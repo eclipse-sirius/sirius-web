@@ -2,11 +2,11 @@
 
 ## Details
 <!-- Check one of the following options with "x" -->
-* [] Can you reproduce the problem all the time?
-* [] Are you running the latest version?
-* [] Did you check the documentation?
-* [] Are you reporting this issue to the correct repository?
-* [] Did you perform a search to check if the issue does not exist already?
+* [ ] Can you reproduce the problem all the time?
+* [ ] Are you running the latest version?
+* [ ] Did you check the documentation?
+* [ ] Are you reporting this issue to the correct repository?
+* [ ] Did you perform a search to check if the issue does not exist already?
 
 ## Current behavior
 <!-- Describe how the issue manifests -->
@@ -31,14 +31,14 @@ Sirius Components version: X.Y.Z
 
 Browser in which the issue has been reproduced:
 
-* [] Chrome (desktop) version XX
-* [] Chrome (Android) version XX
-* [] Chrome (iOS) version XX
-* [] Firefox version XX
-* [] Safari (desktop) version XX
-* [] Safari (iOS) version XX
-* [] IE version XX
-* [] Edge version XX
+* [ ] Chrome (desktop) version XX
+* [ ] Chrome (Android) version XX
+* [ ] Chrome (iOS) version XX
+* [ ] Firefox version XX
+* [ ] Safari (desktop) version XX
+* [ ] Safari (iOS) version XX
+* [ ] IE version XX
+* [ ] Edge version XX
  
 For Tooling issues:
 
