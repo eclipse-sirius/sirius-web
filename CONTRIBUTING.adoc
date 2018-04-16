@@ -1,0 +1,53 @@
+= Contributing to this project
+
+Want to contribute? There are a few things you need to know.
+
+== Support
+
+If you have some questions regarding the project or if you require some support, please ask your question on https://stackoverflow.com/questions/tagged/sirius[Stack Overflow].
+The Github issues are only for bugs and feature requests.
+
+== Bugs and feature requests
+
+If you have found a bug, please open an issue on Github.
+If you want to contribute to the project by fixing the issue, don't hesitate to open a pull request with your contribution.
+Templates have been configured to guide you during the creation of your issues and pull request.
+Please check first that a similar bugs has not been found before.
+If you want to request a new feature, please specify in details what you need and why.
+
+== Coding Rules
+
+In order to contribute to the project, keep in mind that all contributions will require tests and documentation.
+For details regarding our coding style, please have a look at our coding style guide.
+
+== Commit Message Guidelines
+
+All commit messages should adhere to the following guidelines:
+
+[source]
+----
+[GITHUB_ISSUE_NUMBER] SUBJECT
+BLANK LINE
+BODY
+BLANK LINE
+Bug: GITHUB_BUG_URL
+Signed-off-by: COMMITTER_NAME <COMMITTER_EMAIL>
+----
+
+Example:
+
+[source]
+----
+[42] Add an awesome new feature
+
+Let me tell you why it is awesome
+
+Bug: https://github.com/eclipse/sirius-components/issues/42
+Signed-off-by: John Doe <john.doe@example.com>
+----
+
+Commits and pull request used to close issues should follow the https://help.github.com/articles/closing-issues-using-keywords[Github guidelines] for closing issues with keyword in their body.
+
+== Signing the Eclipse Contributor Agreement
+
+In order to contribute to this project, you will need to have an Eclipse account with a valid https://www.eclipse.org/legal/ecafaq.php[Eclipse Contributor Agreement (ECA)].

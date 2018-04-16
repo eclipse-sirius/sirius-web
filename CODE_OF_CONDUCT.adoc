@@ -1,0 +1,4 @@
+= Code of Conduct
+
+The Eclipse Foundation has adopted a Code of Conduct that we expect project participants to adhere to.
+Please https://www.eclipse.org/org/documents/Community_Code_of_Conduct.php[read the full text] so that you can understand what actions will and will not be tolerated.

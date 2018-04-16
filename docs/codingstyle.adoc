@@ -1,0 +1,199 @@
+= Coding Style Guide
+Stéphane Bégaudeau <stephane.begaudeau@obeo.fr>
+v1.0.0, 2018-03-23
+
+== Introduction
+
+This document will specify the coding style which should be enforced in this project.
+We want our best practices to be aligned with the best practices of the JavaScript and React communities.
+Keep in mind that best practices are not set in stones, they should evolve over time.
+If you think that some of our practices can be improved, don't hesitate to open an issue.
+
+== JavaScript
+
+=== Whitespace
+
+The only kind of whitespace used in our code should be a regular space.
+Tab characters should not be used for indentation.
+
+=== File structure
+
+All files should start with the license and copyright information.
+After that, in JavaScript modules, the import statements should appear in alphabetical order.
+You can group import statements from similar folders.
+Finally, you can have the file's implementation.
+The license and copyright information and the import statements should be separated by exactly one blank line.
+In a similar fashion, groups of import statements should be separated by one blank line.
+Finally, one blank line should separate the import statements and the implementation.
+
+=== ECMAScript Modules
+
+Always use named imports and exports in your ECMAScript modules.
+Do not use default imports and exports.
+
+=== Formatting
+
+A Prettier configuration is available in the project.
+It should be used to format automatically the project.
+
+=== Statements
+
+Only use one statement per line.
+Semicolons are required to prevent issues with the automatic semicolons insertion mechanism.
+
+=== Local variable declarations
+
+Do not use the keyword `var`.
+Always use `const` by default and if you discover that you need to modify the value of the variable then switch to `let`.
+
+=== Arrays and objects literals
+
+Always use a trailing commas.
+Do not use the Array or the Object constructor.
+
+=== Classes
+
+Do not use classes except in some React-specific code.
+Do not manipulate anything related to `prototype`.
+
+=== Functions literals
+
+Prefer arrow functions instead of the `function` keyword to prevent some issues with `this`.
+
+=== String literals
+
+Regular string literals are delimited with single quotes rather than double quotes.
+They do not span multiple lines.
+Use template strings over complex string concatenation.
+
+=== Naming conventions
+
+Class names should be written in UpperCamelCase.
+Functions, variables and parameters should be written in lowerCamelCase.
+React components are an exception to this rule since they should always be written in UpperCamelCase.
+
+== React
+
+* Only include one React component per file
+* Multiple stateless or pure components are allowed per file
+* Always use JSX
+* Do not use mixins
+* Do not use React.createClass
+
+=== Naming conventions
+
+All the components should be separated between stateful and stateless ones.
+Stateless components should not have any constraints regarding the environment in which they may be used (urls for example).
+Stateful components should be located in a folder named _containers_ while stateless ones should be located in a folder named _components_.
+The folders containing the components should be plural while the components themself should be singular.
+Use the name of the component as the name of the file.
+If you have multiple stateless components in a single file, pick the name of the most important component as the file name.
+
+The components should be organized by the feature they provide, not by their technical role.
+As a result, an imaginary _ButtonService_ and an imaginary _ButtonController_ should be both in a _buttons_ folder not in _services_ and _controller_ folders.
+If the organization becomes too complex, subfolder specific to the technical role of the component can be introduced but a feature-based organization will be more relevant 99% of the time.
+
+=== Props
+
+Use lowerCamelCase for all props.
+Always specify `propTypes` for all props.
+Always define explicit `defaultProps` for all non-required props.
+Always provide regular properties to the root of your component using the spread operator.
+
+=== Stateless and stateful components
+
+Always start writing components using an arrow function.
+If your components require the use of a lifecycle hook or a state management property (state, setState) then convert it to a class-based component.
+Always use destructuring and rest to easily identify the API of your components
+
+[source,javascript]
+----
+import React from 'react';
+import PropTypes from 'prop-types';
+
+const propTypes = {
+  api: PropTypes.string.isRequired
+}
+const defaultProps = {
+  api: ''
+}
+
+export const Stateless = ({ api, ...props }) => {
+  return <div {...props}>Stateless</div>;
+};
+Stateless.propTypes = propTypes;
+Stateless.defaultProps = defaultProps;
+----
+
+[source,javascript]
+----
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+
+const propTypes = {
+  api: PropTypes.string.isRequired
+}
+const defaultProps = {
+  api: ''
+}
+
+export class Stateful extends Component {
+  //...
+  render() {
+    const { api, ...props } = this.props;
+    return <div {...props}>Stateful</div>;
+  }
+}
+Stateful.propTypes = propTypes;
+Stateful.defaultProps = defaultProps;
+----
+
+=== JSX
+
+Always use parentheses for JSX tages when they span more than one line.
+Always self-close tags that have no children.
+
+=== Stateful components ordering
+
+Order of the properties of a stateful component:
+
+* static methods
+* constructor
+* getChildContext
+* componentWillMount
+* componentDidMount
+* componentWillReceiveProps
+* shouldComponentUpdate
+* componentWillUpdate
+* componentDidUpdate
+* componentWillUnmount
+* clickHandlers or eventHandlers like onClickSubmit() or onChangeDescription()
+* getter methods for render like getSelectReason() or getFooterContent()
+* optional render methods like renderNavigation() or renderProfilePicture()
+* render
+
+=== Stateful components methods
+
+Always bind event handlers for the render method in the constructor.
+
+=== Tests
+
+Tests should be located in a folder named `$$__tests__$$` next to the tested components.
+Use Jest to define and run your tests.
+
+== CSS
+
+Our CSS will leverage some reset rules in order to have the same blank style on all web browsers.
+
+=== Naming conventions
+
+Our projects will contain two kind of CSS classes.
+The first one, _property-based classes_ will be used to modify the behavior of some specific CSS property.
+They will mostly be used by stateless components in order to create a set of coherent looking reusable components.
+
+Their name will adhere to the following naming convention: `stylePropertyName-valueName` like `fontSize-xxl`.
+Property-based CSS classes will define the core property values will should be shared by all our components like font-size, padding, margin, colors...
+
+The second kind of CSS classes are _component-based classes_.
+Component-based CSS classes are used by both stateless and stateful components to identify the various parts of the components which can be influenced by CSS rules.
+They should be named using the following convention: `component-element\--state` like `loginCard-username\--invalid`.

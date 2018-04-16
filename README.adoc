@@ -1,0 +1,25 @@
+= Sirius Components
+
+JavaScript, HTML and CSS components for https://www.eclipse.org/sirius[Eclipse Sirius]
+
+https://www.eclipse.org/legal/epl-2.0[image:https://img.shields.io/badge/License-EPLv2-blue.svg?style=flat-square[License EPL v2]]
+https://github.com/prettier/prettier[image:https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square[code style: prettier]]
+
+== Execute the code
+
+Have a look at the https://github.com/eclipse/sirius-components/blob/master/docs/development.adoc[developer documentation] to find out how to setup your development environment and run the code.
+
+
+== Contributing
+
+In order to contribute to the project, please follow the guidelines of the https://github.com/eclipse/sirius-components/blob/master/CONTRIBUTING.adoc[CONTRIBUTING] documentation.
+
+
+== License
+
+Copyright (c) 2018 Obeo and others.
+
+All rights reserved. This program and the accompanying materials
+are made available under the terms of the Eclipse Public License 2
+which accompanies this distribution and is available at
+https://www.eclipse.org/legal/epl-2.0.

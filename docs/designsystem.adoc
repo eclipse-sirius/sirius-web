@@ -1,0 +1,424 @@
+= Design System Guide
+Stéphane Bégaudeau <stephane.begaudeau@obeo.fr>
+v1.0.1, 2018-03-23
+
+== Introduction
+
+The goal of this design system guide is to contain the fundamental principles used to define applications sharing our design language.
+The design system will define much more than just the guideline of the appearance of our application.
+It will contain all the elements of the language to use to communicate with our end users.
+From the way users are expected to navigate to our strategy to present errors and blank states, this document will define everything regarding the user experience of our application.
+At such, it will cover at least the following topics (in no specific order):
+
+* Usability
+* Accessibility
+* Information architecture
+* Interaction design
+* Visual design
+
+The design system will at the very least contain all the properties of the visual design of our application.
+In a web application, developers tend to copy and paste lot of code regarding sizes, colors, margin and countless of HTML and CSS elements.
+This document defines all the properties of our visual design language that should be reused and customized accross our application.
+
+== Design Principles
+
+Before starting by defining the technical properties of our design language, we will first have a look at its philosophy.
+We want our applications to reflect the way we think about our work.
+As a result, our applications should share the following properties:
+
+* Professional
+* Pleasant
+* Adaptable
+* Dynamic
+
+Those principles will be used to judge the quality of our design language and to evaluate the gap between the user experience of an application and our expected result.
+You should not think of those principles as a marketing speech for the end users.
+They shoud instead be used by both designers and developers alike in order to have a guideline to build applications.
+
+As an example, you can think of a pleasant application as an application in which the user can easily find how to realize his tasks.
+A professional application should be able to let the user manipulate large amount of complex pieces of information easily and it should also display clear and meaningful errors messages.
+A dynamic application must provide the end users with some feedback when a long running process is running.
+To build an adaptable application, you must support newcomers and advanced users alike with both basic features and support for complex use cases.
+
+Use those principles to judge in a *concrete* manner the result of your work on a day to day basis.
+They must be used as the guideline to review code contributions for example.
+Our design principles are not set in stone, they *will* evolve over time just like the user experience of our applications.
+
+Don't hesitate to submit issues or contributions for this document.
+
+== States
+
+Consider your web application has a complex finite state machine with various transitions triggered by users interactions and asynchronous events.
+In accordance with our design principles, we have the responsability to create a professional and pleasant user experience.
+
+As such, we need to start by handling the http://emptystat.es[the blank state] to get users onboard.
+Do not minimize how complex it can be for new users to find how we are expecting them to behave.
+Try to find some inspiration in the https://www.useronboard.com[onboarding process] of some of the most popular web applications.
+You should be able to guide the users when there are no data available.
+Remember that the lack of data is the first valid state of the application that your users will see.
+All your users will have to deal with this situation one day or another.
+
+Once the blank state is properly supported, you will have to handle http://emptystat.es/tagged/error[the error state] and the loading state of your application.
+We are building an application based on asynchronous actions with remote calls which will take an undefined amount of time to complete and which may fail dramatically.
+Informing the user on the progress of the actions that we are executing and handling properly the errors which will appear is not an option.
+
+Once this work is done, you can move on to the expected states of your application.
+
+=== Blank state
+
+The blank state should contain all the necessary information to let the user produce some data.
+It should contain a message indicating at least:
+
+* What kind of elements should be visible at this location
+* Why there are no elements available
+* How to create new elements
+
+At least one action should be available to start populating the page with data.
+It can be a link to another page used to create new elements.
+
+=== Error state
+
+The error state has to be helpful to multiple kind of actors.
+First, it must help the user understand the issue and how to possibly fix it.
+Second, it must provide some information to let the support team or the administrator answer some questions from the user.
+Finally, it should let developers of the application understand precisly the context of the issue.
+
+The error state should contain a message indicating at least:
+
+* What is the issue (invalid input from the user, server error)
+* How to proceed to fix the issue (reload the page, try another page, contact your admin, fix your input)
+* A code to find more about this issue in some knowledge base
+
+If an error can be fixed by the user, the error state should guide the user to fix it.
+In such situation, action(s) should be available to start fixing the issue.
+
+== Navigation and actions
+
+The first key feature of a web application is the ability to navigate easily from one page to another.
+In order to be able to navigate easily, users should understand where to click to trigger the navigation.
+As such, it is of paramount importance to identify buttons which will trigger an action and links which will only be used to navigate.
+Links should not look like buttons and buttons should not look like links.
+
+Our application will be manipulated by users on mobile devices with tactile screens.
+While they may not be our main target at the beginning, we have to make sure to provide a nice user experience for those users.
+As a result, we have to make sure that the area to be clicked in order to navigate or to trigger an action is not too small.
+Do not hesitate to create a larger area surrounding a link to let users click easily.
+It will also improve the user experience of those using a keyword and a mouse since it will be easier to click on our links and actions.
+
+Actions should be represented with buttons.
+They should have a clear and meaningful label.
+Buttons should not use generic labels like OK/Cancel.
+In a similar fashion as https://www.eclipse.org/eclipse/news/4.7/M6#improved-exit-and-restart-dialog[some improvements of Eclipse Oxygen], buttons should have direct and specific labels.
+
+== Performance
+
+The performance of our application will be a critical aspect of our work.
+While developing web applications you will have to be especially careful to this aspect.
+The performance of a process in an application can be defined by four properties: Its duration, responsiveness, fluency and the tolerance.
+
+=== Duration
+
+We can define four categories of duration for the process executed by our applications (like clicking on a button and observing some result):
+
+[cols=2*]
+|===
+|Instantaneous
+|less than 100ms
+
+|Immediate
+|between 100ms and 1000 ms
+
+|Continuous
+|between 1000ms and 5000 ms
+
+|Captive
+|more than 5000ms
+|===
+
+Reacting to the user input should be instantaneous (i.e. indicating that the cursor is over a button).
+Performing some simple task should be immediate like opening a new tab.
+A continuous task requires a loading indicator to inform the end user that the result will take some time to be computed.
+A captive process should not only display a loading indicator but also proper messages detailling the steps of the process.
+Continuous and captive taks should allow the user to cancel the process.
+
+=== Responsiveness
+
+It is of paramount importance to lower as much as possible the time perceived by the end user.
+As a result, we should strive to display some feedback to user input as fast as possible.
+We should leverage lazy loading in order to speed up the time to render in our application.
+
+=== Fluency
+
+While a process may take some time to complete, it should not slow the user interface which should remain responsive at all time.
+If it is possible for the user to cancel a long running task, he should receive some feedback quickly and the task should be cancelled as soon as possible.
+
+=== Tolerance
+
+Captive processes will require messages detailling the process but also the currently executed subtask.
+Very long processes should also allow the end user to switch to another part of the application before coming back later to see the new state of the process (i.e. continuous integration tools like Jenkins).
+
+== Typography
+
+=== Typeface
+
+Our primary typeface is the standard typeface of each operating system in a similar fashion as Github for example.
+
+=== Sizes
+
+4 font sizes are supported in our applications. The default font size in our applications is *medium*.
+
+* Medium
+* Large
+* Extra Large
+* Extra extra large
+
+The various font sizes are accessible with the following CSS variables.
+
+[source,css,indent=0]
+----
+--fontSize-m
+--fontSize-l
+--fontSize-xl
+--fontSize-xxl
+----
+
+=== Weight
+
+We are supporting five font weights for Open Sans. The default font weight in the body is *regular*.
+
+* Light
+* Regular
+* Semi-Bold
+* Bold
+* Extra-Bold
+
+Those font weight can be applied usong the following CSS variables.
+[source,css,indent=0]
+----
+--fontWeight-light
+--fontWeight-regular
+--fontWeight-semiBold
+--fontWeight-bold
+--fontWeight-extraBold
+----
+
+=== Text styles
+
+By combining the font sizes and the font weights, we can produce by default the following text styles.
+
+* Extra Extra Large Title
+* Extra Large Title
+* Large Title
+* Medium Title
+* Medium Body
+* Medium Caption
+
+They can be used with the following CSS classes.
+
+[source,css]
+----
+.title-xxl
+.title-xl
+.title-l
+.title-m
+.body-m
+.caption-m
+----
+
+You can produce new text styles by mixing other font size and font weight but these are the most important ones that you should use most of the time.
+Text styles should always be defined in this document and in the root CSS file.
+Do not define new text styles locally.
+
+=== Line Length
+
+You need to take care about the number of characters per line to produce documents which can be read easily.
+When you will define the layout of your elements, you should ensure that most of your lines stay between *45 and 75 characters on a desktop* and between *35 and 40 characters on mobile devices*.
+The perfect number of characters in a line in a desktop environement is around 66 and around 39 characters for a mobile device.
+Do not put more than 90 characters per line on a desktop and 50 characters per line on a mobile device.
+
+=== Line Height
+
+In order to ensure a proper readability of the text in our application, you can use the link:https://pearsonified.com/typography[golden ratio typeography calculator] to compute a proper line height.
+Since the best line height is influenced by a lot of factors, it is quite difficult to specify one size for all the parts of the application.
+By default, the various text style come with dedicated line height.
+
+You can find the line heights used in the default text styles below.
+
+[source,css,indent=0]
+----
+--lineHeight-xxl
+--lineHeight-xl
+--lineHeight-l
+--lineHeight-m
+--lineHeight-s
+----
+
+== Colors
+
+In our applications, we will use one of the core color defined below.
+Each of the core color is available in a regular, light and dark version.
+The regular version is the one that you should use most of the time.
+Light and dark versions can be used to indicate a change in the state of the element displayed.
+
+* Light Blue, Blue, Dark Blue
+* Light Green, Green, Dark Green
+* Light Yellow, Yellow, Dark Yellow
+* Light Orange, Orange, Dark Orange
+* Light Red, Red, Dark Red
+* Light Pink, Pink, Dark Pink
+* Light Purple, Purple, Dark Purple
+
+Blue should be used as the primary color for the main elements.
+It should be used as accent color for links, active states and in order to highlight buttons and actions.
+Green should be used to indicate the success of an action or a positive situation.
+Yellow should be used to indicate a warning regarding the current situation.
+Red should be used to indicate the failure of an action or to give a negative feedback.
+It can be used as the background color of destructive tasks like the deletion of an account.
+Pink and purple should only be used to differentiate some elements in a situation where additional colors are needed.
+For example, in some search results, a colored label can be used to show the type of the element.
+In such situation, a large number of different colors will be necessary and the pink and purple could be used.
+
+Those colors can be accessed using the following CSS variables.
+[source,css,indent=0]
+----
+--light-blue
+--blue
+--dark-blue
+
+--light-green
+--green
+--dark-green
+
+--light-yellow
+--yellow
+--dark-yellow
+
+--light-orange
+--orange
+--dark-orange
+
+--light-red
+--red
+--dark-red
+
+--light-pink
+--pink
+--dark-pink
+
+--light-purple
+--purple
+--dark-purple
+----
+
+=== Black and white
+
+The following black and white colors are also available.
+
+* Black
+* Darkness, Steel, Slate, Silver
+* Light Smoke, Smoke, Dark Smoke
+* Light Snow, Snow, Dark Snow
+* White
+
+You can leverage them with the following CSS variables
+[source,css,indent=0]
+----
+--black
+--darkness
+--steel
+--slate
+--silver
+--dark-smoke
+--smoke
+--light-smoke
+--dark-snow
+--snow
+--light-snow
+--white
+----
+
+=== Color Match
+
+By default the body of the application will use *Slate* as the color of the text.
+If you want to use one of the core colors as the background of an element, then you should use *White* as the foreground color.
+For white, varitions of Snow and Smoke, you should use *Slate* as the foreground color.
+For example, a primary button should have a *Blue* background with a *White* label.
+If you want to create a light/dark theme for your application, you can use the following color configuration.
+
+* Slate text with a White, Snow and Light Smoke background
+* White text with a Black, Steel and Slate background
+
+=== Meaning
+
+Most of the time, we will not need to use specific colors.
+If you want to highlight an element, for example to indicate a link which can be clicked or an action which can be performed, you should use some blue.
+When the user will place the cursor on top of the highlighted element and when he will click on it, you can use variation of the blue with its light and dark version.
+This may not be relevant for navigation links but it will be for actions.
+The colors green, yellow, orange and red should be used to indicate to the user the status of an interaction.
+
+* Green = success
+* Yellow and orange = warning
+* Red = danger
+
+For example, an action used to delete some data should be in red, while a successfully validated form should use some green.
+Other colors link pink and purple should only be used when a large number of different colors is required.
+This situation can arise if we have to display a large set of colored labels with various meanings.
+
+== Layout
+
+Since most of the elements of our application may be reused in other context, we will make sure to share the same kind of layout conventions.
+Six dimensions of margin and padding are supported by this design guide.
+
+* Extra small
+* Small
+* Medium
+* Large
+* Extra large
+* Extra extra large
+
+Those dimensions can be used with regular CSS variables.
+
+[source,css,indent=0]
+----
+--layoutDimension-xs
+--layoutDimension-s
+--layoutDimension-m
+--layoutDimension-l
+--layoutDimension-xl
+--layoutDimension-xxl
+----
+
+By default in most of our elements with a custom layout a padding using the *medium* size is used.
+For example, cards should use a medium padding with the CSS classe padding-m.
+Within a card, some complex arrangements of elements may require some fine tuning of the layout with those CSS classes.
+
+== Borders
+
+Most of the borders are not using directly CSS borders but instead they are created using CSS box-shadows.
+Those shadows can thus be combined easily with any core CSS colors to give additional depths to an element.
+
+The following variables to manipulate box-shadows are available.
+
+[source,css,indent=0]
+----
+--boxShadow-emboss
+--boxShadow-deboss
+--boxShadow-float
+--boxShadow-border
+----
+
+The variable --boxShadow-deboss can be used to show that the user can press on an element (i.e. button).
+On the other hand, the variable --boxShadow-deboss can be used to represent that the user is currently pressing on an element (i.e. a button).
+
+== Border radius
+
+The following variables are available to configure the border radius of an element:
+
+[source,css,indent=0]
+----
+--borderRadius-small
+--borderRadius-medium
+--borderRadius-large
+--borderRadius-extraLarge
+--borderRadius-circle
+----
