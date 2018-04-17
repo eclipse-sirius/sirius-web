@@ -17,6 +17,15 @@ exports[`Aside renders the aside component 1`] = `
           Dashboard
         </a>
       </li>
+      <li>
+        <a
+          className="title-m"
+          href="/projects"
+          onClick={[Function]}
+        >
+          Projects
+        </a>
+      </li>
     </ul>
   </div>
   <div
