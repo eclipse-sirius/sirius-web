@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Aside renders the aside component 1`] = `
+<aside
+  className="aside"
+>
+  <div
+    className="aside-mainlinks"
+  >
+    <ul>
+      <li>
+        <a
+          className="title-m"
+          href="/"
+          onClick={[Function]}
+        >
+          Dashboard
+        </a>
+      </li>
+    </ul>
+  </div>
+  <div
+    className="aside-additionallinks"
+  >
+    <ul>
+      <li>
+        <a
+          className="caption-m"
+          href="https://github.com/eclipse/sirius-components/issues"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          Report an issue
+        </a>
+      </li>
+      <li>
+        <a
+          className="caption-m"
+          href="https://stackoverflow.com/questions/tagged/sirius"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          Help
+        </a>
+      </li>
+    </ul>
+  </div>
+</aside>
+`;

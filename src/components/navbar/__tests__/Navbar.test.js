@@ -8,21 +8,18 @@
  *******************************************************************************/
 
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { MemoryRouter } from 'react-router-dom';
+import Renderer from 'react-test-renderer';
 
-import { BrowserRouter } from 'react-router-dom';
+import { Navbar } from '../Navbar';
 
-import { App } from './components/app/App';
-
-import './reset.css';
-import './app.css';
-
-/**
- * The entry point of the application.
- */
-ReactDOM.render(
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>,
-  document.getElementById('root')
-);
+describe('Navbar', () => {
+  it('renders the navbar component', () => {
+    const navbar = Renderer.create(
+      <MemoryRouter initialEntries={['/']}>
+        <Navbar />
+      </MemoryRouter>
+    );
+    expect(navbar.toJSON()).toMatchSnapshot();
+  });
+});

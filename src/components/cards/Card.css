@@ -1,0 +1,37 @@
+/*******************************************************************************
+ * Copyright (c) 2018 Obeo and others.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2
+ * which accompanies this distribution and is available at
+ * https://www.eclipse.org/legal/epl-2.0.
+ *******************************************************************************/
+
+.card {
+  background-color: var(--white);
+  box-shadow: var(--boxShadow-float);
+  border-radius: var(--borderRadius-small);
+}
+
+.card-header {
+  padding: var(--layoutDimension-m);
+}
+
+.card-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-divider {
+  border-top: 1px solid var(--light-smoke);
+}
+
+.card-footerlink {
+  display: block;
+  text-transform: capitalize;
+  padding: var(--layoutDimension-m) var(--layoutDimension-m);
+}
+.card-footerlink:hover {
+  background-color: var(--light-snow);
+}
