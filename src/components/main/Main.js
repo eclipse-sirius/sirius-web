@@ -13,6 +13,7 @@ import { Route, Switch } from 'react-router-dom';
 import { classNames } from '../../common/classnames';
 
 import { DashboardView } from '../dashboard/DashboardView';
+import { ListProjectsView } from '../projects/listprojects/ListProjectsView';
 
 import './Main.css';
 
@@ -30,6 +31,7 @@ export const Main = ({ className, ...props }) => {
     <main className={mainClassNames} {...props}>
       <Switch>
         <Route exact path="/" component={DashboardView} />
+        <Route exact path="/projects" component={ListProjectsView} />
       </Switch>
     </main>
   );

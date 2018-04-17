@@ -42,6 +42,11 @@ export const Aside = ({ className, ...props }) => {
               Dashboard
             </Link>
           </li>
+          <li>
+            <Link className={MAIN_LINKS__CLASS_NAMES} to="/projects">
+              Projects
+            </Link>
+          </li>
         </ul>
       </div>
       <div className={ASIDE_ADDITIONAL_LINKS__CLASS_NAMES}>
