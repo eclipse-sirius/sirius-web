@@ -51,7 +51,7 @@ Don't hesitate to submit issues or contributions for this document.
 Consider your web application has a complex finite state machine with various transitions triggered by users interactions and asynchronous events.
 In accordance with our design principles, we have the responsability to create a professional and pleasant user experience.
 
-As such, we need to start by handling the http://emptystat.es[the blank state] to get users onboard.
+As such, we need to start by handling http://emptystat.es[the blank state] to get users onboard.
 Do not minimize how complex it can be for new users to find how we are expecting them to behave.
 Try to find some inspiration in the https://www.useronboard.com[onboarding process] of some of the most popular web applications.
 You should be able to guide the users when there are no data available.

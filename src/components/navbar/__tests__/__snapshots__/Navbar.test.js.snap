@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Navbar renders the navbar component 1`] = `
+<nav
+  className="navbar"
+>
+  <div
+    className="navbar-title title-xxl"
+  >
+    Eclipse Sirius
+  </div>
+</nav>
+`;

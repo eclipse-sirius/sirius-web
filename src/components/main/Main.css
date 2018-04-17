@@ -7,22 +7,6 @@
  * https://www.eclipse.org/legal/epl-2.0.
  *******************************************************************************/
 
-import React from 'react';
-import ReactDOM from 'react-dom';
-
-import { BrowserRouter } from 'react-router-dom';
-
-import { App } from './components/app/App';
-
-import './reset.css';
-import './app.css';
-
-/**
- * The entry point of the application.
- */
-ReactDOM.render(
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>,
-  document.getElementById('root')
-);
+.main {
+  padding: 0px var(--layoutDimension-xl) 0px 0px;
+}

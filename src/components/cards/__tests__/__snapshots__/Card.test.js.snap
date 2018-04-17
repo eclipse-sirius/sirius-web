@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Card renders a card with a divider between the header and body 1`] = `
+<div
+  className="card"
+>
+  <div
+    className="card-header"
+  >
+    <h1
+      className="card-title title-l"
+    >
+      Card Title
+    </h1>
+  </div>
+  <div
+    className="card-divider"
+  />
+  <div
+    className="card-body"
+  />
+</div>
+`;
+
+exports[`Card renders a card with a header and a body 1`] = `
+<div
+  className="card"
+>
+  <div
+    className="card-header"
+  >
+    <h1
+      className="card-title title-l"
+    >
+      Card Title
+    </h1>
+  </div>
+  <div
+    className="card-body"
+  />
+</div>
+`;
+
+exports[`Card renders an empty card 1`] = `
+<div
+  className="card"
+/>
+`;

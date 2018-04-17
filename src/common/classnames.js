@@ -7,22 +7,11 @@
  * https://www.eclipse.org/legal/epl-2.0.
  *******************************************************************************/
 
-import React from 'react';
-import ReactDOM from 'react-dom';
-
-import { BrowserRouter } from 'react-router-dom';
-
-import { App } from './components/app/App';
-
-import './reset.css';
-import './app.css';
-
 /**
- * The entry point of the application.
+ * Computes the class names of an element from the given static class names
+ * along with optional class names which can be null or undefined.
  */
-ReactDOM.render(
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>,
-  document.getElementById('root')
-);
+export const classNames = (staticClassNames, ...optionalClassNames) => {
+  const classNames = staticClassNames + ' ' + optionalClassNames.filter(n => n).join(' ');
+  return classNames.trim();
+};

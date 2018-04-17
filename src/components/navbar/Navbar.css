@@ -7,22 +7,18 @@
  * https://www.eclipse.org/legal/epl-2.0.
  *******************************************************************************/
 
-import React from 'react';
-import ReactDOM from 'react-dom';
+.navbar {
+  display: flex;
+  flex-direction: row;
 
-import { BrowserRouter } from 'react-router-dom';
+  padding: 0 var(--layoutDimension-m);
 
-import { App } from './components/app/App';
+  height: var(--layoutDimension-xl);
 
-import './reset.css';
-import './app.css';
+  background-color: var(--white);
+  box-shadow: var(--boxShadow-float);
+}
 
-/**
- * The entry point of the application.
- */
-ReactDOM.render(
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>,
-  document.getElementById('root')
-);
+.navbar-title {
+  margin: auto 0;
+}

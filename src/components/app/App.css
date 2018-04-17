@@ -7,22 +7,24 @@
  * https://www.eclipse.org/legal/epl-2.0.
  *******************************************************************************/
 
-import React from 'react';
-import ReactDOM from 'react-dom';
+.app {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows:
+    [navbar] min-content
+    [container] minmax(max-content, auto);
 
-import { BrowserRouter } from 'react-router-dom';
+  min-height: 100vh;
+}
+.app-navbar {
+  grid-row-start: navbar;
+}
+.app-container {
+  display: grid;
+  grid-template-columns:
+    [aside] min-content
+    [main] auto;
 
-import { App } from './components/app/App';
-
-import './reset.css';
-import './app.css';
-
-/**
- * The entry point of the application.
- */
-ReactDOM.render(
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>,
-  document.getElementById('root')
-);
+  grid-row-start: container;
+  padding: var(--layoutDimension-l) 0 var(--layoutDimension-xl) 0;
+}

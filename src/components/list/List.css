@@ -7,22 +7,25 @@
  * https://www.eclipse.org/legal/epl-2.0.
  *******************************************************************************/
 
-import React from 'react';
-import ReactDOM from 'react-dom';
+.list--separated .listitem {
+  border-bottom: 1px solid var(--light-smoke);
+}
+.list--separated .listitem:nth-last-child(1) {
+  border-bottom: 0px;
+}
 
-import { BrowserRouter } from 'react-router-dom';
+.list--highlighted .listitem:hover {
+  background-color: var(--light-snow);
+}
 
-import { App } from './components/app/App';
+.listitem {
+  padding: var(--layoutDimension-m) var(--layoutDimension-m);
+}
 
-import './reset.css';
-import './app.css';
-
-/**
- * The entry point of the application.
- */
-ReactDOM.render(
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>,
-  document.getElementById('root')
-);
+.listitem--link {
+  padding: 0;
+}
+.listitem--link a {
+  display: block;
+  padding: var(--layoutDimension-m) var(--layoutDimension-m);
+}
