@@ -18,11 +18,11 @@ const LIST_PROJECTS_VIEW__CLASS_NAMES = 'listprojectsview';
 /**
  * The ListProjectsView component is used to display the list of all the projects.
  */
-export const ListProjectsView = ({ className }) => {
+export const ListProjectsView = ({ className, projects, ...props }) => {
   const listProjectsViewClassNames = classNames(LIST_PROJECTS_VIEW__CLASS_NAMES, className);
   return (
     <div className={listProjectsViewClassNames}>
-      <ProjectsListCard className={className} />
+      <ProjectsListCard projects={projects} {...props} />
     </div>
   );
 };
