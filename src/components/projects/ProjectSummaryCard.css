@@ -7,6 +7,6 @@
  * https://www.eclipse.org/legal/epl-2.0.
  *******************************************************************************/
 
-.project-card .card-divider {
+.projectsummarycard .card-divider {
   margin-top: var(--layoutDimension-s);
 }

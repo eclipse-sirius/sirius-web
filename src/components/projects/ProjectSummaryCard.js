@@ -10,12 +10,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Body, Card, Header, Title } from '../cards/Card';
+import { Body, Card, Divider, Footer, FooterLink, Header, Title } from '../cards/Card';
 import { List, ListItem, ListItemDescription, ListItemTitle } from '../list/List';
 
 import './ProjectSummaryCard.css';
 
-const PROJECT_CARD__CLASS_NAMES = 'project-card';
+const PROJECT_SUMMARY_CARD__CLASS_NAMES = 'projectsummarycard';
 
 const propTypes = {
   project: PropTypes.object.isRequired
@@ -27,7 +27,7 @@ const propTypes = {
  */
 export const ProjectSummaryCard = ({ project, ...props }) => {
   return (
-    <Card className={PROJECT_CARD__CLASS_NAMES} {...props}>
+    <Card className={PROJECT_SUMMARY_CARD__CLASS_NAMES} {...props}>
       <Header>
         <Title>{project.name}</Title>
       </Header>
@@ -41,6 +41,10 @@ export const ProjectSummaryCard = ({ project, ...props }) => {
           </ListItem>
         </List>
       </Body>
+      <Divider />
+      <Footer>
+        <FooterLink to={`/projects/${project.name}`}>View Project</FooterLink>
+      </Footer>
     </Card>
   );
 };
