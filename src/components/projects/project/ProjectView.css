@@ -1,0 +1,36 @@
+/*******************************************************************************
+ * Copyright (c) 2018 Obeo and others.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2
+ * which accompanies this distribution and is available at
+ * https://www.eclipse.org/legal/epl-2.0.
+ *******************************************************************************/
+
+.projectview {
+  display: grid;
+  grid-template-rows:
+    [header] min-content
+    [main] auto;
+  grid-template-columns: 1fr;
+  grid-row-gap: var(--layoutDimension-l);
+}
+
+.projectview-main {
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: [details] auto;
+  grid-column-gap: var(--layoutDimension-l);
+}
+
+.projectview-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.projectview-details .card {
+  margin-top: var(--layoutDimension-l);
+}
+.projectview-details .card:nth-child(1) {
+  margin-top: 0;
+}

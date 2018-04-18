@@ -14,6 +14,7 @@ import { classNames } from '../../common/classnames';
 
 import { DashboardView } from '../dashboard/DashboardView';
 import { ListProjectsView } from '../projects/listprojects/ListProjectsView';
+import { ProjectView } from '../projects/project/ProjectView';
 
 import './Main.css';
 
@@ -32,6 +33,7 @@ export const Main = ({ className, ...props }) => {
       <Switch>
         <Route exact path="/" component={DashboardView} />
         <Route exact path="/projects" component={ListProjectsView} />
+        <Route exact path="/projects/:projectName" component={ProjectView} />
       </Switch>
     </main>
   );
