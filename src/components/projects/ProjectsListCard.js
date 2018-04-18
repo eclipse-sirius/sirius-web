@@ -7,6 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0.
  *******************************************************************************/
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { classNames } from '../../common/classnames';
 
@@ -15,10 +16,17 @@ import { LIST_WITH_HIGHLIGHT__KIND, LIST_WITH_SEPARATOR__KIND, List, ListItem } 
 
 const PROJECTS_LIST_CARD__CLASS_NAMES = 'projectslistcard';
 
+const propTypes = {
+  projects: PropTypes.array.isRequired
+};
+const defaultProps = {
+  projects: []
+};
+
 /**
  * The ProjectsListCard is used to display a list of projects as a card.
  */
-export const ProjectsListCard = ({ className, ...props }) => {
+export const ProjectsListCard = ({ className, projects, ...props }) => {
   const projectsListCardClassNames = classNames(PROJECTS_LIST_CARD__CLASS_NAMES, className);
   return (
     <Card className={projectsListCardClassNames} {...props}>
@@ -28,20 +36,17 @@ export const ProjectsListCard = ({ className, ...props }) => {
       <Divider />
       <Body>
         <List kind={[LIST_WITH_HIGHLIGHT__KIND, LIST_WITH_SEPARATOR__KIND]}>
-          <ListItem key={'sirius'} to={`projects/sirius`}>
-            Sirius
-          </ListItem>
-          <ListItem key={'acceleo'} to={`projects/acceleo`}>
-            Acceleo
-          </ListItem>
-          <ListItem key={'m2doc'} to={`projects/m2doc`}>
-            M2Doc
-          </ListItem>
-          <ListItem key={'emfcompare'} to={`projects/emfcompare`}>
-            EMF Compare
-          </ListItem>
+          {projects.map(project => {
+            return (
+              <ListItem key={project.name} to={`projects/${project.name}`}>
+                {project.name}
+              </ListItem>
+            );
+          })}
         </List>
       </Body>
     </Card>
   );
 };
+ProjectsListCard.propTypes = propTypes;
+ProjectsListCard.defaultProps = defaultProps;

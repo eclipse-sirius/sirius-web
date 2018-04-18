@@ -19,32 +19,17 @@ const PROJECT_VIEW__CLASS_NAMES = 'projectview';
 const PROJECT_VIEW_MAIN__CLASS_NAMES = 'projectview-main';
 const PROJECT_VIEW_DETAILS__CLASS_NAMES = 'projectview-details';
 
-const semanticResources = [
-  { path: 'model/Architecture.ecore' },
-  { path: 'model/Architecture.genmodel' },
-  { path: 'model/Interaction.ecore' },
-  { path: 'model/Interaction.genmodel' }
-];
-
-const representations = [
-  { name: 'Class Diagram' },
-  { name: 'Architecture Diagram' },
-  { name: 'Interaction Diagram' },
-  { name: 'Activity Diagram' },
-  { name: 'Performance Table' }
-];
-
 /**
  * The ProjectView is used to display and manipulate a project.
  */
-export const ProjectView = ({ className }) => {
+export const ProjectView = ({ className, project, ...props }) => {
   return (
     <div className={PROJECT_VIEW__CLASS_NAMES}>
-      <ProjectHeaderCard name={'Acceleo'} />
+      <ProjectHeaderCard name={project.name} />
       <div className={PROJECT_VIEW_MAIN__CLASS_NAMES}>
         <div className={PROJECT_VIEW_DETAILS__CLASS_NAMES}>
-          <ProjectSemanticResourcesListCard semanticResources={semanticResources} />
-          <ProjectRepresentationsListCard representations={representations} />
+          <ProjectSemanticResourcesListCard semanticResources={project.semanticResources} />
+          <ProjectRepresentationsListCard representations={project.representations} />
         </div>
       </div>
     </div>
