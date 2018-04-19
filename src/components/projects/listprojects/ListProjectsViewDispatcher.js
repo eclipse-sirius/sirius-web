@@ -15,6 +15,7 @@ import {
   ERROR__STATE,
   INITIAL__STATE,
   LOADING__STATE,
+  NO_PROJECTS_LOADED__STATE,
   PROJECTS_LOADED__STATE,
   HANDLE_ERROR__ACTION,
   HANDLE_FETCHED_PROJECTS__ACTION,
@@ -36,6 +37,9 @@ const reducer = (state, props, action) => {
     case INITIALIZE__ACTION:
       return { stateId: LOADING__STATE, projects: [], error: null };
     case HANDLE_FETCHED_PROJECTS__ACTION:
+      if (action.projects.length === 0) {
+        return { stateId: NO_PROJECTS_LOADED__STATE, projects: [], error: null };
+      }
       return { stateId: PROJECTS_LOADED__STATE, projects: action.projects, error: null };
     case HANDLE_ERROR__ACTION:
       return { stateId: ERROR__STATE, projects: state.projects, error: action.error };
