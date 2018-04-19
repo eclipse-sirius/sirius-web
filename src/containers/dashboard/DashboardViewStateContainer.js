@@ -11,6 +11,8 @@ import React, { Component } from 'react';
 
 import { DashboardView } from '../../components/dashboard/DashboardView';
 
+import { actionCreator, dispatcher } from '../../components/dashboard/DashboardViewDispatcher';
+
 /**
  * The DashboardViewStateContainer is the stateful component used to manipulate
  * the state of the dashboard.
@@ -18,26 +20,27 @@ import { DashboardView } from '../../components/dashboard/DashboardView';
 export class DashboardViewStateContainer extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      projects: []
-    };
+    this.state = dispatcher(undefined, props, actionCreator.newInitializeAction());
   }
 
   async componentDidMount() {
     try {
       const jsonDashboardResponse = await fetch(`/api/dashboard`);
-      const jsonDashboard = await jsonDashboardResponse.json();
-      this.setState({
-        projects: jsonDashboard.projects
-      });
+      const dashboardResponse = await jsonDashboardResponse.json();
+      const action = actionCreator.newHandleDashboardFetchedAction(dashboardResponse);
+      this.dispatch(action);
     } catch (error) {
       // To be handled later
     }
   }
 
-  render() {
-    const { projects } = this.state;
+  dispatch(action) {
+    this.setState((prevState, props) => dispatcher(prevState, props, action));
+  }
 
-    return <DashboardView projects={projects} />;
+  render() {
+    const { dashboard } = this.state;
+
+    return <DashboardView dashboard={dashboard} />;
   }
 }

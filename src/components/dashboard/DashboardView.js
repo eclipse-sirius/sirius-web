@@ -24,13 +24,15 @@ const PROJECTS_BODY__CLASS_NAMES = 'projects-body';
  * It will render a bird eye view of the state of the data of the user starting
  * with the list of the projects available.
  */
-export const DashboardView = ({ className, projects, ...props }) => {
+export const DashboardView = ({ className, dashboard, ...props }) => {
   const dashboardViewClassNames = classNames(DASHBOARD_VIEW__CLASS_NAMES, className);
   return (
     <div className={dashboardViewClassNames} {...props}>
       <div className={PROJECTS__CLASS_NAMES}>
         <div className={PROJECTS_BODY__CLASS_NAMES}>
-          {projects.map(project => <ProjectSummaryCard key={project.name} project={project} />)}
+          {dashboard.projects.map(project => (
+            <ProjectSummaryCard key={project.name} project={project} />
+          ))}
         </div>
       </div>
     </div>
