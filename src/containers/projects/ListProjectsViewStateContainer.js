@@ -27,11 +27,18 @@ export class ListProjectsViewStateContainer extends Component {
   async componentDidMount() {
     try {
       const jsonProjectsResponse = await fetch(`/api/projects`);
-      const projectsResponse = await jsonProjectsResponse.json();
-      const action = actionCreator.newHandleProjectsFetchedAction(projectsResponse);
+      let action;
+      if (jsonProjectsResponse.ok) {
+        const projectsResponse = await jsonProjectsResponse.json();
+        action = actionCreator.newHandleProjectsFetchedAction(projectsResponse);
+      } else {
+        const { statusText, status } = jsonProjectsResponse;
+        action = actionCreator.newInvalidResponseAction(statusText, status);
+      }
       this.dispatch(action);
     } catch (error) {
-      // To be handled later
+      const action = actionCreator.newUnexpectedErrorAction(error);
+      this.dispatch(action);
     }
   }
 
@@ -41,8 +48,8 @@ export class ListProjectsViewStateContainer extends Component {
 
   render() {
     const { children, render = children } = this.props;
-    const { stateId, projects } = this.state;
+    const { stateId, error, projects } = this.state;
 
-    return render(stateId, projects);
+    return render(stateId, error, projects);
   }
 }

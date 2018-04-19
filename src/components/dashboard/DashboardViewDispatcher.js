@@ -8,12 +8,15 @@
  *******************************************************************************/
 
 import { dispatcherCreator } from '../../common/dispatcherCreator';
+import { UNKNOWN_ERROR } from '../../common/errors';
 
 import {
   FSM,
+  ERROR__STATE,
   INITIAL__STATE,
   LOADING__STATE,
   DASHBOARD_LOADED__STATE,
+  HANDLE_ERROR__ACTION,
   HANDLE_FETCHED_DASHBOARD__ACTION,
   INITIALIZE__ACTION
 } from './DashboardViewFiniteStateMachine';
@@ -34,6 +37,8 @@ const reducer = (state, props, action) => {
       return { stateId: LOADING__STATE, dashboard: { projects: [] }, error: null };
     case HANDLE_FETCHED_DASHBOARD__ACTION:
       return { stateId: DASHBOARD_LOADED__STATE, dashboard: action.dashboard, error: null };
+    case HANDLE_ERROR__ACTION:
+      return { stateId: ERROR__STATE, dashboard: state.dashboard, error: action.error };
     default:
       return state;
   }
@@ -58,6 +63,42 @@ const newHandleDashboardFetchedAction = response => ({
   dashboard: response
 });
 
-export const actionCreator = { newInitializeAction, newHandleDashboardFetchedAction };
+/**
+ * Returns an invalid response action used to indicate that the server has
+ * returned a response with an error status 4xx or 5xx.
+ *
+ * @param {*} message The message from the server
+ * @param {*} code The HTTP status code
+ */
+const newInvalidResponseAction = (message, code) => ({
+  kind: HANDLE_ERROR__ACTION,
+  error: {
+    title: 'An error has occurred while retrieving the dashboard',
+    message,
+    code
+  }
+});
+
+/**
+ * Returns an unexpected error action used to indicate that an issue has appeared
+ * during the processing of the server response.
+ *
+ * @param {*} message The error message
+ */
+const newUnexpectedErrorAction = message => ({
+  kind: HANDLE_ERROR__ACTION,
+  error: {
+    title: 'Unexpected content retrieved for the dashboard',
+    message,
+    code: UNKNOWN_ERROR
+  }
+});
+
+export const actionCreator = {
+  newInitializeAction,
+  newHandleDashboardFetchedAction,
+  newInvalidResponseAction,
+  newUnexpectedErrorAction
+};
 
 export const dispatcher = dispatcherCreator(FSM, reducer, INITIAL__STATE);

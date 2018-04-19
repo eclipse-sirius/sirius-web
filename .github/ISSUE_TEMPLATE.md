@@ -43,7 +43,7 @@ Browser in which the issue has been reproduced:
 For Tooling issues:
 
 * Yarn version: XX
-* Node versiob: XX
+* Node version: XX
 * Platform:
 
 Others:

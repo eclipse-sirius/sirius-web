@@ -24,11 +24,18 @@ export class DashboardViewStateContainer extends Component {
   async componentDidMount() {
     try {
       const jsonDashboardResponse = await fetch(`/api/dashboard`);
-      const dashboardResponse = await jsonDashboardResponse.json();
-      const action = actionCreator.newHandleDashboardFetchedAction(dashboardResponse);
+      let action;
+      if (jsonDashboardResponse.ok) {
+        const dashboardResponse = await jsonDashboardResponse.json();
+        action = actionCreator.newHandleDashboardFetchedAction(dashboardResponse);
+      } else {
+        const { statusText, status } = jsonDashboardResponse;
+        action = actionCreator.newInvalidResponseAction(statusText, status);
+      }
       this.dispatch(action);
     } catch (error) {
-      // To be handled later
+      const action = actionCreator.newUnexpectedErrorAction(error);
+      this.dispatch(action);
     }
   }
 
@@ -38,8 +45,8 @@ export class DashboardViewStateContainer extends Component {
 
   render() {
     const { children, render = children } = this.props;
-    const { stateId, dashboard } = this.state;
+    const { stateId, error, dashboard } = this.state;
 
-    return render(stateId, dashboard);
+    return render(stateId, error, dashboard);
   }
 }

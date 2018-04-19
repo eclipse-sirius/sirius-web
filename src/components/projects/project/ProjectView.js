@@ -11,14 +11,20 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { classNames } from '../../../common/classnames';
+import { UNSUPPORTED_STATE } from '../../../common/errors';
 
+import { ErrorCard } from '../../error/ErrorCard';
 import { Loading } from '../../loading/Loading';
 
 import { ProjectHeaderCard } from '../ProjectHeaderCard';
 import { ProjectRepresentationsListCard } from '../ProjectRepresentationsListCard';
 import { ProjectSemanticResourcesListCard } from '../ProjectSemanticResourcesListCard';
 
-import { LOADING__STATE, PROJECT_LOADED__STATE } from './ProjectViewFiniteStateMachine';
+import {
+  ERROR__STATE,
+  LOADING__STATE,
+  PROJECT_LOADED__STATE
+} from './ProjectViewFiniteStateMachine';
 
 import './ProjectView.css';
 
@@ -33,20 +39,48 @@ export const ProjectView = ({ className, stateId, error, project, ...props }) =>
   switch (stateId) {
     case LOADING__STATE:
       return renderLoadingState(className, props);
+    case ERROR__STATE:
+      return renderErrorState(className, error, props);
     case PROJECT_LOADED__STATE:
       return renderProjectLoadedState(className, project, props);
     default:
-      return renderLoadingState(className, props);
+      const undefinedStateError = {
+        title: `The projects list is in an unsupported state: ${stateId}`,
+        message: 'Contact your administrator to find a suitable solution',
+        code: UNSUPPORTED_STATE
+      };
+      return renderErrorState(className, undefinedStateError, props);
   }
 };
 ProjectView.propTypes = propTypes;
 
+/**
+ * Renders the loading state of the project.
+ * @param {*} className The class name of the project
+ * @param {*} props The properties of the component
+ */
 const renderLoadingState = (className, props) => <Loading className={className} {...props} />;
+
+/**
+ * Renders the error.
+ * @param {*} className The class name of the dashboard
+ * @param {*} error The error to render
+ * @param {*} props The properties of the component
+ */
+const renderErrorState = (className, error, props) => (
+  <ErrorCard className={className} {...error} {...props} />
+);
 
 const PROJECT_VIEW__CLASS_NAMES = 'projectview';
 const PROJECT_VIEW_MAIN__CLASS_NAMES = 'projectview-main';
 const PROJECT_VIEW_DETAILS__CLASS_NAMES = 'projectview-details';
 
+/**
+ * Renders the project loaded.
+ * @param {*} className The class name of the project
+ * @param {*} project The project to be displayed
+ * @param {*} props The properties of the component
+ */
 const renderProjectLoadedState = (className, project, props) => {
   const projectViewClassNames = classNames(PROJECT_VIEW__CLASS_NAMES, className);
   return (
