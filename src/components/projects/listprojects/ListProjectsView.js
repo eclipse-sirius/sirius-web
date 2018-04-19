@@ -13,6 +13,7 @@ import PropTypes from 'prop-types';
 import { classNames } from '../../../common/classnames';
 import { UNSUPPORTED_STATE } from '../../../common/errors';
 
+import { BlankCard } from '../../blank/BlankCard';
 import { ErrorCard } from '../../error/ErrorCard';
 import { Loading } from '../../loading/Loading';
 
@@ -21,6 +22,7 @@ import { ProjectsListCard } from '../ProjectsListCard';
 import {
   ERROR__STATE,
   LOADING__STATE,
+  NO_PROJECTS_LOADED__STATE,
   PROJECTS_LOADED__STATE
 } from './ListProjectsViewFiniteStateMachine';
 
@@ -39,6 +41,8 @@ export const ListProjectsView = ({ className, stateId, error, projects, ...props
       return renderLoadingState(className, props);
     case ERROR__STATE:
       return renderErrorState(className, error, props);
+    case NO_PROJECTS_LOADED__STATE:
+      return renderEmptyState(className, props);
     case PROJECTS_LOADED__STATE:
       return renderProjectsLoadedState(className, projects, props);
     default:
@@ -61,12 +65,26 @@ const renderLoadingState = (className, props) => <Loading className={className} 
 
 /**
  * Renders the error.
- * @param {*} className The class name of the dashboard
+ * @param {*} className The class name of the project list
  * @param {*} error The error to render
  * @param {*} props The properties of the component
  */
 const renderErrorState = (className, error, props) => (
   <ErrorCard className={className} {...error} {...props} />
+);
+
+/**
+ * Renders the empty state.
+ * @param {*} className The class name of the project list
+ * @param {*} props The properties of the component
+ */
+const renderEmptyState = (className, props) => (
+  <BlankCard
+    title="You haven't created any projects yet"
+    message="Once you start creating new projects, you will be able to see them here"
+    className={className}
+    {...props}
+  />
 );
 
 /**
