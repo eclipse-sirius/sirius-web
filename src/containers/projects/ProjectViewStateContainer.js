@@ -7,10 +7,8 @@
  * https://www.eclipse.org/legal/epl-2.0.
  *******************************************************************************/
 
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-
-import { ProjectView } from '../../components/projects/project/ProjectView';
 
 import { actionCreator, dispatcher } from '../../components/projects/project/ProjectViewDispatcher';
 
@@ -45,12 +43,10 @@ class ProjectViewStateContainerWithoutRouter extends Component {
   }
 
   render() {
-    const { project } = this.state;
+    const { children, render = children } = this.props;
+    const { stateId, project } = this.state;
 
-    if (!project) {
-      return <p>Loading</p>;
-    }
-    return <ProjectView project={project} {...this.props} />;
+    return render(stateId, project);
   }
 }
 export const ProjectViewStateContainer = withRouter(ProjectViewStateContainerWithoutRouter);
