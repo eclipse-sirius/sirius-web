@@ -29,12 +29,18 @@ class ProjectViewStateContainerWithoutRouter extends Component {
     try {
       const { projectName } = this.props.match.params;
       const jsonProjectResponse = await fetch(`/api/projects/${projectName}`);
-      const projectResponse = await jsonProjectResponse.json();
-
-      const action = actionCreator.newHandleProjectFetchedAction(projectResponse);
+      let action;
+      if (jsonProjectResponse.ok) {
+        const projectResponse = await jsonProjectResponse.json();
+        action = actionCreator.newHandleProjectFetchedAction(projectResponse);
+      } else {
+        const { statusText, status } = jsonProjectResponse;
+        action = actionCreator.newInvalidResponseAction(statusText, status);
+      }
       this.dispatch(action);
     } catch (error) {
-      // To be handled later
+      const action = actionCreator.newUnexpectedErrorAction(error);
+      this.dispatch(action);
     }
   }
 
@@ -44,9 +50,9 @@ class ProjectViewStateContainerWithoutRouter extends Component {
 
   render() {
     const { children, render = children } = this.props;
-    const { stateId, project } = this.state;
+    const { stateId, error, project } = this.state;
 
-    return render(stateId, project);
+    return render(stateId, error, project);
   }
 }
 export const ProjectViewStateContainer = withRouter(ProjectViewStateContainerWithoutRouter);

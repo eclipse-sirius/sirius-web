@@ -11,11 +11,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { classNames } from '../../common/classnames';
+import { UNSUPPORTED_STATE } from '../../common/errors';
 
+import { ErrorCard } from '../error/ErrorCard';
 import { Loading } from '../loading/Loading';
 import { ProjectSummaryCard } from '../projects/ProjectSummaryCard';
 
-import { LOADING__STATE, DASHBOARD_LOADED__STATE } from './DashboardViewFiniteStateMachine';
+import {
+  ERROR__STATE,
+  LOADING__STATE,
+  DASHBOARD_LOADED__STATE
+} from './DashboardViewFiniteStateMachine';
 
 import './DashboardView.css';
 
@@ -28,14 +34,21 @@ const propTypes = {
  * It will render a bird eye view of the state of the data of the user starting
  * with the list of the projects available.
  */
-export const DashboardView = ({ className, stateId, dashboard, ...props }) => {
+export const DashboardView = ({ className, stateId, error, dashboard, ...props }) => {
   switch (stateId) {
     case LOADING__STATE:
       return renderLoadingState(className, props);
+    case ERROR__STATE:
+      return renderErrorState(className, error, props);
     case DASHBOARD_LOADED__STATE:
       return renderDashboardLoadedState(className, dashboard, props);
     default:
-      return renderLoadingState(className, props);
+      const undefinedStateError = {
+        title: `The dashboard is in an unsupported state: ${stateId}`,
+        message: 'Contact your administrator to find a suitable solution',
+        code: UNSUPPORTED_STATE
+      };
+      return renderErrorState(className, undefinedStateError, props);
   }
 };
 DashboardView.propTypes = propTypes;
@@ -46,6 +59,16 @@ DashboardView.propTypes = propTypes;
  * @param {*} props The properties of the component
  */
 const renderLoadingState = (className, props) => <Loading className={className} {...props} />;
+
+/**
+ * Renders the error.
+ * @param {*} className The class name of the dashboard
+ * @param {*} error The error to render
+ * @param {*} props The properties of the component
+ */
+const renderErrorState = (className, error, props) => (
+  <ErrorCard className={className} {...error} {...props} />
+);
 
 const DASHBOARD_VIEW__CLASS_NAMES = 'dashboardview';
 const PROJECTS__CLASS_NAMES = 'projects';

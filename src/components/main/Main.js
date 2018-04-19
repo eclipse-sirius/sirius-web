@@ -45,18 +45,22 @@ export const Main = ({ className, ...props }) => {
 
 const renderDashboardViewStateContainer = () => (
   <DashboardViewStateContainer>
-    {(stateId, dashboard) => <DashboardView stateId={stateId} dashboard={dashboard} />}
+    {(stateId, error, dashboard) => (
+      <DashboardView stateId={stateId} error={error} dashboard={dashboard} />
+    )}
   </DashboardViewStateContainer>
 );
 
 const renderListProjectsViewStateContainer = () => (
   <ListProjectsViewStateContainer>
-    {(stateId, projects) => <ListProjectsView stateId={stateId} projects={projects} />}
+    {(stateId, error, projects) => (
+      <ListProjectsView stateId={stateId} error={error} projects={projects} />
+    )}
   </ListProjectsViewStateContainer>
 );
 
 const renderProjectViewStateContainer = () => (
   <ProjectViewStateContainer>
-    {(stateId, project) => <ProjectView stateId={stateId} project={project} />}
+    {(stateId, error, project) => <ProjectView stateId={stateId} error={error} project={project} />}
   </ProjectViewStateContainer>
 );
