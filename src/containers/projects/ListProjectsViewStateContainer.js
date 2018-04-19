@@ -7,9 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0.
  *******************************************************************************/
 
-import React, { Component } from 'react';
-
-import { ListProjectsView } from '../../components/projects/listprojects/ListProjectsView';
+import { Component } from 'react';
 
 import {
   actionCreator,
@@ -42,8 +40,9 @@ export class ListProjectsViewStateContainer extends Component {
   }
 
   render() {
-    const { projects } = this.state;
+    const { children, render = children } = this.props;
+    const { stateId, projects } = this.state;
 
-    return <ListProjectsView projects={projects} />;
+    return render(stateId, projects);
   }
 }

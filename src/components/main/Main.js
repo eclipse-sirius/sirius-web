@@ -12,6 +12,10 @@ import { Route, Switch } from 'react-router-dom';
 
 import { classNames } from '../../common/classnames';
 
+import { DashboardView } from '../dashboard/DashboardView';
+import { ListProjectsView } from '../projects/listprojects/ListProjectsView';
+import { ProjectView } from '../projects/project/ProjectView';
+
 import { DashboardViewStateContainer } from '../../containers/dashboard/DashboardViewStateContainer';
 import { ListProjectsViewStateContainer } from '../../containers/projects/ListProjectsViewStateContainer';
 import { ProjectViewStateContainer } from '../../containers/projects/ProjectViewStateContainer';
@@ -31,10 +35,28 @@ export const Main = ({ className, ...props }) => {
   return (
     <main className={mainClassNames} {...props}>
       <Switch>
-        <Route exact path="/" component={DashboardViewStateContainer} />
-        <Route exact path="/projects" component={ListProjectsViewStateContainer} />
-        <Route exact path="/projects/:projectName" component={ProjectViewStateContainer} />
+        <Route exact path="/" render={renderDashboardViewStateContainer} />
+        <Route exact path="/projects" render={renderListProjectsViewStateContainer} />
+        <Route exact path="/projects/:projectName" render={renderProjectViewStateContainer} />
       </Switch>
     </main>
   );
 };
+
+const renderDashboardViewStateContainer = () => (
+  <DashboardViewStateContainer>
+    {(stateId, dashboard) => <DashboardView stateId={stateId} dashboard={dashboard} />}
+  </DashboardViewStateContainer>
+);
+
+const renderListProjectsViewStateContainer = () => (
+  <ListProjectsViewStateContainer>
+    {(stateId, projects) => <ListProjectsView stateId={stateId} projects={projects} />}
+  </ListProjectsViewStateContainer>
+);
+
+const renderProjectViewStateContainer = () => (
+  <ProjectViewStateContainer>
+    {(stateId, project) => <ProjectView stateId={stateId} project={project} />}
+  </ProjectViewStateContainer>
+);

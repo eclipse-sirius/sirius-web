@@ -7,10 +7,12 @@
  * https://www.eclipse.org/legal/epl-2.0.
  *******************************************************************************/
 
-.dashboardview .projects-body {
-  display: grid;
-  grid-template-rows: repeat(auto-fill, minmax(100px, 1fr));
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  grid-row-gap: var(--layoutDimension-l);
-  grid-column-gap: var(--layoutDimension-l);
-}
+import React from 'react';
+
+/**
+ * The Login component is used to display that we are waiting for some
+ * asynchronous process to finish like a request to a server.
+ */
+export const Loading = props => {
+  return <div {...props}>Loading</div>;
+};

@@ -7,9 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0.
  *******************************************************************************/
 
-import React, { Component } from 'react';
-
-import { DashboardView } from '../../components/dashboard/DashboardView';
+import { Component } from 'react';
 
 import { actionCreator, dispatcher } from '../../components/dashboard/DashboardViewDispatcher';
 
@@ -39,8 +37,9 @@ export class DashboardViewStateContainer extends Component {
   }
 
   render() {
-    const { dashboard } = this.state;
+    const { children, render = children } = this.props;
+    const { stateId, dashboard } = this.state;
 
-    return <DashboardView dashboard={dashboard} />;
+    return render(stateId, dashboard);
   }
 }
