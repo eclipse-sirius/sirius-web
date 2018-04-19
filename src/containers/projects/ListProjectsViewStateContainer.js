@@ -11,6 +11,11 @@ import React, { Component } from 'react';
 
 import { ListProjectsView } from '../../components/projects/listprojects/ListProjectsView';
 
+import {
+  actionCreator,
+  dispatcher
+} from '../../components/projects/listprojects/ListProjectsViewDispatcher';
+
 /**
  * The ListProjectsViewStateContainer is the stateful component used to manipulate
  * the list of the projects.
@@ -18,17 +23,22 @@ import { ListProjectsView } from '../../components/projects/listprojects/ListPro
 export class ListProjectsViewStateContainer extends Component {
   constructor(props) {
     super(props);
-    this.state = { projects: [] };
+    this.state = dispatcher(undefined, props, actionCreator.newInitializeAction());
   }
 
   async componentDidMount() {
     try {
       const jsonProjectsResponse = await fetch(`/api/projects`);
-      const jsonProjects = await jsonProjectsResponse.json();
-      this.setState({ projects: jsonProjects.projects });
+      const projectsResponse = await jsonProjectsResponse.json();
+      const action = actionCreator.newHandleProjectsFetchedAction(projectsResponse);
+      this.dispatch(action);
     } catch (error) {
       // To be handled later
     }
+  }
+
+  dispatch(action) {
+    this.setState((prevState, props) => dispatcher(prevState, props, action));
   }
 
   render() {

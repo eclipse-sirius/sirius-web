@@ -12,6 +12,8 @@ import { withRouter } from 'react-router-dom';
 
 import { ProjectView } from '../../components/projects/project/ProjectView';
 
+import { actionCreator, dispatcher } from '../../components/projects/project/ProjectViewDispatcher';
+
 /**
  * The ProjectViewStateContainerWithoutRouter is the stateful component used to
  * manipulate the state of the ProjectView.
@@ -22,7 +24,7 @@ import { ProjectView } from '../../components/projects/project/ProjectView';
 class ProjectViewStateContainerWithoutRouter extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = dispatcher(undefined, props, actionCreator.newInitializeAction());
   }
 
   async componentDidMount() {
@@ -31,18 +33,21 @@ class ProjectViewStateContainerWithoutRouter extends Component {
       const jsonProjectResponse = await fetch(`/api/projects/${projectName}`);
       const projectResponse = await jsonProjectResponse.json();
 
-      this.setState({
-        project: projectResponse
-      });
+      const action = actionCreator.newHandleProjectFetchedAction(projectResponse);
+      this.dispatch(action);
     } catch (error) {
       // To be handled later
     }
   }
 
+  dispatch(action) {
+    this.setState((prevState, props) => dispatcher(prevState, props, action));
+  }
+
   render() {
     const { project } = this.state;
 
-    if (project === undefined) {
+    if (!project) {
       return <p>Loading</p>;
     }
     return <ProjectView project={project} {...this.props} />;
