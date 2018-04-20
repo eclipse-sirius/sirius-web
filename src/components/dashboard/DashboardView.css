@@ -7,6 +7,35 @@
  * https://www.eclipse.org/legal/epl-2.0.
  *******************************************************************************/
 
+.dashboardview {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: min-content min-content;
+  grid-row-gap: var(--layoutDimension-l);
+}
+
+.dashboardview .info {
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-column-gap: var(--layoutDimension-l);
+}
+
+.projectsinfo .card-body {
+  background-color: var(--blue);
+  color: var(--white);
+}
+
+.viewpointsinfo .card-body {
+  background-color: var(--orange);
+  color: var(--white);
+}
+
+.metamodelsinfo .card-body {
+  background-color: var(--purple);
+  color: var(--white);
+}
+
 .dashboardview .projects-body {
   display: grid;
   grid-template-rows: repeat(auto-fill, minmax(100px, 1fr));

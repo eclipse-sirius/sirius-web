@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InfoCard renders an info card 1`] = `
+<div
+  className="card infocard"
+>
+  <div
+    className="card-body"
+  >
+    <h1
+      className="infocard-title"
+    >
+      42
+    </h1>
+    <p
+      className="infocard-message"
+    >
+      Projects
+    </p>
+  </div>
+</div>
+`;

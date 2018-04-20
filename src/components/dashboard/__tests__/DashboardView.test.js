@@ -26,7 +26,12 @@ describe('DashboardView', () => {
       message: 'Please contact the administrator to try to find a solution',
       code: 500
     };
-    const dashboard = { projects: [] };
+    const dashboard = {
+      projectsCount: '0',
+      viewpointsCount: '27',
+      metamodelsCount: '132',
+      projects: []
+    };
     const dashboardComponent = Renderer.create(
       <MemoryRouter initialEntries={['/']}>
         <DashboardView stateId={ERROR__STATE} error={error} dashboard={dashboard} />
@@ -36,7 +41,12 @@ describe('DashboardView', () => {
   });
 
   it('renders an error card for an unsupported state', () => {
-    const dashboard = { projects: [] };
+    const dashboard = {
+      projectsCount: '0',
+      viewpointsCount: '27',
+      metamodelsCount: '132',
+      projects: []
+    };
     const dashboardComponent = Renderer.create(
       <MemoryRouter initialEntries={['/']}>
         <DashboardView stateId={INITIAL__STATE} error={null} dashboard={dashboard} />
@@ -46,7 +56,12 @@ describe('DashboardView', () => {
   });
 
   it('renders a loading indicator during the loading', () => {
-    const dashboard = { projects: [] };
+    const dashboard = {
+      projectsCount: '0',
+      viewpointsCount: '27',
+      metamodelsCount: '132',
+      projects: []
+    };
     const dashboardComponent = Renderer.create(
       <MemoryRouter initialEntries={['/']}>
         <DashboardView stateId={LOADING__STATE} error={null} dashboard={dashboard} />
@@ -57,7 +72,12 @@ describe('DashboardView', () => {
 
   it('renders the projects', () => {
     const projects = [{ name: 'First Project' }, { name: 'Second Project' }];
-    const dashboard = { projects };
+    const dashboard = {
+      projectsCount: '0',
+      viewpointsCount: '27',
+      metamodelsCount: '132',
+      projects
+    };
     const dashboardComponent = Renderer.create(
       <MemoryRouter initialEntries={['/']}>
         <DashboardView stateId={DASHBOARD_LOADED__STATE} error={null} dashboard={dashboard} />
