@@ -1,0 +1,138 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProjectView renders a loading indicator during the loading 1`] = `
+<div
+  className=""
+>
+  Loading
+</div>
+`;
+
+exports[`ProjectView renders an error card for an error 1`] = `
+<div
+  className="card errorcard"
+>
+  <div
+    className="card-body"
+  >
+    <h1
+      className="title-l"
+    >
+      An error has occurred
+    </h1>
+    <p>
+      Please contact the administrator to try to find a solution (code: 500)
+    </p>
+  </div>
+</div>
+`;
+
+exports[`ProjectView renders an error card for an unsupported state 1`] = `
+<div
+  className="card errorcard"
+>
+  <div
+    className="card-body"
+  >
+    <h1
+      className="title-l"
+    >
+      The project is in an unsupported state: INITIAL__STATE
+    </h1>
+    <p>
+      Contact your administrator to find a suitable solution (code: 1001)
+    </p>
+  </div>
+</div>
+`;
+
+exports[`ProjectView renders the project 1`] = `
+<div
+  className="projectview"
+>
+  <div
+    className="card projectheadercard"
+  >
+    <div
+      className="card-header"
+    >
+      <h1
+        className="card-title title-xl"
+      >
+        Project
+      </h1>
+    </div>
+  </div>
+  <div
+    className="projectview-main"
+  >
+    <div
+      className="projectview-details"
+    >
+      <div
+        className="card projectsemanticresourceslistcard"
+      >
+        <div
+          className="card-header"
+        >
+          <h1
+            className="card-title title-l"
+          >
+            Semantic Resources
+          </h1>
+        </div>
+        <div
+          className="card-divider"
+        />
+        <div
+          className="card-body"
+        >
+          <ul
+            className="list list--separated"
+          >
+            <li
+              className="listitem"
+            >
+              /model/model.ecore
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div
+        className="card projectrepresentationslistcard"
+      >
+        <div
+          className="card-header"
+        >
+          <h1
+            className="card-title title-l"
+          >
+            Representations
+          </h1>
+        </div>
+        <div
+          className="card-divider"
+        />
+        <div
+          className="card-body"
+        >
+          <ul
+            className="list list--separated"
+          >
+            <li
+              className="listitem"
+            >
+              Class Diagram
+            </li>
+            <li
+              className="listitem"
+            >
+              Activity Diagram
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

@@ -1,0 +1,117 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ListProjectsView renders a blank card for an empty list of projects 1`] = `
+<div
+  className="card blankcard"
+>
+  <div
+    className="card-body"
+  >
+    <h1
+      className="title-l"
+    >
+      You haven't created any projects yet
+    </h1>
+    <p>
+      Once you start creating new projects, you will be able to see them here
+    </p>
+  </div>
+</div>
+`;
+
+exports[`ListProjectsView renders a loading indicator during the loading 1`] = `
+<div
+  className=""
+>
+  Loading
+</div>
+`;
+
+exports[`ListProjectsView renders an error card for an error 1`] = `
+<div
+  className="card errorcard"
+>
+  <div
+    className="card-body"
+  >
+    <h1
+      className="title-l"
+    >
+      An error has occurred
+    </h1>
+    <p>
+      Please contact the administrator to try to find a solution (code: 500)
+    </p>
+  </div>
+</div>
+`;
+
+exports[`ListProjectsView renders an error card for an unsupported state 1`] = `
+<div
+  className="card errorcard"
+>
+  <div
+    className="card-body"
+  >
+    <h1
+      className="title-l"
+    >
+      The projects list is in an unsupported state: INITIAL__STATE
+    </h1>
+    <p>
+      Contact your administrator to find a suitable solution (code: 1001)
+    </p>
+  </div>
+</div>
+`;
+
+exports[`ListProjectsView renders the projects 1`] = `
+<div
+  className="listprojectsview"
+>
+  <div
+    className="card projectslistcard"
+  >
+    <div
+      className="card-header"
+    >
+      <h1
+        className="card-title title-l"
+      >
+        Projects
+      </h1>
+    </div>
+    <div
+      className="card-divider"
+    />
+    <div
+      className="card-body"
+    >
+      <ul
+        className="list list--highlighted list--separated"
+      >
+        <li
+          className="listitem listitem--link"
+        >
+          <a
+            href="projects/First Project"
+            onClick={[Function]}
+          >
+            First Project
+          </a>
+        </li>
+        <li
+          className="listitem listitem--link"
+        >
+          <a
+            href="projects/Second Project"
+            onClick={[Function]}
+          >
+            Second Project
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+`;

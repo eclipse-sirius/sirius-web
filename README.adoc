@@ -4,6 +4,7 @@ JavaScript, HTML and CSS components for https://www.eclipse.org/sirius[Eclipse S
 
 https://www.eclipse.org/legal/epl-2.0[image:https://img.shields.io/badge/License-EPLv2-blue.svg?style=flat-square[License EPL v2]]
 https://github.com/prettier/prettier[image:https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square[code style: prettier]]
+https://travis-ci.org/eclipse/sirius-components[image:https://travis-ci.org/eclipse/sirius-components.svg?branch=master["Build Status", link="https://travis-ci.org/eclipse/sirius-components"]]
 
 == Execute the code
 

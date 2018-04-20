@@ -1,0 +1,160 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DashboardView renders a loading indicator during the loading 1`] = `
+<div
+  className={undefined}
+>
+  Loading
+</div>
+`;
+
+exports[`DashboardView renders an error card for an error 1`] = `
+<div
+  className="card errorcard"
+>
+  <div
+    className="card-body"
+  >
+    <h1
+      className="title-l"
+    >
+      An error has occurred
+    </h1>
+    <p>
+      Please contact the administrator to try to find a solution (code: 500)
+    </p>
+  </div>
+</div>
+`;
+
+exports[`DashboardView renders an error card for an unsupported state 1`] = `
+<div
+  className="card errorcard"
+>
+  <div
+    className="card-body"
+  >
+    <h1
+      className="title-l"
+    >
+      The dashboard is in an unsupported state: INITIAL__STATE
+    </h1>
+    <p>
+      Contact your administrator to find a suitable solution (code: 1001)
+    </p>
+  </div>
+</div>
+`;
+
+exports[`DashboardView renders the projects 1`] = `
+<div
+  className="dashboardview"
+>
+  <div
+    className="projects"
+  >
+    <div
+      className="projects-body"
+    >
+      <div
+        className="card projectsummarycard"
+      >
+        <div
+          className="card-header"
+        >
+          <h1
+            className="card-title title-l"
+          >
+            First Project
+          </h1>
+        </div>
+        <div
+          className="card-body"
+        >
+          <ul
+            className="list"
+          >
+            <li
+              className="listitem"
+            >
+              <div
+                className="listitem-title title-m"
+              >
+                Semantic Resources
+              </div>
+              <div
+                className="listitem-description body-m"
+              >
+                 resource(s) in the project
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div
+          className="card-divider"
+        />
+        <div
+          className="card-footer"
+        >
+          <a
+            className="card-footerlink"
+            href="/projects/First Project"
+            onClick={[Function]}
+          >
+            View Project
+          </a>
+        </div>
+      </div>
+      <div
+        className="card projectsummarycard"
+      >
+        <div
+          className="card-header"
+        >
+          <h1
+            className="card-title title-l"
+          >
+            Second Project
+          </h1>
+        </div>
+        <div
+          className="card-body"
+        >
+          <ul
+            className="list"
+          >
+            <li
+              className="listitem"
+            >
+              <div
+                className="listitem-title title-m"
+              >
+                Semantic Resources
+              </div>
+              <div
+                className="listitem-description body-m"
+              >
+                 resource(s) in the project
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div
+          className="card-divider"
+        />
+        <div
+          className="card-footer"
+        >
+          <a
+            className="card-footerlink"
+            href="/projects/Second Project"
+            onClick={[Function]}
+          >
+            View Project
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
