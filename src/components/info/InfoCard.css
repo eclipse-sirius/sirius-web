@@ -1,0 +1,26 @@
+/*******************************************************************************
+ * Copyright (c) 2018 Obeo and others.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2
+ * which accompanies this distribution and is available at
+ * https://www.eclipse.org/legal/epl-2.0.
+ *******************************************************************************/
+
+.infocard .card-body {
+  display: grid;
+  grid-template-rows: min-content min-content;
+  grid-row-gap: var(--layoutDimension-m);
+  padding: var(--layoutDimension-l);
+}
+
+.infocard-title {
+  text-align: center;
+  font-size: var(--fontSize-xxxl);
+  font-weight: var(--fontWeight-bold);
+}
+
+.infocard-message {
+  text-align: center;
+  font-size: var(--fontSize-l);
+}

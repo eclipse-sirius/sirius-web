@@ -14,6 +14,7 @@ import { classNames } from '../../common/classnames';
 import { UNSUPPORTED_STATE } from '../../common/errors';
 
 import { ErrorCard } from '../error/ErrorCard';
+import { InfoCard } from '../info/InfoCard';
 import { Loading } from '../loading/Loading';
 import { ProjectSummaryCard } from '../projects/ProjectSummaryCard';
 
@@ -71,6 +72,10 @@ const renderErrorState = (className, error, props) => (
 );
 
 const DASHBOARD_VIEW__CLASS_NAMES = 'dashboardview';
+const INFO__CLASS_NAMES = 'info';
+const PROJECTS_INFO__CLASS_NAMES = 'projectsinfo';
+const VIEWPOINTS_INFO__CLASS_NAMES = 'viewpointsinfo';
+const METAMODELS_INFO__CLASS_NAMES = 'metamodelsinfo';
 const PROJECTS__CLASS_NAMES = 'projects';
 const PROJECTS_BODY__CLASS_NAMES = 'projects-body';
 
@@ -82,8 +87,28 @@ const PROJECTS_BODY__CLASS_NAMES = 'projects-body';
  */
 const renderDashboardLoadedState = (className, dashboard, props) => {
   const dashboardViewClassNames = classNames(DASHBOARD_VIEW__CLASS_NAMES, className);
+
+  const { projectsCount, viewpointsCount, metamodelsCount } = dashboard;
+
   return (
     <div className={dashboardViewClassNames} {...props}>
+      <div className={INFO__CLASS_NAMES}>
+        <InfoCard
+          className={PROJECTS_INFO__CLASS_NAMES}
+          title={projectsCount.toString()}
+          message={'Projects'}
+        />
+        <InfoCard
+          className={VIEWPOINTS_INFO__CLASS_NAMES}
+          title={viewpointsCount.toString()}
+          message={'Viewpoints'}
+        />
+        <InfoCard
+          className={METAMODELS_INFO__CLASS_NAMES}
+          title={metamodelsCount.toString()}
+          message={'Metamodels'}
+        />
+      </div>
       <div className={PROJECTS__CLASS_NAMES}>
         <div className={PROJECTS_BODY__CLASS_NAMES}>
           {dashboard.projects.map(project => (

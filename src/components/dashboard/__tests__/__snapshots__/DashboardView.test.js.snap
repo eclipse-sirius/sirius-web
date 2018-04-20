@@ -51,6 +51,64 @@ exports[`DashboardView renders the projects 1`] = `
   className="dashboardview"
 >
   <div
+    className="info"
+  >
+    <div
+      className="card infocard projectsinfo"
+    >
+      <div
+        className="card-body"
+      >
+        <h1
+          className="infocard-title"
+        >
+          0
+        </h1>
+        <p
+          className="infocard-message"
+        >
+          Projects
+        </p>
+      </div>
+    </div>
+    <div
+      className="card infocard viewpointsinfo"
+    >
+      <div
+        className="card-body"
+      >
+        <h1
+          className="infocard-title"
+        >
+          27
+        </h1>
+        <p
+          className="infocard-message"
+        >
+          Viewpoints
+        </p>
+      </div>
+    </div>
+    <div
+      className="card infocard metamodelsinfo"
+    >
+      <div
+        className="card-body"
+      >
+        <h1
+          className="infocard-title"
+        >
+          132
+        </h1>
+        <p
+          className="infocard-message"
+        >
+          Metamodels
+        </p>
+      </div>
+    </div>
+  </div>
+  <div
     className="projects"
   >
     <div
