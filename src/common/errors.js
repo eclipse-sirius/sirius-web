@@ -11,3 +11,4 @@
 
 export const UNKNOWN_ERROR = 1000;
 export const UNSUPPORTED_STATE = 1001;
+export const RENDERING_ERROR = 1002;

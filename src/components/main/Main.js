@@ -13,6 +13,7 @@ import { Route, Switch } from 'react-router-dom';
 import { classNames } from '../../common/classnames';
 
 import { DashboardView } from '../dashboard/DashboardView';
+import { ErrorBoundary } from '../error/ErrorBoundary';
 import { ListProjectsView } from '../projects/listprojects/ListProjectsView';
 import { ProjectView } from '../projects/project/ProjectView';
 
@@ -34,11 +35,13 @@ export const Main = ({ className, ...props }) => {
   const mainClassNames = classNames(MAIN__CLASS_NAMES, className);
   return (
     <main className={mainClassNames} {...props}>
-      <Switch>
-        <Route exact path="/" render={renderDashboardViewStateContainer} />
-        <Route exact path="/projects" render={renderListProjectsViewStateContainer} />
-        <Route exact path="/projects/:projectName" render={renderProjectViewStateContainer} />
-      </Switch>
+      <ErrorBoundary>
+        <Switch>
+          <Route exact path="/" render={renderDashboardViewStateContainer} />
+          <Route exact path="/projects" render={renderListProjectsViewStateContainer} />
+          <Route exact path="/projects/:projectName" render={renderProjectViewStateContainer} />
+        </Switch>
+      </ErrorBoundary>
     </main>
   );
 };
