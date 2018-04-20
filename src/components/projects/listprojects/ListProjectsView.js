@@ -61,7 +61,10 @@ ListProjectsView.propTypes = propTypes;
  * @param {*} className The class name of the projects list
  * @param {*} props The properties of the component
  */
-const renderLoadingState = (className, props) => <Loading className={className} {...props} />;
+const renderLoadingState = (className, props) => {
+  const listProjectsViewLoadingClassNames = classNames('', className);
+  return <Loading className={listProjectsViewLoadingClassNames} {...props} />;
+};
 
 /**
  * Renders the error.
@@ -69,23 +72,27 @@ const renderLoadingState = (className, props) => <Loading className={className} 
  * @param {*} error The error to render
  * @param {*} props The properties of the component
  */
-const renderErrorState = (className, error, props) => (
-  <ErrorCard className={className} {...error} {...props} />
-);
+const renderErrorState = (className, error, props) => {
+  const listProjectsViewErrorClassNames = classNames('', className);
+  return <ErrorCard className={listProjectsViewErrorClassNames} {...error} {...props} />;
+};
 
 /**
  * Renders the empty state.
  * @param {*} className The class name of the project list
  * @param {*} props The properties of the component
  */
-const renderEmptyState = (className, props) => (
-  <BlankCard
-    title="You haven't created any projects yet"
-    message="Once you start creating new projects, you will be able to see them here"
-    className={className}
-    {...props}
-  />
-);
+const renderEmptyState = (className, props) => {
+  const listProjectsViewEmptyClassNames = classNames('', className);
+  return (
+    <BlankCard
+      title="You haven't created any projects yet"
+      message="Once you start creating new projects, you will be able to see them here"
+      className={listProjectsViewEmptyClassNames}
+      {...props}
+    />
+  );
+};
 
 /**
  * Renders the projects loaded.

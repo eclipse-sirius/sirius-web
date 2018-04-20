@@ -45,7 +45,7 @@ export const ProjectView = ({ className, stateId, error, project, ...props }) =>
       return renderProjectLoadedState(className, project, props);
     default:
       const undefinedStateError = {
-        title: `The projects list is in an unsupported state: ${stateId}`,
+        title: `The project is in an unsupported state: ${stateId}`,
         message: 'Contact your administrator to find a suitable solution',
         code: UNSUPPORTED_STATE
       };
@@ -59,7 +59,10 @@ ProjectView.propTypes = propTypes;
  * @param {*} className The class name of the project
  * @param {*} props The properties of the component
  */
-const renderLoadingState = (className, props) => <Loading className={className} {...props} />;
+const renderLoadingState = (className, props) => {
+  const projectViewLoadingClassNames = classNames('', className);
+  return <Loading className={projectViewLoadingClassNames} {...props} />;
+};
 
 /**
  * Renders the error.
@@ -67,9 +70,10 @@ const renderLoadingState = (className, props) => <Loading className={className} 
  * @param {*} error The error to render
  * @param {*} props The properties of the component
  */
-const renderErrorState = (className, error, props) => (
-  <ErrorCard className={className} {...error} {...props} />
-);
+const renderErrorState = (className, error, props) => {
+  const projectViewErrorClassNames = classNames('', className);
+  return <ErrorCard className={projectViewErrorClassNames} {...error} {...props} />;
+};
 
 const PROJECT_VIEW__CLASS_NAMES = 'projectview';
 const PROJECT_VIEW_MAIN__CLASS_NAMES = 'projectview-main';
