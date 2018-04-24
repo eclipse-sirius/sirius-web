@@ -26,8 +26,6 @@ import {
   PROJECTS_LOADED__STATE
 } from './ListProjectsViewFiniteStateMachine';
 
-const LIST_PROJECTS_VIEW__CLASS_NAMES = 'listprojectsview';
-
 const propTypes = {
   stateId: PropTypes.string.isRequired
 };
@@ -93,6 +91,8 @@ const renderEmptyState = (className, props) => {
     />
   );
 };
+
+const LIST_PROJECTS_VIEW__CLASS_NAMES = 'listprojectsview';
 
 /**
  * Renders the projects loaded.

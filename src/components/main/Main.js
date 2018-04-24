@@ -15,10 +15,12 @@ import { classNames } from '../../common/classnames';
 import { DashboardView } from '../dashboard/DashboardView';
 import { ErrorBoundary } from '../error/ErrorBoundary';
 import { ListProjectsView } from '../projects/listprojects/ListProjectsView';
+import { NewProjectView } from '../projects/newproject/NewProjectView';
 import { ProjectView } from '../projects/project/ProjectView';
 
 import { DashboardViewStateContainer } from '../../containers/dashboard/DashboardViewStateContainer';
 import { ListProjectsViewStateContainer } from '../../containers/projects/ListProjectsViewStateContainer';
+import { NewProjectViewStateContainer } from '../../containers/projects/NewProjectViewStateContainer';
 import { ProjectViewStateContainer } from '../../containers/projects/ProjectViewStateContainer';
 
 import './Main.css';
@@ -40,6 +42,7 @@ export const Main = ({ className, ...props }) => {
           <Route exact path="/" render={renderDashboardViewStateContainer} />
           <Route exact path="/projects" render={renderListProjectsViewStateContainer} />
           <Route exact path="/projects/:projectName" render={renderProjectViewStateContainer} />
+          <Route exact path="/newproject" render={renderNewProjectViewStateContainer} />
         </Switch>
       </ErrorBoundary>
     </main>
@@ -66,4 +69,21 @@ const renderProjectViewStateContainer = () => (
   <ProjectViewStateContainer>
     {(stateId, error, project) => <ProjectView stateId={stateId} error={error} project={project} />}
   </ProjectViewStateContainer>
+);
+
+const renderNewProjectViewStateContainer = () => (
+  <NewProjectViewStateContainer>
+    {(stateId, errors, isValid, onSubmit, name, nameIsValid, nameErrors, onNameChange) => (
+      <NewProjectView
+        stateId={stateId}
+        errors={errors}
+        isValid={isValid}
+        onSubmit={onSubmit}
+        name={name}
+        nameIsValid={nameIsValid}
+        nameErrors={nameErrors}
+        onNameChange={onNameChange}
+      />
+    )}
+  </NewProjectViewStateContainer>
 );
