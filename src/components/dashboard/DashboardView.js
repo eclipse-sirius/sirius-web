@@ -76,6 +76,7 @@ const INFO__CLASS_NAMES = 'info';
 const PROJECTS_INFO__CLASS_NAMES = 'projectsinfo';
 const VIEWPOINTS_INFO__CLASS_NAMES = 'viewpointsinfo';
 const METAMODELS_INFO__CLASS_NAMES = 'metamodelsinfo';
+const NEWPROJECT_INFO__CLASS_NAMES = 'newprojectinfo';
 const PROJECTS__CLASS_NAMES = 'projects';
 const PROJECTS_BODY__CLASS_NAMES = 'projects-body';
 
@@ -111,6 +112,12 @@ const renderDashboardLoadedState = (className, dashboard, props) => {
       </div>
       <div className={PROJECTS__CLASS_NAMES}>
         <div className={PROJECTS_BODY__CLASS_NAMES}>
+          <InfoCard
+            className={NEWPROJECT_INFO__CLASS_NAMES}
+            title="+"
+            message="New Project"
+            to="/newproject"
+          />
           {dashboard.projects.map(project => (
             <ProjectSummaryCard key={project.name} project={project} />
           ))}

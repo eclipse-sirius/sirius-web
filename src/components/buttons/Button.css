@@ -1,0 +1,58 @@
+/*******************************************************************************
+ * Copyright (c) 2018 Obeo and others.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2
+ * which accompanies this distribution and is available at
+ * https://www.eclipse.org/legal/epl-2.0.
+ *******************************************************************************/
+.button {
+  border-radius: 2px;
+  text-transform: capitalize;
+  font-weight: var(--fontWeight-semiBold);
+  padding: var(--layoutDimension-s) var(--layoutDimension-m);
+}
+.button:hover {
+  box-shadow: var(--boxShadow-emboss);
+}
+.button:active {
+  box-shadow: var(--boxShadow-deboss);
+}
+
+.button--default {
+  background-color: var(--white);
+  color: var(--slate);
+  box-shadow: var(--boxShadow-border);
+}
+.button--default:hover {
+  background-color: var(--blue);
+  color: var(--white);
+}
+.button--default:active {
+  background-color: var(--blue);
+  color: var(--white);
+}
+
+.button--primary {
+  background-color: var(--blue);
+  color: var(--white);
+}
+.button--success {
+  background-color: var(--green);
+  color: var(--white);
+}
+.button--warning {
+  background-color: var(--yellow);
+  color: var(--white);
+}
+.button--danger {
+  background-color: var(--red);
+  color: var(--white);
+}
+
+.button[disabled],
+.button[disabled]:active,
+.button[disabled]:hover {
+  background-color: var(--smoke);
+  box-shadow: none;
+}

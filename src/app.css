@@ -55,6 +55,7 @@
   --layoutDimension-l: 32px;
   --layoutDimension-xl: 64px;
   --layoutDimension-xxl: 128px;
+  --layoutDimension-xxxl: 600px;
 
   --fontSize-m: 14px;
   --fontSize-l: 20px;
@@ -105,6 +106,11 @@
   font-size: var(--fontSize-m);
   line-height: var(--lineHeight-m);
   font-weight: var(--fontWeight-semiBold);
+}
+.body-l {
+  font-size: var(--fontSize-l);
+  line-height: var(--lineHeight-l);
+  font-weight: var(--fontWeight-regular);
 }
 .body-m {
   font-size: var(--fontSize-m);

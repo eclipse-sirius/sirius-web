@@ -1,0 +1,250 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NewProjectView renders a card with a form ready to be submitted to create a new project 1`] = `
+<div
+  className="newprojectview"
+>
+  <div
+    className="card newprojectcard"
+  >
+    <div
+      className="card-header"
+    >
+      <h1
+        className="card-title title-l"
+      >
+        New Project
+      </h1>
+    </div>
+    <div
+      className="card-divider"
+    />
+    <div
+      className="card-body"
+    >
+      <form
+        className="form"
+        onSubmit={[Function]}
+      >
+        <div
+          className="errorgroup"
+        />
+        <div
+          className="field"
+        >
+          <label
+            className="label body-l"
+            htmlFor="name"
+          >
+            Name
+          </label>
+          <p
+            className="description caption-m"
+          >
+            The name of the project can only contain letters and numbers separated by dots, dashes or underscores.
+          </p>
+          <input
+            className="text"
+            id="name"
+            name="name"
+            onChange={[Function]}
+            placeholder="Enter the name"
+            type="text"
+            value="sirius"
+          />
+          <div
+            className="errorgroup"
+          />
+        </div>
+        <div
+          className="actiongroup"
+        >
+          <button
+            className="button button--primary"
+            disabled={false}
+          >
+            Create Project
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`NewProjectView renders a card with a unsubmittable form to create a new project 1`] = `
+<div
+  className="newprojectview"
+>
+  <div
+    className="card newprojectcard"
+  >
+    <div
+      className="card-header"
+    >
+      <h1
+        className="card-title title-l"
+      >
+        New Project
+      </h1>
+    </div>
+    <div
+      className="card-divider"
+    />
+    <div
+      className="card-body"
+    >
+      <form
+        className="form"
+        onSubmit={[Function]}
+      >
+        <div
+          className="errorgroup"
+        />
+        <div
+          className="field"
+        >
+          <label
+            className="label body-l"
+            htmlFor="name"
+          >
+            Name
+          </label>
+          <p
+            className="description caption-m"
+          >
+            The name of the project can only contain letters and numbers separated by dots, dashes or underscores.
+          </p>
+          <input
+            className="text"
+            id="name"
+            name="name"
+            onChange={[Function]}
+            placeholder="Enter the name"
+            type="text"
+            value=""
+          />
+          <div
+            className="errorgroup"
+          />
+        </div>
+        <div
+          className="actiongroup"
+        >
+          <button
+            className="button button--primary"
+            disabled={true}
+          >
+            Create Project
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`NewProjectView renders a redirect component once the project has been created 1`] = `null`;
+
+exports[`NewProjectView renders an error card for an unsupported state 1`] = `
+<div
+  className="card errorcard"
+>
+  <div
+    className="card-body"
+  >
+    <h1
+      className="title-l"
+    >
+      The new project page is in an unsupported state: INITIAL__STATE
+    </h1>
+    <p>
+      Contact your administrator to find a suitable solution (code: 1001)
+    </p>
+  </div>
+</div>
+`;
+
+exports[`NewProjectView renders errors message 1`] = `
+<div
+  className="newprojectview"
+>
+  <div
+    className="card newprojectcard"
+  >
+    <div
+      className="card-header"
+    >
+      <h1
+        className="card-title title-l"
+      >
+        New Project
+      </h1>
+    </div>
+    <div
+      className="card-divider"
+    />
+    <div
+      className="card-body"
+    >
+      <form
+        className="form"
+        onSubmit={[Function]}
+      >
+        <div
+          className="errorgroup"
+        >
+          <div
+            className="error"
+          >
+            Project already exists
+          </div>
+        </div>
+        <div
+          className="field"
+        >
+          <label
+            className="label body-l"
+            htmlFor="name"
+          >
+            Name
+          </label>
+          <p
+            className="description caption-m"
+          >
+            The name of the project can only contain letters and numbers separated by dots, dashes or underscores.
+          </p>
+          <input
+            className="text fielderror"
+            id="name"
+            name="name"
+            onChange={[Function]}
+            placeholder="Enter the name"
+            type="text"
+            value=":\\\\/."
+          />
+          <div
+            className="errorgroup"
+          >
+            <div
+              className="error"
+            >
+              Invalid name
+            </div>
+          </div>
+        </div>
+        <div
+          className="actiongroup"
+        >
+          <button
+            className="button button--primary"
+            disabled={true}
+          >
+            Create Project
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+`;

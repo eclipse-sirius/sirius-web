@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Button renders a button with a label 1`] = `
+<button
+  className="button button--default"
+>
+  OK
+</button>
+`;
+
+exports[`Button renders a button without a label 1`] = `
+<button
+  className="button button--default"
+/>
+`;
+
+exports[`Button renders a danger button 1`] = `
+<button
+  className="button button--danger"
+/>
+`;
+
+exports[`Button renders a default button 1`] = `
+<button
+  className="button button--default"
+/>
+`;
+
+exports[`Button renders a primary button 1`] = `
+<button
+  className="button button--primary"
+/>
+`;
+
+exports[`Button renders a success button 1`] = `
+<button
+  className="button button--success"
+/>
+`;
+
+exports[`Button renders a warning button 1`] = `
+<button
+  className="button button--warning"
+/>
+`;

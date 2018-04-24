@@ -115,6 +115,29 @@ exports[`DashboardView renders the projects 1`] = `
       className="projects-body"
     >
       <div
+        className="card infocard newprojectinfo"
+      >
+        <a
+          href="/newproject"
+          onClick={[Function]}
+        >
+          <div
+            className="card-body"
+          >
+            <h1
+              className="infocard-title"
+            >
+              +
+            </h1>
+            <p
+              className="infocard-message"
+            >
+              New Project
+            </p>
+          </div>
+        </a>
+      </div>
+      <div
         className="card projectsummarycard"
       >
         <div
