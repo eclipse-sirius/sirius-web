@@ -7,6 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0.
  *******************************************************************************/
 .button {
+  cursor: pointer;
   border-radius: 2px;
   text-transform: capitalize;
   font-weight: var(--fontWeight-semiBold);

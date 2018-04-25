@@ -67,7 +67,16 @@ const renderListProjectsViewStateContainer = () => (
 
 const renderProjectViewStateContainer = () => (
   <ProjectViewStateContainer>
-    {(stateId, error, project) => <ProjectView stateId={stateId} error={error} project={project} />}
+    {(stateId, error, project, pageIdentifier, onTabClick, onActivityClick) => (
+      <ProjectView
+        stateId={stateId}
+        error={error}
+        project={project}
+        pageIdentifier={pageIdentifier}
+        onTabClick={onTabClick}
+        onActivityClick={onActivityClick}
+      />
+    )}
   </ProjectViewStateContainer>
 );
 

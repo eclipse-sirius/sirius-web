@@ -15,6 +15,7 @@ import { UNSUPPORTED_STATE } from '../../../common/errors';
 
 import { ErrorCard } from '../../error/ErrorCard';
 import { Loading } from '../../loading/Loading';
+import { WorkflowCard } from '../../workflow/WorkflowCard';
 
 import { ProjectHeaderCard } from '../ProjectHeaderCard';
 import { ProjectRepresentationsListCard } from '../ProjectRepresentationsListCard';
@@ -35,14 +36,30 @@ const propTypes = {
 /**
  * The ProjectView is used to display and manipulate a project.
  */
-export const ProjectView = ({ className, stateId, error, project, ...props }) => {
+export const ProjectView = ({
+  className,
+  stateId,
+  error,
+  project,
+  pageIdentifier,
+  onTabClick,
+  onActivityClick,
+  ...props
+}) => {
   switch (stateId) {
     case LOADING__STATE:
       return renderLoadingState(className, props);
     case ERROR__STATE:
       return renderErrorState(className, error, props);
     case PROJECT_LOADED__STATE:
-      return renderProjectLoadedState(className, project, props);
+      return renderProjectLoadedState(
+        className,
+        project,
+        pageIdentifier,
+        onTabClick,
+        onActivityClick,
+        props
+      );
     default:
       const undefinedStateError = {
         title: `The project is in an unsupported state: ${stateId}`,
@@ -78,6 +95,7 @@ const renderErrorState = (className, error, props) => {
 const PROJECT_VIEW__CLASS_NAMES = 'projectview';
 const PROJECT_VIEW_MAIN__CLASS_NAMES = 'projectview-main';
 const PROJECT_VIEW_DETAILS__CLASS_NAMES = 'projectview-details';
+const PROJECT_VIEW_WORKFLOW__CLASS_NAMES = 'projectview-workflow';
 
 /**
  * Renders the project loaded.
@@ -85,7 +103,14 @@ const PROJECT_VIEW_DETAILS__CLASS_NAMES = 'projectview-details';
  * @param {*} project The project to be displayed
  * @param {*} props The properties of the component
  */
-const renderProjectLoadedState = (className, project, props) => {
+const renderProjectLoadedState = (
+  className,
+  project,
+  pageIdentifier,
+  onTabClick,
+  onActivityClick,
+  props
+) => {
   const projectViewClassNames = classNames(PROJECT_VIEW__CLASS_NAMES, className);
   return (
     <div className={projectViewClassNames}>
@@ -94,6 +119,16 @@ const renderProjectLoadedState = (className, project, props) => {
         <div className={PROJECT_VIEW_DETAILS__CLASS_NAMES}>
           <ProjectSemanticResourcesListCard semanticResources={project.semanticResources} />
           <ProjectRepresentationsListCard representations={project.representations} />
+        </div>
+        <div className={PROJECT_VIEW_WORKFLOW__CLASS_NAMES}>
+          <WorkflowCard
+            projectName={project.name}
+            pageIdentifier={pageIdentifier}
+            pages={project.pages}
+            sections={project.currentPageSections}
+            onTabClick={onTabClick}
+            onActivityClick={onActivityClick}
+          />
         </div>
       </div>
     </div>

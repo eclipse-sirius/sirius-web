@@ -26,7 +26,7 @@ const globalFetch = global.fetch;
  */
 const projectFetch = () =>
   new Promise((resolve, reject) => {
-    const data = { name: 'Project' };
+    const data = { name: 'Project', pages: [] };
     const response = { ok: true, json: () => Promise.resolve(data) };
     resolve(response);
   });
@@ -57,9 +57,7 @@ describe('ProjectViewStateContainer', () => {
 
     const container = ReactTestUtils.renderIntoDocument(
       <MemoryRouter initialEntries={['/projects/firstProject']}>
-        <ProjectViewStateContainer>
-          {(stateId, error, project) => <p>{stateId}</p>}
-        </ProjectViewStateContainer>
+        <ProjectViewStateContainer>{stateId => <p>{stateId}</p>}</ProjectViewStateContainer>
       </MemoryRouter>
     );
 
@@ -72,6 +70,7 @@ describe('ProjectViewStateContainer', () => {
       expect(stateId).toBe(PROJECT_LOADED__STATE);
       expect(error).toBeNull();
       expect(project.name).toBe('Project');
+      expect(project.pages.length).toBe(0);
     });
 
     global.fetch = globalFetch;
