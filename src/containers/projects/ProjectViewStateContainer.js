@@ -22,6 +22,10 @@ import { actionCreator, dispatcher } from '../../components/projects/project/Pro
 class ProjectViewStateContainerWithoutRouter extends Component {
   constructor(props) {
     super(props);
+
+    this.handleActivityClick = this.handleActivityClick.bind(this);
+    this.handleTabClick = this.handleTabClick.bind(this);
+
     this.state = dispatcher(undefined, props, actionCreator.newInitializeAction());
   }
 
@@ -44,15 +48,54 @@ class ProjectViewStateContainerWithoutRouter extends Component {
     }
   }
 
+  async handleTabClick(index) {
+    const { project: { pages } } = this.state;
+    let pageIdentifier = pages[index].identifier;
+    const { projectName } = this.props.match.params;
+    try {
+      const jsonPageResponse = await fetch(`/api/projects/${projectName}/pages/${pageIdentifier}`);
+      const pageResponse = await jsonPageResponse.json();
+      const action = actionCreator.newHandlePageFetchedAction(pageResponse);
+      this.dispatch(action);
+    } catch (error) {
+      // TO be handled
+    }
+  }
+
+  async handleActivityClick(projectName, pageIdentifier, sectionIdentifier, activityIdentifier) {
+    try {
+      const request = new Request(
+        `/api/projects/${projectName}/pages/${pageIdentifier}/sections/${sectionIdentifier}/activities/${activityIdentifier}/execute`,
+        {
+          method: 'POST'
+        }
+      );
+      const jsonResponse = await fetch(request);
+      const { ok } = jsonResponse;
+      if (!ok) {
+        // To be handled
+      }
+    } catch (error) {
+      // To be handled
+    }
+  }
+
   dispatch(action) {
     this.setState((prevState, props) => dispatcher(prevState, props, action));
   }
 
   render() {
     const { children, render = children } = this.props;
-    const { stateId, error, project } = this.state;
+    const { stateId, error, project, pageIdentifier } = this.state;
 
-    return render(stateId, error, project);
+    return render(
+      stateId,
+      error,
+      project,
+      pageIdentifier,
+      this.handleTabClick,
+      this.handleActivityClick
+    );
   }
 }
 export const ProjectViewStateContainer = withRouter(ProjectViewStateContainerWithoutRouter);

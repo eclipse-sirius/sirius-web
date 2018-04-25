@@ -7,23 +7,11 @@
  * https://www.eclipse.org/legal/epl-2.0.
  *******************************************************************************/
 
-.projectview {
+.section-title {
+  padding: var(--layoutDimension-m) var(--layoutDimension-m) 0 var(--layoutDimension-m);
+}
+.section .listitem {
   display: grid;
-  grid-template-rows: min-content auto;
-  grid-template-columns: 1fr;
-  grid-row-gap: var(--layoutDimension-l);
-}
-
-.projectview-main {
-  display: grid;
-  grid-template-rows: 1fr;
-  grid-template-columns: 1fr 1fr;
-  grid-column-gap: var(--layoutDimension-l);
-}
-
-.projectview-details .card {
-  margin-top: var(--layoutDimension-l);
-}
-.projectview-details .card:nth-child(1) {
-  margin-top: 0;
+  grid-template-columns: auto min-content;
+  align-items: center;
 }

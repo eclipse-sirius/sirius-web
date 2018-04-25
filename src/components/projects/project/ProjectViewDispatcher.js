@@ -17,6 +17,7 @@ import {
   LOADING__STATE,
   PROJECT_LOADED__STATE,
   HANDLE_ERROR__ACTION,
+  HANDLE_FETCHED_PAGE__ACTION,
   HANDLE_FETCHED_PROJECT__ACTION,
   INITIALIZE__ACTION
 } from './ProjectViewFiniteStateMachine';
@@ -34,11 +35,34 @@ import {
 const reducer = (state, props, action) => {
   switch (action.kind) {
     case INITIALIZE__ACTION:
-      return { stateId: LOADING__STATE, project: null, error: null };
+      return { stateId: LOADING__STATE, project: null, pageIdentifier: null, error: null };
     case HANDLE_FETCHED_PROJECT__ACTION:
-      return { stateId: PROJECT_LOADED__STATE, project: action.project, error: null };
+      let pageIdentifier = null;
+      if (action.project.pages.length > 0) {
+        pageIdentifier = action.project.pages[0].identifier;
+      }
+      return {
+        stateId: PROJECT_LOADED__STATE,
+        project: action.project,
+        pageIdentifier,
+        error: null
+      };
+    case HANDLE_FETCHED_PAGE__ACTION:
+      const newState = {
+        stateId: PROJECT_LOADED__STATE,
+        project: state.project,
+        pageIdentifier: action.page.identifier,
+        error: null
+      };
+      newState.project.currentPageSections = action.page.sections;
+      return newState;
     case HANDLE_ERROR__ACTION:
-      return { stateId: ERROR__STATE, project: state.project, error: action.error };
+      return {
+        stateId: ERROR__STATE,
+        project: state.project,
+        pageIdentifier: state.pageIdentifier,
+        error: action.error
+      };
     default:
       return state;
   }
@@ -61,6 +85,11 @@ const newInitializeAction = () => ({
 const newHandleProjectFetchedAction = response => ({
   kind: HANDLE_FETCHED_PROJECT__ACTION,
   project: response
+});
+
+const newHandlePageFetchedAction = response => ({
+  kind: HANDLE_FETCHED_PAGE__ACTION,
+  page: response
 });
 
 /**
@@ -97,6 +126,7 @@ const newUnexpectedErrorAction = message => ({
 export const actionCreator = {
   newInitializeAction,
   newHandleProjectFetchedAction,
+  newHandlePageFetchedAction,
   newInvalidResponseAction,
   newUnexpectedErrorAction
 };

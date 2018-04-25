@@ -1,0 +1,123 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`WorkflowCard renders the workflow card 1`] = `
+<div
+  className="card workflowcard"
+>
+  <div
+    className="card-header"
+  >
+    <h1
+      className="card-title title-l"
+    >
+      Workflow
+    </h1>
+  </div>
+  <div
+    className="card-body"
+  >
+    <div
+      className="tabbar"
+    >
+      <div
+        className="tabbar-nav tabbar-nav--disabled"
+        data-side="previous"
+        onClick={[Function]}
+      >
+        &lt;
+      </div>
+      <div
+        className="tabbar-tabs"
+      >
+        <div
+          className="tabbar-tab tabbar-tab--selected"
+          data-index={0}
+          onClick={[Function]}
+        >
+          Test Page
+        </div>
+        <div
+          className="tabbar-tab"
+          data-index={1}
+          onClick={[Function]}
+        >
+          Test Page 1
+        </div>
+        <div
+          className="tabbar-tab"
+          data-index={2}
+          onClick={[Function]}
+        >
+          Test Page 2
+        </div>
+      </div>
+      <div
+        className="tabbar-nav"
+        data-side="next"
+        onClick={[Function]}
+      >
+        &gt;
+      </div>
+    </div>
+    <div
+      className="section"
+    >
+      <h2
+        className="section-title title-m"
+      >
+        Test Section
+      </h2>
+      <ul
+        className="list"
+      >
+        <li
+          className="listitem"
+        >
+          Test Activity
+          <button
+            className="button button--default"
+            onClick={[Function]}
+          >
+            Run
+          </button>
+        </li>
+        <li
+          className="listitem"
+        >
+          Test Activity 1
+          <button
+            className="button button--default"
+            onClick={[Function]}
+          >
+            Run
+          </button>
+        </li>
+      </ul>
+    </div>
+    <div
+      className="section"
+    >
+      <h2
+        className="section-title title-m"
+      >
+        Test Section 1
+      </h2>
+      <ul
+        className="list"
+      >
+        <li
+          className="listitem"
+        >
+          Test Activity
+          <button
+            className="button button--default"
+            onClick={[Function]}
+          >
+            Run
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+`;

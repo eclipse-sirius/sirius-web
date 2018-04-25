@@ -133,6 +133,48 @@ exports[`ProjectView renders the project 1`] = `
         </div>
       </div>
     </div>
+    <div
+      className="projectview-workflow"
+    >
+      <div
+        className="card workflowcard"
+      >
+        <div
+          className="card-header"
+        >
+          <h1
+            className="card-title title-l"
+          >
+            Workflow
+          </h1>
+        </div>
+        <div
+          className="card-body"
+        >
+          <div
+            className="tabbar"
+          >
+            <div
+              className="tabbar-nav tabbar-nav--disabled"
+              data-side="previous"
+              onClick={[Function]}
+            >
+              &lt;
+            </div>
+            <div
+              className="tabbar-tabs"
+            />
+            <div
+              className="tabbar-nav tabbar-nav--disabled"
+              data-side="next"
+              onClick={[Function]}
+            >
+              &gt;
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 `;
