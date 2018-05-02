@@ -82,34 +82,53 @@ exports[`ListProjectsView renders the projects 1`] = `
       </h1>
     </div>
     <div
-      className="card-divider"
-    />
-    <div
       className="card-body"
     >
       <ul
-        className="list list--highlighted list--separated"
+        className="list list--highlighted"
       >
-        <li
-          className="listitem listitem--link"
+        <a
+          href="projects/First Project"
+          onClick={[Function]}
         >
-          <a
-            href="projects/First Project"
-            onClick={[Function]}
+          <li
+            className="tile tile--twoline"
           >
-            First Project
-          </a>
-        </li>
-        <li
-          className="listitem listitem--link"
+            <div>
+              <h4
+                className="tile-maintext body-s"
+              >
+                First Project
+              </h4>
+              <h5
+                className="tile-additionaltext caption-xs"
+              >
+                Description of the project
+              </h5>
+            </div>
+          </li>
+        </a>
+        <a
+          href="projects/Second Project"
+          onClick={[Function]}
         >
-          <a
-            href="projects/Second Project"
-            onClick={[Function]}
+          <li
+            className="tile tile--twoline"
           >
-            Second Project
-          </a>
-        </li>
+            <div>
+              <h4
+                className="tile-maintext body-s"
+              >
+                Second Project
+              </h4>
+              <h5
+                className="tile-additionaltext caption-xs"
+              >
+                Description of the project
+              </h5>
+            </div>
+          </li>
+        </a>
       </ul>
     </div>
   </div>

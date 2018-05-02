@@ -1,0 +1,83 @@
+= List
+
+== Usage
+
+Lists are used to display multiple lines vertically in a single component.
+A list can be considered as a table with a single column containing rows of tiles.
+All rows must have the same width but their height may vary inside of a list.
+List are suited to present an unique kind of information such as a set of similar elements.
+If more than three lines of text are required in a single list tile switch to another component like a card.
+
+== Behavior
+
+A list can be scrolled vertically only.
+A list should not be scrollable horizontally, if it is the case, the density of information on the list is too high.
+Lists may be filterable or sortable.
+
+== Content
+
+The list is composed of a collection of tiles.
+The tiles of the list should present content in a consistant manner.
+In some very rare occasions, different kind of tiles can be used within a list.
+The most important content of a tile should be located on the left side of the tile.
+The least imporant content should be on the right.
+A tile may contain up to three line of text.
+The length of a line of text within tiles may vary.
+Most of the space of a tile should be available for its primary action.
+If a tile contain multiple lines of text, the first line must contain the most important content.
+
+== Actions
+
+A tile may contain two kinds of actions.
+The primary ones using most if not all the space available.
+The primary actions should not be limited to a single icon or text.
+As an example, in a list of hyperlinks, the whole tile should let users navigate to another page not just the hyperlink itself.
+Using only the hyperlink as the target of the click would make it difficult to navigate in the user interface especially with touch screen devices.
+The secondary actions should be represented by icons, secondary text or buttons.
+They should take a limited amount of space within a tile.
+The position and size of primary and secondary actions within a list should be consistent.
+
+Some actions may be considered as a global effect and they may not be presented on each tile directly.
+As an example, instead of a delete button on each tile, we can display a checkbox of each tile and a global delete button allowing the deletion of multiple items at once.
+It would make the user interface more readable by lowering the amount of information per tile.
+
+== Specification
+
+A list should contain a top and bottom padding of var(--listLayoutPadding).
+The list itself does not need any left and right padding nor any margin.
+The rows of the list may be separated by a delimiter.
+
+There are three kinds of tile possible inside of a list.
+The single-line one, the two-line one and the three-line tile.
+Each tile is available in multiple versions: 
+
+* text only
+* a main icon and some text
+* a main icon, some text and additional icons.
+
+=== Single-line tile
+
+In a text-only version, the single-line tile should have a left and right padding of var(--tileLayoutPadding).
+The single-line tile should have a vertical size of var(--tileSingleLineHeight).
+The text should be centered vertically in the tile.
+
+In a main icon and text version, the single-line tile should keep its left and right padding of var(--tileLayoutPadding).
+The main icon need to occupy a space of 16x16 pixels.
+The main icon area should have a width of var(--tileIconAreaWith).
+The main icon should be centered vertically in the tile.
+
+Finally in the main icon, text and additional icons version, the previous rules should still be applied for both the main icon and the text.
+Each additional icon should have a left padding of var(--tileAdditionalIconPadding).
+
+=== Two-line tile
+
+In its text-only version, the two-line tile should have a left and right padding of var(--tileLayoutPadding).
+The two-line tile should have a vertical size of (var--tileTwoLineHeight).
+The two lines of text should be centered vertically.
+The first line should contain the most important text.
+The dimensions of the area for the main icon and the additional icons are the same as in the single-line tile.
+
+=== Three-line tile
+
+The three-line version of the tile has the same dimension as both the single-line and the two-line version except for its height.
+The height of this version should be var(--tileThreeLineHeight).

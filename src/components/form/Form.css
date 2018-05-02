@@ -28,7 +28,7 @@
 .text {
   display: block;
   width: 100%;
-  font-size: var(--fontSize-m);
+  font-size: var(--fontSize-s);
   line-height: var(--lineHeight-m);
   padding: var(--layoutDimension-xs) var(--layoutDimension-s);
   border-radius: var(--borderRadius-small);

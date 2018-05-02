@@ -12,8 +12,14 @@ import PropTypes from 'prop-types';
 
 import { classNames } from '../../common/classnames';
 
-import { Body, Card, Divider, Header, Title } from '../cards/Card';
-import { List, ListItem, LIST_WITH_SEPARATOR__KIND } from '../list/List';
+import { Body, Card, Header, Title } from '../cards/Card';
+import {
+  LIST_WITH_HIGHLIGHT__KIND,
+  AdditionalText,
+  List,
+  MainText,
+  TwoLineTile
+} from '../list/List';
 
 const PROJECT_REPRESENTATIONS_LIST_CARD__CLASS_NAMES = 'projectrepresentationslistcard';
 
@@ -36,11 +42,15 @@ export const ProjectRepresentationsListCard = ({ className, representations, ...
       <Header>
         <Title>Representations</Title>
       </Header>
-      <Divider />
       <Body>
-        <List kind={LIST_WITH_SEPARATOR__KIND}>
+        <List kind={LIST_WITH_HIGHLIGHT__KIND}>
           {representations.map(representation => (
-            <ListItem key={representation.name}>{representation.name}</ListItem>
+            <TwoLineTile key={representation.name}>
+              <div>
+                <MainText>{representation.name}</MainText>
+                <AdditionalText>{representation.descriptionName}</AdditionalText>
+              </div>
+            </TwoLineTile>
           ))}
         </List>
       </Body>

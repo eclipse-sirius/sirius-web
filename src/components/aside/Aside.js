@@ -17,10 +17,10 @@ import './Aside.css';
 const ASIDE__CLASS_NAMES = 'aside';
 
 const ASIDE_MAIN_LINKS__CLASS_NAMES = 'aside-mainlinks';
-const MAIN_LINKS__CLASS_NAMES = 'title-m';
+const MAIN_LINKS__CLASS_NAMES = 'title-s';
 
 const ASIDE_ADDITIONAL_LINKS__CLASS_NAMES = 'aside-additionallinks';
-const ADDITIONAL_LINKS__CLASS_NAMES = 'caption-m';
+const ADDITIONAL_LINKS__CLASS_NAMES = 'caption-s';
 
 /**
  * The Aside component is used to display the navigation links to move from one

@@ -143,46 +143,15 @@ exports[`DashboardView renders the projects 1`] = `
         <div
           className="card-header"
         >
-          <h1
-            className="card-title title-l"
-          >
-            First Project
-          </h1>
-        </div>
-        <div
-          className="card-body"
-        >
-          <ul
-            className="list"
-          >
-            <li
-              className="listitem"
-            >
-              <div
-                className="listitem-title title-m"
-              >
-                Semantic Resources
-              </div>
-              <div
-                className="listitem-description body-m"
-              >
-                 resource(s) in the project
-              </div>
-            </li>
-          </ul>
-        </div>
-        <div
-          className="card-divider"
-        />
-        <div
-          className="card-footer"
-        >
           <a
-            className="card-footerlink"
             href="/projects/First Project"
             onClick={[Function]}
           >
-            View Project
+            <h1
+              className="card-title title-l"
+            >
+              First Project
+            </h1>
           </a>
         </div>
       </div>
@@ -192,46 +161,15 @@ exports[`DashboardView renders the projects 1`] = `
         <div
           className="card-header"
         >
-          <h1
-            className="card-title title-l"
-          >
-            Second Project
-          </h1>
-        </div>
-        <div
-          className="card-body"
-        >
-          <ul
-            className="list"
-          >
-            <li
-              className="listitem"
-            >
-              <div
-                className="listitem-title title-m"
-              >
-                Semantic Resources
-              </div>
-              <div
-                className="listitem-description body-m"
-              >
-                 resource(s) in the project
-              </div>
-            </li>
-          </ul>
-        </div>
-        <div
-          className="card-divider"
-        />
-        <div
-          className="card-footer"
-        >
           <a
-            className="card-footerlink"
             href="/projects/Second Project"
             onClick={[Function]}
           >
-            View Project
+            <h1
+              className="card-title title-l"
+            >
+              Second Project
+            </h1>
           </a>
         </div>
       </div>

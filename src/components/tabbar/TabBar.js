@@ -21,7 +21,7 @@ const TABBAR_NAV__CLASS_NAMES = 'tabbar-nav';
 const TABBAR_NAV__DISABLED__CLASS_NAMES = 'tabbar-nav--disabled';
 const TABBAR_TAB__CONTAIN_SELECTION__CLASS_NAMES = 'tabbar-nav--contain-selection';
 const TABBAR_TABS__CLASS_NAMES = 'tabbar-tabs';
-const TABBAR_TAB__CLASS_NAMES = 'tabbar-tab';
+const TABBAR_TAB__CLASS_NAMES = 'tabbar-tab title-m';
 const TABBAR_TAB_SELECTED__CLASS_NAMES = 'tabbar-tab--selected';
 
 const propTypes = {

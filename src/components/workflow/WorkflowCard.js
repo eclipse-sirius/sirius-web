@@ -12,9 +12,15 @@ import PropTypes from 'prop-types';
 
 import { classNames } from '../../common/classnames';
 
-import { Button } from '../buttons/Button';
 import { Body, Card, Header, Title } from '../cards/Card';
-import { List, ListItem } from '../list/List';
+import { IconRun } from '../icons/IconRun';
+import {
+  List,
+  MainText,
+  SingleLineTile,
+  AdditionalIcon,
+  LIST_WITH_HIGHLIGHT__KIND
+} from '../list/List';
 import { TabBar } from '../tabbar/TabBar';
 
 import './WorkflowCard.css';
@@ -88,7 +94,7 @@ WorkflowCard.propTypes = propTypes;
 WorkflowCard.defaultProps = defaultProps;
 
 const SECTION__CLASS_NAMES = 'section';
-const SECTION_TITLE__CLASS_NAMES = 'section-title title-m';
+const SECTION_TITLE__CLASS_NAMES = 'section-title title-s';
 
 const Section = ({
   className,
@@ -102,22 +108,23 @@ const Section = ({
   return (
     <div className={sectionClassNames} {...props}>
       <h2 className={SECTION_TITLE__CLASS_NAMES}>{section.name}</h2>
-      <List>
+      <List kind={LIST_WITH_HIGHLIGHT__KIND}>
         {section.activities.map(activity => (
-          <ListItem key={activity.identifier}>
-            {activity.name}
-            <Button
-              onClick={() =>
-                onActivityClick(
-                  projectName,
-                  pageIdentifier,
-                  section.identifier,
-                  activity.identifier
-                )
-              }>
-              Run
-            </Button>
-          </ListItem>
+          <SingleLineTile key={activity.identifier}>
+            <MainText>{activity.name}</MainText>
+            <AdditionalIcon>
+              <IconRun
+                onClick={() =>
+                  onActivityClick(
+                    projectName,
+                    pageIdentifier,
+                    section.identifier,
+                    activity.identifier
+                  )
+                }
+              />
+            </AdditionalIcon>
+          </SingleLineTile>
         ))}
       </List>
     </div>

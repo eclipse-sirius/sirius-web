@@ -82,18 +82,19 @@ exports[`ProjectView renders the project 1`] = `
           </h1>
         </div>
         <div
-          className="card-divider"
-        />
-        <div
           className="card-body"
         >
           <ul
-            className="list list--separated"
+            className="list list--highlighted"
           >
             <li
-              className="listitem"
+              className="tile tile--singleline"
             >
-              /model/model.ecore
+              <h4
+                className="tile-maintext body-s"
+              >
+                /model/model.ecore
+              </h4>
             </li>
           </ul>
         </div>
@@ -111,23 +112,38 @@ exports[`ProjectView renders the project 1`] = `
           </h1>
         </div>
         <div
-          className="card-divider"
-        />
-        <div
           className="card-body"
         >
           <ul
-            className="list list--separated"
+            className="list list--highlighted"
           >
             <li
-              className="listitem"
+              className="tile tile--twoline"
             >
-              Class Diagram
+              <div>
+                <h4
+                  className="tile-maintext body-s"
+                >
+                  Class Diagram
+                </h4>
+                <h5
+                  className="tile-additionaltext caption-xs"
+                />
+              </div>
             </li>
             <li
-              className="listitem"
+              className="tile tile--twoline"
             >
-              Activity Diagram
+              <div>
+                <h4
+                  className="tile-maintext body-s"
+                >
+                  Activity Diagram
+                </h4>
+                <h5
+                  className="tile-additionaltext caption-xs"
+                />
+              </div>
             </li>
           </ul>
         </div>

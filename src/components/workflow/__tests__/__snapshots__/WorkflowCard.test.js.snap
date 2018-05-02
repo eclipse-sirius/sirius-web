@@ -30,21 +30,21 @@ exports[`WorkflowCard renders the workflow card 1`] = `
         className="tabbar-tabs"
       >
         <div
-          className="tabbar-tab tabbar-tab--selected"
+          className="tabbar-tab title-m tabbar-tab--selected"
           data-index={0}
           onClick={[Function]}
         >
           Test Page
         </div>
         <div
-          className="tabbar-tab"
+          className="tabbar-tab title-m"
           data-index={1}
           onClick={[Function]}
         >
           Test Page 1
         </div>
         <div
-          className="tabbar-tab"
+          className="tabbar-tab title-m"
           data-index={2}
           onClick={[Function]}
         >
@@ -63,34 +63,60 @@ exports[`WorkflowCard renders the workflow card 1`] = `
       className="section"
     >
       <h2
-        className="section-title title-m"
+        className="section-title title-s"
       >
         Test Section
       </h2>
       <ul
-        className="list"
+        className="list list--highlighted"
       >
         <li
-          className="listitem"
+          className="tile tile--singleline"
         >
-          Test Activity
-          <button
-            className="button button--default"
-            onClick={[Function]}
+          <h4
+            className="tile-maintext body-s"
           >
-            Run
-          </button>
+            Test Activity
+          </h4>
+          <div
+            className="tile-additionalicon"
+          >
+            <svg
+              className="iconrun"
+              height="16"
+              onClick={[Function]}
+              width="16"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <polygon
+                points="0,0 16,8 0,16"
+              />
+            </svg>
+          </div>
         </li>
         <li
-          className="listitem"
+          className="tile tile--singleline"
         >
-          Test Activity 1
-          <button
-            className="button button--default"
-            onClick={[Function]}
+          <h4
+            className="tile-maintext body-s"
           >
-            Run
-          </button>
+            Test Activity 1
+          </h4>
+          <div
+            className="tile-additionalicon"
+          >
+            <svg
+              className="iconrun"
+              height="16"
+              onClick={[Function]}
+              width="16"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <polygon
+                points="0,0 16,8 0,16"
+              />
+            </svg>
+          </div>
         </li>
       </ul>
     </div>
@@ -98,23 +124,36 @@ exports[`WorkflowCard renders the workflow card 1`] = `
       className="section"
     >
       <h2
-        className="section-title title-m"
+        className="section-title title-s"
       >
         Test Section 1
       </h2>
       <ul
-        className="list"
+        className="list list--highlighted"
       >
         <li
-          className="listitem"
+          className="tile tile--singleline"
         >
-          Test Activity
-          <button
-            className="button button--default"
-            onClick={[Function]}
+          <h4
+            className="tile-maintext body-s"
           >
-            Run
-          </button>
+            Test Activity
+          </h4>
+          <div
+            className="tile-additionalicon"
+          >
+            <svg
+              className="iconrun"
+              height="16"
+              onClick={[Function]}
+              width="16"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <polygon
+                points="0,0 16,8 0,16"
+              />
+            </svg>
+          </div>
         </li>
       </ul>
     </div>

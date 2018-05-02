@@ -165,21 +165,27 @@ Our primary typeface is the standard typeface of each operating system in a simi
 
 === Sizes
 
-4 font sizes are supported in our applications. The default font size in our applications is *medium*.
+4 font sizes are supported in our applications. The default font size in our applications is *small*.
 
+* Extra Small
+* Small
 * Medium
 * Large
 * Extra Large
 * Extra extra large
+* Extra extra extra large
 
 The various font sizes are accessible with the following CSS variables.
 
 [source,css,indent=0]
 ----
+--fontSize-xs
+--fontSize-s
 --fontSize-m
 --fontSize-l
 --fontSize-xl
 --fontSize-xxl
+--fontSize-xxxl
 ----
 
 === Weight
@@ -210,8 +216,13 @@ By combining the font sizes and the font weights, we can produce by default the 
 * Extra Large Title
 * Large Title
 * Medium Title
+* Small Title
+* Large Body
 * Medium Body
+* Small Body
 * Medium Caption
+* Small Caption
+* Extra Small Caption
 
 They can be used with the following CSS classes.
 
@@ -221,8 +232,12 @@ They can be used with the following CSS classes.
 .title-xl
 .title-l
 .title-m
+.title-s
+.body-l
 .body-m
-.caption-m
+.body-s
+.caption-s
+.caption-xs
 ----
 
 You can produce new text styles by mixing other font size and font weight but these are the most important ones that you should use most of the time.
@@ -246,11 +261,13 @@ You can find the line heights used in the default text styles below.
 
 [source,css,indent=0]
 ----
+--lineHeight-xxxl
 --lineHeight-xxl
 --lineHeight-xl
 --lineHeight-l
 --lineHeight-m
 --lineHeight-s
+--lineHeight-xs
 ----
 
 == Colors
@@ -386,6 +403,7 @@ Those dimensions can be used with regular CSS variables.
 --layoutDimension-l
 --layoutDimension-xl
 --layoutDimension-xxl
+--layoutDimension-xxxl
 ----
 
 By default in most of our elements with a custom layout a padding using the *medium* size is used.

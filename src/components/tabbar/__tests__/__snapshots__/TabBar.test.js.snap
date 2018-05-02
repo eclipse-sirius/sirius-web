@@ -15,21 +15,21 @@ exports[`TabBar renders a list of tabs 1`] = `
     className="tabbar-tabs"
   >
     <div
-      className="tabbar-tab tabbar-tab--selected"
+      className="tabbar-tab title-m tabbar-tab--selected"
       data-index={0}
       onClick={[Function]}
     >
       First
     </div>
     <div
-      className="tabbar-tab"
+      className="tabbar-tab title-m"
       data-index={1}
       onClick={[Function]}
     >
       Second
     </div>
     <div
-      className="tabbar-tab"
+      className="tabbar-tab title-m"
       data-index={2}
       onClick={[Function]}
     >
@@ -61,21 +61,21 @@ exports[`TabBar renders a list of tabs with a selected tab 1`] = `
     className="tabbar-tabs"
   >
     <div
-      className="tabbar-tab"
+      className="tabbar-tab title-m"
       data-index={0}
       onClick={[Function]}
     >
       First
     </div>
     <div
-      className="tabbar-tab tabbar-tab--selected"
+      className="tabbar-tab title-m tabbar-tab--selected"
       data-index={1}
       onClick={[Function]}
     >
       Second
     </div>
     <div
-      className="tabbar-tab"
+      className="tabbar-tab title-m"
       data-index={2}
       onClick={[Function]}
     >
