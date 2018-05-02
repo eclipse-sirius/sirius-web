@@ -9,7 +9,6 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 
 import { classNames } from '../../common/classnames';
 
@@ -111,19 +110,5 @@ export const Footer = ({ className, ...props }) => {
     <div className={footerClassNames} {...props}>
       {props.children}
     </div>
-  );
-};
-
-const CARD_FOOTERACTION__CLASS_NAMES = 'card-footerlink';
-
-/**
- * The FooterLink is a child of the Footer used as a Link.
- */
-export const FooterLink = ({ to, className, ...props }) => {
-  const footerActionClassNames = classNames(CARD_FOOTERACTION__CLASS_NAMES, className);
-  return (
-    <Link to={to} className={footerActionClassNames} {...props}>
-      {props.children}
-    </Link>
   );
 };

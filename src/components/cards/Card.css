@@ -26,12 +26,3 @@
 .card-divider {
   border-top: 1px solid var(--light-smoke);
 }
-
-.card-footerlink {
-  display: block;
-  text-transform: capitalize;
-  padding: var(--layoutDimension-m) var(--layoutDimension-m);
-}
-.card-footerlink:hover {
-  background-color: var(--light-snow);
-}

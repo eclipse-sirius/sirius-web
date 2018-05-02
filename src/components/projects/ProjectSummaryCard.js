@@ -8,10 +8,10 @@
  *******************************************************************************/
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import { Body, Card, Divider, Footer, FooterLink, Header, Title } from '../cards/Card';
-import { List, ListItem, ListItemDescription, ListItemTitle } from '../list/List';
+import { Card, Header, Title } from '../cards/Card';
 
 import './ProjectSummaryCard.css';
 
@@ -29,22 +29,10 @@ export const ProjectSummaryCard = ({ project, ...props }) => {
   return (
     <Card className={PROJECT_SUMMARY_CARD__CLASS_NAMES} {...props}>
       <Header>
-        <Title>{project.name}</Title>
+        <Link to={`/projects/${project.name}`}>
+          <Title>{project.name}</Title>
+        </Link>
       </Header>
-      <Body>
-        <List>
-          <ListItem>
-            <ListItemTitle>Semantic Resources</ListItemTitle>
-            <ListItemDescription>
-              {project.semanticResourcesCount} resource(s) in the project
-            </ListItemDescription>
-          </ListItem>
-        </List>
-      </Body>
-      <Divider />
-      <Footer>
-        <FooterLink to={`/projects/${project.name}`}>View Project</FooterLink>
-      </Footer>
     </Card>
   );
 };

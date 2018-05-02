@@ -7,22 +7,6 @@
  * https://www.eclipse.org/legal/epl-2.0.
  *******************************************************************************/
 
-.infocard .card-body {
-  display: grid;
-  grid-template-rows: min-content min-content;
-  grid-row-gap: var(--layoutDimension-m);
-  padding: var(--layoutDimension-l);
-}
-
-.infocard-title {
-  text-align: center;
-  font-size: var(--fontSize-xxxl);
-  font-weight: var(--fontWeight-bold);
-  line-height: var(--lineHeight-xxxl);
-}
-
-.infocard-message {
-  text-align: center;
-  font-size: var(--fontSize-l);
-  line-height: var(--lineHeight-l);
+.projectslistcard .tile-maintext {
+  font-weight: var(--fontWeight-semiBold);
 }

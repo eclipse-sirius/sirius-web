@@ -7,12 +7,21 @@
  * https://www.eclipse.org/legal/epl-2.0.
  *******************************************************************************/
 import React from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import { classNames } from '../../common/classnames';
 
-import { Body, Card, Divider, Header, Title } from '../cards/Card';
-import { LIST_WITH_HIGHLIGHT__KIND, LIST_WITH_SEPARATOR__KIND, List, ListItem } from '../list/List';
+import { Body, Card, Header, Title } from '../cards/Card';
+import {
+  LIST_WITH_HIGHLIGHT__KIND,
+  AdditionalText,
+  List,
+  MainText,
+  TwoLineTile
+} from '../list/List';
+
+import './ProjectsListCard.css';
 
 const PROJECTS_LIST_CARD__CLASS_NAMES = 'projectslistcard';
 
@@ -33,14 +42,18 @@ export const ProjectsListCard = ({ className, projects, ...props }) => {
       <Header>
         <Title>Projects</Title>
       </Header>
-      <Divider />
       <Body>
-        <List kind={[LIST_WITH_HIGHLIGHT__KIND, LIST_WITH_SEPARATOR__KIND]}>
+        <List kind={LIST_WITH_HIGHLIGHT__KIND}>
           {projects.map(project => {
             return (
-              <ListItem key={project.name} to={`projects/${project.name}`}>
-                {project.name}
-              </ListItem>
+              <Link to={`projects/${project.name}`} key={project.name}>
+                <TwoLineTile>
+                  <div>
+                    <MainText>{project.name}</MainText>
+                    <AdditionalText>{'Description of the project'}</AdditionalText>
+                  </div>
+                </TwoLineTile>
+              </Link>
             );
           })}
         </List>

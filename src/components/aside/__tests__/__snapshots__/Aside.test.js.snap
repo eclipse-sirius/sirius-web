@@ -10,7 +10,7 @@ exports[`Aside renders the aside component 1`] = `
     <ul>
       <li>
         <a
-          className="title-m"
+          className="title-s"
           href="/"
           onClick={[Function]}
         >
@@ -19,7 +19,7 @@ exports[`Aside renders the aside component 1`] = `
       </li>
       <li>
         <a
-          className="title-m"
+          className="title-s"
           href="/projects"
           onClick={[Function]}
         >
@@ -34,7 +34,7 @@ exports[`Aside renders the aside component 1`] = `
     <ul>
       <li>
         <a
-          className="caption-m"
+          className="caption-s"
           href="https://github.com/eclipse/sirius-components/issues"
           rel="noopener noreferrer"
           target="_blank"
@@ -44,7 +44,7 @@ exports[`Aside renders the aside component 1`] = `
       </li>
       <li>
         <a
-          className="caption-m"
+          className="caption-s"
           href="https://stackoverflow.com/questions/tagged/sirius"
           rel="noopener noreferrer"
           target="_blank"

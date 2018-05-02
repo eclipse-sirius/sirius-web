@@ -12,8 +12,8 @@ import PropTypes from 'prop-types';
 
 import { classNames } from '../../common/classnames';
 
-import { Body, Card, Divider, Header, Title } from '../cards/Card';
-import { List, ListItem, LIST_WITH_SEPARATOR__KIND } from '../list/List';
+import { Body, Card, Header, Title } from '../cards/Card';
+import { List, MainText, SingleLineTile, LIST_WITH_HIGHLIGHT__KIND } from '../list/List';
 
 const PROJECT_SEMANTIC_RESOURCES_LIST_CARD__CLASS_NAMES = 'projectsemanticresourceslistcard';
 
@@ -36,11 +36,12 @@ export const ProjectSemanticResourcesListCard = ({ className, semanticResources,
       <Header>
         <Title>Semantic Resources</Title>
       </Header>
-      <Divider />
       <Body>
-        <List kind={LIST_WITH_SEPARATOR__KIND}>
+        <List kind={LIST_WITH_HIGHLIGHT__KIND}>
           {semanticResources.map(resource => (
-            <ListItem key={resource.path}>{resource.path}</ListItem>
+            <SingleLineTile key={resource.path}>
+              <MainText>{resource.path}</MainText>
+            </SingleLineTile>
           ))}
         </List>
       </Body>

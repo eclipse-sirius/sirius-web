@@ -7,25 +7,65 @@
  * https://www.eclipse.org/legal/epl-2.0.
  *******************************************************************************/
 
-.list--separated .listitem {
+.list {
+  --listLayoutPadding: 8px;
+
+  padding: var(--listLayoutPadding) 0;
+}
+
+.list--separated .tile {
   border-bottom: 1px solid var(--light-smoke);
 }
-.list--separated .listitem:nth-last-child(1) {
+.list--separated .tile:nth-last-child(1) {
   border-bottom: 0px;
 }
 
-.list--highlighted .listitem:hover {
+.list--highlighted .tile:hover {
   background-color: var(--light-snow);
 }
 
-.listitem {
-  padding: var(--layoutDimension-m) var(--layoutDimension-m);
+.tile {
+  --tileLayoutPadding: 16px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  padding: 0 var(--tileLayoutPadding);
+}
+.tile--singleline {
+  --tileSingleLineHeight: 48px;
+
+  height: var(--tileSingleLineHeight);
+}
+.tile--twoline {
+  --tileTwoLineHeight: 60px;
+
+  height: var(--tileTwoLineHeight);
+}
+.tile--threeline {
+  --tileThreeLineHeight: 76px;
+
+  height: var(--tileThreeLineHeight);
 }
 
-.listitem--link {
-  padding: 0;
+.tile-maintext {
+  margin-right: auto;
 }
-.listitem--link a {
-  display: block;
-  padding: var(--layoutDimension-m) var(--layoutDimension-m);
+.tile-additionaltext {
+  color: var(--silver);
+}
+
+.tile-additionalicon {
+  --tileAdditionalIconPadding: 16px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  padding-left: var(--tileAdditionalIconPadding);
+  cursor: pointer;
+}
+.title-additionalicon:hover svg {
+  fill: var(--blue);
 }

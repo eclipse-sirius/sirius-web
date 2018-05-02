@@ -9,43 +9,132 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 
 import { classNames } from '../../common/classnames';
 
 import './List.css';
 
-const LISTITEM__CLASS_NAMES = 'listitem';
-const LISTITEM_LINK__CLASS_NAMES = 'listitem--link';
+const TILE_MAINICON__CLASS_NAMES = 'tile-mainicon';
 
-const listItemPropTypes = {
-  to: PropTypes.string
+const mainIconPropTypes = {};
+
+/**
+ * The main icon is used to display an image before the main text.
+ */
+export const MainIcon = ({ className, ...props }) => {
+  const mainIconClassNames = classNames(TILE_MAINICON__CLASS_NAMES, className);
+  return <div className={mainIconClassNames} {...props} />;
+};
+MainIcon.propTypes = mainIconPropTypes;
+
+const TILE_ADDITIONALICON__CLASS_NAMES = 'tile-additionalicon';
+
+const additionalIconPropTypes = {};
+
+/**
+ * The additional icon is used to display images after the main text.
+ */
+export const AdditionalIcon = ({ className, ...props }) => {
+  const additionalIconClassNames = classNames(TILE_ADDITIONALICON__CLASS_NAMES, className);
+  return <div className={additionalIconClassNames} {...props} />;
+};
+AdditionalIcon.propTypes = additionalIconPropTypes;
+
+const TILE_MAINTEXT__CLASS_NAMES = 'tile-maintext body-s';
+
+const mainTextPropTypes = {
+  children: PropTypes.string
 };
 
 /**
- * The ListItem is used to represent one item of the link component. It can
- * display some content like text but it can also be used as a link directly.
+ * The MainText component is used as the main text content of a tile.
  */
-export const ListItem = ({ className, to, ...props }) => {
-  const additionalClassNames = [];
-  if (to) {
-    additionalClassNames.push(LISTITEM_LINK__CLASS_NAMES);
-  }
-  if (className) {
-    additionalClassNames.push(className);
-  }
-  const listItemClassNames = classNames(LISTITEM__CLASS_NAMES, ...additionalClassNames);
-
-  if (to) {
-    return (
-      <li className={listItemClassNames} {...props}>
-        <Link to={to}>{props.children}</Link>
-      </li>
-    );
-  }
-  return <li className={listItemClassNames} {...props} />;
+export const MainText = ({ className, children, ...props }) => {
+  const mainTextClassNames = classNames(TILE_MAINTEXT__CLASS_NAMES, className);
+  return (
+    <h4 className={mainTextClassNames} {...props}>
+      {children}
+    </h4>
+  );
 };
-ListItem.propTypes = listItemPropTypes;
+MainText.propTypes = mainTextPropTypes;
+
+const TILE_ADDITIONALTEXT__CLASS_NAMES = 'tile-additionaltext caption-xs';
+
+const additionalTextPropTypes = {
+  children: PropTypes.string
+};
+
+/**
+ * The AdditionalText component is used as the additional text content of a tile.
+ */
+export const AdditionalText = ({ className, children, ...props }) => {
+  const additionalTextClassNames = classNames(TILE_ADDITIONALTEXT__CLASS_NAMES, className);
+  return (
+    <h5 className={additionalTextClassNames} {...props}>
+      {children}
+    </h5>
+  );
+};
+AdditionalText.propTypes = additionalTextPropTypes;
+
+const TILE__CLASS_NAMES = 'tile';
+const TILE__SINGLELINE__CLASS_NAMES = 'tile--singleline';
+
+const singleLineTilePropTypes = {};
+
+/**
+ * The SingleLineTile is used to represent one line of the list component. It
+ * can display a main icon, some text and additional icons. The text displayed
+ * can only use one line for the main text.
+ */
+export const SingleLineTile = ({ className, ...props }) => {
+  const singleLineTileClassNames = classNames(
+    TILE__CLASS_NAMES,
+    TILE__SINGLELINE__CLASS_NAMES,
+    className
+  );
+  return <li className={singleLineTileClassNames} {...props} />;
+};
+SingleLineTile.propTypes = singleLineTilePropTypes;
+
+const TILE__TWOLINE__CLASS_NAMES = 'tile--twoline';
+
+const twoLineTilePropTypes = {};
+
+/**
+ * The TwoLineTile is used to represent one line of the list component. It can
+ * display a main icon, some text and additional icons. The text displayed will
+ * be composed of a main text and an additional text.
+ */
+export const TwoLineTile = ({ className, mainText, additionalText, ...props }) => {
+  const twoLineTileClassNames = classNames(
+    TILE__CLASS_NAMES,
+    TILE__TWOLINE__CLASS_NAMES,
+    className
+  );
+  return <li className={twoLineTileClassNames} {...props} />;
+};
+TwoLineTile.propTypes = twoLineTilePropTypes;
+
+const TILE__THREELINE__CLASS_NAMES = 'tile--threeline';
+
+const threeLineTilePropTypes = {};
+
+/**
+ * The ThreeLineTile is used to represent one line of the list component. It can
+ * display a main icon, some text and additional icons. The text displayed will
+ * be composed of a main text and two lines of additional text.
+ */
+export const ThreeLineTile = ({ className, ...props }) => {
+  const threeLineTileClassNames = classNames(
+    TILE__CLASS_NAMES,
+    TILE__THREELINE__CLASS_NAMES,
+    className
+  );
+  return <li className={threeLineTileClassNames} {...props} />;
+};
+ThreeLineTile.propTypes = threeLineTilePropTypes;
 
 /** The list with separator kind. */
 export const LIST_WITH_SEPARATOR__KIND = 'list--separated';
@@ -57,7 +146,14 @@ const LIST__CLASS_NAMES = 'list';
 
 const listPropTypes = {
   kind: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
-  children: PropTypes.oneOfType([PropTypes.arrayOf(ListItem), PropTypes.objectOf(ListItem)])
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(SingleLineTile),
+    PropTypes.arrayOf(TwoLineTile),
+    PropTypes.arrayOf(ThreeLineTile),
+    PropTypes.objectOf(SingleLineTile),
+    PropTypes.objectOf(TwoLineTile),
+    PropTypes.objectOf(ThreeLineTile)
+  ])
 };
 const listDefaultProps = {
   kind: ''
@@ -94,26 +190,4 @@ const computeKinds = kind => {
     kinds.push(kind);
   }
   return kinds;
-};
-
-const LISTITEM_TITLE__CLASS_NAMES = 'listitem-title title-m';
-
-/**
- * The ListItemTitle is used to create richer LinkItems with both a title and a
- * description.
- */
-export const ListItemTitle = ({ className, ...props }) => {
-  const listItemTitleClassNames = classNames(LISTITEM_TITLE__CLASS_NAMES, className);
-  return <div className={listItemTitleClassNames} {...props} />;
-};
-
-const LISTITEM_DESCRIPTION__CLASS_NAMES = 'listitem-description body-m';
-
-/**
- * The ListItemDescription is used to create richer LinkItems with both a title
- * and a description.
- */
-export const ListItemDescription = ({ className, ...props }) => {
-  const listItemDescriptionClassNames = classNames(LISTITEM_DESCRIPTION__CLASS_NAMES, className);
-  return <div className={listItemDescriptionClassNames} {...props} />;
 };
