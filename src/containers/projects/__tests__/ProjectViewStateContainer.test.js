@@ -22,11 +22,11 @@ const globalFetch = global.fetch;
 
 /**
  * A mock of the global.fetch function used to receive a valid json response
- * containing a project.
+ * containing a project with an empty workflow.
  */
-const projectFetch = () =>
+const projectWithEmptyWorkflowFetch = () =>
   new Promise((resolve, reject) => {
-    const data = { name: 'Project', pages: [] };
+    const data = { name: 'Project', pages: [], sections: [] };
     const response = { ok: true, json: () => Promise.resolve(data) };
     resolve(response);
   });
@@ -52,8 +52,8 @@ const invalidFetch = () =>
   });
 
 describe('ProjectViewStateContainer', () => {
-  it('fetches a project', () => {
-    global.fetch = projectFetch;
+  it('fetches a project with an empty workflow', () => {
+    global.fetch = projectWithEmptyWorkflowFetch;
 
     const container = ReactTestUtils.renderIntoDocument(
       <MemoryRouter initialEntries={['/projects/firstProject']}>

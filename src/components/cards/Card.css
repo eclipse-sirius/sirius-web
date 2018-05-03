@@ -38,3 +38,8 @@
 .card-divider {
   border-top: 1px solid var(--light-smoke);
 }
+
+.card-text {
+  padding: var(--layoutDimension-s) var(--layoutDimension-m) var(--layoutDimension-m)
+    var(--layoutDimension-m);
+}

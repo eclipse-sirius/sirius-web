@@ -12,8 +12,8 @@ import PropTypes from 'prop-types';
 
 import { classNames } from '../../common/classnames';
 
-import { Card, PrimaryTitle } from '../cards/Card';
-import { List, MainText, SingleLineTile, LIST_WITH_HIGHLIGHT__KIND } from '../list/List';
+import { Card, PrimaryTitle, Text } from '../cards/Card';
+import { LIST_WITH_HIGHLIGHT__KIND, List, MainText, SingleLineTile } from '../list/List';
 
 const PROJECT_SEMANTIC_RESOURCES_LIST_CARD__CLASS_NAMES = 'projectsemanticresourceslistcard';
 const SEMANTIC_RESOURCES_SIZE__CLASS_NAMES = 'semanticresources-size caption-s';
@@ -35,16 +35,41 @@ export const ProjectSemanticResourcesListCard = ({ className, semanticResources,
   return (
     <Card className={cardClassNames} {...props}>
       <PrimaryTitle label="Semantic Resources" />
-      <List kind={LIST_WITH_HIGHLIGHT__KIND}>
-        {semanticResources.map(resource => (
-          <SingleLineTile key={resource.path}>
-            <MainText>{resource.path}</MainText>
-            <div className={SEMANTIC_RESOURCES_SIZE__CLASS_NAMES}>{resource.size}</div>
-          </SingleLineTile>
-        ))}
-      </List>
+      <SemanticResources semanticResources={semanticResources} />
     </Card>
   );
 };
 ProjectSemanticResourcesListCard.propTypes = propTypes;
 ProjectSemanticResourcesListCard.defaultProps = defaultProps;
+
+/**
+ * Renders the semantic resources of the card or a text indicating the lack of
+ * semantic resources.
+ */
+const SemanticResources = ({ semanticResources }) => {
+  if (semanticResources.length > 0) {
+    return <SemanticResourcesList semanticResources={semanticResources} />;
+  }
+  return <EmptySemanticResources />;
+};
+
+/**
+ * Renders the list of semantic resources.
+ */
+const SemanticResourcesList = ({ semanticResources }) => (
+  <List kind={LIST_WITH_HIGHLIGHT__KIND}>
+    {semanticResources.map(resource => (
+      <SingleLineTile key={resource.path}>
+        <MainText>{resource.path}</MainText>
+        <div className={SEMANTIC_RESOURCES_SIZE__CLASS_NAMES}>{resource.size}</div>
+      </SingleLineTile>
+    ))}
+  </List>
+);
+
+/**
+ * Renders a text indicating the lack of semantic resources.
+ */
+const EmptySemanticResources = () => (
+  <Text>No semantic resource has been found on the project.</Text>
+);
