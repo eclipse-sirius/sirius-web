@@ -12,7 +12,7 @@ import PropTypes from 'prop-types';
 
 import { classNames } from '../../common/classnames';
 
-import { Card, PrimaryTitle } from '../cards/Card';
+import { Card, PrimaryTitle, Text } from '../cards/Card';
 import {
   LIST_WITH_HIGHLIGHT__KIND,
   AdditionalText,
@@ -40,18 +40,41 @@ export const ProjectRepresentationsListCard = ({ className, representations, ...
   return (
     <Card className={cardClassNames} {...props}>
       <PrimaryTitle label="Representations" />
-      <List kind={LIST_WITH_HIGHLIGHT__KIND}>
-        {representations.map(representation => (
-          <TwoLineTile key={representation.name}>
-            <div>
-              <MainText>{representation.name}</MainText>
-              <AdditionalText>{representation.descriptionName}</AdditionalText>
-            </div>
-          </TwoLineTile>
-        ))}
-      </List>
+      <Representations representations={representations} />
     </Card>
   );
 };
 ProjectRepresentationsListCard.propTypes = propTypes;
 ProjectRepresentationsListCard.defaultProps = defaultProps;
+
+/**
+ * Renders the representations of the card or a text indicating the lack of
+ * representations.
+ */
+const Representations = ({ representations }) => {
+  if (representations.length > 0) {
+    return <RepresentationsList representations={representations} />;
+  }
+  return <EmptyRepresentations />;
+};
+
+/**
+ * Renders the list of representations.
+ */
+const RepresentationsList = ({ representations }) => (
+  <List kind={LIST_WITH_HIGHLIGHT__KIND}>
+    {representations.map(representation => (
+      <TwoLineTile key={representation.name}>
+        <div>
+          <MainText>{representation.name}</MainText>
+          <AdditionalText>{representation.descriptionName}</AdditionalText>
+        </div>
+      </TwoLineTile>
+    ))}
+  </List>
+);
+
+/**
+ * Renders a text indicating the lack of representations.
+ */
+const EmptyRepresentations = () => <Text>No representation has been found on the project.</Text>;

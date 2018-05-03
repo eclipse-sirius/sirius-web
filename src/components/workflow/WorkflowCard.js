@@ -12,7 +12,7 @@ import PropTypes from 'prop-types';
 
 import { classNames } from '../../common/classnames';
 
-import { Card, Divider, PrimaryTitle, SecondaryTitle } from '../cards/Card';
+import { Card, Divider, PrimaryTitle, SecondaryTitle, Text } from '../cards/Card';
 import { IconRun } from '../icons/IconRun';
 import {
   List,
@@ -69,28 +69,51 @@ export const WorkflowCard = ({
   return (
     <Card {...props} className={workflowCardClassNames}>
       <PrimaryTitle label="Workflow" />
-      <TabBar
-        selectedTabIndex={selectedTabIndex}
-        tabs={pages.map(page => page.name)}
-        onTabClick={onTabClick}
+      <WorkflowTabBar pages={pages} selectedTabIndex={selectedTabIndex} onTabClick={onTabClick} />
+      <Sections
+        sections={sections}
+        projectName={projectName}
+        pageIdentifier={pageIdentifier}
+        onActivityClick={onActivityClick}
       />
-      {sections.map((section, index) => (
-        <Fragment key={section.identifier}>
-          <Section
-            key={section.identifier}
-            projectName={projectName}
-            pageIdentifier={pageIdentifier}
-            section={section}
-            onActivityClick={onActivityClick}
-          />
-          {index + 1 < sections.length ? <Divider /> : null}
-        </Fragment>
-      ))}
     </Card>
   );
 };
 WorkflowCard.propTypes = propTypes;
 WorkflowCard.defaultProps = defaultProps;
+
+const WorkflowTabBar = ({ pages, selectedTabIndex, onTabClick }) => {
+  if (pages.length === 0) {
+    return <Text>No workflow pages found</Text>;
+  }
+  return (
+    <TabBar
+      selectedTabIndex={selectedTabIndex}
+      tabs={pages.map(page => page.name)}
+      onTabClick={onTabClick}
+    />
+  );
+};
+
+const Sections = ({ sections, projectName, pageIdentifier, onActivityClick }) => {
+  if (sections.length === 0) {
+    return <EmptySections />;
+  }
+  return sections.map((section, index) => (
+    <Fragment key={section.identifier}>
+      <Section
+        key={section.identifier}
+        projectName={projectName}
+        pageIdentifier={pageIdentifier}
+        section={section}
+        onActivityClick={onActivityClick}
+      />
+      {index + 1 < sections.length ? <Divider /> : null}
+    </Fragment>
+  ));
+};
+
+const EmptySections = () => <Text>No sections found in the workflow</Text>;
 
 const SECTION__CLASS_NAMES = 'section';
 
@@ -106,25 +129,59 @@ const Section = ({
   return (
     <div className={sectionClassNames} {...props}>
       <SecondaryTitle label={section.name} />
-      <List kind={LIST_WITH_HIGHLIGHT__KIND}>
-        {section.activities.map(activity => (
-          <SingleLineTile key={activity.identifier}>
-            <MainText>{activity.name}</MainText>
-            <AdditionalIcon>
-              <IconRun
-                onClick={() =>
-                  onActivityClick(
-                    projectName,
-                    pageIdentifier,
-                    section.identifier,
-                    activity.identifier
-                  )
-                }
-              />
-            </AdditionalIcon>
-          </SingleLineTile>
-        ))}
-      </List>
+      <Activities
+        activities={section.activities}
+        onActivityClick={onActivityClick}
+        projectName={projectName}
+        pageIdentifier={pageIdentifier}
+        sectionIdentifier={section.identifier}
+      />
     </div>
   );
 };
+
+const Activities = ({
+  activities,
+  onActivityClick,
+  projectName,
+  pageIdentifier,
+  sectionIdentifier
+}) => {
+  if (activities.length === 0) {
+    return <EmptyActivities />;
+  }
+  return (
+    <ActivitiesList
+      activities={activities}
+      onActivityClick={onActivityClick}
+      projectName={projectName}
+      pageIdentifier={pageIdentifier}
+      sectionIdentifier={sectionIdentifier}
+    />
+  );
+};
+
+const ActivitiesList = ({
+  activities,
+  onActivityClick,
+  projectName,
+  pageIdentifier,
+  sectionIdentifier
+}) => (
+  <List kind={LIST_WITH_HIGHLIGHT__KIND}>
+    {activities.map(activity => (
+      <SingleLineTile key={activity.identifier}>
+        <MainText>{activity.name}</MainText>
+        <AdditionalIcon>
+          <IconRun
+            onClick={() =>
+              onActivityClick(projectName, pageIdentifier, sectionIdentifier, activity.identifier)
+            }
+          />
+        </AdditionalIcon>
+      </SingleLineTile>
+    ))}
+  </List>
+);
+
+const EmptyActivities = () => <Text>No activities in the section</Text>;

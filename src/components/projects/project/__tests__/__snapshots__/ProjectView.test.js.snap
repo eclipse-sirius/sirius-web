@@ -38,7 +38,7 @@ exports[`ProjectView renders an error card for an unsupported state 1`] = `
 </div>
 `;
 
-exports[`ProjectView renders the project 1`] = `
+exports[`ProjectView renders the project with activities 1`] = `
 <div
   className="projectview"
 >
@@ -147,7 +147,15 @@ exports[`ProjectView renders the project 1`] = `
           </div>
           <div
             className="tabbar-tabs"
-          />
+          >
+            <div
+              className="tabbar-tab title-m tabbar-tab--selected"
+              data-index={0}
+              onClick={[Function]}
+            >
+              page1
+            </div>
+          </div>
           <div
             className="tabbar-nav tabbar-nav--disabled"
             data-side="next"
@@ -155,6 +163,398 @@ exports[`ProjectView renders the project 1`] = `
           >
             &gt;
           </div>
+        </div>
+        <div
+          className="card-text body-s"
+        >
+          No sections found in the workflow
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ProjectView renders the project without activities 1`] = `
+<div
+  className="projectview"
+>
+  <div
+    className="card projectheadercard"
+  >
+    <h1
+      className="card-herotitle title-xl"
+    >
+      Project
+    </h1>
+  </div>
+  <div
+    className="projectview-main"
+  >
+    <div
+      className="projectview-details"
+    >
+      <div
+        className="card projectsemanticresourceslistcard"
+      >
+        <h2
+          className="card-primarytitle title-l"
+        >
+          Semantic Resources
+        </h2>
+        <ul
+          className="list list--highlighted"
+        >
+          <li
+            className="tile tile--singleline"
+          >
+            <h4
+              className="tile-maintext body-s"
+            >
+              /model/model.ecore
+            </h4>
+            <div
+              className="semanticresources-size caption-s"
+            />
+          </li>
+        </ul>
+      </div>
+      <div
+        className="card projectrepresentationslistcard"
+      >
+        <h2
+          className="card-primarytitle title-l"
+        >
+          Representations
+        </h2>
+        <ul
+          className="list list--highlighted"
+        >
+          <li
+            className="tile tile--twoline"
+          >
+            <div>
+              <h4
+                className="tile-maintext body-s"
+              >
+                Class Diagram
+              </h4>
+              <h5
+                className="tile-additionaltext caption-xs"
+              />
+            </div>
+          </li>
+          <li
+            className="tile tile--twoline"
+          >
+            <div>
+              <h4
+                className="tile-maintext body-s"
+              >
+                Activity Diagram
+              </h4>
+              <h5
+                className="tile-additionaltext caption-xs"
+              />
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div
+      className="projectview-workflow"
+    >
+      <div
+        className="card workflowcard"
+      >
+        <h2
+          className="card-primarytitle title-l"
+        >
+          Workflow
+        </h2>
+        <div
+          className="tabbar"
+        >
+          <div
+            className="tabbar-nav tabbar-nav--disabled"
+            data-side="previous"
+            onClick={[Function]}
+          >
+            &lt;
+          </div>
+          <div
+            className="tabbar-tabs"
+          >
+            <div
+              className="tabbar-tab title-m tabbar-tab--selected"
+              data-index={0}
+              onClick={[Function]}
+            >
+              page1
+            </div>
+          </div>
+          <div
+            className="tabbar-nav tabbar-nav--disabled"
+            data-side="next"
+            onClick={[Function]}
+          >
+            &gt;
+          </div>
+        </div>
+        <div
+          className="card-text body-s"
+        >
+          No sections found in the workflow
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ProjectView renders the project without any workflow 1`] = `
+<div
+  className="projectview"
+>
+  <div
+    className="card projectheadercard"
+  >
+    <h1
+      className="card-herotitle title-xl"
+    >
+      Project
+    </h1>
+  </div>
+  <div
+    className="projectview-main"
+  >
+    <div
+      className="projectview-details"
+    >
+      <div
+        className="card projectsemanticresourceslistcard"
+      >
+        <h2
+          className="card-primarytitle title-l"
+        >
+          Semantic Resources
+        </h2>
+        <ul
+          className="list list--highlighted"
+        >
+          <li
+            className="tile tile--singleline"
+          >
+            <h4
+              className="tile-maintext body-s"
+            >
+              /model/model.ecore
+            </h4>
+            <div
+              className="semanticresources-size caption-s"
+            />
+          </li>
+        </ul>
+      </div>
+      <div
+        className="card projectrepresentationslistcard"
+      >
+        <h2
+          className="card-primarytitle title-l"
+        >
+          Representations
+        </h2>
+        <ul
+          className="list list--highlighted"
+        >
+          <li
+            className="tile tile--twoline"
+          >
+            <div>
+              <h4
+                className="tile-maintext body-s"
+              >
+                Class Diagram
+              </h4>
+              <h5
+                className="tile-additionaltext caption-xs"
+              />
+            </div>
+          </li>
+          <li
+            className="tile tile--twoline"
+          >
+            <div>
+              <h4
+                className="tile-maintext body-s"
+              >
+                Activity Diagram
+              </h4>
+              <h5
+                className="tile-additionaltext caption-xs"
+              />
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div
+      className="projectview-workflow"
+    >
+      <div
+        className="card workflowcard"
+      >
+        <h2
+          className="card-primarytitle title-l"
+        >
+          Workflow
+        </h2>
+        <div
+          className="card-text body-s"
+        >
+          No workflow pages found
+        </div>
+        <div
+          className="card-text body-s"
+        >
+          No sections found in the workflow
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ProjectView renders the project without sections 1`] = `
+<div
+  className="projectview"
+>
+  <div
+    className="card projectheadercard"
+  >
+    <h1
+      className="card-herotitle title-xl"
+    >
+      Project
+    </h1>
+  </div>
+  <div
+    className="projectview-main"
+  >
+    <div
+      className="projectview-details"
+    >
+      <div
+        className="card projectsemanticresourceslistcard"
+      >
+        <h2
+          className="card-primarytitle title-l"
+        >
+          Semantic Resources
+        </h2>
+        <ul
+          className="list list--highlighted"
+        >
+          <li
+            className="tile tile--singleline"
+          >
+            <h4
+              className="tile-maintext body-s"
+            >
+              /model/model.ecore
+            </h4>
+            <div
+              className="semanticresources-size caption-s"
+            />
+          </li>
+        </ul>
+      </div>
+      <div
+        className="card projectrepresentationslistcard"
+      >
+        <h2
+          className="card-primarytitle title-l"
+        >
+          Representations
+        </h2>
+        <ul
+          className="list list--highlighted"
+        >
+          <li
+            className="tile tile--twoline"
+          >
+            <div>
+              <h4
+                className="tile-maintext body-s"
+              >
+                Class Diagram
+              </h4>
+              <h5
+                className="tile-additionaltext caption-xs"
+              />
+            </div>
+          </li>
+          <li
+            className="tile tile--twoline"
+          >
+            <div>
+              <h4
+                className="tile-maintext body-s"
+              >
+                Activity Diagram
+              </h4>
+              <h5
+                className="tile-additionaltext caption-xs"
+              />
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div
+      className="projectview-workflow"
+    >
+      <div
+        className="card workflowcard"
+      >
+        <h2
+          className="card-primarytitle title-l"
+        >
+          Workflow
+        </h2>
+        <div
+          className="tabbar"
+        >
+          <div
+            className="tabbar-nav tabbar-nav--disabled"
+            data-side="previous"
+            onClick={[Function]}
+          >
+            &lt;
+          </div>
+          <div
+            className="tabbar-tabs"
+          >
+            <div
+              className="tabbar-tab title-m tabbar-tab--selected"
+              data-index={0}
+              onClick={[Function]}
+            >
+              page1
+            </div>
+          </div>
+          <div
+            className="tabbar-nav tabbar-nav--disabled"
+            data-side="next"
+            onClick={[Function]}
+          >
+            &gt;
+          </div>
+        </div>
+        <div
+          className="card-text body-s"
+        >
+          No sections found in the workflow
         </div>
       </div>
     </div>

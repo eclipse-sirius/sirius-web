@@ -53,11 +53,67 @@ describe('ProjectView', () => {
     expect(project.toJSON()).toMatchSnapshot();
   });
 
-  it('renders the project', () => {
+  it('renders the project without any workflow', () => {
     const project = {
       name: 'Project',
       representations: [{ name: 'Class Diagram' }, { name: 'Activity Diagram' }],
       semanticResources: [{ name: 'model.ecore', path: '/model/model.ecore' }]
+    };
+    const projectComponent = Renderer.create(
+      <MemoryRouter initialEntries={['/']}>
+        <ProjectView stateId={PROJECT_LOADED__STATE} error={null} project={project} />
+      </MemoryRouter>
+    );
+    expect(projectComponent.toJSON()).toMatchSnapshot();
+  });
+
+  it('renders the project without sections', () => {
+    const project = {
+      name: 'Project',
+      representations: [{ name: 'Class Diagram' }, { name: 'Activity Diagram' }],
+      semanticResources: [{ name: 'model.ecore', path: '/model/model.ecore' }],
+      pages: [{ identifier: 'page1', name: 'page1' }]
+    };
+    const projectComponent = Renderer.create(
+      <MemoryRouter initialEntries={['/']}>
+        <ProjectView stateId={PROJECT_LOADED__STATE} error={null} project={project} />
+      </MemoryRouter>
+    );
+    expect(projectComponent.toJSON()).toMatchSnapshot();
+  });
+
+  it('renders the project without activities', () => {
+    const project = {
+      name: 'Project',
+      representations: [{ name: 'Class Diagram' }, { name: 'Activity Diagram' }],
+      semanticResources: [{ name: 'model.ecore', path: '/model/model.ecore' }],
+      pages: [{ identifier: 'page1', name: 'page1' }],
+      sections: [{ identifier: 'section1', name: 'section1', activities: [] }]
+    };
+    const projectComponent = Renderer.create(
+      <MemoryRouter initialEntries={['/']}>
+        <ProjectView stateId={PROJECT_LOADED__STATE} error={null} project={project} />
+      </MemoryRouter>
+    );
+    expect(projectComponent.toJSON()).toMatchSnapshot();
+  });
+
+  it('renders the project with activities', () => {
+    const project = {
+      name: 'Project',
+      representations: [{ name: 'Class Diagram' }, { name: 'Activity Diagram' }],
+      semanticResources: [{ name: 'model.ecore', path: '/model/model.ecore' }],
+      pages: [{ identifier: 'page1', name: 'page1' }],
+      sections: [
+        {
+          identifier: 'section1',
+          name: 'section1',
+          activities: [
+            { identifier: 'activity1', name: 'activity1' },
+            { identifier: 'activity2', name: 'activity2' }
+          ]
+        }
+      ]
     };
     const projectComponent = Renderer.create(
       <MemoryRouter initialEntries={['/']}>
