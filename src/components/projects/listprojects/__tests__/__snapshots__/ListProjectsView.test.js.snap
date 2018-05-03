@@ -4,18 +4,14 @@ exports[`ListProjectsView renders a blank card for an empty list of projects 1`]
 <div
   className="card blankcard"
 >
-  <div
-    className="card-body"
+  <h1
+    className="title-l"
   >
-    <h1
-      className="title-l"
-    >
-      You haven't created any projects yet
-    </h1>
-    <p>
-      Once you start creating new projects, you will be able to see them here
-    </p>
-  </div>
+    You haven't created any projects yet
+  </h1>
+  <p>
+    Once you start creating new projects, you will be able to see them here
+  </p>
 </div>
 `;
 
@@ -31,18 +27,14 @@ exports[`ListProjectsView renders an error card for an error 1`] = `
 <div
   className="card errorcard"
 >
-  <div
-    className="card-body"
+  <h1
+    className="title-l"
   >
-    <h1
-      className="title-l"
-    >
-      An error has occurred
-    </h1>
-    <p>
-      Please contact the administrator to try to find a solution (code: 500)
-    </p>
-  </div>
+    An error has occurred
+  </h1>
+  <p>
+    Please contact the administrator to try to find a solution (code: 500)
+  </p>
 </div>
 `;
 
@@ -50,18 +42,14 @@ exports[`ListProjectsView renders an error card for an unsupported state 1`] = `
 <div
   className="card errorcard"
 >
-  <div
-    className="card-body"
+  <h1
+    className="title-l"
   >
-    <h1
-      className="title-l"
-    >
-      The projects list is in an unsupported state: INITIAL__STATE
-    </h1>
-    <p>
-      Contact your administrator to find a suitable solution (code: 1001)
-    </p>
-  </div>
+    The projects list is in an unsupported state: INITIAL__STATE
+  </h1>
+  <p>
+    Contact your administrator to find a suitable solution (code: 1001)
+  </p>
 </div>
 `;
 
@@ -72,65 +60,57 @@ exports[`ListProjectsView renders the projects 1`] = `
   <div
     className="card projectslistcard"
   >
-    <div
-      className="card-header"
+    <h2
+      className="card-primarytitle title-l"
     >
-      <h1
-        className="card-title title-l"
-      >
-        Projects
-      </h1>
-    </div>
-    <div
-      className="card-body"
+      Projects
+    </h2>
+    <ul
+      className="list list--highlighted"
     >
-      <ul
-        className="list list--highlighted"
+      <a
+        href="projects/First Project"
+        onClick={[Function]}
       >
-        <a
-          href="projects/First Project"
-          onClick={[Function]}
+        <li
+          className="tile tile--twoline"
         >
-          <li
-            className="tile tile--twoline"
-          >
-            <div>
-              <h4
-                className="tile-maintext body-s"
-              >
-                First Project
-              </h4>
-              <h5
-                className="tile-additionaltext caption-xs"
-              >
-                Description of the project
-              </h5>
-            </div>
-          </li>
-        </a>
-        <a
-          href="projects/Second Project"
-          onClick={[Function]}
+          <div>
+            <h4
+              className="tile-maintext body-s"
+            >
+              First Project
+            </h4>
+            <h5
+              className="tile-additionaltext caption-xs"
+            >
+              Description of the project
+            </h5>
+          </div>
+        </li>
+      </a>
+      <a
+        href="projects/Second Project"
+        onClick={[Function]}
+      >
+        <li
+          className="tile tile--twoline"
         >
-          <li
-            className="tile tile--twoline"
-          >
-            <div>
-              <h4
-                className="tile-maintext body-s"
-              >
-                Second Project
-              </h4>
-              <h5
-                className="tile-additionaltext caption-xs"
-              >
-                Description of the project
-              </h5>
-            </div>
-          </li>
-        </a>
-      </ul>
-    </div>
+          <div>
+            <h4
+              className="tile-maintext body-s"
+            >
+              Second Project
+            </h4>
+            <h5
+              className="tile-additionaltext caption-xs"
+            >
+              Description of the project
+            </h5>
+          </div>
+        </li>
+      </a>
+    </ul>
   </div>
 </div>
 `;

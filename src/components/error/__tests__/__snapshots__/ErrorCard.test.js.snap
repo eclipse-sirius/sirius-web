@@ -4,17 +4,13 @@ exports[`ErrorCard renders an error card 1`] = `
 <div
   className="card errorcard"
 >
-  <div
-    className="card-body"
+  <h1
+    className="title-l"
   >
-    <h1
-      className="title-l"
-    >
-      An error has occurred
-    </h1>
-    <p>
-      Please contact your administrator to find out more about this error (code: 500)
-    </p>
-  </div>
+    An error has occurred
+  </h1>
+  <p>
+    Please contact your administrator to find out more about this error (code: 500)
+  </p>
 </div>
 `;

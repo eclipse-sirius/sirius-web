@@ -7,9 +7,13 @@
  * https://www.eclipse.org/legal/epl-2.0.
  *******************************************************************************/
 
+.workflowcard .card-divider {
+  margin: 0 var(--layoutDimension-m);
+}
 .section-title {
   padding: var(--layoutDimension-m) var(--layoutDimension-m) 0 var(--layoutDimension-m);
 }
+
 .section .listitem {
   display: grid;
   grid-template-columns: auto min-content;

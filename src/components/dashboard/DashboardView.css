@@ -20,24 +20,18 @@
   grid-template-columns: 1fr 1fr 1fr;
   grid-column-gap: var(--layoutDimension-l);
 }
-.newprojectinfo .card-body:hover {
-  color: var(--light-blue);
-}
-.newprojectinfo .card-body:active {
-  color: var(--dark-blue);
-}
 
-.projectsinfo .card-body {
+.projectsinfo {
   background-color: var(--blue);
   color: var(--white);
 }
 
-.viewpointsinfo .card-body {
+.viewpointsinfo {
   background-color: var(--orange);
   color: var(--white);
 }
 
-.metamodelsinfo .card-body {
+.metamodelsinfo {
   background-color: var(--purple);
   color: var(--white);
 }

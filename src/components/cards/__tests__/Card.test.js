@@ -10,7 +10,7 @@
 import React from 'react';
 import Renderer from 'react-test-renderer';
 
-import { Body, Card, Divider, Header, Title } from '../Card';
+import { Card, Divider, PrimaryTitle } from '../Card';
 
 describe('Card', () => {
   it('renders an empty card', () => {
@@ -18,26 +18,20 @@ describe('Card', () => {
     expect(card.toJSON()).toMatchSnapshot();
   });
 
-  it('renders a card with a header and a body', () => {
+  it('renders a card with a primary title', () => {
     const card = Renderer.create(
       <Card>
-        <Header>
-          <Title>Card Title</Title>
-        </Header>
-        <Body />
+        <PrimaryTitle label="Card Title" />
       </Card>
     );
     expect(card.toJSON()).toMatchSnapshot();
   });
 
-  it('renders a card with a divider between the header and body', () => {
+  it('renders a card with a primary title and a divider', () => {
     const card = Renderer.create(
       <Card>
-        <Header>
-          <Title>Card Title</Title>
-        </Header>
+        <PrimaryTitle label="Card Title" />
         <Divider />
-        <Body />
       </Card>
     );
     expect(card.toJSON()).toMatchSnapshot();

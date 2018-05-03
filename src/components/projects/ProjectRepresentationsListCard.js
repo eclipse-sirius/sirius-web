@@ -12,7 +12,7 @@ import PropTypes from 'prop-types';
 
 import { classNames } from '../../common/classnames';
 
-import { Body, Card, Header, Title } from '../cards/Card';
+import { Card, PrimaryTitle } from '../cards/Card';
 import {
   LIST_WITH_HIGHLIGHT__KIND,
   AdditionalText,
@@ -39,21 +39,17 @@ export const ProjectRepresentationsListCard = ({ className, representations, ...
   const cardClassNames = classNames(PROJECT_REPRESENTATIONS_LIST_CARD__CLASS_NAMES, className);
   return (
     <Card className={cardClassNames} {...props}>
-      <Header>
-        <Title>Representations</Title>
-      </Header>
-      <Body>
-        <List kind={LIST_WITH_HIGHLIGHT__KIND}>
-          {representations.map(representation => (
-            <TwoLineTile key={representation.name}>
-              <div>
-                <MainText>{representation.name}</MainText>
-                <AdditionalText>{representation.descriptionName}</AdditionalText>
-              </div>
-            </TwoLineTile>
-          ))}
-        </List>
-      </Body>
+      <PrimaryTitle label="Representations" />
+      <List kind={LIST_WITH_HIGHLIGHT__KIND}>
+        {representations.map(representation => (
+          <TwoLineTile key={representation.name}>
+            <div>
+              <MainText>{representation.name}</MainText>
+              <AdditionalText>{representation.descriptionName}</AdditionalText>
+            </div>
+          </TwoLineTile>
+        ))}
+      </List>
     </Card>
   );
 };

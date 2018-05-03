@@ -28,51 +28,69 @@ export const Card = ({ className, ...props }) => {
   );
 };
 
-const CARD_HEADER__CLASS_NAMES = 'card-header';
+const CARD_HEROTITLE__CLASS_NAMES = 'card-herotitle title-xl';
 
-/**
- * The Header component is used to display a header in the Card.
- */
-export const Header = ({ className, ...props }) => {
-  const headerClassNames = classNames(CARD_HEADER__CLASS_NAMES, className);
-  return (
-    <div className={headerClassNames} {...props}>
-      {props.children}
-    </div>
-  );
-};
-
-/** The large title kind. */
-export const TITLE_LARGE__KIND = 'large';
-
-const CARD_TITLE__CLASS_NAMES = 'card-title';
-const CARD_TITLE_REGULAR__CLASS_NAMES = 'title-l';
-const CARD_TITLE_LARGE__CLASS_NAMES = 'title-xl';
-
-const titlePropTypes = {
-  kind: PropTypes.string
-};
-const titleDefaultProps = {
-  kind: ''
+const heroTitlePropTypes = {
+  label: PropTypes.string.isRequired
 };
 
 /**
- * The Title of the Card, to be used inside a Header.
+ * The Hero Title of the Card.
  */
-export const Title = ({ className, kind, ...props }) => {
-  let additionalClassNames = CARD_TITLE_REGULAR__CLASS_NAMES;
-  if (kind === TITLE_LARGE__KIND) {
-    additionalClassNames = CARD_TITLE_LARGE__CLASS_NAMES;
-  }
-  const titleClassNames = classNames(CARD_TITLE__CLASS_NAMES, additionalClassNames, className);
+export const HeroTitle = ({ className, label, ...props }) => {
+  const heroTitleClassNames = classNames(CARD_HEROTITLE__CLASS_NAMES, className);
   return (
-    <h1 className={titleClassNames} {...props}>
-      {props.children}
+    <h1 className={heroTitleClassNames} {...props}>
+      {label}
     </h1>
   );
 };
-Title.propTypes = titlePropTypes;
-Title.defaultProps = titleDefaultProps;
+HeroTitle.propTypes = heroTitlePropTypes;
+
+const CARD_PRIMARYTITLE__CLASS_NAMES = 'card-primarytitle title-l';
+
+const primaryTitlePropTypes = {
+  label: PropTypes.string.isRequired
+};
+
+/**
+ * The Primary Title of the Card.
+ */
+export const PrimaryTitle = ({ className, label, ...props }) => {
+  const primaryTitleClassNames = classNames(CARD_PRIMARYTITLE__CLASS_NAMES, className);
+  return (
+    <h2 className={primaryTitleClassNames} {...props}>
+      {label}
+    </h2>
+  );
+};
+PrimaryTitle.propTypes = primaryTitlePropTypes;
+
+const CARD_SECONDARYTITLE__CLASS_NAMES = 'card-secondarytitle title-m';
+
+const secondaryTitlePropTypes = {
+  label: PropTypes.string.isRequired
+};
+
+/**
+ * The Secondary Title of the card.
+ */
+export const SecondaryTitle = ({ className, label, ...props }) => {
+  const secondaryTitleClassNames = classNames(CARD_SECONDARYTITLE__CLASS_NAMES, className);
+  return (
+    <h3 className={secondaryTitleClassNames} {...props}>
+      {label}
+    </h3>
+  );
+};
+SecondaryTitle.propTypes = secondaryTitlePropTypes;
+
+const CARD_TEXT__CLASS_NAMES = 'card-text body-s';
+
+export const Text = ({ className, ...props }) => {
+  const textClassNames = classNames(CARD_TEXT__CLASS_NAMES, className);
+  return <div className={textClassNames} {...props} />;
+};
 
 const CARD_DIVIDER__CLASS_NAMES = 'card-divider';
 
@@ -85,29 +103,15 @@ export const Divider = ({ className, ...props }) => {
   return <div className={dividerClassNames} {...props} />;
 };
 
-const CARD_BODY__CLASS_NAMES = 'card-body';
+const CARD_ACTIONS__CLASS_NAMES = 'card-actions';
 
 /**
- * The Body is the main part of the Card where most of its content will be located.
+ * The Actions component is used to display some actions or links.
  */
-export const Body = ({ className, ...props }) => {
-  const bodyClassNames = classNames(CARD_BODY__CLASS_NAMES, className);
+export const Actions = ({ className, ...props }) => {
+  const actionsClassNames = classNames(CARD_ACTIONS__CLASS_NAMES, className);
   return (
-    <div className={bodyClassNames} {...props}>
-      {props.children}
-    </div>
-  );
-};
-
-const CARD_FOOTER__CLASS_NAMES = 'card-footer';
-
-/**
- * The Footer is used to display some actions or links.
- */
-export const Footer = ({ className, ...props }) => {
-  const footerClassNames = classNames(CARD_FOOTER__CLASS_NAMES, className);
-  return (
-    <div className={footerClassNames} {...props}>
+    <div className={actionsClassNames} {...props}>
       {props.children}
     </div>
   );

@@ -12,10 +12,11 @@ import PropTypes from 'prop-types';
 
 import { classNames } from '../../common/classnames';
 
-import { Body, Card, Header, Title } from '../cards/Card';
+import { Card, PrimaryTitle } from '../cards/Card';
 import { List, MainText, SingleLineTile, LIST_WITH_HIGHLIGHT__KIND } from '../list/List';
 
 const PROJECT_SEMANTIC_RESOURCES_LIST_CARD__CLASS_NAMES = 'projectsemanticresourceslistcard';
+const SEMANTIC_RESOURCES_SIZE__CLASS_NAMES = 'semanticresources-size caption-s';
 
 const propTypes = {
   semanticResources: PropTypes.array.isRequired
@@ -33,18 +34,15 @@ export const ProjectSemanticResourcesListCard = ({ className, semanticResources,
   const cardClassNames = classNames(PROJECT_SEMANTIC_RESOURCES_LIST_CARD__CLASS_NAMES, className);
   return (
     <Card className={cardClassNames} {...props}>
-      <Header>
-        <Title>Semantic Resources</Title>
-      </Header>
-      <Body>
-        <List kind={LIST_WITH_HIGHLIGHT__KIND}>
-          {semanticResources.map(resource => (
-            <SingleLineTile key={resource.path}>
-              <MainText>{resource.path}</MainText>
-            </SingleLineTile>
-          ))}
-        </List>
-      </Body>
+      <PrimaryTitle label="Semantic Resources" />
+      <List kind={LIST_WITH_HIGHLIGHT__KIND}>
+        {semanticResources.map(resource => (
+          <SingleLineTile key={resource.path}>
+            <MainText>{resource.path}</MainText>
+            <div className={SEMANTIC_RESOURCES_SIZE__CLASS_NAMES}>{resource.size}</div>
+          </SingleLineTile>
+        ))}
+      </List>
     </Card>
   );
 };

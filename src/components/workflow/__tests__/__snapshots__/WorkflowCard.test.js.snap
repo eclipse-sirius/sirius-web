@@ -4,159 +4,154 @@ exports[`WorkflowCard renders the workflow card 1`] = `
 <div
   className="card workflowcard"
 >
-  <div
-    className="card-header"
+  <h2
+    className="card-primarytitle title-l"
   >
-    <h1
-      className="card-title title-l"
+    Workflow
+  </h2>
+  <div
+    className="tabbar"
+  >
+    <div
+      className="tabbar-nav tabbar-nav--disabled"
+      data-side="previous"
+      onClick={[Function]}
     >
-      Workflow
-    </h1>
+      &lt;
+    </div>
+    <div
+      className="tabbar-tabs"
+    >
+      <div
+        className="tabbar-tab title-m tabbar-tab--selected"
+        data-index={0}
+        onClick={[Function]}
+      >
+        Test Page
+      </div>
+      <div
+        className="tabbar-tab title-m"
+        data-index={1}
+        onClick={[Function]}
+      >
+        Test Page 1
+      </div>
+      <div
+        className="tabbar-tab title-m"
+        data-index={2}
+        onClick={[Function]}
+      >
+        Test Page 2
+      </div>
+    </div>
+    <div
+      className="tabbar-nav"
+      data-side="next"
+      onClick={[Function]}
+    >
+      &gt;
+    </div>
   </div>
   <div
-    className="card-body"
+    className="section"
   >
-    <div
-      className="tabbar"
+    <h3
+      className="card-secondarytitle title-m"
     >
-      <div
-        className="tabbar-nav tabbar-nav--disabled"
-        data-side="previous"
-        onClick={[Function]}
-      >
-        &lt;
-      </div>
-      <div
-        className="tabbar-tabs"
-      >
-        <div
-          className="tabbar-tab title-m tabbar-tab--selected"
-          data-index={0}
-          onClick={[Function]}
-        >
-          Test Page
-        </div>
-        <div
-          className="tabbar-tab title-m"
-          data-index={1}
-          onClick={[Function]}
-        >
-          Test Page 1
-        </div>
-        <div
-          className="tabbar-tab title-m"
-          data-index={2}
-          onClick={[Function]}
-        >
-          Test Page 2
-        </div>
-      </div>
-      <div
-        className="tabbar-nav"
-        data-side="next"
-        onClick={[Function]}
-      >
-        &gt;
-      </div>
-    </div>
-    <div
-      className="section"
+      Test Section
+    </h3>
+    <ul
+      className="list list--highlighted"
     >
-      <h2
-        className="section-title title-s"
+      <li
+        className="tile tile--singleline"
       >
-        Test Section
-      </h2>
-      <ul
-        className="list list--highlighted"
+        <h4
+          className="tile-maintext body-s"
+        >
+          Test Activity
+        </h4>
+        <div
+          className="tile-additionalicon"
+        >
+          <svg
+            className="iconrun"
+            height="16"
+            onClick={[Function]}
+            width="16"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <polygon
+              points="0,0 16,8 0,16"
+            />
+          </svg>
+        </div>
+      </li>
+      <li
+        className="tile tile--singleline"
       >
-        <li
-          className="tile tile--singleline"
+        <h4
+          className="tile-maintext body-s"
         >
-          <h4
-            className="tile-maintext body-s"
-          >
-            Test Activity
-          </h4>
-          <div
-            className="tile-additionalicon"
-          >
-            <svg
-              className="iconrun"
-              height="16"
-              onClick={[Function]}
-              width="16"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <polygon
-                points="0,0 16,8 0,16"
-              />
-            </svg>
-          </div>
-        </li>
-        <li
-          className="tile tile--singleline"
+          Test Activity 1
+        </h4>
+        <div
+          className="tile-additionalicon"
         >
-          <h4
-            className="tile-maintext body-s"
+          <svg
+            className="iconrun"
+            height="16"
+            onClick={[Function]}
+            width="16"
+            xmlns="http://www.w3.org/2000/svg"
           >
-            Test Activity 1
-          </h4>
-          <div
-            className="tile-additionalicon"
-          >
-            <svg
-              className="iconrun"
-              height="16"
-              onClick={[Function]}
-              width="16"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <polygon
-                points="0,0 16,8 0,16"
-              />
-            </svg>
-          </div>
-        </li>
-      </ul>
-    </div>
-    <div
-      className="section"
+            <polygon
+              points="0,0 16,8 0,16"
+            />
+          </svg>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div
+    className="card-divider"
+  />
+  <div
+    className="section"
+  >
+    <h3
+      className="card-secondarytitle title-m"
     >
-      <h2
-        className="section-title title-s"
+      Test Section 1
+    </h3>
+    <ul
+      className="list list--highlighted"
+    >
+      <li
+        className="tile tile--singleline"
       >
-        Test Section 1
-      </h2>
-      <ul
-        className="list list--highlighted"
-      >
-        <li
-          className="tile tile--singleline"
+        <h4
+          className="tile-maintext body-s"
         >
-          <h4
-            className="tile-maintext body-s"
+          Test Activity
+        </h4>
+        <div
+          className="tile-additionalicon"
+        >
+          <svg
+            className="iconrun"
+            height="16"
+            onClick={[Function]}
+            width="16"
+            xmlns="http://www.w3.org/2000/svg"
           >
-            Test Activity
-          </h4>
-          <div
-            className="tile-additionalicon"
-          >
-            <svg
-              className="iconrun"
-              height="16"
-              onClick={[Function]}
-              width="16"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <polygon
-                points="0,0 16,8 0,16"
-              />
-            </svg>
-          </div>
-        </li>
-      </ul>
-    </div>
+            <polygon
+              points="0,0 16,8 0,16"
+            />
+          </svg>
+        </div>
+      </li>
+    </ul>
   </div>
 </div>
 `;

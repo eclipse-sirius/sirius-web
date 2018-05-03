@@ -12,7 +12,7 @@ import React from 'react';
 import { classNames } from '../../common/classnames';
 
 import { Button, BUTTON_PRIMARY__KIND } from '../buttons/Button';
-import { Body, Card, Divider, Header, Title } from '../cards/Card';
+import { Card, Divider, PrimaryTitle } from '../cards/Card';
 import {
   ActionGroup,
   Description,
@@ -21,7 +21,7 @@ import {
   Form,
   Field,
   Label,
-  Text
+  TextField
 } from '../form/Form';
 
 const NEWPROJECT_CARD__CLASS_NAMES = 'newprojectcard';
@@ -50,36 +50,32 @@ export const NewProjectCard = ({
 
   return (
     <Card className={newProjectCardClassNames} {...props}>
-      <Header>
-        <Title>New Project</Title>
-      </Header>
+      <PrimaryTitle label="New Project" />
       <Divider />
-      <Body>
-        <Form onSubmit={onSubmit}>
-          <ErrorGroup>{errors.map(error => <Error key={error}>{error}</Error>)}</ErrorGroup>
-          <Field>
-            <Label htmlFor="name">Name</Label>
-            <Description>
-              The name of the project can only contain letters and numbers separated by dots, dashes
-              or underscores.
-            </Description>
-            <Text
-              id="name"
-              name="name"
-              className={nameClassName}
-              placeholder="Enter the name"
-              value={name}
-              onChange={onNameChange}
-            />
-            <ErrorGroup>{nameErrors.map(error => <Error key={error}>{error}</Error>)}</ErrorGroup>
-          </Field>
-          <ActionGroup>
-            <Button kind={BUTTON_PRIMARY__KIND} disabled={!isValid}>
-              Create Project
-            </Button>
-          </ActionGroup>
-        </Form>
-      </Body>
+      <Form onSubmit={onSubmit}>
+        <ErrorGroup>{errors.map(error => <Error key={error}>{error}</Error>)}</ErrorGroup>
+        <Field>
+          <Label htmlFor="name">Name</Label>
+          <Description>
+            The name of the project can only contain letters and numbers separated by dots, dashes
+            or underscores.
+          </Description>
+          <TextField
+            id="name"
+            name="name"
+            className={nameClassName}
+            placeholder="Enter the name"
+            value={name}
+            onChange={onNameChange}
+          />
+          <ErrorGroup>{nameErrors.map(error => <Error key={error}>{error}</Error>)}</ErrorGroup>
+        </Field>
+        <ActionGroup>
+          <Button kind={BUTTON_PRIMARY__KIND} disabled={!isValid}>
+            Create Project
+          </Button>
+        </ActionGroup>
+      </Form>
     </Card>
   );
 };

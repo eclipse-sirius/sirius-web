@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 
 import { classNames } from '../../common/classnames';
 
-import { Body, Card } from '../cards/Card';
+import { Card } from '../cards/Card';
 
 import './BlankCard.css';
 
@@ -30,10 +30,8 @@ export const BlankCard = ({ className, title, message, ...props }) => {
   const blankCardClassNames = classNames(BLANKCARD__CLASS_NAMES, className);
   return (
     <Card {...props} className={blankCardClassNames}>
-      <Body>
-        <h1 className={BLANKCARD_TITLE__CLASS_NAMES}>{title}</h1>
-        <p>{message}</p>
-      </Body>
+      <h1 className={BLANKCARD_TITLE__CLASS_NAMES}>{title}</h1>
+      <p>{message}</p>
     </Card>
   );
 };

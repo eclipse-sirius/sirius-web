@@ -13,14 +13,26 @@
   border-radius: var(--borderRadius-small);
 }
 
-.card-header {
-  padding: var(--layoutDimension-m);
-}
-
-.card-title {
+.card-herotitle,
+.card-primarytitle,
+.card-secondarytitle {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.card-herotitle {
+  padding: var(--layoutDimension-m) var(--layoutDimension-m) var(--layoutDimension-l)
+    var(--layoutDimension-m);
+}
+
+.card-primarytitle {
+  padding: var(--layoutDimension-m) var(--layoutDimension-m);
+}
+
+.card-secondarytitle {
+  padding: var(--layoutDimension-m) var(--layoutDimension-m) var(--layoutDimension-s)
+    var(--layoutDimension-m);
 }
 
 .card-divider {
