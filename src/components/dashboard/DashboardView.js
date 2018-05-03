@@ -8,6 +8,7 @@
  *******************************************************************************/
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import { classNames } from '../../common/classnames';
@@ -112,12 +113,14 @@ const renderDashboardLoadedState = (className, dashboard, props) => {
       </div>
       <div className={PROJECTS__CLASS_NAMES}>
         <div className={PROJECTS_BODY__CLASS_NAMES}>
-          <InfoCard
-            className={NEWPROJECT_INFO__CLASS_NAMES}
-            title="+"
-            message="New Project"
-            to="/newproject"
-          />
+          <Link to="/newproject">
+            <InfoCard
+              className={NEWPROJECT_INFO__CLASS_NAMES}
+              title="+"
+              message="New Project"
+              to=""
+            />
+          </Link>
           {dashboard.projects.map(project => (
             <ProjectSummaryCard key={project.name} project={project} />
           ))}

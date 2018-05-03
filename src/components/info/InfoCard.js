@@ -9,11 +9,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Link } from 'react-router-dom';
-
 import { classNames } from '../../common/classnames';
 
-import { Card, Body } from '../cards/Card';
+import { Card } from '../cards/Card';
 
 import './InfoCard.css';
 
@@ -29,22 +27,12 @@ const INFOCARD_MESSAGE__CLASS_NAMES = 'infocard-message';
 /**
  * The InfoCard component is used to display some information with a catchy card.
  */
-export const InfoCard = ({ className, title, message, to, ...props }) => {
-  let cardBody = (
-    <Body>
-      <h1 className={INFOCARD_TITLE__CLASS_NAMES}>{title}</h1>
-      <p className={INFOCARD_MESSAGE__CLASS_NAMES}>{message}</p>
-    </Body>
-  );
-
-  if (to) {
-    cardBody = <Link to={to}>{cardBody}</Link>;
-  }
-
+export const InfoCard = ({ className, title, message, ...props }) => {
   const infoCardClassNames = classNames(INFOCARD__CLASS_NAMES, className);
   return (
     <Card {...props} className={infoCardClassNames}>
-      {cardBody}
+      <h1 className={INFOCARD_TITLE__CLASS_NAMES}>{title}</h1>
+      <p className={INFOCARD_MESSAGE__CLASS_NAMES}>{message}</p>
     </Card>
   );
 };

@@ -25,7 +25,7 @@
   padding: 0 0 var(--layoutDimension-s) 0;
 }
 
-.text {
+.textfield {
   display: block;
   width: 100%;
   font-size: var(--fontSize-s);
@@ -38,14 +38,14 @@
   background-clip: padding-box;
   overflow: visible;
 }
-.text:focus {
+.textfield:focus {
   color: var(--slate);
   background-color: var(--white);
   border-color: var(--blue);
   outline: 0;
   box-shadow: var(--boxShadow-float);
 }
-.text.fielderror {
+.textfield.fielderror {
   border-color: var(--red);
 }
 

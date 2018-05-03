@@ -11,7 +11,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import { Card, Header, Title } from '../cards/Card';
+import { Card, PrimaryTitle } from '../cards/Card';
 
 import './ProjectSummaryCard.css';
 
@@ -28,11 +28,9 @@ const propTypes = {
 export const ProjectSummaryCard = ({ project, ...props }) => {
   return (
     <Card className={PROJECT_SUMMARY_CARD__CLASS_NAMES} {...props}>
-      <Header>
-        <Link to={`/projects/${project.name}`}>
-          <Title>{project.name}</Title>
-        </Link>
-      </Header>
+      <Link to={`/projects/${project.name}`}>
+        <PrimaryTitle label={project.name} />
+      </Link>
     </Card>
   );
 };

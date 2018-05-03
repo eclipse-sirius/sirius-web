@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0.
  *******************************************************************************/
 
-.infocard .card-body {
+.infocard {
   display: grid;
   grid-template-rows: min-content min-content;
   grid-row-gap: var(--layoutDimension-m);

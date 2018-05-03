@@ -7,12 +7,12 @@
  * https://www.eclipse.org/legal/epl-2.0.
  *******************************************************************************/
 
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 
 import { classNames } from '../../common/classnames';
 
-import { Body, Card, Header, Title } from '../cards/Card';
+import { Card, Divider, PrimaryTitle, SecondaryTitle } from '../cards/Card';
 import { IconRun } from '../icons/IconRun';
 import {
   List,
@@ -68,16 +68,14 @@ export const WorkflowCard = ({
   const workflowCardClassNames = classNames(WORKFLOWCARD__CLASS_NAMES, className);
   return (
     <Card {...props} className={workflowCardClassNames}>
-      <Header>
-        <Title>Workflow</Title>
-      </Header>
-      <Body>
-        <TabBar
-          selectedTabIndex={selectedTabIndex}
-          tabs={pages.map(page => page.name)}
-          onTabClick={onTabClick}
-        />
-        {sections.map(section => (
+      <PrimaryTitle label="Workflow" />
+      <TabBar
+        selectedTabIndex={selectedTabIndex}
+        tabs={pages.map(page => page.name)}
+        onTabClick={onTabClick}
+      />
+      {sections.map((section, index) => (
+        <Fragment key={section.identifier}>
           <Section
             key={section.identifier}
             projectName={projectName}
@@ -85,8 +83,9 @@ export const WorkflowCard = ({
             section={section}
             onActivityClick={onActivityClick}
           />
-        ))}
-      </Body>
+          {index + 1 < sections.length ? <Divider /> : null}
+        </Fragment>
+      ))}
     </Card>
   );
 };
@@ -94,7 +93,6 @@ WorkflowCard.propTypes = propTypes;
 WorkflowCard.defaultProps = defaultProps;
 
 const SECTION__CLASS_NAMES = 'section';
-const SECTION_TITLE__CLASS_NAMES = 'section-title title-s';
 
 const Section = ({
   className,
@@ -107,7 +105,7 @@ const Section = ({
   const sectionClassNames = classNames(SECTION__CLASS_NAMES, className);
   return (
     <div className={sectionClassNames} {...props}>
-      <h2 className={SECTION_TITLE__CLASS_NAMES}>{section.name}</h2>
+      <SecondaryTitle label={section.name} />
       <List kind={LIST_WITH_HIGHLIGHT__KIND}>
         {section.activities.map(activity => (
           <SingleLineTile key={activity.identifier}>

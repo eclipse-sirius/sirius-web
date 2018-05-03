@@ -53,13 +53,13 @@ export const Description = ({ className, ...props }) => {
   return <p className={descriptionClassNames} {...props} />;
 };
 
-const TEXT__CLASS_NAMES = 'text';
+const TEXTFIELD__CLASS_NAMES = 'textfield';
 
 /**
  * The Text widget.
  */
-export const Text = ({ className, ...props }) => {
-  const textClassNames = classNames(TEXT__CLASS_NAMES, className);
+export const TextField = ({ className, ...props }) => {
+  const textClassNames = classNames(TEXTFIELD__CLASS_NAMES, className);
   return <input className={textClassNames} type="text" {...props} />;
 };
 

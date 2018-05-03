@@ -12,7 +12,7 @@ import PropTypes from 'prop-types';
 
 import { classNames } from '../../common/classnames';
 
-import { Body, Card, Header, Title } from '../cards/Card';
+import { Card, PrimaryTitle } from '../cards/Card';
 import {
   LIST_WITH_HIGHLIGHT__KIND,
   AdditionalText,
@@ -39,25 +39,21 @@ export const ProjectsListCard = ({ className, projects, ...props }) => {
   const projectsListCardClassNames = classNames(PROJECTS_LIST_CARD__CLASS_NAMES, className);
   return (
     <Card className={projectsListCardClassNames} {...props}>
-      <Header>
-        <Title>Projects</Title>
-      </Header>
-      <Body>
-        <List kind={LIST_WITH_HIGHLIGHT__KIND}>
-          {projects.map(project => {
-            return (
-              <Link to={`projects/${project.name}`} key={project.name}>
-                <TwoLineTile>
-                  <div>
-                    <MainText>{project.name}</MainText>
-                    <AdditionalText>{'Description of the project'}</AdditionalText>
-                  </div>
-                </TwoLineTile>
-              </Link>
-            );
-          })}
-        </List>
-      </Body>
+      <PrimaryTitle label="Projects" />
+      <List kind={LIST_WITH_HIGHLIGHT__KIND}>
+        {projects.map(project => {
+          return (
+            <Link to={`projects/${project.name}`} key={project.name}>
+              <TwoLineTile>
+                <div>
+                  <MainText>{project.name}</MainText>
+                  <AdditionalText>{'Description of the project'}</AdditionalText>
+                </div>
+              </TwoLineTile>
+            </Link>
+          );
+        })}
+      </List>
     </Card>
   );
 };

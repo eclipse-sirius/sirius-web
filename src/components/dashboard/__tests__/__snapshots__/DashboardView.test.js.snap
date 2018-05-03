@@ -12,18 +12,14 @@ exports[`DashboardView renders an error card for an error 1`] = `
 <div
   className="card errorcard"
 >
-  <div
-    className="card-body"
+  <h1
+    className="title-l"
   >
-    <h1
-      className="title-l"
-    >
-      An error has occurred
-    </h1>
-    <p>
-      Please contact the administrator to try to find a solution (code: 500)
-    </p>
-  </div>
+    An error has occurred
+  </h1>
+  <p>
+    Please contact the administrator to try to find a solution (code: 500)
+  </p>
 </div>
 `;
 
@@ -31,18 +27,14 @@ exports[`DashboardView renders an error card for an unsupported state 1`] = `
 <div
   className="card errorcard"
 >
-  <div
-    className="card-body"
+  <h1
+    className="title-l"
   >
-    <h1
-      className="title-l"
-    >
-      The dashboard is in an unsupported state: INITIAL__STATE
-    </h1>
-    <p>
-      Contact your administrator to find a suitable solution (code: 1001)
-    </p>
-  </div>
+    The dashboard is in an unsupported state: INITIAL__STATE
+  </h1>
+  <p>
+    Contact your administrator to find a suitable solution (code: 1001)
+  </p>
 </div>
 `;
 
@@ -56,56 +48,44 @@ exports[`DashboardView renders the projects 1`] = `
     <div
       className="card infocard projectsinfo"
     >
-      <div
-        className="card-body"
+      <h1
+        className="infocard-title"
       >
-        <h1
-          className="infocard-title"
-        >
-          0
-        </h1>
-        <p
-          className="infocard-message"
-        >
-          Projects
-        </p>
-      </div>
+        0
+      </h1>
+      <p
+        className="infocard-message"
+      >
+        Projects
+      </p>
     </div>
     <div
       className="card infocard viewpointsinfo"
     >
-      <div
-        className="card-body"
+      <h1
+        className="infocard-title"
       >
-        <h1
-          className="infocard-title"
-        >
-          27
-        </h1>
-        <p
-          className="infocard-message"
-        >
-          Viewpoints
-        </p>
-      </div>
+        27
+      </h1>
+      <p
+        className="infocard-message"
+      >
+        Viewpoints
+      </p>
     </div>
     <div
       className="card infocard metamodelsinfo"
     >
-      <div
-        className="card-body"
+      <h1
+        className="infocard-title"
       >
-        <h1
-          className="infocard-title"
-        >
-          132
-        </h1>
-        <p
-          className="infocard-message"
-        >
-          Metamodels
-        </p>
-      </div>
+        132
+      </h1>
+      <p
+        className="infocard-message"
+      >
+        Metamodels
+      </p>
     </div>
   </div>
   <div
@@ -114,64 +94,53 @@ exports[`DashboardView renders the projects 1`] = `
     <div
       className="projects-body"
     >
+      <a
+        href="/newproject"
+        onClick={[Function]}
+      >
+        <div
+          className="card infocard newprojectinfo"
+          to=""
+        >
+          <h1
+            className="infocard-title"
+          >
+            +
+          </h1>
+          <p
+            className="infocard-message"
+          >
+            New Project
+          </p>
+        </div>
+      </a>
       <div
-        className="card infocard newprojectinfo"
+        className="card projectsummarycard"
       >
         <a
-          href="/newproject"
+          href="/projects/First Project"
           onClick={[Function]}
         >
-          <div
-            className="card-body"
+          <h2
+            className="card-primarytitle title-l"
           >
-            <h1
-              className="infocard-title"
-            >
-              +
-            </h1>
-            <p
-              className="infocard-message"
-            >
-              New Project
-            </p>
-          </div>
+            First Project
+          </h2>
         </a>
       </div>
       <div
         className="card projectsummarycard"
       >
-        <div
-          className="card-header"
+        <a
+          href="/projects/Second Project"
+          onClick={[Function]}
         >
-          <a
-            href="/projects/First Project"
-            onClick={[Function]}
+          <h2
+            className="card-primarytitle title-l"
           >
-            <h1
-              className="card-title title-l"
-            >
-              First Project
-            </h1>
-          </a>
-        </div>
-      </div>
-      <div
-        className="card projectsummarycard"
-      >
-        <div
-          className="card-header"
-        >
-          <a
-            href="/projects/Second Project"
-            onClick={[Function]}
-          >
-            <h1
-              className="card-title title-l"
-            >
-              Second Project
-            </h1>
-          </a>
-        </div>
+            Second Project
+          </h2>
+        </a>
       </div>
     </div>
   </div>

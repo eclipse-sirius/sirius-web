@@ -12,7 +12,7 @@ import PropTypes from 'prop-types';
 
 import { classNames } from '../../common/classnames';
 
-import { Card, Header, Title, TITLE_LARGE__KIND } from '../cards/Card';
+import { Card, HeroTitle } from '../cards/Card';
 
 const PROJECT_HEADER_CARD__CLASS_NAMES = 'projectheadercard';
 
@@ -28,9 +28,7 @@ export const ProjectHeaderCard = ({ className, name, ...props }) => {
   const cardClassNames = classNames(PROJECT_HEADER_CARD__CLASS_NAMES, className);
   return (
     <Card className={cardClassNames} {...props}>
-      <Header>
-        <Title kind={TITLE_LARGE__KIND}>{name}</Title>
-      </Header>
+      <HeroTitle label={name} />
     </Card>
   );
 };

@@ -12,7 +12,7 @@ import PropTypes from 'prop-types';
 
 import { classNames } from '../../common/classnames';
 
-import { Body, Card } from '../cards/Card';
+import { Card } from '../cards/Card';
 
 import './ErrorCard.css';
 
@@ -32,10 +32,8 @@ export const ErrorCard = ({ className, code, title, message, ...props }) => {
   const errorCardClassNames = classNames(ERRORCARD__CLASS_NAMES, className);
   return (
     <Card {...props} className={errorCardClassNames}>
-      <Body>
-        <h1 className={ERRORCARD_TITLE__CLASS_NAMES}>{title}</h1>
-        <p>{`${message} (code: ${code})`}</p>
-      </Body>
+      <h1 className={ERRORCARD_TITLE__CLASS_NAMES}>{title}</h1>
+      <p>{`${message} (code: ${code})`}</p>
     </Card>
   );
 };

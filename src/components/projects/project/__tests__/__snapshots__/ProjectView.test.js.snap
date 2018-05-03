@@ -12,18 +12,14 @@ exports[`ProjectView renders an error card for an error 1`] = `
 <div
   className="card errorcard"
 >
-  <div
-    className="card-body"
+  <h1
+    className="title-l"
   >
-    <h1
-      className="title-l"
-    >
-      An error has occurred
-    </h1>
-    <p>
-      Please contact the administrator to try to find a solution (code: 500)
-    </p>
-  </div>
+    An error has occurred
+  </h1>
+  <p>
+    Please contact the administrator to try to find a solution (code: 500)
+  </p>
 </div>
 `;
 
@@ -31,18 +27,14 @@ exports[`ProjectView renders an error card for an unsupported state 1`] = `
 <div
   className="card errorcard"
 >
-  <div
-    className="card-body"
+  <h1
+    className="title-l"
   >
-    <h1
-      className="title-l"
-    >
-      The project is in an unsupported state: INITIAL__STATE
-    </h1>
-    <p>
-      Contact your administrator to find a suitable solution (code: 1001)
-    </p>
-  </div>
+    The project is in an unsupported state: INITIAL__STATE
+  </h1>
+  <p>
+    Contact your administrator to find a suitable solution (code: 1001)
+  </p>
 </div>
 `;
 
@@ -53,15 +45,11 @@ exports[`ProjectView renders the project 1`] = `
   <div
     className="card projectheadercard"
   >
-    <div
-      className="card-header"
+    <h1
+      className="card-herotitle title-xl"
     >
-      <h1
-        className="card-title title-xl"
-      >
-        Project
-      </h1>
-    </div>
+      Project
+    </h1>
   </div>
   <div
     className="projectview-main"
@@ -72,81 +60,68 @@ exports[`ProjectView renders the project 1`] = `
       <div
         className="card projectsemanticresourceslistcard"
       >
-        <div
-          className="card-header"
+        <h2
+          className="card-primarytitle title-l"
         >
-          <h1
-            className="card-title title-l"
-          >
-            Semantic Resources
-          </h1>
-        </div>
-        <div
-          className="card-body"
+          Semantic Resources
+        </h2>
+        <ul
+          className="list list--highlighted"
         >
-          <ul
-            className="list list--highlighted"
+          <li
+            className="tile tile--singleline"
           >
-            <li
-              className="tile tile--singleline"
+            <h4
+              className="tile-maintext body-s"
             >
-              <h4
-                className="tile-maintext body-s"
-              >
-                /model/model.ecore
-              </h4>
-            </li>
-          </ul>
-        </div>
+              /model/model.ecore
+            </h4>
+            <div
+              className="semanticresources-size caption-s"
+            />
+          </li>
+        </ul>
       </div>
       <div
         className="card projectrepresentationslistcard"
       >
-        <div
-          className="card-header"
+        <h2
+          className="card-primarytitle title-l"
         >
-          <h1
-            className="card-title title-l"
-          >
-            Representations
-          </h1>
-        </div>
-        <div
-          className="card-body"
+          Representations
+        </h2>
+        <ul
+          className="list list--highlighted"
         >
-          <ul
-            className="list list--highlighted"
+          <li
+            className="tile tile--twoline"
           >
-            <li
-              className="tile tile--twoline"
-            >
-              <div>
-                <h4
-                  className="tile-maintext body-s"
-                >
-                  Class Diagram
-                </h4>
-                <h5
-                  className="tile-additionaltext caption-xs"
-                />
-              </div>
-            </li>
-            <li
-              className="tile tile--twoline"
-            >
-              <div>
-                <h4
-                  className="tile-maintext body-s"
-                >
-                  Activity Diagram
-                </h4>
-                <h5
-                  className="tile-additionaltext caption-xs"
-                />
-              </div>
-            </li>
-          </ul>
-        </div>
+            <div>
+              <h4
+                className="tile-maintext body-s"
+              >
+                Class Diagram
+              </h4>
+              <h5
+                className="tile-additionaltext caption-xs"
+              />
+            </div>
+          </li>
+          <li
+            className="tile tile--twoline"
+          >
+            <div>
+              <h4
+                className="tile-maintext body-s"
+              >
+                Activity Diagram
+              </h4>
+              <h5
+                className="tile-additionaltext caption-xs"
+              />
+            </div>
+          </li>
+        </ul>
       </div>
     </div>
     <div
@@ -155,38 +130,30 @@ exports[`ProjectView renders the project 1`] = `
       <div
         className="card workflowcard"
       >
-        <div
-          className="card-header"
+        <h2
+          className="card-primarytitle title-l"
         >
-          <h1
-            className="card-title title-l"
-          >
-            Workflow
-          </h1>
-        </div>
+          Workflow
+        </h2>
         <div
-          className="card-body"
+          className="tabbar"
         >
           <div
-            className="tabbar"
+            className="tabbar-nav tabbar-nav--disabled"
+            data-side="previous"
+            onClick={[Function]}
           >
-            <div
-              className="tabbar-nav tabbar-nav--disabled"
-              data-side="previous"
-              onClick={[Function]}
-            >
-              &lt;
-            </div>
-            <div
-              className="tabbar-tabs"
-            />
-            <div
-              className="tabbar-nav tabbar-nav--disabled"
-              data-side="next"
-              onClick={[Function]}
-            >
-              &gt;
-            </div>
+            &lt;
+          </div>
+          <div
+            className="tabbar-tabs"
+          />
+          <div
+            className="tabbar-nav tabbar-nav--disabled"
+            data-side="next"
+            onClick={[Function]}
+          >
+            &gt;
           </div>
         </div>
       </div>
