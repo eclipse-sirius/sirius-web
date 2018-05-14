@@ -19,9 +19,9 @@
     "test": "react-scripts test --env=jsdom",
     "coverage": "react-scripts test --env=jsdom --coverage",
     "eject": "react-scripts eject",
-    "lint": "eslint 'src/**/*.{js,jsx}'",
-    "format": "prettier --write 'src/**/*.{js,css}'",
-    "format-lint": "prettier --list-different 'src/**/*.{js,css}'"
+    "lint": "eslint \"src/**/*.{js,jsx}\"",
+    "format": "prettier --write \"src/**/*.{js,css}\"",
+    "format-lint": "prettier --list-different \"src/**/*.{js,css}\""
   },
   "proxy": {
     "/api": {
