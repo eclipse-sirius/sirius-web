@@ -35,7 +35,11 @@ export const dispatcherCreator = (FSM, reducer, INITIAL__STATE) => (
   if (newPotentialState) {
     const newState = reducer(prevState, props, action);
     if (newPotentialState.includes(newState.stateId)) {
-      return newState;
+      if (FSM[newState.stateId]) {
+        return newState;
+      } else {
+        console.error(`The state ${newState.stateId} does not exist.`);
+      }
     } else {
       console.error(
         `The state '${newState.stateId}' should not be accessible from ${
