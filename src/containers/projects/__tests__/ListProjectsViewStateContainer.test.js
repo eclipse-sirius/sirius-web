@@ -84,7 +84,7 @@ describe('ListProjectsViewStateContainer', () => {
     setImmediate(() => {
       const { stateId, error, projects } = container.state;
       expect(stateId).toBe(NO_PROJECTS_LOADED__STATE);
-      expect(error).toBeNull();
+      expect(error).toBeUndefined();
       expect(projects.length).toBe(0);
     });
 
@@ -103,7 +103,7 @@ describe('ListProjectsViewStateContainer', () => {
     setImmediate(() => {
       const { stateId, error, projects } = container.state;
       expect(stateId).toBe(PROJECTS_LOADED__STATE);
-      expect(error).toBeNull();
+      expect(error).toBeUndefined();
       expect(projects.length).toBe(2);
       expect(projects[0].name).toBe('First Project');
       expect(projects[1].name).toBe('Second Project');

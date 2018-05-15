@@ -35,12 +35,12 @@ import {
 const reducer = (state, props, action) => {
   switch (action.kind) {
     case INITIALIZE__ACTION:
-      return { stateId: LOADING__STATE, projects: [], error: null };
+      return { stateId: LOADING__STATE, projects: [], error: undefined };
     case HANDLE_FETCHED_PROJECTS__ACTION:
       if (action.projects.length === 0) {
-        return { stateId: NO_PROJECTS_LOADED__STATE, projects: [], error: null };
+        return { stateId: NO_PROJECTS_LOADED__STATE, projects: [], error: undefined };
       }
-      return { stateId: PROJECTS_LOADED__STATE, projects: action.projects, error: null };
+      return { stateId: PROJECTS_LOADED__STATE, projects: action.projects, error: undefined };
     case HANDLE_ERROR__ACTION:
       return { stateId: ERROR__STATE, projects: state.projects, error: action.error };
     default:

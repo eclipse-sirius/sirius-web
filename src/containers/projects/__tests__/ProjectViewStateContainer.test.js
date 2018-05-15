@@ -68,7 +68,7 @@ describe('ProjectViewStateContainer', () => {
     setImmediate(() => {
       const { stateId, error, project } = projectStateContainer.state;
       expect(stateId).toBe(PROJECT_LOADED__STATE);
-      expect(error).toBeNull();
+      expect(error).toBeUndefined();
       expect(project.name).toBe('Project');
       expect(project.pages.length).toBe(0);
     });
@@ -95,7 +95,7 @@ describe('ProjectViewStateContainer', () => {
       const { stateId, error, project } = projectStateContainer.state;
       expect(stateId).toBe(ERROR__STATE);
       expect(error).toBeDefined();
-      expect(project).toBeNull();
+      expect(project).toBeUndefined();
     });
 
     global.fetch = globalFetch;
@@ -120,7 +120,7 @@ describe('ProjectViewStateContainer', () => {
       const { stateId, error, project } = projectStateContainer.state;
       expect(stateId).toBe(ERROR__STATE);
       expect(error).toBeDefined();
-      expect(project).toBeNull();
+      expect(project).toBeUndefined();
     });
 
     global.fetch = globalFetch;

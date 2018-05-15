@@ -1,0 +1,34 @@
+/*******************************************************************************
+ * Copyright (c) 2018 Obeo and others.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2
+ * which accompanies this distribution and is available at
+ * https://www.eclipse.org/legal/epl-2.0.
+ *******************************************************************************/
+
+.projectheadercard-viewdescription {
+  display: flex;
+  align-items: center;
+
+  padding: var(--layoutDimension-s) var(--layoutDimension-m);
+}
+.projectheadercard-viewdescription p {
+  margin-right: auto;
+}
+.projectheadercard-viewdescription .button {
+  margin-left: var(--layoutDimension-m);
+}
+
+.projectheadercard-editdescription {
+  display: flex;
+  align-items: center;
+
+  padding: var(--layoutDimension-s) var(--layoutDimension-m);
+}
+.projectheadercard-editdescription input {
+  margin-right: auto;
+}
+.projectheadercard-editdescription .button {
+  margin-left: var(--layoutDimension-m);
+}

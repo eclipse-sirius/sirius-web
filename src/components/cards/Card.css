@@ -22,8 +22,7 @@
 }
 
 .card-herotitle {
-  padding: var(--layoutDimension-m) var(--layoutDimension-m) var(--layoutDimension-l)
-    var(--layoutDimension-m);
+  padding: var(--layoutDimension-m);
 }
 
 .card-primarytitle {

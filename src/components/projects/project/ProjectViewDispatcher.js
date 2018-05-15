@@ -19,6 +19,7 @@ import {
   HANDLE_ERROR__ACTION,
   HANDLE_FETCHED_PAGE__ACTION,
   HANDLE_FETCHED_PROJECT__ACTION,
+  HANDLE_DESCRIPTION_UPDATED__ACTION,
   INITIALIZE__ACTION
 } from './ProjectViewFiniteStateMachine';
 
@@ -35,9 +36,14 @@ import {
 const reducer = (state, props, action) => {
   switch (action.kind) {
     case INITIALIZE__ACTION:
-      return { stateId: LOADING__STATE, project: null, pageIdentifier: null, error: null };
+      return {
+        stateId: LOADING__STATE,
+        project: undefined,
+        pageIdentifier: undefined,
+        error: undefined
+      };
     case HANDLE_FETCHED_PROJECT__ACTION:
-      let pageIdentifier = null;
+      let pageIdentifier;
       if (action.project.pages.length > 0) {
         pageIdentifier = action.project.pages[0].identifier;
       }
@@ -45,17 +51,29 @@ const reducer = (state, props, action) => {
         stateId: PROJECT_LOADED__STATE,
         project: action.project,
         pageIdentifier,
-        error: null
+        error: undefined
       };
     case HANDLE_FETCHED_PAGE__ACTION:
-      const newState = {
+      const newFetchedPageState = {
         stateId: PROJECT_LOADED__STATE,
         project: state.project,
         pageIdentifier: action.page.identifier,
-        error: null
+        error: undefined
       };
-      newState.project.currentPageSections = action.page.sections;
-      return newState;
+      newFetchedPageState.project.currentPageSections = action.page.sections;
+      return newFetchedPageState;
+    case HANDLE_DESCRIPTION_UPDATED__ACTION:
+      const newDescriptionUpdatedState = {
+        stateId: PROJECT_LOADED__STATE,
+        project: state.project,
+        pageIdentifier: state.pageIdentifier,
+        error: undefined
+      };
+      newDescriptionUpdatedState.project = {
+        ...newDescriptionUpdatedState.project,
+        description: action.description
+      };
+      return newDescriptionUpdatedState;
     case HANDLE_ERROR__ACTION:
       return {
         stateId: ERROR__STATE,
@@ -87,9 +105,26 @@ const newHandleProjectFetchedAction = response => ({
   project: response
 });
 
+/**
+ * Returns an handle page fetched action used to change the current workflow
+ * page.
+ *
+ * @param {*} response The HTTP response of the server
+ */
 const newHandlePageFetchedAction = response => ({
   kind: HANDLE_FETCHED_PAGE__ACTION,
   page: response
+});
+
+/**
+ * Returns an handle description updated action used to change the current
+ * description of the project.
+ *
+ * @param {*} response The HTTP response of the server
+ */
+const newHandleDescriptionUpdatedAction = response => ({
+  kind: HANDLE_DESCRIPTION_UPDATED__ACTION,
+  description: response.description
 });
 
 /**
@@ -127,6 +162,7 @@ export const actionCreator = {
   newInitializeAction,
   newHandleProjectFetchedAction,
   newHandlePageFetchedAction,
+  newHandleDescriptionUpdatedAction,
   newInvalidResponseAction,
   newUnexpectedErrorAction
 };

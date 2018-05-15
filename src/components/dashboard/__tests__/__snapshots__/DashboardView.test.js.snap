@@ -127,6 +127,11 @@ exports[`DashboardView renders the projects 1`] = `
             First Project
           </h2>
         </a>
+        <div
+          className="card-text body-s"
+        >
+          No description provided
+        </div>
       </div>
       <div
         className="card projectsummarycard"
@@ -141,6 +146,11 @@ exports[`DashboardView renders the projects 1`] = `
             Second Project
           </h2>
         </a>
+        <div
+          className="card-text body-s"
+        >
+          No description provided
+        </div>
       </div>
     </div>
   </div>
