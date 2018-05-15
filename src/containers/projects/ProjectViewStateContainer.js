@@ -25,6 +25,7 @@ class ProjectViewStateContainerWithoutRouter extends Component {
 
     this.handleActivityClick = this.handleActivityClick.bind(this);
     this.handleTabClick = this.handleTabClick.bind(this);
+    this.handleNewDescription = this.handleNewDescription.bind(this);
 
     this.state = dispatcher(undefined, props, actionCreator.newInitializeAction());
   }
@@ -80,6 +81,28 @@ class ProjectViewStateContainerWithoutRouter extends Component {
     }
   }
 
+  async handleNewDescription(description) {
+    const { project } = this.state;
+    let oldDescription = project.description;
+    if (oldDescription === undefined) {
+      oldDescription = '';
+    }
+
+    if (description !== oldDescription) {
+      const { projectName } = this.props.match.params;
+      try {
+        const body = JSON.stringify({ description });
+        const request = new Request(`/api/projects/${projectName}`, { method: 'PUT', body });
+        const jsonResponse = await fetch(request);
+        const response = await jsonResponse.json();
+        const action = actionCreator.newHandleDescriptionUpdatedAction(response);
+        this.dispatch(action);
+      } catch (error) {
+        // To be handled
+      }
+    }
+  }
+
   dispatch(action) {
     this.setState((prevState, props) => dispatcher(prevState, props, action));
   }
@@ -94,7 +117,8 @@ class ProjectViewStateContainerWithoutRouter extends Component {
       project,
       pageIdentifier,
       this.handleTabClick,
-      this.handleActivityClick
+      this.handleActivityClick,
+      this.handleNewDescription
     );
   }
 }

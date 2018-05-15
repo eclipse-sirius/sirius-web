@@ -50,6 +50,19 @@ exports[`ProjectView renders the project with activities 1`] = `
     >
       Project
     </h1>
+    <div
+      className="projectheadercard-viewdescription"
+    >
+      <p>
+        No description provided
+      </p>
+      <button
+        className="button button--default"
+        onClick={[Function]}
+      >
+        Edit
+      </button>
+    </div>
   </div>
   <div
     className="projectview-main"
@@ -187,6 +200,19 @@ exports[`ProjectView renders the project without activities 1`] = `
     >
       Project
     </h1>
+    <div
+      className="projectheadercard-viewdescription"
+    >
+      <p>
+        No description provided
+      </p>
+      <button
+        className="button button--default"
+        onClick={[Function]}
+      >
+        Edit
+      </button>
+    </div>
   </div>
   <div
     className="projectview-main"
@@ -324,6 +350,19 @@ exports[`ProjectView renders the project without any workflow 1`] = `
     >
       Project
     </h1>
+    <div
+      className="projectheadercard-viewdescription"
+    >
+      <p>
+        No description provided
+      </p>
+      <button
+        className="button button--default"
+        onClick={[Function]}
+      >
+        Edit
+      </button>
+    </div>
   </div>
   <div
     className="projectview-main"
@@ -437,6 +476,19 @@ exports[`ProjectView renders the project without sections 1`] = `
     >
       Project
     </h1>
+    <div
+      className="projectheadercard-viewdescription"
+    >
+      <p>
+        No description provided
+      </p>
+      <button
+        className="button button--default"
+        onClick={[Function]}
+      >
+        Edit
+      </button>
+    </div>
   </div>
   <div
     className="projectview-main"

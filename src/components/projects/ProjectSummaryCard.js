@@ -11,7 +11,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import { Card, PrimaryTitle } from '../cards/Card';
+import { Card, PrimaryTitle, Text } from '../cards/Card';
 
 import './ProjectSummaryCard.css';
 
@@ -31,6 +31,7 @@ export const ProjectSummaryCard = ({ project, ...props }) => {
       <Link to={`/projects/${project.name}`}>
         <PrimaryTitle label={project.name} />
       </Link>
+      <Text>{project.description || 'No description provided'}</Text>
     </Card>
   );
 };

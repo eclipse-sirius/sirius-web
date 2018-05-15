@@ -47,7 +47,9 @@ export const ProjectsListCard = ({ className, projects, ...props }) => {
               <TwoLineTile>
                 <div>
                   <MainText>{project.name}</MainText>
-                  <AdditionalText>{'Description of the project'}</AdditionalText>
+                  <AdditionalText>
+                    {project.description || 'No description provided'}
+                  </AdditionalText>
                 </div>
               </TwoLineTile>
             </Link>

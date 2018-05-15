@@ -44,6 +44,7 @@ export const ProjectView = ({
   pageIdentifier,
   onTabClick,
   onActivityClick,
+  onNewDescription,
   ...props
 }) => {
   switch (stateId) {
@@ -58,6 +59,7 @@ export const ProjectView = ({
         pageIdentifier,
         onTabClick,
         onActivityClick,
+        onNewDescription,
         props
       );
     default:
@@ -109,12 +111,17 @@ const renderProjectLoadedState = (
   pageIdentifier,
   onTabClick,
   onActivityClick,
+  onNewDescription,
   props
 ) => {
   const projectViewClassNames = classNames(PROJECT_VIEW__CLASS_NAMES, className);
   return (
     <div className={projectViewClassNames}>
-      <ProjectHeaderCard name={project.name} />
+      <ProjectHeaderCard
+        name={project.name}
+        description={project.description}
+        onNewDescription={onNewDescription}
+      />
       <div className={PROJECT_VIEW_MAIN__CLASS_NAMES}>
         <div className={PROJECT_VIEW_DETAILS__CLASS_NAMES}>
           <ProjectSemanticResourcesListCard semanticResources={project.semanticResources} />

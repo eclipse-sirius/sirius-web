@@ -84,7 +84,7 @@ exports[`ListProjectsView renders the projects 1`] = `
             <h5
               className="tile-additionaltext caption-xs"
             >
-              Description of the project
+              No description provided
             </h5>
           </div>
         </li>
@@ -105,7 +105,7 @@ exports[`ListProjectsView renders the projects 1`] = `
             <h5
               className="tile-additionaltext caption-xs"
             >
-              Description of the project
+              No description provided
             </h5>
           </div>
         </li>
