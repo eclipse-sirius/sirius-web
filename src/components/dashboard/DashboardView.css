@@ -38,6 +38,7 @@
 
 .dashboardview .projects-body {
   display: grid;
+  grid-auto-rows: 1fr;
   grid-template-rows: 1fr 1fr;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   grid-row-gap: var(--layoutDimension-l);
