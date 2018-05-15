@@ -12,7 +12,6 @@
   flex-direction: column;
 
   min-width: 250px;
-  padding: 0 var(--layoutDimension-m) 0 var(--layoutDimension-m);
 }
 .aside a {
   display: block;

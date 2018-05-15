@@ -26,5 +26,14 @@
     [main] auto;
 
   grid-row-start: container;
-  padding: var(--layoutDimension-l) 0 var(--layoutDimension-xl) 0;
+  padding: var(--layoutDimension-l) var(--layoutDimension-m) var(--layoutDimension-xl)
+    var(--layoutDimension-m);
+}
+
+.fullscreen .app-container {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+.fullscreen .app-navbar {
+  display: none;
 }

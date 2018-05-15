@@ -8,5 +8,5 @@
  *******************************************************************************/
 
 .main {
-  padding: 0px var(--layoutDimension-xl) 0px 0px;
+  padding: 0px var(--layoutDimension-l);
 }
