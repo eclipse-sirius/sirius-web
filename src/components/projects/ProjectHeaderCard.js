@@ -99,8 +99,11 @@ ViewDescription.propTypes = viewDescriptionPropTypes;
 const PROJECTHEADERCARD_EDITDESCRIPTION__CLASS_NAMES = 'projectheadercard-editdescription';
 
 const editDescriptionPropTypes = {
-  description: PropTypes.string,
+  description: PropTypes.string.isRequired,
   onNewDescription: PropTypes.func.isRequired
+};
+const editDescriptionDefaultProps = {
+  description: ''
 };
 
 /**
@@ -113,7 +116,7 @@ class EditDescription extends Component {
     this.handleDoneClick = this.handleDoneClick.bind(this);
 
     this.state = {
-      description: props.description || ''
+      description: props.description
     };
   }
 
@@ -138,3 +141,4 @@ class EditDescription extends Component {
   }
 }
 EditDescription.propTypes = editDescriptionPropTypes;
+EditDescription.defaultProps = editDescriptionDefaultProps;
