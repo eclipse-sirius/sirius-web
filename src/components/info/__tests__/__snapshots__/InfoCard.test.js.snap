@@ -4,15 +4,30 @@ exports[`InfoCard renders an info card 1`] = `
 <div
   className="card infocard"
 >
-  <h1
-    className="infocard-title"
+  <div
+    style={
+      Object {
+        "paddingBottom": "32px",
+        "paddingLeft": "32px",
+        "paddingRight": "32px",
+        "paddingTop": "32px",
+      }
+    }
   >
-    42
-  </h1>
-  <p
-    className="infocard-message"
-  >
-    Projects
-  </p>
+    <div
+      className="infocard-container"
+    >
+      <h1
+        className="infocard-title"
+      >
+        42
+      </h1>
+      <p
+        className="infocard-message"
+      >
+        Projects
+      </p>
+    </div>
+  </div>
 </div>
 `;

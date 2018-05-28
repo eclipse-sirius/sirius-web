@@ -10,9 +10,6 @@
 .workflowcard .card-divider {
   margin: 0 var(--layoutDimension-m);
 }
-.section-title {
-  padding: var(--layoutDimension-m) var(--layoutDimension-m) 0 var(--layoutDimension-m);
-}
 
 .section .listitem {
   display: grid;

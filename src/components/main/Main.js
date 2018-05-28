@@ -17,13 +17,13 @@ import { ErrorBoundary } from '../error/ErrorBoundary';
 import { ListProjectsView } from '../projects/listprojects/ListProjectsView';
 import { NewProjectView } from '../projects/newproject/NewProjectView';
 import { ProjectView } from '../projects/project/ProjectView';
+import { Spacing } from '../spacing/Spacing';
+import { L } from '../spacing/SpacingConstants';
 
 import { DashboardViewStateContainer } from '../../containers/dashboard/DashboardViewStateContainer';
 import { ListProjectsViewStateContainer } from '../../containers/projects/ListProjectsViewStateContainer';
 import { NewProjectViewStateContainer } from '../../containers/projects/NewProjectViewStateContainer';
 import { ProjectViewStateContainer } from '../../containers/projects/ProjectViewStateContainer';
-
-import './Main.css';
 
 const MAIN__CLASS_NAMES = 'main';
 
@@ -37,14 +37,16 @@ export const Main = ({ className, ...props }) => {
   const mainClassNames = classNames(MAIN__CLASS_NAMES, className);
   return (
     <main className={mainClassNames} {...props}>
-      <ErrorBoundary>
-        <Switch>
-          <Route exact path="/" render={renderDashboardViewStateContainer} />
-          <Route exact path="/projects" render={renderListProjectsViewStateContainer} />
-          <Route exact path="/projects/:projectName" render={renderProjectViewStateContainer} />
-          <Route exact path="/newproject" render={renderNewProjectViewStateContainer} />
-        </Switch>
-      </ErrorBoundary>
+      <Spacing right={L} left={L}>
+        <ErrorBoundary>
+          <Switch>
+            <Route exact path="/" render={renderDashboardViewStateContainer} />
+            <Route exact path="/projects" render={renderListProjectsViewStateContainer} />
+            <Route exact path="/projects/:projectName" render={renderProjectViewStateContainer} />
+            <Route exact path="/newproject" render={renderNewProjectViewStateContainer} />
+          </Switch>
+        </ErrorBoundary>
+      </Spacing>
     </main>
   );
 };

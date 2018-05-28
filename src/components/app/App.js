@@ -15,6 +15,8 @@ import { classNames } from '../../common/classnames';
 import { Aside } from '../aside/Aside';
 import { Main } from '../main/Main';
 import { Navbar } from '../navbar/Navbar';
+import { Spacing } from '../spacing/Spacing';
+import { M, L, XL } from '../spacing/SpacingConstants';
 
 import './App.css';
 
@@ -59,7 +61,9 @@ const AppWithoutRouter = ({ className, ...props }) => {
   return (
     <div className={appClassNames}>
       <Navbar className={APP_NAVBAR__CLASS_NAMES} />
-      {container}
+      <Spacing top={L} right={M} bottom={XL} left={M}>
+        {container}
+      </Spacing>
     </div>
   );
 };

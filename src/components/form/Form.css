@@ -7,24 +7,6 @@
  * https://www.eclipse.org/legal/epl-2.0.
  *******************************************************************************/
 
-.form {
-  padding: var(--layoutDimension-m);
-}
-
-.field {
-  padding: 0 0 var(--layoutDimension-m) 0;
-}
-
-.label {
-  display: block;
-  padding: 0 0 var(--layoutDimension-s) 0;
-}
-
-.description {
-  display: block;
-  padding: 0 0 var(--layoutDimension-s) 0;
-}
-
 .textfield {
   display: block;
   width: 100%;
@@ -49,18 +31,9 @@
   border-color: var(--red);
 }
 
-.errorgroup {
-  padding: var(--layoutDimension-s) 0 var(--layoutDimension-s) 0;
-}
-
 .error {
   color: var(--red);
-  padding: var(--layoutDimension-s) 0 0 0;
 }
 .error:nth-child(1) {
   padding: 0 0 0 0;
-}
-
-.actiongroup {
-  padding: var(--layoutDimension-m) 0 0 0;
 }

@@ -13,7 +13,8 @@ import PropTypes from 'prop-types';
 import { classNames } from '../../common/classnames';
 
 import { Card, PrimaryTitle, Text } from '../cards/Card';
-import { LIST_WITH_HIGHLIGHT__KIND, List, MainText, SingleLineTile } from '../list/List';
+import { LIST_WITH_HIGHLIGHT__KIND, List, MainText, Tile } from '../list/List';
+import { SINGLE_LINE } from '../list/ListConstants';
 
 const PROJECT_SEMANTIC_RESOURCES_LIST_CARD__CLASS_NAMES = 'projectsemanticresourceslistcard';
 const SEMANTIC_RESOURCES_SIZE__CLASS_NAMES = 'semanticresources-size caption-s';
@@ -59,10 +60,10 @@ const SemanticResources = ({ semanticResources }) => {
 const SemanticResourcesList = ({ semanticResources }) => (
   <List kind={LIST_WITH_HIGHLIGHT__KIND}>
     {semanticResources.map(resource => (
-      <SingleLineTile key={resource.path}>
+      <Tile kind={SINGLE_LINE} key={resource.path}>
         <MainText>{resource.path}</MainText>
         <div className={SEMANTIC_RESOURCES_SIZE__CLASS_NAMES}>{resource.size}</div>
-      </SingleLineTile>
+      </Tile>
     ))}
   </List>
 );

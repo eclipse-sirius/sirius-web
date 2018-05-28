@@ -8,15 +8,13 @@
  *******************************************************************************/
 
 .navbar {
-  display: flex;
-  flex-direction: row;
-
-  padding: 0 var(--layoutDimension-m);
-
-  height: var(--layoutDimension-xl);
-
   background-color: var(--white);
   box-shadow: var(--boxShadow-float);
+}
+
+.navbar-container {
+  display: flex;
+  flex-direction: row;
 }
 
 .navbar-title {

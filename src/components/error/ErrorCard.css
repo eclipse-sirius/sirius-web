@@ -7,13 +7,8 @@
  * https://www.eclipse.org/legal/epl-2.0.
  *******************************************************************************/
 
-.errorcard {
+.errorcard-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: var(--layoutDimension-l);
-}
-
-.errorcard .title-l {
-  margin-bottom: var(--layoutDimension-m);
 }

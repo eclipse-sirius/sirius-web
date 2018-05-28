@@ -15,6 +15,8 @@ import { classNames } from '../../common/classnames';
 import { Button } from '../buttons/Button';
 import { Card, HeroTitle } from '../cards/Card';
 import { TextField } from '../form/Form';
+import { Spacing } from '../spacing/Spacing';
+import { S, M } from '../spacing/SpacingConstants';
 
 import './ProjectHeaderCard.css';
 
@@ -62,14 +64,19 @@ export class ProjectHeaderCard extends Component {
     return (
       <Card className={cardClassNames} {...props}>
         <HeroTitle label={name} />
-        {isViewingDescription ? (
-          <ViewDescription
-            description={description || 'No description provided'}
-            onEditClick={this.handleEditClick}
-          />
-        ) : (
-          <EditDescription description={description} onNewDescription={this.handleNewDescription} />
-        )}
+        <Spacing top={S} right={M} bottom={S} left={M}>
+          {isViewingDescription ? (
+            <ViewDescription
+              description={description || 'No description provided'}
+              onEditClick={this.handleEditClick}
+            />
+          ) : (
+            <EditDescription
+              description={description}
+              onNewDescription={this.handleNewDescription}
+            />
+          )}
+        </Spacing>
       </Card>
     );
   }
@@ -91,7 +98,9 @@ const viewDescriptionPropTypes = {
 const ViewDescription = ({ description, onEditClick }) => (
   <div className={PROJECTHEADERCARD_VIEWDESCRIPTION__CLASS_NAMES}>
     <p>{description}</p>
-    <Button onClick={onEditClick}>Edit</Button>
+    <Spacing left={M}>
+      <Button onClick={onEditClick}>Edit</Button>
+    </Spacing>
   </div>
 );
 ViewDescription.propTypes = viewDescriptionPropTypes;
@@ -135,7 +144,9 @@ class EditDescription extends Component {
     return (
       <div className={PROJECTHEADERCARD_EDITDESCRIPTION__CLASS_NAMES}>
         <TextField value={description} onChange={this.handleDescriptionChange} />
-        <Button onClick={this.handleDoneClick}>Done</Button>
+        <Spacing left={M}>
+          <Button onClick={this.handleDoneClick}>Done</Button>
+        </Spacing>
       </div>
     );
   }

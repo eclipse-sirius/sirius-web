@@ -12,6 +12,9 @@ import PropTypes from 'prop-types';
 
 import { classNames } from '../../common/classnames';
 
+import { Spacing } from '../spacing/Spacing';
+import { S, M } from '../spacing/SpacingConstants';
+
 import './Button.css';
 
 /** The default button kind. */
@@ -44,7 +47,9 @@ export const Button = ({ className, kind, ...props }) => {
   const buttonClassNames = classNames(BUTTON__CLASS_NAMES, kindClassNames, className);
   return (
     <button className={buttonClassNames} {...props}>
-      {props.children}
+      <Spacing top={S} right={M} bottom={S} left={M}>
+        {props.children}
+      </Spacing>
     </button>
   );
 };

@@ -12,14 +12,40 @@ exports[`DashboardView renders an error card for an error 1`] = `
 <div
   className="card errorcard"
 >
-  <h1
-    className="title-l"
+  <div
+    style={
+      Object {
+        "paddingBottom": "32px",
+        "paddingLeft": "32px",
+        "paddingRight": "32px",
+        "paddingTop": "32px",
+      }
+    }
   >
-    An error has occurred
-  </h1>
-  <p>
-    Please contact the administrator to try to find a solution (code: 500)
-  </p>
+    <div
+      className="errorcard-container"
+    >
+      <div
+        style={
+          Object {
+            "paddingBottom": "16px",
+            "paddingLeft": "16px",
+            "paddingRight": "16px",
+            "paddingTop": "16px",
+          }
+        }
+      >
+        <h1
+          className="title-l"
+        >
+          An error has occurred
+        </h1>
+      </div>
+      <p>
+        Please contact the administrator to try to find a solution (code: 500)
+      </p>
+    </div>
+  </div>
 </div>
 `;
 
@@ -27,14 +53,40 @@ exports[`DashboardView renders an error card for an unsupported state 1`] = `
 <div
   className="card errorcard"
 >
-  <h1
-    className="title-l"
+  <div
+    style={
+      Object {
+        "paddingBottom": "32px",
+        "paddingLeft": "32px",
+        "paddingRight": "32px",
+        "paddingTop": "32px",
+      }
+    }
   >
-    The dashboard is in an unsupported state: INITIAL__STATE
-  </h1>
-  <p>
-    Contact your administrator to find a suitable solution (code: 1001)
-  </p>
+    <div
+      className="errorcard-container"
+    >
+      <div
+        style={
+          Object {
+            "paddingBottom": "16px",
+            "paddingLeft": "16px",
+            "paddingRight": "16px",
+            "paddingTop": "16px",
+          }
+        }
+      >
+        <h1
+          className="title-l"
+        >
+          The dashboard is in an unsupported state: INITIAL__STATE
+        </h1>
+      </div>
+      <p>
+        Contact your administrator to find a suitable solution (code: 1001)
+      </p>
+    </div>
+  </div>
 </div>
 `;
 
@@ -48,44 +100,89 @@ exports[`DashboardView renders the projects 1`] = `
     <div
       className="card infocard projectsinfo"
     >
-      <h1
-        className="infocard-title"
+      <div
+        style={
+          Object {
+            "paddingBottom": "32px",
+            "paddingLeft": "32px",
+            "paddingRight": "32px",
+            "paddingTop": "32px",
+          }
+        }
       >
-        0
-      </h1>
-      <p
-        className="infocard-message"
-      >
-        Projects
-      </p>
+        <div
+          className="infocard-container"
+        >
+          <h1
+            className="infocard-title"
+          >
+            0
+          </h1>
+          <p
+            className="infocard-message"
+          >
+            Projects
+          </p>
+        </div>
+      </div>
     </div>
     <div
       className="card infocard viewpointsinfo"
     >
-      <h1
-        className="infocard-title"
+      <div
+        style={
+          Object {
+            "paddingBottom": "32px",
+            "paddingLeft": "32px",
+            "paddingRight": "32px",
+            "paddingTop": "32px",
+          }
+        }
       >
-        27
-      </h1>
-      <p
-        className="infocard-message"
-      >
-        Viewpoints
-      </p>
+        <div
+          className="infocard-container"
+        >
+          <h1
+            className="infocard-title"
+          >
+            27
+          </h1>
+          <p
+            className="infocard-message"
+          >
+            Viewpoints
+          </p>
+        </div>
+      </div>
     </div>
     <div
       className="card infocard metamodelsinfo"
     >
-      <h1
-        className="infocard-title"
+      <div
+        style={
+          Object {
+            "paddingBottom": "32px",
+            "paddingLeft": "32px",
+            "paddingRight": "32px",
+            "paddingTop": "32px",
+          }
+        }
       >
-        132
-      </h1>
-      <p
-        className="infocard-message"
-      >
-        Metamodels
-      </p>
+        <div
+          className="infocard-container"
+        >
+          <h1
+            className="infocard-title"
+          >
+            132
+          </h1>
+          <p
+            className="infocard-message"
+          >
+            Metamodels
+          </p>
+        </div>
+      </div>
     </div>
   </div>
   <div
@@ -102,16 +199,31 @@ exports[`DashboardView renders the projects 1`] = `
           className="card infocard newprojectinfo"
           to=""
         >
-          <h1
-            className="infocard-title"
+          <div
+            style={
+              Object {
+                "paddingBottom": "32px",
+                "paddingLeft": "32px",
+                "paddingRight": "32px",
+                "paddingTop": "32px",
+              }
+            }
           >
-            +
-          </h1>
-          <p
-            className="infocard-message"
-          >
-            New Project
-          </p>
+            <div
+              className="infocard-container"
+            >
+              <h1
+                className="infocard-title"
+              >
+                +
+              </h1>
+              <p
+                className="infocard-message"
+              >
+                New Project
+              </p>
+            </div>
+          </div>
         </div>
       </a>
       <div
@@ -121,16 +233,38 @@ exports[`DashboardView renders the projects 1`] = `
           href="/projects/First Project"
           onClick={[Function]}
         >
-          <h2
-            className="card-primarytitle title-l"
+          <div
+            style={
+              Object {
+                "paddingBottom": "16px",
+                "paddingLeft": "16px",
+                "paddingRight": "16px",
+                "paddingTop": "16px",
+              }
+            }
           >
-            First Project
-          </h2>
+            <h2
+              className="card-primarytitle title-l"
+            >
+              First Project
+            </h2>
+          </div>
         </a>
         <div
-          className="card-text body-s"
+          style={
+            Object {
+              "paddingBottom": "16px",
+              "paddingLeft": "16px",
+              "paddingRight": "16px",
+              "paddingTop": "8px",
+            }
+          }
         >
-          No description provided
+          <div
+            className="card-text body-s"
+          >
+            No description provided
+          </div>
         </div>
       </div>
       <div
@@ -140,16 +274,38 @@ exports[`DashboardView renders the projects 1`] = `
           href="/projects/Second Project"
           onClick={[Function]}
         >
-          <h2
-            className="card-primarytitle title-l"
+          <div
+            style={
+              Object {
+                "paddingBottom": "16px",
+                "paddingLeft": "16px",
+                "paddingRight": "16px",
+                "paddingTop": "16px",
+              }
+            }
           >
-            Second Project
-          </h2>
+            <h2
+              className="card-primarytitle title-l"
+            >
+              Second Project
+            </h2>
+          </div>
         </a>
         <div
-          className="card-text body-s"
+          style={
+            Object {
+              "paddingBottom": "16px",
+              "paddingLeft": "16px",
+              "paddingRight": "16px",
+              "paddingTop": "8px",
+            }
+          }
         >
-          No description provided
+          <div
+            className="card-text body-s"
+          >
+            No description provided
+          </div>
         </div>
       </div>
     </div>

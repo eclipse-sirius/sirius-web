@@ -13,13 +13,8 @@ import PropTypes from 'prop-types';
 import { classNames } from '../../common/classnames';
 
 import { Card, PrimaryTitle, Text } from '../cards/Card';
-import {
-  LIST_WITH_HIGHLIGHT__KIND,
-  AdditionalText,
-  List,
-  MainText,
-  TwoLineTile
-} from '../list/List';
+import { LIST_WITH_HIGHLIGHT__KIND, AdditionalText, List, MainText, Tile } from '../list/List';
+import { TWO_LINES } from '../list/ListConstants';
 
 const PROJECT_REPRESENTATIONS_LIST_CARD__CLASS_NAMES = 'projectrepresentationslistcard';
 
@@ -64,12 +59,12 @@ const Representations = ({ representations }) => {
 const RepresentationsList = ({ representations }) => (
   <List kind={LIST_WITH_HIGHLIGHT__KIND}>
     {representations.map(representation => (
-      <TwoLineTile key={representation.name}>
+      <Tile kind={TWO_LINES} key={representation.name}>
         <div>
           <MainText>{representation.name}</MainText>
           <AdditionalText>{representation.descriptionName}</AdditionalText>
         </div>
-      </TwoLineTile>
+      </Tile>
     ))}
   </List>
 );

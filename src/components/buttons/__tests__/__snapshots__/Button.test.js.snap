@@ -4,42 +4,119 @@ exports[`Button renders a button with a label 1`] = `
 <button
   className="button button--default"
 >
-  OK
+  <div
+    style={
+      Object {
+        "paddingBottom": "8px",
+        "paddingLeft": "16px",
+        "paddingRight": "16px",
+        "paddingTop": "8px",
+      }
+    }
+  >
+    OK
+  </div>
 </button>
 `;
 
 exports[`Button renders a button without a label 1`] = `
 <button
   className="button button--default"
-/>
+>
+  <div
+    style={
+      Object {
+        "paddingBottom": "8px",
+        "paddingLeft": "16px",
+        "paddingRight": "16px",
+        "paddingTop": "8px",
+      }
+    }
+  />
+</button>
 `;
 
 exports[`Button renders a danger button 1`] = `
 <button
   className="button button--danger"
-/>
+>
+  <div
+    style={
+      Object {
+        "paddingBottom": "8px",
+        "paddingLeft": "16px",
+        "paddingRight": "16px",
+        "paddingTop": "8px",
+      }
+    }
+  />
+</button>
 `;
 
 exports[`Button renders a default button 1`] = `
 <button
   className="button button--default"
-/>
+>
+  <div
+    style={
+      Object {
+        "paddingBottom": "8px",
+        "paddingLeft": "16px",
+        "paddingRight": "16px",
+        "paddingTop": "8px",
+      }
+    }
+  />
+</button>
 `;
 
 exports[`Button renders a primary button 1`] = `
 <button
   className="button button--primary"
-/>
+>
+  <div
+    style={
+      Object {
+        "paddingBottom": "8px",
+        "paddingLeft": "16px",
+        "paddingRight": "16px",
+        "paddingTop": "8px",
+      }
+    }
+  />
+</button>
 `;
 
 exports[`Button renders a success button 1`] = `
 <button
   className="button button--success"
-/>
+>
+  <div
+    style={
+      Object {
+        "paddingBottom": "8px",
+        "paddingLeft": "16px",
+        "paddingRight": "16px",
+        "paddingTop": "8px",
+      }
+    }
+  />
+</button>
 `;
 
 exports[`Button renders a warning button 1`] = `
 <button
   className="button button--warning"
-/>
+>
+  <div
+    style={
+      Object {
+        "paddingBottom": "8px",
+        "paddingLeft": "16px",
+        "paddingRight": "16px",
+        "paddingTop": "8px",
+      }
+    }
+  />
+</button>
 `;
