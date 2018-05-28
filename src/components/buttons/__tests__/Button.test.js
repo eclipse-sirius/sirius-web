@@ -12,14 +12,14 @@ import ReactDOM from 'react-dom';
 import ReactTestUtils from 'react-dom/test-utils';
 import Renderer from 'react-test-renderer';
 
+import { Button } from '../Button';
 import {
   BUTTON_DANGER__KIND,
   BUTTON_DEFAULT__KIND,
   BUTTON_PRIMARY__KIND,
   BUTTON_SUCCESS__KIND,
-  BUTTON_WARNING__KIND,
-  Button
-} from '../Button';
+  BUTTON_WARNING__KIND
+} from '../ButtonConstants';
 
 describe('Button', () => {
   it('renders a button without a label', () => {

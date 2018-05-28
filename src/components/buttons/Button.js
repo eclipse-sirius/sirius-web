@@ -15,25 +15,24 @@ import { classNames } from '../../common/classnames';
 import { Spacing } from '../spacing/Spacing';
 import { S, M } from '../spacing/SpacingConstants';
 
+import {
+  BUTTON_DANGER__KIND,
+  BUTTON_DEFAULT__KIND,
+  BUTTON_PRIMARY__KIND,
+  BUTTON_SUCCESS__KIND,
+  BUTTON_WARNING__KIND
+} from './ButtonConstants';
+
 import './Button.css';
 
-/** The default button kind. */
-export const BUTTON_DEFAULT__KIND = 'default';
-
-/** The primary button kind. */
-export const BUTTON_PRIMARY__KIND = 'primary';
-
-/** The success button kind. */
-export const BUTTON_SUCCESS__KIND = 'success';
-
-/** The warning button kind. */
-export const BUTTON_WARNING__KIND = 'warning';
-
-/** The danger button kind. */
-export const BUTTON_DANGER__KIND = 'danger';
-
 const propTypes = {
-  kind: PropTypes.string
+  kind: PropTypes.oneOf([
+    BUTTON_DANGER__KIND,
+    BUTTON_DEFAULT__KIND,
+    BUTTON_PRIMARY__KIND,
+    BUTTON_SUCCESS__KIND,
+    BUTTON_WARNING__KIND
+  ])
 };
 const defaultProps = {
   kind: BUTTON_DEFAULT__KIND

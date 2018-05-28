@@ -11,7 +11,8 @@ import React from 'react';
 
 import { classNames } from '../../common/classnames';
 
-import { Button, BUTTON_PRIMARY__KIND } from '../buttons/Button';
+import { Button } from '../buttons/Button';
+import { BUTTON_PRIMARY__KIND } from '../buttons/ButtonConstants';
 import { Card, Divider, PrimaryTitle } from '../cards/Card';
 import {
   ActionGroup,
