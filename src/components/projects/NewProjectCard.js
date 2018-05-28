@@ -13,7 +13,7 @@ import { classNames } from '../../common/classnames';
 
 import { Button } from '../buttons/Button';
 import { BUTTON_PRIMARY__KIND } from '../buttons/ButtonConstants';
-import { Card, Divider, PrimaryTitle } from '../cards/Card';
+import { Card, Divider } from '../cards/Card';
 import {
   ActionGroup,
   Description,
@@ -24,6 +24,10 @@ import {
   Label,
   TextField
 } from '../form/Form';
+import { Spacing } from '../spacing/Spacing';
+import { M } from '../spacing/SpacingConstants';
+import { Text } from '../text/Text';
+import { SEMI_BOLD, LARGE } from '../text/TextConstants';
 
 const NEWPROJECT_CARD__CLASS_NAMES = 'newprojectcard';
 
@@ -51,7 +55,11 @@ export const NewProjectCard = ({
 
   return (
     <Card className={newProjectCardClassNames} {...props}>
-      <PrimaryTitle label="New Project" />
+      <Spacing top={M} right={M} bottom={M} left={M}>
+        <Text weight={SEMI_BOLD} size={LARGE} hideOverflow>
+          New Project
+        </Text>
+      </Spacing>
       <Divider />
       <Form onSubmit={onSubmit}>
         <ErrorGroup>{errors.map(error => <Error key={error}>{error}</Error>)}</ErrorGroup>

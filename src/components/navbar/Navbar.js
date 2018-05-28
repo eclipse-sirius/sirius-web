@@ -13,6 +13,8 @@ import { classNames } from '../../common/classnames';
 
 import { Spacing } from '../spacing/Spacing';
 import { S, M } from '../spacing/SpacingConstants';
+import { Text } from '../text/Text';
+import { BOLD, EXTRA_EXTRA_LARGE } from '../text/TextConstants';
 
 import './Navbar.css';
 
@@ -30,7 +32,11 @@ export const Navbar = ({ className, ...props }) => {
     <nav className={navClassNames} {...props}>
       <Spacing top={S} right={M} bottom={S} left={M}>
         <div className={NAVBAR_CONTAINER__CLASS_NAMES}>
-          <div className={NARBAR_TITLE__CLASS_NAMES}>Eclipse Sirius</div>
+          <div className={NARBAR_TITLE__CLASS_NAMES}>
+            <Text weight={BOLD} size={EXTRA_EXTRA_LARGE}>
+              Eclipse Sirius
+            </Text>
+          </div>
         </div>
       </Spacing>
     </nav>

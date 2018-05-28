@@ -13,10 +13,12 @@ import PropTypes from 'prop-types';
 import { classNames } from '../../common/classnames';
 
 import { Button } from '../buttons/Button';
-import { Card, HeroTitle } from '../cards/Card';
+import { Card } from '../cards/Card';
 import { TextField } from '../form/Form';
 import { Spacing } from '../spacing/Spacing';
 import { S, M } from '../spacing/SpacingConstants';
+import { Text } from '../text/Text';
+import { SEMI_BOLD, EXTRA_LARGE } from '../text/TextConstants';
 
 import './ProjectHeaderCard.css';
 
@@ -63,7 +65,11 @@ export class ProjectHeaderCard extends Component {
     const cardClassNames = classNames(PROJECTHEADERCARD__CLASS_NAMES, className);
     return (
       <Card className={cardClassNames} {...props}>
-        <HeroTitle label={name} />
+        <Spacing top={M} right={M} bottom={M} left={M}>
+          <Text weight={SEMI_BOLD} size={EXTRA_LARGE} hideOverflow>
+            {name}
+          </Text>
+        </Spacing>
         <Spacing top={S} right={M} bottom={S} left={M}>
           {isViewingDescription ? (
             <ViewDescription
@@ -85,6 +91,8 @@ ProjectHeaderCard.propTypes = projectHeaderCardPropTypes;
 ProjectHeaderCard.defaultProps = projectHeaderCardDefaultProps;
 
 const PROJECTHEADERCARD_VIEWDESCRIPTION__CLASS_NAMES = 'projectheadercard-viewdescription';
+const PROJECTHEADERCARD_VIEWDESCRIPTION_DESCRIPTION__CLASS_NAMES =
+  'projectheadercard-viewdescription-description';
 
 const viewDescriptionPropTypes = {
   description: PropTypes.string.isRequired,
@@ -97,7 +105,9 @@ const viewDescriptionPropTypes = {
  */
 const ViewDescription = ({ description, onEditClick }) => (
   <div className={PROJECTHEADERCARD_VIEWDESCRIPTION__CLASS_NAMES}>
-    <p>{description}</p>
+    <Text className={PROJECTHEADERCARD_VIEWDESCRIPTION_DESCRIPTION__CLASS_NAMES}>
+      {description}
+    </Text>
     <Spacing left={M}>
       <Button onClick={onEditClick}>Edit</Button>
     </Spacing>

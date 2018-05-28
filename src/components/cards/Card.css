@@ -13,14 +13,6 @@
   border-radius: var(--borderRadius-small);
 }
 
-.card-herotitle,
-.card-primarytitle,
-.card-secondarytitle {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .card-divider {
   border-top: 1px solid var(--light-smoke);
 }

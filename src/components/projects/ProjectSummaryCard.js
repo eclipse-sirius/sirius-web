@@ -11,7 +11,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import { Card, PrimaryTitle, Text } from '../cards/Card';
+import { Card } from '../cards/Card';
+import { Spacing } from '../spacing/Spacing';
+import { S, M } from '../spacing/SpacingConstants';
+import { Text } from '../text/Text';
+import { SEMI_BOLD, LARGE } from '../text/TextConstants';
 
 const PROJECT_SUMMARY_CARD__CLASS_NAMES = 'projectsummarycard';
 
@@ -27,9 +31,15 @@ export const ProjectSummaryCard = ({ project, ...props }) => {
   return (
     <Card className={PROJECT_SUMMARY_CARD__CLASS_NAMES} {...props}>
       <Link to={`/projects/${project.name}`}>
-        <PrimaryTitle label={project.name} />
+        <Spacing top={M} right={M} bottom={M} left={M}>
+          <Text weight={SEMI_BOLD} size={LARGE} hideOverflow>
+            {project.name}
+          </Text>
+        </Spacing>
       </Link>
-      <Text>{project.description || 'No description provided'}</Text>
+      <Spacing top={S} right={M} bottom={M} left={M}>
+        <Text>{project.description || 'No description provided'}</Text>
+      </Spacing>
     </Card>
   );
 };

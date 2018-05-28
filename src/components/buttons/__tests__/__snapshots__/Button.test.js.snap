@@ -14,7 +14,11 @@ exports[`Button renders a button with a label 1`] = `
       }
     }
   >
-    OK
+    <div
+      className="text s semibold"
+    >
+      OK
+    </div>
   </div>
 </button>
 `;
@@ -32,7 +36,11 @@ exports[`Button renders a button without a label 1`] = `
         "paddingTop": "8px",
       }
     }
-  />
+  >
+    <div
+      className="text s semibold"
+    />
+  </div>
 </button>
 `;
 
@@ -49,7 +57,11 @@ exports[`Button renders a danger button 1`] = `
         "paddingTop": "8px",
       }
     }
-  />
+  >
+    <div
+      className="text s semibold"
+    />
+  </div>
 </button>
 `;
 
@@ -66,7 +78,11 @@ exports[`Button renders a default button 1`] = `
         "paddingTop": "8px",
       }
     }
-  />
+  >
+    <div
+      className="text s semibold"
+    />
+  </div>
 </button>
 `;
 
@@ -83,7 +99,11 @@ exports[`Button renders a primary button 1`] = `
         "paddingTop": "8px",
       }
     }
-  />
+  >
+    <div
+      className="text s semibold"
+    />
+  </div>
 </button>
 `;
 
@@ -100,7 +120,11 @@ exports[`Button renders a success button 1`] = `
         "paddingTop": "8px",
       }
     }
-  />
+  >
+    <div
+      className="text s semibold"
+    />
+  </div>
 </button>
 `;
 
@@ -117,6 +141,10 @@ exports[`Button renders a warning button 1`] = `
         "paddingTop": "8px",
       }
     }
-  />
+  >
+    <div
+      className="text s semibold"
+    />
+  </div>
 </button>
 `;

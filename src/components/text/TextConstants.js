@@ -7,18 +7,17 @@
  * https://www.eclipse.org/legal/epl-2.0.
  *******************************************************************************/
 
-.projectheadercard-viewdescription {
-  display: flex;
-  align-items: center;
-}
-.projectheadercard-viewdescription-description {
-  margin-right: auto;
-}
+// Text weights
+export const LIGHT = 'light';
+export const REGULAR = 'regular';
+export const SEMI_BOLD = 'semibold';
+export const BOLD = 'bold';
+export const EXTRA_BOLD = 'extrabold';
 
-.projectheadercard-editdescription {
-  display: flex;
-  align-items: center;
-}
-.projectheadercard-editdescription input {
-  margin-right: auto;
-}
+// Text sizes
+export const EXTRA_EXTRA_LARGE = 'xxl';
+export const EXTRA_LARGE = 'xl';
+export const LARGE = 'l';
+export const MEDIUM = 'm';
+export const SMALL = 's';
+export const EXTRA_SMALL = 'xs';

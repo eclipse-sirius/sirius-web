@@ -12,9 +12,13 @@ import PropTypes from 'prop-types';
 
 import { classNames } from '../../common/classnames';
 
-import { Card, PrimaryTitle, Text } from '../cards/Card';
+import { Card } from '../cards/Card';
 import { LIST_WITH_HIGHLIGHT__KIND, AdditionalText, List, MainText, Tile } from '../list/List';
 import { TWO_LINES } from '../list/ListConstants';
+import { Spacing } from '../spacing/Spacing';
+import { S, M } from '../spacing/SpacingConstants';
+import { Text } from '../text/Text';
+import { SEMI_BOLD, LARGE } from '../text/TextConstants';
 
 const PROJECT_REPRESENTATIONS_LIST_CARD__CLASS_NAMES = 'projectrepresentationslistcard';
 
@@ -34,7 +38,11 @@ export const ProjectRepresentationsListCard = ({ className, representations, ...
   const cardClassNames = classNames(PROJECT_REPRESENTATIONS_LIST_CARD__CLASS_NAMES, className);
   return (
     <Card className={cardClassNames} {...props}>
-      <PrimaryTitle label="Representations" />
+      <Spacing top={M} right={M} bottom={M} left={M}>
+        <Text weight={SEMI_BOLD} size={LARGE} hideOverflow>
+          Representations
+        </Text>
+      </Spacing>
       <Representations representations={representations} />
     </Card>
   );
@@ -72,4 +80,8 @@ const RepresentationsList = ({ representations }) => (
 /**
  * Renders a text indicating the lack of representations.
  */
-const EmptyRepresentations = () => <Text>No representation has been found on the project.</Text>;
+const EmptyRepresentations = () => (
+  <Spacing top={S} right={M} bottom={M} left={M}>
+    <Text>No representation has been found on the project.</Text>
+  </Spacing>
+);

@@ -20,7 +20,11 @@ exports[`Navbar renders the navbar component 1`] = `
       <div
         className="navbar-title title-xxl"
       >
-        Eclipse Sirius
+        <div
+          className="text xxl bold"
+        >
+          Eclipse Sirius
+        </div>
       </div>
     </div>
   </div>

@@ -17,11 +17,11 @@ exports[`NewProjectView renders a card with a form ready to be submitted to crea
         }
       }
     >
-      <h2
-        className="card-primarytitle title-l"
+      <div
+        className="text l semibold hideoverflow"
       >
         New Project
-      </h2>
+      </div>
     </div>
     <div
       className="card-divider"
@@ -152,7 +152,11 @@ exports[`NewProjectView renders a card with a form ready to be submitted to crea
                   }
                 }
               >
-                Create Project
+                <div
+                  className="text s semibold"
+                >
+                  Create Project
+                </div>
               </div>
             </button>
           </div>
@@ -180,11 +184,11 @@ exports[`NewProjectView renders a card with a unsubmittable form to create a new
         }
       }
     >
-      <h2
-        className="card-primarytitle title-l"
+      <div
+        className="text l semibold hideoverflow"
       >
         New Project
-      </h2>
+      </div>
     </div>
     <div
       className="card-divider"
@@ -315,7 +319,11 @@ exports[`NewProjectView renders a card with a unsubmittable form to create a new
                   }
                 }
               >
-                Create Project
+                <div
+                  className="text s semibold"
+                >
+                  Create Project
+                </div>
               </div>
             </button>
           </div>
@@ -386,11 +394,11 @@ exports[`NewProjectView renders errors message 1`] = `
         }
       }
     >
-      <h2
-        className="card-primarytitle title-l"
+      <div
+        className="text l semibold hideoverflow"
       >
         New Project
-      </h2>
+      </div>
     </div>
     <div
       className="card-divider"
@@ -555,7 +563,11 @@ exports[`NewProjectView renders errors message 1`] = `
                   }
                 }
               >
-                Create Project
+                <div
+                  className="text s semibold"
+                >
+                  Create Project
+                </div>
               </div>
             </button>
           </div>

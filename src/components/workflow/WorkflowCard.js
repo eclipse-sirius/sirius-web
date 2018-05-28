@@ -12,11 +12,15 @@ import PropTypes from 'prop-types';
 
 import { classNames } from '../../common/classnames';
 
-import { Card, Divider, PrimaryTitle, SecondaryTitle, Text } from '../cards/Card';
+import { Card, Divider } from '../cards/Card';
 import { IconRun } from '../icons/IconRun';
 import { List, MainText, Tile, AdditionalIcon, LIST_WITH_HIGHLIGHT__KIND } from '../list/List';
 import { SINGLE_LINE } from '../list/ListConstants';
+import { Spacing } from '../spacing/Spacing';
+import { S, M } from '../spacing/SpacingConstants';
 import { TabBar } from '../tabbar/TabBar';
+import { Text } from '../text/Text';
+import { SEMI_BOLD, MEDIUM, LARGE } from '../text/TextConstants';
 
 import './WorkflowCard.css';
 
@@ -63,7 +67,11 @@ export const WorkflowCard = ({
   const workflowCardClassNames = classNames(WORKFLOWCARD__CLASS_NAMES, className);
   return (
     <Card {...props} className={workflowCardClassNames}>
-      <PrimaryTitle label="Workflow" />
+      <Spacing top={M} right={M} bottom={M} left={M}>
+        <Text weight={SEMI_BOLD} size={LARGE} hideOverflow>
+          Workflow
+        </Text>
+      </Spacing>
       <WorkflowTabBar pages={pages} selectedTabIndex={selectedTabIndex} onTabClick={onTabClick} />
       <Sections
         sections={sections}
@@ -79,7 +87,11 @@ WorkflowCard.defaultProps = defaultProps;
 
 const WorkflowTabBar = ({ pages, selectedTabIndex, onTabClick }) => {
   if (pages.length === 0) {
-    return <Text>No workflow pages found</Text>;
+    return (
+      <Spacing top={S} right={M} bottom={M} left={M}>
+        <Text>No workflow pages found</Text>
+      </Spacing>
+    );
   }
   return (
     <TabBar
@@ -108,7 +120,11 @@ const Sections = ({ sections, projectName, pageIdentifier, onActivityClick }) =>
   ));
 };
 
-const EmptySections = () => <Text>No sections found in the workflow</Text>;
+const EmptySections = () => (
+  <Spacing top={S} right={M} bottom={M} left={M}>
+    <Text>No sections found in the workflow.</Text>
+  </Spacing>
+);
 
 const SECTION__CLASS_NAMES = 'section';
 
@@ -123,7 +139,11 @@ const Section = ({
   const sectionClassNames = classNames(SECTION__CLASS_NAMES, className);
   return (
     <div className={sectionClassNames} {...props}>
-      <SecondaryTitle label={section.name} />
+      <Spacing top={M} right={M} bottom={M} left={M}>
+        <Text weight={SEMI_BOLD} size={MEDIUM} hideOverflow>
+          {section.name}
+        </Text>
+      </Spacing>
       <Activities
         activities={section.activities}
         onActivityClick={onActivityClick}
@@ -179,4 +199,8 @@ const ActivitiesList = ({
   </List>
 );
 
-const EmptyActivities = () => <Text>No activities in the section</Text>;
+const EmptyActivities = () => (
+  <Spacing top={S} right={M} bottom={M} left={M}>
+    <Text>No activities in the section.</Text>
+  </Spacing>
+);
