@@ -12,9 +12,13 @@ import PropTypes from 'prop-types';
 
 import { classNames } from '../../common/classnames';
 
-import { Card, PrimaryTitle } from '../cards/Card';
+import { Card } from '../cards/Card';
 import { LIST_WITH_HIGHLIGHT__KIND, AdditionalText, List, MainText, Tile } from '../list/List';
 import { TWO_LINES } from '../list/ListConstants';
+import { Spacing } from '../spacing/Spacing';
+import { M } from '../spacing/SpacingConstants';
+import { Text } from '../text/Text';
+import { SEMI_BOLD, LARGE } from '../text/TextConstants';
 
 import './ProjectsListCard.css';
 
@@ -34,7 +38,11 @@ export const ProjectsListCard = ({ className, projects, ...props }) => {
   const projectsListCardClassNames = classNames(PROJECTS_LIST_CARD__CLASS_NAMES, className);
   return (
     <Card className={projectsListCardClassNames} {...props}>
-      <PrimaryTitle label="Projects" />
+      <Spacing top={M} right={M} bottom={M} left={M}>
+        <Text weight={SEMI_BOLD} size={LARGE}>
+          Projects
+        </Text>
+      </Spacing>
       <List kind={LIST_WITH_HIGHLIGHT__KIND}>
         {projects.map(project => {
           return (

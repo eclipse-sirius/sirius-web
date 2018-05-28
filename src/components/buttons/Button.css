@@ -10,7 +10,6 @@
   cursor: pointer;
   border-radius: 2px;
   text-transform: capitalize;
-  font-weight: var(--fontWeight-semiBold);
 }
 .button:hover {
   box-shadow: var(--boxShadow-emboss);

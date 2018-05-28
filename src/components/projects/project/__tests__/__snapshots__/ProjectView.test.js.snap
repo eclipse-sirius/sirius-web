@@ -107,11 +107,11 @@ exports[`ProjectView renders the project with activities 1`] = `
         }
       }
     >
-      <h1
-        className="card-herotitle title-xl"
+      <div
+        className="text xl semibold hideoverflow"
       >
         Project
-      </h1>
+      </div>
     </div>
     <div
       style={
@@ -126,9 +126,11 @@ exports[`ProjectView renders the project with activities 1`] = `
       <div
         className="projectheadercard-viewdescription"
       >
-        <p>
+        <div
+          className="text s regular projectheadercard-viewdescription-description"
+        >
           No description provided
-        </p>
+        </div>
         <div
           style={
             Object {
@@ -153,7 +155,11 @@ exports[`ProjectView renders the project with activities 1`] = `
                 }
               }
             >
-              Edit
+              <div
+                className="text s semibold"
+              >
+                Edit
+              </div>
             </div>
           </button>
         </div>
@@ -179,11 +185,11 @@ exports[`ProjectView renders the project with activities 1`] = `
             }
           }
         >
-          <h2
-            className="card-primarytitle title-l"
+          <div
+            className="text l semibold hideoverflow"
           >
             Semantic Resources
-          </h2>
+          </div>
         </div>
         <ul
           className="list list--highlighted"
@@ -201,13 +207,13 @@ exports[`ProjectView renders the project with activities 1`] = `
             <li
               className="tile tile--singleline"
             >
-              <h4
-                className="tile-maintext body-s"
+              <div
+                className="text s regular tile-maintext"
               >
                 /model/model.ecore
-              </h4>
+              </div>
               <div
-                className="semanticresources-size caption-s"
+                className="text s regular"
               />
             </li>
           </div>
@@ -226,11 +232,11 @@ exports[`ProjectView renders the project with activities 1`] = `
             }
           }
         >
-          <h2
-            className="card-primarytitle title-l"
+          <div
+            className="text l semibold hideoverflow"
           >
             Representations
-          </h2>
+          </div>
         </div>
         <ul
           className="list list--highlighted"
@@ -249,13 +255,13 @@ exports[`ProjectView renders the project with activities 1`] = `
               className="tile tile--twoline"
             >
               <div>
-                <h4
-                  className="tile-maintext body-s"
+                <div
+                  className="text s regular tile-maintext"
                 >
                   Class Diagram
-                </h4>
-                <h5
-                  className="tile-additionaltext caption-xs"
+                </div>
+                <div
+                  className="text xs light tile-additionaltext"
                 />
               </div>
             </li>
@@ -263,13 +269,13 @@ exports[`ProjectView renders the project with activities 1`] = `
               className="tile tile--twoline"
             >
               <div>
-                <h4
-                  className="tile-maintext body-s"
+                <div
+                  className="text s regular tile-maintext"
                 >
                   Activity Diagram
-                </h4>
-                <h5
-                  className="tile-additionaltext caption-xs"
+                </div>
+                <div
+                  className="text xs light tile-additionaltext"
                 />
               </div>
             </li>
@@ -293,11 +299,11 @@ exports[`ProjectView renders the project with activities 1`] = `
             }
           }
         >
-          <h2
-            className="card-primarytitle title-l"
+          <div
+            className="text l semibold hideoverflow"
           >
             Workflow
-          </h2>
+          </div>
         </div>
         <div
           className="tabbar"
@@ -307,17 +313,25 @@ exports[`ProjectView renders the project with activities 1`] = `
             data-side="previous"
             onClick={[Function]}
           >
-            &lt;
+            <div
+              className="text s semibold"
+            >
+              &lt;
+            </div>
           </div>
           <div
             className="tabbar-tabs"
           >
             <div
-              className="tabbar-tab title-m tabbar-tab--selected"
+              className="tabbar-tab tabbar-tab--selected"
               data-index={0}
               onClick={[Function]}
             >
-              page1
+              <div
+                className="text m semibold"
+              >
+                page1
+              </div>
             </div>
           </div>
           <div
@@ -325,7 +339,11 @@ exports[`ProjectView renders the project with activities 1`] = `
             data-side="next"
             onClick={[Function]}
           >
-            &gt;
+            <div
+              className="text s semibold"
+            >
+              &gt;
+            </div>
           </div>
         </div>
         <div
@@ -339,9 +357,9 @@ exports[`ProjectView renders the project with activities 1`] = `
           }
         >
           <div
-            className="card-text body-s"
+            className="text s regular"
           >
-            No sections found in the workflow
+            No sections found in the workflow.
           </div>
         </div>
       </div>
@@ -367,11 +385,11 @@ exports[`ProjectView renders the project without activities 1`] = `
         }
       }
     >
-      <h1
-        className="card-herotitle title-xl"
+      <div
+        className="text xl semibold hideoverflow"
       >
         Project
-      </h1>
+      </div>
     </div>
     <div
       style={
@@ -386,9 +404,11 @@ exports[`ProjectView renders the project without activities 1`] = `
       <div
         className="projectheadercard-viewdescription"
       >
-        <p>
+        <div
+          className="text s regular projectheadercard-viewdescription-description"
+        >
           No description provided
-        </p>
+        </div>
         <div
           style={
             Object {
@@ -413,7 +433,11 @@ exports[`ProjectView renders the project without activities 1`] = `
                 }
               }
             >
-              Edit
+              <div
+                className="text s semibold"
+              >
+                Edit
+              </div>
             </div>
           </button>
         </div>
@@ -439,11 +463,11 @@ exports[`ProjectView renders the project without activities 1`] = `
             }
           }
         >
-          <h2
-            className="card-primarytitle title-l"
+          <div
+            className="text l semibold hideoverflow"
           >
             Semantic Resources
-          </h2>
+          </div>
         </div>
         <ul
           className="list list--highlighted"
@@ -461,13 +485,13 @@ exports[`ProjectView renders the project without activities 1`] = `
             <li
               className="tile tile--singleline"
             >
-              <h4
-                className="tile-maintext body-s"
+              <div
+                className="text s regular tile-maintext"
               >
                 /model/model.ecore
-              </h4>
+              </div>
               <div
-                className="semanticresources-size caption-s"
+                className="text s regular"
               />
             </li>
           </div>
@@ -486,11 +510,11 @@ exports[`ProjectView renders the project without activities 1`] = `
             }
           }
         >
-          <h2
-            className="card-primarytitle title-l"
+          <div
+            className="text l semibold hideoverflow"
           >
             Representations
-          </h2>
+          </div>
         </div>
         <ul
           className="list list--highlighted"
@@ -509,13 +533,13 @@ exports[`ProjectView renders the project without activities 1`] = `
               className="tile tile--twoline"
             >
               <div>
-                <h4
-                  className="tile-maintext body-s"
+                <div
+                  className="text s regular tile-maintext"
                 >
                   Class Diagram
-                </h4>
-                <h5
-                  className="tile-additionaltext caption-xs"
+                </div>
+                <div
+                  className="text xs light tile-additionaltext"
                 />
               </div>
             </li>
@@ -523,13 +547,13 @@ exports[`ProjectView renders the project without activities 1`] = `
               className="tile tile--twoline"
             >
               <div>
-                <h4
-                  className="tile-maintext body-s"
+                <div
+                  className="text s regular tile-maintext"
                 >
                   Activity Diagram
-                </h4>
-                <h5
-                  className="tile-additionaltext caption-xs"
+                </div>
+                <div
+                  className="text xs light tile-additionaltext"
                 />
               </div>
             </li>
@@ -553,11 +577,11 @@ exports[`ProjectView renders the project without activities 1`] = `
             }
           }
         >
-          <h2
-            className="card-primarytitle title-l"
+          <div
+            className="text l semibold hideoverflow"
           >
             Workflow
-          </h2>
+          </div>
         </div>
         <div
           className="tabbar"
@@ -567,17 +591,25 @@ exports[`ProjectView renders the project without activities 1`] = `
             data-side="previous"
             onClick={[Function]}
           >
-            &lt;
+            <div
+              className="text s semibold"
+            >
+              &lt;
+            </div>
           </div>
           <div
             className="tabbar-tabs"
           >
             <div
-              className="tabbar-tab title-m tabbar-tab--selected"
+              className="tabbar-tab tabbar-tab--selected"
               data-index={0}
               onClick={[Function]}
             >
-              page1
+              <div
+                className="text m semibold"
+              >
+                page1
+              </div>
             </div>
           </div>
           <div
@@ -585,7 +617,11 @@ exports[`ProjectView renders the project without activities 1`] = `
             data-side="next"
             onClick={[Function]}
           >
-            &gt;
+            <div
+              className="text s semibold"
+            >
+              &gt;
+            </div>
           </div>
         </div>
         <div
@@ -599,9 +635,9 @@ exports[`ProjectView renders the project without activities 1`] = `
           }
         >
           <div
-            className="card-text body-s"
+            className="text s regular"
           >
-            No sections found in the workflow
+            No sections found in the workflow.
           </div>
         </div>
       </div>
@@ -627,11 +663,11 @@ exports[`ProjectView renders the project without any workflow 1`] = `
         }
       }
     >
-      <h1
-        className="card-herotitle title-xl"
+      <div
+        className="text xl semibold hideoverflow"
       >
         Project
-      </h1>
+      </div>
     </div>
     <div
       style={
@@ -646,9 +682,11 @@ exports[`ProjectView renders the project without any workflow 1`] = `
       <div
         className="projectheadercard-viewdescription"
       >
-        <p>
+        <div
+          className="text s regular projectheadercard-viewdescription-description"
+        >
           No description provided
-        </p>
+        </div>
         <div
           style={
             Object {
@@ -673,7 +711,11 @@ exports[`ProjectView renders the project without any workflow 1`] = `
                 }
               }
             >
-              Edit
+              <div
+                className="text s semibold"
+              >
+                Edit
+              </div>
             </div>
           </button>
         </div>
@@ -699,11 +741,11 @@ exports[`ProjectView renders the project without any workflow 1`] = `
             }
           }
         >
-          <h2
-            className="card-primarytitle title-l"
+          <div
+            className="text l semibold hideoverflow"
           >
             Semantic Resources
-          </h2>
+          </div>
         </div>
         <ul
           className="list list--highlighted"
@@ -721,13 +763,13 @@ exports[`ProjectView renders the project without any workflow 1`] = `
             <li
               className="tile tile--singleline"
             >
-              <h4
-                className="tile-maintext body-s"
+              <div
+                className="text s regular tile-maintext"
               >
                 /model/model.ecore
-              </h4>
+              </div>
               <div
-                className="semanticresources-size caption-s"
+                className="text s regular"
               />
             </li>
           </div>
@@ -746,11 +788,11 @@ exports[`ProjectView renders the project without any workflow 1`] = `
             }
           }
         >
-          <h2
-            className="card-primarytitle title-l"
+          <div
+            className="text l semibold hideoverflow"
           >
             Representations
-          </h2>
+          </div>
         </div>
         <ul
           className="list list--highlighted"
@@ -769,13 +811,13 @@ exports[`ProjectView renders the project without any workflow 1`] = `
               className="tile tile--twoline"
             >
               <div>
-                <h4
-                  className="tile-maintext body-s"
+                <div
+                  className="text s regular tile-maintext"
                 >
                   Class Diagram
-                </h4>
-                <h5
-                  className="tile-additionaltext caption-xs"
+                </div>
+                <div
+                  className="text xs light tile-additionaltext"
                 />
               </div>
             </li>
@@ -783,13 +825,13 @@ exports[`ProjectView renders the project without any workflow 1`] = `
               className="tile tile--twoline"
             >
               <div>
-                <h4
-                  className="tile-maintext body-s"
+                <div
+                  className="text s regular tile-maintext"
                 >
                   Activity Diagram
-                </h4>
-                <h5
-                  className="tile-additionaltext caption-xs"
+                </div>
+                <div
+                  className="text xs light tile-additionaltext"
                 />
               </div>
             </li>
@@ -813,11 +855,11 @@ exports[`ProjectView renders the project without any workflow 1`] = `
             }
           }
         >
-          <h2
-            className="card-primarytitle title-l"
+          <div
+            className="text l semibold hideoverflow"
           >
             Workflow
-          </h2>
+          </div>
         </div>
         <div
           style={
@@ -830,7 +872,7 @@ exports[`ProjectView renders the project without any workflow 1`] = `
           }
         >
           <div
-            className="card-text body-s"
+            className="text s regular"
           >
             No workflow pages found
           </div>
@@ -846,9 +888,9 @@ exports[`ProjectView renders the project without any workflow 1`] = `
           }
         >
           <div
-            className="card-text body-s"
+            className="text s regular"
           >
-            No sections found in the workflow
+            No sections found in the workflow.
           </div>
         </div>
       </div>
@@ -874,11 +916,11 @@ exports[`ProjectView renders the project without sections 1`] = `
         }
       }
     >
-      <h1
-        className="card-herotitle title-xl"
+      <div
+        className="text xl semibold hideoverflow"
       >
         Project
-      </h1>
+      </div>
     </div>
     <div
       style={
@@ -893,9 +935,11 @@ exports[`ProjectView renders the project without sections 1`] = `
       <div
         className="projectheadercard-viewdescription"
       >
-        <p>
+        <div
+          className="text s regular projectheadercard-viewdescription-description"
+        >
           No description provided
-        </p>
+        </div>
         <div
           style={
             Object {
@@ -920,7 +964,11 @@ exports[`ProjectView renders the project without sections 1`] = `
                 }
               }
             >
-              Edit
+              <div
+                className="text s semibold"
+              >
+                Edit
+              </div>
             </div>
           </button>
         </div>
@@ -946,11 +994,11 @@ exports[`ProjectView renders the project without sections 1`] = `
             }
           }
         >
-          <h2
-            className="card-primarytitle title-l"
+          <div
+            className="text l semibold hideoverflow"
           >
             Semantic Resources
-          </h2>
+          </div>
         </div>
         <ul
           className="list list--highlighted"
@@ -968,13 +1016,13 @@ exports[`ProjectView renders the project without sections 1`] = `
             <li
               className="tile tile--singleline"
             >
-              <h4
-                className="tile-maintext body-s"
+              <div
+                className="text s regular tile-maintext"
               >
                 /model/model.ecore
-              </h4>
+              </div>
               <div
-                className="semanticresources-size caption-s"
+                className="text s regular"
               />
             </li>
           </div>
@@ -993,11 +1041,11 @@ exports[`ProjectView renders the project without sections 1`] = `
             }
           }
         >
-          <h2
-            className="card-primarytitle title-l"
+          <div
+            className="text l semibold hideoverflow"
           >
             Representations
-          </h2>
+          </div>
         </div>
         <ul
           className="list list--highlighted"
@@ -1016,13 +1064,13 @@ exports[`ProjectView renders the project without sections 1`] = `
               className="tile tile--twoline"
             >
               <div>
-                <h4
-                  className="tile-maintext body-s"
+                <div
+                  className="text s regular tile-maintext"
                 >
                   Class Diagram
-                </h4>
-                <h5
-                  className="tile-additionaltext caption-xs"
+                </div>
+                <div
+                  className="text xs light tile-additionaltext"
                 />
               </div>
             </li>
@@ -1030,13 +1078,13 @@ exports[`ProjectView renders the project without sections 1`] = `
               className="tile tile--twoline"
             >
               <div>
-                <h4
-                  className="tile-maintext body-s"
+                <div
+                  className="text s regular tile-maintext"
                 >
                   Activity Diagram
-                </h4>
-                <h5
-                  className="tile-additionaltext caption-xs"
+                </div>
+                <div
+                  className="text xs light tile-additionaltext"
                 />
               </div>
             </li>
@@ -1060,11 +1108,11 @@ exports[`ProjectView renders the project without sections 1`] = `
             }
           }
         >
-          <h2
-            className="card-primarytitle title-l"
+          <div
+            className="text l semibold hideoverflow"
           >
             Workflow
-          </h2>
+          </div>
         </div>
         <div
           className="tabbar"
@@ -1074,17 +1122,25 @@ exports[`ProjectView renders the project without sections 1`] = `
             data-side="previous"
             onClick={[Function]}
           >
-            &lt;
+            <div
+              className="text s semibold"
+            >
+              &lt;
+            </div>
           </div>
           <div
             className="tabbar-tabs"
           >
             <div
-              className="tabbar-tab title-m tabbar-tab--selected"
+              className="tabbar-tab tabbar-tab--selected"
               data-index={0}
               onClick={[Function]}
             >
-              page1
+              <div
+                className="text m semibold"
+              >
+                page1
+              </div>
             </div>
           </div>
           <div
@@ -1092,7 +1148,11 @@ exports[`ProjectView renders the project without sections 1`] = `
             data-side="next"
             onClick={[Function]}
           >
-            &gt;
+            <div
+              className="text s semibold"
+            >
+              &gt;
+            </div>
           </div>
         </div>
         <div
@@ -1106,9 +1166,9 @@ exports[`ProjectView renders the project without sections 1`] = `
           }
         >
           <div
-            className="card-text body-s"
+            className="text s regular"
           >
-            No sections found in the workflow
+            No sections found in the workflow.
           </div>
         </div>
       </div>

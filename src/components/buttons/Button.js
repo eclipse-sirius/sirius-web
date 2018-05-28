@@ -14,6 +14,8 @@ import { classNames } from '../../common/classnames';
 
 import { Spacing } from '../spacing/Spacing';
 import { S, M } from '../spacing/SpacingConstants';
+import { Text } from '../text/Text';
+import { SEMI_BOLD } from '../text/TextConstants';
 
 import {
   BUTTON_DANGER__KIND,
@@ -47,7 +49,7 @@ export const Button = ({ className, kind, ...props }) => {
   return (
     <button className={buttonClassNames} {...props}>
       <Spacing top={S} right={M} bottom={S} left={M}>
-        {props.children}
+        <Text weight={SEMI_BOLD}>{props.children}</Text>
       </Spacing>
     </button>
   );

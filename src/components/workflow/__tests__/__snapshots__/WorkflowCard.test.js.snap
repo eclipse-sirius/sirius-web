@@ -14,11 +14,11 @@ exports[`WorkflowCard renders the workflow card 1`] = `
       }
     }
   >
-    <h2
-      className="card-primarytitle title-l"
+    <div
+      className="text l semibold hideoverflow"
     >
       Workflow
-    </h2>
+    </div>
   </div>
   <div
     className="tabbar"
@@ -28,31 +28,47 @@ exports[`WorkflowCard renders the workflow card 1`] = `
       data-side="previous"
       onClick={[Function]}
     >
-      &lt;
+      <div
+        className="text s semibold"
+      >
+        &lt;
+      </div>
     </div>
     <div
       className="tabbar-tabs"
     >
       <div
-        className="tabbar-tab title-m tabbar-tab--selected"
+        className="tabbar-tab tabbar-tab--selected"
         data-index={0}
         onClick={[Function]}
       >
-        Test Page
+        <div
+          className="text m semibold"
+        >
+          Test Page
+        </div>
       </div>
       <div
-        className="tabbar-tab title-m"
+        className="tabbar-tab"
         data-index={1}
         onClick={[Function]}
       >
-        Test Page 1
+        <div
+          className="text m semibold"
+        >
+          Test Page 1
+        </div>
       </div>
       <div
-        className="tabbar-tab title-m"
+        className="tabbar-tab"
         data-index={2}
         onClick={[Function]}
       >
-        Test Page 2
+        <div
+          className="text m semibold"
+        >
+          Test Page 2
+        </div>
       </div>
     </div>
     <div
@@ -60,7 +76,11 @@ exports[`WorkflowCard renders the workflow card 1`] = `
       data-side="next"
       onClick={[Function]}
     >
-      &gt;
+      <div
+        className="text s semibold"
+      >
+        &gt;
+      </div>
     </div>
   </div>
   <div
@@ -69,18 +89,18 @@ exports[`WorkflowCard renders the workflow card 1`] = `
     <div
       style={
         Object {
-          "paddingBottom": "8px",
+          "paddingBottom": "16px",
           "paddingLeft": "16px",
           "paddingRight": "16px",
           "paddingTop": "16px",
         }
       }
     >
-      <h3
-        className="card-secondarytitle title-m"
+      <div
+        className="text m semibold hideoverflow"
       >
         Test Section
-      </h3>
+      </div>
     </div>
     <ul
       className="list list--highlighted"
@@ -98,11 +118,11 @@ exports[`WorkflowCard renders the workflow card 1`] = `
         <li
           className="tile tile--singleline"
         >
-          <h4
-            className="tile-maintext body-s"
+          <div
+            className="text s regular tile-maintext"
           >
             Test Activity
-          </h4>
+          </div>
           <div
             className="tile-additionalicon"
           >
@@ -122,11 +142,11 @@ exports[`WorkflowCard renders the workflow card 1`] = `
         <li
           className="tile tile--singleline"
         >
-          <h4
-            className="tile-maintext body-s"
+          <div
+            className="text s regular tile-maintext"
           >
             Test Activity 1
-          </h4>
+          </div>
           <div
             className="tile-additionalicon"
           >
@@ -155,18 +175,18 @@ exports[`WorkflowCard renders the workflow card 1`] = `
     <div
       style={
         Object {
-          "paddingBottom": "8px",
+          "paddingBottom": "16px",
           "paddingLeft": "16px",
           "paddingRight": "16px",
           "paddingTop": "16px",
         }
       }
     >
-      <h3
-        className="card-secondarytitle title-m"
+      <div
+        className="text m semibold hideoverflow"
       >
         Test Section 1
-      </h3>
+      </div>
     </div>
     <ul
       className="list list--highlighted"
@@ -184,11 +204,11 @@ exports[`WorkflowCard renders the workflow card 1`] = `
         <li
           className="tile tile--singleline"
         >
-          <h4
-            className="tile-maintext body-s"
+          <div
+            className="text s regular tile-maintext"
           >
             Test Activity
-          </h4>
+          </div>
           <div
             className="tile-additionalicon"
           >

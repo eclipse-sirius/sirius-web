@@ -148,11 +148,11 @@ exports[`ListProjectsView renders the projects 1`] = `
         }
       }
     >
-      <h2
-        className="card-primarytitle title-l"
+      <div
+        className="text l semibold"
       >
         Projects
-      </h2>
+      </div>
     </div>
     <ul
       className="list list--highlighted"
@@ -175,16 +175,16 @@ exports[`ListProjectsView renders the projects 1`] = `
             className="tile tile--twoline"
           >
             <div>
-              <h4
-                className="tile-maintext body-s"
+              <div
+                className="text s regular tile-maintext"
               >
                 First Project
-              </h4>
-              <h5
-                className="tile-additionaltext caption-xs"
+              </div>
+              <div
+                className="text xs light tile-additionaltext"
               >
                 No description provided
-              </h5>
+              </div>
             </div>
           </li>
         </a>
@@ -196,16 +196,16 @@ exports[`ListProjectsView renders the projects 1`] = `
             className="tile tile--twoline"
           >
             <div>
-              <h4
-                className="tile-maintext body-s"
+              <div
+                className="text s regular tile-maintext"
               >
                 Second Project
-              </h4>
-              <h5
-                className="tile-additionaltext caption-xs"
+              </div>
+              <div
+                className="text xs light tile-additionaltext"
               >
                 No description provided
-              </h5>
+              </div>
             </div>
           </li>
         </a>

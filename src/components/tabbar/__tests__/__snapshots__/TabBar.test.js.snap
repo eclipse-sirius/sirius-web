@@ -9,31 +9,47 @@ exports[`TabBar renders a list of tabs 1`] = `
     data-side="previous"
     onClick={[Function]}
   >
-    &lt;
+    <div
+      className="text s semibold"
+    >
+      &lt;
+    </div>
   </div>
   <div
     className="tabbar-tabs"
   >
     <div
-      className="tabbar-tab title-m tabbar-tab--selected"
+      className="tabbar-tab tabbar-tab--selected"
       data-index={0}
       onClick={[Function]}
     >
-      First
+      <div
+        className="text m semibold"
+      >
+        First
+      </div>
     </div>
     <div
-      className="tabbar-tab title-m"
+      className="tabbar-tab"
       data-index={1}
       onClick={[Function]}
     >
-      Second
+      <div
+        className="text m semibold"
+      >
+        Second
+      </div>
     </div>
     <div
-      className="tabbar-tab title-m"
+      className="tabbar-tab"
       data-index={2}
       onClick={[Function]}
     >
-      Third
+      <div
+        className="text m semibold"
+      >
+        Third
+      </div>
     </div>
   </div>
   <div
@@ -41,7 +57,11 @@ exports[`TabBar renders a list of tabs 1`] = `
     data-side="next"
     onClick={[Function]}
   >
-    &gt;
+    <div
+      className="text s semibold"
+    >
+      &gt;
+    </div>
   </div>
 </div>
 `;
@@ -55,31 +75,47 @@ exports[`TabBar renders a list of tabs with a selected tab 1`] = `
     data-side="previous"
     onClick={[Function]}
   >
-    &lt;
+    <div
+      className="text s semibold"
+    >
+      &lt;
+    </div>
   </div>
   <div
     className="tabbar-tabs"
   >
     <div
-      className="tabbar-tab title-m"
+      className="tabbar-tab"
       data-index={0}
       onClick={[Function]}
     >
-      First
+      <div
+        className="text m semibold"
+      >
+        First
+      </div>
     </div>
     <div
-      className="tabbar-tab title-m tabbar-tab--selected"
+      className="tabbar-tab tabbar-tab--selected"
       data-index={1}
       onClick={[Function]}
     >
-      Second
+      <div
+        className="text m semibold"
+      >
+        Second
+      </div>
     </div>
     <div
-      className="tabbar-tab title-m"
+      className="tabbar-tab"
       data-index={2}
       onClick={[Function]}
     >
-      Third
+      <div
+        className="text m semibold"
+      >
+        Third
+      </div>
     </div>
   </div>
   <div
@@ -87,7 +123,11 @@ exports[`TabBar renders a list of tabs with a selected tab 1`] = `
     data-side="next"
     onClick={[Function]}
   >
-    &gt;
+    <div
+      className="text s semibold"
+    >
+      &gt;
+    </div>
   </div>
 </div>
 `;

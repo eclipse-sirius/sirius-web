@@ -243,11 +243,11 @@ exports[`DashboardView renders the projects 1`] = `
               }
             }
           >
-            <h2
-              className="card-primarytitle title-l"
+            <div
+              className="text l semibold hideoverflow"
             >
               First Project
-            </h2>
+            </div>
           </div>
         </a>
         <div
@@ -261,7 +261,7 @@ exports[`DashboardView renders the projects 1`] = `
           }
         >
           <div
-            className="card-text body-s"
+            className="text s regular"
           >
             No description provided
           </div>
@@ -284,11 +284,11 @@ exports[`DashboardView renders the projects 1`] = `
               }
             }
           >
-            <h2
-              className="card-primarytitle title-l"
+            <div
+              className="text l semibold hideoverflow"
             >
               Second Project
-            </h2>
+            </div>
           </div>
         </a>
         <div
@@ -302,7 +302,7 @@ exports[`DashboardView renders the projects 1`] = `
           }
         >
           <div
-            className="card-text body-s"
+            className="text s regular"
           >
             No description provided
           </div>

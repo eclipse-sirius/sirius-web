@@ -12,12 +12,15 @@ import PropTypes from 'prop-types';
 
 import { classNames } from '../../common/classnames';
 
-import { Card, PrimaryTitle, Text } from '../cards/Card';
+import { Card } from '../cards/Card';
 import { LIST_WITH_HIGHLIGHT__KIND, List, MainText, Tile } from '../list/List';
 import { SINGLE_LINE } from '../list/ListConstants';
+import { Spacing } from '../spacing/Spacing';
+import { S, M } from '../spacing/SpacingConstants';
+import { Text } from '../text/Text';
+import { SEMI_BOLD, SMALL, LARGE } from '../text/TextConstants';
 
 const PROJECT_SEMANTIC_RESOURCES_LIST_CARD__CLASS_NAMES = 'projectsemanticresourceslistcard';
-const SEMANTIC_RESOURCES_SIZE__CLASS_NAMES = 'semanticresources-size caption-s';
 
 const propTypes = {
   semanticResources: PropTypes.array.isRequired
@@ -35,7 +38,11 @@ export const ProjectSemanticResourcesListCard = ({ className, semanticResources,
   const cardClassNames = classNames(PROJECT_SEMANTIC_RESOURCES_LIST_CARD__CLASS_NAMES, className);
   return (
     <Card className={cardClassNames} {...props}>
-      <PrimaryTitle label="Semantic Resources" />
+      <Spacing top={M} right={M} bottom={M} left={M}>
+        <Text weight={SEMI_BOLD} size={LARGE} hideOverflow>
+          Semantic Resources
+        </Text>
+      </Spacing>
       <SemanticResources semanticResources={semanticResources} />
     </Card>
   );
@@ -62,7 +69,7 @@ const SemanticResourcesList = ({ semanticResources }) => (
     {semanticResources.map(resource => (
       <Tile kind={SINGLE_LINE} key={resource.path}>
         <MainText>{resource.path}</MainText>
-        <div className={SEMANTIC_RESOURCES_SIZE__CLASS_NAMES}>{resource.size}</div>
+        <Text size={SMALL}>{resource.size}</Text>
       </Tile>
     ))}
   </List>
@@ -72,5 +79,7 @@ const SemanticResourcesList = ({ semanticResources }) => (
  * Renders a text indicating the lack of semantic resources.
  */
 const EmptySemanticResources = () => (
-  <Text>No semantic resource has been found on the project.</Text>
+  <Spacing top={S} right={M} bottom={M} left={M}>
+    <Text>No semantic resource has been found on the project.</Text>
+  </Spacing>
 );

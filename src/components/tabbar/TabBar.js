@@ -12,6 +12,9 @@ import PropTypes from 'prop-types';
 
 import { classNames } from '../../common/classnames';
 
+import { Text } from '../text/Text';
+import { SEMI_BOLD, MEDIUM } from '../text/TextConstants';
+
 import { actionCreator, dispatcher } from './TabBarDispatcher';
 
 import './TabBar.css';
@@ -21,7 +24,7 @@ const TABBAR_NAV__CLASS_NAMES = 'tabbar-nav';
 const TABBAR_NAV__DISABLED__CLASS_NAMES = 'tabbar-nav--disabled';
 const TABBAR_TAB__CONTAIN_SELECTION__CLASS_NAMES = 'tabbar-nav--contain-selection';
 const TABBAR_TABS__CLASS_NAMES = 'tabbar-tabs';
-const TABBAR_TAB__CLASS_NAMES = 'tabbar-tab title-m';
+const TABBAR_TAB__CLASS_NAMES = 'tabbar-tab';
 const TABBAR_TAB_SELECTED__CLASS_NAMES = 'tabbar-tab--selected';
 
 const propTypes = {
@@ -101,7 +104,9 @@ export class TabBar extends Component {
       }
       tabsToDisplay.push(
         <div key={tab} data-index={index} className={tabClassNames} onClick={this.handleTabClick}>
-          {tab}
+          <Text weight={SEMI_BOLD} size={MEDIUM}>
+            {tab}
+          </Text>
         </div>
       );
     }
@@ -129,11 +134,11 @@ export class TabBar extends Component {
           className={previousClassNames}
           onClick={this.handleTabBarNavClick}
           data-side="previous">
-          &lt;
+          <Text weight={SEMI_BOLD}>&lt;</Text>
         </div>
         <div className={TABBAR_TABS__CLASS_NAMES}>{tabsToDisplay}</div>
         <div className={nextClassNames} onClick={this.handleTabBarNavClick} data-side="next">
-          &gt;
+          <Text weight={SEMI_BOLD}>&gt;</Text>
         </div>
       </div>
     );

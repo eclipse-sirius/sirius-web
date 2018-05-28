@@ -14,10 +14,12 @@ import { classNames } from '../../common/classnames';
 
 import { Spacing } from '../spacing/Spacing';
 import { S } from '../spacing/SpacingConstants';
+import { Text } from '../text/Text';
 
 import { SINGLE_LINE, TWO_LINES, THREE_LINES } from './ListConstants';
 
 import './List.css';
+import { LIGHT, EXTRA_SMALL } from '../text/TextConstants';
 
 const TILE_MAINICON__CLASS_NAMES = 'tile-mainicon';
 
@@ -45,7 +47,7 @@ export const AdditionalIcon = ({ className, ...props }) => {
 };
 AdditionalIcon.propTypes = additionalIconPropTypes;
 
-const TILE_MAINTEXT__CLASS_NAMES = 'tile-maintext body-s';
+const TILE_MAINTEXT__CLASS_NAMES = 'tile-maintext';
 
 const mainTextPropTypes = {
   children: PropTypes.string
@@ -57,14 +59,14 @@ const mainTextPropTypes = {
 export const MainText = ({ className, children, ...props }) => {
   const mainTextClassNames = classNames(TILE_MAINTEXT__CLASS_NAMES, className);
   return (
-    <h4 className={mainTextClassNames} {...props}>
+    <Text className={mainTextClassNames} {...props}>
       {children}
-    </h4>
+    </Text>
   );
 };
 MainText.propTypes = mainTextPropTypes;
 
-const TILE_ADDITIONALTEXT__CLASS_NAMES = 'tile-additionaltext caption-xs';
+const TILE_ADDITIONALTEXT__CLASS_NAMES = 'tile-additionaltext';
 
 const additionalTextPropTypes = {
   children: PropTypes.string
@@ -76,9 +78,9 @@ const additionalTextPropTypes = {
 export const AdditionalText = ({ className, children, ...props }) => {
   const additionalTextClassNames = classNames(TILE_ADDITIONALTEXT__CLASS_NAMES, className);
   return (
-    <h5 className={additionalTextClassNames} {...props}>
+    <Text className={additionalTextClassNames} {...props} size={EXTRA_SMALL} weight={LIGHT}>
       {children}
-    </h5>
+    </Text>
   );
 };
 AdditionalText.propTypes = additionalTextPropTypes;
