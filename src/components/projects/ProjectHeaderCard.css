@@ -10,25 +10,15 @@
 .projectheadercard-viewdescription {
   display: flex;
   align-items: center;
-
-  padding: var(--layoutDimension-s) var(--layoutDimension-m);
 }
 .projectheadercard-viewdescription p {
   margin-right: auto;
-}
-.projectheadercard-viewdescription .button {
-  margin-left: var(--layoutDimension-m);
 }
 
 .projectheadercard-editdescription {
   display: flex;
   align-items: center;
-
-  padding: var(--layoutDimension-s) var(--layoutDimension-m);
 }
 .projectheadercard-editdescription input {
   margin-right: auto;
-}
-.projectheadercard-editdescription .button {
-  margin-left: var(--layoutDimension-m);
 }

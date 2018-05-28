@@ -26,8 +26,6 @@
     [main] auto;
 
   grid-row-start: container;
-  padding: var(--layoutDimension-l) var(--layoutDimension-m) var(--layoutDimension-xl)
-    var(--layoutDimension-m);
 }
 
 .fullscreen .app-container {

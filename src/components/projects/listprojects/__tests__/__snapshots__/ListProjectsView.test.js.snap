@@ -4,14 +4,40 @@ exports[`ListProjectsView renders a blank card for an empty list of projects 1`]
 <div
   className="card blankcard"
 >
-  <h1
-    className="title-l"
+  <div
+    style={
+      Object {
+        "paddingBottom": "32px",
+        "paddingLeft": "32px",
+        "paddingRight": "32px",
+        "paddingTop": "32px",
+      }
+    }
   >
-    You haven't created any projects yet
-  </h1>
-  <p>
-    Once you start creating new projects, you will be able to see them here
-  </p>
+    <div
+      className="blankcard-container"
+    >
+      <div
+        style={
+          Object {
+            "paddingBottom": "16px",
+            "paddingLeft": undefined,
+            "paddingRight": undefined,
+            "paddingTop": undefined,
+          }
+        }
+      >
+        <h1
+          className="title-l"
+        >
+          You haven't created any projects yet
+        </h1>
+      </div>
+      <p>
+        Once you start creating new projects, you will be able to see them here
+      </p>
+    </div>
+  </div>
 </div>
 `;
 
@@ -27,14 +53,40 @@ exports[`ListProjectsView renders an error card for an error 1`] = `
 <div
   className="card errorcard"
 >
-  <h1
-    className="title-l"
+  <div
+    style={
+      Object {
+        "paddingBottom": "32px",
+        "paddingLeft": "32px",
+        "paddingRight": "32px",
+        "paddingTop": "32px",
+      }
+    }
   >
-    An error has occurred
-  </h1>
-  <p>
-    Please contact the administrator to try to find a solution (code: 500)
-  </p>
+    <div
+      className="errorcard-container"
+    >
+      <div
+        style={
+          Object {
+            "paddingBottom": "16px",
+            "paddingLeft": "16px",
+            "paddingRight": "16px",
+            "paddingTop": "16px",
+          }
+        }
+      >
+        <h1
+          className="title-l"
+        >
+          An error has occurred
+        </h1>
+      </div>
+      <p>
+        Please contact the administrator to try to find a solution (code: 500)
+      </p>
+    </div>
+  </div>
 </div>
 `;
 
@@ -42,14 +94,40 @@ exports[`ListProjectsView renders an error card for an unsupported state 1`] = `
 <div
   className="card errorcard"
 >
-  <h1
-    className="title-l"
+  <div
+    style={
+      Object {
+        "paddingBottom": "32px",
+        "paddingLeft": "32px",
+        "paddingRight": "32px",
+        "paddingTop": "32px",
+      }
+    }
   >
-    The projects list is in an unsupported state: INITIAL__STATE
-  </h1>
-  <p>
-    Contact your administrator to find a suitable solution (code: 1001)
-  </p>
+    <div
+      className="errorcard-container"
+    >
+      <div
+        style={
+          Object {
+            "paddingBottom": "16px",
+            "paddingLeft": "16px",
+            "paddingRight": "16px",
+            "paddingTop": "16px",
+          }
+        }
+      >
+        <h1
+          className="title-l"
+        >
+          The projects list is in an unsupported state: INITIAL__STATE
+        </h1>
+      </div>
+      <p>
+        Contact your administrator to find a suitable solution (code: 1001)
+      </p>
+    </div>
+  </div>
 </div>
 `;
 
@@ -60,56 +138,78 @@ exports[`ListProjectsView renders the projects 1`] = `
   <div
     className="card projectslistcard"
   >
-    <h2
-      className="card-primarytitle title-l"
+    <div
+      style={
+        Object {
+          "paddingBottom": "16px",
+          "paddingLeft": "16px",
+          "paddingRight": "16px",
+          "paddingTop": "16px",
+        }
+      }
     >
-      Projects
-    </h2>
+      <h2
+        className="card-primarytitle title-l"
+      >
+        Projects
+      </h2>
+    </div>
     <ul
       className="list list--highlighted"
     >
-      <a
-        href="projects/First Project"
-        onClick={[Function]}
+      <div
+        style={
+          Object {
+            "paddingBottom": "8px",
+            "paddingLeft": undefined,
+            "paddingRight": undefined,
+            "paddingTop": "8px",
+          }
+        }
       >
-        <li
-          className="tile tile--twoline"
+        <a
+          href="projects/First Project"
+          onClick={[Function]}
         >
-          <div>
-            <h4
-              className="tile-maintext body-s"
-            >
-              First Project
-            </h4>
-            <h5
-              className="tile-additionaltext caption-xs"
-            >
-              No description provided
-            </h5>
-          </div>
-        </li>
-      </a>
-      <a
-        href="projects/Second Project"
-        onClick={[Function]}
-      >
-        <li
-          className="tile tile--twoline"
+          <li
+            className="tile tile--twoline"
+          >
+            <div>
+              <h4
+                className="tile-maintext body-s"
+              >
+                First Project
+              </h4>
+              <h5
+                className="tile-additionaltext caption-xs"
+              >
+                No description provided
+              </h5>
+            </div>
+          </li>
+        </a>
+        <a
+          href="projects/Second Project"
+          onClick={[Function]}
         >
-          <div>
-            <h4
-              className="tile-maintext body-s"
-            >
-              Second Project
-            </h4>
-            <h5
-              className="tile-additionaltext caption-xs"
-            >
-              No description provided
-            </h5>
-          </div>
-        </li>
-      </a>
+          <li
+            className="tile tile--twoline"
+          >
+            <div>
+              <h4
+                className="tile-maintext body-s"
+              >
+                Second Project
+              </h4>
+              <h5
+                className="tile-additionaltext caption-xs"
+              >
+                No description provided
+              </h5>
+            </div>
+          </li>
+        </a>
+      </div>
     </ul>
   </div>
 </div>

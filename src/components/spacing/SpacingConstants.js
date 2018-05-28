@@ -7,6 +7,9 @@
  * https://www.eclipse.org/legal/epl-2.0.
  *******************************************************************************/
 
-.main {
-  padding: 0px var(--layoutDimension-l);
-}
+export const XS = '4px';
+export const S = '8px';
+export const M = '16px';
+export const L = '32px';
+export const XL = '64px';
+export const XXL = '128px';

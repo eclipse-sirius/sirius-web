@@ -12,14 +12,40 @@ exports[`ProjectView renders an error card for an error 1`] = `
 <div
   className="card errorcard"
 >
-  <h1
-    className="title-l"
+  <div
+    style={
+      Object {
+        "paddingBottom": "32px",
+        "paddingLeft": "32px",
+        "paddingRight": "32px",
+        "paddingTop": "32px",
+      }
+    }
   >
-    An error has occurred
-  </h1>
-  <p>
-    Please contact the administrator to try to find a solution (code: 500)
-  </p>
+    <div
+      className="errorcard-container"
+    >
+      <div
+        style={
+          Object {
+            "paddingBottom": "16px",
+            "paddingLeft": "16px",
+            "paddingRight": "16px",
+            "paddingTop": "16px",
+          }
+        }
+      >
+        <h1
+          className="title-l"
+        >
+          An error has occurred
+        </h1>
+      </div>
+      <p>
+        Please contact the administrator to try to find a solution (code: 500)
+      </p>
+    </div>
+  </div>
 </div>
 `;
 
@@ -27,14 +53,40 @@ exports[`ProjectView renders an error card for an unsupported state 1`] = `
 <div
   className="card errorcard"
 >
-  <h1
-    className="title-l"
+  <div
+    style={
+      Object {
+        "paddingBottom": "32px",
+        "paddingLeft": "32px",
+        "paddingRight": "32px",
+        "paddingTop": "32px",
+      }
+    }
   >
-    The project is in an unsupported state: INITIAL__STATE
-  </h1>
-  <p>
-    Contact your administrator to find a suitable solution (code: 1001)
-  </p>
+    <div
+      className="errorcard-container"
+    >
+      <div
+        style={
+          Object {
+            "paddingBottom": "16px",
+            "paddingLeft": "16px",
+            "paddingRight": "16px",
+            "paddingTop": "16px",
+          }
+        }
+      >
+        <h1
+          className="title-l"
+        >
+          The project is in an unsupported state: INITIAL__STATE
+        </h1>
+      </div>
+      <p>
+        Contact your administrator to find a suitable solution (code: 1001)
+      </p>
+    </div>
+  </div>
 </div>
 `;
 
@@ -45,23 +97,67 @@ exports[`ProjectView renders the project with activities 1`] = `
   <div
     className="card projectheadercard"
   >
-    <h1
-      className="card-herotitle title-xl"
-    >
-      Project
-    </h1>
     <div
-      className="projectheadercard-viewdescription"
+      style={
+        Object {
+          "paddingBottom": "16px",
+          "paddingLeft": "16px",
+          "paddingRight": "16px",
+          "paddingTop": "16px",
+        }
+      }
     >
-      <p>
-        No description provided
-      </p>
-      <button
-        className="button button--default"
-        onClick={[Function]}
+      <h1
+        className="card-herotitle title-xl"
       >
-        Edit
-      </button>
+        Project
+      </h1>
+    </div>
+    <div
+      style={
+        Object {
+          "paddingBottom": "8px",
+          "paddingLeft": "16px",
+          "paddingRight": "16px",
+          "paddingTop": "8px",
+        }
+      }
+    >
+      <div
+        className="projectheadercard-viewdescription"
+      >
+        <p>
+          No description provided
+        </p>
+        <div
+          style={
+            Object {
+              "paddingBottom": undefined,
+              "paddingLeft": "16px",
+              "paddingRight": undefined,
+              "paddingTop": undefined,
+            }
+          }
+        >
+          <button
+            className="button button--default"
+            onClick={[Function]}
+          >
+            <div
+              style={
+                Object {
+                  "paddingBottom": "8px",
+                  "paddingLeft": "16px",
+                  "paddingRight": "16px",
+                  "paddingTop": "8px",
+                }
+              }
+            >
+              Edit
+            </div>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
   <div
@@ -73,67 +169,111 @@ exports[`ProjectView renders the project with activities 1`] = `
       <div
         className="card projectsemanticresourceslistcard"
       >
-        <h2
-          className="card-primarytitle title-l"
+        <div
+          style={
+            Object {
+              "paddingBottom": "16px",
+              "paddingLeft": "16px",
+              "paddingRight": "16px",
+              "paddingTop": "16px",
+            }
+          }
         >
-          Semantic Resources
-        </h2>
+          <h2
+            className="card-primarytitle title-l"
+          >
+            Semantic Resources
+          </h2>
+        </div>
         <ul
           className="list list--highlighted"
         >
-          <li
-            className="tile tile--singleline"
+          <div
+            style={
+              Object {
+                "paddingBottom": "8px",
+                "paddingLeft": undefined,
+                "paddingRight": undefined,
+                "paddingTop": "8px",
+              }
+            }
           >
-            <h4
-              className="tile-maintext body-s"
+            <li
+              className="tile tile--singleline"
             >
-              /model/model.ecore
-            </h4>
-            <div
-              className="semanticresources-size caption-s"
-            />
-          </li>
+              <h4
+                className="tile-maintext body-s"
+              >
+                /model/model.ecore
+              </h4>
+              <div
+                className="semanticresources-size caption-s"
+              />
+            </li>
+          </div>
         </ul>
       </div>
       <div
         className="card projectrepresentationslistcard"
       >
-        <h2
-          className="card-primarytitle title-l"
+        <div
+          style={
+            Object {
+              "paddingBottom": "16px",
+              "paddingLeft": "16px",
+              "paddingRight": "16px",
+              "paddingTop": "16px",
+            }
+          }
         >
-          Representations
-        </h2>
+          <h2
+            className="card-primarytitle title-l"
+          >
+            Representations
+          </h2>
+        </div>
         <ul
           className="list list--highlighted"
         >
-          <li
-            className="tile tile--twoline"
+          <div
+            style={
+              Object {
+                "paddingBottom": "8px",
+                "paddingLeft": undefined,
+                "paddingRight": undefined,
+                "paddingTop": "8px",
+              }
+            }
           >
-            <div>
-              <h4
-                className="tile-maintext body-s"
-              >
-                Class Diagram
-              </h4>
-              <h5
-                className="tile-additionaltext caption-xs"
-              />
-            </div>
-          </li>
-          <li
-            className="tile tile--twoline"
-          >
-            <div>
-              <h4
-                className="tile-maintext body-s"
-              >
-                Activity Diagram
-              </h4>
-              <h5
-                className="tile-additionaltext caption-xs"
-              />
-            </div>
-          </li>
+            <li
+              className="tile tile--twoline"
+            >
+              <div>
+                <h4
+                  className="tile-maintext body-s"
+                >
+                  Class Diagram
+                </h4>
+                <h5
+                  className="tile-additionaltext caption-xs"
+                />
+              </div>
+            </li>
+            <li
+              className="tile tile--twoline"
+            >
+              <div>
+                <h4
+                  className="tile-maintext body-s"
+                >
+                  Activity Diagram
+                </h4>
+                <h5
+                  className="tile-additionaltext caption-xs"
+                />
+              </div>
+            </li>
+          </div>
         </ul>
       </div>
     </div>
@@ -143,11 +283,22 @@ exports[`ProjectView renders the project with activities 1`] = `
       <div
         className="card workflowcard"
       >
-        <h2
-          className="card-primarytitle title-l"
+        <div
+          style={
+            Object {
+              "paddingBottom": "16px",
+              "paddingLeft": "16px",
+              "paddingRight": "16px",
+              "paddingTop": "16px",
+            }
+          }
         >
-          Workflow
-        </h2>
+          <h2
+            className="card-primarytitle title-l"
+          >
+            Workflow
+          </h2>
+        </div>
         <div
           className="tabbar"
         >
@@ -178,9 +329,20 @@ exports[`ProjectView renders the project with activities 1`] = `
           </div>
         </div>
         <div
-          className="card-text body-s"
+          style={
+            Object {
+              "paddingBottom": "16px",
+              "paddingLeft": "16px",
+              "paddingRight": "16px",
+              "paddingTop": "8px",
+            }
+          }
         >
-          No sections found in the workflow
+          <div
+            className="card-text body-s"
+          >
+            No sections found in the workflow
+          </div>
         </div>
       </div>
     </div>
@@ -195,23 +357,67 @@ exports[`ProjectView renders the project without activities 1`] = `
   <div
     className="card projectheadercard"
   >
-    <h1
-      className="card-herotitle title-xl"
-    >
-      Project
-    </h1>
     <div
-      className="projectheadercard-viewdescription"
+      style={
+        Object {
+          "paddingBottom": "16px",
+          "paddingLeft": "16px",
+          "paddingRight": "16px",
+          "paddingTop": "16px",
+        }
+      }
     >
-      <p>
-        No description provided
-      </p>
-      <button
-        className="button button--default"
-        onClick={[Function]}
+      <h1
+        className="card-herotitle title-xl"
       >
-        Edit
-      </button>
+        Project
+      </h1>
+    </div>
+    <div
+      style={
+        Object {
+          "paddingBottom": "8px",
+          "paddingLeft": "16px",
+          "paddingRight": "16px",
+          "paddingTop": "8px",
+        }
+      }
+    >
+      <div
+        className="projectheadercard-viewdescription"
+      >
+        <p>
+          No description provided
+        </p>
+        <div
+          style={
+            Object {
+              "paddingBottom": undefined,
+              "paddingLeft": "16px",
+              "paddingRight": undefined,
+              "paddingTop": undefined,
+            }
+          }
+        >
+          <button
+            className="button button--default"
+            onClick={[Function]}
+          >
+            <div
+              style={
+                Object {
+                  "paddingBottom": "8px",
+                  "paddingLeft": "16px",
+                  "paddingRight": "16px",
+                  "paddingTop": "8px",
+                }
+              }
+            >
+              Edit
+            </div>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
   <div
@@ -223,67 +429,111 @@ exports[`ProjectView renders the project without activities 1`] = `
       <div
         className="card projectsemanticresourceslistcard"
       >
-        <h2
-          className="card-primarytitle title-l"
+        <div
+          style={
+            Object {
+              "paddingBottom": "16px",
+              "paddingLeft": "16px",
+              "paddingRight": "16px",
+              "paddingTop": "16px",
+            }
+          }
         >
-          Semantic Resources
-        </h2>
+          <h2
+            className="card-primarytitle title-l"
+          >
+            Semantic Resources
+          </h2>
+        </div>
         <ul
           className="list list--highlighted"
         >
-          <li
-            className="tile tile--singleline"
+          <div
+            style={
+              Object {
+                "paddingBottom": "8px",
+                "paddingLeft": undefined,
+                "paddingRight": undefined,
+                "paddingTop": "8px",
+              }
+            }
           >
-            <h4
-              className="tile-maintext body-s"
+            <li
+              className="tile tile--singleline"
             >
-              /model/model.ecore
-            </h4>
-            <div
-              className="semanticresources-size caption-s"
-            />
-          </li>
+              <h4
+                className="tile-maintext body-s"
+              >
+                /model/model.ecore
+              </h4>
+              <div
+                className="semanticresources-size caption-s"
+              />
+            </li>
+          </div>
         </ul>
       </div>
       <div
         className="card projectrepresentationslistcard"
       >
-        <h2
-          className="card-primarytitle title-l"
+        <div
+          style={
+            Object {
+              "paddingBottom": "16px",
+              "paddingLeft": "16px",
+              "paddingRight": "16px",
+              "paddingTop": "16px",
+            }
+          }
         >
-          Representations
-        </h2>
+          <h2
+            className="card-primarytitle title-l"
+          >
+            Representations
+          </h2>
+        </div>
         <ul
           className="list list--highlighted"
         >
-          <li
-            className="tile tile--twoline"
+          <div
+            style={
+              Object {
+                "paddingBottom": "8px",
+                "paddingLeft": undefined,
+                "paddingRight": undefined,
+                "paddingTop": "8px",
+              }
+            }
           >
-            <div>
-              <h4
-                className="tile-maintext body-s"
-              >
-                Class Diagram
-              </h4>
-              <h5
-                className="tile-additionaltext caption-xs"
-              />
-            </div>
-          </li>
-          <li
-            className="tile tile--twoline"
-          >
-            <div>
-              <h4
-                className="tile-maintext body-s"
-              >
-                Activity Diagram
-              </h4>
-              <h5
-                className="tile-additionaltext caption-xs"
-              />
-            </div>
-          </li>
+            <li
+              className="tile tile--twoline"
+            >
+              <div>
+                <h4
+                  className="tile-maintext body-s"
+                >
+                  Class Diagram
+                </h4>
+                <h5
+                  className="tile-additionaltext caption-xs"
+                />
+              </div>
+            </li>
+            <li
+              className="tile tile--twoline"
+            >
+              <div>
+                <h4
+                  className="tile-maintext body-s"
+                >
+                  Activity Diagram
+                </h4>
+                <h5
+                  className="tile-additionaltext caption-xs"
+                />
+              </div>
+            </li>
+          </div>
         </ul>
       </div>
     </div>
@@ -293,11 +543,22 @@ exports[`ProjectView renders the project without activities 1`] = `
       <div
         className="card workflowcard"
       >
-        <h2
-          className="card-primarytitle title-l"
+        <div
+          style={
+            Object {
+              "paddingBottom": "16px",
+              "paddingLeft": "16px",
+              "paddingRight": "16px",
+              "paddingTop": "16px",
+            }
+          }
         >
-          Workflow
-        </h2>
+          <h2
+            className="card-primarytitle title-l"
+          >
+            Workflow
+          </h2>
+        </div>
         <div
           className="tabbar"
         >
@@ -328,9 +589,20 @@ exports[`ProjectView renders the project without activities 1`] = `
           </div>
         </div>
         <div
-          className="card-text body-s"
+          style={
+            Object {
+              "paddingBottom": "16px",
+              "paddingLeft": "16px",
+              "paddingRight": "16px",
+              "paddingTop": "8px",
+            }
+          }
         >
-          No sections found in the workflow
+          <div
+            className="card-text body-s"
+          >
+            No sections found in the workflow
+          </div>
         </div>
       </div>
     </div>
@@ -345,23 +617,67 @@ exports[`ProjectView renders the project without any workflow 1`] = `
   <div
     className="card projectheadercard"
   >
-    <h1
-      className="card-herotitle title-xl"
-    >
-      Project
-    </h1>
     <div
-      className="projectheadercard-viewdescription"
+      style={
+        Object {
+          "paddingBottom": "16px",
+          "paddingLeft": "16px",
+          "paddingRight": "16px",
+          "paddingTop": "16px",
+        }
+      }
     >
-      <p>
-        No description provided
-      </p>
-      <button
-        className="button button--default"
-        onClick={[Function]}
+      <h1
+        className="card-herotitle title-xl"
       >
-        Edit
-      </button>
+        Project
+      </h1>
+    </div>
+    <div
+      style={
+        Object {
+          "paddingBottom": "8px",
+          "paddingLeft": "16px",
+          "paddingRight": "16px",
+          "paddingTop": "8px",
+        }
+      }
+    >
+      <div
+        className="projectheadercard-viewdescription"
+      >
+        <p>
+          No description provided
+        </p>
+        <div
+          style={
+            Object {
+              "paddingBottom": undefined,
+              "paddingLeft": "16px",
+              "paddingRight": undefined,
+              "paddingTop": undefined,
+            }
+          }
+        >
+          <button
+            className="button button--default"
+            onClick={[Function]}
+          >
+            <div
+              style={
+                Object {
+                  "paddingBottom": "8px",
+                  "paddingLeft": "16px",
+                  "paddingRight": "16px",
+                  "paddingTop": "8px",
+                }
+              }
+            >
+              Edit
+            </div>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
   <div
@@ -373,67 +689,111 @@ exports[`ProjectView renders the project without any workflow 1`] = `
       <div
         className="card projectsemanticresourceslistcard"
       >
-        <h2
-          className="card-primarytitle title-l"
+        <div
+          style={
+            Object {
+              "paddingBottom": "16px",
+              "paddingLeft": "16px",
+              "paddingRight": "16px",
+              "paddingTop": "16px",
+            }
+          }
         >
-          Semantic Resources
-        </h2>
+          <h2
+            className="card-primarytitle title-l"
+          >
+            Semantic Resources
+          </h2>
+        </div>
         <ul
           className="list list--highlighted"
         >
-          <li
-            className="tile tile--singleline"
+          <div
+            style={
+              Object {
+                "paddingBottom": "8px",
+                "paddingLeft": undefined,
+                "paddingRight": undefined,
+                "paddingTop": "8px",
+              }
+            }
           >
-            <h4
-              className="tile-maintext body-s"
+            <li
+              className="tile tile--singleline"
             >
-              /model/model.ecore
-            </h4>
-            <div
-              className="semanticresources-size caption-s"
-            />
-          </li>
+              <h4
+                className="tile-maintext body-s"
+              >
+                /model/model.ecore
+              </h4>
+              <div
+                className="semanticresources-size caption-s"
+              />
+            </li>
+          </div>
         </ul>
       </div>
       <div
         className="card projectrepresentationslistcard"
       >
-        <h2
-          className="card-primarytitle title-l"
+        <div
+          style={
+            Object {
+              "paddingBottom": "16px",
+              "paddingLeft": "16px",
+              "paddingRight": "16px",
+              "paddingTop": "16px",
+            }
+          }
         >
-          Representations
-        </h2>
+          <h2
+            className="card-primarytitle title-l"
+          >
+            Representations
+          </h2>
+        </div>
         <ul
           className="list list--highlighted"
         >
-          <li
-            className="tile tile--twoline"
+          <div
+            style={
+              Object {
+                "paddingBottom": "8px",
+                "paddingLeft": undefined,
+                "paddingRight": undefined,
+                "paddingTop": "8px",
+              }
+            }
           >
-            <div>
-              <h4
-                className="tile-maintext body-s"
-              >
-                Class Diagram
-              </h4>
-              <h5
-                className="tile-additionaltext caption-xs"
-              />
-            </div>
-          </li>
-          <li
-            className="tile tile--twoline"
-          >
-            <div>
-              <h4
-                className="tile-maintext body-s"
-              >
-                Activity Diagram
-              </h4>
-              <h5
-                className="tile-additionaltext caption-xs"
-              />
-            </div>
-          </li>
+            <li
+              className="tile tile--twoline"
+            >
+              <div>
+                <h4
+                  className="tile-maintext body-s"
+                >
+                  Class Diagram
+                </h4>
+                <h5
+                  className="tile-additionaltext caption-xs"
+                />
+              </div>
+            </li>
+            <li
+              className="tile tile--twoline"
+            >
+              <div>
+                <h4
+                  className="tile-maintext body-s"
+                >
+                  Activity Diagram
+                </h4>
+                <h5
+                  className="tile-additionaltext caption-xs"
+                />
+              </div>
+            </li>
+          </div>
         </ul>
       </div>
     </div>
@@ -443,20 +803,53 @@ exports[`ProjectView renders the project without any workflow 1`] = `
       <div
         className="card workflowcard"
       >
-        <h2
-          className="card-primarytitle title-l"
-        >
-          Workflow
-        </h2>
         <div
-          className="card-text body-s"
+          style={
+            Object {
+              "paddingBottom": "16px",
+              "paddingLeft": "16px",
+              "paddingRight": "16px",
+              "paddingTop": "16px",
+            }
+          }
         >
-          No workflow pages found
+          <h2
+            className="card-primarytitle title-l"
+          >
+            Workflow
+          </h2>
         </div>
         <div
-          className="card-text body-s"
+          style={
+            Object {
+              "paddingBottom": "16px",
+              "paddingLeft": "16px",
+              "paddingRight": "16px",
+              "paddingTop": "8px",
+            }
+          }
         >
-          No sections found in the workflow
+          <div
+            className="card-text body-s"
+          >
+            No workflow pages found
+          </div>
+        </div>
+        <div
+          style={
+            Object {
+              "paddingBottom": "16px",
+              "paddingLeft": "16px",
+              "paddingRight": "16px",
+              "paddingTop": "8px",
+            }
+          }
+        >
+          <div
+            className="card-text body-s"
+          >
+            No sections found in the workflow
+          </div>
         </div>
       </div>
     </div>
@@ -471,23 +864,67 @@ exports[`ProjectView renders the project without sections 1`] = `
   <div
     className="card projectheadercard"
   >
-    <h1
-      className="card-herotitle title-xl"
-    >
-      Project
-    </h1>
     <div
-      className="projectheadercard-viewdescription"
+      style={
+        Object {
+          "paddingBottom": "16px",
+          "paddingLeft": "16px",
+          "paddingRight": "16px",
+          "paddingTop": "16px",
+        }
+      }
     >
-      <p>
-        No description provided
-      </p>
-      <button
-        className="button button--default"
-        onClick={[Function]}
+      <h1
+        className="card-herotitle title-xl"
       >
-        Edit
-      </button>
+        Project
+      </h1>
+    </div>
+    <div
+      style={
+        Object {
+          "paddingBottom": "8px",
+          "paddingLeft": "16px",
+          "paddingRight": "16px",
+          "paddingTop": "8px",
+        }
+      }
+    >
+      <div
+        className="projectheadercard-viewdescription"
+      >
+        <p>
+          No description provided
+        </p>
+        <div
+          style={
+            Object {
+              "paddingBottom": undefined,
+              "paddingLeft": "16px",
+              "paddingRight": undefined,
+              "paddingTop": undefined,
+            }
+          }
+        >
+          <button
+            className="button button--default"
+            onClick={[Function]}
+          >
+            <div
+              style={
+                Object {
+                  "paddingBottom": "8px",
+                  "paddingLeft": "16px",
+                  "paddingRight": "16px",
+                  "paddingTop": "8px",
+                }
+              }
+            >
+              Edit
+            </div>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
   <div
@@ -499,67 +936,111 @@ exports[`ProjectView renders the project without sections 1`] = `
       <div
         className="card projectsemanticresourceslistcard"
       >
-        <h2
-          className="card-primarytitle title-l"
+        <div
+          style={
+            Object {
+              "paddingBottom": "16px",
+              "paddingLeft": "16px",
+              "paddingRight": "16px",
+              "paddingTop": "16px",
+            }
+          }
         >
-          Semantic Resources
-        </h2>
+          <h2
+            className="card-primarytitle title-l"
+          >
+            Semantic Resources
+          </h2>
+        </div>
         <ul
           className="list list--highlighted"
         >
-          <li
-            className="tile tile--singleline"
+          <div
+            style={
+              Object {
+                "paddingBottom": "8px",
+                "paddingLeft": undefined,
+                "paddingRight": undefined,
+                "paddingTop": "8px",
+              }
+            }
           >
-            <h4
-              className="tile-maintext body-s"
+            <li
+              className="tile tile--singleline"
             >
-              /model/model.ecore
-            </h4>
-            <div
-              className="semanticresources-size caption-s"
-            />
-          </li>
+              <h4
+                className="tile-maintext body-s"
+              >
+                /model/model.ecore
+              </h4>
+              <div
+                className="semanticresources-size caption-s"
+              />
+            </li>
+          </div>
         </ul>
       </div>
       <div
         className="card projectrepresentationslistcard"
       >
-        <h2
-          className="card-primarytitle title-l"
+        <div
+          style={
+            Object {
+              "paddingBottom": "16px",
+              "paddingLeft": "16px",
+              "paddingRight": "16px",
+              "paddingTop": "16px",
+            }
+          }
         >
-          Representations
-        </h2>
+          <h2
+            className="card-primarytitle title-l"
+          >
+            Representations
+          </h2>
+        </div>
         <ul
           className="list list--highlighted"
         >
-          <li
-            className="tile tile--twoline"
+          <div
+            style={
+              Object {
+                "paddingBottom": "8px",
+                "paddingLeft": undefined,
+                "paddingRight": undefined,
+                "paddingTop": "8px",
+              }
+            }
           >
-            <div>
-              <h4
-                className="tile-maintext body-s"
-              >
-                Class Diagram
-              </h4>
-              <h5
-                className="tile-additionaltext caption-xs"
-              />
-            </div>
-          </li>
-          <li
-            className="tile tile--twoline"
-          >
-            <div>
-              <h4
-                className="tile-maintext body-s"
-              >
-                Activity Diagram
-              </h4>
-              <h5
-                className="tile-additionaltext caption-xs"
-              />
-            </div>
-          </li>
+            <li
+              className="tile tile--twoline"
+            >
+              <div>
+                <h4
+                  className="tile-maintext body-s"
+                >
+                  Class Diagram
+                </h4>
+                <h5
+                  className="tile-additionaltext caption-xs"
+                />
+              </div>
+            </li>
+            <li
+              className="tile tile--twoline"
+            >
+              <div>
+                <h4
+                  className="tile-maintext body-s"
+                >
+                  Activity Diagram
+                </h4>
+                <h5
+                  className="tile-additionaltext caption-xs"
+                />
+              </div>
+            </li>
+          </div>
         </ul>
       </div>
     </div>
@@ -569,11 +1050,22 @@ exports[`ProjectView renders the project without sections 1`] = `
       <div
         className="card workflowcard"
       >
-        <h2
-          className="card-primarytitle title-l"
+        <div
+          style={
+            Object {
+              "paddingBottom": "16px",
+              "paddingLeft": "16px",
+              "paddingRight": "16px",
+              "paddingTop": "16px",
+            }
+          }
         >
-          Workflow
-        </h2>
+          <h2
+            className="card-primarytitle title-l"
+          >
+            Workflow
+          </h2>
+        </div>
         <div
           className="tabbar"
         >
@@ -604,9 +1096,20 @@ exports[`ProjectView renders the project without sections 1`] = `
           </div>
         </div>
         <div
-          className="card-text body-s"
+          style={
+            Object {
+              "paddingBottom": "16px",
+              "paddingLeft": "16px",
+              "paddingRight": "16px",
+              "paddingTop": "8px",
+            }
+          }
         >
-          No sections found in the workflow
+          <div
+            className="card-text body-s"
+          >
+            No sections found in the workflow
+          </div>
         </div>
       </div>
     </div>

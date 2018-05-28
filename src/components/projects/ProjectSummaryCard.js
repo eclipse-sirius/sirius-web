@@ -13,8 +13,6 @@ import PropTypes from 'prop-types';
 
 import { Card, PrimaryTitle, Text } from '../cards/Card';
 
-import './ProjectSummaryCard.css';
-
 const PROJECT_SUMMARY_CARD__CLASS_NAMES = 'projectsummarycard';
 
 const propTypes = {

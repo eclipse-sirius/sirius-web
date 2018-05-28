@@ -7,11 +7,10 @@
  * https://www.eclipse.org/legal/epl-2.0.
  *******************************************************************************/
 
-.infocard {
+.infocard-container {
   display: grid;
   grid-template-rows: min-content min-content;
   grid-row-gap: var(--layoutDimension-m);
-  padding: var(--layoutDimension-l);
 }
 
 .infocard-title {

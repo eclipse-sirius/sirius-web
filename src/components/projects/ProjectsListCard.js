@@ -13,13 +13,8 @@ import PropTypes from 'prop-types';
 import { classNames } from '../../common/classnames';
 
 import { Card, PrimaryTitle } from '../cards/Card';
-import {
-  LIST_WITH_HIGHLIGHT__KIND,
-  AdditionalText,
-  List,
-  MainText,
-  TwoLineTile
-} from '../list/List';
+import { LIST_WITH_HIGHLIGHT__KIND, AdditionalText, List, MainText, Tile } from '../list/List';
+import { TWO_LINES } from '../list/ListConstants';
 
 import './ProjectsListCard.css';
 
@@ -44,14 +39,14 @@ export const ProjectsListCard = ({ className, projects, ...props }) => {
         {projects.map(project => {
           return (
             <Link to={`projects/${project.name}`} key={project.name}>
-              <TwoLineTile>
+              <Tile kind={TWO_LINES}>
                 <div>
                   <MainText>{project.name}</MainText>
                   <AdditionalText>
                     {project.description || 'No description provided'}
                   </AdditionalText>
                 </div>
-              </TwoLineTile>
+              </Tile>
             </Link>
           );
         })}

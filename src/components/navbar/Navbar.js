@@ -11,9 +11,13 @@ import React from 'react';
 
 import { classNames } from '../../common/classnames';
 
+import { Spacing } from '../spacing/Spacing';
+import { S, M } from '../spacing/SpacingConstants';
+
 import './Navbar.css';
 
 const NAVBAR__CLASS_NAMES = 'navbar';
+const NAVBAR_CONTAINER__CLASS_NAMES = 'navbar-container';
 const NARBAR_TITLE__CLASS_NAMES = 'navbar-title title-xxl';
 
 /**
@@ -24,7 +28,11 @@ export const Navbar = ({ className, ...props }) => {
   const navClassNames = classNames(NAVBAR__CLASS_NAMES, className);
   return (
     <nav className={navClassNames} {...props}>
-      <div className={NARBAR_TITLE__CLASS_NAMES}>Eclipse Sirius</div>
+      <Spacing top={S} right={M} bottom={S} left={M}>
+        <div className={NAVBAR_CONTAINER__CLASS_NAMES}>
+          <div className={NARBAR_TITLE__CLASS_NAMES}>Eclipse Sirius</div>
+        </div>
+      </Spacing>
     </nav>
   );
 };

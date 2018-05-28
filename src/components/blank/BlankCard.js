@@ -12,6 +12,8 @@ import PropTypes from 'prop-types';
 import { classNames } from '../../common/classnames';
 
 import { Card } from '../cards/Card';
+import { Spacing } from '../spacing/Spacing';
+import { M, L } from '../spacing/SpacingConstants';
 
 import './BlankCard.css';
 
@@ -21,6 +23,7 @@ const propTypes = {
 };
 
 const BLANKCARD__CLASS_NAMES = 'blankcard';
+const BLANKCARD_CONTAINER__CLASS_NAMES = 'blankcard-container';
 const BLANKCARD_TITLE__CLASS_NAMES = 'title-l';
 
 /**
@@ -30,8 +33,14 @@ export const BlankCard = ({ className, title, message, ...props }) => {
   const blankCardClassNames = classNames(BLANKCARD__CLASS_NAMES, className);
   return (
     <Card {...props} className={blankCardClassNames}>
-      <h1 className={BLANKCARD_TITLE__CLASS_NAMES}>{title}</h1>
-      <p>{message}</p>
+      <Spacing top={L} right={L} left={L} bottom={L}>
+        <div className={BLANKCARD_CONTAINER__CLASS_NAMES}>
+          <Spacing bottom={M}>
+            <h1 className={BLANKCARD_TITLE__CLASS_NAMES}>{title}</h1>
+          </Spacing>
+          <p>{message}</p>
+        </div>
+      </Spacing>
     </Card>
   );
 };

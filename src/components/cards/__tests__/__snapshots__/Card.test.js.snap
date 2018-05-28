@@ -4,11 +4,22 @@ exports[`Card renders a card with a primary title 1`] = `
 <div
   className="card"
 >
-  <h2
-    className="card-primarytitle title-l"
+  <div
+    style={
+      Object {
+        "paddingBottom": "16px",
+        "paddingLeft": "16px",
+        "paddingRight": "16px",
+        "paddingTop": "16px",
+      }
+    }
   >
-    Card Title
-  </h2>
+    <h2
+      className="card-primarytitle title-l"
+    >
+      Card Title
+    </h2>
+  </div>
 </div>
 `;
 
@@ -16,11 +27,22 @@ exports[`Card renders a card with a primary title and a divider 1`] = `
 <div
   className="card"
 >
-  <h2
-    className="card-primarytitle title-l"
+  <div
+    style={
+      Object {
+        "paddingBottom": "16px",
+        "paddingLeft": "16px",
+        "paddingRight": "16px",
+        "paddingTop": "16px",
+      }
+    }
   >
-    Card Title
-  </h2>
+    <h2
+      className="card-primarytitle title-l"
+    >
+      Card Title
+    </h2>
+  </div>
   <div
     className="card-divider"
   />

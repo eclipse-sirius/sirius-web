@@ -7,13 +7,8 @@
  * https://www.eclipse.org/legal/epl-2.0.
  *******************************************************************************/
 
-.blankcard {
+.blankcard-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: var(--layoutDimension-l);
-}
-
-.blankcard .title-l {
-  margin-bottom: var(--layoutDimension-m);
 }

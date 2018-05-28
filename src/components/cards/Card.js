@@ -12,6 +12,9 @@ import PropTypes from 'prop-types';
 
 import { classNames } from '../../common/classnames';
 
+import { Spacing } from '../spacing/Spacing';
+import { S, M } from '../spacing/SpacingConstants';
+
 import './Card.css';
 
 const CARD__CLASS_NAMES = 'card';
@@ -40,9 +43,11 @@ const heroTitlePropTypes = {
 export const HeroTitle = ({ className, label, ...props }) => {
   const heroTitleClassNames = classNames(CARD_HEROTITLE__CLASS_NAMES, className);
   return (
-    <h1 className={heroTitleClassNames} {...props}>
-      {label}
-    </h1>
+    <Spacing top={M} right={M} bottom={M} left={M}>
+      <h1 className={heroTitleClassNames} {...props}>
+        {label}
+      </h1>
+    </Spacing>
   );
 };
 HeroTitle.propTypes = heroTitlePropTypes;
@@ -59,9 +64,11 @@ const primaryTitlePropTypes = {
 export const PrimaryTitle = ({ className, label, ...props }) => {
   const primaryTitleClassNames = classNames(CARD_PRIMARYTITLE__CLASS_NAMES, className);
   return (
-    <h2 className={primaryTitleClassNames} {...props}>
-      {label}
-    </h2>
+    <Spacing top={M} right={M} bottom={M} left={M}>
+      <h2 className={primaryTitleClassNames} {...props}>
+        {label}
+      </h2>
+    </Spacing>
   );
 };
 PrimaryTitle.propTypes = primaryTitlePropTypes;
@@ -78,9 +85,11 @@ const secondaryTitlePropTypes = {
 export const SecondaryTitle = ({ className, label, ...props }) => {
   const secondaryTitleClassNames = classNames(CARD_SECONDARYTITLE__CLASS_NAMES, className);
   return (
-    <h3 className={secondaryTitleClassNames} {...props}>
-      {label}
-    </h3>
+    <Spacing top={M} right={M} bottom={S} left={M}>
+      <h3 className={secondaryTitleClassNames} {...props}>
+        {label}
+      </h3>
+    </Spacing>
   );
 };
 SecondaryTitle.propTypes = secondaryTitlePropTypes;
@@ -89,7 +98,11 @@ const CARD_TEXT__CLASS_NAMES = 'card-text body-s';
 
 export const Text = ({ className, ...props }) => {
   const textClassNames = classNames(CARD_TEXT__CLASS_NAMES, className);
-  return <div className={textClassNames} {...props} />;
+  return (
+    <Spacing top={S} right={M} bottom={M} left={M}>
+      <div className={textClassNames} {...props} />
+    </Spacing>
+  );
 };
 
 const CARD_DIVIDER__CLASS_NAMES = 'card-divider';

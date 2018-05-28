@@ -7,11 +7,22 @@ exports[`NewProjectView renders a card with a form ready to be submitted to crea
   <div
     className="card newprojectcard"
   >
-    <h2
-      className="card-primarytitle title-l"
+    <div
+      style={
+        Object {
+          "paddingBottom": "16px",
+          "paddingLeft": "16px",
+          "paddingRight": "16px",
+          "paddingTop": "16px",
+        }
+      }
     >
-      New Project
-    </h2>
+      <h2
+        className="card-primarytitle title-l"
+      >
+        New Project
+      </h2>
+    </div>
     <div
       className="card-divider"
     />
@@ -20,44 +31,132 @@ exports[`NewProjectView renders a card with a form ready to be submitted to crea
       onSubmit={[Function]}
     >
       <div
-        className="errorgroup"
-      />
-      <div
-        className="field"
+        style={
+          Object {
+            "paddingBottom": "16px",
+            "paddingLeft": "16px",
+            "paddingRight": "16px",
+            "paddingTop": "16px",
+          }
+        }
       >
-        <label
-          className="label body-l"
-          htmlFor="name"
-        >
-          Name
-        </label>
-        <p
-          className="description caption-m"
-        >
-          The name of the project can only contain letters and numbers separated by dots, dashes or underscores.
-        </p>
-        <input
-          className="textfield"
-          id="name"
-          name="name"
-          onChange={[Function]}
-          placeholder="Enter the name"
-          type="text"
-          value="sirius"
-        />
         <div
           className="errorgroup"
-        />
-      </div>
-      <div
-        className="actiongroup"
-      >
-        <button
-          className="button button--primary"
-          disabled={false}
         >
-          Create Project
-        </button>
+          <div
+            style={
+              Object {
+                "paddingBottom": "8px",
+                "paddingLeft": undefined,
+                "paddingRight": undefined,
+                "paddingTop": "8px",
+              }
+            }
+          />
+        </div>
+        <div
+          className="field"
+        >
+          <div
+            style={
+              Object {
+                "paddingBottom": "16px",
+                "paddingLeft": undefined,
+                "paddingRight": undefined,
+                "paddingTop": undefined,
+              }
+            }
+          >
+            <div
+              style={
+                Object {
+                  "paddingBottom": "8px",
+                  "paddingLeft": undefined,
+                  "paddingRight": undefined,
+                  "paddingTop": undefined,
+                }
+              }
+            >
+              <label
+                className="label body-l"
+                htmlFor="name"
+              >
+                Name
+              </label>
+            </div>
+            <div
+              style={
+                Object {
+                  "paddingBottom": "8px",
+                  "paddingLeft": undefined,
+                  "paddingRight": undefined,
+                  "paddingTop": undefined,
+                }
+              }
+            >
+              <p
+                className="description caption-m"
+              >
+                The name of the project can only contain letters and numbers separated by dots, dashes or underscores.
+              </p>
+            </div>
+            <input
+              className="textfield"
+              id="name"
+              name="name"
+              onChange={[Function]}
+              placeholder="Enter the name"
+              type="text"
+              value="sirius"
+            />
+            <div
+              className="errorgroup"
+            >
+              <div
+                style={
+                  Object {
+                    "paddingBottom": "8px",
+                    "paddingLeft": undefined,
+                    "paddingRight": undefined,
+                    "paddingTop": "8px",
+                  }
+                }
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          className="actiongroup"
+        >
+          <div
+            style={
+              Object {
+                "paddingBottom": undefined,
+                "paddingLeft": undefined,
+                "paddingRight": undefined,
+                "paddingTop": "16px",
+              }
+            }
+          >
+            <button
+              className="button button--primary"
+              disabled={false}
+            >
+              <div
+                style={
+                  Object {
+                    "paddingBottom": "8px",
+                    "paddingLeft": "16px",
+                    "paddingRight": "16px",
+                    "paddingTop": "8px",
+                  }
+                }
+              >
+                Create Project
+              </div>
+            </button>
+          </div>
+        </div>
       </div>
     </form>
   </div>
@@ -71,11 +170,22 @@ exports[`NewProjectView renders a card with a unsubmittable form to create a new
   <div
     className="card newprojectcard"
   >
-    <h2
-      className="card-primarytitle title-l"
+    <div
+      style={
+        Object {
+          "paddingBottom": "16px",
+          "paddingLeft": "16px",
+          "paddingRight": "16px",
+          "paddingTop": "16px",
+        }
+      }
     >
-      New Project
-    </h2>
+      <h2
+        className="card-primarytitle title-l"
+      >
+        New Project
+      </h2>
+    </div>
     <div
       className="card-divider"
     />
@@ -84,44 +194,132 @@ exports[`NewProjectView renders a card with a unsubmittable form to create a new
       onSubmit={[Function]}
     >
       <div
-        className="errorgroup"
-      />
-      <div
-        className="field"
+        style={
+          Object {
+            "paddingBottom": "16px",
+            "paddingLeft": "16px",
+            "paddingRight": "16px",
+            "paddingTop": "16px",
+          }
+        }
       >
-        <label
-          className="label body-l"
-          htmlFor="name"
-        >
-          Name
-        </label>
-        <p
-          className="description caption-m"
-        >
-          The name of the project can only contain letters and numbers separated by dots, dashes or underscores.
-        </p>
-        <input
-          className="textfield"
-          id="name"
-          name="name"
-          onChange={[Function]}
-          placeholder="Enter the name"
-          type="text"
-          value=""
-        />
         <div
           className="errorgroup"
-        />
-      </div>
-      <div
-        className="actiongroup"
-      >
-        <button
-          className="button button--primary"
-          disabled={true}
         >
-          Create Project
-        </button>
+          <div
+            style={
+              Object {
+                "paddingBottom": "8px",
+                "paddingLeft": undefined,
+                "paddingRight": undefined,
+                "paddingTop": "8px",
+              }
+            }
+          />
+        </div>
+        <div
+          className="field"
+        >
+          <div
+            style={
+              Object {
+                "paddingBottom": "16px",
+                "paddingLeft": undefined,
+                "paddingRight": undefined,
+                "paddingTop": undefined,
+              }
+            }
+          >
+            <div
+              style={
+                Object {
+                  "paddingBottom": "8px",
+                  "paddingLeft": undefined,
+                  "paddingRight": undefined,
+                  "paddingTop": undefined,
+                }
+              }
+            >
+              <label
+                className="label body-l"
+                htmlFor="name"
+              >
+                Name
+              </label>
+            </div>
+            <div
+              style={
+                Object {
+                  "paddingBottom": "8px",
+                  "paddingLeft": undefined,
+                  "paddingRight": undefined,
+                  "paddingTop": undefined,
+                }
+              }
+            >
+              <p
+                className="description caption-m"
+              >
+                The name of the project can only contain letters and numbers separated by dots, dashes or underscores.
+              </p>
+            </div>
+            <input
+              className="textfield"
+              id="name"
+              name="name"
+              onChange={[Function]}
+              placeholder="Enter the name"
+              type="text"
+              value=""
+            />
+            <div
+              className="errorgroup"
+            >
+              <div
+                style={
+                  Object {
+                    "paddingBottom": "8px",
+                    "paddingLeft": undefined,
+                    "paddingRight": undefined,
+                    "paddingTop": "8px",
+                  }
+                }
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          className="actiongroup"
+        >
+          <div
+            style={
+              Object {
+                "paddingBottom": undefined,
+                "paddingLeft": undefined,
+                "paddingRight": undefined,
+                "paddingTop": "16px",
+              }
+            }
+          >
+            <button
+              className="button button--primary"
+              disabled={true}
+            >
+              <div
+                style={
+                  Object {
+                    "paddingBottom": "8px",
+                    "paddingLeft": "16px",
+                    "paddingRight": "16px",
+                    "paddingTop": "8px",
+                  }
+                }
+              >
+                Create Project
+              </div>
+            </button>
+          </div>
+        </div>
       </div>
     </form>
   </div>
@@ -134,14 +332,40 @@ exports[`NewProjectView renders an error card for an unsupported state 1`] = `
 <div
   className="card errorcard"
 >
-  <h1
-    className="title-l"
+  <div
+    style={
+      Object {
+        "paddingBottom": "32px",
+        "paddingLeft": "32px",
+        "paddingRight": "32px",
+        "paddingTop": "32px",
+      }
+    }
   >
-    The new project page is in an unsupported state: INITIAL__STATE
-  </h1>
-  <p>
-    Contact your administrator to find a suitable solution (code: 1001)
-  </p>
+    <div
+      className="errorcard-container"
+    >
+      <div
+        style={
+          Object {
+            "paddingBottom": "16px",
+            "paddingLeft": "16px",
+            "paddingRight": "16px",
+            "paddingTop": "16px",
+          }
+        }
+      >
+        <h1
+          className="title-l"
+        >
+          The new project page is in an unsupported state: INITIAL__STATE
+        </h1>
+      </div>
+      <p>
+        Contact your administrator to find a suitable solution (code: 1001)
+      </p>
+    </div>
+  </div>
 </div>
 `;
 
@@ -152,11 +376,22 @@ exports[`NewProjectView renders errors message 1`] = `
   <div
     className="card newprojectcard"
   >
-    <h2
-      className="card-primarytitle title-l"
+    <div
+      style={
+        Object {
+          "paddingBottom": "16px",
+          "paddingLeft": "16px",
+          "paddingRight": "16px",
+          "paddingTop": "16px",
+        }
+      }
     >
-      New Project
-    </h2>
+      <h2
+        className="card-primarytitle title-l"
+      >
+        New Project
+      </h2>
+    </div>
     <div
       className="card-divider"
     />
@@ -165,56 +400,166 @@ exports[`NewProjectView renders errors message 1`] = `
       onSubmit={[Function]}
     >
       <div
-        className="errorgroup"
+        style={
+          Object {
+            "paddingBottom": "16px",
+            "paddingLeft": "16px",
+            "paddingRight": "16px",
+            "paddingTop": "16px",
+          }
+        }
       >
-        <div
-          className="error"
-        >
-          Project already exists
-        </div>
-      </div>
-      <div
-        className="field"
-      >
-        <label
-          className="label body-l"
-          htmlFor="name"
-        >
-          Name
-        </label>
-        <p
-          className="description caption-m"
-        >
-          The name of the project can only contain letters and numbers separated by dots, dashes or underscores.
-        </p>
-        <input
-          className="textfield fielderror"
-          id="name"
-          name="name"
-          onChange={[Function]}
-          placeholder="Enter the name"
-          type="text"
-          value=":\\\\/."
-        />
         <div
           className="errorgroup"
         >
           <div
-            className="error"
+            style={
+              Object {
+                "paddingBottom": "8px",
+                "paddingLeft": undefined,
+                "paddingRight": undefined,
+                "paddingTop": "8px",
+              }
+            }
           >
-            Invalid name
+            <div
+              className="error"
+            >
+              <div
+                style={
+                  Object {
+                    "paddingBottom": undefined,
+                    "paddingLeft": undefined,
+                    "paddingRight": undefined,
+                    "paddingTop": "8px",
+                  }
+                }
+              >
+                Project already exists
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <div
-        className="actiongroup"
-      >
-        <button
-          className="button button--primary"
-          disabled={true}
+        <div
+          className="field"
         >
-          Create Project
-        </button>
+          <div
+            style={
+              Object {
+                "paddingBottom": "16px",
+                "paddingLeft": undefined,
+                "paddingRight": undefined,
+                "paddingTop": undefined,
+              }
+            }
+          >
+            <div
+              style={
+                Object {
+                  "paddingBottom": "8px",
+                  "paddingLeft": undefined,
+                  "paddingRight": undefined,
+                  "paddingTop": undefined,
+                }
+              }
+            >
+              <label
+                className="label body-l"
+                htmlFor="name"
+              >
+                Name
+              </label>
+            </div>
+            <div
+              style={
+                Object {
+                  "paddingBottom": "8px",
+                  "paddingLeft": undefined,
+                  "paddingRight": undefined,
+                  "paddingTop": undefined,
+                }
+              }
+            >
+              <p
+                className="description caption-m"
+              >
+                The name of the project can only contain letters and numbers separated by dots, dashes or underscores.
+              </p>
+            </div>
+            <input
+              className="textfield fielderror"
+              id="name"
+              name="name"
+              onChange={[Function]}
+              placeholder="Enter the name"
+              type="text"
+              value=":\\\\/."
+            />
+            <div
+              className="errorgroup"
+            >
+              <div
+                style={
+                  Object {
+                    "paddingBottom": "8px",
+                    "paddingLeft": undefined,
+                    "paddingRight": undefined,
+                    "paddingTop": "8px",
+                  }
+                }
+              >
+                <div
+                  className="error"
+                >
+                  <div
+                    style={
+                      Object {
+                        "paddingBottom": undefined,
+                        "paddingLeft": undefined,
+                        "paddingRight": undefined,
+                        "paddingTop": "8px",
+                      }
+                    }
+                  >
+                    Invalid name
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="actiongroup"
+        >
+          <div
+            style={
+              Object {
+                "paddingBottom": undefined,
+                "paddingLeft": undefined,
+                "paddingRight": undefined,
+                "paddingTop": "16px",
+              }
+            }
+          >
+            <button
+              className="button button--primary"
+              disabled={true}
+            >
+              <div
+                style={
+                  Object {
+                    "paddingBottom": "8px",
+                    "paddingLeft": "16px",
+                    "paddingRight": "16px",
+                    "paddingTop": "8px",
+                  }
+                }
+              >
+                Create Project
+              </div>
+            </button>
+          </div>
+        </div>
       </div>
     </form>
   </div>

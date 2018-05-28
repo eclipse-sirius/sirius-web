@@ -13,6 +13,8 @@ import PropTypes from 'prop-types';
 import { classNames } from '../../common/classnames';
 
 import { Card } from '../cards/Card';
+import { Spacing } from '../spacing/Spacing';
+import { M, L } from '../spacing/SpacingConstants';
 
 import './ErrorCard.css';
 
@@ -23,6 +25,7 @@ const propTypes = {
 };
 
 const ERRORCARD__CLASS_NAMES = 'errorcard';
+const ERRORCARD_CONTAINER__CLASS_NAMES = 'errorcard-container';
 const ERRORCARD_TITLE__CLASS_NAMES = 'title-l';
 
 /**
@@ -32,8 +35,14 @@ export const ErrorCard = ({ className, code, title, message, ...props }) => {
   const errorCardClassNames = classNames(ERRORCARD__CLASS_NAMES, className);
   return (
     <Card {...props} className={errorCardClassNames}>
-      <h1 className={ERRORCARD_TITLE__CLASS_NAMES}>{title}</h1>
-      <p>{`${message} (code: ${code})`}</p>
+      <Spacing top={L} right={L} bottom={L} left={L}>
+        <div className={ERRORCARD_CONTAINER__CLASS_NAMES}>
+          <Spacing top={M} right={M} bottom={M} left={M}>
+            <h1 className={ERRORCARD_TITLE__CLASS_NAMES}>{title}</h1>
+          </Spacing>
+          <p>{`${message} (code: ${code})`}</p>
+        </div>
+      </Spacing>
     </Card>
   );
 };

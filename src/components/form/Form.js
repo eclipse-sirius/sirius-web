@@ -11,6 +11,9 @@ import React from 'react';
 
 import { classNames } from '../../common/classnames';
 
+import { Spacing } from '../spacing/Spacing';
+import { S, M } from '../spacing/SpacingConstants';
+
 import './Form.css';
 
 const FORM__CLASS_NAMES = 'form';
@@ -18,9 +21,15 @@ const FORM__CLASS_NAMES = 'form';
 /**
  * The Form component.
  */
-export const Form = ({ className, ...props }) => {
+export const Form = ({ children, className, ...props }) => {
   const formClassNames = classNames(FORM__CLASS_NAMES, className);
-  return <form className={formClassNames} {...props} />;
+  return (
+    <form className={formClassNames} {...props}>
+      <Spacing top={M} right={M} bottom={M} left={M}>
+        {children}
+      </Spacing>
+    </form>
+  );
 };
 
 const FIELD__CLASS_NAMES = 'field';
@@ -28,9 +37,13 @@ const FIELD__CLASS_NAMES = 'field';
 /**
  * The Field component used to contain the label, the description and the widget.
  */
-export const Field = ({ className, ...props }) => {
+export const Field = ({ children, className, ...props }) => {
   const fieldClassNames = classNames(FIELD__CLASS_NAMES, className);
-  return <div className={fieldClassNames} {...props} />;
+  return (
+    <div className={fieldClassNames} {...props}>
+      <Spacing bottom={M}>{children}</Spacing>
+    </div>
+  );
 };
 
 const LABEL__CLASS_NAMES = 'label body-l';
@@ -40,7 +53,11 @@ const LABEL__CLASS_NAMES = 'label body-l';
  */
 export const Label = ({ className, ...props }) => {
   const labelClassNames = classNames(LABEL__CLASS_NAMES, className);
-  return <label className={labelClassNames} {...props} />;
+  return (
+    <Spacing bottom={S}>
+      <label className={labelClassNames} {...props} />
+    </Spacing>
+  );
 };
 
 const DESCRIPTION__CLASS_NAMES = 'description caption-m';
@@ -50,7 +67,11 @@ const DESCRIPTION__CLASS_NAMES = 'description caption-m';
  */
 export const Description = ({ className, ...props }) => {
   const descriptionClassNames = classNames(DESCRIPTION__CLASS_NAMES, className);
-  return <p className={descriptionClassNames} {...props} />;
+  return (
+    <Spacing bottom={S}>
+      <p className={descriptionClassNames} {...props} />
+    </Spacing>
+  );
 };
 
 const TEXTFIELD__CLASS_NAMES = 'textfield';
@@ -68,9 +89,13 @@ const ACTION_GROUP__CLASS_NAMES = 'actiongroup';
 /**
  * The group of actions of the form, for example, the submit button.
  */
-export const ActionGroup = ({ className, ...props }) => {
+export const ActionGroup = ({ children, className, ...props }) => {
   const actionGroupClassNames = classNames(ACTION_GROUP__CLASS_NAMES, className);
-  return <div className={actionGroupClassNames} {...props} />;
+  return (
+    <div className={actionGroupClassNames} {...props}>
+      <Spacing top={M}>{children}</Spacing>
+    </div>
+  );
 };
 
 const ERROR_GROUP__CLASS_NAMES = 'errorgroup';
@@ -78,9 +103,15 @@ const ERROR_GROUP__CLASS_NAMES = 'errorgroup';
 /**
  * The group of errors of the form.
  */
-export const ErrorGroup = ({ className, ...props }) => {
+export const ErrorGroup = ({ children, className, ...props }) => {
   const errorGroupClassNames = classNames(ERROR_GROUP__CLASS_NAMES, className);
-  return <div className={errorGroupClassNames} {...props} />;
+  return (
+    <div className={errorGroupClassNames} {...props}>
+      <Spacing top={S} bottom={S}>
+        {children}
+      </Spacing>
+    </div>
+  );
 };
 
 const ERROR__CLASS_NAMES = 'error';
@@ -88,7 +119,11 @@ const ERROR__CLASS_NAMES = 'error';
 /**
  * An error to be displayed in the form.
  */
-export const Error = ({ className, ...props }) => {
+export const Error = ({ children, className, ...props }) => {
   const errorClassNames = classNames(ERROR__CLASS_NAMES, className);
-  return <div className={errorClassNames} {...props} />;
+  return (
+    <div className={errorClassNames} {...props}>
+      <Spacing top={S}>{children}</Spacing>
+    </div>
+  );
 };

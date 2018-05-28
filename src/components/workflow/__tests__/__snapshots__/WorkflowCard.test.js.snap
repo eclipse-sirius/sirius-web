@@ -4,11 +4,22 @@ exports[`WorkflowCard renders the workflow card 1`] = `
 <div
   className="card workflowcard"
 >
-  <h2
-    className="card-primarytitle title-l"
+  <div
+    style={
+      Object {
+        "paddingBottom": "16px",
+        "paddingLeft": "16px",
+        "paddingRight": "16px",
+        "paddingTop": "16px",
+      }
+    }
   >
-    Workflow
-  </h2>
+    <h2
+      className="card-primarytitle title-l"
+    >
+      Workflow
+    </h2>
+  </div>
   <div
     className="tabbar"
   >
@@ -55,62 +66,84 @@ exports[`WorkflowCard renders the workflow card 1`] = `
   <div
     className="section"
   >
-    <h3
-      className="card-secondarytitle title-m"
+    <div
+      style={
+        Object {
+          "paddingBottom": "8px",
+          "paddingLeft": "16px",
+          "paddingRight": "16px",
+          "paddingTop": "16px",
+        }
+      }
     >
-      Test Section
-    </h3>
+      <h3
+        className="card-secondarytitle title-m"
+      >
+        Test Section
+      </h3>
+    </div>
     <ul
       className="list list--highlighted"
     >
-      <li
-        className="tile tile--singleline"
+      <div
+        style={
+          Object {
+            "paddingBottom": "8px",
+            "paddingLeft": undefined,
+            "paddingRight": undefined,
+            "paddingTop": "8px",
+          }
+        }
       >
-        <h4
-          className="tile-maintext body-s"
+        <li
+          className="tile tile--singleline"
         >
-          Test Activity
-        </h4>
-        <div
-          className="tile-additionalicon"
-        >
-          <svg
-            className="iconrun"
-            height="16"
-            onClick={[Function]}
-            width="16"
-            xmlns="http://www.w3.org/2000/svg"
+          <h4
+            className="tile-maintext body-s"
           >
-            <polygon
-              points="0,0 16,8 0,16"
-            />
-          </svg>
-        </div>
-      </li>
-      <li
-        className="tile tile--singleline"
-      >
-        <h4
-          className="tile-maintext body-s"
-        >
-          Test Activity 1
-        </h4>
-        <div
-          className="tile-additionalicon"
-        >
-          <svg
-            className="iconrun"
-            height="16"
-            onClick={[Function]}
-            width="16"
-            xmlns="http://www.w3.org/2000/svg"
+            Test Activity
+          </h4>
+          <div
+            className="tile-additionalicon"
           >
-            <polygon
-              points="0,0 16,8 0,16"
-            />
-          </svg>
-        </div>
-      </li>
+            <svg
+              className="iconrun"
+              height="16"
+              onClick={[Function]}
+              width="16"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <polygon
+                points="0,0 16,8 0,16"
+              />
+            </svg>
+          </div>
+        </li>
+        <li
+          className="tile tile--singleline"
+        >
+          <h4
+            className="tile-maintext body-s"
+          >
+            Test Activity 1
+          </h4>
+          <div
+            className="tile-additionalicon"
+          >
+            <svg
+              className="iconrun"
+              height="16"
+              onClick={[Function]}
+              width="16"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <polygon
+                points="0,0 16,8 0,16"
+              />
+            </svg>
+          </div>
+        </li>
+      </div>
     </ul>
   </div>
   <div
@@ -119,38 +152,60 @@ exports[`WorkflowCard renders the workflow card 1`] = `
   <div
     className="section"
   >
-    <h3
-      className="card-secondarytitle title-m"
+    <div
+      style={
+        Object {
+          "paddingBottom": "8px",
+          "paddingLeft": "16px",
+          "paddingRight": "16px",
+          "paddingTop": "16px",
+        }
+      }
     >
-      Test Section 1
-    </h3>
+      <h3
+        className="card-secondarytitle title-m"
+      >
+        Test Section 1
+      </h3>
+    </div>
     <ul
       className="list list--highlighted"
     >
-      <li
-        className="tile tile--singleline"
+      <div
+        style={
+          Object {
+            "paddingBottom": "8px",
+            "paddingLeft": undefined,
+            "paddingRight": undefined,
+            "paddingTop": "8px",
+          }
+        }
       >
-        <h4
-          className="tile-maintext body-s"
+        <li
+          className="tile tile--singleline"
         >
-          Test Activity
-        </h4>
-        <div
-          className="tile-additionalicon"
-        >
-          <svg
-            className="iconrun"
-            height="16"
-            onClick={[Function]}
-            width="16"
-            xmlns="http://www.w3.org/2000/svg"
+          <h4
+            className="tile-maintext body-s"
           >
-            <polygon
-              points="0,0 16,8 0,16"
-            />
-          </svg>
-        </div>
-      </li>
+            Test Activity
+          </h4>
+          <div
+            className="tile-additionalicon"
+          >
+            <svg
+              className="iconrun"
+              height="16"
+              onClick={[Function]}
+              width="16"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <polygon
+                points="0,0 16,8 0,16"
+              />
+            </svg>
+          </div>
+        </li>
+      </div>
     </ul>
   </div>
 </div>

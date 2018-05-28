@@ -14,13 +14,8 @@ import { classNames } from '../../common/classnames';
 
 import { Card, Divider, PrimaryTitle, SecondaryTitle, Text } from '../cards/Card';
 import { IconRun } from '../icons/IconRun';
-import {
-  List,
-  MainText,
-  SingleLineTile,
-  AdditionalIcon,
-  LIST_WITH_HIGHLIGHT__KIND
-} from '../list/List';
+import { List, MainText, Tile, AdditionalIcon, LIST_WITH_HIGHLIGHT__KIND } from '../list/List';
+import { SINGLE_LINE } from '../list/ListConstants';
 import { TabBar } from '../tabbar/TabBar';
 
 import './WorkflowCard.css';
@@ -170,7 +165,7 @@ const ActivitiesList = ({
 }) => (
   <List kind={LIST_WITH_HIGHLIGHT__KIND}>
     {activities.map(activity => (
-      <SingleLineTile key={activity.identifier}>
+      <Tile kind={SINGLE_LINE} key={activity.identifier}>
         <MainText>{activity.name}</MainText>
         <AdditionalIcon>
           <IconRun
@@ -179,7 +174,7 @@ const ActivitiesList = ({
             }
           />
         </AdditionalIcon>
-      </SingleLineTile>
+      </Tile>
     ))}
   </List>
 );

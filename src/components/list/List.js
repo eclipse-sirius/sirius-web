@@ -12,6 +12,11 @@ import PropTypes from 'prop-types';
 
 import { classNames } from '../../common/classnames';
 
+import { Spacing } from '../spacing/Spacing';
+import { S } from '../spacing/SpacingConstants';
+
+import { SINGLE_LINE, TWO_LINES, THREE_LINES } from './ListConstants';
+
 import './List.css';
 
 const TILE_MAINICON__CLASS_NAMES = 'tile-mainicon';
@@ -80,61 +85,29 @@ AdditionalText.propTypes = additionalTextPropTypes;
 
 const TILE__CLASS_NAMES = 'tile';
 const TILE__SINGLELINE__CLASS_NAMES = 'tile--singleline';
+const TILE__TWOLINE__CLASS_NAMES = 'tile--twoline';
+const TILE__THREELINE__CLASS_NAMES = 'tile--threeline';
 
-const singleLineTilePropTypes = {};
+const tilePropTypes = {
+  kind: PropTypes.oneOf([SINGLE_LINE, TWO_LINES, THREE_LINES]).isRequired
+};
 
 /**
  * The SingleLineTile is used to represent one line of the list component. It
  * can display a main icon, some text and additional icons. The text displayed
  * can only use one line for the main text.
  */
-export const SingleLineTile = ({ className, ...props }) => {
-  const singleLineTileClassNames = classNames(
-    TILE__CLASS_NAMES,
-    TILE__SINGLELINE__CLASS_NAMES,
-    className
-  );
-  return <li className={singleLineTileClassNames} {...props} />;
+export const Tile = ({ className, kind, ...props }) => {
+  let kindClassName = TILE__SINGLELINE__CLASS_NAMES;
+  if (kind === TWO_LINES) {
+    kindClassName = TILE__TWOLINE__CLASS_NAMES;
+  } else if (kind === THREE_LINES) {
+    kindClassName = TILE__THREELINE__CLASS_NAMES;
+  }
+  const tileClassNames = classNames(TILE__CLASS_NAMES, kindClassName, className);
+  return <li className={tileClassNames} {...props} />;
 };
-SingleLineTile.propTypes = singleLineTilePropTypes;
-
-const TILE__TWOLINE__CLASS_NAMES = 'tile--twoline';
-
-const twoLineTilePropTypes = {};
-
-/**
- * The TwoLineTile is used to represent one line of the list component. It can
- * display a main icon, some text and additional icons. The text displayed will
- * be composed of a main text and an additional text.
- */
-export const TwoLineTile = ({ className, mainText, additionalText, ...props }) => {
-  const twoLineTileClassNames = classNames(
-    TILE__CLASS_NAMES,
-    TILE__TWOLINE__CLASS_NAMES,
-    className
-  );
-  return <li className={twoLineTileClassNames} {...props} />;
-};
-TwoLineTile.propTypes = twoLineTilePropTypes;
-
-const TILE__THREELINE__CLASS_NAMES = 'tile--threeline';
-
-const threeLineTilePropTypes = {};
-
-/**
- * The ThreeLineTile is used to represent one line of the list component. It can
- * display a main icon, some text and additional icons. The text displayed will
- * be composed of a main text and two lines of additional text.
- */
-export const ThreeLineTile = ({ className, ...props }) => {
-  const threeLineTileClassNames = classNames(
-    TILE__CLASS_NAMES,
-    TILE__THREELINE__CLASS_NAMES,
-    className
-  );
-  return <li className={threeLineTileClassNames} {...props} />;
-};
-ThreeLineTile.propTypes = threeLineTilePropTypes;
+Tile.propTypes = tilePropTypes;
 
 /** The list with separator kind. */
 export const LIST_WITH_SEPARATOR__KIND = 'list--separated';
@@ -146,14 +119,7 @@ const LIST__CLASS_NAMES = 'list';
 
 const listPropTypes = {
   kind: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
-  children: PropTypes.oneOfType([
-    PropTypes.arrayOf(SingleLineTile),
-    PropTypes.arrayOf(TwoLineTile),
-    PropTypes.arrayOf(ThreeLineTile),
-    PropTypes.objectOf(SingleLineTile),
-    PropTypes.objectOf(TwoLineTile),
-    PropTypes.objectOf(ThreeLineTile)
-  ])
+  children: PropTypes.oneOfType([PropTypes.arrayOf(Tile), PropTypes.objectOf(Tile)])
 };
 const listDefaultProps = {
   kind: ''
@@ -169,10 +135,16 @@ const listDefaultProps = {
  *
  * The List component can only have ListItem children.
  */
-export const List = ({ className, kind, ...props }) => {
+export const List = ({ children, className, kind, ...props }) => {
   const kinds = computeKinds(kind);
   const listClassNames = classNames(LIST__CLASS_NAMES, ...kinds, className);
-  return <ul className={listClassNames} {...props} />;
+  return (
+    <ul className={listClassNames} {...props}>
+      <Spacing top={S} bottom={S}>
+        {children}
+      </Spacing>
+    </ul>
+  );
 };
 List.propTypes = listPropTypes;
 List.defaultProps = listDefaultProps;

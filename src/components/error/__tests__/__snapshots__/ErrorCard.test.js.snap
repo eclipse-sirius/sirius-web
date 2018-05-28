@@ -4,13 +4,39 @@ exports[`ErrorCard renders an error card 1`] = `
 <div
   className="card errorcard"
 >
-  <h1
-    className="title-l"
+  <div
+    style={
+      Object {
+        "paddingBottom": "32px",
+        "paddingLeft": "32px",
+        "paddingRight": "32px",
+        "paddingTop": "32px",
+      }
+    }
   >
-    An error has occurred
-  </h1>
-  <p>
-    Please contact your administrator to find out more about this error (code: 500)
-  </p>
+    <div
+      className="errorcard-container"
+    >
+      <div
+        style={
+          Object {
+            "paddingBottom": "16px",
+            "paddingLeft": "16px",
+            "paddingRight": "16px",
+            "paddingTop": "16px",
+          }
+        }
+      >
+        <h1
+          className="title-l"
+        >
+          An error has occurred
+        </h1>
+      </div>
+      <p>
+        Please contact your administrator to find out more about this error (code: 500)
+      </p>
+    </div>
+  </div>
 </div>
 `;

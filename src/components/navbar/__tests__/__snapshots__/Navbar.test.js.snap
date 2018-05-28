@@ -5,9 +5,24 @@ exports[`Navbar renders the navbar component 1`] = `
   className="navbar"
 >
   <div
-    className="navbar-title title-xxl"
+    style={
+      Object {
+        "paddingBottom": "8px",
+        "paddingLeft": "16px",
+        "paddingRight": "16px",
+        "paddingTop": "8px",
+      }
+    }
   >
-    Eclipse Sirius
+    <div
+      className="navbar-container"
+    >
+      <div
+        className="navbar-title title-xxl"
+      >
+        Eclipse Sirius
+      </div>
+    </div>
   </div>
 </nav>
 `;

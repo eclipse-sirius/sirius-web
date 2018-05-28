@@ -4,13 +4,39 @@ exports[`BlankCard renders a blank card 1`] = `
 <div
   className="card blankcard"
 >
-  <h1
-    className="title-l"
+  <div
+    style={
+      Object {
+        "paddingBottom": "32px",
+        "paddingLeft": "32px",
+        "paddingRight": "32px",
+        "paddingTop": "32px",
+      }
+    }
   >
-    Nothing to see here
-  </h1>
-  <p>
-    You should create new elements to see them here
-  </p>
+    <div
+      className="blankcard-container"
+    >
+      <div
+        style={
+          Object {
+            "paddingBottom": "16px",
+            "paddingLeft": undefined,
+            "paddingRight": undefined,
+            "paddingTop": undefined,
+          }
+        }
+      >
+        <h1
+          className="title-l"
+        >
+          Nothing to see here
+        </h1>
+      </div>
+      <p>
+        You should create new elements to see them here
+      </p>
+    </div>
+  </div>
 </div>
 `;
