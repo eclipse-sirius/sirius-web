@@ -43,7 +43,7 @@ exports[`WorkflowCard renders the workflow card 1`] = `
         onClick={[Function]}
       >
         <div
-          className="text m semibold"
+          className="text m semibold hideoverflow"
         >
           Test Page
         </div>
@@ -54,7 +54,7 @@ exports[`WorkflowCard renders the workflow card 1`] = `
         onClick={[Function]}
       >
         <div
-          className="text m semibold"
+          className="text m semibold hideoverflow"
         >
           Test Page 1
         </div>
@@ -65,7 +65,7 @@ exports[`WorkflowCard renders the workflow card 1`] = `
         onClick={[Function]}
       >
         <div
-          className="text m semibold"
+          className="text m semibold hideoverflow"
         >
           Test Page 2
         </div>

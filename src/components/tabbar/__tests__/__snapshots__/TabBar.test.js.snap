@@ -24,7 +24,7 @@ exports[`TabBar renders a list of tabs 1`] = `
       onClick={[Function]}
     >
       <div
-        className="text m semibold"
+        className="text m semibold hideoverflow"
       >
         First
       </div>
@@ -35,7 +35,7 @@ exports[`TabBar renders a list of tabs 1`] = `
       onClick={[Function]}
     >
       <div
-        className="text m semibold"
+        className="text m semibold hideoverflow"
       >
         Second
       </div>
@@ -46,7 +46,7 @@ exports[`TabBar renders a list of tabs 1`] = `
       onClick={[Function]}
     >
       <div
-        className="text m semibold"
+        className="text m semibold hideoverflow"
       >
         Third
       </div>
@@ -90,7 +90,7 @@ exports[`TabBar renders a list of tabs with a selected tab 1`] = `
       onClick={[Function]}
     >
       <div
-        className="text m semibold"
+        className="text m semibold hideoverflow"
       >
         First
       </div>
@@ -101,7 +101,7 @@ exports[`TabBar renders a list of tabs with a selected tab 1`] = `
       onClick={[Function]}
     >
       <div
-        className="text m semibold"
+        className="text m semibold hideoverflow"
       >
         Second
       </div>
@@ -112,7 +112,7 @@ exports[`TabBar renders a list of tabs with a selected tab 1`] = `
       onClick={[Function]}
     >
       <div
-        className="text m semibold"
+        className="text m semibold hideoverflow"
       >
         Third
       </div>
