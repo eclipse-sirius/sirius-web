@@ -104,7 +104,7 @@ export class TabBar extends Component {
       }
       tabsToDisplay.push(
         <div key={tab} data-index={index} className={tabClassNames} onClick={this.handleTabClick}>
-          <Text weight={SEMI_BOLD} size={MEDIUM}>
+          <Text weight={SEMI_BOLD} size={MEDIUM} hideOverflow>
             {tab}
           </Text>
         </div>

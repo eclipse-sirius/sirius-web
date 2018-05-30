@@ -328,7 +328,7 @@ exports[`ProjectView renders the project with activities 1`] = `
               onClick={[Function]}
             >
               <div
-                className="text m semibold"
+                className="text m semibold hideoverflow"
               >
                 page1
               </div>
@@ -606,7 +606,7 @@ exports[`ProjectView renders the project without activities 1`] = `
               onClick={[Function]}
             >
               <div
-                className="text m semibold"
+                className="text m semibold hideoverflow"
               >
                 page1
               </div>
@@ -1137,7 +1137,7 @@ exports[`ProjectView renders the project without sections 1`] = `
               onClick={[Function]}
             >
               <div
-                className="text m semibold"
+                className="text m semibold hideoverflow"
               >
                 page1
               </div>
