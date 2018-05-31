@@ -7,6 +7,28 @@
  * https://www.eclipse.org/legal/epl-2.0.
  *******************************************************************************/
 
+.text.loading {
+  color: var(--white);
+  background-color: var(--white);
+
+  animation-name: textloading;
+  animation-duration: 0.8s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+  animation-direction: alternate;
+  animation-fill-mode: forwards;
+}
+@keyframes textloading {
+  from {
+    color: var(--white);
+    background-color: var(--white);
+  }
+  to {
+    color: var(--smoke);
+    background-color: var(--smoke);
+  }
+}
+
 .xxl {
   font-size: var(--fontSize-xxl);
   line-height: var(--lineHeight-xxl);

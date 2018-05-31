@@ -9,10 +9,23 @@
 
 import React from 'react';
 
+import { classNames } from '../../common/classnames';
+
+import './Loading.css';
+
+const LOADING__CLASS_NAMES = 'loading';
+
 /**
  * The Login component is used to display that we are waiting for some
  * asynchronous process to finish like a request to a server.
  */
-export const Loading = props => {
-  return <div {...props}>Loading</div>;
+export const Loading = ({ className, ...props }) => {
+  const loadingClassNames = classNames(LOADING__CLASS_NAMES, className);
+  return (
+    <div className={loadingClassNames} {...props}>
+      <div />
+      <div />
+      <div />
+    </div>
+  );
 };

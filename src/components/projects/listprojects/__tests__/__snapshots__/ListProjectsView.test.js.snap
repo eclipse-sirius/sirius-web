@@ -43,9 +43,11 @@ exports[`ListProjectsView renders a blank card for an empty list of projects 1`]
 
 exports[`ListProjectsView renders a loading indicator during the loading 1`] = `
 <div
-  className=""
+  className="loading"
 >
-  Loading
+  <div />
+  <div />
+  <div />
 </div>
 `;
 

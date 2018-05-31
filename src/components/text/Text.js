@@ -29,19 +29,24 @@ import './Text.css';
 
 const propTypes = {
   children: PropTypes.string,
+  loading: PropTypes.bool,
   weight: PropTypes.oneOf([LIGHT, REGULAR, SEMI_BOLD, BOLD, EXTRA_BOLD]).isRequired,
   size: PropTypes.oneOf([EXTRA_SMALL, SMALL, MEDIUM, LARGE, EXTRA_LARGE, EXTRA_EXTRA_LARGE])
-    .isRequired
+    .isRequired,
+  hideOverflow: PropTypes.bool
 };
 const defaultProps = {
   weight: REGULAR,
   size: SMALL
 };
 
-export const Text = ({ children, className, weight, size, hideOverflow, ...props }) => {
+export const Text = ({ children, className, weight, size, hideOverflow, loading, ...props }) => {
   let textClassNames = classNames('text', size, weight);
   if (hideOverflow) {
     textClassNames = classNames(textClassNames, 'hideoverflow');
+  }
+  if (loading) {
+    textClassNames = classNames(textClassNames, 'loading');
   }
   textClassNames = classNames(textClassNames, className);
   return <div className={textClassNames}>{children}</div>;

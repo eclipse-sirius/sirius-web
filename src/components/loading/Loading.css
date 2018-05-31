@@ -1,0 +1,50 @@
+/*******************************************************************************
+ * Copyright (c) 2018 Obeo and others.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2
+ * which accompanies this distribution and is available at
+ * https://www.eclipse.org/legal/epl-2.0.
+ *******************************************************************************/
+
+.loading {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.loading div {
+  width: 8px;
+  height: 8px;
+  margin: 5px;
+
+  border-radius: 100%;
+  background-color: var(--blue);
+
+  animation-name: loading;
+  animation-duration: 0.8s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  animation-fill-mode: both;
+}
+
+.loading div:nth-child(0n + 1) {
+  animation-delay: 0s;
+}
+.loading div:nth-child(0n + 2) {
+  animation-delay: 0.15s;
+}
+.loading div:nth-child(0n + 3) {
+  animation-delay: 0.3s;
+}
+@keyframes loading {
+  0%,
+  85%,
+  100% {
+    opacity: 0;
+  }
+  35%,
+  50% {
+    opacity: 1;
+  }
+}
