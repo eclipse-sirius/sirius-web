@@ -2,9 +2,11 @@
 
 exports[`DashboardView renders a loading indicator during the loading 1`] = `
 <div
-  className={undefined}
+  className="loading"
 >
-  Loading
+  <div />
+  <div />
+  <div />
 </div>
 `;
 

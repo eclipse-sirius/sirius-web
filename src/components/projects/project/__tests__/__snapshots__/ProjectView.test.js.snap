@@ -2,9 +2,11 @@
 
 exports[`ProjectView renders a loading indicator during the loading 1`] = `
 <div
-  className=""
+  className="loading"
 >
-  Loading
+  <div />
+  <div />
+  <div />
 </div>
 `;
 
