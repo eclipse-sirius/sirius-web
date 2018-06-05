@@ -13,8 +13,9 @@ import PropTypes from 'prop-types';
 import { classNames } from '../../common/classnames';
 
 import { Text } from '../text/Text';
-import { SEMI_BOLD, MEDIUM } from '../text/TextConstants';
+import { SEMI_BOLD } from '../text/TextConstants';
 
+import { Tab } from './Tab';
 import { actionCreator, dispatcher } from './TabBarDispatcher';
 
 import './TabBar.css';
@@ -24,8 +25,6 @@ const TABBAR_NAV__CLASS_NAMES = 'tabbar-nav';
 const TABBAR_NAV__DISABLED__CLASS_NAMES = 'tabbar-nav--disabled';
 const TABBAR_TAB__CONTAIN_SELECTION__CLASS_NAMES = 'tabbar-nav--contain-selection';
 const TABBAR_TABS__CLASS_NAMES = 'tabbar-tabs';
-const TABBAR_TAB__CLASS_NAMES = 'tabbar-tab';
-const TABBAR_TAB_SELECTED__CLASS_NAMES = 'tabbar-tab--selected';
 
 const propTypes = {
   tabs: PropTypes.array.isRequired,
@@ -70,13 +69,11 @@ export class TabBar extends Component {
     }
   }
 
-  handleTabClick(event) {
+  handleTabClick(event, index) {
     const { onTabClick } = this.props;
-    const indexValue = event.target.getAttribute('data-index');
-    const selectedTabIndex = parseInt(indexValue, 10);
 
-    const action = actionCreator.newHandleTabSelectedAction(selectedTabIndex);
-    this.dispatch(action, () => onTabClick(selectedTabIndex));
+    const action = actionCreator.newHandleTabSelectedAction(index);
+    this.dispatch(action, () => onTabClick(index));
   }
 
   getTabBarNavClassNames(isAvailable, containsSelection) {
@@ -97,17 +94,14 @@ export class TabBar extends Component {
     const endIndex = Math.min(tabs.length, startIndex + numberOfTabsDisplayed);
     for (let index = startIndex; index < endIndex; index++) {
       let tab = tabs[index];
-
-      let tabClassNames = TABBAR_TAB__CLASS_NAMES;
-      if (index === selectedTabIndex) {
-        tabClassNames = classNames(TABBAR_TAB__CLASS_NAMES, TABBAR_TAB_SELECTED__CLASS_NAMES);
-      }
       tabsToDisplay.push(
-        <div key={tab} data-index={index} className={tabClassNames} onClick={this.handleTabClick}>
-          <Text weight={SEMI_BOLD} size={MEDIUM} hideOverflow>
-            {tab}
-          </Text>
-        </div>
+        <Tab
+          key={tab}
+          index={index}
+          onClick={this.handleTabClick}
+          selected={index === selectedTabIndex}>
+          {tab}
+        </Tab>
       );
     }
     return tabsToDisplay;

@@ -111,12 +111,6 @@ export const Tile = ({ className, kind, ...props }) => {
 };
 Tile.propTypes = tilePropTypes;
 
-/** The list with separator kind. */
-export const LIST_WITH_SEPARATOR__KIND = 'list--separated';
-
-/** The list with highlight kind. */
-export const LIST_WITH_HIGHLIGHT__KIND = 'list--highlighted';
-
 const LIST__CLASS_NAMES = 'list';
 
 const listPropTypes = {

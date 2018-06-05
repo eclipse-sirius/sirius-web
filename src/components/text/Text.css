@@ -8,6 +8,7 @@
  *******************************************************************************/
 
 .text.loading {
+  height: 2ex;
   color: var(--white);
   background-color: var(--white);
 

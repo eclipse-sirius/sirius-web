@@ -140,22 +140,33 @@ exports[`NewProjectView renders a card with a form ready to be submitted to crea
           >
             <button
               className="button button--primary"
-              disabled={false}
+              disabled={undefined}
             >
               <div
                 style={
                   Object {
-                    "paddingBottom": "8px",
+                    "paddingBottom": undefined,
                     "paddingLeft": "16px",
                     "paddingRight": "16px",
-                    "paddingTop": "8px",
+                    "paddingTop": undefined,
                   }
                 }
               >
                 <div
-                  className="text s semibold"
+                  className="button-container"
                 >
-                  Create Project
+                  <div
+                    className="loading button-loadingindicator"
+                  >
+                    <div />
+                    <div />
+                    <div />
+                  </div>
+                  <div
+                    className="text s semibold button-label"
+                  >
+                    Create Project
+                  </div>
                 </div>
               </div>
             </button>
@@ -307,22 +318,33 @@ exports[`NewProjectView renders a card with a unsubmittable form to create a new
           >
             <button
               className="button button--primary"
-              disabled={true}
+              disabled={undefined}
             >
               <div
                 style={
                   Object {
-                    "paddingBottom": "8px",
+                    "paddingBottom": undefined,
                     "paddingLeft": "16px",
                     "paddingRight": "16px",
-                    "paddingTop": "8px",
+                    "paddingTop": undefined,
                   }
                 }
               >
                 <div
-                  className="text s semibold"
+                  className="button-container"
                 >
-                  Create Project
+                  <div
+                    className="loading button-loadingindicator"
+                  >
+                    <div />
+                    <div />
+                    <div />
+                  </div>
+                  <div
+                    className="text s semibold button-label"
+                  >
+                    Create Project
+                  </div>
                 </div>
               </div>
             </button>
@@ -551,22 +573,33 @@ exports[`NewProjectView renders errors message 1`] = `
           >
             <button
               className="button button--primary"
-              disabled={true}
+              disabled={undefined}
             >
               <div
                 style={
                   Object {
-                    "paddingBottom": "8px",
+                    "paddingBottom": undefined,
                     "paddingLeft": "16px",
                     "paddingRight": "16px",
-                    "paddingTop": "8px",
+                    "paddingTop": undefined,
                   }
                 }
               >
                 <div
-                  className="text s semibold"
+                  className="button-container"
                 >
-                  Create Project
+                  <div
+                    className="loading button-loadingindicator"
+                  >
+                    <div />
+                    <div />
+                    <div />
+                  </div>
+                  <div
+                    className="text s semibold button-label"
+                  >
+                    Create Project
+                  </div>
                 </div>
               </div>
             </button>

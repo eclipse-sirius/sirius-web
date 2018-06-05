@@ -14,8 +14,10 @@ import { classNames } from '../../common/classnames';
 
 import { Card, Divider } from '../cards/Card';
 import { IconRun } from '../icons/IconRun';
-import { List, MainText, Tile, AdditionalIcon, LIST_WITH_HIGHLIGHT__KIND } from '../list/List';
+import { List, MainText, Tile, AdditionalIcon } from '../list/List';
+import { LIST_WITH_HIGHLIGHT__KIND } from '../list/ListConstants';
 import { SINGLE_LINE } from '../list/ListConstants';
+import { LoadingConsumer } from '../loading/Loading';
 import { Spacing } from '../spacing/Spacing';
 import { S, M } from '../spacing/SpacingConstants';
 import { TabBar } from '../tabbar/TabBar';
@@ -64,21 +66,32 @@ export const WorkflowCard = ({
     }
   }
 
-  const workflowCardClassNames = classNames(WORKFLOWCARD__CLASS_NAMES, className);
-  return (
-    <Card {...props} className={workflowCardClassNames}>
-      <Spacing top={M} right={M} bottom={M} left={M}>
-        <Text weight={SEMI_BOLD} size={LARGE} hideOverflow>
-          Workflow
-        </Text>
-      </Spacing>
-      <WorkflowTabBar pages={pages} selectedTabIndex={selectedTabIndex} onTabClick={onTabClick} />
+  let sectionsElement;
+  if (pages.length > 0) {
+    sectionsElement = (
       <Sections
         sections={sections}
         projectName={projectName}
         pageIdentifier={pageIdentifier}
         onActivityClick={onActivityClick}
       />
+    );
+  }
+
+  const workflowCardClassNames = classNames(WORKFLOWCARD__CLASS_NAMES, className);
+  return (
+    <Card {...props} className={workflowCardClassNames}>
+      <Spacing top={M} right={M} bottom={M} left={M}>
+        <LoadingConsumer>
+          {loading => (
+            <Text weight={SEMI_BOLD} size={LARGE} loading={loading} hideOverflow>
+              Workflow
+            </Text>
+          )}
+        </LoadingConsumer>
+      </Spacing>
+      <WorkflowTabBar pages={pages} selectedTabIndex={selectedTabIndex} onTabClick={onTabClick} />
+      {sectionsElement}
     </Card>
   );
 };
@@ -89,7 +102,9 @@ const WorkflowTabBar = ({ pages, selectedTabIndex, onTabClick }) => {
   if (pages.length === 0) {
     return (
       <Spacing top={S} right={M} bottom={M} left={M}>
-        <Text>No workflow pages found</Text>
+        <LoadingConsumer>
+          {loading => <Text loading={loading}>No workflow pages found</Text>}
+        </LoadingConsumer>
       </Spacing>
     );
   }

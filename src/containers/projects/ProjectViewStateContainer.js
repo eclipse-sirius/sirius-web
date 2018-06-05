@@ -31,6 +31,10 @@ class ProjectViewStateContainerWithoutRouter extends Component {
   }
 
   async componentDidMount() {
+    await this.updateData();
+  }
+
+  async updateData() {
     try {
       const { projectName } = this.props.match.params;
       const jsonProjectResponse = await fetch(`/api/projects/${projectName}`);
@@ -76,6 +80,7 @@ class ProjectViewStateContainerWithoutRouter extends Component {
       if (!ok) {
         // To be handled
       }
+      await this.updateData();
     } catch (error) {
       // To be handled
     }
