@@ -12,8 +12,9 @@ import PropTypes from 'prop-types';
 
 import { classNames } from '../../common/classnames';
 
+import { Loading } from '../loading/Loading';
 import { Spacing } from '../spacing/Spacing';
-import { S, M } from '../spacing/SpacingConstants';
+import { M } from '../spacing/SpacingConstants';
 import { Text } from '../text/Text';
 import { SEMI_BOLD } from '../text/TextConstants';
 
@@ -34,22 +35,40 @@ const propTypes = {
     BUTTON_PRIMARY__KIND,
     BUTTON_SUCCESS__KIND,
     BUTTON_WARNING__KIND
-  ])
+  ]),
+  loading: PropTypes.bool
 };
 const defaultProps = {
   kind: BUTTON_DEFAULT__KIND
 };
 
+const BUTTON__CLASS_NAMES = 'button';
+const BUTTON__LOADING__CLASS_NAMES = 'button--loading';
+const BUTTON_CONTAINER__CLASS_NAMES = 'button-container';
+const BUTTON_LOADINGINDICATOR__CLASS_NAMES = 'button-loadingindicator';
+const BUTTON_LABEL__CLASS_NAMES = 'button-label';
+
 /**
  * The button component.
  */
-export const Button = ({ className, kind, ...props }) => {
-  const kindClassNames = getKindClassNames(kind);
-  const buttonClassNames = classNames(BUTTON__CLASS_NAMES, kindClassNames, className);
+export const Button = ({ className, kind, loading, ...props }) => {
+  let buttonClassNames = classNames(BUTTON__CLASS_NAMES, className);
+  if (loading) {
+    buttonClassNames = classNames(buttonClassNames, BUTTON__LOADING__CLASS_NAMES);
+  } else {
+    const kindClassNames = getKindClassNames(kind);
+    buttonClassNames = classNames(buttonClassNames, kindClassNames);
+  }
+
   return (
-    <button className={buttonClassNames} {...props}>
-      <Spacing top={S} right={M} bottom={S} left={M}>
-        <Text weight={SEMI_BOLD}>{props.children}</Text>
+    <button className={buttonClassNames} {...props} disabled={loading}>
+      <Spacing right={M} left={M}>
+        <div className={BUTTON_CONTAINER__CLASS_NAMES}>
+          <Loading className={BUTTON_LOADINGINDICATOR__CLASS_NAMES} />
+          <Text className={BUTTON_LABEL__CLASS_NAMES} weight={SEMI_BOLD}>
+            {props.children}
+          </Text>
+        </div>
       </Spacing>
     </button>
   );
@@ -57,7 +76,6 @@ export const Button = ({ className, kind, ...props }) => {
 Button.propTypes = propTypes;
 Button.defaultProps = defaultProps;
 
-const BUTTON__CLASS_NAMES = 'button';
 const BUTTON_DEFAULT_KIND__CLASS_NAMES = 'button--default';
 const BUTTON_PRIMARY_KIND__CLASS_NAMES = 'button--primary';
 const BUTTON_SUCCESS_KIND__CLASS_NAMES = 'button--success';

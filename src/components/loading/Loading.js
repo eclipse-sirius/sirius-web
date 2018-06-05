@@ -7,7 +7,8 @@
  * https://www.eclipse.org/legal/epl-2.0.
  *******************************************************************************/
 
-import React from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import { classNames } from '../../common/classnames';
 
@@ -28,4 +29,27 @@ export const Loading = ({ className, ...props }) => {
       <div />
     </div>
   );
+};
+
+export class LoadingProvider extends Component {
+  getChildContext() {
+    return {
+      LoadingProvider_LOADING: this.props.loading
+    };
+  }
+  render() {
+    return this.props.children;
+  }
+}
+LoadingProvider.childContextTypes = {
+  LoadingProvider_LOADING: PropTypes.bool.isRequired
+};
+
+export const LoadingConsumer = (props, context) => {
+  const { render, children = render } = props;
+  const loading = context.LoadingProvider_LOADING;
+  return children(loading);
+};
+LoadingConsumer.contextTypes = {
+  LoadingProvider_LOADING: PropTypes.bool
 };

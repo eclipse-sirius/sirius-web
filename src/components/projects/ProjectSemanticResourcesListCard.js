@@ -13,8 +13,9 @@ import PropTypes from 'prop-types';
 import { classNames } from '../../common/classnames';
 
 import { Card } from '../cards/Card';
-import { LIST_WITH_HIGHLIGHT__KIND, List, MainText, Tile } from '../list/List';
-import { SINGLE_LINE } from '../list/ListConstants';
+import { List, MainText, Tile } from '../list/List';
+import { LIST_WITH_HIGHLIGHT__KIND, SINGLE_LINE } from '../list/ListConstants';
+import { LoadingConsumer } from '../loading/Loading';
 import { Spacing } from '../spacing/Spacing';
 import { S, M } from '../spacing/SpacingConstants';
 import { Text } from '../text/Text';
@@ -39,9 +40,13 @@ export const ProjectSemanticResourcesListCard = ({ className, semanticResources,
   return (
     <Card className={cardClassNames} {...props}>
       <Spacing top={M} right={M} bottom={M} left={M}>
-        <Text weight={SEMI_BOLD} size={LARGE} hideOverflow>
-          Semantic Resources
-        </Text>
+        <LoadingConsumer>
+          {loading => (
+            <Text weight={SEMI_BOLD} size={LARGE} loading={loading} hideOverflow>
+              Semantic Resources
+            </Text>
+          )}
+        </LoadingConsumer>
       </Spacing>
       <SemanticResources semanticResources={semanticResources} />
     </Card>
@@ -80,6 +85,10 @@ const SemanticResourcesList = ({ semanticResources }) => (
  */
 const EmptySemanticResources = () => (
   <Spacing top={S} right={M} bottom={M} left={M}>
-    <Text>No semantic resource has been found on the project.</Text>
+    <LoadingConsumer>
+      {loading => (
+        <Text loading={loading}>No semantic resource has been found on the project.</Text>
+      )}
+    </LoadingConsumer>
   </Spacing>
 );

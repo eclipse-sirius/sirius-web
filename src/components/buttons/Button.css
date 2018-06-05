@@ -7,6 +7,9 @@
  * https://www.eclipse.org/legal/epl-2.0.
  *******************************************************************************/
 .button {
+  height: 36px;
+  min-width: 90px;
+
   cursor: pointer;
   border-radius: 2px;
   text-transform: capitalize;
@@ -16,6 +19,53 @@
 }
 .button:active {
   box-shadow: var(--boxShadow-deboss);
+}
+.button[disabled],
+.button[disabled]:active,
+.button[disabled]:hover {
+  background-color: var(--smoke);
+  box-shadow: none;
+}
+
+.button-container {
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr;
+}
+
+.button-label {
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
+  z-index: 0;
+}
+
+.button-loadingindicator {
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
+  z-index: 2;
+}
+
+.button--loading {
+  cursor: progress;
+  background-color: var(--white);
+  color: var(--slate);
+  box-shadow: var(--boxShadow-border);
+}
+.button--loading:hover {
+  box-shadow: var(--boxShadow-border);
+}
+.button--loading:active {
+  box-shadow: var(--boxShadow-border);
+}
+.button--loading[disabled],
+.button--loading[disabled]:active,
+.button--loading[disabled]:hover {
+  background-color: var(--white);
+  box-shadow: var(--boxShadow-border);
+}
+
+.button--loading .button-label {
+  visibility: hidden;
 }
 
 .button--default {
@@ -31,27 +81,38 @@
   background-color: var(--blue);
   color: var(--white);
 }
+.button--default .button-loadingindicator {
+  display: none;
+}
 
 .button--primary {
   background-color: var(--blue);
   color: var(--white);
 }
+.button--primary .button-loadingindicator {
+  display: none;
+}
+
 .button--success {
   background-color: var(--green);
   color: var(--white);
 }
+.button--success .button-loadingindicator {
+  display: none;
+}
+
 .button--warning {
   background-color: var(--yellow);
   color: var(--white);
 }
+.button--warning .button-loadingindicator {
+  display: none;
+}
+
 .button--danger {
   background-color: var(--red);
   color: var(--white);
 }
-
-.button[disabled],
-.button[disabled]:active,
-.button[disabled]:hover {
-  background-color: var(--smoke);
-  box-shadow: none;
+.button--danger .button-loadingindicator {
+  display: none;
 }

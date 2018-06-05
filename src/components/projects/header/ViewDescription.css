@@ -7,18 +7,10 @@
  * https://www.eclipse.org/legal/epl-2.0.
  *******************************************************************************/
 
-.projectheadercard-viewdescription {
-  display: flex;
-  align-items: center;
+.viewdescription {
+  display: grid;
+  grid-template-columns: 1fr min-content;
 }
-.projectheadercard-viewdescription-description {
-  margin-right: auto;
-}
-
-.projectheadercard-editdescription {
-  display: flex;
-  align-items: center;
-}
-.projectheadercard-editdescription input {
-  margin-right: auto;
+.viewdescription-text {
+  align-self: center;
 }

@@ -13,7 +13,8 @@ import PropTypes from 'prop-types';
 import { classNames } from '../../common/classnames';
 
 import { Card } from '../cards/Card';
-import { LIST_WITH_HIGHLIGHT__KIND, AdditionalText, List, MainText, Tile } from '../list/List';
+import { AdditionalText, List, MainText, Tile } from '../list/List';
+import { LIST_WITH_HIGHLIGHT__KIND } from '../list/ListConstants';
 import { TWO_LINES } from '../list/ListConstants';
 import { Spacing } from '../spacing/Spacing';
 import { M } from '../spacing/SpacingConstants';

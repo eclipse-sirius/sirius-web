@@ -3,21 +3,33 @@
 exports[`Button renders a button with a label 1`] = `
 <button
   className="button button--default"
+  disabled={undefined}
 >
   <div
     style={
       Object {
-        "paddingBottom": "8px",
+        "paddingBottom": undefined,
         "paddingLeft": "16px",
         "paddingRight": "16px",
-        "paddingTop": "8px",
+        "paddingTop": undefined,
       }
     }
   >
     <div
-      className="text s semibold"
+      className="button-container"
     >
-      OK
+      <div
+        className="loading button-loadingindicator"
+      >
+        <div />
+        <div />
+        <div />
+      </div>
+      <div
+        className="text s semibold button-label"
+      >
+        OK
+      </div>
     </div>
   </div>
 </button>
@@ -26,20 +38,32 @@ exports[`Button renders a button with a label 1`] = `
 exports[`Button renders a button without a label 1`] = `
 <button
   className="button button--default"
+  disabled={undefined}
 >
   <div
     style={
       Object {
-        "paddingBottom": "8px",
+        "paddingBottom": undefined,
         "paddingLeft": "16px",
         "paddingRight": "16px",
-        "paddingTop": "8px",
+        "paddingTop": undefined,
       }
     }
   >
     <div
-      className="text s semibold"
-    />
+      className="button-container"
+    >
+      <div
+        className="loading button-loadingindicator"
+      >
+        <div />
+        <div />
+        <div />
+      </div>
+      <div
+        className="text s semibold button-label"
+      />
+    </div>
   </div>
 </button>
 `;
@@ -47,20 +71,32 @@ exports[`Button renders a button without a label 1`] = `
 exports[`Button renders a danger button 1`] = `
 <button
   className="button button--danger"
+  disabled={undefined}
 >
   <div
     style={
       Object {
-        "paddingBottom": "8px",
+        "paddingBottom": undefined,
         "paddingLeft": "16px",
         "paddingRight": "16px",
-        "paddingTop": "8px",
+        "paddingTop": undefined,
       }
     }
   >
     <div
-      className="text s semibold"
-    />
+      className="button-container"
+    >
+      <div
+        className="loading button-loadingindicator"
+      >
+        <div />
+        <div />
+        <div />
+      </div>
+      <div
+        className="text s semibold button-label"
+      />
+    </div>
   </div>
 </button>
 `;
@@ -68,20 +104,32 @@ exports[`Button renders a danger button 1`] = `
 exports[`Button renders a default button 1`] = `
 <button
   className="button button--default"
+  disabled={undefined}
 >
   <div
     style={
       Object {
-        "paddingBottom": "8px",
+        "paddingBottom": undefined,
         "paddingLeft": "16px",
         "paddingRight": "16px",
-        "paddingTop": "8px",
+        "paddingTop": undefined,
       }
     }
   >
     <div
-      className="text s semibold"
-    />
+      className="button-container"
+    >
+      <div
+        className="loading button-loadingindicator"
+      >
+        <div />
+        <div />
+        <div />
+      </div>
+      <div
+        className="text s semibold button-label"
+      />
+    </div>
   </div>
 </button>
 `;
@@ -89,20 +137,32 @@ exports[`Button renders a default button 1`] = `
 exports[`Button renders a primary button 1`] = `
 <button
   className="button button--primary"
+  disabled={undefined}
 >
   <div
     style={
       Object {
-        "paddingBottom": "8px",
+        "paddingBottom": undefined,
         "paddingLeft": "16px",
         "paddingRight": "16px",
-        "paddingTop": "8px",
+        "paddingTop": undefined,
       }
     }
   >
     <div
-      className="text s semibold"
-    />
+      className="button-container"
+    >
+      <div
+        className="loading button-loadingindicator"
+      >
+        <div />
+        <div />
+        <div />
+      </div>
+      <div
+        className="text s semibold button-label"
+      />
+    </div>
   </div>
 </button>
 `;
@@ -110,20 +170,32 @@ exports[`Button renders a primary button 1`] = `
 exports[`Button renders a success button 1`] = `
 <button
   className="button button--success"
+  disabled={undefined}
 >
   <div
     style={
       Object {
-        "paddingBottom": "8px",
+        "paddingBottom": undefined,
         "paddingLeft": "16px",
         "paddingRight": "16px",
-        "paddingTop": "8px",
+        "paddingTop": undefined,
       }
     }
   >
     <div
-      className="text s semibold"
-    />
+      className="button-container"
+    >
+      <div
+        className="loading button-loadingindicator"
+      >
+        <div />
+        <div />
+        <div />
+      </div>
+      <div
+        className="text s semibold button-label"
+      />
+    </div>
   </div>
 </button>
 `;
@@ -131,20 +203,32 @@ exports[`Button renders a success button 1`] = `
 exports[`Button renders a warning button 1`] = `
 <button
   className="button button--warning"
+  disabled={undefined}
 >
   <div
     style={
       Object {
-        "paddingBottom": "8px",
+        "paddingBottom": undefined,
         "paddingLeft": "16px",
         "paddingRight": "16px",
-        "paddingTop": "8px",
+        "paddingTop": undefined,
       }
     }
   >
     <div
-      className="text s semibold"
-    />
+      className="button-container"
+    >
+      <div
+        className="loading button-loadingindicator"
+      >
+        <div />
+        <div />
+        <div />
+      </div>
+      <div
+        className="text s semibold button-label"
+      />
+    </div>
   </div>
 </button>
 `;

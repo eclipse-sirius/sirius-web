@@ -7,9 +7,18 @@
  * https://www.eclipse.org/legal/epl-2.0.
  *******************************************************************************/
 
-export const SINGLE_LINE = 'SINGLE_LINE';
-export const TWO_LINES = 'TWO_LINES';
-export const THREE_LINES = 'THREE_LINES';
+.tab {
+  padding: var(--layoutDimension-m) var(--layoutDimension-s);
+  border-bottom: 5px solid var(--light-smoke);
 
-export const LIST_WITH_SEPARATOR__KIND = 'list--separated';
-export const LIST_WITH_HIGHLIGHT__KIND = 'list--highlighted';
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: center;
+}
+.tab:hover {
+  border-bottom: 5px solid var(--light-blue);
+}
+.tab--selected {
+  border-bottom: 5px solid var(--blue);
+}

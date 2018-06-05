@@ -23,7 +23,9 @@
 .tabbar-tabs {
   display: grid;
   grid-auto-rows: 1fr;
-  grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(10px, 1fr));
+  grid-column-gap: var(--layoutDimension-m);
+  padding: 0 var(--layoutDimension-m);
 }
 
 .tabbar-nav {
@@ -53,21 +55,4 @@
 .tabbar-nav--contain-selection {
   color: var(--white);
   background-color: var(--light-blue);
-}
-
-.tabbar-tab {
-  padding: var(--layoutDimension-m) var(--layoutDimension-s);
-  margin: 0 var(--layoutDimension-m);
-  border-bottom: 5px solid var(--light-smoke);
-
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  text-align: center;
-}
-.tabbar-tab:hover {
-  border-bottom: 5px solid var(--light-blue);
-}
-.tabbar-tab--selected {
-  border-bottom: 5px solid var(--blue);
 }

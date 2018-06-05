@@ -2,11 +2,212 @@
 
 exports[`ProjectView renders a loading indicator during the loading 1`] = `
 <div
-  className="loading"
+  className="projectview"
 >
-  <div />
-  <div />
-  <div />
+  <div
+    className="card projectheadercard"
+  >
+    <div
+      style={
+        Object {
+          "paddingBottom": "16px",
+          "paddingLeft": "16px",
+          "paddingRight": "16px",
+          "paddingTop": "16px",
+        }
+      }
+    >
+      <div
+        className="text xl semibold hideoverflow loading"
+      >
+        
+      </div>
+    </div>
+    <div
+      style={
+        Object {
+          "paddingBottom": "8px",
+          "paddingLeft": "16px",
+          "paddingRight": "16px",
+          "paddingTop": "8px",
+        }
+      }
+    >
+      <div
+        className="viewdescription"
+      >
+        <div
+          className="text s regular loading viewdescription-text"
+        >
+          No description provided
+        </div>
+        <div
+          style={
+            Object {
+              "paddingBottom": undefined,
+              "paddingLeft": "16px",
+              "paddingRight": undefined,
+              "paddingTop": undefined,
+            }
+          }
+        >
+          <button
+            className="button button--loading"
+            disabled={true}
+            onClick={[Function]}
+          >
+            <div
+              style={
+                Object {
+                  "paddingBottom": undefined,
+                  "paddingLeft": "16px",
+                  "paddingRight": "16px",
+                  "paddingTop": undefined,
+                }
+              }
+            >
+              <div
+                className="button-container"
+              >
+                <div
+                  className="loading button-loadingindicator"
+                >
+                  <div />
+                  <div />
+                  <div />
+                </div>
+                <div
+                  className="text s semibold button-label"
+                >
+                  Edit
+                </div>
+              </div>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    className="projectview-main"
+  >
+    <div
+      className="projectview-details"
+    >
+      <div
+        className="card projectsemanticresourceslistcard"
+      >
+        <div
+          style={
+            Object {
+              "paddingBottom": "16px",
+              "paddingLeft": "16px",
+              "paddingRight": "16px",
+              "paddingTop": "16px",
+            }
+          }
+        >
+          <div
+            className="text l semibold hideoverflow loading"
+          >
+            Semantic Resources
+          </div>
+        </div>
+        <div
+          style={
+            Object {
+              "paddingBottom": "16px",
+              "paddingLeft": "16px",
+              "paddingRight": "16px",
+              "paddingTop": "8px",
+            }
+          }
+        >
+          <div
+            className="text s regular loading"
+          >
+            No semantic resource has been found on the project.
+          </div>
+        </div>
+      </div>
+      <div
+        className="card projectrepresentationslistcard"
+      >
+        <div
+          style={
+            Object {
+              "paddingBottom": "16px",
+              "paddingLeft": "16px",
+              "paddingRight": "16px",
+              "paddingTop": "16px",
+            }
+          }
+        >
+          <div
+            className="text l semibold hideoverflow loading"
+          >
+            Representations
+          </div>
+        </div>
+        <div
+          style={
+            Object {
+              "paddingBottom": "16px",
+              "paddingLeft": "16px",
+              "paddingRight": "16px",
+              "paddingTop": "8px",
+            }
+          }
+        >
+          <div
+            className="text s regular loading"
+          >
+            No representation has been found on the project.
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="projectview-workflow"
+    >
+      <div
+        className="card workflowcard"
+      >
+        <div
+          style={
+            Object {
+              "paddingBottom": "16px",
+              "paddingLeft": "16px",
+              "paddingRight": "16px",
+              "paddingTop": "16px",
+            }
+          }
+        >
+          <div
+            className="text l semibold hideoverflow loading"
+          >
+            Workflow
+          </div>
+        </div>
+        <div
+          style={
+            Object {
+              "paddingBottom": "16px",
+              "paddingLeft": "16px",
+              "paddingRight": "16px",
+              "paddingTop": "8px",
+            }
+          }
+        >
+          <div
+            className="text s regular loading"
+          >
+            No workflow pages found
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 `;
 
@@ -126,10 +327,10 @@ exports[`ProjectView renders the project with activities 1`] = `
       }
     >
       <div
-        className="projectheadercard-viewdescription"
+        className="viewdescription"
       >
         <div
-          className="text s regular projectheadercard-viewdescription-description"
+          className="text s regular viewdescription-text"
         >
           No description provided
         </div>
@@ -145,22 +346,34 @@ exports[`ProjectView renders the project with activities 1`] = `
         >
           <button
             className="button button--default"
+            disabled={false}
             onClick={[Function]}
           >
             <div
               style={
                 Object {
-                  "paddingBottom": "8px",
+                  "paddingBottom": undefined,
                   "paddingLeft": "16px",
                   "paddingRight": "16px",
-                  "paddingTop": "8px",
+                  "paddingTop": undefined,
                 }
               }
             >
               <div
-                className="text s semibold"
+                className="button-container"
               >
-                Edit
+                <div
+                  className="loading button-loadingindicator"
+                >
+                  <div />
+                  <div />
+                  <div />
+                </div>
+                <div
+                  className="text s semibold button-label"
+                >
+                  Edit
+                </div>
               </div>
             </div>
           </button>
@@ -325,8 +538,7 @@ exports[`ProjectView renders the project with activities 1`] = `
             className="tabbar-tabs"
           >
             <div
-              className="tabbar-tab tabbar-tab--selected"
-              data-index={0}
+              className="tab tab--selected"
               onClick={[Function]}
             >
               <div
@@ -404,10 +616,10 @@ exports[`ProjectView renders the project without activities 1`] = `
       }
     >
       <div
-        className="projectheadercard-viewdescription"
+        className="viewdescription"
       >
         <div
-          className="text s regular projectheadercard-viewdescription-description"
+          className="text s regular viewdescription-text"
         >
           No description provided
         </div>
@@ -423,22 +635,34 @@ exports[`ProjectView renders the project without activities 1`] = `
         >
           <button
             className="button button--default"
+            disabled={false}
             onClick={[Function]}
           >
             <div
               style={
                 Object {
-                  "paddingBottom": "8px",
+                  "paddingBottom": undefined,
                   "paddingLeft": "16px",
                   "paddingRight": "16px",
-                  "paddingTop": "8px",
+                  "paddingTop": undefined,
                 }
               }
             >
               <div
-                className="text s semibold"
+                className="button-container"
               >
-                Edit
+                <div
+                  className="loading button-loadingindicator"
+                >
+                  <div />
+                  <div />
+                  <div />
+                </div>
+                <div
+                  className="text s semibold button-label"
+                >
+                  Edit
+                </div>
               </div>
             </div>
           </button>
@@ -603,8 +827,7 @@ exports[`ProjectView renders the project without activities 1`] = `
             className="tabbar-tabs"
           >
             <div
-              className="tabbar-tab tabbar-tab--selected"
-              data-index={0}
+              className="tab tab--selected"
               onClick={[Function]}
             >
               <div
@@ -682,10 +905,10 @@ exports[`ProjectView renders the project without any workflow 1`] = `
       }
     >
       <div
-        className="projectheadercard-viewdescription"
+        className="viewdescription"
       >
         <div
-          className="text s regular projectheadercard-viewdescription-description"
+          className="text s regular viewdescription-text"
         >
           No description provided
         </div>
@@ -701,22 +924,34 @@ exports[`ProjectView renders the project without any workflow 1`] = `
         >
           <button
             className="button button--default"
+            disabled={false}
             onClick={[Function]}
           >
             <div
               style={
                 Object {
-                  "paddingBottom": "8px",
+                  "paddingBottom": undefined,
                   "paddingLeft": "16px",
                   "paddingRight": "16px",
-                  "paddingTop": "8px",
+                  "paddingTop": undefined,
                 }
               }
             >
               <div
-                className="text s semibold"
+                className="button-container"
               >
-                Edit
+                <div
+                  className="loading button-loadingindicator"
+                >
+                  <div />
+                  <div />
+                  <div />
+                </div>
+                <div
+                  className="text s semibold button-label"
+                >
+                  Edit
+                </div>
               </div>
             </div>
           </button>
@@ -879,22 +1114,6 @@ exports[`ProjectView renders the project without any workflow 1`] = `
             No workflow pages found
           </div>
         </div>
-        <div
-          style={
-            Object {
-              "paddingBottom": "16px",
-              "paddingLeft": "16px",
-              "paddingRight": "16px",
-              "paddingTop": "8px",
-            }
-          }
-        >
-          <div
-            className="text s regular"
-          >
-            No sections found in the workflow.
-          </div>
-        </div>
       </div>
     </div>
   </div>
@@ -935,10 +1154,10 @@ exports[`ProjectView renders the project without sections 1`] = `
       }
     >
       <div
-        className="projectheadercard-viewdescription"
+        className="viewdescription"
       >
         <div
-          className="text s regular projectheadercard-viewdescription-description"
+          className="text s regular viewdescription-text"
         >
           No description provided
         </div>
@@ -954,22 +1173,34 @@ exports[`ProjectView renders the project without sections 1`] = `
         >
           <button
             className="button button--default"
+            disabled={false}
             onClick={[Function]}
           >
             <div
               style={
                 Object {
-                  "paddingBottom": "8px",
+                  "paddingBottom": undefined,
                   "paddingLeft": "16px",
                   "paddingRight": "16px",
-                  "paddingTop": "8px",
+                  "paddingTop": undefined,
                 }
               }
             >
               <div
-                className="text s semibold"
+                className="button-container"
               >
-                Edit
+                <div
+                  className="loading button-loadingindicator"
+                >
+                  <div />
+                  <div />
+                  <div />
+                </div>
+                <div
+                  className="text s semibold button-label"
+                >
+                  Edit
+                </div>
               </div>
             </div>
           </button>
@@ -1134,8 +1365,7 @@ exports[`ProjectView renders the project without sections 1`] = `
             className="tabbar-tabs"
           >
             <div
-              className="tabbar-tab tabbar-tab--selected"
-              data-index={0}
+              className="tab tab--selected"
               onClick={[Function]}
             >
               <div
