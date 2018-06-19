@@ -59,8 +59,7 @@ export const ProjectView = ({
         pageIdentifier,
         onTabClick,
         onActivityClick,
-        onNewDescription,
-        props
+        onNewDescription
       );
     default:
       const undefinedStateError = {
@@ -103,7 +102,6 @@ const PROJECT_VIEW_WORKFLOW__CLASS_NAMES = 'projectview-workflow';
  * Renders the project loaded.
  * @param {*} className The class name of the project
  * @param {*} project The project to be displayed
- * @param {*} props The properties of the component
  */
 const renderProjectLoadedState = (
   className,
@@ -111,8 +109,7 @@ const renderProjectLoadedState = (
   pageIdentifier,
   onTabClick,
   onActivityClick,
-  onNewDescription,
-  props
+  onNewDescription
 ) => {
   const projectViewClassNames = classNames(PROJECT_VIEW__CLASS_NAMES, className);
   return (

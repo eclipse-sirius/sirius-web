@@ -28,10 +28,9 @@ import {
  * the new project view.
  *
  * @param {*} state The current state
- * @param {*} props The properties of the component
  * @param {*} action The action to perform
  */
-const reducer = (state, props, action) => {
+const reducer = (state, action) => {
   switch (action.kind) {
     case INITIALIZE__ACTION:
       return {
@@ -130,10 +129,8 @@ const newModifyNameAction = name => ({
 /**
  * Returns a new unexpected error action used to handle an unexpected error in
  * our code.
- *
- * @param {*} message The message
  */
-const newUnexpectedErrorAction = message => ({
+const newUnexpectedErrorAction = () => ({
   kind: HANDLE_ERROR__ACTION,
   message: 'An error has occured during the processing of the response'
 });

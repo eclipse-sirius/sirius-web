@@ -49,7 +49,11 @@ export const Text = ({ children, className, weight, size, hideOverflow, loading,
     textClassNames = classNames(textClassNames, 'loading');
   }
   textClassNames = classNames(textClassNames, className);
-  return <div className={textClassNames}>{children}</div>;
+  return (
+    <div className={textClassNames} {...props}>
+      {children}
+    </div>
+  );
 };
 Text.propTypes = propTypes;
 Text.defaultProps = defaultProps;

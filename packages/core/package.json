@@ -1,0 +1,23 @@
+{
+  "name": "@sirius/core",
+  "version": "0.1.0",
+  "description": "",
+  "scripts": {
+    "lint": "eslint \"src/**/*.{js,jsx}\"",
+    "format": "prettier --write \"src/**/*.{js,css}\"",
+    "format-lint": "prettier --list-different \"src/**/*.{js,css}\""
+  },
+  "author": "",
+  "dependencies": {
+    "prop-types": "^15.6.1"
+  },
+  "peerDependencies": {
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-router-dom": "^4.2.2"
+  },
+  "devDependencies": {
+    "lerna": "^2.11.0",
+    "prettier": "1.11.1"
+  }
+}

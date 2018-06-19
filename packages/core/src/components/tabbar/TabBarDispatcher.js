@@ -27,10 +27,10 @@ import {
  * the tab bar.
  *
  * @param {*} state The current state
- * @param {*} props The properties of the component
  * @param {*} action The action to perform
+ * @param {*} props The properties of the component
  */
-const reducer = (state, props, action) => {
+const reducer = (state, action, props) => {
   switch (action.kind) {
     case INITIALIZE__ACTION:
       const initializedState = computeState(

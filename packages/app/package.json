@@ -1,0 +1,45 @@
+{
+  "name": "@sirius/app",
+  "version": "0.1.0",
+  "description": "",
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "coverage": "react-scripts test --env=jsdom --coverage",
+    "lint": "eslint \"src/**/*.{js,jsx}\"",
+    "format": "prettier --write \"src/**/*.{js,css}\"",
+    "format-lint": "prettier --list-different \"src/**/*.{js,css}\""
+  },
+  "author": "",
+  "dependencies": {
+    "prop-types": "^15.6.1",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-router-dom": "^4.2.2",
+    "@sirius/core": "0.1.0"
+  },
+  "devDependencies": {
+    "prettier": "1.11.1",
+    "react-scripts": "^2.0.0-next.3e165448",
+    "react-test-renderer": "^16.2.0"
+  },
+  "proxy": {
+    "/api": {
+      "target": "http://localhost:8080",
+      "ws": true
+    }
+  },
+  "browserslist": {
+    "development": [
+      "last 2 chrome versions",
+      "last 2 firefox versions",
+      "last 2 edge versions"
+    ],
+    "production": [
+      ">0.25%",
+      "not op_mini all",
+      "ie 11"
+    ]
+  }
+}

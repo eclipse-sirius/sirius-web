@@ -30,10 +30,9 @@ import {
  * the project view.
  *
  * @param {*} state The current state
- * @param {*} props The properties of the component
  * @param {*} action The action to perform
  */
-const reducer = (state, props, action) => {
+const reducer = (state, action) => {
   switch (action.kind) {
     case INITIALIZE__ACTION:
       return {

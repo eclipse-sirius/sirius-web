@@ -7,38 +7,41 @@
  * https://www.eclipse.org/legal/epl-2.0.
  *******************************************************************************/
 
-import { dispatcherCreator } from '../../common/dispatcherCreator';
-import { UNKNOWN_ERROR } from '../../common/errors';
+import { dispatcherCreator } from '../../../common/dispatcherCreator';
+import { UNKNOWN_ERROR } from '../../../common/errors';
 
 import {
   FSM,
   ERROR__STATE,
   INITIAL__STATE,
   LOADING__STATE,
-  DASHBOARD_LOADED__STATE,
+  NO_PROJECTS_LOADED__STATE,
+  PROJECTS_LOADED__STATE,
   HANDLE_ERROR__ACTION,
-  HANDLE_FETCHED_DASHBOARD__ACTION,
+  HANDLE_FETCHED_PROJECTS__ACTION,
   INITIALIZE__ACTION
-} from './DashboardViewFiniteStateMachine';
+} from './ListProjectsViewFiniteStateMachine';
 
 /**
- * The reducer of the dashboard view.
+ * The reducer of the list projects view.
  *
  * It will be used to execute the transitions in the finite state machine of
- * the dashboard.
+ * the list projects view.
  *
  * @param {*} state The current state
- * @param {*} props The properties of the component
  * @param {*} action The action to perform
  */
-const reducer = (state, props, action) => {
+const reducer = (state, action) => {
   switch (action.kind) {
     case INITIALIZE__ACTION:
-      return { stateId: LOADING__STATE, dashboard: { projects: [] }, error: null };
-    case HANDLE_FETCHED_DASHBOARD__ACTION:
-      return { stateId: DASHBOARD_LOADED__STATE, dashboard: action.dashboard, error: null };
+      return { stateId: LOADING__STATE, projects: [], error: undefined };
+    case HANDLE_FETCHED_PROJECTS__ACTION:
+      if (action.projects.length === 0) {
+        return { stateId: NO_PROJECTS_LOADED__STATE, projects: [], error: undefined };
+      }
+      return { stateId: PROJECTS_LOADED__STATE, projects: action.projects, error: undefined };
     case HANDLE_ERROR__ACTION:
-      return { stateId: ERROR__STATE, dashboard: state.dashboard, error: action.error };
+      return { stateId: ERROR__STATE, projects: state.projects, error: action.error };
     default:
       return state;
   }
@@ -53,14 +56,14 @@ const newInitializeAction = () => ({
 });
 
 /**
- * Returns an handle dashboard fetched action used to go from the loading state
- * to the dashboard loaded state.
+ * Returns an handle projects fetched action used to go from the loading state
+ * to the projects loaded state.
  *
  * @param {*} response The HTTP response of the server
  */
-const newHandleDashboardFetchedAction = response => ({
-  kind: HANDLE_FETCHED_DASHBOARD__ACTION,
-  dashboard: response
+const newHandleProjectsFetchedAction = response => ({
+  kind: HANDLE_FETCHED_PROJECTS__ACTION,
+  projects: response.projects
 });
 
 /**
@@ -73,7 +76,7 @@ const newHandleDashboardFetchedAction = response => ({
 const newInvalidResponseAction = (message, code) => ({
   kind: HANDLE_ERROR__ACTION,
   error: {
-    title: 'An error has occurred while retrieving the dashboard',
+    title: 'An error has occurred while retrieving the list of projects',
     message,
     code
   }
@@ -88,7 +91,7 @@ const newInvalidResponseAction = (message, code) => ({
 const newUnexpectedErrorAction = message => ({
   kind: HANDLE_ERROR__ACTION,
   error: {
-    title: 'Unexpected content retrieved for the dashboard',
+    title: 'Unexpected content retrieved for the projects list',
     message,
     code: UNKNOWN_ERROR
   }
@@ -96,7 +99,7 @@ const newUnexpectedErrorAction = message => ({
 
 export const actionCreator = {
   newInitializeAction,
-  newHandleDashboardFetchedAction,
+  newHandleProjectsFetchedAction,
   newInvalidResponseAction,
   newUnexpectedErrorAction
 };

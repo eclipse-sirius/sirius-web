@@ -170,7 +170,7 @@ exports[`ListProjectsView renders the projects 1`] = `
         }
       >
         <a
-          href="projects/First Project"
+          href="/projects/First Project"
           onClick={[Function]}
         >
           <li
@@ -191,7 +191,7 @@ exports[`ListProjectsView renders the projects 1`] = `
           </li>
         </a>
         <a
-          href="projects/Second Project"
+          href="/projects/Second Project"
           onClick={[Function]}
         >
           <li
