@@ -21,7 +21,7 @@
   },
   "devDependencies": {
     "prettier": "1.11.1",
-    "react-scripts": "^2.0.0-next.3e165448",
+    "react-scripts": "2.0.0-next.3e165448",
     "react-test-renderer": "^16.2.0"
   },
   "proxy": {
