@@ -34,7 +34,7 @@ export const dispatcherCreator = (FSM, reducer, INITIAL__STATE) => (
   const newPotentialState = transitions[action.kind];
   if (newPotentialState) {
     const newState = reducer(prevState, props, action);
-    if (newPotentialState.includes(newState.stateId)) {
+    if (newPotentialState.indexOf(newState.stateId) !== -1) {
       if (FSM[newState.stateId]) {
         return newState;
       } else {

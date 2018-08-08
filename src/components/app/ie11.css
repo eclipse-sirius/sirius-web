@@ -1,0 +1,142 @@
+.ie11 {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  color: #273444;
+  background-color: #eff2f7;
+}
+
+.ie11 .semibold {
+  font-weight: 600;
+}
+.ie11 .regular {
+  font-weight: 400;
+}
+.ie11 .light {
+  font-weight: 300;
+}
+.ie11 .xl {
+  font-size: 28px;
+  line-height: 38px;
+}
+.ie11 .l {
+  font-size: 20px;
+  line-height: 30px;
+}
+.ie11 .m {
+  font-size: 16px;
+  line-height: 22px;
+}
+.ie .s {
+  font-size: 14px;
+  line-height: 20px;
+}
+.ie11 .xs {
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.ie11 .card {
+  background-color: #ffffff;
+  box-shadow: 0 1px 4px 0 rgba(31, 45, 61, 0.15);
+}
+
+.ie11 .projectheadercard {
+  margin-bottom: 32px;
+}
+.ie11 .projectheadercard .viewdescription {
+  display: -ms-grid;
+  -ms-grid-columns: 1fr min-content;
+}
+.ie11 .projectheadercard .viewdescription .text {
+  -ms-grid-row: 1;
+  -ms-grid-column: 1;
+  -ms-grid-row-align: center;
+}
+.ie11 .projectheadercard .viewdescription div:last-child {
+  -ms-grid-row: 1;
+  -ms-grid-column: 2;
+}
+
+.ie11 .projectview-main {
+  display: -ms-grid;
+  -ms-grid-columns: 1fr 32px 1fr;
+  -ms-grid-rows: 1fr;
+}
+.ie11 .projectview-main .projectview-details {
+  -ms-grid-row: 1;
+  -ms-grid-column: 1;
+}
+.ie11 .projectview-main .projectview-workflow {
+  -ms-grid-row: 1;
+  -ms-grid-column: 3;
+}
+
+.ie11 .projectview-main .projectview-details .projectrepresentationslistcard {
+  margin-top: 32px;
+}
+.ie11 .tile {
+  padding: 0 16px;
+}
+.ie11 .tile--singleline {
+  height: 48px;
+}
+.ie11 .tile--twoline {
+  height: 60px;
+}
+
+.ie11 .tabbar {
+  display: -ms-grid;
+  -ms-grid-columns: min-content 1fr min-content;
+  -ms-grid-rows: 1fr;
+  border-top: 1px solid hsl(212.3, 26.5%, 90.4%);
+  border-bottom: 1px solid hsl(212.3, 26.5%, 90.4%);
+}
+.ie11 .tabbar .tabbar-nav {
+  padding: 16px 8px;
+  font-weight: 700;
+  color: hsl(200, 100%, 55%);
+}
+.ie11 .tabbar .tabbar-nav--disabled {
+  color: hsl(212.3, 26.5%, 90.4%);
+}
+.ie11 .tabbar .tabbar-nav:first-child {
+  border-right: 1px solid hsl(212.3, 26.5%, 90.4%);
+  -ms-grid-row: 1;
+  -ms-grid-column: 1;
+}
+.ie11 .tabbar .tabbar-tabs {
+  display: -ms-grid;
+  -ms-grid-columns: 1fr 16px 1fr 16px 1fr;
+  padding: 0 16px;
+
+  -ms-grid-row: 1;
+  -ms-grid-column: 2;
+}
+.ie11 .tabbar .tab {
+  padding: 16px 8px;
+  border-bottom: 5px solid hsl(212.3, 26.5%, 90.4%);
+}
+.ie11 .tabbar .tab--selected {
+  border-bottom: 5px solid hsl(200, 100%, 55%);
+}
+.ie11 .tabbar .tab:first-child {
+  -ms-grid-row: 1;
+  -ms-grid-column: 1;
+}
+.ie11 .tabbar .tab:nth-child(2) {
+  -ms-grid-row: 1;
+  -ms-grid-column: 3;
+}
+.ie11 .tabbar .tab:last-child {
+  -ms-grid-row: 1;
+  -ms-grid-column: 5;
+}
+.ie11 .tabbar .tabbar-nav:last-child {
+  border-left: 1px solid hsl(212.3, 26.5%, 90.4%);
+  -ms-grid-row: 1;
+  -ms-grid-column: 3;
+}
+.ie11 .iconrun {
+  fill: hsl(146, 83%, 45%);
+  stroke: hsl(146, 83%, 45%);
+}
