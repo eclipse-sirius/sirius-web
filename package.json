@@ -4,14 +4,14 @@
   "private": true,
   "dependencies": {
     "prop-types": "^15.6.1",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
+    "react": "16.4.1",
+    "react-dom": "16.4.1",
     "react-router-dom": "^4.2.2"
   },
   "devDependencies": {
     "prettier": "1.11.1",
     "react-scripts": "1.1.1",
-    "react-test-renderer": "^16.2.0"
+    "react-test-renderer": "16.4.1"
   },
   "scripts": {
     "start": "react-scripts start",
