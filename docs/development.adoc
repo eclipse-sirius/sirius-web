@@ -1,6 +1,6 @@
 = Development Guide
 Stéphane Bégaudeau <stephane.begaudeau@obeo.fr>
-v1.0.0, 2018-03-23
+v1.0.1, 2018-08-09
 
 == Environment
 
@@ -37,6 +37,8 @@ To execute the tests only once with code coverage, use `yarn coverage`.
 Coverage reports will be generated in the coverage folder.
 
 Finally, to build the production version of the code which can be deployed on a server, you should use `yarn build`.
+If you want to build the code to deploy it at a specific path, for example `/workflow` instead of `/`, you can use the `PUBLIC_URL` environment variable in your build.
+Have a look at the create-react-app documentation for additional information regarding environment variables.
 
 == Server
 
