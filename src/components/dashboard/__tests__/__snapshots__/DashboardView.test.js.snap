@@ -97,216 +97,295 @@ exports[`DashboardView renders the projects 1`] = `
   className="dashboardview"
 >
   <div
-    className="info"
+    style={
+      Object {
+        "paddingBottom": undefined,
+        "paddingLeft": undefined,
+        "paddingRight": undefined,
+        "paddingTop": undefined,
+      }
+    }
   >
     <div
-      className="card infocard projectsinfo"
+      className="text xl bold"
     >
-      <div
-        style={
-          Object {
-            "paddingBottom": "32px",
-            "paddingLeft": "32px",
-            "paddingRight": "32px",
-            "paddingTop": "32px",
-          }
-        }
-      >
-        <div
-          className="infocard-container"
-        >
-          <h1
-            className="infocard-title"
-          >
-            0
-          </h1>
-          <p
-            className="infocard-message"
-          >
-            Projects
-          </p>
-        </div>
-      </div>
+      Dashboard
     </div>
+  </div>
+  <div
+    className="dashboardoverviewsection"
+  >
     <div
-      className="card infocard viewpointsinfo"
+      style={
+        Object {
+          "paddingBottom": "16px",
+          "paddingLeft": undefined,
+          "paddingRight": undefined,
+          "paddingTop": "16px",
+        }
+      }
     >
       <div
-        style={
-          Object {
-            "paddingBottom": "32px",
-            "paddingLeft": "32px",
-            "paddingRight": "32px",
-            "paddingTop": "32px",
-          }
-        }
+        className="text m semibold"
       >
-        <div
-          className="infocard-container"
-        >
-          <h1
-            className="infocard-title"
-          >
-            27
-          </h1>
-          <p
-            className="infocard-message"
-          >
-            Viewpoints
-          </p>
-        </div>
+        Overview
       </div>
-    </div>
-    <div
-      className="card infocard metamodelsinfo"
-    >
       <div
         style={
           Object {
-            "paddingBottom": "32px",
-            "paddingLeft": "32px",
-            "paddingRight": "32px",
-            "paddingTop": "32px",
+            "paddingBottom": undefined,
+            "paddingLeft": undefined,
+            "paddingRight": undefined,
+            "paddingTop": "8px",
           }
         }
       >
         <div
-          className="infocard-container"
+          className="dashboardoverviewsection-container"
         >
-          <h1
-            className="infocard-title"
+          <div
+            className="card infocard projectsinfocard"
           >
-            132
-          </h1>
-          <p
-            className="infocard-message"
+            <div
+              style={
+                Object {
+                  "paddingBottom": "32px",
+                  "paddingLeft": "32px",
+                  "paddingRight": "32px",
+                  "paddingTop": "32px",
+                }
+              }
+            >
+              <div
+                className="infocard-container"
+              >
+                <h1
+                  className="infocard-title"
+                >
+                  0
+                </h1>
+                <p
+                  className="infocard-message"
+                >
+                  Projects
+                </p>
+              </div>
+            </div>
+          </div>
+          <div
+            className="card infocard viewpointsinfocard"
           >
-            Metamodels
-          </p>
+            <div
+              style={
+                Object {
+                  "paddingBottom": "32px",
+                  "paddingLeft": "32px",
+                  "paddingRight": "32px",
+                  "paddingTop": "32px",
+                }
+              }
+            >
+              <div
+                className="infocard-container"
+              >
+                <h1
+                  className="infocard-title"
+                >
+                  27
+                </h1>
+                <p
+                  className="infocard-message"
+                >
+                  Viewpoints
+                </p>
+              </div>
+            </div>
+          </div>
+          <div
+            className="card infocard metamodelsinfocard"
+          >
+            <div
+              style={
+                Object {
+                  "paddingBottom": "32px",
+                  "paddingLeft": "32px",
+                  "paddingRight": "32px",
+                  "paddingTop": "32px",
+                }
+              }
+            >
+              <div
+                className="infocard-container"
+              >
+                <h1
+                  className="infocard-title"
+                >
+                  132
+                </h1>
+                <p
+                  className="infocard-message"
+                >
+                  Metamodels
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
   <div
-    className="projects"
+    className="dashboardprojectssection"
   >
     <div
-      className="projects-body"
+      style={
+        Object {
+          "paddingBottom": "16px",
+          "paddingLeft": undefined,
+          "paddingRight": undefined,
+          "paddingTop": "16px",
+        }
+      }
     >
-      <a
-        href="/newproject"
-        onClick={[Function]}
-      >
-        <div
-          className="card infocard newprojectinfo"
-          to=""
-        >
-          <div
-            style={
-              Object {
-                "paddingBottom": "32px",
-                "paddingLeft": "32px",
-                "paddingRight": "32px",
-                "paddingTop": "32px",
-              }
-            }
-          >
-            <div
-              className="infocard-container"
-            >
-              <h1
-                className="infocard-title"
-              >
-                +
-              </h1>
-              <p
-                className="infocard-message"
-              >
-                New Project
-              </p>
-            </div>
-          </div>
-        </div>
-      </a>
       <div
-        className="card projectsummarycard"
+        className="text m semibold"
       >
         <a
-          href="/projects/First Project"
+          href="/projects"
           onClick={[Function]}
         >
-          <div
-            style={
-              Object {
-                "paddingBottom": "16px",
-                "paddingLeft": "16px",
-                "paddingRight": "16px",
-                "paddingTop": "16px",
-              }
-            }
-          >
-            <div
-              className="text l semibold hideoverflow"
-            >
-              First Project
-            </div>
-          </div>
+          Projects
         </a>
-        <div
-          style={
-            Object {
-              "paddingBottom": "16px",
-              "paddingLeft": "16px",
-              "paddingRight": "16px",
-              "paddingTop": "8px",
-            }
-          }
-        >
-          <div
-            className="text s regular"
-          >
-            No description provided
-          </div>
-        </div>
       </div>
       <div
-        className="card projectsummarycard"
+        style={
+          Object {
+            "paddingBottom": undefined,
+            "paddingLeft": undefined,
+            "paddingRight": undefined,
+            "paddingTop": "8px",
+          }
+        }
       >
-        <a
-          href="/projects/Second Project"
-          onClick={[Function]}
+        <div
+          className="dashboardprojectssection-container"
         >
-          <div
-            style={
-              Object {
-                "paddingBottom": "16px",
-                "paddingLeft": "16px",
-                "paddingRight": "16px",
-                "paddingTop": "16px",
-              }
-            }
+          <a
+            href="/newproject"
+            onClick={[Function]}
           >
             <div
-              className="text l semibold hideoverflow"
+              className="card infocard dashboardprojectssection-newcard"
+              to=""
             >
-              Second Project
+              <div
+                style={
+                  Object {
+                    "paddingBottom": "32px",
+                    "paddingLeft": "32px",
+                    "paddingRight": "32px",
+                    "paddingTop": "32px",
+                  }
+                }
+              >
+                <div
+                  className="infocard-container"
+                >
+                  <h1
+                    className="infocard-title"
+                  >
+                    +
+                  </h1>
+                  <p
+                    className="infocard-message"
+                  >
+                    New Project
+                  </p>
+                </div>
+              </div>
+            </div>
+          </a>
+          <div
+            className="card projectsummarycard"
+          >
+            <a
+              href="/projects/First Project"
+              onClick={[Function]}
+            >
+              <div
+                style={
+                  Object {
+                    "paddingBottom": "16px",
+                    "paddingLeft": "16px",
+                    "paddingRight": "16px",
+                    "paddingTop": "16px",
+                  }
+                }
+              >
+                <div
+                  className="text l semibold hideoverflow"
+                >
+                  First Project
+                </div>
+              </div>
+            </a>
+            <div
+              style={
+                Object {
+                  "paddingBottom": "16px",
+                  "paddingLeft": "16px",
+                  "paddingRight": "16px",
+                  "paddingTop": "8px",
+                }
+              }
+            >
+              <div
+                className="text s regular"
+              >
+                No description provided
+              </div>
             </div>
           </div>
-        </a>
-        <div
-          style={
-            Object {
-              "paddingBottom": "16px",
-              "paddingLeft": "16px",
-              "paddingRight": "16px",
-              "paddingTop": "8px",
-            }
-          }
-        >
           <div
-            className="text s regular"
+            className="card projectsummarycard"
           >
-            No description provided
+            <a
+              href="/projects/Second Project"
+              onClick={[Function]}
+            >
+              <div
+                style={
+                  Object {
+                    "paddingBottom": "16px",
+                    "paddingLeft": "16px",
+                    "paddingRight": "16px",
+                    "paddingTop": "16px",
+                  }
+                }
+              >
+                <div
+                  className="text l semibold hideoverflow"
+                >
+                  Second Project
+                </div>
+              </div>
+            </a>
+            <div
+              style={
+                Object {
+                  "paddingBottom": "16px",
+                  "paddingLeft": "16px",
+                  "paddingRight": "16px",
+                  "paddingTop": "8px",
+                }
+              }
+            >
+              <div
+                className="text s regular"
+              >
+                No description provided
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -28,7 +28,6 @@ import {
 import './Text.css';
 
 const propTypes = {
-  children: PropTypes.string,
   loading: PropTypes.bool,
   weight: PropTypes.oneOf([LIGHT, REGULAR, SEMI_BOLD, BOLD, EXTRA_BOLD]).isRequired,
   size: PropTypes.oneOf([EXTRA_SMALL, SMALL, MEDIUM, LARGE, EXTRA_LARGE, EXTRA_EXTRA_LARGE])

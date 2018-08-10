@@ -12,30 +12,5 @@
   flex-direction: column;
 
   min-width: 250px;
-  background-color: var(--snow);
-}
-.aside a {
-  display: block;
-  padding: var(--layoutDimension-xs) var(--layoutDimension-xs);
-}
-.aside a:hover {
-  background-color: var(--dark-snow);
-}
-
-.aside-mainlinks {
-  border-bottom: 1px solid var(--dark-smoke);
-  padding-bottom: var(--layoutDimension-s);
-  margin-bottom: var(--layoutDimension-m);
-}
-
-.aside-mainlinks a,
-.aside-mainlinks a:hover,
-.aside-mainlinks a:active {
-  color: var(--slate);
-}
-.aside-additionallinks a,
-.aside-additionallinks a:hover,
-.aside-additionallinks a:active {
-  color: var(--silver);
-  font-weight: var(--fontWeight-normal);
+  background-color: var(--darkness);
 }

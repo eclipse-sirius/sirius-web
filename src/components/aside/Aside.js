@@ -8,21 +8,19 @@
  *******************************************************************************/
 
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 import { classNames } from '../../common/classnames';
 import { Spacing } from '../spacing/Spacing';
 import { M, L } from '../spacing/SpacingConstants';
+import { Text } from '../text/Text';
+import { MEDIUM, REGULAR } from '../text/TextConstants';
+
+import { MainLink } from './MainLink';
 
 import './Aside.css';
 
 const ASIDE__CLASS_NAMES = 'aside';
-
 const ASIDE_MAIN_LINKS__CLASS_NAMES = 'aside-mainlinks';
-const MAIN_LINKS__CLASS_NAMES = 'title-s';
-
-const ASIDE_ADDITIONAL_LINKS__CLASS_NAMES = 'aside-additionallinks';
-const ADDITIONAL_LINKS__CLASS_NAMES = 'caption-s';
 
 /**
  * The Aside component is used to display the navigation links to move from one
@@ -41,36 +39,18 @@ export const Aside = ({ className, ...props }) => {
         <div className={ASIDE_MAIN_LINKS__CLASS_NAMES}>
           <ul>
             <li>
-              <Link className={MAIN_LINKS__CLASS_NAMES} to="/">
-                Dashboard
-              </Link>
+              <MainLink to="/">
+                <Text size={MEDIUM} weight={REGULAR}>
+                  Dashboard
+                </Text>
+              </MainLink>
             </li>
             <li>
-              <Link className={MAIN_LINKS__CLASS_NAMES} to="/projects">
-                Projects
-              </Link>
-            </li>
-          </ul>
-        </div>
-        <div className={ASIDE_ADDITIONAL_LINKS__CLASS_NAMES}>
-          <ul>
-            <li>
-              <a
-                className={ADDITIONAL_LINKS__CLASS_NAMES}
-                href="https://github.com/eclipse/sirius-components/issues"
-                target="_blank"
-                rel="noopener noreferrer">
-                Report an issue
-              </a>
-            </li>
-            <li>
-              <a
-                className={ADDITIONAL_LINKS__CLASS_NAMES}
-                href="https://stackoverflow.com/questions/tagged/sirius"
-                target="_blank"
-                rel="noopener noreferrer">
-                Help
-              </a>
+              <MainLink to="/projects">
+                <Text size={MEDIUM} weight={REGULAR}>
+                  Projects
+                </Text>
+              </MainLink>
             </li>
           </ul>
         </div>

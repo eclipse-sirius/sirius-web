@@ -6,8 +6,23 @@
  * which accompanies this distribution and is available at
  * https://www.eclipse.org/legal/epl-2.0.
  *******************************************************************************/
-
-.dashboardview {
+.dashboardoverviewsection-container {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-column-gap: var(--layoutDimension-l);
+  grid-row-gap: var(--layoutDimension-l);
+}
+.projectsinfocard {
+  background-color: var(--blue);
+  color: var(--white);
+}
+
+.viewpointsinfocard {
+  background-color: var(--orange);
+  color: var(--white);
+}
+
+.metamodelsinfocard {
+  background-color: var(--purple);
+  color: var(--white);
 }

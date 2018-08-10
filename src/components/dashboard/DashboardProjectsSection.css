@@ -6,8 +6,11 @@
  * which accompanies this distribution and is available at
  * https://www.eclipse.org/legal/epl-2.0.
  *******************************************************************************/
-
-.dashboardview {
+.dashboardprojectssection-container {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-auto-rows: 1fr;
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-row-gap: var(--layoutDimension-l);
+  grid-column-gap: var(--layoutDimension-l);
 }
