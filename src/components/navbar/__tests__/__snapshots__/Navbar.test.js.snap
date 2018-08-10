@@ -18,6 +18,43 @@ exports[`Navbar renders the navbar component 1`] = `
       className="navbar-container"
     >
       <div
+        style={
+          Object {
+            "paddingBottom": undefined,
+            "paddingLeft": undefined,
+            "paddingRight": "16px",
+            "paddingTop": undefined,
+          }
+        }
+      >
+        <svg
+          className="iconmenu"
+          height="20"
+          onClick={[Function]}
+          width="20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <rect
+            height="2"
+            width="20"
+            x="0"
+            y="3"
+          />
+          <rect
+            height="2"
+            width="20"
+            x="0"
+            y="9"
+          />
+          <rect
+            height="2"
+            width="20"
+            x="0"
+            y="15"
+          />
+        </svg>
+      </div>
+      <div
         className="navbar-title title-xxl"
       >
         <div

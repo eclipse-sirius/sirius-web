@@ -12,6 +12,7 @@
   flex-direction: column;
 
   min-width: 250px;
+  background-color: var(--snow);
 }
 .aside a {
   display: block;

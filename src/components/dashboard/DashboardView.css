@@ -16,9 +16,9 @@
 
 .dashboardview .info {
   display: grid;
-  grid-template-rows: 1fr;
   grid-template-columns: 1fr 1fr 1fr;
   grid-column-gap: var(--layoutDimension-l);
+  grid-row-gap: var(--layoutDimension-l);
 }
 
 .projectsinfo {
