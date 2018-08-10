@@ -20,46 +20,54 @@ exports[`Aside renders the aside component 1`] = `
       <ul>
         <li>
           <a
-            className="title-s"
+            aria-current="true"
+            className="mainlink mainlink--active"
             href="/"
             onClick={[Function]}
+            style={Object {}}
           >
-            Dashboard
+            <div
+              style={
+                Object {
+                  "paddingBottom": "8px",
+                  "paddingLeft": "16px",
+                  "paddingRight": "16px",
+                  "paddingTop": "8px",
+                }
+              }
+            >
+              <div
+                className="text m regular"
+              >
+                Dashboard
+              </div>
+            </div>
           </a>
         </li>
         <li>
           <a
-            className="title-s"
+            aria-current={false}
+            className="mainlink"
             href="/projects"
             onClick={[Function]}
+            style={undefined}
           >
-            Projects
-          </a>
-        </li>
-      </ul>
-    </div>
-    <div
-      className="aside-additionallinks"
-    >
-      <ul>
-        <li>
-          <a
-            className="caption-s"
-            href="https://github.com/eclipse/sirius-components/issues"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Report an issue
-          </a>
-        </li>
-        <li>
-          <a
-            className="caption-s"
-            href="https://stackoverflow.com/questions/tagged/sirius"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Help
+            <div
+              style={
+                Object {
+                  "paddingBottom": "8px",
+                  "paddingLeft": "16px",
+                  "paddingRight": "16px",
+                  "paddingTop": "8px",
+                }
+              }
+            >
+              <div
+                className="text m regular"
+              >
+                Projects
+              </div>
+            </div>
           </a>
         </li>
       </ul>

@@ -27,9 +27,9 @@ describe('DashboardView', () => {
       code: 500
     };
     const dashboard = {
-      projectsCount: '0',
-      viewpointsCount: '27',
-      metamodelsCount: '132',
+      projectsCount: 0,
+      viewpointsCount: 27,
+      metamodelsCount: 132,
       projects: []
     };
     const dashboardComponent = Renderer.create(
@@ -42,9 +42,9 @@ describe('DashboardView', () => {
 
   it('renders an error card for an unsupported state', () => {
     const dashboard = {
-      projectsCount: '0',
-      viewpointsCount: '27',
-      metamodelsCount: '132',
+      projectsCount: 0,
+      viewpointsCount: 27,
+      metamodelsCount: 132,
       projects: []
     };
     const dashboardComponent = Renderer.create(
@@ -57,9 +57,9 @@ describe('DashboardView', () => {
 
   it('renders a loading indicator during the loading', () => {
     const dashboard = {
-      projectsCount: '0',
-      viewpointsCount: '27',
-      metamodelsCount: '132',
+      projectsCount: 0,
+      viewpointsCount: 27,
+      metamodelsCount: 132,
       projects: []
     };
     const dashboardComponent = Renderer.create(
@@ -73,9 +73,9 @@ describe('DashboardView', () => {
   it('renders the projects', () => {
     const projects = [{ name: 'First Project' }, { name: 'Second Project' }];
     const dashboard = {
-      projectsCount: '0',
-      viewpointsCount: '27',
-      metamodelsCount: '132',
+      projectsCount: 0,
+      viewpointsCount: 27,
+      metamodelsCount: 132,
       projects
     };
     const dashboardComponent = Renderer.create(

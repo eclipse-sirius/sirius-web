@@ -8,17 +8,18 @@
  *******************************************************************************/
 
 import React from 'react';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import { classNames } from '../../common/classnames';
 import { UNSUPPORTED_STATE } from '../../common/errors';
 
 import { ErrorCard } from '../error/ErrorCard';
-import { InfoCard } from '../info/InfoCard';
 import { Loading } from '../loading/Loading';
-import { ProjectSummaryCard } from '../projects/ProjectSummaryCard';
+import { Spacing } from '../spacing/Spacing';
+import { Text } from '../text/Text';
+import { BOLD, EXTRA_LARGE } from '../text/TextConstants';
 
+import { DashboardOverviewSection } from './DashboardOverviewSection';
 import {
   ERROR__STATE,
   LOADING__STATE,
@@ -26,6 +27,7 @@ import {
 } from './DashboardViewFiniteStateMachine';
 
 import './DashboardView.css';
+import { DashboardProjectsSection } from './DashboardProjectsSection';
 
 const propTypes = {
   stateId: PropTypes.string.isRequired
@@ -73,13 +75,6 @@ const renderErrorState = (className, error, props) => (
 );
 
 const DASHBOARD_VIEW__CLASS_NAMES = 'dashboardview';
-const INFO__CLASS_NAMES = 'info';
-const PROJECTS_INFO__CLASS_NAMES = 'projectsinfo';
-const VIEWPOINTS_INFO__CLASS_NAMES = 'viewpointsinfo';
-const METAMODELS_INFO__CLASS_NAMES = 'metamodelsinfo';
-const NEWPROJECT_INFO__CLASS_NAMES = 'newprojectinfo';
-const PROJECTS__CLASS_NAMES = 'projects';
-const PROJECTS_BODY__CLASS_NAMES = 'projects-body';
 
 /**
  * Renders the dashboard.
@@ -90,42 +85,21 @@ const PROJECTS_BODY__CLASS_NAMES = 'projects-body';
 const renderDashboardLoadedState = (className, dashboard, props) => {
   const dashboardViewClassNames = classNames(DASHBOARD_VIEW__CLASS_NAMES, className);
 
-  const { projectsCount, viewpointsCount, metamodelsCount } = dashboard;
+  const { projectsCount, viewpointsCount, metamodelsCount, projects } = dashboard;
 
   return (
     <div className={dashboardViewClassNames} {...props}>
-      <div className={INFO__CLASS_NAMES}>
-        <InfoCard
-          className={PROJECTS_INFO__CLASS_NAMES}
-          title={projectsCount.toString()}
-          message={'Projects'}
-        />
-        <InfoCard
-          className={VIEWPOINTS_INFO__CLASS_NAMES}
-          title={viewpointsCount.toString()}
-          message={'Viewpoints'}
-        />
-        <InfoCard
-          className={METAMODELS_INFO__CLASS_NAMES}
-          title={metamodelsCount.toString()}
-          message={'Metamodels'}
-        />
-      </div>
-      <div className={PROJECTS__CLASS_NAMES}>
-        <div className={PROJECTS_BODY__CLASS_NAMES}>
-          <Link to="/newproject">
-            <InfoCard
-              className={NEWPROJECT_INFO__CLASS_NAMES}
-              title="+"
-              message="New Project"
-              to=""
-            />
-          </Link>
-          {dashboard.projects.map(project => (
-            <ProjectSummaryCard key={project.name} project={project} />
-          ))}
-        </div>
-      </div>
+      <Spacing>
+        <Text size={EXTRA_LARGE} weight={BOLD}>
+          Dashboard
+        </Text>
+      </Spacing>
+      <DashboardOverviewSection
+        projectsCount={projectsCount}
+        viewpointsCount={viewpointsCount}
+        metamodelsCount={metamodelsCount}
+      />
+      <DashboardProjectsSection projects={projects} />
     </div>
   );
 };

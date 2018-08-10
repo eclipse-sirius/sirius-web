@@ -6,8 +6,18 @@
  * which accompanies this distribution and is available at
  * https://www.eclipse.org/legal/epl-2.0.
  *******************************************************************************/
+.mainlink {
+  display: block;
+  color: var(--white);
+  border-radius: var(--borderRadius-small);
+}
+.mainlink:hover {
+  color: var(--white);
+}
+.mainlink:active {
+  color: var(--white);
+}
 
-.dashboardview {
-  display: grid;
-  grid-template-columns: 1fr;
+.mainlink--active {
+  background-color: var(--slate);
 }
