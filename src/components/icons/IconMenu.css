@@ -7,18 +7,15 @@
  * https://www.eclipse.org/legal/epl-2.0.
  *******************************************************************************/
 
-.navbar {
-  background-color: var(--white);
-  box-shadow: var(--boxShadow-float);
-  z-index: 1;
+.iconmenu {
+  stroke: var(--black);
+  fill: var(--black);
 }
-
-.navbar-container {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+.iconmenu:hover {
+  stroke: var(--black);
+  fill: var(--black);
 }
-
-.navbar-title {
-  margin: auto 0;
+.iconmenu:active {
+  stroke: var(--black);
+  fill: var(--black);
 }

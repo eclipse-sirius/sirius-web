@@ -15,8 +15,6 @@
     [container] minmax(max-content, auto);
 
   min-height: 100vh;
-
-  background-color: var(--snow);
 }
 .app-navbar {
   grid-row-start: navbar;
@@ -25,15 +23,15 @@
   display: grid;
   grid-template-columns:
     [aside] min-content
-    [main] auto;
+    [main] 1fr;
+  grid-template-rows: 1fr;
 
   grid-row-start: container;
 }
-
-.fullscreen .app-container {
-  display: grid;
-  grid-template-columns: 1fr;
+.app-aside {
+  grid-column-start: aside;
 }
-.fullscreen .app-navbar {
-  display: none;
+.app-main {
+  grid-column-start: main;
+  background-color: var(--snow);
 }

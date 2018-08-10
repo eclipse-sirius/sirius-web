@@ -8,9 +8,11 @@
  *******************************************************************************/
 
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { classNames } from '../../common/classnames';
 
+import { IconMenu } from '../icons/IconMenu';
 import { Spacing } from '../spacing/Spacing';
 import { S, M } from '../spacing/SpacingConstants';
 import { Text } from '../text/Text';
@@ -22,16 +24,26 @@ const NAVBAR__CLASS_NAMES = 'navbar';
 const NAVBAR_CONTAINER__CLASS_NAMES = 'navbar-container';
 const NARBAR_TITLE__CLASS_NAMES = 'navbar-title title-xxl';
 
+const propTypes = {
+  onHamburgerMenuClick: PropTypes.func.isRequired
+};
+const defaultProps = {
+  onHamburgerMenuClick: () => {}
+};
+
 /**
  * The Navbar is used to display a navigation bar on top of the user interface.
  * It can contain the title of the application and various actions.
  */
-export const Navbar = ({ className, ...props }) => {
+export const Navbar = ({ className, onHamburgerMenuClick, ...props }) => {
   const navClassNames = classNames(NAVBAR__CLASS_NAMES, className);
   return (
     <nav className={navClassNames} {...props}>
       <Spacing top={S} right={M} bottom={S} left={M}>
         <div className={NAVBAR_CONTAINER__CLASS_NAMES}>
+          <Spacing right={M}>
+            <IconMenu onClick={onHamburgerMenuClick} />
+          </Spacing>
           <div className={NARBAR_TITLE__CLASS_NAMES}>
             <Text weight={BOLD} size={EXTRA_EXTRA_LARGE}>
               Eclipse Sirius
@@ -42,3 +54,5 @@ export const Navbar = ({ className, ...props }) => {
     </nav>
   );
 };
+Navbar.propTypes = propTypes;
+Navbar.defaultProps = defaultProps;

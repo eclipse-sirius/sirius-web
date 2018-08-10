@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0.
  *******************************************************************************/
 
-import React from 'react';
+import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 
 import { classNames } from '../../common/classnames';
@@ -15,21 +15,16 @@ import { classNames } from '../../common/classnames';
 import { Aside } from '../aside/Aside';
 import { Main } from '../main/Main';
 import { Navbar } from '../navbar/Navbar';
-import { Spacing } from '../spacing/Spacing';
-import { M, L, XL } from '../spacing/SpacingConstants';
 
 import './App.css';
-import './ie11.css';
 
 const APP__CLASS_NAMES = 'app';
 const APP_NAVBAR__CLASS_NAMES = 'app-navbar';
 const APP_CONTAINER__CLASS_NAMES = 'app-container';
 const APP_ASIDE__CLASS_NAMES = 'app-aside';
 const APP_MAIN__CLASS_NAMES = 'app-main';
-const FULLSCREEN__CLASS_NAMES = 'fullscreen';
 
-const FULLSCREEN_PARAMETER_NAME = 'fullscreen';
-const IE11__CLASS_NAMES = 'ie11';
+const SMALL_DEVICE_WIDTH = 1024;
 
 /**
  * The App component is the entry point of the user interface of the application.
@@ -38,51 +33,48 @@ const IE11__CLASS_NAMES = 'ie11';
  * application along with some additional actions. Under the Navbar, two columns
  * are used to display side by side the Aside component and the Main component.
  */
-const AppWithoutRouter = ({ className, ...props }) => {
-  const { location } = props;
+class AppWithoutRouter extends Component {
+  constructor(props) {
+    super(props);
 
-  let query = location.search;
-  if (query[0] === '?') {
-    query = query.substring(1);
-  }
-  const segments = query.split('&');
-  const parameters = {};
-  for (var i = 0; i < segments.length; i++) {
-    const entry = segments[i].split('=');
-    parameters[decodeURIComponent(entry[0])] = decodeURIComponent(entry[1]);
+    this.state = {
+      asideHidden: document.documentElement.clientWidth < SMALL_DEVICE_WIDTH
+    };
+
+    this.handleHamburgerClick = this.handleHamburgerClick.bind(this);
   }
 
-  const isFullScreen = parameters[FULLSCREEN_PARAMETER_NAME];
+  handleHamburgerClick() {
+    this.setState(previousState => {
+      return {
+        asideHidden: !previousState.asideHidden
+      };
+    });
+  }
 
-  let appClassNames = classNames(APP__CLASS_NAMES, className);
-  let container = (
-    <div className={APP_CONTAINER__CLASS_NAMES}>
-      <Aside className={APP_ASIDE__CLASS_NAMES} />
-      <Main className={APP_MAIN__CLASS_NAMES} />
-    </div>
-  );
+  render() {
+    const { className } = this.props;
+    const { asideHidden } = this.state;
 
-  if (isFullScreen) {
-    appClassNames = classNames(APP__CLASS_NAMES, FULLSCREEN__CLASS_NAMES, className);
-    container = (
-      <div className={APP_CONTAINER__CLASS_NAMES}>
-        <Main className={APP_MAIN__CLASS_NAMES} />
+    let appClassNames = classNames(APP__CLASS_NAMES, className);
+
+    let aside = <Aside className={APP_ASIDE__CLASS_NAMES} />;
+    if (asideHidden) {
+      aside = null;
+    }
+
+    return (
+      <div className={appClassNames}>
+        <Navbar
+          className={APP_NAVBAR__CLASS_NAMES}
+          onHamburgerMenuClick={this.handleHamburgerClick}
+        />
+        <div className={APP_CONTAINER__CLASS_NAMES}>
+          {aside}
+          <Main className={APP_MAIN__CLASS_NAMES} />
+        </div>
       </div>
     );
   }
-
-  const isIE11 = !!window.MSInputMethodContext && !!document.documentMode;
-  if (isIE11) {
-    appClassNames = classNames(appClassNames, IE11__CLASS_NAMES);
-  }
-
-  return (
-    <div className={appClassNames}>
-      <Navbar className={APP_NAVBAR__CLASS_NAMES} />
-      <Spacing top={L} right={M} bottom={XL} left={M}>
-        {container}
-      </Spacing>
-    </div>
-  );
-};
+}
 export const App = withRouter(AppWithoutRouter);

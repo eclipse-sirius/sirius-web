@@ -18,7 +18,7 @@ import { ListProjectsView } from '../projects/listprojects/ListProjectsView';
 import { NewProjectView } from '../projects/newproject/NewProjectView';
 import { ProjectView } from '../projects/project/ProjectView';
 import { Spacing } from '../spacing/Spacing';
-import { L } from '../spacing/SpacingConstants';
+import { L, XL } from '../spacing/SpacingConstants';
 
 import { DashboardViewStateContainer } from '../../containers/dashboard/DashboardViewStateContainer';
 import { ListProjectsViewStateContainer } from '../../containers/projects/ListProjectsViewStateContainer';
@@ -37,7 +37,7 @@ export const Main = ({ className, ...props }) => {
   const mainClassNames = classNames(MAIN__CLASS_NAMES, className);
   return (
     <main className={mainClassNames} {...props}>
-      <Spacing right={L} left={L}>
+      <Spacing top={L} right={L} bottom={XL} left={L}>
         <ErrorBoundary>
           <Switch>
             <Route exact path="/" render={renderDashboardViewStateContainer} />
