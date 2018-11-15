@@ -5,27 +5,13 @@ exports[`Navbar renders the navbar component 1`] = `
   className="navbar"
 >
   <div
-    style={
-      Object {
-        "paddingBottom": "8px",
-        "paddingLeft": "16px",
-        "paddingRight": "16px",
-        "paddingTop": "8px",
-      }
-    }
+    className="css-1bwpiip"
   >
     <div
       className="navbar-container"
     >
       <div
-        style={
-          Object {
-            "paddingBottom": undefined,
-            "paddingLeft": undefined,
-            "paddingRight": "16px",
-            "paddingTop": undefined,
-          }
-        }
+        className="css-1vi0ksp"
       >
         <svg
           className="iconmenu"

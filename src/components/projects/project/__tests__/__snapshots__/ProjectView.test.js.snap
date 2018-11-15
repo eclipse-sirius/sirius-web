@@ -8,14 +8,7 @@ exports[`ProjectView renders a loading indicator during the loading 1`] = `
     className="card projectheadercard"
   >
     <div
-      style={
-        Object {
-          "paddingBottom": "16px",
-          "paddingLeft": "16px",
-          "paddingRight": "16px",
-          "paddingTop": "16px",
-        }
-      }
+      className="css-kglogr"
     >
       <div
         className="text xl semibold hideoverflow loading"
@@ -24,14 +17,7 @@ exports[`ProjectView renders a loading indicator during the loading 1`] = `
       </div>
     </div>
     <div
-      style={
-        Object {
-          "paddingBottom": "8px",
-          "paddingLeft": "16px",
-          "paddingRight": "16px",
-          "paddingTop": "8px",
-        }
-      }
+      className="css-1bwpiip"
     >
       <div
         className="viewdescription"
@@ -42,14 +28,7 @@ exports[`ProjectView renders a loading indicator during the loading 1`] = `
           No description provided
         </div>
         <div
-          style={
-            Object {
-              "paddingBottom": undefined,
-              "paddingLeft": "16px",
-              "paddingRight": undefined,
-              "paddingTop": undefined,
-            }
-          }
+          className="css-dqccva"
         >
           <button
             className="button button--loading"
@@ -57,14 +36,7 @@ exports[`ProjectView renders a loading indicator during the loading 1`] = `
             onClick={[Function]}
           >
             <div
-              style={
-                Object {
-                  "paddingBottom": undefined,
-                  "paddingLeft": "16px",
-                  "paddingRight": "16px",
-                  "paddingTop": undefined,
-                }
-              }
+              className="css-1trk9rv"
             >
               <div
                 className="button-container"
@@ -98,14 +70,7 @@ exports[`ProjectView renders a loading indicator during the loading 1`] = `
         className="card projectsemanticresourceslistcard"
       >
         <div
-          style={
-            Object {
-              "paddingBottom": "16px",
-              "paddingLeft": "16px",
-              "paddingRight": "16px",
-              "paddingTop": "16px",
-            }
-          }
+          className="css-kglogr"
         >
           <div
             className="text l semibold hideoverflow loading"
@@ -114,14 +79,7 @@ exports[`ProjectView renders a loading indicator during the loading 1`] = `
           </div>
         </div>
         <div
-          style={
-            Object {
-              "paddingBottom": "16px",
-              "paddingLeft": "16px",
-              "paddingRight": "16px",
-              "paddingTop": "8px",
-            }
-          }
+          className="css-sfh1o5"
         >
           <div
             className="text s regular loading"
@@ -134,14 +92,7 @@ exports[`ProjectView renders a loading indicator during the loading 1`] = `
         className="card projectrepresentationslistcard"
       >
         <div
-          style={
-            Object {
-              "paddingBottom": "16px",
-              "paddingLeft": "16px",
-              "paddingRight": "16px",
-              "paddingTop": "16px",
-            }
-          }
+          className="css-kglogr"
         >
           <div
             className="text l semibold hideoverflow loading"
@@ -150,14 +101,7 @@ exports[`ProjectView renders a loading indicator during the loading 1`] = `
           </div>
         </div>
         <div
-          style={
-            Object {
-              "paddingBottom": "16px",
-              "paddingLeft": "16px",
-              "paddingRight": "16px",
-              "paddingTop": "8px",
-            }
-          }
+          className="css-sfh1o5"
         >
           <div
             className="text s regular loading"
@@ -174,14 +118,7 @@ exports[`ProjectView renders a loading indicator during the loading 1`] = `
         className="card workflowcard"
       >
         <div
-          style={
-            Object {
-              "paddingBottom": "16px",
-              "paddingLeft": "16px",
-              "paddingRight": "16px",
-              "paddingTop": "16px",
-            }
-          }
+          className="css-kglogr"
         >
           <div
             className="text l semibold hideoverflow loading"
@@ -190,14 +127,7 @@ exports[`ProjectView renders a loading indicator during the loading 1`] = `
           </div>
         </div>
         <div
-          style={
-            Object {
-              "paddingBottom": "16px",
-              "paddingLeft": "16px",
-              "paddingRight": "16px",
-              "paddingTop": "8px",
-            }
-          }
+          className="css-sfh1o5"
         >
           <div
             className="text s regular loading"
@@ -216,27 +146,13 @@ exports[`ProjectView renders an error card for an error 1`] = `
   className="card errorcard"
 >
   <div
-    style={
-      Object {
-        "paddingBottom": "32px",
-        "paddingLeft": "32px",
-        "paddingRight": "32px",
-        "paddingTop": "32px",
-      }
-    }
+    className="css-1nc71gt"
   >
     <div
       className="errorcard-container"
     >
       <div
-        style={
-          Object {
-            "paddingBottom": "16px",
-            "paddingLeft": "16px",
-            "paddingRight": "16px",
-            "paddingTop": "16px",
-          }
-        }
+        className="css-kglogr"
       >
         <h1
           className="title-l"
@@ -257,27 +173,13 @@ exports[`ProjectView renders an error card for an unsupported state 1`] = `
   className="card errorcard"
 >
   <div
-    style={
-      Object {
-        "paddingBottom": "32px",
-        "paddingLeft": "32px",
-        "paddingRight": "32px",
-        "paddingTop": "32px",
-      }
-    }
+    className="css-1nc71gt"
   >
     <div
       className="errorcard-container"
     >
       <div
-        style={
-          Object {
-            "paddingBottom": "16px",
-            "paddingLeft": "16px",
-            "paddingRight": "16px",
-            "paddingTop": "16px",
-          }
-        }
+        className="css-kglogr"
       >
         <h1
           className="title-l"
@@ -301,14 +203,7 @@ exports[`ProjectView renders the project with activities 1`] = `
     className="card projectheadercard"
   >
     <div
-      style={
-        Object {
-          "paddingBottom": "16px",
-          "paddingLeft": "16px",
-          "paddingRight": "16px",
-          "paddingTop": "16px",
-        }
-      }
+      className="css-kglogr"
     >
       <div
         className="text xl semibold hideoverflow"
@@ -317,14 +212,7 @@ exports[`ProjectView renders the project with activities 1`] = `
       </div>
     </div>
     <div
-      style={
-        Object {
-          "paddingBottom": "8px",
-          "paddingLeft": "16px",
-          "paddingRight": "16px",
-          "paddingTop": "8px",
-        }
-      }
+      className="css-1bwpiip"
     >
       <div
         className="viewdescription"
@@ -335,14 +223,7 @@ exports[`ProjectView renders the project with activities 1`] = `
           No description provided
         </div>
         <div
-          style={
-            Object {
-              "paddingBottom": undefined,
-              "paddingLeft": "16px",
-              "paddingRight": undefined,
-              "paddingTop": undefined,
-            }
-          }
+          className="css-dqccva"
         >
           <button
             className="button button--default"
@@ -350,14 +231,7 @@ exports[`ProjectView renders the project with activities 1`] = `
             onClick={[Function]}
           >
             <div
-              style={
-                Object {
-                  "paddingBottom": undefined,
-                  "paddingLeft": "16px",
-                  "paddingRight": "16px",
-                  "paddingTop": undefined,
-                }
-              }
+              className="css-1trk9rv"
             >
               <div
                 className="button-container"
@@ -391,14 +265,7 @@ exports[`ProjectView renders the project with activities 1`] = `
         className="card projectsemanticresourceslistcard"
       >
         <div
-          style={
-            Object {
-              "paddingBottom": "16px",
-              "paddingLeft": "16px",
-              "paddingRight": "16px",
-              "paddingTop": "16px",
-            }
-          }
+          className="css-kglogr"
         >
           <div
             className="text l semibold hideoverflow"
@@ -410,14 +277,7 @@ exports[`ProjectView renders the project with activities 1`] = `
           className="list list--highlighted"
         >
           <div
-            style={
-              Object {
-                "paddingBottom": "8px",
-                "paddingLeft": undefined,
-                "paddingRight": undefined,
-                "paddingTop": "8px",
-              }
-            }
+            className="css-u1f566"
           >
             <li
               className="tile tile--singleline"
@@ -438,14 +298,7 @@ exports[`ProjectView renders the project with activities 1`] = `
         className="card projectrepresentationslistcard"
       >
         <div
-          style={
-            Object {
-              "paddingBottom": "16px",
-              "paddingLeft": "16px",
-              "paddingRight": "16px",
-              "paddingTop": "16px",
-            }
-          }
+          className="css-kglogr"
         >
           <div
             className="text l semibold hideoverflow"
@@ -457,14 +310,7 @@ exports[`ProjectView renders the project with activities 1`] = `
           className="list list--highlighted"
         >
           <div
-            style={
-              Object {
-                "paddingBottom": "8px",
-                "paddingLeft": undefined,
-                "paddingRight": undefined,
-                "paddingTop": "8px",
-              }
-            }
+            className="css-u1f566"
           >
             <li
               className="tile tile--twoline"
@@ -505,14 +351,7 @@ exports[`ProjectView renders the project with activities 1`] = `
         className="card workflowcard"
       >
         <div
-          style={
-            Object {
-              "paddingBottom": "16px",
-              "paddingLeft": "16px",
-              "paddingRight": "16px",
-              "paddingTop": "16px",
-            }
-          }
+          className="css-kglogr"
         >
           <div
             className="text l semibold hideoverflow"
@@ -561,14 +400,7 @@ exports[`ProjectView renders the project with activities 1`] = `
           </div>
         </div>
         <div
-          style={
-            Object {
-              "paddingBottom": "16px",
-              "paddingLeft": "16px",
-              "paddingRight": "16px",
-              "paddingTop": "8px",
-            }
-          }
+          className="css-sfh1o5"
         >
           <div
             className="text s regular"
@@ -590,14 +422,7 @@ exports[`ProjectView renders the project without activities 1`] = `
     className="card projectheadercard"
   >
     <div
-      style={
-        Object {
-          "paddingBottom": "16px",
-          "paddingLeft": "16px",
-          "paddingRight": "16px",
-          "paddingTop": "16px",
-        }
-      }
+      className="css-kglogr"
     >
       <div
         className="text xl semibold hideoverflow"
@@ -606,14 +431,7 @@ exports[`ProjectView renders the project without activities 1`] = `
       </div>
     </div>
     <div
-      style={
-        Object {
-          "paddingBottom": "8px",
-          "paddingLeft": "16px",
-          "paddingRight": "16px",
-          "paddingTop": "8px",
-        }
-      }
+      className="css-1bwpiip"
     >
       <div
         className="viewdescription"
@@ -624,14 +442,7 @@ exports[`ProjectView renders the project without activities 1`] = `
           No description provided
         </div>
         <div
-          style={
-            Object {
-              "paddingBottom": undefined,
-              "paddingLeft": "16px",
-              "paddingRight": undefined,
-              "paddingTop": undefined,
-            }
-          }
+          className="css-dqccva"
         >
           <button
             className="button button--default"
@@ -639,14 +450,7 @@ exports[`ProjectView renders the project without activities 1`] = `
             onClick={[Function]}
           >
             <div
-              style={
-                Object {
-                  "paddingBottom": undefined,
-                  "paddingLeft": "16px",
-                  "paddingRight": "16px",
-                  "paddingTop": undefined,
-                }
-              }
+              className="css-1trk9rv"
             >
               <div
                 className="button-container"
@@ -680,14 +484,7 @@ exports[`ProjectView renders the project without activities 1`] = `
         className="card projectsemanticresourceslistcard"
       >
         <div
-          style={
-            Object {
-              "paddingBottom": "16px",
-              "paddingLeft": "16px",
-              "paddingRight": "16px",
-              "paddingTop": "16px",
-            }
-          }
+          className="css-kglogr"
         >
           <div
             className="text l semibold hideoverflow"
@@ -699,14 +496,7 @@ exports[`ProjectView renders the project without activities 1`] = `
           className="list list--highlighted"
         >
           <div
-            style={
-              Object {
-                "paddingBottom": "8px",
-                "paddingLeft": undefined,
-                "paddingRight": undefined,
-                "paddingTop": "8px",
-              }
-            }
+            className="css-u1f566"
           >
             <li
               className="tile tile--singleline"
@@ -727,14 +517,7 @@ exports[`ProjectView renders the project without activities 1`] = `
         className="card projectrepresentationslistcard"
       >
         <div
-          style={
-            Object {
-              "paddingBottom": "16px",
-              "paddingLeft": "16px",
-              "paddingRight": "16px",
-              "paddingTop": "16px",
-            }
-          }
+          className="css-kglogr"
         >
           <div
             className="text l semibold hideoverflow"
@@ -746,14 +529,7 @@ exports[`ProjectView renders the project without activities 1`] = `
           className="list list--highlighted"
         >
           <div
-            style={
-              Object {
-                "paddingBottom": "8px",
-                "paddingLeft": undefined,
-                "paddingRight": undefined,
-                "paddingTop": "8px",
-              }
-            }
+            className="css-u1f566"
           >
             <li
               className="tile tile--twoline"
@@ -794,14 +570,7 @@ exports[`ProjectView renders the project without activities 1`] = `
         className="card workflowcard"
       >
         <div
-          style={
-            Object {
-              "paddingBottom": "16px",
-              "paddingLeft": "16px",
-              "paddingRight": "16px",
-              "paddingTop": "16px",
-            }
-          }
+          className="css-kglogr"
         >
           <div
             className="text l semibold hideoverflow"
@@ -850,14 +619,7 @@ exports[`ProjectView renders the project without activities 1`] = `
           </div>
         </div>
         <div
-          style={
-            Object {
-              "paddingBottom": "16px",
-              "paddingLeft": "16px",
-              "paddingRight": "16px",
-              "paddingTop": "8px",
-            }
-          }
+          className="css-sfh1o5"
         >
           <div
             className="text s regular"
@@ -879,14 +641,7 @@ exports[`ProjectView renders the project without any workflow 1`] = `
     className="card projectheadercard"
   >
     <div
-      style={
-        Object {
-          "paddingBottom": "16px",
-          "paddingLeft": "16px",
-          "paddingRight": "16px",
-          "paddingTop": "16px",
-        }
-      }
+      className="css-kglogr"
     >
       <div
         className="text xl semibold hideoverflow"
@@ -895,14 +650,7 @@ exports[`ProjectView renders the project without any workflow 1`] = `
       </div>
     </div>
     <div
-      style={
-        Object {
-          "paddingBottom": "8px",
-          "paddingLeft": "16px",
-          "paddingRight": "16px",
-          "paddingTop": "8px",
-        }
-      }
+      className="css-1bwpiip"
     >
       <div
         className="viewdescription"
@@ -913,14 +661,7 @@ exports[`ProjectView renders the project without any workflow 1`] = `
           No description provided
         </div>
         <div
-          style={
-            Object {
-              "paddingBottom": undefined,
-              "paddingLeft": "16px",
-              "paddingRight": undefined,
-              "paddingTop": undefined,
-            }
-          }
+          className="css-dqccva"
         >
           <button
             className="button button--default"
@@ -928,14 +669,7 @@ exports[`ProjectView renders the project without any workflow 1`] = `
             onClick={[Function]}
           >
             <div
-              style={
-                Object {
-                  "paddingBottom": undefined,
-                  "paddingLeft": "16px",
-                  "paddingRight": "16px",
-                  "paddingTop": undefined,
-                }
-              }
+              className="css-1trk9rv"
             >
               <div
                 className="button-container"
@@ -969,14 +703,7 @@ exports[`ProjectView renders the project without any workflow 1`] = `
         className="card projectsemanticresourceslistcard"
       >
         <div
-          style={
-            Object {
-              "paddingBottom": "16px",
-              "paddingLeft": "16px",
-              "paddingRight": "16px",
-              "paddingTop": "16px",
-            }
-          }
+          className="css-kglogr"
         >
           <div
             className="text l semibold hideoverflow"
@@ -988,14 +715,7 @@ exports[`ProjectView renders the project without any workflow 1`] = `
           className="list list--highlighted"
         >
           <div
-            style={
-              Object {
-                "paddingBottom": "8px",
-                "paddingLeft": undefined,
-                "paddingRight": undefined,
-                "paddingTop": "8px",
-              }
-            }
+            className="css-u1f566"
           >
             <li
               className="tile tile--singleline"
@@ -1016,14 +736,7 @@ exports[`ProjectView renders the project without any workflow 1`] = `
         className="card projectrepresentationslistcard"
       >
         <div
-          style={
-            Object {
-              "paddingBottom": "16px",
-              "paddingLeft": "16px",
-              "paddingRight": "16px",
-              "paddingTop": "16px",
-            }
-          }
+          className="css-kglogr"
         >
           <div
             className="text l semibold hideoverflow"
@@ -1035,14 +748,7 @@ exports[`ProjectView renders the project without any workflow 1`] = `
           className="list list--highlighted"
         >
           <div
-            style={
-              Object {
-                "paddingBottom": "8px",
-                "paddingLeft": undefined,
-                "paddingRight": undefined,
-                "paddingTop": "8px",
-              }
-            }
+            className="css-u1f566"
           >
             <li
               className="tile tile--twoline"
@@ -1083,14 +789,7 @@ exports[`ProjectView renders the project without any workflow 1`] = `
         className="card workflowcard"
       >
         <div
-          style={
-            Object {
-              "paddingBottom": "16px",
-              "paddingLeft": "16px",
-              "paddingRight": "16px",
-              "paddingTop": "16px",
-            }
-          }
+          className="css-kglogr"
         >
           <div
             className="text l semibold hideoverflow"
@@ -1099,14 +798,7 @@ exports[`ProjectView renders the project without any workflow 1`] = `
           </div>
         </div>
         <div
-          style={
-            Object {
-              "paddingBottom": "16px",
-              "paddingLeft": "16px",
-              "paddingRight": "16px",
-              "paddingTop": "8px",
-            }
-          }
+          className="css-sfh1o5"
         >
           <div
             className="text s regular"
@@ -1128,14 +820,7 @@ exports[`ProjectView renders the project without sections 1`] = `
     className="card projectheadercard"
   >
     <div
-      style={
-        Object {
-          "paddingBottom": "16px",
-          "paddingLeft": "16px",
-          "paddingRight": "16px",
-          "paddingTop": "16px",
-        }
-      }
+      className="css-kglogr"
     >
       <div
         className="text xl semibold hideoverflow"
@@ -1144,14 +829,7 @@ exports[`ProjectView renders the project without sections 1`] = `
       </div>
     </div>
     <div
-      style={
-        Object {
-          "paddingBottom": "8px",
-          "paddingLeft": "16px",
-          "paddingRight": "16px",
-          "paddingTop": "8px",
-        }
-      }
+      className="css-1bwpiip"
     >
       <div
         className="viewdescription"
@@ -1162,14 +840,7 @@ exports[`ProjectView renders the project without sections 1`] = `
           No description provided
         </div>
         <div
-          style={
-            Object {
-              "paddingBottom": undefined,
-              "paddingLeft": "16px",
-              "paddingRight": undefined,
-              "paddingTop": undefined,
-            }
-          }
+          className="css-dqccva"
         >
           <button
             className="button button--default"
@@ -1177,14 +848,7 @@ exports[`ProjectView renders the project without sections 1`] = `
             onClick={[Function]}
           >
             <div
-              style={
-                Object {
-                  "paddingBottom": undefined,
-                  "paddingLeft": "16px",
-                  "paddingRight": "16px",
-                  "paddingTop": undefined,
-                }
-              }
+              className="css-1trk9rv"
             >
               <div
                 className="button-container"
@@ -1218,14 +882,7 @@ exports[`ProjectView renders the project without sections 1`] = `
         className="card projectsemanticresourceslistcard"
       >
         <div
-          style={
-            Object {
-              "paddingBottom": "16px",
-              "paddingLeft": "16px",
-              "paddingRight": "16px",
-              "paddingTop": "16px",
-            }
-          }
+          className="css-kglogr"
         >
           <div
             className="text l semibold hideoverflow"
@@ -1237,14 +894,7 @@ exports[`ProjectView renders the project without sections 1`] = `
           className="list list--highlighted"
         >
           <div
-            style={
-              Object {
-                "paddingBottom": "8px",
-                "paddingLeft": undefined,
-                "paddingRight": undefined,
-                "paddingTop": "8px",
-              }
-            }
+            className="css-u1f566"
           >
             <li
               className="tile tile--singleline"
@@ -1265,14 +915,7 @@ exports[`ProjectView renders the project without sections 1`] = `
         className="card projectrepresentationslistcard"
       >
         <div
-          style={
-            Object {
-              "paddingBottom": "16px",
-              "paddingLeft": "16px",
-              "paddingRight": "16px",
-              "paddingTop": "16px",
-            }
-          }
+          className="css-kglogr"
         >
           <div
             className="text l semibold hideoverflow"
@@ -1284,14 +927,7 @@ exports[`ProjectView renders the project without sections 1`] = `
           className="list list--highlighted"
         >
           <div
-            style={
-              Object {
-                "paddingBottom": "8px",
-                "paddingLeft": undefined,
-                "paddingRight": undefined,
-                "paddingTop": "8px",
-              }
-            }
+            className="css-u1f566"
           >
             <li
               className="tile tile--twoline"
@@ -1332,14 +968,7 @@ exports[`ProjectView renders the project without sections 1`] = `
         className="card workflowcard"
       >
         <div
-          style={
-            Object {
-              "paddingBottom": "16px",
-              "paddingLeft": "16px",
-              "paddingRight": "16px",
-              "paddingTop": "16px",
-            }
-          }
+          className="css-kglogr"
         >
           <div
             className="text l semibold hideoverflow"
@@ -1388,14 +1017,7 @@ exports[`ProjectView renders the project without sections 1`] = `
           </div>
         </div>
         <div
-          style={
-            Object {
-              "paddingBottom": "16px",
-              "paddingLeft": "16px",
-              "paddingRight": "16px",
-              "paddingTop": "8px",
-            }
-          }
+          className="css-sfh1o5"
         >
           <div
             className="text s regular"

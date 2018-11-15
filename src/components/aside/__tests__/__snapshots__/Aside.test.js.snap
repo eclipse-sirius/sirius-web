@@ -5,14 +5,7 @@ exports[`Aside renders the aside component 1`] = `
   className="aside"
 >
   <div
-    style={
-      Object {
-        "paddingBottom": undefined,
-        "paddingLeft": "16px",
-        "paddingRight": "16px",
-        "paddingTop": "32px",
-      }
-    }
+    className="css-1uaiame"
   >
     <div
       className="aside-mainlinks"
@@ -27,14 +20,7 @@ exports[`Aside renders the aside component 1`] = `
             style={Object {}}
           >
             <div
-              style={
-                Object {
-                  "paddingBottom": "8px",
-                  "paddingLeft": "16px",
-                  "paddingRight": "16px",
-                  "paddingTop": "8px",
-                }
-              }
+              className="css-1bwpiip"
             >
               <div
                 className="text m regular"
@@ -52,14 +38,7 @@ exports[`Aside renders the aside component 1`] = `
             onClick={[Function]}
           >
             <div
-              style={
-                Object {
-                  "paddingBottom": "8px",
-                  "paddingLeft": "16px",
-                  "paddingRight": "16px",
-                  "paddingTop": "8px",
-                }
-              }
+              className="css-1bwpiip"
             >
               <div
                 className="text m regular"

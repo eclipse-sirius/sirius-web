@@ -8,6 +8,7 @@
  *******************************************************************************/
 import React from 'react';
 import PropTypes from 'prop-types';
+import { css } from 'emotion';
 
 import { XS, S, M, L, XL, XXL } from './SpacingConstants';
 
@@ -25,12 +26,12 @@ const propTypes = {
  * the given value of top, right, bottom and left.
  */
 export const Spacing = ({ children, top, right, bottom, left }) => {
-  const style = {
+  const style = css({
     paddingTop: top,
     paddingRight: right,
     paddingBottom: bottom,
     paddingLeft: left
-  };
-  return <div style={style}>{children}</div>;
+  });
+  return <div className={style}>{children}</div>;
 };
 Spacing.propTypes = propTypes;

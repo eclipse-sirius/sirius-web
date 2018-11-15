@@ -15,27 +15,13 @@ exports[`DashboardView renders an error card for an error 1`] = `
   className="card errorcard"
 >
   <div
-    style={
-      Object {
-        "paddingBottom": "32px",
-        "paddingLeft": "32px",
-        "paddingRight": "32px",
-        "paddingTop": "32px",
-      }
-    }
+    className="css-1nc71gt"
   >
     <div
       className="errorcard-container"
     >
       <div
-        style={
-          Object {
-            "paddingBottom": "16px",
-            "paddingLeft": "16px",
-            "paddingRight": "16px",
-            "paddingTop": "16px",
-          }
-        }
+        className="css-kglogr"
       >
         <h1
           className="title-l"
@@ -56,27 +42,13 @@ exports[`DashboardView renders an error card for an unsupported state 1`] = `
   className="card errorcard"
 >
   <div
-    style={
-      Object {
-        "paddingBottom": "32px",
-        "paddingLeft": "32px",
-        "paddingRight": "32px",
-        "paddingTop": "32px",
-      }
-    }
+    className="css-1nc71gt"
   >
     <div
       className="errorcard-container"
     >
       <div
-        style={
-          Object {
-            "paddingBottom": "16px",
-            "paddingLeft": "16px",
-            "paddingRight": "16px",
-            "paddingTop": "16px",
-          }
-        }
+        className="css-kglogr"
       >
         <h1
           className="title-l"
@@ -97,14 +69,7 @@ exports[`DashboardView renders the projects 1`] = `
   className="dashboardview"
 >
   <div
-    style={
-      Object {
-        "paddingBottom": undefined,
-        "paddingLeft": undefined,
-        "paddingRight": undefined,
-        "paddingTop": undefined,
-      }
-    }
+    className="css-38q71r"
   >
     <div
       className="text xl bold"
@@ -116,14 +81,7 @@ exports[`DashboardView renders the projects 1`] = `
     className="dashboardoverviewsection"
   >
     <div
-      style={
-        Object {
-          "paddingBottom": "16px",
-          "paddingLeft": undefined,
-          "paddingRight": undefined,
-          "paddingTop": "16px",
-        }
-      }
+      className="css-1ww0b7b"
     >
       <div
         className="text m semibold"
@@ -131,14 +89,7 @@ exports[`DashboardView renders the projects 1`] = `
         Overview
       </div>
       <div
-        style={
-          Object {
-            "paddingBottom": undefined,
-            "paddingLeft": undefined,
-            "paddingRight": undefined,
-            "paddingTop": "8px",
-          }
-        }
+        className="css-8ikfdx"
       >
         <div
           className="dashboardoverviewsection-container"
@@ -147,14 +98,7 @@ exports[`DashboardView renders the projects 1`] = `
             className="card infocard projectsinfocard"
           >
             <div
-              style={
-                Object {
-                  "paddingBottom": "32px",
-                  "paddingLeft": "32px",
-                  "paddingRight": "32px",
-                  "paddingTop": "32px",
-                }
-              }
+              className="css-1nc71gt"
             >
               <div
                 className="infocard-container"
@@ -176,14 +120,7 @@ exports[`DashboardView renders the projects 1`] = `
             className="card infocard viewpointsinfocard"
           >
             <div
-              style={
-                Object {
-                  "paddingBottom": "32px",
-                  "paddingLeft": "32px",
-                  "paddingRight": "32px",
-                  "paddingTop": "32px",
-                }
-              }
+              className="css-1nc71gt"
             >
               <div
                 className="infocard-container"
@@ -205,14 +142,7 @@ exports[`DashboardView renders the projects 1`] = `
             className="card infocard metamodelsinfocard"
           >
             <div
-              style={
-                Object {
-                  "paddingBottom": "32px",
-                  "paddingLeft": "32px",
-                  "paddingRight": "32px",
-                  "paddingTop": "32px",
-                }
-              }
+              className="css-1nc71gt"
             >
               <div
                 className="infocard-container"
@@ -238,14 +168,7 @@ exports[`DashboardView renders the projects 1`] = `
     className="dashboardprojectssection"
   >
     <div
-      style={
-        Object {
-          "paddingBottom": "16px",
-          "paddingLeft": undefined,
-          "paddingRight": undefined,
-          "paddingTop": "16px",
-        }
-      }
+      className="css-1ww0b7b"
     >
       <div
         className="text m semibold"
@@ -258,14 +181,7 @@ exports[`DashboardView renders the projects 1`] = `
         </a>
       </div>
       <div
-        style={
-          Object {
-            "paddingBottom": undefined,
-            "paddingLeft": undefined,
-            "paddingRight": undefined,
-            "paddingTop": "8px",
-          }
-        }
+        className="css-8ikfdx"
       >
         <div
           className="dashboardprojectssection-container"
@@ -279,14 +195,7 @@ exports[`DashboardView renders the projects 1`] = `
               to=""
             >
               <div
-                style={
-                  Object {
-                    "paddingBottom": "32px",
-                    "paddingLeft": "32px",
-                    "paddingRight": "32px",
-                    "paddingTop": "32px",
-                  }
-                }
+                className="css-1nc71gt"
               >
                 <div
                   className="infocard-container"
@@ -313,14 +222,7 @@ exports[`DashboardView renders the projects 1`] = `
               onClick={[Function]}
             >
               <div
-                style={
-                  Object {
-                    "paddingBottom": "16px",
-                    "paddingLeft": "16px",
-                    "paddingRight": "16px",
-                    "paddingTop": "16px",
-                  }
-                }
+                className="css-kglogr"
               >
                 <div
                   className="text l semibold hideoverflow"
@@ -330,14 +232,7 @@ exports[`DashboardView renders the projects 1`] = `
               </div>
             </a>
             <div
-              style={
-                Object {
-                  "paddingBottom": "16px",
-                  "paddingLeft": "16px",
-                  "paddingRight": "16px",
-                  "paddingTop": "8px",
-                }
-              }
+              className="css-sfh1o5"
             >
               <div
                 className="text s regular"
@@ -354,14 +249,7 @@ exports[`DashboardView renders the projects 1`] = `
               onClick={[Function]}
             >
               <div
-                style={
-                  Object {
-                    "paddingBottom": "16px",
-                    "paddingLeft": "16px",
-                    "paddingRight": "16px",
-                    "paddingTop": "16px",
-                  }
-                }
+                className="css-kglogr"
               >
                 <div
                   className="text l semibold hideoverflow"
@@ -371,14 +259,7 @@ exports[`DashboardView renders the projects 1`] = `
               </div>
             </a>
             <div
-              style={
-                Object {
-                  "paddingBottom": "16px",
-                  "paddingLeft": "16px",
-                  "paddingRight": "16px",
-                  "paddingTop": "8px",
-                }
-              }
+              className="css-sfh1o5"
             >
               <div
                 className="text s regular"
