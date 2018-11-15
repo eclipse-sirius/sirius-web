@@ -20,7 +20,7 @@ exports[`Aside renders the aside component 1`] = `
       <ul>
         <li>
           <a
-            aria-current="true"
+            aria-current="page"
             className="mainlink mainlink--active"
             href="/"
             onClick={[Function]}
@@ -46,7 +46,7 @@ exports[`Aside renders the aside component 1`] = `
         </li>
         <li>
           <a
-            aria-current={false}
+            aria-current={null}
             className="mainlink"
             href="/projects"
             onClick={[Function]}
