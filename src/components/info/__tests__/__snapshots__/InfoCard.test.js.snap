@@ -5,14 +5,7 @@ exports[`InfoCard renders an info card 1`] = `
   className="card infocard"
 >
   <div
-    style={
-      Object {
-        "paddingBottom": "32px",
-        "paddingLeft": "32px",
-        "paddingRight": "32px",
-        "paddingTop": "32px",
-      }
-    }
+    className="css-1nc71gt"
   >
     <div
       className="infocard-container"

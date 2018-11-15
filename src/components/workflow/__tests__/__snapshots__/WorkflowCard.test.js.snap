@@ -5,14 +5,7 @@ exports[`WorkflowCard renders the workflow card 1`] = `
   className="card workflowcard"
 >
   <div
-    style={
-      Object {
-        "paddingBottom": "16px",
-        "paddingLeft": "16px",
-        "paddingRight": "16px",
-        "paddingTop": "16px",
-      }
-    }
+    className="css-kglogr"
   >
     <div
       className="text l semibold hideoverflow"
@@ -84,14 +77,7 @@ exports[`WorkflowCard renders the workflow card 1`] = `
     className="section"
   >
     <div
-      style={
-        Object {
-          "paddingBottom": "16px",
-          "paddingLeft": "16px",
-          "paddingRight": "16px",
-          "paddingTop": "16px",
-        }
-      }
+      className="css-kglogr"
     >
       <div
         className="text m semibold hideoverflow"
@@ -103,14 +89,7 @@ exports[`WorkflowCard renders the workflow card 1`] = `
       className="list list--highlighted"
     >
       <div
-        style={
-          Object {
-            "paddingBottom": "8px",
-            "paddingLeft": undefined,
-            "paddingRight": undefined,
-            "paddingTop": "8px",
-          }
-        }
+        className="css-u1f566"
       >
         <li
           className="tile tile--singleline"
@@ -170,14 +149,7 @@ exports[`WorkflowCard renders the workflow card 1`] = `
     className="section"
   >
     <div
-      style={
-        Object {
-          "paddingBottom": "16px",
-          "paddingLeft": "16px",
-          "paddingRight": "16px",
-          "paddingTop": "16px",
-        }
-      }
+      className="css-kglogr"
     >
       <div
         className="text m semibold hideoverflow"
@@ -189,14 +161,7 @@ exports[`WorkflowCard renders the workflow card 1`] = `
       className="list list--highlighted"
     >
       <div
-        style={
-          Object {
-            "paddingBottom": "8px",
-            "paddingLeft": undefined,
-            "paddingRight": undefined,
-            "paddingTop": "8px",
-          }
-        }
+        className="css-u1f566"
       >
         <li
           className="tile tile--singleline"

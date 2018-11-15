@@ -8,14 +8,7 @@ exports[`NewProjectView renders a card with a form ready to be submitted to crea
     className="card newprojectcard"
   >
     <div
-      style={
-        Object {
-          "paddingBottom": "16px",
-          "paddingLeft": "16px",
-          "paddingRight": "16px",
-          "paddingTop": "16px",
-        }
-      }
+      className="css-kglogr"
     >
       <div
         className="text l semibold hideoverflow"
@@ -31,51 +24,23 @@ exports[`NewProjectView renders a card with a form ready to be submitted to crea
       onSubmit={[Function]}
     >
       <div
-        style={
-          Object {
-            "paddingBottom": "16px",
-            "paddingLeft": "16px",
-            "paddingRight": "16px",
-            "paddingTop": "16px",
-          }
-        }
+        className="css-kglogr"
       >
         <div
           className="errorgroup"
         >
           <div
-            style={
-              Object {
-                "paddingBottom": "8px",
-                "paddingLeft": undefined,
-                "paddingRight": undefined,
-                "paddingTop": "8px",
-              }
-            }
+            className="css-u1f566"
           />
         </div>
         <div
           className="field"
         >
           <div
-            style={
-              Object {
-                "paddingBottom": "16px",
-                "paddingLeft": undefined,
-                "paddingRight": undefined,
-                "paddingTop": undefined,
-              }
-            }
+            className="css-ie0fxa"
           >
             <div
-              style={
-                Object {
-                  "paddingBottom": "8px",
-                  "paddingLeft": undefined,
-                  "paddingRight": undefined,
-                  "paddingTop": undefined,
-                }
-              }
+              className="css-f17nry"
             >
               <label
                 className="label body-l"
@@ -85,14 +50,7 @@ exports[`NewProjectView renders a card with a form ready to be submitted to crea
               </label>
             </div>
             <div
-              style={
-                Object {
-                  "paddingBottom": "8px",
-                  "paddingLeft": undefined,
-                  "paddingRight": undefined,
-                  "paddingTop": undefined,
-                }
-              }
+              className="css-f17nry"
             >
               <p
                 className="description caption-m"
@@ -113,14 +71,7 @@ exports[`NewProjectView renders a card with a form ready to be submitted to crea
               className="errorgroup"
             >
               <div
-                style={
-                  Object {
-                    "paddingBottom": "8px",
-                    "paddingLeft": undefined,
-                    "paddingRight": undefined,
-                    "paddingTop": "8px",
-                  }
-                }
+                className="css-u1f566"
               />
             </div>
           </div>
@@ -129,27 +80,13 @@ exports[`NewProjectView renders a card with a form ready to be submitted to crea
           className="actiongroup"
         >
           <div
-            style={
-              Object {
-                "paddingBottom": undefined,
-                "paddingLeft": undefined,
-                "paddingRight": undefined,
-                "paddingTop": "16px",
-              }
-            }
+            className="css-12hj4ej"
           >
             <button
               className="button button--primary"
             >
               <div
-                style={
-                  Object {
-                    "paddingBottom": undefined,
-                    "paddingLeft": "16px",
-                    "paddingRight": "16px",
-                    "paddingTop": undefined,
-                  }
-                }
+                className="css-1trk9rv"
               >
                 <div
                   className="button-container"
@@ -185,14 +122,7 @@ exports[`NewProjectView renders a card with a unsubmittable form to create a new
     className="card newprojectcard"
   >
     <div
-      style={
-        Object {
-          "paddingBottom": "16px",
-          "paddingLeft": "16px",
-          "paddingRight": "16px",
-          "paddingTop": "16px",
-        }
-      }
+      className="css-kglogr"
     >
       <div
         className="text l semibold hideoverflow"
@@ -208,51 +138,23 @@ exports[`NewProjectView renders a card with a unsubmittable form to create a new
       onSubmit={[Function]}
     >
       <div
-        style={
-          Object {
-            "paddingBottom": "16px",
-            "paddingLeft": "16px",
-            "paddingRight": "16px",
-            "paddingTop": "16px",
-          }
-        }
+        className="css-kglogr"
       >
         <div
           className="errorgroup"
         >
           <div
-            style={
-              Object {
-                "paddingBottom": "8px",
-                "paddingLeft": undefined,
-                "paddingRight": undefined,
-                "paddingTop": "8px",
-              }
-            }
+            className="css-u1f566"
           />
         </div>
         <div
           className="field"
         >
           <div
-            style={
-              Object {
-                "paddingBottom": "16px",
-                "paddingLeft": undefined,
-                "paddingRight": undefined,
-                "paddingTop": undefined,
-              }
-            }
+            className="css-ie0fxa"
           >
             <div
-              style={
-                Object {
-                  "paddingBottom": "8px",
-                  "paddingLeft": undefined,
-                  "paddingRight": undefined,
-                  "paddingTop": undefined,
-                }
-              }
+              className="css-f17nry"
             >
               <label
                 className="label body-l"
@@ -262,14 +164,7 @@ exports[`NewProjectView renders a card with a unsubmittable form to create a new
               </label>
             </div>
             <div
-              style={
-                Object {
-                  "paddingBottom": "8px",
-                  "paddingLeft": undefined,
-                  "paddingRight": undefined,
-                  "paddingTop": undefined,
-                }
-              }
+              className="css-f17nry"
             >
               <p
                 className="description caption-m"
@@ -290,14 +185,7 @@ exports[`NewProjectView renders a card with a unsubmittable form to create a new
               className="errorgroup"
             >
               <div
-                style={
-                  Object {
-                    "paddingBottom": "8px",
-                    "paddingLeft": undefined,
-                    "paddingRight": undefined,
-                    "paddingTop": "8px",
-                  }
-                }
+                className="css-u1f566"
               />
             </div>
           </div>
@@ -306,27 +194,13 @@ exports[`NewProjectView renders a card with a unsubmittable form to create a new
           className="actiongroup"
         >
           <div
-            style={
-              Object {
-                "paddingBottom": undefined,
-                "paddingLeft": undefined,
-                "paddingRight": undefined,
-                "paddingTop": "16px",
-              }
-            }
+            className="css-12hj4ej"
           >
             <button
               className="button button--primary"
             >
               <div
-                style={
-                  Object {
-                    "paddingBottom": undefined,
-                    "paddingLeft": "16px",
-                    "paddingRight": "16px",
-                    "paddingTop": undefined,
-                  }
-                }
+                className="css-1trk9rv"
               >
                 <div
                   className="button-container"
@@ -361,27 +235,13 @@ exports[`NewProjectView renders an error card for an unsupported state 1`] = `
   className="card errorcard"
 >
   <div
-    style={
-      Object {
-        "paddingBottom": "32px",
-        "paddingLeft": "32px",
-        "paddingRight": "32px",
-        "paddingTop": "32px",
-      }
-    }
+    className="css-1nc71gt"
   >
     <div
       className="errorcard-container"
     >
       <div
-        style={
-          Object {
-            "paddingBottom": "16px",
-            "paddingLeft": "16px",
-            "paddingRight": "16px",
-            "paddingTop": "16px",
-          }
-        }
+        className="css-kglogr"
       >
         <h1
           className="title-l"
@@ -405,14 +265,7 @@ exports[`NewProjectView renders errors message 1`] = `
     className="card newprojectcard"
   >
     <div
-      style={
-        Object {
-          "paddingBottom": "16px",
-          "paddingLeft": "16px",
-          "paddingRight": "16px",
-          "paddingTop": "16px",
-        }
-      }
+      className="css-kglogr"
     >
       <div
         className="text l semibold hideoverflow"
@@ -428,40 +281,19 @@ exports[`NewProjectView renders errors message 1`] = `
       onSubmit={[Function]}
     >
       <div
-        style={
-          Object {
-            "paddingBottom": "16px",
-            "paddingLeft": "16px",
-            "paddingRight": "16px",
-            "paddingTop": "16px",
-          }
-        }
+        className="css-kglogr"
       >
         <div
           className="errorgroup"
         >
           <div
-            style={
-              Object {
-                "paddingBottom": "8px",
-                "paddingLeft": undefined,
-                "paddingRight": undefined,
-                "paddingTop": "8px",
-              }
-            }
+            className="css-u1f566"
           >
             <div
               className="error"
             >
               <div
-                style={
-                  Object {
-                    "paddingBottom": undefined,
-                    "paddingLeft": undefined,
-                    "paddingRight": undefined,
-                    "paddingTop": "8px",
-                  }
-                }
+                className="css-8ikfdx"
               >
                 Project already exists
               </div>
@@ -472,24 +304,10 @@ exports[`NewProjectView renders errors message 1`] = `
           className="field"
         >
           <div
-            style={
-              Object {
-                "paddingBottom": "16px",
-                "paddingLeft": undefined,
-                "paddingRight": undefined,
-                "paddingTop": undefined,
-              }
-            }
+            className="css-ie0fxa"
           >
             <div
-              style={
-                Object {
-                  "paddingBottom": "8px",
-                  "paddingLeft": undefined,
-                  "paddingRight": undefined,
-                  "paddingTop": undefined,
-                }
-              }
+              className="css-f17nry"
             >
               <label
                 className="label body-l"
@@ -499,14 +317,7 @@ exports[`NewProjectView renders errors message 1`] = `
               </label>
             </div>
             <div
-              style={
-                Object {
-                  "paddingBottom": "8px",
-                  "paddingLeft": undefined,
-                  "paddingRight": undefined,
-                  "paddingTop": undefined,
-                }
-              }
+              className="css-f17nry"
             >
               <p
                 className="description caption-m"
@@ -527,27 +338,13 @@ exports[`NewProjectView renders errors message 1`] = `
               className="errorgroup"
             >
               <div
-                style={
-                  Object {
-                    "paddingBottom": "8px",
-                    "paddingLeft": undefined,
-                    "paddingRight": undefined,
-                    "paddingTop": "8px",
-                  }
-                }
+                className="css-u1f566"
               >
                 <div
                   className="error"
                 >
                   <div
-                    style={
-                      Object {
-                        "paddingBottom": undefined,
-                        "paddingLeft": undefined,
-                        "paddingRight": undefined,
-                        "paddingTop": "8px",
-                      }
-                    }
+                    className="css-8ikfdx"
                   >
                     Invalid name
                   </div>
@@ -560,27 +357,13 @@ exports[`NewProjectView renders errors message 1`] = `
           className="actiongroup"
         >
           <div
-            style={
-              Object {
-                "paddingBottom": undefined,
-                "paddingLeft": undefined,
-                "paddingRight": undefined,
-                "paddingTop": "16px",
-              }
-            }
+            className="css-12hj4ej"
           >
             <button
               className="button button--primary"
             >
               <div
-                style={
-                  Object {
-                    "paddingBottom": undefined,
-                    "paddingLeft": "16px",
-                    "paddingRight": "16px",
-                    "paddingTop": undefined,
-                  }
-                }
+                className="css-1trk9rv"
               >
                 <div
                   className="button-container"

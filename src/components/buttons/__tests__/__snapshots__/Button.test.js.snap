@@ -5,14 +5,7 @@ exports[`Button renders a button with a label 1`] = `
   className="button button--default"
 >
   <div
-    style={
-      Object {
-        "paddingBottom": undefined,
-        "paddingLeft": "16px",
-        "paddingRight": "16px",
-        "paddingTop": undefined,
-      }
-    }
+    className="css-1trk9rv"
   >
     <div
       className="button-container"
@@ -39,14 +32,7 @@ exports[`Button renders a button without a label 1`] = `
   className="button button--default"
 >
   <div
-    style={
-      Object {
-        "paddingBottom": undefined,
-        "paddingLeft": "16px",
-        "paddingRight": "16px",
-        "paddingTop": undefined,
-      }
-    }
+    className="css-1trk9rv"
   >
     <div
       className="button-container"
@@ -71,14 +57,7 @@ exports[`Button renders a danger button 1`] = `
   className="button button--danger"
 >
   <div
-    style={
-      Object {
-        "paddingBottom": undefined,
-        "paddingLeft": "16px",
-        "paddingRight": "16px",
-        "paddingTop": undefined,
-      }
-    }
+    className="css-1trk9rv"
   >
     <div
       className="button-container"
@@ -103,14 +82,7 @@ exports[`Button renders a default button 1`] = `
   className="button button--default"
 >
   <div
-    style={
-      Object {
-        "paddingBottom": undefined,
-        "paddingLeft": "16px",
-        "paddingRight": "16px",
-        "paddingTop": undefined,
-      }
-    }
+    className="css-1trk9rv"
   >
     <div
       className="button-container"
@@ -135,14 +107,7 @@ exports[`Button renders a primary button 1`] = `
   className="button button--primary"
 >
   <div
-    style={
-      Object {
-        "paddingBottom": undefined,
-        "paddingLeft": "16px",
-        "paddingRight": "16px",
-        "paddingTop": undefined,
-      }
-    }
+    className="css-1trk9rv"
   >
     <div
       className="button-container"
@@ -167,14 +132,7 @@ exports[`Button renders a success button 1`] = `
   className="button button--success"
 >
   <div
-    style={
-      Object {
-        "paddingBottom": undefined,
-        "paddingLeft": "16px",
-        "paddingRight": "16px",
-        "paddingTop": undefined,
-      }
-    }
+    className="css-1trk9rv"
   >
     <div
       className="button-container"
@@ -199,14 +157,7 @@ exports[`Button renders a warning button 1`] = `
   className="button button--warning"
 >
   <div
-    style={
-      Object {
-        "paddingBottom": undefined,
-        "paddingLeft": "16px",
-        "paddingRight": "16px",
-        "paddingTop": undefined,
-      }
-    }
+    className="css-1trk9rv"
   >
     <div
       className="button-container"
