@@ -3,7 +3,6 @@
 exports[`Button renders a button with a label 1`] = `
 <button
   className="button button--default"
-  disabled={undefined}
 >
   <div
     style={
@@ -38,7 +37,6 @@ exports[`Button renders a button with a label 1`] = `
 exports[`Button renders a button without a label 1`] = `
 <button
   className="button button--default"
-  disabled={undefined}
 >
   <div
     style={
@@ -71,7 +69,6 @@ exports[`Button renders a button without a label 1`] = `
 exports[`Button renders a danger button 1`] = `
 <button
   className="button button--danger"
-  disabled={undefined}
 >
   <div
     style={
@@ -104,7 +101,6 @@ exports[`Button renders a danger button 1`] = `
 exports[`Button renders a default button 1`] = `
 <button
   className="button button--default"
-  disabled={undefined}
 >
   <div
     style={
@@ -137,7 +133,6 @@ exports[`Button renders a default button 1`] = `
 exports[`Button renders a primary button 1`] = `
 <button
   className="button button--primary"
-  disabled={undefined}
 >
   <div
     style={
@@ -170,7 +165,6 @@ exports[`Button renders a primary button 1`] = `
 exports[`Button renders a success button 1`] = `
 <button
   className="button button--success"
-  disabled={undefined}
 >
   <div
     style={
@@ -203,7 +197,6 @@ exports[`Button renders a success button 1`] = `
 exports[`Button renders a warning button 1`] = `
 <button
   className="button button--warning"
-  disabled={undefined}
 >
   <div
     style={
