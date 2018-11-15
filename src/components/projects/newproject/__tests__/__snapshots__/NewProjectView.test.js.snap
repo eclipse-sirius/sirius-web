@@ -140,7 +140,6 @@ exports[`NewProjectView renders a card with a form ready to be submitted to crea
           >
             <button
               className="button button--primary"
-              disabled={undefined}
             >
               <div
                 style={
@@ -318,7 +317,6 @@ exports[`NewProjectView renders a card with a unsubmittable form to create a new
           >
             <button
               className="button button--primary"
-              disabled={undefined}
             >
               <div
                 style={
@@ -573,7 +571,6 @@ exports[`NewProjectView renders errors message 1`] = `
           >
             <button
               className="button button--primary"
-              disabled={undefined}
             >
               <div
                 style={

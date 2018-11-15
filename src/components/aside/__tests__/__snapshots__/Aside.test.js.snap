@@ -50,7 +50,6 @@ exports[`Aside renders the aside component 1`] = `
             className="mainlink"
             href="/projects"
             onClick={[Function]}
-            style={undefined}
           >
             <div
               style={
