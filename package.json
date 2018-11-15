@@ -13,7 +13,8 @@
     "prettier": "1.11.1",
     "react-scripts": "2.1.1",
     "react-test-renderer": "16.6.0",
-    "react-testing-library": "5.2.3"
+    "react-testing-library": "5.2.3",
+    "http-proxy-middleware": "^0.19.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -25,10 +26,10 @@
     "format": "prettier --write \"src/**/*.{js,css}\"",
     "format-lint": "prettier --list-different \"src/**/*.{js,css}\""
   },
-  "proxy": {
-    "/api": {
-      "target": "http://localhost:8080",
-      "ws": true
-    }
-  }
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }
