@@ -11,7 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import gql from 'graphql-tag';
-
 export const diagramEventSubscription = gql`
   subscription diagramEvent($input: DiagramEventInput!) {
     diagramEvent(input: $input) {
@@ -183,7 +182,7 @@ export const diagramEventSubscription = gql`
       y
     }
   }
-`.loc.source.body;
+`;
 
 export const deleteFromDiagramMutation = gql`
   mutation deleteFromDiagram($input: DeleteFromDiagramInput!) {
@@ -199,7 +198,7 @@ export const deleteFromDiagramMutation = gql`
       }
     }
   }
-`.loc.source.body;
+`;
 
 export const editLabelMutation = gql`
   mutation editLabel($input: EditLabelInput!) {
@@ -215,7 +214,7 @@ export const editLabelMutation = gql`
       }
     }
   }
-`.loc.source.body;
+`;
 
 export const invokeNodeToolOnDiagramMutation = gql`
   mutation invokeNodeToolOnDiagram($input: InvokeNodeToolOnDiagramInput!) {
@@ -231,7 +230,7 @@ export const invokeNodeToolOnDiagramMutation = gql`
       }
     }
   }
-`.loc.source.body;
+`;
 
 export const invokeEdgeToolOnDiagramMutation = gql`
   mutation invokeEdgeToolOnDiagram($input: InvokeEdgeToolOnDiagramInput!) {
@@ -247,7 +246,7 @@ export const invokeEdgeToolOnDiagramMutation = gql`
       }
     }
   }
-`.loc.source.body;
+`;
 
 export const getToolSectionsQuery = gql`
   fragment edgeCandidateField on EdgeCandidate {
@@ -285,4 +284,4 @@ export const getToolSectionsQuery = gql`
       }
     }
   }
-`.loc.source.body;
+`;

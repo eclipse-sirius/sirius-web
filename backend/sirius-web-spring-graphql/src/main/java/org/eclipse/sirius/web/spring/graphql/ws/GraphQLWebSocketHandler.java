@@ -174,7 +174,7 @@ import reactor.core.publisher.Flux;
  */
 public class GraphQLWebSocketHandler extends TextWebSocketHandler implements SubProtocolCapable {
 
-    private static final Duration GRAPHQL_KEEP_ALIVE_INTERVAL = Duration.ofSeconds(58);
+    private static final Duration GRAPHQL_KEEP_ALIVE_INTERVAL = Duration.ofSeconds(28);
 
     private static final String COUNTER_METRIC_NAME = "siriusweb_graphql_ws_messages"; //$NON-NLS-1$
 
