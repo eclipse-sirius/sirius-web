@@ -195,7 +195,7 @@ const handleConnectionErrorAction = (prevState) => {
 };
 
 const handleErrorAction = (prevState, action) => {
-  const { payload: message } = action.message;
+  const message = action.message;
   return switchToCompleteState(prevState, message);
 };
 
@@ -207,8 +207,8 @@ const handleDataAction = (prevState, action) => {
   const { message } = action;
 
   let state = prevState;
-  if (message.payload && message.payload.data && message.payload.data.diagramEvent) {
-    const { diagramEvent } = message.payload.data;
+  if (message.data && message.data.diagramEvent) {
+    const { diagramEvent } = message.data;
     if (diagramEvent.__typename === 'DiagramRefreshedEventPayload') {
       const {
         displayedRepresentationId,
@@ -394,10 +394,13 @@ const setToolSectionsAction = (prevState, action) => {
   } = prevState;
   const { toolSections } = action;
 
+  let toolSectionsWithDefaults = toolSections;
   if (toolSections) {
-    toolSections.forEach((toolSection) => {
+    toolSectionsWithDefaults = toolSections.map((toolSection) => {
       if (toolSection.tools && toolSection.tools.length > 0) {
-        toolSection.defaultTool = toolSection.tools[0];
+        return { ...toolSection, defaultTool: toolSection.tools[0] };
+      } else {
+        return toolSection;
       }
     });
   }
@@ -408,7 +411,7 @@ const setToolSectionsAction = (prevState, action) => {
     diagramServer,
     diagram,
     contextualPalette,
-    toolSections,
+    toolSections: toolSectionsWithDefaults,
     activeTool,
     latestSelection,
     newSelection,

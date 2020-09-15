@@ -1,0 +1,38 @@
+= ADR-001 - Switch to Apollo client
+
+== Context
+
+We are using a set of custom operations to perform our network operations such as `useQuery`, `useLazyQuery` and `useMutation`.
+Those operations have been inspired by Apollo and we have considered switching to Apollo client for a long time.
+
+== Decision
+
+Starting with the diagram part, we will migrate to Apollo client.
+We will use both the HTTP and WebSocket network support from Apollo.
+Only subscriptions will be performed using the WebSocket support, queries and mutations will only rely on HTTP.
+
+Apollo sends an empty (in our case) "extensions" map in the payload, hence we will update the GraphQLPayload on the backend to support it.
+
+We disable the Apollo cache for subscriptions, at least for the moment.
+We can not avoid having a `cache` in the ApolloClient, and it does not seem to cause issues for queries or mutations, but for subscriptions it creates a lot of warnings in the console.
+Maybe we will re-enable the cache later if it makes sense and we understand how to avoid these warnings, but disable it for now. We did not have one before, so it should not be an issue.
+
+It will be the responsibility of each application to build a proper ApolloClient and provide it via ApolloProvider.
+This will allow any application to configure the ApolloClient.
+Sirius Web will contain a sample client that can be used as an example/starting point.
+
+Apollo Client uses a default timeout of 30s for its WebSocket connections.
+To avoid re-creating new subscriptions for no good reason after periods of inactivity, we will reduce the delay between `ka` messages sent by the server to keep the existing subscription alive.
+
+== Status
+
+Accepted.
+
+== Consequences
+
+The data returned by Apollo cannot be modified.
+This should be taken into account in our state machines if we try to manipulate objects retrieved from the server.
+
+== References
+
+- https://www.apollographql.com/docs/react/data/subscriptions/

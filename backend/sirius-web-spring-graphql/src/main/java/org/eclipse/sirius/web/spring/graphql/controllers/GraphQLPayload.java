@@ -31,6 +31,7 @@ import org.eclipse.sirius.web.annotations.Immutable;
  *   "variables": {
  *     "key": "value"
  *   },
+ *   "extensions": { ... },
  *   "operationName": "..."
  * }
  * </pre>
@@ -48,6 +49,8 @@ public final class GraphQLPayload {
 
     private Map<String, Object> variables = new HashMap<>();
 
+    private Map<String, Object> extensions = new HashMap<>();
+
     private String operationName;
 
     public String getQuery() {
@@ -56,6 +59,10 @@ public final class GraphQLPayload {
 
     public Map<String, Object> getVariables() {
         return this.variables;
+    }
+
+    public Map<String, Object> getExtensions() {
+        return this.extensions;
     }
 
     public String getOperationName() {
@@ -77,6 +84,8 @@ public final class GraphQLPayload {
 
         private Map<String, Object> variables = new HashMap<>();
 
+        private Map<String, Object> extensions = new HashMap<>();
+
         private String operationName;
 
         private Builder() {
@@ -93,6 +102,11 @@ public final class GraphQLPayload {
             return this;
         }
 
+        public Builder extensions(Map<String, Object> extensions) {
+            this.extensions = Objects.requireNonNull(extensions);
+            return this;
+        }
+
         public Builder operationName(String operationName) {
             this.operationName = Objects.requireNonNull(operationName);
             return this;
@@ -102,6 +116,7 @@ public final class GraphQLPayload {
             GraphQLPayload graphQLPayload = new GraphQLPayload();
             graphQLPayload.query = Objects.requireNonNull(this.query);
             graphQLPayload.variables = Objects.requireNonNull(this.variables);
+            graphQLPayload.extensions = Objects.requireNonNull(this.extensions);
             graphQLPayload.operationName = this.operationName;
             return graphQLPayload;
         }

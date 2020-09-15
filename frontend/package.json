@@ -25,6 +25,7 @@
     "test": "jest"
   },
   "devDependencies": {
+    "@apollo/client": "^3.2.7",
     "@rollup/plugin-commonjs": "^14.0.0",
     "@rollup/plugin-image": "^2.0.5",
     "@rollup/plugin-node-resolve": "^8.4.0",
@@ -58,6 +59,7 @@
     "rollup-plugin-typescript2": "^0.27.1",
     "rollup": "^2.22.1",
     "sprotty": "0.7.0",
+    "subscriptions-transport-ws": "^0.9.18",
     "svg-url-loader": "^6.0.0",
     "terser": "^5.3.1",
     "ts-jest": "26.4.1",
@@ -66,6 +68,8 @@
     "universal-cookie": "^4.0.2"
   },
   "peerDependencies": {
+    "@apollo/client": "^3.2.7",
+    "subscriptions-transport-ws": "^0.9.18",
     "airbnb-prop-types": "^2.15.0",
     "graphql-tag": "^2.11.0",
     "graphql": "14.6.0",
