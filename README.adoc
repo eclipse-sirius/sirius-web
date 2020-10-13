@@ -15,9 +15,9 @@ To actually build and run a complete example application, see the `sirius-web` r
 To build the components in this repository, you will need the following tools installed:
 
 * git
-* Java 11 (or later)
+* Java 11 (Java 12 or later are currently not supported)
 * Apache Maven 3.6.3
-* Recent versions of Node and NPM (tested with Node v14.10 and npm 6.14.8)
+* Recent versions of Node and NPM: in particular, Node >= 14.
 * rollup (`npm install -g rollup`)
 * yalc (`npm install -g yalc`): optional, only needed for local publication of the frontend components
 
