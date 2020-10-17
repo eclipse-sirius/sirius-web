@@ -1,0 +1,10 @@
+= sirius-web-spring-collaborative-forms
+
+== Goal
+
+This project provides support for our form collaborative edition layer.
+
+== Dependencies
+
+- sirius-web-collaborative-forms-api
+- sirius-web-services-api

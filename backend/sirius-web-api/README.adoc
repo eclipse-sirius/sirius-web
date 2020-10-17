@@ -1,0 +1,17 @@
+= sirius-web-api
+
+== Goal
+
+This project is used to decouple the API of the core of the Sirius Web project from the code of the core.
+It allows provider of some of our services to only have to depend on this relatively small project.
+This project may even be decoupled in the future to extract an API of the persistence layer from an API of the services.
+
+== Dependencies
+
+Since this project will contain APIs for our services layer, this project may depend on our utility projects which do not depend on any persistence layer nor the web layer such as:
+
+- sirius-web-components
+- sirius-web-diagrams
+- sirius-web-forms
+- sirius-web-representations
+- sirius-web-trees

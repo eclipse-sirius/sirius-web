@@ -1,0 +1,103 @@
+/*******************************************************************************
+ * Copyright (c) 2019, 2020 Obeo.
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
+.contextmenu {
+  display: grid;
+  grid-template-columns: min-content 1fr;
+  grid-template-rows: min-content 1fr;
+  position: fixed;
+  z-index: 1;
+}
+
+.leftcaretarea {
+  display: grid;
+  grid-template-rows: 8px 1fr;
+  grid-column: 1/2;
+  grid-row: 2/3;
+}
+
+.leftcaret {
+  grid-row: 2/3;
+  width: 0;
+  height: 0;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  border-right: 6px solid var(--daintree);
+}
+
+.topcaretarea {
+  display: grid;
+  grid-template-columns: 8px 1fr;
+  grid-column: 2/3;
+  grid-row: 1/2;
+}
+
+.topcaret {
+  grid-column: 2/3;
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 6px solid var(--daintree);
+  z-index: -1;
+}
+
+.menucontents {
+  color: var(--white);
+  background-color: var(--daintree);
+  grid-column: 2/3;
+  grid-row: 2/3;
+  border: 1px solid var(--daintree);
+  border-radius: 4px;
+  padding: 4px 0px 4px 0px;
+  min-height: 40px;
+  min-width: 200px;
+}
+
+.entry {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 4px 8px;
+
+  user-select: none;
+  cursor: pointer;
+}
+.entry:hover {
+  background-color: var(--bondi-blue);
+}
+.entry:focus {
+  background-color: var(--bondi-blue);
+}
+
+.icon {
+  margin-right: 8px;
+  width: 16px;
+  height: 16px;
+
+  fill: var(--white);
+}
+
+.label {
+  font-size: var(--font-size-4);
+  color: var(--white);
+}
+.disabled {
+  color: var(--daintree-lighten-90);
+}
+
+.separator {
+  border-color: var(--daintree-lighten-70);
+  border-top-style: solid;
+  border-top-width: 1px;
+  margin: 4px 8px;
+}

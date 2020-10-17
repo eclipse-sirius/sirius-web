@@ -1,0 +1,3 @@
+= Sirius Components
+
+A library of reusable React components used to build the Sirius Web frontend.

@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.js": "/voyager/static/js/main.81d8b8ab.chunk.js",
+    "main.js.map": "/voyager/static/js/main.81d8b8ab.chunk.js.map",
+    "runtime~main.js": "/voyager/static/js/runtime~main.792685de.js",
+    "runtime~main.js.map": "/voyager/static/js/runtime~main.792685de.js.map",
+    "static/js/2.f118a4b8.chunk.js": "/voyager/static/js/2.f118a4b8.chunk.js",
+    "static/js/2.f118a4b8.chunk.js.map": "/voyager/static/js/2.f118a4b8.chunk.js.map",
+    "index.html": "/voyager/index.html",
+    "precache-manifest.17a20d7b04db3a3b2549146c30404351.js": "/voyager/precache-manifest.17a20d7b04db3a3b2549146c30404351.js",
+    "service-worker.js": "/voyager/service-worker.js"
+  }
+}

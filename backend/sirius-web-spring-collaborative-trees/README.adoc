@@ -1,0 +1,10 @@
+= sirius-web-spring-collaborative-trees
+
+== Goal
+
+This project provides support for our tree collaborative edition layer.
+
+== Dependencies
+
+- sirius-web-collaborative-trees-api
+- sirius-web-services-api

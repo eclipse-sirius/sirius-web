@@ -1,0 +1,10 @@
+= sirius-web-collaborative-trees-api
+
+== Goal
+
+This project provides the API of our tree collaborative edition layer.
+
+== Dependencies
+
+- sirius-web-collaborative-api
+- sirius-web-trees

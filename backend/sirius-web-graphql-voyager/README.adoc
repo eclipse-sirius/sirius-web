@@ -1,0 +1,10 @@
+= sirius-web-graphql-voyager
+
+== Goal
+
+This project contains the static resources used to provide support a graphQL API UX.
+This project should not contain anything more than that in the foreseeable future.
+
+== Dependencies
+
+None, it does not even contain Java resources

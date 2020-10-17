@@ -1,0 +1,44 @@
+/*******************************************************************************
+ * Copyright (c) 2019, 2020 Obeo.
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
+.panel {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.verticalResizer {
+  width: 4px;
+  cursor: col-resize;
+  display: grid;
+}
+.horizontalResizer {
+  height: 4px;
+  cursor: row-resize;
+  display: grid;
+}
+
+.verticalResizer div {
+  background-color: var(--daintree-lighten-80);
+  border-color: var(--daintree-lighten-70);
+  border-right-style: solid;
+  border-right-width: 1px;
+  margin-right: 1px;
+}
+
+.horizontalResizer div {
+  background-color: var(--daintree-lighten-80);
+  border-color: var(--daintree-lighten-70);
+  border-top-style: solid;
+  border-top-width: 1px;
+  margin-top: 1px;
+}

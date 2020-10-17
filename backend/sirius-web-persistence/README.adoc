@@ -1,0 +1,11 @@
+= sirius-web-persistence
+
+== Goal
+
+== Goal
+
+This project is used to configure the persistence layer of the server.
+
+== Dependencies
+
+- sirius-web-api

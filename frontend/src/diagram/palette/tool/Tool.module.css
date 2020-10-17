@@ -1,0 +1,47 @@
+/*******************************************************************************
+ * Copyright (c) 2019, 2020 Obeo.
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
+.tool {
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 20px 1fr;
+  align-items: center;
+  cursor: pointer;
+}
+
+.label {
+  font-size: var(--font-size-5);
+  color: var(--daintree);
+}
+.tool:active .label {
+  color: var(--daintree-darken-30);
+}
+.tool:hover {
+  background-color: var(--blue-lagoon-lighten-95);
+}
+.tool:focus {
+  background-color: var(--blue-lagoon-lighten-90);
+}
+.selected {
+  font-weight: var(--font-weight-bold);
+  background-color: var(--blue-lagoon-lighten-90);
+}
+
+.tool.disabled {
+  cursor: default;
+}
+.tool.disabled .label,
+.tool.disabled:focus .label,
+.tool.disabled:hover .label,
+.tool.disabled:active .label {
+  color: var(--daintree-lighten-90);
+}

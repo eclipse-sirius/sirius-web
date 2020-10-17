@@ -1,0 +1,5 @@
+Origin and license of the icons:
+
+svg/default.gif:  copied from org.eclipse.emf/plugins/org.eclipse.emf.edit/icons/full/obj16/Item.gif, EPL 2.0
+svg/Diagram.svg:  adapted from an original from https://github.com/Remix-Design/remixicon, Apache-2.0 License 
+svg/Resource.svg: adapted from an original from https://github.com/Remix-Design/remixicon, Apache-2.0 License

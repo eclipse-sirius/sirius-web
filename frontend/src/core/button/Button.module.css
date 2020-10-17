@@ -1,0 +1,85 @@
+/*******************************************************************************
+ * Copyright (c) 2019, 2020 Obeo.
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
+.rectangularButton {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  justify-items: center;
+  align-items: center;
+  min-width: 90px;
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 0px 16px;
+}
+
+.label {
+  font-size: var(--font-size-5);
+  font-weight: var(--font-weight-600);
+  line-height: var(--line-height-1);
+  color: var(--white);
+  white-space: nowrap;
+}
+
+.action {
+  background-color: var(--blue-lagoon);
+}
+
+.action:focus {
+  background-color: var(--blue-lagoon-lighten-30);
+}
+
+.action:hover {
+  background-color: var(--blue-lagoon-darken-30);
+}
+
+.action:active {
+  background-color: var(--blue-lagoon);
+  box-shadow: 0px 0px 6px var(--blue-lagoon-lighten-30);
+}
+
+.danger {
+  background-color: var(--red);
+}
+
+.danger:focus {
+  background-color: var(--red-lighten-30);
+}
+
+.danger:hover {
+  background-color: var(--red-darken-30);
+}
+
+.danger:active {
+  background-color: var(--red);
+  box-shadow: 0px 0px 6px var(--red-lighten-30);
+}
+
+.rectangularButton:disabled,
+.rectangularButton.disabled {
+  background-color: var(--daintree-lighten-90);
+}
+
+.iconButton {
+  display: grid;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 50%;
+}
+
+.iconButton:active {
+  background-color: var(--daintree-lighten-70);
+}
+.iconButton:disabled,
+.iconButton.disabled {
+  stroke: var(--daintree-lighten-90);
+}

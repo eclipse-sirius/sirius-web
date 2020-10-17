@@ -1,0 +1,9 @@
+= sirius-web-collaborative-api
+
+== Goal
+
+This project provides the API of our collaborative edition layer.
+
+== Dependencies
+
+None.

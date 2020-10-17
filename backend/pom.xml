@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright (c) 2020 Obeo.
+ All rights reserved. This program and the accompanying materials
+ are made available under the terms of the Eclipse Public License v1.0
+ which accompanies this distribution, and is available at
+ http://www.eclipse.org/legal/epl-v10.html
+
+ Contributors:
+     Obeo - initial API and implementation
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>org.eclipse.sirius.web</groupId>
+	<artifactId>sirius-web</artifactId>
+	<version>0.1.0-SNAPSHOT</version>
+
+	<name>sirius-web</name>
+	<description>Sirius Web</description>
+	<packaging>pom</packaging>
+
+	<distributionManagement>
+		<repository>
+			<id>github</id>
+			<name>Apache Maven Packages</name>
+			<url>https://maven.pkg.github.com/eclipse-sirius/sirius-components</url>
+		</repository>
+	</distributionManagement>
+
+	<modules>
+		<module>sirius-web-annotations-spring</module>
+		<module>sirius-web-annotations</module>
+		<module>sirius-web-api</module>
+		<module>sirius-web-collaborative-api</module>
+		<module>sirius-web-collaborative-diagrams-api</module>
+		<module>sirius-web-collaborative-forms-api</module>
+		<module>sirius-web-collaborative-trees-api</module>
+		<module>sirius-web-components</module>
+		<module>sirius-web-diagrams-layout-api</module>
+		<module>sirius-web-diagrams-layout</module>
+		<module>sirius-web-diagrams-tests</module>
+		<module>sirius-web-diagrams</module>
+		<module>sirius-web-forms-tests</module>
+		<module>sirius-web-forms</module>
+		<module>sirius-web-graphiql</module>
+		<module>sirius-web-graphql-schema</module>
+		<module>sirius-web-graphql-utils</module>
+		<module>sirius-web-graphql-voyager</module>
+		<module>sirius-web-graphql</module>
+		<module>sirius-web-representations</module>
+		<module>sirius-web-services-api</module>
+		<module>sirius-web-spring-collaborative-diagrams</module>
+		<module>sirius-web-spring-collaborative-forms</module>
+		<module>sirius-web-spring-collaborative-trees</module>
+		<module>sirius-web-spring-collaborative</module>
+		<module>sirius-web-spring-graphql-api</module>
+		<module>sirius-web-spring-graphql</module>
+		<module>sirius-web-spring-starter</module>
+		<module>sirius-web-spring-tests</module>
+		<module>sirius-web-spring</module>
+		<module>sirius-web-tests</module>
+		<module>sirius-web-trees</module>
+		<module>sirius-web-compatibility</module>
+		<module>sirius-web-emf</module>
+		<module>sirius-web-interpreter</module>
+		<module>sirius-web-persistence</module>
+	</modules>
+</project>

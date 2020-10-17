@@ -1,0 +1,11 @@
+= sirius-web-spring-graphql
+
+== Goal
+
+This project is used to provide GraphQL endpoints for Spring
+
+== Dependencies
+
+- sirius-web-spring-graphql-api
+
+This project should not depend on anything else without a good reason to do so.

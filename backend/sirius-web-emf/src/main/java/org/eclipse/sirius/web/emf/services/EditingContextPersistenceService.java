@@ -1,0 +1,110 @@
+/*******************************************************************************
+ * Copyright (c) 2019, 2020 Obeo.
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
+package org.eclipse.sirius.web.emf.services;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
+
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.edit.domain.EditingDomain;
+import org.eclipse.sirius.emfjson.resource.JsonResource;
+import org.eclipse.sirius.web.collaborative.api.dto.DocumentsModifiedEvent;
+import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
+import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
+import org.eclipse.sirius.web.services.api.monitoring.IStopWatch;
+import org.eclipse.sirius.web.services.api.objects.IEditingContext;
+import org.eclipse.sirius.web.services.api.objects.IEditingContextPersistenceService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.stereotype.Service;
+
+/**
+ * Service used to persist the editing context when a change has been performed.
+ *
+ * @author sbegaudeau
+ */
+@Service
+public class EditingContextPersistenceService implements IEditingContextPersistenceService {
+
+    private final Logger logger = LoggerFactory.getLogger(EditingContextPersistenceService.class);
+
+    private final IDocumentRepository documentRepository;
+
+    private final ApplicationEventPublisher applicationEventPublisher;
+
+    public EditingContextPersistenceService(IDocumentRepository documentRepository, ApplicationEventPublisher applicationEventPublisher) {
+        this.documentRepository = Objects.requireNonNull(documentRepository);
+        this.applicationEventPublisher = Objects.requireNonNull(applicationEventPublisher);
+    }
+
+    @Override
+    public void persist(UUID projectId, IEditingContext editingContext, IStopWatch stopWatch) {
+        // @formatter:off
+        var optionalDocuments = Optional.ofNullable(editingContext)
+            .map(IEditingContext::getDomain)
+            .filter(EditingDomain.class::isInstance)
+            .map(EditingDomain.class::cast)
+            .map(editingDomain -> this.persist(editingDomain, stopWatch));
+        optionalDocuments.ifPresent(documentEntities -> {
+            this.applicationEventPublisher.publishEvent(new DocumentsModifiedEvent(projectId, documentEntities));
+        });
+        // @formatter:on
+    }
+
+    private List<DocumentEntity> persist(EditingDomain editingDomain, IStopWatch stopWatch) {
+        stopWatch.start("Persisting the editing context"); //$NON-NLS-1$
+        List<DocumentEntity> result = new ArrayList<>();
+        List<Resource> resources = editingDomain.getResourceSet().getResources();
+        for (Resource resource : resources) {
+            this.save(resource).ifPresent(result::add);
+        }
+        stopWatch.stop();
+        return result;
+    }
+
+    private Optional<DocumentEntity> save(Resource resource) {
+        Optional<DocumentEntity> result = Optional.empty();
+        HashMap<Object, Object> options = new HashMap<>();
+        options.put(JsonResource.OPTION_ID_MANAGER, new EObjectIDManager());
+
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+            resource.save(outputStream, options);
+
+            for (Resource.Diagnostic warning : resource.getWarnings()) {
+                this.logger.warn(warning.getMessage());
+            }
+            for (Resource.Diagnostic error : resource.getErrors()) {
+                this.logger.error(error.getMessage());
+            }
+
+            byte[] bytes = outputStream.toByteArray();
+            String content = new String(bytes);
+
+            UUID id = UUID.fromString(resource.getURI().toString());
+            result = this.documentRepository.findById(id).map(entity -> {
+                entity.setContent(content);
+                return this.documentRepository.save(entity);
+            });
+        } catch (IllegalArgumentException | IOException exception) {
+            this.logger.error(exception.getMessage(), exception);
+        }
+        return result;
+    }
+}

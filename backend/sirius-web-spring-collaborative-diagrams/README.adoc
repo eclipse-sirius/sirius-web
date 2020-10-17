@@ -1,0 +1,10 @@
+= sirius-web-spring-collaborative-diagrams
+
+== Goal
+
+This project provides support for our diagram collaborative edition layer.
+
+== Dependencies
+
+- sirius-web-collaborative-diagrams-api
+- sirius-web-services-api

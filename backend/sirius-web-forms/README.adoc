@@ -1,0 +1,13 @@
+= sirius-web-forms
+
+== Goal
+
+This project is used to compute forms.
+
+== Dependencies
+
+- sirius-web-graphql-annotations
+- sirius-web-components
+- sirius-web-representations (interfaces which are implemented)
+
+This project should not depend on anything else without a good reason to do so.

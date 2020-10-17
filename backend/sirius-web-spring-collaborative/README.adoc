@@ -1,0 +1,11 @@
+= sirius-web-spring-collaborative
+
+== Goal
+
+This project provides the core parts of our collaborative edition layer.
+
+== Dependencies
+
+- sirius-web-collaborative-api
+
+This project should never depend on a specific kind of representation.

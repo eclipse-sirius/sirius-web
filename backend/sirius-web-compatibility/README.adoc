@@ -1,0 +1,7 @@
+= sirius-web-compatibility
+
+== Goal
+
+This project provides support for Sirius descriptions coming from an odesign file. It is used to offer similar behavior as in Sirius Desktop on top of the APIs of Sirius Web.
+
+== Dependencies

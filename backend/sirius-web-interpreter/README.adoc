@@ -1,0 +1,13 @@
+= sirius-web-interpreter
+
+== Goal
+
+This project brings support for the AQL interpreter to Sirius Web.
+
+== Dependencies
+
+This project will obviously depend on EMF, as such, it may depends on the following projects:
+
+- EMF Common
+- EMF Ecore
+- AQL

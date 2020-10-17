@@ -1,0 +1,10 @@
+= sirius-web-collaborative-diagrams-api
+
+== Goal
+
+This project provides the API of our diagram collaborative edition layer.
+
+== Dependencies
+
+- sirius-web-collaborative-api
+- sirius-web-diagrams

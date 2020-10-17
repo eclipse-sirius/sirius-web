@@ -1,0 +1,10 @@
+= sirius-web-collaborative-forms-api
+
+== Goal
+
+This project provides the API of our form collaborative edition layer.
+
+== Dependencies
+
+- sirius-web-collaborative-api
+- sirius-web-forms

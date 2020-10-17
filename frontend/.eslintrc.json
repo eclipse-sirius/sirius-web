@@ -1,0 +1,8 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "extends": ["plugin:react-hooks/recommended"],
+  "ignorePatterns": ["*.css"],
+  "rules": {
+    "react-hooks/exhaustive-deps": 2
+  }
+}

@@ -1,9 +1,0 @@
-{
-  "editor.tabSize": 2,
-  "editor.formatOnSave": true,
-  "editor.formatOnPaste": false,
-  "prettier.singleQuote": true,
-  "editor.codeActionsOnSave": {
-    "source.organizeImports": false
-  }
-}

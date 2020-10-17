@@ -1,0 +1,63 @@
+# Contributing to Sirius
+
+Thanks for your interest in this project.
+
+## Project description
+
+Eclipse Sirius enables the specification of a modeling workbench in terms of
+graphical, table or tree editors with validation rules and actions using
+declarative descriptions.
+
+* http://www.eclipse.org/sirius
+* https://projects.eclipse.org/projects/modeling.sirius
+* http://wiki.eclipse.org/Sirius
+
+## Developer resources
+
+Information regarding source code management, builds, coding standards, and
+more.
+
+* https://projects.eclipse.org/projects/modeling.sirius/developer
+
+The project maintains the following source code repositories
+
+* https://git.eclipse.org/c/sirius/org.eclipse.sirius.git
+* https://git.eclipse.org/c/sirius/org.eclipse.sirius.legacy.git
+* https://github.com/eclipse/sirius-emf-json
+* https://github.com/eclipse/sirius-components
+* https://github.com/eclipse/sirius-web
+
+This project uses Bugzilla to track ongoing development and issues.
+
+* Search for issues: https://eclipse.org/bugs/buglist.cgi?product=Sirius
+* Create a new report: https://eclipse.org/bugs/enter_bug.cgi?product=Sirius
+
+Be sure to search for existing bugs before you create another one.
+Remember that contributions are always welcome! There are many ways to
+contribute, from entering high quality bug reports, to contributing
+code or documentation changes. For a complete guide, see the [How to
+Contribute](http://wiki.eclipse.org/Sirius/Contributor_Guide) page on
+the team wiki. For further questions about contributing to Sirius,
+please send a mail to sirius-dev@eclipse.org.
+
+## Eclipse Contributor Agreement
+
+Before your contribution can be accepted by the project team contributors must
+electronically sign the Eclipse Contributor Agreement (ECA).
+
+* http://www.eclipse.org/legal/ECA.php
+
+Commits that are provided by non-committers must have a Signed-off-by field in
+the footer indicating that the author is aware of the terms by which the
+contribution has been provided to the project. The non-committer must
+additionally have an Eclipse Foundation account and must have a signed Eclipse
+Contributor Agreement (ECA) on file.
+
+For more information, please see the Eclipse Committer Handbook:
+https://www.eclipse.org/projects/handbook/#resources-commit
+
+## Contact
+
+Contact the project developers via the project's "dev" list.
+
+* https://accounts.eclipse.org/mailing-list/sirius-dev

@@ -1,0 +1,31 @@
+name: Maven Publish
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Java SDK
+        uses: actions/setup-java@v1.3.0
+        with:
+          java-version: 11
+
+      - name: Maven Build
+        env:
+          USENAME: ${{github.actor}}
+          PASSWORD: ${{ secrets.PASSWORD }}
+        run: mvn -U -B clean verify -f backend/pom.xml --settings settings.xml
+
+      - name: Maven Deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: mvn -B deploy -f backend/pom.xml

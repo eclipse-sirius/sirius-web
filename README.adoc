@@ -1,26 +1,62 @@
-= Sirius Components
+= sirius-components
 
-JavaScript, HTML and CSS components for https://www.eclipse.org/sirius[Eclipse Sirius]
+https://www.eclipse.org/sirius-web.html[Eclipse Sirius Web] is a framework to easily create and deploy studios to the web.
+We keep the principles which made the success of https://www.eclipse.org/sirius[Eclipse Sirius Desktop] and make them available on a modern cloud-based stack.
 
-https://www.eclipse.org/legal/epl-2.0[image:https://img.shields.io/badge/License-EPLv2-blue.svg?style=flat-square[License EPL v2]]
-https://github.com/prettier/prettier[image:https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square[code style: prettier]]
-https://travis-ci.org/eclipse/sirius-components[image:https://travis-ci.org/eclipse/sirius-components.svg?branch=master["Build Status", link="https://travis-ci.org/eclipse/sirius-components"]]
+This repository, `sirius-components`, contains the building blocks from which Sirius Web applications are built:
 
-== Execute the code
+* `frontend` contains reusable React components used to build the application's UI;
+* `backend` contains the Spring Boot projects from which the corresponding backend is built.
 
-Have a look at the https://github.com/eclipse/sirius-components/blob/master/docs/development.adoc[developer documentation] to find out how to setup your development environment and run the code.
+To actually build and run a complete example application, see the `sirius-web` repository which contains a complete example of a Sirius Web modeler built using these components.
 
+== Building
 
-== Contributing
+To build the components in this repository, you will need the following tools installed:
 
-In order to contribute to the project, please follow the guidelines of the https://github.com/eclipse/sirius-components/blob/master/CONTRIBUTING.adoc[CONTRIBUTING] documentation.
+* git
+* Java 11 (or later)
+* Apache Maven 3.6.3
+* Recent versions of Node and NPM (tested with Node v14.10 and npm 6.14.8)
+* rollup (`npm install -g rollup`)
+* yalc (`npm install -g yalc`): optional, only needed for local publication of the frontend components
 
+Build steps:
+
+1. Clone the Sirius EMF JSON repository (the `sirius-components` backend depends on it):
++
+----
+git clone https://github.com/eclipse-sirius/sirius-emf-json.git
+----
+2. Build and install (locally) the EMF JSON JARs:
++
+----
+cd sirius-emf-json
+mvn clean install -f releng/org.eclipse.sirius.emfjson.releng/pom.xml
+----
+3. Clone the `sirius-components` repository
++
+----
+git clone https://github.com/eclipse-sirius/sirius-components.git
+----
+4. Build the frontend components:
++
+----
+cd sirius-components/frontend
+npm install
+npm run build
+----
+5. Optional: publish the built version of the frontend components locally. Still from `sirius-components/frontend`: 
++
+----
+yalc publish
+----
+6. Build the backend components:
+----
+cd sirius-components/backend
+mvn clean install
+----
 
 == License
 
-Copyright (c) 2018 Obeo and others.
-
-All rights reserved. This program and the accompanying materials
-are made available under the terms of the Eclipse Public License 2
-which accompanies this distribution and is available at
-https://www.eclipse.org/legal/epl-2.0.
+Everything in this repository is Open Source. Except when explicitly mentioned otherwise (e.g. for some resources likes images), the license is Eclipse Public License - v 2.0.

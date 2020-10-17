@@ -1,0 +1,33 @@
+subscription treeEvent($input: TreeEventInput!) {
+  treeEvent(input: $input) {
+    __typename
+    ... on PreDestroyPayload {
+      id
+    }
+    ... on TreeRefreshedEventPayload {
+      tree {
+        id
+        label
+        children {
+          ...treeItemFields
+          children {
+            ...treeItemFields
+            children {
+              ...treeItemFields
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+fragment treeItemFields on TreeItem {
+  id
+  hasChildren
+  expanded
+  label
+  editable
+  kind
+  imageURL
+}
