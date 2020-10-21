@@ -21,6 +21,8 @@ To build the components in this repository, you will need the following tools in
 * https://rollupjs.org/[rollup] (`npm install -g rollup`)
 * https://github.com/whitecolor/yalc[yalc] (`npm install -g yalc`)
 
+WARNING: Note that there are issues with npm under Windows Subsystem for Linux (WSL). If you use WSL and encounter error messages like _"Maximum call stack size exceeded"_ when running NPM, switch to plain Windows where this should work.
+
 Build steps:
 
 1. Clone the Sirius EMF JSON repository (the `sirius-components` backend depends on it):
