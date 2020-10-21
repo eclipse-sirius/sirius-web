@@ -19,18 +19,18 @@ more.
 
 * https://projects.eclipse.org/projects/modeling.sirius/developer
 
-The project maintains the following source code repositories
+The project as a whole maintains the following source code repositories
 
 * https://git.eclipse.org/c/sirius/org.eclipse.sirius.git
 * https://git.eclipse.org/c/sirius/org.eclipse.sirius.legacy.git
-* https://github.com/eclipse/sirius-emf-json
-* https://github.com/eclipse/sirius-components
-* https://github.com/eclipse/sirius-web
+* https://github.com/eclipse-sirius/sirius-emf-json
+* https://github.com/eclipse-sirius/sirius-components
+* https://github.com/eclipse-sirius/sirius-web
 
-This project uses Bugzilla to track ongoing development and issues.
+This particular sub-project of Sirius, uses GitHub Issues to track ongoing development and issues.
 
-* Search for issues: https://eclipse.org/bugs/buglist.cgi?product=Sirius
-* Create a new report: https://eclipse.org/bugs/enter_bug.cgi?product=Sirius
+* Search for issues: https://github.com/eclipse-sirius/sirius-components/issues
+* Create a new report: https://github.com/eclipse-sirius/sirius-components/issues/new/choose
 
 Be sure to search for existing bugs before you create another one.
 Remember that contributions are always welcome! There are many ways to

@@ -1,4 +1,4 @@
-= sirius-components
+= Sirius Components (for Sirius Web)
 
 https://www.eclipse.org/sirius-web.html[Eclipse Sirius Web] is a framework to easily create and deploy studios to the web.
 We keep the principles which made the success of https://www.eclipse.org/sirius[Eclipse Sirius Desktop] and make them available on a modern cloud-based stack.
@@ -14,12 +14,12 @@ To actually build and run a complete example application, see the `sirius-web` r
 
 To build the components in this repository, you will need the following tools installed:
 
-* git
+* Git
 * Java 11 (Java 12 or later are currently not supported)
 * Apache Maven 3.6.3
-* Recent versions of Node and NPM: in particular, Node >= 14.
-* rollup (`npm install -g rollup`)
-* yalc (`npm install -g yalc`): optional, only needed for local publication of the frontend components
+* Recent versions of Node and NPM: in particular, Node >= 14 is required.
+* https://rollupjs.org/[rollup] (`npm install -g rollup`)
+* https://github.com/whitecolor/yalc[yalc] (`npm install -g yalc`)
 
 Build steps:
 
@@ -34,7 +34,10 @@ git clone https://github.com/eclipse-sirius/sirius-emf-json.git
 cd sirius-emf-json
 mvn clean install -f releng/org.eclipse.sirius.emfjson.releng/pom.xml
 ----
-3. Clone the `sirius-components` repository
++
+If you are behind a proxy, you may get Maven errors about checkstyle.org not being available.
+In this case you need to explicitly disable CheckStyle from the build: `mvn clean install -f releng/org.eclipse.sirius.emfjson.releng/pom.xml -P\!checkstyle`
+3. Clone the `sirius-components` repository (in another folder):
 +
 ----
 git clone https://github.com/eclipse-sirius/sirius-components.git
@@ -46,7 +49,10 @@ cd sirius-components/frontend
 npm install
 npm run build
 ----
-5. Optional: publish the built version of the frontend components locally. Still from `sirius-components/frontend`: 
++
+You may see some warnings when building the frontend (skipped optional dependencies during `npm install`, circular dependencies detected on an indirect dependency during the build).
+You can ignore them, they do not cause any actual issue at runtime.
+5. Publish the built version of the frontend components locally. Still from inside `sirius-components/frontend`: 
 +
 ----
 yalc publish
@@ -56,7 +62,9 @@ yalc publish
 cd sirius-components/backend
 mvn clean install
 ----
++
+Here again, you may need to add `-P\!checkstyle` to the `mvn` command if you are behind a proxy.
 
 == License
 
-Everything in this repository is Open Source. Except when explicitly mentioned otherwise (e.g. for some resources likes images), the license is Eclipse Public License - v 2.0.
+Everything in this repository is Open Source. Except when explicitly mentioned otherwise (e.g. for some resources likes icons which are under Apache-2.0), the license is Eclipse Public License - v 2.0.
