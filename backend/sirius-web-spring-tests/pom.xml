@@ -23,7 +23,7 @@
 	<groupId>org.eclipse.sirius.web</groupId>
 	<artifactId>sirius-web-spring-tests</artifactId>
 	<version>0.1.0-SNAPSHOT</version>
-	<name>siriusweb-spring-tests</name>
+	<name>sirius-web-spring-tests</name>
 	<description>Sirius Web Spring Tests</description>
 
 	<properties>

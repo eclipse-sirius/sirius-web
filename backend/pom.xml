@@ -14,11 +14,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>org.eclipse.sirius.web</groupId>
-	<artifactId>sirius-web</artifactId>
+	<artifactId>sirius-components</artifactId>
 	<version>0.1.0-SNAPSHOT</version>
 
-	<name>sirius-web</name>
-	<description>Sirius Web</description>
+	<name>sirius-components</name>
+	<description>Sirius Components</description>
 	<packaging>pom</packaging>
 
 	<distributionManagement>
