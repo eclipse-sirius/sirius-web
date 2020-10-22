@@ -21,8 +21,7 @@ jobs:
 
       - name: Maven Build
         env:
-          USENAME: ${{github.actor}}
-          PASSWORD: ${{ secrets.PASSWORD }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: mvn -U -B clean verify -f backend/pom.xml --settings settings.xml
 
       - name: Maven Deploy
