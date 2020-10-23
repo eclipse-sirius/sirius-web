@@ -46,7 +46,7 @@ WARNING: Once generated, a token cannot be displayed anymore, so make sure to co
           xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 https://maven.apache.org/xsd/settings-1.0.0.xsd">
   <servers>
     <server>
-      <id>github-emfjson</id>
+      <id>github-sirius-emfjson</id>
       <username>$GITHUB_USERNAME</username>
       <password>$GITHUB_ACCESS_TOKEN</password>
     </server>
@@ -55,7 +55,7 @@ WARNING: Once generated, a token cannot be displayed anymore, so make sure to co
 +
 Be sure to replace `$GITHUB_USERNAME` with your GitHub user id, and `$GITHUB_ACCESS_TOKEN` with the value of your acess token.
 +
-IMPORTANT: The `id` used in your `settings.xml` *must* be `github-emfjson` to match what is used in the POMs.
+IMPORTANT: The `id` used in your `settings.xml` *must* be `github-sirius-emfjson` to match what is used in the POMs.
 
 === Build steps
 
