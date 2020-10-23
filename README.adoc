@@ -8,64 +8,92 @@ This repository, `sirius-components`, contains the building blocks from which Si
 * `frontend` contains reusable React components used to build the application's UI;
 * `backend` contains the Spring Boot projects from which the corresponding backend is built.
 
-To actually build and run a complete example application, see the `sirius-web` repository which contains a complete example of a Sirius Web modeler built using these components.
+To actually build and run a complete example application, see https://github.com/eclipse-sirius/sirius-web[the `sirius-web` repository] which contains a complete example of a Sirius Web modeler built using these components.
 
 == Building
 
-To build the components in this repository, you will need the following tools installed:
+=== Requirements
 
-* Git
-* Java 11 (Java 12 or later are currently not supported)
-* Apache Maven 3.6.3
-* Recent versions of Node and NPM: in particular, Node >= 14 is required.
-* https://rollupjs.org/[rollup] (`npm install -g rollup`)
-* https://github.com/whitecolor/yalc[yalc] (`npm install -g yalc`)
+To build the components in this repository on your own, you will need the following tools installed:
 
-WARNING: Note that there are issues with npm under Windows Subsystem for Linux (WSL). If you use WSL and encounter error messages like _"Maximum call stack size exceeded"_ when running NPM, switch to plain Windows where this should work.
+* Git, and a GitHub account
+* To build the backend components:
+** Java 11 (Java 12 or later are currently not supported)
+** https://maven.apache.org[Apache Maven 3.6.3]
+* To build the frontend components:
+** Recent versions of https://nodejs.org/[Node and NPM]: in particular, Node >= 14 is required.
+** https://rollupjs.org/[rollup] (`npm install -g rollup`)
+** https://github.com/whitecolor/yalc[yalc] (`npm install -g yalc`)
 
-Build steps:
+WARNING: Note that there are issues with NPM under Windows Subsystem for Linux (WSL).
+If you use WSL and encounter error messages like _"Maximum call stack size exceeded"_ when running NPM, switch to plain Windows where this should work.
 
-1. Clone the Sirius EMF JSON repository (the `sirius-components` backend depends on it):
+=== GitHub Access Token
+
+The backend part of _Sirius Components_ depends on https://github.com/eclipse-sirius/sirius-emf-json[`sirius-emf-json`], which is published as Maven artifacts in _GitHub Packages_.
+To build `sirius-components` locally, you need a _GitHub Access Token_ so that Maven can download the `sirius-emf-json` artifacts.
+
+. Create a personal token with a scope of `read:package` by following https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token[the GitHub documentation] if you do not have one already.
 +
-----
-git clone https://github.com/eclipse-sirius/sirius-emf-json.git
-----
-2. Build and install (locally) the EMF JSON JARs:
+WARNING: Once generated, a token cannot be displayed anymore, so make sure to copy it in a secure location.
+. Create or edit `$HOME/.m2/settings.xml` to tell Maven to use this token when accessing the Sirius EMF JSON repository:
 +
+[source,xml]
 ----
-cd sirius-emf-json
-mvn clean install -f releng/org.eclipse.sirius.emfjson.releng/pom.xml
+<?xml version="1.0" encoding="UTF-8"?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 https://maven.apache.org/xsd/settings-1.0.0.xsd">
+  <servers>
+    <server>
+      <id>github-emfjson</id>
+      <username>$GITHUB_USERNAME</username>
+      <password>$GITHUB_ACCESS_TOKEN</password>
+    </server>
+</settings>
 ----
 +
-If you are behind a proxy, you may get Maven errors about checkstyle.org not being available.
-In this case you need to explicitly disable CheckStyle from the build: `mvn clean install -f releng/org.eclipse.sirius.emfjson.releng/pom.xml -P\!checkstyle`
-3. Clone the `sirius-components` repository (in another folder):
+Be sure to replace `$GITHUB_USERNAME` with your GitHub user id, and `$GITHUB_ACCESS_TOKEN` with the value of your acess token.
 +
+IMPORTANT: The `id` used in your `settings.xml` *must* be `github-emfjson` to match what is used in the POMs.
+
+=== Build steps
+
+1. Clone the Sirius Components repository:
++
+[source,sh]
 ----
 git clone https://github.com/eclipse-sirius/sirius-components.git
 ----
-4. Build the frontend components:
+2. Build the frontend components.
+From the `frontend` directory:
 +
 ----
-cd sirius-components/frontend
-npm install
+npm ci
 npm run build
 ----
 +
-You may see some warnings when building the frontend (skipped optional dependencies during `npm install`, circular dependencies detected on an indirect dependency during the build).
+NOTE: You may see some warnings when building the frontend (skipped optional dependencies during `npm ci`, circular dependencies detected on an indirect dependency during the build).
 You can ignore them, they do not cause any actual issue at runtime.
-5. Publish the built version of the frontend components locally. Still from inside `sirius-components/frontend`: 
+3. Publish the built version of the frontend components locally.
+Still from inside `sirius-components/frontend`: 
 +
+[source,sh]
 ----
 yalc publish
 ----
-6. Build the backend components:
++
+NOTE: This step is not strictly needed but will allow you to consume your locally built version of the frontend components if you want to build a complete Sirius Web studio using them without publishing them to an external NPM registry.
+4. Build the backend components.
+From the `sirius-components/backend` directory:
++
+[source,sh]
 ----
-cd sirius-components/backend
 mvn clean install
 ----
 +
-Here again, you may need to add `-P\!checkstyle` to the `mvn` command if you are behind a proxy.
+TIP: If you are behind a proxy, you may get Maven errors about checkstyle.org not being available.
+In this case you need to explicitly disable CheckStyle from the build: `mvn clean install -f releng/org.eclipse.sirius.emfjson.releng/pom.xml -P\!checkstyle`
 
 == License
 
