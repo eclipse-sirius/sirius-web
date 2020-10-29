@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.interpreter;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Used to convert expression written using Sirius specific interpreters such as var: and feature: into proper AQL
@@ -52,7 +53,7 @@ public class ExpressionConverter {
     private static final String ESCAPED_QUOTE = "\\'"; //$NON-NLS-1$
 
     public String convertExpression(String expressionBody) {
-        String processedExpression = expressionBody;
+        String processedExpression = Optional.ofNullable(expressionBody).orElse(""); //$NON-NLS-1$
 
         if (processedExpression.startsWith(VAR_PREFIX)) {
             // var:variableName -> aql:variableName

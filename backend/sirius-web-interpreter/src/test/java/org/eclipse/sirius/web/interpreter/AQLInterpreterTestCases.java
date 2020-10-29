@@ -92,4 +92,20 @@ public class AQLInterpreterTestCases {
         assertThat(interpreter).isNotNull();
     }
 
+    @Test
+    public void testNullExpressionEvaluatesToTrue() {
+        AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(EcorePackage.eINSTANCE));
+        Result result = interpreter.evaluateExpression(Map.of(), null);
+        assertThat(result).isNotNull();
+        assertThat(result.asBoolean()).contains(Boolean.TRUE);
+    }
+
+    @Test
+    public void testEmptyExpressionEvaluatesToTrue() {
+        AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(EcorePackage.eINSTANCE));
+        Result result = interpreter.evaluateExpression(Map.of(), ""); //$NON-NLS-1$
+        assertThat(result).isNotNull();
+        assertThat(result.asBoolean()).contains(Boolean.TRUE);
+    }
+
 }

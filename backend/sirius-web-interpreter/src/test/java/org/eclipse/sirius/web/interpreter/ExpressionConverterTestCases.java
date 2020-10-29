@@ -88,4 +88,11 @@ public class ExpressionConverterTestCases {
         String aqlExpression = new ExpressionConverter().convertExpression(varExpression);
         assertThat(aqlExpression).isEqualTo("aql:arg0"); //$NON-NLS-1$
     }
+
+    @Test
+    public void testNullExpressionConvertedToEmptyStringExpression() {
+        String expression = null;
+        String aqlExpression = new ExpressionConverter().convertExpression(expression);
+        assertThat(aqlExpression).isEqualTo("aql:''"); //$NON-NLS-1$
+    }
 }
