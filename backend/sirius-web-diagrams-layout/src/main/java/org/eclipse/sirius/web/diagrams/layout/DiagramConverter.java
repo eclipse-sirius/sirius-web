@@ -21,6 +21,7 @@ import java.util.Optional;
 
 import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.core.options.EdgeLabelPlacement;
+import org.eclipse.elk.core.options.SizeConstraint;
 import org.eclipse.elk.graph.ElkConnectableShape;
 import org.eclipse.elk.graph.ElkEdge;
 import org.eclipse.elk.graph.ElkGraphElement;
@@ -116,13 +117,22 @@ public class DiagramConverter {
         this.convertLabel(node.getLabel(), textBounds, elkNode, id2ElkGraphElements, null);
 
         id2ElkGraphElements.put(node.getId(), elkNode);
+
+        /**
+         * ELK doesn't take the label width into account when it has one or several children. The following code is a
+         * workaround to force ELK to use the label width.
+         */
+        ElkNode elkTest = ElkGraphFactory.eINSTANCE.createElkNode();
+        elkTest.setIdentifier(node.getId() + "_force_size"); //$NON-NLS-1$
+        elkTest.setProperty(CoreOptions.NODE_SIZE_CONSTRAINTS, SizeConstraint.fixed());
+        elkTest.setDimensions(textBounds.getSize().getWidth(), 1);
+        elkTest.setParent(elkNode);
     }
 
     private void convertBorderNode(Node borderNode, ElkNode elkNode, Map<String, ElkConnectableShape> connectableShapeIndex, Map<String, ElkGraphElement> id2ElkGraphElements) {
         ElkPort elkPort = ElkGraphFactory.eINSTANCE.createElkPort();
         elkPort.setIdentifier(borderNode.getId());
         elkPort.setProperty(PROPERTY_TYPE, borderNode.getType());
-
 
         TextBounds textBounds = this.textBoundsService.getBounds(borderNode.getLabel());
         elkPort.setDimensions(textBounds.getSize().getWidth(), textBounds.getSize().getHeight());

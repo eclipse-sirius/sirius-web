@@ -151,9 +151,14 @@ public class DiagramConverterTestCases {
         ElkNode elkNode = (ElkNode) id2ElkGraphElements.get(node.getId());
         this.assertSize(elkNode, TEXT_WIDTH, TEXT_HEIGHT);
 
-        assertThat(elkNode.getChildren().size()).isEqualTo(1);
+        assertThat(elkNode.getChildren().size()).isEqualTo(2);
+
         ElkNode elkImage = elkNode.getChildren().get(0);
         this.assertSize(elkImage, IMAGE_WIDTH, IMAGE_HEIGHT);
+
+        ElkNode elkForceSize = elkNode.getChildren().get(1);
+        assertThat(elkForceSize.getIdentifier()).endsWith("force_size"); //$NON-NLS-1$
+        this.assertSize(elkForceSize, TEXT_WIDTH, 1);
 
         assertThat(elkNode.getLabels().size()).isEqualTo(1);
         ElkLabel elkLabel = elkNode.getLabels().get(0);
