@@ -114,6 +114,7 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
 
                 VariableManager variableManager = new VariableManager();
                 variableManager.put(VariableManager.SELF, self);
+                variableManager.put(NodeDescription.NODE, node);
                 variableManager.put(IDiagramRefreshManager.DIAGRAM_REFRESH_MANAGER, refreshManager);
                 nodeDescription.getDeleteHandler().apply(variableManager);
 
