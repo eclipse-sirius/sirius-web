@@ -42,6 +42,11 @@ public final class NodeDescription {
      */
     public static final String NODE_CONTAINER = "nodeContainer"; //$NON-NLS-1$
 
+    /**
+     * The name of the variable used to store and retrieve the node from a variable manager.
+     */
+    public static final String NODE = "node"; //$NON-NLS-1$
+
     private UUID id;
 
     private boolean synchronised;
