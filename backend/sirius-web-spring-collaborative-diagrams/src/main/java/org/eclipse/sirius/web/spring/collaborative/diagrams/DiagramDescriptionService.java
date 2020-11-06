@@ -38,15 +38,16 @@ public class DiagramDescriptionService implements IDiagramDescriptionService {
     }
 
     private Optional<NodeDescription> findNodeDescription(Predicate<NodeDescription> condition, List<NodeDescription> candidates) {
-        Optional<NodeDescription> result = Optional.empty();
-        for (NodeDescription node : candidates) {
-            if (condition.test(node)) {
-                result = Optional.of(node);
-            } else {
-                result = this.findNodeDescription(condition, node.getBorderNodeDescriptions()).or(() -> this.findNodeDescription(condition, node.getChildNodeDescriptions()));
-            }
-            if (result.isPresent()) {
-                break;
+        Optional<NodeDescription> result = candidates.stream().filter(condition).findFirst();
+        if (!result.isPresent()) {
+            for (NodeDescription node : candidates) {
+                // @formatter:off
+                result = this.findNodeDescription(condition, node.getBorderNodeDescriptions())
+                        .or(() -> this.findNodeDescription(condition, node.getChildNodeDescriptions()));
+                // @formatter:on
+                if (result.isPresent()) {
+                    break;
+                }
             }
         }
         return result;
