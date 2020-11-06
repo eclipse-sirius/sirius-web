@@ -82,7 +82,7 @@ public class DiagramRefreshManager implements IDiagramRefreshManager {
      */
     @Override
     public void initialize(UUID projectId, DiagramCreationParameters diagramCreationParameters) {
-        this.computeDiagram(projectId, diagramCreationParameters, Optional.empty());
+        this.computeDiagram(projectId, diagramCreationParameters, Optional.ofNullable(this.diagram));
     }
 
     /**
@@ -109,7 +109,7 @@ public class DiagramRefreshManager implements IDiagramRefreshManager {
         // @formatter:off
         Diagram unlayoutedDiagram = optionalPrevDiagram
                 .map(prevDiagram -> this.diagramService.refresh(diagramCreationParameters, this))
-                .orElse(this.diagramService.create(diagramCreationParameters));
+                .orElseGet(() -> this.diagramService.create(diagramCreationParameters));
         // @formatter:on
         this.diagram = this.layoutService.layout(unlayoutedDiagram);
 

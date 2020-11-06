@@ -14,7 +14,10 @@ package org.eclipse.sirius.web.spring.collaborative.diagrams;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -29,11 +32,13 @@ import org.eclipse.sirius.web.diagrams.Node;
 import org.eclipse.sirius.web.diagrams.components.DiagramComponent;
 import org.eclipse.sirius.web.diagrams.components.DiagramComponentProps;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
+import org.eclipse.sirius.web.diagrams.description.NodeDescription;
 import org.eclipse.sirius.web.diagrams.renderer.DiagramRenderer;
 import org.eclipse.sirius.web.persistence.repositories.IRepresentationRepository;
 import org.eclipse.sirius.web.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.web.representations.VariableManager;
 import org.eclipse.sirius.web.services.api.objects.IEditingContext;
+import org.eclipse.sirius.web.services.api.objects.IObjectService;
 import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;
 import org.eclipse.sirius.web.spring.collaborative.representations.RepresentationMapper;
 import org.slf4j.Logger;
@@ -48,13 +53,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class DiagramService implements IDiagramService {
 
+    private final IObjectService objectService;
+
     private final IRepresentationRepository representationRepository;
 
     private final ObjectMapper objectMapper;
 
     private final Logger logger = LoggerFactory.getLogger(DiagramService.class);
 
-    public DiagramService(IRepresentationRepository representationRepository, ObjectMapper objectMapper) {
+    public DiagramService(IObjectService objectService, IRepresentationRepository representationRepository, ObjectMapper objectMapper) {
+        this.objectService = Objects.requireNonNull(objectService);
         this.representationRepository = Objects.requireNonNull(representationRepository);
         this.objectMapper = Objects.requireNonNull(objectMapper);
     }
@@ -78,7 +86,16 @@ public class DiagramService implements IDiagramService {
         if (optionalRefreshManager.isPresent()) {
             variableManager.put(IDiagramRefreshManager.DIAGRAM_REFRESH_MANAGER, optionalRefreshManager.get());
         }
-        DiagramComponentProps props = new DiagramComponentProps(variableManager, parameters.getDiagramDescription());
+        Optional<Diagram> prevDiagram = optionalRefreshManager.map(IDiagramRefreshManager::getDiagram);
+        DiagramComponentProps props = new DiagramComponentProps(variableManager, parameters.getDiagramDescription(), prevDiagram);
+        Map<String, Object> targetSemanticObjectsMap = Map.of();
+        if (optionalRefreshManager.isPresent() && parameters.getEditingContext() != null && prevDiagram.isPresent()) {
+            if (this.hasOneNodeDescriptionUnsynchronized(parameters.getDiagramDescription())) {
+                targetSemanticObjectsMap = this.getSemanticElements(prevDiagram.get(), parameters.getEditingContext());
+            }
+        }
+        variableManager.put(DiagramDescription.TARGET_SEMANTIC_OBJECTS, targetSemanticObjectsMap);
+
         Element element = new Element(DiagramComponent.class, props);
         Diagram diagram = new DiagramRenderer(this.logger).render(element);
 
@@ -114,5 +131,46 @@ public class DiagramService implements IDiagramService {
                 .filter(Diagram.class::isInstance)
                 .map(Diagram.class::cast);
         // @formatter:on
+    }
+
+    private boolean hasOneNodeDescriptionUnsynchronized(DiagramDescription diagramDescription) {
+        return diagramDescription.getNodeDescriptions().stream().anyMatch(nodeDesc -> this.hasOneNodeDescriptionUnsynchronized(nodeDesc));
+    }
+
+    private boolean hasOneNodeDescriptionUnsynchronized(NodeDescription nodeDescription) {
+        boolean isUnsynchronised = !nodeDescription.isSynchronised();
+        if (!isUnsynchronised) {
+            isUnsynchronised = nodeDescription.getBorderNodeDescriptions().stream().anyMatch(borderNodeDesc -> this.hasOneNodeDescriptionUnsynchronized(borderNodeDesc));
+            if (!isUnsynchronised) {
+                isUnsynchronised = nodeDescription.getChildNodeDescriptions().stream().anyMatch(childNodeDesc -> this.hasOneNodeDescriptionUnsynchronized(childNodeDesc));
+            }
+        }
+        return isUnsynchronised;
+    }
+
+    private Map<String, Object> getSemanticElements(Diagram diagram, IEditingContext editingContext) {
+        Map<String, Object> result = new HashMap<>();
+        for (String targetId : this.getTargetIds(diagram)) {
+            Optional<Object> optionalObject = this.objectService.getObject(editingContext, targetId);
+            if (optionalObject.isPresent()) {
+                result.put(targetId, optionalObject.get());
+            }
+        }
+        return result;
+    }
+
+    private List<String> getTargetIds(Diagram diagram) {
+        List<String> result = new ArrayList<>();
+        result.add(diagram.getTargetObjectId());
+        diagram.getNodes().forEach(node -> result.addAll(this.getTargetIds(node)));
+        return result;
+    }
+
+    private List<String> getTargetIds(Node node) {
+        List<String> result = new ArrayList<>();
+        result.add(node.getTargetObjectId());
+        node.getBorderNodes().stream().map(this::getTargetIds).flatMap(List::stream).forEach(result::add);
+        node.getChildNodes().stream().map(this::getTargetIds).flatMap(List::stream).forEach(result::add);
+        return result;
     }
 }

@@ -46,6 +46,8 @@ public final class DiagramDescription implements IRepresentationDescription {
 
     public static final String LABEL = "label"; //$NON-NLS-1$
 
+    public static final String TARGET_SEMANTIC_OBJECTS = "targetSemanticObjects"; //$NON-NLS-1$
+
     private UUID id;
 
     private String label;

@@ -98,6 +98,7 @@ public class DiagramEventProcessorFactory implements IRepresentationEventProcess
                             .build();
 
                     IDiagramRefreshManager diagramRefreshManager = this.diagramRefreshManagerFactory.create();
+                    diagramRefreshManager.setDiagram(diagram);
                     IRepresentationEventProcessor diagramEventProcessor = new DiagramEventProcessor(diagramCreationParameters,
                             editingContext, this.diagramEventHandlers, this.subscriptionManagerFactory.create(), diagramRefreshManager);
 

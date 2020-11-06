@@ -16,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
 
@@ -192,7 +193,7 @@ public class DiagramRendererNodeTestCases {
 
         VariableManager variableManager = new VariableManager();
 
-        DiagramComponentProps props = new DiagramComponentProps(variableManager, diagramDescription);
+        DiagramComponentProps props = new DiagramComponentProps(variableManager, diagramDescription, Optional.empty());
         Element element = new Element(DiagramComponent.class, props);
         return new DiagramRenderer(this.logger).render(element);
     }
