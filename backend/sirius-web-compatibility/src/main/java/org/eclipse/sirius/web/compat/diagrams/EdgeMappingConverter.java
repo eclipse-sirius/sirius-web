@@ -70,6 +70,7 @@ public class EdgeMappingConverter {
     }
 
     public EdgeDescription convert(EdgeMapping edgeMapping) {
+        String identifier = this.identifierProvider.getIdentifier(edgeMapping);
         Function<VariableManager, String> idProvider = variableManager -> {
             // @formatter:off
             var sourceId = Optional.of(variableManager.getVariables().get(EdgeDescription.SOURCE_NODE))
@@ -94,7 +95,7 @@ public class EdgeMappingConverter {
                     .filter(Integer.class::isInstance).orElse(0);
             // @formatter:on
 
-            return sourceId + " --> " + targetId + " - " + count; //$NON-NLS-1$ //$NON-NLS-2$
+            return identifier + ": " + sourceId + " --> " + targetId + " - " + count; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         };
 
         Function<VariableManager, String> targetIdProvider = variableManager -> {
@@ -140,7 +141,7 @@ public class EdgeMappingConverter {
         ToolConverter toolConverter = new ToolConverter(this.interpreter, this.editService);
         var deleteHandler = toolConverter.createDeleteToolHandler(edgeMapping.getDeletionDescription());
 
-        return EdgeDescription.newEdgeDescription(UUID.fromString(this.identifierProvider.getIdentifier(edgeMapping)))
+        return EdgeDescription.newEdgeDescription(UUID.fromString(identifier))
                 .idProvider(idProvider)
                 .targetObjectIdProvider(targetIdProvider)
                 .targetObjectKindProvider(targetKindProvider)
