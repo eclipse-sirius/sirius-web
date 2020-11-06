@@ -21,6 +21,7 @@ import java.util.UUID;
 import java.util.function.Predicate;
 
 import org.eclipse.sirius.web.collaborative.diagrams.api.DiagramCreationParameters;
+import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramRefreshManager;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramService;
 import org.eclipse.sirius.web.components.Element;
 import org.eclipse.sirius.web.diagrams.Diagram;
@@ -60,12 +61,23 @@ public class DiagramService implements IDiagramService {
 
     @Override
     public Diagram create(DiagramCreationParameters parameters) {
+        return this.create(parameters, Optional.empty());
+    }
+
+    @Override
+    public Diagram refresh(DiagramCreationParameters parameters, IDiagramRefreshManager refreshManager) {
+        return this.create(parameters, Optional.of(refreshManager));
+    }
+
+    private Diagram create(DiagramCreationParameters parameters, Optional<IDiagramRefreshManager> optionalRefreshManager) {
         VariableManager variableManager = new VariableManager();
         variableManager.put(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, parameters.getId());
         variableManager.put(DiagramDescription.LABEL, parameters.getLabel());
         variableManager.put(VariableManager.SELF, parameters.getObject());
         variableManager.put(IEditingContext.EDITING_CONTEXT, parameters.getEditingContext());
-
+        if (optionalRefreshManager.isPresent()) {
+            variableManager.put(IDiagramRefreshManager.DIAGRAM_REFRESH_MANAGER, optionalRefreshManager.get());
+        }
         DiagramComponentProps props = new DiagramComponentProps(variableManager, parameters.getDiagramDescription());
         Element element = new Element(DiagramComponent.class, props);
         Diagram diagram = new DiagramRenderer(this.logger).render(element);

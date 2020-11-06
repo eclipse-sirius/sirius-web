@@ -13,7 +13,6 @@
 package org.eclipse.sirius.web.collaborative.diagrams.api;
 
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
-import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.services.api.objects.IEditingContext;
 
 /**
@@ -25,6 +24,6 @@ public interface IDiagramEventHandler {
 
     boolean canHandle(IDiagramInput diagramInput);
 
-    EventHandlerResponse handle(IEditingContext editingContext, Diagram diagram, IDiagramInput diagramInput);
+    EventHandlerResponse handle(IEditingContext editingContext, IDiagramRefreshManager refreshManager, IDiagramInput diagramInput);
 
 }

@@ -26,6 +26,8 @@ import org.eclipse.sirius.web.diagrams.Node;
 public interface IDiagramService {
     Diagram create(DiagramCreationParameters parameters);
 
+    Diagram refresh(DiagramCreationParameters parameters, IDiagramRefreshManager refreshManager);
+
     Optional<Diagram> findById(UUID diagramId);
 
     Optional<Node> findNodeById(Diagram diagram, String nodeId);

@@ -19,6 +19,7 @@ import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramInput;
+import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramRefreshManager;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramService;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IToolService;
 import org.eclipse.sirius.web.collaborative.diagrams.api.dto.InvokeEdgeToolOnDiagramInput;
@@ -76,11 +77,12 @@ public class InvokeEdgeToolOnDiagramEventHandler implements IDiagramEventHandler
     }
 
     @Override
-    public EventHandlerResponse handle(IEditingContext editingContext, Diagram diagram, IDiagramInput diagramInput) {
+    public EventHandlerResponse handle(IEditingContext editingContext, IDiagramRefreshManager refreshManager, IDiagramInput diagramInput) {
         this.counter.increment();
 
         if (diagramInput instanceof InvokeEdgeToolOnDiagramInput) {
             InvokeEdgeToolOnDiagramInput input = (InvokeEdgeToolOnDiagramInput) diagramInput;
+            Diagram diagram = refreshManager.getDiagram();
             // @formatter:off
             var optionalTool = this.toolService.findToolById(diagram, input.getToolId())
                     .filter(CreateEdgeTool.class::isInstance)

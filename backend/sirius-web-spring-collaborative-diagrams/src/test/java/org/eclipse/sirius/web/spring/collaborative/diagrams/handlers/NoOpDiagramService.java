@@ -16,6 +16,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.collaborative.diagrams.api.DiagramCreationParameters;
+import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramRefreshManager;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramService;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.Node;
@@ -29,6 +30,11 @@ public class NoOpDiagramService implements IDiagramService {
 
     @Override
     public Diagram create(DiagramCreationParameters parameters) {
+        return null;
+    }
+
+    @Override
+    public Diagram refresh(DiagramCreationParameters parameters, IDiagramRefreshManager refreshManager) {
         return null;
     }
 

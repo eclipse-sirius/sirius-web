@@ -87,7 +87,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
 
             if (optionalDiagramEventHandler.isPresent()) {
                 IDiagramEventHandler diagramEventHandler = optionalDiagramEventHandler.get();
-                return Optional.of(diagramEventHandler.handle(this.editingContext, this.diagramRefreshManager.getDiagram(), diagramInput));
+                return Optional.of(diagramEventHandler.handle(this.editingContext, this.diagramRefreshManager, diagramInput));
             } else {
                 this.logger.warn("No handler found for event: {}", diagramInput); //$NON-NLS-1$
             }

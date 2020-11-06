@@ -20,6 +20,7 @@ import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramDescriptionService;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramInput;
+import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramRefreshManager;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramService;
 import org.eclipse.sirius.web.collaborative.diagrams.api.dto.DeleteFromDiagramInput;
 import org.eclipse.sirius.web.collaborative.diagrams.api.dto.DeleteFromDiagramSuccessPayload;
@@ -83,16 +84,17 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
     }
 
     @Override
-    public EventHandlerResponse handle(IEditingContext editingContext, Diagram diagram, IDiagramInput diagramInput) {
+    public EventHandlerResponse handle(IEditingContext editingContext, IDiagramRefreshManager refreshManager, IDiagramInput diagramInput) {
         this.counter.increment();
 
         if (diagramInput instanceof DeleteFromDiagramInput) {
+            Diagram diagram = refreshManager.getDiagram();
             DeleteFromDiagramInput input = (DeleteFromDiagramInput) diagramInput;
             var optionalNode = this.diagramService.findNodeById(diagram, input.getDiagramElementId());
             if (optionalNode.isPresent()) {
                 Node node = optionalNode.get();
 
-                this.invokeDeleteTool(node, editingContext, diagram);
+                this.invokeDeleteTool(node, editingContext, refreshManager);
                 return new EventHandlerResponse(true, representation -> true, new DeleteFromDiagramSuccessPayload(diagram));
             }
         }
@@ -100,7 +102,8 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
         return new EventHandlerResponse(false, representation -> false, new ErrorPayload(message));
     }
 
-    private void invokeDeleteTool(Node node, IEditingContext editingContext, Diagram diagram) {
+    private void invokeDeleteTool(Node node, IEditingContext editingContext, IDiagramRefreshManager refreshManager) {
+        Diagram diagram = refreshManager.getDiagram();
         var optionalNodeDescription = this.findNodeDescription(node, diagram);
         if (optionalNodeDescription.isPresent()) {
             NodeDescription nodeDescription = optionalNodeDescription.get();
@@ -111,6 +114,7 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
 
                 VariableManager variableManager = new VariableManager();
                 variableManager.put(VariableManager.SELF, self);
+                variableManager.put(IDiagramRefreshManager.DIAGRAM_REFRESH_MANAGER, refreshManager);
                 nodeDescription.getDeleteHandler().apply(variableManager);
 
                 this.logger.debug("Deleted diagram element {}", node.getId()); //$NON-NLS-1$

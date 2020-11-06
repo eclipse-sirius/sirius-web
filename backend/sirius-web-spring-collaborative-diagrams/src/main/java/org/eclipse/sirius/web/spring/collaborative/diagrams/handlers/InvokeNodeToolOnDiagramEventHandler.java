@@ -19,6 +19,7 @@ import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramInput;
+import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramRefreshManager;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramService;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IToolService;
 import org.eclipse.sirius.web.collaborative.diagrams.api.dto.InvokeNodeToolOnDiagramInput;
@@ -75,18 +76,19 @@ public class InvokeNodeToolOnDiagramEventHandler implements IDiagramEventHandler
     }
 
     @Override
-    public EventHandlerResponse handle(IEditingContext editingContext, Diagram diagram, IDiagramInput diagramInput) {
+    public EventHandlerResponse handle(IEditingContext editingContext, IDiagramRefreshManager refreshManager, IDiagramInput diagramInput) {
         this.counter.increment();
 
         if (diagramInput instanceof InvokeNodeToolOnDiagramInput) {
             InvokeNodeToolOnDiagramInput input = (InvokeNodeToolOnDiagramInput) diagramInput;
-         // @formatter:off
+            Diagram diagram = refreshManager.getDiagram();
+            // @formatter:off
             var optionalTool = this.toolService.findToolById(diagram, input.getToolId())
                     .filter(CreateNodeTool.class::isInstance)
                     .map(CreateNodeTool.class::cast);
             // @formatter:on
             if (optionalTool.isPresent()) {
-                Status status = this.executeTool(editingContext, diagram, input.getDiagramElementId(), optionalTool.get());
+                Status status = this.executeTool(editingContext, refreshManager, input.getDiagramElementId(), optionalTool.get());
                 if (Objects.equals(status, Status.OK)) {
                     return new EventHandlerResponse(true, representation -> true, new InvokeNodeToolOnDiagramSuccessPayload(diagram));
                 }
@@ -96,8 +98,9 @@ public class InvokeNodeToolOnDiagramEventHandler implements IDiagramEventHandler
         return new EventHandlerResponse(false, representation -> false, new ErrorPayload(message));
     }
 
-    private Status executeTool(IEditingContext editingContext, Diagram diagram, String diagramElementId, CreateNodeTool tool) {
+    private Status executeTool(IEditingContext editingContext, IDiagramRefreshManager refreshManager, String diagramElementId, CreateNodeTool tool) {
         Status result = Status.ERROR;
+        Diagram diagram = refreshManager.getDiagram();
         Optional<Node> node = this.diagramService.findNodeById(diagram, diagramElementId);
         Optional<Object> self = Optional.empty();
         if (node.isPresent()) {
@@ -108,6 +111,7 @@ public class InvokeNodeToolOnDiagramEventHandler implements IDiagramEventHandler
 
         if (self.isPresent()) {
             VariableManager variableManager = new VariableManager();
+            variableManager.put(IDiagramRefreshManager.DIAGRAM_REFRESH_MANAGER, refreshManager);
             variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
             variableManager.put(VariableManager.SELF, self.get());
 

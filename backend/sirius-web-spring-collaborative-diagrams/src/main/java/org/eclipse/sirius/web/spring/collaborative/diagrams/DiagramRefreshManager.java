@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.spring.collaborative.diagrams;
 
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -81,7 +82,7 @@ public class DiagramRefreshManager implements IDiagramRefreshManager {
      */
     @Override
     public void initialize(UUID projectId, DiagramCreationParameters diagramCreationParameters) {
-        this.computeDiagram(projectId, diagramCreationParameters);
+        this.computeDiagram(projectId, diagramCreationParameters, Optional.empty());
     }
 
     /**
@@ -96,7 +97,7 @@ public class DiagramRefreshManager implements IDiagramRefreshManager {
     public void refresh(UUID projectId, DiagramCreationParameters diagramCreationParameters) {
         long start = System.currentTimeMillis();
 
-        this.computeDiagram(projectId, diagramCreationParameters);
+        this.computeDiagram(projectId, diagramCreationParameters, Optional.of(this.diagram));
 
         long end = System.currentTimeMillis();
         this.timer.record(end - start, TimeUnit.MILLISECONDS);
@@ -104,8 +105,12 @@ public class DiagramRefreshManager implements IDiagramRefreshManager {
         this.sink.next(new DiagramRefreshedEventPayload(this.diagram));
     }
 
-    private void computeDiagram(UUID projectId, DiagramCreationParameters diagramCreationParameters) {
-        Diagram unlayoutedDiagram = this.diagramService.create(diagramCreationParameters);
+    private void computeDiagram(UUID projectId, DiagramCreationParameters diagramCreationParameters, Optional<Diagram> optionalPrevDiagram) {
+        // @formatter:off
+        Diagram unlayoutedDiagram = optionalPrevDiagram
+                .map(prevDiagram -> this.diagramService.refresh(diagramCreationParameters, this))
+                .orElse(this.diagramService.create(diagramCreationParameters));
+        // @formatter:on
         this.diagram = this.layoutService.layout(unlayoutedDiagram);
 
         RepresentationDescriptor representationDescriptor = this.getRepresentationDescriptor(projectId);
@@ -126,6 +131,11 @@ public class DiagramRefreshManager implements IDiagramRefreshManager {
     @Override
     public Diagram getDiagram() {
         return this.diagram;
+    }
+
+    @Override
+    public void setDiagram(Diagram diagram) {
+        this.diagram = diagram;
     }
 
     @Override

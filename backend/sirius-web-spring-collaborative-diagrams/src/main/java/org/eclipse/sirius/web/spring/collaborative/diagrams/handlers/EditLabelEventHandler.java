@@ -20,6 +20,7 @@ import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramDescriptionService;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramInput;
+import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramRefreshManager;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramService;
 import org.eclipse.sirius.web.collaborative.diagrams.api.dto.EditLabelInput;
 import org.eclipse.sirius.web.collaborative.diagrams.api.dto.EditLabelSuccessPayload;
@@ -84,12 +85,13 @@ public class EditLabelEventHandler implements IDiagramEventHandler {
     }
 
     @Override
-    public EventHandlerResponse handle(IEditingContext editingContext, Diagram diagram, IDiagramInput diagramInput) {
+    public EventHandlerResponse handle(IEditingContext editingContext, IDiagramRefreshManager refreshManager, IDiagramInput diagramInput) {
         this.counter.increment();
 
         if (diagramInput instanceof EditLabelInput) {
             EditLabelInput input = (EditLabelInput) diagramInput;
             if (input.getLabelId().endsWith(LABEL_SUFFIX)) {
+                Diagram diagram = refreshManager.getDiagram();
                 String nodeId = this.extractNodeId(input.getLabelId());
                 var node = this.diagramService.findNodeById(diagram, nodeId);
                 if (node.isPresent()) {

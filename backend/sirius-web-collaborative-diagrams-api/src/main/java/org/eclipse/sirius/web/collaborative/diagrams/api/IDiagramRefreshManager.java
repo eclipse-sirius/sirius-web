@@ -25,9 +25,16 @@ import reactor.core.publisher.Flux;
  * @author sbegaudeau
  */
 public interface IDiagramRefreshManager {
+    /**
+     * The name of the variable used to store and retrieve the diagram refresh manager from a variable manager.
+     */
+    String DIAGRAM_REFRESH_MANAGER = "diagramRefreshManager"; //$NON-NLS-1$
+
     void initialize(UUID projectId, DiagramCreationParameters diagramCreationParameters);
 
     void refresh(UUID projectId, DiagramCreationParameters diagramCreationParameters);
+
+    void setDiagram(Diagram diagram);
 
     Diagram getDiagram();
 
