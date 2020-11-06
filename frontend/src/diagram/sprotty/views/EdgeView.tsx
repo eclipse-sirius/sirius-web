@@ -137,18 +137,21 @@ export class EdgeView extends PolylineEdgeView {
     const basicArrowPath = `m ${-5 - strokeWidth}  ${-3.5 - strokeWidth} L 0 0 L ${-5 - strokeWidth} ${
       3.5 + strokeWidth
     }`;
+    const basicHalfArrowPath = `m ${-8 - strokeWidth}  ${-3.5 - strokeWidth} L 0 0`;
     const basicDiamondPath = `m 0 0 L ${5 + strokeWidth} ${-3.5 - strokeWidth}  L ${10 + strokeWidth * 2} 0 L ${
       5 + strokeWidth
     } ${3.5 + strokeWidth} z`;
+    const basicRoundPath = `m 0 0 a 4,4 0 1,1 8.0,0 a 4,4 0 1,1 -8.0,0`;
     const offsetArrowPath = `m ${(5 + strokeWidth) * 2} 0 L ${(5 + strokeWidth) * 2 + (5 + strokeWidth)} ${
       -3.5 - strokeWidth
     } M ${(5 + strokeWidth) * 2} 0 L ${(5 + strokeWidth) * 2 + (5 + strokeWidth)} ${3.5 + strokeWidth}`;
 
     let styleObjectCopy = { ...styleObject };
-
     let arrow;
     if (arrowStyle === 'OutputArrow') {
       arrow = this.buildOutputArrow(basicArrowPath, p1, p2, styleObjectCopy, strokeWidth);
+    } else if (arrowStyle === 'InputHalfArrow') {
+      arrow = this.buildInputHalfArrow(basicHalfArrowPath, p1, p2, styleObjectCopy);
     } else if (arrowStyle === 'InputArrow') {
       arrow = this.buildInputArrow(basicArrowPath, p1, p2, styleObjectCopy);
     } else if (arrowStyle === 'OutputClosedArrow') {
@@ -159,6 +162,8 @@ export class EdgeView extends PolylineEdgeView {
       arrow = this.buildOutputFillClosedArrow(basicArrowPath + 'z', p1, p2, styleObjectCopy, strokeWidth);
     } else if (arrowStyle === 'InputFillClosedArrow') {
       arrow = this.buildInputFillClosedArrow(basicArrowPath + 'z', p1, p2, styleObjectCopy);
+    } else if (arrowStyle === 'Round') {
+      arrow = this.buildRoundArrow(basicRoundPath, p1, p2, styleObjectCopy);
     } else if (arrowStyle === 'Diamond') {
       arrow = this.buildDiamondArrow(basicDiamondPath, p1, p2, styleObjectCopy);
     } else if (arrowStyle === 'FillDiamond') {
@@ -187,6 +192,16 @@ export class EdgeView extends PolylineEdgeView {
     const offsetX = p2.x + strokeWidth;
     const offsetY = p2.y;
     const rotationAngle = toDegrees(angle(p2, p1));
+    const rotationX = p2.x;
+    const rotationY = p2.y;
+    return this.buildArrowPath(path, offsetX, offsetY, styleObject, rotationAngle, rotationX, rotationY);
+  }
+
+  buildInputHalfArrow(path, p1, p2, styleObject) {
+    styleObject.fill = 'transparent';
+    const offsetX = p2.x;
+    const offsetY = p2.y;
+    const rotationAngle = toDegrees(angle(p1, p2));
     const rotationX = p2.x;
     const rotationY = p2.y;
     return this.buildArrowPath(path, offsetX, offsetY, styleObject, rotationAngle, rotationX, rotationY);
@@ -242,6 +257,15 @@ export class EdgeView extends PolylineEdgeView {
 
   buildDiamondArrow(path, p1, p2, styleObject) {
     styleObject.fill = '#ffffff';
+    const offsetX = p2.x;
+    const offsetY = p2.y;
+    const rotationAngle = toDegrees(angle(p2, p1));
+    const rotationX = p2.x;
+    const rotationY = p2.y;
+    return this.buildArrowPath(path, offsetX, offsetY, styleObject, rotationAngle, rotationX, rotationY);
+  }
+  buildRoundArrow(path, p1, p2, styleObject) {
+    styleObject.fill = '#000000';
     const offsetX = p2.x;
     const offsetY = p2.y;
     const rotationAngle = toDegrees(angle(p2, p1));

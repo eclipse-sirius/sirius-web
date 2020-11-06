@@ -21,5 +21,5 @@ import org.eclipse.sirius.web.annotations.graphql.GraphQLEnumType;
  */
 @GraphQLEnumType
 public enum ArrowStyle {
-    None, OutputArrow, InputArrow, OutputClosedArrow, InputClosedArrow, OutputFillClosedArrow, InputFillClosedArrow, Diamond, FillDiamond, InputArrowWithDiamond, InputArrowWithFillDiamond
+    None, InputHalfArrow, OutputArrow, InputArrow, OutputClosedArrow, InputClosedArrow, OutputFillClosedArrow, InputFillClosedArrow, Round, Diamond, FillDiamond, InputArrowWithDiamond, InputArrowWithFillDiamond
 }
