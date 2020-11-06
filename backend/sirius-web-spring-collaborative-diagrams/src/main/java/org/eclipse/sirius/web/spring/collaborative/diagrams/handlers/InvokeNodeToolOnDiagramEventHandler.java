@@ -26,6 +26,7 @@ import org.eclipse.sirius.web.collaborative.diagrams.api.dto.InvokeNodeToolOnDia
 import org.eclipse.sirius.web.collaborative.diagrams.api.dto.InvokeNodeToolOnDiagramSuccessPayload;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.Node;
+import org.eclipse.sirius.web.diagrams.description.NodeDescription;
 import org.eclipse.sirius.web.diagrams.tools.CreateNodeTool;
 import org.eclipse.sirius.web.representations.Status;
 import org.eclipse.sirius.web.representations.VariableManager;
@@ -103,14 +104,15 @@ public class InvokeNodeToolOnDiagramEventHandler implements IDiagramEventHandler
         Diagram diagram = refreshManager.getDiagram();
         Optional<Node> node = this.diagramService.findNodeById(diagram, diagramElementId);
         Optional<Object> self = Optional.empty();
+        VariableManager variableManager = new VariableManager();
         if (node.isPresent()) {
             self = this.objectService.getObject(editingContext, node.get().getTargetObjectId());
+            variableManager.put(NodeDescription.NODE_CONTAINER, node.get());
         } else if (Objects.equals(diagram.getId().toString(), diagramElementId)) {
             self = this.objectService.getObject(editingContext, diagram.getTargetObjectId());
         }
 
         if (self.isPresent()) {
-            VariableManager variableManager = new VariableManager();
             variableManager.put(IDiagramRefreshManager.DIAGRAM_REFRESH_MANAGER, refreshManager);
             variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
             variableManager.put(VariableManager.SELF, self.get());
