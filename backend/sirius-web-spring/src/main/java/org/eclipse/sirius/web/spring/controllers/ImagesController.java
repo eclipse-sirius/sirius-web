@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 
 import org.eclipse.sirius.web.api.services.IImagePathService;
-import org.springframework.core.io.ClassPathResource;
+import org.eclipse.sirius.web.spring.services.IResourceService;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -79,11 +79,14 @@ public class ImagesController {
 
     private static final String TIMER = "siriusweb_images"; //$NON-NLS-1$
 
+    private final IResourceService resourceService;
+
     private final List<IImagePathService> pathResourcesServices;
 
     private final Timer timer;
 
-    public ImagesController(List<IImagePathService> pathResourcesServices, MeterRegistry meterRegistry) {
+    public ImagesController(IResourceService resourceService, List<IImagePathService> pathResourcesServices, MeterRegistry meterRegistry) {
+        this.resourceService = Objects.requireNonNull(resourceService);
         this.pathResourcesServices = Objects.requireNonNull(pathResourcesServices);
 
         this.timer = Timer.builder(TIMER).register(meterRegistry);
@@ -103,7 +106,7 @@ public class ImagesController {
         if (mediatype != null && this.isImagePathAccessible(imagePath)) {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(mediatype);
-            Resource resource = new ClassPathResource(imagePath);
+            Resource resource = this.resourceService.getResource(imagePath);
             if (resource.exists()) {
                 response = new ResponseEntity<>(resource, headers, HttpStatus.OK);
             }

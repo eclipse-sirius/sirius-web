@@ -44,7 +44,7 @@ import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 public class ImagesControllerTestCases {
     @Test
     public void testInvalidFolder() {
-        ImagesController imagesController = new ImagesController(new ArrayList<>(), new SimpleMeterRegistry());
+        ImagesController imagesController = new ImagesController(new NoOpResourceService(), new ArrayList<>(), new SimpleMeterRegistry());
         HttpServletRequest request = new MockHttpServletRequest(HttpMethod.GET.name(), "/api/images/invalidFolder/doesNotExist.png"); //$NON-NLS-1$
         ResponseEntity<Resource> responseEntity = imagesController.getImage(request);
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
@@ -58,7 +58,7 @@ public class ImagesControllerTestCases {
                 return List.of("/validFolder"); //$NON-NLS-1$
             }
         };
-        ImagesController imagesController = new ImagesController(List.of(imagePathService), new SimpleMeterRegistry());
+        ImagesController imagesController = new ImagesController(new NoOpResourceService(), List.of(imagePathService), new SimpleMeterRegistry());
         HttpServletRequest request = new MockHttpServletRequest(HttpMethod.GET.name(), "/api/images/validFolder/doesNotExist.png"); //$NON-NLS-1$
         ResponseEntity<Resource> responseEntity = imagesController.getImage(request);
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
@@ -72,7 +72,7 @@ public class ImagesControllerTestCases {
                 return List.of("/icons"); //$NON-NLS-1$
             }
         };
-        ImagesController imagesController = new ImagesController(List.of(imagePathService), new SimpleMeterRegistry());
+        ImagesController imagesController = new ImagesController(new NoOpResourceService(), List.of(imagePathService), new SimpleMeterRegistry());
         HttpServletRequest request = new MockHttpServletRequest(HttpMethod.GET.name(), "/api/images/icons/full/obj16/EClass.gif"); //$NON-NLS-1$
 
         // We need to replace the current class loader to trick Spring into thinking that the resource exists

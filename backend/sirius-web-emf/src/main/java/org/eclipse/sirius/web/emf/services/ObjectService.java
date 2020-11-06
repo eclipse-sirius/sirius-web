@@ -30,6 +30,7 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.sirius.web.representations.IRepresentation;
+import org.eclipse.sirius.web.services.api.IPathService;
 import org.eclipse.sirius.web.services.api.objects.IEditingContext;
 import org.eclipse.sirius.web.services.api.objects.IObjectService;
 import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;
@@ -52,11 +53,14 @@ public class ObjectService implements IObjectService {
 
     private static final String ID_SEPARATOR = "#"; //$NON-NLS-1$
 
+    private final IPathService pathService;
+
     private final ComposedAdapterFactory composedAdapterFactory;
 
     private final LabelFeatureProviderRegistry labelFeatureProviderRegistry;
 
-    public ObjectService(ComposedAdapterFactory composedAdapterFactory, LabelFeatureProviderRegistry labelFeatureProviderRegistry) {
+    public ObjectService(IPathService pathService, ComposedAdapterFactory composedAdapterFactory, LabelFeatureProviderRegistry labelFeatureProviderRegistry) {
+        this.pathService = Objects.requireNonNull(pathService);
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.labelFeatureProviderRegistry = Objects.requireNonNull(labelFeatureProviderRegistry);
     }
@@ -147,31 +151,24 @@ public class ObjectService implements IObjectService {
 
     @Override
     public String getImagePath(Object object) {
+        String imagePath = null;
         if (object instanceof EObject) {
             EObject eObject = (EObject) object;
-
+            
             Adapter adapter = this.composedAdapterFactory.adapt(eObject, IItemLabelProvider.class);
             if (adapter instanceof IItemLabelProvider) {
                 IItemLabelProvider labelProvider = (IItemLabelProvider) adapter;
                 Object image = labelProvider.getImage(eObject);
-                String imagePath = null;
-                if (image instanceof URI) {
-                    URI uri = (URI) image;
-                    imagePath = uri.toString();
-                } else if (image instanceof URL) {
-                    URL url = (URL) image;
-                    imagePath = url.toString();
-                }
-                if (imagePath != null) {
-                    String[] uriSplit = imagePath.split("!"); //$NON-NLS-1$
-                    if (uriSplit.length > 1) {
-                        String insideJarPath = uriSplit[uriSplit.length - 1];
-                        return insideJarPath;
-                    }
-                }
+                imagePath = this.getImagePath(image);
             }
+        } else if (object instanceof URI) {
+            URI uri = (URI) object;
+            imagePath = this.pathService.obfuscatePath(uri.toString());
+        } else if (object instanceof URL) {
+            URL url = (URL) object;
+            imagePath = this.pathService.obfuscatePath(url.toString());
         }
-        return null;
+        return imagePath;
     }
 
     @Override

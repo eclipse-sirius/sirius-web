@@ -17,6 +17,8 @@ import org.eclipse.sirius.web.spring.architecture.SpringCodingRulesTestCases;
 import org.eclipse.sirius.web.spring.controllers.DocumentControllerTestCases;
 import org.eclipse.sirius.web.spring.controllers.ImagesControllerTestCases;
 import org.eclipse.sirius.web.spring.controllers.ProjectControllerTestCases;
+import org.eclipse.sirius.web.spring.services.PathServiceIsObfuscatedTestCases;
+import org.eclipse.sirius.web.spring.services.PathServiceTestObfuscateAndResolveCases;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
@@ -33,7 +35,9 @@ import org.junit.runners.Suite.SuiteClasses;
     SpringCodingRulesTestCases.class,
     DocumentControllerTestCases.class,
     ImagesControllerTestCases.class,
-    ProjectControllerTestCases.class
+    ProjectControllerTestCases.class,
+    PathServiceIsObfuscatedTestCases.class,
+    PathServiceTestObfuscateAndResolveCases.class
 })
 //@formatter:on
 public final class AllSiriusWebSpringTests {
