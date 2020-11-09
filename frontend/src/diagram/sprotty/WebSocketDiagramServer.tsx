@@ -85,7 +85,7 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
   modelFactory;
   activeTool;
   editLabel;
-  deleteElement;
+  deleteElements;
 
   invokeTool;
   setContextualPalette;
@@ -271,10 +271,7 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
     const { element } = action;
     if (element) {
       const selectedItems = element.index.all().filter((e) => e.selected);
-      selectedItems.forEach((item) => {
-        element.index.remove(item);
-        this.deleteElement(item.id);
-      });
+      this.deleteElements([...selectedItems]);
     } else {
       this.logger.log(this, 'Invalid delete action', action);
     }
@@ -404,8 +401,8 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
     this.editLabel = editLabel;
   }
 
-  setDeleteElementListener(deleteElement) {
-    this.deleteElement = deleteElement;
+  setDeleteElementsListener(deleteElements) {
+    this.deleteElements = deleteElements;
   }
 
   setInvokeToolListener(invokeTool) {

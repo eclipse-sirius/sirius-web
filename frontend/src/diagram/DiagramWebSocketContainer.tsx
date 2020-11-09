@@ -47,7 +47,7 @@ import { Toolbar } from 'diagram/Toolbar';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useReducer, useRef } from 'react';
 import 'reflect-metadata'; // Required because Sprotty uses Inversify and both frameworks are written in TypeScript with experimental features.
-import { EditLabelAction, FitToScreenAction } from 'sprotty';
+import { SEdge, SNode, FitToScreenAction, EditLabelAction } from 'sprotty';
 import styles from './Diagram.module.css';
 import {
   deleteFromDiagramMutation,
@@ -245,7 +245,7 @@ export const DiagramWebSocketContainer = ({
     message,
   } = state;
 
-  const [deleteElementMutation] = useMutation(deleteFromDiagramMutation);
+  const [deleteElementsMutation] = useMutation(deleteFromDiagramMutation);
   const [invokeNodeToolMutation] = useMutation(invokeNodeToolOnDiagramMutation);
   const [invokeEdgeToolMutation] = useMutation(invokeEdgeToolOnDiagramMutation);
   const [editLabelMutation] = useMutation(editLabelMutationOp);
@@ -310,16 +310,21 @@ export const DiagramWebSocketContainer = ({
     }
   }, [displayedRepresentationId, representationId]);
 
-  const deleteElement = useCallback(
-    (diagramElementId) => {
+  const deleteElements = useCallback(
+    (diagramElements) => {
+      const edgeIds = diagramElements.filter((diagramElement) => diagramElement instanceof SEdge).map((elt) => elt.id);
+      const nodeIds = diagramElements.filter((diagramElement) => diagramElement instanceof SNode).map((elt) => elt.id);
+
       const input = {
         projectId,
         representationId,
-        diagramElementId,
+        nodeIds,
+        edgeIds,
       };
-      deleteElementMutation({ variables: { input } });
+      deleteElementsMutation({ variables: { input } });
+      dispatch({ type: SET_CONTEXTUAL_PALETTE__ACTION, contextualPalette: undefined });
     },
-    [projectId, representationId, deleteElementMutation]
+    [projectId, representationId, deleteElementsMutation]
   );
 
   const invokeTool = useCallback(
@@ -402,7 +407,7 @@ export const DiagramWebSocketContainer = ({
       dispatch({
         type: INITIALIZE__ACTION,
         diagramDomElement,
-        deleteElement,
+        deleteElements,
         invokeTool,
         editLabel,
         onSelectElement,
@@ -415,7 +420,7 @@ export const DiagramWebSocketContainer = ({
     displayedRepresentationId,
     diagramServer,
     setSelection,
-    deleteElement,
+    deleteElements,
     invokeTool,
     editLabelMutation,
     toolSections,
@@ -536,7 +541,7 @@ export const DiagramWebSocketContainer = ({
     }
     let invokeDeleteFromContextualPalette;
     if (deletable) {
-      invokeDeleteFromContextualPalette = () => deleteElement(element.id);
+      invokeDeleteFromContextualPalette = () => deleteElements([element]);
     }
     const invokeToolFromContextualPalette = (tool) => {
       if (tool.__typename === 'CreateEdgeTool') {

@@ -18,6 +18,7 @@ import java.util.UUID;
 import org.eclipse.sirius.web.collaborative.diagrams.api.DiagramCreationParameters;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramService;
 import org.eclipse.sirius.web.diagrams.Diagram;
+import org.eclipse.sirius.web.diagrams.Edge;
 import org.eclipse.sirius.web.diagrams.Node;
 
 /**
@@ -39,6 +40,11 @@ public class NoOpDiagramService implements IDiagramService {
 
     @Override
     public Optional<Node> findNodeById(Diagram diagram, String nodeId) {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<Edge> findEdgeById(Diagram diagram, String edgeId) {
         return Optional.empty();
     }
 }

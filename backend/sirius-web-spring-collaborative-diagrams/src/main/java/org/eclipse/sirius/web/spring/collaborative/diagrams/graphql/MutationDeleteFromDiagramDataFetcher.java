@@ -29,7 +29,7 @@ import org.eclipse.sirius.web.spring.graphql.api.IDataFetcherWithFieldCoordinate
 import graphql.schema.DataFetchingEnvironment;
 
 /**
- * The data fetcher used to delete an element from a diagram.
+ * The data fetcher used to delete edges and nodes from a diagram.
  * <p>
  * It will be used to handle the following GraphQL field:
  * </p>
@@ -41,6 +41,8 @@ import graphql.schema.DataFetchingEnvironment;
  * </pre>
  *
  * @author pcdavid
+ * @author sdrapeau
+ * @author hmarchadour
  */
 // @formatter:off
 @GraphQLMutationTypes(

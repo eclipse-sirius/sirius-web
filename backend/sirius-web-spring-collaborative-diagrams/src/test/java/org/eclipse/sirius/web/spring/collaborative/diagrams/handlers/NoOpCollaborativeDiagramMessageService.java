@@ -26,4 +26,44 @@ public class NoOpCollaborativeDiagramMessageService implements ICollaborativeDia
         return null;
     }
 
+    @Override
+    public String edgeNotFound(String id) {
+        return null;
+    }
+
+    @Override
+    public String nodeNotFound(String id) {
+        return null;
+    }
+
+    @Override
+    public String deleteEdgeFailed(String id) {
+        return null;
+    }
+
+    @Override
+    public String deleteNodeFailed(String id) {
+        return null;
+    }
+
+    @Override
+    public String deleteFailed() {
+        return null;
+    }
+
+    @Override
+    public String semanticObjectNotFound(String id) {
+        return null;
+    }
+
+    @Override
+    public String nodeDescriptionNotFound(String id) {
+        return null;
+    }
+
+    @Override
+    public String edgeDescriptionNotFound(String id) {
+        return null;
+    }
+
 }
