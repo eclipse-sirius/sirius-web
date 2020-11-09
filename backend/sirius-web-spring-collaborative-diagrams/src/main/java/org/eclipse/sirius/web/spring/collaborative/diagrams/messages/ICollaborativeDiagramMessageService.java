@@ -21,4 +21,19 @@ public interface ICollaborativeDiagramMessageService {
 
     String invalidInput(String expectedInputTypeName, String receivedInputTypeName);
 
+    String edgeNotFound(String id);
+
+    String nodeNotFound(String id);
+
+    String deleteEdgeFailed(String id);
+
+    String deleteNodeFailed(String id);
+
+    String deleteFailed();
+
+    String semanticObjectNotFound(String id);
+
+    String nodeDescriptionNotFound(String id);
+
+    String edgeDescriptionNotFound(String id);
 }

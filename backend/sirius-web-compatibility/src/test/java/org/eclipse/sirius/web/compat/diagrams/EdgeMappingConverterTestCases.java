@@ -52,8 +52,8 @@ public class EdgeMappingConverterTestCases {
     };
 
     /**
-     * Non-regression test for the create edges issue. This test will ensure that a container description can be used as a valid
-     * target for an edge.
+     * Non-regression test for the create edges issue. This test will ensure that a container description can be used as
+     * a valid target for an edge.
      */
     @Test
     public void testEdgeFromNodeToContainer() {
@@ -73,7 +73,8 @@ public class EdgeMappingConverterTestCases {
                 containerMappingUUID, this.createNodeDescription(containerMappingUUID)
         );
         // @formatter:on
-        EdgeMappingConverter edgeMappingConverter = new EdgeMappingConverter(new NoOpObjectService(), new AQLInterpreter(List.of(), List.of()), this.identifierProvider, id2NodeDescriptions);
+        EdgeMappingConverter edgeMappingConverter = new EdgeMappingConverter(new NoOpObjectService(), new NoOpEditService(), new AQLInterpreter(List.of(), List.of()), this.identifierProvider,
+                id2NodeDescriptions);
 
         EdgeDescription edgeDescription = edgeMappingConverter.convert(edgeMapping);
         assertThat(edgeDescription.getTargetNodeDescriptions()).contains(id2NodeDescriptions.get(containerMappingUUID));
@@ -115,8 +116,8 @@ public class EdgeMappingConverterTestCases {
     }
 
     /**
-     * Non-regression test for the create edges issue. This test will ensure that a container description can be used as a valid
-     * source for an edge.
+     * Non-regression test for the create edges issue. This test will ensure that a container description can be used as
+     * a valid source for an edge.
      */
     @Test
     public void testEdgeFromContainerToNode() {
@@ -136,15 +137,16 @@ public class EdgeMappingConverterTestCases {
                 containerMappingUUID, this.createNodeDescription(containerMappingUUID)
         );
         // @formatter:on
-        EdgeMappingConverter edgeMappingConverter = new EdgeMappingConverter(new NoOpObjectService(), new AQLInterpreter(List.of(), List.of()), this.identifierProvider, id2NodeDescriptions);
+        EdgeMappingConverter edgeMappingConverter = new EdgeMappingConverter(new NoOpObjectService(), new NoOpEditService(), new AQLInterpreter(List.of(), List.of()), this.identifierProvider,
+                id2NodeDescriptions);
 
         EdgeDescription edgeDescription = edgeMappingConverter.convert(edgeMapping);
         assertThat(edgeDescription.getSourceNodeDescriptions()).contains(id2NodeDescriptions.get(containerMappingUUID));
     }
 
     /**
-     * Non-regression test for the create edges issue. This test will ensure that a container description can be used as both a valid
-     * source and a valid target for an edge.
+     * Non-regression test for the create edges issue. This test will ensure that a container description can be used as
+     * both a valid source and a valid target for an edge.
      */
     @Test
     public void testEdgeFromContainerToContainer() {
@@ -164,7 +166,8 @@ public class EdgeMappingConverterTestCases {
                 targetContainerMappingUUID, this.createNodeDescription(targetContainerMappingUUID)
         );
         // @formatter:on
-        EdgeMappingConverter edgeMappingConverter = new EdgeMappingConverter(new NoOpObjectService(), new AQLInterpreter(List.of(), List.of()), this.identifierProvider, id2NodeDescriptions);
+        EdgeMappingConverter edgeMappingConverter = new EdgeMappingConverter(new NoOpObjectService(), new NoOpEditService(), new AQLInterpreter(List.of(), List.of()), this.identifierProvider,
+                id2NodeDescriptions);
 
         EdgeDescription edgeDescription = edgeMappingConverter.convert(edgeMapping);
         edgeDescription.getSourceNodeDescriptions().contains(id2NodeDescriptions.get(sourceContainerMappingUUID));

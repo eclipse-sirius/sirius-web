@@ -271,6 +271,7 @@ public class DiagramRendererEdgeTestCases {
                 .targetObjectKindProvider(variableManager -> "") //$NON-NLS-1$
                 .targetObjectLabelProvider(variableManager -> "")//$NON-NLS-1$
                 .styleProvider(edgeStyleProvider)
+                .deleteHandler(variableManager -> Status.ERROR)
                 .build();
         // @formatter:on
     }

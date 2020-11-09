@@ -23,6 +23,7 @@ import org.eclipse.sirius.web.annotations.Immutable;
 import org.eclipse.sirius.web.components.Element;
 import org.eclipse.sirius.web.diagrams.EdgeStyle;
 import org.eclipse.sirius.web.diagrams.Label;
+import org.eclipse.sirius.web.representations.Status;
 import org.eclipse.sirius.web.representations.VariableManager;
 
 /**
@@ -66,6 +67,8 @@ public final class EdgeDescription {
     private Function<VariableManager, List<Element>> targetNodesProvider;
 
     private Function<VariableManager, EdgeStyle> styleProvider;
+
+    private Function<VariableManager, Status> deleteHandler;
 
     private EdgeDescription() {
         // Prevent instantiation
@@ -127,6 +130,10 @@ public final class EdgeDescription {
         return this.styleProvider;
     }
 
+    public Function<VariableManager, Status> getDeleteHandler() {
+        return this.deleteHandler;
+    }
+
     public static Builder newEdgeDescription(UUID id) {
         return new Builder(id);
     }
@@ -171,6 +178,8 @@ public final class EdgeDescription {
         private Function<VariableManager, List<Element>> targetNodesProvider;
 
         private Function<VariableManager, EdgeStyle> styleProvider;
+
+        private Function<VariableManager, Status> deleteHandler;
 
         private Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
@@ -242,6 +251,11 @@ public final class EdgeDescription {
             return this;
         }
 
+        public Builder deleteHandler(Function<VariableManager, Status> deleteHandler) {
+            this.deleteHandler = Objects.requireNonNull(deleteHandler);
+            return this;
+        }
+
         public EdgeDescription build() {
             EdgeDescription edgeDescription = new EdgeDescription();
             edgeDescription.id = Objects.requireNonNull(this.id);
@@ -258,6 +272,7 @@ public final class EdgeDescription {
             edgeDescription.sourceNodesProvider = Objects.requireNonNull(this.sourceNodesProvider);
             edgeDescription.targetNodesProvider = Objects.requireNonNull(this.targetNodesProvider);
             edgeDescription.styleProvider = Objects.requireNonNull(this.styleProvider);
+            edgeDescription.deleteHandler = Objects.requireNonNull(this.deleteHandler);
             return edgeDescription;
         }
     }

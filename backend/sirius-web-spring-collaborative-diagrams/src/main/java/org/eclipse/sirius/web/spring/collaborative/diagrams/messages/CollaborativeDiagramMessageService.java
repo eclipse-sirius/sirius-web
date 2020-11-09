@@ -33,6 +33,46 @@ public class CollaborativeDiagramMessageService implements ICollaborativeDiagram
 
     @Override
     public String invalidInput(String expectedInputTypeName, String receivedInputTypeName) {
-        return this.messageSourceAccessor.getMessage("INVALID_INPUT", new Object[] { expectedInputTypeName, receivedInputTypeName }); //$NON-NLS-1$
+        return this.messageSourceAccessor.getMessage(MessageConstants.INVALID_INPUT, new Object[] { expectedInputTypeName, receivedInputTypeName });
+    }
+
+    @Override
+    public String edgeNotFound(String id) {
+        return this.messageSourceAccessor.getMessage(MessageConstants.EDGE_NOT_FOUND, new Object[] { id });
+    }
+
+    @Override
+    public String nodeNotFound(String id) {
+        return this.messageSourceAccessor.getMessage(MessageConstants.NODE_NOT_FOUND, new Object[] { id });
+    }
+
+    @Override
+    public String semanticObjectNotFound(String id) {
+        return this.messageSourceAccessor.getMessage(MessageConstants.SEMANTIC_OBJECT_NOT_FOUND, new Object[] { id });
+    }
+
+    @Override
+    public String nodeDescriptionNotFound(String id) {
+        return this.messageSourceAccessor.getMessage(MessageConstants.NODE_DESCRIPTION_NOT_FOUND, new Object[] { id });
+    }
+
+    @Override
+    public String edgeDescriptionNotFound(String id) {
+        return this.messageSourceAccessor.getMessage(MessageConstants.EDGE_DESCRIPTION_NOT_FOUND, new Object[] { id });
+    }
+
+    @Override
+    public String deleteEdgeFailed(String id) {
+        return this.messageSourceAccessor.getMessage(MessageConstants.DELETE_EGDE_FAILED, new Object[] { id });
+    }
+
+    @Override
+    public String deleteNodeFailed(String id) {
+        return this.messageSourceAccessor.getMessage(MessageConstants.DELETE_NODE_FAILED, new Object[] { id });
+    }
+
+    @Override
+    public String deleteFailed() {
+        return this.messageSourceAccessor.getMessage(MessageConstants.DELETE_FAILED);
     }
 }
