@@ -16,6 +16,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.diagrams.Diagram;
+import org.eclipse.sirius.web.diagrams.Edge;
 import org.eclipse.sirius.web.diagrams.Node;
 
 /**
@@ -29,5 +30,7 @@ public interface IDiagramService {
     Optional<Diagram> findById(UUID diagramId);
 
     Optional<Node> findNodeById(Diagram diagram, String nodeId);
+
+    Optional<Edge> findEdgeById(Diagram diagram, String edgeId);
 
 }

@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.collaborative.diagrams.api.dto;
 
 import java.text.MessageFormat;
+import java.util.List;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.annotations.graphql.GraphQLField;
@@ -22,9 +23,10 @@ import org.eclipse.sirius.web.annotations.graphql.GraphQLNonNull;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramInput;
 
 /**
- * The input for the "Delete from diagram" mutation.
+ * The class of the inputs for the "Delete from diagram" mutation.
  *
  * @author pcdavid
+ * @author hmarchadour
  */
 @GraphQLInputObjectType
 public final class DeleteFromDiagramInput implements IDiagramInput {
@@ -32,7 +34,9 @@ public final class DeleteFromDiagramInput implements IDiagramInput {
 
     private UUID representationId;
 
-    private String diagramElementId;
+    private List<String> nodeIds;
+
+    private List<String> edgeIds;
 
     @GraphQLID
     @GraphQLField
@@ -49,16 +53,21 @@ public final class DeleteFromDiagramInput implements IDiagramInput {
         return this.representationId;
     }
 
-    @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public String getDiagramElementId() {
-        return this.diagramElementId;
+    public List<@GraphQLNonNull String> getNodeIds() {
+        return this.nodeIds;
+    }
+
+    @GraphQLField
+    @GraphQLNonNull
+    public List<@GraphQLNonNull String> getEdgeIds() {
+        return this.edgeIds;
     }
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'projectId: {1}, representationId: {2}, diagramElementId: {3}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.projectId, this.representationId, this.diagramElementId);
+        String pattern = "{0} '{'projectId: {1}, representationId: {2}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.projectId, this.representationId);
     }
 }

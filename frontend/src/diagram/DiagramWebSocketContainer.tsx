@@ -50,7 +50,7 @@ import { edgeCreationFeedback } from 'diagram/sprotty/edgeCreationFeedback';
 import PropTypes from 'prop-types';
 import React, { useContext, useEffect, useReducer, useRef, useCallback } from 'react';
 import 'reflect-metadata'; // Required because Sprotty uses Inversify and both frameworks are written in TypeScript with experimental features.
-import { FitToScreenAction, EditLabelAction } from 'sprotty';
+import { SEdge, SNode, FitToScreenAction, EditLabelAction } from 'sprotty';
 import styles from './Diagram.module.css';
 import {
   deleteFromDiagramMutation,
@@ -236,7 +236,7 @@ export const DiagramWebSocketContainer = ({ representationId, selection, setSele
     message,
   } = state;
 
-  const [deleteElementMutation] = useMutation(deleteFromDiagramMutation, {}, 'deleteFromDiagram');
+  const [deleteElementsMutation] = useMutation(deleteFromDiagramMutation, {}, 'deleteFromDiagram');
   const [invokeNodeToolMutation] = useMutation(invokeNodeToolOnDiagramMutation, {}, 'invokeNodeToolOnDiagram');
   const [invokeEdgeToolMutation] = useMutation(invokeEdgeToolOnDiagramMutation, {}, 'invokeEdgeToolOnDiagram');
   const [editLabelMutation] = useMutation(editLabelMutationOp, {}, 'editLabel');
@@ -299,16 +299,40 @@ export const DiagramWebSocketContainer = ({ representationId, selection, setSele
     }
   }, [displayedRepresentationId, representationId]);
 
-  const deleteElement = useCallback(
-    (diagramElementId) => {
+  const deleteElements = useCallback(
+    (diagramElements) => {
+      const nodeIds = [];
+      const edgeIds = [];
+      diagramElements.forEach((diagramElement) => {
+        if (diagramElement instanceof SNode) {
+          nodeIds.push(diagramElement.id);
+        } else if (diagramElement instanceof SEdge) {
+          edgeIds.push(diagramElement.id);
+        }
+      });
+      /**
+       * We should not ask to remove more than once a Node.
+       * To avoid this state, we filter all nodes that have also there parents in the list to delete.
+       */
+      diagramElements
+        .filter((diagramElement) => diagramElement instanceof SNode)
+        .filter((diagramElement) => diagramElement.parent instanceof SNode)
+        .forEach((diagramElement) => {
+          const index = nodeIds.indexOf(diagramElement.id);
+          if (index > -1 && nodeIds[index] !== diagramElement.id) {
+            nodeIds.splice(index, 1);
+          }
+        });
       const input = {
         projectId: id,
         representationId,
-        diagramElementId,
+        nodeIds,
+        edgeIds,
       };
-      deleteElementMutation({ input });
+      deleteElementsMutation({ input });
+      dispatch({ type: SET_CONTEXTUAL_PALETTE__ACTION, contextualPalette: undefined });
     },
-    [id, representationId, deleteElementMutation]
+    [id, representationId, deleteElementsMutation]
   );
 
   const invokeTool = useCallback(
@@ -391,7 +415,7 @@ export const DiagramWebSocketContainer = ({ representationId, selection, setSele
       dispatch({
         type: INITIALIZE__ACTION,
         diagramDomElement,
-        deleteElement,
+        deleteElements,
         invokeTool,
         editLabel,
         onSelectElement,
@@ -404,7 +428,7 @@ export const DiagramWebSocketContainer = ({ representationId, selection, setSele
     displayedRepresentationId,
     diagramServer,
     setSelection,
-    deleteElement,
+    deleteElements,
     invokeTool,
     editLabelMutation,
     toolSections,
@@ -552,7 +576,7 @@ export const DiagramWebSocketContainer = ({ representationId, selection, setSele
     }
     let invokeDeleteFromContextualPalette;
     if (deletable) {
-      invokeDeleteFromContextualPalette = () => deleteElement(element.id);
+      invokeDeleteFromContextualPalette = () => deleteElements([element]);
     }
     const invokeToolFromContextualPalette = (tool) => {
       if (tool.__typename === 'CreateEdgeTool') {
