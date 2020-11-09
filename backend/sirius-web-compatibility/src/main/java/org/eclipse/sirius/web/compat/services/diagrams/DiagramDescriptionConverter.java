@@ -104,7 +104,7 @@ public class DiagramDescriptionConverter implements IDiagramDescriptionConverter
         nodeDescriptions.addAll(containerDescriptions);
 
         // @formatter:off
-        EdgeMappingConverter edgeMappingConverter = new EdgeMappingConverter(this.objectService, interpreter, this.identifierProvider, id2NodeDescriptions);
+        EdgeMappingConverter edgeMappingConverter = new EdgeMappingConverter(this.objectService, this.editService, interpreter, this.identifierProvider, id2NodeDescriptions);
         List<EdgeDescription> edgeDescriptions = layers.stream()
                 .flatMap(layer -> layer.getEdgeMappings().stream())
                 .map(edgeMappingConverter::convert)

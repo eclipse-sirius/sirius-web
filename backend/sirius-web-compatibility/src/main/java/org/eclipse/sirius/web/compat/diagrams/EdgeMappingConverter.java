@@ -40,6 +40,7 @@ import org.eclipse.sirius.web.diagrams.description.NodeDescription;
 import org.eclipse.sirius.web.diagrams.elements.NodeElementProps;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
 import org.eclipse.sirius.web.representations.VariableManager;
+import org.eclipse.sirius.web.services.api.objects.IEditService;
 import org.eclipse.sirius.web.services.api.objects.IObjectService;
 
 /**
@@ -51,14 +52,18 @@ public class EdgeMappingConverter {
 
     private final IObjectService objectService;
 
+    private final IEditService editService;
+
     private final AQLInterpreter interpreter;
 
     private final IdentifierProvider identifierProvider;
 
     private final Map<UUID, NodeDescription> id2NodeDescriptions;
 
-    public EdgeMappingConverter(IObjectService objectService, AQLInterpreter interpreter, IdentifierProvider identifierProvider, Map<UUID, NodeDescription> id2NodeDescriptions) {
+    public EdgeMappingConverter(IObjectService objectService, IEditService editService, AQLInterpreter interpreter, IdentifierProvider identifierProvider,
+            Map<UUID, NodeDescription> id2NodeDescriptions) {
         this.objectService = Objects.requireNonNull(objectService);
+        this.editService = Objects.requireNonNull(editService);
         this.interpreter = Objects.requireNonNull(interpreter);
         this.identifierProvider = Objects.requireNonNull(identifierProvider);
         this.id2NodeDescriptions = Objects.requireNonNull(id2NodeDescriptions);
@@ -132,6 +137,9 @@ public class EdgeMappingConverter {
                 .map(edgeStyle -> this.createLabelProvider(labelStyleDescriptionConverter, edgeStyle.getEndLabelStyleDescription(), "_endlabel")) //$NON-NLS-1$
                 .orElse(variableManager -> Optional.empty());
 
+        ToolConverter toolConverter = new ToolConverter(this.interpreter, this.editService);
+        var deleteHandler = toolConverter.createDeleteToolHandler(edgeMapping.getDeletionDescription());
+
         return EdgeDescription.newEdgeDescription(UUID.fromString(this.identifierProvider.getIdentifier(edgeMapping)))
                 .idProvider(idProvider)
                 .targetObjectIdProvider(targetIdProvider)
@@ -145,7 +153,9 @@ public class EdgeMappingConverter {
                 .targetNodeDescriptions(targetNodeDescriptions)
                 .sourceNodesProvider(sourceNodesProvider)
                 .targetNodesProvider(targetNodesProvider)
-                .styleProvider(styleProvider).build();
+                .styleProvider(styleProvider)
+                .deleteHandler(deleteHandler)
+                .build();
         // @formatter:on
     }
 
