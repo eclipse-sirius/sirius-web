@@ -10,11 +10,6 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-.links {
-  display: grid;
-  justify-items: center;
-}
-
 .messageArea {
   min-height: 16px;
 }

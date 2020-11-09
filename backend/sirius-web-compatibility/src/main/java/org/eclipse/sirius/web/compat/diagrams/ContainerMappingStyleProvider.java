@@ -88,7 +88,7 @@ public class ContainerMappingStyleProvider implements Function<VariableManager, 
         String color = backgroundColorProvider.convert(flatContainerStyleDescription.getBackgroundColor());
         String borderColor = borderColorProvider.convert(flatContainerStyleDescription.getBorderColor());
 
-        LineStyle borderStyle = LineStyle.Solid;
+        LineStyle borderStyle = new LineStyleConverter().getStyle(flatContainerStyleDescription.getBorderLineStyle());
 
         Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), flatContainerStyleDescription.getBorderSizeComputationExpression());
         int borderSize = result.asInt().getAsInt();

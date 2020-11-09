@@ -18,6 +18,7 @@ import java.util.Optional;
 
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.IProjectEventHandler;
+import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.services.api.Context;
 import org.eclipse.sirius.web.services.api.dto.ErrorPayload;
 import org.eclipse.sirius.web.services.api.dto.IProjectInput;
@@ -30,6 +31,9 @@ import org.eclipse.sirius.web.spring.collaborative.messages.ICollaborativeMessag
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 
 /**
  * Handler used to delete an object.
@@ -47,10 +51,18 @@ public class DeleteObjectEventHandler implements IProjectEventHandler {
 
     private final ICollaborativeMessageService messageService;
 
-    public DeleteObjectEventHandler(IObjectService objectService, IEditService editService, ICollaborativeMessageService messageService) {
+    private final Counter counter;
+
+    public DeleteObjectEventHandler(IObjectService objectService, IEditService editService, ICollaborativeMessageService messageService, MeterRegistry meterRegistry) {
         this.objectService = Objects.requireNonNull(objectService);
         this.editService = Objects.requireNonNull(editService);
         this.messageService = Objects.requireNonNull(messageService);
+
+        // @formatter:off
+        this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
+                .tag(Monitoring.NAME, this.getClass().getSimpleName())
+                .register(meterRegistry);
+        // @formatter:on
     }
 
     @Override
@@ -60,6 +72,8 @@ public class DeleteObjectEventHandler implements IProjectEventHandler {
 
     @Override
     public EventHandlerResponse handle(IEditingContext editingContext, IProjectInput projectInput, Context context) {
+        this.counter.increment();
+
         if (projectInput instanceof DeleteObjectInput) {
             DeleteObjectInput input = (DeleteObjectInput) projectInput;
 

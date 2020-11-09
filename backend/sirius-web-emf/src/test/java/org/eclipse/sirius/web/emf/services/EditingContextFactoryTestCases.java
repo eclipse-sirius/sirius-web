@@ -30,6 +30,8 @@ import org.eclipse.sirius.web.services.api.objects.IEditingContext;
 import org.eclipse.sirius.web.services.api.objects.IEditingContextFactory;
 import org.junit.Test;
 
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
+
 /**
  * Unit tests of the editing context factory.
  *
@@ -74,7 +76,7 @@ public class EditingContextFactoryTestCases {
 
         UUID projectId = UUID.randomUUID();
 
-        IEditingContextFactory editingContextFactory = new EditingContextFactory(documentRepository, composedAdapterFactory, ePackageRegistry);
+        IEditingContextFactory editingContextFactory = new EditingContextFactory(documentRepository, composedAdapterFactory, ePackageRegistry, new SimpleMeterRegistry());
         IEditingContext editingContext = editingContextFactory.createEditingContext(projectId);
 
         assertThat(editingContext.getDomain()).isInstanceOf(EditingDomain.class);
@@ -112,7 +114,7 @@ public class EditingContextFactoryTestCases {
         ComposedAdapterFactory composedAdapterFactory = new ComposedAdapterFactory();
         EPackage.Registry ePackageRegistry = new EPackageRegistryImpl();
 
-        IEditingContextFactory editingContextFactory = new EditingContextFactory(documentRepository, composedAdapterFactory, ePackageRegistry);
+        IEditingContextFactory editingContextFactory = new EditingContextFactory(documentRepository, composedAdapterFactory, ePackageRegistry, new SimpleMeterRegistry());
         IEditingContext editingContext = editingContextFactory.createEditingContext(projectId);
 
         assertThat(editingContext.getDomain()).isInstanceOf(EditingDomain.class);

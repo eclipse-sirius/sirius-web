@@ -26,6 +26,8 @@ import org.eclipse.sirius.web.services.api.objects.IEditingContext;
 import org.junit.Test;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
+
 /**
  * Tests of the create root object event handler.
  *
@@ -42,7 +44,7 @@ public class CreateRootObjectEventHandlerTestCases {
             }
         };
 
-        CreateRootObjectEventHandler handler = new CreateRootObjectEventHandler(editService, new NoOpCollaborativeMessageService());
+        CreateRootObjectEventHandler handler = new CreateRootObjectEventHandler(editService, new NoOpCollaborativeMessageService(), new SimpleMeterRegistry());
         var input = new CreateRootObjectInput(UUID.randomUUID(), UUID.randomUUID(), "namespaceId", "rootObjectCreationDescriptionId"); //$NON-NLS-1$//$NON-NLS-2$
         var context = new Context(new UsernamePasswordAuthenticationToken(null, null));
         assertThat(handler.canHandle(input)).isTrue();

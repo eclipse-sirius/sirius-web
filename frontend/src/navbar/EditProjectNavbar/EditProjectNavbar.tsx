@@ -1,4 +1,3 @@
-import { useBranding } from 'common/BrandingContext';
 /*******************************************************************************
  * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
@@ -11,9 +10,12 @@ import { useBranding } from 'common/BrandingContext';
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { useAuth } from 'auth/useAuth';
+import { useBranding } from 'common/BrandingContext';
 import { IconButton } from 'core/button/Button';
 import { LARGE, LIGHT } from 'core/subscriber/Subscriber';
 import { Subscribers } from 'core/subscriber/Subscribers';
+import { Text } from 'core/text/Text';
 import { More } from 'icons';
 import { DeleteProjectModal } from 'modals/delete-project/DeleteProjectModal';
 import { NewDocumentModal } from 'modals/new-document/NewDocumentModal';
@@ -34,6 +36,7 @@ import {
   HANDLE_REDIRECTING__ACTION,
   HANDLE_SHOW_CONTEXT_MENU__ACTION,
   HANDLE_SHOW_MODAL__ACTION,
+  EMPTY__STATE,
   REDIRECT__STATE,
 } from './machine';
 import { initialState, reducer } from './reducer';
@@ -50,13 +53,25 @@ const propTypes = {
   subscribers: PropTypes.array.isRequired,
 };
 export const EditProjectNavbar = ({ subscribers }) => {
-  const { id, name } = useProject() as any;
+  const {
+    id,
+    name,
+    canEdit,
+    owner: { username: projectOwner },
+  } = useProject() as any;
+  const { username } = useAuth() as any;
   const [state, dispatch] = useReducer(reducer, initialState);
   const { userStatus } = useBranding();
   const onMore = (event) => {
-    const { x, y } = event.target.getBoundingClientRect();
-    const action = { type: HANDLE_SHOW_CONTEXT_MENU__ACTION, x: x + menuPositionDelta.dx, y: y + menuPositionDelta.dy };
-    dispatch(action);
+    if (state.viewState === EMPTY__STATE) {
+      const { x, y } = event.target.getBoundingClientRect();
+      const action = {
+        type: HANDLE_SHOW_CONTEXT_MENU__ACTION,
+        x: x + menuPositionDelta.dx,
+        y: y + menuPositionDelta.dy,
+      };
+      dispatch(action);
+    }
   };
 
   const { viewState, to, modalDisplayed, x, y } = state;
@@ -114,6 +129,18 @@ export const EditProjectNavbar = ({ subscribers }) => {
   } else if (modalDisplayed === 'DeleteProject') {
     modal = <DeleteProjectModal projectId={id} onProjectDeleted={onProjectDeleted} onClose={onCloseModal} />;
   }
+  let accessDetails = undefined;
+  if (!canEdit) {
+    accessDetails = (
+      <Text
+        className={styles.accessDetails}
+        data-testid="project-access-details">{`View Only (owned by ${projectOwner})`}</Text>
+    );
+  } else if (projectOwner !== username) {
+    accessDetails = (
+      <Text className={styles.accessDetails} data-testid="project-access-details">{`(owned by ${projectOwner})`}</Text>
+    );
+  }
   return (
     <>
       <div className={styles.editProjectNavbar}>
@@ -129,6 +156,7 @@ export const EditProjectNavbar = ({ subscribers }) => {
                   <More title="More" />
                 </IconButton>
               </div>
+              {accessDetails}
             </div>
           </div>
           <div className={styles.rightArea}>

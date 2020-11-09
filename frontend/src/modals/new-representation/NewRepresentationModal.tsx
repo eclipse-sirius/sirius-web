@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMutation, useQuery } from 'common/GraphQLHooks';
-import { ActionButton } from 'core/button/Button';
+import { Buttons, ActionButton } from 'core/button/Button';
 import { Form } from 'core/form/Form';
 import { Label } from 'core/label/Label';
 import { Select } from 'core/select/Select';
@@ -157,7 +157,7 @@ export const NewRepresentationModal = ({ projectId, classId, objectId, onReprese
     createRepresentation({ input });
   };
 
-  let invalid = !(name != null && name.length > 0); // TODO Textfield does not actually support an "invalid" prop
+  let invalid = !(name != null && name.length > 0 && selectedRepresentationDescription); // TODO Textfield does not actually support an "invalid" prop
 
   let selectedValue = undefined;
   if (selectedRepresentationDescription) {
@@ -186,8 +186,9 @@ export const NewRepresentationModal = ({ projectId, classId, objectId, onReprese
             data-testid="description"
           />
         </Label>
-        <ActionButton type="submit" disabled={invalid} label="Create" data-testid="create-representation" />
-        <ActionButton onClick={onClose} label="Cancel" data-testid="cancel" />
+        <Buttons>
+          <ActionButton type="submit" disabled={invalid} label="Create" data-testid="create-representation" />
+        </Buttons>
       </Form>
     </Modal>
   );

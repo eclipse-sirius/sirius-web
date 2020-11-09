@@ -27,7 +27,6 @@ import org.eclipse.sirius.web.representations.IRepresentation;
 import org.eclipse.sirius.web.services.api.Context;
 import org.eclipse.sirius.web.services.api.dto.IPayload;
 import org.eclipse.sirius.web.services.api.dto.IRepresentationInput;
-import org.eclipse.sirius.web.services.api.monitoring.IStopWatch;
 import org.eclipse.sirius.web.services.api.objects.IEditingContext;
 import org.eclipse.sirius.web.services.api.representations.RenameRepresentationInput;
 import org.slf4j.Logger;
@@ -100,7 +99,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
     }
 
     @Override
-    public void refresh(IStopWatch stopWatch) {
+    public void refresh() {
         this.diagramRefreshManager.refresh(this.editingContext.getProjectId(), this.diagramCreationParameters);
     }
 

@@ -31,6 +31,8 @@ import org.eclipse.sirius.web.services.api.projects.Visibility;
 import org.junit.Test;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
+
 /**
  * Unit tests of the delete document event handler.
  *
@@ -48,7 +50,7 @@ public class DeleteDocumentEventHandlerTestCases {
                 return Optional.of(document);
             }
         };
-        DeleteDocumentEventHandler handler = new DeleteDocumentEventHandler(documentService, new NoOpEMFMessageService());
+        DeleteDocumentEventHandler handler = new DeleteDocumentEventHandler(documentService, new NoOpEMFMessageService(), new SimpleMeterRegistry());
 
         var input = new DeleteDocumentInput(document.getId());
         var context = new Context(new UsernamePasswordAuthenticationToken(null, null));

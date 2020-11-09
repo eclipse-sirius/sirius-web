@@ -64,6 +64,10 @@
   background-color: var(--blue-lagoon);
 }
 
+.checkbox.disabled > input[type='checkbox']:checked ~ .checkmark {
+  background-color: var(--daintree-lighten-70);
+}
+
 .checkbox > input[type='checkbox']:checked ~ .checkmark::after {
   display: block;
 }
@@ -76,10 +80,26 @@
   background-color: var(--blue-lagoon-darken-20);
 }
 
+.checkbox.disabled:hover input[type='checkbox'] ~ .checkmark {
+  background-color: var(--daintree-lighten-70);
+}
+
 .checkbox:active {
   color: var(--blue-lagoon-lighten-20);
 }
 
+.checkbox.disabled:active {
+  color: var(--daintree-lighten-70);
+}
+
 .checkbox:active input[type='checkbox'] ~ .checkmark {
   background-color: var(--blue-lagoon-lighten-20);
+}
+
+.checkbox.disabled:active input[type='checkbox'] ~ .checkmark {
+  background-color: var(--daintree-lighten-70);
+}
+
+.disabled {
+  color: var(--daintree-lighten-70);
 }

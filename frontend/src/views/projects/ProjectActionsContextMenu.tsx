@@ -10,27 +10,31 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import React from 'react';
-import PropTypes from 'prop-types';
-
 import { httpOrigin } from 'common/URL';
 import { ContextMenu, Entry } from 'core/contextmenu/ContextMenu';
 import { Delete } from 'icons/Delete';
-import { Edit } from 'icons/Edit';
 import { Download } from 'icons/Download';
+import { Edit } from 'icons/Edit';
+import { UnsynchronizedPermission } from 'project/Permission';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 const propTypes = {
   projectId: PropTypes.string.isRequired,
+  accessLevel: PropTypes.string.isRequired,
   x: PropTypes.number.isRequired,
   y: PropTypes.number.isRequired,
   onDelete: PropTypes.func.isRequired,
   onRename: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
 };
-export const ProjectActionsContextMenu = ({ projectId, x, y, onDelete, onRename, onClose }) => {
+
+export const ProjectActionsContextMenu = ({ projectId, accessLevel, x, y, onDelete, onRename, onClose }) => {
   return (
     <ContextMenu x={x} y={y} caretPosition="left" onClose={onClose} data-testid="project-actions-contextmenu">
-      <Entry icon={<Edit title="" />} label="Rename" onClick={onRename} data-testid="rename" />
+      <UnsynchronizedPermission requiredAccessLevel="EDIT" accessLevel={accessLevel}>
+        <Entry icon={<Edit title="" />} label="Rename" onClick={onRename} data-testid="rename" />
+      </UnsynchronizedPermission>
       <a
         href={`${httpOrigin}/api/projects/${projectId}`}
         type="application/octet-stream"
@@ -38,7 +42,9 @@ export const ProjectActionsContextMenu = ({ projectId, x, y, onDelete, onRename,
         data-testid="download-link">
         <Entry icon={<Download title="" />} label="Download" data-testid="download" />
       </a>
-      <Entry icon={<Delete title="" />} label="Delete" onClick={onDelete} data-testid="delete" />
+      <UnsynchronizedPermission requiredAccessLevel="ADMIN" accessLevel={accessLevel}>
+        <Entry icon={<Delete title="" />} label="Delete" onClick={onDelete} data-testid="delete" />
+      </UnsynchronizedPermission>
     </ContextMenu>
   );
 };

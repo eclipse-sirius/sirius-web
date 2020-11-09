@@ -34,6 +34,8 @@ import org.eclipse.sirius.web.services.api.representations.RepresentationDescrip
 import org.junit.Test;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
+
 /**
  * Unit tests of the delete representation event handler.
  *
@@ -100,7 +102,7 @@ public class DeleteRepresentationEventHandlerTestCases {
 
     private EventHandlerResponse handleEvent(IRepresentationService representationService, IProjectService projectService) {
         IProjectInput input = new DeleteRepresentationInput(UUID.randomUUID());
-        DeleteRepresentationEventHandler handler = new DeleteRepresentationEventHandler(representationService, projectService, new NoOpCollaborativeMessageService());
+        DeleteRepresentationEventHandler handler = new DeleteRepresentationEventHandler(representationService, projectService, new NoOpCollaborativeMessageService(), new SimpleMeterRegistry());
         assertThat(handler.canHandle(input)).isTrue();
 
         IEditingContext editingContext = new NoOpEditingContext();

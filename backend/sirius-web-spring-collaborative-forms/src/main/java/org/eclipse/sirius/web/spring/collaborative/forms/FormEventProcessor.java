@@ -40,7 +40,6 @@ import org.eclipse.sirius.web.representations.VariableManager;
 import org.eclipse.sirius.web.services.api.Context;
 import org.eclipse.sirius.web.services.api.dto.IPayload;
 import org.eclipse.sirius.web.services.api.dto.IRepresentationInput;
-import org.eclipse.sirius.web.services.api.monitoring.IStopWatch;
 import org.eclipse.sirius.web.services.api.objects.IEditingContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -131,10 +130,8 @@ public class FormEventProcessor implements IFormEventProcessor {
     }
 
     @Override
-    public void refresh(IStopWatch stopWatch) {
-        stopWatch.start("Form rendering"); //$NON-NLS-1$
+    public void refresh() {
         Form form = this.refreshForm();
-        stopWatch.stop();
 
         this.currentForm.set(form);
         this.sink.next(new FormRefreshedEventPayload(form));

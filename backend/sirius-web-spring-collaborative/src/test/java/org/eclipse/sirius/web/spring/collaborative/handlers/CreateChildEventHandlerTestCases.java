@@ -28,6 +28,8 @@ import org.eclipse.sirius.web.services.api.objects.IObjectService;
 import org.junit.Test;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
+
 /**
  * Tests of the create child event handler.
  *
@@ -70,7 +72,7 @@ public class CreateChildEventHandlerTestCases {
             }
         };
 
-        CreateChildEventHandler handler = new CreateChildEventHandler(objectService, editService, new NoOpCollaborativeMessageService());
+        CreateChildEventHandler handler = new CreateChildEventHandler(objectService, editService, new NoOpCollaborativeMessageService(), new SimpleMeterRegistry());
         var input = new CreateChildInput(UUID.randomUUID(), "parentObjectId", "childCreationDescriptionId"); //$NON-NLS-1$//$NON-NLS-2$
         var context = new Context(new UsernamePasswordAuthenticationToken(null, null));
 

@@ -30,6 +30,8 @@ import org.eclipse.sirius.web.forms.Textfield;
 import org.eclipse.sirius.web.representations.Status;
 import org.junit.Test;
 
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
+
 /**
  * Unit tests of the edit textfield event handler.
  *
@@ -80,7 +82,7 @@ public class EditTextfieldEventHandlerTestCases {
                 return Optional.of(textfield);
             }
         };
-        EditTextfieldEventHandler handler = new EditTextfieldEventHandler(formService, new NoOpCollaborativeFormMessageService());
+        EditTextfieldEventHandler handler = new EditTextfieldEventHandler(formService, new NoOpCollaborativeFormMessageService(), new SimpleMeterRegistry());
         assertThat(handler.canHandle(input)).isTrue();
 
         handler.handle(form, input);

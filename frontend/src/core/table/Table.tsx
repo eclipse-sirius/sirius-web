@@ -17,10 +17,11 @@ import { TableItem } from './TableItem';
 
 const propTypes = {
   children: PropTypes.node,
+  'data-testid': PropTypes.string.isRequired,
 };
 
-export const Table = ({ children }) => {
+export const Table = ({ 'data-testid': dataTestid, children }) => {
   const content = React.Children.map(children, (child, i) => <TableItem key={i}>{child}</TableItem>);
-  return <div>{content}</div>;
+  return <div data-testid={dataTestid}>{content}</div>;
 };
 Table.propTypes = propTypes;

@@ -20,14 +20,18 @@ const propTypes = {
   checked: PropTypes.bool.isRequired,
   onChange: PropTypes.func,
   readOnly: PropTypes.bool,
+  disabled: PropTypes.bool,
   label: PropTypes.oneOfType([PropTypes.string, PropTypes.node]).isRequired,
   'data-testid': PropTypes.string.isRequired,
 };
 
-export const Checkbox = ({ name, checked, onChange, readOnly, label, 'data-testid': dataTestId }) => {
+export const Checkbox = ({ name, checked, onChange, readOnly, disabled, label, 'data-testid': dataTestId }) => {
   let checkboxClass = `${styles.checkbox}`;
   if (checked) {
     checkboxClass = `${checkboxClass} ${styles.checked}`;
+  }
+  if (readOnly || disabled) {
+    checkboxClass = `${checkboxClass} ${styles.disabled}`;
   }
   return (
     <label className={checkboxClass}>
@@ -36,6 +40,7 @@ export const Checkbox = ({ name, checked, onChange, readOnly, label, 'data-testi
         name={name}
         checked={checked}
         readOnly={readOnly}
+        disabled={disabled}
         onChange={onChange}
         data-testid={dataTestId}
       />

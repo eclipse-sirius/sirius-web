@@ -13,17 +13,15 @@
 package org.eclipse.sirius.web.graphql.datafetchers.mutation;
 
 import java.util.Objects;
-import java.util.Optional;
 
 import org.eclipse.sirius.web.annotations.graphql.GraphQLMutationTypes;
 import org.eclipse.sirius.web.annotations.spring.graphql.MutationDataFetcher;
+import org.eclipse.sirius.web.collaborative.api.services.IProjectEventProcessorRegistry;
 import org.eclipse.sirius.web.graphql.datafetchers.IDataFetchingEnvironmentService;
 import org.eclipse.sirius.web.graphql.messages.IGraphQLMessageService;
 import org.eclipse.sirius.web.graphql.schema.MutationTypeProvider;
 import org.eclipse.sirius.web.services.api.dto.ErrorPayload;
 import org.eclipse.sirius.web.services.api.dto.IPayload;
-import org.eclipse.sirius.web.services.api.projects.IProjectService;
-import org.eclipse.sirius.web.services.api.projects.Project;
 import org.eclipse.sirius.web.services.api.projects.RenameProjectInput;
 import org.eclipse.sirius.web.services.api.projects.RenameProjectSuccessPayload;
 import org.eclipse.sirius.web.spring.graphql.api.IDataFetcherWithFieldCoordinates;
@@ -59,27 +57,29 @@ public class MutationRenameProjectDataFetcher implements IDataFetcherWithFieldCo
 
     private final IDataFetchingEnvironmentService dataFetchingEnvironmentService;
 
-    private final IProjectService projectService;
-
     private final IGraphQLMessageService messageService;
 
-    public MutationRenameProjectDataFetcher(IDataFetchingEnvironmentService dataFetchingEnvironmentService, IProjectService projectRepository, IGraphQLMessageService messageService) {
+    private IProjectEventProcessorRegistry projectEventProcessorRegistry;
+
+    public MutationRenameProjectDataFetcher(IDataFetchingEnvironmentService dataFetchingEnvironmentService, IProjectEventProcessorRegistry projectEventProcessorRegistry,
+            IGraphQLMessageService messageService) {
         this.dataFetchingEnvironmentService = Objects.requireNonNull(dataFetchingEnvironmentService);
-        this.projectService = Objects.requireNonNull(projectRepository);
+        this.projectEventProcessorRegistry = Objects.requireNonNull(projectEventProcessorRegistry);
         this.messageService = Objects.requireNonNull(messageService);
     }
 
     @Override
     public IPayload get(DataFetchingEnvironment environment) throws Exception {
         var input = this.dataFetchingEnvironmentService.getInput(environment, RenameProjectInput.class);
+        var context = this.dataFetchingEnvironmentService.getContext(environment);
 
         IPayload payload = new ErrorPayload(this.messageService.unexpectedError());
         boolean canAdmin = this.dataFetchingEnvironmentService.canAdmin(environment, input.getProjectId());
         if (canAdmin) {
-            Optional<Project> optionalProject = this.projectService.renameProject(input.getProjectId(), input.getNewName());
-            if (optionalProject.isPresent()) {
-                payload = new RenameProjectSuccessPayload(optionalProject.get());
-            }
+         // @formatter:off
+            payload = this.projectEventProcessorRegistry.dispatchEvent(input.getProjectId(), input, context)
+                    .orElse(new ErrorPayload(this.messageService.unexpectedError()));
+            // @formatter:on
         } else {
             payload = new ErrorPayload(this.messageService.unauthorized());
         }

@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.security.Principal;
 import java.text.MessageFormat;
+import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +34,7 @@ import org.eclipse.sirius.web.spring.graphql.ws.dto.input.ConnectionTerminateMes
 import org.eclipse.sirius.web.spring.graphql.ws.dto.input.StartMessage;
 import org.eclipse.sirius.web.spring.graphql.ws.dto.input.StopMessage;
 import org.eclipse.sirius.web.spring.graphql.ws.dto.output.ConnectionErrorMessage;
+import org.eclipse.sirius.web.spring.graphql.ws.dto.output.ConnectionKeepAliveMessage;
 import org.eclipse.sirius.web.spring.graphql.ws.handlers.ConnectionInitMessageHandler;
 import org.eclipse.sirius.web.spring.graphql.ws.handlers.ConnectionTerminateMessageHandler;
 import org.eclipse.sirius.web.spring.graphql.ws.handlers.StartMessageHandler;
@@ -49,6 +51,11 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import graphql.GraphQL;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.Gauge;
+import io.micrometer.core.instrument.MeterRegistry;
+import reactor.core.Disposable;
+import reactor.core.publisher.Flux;
 
 /**
  * The entry point of the GraphQL Web Socket API.
@@ -167,6 +174,14 @@ import graphql.GraphQL;
  */
 public class GraphQLWebSocketHandler extends TextWebSocketHandler implements SubProtocolCapable {
 
+    private static final Duration GRAPHQL_KEEP_ALIVE_INTERVAL = Duration.ofSeconds(58);
+
+    private static final String COUNTER_METRIC_NAME = "siriusweb_graphql_ws_messages"; //$NON-NLS-1$
+
+    private static final String TIMER_METRIC_NAME = "siriusweb_graphql_ws_sessions"; //$NON-NLS-1$
+
+    private static final String MESSAGE = "message"; //$NON-NLS-1$
+
     private static final String GRAPHQL_WS = "graphql-ws"; //$NON-NLS-1$
 
     private static final String TYPE = "type"; //$NON-NLS-1$
@@ -179,12 +194,48 @@ public class GraphQLWebSocketHandler extends TextWebSocketHandler implements Sub
 
     private final Map<WebSocketSession, List<SubscriptionEntry>> sessions2entries = new ConcurrentHashMap<>();
 
+    private final Map<WebSocketSession, Disposable> sessions2keepAliveSubscriptions = new ConcurrentHashMap<>();
+
     private final ISubscriptionTerminatedHandler subscriptionTerminatedHandler;
 
-    public GraphQLWebSocketHandler(ObjectMapper objectMapper, GraphQL graphQL, ISubscriptionTerminatedHandler subscriptionTerminatedHandler) {
+    private final Counter connectionInitCounter;
+
+    private final Counter startMessageCounter;
+
+    private final Counter stopMessageCounter;
+
+    private final Counter connectionTerminateCounter;
+
+    private final Counter connectionErrorCounter;
+
+    private final MeterRegistry meterRegistry;
+
+    public GraphQLWebSocketHandler(ObjectMapper objectMapper, GraphQL graphQL, ISubscriptionTerminatedHandler subscriptionTerminatedHandler, MeterRegistry meterRegistry) {
         this.objectMapper = Objects.requireNonNull(objectMapper);
         this.graphQL = Objects.requireNonNull(graphQL);
         this.subscriptionTerminatedHandler = Objects.requireNonNull(subscriptionTerminatedHandler);
+        this.meterRegistry = Objects.requireNonNull(meterRegistry);
+
+        // @formatter:off
+        this.startMessageCounter = Counter.builder(COUNTER_METRIC_NAME)
+                .tag(MESSAGE, "Start") //$NON-NLS-1$
+                .register(meterRegistry);
+        this.stopMessageCounter = Counter.builder(COUNTER_METRIC_NAME)
+                .tag(MESSAGE, "Stop") //$NON-NLS-1$
+                .register(meterRegistry);
+        this.connectionInitCounter = Counter.builder(COUNTER_METRIC_NAME)
+                .tag(MESSAGE, "Connection Init") //$NON-NLS-1$
+                .register(meterRegistry);
+        this.connectionErrorCounter = Counter.builder(COUNTER_METRIC_NAME)
+                .tag(MESSAGE, "Connection Error") //$NON-NLS-1$
+                .register(meterRegistry);
+        this.connectionTerminateCounter = Counter.builder(COUNTER_METRIC_NAME)
+                .tag(MESSAGE, "Connection Terminate") //$NON-NLS-1$
+                .register(meterRegistry);
+        Gauge.builder(TIMER_METRIC_NAME, this.sessions2keepAliveSubscriptions.keySet()::size)
+                .register(meterRegistry);
+        // @formatter:on
+
     }
 
     @Override
@@ -207,19 +258,26 @@ public class GraphQLWebSocketHandler extends TextWebSocketHandler implements Sub
 
             if (operationMessage instanceof ConnectionInitMessage) {
                 new ConnectionInitMessageHandler(session, this.objectMapper).handle();
+                this.connectionInitCounter.increment();
             } else if (operationMessage instanceof StartMessage) {
                 StartMessage startMessage = (StartMessage) operationMessage;
-                new StartMessageHandler(session, this.graphQL, this.objectMapper, this.sessions2entries).handle(startMessage);
+
+                new StartMessageHandler(session, this.graphQL, this.objectMapper, this.sessions2entries, this.meterRegistry).handle(startMessage);
+                this.startMessageCounter.increment();
             } else if (operationMessage instanceof StopMessage) {
                 StopMessage stopMessage = (StopMessage) operationMessage;
                 new StopMessageHandler(session, this.sessions2entries, this.subscriptionTerminatedHandler).handle(stopMessage);
+                this.stopMessageCounter.increment();
             } else if (operationMessage instanceof ConnectionTerminateMessage) {
                 new ConnectionTerminateMessageHandler(session, this.sessions2entries, this.subscriptionTerminatedHandler);
+                this.connectionTerminateCounter.increment();
             } else {
                 this.send(session, new ConnectionErrorMessage());
+                this.connectionErrorCounter.increment();
             }
         } else {
             this.send(session, new ConnectionErrorMessage());
+            this.connectionErrorCounter.increment();
         }
     }
 
@@ -285,7 +343,19 @@ public class GraphQLWebSocketHandler extends TextWebSocketHandler implements Sub
     }
 
     @Override
+    public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+        // @formatter:off
+        Disposable subscribe = Flux.interval(GRAPHQL_KEEP_ALIVE_INTERVAL)
+                .subscribe(data -> this.send(session, new ConnectionKeepAliveMessage()));
+        // @formatter:on
+        this.sessions2keepAliveSubscriptions.put(session, subscribe);
+    }
+
+    @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+        Disposable keepAliveSubscription = this.sessions2keepAliveSubscriptions.remove(session);
+        keepAliveSubscription.dispose();
+
         // Closing the connection will trigger the same behavior as indicating that the connection should be closed
         new ConnectionTerminateMessageHandler(session, this.sessions2entries, this.subscriptionTerminatedHandler).handle();
     }

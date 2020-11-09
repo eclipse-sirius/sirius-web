@@ -31,6 +31,8 @@ import org.eclipse.sirius.web.forms.RadioOption;
 import org.eclipse.sirius.web.representations.Status;
 import org.junit.Test;
 
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
+
 /**
  * Unit tests of the edit radio event handler.
  *
@@ -86,7 +88,7 @@ public class EditRadioEventHandlerTestCases {
                 return Optional.of(radio);
             }
         };
-        EditRadioEventHandler handler = new EditRadioEventHandler(formService, new NoOpCollaborativeFormMessageService());
+        EditRadioEventHandler handler = new EditRadioEventHandler(formService, new NoOpCollaborativeFormMessageService(), new SimpleMeterRegistry());
 
         assertThat(handler.canHandle(input)).isTrue();
 

@@ -30,6 +30,7 @@ export const initialState = {
   viewState: PRISTINE__STATE,
   file: null,
   message: null,
+  newProjectId: undefined,
 };
 
 export const reducer = (prevState, action) => {

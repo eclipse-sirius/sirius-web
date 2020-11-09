@@ -13,12 +13,15 @@
 import { useCapabilities } from 'capabilities/useCapabilities';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { httpOrigin } from 'common/URL';
 
-export const Go = ({ to, children, ...props }) => {
+export const Go = ({ to, disabled = false, children, ...props }) => {
   const capabilities = useCapabilities();
-  if (capabilities?.overrides(to)) {
+  if (disabled) {
+    return React.cloneElement(children, { disabled });
+  } else if (capabilities?.overrides(to)) {
     return (
-      <a {...props} href={to}>
+      <a {...props} href={httpOrigin + to}>
         {children}
       </a>
     );

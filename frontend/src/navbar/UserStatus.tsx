@@ -45,9 +45,11 @@ export const UserStatus = () => {
   }
 
   const onMore = (event) => {
-    const { x, y, width } = event.target.getBoundingClientRect();
-    const contextMenuWidth = 200;
-    setState({ x: x - contextMenuWidth + width, y, showContextMenu: true });
+    if (!showContextMenu) {
+      const { x, y, width } = event.target.getBoundingClientRect();
+      const contextMenuWidth = 200;
+      setState({ x: x - contextMenuWidth + width, y, showContextMenu: true });
+    }
   };
 
   if (auth.username) {

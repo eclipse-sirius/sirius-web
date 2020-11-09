@@ -29,10 +29,11 @@ export const Tree = ({ tree, onExpand, selection, displayedRepresentation, setSe
   useEffect(() => {
     const downHandler = (event) => {
       if (
-        event.key === 'ArrowLeft' ||
-        event.key === 'ArrowRight' ||
-        event.key === 'ArrowUp' ||
-        event.key === 'ArrowDown'
+        (event.key === 'ArrowLeft' ||
+          event.key === 'ArrowRight' ||
+          event.key === 'ArrowUp' ||
+          event.key === 'ArrowDown') &&
+        event.target.tagName !== 'INPUT'
       ) {
         event.preventDefault();
 

@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { ActionButton } from 'core/button/Button';
+import { ActionButton, SecondaryButton } from 'core/button/Button';
 import { Text } from 'core/text/Text';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -27,7 +27,7 @@ export const ProjectsViewContainer = ({ children }) => {
         <Text className={styles.headline}>Projects</Text>
         <div className={styles.actions}>
           <ActionButton to="/new/project" label="New" data-testid="create" />
-          <ActionButton to="/upload/project" label="Upload" data-testid="upload" />
+          <SecondaryButton to="/upload/project" label="Upload" data-testid="upload" />
         </div>
       </div>
       <div className={styles.content}>{children}</div>

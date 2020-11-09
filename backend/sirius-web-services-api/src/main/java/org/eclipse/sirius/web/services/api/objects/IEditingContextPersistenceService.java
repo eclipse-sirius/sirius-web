@@ -14,13 +14,11 @@ package org.eclipse.sirius.web.services.api.objects;
 
 import java.util.UUID;
 
-import org.eclipse.sirius.web.services.api.monitoring.IStopWatch;
-
 /**
  * Interface used to save the editing context when a change has been performed.
  *
  * @author sbegaudeau
  */
 public interface IEditingContextPersistenceService {
-    void persist(UUID projectId, IEditingContext editingContext, IStopWatch stopWatch);
+    void persist(UUID projectId, IEditingContext editingContext);
 }

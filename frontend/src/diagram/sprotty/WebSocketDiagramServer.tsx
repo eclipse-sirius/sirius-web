@@ -192,7 +192,7 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
       selectedItems.forEach((item) => {
         const label = item.editableLabel;
         if (label) {
-          this.actionDispatcher.dispatch(new EditLabelAction(label.id));
+          this.actionDispatcher.dispatchAll([{ kind: HIDE_CONTEXTUAL_TOOLBAR_ACTION }, new EditLabelAction(label.id)]);
         }
       });
     }
@@ -200,7 +200,10 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
 
   handleSiriusLabelEditAction(action) {
     const { elementId } = action;
-    this.actionDispatcher.dispatch(new EditLabelAction(elementId + '_label'));
+    this.actionDispatcher.dispatchAll([
+      { kind: HIDE_CONTEXTUAL_TOOLBAR_ACTION },
+      new EditLabelAction(elementId + '_label'),
+    ]);
   }
 
   handleSprottySelectAction(action) {

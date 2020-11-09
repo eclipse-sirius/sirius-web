@@ -18,19 +18,19 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import org.eclipse.sirius.web.persistence.entities.ProjectEntity;
 import org.eclipse.sirius.web.persistence.entities.RepresentationEntity;
 import org.eclipse.sirius.web.persistence.repositories.IProjectRepository;
 import org.eclipse.sirius.web.persistence.repositories.IRepresentationRepository;
-import org.eclipse.sirius.web.services.api.monitoring.IStopWatch;
-import org.eclipse.sirius.web.services.api.monitoring.IStopWatchFactory;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationService;
 import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Timer;
 
 /**
  * The service to manipulate representations.
@@ -40,7 +40,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class RepresentationService implements IRepresentationService {
 
-    private final Logger logger = LoggerFactory.getLogger(RepresentationService.class);
+    private static final String TIMER_NAME = "siriusweb_representation_save"; //$NON-NLS-1$
 
     private final IProjectRepository projectRepository;
 
@@ -48,13 +48,14 @@ public class RepresentationService implements IRepresentationService {
 
     private final ObjectMapper objectMapper;
 
-    private final IStopWatchFactory stopWatchFactory;
+    private final Timer timer;
 
-    public RepresentationService(IProjectRepository projectRepository, IRepresentationRepository representationRepository, ObjectMapper objectMapper, IStopWatchFactory stopWatchFactory) {
+    public RepresentationService(IProjectRepository projectRepository, IRepresentationRepository representationRepository, ObjectMapper objectMapper, MeterRegistry meterRegistry) {
         this.projectRepository = Objects.requireNonNull(projectRepository);
         this.representationRepository = Objects.requireNonNull(representationRepository);
         this.objectMapper = Objects.requireNonNull(objectMapper);
-        this.stopWatchFactory = Objects.requireNonNull(stopWatchFactory);
+
+        this.timer = Timer.builder(TIMER_NAME).register(meterRegistry);
     }
 
     @Override
@@ -87,21 +88,17 @@ public class RepresentationService implements IRepresentationService {
 
     @Override
     public void save(RepresentationDescriptor representationDescriptor) {
-        IStopWatch stopWatch = this.stopWatchFactory.createStopWatch("Saving representation"); //$NON-NLS-1$
-        stopWatch.start("Finding ProjectEntity"); //$NON-NLS-1$
+        long start = System.currentTimeMillis();
+
         var optionalProjectEntity = this.projectRepository.findById(representationDescriptor.getProjectId());
         if (optionalProjectEntity.isPresent()) {
             ProjectEntity projectEntity = optionalProjectEntity.get();
-            stopWatch.stop();
-            stopWatch.start("RepresentationEntity creation (incl. serialization to JSON)"); //$NON-NLS-1$
             RepresentationEntity representationEntity = new RepresentationMapper(this.objectMapper).toEntity(representationDescriptor, projectEntity);
-            stopWatch.stop();
-            int length = representationEntity.getContent().length() / 1024;
-            stopWatch.start("Saving RepresentationEntity to database (" + length + " kiB)"); //$NON-NLS-1$ //$NON-NLS-2$
             this.representationRepository.save(representationEntity);
-            stopWatch.stop();
         }
-        this.logger.debug(System.lineSeparator() + stopWatch.prettyPrint());
+
+        long end = System.currentTimeMillis();
+        this.timer.record(end - start, TimeUnit.MILLISECONDS);
     }
 
     @Override

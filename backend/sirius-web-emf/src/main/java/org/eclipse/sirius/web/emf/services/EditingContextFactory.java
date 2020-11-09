@@ -18,6 +18,7 @@ import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import org.eclipse.emf.common.command.BasicCommandStack;
 import org.eclipse.emf.common.util.URI;
@@ -36,6 +37,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Timer;
+
 /**
  * Service used to create a new editing context.
  *
@@ -43,6 +47,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class EditingContextFactory implements IEditingContextFactory {
+
+    private static final String TIMER_NAME = "siriusweb_editingcontext_load"; //$NON-NLS-1$
 
     private final Logger logger = LoggerFactory.getLogger(EditingContextFactory.class);
 
@@ -52,14 +58,20 @@ public class EditingContextFactory implements IEditingContextFactory {
 
     private final EPackage.Registry ePackageRegistry;
 
-    public EditingContextFactory(IDocumentRepository documentRepository, ComposedAdapterFactory composedAdapterFactory, EPackage.Registry ePackageRegistry) {
+    private final Timer timer;
+
+    public EditingContextFactory(IDocumentRepository documentRepository, ComposedAdapterFactory composedAdapterFactory, EPackage.Registry ePackageRegistry, MeterRegistry meterRegistry) {
         this.documentRepository = Objects.requireNonNull(documentRepository);
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.ePackageRegistry = Objects.requireNonNull(ePackageRegistry);
+
+        this.timer = Timer.builder(TIMER_NAME).register(meterRegistry);
     }
 
     @Override
     public IEditingContext createEditingContext(UUID projectId) {
+        long start = System.currentTimeMillis();
+
         this.logger.debug(MessageFormat.format("Loading the editing context of the project \"{0}\"", projectId)); //$NON-NLS-1$
         ResourceSet resourceSet = new ResourceSetImpl();
         resourceSet.setPackageRegistry(this.ePackageRegistry);
@@ -80,6 +92,9 @@ public class EditingContextFactory implements IEditingContextFactory {
 
         EditingDomain editingDomain = new AdapterFactoryEditingDomain(this.composedAdapterFactory, new BasicCommandStack(), resourceSet);
         this.logger.debug(MessageFormat.format("{0} documents loaded for the project \"{1}\"", documentEntities.size(), projectId)); //$NON-NLS-1$
+
+        long end = System.currentTimeMillis();
+        this.timer.record(end - start, TimeUnit.MILLISECONDS);
 
         return new EditingContext(projectId, editingDomain);
     }

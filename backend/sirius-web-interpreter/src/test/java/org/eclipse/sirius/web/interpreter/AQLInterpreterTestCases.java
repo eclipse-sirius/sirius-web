@@ -18,6 +18,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.junit.Test;
 
@@ -81,6 +83,13 @@ public class AQLInterpreterTestCases {
         Optional<List<Object>> asObjects = result.asObjects();
         assertThat(asObjects).isPresent();
         assertThat(asObjects.get()).contains(EcorePackage.Literals.EENUM_LITERAL__EENUM);
+    }
+
+    @Test
+    public void testBrokenEPackage() {
+        EPackage broken = EcoreFactory.eINSTANCE.createEPackage();
+        AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(broken));
+        assertThat(interpreter).isNotNull();
     }
 
 }

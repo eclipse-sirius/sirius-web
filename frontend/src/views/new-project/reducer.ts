@@ -23,11 +23,9 @@ import {
   INVALID_NAME__STATE,
   VALID__STATE,
   SUBMIT_ERROR__STATE,
-  CANCEL_CREATION_STATE,
   SUBMIT_SUCCESS__STATE,
   HANDLE_CHANGE_NAME__ACTION,
   HANDLE_SUBMIT__ACTION,
-  HANDLE_CANCEL_CREATION__ACTION,
 } from './machine';
 
 import { SEVERITY_DEFAULT, SEVERITY_SUCCESS, SEVERITY_WARNING } from 'core/message/Message';
@@ -56,9 +54,6 @@ export const reducer = (prevState, action) => {
       break;
     case HANDLE_SUBMIT__ACTION:
       state = handleSubmitAction(prevState, action);
-      break;
-    case HANDLE_CANCEL_CREATION__ACTION:
-      state = handleCancelCreationAction();
       break;
     default:
       state = prevState;
@@ -107,8 +102,4 @@ const handleSubmitAction = (prevState, action) => {
     }
   }
   return state;
-};
-
-const handleCancelCreationAction = () => {
-  return { viewState: CANCEL_CREATION_STATE, name: '', message: '' };
 };

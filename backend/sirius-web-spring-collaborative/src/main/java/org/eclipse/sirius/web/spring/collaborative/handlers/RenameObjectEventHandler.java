@@ -16,6 +16,7 @@ import java.util.Objects;
 
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.IProjectEventHandler;
+import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.services.api.Context;
 import org.eclipse.sirius.web.services.api.dto.ErrorPayload;
 import org.eclipse.sirius.web.services.api.dto.IProjectInput;
@@ -26,6 +27,9 @@ import org.eclipse.sirius.web.services.api.objects.RenameObjectInput;
 import org.eclipse.sirius.web.services.api.objects.RenameObjectSuccessPayload;
 import org.eclipse.sirius.web.spring.collaborative.messages.ICollaborativeMessageService;
 import org.springframework.stereotype.Service;
+
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 
 /**
  * Handler used to rename an object.
@@ -41,10 +45,18 @@ public class RenameObjectEventHandler implements IProjectEventHandler {
 
     private final IEditService editService;
 
-    public RenameObjectEventHandler(ICollaborativeMessageService messageService, IObjectService objectService, IEditService editService) {
+    private final Counter counter;
+
+    public RenameObjectEventHandler(ICollaborativeMessageService messageService, IObjectService objectService, IEditService editService, MeterRegistry meterRegistry) {
         this.messageService = Objects.requireNonNull(messageService);
         this.objectService = Objects.requireNonNull(objectService);
         this.editService = Objects.requireNonNull(editService);
+
+        // @formatter:off
+        this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
+                .tag(Monitoring.NAME, this.getClass().getSimpleName())
+                .register(meterRegistry);
+        // @formatter:on
     }
 
     @Override
@@ -54,6 +66,8 @@ public class RenameObjectEventHandler implements IProjectEventHandler {
 
     @Override
     public EventHandlerResponse handle(IEditingContext editingContext, IProjectInput projectInput, Context context) {
+        this.counter.increment();
+
         if (projectInput instanceof RenameObjectInput) {
             RenameObjectInput input = (RenameObjectInput) projectInput;
             String objectId = input.getObjectId();

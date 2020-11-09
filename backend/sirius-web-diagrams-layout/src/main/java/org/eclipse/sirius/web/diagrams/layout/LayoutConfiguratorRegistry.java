@@ -12,6 +12,9 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.diagrams.layout;
 
+import java.util.List;
+import java.util.Objects;
+
 import org.eclipse.elk.alg.layered.options.LayeredOptions;
 import org.eclipse.elk.alg.layered.options.LayeringStrategy;
 import org.eclipse.elk.core.LayoutConfigurator;
@@ -20,7 +23,9 @@ import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.core.options.HierarchyHandling;
 import org.eclipse.elk.core.options.NodeLabelPlacement;
 import org.eclipse.elk.core.options.SizeConstraint;
+import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.NodeType;
+import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
 import org.springframework.stereotype.Service;
 
 /**
@@ -55,7 +60,13 @@ public class LayoutConfiguratorRegistry {
      */
     private static final Double SPACING_NODE_EDGE = Double.valueOf(30.0);
 
-    public LayoutConfigurator getLayoutConfigurator() {
+    private final List<IDiagramLayoutConfiguratorProvider> customLayoutProviders;
+
+    public LayoutConfiguratorRegistry(List<IDiagramLayoutConfiguratorProvider> customLayoutProviders) {
+        this.customLayoutProviders = List.copyOf(Objects.requireNonNull(customLayoutProviders));
+    }
+
+    public LayoutConfigurator getDefaultLayoutConfigurator() {
         // @formatter:off
         SiriusWebLayoutConfigurator configurator = new SiriusWebLayoutConfigurator();
         configurator.configureByType(DiagramConverter.DEFAULT_DIAGRAM_TYPE)
@@ -82,5 +93,15 @@ public class LayoutConfiguratorRegistry {
         // @formatter:on
 
         return configurator;
+    }
+
+    public LayoutConfigurator getLayoutConfigurator(Diagram diagram, DiagramDescription diagramDescription) {
+        for (var customLayoutProvider : this.customLayoutProviders) {
+            var customLayout = customLayoutProvider.getLayoutConfigurator(diagram, diagramDescription);
+            if (customLayout.isPresent()) {
+                return customLayout.get();
+            }
+        }
+        return this.getDefaultLayoutConfigurator();
     }
 }

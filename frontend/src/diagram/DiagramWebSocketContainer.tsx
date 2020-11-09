@@ -41,6 +41,7 @@ import {
   ZOOM_OUT_ACTION,
   ZOOM_TO_ACTION,
   SOURCE_ELEMENT_ACTION,
+  HIDE_CONTEXTUAL_TOOLBAR_ACTION,
 } from 'diagram/sprotty/WebSocketDiagramServer';
 import { Toolbar } from 'diagram/Toolbar';
 import { ContextualPalette } from 'diagram/palette/ContextualPalette';
@@ -216,7 +217,7 @@ const propTypes = {
  */
 export const DiagramWebSocketContainer = ({ representationId, selection, setSelection, setSubscribers }) => {
   const { graphQLWebSocketClient } = useContext(GraphQLClient);
-  const { id } = useProject() as any;
+  const { id, canEdit } = useProject() as any;
   const diagramDomElement = useRef(null);
 
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -381,7 +382,9 @@ export const DiagramWebSocketContainer = ({ representationId, selection, setSele
       editLabelMutation({ input });
     };
     const setContextualPalette = (contextualPalette) => {
-      dispatch({ type: SET_CONTEXTUAL_PALETTE__ACTION, contextualPalette });
+      if (canEdit) {
+        dispatch({ type: SET_CONTEXTUAL_PALETTE__ACTION, contextualPalette });
+      }
     };
 
     if (viewState === LOADING__STATE && diagramDomElement.current) {
@@ -408,6 +411,7 @@ export const DiagramWebSocketContainer = ({ representationId, selection, setSele
     selection,
     id,
     representationId,
+    canEdit,
   ]);
 
   useEffect(() => {
@@ -424,7 +428,7 @@ export const DiagramWebSocketContainer = ({ representationId, selection, setSele
    */
   useEffect(() => {
     if (viewState !== READY__STATE) {
-      return () => { };
+      return () => {};
     }
     const operationId = graphQLWebSocketClient.generateOperationId();
 
@@ -530,7 +534,7 @@ export const DiagramWebSocketContainer = ({ representationId, selection, setSele
    * TLDR: Do not touch the div structure below without a deep understanding of the React reconciliation algorithm!
    */
   let contextualPaletteContent;
-  if (contextualPalette) {
+  if (canEdit && contextualPalette) {
     const { element, canvasBounds, origin, renameable, deletable } = contextualPalette;
     const { x, y } = origin;
     const invokeCloseFromContextualPalette = () => dispatch({ type: SET_CONTEXTUAL_PALETTE__ACTION });
@@ -541,7 +545,10 @@ export const DiagramWebSocketContainer = ({ representationId, selection, setSele
     let invokeLabelEditFromContextualPalette;
     if (renameable) {
       invokeLabelEditFromContextualPalette = () =>
-        diagramServer.actionDispatcher.dispatch(new EditLabelAction(element.id + '_label'));
+        diagramServer.actionDispatcher.dispatchAll([
+          { kind: HIDE_CONTEXTUAL_TOOLBAR_ACTION },
+          new EditLabelAction(element.id + '_label'),
+        ]);
     }
     let invokeDeleteFromContextualPalette;
     if (deletable) {

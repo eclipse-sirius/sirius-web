@@ -25,6 +25,7 @@ import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.api.configuration.StereotypeDescription;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.IProjectEventHandler;
+import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.emf.services.messages.IEMFMessageService;
 import org.eclipse.sirius.web.services.api.Context;
 import org.eclipse.sirius.web.services.api.document.CreateDocumentInput;
@@ -39,6 +40,9 @@ import org.eclipse.sirius.web.services.api.stereotypes.IStereotypeDescriptionSer
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 
 /**
  * Event handler used to create a new document from a stereotype.
@@ -56,10 +60,18 @@ public class CreateDocumentEventHandler implements IProjectEventHandler {
 
     private final IEMFMessageService messageService;
 
-    public CreateDocumentEventHandler(IDocumentService documentService, IStereotypeDescriptionService stereotypeDescriptionService, IEMFMessageService messageService) {
+    private final Counter counter;
+
+    public CreateDocumentEventHandler(IDocumentService documentService, IStereotypeDescriptionService stereotypeDescriptionService, IEMFMessageService messageService, MeterRegistry meterRegistry) {
         this.documentService = Objects.requireNonNull(documentService);
         this.stereotypeDescriptionService = Objects.requireNonNull(stereotypeDescriptionService);
         this.messageService = Objects.requireNonNull(messageService);
+
+        // @formatter:off
+        this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
+                .tag(Monitoring.NAME, this.getClass().getSimpleName())
+                .register(meterRegistry);
+        // @formatter:on
     }
 
     @Override
@@ -69,6 +81,8 @@ public class CreateDocumentEventHandler implements IProjectEventHandler {
 
     @Override
     public EventHandlerResponse handle(IEditingContext editingContext, IProjectInput projectInput, Context context) {
+        this.counter.increment();
+
         EventHandlerResponse response = new EventHandlerResponse(false, representation -> false, new ErrorPayload(this.messageService.unexpectedError()));
 
         if (projectInput instanceof CreateDocumentInput) {

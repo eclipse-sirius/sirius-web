@@ -40,6 +40,8 @@ import org.eclipse.sirius.web.services.api.representations.RepresentationDescrip
 import org.junit.Test;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
+
 /**
  * Unit tests of the rename representation event handler.
  *
@@ -105,7 +107,7 @@ public class RenameDiagramEventHandlerTestCases {
         };
 
         RenameDiagramEventHandler handler = new RenameDiagramEventHandler(noOpRepresentationService, new NoOpCollaborativeDiagramMessageService(), diagramService, objectService,
-                representationDescriptionService);
+                representationDescriptionService, new SimpleMeterRegistry());
 
         IProjectInput input = new RenameRepresentationInput(projectId, representationId, NEW_LABEL);
 

@@ -18,6 +18,7 @@ import org.eclipse.sirius.web.spring.collaborative.handlers.CreateChildEventHand
 import org.eclipse.sirius.web.spring.collaborative.handlers.CreateRootObjectEventHandlerTestCases;
 import org.eclipse.sirius.web.spring.collaborative.handlers.DeleteObjectEventHandlerTestCases;
 import org.eclipse.sirius.web.spring.collaborative.handlers.RenameObjectEventHandlerTestCases;
+import org.eclipse.sirius.web.spring.collaborative.handlers.RenameProjectEventHandlerTestCases;
 import org.eclipse.sirius.web.spring.collaborative.projects.ProjectServiceTestCases;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -37,7 +38,8 @@ import org.junit.runners.Suite.SuiteClasses;
     CreateRootObjectEventHandlerTestCases.class,
     DeleteObjectEventHandlerTestCases.class,
     RenameObjectEventHandlerTestCases.class,
-    ProjectServiceTestCases.class
+    ProjectServiceTestCases.class,
+    RenameProjectEventHandlerTestCases.class
 })
 //@formatter:on
 public final class AllSiriusWebSpringCollaborativeTests {

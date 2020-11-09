@@ -30,6 +30,7 @@ import java.util.stream.Collectors;
 
 import org.eclipse.sirius.web.collaborative.api.dto.DeleteRepresentationInput;
 import org.eclipse.sirius.web.collaborative.api.dto.PreDestroyPayload;
+import org.eclipse.sirius.web.collaborative.api.dto.ProjectRenamedEventPayload;
 import org.eclipse.sirius.web.collaborative.api.dto.RenameRepresentationSuccessPayload;
 import org.eclipse.sirius.web.collaborative.api.dto.RepresentationRefreshedEvent;
 import org.eclipse.sirius.web.collaborative.api.dto.RepresentationRenamedEventPayload;
@@ -47,11 +48,12 @@ import org.eclipse.sirius.web.services.api.dto.IInput;
 import org.eclipse.sirius.web.services.api.dto.IPayload;
 import org.eclipse.sirius.web.services.api.dto.IProjectInput;
 import org.eclipse.sirius.web.services.api.dto.IRepresentationInput;
-import org.eclipse.sirius.web.services.api.monitoring.IStopWatch;
-import org.eclipse.sirius.web.services.api.monitoring.IStopWatchFactory;
 import org.eclipse.sirius.web.services.api.objects.IEditingContext;
 import org.eclipse.sirius.web.services.api.objects.IObjectService;
 import org.eclipse.sirius.web.services.api.projects.IEditingContextManager;
+import org.eclipse.sirius.web.services.api.projects.Project;
+import org.eclipse.sirius.web.services.api.projects.RenameProjectInput;
+import org.eclipse.sirius.web.services.api.projects.RenameProjectSuccessPayload;
 import org.eclipse.sirius.web.services.api.representations.RenameRepresentationInput;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -88,8 +90,6 @@ public class ProjectEventProcessor implements IProjectEventProcessor {
 
     private final IRepresentationEventProcessorComposedFactory representationEventProcessorComposedFactory;
 
-    private final IStopWatchFactory stopWatchFactory;
-
     private final ExecutorService executor;
 
     private final Map<UUID, IRepresentationEventProcessor> representationEventProcessors = new ConcurrentHashMap<>();
@@ -99,7 +99,7 @@ public class ProjectEventProcessor implements IProjectEventProcessor {
     private final FluxSink<IPayload> sink;
 
     public ProjectEventProcessor(UUID projectId, IEditingContextManager editingContextManager, ApplicationEventPublisher applicationEventPublisher, IObjectService objectService,
-            List<IProjectEventHandler> projectEventHandlers, IRepresentationEventProcessorComposedFactory representationEventProcessorComposedFactory, IStopWatchFactory stopWatchFactory) {
+            List<IProjectEventHandler> projectEventHandlers, IRepresentationEventProcessorComposedFactory representationEventProcessorComposedFactory) {
         this.projectId = Objects.requireNonNull(projectId);
         this.editingContextManager = Objects.requireNonNull(editingContextManager);
         this.editingContext = this.editingContextManager.createEditingContext(projectId);
@@ -107,7 +107,6 @@ public class ProjectEventProcessor implements IProjectEventProcessor {
         this.objectService = Objects.requireNonNull(objectService);
         this.projectEventHandlers = Objects.requireNonNull(projectEventHandlers);
         this.representationEventProcessorComposedFactory = Objects.requireNonNull(representationEventProcessorComposedFactory);
-        this.stopWatchFactory = Objects.requireNonNull(stopWatchFactory);
 
         this.executor = Executors.newSingleThreadExecutor((Runnable runnable) -> {
             Thread thread = Executors.defaultThreadFactory().newThread(runnable);
@@ -153,15 +152,22 @@ public class ProjectEventProcessor implements IProjectEventProcessor {
             this.logger.error(exception.getMessage(), exception);
         }
 
-        if (input instanceof RenameRepresentationInput && optionalPayload.isPresent()) {
+        this.publishEvent(input, optionalPayload);
+        return optionalPayload;
+    }
+
+    private void publishEvent(IInput input, Optional<IPayload> optionalPayload) {
+        if (optionalPayload.isPresent()) {
             IPayload payload = optionalPayload.get();
-            if (payload instanceof RenameRepresentationSuccessPayload) {
+            if (input instanceof RenameRepresentationInput && payload instanceof RenameRepresentationSuccessPayload) {
                 UUID representationId = ((RenameRepresentationInput) input).getRepresentationId();
                 String newLabel = ((RenameRepresentationInput) input).getNewLabel();
                 this.sink.next(new RepresentationRenamedEventPayload(representationId, newLabel));
+            } else if (input instanceof RenameProjectInput && payload instanceof RenameProjectSuccessPayload) {
+                Project project = ((RenameProjectSuccessPayload) payload).getProject();
+                this.sink.next(new ProjectRenamedEventPayload(project.getId(), project.getName()));
             }
         }
-        return optionalPayload;
     }
 
     /**
@@ -176,9 +182,6 @@ public class ProjectEventProcessor implements IProjectEventProcessor {
 
         Optional<EventHandlerResponse> optionalResponse = Optional.empty();
 
-        IStopWatch stopWatch = this.stopWatchFactory.createStopWatch(input.getClass().getSimpleName());
-
-        stopWatch.start("Processing event"); //$NON-NLS-1$
         if (input instanceof IProjectInput) {
             optionalResponse = this.handleProjectInput((IProjectInput) input, context);
 
@@ -191,7 +194,6 @@ public class ProjectEventProcessor implements IProjectEventProcessor {
         } else if (input instanceof IRepresentationInput) {
             optionalResponse = this.handleRepresentationInput((IRepresentationInput) input, context);
         }
-        stopWatch.stop();
 
         if (optionalResponse.isPresent()) {
             EventHandlerResponse response = optionalResponse.get();
@@ -205,18 +207,16 @@ public class ProjectEventProcessor implements IProjectEventProcessor {
                     return response.getShouldRefreshPredicate().test(representation);
                 })
                 .forEach(representationEventProcessor -> {
-                    representationEventProcessor.refresh(stopWatch);
+                    representationEventProcessor.refresh();
                     IRepresentation representation = representationEventProcessor.getRepresentation();
                     this.applicationEventPublisher.publishEvent(new RepresentationRefreshedEvent(this.projectId, representation));
                 });
             // @formatter:on
 
             if (response.isEditingContextDirty()) {
-                this.editingContextManager.persist(this.projectId, this.editingContext, stopWatch);
+                this.editingContextManager.persist(this.projectId, this.editingContext);
             }
         }
-
-        this.logger.debug(System.lineSeparator() + stopWatch.prettyPrint());
 
         return optionalResponse;
     }

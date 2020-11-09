@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useLazyQuery, useMutation, useQuery } from 'common/GraphQLHooks';
-import { ActionButton } from 'core/button/Button';
+import { Buttons, ActionButton } from 'core/button/Button';
 import { Checkbox } from 'core/checkbox/Checkbox';
 import { Form } from 'core/form/Form';
 import { Label } from 'core/label/Label';
@@ -198,7 +198,9 @@ export const NewRootObjectModal = ({ projectId, documentId, onObjectCreated, onC
             onChange={onChangePreferred}
             data-testid="suggested"></Checkbox>
         </div>
-        <ActionButton type="submit" label="Create" data-testid="create-object" />
+        <Buttons>
+          <ActionButton type="submit" label="Create" data-testid="create-object" />
+        </Buttons>
       </Form>
     </Modal>
   );

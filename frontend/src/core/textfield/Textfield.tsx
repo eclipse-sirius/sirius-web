@@ -29,6 +29,7 @@ const propTypes = {
   onKeyDown: PropTypes.func,
   readOnly: PropTypes.bool,
   autoFocus: PropTypes.bool,
+  disabled: PropTypes.bool,
   'data-testid': PropTypes.string.isRequired,
 };
 const defaultProps = {
@@ -49,6 +50,7 @@ export const Textfield = ({
   onKeyDown,
   readOnly,
   autoFocus,
+  disabled,
   'data-testid': dataTestId,
 }) => {
   let className;
@@ -56,6 +58,9 @@ export const Textfield = ({
     className = styles.small;
   } else {
     className = styles.textfield;
+  }
+  if (readOnly || disabled) {
+    className = `${className} ${styles.disabled}`;
   }
   return (
     <input
@@ -71,6 +76,7 @@ export const Textfield = ({
       onKeyPress={onKeyPress}
       onKeyDown={onKeyDown}
       readOnly={readOnly}
+      disabled={disabled}
       autoFocus={autoFocus}
       data-testid={dataTestId}
     />

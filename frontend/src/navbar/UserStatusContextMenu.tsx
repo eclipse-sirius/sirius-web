@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { ContextMenu, Entry, Separator } from 'core/contextmenu/ContextMenu';
-import { Logout } from 'icons/Logout';
+import { Help, Logout } from 'icons';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styles from './UserStatusContextMenu.module.css';
@@ -22,6 +22,7 @@ const propTypes = {
   onLoggedOut: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
 };
+
 export const UserStatusContextMenu = ({ x, y, userName, onLoggedOut, onClose }) => {
   return (
     <ContextMenu x={x} y={y} onClose={onClose} data-testid="userstatus-contextmenu">
@@ -29,6 +30,9 @@ export const UserStatusContextMenu = ({ x, y, userName, onLoggedOut, onClose }) 
         {userName}
       </div>
       <Separator />
+      <a href="https://ocpmodeler.com/doc/welcome_help_center.html" rel="noopener noreferrer" target="_blank">
+        <Entry icon={<Help title="Help" />} label="Help" data-testid="help" />
+      </a>
       <Entry icon={<Logout title="" />} label="Log out" onClick={onLoggedOut} data-testid="logout"></Entry>
     </ContextMenu>
   );

@@ -12,7 +12,7 @@
  *******************************************************************************/
 import { useMutation } from 'common/GraphQLHooks';
 import { Banner } from 'core/banner/Banner';
-import { ActionButton, DangerButton } from 'core/button/Button';
+import { Buttons, DangerButton } from 'core/button/Button';
 import { Text } from 'core/text/Text';
 import gql from 'graphql-tag';
 import { Modal } from 'modals/Modal';
@@ -84,8 +84,9 @@ export const DeleteProjectModal = ({ projectId, onProjectDeleted, onClose }) => 
           </Text>
           <div className={styles.bannerArea}>{bannerContent}</div>
         </div>
-        <DangerButton type="button" onClick={onDeleteProject} label="Delete" data-testid="delete-project" />
-        <ActionButton type="button" onClick={onClose} label="Cancel" data-testid="cancel" />
+        <Buttons>
+          <DangerButton type="button" onClick={onDeleteProject} label="Delete" data-testid="delete-project" />
+        </Buttons>
       </div>
     </Modal>
   );

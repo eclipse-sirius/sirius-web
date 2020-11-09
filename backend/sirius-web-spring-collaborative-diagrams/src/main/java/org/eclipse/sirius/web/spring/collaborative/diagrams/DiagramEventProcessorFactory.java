@@ -26,14 +26,13 @@ import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramEventProcessor;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramRefreshManager;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramService;
+import org.eclipse.sirius.web.collaborative.diagrams.api.dto.IDiagramRefreshManagerFactory;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
-import org.eclipse.sirius.web.diagrams.layout.api.ILayoutService;
 import org.eclipse.sirius.web.services.api.Context;
 import org.eclipse.sirius.web.services.api.objects.IEditingContext;
 import org.eclipse.sirius.web.services.api.objects.IObjectService;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationDescriptionService;
-import org.eclipse.sirius.web.services.api.representations.IRepresentationService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -48,22 +47,19 @@ public class DiagramEventProcessorFactory implements IRepresentationEventProcess
 
     private final IDiagramService diagramService;
 
-    private final IRepresentationService representationService;
-
-    private final ILayoutService layoutService;
-
     private final IObjectService objectService;
+
+    private final IDiagramRefreshManagerFactory diagramRefreshManagerFactory;
 
     private final List<IDiagramEventHandler> diagramEventHandlers;
 
     private final ISubscriptionManagerFactory subscriptionManagerFactory;
 
     public DiagramEventProcessorFactory(IRepresentationDescriptionService representationDescriptionService, IDiagramService diagramService, IObjectService objectService,
-            IRepresentationService representationService, ILayoutService layoutService, List<IDiagramEventHandler> diagramEventHandlers, ISubscriptionManagerFactory subscriptionManagerFactory) {
+            IDiagramRefreshManagerFactory diagramRefreshManagerFactory, List<IDiagramEventHandler> diagramEventHandlers, ISubscriptionManagerFactory subscriptionManagerFactory) {
         this.representationDescriptionService = Objects.requireNonNull(representationDescriptionService);
         this.diagramService = Objects.requireNonNull(diagramService);
-        this.representationService = Objects.requireNonNull(representationService);
-        this.layoutService = Objects.requireNonNull(layoutService);
+        this.diagramRefreshManagerFactory = Objects.requireNonNull(diagramRefreshManagerFactory);
         this.objectService = Objects.requireNonNull(objectService);
         this.diagramEventHandlers = Objects.requireNonNull(diagramEventHandlers);
         this.subscriptionManagerFactory = Objects.requireNonNull(subscriptionManagerFactory);
@@ -101,9 +97,9 @@ public class DiagramEventProcessorFactory implements IRepresentationEventProcess
                             .editingContext(editingContext)
                             .build();
 
-                    IDiagramRefreshManager diagramRefreshManager = new DiagramRefreshManager(this.representationService, this.diagramService, this.layoutService);
+                    IDiagramRefreshManager diagramRefreshManager = this.diagramRefreshManagerFactory.create();
                     IRepresentationEventProcessor diagramEventProcessor = new DiagramEventProcessor(diagramCreationParameters,
-                            editingContext, this.diagramEventHandlers, this.subscriptionManagerFactory.create(),  diagramRefreshManager);
+                            editingContext, this.diagramEventHandlers, this.subscriptionManagerFactory.create(), diagramRefreshManager);
 
                     return Optional.of(diagramEventProcessor)
                             .filter(representationEventProcessorClass::isInstance)

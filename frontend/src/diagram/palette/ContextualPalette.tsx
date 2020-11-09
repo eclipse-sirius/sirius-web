@@ -93,7 +93,7 @@ export const ContextualPalette = ({
   if (contextualToolSections.length > 0) {
     toolSectionsContent = contextualToolSections.map((toolSection) => {
       return (
-        <div className={styles.toolSectionEntry} key={toolSection.id}>
+        <div className={styles.toolSectionEntry} key={targetElement.id + toolSection.id}>
           <ToolSection toolSection={toolSection} onToolClick={invokeTool} />
         </div>
       );

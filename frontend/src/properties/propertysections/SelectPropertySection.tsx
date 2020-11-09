@@ -13,6 +13,7 @@
 import { useMutation } from 'common/GraphQLHooks';
 import { Select } from 'core/select/Select';
 import { Text } from 'core/text/Text';
+import { Permission } from 'project/Permission';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { editSelectMutation } from './mutations';
@@ -44,7 +45,15 @@ export const SelectPropertySection = ({ projectId, formId, widgetId, label, valu
   return (
     <>
       <Text className={styles.label}>{label}</Text>
-      <Select name={label} options={optionsWithEmptySelection} value={value} onChange={onChange} data-testid={label} />
+      <Permission requiredAccessLevel="EDIT">
+        <Select
+          name={label}
+          options={optionsWithEmptySelection}
+          value={value}
+          onChange={onChange}
+          data-testid={label}
+        />
+      </Permission>
     </>
   );
 };

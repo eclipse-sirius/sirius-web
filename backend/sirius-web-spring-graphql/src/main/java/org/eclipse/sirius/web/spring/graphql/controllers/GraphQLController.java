@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -43,6 +44,8 @@ import graphql.ExecutionInput;
 import graphql.ExecutionResult;
 import graphql.GraphQL;
 import graphql.GraphQLContext;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Timer;
 
 /**
  * The entry point of the GraphQL HTTP API.
@@ -96,6 +99,10 @@ import graphql.GraphQLContext;
 @RequestMapping(GraphQLConstants.GRAPHQL_BASE_PATH)
 public class GraphQLController {
 
+    private static final String METRIC_NAME = "siriusweb_graphql_http"; //$NON-NLS-1$
+
+    private static final String KIND = "kind"; //$NON-NLS-1$
+
     private static final String OPERATIONS = "operations"; //$NON-NLS-1$
 
     private static final String MAP = "map"; //$NON-NLS-1$
@@ -112,14 +119,24 @@ public class GraphQLController {
 
     private final ObjectMapper objectMapper;
 
-    /**
-     * The GraphQL configuration which contain the GraphQL schema and its behavior to execute the queries received.
-     */
     private final GraphQL graphQL;
 
-    public GraphQLController(ObjectMapper objectMapper, GraphQL graphQL) {
+    private final Timer graphQLRequestTimer;
+
+    private final Timer graphQLUploadTimer;
+
+    public GraphQLController(ObjectMapper objectMapper, GraphQL graphQL, MeterRegistry meterRegistry) {
         this.objectMapper = Objects.requireNonNull(objectMapper);
         this.graphQL = Objects.requireNonNull(graphQL);
+
+        // @formatter:off
+        this.graphQLRequestTimer = Timer.builder(METRIC_NAME)
+                .tag(KIND, "request") //$NON-NLS-1$
+                .register(meterRegistry);
+        this.graphQLUploadTimer = Timer.builder(METRIC_NAME)
+                .tag(KIND, "upload") //$NON-NLS-1$
+                .register(meterRegistry);
+        // @formatter:on
     }
 
     @PostMapping
@@ -145,7 +162,12 @@ public class GraphQLController {
                 .build();
         // @formatter:on
 
+        long start = System.currentTimeMillis();
         ExecutionResult executionResult = this.graphQL.execute(executionInput);
+        long end = System.currentTimeMillis();
+
+        this.graphQLRequestTimer.record(end - start, TimeUnit.MILLISECONDS);
+
         this.logErrors(executionResult);
 
         return new ResponseEntity<>(executionResult.toSpecification(), HttpStatus.OK);
@@ -204,7 +226,13 @@ public class GraphQLController {
                         .build();
                 // @formatter:on
 
+                long start = System.currentTimeMillis();
                 ExecutionResult executionResult = this.graphQL.execute(executionInput);
+                long end = System.currentTimeMillis();
+
+                this.graphQLUploadTimer.record(end - start, TimeUnit.MILLISECONDS);
+
+                this.logErrors(executionResult);
 
                 responseEntity = new ResponseEntity<>(executionResult.toSpecification(), HttpStatus.CREATED);
             }

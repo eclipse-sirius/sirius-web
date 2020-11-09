@@ -18,6 +18,7 @@ import org.eclipse.sirius.web.collaborative.api.dto.DeleteRepresentationInput;
 import org.eclipse.sirius.web.collaborative.api.dto.DeleteRepresentationSuccessPayload;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.IProjectEventHandler;
+import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.services.api.Context;
 import org.eclipse.sirius.web.services.api.dto.ErrorPayload;
 import org.eclipse.sirius.web.services.api.dto.IProjectInput;
@@ -28,6 +29,9 @@ import org.eclipse.sirius.web.services.api.representations.IRepresentationServic
 import org.eclipse.sirius.web.spring.collaborative.messages.ICollaborativeMessageService;
 import org.eclipse.sirius.web.trees.Tree;
 import org.springframework.stereotype.Service;
+
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 
 /**
  * Handler used to delete a representation.
@@ -43,10 +47,18 @@ public class DeleteRepresentationEventHandler implements IProjectEventHandler {
 
     private final ICollaborativeMessageService messageService;
 
-    public DeleteRepresentationEventHandler(IRepresentationService representationService, IProjectService projectService, ICollaborativeMessageService messageService) {
+    private final Counter counter;
+
+    public DeleteRepresentationEventHandler(IRepresentationService representationService, IProjectService projectService, ICollaborativeMessageService messageService, MeterRegistry meterRegistry) {
         this.representationService = Objects.requireNonNull(representationService);
         this.projectService = Objects.requireNonNull(projectService);
         this.messageService = Objects.requireNonNull(messageService);
+
+        // @formatter:off
+        this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
+                .tag(Monitoring.NAME, this.getClass().getSimpleName())
+                .register(meterRegistry);
+        // @formatter:on
     }
 
     @Override
@@ -56,6 +68,8 @@ public class DeleteRepresentationEventHandler implements IProjectEventHandler {
 
     @Override
     public EventHandlerResponse handle(IEditingContext editingContext, IProjectInput deleteDiagramInput, Context context) {
+        this.counter.increment();
+
         String message = this.messageService.invalidInput(deleteDiagramInput.getClass().getSimpleName(), DeleteRepresentationInput.class.getSimpleName());
         EventHandlerResponse eventHandlerResponse = new EventHandlerResponse(false, representation -> false, new ErrorPayload(message));
         if (deleteDiagramInput instanceof DeleteRepresentationInput) {

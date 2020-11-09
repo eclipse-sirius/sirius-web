@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.spring.controllers;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,6 +31,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Timer;
 
 /**
  * The entry point of the HTTP API to get images.
@@ -73,15 +77,25 @@ public class ImagesController {
 
     private static final MediaType IMAGE_SVG = MediaType.valueOf("image/svg+xml"); //$NON-NLS-1$
 
+    private static final String TIMER = "siriusweb_images"; //$NON-NLS-1$
+
     private final List<IImagePathService> pathResourcesServices;
 
-    public ImagesController(List<IImagePathService> pathResourcesServices) {
+    private final Timer timer;
+
+    public ImagesController(List<IImagePathService> pathResourcesServices, MeterRegistry meterRegistry) {
         this.pathResourcesServices = Objects.requireNonNull(pathResourcesServices);
+
+        this.timer = Timer.builder(TIMER).register(meterRegistry);
     }
 
     @GetMapping
     @ResponseBody
     public ResponseEntity<Resource> getImage(HttpServletRequest request) {
+        ResponseEntity<Resource> response = new ResponseEntity<>(null, new HttpHeaders(), HttpStatus.NOT_FOUND);
+
+        long start = System.currentTimeMillis();
+
         String requestURI = request.getRequestURI();
         String imagePath = requestURI.substring(URLConstants.IMAGE_BASE_PATH.length());
 
@@ -91,11 +105,14 @@ public class ImagesController {
             headers.setContentType(mediatype);
             Resource resource = new ClassPathResource(imagePath);
             if (resource.exists()) {
-                return new ResponseEntity<>(resource, headers, HttpStatus.OK);
+                response = new ResponseEntity<>(resource, headers, HttpStatus.OK);
             }
         }
 
-        return new ResponseEntity<>(null, new HttpHeaders(), HttpStatus.NOT_FOUND);
+        long end = System.currentTimeMillis();
+        this.timer.record(end - start, TimeUnit.MILLISECONDS);
+
+        return response;
     }
 
     private MediaType getContentType(String imagePath) {

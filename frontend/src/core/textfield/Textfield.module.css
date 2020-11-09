@@ -20,6 +20,7 @@
   color: var(--daintree-lighten-30);
 
   border: 1px solid transparent;
+  border-radius: 5px;
   border-bottom: 1px solid var(--daintree);
 }
 
@@ -51,4 +52,8 @@
 
   border: 1px solid transparent;
   border-radius: 5px;
+}
+
+.disabled {
+  color: var(--daintree-lighten-70);
 }

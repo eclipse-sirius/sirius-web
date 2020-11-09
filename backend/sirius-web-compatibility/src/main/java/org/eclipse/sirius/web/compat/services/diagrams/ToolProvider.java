@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.compat.services.diagrams;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -22,10 +23,13 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EPackage.Registry;
 import org.eclipse.sirius.business.api.query.IdentifiedElementQuery;
 import org.eclipse.sirius.diagram.business.internal.metamodel.description.spec.LayerSpec;
 import org.eclipse.sirius.diagram.description.AbstractNodeMapping;
+import org.eclipse.sirius.diagram.description.AdditionalLayer;
+import org.eclipse.sirius.diagram.description.ContainerMapping;
 import org.eclipse.sirius.diagram.description.DiagramDescription;
 import org.eclipse.sirius.diagram.description.DiagramElementMapping;
 import org.eclipse.sirius.diagram.description.EdgeMapping;
@@ -228,10 +232,10 @@ public class ToolProvider implements IToolProvider {
         String id = this.identifierProvider.getIdentifier(toolDescription);
         String label = new IdentifiedElementQuery(toolDescription).getLabel();
         String imagePath = new ToolImageProvider(this.objectService, this.ePackageRegistry, toolDescription).get();
-        // @formatter:off
-        siriusDiagramDescription.getNodeMappings();
-        List<DiagramElementMapping> mappings = new ArrayList<>(siriusDiagramDescription.getNodeMappings());
-        mappings.addAll(siriusDiagramDescription.getContainerMappings());
+
+        List<DiagramElementMapping> mappings = this.getAllDiagramElementMappings(siriusDiagramDescription);
+
+       // @formatter:off
         List<String> targetDescriptionIds = mappings.stream()
                 .map(this.identifierProvider::getIdentifier)
                 .collect(Collectors.toList());
@@ -247,6 +251,29 @@ public class ToolProvider implements IToolProvider {
                 .appliesToDiagramRoot(true)
                 .build();
         // @formatter:on
+    }
+
+    private List<DiagramElementMapping> getAllDiagramElementMappings(DiagramDescription siriusDiagramDescription) {
+        List<DiagramElementMapping> mappings = new ArrayList<>(siriusDiagramDescription.getDefaultLayer().getNodeMappings());
+        mappings.addAll(siriusDiagramDescription.getDefaultLayer().getContainerMappings());
+        mappings.addAll(this.getAllSubMappings(siriusDiagramDescription.getDefaultLayer().getContainerMappings()));
+        for (AdditionalLayer additionalLayer : siriusDiagramDescription.getAdditionalLayers()) {
+            mappings.addAll(additionalLayer.getNodeMappings());
+            mappings.addAll(additionalLayer.getContainerMappings());
+            mappings.addAll(this.getAllSubMappings(additionalLayer.getContainerMappings()));
+        }
+        return mappings;
+    }
+
+    private Collection<? extends DiagramElementMapping> getAllSubMappings(EList<ContainerMapping> containerMappings) {
+        List<DiagramElementMapping> result = new ArrayList<>();
+        for (ContainerMapping containerMapping : containerMappings) {
+            result.addAll(containerMapping.getSubNodeMappings());
+            result.addAll(containerMapping.getBorderedNodeMappings());
+            result.addAll(containerMapping.getSubContainerMappings());
+            result.addAll(this.getAllSubMappings(containerMapping.getSubContainerMappings()));
+        }
+        return result;
     }
 
     private CreateEdgeTool convertEdgeCreationDescription(Map<UUID, NodeDescription> id2NodeDescriptions, AQLInterpreter interpreter, EdgeCreationDescription edgeCreationDescription) {

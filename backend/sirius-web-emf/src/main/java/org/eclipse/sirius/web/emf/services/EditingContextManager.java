@@ -15,7 +15,6 @@ package org.eclipse.sirius.web.emf.services;
 import java.util.Objects;
 import java.util.UUID;
 
-import org.eclipse.sirius.web.services.api.monitoring.IStopWatch;
 import org.eclipse.sirius.web.services.api.objects.IEditingContext;
 import org.eclipse.sirius.web.services.api.objects.IEditingContextFactory;
 import org.eclipse.sirius.web.services.api.objects.IEditingContextPersistenceService;
@@ -45,8 +44,8 @@ public class EditingContextManager implements IEditingContextManager {
     }
 
     @Override
-    public void persist(UUID projectId, IEditingContext editingContext, IStopWatch stopWatch) {
-        this.editingContextPersistenceService.persist(projectId, editingContext, stopWatch);
+    public void persist(UUID projectId, IEditingContext editingContext) {
+        this.editingContextPersistenceService.persist(projectId, editingContext);
     }
 
 }

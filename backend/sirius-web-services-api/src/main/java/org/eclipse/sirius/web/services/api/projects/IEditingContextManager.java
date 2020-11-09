@@ -14,7 +14,6 @@ package org.eclipse.sirius.web.services.api.projects;
 
 import java.util.UUID;
 
-import org.eclipse.sirius.web.services.api.monitoring.IStopWatch;
 import org.eclipse.sirius.web.services.api.objects.IEditingContext;
 
 /**
@@ -25,5 +24,5 @@ import org.eclipse.sirius.web.services.api.objects.IEditingContext;
 public interface IEditingContextManager {
     IEditingContext createEditingContext(UUID projectID);
 
-    void persist(UUID projectId, IEditingContext editingContext, IStopWatch stopWatch);
+    void persist(UUID projectId, IEditingContext editingContext);
 }

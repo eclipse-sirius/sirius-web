@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.EditingDomain;
@@ -27,13 +28,15 @@ import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.collaborative.api.dto.DocumentsModifiedEvent;
 import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
 import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
-import org.eclipse.sirius.web.services.api.monitoring.IStopWatch;
 import org.eclipse.sirius.web.services.api.objects.IEditingContext;
 import org.eclipse.sirius.web.services.api.objects.IEditingContextPersistenceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Timer;
 
 /**
  * Service used to persist the editing context when a change has been performed.
@@ -43,39 +46,48 @@ import org.springframework.stereotype.Service;
 @Service
 public class EditingContextPersistenceService implements IEditingContextPersistenceService {
 
+    private static final String TIMER_NAME = "siriusweb_editingcontext_save"; //$NON-NLS-1$
+
     private final Logger logger = LoggerFactory.getLogger(EditingContextPersistenceService.class);
 
     private final IDocumentRepository documentRepository;
 
     private final ApplicationEventPublisher applicationEventPublisher;
 
-    public EditingContextPersistenceService(IDocumentRepository documentRepository, ApplicationEventPublisher applicationEventPublisher) {
+    private final Timer timer;
+
+    public EditingContextPersistenceService(IDocumentRepository documentRepository, ApplicationEventPublisher applicationEventPublisher, MeterRegistry meterRegistry) {
         this.documentRepository = Objects.requireNonNull(documentRepository);
         this.applicationEventPublisher = Objects.requireNonNull(applicationEventPublisher);
+
+        this.timer = Timer.builder(TIMER_NAME).register(meterRegistry);
     }
 
     @Override
-    public void persist(UUID projectId, IEditingContext editingContext, IStopWatch stopWatch) {
+    public void persist(UUID projectId, IEditingContext editingContext) {
+        long start = System.currentTimeMillis();
+
         // @formatter:off
         var optionalDocuments = Optional.ofNullable(editingContext)
             .map(IEditingContext::getDomain)
             .filter(EditingDomain.class::isInstance)
             .map(EditingDomain.class::cast)
-            .map(editingDomain -> this.persist(editingDomain, stopWatch));
+            .map(this::persist);
         optionalDocuments.ifPresent(documentEntities -> {
             this.applicationEventPublisher.publishEvent(new DocumentsModifiedEvent(projectId, documentEntities));
         });
         // @formatter:on
+
+        long end = System.currentTimeMillis();
+        this.timer.record(end - start, TimeUnit.MILLISECONDS);
     }
 
-    private List<DocumentEntity> persist(EditingDomain editingDomain, IStopWatch stopWatch) {
-        stopWatch.start("Persisting the editing context"); //$NON-NLS-1$
+    private List<DocumentEntity> persist(EditingDomain editingDomain) {
         List<DocumentEntity> result = new ArrayList<>();
         List<Resource> resources = editingDomain.getResourceSet().getResources();
         for (Resource resource : resources) {
             this.save(resource).ifPresent(result::add);
         }
-        stopWatch.stop();
         return result;
     }
 

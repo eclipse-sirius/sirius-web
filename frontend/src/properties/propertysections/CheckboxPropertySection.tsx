@@ -13,6 +13,7 @@
 import { useMutation } from 'common/GraphQLHooks';
 import { Checkbox } from 'core/checkbox/Checkbox';
 import { Text } from 'core/text/Text';
+import { Permission } from 'project/Permission';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { editCheckboxMutation } from './mutations';
@@ -44,7 +45,9 @@ export const CheckboxPropertySection = ({ projectId, formId, widgetId, label, va
   return (
     <>
       <Text className={styles.label}>{label}</Text>
-      <Checkbox name={label} label="" checked={value} onChange={onChange} data-testid={label} />
+      <Permission requiredAccessLevel="EDIT">
+        <Checkbox name={label} label="" checked={value} onChange={onChange} data-testid={label} />
+      </Permission>
     </>
   );
 };

@@ -44,6 +44,8 @@ import org.apache.commons.io.IOUtils;
 import org.eclipse.sirius.web.diagrams.Size;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.svg.SVGDocument;
 
@@ -117,17 +119,28 @@ public class ImageSizeService {
 
     private Optional<Size> computeSize(String imagePath) {
         Optional<Size> optionalSize = Optional.empty();
-
-        URL url = this.getClass().getClassLoader().getResource(imagePath);
-        if (url != null) {
+        Optional<URL> optionalURL = this.getImageURL(imagePath);
+        if (optionalURL.isPresent()) {
             String extension = imagePath.substring(imagePath.lastIndexOf('.') + 1);
             if (SVG_FILE_EXTENSION.equalsIgnoreCase(extension) || SVGZ_FILE_EXTENSION.equalsIgnoreCase(extension)) {
-                optionalSize = this.getSVGSize(url, extension);
+                optionalSize = this.getSVGSize(optionalURL.get(), extension);
             } else {
-                optionalSize = this.getNonSVGSize(url);
+                optionalSize = this.getNonSVGSize(optionalURL.get());
             }
         }
         return optionalSize;
+    }
+
+    private Optional<URL> getImageURL(String imagePath) {
+        Resource resource = new ClassPathResource(imagePath);
+        if (resource.exists()) {
+            try {
+                return Optional.ofNullable(resource.getURL());
+            } catch (IOException e) {
+                this.logger.error(e.getMessage(), e);
+            }
+        }
+        return Optional.empty();
     }
 
     /**

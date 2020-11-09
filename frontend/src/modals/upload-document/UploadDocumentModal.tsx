@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { GraphQLClient } from 'common/GraphQLClient';
-import { ActionButton } from 'core/button/Button';
+import { Buttons, ActionButton } from 'core/button/Button';
 import { FileUpload } from 'core/file-upload/FileUpload';
 import { Form } from 'core/form/Form';
 import gql from 'graphql-tag';
@@ -90,8 +90,9 @@ export const UploadDocumentModal = ({ projectId, onDocumentUploaded, onClose }) 
       <Form onSubmit={uploadDocument} encType="multipart/form-data">
         <FileUpload onFileSelected={onFileSelected} data-testid="file" />
 
-        <ActionButton type="submit" disabled={!canSubmit} label="Upload" data-testid="upload-document" />
-        <ActionButton onClick={onClose} label="Cancel" data-testid="cancel" />
+        <Buttons>
+          <ActionButton type="submit" disabled={!canSubmit} label="Upload" data-testid="upload-document" />
+        </Buttons>
       </Form>
     </Modal>
   );

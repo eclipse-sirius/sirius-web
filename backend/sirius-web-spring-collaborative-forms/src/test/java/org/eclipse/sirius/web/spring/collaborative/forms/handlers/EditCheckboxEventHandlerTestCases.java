@@ -30,6 +30,8 @@ import org.eclipse.sirius.web.forms.Page;
 import org.eclipse.sirius.web.representations.Status;
 import org.junit.Test;
 
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
+
 /**
  * Unit tests of the edit checkbox event handler.
  *
@@ -79,7 +81,7 @@ public class EditCheckboxEventHandlerTestCases {
                 return Optional.of(checkbox);
             }
         };
-        EditCheckboxEventHandler handler = new EditCheckboxEventHandler(formService, new NoOpCollaborativeFormMessageService());
+        EditCheckboxEventHandler handler = new EditCheckboxEventHandler(formService, new NoOpCollaborativeFormMessageService(), new SimpleMeterRegistry());
         assertThat(handler.canHandle(input)).isTrue();
 
         handler.handle(form, input);

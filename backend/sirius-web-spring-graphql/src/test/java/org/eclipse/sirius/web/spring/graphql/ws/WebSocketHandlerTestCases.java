@@ -42,6 +42,7 @@ import graphql.schema.FieldCoordinates;
 import graphql.schema.GraphQLCodeRegistry;
 import graphql.schema.GraphQLObjectType;
 import graphql.schema.GraphQLSchema;
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 
@@ -91,7 +92,7 @@ public class WebSocketHandlerTestCases {
         // @formatter:on
 
         StartMessage startMessage = new StartMessage("operationId", payload); //$NON-NLS-1$
-        new StartMessageHandler(session, graphQL, objectMapper, sessions2entries).handle(startMessage);
+        new StartMessageHandler(session, graphQL, objectMapper, sessions2entries, new SimpleMeterRegistry()).handle(startMessage);
 
         assertThat(session.getMessages()).hasSize(1);
         WebSocketMessage<?> webSocketMessage = session.getMessages().get(0);
@@ -143,7 +144,7 @@ public class WebSocketHandlerTestCases {
         assertThat(session.getMessages()).hasSize(0);
 
         StartMessage startMessage = new StartMessage("subscriptionOperationId", payload); //$NON-NLS-1$
-        new StartMessageHandler(session, graphQL, objectMapper, sessions2entries).handle(startMessage);
+        new StartMessageHandler(session, graphQL, objectMapper, sessions2entries, new SimpleMeterRegistry()).handle(startMessage);
 
         assertThat(session.getMessages()).hasSize(2);
 

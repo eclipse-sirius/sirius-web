@@ -11,9 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { GraphQLClient } from 'common/GraphQLClient';
-import { ActionButton } from 'core/button/Button';
+import { Buttons, ActionButton, SecondaryButton } from 'core/button/Button';
 import { Form } from 'core/form/Form';
-import { Link } from 'core/link/Link';
 import { FileUpload } from 'core/file-upload/FileUpload';
 import React, { useContext, useReducer } from 'react';
 import { Redirect } from 'react-router-dom';
@@ -21,7 +20,6 @@ import { FormContainer } from 'views/FormContainer';
 import { View } from 'views/View';
 import { HANDLE_SELECTED__ACTION, HANDLE_SUBMIT__ACTION, SELECTED__STATE, SUBMIT_SUCCESS__STATE } from './machine';
 import { initialState, reducer } from './reducer';
-import styles from './UploadProjectView.module.css';
 import gql from 'graphql-tag';
 
 const uploadProjectMutation = gql`
@@ -77,12 +75,10 @@ export const UploadProjectView = () => {
       <FormContainer title="Upload a project" subtitle="Start with an existing project">
         <Form onSubmit={onUploadProject} encType="multipart/form-data">
           <FileUpload onFileSelected={onFileSelected} data-testid="file" />
-          <ActionButton type="submit" disabled={!canSubmit} label="Upload project" data-testid="upload-project" />
-          <div className={styles.links}>
-            <Link to="/" data-testid="back">
-              Back to homepage
-            </Link>
-          </div>
+          <Buttons>
+            <ActionButton type="submit" disabled={!canSubmit} label="Upload" data-testid="upload-project" />
+            <SecondaryButton type="submit" to={`/`} label="Cancel" data-testid="back" />
+          </Buttons>
         </Form>
       </FormContainer>
     </View>

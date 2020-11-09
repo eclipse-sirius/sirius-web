@@ -16,6 +16,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
+import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramDescriptionService;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramInput;
@@ -35,6 +36,9 @@ import org.eclipse.sirius.web.spring.collaborative.diagrams.messages.ICollaborat
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 
 /**
  * Handle "Edit Label" events.
@@ -57,13 +61,21 @@ public class EditLabelEventHandler implements IDiagramEventHandler {
 
     private final Logger logger = LoggerFactory.getLogger(EditLabelEventHandler.class);
 
+    private final Counter counter;
+
     public EditLabelEventHandler(IObjectService objectService, IDiagramService diagramService, IDiagramDescriptionService diagramDescriptionService,
-            IRepresentationDescriptionService representationDescriptionService, ICollaborativeDiagramMessageService messageService) {
+            IRepresentationDescriptionService representationDescriptionService, ICollaborativeDiagramMessageService messageService, MeterRegistry meterRegistry) {
         this.objectService = Objects.requireNonNull(objectService);
         this.diagramService = Objects.requireNonNull(diagramService);
         this.diagramDescriptionService = Objects.requireNonNull(diagramDescriptionService);
         this.representationDescriptionService = Objects.requireNonNull(representationDescriptionService);
         this.messageService = Objects.requireNonNull(messageService);
+
+        // @formatter:off
+        this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
+                .tag(Monitoring.NAME, this.getClass().getSimpleName())
+                .register(meterRegistry);
+        // @formatter:on
     }
 
     @Override
@@ -73,6 +85,8 @@ public class EditLabelEventHandler implements IDiagramEventHandler {
 
     @Override
     public EventHandlerResponse handle(IEditingContext editingContext, Diagram diagram, IDiagramInput diagramInput) {
+        this.counter.increment();
+
         if (diagramInput instanceof EditLabelInput) {
             EditLabelInput input = (EditLabelInput) diagramInput;
             if (input.getLabelId().endsWith(LABEL_SUFFIX)) {

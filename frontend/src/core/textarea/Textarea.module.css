@@ -12,7 +12,7 @@
  *******************************************************************************/
 .textarea {
   padding: 8px;
-
+  border-radius: 5px;
   font-family: var(--font-family);
   font-size: var(--font-size-4);
   line-height: var(--line-height-default);
@@ -28,4 +28,8 @@
 .textarea:focus,
 .textarea:active {
   border: 1px solid var(--bondi-blue);
+}
+
+.disabled {
+  color: var(--daintree-lighten-70);
 }

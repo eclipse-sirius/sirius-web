@@ -15,8 +15,10 @@ package org.eclipse.sirius.web.compat.diagrams;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.sirius.diagram.LineStyle;
 import org.eclipse.sirius.diagram.description.ConditionalContainerStyleDescription;
 import org.eclipse.sirius.diagram.description.ContainerMapping;
 import org.eclipse.sirius.diagram.description.DescriptionFactory;
@@ -83,5 +85,29 @@ public class ContainerMappingStyleProviderTestCases {
 
         containerStyleDescription.setBorderColor(fixedColor);
         return containerStyleDescription;
+    }
+
+    @Test
+    public void testBorderLineStyleConversion() {
+        // @formatter:off
+        var conversions = Map.of(LineStyle.DASH_DOT_LITERAL, org.eclipse.sirius.web.diagrams.LineStyle.Dash_Dot,
+                                LineStyle.DASH_LITERAL, org.eclipse.sirius.web.diagrams.LineStyle.Dash,
+                                LineStyle.DOT_LITERAL, org.eclipse.sirius.web.diagrams.LineStyle.Dot,
+                                LineStyle.SOLID_LITERAL, org.eclipse.sirius.web.diagrams.LineStyle.Solid);
+        // @formatter:on
+
+        for (var entry : conversions.entrySet()) {
+            ContainerMapping containerMapping = DescriptionFactory.eINSTANCE.createContainerMapping();
+            ContainerStyleDescription style = this.createFlatStyle(0, 0, 0);
+            style.setBorderLineStyle(entry.getKey());
+            containerMapping.setStyle(style);
+
+            VariableManager variableManager = new VariableManager();
+            AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(EcorePackage.eINSTANCE));
+            INodeStyle nodeStyle = new ContainerMappingStyleProvider(interpreter, containerMapping).apply(variableManager);
+            assertThat(nodeStyle).isInstanceOf(RectangularNodeStyle.class);
+            RectangularNodeStyle rectangularNodeStyle = (RectangularNodeStyle) nodeStyle;
+            assertThat(rectangularNodeStyle.getBorderStyle()).isEqualTo(entry.getValue());
+        }
     }
 }

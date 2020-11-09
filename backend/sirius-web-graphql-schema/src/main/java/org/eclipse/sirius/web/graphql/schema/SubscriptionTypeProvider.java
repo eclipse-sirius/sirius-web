@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 
 import org.eclipse.sirius.web.collaborative.api.dto.PreDestroyPayload;
 import org.eclipse.sirius.web.collaborative.api.dto.ProjectEventInput;
+import org.eclipse.sirius.web.collaborative.api.dto.ProjectRenamedEventPayload;
 import org.eclipse.sirius.web.collaborative.api.dto.RepresentationRenamedEventPayload;
 import org.eclipse.sirius.web.collaborative.api.dto.Subscriber;
 import org.eclipse.sirius.web.collaborative.api.dto.SubscribersUpdatedEventPayload;
@@ -140,6 +141,7 @@ public class SubscriptionTypeProvider implements ISubscriptionTypeProvider {
                 FormRefreshedEventPayload.class,
                 TreeRefreshedEventPayload.class,
                 RepresentationRenamedEventPayload.class,
+                ProjectRenamedEventPayload.class,
                 WidgetSubscriptionsUpdatedEventPayload.class,
                 WidgetSubscription.class,
                 PreDestroyPayload.class
@@ -206,6 +208,7 @@ public class SubscriptionTypeProvider implements ISubscriptionTypeProvider {
         // @formatter:off
         return GraphQLUnionType.newUnionType().name(PROJECT_EVENT_PAYLOAD_UNION_TYPE).possibleTypes(
                 new GraphQLTypeReference(RepresentationRenamedEventPayload.class.getSimpleName()),
+                new GraphQLTypeReference(ProjectRenamedEventPayload.class.getSimpleName()),
                 new GraphQLTypeReference(SubscribersUpdatedEventPayload.class.getSimpleName()),
                 new GraphQLTypeReference(PreDestroyPayload.class.getSimpleName())
             ).build();

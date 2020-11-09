@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMutation, useQuery } from 'common/GraphQLHooks';
-import { ActionButton } from 'core/button/Button';
+import { Buttons, ActionButton } from 'core/button/Button';
 import { Form } from 'core/form/Form';
 import { Label } from 'core/label/Label';
 import { Select } from 'core/select/Select';
@@ -126,8 +126,9 @@ export const NewObjectModal = ({ projectId, classId, objectId, onObjectCreated, 
             data-testid="stereotype"
           />
         </Label>
-        <ActionButton type="submit" label="Create" data-testid="create-object" />
-        <ActionButton onClick={onClose} label="Cancel" data-testid="cancel" />
+        <Buttons>
+          <ActionButton type="submit" label="Create" data-testid="create-object" />
+        </Buttons>
       </Form>
     </Modal>
   );

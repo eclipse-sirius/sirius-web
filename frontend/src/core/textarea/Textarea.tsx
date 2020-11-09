@@ -28,6 +28,7 @@ const propTypes = {
   onFocus: PropTypes.func,
   onKeyPress: PropTypes.func,
   autoFocus: PropTypes.bool,
+  disabled: PropTypes.bool,
   'data-testid': PropTypes.string.isRequired,
 };
 
@@ -44,16 +45,22 @@ export const Textarea = ({
   onFocus,
   onKeyPress,
   autoFocus,
+  disabled,
   'data-testid': dataTestId,
 }) => {
+  let className = styles.textarea;
+  if (readOnly || disabled) {
+    className = `${className} ${styles.disabled}`;
+  }
   return (
     <textarea
-      className={styles.textarea}
+      className={className}
       name={name}
       value={value}
       placeholder={placeholder}
       autoComplete={autoComplete}
       readOnly={readOnly}
+      disabled={disabled}
       rows={rows}
       maxLength={maxLength}
       onChange={onChange}

@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { ActionButton } from 'core/button/Button';
+import { ActionButton, SecondaryButton } from 'core/button/Button';
 import { Text } from 'core/text/Text';
 import React from 'react';
 import { View } from 'views/View';
@@ -25,7 +25,7 @@ export const ProjectsEmptyView = () => {
           <Text className={styles.subtitle}>Start creating your first project and it will appear here</Text>
           <div className={styles.actions}>
             <ActionButton to="/new/project" label="New" data-testid="create" />
-            <ActionButton to="/upload/project" label="Upload" data-testid="upload" />
+            <SecondaryButton to="/upload/project" label="Upload" data-testid="upload" />
           </div>
         </div>
       </div>

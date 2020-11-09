@@ -30,4 +30,5 @@ export const machine = {
     HANDLE_SELECTED__ACTION: [SELECTED__STATE],
   },
   SUBMIT_SUCCESS__STATE: {},
+  CANCEL__STATE: {},
 };

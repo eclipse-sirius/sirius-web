@@ -30,7 +30,6 @@ import org.eclipse.sirius.web.collaborative.api.services.IRepresentationEventPro
 import org.eclipse.sirius.web.services.api.Context;
 import org.eclipse.sirius.web.services.api.dto.IInput;
 import org.eclipse.sirius.web.services.api.dto.IPayload;
-import org.eclipse.sirius.web.services.api.monitoring.IStopWatchFactory;
 import org.eclipse.sirius.web.services.api.objects.IObjectService;
 import org.eclipse.sirius.web.services.api.projects.IEditingContextManager;
 import org.eclipse.sirius.web.services.api.projects.IProjectService;
@@ -61,20 +60,17 @@ public class ProjectEventProcessorRegistry implements IProjectEventProcessorRegi
 
     private final IRepresentationEventProcessorComposedFactory representationEventProcessorComposedFactory;
 
-    private final IStopWatchFactory stopWatchFactory;
-
     private final ConcurrentMap<UUID, ProjectEventProcessor> projectEventProcessors = new ConcurrentHashMap<>();
 
     public ProjectEventProcessorRegistry(IProjectService projectService, IEditingContextManager editingContextManager, IObjectService objectService,
             ApplicationEventPublisher applicationEventPublisher, List<IProjectEventHandler> projectEventHandlers,
-            IRepresentationEventProcessorComposedFactory representationEventProcessorComposedFactory, IStopWatchFactory stopWatchFactory) {
+            IRepresentationEventProcessorComposedFactory representationEventProcessorComposedFactory) {
         this.projectService = Objects.requireNonNull(projectService);
         this.editingContextManager = Objects.requireNonNull(editingContextManager);
         this.applicationEventPublisher = Objects.requireNonNull(applicationEventPublisher);
         this.objectService = Objects.requireNonNull(objectService);
         this.projectEventHandlers = Objects.requireNonNull(projectEventHandlers);
         this.representationEventProcessorComposedFactory = Objects.requireNonNull(representationEventProcessorComposedFactory);
-        this.stopWatchFactory = Objects.requireNonNull(stopWatchFactory);
     }
 
     @Override
@@ -95,7 +91,7 @@ public class ProjectEventProcessorRegistry implements IProjectEventProcessorRegi
         if (this.projectService.existsById(projectId)) {
             ProjectEventProcessor projectEventHandler = this.projectEventProcessors.computeIfAbsent(projectId, id -> {
                 return new ProjectEventProcessor(id, this.editingContextManager, this.applicationEventPublisher, this.objectService, this.projectEventHandlers,
-                        this.representationEventProcessorComposedFactory, this.stopWatchFactory);
+                        this.representationEventProcessorComposedFactory);
             });
             return Optional.of(projectEventHandler);
         }

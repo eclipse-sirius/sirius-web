@@ -18,6 +18,7 @@ import { PropertySectionSubscribers } from 'properties/propertysections/Property
 import React, { useEffect, useState } from 'react';
 import styles from './PropertySection.module.css';
 import { editTextfieldMutation, updateWidgetFocusMutation } from './mutations';
+import { Permission } from 'project/Permission';
 
 const propTypes = {
   projectId: PropTypes.string.isRequired,
@@ -98,8 +99,10 @@ export const TextfieldPropertySection = ({ projectId, formId, widgetId, label, v
 
   return (
     <>
-      <Text className={styles.label}>{label}</Text>
       <PropertySectionSubscribers subscribers={subscribers}>
+        <Text className={styles.label}>{label}</Text>
+      </PropertySectionSubscribers>
+      <Permission requiredAccessLevel="EDIT">
         <Textfield
           name={label}
           kind="small"
@@ -111,7 +114,7 @@ export const TextfieldPropertySection = ({ projectId, formId, widgetId, label, v
           onKeyPress={onKeyPress}
           data-testid={label}
         />
-      </PropertySectionSubscribers>
+      </Permission>
     </>
   );
 };

@@ -18,7 +18,6 @@ import org.eclipse.sirius.web.representations.IRepresentation;
 import org.eclipse.sirius.web.services.api.Context;
 import org.eclipse.sirius.web.services.api.dto.IPayload;
 import org.eclipse.sirius.web.services.api.dto.IRepresentationInput;
-import org.eclipse.sirius.web.services.api.monitoring.IStopWatch;
 
 import reactor.core.publisher.Flux;
 
@@ -32,7 +31,7 @@ public interface IRepresentationEventProcessor {
 
     Optional<EventHandlerResponse> handle(IRepresentationInput representationInput, Context context);
 
-    void refresh(IStopWatch stopWatch);
+    void refresh();
 
     ISubscriptionManager getSubscriptionManager();
 

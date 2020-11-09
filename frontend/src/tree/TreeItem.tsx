@@ -194,22 +194,41 @@ export const TreeItem = ({ item, depth, onExpand, selection, setSelection }) => 
     }
   }, [renameObjectResult]);
 
+  // custom hook for getting previous value 
+  const usePrevious = (value) => {
+    const ref = useRef();
+    useEffect(() => {
+      ref.current = value;
+    });
+    return ref.current;
+  }
+
   const onMore = (event) => {
     const { x, y } = event.currentTarget.getBoundingClientRect();
-    setState((prevState) => {
-      return {
-        modalDisplayed: prevState.modalDisplayed,
-        x: x + menuPositionDelta.dx,
-        y: y + menuPositionDelta.dy,
-        showContextMenu: true,
-        editingMode: false,
-        label: item.label,
-        prevSelectionId: prevState.prevSelectionId,
-      };
-    });
+    if (!state.showContextMenu) {
+      setState((prevState) => {
+        return {
+          modalDisplayed: prevState.modalDisplayed,
+          x: x + menuPositionDelta.dx,
+          y: y + menuPositionDelta.dy,
+          showContextMenu: true,
+          editingMode: false,
+          label: item.label,
+          prevSelectionId: prevState.prevSelectionId,
+        };
+      });
+    }
   };
 
   const { x, y, showContextMenu, modalDisplayed, editingMode, label } = state;
+
+  const prevEditingMode = usePrevious(editingMode);
+  useEffect(() => {
+    if (prevEditingMode && !editingMode) {
+      refDom.current.focus();
+    }
+  }, [editingMode, prevEditingMode]);
+
   let contextMenu = null;
   if (showContextMenu) {
     const onCloseContextMenu = () => {
@@ -410,38 +429,38 @@ export const TreeItem = ({ item, depth, onExpand, selection, setSelection }) => 
         return { ...prevState, editingMode: true, label: newLabel };
       });
     };
+
+    const doRename = () => {
+      const isNameValid = label.length >= 1;
+      if (isNameValid && item) {
+        if (item.kind === 'Document') {
+          renameDocument({ input: { documentId: item.id, newName: label } });
+        } else if (item?.kind === 'Diagram') {
+          renameRepresentation({ input: { projectId: projectId, representationId: item.id, newLabel: label } });
+        } else {
+          renameObject({ input: { projectId: projectId, objectId: item.id, newName: label } });
+        }
+      } else {
+        setState((prevState) => {
+          return { ...prevState, editingMode: false, label: item.label };
+        });
+      }
+    }
     const onFinishEditing = (event) => {
       const { key } = event;
       if (key === 'Enter') {
-        const isNameValid = label.length >= 1;
-        if (isNameValid && item) {
-          if (item.kind === 'Document') {
-            renameDocument({ input: { documentId: item.id, newName: label } });
-          } else if (item?.kind === 'Diagram') {
-            renameRepresentation({ input: { projectId: projectId, representationId: item.id, newLabel: label } });
-          } else {
-            renameObject({ input: { projectId: projectId, objectId: item.id, newName: label } });
-          }
-        } else {
-          setState((prevState) => {
-            return { ...prevState, editingMode: false, label: item.label };
-          });
-        }
-        refDom.current.focus();
+        doRename();
       } else if (key === 'Escape') {
         setState((prevState) => {
           return { ...prevState, editingMode: false, label: item.label };
         });
-        refDom.current.focus();
       }
     };
     const onFocusIn = (event) => {
       event.target.select();
     };
     const onFocusOut = (event) => {
-      setState((prevState) => {
-        return { ...prevState, editingMode: false, label: item.label };
-      });
+      doRename();
     };
     text = (
       <Textfield

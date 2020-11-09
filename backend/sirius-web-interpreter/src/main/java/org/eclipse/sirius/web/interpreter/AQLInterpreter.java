@@ -83,9 +83,13 @@ public class AQLInterpreter {
             ServiceUtils.registerServices(this.queryEnvironment, services);
         }
 
-        ePackages.stream().forEach(this.queryEnvironment::registerEPackage);
+        ePackages.stream().filter(this::isValidEPackage).forEach(this.queryEnvironment::registerEPackage);
 
         this.initExpressionsCache();
+    }
+
+    private boolean isValidEPackage(EPackage ePackage) {
+        return ePackage != null && ePackage.getName() != null && ePackage.getNsURI() != null;
     }
 
     /**

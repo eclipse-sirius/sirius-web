@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.IProjectEventHandler;
+import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.emf.services.messages.IEMFMessageService;
 import org.eclipse.sirius.web.services.api.Context;
 import org.eclipse.sirius.web.services.api.document.Document;
@@ -30,6 +31,9 @@ import org.eclipse.sirius.web.services.api.dto.ErrorPayload;
 import org.eclipse.sirius.web.services.api.dto.IProjectInput;
 import org.eclipse.sirius.web.services.api.objects.IEditingContext;
 import org.springframework.stereotype.Service;
+
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 
 /**
  * Reducer used to rename a document.
@@ -43,9 +47,17 @@ public class RenameDocumentEventHandler implements IProjectEventHandler {
 
     private final IEMFMessageService messageService;
 
-    public RenameDocumentEventHandler(IDocumentService documentService, IEMFMessageService messageService) {
+    private final Counter counter;
+
+    public RenameDocumentEventHandler(IDocumentService documentService, IEMFMessageService messageService, MeterRegistry meterRegistry) {
         this.documentService = Objects.requireNonNull(documentService);
         this.messageService = Objects.requireNonNull(messageService);
+
+        // @formatter:off
+        this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
+                .tag(Monitoring.NAME, this.getClass().getSimpleName())
+                .register(meterRegistry);
+        // @formatter:on
     }
 
     @Override
@@ -55,6 +67,8 @@ public class RenameDocumentEventHandler implements IProjectEventHandler {
 
     @Override
     public EventHandlerResponse handle(IEditingContext editingContext, IProjectInput projectInput, Context context) {
+        this.counter.increment();
+
         // @formatter:off
         Optional<AdapterFactoryEditingDomain> optionalEditingDomain = Optional.of(editingContext)
                 .map(IEditingContext::getDomain)

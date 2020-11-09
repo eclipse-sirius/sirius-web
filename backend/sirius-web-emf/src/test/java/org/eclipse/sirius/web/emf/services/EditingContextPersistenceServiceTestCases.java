@@ -27,10 +27,11 @@ import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
 import org.eclipse.sirius.web.persistence.entities.ProjectEntity;
 import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
-import org.eclipse.sirius.web.services.api.monitoring.IStopWatch;
 import org.eclipse.sirius.web.services.api.objects.IEditingContext;
 import org.eclipse.sirius.web.services.api.objects.IEditingContextPersistenceService;
 import org.junit.Test;
+
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 
 /**
  * Unit tests of the editing context persistence service.
@@ -77,7 +78,7 @@ public class EditingContextPersistenceServiceTestCases {
                 return Optional.of(existingEntity);
             }
         };
-        IEditingContextPersistenceService editingContextPersistenceService = new EditingContextPersistenceService(documentRepository, new NoOpApplicationEventPublisher());
+        IEditingContextPersistenceService editingContextPersistenceService = new EditingContextPersistenceService(documentRepository, new NoOpApplicationEventPublisher(), new SimpleMeterRegistry());
         assertThat(entities).hasSize(0);
 
         IEditingContext editingContext = new IEditingContext() {
@@ -92,25 +93,7 @@ public class EditingContextPersistenceServiceTestCases {
             }
         };
 
-        IStopWatch stopWatch = new IStopWatch() {
-
-            @Override
-            public void stop() {
-                // Do nothing
-            }
-
-            @Override
-            public void start(String taskName) {
-                // Do nothing
-            }
-
-            @Override
-            public String prettyPrint() {
-                return ""; //$NON-NLS-1$
-            }
-        };
-
-        editingContextPersistenceService.persist(projectId, editingContext, stopWatch);
+        editingContextPersistenceService.persist(projectId, editingContext);
         assertThat(entities).hasSize(1);
 
         DocumentEntity documentEntity = entities.get(0);

@@ -35,8 +35,10 @@ export const ProjectCard = ({ project, onProjectUpdated }) => {
   const [state, setState] = useState(initialState);
 
   const onMore = (event) => {
-    const { x, y } = event.target.getBoundingClientRect();
-    setState({ modalDisplayed: null, x: x + menuPositionDelta.dx, y: y + menuPositionDelta.dy, showContextMenu: true });
+    if (!showContextMenu) {
+      const { x, y } = event.target.getBoundingClientRect();
+      setState({ modalDisplayed: null, x: x + menuPositionDelta.dx, y: y + menuPositionDelta.dy, showContextMenu: true });
+    }
   };
 
   const { modalDisplayed, x, y, showContextMenu } = state;
@@ -49,6 +51,7 @@ export const ProjectCard = ({ project, onProjectUpdated }) => {
     contextMenu = (
       <ProjectActionsContextMenu
         projectId={project.id}
+        accessLevel={project.accessLevel}
         x={x}
         y={y}
         onRename={onRename}

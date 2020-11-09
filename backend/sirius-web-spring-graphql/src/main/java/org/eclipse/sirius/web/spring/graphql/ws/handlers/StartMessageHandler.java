@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.web.spring.graphql.api.GraphQLConstants;
@@ -37,6 +38,8 @@ import graphql.ExecutionInput;
 import graphql.ExecutionResult;
 import graphql.GraphQL;
 import graphql.GraphQLContext;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Timer;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 
@@ -49,6 +52,8 @@ import reactor.core.publisher.Flux;
  * @author sbegaudeau
  */
 public class StartMessageHandler implements IWebSocketMessageHandler {
+
+    private static final String COUNTER_METRIC_NAME = "siriusweb_graphql_ws"; //$NON-NLS-1$
 
     /** Used to separate the session id from the operation id in the creation of the subscription id. */
     private static final String SEPARATOR = "#"; //$NON-NLS-1$
@@ -63,11 +68,15 @@ public class StartMessageHandler implements IWebSocketMessageHandler {
 
     private final Map<WebSocketSession, List<SubscriptionEntry>> sessions2entries;
 
-    public StartMessageHandler(WebSocketSession session, GraphQL graphQL, ObjectMapper objectMapper, Map<WebSocketSession, List<SubscriptionEntry>> sessions2entries) {
+    private final Timer graphQLRequestTimer;
+
+    public StartMessageHandler(WebSocketSession session, GraphQL graphQL, ObjectMapper objectMapper, Map<WebSocketSession, List<SubscriptionEntry>> sessions2entries, MeterRegistry meterRegistry) {
         this.session = Objects.requireNonNull(session);
         this.graphQL = Objects.requireNonNull(graphQL);
         this.objectMapper = Objects.requireNonNull(objectMapper);
         this.sessions2entries = Objects.requireNonNull(sessions2entries);
+
+        this.graphQLRequestTimer = Timer.builder(COUNTER_METRIC_NAME).register(meterRegistry);
     }
 
     public void handle(StartMessage startMessage) {
@@ -92,7 +101,12 @@ public class StartMessageHandler implements IWebSocketMessageHandler {
                 .build();
         // @formatter:on
 
+        long start = System.currentTimeMillis();
         ExecutionResult executionResult = this.graphQL.execute(executionInput);
+        long end = System.currentTimeMillis();
+
+        this.graphQLRequestTimer.record(end - start, TimeUnit.MILLISECONDS);
+
         if (executionResult.getData() instanceof Publisher<?>) {
             Publisher<ExecutionResult> publisher = executionResult.getData();
 

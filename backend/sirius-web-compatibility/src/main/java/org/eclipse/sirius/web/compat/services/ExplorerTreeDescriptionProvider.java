@@ -200,7 +200,9 @@ public class ExplorerTreeDescriptionProvider {
                     Resource resource = (Resource) self;
                     result.addAll(resource.getContents());
                 } else if (self instanceof EObject) {
-                    result.addAll(this.representationService.getRepresentationDescriptorsForObjectId(id));
+                    var representationDescriptors = new ArrayList<>(this.representationService.getRepresentationDescriptorsForObjectId(id));
+                    representationDescriptors.sort((descriptor1, descriptor2) -> descriptor1.getLabel().compareTo(descriptor2.getLabel()));
+                    result.addAll(representationDescriptors);
                     List<Object> contents = this.objectService.getContents(context, id);
                     result.addAll(contents);
                 }

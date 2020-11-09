@@ -15,8 +15,10 @@ package org.eclipse.sirius.web.compat.diagrams;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.sirius.diagram.LineStyle;
 import org.eclipse.sirius.diagram.description.ConditionalNodeStyleDescription;
 import org.eclipse.sirius.diagram.description.DescriptionFactory;
 import org.eclipse.sirius.diagram.description.NodeMapping;
@@ -82,5 +84,29 @@ public class NodeMappingStyleProviderTestCases {
 
         nodeStyleDescription.setBorderColor(fixedColor);
         return nodeStyleDescription;
+    }
+
+    @Test
+    public void testBorderLineStyleConversion() {
+        // @formatter:off
+        var conversions = Map.of(LineStyle.DASH_DOT_LITERAL, org.eclipse.sirius.web.diagrams.LineStyle.Dash_Dot,
+                                LineStyle.DASH_LITERAL, org.eclipse.sirius.web.diagrams.LineStyle.Dash,
+                                LineStyle.DOT_LITERAL, org.eclipse.sirius.web.diagrams.LineStyle.Dot,
+                                LineStyle.SOLID_LITERAL, org.eclipse.sirius.web.diagrams.LineStyle.Solid);
+        // @formatter:on
+
+        for (var entry : conversions.entrySet()) {
+            NodeMapping nodeMapping = DescriptionFactory.eINSTANCE.createNodeMapping();
+            NodeStyleDescription style = this.createSquareStyle(0, 0, 0);
+            style.setBorderLineStyle(entry.getKey());
+            nodeMapping.setStyle(style);
+
+            VariableManager variableManager = new VariableManager();
+            AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(EcorePackage.eINSTANCE));
+            INodeStyle nodeStyle = new NodeMappingStyleProvider(interpreter, nodeMapping).apply(variableManager);
+            assertThat(nodeStyle).isInstanceOf(RectangularNodeStyle.class);
+            RectangularNodeStyle rectangularNodeStyle = (RectangularNodeStyle) nodeStyle;
+            assertThat(rectangularNodeStyle.getBorderStyle()).isEqualTo(entry.getValue());
+        }
     }
 }

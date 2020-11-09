@@ -34,6 +34,8 @@ import org.eclipse.sirius.web.services.api.stereotypes.IStereotypeDescriptionSer
 import org.junit.Test;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
+
 /**
  * Unit tests of the create document from stereotype event handler.
  *
@@ -92,7 +94,7 @@ public class CreateDocumentEventHandlerTestCases {
         };
         IEMFMessageService messageService = new NoOpEMFMessageService();
 
-        CreateDocumentEventHandler handler = new CreateDocumentEventHandler(documentService, stereotypeDescriptionService, messageService);
+        CreateDocumentEventHandler handler = new CreateDocumentEventHandler(documentService, stereotypeDescriptionService, messageService, new SimpleMeterRegistry());
         var input = new CreateDocumentInput(UUID.randomUUID(), DOCUMENT_NAME, STEREOTYPE_DESCRIPTION_ID);
         var context = new Context(new UsernamePasswordAuthenticationToken(null, null));
 
@@ -150,7 +152,7 @@ public class CreateDocumentEventHandlerTestCases {
         };
         UUID projectId = UUID.randomUUID();
 
-        CreateDocumentEventHandler handler = new CreateDocumentEventHandler(documentService, stereotypeDescriptionService, messageService);
+        CreateDocumentEventHandler handler = new CreateDocumentEventHandler(documentService, stereotypeDescriptionService, messageService, new SimpleMeterRegistry());
         var context = new Context(new UsernamePasswordAuthenticationToken(null, null));
 
         var firstCreateInput = new CreateDocumentInput(projectId, DOCUMENT_NAME, STEREOTYPE_DESCRIPTION_ID);

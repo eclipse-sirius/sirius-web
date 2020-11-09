@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMutation } from 'common/GraphQLHooks';
-import { ActionButton } from 'core/button/Button';
+import { Buttons, ActionButton } from 'core/button/Button';
 import { Form } from 'core/form/Form';
 import { Label } from 'core/label/Label';
 import { Textfield } from 'core/textfield/Textfield';
@@ -121,8 +121,9 @@ export const RenameProjectModal = ({ projectId, initialProjectName, onProjectRen
             data-testid="name"
           />
         </Label>
-        <ActionButton type="submit" disabled={!isValid} label="Rename" data-testid="rename-project" />
-        <ActionButton onClick={onClose} label="Cancel" data-testid="cancel" />
+        <Buttons>
+          <ActionButton type="submit" disabled={!isValid} label="Rename" data-testid="rename-project" />
+        </Buttons>
       </Form>
     </Modal>
   );

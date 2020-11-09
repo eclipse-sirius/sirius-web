@@ -24,7 +24,7 @@ import org.eclipse.sirius.web.spring.graphql.ws.dto.IOperationMessage;
  */
 public class ConnectionErrorMessage implements IOperationMessage {
 
-    private static final String CONNECTION_ERROR = "connection_error"; //$NON-NLS-1$
+    public static final String CONNECTION_ERROR = "connection_error"; //$NON-NLS-1$
 
     @Override
     public String getType() {

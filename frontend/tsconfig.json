@@ -12,7 +12,8 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "noUnusedLocals": true,
-    "types": ["node", "reflect-metadata"]
+    "types": ["node", "reflect-metadata", "jest"],
+    "resolveJsonModule": true
   },
   "include": ["src/**/*"],
   "exclude": [

@@ -78,13 +78,14 @@ public class NodeMappingStyleProvider implements Function<VariableManager, INode
             style = workspaceImageDescriptionConverter.convert();
         } else {
             // Fallback on Rectangular node style for now, until other styles are supported
+            LineStyle borderStyle = new LineStyleConverter().getStyle(nodeStyleDescription.getBorderLineStyle());
 
             // @formatter:off
             style = RectangularNodeStyle.newRectangularNodeStyle()
                     .color("rgb(200, 200, 200)") //$NON-NLS-1$
                     .borderColor("rgb(0, 0, 0)") //$NON-NLS-1$
                     .borderSize(1)
-                    .borderStyle(LineStyle.Solid)
+                    .borderStyle(borderStyle)
                     .build();
             // @formatter:on
         }
@@ -99,7 +100,7 @@ public class NodeMappingStyleProvider implements Function<VariableManager, INode
         String color = colorProvider.convert(squareDescription.getColor());
         String borderColor = borderColorProvider.convert(squareDescription.getBorderColor());
 
-        LineStyle borderStyle = LineStyle.Solid;
+        LineStyle borderStyle = new LineStyleConverter().getStyle(squareDescription.getBorderLineStyle());
 
         Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), squareDescription.getBorderSizeComputationExpression());
         int borderSize = result.asInt().getAsInt();

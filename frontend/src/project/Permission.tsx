@@ -18,13 +18,24 @@ const propTypes = {
   requiredAccessLevel: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired,
 };
+
 export const Permission = ({ requiredAccessLevel, children }) => {
   const { accessLevel } = useProject() as any;
+  return (
+    <UnsynchronizedPermission accessLevel={accessLevel} requiredAccessLevel={requiredAccessLevel} children={children} />
+  );
+};
+Permission.propTypes = propTypes;
 
+export const UnsynchronizedPermission = ({ accessLevel, requiredAccessLevel, children }) => {
   let shouldDisable = accessLevel === 'READ' && requiredAccessLevel === 'EDIT';
   shouldDisable = shouldDisable || (accessLevel === 'READ' && requiredAccessLevel === 'ADMIN');
   shouldDisable = shouldDisable || (accessLevel === 'EDIT' && requiredAccessLevel === 'ADMIN');
-
   return React.cloneElement(children, { disabled: shouldDisable });
 };
-Permission.propTypes = propTypes;
+
+UnsynchronizedPermission.propTypes = {
+  accessLevel: PropTypes.string.isRequired,
+  requiredAccessLevel: PropTypes.string.isRequired,
+  children: PropTypes.node.isRequired,
+};

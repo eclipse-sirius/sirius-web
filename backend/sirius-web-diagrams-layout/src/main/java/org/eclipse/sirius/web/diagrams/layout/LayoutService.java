@@ -25,7 +25,9 @@ import org.eclipse.elk.core.util.ElkUtil;
 import org.eclipse.elk.graph.ElkGraphElement;
 import org.eclipse.elk.graph.ElkNode;
 import org.eclipse.sirius.web.diagrams.Diagram;
+import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.web.diagrams.layout.api.ILayoutService;
+import org.eclipse.sirius.web.services.api.representations.IRepresentationDescriptionService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -42,10 +44,14 @@ public class LayoutService implements ILayoutService {
 
     private final LayoutedDiagramProvider layoutedDiagramProvider;
 
-    public LayoutService(DiagramConverter diagramConverter, LayoutConfiguratorRegistry layoutConfiguratorRegistry, LayoutedDiagramProvider layoutedDiagramProvider) {
+    private final IRepresentationDescriptionService representationDescriptionService;
+
+    public LayoutService(DiagramConverter diagramConverter, LayoutConfiguratorRegistry layoutConfiguratorRegistry, LayoutedDiagramProvider layoutedDiagramProvider,
+            IRepresentationDescriptionService representationDescriptionService) {
         this.diagramConverter = Objects.requireNonNull(diagramConverter);
         this.layoutConfiguratorRegistry = Objects.requireNonNull(layoutConfiguratorRegistry);
         this.layoutedDiagramProvider = Objects.requireNonNull(layoutedDiagramProvider);
+        this.representationDescriptionService = Objects.requireNonNull(representationDescriptionService);
     }
 
     @Override
@@ -53,7 +59,13 @@ public class LayoutService implements ILayoutService {
         ConvertedDiagram convertedDiagram = this.diagramConverter.convert(diagram);
 
         ElkNode elkDiagram = convertedDiagram.getElkDiagram();
-        LayoutConfigurator layoutConfigurator = this.layoutConfiguratorRegistry.getLayoutConfigurator();
+        var representationDescription = this.representationDescriptionService.findRepresentationDescriptionById(diagram.getDescriptionId());
+        LayoutConfigurator layoutConfigurator;
+        if (representationDescription.isPresent() && representationDescription.get() instanceof DiagramDescription) {
+            layoutConfigurator = this.layoutConfiguratorRegistry.getLayoutConfigurator(diagram, (DiagramDescription) representationDescription.get());
+        } else {
+            layoutConfigurator = this.layoutConfiguratorRegistry.getDefaultLayoutConfigurator();
+        }
 
         LayoutMetaDataService.getInstance().registerLayoutMetaDataProviders(new LayeredOptions());
 

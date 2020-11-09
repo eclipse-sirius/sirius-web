@@ -17,6 +17,7 @@ import java.util.Optional;
 
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.IProjectEventHandler;
+import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.services.api.Context;
 import org.eclipse.sirius.web.services.api.dto.ErrorPayload;
 import org.eclipse.sirius.web.services.api.dto.IProjectInput;
@@ -27,6 +28,9 @@ import org.eclipse.sirius.web.services.api.objects.IEditingContext;
 import org.eclipse.sirius.web.services.api.objects.IObjectService;
 import org.eclipse.sirius.web.spring.collaborative.messages.ICollaborativeMessageService;
 import org.springframework.stereotype.Service;
+
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 
 /**
  * Handler used to create a new child.
@@ -42,10 +46,18 @@ public class CreateChildEventHandler implements IProjectEventHandler {
 
     private final ICollaborativeMessageService messageService;
 
-    public CreateChildEventHandler(IObjectService objectService, IEditService editService, ICollaborativeMessageService messageService) {
+    private final Counter counter;
+
+    public CreateChildEventHandler(IObjectService objectService, IEditService editService, ICollaborativeMessageService messageService, MeterRegistry meterRegistry) {
         this.objectService = Objects.requireNonNull(objectService);
         this.editService = Objects.requireNonNull(editService);
         this.messageService = Objects.requireNonNull(messageService);
+
+        // @formatter:off
+        this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
+                .tag(Monitoring.NAME, this.getClass().getSimpleName())
+                .register(meterRegistry);
+        // @formatter:on
     }
 
     @Override
@@ -55,6 +67,8 @@ public class CreateChildEventHandler implements IProjectEventHandler {
 
     @Override
     public EventHandlerResponse handle(IEditingContext editingContext, IProjectInput projectInput, Context context) {
+        this.counter.increment();
+
         String message = this.messageService.invalidInput(projectInput.getClass().getSimpleName(), CreateChildInput.class.getSimpleName());
         if (projectInput instanceof CreateChildInput) {
             CreateChildInput input = (CreateChildInput) projectInput;

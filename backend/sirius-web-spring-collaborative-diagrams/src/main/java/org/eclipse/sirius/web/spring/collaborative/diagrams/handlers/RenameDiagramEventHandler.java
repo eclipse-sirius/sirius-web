@@ -19,6 +19,7 @@ import java.util.UUID;
 import org.eclipse.sirius.web.collaborative.api.dto.RenameRepresentationSuccessPayload;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.IProjectEventHandler;
+import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.collaborative.diagrams.api.DiagramCreationParameters;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramService;
 import org.eclipse.sirius.web.diagrams.Diagram;
@@ -36,6 +37,9 @@ import org.eclipse.sirius.web.services.api.representations.RepresentationDescrip
 import org.eclipse.sirius.web.spring.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
 import org.eclipse.sirius.web.trees.Tree;
 import org.springframework.stereotype.Service;
+
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 
 /**
  * Handler used to rename a diagram.
@@ -55,13 +59,21 @@ public class RenameDiagramEventHandler implements IProjectEventHandler {
 
     private final IRepresentationDescriptionService representationDescriptionService;
 
+    private final Counter counter;
+
     public RenameDiagramEventHandler(IRepresentationService representationService, ICollaborativeDiagramMessageService messageService, IDiagramService diagramService, IObjectService objectService,
-            IRepresentationDescriptionService representationDescriptionService) {
+            IRepresentationDescriptionService representationDescriptionService, MeterRegistry meterRegistry) {
         this.representationService = Objects.requireNonNull(representationService);
         this.messageService = Objects.requireNonNull(messageService);
         this.diagramService = Objects.requireNonNull(diagramService);
         this.objectService = Objects.requireNonNull(objectService);
         this.representationDescriptionService = Objects.requireNonNull(representationDescriptionService);
+
+        // @formatter:off
+        this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
+                .tag(Monitoring.NAME, this.getClass().getSimpleName())
+                .register(meterRegistry);
+        // @formatter:on
     }
 
     @Override
@@ -71,6 +83,8 @@ public class RenameDiagramEventHandler implements IProjectEventHandler {
 
     @Override
     public EventHandlerResponse handle(IEditingContext editingContext, IProjectInput projectInput, Context context) {
+        this.counter.increment();
+
         if (projectInput instanceof RenameRepresentationInput) {
             RenameRepresentationInput input = (RenameRepresentationInput) projectInput;
             UUID representationId = input.getRepresentationId();

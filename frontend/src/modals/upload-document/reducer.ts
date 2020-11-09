@@ -24,6 +24,7 @@ export const initialState = {
   viewState: EMPTY_STATE,
   file: undefined,
   message: undefined,
+  uploadedDocumentId: undefined,
 };
 
 export const reducer = (prevState, action) => {

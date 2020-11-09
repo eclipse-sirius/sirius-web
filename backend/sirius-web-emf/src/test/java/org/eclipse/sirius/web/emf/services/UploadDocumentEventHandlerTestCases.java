@@ -48,6 +48,8 @@ import org.eclipse.sirius.web.spring.graphql.api.UploadFile;
 import org.junit.Test;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
+
 /**
  * Unit tests of the create document from upload event handler.
  *
@@ -154,7 +156,7 @@ public class UploadDocumentEventHandlerTestCases {
         };
         IEMFMessageService messageService = new NoOpEMFMessageService();
 
-        UploadDocumentEventHandler handler = new UploadDocumentEventHandler(documentService, messageService);
+        UploadDocumentEventHandler handler = new UploadDocumentEventHandler(documentService, messageService, new SimpleMeterRegistry());
 
         UploadFile file = new UploadFile(FILE_NAME, inputstream);
         var input = new UploadDocumentInput(UUID.randomUUID(), file);
@@ -235,7 +237,7 @@ public class UploadDocumentEventHandlerTestCases {
             }
         };
         IEMFMessageService messageService = new NoOpEMFMessageService();
-        UploadDocumentEventHandler handler = new UploadDocumentEventHandler(documentService, messageService);
+        UploadDocumentEventHandler handler = new UploadDocumentEventHandler(documentService, messageService, new SimpleMeterRegistry());
         UploadFile file = new UploadFile(FILE_NAME, new ByteArrayInputStream(resourceBytes));
 
         var input = new UploadDocumentInput(UUID.randomUUID(), file);

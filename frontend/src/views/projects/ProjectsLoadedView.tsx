@@ -30,7 +30,7 @@ export const ProjectsLoadedView = ({ projects, onProjectUpdated }) => {
   return (
     <View>
       <ProjectsViewContainer>
-        <Table>
+        <Table data-testid="projects">
           {projects.map((project) => (
             <ProjectCard project={project} key={project.id} onProjectUpdated={onProjectUpdated} />
           ))}

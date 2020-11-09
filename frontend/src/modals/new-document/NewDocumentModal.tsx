@@ -15,7 +15,7 @@ import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 
 import { useQuery, useMutation } from 'common/GraphQLHooks';
-import { ActionButton } from 'core/button/Button';
+import { Buttons, ActionButton } from 'core/button/Button';
 import { Form } from 'core/form/Form';
 import { Select } from 'core/select/Select';
 import { Label } from 'core/label/Label';
@@ -173,8 +173,9 @@ export const NewDocumentModal = ({ projectId, onDocumentCreated, onClose }) => {
             data-testid="stereotype"
           />
         </Label>
-        <ActionButton type="submit" disabled={!isValid} label="Create" data-testid="create-document" />
-        <ActionButton onClick={onClose} label="Cancel" data-testid="cancel" />
+        <Buttons>
+          <ActionButton type="submit" disabled={!isValid} label="Create" data-testid="create-document" />
+        </Buttons>
       </Form>
     </Modal>
   );

@@ -16,11 +16,13 @@ import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.sirius.web.collaborative.api.dto.PreDestroyPayload;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.ISubscriptionManager;
+import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.collaborative.trees.api.ITreeEventHandler;
 import org.eclipse.sirius.web.collaborative.trees.api.ITreeEventProcessor;
 import org.eclipse.sirius.web.collaborative.trees.api.ITreeInput;
@@ -31,11 +33,12 @@ import org.eclipse.sirius.web.representations.IRepresentation;
 import org.eclipse.sirius.web.services.api.Context;
 import org.eclipse.sirius.web.services.api.dto.IPayload;
 import org.eclipse.sirius.web.services.api.dto.IRepresentationInput;
-import org.eclipse.sirius.web.services.api.monitoring.IStopWatch;
 import org.eclipse.sirius.web.trees.Tree;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Timer;
 import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
@@ -65,7 +68,10 @@ public class TreeEventProcessor implements ITreeEventProcessor {
 
     private final AtomicReference<Tree> currentTree = new AtomicReference<>();
 
-    public TreeEventProcessor(ITreeService treeService, TreeCreationParameters treeCreationParameters, List<ITreeEventHandler> treeEventHandlers, ISubscriptionManager subscriptionManager) {
+    private final Timer timer;
+
+    public TreeEventProcessor(ITreeService treeService, TreeCreationParameters treeCreationParameters, List<ITreeEventHandler> treeEventHandlers, ISubscriptionManager subscriptionManager,
+            MeterRegistry meterRegistry) {
         this.treeService = Objects.requireNonNull(treeService);
         this.treeCreationParameters = Objects.requireNonNull(treeCreationParameters);
         this.treeEventHandlers = Objects.requireNonNull(treeEventHandlers);
@@ -73,6 +79,12 @@ public class TreeEventProcessor implements ITreeEventProcessor {
 
         this.flux = DirectProcessor.create();
         this.sink = this.flux.sink();
+
+        // @formatter:off
+        this.timer = Timer.builder(Monitoring.REPRESENTATION_EVENT_PROCESSOR_REFRESH)
+                .tag(Monitoring.NAME, "tree") //$NON-NLS-1$
+                .register(meterRegistry);
+        // @formatter:on
 
         Tree tree = this.refreshTree();
         this.currentTree.set(tree);
@@ -106,13 +118,16 @@ public class TreeEventProcessor implements ITreeEventProcessor {
     }
 
     @Override
-    public void refresh(IStopWatch stopWatch) {
-        stopWatch.start("Tree rendering"); //$NON-NLS-1$
+    public void refresh() {
+        long start = System.currentTimeMillis();
+
         Tree tree = this.refreshTree();
-        stopWatch.stop();
 
         this.currentTree.set(tree);
         this.sink.next(new TreeRefreshedEventPayload(tree));
+
+        long end = System.currentTimeMillis();
+        this.timer.record(end - start, TimeUnit.MILLISECONDS);
     }
 
     private Tree refreshTree() {

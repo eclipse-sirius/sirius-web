@@ -32,8 +32,8 @@
   --bottomBarMarginTop: 3px;
 }
 .small {
-  --externalCircleDiameter: 20px;
-  --internalCircleDiameter: 16px;
+  --externalCircleDiameter: 16px;
+  --internalCircleDiameter: 14px;
   --labelFontSize: 12px;
   --bottomBarMarginTop: 3px;
 }
@@ -74,6 +74,7 @@
 
 .username {
   font-size: var(--labelFontSize);
+  font-family: var(--font-family);
   text-transform: uppercase;
   user-select: none;
 

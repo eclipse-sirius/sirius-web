@@ -31,6 +31,8 @@ import org.eclipse.sirius.web.services.api.projects.Visibility;
 import org.junit.Test;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
+
 /**
  * Unit tests of the rename document event handler.
  *
@@ -49,7 +51,7 @@ public class RenameDocumentEventHandlerTestCases {
                 return Optional.of(new Document(documentId, new Project(UUID.randomUUID(), "", new Profile(UUID.randomUUID(), "username"), Visibility.PUBLIC), newName, "noContent")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             }
         };
-        RenameDocumentEventHandler handler = new RenameDocumentEventHandler(noOpDocumentService, new NoOpEMFMessageService());
+        RenameDocumentEventHandler handler = new RenameDocumentEventHandler(noOpDocumentService, new NoOpEMFMessageService(), new SimpleMeterRegistry());
 
         UUID documentId = UUID.randomUUID();
         IProjectInput input = new RenameDocumentInput(documentId, NEW_NAME);

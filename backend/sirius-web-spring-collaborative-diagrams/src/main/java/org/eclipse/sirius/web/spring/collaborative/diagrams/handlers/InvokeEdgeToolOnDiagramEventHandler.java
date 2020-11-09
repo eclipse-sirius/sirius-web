@@ -16,6 +16,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
+import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramService;
@@ -32,6 +33,9 @@ import org.eclipse.sirius.web.services.api.objects.IEditingContext;
 import org.eclipse.sirius.web.services.api.objects.IObjectService;
 import org.eclipse.sirius.web.spring.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
 import org.springframework.stereotype.Service;
+
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 
 /**
  * Handle "Invoke edge tool on diagram" events.
@@ -50,11 +54,20 @@ public class InvokeEdgeToolOnDiagramEventHandler implements IDiagramEventHandler
 
     private final ICollaborativeDiagramMessageService messageService;
 
-    public InvokeEdgeToolOnDiagramEventHandler(IObjectService objectService, IDiagramService diagramService, IToolService toolService, ICollaborativeDiagramMessageService messageService) {
+    private final Counter counter;
+
+    public InvokeEdgeToolOnDiagramEventHandler(IObjectService objectService, IDiagramService diagramService, IToolService toolService, ICollaborativeDiagramMessageService messageService,
+            MeterRegistry meterRegistry) {
         this.objectService = Objects.requireNonNull(objectService);
         this.diagramService = Objects.requireNonNull(diagramService);
         this.toolService = Objects.requireNonNull(toolService);
         this.messageService = Objects.requireNonNull(messageService);
+
+        // @formatter:off
+        this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
+                .tag(Monitoring.NAME, this.getClass().getSimpleName())
+                .register(meterRegistry);
+        // @formatter:on
     }
 
     @Override
@@ -64,6 +77,8 @@ public class InvokeEdgeToolOnDiagramEventHandler implements IDiagramEventHandler
 
     @Override
     public EventHandlerResponse handle(IEditingContext editingContext, Diagram diagram, IDiagramInput diagramInput) {
+        this.counter.increment();
+
         if (diagramInput instanceof InvokeEdgeToolOnDiagramInput) {
             InvokeEdgeToolOnDiagramInput input = (InvokeEdgeToolOnDiagramInput) diagramInput;
             // @formatter:off

@@ -47,7 +47,7 @@
 
 .centerArea > div {
   display: grid;
-  grid-template-columns: min-content min-content;
+  grid-template-columns: min-content min-content max-content;
   column-gap: 8px;
   align-items: baseline;
 }
@@ -75,7 +75,6 @@
 }
 
 .moreIcon {
-  stroke: var(--white);
   fill: var(--white);
   width: 24px;
   height: 24px;
@@ -87,4 +86,9 @@
 .moreIcon:focus {
   background-color: var(--blue-lagoon-lighten-90);
   fill: black;
+}
+
+.accessDetails {
+  color: var(--daintree-lighten-40);
+  align-self: center;
 }

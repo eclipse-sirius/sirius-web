@@ -21,6 +21,7 @@ import { Text } from 'core/text/Text';
 import styles from './PropertySection.module.css';
 
 import { editRadioMutation } from './mutations';
+import { Permission } from 'project/Permission';
 
 const propTypes = {
   projectId: PropTypes.string.isRequired,
@@ -49,7 +50,9 @@ export const RadioPropertySection = ({ projectId, formId, widgetId, label, optio
   return (
     <>
       <Text className={styles.label}>{label}</Text>
-      <Radio name={label} options={options} onChange={onChange} data-testid={label} />
+      <Permission requiredAccessLevel="EDIT">
+        <Radio name={label} options={options} onChange={onChange} data-testid={label} />
+      </Permission>
     </>
   );
 };

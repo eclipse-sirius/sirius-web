@@ -14,8 +14,10 @@ package org.eclipse.sirius.web.spring.collaborative.diagrams;
 
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import org.eclipse.sirius.web.collaborative.api.dto.PreDestroyPayload;
+import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.collaborative.diagrams.api.DiagramCreationParameters;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramRefreshManager;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramService;
@@ -23,13 +25,11 @@ import org.eclipse.sirius.web.collaborative.diagrams.api.dto.DiagramRefreshedEve
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.layout.api.ILayoutService;
 import org.eclipse.sirius.web.services.api.dto.IPayload;
-import org.eclipse.sirius.web.services.api.monitoring.IStopWatch;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationService;
 import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;
-import org.eclipse.sirius.web.spring.collaborative.stopwatch.SpringStopWatch;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Timer;
 import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
@@ -42,8 +42,6 @@ import reactor.core.publisher.Mono;
  */
 public class DiagramRefreshManager implements IDiagramRefreshManager {
 
-    private final Logger logger = LoggerFactory.getLogger(DiagramRefreshManager.class);
-
     private final IRepresentationService representationService;
 
     private final IDiagramService diagramService;
@@ -54,14 +52,22 @@ public class DiagramRefreshManager implements IDiagramRefreshManager {
 
     private final FluxSink<IPayload> sink;
 
+    private final Timer timer;
+
     private Diagram diagram;
 
-    public DiagramRefreshManager(IRepresentationService representationService, IDiagramService diagramService, ILayoutService layoutService) {
+    public DiagramRefreshManager(IRepresentationService representationService, IDiagramService diagramService, ILayoutService layoutService, MeterRegistry meterRegistry) {
         this.representationService = Objects.requireNonNull(representationService);
         this.diagramService = Objects.requireNonNull(diagramService);
         this.layoutService = Objects.requireNonNull(layoutService);
         this.flux = DirectProcessor.create();
         this.sink = this.flux.sink();
+
+        // @formatter:off
+        this.timer = Timer.builder(Monitoring.REPRESENTATION_EVENT_PROCESSOR_REFRESH)
+                .tag(Monitoring.NAME, "diagram") //$NON-NLS-1$
+                .register(meterRegistry);
+        // @formatter:on
     }
 
     /**
@@ -88,27 +94,22 @@ public class DiagramRefreshManager implements IDiagramRefreshManager {
      */
     @Override
     public void refresh(UUID projectId, DiagramCreationParameters diagramCreationParameters) {
+        long start = System.currentTimeMillis();
+
         this.computeDiagram(projectId, diagramCreationParameters);
+
+        long end = System.currentTimeMillis();
+        this.timer.record(end - start, TimeUnit.MILLISECONDS);
+
         this.sink.next(new DiagramRefreshedEventPayload(this.diagram));
     }
 
     private void computeDiagram(UUID projectId, DiagramCreationParameters diagramCreationParameters) {
-        IStopWatch stopWatch = new SpringStopWatch("DiagramEventProcessor#init()"); //$NON-NLS-1$
-        stopWatch.start("Diagram creation"); //$NON-NLS-1$
         Diagram unlayoutedDiagram = this.diagramService.create(diagramCreationParameters);
-        stopWatch.stop();
-        stopWatch.start("Diagram layout"); //$NON-NLS-1$
         this.diagram = this.layoutService.layout(unlayoutedDiagram);
-        stopWatch.stop();
 
-        stopWatch.start("Diagram saving"); //$NON-NLS-1$
         RepresentationDescriptor representationDescriptor = this.getRepresentationDescriptor(projectId);
         this.representationService.save(representationDescriptor);
-        stopWatch.stop();
-
-        if (this.logger.isDebugEnabled()) {
-            this.logger.debug(stopWatch.prettyPrint());
-        }
     }
 
     private RepresentationDescriptor getRepresentationDescriptor(UUID projectId) {

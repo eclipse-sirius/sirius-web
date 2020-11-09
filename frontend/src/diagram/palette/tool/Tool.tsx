@@ -12,7 +12,7 @@
  *******************************************************************************/
 import { httpOrigin } from 'common/URL';
 import { Text } from 'core/text/Text';
-import { NoIcon } from 'icons/NoIcon';
+import { GenericTool } from 'icons/GenericTool';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styles from './Tool.module.css';
@@ -39,8 +39,8 @@ export const Tool = ({ tool, selected, onClick, disabled, thumbnail }) => {
     className = `${className} ${styles.selected}`;
   }
 
-  let image = <NoIcon title={label} />;
-  if (imageURL) {
+  let image = <GenericTool title={label} style={{ fill: 'var(--daintree)' }} />;
+  if (imageURL && imageURL != '/api/images') {
     let imageSrc;
     if (imageURL.startsWith('data:')) {
       imageSrc = imageURL;

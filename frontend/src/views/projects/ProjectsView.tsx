@@ -34,6 +34,7 @@ const getProjectsQuery = gql`
       projects {
         id
         name
+        accessLevel
       }
     }
   }

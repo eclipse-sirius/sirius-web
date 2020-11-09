@@ -11,10 +11,9 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMutation } from 'common/GraphQLHooks';
-import { ActionButton } from 'core/button/Button';
+import { Buttons, ActionButton, SecondaryButton } from 'core/button/Button';
 import { Form } from 'core/form/Form';
 import { Label } from 'core/label/Label';
-import { Link } from 'core/link/Link';
 import { Message } from 'core/message/Message';
 import { Textfield } from 'core/textfield/Textfield';
 import React, { useEffect, useReducer } from 'react';
@@ -106,12 +105,10 @@ export const NewProjectView = () => {
             />
             <div className={styles.messageArea}>{nameMessageContent}</div>
           </Label>
-          <ActionButton type="submit" disabled={!canBeSubmitted} label="Create project" data-testid="create-project" />
-          <div className={styles.links}>
-            <Link to="/" data-testid="back">
-              Back to homepage
-            </Link>
-          </div>
+          <Buttons>
+            <ActionButton type="submit" disabled={!canBeSubmitted} label="Create" data-testid="create-project" />
+            <SecondaryButton type="submit" to={`/`} label="Cancel" data-testid="back" />
+          </Buttons>
         </Form>
       </FormContainer>
     </View>

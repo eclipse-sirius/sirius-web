@@ -14,7 +14,7 @@ import { useCapabilities } from 'capabilities/useCapabilities';
 import { httpOrigin } from 'common/URL';
 import { ContextMenu, Entry, Separator } from 'core/contextmenu/ContextMenu';
 import { Go } from 'core/go/Go';
-import { Delete, Edit } from 'icons';
+import { Delete, Edit, Settings } from 'icons';
 import { Permission } from 'project/Permission';
 import { useProject } from 'project/ProjectProvider';
 import PropTypes from 'prop-types';
@@ -45,9 +45,11 @@ export const EditProjectNavbarContextMenu = ({
   let settingsEntry;
   if (capabilities.overrides(settingsURL)) {
     settingsEntry = (
-      <Go to={settingsURL} data-testid="settings-link">
-        <Entry label="Settings" data-testid="settings" />
-      </Go>
+      <Permission requiredAccessLevel="ADMIN">
+        <Go to={settingsURL} data-testid="settings-link">
+          <Entry icon={<Settings title="" />} label="Settings" data-testid="settings" />
+        </Go>
+      </Permission>
     );
   }
 

@@ -19,13 +19,14 @@ import { httpOrigin } from 'common/URL';
 
 const propTypes = {
   items: PropTypes.array.isRequired,
+  disabled: PropTypes.bool,
 };
 
 const defaultProps = {
   items: [],
 };
 
-export const List = ({ items }) => {
+export const List = ({ items, disabled }) => {
   const content = items.map((item) => (
     <li className={styles.item} key={item.id}>
       {item.imageURL ? (
@@ -37,7 +38,12 @@ export const List = ({ items }) => {
     </li>
   ));
 
-  return <ul className={styles.list}>{content}</ul>;
+  let className = styles.list;
+  if (disabled) {
+    className = `${className} ${styles.disabled}`;
+  }
+
+  return <ul className={className}>{content}</ul>;
 };
 List.propTypes = propTypes;
 List.defaultProps = defaultProps;

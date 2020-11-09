@@ -40,6 +40,7 @@ import graphql.schema.GraphQLNonNull;
 import graphql.schema.GraphQLObjectType;
 import graphql.schema.GraphQLSchema;
 import graphql.schema.GraphQLTypeReference;
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 
 /**
  * Unit tests of the GraphQL controller.
@@ -108,28 +109,28 @@ public class GraphQLControllerTestCases {
 
     @Test
     public void testInvalidOperation() {
-        GraphQLController graphQLController = new GraphQLController(new ObjectMapper(), this.getGraphQL());
+        GraphQLController graphQLController = new GraphQLController(new ObjectMapper(), this.getGraphQL(), new SimpleMeterRegistry());
         ResponseEntity<Map<String, Object>> responseEntity = graphQLController.uploadDocument(null, MAPPING, FILE, new UsernamePasswordAuthenticationToken(new Object(), new Object()));
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
     @Test
     public void testInvalidMapping() {
-        GraphQLController graphQLController = new GraphQLController(new ObjectMapper(), this.getGraphQL());
+        GraphQLController graphQLController = new GraphQLController(new ObjectMapper(), this.getGraphQL(), new SimpleMeterRegistry());
         ResponseEntity<Map<String, Object>> responseEntity = graphQLController.uploadDocument(QUERY, null, FILE, new UsernamePasswordAuthenticationToken(new Object(), new Object()));
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
     @Test
     public void testInvalidMultipartFile() {
-        GraphQLController graphQLController = new GraphQLController(new ObjectMapper(), this.getGraphQL());
+        GraphQLController graphQLController = new GraphQLController(new ObjectMapper(), this.getGraphQL(), new SimpleMeterRegistry());
         ResponseEntity<Map<String, Object>> responseEntity = graphQLController.uploadDocument(QUERY, MAPPING, null, new UsernamePasswordAuthenticationToken(new Object(), new Object()));
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
     @Test
     public void testValidUpload() {
-        GraphQLController graphQLController = new GraphQLController(new ObjectMapper(), this.getGraphQL());
+        GraphQLController graphQLController = new GraphQLController(new ObjectMapper(), this.getGraphQL(), new SimpleMeterRegistry());
         ResponseEntity<Map<String, Object>> responseEntity = graphQLController.uploadDocument(QUERY, MAPPING, FILE, new UsernamePasswordAuthenticationToken(new Object(), new Object()));
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         assertThat(responseEntity.getBody().toString()).isEqualTo("{data={uploadDocument=DOCUMENT_CREATED}}"); //$NON-NLS-1$

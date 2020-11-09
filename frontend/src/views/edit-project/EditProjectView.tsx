@@ -64,10 +64,13 @@ export const EditProjectView = () => {
   const { viewState, project, representations, displayedRepresentation, selection, subscribers, message } = state;
 
   const context = useProject() as any;
-  const { id: contextId } = context;
+  let contextId;
+  if (context) {
+    contextId = context.id;
+  }
 
   useEffect(() => {
-    if (context && context.id) {
+    if (context && context.id && viewState === LOADING__STATE) {
       const action = {
         type: HANDLE_FETCHED_PROJECT__ACTION,
         response: {
@@ -85,7 +88,7 @@ export const EditProjectView = () => {
       };
       dispatch(action);
     }
-  }, [context]);
+  }, [context, viewState]);
 
   const [getRepresentation, result] = useLazyQuery(getRepresentationQuery, {}, 'getRepresentation');
   useEffect(() => {
@@ -126,7 +129,7 @@ export const EditProjectView = () => {
    */
   useEffect(() => {
     if (!contextId) {
-      return () => {};
+      return () => { };
     }
     const operationId = graphQLWebSocketClient.generateOperationId();
 

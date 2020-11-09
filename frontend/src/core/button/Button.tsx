@@ -65,9 +65,25 @@ export const ActionButton = ({ label, ...props }) => {
   );
 };
 
+export const SecondaryButton = ({ label, ...props }) => {
+  return (
+    <Button {...props} className={`${styles.rectangularButton} ${styles.secondary}`}>
+      <Text className={styles.label}>{label}</Text>
+    </Button>
+  );
+};
+
 export const DangerButton = ({ label, ...props }) => {
   return (
     <Button {...props} className={`${styles.rectangularButton} ${styles.danger}`}>
+      <Text className={styles.label}>{label}</Text>
+    </Button>
+  );
+};
+
+export const DangerSecondaryButton = ({ label, ...props }) => {
+  return (
+    <Button {...props} className={`${styles.rectangularButton} ${styles.dangerSecondary}`}>
       <Text className={styles.label}>{label}</Text>
     </Button>
   );
@@ -79,4 +95,8 @@ export const IconButton = ({ className = undefined, ...props }) => {
     iconClassName = `${iconClassName} ${className}`;
   }
   return <Button {...props} className={iconClassName} />;
+};
+
+export const Buttons = ({ children }) => {
+  return <div className={styles.buttons}>{children}</div>;
 };

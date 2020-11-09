@@ -20,6 +20,7 @@ import org.eclipse.sirius.web.collaborative.api.dto.CreateRepresentationInput;
 import org.eclipse.sirius.web.collaborative.api.dto.CreateRepresentationSuccessPayload;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.IProjectEventHandler;
+import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.collaborative.diagrams.api.DiagramCreationParameters;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramService;
 import org.eclipse.sirius.web.diagrams.Diagram;
@@ -35,6 +36,9 @@ import org.eclipse.sirius.web.services.api.representations.RepresentationDescrip
 import org.eclipse.sirius.web.spring.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
 import org.eclipse.sirius.web.trees.Tree;
 import org.springframework.stereotype.Service;
+
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 
 /**
  * Handler used to create a new representation.
@@ -54,13 +58,21 @@ public class CreateDiagramEventHandler implements IProjectEventHandler {
 
     private final ICollaborativeDiagramMessageService messageService;
 
+    private final Counter counter;
+
     public CreateDiagramEventHandler(IRepresentationDescriptionService representationDescriptionService, IRepresentationService representationService, IDiagramService diagramService,
-            IObjectService objectService, ICollaborativeDiagramMessageService messageService) {
+            IObjectService objectService, ICollaborativeDiagramMessageService messageService, MeterRegistry meterRegistry) {
         this.representationDescriptionService = Objects.requireNonNull(representationDescriptionService);
         this.representationService = Objects.requireNonNull(representationService);
         this.diagramService = Objects.requireNonNull(diagramService);
         this.objectService = Objects.requireNonNull(objectService);
         this.messageService = Objects.requireNonNull(messageService);
+
+        // @formatter:off
+        this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
+                .tag(Monitoring.NAME, this.getClass().getSimpleName())
+                .register(meterRegistry);
+        // @formatter:on
     }
 
     @Override
@@ -70,6 +82,8 @@ public class CreateDiagramEventHandler implements IProjectEventHandler {
 
     @Override
     public EventHandlerResponse handle(IEditingContext editingContext, IProjectInput projectInput, Context context) {
+        this.counter.increment();
+
         if (projectInput instanceof CreateRepresentationInput) {
             CreateRepresentationInput input = (CreateRepresentationInput) projectInput;
 

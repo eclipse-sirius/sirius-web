@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.spring.collaborative.forms.handlers;
 import java.util.Objects;
 
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
+import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.collaborative.forms.api.IFormEventHandler;
 import org.eclipse.sirius.web.collaborative.forms.api.IFormInput;
 import org.eclipse.sirius.web.collaborative.forms.api.IFormService;
@@ -26,6 +27,9 @@ import org.eclipse.sirius.web.representations.Status;
 import org.eclipse.sirius.web.services.api.dto.ErrorPayload;
 import org.eclipse.sirius.web.spring.collaborative.forms.messages.ICollaborativeFormMessageService;
 import org.springframework.stereotype.Service;
+
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 
 /**
  * The handler of the edit checkbox event.
@@ -39,9 +43,17 @@ public class EditCheckboxEventHandler implements IFormEventHandler {
 
     private final ICollaborativeFormMessageService messageService;
 
-    public EditCheckboxEventHandler(IFormService formService, ICollaborativeFormMessageService messageService) {
+    private final Counter counter;
+
+    public EditCheckboxEventHandler(IFormService formService, ICollaborativeFormMessageService messageService, MeterRegistry meterRegistry) {
         this.formService = Objects.requireNonNull(formService);
         this.messageService = Objects.requireNonNull(messageService);
+
+        // @formatter:off
+        this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
+                .tag(Monitoring.NAME, this.getClass().getSimpleName())
+                .register(meterRegistry);
+        // @formatter:on
     }
 
     @Override
@@ -51,6 +63,8 @@ public class EditCheckboxEventHandler implements IFormEventHandler {
 
     @Override
     public EventHandlerResponse handle(Form form, IFormInput formInput) {
+        this.counter.increment();
+
         if (formInput instanceof EditCheckboxInput) {
             EditCheckboxInput input = (EditCheckboxInput) formInput;
 

@@ -13,6 +13,7 @@
 /** @jsx svg */
 import { svg } from 'snabbdom-jsx';
 import { SLabelView, getSubType, setAttr } from 'sprotty';
+import { httpOrigin } from 'common/URL';
 
 /**
  * The view used to display labels.
@@ -52,7 +53,7 @@ export class LabelView extends SLabelView {
     const iconVerticalOffset = label.text ? -12 : -6;
     const vnode = (
       <g attrs-data-testid={`Label - ${label.text}`}>
-        {iconURL ? <image href={iconURL} y={iconVerticalOffset} x="-20" /> : ''}
+        {iconURL ? <image href={httpOrigin + iconURL} y={iconVerticalOffset} x="-20" /> : ''}
         <text class-sprotty-label={true} style={styleObject}>
           {label.text}
         </text>

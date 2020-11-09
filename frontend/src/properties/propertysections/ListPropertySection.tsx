@@ -12,6 +12,7 @@
  *******************************************************************************/
 import { List } from 'core/list/List';
 import { Text } from 'core/text/Text';
+import { Permission } from 'project/Permission';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styles from './PropertySection.module.css';
@@ -25,7 +26,9 @@ export const ListPropertySection = ({ label, items }) => {
   return (
     <>
       <Text className={styles.label}>{label}</Text>
-      <List items={items} />
+      <Permission requiredAccessLevel="EDIT">
+        <List items={items} />
+      </Permission>
     </>
   );
 };

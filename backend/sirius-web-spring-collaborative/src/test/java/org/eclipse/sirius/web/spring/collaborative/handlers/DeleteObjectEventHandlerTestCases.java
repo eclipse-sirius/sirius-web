@@ -26,6 +26,8 @@ import org.eclipse.sirius.web.services.api.objects.IObjectService;
 import org.junit.Test;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
+
 /**
  * Unit tests of the delete object event handler.
  *
@@ -49,7 +51,7 @@ public class DeleteObjectEventHandlerTestCases {
             }
         };
 
-        DeleteObjectEventHandler handler = new DeleteObjectEventHandler(objectService, editService, new NoOpCollaborativeMessageService());
+        DeleteObjectEventHandler handler = new DeleteObjectEventHandler(objectService, editService, new NoOpCollaborativeMessageService(), new SimpleMeterRegistry());
         var input = new DeleteObjectInput(UUID.randomUUID(), "objectId"); //$NON-NLS-1$
         var context = new Context(new UsernamePasswordAuthenticationToken(null, null));
 

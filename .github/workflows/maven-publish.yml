@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - master
+    paths:
+      - 'backend/**'
+  pull_request:
   workflow_dispatch:
 
 jobs:
@@ -26,6 +29,7 @@ jobs:
         run: mvn -U -B clean verify -f backend/pom.xml --settings settings.xml
 
       - name: Maven Deploy
+        if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch')  && github.ref == 'refs/heads/master'
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         run: mvn -B deploy -f backend/pom.xml

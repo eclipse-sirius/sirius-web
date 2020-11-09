@@ -20,14 +20,18 @@ const propTypes = {
   options: PropTypes.array.isRequired,
   vertical: PropTypes.bool,
   onChange: PropTypes.func.isRequired,
+  disabled: PropTypes.bool,
   'data-testid': PropTypes.string.isRequired,
 };
 
-export const Radio = ({ name, options, vertical, onChange, 'data-testid': dataTestId }) => {
+export const Radio = ({ name, options, vertical, onChange, disabled, 'data-testid': dataTestId }) => {
   const opts = options.map((option) => {
     let radioClass = `${styles.radio}`;
     if (option.selected) {
       radioClass = `${radioClass} ${styles.selected}`;
+    }
+    if (disabled) {
+      radioClass = `${radioClass} ${styles.disabled}`;
     }
     return (
       <label className={radioClass} key={option.id}>
@@ -36,6 +40,7 @@ export const Radio = ({ name, options, vertical, onChange, 'data-testid': dataTe
           name={name}
           value={option.id}
           checked={option.selected}
+          disabled={disabled}
           onChange={onChange}
           data-testid={option.id}
         />

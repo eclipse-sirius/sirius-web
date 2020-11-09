@@ -34,6 +34,8 @@ import org.eclipse.sirius.web.services.api.representations.IRepresentationDescri
 import org.junit.Test;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
+
 /**
  * Tests of the create representation event handler.
  *
@@ -79,7 +81,7 @@ public class CreateDiagramEventHandlerTestCases {
         };
 
         CreateDiagramEventHandler handler = new CreateDiagramEventHandler(representationDescriptionService, new NoOpRepresentationService(), diagramService, objectService,
-                new NoOpCollaborativeDiagramMessageService());
+                new NoOpCollaborativeDiagramMessageService(), new SimpleMeterRegistry());
 
         var input = new CreateRepresentationInput(UUID.randomUUID(), UUID.randomUUID(), "objectId", "representationName"); //$NON-NLS-1$//$NON-NLS-2$
         var context = new Context(new UsernamePasswordAuthenticationToken(null, null));

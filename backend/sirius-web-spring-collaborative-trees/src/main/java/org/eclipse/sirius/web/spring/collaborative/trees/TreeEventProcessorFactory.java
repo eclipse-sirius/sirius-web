@@ -31,6 +31,8 @@ import org.eclipse.sirius.web.services.api.representations.IRepresentationDescri
 import org.eclipse.sirius.web.trees.description.TreeDescription;
 import org.springframework.stereotype.Service;
 
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
+
 /**
  * Used to create the tree event processors.
  *
@@ -82,7 +84,8 @@ public class TreeEventProcessorFactory implements IRepresentationEventProcessorF
                         .build();
                 // @formatter:on
 
-                IRepresentationEventProcessor treeEventProcessor = new TreeEventProcessor(this.treeService, treeCreationParameters, this.treeEventHandlers, this.subscriptionManagerFactory.create());
+                IRepresentationEventProcessor treeEventProcessor = new TreeEventProcessor(this.treeService, treeCreationParameters, this.treeEventHandlers, this.subscriptionManagerFactory.create(),
+                        new SimpleMeterRegistry());
                 // @formatter:off
                 return Optional.of(treeEventProcessor)
                         .filter(representationEventProcessorClass::isInstance)
