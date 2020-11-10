@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
     "baseUrl": "src",
-    "lib": ["es2020"]
+    "lib": ["es2020"],
+    "experimentalDecorators": true
   },
   "include": ["src"],
   "exclude": ["node_modules"]

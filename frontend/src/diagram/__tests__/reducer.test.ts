@@ -10,7 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { initialState, reducer } from '../reducer';
+import { initialState, reducer, INITIAL_ROOT } from '../reducer';
+import { DiagramModelSource } from 'diagram/sprotty/DiagramModelSource';
 import {
   EMPTY__STATE,
   LOADING__STATE,
@@ -28,30 +29,26 @@ import {
   SET_TOOL_SECTIONS__ACTION,
 } from '../machine';
 
-class ActionDispatcher {
-  dispatch(action) {}
-}
-class DiagramServer {
-  actionDispatcher = new ActionDispatcher();
-  updateModel(diagram) {}
-  setActiveTool(activeTool) {}
-}
-
-const diagramServer = new DiagramServer();
+const modelSource = new DiagramModelSource();
 
 const getReadyState = () => ({
   viewState: READY__STATE,
   displayedRepresentationId: 'displayedRepresentationId',
-  diagramServer,
+  modelSource,
   diagram: undefined,
   toolSections: [],
   contextualPalette: undefined,
+  diagramInternalState: {
+    currentRoot: INITIAL_ROOT,
+    activeTool: undefined,
+    sourceElement: undefined,
+  },
   activeTool: undefined,
   latestSelection: undefined,
+  newSelection: undefined,
   zoomLevel: '1',
   subscribers: [],
   message: undefined,
-  newSelection: undefined,
 });
 
 const nodeTool = { id: 'myNodeToolId', label: 'My Node Tool', type: 'CreateNodeTool' };
@@ -74,8 +71,8 @@ const subscribersUpdatedEventPayloadMessage = {
   },
 };
 
-const selectedElement1 = { id: 'objectId', kind: 'graph', label: 'Object', root: undefined };
-selectedElement1.root = selectedElement1;
+const selectedElement1 = { id: 'objectId', kind: 'graph', label: 'Object' };
+selectedElement1['root'] = selectedElement1;
 const selection1 = { id: 'objectId', kind: 'Diagram', label: 'Object' };
 const selection2 = { id: 'objectId2', kind: 'Object2', label: 'Object2' };
 
@@ -84,11 +81,12 @@ describe('DiagramWebSocketContainer - reducer', () => {
     expect(initialState).toStrictEqual({
       viewState: EMPTY__STATE,
       displayedRepresentationId: undefined,
-      diagramServer: undefined,
+      modelSource: undefined,
       diagram: undefined,
       toolSections: [],
       contextualPalette: undefined,
       newSelection: undefined,
+      diagramInternalState: undefined,
       latestSelection: undefined,
       activeTool: undefined,
       zoomLevel: undefined,
@@ -108,11 +106,12 @@ describe('DiagramWebSocketContainer - reducer', () => {
     expect(state).toStrictEqual({
       viewState: COMPLETE__STATE,
       displayedRepresentationId: prevState.displayedRepresentationId,
-      diagramServer: undefined,
+      modelSource: undefined,
       diagram: undefined,
       toolSections: [],
       contextualPalette: undefined,
       newSelection: undefined,
+      diagramInternalState: undefined,
       latestSelection: undefined,
       activeTool: undefined,
       zoomLevel: undefined,
@@ -130,11 +129,12 @@ describe('DiagramWebSocketContainer - reducer', () => {
     expect(state).toStrictEqual({
       viewState: COMPLETE__STATE,
       displayedRepresentationId: prevState.displayedRepresentationId,
-      diagramServer: undefined,
+      modelSource: undefined,
       diagram: undefined,
       toolSections: [],
       contextualPalette: undefined,
       newSelection: undefined,
+      diagramInternalState: undefined,
       latestSelection: undefined,
       activeTool: undefined,
       zoomLevel: undefined,
@@ -152,11 +152,12 @@ describe('DiagramWebSocketContainer - reducer', () => {
     expect(state).toStrictEqual({
       viewState: READY__STATE,
       displayedRepresentationId: prevState.displayedRepresentationId,
-      diagramServer: prevState.diagramServer,
+      modelSource: prevState.modelSource,
       diagram: prevState.diagram,
       toolSections: prevState.toolSections,
       contextualPalette: prevState.contextualPalette,
       newSelection: undefined,
+      diagramInternalState: prevState.diagramInternalState,
       latestSelection: undefined,
       activeTool: undefined,
       zoomLevel: prevState.zoomLevel,
@@ -174,11 +175,12 @@ describe('DiagramWebSocketContainer - reducer', () => {
     expect(state).toStrictEqual({
       viewState: COMPLETE__STATE,
       displayedRepresentationId: prevState.displayedRepresentationId,
-      diagramServer: undefined,
+      modelSource: undefined,
       diagram: undefined,
       toolSections: [],
       contextualPalette: undefined,
       newSelection: undefined,
+      diagramInternalState: undefined,
       latestSelection: undefined,
       activeTool: undefined,
       zoomLevel: undefined,
@@ -195,12 +197,17 @@ describe('DiagramWebSocketContainer - reducer', () => {
     expect(state).toStrictEqual({
       viewState: READY__STATE,
       displayedRepresentationId: prevState.displayedRepresentationId,
-      diagramServer: prevState.diagramServer,
+      modelSource: prevState.modelSource,
       diagram: prevState.diagram,
       toolSections: prevState.toolSections,
       activeTool: nodeTool,
       contextualPalette: undefined,
       newSelection: undefined,
+      diagramInternalState: {
+        currentRoot: INITIAL_ROOT,
+        activeTool: nodeTool,
+        sourceElement: undefined,
+      },
       latestSelection: undefined,
       zoomLevel: prevState.zoomLevel,
       subscribers: prevState.subscribers,
@@ -216,12 +223,17 @@ describe('DiagramWebSocketContainer - reducer', () => {
     expect(state).toStrictEqual({
       viewState: READY__STATE,
       displayedRepresentationId: prevState.displayedRepresentationId,
-      diagramServer: prevState.diagramServer,
+      modelSource: prevState.modelSource,
       diagram: prevState.diagram,
       toolSections: prevState.toolSections,
       activeTool: edgeTool,
       contextualPalette: undefined,
       newSelection: undefined,
+      diagramInternalState: {
+        currentRoot: INITIAL_ROOT,
+        activeTool: edgeTool,
+        sourceElement: undefined,
+      },
       latestSelection: undefined,
       zoomLevel: prevState.zoomLevel,
       subscribers: prevState.subscribers,
@@ -238,12 +250,13 @@ describe('DiagramWebSocketContainer - reducer', () => {
     expect(state).toStrictEqual({
       viewState: COMPLETE__STATE,
       displayedRepresentationId: prevState.displayedRepresentationId,
-      diagramServer: undefined,
+      modelSource: undefined,
       diagram: undefined,
       toolSections: [],
       activeTool: undefined,
       contextualPalette: undefined,
       newSelection: undefined,
+      diagramInternalState: undefined,
       latestSelection: undefined,
       zoomLevel: undefined,
       subscribers: [],
@@ -259,12 +272,13 @@ describe('DiagramWebSocketContainer - reducer', () => {
     expect(state).toStrictEqual({
       viewState: LOADING__STATE,
       displayedRepresentationId: 'newDisplayedRepresentationId',
-      diagramServer: undefined,
+      modelSource: undefined,
       diagram: undefined,
       toolSections: [],
       activeTool: undefined,
       contextualPalette: undefined,
       newSelection: undefined,
+      diagramInternalState: undefined,
       latestSelection: undefined,
       zoomLevel: '1',
       subscribers: prevState.subscribers,
@@ -279,12 +293,17 @@ describe('DiagramWebSocketContainer - reducer', () => {
     expect(state).toStrictEqual({
       viewState: READY__STATE,
       displayedRepresentationId: prevState.displayedRepresentationId,
-      diagramServer: prevState.diagramServer,
+      modelSource: prevState.modelSource,
       diagram: prevState.diagram,
       toolSections: prevState.toolSections,
       latestSelection: selection1,
       contextualPalette: undefined,
       newSelection: selection1,
+      diagramInternalState: {
+        currentRoot: INITIAL_ROOT,
+        activeTool: prevState.activeTool,
+        sourceElement: undefined,
+      },
       activeTool: prevState.activeTool,
       zoomLevel: prevState.zoomLevel,
       subscribers: prevState.subscribers,
@@ -303,12 +322,17 @@ describe('DiagramWebSocketContainer - reducer', () => {
     expect(state2).toStrictEqual({
       viewState: READY__STATE,
       displayedRepresentationId: prevState.displayedRepresentationId,
-      diagramServer: prevState.diagramServer,
+      modelSource: prevState.modelSource,
       diagram: prevState.diagram,
       toolSections: prevState.toolSections,
       latestSelection: selection2,
       contextualPalette: undefined,
       newSelection: selection2,
+      diagramInternalState: {
+        currentRoot: INITIAL_ROOT,
+        activeTool: prevState.activeTool,
+        sourceElement: undefined,
+      },
       activeTool: prevState.activeTool,
       zoomLevel: prevState.zoomLevel,
       subscribers: prevState.subscribers,
@@ -324,12 +348,17 @@ describe('DiagramWebSocketContainer - reducer', () => {
     expect(state).toStrictEqual({
       viewState: READY__STATE,
       displayedRepresentationId: prevState.displayedRepresentationId,
-      diagramServer: prevState.diagramServer,
+      modelSource: prevState.modelSource,
       diagram: prevState.diagram,
       toolSections: prevState.toolSections,
       latestSelection: selection1,
       contextualPalette: undefined,
       newSelection: prevState.newSelection,
+      diagramInternalState: {
+        currentRoot: INITIAL_ROOT,
+        activeTool: prevState.activeTool,
+        sourceElement: undefined,
+      },
       activeTool: prevState.activeTool,
       zoomLevel: prevState.zoomLevel,
       subscribers: prevState.subscribers,
@@ -348,12 +377,17 @@ describe('DiagramWebSocketContainer - reducer', () => {
     expect(state2).toStrictEqual({
       viewState: READY__STATE,
       displayedRepresentationId: prevState.displayedRepresentationId,
-      diagramServer: prevState.diagramServer,
+      modelSource: prevState.modelSource,
       diagram: prevState.diagram,
       toolSections: prevState.toolSections,
       latestSelection: selection1,
       contextualPalette: undefined,
       newSelection: selection2,
+      diagramInternalState: {
+        currentRoot: INITIAL_ROOT,
+        activeTool: prevState.activeTool,
+        sourceElement: undefined,
+      },
       activeTool: prevState.activeTool,
       zoomLevel: prevState.zoomLevel,
       subscribers: prevState.subscribers,
@@ -369,11 +403,16 @@ describe('DiagramWebSocketContainer - reducer', () => {
     expect(state).toStrictEqual({
       viewState: READY__STATE,
       displayedRepresentationId: prevState.displayedRepresentationId,
-      diagramServer: prevState.diagramServer,
+      modelSource: prevState.modelSource,
       diagram: prevState.diagram,
       toolSections: prevState.toolSections,
       activeTool: undefined,
       newSelection: undefined,
+      diagramInternalState: {
+        currentRoot: INITIAL_ROOT,
+        activeTool: undefined,
+        sourceElement: undefined,
+      },
       latestSelection: undefined,
       contextualPalette: undefined,
       zoomLevel: '2',
@@ -406,7 +445,7 @@ describe('DiagramWebSocketContainer - reducer', () => {
     expect(state).toStrictEqual({
       viewState: READY__STATE,
       displayedRepresentationId: prevState.displayedRepresentationId,
-      diagramServer: prevState.diagramServer,
+      modelSource: prevState.modelSource,
       diagram: prevState.diagram,
       toolSections: [
         {
@@ -426,6 +465,14 @@ describe('DiagramWebSocketContainer - reducer', () => {
       ],
       activeTool: prevState.activeTool,
       newSelection: prevState.newSelection,
+      diagramInternalState: {
+        activeTool: undefined,
+        currentRoot: {
+          id: 'ROOT',
+          type: 'NONE',
+        },
+        sourceElement: undefined,
+      },
       latestSelection: prevState.latestSelection,
       contextualPalette: prevState.contextualPalette,
       zoomLevel: prevState.zoomLevel,
