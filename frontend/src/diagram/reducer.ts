@@ -12,8 +12,7 @@
  *******************************************************************************/
 // Required because Sprotty uses Inversify and both frameworks are written in TypeScript with experimental features.
 import 'reflect-metadata';
-import { TYPES, MousePositionTracker } from 'sprotty';
-
+import { TYPES } from 'sprotty';
 import {
   machine,
   EMPTY__STATE,
@@ -27,6 +26,8 @@ import {
   HANDLE_COMPLETE__ACTION,
   SET_ACTIVE_TOOL__ACTION,
   SET_CONTEXTUAL_PALETTE__ACTION,
+  SET_SOURCE_ELEMENT__ACTION,
+  SET_CURRENT_ROOT__ACTION,
   SELECTION__ACTION,
   SELECTED_ELEMENT__ACTION,
   SWITCH_REPRESENTATION__ACTION,
@@ -35,15 +36,24 @@ import {
   SET_DEFAULT_TOOL__ACTION,
 } from 'diagram/machine';
 import { createDependencyInjectionContainer } from 'diagram/sprotty/DependencyInjection';
-import { SiriusWebWebSocketDiagramServer } from 'diagram/sprotty/WebSocketDiagramServer';
+import { SIRIUS_TYPES } from 'diagram/sprotty/Types';
+import { IMutations } from 'diagram/sprotty/IMutations';
+import { IState } from 'diagram/sprotty/IState';
+import { ISetState } from 'diagram/sprotty/ISetState';
+
+export const INITIAL_ROOT = {
+  type: 'NONE',
+  id: 'ROOT',
+};
 
 export const initialState = {
   viewState: EMPTY__STATE,
   displayedRepresentationId: undefined,
-  diagramServer: undefined,
+  modelSource: undefined,
   diagram: undefined,
-  toolSections: [],
+  sprottyState: undefined,
   activeTool: undefined,
+  toolSections: [],
   contextualPalette: undefined,
   latestSelection: undefined,
   newSelection: undefined,
@@ -81,11 +91,17 @@ export const reducer = (prevState, action) => {
     case SET_ACTIVE_TOOL__ACTION:
       state = setActiveToolAction(prevState, action);
       break;
-    case SET_TOOL_SECTIONS__ACTION:
-      state = setToolSectionsAction(prevState, action);
+    case SET_SOURCE_ELEMENT__ACTION:
+      state = selectSourceElementAction(prevState, action);
+      break;
+    case SET_CURRENT_ROOT__ACTION:
+      state = setCurrentRootAction(prevState, action);
       break;
     case SET_CONTEXTUAL_PALETTE__ACTION:
       state = setContextualPaletteAction(prevState, action);
+      break;
+    case SET_TOOL_SECTIONS__ACTION:
+      state = setToolSectionsAction(prevState, action);
       break;
     case SET_DEFAULT_TOOL__ACTION:
       state = setDefaultToolAction(prevState, action);
@@ -116,9 +132,10 @@ const switchRepresentationAction = (action) => {
   return {
     viewState: LOADING__STATE,
     displayedRepresentationId: action.representationId,
-    diagramServer: undefined,
+    modelSource: undefined,
     diagram: undefined,
     toolSections: [],
+    sprottyState: undefined,
     activeTool: undefined,
     contextualPalette: undefined,
     latestSelection: undefined,
@@ -133,33 +150,56 @@ const initializeAction = (prevState, action) => {
   const { displayedRepresentationId, subscribers } = prevState;
   const {
     diagramDomElement,
+    toolSections,
     deleteElements,
     invokeTool,
     editLabel,
     onSelectElement,
-    toolSections,
     setContextualPalette,
+    setSourceElement,
+    setCurrentRoot,
+    setActiveTool,
   } = action;
 
-  const container = createDependencyInjectionContainer(diagramDomElement.current.id, onSelectElement);
-  const diagramServer = <SiriusWebWebSocketDiagramServer>container.get(TYPES.ModelSource);
+  const container = createDependencyInjectionContainer(diagramDomElement.current.id);
+
+  const modelSource = container.get(TYPES.ModelSource);
   /**
-   * workaround to inject objects in diagramServer from the injector.
-   * We cannot use inversify annotation for now. (and perhaps never)
+   * Sprotty lifecycle can trigger a graphQL mutation.
+   * The MutationAPI class instance binds graphQL mutation functions.
+   * Those functions will be available thanks to the inversity injection in Sprotty handlers.
    */
-  diagramServer.setMousePositionTracker(container.get(MousePositionTracker));
-  diagramServer.setModelFactory(container.get(TYPES.IModelFactory));
-  diagramServer.setLogger(container.get(TYPES.ILogger));
-
-  diagramServer.setEditLabelListener(editLabel);
-  diagramServer.setDeleteElementsListener(deleteElements);
-  diagramServer.setInvokeToolListener(invokeTool);
-  diagramServer.setContextualPaletteListener(setContextualPalette);
-
+  const mutations = container.get<IMutations>(SIRIUS_TYPES.MUTATIONS);
+  mutations.invokeEdgeTool = (tool, sourceElement, targetElement) => invokeTool(tool, sourceElement, targetElement);
+  mutations.invokeNodeTool = (tool, targetElement) => invokeTool(tool, targetElement);
+  mutations.deleteElements = deleteElements;
+  mutations.editLabel = editLabel;
+  mutations.onSelectElement = onSelectElement;
+  /**
+   * Sprotty lifecycle can trigger React setState.
+   * The SetState class instance binds DiagramWebSocketContainer setState functions.
+   * Those functions will be available thanks to the inversity injection in Sprotty handlers.
+   */
+  const setState = container.get<ISetState>(SIRIUS_TYPES.SET_STATE);
+  setState.setContextualPalette = setContextualPalette;
+  setState.setSourceElement = setSourceElement;
+  setState.setCurrentRoot = setCurrentRoot;
+  setState.setActiveTool = setActiveTool;
+  /**
+   * Sprotty handlers/listeners can need to read some state values.
+   * The State class instance values will be synchronized with the reducer.
+   * Actually, we expose: currentRoot, activeTool, sourceElement.
+   * Those values will be available thanks to the inversity injection in Sprotty handlers/listeners.
+   */
+  const sprottyState = container.get<IState>(SIRIUS_TYPES.STATE);
+  sprottyState.currentRoot = INITIAL_ROOT;
+  sprottyState.activeTool = undefined;
+  sprottyState.sourceElement = undefined;
   return {
     viewState: READY__STATE,
     displayedRepresentationId,
-    diagramServer,
+    modelSource,
+    sprottyState,
     toolSections,
     contextualPalette: undefined,
     diagram: undefined,
@@ -177,7 +217,8 @@ const switchToCompleteState = (prevState, message) => {
   return {
     viewState: COMPLETE__STATE,
     displayedRepresentationId,
-    diagramServer: undefined,
+    modelSource: undefined,
+    sprottyState: undefined,
     diagram: undefined,
     toolSections: [],
     contextualPalette: undefined,
@@ -212,7 +253,8 @@ const handleDataAction = (prevState, action) => {
     if (diagramEvent.__typename === 'DiagramRefreshedEventPayload') {
       const {
         displayedRepresentationId,
-        diagramServer,
+        modelSource,
+        sprottyState,
         toolSections,
         contextualPalette,
         activeTool,
@@ -225,7 +267,8 @@ const handleDataAction = (prevState, action) => {
       state = {
         viewState: READY__STATE,
         displayedRepresentationId,
-        diagramServer,
+        modelSource,
+        sprottyState,
         diagram,
         toolSections,
         contextualPalette,
@@ -239,7 +282,8 @@ const handleDataAction = (prevState, action) => {
     } else if (diagramEvent.__typename === 'SubscribersUpdatedEventPayload') {
       const {
         displayedRepresentationId,
-        diagramServer,
+        modelSource,
+        sprottyState,
         diagram,
         toolSections,
         contextualPalette,
@@ -252,7 +296,8 @@ const handleDataAction = (prevState, action) => {
       state = {
         viewState: READY__STATE,
         displayedRepresentationId,
-        diagramServer,
+        modelSource,
+        sprottyState,
         diagram,
         toolSections,
         contextualPalette,
@@ -273,7 +318,8 @@ const setActiveToolAction = (prevState, action) => {
   const {
     viewState,
     displayedRepresentationId,
-    diagramServer,
+    modelSource,
+    sprottyState,
     diagram,
     toolSections,
     contextualPalette,
@@ -281,29 +327,101 @@ const setActiveToolAction = (prevState, action) => {
     newSelection,
     zoomLevel,
     subscribers,
+    message,
   } = prevState;
   const { activeTool } = action;
-
+  sprottyState.activeTool = activeTool;
   return {
     viewState,
     displayedRepresentationId,
-    diagramServer,
+    modelSource,
+    sprottyState,
+    activeTool,
     diagram,
     toolSections,
     contextualPalette,
-    activeTool,
     latestSelection,
     newSelection,
     zoomLevel,
     subscribers,
-    message: undefined,
+    message,
+  };
+};
+
+const selectSourceElementAction = (prevState, action) => {
+  const {
+    viewState,
+    displayedRepresentationId,
+    modelSource,
+    sprottyState,
+    activeTool,
+    diagram,
+    toolSections,
+    contextualPalette,
+    latestSelection,
+    newSelection,
+    zoomLevel,
+    subscribers,
+    message,
+  } = prevState;
+  const { sourceElement } = action;
+  sprottyState.sourceElement = sourceElement;
+  return {
+    viewState,
+    displayedRepresentationId,
+    modelSource,
+    sprottyState,
+    activeTool,
+    diagram,
+    toolSections,
+    contextualPalette,
+    latestSelection,
+    newSelection,
+    zoomLevel,
+    subscribers,
+    message,
+  };
+};
+const setCurrentRootAction = (prevState, action) => {
+  const {
+    viewState,
+    displayedRepresentationId,
+    modelSource,
+    sprottyState,
+    activeTool,
+    diagram,
+    toolSections,
+    contextualPalette,
+    latestSelection,
+    newSelection,
+    zoomLevel,
+    subscribers,
+    message,
+  } = prevState;
+  const { currentRoot } = action;
+  sprottyState.currentRoot = currentRoot;
+  return {
+    viewState,
+    displayedRepresentationId,
+    modelSource,
+    sprottyState,
+    activeTool,
+    diagram,
+    toolSections,
+    contextualPalette,
+    latestSelection,
+    newSelection,
+    zoomLevel,
+    subscribers,
+    message,
   };
 };
 const setContextualPaletteAction = (prevState, action) => {
   const {
     viewState,
     displayedRepresentationId,
-    diagramServer,
+    modelSource,
+    sprottyState,
     activeTool,
     diagram,
     toolSections,
@@ -318,7 +436,8 @@ const setContextualPaletteAction = (prevState, action) => {
   return {
     viewState,
     displayedRepresentationId,
-    diagramServer,
+    modelSource,
+    sprottyState,
     activeTool,
     diagram,
     toolSections,
@@ -330,12 +449,12 @@ const setContextualPaletteAction = (prevState, action) => {
     message,
   };
 };
-
 const setDefaultToolAction = (prevState, action) => {
   const {
     viewState,
     displayedRepresentationId,
-    diagramServer,
+    modelSource,
+    sprottyState,
     activeTool,
     diagram,
     contextualPalette,
@@ -365,7 +484,8 @@ const setDefaultToolAction = (prevState, action) => {
   return {
     viewState,
     displayedRepresentationId,
-    diagramServer,
+    modelSource,
+    sprottyState,
     activeTool,
     diagram,
     toolSections: newToolSections,
@@ -382,7 +502,8 @@ const setToolSectionsAction = (prevState, action) => {
   const {
     viewState,
     displayedRepresentationId,
-    diagramServer,
+    modelSource,
+    sprottyState,
     activeTool,
     diagram,
     contextualPalette,
@@ -405,7 +526,8 @@ const setToolSectionsAction = (prevState, action) => {
   return {
     viewState,
     displayedRepresentationId,
-    diagramServer,
+    modelSource,
+    sprottyState,
     diagram,
     contextualPalette,
     toolSections,
@@ -422,7 +544,8 @@ const selectedElementAction = (prevState, action) => {
   const {
     viewState,
     displayedRepresentationId,
-    diagramServer,
+    modelSource,
+    sprottyState,
     diagram,
     toolSections,
     contextualPalette,
@@ -436,7 +559,8 @@ const selectedElementAction = (prevState, action) => {
   return {
     viewState,
     displayedRepresentationId,
-    diagramServer,
+    modelSource,
+    sprottyState,
     diagram,
     toolSections,
     contextualPalette,
@@ -453,7 +577,8 @@ const selectionAction = (prevState, action) => {
   const {
     viewState,
     displayedRepresentationId,
-    diagramServer,
+    modelSource,
+    sprottyState,
     diagram,
     toolSections,
     contextualPalette,
@@ -472,7 +597,8 @@ const selectionAction = (prevState, action) => {
   return {
     viewState,
     displayedRepresentationId,
-    diagramServer,
+    modelSource,
+    sprottyState,
     diagram,
     toolSections,
     contextualPalette,
@@ -489,7 +615,8 @@ const selectZoomLevelAction = (prevState, action) => {
   const {
     viewState,
     displayedRepresentationId,
-    diagramServer,
+    modelSource,
+    sprottyState,
     diagram,
     toolSections,
     contextualPalette,
@@ -503,7 +630,8 @@ const selectZoomLevelAction = (prevState, action) => {
   return {
     viewState,
     displayedRepresentationId,
-    diagramServer,
+    modelSource,
+    sprottyState,
     diagram,
     toolSections,
     contextualPalette,

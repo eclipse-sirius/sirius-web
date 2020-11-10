@@ -25,6 +25,8 @@ import {
   SELECTED_ELEMENT__ACTION,
   SELECTION__ACTION,
   SET_ACTIVE_TOOL__ACTION,
+  SET_SOURCE_ELEMENT__ACTION,
+  SET_CURRENT_ROOT__ACTION,
   SET_CONTEXTUAL_PALETTE__ACTION,
   SET_DEFAULT_TOOL__ACTION,
   SET_TOOL_SECTIONS__ACTION,
@@ -32,25 +34,15 @@ import {
   SWITCH_REPRESENTATION__ACTION,
 } from 'diagram/machine';
 import { initialState, reducer } from 'diagram/reducer';
-import {
-  ACTIVE_TOOL_ACTION,
-  SIRIUS_SELECT_ACTION,
-  SIRIUS_UPDATE_MODEL_ACTION,
-  SPROTTY_SELECT_ACTION,
-  ZOOM_IN_ACTION,
-  ZOOM_OUT_ACTION,
-  ZOOM_TO_ACTION,
-  SOURCE_ELEMENT_ACTION,
-  HIDE_CONTEXTUAL_TOOLBAR_ACTION,
-} from 'diagram/sprotty/WebSocketDiagramServer';
+import { SIRIUS_SELECT_ACTION, SIRIUS_UPDATE_MODEL_ACTION } from 'diagram/sprotty/Actions';
 import { Toolbar } from 'diagram/Toolbar';
-import { ContextualPalette } from 'diagram/palette/ContextualPalette';
+import { ContextualPaletteContainer } from 'diagram/palette/ContextualPaletteContainer';
 import { useProject } from 'project/ProjectProvider';
 import { edgeCreationFeedback } from 'diagram/sprotty/edgeCreationFeedback';
 import PropTypes from 'prop-types';
 import React, { useContext, useEffect, useReducer, useRef, useCallback } from 'react';
 import 'reflect-metadata'; // Required because Sprotty uses Inversify and both frameworks are written in TypeScript with experimental features.
-import { SEdge, SNode, FitToScreenAction, EditLabelAction } from 'sprotty';
+import { SEdge, SNode } from 'sprotty';
 import styles from './Diagram.module.css';
 import {
   deleteFromDiagramMutation,
@@ -225,11 +217,10 @@ export const DiagramWebSocketContainer = ({ representationId, selection, setSele
   const {
     viewState,
     displayedRepresentationId,
-    diagramServer,
+    modelSource,
     diagram,
     toolSections,
     contextualPalette,
-    activeTool,
     newSelection,
     zoomLevel,
     subscribers,
@@ -251,22 +242,13 @@ export const DiagramWebSocketContainer = ({ representationId, selection, setSele
     getToolSectionData({ diagramId: representationId });
   }, [representationId, getToolSectionData]);
   /**
-   * Dispatch the diagram to the diagramServer if our state indicate that diagram has changed.
+   * Dispatch the diagram to the modelSource if our state indicate that diagram has changed.
    */
   useEffect(() => {
-    if (diagramServer) {
-      diagramServer.actionDispatcher.dispatch({ kind: SIRIUS_UPDATE_MODEL_ACTION, diagram });
+    if (modelSource) {
+      modelSource.actionDispatcher.dispatch({ kind: SIRIUS_UPDATE_MODEL_ACTION, diagram });
     }
-  }, [diagram, diagramServer]);
-
-  /**
-   * Dispatch the activeTool to the diagramServer if our state indicate that activeTool has changed.
-   */
-  useEffect(() => {
-    if (diagramServer) {
-      diagramServer.actionDispatcher.dispatch({ kind: ACTIVE_TOOL_ACTION, tool: activeTool });
-    }
-  }, [activeTool, diagramServer]);
+  }, [diagram, modelSource]);
 
   /**
    * Dispatch the selection if our props indicate that selection has changed.
@@ -275,16 +257,16 @@ export const DiagramWebSocketContainer = ({ representationId, selection, setSele
     if (viewState === READY__STATE) {
       dispatch({ type: SELECTION__ACTION, selection });
     }
-  }, [selection, diagramServer, viewState]);
+  }, [selection, modelSource, viewState]);
 
   /**
-   * Dispatch the new selection to the diagramServer if our state indicate that new selection has changed.
+   * Dispatch the new selection to the modelSource if our state indicate that new selection has changed.
    */
   useEffect(() => {
-    if (diagramServer && newSelection) {
-      diagramServer.actionDispatcher.dispatch({ kind: SIRIUS_SELECT_ACTION, selection: newSelection });
+    if (modelSource && newSelection) {
+      modelSource.actionDispatcher.dispatch({ kind: SIRIUS_SELECT_ACTION, selection: newSelection });
     }
-  }, [newSelection, diagramServer]);
+  }, [newSelection, modelSource]);
 
   /**
    * Switch to another diagram if our props indicate that we should display a different diagram
@@ -299,81 +281,79 @@ export const DiagramWebSocketContainer = ({ representationId, selection, setSele
     }
   }, [displayedRepresentationId, representationId]);
 
-  const deleteElements = useCallback(
-    (diagramElements) => {
-      const nodeIds = [];
-      const edgeIds = [];
-      diagramElements.forEach((diagramElement) => {
-        if (diagramElement instanceof SNode) {
-          nodeIds.push(diagramElement.id);
-        } else if (diagramElement instanceof SEdge) {
-          edgeIds.push(diagramElement.id);
-        }
-      });
-      /**
-       * We should not ask to remove more than once a Node.
-       * To avoid this state, we filter all nodes that have also there parents in the list to delete.
-       */
-      diagramElements
-        .filter((diagramElement) => diagramElement instanceof SNode)
-        .filter((diagramElement) => diagramElement.parent instanceof SNode)
-        .forEach((diagramElement) => {
-          const index = nodeIds.indexOf(diagramElement.id);
-          if (index > -1 && nodeIds[index] !== diagramElement.id) {
-            nodeIds.splice(index, 1);
-          }
-        });
-      const input = {
-        projectId: id,
-        representationId,
-        nodeIds,
-        edgeIds,
-      };
-      deleteElementsMutation({ input });
-      dispatch({ type: SET_CONTEXTUAL_PALETTE__ACTION, contextualPalette: undefined });
-    },
-    [id, representationId, deleteElementsMutation]
-  );
-
-  const invokeTool = useCallback(
-    (tool, ...params) => {
-      if (tool) {
-        const { id: toolId } = tool;
-        if (tool.__typename === 'CreateEdgeTool') {
-          const [diagramSourceElementId, diagramTargetElementId] = params;
-
-          const input = {
-            projectId: id,
-            representationId,
-            diagramSourceElementId,
-            diagramTargetElementId,
-            toolId,
-          };
-          invokeEdgeToolMutation({ input });
-          edgeCreationFeedback.reset();
-        } else {
-          const [diagramElementId] = params;
-
-          const input = {
-            projectId: id,
-            representationId,
-            diagramElementId,
-            toolId,
-          };
-          invokeNodeToolMutation({ input });
-        }
-        dispatch({ type: SET_ACTIVE_TOOL__ACTION });
+  const setContextualPalette = useCallback(
+    (newContextualPalette?) => {
+      if (canEdit) {
+        dispatch({ type: SET_CONTEXTUAL_PALETTE__ACTION, contextualPalette: newContextualPalette });
       }
     },
-    [id, representationId, invokeNodeToolMutation, invokeEdgeToolMutation]
+    [canEdit]
   );
 
-  /**
-   * Initialize the diagram server used by Sprotty in order to perform the diagram edition. This
-   * initialization will be done each time we are in the loading state.
-   */
-  useEffect(() => {
-    const onSelectElement = (newSelectedElement, diagServer) => {
+  const setDefaultTool = useCallback((defaultTool) => {
+    dispatch({ type: SET_DEFAULT_TOOL__ACTION, defaultTool });
+  }, []);
+
+  const setActiveTool = useCallback((activeTool?) => {
+    dispatch({ type: SET_ACTIVE_TOOL__ACTION, activeTool });
+  }, []);
+
+  const setSourceElement = useCallback((sourceElement) => {
+    dispatch({ type: SET_SOURCE_ELEMENT__ACTION, sourceElement });
+  }, []);
+
+  const setCurrentRoot = useCallback((currentRoot) => {
+    dispatch({ type: SET_CURRENT_ROOT__ACTION, currentRoot });
+  }, []);
+
+  const setZoomLevel = useCallback((level) => {
+    dispatch({ type: SELECT_ZOOM_LEVEL__ACTION, level: level });
+  }, []);
+
+  const closeContextualPalette = useCallback(() => {
+    setContextualPalette();
+  }, [setContextualPalette]);
+
+  const deleteElements = useCallback(
+    (diagramElements) => {
+      if (canEdit) {
+        const nodeIds = [];
+        const edgeIds = [];
+        diagramElements.forEach((diagramElement) => {
+          if (diagramElement instanceof SNode) {
+            nodeIds.push(diagramElement.id);
+          } else if (diagramElement instanceof SEdge) {
+            edgeIds.push(diagramElement.id);
+          }
+        });
+        /**
+         * We should not ask to remove more than once a Node.
+         * To avoid this state, we filter all nodes that have also there parents in the list to delete.
+         */
+        diagramElements
+          .filter((diagramElement) => diagramElement instanceof SNode)
+          .filter((diagramElement) => diagramElement.parent instanceof SNode)
+          .forEach((diagramElement) => {
+            const index = nodeIds.indexOf(diagramElement.id);
+            if (index > -1 && nodeIds[index] !== diagramElement.id) {
+              nodeIds.splice(index, 1);
+            }
+          });
+        const input = {
+          projectId: id,
+          representationId,
+          nodeIds,
+          edgeIds,
+        };
+        deleteElementsMutation({ input });
+        dispatch({ type: SET_CONTEXTUAL_PALETTE__ACTION, contextualPalette: undefined });
+      }
+    },
+    [id, canEdit, representationId, deleteElementsMutation]
+  );
+
+  const onSelectElement = useCallback(
+    (newSelectedElement) => {
       let newSelection;
       if (newSelectedElement.root.id === newSelectedElement.id) {
         const { id, label, kind } = newSelectedElement;
@@ -388,29 +368,67 @@ export const DiagramWebSocketContainer = ({ representationId, selection, setSele
       }
       setSelection(newSelection);
       dispatch({ type: SELECTED_ELEMENT__ACTION, selection: newSelection });
-      /**
-       * Dispatch the selected element to the diagramServer if our state indicate that selected element has changed.
-       * We can't use useEffet hook here, because SPROTTY_SELECT_ACTION must be send to SiriusWebWebSocketDiagramServer even
-       * if the same element is selected several times (useEffect hook only reacts if the selected element is not the same).
-       * We can also not use diagramServer from the reducer state here, because it is undefined when onSelectElement() is called.
-       */
-      diagServer.actionDispatcher.dispatch({ kind: SPROTTY_SELECT_ACTION, element: newSelectedElement });
-    };
-    const editLabel = (labelId, newText) => {
-      const input = {
-        projectId: id,
-        representationId,
-        labelId,
-        newText,
-      };
-      editLabelMutation({ input });
-    };
-    const setContextualPalette = (contextualPalette) => {
-      if (canEdit) {
-        dispatch({ type: SET_CONTEXTUAL_PALETTE__ACTION, contextualPalette });
-      }
-    };
+    },
+    [setSelection]
+  );
 
+  const invokeTool = useCallback(
+    (tool, ...params) => {
+      if (canEdit && tool) {
+        const { id: toolId } = tool;
+        if (tool.__typename === 'CreateEdgeTool') {
+          const [diagramSourceElement, diagramTargetElement] = params;
+          const diagramSourceElementId = diagramSourceElement.id;
+          const diagramTargetElementId = diagramTargetElement.id;
+
+          const input = {
+            projectId: id,
+            representationId,
+            diagramSourceElementId,
+            diagramTargetElementId,
+            toolId,
+          };
+          invokeEdgeToolMutation({ input });
+          edgeCreationFeedback.reset();
+        } else {
+          const [diagramElement] = params;
+          const diagramElementId = diagramElement.id;
+
+          const input = {
+            projectId: id,
+            representationId,
+            diagramElementId,
+            toolId,
+          };
+          invokeNodeToolMutation({ input });
+        }
+        setActiveTool();
+        setContextualPalette();
+      }
+    },
+    [id, canEdit, representationId, invokeNodeToolMutation, invokeEdgeToolMutation, setActiveTool, setContextualPalette]
+  );
+
+  const editLabel = useCallback(
+    (labelId, newText) => {
+      if (canEdit) {
+        const input = {
+          projectId: id,
+          representationId,
+          labelId,
+          newText,
+        };
+        editLabelMutation({ input });
+      }
+    },
+    [id, canEdit, representationId, editLabelMutation]
+  );
+
+  /**
+   * Initialize the diagram server used by Sprotty in order to perform the diagram edition. This
+   * initialization will be done each time we are in the loading state.
+   */
+  useEffect(() => {
     if (viewState === LOADING__STATE && diagramDomElement.current) {
       dispatch({
         type: INITIALIZE__ACTION,
@@ -421,21 +439,25 @@ export const DiagramWebSocketContainer = ({ representationId, selection, setSele
         onSelectElement,
         toolSections,
         setContextualPalette,
+        setSourceElement,
+        setCurrentRoot,
+        setActiveTool,
       });
     }
   }, [
+    diagramDomElement,
     viewState,
     displayedRepresentationId,
-    diagramServer,
-    setSelection,
+    modelSource,
+    onSelectElement,
     deleteElements,
     invokeTool,
-    editLabelMutation,
+    editLabel,
+    setContextualPalette,
+    setSourceElement,
+    setCurrentRoot,
+    setActiveTool,
     toolSections,
-    selection,
-    id,
-    representationId,
-    canEdit,
   ]);
 
   useEffect(() => {
@@ -504,31 +526,6 @@ export const DiagramWebSocketContainer = ({ representationId, selection, setSele
     setSubscribers(subscribers);
   }, [setSubscribers, subscribers]);
 
-  const onZoomIn = () => {
-    if (diagramServer) {
-      diagramServer.actionDispatcher.dispatch({ kind: ZOOM_IN_ACTION });
-    }
-  };
-
-  const onZoomOut = () => {
-    if (diagramServer) {
-      diagramServer.actionDispatcher.dispatch({ kind: ZOOM_OUT_ACTION });
-    }
-  };
-
-  const onFitToScreen = () => {
-    if (diagramServer) {
-      diagramServer.actionDispatcher.dispatch(new FitToScreenAction([], 20));
-    }
-  };
-
-  const setZoomLevel = (level) => {
-    if (diagramServer) {
-      diagramServer.actionDispatcher.dispatch({ kind: ZOOM_TO_ACTION, level: level });
-      dispatch({ type: SELECT_ZOOM_LEVEL__ACTION, level: level });
-    }
-  };
-
   /**
    * Gather up, it's time for a story.
    *
@@ -557,56 +554,10 @@ export const DiagramWebSocketContainer = ({ representationId, selection, setSele
    *
    * TLDR: Do not touch the div structure below without a deep understanding of the React reconciliation algorithm!
    */
-  let contextualPaletteContent;
-  if (canEdit && contextualPalette) {
-    const { element, canvasBounds, origin, renameable, deletable } = contextualPalette;
-    const { x, y } = origin;
-    const invokeCloseFromContextualPalette = () => dispatch({ type: SET_CONTEXTUAL_PALETTE__ACTION });
-    const style = {
-      left: canvasBounds.x + 'px',
-      top: canvasBounds.y + 'px',
-    };
-    let invokeLabelEditFromContextualPalette;
-    if (renameable) {
-      invokeLabelEditFromContextualPalette = () =>
-        diagramServer.actionDispatcher.dispatchAll([
-          { kind: HIDE_CONTEXTUAL_TOOLBAR_ACTION },
-          new EditLabelAction(element.id + '_label'),
-        ]);
-    }
-    let invokeDeleteFromContextualPalette;
-    if (deletable) {
-      invokeDeleteFromContextualPalette = () => deleteElements([element]);
-    }
-    const invokeToolFromContextualPalette = (tool) => {
-      if (tool.__typename === 'CreateEdgeTool') {
-        dispatch({ type: SET_ACTIVE_TOOL__ACTION, activeTool: tool });
-        dispatch({ type: SET_CONTEXTUAL_PALETTE__ACTION });
-        edgeCreationFeedback.init(x, y);
-        diagramServer.actionDispatcher.dispatch({ kind: SOURCE_ELEMENT_ACTION, sourceElement: element });
-      } else if (tool.__typename === 'CreateNodeTool') {
-        invokeTool(tool, element.id);
-        diagramServer.actionDispatcher.dispatch({ kind: SOURCE_ELEMENT_ACTION });
-      }
-      dispatch({ type: SET_DEFAULT_TOOL__ACTION, defaultTool: tool });
-    };
-    contextualPaletteContent = (
-      <div className={styles.contextualPalette} style={style}>
-        <ContextualPalette
-          toolSections={toolSections}
-          targetElement={element}
-          invokeTool={invokeToolFromContextualPalette}
-          invokeLabelEdit={invokeLabelEditFromContextualPalette}
-          invokeDelete={invokeDeleteFromContextualPalette}
-          invokeClose={invokeCloseFromContextualPalette}></ContextualPalette>
-      </div>
-    );
-  }
   let content = (
     <div id="diagram-container" className={styles.diagramContainer}>
       <div id="diagram-wrapper" className={styles.diagramWrapper}>
         <div ref={diagramDomElement} id="diagram" className={styles.diagram} />
-        {contextualPaletteContent}
       </div>
     </div>
   );
@@ -623,14 +574,15 @@ export const DiagramWebSocketContainer = ({ representationId, selection, setSele
 
   return (
     <div className={styles.container}>
-      <Toolbar
-        onZoomIn={onZoomIn}
-        onZoomOut={onZoomOut}
-        onFitToScreen={onFitToScreen}
-        setZoomLevel={setZoomLevel}
-        zoomLevel={zoomLevel}
-      />
+      <Toolbar modelSource={modelSource} setZoomLevel={setZoomLevel} zoomLevel={zoomLevel} />
       {content}
+      <ContextualPaletteContainer
+        contextualPalette={contextualPalette}
+        modelSource={modelSource}
+        toolSections={toolSections}
+        deleteElements={deleteElements}
+        setDefaultTool={setDefaultTool}
+        close={closeContextualPalette}></ContextualPaletteContainer>
     </div>
   );
 };

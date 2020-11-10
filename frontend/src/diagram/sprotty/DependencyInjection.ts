@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Container, ContainerModule, decorate, inject } from 'inversify';
+import { Container, ContainerModule } from 'inversify';
 import {
   boundsModule,
   configureModelElement,
@@ -18,16 +18,12 @@ import {
   configureViewerOptions,
   ConsoleLogger,
   defaultModule,
-  EditLabelAction,
-  edgeEditModule,
   edgeLayoutModule,
   editLabelFeature,
   exportModule,
   fadeModule,
   graphModule,
-  hoverModule,
   HtmlRootView,
-  KeyListener,
   labelEditModule,
   labelEditUiModule,
   LogLevel,
@@ -46,10 +42,15 @@ import {
   viewportModule,
   withEditLabelFeature,
   zorderModule,
-  MouseListener,
   SetPopupModelAction,
   RequestPopupModelAction,
   overrideCommandStackOptions,
+  configureCommand,
+  HoverFeedbackCommand,
+  SwitchEditModeCommand,
+  ReconnectCommand,
+  SDanglingAnchor,
+  EmptyGroupView,
 } from 'sprotty';
 
 import { GraphFactory } from 'diagram/sprotty/GraphFactory';
@@ -58,21 +59,79 @@ import { EdgeView } from 'diagram/sprotty/views/EdgeView';
 import { ImageView } from 'diagram/sprotty/views/ImageView';
 import { LabelView } from 'diagram/sprotty/views/LabelView';
 import { RectangleView } from 'diagram/sprotty/views/RectangleView';
-import {
-  SiriusWebWebSocketDiagramServer,
-  SPROTTY_DELETE_ACTION,
-  HIDE_CONTEXTUAL_TOOLBAR_ACTION,
-  ACTIVE_TOOL_ACTION,
-} from 'diagram/sprotty/WebSocketDiagramServer';
-import { edgeCreationFeedback } from 'diagram/sprotty/edgeCreationFeedback';
+import { DiagramModelSource } from 'diagram/sprotty/DiagramModelSource';
+import { EditActionHandler } from 'diagram/sprotty/handlers/EditActionHandler';
+import { DeleteActionHandler } from 'diagram/sprotty/handlers/DeleteActionHandler';
+import { ModelActionHandler } from 'diagram/sprotty/handlers/ModelActionHandler';
+import { SelectActionHandler } from 'diagram/sprotty/handlers/SelectActionHandler';
+import { ZoomActionHandler } from 'diagram/sprotty/handlers/ZoomActionHandler';
+import { EdgeFeedbackActionHandler } from 'diagram/sprotty/handlers/EdgeFeedbackActionHandler';
+import { ContextualPaletteActionHandler } from 'diagram/sprotty/handlers/ContextualPaletteActionHandler';
+import { ToolActionHandler } from 'diagram/sprotty/handlers/ToolActionHandler';
+import { HoverActionHandler } from 'diagram/sprotty/handlers/HoverActionHandler';
+
+import { ContextualPaletteMouseListener } from 'diagram/sprotty/listeners/mouse-listeners/ContextualPaletteMouseListener';
+import { CursorMouseListener } from 'diagram/sprotty/listeners/mouse-listeners/CursorMouseListener';
+import { EdgeCreateFeedbackMouseListener } from 'diagram/sprotty/listeners/mouse-listeners/EdgeCreateFeedbackMouseListener';
+import { HoverMouseListener } from 'diagram/sprotty/listeners/mouse-listeners/HoverMouseListener';
+import { SelectMouseListener } from 'diagram/sprotty/listeners/mouse-listeners/SelectMouseListener';
+import { ToolMouseListener } from 'diagram/sprotty/listeners/mouse-listeners/ToolMouseListener';
+
+import { ContextualPaletteKeyListener } from 'diagram/sprotty/listeners/key-listeners/ContextualPaletteKeyListener';
+import { DeleteKeyListener } from 'diagram/sprotty/listeners/key-listeners/DeleteKeyListener';
+import { EditKeyListener } from 'diagram/sprotty/listeners/key-listeners/EditKeyListener';
+
+import { SIRIUS_TYPES } from 'diagram/sprotty/Types';
+
+/**
+ * Action handlers
+ */
+const handlerClasses = [
+  DeleteActionHandler,
+  EditActionHandler,
+  ModelActionHandler,
+  SelectActionHandler,
+  ZoomActionHandler,
+  EdgeFeedbackActionHandler,
+  ContextualPaletteActionHandler,
+  ToolActionHandler,
+  HoverActionHandler,
+];
+
+/**
+ * Listeners
+ */
+const mouseListeners = [
+  SelectMouseListener,
+  CursorMouseListener,
+  EdgeCreateFeedbackMouseListener,
+  ToolMouseListener,
+  ContextualPaletteMouseListener,
+  HoverMouseListener,
+];
+const keyListeners = [EditKeyListener, DeleteKeyListener, ContextualPaletteKeyListener];
 
 const siriusWebContainerModule = new ContainerModule((bind, unbind, isBound, rebind) => {
   rebind(TYPES.ILogger).to(ConsoleLogger).inSingletonScope();
   rebind(TYPES.LogLevel).toConstantValue(LogLevel.warn);
   rebind(TYPES.IModelFactory).to(GraphFactory).inSingletonScope();
-  bind(TYPES.ModelSource).to(SiriusWebWebSocketDiagramServer).inSingletonScope();
+  bind(TYPES.ModelSource).to(DiagramModelSource).inSingletonScope();
+
+  mouseListeners.forEach((listenerClass) => {
+    bind(TYPES.MouseListener).to(listenerClass).inSingletonScope();
+  });
+  keyListeners.forEach((listenerClass) => {
+    bind(TYPES.KeyListener).to(listenerClass).inSingletonScope();
+  });
+
+  bind(SIRIUS_TYPES.MUTATIONS).toConstantValue({});
+  bind(SIRIUS_TYPES.STATE).toConstantValue({});
+  bind(SIRIUS_TYPES.SET_STATE).toConstantValue({});
 
   const context = { bind, unbind, isBound, rebind };
+
+  configureCommand(context, HoverFeedbackCommand);
+
   configureViewerOptions(context, {
     needsClientLayout: true,
     needsServerLayout: true,
@@ -115,15 +174,25 @@ const siriusWebContainerModule = new ContainerModule((bind, unbind, isBound, reb
   configureView({ bind, isBound }, 'pre-rendered', PreRenderedView);
   configureView({ bind, isBound }, 'routing-point', SRoutingHandleView);
   configureView({ bind, isBound }, 'volatile-routing-point', SRoutingHandleView);
+
+  handlerClasses.forEach((handlerClass) => {
+    bind(TYPES.IActionHandlerInitializer).to(handlerClass).inSingletonScope();
+  });
 });
 
 /**
  * Create the dependency injection container.
  * @param containerId The identifier of the container
- * @param onSelectElement The selection call back
  */
-export const createDependencyInjectionContainer = (containerId, onSelectElement) => {
+export const createDependencyInjectionContainer = (containerId) => {
   const container = new Container();
+
+  const edgeEditModule = new ContainerModule((bind, _unbind, isBound) => {
+    const context = { bind, isBound };
+    configureCommand(context, SwitchEditModeCommand);
+    configureCommand(context, ReconnectCommand);
+    configureModelElement(context, 'dangling-anchor', SDanglingAnchor, EmptyGroupView);
+  });
   container.load(
     defaultModule,
     boundsModule,
@@ -132,7 +201,6 @@ export const createDependencyInjectionContainer = (containerId, onSelectElement)
     viewportModule,
     fadeModule,
     exportModule,
-    hoverModule,
     graphModule,
     updateModule,
     modelSourceModule,
@@ -144,77 +212,6 @@ export const createDependencyInjectionContainer = (containerId, onSelectElement)
     labelEditModule,
     labelEditUiModule
   );
-
-  const findElementWithTarget = (element) => {
-    if (element.targetObjectId) {
-      return element;
-    } else if (element.parent) {
-      return findElementWithTarget(element.parent);
-    }
-    // Otherwise, use the diagram as element with target.
-    return element.root;
-  };
-
-  /**
-   * Using our own MouseListener allows to inject the ModelSource.
-   * Then, when an element is selected in the diagram, the onSelectElement()
-   * method can use the ModelSource to dispatch the SPROTTY_SELECT_ACTION
-   * through DiagramWebSocketContainer.
-   */
-  class DiagramMouseListener extends MouseListener {
-    diagramServer: any;
-    constructor(diagramServer) {
-      super();
-      this.diagramServer = diagramServer;
-    }
-
-    mouseDown(element, event) {
-      if (event.button === 0) {
-        const elementWithTarget = findElementWithTarget(element);
-        onSelectElement(elementWithTarget, this.diagramServer);
-      } else if (event.button === 2) {
-        edgeCreationFeedback.reset();
-        return [{ kind: ACTIVE_TOOL_ACTION, tool: undefined }];
-      }
-      return [];
-    }
-    mouseMove(target, event) {
-      edgeCreationFeedback.update(event.offsetX, event.offsetY);
-      return [];
-    }
-  }
-  decorate(inject(TYPES.ModelSource), DiagramMouseListener, 0);
-
-  container.bind(TYPES.MouseListener).to(DiagramMouseListener).inSingletonScope();
-
-  // The list of characters that will enable the direct edit mechanism.
-  const directEditActivationValidCharacters = /[\w&é§èàùçÔØÁÛÊË"«»’”„´$¥€£\\¿?!=+-,;:%/{}[\]–#@*.]/;
-
-  const keyListener = new KeyListener();
-  keyListener.keyDown = (element, event) => {
-    if (event.code === 'Delete') {
-      return [{ kind: SPROTTY_DELETE_ACTION, element }];
-    } else if (event.code === 'F2') {
-      return [{ kind: EditLabelAction.KIND, element }];
-    } else if (event.code === 'Escape') {
-      return [{ kind: HIDE_CONTEXTUAL_TOOLBAR_ACTION }];
-    } else {
-      /*If a modifier key is hit alone, do nothing*/
-      if ((event.altKey || event.shiftKey) && event.getModifierState(event.key)) {
-        return [];
-      }
-      const validFirstInputChar =
-        !event.metaKey &&
-        !event.ctrlKey &&
-        event.key.length === 1 &&
-        directEditActivationValidCharacters.test(event.key);
-      if (validFirstInputChar) {
-        return [{ kind: EditLabelAction.KIND, element }];
-      }
-    }
-    return [];
-  };
-  container.bind(TYPES.KeyListener).toConstantValue(keyListener);
 
   overrideViewerOptions(container, {
     baseDiv: containerId,

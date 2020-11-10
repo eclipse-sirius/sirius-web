@@ -115,7 +115,7 @@ export * from 'diagram/sprotty/views/LabelView';
 export * from 'diagram/sprotty/views/RectangleView';
 export * from 'diagram/sprotty/DependencyInjection';
 export * from 'diagram/sprotty/GraphFactory';
-export * from 'diagram/sprotty/WebSocketDiagramServer';
+export * from 'diagram/sprotty/DiagramModelSource';
 export * from 'diagram/sprotty/convertDiagram';
 export * from 'diagram/sprotty/edgeCreationFeedback';
 export * from 'diagram/DiagramWebSocketContainer';

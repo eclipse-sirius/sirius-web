@@ -13,6 +13,8 @@
 import { IconButton } from 'core/button/Button';
 import { Select } from 'core/select/Select';
 import { FitToScreen, Share, ZoomIn, ZoomOut } from 'icons';
+import { FitToScreenAction } from 'sprotty';
+import { ZOOM_IN_ACTION, ZOOM_OUT_ACTION, ZOOM_TO_ACTION } from 'diagram/sprotty/Actions';
 import { ShareDiagramModal } from 'modals/share-diagram/ShareDiagramModal';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
@@ -33,13 +35,12 @@ const zooms = [
 ];
 
 const propTypes = {
-  onZoomIn: PropTypes.func.isRequired,
-  onZoomOut: PropTypes.func.isRequired,
-  onFitToScreen: PropTypes.func.isRequired,
+  modelSource: PropTypes.object,
+
   setZoomLevel: PropTypes.func.isRequired,
   zoomLevel: PropTypes.string,
 };
-export const Toolbar = ({ onZoomIn, onZoomOut, onFitToScreen, setZoomLevel, zoomLevel }) => {
+export const Toolbar = ({ modelSource, setZoomLevel, zoomLevel }) => {
   const [state, setState] = useState({ modal: undefined, currentZoomLevel: undefined });
   const onShare = () => setState({ modal: 'ShareDiagramModal', currentZoomLevel: state.currentZoomLevel });
   const closeModal = () => setState({ modal: undefined, currentZoomLevel: state.currentZoomLevel });
@@ -52,8 +53,31 @@ export const Toolbar = ({ onZoomIn, onZoomOut, onFitToScreen, setZoomLevel, zoom
 
   const updateZoomLevel = (event) => {
     const newZoomLevel = event.target.value;
-    setState({ modal: state.modal, currentZoomLevel: newZoomLevel.toString() });
+
+    const level = newZoomLevel.toString();
+    setState({ modal: state.modal, currentZoomLevel: level });
     setZoomLevel(newZoomLevel.toString());
+    if (modelSource) {
+      modelSource.actionDispatcher.dispatch({ kind: ZOOM_TO_ACTION, level });
+    }
+  };
+
+  const onZoomIn = () => {
+    if (modelSource) {
+      modelSource.actionDispatcher.dispatch({ kind: ZOOM_IN_ACTION });
+    }
+  };
+
+  const onZoomOut = () => {
+    if (modelSource) {
+      modelSource.actionDispatcher.dispatch({ kind: ZOOM_OUT_ACTION });
+    }
+  };
+
+  const onFitToScreen = () => {
+    if (modelSource) {
+      modelSource.actionDispatcher.dispatch(new FitToScreenAction([], 20));
+    }
   };
 
   let modalElement = null;
