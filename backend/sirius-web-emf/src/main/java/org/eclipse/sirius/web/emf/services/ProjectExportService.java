@@ -36,6 +36,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
+import org.eclipse.sirius.emfjson.resource.JsonResourceFactoryImpl;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.persistence.entities.IdMappingEntity;
 import org.eclipse.sirius.web.persistence.repositories.IIdMappingRepository;
@@ -165,7 +166,7 @@ public class ProjectExportService implements IProjectExportService {
             if (optionalBytes.isPresent()) {
                 byte[] bytes = optionalBytes.get();
                 id2DocumentName.put(document.getId().toString(), document.getName());
-                String name = projectName + "/documents/" + document.getId(); //$NON-NLS-1$
+                String name = projectName + "/documents/" + document.getId() + "." + JsonResourceFactoryImpl.EXTENSION; //$NON-NLS-1$ //$NON-NLS-2$
                 ZipEntry zipEntry = this.createZipEntry(name, bytes.length);
                 zippedOut.putNextEntry(zipEntry);
                 zippedOut.write(bytes);
@@ -214,7 +215,7 @@ public class ProjectExportService implements IProjectExportService {
                     representationManifests.put(representationId.toString(), representationManifest);
 
                     byte[] bytes = new ObjectMapper().writeValueAsBytes(representationDescriptor);
-                    String name = projectName + "/representations/" + representationId; //$NON-NLS-1$
+                    String name = projectName + "/representations/" + representationId + "." + JsonResourceFactoryImpl.EXTENSION; //$NON-NLS-1$ //$NON-NLS-2$
                     ZipEntry zipEntry = this.createZipEntry(name, bytes.length);
                     zippedout.putNextEntry(zipEntry);
                     zippedout.write(bytes);

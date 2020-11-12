@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { ContextMenu, Entry, Separator } from 'core/contextmenu/ContextMenu';
+import { ContextMenu, Entry, LEFT_START, Separator } from 'core/contextmenu/ContextMenu';
 import { Delete, Edit } from 'icons';
 import { Permission } from 'project/Permission';
 import PropTypes from 'prop-types';
@@ -48,7 +48,7 @@ export const TreeItemObjectContextMenu = ({
     );
   }
   return (
-    <ContextMenu x={x} y={y} caretPosition="left" onClose={onClose} data-testid="treeitemobject-contextmenu">
+    <ContextMenu x={x} y={y} caretPosition={LEFT_START} onClose={onClose} data-testid="treeitemobject-contextmenu">
       <Permission requiredAccessLevel="EDIT">
         <Entry label="New object" onClick={onCreateNewObject} data-testid="new-object" />
       </Permission>

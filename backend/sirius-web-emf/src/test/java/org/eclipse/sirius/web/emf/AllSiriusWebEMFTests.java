@@ -13,15 +13,16 @@
 package org.eclipse.sirius.web.emf;
 
 import org.eclipse.sirius.web.emf.architecture.CodingRulesTestCases;
-import org.eclipse.sirius.web.emf.architecture.ConfigurationTestCases;
 import org.eclipse.sirius.web.emf.architecture.ServiceTestCases;
 import org.eclipse.sirius.web.emf.architecture.SpringCodingRulesTestCases;
 import org.eclipse.sirius.web.emf.services.CreateDocumentEventHandlerTestCases;
 import org.eclipse.sirius.web.emf.services.DeleteDocumentEventHandlerTestCases;
 import org.eclipse.sirius.web.emf.services.EditingContextFactoryTestCases;
 import org.eclipse.sirius.web.emf.services.EditingContextPersistenceServiceTestCases;
+import org.eclipse.sirius.web.emf.services.IDManagerTestCases;
 import org.eclipse.sirius.web.emf.services.LabelFeatureProviderRegistryTestCases;
 import org.eclipse.sirius.web.emf.services.LabelFeatureProviderTestCases;
+import org.eclipse.sirius.web.emf.services.ProjectExportServiceTestCases;
 import org.eclipse.sirius.web.emf.services.ProjectImportServiceTestCases;
 import org.eclipse.sirius.web.emf.services.RenameDocumentEventHandlerTestCases;
 import org.eclipse.sirius.web.emf.services.UploadDocumentEventHandlerTestCases;
@@ -35,9 +36,25 @@ import org.junit.runners.Suite.SuiteClasses;
  * @author sbegaudeau
  */
 @RunWith(Suite.class)
-@SuiteClasses({ CodingRulesTestCases.class, ConfigurationTestCases.class, ServiceTestCases.class, SpringCodingRulesTestCases.class, CreateDocumentEventHandlerTestCases.class,
-        UploadDocumentEventHandlerTestCases.class, DeleteDocumentEventHandlerTestCases.class, RenameDocumentEventHandlerTestCases.class, EditingContextFactoryTestCases.class,
-        EditingContextPersistenceServiceTestCases.class, ProjectImportServiceTestCases.class, LabelFeatureProviderRegistryTestCases.class, LabelFeatureProviderTestCases.class })
+// @formatter:off
+@SuiteClasses({
+    CodingRulesTestCases.class,
+    //ConfigurationTestCases.class,
+    CreateDocumentEventHandlerTestCases.class,
+    DeleteDocumentEventHandlerTestCases.class,
+    EditingContextFactoryTestCases.class,
+    EditingContextPersistenceServiceTestCases.class,
+    IDManagerTestCases.class,
+    LabelFeatureProviderRegistryTestCases.class,
+    LabelFeatureProviderTestCases.class,
+    ProjectExportServiceTestCases.class,
+    ProjectImportServiceTestCases.class,
+    RenameDocumentEventHandlerTestCases.class,
+    ServiceTestCases.class,
+    SpringCodingRulesTestCases.class,
+    UploadDocumentEventHandlerTestCases.class
+ })
+// @formatter:on
 public final class AllSiriusWebEMFTests {
     private AllSiriusWebEMFTests() {
         // Prevent instantiation

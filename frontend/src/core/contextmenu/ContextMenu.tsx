@@ -48,10 +48,14 @@ export const Separator = () => {
   return <li className={styles.separator} />;
 };
 
+export const LEFT_START = 'leftstart';
+export const TOP_START = 'topstart';
+export const TOP_END = 'topend';
+
 const contextMenuPropTypes = {
   x: PropTypes.number.isRequired,
   y: PropTypes.number.isRequired,
-  caretPosition: PropTypes.string,
+  caretPosition: PropTypes.oneOf([LEFT_START, TOP_START, TOP_END]),
   children: PropTypes.node.isRequired,
   onClose: PropTypes.func.isRequired,
   'data-testid': PropTypes.string.isRequired,
@@ -96,16 +100,23 @@ export const ContextMenu = ({ x, y, caretPosition, children, onClose, 'data-test
     top: y,
   };
   let caret;
-  if (caretPosition === 'left') {
+  if (caretPosition === LEFT_START) {
     caret = (
-      <div className={styles.leftcaretarea}>
-        <div className={styles.leftcaret} />
+      <div className={styles.leftstartcaretarea}>
+        <div className={styles.leftstartcaret} />
       </div>
     );
-  } else if (caretPosition === 'top') {
+  } else if (caretPosition === TOP_START) {
     caret = (
-      <div className={styles.topcaretarea}>
-        <div className={styles.topcaret} />
+      <div className={styles.topstartcaretarea}>
+        <div className={styles.topstartcaret} />
+      </div>
+    );
+  }
+  else if (caretPosition === TOP_END) {
+    caret = (
+      <div className={styles.topendcaretarea}>
+        <div className={styles.topendcaret} />
       </div>
     );
   }

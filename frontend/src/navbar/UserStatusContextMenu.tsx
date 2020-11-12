@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { ContextMenu, Entry, Separator } from 'core/contextmenu/ContextMenu';
+import { ContextMenu, Entry, Separator, TOP_END } from 'core/contextmenu/ContextMenu';
 import { Help, Logout } from 'icons';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -25,7 +25,7 @@ const propTypes = {
 
 export const UserStatusContextMenu = ({ x, y, userName, onLoggedOut, onClose }) => {
   return (
-    <ContextMenu x={x} y={y} onClose={onClose} data-testid="userstatus-contextmenu">
+    <ContextMenu x={x} y={y} caretPosition={TOP_END} onClose={onClose} data-testid="userstatus-contextmenu">
       <div className={styles.userName} data-testid="username">
         {userName}
       </div>

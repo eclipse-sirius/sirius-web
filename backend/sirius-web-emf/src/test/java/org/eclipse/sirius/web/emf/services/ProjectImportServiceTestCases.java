@@ -21,6 +21,8 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -89,9 +91,10 @@ public class ProjectImportServiceTestCases {
         ProjectImportService projectImportService = this.createProjectImportService(this.project, this.document, this.diagram);
 
         String filePath = ProjectImportServiceTestCases.class.getClassLoader().getResource(PATH_TO_ZIPPED_PROJECT).getFile();
-        assertThat(new File(filePath).exists()).isTrue();
+        String decodedfilePath = URLDecoder.decode(filePath, StandardCharsets.UTF_8);
+        assertThat(new File(decodedfilePath).exists()).isTrue();
 
-        try (var inputStream = new FileInputStream(filePath)) {
+        try (var inputStream = new FileInputStream(decodedfilePath)) {
             UploadFile file = new UploadFile(PROJECT_NAME, inputStream);
             var context = new Context(new UsernamePasswordAuthenticationToken(null, null));
             IPayload importedProjectPayload = projectImportService.importProject(file, context);
@@ -158,9 +161,10 @@ public class ProjectImportServiceTestCases {
         ProjectImportService projectImportService = new ProjectImportService(projectService, projectEventProcessorRegistry, objectMapper, messageService, this.idMappingRepository);
 
         String filePath = ProjectImportServiceTestCases.class.getClassLoader().getResource(PATH_TO_ZIPPED_PROJECT).getFile();
-        assertThat(new File(filePath).exists()).isTrue();
+        String decodedfilePath = URLDecoder.decode(filePath, StandardCharsets.UTF_8);
+        assertThat(new File(decodedfilePath).exists()).isTrue();
 
-        try (var inputStream = new FileInputStream(filePath)) {
+        try (var inputStream = new FileInputStream(decodedfilePath)) {
             UploadFile file = new UploadFile(PROJECT_NAME, inputStream);
             var context = new Context(new UsernamePasswordAuthenticationToken(null, null));
             IPayload importedProjectPayload = projectImportService.importProject(file, context);
@@ -236,9 +240,10 @@ public class ProjectImportServiceTestCases {
         ProjectImportService projectImportService = new ProjectImportService(projectService, projectEventProcessorRegistry, objectMapper, messageService, this.idMappingRepository);
 
         String filePath = ProjectImportServiceTestCases.class.getClassLoader().getResource(PATH_TO_ZIPPED_PROJECT).getFile();
-        assertThat(new File(filePath).exists()).isTrue();
+        String decodedfilePath = URLDecoder.decode(filePath, StandardCharsets.UTF_8);
+        assertThat(new File(decodedfilePath).exists()).isTrue();
 
-        try (var inputStream = new FileInputStream(filePath)) {
+        try (var inputStream = new FileInputStream(decodedfilePath)) {
             UploadFile file = new UploadFile(PROJECT_NAME, inputStream);
             var context = new Context(new UsernamePasswordAuthenticationToken(null, null));
             IPayload importedProjectPayload = projectImportService.importProject(file, context);
@@ -261,9 +266,10 @@ public class ProjectImportServiceTestCases {
     private void importProject(String projectName, Project projectForPayload, Document documentForPayload, Diagram diagramForPayload) {
         ProjectImportService projectImportService = this.createProjectImportService(projectForPayload, documentForPayload, diagramForPayload);
         String filePath = ProjectImportServiceTestCases.class.getClassLoader().getResource(PATH_TO_ZIPPED_PROJECT).getFile();
-        assertThat(new File(filePath).exists()).isTrue();
+        String decodedfilePath = URLDecoder.decode(filePath, StandardCharsets.UTF_8);
+        assertThat(new File(decodedfilePath).exists()).isTrue();
 
-        try (var inputStream = new FileInputStream(filePath)) {
+        try (var inputStream = new FileInputStream(decodedfilePath)) {
             UploadFile file = new UploadFile(projectName, inputStream);
             var context = new Context(new UsernamePasswordAuthenticationToken(null, null));
             IPayload importedProjectPayload = projectImportService.importProject(file, context);

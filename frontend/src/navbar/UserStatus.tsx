@@ -17,6 +17,16 @@ import { Profile } from 'icons/Profile';
 import styles from './UserStatus.module.css';
 
 export const UserStatus = () => {
+
+  /**
+ * Determines where the context menu should open relative to the actual mouse position.
+ * These are relative to the bottom-left corner of the "more" icon, and to the size of the
+ * caret, so that the caret at the left of the menu points to the middle of the "more" icon.
+ */
+  const menuPositionDelta = {
+    dx: -168,
+    dy: 49,
+  };
   const initialState = { x: 0, y: 0, showContextMenu: false };
   const [state, setState] = useState(initialState);
 
@@ -46,17 +56,16 @@ export const UserStatus = () => {
 
   const onMore = (event) => {
     if (!showContextMenu) {
-      const { x, y, width } = event.target.getBoundingClientRect();
-      const contextMenuWidth = 200;
-      setState({ x: x - contextMenuWidth + width, y, showContextMenu: true });
+      const { x, y } = event.target.getBoundingClientRect();
+      setState({ x: x + menuPositionDelta.dx, y: y + menuPositionDelta.dy, showContextMenu: true });
     }
   };
 
   if (auth.username) {
     return (
       <>
-        <div className={styles.userstatus} onClick={onMore} data-testid="userstatus" title={userName}>
-          <Profile className={styles.userIcon} title="" />
+        <div className={styles.userstatus} data-testid="userstatus" title={userName}>
+          <Profile onClick={onMore} className={styles.userIcon} title="" />
         </div>
         {contextMenu}
       </>
