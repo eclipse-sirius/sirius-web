@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { httpOrigin } from 'common/URL';
-import { ContextMenu, Entry, Separator } from 'core/contextmenu/ContextMenu';
+import { ContextMenu, Entry, LEFT_START, Separator } from 'core/contextmenu/ContextMenu';
 import { Delete, Edit } from 'icons';
 import { Permission } from 'project/Permission';
 import { useProject } from 'project/ProjectProvider';
@@ -41,7 +41,7 @@ export const TreeItemDocumentContextMenu = ({
   const { id: projectId } = useProject() as any;
 
   return (
-    <ContextMenu x={x} y={y} caretPosition="left" onClose={onClose} data-testid="treeitemdocument-contextmenu">
+    <ContextMenu x={x} y={y} caretPosition={LEFT_START} onClose={onClose} data-testid="treeitemdocument-contextmenu">
       <Permission requiredAccessLevel="EDIT">
         <Entry label="New object" onClick={onNewObject} data-testid="new-object" />
       </Permission>

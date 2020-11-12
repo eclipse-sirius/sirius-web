@@ -160,8 +160,15 @@ public class ProjectUnzipper {
      * @return The map of document id to document content
      */
     private Map<String, ByteArrayOutputStream> selectAndTransformIntoDocumentIdToDocumentContent(Map<String, ByteArrayOutputStream> zipEntryNameToContent, String documentsFolderInZip) {
-        Function<Entry<String, ByteArrayOutputStream>, String> mapZipEntryNameToDocumentId = (e) -> {
-            return e.getKey().substring(documentsFolderInZip.length());
+        Function<Entry<String, ByteArrayOutputStream>, String> mapZipEntryNameToDocumentId = e -> {
+            String fullPath = e.getKey();
+            String fileName = fullPath.substring(documentsFolderInZip.length());
+            int extensionIndex = fileName.lastIndexOf('.');
+            if (extensionIndex >= 0) {
+                return fileName.substring(0, extensionIndex);
+            } else {
+                return fileName;
+            }
         };
 
         // @formatter:off

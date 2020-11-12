@@ -42,6 +42,9 @@ import org.eclipse.sirius.web.services.api.objects.IObjectService;
  * @author sbegaudeau
  */
 public class NodeMappingConverter {
+
+    private static final String EMPTY_STRING = ""; //$NON-NLS-1$
+
     private final IObjectService objectService;
 
     private final IEditService editService;
@@ -61,7 +64,10 @@ public class NodeMappingConverter {
     }
 
     public NodeDescription convert(NodeMapping nodeMapping, Map<UUID, NodeDescription> id2NodeDescriptions) {
-        String labelExpression = nodeMapping.getStyle().getLabelExpression();
+        String labelExpression = EMPTY_STRING;
+        if (nodeMapping.getStyle() != null) {
+            labelExpression = nodeMapping.getStyle().getLabelExpression();
+        }
         LabelStyleDescription labelStyleDescription = this.labelStyleDescriptionConverter.convert(nodeMapping.getStyle());
         Function<VariableManager, String> labelIdProvider = variableManager -> {
             Object parentId = variableManager.getVariables().get(LabelDescription.OWNER_ID);

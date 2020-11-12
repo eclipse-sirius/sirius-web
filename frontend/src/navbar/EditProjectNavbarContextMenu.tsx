@@ -12,7 +12,7 @@
  *******************************************************************************/
 import { useCapabilities } from 'capabilities/useCapabilities';
 import { httpOrigin } from 'common/URL';
-import { ContextMenu, Entry, Separator } from 'core/contextmenu/ContextMenu';
+import { ContextMenu, Entry, Separator, TOP_START } from 'core/contextmenu/ContextMenu';
 import { Go } from 'core/go/Go';
 import { Delete, Edit, Settings } from 'icons';
 import { Permission } from 'project/Permission';
@@ -54,7 +54,7 @@ export const EditProjectNavbarContextMenu = ({
   }
 
   return (
-    <ContextMenu caretPosition="top" x={x} y={y} onClose={onClose} data-testid="navbar-contextmenu">
+    <ContextMenu caretPosition={TOP_START} x={x} y={y} onClose={onClose} data-testid="navbar-contextmenu">
       <Permission requiredAccessLevel="EDIT">
         <Entry label="New model" onClick={onCreateDocument} data-testid="new-document" />
       </Permission>

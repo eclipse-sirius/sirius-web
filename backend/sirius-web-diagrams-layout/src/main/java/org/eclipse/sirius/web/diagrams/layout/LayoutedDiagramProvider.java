@@ -121,14 +121,17 @@ public class LayoutedDiagramProvider {
         List<Position> routingPoints = new ArrayList<>();
 
         ElkNode containingNode = elkEdge.getContainingNode();
-        double xOffset = containingNode.getX();
-        double yOffset = containingNode.getY();
-
-        ElkNode parent = containingNode.getParent();
-        while (parent instanceof ElkNode) {
-            xOffset += parent.getX();
-            yOffset += parent.getY();
-            parent = parent.getParent();
+        double xOffset = 0;
+        double yOffset = 0;
+        if (containingNode != null) {
+            xOffset = containingNode.getX();
+            yOffset = containingNode.getY();
+            ElkNode parent = containingNode.getParent();
+            while (parent instanceof ElkNode) {
+                xOffset += parent.getX();
+                yOffset += parent.getY();
+                parent = parent.getParent();
+            }
         }
 
         if (!elkEdge.getSections().isEmpty()) {

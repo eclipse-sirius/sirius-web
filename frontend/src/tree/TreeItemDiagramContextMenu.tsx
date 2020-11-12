@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { ContextMenu, Entry, Separator } from 'core/contextmenu/ContextMenu';
+import { ContextMenu, Entry, LEFT_START, Separator } from 'core/contextmenu/ContextMenu';
 import { Delete, Edit } from 'icons';
 import { Permission } from 'project/Permission';
 import PropTypes from 'prop-types';
@@ -24,7 +24,7 @@ const propTypes = {
 };
 export const TreeItemDiagramContextMenu = ({ x, y, onDeleteRepresentation, onRenameRepresentation, onClose }) => {
   return (
-    <ContextMenu x={x} y={y} caretPosition="left" onClose={onClose} data-testid="treeitemdiagram-contextmenu">
+    <ContextMenu x={x} y={y} caretPosition={LEFT_START} onClose={onClose} data-testid="treeitemdiagram-contextmenu">
       <Permission requiredAccessLevel="EDIT">
         <Entry
           icon={<Edit title="" />}

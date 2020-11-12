@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { httpOrigin } from 'common/URL';
-import { ContextMenu, Entry } from 'core/contextmenu/ContextMenu';
+import { ContextMenu, Entry, LEFT_START } from 'core/contextmenu/ContextMenu';
 import { Delete } from 'icons/Delete';
 import { Download } from 'icons/Download';
 import { Edit } from 'icons/Edit';
@@ -31,7 +31,7 @@ const propTypes = {
 
 export const ProjectActionsContextMenu = ({ projectId, accessLevel, x, y, onDelete, onRename, onClose }) => {
   return (
-    <ContextMenu x={x} y={y} caretPosition="left" onClose={onClose} data-testid="project-actions-contextmenu">
+    <ContextMenu x={x} y={y} caretPosition={LEFT_START} onClose={onClose} data-testid="project-actions-contextmenu">
       <UnsynchronizedPermission requiredAccessLevel="EDIT" accessLevel={accessLevel}>
         <Entry icon={<Edit title="" />} label="Rename" onClick={onRename} data-testid="rename" />
       </UnsynchronizedPermission>

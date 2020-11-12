@@ -22,6 +22,10 @@
           <name>Sirius EMF JSON - Maven Packages</name>
           <url>https://maven.pkg.github.com/eclipse-sirius/sirius-emf-json</url>
         </repository>
+        <repository>
+          <id>github-flow</id>
+          <url>https://maven.pkg.github.com/ObeoNetwork/Flow-Designer</url>
+        </repository>
       </repositories>
     </profile>
   </profiles>
@@ -29,6 +33,11 @@
   <servers>
     <server>
       <id>github-sirius-emfjson</id>
+      <username>${env.USERNAME}</username>
+      <password>${env.PASSWORD}</password>
+    </server>
+    <server>
+      <id>github-flow</id>
       <username>${env.USERNAME}</username>
       <password>${env.PASSWORD}</password>
     </server>

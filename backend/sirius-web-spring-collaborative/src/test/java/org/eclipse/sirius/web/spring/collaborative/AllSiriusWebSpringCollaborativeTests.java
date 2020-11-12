@@ -17,6 +17,7 @@ import org.eclipse.sirius.web.spring.collaborative.architecture.SpringCodingRule
 import org.eclipse.sirius.web.spring.collaborative.handlers.CreateChildEventHandlerTestCases;
 import org.eclipse.sirius.web.spring.collaborative.handlers.CreateRootObjectEventHandlerTestCases;
 import org.eclipse.sirius.web.spring.collaborative.handlers.DeleteObjectEventHandlerTestCases;
+import org.eclipse.sirius.web.spring.collaborative.handlers.DeleteRepresentationEventHandlerTestCases;
 import org.eclipse.sirius.web.spring.collaborative.handlers.RenameObjectEventHandlerTestCases;
 import org.eclipse.sirius.web.spring.collaborative.handlers.RenameProjectEventHandlerTestCases;
 import org.eclipse.sirius.web.spring.collaborative.projects.ProjectServiceTestCases;
@@ -37,6 +38,7 @@ import org.junit.runners.Suite.SuiteClasses;
     CreateChildEventHandlerTestCases.class,
     CreateRootObjectEventHandlerTestCases.class,
     DeleteObjectEventHandlerTestCases.class,
+    DeleteRepresentationEventHandlerTestCases.class,
     RenameObjectEventHandlerTestCases.class,
     ProjectServiceTestCases.class,
     RenameProjectEventHandlerTestCases.class

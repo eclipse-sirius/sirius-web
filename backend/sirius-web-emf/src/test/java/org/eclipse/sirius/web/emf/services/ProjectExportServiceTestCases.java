@@ -20,6 +20,8 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
+import fr.obeo.dsl.designer.sample.flow.FlowPackage;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -69,7 +71,7 @@ public class ProjectExportServiceTestCases {
      */
     private static final String SIRIUS_WEB_VERSION = "0.1.0-SNAPSHOT"; //$NON-NLS-1$
 
-    private static final UUID FLOW_DOCUMENT_ID = UUID.randomUUID();
+    private static final UUID FLOW_DOCUMENT_ID = UUID.fromString("41f1f42f-2b3c-4226-b3f5-3befe064f38c"); //$NON-NLS-1$
 
     private static final String FLOW_DOCUMENT_NAME = "flow"; //$NON-NLS-1$
 
@@ -150,6 +152,7 @@ public class ProjectExportServiceTestCases {
 
         Registry ePackageRegistry = new EPackageRegistryImpl();
         ePackageRegistry.put(EcorePackage.eINSTANCE.getNsURI(), EcorePackage.eINSTANCE);
+        ePackageRegistry.put(FlowPackage.eINSTANCE.getNsURI(), FlowPackage.eINSTANCE);
 
         IIdMappingRepository idMappingRepository = new NoOpIdMappingRepository();
         IProjectExportService projectExportService = new ProjectExportService(this.projectService, this.documentService, representationService, ePackageRegistry, idMappingRepository, objectMapper,

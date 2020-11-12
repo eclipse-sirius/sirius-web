@@ -15,12 +15,11 @@
   flex-direction: column;
   justify-content: flex-end;
   padding-bottom: 10px;
-  cursor: pointer;
 }
 
 .userIcon {
   width: 32px;
   height: 32px;
-
+  cursor: pointer;
   fill: var(--white);
 }
