@@ -57,7 +57,8 @@ public class SiriusRepresentationDescriptionProvider {
 
         List<IRepresentationDescription> representationDescriptions = new ArrayList<>();
         for (RepresentationDescription siriusRepresentationDescription : siriusRepresentationDescriptions) {
-            if (siriusRepresentationDescription instanceof org.eclipse.sirius.diagram.description.DiagramDescription) {
+            if (siriusRepresentationDescription instanceof org.eclipse.sirius.diagram.description.DiagramDescription
+                    && !(siriusRepresentationDescription instanceof org.eclipse.sirius.diagram.sequence.description.SequenceDiagramDescription)) {
                 representationDescriptions.add(this.diagramDescriptionConverter.convert((org.eclipse.sirius.diagram.description.DiagramDescription) siriusRepresentationDescription));
             }
         }
