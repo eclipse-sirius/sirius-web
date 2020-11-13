@@ -210,7 +210,8 @@ public class EdgeMappingConverter {
         if (edgeMapping.isUseDomainElement()) {
             String semanticCandidatesExpression = edgeMapping.getSemanticCandidatesExpression();
             String preconditionExpression = edgeMapping.getPreconditionExpression();
-            semanticElementsProvider = new SemanticCandidatesProvider(this.interpreter, EOBJECT, semanticCandidatesExpression, preconditionExpression);
+            String domainClass = Optional.ofNullable(edgeMapping.getDomainClass()).orElse(""); //$NON-NLS-1$
+            semanticElementsProvider = new SemanticCandidatesProvider(this.interpreter, domainClass, semanticCandidatesExpression, preconditionExpression);
         } else {
             // @formatter:off
             List<UUID> sourceNodeDescriptionIds = sourceNodeDescriptions.stream()
