@@ -49,6 +49,7 @@ const getReadyState = () => ({
   zoomLevel: '1',
   subscribers: [],
   message: undefined,
+  errorMessage: undefined,
 });
 
 const nodeTool = { id: 'myNodeToolId', label: 'My Node Tool', type: 'CreateNodeTool' };
@@ -92,6 +93,7 @@ describe('DiagramWebSocketContainer - reducer', () => {
       zoomLevel: undefined,
       subscribers: [],
       message: undefined,
+      errorMessage: undefined,
     });
   });
 
@@ -117,6 +119,7 @@ describe('DiagramWebSocketContainer - reducer', () => {
       zoomLevel: undefined,
       subscribers: [],
       message: 'An error has occured while retrieving the content from the server',
+      errorMessage: undefined,
     });
   });
 
@@ -140,6 +143,7 @@ describe('DiagramWebSocketContainer - reducer', () => {
       zoomLevel: undefined,
       subscribers: [],
       message,
+      errorMessage: undefined,
     });
   });
 
@@ -163,6 +167,7 @@ describe('DiagramWebSocketContainer - reducer', () => {
       zoomLevel: prevState.zoomLevel,
       subscribers: message.data.diagramEvent.subscribers,
       message: undefined,
+      errorMessage: undefined,
     });
   });
 
@@ -186,6 +191,7 @@ describe('DiagramWebSocketContainer - reducer', () => {
       zoomLevel: undefined,
       subscribers: prevState.subscribers,
       message,
+      errorMessage: undefined,
     });
   });
 
@@ -212,6 +218,7 @@ describe('DiagramWebSocketContainer - reducer', () => {
       zoomLevel: prevState.zoomLevel,
       subscribers: prevState.subscribers,
       message: undefined,
+      errorMessage: undefined,
     });
   });
 
@@ -238,6 +245,7 @@ describe('DiagramWebSocketContainer - reducer', () => {
       zoomLevel: prevState.zoomLevel,
       subscribers: prevState.subscribers,
       message: undefined,
+      errorMessage: undefined,
     });
   });
 
@@ -261,6 +269,7 @@ describe('DiagramWebSocketContainer - reducer', () => {
       zoomLevel: undefined,
       subscribers: [],
       message: 'The diagram does not exist',
+      errorMessage: undefined,
     });
   });
 
@@ -283,6 +292,7 @@ describe('DiagramWebSocketContainer - reducer', () => {
       zoomLevel: '1',
       subscribers: prevState.subscribers,
       message: undefined,
+      errorMessage: undefined,
     });
   });
 
@@ -308,6 +318,7 @@ describe('DiagramWebSocketContainer - reducer', () => {
       zoomLevel: prevState.zoomLevel,
       subscribers: prevState.subscribers,
       message: undefined,
+      errorMessage: undefined,
     });
   });
 
@@ -337,6 +348,7 @@ describe('DiagramWebSocketContainer - reducer', () => {
       zoomLevel: prevState.zoomLevel,
       subscribers: prevState.subscribers,
       message: undefined,
+      errorMessage: undefined,
     });
   });
 
@@ -363,6 +375,7 @@ describe('DiagramWebSocketContainer - reducer', () => {
       zoomLevel: prevState.zoomLevel,
       subscribers: prevState.subscribers,
       message: undefined,
+      errorMessage: undefined,
     });
   });
 
@@ -392,6 +405,7 @@ describe('DiagramWebSocketContainer - reducer', () => {
       zoomLevel: prevState.zoomLevel,
       subscribers: prevState.subscribers,
       message: undefined,
+      errorMessage: undefined,
     });
   });
 
@@ -418,6 +432,7 @@ describe('DiagramWebSocketContainer - reducer', () => {
       zoomLevel: '2',
       subscribers: prevState.subscribers,
       message: undefined,
+      errorMessage: undefined,
     });
   });
 
@@ -478,6 +493,7 @@ describe('DiagramWebSocketContainer - reducer', () => {
       zoomLevel: prevState.zoomLevel,
       subscribers: prevState.subscribers,
       message: undefined,
+      errorMessage: undefined,
     });
   });
 });

@@ -12,10 +12,13 @@
  *******************************************************************************/
 import { useLazyQuery, useMutation, useSubscription } from '@apollo/client';
 import { Text } from 'core/text/Text';
+import { Banner } from 'core/banner/Banner';
 import {
   COMPLETE__STATE,
   HANDLE_COMPLETE__ACTION,
   HANDLE_DATA__ACTION,
+  HANDLE_ERROR__ACTION,
+  HANDLE_ERROR_MESSAGE__ACTION,
   INITIALIZE__ACTION,
   LOADING__STATE,
   READY__STATE,
@@ -42,10 +45,9 @@ import {
   ZOOM_TO_ACTION,
 } from 'diagram/sprotty/Actions';
 import { Toolbar } from 'diagram/Toolbar';
-import { HANDLE_ERROR__ACTION } from 'explorer/machine';
 import { useProject } from 'project/ProjectProvider';
 import PropTypes from 'prop-types';
-import React, { useCallback, useEffect, useReducer, useRef } from 'react';
+import React, { useEffect, useReducer, useRef, useCallback } from 'react';
 import 'reflect-metadata'; // Required because Sprotty uses Inversify and both frameworks are written in TypeScript with experimental features.
 import { SEdge, SNode, EditLabelAction, FitToScreenAction } from 'sprotty';
 import styles from './Diagram.module.css';
@@ -229,15 +231,56 @@ export const DiagramWebSocketContainer = ({ representationId, selection, setSele
     zoomLevel,
     subscribers,
     message,
+    errorMessage,
   } = state;
 
-  const [deleteElementsMutation] = useMutation(deleteFromDiagramMutation);
-  const [invokeNodeToolMutation] = useMutation(invokeNodeToolOnDiagramMutation);
-  const [invokeEdgeToolMutation] = useMutation(invokeEdgeToolOnDiagramMutation);
-  const [editLabelMutation] = useMutation(editLabelMutationOp);
+  const [deleteElementsMutation, deleteElementResult] = useMutation(deleteFromDiagramMutation);
+  const [invokeNodeToolMutation, invokeNodeToolResult] = useMutation(invokeNodeToolOnDiagramMutation);
+  const [invokeEdgeToolMutation, invokeEdgeToolResult] = useMutation(invokeEdgeToolOnDiagramMutation);
+  const [editLabelMutation, editLabelResult] = useMutation(editLabelMutationOp);
   const [getToolSectionData, { loading: toolSectionLoading, data: toolSectionData }] = useLazyQuery(
     getToolSectionsQuery
   );
+
+  const setErrorMessage = useCallback((errorMessage?) => {
+    dispatch({ type: HANDLE_ERROR_MESSAGE__ACTION, errorMessage });
+  }, []);
+
+  useEffect(() => {
+    if (!deleteElementResult?.loading && deleteElementResult?.data?.data) {
+      const { deleteFromDiagram } = deleteElementResult.data.data;
+      if (deleteFromDiagram.__typename === 'ErrorPayload') {
+        setErrorMessage(deleteFromDiagram.message);
+      }
+    }
+  }, [deleteElementResult, setErrorMessage]);
+  useEffect(() => {
+    if (!invokeNodeToolResult?.loading && invokeNodeToolResult?.data?.data) {
+      const { invokeNodeToolOnDiagram } = invokeNodeToolResult.data.data;
+      if (invokeNodeToolOnDiagram.__typename === 'ErrorPayload') {
+        setErrorMessage(invokeNodeToolOnDiagram.message);
+      }
+    }
+  }, [invokeNodeToolResult, setErrorMessage]);
+
+  useEffect(() => {
+    if (!invokeEdgeToolResult?.loading && invokeEdgeToolResult?.data?.data) {
+      const { invokeEdgeToolOnDiagram } = invokeEdgeToolResult.data.data;
+      if (invokeEdgeToolOnDiagram.__typename === 'ErrorPayload') {
+        setErrorMessage(invokeEdgeToolOnDiagram.message);
+      }
+    }
+  }, [invokeEdgeToolResult, setErrorMessage]);
+
+  useEffect(() => {
+    if (!editLabelResult?.loading && editLabelResult?.data?.data) {
+      const { editLabel } = editLabelResult.data.data;
+      if (editLabel.__typename === 'ErrorPayload') {
+        setErrorMessage(editLabel.message);
+      }
+    }
+  }, [editLabelResult, setErrorMessage]);
+
   /**
    * We have choose to make only one query by diagram to get tools to avoid network flooding.
    * In consequence, a tool must contains all necessary properties to be filtered on a specific context (In the contextual palette for example).
@@ -454,6 +497,8 @@ export const DiagramWebSocketContainer = ({ representationId, selection, setSele
           type: SET_TOOL_SECTIONS__ACTION,
           toolSections: toolSectionData.viewer.toolSections,
         });
+      } else {
+        dispatch({ type: HANDLE_ERROR_MESSAGE__ACTION, errorMessage: 'Error: Cannot get tools from the server' });
       }
     }
   }, [toolSectionLoading, toolSectionData, viewState]);
@@ -577,6 +622,15 @@ export const DiagramWebSocketContainer = ({ representationId, selection, setSele
     );
   }
 
+  let errorContent;
+  if (errorMessage) {
+    errorContent = (
+      <div className={styles.errorBanner} onClick={() => setErrorMessage()}>
+        <Banner data-testid="banner" content={errorMessage} />
+      </div>
+    );
+  }
+
   return (
     <div className={styles.container}>
       <Toolbar
@@ -595,6 +649,7 @@ export const DiagramWebSocketContainer = ({ representationId, selection, setSele
         invokeTool={invokeToolFromPalette}
         setDefaultTool={setDefaultTool}
         close={closeContextualPalette}></ContextualPaletteContainer>
+      {errorContent}
     </div>
   );
 };

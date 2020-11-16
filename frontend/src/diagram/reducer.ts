@@ -23,6 +23,7 @@ import {
   HANDLE_DATA__ACTION,
   HANDLE_CONNECTION_ERROR__ACTION,
   HANDLE_ERROR__ACTION,
+  HANDLE_ERROR_MESSAGE__ACTION,
   HANDLE_COMPLETE__ACTION,
   SET_ACTIVE_TOOL__ACTION,
   SET_CONTEXTUAL_PALETTE__ACTION,
@@ -60,6 +61,7 @@ export const initialState = {
   zoomLevel: undefined,
   subscribers: [],
   message: undefined,
+  errorMessage: undefined,
 };
 
 export const reducer = (prevState, action) => {
@@ -81,6 +83,9 @@ export const reducer = (prevState, action) => {
       break;
     case HANDLE_ERROR__ACTION:
       state = handleErrorAction(prevState, action);
+      break;
+    case HANDLE_ERROR_MESSAGE__ACTION:
+      state = handleErrorMessageAction(prevState, action);
       break;
     case HANDLE_COMPLETE__ACTION:
       state = handleCompleteAction(prevState);
@@ -143,6 +148,7 @@ const switchRepresentationAction = (action) => {
     zoomLevel: '1',
     subscribers: [],
     message: undefined,
+    errorMessage: undefined,
   };
 };
 
@@ -209,6 +215,7 @@ const initializeAction = (prevState, action) => {
     zoomLevel: '1',
     subscribers,
     message: undefined,
+    errorMessage: undefined,
   };
 };
 
@@ -228,6 +235,7 @@ const switchToCompleteState = (prevState, message) => {
     zoomLevel: undefined,
     subscribers,
     message,
+    errorMessage: undefined,
   };
 };
 
@@ -238,6 +246,41 @@ const handleConnectionErrorAction = (prevState) => {
 const handleErrorAction = (prevState, action) => {
   const message = action.message;
   return switchToCompleteState(prevState, message);
+};
+
+const handleErrorMessageAction = (prevState, action) => {
+  const {
+    viewState,
+    displayedRepresentationId,
+    modelSource,
+    sprottyState,
+    activeTool,
+    diagram,
+    toolSections,
+    contextualPalette,
+    latestSelection,
+    newSelection,
+    zoomLevel,
+    subscribers,
+    message,
+  } = prevState;
+  const { errorMessage } = action;
+  return {
+    viewState,
+    displayedRepresentationId,
+    modelSource,
+    sprottyState,
+    activeTool,
+    diagram,
+    toolSections,
+    contextualPalette,
+    latestSelection,
+    newSelection,
+    zoomLevel,
+    subscribers,
+    message,
+    errorMessage,
+  };
 };
 
 const handleCompleteAction = (prevState) => {
@@ -262,6 +305,7 @@ const handleDataAction = (prevState, action) => {
         newSelection,
         zoomLevel,
         subscribers,
+        errorMessage,
       } = prevState;
       const { diagram } = diagramEvent;
       state = {
@@ -278,6 +322,7 @@ const handleDataAction = (prevState, action) => {
         zoomLevel,
         subscribers,
         message: undefined,
+        errorMessage,
       };
     } else if (diagramEvent.__typename === 'SubscribersUpdatedEventPayload') {
       const {
@@ -291,6 +336,7 @@ const handleDataAction = (prevState, action) => {
         latestSelection,
         newSelection,
         zoomLevel,
+        errorMessage,
       } = prevState;
       const { subscribers } = diagramEvent;
       state = {
@@ -307,6 +353,7 @@ const handleDataAction = (prevState, action) => {
         zoomLevel,
         subscribers,
         message: undefined,
+        errorMessage,
       };
     }
   }
@@ -328,6 +375,7 @@ const setActiveToolAction = (prevState, action) => {
     zoomLevel,
     subscribers,
     message,
+    errorMessage,
   } = prevState;
   const { activeTool } = action;
   diagramInternalState.activeTool = activeTool;
@@ -345,6 +393,7 @@ const setActiveToolAction = (prevState, action) => {
     zoomLevel,
     subscribers,
     message,
+    errorMessage,
   };
 };
 
@@ -363,6 +412,7 @@ const selectSourceElementAction = (prevState, action) => {
     zoomLevel,
     subscribers,
     message,
+    errorMessage,
   } = prevState;
   const { sourceElement } = action;
   diagramInternalState.sourceElement = sourceElement;
@@ -380,6 +430,7 @@ const selectSourceElementAction = (prevState, action) => {
     zoomLevel,
     subscribers,
     message,
+    errorMessage,
   };
 };
 const setCurrentRootAction = (prevState, action) => {
@@ -397,6 +448,7 @@ const setCurrentRootAction = (prevState, action) => {
     zoomLevel,
     subscribers,
     message,
+    errorMessage,
   } = prevState;
   const { currentRoot } = action;
   diagramInternalState.currentRoot = currentRoot;
@@ -414,6 +466,7 @@ const setCurrentRootAction = (prevState, action) => {
     zoomLevel,
     subscribers,
     message,
+    errorMessage,
   };
 };
 const setContextualPaletteAction = (prevState, action) => {
@@ -430,6 +483,7 @@ const setContextualPaletteAction = (prevState, action) => {
     zoomLevel,
     subscribers,
     message,
+    errorMessage,
   } = prevState;
   const { contextualPalette } = action;
 
@@ -447,6 +501,7 @@ const setContextualPaletteAction = (prevState, action) => {
     zoomLevel,
     subscribers,
     message,
+    errorMessage,
   };
 };
 const setDefaultToolAction = (prevState, action) => {
@@ -464,6 +519,7 @@ const setDefaultToolAction = (prevState, action) => {
     zoomLevel,
     subscribers,
     message,
+    errorMessage,
   } = prevState;
   const { defaultTool } = action;
   let newToolSections;
@@ -495,6 +551,7 @@ const setDefaultToolAction = (prevState, action) => {
     zoomLevel,
     subscribers,
     message,
+    errorMessage,
   };
 };
 
@@ -512,6 +569,7 @@ const setToolSectionsAction = (prevState, action) => {
     zoomLevel,
     subscribers,
     message,
+    errorMessage,
   } = prevState;
   const { toolSections } = action;
 
@@ -540,6 +598,7 @@ const setToolSectionsAction = (prevState, action) => {
     zoomLevel,
     subscribers,
     message,
+    errorMessage,
   };
 };
 
@@ -556,6 +615,7 @@ const selectedElementAction = (prevState, action) => {
     newSelection,
     zoomLevel,
     subscribers,
+    errorMessage,
   } = prevState;
   const { selection } = action;
 
@@ -573,6 +633,7 @@ const selectedElementAction = (prevState, action) => {
     zoomLevel,
     subscribers,
     message: undefined,
+    errorMessage,
   };
 };
 
@@ -589,6 +650,7 @@ const selectionAction = (prevState, action) => {
     latestSelection,
     newSelection,
     subscribers,
+    errorMessage,
   } = prevState;
   const { selection } = action;
   let newSelectionValue;
@@ -611,6 +673,7 @@ const selectionAction = (prevState, action) => {
     subscribers,
     zoomLevel: '1',
     message: undefined,
+    errorMessage,
   };
 };
 
@@ -627,6 +690,7 @@ const selectZoomLevelAction = (prevState, action) => {
     latestSelection,
     newSelection,
     subscribers,
+    errorMessage,
   } = prevState;
   const { level } = action;
 
@@ -644,5 +708,6 @@ const selectZoomLevelAction = (prevState, action) => {
     zoomLevel: level,
     subscribers,
     message: undefined,
+    errorMessage,
   };
 };
