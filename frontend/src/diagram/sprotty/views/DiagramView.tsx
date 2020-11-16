@@ -22,11 +22,24 @@ export class DiagramView extends SGraphView {
   // @ts-ignore
   render(model: Readonly<SGraph>, context: RenderingContext) {
     const transform = `scale(${model.zoom}) translate(${-model.scroll.x},${-model.scroll.y})`;
+    let cursor = 'pointer';
+    if (model['cursor']) {
+      cursor = model['cursor'];
+    }
     const styleObject = {
-      cursor: 'pointer',
+      cursor,
+      outline: 'transparent solid 1px',
     };
+    if (model['hoverFeedback']) {
+      styleObject['outline'] = '#007788 solid 2px';
+    }
     return (
-      <svg class-sprotty-graph={true} style={styleObject} attrs-data-testid={`Diagram`}>
+      <svg
+        class-sprotty-graph={true}
+        style={styleObject}
+        attrs-data-testid={`Diagram`}
+        attrs-data-diagramid={model.id}
+        attrs-data-descriptionid={model['descriptionId']}>
         <g transform={transform}>{context.renderChildren(model)}</g>
         <line id="edge-creation-feedback" x1="0" y1="0" x2="0" y2="0" visibility="hidden" />
       </svg>
