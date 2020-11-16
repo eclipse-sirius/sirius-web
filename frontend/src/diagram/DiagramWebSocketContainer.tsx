@@ -36,6 +36,7 @@ import {
 import { initialState, reducer } from 'diagram/reducer';
 import { SIRIUS_SELECT_ACTION, SIRIUS_UPDATE_MODEL_ACTION } from 'diagram/sprotty/Actions';
 import { Toolbar } from 'diagram/Toolbar';
+import { DropArea } from 'diagram/DropArea';
 import { ContextualPaletteContainer } from 'diagram/palette/ContextualPaletteContainer';
 import { useProject } from 'project/ProjectProvider';
 import { edgeCreationFeedback } from 'diagram/sprotty/edgeCreationFeedback';
@@ -556,9 +557,15 @@ export const DiagramWebSocketContainer = ({ representationId, selection, setSele
    */
   let content = (
     <div id="diagram-container" className={styles.diagramContainer}>
-      <div id="diagram-wrapper" className={styles.diagramWrapper}>
-        <div ref={diagramDomElement} id="diagram" className={styles.diagram} />
-      </div>
+      <DropArea
+        representationId={representationId}
+        modelSource={modelSource}
+        toolSections={toolSections}
+        setError={setError}>
+        <div id="diagram-wrapper" className={styles.diagramWrapper}>
+          <div ref={diagramDomElement} id="diagram" className={styles.diagram} />
+        </div>
+      </DropArea>
     </div>
   );
 
