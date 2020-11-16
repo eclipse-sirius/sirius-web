@@ -303,6 +303,7 @@ public class GeneralPurposeTestCases {
         var whitelist = Stream.of(
                 Path.of("frontend/src/diagram/Sprotty.css"), //$NON-NLS-1$
                 Path.of("frontend/src/modals/Modal.module.css"), //$NON-NLS-1$
+                Path.of("frontend/src/diagram/palette/ContextualMenu.module.css"), //$NON-NLS-1$
                 Path.of("frontend/src/diagram/palette/tool-section/ToolSection.module.css") //$NON-NLS-1$
         );
         // @formatter:on
@@ -337,6 +338,7 @@ public class GeneralPurposeTestCases {
         var whitelist = Stream.of(
                 Path.of("frontend/src/diagram/Sprotty.css"), //$NON-NLS-1$
                 Path.of("frontend/src/modals/Modal.module.css"), //$NON-NLS-1$
+                Path.of("frontend/src/diagram/palette/ContextualMenu.module.css"), //$NON-NLS-1$
                 Path.of("frontend/src/diagram/palette/tool-section/ToolSection.module.css") //$NON-NLS-1$
         );
         // @formatter:on

@@ -1,0 +1,52 @@
+/*******************************************************************************
+ * Copyright (c) 2019, 2020 Obeo.
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
+
+.menu {
+  background: #fafafa;
+  border: 1px solid #d1dadb;
+  box-shadow: 0px 2px 5px #002b3c40;
+  border-radius: 2px;
+  display: grid;
+  grid-template-rows: 8px 1fr 8px;
+  grid-template-columns: 8px 1fr 8px;
+  color: #002d37;
+  position: fixed;
+  z-index: 2;
+}
+
+.menuEntries {
+  grid-column-start: 1;
+  grid-column-start: 2;
+  grid-row-start: 1;
+  grid-row-start: 2;
+  display: flex;
+  flex-direction: column;
+}
+
+.noToolsLabel {
+  font-size: var(--font-size-4);
+  color: var(--daintree);
+  font-weight: var(--font-weight-bold);
+}
+
+.modal {
+  position: fixed;
+  /* Stay in place */
+  z-index: 1;
+  /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}

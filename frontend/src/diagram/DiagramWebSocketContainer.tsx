@@ -28,16 +28,19 @@ import {
   SET_SOURCE_ELEMENT__ACTION,
   SET_CURRENT_ROOT__ACTION,
   SET_CONTEXTUAL_PALETTE__ACTION,
+  SET_CONTEXTUAL_MENU__ACTION,
   SET_DEFAULT_TOOL__ACTION,
   SET_TOOL_SECTIONS__ACTION,
   SELECT_ZOOM_LEVEL__ACTION,
   SWITCH_REPRESENTATION__ACTION,
 } from 'diagram/machine';
 import { initialState, reducer } from 'diagram/reducer';
-import { SIRIUS_SELECT_ACTION, SIRIUS_UPDATE_MODEL_ACTION } from 'diagram/sprotty/Actions';
+import { SIRIUS_SELECT_ACTION, SIRIUS_UPDATE_MODEL_ACTION, REMOVE_EDGE_FEEDBACK_ACTION } from 'diagram/sprotty/Actions';
 import { Toolbar } from 'diagram/Toolbar';
 import { DropArea } from 'diagram/DropArea';
 import { ContextualPaletteContainer } from 'diagram/palette/ContextualPaletteContainer';
+import { ContextualMenuContainer } from 'diagram/palette/ContextualMenuContainer';
+
 import { useProject } from 'project/ProjectProvider';
 import { edgeCreationFeedback } from 'diagram/sprotty/edgeCreationFeedback';
 import PropTypes from 'prop-types';
@@ -222,6 +225,7 @@ export const DiagramWebSocketContainer = ({ representationId, selection, setSele
     diagram,
     toolSections,
     contextualPalette,
+    contextualMenu,
     newSelection,
     zoomLevel,
     subscribers,
@@ -291,6 +295,15 @@ export const DiagramWebSocketContainer = ({ representationId, selection, setSele
     [canEdit]
   );
 
+  const setContextualMenu = useCallback(
+    (newContextualMenu?) => {
+      if (canEdit) {
+        dispatch({ type: SET_CONTEXTUAL_MENU__ACTION, contextualMenu: newContextualMenu });
+      }
+    },
+    [canEdit]
+  );
+
   const setDefaultTool = useCallback((defaultTool) => {
     dispatch({ type: SET_DEFAULT_TOOL__ACTION, defaultTool });
   }, []);
@@ -299,7 +312,7 @@ export const DiagramWebSocketContainer = ({ representationId, selection, setSele
     dispatch({ type: SET_ACTIVE_TOOL__ACTION, activeTool });
   }, []);
 
-  const setSourceElement = useCallback((sourceElement) => {
+  const setSourceElement = useCallback((sourceElement?) => {
     dispatch({ type: SET_SOURCE_ELEMENT__ACTION, sourceElement });
   }, []);
 
@@ -314,6 +327,13 @@ export const DiagramWebSocketContainer = ({ representationId, selection, setSele
   const closeContextualPalette = useCallback(() => {
     setContextualPalette();
   }, [setContextualPalette]);
+
+  const closeContextualMenu = useCallback(() => {
+    setContextualMenu();
+    setSourceElement();
+    setActiveTool();
+    modelSource.actionDispatcher.dispatch({ kind: REMOVE_EDGE_FEEDBACK_ACTION });
+  }, [modelSource, setContextualMenu, setSourceElement, setActiveTool]);
 
   const deleteElements = useCallback(
     (diagramElements) => {
@@ -590,6 +610,11 @@ export const DiagramWebSocketContainer = ({ representationId, selection, setSele
         deleteElements={deleteElements}
         setDefaultTool={setDefaultTool}
         close={closeContextualPalette}></ContextualPaletteContainer>
+      <ContextualMenuContainer
+        contextualMenu={contextualMenu}
+        modelSource={modelSource}
+        toolSections={toolSections}
+        close={closeContextualMenu}></ContextualMenuContainer>
     </div>
   );
 };

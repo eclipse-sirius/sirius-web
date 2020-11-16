@@ -19,6 +19,8 @@ export function isContextualTool(tool, element) {
     result = tool.edgeCandidates.some((edgeCandidate) =>
       edgeCandidate.sources.some((source) => source.id === element.descriptionId)
     );
+  } else if (tool.__typename === 'MagicCreateEdgeTool') {
+    result = tool.createEdgeTools.some((createEdgeTool) => isContextualTool(createEdgeTool, element));
   }
   return result;
 }
@@ -45,6 +47,8 @@ export function canInvokeTool(tool, sourceElement, targetElement) {
     result = tool.edgeCandidates
       .filter((edgeCandidate) => edgeCandidate.sources.some((source) => source.id === sourceElement.descriptionId))
       .some((edgeCandidate) => edgeCandidate.targets.some((target) => target.id === targetElement.descriptionId));
+  } else if (tool.__typename === 'MagicCreateEdgeTool') {
+    result = tool.createEdgeTools.some((createEdgeTool) => canInvokeTool(createEdgeTool, sourceElement, targetElement));
   }
   return result;
 }
