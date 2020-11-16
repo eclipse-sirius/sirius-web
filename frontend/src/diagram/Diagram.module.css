@@ -37,8 +37,9 @@
 }
 
 .diagramWrapper {
-  display: flex;
-  align-items: stretch;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
 }
 .diagram {
   display: flex;
@@ -48,4 +49,9 @@
 
 .diagram > * {
   flex-grow: 1;
+}
+
+.errorBanner {
+  position: fixed;
+  cursor: pointer;
 }
