@@ -20,6 +20,7 @@ import {
   fadeFeature,
   hoverFeedbackFeature,
   popupFeature,
+  viewportFeature,
 } from 'sprotty';
 
 /**
@@ -32,11 +33,22 @@ import {
  * @return a Sprotty diagram object
  */
 export const convertDiagram = (diagram) => {
-  const { id, kind, targetObjectId, label, position, size } = diagram;
+  const { id, descriptionId, kind, targetObjectId, label, position, size } = diagram;
   const nodes = diagram.nodes.map((node) => convertNode(node));
   const edges = diagram.edges.map((edge) => convertEdge(edge));
 
-  return { id, kind, type: 'graph', targetObjectId, label, position, size, children: [...nodes, ...edges] };
+  return {
+    id,
+    descriptionId,
+    kind,
+    type: 'graph',
+    targetObjectId,
+    label,
+    position,
+    features: createFeatureSet([hoverFeedbackFeature, viewportFeature]),
+    size,
+    children: [...nodes, ...edges],
+  };
 };
 
 const convertNode = (node) => {

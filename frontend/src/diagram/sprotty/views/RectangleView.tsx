@@ -57,7 +57,11 @@ export class RectangleView extends RectangularNodeView {
     }
 
     return (
-      <g attrs-data-testid={`Rectangle - ${node.children[0]?.text}`} attrs-data-testselected={`${node.selected}`}>
+      <g
+        attrs-data-testid={`Rectangle - ${node.children[0]?.text}`}
+        attrs-data-testselected={`${node.selected}`}
+        attrs-data-nodeid={node.id}
+        attrs-data-descriptionid={node.descriptionId}>
         <rect
           class-selected={node.selected}
           class-mouseover={node.hoverFeedback}
