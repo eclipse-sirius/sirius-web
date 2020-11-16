@@ -45,6 +45,7 @@ import {
   ZOOM_TO_ACTION,
 } from 'diagram/sprotty/Actions';
 import { Toolbar } from 'diagram/Toolbar';
+import { DropArea } from 'diagram/DropArea';
 import { useProject } from 'project/ProjectProvider';
 import PropTypes from 'prop-types';
 import React, { useEffect, useReducer, useRef, useCallback } from 'react';
@@ -606,9 +607,15 @@ export const DiagramWebSocketContainer = ({ representationId, selection, setSele
    */
   let content = (
     <div id="diagram-container" className={styles.diagramContainer}>
-      <div id="diagram-wrapper" className={styles.diagramWrapper}>
-        <div ref={diagramDomElement} id="diagram" className={styles.diagram} />
-      </div>
+      <DropArea
+        representationId={representationId}
+        modelSource={modelSource}
+        toolSections={toolSections}
+        setError={setErrorMessage}>
+        <div id="diagram-wrapper" className={styles.diagramWrapper}>
+          <div ref={diagramDomElement} id="diagram" className={styles.diagram} />
+        </div>
+      </DropArea>
     </div>
   );
 

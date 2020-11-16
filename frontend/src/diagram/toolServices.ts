@@ -23,9 +23,21 @@ export function isContextualTool(tool, element) {
   return result;
 }
 
+export function canDrop(tool, targetId, targetDescriptionId, representationId) {
+  let result = false;
+  if (tool.__typename === 'DropTool') {
+    if (targetId === representationId) {
+      result = tool.appliesToDiagramRoot;
+    } else {
+      result = tool.targetDescriptions.some((aTargetDescription) => aTargetDescription.id === targetDescriptionId);
+    }
+  }
+  return result;
+}
+
 export function canInvokeTool(tool, sourceElement, targetElement) {
   let result = false;
-  if (tool.__typename === 'CreateNodeTool') {
+  if (tool.__typename === 'CreateNodeTool' || tool.__typename === 'DropTool') {
     result =
       (tool.appliesToDiagramRoot && targetElement.kind === 'Diagram') ||
       tool.targetDescriptions.some((targetDescription) => targetDescription.id === targetElement.descriptionId);
