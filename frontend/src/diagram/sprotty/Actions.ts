@@ -33,6 +33,8 @@ export const ZOOM_TO_ACTION = 'zoomTo';
 export const HOVER_ACTION = 'hover';
 /** Action to set a contextual palette */
 export const SET_CONTEXTUAL_PALETTE_ACTION = 'setContextualPalette';
+/** Action to set a contextual palette */
+export const SET_CONTEXTUAL_MENU_ACTION = 'setContextualMenu';
 /** Action to create edge feedback */
 export const CREATE_EDGE_FEEDBACK_ACTION = 'createEdgeFeedback';
 /** Action to update edge feedback */

@@ -29,6 +29,7 @@ import {
   SET_CONTEXTUAL_PALETTE__ACTION,
   SET_SOURCE_ELEMENT__ACTION,
   SET_CURRENT_ROOT__ACTION,
+  SET_CONTEXTUAL_MENU__ACTION,
   SELECTION__ACTION,
   SELECTED_ELEMENT__ACTION,
   SWITCH_REPRESENTATION__ACTION,
@@ -56,6 +57,7 @@ export const initialState = {
   activeTool: undefined,
   toolSections: [],
   contextualPalette: undefined,
+  contextualMenu: undefined,
   latestSelection: undefined,
   newSelection: undefined,
   zoomLevel: undefined,
@@ -105,6 +107,9 @@ export const reducer = (prevState, action) => {
     case SET_CONTEXTUAL_PALETTE__ACTION:
       state = setContextualPaletteAction(prevState, action);
       break;
+    case SET_CONTEXTUAL_MENU__ACTION:
+      state = setContextualMenuAction(prevState, action);
+      break;
     case SET_TOOL_SECTIONS__ACTION:
       state = setToolSectionsAction(prevState, action);
       break;
@@ -143,6 +148,7 @@ const switchRepresentationAction = (action) => {
     diagramInternalState: undefined,
     activeTool: undefined,
     contextualPalette: undefined,
+    contextualMenu: undefined,
     latestSelection: undefined,
     newSelection: undefined,
     zoomLevel: '1',
@@ -162,6 +168,7 @@ const initializeAction = (prevState, action) => {
     editLabel,
     onSelectElement,
     setContextualPalette,
+    setContextualMenu,
     setSourceElement,
     setCurrentRoot,
     setActiveTool,
@@ -188,6 +195,7 @@ const initializeAction = (prevState, action) => {
    */
   const setState = container.get<ISetState>(SIRIUS_TYPES.SET_STATE);
   setState.setContextualPalette = setContextualPalette;
+  setState.setContextualMenu = setContextualMenu;
   setState.setSourceElement = setSourceElement;
   setState.setCurrentRoot = setCurrentRoot;
   setState.setActiveTool = setActiveTool;
@@ -208,6 +216,7 @@ const initializeAction = (prevState, action) => {
     diagramInternalState,
     toolSections,
     contextualPalette: undefined,
+    contextualMenu: undefined,
     diagram: undefined,
     activeTool: undefined,
     latestSelection: undefined,
@@ -229,6 +238,7 @@ const switchToCompleteState = (prevState, message) => {
     diagram: undefined,
     toolSections: [],
     contextualPalette: undefined,
+    contextualMenu: undefined,
     activeTool: undefined,
     latestSelection: undefined,
     newSelection: undefined,
@@ -300,6 +310,7 @@ const handleDataAction = (prevState, action) => {
         diagramInternalState,
         toolSections,
         contextualPalette,
+        contextualMenu,
         activeTool,
         latestSelection,
         newSelection,
@@ -316,6 +327,7 @@ const handleDataAction = (prevState, action) => {
         diagram,
         toolSections,
         contextualPalette,
+        contextualMenu,
         activeTool,
         latestSelection,
         newSelection,
@@ -332,6 +344,7 @@ const handleDataAction = (prevState, action) => {
         diagram,
         toolSections,
         contextualPalette,
+        contextualMenu,
         activeTool,
         latestSelection,
         newSelection,
@@ -347,6 +360,7 @@ const handleDataAction = (prevState, action) => {
         diagram,
         toolSections,
         contextualPalette,
+        contextualMenu,
         activeTool,
         latestSelection,
         newSelection,
@@ -370,6 +384,7 @@ const setActiveToolAction = (prevState, action) => {
     diagram,
     toolSections,
     contextualPalette,
+    contextualMenu,
     latestSelection,
     newSelection,
     zoomLevel,
@@ -388,6 +403,7 @@ const setActiveToolAction = (prevState, action) => {
     diagram,
     toolSections,
     contextualPalette,
+    contextualMenu,
     latestSelection,
     newSelection,
     zoomLevel,
@@ -407,6 +423,7 @@ const selectSourceElementAction = (prevState, action) => {
     diagram,
     toolSections,
     contextualPalette,
+    contextualMenu,
     latestSelection,
     newSelection,
     zoomLevel,
@@ -425,6 +442,7 @@ const selectSourceElementAction = (prevState, action) => {
     diagram,
     toolSections,
     contextualPalette,
+    contextualMenu,
     latestSelection,
     newSelection,
     zoomLevel,
@@ -443,6 +461,7 @@ const setCurrentRootAction = (prevState, action) => {
     diagram,
     toolSections,
     contextualPalette,
+    contextualMenu,
     latestSelection,
     newSelection,
     zoomLevel,
@@ -461,6 +480,7 @@ const setCurrentRootAction = (prevState, action) => {
     diagram,
     toolSections,
     contextualPalette,
+    contextualMenu,
     latestSelection,
     newSelection,
     zoomLevel,
@@ -504,6 +524,43 @@ const setContextualPaletteAction = (prevState, action) => {
     errorMessage,
   };
 };
+
+const setContextualMenuAction = (prevState, action) => {
+  const {
+    viewState,
+    displayedRepresentationId,
+    modelSource,
+    sprottyState,
+    activeTool,
+    diagram,
+    toolSections,
+    latestSelection,
+    contextualPalette,
+    newSelection,
+    zoomLevel,
+    subscribers,
+    message,
+  } = prevState;
+  const { contextualMenu } = action;
+
+  return {
+    viewState,
+    displayedRepresentationId,
+    modelSource,
+    sprottyState,
+    activeTool,
+    diagram,
+    toolSections,
+    contextualPalette,
+    contextualMenu,
+    latestSelection,
+    newSelection,
+    zoomLevel,
+    subscribers,
+    message,
+  };
+};
+
 const setDefaultToolAction = (prevState, action) => {
   const {
     viewState,
@@ -513,6 +570,7 @@ const setDefaultToolAction = (prevState, action) => {
     activeTool,
     diagram,
     contextualPalette,
+    contextualMenu,
     toolSections,
     latestSelection,
     newSelection,
@@ -546,6 +604,7 @@ const setDefaultToolAction = (prevState, action) => {
     diagram,
     toolSections: newToolSections,
     contextualPalette,
+    contextualMenu,
     latestSelection,
     newSelection,
     zoomLevel,
@@ -564,6 +623,7 @@ const setToolSectionsAction = (prevState, action) => {
     activeTool,
     diagram,
     contextualPalette,
+    contextualMenu,
     latestSelection,
     newSelection,
     zoomLevel,
@@ -592,6 +652,7 @@ const setToolSectionsAction = (prevState, action) => {
     diagram,
     contextualPalette,
     toolSections: toolSectionsWithDefaults,
+    contextualMenu,
     activeTool,
     latestSelection,
     newSelection,
@@ -611,6 +672,7 @@ const selectedElementAction = (prevState, action) => {
     diagram,
     toolSections,
     contextualPalette,
+    contextualMenu,
     activeTool,
     newSelection,
     zoomLevel,
@@ -627,6 +689,7 @@ const selectedElementAction = (prevState, action) => {
     diagram,
     toolSections,
     contextualPalette,
+    contextualMenu,
     activeTool,
     latestSelection: selection,
     newSelection,
@@ -646,6 +709,7 @@ const selectionAction = (prevState, action) => {
     diagram,
     toolSections,
     contextualPalette,
+    contextualMenu,
     activeTool,
     latestSelection,
     newSelection,
@@ -667,6 +731,7 @@ const selectionAction = (prevState, action) => {
     diagram,
     toolSections,
     contextualPalette,
+    contextualMenu,
     activeTool,
     latestSelection: newSelectionValue,
     newSelection: newSelectionValue,
@@ -686,6 +751,7 @@ const selectZoomLevelAction = (prevState, action) => {
     diagram,
     toolSections,
     contextualPalette,
+    contextualMenu,
     activeTool,
     latestSelection,
     newSelection,
@@ -702,6 +768,7 @@ const selectZoomLevelAction = (prevState, action) => {
     diagram,
     toolSections,
     contextualPalette,
+    contextualMenu,
     activeTool,
     latestSelection,
     newSelection,

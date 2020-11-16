@@ -296,6 +296,17 @@ export const getToolSectionsQuery = gql`
               ...edgeCandidateField
             }
           }
+          ... on MagicCreateEdgeTool {
+            createEdgeTools {
+              __typename
+              id
+              label
+              imageURL
+              edgeCandidates {
+                ...edgeCandidateField
+              }
+            }
+          }
           ... on DropTool {
             targetDescriptions {
               id

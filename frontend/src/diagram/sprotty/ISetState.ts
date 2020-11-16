@@ -21,5 +21,6 @@ export interface ISetState {
   setCurrentRoot?: (currentRoot: SModelRoot) => void;
   setSourceElement?: (sourceElement: SModelElement) => void;
   setContextualPalette?: (contextualPalette: any) => void;
+  setContextualMenu?: (contextualMenu: any) => void;
   setActiveTool?: (activeTool: any) => void;
 }

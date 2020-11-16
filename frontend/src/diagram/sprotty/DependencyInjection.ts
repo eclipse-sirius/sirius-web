@@ -67,10 +67,12 @@ import { SelectActionHandler } from 'diagram/sprotty/handlers/SelectActionHandle
 import { ZoomActionHandler } from 'diagram/sprotty/handlers/ZoomActionHandler';
 import { EdgeFeedbackActionHandler } from 'diagram/sprotty/handlers/EdgeFeedbackActionHandler';
 import { ContextualPaletteActionHandler } from 'diagram/sprotty/handlers/ContextualPaletteActionHandler';
+import { ContextualMenuActionHandler } from 'diagram/sprotty/handlers/ContextualMenuActionHandler';
 import { ToolActionHandler } from 'diagram/sprotty/handlers/ToolActionHandler';
 import { HoverActionHandler } from 'diagram/sprotty/handlers/HoverActionHandler';
 
 import { ContextualPaletteMouseListener } from 'diagram/sprotty/listeners/mouse-listeners/ContextualPaletteMouseListener';
+import { ContextualMenuMouseListener } from 'diagram/sprotty/listeners/mouse-listeners/ContextualMenuMouseListener';
 import { CursorMouseListener } from 'diagram/sprotty/listeners/mouse-listeners/CursorMouseListener';
 import { EdgeCreateFeedbackMouseListener } from 'diagram/sprotty/listeners/mouse-listeners/EdgeCreateFeedbackMouseListener';
 import { HoverMouseListener } from 'diagram/sprotty/listeners/mouse-listeners/HoverMouseListener';
@@ -94,6 +96,7 @@ const handlerClasses = [
   ZoomActionHandler,
   EdgeFeedbackActionHandler,
   ContextualPaletteActionHandler,
+  ContextualMenuActionHandler,
   ToolActionHandler,
   HoverActionHandler,
 ];
@@ -107,6 +110,7 @@ const mouseListeners = [
   EdgeCreateFeedbackMouseListener,
   ToolMouseListener,
   ContextualPaletteMouseListener,
+  ContextualMenuMouseListener,
   HoverMouseListener,
 ];
 const keyListeners = [EditKeyListener, DeleteKeyListener, ContextualPaletteKeyListener];
