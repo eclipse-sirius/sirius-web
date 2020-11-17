@@ -21,7 +21,9 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.eclipse.sirius.diagram.description.NodeMapping;
+import org.eclipse.sirius.diagram.description.style.NodeStyleDescription;
 import org.eclipse.sirius.diagram.description.style.WorkspaceImageDescription;
+import org.eclipse.sirius.viewpoint.description.style.StyleFactory;
 import org.eclipse.sirius.web.compat.api.IIdentifierProvider;
 import org.eclipse.sirius.web.compat.api.IModelOperationHandlerSwitchProvider;
 import org.eclipse.sirius.web.compat.api.ISemanticCandidatesProviderFactory;
@@ -42,8 +44,6 @@ import org.eclipse.sirius.web.services.api.objects.IEditService;
  * @author sbegaudeau
  */
 public class NodeMappingConverter {
-
-    private static final String EMPTY_STRING = ""; //$NON-NLS-1$
 
     private final IObjectService objectService;
 
@@ -71,11 +71,18 @@ public class NodeMappingConverter {
     }
 
     public NodeDescription convert(NodeMapping nodeMapping, Map<UUID, NodeDescription> id2NodeDescriptions) {
-        String labelExpression = EMPTY_STRING;
-        if (nodeMapping.getStyle() != null) {
-            labelExpression = nodeMapping.getStyle().getLabelExpression();
+        NodeStyleDescription nodeStyle = nodeMapping.getStyle();
+
+        String labelExpression = ""; //$NON-NLS-1$
+        if (nodeStyle != null) {
+            labelExpression = nodeStyle.getLabelExpression();
         }
-        LabelStyleDescription labelStyleDescription = this.labelStyleDescriptionConverter.convert(nodeMapping.getStyle());
+        LabelStyleDescription labelStyleDescription;
+        if (nodeStyle != null) {
+            labelStyleDescription = this.labelStyleDescriptionConverter.convert(nodeStyle);
+        } else {
+            labelStyleDescription = this.labelStyleDescriptionConverter.convert(this.getDefaultLabelStyle());
+        }
         Function<VariableManager, String> labelIdProvider = variableManager -> {
             Object parentId = variableManager.getVariables().get(LabelDescription.OWNER_ID);
             return String.valueOf(parentId) + LabelDescription.LABEL_SUFFIX;
@@ -99,7 +106,7 @@ public class NodeMappingConverter {
             return variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getLabel).orElse(null);
         };
         Function<VariableManager, String> typeProvider = variableManager -> {
-            if (nodeMapping.getStyle() instanceof WorkspaceImageDescription) {
+            if (nodeStyle instanceof WorkspaceImageDescription) {
                 return NodeType.NODE_IMAGE;
             }
             return NodeType.NODE_RECTANGLE;
@@ -142,6 +149,14 @@ public class NodeMappingConverter {
         id2NodeDescriptions.put(description.getId(), description);
 
         return description;
+    }
+
+    private org.eclipse.sirius.viewpoint.description.style.BasicLabelStyleDescription getDefaultLabelStyle() {
+        var labelStyle = StyleFactory.eINSTANCE.createBasicLabelStyleDescription();
+        labelStyle.setLabelExpression(""); //$NON-NLS-1$
+        labelStyle.setShowIcon(true);
+        labelStyle.setLabelSize(16);
+        return labelStyle;
     }
 
 }
