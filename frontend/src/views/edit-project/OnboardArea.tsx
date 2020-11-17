@@ -48,11 +48,11 @@ const getOnboardDataQuery = gql`
 `.loc.source.body;
 
 const propTypes = {
-  selection: PropTypes.object,
-  setSelection: PropTypes.func.isRequired,
+  selections: PropTypes.array.isRequired,
+  setSelections: PropTypes.func.isRequired,
 };
 
-export const OnboardArea = ({ selection, setSelection }) => {
+export const OnboardArea = ({ selections, setSelections }) => {
   const { id } = useProject() as any;
   const initialState = {
     stereotypeDescriptions: [],
@@ -62,7 +62,11 @@ export const OnboardArea = ({ selection, setSelection }) => {
   const [state, setState] = useState(initialState);
   const { stereotypeDescriptions, representationDescriptions, representations } = state;
 
-  const classId = selection ? selection.kind : '';
+  let classId = '';
+  if (selections && selections.length === 1) {
+    const selection = selections[0];
+    classId = selection.kind;
+  }
 
   const [getOnboardData, onboardData] = useLazyQuery(getOnboardDataQuery, {}, 'getOnboardData');
   useEffect(() => {
@@ -88,7 +92,7 @@ export const OnboardArea = ({ selection, setSelection }) => {
           <NewDocumentArea
             stereotypeDescriptions={stereotypeDescriptions}
             projectId={id}
-            setSelection={setSelection}
+            setSelections={setSelections}
             maxDisplay={maxDisplay}
           />
         </Permission>
@@ -96,15 +100,15 @@ export const OnboardArea = ({ selection, setSelection }) => {
           <NewRepresentationArea
             representationDescriptions={representationDescriptions}
             projectId={id}
-            selection={selection}
-            setSelection={setSelection}
+            selections={selections}
+            setSelections={setSelections}
             maxDisplay={maxDisplay}
           />
         </Permission>
         <RepresentationsArea
           representations={representations}
           // projectId={id} TODO RepresentationsArea has no such prop
-          setSelection={setSelection}
+          setSelections={setSelections}
           maxDisplay={maxDisplay}
         />
       </div>

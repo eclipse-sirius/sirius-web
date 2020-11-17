@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import React, { useEffect, useRef } from 'react';
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 
 import { TreeItem } from 'tree/TreeItem';
@@ -18,16 +18,14 @@ import { TreeItem } from 'tree/TreeItem';
 const propTypes = {
   tree: PropTypes.object.isRequired,
   onExpand: PropTypes.func.isRequired,
-  selection: PropTypes.object,
+  selections: PropTypes.array.isRequired,
   displayedRepresentation: PropTypes.object,
-  setSelection: PropTypes.func.isRequired,
+  setSelections: PropTypes.func.isRequired,
 };
 
-export const Tree = ({ tree, onExpand, selection, displayedRepresentation, setSelection }) => {
-  const treeElement = useRef(null);
-
-  useEffect(() => {
-    const downHandler = (event) => {
+export const Tree = ({ tree, onExpand, selections, displayedRepresentation, setSelections }) => {
+  const downHandler = useCallback(
+    (event) => {
       if (
         (event.key === 'ArrowLeft' ||
           event.key === 'ArrowRight' ||
@@ -71,35 +69,25 @@ export const Tree = ({ tree, onExpand, selection, displayedRepresentation, setSe
           }
         }
       }
-    };
-
-    const element = treeElement?.current;
-    if (element) {
-      element.addEventListener('keydown', downHandler);
-
-      return () => {
-        element.removeEventListener('keydown', downHandler);
-      };
-    }
-  }, [treeElement, onExpand]);
+    },
+    [onExpand]
+  );
 
   return (
-    <div ref={treeElement}>
-      <ul>
-        {tree.children.map((item) => (
-          <li key={item.id}>
-            <TreeItem
-              item={item}
-              depth={1}
-              onExpand={onExpand}
-              selection={selection}
-              // displayedRepresentation={displayedRepresentation} TODO TreeItem has no such prop
-              setSelection={setSelection}
-            />
-          </li>
-        ))}
-      </ul>
-    </div>
+    <ul onKeyDown={(e) => downHandler(e)}>
+      {tree.children.map((item) => (
+        <li key={item.id}>
+          <TreeItem
+            item={item}
+            depth={1}
+            onExpand={onExpand}
+            selections={selections}
+            // displayedRepresentation={displayedRepresentation} TODO TreeItem has no such prop
+            setSelections={setSelections}
+          />
+        </li>
+      ))}
+    </ul>
   );
 };
 Tree.propTypes = propTypes;

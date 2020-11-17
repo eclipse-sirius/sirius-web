@@ -18,14 +18,14 @@ import styles from './Explorer.module.css';
 const propTypes = {
   tree: PropTypes.object.isRequired,
   onExpand: PropTypes.func.isRequired,
-  selection: PropTypes.object,
-  setSelection: PropTypes.func.isRequired,
+  selections: PropTypes.array.isRequired,
+  setSelections: PropTypes.func.isRequired,
 };
 
-export const Explorer = ({ tree, onExpand, selection, setSelection }) => {
+export const Explorer = ({ tree, onExpand, selections, setSelections }) => {
   return (
     <div className={styles.explorer} data-testid="explorer">
-      <Tree tree={tree} onExpand={onExpand} selection={selection} setSelection={setSelection} />
+      <Tree tree={tree} onExpand={onExpand} selections={selections} setSelections={setSelections} />
     </div>
   );
 };

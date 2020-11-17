@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.collaborative.diagrams.api.dto;
 
 import java.text.MessageFormat;
+import java.util.List;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.annotations.graphql.GraphQLField;
@@ -34,7 +35,7 @@ public final class InvokeDropToolOnDiagramInput implements IDiagramInput {
 
     private String diagramElementId;
 
-    private String objectId;
+    private List<String> objectIds;
 
     private String toolId;
 
@@ -59,11 +60,10 @@ public final class InvokeDropToolOnDiagramInput implements IDiagramInput {
         return this.diagramElementId;
     }
 
-    @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public String getObjectId() {
-        return this.objectId;
+    public List<@GraphQLNonNull String> getObjectIds() {
+        return this.objectIds;
     }
 
     @GraphQLID
@@ -75,7 +75,7 @@ public final class InvokeDropToolOnDiagramInput implements IDiagramInput {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'projectId: {1}, representationId: {2}, objectId: {3}, toolId: {4}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.projectId, this.representationId, this.objectId, this.toolId);
+        String pattern = "{0} '{'projectId: {1}, representationId: {2},  toolId: {3}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.projectId, this.representationId, this.toolId);
     }
 }

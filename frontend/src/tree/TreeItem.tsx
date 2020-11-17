@@ -23,10 +23,11 @@ import { NewRepresentationModal } from 'modals/new-representation/NewRepresentat
 import { NewRootObjectModal } from 'modals/new-root-object/NewRootObjectModal';
 import { useProject } from 'project/ProjectProvider';
 import PropTypes from 'prop-types';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { TreeItemDiagramContextMenu } from 'tree/TreeItemDiagramContextMenu';
 import { TreeItemDocumentContextMenu } from 'tree/TreeItemDocumentContextMenu';
 import { TreeItemObjectContextMenu } from 'tree/TreeItemObjectContextMenu';
+import { useKeyBinding } from 'common/KeyBindingProvider';
 import styles from './TreeItem.module.css';
 
 const deleteObjectMutation = gql`
@@ -125,11 +126,11 @@ const propTypes = {
   item: PropTypes.object.isRequired,
   depth: PropTypes.number.isRequired,
   onExpand: PropTypes.func.isRequired,
-  selection: PropTypes.object,
-  setSelection: PropTypes.func.isRequired,
+  selections: PropTypes.array.isRequired,
+  setSelections: PropTypes.func.isRequired,
 };
 
-export const TreeItem = ({ item, depth, onExpand, selection, setSelection }) => {
+export const TreeItem = ({ item, depth, onExpand, selections, setSelections }) => {
   const initialState = {
     modalDisplayed: null,
     x: 0,
@@ -194,14 +195,14 @@ export const TreeItem = ({ item, depth, onExpand, selection, setSelection }) => 
     }
   }, [renameObjectResult]);
 
-  // custom hook for getting previous value 
+  // custom hook for getting previous value
   const usePrevious = (value) => {
     const ref = useRef();
     useEffect(() => {
       ref.current = value;
     });
     return ref.current;
-  }
+  };
 
   const onMore = (event) => {
     const { x, y } = event.currentTarget.getBoundingClientRect();
@@ -445,7 +446,7 @@ export const TreeItem = ({ item, depth, onExpand, selection, setSelection }) => 
           return { ...prevState, editingMode: false, label: item.label };
         });
       }
-    }
+    };
     const onFinishEditing = (event) => {
       const { key } = event;
       if (key === 'Enter') {
@@ -497,7 +498,7 @@ export const TreeItem = ({ item, depth, onExpand, selection, setSelection }) => 
       }
 
       const { id, label, kind } = object;
-      setSelection({ id, label, kind });
+      setSelections([{ id, label, kind }]);
       setState((prevState) => {
         return {
           modalDisplayed: null,
@@ -525,7 +526,7 @@ export const TreeItem = ({ item, depth, onExpand, selection, setSelection }) => 
       }
 
       const { id, label, kind } = object;
-      setSelection({ id, label, kind });
+      setSelections([{ id, label, kind }]);
       setState((prevState) => {
         return {
           modalDisplayed: null,
@@ -554,7 +555,7 @@ export const TreeItem = ({ item, depth, onExpand, selection, setSelection }) => 
       }
 
       const { id, label, kind } = representation;
-      setSelection({ id, label, kind });
+      setSelections([{ id, label, kind }]);
       setState((prevState) => {
         return {
           modalDisplayed: null,
@@ -589,8 +590,8 @@ export const TreeItem = ({ item, depth, onExpand, selection, setSelection }) => 
                 item={childItem}
                 depth={depth + 1}
                 onExpand={onExpand}
-                selection={selection}
-                setSelection={setSelection}
+                selections={selections}
+                setSelections={setSelections}
               />
             </li>
           );
@@ -602,7 +603,7 @@ export const TreeItem = ({ item, depth, onExpand, selection, setSelection }) => 
   let className = styles.treeItem;
   let dataTestid = undefined;
 
-  if (selection?.id === item.id) {
+  if (selections.some((selection) => selection?.id === item.id)) {
     className = `${className} ${styles.selected}`;
     dataTestid = 'selected';
   }
@@ -638,17 +639,30 @@ export const TreeItem = ({ item, depth, onExpand, selection, setSelection }) => 
   if (item.imageURL) {
     image = <img height="16" width="16" alt={item.kind} src={httpOrigin + item.imageURL}></img>;
   }
+  const { ctrlPressed } = useKeyBinding();
 
   const onFocus = () => {
-    const { id, label, kind } = item;
-    setSelection({ id, label, kind });
-  };
-
-  const onClick = () => {
-    if (!editingMode) {
-      refDom.current.focus();
+    if (!ctrlPressed) {
+      const { id, label, kind } = item;
+      setSelections([{ id, label, kind }]);
     }
   };
+
+  const onClick = useCallback(
+    (e) => {
+      if (!editingMode && ctrlPressed) {
+        const { id, label, kind } = item;
+        const selectionOnClick = { id, label, kind };
+        const newSelections = selections.filter((selection) => selection.id !== selectionOnClick.id);
+        if (newSelections.length === selections.length) {
+          setSelections([...selections, selectionOnClick]);
+        } else {
+          setSelections(newSelections);
+        }
+      }
+    },
+    [selections, setSelections, item, ctrlPressed, editingMode]
+  );
 
   const onBeginEditing = (event) => {
     if (!item.editable || editingMode) {
@@ -668,6 +682,18 @@ export const TreeItem = ({ item, depth, onExpand, selection, setSelection }) => 
     }
   };
 
+  const { kind } = item;
+  const draggable = kind !== 'Document' && kind !== 'Diagram';
+  const dragStart = (e) => {
+    const ids = selections
+      .filter((selection) => selection.kind !== 'Document' && selection.kind !== 'Diagram')
+      .map((selection) => selection.id);
+    e.dataTransfer.setData('ids', JSON.stringify([...ids]));
+  };
+  const dragOver = (e) => {
+    e.stopPropagation();
+  };
+
   /* ref, tabindex and onFocus are used to set the React component focusabled and to set the focus to the corresponding DOM part */
   return (
     <>
@@ -677,6 +703,10 @@ export const TreeItem = ({ item, depth, onExpand, selection, setSelection }) => 
         tabIndex={0}
         onFocus={onFocus}
         onKeyDown={onBeginEditing}
+        onClick={onClick}
+        draggable={draggable}
+        onDragStart={dragStart}
+        onDragOver={dragOver}
         data-treeitemid={item.id}
         data-haschildren={item.hasChildren.toString()}
         data-depth={depth}
@@ -686,7 +716,6 @@ export const TreeItem = ({ item, depth, onExpand, selection, setSelection }) => 
         <div className={styles.content}>
           <div
             className={styles.imageAndLabel}
-            onClick={onClick}
             onDoubleClick={() => item.hasChildren && onExpand(item.id, depth)}
             data-testid={itemLabel}>
             {image}

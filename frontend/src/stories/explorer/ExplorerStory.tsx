@@ -133,7 +133,7 @@ export const ExplorerStory = () => {
     <MemoryRouter>
       <Border>
         <ProjectContext.Provider value={project}>
-          <Explorer tree={tree} onExpand={(item) => expand(item)} selection={selection} setSelection={() => {}} />
+          <Explorer tree={tree} onExpand={(item) => expand(item)} selections={[selection]} setSelections={() => {}} />
         </ProjectContext.Provider>
         {modal}
       </Border>

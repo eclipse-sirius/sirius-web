@@ -40,11 +40,11 @@ const propTypes = {
   maxDisplay: PropTypes.number.isRequired,
   stereotypeDescriptions: PropTypes.array.isRequired,
   projectId: PropTypes.string.isRequired,
-  setSelection: PropTypes.func.isRequired,
+  setSelections: PropTypes.func.isRequired,
   disabled: PropTypes.bool,
 };
 
-export const NewDocumentArea = ({ stereotypeDescriptions, projectId, maxDisplay, setSelection, disabled }) => {
+export const NewDocumentArea = ({ stereotypeDescriptions, projectId, maxDisplay, setSelections, disabled }) => {
   const initialState = {
     message: undefined,
   };
@@ -75,7 +75,7 @@ export const NewDocumentArea = ({ stereotypeDescriptions, projectId, maxDisplay,
         });
       }
     }
-  }, [createDocumentResult, setSelection]);
+  }, [createDocumentResult, setSelections]);
 
   // Document stereotypes list
   let newDocumentButtons =

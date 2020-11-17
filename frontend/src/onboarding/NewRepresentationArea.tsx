@@ -42,17 +42,17 @@ const propTypes = {
   maxDisplay: PropTypes.number.isRequired,
   projectId: PropTypes.string.isRequired,
   representationDescriptions: PropTypes.array.isRequired,
-  selection: PropTypes.object,
-  setSelection: PropTypes.func.isRequired,
+  selections: PropTypes.array.isRequired,
+  setSelections: PropTypes.func.isRequired,
   disabled: PropTypes.bool,
 };
 
 export const NewRepresentationArea = ({
   projectId,
   representationDescriptions,
-  selection,
+  selections,
   maxDisplay,
-  setSelection,
+  setSelections,
   disabled,
 }) => {
   const initialState = {
@@ -61,6 +61,11 @@ export const NewRepresentationArea = ({
   const [state, setState] = useState(initialState);
   const { message } = state;
 
+  let selection;
+  if (selections && selections.length === 1) {
+    selection = selections[0];
+  }
+
   // Representation creation
   const [createRepresentation, result] = useMutation(createRepresentationMutation, {}, 'createRepresentation');
   useEffect(() => {
@@ -68,7 +73,7 @@ export const NewRepresentationArea = ({
       const { createRepresentation } = result.data.data;
       if (createRepresentation.representation) {
         const { id, label, __typename } = createRepresentation.representation;
-        setSelection({ id, label, kind: __typename });
+        setSelections([{ id, label, kind: __typename }]);
       } else if (createRepresentation.__typename === 'ErrorPayload') {
         setState((prevState) => {
           const newState = { ...prevState };
@@ -77,7 +82,7 @@ export const NewRepresentationArea = ({
         });
       }
     }
-  }, [result, setSelection]);
+  }, [result, setSelections]);
   const onCreateRepresentation = (representationDescriptionId) => {
     const selected = representationDescriptions.find((candidate) => candidate.id === representationDescriptionId);
     const objectId = selection.id;

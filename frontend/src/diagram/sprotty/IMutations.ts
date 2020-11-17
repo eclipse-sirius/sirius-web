@@ -21,5 +21,5 @@ export class IMutations {
   invokeNodeTool?: (tool: any, targetElement: SModelElement) => void;
   deleteElements?: (elements: SModelElement[]) => void;
   editLabel?: (labelId: string, text: string) => void;
-  onSelectElement?: (element: SModelElement) => void;
+  onSelectElements?: (elements: SModelElement[]) => void;
 }

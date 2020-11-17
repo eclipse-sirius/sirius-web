@@ -29,8 +29,8 @@ import {
   SET_SOURCE_ELEMENT__ACTION,
   SET_CURRENT_ROOT__ACTION,
   SET_CONTEXTUAL_MENU__ACTION,
-  SELECTION__ACTION,
-  SELECTED_ELEMENT__ACTION,
+  SELECTIONS__ACTION,
+  SELECTED_ELEMENTS__ACTION,
   SWITCH_REPRESENTATION__ACTION,
   SELECT_ZOOM_LEVEL__ACTION,
   SET_TOOL_SECTIONS__ACTION,
@@ -57,8 +57,8 @@ export const initialState = {
   toolSections: [],
   contextualPalette: undefined,
   contextualMenu: undefined,
-  latestSelection: undefined,
-  newSelection: undefined,
+  latestSelections: [],
+  newSelections: [],
   zoomLevel: undefined,
   subscribers: [],
   message: undefined,
@@ -111,11 +111,11 @@ export const reducer = (prevState, action) => {
     case SET_DEFAULT_TOOL__ACTION:
       state = setDefaultToolAction(prevState, action);
       break;
-    case SELECTION__ACTION:
-      state = selectionAction(prevState, action);
+    case SELECTIONS__ACTION:
+      state = selectionsAction(prevState, action);
       break;
-    case SELECTED_ELEMENT__ACTION:
-      state = selectedElementAction(prevState, action);
+    case SELECTED_ELEMENTS__ACTION:
+      state = selectedElementsAction(prevState, action);
       break;
     case SELECT_ZOOM_LEVEL__ACTION:
       state = selectZoomLevelAction(prevState, action);
@@ -139,13 +139,14 @@ const switchRepresentationAction = (action) => {
     displayedRepresentationId: action.representationId,
     modelSource: undefined,
     diagram: undefined,
-    toolSections: [],
     sprottyState: undefined,
     activeTool: undefined,
+
+    toolSections: [],
     contextualPalette: undefined,
     contextualMenu: undefined,
-    latestSelection: undefined,
-    newSelection: undefined,
+    latestSelections: [],
+    newSelections: [],
     zoomLevel: '1',
     subscribers: [],
     message: undefined,
@@ -160,7 +161,7 @@ const initializeAction = (prevState, action) => {
     deleteElements,
     invokeTool,
     editLabel,
-    onSelectElement,
+    onSelectElements,
     setContextualPalette,
     setContextualMenu,
     setSourceElement,
@@ -181,7 +182,7 @@ const initializeAction = (prevState, action) => {
   mutations.invokeNodeTool = (tool, targetElement) => invokeTool(tool, targetElement);
   mutations.deleteElements = deleteElements;
   mutations.editLabel = editLabel;
-  mutations.onSelectElement = onSelectElement;
+  mutations.onSelectElements = onSelectElements;
   /**
    * Sprotty lifecycle can trigger React setState.
    * The SetState class instance binds DiagramWebSocketContainer setState functions.
@@ -213,8 +214,8 @@ const initializeAction = (prevState, action) => {
     contextualMenu: undefined,
     diagram: undefined,
     activeTool: undefined,
-    latestSelection: undefined,
-    newSelection: undefined,
+    latestSelections: undefined,
+    newSelections: undefined,
     zoomLevel: '1',
     subscribers,
     message: undefined,
@@ -227,13 +228,14 @@ const switchToCompleteState = (prevState, message) => {
     viewState: COMPLETE__STATE,
     displayedRepresentationId,
     modelSource: undefined,
-    sprottyState: undefined,
     diagram: undefined,
+    sprottyState: undefined,
+    activeTool: undefined,
     toolSections: [],
     contextualPalette: undefined,
-    activeTool: undefined,
-    latestSelection: undefined,
-    newSelection: undefined,
+    contextualMenu: undefined,
+    latestSelections: [],
+    newSelections: [],
     zoomLevel: undefined,
     subscribers,
     message,
@@ -268,8 +270,8 @@ const handleDataAction = (prevState, action) => {
         contextualPalette,
         contextualMenu,
         activeTool,
-        latestSelection,
-        newSelection,
+        latestSelections,
+        newSelections,
         zoomLevel,
         subscribers,
       } = prevState;
@@ -284,8 +286,8 @@ const handleDataAction = (prevState, action) => {
         contextualPalette,
         contextualMenu,
         activeTool,
-        latestSelection,
-        newSelection,
+        latestSelections,
+        newSelections,
         zoomLevel,
         subscribers,
         message: undefined,
@@ -300,8 +302,8 @@ const handleDataAction = (prevState, action) => {
         contextualPalette,
         contextualMenu,
         activeTool,
-        latestSelection,
-        newSelection,
+        latestSelections,
+        newSelections,
         zoomLevel,
       } = prevState;
       const { subscribers } = diagramEvent;
@@ -315,8 +317,8 @@ const handleDataAction = (prevState, action) => {
         contextualPalette,
         contextualMenu,
         activeTool,
-        latestSelection,
-        newSelection,
+        latestSelections,
+        newSelections,
         zoomLevel,
         subscribers,
         message: undefined,
@@ -337,8 +339,8 @@ const setActiveToolAction = (prevState, action) => {
     toolSections,
     contextualPalette,
     contextualMenu,
-    latestSelection,
-    newSelection,
+    latestSelections,
+    newSelections,
     zoomLevel,
     subscribers,
     message,
@@ -355,8 +357,8 @@ const setActiveToolAction = (prevState, action) => {
     toolSections,
     contextualPalette,
     contextualMenu,
-    latestSelection,
-    newSelection,
+    latestSelections,
+    newSelections,
     zoomLevel,
     subscribers,
     message,
@@ -374,8 +376,8 @@ const selectSourceElementAction = (prevState, action) => {
     toolSections,
     contextualPalette,
     contextualMenu,
-    latestSelection,
-    newSelection,
+    latestSelections,
+    newSelections,
     zoomLevel,
     subscribers,
     message,
@@ -392,8 +394,8 @@ const selectSourceElementAction = (prevState, action) => {
     toolSections,
     contextualPalette,
     contextualMenu,
-    latestSelection,
-    newSelection,
+    latestSelections,
+    newSelections,
     zoomLevel,
     subscribers,
     message,
@@ -410,8 +412,8 @@ const setCurrentRootAction = (prevState, action) => {
     toolSections,
     contextualPalette,
     contextualMenu,
-    latestSelection,
-    newSelection,
+    latestSelections,
+    newSelections,
     zoomLevel,
     subscribers,
     message,
@@ -428,8 +430,8 @@ const setCurrentRootAction = (prevState, action) => {
     toolSections,
     contextualPalette,
     contextualMenu,
-    latestSelection,
-    newSelection,
+    latestSelections,
+    newSelections,
     zoomLevel,
     subscribers,
     message,
@@ -444,8 +446,8 @@ const setContextualPaletteAction = (prevState, action) => {
     activeTool,
     diagram,
     toolSections,
-    latestSelection,
-    newSelection,
+    latestSelections,
+    newSelections,
     zoomLevel,
     subscribers,
     message,
@@ -461,8 +463,8 @@ const setContextualPaletteAction = (prevState, action) => {
     diagram,
     toolSections,
     contextualPalette,
-    latestSelection,
-    newSelection,
+    latestSelections,
+    newSelections,
     zoomLevel,
     subscribers,
     message,
@@ -478,9 +480,9 @@ const setContextualMenuAction = (prevState, action) => {
     activeTool,
     diagram,
     toolSections,
-    latestSelection,
+    latestSelections,
     contextualPalette,
-    newSelection,
+    newSelections,
     zoomLevel,
     subscribers,
     message,
@@ -497,8 +499,8 @@ const setContextualMenuAction = (prevState, action) => {
     toolSections,
     contextualPalette,
     contextualMenu,
-    latestSelection,
-    newSelection,
+    latestSelections,
+    newSelections,
     zoomLevel,
     subscribers,
     message,
@@ -516,8 +518,8 @@ const setDefaultToolAction = (prevState, action) => {
     contextualPalette,
     contextualMenu,
     toolSections,
-    latestSelection,
-    newSelection,
+    latestSelections,
+    newSelections,
     zoomLevel,
     subscribers,
     message,
@@ -548,8 +550,8 @@ const setDefaultToolAction = (prevState, action) => {
     toolSections: newToolSections,
     contextualPalette,
     contextualMenu,
-    latestSelection,
-    newSelection,
+    latestSelections,
+    newSelections,
     zoomLevel,
     subscribers,
     message,
@@ -566,8 +568,8 @@ const setToolSectionsAction = (prevState, action) => {
     diagram,
     contextualPalette,
     contextualMenu,
-    latestSelection,
-    newSelection,
+    latestSelections,
+    newSelections,
     zoomLevel,
     subscribers,
     message,
@@ -592,15 +594,15 @@ const setToolSectionsAction = (prevState, action) => {
     contextualMenu,
     toolSections,
     activeTool,
-    latestSelection,
-    newSelection,
+    latestSelections,
+    newSelections,
     zoomLevel,
     subscribers,
     message,
   };
 };
 
-const selectedElementAction = (prevState, action) => {
+const selectedElementsAction = (prevState, action) => {
   const {
     viewState,
     displayedRepresentationId,
@@ -611,11 +613,11 @@ const selectedElementAction = (prevState, action) => {
     contextualPalette,
     contextualMenu,
     activeTool,
-    newSelection,
+    newSelections,
     zoomLevel,
     subscribers,
   } = prevState;
-  const { selection } = action;
+  const { selections } = action;
 
   return {
     viewState,
@@ -627,15 +629,15 @@ const selectedElementAction = (prevState, action) => {
     contextualPalette,
     contextualMenu,
     activeTool,
-    latestSelection: selection,
-    newSelection,
+    latestSelections: selections,
+    newSelections,
     zoomLevel,
     subscribers,
     message: undefined,
   };
 };
 
-const selectionAction = (prevState, action) => {
+const selectionsAction = (prevState, action) => {
   const {
     viewState,
     displayedRepresentationId,
@@ -646,16 +648,22 @@ const selectionAction = (prevState, action) => {
     contextualPalette,
     contextualMenu,
     activeTool,
-    latestSelection,
-    newSelection,
+    latestSelections,
+    newSelections,
     subscribers,
   } = prevState;
-  const { selection } = action;
-  let newSelectionValue;
-  if ((!latestSelection && !selection) || latestSelection?.id === selection?.id) {
-    newSelectionValue = newSelection;
+  const { selections } = action;
+  let newSelectionValues;
+  if (
+    (!latestSelections && !selections) ||
+    (latestSelections &&
+      selections &&
+      latestSelections.length === selections.length &&
+      selections.every((selection) => latestSelections.some((latestSelection) => latestSelection.id === selection.id)))
+  ) {
+    newSelectionValues = newSelections;
   } else {
-    newSelectionValue = selection;
+    newSelectionValues = selections;
   }
   return {
     viewState,
@@ -667,8 +675,8 @@ const selectionAction = (prevState, action) => {
     contextualPalette,
     contextualMenu,
     activeTool,
-    latestSelection: newSelectionValue,
-    newSelection: newSelectionValue,
+    latestSelections: newSelectionValues,
+    newSelections: newSelectionValues,
     subscribers,
     zoomLevel: '1',
     message: undefined,
@@ -686,8 +694,8 @@ const selectZoomLevelAction = (prevState, action) => {
     contextualPalette,
     contextualMenu,
     activeTool,
-    latestSelection,
-    newSelection,
+    latestSelections,
+    newSelections,
     subscribers,
   } = prevState;
   const { level } = action;
@@ -702,8 +710,8 @@ const selectZoomLevelAction = (prevState, action) => {
     contextualPalette,
     contextualMenu,
     activeTool,
-    latestSelection,
-    newSelection,
+    latestSelections,
+    newSelections,
     zoomLevel: level,
     subscribers,
     message: undefined,

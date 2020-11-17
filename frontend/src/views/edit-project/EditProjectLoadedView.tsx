@@ -30,39 +30,42 @@ const selectionPropType = PropTypes.shape(
 const propTypes = {
   subscribers: PropTypes.array.isRequired,
   representations: PropTypes.array.isRequired,
-  selection: selectionPropType,
+  selections: PropTypes.arrayOf(selectionPropType).isRequired,
   displayedRepresentation: PropTypes.object,
-  setSelection: PropTypes.func.isRequired,
+  setSelections: PropTypes.func.isRequired,
   setSubscribers: PropTypes.func.isRequired,
 };
 export const EditProjectLoadedView = ({
   subscribers,
   representations,
-  selection,
+  selections,
   displayedRepresentation,
-  setSelection,
+  setSelections,
   setSubscribers,
 }) => {
   const explorer = (
     <ExplorerWebSocketContainer
-      selection={selection}
+      selections={selections}
       displayedRepresentation={displayedRepresentation}
-      setSelection={setSelection}
+      setSelections={setSelections}
     />
   );
 
   let representation = (
     <RepresentationArea
       representations={representations}
-      selection={selection}
+      selections={selections}
       displayedRepresentation={displayedRepresentation}
-      setSelection={setSelection}
+      setSelections={setSelections}
       setSubscribers={setSubscribers}
     />
   );
   let objectId = undefined;
-  if (selection && !(selection.kind === 'Unknown' || selection.kind === 'Diagram' || selection.kind === 'Document')) {
-    objectId = selection.id;
+  if (selections && selections.length === 1) {
+    const [selection] = selections;
+    if (!(selection.kind === 'Unknown' || selection.kind === 'Diagram' || selection.kind === 'Document')) {
+      objectId = selection.id;
+    }
   }
   const properties = <PropertiesWebSocketContainer objectId={objectId} />;
 
