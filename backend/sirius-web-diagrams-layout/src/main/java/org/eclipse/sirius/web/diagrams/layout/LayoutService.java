@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,15 @@ package org.eclipse.sirius.web.diagrams.layout;
 import java.util.Map;
 import java.util.Objects;
 
+import org.eclipse.elk.alg.common.compaction.options.PolyominoOptions;
+import org.eclipse.elk.alg.disco.options.DisCoMetaDataProvider;
+import org.eclipse.elk.alg.force.options.ForceMetaDataProvider;
+import org.eclipse.elk.alg.force.options.StressMetaDataProvider;
+import org.eclipse.elk.alg.layered.options.LayeredMetaDataProvider;
 import org.eclipse.elk.alg.layered.options.LayeredOptions;
+import org.eclipse.elk.alg.mrtree.options.MrTreeMetaDataProvider;
+import org.eclipse.elk.alg.radial.options.RadialMetaDataProvider;
+import org.eclipse.elk.alg.spore.options.SporeMetaDataProvider;
 import org.eclipse.elk.core.IGraphLayoutEngine;
 import org.eclipse.elk.core.LayoutConfigurator;
 import org.eclipse.elk.core.RecursiveGraphLayoutEngine;
@@ -67,7 +75,18 @@ public class LayoutService implements ILayoutService {
             layoutConfigurator = this.layoutConfiguratorRegistry.getDefaultLayoutConfigurator();
         }
 
-        LayoutMetaDataService.getInstance().registerLayoutMetaDataProviders(new LayeredOptions());
+        // @formatter:off
+        LayoutMetaDataService.getInstance().registerLayoutMetaDataProviders(
+                new LayeredOptions(),
+                new ForceMetaDataProvider(),
+                new LayeredMetaDataProvider(),
+                new MrTreeMetaDataProvider(),
+                new RadialMetaDataProvider(),
+                new StressMetaDataProvider(),
+                new PolyominoOptions(),
+                new DisCoMetaDataProvider(),
+                new SporeMetaDataProvider());
+        // @formatter:on
 
         ElkUtil.applyVisitors(elkDiagram, layoutConfigurator);
         IGraphLayoutEngine engine = new RecursiveGraphLayoutEngine();

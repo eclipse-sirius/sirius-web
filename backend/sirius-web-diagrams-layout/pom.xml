@@ -73,6 +73,46 @@
 			<artifactId>org.eclipse.elk.alg.layered</artifactId>
 			<version>${elk.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.eclipse.elk</groupId>
+			<artifactId>org.eclipse.elk.alg.common</artifactId>
+			<version>${elk.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.elk</groupId>
+			<artifactId>org.eclipse.elk.alg.disco</artifactId>
+			<version>${elk.version}</version>
+		</dependency>
+			<dependency>
+			<groupId>org.eclipse.elk</groupId>
+			<artifactId>org.eclipse.elk.alg.force</artifactId>
+			<version>${elk.version}</version>
+		</dependency>
+			<dependency>
+			<groupId>org.eclipse.elk</groupId>
+			<artifactId>org.eclipse.elk.alg.graphviz.dot</artifactId>
+			<version>${elk.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.elk</groupId>
+			<artifactId>org.eclipse.elk.alg.mrtree</artifactId>
+			<version>${elk.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.elk</groupId>
+			<artifactId>org.eclipse.elk.alg.radial</artifactId>
+			<version>${elk.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.elk</groupId>
+			<artifactId>org.eclipse.elk.alg.force</artifactId>
+			<version>${elk.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.elk</groupId>
+			<artifactId>org.eclipse.elk.alg.spore</artifactId>
+			<version>${elk.version}</version>
+		</dependency>
  		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-services-api</artifactId>
