@@ -16,6 +16,7 @@ import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import org.eclipse.sirius.web.annotations.Immutable;
 import org.eclipse.sirius.web.representations.VariableManager;
@@ -36,6 +37,8 @@ public final class GroupDescription {
     private Function<VariableManager, List<Object>> semanticElementsProvider;
 
     private List<AbstractControlDescription> controlDescriptions;
+
+    private Predicate<VariableManager> canCreatePredicate;
 
     private GroupDescription() {
         // Prevent instantiation
@@ -59,6 +62,10 @@ public final class GroupDescription {
 
     public List<AbstractControlDescription> getControlDescriptions() {
         return this.controlDescriptions;
+    }
+
+    public Predicate<VariableManager> getCanCreatePredicate() {
+        return this.canCreatePredicate;
     }
 
     public static Builder newGroupDescription(String id) {
@@ -88,6 +95,8 @@ public final class GroupDescription {
 
         private List<AbstractControlDescription> controlDescriptions;
 
+        private Predicate<VariableManager> canCreatePredicate;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -112,6 +121,11 @@ public final class GroupDescription {
             return this;
         }
 
+        public Builder canCreatePredicate(Predicate<VariableManager> predicate) {
+            this.canCreatePredicate = Objects.requireNonNull(predicate);
+            return this;
+        }
+
         public GroupDescription build() {
             GroupDescription groupDescription = new GroupDescription();
             groupDescription.id = Objects.requireNonNull(this.id);
@@ -119,6 +133,7 @@ public final class GroupDescription {
             groupDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
             groupDescription.semanticElementsProvider = Objects.requireNonNull(this.semanticElementsProvider);
             groupDescription.controlDescriptions = Objects.requireNonNull(this.controlDescriptions);
+            groupDescription.canCreatePredicate = Objects.requireNonNull(this.canCreatePredicate);
             return groupDescription;
         }
     }

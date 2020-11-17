@@ -181,6 +181,7 @@ public class PropertiesDefaultDescriptionProvider implements IPropertiesDefaultD
                 .labelProvider(variableManager -> "Core Properties") //$NON-NLS-1$
                 .semanticElementsProvider(variableManager -> Collections.singletonList(variableManager.getVariables().get(VariableManager.SELF)))
                 .controlDescriptions(controlDescriptions)
+                .canCreatePredicate(variableManager -> true)
                 .build();
         // @formatter:on
     }
