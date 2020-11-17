@@ -19,7 +19,7 @@ import { EditProjectLoadedView } from 'views/edit-project/EditProjectLoadedView'
 import {
   HANDLE_FETCHED_PROJECT__ACTION,
   HANDLE_REPRESENTATION_RENAMED__ACTION,
-  HANDLE_SELECTION__ACTION,
+  HANDLE_SELECTIONS__ACTION,
   HANDLE_SUBSCRIBERS_UPDATED__ACTION,
   LOADING__STATE,
   PROJECT_FETCHING_ERROR__STATE,
@@ -59,7 +59,7 @@ export const EditProjectView = () => {
   const routeMatch = useRouteMatch();
   const { projectId, representationId } = useParams();
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { viewState, project, representations, displayedRepresentation, selection, subscribers, message } = state;
+  const { viewState, project, representations, displayedRepresentation, selections, subscribers, message } = state;
 
   const context = useProject() as any;
   let contextId;
@@ -98,7 +98,7 @@ export const EditProjectView = () => {
     if (!loading && !error && data?.viewer?.project?.representation) {
       const { id, label, __typename } = data.viewer.project.representation;
       const representation = { id, label, kind: __typename };
-      const action = { type: HANDLE_SELECTION__ACTION, selection: representation };
+      const action = { type: HANDLE_SELECTIONS__ACTION, selections: [representation] };
       dispatch(action);
     }
   }, [loading, data, error]);
@@ -110,9 +110,9 @@ export const EditProjectView = () => {
     }
   }, [projectId, routeMatch, history, displayedRepresentation, representationId]);
 
-  const setSelection = useCallback(
-    (newSelectedObject) => {
-      const action = { type: HANDLE_SELECTION__ACTION, selection: newSelectedObject };
+  const setSelections = useCallback(
+    (newSelectedObjects) => {
+      const action = { type: HANDLE_SELECTIONS__ACTION, selections: newSelectedObjects };
       dispatch(action);
     },
     [dispatch]
@@ -167,8 +167,8 @@ export const EditProjectView = () => {
       subscribers={subscribers}
       representations={representations}
       displayedRepresentation={displayedRepresentation}
-      selection={selection}
-      setSelection={setSelection}
+      selections={selections}
+      setSelections={setSelections}
       setSubscribers={setSubscribers}
     />
   );

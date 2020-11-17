@@ -56,20 +56,20 @@ export const DropArea = ({ representationId, modelSource, toolSections, setError
 
   useEffect(() => {
     if (!invokeDropToolResult?.loading && invokeDropToolResult?.data?.data) {
-      const { invokeDropToolsOnDiagram } = invokeDropToolResult.data.data;
-      if (invokeDropToolsOnDiagram.__typename === 'ErrorPayload') {
-        setError(invokeDropToolsOnDiagram.message);
+      const { invokeDropToolOnDiagram } = invokeDropToolResult.data.data;
+      if (invokeDropToolOnDiagram.__typename === 'ErrorPayload') {
+        setError(invokeDropToolOnDiagram.message);
       }
     }
   }, [invokeDropToolResult, setError]);
 
-  const dropElement = useCallback(
-    (tool: any, objectId: string, diagramElementId?: string) => {
+  const dropElements = useCallback(
+    (tool: any, objectIds: string[], diagramElementId?: string) => {
       const { id: toolId } = tool;
       const input = {
         projectId: id,
         representationId,
-        objectId,
+        objectIds,
         toolId,
       };
       if (diagramElementId) {
@@ -154,22 +154,22 @@ export const DropArea = ({ representationId, modelSource, toolSections, setError
   const handleDrop = useCallback(
     (e) => {
       e.preventDefault();
-      const objectId = e.dataTransfer.getData('id');
+      const objectIds = JSON.parse(e.dataTransfer.getData('ids'));
 
       const id = searchId(e.target);
       const descriptionId = searchDescriptionId(e.target);
       const tool = searchDropTool(id, descriptionId);
 
-      if (tool && objectId) {
+      if (tool && objectIds && objectIds.length > 0) {
         const diagramElementId = searchId(e.target);
         if (diagramElementId) {
-          dropElement(tool, objectId, diagramElementId);
+          dropElements(tool, objectIds, diagramElementId);
         } else {
-          dropElement(tool, objectId);
+          dropElements(tool, objectIds);
         }
       }
     },
-    [searchDropTool, dropElement, searchDescriptionId, searchId]
+    [searchDropTool, dropElements, searchDescriptionId, searchId]
   );
 
   const style = { display: 'grid', gridTemplateColumns: '1fr', gridTemplateRows: '1fr' };

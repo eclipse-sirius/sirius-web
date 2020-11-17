@@ -13,8 +13,6 @@
 
 /** Action to select a Sirius element */
 export const SIRIUS_SELECT_ACTION = 'siriusSelectElement';
-/** Action to select a sprotty element */
-export const SPROTTY_SELECT_ACTION = 'sprottySelectElement';
 /** Action to select a  Sirius element */
 export const SIRIUS_UPDATE_MODEL_ACTION = 'siriusUpdateModel';
 /** Action to invoke a tool */

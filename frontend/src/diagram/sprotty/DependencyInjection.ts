@@ -76,7 +76,6 @@ import { ContextualMenuMouseListener } from 'diagram/sprotty/listeners/mouse-lis
 import { CursorMouseListener } from 'diagram/sprotty/listeners/mouse-listeners/CursorMouseListener';
 import { EdgeCreateFeedbackMouseListener } from 'diagram/sprotty/listeners/mouse-listeners/EdgeCreateFeedbackMouseListener';
 import { HoverMouseListener } from 'diagram/sprotty/listeners/mouse-listeners/HoverMouseListener';
-import { SelectMouseListener } from 'diagram/sprotty/listeners/mouse-listeners/SelectMouseListener';
 import { ToolMouseListener } from 'diagram/sprotty/listeners/mouse-listeners/ToolMouseListener';
 
 import { ContextualPaletteKeyListener } from 'diagram/sprotty/listeners/key-listeners/ContextualPaletteKeyListener';
@@ -105,7 +104,6 @@ const handlerClasses = [
  * Listeners
  */
 const mouseListeners = [
-  SelectMouseListener,
   CursorMouseListener,
   EdgeCreateFeedbackMouseListener,
   ToolMouseListener,

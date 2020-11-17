@@ -18,9 +18,9 @@ import styles from './RepresentationNavigation.module.css';
 const propTypes = {
   representations: PropTypes.array.isRequired,
   displayedRepresentation: PropTypes.object,
-  setSelection: PropTypes.func.isRequired,
+  setSelections: PropTypes.func.isRequired,
 };
-export const RepresentationNavigation = ({ representations, displayedRepresentation, setSelection }) => {
+export const RepresentationNavigation = ({ representations, displayedRepresentation, setSelections }) => {
   return (
     <ul className={styles.representationNavigation}>
       {representations.map((representation) => {
@@ -34,7 +34,7 @@ export const RepresentationNavigation = ({ representations, displayedRepresentat
           <li
             key={representation.id}
             className={styles.item}
-            onClick={() => setSelection({ id, label, kind })}
+            onClick={() => setSelections([{ id, label, kind }])}
             data-testid={`representation-tab-${label}`}
             data-testselected={isSelected}>
             <Text className={labelClassName}>{label}</Text>

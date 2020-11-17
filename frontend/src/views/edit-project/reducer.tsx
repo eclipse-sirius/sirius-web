@@ -19,16 +19,16 @@ import {
   PROJECT_LOADED__STATE,
   PROJECT_LOADED_AND_REPRESENTATION_DISPLAYED__STATE,
   HANDLE_FETCHED_PROJECT__ACTION,
-  HANDLE_SELECTION__ACTION,
+  HANDLE_SELECTIONS__ACTION,
   HANDLE_REPRESENTATION_RENAMED__ACTION,
   HANDLE_SUBSCRIBERS_UPDATED__ACTION,
-} from './machine';
+} from 'views/edit-project/machine';
 
 export const initialState = {
   viewState: LOADING__STATE,
   project: undefined,
   representations: [],
-  selection: undefined,
+  selections: [],
   displayedRepresentation: undefined,
   subscribers: [],
   message: undefined,
@@ -45,8 +45,8 @@ export const reducer = (prevState, action) => {
     case HANDLE_FETCHED_PROJECT__ACTION:
       state = handleFetchedProjectAction(prevState, action);
       break;
-    case HANDLE_SELECTION__ACTION:
-      state = handleSelectionAction(prevState, action);
+    case HANDLE_SELECTIONS__ACTION:
+      state = handleSelectionsAction(prevState, action);
       break;
     case HANDLE_REPRESENTATION_RENAMED__ACTION:
       state = handleRepresentationRenamedAction(prevState, action);
@@ -66,7 +66,7 @@ export const reducer = (prevState, action) => {
 };
 
 const handleFetchedProjectAction = (prevState, action) => {
-  const { representations, selection, displayedRepresentation, subscribers, message } = prevState;
+  const { representations, selections, displayedRepresentation, subscribers, message } = prevState;
   const { response } = action;
 
   let state = undefined;
@@ -79,7 +79,7 @@ const handleFetchedProjectAction = (prevState, action) => {
       viewState: PROJECT_LOADED__STATE,
       project,
       representations,
-      selection,
+      selections,
       displayedRepresentation,
       subscribers,
       message,
@@ -92,26 +92,30 @@ const handleFetchedProjectAction = (prevState, action) => {
   return state;
 };
 
-const handleSelectionAction = (prevState, action) => {
-  const { selection } = action;
+const handleSelectionsAction = (prevState, action) => {
+  const { selections } = action;
   const { viewState, project, representations, displayedRepresentation, subscribers, message } = prevState;
 
   let newRepresentations;
   let newDisplayedRepresentation;
   let newViewState = null;
 
-  if (selection?.kind === 'Diagram') {
-    newViewState = PROJECT_LOADED_AND_REPRESENTATION_DISPLAYED__STATE;
-    newDisplayedRepresentation = selection;
-    newRepresentations = [...representations];
-    const selectedRepresentation = representations.find((representation) => selection.id === representation.id);
-    if (!selectedRepresentation) {
-      newRepresentations = [...representations, selection];
-    } else {
-      newRepresentations = representations;
+  if (selections && selections.length === 1) {
+    const [selection] = selections;
+    if (selection?.kind === 'Diagram') {
+      newViewState = PROJECT_LOADED_AND_REPRESENTATION_DISPLAYED__STATE;
+      newDisplayedRepresentation = selection;
+      newRepresentations = [...representations];
+      const selectedRepresentation = representations.find((representation) => selection.id === representation.id);
+      if (!selectedRepresentation) {
+        newRepresentations = [...representations, selection];
+      } else {
+        newRepresentations = representations;
+      }
+      newViewState = PROJECT_LOADED_AND_REPRESENTATION_DISPLAYED__STATE;
     }
-    newViewState = PROJECT_LOADED_AND_REPRESENTATION_DISPLAYED__STATE;
-  } else {
+  }
+  if (!newViewState) {
     // Keep existing representations & displayedRepresentation
     newRepresentations = representations;
     newDisplayedRepresentation = displayedRepresentation;
@@ -129,14 +133,14 @@ const handleSelectionAction = (prevState, action) => {
     project,
     representations: newRepresentations,
     displayedRepresentation: newDisplayedRepresentation,
-    selection,
+    selections,
     subscribers,
     message,
   };
 };
 
 const handleRepresentationRenamedAction = (prevState, action) => {
-  const { viewState, project, representations, displayedRepresentation, selection, subscribers, message } = prevState;
+  const { viewState, project, representations, displayedRepresentation, selections, subscribers, message } = prevState;
   const { projectEvent } = action;
   const { representationId, newLabel } = projectEvent;
   let representationToRename = representations.find((r) => r.id === representationId);
@@ -149,7 +153,7 @@ const handleRepresentationRenamedAction = (prevState, action) => {
     project,
     representations,
     displayedRepresentation,
-    selection,
+    selections,
     subscribers,
     message,
   };
@@ -157,13 +161,13 @@ const handleRepresentationRenamedAction = (prevState, action) => {
 
 const handleSubscribersUpdated = (prevState, action) => {
   const { subscribers } = action;
-  const { viewState, project, representations, selection, displayedRepresentation, message } = prevState;
+  const { viewState, project, representations, selections, displayedRepresentation, message } = prevState;
 
   return {
     viewState,
     project,
     representations,
-    selection,
+    selections,
     displayedRepresentation,
     subscribers,
     message,

@@ -12,8 +12,10 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.spring.collaborative.diagrams.handlers;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramContext;
@@ -69,17 +71,22 @@ public class InvokeDropToolsOnDiagramEventHandler implements IDiagramEventHandle
         EventHandlerResponse result = new EventHandlerResponse(false, representation -> false, new ErrorPayload(message));
         if (diagramInput instanceof InvokeDropToolOnDiagramInput) {
             InvokeDropToolOnDiagramInput input = (InvokeDropToolOnDiagramInput) diagramInput;
-            Optional<Object> optionalObject = this.objectService.getObject(editingContext, input.getObjectId());
+            // @formatter:off
+            List<Object> objects = input.getObjectIds().stream()
+                .map(objectId -> this.objectService.getObject(editingContext, objectId))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toList());
+            // @formatter:on
             Diagram diagram = diagramContext.getDiagram();
             // @formatter:off
             var optionalTool = this.toolService.findToolById(diagram, input.getToolId())
                     .filter(DropTool.class::isInstance)
                     .map(DropTool.class::cast);
             // @formatter:on
-            if (optionalObject.isPresent() && optionalTool.isPresent()) {
-                Object self = optionalObject.get();
+            if (!objects.isEmpty() && optionalTool.isPresent()) {
                 DropTool tool = optionalTool.get();
-                Status status = this.executeTool(editingContext, diagramContext, self, input.getDiagramElementId(), tool);
+                Status status = this.executeTool(editingContext, diagramContext, objects, input.getDiagramElementId(), tool);
                 if (Objects.equals(Status.OK, status)) {
                     return new EventHandlerResponse(true, representation -> true, new InvokeDropToolOnDiagramSuccessPayload(diagram));
                 } else {
@@ -90,7 +97,7 @@ public class InvokeDropToolsOnDiagramEventHandler implements IDiagramEventHandle
         return result;
     }
 
-    private Status executeTool(IEditingContext editingContext, IDiagramContext diagramContext, Object self, String diagramElementId, DropTool tool) {
+    private Status executeTool(IEditingContext editingContext, IDiagramContext diagramContext, List<Object> objects, String diagramElementId, DropTool tool) {
         Diagram diagram = diagramContext.getDiagram();
         Optional<Node> node = this.diagramService.findNodeById(diagram, diagramElementId);
         VariableManager variableManager = new VariableManager();
@@ -99,7 +106,16 @@ public class InvokeDropToolsOnDiagramEventHandler implements IDiagramEventHandle
         }
         variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
         variableManager.put(IDiagramContext.DIAGRAM_CONTEXT, diagramContext);
-        variableManager.put(VariableManager.SELF, self);
-        return tool.getHandler().apply(variableManager);
+        Status result = Status.OK;
+        for (Object self : objects) {
+            VariableManager childVariableManager = variableManager.createChild();
+            childVariableManager.put(VariableManager.SELF, self);
+            Status status = tool.getHandler().apply(childVariableManager);
+            // execute all drop tools but keep the error status if at least one drop fails.
+            if (Objects.equals(Status.OK, result) && Objects.equals(Status.ERROR, status)) {
+                result = Status.ERROR;
+            }
+        }
+        return result;
     }
 }

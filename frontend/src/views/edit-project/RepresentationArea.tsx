@@ -22,27 +22,27 @@ import styles from './RepresentationArea.module.css';
 
 const propTypes = {
   representations: PropTypes.array.isRequired,
-  selection: PropTypes.object,
+  selections: PropTypes.array.isRequired,
   displayedRepresentation: PropTypes.object,
-  setSelection: PropTypes.func.isRequired,
+  setSelections: PropTypes.func.isRequired,
   setSubscribers: PropTypes.func.isRequired,
 };
 export const RepresentationArea = ({
   representations,
-  selection,
+  selections,
   displayedRepresentation,
-  setSelection,
+  setSelections,
   setSubscribers,
 }) => {
   let content;
   if (!displayedRepresentation) {
-    content = <OnboardArea selection={selection} setSelection={setSelection} />;
+    content = <OnboardArea selections={selections} setSelections={setSelections} />;
   } else if (displayedRepresentation.kind === 'Diagram') {
     content = (
       <DiagramWebSocketContainer
         representationId={displayedRepresentation.id}
-        selection={selection}
-        setSelection={setSelection}
+        selections={selections}
+        setSelections={setSelections}
         setSubscribers={setSubscribers}
       />
     );
@@ -55,7 +55,7 @@ export const RepresentationArea = ({
       <RepresentationNavigation
         representations={representations}
         displayedRepresentation={displayedRepresentation}
-        setSelection={setSelection}
+        setSelections={setSelections}
       />
       {content}
     </div>

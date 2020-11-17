@@ -32,12 +32,12 @@ import { getTreeEventSubscription } from './getTreeEventSubscription';
 import { initialState, reducer } from './reducer';
 
 const propTypes = {
-  selection: PropTypes.object,
+  selections: PropTypes.array.isRequired,
   displayedRepresentation: PropTypes.object,
-  setSelection: PropTypes.func.isRequired,
+  setSelections: PropTypes.func.isRequired,
 };
 
-export const ExplorerWebSocketContainer = ({ selection, displayedRepresentation, setSelection }) => {
+export const ExplorerWebSocketContainer = ({ selections, displayedRepresentation, setSelections }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { viewState, tree, expanded, maxDepth, message } = state;
 
@@ -109,9 +109,9 @@ export const ExplorerWebSocketContainer = ({ selection, displayedRepresentation,
     <Explorer
       tree={tree}
       onExpand={onExpand}
-      selection={selection}
+      selections={selections}
       // displayedRepresentation={displayedRepresentation} TODO Explorer does not support such a prop
-      setSelection={setSelection}
+      setSelections={setSelections}
     />
   );
 };

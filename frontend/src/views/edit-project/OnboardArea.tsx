@@ -48,8 +48,8 @@ const getOnboardDataQuery = gql`
 `;
 
 const propTypes = {
-  selection: PropTypes.object,
-  setSelection: PropTypes.func.isRequired,
+  selections: PropTypes.array.isRequired,
+  setSelections: PropTypes.func.isRequired,
 };
 
 const MAX_DISPLAY = 5;
@@ -60,12 +60,16 @@ const INITIAL_STATE = {
   representations: [],
 };
 
-export const OnboardArea = ({ selection, setSelection }) => {
+export const OnboardArea = ({ selections, setSelections }) => {
   const { id } = useProject() as any;
   const [state, setState] = useState(INITIAL_STATE);
   const { stereotypeDescriptions, representationDescriptions, representations } = state;
 
-  const classId = selection ? selection.kind : '';
+  let classId = '';
+  if (selections && selections.length === 1) {
+    const selection = selections[0];
+    classId = selection.kind;
+  }
 
   const [getOnboardData, { loading, data, error }] = useLazyQuery(getOnboardDataQuery);
   useEffect(() => {
@@ -90,7 +94,7 @@ export const OnboardArea = ({ selection, setSelection }) => {
           <NewDocumentArea
             stereotypeDescriptions={stereotypeDescriptions}
             projectId={id}
-            setSelection={setSelection}
+            setSelections={setSelections}
             maxDisplay={MAX_DISPLAY}
           />
         </Permission>
@@ -98,15 +102,15 @@ export const OnboardArea = ({ selection, setSelection }) => {
           <NewRepresentationArea
             representationDescriptions={representationDescriptions}
             projectId={id}
-            selection={selection}
-            setSelection={setSelection}
+            selections={selections}
+            setSelections={setSelections}
             maxDisplay={MAX_DISPLAY}
           />
         </Permission>
         <RepresentationsArea
           representations={representations}
           // projectId={id} TODO RepresentationsArea has no such prop
-          setSelection={setSelection}
+          setSelections={setSelections}
           maxDisplay={MAX_DISPLAY}
         />
       </div>

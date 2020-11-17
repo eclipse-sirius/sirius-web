@@ -17,7 +17,7 @@ import {
   PROJECT_LOADED__STATE,
   PROJECT_LOADED_AND_REPRESENTATION_DISPLAYED__STATE,
   HANDLE_FETCHED_PROJECT__ACTION,
-  HANDLE_SELECTION__ACTION,
+  HANDLE_SELECTIONS__ACTION,
   HANDLE_REPRESENTATION_RENAMED__ACTION,
   HANDLE_SUBSCRIBERS_UPDATED__ACTION,
 } from '../machine';
@@ -40,7 +40,7 @@ const projectLoadedState = {
   },
   representations: [],
   displayedRepresentation: undefined,
-  selection: undefined,
+  selections: [],
   subscribers: [],
   message: undefined,
 };
@@ -53,7 +53,7 @@ const projectLoadedAndrepresentationDisplayedState = {
   },
   representations: [FIRST_DIAGRAM],
   displayedRepresentation: FIRST_DIAGRAM,
-  selection: FIRST_DIAGRAM,
+  selections: [FIRST_DIAGRAM],
   subscribers: [],
   message: undefined,
 };
@@ -66,7 +66,7 @@ const objectSelectedState = {
   },
   representations: [],
   displayedRepresentation: undefined,
-  selection: FIRST_OBJECT,
+  selections: [FIRST_OBJECT],
   subscribers: [],
   message: undefined,
 };
@@ -79,7 +79,7 @@ const representationAndObjectSelectedState = {
   },
   representations: [FIRST_DIAGRAM],
   displayedRepresentation: FIRST_DIAGRAM,
-  selection: FIRST_OBJECT,
+  selections: [FIRST_OBJECT],
   subscribers: [],
   message: undefined,
 };
@@ -89,7 +89,7 @@ describe('EditProjectView - reducer', () => {
       viewState: LOADING__STATE,
       project: undefined,
       representations: [],
-      selection: undefined,
+      selections: [],
       displayedRepresentation: undefined,
       subscribers: [],
       message: undefined,
@@ -162,7 +162,7 @@ describe('EditProjectView - reducer', () => {
       project: response.data.viewer.project,
       representations: [],
       displayedRepresentation: undefined,
-      selection: undefined,
+      selections: [],
       subscribers: [],
       message: undefined,
     });
@@ -170,7 +170,7 @@ describe('EditProjectView - reducer', () => {
 
   it('navigates to the object selected state after selecting an object', () => {
     const prevState = projectLoadedState;
-    const action = { type: HANDLE_SELECTION__ACTION, selection: FIRST_OBJECT };
+    const action = { type: HANDLE_SELECTIONS__ACTION, selections: [FIRST_OBJECT] };
     const state = reducer(prevState, action);
 
     expect(state).toStrictEqual({
@@ -178,13 +178,13 @@ describe('EditProjectView - reducer', () => {
       project: projectLoadedState.project,
       representations: [],
       displayedRepresentation: undefined,
-      selection: action.selection,
+      selections: action.selections,
       subscribers: [],
       message: undefined,
     });
   });
 
-  it('navigates to the projet loaded state after renaming a representation', () => {
+  it('navigates to the project loaded state after renaming a representation', () => {
     const prevState = projectLoadedState;
     const action = {
       type: HANDLE_REPRESENTATION_RENAMED__ACTION,
@@ -197,7 +197,7 @@ describe('EditProjectView - reducer', () => {
       project: projectLoadedState.project,
       representations: [],
       displayedRepresentation: undefined,
-      selection: projectLoadedState.selection,
+      selections: [],
       subscribers: [],
       message: undefined,
     });
@@ -206,17 +206,17 @@ describe('EditProjectView - reducer', () => {
   it('navigates to the representation displayed state after selecting an object', () => {
     const prevState = projectLoadedState;
     const action = {
-      type: HANDLE_SELECTION__ACTION,
-      selection: FIRST_DIAGRAM,
+      type: HANDLE_SELECTIONS__ACTION,
+      selections: [FIRST_DIAGRAM],
     };
     const state = reducer(prevState, action);
 
     expect(state).toStrictEqual({
       viewState: PROJECT_LOADED_AND_REPRESENTATION_DISPLAYED__STATE,
       project: projectLoadedState.project,
-      representations: [action.selection],
-      displayedRepresentation: action.selection,
-      selection: action.selection,
+      representations: action.selections,
+      displayedRepresentation: FIRST_DIAGRAM,
+      selections: action.selections,
       subscribers: [],
       message: undefined,
     });
@@ -235,7 +235,7 @@ describe('EditProjectView - reducer', () => {
       project: projectLoadedState.project,
       representations: projectLoadedState.representations,
       displayedRepresentation: projectLoadedState.displayedRepresentation,
-      selection: projectLoadedState.selection,
+      selections: projectLoadedState.selections,
       subscribers: [],
       message: undefined,
     });
@@ -254,7 +254,7 @@ describe('EditProjectView - reducer', () => {
       project: projectLoadedAndrepresentationDisplayedState.project,
       representations: projectLoadedAndrepresentationDisplayedState.representations,
       displayedRepresentation: projectLoadedAndrepresentationDisplayedState.displayedRepresentation,
-      selection: projectLoadedAndrepresentationDisplayedState.selection,
+      selections: projectLoadedAndrepresentationDisplayedState.selections,
       subscribers: [],
       message: undefined,
     });
@@ -263,17 +263,17 @@ describe('EditProjectView - reducer', () => {
   it('navigates to the representation and object selected state after selecting a representation', () => {
     const prevState = objectSelectedState;
     const action = {
-      type: HANDLE_SELECTION__ACTION,
-      selection: SECOND_DIAGRAM,
+      type: HANDLE_SELECTIONS__ACTION,
+      selections: [SECOND_DIAGRAM],
     };
     const state = reducer(prevState, action);
 
     expect(state).toStrictEqual({
       viewState: PROJECT_LOADED_AND_REPRESENTATION_DISPLAYED__STATE,
       project: objectSelectedState.project,
-      representations: [action.selection],
-      displayedRepresentation: action.selection,
-      selection: action.selection,
+      representations: action.selections,
+      displayedRepresentation: SECOND_DIAGRAM,
+      selections: action.selections,
       subscribers: [],
       message: undefined,
     });
@@ -281,7 +281,7 @@ describe('EditProjectView - reducer', () => {
 
   it('navigates to the representation and object selected state after selecting an object', () => {
     const prevState = projectLoadedAndrepresentationDisplayedState;
-    const action = { type: HANDLE_SELECTION__ACTION, selection: SECOND_OBJECT };
+    const action = { type: HANDLE_SELECTIONS__ACTION, selections: [SECOND_OBJECT] };
     const state = reducer(prevState, action);
 
     expect(state).toStrictEqual({
@@ -289,7 +289,7 @@ describe('EditProjectView - reducer', () => {
       project: projectLoadedAndrepresentationDisplayedState.project,
       representations: projectLoadedAndrepresentationDisplayedState.representations,
       displayedRepresentation: projectLoadedAndrepresentationDisplayedState.displayedRepresentation,
-      selection: action.selection,
+      selections: action.selections,
       subscribers: [],
       message: undefined,
     });
@@ -298,17 +298,17 @@ describe('EditProjectView - reducer', () => {
   it('navigates back to the representation and object selected state after selecting another representation', () => {
     const prevState = representationAndObjectSelectedState;
     const action = {
-      type: HANDLE_SELECTION__ACTION,
-      selection: SECOND_DIAGRAM,
+      type: HANDLE_SELECTIONS__ACTION,
+      selections: [SECOND_DIAGRAM],
     };
     const state = reducer(prevState, action);
 
     expect(state).toStrictEqual({
       viewState: PROJECT_LOADED_AND_REPRESENTATION_DISPLAYED__STATE,
       project: representationAndObjectSelectedState.project,
-      representations: [...representationAndObjectSelectedState.representations, action.selection],
-      displayedRepresentation: action.selection,
-      selection: action.selection,
+      representations: [...representationAndObjectSelectedState.representations, ...action.selections],
+      displayedRepresentation: SECOND_DIAGRAM,
+      selections: action.selections,
       subscribers: [],
       message: undefined,
     });
@@ -316,7 +316,7 @@ describe('EditProjectView - reducer', () => {
 
   it('navigates back to the representation and object selected state after selecting another object', () => {
     const prevState = representationAndObjectSelectedState;
-    const action = { type: HANDLE_SELECTION__ACTION, selection: SECOND_OBJECT };
+    const action = { type: HANDLE_SELECTIONS__ACTION, selections: [SECOND_OBJECT] };
     const state = reducer(prevState, action);
 
     expect(state).toStrictEqual({
@@ -324,7 +324,7 @@ describe('EditProjectView - reducer', () => {
       project: representationAndObjectSelectedState.project,
       representations: representationAndObjectSelectedState.representations,
       displayedRepresentation: representationAndObjectSelectedState.displayedRepresentation,
-      selection: action.selection,
+      selections: action.selections,
       subscribers: [],
       message: undefined,
     });
@@ -343,7 +343,7 @@ describe('EditProjectView - reducer', () => {
       project: projectLoadedAndrepresentationDisplayedState.project,
       representations: projectLoadedAndrepresentationDisplayedState.representations,
       displayedRepresentation: projectLoadedAndrepresentationDisplayedState.displayedRepresentation,
-      selection: projectLoadedAndrepresentationDisplayedState.selection,
+      selections: projectLoadedAndrepresentationDisplayedState.selections,
       subscribers: [],
       message: undefined,
     });
@@ -360,7 +360,7 @@ describe('EditProjectView - reducer', () => {
       project: representationAndObjectSelectedState.project,
       representations: representationAndObjectSelectedState.representations,
       displayedRepresentation: representationAndObjectSelectedState.displayedRepresentation,
-      selection: representationAndObjectSelectedState.selection,
+      selections: representationAndObjectSelectedState.selections,
       subscribers,
       message: undefined,
     });

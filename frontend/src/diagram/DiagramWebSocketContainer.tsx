@@ -22,9 +22,9 @@ import {
   INITIALIZE__ACTION,
   LOADING__STATE,
   READY__STATE,
-  SELECTED_ELEMENT__ACTION,
-  SELECTION__ACTION,
+  SELECTIONS__ACTION,
   SELECT_ZOOM_LEVEL__ACTION,
+  SELECTED_ELEMENTS__ACTION,
   SET_ACTIVE_TOOL__ACTION,
   SET_SOURCE_ELEMENT__ACTION,
   SET_CURRENT_ROOT__ACTION,
@@ -45,6 +45,7 @@ import {
   ZOOM_IN_ACTION,
   ZOOM_OUT_ACTION,
   ZOOM_TO_ACTION,
+  INVOKE_CONTEXTUAL_TOOL_ACTION,
 } from 'diagram/sprotty/Actions';
 import { Toolbar } from 'diagram/Toolbar';
 import { DropArea } from 'diagram/DropArea';
@@ -65,7 +66,7 @@ import {
 
 const propTypes = {
   representationId: PropTypes.string.isRequired,
-  setSelection: PropTypes.func.isRequired,
+  setSelections: PropTypes.func.isRequired,
   setSubscribers: PropTypes.func.isRequired,
 };
 
@@ -217,7 +218,7 @@ const propTypes = {
  *
  * @author sbegaudeau
  */
-export const DiagramWebSocketContainer = ({ representationId, selection, setSelection, setSubscribers }) => {
+export const DiagramWebSocketContainer = ({ representationId, selections, setSelections, setSubscribers }) => {
   const { id, canEdit } = useProject() as any;
   const diagramDomElement = useRef(null);
 
@@ -231,7 +232,7 @@ export const DiagramWebSocketContainer = ({ representationId, selection, setSele
     toolSections,
     contextualPalette,
     contextualMenu,
-    newSelection,
+    newSelections,
     zoomLevel,
     subscribers,
     message,
@@ -308,18 +309,18 @@ export const DiagramWebSocketContainer = ({ representationId, selection, setSele
    */
   useEffect(() => {
     if (viewState === READY__STATE) {
-      dispatch({ type: SELECTION__ACTION, selection });
+      dispatch({ type: SELECTIONS__ACTION, selections });
     }
-  }, [selection, modelSource, viewState]);
+  }, [selections, modelSource, viewState]);
 
   /**
    * Dispatch the new selection to the modelSource if our state indicate that new selection has changed.
    */
   useEffect(() => {
-    if (modelSource && newSelection) {
-      modelSource.actionDispatcher.dispatch({ kind: SIRIUS_SELECT_ACTION, selection: newSelection });
+    if (modelSource && newSelections) {
+      modelSource.actionDispatcher.dispatch({ kind: SIRIUS_SELECT_ACTION, selections: newSelections });
     }
-  }, [newSelection, modelSource]);
+  }, [newSelections, modelSource]);
 
   /**
    * Switch to another diagram if our props indicate that we should display a different diagram
@@ -387,6 +388,25 @@ export const DiagramWebSocketContainer = ({ representationId, selection, setSele
           .map((elt) => elt.id);
         const nodeIds = diagramElements
           .filter((diagramElement) => diagramElement instanceof SNode)
+          .filter((diagramElement) => {
+            /**
+             * We should not ask to remove more than once a Node.
+             * To avoid this state, we filter all nodes that have also their parents in the list to delete.
+             */
+            let noParents = true;
+            if (diagramElement.parent instanceof SNode) {
+              let parent = diagramElement.parent;
+              do {
+                const index = diagramElements.indexOf(parent);
+                if (index > -1) {
+                  noParents = false;
+                  break;
+                }
+                parent = parent.parent;
+              } while (parent instanceof SNode); // while there is a Node parent...
+            }
+            return noParents;
+          })
           .map((elt) => elt.id);
 
         const input = {
@@ -400,6 +420,30 @@ export const DiagramWebSocketContainer = ({ representationId, selection, setSele
       }
     },
     [id, canEdit, representationId, deleteElementsMutation]
+  );
+
+  const onSelectElements = useCallback(
+    (newSelectedElements) => {
+      const selections = [];
+      newSelectedElements.forEach((newSelectedElement) => {
+        let selection;
+        if (newSelectedElement.root.id === newSelectedElement.id) {
+          const { id, label, kind } = newSelectedElement;
+          selection = { id, label, kind };
+        } else {
+          const { targetObjectId, targetObjectKind, targetObjectLabel } = newSelectedElement;
+          selection = {
+            id: targetObjectId,
+            label: targetObjectLabel,
+            kind: targetObjectKind,
+          };
+        }
+        selections.push(selection);
+      });
+      setSelections(selections);
+      dispatch({ type: SELECTED_ELEMENTS__ACTION, selections });
+    },
+    [setSelections]
   );
 
   const invokeTool = useCallback(
@@ -454,26 +498,6 @@ export const DiagramWebSocketContainer = ({ representationId, selection, setSele
     [id, canEdit, representationId, editLabelMutation]
   );
 
-  const onSelectElement = useCallback(
-    (newSelectedElement) => {
-      let newSelection;
-      if (newSelectedElement.root.id === newSelectedElement.id) {
-        const { id, label, kind } = newSelectedElement;
-        newSelection = { id, label, kind };
-      } else {
-        const { targetObjectId, targetObjectKind, targetObjectLabel } = newSelectedElement;
-        newSelection = {
-          id: targetObjectId,
-          label: targetObjectLabel,
-          kind: targetObjectKind,
-        };
-      }
-      setSelection(newSelection);
-      dispatch({ type: SELECTED_ELEMENT__ACTION, selection: newSelection });
-    },
-    [setSelection]
-  );
-
   /**
    * Initialize the diagram server used by Sprotty in order to perform the diagram edition. This
    * initialization will be done each time we are in the loading state.
@@ -486,7 +510,7 @@ export const DiagramWebSocketContainer = ({ representationId, selection, setSele
         deleteElements,
         invokeTool,
         editLabel,
-        onSelectElement,
+        onSelectElements,
         toolSections,
         setContextualPalette,
         setSourceElement,
@@ -499,7 +523,7 @@ export const DiagramWebSocketContainer = ({ representationId, selection, setSele
     viewState,
     displayedRepresentationId,
     modelSource,
-    onSelectElement,
+    onSelectElements,
     deleteElements,
     invokeTool,
     editLabel,

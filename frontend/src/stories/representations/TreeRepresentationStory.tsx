@@ -87,7 +87,7 @@ export const TreeRepresentationStory = () => {
 
   return (
     <Border>
-      <Tree tree={tree} onExpand={(item) => expand(item)} selection={selection} setSelection={() => {}} />
+      <Tree tree={tree} onExpand={(item) => expand(item)} selections={[selection]} setSelections={() => {}} />
     </Border>
   );
 };
