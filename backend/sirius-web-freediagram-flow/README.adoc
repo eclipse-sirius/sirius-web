@@ -1,0 +1,14 @@
+= odweb-freediagram
+
+== Goal
+
+This project contains our free diagram support for diagrams.
+
+== Dependencies
+
+This project will depend on the following projects:
+
+- odweb-api
+- odweb-diagrams
+
+This project should not have any dependency to any persistence or network-related (HTTP, Web Socket) code.
