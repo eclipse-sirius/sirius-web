@@ -20,7 +20,6 @@ import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-import org.eclipse.sirius.web.annotations.Immutable;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLField;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLID;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLNonNull;
@@ -34,7 +33,6 @@ import org.eclipse.sirius.web.representations.VariableManager;
  *
  * @author sbegaudeau
  */
-@Immutable
 @GraphQLObjectType
 public final class NodeDescription {
     /**
@@ -128,6 +126,10 @@ public final class NodeDescription {
 
     public List<NodeDescription> getChildNodeDescriptions() {
         return this.childNodeDescriptions;
+    }
+
+    public void setChildNodeDescriptions(List<NodeDescription> childNodeDescriptions) {
+        this.childNodeDescriptions = childNodeDescriptions;
     }
 
     public Function<VariableManager, Status> getDeleteHandler() {
