@@ -25,6 +25,7 @@ import {
   SELECTED_ELEMENTS__ACTION,
   SELECTIONS__ACTION,
   SET_ACTIVE_TOOL__ACTION,
+  SET_DIRTY__ACTION,
   SET_SOURCE_ELEMENT__ACTION,
   SET_CURRENT_ROOT__ACTION,
   SET_CONTEXTUAL_PALETTE__ACTION,
@@ -35,18 +36,19 @@ import {
   SWITCH_REPRESENTATION__ACTION,
 } from 'diagram/machine';
 import { initialState, reducer } from 'diagram/reducer';
-import { SIRIUS_SELECT_ACTION, SIRIUS_UPDATE_MODEL_ACTION, REMOVE_EDGE_FEEDBACK_ACTION } from 'diagram/sprotty/Actions';
+import { SIRIUS_SELECT_ACTION, REMOVE_EDGE_FEEDBACK_ACTION } from 'diagram/sprotty/Actions';
 import { Toolbar } from 'diagram/Toolbar';
 import { DropArea } from 'diagram/DropArea';
 import { ContextualPaletteContainer } from 'diagram/palette/ContextualPaletteContainer';
 import { ContextualMenuContainer } from 'diagram/palette/ContextualMenuContainer';
 
+import { convertDiagram } from 'diagram/sprotty/convertDiagram';
 import { useProject } from 'project/ProjectProvider';
 import { edgeCreationFeedback } from 'diagram/sprotty/edgeCreationFeedback';
 import PropTypes from 'prop-types';
 import React, { useContext, useEffect, useReducer, useRef, useCallback } from 'react';
 import 'reflect-metadata'; // Required because Sprotty uses Inversify and both frameworks are written in TypeScript with experimental features.
-import { SEdge, SNode } from 'sprotty';
+import { SEdge, SNode, UpdateModelAction } from 'sprotty';
 import styles from './Diagram.module.css';
 import {
   deleteFromDiagramMutation,
@@ -246,14 +248,23 @@ export const DiagramWebSocketContainer = ({ representationId, selections, setSel
   useEffect(() => {
     getToolSectionData({ diagramId: representationId });
   }, [representationId, getToolSectionData]);
+
+  const setDirty = useCallback((dirty) => {
+    dispatch({ type: SET_DIRTY__ACTION, dirty });
+  }, []);
+
   /**
    * Dispatch the diagram to the modelSource if our state indicate that diagram has changed.
    */
   useEffect(() => {
-    if (modelSource) {
-      modelSource.actionDispatcher.dispatch({ kind: SIRIUS_UPDATE_MODEL_ACTION, diagram });
+    if (modelSource && diagram) {
+      const convertedDiagram = convertDiagram(diagram);
+      const sprottyModel = modelSource.modelFactory.createRoot(convertedDiagram);
+      const sprottySchema = modelSource.modelFactory.createSchema(sprottyModel);
+      modelSource.actionDispatcher.dispatch(new UpdateModelAction(sprottySchema));
+      setDirty(false);
     }
-  }, [diagram, modelSource]);
+  }, [diagram, modelSource, setDirty]);
 
   /**
    * Dispatch the selection if our props indicate that selection has changed.
@@ -366,11 +377,13 @@ export const DiagramWebSocketContainer = ({ representationId, selections, setSel
           nodeIds,
           edgeIds,
         };
+        setDirty(true);
         deleteElementsMutation({ input });
+
         dispatch({ type: SET_CONTEXTUAL_PALETTE__ACTION, contextualPalette: undefined });
       }
     },
-    [id, canEdit, representationId, deleteElementsMutation]
+    [id, canEdit, representationId, deleteElementsMutation, setDirty]
   );
 
   const onSelectElements = useCallback(
@@ -413,6 +426,8 @@ export const DiagramWebSocketContainer = ({ representationId, selections, setSel
             diagramTargetElementId,
             toolId,
           };
+
+          setDirty(true);
           invokeEdgeToolMutation({ input });
           edgeCreationFeedback.reset();
         } else {
@@ -425,13 +440,24 @@ export const DiagramWebSocketContainer = ({ representationId, selections, setSel
             diagramElementId,
             toolId,
           };
+
+          setDirty(true);
           invokeNodeToolMutation({ input });
         }
         setActiveTool();
         setContextualPalette();
       }
     },
-    [id, canEdit, representationId, invokeNodeToolMutation, invokeEdgeToolMutation, setActiveTool, setContextualPalette]
+    [
+      id,
+      canEdit,
+      representationId,
+      invokeNodeToolMutation,
+      invokeEdgeToolMutation,
+      setActiveTool,
+      setContextualPalette,
+      setDirty,
+    ]
   );
 
   const editLabel = useCallback(
@@ -443,10 +469,11 @@ export const DiagramWebSocketContainer = ({ representationId, selections, setSel
           labelId,
           newText,
         };
+        setDirty(true);
         editLabelMutation({ input });
       }
     },
-    [id, canEdit, representationId, editLabelMutation]
+    [id, canEdit, representationId, editLabelMutation, setDirty]
   );
 
   /**
@@ -464,6 +491,7 @@ export const DiagramWebSocketContainer = ({ representationId, selections, setSel
         onSelectElements,
         toolSections,
         setContextualPalette,
+        setContextualMenu,
         setSourceElement,
         setCurrentRoot,
         setActiveTool,
@@ -479,6 +507,7 @@ export const DiagramWebSocketContainer = ({ representationId, selections, setSel
     invokeTool,
     editLabel,
     setContextualPalette,
+    setContextualMenu,
     setSourceElement,
     setCurrentRoot,
     setActiveTool,

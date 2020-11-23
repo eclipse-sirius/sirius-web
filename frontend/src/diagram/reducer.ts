@@ -25,6 +25,7 @@ import {
   HANDLE_ERROR__ACTION,
   HANDLE_COMPLETE__ACTION,
   SET_ACTIVE_TOOL__ACTION,
+  SET_DIRTY__ACTION,
   SET_CONTEXTUAL_PALETTE__ACTION,
   SET_SOURCE_ELEMENT__ACTION,
   SET_CURRENT_ROOT__ACTION,
@@ -92,6 +93,9 @@ export const reducer = (prevState, action) => {
       break;
     case SET_ACTIVE_TOOL__ACTION:
       state = setActiveToolAction(prevState, action);
+      break;
+    case SET_DIRTY__ACTION:
+      state = setDirtyAction(prevState, action);
       break;
     case SET_SOURCE_ELEMENT__ACTION:
       state = selectSourceElementAction(prevState, action);
@@ -204,6 +208,7 @@ const initializeAction = (prevState, action) => {
   sprottyState.currentRoot = INITIAL_ROOT;
   sprottyState.activeTool = undefined;
   sprottyState.sourceElement = undefined;
+  sprottyState.dirty = false;
   return {
     viewState: READY__STATE,
     displayedRepresentationId,
@@ -327,6 +332,42 @@ const handleDataAction = (prevState, action) => {
   }
 
   return state;
+};
+const setDirtyAction = (prevState, action) => {
+  const {
+    viewState,
+    displayedRepresentationId,
+    modelSource,
+    sprottyState,
+    diagram,
+    activeTool,
+    toolSections,
+    contextualPalette,
+    contextualMenu,
+    latestSelections,
+    newSelections,
+    zoomLevel,
+    subscribers,
+    message,
+  } = prevState;
+  const { dirty } = action;
+  sprottyState.dirty = dirty;
+  return {
+    viewState,
+    displayedRepresentationId,
+    modelSource,
+    sprottyState,
+    activeTool,
+    diagram,
+    toolSections,
+    contextualPalette,
+    contextualMenu,
+    latestSelections,
+    newSelections,
+    zoomLevel,
+    subscribers,
+    message,
+  };
 };
 
 const setActiveToolAction = (prevState, action) => {

@@ -15,7 +15,6 @@ import {
   TYPES,
   IActionDispatcher,
   UpdateModelAction,
-  GetSelectionAction,
   ILogger,
   IModelFactory,
   IActionHandler,
@@ -24,15 +23,8 @@ import {
   Action,
   SModelRoot,
 } from 'sprotty';
-import { convertDiagram } from 'diagram/sprotty/convertDiagram';
-import { SIRIUS_UPDATE_MODEL_ACTION } from 'diagram/sprotty/Actions';
 import { SIRIUS_TYPES } from 'diagram/sprotty/Types';
 import { ISetState } from 'diagram/sprotty/ISetState';
-
-const INITIAL_ROOT = {
-  type: 'NONE',
-  id: 'ROOT',
-};
 
 @injectable()
 export class ModelActionHandler implements IActionHandler, IActionHandlerInitializer {
@@ -45,16 +37,12 @@ export class ModelActionHandler implements IActionHandler, IActionHandlerInitial
 
   initialize(registry: ActionHandlerRegistry): void {
     registry.register(UpdateModelAction.KIND, this);
-    registry.register(SIRIUS_UPDATE_MODEL_ACTION, this);
   }
 
   handle(action: Action): void {
     switch (action.kind) {
       case UpdateModelAction.KIND:
         this.handleUpdateModelAction(<UpdateModelAction>action);
-        break;
-      case SIRIUS_UPDATE_MODEL_ACTION:
-        this.handleSiriusUpdateModelAction(action);
         break;
       default:
         this.logger.error(this, 'Invalid action', action);
@@ -66,24 +54,6 @@ export class ModelActionHandler implements IActionHandler, IActionHandlerInitial
     if (action.newRoot) {
       const sprottyModel: SModelRoot = this.modelFactory.createRoot(action.newRoot);
       this.setState.setCurrentRoot(sprottyModel);
-    }
-  }
-
-  async handleSiriusUpdateModelAction(action) {
-    const { diagram } = action;
-    if (diagram) {
-      const convertedDiagram = convertDiagram(diagram);
-      const sprottyModel: SModelRoot = this.modelFactory.createRoot(convertedDiagram);
-      const selectionResult = await this.actionDispatcher.request(GetSelectionAction.create());
-      sprottyModel.index
-        .all()
-        .filter((element) => selectionResult.selectedElementsIDs.indexOf(element.id) >= 0)
-        .forEach((element) => (element['selected'] = true));
-
-      const sprottySchema = this.modelFactory.createSchema(sprottyModel);
-      this.actionDispatcher.dispatch(new UpdateModelAction(sprottySchema));
-    } else {
-      this.actionDispatcher.dispatch(new UpdateModelAction(INITIAL_ROOT));
     }
   }
 }

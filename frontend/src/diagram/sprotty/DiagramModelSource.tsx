@@ -10,14 +10,18 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { ModelSource, Action } from 'sprotty';
+import { ModelSource, Action, TYPES, IModelFactory } from 'sprotty';
+import { inject, injectable } from 'inversify';
 
 /**
  * A diagram model source.
  * This class can be used as a facade over the action-based API of sprotty.
  * @hmarchadour
  */
+@injectable()
 export class DiagramModelSource extends ModelSource {
+  @inject(TYPES.IModelFactory) modelFactory: IModelFactory;
+
   currentRoot;
 
   initialize(registry) {}
