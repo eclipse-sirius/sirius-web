@@ -19,9 +19,9 @@ import { SET_CONTEXTUAL_PALETTE_ACTION } from 'diagram/sprotty/Actions';
 export class ContextualPaletteMouseListener extends MouseListener {
   potentialOnClick = false;
   mouseDown(target: SModelElement, event: MouseEvent): (Action | Promise<Action>)[] {
-    if (event.button === 0) {
+    if (event.button === 0 && !event.ctrlKey && !event.metaKey) {
       this.potentialOnClick = true;
-    } else if (event.button === 2) {
+    } else if (event.button === 2 || (event.button === 0 && (event.ctrlKey || event.metaKey))) {
       this.potentialOnClick = false;
       return [
         {
@@ -48,8 +48,8 @@ export class ContextualPaletteMouseListener extends MouseListener {
     if (event.button === 0 && this.potentialOnClick) {
       this.potentialOnClick = false;
       const elementWithTarget = this.findElementWithTarget(target);
-      const { activeTool } = this.state;
-      if (!activeTool) {
+      const { activeTool, dirty } = this.state;
+      if (!activeTool && !dirty) {
         return [
           <any>{
             kind: SET_CONTEXTUAL_PALETTE_ACTION,

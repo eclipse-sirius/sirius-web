@@ -13,8 +13,6 @@
 
 /** Action to select a Sirius element */
 export const SIRIUS_SELECT_ACTION = 'siriusSelectElement';
-/** Action to select a  Sirius element */
-export const SIRIUS_UPDATE_MODEL_ACTION = 'siriusUpdateModel';
 /** Action to invoke a tool */
 export const INVOKE_TOOL_ACTION = 'invokeTool';
 /** Action to invoke a contextual tool */
@@ -31,7 +29,7 @@ export const ZOOM_TO_ACTION = 'zoomTo';
 export const HOVER_ACTION = 'hover';
 /** Action to set a contextual palette */
 export const SET_CONTEXTUAL_PALETTE_ACTION = 'setContextualPalette';
-/** Action to set a contextual palette */
+/** Action to set a contextual menu */
 export const SET_CONTEXTUAL_MENU_ACTION = 'setContextualMenu';
 /** Action to create edge feedback */
 export const CREATE_EDGE_FEEDBACK_ACTION = 'createEdgeFeedback';

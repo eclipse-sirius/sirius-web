@@ -24,6 +24,7 @@ import {
   IActionHandlerInitializer,
   ActionHandlerRegistry,
   Action,
+  SModelElement,
 } from 'sprotty';
 import { SET_CONTEXTUAL_PALETTE_ACTION } from 'diagram/sprotty/Actions';
 import { SIRIUS_TYPES } from 'diagram/sprotty/Types';
@@ -51,7 +52,7 @@ export class ContextualPaletteActionHandler implements IActionHandler, IActionHa
   }
   async handleSetContextualPaletteAction(action) {
     const { element } = action;
-    if (element && element.kind !== 'Diagram' && element.parent) {
+    if (element instanceof SModelElement) {
       const root = await this.actionDispatcher.request(GetViewportAction.create());
       const { viewport, canvasBounds } = root;
       const { scroll, zoom } = viewport;

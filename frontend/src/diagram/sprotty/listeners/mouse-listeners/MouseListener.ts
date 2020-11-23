@@ -11,19 +11,18 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { injectable, inject } from 'inversify';
-import { MouseListener as SprottyMouseListener, TYPES, ILogger } from 'sprotty';
+import { MouseListener as SprottyMouseListener, SModelElement, SChildElement } from 'sprotty';
 import { SIRIUS_TYPES } from 'diagram/sprotty/Types';
 import { IState } from 'diagram/sprotty/IState';
 
 @injectable()
 export class MouseListener extends SprottyMouseListener {
-  @inject(TYPES.ILogger) logger: ILogger;
   @inject(SIRIUS_TYPES.STATE) state: IState;
 
-  findElementWithTarget(element) {
-    if (element.targetObjectId) {
+  findElementWithTarget(element: SModelElement) {
+    if (element['targetObjectId']) {
       return element;
-    } else if (element.parent) {
+    } else if (element instanceof SChildElement) {
       return this.findElementWithTarget(element.parent);
     }
     // Otherwise, use the diagram as element with target.

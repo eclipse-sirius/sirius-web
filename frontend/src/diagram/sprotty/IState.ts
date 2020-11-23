@@ -19,4 +19,5 @@ export interface IState {
   currentRoot?: SModelRoot | SModelElementSchema;
   activeTool?: any;
   sourceElement?: SModelElement;
+  dirty: boolean;
 }
