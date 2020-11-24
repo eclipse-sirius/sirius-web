@@ -56,8 +56,14 @@ public class GraphQLControllerTestCases {
 
     private GraphQL getGraphQL() {
         // @formatter:off
+        // The dummy field is needed to pass GraphQL validation, as Query must have at least one field
+        GraphQLFieldDefinition dummyField = GraphQLFieldDefinition.newFieldDefinition()
+                .name("dummy") //$NON-NLS-1$
+                .type(Scalars.GraphQLBoolean)
+                .build();
         GraphQLObjectType queryObjectType = GraphQLObjectType.newObject()
                 .name("Query") //$NON-NLS-1$
+                .field(dummyField)
                 .build();
 
         GraphQLInputObjectField fileField = GraphQLInputObjectField.newInputObjectField()
