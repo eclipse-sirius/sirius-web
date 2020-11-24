@@ -28,6 +28,7 @@
 
 	<properties>
 		<java.version>11</java.version>
+		<graphql-java.version>16.1</graphql-java.version>
 	</properties>
 
 	<distributionManagement>
@@ -42,7 +43,7 @@
 		<dependency>
         	<groupId>com.graphql-java</groupId>
         	<artifactId>graphql-java</artifactId>
-        	<version>14.0</version>
+        	<version>${graphql-java.version}</version>
     	</dependency>
     	<dependency>
         	<groupId>org.eclipse.sirius.web</groupId>
