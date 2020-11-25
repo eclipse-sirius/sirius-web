@@ -22,7 +22,7 @@ const defaultValue = {
   productName: 'Sirius Web',
   userStatus: (
     <a href="https://www.eclipse.org/sirius" rel="noopener noreferrer" target="_blank">
-      <Help style={{ fill: 'var(--white)', 'margin-top': 16, width: 32, height: 32 }} title="Help" />
+      <Help style={{ fill: 'var(--white)', marginTop: 16, width: 32, height: 32 }} title="Help" />
     </a>
   ),
   footer: <Footer />,
