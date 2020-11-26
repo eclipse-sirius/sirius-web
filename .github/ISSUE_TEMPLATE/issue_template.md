@@ -1,7 +1,11 @@
 * [ ] **I have checked that this bug has not yet been reported by someone else.**
 * [ ] **I have checked that this bug appears on Chrome.**
 
-### Description
+### Version
+ - [ ] latest
+ - [ ] other: please specify
+
+### Actual behavior
 
 ...
 
