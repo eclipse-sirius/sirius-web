@@ -48,7 +48,7 @@ public class DiagramComponent implements IComponent {
 
         String label = diagramDescription.getLabelProvider().apply(variableManager);
 
-        UUID diagramId = optionalPreviousDiagram.map(Diagram::getId).orElseGet(() -> diagramDescription.getIdProvider().apply(variableManager));
+        UUID diagramId = optionalPreviousDiagram.map(Diagram::getId).orElseGet(UUID::randomUUID);
         String targetObjectId = diagramDescription.getTargetObjectIdProvider().apply(variableManager);
 
         DiagramRenderingCache cache = new DiagramRenderingCache();
@@ -60,7 +60,7 @@ public class DiagramComponent implements IComponent {
                     var previousNodes = optionalPreviousDiagram.map(previousDiagram -> diagramElementRequestor.getRootNodes(previousDiagram, nodeDescription))
                             .orElse(List.of());
                     INodesRequestor nodesRequestor = new NodesRequestor(previousNodes);
-                    var nodeComponentProps = new NodeComponentProps(variableManager, nodeDescription, nodesRequestor, false, cache, this.props.getViewCreationRequests(), diagramId.toString());
+                    var nodeComponentProps = new NodeComponentProps(variableManager, nodeDescription, nodesRequestor, NodeContainmentKind.CHILD_NODE, cache, this.props.getViewCreationRequests(), diagramId);
                     return new Element(NodeComponent.class, nodeComponentProps);
                 })
                 .collect(Collectors.toList());

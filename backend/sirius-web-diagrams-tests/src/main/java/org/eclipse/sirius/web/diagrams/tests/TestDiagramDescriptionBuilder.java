@@ -42,7 +42,6 @@ public class TestDiagramDescriptionBuilder {
     public DiagramDescription getDiagramDescription(UUID diagramDescriptionId, List<NodeDescription> nodeDescriptions, List<EdgeDescription> edgeDescriptions, List<ToolSection> toolSections) {
         // @formatter:off
         return DiagramDescription.newDiagramDescription(diagramDescriptionId)
-            .idProvider(variableManager -> UUID.randomUUID())
             .label("") //$NON-NLS-1$
             .canCreatePredicate(variableManager -> Boolean.TRUE)
             .targetObjectIdProvider(variableManager -> "targetObjectId") //$NON-NLS-1$
@@ -74,7 +73,6 @@ public class TestDiagramDescriptionBuilder {
         };
 
         return EdgeDescription.newEdgeDescription(edgeDescriptionId)
-                .idProvider(variableManager -> UUID.randomUUID().toString())
                 .semanticElementsProvider(variableManager -> List.of())
                 .sourceNodesProvider(sourceNodesProvider)
                 .targetNodesProvider(targetNodesProvider)
@@ -124,7 +122,6 @@ public class TestDiagramDescriptionBuilder {
         };
 
         return NodeDescription.newNodeDescription(nodeDescriptionId)
-                .idProvider(idProvider)
                 .typeProvider(variableManager -> "") //$NON-NLS-1$
                 .semanticElementsProvider(semanticElementsProvider)
                 .targetObjectIdProvider(idProvider)

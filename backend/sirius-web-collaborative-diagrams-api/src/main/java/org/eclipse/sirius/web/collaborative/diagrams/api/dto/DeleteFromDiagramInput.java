@@ -34,9 +34,9 @@ public final class DeleteFromDiagramInput implements IDiagramInput {
 
     private UUID representationId;
 
-    private List<String> nodeIds;
+    private List<UUID> nodeIds;
 
-    private List<String> edgeIds;
+    private List<UUID> edgeIds;
 
     @GraphQLID
     @GraphQLField
@@ -55,13 +55,13 @@ public final class DeleteFromDiagramInput implements IDiagramInput {
 
     @GraphQLField
     @GraphQLNonNull
-    public List<@GraphQLNonNull String> getNodeIds() {
+    public List<@GraphQLNonNull @GraphQLID UUID> getNodeIds() {
         return this.nodeIds;
     }
 
     @GraphQLField
     @GraphQLNonNull
-    public List<@GraphQLNonNull String> getEdgeIds() {
+    public List<@GraphQLNonNull @GraphQLID UUID> getEdgeIds() {
         return this.edgeIds;
     }
 

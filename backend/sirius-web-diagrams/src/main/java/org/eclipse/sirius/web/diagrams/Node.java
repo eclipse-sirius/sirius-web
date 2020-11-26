@@ -32,7 +32,7 @@ import org.eclipse.sirius.web.annotations.graphql.GraphQLObjectType;
 @Immutable
 @GraphQLObjectType
 public final class Node {
-    private String id;
+    private UUID id;
 
     private String type;
 
@@ -65,7 +65,7 @@ public final class Node {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public String getId() {
+    public UUID getId() {
         return this.id;
     }
 
@@ -140,7 +140,7 @@ public final class Node {
         return this.childNodes;
     }
 
-    public static Builder newNode(String id) {
+    public static Builder newNode(UUID id) {
         return new Builder(id);
     }
 
@@ -162,7 +162,7 @@ public final class Node {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private String id;
+        private UUID id;
 
         private String type;
 
@@ -188,7 +188,7 @@ public final class Node {
 
         private List<Node> childNodes;
 
-        private Builder(String id) {
+        private Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
         }
 

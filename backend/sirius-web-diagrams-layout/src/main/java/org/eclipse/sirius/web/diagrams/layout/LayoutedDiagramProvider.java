@@ -70,7 +70,7 @@ public class LayoutedDiagramProvider {
     private List<Node> getLayoutedNodes(List<Node> nodes, Map<String, ElkGraphElement> id2ElkGraphElements) {
         // @formatter:off
         return nodes.stream().flatMap(node -> {
-            return Optional.ofNullable(id2ElkGraphElements.get(node.getId()))
+            return Optional.ofNullable(id2ElkGraphElements.get(node.getId().toString()))
                     .filter(ElkConnectableShape.class::isInstance)
                     .map(ElkConnectableShape.class::cast)
                     .map(elkNode -> this.getLayoutedNode(node, elkNode, id2ElkGraphElements))
@@ -108,7 +108,7 @@ public class LayoutedDiagramProvider {
     private List<Edge> getLayoutedEdges(List<Edge> edges, Map<String, ElkGraphElement> id2ElkGraphElements) {
         // @formatter:off
         return edges.stream().flatMap(edge -> {
-            return Optional.ofNullable(id2ElkGraphElements.get(edge.getId()))
+            return Optional.ofNullable(id2ElkGraphElements.get(edge.getId().toString()))
                     .filter(ElkEdge.class::isInstance)
                     .map(ElkEdge.class::cast)
                     .map(elkEdge -> this.getLayoutedEdge(edge, elkEdge, id2ElkGraphElements))

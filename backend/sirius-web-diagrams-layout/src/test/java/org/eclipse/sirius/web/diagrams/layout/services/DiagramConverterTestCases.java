@@ -58,13 +58,13 @@ public class DiagramConverterTestCases {
 
     private static final UUID DIAGRAM_ID = UUID.randomUUID();
 
-    private static final String FIRST_NODE_ID = "firstNodeId"; //$NON-NLS-1$
+    private static final UUID FIRST_NODE_ID = UUID.randomUUID();
 
-    private static final String SECOND_NODE_ID = "secondNodeId"; //$NON-NLS-1$
+    private static final UUID SECOND_NODE_ID = UUID.randomUUID();
 
-    private static final String THIRD_NODE_ID = "thirdNodeId"; //$NON-NLS-1$
+    private static final UUID THIRD_NODE_ID = UUID.randomUUID();
 
-    private static final String FIRST_EDGE_ID = "firstEdgeId"; //$NON-NLS-1$
+    private static final UUID FIRST_EDGE_ID = UUID.randomUUID();
 
     private TextBoundsService textSizeService = new TextBoundsService() {
         @Override
@@ -113,10 +113,10 @@ public class DiagramConverterTestCases {
         assertThat(elkDiagram.getChildren().size()).isEqualTo(1);
 
         Map<String, ElkGraphElement> id2ElkGraphElements = convertedDiagram.getId2ElkGraphElements();
-        assertThat(id2ElkGraphElements.get(node.getId())).isInstanceOf(ElkNode.class);
+        assertThat(id2ElkGraphElements.get(node.getId().toString())).isInstanceOf(ElkNode.class);
         assertThat(id2ElkGraphElements.get(node.getLabel().getId())).isInstanceOf(ElkLabel.class);
 
-        ElkNode elkNode = (ElkNode) id2ElkGraphElements.get(node.getId());
+        ElkNode elkNode = (ElkNode) id2ElkGraphElements.get(node.getId().toString());
         this.assertSize(elkNode, TEXT_WIDTH, TEXT_HEIGHT);
 
         assertThat(elkNode.getLabels().size()).isEqualTo(1);
@@ -145,10 +145,10 @@ public class DiagramConverterTestCases {
         assertThat(elkDiagram.getChildren().size()).isEqualTo(1);
 
         Map<String, ElkGraphElement> id2ElkGraphElements = convertedDiagram.getId2ElkGraphElements();
-        assertThat(id2ElkGraphElements.get(node.getId())).isInstanceOf(ElkNode.class);
+        assertThat(id2ElkGraphElements.get(node.getId().toString())).isInstanceOf(ElkNode.class);
         assertThat(id2ElkGraphElements.get(node.getLabel().getId())).isInstanceOf(ElkLabel.class);
 
-        ElkNode elkNode = (ElkNode) id2ElkGraphElements.get(node.getId());
+        ElkNode elkNode = (ElkNode) id2ElkGraphElements.get(node.getId().toString());
         this.assertSize(elkNode, TEXT_WIDTH, TEXT_HEIGHT);
 
         assertThat(elkNode.getChildren().size()).isEqualTo(1);
@@ -185,7 +185,7 @@ public class DiagramConverterTestCases {
         assertThat(elkDiagram.getContainedEdges().size()).isEqualTo(1);
 
         ElkEdge elkEdge = elkDiagram.getContainedEdges().get(0);
-        assertThat(elkEdge.getIdentifier()).isEqualTo(edge.getId());
+        assertThat(elkEdge.getIdentifier()).isEqualTo(edge.getId().toString());
     }
 
     @Test
@@ -218,7 +218,7 @@ public class DiagramConverterTestCases {
         assertThat(elkNode.getPorts().size()).isEqualTo(1);
 
         ElkPort elkPort = elkNode.getPorts().get(0);
-        assertThat(elkPort.getIdentifier()).isEqualTo(borderNode.getId());
+        assertThat(elkPort.getIdentifier()).isEqualTo(borderNode.getId().toString());
     }
 
     @Test
@@ -258,8 +258,8 @@ public class DiagramConverterTestCases {
 
         ElkEdge elkEdge = elkDiagram.getContainedEdges().get(0);
         assertThat(elkEdge.getSources().size()).isEqualTo(1);
-        assertThat(elkEdge.getSources().get(0).getIdentifier()).isEqualTo(firstBorderNode.getId());
+        assertThat(elkEdge.getSources().get(0).getIdentifier()).isEqualTo(firstBorderNode.getId().toString());
         assertThat(elkEdge.getTargets().size()).isEqualTo(1);
-        assertThat(elkEdge.getTargets().get(0).getIdentifier()).isEqualTo(secondBorderNode.getId());
+        assertThat(elkEdge.getTargets().get(0).getIdentifier()).isEqualTo(secondBorderNode.getId().toString());
     }
 }

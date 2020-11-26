@@ -77,7 +77,7 @@ public class TestDiagramBuilder {
         // @formatter:on
     }
 
-    public Node getNode(String id) {
+    public Node getNode(UUID id) {
         // @formatter:off
         LabelStyle labelStyle = LabelStyle.newLabelStyle()
                 .color("#000000") //$NON-NLS-1$
@@ -109,7 +109,7 @@ public class TestDiagramBuilder {
         // @formatter:on
     }
 
-    public Edge getEdge(String id, String sourceId, String targetId) {
+    public Edge getEdge(UUID id, UUID sourceId, UUID targetId) {
         // @formatter:off
         EdgeStyle style = EdgeStyle.newEdgeStyle()
                 .size(1)

@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.spring.collaborative.diagrams.handlers;
 
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
@@ -93,7 +94,7 @@ public class EditLabelEventHandler implements IDiagramEventHandler {
             if (input.getLabelId().endsWith(LABEL_SUFFIX)) {
                 Diagram diagram = diagramContext.getDiagram();
                 String nodeId = this.extractNodeId(input.getLabelId());
-                var node = this.diagramService.findNodeById(diagram, nodeId);
+                var node = this.diagramService.findNodeById(diagram, UUID.fromString(nodeId));
                 if (node.isPresent()) {
                     this.invokeDirectEditTool(node.get(), editingContext, diagram, input.getNewText());
                     return new EventHandlerResponse(true, representation -> true, new EditLabelSuccessPayload(diagram));

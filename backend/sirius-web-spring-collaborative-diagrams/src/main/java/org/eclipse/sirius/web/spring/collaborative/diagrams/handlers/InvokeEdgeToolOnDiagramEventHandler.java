@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.spring.collaborative.diagrams.handlers;
 
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
@@ -99,11 +100,11 @@ public class InvokeEdgeToolOnDiagramEventHandler implements IDiagramEventHandler
         return new EventHandlerResponse(false, representation -> false, new ErrorPayload(message));
     }
 
-    private Status executeTool(IEditingContext editingContext, IDiagramContext diagramContext, String diagramSourceElementId, String diagramTargetElementId, CreateEdgeTool tool) {
+    private Status executeTool(IEditingContext editingContext, IDiagramContext diagramContext, UUID sourceNodeId, UUID targetNodeId, CreateEdgeTool tool) {
         Status result = Status.ERROR;
         Diagram diagram = diagramContext.getDiagram();
-        Optional<Node> sourceNode = this.diagramService.findNodeById(diagram, diagramSourceElementId);
-        Optional<Node> targetNode = this.diagramService.findNodeById(diagram, diagramTargetElementId);
+        Optional<Node> sourceNode = this.diagramService.findNodeById(diagram, sourceNodeId);
+        Optional<Node> targetNode = this.diagramService.findNodeById(diagram, targetNodeId);
         Optional<Object> source = Optional.empty();
         Optional<Object> target = Optional.empty();
         if (sourceNode.isPresent() && targetNode.isPresent()) {

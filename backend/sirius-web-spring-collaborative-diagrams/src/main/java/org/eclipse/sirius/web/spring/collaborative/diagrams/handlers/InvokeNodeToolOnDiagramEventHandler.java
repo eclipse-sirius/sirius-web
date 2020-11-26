@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.spring.collaborative.diagrams.handlers;
 
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
@@ -98,14 +99,14 @@ public class InvokeNodeToolOnDiagramEventHandler implements IDiagramEventHandler
         return new EventHandlerResponse(false, representation -> false, new ErrorPayload(message));
     }
 
-    private Status executeTool(IEditingContext editingContext, IDiagramContext diagramContext, String diagramElementId, CreateNodeTool tool) {
+    private Status executeTool(IEditingContext editingContext, IDiagramContext diagramContext, UUID diagramElementId, CreateNodeTool tool) {
         Status result = Status.ERROR;
         Diagram diagram = diagramContext.getDiagram();
         Optional<Node> node = this.diagramService.findNodeById(diagram, diagramElementId);
         Optional<Object> self = Optional.empty();
         if (node.isPresent()) {
             self = this.objectService.getObject(editingContext, node.get().getTargetObjectId());
-        } else if (Objects.equals(diagram.getId().toString(), diagramElementId)) {
+        } else if (Objects.equals(diagram.getId(), diagramElementId)) {
             self = this.objectService.getObject(editingContext, diagram.getTargetObjectId());
         }
 

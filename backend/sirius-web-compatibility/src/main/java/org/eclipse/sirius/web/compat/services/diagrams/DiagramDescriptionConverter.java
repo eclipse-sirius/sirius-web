@@ -39,7 +39,6 @@ import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.web.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.web.diagrams.description.NodeDescription;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
-import org.eclipse.sirius.web.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.web.representations.VariableManager;
 import org.eclipse.sirius.web.services.api.objects.IEditService;
 import org.eclipse.sirius.web.services.api.objects.IObjectService;
@@ -121,7 +120,6 @@ public class DiagramDescriptionConverter implements IDiagramDescriptionConverter
         // @formatter:off
         return DiagramDescription.newDiagramDescription(UUID.fromString(this.identifierProvider.getIdentifier(siriusDiagramDescription)))
                 .label(this.identifiedElementLabelProvider.getLabel(siriusDiagramDescription))
-                .idProvider(new GetOrCreateRandomIdProvider())
                 .targetObjectIdProvider(targetObjectIdProvider)
                 .canCreatePredicate(canCreatePredicate)
                 .labelProvider(labelProvider)

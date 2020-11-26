@@ -127,6 +127,11 @@ public class GraphQLInputObjectFieldProvider {
         if (type instanceof Class<?>) {
             Class<?> genericType = (Class<?>) type;
             GraphQLInputType genericInputType = this.getRawInputType(genericType);
+
+            if (annotatedType.isAnnotationPresent(org.eclipse.sirius.web.annotations.graphql.GraphQLID.class)) {
+                genericInputType = Scalars.GraphQLID;
+            }
+
             if (annotatedType.isAnnotationPresent(org.eclipse.sirius.web.annotations.graphql.GraphQLNonNull.class)) {
                 optionalInputType = Optional.of(new GraphQLList(new GraphQLNonNull(genericInputType)));
             } else {

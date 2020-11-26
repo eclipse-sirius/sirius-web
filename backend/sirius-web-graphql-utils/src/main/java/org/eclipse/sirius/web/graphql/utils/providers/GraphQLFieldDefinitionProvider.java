@@ -122,11 +122,13 @@ public class GraphQLFieldDefinitionProvider {
         if (type instanceof Class<?>) {
             Class<?> genericType = (Class<?>) type;
             GraphQLOutputType genericOutputType = this.getRawOutputType(genericType);
+
             if (annotatedType.isAnnotationPresent(org.eclipse.sirius.web.annotations.graphql.GraphQLNonNull.class)) {
                 optionalOutputType = Optional.of(new GraphQLList(new GraphQLNonNull(genericOutputType)));
             } else {
                 optionalOutputType = Optional.of(new GraphQLList(genericOutputType));
             }
+
         }
         return optionalOutputType;
     }

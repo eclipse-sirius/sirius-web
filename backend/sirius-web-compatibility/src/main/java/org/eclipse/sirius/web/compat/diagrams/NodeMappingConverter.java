@@ -81,8 +81,6 @@ public class NodeMappingConverter {
                 .build();
         // @formatter:on
 
-        Function<VariableManager, String> nodeIdProvider = variableManager -> UUID.randomUUID().toString();
-
         Function<VariableManager, String> semanticTargetIdProvider = variableManager -> {
             return variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null);
         };
@@ -118,7 +116,6 @@ public class NodeMappingConverter {
 
         // @formatter:off
         NodeDescription description = NodeDescription.newNodeDescription(UUID.fromString(this.identifierProvider.getIdentifier(nodeMapping)))
-                .idProvider(nodeIdProvider)
                 .typeProvider(typeProvider)
                 .targetObjectIdProvider(semanticTargetIdProvider)
                 .targetObjectKindProvider(semanticTargetKindProvider)

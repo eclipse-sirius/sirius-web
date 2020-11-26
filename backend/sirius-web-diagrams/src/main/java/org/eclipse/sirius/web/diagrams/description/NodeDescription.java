@@ -41,8 +41,6 @@ public final class NodeDescription {
 
     private SynchronizationPolicy synchronizationPolicy;
 
-    private Function<VariableManager, String> idProvider;
-
     private Function<VariableManager, String> typeProvider;
 
     private Function<VariableManager, String> targetObjectIdProvider;
@@ -78,10 +76,6 @@ public final class NodeDescription {
 
     public SynchronizationPolicy getSynchronizationPolicy() {
         return this.synchronizationPolicy;
-    }
-
-    public Function<VariableManager, String> getIdProvider() {
-        return this.idProvider;
     }
 
     public Function<VariableManager, String> getTypeProvider() {
@@ -149,8 +143,6 @@ public final class NodeDescription {
 
         private SynchronizationPolicy synchronizationPolicy = SynchronizationPolicy.SYNCHRONIZED;
 
-        private Function<VariableManager, String> idProvider;
-
         private Function<VariableManager, String> typeProvider;
 
         private Function<VariableManager, String> targetObjectIdProvider;
@@ -175,11 +167,6 @@ public final class NodeDescription {
 
         public Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
-        }
-
-        public Builder idProvider(Function<VariableManager, String> idProvider) {
-            this.idProvider = Objects.requireNonNull(idProvider);
-            return this;
         }
 
         public Builder synchronizationPolicy(SynchronizationPolicy synchronizationPolicy) {
@@ -246,7 +233,6 @@ public final class NodeDescription {
             NodeDescription nodeDescription = new NodeDescription();
             nodeDescription.id = Objects.requireNonNull(this.id);
             nodeDescription.synchronizationPolicy = this.synchronizationPolicy;
-            nodeDescription.idProvider = Objects.requireNonNull(this.idProvider);
             nodeDescription.typeProvider = Objects.requireNonNull(this.typeProvider);
             nodeDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
             nodeDescription.targetObjectKindProvider = Objects.requireNonNull(this.targetObjectKindProvider);

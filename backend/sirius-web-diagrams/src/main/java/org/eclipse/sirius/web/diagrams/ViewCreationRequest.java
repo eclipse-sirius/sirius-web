@@ -26,7 +26,7 @@ import org.eclipse.sirius.web.annotations.Immutable;
 @Immutable
 public final class ViewCreationRequest {
 
-    private String parentElementId;
+    private UUID parentElementId;
 
     private UUID descriptionId;
 
@@ -41,7 +41,7 @@ public final class ViewCreationRequest {
      *
      * @return the diagram element identifier
      */
-    public String getParentElementId() {
+    public UUID getParentElementId() {
         return this.parentElementId;
     }
 
@@ -80,7 +80,7 @@ public final class ViewCreationRequest {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private String parentElementId;
+        private UUID parentElementId;
 
         private UUID descriptionId;
 
@@ -90,7 +90,7 @@ public final class ViewCreationRequest {
             // Prevent instantiation
         }
 
-        public Builder parentElementId(String parentElementId) {
+        public Builder parentElementId(UUID parentElementId) {
             this.parentElementId = Objects.requireNonNull(parentElementId);
             return this;
         }
