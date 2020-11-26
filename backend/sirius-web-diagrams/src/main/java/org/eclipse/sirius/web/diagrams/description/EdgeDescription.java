@@ -34,17 +34,9 @@ import org.eclipse.sirius.web.representations.VariableManager;
 @Immutable
 public final class EdgeDescription {
 
-    public static final String SOURCE_NODE = "sourceNode"; //$NON-NLS-1$
-
-    public static final String TARGET_NODE = "targetNode"; //$NON-NLS-1$
-
-    public static final String COUNT = "count"; //$NON-NLS-1$
-
     private UUID id;
 
     private SynchronizationPolicy synchronizationPolicy;
-
-    private Function<VariableManager, String> idProvider;
 
     private Function<VariableManager, String> targetObjectIdProvider;
 
@@ -82,10 +74,6 @@ public final class EdgeDescription {
 
     public SynchronizationPolicy getSynchronizationPolicy() {
         return this.synchronizationPolicy;
-    }
-
-    public Function<VariableManager, String> getIdProvider() {
-        return this.idProvider;
     }
 
     public Function<VariableManager, String> getTargetObjectIdProvider() {
@@ -161,8 +149,6 @@ public final class EdgeDescription {
 
         private SynchronizationPolicy synchronizationPolicy = SynchronizationPolicy.SYNCHRONIZED;
 
-        private Function<VariableManager, String> idProvider;
-
         private Function<VariableManager, String> targetObjectIdProvider;
 
         private Function<VariableManager, String> targetObjectKindProvider;
@@ -191,11 +177,6 @@ public final class EdgeDescription {
 
         private Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
-        }
-
-        public Builder idProvider(Function<VariableManager, String> idProvider) {
-            this.idProvider = Objects.requireNonNull(idProvider);
-            return this;
         }
 
         public Builder synchronizationPolicy(SynchronizationPolicy synchronizationPolicy) {
@@ -273,7 +254,6 @@ public final class EdgeDescription {
             EdgeDescription edgeDescription = new EdgeDescription();
             edgeDescription.id = Objects.requireNonNull(this.id);
             edgeDescription.synchronizationPolicy = this.synchronizationPolicy;
-            edgeDescription.idProvider = Objects.requireNonNull(this.idProvider);
             edgeDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
             edgeDescription.targetObjectKindProvider = Objects.requireNonNull(this.targetObjectKindProvider);
             edgeDescription.targetObjectLabelProvider = Objects.requireNonNull(this.targetObjectLabelProvider);

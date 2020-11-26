@@ -78,7 +78,6 @@ public class DiagramRendererEdgeTestCases {
 
         // @formatter:off
         DiagramDescription diagramDescription = DiagramDescription.newDiagramDescription(DIAGRAM_DESCRIPTION_ID)
-                .idProvider(variableManager -> UUID.randomUUID())
                 .label("") //$NON-NLS-1$
                 .canCreatePredicate(variableManager -> true)
                 .targetObjectIdProvider(variableManager -> "diagramTargetObjectId") //$NON-NLS-1$
@@ -102,16 +101,13 @@ public class DiagramRendererEdgeTestCases {
         assertThat(diagram.getNodes()).hasSize(2);
 
         Node firstNode = diagram.getNodes().get(0);
-        assertThat(firstNode).extracting(Node::getId).isEqualTo(this.getNodeId(NODE_DESCRIPTION_ID1, FIRST_OBJECT_ID));
-
         Node secondNode = diagram.getNodes().get(1);
-        assertThat(secondNode).extracting(Node::getId).isEqualTo(this.getNodeId(NODE_DESCRIPTION_ID1, SECOND_OBJECT_ID));
 
         assertThat(diagram.getEdges()).hasSize(1);
 
         Edge edge = diagram.getEdges().get(0);
-        assertThat(edge).extracting(Edge::getSourceId).isEqualTo(this.getNodeId(NODE_DESCRIPTION_ID1, FIRST_OBJECT_ID));
-        assertThat(edge).extracting(Edge::getTargetId).isEqualTo(this.getNodeId(NODE_DESCRIPTION_ID1, SECOND_OBJECT_ID));
+        assertThat(edge).extracting(Edge::getSourceId).isEqualTo(firstNode.getId());
+        assertThat(edge).extracting(Edge::getTargetId).isEqualTo(secondNode.getId());
     }
 
     /**
@@ -129,7 +125,6 @@ public class DiagramRendererEdgeTestCases {
 
         // @formatter:off
         DiagramDescription diagramDescription = DiagramDescription.newDiagramDescription(DIAGRAM_DESCRIPTION_ID)
-                .idProvider(variableManager -> UUID.randomUUID())
                 .label("") //$NON-NLS-1$
                 .canCreatePredicate(variableManager -> true)
                 .targetObjectIdProvider(variableManager -> "diagramTargetObjectId") //$NON-NLS-1$
@@ -148,19 +143,13 @@ public class DiagramRendererEdgeTestCases {
         assertThat(diagram.getNodes()).hasSize(4);
 
         Node node1 = diagram.getNodes().get(0);
-        assertThat(node1).extracting(Node::getId).isEqualTo(this.getNodeId(NODE_DESCRIPTION_ID1, FIRST_OBJECT_ID));
         Node node2 = diagram.getNodes().get(1);
-        assertThat(node2).extracting(Node::getId).isEqualTo(this.getNodeId(NODE_DESCRIPTION_ID1, SECOND_OBJECT_ID));
-        Node node3 = diagram.getNodes().get(2);
-        assertThat(node3).extracting(Node::getId).isEqualTo(this.getNodeId(NODE_DESCRIPTION_ID2, FIRST_OBJECT_ID));
-        Node node4 = diagram.getNodes().get(3);
-        assertThat(node4).extracting(Node::getId).isEqualTo(this.getNodeId(NODE_DESCRIPTION_ID2, SECOND_OBJECT_ID));
 
         assertThat(diagram.getEdges()).hasSize(1);
 
         Edge edge = diagram.getEdges().get(0);
-        assertThat(edge).extracting(Edge::getSourceId).isEqualTo(this.getNodeId(NODE_DESCRIPTION_ID1, FIRST_OBJECT_ID));
-        assertThat(edge).extracting(Edge::getTargetId).isEqualTo(this.getNodeId(NODE_DESCRIPTION_ID1, SECOND_OBJECT_ID));
+        assertThat(edge).extracting(Edge::getSourceId).isEqualTo(node1.getId());
+        assertThat(edge).extracting(Edge::getTargetId).isEqualTo(node2.getId());
     }
 
     private NodeDescription getNodeDescription(UUID nodeDescriptionId) {
@@ -190,19 +179,18 @@ public class DiagramRendererEdgeTestCases {
                     .build();
         };
 
-        Function<VariableManager, String> idProvider = variableManager -> {
+        Function<VariableManager, String> targetObjectIdProvider = variableManager -> {
             Object object = variableManager.getVariables().get(VariableManager.SELF);
             if (object instanceof String) {
-                return this.getNodeId(nodeDescriptionId, (String) object);
+                return nodeDescriptionId + "__" +  object; //$NON-NLS-1$
             }
             return null;
         };
 
         return NodeDescription.newNodeDescription(nodeDescriptionId)
-                .idProvider(idProvider)
                 .typeProvider(variableManager -> "") //$NON-NLS-1$
                 .semanticElementsProvider(variableManager -> List.of(FIRST_OBJECT_ID, SECOND_OBJECT_ID))
-                .targetObjectIdProvider(idProvider)
+                .targetObjectIdProvider(targetObjectIdProvider)
                 .targetObjectKindProvider(variableManager -> "") //$NON-NLS-1$
                 .targetObjectLabelProvider(variableManager -> "")//$NON-NLS-1$
                 .labelDescription(labelDescription)
@@ -258,7 +246,6 @@ public class DiagramRendererEdgeTestCases {
 
         Function<VariableManager, Optional<Label>> dummyLabelProvider = variableManager -> Optional.empty();
         return EdgeDescription.newEdgeDescription(EDGE_DESCRIPTION_ID)
-                .idProvider(variableManager -> UUID.randomUUID().toString())
                 .semanticElementsProvider(variableManager -> List.of(FIRST_OBJECT_ID))
                 .sourceNodesProvider(sourceNodesProvider)
                 .targetNodesProvider(targetNodesProvider)
@@ -274,9 +261,5 @@ public class DiagramRendererEdgeTestCases {
                 .deleteHandler(variableManager -> Status.ERROR)
                 .build();
         // @formatter:on
-    }
-
-    private String getNodeId(UUID nodeDescriptionId, String objectId) {
-        return nodeDescriptionId + "_" + objectId; //$NON-NLS-1$
     }
 }

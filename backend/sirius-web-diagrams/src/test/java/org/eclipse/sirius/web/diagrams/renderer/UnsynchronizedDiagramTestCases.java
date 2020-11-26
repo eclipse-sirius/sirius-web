@@ -78,7 +78,7 @@ public class UnsynchronizedDiagramTestCases {
         // @formatter:off
         ViewCreationRequest viewCreationRequest = ViewCreationRequest.newViewCreationRequest()
             .descriptionId(diagramDescription.getNodeDescriptions().get(0).getId())
-            .parentElementId(refreshedDiagram.getId().toString())
+            .parentElementId(refreshedDiagram.getId())
             .targetObjectId(TARGET_OBJECT_ID)
             .build();
         // @formatter:on
@@ -104,13 +104,13 @@ public class UnsynchronizedDiagramTestCases {
         // @formatter:off
         ViewCreationRequest viewCreationRequest = ViewCreationRequest.newViewCreationRequest()
             .descriptionId(diagramDescription.getNodeDescriptions().get(0).getId())
-            .parentElementId(initialDiagram.getId().toString())
+            .parentElementId(initialDiagram.getId())
             .targetObjectId(TARGET_OBJECT_ID)
             .build();
         // @formatter:on
         Diagram diagramAfterFirstNodeCreation = this.render(diagramDescription, List.of(viewCreationRequest), Optional.of(initialDiagram));
         UUID descriptionId = diagramDescription.getNodeDescriptions().get(0).getChildNodeDescriptions().get(0).getId();
-        String parentNodeId = diagramAfterFirstNodeCreation.getNodes().get(0).getId();
+        UUID parentNodeId = diagramAfterFirstNodeCreation.getNodes().get(0).getId();
         // @formatter:off
         ViewCreationRequest childViewCreationRequest = ViewCreationRequest.newViewCreationRequest()
             .descriptionId(descriptionId)
@@ -167,7 +167,6 @@ public class UnsynchronizedDiagramTestCases {
 
         NodeDescription subUnsynchronizedNodeDescription = NodeDescription.newNodeDescription(UUID.nameUUIDFromBytes("subUnsynchronized".getBytes())) //$NON-NLS-1$
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
-                .idProvider(variableManager -> UUID.randomUUID().toString())
                 .typeProvider(variableManager -> NODE_TYPE)
                 .semanticElementsProvider(variableManager -> List.of(new Object()))
                 .targetObjectIdProvider(variableManager -> TARGET_OBJECT_ID)
@@ -182,7 +181,6 @@ public class UnsynchronizedDiagramTestCases {
                 .build();
         NodeDescription unsynchronizedNodeDescription = NodeDescription.newNodeDescription(UUID.nameUUIDFromBytes("unsynchronized".getBytes())) //$NON-NLS-1$
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
-                .idProvider(variableManager -> UUID.randomUUID().toString())
                 .typeProvider(variableManager -> NODE_TYPE)
                 .semanticElementsProvider(variableManager -> List.of(new Object()))
                 .targetObjectIdProvider(variableManager -> TARGET_OBJECT_ID)
@@ -198,7 +196,6 @@ public class UnsynchronizedDiagramTestCases {
 
         NodeDescription synchronizedNodeDescription = NodeDescription.newNodeDescription(UUID.nameUUIDFromBytes("synchronized".getBytes())) //$NON-NLS-1$
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
-                .idProvider(variableManager -> UUID.randomUUID().toString())
                 .typeProvider(variableManager -> NODE_TYPE)
                 .semanticElementsProvider(variableManager -> List.of(new Object()))
                 .targetObjectIdProvider(variableManager -> TARGET_OBJECT_ID)
@@ -213,7 +210,6 @@ public class UnsynchronizedDiagramTestCases {
                 .build();
 
         DiagramDescription diagramDescription = DiagramDescription.newDiagramDescription(UUID.nameUUIDFromBytes("diagram".getBytes())) //$NON-NLS-1$
-                .idProvider(variableManager -> UUID.randomUUID())
                 .label("") //$NON-NLS-1$
                 .canCreatePredicate(variableManager -> true)
                 .targetObjectIdProvider(variableManager -> "diagramTargetObjectId") //$NON-NLS-1$

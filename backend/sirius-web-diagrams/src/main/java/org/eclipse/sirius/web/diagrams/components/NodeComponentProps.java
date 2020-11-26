@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.diagrams.components;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 import org.eclipse.sirius.web.components.IProps;
 import org.eclipse.sirius.web.diagrams.ViewCreationRequest;
@@ -34,20 +35,20 @@ public class NodeComponentProps implements IProps {
 
     private final INodesRequestor nodesRequestor;
 
-    private final boolean isBorderNode;
+    private final NodeContainmentKind containmentKind;
 
     private final DiagramRenderingCache cache;
 
     private final List<ViewCreationRequest> viewCreationRequests;
 
-    private final String parentElementId;
+    private final UUID parentElementId;
 
-    public NodeComponentProps(VariableManager variableManager, NodeDescription nodeDescription, INodesRequestor nodesRequestor, boolean isBorderNode, DiagramRenderingCache cache,
-            List<ViewCreationRequest> viewCreationRequests, String parentElementId) {
+    public NodeComponentProps(VariableManager variableManager, NodeDescription nodeDescription, INodesRequestor nodesRequestor, NodeContainmentKind containmentKind, DiagramRenderingCache cache,
+            List<ViewCreationRequest> viewCreationRequests, UUID parentElementId) {
         this.variableManager = Objects.requireNonNull(variableManager);
         this.nodeDescription = Objects.requireNonNull(nodeDescription);
         this.nodesRequestor = Objects.requireNonNull(nodesRequestor);
-        this.isBorderNode = isBorderNode;
+        this.containmentKind = Objects.requireNonNull(containmentKind);
         this.cache = Objects.requireNonNull(cache);
         this.viewCreationRequests = List.copyOf(Objects.requireNonNull(viewCreationRequests));
         this.parentElementId = Objects.requireNonNull(parentElementId);
@@ -65,8 +66,8 @@ public class NodeComponentProps implements IProps {
         return this.nodesRequestor;
     }
 
-    public boolean isBorderNode() {
-        return this.isBorderNode;
+    public NodeContainmentKind getContainmentKind() {
+        return this.containmentKind;
     }
 
     public DiagramRenderingCache getCache() {
@@ -77,7 +78,7 @@ public class NodeComponentProps implements IProps {
         return this.viewCreationRequests;
     }
 
-    public String getParentElementId() {
+    public UUID getParentElementId() {
         return this.parentElementId;
     }
 

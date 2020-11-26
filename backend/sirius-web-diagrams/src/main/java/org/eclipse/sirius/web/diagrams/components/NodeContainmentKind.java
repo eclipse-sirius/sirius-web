@@ -10,20 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.annotations.graphql;
-
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+package org.eclipse.sirius.web.diagrams.components;
 
 /**
- * The annotation used to indicate that the decorated getter should be considered as an identifier.
+ * Used to distinguish child nodes from border nodes.
  *
  * @author sbegaudeau
  */
-@Target({ ElementType.METHOD, ElementType.TYPE_USE })
-@Retention(RetentionPolicy.RUNTIME)
-public @interface GraphQLID {
-
+public enum NodeContainmentKind {
+    CHILD_NODE, BORDER_NODE
 }

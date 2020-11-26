@@ -88,7 +88,7 @@ public class DiagramConverter {
 
     private void convertNode(Node node, ElkNode parent, Map<String, ElkConnectableShape> connectableShapeIndex, Map<String, ElkGraphElement> id2ElkGraphElements) {
         ElkNode elkNode = ElkGraphFactory.eINSTANCE.createElkNode();
-        elkNode.setIdentifier(node.getId());
+        elkNode.setIdentifier(node.getId().toString());
         elkNode.setProperty(PROPERTY_TYPE, node.getType());
 
         TextBounds textBounds = this.textBoundsService.getBounds(node.getLabel());
@@ -115,14 +115,13 @@ public class DiagramConverter {
 
         this.convertLabel(node.getLabel(), textBounds, elkNode, id2ElkGraphElements, null);
 
-        id2ElkGraphElements.put(node.getId(), elkNode);
+        id2ElkGraphElements.put(node.getId().toString(), elkNode);
     }
 
     private void convertBorderNode(Node borderNode, ElkNode elkNode, Map<String, ElkConnectableShape> connectableShapeIndex, Map<String, ElkGraphElement> id2ElkGraphElements) {
         ElkPort elkPort = ElkGraphFactory.eINSTANCE.createElkPort();
-        elkPort.setIdentifier(borderNode.getId());
+        elkPort.setIdentifier(borderNode.getId().toString());
         elkPort.setProperty(PROPERTY_TYPE, borderNode.getType());
-
 
         TextBounds textBounds = this.textBoundsService.getBounds(borderNode.getLabel());
         elkPort.setDimensions(textBounds.getSize().getWidth(), textBounds.getSize().getHeight());
@@ -137,7 +136,7 @@ public class DiagramConverter {
 
         this.convertLabel(borderNode.getLabel(), textBounds, elkPort, id2ElkGraphElements, null);
 
-        id2ElkGraphElements.put(borderNode.getId(), elkPort);
+        id2ElkGraphElements.put(borderNode.getId().toString(), elkPort);
     }
 
     private void convertLabel(Label label, TextBounds textBounds, ElkGraphElement elkGraphElement, Map<String, ElkGraphElement> id2ElkGraphElements, EdgeLabelPlacement placement) {
@@ -165,10 +164,10 @@ public class DiagramConverter {
 
     private void convertEdge(Edge edge, ElkNode elkDiagram, Map<String, ElkConnectableShape> connectableShapeIndex, Map<String, ElkGraphElement> id2ElkGraphElements) {
         ElkEdge elkEdge = ElkGraphFactory.eINSTANCE.createElkEdge();
-        elkEdge.setIdentifier(edge.getId());
+        elkEdge.setIdentifier(edge.getId().toString());
 
-        ElkConnectableShape source = connectableShapeIndex.get(edge.getSourceId());
-        ElkConnectableShape target = connectableShapeIndex.get(edge.getTargetId());
+        ElkConnectableShape source = connectableShapeIndex.get(edge.getSourceId().toString());
+        ElkConnectableShape target = connectableShapeIndex.get(edge.getTargetId().toString());
 
         if (source != null) {
             elkEdge.getSources().add(source);
@@ -197,7 +196,7 @@ public class DiagramConverter {
         Optional.ofNullable(edge.getCenterLabel()).ifPresent(label -> this.convertLabel(label, this.textBoundsService.getBounds(label), elkEdge, id2ElkGraphElements, EdgeLabelPlacement.CENTER));
         Optional.ofNullable(edge.getEndLabel()).ifPresent(label -> this.convertLabel(label, this.textBoundsService.getBounds(label), elkEdge, id2ElkGraphElements, EdgeLabelPlacement.TAIL));
 
-        id2ElkGraphElements.put(edge.getId(), elkEdge);
+        id2ElkGraphElements.put(edge.getId().toString(), elkEdge);
     }
 
 }

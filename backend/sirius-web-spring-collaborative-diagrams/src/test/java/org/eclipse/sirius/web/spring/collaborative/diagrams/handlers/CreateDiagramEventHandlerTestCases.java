@@ -49,7 +49,6 @@ public class CreateDiagramEventHandlerTestCases {
                 // @formatter:off
                 DiagramDescription diagramDescription = DiagramDescription.newDiagramDescription(UUID.randomUUID())
                         .label("label") //$NON-NLS-1$
-                        .idProvider(variableManager -> UUID.randomUUID())
                         .canCreatePredicate(variableManager -> Boolean.TRUE)
                         .edgeDescriptions(new ArrayList<>())
                         .labelProvider(variableManager -> "label") //$NON-NLS-1$

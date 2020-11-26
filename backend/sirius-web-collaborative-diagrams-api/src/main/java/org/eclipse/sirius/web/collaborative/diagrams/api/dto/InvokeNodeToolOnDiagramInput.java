@@ -32,7 +32,7 @@ public final class InvokeNodeToolOnDiagramInput implements IDiagramInput {
 
     private UUID representationId;
 
-    private String diagramElementId;
+    private UUID diagramElementId;
 
     private String toolId;
 
@@ -54,7 +54,7 @@ public final class InvokeNodeToolOnDiagramInput implements IDiagramInput {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public String getDiagramElementId() {
+    public UUID getDiagramElementId() {
         return this.diagramElementId;
     }
 

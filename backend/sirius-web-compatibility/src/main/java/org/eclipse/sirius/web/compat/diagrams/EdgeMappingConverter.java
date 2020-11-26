@@ -37,7 +37,6 @@ import org.eclipse.sirius.web.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.web.diagrams.description.LabelDescription;
 import org.eclipse.sirius.web.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.web.diagrams.description.NodeDescription;
-import org.eclipse.sirius.web.diagrams.elements.NodeElementProps;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
 import org.eclipse.sirius.web.representations.VariableManager;
 import org.eclipse.sirius.web.services.api.objects.IEditService;
@@ -70,33 +69,6 @@ public class EdgeMappingConverter {
     }
 
     public EdgeDescription convert(EdgeMapping edgeMapping) {
-        Function<VariableManager, String> idProvider = variableManager -> {
-            // @formatter:off
-            var sourceId = Optional.of(variableManager.getVariables().get(EdgeDescription.SOURCE_NODE))
-                    .filter(Element.class::isInstance)
-                    .map(Element.class::cast)
-                    .map(Element::getProps)
-                    .filter(NodeElementProps.class::isInstance)
-                    .map(NodeElementProps.class::cast)
-                    .map(NodeElementProps::getId)
-                    .orElse(""); //$NON-NLS-1$
-
-            var targetId = Optional.of(variableManager.getVariables().get(EdgeDescription.TARGET_NODE))
-                    .filter(Element.class::isInstance)
-                    .map(Element.class::cast)
-                    .map(Element::getProps)
-                    .filter(NodeElementProps.class::isInstance)
-                    .map(NodeElementProps.class::cast)
-                    .map(NodeElementProps::getId)
-                    .orElse(""); //$NON-NLS-1$
-
-            var count = Optional.of(variableManager.getVariables().get(EdgeDescription.COUNT))
-                    .filter(Integer.class::isInstance).orElse(0);
-            // @formatter:on
-
-            return sourceId + " --> " + targetId + " - " + count; //$NON-NLS-1$ //$NON-NLS-2$
-        };
-
         Function<VariableManager, String> targetIdProvider = variableManager -> {
             return variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null);
         };
@@ -141,7 +113,6 @@ public class EdgeMappingConverter {
         var deleteHandler = toolConverter.createDeleteToolHandler(edgeMapping.getDeletionDescription());
 
         return EdgeDescription.newEdgeDescription(UUID.fromString(this.identifierProvider.getIdentifier(edgeMapping)))
-                .idProvider(idProvider)
                 .targetObjectIdProvider(targetIdProvider)
                 .targetObjectKindProvider(targetKindProvider)
                 .targetObjectLabelProvider(targetLabelProvider)
@@ -163,9 +134,9 @@ public class EdgeMappingConverter {
             String idSuffix) {
         return variableManager -> {
             return Optional.ofNullable(siriusBasicLabelStyleDescription).map(siriusLabelStyleDescription -> {
-                String ownerId = variableManager.get(LabelDescription.OWNER_ID, String.class).orElse(""); //$NON-NLS-1$
+                UUID ownerId = variableManager.get(LabelDescription.OWNER_ID, UUID.class).orElse(null);
 
-                String labelId = ownerId + idSuffix;
+                String labelId = ownerId.toString() + idSuffix;
                 String labelExpression = Optional.ofNullable(siriusLabelStyleDescription).map(BasicLabelStyleDescription::getLabelExpression).orElse(""); //$NON-NLS-1$
                 LabelStyleDescription labelStyleDescription = labelStyleDescriptionConverter.convert(siriusLabelStyleDescription);
 

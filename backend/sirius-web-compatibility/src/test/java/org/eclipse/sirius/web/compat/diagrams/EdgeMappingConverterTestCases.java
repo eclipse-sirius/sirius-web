@@ -99,7 +99,6 @@ public class EdgeMappingConverterTestCases {
                 .build();
 
         return NodeDescription.newNodeDescription(id)
-                .idProvider(variableManager -> "") //$NON-NLS-1$
                 .typeProvider(variableManager -> "") //$NON-NLS-1$
                 .targetObjectIdProvider(variableManager -> "") //$NON-NLS-1$
                 .targetObjectKindProvider(variableManager -> "") //$NON-NLS-1$

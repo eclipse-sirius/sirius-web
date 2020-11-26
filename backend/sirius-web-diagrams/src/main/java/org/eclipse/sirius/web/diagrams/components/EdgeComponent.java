@@ -17,6 +17,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.eclipse.sirius.web.components.Element;
 import org.eclipse.sirius.web.components.Fragment;
@@ -40,6 +41,8 @@ import org.eclipse.sirius.web.representations.VariableManager;
  * @author sbegaudeau
  */
 public class EdgeComponent implements IComponent {
+
+    private static final String INVALID_NODE_ID = "INVALID_NODE_ID"; //$NON-NLS-1$
 
     private final EdgeComponentProps props;
 
@@ -89,11 +92,7 @@ public class EdgeComponent implements IComponent {
 
                     for (Element sourceNode : sourceNodes) {
                         for (Element targetNode : targetNodes) {
-                            VariableManager idVariableManager = edgeVariableManager.createChild();
-                            idVariableManager.put(EdgeDescription.SOURCE_NODE, sourceNode);
-                            idVariableManager.put(EdgeDescription.TARGET_NODE, targetNode);
-                            idVariableManager.put(EdgeDescription.COUNT, count);
-                            String id = edgeDescription.getIdProvider().apply(idVariableManager);
+                            UUID id = this.computeEdgeId(sourceNode, targetNode, count);
 
                             EdgeStyle style = edgeDescription.getStyleProvider().apply(edgeVariableManager);
 
@@ -103,8 +102,8 @@ public class EdgeComponent implements IComponent {
                             Label centerLabel = edgeDescription.getCenterLabelProvider().apply(labelVariableManager).orElse(null);
                             Label endLabel = edgeDescription.getEndLabelProvider().apply(labelVariableManager).orElse(null);
 
-                            String sourceId = this.getId(sourceNode);
-                            String targetId = this.getId(targetNode);
+                            UUID sourceId = this.getId(sourceNode);
+                            UUID targetId = this.getId(targetNode);
 
                             // @formatter:off
                             EdgeElementProps edgeElementProps = EdgeElementProps.newEdgeElementProps(id)
@@ -136,6 +135,26 @@ public class EdgeComponent implements IComponent {
         return new Fragment(fragmentProps);
     }
 
+    private UUID computeEdgeId(Element sourceNode, Element targetNode, int count) {
+        // @formatter:off
+        var sourceId = Optional.of(sourceNode.getProps())
+                .filter(NodeElementProps.class::isInstance)
+                .map(NodeElementProps.class::cast)
+                .map(NodeElementProps::getId)
+                .map(UUID::toString)
+                .orElse(INVALID_NODE_ID);
+
+        var targetId = Optional.of(targetNode.getProps())
+                .filter(NodeElementProps.class::isInstance)
+                .map(NodeElementProps.class::cast)
+                .map(NodeElementProps::getId)
+                .map(UUID::toString)
+                .orElse(INVALID_NODE_ID);
+        // @formatter:on
+        String rawIdentifier = sourceId + " --> " + targetId + " - " + count; //$NON-NLS-1$ //$NON-NLS-2$
+        return UUID.nameUUIDFromBytes(rawIdentifier.getBytes());
+    }
+
     private boolean hasNodeCandidates(List<NodeDescription> nodeDescriptions, DiagramRenderingCache cache) {
         // @formatter:off
         return nodeDescriptions.stream()
@@ -148,13 +167,13 @@ public class EdgeComponent implements IComponent {
         // @formatter:on
     }
 
-    private String getId(Element nodeElement) {
+    private UUID getId(Element nodeElement) {
         // @formatter:off
         return Optional.of(nodeElement.getProps())
                 .filter(NodeElementProps.class::isInstance)
                 .map(NodeElementProps.class::cast)
                 .map(NodeElementProps::getId)
-                .orElse(""); //$NON-NLS-1$
+                .orElse(UUID.randomUUID());
         // @formatter:on
     }
 

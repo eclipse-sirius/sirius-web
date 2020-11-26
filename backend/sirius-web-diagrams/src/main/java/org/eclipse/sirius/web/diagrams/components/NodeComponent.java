@@ -91,7 +91,7 @@ public class NodeComponent implements IComponent {
     }
 
     private boolean existsViewCreationRequested(String targetObjectId) {
-        String parentElementId = this.props.getParentElementId();
+        UUID parentElementId = this.props.getParentElementId();
         UUID nodeDescriptionId = this.props.getNodeDescription().getId();
         // @formatter:off
         return this.props.getViewCreationRequests().stream()
@@ -103,10 +103,10 @@ public class NodeComponent implements IComponent {
 
     private Element doRender(VariableManager nodeVariableManager, String targetObjectId, Optional<Node> optionalPreviousNode) {
         NodeDescription nodeDescription = this.props.getNodeDescription();
-        boolean isBorderNode = this.props.isBorderNode();
+        NodeContainmentKind containmentKind = this.props.getContainmentKind();
         DiagramRenderingCache cache = this.props.getCache();
 
-        String nodeId = optionalPreviousNode.map(Node::getId).orElseGet(() -> nodeDescription.getIdProvider().apply(nodeVariableManager));
+        UUID nodeId = optionalPreviousNode.map(Node::getId).orElseGet(() -> this.computeNodeId(targetObjectId));
         String type = nodeDescription.getTypeProvider().apply(nodeVariableManager);
         String targetObjectKind = nodeDescription.getTargetObjectKindProvider().apply(nodeVariableManager);
         String targetObjectLabel = nodeDescription.getTargetObjectLabelProvider().apply(nodeVariableManager);
@@ -125,7 +125,7 @@ public class NodeComponent implements IComponent {
                     List<Node> previousBorderNodes = optionalPreviousNode.map(previousNode -> diagramElementRequestor.getBorderNodes(previousNode, borderNodeDescription))
                             .orElse(List.of());
                     INodesRequestor borderNodesRequestor = new NodesRequestor(previousBorderNodes);
-                    var nodeComponentProps = new NodeComponentProps(nodeVariableManager, borderNodeDescription, borderNodesRequestor, true, cache, this.props.getViewCreationRequests(), nodeId);
+                    var nodeComponentProps = new NodeComponentProps(nodeVariableManager, borderNodeDescription, borderNodesRequestor, NodeContainmentKind.BORDER_NODE, cache, this.props.getViewCreationRequests(), nodeId);
                     return new Element(NodeComponent.class, nodeComponentProps);
                 })
                 .collect(Collectors.toList());
@@ -135,7 +135,7 @@ public class NodeComponent implements IComponent {
                     List<Node> previousChildNodes = optionalPreviousNode.map(previousNode -> diagramElementRequestor.getChildNodes(previousNode, childNodeDescription))
                             .orElse(List.of());
                     INodesRequestor childNodesRequestor = new NodesRequestor(previousChildNodes);
-                    var nodeComponentProps = new NodeComponentProps(nodeVariableManager, childNodeDescription, childNodesRequestor, false, cache, this.props.getViewCreationRequests(), nodeId);
+                    var nodeComponentProps = new NodeComponentProps(nodeVariableManager, childNodeDescription, childNodesRequestor, NodeContainmentKind.CHILD_NODE, cache, this.props.getViewCreationRequests(), nodeId);
                     return new Element(NodeComponent.class, nodeComponentProps);
                 })
                 .collect(Collectors.toList());
@@ -153,7 +153,7 @@ public class NodeComponent implements IComponent {
                 .targetObjectKind(targetObjectKind)
                 .targetObjectLabel(targetObjectLabel)
                 .descriptionId(nodeDescription.getId())
-                .borderNode(isBorderNode)
+                .borderNode(containmentKind == NodeContainmentKind.BORDER_NODE)
                 .style(style)
                 .position(Position.UNDEFINED)
                 .size(Size.UNDEFINED)
@@ -162,6 +162,15 @@ public class NodeComponent implements IComponent {
         // @formatter:on
 
         return new Element(NodeElementProps.TYPE, nodeElementProps);
+    }
+
+    private UUID computeNodeId(String targetObjectId) {
+        UUID parentElementId = this.props.getParentElementId();
+        NodeDescription nodeDescription = this.props.getNodeDescription();
+        NodeContainmentKind containmentKind = this.props.getContainmentKind();
+
+        String rawIdentifier = parentElementId.toString() + containmentKind.toString() + nodeDescription.getId().toString() + targetObjectId;
+        return UUID.nameUUIDFromBytes(rawIdentifier.getBytes());
     }
 
 }

@@ -89,7 +89,6 @@ public class DiagramRendererNodeTestCases {
         assertThat(diagram.getTargetObjectId()).isNotBlank();
 
         assertThat(diagram.getNodes()).hasSize(1);
-        assertThat(diagram.getNodes()).extracting(Node::getId).noneMatch(String::isBlank);
         assertThat(diagram.getNodes()).extracting(Node::getTargetObjectId).noneMatch(String::isBlank);
         assertThat(diagram.getNodes()).extracting(Node::getDescriptionId).noneMatch(t -> t.toString().isBlank());
         assertThat(diagram.getNodes()).extracting(Node::getType).noneMatch(String::isBlank);
@@ -127,7 +126,6 @@ public class DiagramRendererNodeTestCases {
         assertThat(diagram.getTargetObjectId()).isNotBlank();
 
         assertThat(diagram.getNodes()).hasSize(1);
-        assertThat(diagram.getNodes()).extracting(Node::getId).noneMatch(String::isBlank);
         assertThat(diagram.getNodes()).extracting(Node::getTargetObjectId).noneMatch(String::isBlank);
         assertThat(diagram.getNodes()).extracting(Node::getDescriptionId).noneMatch(t -> t.toString().isBlank());
         assertThat(diagram.getNodes()).extracting(Node::getType).noneMatch(String::isBlank);
@@ -167,7 +165,6 @@ public class DiagramRendererNodeTestCases {
                 .build();
 
         NodeDescription nodeDescription = NodeDescription.newNodeDescription(NODE_DESCRIPTION_ID)
-                .idProvider(variableManager -> UUID.randomUUID().toString())
                 .typeProvider(typeProvider)
                 .semanticElementsProvider(variableManager -> List.of(new Object()))
                 .targetObjectIdProvider(variableManager -> "targetObjectId") //$NON-NLS-1$
@@ -182,7 +179,6 @@ public class DiagramRendererNodeTestCases {
                 .build();
 
         DiagramDescription diagramDescription = DiagramDescription.newDiagramDescription(UUID.randomUUID())
-                .idProvider(variableManager -> UUID.randomUUID())
                 .label("") //$NON-NLS-1$
                 .canCreatePredicate(variableManager -> true)
                 .targetObjectIdProvider(variableManager -> "diagramTargetObjectId") //$NON-NLS-1$

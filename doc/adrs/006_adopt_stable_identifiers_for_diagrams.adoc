@@ -1,0 +1,63 @@
+= ADR-006 - Adopt stable identifiers for diagrams
+
+== Context
+
+After the improvements of the ADR 003, we are now keeping identifiers of diagram elements over time.
+Those identifiers are still randomly computed.
+In order to improve the lifecycle of our diagrams, we should have stable identifiers for diagram elements.
+
+== Decision
+
+=== Diagram
+
+With the improvements of ADR 003, the method `idProvider` on the `DiagramDescription` did not make much sense anymore.
+It will thus be removed and the identifier will be computed by the component directly.
+We will stop using `GetOrCreateRandomIdProvider` to compute diagram identifiers too.
+This class should be removed entirely when the same improvements will be made to the other representations.
+The identifier of the diagram will not be provided in the variable manager anymore.
+It was not very relevant to give this information to specifiers in the first place.
+After all, it does not really make sense to ask specifiers to define a policy to compute internal identifiers of our representations.
+
+
+=== Node
+
+The identifier of a node will now be computed using:
+
+- The identifier of the parent node or diagram (for root nodes)
+- The kind of containment (child node or border node)
+- The identifier of the node description used to create the node
+- The identifier of the semantic element used to create the node
+
+Using those pieces of information, we will rely on `UUID#.#nameUUIDFromBytes` in order to create a stable identifier which will still remain opaque for the frontend.
+Diagrams on the other hand will still have a random UUID since we have no real need for a stable diagram identifier.
+
+The node identifier can now be a proper `UUID`, instead of an `UUID` saved as a `String`, which will impact all the backend code manipulating nodes.
+This should not have any impact on the frontend since all identifiers are serialized as strings when defined as GraphQL IDs.
+The containment kind of a node will not be defined by a boolean on the props of `NodeComponent` but as a proper enum instead.
+Using booleans to express such API can easily cause some confusions.
+
+
+=== Edge
+
+Edges will have stable identifiers too since they rely on node identifiers to compute their own identifiers.
+In a similar fashion as nodes, edges will not need to rely on the `idProvider` of the `EdgeDescription` anymore.
+This method will thus be removed.
+Finally, the identifier of an edge will now be a proper `UUID` too.
+
+
+== Status
+
+Accepted.
+
+
+== Consequences
+
+Labels should switch to an opaque identifier too but it can't be done right now.
+The frontend has been "contaminated" since the generation strategy of the label identifier has been copied from the backend.
+As a result, various improvements need to be done in the support for the direct edit in order to remove this code.
+
+While refactoring the code, it appeared that `XxxEdgeLabelProvider` on `EdgeDescription` do not make any sense.
+Specifiers should not have to arbitrary create diagram elements, just provide information to let the `DiagramRenderer` do it.
+Otherwise, they would have to handle countless of tiny details as our API evolve over time.
+The creation of labels on edges should rely on the same API as the labels on nodes.
+There are no need to have two different APIs for the same need.

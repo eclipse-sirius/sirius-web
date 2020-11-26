@@ -152,10 +152,10 @@ public class DiagramAssert extends AbstractAssert<DiagramAssert, Diagram> {
     }
 
     private void visitNodeId(List<String> ids, Node node) {
-        if (ids.contains(node.getId())) {
+        if (ids.contains(node.getId().toString())) {
             this.failWithMessage("The id of the node <%s> already exist in the diagram", node.getId()); //$NON-NLS-1$
         }
-        ids.add(node.getId());
+        ids.add(node.getId().toString());
         this.visitLabelId(ids, node.getLabel());
 
         node.getBorderNodes().forEach(borderNode -> this.visitNodeId(ids, borderNode));
@@ -163,10 +163,10 @@ public class DiagramAssert extends AbstractAssert<DiagramAssert, Diagram> {
     }
 
     private void visitEdgeId(List<String> ids, Edge edge) {
-        if (ids.contains(edge.getId())) {
+        if (ids.contains(edge.getId().toString())) {
             this.failWithMessage("The id of the edge <%s> already exist in the diagram", edge.getId()); //$NON-NLS-1$
         }
-        ids.add(edge.getId());
+        ids.add(edge.getId().toString());
 
         this.visitLabelId(ids, edge.getBeginLabel());
         this.visitLabelId(ids, edge.getCenterLabel());

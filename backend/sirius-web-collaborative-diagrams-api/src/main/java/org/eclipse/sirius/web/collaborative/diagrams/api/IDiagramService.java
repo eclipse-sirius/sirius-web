@@ -28,8 +28,8 @@ public interface IDiagramService {
 
     Optional<Diagram> findById(UUID diagramId);
 
-    Optional<Node> findNodeById(Diagram diagram, String nodeId);
+    Optional<Node> findNodeById(Diagram diagram, UUID nodeId);
 
-    Optional<Edge> findEdgeById(Diagram diagram, String edgeId);
+    Optional<Edge> findEdgeById(Diagram diagram, UUID edgeId);
 
 }

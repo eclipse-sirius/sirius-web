@@ -34,7 +34,7 @@ public final class NodeElementProps implements IProps {
 
     public static final String TYPE = "Node"; //$NON-NLS-1$
 
-    private String id;
+    private UUID id;
 
     private String type;
 
@@ -60,7 +60,7 @@ public final class NodeElementProps implements IProps {
         // Prevent instantiation
     }
 
-    public String getId() {
+    public UUID getId() {
         return this.id;
     }
 
@@ -105,7 +105,7 @@ public final class NodeElementProps implements IProps {
         return this.children;
     }
 
-    public static Builder newNodeElementProps(String id) {
+    public static Builder newNodeElementProps(UUID id) {
         return new Builder(id);
     }
 
@@ -122,7 +122,7 @@ public final class NodeElementProps implements IProps {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private String id;
+        private UUID id;
 
         private String type;
 
@@ -144,7 +144,7 @@ public final class NodeElementProps implements IProps {
 
         private List<Element> children;
 
-        private Builder(String id) {
+        private Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
         }
 

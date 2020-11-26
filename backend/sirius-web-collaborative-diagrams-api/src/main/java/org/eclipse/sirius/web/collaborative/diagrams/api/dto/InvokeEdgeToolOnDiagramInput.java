@@ -33,9 +33,9 @@ public final class InvokeEdgeToolOnDiagramInput implements IDiagramInput {
 
     private UUID representationId;
 
-    private String diagramSourceElementId;
+    private UUID diagramSourceElementId;
 
-    private String diagramTargetElementId;
+    private UUID diagramTargetElementId;
 
     private String toolId;
 
@@ -57,14 +57,14 @@ public final class InvokeEdgeToolOnDiagramInput implements IDiagramInput {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public String getDiagramSourceElementId() {
+    public UUID getDiagramSourceElementId() {
         return this.diagramSourceElementId;
     }
 
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public String getDiagramTargetElementId() {
+    public UUID getDiagramTargetElementId() {
         return this.diagramTargetElementId;
     }
 

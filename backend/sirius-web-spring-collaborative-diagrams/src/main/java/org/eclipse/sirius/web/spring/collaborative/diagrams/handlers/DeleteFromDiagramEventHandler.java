@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
@@ -106,7 +107,7 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
         List<String> errors = new ArrayList<>();
         boolean atLeastOneOk = false;
         Diagram diagram = diagramContext.getDiagram();
-        for (String edgeId : diagramInput.getEdgeIds()) {
+        for (UUID edgeId : diagramInput.getEdgeIds()) {
             var optionalElement = this.diagramService.findEdgeById(diagram, edgeId);
             if (optionalElement.isPresent()) {
                 Status status = this.invokeDeleteEdgeTool(optionalElement.get(), editingContext, diagramContext);
@@ -114,11 +115,11 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
                     atLeastOneOk = true;
                 }
             } else {
-                String message = this.messageService.edgeNotFound(edgeId);
+                String message = this.messageService.edgeNotFound(edgeId.toString());
                 errors.add(message);
             }
         }
-        for (String nodeId : diagramInput.getNodeIds()) {
+        for (UUID nodeId : diagramInput.getNodeIds()) {
             var optionalElement = this.diagramService.findNodeById(diagram, nodeId);
             if (optionalElement.isPresent()) {
                 Status status = this.invokeDeleteNodeTool(optionalElement.get(), editingContext, diagramContext);
@@ -126,7 +127,7 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
                     atLeastOneOk = true;
                 }
             } else {
-                String message = this.messageService.nodeNotFound(nodeId);
+                String message = this.messageService.nodeNotFound(nodeId.toString());
                 errors.add(message);
             }
         }
@@ -166,7 +167,7 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
                 this.logger.debug(message);
             }
         } else {
-            String message = this.messageService.nodeDescriptionNotFound(node.getId());
+            String message = this.messageService.nodeDescriptionNotFound(node.getId().toString());
             this.logger.debug(message);
         }
         return result;
@@ -189,7 +190,7 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
                 this.logger.debug(message);
             }
         } else {
-            String message = this.messageService.edgeDescriptionNotFound(edge.getId());
+            String message = this.messageService.edgeDescriptionNotFound(edge.getId().toString());
             this.logger.debug(message);
         }
         return result;

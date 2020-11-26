@@ -66,9 +66,9 @@ public class LayoutedDiagramProviderTestCases {
 
     private static final UUID DIAGRAM_ID = UUID.randomUUID();
 
-    private static final String FIRST_NODE_ID = "firstNodeId"; //$NON-NLS-1$
+    private static final UUID FIRST_NODE_ID = UUID.randomUUID();
 
-    private static final String FIRST_EDGE_ID = "firstEdgeId"; //$NON-NLS-1$
+    private static final UUID FIRST_EDGE_ID = UUID.randomUUID();
 
     @Test
     public void testLayoutedDiagramProvider() {
@@ -104,7 +104,7 @@ public class LayoutedDiagramProviderTestCases {
 
         Node node = originalDiagram.getNodes().get(0);
         ElkNode elkNode = ElkGraphFactory.eINSTANCE.createElkNode();
-        elkNode.setIdentifier(node.getId());
+        elkNode.setIdentifier(node.getId().toString());
         elkNode.setDimensions(NODE_WIDTH, NODE_HEIGHT);
         elkNode.setX(NODE_X);
         elkNode.setY(NODE_Y);
@@ -120,10 +120,10 @@ public class LayoutedDiagramProviderTestCases {
 
         id2ElkGraphElements.put(elkNode.getIdentifier(), elkNode);
 
-        String edgeId = originalDiagram.getEdges().get(0).getId();
+        UUID edgeId = originalDiagram.getEdges().get(0).getId();
 
         ElkEdge elkEdge = ElkGraphFactory.eINSTANCE.createElkEdge();
-        elkEdge.setIdentifier(edgeId);
+        elkEdge.setIdentifier(edgeId.toString());
         elkEdge.getSources().add(elkNode);
         elkEdge.getTargets().add(elkNode);
         elkEdge.setContainingNode(elkDiagram);

@@ -47,7 +47,7 @@ public class DiagramService implements IDiagramService {
     }
 
     @Override
-    public Optional<Node> findNodeById(Diagram diagram, String nodeId) {
+    public Optional<Node> findNodeById(Diagram diagram, UUID nodeId) {
         return this.findNode(node -> Objects.equals(node.getId(), nodeId), diagram.getNodes());
     }
 
@@ -67,7 +67,7 @@ public class DiagramService implements IDiagramService {
     }
 
     @Override
-    public Optional<Edge> findEdgeById(Diagram diagram, String edgeId) {
+    public Optional<Edge> findEdgeById(Diagram diagram, UUID edgeId) {
         return diagram.getEdges().stream().filter(edge -> Objects.equals(edgeId, edge.getId())).findFirst();
     }
 

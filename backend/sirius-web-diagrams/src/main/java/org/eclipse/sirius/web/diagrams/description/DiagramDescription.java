@@ -50,8 +50,6 @@ public final class DiagramDescription implements IRepresentationDescription {
 
     private String label;
 
-    private Function<VariableManager, UUID> idProvider;
-
     private Function<VariableManager, String> targetObjectIdProvider;
 
     private Predicate<VariableManager> canCreatePredicate;
@@ -81,10 +79,6 @@ public final class DiagramDescription implements IRepresentationDescription {
     @GraphQLNonNull
     public String getLabel() {
         return this.label;
-    }
-
-    public Function<VariableManager, UUID> getIdProvider() {
-        return this.idProvider;
     }
 
     public Function<VariableManager, String> getTargetObjectIdProvider() {
@@ -133,8 +127,6 @@ public final class DiagramDescription implements IRepresentationDescription {
 
         private String label;
 
-        private Function<VariableManager, UUID> idProvider;
-
         private Function<VariableManager, String> targetObjectIdProvider;
 
         private Predicate<VariableManager> canCreatePredicate;
@@ -153,11 +145,6 @@ public final class DiagramDescription implements IRepresentationDescription {
 
         public Builder label(String label) {
             this.label = Objects.requireNonNull(label);
-            return this;
-        }
-
-        public Builder idProvider(Function<VariableManager, UUID> idProvider) {
-            this.idProvider = Objects.requireNonNull(idProvider);
             return this;
         }
 
@@ -195,7 +182,6 @@ public final class DiagramDescription implements IRepresentationDescription {
             DiagramDescription diagramDescription = new DiagramDescription();
             diagramDescription.id = Objects.requireNonNull(this.id);
             diagramDescription.label = Objects.requireNonNull(this.label);
-            diagramDescription.idProvider = Objects.requireNonNull(this.idProvider);
             diagramDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
             diagramDescription.canCreatePredicate = Objects.requireNonNull(this.canCreatePredicate);
             diagramDescription.labelProvider = Objects.requireNonNull(this.labelProvider);

@@ -94,7 +94,6 @@ public class ContainerMappingConverter {
                 .build();
         // @formatter:on
 
-        Function<VariableManager, String> containerIdProvider = variableManager -> UUID.randomUUID().toString();
         Function<VariableManager, String> semanticTargetIdProvider = variableManager -> {
             return variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null);
         };
@@ -143,7 +142,6 @@ public class ContainerMappingConverter {
 
         // @formatter:off
         NodeDescription description = NodeDescription.newNodeDescription(UUID.fromString(this.identifierProvider.getIdentifier(containerMapping)))
-                .idProvider(containerIdProvider)
                 .typeProvider(typeProvider)
                 .targetObjectIdProvider(semanticTargetIdProvider)
                 .targetObjectKindProvider(semanticTargetKindProvider)
