@@ -138,6 +138,10 @@ public final class EdgeDescription {
         return new Builder(id);
     }
 
+    public static Builder newEdgeDescription(EdgeDescription edgeDescription) {
+        return new Builder(edgeDescription);
+    }
+
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, sourceNodeDescriptionCount: {2}, targetNodeDescriptionCount: {3}'}'"; //$NON-NLS-1$
@@ -183,6 +187,24 @@ public final class EdgeDescription {
 
         private Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
+        }
+
+        private Builder(EdgeDescription edgeDescription) {
+            this.id = edgeDescription.id;
+            this.idProvider = edgeDescription.idProvider;
+            this.targetObjectIdProvider = edgeDescription.targetObjectIdProvider;
+            this.targetObjectKindProvider = edgeDescription.targetObjectKindProvider;
+            this.targetObjectLabelProvider = edgeDescription.targetObjectLabelProvider;
+            this.semanticElementsProvider = edgeDescription.semanticElementsProvider;
+            this.beginLabelProvider = edgeDescription.beginLabelProvider;
+            this.centerLabelProvider = edgeDescription.centerLabelProvider;
+            this.endLabelProvider = edgeDescription.endLabelProvider;
+            this.sourceNodeDescriptions = edgeDescription.sourceNodeDescriptions;
+            this.targetNodeDescriptions = edgeDescription.targetNodeDescriptions;
+            this.sourceNodesProvider = edgeDescription.sourceNodesProvider;
+            this.targetNodesProvider = edgeDescription.targetNodesProvider;
+            this.styleProvider = edgeDescription.styleProvider;
+            this.deleteHandler = edgeDescription.deleteHandler;
         }
 
         public Builder idProvider(Function<VariableManager, String> idProvider) {
