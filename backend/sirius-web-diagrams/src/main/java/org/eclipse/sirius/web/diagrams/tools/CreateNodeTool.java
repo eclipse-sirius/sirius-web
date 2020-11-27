@@ -102,6 +102,10 @@ public final class CreateNodeTool implements ITool {
         return new Builder(id);
     }
 
+    public static Builder newCreateNodeTool(CreateNodeTool createNodeTool) {
+        return new Builder(createNodeTool);
+    }
+
     /**
      * The builder used to create a tool.
      *
@@ -123,6 +127,15 @@ public final class CreateNodeTool implements ITool {
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
+        }
+
+        public Builder(CreateNodeTool createNodeTool) {
+            this.id = Objects.requireNonNull(createNodeTool.id);
+            this.imageURL = Objects.requireNonNull(createNodeTool.imageURL);
+            this.label = Objects.requireNonNull(createNodeTool.label);
+            this.handler = Objects.requireNonNull(createNodeTool.handler);
+            this.targetDescriptions = Objects.requireNonNull(createNodeTool.targetDescriptions);
+            this.appliesToDiagramRoot = createNodeTool.appliesToDiagramRoot;
         }
 
         public Builder imageURL(String imageURL) {

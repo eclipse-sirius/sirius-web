@@ -142,6 +142,10 @@ public final class NodeDescription {
         return new Builder(id);
     }
 
+    public static Builder newNodeDescription(NodeDescription nodeDescription) {
+        return new Builder(nodeDescription);
+    }
+
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, borderNodeDescriptionCount: {2}, childNodeDescriptionCount: {3}'}'"; //$NON-NLS-1$
@@ -185,6 +189,23 @@ public final class NodeDescription {
 
         public Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
+        }
+
+        public Builder(NodeDescription nodeDescription) {
+            this.id = nodeDescription.id;
+            this.synchronised = nodeDescription.synchronised;
+            this.idProvider = nodeDescription.idProvider;
+            this.typeProvider = nodeDescription.typeProvider;
+            this.targetObjectIdProvider = nodeDescription.targetObjectIdProvider;
+            this.targetObjectKindProvider = nodeDescription.targetObjectKindProvider;
+            this.targetObjectLabelProvider = nodeDescription.targetObjectLabelProvider;
+            this.semanticElementsProvider = nodeDescription.semanticElementsProvider;
+            this.labelDescription = nodeDescription.labelDescription;
+            this.styleProvider = nodeDescription.styleProvider;
+            this.borderNodeDescriptions = nodeDescription.borderNodeDescriptions;
+            this.childNodeDescriptions = nodeDescription.childNodeDescriptions;
+            this.labelEditHandler = nodeDescription.labelEditHandler;
+            this.deleteHandler = nodeDescription.deleteHandler;
         }
 
         public Builder idProvider(Function<VariableManager, String> idProvider) {

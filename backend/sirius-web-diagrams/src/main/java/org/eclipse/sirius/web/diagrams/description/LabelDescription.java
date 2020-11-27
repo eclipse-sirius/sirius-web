@@ -69,6 +69,10 @@ public final class LabelDescription {
         return this.styleDescription;
     }
 
+    public static Builder newLabelDescription(LabelDescription labelDescription) {
+        return new Builder(labelDescription);
+    }
+
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}'}'"; //$NON-NLS-1$
@@ -92,6 +96,13 @@ public final class LabelDescription {
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
+        }
+
+        private Builder(LabelDescription labelDescription) {
+            this.id = labelDescription.id;
+            this.idProvider = labelDescription.idProvider;
+            this.textProvider = labelDescription.textProvider;
+            this.styleDescription = labelDescription.styleDescription;
         }
 
         public Builder idProvider(Function<VariableManager, String> idProvider) {
