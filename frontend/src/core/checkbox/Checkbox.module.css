@@ -103,3 +103,20 @@
 .disabled {
   color: var(--daintree-lighten-70);
 }
+
+.label {
+  font-style: var(--font-size-5);
+  color: var(--blue-lagoon);
+}
+
+.label:hover {
+  color: var(--blue-lagoon-darken-20);
+}
+
+.label:active {
+  color: var(--blue-lagoon-lighten-20);
+}
+
+.label.disabled {
+  color: var(--daintree-lighten-70);
+}
