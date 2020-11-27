@@ -26,12 +26,14 @@ const propTypes = {
 };
 
 export const Checkbox = ({ name, checked, onChange, readOnly, disabled, label, 'data-testid': dataTestId }) => {
-  let checkboxClass = `${styles.checkbox}`;
+  let checkboxClass = styles.checkbox;
+  let textClass = styles.label;
   if (checked) {
     checkboxClass = `${checkboxClass} ${styles.checked}`;
   }
   if (readOnly || disabled) {
     checkboxClass = `${checkboxClass} ${styles.disabled}`;
+    textClass = `${textClass} ${styles.disabled}`;
   }
   return (
     <label className={checkboxClass}>
@@ -45,7 +47,7 @@ export const Checkbox = ({ name, checked, onChange, readOnly, disabled, label, '
         data-testid={dataTestId}
       />
       <span className={styles.checkmark}></span>
-      <Text className={styles.label}>{label}</Text>
+      <Text className={textClass}>{label}</Text>
     </label>
   );
 };
