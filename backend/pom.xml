@@ -42,6 +42,7 @@
 		<module>sirius-web-diagrams-layout</module>
 		<module>sirius-web-diagrams-tests</module>
 		<module>sirius-web-diagrams</module>
+		<module>sirius-web-freediagram</module>
 		<module>sirius-web-forms-tests</module>
 		<module>sirius-web-forms</module>
 		<module>sirius-web-graphiql</module>
