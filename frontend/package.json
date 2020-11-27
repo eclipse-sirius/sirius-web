@@ -12,8 +12,11 @@
   },
   "private": true,
   "dependencies": {
-    "@eclipse-sirius/sirius-components": "0.1.31-5961a5d263f14a7facc8bed13181713544ea88fe.0",
+    "@eclipse-sirius/sirius-components": "0.1.31-d05a14912ac0da7302c0255acdacc8b9c2307c0f.0",
+    "@apollo/client": "^3.2.7",
+    "subscriptions-transport-ws": "^0.9.18",
     "airbnb-prop-types": "^2.15.0",
+    "graphql-tag": "^2.11.0",
     "graphql": "14.6.0",
     "graphql.macro": "^1.4.2",
     "prop-types": "^15.7.2",

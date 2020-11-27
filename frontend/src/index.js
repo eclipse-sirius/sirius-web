@@ -11,6 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { GraphQLClient, graphQLHttpClient, graphQLWebSocketClient } from '@eclipse-sirius/sirius-components';
+import { ApolloProvider } from '@apollo/client';
+import { ApolloGraphQLClient } from 'ApolloGraphQLClient';
 import { Main } from 'main/Main';
 import React, { StrictMode } from 'react';
 import ReactDOM from 'react-dom';
@@ -35,12 +37,14 @@ export const App = () => {
 };
 
 ReactDOM.render(
-  <GraphQLClient.Provider value={{ graphQLHttpClient, graphQLWebSocketClient }}>
-    <BrowserRouter>
-      <StrictMode>
-        <App />
-      </StrictMode>
-    </BrowserRouter>
-  </GraphQLClient.Provider>,
+  <ApolloProvider client={ApolloGraphQLClient}>
+    <GraphQLClient.Provider value={{ graphQLHttpClient, graphQLWebSocketClient }}>
+      <BrowserRouter>
+        <StrictMode>
+          <App />
+        </StrictMode>
+      </BrowserRouter>
+    </GraphQLClient.Provider>
+  </ApolloProvider>,
   document.getElementById('root')
 );
