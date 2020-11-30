@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -112,7 +113,7 @@ public class UploadDocumentEventHandlerTestCases {
     @Test
     public void testUploadXMIDocumentFromFile() throws UnsupportedEncodingException {
         String filePath = ProjectImportServiceTestCases.class.getClassLoader().getResource(PATH_TO_XMI_DOCUMENT).getFile();
-        String decodedfilePath = URLDecoder.decode(filePath, "UTF-8"); //$NON-NLS-1$
+        String decodedfilePath = URLDecoder.decode(filePath, StandardCharsets.UTF_8.name());
         File file = new File(decodedfilePath);
         assertThat(file.exists()).isTrue();
         EditingDomain editingDomain = this.uploadDocument(file);
