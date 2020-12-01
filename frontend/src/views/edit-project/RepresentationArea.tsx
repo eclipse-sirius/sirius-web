@@ -33,6 +33,7 @@ export const RepresentationArea = ({
   displayedRepresentation,
   setSelection,
   setSubscribers,
+  closeRepresentation,
 }) => {
   let content;
   if (!displayedRepresentation) {
@@ -56,6 +57,7 @@ export const RepresentationArea = ({
         representations={representations}
         displayedRepresentation={displayedRepresentation}
         setSelection={setSelection}
+        closeRepresentation={closeRepresentation}
       />
       {content}
     </div>

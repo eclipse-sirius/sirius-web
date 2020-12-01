@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Text } from 'core/text/Text';
+import { Exit } from 'icons';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styles from './RepresentationNavigation.module.css';
@@ -20,12 +21,17 @@ const propTypes = {
   displayedRepresentation: PropTypes.object,
   setSelection: PropTypes.func.isRequired,
 };
-export const RepresentationNavigation = ({ representations, displayedRepresentation, setSelection }) => {
+export const RepresentationNavigation = ({
+  representations,
+  displayedRepresentation,
+  setSelection,
+  closeRepresentation,
+}) => {
   return (
     <ul className={styles.representationNavigation}>
       {representations.map((representation) => {
         let labelClassName = styles.label;
-        const isSelected = representation.id === displayedRepresentation.id;
+        const isSelected = representation.id === displayedRepresentation?.id;
         if (isSelected) {
           labelClassName = `${labelClassName} ${styles.selected}`;
         }
@@ -34,10 +40,13 @@ export const RepresentationNavigation = ({ representations, displayedRepresentat
           <li
             key={representation.id}
             className={styles.item}
-            onClick={() => setSelection({ id, label, kind })}
             data-testid={`representation-tab-${label}`}
             data-testselected={isSelected}>
-            <Text className={labelClassName}>{label}</Text>
+            <div onClick={() => setSelection({ id, label, kind })}>
+              <Text className={labelClassName}>{label}</Text>
+            </div>
+
+            <Exit className={styles.exitIcon} title="Exit" onClick={() => closeRepresentation(representation.id)} />
           </li>
         );
       })}

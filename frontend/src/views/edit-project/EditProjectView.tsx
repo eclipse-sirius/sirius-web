@@ -20,6 +20,7 @@ import { EditProjectLoadedView } from 'views/edit-project/EditProjectLoadedView'
 import {
   HANDLE_FETCHED_PROJECT__ACTION,
   HANDLE_REPRESENTATION_RENAMED__ACTION,
+  HANDLE_REPRESENTATION_CLOSED__ACTION,
   HANDLE_SELECTION__ACTION,
   HANDLE_SUBSCRIBERS_UPDATED__ACTION,
   LOADING__STATE,
@@ -109,6 +110,12 @@ export const EditProjectView = () => {
     if (displayedRepresentation && displayedRepresentation.id !== representationId) {
       const pathname = generatePath(routeMatch.path, { projectId, representationId: displayedRepresentation.id });
       history.push({ pathname });
+    } else if (!displayedRepresentation && performance.navigation.type !== PerformanceNavigation.TYPE_RELOAD) {
+      //If the browser was reloaded there is no need to generate a new path
+      const pathname = generatePath(routeMatch.path, { projectId, representationId: undefined });
+      if (history.location.pathname !== pathname) {
+        history.push({ pathname });
+      }
     }
   }, [projectId, routeMatch, history, displayedRepresentation, representationId]);
 
@@ -129,7 +136,7 @@ export const EditProjectView = () => {
    */
   useEffect(() => {
     if (!contextId) {
-      return () => { };
+      return () => {};
     }
     const operationId = graphQLWebSocketClient.generateOperationId();
 
@@ -175,6 +182,14 @@ export const EditProjectView = () => {
     [dispatch]
   );
 
+  const closeRepresentation = useCallback(
+    (representationId) => {
+      const action = { type: HANDLE_REPRESENTATION_CLOSED__ACTION, representationId };
+      dispatch(action);
+    },
+    [dispatch]
+  );
+
   if (!context) {
     return <ErrorView message="The requested project does not exist" />;
   }
@@ -192,6 +207,7 @@ export const EditProjectView = () => {
       selection={selection}
       setSelection={setSelection}
       setSubscribers={setSubscribers}
+      closeRepresentation={closeRepresentation}
     />
   );
 };

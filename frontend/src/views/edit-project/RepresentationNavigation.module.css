@@ -17,6 +17,8 @@
 }
 
 .item {
+  display: flex;
+  flex-direction: row;
   padding: 8px;
   border-right: 1px solid var(--blue-lagoon);
 }
@@ -25,10 +27,23 @@
   font-size: var(--font-size-5);
   font-weight: var(--font-weight-bold);
   color: var(--blue-lagoon-lighten-60);
+  cursor: pointer;
 }
 .label:hover {
   color: var(--blue-lagoon-lighten-10);
 }
 .selected {
   color: var(--blue-lagoon-lighten-10);
+}
+
+.exitIcon {
+  stroke: var(--blue-lagoon-lighten-60);
+  fill: var(--blue-lagoon-lighten-60);
+  height: 15px;
+}
+.exitIcon:hover,
+.exitIcon:focus {
+  stroke: var(--blue-lagoon-lighten-10);
+  fill: var(--blue-lagoon-lighten-10);
+  background-color: var(--white);
 }

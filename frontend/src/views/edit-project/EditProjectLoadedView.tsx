@@ -42,6 +42,7 @@ export const EditProjectLoadedView = ({
   displayedRepresentation,
   setSelection,
   setSubscribers,
+  closeRepresentation,
 }) => {
   const explorer = (
     <ExplorerWebSocketContainer
@@ -58,6 +59,7 @@ export const EditProjectLoadedView = ({
       displayedRepresentation={displayedRepresentation}
       setSelection={setSelection}
       setSubscribers={setSubscribers}
+      closeRepresentation={closeRepresentation}
     />
   );
   let objectId = undefined;

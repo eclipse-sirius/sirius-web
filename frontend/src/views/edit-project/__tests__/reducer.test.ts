@@ -20,6 +20,7 @@ import {
   HANDLE_SELECTION__ACTION,
   HANDLE_REPRESENTATION_RENAMED__ACTION,
   HANDLE_SUBSCRIBERS_UPDATED__ACTION,
+  HANDLE_REPRESENTATION_CLOSED__ACTION,
 } from '../machine';
 import { initialState, reducer } from '../reducer';
 
@@ -54,6 +55,32 @@ const projectLoadedAndrepresentationDisplayedState = {
   representations: [FIRST_DIAGRAM],
   displayedRepresentation: FIRST_DIAGRAM,
   selection: FIRST_DIAGRAM,
+  subscribers: [],
+  message: undefined,
+};
+
+const projectLoadedAndSecondRepresentationDisplayedState = {
+  viewState: PROJECT_LOADED_AND_REPRESENTATION_DISPLAYED__STATE,
+  project: {
+    id: '',
+    name: '',
+  },
+  representations: [SECOND_DIAGRAM],
+  displayedRepresentation: SECOND_DIAGRAM,
+  selection: SECOND_DIAGRAM,
+  subscribers: [],
+  message: undefined,
+};
+
+const projectLoadedAnd2representationsDisplayedState = {
+  viewState: PROJECT_LOADED_AND_REPRESENTATION_DISPLAYED__STATE,
+  project: {
+    id: '',
+    name: '',
+  },
+  representations: [FIRST_DIAGRAM, SECOND_DIAGRAM],
+  displayedRepresentation: SECOND_DIAGRAM,
+  selection: SECOND_DIAGRAM,
   subscribers: [],
   message: undefined,
 };
@@ -290,6 +317,54 @@ describe('EditProjectView - reducer', () => {
       representations: projectLoadedAndrepresentationDisplayedState.representations,
       displayedRepresentation: projectLoadedAndrepresentationDisplayedState.displayedRepresentation,
       selection: action.selection,
+      subscribers: [],
+      message: undefined,
+    });
+  });
+
+  it('close the first of two representations', () => {
+    const prevState = projectLoadedAnd2representationsDisplayedState;
+    const action = { type: HANDLE_REPRESENTATION_CLOSED__ACTION, representationId: FIRST_DIAGRAM.id };
+    const state = reducer(prevState, action);
+
+    expect(state).toStrictEqual({
+      viewState: PROJECT_LOADED_AND_REPRESENTATION_DISPLAYED__STATE,
+      project: projectLoadedAndSecondRepresentationDisplayedState.project,
+      representations: projectLoadedAndSecondRepresentationDisplayedState.representations,
+      displayedRepresentation: projectLoadedAndSecondRepresentationDisplayedState.displayedRepresentation,
+      selection: SECOND_DIAGRAM,
+      subscribers: [],
+      message: undefined,
+    });
+  });
+
+  it('close the second of two representations', () => {
+    const prevState = projectLoadedAnd2representationsDisplayedState;
+    const action = { type: HANDLE_REPRESENTATION_CLOSED__ACTION, representationId: SECOND_DIAGRAM.id };
+    const state = reducer(prevState, action);
+
+    expect(state).toStrictEqual({
+      viewState: PROJECT_LOADED_AND_REPRESENTATION_DISPLAYED__STATE,
+      project: projectLoadedAndrepresentationDisplayedState.project,
+      representations: projectLoadedAndrepresentationDisplayedState.representations,
+      displayedRepresentation: projectLoadedAndrepresentationDisplayedState.displayedRepresentation,
+      selection: FIRST_DIAGRAM,
+      subscribers: [],
+      message: undefined,
+    });
+  });
+
+  it('close the only representations', () => {
+    const prevState = projectLoadedAndrepresentationDisplayedState;
+    const action = { type: HANDLE_REPRESENTATION_CLOSED__ACTION, representationId: FIRST_DIAGRAM.id };
+    const state = reducer(prevState, action);
+
+    expect(state).toStrictEqual({
+      viewState: PROJECT_LOADED__STATE,
+      project: projectLoadedAndrepresentationDisplayedState.project,
+      representations: [],
+      displayedRepresentation: undefined,
+      selection: undefined,
       subscribers: [],
       message: undefined,
     });

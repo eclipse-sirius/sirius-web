@@ -22,6 +22,7 @@ import {
   HANDLE_SELECTION__ACTION,
   HANDLE_REPRESENTATION_RENAMED__ACTION,
   HANDLE_SUBSCRIBERS_UPDATED__ACTION,
+  HANDLE_REPRESENTATION_CLOSED__ACTION,
 } from './machine';
 
 export const initialState = {
@@ -53,6 +54,9 @@ export const reducer = (prevState, action) => {
       break;
     case HANDLE_SUBSCRIBERS_UPDATED__ACTION:
       state = handleSubscribersUpdated(prevState, action);
+      break;
+    case HANDLE_REPRESENTATION_CLOSED__ACTION:
+      state = handleRepresentationClosedAction(prevState, action);
       break;
     default:
       state = prevState;
@@ -165,6 +169,31 @@ const handleSubscribersUpdated = (prevState, action) => {
     representations,
     selection,
     displayedRepresentation,
+    subscribers,
+    message,
+  };
+};
+
+const handleRepresentationClosedAction = (prevState, action) => {
+  const { project, representations, displayedRepresentation, subscribers, message } = prevState;
+  const { representationId } = action;
+  let representationToClose = representations.find((r) => r.id === representationId);
+  let newDisplayedRepresentation = displayedRepresentation;
+  let remainingRepresentations = representations.filter((r) => r.id !== representationId);
+  const index = representations.indexOf(representationToClose);
+  if (remainingRepresentations.length === 0) {
+    newDisplayedRepresentation = undefined;
+  } else if (remainingRepresentations.length > index) {
+    newDisplayedRepresentation = remainingRepresentations[index];
+  } else if (remainingRepresentations.length === index) {
+    newDisplayedRepresentation = remainingRepresentations[index - 1];
+  }
+  return {
+    viewState: newDisplayedRepresentation ? PROJECT_LOADED_AND_REPRESENTATION_DISPLAYED__STATE : PROJECT_LOADED__STATE,
+    project,
+    representations: remainingRepresentations,
+    displayedRepresentation: newDisplayedRepresentation,
+    selection: newDisplayedRepresentation,
     subscribers,
     message,
   };
