@@ -265,6 +265,7 @@ public class DiagramRendererEdgeTests {
                 .targetObjectLabelProvider(variableManager -> "")//$NON-NLS-1$
                 .styleProvider(edgeStyleProvider)
                 .deleteHandler(variableManager -> new Failure("")) //$NON-NLS-1$
+                .labelEditHandler((variableManager, newLabel) -> new Failure("")) //$NON-NLS-1$
                 .build();
         // @formatter:on
     }

@@ -62,4 +62,9 @@ public class DiagramQueryService implements IDiagramQueryService {
         return diagram.getEdges().stream().filter(edge -> Objects.equals(edgeId, edge.getId())).findFirst();
     }
 
+    @Override
+    public Optional<Edge> findEdgeByLabelId(Diagram diagram, UUID labelId) {
+        return diagram.getEdges().stream().filter(edge -> Objects.equals(edge.getCenterLabel().getId(), labelId)).findFirst();
+    }
+
 }

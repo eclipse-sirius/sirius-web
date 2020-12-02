@@ -22,7 +22,6 @@ import {
   getWindowScroll,
   ModelSource,
   MoveCommand,
-  SEdge,
   SelectAction,
   SetViewportAction,
   SGraph,
@@ -342,7 +341,7 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
             canvasBounds: bounds,
             origin,
             element: element,
-            renameable: !(element instanceof SGraph) && !(element instanceof SEdge),
+            renameable: !(element instanceof SGraph),
             deletable: !(element instanceof SGraph),
           };
           this.setContextualPalette(contextualPalette);

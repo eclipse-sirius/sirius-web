@@ -32,4 +32,6 @@ public interface IDiagramQueryService {
 
     Optional<Edge> findEdgeById(Diagram diagram, UUID edgeId);
 
+    Optional<Edge> findEdgeByLabelId(Diagram diagram, UUID labelId);
+
 }
