@@ -17,12 +17,14 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import org.eclipse.sirius.web.annotations.Immutable;
 import org.eclipse.sirius.web.components.Element;
 import org.eclipse.sirius.web.diagrams.EdgeStyle;
 import org.eclipse.sirius.web.diagrams.Label;
+import org.eclipse.sirius.web.representations.Status;
 import org.eclipse.sirius.web.representations.VariableManager;
 
 /**
@@ -66,6 +68,8 @@ public final class EdgeDescription {
     private Function<VariableManager, List<Element>> targetNodesProvider;
 
     private Function<VariableManager, EdgeStyle> styleProvider;
+
+    private BiFunction<VariableManager, String, Status> labelEditHandler;
 
     private EdgeDescription() {
         // Prevent instantiation
@@ -127,6 +131,10 @@ public final class EdgeDescription {
         return this.styleProvider;
     }
 
+    public BiFunction<VariableManager, String, Status> getLabelEditHandler() {
+        return this.labelEditHandler;
+    }
+
     public static Builder newEdgeDescription(UUID id) {
         return new Builder(id);
     }
@@ -171,6 +179,8 @@ public final class EdgeDescription {
         private Function<VariableManager, List<Element>> targetNodesProvider;
 
         private Function<VariableManager, EdgeStyle> styleProvider;
+
+        private BiFunction<VariableManager, String, Status> labelEditHandler;
 
         private Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
@@ -242,6 +252,11 @@ public final class EdgeDescription {
             return this;
         }
 
+        public Builder labelEditHandler(BiFunction<VariableManager, String, Status> labelEditHandler) {
+            this.labelEditHandler = Objects.requireNonNull(labelEditHandler);
+            return this;
+        }
+
         public EdgeDescription build() {
             EdgeDescription edgeDescription = new EdgeDescription();
             edgeDescription.id = Objects.requireNonNull(this.id);
@@ -258,6 +273,7 @@ public final class EdgeDescription {
             edgeDescription.sourceNodesProvider = Objects.requireNonNull(this.sourceNodesProvider);
             edgeDescription.targetNodesProvider = Objects.requireNonNull(this.targetNodesProvider);
             edgeDescription.styleProvider = Objects.requireNonNull(this.styleProvider);
+            edgeDescription.labelEditHandler = Objects.requireNonNull(this.labelEditHandler);
             return edgeDescription;
         }
     }

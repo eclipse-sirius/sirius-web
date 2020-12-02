@@ -24,7 +24,6 @@ import {
   getAbsoluteBounds,
   SGraph,
   SNode,
-  SEdge,
 } from 'sprotty';
 import { convertDiagram } from 'diagram/sprotty/convertDiagram';
 /** Action to delete a sprotty element */
@@ -318,7 +317,7 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
           canvasBounds: bounds,
           origin,
           element: element,
-          renameable: !(element instanceof SGraph) && !(element instanceof SEdge),
+          renameable: !(element instanceof SGraph),
           deletable: !(element instanceof SGraph),
         };
         this.setContextualPalette(contextualPalette);

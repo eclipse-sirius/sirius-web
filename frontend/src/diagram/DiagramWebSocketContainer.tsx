@@ -48,7 +48,7 @@ import { useProject } from 'project/ProjectProvider';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useReducer, useRef } from 'react';
 import 'reflect-metadata'; // Required because Sprotty uses Inversify and both frameworks are written in TypeScript with experimental features.
-import { EditLabelAction, FitToScreenAction } from 'sprotty';
+import { EditLabelAction, FitToScreenAction, SEdge } from 'sprotty';
 import styles from './Diagram.module.css';
 import {
   deleteFromDiagramMutation,
@@ -515,10 +515,11 @@ export const DiagramWebSocketContainer = ({ representationId, selection, setSele
     };
     let invokeLabelEditFromContextualPalette;
     if (renameable) {
+      let elementIdSuffix = element instanceof SEdge ? '_centerlabel' : '_label';
       invokeLabelEditFromContextualPalette = () =>
         diagramServer.actionDispatcher.dispatchAll([
           { kind: HIDE_CONTEXTUAL_TOOLBAR_ACTION },
-          new EditLabelAction(element.id + '_label'),
+          new EditLabelAction(element.id + elementIdSuffix),
         ]);
     }
     let invokeDeleteFromContextualPalette;
