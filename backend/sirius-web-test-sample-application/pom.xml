@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright (c) 2019, 2020 Obeo.
+ This program and the accompanying materials
+ are made available under the terms of the Eclipse Public License v2.0
+ which accompanies this distribution, and is available at
+ https://www.eclipse.org/legal/epl-2.0/
+
+ SPDX-License-Identifier: EPL-2.0
+
+ Contributors:
+     Obeo - initial API and implementation
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.4.0</version>
+		<relativePath /> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>org.eclipse.sirius.web</groupId>
+	<artifactId>sirius-web-test-sample-application</artifactId>
+	<version>0.1.0-SNAPSHOT</version>
+	<name>sirius-web-test-sample-application</name>
+	<description>Sirius Web Test Sample Application</description>
+
+	<properties>
+		<java.version>11</java.version>
+		<flow.version>1.0.5-SNAPSHOT</flow.version>
+	</properties>
+
+	<distributionManagement>
+		<repository>
+			<id>github</id>
+			<name>Apache Maven Packages</name>
+			<url>https://maven.pkg.github.com/eclipse-sirius/sirius-components</url>
+		</repository>
+	</distributionManagement>
+
+	<repositories>
+		<repository>
+			<id>Central</id>
+			<url>https://repo.maven.apache.org/maven2</url>
+		</repository>
+		<repository>
+			<id>github-flow</id>
+			<url>https://maven.pkg.github.com/ObeoNetwork/Flow-Designer</url>
+		</repository>
+		<repository>
+			<id>github-bpmn</id>
+			<url>https://maven.pkg.github.com/ObeoNetwork/BPMN-Designer</url>
+		</repository>
+	</repositories>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius.web</groupId>
+			<artifactId>sirius-web-spring-starter</artifactId>
+			<version>0.1.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius.web</groupId>
+			<artifactId>sirius-web-graphiql</artifactId>
+			<version>0.1.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius.web</groupId>
+			<artifactId>sirius-web-graphql-voyager</artifactId>
+			<version>0.1.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>fr.obeo.dsl.designer.sample.flow</groupId>
+			<artifactId>fr.obeo.dsl.designer.sample.flow</artifactId>
+			<version>${flow.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>fr.obeo.dsl.designer.sample.flow</groupId>
+			<artifactId>fr.obeo.dsl.designer.sample.flow.edit</artifactId>
+			<version>${flow.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>fr.obeo.dsl.designer.sample.flow</groupId>
+			<artifactId>fr.obeo.dsl.designer.sample.flow.design</artifactId>
+			<version>${flow.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>BPMN2</groupId>
+			<artifactId>org.obeonetwork.dsl.bpmn2</artifactId>
+			<version>4.0.3-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>BPMN2</groupId>
+			<artifactId>org.obeonetwork.dsl.bpmn2.edit</artifactId>
+			<version>4.0.3-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>BPMN2</groupId>
+			<artifactId>org.obeonetwork.dsl.bpmn2.design</artifactId>
+			<version>4.0.3-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>build-info</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>

@@ -1,0 +1,81 @@
+name: Continuous integration
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Node SDK
+        uses: actions/setup-node@v1.4.4
+        with:
+          node-version: 14
+          registry-url: https://npm.pkg.github.com/
+
+      - name: Install Yalc globally
+        run: npm i yalc -g
+
+      - name: Setup Java SDK
+        uses: actions/setup-java@v1.4.3
+        with:
+          java-version: 11
+
+      - name: Build the frontend
+        run: |
+          npm ci
+          npm run test
+          npm run build
+          yalc publish
+        working-directory: frontend
+
+      - name: Build the frontend of the test-sample
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        run: |
+          echo '//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}' >> .npmrc
+          npm ci
+          yalc add @eclipse-sirius/sirius-components
+          npm run build
+        working-directory: sample/test-sample/frontend
+
+      - name: Copy the test-sample frontend into its backend
+        run: |
+          mkdir -p "backend/sirius-web-test-sample-application/src/main/resources/static"
+          cp -R sample/test-sample/frontend/build/* backend/sirius-web-test-sample-application/src/main/resources/static
+
+      - name: Build the backend
+        env:
+          USERNAME: ${{github.actor}}
+          PASSWORD: ${{secrets.GITHUB_TOKEN}}
+        run: mvn -U -B clean verify -f backend/pom.xml --settings settings.xml
+
+      - name: Run end to end tests against the test-sample
+        uses: cypress-io/github-action@v2
+        with:
+          build: docker-compose -f ../backend/sirius-web-test-sample-application/docker-compose.yml up -d --build
+          start: docker-compose -f ../backend/sirius-web-test-sample-application/docker-compose.yml ps
+          wait-on: 'http://localhost:8080/projects'
+          wait-on-timeout: 180
+          working-directory: frontend
+
+      - name: Publish the backend
+        if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch')  && github.ref == 'refs/heads/master'
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        run: mvn -B deploy -f backend/pom.xml
+
+      - name: Publish the frontend
+        if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/master'
+        run: |
+          npm version prerelease -preid ${GITHUB_SHA} -no-git-tag-version
+          npm publish
+        working-directory: frontend
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}

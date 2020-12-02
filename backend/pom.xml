@@ -66,5 +66,6 @@
 		<module>sirius-web-emf</module>
 		<module>sirius-web-interpreter</module>
 		<module>sirius-web-persistence</module>
+		<module>sirius-web-test-sample-application</module>
 	</modules>
 </project>

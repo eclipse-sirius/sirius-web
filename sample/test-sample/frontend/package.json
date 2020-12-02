@@ -1,0 +1,49 @@
+{
+  "name": "@eclipse-sirius/sirius-web-test-sample",
+  "author": "Eclipse Sirius",
+  "version": "0.1.0",
+  "license": "EPL-2.0",
+  "private": true,
+  "dependencies": {
+    "@eclipse-sirius/sirius-components": "0.1.31-d05a14912ac0da7302c0255acdacc8b9c2307c0f.0",
+    "@apollo/client": "^3.2.7",
+    "subscriptions-transport-ws": "^0.9.18",
+    "airbnb-prop-types": "^2.15.0",
+    "graphql-tag": "^2.11.0",
+    "graphql": "14.6.0",
+    "graphql.macro": "^1.4.2",
+    "prop-types": "^15.7.2",
+    "react": "16.13.1",
+    "react-dom": "16.13.1",
+    "react-router-dom": "5.2.0",
+    "reflect-metadata": "^0.1.13",
+    "sprotty": "0.7.0",
+    "universal-cookie": "^4.0.2"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "5.1.1",
+    "@testing-library/react": "9.4.1",
+    "@testing-library/user-event": "^7.1.2",
+    "jest-junit-reporter": "^1.1.0",
+    "prettier": "1.19.1",
+    "react-scripts": "3.4.3"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build -- --profile",
+    "test": "react-scripts test --modulePaths=src --testResultsProcessor ./node_modules/jest-junit-reporter",
+    "ci-test": "react-scripts test --watchAll=false --modulePaths=src --testResultsProcessor ./node_modules/jest-junit-reporter --coverage",
+    "eject": "react-scripts eject",
+    "format": "prettier --write \"src/**/*.{js,tsx,css}\"",
+    "format-lint": "prettier --list-different \"src/**/*.{js,tsx,css}\""
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}
