@@ -78,7 +78,7 @@ const convertNode = (node, httpOrigin: string, readOnly: boolean, autoLayout: bo
 
   const features = handleNodeFeatures(node, readOnly, autoLayout);
 
-  const editableLabel = handleNodeLabel(convertedLabel, readOnly);
+  const editableLabel = handleEditableLabel(convertedLabel, readOnly);
 
   return {
     id,
@@ -96,7 +96,7 @@ const convertNode = (node, httpOrigin: string, readOnly: boolean, autoLayout: bo
   };
 };
 
-const handleNodeLabel = (label, readOnly: boolean) => {
+const handleEditableLabel = (label, readOnly: boolean) => {
   let editableLabel = undefined;
   if (!readOnly) {
     editableLabel = label;
@@ -183,6 +183,7 @@ const convertEdge = (edge, httpOrigin: string, readOnly: boolean) => {
     routingPoints,
   } = edge;
 
+  let editableLabel;
   let children = [];
   if (beginLabel) {
     const convertedBeginLabel = convertLabel(beginLabel, httpOrigin, readOnly);
@@ -190,6 +191,7 @@ const convertEdge = (edge, httpOrigin: string, readOnly: boolean) => {
   }
   if (centerLabel) {
     const convertedCenterLabel = convertLabel(centerLabel, httpOrigin, readOnly);
+    editableLabel = handleEditableLabel(convertedCenterLabel, readOnly);
     children.push(convertedCenterLabel);
   }
   if (endLabel) {
@@ -211,6 +213,7 @@ const convertEdge = (edge, httpOrigin: string, readOnly: boolean) => {
     style,
     routingPoints,
     features,
+    editableLabel,
     children: children,
   };
 };

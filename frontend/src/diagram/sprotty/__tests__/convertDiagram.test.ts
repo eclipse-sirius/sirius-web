@@ -132,6 +132,7 @@ describe('ModelConverter', () => {
           'style',
           'routingPoints',
           'features',
+          'editableLabel',
           'children',
         ]);
 

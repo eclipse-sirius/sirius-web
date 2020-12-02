@@ -25,6 +25,7 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/773[#773] [compatibility] Add support for both `createView` and `deleteView` model operations which can be used to support unsynchronized diagrams from Sirius Desktop.
 - https://github.com/eclipse-sirius/sirius-components/issues/694[#694] [core] Add `IRepresentationRefreshPolicyRegistry` to contribute `IRepresentationRefreshPolicyProvider`s in order to customize on which kind of change description, representations will be refreshed.
 - https://github.com/eclipse-sirius/sirius-components/issues/613[#613] [compatibility] Add support for external java action with the new API `IExternalJavaActionProvider` which allows others to provide instances of `IExternalJavaAction` in order to perform some custom behavior during the execution of a tool for example.
+- https://github.com/eclipse-sirius/sirius-components/issues/154[#154] [diagram] Add support for the edition of the label of an edge
 
 === Improvements
 
