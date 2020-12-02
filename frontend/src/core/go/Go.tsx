@@ -17,9 +17,10 @@ import { httpOrigin } from 'common/URL';
 
 export const Go = ({ to, disabled = false, children, ...props }) => {
   const capabilities = useCapabilities();
+  const devMode = !!process.env.REACT_APP_HTTP_SERVER_PORT;
   if (disabled) {
     return React.cloneElement(children, { disabled });
-  } else if (capabilities?.overrides(to)) {
+  } else if (capabilities?.overrides(to) && !devMode) {
     return (
       <a {...props} href={httpOrigin + to}>
         {children}
