@@ -31,7 +31,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @Configuration
 public class SpringWebMvcConfigurer implements WebMvcConfigurer {
-    private static final String[] ALLOWED_ORIGINS = { "*" }; //$NON-NLS-1$
+    private static final String[] ALLOWED_ORIGIN_PATTERNS = { "http://localhost:3000" }; //$NON-NLS-1$
 
     /**
      * The Spring environment.
@@ -81,7 +81,7 @@ public class SpringWebMvcConfigurer implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         boolean inDevMode = Arrays.asList(this.environment.getActiveProfiles()).contains("dev"); //$NON-NLS-1$
         if (inDevMode) {
-            registry.addMapping(URLConstants.API_BASE_PATH + SpringWebMvcConfigurerConstants.ANY_PATTERN).allowedOrigins(ALLOWED_ORIGINS).allowCredentials(true);
+            registry.addMapping(URLConstants.API_BASE_PATH + SpringWebMvcConfigurerConstants.ANY_PATTERN).allowedOriginPatterns(ALLOWED_ORIGIN_PATTERNS).allowCredentials(true);
         }
     }
 }
