@@ -28,6 +28,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
+import org.eclipse.emf.edit.provider.ComposedImage;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.sirius.web.representations.IRepresentation;
 import org.eclipse.sirius.web.services.api.IPathService;
@@ -154,12 +155,18 @@ public class ObjectService implements IObjectService {
         String imagePath = null;
         if (object instanceof EObject) {
             EObject eObject = (EObject) object;
-            
+
             Adapter adapter = this.composedAdapterFactory.adapt(eObject, IItemLabelProvider.class);
             if (adapter instanceof IItemLabelProvider) {
                 IItemLabelProvider labelProvider = (IItemLabelProvider) adapter;
                 Object image = labelProvider.getImage(eObject);
                 imagePath = this.getImagePath(image);
+            }
+        } else if (object instanceof ComposedImage) {
+            ComposedImage composedImage = (ComposedImage) object;
+            List<Object> images = composedImage.getImages();
+            if (!images.isEmpty()) {
+                imagePath = this.getImagePath(images.get(0));
             }
         } else if (object instanceof URI) {
             URI uri = (URI) object;
