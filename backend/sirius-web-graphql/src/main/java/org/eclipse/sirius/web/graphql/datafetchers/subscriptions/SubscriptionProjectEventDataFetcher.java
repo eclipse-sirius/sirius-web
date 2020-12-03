@@ -15,8 +15,12 @@ package org.eclipse.sirius.web.graphql.datafetchers.subscriptions;
 import java.util.Objects;
 import java.util.UUID;
 
+import org.eclipse.sirius.web.annotations.graphql.GraphQLSubscriptionTypes;
 import org.eclipse.sirius.web.annotations.spring.graphql.SubscriptionDataFetcher;
+import org.eclipse.sirius.web.collaborative.api.dto.PreDestroyPayload;
 import org.eclipse.sirius.web.collaborative.api.dto.ProjectEventInput;
+import org.eclipse.sirius.web.collaborative.api.dto.ProjectRenamedEventPayload;
+import org.eclipse.sirius.web.collaborative.api.dto.RepresentationRenamedEventPayload;
 import org.eclipse.sirius.web.collaborative.api.services.IProjectEventProcessor;
 import org.eclipse.sirius.web.collaborative.api.services.IProjectEventProcessorRegistry;
 import org.eclipse.sirius.web.graphql.datafetchers.IDataFetchingEnvironmentService;
@@ -42,8 +46,20 @@ import reactor.core.publisher.Flux;
  *
  * @author arichard
  */
-@SubscriptionDataFetcher(type = SubscriptionTypeProvider.TYPE, field = SubscriptionTypeProvider.PROJECT_EVENT_FIELD)
+// @formatter:off
+@GraphQLSubscriptionTypes(
+    input = ProjectEventInput.class,
+    payloads = {
+        ProjectRenamedEventPayload.class,
+        RepresentationRenamedEventPayload.class,
+        PreDestroyPayload.class,
+    }
+)
+@SubscriptionDataFetcher(type = SubscriptionTypeProvider.TYPE, field = SubscriptionProjectEventDataFetcher.PROJECT_EVENT_FIELD)
+// @formatter:on
 public class SubscriptionProjectEventDataFetcher implements IDataFetcherWithFieldCoordinates<Publisher<IPayload>> {
+
+    public static final String PROJECT_EVENT_FIELD = "projectEvent"; //$NON-NLS-1$
 
     private final IDataFetchingEnvironmentService dataFetchingEnvironmentService;
 

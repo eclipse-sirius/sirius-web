@@ -99,16 +99,16 @@ const handleDataAction = (prevState, action) => {
   const { message } = action;
 
   let state = prevState;
-  if (message?.data?.formEvent) {
-    const { formEvent } = message?.data;
-    if (formEvent.__typename === 'FormRefreshedEventPayload') {
-      const { form } = formEvent;
+  if (message?.data?.propertiesEvent) {
+    const { propertiesEvent } = message?.data;
+    if (propertiesEvent.__typename === 'FormRefreshedEventPayload') {
+      const { form } = propertiesEvent;
       state = { ...prevState, viewState: READY__STATE, form, message: '' };
-    } else if (formEvent.__typename === 'SubscribersUpdatedEventPayload') {
-      const { subscribers } = formEvent;
+    } else if (propertiesEvent.__typename === 'SubscribersUpdatedEventPayload') {
+      const { subscribers } = propertiesEvent;
       state = { ...prevState, subscribers };
-    } else if (formEvent.__typename === 'WidgetSubscriptionsUpdatedEventPayload') {
-      const { widgetSubscriptions } = formEvent;
+    } else if (propertiesEvent.__typename === 'WidgetSubscriptionsUpdatedEventPayload') {
+      const { widgetSubscriptions } = propertiesEvent;
       state = { ...prevState, widgetSubscriptions };
     }
   }

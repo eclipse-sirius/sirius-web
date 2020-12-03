@@ -91,6 +91,7 @@ public final class DiagramDescription implements IRepresentationDescription {
         return this.targetObjectIdProvider;
     }
 
+    @Override
     public Predicate<VariableManager> getCanCreatePredicate() {
         return this.canCreatePredicate;
     }

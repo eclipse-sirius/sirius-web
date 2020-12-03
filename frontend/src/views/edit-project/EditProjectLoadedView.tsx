@@ -61,7 +61,15 @@ export const EditProjectLoadedView = ({
     />
   );
   let objectId = undefined;
-  if (selection && !(selection.kind === 'Unknown' || selection.kind === 'Diagram' || selection.kind === 'Document')) {
+  if (
+    selection &&
+    !(
+      selection.kind === 'Unknown' ||
+      selection.kind === 'Diagram' ||
+      selection.kind === 'Form' ||
+      selection.kind === 'Document'
+    )
+  ) {
     objectId = selection.id;
   }
   const properties = <PropertiesWebSocketContainer objectId={objectId} />;

@@ -23,7 +23,7 @@ import org.eclipse.sirius.web.services.api.objects.IEditingContext;
  * @author sbegaudeau
  */
 public interface IRepresentationEventProcessorFactory {
-    <T extends IRepresentationEventProcessor> boolean canHandle(Class<T> representationEventProcessorClass);
+    <T extends IRepresentationEventProcessor> boolean canHandle(Class<T> representationEventProcessorClass, IRepresentationConfiguration configuration);
 
     <T extends IRepresentationEventProcessor> Optional<T> createRepresentationEventProcessor(Class<T> representationEventProcessorClass, IRepresentationConfiguration configuration,
             IEditingContext editingContext, Context context);

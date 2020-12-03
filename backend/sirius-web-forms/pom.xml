@@ -64,6 +64,10 @@
 			<version>0.1.0-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

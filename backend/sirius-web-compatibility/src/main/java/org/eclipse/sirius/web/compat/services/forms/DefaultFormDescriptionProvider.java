@@ -25,7 +25,7 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
-import org.eclipse.sirius.web.collaborative.forms.api.IDefaultFormDescriptionProvider;
+import org.eclipse.sirius.web.api.configuration.IPropertiesDefaultFormDescriptionProvider;
 import org.eclipse.sirius.web.forms.description.AbstractControlDescription;
 import org.eclipse.sirius.web.forms.description.ForDescription;
 import org.eclipse.sirius.web.forms.description.FormDescription;
@@ -44,7 +44,7 @@ import org.springframework.stereotype.Service;
  * @author lfasani
  */
 @Service
-public class DefaultFormDescriptionProvider implements IDefaultFormDescriptionProvider {
+public class DefaultFormDescriptionProvider implements IPropertiesDefaultFormDescriptionProvider {
 
     public static final String ESTRUCTURAL_FEATURE = "eStructuralFeature"; //$NON-NLS-1$
 
@@ -84,6 +84,7 @@ public class DefaultFormDescriptionProvider implements IDefaultFormDescriptionPr
                 .idProvider(new GetOrCreateRandomIdProvider())
                 .labelProvider(labelProvider)
                 .targetObjectIdProvider(targetObjectIdProvider)
+                .canCreatePredicate(variableManager -> false)
                 .pageDescriptions(pageDescriptions)
                 .groupDescriptions(groupDescriptions)
                 .build();

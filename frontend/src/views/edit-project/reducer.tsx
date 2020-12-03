@@ -100,7 +100,7 @@ const handleSelectionAction = (prevState, action) => {
   let newDisplayedRepresentation;
   let newViewState = null;
 
-  if (selection?.kind === 'Diagram') {
+  if (selection?.kind === 'Diagram' || selection?.kind === 'Form') {
     newViewState = PROJECT_LOADED_AND_REPRESENTATION_DISPLAYED__STATE;
     newDisplayedRepresentation = selection;
     newRepresentations = [...representations];

@@ -78,6 +78,7 @@ public class FormElementFactory implements IElementFactory {
         return Form.newForm(props.getId())
                 .label(props.getLabel())
                 .targetObjectId(props.getTargetObjectId())
+                .descriptionId(props.getDescriptionId())
                 .pages(pages)
                 .build();
         // @formatter:on

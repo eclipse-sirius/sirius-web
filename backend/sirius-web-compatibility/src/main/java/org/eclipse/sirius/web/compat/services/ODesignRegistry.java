@@ -18,14 +18,12 @@ import java.util.List;
 
 import org.eclipse.sirius.viewpoint.description.Group;
 import org.eclipse.sirius.web.compat.services.api.IODesignRegistry;
-import org.springframework.stereotype.Service;
 
 /**
  * Registry containing all the odesign files used by the server.
  *
  * @author sbegaudeau
  */
-@Service
 public class ODesignRegistry implements IODesignRegistry {
 
     private final List<Group> groups = new ArrayList<>();

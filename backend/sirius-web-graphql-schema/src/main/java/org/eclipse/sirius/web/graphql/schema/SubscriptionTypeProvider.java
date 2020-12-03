@@ -16,31 +16,27 @@ import static graphql.schema.GraphQLArgument.newArgument;
 import static graphql.schema.GraphQLNonNull.nonNull;
 import static graphql.schema.GraphQLTypeReference.typeRef;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.eclipse.sirius.web.collaborative.api.dto.PreDestroyPayload;
-import org.eclipse.sirius.web.collaborative.api.dto.ProjectEventInput;
-import org.eclipse.sirius.web.collaborative.api.dto.ProjectRenamedEventPayload;
-import org.eclipse.sirius.web.collaborative.api.dto.RepresentationRenamedEventPayload;
+import org.eclipse.sirius.web.annotations.graphql.GraphQLSubscriptionTypes;
+import org.eclipse.sirius.web.annotations.spring.graphql.SubscriptionDataFetcher;
 import org.eclipse.sirius.web.collaborative.api.dto.Subscriber;
-import org.eclipse.sirius.web.collaborative.api.dto.SubscribersUpdatedEventPayload;
-import org.eclipse.sirius.web.collaborative.diagrams.api.dto.DiagramEventInput;
-import org.eclipse.sirius.web.collaborative.diagrams.api.dto.DiagramRefreshedEventPayload;
-import org.eclipse.sirius.web.collaborative.forms.api.dto.FormEventInput;
-import org.eclipse.sirius.web.collaborative.forms.api.dto.FormRefreshedEventPayload;
-import org.eclipse.sirius.web.collaborative.forms.api.dto.WidgetSubscription;
-import org.eclipse.sirius.web.collaborative.forms.api.dto.WidgetSubscriptionsUpdatedEventPayload;
-import org.eclipse.sirius.web.collaborative.trees.api.TreeEventInput;
-import org.eclipse.sirius.web.collaborative.trees.api.TreeRefreshedEventPayload;
 import org.eclipse.sirius.web.graphql.utils.providers.GraphQLInputObjectTypeProvider;
+import org.eclipse.sirius.web.graphql.utils.providers.GraphQLNameProvider;
 import org.eclipse.sirius.web.graphql.utils.providers.GraphQLObjectTypeProvider;
 import org.eclipse.sirius.web.graphql.utils.schema.ISubscriptionTypeProvider;
+import org.eclipse.sirius.web.services.api.dto.ErrorPayload;
+import org.eclipse.sirius.web.spring.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.springframework.stereotype.Service;
 
 import graphql.schema.GraphQLFieldDefinition;
+import graphql.schema.GraphQLNamedType;
 import graphql.schema.GraphQLObjectType;
 import graphql.schema.GraphQLType;
 import graphql.schema.GraphQLTypeReference;
@@ -48,41 +44,14 @@ import graphql.schema.GraphQLUnionType;
 
 /**
  * This class is used to create the definition of the Subscription type.
- * <p>
- * The type created will match the following GraphQL textual definition:
- * </p>
- *
- * <pre>
- * type Subscription {
- *   diagramEvent(input: DiagramEventInput): DiagramEventPayload
- *   formEvent(input: FormEventInput): FormEventPayload
- *   treeEvent(input: TreeEventInput): TreeEventPayload
- *   projectEvent(input: ProjectEventInput): ProjectEventPayload
- * }
- * </pre>
  *
  * @author sbegaudeau
+ * @author hmarchadour
  */
 @Service
 public class SubscriptionTypeProvider implements ISubscriptionTypeProvider {
 
     public static final String TYPE = "Subscription"; //$NON-NLS-1$
-
-    public static final String DIAGRAM_EVENT_FIELD = "diagramEvent"; //$NON-NLS-1$
-
-    public static final String FORM_EVENT_FIELD = "formEvent"; //$NON-NLS-1$
-
-    public static final String TREE_EVENT_FIELD = "treeEvent"; //$NON-NLS-1$
-
-    public static final String PROJECT_EVENT_FIELD = "projectEvent"; //$NON-NLS-1$
-
-    public static final String DIAGRAM_EVENT_PAYLOAD_UNION_TYPE = "DiagramEventPayload"; //$NON-NLS-1$
-
-    public static final String FORM_EVENT_PAYLOAD_UNION_TYPE = "FormEventPayload"; //$NON-NLS-1$
-
-    public static final String TREE_EVENT_PAYLOAD_UNION_TYPE = "TreeEventPayload"; //$NON-NLS-1$
-
-    public static final String PROJECT_EVENT_PAYLOAD_UNION_TYPE = "ProjectEventPayload"; //$NON-NLS-1$
 
     public static final String INPUT_ARGUMENT = "input"; //$NON-NLS-1$
 
@@ -90,19 +59,28 @@ public class SubscriptionTypeProvider implements ISubscriptionTypeProvider {
 
     private static final String PAYLOAD_SUFFIX = "Payload"; //$NON-NLS-1$
 
+    private final GraphQLNameProvider graphQLNameProvider = new GraphQLNameProvider();
+
     private final GraphQLObjectTypeProvider graphQLObjectTypeProvider = new GraphQLObjectTypeProvider();
 
     private final GraphQLInputObjectTypeProvider graphQLInputObjectTypeProvider = new GraphQLInputObjectTypeProvider();
 
+    private final List<Class<?>> subscriptionDataFetcherClasses;
+
+    public SubscriptionTypeProvider(List<IDataFetcherWithFieldCoordinates<?>> dataFetchersWithCoordinates) {
+        // @formatter:off
+        this.subscriptionDataFetcherClasses = Objects.requireNonNull(dataFetchersWithCoordinates).stream()
+                .map(Object::getClass)
+                .filter(aClass -> aClass.isAnnotationPresent(SubscriptionDataFetcher.class))
+                .collect(Collectors.toList());
+        // @formatter:on
+    }
+
     @Override
     public GraphQLObjectType getType() {
         // @formatter:off
-        List<GraphQLFieldDefinition> fields = List.of(
-                DIAGRAM_EVENT_FIELD,
-                FORM_EVENT_FIELD,
-                TREE_EVENT_FIELD,
-                PROJECT_EVENT_FIELD)
-                .stream()
+        var fields = this.subscriptionDataFetcherClasses.stream()
+                .map(dataFetcherClass -> this.graphQLNameProvider.getSubscriptionFieldName(dataFetcherClass))
                 .map(this::getSubscriptionField)
                 .collect(Collectors.toUnmodifiableList());
 
@@ -133,85 +111,65 @@ public class SubscriptionTypeProvider implements ISubscriptionTypeProvider {
 
     @Override
     public Set<GraphQLType> getAdditionalTypes() {
-     // @formatter:off
-        Set<Class<?>> objectClasses = Set.of(
-                Subscriber.class,
-                SubscribersUpdatedEventPayload.class,
-                DiagramRefreshedEventPayload.class,
-                FormRefreshedEventPayload.class,
-                TreeRefreshedEventPayload.class,
-                RepresentationRenamedEventPayload.class,
-                ProjectRenamedEventPayload.class,
-                WidgetSubscriptionsUpdatedEventPayload.class,
-                WidgetSubscription.class,
-                PreDestroyPayload.class
-        );
-        var graphQLObjectTypes = objectClasses.stream()
-                .map(this.graphQLObjectTypeProvider::getType)
-                .collect(Collectors.toUnmodifiableList());
-
-        Set<Class<?>> inputObjectClasses = Set.of(
-            DiagramEventInput.class,
-            FormEventInput.class,
-            TreeEventInput.class,
-            ProjectEventInput.class
-        );
-        var graphQLInputObjectTypes = inputObjectClasses.stream()
+        // @formatter:off
+        var graphQLInputObjectTypes = this.subscriptionDataFetcherClasses.stream()
+                .map(dataFetcherClass -> dataFetcherClass.getAnnotation(GraphQLSubscriptionTypes.class))
+                .map(GraphQLSubscriptionTypes::input)
                 .map(this.graphQLInputObjectTypeProvider::getType)
                 .collect(Collectors.toUnmodifiableList());
+
+        List<GraphQLNamedType> graphQLTypes = new ArrayList<>();
+        for (Class<?> subscriptionDataFetcherClass : this.subscriptionDataFetcherClasses) {
+            List<GraphQLObjectType> graphQLPayloadTypes = this.getGraphQLPayloadTypes(subscriptionDataFetcherClass);
+            for (GraphQLObjectType graphQLPayloadType : graphQLPayloadTypes) {
+                var hasTypeWithSameName = graphQLTypes.stream()
+                        .map(GraphQLNamedType::getName)
+                        .anyMatch(graphQLPayloadType.getName()::equals);
+
+                if (!hasTypeWithSameName) {
+                    graphQLTypes.add(graphQLPayloadType);
+                }
+            }
+
+            GraphQLUnionType unionType = this.getUnionType(subscriptionDataFetcherClass);
+            graphQLTypes.add(unionType);
+        }
         // @formatter:on
 
         Set<GraphQLType> types = new LinkedHashSet<>();
-        types.addAll(graphQLObjectTypes);
+        types.addAll(graphQLTypes);
         types.addAll(graphQLInputObjectTypes);
-
-        types.add(this.getDiagramEventPayloadUnion());
-        types.add(this.getFormEventPayloadUnion());
-        types.add(this.getTreeEventPayloadUnion());
-        types.add(this.getProjectEventPayloadUnion());
+        types.add(this.graphQLObjectTypeProvider.getType(Subscriber.class));
 
         return types;
     }
 
-    private GraphQLUnionType getDiagramEventPayloadUnion() {
+    private GraphQLUnionType getUnionType(Class<?> dataFetcherClass) {
+        GraphQLSubscriptionTypes graphQLSubscriptionTypes = dataFetcherClass.getAnnotation(GraphQLSubscriptionTypes.class);
+
         // @formatter:off
-        return GraphQLUnionType.newUnionType().name(DIAGRAM_EVENT_PAYLOAD_UNION_TYPE).possibleTypes(
-                new GraphQLTypeReference(DiagramRefreshedEventPayload.class.getSimpleName()),
-                new GraphQLTypeReference(SubscribersUpdatedEventPayload.class.getSimpleName()),
-                new GraphQLTypeReference(PreDestroyPayload.class.getSimpleName())
-            ).build();
+        var payloadTypeReferences = Arrays.stream(graphQLSubscriptionTypes.payloads())
+                .map(this.graphQLNameProvider::getObjectTypeName)
+                .map(GraphQLTypeReference::new)
+                .collect(Collectors.toList());
+
+        String unionTypeName = this.graphQLNameProvider.getSubscriptionUnionTypeName(dataFetcherClass);
+        return GraphQLUnionType.newUnionType()
+                .name(unionTypeName)
+                .possibleTypes(payloadTypeReferences.toArray(new GraphQLTypeReference[payloadTypeReferences.size()]))
+                .possibleType(new GraphQLTypeReference(ErrorPayload.class.getSimpleName()))
+                .build();
         // @formatter:on
     }
 
-    private GraphQLUnionType getFormEventPayloadUnion() {
+    private List<GraphQLObjectType> getGraphQLPayloadTypes(Class<?> dataFetcherClass) {
+        GraphQLSubscriptionTypes graphQLSubscriptionTypes = dataFetcherClass.getAnnotation(GraphQLSubscriptionTypes.class);
+
         // @formatter:off
-        return GraphQLUnionType.newUnionType().name(FORM_EVENT_PAYLOAD_UNION_TYPE).possibleTypes(
-                new GraphQLTypeReference(FormRefreshedEventPayload.class.getSimpleName()),
-                new GraphQLTypeReference(SubscribersUpdatedEventPayload.class.getSimpleName()),
-                new GraphQLTypeReference(WidgetSubscriptionsUpdatedEventPayload.class.getSimpleName()),
-                new GraphQLTypeReference(PreDestroyPayload.class.getSimpleName())
-            ).build();
+        return Arrays.stream(graphQLSubscriptionTypes.payloads())
+                .map(this.graphQLObjectTypeProvider::getType)
+                .collect(Collectors.toList());
         // @formatter:on
     }
 
-    private GraphQLUnionType getTreeEventPayloadUnion() {
-        // @formatter:off
-        return GraphQLUnionType.newUnionType().name(TREE_EVENT_PAYLOAD_UNION_TYPE).possibleTypes(
-                new GraphQLTypeReference(TreeRefreshedEventPayload.class.getSimpleName()),
-                new GraphQLTypeReference(SubscribersUpdatedEventPayload.class.getSimpleName()),
-                new GraphQLTypeReference(PreDestroyPayload.class.getSimpleName())
-            ).build();
-        // @formatter:on
-    }
-
-    private GraphQLUnionType getProjectEventPayloadUnion() {
-        // @formatter:off
-        return GraphQLUnionType.newUnionType().name(PROJECT_EVENT_PAYLOAD_UNION_TYPE).possibleTypes(
-                new GraphQLTypeReference(RepresentationRenamedEventPayload.class.getSimpleName()),
-                new GraphQLTypeReference(ProjectRenamedEventPayload.class.getSimpleName()),
-                new GraphQLTypeReference(SubscribersUpdatedEventPayload.class.getSimpleName()),
-                new GraphQLTypeReference(PreDestroyPayload.class.getSimpleName())
-            ).build();
-        // @formatter:on
-    }
 }

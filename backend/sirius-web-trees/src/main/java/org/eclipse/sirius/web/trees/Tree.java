@@ -33,9 +33,13 @@ import org.eclipse.sirius.web.representations.IRepresentation;
 @GraphQLObjectType
 public final class Tree implements IRepresentation {
 
-    private static final String KIND = "Tree"; //$NON-NLS-1$
+    public static final String KIND = "Tree"; //$NON-NLS-1$
 
     private UUID id;
+
+    private String kind;
+
+    private UUID descriptionId;
 
     private String label;
 
@@ -54,10 +58,18 @@ public final class Tree implements IRepresentation {
     }
 
     @Override
+    @GraphQLID
+    @GraphQLField
+    @GraphQLNonNull
+    public UUID getDescriptionId() {
+        return null;
+    }
+
+    @Override
     @GraphQLField
     @GraphQLNonNull
     public String getKind() {
-        return KIND;
+        return this.kind;
     }
 
     @Override
@@ -79,8 +91,8 @@ public final class Tree implements IRepresentation {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, label: {2}, childCount: {3}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.label, this.children.size());
+        String pattern = "{0} '{'id: {1}, descriptionId: {2}, label: {3}, childCount: {4}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.descriptionId, this.label, this.children.size());
     }
 
     /**
@@ -92,12 +104,21 @@ public final class Tree implements IRepresentation {
     public static final class Builder {
         private UUID id;
 
+        private String kind = KIND;
+
+        private UUID descriptionId;
+
         private String label;
 
         private List<TreeItem> children;
 
         private Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
+        }
+
+        public Builder descriptionId(UUID descriptionId) {
+            this.descriptionId = Objects.requireNonNull(descriptionId);
+            return this;
         }
 
         public Builder label(String label) {
@@ -113,6 +134,8 @@ public final class Tree implements IRepresentation {
         public Tree build() {
             Tree tree = new Tree();
             tree.id = Objects.requireNonNull(this.id);
+            tree.kind = Objects.requireNonNull(this.kind);
+            tree.descriptionId = Objects.requireNonNull(this.descriptionId);
             tree.label = Objects.requireNonNull(this.label);
             tree.children = Objects.requireNonNull(this.children);
             return tree;

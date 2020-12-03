@@ -37,7 +37,7 @@ export const RepresentationsArea = ({ representations, maxDisplay, setSelection 
               onClick={() =>
                 setSelection({ id: representation.id, label: representation.label, kind: representation.__typename })
               }>
-              <Representation title="" className={styles.icon} />
+              <Representation title={representation.label} className={styles.icon} />
             </LinkButton>
           );
         })

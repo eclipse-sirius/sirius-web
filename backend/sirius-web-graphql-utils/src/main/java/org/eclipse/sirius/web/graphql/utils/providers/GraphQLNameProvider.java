@@ -27,6 +27,8 @@ public class GraphQLNameProvider {
 
     private static final String MUTATION_PREFIX = "Mutation"; //$NON-NLS-1$
 
+    private static final String SUBSCRIPTION_PREFIX = "Subscription"; //$NON-NLS-1$
+
     private static final String DATA_FETCHER_SUFFIX = "DataFetcher"; //$NON-NLS-1$
 
     private static final String PAYLOAD_SUFFIX = "Payload"; //$NON-NLS-1$
@@ -83,8 +85,14 @@ public class GraphQLNameProvider {
         return name;
     }
 
-    public String getUnionTypeName(Class<?> dataFetcherClass) {
+    public String getMutationUnionTypeName(Class<?> dataFetcherClass) {
         String fieldName = this.getMutationFieldName(dataFetcherClass);
+        String unionTypeName = this.toUpperFirst(fieldName) + PAYLOAD_SUFFIX;
+        return unionTypeName;
+    }
+
+    public String getSubscriptionUnionTypeName(Class<?> dataFetcherClass) {
+        String fieldName = this.getSubscriptionFieldName(dataFetcherClass);
         String unionTypeName = this.toUpperFirst(fieldName) + PAYLOAD_SUFFIX;
         return unionTypeName;
     }
@@ -93,6 +101,15 @@ public class GraphQLNameProvider {
         String name = dataFetcherClass.getSimpleName();
         if (name.startsWith(MUTATION_PREFIX) && name.endsWith(DATA_FETCHER_SUFFIX) && name.length() > (MUTATION_PREFIX.length() + DATA_FETCHER_SUFFIX.length() + 1)) {
             name = name.substring(MUTATION_PREFIX.length(), name.length() - DATA_FETCHER_SUFFIX.length());
+            name = name.substring(0, 1).toLowerCase() + name.substring(1);
+        }
+        return name;
+    }
+
+    public String getSubscriptionFieldName(Class<?> dataFetcherClass) {
+        String name = dataFetcherClass.getSimpleName();
+        if (name.startsWith(SUBSCRIPTION_PREFIX) && name.endsWith(DATA_FETCHER_SUFFIX) && name.length() > (SUBSCRIPTION_PREFIX.length() + DATA_FETCHER_SUFFIX.length() + 1)) {
+            name = name.substring(SUBSCRIPTION_PREFIX.length(), name.length() - DATA_FETCHER_SUFFIX.length());
             name = name.substring(0, 1).toLowerCase() + name.substring(1);
         }
         return name;

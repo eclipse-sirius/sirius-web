@@ -66,8 +66,8 @@ public class DiagramEventProcessorFactory implements IRepresentationEventProcess
     }
 
     @Override
-    public <T extends IRepresentationEventProcessor> boolean canHandle(Class<T> representationEventProcessorClass) {
-        return IDiagramEventProcessor.class.isAssignableFrom(representationEventProcessorClass);
+    public <T extends IRepresentationEventProcessor> boolean canHandle(Class<T> representationEventProcessorClass, IRepresentationConfiguration configuration) {
+        return IDiagramEventProcessor.class.isAssignableFrom(representationEventProcessorClass) && configuration instanceof DiagramConfiguration;
     }
 
     @Override

@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.eclipse.sirius.web.diagrams.tools.ToolSection;
 import org.eclipse.sirius.web.graphql.utils.schema.ITypeProvider;
 import org.eclipse.sirius.web.services.api.accounts.Capabilities;
 import org.eclipse.sirius.web.services.api.objects.ChildCreationDescription;
@@ -50,7 +49,6 @@ import graphql.schema.GraphQLTypeReference;
  *   childCreationDescriptions(classId: ID!): [ChildCreationDescription!]!
  *   rootObjectCreationDescriptions(namespaceId: ID!, suggested: Boolean!): [ChildCreationDescription!]!
  *   namespaces: [Namespace!]!
- *   toolSections(diagramId: ID!): [ToolSection!]!
  *   capabilities: Capabilities!
  * }
  *
@@ -64,7 +62,6 @@ import graphql.schema.GraphQLTypeReference;
  *   childCreationDescriptions(classId: ID!): [ChildCreationDescription!]!
  *   rootObjectCreationDescriptions(namespaceId: ID!, suggested: Boolean!): [ChildCreationDescription!]!
  *   namespaces: [Namespace!]!
- *   toolSections(diagramId: ID!): [ToolSection!]!
  *   capabilities: Capabilities!
  * }
  *
@@ -106,10 +103,6 @@ public class ViewerTypeProvider implements ITypeProvider {
 
     public static final String SUGGESTED_ARGUMENT = "suggested"; //$NON-NLS-1$
 
-    public static final String TOOL_SECTIONS_FIELD = "toolSections"; //$NON-NLS-1$
-
-    public static final String DIAGRAM_ID_ARGUMENT = "diagramId"; //$NON-NLS-1$
-
     public static final String REPRESENTATION_DESCRIPTIONS_FIELD = "representationDescriptions"; //$NON-NLS-1$
 
     public static final String VIEWER_REPRESENTATION_DESCRIPTIONS_CONNECTION = TYPE + RepresentationDescriptionTypeProvider.TYPE + GraphQLConstants.CONNECTION;
@@ -125,7 +118,7 @@ public class ViewerTypeProvider implements ITypeProvider {
     @Override
     public Set<GraphQLType> getTypes() {
         GraphQLInterfaceType viewerInterface = this.getViewerInterface();
-        GraphQLObjectType userType = this.getUserType(viewerInterface);
+        GraphQLObjectType userType = this.getUserType();
 
         GraphQLObjectType viewerRepresentationDescriptionEdge = new PaginationEdgeTypeProvider(VIEWER_REPRESENTATION_DESCRIPTIONS_EDGE, RepresentationDescriptionTypeProvider.TYPE).getType();
         GraphQLObjectType viewerRepresentationDescriptionConnection = new PaginationConnectionTypeProvider(VIEWER_REPRESENTATION_DESCRIPTIONS_CONNECTION, VIEWER_REPRESENTATION_DESCRIPTIONS_EDGE)
@@ -143,12 +136,12 @@ public class ViewerTypeProvider implements ITypeProvider {
         // @formatter:on
     }
 
-    private GraphQLObjectType getUserType(GraphQLInterfaceType viewerInterface) {
+    private GraphQLObjectType getUserType() {
         // @formatter:off
         return GraphQLObjectType.newObject()
                 .name(USER_TYPE)
                 .fields(this.getViewerFieldDefinitions())
-                .withInterface(viewerInterface)
+                .withInterface(new GraphQLTypeReference(TYPE))
                 .build();
         // @formatter:on
     }
@@ -159,7 +152,6 @@ public class ViewerTypeProvider implements ITypeProvider {
         viewerFieldsDefinition.add(this.getUsernameField());
         viewerFieldsDefinition.add(this.getStereotypeDescriptionsField());
         viewerFieldsDefinition.add(this.getProjectsField());
-        viewerFieldsDefinition.add(this.getToolSectionsField());
         viewerFieldsDefinition.add(this.getProjectField());
         viewerFieldsDefinition.add(this.getNamespaceField());
         viewerFieldsDefinition.add(this.getRootObjectCreationDescriptionsField());
@@ -202,16 +194,6 @@ public class ViewerTypeProvider implements ITypeProvider {
         return GraphQLFieldDefinition.newFieldDefinition()
                 .name(PROJECTS_FIELD)
                 .type(new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(new GraphQLTypeReference(ProjectTypeProvider.TYPE)))))
-                .build();
-        // @formatter:on
-    }
-
-    private GraphQLFieldDefinition getToolSectionsField() {
-        // @formatter:off
-        return GraphQLFieldDefinition.newFieldDefinition()
-                .name(TOOL_SECTIONS_FIELD)
-                .type(new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(new GraphQLTypeReference(ToolSection.class.getSimpleName())))))
-                .argument(this.getDiagramIdArgument())
                 .build();
         // @formatter:on
     }
@@ -259,15 +241,6 @@ public class ViewerTypeProvider implements ITypeProvider {
         return GraphQLArgument.newArgument()
                 .name(SUGGESTED_ARGUMENT)
                 .type(new GraphQLNonNull(Scalars.GraphQLBoolean))
-                .build();
-        // @formatter:on
-    }
-
-    private GraphQLArgument getDiagramIdArgument() {
-        // @formatter:off
-        return GraphQLArgument.newArgument()
-                .name(DIAGRAM_ID_ARGUMENT)
-                .type(new GraphQLNonNull(Scalars.GraphQLID))
                 .build();
         // @formatter:on
     }

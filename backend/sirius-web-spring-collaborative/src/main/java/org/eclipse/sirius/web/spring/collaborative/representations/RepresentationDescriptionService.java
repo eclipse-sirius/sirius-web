@@ -17,9 +17,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
+import java.util.function.Predicate;
 
-import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.web.representations.IRepresentationDescription;
 import org.eclipse.sirius.web.representations.VariableManager;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationDescriptionService;
@@ -28,6 +27,7 @@ import org.eclipse.sirius.web.services.api.representations.IRepresentationDescri
  * Service used to query the representation descriptions available.
  *
  * @author sbegaudeau
+ * @author hmarchadour
  */
 public class RepresentationDescriptionService implements IRepresentationDescriptionService {
 
@@ -39,23 +39,17 @@ public class RepresentationDescriptionService implements IRepresentationDescript
 
     @Override
     public List<IRepresentationDescription> getRepresentationDescriptions(Object clazz) {
-        // @formatter:off
-        var diagramDescriptions = this.registry.getRepresentationDescriptions().stream()
-                .filter(DiagramDescription.class::isInstance)
-                .map(DiagramDescription.class::cast)
-                .collect(Collectors.toList());
-        // @formatter:on
-
-        List<IRepresentationDescription> representationDescriptions = new ArrayList<>();
-        for (DiagramDescription diagramDescription : diagramDescriptions) {
+        List<IRepresentationDescription> result = new ArrayList<>();
+        for (IRepresentationDescription description : this.registry.getRepresentationDescriptions()) {
             VariableManager variableManager = new VariableManager();
             variableManager.put(IRepresentationDescription.CLASS, clazz);
-            boolean canCreate = diagramDescription.getCanCreatePredicate().test(variableManager);
+            Predicate<VariableManager> canCreatePredicate = description.getCanCreatePredicate();
+            boolean canCreate = canCreatePredicate.test(variableManager);
             if (canCreate) {
-                representationDescriptions.add(diagramDescription);
+                result.add(description);
             }
         }
-        return representationDescriptions;
+        return result;
     }
 
     @Override

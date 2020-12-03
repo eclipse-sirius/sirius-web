@@ -37,6 +37,7 @@ import graphql.execution.ExecutionStrategy;
 import graphql.schema.GraphQLCodeRegistry;
 import graphql.schema.GraphQLInterfaceType;
 import graphql.schema.GraphQLNamedType;
+import graphql.schema.GraphQLObjectType;
 import graphql.schema.GraphQLSchema;
 import graphql.schema.GraphQLType;
 import graphql.schema.GraphQLUnionType;
@@ -118,11 +119,35 @@ public class GraphQLConfiguration {
         });
         var graphQLCodeRegistry = builder.build();
 
+        GraphQLObjectType queryType = queryTypeProvider.getType();
+        for (ITypeCustomizer typeCustomizer : typeCustomizers) {
+            GraphQLType customizedGraphQLType = typeCustomizer.customize(queryType);
+            if (customizedGraphQLType instanceof GraphQLObjectType) {
+                queryType = (GraphQLObjectType) customizedGraphQLType;
+            }
+        }
+
+        GraphQLObjectType mutationType = mutationTypeProvider.getType();
+        for (ITypeCustomizer typeCustomizer : typeCustomizers) {
+            GraphQLType customizedGraphQLType = typeCustomizer.customize(mutationType);
+            if (customizedGraphQLType instanceof GraphQLObjectType) {
+                mutationType = (GraphQLObjectType) customizedGraphQLType;
+            }
+        }
+
+        GraphQLObjectType subscriptionType = subscriptionTypeProvider.getType();
+        for (ITypeCustomizer typeCustomizer : typeCustomizers) {
+            GraphQLType customizedGraphQLType = typeCustomizer.customize(subscriptionType);
+            if (customizedGraphQLType instanceof GraphQLObjectType) {
+                subscriptionType = (GraphQLObjectType) customizedGraphQLType;
+            }
+        }
+
         // @formatter:off
         return GraphQLSchema.newSchema()
-                .query(queryTypeProvider.getType())
-                .mutation(mutationTypeProvider.getType())
-                .subscription(subscriptionTypeProvider.getType())
+                .query(queryType)
+                .mutation(mutationType)
+                .subscription(subscriptionType)
                 .additionalTypes(customizedTypes)
                 .codeRegistry(graphQLCodeRegistry)
                 .build();

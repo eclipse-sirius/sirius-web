@@ -21,15 +21,14 @@ import org.eclipse.sirius.web.collaborative.api.services.IRepresentationConfigur
  * The configuration used to create a form event processor.
  *
  * @author sbegaudeau
+ * @author hmarchadour
  */
 public class FormConfiguration implements IRepresentationConfiguration {
+
     private final UUID formId;
 
-    private final String objectId;
-
-    public FormConfiguration(String objectId) {
-        this.objectId = Objects.requireNonNull(objectId);
-        this.formId = UUID.nameUUIDFromBytes(objectId.getBytes());
+    public FormConfiguration(UUID formId) {
+        this.formId = Objects.requireNonNull(formId);
     }
 
     @Override
@@ -37,7 +36,4 @@ public class FormConfiguration implements IRepresentationConfiguration {
         return this.formId;
     }
 
-    public String getObjectId() {
-        return this.objectId;
-    }
 }

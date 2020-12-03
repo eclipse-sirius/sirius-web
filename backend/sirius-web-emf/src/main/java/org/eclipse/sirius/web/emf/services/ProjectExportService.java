@@ -37,7 +37,6 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.emfjson.resource.JsonResourceFactoryImpl;
-import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.persistence.entities.IdMappingEntity;
 import org.eclipse.sirius.web.persistence.repositories.IIdMappingRepository;
 import org.eclipse.sirius.web.representations.IRepresentation;
@@ -207,67 +206,63 @@ public class ProjectExportService implements IProjectExportService {
         ResourceSet resourceSet = this.loadAllDocuments(projectId);
 
         for (RepresentationDescriptor representationDescriptor : representationsDescriptor) {
-            IRepresentation representation = representationDescriptor.getRepresentation();
-            if (representation instanceof Diagram) {
-                RepresentationManifest representationManifest = this.createRepresentationManifest((Diagram) representation, representationDescriptor, resourceSet);
-                if (representationManifest != null) {
-                    UUID representationId = representationDescriptor.getId();
-                    representationManifests.put(representationId.toString(), representationManifest);
+            RepresentationManifest representationManifest = this.createRepresentationManifest(representationDescriptor, resourceSet);
+            UUID representationId = representationDescriptor.getId();
+            representationManifests.put(representationId.toString(), representationManifest);
 
-                    byte[] bytes = new ObjectMapper().writeValueAsBytes(representationDescriptor);
-                    String name = projectName + "/representations/" + representationId + "." + JsonResourceFactoryImpl.EXTENSION; //$NON-NLS-1$ //$NON-NLS-2$
-                    ZipEntry zipEntry = this.createZipEntry(name, bytes.length);
-                    zippedout.putNextEntry(zipEntry);
-                    zippedout.write(bytes);
-                    zippedout.closeEntry();
-                }
-            }
+            byte[] bytes = new ObjectMapper().writeValueAsBytes(representationDescriptor);
+            String name = projectName + "/representations/" + representationId + "." + JsonResourceFactoryImpl.EXTENSION; //$NON-NLS-1$ //$NON-NLS-2$
+            ZipEntry zipEntry = this.createZipEntry(name, bytes.length);
+            zippedout.putNextEntry(zipEntry);
+            zippedout.write(bytes);
+            zippedout.closeEntry();
         }
 
         return representationManifests;
     }
 
     /**
-     * Creates a {@link RepresentationManifest} for the given {@link Diagram}.
+     * Creates a {@link RepresentationManifest} for the given {@link RepresentationDescriptor}.
      *
-     * @param diagram
-     *            The given {@link Diagram}
+     * @param representationDescriptor
+     *            The {@link RepresentationDescriptor}
      * @param resourceSet
      *            The {@link ResourceSet} containing all loaded documents
-     * @param representationDescriptor
-     *            The {@link RepresentationDescriptor} of the given {@link Diagram}
-     * @return the {@link RepresentationManifest} for the given {@link Diagram}
-     * @throws IOException
-     *             if an I/O error occurred
+     * @return the {@link RepresentationManifest} for the given {@link RepresentationDescriptor}
      */
-    private RepresentationManifest createRepresentationManifest(Diagram diagram, RepresentationDescriptor representationDescriptor, ResourceSet resourceSet) throws IOException {
-        UUID descriptionId = diagram.getDescriptionId();
-        Optional<IdMappingEntity> optionalIdMappingEntity = this.idMappingRepository.findById(descriptionId);
-        if (optionalIdMappingEntity.isPresent()) {
-            IdMappingEntity idMappingEntity = optionalIdMappingEntity.get();
+    private RepresentationManifest createRepresentationManifest(RepresentationDescriptor representationDescriptor, ResourceSet resourceSet) {
+        IRepresentation representation = representationDescriptor.getRepresentation();
+        UUID descriptionId = representationDescriptor.getDescriptionId();
 
-            String uriFragment = ""; //$NON-NLS-1$
-            String targetObjectId = diagram.getTargetObjectId();
-            for (Resource resource : resourceSet.getResources()) {
-                EObject eObject = resource.getEObject(targetObjectId);
-                if (eObject != null) {
-                    uriFragment = EcoreUtil.getURI(eObject).toString();
-                    break;
-                }
-            }
-            if (uriFragment.isEmpty()) {
-                this.logger.error("The serialization of the representationManifest won't be complete."); //$NON-NLS-1$
-            }
-            // @formatter:off
-            return RepresentationManifest.newRepresentationManifest()
-                    .type(diagram.getClass().getSimpleName())
-                    .descriptionURI(idMappingEntity.getExternalId())
-                    .targetObjectURI(uriFragment)
-                    .build();
-            // @formatter:on
+        /*
+         * If the given descriptionId does not match with an existing IdMappingEntity, the current representation is
+         * based on a custom description. We use the descriptionId as descriptionURI.
+         */
+        // @formatter:off
+        String descriptionURI = this.idMappingRepository.findById(descriptionId)
+            .map(IdMappingEntity::getExternalId)
+            .orElse(descriptionId.toString());
+        // @formatter:on
 
+        String uriFragment = ""; //$NON-NLS-1$
+        String targetObjectId = representationDescriptor.getTargetObjectId();
+        for (Resource resource : resourceSet.getResources()) {
+            EObject eObject = resource.getEObject(targetObjectId);
+            if (eObject != null) {
+                uriFragment = EcoreUtil.getURI(eObject).toString();
+                break;
+            }
         }
-        return null;
+        if (uriFragment.isEmpty()) {
+            this.logger.error("The serialization of the representationManifest won't be complete."); //$NON-NLS-1$
+        }
+        // @formatter:off
+        return RepresentationManifest.newRepresentationManifest()
+            .type(representation.getKind())
+            .descriptionURI(descriptionURI)
+            .targetObjectURI(uriFragment)
+            .build();
+        // @formatter:on
     }
 
     /**

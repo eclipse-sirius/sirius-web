@@ -17,8 +17,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import org.eclipse.sirius.web.annotations.Immutable;
+import org.eclipse.sirius.web.annotations.PublicApi;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLField;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLID;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLNonNull;
@@ -30,7 +32,9 @@ import org.eclipse.sirius.web.representations.VariableManager;
  * The root concept of the description of a form representation.
  *
  * @author sbegaudeau
+ * @author hmarchadour
  */
+@PublicApi
 @Immutable
 @GraphQLObjectType
 public final class FormDescription implements IRepresentationDescription {
@@ -43,6 +47,8 @@ public final class FormDescription implements IRepresentationDescription {
     private Function<VariableManager, String> labelProvider;
 
     private Function<VariableManager, String> targetObjectIdProvider;
+
+    private Predicate<VariableManager> canCreatePredicate;
 
     private List<PageDescription> pageDescriptions;
 
@@ -77,6 +83,11 @@ public final class FormDescription implements IRepresentationDescription {
 
     public Function<VariableManager, String> getTargetObjectIdProvider() {
         return this.targetObjectIdProvider;
+    }
+
+    @Override
+    public Predicate<VariableManager> getCanCreatePredicate() {
+        return this.canCreatePredicate;
     }
 
     public List<PageDescription> getPageDescriptions() {
@@ -114,6 +125,8 @@ public final class FormDescription implements IRepresentationDescription {
 
         private Function<VariableManager, String> targetObjectIdProvider;
 
+        private Predicate<VariableManager> canCreatePredicate;
+
         private List<PageDescription> pageDescriptions;
 
         private List<GroupDescription> groupDescriptions;
@@ -142,6 +155,11 @@ public final class FormDescription implements IRepresentationDescription {
             return this;
         }
 
+        public Builder canCreatePredicate(Predicate<VariableManager> canCreatePredicate) {
+            this.canCreatePredicate = Objects.requireNonNull(canCreatePredicate);
+            return this;
+        }
+
         public Builder pageDescriptions(List<PageDescription> pageDescriptions) {
             this.pageDescriptions = Objects.requireNonNull(pageDescriptions);
             return this;
@@ -157,6 +175,7 @@ public final class FormDescription implements IRepresentationDescription {
             formDescription.id = Objects.requireNonNull(this.id);
             formDescription.label = Objects.requireNonNull(this.label);
             formDescription.idProvider = Objects.requireNonNull(this.idProvider);
+            formDescription.canCreatePredicate = Objects.requireNonNull(this.canCreatePredicate);
             formDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
             formDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
             formDescription.pageDescriptions = Objects.requireNonNull(this.pageDescriptions);

@@ -129,6 +129,7 @@ public class RenameDiagramEventHandler implements IProjectEventHandler {
                     // @formatter:off
                     RepresentationDescriptor representationDescriptor = RepresentationDescriptor.newRepresentationDescriptor(renamedDiagram.getId())
                             .projectId(editingContext.getProjectId())
+                            .descriptionId(renamedDiagram.getDescriptionId())
                             .targetObjectId(renamedDiagram.getTargetObjectId())
                             .label(renamedDiagram.getLabel())
                             .representation(renamedDiagram)

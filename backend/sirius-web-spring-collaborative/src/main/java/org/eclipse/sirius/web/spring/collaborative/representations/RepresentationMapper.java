@@ -17,7 +17,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.Objects;
 
-import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.persistence.entities.ProjectEntity;
 import org.eclipse.sirius.web.persistence.entities.RepresentationEntity;
 import org.eclipse.sirius.web.representations.IRepresentation;
@@ -41,23 +40,21 @@ public class RepresentationMapper {
     }
 
     public RepresentationDescriptor toDTO(RepresentationEntity representationEntity) {
-        IRepresentation representation = null;
-        if (representationEntity.getContentType().equals(Diagram.class.getSimpleName())) {
-            try {
-                representation = this.objectMapper.readValue(representationEntity.getContent(), Diagram.class);
-            } catch (JsonProcessingException exception) {
-                this.logger.error(exception.getMessage(), exception);
-            }
+        try {
+            IRepresentation representation = this.objectMapper.readValue(representationEntity.getContent(), IRepresentation.class);
+            // @formatter:off
+            return RepresentationDescriptor.newRepresentationDescriptor(representationEntity.getId())
+                    .label(representationEntity.getLabel())
+                    .projectId(representationEntity.getProject().getId())
+                    .descriptionId(representation.getDescriptionId())
+                    .targetObjectId(representationEntity.getTargetObjectId())
+                    .representation(representation)
+                    .build();
+            // @formatter:on
+        } catch (JsonProcessingException exception) {
+            this.logger.warn(exception.getMessage(), exception);
         }
-
-        // @formatter:off
-        return RepresentationDescriptor.newRepresentationDescriptor(representationEntity.getId())
-                .label(representationEntity.getLabel())
-                .projectId(representationEntity.getProject().getId())
-                .targetObjectId(representationEntity.getTargetObjectId())
-                .representation(representation)
-                .build();
-        // @formatter:on
+        return null;
     }
 
     public RepresentationEntity toEntity(RepresentationDescriptor representationDescriptor, ProjectEntity projectEntity) {

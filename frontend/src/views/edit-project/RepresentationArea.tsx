@@ -16,6 +16,7 @@ import PropTypes from 'prop-types';
 import { Text } from 'core/text/Text';
 import { OnboardArea } from './OnboardArea';
 import { DiagramWebSocketContainer } from 'diagram/DiagramWebSocketContainer';
+import { FormWebSocketContainer } from 'form/FormWebSocketContainer';
 import { RepresentationNavigation } from 'views/edit-project/RepresentationNavigation';
 
 import styles from './RepresentationArea.module.css';
@@ -46,12 +47,14 @@ export const RepresentationArea = ({
         setSubscribers={setSubscribers}
       />
     );
+  } else if (displayedRepresentation.kind === 'Form') {
+    content = <FormWebSocketContainer formId={displayedRepresentation.id} />;
   } else {
     content = <Text className={styles.text}>Invalid representation type ${displayedRepresentation.kind}</Text>;
   }
 
   return (
-    <div className={styles.representationArea}>
+    <div className={styles.representationArea} data-testid="representation-area">
       <RepresentationNavigation
         representations={representations}
         displayedRepresentation={displayedRepresentation}

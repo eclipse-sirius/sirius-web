@@ -12,14 +12,16 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.spring.configuration;
 
+import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleDeserializers;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.eclipse.sirius.web.services.api.mapper.IDeserializerProvider;
+import org.eclipse.sirius.web.services.api.mapper.IStdDeserializerProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -31,13 +33,19 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ObjectMapperConfiguration {
     @Bean
-    public ObjectMapper objectMapper(List<IDeserializerProvider<?>> deserializerProviders) {
-        ObjectMapper objectMapper = new ObjectMapper();
+    public ObjectMapper objectMapper(List<IStdDeserializerProvider<?>> deserializerProviders) {
+        // @formatter:off
+        Map<Class<?>, JsonDeserializer<?>> deserializers = deserializerProviders.stream()
+                .collect(Collectors.toMap(IStdDeserializerProvider::getType, IStdDeserializerProvider::getDeserializer));
+        // @formatter:on
+
+        SimpleDeserializers simpleDeserializers = new SimpleDeserializers();
+        simpleDeserializers.addDeserializers(deserializers);
 
         SimpleModule module = new SimpleModule();
-        SimpleDeserializers simpleDeserializers = new SimpleDeserializers();
-        simpleDeserializers.addDeserializers(deserializerProviders.stream().collect(Collectors.toMap(dp -> dp.getType(), dp -> dp.getDeserializer())));
         module.setDeserializers(simpleDeserializers);
+
+        ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(module);
 
         return objectMapper;

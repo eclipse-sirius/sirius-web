@@ -47,7 +47,7 @@ public class RepresentationEventProcessorComposedFactory implements IRepresentat
             IEditingContext editingContext, Context context) {
         // @formatter:off
         return this.factories.stream()
-                .filter(factory -> factory.canHandle(representationEventProcessorClass))
+                .filter(factory -> factory.canHandle(representationEventProcessorClass, configuration))
                 .findFirst()
                 .flatMap(factory -> factory.createRepresentationEventProcessor(representationEventProcessorClass, configuration, editingContext, context));
         // @formatter:on
