@@ -77,6 +77,7 @@ public class EditRadioEventHandlerTestCases {
 
         Form form = Form.newForm(FORM_ID)
                 .targetObjectId("targetObjectId") //$NON-NLS-1$
+                .descriptionId(UUID.randomUUID())
                 .label("form label") //$NON-NLS-1$
                 .pages(List.of(page))
                 .build();

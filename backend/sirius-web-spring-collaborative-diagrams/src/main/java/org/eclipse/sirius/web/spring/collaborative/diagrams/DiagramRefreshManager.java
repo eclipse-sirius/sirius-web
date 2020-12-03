@@ -116,6 +116,7 @@ public class DiagramRefreshManager implements IDiagramRefreshManager {
         // @formatter:off
         return RepresentationDescriptor.newRepresentationDescriptor(this.diagram.getId())
                 .projectId(projectId)
+                .descriptionId(this.diagram.getDescriptionId())
                 .targetObjectId(this.diagram.getTargetObjectId())
                 .label(this.diagram.getLabel())
                 .representation(this.diagram)

@@ -36,6 +36,8 @@ public final class FormElementProps implements IProps {
 
     private String targetObjectId;
 
+    private UUID descriptionId;
+
     private List<Element> children;
 
     private FormElementProps() {
@@ -52,6 +54,10 @@ public final class FormElementProps implements IProps {
 
     public String getTargetObjectId() {
         return this.targetObjectId;
+    }
+
+    public UUID getDescriptionId() {
+        return this.descriptionId;
     }
 
     @Override
@@ -82,6 +88,8 @@ public final class FormElementProps implements IProps {
 
         private String targetObjectId;
 
+        private UUID descriptionId;
+
         private List<Element> children;
 
         private Builder(UUID id) {
@@ -98,6 +106,11 @@ public final class FormElementProps implements IProps {
             return this;
         }
 
+        public Builder descriptionId(UUID descriptionId) {
+            this.descriptionId = Objects.requireNonNull(descriptionId);
+            return this;
+        }
+
         public Builder children(List<Element> children) {
             this.children = Objects.requireNonNull(children);
             return this;
@@ -108,6 +121,7 @@ public final class FormElementProps implements IProps {
             formElementProps.id = Objects.requireNonNull(this.id);
             formElementProps.label = Objects.requireNonNull(this.label);
             formElementProps.targetObjectId = Objects.requireNonNull(this.targetObjectId);
+            formElementProps.descriptionId = Objects.requireNonNull(this.descriptionId);
             formElementProps.children = Objects.requireNonNull(this.children);
             return formElementProps;
         }

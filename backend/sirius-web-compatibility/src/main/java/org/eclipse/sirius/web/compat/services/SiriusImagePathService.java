@@ -15,7 +15,6 @@ package org.eclipse.sirius.web.compat.services;
 import java.util.List;
 
 import org.eclipse.sirius.web.api.services.IImagePathService;
-import org.eclipse.sirius.web.diagrams.DiagramImages;
 import org.springframework.stereotype.Service;
 
 /**
@@ -26,11 +25,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class SiriusImagePathService implements IImagePathService {
 
-    private static final List<String> IMAGES_PATHS = List.of(DiagramImages.IMAGES_ROOT_FOLDER);
-
     @Override
     public List<String> getPaths() {
-        return IMAGES_PATHS;
+        return List.of(ImageConstants.IMAGES_ROOT_FOLDER);
     }
 
 }

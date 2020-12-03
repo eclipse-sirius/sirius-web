@@ -55,6 +55,7 @@ public class FormComponent implements IComponent {
         FormElementProps formElementProps = FormElementProps.newFormElementProps(id)
                 .label(label)
                 .targetObjectId(targetObjectId)
+                .descriptionId(formDescription.getId())
                 .children(children)
                 .build();
 

@@ -15,13 +15,17 @@ package org.eclipse.sirius.web.graphql.datafetchers.subscriptions;
 import java.security.Principal;
 import java.util.Objects;
 
+import org.eclipse.sirius.web.annotations.graphql.GraphQLSubscriptionTypes;
 import org.eclipse.sirius.web.annotations.spring.graphql.SubscriptionDataFetcher;
+import org.eclipse.sirius.web.collaborative.api.dto.PreDestroyPayload;
+import org.eclipse.sirius.web.collaborative.api.dto.SubscribersUpdatedEventPayload;
 import org.eclipse.sirius.web.collaborative.api.services.IProjectEventProcessorRegistry;
 import org.eclipse.sirius.web.collaborative.api.services.IRepresentationEventProcessor;
 import org.eclipse.sirius.web.collaborative.api.services.SubscriptionDescription;
 import org.eclipse.sirius.web.collaborative.trees.api.ITreeEventProcessor;
 import org.eclipse.sirius.web.collaborative.trees.api.TreeConfiguration;
 import org.eclipse.sirius.web.collaborative.trees.api.TreeEventInput;
+import org.eclipse.sirius.web.collaborative.trees.api.TreeRefreshedEventPayload;
 import org.eclipse.sirius.web.graphql.datafetchers.IDataFetchingEnvironmentService;
 import org.eclipse.sirius.web.graphql.schema.SubscriptionTypeProvider;
 import org.eclipse.sirius.web.services.api.dto.IPayload;
@@ -46,8 +50,20 @@ import reactor.core.publisher.Flux;
  * @author hmarchadour
  * @author pcdavid
  */
-@SubscriptionDataFetcher(type = SubscriptionTypeProvider.TYPE, field = SubscriptionTypeProvider.TREE_EVENT_FIELD)
+// @formatter:off
+@GraphQLSubscriptionTypes(
+    input = TreeEventInput.class,
+    payloads = {
+        TreeRefreshedEventPayload.class,
+        SubscribersUpdatedEventPayload.class,
+        PreDestroyPayload.class,
+    }
+)
+@SubscriptionDataFetcher(type = SubscriptionTypeProvider.TYPE, field = SubscriptionTreeEventDataFetcher.TREE_EVENT_FIELD)
+// @formatter:on
 public class SubscriptionTreeEventDataFetcher implements IDataFetcherWithFieldCoordinates<Publisher<IPayload>> {
+
+    public static final String TREE_EVENT_FIELD = "treeEvent"; //$NON-NLS-1$
 
     private final IDataFetchingEnvironmentService dataFetchingEnvironmentService;
 

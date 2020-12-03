@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.diagrams;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
@@ -36,9 +34,11 @@ import org.eclipse.sirius.web.representations.ISemanticRepresentation;
 @GraphQLObjectType
 public final class Diagram implements IRepresentation, ISemanticRepresentation {
 
-    private static final String KIND = "Diagram"; //$NON-NLS-1$
+    public static final String KIND = "Diagram"; //$NON-NLS-1$
 
     private UUID id;
+
+    private String kind;
 
     private String targetObjectId;
 
@@ -69,9 +69,8 @@ public final class Diagram implements IRepresentation, ISemanticRepresentation {
     @Override
     @GraphQLField
     @GraphQLNonNull
-    @JsonIgnore
     public String getKind() {
-        return KIND;
+        return this.kind;
     }
 
     @Override
@@ -82,6 +81,7 @@ public final class Diagram implements IRepresentation, ISemanticRepresentation {
         return this.targetObjectId;
     }
 
+    @Override
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
@@ -142,6 +142,8 @@ public final class Diagram implements IRepresentation, ISemanticRepresentation {
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
         private UUID id;
+
+        private String kind = KIND;
 
         private String targetObjectId;
 
@@ -210,6 +212,7 @@ public final class Diagram implements IRepresentation, ISemanticRepresentation {
         public Diagram build() {
             Diagram diagram = new Diagram();
             diagram.id = Objects.requireNonNull(this.id);
+            diagram.kind = Objects.requireNonNull(this.kind);
             diagram.targetObjectId = Objects.requireNonNull(this.targetObjectId);
             diagram.descriptionId = Objects.requireNonNull(this.descriptionId);
             diagram.label = Objects.requireNonNull(this.label);

@@ -67,6 +67,7 @@ public class FormDescriptionAggregator {
                 .idProvider(new GetOrCreateRandomIdProvider())
                 .labelProvider(labelProvider)
                 .targetObjectIdProvider(targetObjectIdProvider)
+                .canCreatePredicate(variableManager -> false)
                 .pageDescriptions(pageDescriptions)
                 .groupDescriptions(groupDescriptions)
                 .build());

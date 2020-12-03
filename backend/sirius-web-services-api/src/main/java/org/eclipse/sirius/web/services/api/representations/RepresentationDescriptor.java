@@ -29,6 +29,8 @@ public class RepresentationDescriptor {
 
     private UUID projectId;
 
+    private UUID descriptionId;
+
     private String targetObjectId;
 
     private String label;
@@ -41,6 +43,10 @@ public class RepresentationDescriptor {
 
     public UUID getProjectId() {
         return this.projectId;
+    }
+
+    public UUID getDescriptionId() {
+        return this.descriptionId;
     }
 
     public String getTargetObjectId() {
@@ -70,6 +76,8 @@ public class RepresentationDescriptor {
 
         private UUID projectId;
 
+        private UUID descriptionId;
+
         private String targetObjectId;
 
         private String label;
@@ -82,6 +90,11 @@ public class RepresentationDescriptor {
 
         public Builder projectId(UUID projectId) {
             this.projectId = Objects.requireNonNull(projectId);
+            return this;
+        }
+
+        public Builder descriptionId(UUID descriptionId) {
+            this.descriptionId = Objects.requireNonNull(descriptionId);
             return this;
         }
 
@@ -104,6 +117,7 @@ public class RepresentationDescriptor {
             RepresentationDescriptor representationDescriptor = new RepresentationDescriptor();
             representationDescriptor.id = Objects.requireNonNull(this.id);
             representationDescriptor.projectId = Objects.requireNonNull(this.projectId);
+            representationDescriptor.descriptionId = Objects.requireNonNull(this.descriptionId);
             representationDescriptor.targetObjectId = Objects.requireNonNull(this.targetObjectId);
             representationDescriptor.label = Objects.requireNonNull(this.label);
             representationDescriptor.representation = Objects.requireNonNull(this.representation);

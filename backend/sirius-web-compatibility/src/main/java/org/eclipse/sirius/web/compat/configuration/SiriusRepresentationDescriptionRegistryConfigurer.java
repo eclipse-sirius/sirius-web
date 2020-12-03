@@ -15,15 +15,16 @@ package org.eclipse.sirius.web.compat.configuration;
 import java.util.List;
 import java.util.Objects;
 
-import org.eclipse.sirius.viewpoint.description.Group;
+import org.eclipse.sirius.web.api.configuration.IPropertiesDescriptionRegistry;
+import org.eclipse.sirius.web.api.configuration.IPropertiesDescriptionRegistryConfigurer;
 import org.eclipse.sirius.web.api.configuration.IRepresentationDescriptionRegistry;
 import org.eclipse.sirius.web.api.configuration.IRepresentationDescriptionRegistryConfigurer;
 import org.eclipse.sirius.web.compat.services.ExplorerTreeDescriptionProvider;
-import org.eclipse.sirius.web.compat.services.ODesignRegistry;
-import org.eclipse.sirius.web.compat.services.api.IODesignRegistry;
 import org.eclipse.sirius.web.compat.services.api.ISiriusConfiguration;
 import org.eclipse.sirius.web.compat.services.representations.ODesignReader;
 import org.eclipse.sirius.web.compat.services.representations.SiriusRepresentationDescriptionProvider;
+import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
+import org.eclipse.sirius.web.forms.description.FormDescription;
 import org.eclipse.sirius.web.representations.IRepresentationDescription;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
@@ -33,25 +34,23 @@ import org.springframework.core.io.ClassPathResource;
  * the default form description and all the descriptions from the odesign files registered in the Sirius configurations.
  *
  * @author sbegaudeau
+ * @author hmarchadour
  */
 @Configuration
-public class SiriusRepresentationDescriptionRegistryConfigurer implements IRepresentationDescriptionRegistryConfigurer {
+public class SiriusRepresentationDescriptionRegistryConfigurer implements IRepresentationDescriptionRegistryConfigurer, IPropertiesDescriptionRegistryConfigurer {
 
     private final List<ISiriusConfiguration> siriusConfigurations;
 
     private final ODesignReader oDesignReader;
 
-    private final IODesignRegistry oDesignRegistry;
-
     private final SiriusRepresentationDescriptionProvider representationDescriptionProvider;
 
     private final ExplorerTreeDescriptionProvider treeDescriptionProvider;
 
-    public SiriusRepresentationDescriptionRegistryConfigurer(List<ISiriusConfiguration> siriusConfigurations, ODesignReader oDesignReader, IODesignRegistry oDesignRegistry,
+    public SiriusRepresentationDescriptionRegistryConfigurer(List<ISiriusConfiguration> siriusConfigurations, ODesignReader oDesignReader,
             SiriusRepresentationDescriptionProvider representationDescriptionProvider, ExplorerTreeDescriptionProvider treeDescriptionProvider) {
         this.siriusConfigurations = Objects.requireNonNull(siriusConfigurations);
         this.oDesignReader = Objects.requireNonNull(oDesignReader);
-        this.oDesignRegistry = Objects.requireNonNull(oDesignRegistry);
         this.representationDescriptionProvider = Objects.requireNonNull(representationDescriptionProvider);
         this.treeDescriptionProvider = Objects.requireNonNull(treeDescriptionProvider);
     }
@@ -59,24 +58,36 @@ public class SiriusRepresentationDescriptionRegistryConfigurer implements IRepre
     @Override
     public void addRepresentationDescriptions(IRepresentationDescriptionRegistry registry) {
         registry.add(this.treeDescriptionProvider.getTreeDescription());
-
         // @formatter:off
         this.siriusConfigurations.stream()
             .map(ISiriusConfiguration::getODesignPaths)
             .flatMap(List::stream)
-            .forEach(path -> this.registerODesign(registry, path));
+            .map(this::getRepresentationDescriptions)
+            .flatMap(List::stream)
+            .filter(DiagramDescription.class::isInstance)
+            .forEach(registry::add);
         // @formatter:on
     }
 
-    private void registerODesign(IRepresentationDescriptionRegistry registry, String odesignPath) {
-        var optionalGroup = this.oDesignReader.read(new ClassPathResource(odesignPath));
-        if (optionalGroup.isPresent()) {
-            Group group = optionalGroup.get();
-            if (this.oDesignRegistry instanceof ODesignRegistry) {
-                ((ODesignRegistry) this.oDesignRegistry).add(group);
-            }
-            List<IRepresentationDescription> representationDescriptions = this.representationDescriptionProvider.getRepresentationDescriptions(group);
-            representationDescriptions.forEach(registry::add);
-        }
+    @Override
+    public void addPropertiesDescriptions(IPropertiesDescriptionRegistry registry) {
+        // @formatter:off
+        this.siriusConfigurations.stream()
+            .map(ISiriusConfiguration::getODesignPaths)
+            .flatMap(List::stream)
+            .map(this::getRepresentationDescriptions)
+            .flatMap(List::stream)
+            .filter(FormDescription.class::isInstance)
+            .map(FormDescription.class::cast)
+            .forEach(registry::add);
+        // @formatter:on
+    }
+
+    private List<IRepresentationDescription> getRepresentationDescriptions(String odesignPath) {
+        // @formatter:off
+        return this.oDesignReader.read(new ClassPathResource(odesignPath))
+                .map(this.representationDescriptionProvider::getRepresentationDescriptions)
+                .orElse(List.of());
+        // @formatter:on
     }
 }

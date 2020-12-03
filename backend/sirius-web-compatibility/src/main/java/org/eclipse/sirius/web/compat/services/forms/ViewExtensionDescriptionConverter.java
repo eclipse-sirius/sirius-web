@@ -91,6 +91,7 @@ public class ViewExtensionDescriptionConverter implements IViewExtensionDescript
                 .label(this.identifiedElementLabelProvider.getLabel(viewExtensionDescription))
                 .idProvider(new GetOrCreateRandomIdProvider())
                 .labelProvider(labelProvider)
+                .canCreatePredicate(variableManager -> false)
                 .targetObjectIdProvider(targetObjectIdProvider)
                 .pageDescriptions(pageDescriptions)
                 .groupDescriptions(groupDescriptions)

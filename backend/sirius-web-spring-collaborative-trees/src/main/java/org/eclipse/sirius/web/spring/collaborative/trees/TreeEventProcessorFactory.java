@@ -58,8 +58,8 @@ public class TreeEventProcessorFactory implements IRepresentationEventProcessorF
     }
 
     @Override
-    public <T extends IRepresentationEventProcessor> boolean canHandle(Class<T> representationEventProcessorClass) {
-        return ITreeEventProcessor.class.isAssignableFrom(representationEventProcessorClass);
+    public <T extends IRepresentationEventProcessor> boolean canHandle(Class<T> representationEventProcessorClass, IRepresentationConfiguration configuration) {
+        return ITreeEventProcessor.class.isAssignableFrom(representationEventProcessorClass) && configuration instanceof TreeConfiguration;
     }
 
     @Override

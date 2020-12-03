@@ -67,13 +67,13 @@ public class DeleteRepresentationEventHandler implements IProjectEventHandler {
     }
 
     @Override
-    public EventHandlerResponse handle(IEditingContext editingContext, IProjectInput deleteDiagramInput, Context context) {
+    public EventHandlerResponse handle(IEditingContext editingContext, IProjectInput deleteRepresentationInput, Context context) {
         this.counter.increment();
 
-        String message = this.messageService.invalidInput(deleteDiagramInput.getClass().getSimpleName(), DeleteRepresentationInput.class.getSimpleName());
+        String message = this.messageService.invalidInput(deleteRepresentationInput.getClass().getSimpleName(), DeleteRepresentationInput.class.getSimpleName());
         EventHandlerResponse eventHandlerResponse = new EventHandlerResponse(false, representation -> false, new ErrorPayload(message));
-        if (deleteDiagramInput instanceof DeleteRepresentationInput) {
-            DeleteRepresentationInput input = (DeleteRepresentationInput) deleteDiagramInput;
+        if (deleteRepresentationInput instanceof DeleteRepresentationInput) {
+            DeleteRepresentationInput input = (DeleteRepresentationInput) deleteRepresentationInput;
             var optionalRepresentation = this.representationService.getRepresentation(input.getRepresentationId());
 
             if (optionalRepresentation.isPresent()) {

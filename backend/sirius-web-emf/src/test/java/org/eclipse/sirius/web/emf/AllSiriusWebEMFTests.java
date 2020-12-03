@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.emf;
 
 import org.eclipse.sirius.web.emf.architecture.CodingRulesTestCases;
+import org.eclipse.sirius.web.emf.architecture.ConfigurationTestCases;
 import org.eclipse.sirius.web.emf.architecture.ServiceTestCases;
 import org.eclipse.sirius.web.emf.architecture.SpringCodingRulesTestCases;
 import org.eclipse.sirius.web.emf.services.CreateDocumentEventHandlerTestCases;
@@ -22,8 +23,6 @@ import org.eclipse.sirius.web.emf.services.EditingContextPersistenceServiceTestC
 import org.eclipse.sirius.web.emf.services.IDManagerTestCases;
 import org.eclipse.sirius.web.emf.services.LabelFeatureProviderRegistryTestCases;
 import org.eclipse.sirius.web.emf.services.LabelFeatureProviderTestCases;
-import org.eclipse.sirius.web.emf.services.ProjectExportServiceTestCases;
-import org.eclipse.sirius.web.emf.services.ProjectImportServiceTestCases;
 import org.eclipse.sirius.web.emf.services.RenameDocumentEventHandlerTestCases;
 import org.eclipse.sirius.web.emf.services.UploadDocumentEventHandlerTestCases;
 import org.junit.runner.RunWith;
@@ -39,7 +38,7 @@ import org.junit.runners.Suite.SuiteClasses;
 // @formatter:off
 @SuiteClasses({
     CodingRulesTestCases.class,
-    //ConfigurationTestCases.class,
+    ConfigurationTestCases.class,
     CreateDocumentEventHandlerTestCases.class,
     DeleteDocumentEventHandlerTestCases.class,
     EditingContextFactoryTestCases.class,
@@ -47,8 +46,6 @@ import org.junit.runners.Suite.SuiteClasses;
     IDManagerTestCases.class,
     LabelFeatureProviderRegistryTestCases.class,
     LabelFeatureProviderTestCases.class,
-    ProjectExportServiceTestCases.class,
-    ProjectImportServiceTestCases.class,
     RenameDocumentEventHandlerTestCases.class,
     ServiceTestCases.class,
     SpringCodingRulesTestCases.class,

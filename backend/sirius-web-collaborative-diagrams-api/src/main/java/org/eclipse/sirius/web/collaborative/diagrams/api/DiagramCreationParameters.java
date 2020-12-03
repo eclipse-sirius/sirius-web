@@ -69,13 +69,13 @@ public final class DiagramCreationParameters {
         return new Builder(id);
     }
 
-    public static Builder newDiagramCreationParameters(DiagramCreationParameters dcp) {
+    public static Builder newDiagramCreationParameters(DiagramCreationParameters diagramCreationParameters) {
         // @formatter:off
-        return new Builder(dcp.getId())
-                .diagramDescription(dcp.getDiagramDescription())
-                .editingContext(dcp.getEditingContext())
-                .label(dcp.getLabel())
-                .object(dcp.getObject());
+        return new Builder(diagramCreationParameters.getId())
+                .diagramDescription(diagramCreationParameters.getDiagramDescription())
+                .editingContext(diagramCreationParameters.getEditingContext())
+                .label(diagramCreationParameters.getLabel())
+                .object(diagramCreationParameters.getObject());
         // @formatter:on
     }
 

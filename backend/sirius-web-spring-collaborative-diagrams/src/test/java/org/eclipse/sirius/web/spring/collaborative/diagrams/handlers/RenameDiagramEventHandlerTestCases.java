@@ -74,6 +74,7 @@ public class RenameDiagramEventHandlerTestCases {
         RepresentationDescriptor representationDescriptor = RepresentationDescriptor.newRepresentationDescriptor(representationId)
                 .label(OLD_LABEL)
                 .projectId(projectId)
+                .descriptionId(diagram.getDescriptionId())
                 .representation(diagram)
                 .targetObjectId(targetObjectId.toString())
                 .build();

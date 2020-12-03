@@ -139,7 +139,7 @@ public class MutationTypeProvider implements IMutationTypeProvider {
             graphQLObjectTypes.add(graphQLObjectType);
         }
 
-        String unionTypeName = this.graphQLNameProvider.getUnionTypeName(dataFetcherClass);
+        String unionTypeName = this.graphQLNameProvider.getMutationUnionTypeName(dataFetcherClass);
         var union = GraphQLUnionType.newUnionType()
                 .name(unionTypeName)
                 .possibleTypes(graphQLObjectTypes.toArray(new GraphQLObjectType[graphQLObjectTypes.size()]))

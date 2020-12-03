@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.spring.collaborative.forms.handlers;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import org.eclipse.sirius.web.collaborative.forms.api.IFormService;
 import org.eclipse.sirius.web.forms.AbstractWidget;
@@ -22,11 +23,17 @@ import org.eclipse.sirius.web.forms.Form;
  * Implementation of the form service which does nothing.
  *
  * @author sbegaudeau
+ * @author hmarchadour
  */
 public class NoOpFormService implements IFormService {
 
     @Override
     public Optional<AbstractWidget> findWidget(Form form, String widgetId) {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<Form> findById(UUID formId) {
         return Optional.empty();
     }
 

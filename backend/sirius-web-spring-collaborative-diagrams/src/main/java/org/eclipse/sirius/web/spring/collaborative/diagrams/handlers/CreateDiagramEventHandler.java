@@ -41,9 +41,10 @@ import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
 
 /**
- * Handler used to create a new representation.
+ * Handler used to create a new diagram representation.
  *
  * @author sbegaudeau
+ * @author hmarchadour
  */
 @Service
 public class CreateDiagramEventHandler implements IProjectEventHandler {
@@ -77,7 +78,15 @@ public class CreateDiagramEventHandler implements IProjectEventHandler {
 
     @Override
     public boolean canHandle(IProjectInput projectInput) {
-        return projectInput instanceof CreateRepresentationInput;
+        if (projectInput instanceof CreateRepresentationInput) {
+            CreateRepresentationInput input = (CreateRepresentationInput) projectInput;
+            // @formatter:off
+            return this.representationDescriptionService.findRepresentationDescriptionById(input.getRepresentationDescriptionId())
+                    .filter(DiagramDescription.class::isInstance)
+                    .isPresent();
+            // @formatter:on
+        }
+        return false;
     }
 
     @Override
@@ -115,6 +124,7 @@ public class CreateDiagramEventHandler implements IProjectEventHandler {
                 // @formatter:off
                 RepresentationDescriptor representationDescriptor = RepresentationDescriptor.newRepresentationDescriptor(diagram.getId())
                         .projectId(editingContext.getProjectId())
+                        .descriptionId(diagram.getDescriptionId())
                         .targetObjectId(diagram.getTargetObjectId())
                         .label(diagram.getLabel())
                         .representation(diagram)

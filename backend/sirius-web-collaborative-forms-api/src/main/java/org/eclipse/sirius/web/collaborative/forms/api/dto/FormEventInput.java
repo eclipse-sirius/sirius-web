@@ -22,15 +22,16 @@ import org.eclipse.sirius.web.annotations.graphql.GraphQLNonNull;
 import org.eclipse.sirius.web.services.api.dto.IInput;
 
 /**
- * The input of the properties event subscription.
+ * The input of the form event subscription.
  *
  * @author sbegaudeau
+ * @author hmarchadour
  */
 @GraphQLInputObjectType
 public final class FormEventInput implements IInput {
     private UUID projectId;
 
-    private String objectId;
+    private UUID formId;
 
     @GraphQLID
     @GraphQLField
@@ -42,13 +43,13 @@ public final class FormEventInput implements IInput {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public String getObjectId() {
-        return this.objectId;
+    public UUID getFormId() {
+        return this.formId;
     }
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'projectId: {1}, objectId: {2}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.projectId, this.objectId);
+        String pattern = "{0} '{'projectId: {1}, formId: {2}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.projectId, this.formId);
     }
 }

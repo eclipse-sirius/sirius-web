@@ -29,8 +29,8 @@ import React, { useEffect, useReducer } from 'react';
 import styles from './PropertiesWebSocketContainer.module.css';
 
 const propertiesEventSubscription = gql`
-  subscription formEvent($input: FormEventInput!) {
-    formEvent(input: $input) {
+  subscription propertiesEvent($input: PropertiesEventInput!) {
+    propertiesEvent(input: $input) {
       __typename
       ... on PreDestroyPayload {
         id

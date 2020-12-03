@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import org.eclipse.sirius.web.annotations.Immutable;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLField;
@@ -55,6 +56,8 @@ public final class TreeDescription implements IRepresentationDescription {
     private Function<VariableManager, List<Object>> childrenProvider;
 
     private Function<VariableManager, Boolean> hasChildrenProvider;
+
+    private Predicate<VariableManager> canCreatePredicate;
 
     private TreeDescription() {
         // Prevent instantiation
@@ -111,6 +114,11 @@ public final class TreeDescription implements IRepresentationDescription {
         return this.hasChildrenProvider;
     }
 
+    @Override
+    public Predicate<VariableManager> getCanCreatePredicate() {
+        return this.canCreatePredicate;
+    }
+
     public static Builder newTreeDescription(UUID id) {
         return new Builder(id);
     }
@@ -149,6 +157,8 @@ public final class TreeDescription implements IRepresentationDescription {
         private Function<VariableManager, List<Object>> childrenProvider;
 
         private Function<VariableManager, Boolean> hasChildrenProvider;
+
+        private Predicate<VariableManager> canCreatePredicate;
 
         private Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
@@ -204,6 +214,11 @@ public final class TreeDescription implements IRepresentationDescription {
             return this;
         }
 
+        public Builder canCreatePredicate(Predicate<VariableManager> canCreatePredicate) {
+            this.canCreatePredicate = Objects.requireNonNull(canCreatePredicate);
+            return this;
+        }
+
         public TreeDescription build() {
             TreeDescription treeDescription = new TreeDescription();
             treeDescription.id = Objects.requireNonNull(this.id);
@@ -217,6 +232,7 @@ public final class TreeDescription implements IRepresentationDescription {
             treeDescription.elementsProvider = Objects.requireNonNull(this.elementsProvider);
             treeDescription.childrenProvider = Objects.requireNonNull(this.childrenProvider);
             treeDescription.hasChildrenProvider = Objects.requireNonNull(this.hasChildrenProvider);
+            treeDescription.canCreatePredicate = Objects.requireNonNull(this.canCreatePredicate);
             return treeDescription;
         }
     }

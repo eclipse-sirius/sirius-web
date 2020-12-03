@@ -112,7 +112,7 @@ public class UploadDocumentEventHandlerTestCases {
 
     @Test
     public void testUploadXMIDocumentFromFile() throws UnsupportedEncodingException {
-        String filePath = ProjectImportServiceTestCases.class.getClassLoader().getResource(PATH_TO_XMI_DOCUMENT).getFile();
+        String filePath = UploadDocumentEventHandlerTestCases.class.getClassLoader().getResource(PATH_TO_XMI_DOCUMENT).getFile();
         String decodedfilePath = URLDecoder.decode(filePath, StandardCharsets.UTF_8.name());
         File file = new File(decodedfilePath);
         assertThat(file.exists()).isTrue();

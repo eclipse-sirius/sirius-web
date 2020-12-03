@@ -16,12 +16,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.EditingDomain;
-import org.eclipse.sirius.web.diagrams.DiagramImages;
+import org.eclipse.sirius.web.collaborative.api.services.IRepresentationImageProvider;
 import org.eclipse.sirius.web.emf.services.DocumentMetadataAdapter;
 import org.eclipse.sirius.web.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.web.representations.VariableManager;
@@ -46,12 +47,19 @@ public class ExplorerTreeDescriptionProvider {
 
     private final IRepresentationService representationService;
 
-    public ExplorerTreeDescriptionProvider(IObjectService objectService, IRepresentationService representationService) {
+    private final List<IRepresentationImageProvider> representationImageProviders;
+
+    public ExplorerTreeDescriptionProvider(IObjectService objectService, IRepresentationService representationService, List<IRepresentationImageProvider> representationImageProviders) {
         this.objectService = Objects.requireNonNull(objectService);
         this.representationService = Objects.requireNonNull(representationService);
+        this.representationImageProviders = Objects.requireNonNull(representationImageProviders);
     }
 
     public TreeDescription getTreeDescription() {
+        // This predicate will NOT be used while creating the explorer but we don't want to see the description of the
+        // explorer in the list of representations that can be created. Thus, we will return false all the time.
+        Predicate<VariableManager> canCreatePredicate = variableManager -> false;
+
         // @formatter:off
         return TreeDescription.newTreeDescription(IRepresentationDescriptionService.EXPLORER_TREE_DESCRIPTION)
                 .label("Explorer") //$NON-NLS-1$
@@ -64,6 +72,7 @@ public class ExplorerTreeDescriptionProvider {
                 .elementsProvider(this::getElements)
                 .hasChildrenProvider(this::hasChildren)
                 .childrenProvider(this::getChildren)
+                .canCreatePredicate(canCreatePredicate)
                 .build();
         // @formatter:on
     }
@@ -133,7 +142,15 @@ public class ExplorerTreeDescriptionProvider {
             String imagePath = this.objectService.getImagePath(self);
             imageURL = imagePath;
         } else if (self instanceof RepresentationDescriptor) {
-            imageURL = DiagramImages.DIAGRAM_SVG;
+            RepresentationDescriptor representationDescriptor = (RepresentationDescriptor) self;
+
+            // @formatter:off
+            imageURL = this.representationImageProviders.stream()
+                    .map(representationImageProvider -> representationImageProvider.getImageURL(representationDescriptor.getRepresentation()))
+                    .flatMap(Optional::stream)
+                    .findFirst()
+                    .orElse(ImageConstants.RESOURCE_SVG);
+            // @formatter:on
         } else if (self instanceof Resource) {
             imageURL = ImageConstants.RESOURCE_SVG;
         }

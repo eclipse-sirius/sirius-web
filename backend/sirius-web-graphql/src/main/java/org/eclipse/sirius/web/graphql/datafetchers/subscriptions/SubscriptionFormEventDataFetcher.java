@@ -15,13 +15,18 @@ package org.eclipse.sirius.web.graphql.datafetchers.subscriptions;
 import java.security.Principal;
 import java.util.Objects;
 
+import org.eclipse.sirius.web.annotations.graphql.GraphQLSubscriptionTypes;
 import org.eclipse.sirius.web.annotations.spring.graphql.SubscriptionDataFetcher;
+import org.eclipse.sirius.web.collaborative.api.dto.PreDestroyPayload;
+import org.eclipse.sirius.web.collaborative.api.dto.SubscribersUpdatedEventPayload;
 import org.eclipse.sirius.web.collaborative.api.services.IProjectEventProcessorRegistry;
 import org.eclipse.sirius.web.collaborative.api.services.IRepresentationEventProcessor;
 import org.eclipse.sirius.web.collaborative.api.services.SubscriptionDescription;
 import org.eclipse.sirius.web.collaborative.forms.api.FormConfiguration;
 import org.eclipse.sirius.web.collaborative.forms.api.IFormEventProcessor;
 import org.eclipse.sirius.web.collaborative.forms.api.dto.FormEventInput;
+import org.eclipse.sirius.web.collaborative.forms.api.dto.FormRefreshedEventPayload;
+import org.eclipse.sirius.web.collaborative.forms.api.dto.WidgetSubscriptionsUpdatedEventPayload;
 import org.eclipse.sirius.web.graphql.datafetchers.IDataFetchingEnvironmentService;
 import org.eclipse.sirius.web.graphql.schema.SubscriptionTypeProvider;
 import org.eclipse.sirius.web.services.api.dto.IPayload;
@@ -46,8 +51,21 @@ import reactor.core.publisher.Flux;
  * @author sbegaudeau
  * @author pcdavid
  */
-@SubscriptionDataFetcher(type = SubscriptionTypeProvider.TYPE, field = SubscriptionTypeProvider.FORM_EVENT_FIELD)
+// @formatter:off
+@GraphQLSubscriptionTypes(
+    input = FormEventInput.class,
+    payloads = {
+        FormRefreshedEventPayload.class,
+        WidgetSubscriptionsUpdatedEventPayload.class,
+        SubscribersUpdatedEventPayload.class,
+        PreDestroyPayload.class,
+    }
+)
+@SubscriptionDataFetcher(type = SubscriptionTypeProvider.TYPE, field = SubscriptionFormEventDataFetcher.FORM_EVENT_FIELD)
+// @formatter:on
 public class SubscriptionFormEventDataFetcher implements IDataFetcherWithFieldCoordinates<Publisher<IPayload>> {
+
+    public static final String FORM_EVENT_FIELD = "formEvent"; //$NON-NLS-1$
 
     private final IDataFetchingEnvironmentService dataFetchingEnvironmentService;
 
@@ -66,7 +84,7 @@ public class SubscriptionFormEventDataFetcher implements IDataFetcherWithFieldCo
         Principal principal = this.dataFetchingEnvironmentService.getPrincipal(environment).orElse(null);
         String subscriptionId = this.dataFetchingEnvironmentService.getSubscriptionId(environment);
 
-        var formConfiguration = new FormConfiguration(input.getObjectId());
+        var formConfiguration = new FormConfiguration(input.getFormId());
 
         // @formatter:off
         return this.projectEventProcessorRegistry.getOrCreateProjectEventProcessor(input.getProjectId())

@@ -302,7 +302,7 @@ export const TreeItem = ({ item, depth, onExpand, selection, setSelection }) => 
           onClose={onCloseContextMenu}
         />
       );
-    } else if (item.kind === 'Diagram') {
+    } else if (item.kind === 'Diagram' || item.kind === 'Form') {
       const onDeleteRepresentation = () => {
         const variables = {
           input: {
@@ -408,7 +408,7 @@ export const TreeItem = ({ item, depth, onExpand, selection, setSelection }) => 
     });
 
   let itemLabel = null;
-  if (item.kind === 'Document' || item.kind === 'Diagram') {
+  if (item.kind === 'Document' || item.kind === 'Diagram' || item.kind === 'Form') {
     itemLabel = item.label;
   } else {
     itemLabel = item.kind.split('::').pop();

@@ -69,7 +69,7 @@ const formRefreshEventPayloadMessage = {
   type: 'data',
   id: '42',
   data: {
-    formEvent: {
+    propertiesEvent: {
       __typename: 'FormRefreshedEventPayload',
       form: {
         id: 'form',
@@ -84,7 +84,7 @@ const subscribersUpdatedEventPayloadMessage = {
   type: 'data',
   id: '51',
   data: {
-    formEvent: {
+    propertiesEvent: {
       __typename: 'SubscribersUpdatedEventPayload',
       subscribers: [{ username: 'jdoe' }],
     },
@@ -95,7 +95,7 @@ const widgetSubscriptionsUpdatedEventPayloadMessage = {
   type: 'data',
   id: '54',
   data: {
-    formEvent: {
+    propertiesEvent: {
       __typename: 'WidgetSubscriptionsUpdatedEventPayload',
       widgetSubscriptions: [{ widgetId: 'some widget', subscribers: [{ username: 'jdoe' }] }],
     },
@@ -171,7 +171,7 @@ describe('PropertiesWebSocketContainer - reducer', () => {
 
     expect(state).toStrictEqual({
       viewState: READY__STATE,
-      form: message.data.formEvent.form,
+      form: message.data.propertiesEvent.form,
       displayedObjectId: prevState.displayedObjectId,
       subscribers: [],
       widgetSubscriptions: [],
@@ -187,7 +187,7 @@ describe('PropertiesWebSocketContainer - reducer', () => {
 
     expect(state).toStrictEqual({
       viewState: READY__STATE,
-      form: message.data.formEvent.form,
+      form: message.data.propertiesEvent.form,
       displayedObjectId: prevState.displayedObjectId,
       subscribers: [],
       widgetSubscriptions: [],
@@ -205,7 +205,7 @@ describe('PropertiesWebSocketContainer - reducer', () => {
       viewState: READY__STATE,
       form: prevState.form,
       displayedObjectId: prevState.displayedObjectId,
-      subscribers: message.data.formEvent.subscribers,
+      subscribers: message.data.propertiesEvent.subscribers,
       widgetSubscriptions: [],
       message: '',
     });
@@ -235,7 +235,7 @@ describe('PropertiesWebSocketContainer - reducer', () => {
 
     expect(state).toStrictEqual({
       viewState: READY__STATE,
-      form: message.data.formEvent.form,
+      form: message.data.propertiesEvent.form,
       displayedObjectId: prevState.displayedObjectId,
       subscribers: prevState.subscribers,
       widgetSubscriptions: [],
@@ -302,7 +302,7 @@ describe('PropertiesWebSocketContainer - reducer', () => {
       form: prevState.form,
       displayedObjectId: prevState.displayedObjectId,
       subscribers: prevState.subscribers,
-      widgetSubscriptions: message.data.formEvent.widgetSubscriptions,
+      widgetSubscriptions: message.data.propertiesEvent.widgetSubscriptions,
       message: prevState.message,
     });
   });

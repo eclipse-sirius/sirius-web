@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.collaborative.api.dto.CreateRepresentationInput;
@@ -104,20 +103,27 @@ public class ProjectImporter {
                 objectId = targetObjectURI;
             }
             boolean representationCreated = false;
-            Optional<IdMappingEntity> optionalIdMappingEntity = this.idMappingRepository.findByExternalId(representationManifest.getDescriptionURI());
-            if (optionalIdMappingEntity.isPresent()) {
-                IdMappingEntity idMappingEntity = optionalIdMappingEntity.get();
+            String descriptionURI = representationManifest.getDescriptionURI();
 
-                CreateRepresentationInput input = new CreateRepresentationInput(this.projectId, idMappingEntity.getId(), objectId, representationDescriptor.getLabel());
+            // @formatter:off
+            UUID representationDescriptionId = this.idMappingRepository.findByExternalId(descriptionURI)
+                .map(IdMappingEntity::getId)
+                /*
+                 * If the given descriptionURI does not match with an existing IdMappingEntity, the current representation is
+                 * based on a custom description. We use the descriptionURI as representationDescriptionId.
+                 */
+                .orElseGet(() -> UUID.fromString(descriptionURI));
+            // @formatter:on
 
-                // @formatter:off
+            CreateRepresentationInput input = new CreateRepresentationInput(this.projectId, representationDescriptionId, objectId, representationDescriptor.getLabel());
+
+            // @formatter:off
                 representationCreated = this.projectEventProcessor.handle(input, this.context)
                         .filter(CreateRepresentationSuccessPayload.class::isInstance)
                         .map(CreateRepresentationSuccessPayload.class::cast)
                         .map(CreateRepresentationSuccessPayload::getRepresentation)
                         .isPresent();
                 // @formatter:on
-            }
 
             if (!representationCreated) {
                 this.logger.error(String.format("The representation %1$s has not been created", representationDescriptor.getLabel())); //$NON-NLS-1$

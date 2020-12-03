@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.representations;
 
 import java.util.UUID;
+import java.util.function.Predicate;
 
 import org.eclipse.sirius.web.annotations.PublicApi;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLField;
@@ -39,4 +40,6 @@ public interface IRepresentationDescription {
     @GraphQLField
     @GraphQLNonNull
     String getLabel();
+
+    Predicate<VariableManager> getCanCreatePredicate();
 }

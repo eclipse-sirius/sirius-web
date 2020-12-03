@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.collaborative.forms.api;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import org.eclipse.sirius.web.forms.AbstractWidget;
 import org.eclipse.sirius.web.forms.Form;
@@ -21,7 +22,11 @@ import org.eclipse.sirius.web.forms.Form;
  * Interface used to manipulate forms.
  *
  * @author sbegaudeau
+ * @author hmarchadour
  */
 public interface IFormService {
+
+    Optional<Form> findById(UUID formId);
+
     Optional<AbstractWidget> findWidget(Form form, String widgetId);
 }

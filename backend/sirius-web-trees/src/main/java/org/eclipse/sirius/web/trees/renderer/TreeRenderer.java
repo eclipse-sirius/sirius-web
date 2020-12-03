@@ -54,6 +54,7 @@ public class TreeRenderer {
 
         // @formatter:off
         return Tree.newTree(treeId)
+                .descriptionId(this.treeDescription.getId())
                 .label(label)
                 .children(childrenItems)
                 .build();

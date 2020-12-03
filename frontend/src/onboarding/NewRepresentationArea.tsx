@@ -102,7 +102,7 @@ export const NewRepresentationArea = ({
               onClick={() => {
                 onCreateRepresentation(representationDescription.id);
               }}>
-              <NewRepresentation title="" className={styles.icon} />
+              <NewRepresentation title={representationDescription.label} className={styles.icon} />
             </LinkButton>
           );
         })
