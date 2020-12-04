@@ -22,7 +22,9 @@
     "build:watch": "rollup -c rollup-dev.config.js -w",
     "storybook": "NODE_PATH=src start-storybook -p 6006",
     "build-storybook": "NODE_PATH=src build-storybook",
-    "test": "jest"
+    "test": "jest",
+    "format": "prettier --write \"src/**/*.{js,tsx,css}\"",
+    "format-lint": "prettier --list-different \"src/**/*.{js,tsx,css}\""
   },
   "devDependencies": {
     "@apollo/client": "^3.2.7",
@@ -48,6 +50,7 @@
     "jest": "^26.4.0",
     "jest-junit-reporter": "^1.1.0",
     "jest-transform-css": "^2.1.0",
+    "prettier": "2.0.5",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -70,16 +73,16 @@
   },
   "peerDependencies": {
     "@apollo/client": "^3.2.7",
-    "subscriptions-transport-ws": "^0.9.18",
     "airbnb-prop-types": "^2.15.0",
-    "graphql-tag": "^2.11.0",
     "graphql": "14.6.0",
+    "graphql-tag": "^2.11.0",
     "prop-types": ">=15.7.2",
+    "react": ">=16.13.1",
     "react-dom": ">=16.13.1",
     "react-router-dom": ">=5.2.0",
-    "react": ">=16.13.1",
     "reflect-metadata": "^0.1.13",
     "sprotty": "0.7.0",
+    "subscriptions-transport-ws": "^0.9.18",
     "universal-cookie": "^4.0.2"
   }
 }

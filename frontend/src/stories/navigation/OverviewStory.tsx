@@ -42,9 +42,7 @@ export const OverviewStory = () => {
 
       <Text className={styles.subtitle}>Project list</Text>
       <Text className={styles.details}>URL: localhost:8080/projects</Text>
-      <Text className={styles.body}>
-        Used to see all the available projects.
-      </Text>
+      <Text className={styles.body}>Used to see all the available projects.</Text>
 
       <Text className={styles.subtitle}>Project details</Text>
       <Text className={styles.details}>URL: localhost:8080/projects/:projectId</Text>

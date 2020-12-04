@@ -112,8 +112,7 @@ export const ContextMenu = ({ x, y, caretPosition, children, onClose, 'data-test
         <div className={styles.topstartcaret} />
       </div>
     );
-  }
-  else if (caretPosition === TOP_END) {
+  } else if (caretPosition === TOP_END) {
     caret = (
       <div className={styles.topendcaretarea}>
         <div className={styles.topendcaret} />
