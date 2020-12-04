@@ -14,7 +14,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 
-import { useQuery, useMutation } from 'common/GraphQLHooks';
+import { useQuery, useMutation } from '@apollo/client';
 import { Buttons, ActionButton } from 'core/button/Button';
 import { Form } from 'core/form/Form';
 import { Select } from 'core/select/Select';
@@ -36,7 +36,7 @@ const createDocumentMutation = gql`
       }
     }
   }
-`.loc.source.body;
+`;
 
 const getStereotypeDescriptionsQuery = gql`
   query getStereotypeDescriptions {
@@ -47,7 +47,7 @@ const getStereotypeDescriptionsQuery = gql`
       }
     }
   }
-`.loc.source.body;
+`;
 
 const propTypes = {
   projectId: PropTypes.string.isRequired,
@@ -67,21 +67,19 @@ export const NewDocumentModal = ({ projectId, onDocumentCreated, onClose }) => {
   const { name, stereotypeDescriptions, selectedStereotypeDescriptionId, isValid } = state;
 
   // Retrieve the available stereotypeDescriptions
-  const { loading, data, error } = useQuery(getStereotypeDescriptionsQuery, {}, 'getStereotypeDescriptions');
+  const { loading, data, error } = useQuery(getStereotypeDescriptionsQuery);
   useEffect(() => {
-    if (!loading) {
-      if (!error && data) {
-        const { stereotypeDescriptions } = data.data.viewer;
+    if (!loading && !error && data?.viewer?.stereotypeDescriptions) {
+      const { stereotypeDescriptions } = data.viewer;
 
-        setState((prevState) => {
-          const newState = { ...prevState };
-          newState.stereotypeDescriptions = [...prevState.stereotypeDescriptions, ...stereotypeDescriptions];
-          if (newState.stereotypeDescriptions.length > 0) {
-            newState.selectedStereotypeDescriptionId = newState.stereotypeDescriptions[0].id;
-          }
-          return newState;
-        });
-      }
+      setState((prevState) => {
+        const newState = { ...prevState };
+        newState.stereotypeDescriptions = [...prevState.stereotypeDescriptions, ...stereotypeDescriptions];
+        if (newState.stereotypeDescriptions.length > 0) {
+          newState.selectedStereotypeDescriptionId = newState.stereotypeDescriptions[0].id;
+        }
+        return newState;
+      });
     }
   }, [loading, error, data]);
 
@@ -122,7 +120,10 @@ export const NewDocumentModal = ({ projectId, onDocumentCreated, onClose }) => {
   }, [name, selectedStereotypeDescriptionId]);
 
   // Execute the creation of a new document and redirect to the newly created document
-  const [createDocument, createDocumentResult] = useMutation(createDocumentMutation, {}, 'createDocument');
+  const [
+    createDocument,
+    { loading: createDocumentLoading, data: createDocumentData, error: createDocumentError },
+  ] = useMutation(createDocumentMutation);
   const createNewDocument = async (event) => {
     event.preventDefault();
     const variables = {
@@ -132,11 +133,11 @@ export const NewDocumentModal = ({ projectId, onDocumentCreated, onClose }) => {
         stereotypeDescriptionId: selectedStereotypeDescriptionId,
       },
     };
-    createDocument(variables);
+    createDocument({ variables });
   };
   useEffect(() => {
-    if (!createDocumentResult.loading) {
-      const { createDocument } = createDocumentResult.data.data;
+    if (!createDocumentLoading && !createDocumentError && createDocumentData?.createDocument) {
+      const { createDocument } = createDocumentData;
       if (createDocument.__typename === 'CreateDocumentSuccessPayload') {
         const { id } = createDocument.document;
         onDocumentCreated(id);
@@ -149,7 +150,7 @@ export const NewDocumentModal = ({ projectId, onDocumentCreated, onClose }) => {
         });
       }
     }
-  }, [createDocumentResult, onDocumentCreated]);
+  }, [createDocumentLoading, createDocumentData, createDocumentError, onDocumentCreated]);
 
   return (
     <Modal title="Create a new model" onClose={onClose}>

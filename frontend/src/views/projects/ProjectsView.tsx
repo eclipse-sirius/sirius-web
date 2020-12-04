@@ -10,15 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GraphQLClient } from 'common/GraphQLClient';
-import { useQuery } from 'common/GraphQLHooks';
+import { useLazyQuery, useQuery } from '@apollo/client';
 import gql from 'graphql-tag';
-import React, { useCallback, useContext, useEffect, useReducer } from 'react';
+import React, { useEffect, useReducer } from 'react';
 import {
   EMPTY__STATE,
   ERROR__STATE,
+  HANDLE_ERROR_FETCHING_PROJECTS__ACTION,
   HANDLE_FETCHED_PROJECTS__ACTION,
-  HANDLE_PROJECT_UPDATED__ACTION,
+  HANDLE_PROJECTS_UPDATED__ACTION,
   LOADED__STATE,
   LOADING__STATE,
 } from './machine';
@@ -38,7 +38,7 @@ const getProjectsQuery = gql`
       }
     }
   }
-`.loc.source.body;
+`;
 
 /**
  * Displays a list of all the projects available to the user and a link to create a new one.
@@ -52,22 +52,29 @@ export const ProjectsView = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { viewState, projects, message } = state;
 
-  const { loading: projectsLoading, data: projectsData } = useQuery(getProjectsQuery, {}, 'getProjects');
+  // Load current project list
+  const { loading: projectsLoading, data: projectsData, error: projectsError } = useQuery(getProjectsQuery);
   useEffect(() => {
     if (!projectsLoading) {
-      dispatch({ type: HANDLE_FETCHED_PROJECTS__ACTION, response: projectsData });
+      if (projectsError) {
+        dispatch({ type: HANDLE_ERROR_FETCHING_PROJECTS__ACTION, error: projectsError });
+      } else if (projectsData) {
+        dispatch({ type: HANDLE_FETCHED_PROJECTS__ACTION, response: projectsData });
+      }
     }
-  }, [projectsLoading, projectsData]);
+  }, [projectsLoading, projectsData, projectsError]);
 
-  const { graphQLHttpClient } = useContext(GraphQLClient);
-  const onProjectUpdated = useCallback(async () => {
-    const response = await graphQLHttpClient.send(getProjectsQuery, {}, 'getProjects');
-    if (!response.ok) {
-      dispatch({ type: HANDLE_PROJECT_UPDATED__ACTION, response: response.error });
-    } else {
-      dispatch({ type: HANDLE_PROJECT_UPDATED__ACTION, response: response.body });
+  // Setup callback to update project list when invoked
+  const [getProjects, { loading, error, data }] = useLazyQuery(getProjectsQuery, { fetchPolicy: 'no-cache' });
+  useEffect(() => {
+    if (!loading) {
+      if (error) {
+        dispatch({ type: HANDLE_ERROR_FETCHING_PROJECTS__ACTION, error });
+      } else if (data) {
+        dispatch({ type: HANDLE_PROJECTS_UPDATED__ACTION, response: data });
+      }
     }
-  }, [graphQLHttpClient]);
+  }, [loading, error, data]);
 
   let view = null;
   switch (viewState) {
@@ -81,7 +88,7 @@ export const ProjectsView = () => {
       view = <ProjectsErrorView message={message} />;
       break;
     case LOADED__STATE:
-      view = <ProjectsLoadedView projects={projects} onProjectUpdated={onProjectUpdated} />;
+      view = <ProjectsLoadedView projects={projects} onProjectUpdated={getProjects} />;
       break;
     default:
       view = <ProjectsErrorView message={message} />;

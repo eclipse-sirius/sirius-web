@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useMutation } from 'common/GraphQLHooks';
+import { useMutation } from '@apollo/client';
 import { httpOrigin } from 'common/URL';
 import { IconButton } from 'core/button/Button';
 import { Text } from 'core/text/Text';
@@ -43,7 +43,7 @@ const deleteObjectMutation = gql`
       }
     }
   }
-`.loc.source.body;
+`;
 
 const deleteRepresentationMutation = gql`
   mutation deleteRepresentation($input: DeleteRepresentationInput!) {
@@ -59,7 +59,7 @@ const deleteRepresentationMutation = gql`
       }
     }
   }
-`.loc.source.body;
+`;
 
 const renameDocumentMutation = gql`
   mutation renameDocument($input: RenameDocumentInput!) {
@@ -75,7 +75,7 @@ const renameDocumentMutation = gql`
       }
     }
   }
-`.loc.source.body;
+`;
 
 const renameObjectMutation = gql`
   mutation renameObject($input: RenameObjectInput!) {
@@ -90,7 +90,7 @@ const renameObjectMutation = gql`
       }
     }
   }
-`.loc.source.body;
+`;
 
 const renameRepresentationMutation = gql`
   mutation renameRepresentation($input: RenameRepresentationInput!) {
@@ -106,7 +106,7 @@ const renameRepresentationMutation = gql`
       }
     }
   }
-`.loc.source.body;
+`;
 
 // The list of characters that will enable the direct edit mechanism.
 const directEditActivationValidCharacters = /[\w&é§èàùçÔØÁÛÊË"«»’”„´$¥€£\\¿?!=+-,;:%/{}[\]–#@*.]/;
@@ -141,58 +141,54 @@ export const TreeItem = ({ item, depth, onExpand, selection, setSelection }) => 
   };
   const [state, setState] = useState(initialState);
   const { id: projectId } = useProject() as any;
-  const [deleteObject] = useMutation(deleteObjectMutation, {}, 'deleteObject');
-  const [deleteRepresentation] = useMutation(deleteRepresentationMutation, {}, 'deleteRepresentation');
+  const [deleteObject] = useMutation(deleteObjectMutation);
+  const [deleteRepresentation] = useMutation(deleteRepresentationMutation);
   const refDom = useRef() as any;
 
-  const [renameDocument, renameDocumentResult] = useMutation(renameDocumentMutation, {}, 'renameDocument');
+  const [
+    renameDocument,
+    { loading: renameDocumentLoading, data: renameDocumentData, error: renameDocumentError },
+  ] = useMutation(renameDocumentMutation);
   useEffect(() => {
-    if (!renameDocumentResult.loading) {
-      const { data, error } = renameDocumentResult;
-      if (!error) {
-        const { renameDocument } = data.data;
-        if (renameDocument.__typename === 'RenameDocumentSuccessPayload') {
-          setState((prevState) => {
-            return { ...prevState, editingMode: false, label: renameDocument.name };
-          });
-        }
+    if (!renameDocumentLoading && !renameDocumentError && renameDocumentData?.renameDocument) {
+      const { renameDocument } = renameDocumentData;
+      if (renameDocument.__typename === 'RenameDocumentSuccessPayload') {
+        setState((prevState) => {
+          return { ...prevState, editingMode: false, label: renameDocument.name };
+        });
       }
     }
-  }, [renameDocumentResult]);
+  }, [renameDocumentData, renameDocumentError, renameDocumentLoading]);
 
-  const [renameRepresentation, renameRepresentationResult] = useMutation(
-    renameRepresentationMutation,
-    {},
-    'renameRepresentation'
-  );
+  const [
+    renameRepresentation,
+    { loading: renameRepresentationLoading, data: renameRepresentationData, error: renameRepresentationError },
+  ] = useMutation(renameRepresentationMutation);
   useEffect(() => {
-    if (!renameRepresentationResult.loading) {
-      const { data, error } = renameRepresentationResult;
-      if (!error) {
-        const { renameRepresentation } = data.data;
-        if (renameRepresentation.__typename === 'RenameRepresentationSuccessPayload') {
-          setState((prevState) => {
-            return { ...prevState, editingMode: false, label: renameRepresentation.label };
-          });
-        }
+    if (!renameRepresentationLoading && !renameRepresentationError && renameRepresentationData?.renameRepresentation) {
+      const { renameRepresentation } = renameRepresentationData;
+      if (renameRepresentation.__typename === 'RenameRepresentationSuccessPayload') {
+        setState((prevState) => {
+          return { ...prevState, editingMode: false, label: renameRepresentation.label };
+        });
       }
     }
-  }, [renameRepresentationResult]);
+  }, [renameRepresentationData, renameRepresentationError, renameRepresentationLoading]);
 
-  const [renameObject, renameObjectResult] = useMutation(renameObjectMutation, {}, 'renameObject');
+  const [
+    renameObject,
+    { loading: renameObjectLoading, data: renameObjectData, error: renameObjectError },
+  ] = useMutation(renameObjectMutation);
   useEffect(() => {
-    if (!renameObjectResult.loading) {
-      const { data, error } = renameObjectResult;
-      if (!error) {
-        const { renameObject } = data.data;
-        if (renameObject.__typename === 'RenameObjectSuccessPayload') {
-          setState((prevState) => {
-            return { ...prevState, editingMode: false, label: renameObject.newName };
-          });
-        }
+    if (!renameObjectLoading && !renameObjectError && renameObjectData?.renameObject) {
+      const { renameObject } = renameObjectData;
+      if (renameObject.__typename === 'RenameObjectSuccessPayload') {
+        setState((prevState) => {
+          return { ...prevState, editingMode: false, label: renameObject.newName };
+        });
       }
     }
-  }, [renameObjectResult]);
+  }, [renameObjectData, renameObjectError, renameObjectLoading]);
 
   // custom hook for getting previous value
   const usePrevious = (value) => {
@@ -313,7 +309,7 @@ export const TreeItem = ({ item, depth, onExpand, selection, setSelection }) => 
             representationId: item.id,
           },
         };
-        deleteRepresentation(variables);
+        deleteRepresentation({ variables });
         onCloseContextMenu();
       };
       const onRenameRepresentation = () =>
@@ -381,7 +377,7 @@ export const TreeItem = ({ item, depth, onExpand, selection, setSelection }) => 
             objectId: item.id,
           },
         };
-        deleteObject(variables);
+        deleteObject({ variables });
         onCloseContextMenu();
       };
       contextMenu = (
@@ -434,11 +430,13 @@ export const TreeItem = ({ item, depth, onExpand, selection, setSelection }) => 
       const isNameValid = label.length >= 1;
       if (isNameValid && item) {
         if (item.kind === 'Document') {
-          renameDocument({ input: { documentId: item.id, newName: label } });
+          renameDocument({ variables: { input: { documentId: item.id, newName: label } } });
         } else if (item?.kind === 'Diagram') {
-          renameRepresentation({ input: { projectId: projectId, representationId: item.id, newLabel: label } });
+          renameRepresentation({
+            variables: { input: { projectId: projectId, representationId: item.id, newLabel: label } },
+          });
         } else {
-          renameObject({ input: { projectId: projectId, objectId: item.id, newName: label } });
+          renameObject({ variables: { input: { projectId: projectId, objectId: item.id, newName: label } } });
         }
       } else {
         setState((prevState) => {

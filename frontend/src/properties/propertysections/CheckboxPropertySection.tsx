@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useMutation } from 'common/GraphQLHooks';
+import { useMutation } from '@apollo/client';
 import { Checkbox } from 'core/checkbox/Checkbox';
 import { Text } from 'core/text/Text';
 import { Permission } from 'project/Permission';
@@ -28,7 +28,7 @@ const propTypes = {
 };
 
 export const CheckboxPropertySection = ({ projectId, formId, widgetId, label, value }) => {
-  const [editCheckbox] = useMutation(editCheckboxMutation, {}, 'editCheckbox');
+  const [editCheckbox] = useMutation(editCheckboxMutation);
   const onChange = async (event) => {
     const newValue = event.target.checked;
     const variables = {
@@ -39,7 +39,7 @@ export const CheckboxPropertySection = ({ projectId, formId, widgetId, label, va
         newValue,
       },
     };
-    await editCheckbox(variables);
+    await editCheckbox({ variables });
   };
 
   return (

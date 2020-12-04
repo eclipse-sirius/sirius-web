@@ -59,11 +59,7 @@ const firstLoadingState = {
   message: 'Please select an object to display its properties',
 };
 
-const errorMessage = {
-  type: 'error',
-  id: '42',
-  payload: 'An error has occured while retrieving the content from the server',
-};
+const errorMessage = 'An error has occured while retrieving the content from the server';
 
 const completeMessage = {
   type: 'complete',
@@ -72,15 +68,13 @@ const completeMessage = {
 const formRefreshEventPayloadMessage = {
   type: 'data',
   id: '42',
-  payload: {
-    data: {
-      formEvent: {
-        __typename: 'FormRefreshedEventPayload',
-        form: {
-          id: 'form',
-          label: 'New Label',
-          pages: [],
-        },
+  data: {
+    formEvent: {
+      __typename: 'FormRefreshedEventPayload',
+      form: {
+        id: 'form',
+        label: 'New Label',
+        pages: [],
       },
     },
   },
@@ -89,12 +83,10 @@ const formRefreshEventPayloadMessage = {
 const subscribersUpdatedEventPayloadMessage = {
   type: 'data',
   id: '51',
-  payload: {
-    data: {
-      formEvent: {
-        __typename: 'SubscribersUpdatedEventPayload',
-        subscribers: [{ username: 'jdoe' }],
-      },
+  data: {
+    formEvent: {
+      __typename: 'SubscribersUpdatedEventPayload',
+      subscribers: [{ username: 'jdoe' }],
     },
   },
 };
@@ -102,12 +94,10 @@ const subscribersUpdatedEventPayloadMessage = {
 const widgetSubscriptionsUpdatedEventPayloadMessage = {
   type: 'data',
   id: '54',
-  payload: {
-    data: {
-      formEvent: {
-        __typename: 'WidgetSubscriptionsUpdatedEventPayload',
-        widgetSubscriptions: [{ widgetId: 'some widget', subscribers: [{ username: 'jdoe' }] }],
-      },
+  data: {
+    formEvent: {
+      __typename: 'WidgetSubscriptionsUpdatedEventPayload',
+      widgetSubscriptions: [{ widgetId: 'some widget', subscribers: [{ username: 'jdoe' }] }],
     },
   },
 };
@@ -181,7 +171,7 @@ describe('PropertiesWebSocketContainer - reducer', () => {
 
     expect(state).toStrictEqual({
       viewState: READY__STATE,
-      form: message.payload.data.formEvent.form,
+      form: message.data.formEvent.form,
       displayedObjectId: prevState.displayedObjectId,
       subscribers: [],
       widgetSubscriptions: [],
@@ -197,7 +187,7 @@ describe('PropertiesWebSocketContainer - reducer', () => {
 
     expect(state).toStrictEqual({
       viewState: READY__STATE,
-      form: message.payload.data.formEvent.form,
+      form: message.data.formEvent.form,
       displayedObjectId: prevState.displayedObjectId,
       subscribers: [],
       widgetSubscriptions: [],
@@ -215,7 +205,7 @@ describe('PropertiesWebSocketContainer - reducer', () => {
       viewState: READY__STATE,
       form: prevState.form,
       displayedObjectId: prevState.displayedObjectId,
-      subscribers: message.payload.data.formEvent.subscribers,
+      subscribers: message.data.formEvent.subscribers,
       widgetSubscriptions: [],
       message: '',
     });
@@ -233,7 +223,7 @@ describe('PropertiesWebSocketContainer - reducer', () => {
       displayedObjectId: prevState.displayedObjectId,
       subscribers: prevState.subscribers,
       widgetSubscriptions: [],
-      message: message.payload,
+      message: message,
     });
   });
 
@@ -245,7 +235,7 @@ describe('PropertiesWebSocketContainer - reducer', () => {
 
     expect(state).toStrictEqual({
       viewState: READY__STATE,
-      form: message.payload.data.formEvent.form,
+      form: message.data.formEvent.form,
       displayedObjectId: prevState.displayedObjectId,
       subscribers: prevState.subscribers,
       widgetSubscriptions: [],
@@ -312,7 +302,7 @@ describe('PropertiesWebSocketContainer - reducer', () => {
       form: prevState.form,
       displayedObjectId: prevState.displayedObjectId,
       subscribers: prevState.subscribers,
-      widgetSubscriptions: message.payload.data.formEvent.widgetSubscriptions,
+      widgetSubscriptions: message.data.formEvent.widgetSubscriptions,
       message: prevState.message,
     });
   });

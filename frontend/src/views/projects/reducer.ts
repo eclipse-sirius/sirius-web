@@ -16,8 +16,9 @@ import {
   EMPTY__STATE,
   ERROR__STATE,
   LOADED__STATE,
+  HANDLE_ERROR_FETCHING_PROJECTS__ACTION,
   HANDLE_FETCHED_PROJECTS__ACTION,
-  HANDLE_PROJECT_UPDATED__ACTION,
+  HANDLE_PROJECTS_UPDATED__ACTION,
 } from './machine';
 
 export const initialState = {
@@ -34,11 +35,14 @@ export const reducer = (prevState, action) => {
 
   let state = prevState;
   switch (action.type) {
+    case HANDLE_ERROR_FETCHING_PROJECTS__ACTION:
+      state = handleErrorFetchingProjectsAction(prevState, action);
+      break;
     case HANDLE_FETCHED_PROJECTS__ACTION:
       state = handleFetchedProjectsAction(prevState, action);
       break;
-    case HANDLE_PROJECT_UPDATED__ACTION:
-      state = handleProjectUpdatedAction(prevState, action);
+    case HANDLE_PROJECTS_UPDATED__ACTION:
+      state = handleProjectsUpdatedAction(prevState, action);
       break;
     default:
       state = prevState;
@@ -51,39 +55,33 @@ export const reducer = (prevState, action) => {
   return state;
 };
 
+const handleErrorFetchingProjectsAction = (prevState, action) => {
+  const message = 'An unexpected error has occured while retrieving the project, please contact your administrator';
+  return { viewState: ERROR__STATE, message };
+};
+
 const handleFetchedProjectsAction = (prevState, action) => {
   const { response } = action;
 
   let state = prevState;
-  if (response.errors) {
-    const message = 'An unexpected error has occured while retrieving the project, please contact your administrator';
-    state = { viewState: ERROR__STATE, message };
+  const { projects } = response.viewer;
+  if (projects.length === 0) {
+    state = { viewState: EMPTY__STATE };
   } else {
-    const { projects } = response.data.viewer;
-    if (projects.length === 0) {
-      state = { viewState: EMPTY__STATE };
-    } else {
-      state = { viewState: LOADED__STATE, projects };
-    }
+    state = { viewState: LOADED__STATE, projects };
   }
-
   return state;
 };
 
-const handleProjectUpdatedAction = (prevState, action) => {
+const handleProjectsUpdatedAction = (prevState, action) => {
   const { response } = action;
 
   let state = prevState;
-  if (response.errors) {
-    const message = 'An unexpected error has occured while deleting the project, please contact your administrator';
-    state = { viewState: ERROR__STATE, message };
+  const { projects } = response.viewer;
+  if (projects.length === 0) {
+    state = { viewState: EMPTY__STATE };
   } else {
-    const { projects } = response.data.viewer;
-    if (projects.length === 0) {
-      state = { viewState: EMPTY__STATE };
-    } else {
-      state = { viewState: LOADED__STATE, projects };
-    }
+    state = { viewState: LOADED__STATE, projects };
   }
   return state;
 };

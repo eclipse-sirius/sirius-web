@@ -24,7 +24,7 @@ export const editTextfieldMutation = gql`
       }
     }
   }
-`.loc.source.body;
+`;
 
 export const updateWidgetFocusMutation = gql`
   mutation updateWidgetFocus($input: UpdateWidgetFocusInput!) {
@@ -35,7 +35,7 @@ export const updateWidgetFocusMutation = gql`
       }
     }
   }
-`.loc.source.body;
+`;
 
 export const editCheckboxMutation = gql`
   mutation editCheckbox($input: EditCheckboxInput!) {
@@ -49,7 +49,7 @@ export const editCheckboxMutation = gql`
       }
     }
   }
-`.loc.source.body;
+`;
 
 export const editRadioMutation = gql`
   mutation editRadio($input: EditRadioInput!) {
@@ -63,7 +63,7 @@ export const editRadioMutation = gql`
       }
     }
   }
-`.loc.source.body;
+`;
 
 export const editSelectMutation = gql`
   mutation editSelect($input: EditSelectInput!) {
@@ -77,4 +77,4 @@ export const editSelectMutation = gql`
       }
     }
   }
-`.loc.source.body;
+`;

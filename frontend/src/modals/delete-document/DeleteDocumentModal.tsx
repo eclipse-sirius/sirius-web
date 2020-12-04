@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useMutation } from 'common/GraphQLHooks';
+import { useMutation } from '@apollo/client';
 import { Banner } from 'core/banner/Banner';
 import { Buttons, DangerButton } from 'core/button/Button';
 import { Text } from 'core/text/Text';
@@ -34,7 +34,7 @@ const deleteDocumentMutation = gql`
       }
     }
   }
-`.loc.source.body;
+`;
 
 const propTypes = {
   documentName: PropTypes.string.isRequired,
@@ -44,8 +44,8 @@ const propTypes = {
 };
 
 export const DeleteDocumentModal = ({ documentName, documentId, onDocumentDeleted, onClose }) => {
-  const [error, setError] = useState('');
-  const [performDocumentDeletion, deleteDocumentResult] = useMutation(deleteDocumentMutation, {}, 'deleteDocument');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [performDocumentDeletion, { loading, data, error }] = useMutation(deleteDocumentMutation);
   const onDeleteDocument = async (event) => {
     event.preventDefault();
     const variables = {
@@ -53,26 +53,25 @@ export const DeleteDocumentModal = ({ documentName, documentId, onDocumentDelete
         documentId,
       },
     };
-    performDocumentDeletion(variables);
+    performDocumentDeletion({ variables });
   };
 
   useEffect(() => {
-    if (!deleteDocumentResult.loading) {
-      const { data, error } = deleteDocumentResult;
+    if (!loading) {
       if (error) {
-        setError(error.message);
-      } else {
-        const { deleteDocument } = data.data;
+        setErrorMessage(error.message);
+      } else if (data?.deleteDocument) {
+        const { deleteDocument } = data;
         if (deleteDocument.__typename === 'DeleteDocumentSuccessPayload') {
           onDocumentDeleted();
         } else if (deleteDocument.__typename === 'ErrorPayload') {
-          setError(deleteDocument.message);
+          setErrorMessage(deleteDocument.message);
         }
       }
     }
-  }, [deleteDocumentResult, onDocumentDeleted]);
+  }, [loading, data, error, onDocumentDeleted]);
 
-  let bannerContent = error ? <Banner data-testid="banner" content={error} /> : null;
+  let bannerContent = errorMessage ? <Banner data-testid="banner" content={errorMessage} /> : null;
   return (
     <Modal title={`Permanently delete "${documentName}"`} onClose={onClose}>
       <div className={styles.container}>

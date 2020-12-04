@@ -12,7 +12,7 @@
  *******************************************************************************/
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { useMutation } from 'common/GraphQLHooks';
+import { useMutation } from '@apollo/client';
 import { AreaContainer } from './AreaContainer';
 import { LinkButton } from 'core/linkbutton/LinkButton';
 import { Select } from 'core/select/Select';
@@ -34,7 +34,7 @@ const createDocumentMutation = gql`
       }
     }
   }
-`.loc.source.body;
+`;
 
 const propTypes = {
   maxDisplay: PropTypes.number.isRequired,
@@ -52,7 +52,7 @@ export const NewDocumentArea = ({ stereotypeDescriptions, projectId, maxDisplay,
   const { message } = state;
 
   // Document creation
-  const [createDocument, createDocumentResult] = useMutation(createDocumentMutation, {}, 'createDocument');
+  const [createDocument, { loading, data, error }] = useMutation(createDocumentMutation);
   const onCreateDocument = (stereotypeDescriptionId) => {
     const selected = stereotypeDescriptions.find((candidate) => candidate.id === stereotypeDescriptionId);
     const variables = {
@@ -62,11 +62,11 @@ export const NewDocumentArea = ({ stereotypeDescriptions, projectId, maxDisplay,
         stereotypeDescriptionId: stereotypeDescriptionId,
       },
     };
-    createDocument(variables);
+    createDocument({ variables });
   };
   useEffect(() => {
-    if (!createDocumentResult.loading) {
-      const { createDocument } = createDocumentResult.data.data;
+    if (!loading && !error && data?.createDocument) {
+      const { createDocument } = data;
       if (createDocument.__typename === 'ErrorPayload') {
         setState((prevState) => {
           const newState = { ...prevState };
@@ -75,7 +75,7 @@ export const NewDocumentArea = ({ stereotypeDescriptions, projectId, maxDisplay,
         });
       }
     }
-  }, [createDocumentResult, setSelection]);
+  }, [loading, data, error, setSelection]);
 
   // Document stereotypes list
   let newDocumentButtons =

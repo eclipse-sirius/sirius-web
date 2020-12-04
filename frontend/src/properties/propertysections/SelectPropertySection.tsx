@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useMutation } from 'common/GraphQLHooks';
+import { useMutation } from '@apollo/client';
 import { Select } from 'core/select/Select';
 import { Text } from 'core/text/Text';
 import { Permission } from 'project/Permission';
@@ -28,7 +28,7 @@ const propTypes = {
 export const SelectPropertySection = ({ projectId, formId, widgetId, label, value, options }) => {
   const optionsWithEmptySelection = [{ id: '', label: '' }].concat(options);
 
-  const [editSelect] = useMutation(editSelectMutation, {}, 'editSelect');
+  const [editSelect] = useMutation(editSelectMutation);
   const onChange = async (event) => {
     const newValue = event.target.value;
     const variables = {
@@ -39,7 +39,7 @@ export const SelectPropertySection = ({ projectId, formId, widgetId, label, valu
         newValue,
       },
     };
-    await editSelect(variables);
+    await editSelect({ variables });
   };
 
   return (

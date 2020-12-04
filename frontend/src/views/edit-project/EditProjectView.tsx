@@ -10,11 +10,10 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GraphQLClient } from 'common/GraphQLClient';
-import { useLazyQuery } from 'common/GraphQLHooks';
+import { useLazyQuery, useSubscription } from '@apollo/client';
 import gql from 'graphql-tag';
 import { useProject } from 'project/ProjectProvider';
-import React, { useCallback, useContext, useEffect, useReducer } from 'react';
+import React, { useCallback, useEffect, useReducer } from 'react';
 import { generatePath, useHistory, useParams, useRouteMatch } from 'react-router-dom';
 import { EditProjectLoadedView } from 'views/edit-project/EditProjectLoadedView';
 import {
@@ -41,9 +40,9 @@ const getRepresentationQuery = gql`
       }
     }
   }
-`.loc.source.body;
+`;
 
-const projectEventSubscriptionFile = gql`
+const projectEventSubscription = gql`
   subscription projectEvent($input: ProjectEventInput!) {
     projectEvent(input: $input) {
       __typename
@@ -56,7 +55,6 @@ const projectEventSubscriptionFile = gql`
 `;
 
 export const EditProjectView = () => {
-  const { graphQLWebSocketClient } = useContext(GraphQLClient);
   const history = useHistory();
   const routeMatch = useRouteMatch();
   const { projectId, representationId } = useParams();
@@ -90,20 +88,20 @@ export const EditProjectView = () => {
     }
   }, [context, viewState]);
 
-  const [getRepresentation, result] = useLazyQuery(getRepresentationQuery, {}, 'getRepresentation');
+  const [getRepresentation, { loading, data, error }] = useLazyQuery(getRepresentationQuery);
   useEffect(() => {
     if (representationId && project && !displayedRepresentation) {
-      getRepresentation({ projectId: project.id, representationId });
+      getRepresentation({ variables: { projectId: project.id, representationId } });
     }
   }, [project, representationId, displayedRepresentation, getRepresentation]);
   useEffect(() => {
-    if (!result.loading && result?.data?.data?.viewer?.project?.representation) {
-      const { id, label, __typename } = result.data.data.viewer.project.representation;
+    if (!loading && !error && data?.viewer?.project?.representation) {
+      const { id, label, __typename } = data.viewer.project.representation;
       const representation = { id, label, kind: __typename };
       const action = { type: HANDLE_SELECTION__ACTION, selection: representation };
       dispatch(action);
     }
-  }, [result]);
+  }, [loading, data, error]);
 
   useEffect(() => {
     if (displayedRepresentation && displayedRepresentation.id !== representationId) {
@@ -127,45 +125,25 @@ export const EditProjectView = () => {
    * The first time useProject() is called, contextId is set to 'undefined', and this useEffect() is then called. -> We don't want to subscribe.
    * The second time useProject() is called, contextId is set with the project ID, and this useEffect() is then called. -> We want to subscribe.
    */
-  useEffect(() => {
-    if (!contextId) {
-      return () => {};
-    }
-    const operationId = graphQLWebSocketClient.generateOperationId();
-
-    const subscribe = () => {
-      graphQLWebSocketClient.on(operationId, (message) => {
-        if (message.type === 'data' && message?.payload?.data?.projectEvent) {
-          const { projectEvent } = message.payload.data;
-          if (projectEvent.__typename === 'RepresentationRenamedEventPayload') {
-            const action = { type: HANDLE_REPRESENTATION_RENAMED__ACTION, projectEvent };
-            dispatch(action);
-          }
+  useSubscription(projectEventSubscription, {
+    variables: {
+      input: {
+        projectId: contextId,
+      },
+    },
+    fetchPolicy: 'no-cache',
+    skip: !contextId,
+    onSubscriptionData: ({ subscriptionData }) => {
+      if (subscriptionData?.data?.projectEvent) {
+        const { projectEvent } = subscriptionData.data;
+        if (projectEvent.__typename === 'RepresentationRenamedEventPayload') {
+          const action = { type: HANDLE_REPRESENTATION_RENAMED__ACTION, projectEvent };
+          dispatch(action);
         }
-      });
-
-      const variables = {
-        input: {
-          projectId: contextId,
-        },
-      };
-
-      graphQLWebSocketClient.start(
-        operationId,
-        projectEventSubscriptionFile.loc.source.body,
-        variables,
-        'projectEvent'
-      );
-    };
-
-    const unsubscribe = (id) => {
-      graphQLWebSocketClient.remove(id);
-      graphQLWebSocketClient.stop(id);
-    };
-
-    subscribe();
-    return () => unsubscribe(operationId);
-  }, [graphQLWebSocketClient, contextId]);
+      }
+    },
+    shouldResubscribe: ({ variables: { input } }) => input.projectId !== contextId,
+  });
 
   const setSubscribers = useCallback(
     (subscribers) => {

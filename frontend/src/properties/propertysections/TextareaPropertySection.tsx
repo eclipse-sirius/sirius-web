@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useMutation } from 'common/GraphQLHooks';
+import { useMutation } from '@apollo/client';
 import { Text } from 'core/text/Text';
 import { Textarea } from 'core/textarea/Textarea';
 import PropTypes from 'prop-types';
@@ -56,7 +56,7 @@ export const TextareaPropertySection = ({ label, value, readOnly, projectId, for
     });
   };
 
-  const [editTextfield] = useMutation(editTextfieldMutation, {}, 'editTextfield');
+  const [editTextfield] = useMutation(editTextfieldMutation);
   const sendEditedValue = async () => {
     if (edited) {
       const variables = {
@@ -67,11 +67,11 @@ export const TextareaPropertySection = ({ label, value, readOnly, projectId, for
           newValue: inputValue,
         },
       };
-      await editTextfield(variables);
+      await editTextfield({ variables });
     }
   };
 
-  const [updateWidgetFocus] = useMutation(updateWidgetFocusMutation, {}, 'updateWidgetFocus');
+  const [updateWidgetFocus] = useMutation(updateWidgetFocusMutation);
   const sendUpdateWidgetFocus = async (selected) => {
     const variables = {
       input: {
@@ -81,7 +81,7 @@ export const TextareaPropertySection = ({ label, value, readOnly, projectId, for
         selected,
       },
     };
-    await updateWidgetFocus(variables);
+    await updateWidgetFocus({ variables });
   };
 
   const onFocus = async () => {
