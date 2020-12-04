@@ -25,9 +25,7 @@ export const LoggedInNavbar = () => {
           <Logo title="Back to all projects" />
           <Title label={productName} />
         </div>
-        <div className={styles.rightArea}>
-          {userStatus}
-        </div>
+        <div className={styles.rightArea}>{userStatus}</div>
       </div>
     </div>
   );

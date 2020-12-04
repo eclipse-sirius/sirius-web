@@ -17,12 +17,11 @@ import { Profile } from 'icons/Profile';
 import styles from './UserStatus.module.css';
 
 export const UserStatus = () => {
-
   /**
- * Determines where the context menu should open relative to the actual mouse position.
- * These are relative to the bottom-left corner of the "more" icon, and to the size of the
- * caret, so that the caret at the left of the menu points to the middle of the "more" icon.
- */
+   * Determines where the context menu should open relative to the actual mouse position.
+   * These are relative to the bottom-left corner of the "more" icon, and to the size of the
+   * caret, so that the caret at the left of the menu points to the middle of the "more" icon.
+   */
   const menuPositionDelta = {
     dx: -168,
     dy: 49,

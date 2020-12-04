@@ -129,7 +129,7 @@ export const EditProjectView = () => {
    */
   useEffect(() => {
     if (!contextId) {
-      return () => { };
+      return () => {};
     }
     const operationId = graphQLWebSocketClient.generateOperationId();
 

@@ -194,14 +194,14 @@ export const TreeItem = ({ item, depth, onExpand, selection, setSelection }) => 
     }
   }, [renameObjectResult]);
 
-  // custom hook for getting previous value 
+  // custom hook for getting previous value
   const usePrevious = (value) => {
     const ref = useRef();
     useEffect(() => {
       ref.current = value;
     });
     return ref.current;
-  }
+  };
 
   const onMore = (event) => {
     const { x, y } = event.currentTarget.getBoundingClientRect();
@@ -445,7 +445,7 @@ export const TreeItem = ({ item, depth, onExpand, selection, setSelection }) => 
           return { ...prevState, editingMode: false, label: item.label };
         });
       }
-    }
+    };
     const onFinishEditing = (event) => {
       const { key } = event;
       if (key === 'Enter') {

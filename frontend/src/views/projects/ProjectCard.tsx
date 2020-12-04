@@ -37,7 +37,12 @@ export const ProjectCard = ({ project, onProjectUpdated }) => {
   const onMore = (event) => {
     if (!showContextMenu) {
       const { x, y } = event.target.getBoundingClientRect();
-      setState({ modalDisplayed: null, x: x + menuPositionDelta.dx, y: y + menuPositionDelta.dy, showContextMenu: true });
+      setState({
+        modalDisplayed: null,
+        x: x + menuPositionDelta.dx,
+        y: y + menuPositionDelta.dy,
+        showContextMenu: true,
+      });
     }
   };
 
