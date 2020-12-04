@@ -99,8 +99,8 @@ const handleDataAction = (prevState, action) => {
   const { message } = action;
 
   let state = prevState;
-  if (message.payload && message.payload.data && message.payload.data.formEvent) {
-    const { formEvent } = message.payload.data;
+  if (message?.data?.formEvent) {
+    const { formEvent } = message?.data;
     if (formEvent.__typename === 'FormRefreshedEventPayload') {
       const { form } = formEvent;
       state = { ...prevState, viewState: READY__STATE, form, message: '' };
@@ -122,7 +122,7 @@ const handleConnectionErrorAction = (prevState) => {
 
 const handleErrorAction = (prevState, action) => {
   const { viewState } = prevState;
-  const { payload: message } = action.message;
+  const { message } = action;
   if (viewState === READY__STATE) {
     return { ...prevState, message };
   }

@@ -10,16 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useMutation, useQuery } from 'common/GraphQLHooks';
-import { Buttons, ActionButton } from 'core/button/Button';
+import { useQuery, useMutation } from '@apollo/client';
+import { ActionButton, Buttons } from 'core/button/Button';
 import { Form } from 'core/form/Form';
 import { Label } from 'core/label/Label';
 import { Select } from 'core/select/Select';
 import { Textfield } from 'core/textfield/Textfield';
+import gql from 'graphql-tag';
 import { Modal } from 'modals/Modal';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
-import gql from 'graphql-tag';
 
 const createRepresentationMutation = gql`
   mutation createRepresentation($input: CreateRepresentationInput!) {
@@ -38,7 +38,7 @@ const createRepresentationMutation = gql`
       }
     }
   }
-`.loc.source.body;
+`;
 
 const getRepresentationDescriptionsQuery = gql`
   query getRepresentationDescriptions($classId: ID!) {
@@ -59,7 +59,7 @@ const getRepresentationDescriptionsQuery = gql`
       }
     }
   }
-`.loc.source.body;
+`;
 
 const propTypes = {
   projectId: PropTypes.string.isRequired,
@@ -79,33 +79,27 @@ export const NewRepresentationModal = ({ projectId, classId, objectId, onReprese
   const [state, setState] = useState(initialState);
   const { representationDescriptions, selectedRepresentationDescription, name } = state;
 
-  const { loading, data: queryResult } = useQuery(
-    getRepresentationDescriptionsQuery,
-    { classId },
-    'getRepresentationDescriptions'
-  );
+  const { loading, data: queryResult, error } = useQuery(getRepresentationDescriptionsQuery, {
+    variables: { classId },
+  });
   useEffect(() => {
-    if (!loading) {
-      if (queryResult) {
-        const representationDescriptions = queryResult.data.viewer.representationDescriptions.edges.map(
-          (edge) => edge.node
-        );
+    if (!loading && !error && queryResult) {
+      const representationDescriptions = queryResult.viewer.representationDescriptions.edges.map((edge) => edge.node);
 
-        setState((prevState) => {
-          const newState = { ...prevState };
-          newState.representationDescriptions = representationDescriptions;
+      setState((prevState) => {
+        const newState = { ...prevState };
+        newState.representationDescriptions = representationDescriptions;
 
-          if (newState.representationDescriptions.length > 0) {
-            newState.selectedRepresentationDescription = newState.representationDescriptions[0];
-            if (!prevState.userChosenName) {
-              newState.name = newState.selectedRepresentationDescription.label;
-            }
+        if (newState.representationDescriptions.length > 0) {
+          newState.selectedRepresentationDescription = newState.representationDescriptions[0];
+          if (!prevState.userChosenName) {
+            newState.name = newState.selectedRepresentationDescription.label;
           }
-          return newState;
-        });
-      }
+        }
+        return newState;
+      });
     }
-  }, [loading, queryResult]);
+  }, [loading, queryResult, error]);
 
   const setSelectedRepresentationDescription = (event) => {
     const selectedId = event.target.value;
@@ -136,15 +130,20 @@ export const NewRepresentationModal = ({ projectId, classId, objectId, onReprese
     });
   };
 
-  const [createRepresentation, result] = useMutation(createRepresentationMutation, {}, 'createRepresentation');
+  const [
+    createRepresentation,
+    { loading: createRepresentationLoading, data: createRepresentationData, error: createRepresentationError },
+  ] = useMutation(createRepresentationMutation);
   useEffect(() => {
-    if (!result.loading) {
-      if (result?.data?.data?.createRepresentation?.representation) {
-        const { id, label, __typename } = result.data.data.createRepresentation.representation;
-        onRepresentationCreated({ id, label, kind: __typename });
-      }
+    if (
+      !createRepresentationLoading &&
+      !createRepresentationError &&
+      createRepresentationData?.createRepresentation?.representation
+    ) {
+      const { id, label, __typename } = createRepresentationData.createRepresentation.representation;
+      onRepresentationCreated({ id, label, kind: __typename });
     }
-  }, [result, onRepresentationCreated]);
+  }, [createRepresentationLoading, createRepresentationData, createRepresentationError, onRepresentationCreated]);
 
   const onCreateRepresentation = (event) => {
     event.preventDefault();
@@ -154,7 +153,7 @@ export const NewRepresentationModal = ({ projectId, classId, objectId, onReprese
       representationDescriptionId: selectedRepresentationDescription.id,
       representationName: name,
     };
-    createRepresentation({ input });
+    createRepresentation({ variables: { input } });
   };
 
   let invalid = !(name != null && name.length > 0 && selectedRepresentationDescription); // TODO Textfield does not actually support an "invalid" prop

@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useMutation } from 'common/GraphQLHooks';
+import { useMutation } from '@apollo/client';
 import { LinkButton } from 'core/linkbutton/LinkButton';
 import { Select } from 'core/select/Select';
 import gql from 'graphql-tag';
@@ -36,7 +36,7 @@ const createRepresentationMutation = gql`
       }
     }
   }
-`.loc.source.body;
+`;
 
 const propTypes = {
   maxDisplay: PropTypes.number.isRequired,
@@ -62,10 +62,10 @@ export const NewRepresentationArea = ({
   const { message } = state;
 
   // Representation creation
-  const [createRepresentation, result] = useMutation(createRepresentationMutation, {}, 'createRepresentation');
+  const [createRepresentation, { loading, data, error }] = useMutation(createRepresentationMutation);
   useEffect(() => {
-    if (!result.loading) {
-      const { createRepresentation } = result.data.data;
+    if (!loading && !error && data?.createRepresentation) {
+      const { createRepresentation } = data;
       if (createRepresentation.representation) {
         const { id, label, __typename } = createRepresentation.representation;
         setSelection({ id, label, kind: __typename });
@@ -77,7 +77,7 @@ export const NewRepresentationArea = ({
         });
       }
     }
-  }, [result, setSelection]);
+  }, [loading, data, error, setSelection]);
   const onCreateRepresentation = (representationDescriptionId) => {
     const selected = representationDescriptions.find((candidate) => candidate.id === representationDescriptionId);
     const objectId = selection.id;
@@ -87,7 +87,7 @@ export const NewRepresentationArea = ({
       representationDescriptionId,
       representationName: selected.label,
     };
-    createRepresentation({ input });
+    createRepresentation({ variables: { input } });
   };
 
   // Representation Descriptions list

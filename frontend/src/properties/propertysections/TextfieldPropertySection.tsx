@@ -10,15 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useMutation } from 'common/GraphQLHooks';
+import { useMutation } from '@apollo/client';
 import { Text } from 'core/text/Text';
 import { Textfield } from 'core/textfield/Textfield';
+import { Permission } from 'project/Permission';
 import PropTypes from 'prop-types';
 import { PropertySectionSubscribers } from 'properties/propertysections/PropertySectionSubscribers';
 import React, { useEffect, useState } from 'react';
-import styles from './PropertySection.module.css';
 import { editTextfieldMutation, updateWidgetFocusMutation } from './mutations';
-import { Permission } from 'project/Permission';
+import styles from './PropertySection.module.css';
 
 const propTypes = {
   projectId: PropTypes.string.isRequired,
@@ -55,7 +55,7 @@ export const TextfieldPropertySection = ({ projectId, formId, widgetId, label, v
     });
   };
 
-  const [editTextfield] = useMutation(editTextfieldMutation, {}, 'editTextfield');
+  const [editTextfield] = useMutation(editTextfieldMutation);
   const sendEditedValue = async () => {
     if (edited) {
       const variables = {
@@ -66,11 +66,11 @@ export const TextfieldPropertySection = ({ projectId, formId, widgetId, label, v
           newValue: inputValue,
         },
       };
-      await editTextfield(variables);
+      await editTextfield({ variables });
     }
   };
 
-  const [updateWidgetFocus] = useMutation(updateWidgetFocusMutation, {}, 'updateWidgetFocus');
+  const [updateWidgetFocus] = useMutation(updateWidgetFocusMutation);
   const sendUpdateWidgetFocus = async (selected) => {
     const variables = {
       input: {
@@ -80,7 +80,7 @@ export const TextfieldPropertySection = ({ projectId, formId, widgetId, label, v
         selected,
       },
     };
-    await updateWidgetFocus(variables);
+    await updateWidgetFocus({ variables });
   };
 
   const onFocus = async () => {

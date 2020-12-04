@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useMutation } from 'common/GraphQLHooks';
+import { useMutation } from '@apollo/client';
 import { Banner } from 'core/banner/Banner';
 import { Buttons, DangerButton } from 'core/button/Button';
 import { Text } from 'core/text/Text';
@@ -34,7 +34,7 @@ const deleteProjectMutation = gql`
       }
     }
   }
-`.loc.source.body;
+`;
 
 const propTypes = {
   projectId: PropTypes.string.isRequired,
@@ -43,8 +43,8 @@ const propTypes = {
 };
 
 export const DeleteProjectModal = ({ projectId, onProjectDeleted, onClose }) => {
-  const [error, setError] = useState('');
-  const [performProjectDeletion, deleteProjectResult] = useMutation(deleteProjectMutation, {}, 'deleteProject');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [performProjectDeletion, { loading, data, error }] = useMutation(deleteProjectMutation);
   const onDeleteProject = async (event) => {
     event.preventDefault();
     const variables = {
@@ -52,28 +52,27 @@ export const DeleteProjectModal = ({ projectId, onProjectDeleted, onClose }) => 
         projectId,
       },
     };
-    performProjectDeletion(variables);
+    performProjectDeletion({ variables });
   };
 
   useEffect(() => {
-    if (!deleteProjectResult.loading) {
-      const { data, error } = deleteProjectResult;
+    if (!loading) {
       if (error) {
-        setError(error.message);
-      } else {
-        const { deleteProject } = data.data;
+        setErrorMessage(error.message);
+      } else if (data?.deleteProject) {
+        const { deleteProject } = data;
         if (deleteProject.__typename === 'DeleteProjectSuccessPayload') {
           onProjectDeleted();
         } else if (deleteProject.__typename === 'ErrorPayload') {
-          setError(deleteProject.message);
+          setErrorMessage(deleteProject.message);
         }
       }
     }
-  }, [deleteProjectResult, onProjectDeleted]);
+  }, [loading, data, error, onProjectDeleted]);
 
   let bannerContent = null;
-  if (error) {
-    bannerContent = <Banner data-testid="banner" content={error} />;
+  if (errorMessage) {
+    bannerContent = <Banner data-testid="banner" content={errorMessage} />;
   }
   return (
     <Modal title="Delete the project" onClose={onClose}>

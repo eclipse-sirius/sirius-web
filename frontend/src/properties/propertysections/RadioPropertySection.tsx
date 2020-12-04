@@ -10,18 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import React from 'react';
-import PropTypes from 'prop-types';
-
-import { useMutation } from 'common/GraphQLHooks';
-
+import { useMutation } from '@apollo/client';
 import { Radio } from 'core/radio/Radio';
 import { Text } from 'core/text/Text';
-
-import styles from './PropertySection.module.css';
-
-import { editRadioMutation } from './mutations';
 import { Permission } from 'project/Permission';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { editRadioMutation } from './mutations';
+import styles from './PropertySection.module.css';
 
 const propTypes = {
   projectId: PropTypes.string.isRequired,
@@ -32,7 +28,7 @@ const propTypes = {
 };
 
 export const RadioPropertySection = ({ projectId, formId, widgetId, label, options }) => {
-  const [editRadio] = useMutation(editRadioMutation, {}, 'editRadio');
+  const [editRadio] = useMutation(editRadioMutation);
 
   const onChange = async (event) => {
     const newValue = event.target.value;
@@ -44,7 +40,7 @@ export const RadioPropertySection = ({ projectId, formId, widgetId, label, optio
         newValue,
       },
     };
-    await editRadio(variables);
+    await editRadio({ variables });
   };
 
   return (

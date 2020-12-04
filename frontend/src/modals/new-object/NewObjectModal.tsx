@@ -10,8 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useMutation, useQuery } from 'common/GraphQLHooks';
-import { Buttons, ActionButton } from 'core/button/Button';
+import { useMutation, useQuery } from '@apollo/client';
+import { ActionButton, Buttons } from 'core/button/Button';
 import { Form } from 'core/form/Form';
 import { Label } from 'core/label/Label';
 import { Select } from 'core/select/Select';
@@ -36,7 +36,7 @@ const createChildMutation = gql`
       }
     }
   }
-`.loc.source.body;
+`;
 
 const getChildCreationDescriptionsQuery = gql`
   query getChildCreationDescriptions($classId: ID!) {
@@ -47,7 +47,7 @@ const getChildCreationDescriptionsQuery = gql`
       }
     }
   }
-`.loc.source.body;
+`;
 
 const propTypes = {
   projectId: PropTypes.string.isRequired,
@@ -65,16 +65,16 @@ export const NewObjectModal = ({ projectId, classId, objectId, onObjectCreated, 
   const [state, setState] = useState(initialState);
   const { selectedChildCreationDescriptionId, childCreationDescriptions } = state;
 
-  const { loading: descriptionsLoading, data: descriptionsResult } = useQuery(
-    getChildCreationDescriptionsQuery,
-    { classId },
-    'getChildCreationDescriptions'
-  );
+  const {
+    loading: descriptionsLoading,
+    data: descriptionsResult,
+    error: descriptionError,
+  } = useQuery(getChildCreationDescriptionsQuery, { variables: { classId } });
   useEffect(() => {
-    if (!descriptionsLoading && descriptionsResult && descriptionsResult.data.viewer) {
+    if (!descriptionsLoading && !descriptionError && descriptionsResult?.viewer) {
       setState((prevState) => {
         const newState = { ...prevState };
-        newState.childCreationDescriptions = descriptionsResult.data.viewer.childCreationDescriptions;
+        newState.childCreationDescriptions = descriptionsResult.viewer.childCreationDescriptions;
 
         if (newState.childCreationDescriptions.length > 0) {
           newState.selectedChildCreationDescriptionId = newState.childCreationDescriptions[0].id;
@@ -83,7 +83,7 @@ export const NewObjectModal = ({ projectId, classId, objectId, onObjectCreated, 
         return newState;
       });
     }
-  }, [descriptionsLoading, descriptionsResult]);
+  }, [descriptionsLoading, descriptionsResult, descriptionError]);
 
   // Used to update the selected child creation description id
   const setSelectedChildCreationDescriptionId = (event) => {
@@ -97,7 +97,7 @@ export const NewObjectModal = ({ projectId, classId, objectId, onObjectCreated, 
   };
 
   // Create the new child
-  const [createChild, createChildResult] = useMutation(createChildMutation, {}, 'createChild');
+  const [createChild, { loading, data, error }] = useMutation(createChildMutation);
   const onCreateChild = (event) => {
     event.preventDefault();
     const input = {
@@ -105,13 +105,13 @@ export const NewObjectModal = ({ projectId, classId, objectId, onObjectCreated, 
       objectId,
       childCreationDescriptionId: selectedChildCreationDescriptionId,
     };
-    createChild({ input });
+    createChild({ variables: { input } });
   };
   useEffect(() => {
-    if (createChildResult?.data?.data?.createChild?.object) {
-      onObjectCreated(createChildResult.data.data.createChild.object);
+    if (!loading && !error && data?.createChild?.object) {
+      onObjectCreated(data.createChild.object);
     }
-  }, [createChildResult, onObjectCreated]);
+  }, [loading, data, error, onObjectCreated]);
 
   return (
     <Modal title="Create a new object" onClose={onClose}>

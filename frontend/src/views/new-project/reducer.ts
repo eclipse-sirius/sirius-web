@@ -26,6 +26,7 @@ import {
   SUBMIT_SUCCESS__STATE,
   HANDLE_CHANGE_NAME__ACTION,
   HANDLE_SUBMIT__ACTION,
+  HANDLE_SUBMIT_FAILURE__ACTION,
 } from './machine';
 
 import { SEVERITY_DEFAULT, SEVERITY_SUCCESS, SEVERITY_WARNING } from 'core/message/Message';
@@ -54,6 +55,9 @@ export const reducer = (prevState, action) => {
       break;
     case HANDLE_SUBMIT__ACTION:
       state = handleSubmitAction(prevState, action);
+      break;
+    case HANDLE_SUBMIT_FAILURE__ACTION:
+      state = handleSubmitFailureAction(prevState, action);
       break;
     default:
       state = prevState;
@@ -90,16 +94,23 @@ const handleSubmitAction = (prevState, action) => {
   const { name } = prevState;
   const { response } = action;
   let state = prevState;
-  if (response.error) {
-    state = { ...prevState, viewState: SUBMIT_ERROR__STATE, message: response.error.message };
-  } else if (response.data && response.data.data) {
-    const { createProject } = response.data.data;
+  if (response?.createProject) {
+    const { createProject } = response;
     if (createProject.__typename === 'CreateProjectSuccessPayload') {
       const newProjectId = createProject.project.id;
       state = { viewState: SUBMIT_SUCCESS__STATE, newProjectId };
     } else if (createProject.__typename === 'ErrorPayload') {
       state = { ...prevState, viewState: SUBMIT_ERROR__STATE, name, message: createProject.message };
     }
+  }
+  return state;
+};
+
+const handleSubmitFailureAction = (prevState, action) => {
+  const { response } = action;
+  let state = prevState;
+  if (response?.message) {
+    state = { ...prevState, viewState: SUBMIT_ERROR__STATE, message: response.message };
   }
   return state;
 };

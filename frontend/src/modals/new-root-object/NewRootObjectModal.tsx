@@ -10,8 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useLazyQuery, useMutation, useQuery } from 'common/GraphQLHooks';
-import { Buttons, ActionButton } from 'core/button/Button';
+import { useQuery, useLazyQuery, useMutation } from '@apollo/client';
+import { ActionButton, Buttons } from 'core/button/Button';
 import { Checkbox } from 'core/checkbox/Checkbox';
 import { Form } from 'core/form/Form';
 import { Label } from 'core/label/Label';
@@ -38,7 +38,7 @@ const createRootObjectMutation = gql`
       }
     }
   }
-`.loc.source.body;
+`;
 
 const getNamespacesQuery = gql`
   query getNamespaces {
@@ -49,7 +49,7 @@ const getNamespacesQuery = gql`
       }
     }
   }
-`.loc.source.body;
+`;
 
 const getRootObjectCreationDescriptionsQuery = gql`
   query getRootObjectCreationDescriptions($namespaceId: ID!, $suggested: Boolean!) {
@@ -60,7 +60,7 @@ const getRootObjectCreationDescriptionsQuery = gql`
       }
     }
   }
-`.loc.source.body;
+`;
 
 const propTypes = {
   projectId: PropTypes.string.isRequired,
@@ -86,42 +86,42 @@ export const NewRootObjectModal = ({ projectId, documentId, onObjectCreated, onC
     suggestedRootObject,
   } = state;
 
-  const { loading: namespacesLoading, data: namespacesResult } = useQuery(getNamespacesQuery, {}, 'getNamespaces');
+  // Fetch the available namespaces only once, they are supposed static (at least for the lifetime of the modal)
+  const { loading: namespacesLoading, data: namespacesResult, error: namespacesError } = useQuery(getNamespacesQuery);
   useEffect(() => {
-    if (!namespacesLoading && namespacesResult && namespacesResult?.data?.viewer) {
+    if (!namespacesLoading && !namespacesError && namespacesResult?.viewer) {
       setState((prevState) => {
-        const namespaces = namespacesResult.data.viewer.namespaces;
+        const namespaces = namespacesResult.viewer.namespaces;
         const selectedNamespaceId = namespaces.length > 0 ? namespaces[0].id : undefined;
         return { ...prevState, namespaces, selectedNamespaceId };
       });
     }
-  }, [namespacesLoading, namespacesResult]);
+  }, [namespacesLoading, namespacesResult, namespacesError]);
 
-  const [getRootObjectCreationDescriptions, { loading: descriptionsLoading, data: descriptionsResult }] = useLazyQuery(
-    getRootObjectCreationDescriptionsQuery,
-    {},
-    'getRootObjectCreationDescriptions'
-  );
+  // Fetch the corresponding object creation description whenever the user selects a new namespace or toggles the checkbox
+  const [
+    getRootObjectCreationDescriptions,
+    { loading: descriptionsLoading, data: descriptionsResult, error: descriptionError },
+  ] = useLazyQuery(getRootObjectCreationDescriptionsQuery, { fetchPolicy: 'no-cache' });
   useEffect(() => {
     if (selectedNamespaceId) {
-      getRootObjectCreationDescriptions({ namespaceId: selectedNamespaceId, suggested: suggestedRootObject });
+      getRootObjectCreationDescriptions({
+        variables: { namespaceId: selectedNamespaceId, suggested: suggestedRootObject },
+      });
     }
   }, [suggestedRootObject, selectedNamespaceId, getRootObjectCreationDescriptions]);
 
+  // Updates the state when we get the result from the lazy query above
   useEffect(() => {
-    if (
-      !descriptionsLoading &&
-      descriptionsResult &&
-      descriptionsResult?.data?.viewer?.rootObjectCreationDescriptions
-    ) {
+    if (!descriptionsLoading && !descriptionError && descriptionsResult?.viewer?.rootObjectCreationDescriptions) {
       setState((prevState) => {
-        const rootObjectCreationDescriptions = descriptionsResult.data.viewer.rootObjectCreationDescriptions;
+        const rootObjectCreationDescriptions = descriptionsResult.viewer.rootObjectCreationDescriptions;
         const selectedRootObjectCreationDescriptionId =
           rootObjectCreationDescriptions.length > 0 ? rootObjectCreationDescriptions[0].id : undefined;
         return { ...prevState, rootObjectCreationDescriptions, selectedRootObjectCreationDescriptionId };
       });
     }
-  }, [descriptionsLoading, descriptionsResult]);
+  }, [descriptionsLoading, descriptionsResult, descriptionError]);
 
   const setSelectedNamespaceId = (event) => {
     const selectedNamespaceId = event.target.value;
@@ -151,7 +151,13 @@ export const NewRootObjectModal = ({ projectId, documentId, onObjectCreated, onC
   };
 
   // Create the new child
-  const [createRootObject, createRootObjectResult] = useMutation(createRootObjectMutation, {}, 'createRootObject');
+  const [createRootObject, { loading, error, data }] = useMutation(createRootObjectMutation);
+  useEffect(() => {
+    if (!loading && !error && data?.createRootObject?.object) {
+      onObjectCreated(data.createRootObject.object);
+    }
+  }, [loading, error, data, onObjectCreated]);
+
   const onCreateRootObject = (event) => {
     event.preventDefault();
     const input = {
@@ -160,13 +166,8 @@ export const NewRootObjectModal = ({ projectId, documentId, onObjectCreated, onC
       namespaceId: selectedNamespaceId,
       rootObjectCreationDescriptionId: selectedRootObjectCreationDescriptionId,
     };
-    createRootObject({ input });
+    createRootObject({ variables: { input } });
   };
-  useEffect(() => {
-    if (createRootObjectResult?.data?.data?.createRootObject?.object) {
-      onObjectCreated(createRootObjectResult.data.data.createRootObject.object);
-    }
-  }, [createRootObjectResult, onObjectCreated]);
 
   return (
     <Modal title="Create a new root object" onClose={onClose}>

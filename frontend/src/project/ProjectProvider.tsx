@@ -10,8 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GraphQLClient } from 'common/GraphQLClient';
-import { useQuery } from 'common/GraphQLHooks';
+import { useQuery, useSubscription } from '@apollo/client';
 import gql from 'graphql-tag';
 import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -32,7 +31,7 @@ const getProjectQuery = gql`
       }
     }
   }
-`.loc.source.body;
+`;
 
 const projectEventSubscription = gql`
   subscription projectEvent($input: ProjectEventInput!) {
@@ -44,7 +43,7 @@ const projectEventSubscription = gql`
       }
     }
   }
-`.loc.source.body;
+`;
 
 // In order, from the least to the most privileged
 const ACCESS_LEVELS = ['READ', 'EDIT', 'ADMIN'];
@@ -59,52 +58,39 @@ const initialState = {
 export const ProjectContext = React.createContext(initialState);
 
 const ProjectProvider = ({ children }) => {
-  const { graphQLWebSocketClient } = useContext(GraphQLClient);
   const [state, setState] = useState(initialState);
   const { projectId } = useParams();
-  const { loading, data } = useQuery(getProjectQuery, { projectId }, 'getProject');
+  const { loading, error, data } = useQuery(getProjectQuery, { variables: { projectId } });
   useEffect(() => {
-    if (!loading && data) {
-      const newState = { ...data.data.viewer.project };
+    if (!loading && !error && data) {
+      const newState = { ...data.viewer.project };
       newState.canRead = ACCESS_LEVELS.indexOf(newState.accessLevel) >= ACCESS_LEVELS.indexOf('READ');
       newState.canEdit = ACCESS_LEVELS.indexOf(newState.accessLevel) >= ACCESS_LEVELS.indexOf('EDIT');
       newState.canAdmin = ACCESS_LEVELS.indexOf(newState.accessLevel) >= ACCESS_LEVELS.indexOf('ADMIN');
       setState(newState);
     }
-  }, [loading, data, setState]);
+  }, [loading, data, error, setState]);
 
-  useEffect(() => {
-    if (state.id) {
-      const operationId = graphQLWebSocketClient.generateOperationId();
-      const subscribe = () => {
-        graphQLWebSocketClient.on(operationId, (message) => {
-          if (message.type === 'data' && message?.payload?.data?.projectEvent) {
-            const { projectEvent } = message.payload.data;
-            if (projectEvent.__typename === 'ProjectRenamedEventPayload') {
-              setState((prevState) => {
-                return { ...prevState, name: projectEvent.newLabel };
-              });
-            }
-          }
-        });
-        const variables = {
-          input: {
-            projectId: state.id,
-          },
-        };
-
-        graphQLWebSocketClient.start(operationId, projectEventSubscription, variables, 'projectEvent');
-      };
-
-      const unsubscribe = (id) => {
-        graphQLWebSocketClient.remove(id);
-        graphQLWebSocketClient.stop(id);
-      };
-
-      subscribe();
-      return () => unsubscribe(operationId);
-    }
-  }, [graphQLWebSocketClient, state.id, setState]);
+  useSubscription(projectEventSubscription, {
+    variables: {
+      input: {
+        projectId: state.id,
+      },
+    },
+    fetchPolicy: 'no-cache',
+    skip: !state.id,
+    onSubscriptionData: ({ subscriptionData }) => {
+      if (subscriptionData.data.projectEvent) {
+        const { projectEvent } = subscriptionData.data;
+        if (projectEvent.__typename === 'ProjectRenamedEventPayload') {
+          setState((prevState) => {
+            return { ...prevState, name: projectEvent.newLabel };
+          });
+        }
+      }
+    },
+    shouldResubscribe: ({ variables: { input } }) => input.projectId !== state.id,
+  });
 
   return <ProjectContext.Provider value={state}>{children}</ProjectContext.Provider>;
 };

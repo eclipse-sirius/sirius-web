@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useQuery } from 'common/GraphQLHooks';
+import { useQuery } from '@apollo/client';
 import gql from 'graphql-tag';
 import React, { useEffect, useState } from 'react';
 
@@ -22,7 +22,7 @@ const getCapablitiliesQuery = gql`
       }
     }
   }
-`.loc.source.body;
+`;
 
 const defaultContextValue = { overrides: (path: string) => false };
 
@@ -32,14 +32,12 @@ const emptyCapabilities = { pathOverrides: [] };
 
 export const CapabilitiesProvider = ({ children }) => {
   const [capabilites, setCapabilities] = useState(emptyCapabilities);
-  const queryResult = useQuery(getCapablitiliesQuery, {}, 'getCapabilities');
-  const { data, loading } = queryResult;
+  const { data, loading, error } = useQuery(getCapablitiliesQuery, {});
   useEffect(() => {
-    if (!loading) {
-      const newState = data?.data?.viewer?.capabilities;
-      setCapabilities(newState);
+    if (!loading && !error) {
+      setCapabilities(data?.viewer?.capabilities);
     }
-  }, [data, loading]);
+  }, [data, loading, error]);
 
   const overrides = (path: string): boolean => {
     return capabilites.pathOverrides.filter((pattern) => path.match(pattern.replace(/\\\\/, '\\'))).length > 0;

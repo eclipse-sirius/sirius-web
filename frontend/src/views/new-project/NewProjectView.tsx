@@ -10,20 +10,25 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useMutation } from 'common/GraphQLHooks';
-import { Buttons, ActionButton, SecondaryButton } from 'core/button/Button';
+import { useMutation } from '@apollo/client';
+import { ActionButton, Buttons, SecondaryButton } from 'core/button/Button';
 import { Form } from 'core/form/Form';
 import { Label } from 'core/label/Label';
 import { Message } from 'core/message/Message';
 import { Textfield } from 'core/textfield/Textfield';
+import gql from 'graphql-tag';
 import React, { useEffect, useReducer } from 'react';
 import { Redirect } from 'react-router-dom';
 import { FormContainer } from 'views/FormContainer';
 import { View } from 'views/View';
-import { HANDLE_CHANGE_NAME__ACTION, HANDLE_SUBMIT__ACTION, VALID__STATE } from './machine';
+import {
+  HANDLE_CHANGE_NAME__ACTION,
+  HANDLE_SUBMIT__ACTION,
+  HANDLE_SUBMIT_FAILURE__ACTION,
+  VALID__STATE,
+} from './machine';
 import styles from './NewProjectView.module.css';
 import { initialState, reducer } from './reducer';
-import gql from 'graphql-tag';
 
 const createProjectMutation = gql`
   mutation createProject($input: CreateProjectInput!) {
@@ -43,7 +48,7 @@ const createProjectMutation = gql`
       }
     }
   }
-`.loc.source.body;
+`;
 
 /**
  * Communicates with the server to handle the operations related to the
@@ -54,7 +59,7 @@ const createProjectMutation = gql`
  * @author lfasani
  */
 export const NewProjectView = () => {
-  const [createProject, projectCreationResult] = useMutation(createProjectMutation, {}, 'createProject');
+  const [createProject, { loading, data, error }] = useMutation(createProjectMutation);
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const { viewState, name, nameMessage, nameMessageSeverity, message, newProjectId } = state;
@@ -73,14 +78,18 @@ export const NewProjectView = () => {
         visibility: 'PUBLIC',
       },
     };
-    createProject(variables);
+    createProject({ variables });
   };
 
   useEffect(() => {
-    if (!projectCreationResult.loading) {
-      dispatch({ type: HANDLE_SUBMIT__ACTION, response: projectCreationResult });
+    if (!loading && !error && data) {
+      if (error) {
+        dispatch({ type: HANDLE_SUBMIT_FAILURE__ACTION, reponse: error });
+      } else if (data) {
+        dispatch({ type: HANDLE_SUBMIT__ACTION, response: data });
+      }
     }
-  }, [projectCreationResult]);
+  }, [loading, data, error]);
 
   if (newProjectId) {
     return <Redirect to={`/projects/${newProjectId}/edit`} />;

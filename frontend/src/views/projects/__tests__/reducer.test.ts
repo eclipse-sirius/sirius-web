@@ -14,8 +14,9 @@ import {
   EMPTY__STATE,
   ERROR__STATE,
   LOADED__STATE,
+  HANDLE_ERROR_FETCHING_PROJECTS__ACTION,
   HANDLE_FETCHED_PROJECTS__ACTION,
-  HANDLE_PROJECT_UPDATED__ACTION,
+  HANDLE_PROJECTS_UPDATED__ACTION,
 } from '../machine';
 import { initialState, reducer } from '../reducer';
 
@@ -54,10 +55,8 @@ describe('ProjectsView - reducer', () => {
   it('navigates to the empty state after loading no projects', () => {
     const prevState = initialState;
     const response = {
-      data: {
-        viewer: {
-          projects: [],
-        },
+      viewer: {
+        projects: [],
       },
     };
     const action = { type: HANDLE_FETCHED_PROJECTS__ACTION, response };
@@ -68,28 +67,26 @@ describe('ProjectsView - reducer', () => {
   it('navigates to the projects loaded state after loading some projects', () => {
     const prevState = initialState;
     const response = {
-      data: {
-        viewer: {
-          projects: [
-            {
-              projectId: 'azerty',
-              name: 'Azerty',
-            },
-          ],
-        },
+      viewer: {
+        projects: [
+          {
+            projectId: 'azerty',
+            name: 'Azerty',
+          },
+        ],
       },
     };
     const action = { type: HANDLE_FETCHED_PROJECTS__ACTION, response };
     const state = reducer(prevState, action);
     expect(state.viewState).toBe(LOADED__STATE);
-    expect(state.projects).toHaveLength(response.data.viewer.projects.length);
+    expect(state.projects).toHaveLength(response.viewer.projects.length);
   });
 
   it('navigates to the error state after an unexpected error during the loading', () => {
     const prevState = initialState;
-    const response = unexpectedErrorResponse;
+    const error = unexpectedErrorResponse;
 
-    const action = { type: HANDLE_FETCHED_PROJECTS__ACTION, response };
+    const action = { type: HANDLE_ERROR_FETCHING_PROJECTS__ACTION, error };
     const state = reducer(prevState, action);
     expect(state.viewState).toBe(ERROR__STATE);
     expect(state.message).not.toBeNull();
@@ -99,42 +96,38 @@ describe('ProjectsView - reducer', () => {
   it('navigates to the projects loaded state after deleting a project', () => {
     const prevState = projectsLoadedState;
     const response = {
-      data: {
-        viewer: {
-          projects: [
-            {
-              projectId: 'azerty',
-              name: 'Azerty',
-            },
-          ],
-        },
+      viewer: {
+        projects: [
+          {
+            projectId: 'azerty',
+            name: 'Azerty',
+          },
+        ],
       },
     };
-    const action = { type: HANDLE_PROJECT_UPDATED__ACTION, response };
+    const action = { type: HANDLE_PROJECTS_UPDATED__ACTION, response };
     const state = reducer(prevState, action);
     expect(state.viewState).toBe(LOADED__STATE);
-    expect(state.projects).toHaveLength(response.data.viewer.projects.length);
+    expect(state.projects).toHaveLength(response.viewer.projects.length);
   });
 
   it('navigates to the empty state after the deletion of the last project', () => {
     const prevState = projectsLoadedState;
     const response = {
-      data: {
-        viewer: {
-          projects: [],
-        },
+      viewer: {
+        projects: [],
       },
     };
-    const action = { type: HANDLE_PROJECT_UPDATED__ACTION, response };
+    const action = { type: HANDLE_PROJECTS_UPDATED__ACTION, response };
     const state = reducer(prevState, action);
     expect(state.viewState).toBe(EMPTY__STATE);
   });
 
   it('navigates to the error state after an unexpected error during the update', () => {
     const prevState = projectsLoadedState;
-    const response = unexpectedErrorResponse;
+    const error = unexpectedErrorResponse;
 
-    const action = { type: HANDLE_PROJECT_UPDATED__ACTION, response };
+    const action = { type: HANDLE_ERROR_FETCHING_PROJECTS__ACTION, error };
     const state = reducer(prevState, action);
     expect(state.viewState).toBe(ERROR__STATE);
     expect(state.message).not.toBeNull();

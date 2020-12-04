@@ -10,16 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-import { useLazyQuery } from 'common/GraphQLHooks';
-import { useProject } from 'project/ProjectProvider';
+import { useLazyQuery } from '@apollo/client';
+import gql from 'graphql-tag';
 import { NewDocumentArea } from 'onboarding/NewDocumentArea';
 import { NewRepresentationArea } from 'onboarding/NewRepresentationArea';
 import { RepresentationsArea } from 'onboarding/RepresentationsArea';
 import { Permission } from 'project/Permission';
+import { useProject } from 'project/ProjectProvider';
+import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react';
 import styles from './OnboardArea.module.css';
-import gql from 'graphql-tag';
 
 const getOnboardDataQuery = gql`
   query getOnboardData($projectId: ID!, $classId: ID!) {
@@ -45,42 +45,44 @@ const getOnboardDataQuery = gql`
       }
     }
   }
-`.loc.source.body;
+`;
 
 const propTypes = {
   selection: PropTypes.object,
   setSelection: PropTypes.func.isRequired,
 };
 
+const MAX_DISPLAY = 5;
+
+const INITIAL_STATE = {
+  stereotypeDescriptions: [],
+  representationDescriptions: [],
+  representations: [],
+};
+
 export const OnboardArea = ({ selection, setSelection }) => {
   const { id } = useProject() as any;
-  const initialState = {
-    stereotypeDescriptions: [],
-    representationDescriptions: [],
-    representations: [],
-  };
-  const [state, setState] = useState(initialState);
+  const [state, setState] = useState(INITIAL_STATE);
   const { stereotypeDescriptions, representationDescriptions, representations } = state;
 
   const classId = selection ? selection.kind : '';
 
-  const [getOnboardData, onboardData] = useLazyQuery(getOnboardDataQuery, {}, 'getOnboardData');
+  const [getOnboardData, { loading, data, error }] = useLazyQuery(getOnboardDataQuery);
   useEffect(() => {
-    getOnboardData({ projectId: id, classId });
+    getOnboardData({ variables: { projectId: id, classId } });
   }, [id, classId, getOnboardData]);
   useEffect(() => {
-    if (!onboardData.loading) {
-      const result = onboardData.data.data.viewer;
-      let representationDescriptions = result.representationDescriptions.edges.map((edge) => edge.node);
+    if (!loading && !error && data?.viewer) {
+      const { viewer } = data;
+      let representationDescriptions = viewer.representationDescriptions.edges.map((edge) => edge.node);
       setState({
-        representations: result.project.representations,
-        stereotypeDescriptions: result.stereotypeDescriptions,
+        representations: viewer.project.representations,
+        stereotypeDescriptions: viewer.stereotypeDescriptions,
         representationDescriptions,
       });
     }
-  }, [id, classId, onboardData]);
+  }, [id, classId, loading, data, error]);
 
-  const maxDisplay = 5;
   return (
     <div className={styles.onboardArea}>
       <div className={styles.onboardContent}>
@@ -89,7 +91,7 @@ export const OnboardArea = ({ selection, setSelection }) => {
             stereotypeDescriptions={stereotypeDescriptions}
             projectId={id}
             setSelection={setSelection}
-            maxDisplay={maxDisplay}
+            maxDisplay={MAX_DISPLAY}
           />
         </Permission>
         <Permission requiredAccessLevel="EDIT">
@@ -98,14 +100,14 @@ export const OnboardArea = ({ selection, setSelection }) => {
             projectId={id}
             selection={selection}
             setSelection={setSelection}
-            maxDisplay={maxDisplay}
+            maxDisplay={MAX_DISPLAY}
           />
         </Permission>
         <RepresentationsArea
           representations={representations}
           // projectId={id} TODO RepresentationsArea has no such prop
           setSelection={setSelection}
-          maxDisplay={maxDisplay}
+          maxDisplay={MAX_DISPLAY}
         />
       </div>
     </div>

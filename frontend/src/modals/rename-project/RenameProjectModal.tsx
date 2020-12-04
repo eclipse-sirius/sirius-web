@@ -10,8 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useMutation } from 'common/GraphQLHooks';
-import { Buttons, ActionButton } from 'core/button/Button';
+import { useMutation } from '@apollo/client';
+import { ActionButton, Buttons } from 'core/button/Button';
 import { Form } from 'core/form/Form';
 import { Label } from 'core/label/Label';
 import { Textfield } from 'core/textfield/Textfield';
@@ -34,7 +34,7 @@ const renameProjectMutation = gql`
       }
     }
   }
-`.loc.source.body;
+`;
 
 const propTypes = {
   projectId: PropTypes.string.isRequired,
@@ -76,17 +76,16 @@ export const RenameProjectModal = ({ projectId, initialProjectName, onProjectRen
     });
   };
 
-  const [renameProject, result] = useMutation(renameProjectMutation, {}, 'renameProject');
+  const [renameProject, { loading, data, error }] = useMutation(renameProjectMutation);
   useEffect(() => {
-    if (!result.loading) {
-      const { data, error } = result;
+    if (!loading) {
       if (error) {
         setState((prevState) => {
           const { name, isNameValid } = prevState;
-          return { name, isNameValid, error, isValid: false };
+          return { name, isNameValid, error: error.message, isValid: false };
         });
-      } else {
-        const { renameProject } = data.data;
+      } else if (data?.renameProject) {
+        const { renameProject } = data;
         if (renameProject.__typename === 'RenameProjectSuccessPayload') {
           onProjectRenamed();
         } else if (renameProject.__typename === 'ErrorPayload') {
@@ -98,7 +97,7 @@ export const RenameProjectModal = ({ projectId, initialProjectName, onProjectRen
         }
       }
     }
-  }, [result, onProjectRenamed]);
+  }, [loading, data, error, onProjectRenamed]);
 
   const onRenameProject = (event) => {
     event.preventDefault();
@@ -106,7 +105,7 @@ export const RenameProjectModal = ({ projectId, initialProjectName, onProjectRen
       projectId,
       newName: name,
     };
-    renameProject({ input });
+    renameProject({ variables: { input } });
   };
 
   return (

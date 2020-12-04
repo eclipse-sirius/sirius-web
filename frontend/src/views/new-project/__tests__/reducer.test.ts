@@ -26,6 +26,7 @@ import {
   SUBMIT_SUCCESS__STATE,
   HANDLE_CHANGE_NAME__ACTION,
   HANDLE_SUBMIT__ACTION,
+  HANDLE_SUBMIT_FAILURE__ACTION,
 } from '../machine';
 
 import { SEVERITY_DEFAULT, SEVERITY_SUCCESS, SEVERITY_WARNING } from 'core/message/Message';
@@ -124,13 +125,9 @@ describe('NewProjectView - reducer', () => {
   it('can handle an error in the valid state', () => {
     const prevState = validState;
     const response = {
-      data: {
-        data: {
-          createProject: {
-            __typename: 'ErrorPayload',
-            message: ERROR_MESSAGE,
-          },
-        },
+      createProject: {
+        __typename: 'ErrorPayload',
+        message: ERROR_MESSAGE,
       },
     };
     const action = { type: HANDLE_SUBMIT__ACTION, response };
@@ -158,14 +155,10 @@ describe('NewProjectView - reducer', () => {
   it('can handle a successful submission in the valid state', () => {
     const prevState = validState;
     const response = {
-      data: {
-        data: {
-          createProject: {
-            __typename: 'CreateProjectSuccessPayload',
-            project: {
-              id: 'abcdef',
-            },
-          },
+      createProject: {
+        __typename: 'CreateProjectSuccessPayload',
+        project: {
+          id: 'abcdef',
         },
       },
     };
@@ -174,7 +167,23 @@ describe('NewProjectView - reducer', () => {
 
     expect(state).toStrictEqual({
       viewState: SUBMIT_SUCCESS__STATE,
-      newProjectId: response.data.data.createProject.project.id,
+      newProjectId: response.createProject.project.id,
+    });
+  });
+
+  it('can handle submission failure', () => {
+    const prevState = validState;
+    const response = {
+      message: 'The project could not be created',
+    };
+    const action = { type: HANDLE_SUBMIT_FAILURE__ACTION, response };
+    const state = reducer(prevState, action);
+    expect(state).toStrictEqual({
+      viewState: SUBMIT_ERROR__STATE,
+      name: VALID_NAME,
+      nameMessage: 'The name is valid.',
+      nameMessageSeverity: 'success',
+      message: 'The project could not be created',
     });
   });
 });
