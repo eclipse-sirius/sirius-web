@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.viewpoint.FontFormat;
 import org.eclipse.sirius.web.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
@@ -46,7 +45,7 @@ public class LabelStyleDescriptionConverter {
             String iconURL = ""; //$NON-NLS-1$
             if (labelStyleDescription.isShowIcon()) {
                 // @formatter:off
-                iconURL = variableManager.get(VariableManager.SELF, EObject.class)
+                iconURL = variableManager.get(VariableManager.SELF, Object.class)
                     .map(this.objectService::getImagePath)
                     .orElse(""); //$NON-NLS-1$
                 // @formatter:on

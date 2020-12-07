@@ -20,7 +20,6 @@ import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.diagram.description.NodeMapping;
 import org.eclipse.sirius.diagram.description.style.WorkspaceImageDescription;
 import org.eclipse.sirius.web.compat.services.representations.IdentifierProvider;
@@ -85,13 +84,13 @@ public class NodeMappingConverter {
         Function<VariableManager, String> nodeIdProvider = variableManager -> UUID.randomUUID().toString();
 
         Function<VariableManager, String> semanticTargetIdProvider = variableManager -> {
-            return variableManager.get(VariableManager.SELF, EObject.class).map(this.objectService::getId).orElse(null);
+            return variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null);
         };
         Function<VariableManager, String> semanticTargetKindProvider = variableManager -> {
-            return variableManager.get(VariableManager.SELF, EObject.class).map(this.objectService::getKind).orElse(null);
+            return variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getKind).orElse(null);
         };
         Function<VariableManager, String> semanticTargetLabelProvider = variableManager -> {
-            return variableManager.get(VariableManager.SELF, EObject.class).map(this.objectService::getLabel).orElse(null);
+            return variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getLabel).orElse(null);
         };
         Function<VariableManager, String> typeProvider = variableManager -> {
             if (nodeMapping.getStyle() instanceof WorkspaceImageDescription) {
