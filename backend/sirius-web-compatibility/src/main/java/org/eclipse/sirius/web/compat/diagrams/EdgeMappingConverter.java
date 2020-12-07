@@ -20,7 +20,6 @@ import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.diagram.description.AbstractNodeMapping;
 import org.eclipse.sirius.diagram.description.DiagramElementMapping;
 import org.eclipse.sirius.diagram.description.EdgeMapping;
@@ -49,7 +48,6 @@ import org.eclipse.sirius.web.services.api.objects.IObjectService;
  * @author sbegaudeau
  */
 public class EdgeMappingConverter {
-    private static final String EOBJECT = "ecore::EObject"; //$NON-NLS-1$
 
     private final IObjectService objectService;
 
@@ -95,13 +93,13 @@ public class EdgeMappingConverter {
         };
 
         Function<VariableManager, String> targetIdProvider = variableManager -> {
-            return variableManager.get(VariableManager.SELF, EObject.class).map(this.objectService::getId).orElse(null);
+            return variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null);
         };
         Function<VariableManager, String> targetKindProvider = variableManager -> {
-            return variableManager.get(VariableManager.SELF, EObject.class).map(this.objectService::getKind).orElse(null);
+            return variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getKind).orElse(null);
         };
         Function<VariableManager, String> targetLabelProvider = variableManager -> {
-            return variableManager.get(VariableManager.SELF, EObject.class).map(this.objectService::getLabel).orElse(null);
+            return variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getLabel).orElse(null);
         };
 
         List<NodeDescription> sourceNodeDescriptions = this.getNodeDescriptions(edgeMapping.getSourceMapping());

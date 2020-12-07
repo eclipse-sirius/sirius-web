@@ -22,7 +22,6 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.diagram.description.ContainerMapping;
 import org.eclipse.sirius.diagram.description.style.ContainerStyleDescription;
 import org.eclipse.sirius.diagram.description.style.WorkspaceImageDescription;
@@ -97,13 +96,13 @@ public class ContainerMappingConverter {
 
         Function<VariableManager, String> containerIdProvider = variableManager -> UUID.randomUUID().toString();
         Function<VariableManager, String> semanticTargetIdProvider = variableManager -> {
-            return variableManager.get(VariableManager.SELF, EObject.class).map(this.objectService::getId).orElse(null);
+            return variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null);
         };
         Function<VariableManager, String> semanticTargetKindProvider = variableManager -> {
-            return variableManager.get(VariableManager.SELF, EObject.class).map(this.objectService::getKind).orElse(null);
+            return variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getKind).orElse(null);
         };
         Function<VariableManager, String> semanticTargetLabelProvider = variableManager -> {
-            return variableManager.get(VariableManager.SELF, EObject.class).map(this.objectService::getLabel).orElse(null);
+            return variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getLabel).orElse(null);
         };
         Function<VariableManager, String> typeProvider = variableManager -> {
             if (containerMapping.getStyle() instanceof WorkspaceImageDescription) {
