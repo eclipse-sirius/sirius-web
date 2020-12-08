@@ -17,15 +17,27 @@ import {
   PROJECT_NOT_FOUND__STATE,
   PROJECT_FETCHING_ERROR__STATE,
   PROJECT_LOADED__STATE,
+  PROJECT_AND_REPRESENTATION_LOADING__STATE,
   PROJECT_LOADED_AND_REPRESENTATION_DISPLAYED__STATE,
   HANDLE_FETCHED_PROJECT__ACTION,
   HANDLE_SELECTION__ACTION,
   HANDLE_REPRESENTATION_RENAMED__ACTION,
+  HANDLE_REPRESENTATION_LOADED__ACTION,
   HANDLE_SUBSCRIBERS_UPDATED__ACTION,
 } from './machine';
 
 export const initialState = {
   viewState: LOADING__STATE,
+  project: undefined,
+  representations: [],
+  selection: undefined,
+  displayedRepresentation: undefined,
+  subscribers: [],
+  message: undefined,
+};
+
+export const initialLoadingState = {
+  viewState: PROJECT_AND_REPRESENTATION_LOADING__STATE,
   project: undefined,
   representations: [],
   selection: undefined,
@@ -51,6 +63,9 @@ export const reducer = (prevState, action) => {
     case HANDLE_REPRESENTATION_RENAMED__ACTION:
       state = handleRepresentationRenamedAction(prevState, action);
       break;
+    case HANDLE_REPRESENTATION_LOADED__ACTION:
+      state = handleRepresentationLoadedAction(prevState, action);
+      break;
     case HANDLE_SUBSCRIBERS_UPDATED__ACTION:
       state = handleSubscribersUpdated(prevState, action);
       break;
@@ -66,7 +81,7 @@ export const reducer = (prevState, action) => {
 };
 
 const handleFetchedProjectAction = (prevState, action) => {
-  const { representations, selection, displayedRepresentation, subscribers, message } = prevState;
+  const { viewState, representations, selection, displayedRepresentation, subscribers, message } = prevState;
   const { response } = action;
 
   let state = undefined;
@@ -76,7 +91,10 @@ const handleFetchedProjectAction = (prevState, action) => {
   } else if (response.data.viewer.project) {
     const { project } = response.data.viewer;
     state = {
-      viewState: PROJECT_LOADED__STATE,
+      viewState:
+        viewState === PROJECT_AND_REPRESENTATION_LOADING__STATE
+          ? PROJECT_AND_REPRESENTATION_LOADING__STATE
+          : PROJECT_LOADED__STATE,
       project,
       representations,
       selection,
@@ -115,11 +133,15 @@ const handleSelectionAction = (prevState, action) => {
     // Keep existing representations & displayedRepresentation
     newRepresentations = representations;
     newDisplayedRepresentation = displayedRepresentation;
-    if (viewState === PROJECT_LOADED__STATE || viewState === PROJECT_LOADED_AND_REPRESENTATION_DISPLAYED__STATE) {
+    if (
+      viewState === PROJECT_LOADED__STATE ||
+      viewState === PROJECT_AND_REPRESENTATION_LOADING__STATE ||
+      viewState === PROJECT_LOADED_AND_REPRESENTATION_DISPLAYED__STATE
+    ) {
       newViewState = viewState;
     } else {
       console.error(
-        'Invalid state, the viewState must be PROJECT_LOADED__STATE or PROJECT_LOADED_AND_REPRESENTATION_DISPLAYED__STATE'
+        'Invalid state, the viewState must be PROJECT_LOADED__STATE or PROJECT_AND_REPRESENTATION_LOADING__STATE or PROJECT_LOADED_AND_REPRESENTATION_DISPLAYED__STATE'
       );
     }
   }
@@ -146,6 +168,28 @@ const handleRepresentationRenamedAction = (prevState, action) => {
 
   return {
     viewState,
+    project,
+    representations,
+    displayedRepresentation,
+    selection,
+    subscribers,
+    message,
+  };
+};
+
+const handleRepresentationLoadedAction = (prevState, action) => {
+  const { viewState, project, representations, displayedRepresentation, selection, subscribers, message } = prevState;
+
+  let newViewState = null;
+
+  if (viewState === PROJECT_AND_REPRESENTATION_LOADING__STATE) {
+    newViewState = PROJECT_LOADED_AND_REPRESENTATION_DISPLAYED__STATE;
+  } else {
+    console.error('Invalid state, the viewState must be PROJECT_AND_REPRESENTATION_LOADING__STATE');
+  }
+
+  return {
+    viewState: newViewState,
     project,
     representations,
     displayedRepresentation,

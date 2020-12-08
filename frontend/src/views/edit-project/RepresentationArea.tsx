@@ -41,6 +41,7 @@ export const RepresentationArea = ({
 }) => {
   let content;
   if (!displayedRepresentation) {
+    // If the user reloads a diagram page, it should load the OnboardArea
     content = <OnboardArea selection={selection} setSelection={setSelection} />;
   } else if (displayedRepresentation.kind === 'Diagram') {
     content = (
