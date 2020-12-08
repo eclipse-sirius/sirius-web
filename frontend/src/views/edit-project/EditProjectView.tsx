@@ -19,13 +19,15 @@ import { EditProjectLoadedView } from 'views/edit-project/EditProjectLoadedView'
 import {
   HANDLE_FETCHED_PROJECT__ACTION,
   HANDLE_REPRESENTATION_RENAMED__ACTION,
+  HANDLE_REPRESENTATION_LOADED__ACTION,
   HANDLE_SELECTION__ACTION,
   HANDLE_SUBSCRIBERS_UPDATED__ACTION,
   LOADING__STATE,
   PROJECT_FETCHING_ERROR__STATE,
   PROJECT_NOT_FOUND__STATE,
+  PROJECT_AND_REPRESENTATION_LOADING__STATE,
 } from 'views/edit-project/machine';
-import { initialState, reducer } from 'views/edit-project/reducer';
+import { initialState, initialLoadingState, reducer } from 'views/edit-project/reducer';
 import { ErrorView } from 'views/ErrorView';
 
 const getRepresentationQuery = gql`
@@ -58,7 +60,7 @@ export const EditProjectView = () => {
   const history = useHistory();
   const routeMatch = useRouteMatch();
   const { projectId, representationId } = useParams();
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer(reducer, representationId ? initialLoadingState : initialState);
   const { viewState, project, representations, displayedRepresentation, selection, subscribers, message } = state;
 
   const context = useProject() as any;
@@ -70,7 +72,11 @@ export const EditProjectView = () => {
   }
 
   useEffect(() => {
-    if (context && context.id && viewState === LOADING__STATE) {
+    if (
+      context &&
+      context.id &&
+      (viewState === LOADING__STATE || viewState === PROJECT_AND_REPRESENTATION_LOADING__STATE)
+    ) {
       const action = {
         type: HANDLE_FETCHED_PROJECT__ACTION,
         response: {
@@ -98,6 +104,7 @@ export const EditProjectView = () => {
   }, [project, representationId, displayedRepresentation, getRepresentation]);
   useEffect(() => {
     if (!loading && !error && data?.viewer?.project?.representation) {
+      dispatch({ type: HANDLE_REPRESENTATION_LOADED__ACTION });
       const { id, label, __typename } = data.viewer.project.representation;
       const representation = { id, label, kind: __typename };
       const action = { type: HANDLE_SELECTION__ACTION, selection: representation };
@@ -158,7 +165,7 @@ export const EditProjectView = () => {
   if (!context) {
     return <ErrorView message="The requested project does not exist" />;
   }
-  if (viewState === LOADING__STATE) {
+  if (viewState === LOADING__STATE || viewState === PROJECT_AND_REPRESENTATION_LOADING__STATE) {
     return <div></div>;
   }
   if (viewState === PROJECT_FETCHING_ERROR__STATE || viewState === PROJECT_NOT_FOUND__STATE) {
