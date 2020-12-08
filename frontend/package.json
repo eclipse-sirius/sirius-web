@@ -28,6 +28,7 @@
   },
   "devDependencies": {
     "@apollo/client": "^3.2.7",
+    "@material-ui/core": "4.11.2",
     "@rollup/plugin-commonjs": "^14.0.0",
     "@rollup/plugin-image": "^2.0.5",
     "@rollup/plugin-node-resolve": "^8.4.0",
@@ -40,6 +41,7 @@
     "@types/jest": "^26.0.14",
     "@types/react": "^16.9.43",
     "@typescript-eslint/parser": "^4.0.1",
+    "@xstate/react": "1.1.0",
     "airbnb-prop-types": "^2.15.0",
     "cypress": "^6.0.1",
     "eslint": "^7.8.1",
@@ -69,10 +71,13 @@
     "ts-jest": "26.4.1",
     "ts-transform-graphql-tag": "^0.2.1",
     "typescript": "^3.9.7",
-    "universal-cookie": "^4.0.2"
+    "universal-cookie": "^4.0.2",
+    "xstate": "4.15.1"
   },
   "peerDependencies": {
     "@apollo/client": "^3.2.7",
+    "@material-ui/core": "4.11.2",
+    "@xstate/react": "1.1.0",
     "airbnb-prop-types": "^2.15.0",
     "graphql": "14.6.0",
     "graphql-tag": "^2.11.0",
@@ -83,6 +88,7 @@
     "reflect-metadata": "^0.1.13",
     "sprotty": "0.7.0",
     "subscriptions-transport-ws": "^0.9.18",
-    "universal-cookie": "^4.0.2"
+    "universal-cookie": "^4.0.2",
+    "xstate": "4.15.1"
   }
 }
