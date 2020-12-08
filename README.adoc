@@ -74,7 +74,7 @@ To build the example application yourself you will need the following tools:
 
 * Git, and a GitHub account
 * To build the frontend:
-** Recent versions of https://nodejs.org/[Node and NPM]: in particular, Node >= 14 is required.
+** Recent versions of https://nodejs.org/[Node and NPM]: in particular, Node 14 (only, no other version) is required.
 ** https://rollupjs.org/[rollup] (`npm install -g rollup`)
 ** https://github.com/whitecolor/yalc[yalc] (`npm install -g yalc`)
 * To build the backend:
