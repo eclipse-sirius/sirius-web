@@ -18,6 +18,7 @@ import org.eclipse.sirius.web.annotations.graphql.GraphQLMutationTypes;
 import org.eclipse.sirius.web.annotations.spring.graphql.MutationDataFetcher;
 import org.eclipse.sirius.web.collaborative.api.services.IProjectEventProcessorRegistry;
 import org.eclipse.sirius.web.collaborative.forms.api.dto.UpdateWidgetFocusInput;
+import org.eclipse.sirius.web.collaborative.forms.api.dto.UpdateWidgetFocusSuccessPayload;
 import org.eclipse.sirius.web.graphql.datafetchers.IDataFetchingEnvironmentService;
 import org.eclipse.sirius.web.graphql.messages.IGraphQLMessageService;
 import org.eclipse.sirius.web.graphql.schema.MutationTypeProvider;
@@ -45,6 +46,7 @@ import graphql.schema.DataFetchingEnvironment;
 @GraphQLMutationTypes(
     input = UpdateWidgetFocusInput.class,
     payloads = {
+            UpdateWidgetFocusSuccessPayload.class
     }
 )
 @MutationDataFetcher(type = MutationTypeProvider.TYPE, field = MutationUpdateWidgetFocusDataFetcher.UPDATE_WIDGET_FOCUS_FIELD)
