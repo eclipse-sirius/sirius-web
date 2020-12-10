@@ -28,6 +28,7 @@ import org.eclipse.sirius.web.collaborative.forms.api.IFormInput;
 import org.eclipse.sirius.web.collaborative.forms.api.IWidgetSubscriptionManager;
 import org.eclipse.sirius.web.collaborative.forms.api.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.web.collaborative.forms.api.dto.UpdateWidgetFocusInput;
+import org.eclipse.sirius.web.collaborative.forms.api.dto.UpdateWidgetFocusSuccessPayload;
 import org.eclipse.sirius.web.components.Element;
 import org.eclipse.sirius.web.forms.Form;
 import org.eclipse.sirius.web.forms.components.FormComponent;
@@ -108,25 +109,28 @@ public class FormEventProcessor implements IFormEventProcessor {
 
     @Override
     public Optional<EventHandlerResponse> handle(IRepresentationInput representationInput, Context context) {
+        Optional<EventHandlerResponse> result = Optional.empty();
         if (representationInput instanceof IFormInput) {
             IFormInput formInput = (IFormInput) representationInput;
 
             if (formInput instanceof UpdateWidgetFocusInput) {
                 UpdateWidgetFocusInput input = (UpdateWidgetFocusInput) formInput;
                 this.widgetSubscriptionManager.handle(input, context);
+                result = Optional
+                        .of(new EventHandlerResponse(true, representation -> input.getRepresentationId().equals(representation.getId()), new UpdateWidgetFocusSuccessPayload(input.getWidgetId())));
             } else {
                 Optional<IFormEventHandler> optionalFormEventHandler = this.formEventHandlers.stream().filter(handler -> handler.canHandle(formInput)).findFirst();
 
                 if (optionalFormEventHandler.isPresent()) {
                     IFormEventHandler formEventHandler = optionalFormEventHandler.get();
-                    return Optional.of(formEventHandler.handle(this.currentForm.get(), formInput));
+                    result = Optional.of(formEventHandler.handle(this.currentForm.get(), formInput));
                 } else {
                     this.logger.warn("No handler found for event: {}", formInput); //$NON-NLS-1$
                 }
             }
         }
 
-        return Optional.empty();
+        return result;
     }
 
     @Override
