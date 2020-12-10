@@ -42,6 +42,8 @@ public final class EdgeDescription {
 
     private UUID id;
 
+    private SynchronizationPolicy synchronizationPolicy;
+
     private Function<VariableManager, String> idProvider;
 
     private Function<VariableManager, String> targetObjectIdProvider;
@@ -76,6 +78,10 @@ public final class EdgeDescription {
 
     public UUID getId() {
         return this.id;
+    }
+
+    public SynchronizationPolicy getSynchronizationPolicy() {
+        return this.synchronizationPolicy;
     }
 
     public Function<VariableManager, String> getIdProvider() {
@@ -153,6 +159,8 @@ public final class EdgeDescription {
     public static final class Builder {
         private UUID id;
 
+        private SynchronizationPolicy synchronizationPolicy = SynchronizationPolicy.SYNCHRONIZED;
+
         private Function<VariableManager, String> idProvider;
 
         private Function<VariableManager, String> targetObjectIdProvider;
@@ -187,6 +195,11 @@ public final class EdgeDescription {
 
         public Builder idProvider(Function<VariableManager, String> idProvider) {
             this.idProvider = Objects.requireNonNull(idProvider);
+            return this;
+        }
+
+        public Builder synchronizationPolicy(SynchronizationPolicy synchronizationPolicy) {
+            this.synchronizationPolicy = synchronizationPolicy;
             return this;
         }
 
@@ -259,6 +272,7 @@ public final class EdgeDescription {
         public EdgeDescription build() {
             EdgeDescription edgeDescription = new EdgeDescription();
             edgeDescription.id = Objects.requireNonNull(this.id);
+            edgeDescription.synchronizationPolicy = this.synchronizationPolicy;
             edgeDescription.idProvider = Objects.requireNonNull(this.idProvider);
             edgeDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
             edgeDescription.targetObjectKindProvider = Objects.requireNonNull(this.targetObjectKindProvider);

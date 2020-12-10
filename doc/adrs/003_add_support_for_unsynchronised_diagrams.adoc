@@ -1,0 +1,80 @@
+= ADR-003 - Add support for unsynchronized diagrams
+
+== Context
+
+Sirius RCP supports unsynschronized diagrams in which a diagram can have some of its mappings defined as unsynchronized.
+An unsynchronized mapping will not automatically trigger the appearance of a figure in the diagram if a semantic element compatible with the mapping is found.
+The figure will only appear if some tool has explicitely requested the creation of a view for this mapping and semantic element thanks to the `Create View` model operation.
+In a similar fashion, it is possible to delete a figure from the diagram without having to delete its semantic element by using the `Delete View` model operation.
+
+Sirius RCP also supports unsynchronizable mappings which, contrary to regular unsynchronized mappings, give the end users some control over the synchronization policy.
+
+We want to support unsynchronized descriptions in Sirius Components.
+In order to refresh unsynchronised descriptions in a diagram, we need to know which diagram elements have been previously created for unsynchronized descriptions in order to keep them on screen.
+This ADR is thus built on top of the previous ADR which introduces the ability to create a diagram using an existing diagram to perform an incremental refresh.
+
+
+== Decision
+
+Node and edge descriptions will now contain a synchronization policy.
+This policy will support synchronized descriptions, the default behavior, and unsynchronized descriptions.
+
+The diagram renderer will need to use some information from a previous diagram in order to keep the existing figure created from unsynchronized descriptions.
+This information will be useful for the `DiagramComponent`, which initializes the creation of the top level nodes and the edges, the `NodeComponent` which creates the various nodes and finally the `EdgeComponent` which creates the various edges.
+Since this information is only relevant for the components themselves and not for the providers such as the semantic element providers or the target object id provider, it will only appear in the props of the various components and not in the variable manager.
+
+When we will refresh a diagram using a previous diagram, if we encounter an unsynchronized description, we should only refresh the old elements created from the description and not try to create new ones.
+For that, we will need to give the `NodeComponent` and `EdgeComponent` the list of nodes and edges respectively that have been created in the previous diagram for their current node or edge description.
+In case of synchronized description, that information may also be relevant since it will give us the ability to keep layout data or a custom user-defined style from an old node or edge while creating the new one.
+In the case of an unsynchronized description, we will only keep the new diagram elements which have an `targetObjectId` which matches the `targetObjectId` of a previously created elements.
+This behavior will be applied recursively over the diagram.
+
+
+=== Introduction of the requestors
+
+The `IDiagramElementRequestor` will be introduced as a way for the diagram renderer to easily find some elements from a previously generated diagram.
+Its scope is quite precise, this service should not be given to anybody (i.e. specifiers) or manipulated outside of the diagram renderer.
+It is not a Spring service and does not depend on anything Spring related.
+It only contains the couple of utility methods needed by components of the diagram renderer to find data in the previous diagram.
+
+The `DiagramComponent` will now ask for its previous diagram with an `Optional<Diagram>` in its props.
+The `NodeComponent` will require the ability to find if there is a previous node for a given `targetObjectId`, the `EdgeComponent` will also require the same capability for edges.
+We will not provide simple lists to those components since it may be quite expensive to find some information in lists and thus, we will give them some dedicated requestors initialized with the proper data.
+
+```
+public interface IDiagramElementRequestor {
+  List<Node> getRootNodes(Diagram diagram, NodeDescription nodeDescription);
+  List<Node> getBorderNodes(Node node, NodeDescription nodeDescription);
+  List<Node> getChildNodes(Node node, NodeDescription nodeDescription);
+  List<Edge> getEdges(Diagram diagram, EdgeDescription edgeDescription);
+}
+
+public interface INodesRequestor {
+  Optional<Node> getByTargetObjectId(String targetObjectId);
+}
+
+public interface IEdgesRequestor {
+  Optional<Edge> getByTargetObjectId(String targetObjectId);
+}
+```
+
+== Status
+
+Accepted.
+
+
+== Consequences
+
+This ADR will be a first step to the support of manual layout since it will will give the renderer the ability to keep layouting information between renders.
+For that, we will need to improve our strategy to generate node identifier in order to have more stable diagram element identifiers.
+With such an improvement, it would be way easier to match nodes and edges.
+After that, keeping layout information over time should be quite trivial and the automatic layout could for example become a manual operation triggered by the end user just like any other tool for example (which will now be supported thanks to the previous ADR).
+
+A service to perform the creation of the new diagram elements will be necessary in a similar fashion as the `Create View` model operation from Sirius RCP.
+As of today, creating a new node cannot be done easily without forking part of the logic of the node and edge components.
+Such new model operations is out of the scope of this ADR but in order to introduce it, we would need to support it for both the `.odesign` compatibility layer and descriptions created using our regular API (`DiagramDescription`, etc).
+
+
+== References
+
+- https://www.eclipse.org/sirius/doc/specifier/diagrams/Diagrams.html#mappings

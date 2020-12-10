@@ -10,26 +10,27 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.collaborative.diagrams.api;
+package org.eclipse.sirius.web.diagrams.components;
 
-import java.util.Optional;
-import java.util.UUID;
+import java.util.List;
 
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.Edge;
 import org.eclipse.sirius.web.diagrams.Node;
+import org.eclipse.sirius.web.diagrams.description.EdgeDescription;
+import org.eclipse.sirius.web.diagrams.description.NodeDescription;
 
 /**
- * Interface used to manipulate diagrams.
+ * Used to find some elements in the previous diagram.
  *
  * @author sbegaudeau
  */
-public interface IDiagramService {
+public interface IDiagramElementRequestor {
+    List<Node> getRootNodes(Diagram diagram, NodeDescription nodeDescription);
 
-    Optional<Diagram> findById(UUID diagramId);
+    List<Node> getBorderNodes(Node node, NodeDescription nodeDescription);
 
-    Optional<Node> findNodeById(Diagram diagram, String nodeId);
+    List<Node> getChildNodes(Node node, NodeDescription nodeDescription);
 
-    Optional<Edge> findEdgeById(Diagram diagram, String edgeId);
-
+    List<Edge> getEdges(Diagram diagram, EdgeDescription edgeDescription);
 }

@@ -1,0 +1,80 @@
+= ADR-002 - Add support for modification of representation's data by event handlers
+
+== Context
+
+Our most advanced representation is the diagram one.
+Yet in this representation, tool's handlers can only modify the semantic elements contained in the editing context.
+After the execution of the tool, the diagram is recreated from scratch using only this editing context.
+
+We want to let handlers modify the representation too and use this modified version of the representation to compute the next version of the representation.
+This could be used for a tool which would change the layout of the diagram or to add unsynchronized elements support for example.
+Such system could also bring the first parts of the support for incremental refresh of the representations.
+
+
+== Decision
+
+Handlers can modify semantic elements, starting with diagrams, we will provide a way for them to modify the graphical elements too.
+We will use a previously computed diagram and the current semantic elements to create a new diagram.
+This will allow us to introduce some API changes to keep some information from a previous diagram to compute a new one.
+We will not leverage every possible information from the previous diagram right now, we are only changing the APIs and the lifecycle of some elements.
+
+
+=== Introduction of the IDiagramContext
+
+Semantic elements are contained in the `IEditingContext`, we will thus introduce an `IDiagramContext` to hold the diagram in the event processor instead of the `DiagramRefreshManager`.
+Since the diagram cannot be updated easily, on purpose at least for now, this new class will provide a clear way to update the diagram.
+The diagram context will be provided in the variable manager just like the editing context to all tool handlers to let them perform any change they want on both semantic and graphical elements.
+
+
+=== Impact on the diagram creation and refresh
+
+The creation of the diagram was performed at two separate locations, in the `IDiagramService` and the `IDiagramRefreshManager`.
+Both were responsible for some use cases of the diagram creation and the responsabilities of each class were not properly defined.
+This task is now the responsability of the `IDiagramCreationService` which can be used to create a diagram from scratch or incrementally using an existing diagram.
+This change in responsability will also be useful for other upcoming modularisation tasks.
+The `DiagramRefreshManagerFactory` will be deleted since the `DiagramCreationService` can be a regular stateless service now that the stateful part in charge of holding the diagram is the `IDiagramContext`.
+The diagram event flux contained in `DiagramRefreshManager` will move to a dedicated class.
+
+`DiagramCreationParameter` were used to hold various pieces of information used to create a diagram.
+Now that we can refresh a diagram using the previous diagram, we don't need it anymore and thus it will be deleted.
+We can end the odd looking update of the `DiagramCreationParameters` in the `DiagramEventProcessor` when we were trying to rename a diagram.
+
+Representation event processors will now be in charge of their refresh after the execution of one of their handlers.
+The ProjectEventProcessor will only refresh other representations.
+As a result, the frontend should feel faster because the impact of a tool should be visible more quickly without having to wait for the refresh of other representations.
+
+
+=== Impact on diagram renaming
+
+Renaming diagram will be easier to perform without having to compute everything in the diagram from scratch.
+The `RenameDiagramEventHandler` which was unused will be deleted, it should not have been added in the first place.
+It was not called because the `DiagramEventProcessor` intercepted the `RenameRepresentationInput` explicitely.
+Renaming a representation is still partially broken because it does not really work for representations which are not currently opened.
+This feature still only works because of a detail in the lifecycle of the frontend.
+The whole feature, which by the way only work for diagrams, still need some work.
+
+
+== Status
+
+Accepted.
+
+
+== Consequences
+
+=== Work to be done on the ProjectEventProcessor
+
+Some project event handler should be able to act as fallback for some tasks which should be performed by a representation event processor, if the representation is currently opened, in some specific situations where the representation is not opened.
+For example, it should be able to handle renaming of a representation if the representation is not open.
+In such situation, it would not be necessary to send an event indicating that the representation has been renamed and thus the behavior would be a bit different.
+
+
+=== Work to be done on the EventHandlerResponse
+
+This whole set of improvement highlights that the `EventHandlerResponse` is a not a good concept.
+It combines three different and unrelated roles:
+
+- whether or not we should save the editing context after the execution of the event handler
+- which representations should be refreshed
+- what should be the response to the mutation which has triggered the event handlers
+
+The whole class should be deleted (a future ADR should details how it should be replaced).

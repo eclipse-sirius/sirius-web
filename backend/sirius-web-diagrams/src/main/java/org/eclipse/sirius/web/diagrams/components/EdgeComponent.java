@@ -28,6 +28,7 @@ import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.web.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.web.diagrams.description.LabelDescription;
 import org.eclipse.sirius.web.diagrams.description.NodeDescription;
+import org.eclipse.sirius.web.diagrams.description.SynchronizationPolicy;
 import org.eclipse.sirius.web.diagrams.elements.EdgeElementProps;
 import org.eclipse.sirius.web.diagrams.elements.NodeElementProps;
 import org.eclipse.sirius.web.diagrams.renderer.DiagramRenderingCache;
@@ -50,6 +51,7 @@ public class EdgeComponent implements IComponent {
     public Element render() {
         VariableManager variableManager = this.props.getVariableManager();
         EdgeDescription edgeDescription = this.props.getEdgeDescription();
+        IEdgesRequestor edgesRequestor = this.props.getEdgesRequestor();
         DiagramRenderingCache cache = this.props.getCache();
 
         List<Element> children = new ArrayList<>();
@@ -76,8 +78,13 @@ public class EdgeComponent implements IComponent {
                 String targetObjectKind = edgeDescription.getTargetObjectKindProvider().apply(edgeVariableManager);
                 String targetObjectLabel = edgeDescription.getTargetObjectLabelProvider().apply(edgeVariableManager);
 
+                var optionalPreviousEdge = edgesRequestor.getByTargetObjectId(targetObjectId);
+                SynchronizationPolicy synchronizationPolicy = edgeDescription.getSynchronizationPolicy();
+                boolean shouldRender = synchronizationPolicy == SynchronizationPolicy.SYNCHRONIZED
+                        || (synchronizationPolicy == SynchronizationPolicy.UNSYNCHRONIZED && optionalPreviousEdge.isPresent());
+
                 List<Element> sourceNodes = edgeDescription.getSourceNodesProvider().apply(edgeVariableManager);
-                if (!sourceNodes.isEmpty()) {
+                if (shouldRender && !sourceNodes.isEmpty()) {
                     List<Element> targetNodes = edgeDescription.getTargetNodesProvider().apply(edgeVariableManager);
 
                     for (Element sourceNode : sourceNodes) {

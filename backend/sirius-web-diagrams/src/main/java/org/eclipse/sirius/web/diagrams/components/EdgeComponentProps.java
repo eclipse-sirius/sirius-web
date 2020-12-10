@@ -30,11 +30,14 @@ public class EdgeComponentProps implements IProps {
 
     private final EdgeDescription edgeDescription;
 
+    private final IEdgesRequestor edgesRequestor;
+
     private final DiagramRenderingCache cache;
 
-    public EdgeComponentProps(VariableManager variableManager, EdgeDescription edgeDescription, DiagramRenderingCache cache) {
+    public EdgeComponentProps(VariableManager variableManager, EdgeDescription edgeDescription, IEdgesRequestor edgesRequestor, DiagramRenderingCache cache) {
         this.variableManager = Objects.requireNonNull(variableManager);
         this.edgeDescription = Objects.requireNonNull(edgeDescription);
+        this.edgesRequestor = Objects.requireNonNull(edgesRequestor);
         this.cache = Objects.requireNonNull(cache);
     }
 
@@ -44,6 +47,10 @@ public class EdgeComponentProps implements IProps {
 
     public EdgeDescription getEdgeDescription() {
         return this.edgeDescription;
+    }
+
+    public IEdgesRequestor getEdgesRequestor() {
+        return this.edgesRequestor;
     }
 
     public DiagramRenderingCache getCache() {

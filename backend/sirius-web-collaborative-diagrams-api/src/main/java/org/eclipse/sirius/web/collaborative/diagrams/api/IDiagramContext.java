@@ -12,28 +12,21 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.collaborative.diagrams.api;
 
-import java.util.UUID;
-
 import org.eclipse.sirius.web.diagrams.Diagram;
-import org.eclipse.sirius.web.services.api.dto.IPayload;
-
-import reactor.core.publisher.Flux;
 
 /**
- * Interface of the diagram refresh manager.
+ * Information used to perform some operations on the diagram.
  *
  * @author sbegaudeau
  */
-public interface IDiagramRefreshManager {
-    void initialize(UUID projectId, DiagramCreationParameters diagramCreationParameters);
+public interface IDiagramContext {
 
-    void refresh(UUID projectId, DiagramCreationParameters diagramCreationParameters);
+    /**
+     * The name of the variable used to store and retrieve the diagram context from a variable manager.
+     */
+    String DIAGRAM_CONTEXT = "diagramContext"; //$NON-NLS-1$
 
     Diagram getDiagram();
 
-    Flux<IPayload> getFlux();
-
-    void dispose();
-
-    void preDestroy();
+    void update(Diagram updatedDiagram);
 }
