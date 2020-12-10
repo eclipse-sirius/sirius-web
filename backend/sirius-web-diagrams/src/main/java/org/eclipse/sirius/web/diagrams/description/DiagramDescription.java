@@ -46,6 +46,11 @@ public final class DiagramDescription implements IRepresentationDescription {
 
     public static final String LABEL = "label"; //$NON-NLS-1$
 
+    /**
+     * The name of the variable used to store and retrieve the target semantic objects map from a variable manager.
+     */
+    public static final String TARGET_SEMANTIC_OBJECTS = "targetSemanticObjects"; //$NON-NLS-1$
+
     private UUID id;
 
     private String label;

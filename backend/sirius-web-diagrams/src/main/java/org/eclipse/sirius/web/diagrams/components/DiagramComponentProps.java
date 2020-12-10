@@ -13,8 +13,10 @@
 package org.eclipse.sirius.web.diagrams.components;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import org.eclipse.sirius.web.components.IProps;
+import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.web.representations.VariableManager;
 
@@ -28,9 +30,18 @@ public class DiagramComponentProps implements IProps {
 
     private final DiagramDescription diagramDescription;
 
+    private final Optional<Diagram> previousDiagram;
+
+    public DiagramComponentProps(VariableManager variableManager, DiagramDescription diagramDescription, Diagram previousDiagram) {
+        this.variableManager = Objects.requireNonNull(variableManager);
+        this.diagramDescription = Objects.requireNonNull(diagramDescription);
+        this.previousDiagram = Optional.of(previousDiagram);
+    }
+
     public DiagramComponentProps(VariableManager variableManager, DiagramDescription diagramDescription) {
         this.variableManager = Objects.requireNonNull(variableManager);
         this.diagramDescription = Objects.requireNonNull(diagramDescription);
+        this.previousDiagram = Optional.empty();
     }
 
     public VariableManager getVariableManager() {
@@ -39,5 +50,9 @@ public class DiagramComponentProps implements IProps {
 
     public DiagramDescription getDiagramDescription() {
         return this.diagramDescription;
+    }
+
+    public Optional<Diagram> getPreviousDiagram() {
+        return this.previousDiagram;
     }
 }

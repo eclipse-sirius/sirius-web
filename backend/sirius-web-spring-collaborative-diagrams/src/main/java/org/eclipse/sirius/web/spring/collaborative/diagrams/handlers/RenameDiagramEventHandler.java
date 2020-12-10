@@ -105,11 +105,11 @@ public class RenameDiagramEventHandler implements IProjectEventHandler {
 
     private Optional<IRepresentation> createDiagramWithNewLabel(IRepresentation representation, String newLabel, IEditingContext editingContext, Context context) {
         if (representation instanceof Diagram) {
-            Diagram diagram = (Diagram) representation;
-            var optionalObject = this.objectService.getObject(editingContext, diagram.getTargetObjectId());
+            Diagram previousDiagram = (Diagram) representation;
+            var optionalObject = this.objectService.getObject(editingContext, previousDiagram.getTargetObjectId());
             if (optionalObject.isPresent()) {
                 // @formatter:on
-                var optionalDiagramDescription = this.representationDescriptionService.findRepresentationDescriptionById(diagram.getDescriptionId()).filter(DiagramDescription.class::isInstance)
+                var optionalDiagramDescription = this.representationDescriptionService.findRepresentationDescriptionById(previousDiagram.getDescriptionId()).filter(DiagramDescription.class::isInstance)
                         .map(DiagramDescription.class::cast);
                 // @formatter:off
                 if (optionalDiagramDescription.isPresent()) {
@@ -124,7 +124,7 @@ public class RenameDiagramEventHandler implements IProjectEventHandler {
                             .build();
                     // @formatter:on
 
-                    Diagram renamedDiagram = this.diagramService.create(diagramCreationParameters);
+                    Diagram renamedDiagram = this.diagramService.create(diagramCreationParameters, previousDiagram);
 
                     // @formatter:off
                     RepresentationDescriptor representationDescriptor = RepresentationDescriptor.newRepresentationDescriptor(renamedDiagram.getId())

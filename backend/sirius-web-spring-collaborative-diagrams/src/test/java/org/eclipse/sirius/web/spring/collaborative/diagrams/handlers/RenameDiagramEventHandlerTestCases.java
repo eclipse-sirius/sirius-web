@@ -104,6 +104,11 @@ public class RenameDiagramEventHandlerTestCases {
             public Diagram create(DiagramCreationParameters parameters) {
                 return diagram;
             }
+
+            @Override
+            public Diagram create(DiagramCreationParameters parameters, Diagram previousDiagram) {
+                return diagram;
+            }
         };
 
         RenameDiagramEventHandler handler = new RenameDiagramEventHandler(noOpRepresentationService, new NoOpCollaborativeDiagramMessageService(), diagramService, objectService,

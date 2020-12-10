@@ -17,6 +17,7 @@ import java.util.Optional;
 
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
+import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramDescriptionService;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramInput;
@@ -84,12 +85,13 @@ public class EditLabelEventHandler implements IDiagramEventHandler {
     }
 
     @Override
-    public EventHandlerResponse handle(IEditingContext editingContext, Diagram diagram, IDiagramInput diagramInput) {
+    public EventHandlerResponse handle(IEditingContext editingContext, IDiagramContext diagramContext, IDiagramInput diagramInput) {
         this.counter.increment();
 
         if (diagramInput instanceof EditLabelInput) {
             EditLabelInput input = (EditLabelInput) diagramInput;
             if (input.getLabelId().endsWith(LABEL_SUFFIX)) {
+                Diagram diagram = diagramContext.getDiagram();
                 String nodeId = this.extractNodeId(input.getLabelId());
                 var node = this.diagramService.findNodeById(diagram, nodeId);
                 if (node.isPresent()) {

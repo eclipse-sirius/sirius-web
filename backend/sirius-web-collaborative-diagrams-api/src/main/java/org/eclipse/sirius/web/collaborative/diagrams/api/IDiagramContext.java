@@ -12,27 +12,21 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.collaborative.diagrams.api;
 
-import java.util.Optional;
-import java.util.UUID;
-
 import org.eclipse.sirius.web.diagrams.Diagram;
-import org.eclipse.sirius.web.diagrams.Edge;
-import org.eclipse.sirius.web.diagrams.Node;
 
 /**
- * Interface used to manipulate diagrams.
+ * Information used to perform some operations on the diagram.
  *
  * @author sbegaudeau
  */
-public interface IDiagramService {
-    Diagram create(DiagramCreationParameters parameters);
+public interface IDiagramContext {
 
-    Diagram create(DiagramCreationParameters parameters, Diagram previousDiagram);
+    /**
+     * The name of the variable used to store and retrieve the diagram context from a variable manager.
+     */
+    String DIAGRAM_CONTEXT = "diagramContext"; //$NON-NLS-1$
 
-    Optional<Diagram> findById(UUID diagramId);
+    Diagram getDiagram();
 
-    Optional<Node> findNodeById(Diagram diagram, String nodeId);
-
-    Optional<Edge> findEdgeById(Diagram diagram, String edgeId);
-
+    void update(Diagram updatedDiagram);
 }

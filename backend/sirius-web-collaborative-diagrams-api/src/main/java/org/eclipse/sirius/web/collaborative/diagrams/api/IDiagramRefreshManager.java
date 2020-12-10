@@ -12,12 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.collaborative.diagrams.api;
 
-import java.util.UUID;
-
 import org.eclipse.sirius.web.diagrams.Diagram;
-import org.eclipse.sirius.web.services.api.dto.IPayload;
-
-import reactor.core.publisher.Flux;
 
 /**
  * Interface of the diagram refresh manager.
@@ -25,15 +20,7 @@ import reactor.core.publisher.Flux;
  * @author sbegaudeau
  */
 public interface IDiagramRefreshManager {
-    void initialize(UUID projectId, DiagramCreationParameters diagramCreationParameters);
 
-    void refresh(UUID projectId, DiagramCreationParameters diagramCreationParameters);
+    Diagram refresh(DiagramCreationParameters diagramCreationParameters, Diagram previousDiagram);
 
-    Diagram getDiagram();
-
-    Flux<IPayload> getFlux();
-
-    void dispose();
-
-    void preDestroy();
 }

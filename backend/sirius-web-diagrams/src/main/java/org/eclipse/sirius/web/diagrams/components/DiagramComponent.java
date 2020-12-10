@@ -14,11 +14,14 @@ package org.eclipse.sirius.web.diagrams.components;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.eclipse.sirius.web.components.Element;
 import org.eclipse.sirius.web.components.IComponent;
+import org.eclipse.sirius.web.diagrams.Diagram;
+import org.eclipse.sirius.web.diagrams.Node;
 import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.Size;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
@@ -52,9 +55,18 @@ public class DiagramComponent implements IComponent {
         DiagramRenderingCache cache = new DiagramRenderingCache();
 
         // @formatter:off
+        List<Node> allPrevNodes = this.props.getPreviousDiagram()
+                .map(Diagram::getNodes)
+                .orElse(List.of());
         var nodes = diagramDescription.getNodeDescriptions().stream()
                 .map(nodeDescription -> {
-                    var nodeComponentProps = new NodeComponentProps(variableManager, nodeDescription, false, cache);
+                    List<Node> prevNodes = List.of();
+                    if (!nodeDescription.isSynchronised()) {
+                        prevNodes = allPrevNodes.stream()
+                                .filter(node -> Objects.equals(node.getDescriptionId(), nodeDescription.getId()))
+                                .collect(Collectors.toList());
+                    }
+                    var nodeComponentProps = new NodeComponentProps(variableManager, nodeDescription, false, cache, prevNodes);
                     return new Element(NodeComponent.class, nodeComponentProps);
                 })
                 .collect(Collectors.toList());

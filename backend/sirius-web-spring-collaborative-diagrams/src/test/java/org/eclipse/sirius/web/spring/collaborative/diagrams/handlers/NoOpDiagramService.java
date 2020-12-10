@@ -34,6 +34,11 @@ public class NoOpDiagramService implements IDiagramService {
     }
 
     @Override
+    public Diagram create(DiagramCreationParameters parameters, Diagram previousDiagram) {
+        return null;
+    }
+
+    @Override
     public Optional<Diagram> findById(UUID diagramId) {
         return Optional.empty();
     }

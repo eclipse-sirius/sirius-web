@@ -14,7 +14,10 @@ package org.eclipse.sirius.web.spring.collaborative.diagrams;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -29,11 +32,13 @@ import org.eclipse.sirius.web.diagrams.Node;
 import org.eclipse.sirius.web.diagrams.components.DiagramComponent;
 import org.eclipse.sirius.web.diagrams.components.DiagramComponentProps;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
+import org.eclipse.sirius.web.diagrams.description.NodeDescription;
 import org.eclipse.sirius.web.diagrams.renderer.DiagramRenderer;
 import org.eclipse.sirius.web.persistence.repositories.IRepresentationRepository;
 import org.eclipse.sirius.web.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.web.representations.VariableManager;
 import org.eclipse.sirius.web.services.api.objects.IEditingContext;
+import org.eclipse.sirius.web.services.api.objects.IObjectService;
 import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;
 import org.eclipse.sirius.web.spring.collaborative.representations.RepresentationMapper;
 import org.slf4j.Logger;
@@ -48,29 +53,52 @@ import org.springframework.stereotype.Service;
 @Service
 public class DiagramService implements IDiagramService {
 
+    private final IObjectService objectService;
+
     private final IRepresentationRepository representationRepository;
 
     private final ObjectMapper objectMapper;
 
     private final Logger logger = LoggerFactory.getLogger(DiagramService.class);
 
-    public DiagramService(IRepresentationRepository representationRepository, ObjectMapper objectMapper) {
+    public DiagramService(IObjectService objectService, IRepresentationRepository representationRepository, ObjectMapper objectMapper) {
+        this.objectService = Objects.requireNonNull(objectService);
         this.representationRepository = Objects.requireNonNull(representationRepository);
         this.objectMapper = Objects.requireNonNull(objectMapper);
     }
 
     @Override
     public Diagram create(DiagramCreationParameters parameters) {
+        return this.create(parameters, Optional.empty());
+    }
+
+    @Override
+    public Diagram create(DiagramCreationParameters parameters, Diagram previousDiagram) {
+        return this.create(parameters, Optional.of(previousDiagram));
+    }
+
+    private Diagram create(DiagramCreationParameters parameters, Optional<Diagram> optionalPreviousDiagram) {
+        DiagramDescription diagramDescription = parameters.getDiagramDescription();
+
         VariableManager variableManager = new VariableManager();
         variableManager.put(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, parameters.getId());
         variableManager.put(DiagramDescription.LABEL, parameters.getLabel());
         variableManager.put(VariableManager.SELF, parameters.getObject());
         variableManager.put(IEditingContext.EDITING_CONTEXT, parameters.getEditingContext());
 
-        DiagramComponentProps props = new DiagramComponentProps(variableManager, parameters.getDiagramDescription());
+        DiagramComponentProps props;
+        if (optionalPreviousDiagram.isPresent()) {
+            Diagram previousDiagram = optionalPreviousDiagram.get();
+            if (this.containsUnsyncDescriptions(diagramDescription)) {
+                Map<String, Object> targetSemanticObjectsMap = this.getSemanticElements(previousDiagram, parameters.getEditingContext());
+                variableManager.put(DiagramDescription.TARGET_SEMANTIC_OBJECTS, targetSemanticObjectsMap);
+            }
+            props = new DiagramComponentProps(variableManager, diagramDescription, previousDiagram);
+        } else {
+            props = new DiagramComponentProps(variableManager, diagramDescription);
+        }
         Element element = new Element(DiagramComponent.class, props);
         Diagram diagram = new DiagramRenderer(this.logger).render(element);
-
         return diagram;
     }
 
@@ -108,5 +136,46 @@ public class DiagramService implements IDiagramService {
                 .filter(Diagram.class::isInstance)
                 .map(Diagram.class::cast);
         // @formatter:on
+    }
+
+    private boolean containsUnsyncDescriptions(DiagramDescription diagramDescription) {
+        return diagramDescription.getNodeDescriptions().stream().anyMatch(this::hasOneNodeDescriptionUnsynchronized);
+    }
+
+    private boolean hasOneNodeDescriptionUnsynchronized(NodeDescription nodeDescription) {
+        boolean isUnsynchronised = !nodeDescription.isSynchronised();
+        if (!isUnsynchronised) {
+            isUnsynchronised = nodeDescription.getBorderNodeDescriptions().stream().anyMatch(this::hasOneNodeDescriptionUnsynchronized);
+            if (!isUnsynchronised) {
+                isUnsynchronised = nodeDescription.getChildNodeDescriptions().stream().anyMatch(this::hasOneNodeDescriptionUnsynchronized);
+            }
+        }
+        return isUnsynchronised;
+    }
+
+    private Map<String, Object> getSemanticElements(Diagram diagram, IEditingContext editingContext) {
+        Map<String, Object> result = new HashMap<>();
+        for (String targetId : this.getTargetIds(diagram)) {
+            Optional<Object> optionalObject = this.objectService.getObject(editingContext, targetId);
+            if (optionalObject.isPresent()) {
+                result.put(targetId, optionalObject.get());
+            }
+        }
+        return result;
+    }
+
+    private List<String> getTargetIds(Diagram diagram) {
+        List<String> result = new ArrayList<>();
+        result.add(diagram.getTargetObjectId());
+        diagram.getNodes().forEach(node -> result.addAll(this.getTargetIds(node)));
+        return result;
+    }
+
+    private List<String> getTargetIds(Node node) {
+        List<String> result = new ArrayList<>();
+        result.add(node.getTargetObjectId());
+        node.getBorderNodes().stream().map(this::getTargetIds).flatMap(List::stream).forEach(result::add);
+        node.getChildNodes().stream().map(this::getTargetIds).flatMap(List::stream).forEach(result::add);
+        return result;
     }
 }

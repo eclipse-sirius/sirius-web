@@ -12,9 +12,11 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.diagrams.components;
 
+import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.web.components.IProps;
+import org.eclipse.sirius.web.diagrams.Node;
 import org.eclipse.sirius.web.diagrams.description.NodeDescription;
 import org.eclipse.sirius.web.diagrams.renderer.DiagramRenderingCache;
 import org.eclipse.sirius.web.representations.VariableManager;
@@ -34,11 +36,14 @@ public class NodeComponentProps implements IProps {
 
     private final DiagramRenderingCache cache;
 
-    public NodeComponentProps(VariableManager variableManager, NodeDescription nodeDescription, boolean isBorderNode, DiagramRenderingCache cache) {
+    private final List<Node> previousNodes;
+
+    public NodeComponentProps(VariableManager variableManager, NodeDescription nodeDescription, boolean isBorderNode, DiagramRenderingCache cache, List<Node> prevNodes) {
         this.variableManager = Objects.requireNonNull(variableManager);
         this.nodeDescription = Objects.requireNonNull(nodeDescription);
         this.isBorderNode = isBorderNode;
         this.cache = Objects.requireNonNull(cache);
+        this.previousNodes = Objects.requireNonNull(prevNodes);
     }
 
     public VariableManager getVariableManager() {
@@ -57,4 +62,7 @@ public class NodeComponentProps implements IProps {
         return this.cache;
     }
 
+    public List<Node> getPreviousNodes() {
+        return this.previousNodes;
+    }
 }

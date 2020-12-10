@@ -71,6 +71,11 @@ public class CreateDiagramEventHandlerTestCases {
                 hasBeenCalled.set(true);
                 return new TestDiagramBuilder().getDiagram(UUID.randomUUID());
             }
+
+            @Override
+            public Diagram create(DiagramCreationParameters parameters, Diagram previousDiagram) {
+                return previousDiagram;
+            }
         };
 
         IObjectService objectService = new NoOpObjectService() {
