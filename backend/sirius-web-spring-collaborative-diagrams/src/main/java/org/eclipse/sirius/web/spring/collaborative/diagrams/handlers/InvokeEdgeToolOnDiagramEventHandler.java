@@ -17,6 +17,7 @@ import java.util.Optional;
 
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
+import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramService;
@@ -76,18 +77,19 @@ public class InvokeEdgeToolOnDiagramEventHandler implements IDiagramEventHandler
     }
 
     @Override
-    public EventHandlerResponse handle(IEditingContext editingContext, Diagram diagram, IDiagramInput diagramInput) {
+    public EventHandlerResponse handle(IEditingContext editingContext, IDiagramContext diagramContext, IDiagramInput diagramInput) {
         this.counter.increment();
 
         if (diagramInput instanceof InvokeEdgeToolOnDiagramInput) {
             InvokeEdgeToolOnDiagramInput input = (InvokeEdgeToolOnDiagramInput) diagramInput;
+            Diagram diagram = diagramContext.getDiagram();
             // @formatter:off
             var optionalTool = this.toolService.findToolById(diagram, input.getToolId())
                     .filter(CreateEdgeTool.class::isInstance)
                     .map(CreateEdgeTool.class::cast);
             // @formatter:on
             if (optionalTool.isPresent()) {
-                Status status = this.executeTool(editingContext, diagram, input.getDiagramSourceElementId(), input.getDiagramTargetElementId(), optionalTool.get());
+                Status status = this.executeTool(editingContext, diagramContext, input.getDiagramSourceElementId(), input.getDiagramTargetElementId(), optionalTool.get());
                 if (Objects.equals(status, Status.OK)) {
                     return new EventHandlerResponse(true, representation -> true, new InvokeEdgeToolOnDiagramSuccessPayload(diagram));
                 }
@@ -97,8 +99,9 @@ public class InvokeEdgeToolOnDiagramEventHandler implements IDiagramEventHandler
         return new EventHandlerResponse(false, representation -> false, new ErrorPayload(message));
     }
 
-    private Status executeTool(IEditingContext editingContext, Diagram diagram, String diagramSourceElementId, String diagramTargetElementId, CreateEdgeTool tool) {
+    private Status executeTool(IEditingContext editingContext, IDiagramContext diagramContext, String diagramSourceElementId, String diagramTargetElementId, CreateEdgeTool tool) {
         Status result = Status.ERROR;
+        Diagram diagram = diagramContext.getDiagram();
         Optional<Node> sourceNode = this.diagramService.findNodeById(diagram, diagramSourceElementId);
         Optional<Node> targetNode = this.diagramService.findNodeById(diagram, diagramTargetElementId);
         Optional<Object> source = Optional.empty();
@@ -110,6 +113,7 @@ public class InvokeEdgeToolOnDiagramEventHandler implements IDiagramEventHandler
 
         if (source.isPresent() && target.isPresent()) {
             VariableManager variableManager = new VariableManager();
+            variableManager.put(IDiagramContext.DIAGRAM_CONTEXT, diagramContext);
             variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
             variableManager.put(CreateEdgeTool.EDGE_SOURCE, source.get());
             variableManager.put(CreateEdgeTool.EDGE_TARGET, target.get());

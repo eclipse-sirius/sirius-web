@@ -21,8 +21,7 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.sirius.web.collaborative.api.dto.CreateRepresentationInput;
-import org.eclipse.sirius.web.collaborative.diagrams.api.DiagramCreationParameters;
-import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramService;
+import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramCreationService;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.web.diagrams.tests.TestDiagramBuilder;
@@ -65,12 +64,13 @@ public class CreateDiagramEventHandlerTestCases {
         };
 
         AtomicBoolean hasBeenCalled = new AtomicBoolean();
-        IDiagramService diagramService = new NoOpDiagramService() {
+        IDiagramCreationService diagramCreationService = new NoOpDiagramCreationService() {
             @Override
-            public Diagram create(DiagramCreationParameters parameters) {
+            public Diagram create(String label, Object targetObject, DiagramDescription diagramDescription, IEditingContext editingContext) {
                 hasBeenCalled.set(true);
                 return new TestDiagramBuilder().getDiagram(UUID.randomUUID());
             }
+
         };
 
         IObjectService objectService = new NoOpObjectService() {
@@ -80,7 +80,7 @@ public class CreateDiagramEventHandlerTestCases {
             }
         };
 
-        CreateDiagramEventHandler handler = new CreateDiagramEventHandler(representationDescriptionService, new NoOpRepresentationService(), diagramService, objectService,
+        CreateDiagramEventHandler handler = new CreateDiagramEventHandler(representationDescriptionService, new NoOpRepresentationService(), diagramCreationService, objectService,
                 new NoOpCollaborativeDiagramMessageService(), new SimpleMeterRegistry());
 
         var input = new CreateRepresentationInput(UUID.randomUUID(), UUID.randomUUID(), "objectId", "representationName"); //$NON-NLS-1$//$NON-NLS-2$

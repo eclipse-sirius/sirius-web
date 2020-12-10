@@ -10,26 +10,21 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.collaborative.diagrams.api;
-
-import java.util.Optional;
-import java.util.UUID;
-
-import org.eclipse.sirius.web.diagrams.Diagram;
-import org.eclipse.sirius.web.diagrams.Edge;
-import org.eclipse.sirius.web.diagrams.Node;
+package org.eclipse.sirius.web.diagrams.description;
 
 /**
- * Interface used to manipulate diagrams.
+ * The policy used to synchronized the description.
  *
  * @author sbegaudeau
  */
-public interface IDiagramService {
+public enum SynchronizationPolicy {
+    /**
+     * A synchronized description will always create a figure in the diagram if a compatible semantic element is found.
+     */
+    SYNCHRONIZED,
 
-    Optional<Diagram> findById(UUID diagramId);
-
-    Optional<Node> findNodeById(Diagram diagram, String nodeId);
-
-    Optional<Edge> findEdgeById(Diagram diagram, String edgeId);
-
+    /**
+     * A figure from an unsynchronized description will only appear in a diagram if some handler explicitly create it.
+     */
+    UNSYNCHRONIZED,
 }

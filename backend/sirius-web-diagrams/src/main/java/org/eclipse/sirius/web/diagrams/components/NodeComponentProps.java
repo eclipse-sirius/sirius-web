@@ -30,13 +30,16 @@ public class NodeComponentProps implements IProps {
 
     private final NodeDescription nodeDescription;
 
+    private final INodesRequestor nodesRequestor;
+
     private final boolean isBorderNode;
 
     private final DiagramRenderingCache cache;
 
-    public NodeComponentProps(VariableManager variableManager, NodeDescription nodeDescription, boolean isBorderNode, DiagramRenderingCache cache) {
+    public NodeComponentProps(VariableManager variableManager, NodeDescription nodeDescription, INodesRequestor nodesRequestor, boolean isBorderNode, DiagramRenderingCache cache) {
         this.variableManager = Objects.requireNonNull(variableManager);
         this.nodeDescription = Objects.requireNonNull(nodeDescription);
+        this.nodesRequestor = Objects.requireNonNull(nodesRequestor);
         this.isBorderNode = isBorderNode;
         this.cache = Objects.requireNonNull(cache);
     }
@@ -47,6 +50,10 @@ public class NodeComponentProps implements IProps {
 
     public NodeDescription getNodeDescription() {
         return this.nodeDescription;
+    }
+
+    public INodesRequestor getNodesRequestor() {
+        return this.nodesRequestor;
     }
 
     public boolean isBorderNode() {

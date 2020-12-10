@@ -14,15 +14,13 @@ package org.eclipse.sirius.web.spring.collaborative.diagrams.handlers;
 
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.eclipse.sirius.web.collaborative.api.dto.CreateRepresentationInput;
 import org.eclipse.sirius.web.collaborative.api.dto.CreateRepresentationSuccessPayload;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.IProjectEventHandler;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
-import org.eclipse.sirius.web.collaborative.diagrams.api.DiagramCreationParameters;
-import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramService;
+import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramCreationService;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.web.services.api.Context;
@@ -53,7 +51,7 @@ public class CreateDiagramEventHandler implements IProjectEventHandler {
 
     private final IRepresentationService representationService;
 
-    private final IDiagramService diagramService;
+    private final IDiagramCreationService diagramCreationService;
 
     private final IObjectService objectService;
 
@@ -61,11 +59,11 @@ public class CreateDiagramEventHandler implements IProjectEventHandler {
 
     private final Counter counter;
 
-    public CreateDiagramEventHandler(IRepresentationDescriptionService representationDescriptionService, IRepresentationService representationService, IDiagramService diagramService,
+    public CreateDiagramEventHandler(IRepresentationDescriptionService representationDescriptionService, IRepresentationService representationService, IDiagramCreationService diagramCreationService,
             IObjectService objectService, ICollaborativeDiagramMessageService messageService, MeterRegistry meterRegistry) {
         this.representationDescriptionService = Objects.requireNonNull(representationDescriptionService);
         this.representationService = Objects.requireNonNull(representationService);
-        this.diagramService = Objects.requireNonNull(diagramService);
+        this.diagramCreationService = Objects.requireNonNull(diagramCreationService);
         this.objectService = Objects.requireNonNull(objectService);
         this.messageService = Objects.requireNonNull(messageService);
 
@@ -107,19 +105,7 @@ public class CreateDiagramEventHandler implements IProjectEventHandler {
                 DiagramDescription diagramDescription = optionalDiagramDescription.get();
                 Object object = optionalObject.get();
 
-                // No previous diagram identifier to keep, so we will use null on purpose
-                UUID id = null;
-
-                // @formatter:off
-                DiagramCreationParameters diagramCreationParameters = DiagramCreationParameters.newDiagramCreationParameters(id)
-                        .label(input.getRepresentationName())
-                        .object(object)
-                        .diagramDescription(diagramDescription)
-                        .editingContext(editingContext)
-                        .build();
-                // @formatter:on
-
-                Diagram diagram = this.diagramService.create(diagramCreationParameters);
+                Diagram diagram = this.diagramCreationService.create(input.getRepresentationName(), object, diagramDescription, editingContext);
 
                 // @formatter:off
                 RepresentationDescriptor representationDescriptor = RepresentationDescriptor.newRepresentationDescriptor(diagram.getId())

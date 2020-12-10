@@ -119,7 +119,11 @@ public class FormEventProcessor implements IFormEventProcessor {
 
                 if (optionalFormEventHandler.isPresent()) {
                     IFormEventHandler formEventHandler = optionalFormEventHandler.get();
-                    return Optional.of(formEventHandler.handle(this.currentForm.get(), formInput));
+                    EventHandlerResponse eventHandlerResponse = formEventHandler.handle(this.currentForm.get(), formInput);
+                    if (eventHandlerResponse.getShouldRefreshPredicate().test(this.currentForm.get())) {
+                        this.refresh();
+                    }
+                    return Optional.of(eventHandlerResponse);
                 } else {
                     this.logger.warn("No handler found for event: {}", formInput); //$NON-NLS-1$
                 }

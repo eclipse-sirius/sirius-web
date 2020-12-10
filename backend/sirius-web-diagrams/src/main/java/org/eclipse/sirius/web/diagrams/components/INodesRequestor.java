@@ -10,15 +10,17 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.collaborative.diagrams.api.dto;
+package org.eclipse.sirius.web.diagrams.components;
 
-import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramRefreshManager;
+import java.util.Optional;
+
+import org.eclipse.sirius.web.diagrams.Node;
 
 /**
- * Used to create the diagram refresh manager.
+ * Used to find some information on a specific set of nodes from a previous diagram.
  *
  * @author sbegaudeau
  */
-public interface IDiagramRefreshManagerFactory {
-    IDiagramRefreshManager create();
+public interface INodesRequestor {
+    Optional<Node> getByTargetObjectId(String targetObjectId);
 }

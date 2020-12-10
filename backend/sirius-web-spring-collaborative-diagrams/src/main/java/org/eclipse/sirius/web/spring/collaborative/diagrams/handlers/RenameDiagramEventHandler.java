@@ -20,17 +20,12 @@ import org.eclipse.sirius.web.collaborative.api.dto.RenameRepresentationSuccessP
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.IProjectEventHandler;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
-import org.eclipse.sirius.web.collaborative.diagrams.api.DiagramCreationParameters;
-import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramService;
 import org.eclipse.sirius.web.diagrams.Diagram;
-import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.web.representations.IRepresentation;
 import org.eclipse.sirius.web.services.api.Context;
 import org.eclipse.sirius.web.services.api.dto.ErrorPayload;
 import org.eclipse.sirius.web.services.api.dto.IProjectInput;
 import org.eclipse.sirius.web.services.api.objects.IEditingContext;
-import org.eclipse.sirius.web.services.api.objects.IObjectService;
-import org.eclipse.sirius.web.services.api.representations.IRepresentationDescriptionService;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationService;
 import org.eclipse.sirius.web.services.api.representations.RenameRepresentationInput;
 import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;
@@ -53,21 +48,11 @@ public class RenameDiagramEventHandler implements IProjectEventHandler {
 
     private final ICollaborativeDiagramMessageService messageService;
 
-    private final IDiagramService diagramService;
-
-    private final IObjectService objectService;
-
-    private final IRepresentationDescriptionService representationDescriptionService;
-
     private final Counter counter;
 
-    public RenameDiagramEventHandler(IRepresentationService representationService, ICollaborativeDiagramMessageService messageService, IDiagramService diagramService, IObjectService objectService,
-            IRepresentationDescriptionService representationDescriptionService, MeterRegistry meterRegistry) {
+    public RenameDiagramEventHandler(IRepresentationService representationService, ICollaborativeDiagramMessageService messageService, MeterRegistry meterRegistry) {
         this.representationService = Objects.requireNonNull(representationService);
         this.messageService = Objects.requireNonNull(messageService);
-        this.diagramService = Objects.requireNonNull(diagramService);
-        this.objectService = Objects.requireNonNull(objectService);
-        this.representationDescriptionService = Objects.requireNonNull(representationDescriptionService);
 
         // @formatter:off
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
@@ -105,41 +90,24 @@ public class RenameDiagramEventHandler implements IProjectEventHandler {
 
     private Optional<IRepresentation> createDiagramWithNewLabel(IRepresentation representation, String newLabel, IEditingContext editingContext, Context context) {
         if (representation instanceof Diagram) {
-            Diagram diagram = (Diagram) representation;
-            var optionalObject = this.objectService.getObject(editingContext, diagram.getTargetObjectId());
-            if (optionalObject.isPresent()) {
-                // @formatter:on
-                var optionalDiagramDescription = this.representationDescriptionService.findRepresentationDescriptionById(diagram.getDescriptionId()).filter(DiagramDescription.class::isInstance)
-                        .map(DiagramDescription.class::cast);
-                // @formatter:off
-                if (optionalDiagramDescription.isPresent()) {
-                    DiagramDescription diagramDescription = optionalDiagramDescription.get();
+            Diagram previousDiagram = (Diagram) representation;
 
-                    // @formatter:off
-                    DiagramCreationParameters diagramCreationParameters = DiagramCreationParameters.newDiagramCreationParameters(representation.getId())
-                            .editingContext(editingContext)
-                            .label(newLabel)
-                            .object(optionalObject.get())
-                            .diagramDescription(diagramDescription)
-                            .build();
-                    // @formatter:on
+            // @formatter:off
+            Diagram renamedDiagram = Diagram.newDiagram(previousDiagram)
+                    .label(newLabel)
+                    .build();
 
-                    Diagram renamedDiagram = this.diagramService.create(diagramCreationParameters);
+            RepresentationDescriptor representationDescriptor = RepresentationDescriptor.newRepresentationDescriptor(renamedDiagram.getId())
+                    .projectId(editingContext.getProjectId())
+                    .descriptionId(renamedDiagram.getDescriptionId())
+                    .targetObjectId(renamedDiagram.getTargetObjectId())
+                    .label(renamedDiagram.getLabel())
+                    .representation(renamedDiagram)
+                    .build();
+            // @formatter:on
 
-                    // @formatter:off
-                    RepresentationDescriptor representationDescriptor = RepresentationDescriptor.newRepresentationDescriptor(renamedDiagram.getId())
-                            .projectId(editingContext.getProjectId())
-                            .descriptionId(renamedDiagram.getDescriptionId())
-                            .targetObjectId(renamedDiagram.getTargetObjectId())
-                            .label(renamedDiagram.getLabel())
-                            .representation(renamedDiagram)
-                            .build();
-                    // @formatter:on
-
-                    this.representationService.save(representationDescriptor);
-                    return Optional.of(renamedDiagram);
-                }
-            }
+            this.representationService.save(representationDescriptor);
+            return Optional.of(renamedDiagram);
         }
         return Optional.empty();
     }

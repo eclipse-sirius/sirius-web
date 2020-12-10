@@ -16,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
 
@@ -80,7 +81,7 @@ public class DiagramRendererNodeTestCases {
                     .build();
             // @formatter:on
         };
-        Diagram diagram = this.createADiagramWith(styleProvider, variableManager -> NODE_RECTANGULAR);
+        Diagram diagram = this.createDiagram(styleProvider, variableManager -> NODE_RECTANGULAR);
 
         assertThat(diagram).isNotNull();
         assertThat(diagram.getId()).asString().isNotBlank();
@@ -118,7 +119,7 @@ public class DiagramRendererNodeTestCases {
                     .build();
             // @formatter:on
         };
-        Diagram diagram = this.createADiagramWith(styleProvider, variableManager -> NODE_IMAGE);
+        Diagram diagram = this.createDiagram(styleProvider, variableManager -> NODE_IMAGE);
 
         assertThat(diagram).isNotNull();
         assertThat(diagram.getId()).asString().isNotBlank();
@@ -147,7 +148,7 @@ public class DiagramRendererNodeTestCases {
     /**
      * Create a diagram with one element that match with the given styleProvider/typeProvider.
      */
-    private Diagram createADiagramWith(Function<VariableManager, INodeStyle> styleProvider, Function<VariableManager, String> typeProvider) {
+    private Diagram createDiagram(Function<VariableManager, INodeStyle> styleProvider, Function<VariableManager, String> typeProvider) {
         // @formatter:off
         LabelStyleDescription labelStyleDescription = LabelStyleDescription.newLabelStyleDescription()
                 .italicProvider(VariableManager -> true)
@@ -181,8 +182,10 @@ public class DiagramRendererNodeTestCases {
                 .build();
 
         DiagramDescription diagramDescription = DiagramDescription.newDiagramDescription(UUID.randomUUID())
-                .idProvider(variableManager -> UUID.randomUUID()).label("") //$NON-NLS-1$
-                .canCreatePredicate(variableManager -> true).targetObjectIdProvider(variableManager -> "diagramTargetObjectId") //$NON-NLS-1$
+                .idProvider(variableManager -> UUID.randomUUID())
+                .label("") //$NON-NLS-1$
+                .canCreatePredicate(variableManager -> true)
+                .targetObjectIdProvider(variableManager -> "diagramTargetObjectId") //$NON-NLS-1$
                 .labelProvider(variableManager -> DIAGRAM_LABEL)
                 .nodeDescriptions(List.of(nodeDescription))
                 .edgeDescriptions(new ArrayList<>())
@@ -192,7 +195,7 @@ public class DiagramRendererNodeTestCases {
 
         VariableManager variableManager = new VariableManager();
 
-        DiagramComponentProps props = new DiagramComponentProps(variableManager, diagramDescription);
+        DiagramComponentProps props = new DiagramComponentProps(variableManager, diagramDescription, Optional.empty());
         Element element = new Element(DiagramComponent.class, props);
         return new DiagramRenderer(this.logger).render(element);
     }

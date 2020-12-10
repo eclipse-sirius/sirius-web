@@ -20,24 +20,13 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Predicate;
 
-import org.eclipse.sirius.web.collaborative.diagrams.api.DiagramCreationParameters;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramService;
-import org.eclipse.sirius.web.components.Element;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.Edge;
 import org.eclipse.sirius.web.diagrams.Node;
-import org.eclipse.sirius.web.diagrams.components.DiagramComponent;
-import org.eclipse.sirius.web.diagrams.components.DiagramComponentProps;
-import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
-import org.eclipse.sirius.web.diagrams.renderer.DiagramRenderer;
 import org.eclipse.sirius.web.persistence.repositories.IRepresentationRepository;
-import org.eclipse.sirius.web.representations.GetOrCreateRandomIdProvider;
-import org.eclipse.sirius.web.representations.VariableManager;
-import org.eclipse.sirius.web.services.api.objects.IEditingContext;
 import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;
 import org.eclipse.sirius.web.spring.collaborative.representations.RepresentationMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 /**
@@ -52,26 +41,9 @@ public class DiagramService implements IDiagramService {
 
     private final ObjectMapper objectMapper;
 
-    private final Logger logger = LoggerFactory.getLogger(DiagramService.class);
-
     public DiagramService(IRepresentationRepository representationRepository, ObjectMapper objectMapper) {
         this.representationRepository = Objects.requireNonNull(representationRepository);
         this.objectMapper = Objects.requireNonNull(objectMapper);
-    }
-
-    @Override
-    public Diagram create(DiagramCreationParameters parameters) {
-        VariableManager variableManager = new VariableManager();
-        variableManager.put(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, parameters.getId());
-        variableManager.put(DiagramDescription.LABEL, parameters.getLabel());
-        variableManager.put(VariableManager.SELF, parameters.getObject());
-        variableManager.put(IEditingContext.EDITING_CONTEXT, parameters.getEditingContext());
-
-        DiagramComponentProps props = new DiagramComponentProps(variableManager, parameters.getDiagramDescription());
-        Element element = new Element(DiagramComponent.class, props);
-        Diagram diagram = new DiagramRenderer(this.logger).render(element);
-
-        return diagram;
     }
 
     @Override

@@ -39,6 +39,8 @@ import org.eclipse.sirius.web.representations.VariableManager;
 public final class NodeDescription {
     private UUID id;
 
+    private SynchronizationPolicy synchronizationPolicy;
+
     private Function<VariableManager, String> idProvider;
 
     private Function<VariableManager, String> typeProvider;
@@ -72,6 +74,10 @@ public final class NodeDescription {
     @GraphQLNonNull
     public UUID getId() {
         return this.id;
+    }
+
+    public SynchronizationPolicy getSynchronizationPolicy() {
+        return this.synchronizationPolicy;
     }
 
     public Function<VariableManager, String> getIdProvider() {
@@ -141,6 +147,8 @@ public final class NodeDescription {
     public static final class Builder {
         private UUID id;
 
+        private SynchronizationPolicy synchronizationPolicy = SynchronizationPolicy.SYNCHRONIZED;
+
         private Function<VariableManager, String> idProvider;
 
         private Function<VariableManager, String> typeProvider;
@@ -171,6 +179,11 @@ public final class NodeDescription {
 
         public Builder idProvider(Function<VariableManager, String> idProvider) {
             this.idProvider = Objects.requireNonNull(idProvider);
+            return this;
+        }
+
+        public Builder synchronizationPolicy(SynchronizationPolicy synchronizationPolicy) {
+            this.synchronizationPolicy = synchronizationPolicy;
             return this;
         }
 
@@ -232,6 +245,7 @@ public final class NodeDescription {
         public NodeDescription build() {
             NodeDescription nodeDescription = new NodeDescription();
             nodeDescription.id = Objects.requireNonNull(this.id);
+            nodeDescription.synchronizationPolicy = this.synchronizationPolicy;
             nodeDescription.idProvider = Objects.requireNonNull(this.idProvider);
             nodeDescription.typeProvider = Objects.requireNonNull(this.typeProvider);
             nodeDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);

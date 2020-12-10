@@ -43,6 +43,7 @@ public class DiagramComponent implements IComponent {
     public Element render() {
         VariableManager variableManager = this.props.getVariableManager();
         DiagramDescription diagramDescription = this.props.getDiagramDescription();
+        var optionalPreviousDiagram = this.props.getPreviousDiagram();
 
         String label = diagramDescription.getLabelProvider().apply(variableManager);
 
@@ -51,10 +52,14 @@ public class DiagramComponent implements IComponent {
 
         DiagramRenderingCache cache = new DiagramRenderingCache();
 
+        IDiagramElementRequestor diagramElementRequestor = new DiagramElementRequestor();
         // @formatter:off
         var nodes = diagramDescription.getNodeDescriptions().stream()
                 .map(nodeDescription -> {
-                    var nodeComponentProps = new NodeComponentProps(variableManager, nodeDescription, false, cache);
+                    var previousNodes = optionalPreviousDiagram.map(previousDiagram -> diagramElementRequestor.getRootNodes(previousDiagram, nodeDescription))
+                            .orElse(List.of());
+                    INodesRequestor nodesRequestor = new NodesRequestor(previousNodes);
+                    var nodeComponentProps = new NodeComponentProps(variableManager, nodeDescription, nodesRequestor, false, cache);
                     return new Element(NodeComponent.class, nodeComponentProps);
                 })
                 .collect(Collectors.toList());
@@ -63,7 +68,10 @@ public class DiagramComponent implements IComponent {
         // @formatter:off
         var edges = diagramDescription.getEdgeDescriptions().stream()
                 .map(edgeDescription -> {
-                    var edgeComponentProps = new EdgeComponentProps(variableManager, edgeDescription, cache);
+                    var previousEdges = optionalPreviousDiagram.map(previousDiagram -> diagramElementRequestor.getEdges(previousDiagram, edgeDescription))
+                            .orElse(List.of());
+                    IEdgesRequestor edgesRequestor = new EdgesRequestor(previousEdges);
+                    var edgeComponentProps = new EdgeComponentProps(variableManager, edgeDescription, edgesRequestor, cache);
                     return new Element(EdgeComponent.class, edgeComponentProps);
                 })
                 .collect(Collectors.toList());

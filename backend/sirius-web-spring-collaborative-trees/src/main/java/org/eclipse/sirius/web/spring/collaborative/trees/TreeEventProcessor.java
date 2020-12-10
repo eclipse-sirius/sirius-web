@@ -108,7 +108,11 @@ public class TreeEventProcessor implements ITreeEventProcessor {
 
             if (optionalTreeEventHandler.isPresent()) {
                 ITreeEventHandler treeEventHandler = optionalTreeEventHandler.get();
-                return Optional.of(treeEventHandler.handle(this.currentTree.get(), treeInput));
+                EventHandlerResponse eventHandlerResponse = treeEventHandler.handle(this.currentTree.get(), treeInput);
+                if (eventHandlerResponse.getShouldRefreshPredicate().test(this.currentTree.get())) {
+                    this.refresh();
+                }
+                return Optional.of(eventHandlerResponse);
             } else {
                 this.logger.warn("No handler found for event: {}", treeInput); //$NON-NLS-1$
             }

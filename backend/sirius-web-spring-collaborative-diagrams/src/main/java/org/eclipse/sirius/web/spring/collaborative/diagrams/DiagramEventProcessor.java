@@ -18,11 +18,12 @@ import java.util.Optional;
 
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.ISubscriptionManager;
-import org.eclipse.sirius.web.collaborative.diagrams.api.DiagramCreationParameters;
+import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramCreationService;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramEventProcessor;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramInput;
-import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramRefreshManager;
+import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.representations.IRepresentation;
 import org.eclipse.sirius.web.services.api.Context;
 import org.eclipse.sirius.web.services.api.dto.IPayload;
@@ -45,32 +46,36 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
 
     private final Logger logger = LoggerFactory.getLogger(DiagramEventProcessor.class);
 
-    private DiagramCreationParameters diagramCreationParameters;
-
     private final IEditingContext editingContext;
+
+    private final IDiagramContext diagramContext;
 
     private final List<IDiagramEventHandler> diagramEventHandlers;
 
     private final ISubscriptionManager subscriptionManager;
 
-    private final IDiagramRefreshManager diagramRefreshManager;
+    private final IDiagramCreationService diagramCreationService;
 
-    public DiagramEventProcessor(DiagramCreationParameters diagramCreationParameters, IEditingContext editingContext, List<IDiagramEventHandler> diagramEventHandlers,
-            ISubscriptionManager subscriptionManager, IDiagramRefreshManager diagramRefreshManager) {
-        this.diagramCreationParameters = Objects.requireNonNull(diagramCreationParameters);
+    private final DiagramEventFlux diagramEventFlux;
+
+    public DiagramEventProcessor(IEditingContext editingContext, IDiagramContext diagramContext, List<IDiagramEventHandler> diagramEventHandlers, ISubscriptionManager subscriptionManager,
+            IDiagramCreationService diagramCreationService) {
         this.editingContext = Objects.requireNonNull(editingContext);
+        this.diagramContext = Objects.requireNonNull(diagramContext);
         this.diagramEventHandlers = Objects.requireNonNull(diagramEventHandlers);
         this.subscriptionManager = Objects.requireNonNull(subscriptionManager);
-        this.diagramRefreshManager = Objects.requireNonNull(diagramRefreshManager);
+        this.diagramCreationService = Objects.requireNonNull(diagramCreationService);
 
         // We automatically refresh the representation before using it since things may have changed since the moment it
         // has been saved in the database. This is quite similar to the auto-refresh on loading in Sirius.
-        this.diagramRefreshManager.initialize(editingContext.getProjectId(), diagramCreationParameters);
+        Diagram diagram = this.diagramCreationService.refresh(editingContext, diagramContext.getDiagram()).orElse(null);
+        diagramContext.update(diagram);
+        this.diagramEventFlux = new DiagramEventFlux(diagram);
     }
 
     @Override
     public IRepresentation getRepresentation() {
-        return this.diagramRefreshManager.getDiagram();
+        return this.diagramContext.getDiagram();
     }
 
     @Override
@@ -87,35 +92,50 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
 
             if (optionalDiagramEventHandler.isPresent()) {
                 IDiagramEventHandler diagramEventHandler = optionalDiagramEventHandler.get();
-                return Optional.of(diagramEventHandler.handle(this.editingContext, this.diagramRefreshManager.getDiagram(), diagramInput));
+                EventHandlerResponse eventHandlerResponse = diagramEventHandler.handle(this.editingContext, this.diagramContext, diagramInput);
+                if (eventHandlerResponse.getShouldRefreshPredicate().test(this.diagramContext.getDiagram())) {
+                    this.refresh();
+                }
+                return Optional.of(eventHandlerResponse);
             } else {
                 this.logger.warn("No handler found for event: {}", diagramInput); //$NON-NLS-1$
             }
         } else if (representationInput instanceof RenameRepresentationInput) {
             String newName = ((RenameRepresentationInput) representationInput).getNewLabel();
-            this.diagramCreationParameters = DiagramCreationParameters.newDiagramCreationParameters(this.diagramCreationParameters).label(newName).build();
+            Diagram diagram = this.diagramContext.getDiagram();
+
+            // @formatter:off
+            Diagram renamedDiagram = Diagram.newDiagram(diagram)
+                    .label(newName)
+                    .build();
+            // @formatter:on
+
+            this.diagramContext.update(renamedDiagram);
+            this.diagramEventFlux.diagramRefreshed(renamedDiagram);
         }
         return Optional.empty();
     }
 
     @Override
     public void refresh() {
-        this.diagramRefreshManager.refresh(this.editingContext.getProjectId(), this.diagramCreationParameters);
+        Diagram refreshedDiagram = this.diagramCreationService.refresh(this.editingContext, this.diagramContext.getDiagram()).orElse(null);
+        this.diagramContext.update(refreshedDiagram);
+        this.diagramEventFlux.diagramRefreshed(refreshedDiagram);
     }
 
     @Override
     public Flux<IPayload> getOutputEvents() {
-        return Flux.merge(this.diagramRefreshManager.getFlux(), this.subscriptionManager.getFlux());
+        return Flux.merge(this.diagramEventFlux.getFlux(), this.subscriptionManager.getFlux());
     }
 
     @Override
     public void dispose() {
         this.subscriptionManager.dispose();
-        this.diagramRefreshManager.dispose();
+        this.diagramEventFlux.dispose();
     }
 
     @Override
     public void preDestroy() {
-        this.diagramRefreshManager.preDestroy();
+        this.diagramEventFlux.preDestroy();
     }
 }

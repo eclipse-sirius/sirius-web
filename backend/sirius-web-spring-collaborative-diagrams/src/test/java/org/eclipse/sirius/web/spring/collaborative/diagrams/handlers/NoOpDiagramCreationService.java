@@ -13,38 +13,27 @@
 package org.eclipse.sirius.web.spring.collaborative.diagrams.handlers;
 
 import java.util.Optional;
-import java.util.UUID;
 
-import org.eclipse.sirius.web.collaborative.diagrams.api.DiagramCreationParameters;
-import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramService;
+import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramCreationService;
 import org.eclipse.sirius.web.diagrams.Diagram;
-import org.eclipse.sirius.web.diagrams.Edge;
-import org.eclipse.sirius.web.diagrams.Node;
+import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
+import org.eclipse.sirius.web.services.api.objects.IEditingContext;
 
 /**
- * Implementation of the diagram service which does nothing.
+ * Implementation of the diagram creation service which does nothing.
  *
  * @author sbegaudeau
  */
-public class NoOpDiagramService implements IDiagramService {
+public class NoOpDiagramCreationService implements IDiagramCreationService {
 
     @Override
-    public Diagram create(DiagramCreationParameters parameters) {
+    public Diagram create(String label, Object targetObject, DiagramDescription diagramDescription, IEditingContext editingContext) {
         return null;
     }
 
     @Override
-    public Optional<Diagram> findById(UUID diagramId) {
+    public Optional<Diagram> refresh(IEditingContext editingContext, Diagram previousDiagram) {
         return Optional.empty();
     }
 
-    @Override
-    public Optional<Node> findNodeById(Diagram diagram, String nodeId) {
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<Edge> findEdgeById(Diagram diagram, String edgeId) {
-        return Optional.empty();
-    }
 }

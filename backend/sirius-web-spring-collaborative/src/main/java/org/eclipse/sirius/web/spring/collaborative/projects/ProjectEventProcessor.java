@@ -203,6 +203,20 @@ public class ProjectEventProcessor implements IProjectEventProcessor {
             // @formatter:off
             this.representationEventProcessors.values().stream()
                 .filter(representationEventProcessor -> {
+                    /**
+                     * Filter the representationEventProcessor related to the IRepresentationInput in order to
+                     * make sure that only other representations are refreshed by the response.
+                     */
+                    if (input instanceof IRepresentationInput) {
+                        IRepresentationInput representationInput = (IRepresentationInput) input;
+                        UUID currentRepresentationId = representationInput.getRepresentationId();
+                        UUID aRepresentationId = representationEventProcessor.getRepresentation().getId();
+                        return !Objects.equals(currentRepresentationId, aRepresentationId);
+                    } else {
+                        return true;
+                    }
+                })
+                .filter(representationEventProcessor -> {
                     IRepresentation representation = representationEventProcessor.getRepresentation();
                     return response.getShouldRefreshPredicate().test(representation);
                 })
