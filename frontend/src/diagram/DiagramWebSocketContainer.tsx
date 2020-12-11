@@ -16,6 +16,7 @@ import {
   COMPLETE__STATE,
   HANDLE_COMPLETE__ACTION,
   HANDLE_DATA__ACTION,
+  HANDLE_ERROR__ACTION,
   INITIALIZE__ACTION,
   LOADING__STATE,
   READY__STATE,
@@ -43,8 +44,6 @@ import {
   ZOOM_TO_ACTION,
 } from 'diagram/sprotty/WebSocketDiagramServer';
 import { Toolbar } from 'diagram/Toolbar';
-import { HANDLE_ERROR__ACTION } from 'explorer/machine';
-import { useProject } from 'project/ProjectProvider';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useReducer, useRef } from 'react';
 import 'reflect-metadata'; // Required because Sprotty uses Inversify and both frameworks are written in TypeScript with experimental features.
@@ -60,7 +59,14 @@ import {
 } from './operations';
 
 const propTypes = {
+  projectId: PropTypes.string.isRequired,
   representationId: PropTypes.string.isRequired,
+  readOnly: PropTypes.bool.isRequired,
+  selection: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    label: PropTypes.string.isRequired,
+    kind: PropTypes.string.isRequired,
+  }),
   setSelection: PropTypes.func.isRequired,
   setSubscribers: PropTypes.func.isRequired,
 };
@@ -213,8 +219,14 @@ const propTypes = {
  *
  * @author sbegaudeau
  */
-export const DiagramWebSocketContainer = ({ representationId, selection, setSelection, setSubscribers }) => {
-  const { id, canEdit } = useProject() as any;
+export const DiagramWebSocketContainer = ({
+  projectId,
+  representationId,
+  readOnly,
+  selection,
+  setSelection,
+  setSubscribers,
+}) => {
   const diagramDomElement = useRef(null);
 
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -301,13 +313,13 @@ export const DiagramWebSocketContainer = ({ representationId, selection, setSele
   const deleteElement = useCallback(
     (diagramElementId) => {
       const input = {
-        projectId: id,
+        projectId,
         representationId,
         diagramElementId,
       };
       deleteElementMutation({ variables: { input } });
     },
-    [id, representationId, deleteElementMutation]
+    [projectId, representationId, deleteElementMutation]
   );
 
   const invokeTool = useCallback(
@@ -318,7 +330,7 @@ export const DiagramWebSocketContainer = ({ representationId, selection, setSele
           const [diagramSourceElementId, diagramTargetElementId] = params;
 
           const input = {
-            projectId: id,
+            projectId,
             representationId,
             diagramSourceElementId,
             diagramTargetElementId,
@@ -330,7 +342,7 @@ export const DiagramWebSocketContainer = ({ representationId, selection, setSele
           const [diagramElementId] = params;
 
           const input = {
-            projectId: id,
+            projectId,
             representationId,
             diagramElementId,
             toolId,
@@ -340,7 +352,7 @@ export const DiagramWebSocketContainer = ({ representationId, selection, setSele
         dispatch({ type: SET_ACTIVE_TOOL__ACTION });
       }
     },
-    [id, representationId, invokeNodeToolMutation, invokeEdgeToolMutation]
+    [projectId, representationId, invokeNodeToolMutation, invokeEdgeToolMutation]
   );
 
   /**
@@ -373,7 +385,7 @@ export const DiagramWebSocketContainer = ({ representationId, selection, setSele
     };
     const editLabel = (labelId, newText) => {
       const input = {
-        projectId: id,
+        projectId,
         representationId,
         labelId,
         newText,
@@ -381,7 +393,7 @@ export const DiagramWebSocketContainer = ({ representationId, selection, setSele
       editLabelMutation({ variables: { input } });
     };
     const setContextualPalette = (contextualPalette) => {
-      if (canEdit) {
+      if (!readOnly) {
         dispatch({ type: SET_CONTEXTUAL_PALETTE__ACTION, contextualPalette });
       }
     };
@@ -408,9 +420,9 @@ export const DiagramWebSocketContainer = ({ representationId, selection, setSele
     editLabelMutation,
     toolSections,
     selection,
-    id,
+    projectId,
     representationId,
-    canEdit,
+    readOnly,
   ]);
 
   useEffect(() => {
@@ -427,7 +439,7 @@ export const DiagramWebSocketContainer = ({ representationId, selection, setSele
   const { error } = useSubscription(diagramEventSubscription, {
     variables: {
       input: {
-        projectId: id,
+        projectId,
         diagramId: representationId,
       },
     },
@@ -437,7 +449,8 @@ export const DiagramWebSocketContainer = ({ representationId, selection, setSele
       dispatch({ type: HANDLE_DATA__ACTION, message: subscriptionData });
     },
     onSubscriptionComplete: () => dispatch({ type: HANDLE_COMPLETE__ACTION }),
-    shouldResubscribe: ({ variables: { input } }) => input.projectId !== id || input.diagramId !== representationId,
+    shouldResubscribe: ({ variables: { input } }) =>
+      input.projectId !== projectId || input.diagramId !== representationId,
   });
   if (error) {
     dispatch({ type: HANDLE_ERROR__ACTION, message: error });
@@ -505,7 +518,7 @@ export const DiagramWebSocketContainer = ({ representationId, selection, setSele
    * TLDR: Do not touch the div structure below without a deep understanding of the React reconciliation algorithm!
    */
   let contextualPaletteContent;
-  if (canEdit && contextualPalette) {
+  if (!readOnly && contextualPalette) {
     const { element, canvasBounds, origin, renameable, deletable } = contextualPalette;
     const { x, y } = origin;
     const invokeCloseFromContextualPalette = () => dispatch({ type: SET_CONTEXTUAL_PALETTE__ACTION });

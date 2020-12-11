@@ -123,3 +123,5 @@ export * from 'diagram/palette/ContextualPalette';
 export * from 'diagram/palette/tool/Tool';
 export * from 'diagram/palette/tool-section/ToolSection';
 export * from 'diagram/palette/tool-separator/ToolSeparator';
+export * from 'diagram/DiagramWebSocketContainer';
+export * from 'diagram/Toolbar';

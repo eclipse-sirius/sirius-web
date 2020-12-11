@@ -21,6 +21,8 @@ import { RepresentationNavigation } from 'views/edit-project/RepresentationNavig
 import styles from './RepresentationArea.module.css';
 
 const propTypes = {
+  projectId: PropTypes.string.isRequired,
+  readOnly: PropTypes.bool.isRequired,
   representations: PropTypes.array.isRequired,
   selection: PropTypes.object,
   displayedRepresentation: PropTypes.object,
@@ -28,7 +30,9 @@ const propTypes = {
   setSubscribers: PropTypes.func.isRequired,
 };
 export const RepresentationArea = ({
+  projectId,
   representations,
+  readOnly,
   selection,
   displayedRepresentation,
   setSelection,
@@ -40,7 +44,9 @@ export const RepresentationArea = ({
   } else if (displayedRepresentation.kind === 'Diagram') {
     content = (
       <DiagramWebSocketContainer
+        projectId={projectId}
         representationId={displayedRepresentation.id}
+        readOnly={readOnly}
         selection={selection}
         setSelection={setSelection}
         setSubscribers={setSubscribers}

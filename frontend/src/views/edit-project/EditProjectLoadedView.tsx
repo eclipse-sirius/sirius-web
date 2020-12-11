@@ -28,16 +28,20 @@ const selectionPropType = PropTypes.shape(
   })
 );
 const propTypes = {
+  projectId: PropTypes.string.isRequired,
   subscribers: PropTypes.array.isRequired,
   representations: PropTypes.array.isRequired,
+  readOnly: PropTypes.bool.isRequired,
   selection: selectionPropType,
   displayedRepresentation: PropTypes.object,
   setSelection: PropTypes.func.isRequired,
   setSubscribers: PropTypes.func.isRequired,
 };
 export const EditProjectLoadedView = ({
+  projectId,
   subscribers,
   representations,
+  readOnly,
   selection,
   displayedRepresentation,
   setSelection,
@@ -53,7 +57,9 @@ export const EditProjectLoadedView = ({
 
   let representation = (
     <RepresentationArea
+      projectId={projectId}
       representations={representations}
+      readOnly={readOnly}
       selection={selection}
       displayedRepresentation={displayedRepresentation}
       setSelection={setSelection}
