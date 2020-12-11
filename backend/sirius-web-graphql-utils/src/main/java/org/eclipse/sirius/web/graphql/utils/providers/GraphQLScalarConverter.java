@@ -34,9 +34,7 @@ public class GraphQLScalarConverter {
         Map.entry(Float.class.getName(), Scalars.GraphQLFloat),
         Map.entry(Float.TYPE.getName(), Scalars.GraphQLFloat),
         Map.entry(Double.class.getName(), Scalars.GraphQLFloat),
-        Map.entry(Double.TYPE.getName(), Scalars.GraphQLFloat),
-        Map.entry(Long.class.getName(), Scalars.GraphQLLong),
-        Map.entry(Long.TYPE.getName(), Scalars.GraphQLLong)
+        Map.entry(Double.TYPE.getName(), Scalars.GraphQLFloat)
     );
     // @formatter:on
 
