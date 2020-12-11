@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow:System xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:flow="http://www.obeo.fr/dsl/designer/sample/flow" xmi:id="_74gncLTZEeeolunnT_MYFg" consumption="500" name="Robot" temperature="50" routingRules="">
+  <elements xsi:type="flow:CompositeProcessor" xmi:id="_74hOgLTZEeeolunnT_MYFg" consumption="200" usage="standard" name="Central_Unit" temperature="25" weight="23" routingRules="Case Robot.temperature >= 70 °C:&#xA;  /!\ critical /!\;&#xA;">
+    <elements xsi:type="flow:Processor" xmi:id="_74icoLTZEeeolunnT_MYFg" usage="standard" incomingFlows="_74muFrTZEeeolunnT_MYFg" capacity="4" load="4" consumption="40" name="DSP" volume="4">
+      <outgoingFlows xmi:id="_74jDsLTZEeeolunnT_MYFg" usage="standard" load="4" target="_74kR0LTZEeeolunnT_MYFg"/>
+    </elements>
+    <elements xsi:type="flow:Processor" xmi:id="_74kR0LTZEeeolunnT_MYFg" usage="high" incomingFlows="_74jDsLTZEeeolunnT_MYFg _74lf87TZEeeolunnT_MYFg _74muErTZEeeolunnT_MYFg" capacity="15" load="18" consumption="150" name="Motion_Engine" volume="18"/>
+    <elements xsi:type="flow:Fan" xmi:id="_74k44LTZEeeolunnT_MYFg" consumption="10"/>
+  </elements>
+  <elements xsi:type="flow:CompositeProcessor" xmi:id="_74lf8bTZEeeolunnT_MYFg" consumption="300" usage="standard" name="CaptureSubSystem" temperature="28" weight="33" routingRules=" Case  CaptureSubSystem.temperature > 70 °C:&#xA; /!\ critical  /!\;&#xA; &#xA;">
+    <elements xsi:type="flow:Processor" xmi:id="_74lf8rTZEeeolunnT_MYFg" usage="standard" incomingFlows="_74mHA7TZEeeolunnT_MYFg" load="8" consumption="100" name="Radar_Capture" volume="8">
+      <outgoingFlows xmi:id="_74lf87TZEeeolunnT_MYFg" usage="high" capacity="6" load="8" target="_74kR0LTZEeeolunnT_MYFg"/>
+      <outgoingFlows xmi:id="_74lf9LTZEeeolunnT_MYFg" usage="high" capacity="6" load="8" target="_74muELTZEeeolunnT_MYFg"/>
+    </elements>
+    <elements xsi:type="flow:DataSource" xmi:id="_74mHALTZEeeolunnT_MYFg" usage="standard" name="Back_Camera" volume="6">
+      <outgoingFlows xmi:id="_74mHAbTZEeeolunnT_MYFg" usage="standard" capacity="6" load="6" target="_74muEbTZEeeolunnT_MYFg"/>
+    </elements>
+    <elements xsi:type="flow:DataSource" xmi:id="_74mHArTZEeeolunnT_MYFg" name="Radar" volume="8">
+      <outgoingFlows xmi:id="_74mHA7TZEeeolunnT_MYFg" usage="high" capacity="6" load="8" target="_74lf8rTZEeeolunnT_MYFg"/>
+    </elements>
+    <elements xsi:type="flow:Processor" xmi:id="_74muELTZEeeolunnT_MYFg" usage="standard" incomingFlows="_74lf9LTZEeeolunnT_MYFg" load="8" consumption="100" name="Engine" volume="8"/>
+    <elements xsi:type="flow:Processor" xmi:id="_74muEbTZEeeolunnT_MYFg" usage="standard" incomingFlows="_74mHAbTZEeeolunnT_MYFg" load="6" consumption="100" name="GPU" volume="6">
+      <outgoingFlows xmi:id="_74muErTZEeeolunnT_MYFg" usage="standard" load="6" target="_74kR0LTZEeeolunnT_MYFg"/>
+    </elements>
+    <elements xsi:type="flow:Fan" xmi:id="_74muE7TZEeeolunnT_MYFg" speed="20"/>
+  </elements>
+  <elements xsi:type="flow:DataSource" xmi:id="_74muFbTZEeeolunnT_MYFg" usage="standard" name="Wifi" volume="4">
+    <outgoingFlows xmi:id="_74muFrTZEeeolunnT_MYFg" usage="standard" capacity="4" load="4" target="_74icoLTZEeeolunnT_MYFg"/>
+  </elements>
+</flow:System>
