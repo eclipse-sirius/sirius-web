@@ -1,5 +1,7 @@
 ### General ###
 .~lock*#
+yalc.lock
+.yalc
 
 
 ### macOS ###

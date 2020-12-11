@@ -70,6 +70,21 @@ jobs:
         run: |
           mkdir -p "backend/sirius-web-test-sample-application/src/main/resources/static"
           cp -R sample/test-sample/frontend/build/* backend/sirius-web-test-sample-application/src/main/resources/static
+      
+      - name: Build the frontend of the diagrams-only sample
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        run: |
+          echo '//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}' >> .npmrc
+          npm ci
+          yalc add @eclipse-sirius/sirius-components
+          npm run build
+        working-directory: sample/diagrams-only/frontend
+
+      - name: Copy the diagrams-only sample frontend into its backend
+        run: |
+          mkdir -p "backend/sirius-web-test-diagrams-only-application/src/main/resources/static"
+          cp -R sample/diagrams-only/frontend/build/* backend/sirius-web-test-diagrams-only-application/src/main/resources/static
 
       - name: Build the backend
         env:
