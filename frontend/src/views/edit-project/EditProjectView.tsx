@@ -63,8 +63,10 @@ export const EditProjectView = () => {
 
   const context = useProject() as any;
   let contextId;
+  let canEdit = false;
   if (context) {
     contextId = context.id;
+    canEdit = context.canEdit;
   }
 
   useEffect(() => {
@@ -164,8 +166,10 @@ export const EditProjectView = () => {
   }
   return (
     <EditProjectLoadedView
+      projectId={projectId}
       subscribers={subscribers}
       representations={representations}
+      readOnly={!canEdit}
       displayedRepresentation={displayedRepresentation}
       selection={selection}
       setSelection={setSelection}
