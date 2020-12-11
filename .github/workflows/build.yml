@@ -20,7 +20,16 @@ jobs:
         with:
           node-version: 14
           registry-url: https://npm.pkg.github.com/
-
+          
+      - name: Cache Node.js modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.OS }}-node-
+            ${{ runner.OS }}-
+      
       - name: Install Yalc globally
         run: npm i yalc -g
 
@@ -29,6 +38,13 @@ jobs:
         with:
           java-version: 11
 
+      - name: Cache Maven packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+      
       - name: Build the frontend
         run: |
           npm ci
