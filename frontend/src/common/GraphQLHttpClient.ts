@@ -48,7 +48,7 @@ export class GraphQLHttpClient {
     }
   }
 
-  async sendFile(query, variables, file) {
+  async sendFile(query: string, variables: any, file: File) {
     const operations = {
       query,
       variables,

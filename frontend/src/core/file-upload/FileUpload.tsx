@@ -51,7 +51,7 @@ export const FileUpload = ({ onFileSelected, 'data-testid': dataTestid }) => {
   // Update the file selection.
   const onFileInputChange = () => {
     const { files } = fileInput.current;
-    let file = null;
+    let file: File = null;
     if (files.length === 1) {
       file = files[0];
     }
