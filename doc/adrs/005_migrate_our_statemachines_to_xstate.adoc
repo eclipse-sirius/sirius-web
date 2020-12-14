@@ -1,0 +1,92 @@
+= ADR-005 - Migrate our state machines to XState
+
+== Context
+
+We have embraced a state machine approach to define the data and lifecycle of our components.
+While our approach works well, we have encountered some limits in our ability to represent some events of the lifecycle of our application.
+On top of that, we do not properly react to some situations such as errors.
+
+Let's consider this very simple scenario. 
+We have an upload project page, where the user can select a file and send that file to the server.
+While uploading the project, we don't want to let the user upload another project without waiting for the first one to finish.
+The request can be fulfilled by the server which will return us the identifier of the project created.
+For that, we will use the following GraphQL mutation:
+
+```
+mutation uploadProject($input: UploadProjectInput!) {
+  uploadProject(input: $input) {
+    __typename
+    ... on UploadProjectSuccessPayload {
+      project {
+        id
+      }
+    }
+    ... on ErrorPayload {
+      message
+    }
+  }
+}
+```
+
+The request can produce an error because of a "technical" error such as a typo in the GraphQL mutation or an invalid variable (client side technical error).
+The request could also return an error because of an invalid response from the backend (server-side technical error).
+In our case, the GraphQL API specifies that if the backend returns a `UploadProjectSuccessPayload` then it must contain a non `null` project with a non `null` identifier.
+If the response from the server did not respect that contract then we would also received an error.
+
+We could also have both some data and some error, if the server did return a project (some data) but with `null` as the identifier.
+The backend could also return a "semantic" error like our `ErrorPayload`.
+Those kind of errors are useful when we have detected a business error such as the modification of a project which does not exist.
+
+Using MaterialUI, we will display errors in the user interface using a snackbar which will display the error for 3s and then disappear.
+Using that component, we will have to simultaneously deal with the appearance and disappearance of our error while the user is manipulating the user interface.
+In order to prevent a combinatorial explosion of the states and transitions of our state machine, we will have to migrate to statecharts.
+
+Statecharts give us the ability to improve state machines with hierarchical states and parallel states which can help us deal more easily with the complex use cases that we cannot properly represent with our current approach.
+
+== Decision
+
+We have decided to switch our state machines to XState statecharts.
+
+== Status
+
+Accepted.
+
+== Consequences
+
+=== Modyfing reducers
+
+Our state machines were composed of, on one side, a static data structure describing the states and the transitions and, on the other side, a composite reducer used to perform the transition on our data.
+Various reducers in a state machine were sharing a lot of small pieces of code (performing the transition, keeping unmodified properties in the nex state, etc).
+With XState, our reducers will be separated in guards and actions.
+Guards will be used to dertermine which transition should be performed especially when multiple transitions are possible.
+Actions will be used to perform the update of the context (the part containing our actual data).
+In order to be quite small, our actions will reuse the `assing` function from XState in order to perform a partial update of the context.
+This way, we won't have to take care of copying every single property while performaing a transition.
+
+
+=== State values are not stored in the data anymore
+
+We had a `viewState` property in our data which we had to change manually in our reducer while the possible value(s) where already defined in the state machine itself.
+We don't have to update this value manually anymore, XState will handle it.
+We will retrieve the value from the property `value` returned whle using `useSubscription(...)`.
+In parallel state machines, we will retrieve an object with all our parallel states in `value`.
+
+
+=== Loading states
+
+It will be easier for us to properly handle loading state and deactivate user interactions while the server is responding in order to prevent undesired double clicks.
+
+
+=== Better typing thanks to our GraphQL types
+
+We will also use this opportunity in order to leverage properly the typing provided by GraphQL.
+Instead of using very brittle tests such as `data?.uploadProject?.message` or `data?.uploadProject?.project?.id`, we will instead on rely on the types of our messages.
+Using `data.__typename`, we can retrieve either a `UploadProjectSuccessPayload` or a `ErrorPayload` from the mutation to upload a project.
+In case of a `UploadProjectSuccessPayload`, we know that none of the fields in `data.uploadProject.project.id` can be `null`.
+
+
+== References
+
+- https://xstate.js.org
+- https://www.sciencedirect.com/science/article/pii/0167642387900359/pdf
+- https://www.w3.org/TR/scxml/
