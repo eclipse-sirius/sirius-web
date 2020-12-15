@@ -10,25 +10,32 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
+import React from 'react';
 
-import styles from './Form.module.css';
+const useFormStyles = makeStyles((theme) => ({
+  form: {
+    display: 'flex',
+    flexDirection: 'column',
+    paddingTop: theme.spacing(1),
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
+    '& > *': {
+      marginBottom: theme.spacing(2),
+    },
+  },
+}));
 
 const propTypes = {
   children: PropTypes.node.isRequired,
-  onSubmit: PropTypes.func.isRequired,
-  encType: PropTypes.string,
 };
-export const Form = ({ children, onSubmit, encType }) => {
-  const props = {
-    className: styles.form,
-    onSubmit,
-    encType: undefined,
-  };
-  if (encType) {
-    props.encType = encType;
-  }
-  return <form {...props}>{children}</form>;
+export const Form = ({ children, ...props }) => {
+  const classes = useFormStyles();
+  return (
+    <form {...props} className={classes.form}>
+      {children}
+    </form>
+  );
 };
 Form.propTypes = propTypes;
