@@ -10,7 +10,6 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Banner } from 'core/banner/Banner';
 import { Text } from 'core/text/Text';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -19,19 +18,16 @@ import styles from './FormContainer.module.css';
 const propTypes = {
   title: PropTypes.string.isRequired,
   subtitle: PropTypes.string.isRequired,
-  banner: PropTypes.node,
   children: PropTypes.node.isRequired,
 };
 
-export const FormContainer = ({ title, subtitle, banner, children }) => {
-  let bannerContent = banner ? <Banner data-testid="banner" content={banner} /> : null;
+export const FormContainer = ({ title, subtitle, children }) => {
   return (
     <div className={styles.container}>
       <div className={styles.titleContainer}>
         <Text className={styles.title}>{title}</Text>
         <Text className={styles.subtitle}>{subtitle}</Text>
       </div>
-      <div className={styles.bannerArea}>{bannerContent}</div>
       <div className={styles.content}>{children}</div>
     </div>
   );
