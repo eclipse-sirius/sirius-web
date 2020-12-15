@@ -29,6 +29,7 @@
   "devDependencies": {
     "@apollo/client": "^3.2.7",
     "@material-ui/core": "4.11.2",
+    "@material-ui/icons": "4.11.2",
     "@rollup/plugin-commonjs": "^14.0.0",
     "@rollup/plugin-image": "^2.0.5",
     "@rollup/plugin-node-resolve": "^8.4.0",
@@ -77,6 +78,7 @@
   "peerDependencies": {
     "@apollo/client": "^3.2.7",
     "@material-ui/core": "4.11.2",
+    "@material-ui/icons": "4.11.2",
     "@xstate/react": "1.1.0",
     "airbnb-prop-types": "^2.15.0",
     "graphql": "14.6.0",
