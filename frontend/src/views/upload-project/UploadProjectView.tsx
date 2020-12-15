@@ -31,13 +31,6 @@ import {
   UploadProjectViewContext,
 } from './UploadProjectViewMachine';
 
-const useUploadProjectViewStyles = makeStyles((theme) => ({
-  buttons: {
-    display: 'flex',
-    justifyContent: 'center',
-  },
-}));
-
 const uploadProjectMutation = gql`
   mutation uploadProject($input: UploadProjectInput!) {
     uploadProject(input: $input) {
@@ -53,6 +46,14 @@ const uploadProjectMutation = gql`
     }
   }
 `.loc.source.body;
+
+const useUploadProjectViewStyles = makeStyles((theme) => ({
+  buttons: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'start',
+  },
+}));
 
 export const UploadProjectView = () => {
   const classes = useUploadProjectViewStyles();
