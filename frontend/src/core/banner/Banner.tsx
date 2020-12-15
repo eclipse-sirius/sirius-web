@@ -9,6 +9,9 @@
  *
  * Contributors:
  *     Obeo - initial API and implementation
+ *
+ * @deprecated use @material-ui/core/Snackbar instead
+ *
  *******************************************************************************/
 import { Text } from 'core/text/Text';
 import { Danger } from 'icons';

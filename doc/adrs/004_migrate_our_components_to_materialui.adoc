@@ -1,0 +1,106 @@
+= ADR-004 - Migrate our components to Material UI
+
+== Context
+
+We have started the project with our own custom made components.
+Is has helped us not get overwhelmed with frameworks and it has also been an opporunity for new members of our team to start working on simple tasks.
+We are now trying to create complex pieces of user interface and doing so all by ourselves is distracting us from the core issues that we are trying to tackle.
+
+MaterialUI is a great UI framework with a good community and tons of features.
+
+== Decision
+
+We have decided to move our user interface to an off the shelves user interface component library, MaterialUI.
+
+== Status
+
+Accepted.
+
+== Consequences
+
+While this may not be the perfect place to do so, we will list here some consequences of this migration such as the new patterns that we will use.
+
+=== Theme and style
+
+Sirius Components will use various components from MaterialUI but it will not define the theme to use.
+Applications based on top of Sirius Components will have to define a theme.
+Since Sirius Components will have to handle a large number of use cases, it may add some constraints on the required theme.
+Such constraints may even go as far as providing some core theme settings.
+
+=== CSS in JS
+
+In order to align our code with the best practices from the MaterialUI community, our CSS will move progressively from CSS modules to CSS in JS.
+Thanks to CSS in JS, we will be able to compute CSS dynamically from the theme.
+
+The theme will be responsible for the definition of colors, text styles, spacing, etc.
+As such, we will not define anymore in the CSS of Sirius Components rules regarding:
+
+- Text-related properties font, font size, weight, line height
+- Custom colors such as `rgb(x, y, z)` or `#ABCDEF`
+- Custom spacing such as `padding-top: 16px`
+
+To create our CSS, we will rely on the function `makeStyles`.
+
+```
+import { makeStyles } from '@material-ui/core/styles';
+
+const useFormStyles = makeStyles((theme) => ({
+  form: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+}));
+
+export const Form = ({ children }) => {
+  const classes = useFormStyles();
+  return (
+    <form className={classes.form}>
+      {children}
+    </form>
+  );
+};
+```
+
+=== Text styling
+
+In order to display some text in the user interface, we will rely on the `<Typography/>` component.
+To specify the look of this text, we will use the `variant` property, we will always define a variant when using typography.
+In order to display some text, we will thus use something like this:
+
+```
+<Typography variant="h4">Hello World</Typography>
+```
+
+We will rely on standard variants of MaterialUI and only introduce custom ones if we are absolutely stuck.
+Such change would need to be properly documented since it would introduce a custom "design API" that our users would have to follow.
+
+=== Layout
+
+Most of our layout will continue to leverage custom usage of flexbox and grid on regular divs.
+Try not to create grids if you only have one column or one row since the grid layout has a greater performance impact than the flexbox layout.
+
+In order to fine tune some internal details of our layout, we will continue to rely mostly on `padding` (since `margin` is creating more issues in order to reuse some components).
+We will reuse the theme in order to compute sizes for the padding.
+
+```
+const useViewStyles = makeStyles((theme) => ({
+  main: {
+    paddingTop: theme.spacing(3),
+    paddingBottom: theme.spacing(3),
+  },
+}));
+
+export const View = ({ children }) => {
+  const classes = useViewStyles();
+
+  return (
+    <main className={classes.main}>
+      {children}
+    </main>
+  );
+};
+```
+
+== References
+
+- https://material-ui.com

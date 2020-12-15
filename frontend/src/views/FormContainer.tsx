@@ -10,29 +10,49 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Banner } from 'core/banner/Banner';
-import { Text } from 'core/text/Text';
+import Paper from '@material-ui/core/Paper';
+import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
 import React from 'react';
-import styles from './FormContainer.module.css';
+
+const useFormContainerStyles = makeStyles((theme) => ({
+  formContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    paddingTop: theme.spacing(8),
+  },
+  content: {
+    display: 'grid',
+    gridTemplateRows: '1fr',
+    gridTemplateColumns: '1fr',
+  },
+  titleContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    paddingBottom: theme.spacing(2),
+  },
+}));
 
 const propTypes = {
   title: PropTypes.string.isRequired,
   subtitle: PropTypes.string.isRequired,
-  banner: PropTypes.node,
   children: PropTypes.node.isRequired,
 };
+export const FormContainer = ({ title, subtitle, children }) => {
+  const classes = useFormContainerStyles();
 
-export const FormContainer = ({ title, subtitle, banner, children }) => {
-  let bannerContent = banner ? <Banner data-testid="banner" content={banner} /> : null;
   return (
-    <div className={styles.container}>
-      <div className={styles.titleContainer}>
-        <Text className={styles.title}>{title}</Text>
-        <Text className={styles.subtitle}>{subtitle}</Text>
+    <div className={classes.formContainer}>
+      <div className={classes.titleContainer}>
+        <Typography variant="h4" align="center" gutterBottom>
+          {title}
+        </Typography>
+        <Typography variant="h5" align="center" gutterBottom>
+          {subtitle}
+        </Typography>
       </div>
-      <div className={styles.bannerArea}>{bannerContent}</div>
-      <div className={styles.content}>{children}</div>
+      <Paper>{children}</Paper>
     </div>
   );
 };

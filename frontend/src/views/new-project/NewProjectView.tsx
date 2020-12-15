@@ -23,8 +23,8 @@ import { FormContainer } from 'views/FormContainer';
 import { View } from 'views/View';
 import {
   HANDLE_CHANGE_NAME__ACTION,
-  HANDLE_SUBMIT__ACTION,
   HANDLE_SUBMIT_FAILURE__ACTION,
+  HANDLE_SUBMIT__ACTION,
   VALID__STATE,
 } from './machine';
 import styles from './NewProjectView.module.css';
@@ -62,7 +62,7 @@ export const NewProjectView = () => {
   const [createProject, { loading, data, error }] = useMutation(createProjectMutation);
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const { viewState, name, nameMessage, nameMessageSeverity, message, newProjectId } = state;
+  const { viewState, name, nameMessage, nameMessageSeverity, newProjectId } = state;
 
   const onNameChange = (event) => {
     const name = event.target.value;
@@ -101,7 +101,7 @@ export const NewProjectView = () => {
   ) : null;
   return (
     <View condensed>
-      <FormContainer title="Create a new project" subtitle="Get started by creating a new project" banner={message}>
+      <FormContainer title="Create a new project" subtitle="Get started by creating a new project">
         <Form onSubmit={onCreateNewProject}>
           <Label value="Name">
             <Textfield

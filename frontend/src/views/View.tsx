@@ -1,4 +1,3 @@
-import { useBranding } from 'common/BrandingContext';
 /*******************************************************************************
  * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
@@ -11,29 +10,41 @@ import { useBranding } from 'common/BrandingContext';
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-//import { Navbar } from 'navbar/Navbar';
+import Container from '@material-ui/core/Container';
+import { makeStyles } from '@material-ui/core/styles';
+import { useBranding } from 'common/BrandingContext';
 import { Navbar } from 'navbar/Navbar';
 import PropTypes from 'prop-types';
 import React from 'react';
-import styles from './View.module.css';
+
+const useViewStyles = makeStyles((theme) => ({
+  view: {
+    display: 'grid',
+    gridTemplateColumns: '1fr',
+    gridTemplateRows: 'min-content 1fr min-content',
+    minHeight: '100vh',
+  },
+  main: {
+    paddingTop: theme.spacing(3),
+    paddingBottom: theme.spacing(3),
+  },
+}));
 
 const propTypes = {
   children: PropTypes.node,
   condensed: PropTypes.bool,
 };
-
 export const View = ({ children, condensed }) => {
+  const classes = useViewStyles();
+
   const { footer } = useBranding();
-  let containerClassName = styles.container;
-  if (condensed) {
-    containerClassName = `${containerClassName} ${styles.condensed}`;
-  }
+  const maxWidth = condensed ? 'sm' : 'xl';
   return (
-    <div className={styles.view}>
+    <div className={classes.view}>
       <Navbar />
-      <div className={containerClassName}>
-        <div className={styles.content}>{children}</div>
-      </div>
+      <main className={classes.main}>
+        <Container maxWidth={maxWidth}>{children}</Container>
+      </main>
       {footer}
     </div>
   );
