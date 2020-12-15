@@ -11,24 +11,30 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
-import { ActionButton, Buttons, SecondaryButton } from 'core/button/Button';
+import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import Snackbar from '@material-ui/core/Snackbar';
+import TextField from '@material-ui/core/TextField';
+import CloseIcon from '@material-ui/icons/Close';
+import { useMachine } from '@xstate/react';
 import { Form } from 'core/form/Form';
-import { Label } from 'core/label/Label';
-import { Message } from 'core/message/Message';
-import { Textfield } from 'core/textfield/Textfield';
 import gql from 'graphql-tag';
-import React, { useEffect, useReducer } from 'react';
+import React, { useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 import { FormContainer } from 'views/FormContainer';
 import { View } from 'views/View';
 import {
-  HANDLE_CHANGE_NAME__ACTION,
-  HANDLE_SUBMIT_FAILURE__ACTION,
-  HANDLE_SUBMIT__ACTION,
-  VALID__STATE,
-} from './machine';
-import styles from './NewProjectView.module.css';
-import { initialState, reducer } from './reducer';
+  ChangeNameEvent,
+  HandleErrorEvent,
+  HandleSuccessEvent,
+  HideToastEvent,
+  NewProjectEvent,
+  NewProjectViewContext,
+  newProjectViewMachine,
+  SchemaValue,
+  ShowToastEvent,
+  SubmitEvent,
+} from './NewProjectViewMachine';
 
 const createProjectMutation = gql`
   mutation createProject($input: CreateProjectInput!) {
@@ -60,66 +66,104 @@ const createProjectMutation = gql`
  */
 export const NewProjectView = () => {
   const [createProject, { loading, data, error }] = useMutation(createProjectMutation);
-  const [state, dispatch] = useReducer(reducer, initialState);
-
-  const { viewState, name, nameMessage, nameMessageSeverity, newProjectId } = state;
+  const [{ value, context }, dispatch] = useMachine<NewProjectViewContext, NewProjectEvent>(newProjectViewMachine);
+  const { newProjectView, toast } = value as SchemaValue;
+  const { name, newProjectId, message, isValidName, nameMessage } = context;
 
   const onNameChange = (event) => {
-    const name = event.target.value;
-    dispatch({ type: HANDLE_CHANGE_NAME__ACTION, name });
+    const value = event.target.value;
+    const changeNameEvent: ChangeNameEvent = { type: 'CHANGE_NAME', name: value };
+    dispatch(changeNameEvent);
   };
 
   const onCreateNewProject = async (event) => {
     event.preventDefault();
-
     const variables = {
       input: {
         name: name.trim(),
         visibility: 'PUBLIC',
       },
     };
+    const submitEvent: SubmitEvent = { type: 'SUBMIT' };
+    dispatch(submitEvent);
     createProject({ variables });
   };
 
   useEffect(() => {
-    if (!loading && !error && data) {
+    if (!loading) {
       if (error) {
-        dispatch({ type: HANDLE_SUBMIT_FAILURE__ACTION, reponse: error });
-      } else if (data) {
-        dispatch({ type: HANDLE_SUBMIT__ACTION, response: data });
+        const { message } = error;
+        const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
+        dispatch(showToastEvent);
+      }
+      if (data) {
+        const typename = data.createProject.__typename;
+        if (typename === 'CreateProjectSuccessPayload') {
+          const { id } = data.createProject.project;
+          const HandleSuccessEvent: HandleSuccessEvent = { type: 'HANDLE_SUCCESS', id };
+          dispatch(HandleSuccessEvent);
+        } else if (typename === 'ErrorPayload') {
+          const { message } = data.createProject;
+          const handlErrorEvent: HandleErrorEvent = { type: 'HANDLE_ERROR' };
+          dispatch(handlErrorEvent);
+          const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
+          dispatch(showToastEvent);
+        }
       }
     }
-  }, [loading, data, error]);
+  }, [loading, data, error, dispatch]);
 
-  if (newProjectId) {
+  if (newProjectView === 'success') {
     return <Redirect to={`/projects/${newProjectId}/edit`} />;
   }
 
-  const canBeSubmitted = viewState === VALID__STATE;
-  const nameMessageContent = nameMessage ? (
-    <Message severity={nameMessageSeverity} data-testid="nameMessage" content={nameMessage} />
-  ) : null;
+  const canBeSubmitted = newProjectView === 'valid';
+
   return (
     <View condensed>
       <FormContainer title="Create a new project" subtitle="Get started by creating a new project">
         <Form onSubmit={onCreateNewProject}>
-          <Label value="Name">
-            <Textfield
-              name="name"
-              placeholder="Enter the project name"
-              value={name}
-              onChange={onNameChange}
-              autoFocus
-              data-testid="name"
-            />
-            <div className={styles.messageArea}>{nameMessageContent}</div>
-          </Label>
-          <Buttons>
-            <ActionButton type="submit" disabled={!canBeSubmitted} label="Create" data-testid="create-project" />
-            <SecondaryButton type="submit" to={`/`} label="Cancel" data-testid="back" />
-          </Buttons>
+          <TextField
+            error={!isValidName}
+            helperText={nameMessage}
+            label="Name"
+            name="name"
+            value={name}
+            placeholder="Enter the project name"
+            data-testid="name"
+            autoFocus={true}
+            onChange={onNameChange}
+          />
+          <Button
+            variant="outlined"
+            type="submit"
+            disabled={!canBeSubmitted}
+            data-testid="create-project"
+            color="primary">
+            Create
+          </Button>
         </Form>
       </FormContainer>
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right',
+        }}
+        open={toast === 'visible'}
+        autoHideDuration={3000}
+        onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
+        message={message}
+        action={
+          <IconButton
+            size="small"
+            aria-label="close"
+            color="inherit"
+            onClick={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}>
+            <CloseIcon fontSize="small" />
+          </IconButton>
+        }
+        data-testid="error"
+      />
     </View>
   );
 };
