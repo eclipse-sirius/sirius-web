@@ -22,7 +22,7 @@ export interface UploadProjectViewStateSchema {
     };
     uploadProjectView: {
       states: {
-        idle: {};
+        pristine: {};
         fileSelected: {};
         uploading: {};
         success: {};
@@ -31,7 +31,7 @@ export interface UploadProjectViewStateSchema {
   };
 }
 export type SchemaValue = {
-  uploadProjectView: 'idle' | 'fileSelected' | 'uploading' | 'success';
+  uploadProjectView: 'pristine' | 'fileSelected' | 'uploading' | 'success';
   toast: 'visible' | 'hidden';
 };
 
@@ -55,7 +55,7 @@ export type UploadProjectEvent =
 
 export const uploadProjectMachine = Machine<UploadProjectViewContext, UploadProjectViewStateSchema, UploadProjectEvent>(
   {
-    id: 'uploadProjectView',
+    id: 'UploadProjectView',
     type: 'parallel',
     context: {
       file: null,
@@ -85,9 +85,9 @@ export const uploadProjectMachine = Machine<UploadProjectViewContext, UploadProj
         },
       },
       uploadProjectView: {
-        initial: 'idle',
+        initial: 'pristine',
         states: {
-          idle: {
+          pristine: {
             on: {
               HANDLE_SELECTED_FILE: {
                 target: 'fileSelected',
@@ -135,7 +135,7 @@ export const uploadProjectMachine = Machine<UploadProjectViewContext, UploadProj
         const { message } = event as ShowToastEvent;
         return { message };
       }),
-      clearMessage: assign((_, event) => {
+      clearMessage: assign((_) => {
         return { message: null };
       }),
     },
