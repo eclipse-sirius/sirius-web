@@ -10,15 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import React from 'react';
-import PropTypes from 'prop-types';
-
 import { Text } from 'core/text/Text';
-import { OnboardArea } from './OnboardArea';
 import { DiagramWebSocketContainer } from 'diagram/DiagramWebSocketContainer';
 import { FormWebSocketContainer } from 'form/FormWebSocketContainer';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { RepresentationNavigation } from 'views/edit-project/RepresentationNavigation';
-
+import { OnboardArea } from './OnboardArea';
 import styles from './RepresentationArea.module.css';
 
 const propTypes = {
@@ -41,7 +39,6 @@ export const RepresentationArea = ({
 }) => {
   let content;
   if (!displayedRepresentation) {
-    // If the user reloads a diagram page, it should load the OnboardArea
     content = <OnboardArea selection={selection} setSelection={setSelection} />;
   } else if (displayedRepresentation.kind === 'Diagram') {
     content = (
