@@ -11,16 +11,16 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import {
-  machine,
-  EMPTY__STATE,
-  LOADING__STATE,
-  READY__STATE,
   COMPLETE__STATE,
-  HANDLE_DATA__ACTION,
-  HANDLE_CONNECTION_ERROR__ACTION,
-  HANDLE_ERROR__ACTION,
+  EMPTY__STATE,
   HANDLE_COMPLETE__ACTION,
+  HANDLE_CONNECTION_ERROR__ACTION,
+  HANDLE_DATA__ACTION,
+  HANDLE_ERROR__ACTION,
   INITIALIZE__ACTION,
+  LOADING__STATE,
+  machine,
+  READY__STATE,
   SWITCH_FORM__ACTION,
 } from './machine';
 
@@ -99,8 +99,8 @@ const handleDataAction = (prevState, action) => {
   const { message } = action;
 
   let state = prevState;
-  if (message.payload && message.payload.data && message.payload.data.formEvent) {
-    const { formEvent } = message.payload.data;
+  if (message?.data?.formEvent) {
+    const { formEvent } = message.data;
     if (formEvent.__typename === 'FormRefreshedEventPayload') {
       const { form } = formEvent;
       state = { ...prevState, viewState: READY__STATE, form, message: '' };
@@ -122,7 +122,7 @@ const handleConnectionErrorAction = (prevState) => {
 
 const handleErrorAction = (prevState, action) => {
   const { viewState } = prevState;
-  const { payload: message } = action.message;
+  const { message } = action;
   if (viewState === READY__STATE) {
     return { ...prevState, message };
   }
