@@ -10,26 +10,22 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import React, { useReducer, useEffect, useContext } from 'react';
-import gql from 'graphql-tag';
-
-import { GraphQLClient } from 'common/GraphQLClient';
-
+import { useSubscription } from '@apollo/client';
 import { Text } from 'core/text/Text';
-import { useProject } from 'project/ProjectProvider';
 import {
+  HANDLE_COMPLETE__ACTION,
+  HANDLE_DATA__ACTION,
+  HANDLE_ERROR__ACTION,
+  INITIALIZE__ACTION,
   LOADING__STATE,
   READY__STATE,
-  HANDLE_CONNECTION_ERROR__ACTION,
-  HANDLE_ERROR__ACTION,
-  HANDLE_DATA__ACTION,
-  HANDLE_COMPLETE__ACTION,
   SWITCH_FORM__ACTION,
-  INITIALIZE__ACTION,
 } from 'form/machine';
-import { Properties } from 'properties/Properties';
 import { initialState, reducer } from 'form/reducer';
-
+import gql from 'graphql-tag';
+import { useProject } from 'project/ProjectProvider';
+import { Properties } from 'properties/Properties';
+import React, { useEffect, useReducer } from 'react';
 import styles from './FormWebSocketContainer.module.css';
 
 const formEventSubscription = gql`
@@ -108,8 +104,7 @@ const formEventSubscription = gql`
       }
     }
   }
-`.loc.source.body;
-const formEventOperationName = 'formEvent';
+`;
 
 /**
  * Connect the Form component to the GraphQL API over Web Socket.
@@ -118,7 +113,6 @@ export const FormWebSocketContainer = ({ formId }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { viewState, form, displayedFormId, subscribers, widgetSubscriptions, message } = state;
 
-  const { graphQLWebSocketClient } = useContext(GraphQLClient);
   const { id } = useProject() as any;
 
   /**
@@ -136,48 +130,23 @@ export const FormWebSocketContainer = ({ formId }) => {
     }
   }, [viewState]);
 
-  useEffect(() => {
-    if (viewState !== READY__STATE) {
-      return () => {};
-    }
-
-    const operationId = graphQLWebSocketClient.generateOperationId();
-    const subscribe = () => {
-      graphQLWebSocketClient.on(operationId, (message) => {
-        switch (message.type) {
-          case 'connection_error':
-            dispatch({ type: HANDLE_CONNECTION_ERROR__ACTION, message });
-            break;
-          case 'error':
-            dispatch({ type: HANDLE_ERROR__ACTION, message });
-            break;
-          case 'data':
-            dispatch({ type: HANDLE_DATA__ACTION, message });
-            break;
-          case 'complete':
-            dispatch({ type: HANDLE_COMPLETE__ACTION, message });
-            break;
-          default:
-            break;
-        }
-      });
-      const variables = {
-        input: {
-          projectId: id,
-          formId,
-        },
-      };
-      graphQLWebSocketClient.start(operationId, formEventSubscription, variables, formEventOperationName);
-    };
-
-    const unsubscribe = (id) => {
-      graphQLWebSocketClient.remove(id);
-      graphQLWebSocketClient.stop(id);
-    };
-
-    subscribe();
-    return () => unsubscribe(operationId);
-  }, [id, formId, graphQLWebSocketClient, viewState]);
+  const { error } = useSubscription(formEventSubscription, {
+    variables: {
+      input: {
+        projectId: id,
+        formId,
+      },
+    },
+    fetchPolicy: 'no-cache',
+    skip: viewState !== READY__STATE,
+    onSubscriptionData: ({ subscriptionData }) => {
+      dispatch({ type: HANDLE_DATA__ACTION, message: subscriptionData });
+    },
+    onSubscriptionComplete: () => dispatch({ type: HANDLE_COMPLETE__ACTION }),
+  });
+  if (error) {
+    dispatch({ type: HANDLE_ERROR__ACTION, message: error.message });
+  }
 
   let view = <div />;
   if (!form) {
