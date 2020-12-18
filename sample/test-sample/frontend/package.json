@@ -7,10 +7,11 @@
   "dependencies": {
     "@apollo/client": "^3.2.7",
     "@eclipse-sirius/sirius-components": "0.1.31-d05a14912ac0da7302c0255acdacc8b9c2307c0f.0",
-    "@material-ui/core": "^4.11.2",
-    "@material-ui/icons": "^4.11.2",
-    "@xstate/react": "^1.1.0",
+    "@material-ui/core": "4.11.2",
+    "@material-ui/icons": "4.11.2",
+    "@xstate/react": "1.1.0",
     "airbnb-prop-types": "^2.15.0",
+    "fontsource-roboto": "3.1.5",
     "graphql": "14.6.0",
     "graphql-tag": "^2.11.0",
     "graphql.macro": "^1.4.2",
@@ -21,7 +22,8 @@
     "reflect-metadata": "^0.1.13",
     "sprotty": "0.7.0",
     "subscriptions-transport-ws": "^0.9.18",
-    "universal-cookie": "^4.0.2"
+    "universal-cookie": "^4.0.2",
+    "xstate": "4.15.1"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "5.1.1",
