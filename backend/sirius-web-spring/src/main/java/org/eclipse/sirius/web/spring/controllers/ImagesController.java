@@ -117,16 +117,18 @@ public class ImagesController {
 
     private MediaType getContentType(String imagePath) {
         MediaType mediaType = null;
-        int extensionSeparatorPos = imagePath.lastIndexOf(EXTENSION_SEPARATOR);
-        String extention = imagePath.substring(extensionSeparatorPos + 1, imagePath.length());
-        if (IMAGE_GIF_EXTENSION.equals(extention)) {
-            mediaType = MediaType.IMAGE_GIF;
-        } else if (IMAGE_PNG_EXTENSION.equals(extention)) {
-            mediaType = MediaType.IMAGE_PNG;
-        } else if (IMAGE_JPG_EXTENSION.equals(extention)) {
-            mediaType = MediaType.IMAGE_JPEG;
-        } else if (IMAGE_SVG_EXTENSION.equals(extention)) {
-            mediaType = IMAGE_SVG;
+        int extensionSeparatorIndex = imagePath.lastIndexOf(EXTENSION_SEPARATOR);
+        if (extensionSeparatorIndex != -1) {
+            String extention = imagePath.substring(extensionSeparatorIndex + 1, imagePath.length());
+            if (IMAGE_GIF_EXTENSION.equalsIgnoreCase(extention)) {
+                mediaType = MediaType.IMAGE_GIF;
+            } else if (IMAGE_PNG_EXTENSION.equalsIgnoreCase(extention)) {
+                mediaType = MediaType.IMAGE_PNG;
+            } else if (IMAGE_JPG_EXTENSION.equalsIgnoreCase(extention)) {
+                mediaType = MediaType.IMAGE_JPEG;
+            } else if (IMAGE_SVG_EXTENSION.equalsIgnoreCase(extention)) {
+                mediaType = IMAGE_SVG;
+            }
         }
         return mediaType;
     }
