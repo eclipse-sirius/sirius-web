@@ -11,19 +11,14 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import React from 'react';
-
 import { GraphQLHttpClient } from './GraphQLHttpClient';
-import { GraphQLWebSocketClient } from './GraphQLWebSocketClient';
-import { httpOrigin, wsOrigin } from './URL';
+import { httpOrigin } from './URL';
 
 const httpUrl = `${httpOrigin}/api/graphql`;
-const wsUrl = `${wsOrigin}/subscriptions`;
 
 export const graphQLHttpClient = new GraphQLHttpClient(httpUrl);
-export const graphQLWebSocketClient = new GraphQLWebSocketClient(wsUrl);
 
 const value = {
-  graphQLWebSocketClient,
   graphQLHttpClient,
 };
 
