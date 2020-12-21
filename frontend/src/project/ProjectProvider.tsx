@@ -89,7 +89,6 @@ const ProjectProvider = ({ children }) => {
         }
       }
     },
-    shouldResubscribe: ({ variables: { input } }) => input.projectId !== state.id,
   });
 
   return <ProjectContext.Provider value={state}>{children}</ProjectContext.Provider>;

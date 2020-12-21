@@ -47,7 +47,7 @@ import { Toolbar } from 'diagram/Toolbar';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useReducer, useRef } from 'react';
 import 'reflect-metadata'; // Required because Sprotty uses Inversify and both frameworks are written in TypeScript with experimental features.
-import { SEdge, SNode, FitToScreenAction, EditLabelAction } from 'sprotty';
+import { EditLabelAction, FitToScreenAction, SEdge, SNode } from 'sprotty';
 import styles from './Diagram.module.css';
 import {
   deleteFromDiagramMutation,
@@ -454,8 +454,6 @@ export const DiagramWebSocketContainer = ({
       dispatch({ type: HANDLE_DATA__ACTION, message: subscriptionData });
     },
     onSubscriptionComplete: () => dispatch({ type: HANDLE_COMPLETE__ACTION }),
-    shouldResubscribe: ({ variables: { input } }) =>
-      input.projectId !== projectId || input.diagramId !== representationId,
   });
   if (error) {
     dispatch({ type: HANDLE_ERROR__ACTION, message: error });

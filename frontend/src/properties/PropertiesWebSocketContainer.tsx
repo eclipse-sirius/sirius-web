@@ -143,7 +143,6 @@ export const PropertiesWebSocketContainer = ({ objectId }) => {
       dispatch({ type: HANDLE_DATA__ACTION, message: subscriptionData });
     },
     onSubscriptionComplete: () => dispatch({ type: HANDLE_COMPLETE__ACTION }),
-    shouldResubscribe: ({ variables: { input } }) => input.projectId !== id || input.objectId !== objectId,
   });
   if (error) {
     dispatch({ type: HANDLE_ERROR__ACTION, message: error });
