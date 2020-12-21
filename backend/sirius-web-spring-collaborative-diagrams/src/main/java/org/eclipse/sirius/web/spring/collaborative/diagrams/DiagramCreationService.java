@@ -12,15 +12,18 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.spring.collaborative.diagrams;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
+import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramCreationService;
 import org.eclipse.sirius.web.components.Element;
 import org.eclipse.sirius.web.diagrams.Diagram;
+import org.eclipse.sirius.web.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.web.diagrams.components.DiagramComponent;
 import org.eclipse.sirius.web.diagrams.components.DiagramComponentProps;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
@@ -75,11 +78,12 @@ public class DiagramCreationService implements IDiagramCreationService {
 
     @Override
     public Diagram create(String label, Object targetObject, DiagramDescription diagramDescription, IEditingContext editingContext) {
-        return this.doRender(null, label, targetObject, editingContext, diagramDescription, Optional.empty());
+        return this.doRender(null, label, targetObject, editingContext, diagramDescription, List.of(), Optional.empty());
     }
 
     @Override
-    public Optional<Diagram> refresh(IEditingContext editingContext, Diagram previousDiagram) {
+    public Optional<Diagram> refresh(IEditingContext editingContext, IDiagramContext diagramContext) {
+        Diagram previousDiagram = diagramContext.getDiagram();
         var optionalObject = this.objectService.getObject(editingContext, previousDiagram.getTargetObjectId());
         // @formatter:off
         var optionalDiagramDescription = this.representationDescriptionService.findRepresentationDescriptionById(previousDiagram.getDescriptionId())
@@ -90,15 +94,16 @@ public class DiagramCreationService implements IDiagramCreationService {
         if (optionalObject.isPresent() && optionalDiagramDescription.isPresent()) {
             Object object = optionalObject.get();
             DiagramDescription diagramDescription = optionalDiagramDescription.get();
+            List<ViewCreationRequest> viewCreationRequests = diagramContext.getViewCreationRequests();
 
-            Diagram diagram = this.doRender(previousDiagram.getId(), previousDiagram.getLabel(), object, editingContext, diagramDescription, Optional.of(previousDiagram));
+            Diagram diagram = this.doRender(previousDiagram.getId(), previousDiagram.getLabel(), object, editingContext, diagramDescription, viewCreationRequests, Optional.of(previousDiagram));
             return Optional.of(diagram);
         }
         return Optional.empty();
     }
 
     private Diagram doRender(UUID representationId, String label, Object targetObject, IEditingContext editingContext, DiagramDescription diagramDescription,
-            Optional<Diagram> optionalPreviousDiagram) {
+            List<ViewCreationRequest> viewCreationRequests, Optional<Diagram> optionalPreviousDiagram) {
         long start = System.currentTimeMillis();
 
         VariableManager variableManager = new VariableManager();
@@ -107,7 +112,7 @@ public class DiagramCreationService implements IDiagramCreationService {
         variableManager.put(VariableManager.SELF, targetObject);
         variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
 
-        DiagramComponentProps props = new DiagramComponentProps(variableManager, diagramDescription, optionalPreviousDiagram);
+        DiagramComponentProps props = new DiagramComponentProps(variableManager, diagramDescription, viewCreationRequests, optionalPreviousDiagram);
         Element element = new Element(DiagramComponent.class, props);
 
         Diagram unlayoutedDiagram = new DiagramRenderer(this.logger).render(element);

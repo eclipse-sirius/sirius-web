@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.spring.collaborative.diagrams.handlers;
 
 import java.util.Optional;
 
+import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramCreationService;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
@@ -32,7 +33,7 @@ public class NoOpDiagramCreationService implements IDiagramCreationService {
     }
 
     @Override
-    public Optional<Diagram> refresh(IEditingContext editingContext, Diagram previousDiagram) {
+    public Optional<Diagram> refresh(IEditingContext editingContext, IDiagramContext diagramContext) {
         return Optional.empty();
     }
 
