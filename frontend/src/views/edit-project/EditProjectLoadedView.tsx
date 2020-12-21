@@ -10,8 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { HORIZONTAL, Panels, SECOND_PANEL } from 'core/panels/Panels';
 import { forbidExtraProps } from 'airbnb-prop-types';
+import { HORIZONTAL, Panels, SECOND_PANEL } from 'core/panels/Panels';
 import { ExplorerWebSocketContainer } from 'explorer/ExplorerWebSocketContainer';
 import { EditProjectNavbar } from 'navbar/EditProjectNavbar/EditProjectNavbar';
 import PropTypes from 'prop-types';
@@ -47,13 +47,7 @@ export const EditProjectLoadedView = ({
   setSelection,
   setSubscribers,
 }) => {
-  const explorer = (
-    <ExplorerWebSocketContainer
-      selection={selection}
-      displayedRepresentation={displayedRepresentation}
-      setSelection={setSelection}
-    />
-  );
+  const explorer = <ExplorerWebSocketContainer selection={selection} setSelection={setSelection} />;
 
   let representation = (
     <RepresentationArea

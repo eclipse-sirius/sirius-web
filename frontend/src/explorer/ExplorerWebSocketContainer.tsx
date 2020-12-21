@@ -33,11 +33,10 @@ import { initialState, reducer } from './reducer';
 
 const propTypes = {
   selection: PropTypes.object,
-  displayedRepresentation: PropTypes.object,
   setSelection: PropTypes.func.isRequired,
 };
 
-export const ExplorerWebSocketContainer = ({ selection, displayedRepresentation, setSelection }) => {
+export const ExplorerWebSocketContainer = ({ selection, setSelection }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { viewState, tree, expanded, maxDepth, message } = state;
 
@@ -105,14 +104,6 @@ export const ExplorerWebSocketContainer = ({ selection, displayedRepresentation,
     );
   }
 
-  return (
-    <Explorer
-      tree={tree}
-      onExpand={onExpand}
-      selection={selection}
-      // displayedRepresentation={displayedRepresentation} TODO Explorer does not support such a prop
-      setSelection={setSelection}
-    />
-  );
+  return <Explorer tree={tree} onExpand={onExpand} selection={selection} setSelection={setSelection} />;
 };
 ExplorerWebSocketContainer.propTypes = propTypes;
