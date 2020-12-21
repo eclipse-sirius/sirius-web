@@ -11,51 +11,40 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
-import { Text } from 'core/text/Text';
-import { Textfield } from 'core/textfield/Textfield';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
+import Input from '@material-ui/core/Input';
+import { useMachine } from '@xstate/react';
 import { Permission } from 'project/Permission';
 import PropTypes from 'prop-types';
 import { PropertySectionSubscribers } from 'properties/propertysections/PropertySectionSubscribers';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { editTextfieldMutation, updateWidgetFocusMutation } from './mutations';
-import styles from './PropertySection.module.css';
+import { createTextFieldPropertySectionMachine } from './TextfieldPropertySectionMachine';
 
 const propTypes = {
   projectId: PropTypes.string.isRequired,
   formId: PropTypes.string.isRequired,
   widgetId: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
+  textValue: PropTypes.string.isRequired,
 };
 
 /**
  * Defines the content of a Textfield property section.
  * The content is submitted when the focus is lost and when pressing the "Enter" key.
  */
-export const TextfieldPropertySection = ({ projectId, formId, widgetId, label, value, subscribers }) => {
-  const initialState = {
-    inputValue: value,
-    edited: false,
-  };
-
-  const [state, setState] = useState(initialState);
-  const { inputValue, edited } = state;
-
-  useEffect(() => {
-    setState({ inputValue: value, edited: false });
-  }, [value]);
+export const TextfieldPropertySection = ({ projectId, formId, widgetId, label, textValue, subscribers }) => {
+  const [{ value, context }, dispatch] = useMachine(createTextFieldPropertySectionMachine(textValue));
+  const { inputValue, edited } = context;
 
   const onChange = (event) => {
-    const newText = event.target.value;
-    setState((prevState) => {
-      const newState = { ...prevState };
-      newState.inputValue = newText;
-      newState.edited = true;
-      return newState;
-    });
+    const newValue = event.target.value;
+
+    dispatch({ type: 'CHANGE_VALUE', newValue });
   };
 
-  const [editTextfield] = useMutation(editTextfieldMutation);
+  const [editTextfield, { loading, data }] = useMutation(editTextfieldMutation);
   const sendEditedValue = async () => {
     if (edited) {
       const variables = {
@@ -83,6 +72,15 @@ export const TextfieldPropertySection = ({ projectId, formId, widgetId, label, v
     await updateWidgetFocus({ variables });
   };
 
+  useEffect(() => {
+    if (loading) {
+      dispatch({ type: 'HANDLE_SUBMIT' });
+    } else if (data?.editTextfield) {
+      dispatch({ type: 'HANDLE_RESPONSE' });
+      //the error will be managed at the level of the PropertiesView. We should have a prop onError in the future
+    }
+  }, [loading, data, dispatch]);
+
   const onFocus = async () => {
     await sendUpdateWidgetFocus(true);
   };
@@ -96,25 +94,29 @@ export const TextfieldPropertySection = ({ projectId, formId, widgetId, label, v
       await sendEditedValue();
     }
   };
-
+  const fieldDisabled = value == 'submitting';
   return (
     <>
-      <PropertySectionSubscribers subscribers={subscribers}>
-        <Text className={styles.label}>{label}</Text>
-      </PropertySectionSubscribers>
-      <Permission requiredAccessLevel="EDIT">
-        <Textfield
-          name={label}
-          kind="small"
-          placeholder={label}
-          value={inputValue}
-          onChange={onChange}
-          onBlur={onBlur}
-          onFocus={onFocus}
-          onKeyPress={onKeyPress}
-          data-testid={label}
-        />
-      </Permission>
+      <FormControl component="fieldset">
+        <PropertySectionSubscribers subscribers={subscribers}>
+          <FormLabel component="legend">{label}</FormLabel>
+        </PropertySectionSubscribers>
+        <Permission requiredAccessLevel="EDIT">
+          <Input
+            id={label}
+            name={label}
+            placeholder={label}
+            value={inputValue}
+            onChange={onChange}
+            disabled={fieldDisabled}
+            readOnly={fieldDisabled}
+            onBlur={onBlur}
+            onFocus={onFocus}
+            onKeyPress={onKeyPress}
+            data-testid={label}
+          />
+        </Permission>
+      </FormControl>
     </>
   );
 };
