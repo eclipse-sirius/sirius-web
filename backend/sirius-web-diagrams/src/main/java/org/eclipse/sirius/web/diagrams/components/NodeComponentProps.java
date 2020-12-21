@@ -12,9 +12,11 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.diagrams.components;
 
+import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.web.components.IProps;
+import org.eclipse.sirius.web.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.web.diagrams.description.NodeDescription;
 import org.eclipse.sirius.web.diagrams.renderer.DiagramRenderingCache;
 import org.eclipse.sirius.web.representations.VariableManager;
@@ -36,12 +38,19 @@ public class NodeComponentProps implements IProps {
 
     private final DiagramRenderingCache cache;
 
-    public NodeComponentProps(VariableManager variableManager, NodeDescription nodeDescription, INodesRequestor nodesRequestor, boolean isBorderNode, DiagramRenderingCache cache) {
+    private final List<ViewCreationRequest> viewCreationRequests;
+
+    private final String parentElementId;
+
+    public NodeComponentProps(VariableManager variableManager, NodeDescription nodeDescription, INodesRequestor nodesRequestor, boolean isBorderNode, DiagramRenderingCache cache,
+            List<ViewCreationRequest> viewCreationRequests, String parentElementId) {
         this.variableManager = Objects.requireNonNull(variableManager);
         this.nodeDescription = Objects.requireNonNull(nodeDescription);
         this.nodesRequestor = Objects.requireNonNull(nodesRequestor);
         this.isBorderNode = isBorderNode;
         this.cache = Objects.requireNonNull(cache);
+        this.viewCreationRequests = List.copyOf(Objects.requireNonNull(viewCreationRequests));
+        this.parentElementId = Objects.requireNonNull(parentElementId);
     }
 
     public VariableManager getVariableManager() {
@@ -62,6 +71,14 @@ public class NodeComponentProps implements IProps {
 
     public DiagramRenderingCache getCache() {
         return this.cache;
+    }
+
+    public List<ViewCreationRequest> getViewCreationRequests() {
+        return this.viewCreationRequests;
+    }
+
+    public String getParentElementId() {
+        return this.parentElementId;
     }
 
 }

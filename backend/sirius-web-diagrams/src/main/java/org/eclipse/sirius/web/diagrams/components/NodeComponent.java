@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.eclipse.sirius.web.components.Element;
@@ -55,6 +56,7 @@ public class NodeComponent implements IComponent {
 
         List<Element> children = new ArrayList<>();
         List<Object> semanticElements = nodeDescription.getSemanticElementsProvider().apply(variableManager);
+
         for (Object semanticElement : semanticElements) {
             VariableManager nodeVariableManager = variableManager.createChild();
             nodeVariableManager.put(VariableManager.SELF, semanticElement);
@@ -62,9 +64,7 @@ public class NodeComponent implements IComponent {
             String targetObjectId = nodeDescription.getTargetObjectIdProvider().apply(nodeVariableManager);
             var optionalPreviousNode = nodesRequestor.getByTargetObjectId(targetObjectId);
 
-            SynchronizationPolicy synchronizationPolicy = nodeDescription.getSynchronizationPolicy();
-            boolean shouldRender = synchronizationPolicy == SynchronizationPolicy.SYNCHRONIZED || (synchronizationPolicy == SynchronizationPolicy.UNSYNCHRONIZED && optionalPreviousNode.isPresent());
-            if (shouldRender) {
+            if (this.shouldRender(targetObjectId, optionalPreviousNode)) {
                 Element nodeElement = this.doRender(nodeVariableManager, targetObjectId, optionalPreviousNode);
                 children.add(nodeElement);
 
@@ -78,12 +78,35 @@ public class NodeComponent implements IComponent {
         return new Fragment(fragmentProps);
     }
 
+    private boolean shouldRender(String targetObjectId, Optional<Node> optionalPreviousNode) {
+        boolean shouldRender = false;
+        NodeDescription nodeDescription = this.props.getNodeDescription();
+        SynchronizationPolicy synchronizationPolicy = nodeDescription.getSynchronizationPolicy();
+        if (synchronizationPolicy == SynchronizationPolicy.SYNCHRONIZED) {
+            shouldRender = true;
+        } else if (synchronizationPolicy == SynchronizationPolicy.UNSYNCHRONIZED) {
+            shouldRender = optionalPreviousNode.isPresent() || this.existsViewCreationRequested(targetObjectId);
+        }
+        return shouldRender;
+    }
+
+    private boolean existsViewCreationRequested(String targetObjectId) {
+        String parentElementId = this.props.getParentElementId();
+        UUID nodeDescriptionId = this.props.getNodeDescription().getId();
+        // @formatter:off
+        return this.props.getViewCreationRequests().stream()
+                .filter(viewCreationRequest -> Objects.equals(viewCreationRequest.getDescriptionId(), nodeDescriptionId))
+                .filter(viewCreationRequest -> Objects.equals(viewCreationRequest.getTargetObjectId(), targetObjectId))
+                .anyMatch(viewCreationRequest -> Objects.equals(viewCreationRequest.getParentElementId(), parentElementId));
+        // @formatter:on
+    }
+
     private Element doRender(VariableManager nodeVariableManager, String targetObjectId, Optional<Node> optionalPreviousNode) {
         NodeDescription nodeDescription = this.props.getNodeDescription();
         boolean isBorderNode = this.props.isBorderNode();
         DiagramRenderingCache cache = this.props.getCache();
 
-        String nodeId = nodeDescription.getIdProvider().apply(nodeVariableManager);
+        String nodeId = optionalPreviousNode.map(Node::getId).orElseGet(() -> nodeDescription.getIdProvider().apply(nodeVariableManager));
         String type = nodeDescription.getTypeProvider().apply(nodeVariableManager);
         String targetObjectKind = nodeDescription.getTargetObjectKindProvider().apply(nodeVariableManager);
         String targetObjectLabel = nodeDescription.getTargetObjectLabelProvider().apply(nodeVariableManager);
@@ -102,7 +125,7 @@ public class NodeComponent implements IComponent {
                     List<Node> previousBorderNodes = optionalPreviousNode.map(previousNode -> diagramElementRequestor.getBorderNodes(previousNode, borderNodeDescription))
                             .orElse(List.of());
                     INodesRequestor borderNodesRequestor = new NodesRequestor(previousBorderNodes);
-                    var nodeComponentProps = new NodeComponentProps(nodeVariableManager, borderNodeDescription, borderNodesRequestor, true, cache);
+                    var nodeComponentProps = new NodeComponentProps(nodeVariableManager, borderNodeDescription, borderNodesRequestor, true, cache, this.props.getViewCreationRequests(), nodeId);
                     return new Element(NodeComponent.class, nodeComponentProps);
                 })
                 .collect(Collectors.toList());
@@ -112,7 +135,7 @@ public class NodeComponent implements IComponent {
                     List<Node> previousChildNodes = optionalPreviousNode.map(previousNode -> diagramElementRequestor.getChildNodes(previousNode, childNodeDescription))
                             .orElse(List.of());
                     INodesRequestor childNodesRequestor = new NodesRequestor(previousChildNodes);
-                    var nodeComponentProps = new NodeComponentProps(nodeVariableManager, childNodeDescription, childNodesRequestor, false, cache);
+                    var nodeComponentProps = new NodeComponentProps(nodeVariableManager, childNodeDescription, childNodesRequestor, false, cache, this.props.getViewCreationRequests(), nodeId);
                     return new Element(NodeComponent.class, nodeComponentProps);
                 })
                 .collect(Collectors.toList());

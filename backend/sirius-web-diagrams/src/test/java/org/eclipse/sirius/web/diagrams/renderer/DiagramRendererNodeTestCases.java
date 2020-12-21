@@ -195,7 +195,7 @@ public class DiagramRendererNodeTestCases {
 
         VariableManager variableManager = new VariableManager();
 
-        DiagramComponentProps props = new DiagramComponentProps(variableManager, diagramDescription, Optional.empty());
+        DiagramComponentProps props = new DiagramComponentProps(variableManager, diagramDescription, List.of(), Optional.empty());
         Element element = new Element(DiagramComponent.class, props);
         return new DiagramRenderer(this.logger).render(element);
     }

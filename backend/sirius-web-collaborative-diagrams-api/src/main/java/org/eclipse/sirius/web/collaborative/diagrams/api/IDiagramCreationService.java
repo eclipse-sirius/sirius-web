@@ -51,10 +51,10 @@ public interface IDiagramCreationService {
      *
      * @param editingContext
      *            The editing context
-     * @param previousDiagram
-     *            The diagram to refresh
+     * @param diagramContext
+     *            The diagram context
      * @return An updated diagram if we have been able to refresh it.
      */
-    Optional<Diagram> refresh(IEditingContext editingContext, Diagram previousDiagram);
+    Optional<Diagram> refresh(IEditingContext editingContext, IDiagramContext diagramContext);
 
 }

@@ -12,10 +12,13 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.spring.collaborative.diagrams;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.web.diagrams.Diagram;
+import org.eclipse.sirius.web.diagrams.ViewCreationRequest;
 
 /**
  * The implementation of {@link IDiagramContext}.
@@ -26,18 +29,25 @@ public class DiagramContext implements IDiagramContext {
 
     private Diagram diagram;
 
+    private final List<ViewCreationRequest> viewCreationRequests;
+
     public DiagramContext(Diagram initialDiagram) {
         this.diagram = Objects.requireNonNull(initialDiagram);
+        this.viewCreationRequests = new ArrayList<>();
     }
 
     @Override
     public Diagram getDiagram() {
         return this.diagram;
     }
-
+    
     @Override
     public void update(Diagram mutateDiagram) {
         this.diagram = Objects.requireNonNull(mutateDiagram);
+    }
+
+    public List<ViewCreationRequest> getViewCreationRequests() {
+        return this.viewCreationRequests;
     }
 
 }

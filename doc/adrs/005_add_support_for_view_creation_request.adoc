@@ -1,0 +1,80 @@
+= ADR-005 - Add support for view creation request
+
+== Context
+
+Sirius RCP supports Create View model operations to request the creation of the view for an unsynchronized mapping.
+Such view, defined by an unsynchronized mapping, would not appear on the diagram without this request.
+
+We want to introduce a similar concept in Sirius Components.
+Tool handlers will be able to indicate that they want to see a view created and during the next refresh, performed after the execution of said tool, it will be created.
+
+== Decision
+
+We will introduce a `ViewCreationRequest` that contains :
+
+- parentElementId: the identifier of the parent element in which the view should be created such as the diagram to create a view on the "background" of the diagram or a node to create a new view inside an existing node.
+- descriptionId: the identifier of the description to use for the creation
+- targetObjectId: the identifier of the semantic element to be displayed
+
+We will update the `IDiagramContext` API to let handlers add a `ViewCreationRequest`.
+For example, a NodeTool could create a semantic element and then use a `ViewCreationRequest` to request the creation of its matching view thanks to an unsynchronized node description.
+The diagram refresh will get the ViewCreationRequest and create the expected node.
+
+
+``` java
+public class DiagramContext implements IDiagramContext {
+  private final Diagram diagram;
+  private final List<ViewCreationRequest> viewCreationRequests;
+
+    public DiagramContext(Diagram initialDiagram) {
+        this.diagram = Objects.requireNonNull(initialDiagram);
+        this.viewCreationRequests = new ArrayList<ViewCreationRequestViewCreationRequest>();
+    }
+
+    @Override
+    public void addViewCreationRequest(ViewCreationRequest viewCreationRequest) {
+        this.viewCreationRequests.add(Objects.requireNonNull(viewCreationRequest));
+    }
+    //...
+}
+
+```
+
+We will propagate the `viewCreationRequests` list in `DiagramComponentProps` and `NodeComponentProps` to create requested nodes in `NodeComponent`.
+
+== Status
+
+Accepted.
+
+== Consequences
+
+All new unsynchronized nodes should be created thanks to a `ViewCreationRequest`.
+
+=== Stability of the identifiers
+
+In order to retrieve the diagram element in which we will create the new one, the identifier of the element must be stable over time.
+For example, if we want to create a node with an unsynchronized node description in an existing node, the existing node must have a stable identifier otherwise, we won't be able to match the identifier of the existing node with the one defined in the `ViewCreationRequest`.
+As a result, this contribution will keep stable the node identifier over time.
+It will not change the fact that this identifier is random.
+
+Another contribution will make sure that the node identifier is not random anymore, which would thus make it stable over time too.
+Both contribution will be useful for various reasons but either one will have for consequences that the various `idProvider` on Diagram, Node, Edge and label are pointless.
+This will be a good improvement since it will make it easier to perform some migration or import/export in the future.
+
+
+=== Unsynchronized edges support
+
+This contribution does not bring `ViewCreationRequest` support for edges.
+While trivial to add, it was just considered out of scope from this first contribution.
+It should be done in the future.
+
+
+=== Improvement of the consistency of our vocabulary
+
+With this contribution, we are stating that elements of the diagrams such as nodes and edges are "views" which can be created with a view creation request.
+In order to keep things consistent, 
+
+
+== References
+
+- https://www.eclipse.org/sirius/doc/specifier/diagrams/Diagrams.html#mappings

@@ -12,7 +12,10 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.collaborative.diagrams.api;
 
+import java.util.List;
+
 import org.eclipse.sirius.web.diagrams.Diagram;
+import org.eclipse.sirius.web.diagrams.ViewCreationRequest;
 
 /**
  * Information used to perform some operations on the diagram.
@@ -29,4 +32,7 @@ public interface IDiagramContext {
     Diagram getDiagram();
 
     void update(Diagram updatedDiagram);
+
+    List<ViewCreationRequest> getViewCreationRequests();
+
 }

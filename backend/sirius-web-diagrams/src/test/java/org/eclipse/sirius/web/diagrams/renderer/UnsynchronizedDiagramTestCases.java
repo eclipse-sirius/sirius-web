@@ -25,9 +25,8 @@ import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.INodeStyle;
 import org.eclipse.sirius.web.diagrams.LineStyle;
 import org.eclipse.sirius.web.diagrams.Node;
-import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.RectangularNodeStyle;
-import org.eclipse.sirius.web.diagrams.Size;
+import org.eclipse.sirius.web.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.web.diagrams.components.DiagramComponent;
 import org.eclipse.sirius.web.diagrams.components.DiagramComponentProps;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
@@ -62,58 +61,81 @@ public class UnsynchronizedDiagramTestCases {
      * <ul>
      * <li>render the diagram from scratch: only the synchronized element should appear</li>
      * <li>refresh the diagram: nothing should change</li>
-     * <li>create manually a new node and refresh this new diagram: two nodes should be visible, the synchronized one
-     * and the unsynchronized one</li>
+     * <li>create a ViewCreationRequest on a node and refresh this new diagram: two nodes should be visible, the
+     * synchronized one and the unsynchronized one</li>
      * </ul>
      */
     @Test
-    public void testUnsynchronizedRendering() {
+    public void testUnsynchronizedRenderingOnRoot() {
         DiagramDescription diagramDescription = this.getDiagramDescription();
 
-        Diagram initialDiagram = this.render(diagramDescription, Optional.empty());
+        Diagram initialDiagram = this.render(diagramDescription, List.of(), Optional.empty());
         assertThat(initialDiagram.getNodes()).hasSize(1);
 
-        Diagram refreshedDiagram = this.render(diagramDescription, Optional.of(initialDiagram));
+        Diagram refreshedDiagram = this.render(diagramDescription, List.of(), Optional.of(initialDiagram));
         assertThat(refreshedDiagram.getNodes()).hasSize(1);
 
-        Node previousNode = initialDiagram.getNodes().get(0);
-        Node newNode = this.createNode(diagramDescription, previousNode);
-
         // @formatter:off
-        Diagram modifiedDiagram = Diagram.newDiagram(initialDiagram)
-                .nodes(List.of(previousNode, newNode))
-                .build();
+        ViewCreationRequest viewCreationRequest = ViewCreationRequest.newViewCreationRequest()
+            .descriptionId(diagramDescription.getNodeDescriptions().get(0).getId())
+            .parentElementId(refreshedDiagram.getId().toString())
+            .targetObjectId(TARGET_OBJECT_ID)
+            .build();
         // @formatter:on
-
-        Diagram refreshedDiagramAfterNodeCreation = this.render(diagramDescription, Optional.of(modifiedDiagram));
+        Diagram refreshedDiagramAfterNodeCreation = this.render(diagramDescription, List.of(viewCreationRequest), Optional.of(refreshedDiagram));
         assertThat(refreshedDiagramAfterNodeCreation.getNodes()).hasSize(2);
     }
 
-    private Diagram render(DiagramDescription diagramDescription, Optional<Diagram> optionalPreviousDiagram) {
+    /**
+     * This very simple test will validate that we can add an unsynchronized node thanks to a ViewCreationRequest on a
+     * node container. We will test the following sequence of events:
+     *
+     * <ul>
+     * <li>render the diagram with two nodes (the first is unsynchronized, the second is synchronized)</li>
+     * <li>create a new node thanks to a ViewCreationRequest during a refresh diagram: a new child nodes should be
+     * visible on the first unsynchronized node children</li>
+     * </ul>
+     */
+    @Test
+    public void testUnsynchronizedRenderingOnNodeContainer() {
+        DiagramDescription diagramDescription = this.getDiagramDescription();
+
+        Diagram initialDiagram = this.render(diagramDescription, List.of(), Optional.empty());
+        // @formatter:off
+        ViewCreationRequest viewCreationRequest = ViewCreationRequest.newViewCreationRequest()
+            .descriptionId(diagramDescription.getNodeDescriptions().get(0).getId())
+            .parentElementId(initialDiagram.getId().toString())
+            .targetObjectId(TARGET_OBJECT_ID)
+            .build();
+        // @formatter:on
+        Diagram diagramAfterFirstNodeCreation = this.render(diagramDescription, List.of(viewCreationRequest), Optional.of(initialDiagram));
+        UUID descriptionId = diagramDescription.getNodeDescriptions().get(0).getChildNodeDescriptions().get(0).getId();
+        String parentNodeId = diagramAfterFirstNodeCreation.getNodes().get(0).getId();
+        // @formatter:off
+        ViewCreationRequest childViewCreationRequest = ViewCreationRequest.newViewCreationRequest()
+            .descriptionId(descriptionId)
+            .parentElementId(parentNodeId)
+            .targetObjectId(TARGET_OBJECT_ID)
+            .build();
+        // @formatter:on
+        Diagram diagramAfterSecondNodeCreation = this.render(diagramDescription, List.of(childViewCreationRequest), Optional.of(diagramAfterFirstNodeCreation));
+
+        assertThat(diagramAfterSecondNodeCreation.getNodes()).hasSize(2);
+        Node firstRootNode = diagramAfterSecondNodeCreation.getNodes().get(0);
+        assertThat(firstRootNode.getBorderNodes()).isEmpty();
+        assertThat(firstRootNode.getChildNodes()).hasSize(1);
+
+        Node secondRootNode = diagramAfterSecondNodeCreation.getNodes().get(1);
+        assertThat(secondRootNode.getBorderNodes()).isEmpty();
+        assertThat(secondRootNode.getChildNodes()).isEmpty();
+    }
+
+    private Diagram render(DiagramDescription diagramDescription, List<ViewCreationRequest> viewCreationRequests, Optional<Diagram> optionalPreviousDiagram) {
         VariableManager variableManager = new VariableManager();
-        DiagramComponentProps props = new DiagramComponentProps(variableManager, diagramDescription, optionalPreviousDiagram);
+        DiagramComponentProps props = new DiagramComponentProps(variableManager, diagramDescription, viewCreationRequests, optionalPreviousDiagram);
         Element element = new Element(DiagramComponent.class, props);
         Diagram diagram = new DiagramRenderer(this.logger).render(element);
         return diagram;
-    }
-
-    private Node createNode(DiagramDescription diagramDescription, Node previousNode) {
-        // @formatter:off
-        return Node.newNode(UUID.randomUUID().toString())
-                .type(NODE_TYPE)
-                .targetObjectId(TARGET_OBJECT_ID)
-                .targetObjectKind("") //$NON-NLS-1$
-                .targetObjectLabel("") //$NON-NLS-1$
-                .descriptionId(diagramDescription.getNodeDescriptions().get(0).getId())
-                .borderNode(false)
-                .label(previousNode.getLabel())
-                .style(previousNode.getStyle())
-                .position(Position.UNDEFINED)
-                .size(Size.UNDEFINED)
-                .borderNodes(List.of())
-                .childNodes(List.of())
-                .build();
-        // @formatter:on
     }
 
     private DiagramDescription getDiagramDescription() {
@@ -143,7 +165,7 @@ public class UnsynchronizedDiagramTestCases {
                     .build();
         };
 
-        NodeDescription unsynchronizedNodeDescription = NodeDescription.newNodeDescription(UUID.nameUUIDFromBytes("unsynchronized".getBytes())) //$NON-NLS-1$
+        NodeDescription subUnsynchronizedNodeDescription = NodeDescription.newNodeDescription(UUID.nameUUIDFromBytes("subUnsynchronized".getBytes())) //$NON-NLS-1$
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
                 .idProvider(variableManager -> UUID.randomUUID().toString())
                 .typeProvider(variableManager -> NODE_TYPE)
@@ -155,6 +177,21 @@ public class UnsynchronizedDiagramTestCases {
                 .styleProvider(styleProvider)
                 .borderNodeDescriptions(new ArrayList<>())
                 .childNodeDescriptions(new ArrayList<>())
+                .labelEditHandler((variableManager, newLabel) -> Status.OK)
+                .deleteHandler(variableManager -> Status.OK)
+                .build();
+        NodeDescription unsynchronizedNodeDescription = NodeDescription.newNodeDescription(UUID.nameUUIDFromBytes("unsynchronized".getBytes())) //$NON-NLS-1$
+                .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
+                .idProvider(variableManager -> UUID.randomUUID().toString())
+                .typeProvider(variableManager -> NODE_TYPE)
+                .semanticElementsProvider(variableManager -> List.of(new Object()))
+                .targetObjectIdProvider(variableManager -> TARGET_OBJECT_ID)
+                .targetObjectKindProvider(variableManager -> "") //$NON-NLS-1$
+                .targetObjectLabelProvider(variableManager -> "")//$NON-NLS-1$
+                .labelDescription(labelDescription)
+                .styleProvider(styleProvider)
+                .borderNodeDescriptions(new ArrayList<>())
+                .childNodeDescriptions(List.of(subUnsynchronizedNodeDescription))
                 .labelEditHandler((variableManager, newLabel) -> Status.OK)
                 .deleteHandler(variableManager -> Status.OK)
                 .build();

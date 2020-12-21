@@ -68,7 +68,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
 
         // We automatically refresh the representation before using it since things may have changed since the moment it
         // has been saved in the database. This is quite similar to the auto-refresh on loading in Sirius.
-        Diagram diagram = this.diagramCreationService.refresh(editingContext, diagramContext.getDiagram()).orElse(null);
+        Diagram diagram = this.diagramCreationService.refresh(editingContext, diagramContext).orElse(null);
         diagramContext.update(diagram);
         this.diagramEventFlux = new DiagramEventFlux(diagram);
     }
@@ -118,7 +118,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
 
     @Override
     public void refresh() {
-        Diagram refreshedDiagram = this.diagramCreationService.refresh(this.editingContext, this.diagramContext.getDiagram()).orElse(null);
+        Diagram refreshedDiagram = this.diagramCreationService.refresh(this.editingContext, this.diagramContext).orElse(null);
         this.diagramContext.update(refreshedDiagram);
         this.diagramEventFlux.diagramRefreshed(refreshedDiagram);
     }

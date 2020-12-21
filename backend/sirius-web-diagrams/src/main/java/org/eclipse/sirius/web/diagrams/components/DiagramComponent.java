@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 
 import org.eclipse.sirius.web.components.Element;
 import org.eclipse.sirius.web.components.IComponent;
+import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.Size;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
@@ -47,7 +48,7 @@ public class DiagramComponent implements IComponent {
 
         String label = diagramDescription.getLabelProvider().apply(variableManager);
 
-        UUID diagramId = diagramDescription.getIdProvider().apply(variableManager);
+        UUID diagramId = optionalPreviousDiagram.map(Diagram::getId).orElseGet(() -> diagramDescription.getIdProvider().apply(variableManager));
         String targetObjectId = diagramDescription.getTargetObjectIdProvider().apply(variableManager);
 
         DiagramRenderingCache cache = new DiagramRenderingCache();
@@ -59,7 +60,7 @@ public class DiagramComponent implements IComponent {
                     var previousNodes = optionalPreviousDiagram.map(previousDiagram -> diagramElementRequestor.getRootNodes(previousDiagram, nodeDescription))
                             .orElse(List.of());
                     INodesRequestor nodesRequestor = new NodesRequestor(previousNodes);
-                    var nodeComponentProps = new NodeComponentProps(variableManager, nodeDescription, nodesRequestor, false, cache);
+                    var nodeComponentProps = new NodeComponentProps(variableManager, nodeDescription, nodesRequestor, false, cache, this.props.getViewCreationRequests(), diagramId.toString());
                     return new Element(NodeComponent.class, nodeComponentProps);
                 })
                 .collect(Collectors.toList());
