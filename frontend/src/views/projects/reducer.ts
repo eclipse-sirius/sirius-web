@@ -11,14 +11,14 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import {
-  machine,
-  LOADING__STATE,
   EMPTY__STATE,
   ERROR__STATE,
-  LOADED__STATE,
   HANDLE_ERROR_FETCHING_PROJECTS__ACTION,
   HANDLE_FETCHED_PROJECTS__ACTION,
   HANDLE_PROJECTS_UPDATED__ACTION,
+  LOADED__STATE,
+  LOADING__STATE,
+  machine,
 } from './machine';
 
 export const initialState = {
@@ -49,7 +49,7 @@ export const reducer = (prevState, action) => {
   }
 
   const newSupportedStates = supportedActions[action.type];
-  if (newSupportedStates.indexOf(state.viewState) === -1) {
+  if (!newSupportedStates || newSupportedStates.indexOf(state.viewState) === -1) {
     console.error(`The state ${state.viewState} should not be accessible with the action ${action.type}`);
   }
   return state;
