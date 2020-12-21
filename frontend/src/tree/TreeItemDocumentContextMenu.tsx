@@ -14,11 +14,12 @@ import { httpOrigin } from 'common/URL';
 import { ContextMenu, Entry, LEFT_START, Separator } from 'core/contextmenu/ContextMenu';
 import { Delete, Edit } from 'icons';
 import { Permission } from 'project/Permission';
-import { useProject } from 'project/ProjectProvider';
 import PropTypes from 'prop-types';
 import React from 'react';
 
 const propTypes = {
+  projectId: PropTypes.string.isRequired,
+  documentId: PropTypes.string.isRequired,
   x: PropTypes.number.isRequired,
   y: PropTypes.number.isRequired,
   onNewObject: PropTypes.func.isRequired,
@@ -29,6 +30,7 @@ const propTypes = {
 };
 
 export const TreeItemDocumentContextMenu = ({
+  projectId,
   documentId,
   x,
   y,
@@ -38,8 +40,6 @@ export const TreeItemDocumentContextMenu = ({
   onDeleteDocument,
   onClose,
 }) => {
-  const { id: projectId } = useProject() as any;
-
   return (
     <ContextMenu x={x} y={y} caretPosition={LEFT_START} onClose={onClose} data-testid="treeitemdocument-contextmenu">
       <Permission requiredAccessLevel="EDIT">

@@ -18,16 +18,16 @@ import { generatePath, useHistory, useParams, useRouteMatch } from 'react-router
 import { EditProjectLoadedView } from 'views/edit-project/EditProjectLoadedView';
 import {
   HANDLE_FETCHED_PROJECT__ACTION,
-  HANDLE_REPRESENTATION_RENAMED__ACTION,
   HANDLE_REPRESENTATION_LOADED__ACTION,
+  HANDLE_REPRESENTATION_RENAMED__ACTION,
   HANDLE_SELECTION__ACTION,
   HANDLE_SUBSCRIBERS_UPDATED__ACTION,
   LOADING__STATE,
+  PROJECT_AND_REPRESENTATION_LOADING__STATE,
   PROJECT_FETCHING_ERROR__STATE,
   PROJECT_NOT_FOUND__STATE,
-  PROJECT_AND_REPRESENTATION_LOADING__STATE,
 } from 'views/edit-project/machine';
-import { initialState, initialLoadingState, reducer } from 'views/edit-project/reducer';
+import { initialLoadingState, initialState, reducer } from 'views/edit-project/reducer';
 import { ErrorView } from 'views/ErrorView';
 
 const getRepresentationQuery = gql`
@@ -127,20 +127,12 @@ export const EditProjectView = () => {
     [dispatch]
   );
 
-  /**
-   * Connect to the WebSocket server to retrieve updates when the component is ready. This will only be
-   * performed once the project has been loaded with useProject() and its ID (contextId) has been retrieved.
-   * Indeed, this useEffect() hook is called each time contextId is updated.
-   * The first time useProject() is called, contextId is set to 'undefined', and this useEffect() is then called. -> We don't want to subscribe.
-   * The second time useProject() is called, contextId is set with the project ID, and this useEffect() is then called. -> We want to subscribe.
-   */
   useSubscription(projectEventSubscription, {
     variables: {
       input: {
-        projectId: contextId,
+        projectId,
       },
     },
-    fetchPolicy: 'no-cache',
     skip: !contextId,
     onSubscriptionData: ({ subscriptionData }) => {
       if (subscriptionData?.data?.projectEvent) {
@@ -151,7 +143,6 @@ export const EditProjectView = () => {
         }
       }
     },
-    shouldResubscribe: ({ variables: { input } }) => input.projectId !== contextId,
   });
 
   const setSubscribers = useCallback(

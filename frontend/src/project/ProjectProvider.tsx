@@ -77,7 +77,6 @@ const ProjectProvider = ({ children }) => {
         projectId: state.id,
       },
     },
-    fetchPolicy: 'no-cache',
     skip: !state.id,
     onSubscriptionData: ({ subscriptionData }) => {
       if (subscriptionData.data.projectEvent) {
@@ -89,7 +88,6 @@ const ProjectProvider = ({ children }) => {
         }
       }
     },
-    shouldResubscribe: ({ variables: { input } }) => input.projectId !== state.id,
   });
 
   return <ProjectContext.Provider value={state}>{children}</ProjectContext.Provider>;

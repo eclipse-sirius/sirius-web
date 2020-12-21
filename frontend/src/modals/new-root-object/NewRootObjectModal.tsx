@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useQuery, useLazyQuery, useMutation } from '@apollo/client';
+import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import { ActionButton, Buttons } from 'core/button/Button';
 import { Checkbox } from 'core/checkbox/Checkbox';
 import { Form } from 'core/form/Form';
@@ -102,7 +102,7 @@ export const NewRootObjectModal = ({ projectId, documentId, onObjectCreated, onC
   const [
     getRootObjectCreationDescriptions,
     { loading: descriptionsLoading, data: descriptionsResult, error: descriptionError },
-  ] = useLazyQuery(getRootObjectCreationDescriptionsQuery, { fetchPolicy: 'no-cache' });
+  ] = useLazyQuery(getRootObjectCreationDescriptionsQuery);
   useEffect(() => {
     if (selectedNamespaceId) {
       getRootObjectCreationDescriptions({

@@ -46,11 +46,7 @@ const treeLoadedWithErrorState = {
   message: 'An error has occured while retrieving the content from the server',
 };
 
-const errorMessage = {
-  type: 'error',
-  id: '42',
-  payload: 'An error has occured while retrieving the content from the server',
-};
+const errorMessage = 'An error has occured while retrieving the content from the server';
 
 const completeMessage = {
   type: 'complete',
@@ -59,15 +55,13 @@ const completeMessage = {
 const treeRefreshEventPayloadMessage = {
   type: 'data',
   id: '42',
-  payload: {
-    data: {
-      treeEvent: {
-        __typename: 'TreeRefreshedEventPayload',
-        tree: {
-          id: 'tree',
-          label: 'Project',
-          children: [],
-        },
+  data: {
+    treeEvent: {
+      __typename: 'TreeRefreshedEventPayload',
+      tree: {
+        id: 'tree',
+        label: 'Project',
+        children: [],
       },
     },
   },
@@ -114,7 +108,7 @@ describe('ExplorerWebSocketContainer - reducer', () => {
       tree: undefined,
       expanded: [],
       maxDepth: 1,
-      message: message.payload,
+      message: message,
       modal: undefined,
     });
   });
@@ -127,7 +121,7 @@ describe('ExplorerWebSocketContainer - reducer', () => {
 
     expect(state).toStrictEqual({
       viewState: TREE_LOADED__STATE,
-      tree: message.payload.data.treeEvent.tree,
+      tree: message.data.treeEvent.tree,
       expanded: [],
       maxDepth: 1,
       message: '',
@@ -143,7 +137,7 @@ describe('ExplorerWebSocketContainer - reducer', () => {
 
     expect(state).toStrictEqual({
       viewState: TREE_LOADED__STATE,
-      tree: message.payload.data.treeEvent.tree,
+      tree: message.data.treeEvent.tree,
       expanded: [],
       maxDepth: 1,
       message: '',
@@ -162,7 +156,7 @@ describe('ExplorerWebSocketContainer - reducer', () => {
       tree: prevState.tree,
       expanded: prevState.expanded,
       maxDepth: prevState.maxDepth,
-      message: message.payload,
+      message: message,
       modal: undefined,
     });
   });
@@ -175,7 +169,7 @@ describe('ExplorerWebSocketContainer - reducer', () => {
 
     expect(state).toStrictEqual({
       viewState: TREE_LOADED__STATE,
-      tree: message.payload.data.treeEvent.tree,
+      tree: message.data.treeEvent.tree,
       expanded: [],
       maxDepth: 1,
       message: '',

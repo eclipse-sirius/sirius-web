@@ -10,8 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GraphQLClient } from 'common/GraphQLClient';
-import { Buttons, ActionButton } from 'core/button/Button';
+import { sendFile } from 'common/sendFile';
+import { ActionButton, Buttons } from 'core/button/Button';
 import { FileUpload } from 'core/file-upload/FileUpload';
 import { Form } from 'core/form/Form';
 import gql from 'graphql-tag';
@@ -24,7 +24,7 @@ import {
 } from 'modals/upload-document/machine';
 import { initialState, reducer } from 'modals/upload-document/reducer';
 import PropTypes from 'prop-types';
-import React, { useContext, useEffect, useReducer } from 'react';
+import React, { useEffect, useReducer } from 'react';
 
 const uploadDocumentMutationFile = gql`
   mutation uploadDocument($input: UploadDocumentInput!) {
@@ -48,7 +48,6 @@ const propTypes = {
   onClose: PropTypes.func.isRequired,
 };
 export const UploadDocumentModal = ({ projectId, onDocumentUploaded, onClose }) => {
-  const { graphQLHttpClient } = useContext(GraphQLClient);
   const [state, dispatch] = useReducer(reducer, initialState);
   const { viewState, file } = state;
 
@@ -63,7 +62,7 @@ export const UploadDocumentModal = ({ projectId, onDocumentUploaded, onClose }) 
       },
     };
     try {
-      const response = await graphQLHttpClient.sendFile(uploadDocumentMutation, variables, file);
+      const response = await sendFile(uploadDocumentMutation, variables, file);
       const action = { type: HANDLE_SUBMIT_ACTION, response };
       dispatch(action);
     } catch (exception) {

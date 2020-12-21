@@ -39,7 +39,7 @@ export const RepresentationArea = ({
 }) => {
   let content;
   if (!displayedRepresentation) {
-    content = <OnboardArea selection={selection} setSelection={setSelection} />;
+    content = <OnboardArea projectId={projectId} selection={selection} setSelection={setSelection} />;
   } else if (displayedRepresentation.kind === 'Diagram') {
     content = (
       <DiagramWebSocketContainer
@@ -52,7 +52,7 @@ export const RepresentationArea = ({
       />
     );
   } else if (displayedRepresentation.kind === 'Form') {
-    content = <FormWebSocketContainer formId={displayedRepresentation.id} />;
+    content = <FormWebSocketContainer projectId={projectId} formId={displayedRepresentation.id} />;
   } else {
     content = <Text className={styles.text}>Invalid representation type ${displayedRepresentation.kind}</Text>;
   }

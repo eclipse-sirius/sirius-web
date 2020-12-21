@@ -21,7 +21,6 @@ import { DeleteDocumentModal } from 'modals/delete-document/DeleteDocumentModal'
 import { NewObjectModal } from 'modals/new-object/NewObjectModal';
 import { NewRepresentationModal } from 'modals/new-representation/NewRepresentationModal';
 import { NewRootObjectModal } from 'modals/new-root-object/NewRootObjectModal';
-import { useProject } from 'project/ProjectProvider';
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
 import { TreeItemDiagramContextMenu } from 'tree/TreeItemDiagramContextMenu';
@@ -129,7 +128,7 @@ const propTypes = {
   setSelection: PropTypes.func.isRequired,
 };
 
-export const TreeItem = ({ item, depth, onExpand, selection, setSelection }) => {
+export const TreeItem = ({ projectId, item, depth, onExpand, selection, setSelection }) => {
   const initialState = {
     modalDisplayed: null,
     x: 0,
@@ -140,7 +139,6 @@ export const TreeItem = ({ item, depth, onExpand, selection, setSelection }) => 
     prevSelectionId: null,
   };
   const [state, setState] = useState(initialState);
-  const { id: projectId } = useProject() as any;
   const [deleteObject] = useMutation(deleteObjectMutation);
   const [deleteRepresentation] = useMutation(deleteRepresentationMutation);
   const refDom = useRef() as any;
@@ -292,6 +290,7 @@ export const TreeItem = ({ item, depth, onExpand, selection, setSelection }) => 
         });
       contextMenu = (
         <TreeItemDocumentContextMenu
+          projectId={projectId}
           documentId={item.id}
           x={x}
           y={y}
@@ -584,6 +583,7 @@ export const TreeItem = ({ item, depth, onExpand, selection, setSelection }) => 
           return (
             <li key={childItem.id}>
               <TreeItem
+                projectId={projectId}
                 item={childItem}
                 depth={depth + 1}
                 onExpand={onExpand}
