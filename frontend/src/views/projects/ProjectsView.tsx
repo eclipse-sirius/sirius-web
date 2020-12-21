@@ -65,7 +65,7 @@ export const ProjectsView = () => {
   }, [projectsLoading, projectsData, projectsError]);
 
   // Setup callback to update project list when invoked
-  const [getProjects, { loading, error, data }] = useLazyQuery(getProjectsQuery, { fetchPolicy: 'no-cache' });
+  const [getProjects, { loading, error, data }] = useLazyQuery(getProjectsQuery);
   useEffect(() => {
     if (!loading) {
       if (error) {

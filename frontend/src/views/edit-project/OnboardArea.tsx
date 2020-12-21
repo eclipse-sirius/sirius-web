@@ -16,7 +16,6 @@ import { NewDocumentArea } from 'onboarding/NewDocumentArea';
 import { NewRepresentationArea } from 'onboarding/NewRepresentationArea';
 import { RepresentationsArea } from 'onboarding/RepresentationsArea';
 import { Permission } from 'project/Permission';
-import { useProject } from 'project/ProjectProvider';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import styles from './OnboardArea.module.css';
@@ -60,8 +59,7 @@ const INITIAL_STATE = {
   representations: [],
 };
 
-export const OnboardArea = ({ selection, setSelection }) => {
-  const { id } = useProject() as any;
+export const OnboardArea = ({ projectId, selection, setSelection }) => {
   const [state, setState] = useState(INITIAL_STATE);
   const { stereotypeDescriptions, representationDescriptions, representations } = state;
 
@@ -69,8 +67,8 @@ export const OnboardArea = ({ selection, setSelection }) => {
 
   const [getOnboardData, { loading, data, error }] = useLazyQuery(getOnboardDataQuery);
   useEffect(() => {
-    getOnboardData({ variables: { projectId: id, classId } });
-  }, [id, classId, getOnboardData]);
+    getOnboardData({ variables: { projectId, classId } });
+  }, [projectId, classId, getOnboardData]);
   useEffect(() => {
     if (!loading && !error && data?.viewer) {
       const { viewer } = data;
@@ -81,7 +79,7 @@ export const OnboardArea = ({ selection, setSelection }) => {
         representationDescriptions,
       });
     }
-  }, [id, classId, loading, data, error]);
+  }, [projectId, classId, loading, data, error]);
 
   return (
     <div className={styles.onboardArea}>
@@ -89,7 +87,7 @@ export const OnboardArea = ({ selection, setSelection }) => {
         <Permission requiredAccessLevel="EDIT">
           <NewDocumentArea
             stereotypeDescriptions={stereotypeDescriptions}
-            projectId={id}
+            projectId={projectId}
             setSelection={setSelection}
             maxDisplay={MAX_DISPLAY}
           />
@@ -97,18 +95,13 @@ export const OnboardArea = ({ selection, setSelection }) => {
         <Permission requiredAccessLevel="EDIT">
           <NewRepresentationArea
             representationDescriptions={representationDescriptions}
-            projectId={id}
+            projectId={projectId}
             selection={selection}
             setSelection={setSelection}
             maxDisplay={MAX_DISPLAY}
           />
         </Permission>
-        <RepresentationsArea
-          representations={representations}
-          // projectId={id} TODO RepresentationsArea has no such prop
-          setSelection={setSelection}
-          maxDisplay={MAX_DISPLAY}
-        />
+        <RepresentationsArea representations={representations} setSelection={setSelection} maxDisplay={MAX_DISPLAY} />
       </div>
     </div>
   );

@@ -31,12 +31,12 @@ import { Redirect } from 'react-router-dom';
 import styles from './EditProjectNavbar.module.css';
 import {
   CONTEXTUAL_MENU_DISPLAYED__STATE,
+  EMPTY__STATE,
   HANDLE_CLOSE_CONTEXT_MENU__ACTION,
   HANDLE_CLOSE_MODAL__ACTION,
   HANDLE_REDIRECTING__ACTION,
   HANDLE_SHOW_CONTEXT_MENU__ACTION,
   HANDLE_SHOW_MODAL__ACTION,
-  EMPTY__STATE,
   REDIRECT__STATE,
 } from './machine';
 import { initialState, reducer } from './reducer';
@@ -87,6 +87,7 @@ export const EditProjectNavbar = ({ subscribers }) => {
       <EditProjectNavbarContextMenu
         x={x}
         y={y}
+        projectId={id}
         onCreateDocument={onCreateDocument}
         onUploadDocument={onUploadDocument}
         onRename={onRename}

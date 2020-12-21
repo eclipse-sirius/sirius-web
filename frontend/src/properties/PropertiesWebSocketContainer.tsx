@@ -13,7 +13,6 @@
 import { useSubscription } from '@apollo/client';
 import { Text } from 'core/text/Text';
 import gql from 'graphql-tag';
-import { useProject } from 'project/ProjectProvider';
 import {
   HANDLE_COMPLETE__ACTION,
   HANDLE_DATA__ACTION,
@@ -109,11 +108,9 @@ const propertiesEventSubscription = gql`
 /**
  * Connect the Properties component to the GraphQL API over Web Socket.
  */
-export const PropertiesWebSocketContainer = ({ objectId }) => {
+export const PropertiesWebSocketContainer = ({ projectId, objectId }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { viewState, form, displayedObjectId, subscribers, widgetSubscriptions, message } = state;
-
-  const { id } = useProject() as any;
 
   /**
    * Displays an other form if the selection indicates that we should display another properties view.
@@ -133,17 +130,15 @@ export const PropertiesWebSocketContainer = ({ objectId }) => {
   const { error } = useSubscription(propertiesEventSubscription, {
     variables: {
       input: {
-        projectId: id,
+        projectId,
         objectId,
       },
     },
-    fetchPolicy: 'no-cache',
     skip: viewState !== READY__STATE,
     onSubscriptionData: ({ subscriptionData }) => {
       dispatch({ type: HANDLE_DATA__ACTION, message: subscriptionData });
     },
     onSubscriptionComplete: () => dispatch({ type: HANDLE_COMPLETE__ACTION }),
-    shouldResubscribe: ({ variables: { input } }) => input.projectId !== id || input.objectId !== objectId,
   });
   if (error) {
     dispatch({ type: HANDLE_ERROR__ACTION, message: error });
@@ -158,7 +153,12 @@ export const PropertiesWebSocketContainer = ({ objectId }) => {
     );
   } else {
     view = (
-      <Properties projectId={id} form={form} subscribers={subscribers} widgetSubscriptions={widgetSubscriptions} />
+      <Properties
+        projectId={projectId}
+        form={form}
+        subscribers={subscribers}
+        widgetSubscriptions={widgetSubscriptions}
+      />
     );
   }
   return view;

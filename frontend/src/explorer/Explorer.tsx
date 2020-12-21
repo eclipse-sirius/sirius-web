@@ -22,10 +22,10 @@ const propTypes = {
   setSelection: PropTypes.func.isRequired,
 };
 
-export const Explorer = ({ tree, onExpand, selection, setSelection }) => {
+export const Explorer = ({ projectId, tree, onExpand, selection, setSelection }) => {
   return (
     <div className={styles.explorer} data-testid="explorer">
-      <Tree tree={tree} onExpand={onExpand} selection={selection} setSelection={setSelection} />
+      <Tree projectId={projectId} tree={tree} onExpand={onExpand} selection={selection} setSelection={setSelection} />
     </div>
   );
 };

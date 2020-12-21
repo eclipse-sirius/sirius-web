@@ -16,11 +16,11 @@ import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
-import { GraphQLClient } from 'common/GraphQLClient';
+import { sendFile } from 'common/sendFile';
 import { FileUpload } from 'core/file-upload/FileUpload';
 import { Form } from 'core/form/Form';
 import gql from 'graphql-tag';
-import React, { useContext } from 'react';
+import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { FormContainer } from 'views/FormContainer';
 import { View } from 'views/View';
@@ -57,7 +57,6 @@ const useUploadProjectViewStyles = makeStyles((theme) => ({
 
 export const UploadProjectView = () => {
   const classes = useUploadProjectViewStyles();
-  const { graphQLHttpClient } = useContext(GraphQLClient);
   const [{ value, context }, dispatch] = useMachine<UploadProjectViewContext, UploadProjectEvent>(uploadProjectMachine);
   const { uploadProjectView, toast } = value as SchemaValue;
   const { file, newProjectId, message } = context;
@@ -72,7 +71,7 @@ export const UploadProjectView = () => {
 
     try {
       dispatch({ type: 'HANDLE_UPLOAD' });
-      const response = await graphQLHttpClient.sendFile(uploadProjectMutation, variables, file);
+      const response = await sendFile(uploadProjectMutation, variables, file);
       const { data, error } = response as any;
       if (error) {
         dispatch({ type: 'SHOW_TOAST', message: 'An unexpected error has occurred, please refresh the page' });

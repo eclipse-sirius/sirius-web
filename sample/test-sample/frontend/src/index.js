@@ -10,18 +10,17 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GraphQLClient, graphQLHttpClient, graphQLWebSocketClient } from '@eclipse-sirius/sirius-components';
 import { ApolloProvider } from '@apollo/client';
 import { ApolloGraphQLClient } from 'ApolloGraphQLClient';
 import { Main } from 'main/Main';
-import React, { StrictMode } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
-import styles from './index.module.css';
 import './fonts.css';
+import styles from './index.module.css';
 import './reset.css';
-import './variables.css';
 import './Sprotty.css';
+import './variables.css';
 
 /**
  * Entry point of the frontend, defines the main layout of the application.
@@ -38,13 +37,9 @@ export const App = () => {
 
 ReactDOM.render(
   <ApolloProvider client={ApolloGraphQLClient}>
-    <GraphQLClient.Provider value={{ graphQLHttpClient, graphQLWebSocketClient }}>
-      <BrowserRouter>
-        <StrictMode>
-          <App />
-        </StrictMode>
-      </BrowserRouter>
-    </GraphQLClient.Provider>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </ApolloProvider>,
   document.getElementById('root')
 );
