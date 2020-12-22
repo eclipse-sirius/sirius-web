@@ -36,7 +36,21 @@ const splitLink = split(
   httpLink
 );
 
+const defaultOptions = {
+  watchQuery: {
+    fetchPolicy: 'no-cache'
+  },
+  query: {
+    fetchPolicy: 'no-cache'
+  },
+  mutate: {
+    fetchPolicy: 'no-cache'
+  }
+};
+
 export const ApolloGraphQLClient = new ApolloClient({
   link: splitLink,
-  cache: new InMemoryCache()
+  cache: new InMemoryCache(),
+  connectToDevTools: true,
+  defaultOptions
 });

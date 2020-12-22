@@ -11,7 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { ApolloProvider } from '@apollo/client';
-import { GraphQLClient, graphQLHttpClient, graphQLWebSocketClient } from '@eclipse-sirius/sirius-components';
 import purple from '@material-ui/core/colors/purple';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
@@ -35,16 +34,14 @@ const theme = createMuiTheme({
 
 ReactDOM.render(
   <ApolloProvider client={ApolloGraphQLClient}>
-    <GraphQLClient.Provider value={{ graphQLHttpClient, graphQLWebSocketClient }}>
-      <BrowserRouter>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <div className={styles.app}>
-            <Main />
-          </div>
-        </ThemeProvider>
-      </BrowserRouter>
-    </GraphQLClient.Provider>
+    <BrowserRouter>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <div className={styles.app}>
+          <Main />
+        </div>
+      </ThemeProvider>
+    </BrowserRouter>
   </ApolloProvider>,
   document.getElementById('root')
 );
