@@ -10,24 +10,21 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import React, { StrictMode } from 'react';
-import ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
-
 import { ApolloProvider } from '@apollo/client';
 import { GraphQLClient, graphQLHttpClient, graphQLWebSocketClient } from '@eclipse-sirius/sirius-components';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import purple from '@material-ui/core/colors/purple';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { ApolloGraphQLClient } from 'ApolloGraphQLClient';
 import { Main } from 'main/Main';
-
-import styles from './index.module.css';
-
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { BrowserRouter } from 'react-router-dom';
 import './fonts.css';
+import styles from './index.module.css';
 import './reset.css';
-import './variables.css';
 import './Sprotty.css';
+import './variables.css';
 
 const theme = createMuiTheme({
   palette: {
@@ -41,12 +38,10 @@ ReactDOM.render(
     <GraphQLClient.Provider value={{ graphQLHttpClient, graphQLWebSocketClient }}>
       <BrowserRouter>
         <ThemeProvider theme={theme}>
-          <StrictMode>
-            <CssBaseline />
-            <div className={styles.app}>
-              <Main />
-            </div>
-          </StrictMode>
+          <CssBaseline />
+          <div className={styles.app}>
+            <Main />
+          </div>
         </ThemeProvider>
       </BrowserRouter>
     </GraphQLClient.Provider>
