@@ -11,12 +11,14 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
-import { ActionButton, Buttons } from 'core/button/Button';
-import { Form } from 'core/form/Form';
-import { Label } from 'core/label/Label';
-import { Textfield } from 'core/textfield/Textfield';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import TextField from '@material-ui/core/TextField';
 import gql from 'graphql-tag';
-import { Modal } from 'modals/Modal';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 
@@ -109,22 +111,31 @@ export const RenameProjectModal = ({ projectId, initialProjectName, onProjectRen
   };
 
   return (
-    <Modal title="Rename the project" onClose={onClose}>
-      <Form onSubmit={onRenameProject}>
-        <Label value="Name">
-          <Textfield
-            name="name"
-            placeholder="Enter the new project name"
-            value={name}
-            onChange={onNewName}
-            data-testid="name"
-          />
-        </Label>
-        <Buttons>
-          <ActionButton type="submit" disabled={!isValid} label="Rename" data-testid="rename-project" />
-        </Buttons>
-      </Form>
-    </Modal>
+    <Dialog open={true} onClose={onClose} aria-labelledby="form-dialog-title">
+      <DialogTitle id="dialog-title">Rename the project</DialogTitle>
+      <DialogContent>
+        <DialogContentText></DialogContentText>
+        <TextField
+          autoFocus
+          label="Name"
+          placeholder="Enter the new project name"
+          value={name}
+          onChange={onNewName}
+          data-testid="name"
+          fullWidth
+        />
+      </DialogContent>
+      <DialogActions>
+        <Button
+          variant="contained"
+          disabled={!isValid}
+          onClick={onRenameProject}
+          color="primary"
+          data-testid="rename-project">
+          Rename
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 };
 RenameProjectModal.propTypes = propTypes;

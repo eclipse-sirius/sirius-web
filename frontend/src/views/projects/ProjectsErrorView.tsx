@@ -10,23 +10,33 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Text } from 'core/text/Text';
+import { makeStyles } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { View } from 'views/View';
-import styles from './ProjectsErrorView.module.css';
 import { ProjectsViewContainer } from './ProjectsViewContainer';
 
 const propTypes = {
   message: PropTypes.string.isRequired,
 };
-
+const useStyles = makeStyles((theme) => ({
+  errorMessage: {
+    display: 'grid',
+    gridTemplateColumns: '1fr',
+    gridTemplateRows: '1fr',
+    justifyItems: 'center',
+    paddingTop: theme.spacing(8),
+    paddingBottom: theme.spacing(8),
+  },
+}));
 export const ProjectsErrorView = ({ message }) => {
+  const classes = useStyles();
   return (
     <View>
       <ProjectsViewContainer>
-        <div className={styles.errorMessage}>
-          <Text className={styles.message}>{message}</Text>
+        <div className={classes.errorMessage}>
+          <Typography>{message}</Typography>
         </div>
       </ProjectsViewContainer>
     </View>

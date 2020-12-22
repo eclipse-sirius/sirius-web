@@ -11,14 +11,17 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DeleteIcon from '@material-ui/icons/Delete';
 import { Banner } from 'core/banner/Banner';
-import { Buttons, DangerButton } from 'core/button/Button';
-import { Text } from 'core/text/Text';
 import gql from 'graphql-tag';
-import { Modal } from 'modals/Modal';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
-import styles from './DeleteProjectModal.module.css';
 
 const deleteProjectMutation = gql`
   mutation deleteProject($input: DeleteProjectInput!) {
@@ -75,19 +78,28 @@ export const DeleteProjectModal = ({ projectId, onProjectDeleted, onClose }) => 
     bannerContent = <Banner data-testid="banner" content={errorMessage} />;
   }
   return (
-    <Modal title="Delete the project" onClose={onClose}>
-      <div className={styles.container}>
-        <div className={styles.content}>
-          <Text className={styles.subtitle}>
-            This action will delete everything in the project, it cannot be reversed.
-          </Text>
-          <div className={styles.bannerArea}>{bannerContent}</div>
-        </div>
-        <Buttons>
-          <DangerButton type="button" onClick={onDeleteProject} label="Delete" data-testid="delete-project" />
-        </Buttons>
-      </div>
-    </Modal>
+    <Dialog open={true} onClose={onClose} aria-labelledby="form-dialog-title">
+      <DialogTitle id="form-dialog-title">Delete the project</DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+          This action will delete everything in the project, it cannot be reversed.
+          <div>{bannerContent}</div>
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button variant="contained" onClick={onClose} color="primary">
+          Cancel
+        </Button>
+        <Button
+          variant="contained"
+          color="secondary"
+          startIcon={<DeleteIcon />}
+          onClick={onDeleteProject}
+          data-testid="delete-project">
+          Delete
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 };
 DeleteProjectModal.propTypes = propTypes;

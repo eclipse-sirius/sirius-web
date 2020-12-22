@@ -11,22 +11,21 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useLazyQuery, useQuery } from '@apollo/client';
+import { useMachine } from '@xstate/react';
 import gql from 'graphql-tag';
-import React, { useEffect, useReducer } from 'react';
-import {
-  EMPTY__STATE,
-  ERROR__STATE,
-  HANDLE_ERROR_FETCHING_PROJECTS__ACTION,
-  HANDLE_FETCHED_PROJECTS__ACTION,
-  HANDLE_PROJECTS_UPDATED__ACTION,
-  LOADED__STATE,
-  LOADING__STATE,
-} from './machine';
+import React, { useEffect } from 'react';
 import { ProjectsEmptyView } from './ProjectsEmptyView';
 import { ProjectsErrorView } from './ProjectsErrorView';
 import { ProjectsLoadedView } from './ProjectsLoadedView';
 import { ProjectsLoadingView } from './ProjectsLoadingView';
-import { initialState, reducer } from './reducer';
+import {
+  ErrorFetchingEvent,
+  FetchedProjectsEvent,
+  ProjectstUpdatedEvent,
+  ProjectsViewContext,
+  ProjectsViewEvent,
+  projectsViewMachine,
+} from './ProjectsViewMachine';
 
 const getProjectsQuery = gql`
   query getProjects {
@@ -49,45 +48,51 @@ const getProjectsQuery = gql`
  * @author sbegaudeau
  */
 export const ProjectsView = () => {
-  const [state, dispatch] = useReducer(reducer, initialState);
-  const { viewState, projects, message } = state;
+  const [{ value, context }, dispatch] = useMachine<ProjectsViewContext, ProjectsViewEvent>(projectsViewMachine);
+  const { projects, message } = context;
 
   // Load current project list
   const { loading: projectsLoading, data: projectsData, error: projectsError } = useQuery(getProjectsQuery);
   useEffect(() => {
     if (!projectsLoading) {
       if (projectsError) {
-        dispatch({ type: HANDLE_ERROR_FETCHING_PROJECTS__ACTION, error: projectsError });
+        const errorFetching = { type: 'ERROR_FETCHING', message: projectsError.message } as ErrorFetchingEvent;
+        dispatch(errorFetching);
       } else if (projectsData) {
-        dispatch({ type: HANDLE_FETCHED_PROJECTS__ACTION, response: projectsData });
+        let { projects } = projectsData?.viewer;
+        const fetchedProjects = { type: 'FETCHED_PROJECTS', projects } as FetchedProjectsEvent;
+        dispatch(fetchedProjects);
       }
     }
-  }, [projectsLoading, projectsData, projectsError]);
+  }, [projectsLoading, projectsData, projectsError, dispatch]);
 
   // Setup callback to update project list when invoked
   const [getProjects, { loading, error, data }] = useLazyQuery(getProjectsQuery, { fetchPolicy: 'no-cache' });
   useEffect(() => {
     if (!loading) {
       if (error) {
-        dispatch({ type: HANDLE_ERROR_FETCHING_PROJECTS__ACTION, error });
+        const errorFetching = { type: 'ERROR_FETCHING', message: error.message } as ErrorFetchingEvent;
+        dispatch(errorFetching);
       } else if (data) {
-        dispatch({ type: HANDLE_PROJECTS_UPDATED__ACTION, response: data });
+        let { projects } = data?.viewer;
+        const projectsUpdatedEvent = { type: 'PROJECTS_UPDATED', projects } as ProjectstUpdatedEvent;
+        dispatch(projectsUpdatedEvent);
       }
     }
-  }, [loading, error, data]);
+  }, [loading, error, data, dispatch]);
 
   let view = null;
-  switch (viewState) {
-    case LOADING__STATE:
+  switch (value) {
+    case 'loading':
       view = <ProjectsLoadingView />;
       break;
-    case EMPTY__STATE:
+    case 'empty':
       view = <ProjectsEmptyView />;
       break;
-    case ERROR__STATE:
+    case 'error':
       view = <ProjectsErrorView message={message} />;
       break;
-    case LOADED__STATE:
+    case 'loaded':
       view = <ProjectsLoadedView projects={projects} onProjectUpdated={getProjects} />;
       break;
     default:

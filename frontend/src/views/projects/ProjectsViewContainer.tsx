@@ -10,27 +10,62 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { ActionButton, SecondaryButton } from 'core/button/Button';
-import { Text } from 'core/text/Text';
+import Button from '@material-ui/core/Button';
+import Paper from '@material-ui/core/Paper';
+import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
 import React from 'react';
-import styles from './ProjectsViewContainer.module.css';
 
 const propTypes = {
   children: PropTypes.node.isRequired,
 };
 
+const useStyles = makeStyles((theme) => ({
+  projectsViewContainer: {
+    display: 'grid',
+    gridTemplateColumns: '1fr',
+    gridTemplateRows: 'min-content 1fr',
+    rowGap: theme.spacing(4),
+  },
+
+  header: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: theme.spacing(5),
+  },
+
+  actions: {
+    display: 'grid',
+    gridTemplateRows: '1fr',
+    gridTemplateColumns: 'repeat(2, min-content)',
+    columnGap: theme.spacing(2),
+  },
+
+  content: {
+    display: 'grid',
+    gridTemplateColumns: '1fr',
+    gridTemplateRows: '1fr',
+  },
+}));
+
 export const ProjectsViewContainer = ({ children }) => {
+  const classes = useStyles();
   return (
-    <div className={styles.projectsViewContainer}>
-      <div className={styles.header}>
-        <Text className={styles.headline}>Projects</Text>
-        <div className={styles.actions}>
-          <ActionButton to="/new/project" label="New" data-testid="create" />
-          <SecondaryButton to="/upload/project" label="Upload" data-testid="upload" />
+    <div className={classes.projectsViewContainer}>
+      <div className={classes.header}>
+        <Typography variant="h5">Projects</Typography>
+        <div className={classes.actions}>
+          <Button data-testid="create" color="primary" href="/new/project" variant="contained">
+            New
+          </Button>
+          <Button data-testid="upload" color="secondary" href="/upload/project" variant="outlined">
+            Upload
+          </Button>
         </div>
       </div>
-      <div className={styles.content}>{children}</div>
+      <Paper className={classes.content}>{children}</Paper>
     </div>
   );
 };
