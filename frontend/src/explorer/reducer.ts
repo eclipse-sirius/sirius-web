@@ -11,16 +11,16 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import {
-  machine,
-  LOADING__STATE,
-  TREE_LOADED__STATE,
   COMPLETE__STATE,
   ERROR__STATE,
-  HANDLE_DATA__ACTION,
-  HANDLE_CONNECTION_ERROR__ACTION,
-  HANDLE_ERROR__ACTION,
   HANDLE_COMPLETE__ACTION,
+  HANDLE_CONNECTION_ERROR__ACTION,
+  HANDLE_DATA__ACTION,
+  HANDLE_ERROR__ACTION,
   HANDLE_EXPANDED__ACTION,
+  LOADING__STATE,
+  machine,
+  TREE_LOADED__STATE,
 } from './machine';
 
 export const initialState = {
@@ -82,8 +82,8 @@ const handleDataAction = (prevState, action) => {
   const { expanded, maxDepth, modal } = prevState;
   const { message } = action;
 
-  if (message.payload && message.payload.data && message.payload.data.treeEvent) {
-    const { treeEvent } = message.payload.data;
+  if (message?.data?.treeEvent) {
+    const { treeEvent } = message.data;
     if (treeEvent.__typename === 'TreeRefreshedEventPayload') {
       const { tree } = treeEvent;
       return { viewState: TREE_LOADED__STATE, tree, expanded, maxDepth, message: '', modal };
@@ -95,7 +95,7 @@ const handleDataAction = (prevState, action) => {
 
 const handleErrorAction = (prevState, action) => {
   const { viewState, tree, expanded, maxDepth, modal } = prevState;
-  const { payload: message } = action.message;
+  const { message } = action;
   if (viewState === TREE_LOADED__STATE) {
     return { viewState: TREE_LOADED__STATE, tree, expanded, maxDepth, message, modal };
   }
