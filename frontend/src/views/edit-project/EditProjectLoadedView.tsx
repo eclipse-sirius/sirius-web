@@ -47,7 +47,9 @@ export const EditProjectLoadedView = ({
   setSelection,
   setSubscribers,
 }) => {
-  const explorer = <ExplorerWebSocketContainer selection={selection} setSelection={setSelection} />;
+  const explorer = (
+    <ExplorerWebSocketContainer projectId={projectId} selection={selection} setSelection={setSelection} />
+  );
 
   let representation = (
     <RepresentationArea
@@ -72,7 +74,7 @@ export const EditProjectLoadedView = ({
   ) {
     objectId = selection.id;
   }
-  const properties = <PropertiesWebSocketContainer objectId={objectId} />;
+  const properties = <PropertiesWebSocketContainer projectId={projectId} objectId={objectId} />;
 
   const representationAndPropertiesPanel = (
     <div className={styles.main} data-testid="representationAndProperties">

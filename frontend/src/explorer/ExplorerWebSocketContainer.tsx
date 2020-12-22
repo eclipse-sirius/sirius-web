@@ -22,7 +22,6 @@ import {
   HANDLE_EXPANDED__ACTION,
   LOADING__STATE,
 } from 'explorer/machine';
-import { useProject } from 'project/ProjectProvider';
 import PropTypes from 'prop-types';
 import React, { useReducer } from 'react';
 import { Explorer } from './Explorer';
@@ -35,10 +34,9 @@ const propTypes = {
   setSelection: PropTypes.func.isRequired,
 };
 
-export const ExplorerWebSocketContainer = ({ selection, setSelection }) => {
+export const ExplorerWebSocketContainer = ({ projectId, selection, setSelection }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { viewState, tree, expanded, maxDepth, message } = state;
-  const { id: projectId } = useProject() as any;
 
   const { error } = useSubscription(gql(getTreeEventSubscription(maxDepth)), {
     variables: {

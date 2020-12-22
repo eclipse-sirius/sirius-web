@@ -16,7 +16,6 @@ import { ContextMenu, Entry, Separator, TOP_START } from 'core/contextmenu/Conte
 import { Go } from 'core/go/Go';
 import { Delete, Edit, Settings } from 'icons';
 import { Permission } from 'project/Permission';
-import { useProject } from 'project/ProjectProvider';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -32,16 +31,15 @@ const propTypes = {
 export const EditProjectNavbarContextMenu = ({
   x,
   y,
+  projectId,
   onCreateDocument,
   onUploadDocument,
   onRename,
   onDelete,
   onClose,
 }) => {
-  const { id } = useProject() as any;
-
   const capabilities = useCapabilities();
-  const settingsURL = `/projects/${id}/settings`;
+  const settingsURL = `/projects/${projectId}/settings`;
   let settingsEntry;
   if (capabilities.overrides(settingsURL)) {
     settingsEntry = (
@@ -66,7 +64,7 @@ export const EditProjectNavbarContextMenu = ({
         <Entry icon={<Edit title="" />} label="Rename" onClick={onRename} data-testid="rename" />
       </Permission>
       <a
-        href={`${httpOrigin}/api/projects/${id}`}
+        href={`${httpOrigin}/api/projects/${projectId}`}
         type="application/octet-stream"
         onClick={onClose}
         data-testid="download-link">

@@ -23,7 +23,6 @@ import {
 } from 'form/machine';
 import { initialState, reducer } from 'form/reducer';
 import gql from 'graphql-tag';
-import { useProject } from 'project/ProjectProvider';
 import { Properties } from 'properties/Properties';
 import React, { useEffect, useReducer } from 'react';
 import styles from './FormWebSocketContainer.module.css';
@@ -109,11 +108,9 @@ const formEventSubscription = gql`
 /**
  * Connect the Form component to the GraphQL API over Web Socket.
  */
-export const FormWebSocketContainer = ({ formId }) => {
+export const FormWebSocketContainer = ({ projectId, formId }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { viewState, form, displayedFormId, subscribers, widgetSubscriptions, message } = state;
-
-  const { id } = useProject() as any;
 
   /**
    * Displays an other form if the selection indicates that we should display another properties view.
@@ -133,7 +130,7 @@ export const FormWebSocketContainer = ({ formId }) => {
   const { error } = useSubscription(formEventSubscription, {
     variables: {
       input: {
-        projectId: id,
+        projectId,
         formId,
       },
     },
@@ -157,7 +154,12 @@ export const FormWebSocketContainer = ({ formId }) => {
     );
   } else {
     view = (
-      <Properties projectId={id} form={form} subscribers={subscribers} widgetSubscriptions={widgetSubscriptions} />
+      <Properties
+        projectId={projectId}
+        form={form}
+        subscribers={subscribers}
+        widgetSubscriptions={widgetSubscriptions}
+      />
     );
   }
   return view;

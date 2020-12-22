@@ -10,9 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-
+import React, { useEffect, useRef } from 'react';
 import { TreeItem } from 'tree/TreeItem';
 
 const propTypes = {
@@ -23,7 +22,7 @@ const propTypes = {
   setSelection: PropTypes.func.isRequired,
 };
 
-export const Tree = ({ tree, onExpand, selection, displayedRepresentation, setSelection }) => {
+export const Tree = ({ projectId, tree, onExpand, selection, displayedRepresentation, setSelection }) => {
   const treeElement = useRef(null);
 
   useEffect(() => {
@@ -89,6 +88,7 @@ export const Tree = ({ tree, onExpand, selection, displayedRepresentation, setSe
         {tree.children.map((item) => (
           <li key={item.id}>
             <TreeItem
+              projectId={projectId}
               item={item}
               depth={1}
               onExpand={onExpand}

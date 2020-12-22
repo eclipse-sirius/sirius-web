@@ -127,17 +127,10 @@ export const EditProjectView = () => {
     [dispatch]
   );
 
-  /**
-   * Connect to the WebSocket server to retrieve updates when the component is ready. This will only be
-   * performed once the project has been loaded with useProject() and its ID (contextId) has been retrieved.
-   * Indeed, this useEffect() hook is called each time contextId is updated.
-   * The first time useProject() is called, contextId is set to 'undefined', and this useEffect() is then called. -> We don't want to subscribe.
-   * The second time useProject() is called, contextId is set with the project ID, and this useEffect() is then called. -> We want to subscribe.
-   */
   useSubscription(projectEventSubscription, {
     variables: {
       input: {
-        projectId: contextId,
+        projectId,
       },
     },
     fetchPolicy: 'no-cache',
