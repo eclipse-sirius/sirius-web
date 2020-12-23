@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,7 +19,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.eclipse.sirius.properties.DynamicMappingForDescription;
-import org.eclipse.sirius.web.compat.services.representations.IdentifierProvider;
+import org.eclipse.sirius.web.compat.api.IIdentifierProvider;
+import org.eclipse.sirius.web.compat.api.IModelOperationHandlerSwitchProvider;
 import org.eclipse.sirius.web.forms.description.ForDescription;
 import org.eclipse.sirius.web.forms.description.IfDescription;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
@@ -37,12 +38,16 @@ public class ForDescriptionConverter {
 
     private final IObjectService objectService;
 
-    private final IdentifierProvider identifierProvider;
+    private final IIdentifierProvider identifierProvider;
 
-    public ForDescriptionConverter(AQLInterpreter interpreter, IObjectService objectService, IdentifierProvider identifierProvider) {
+    private final IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider;
+
+    public ForDescriptionConverter(AQLInterpreter interpreter, IObjectService objectService, IIdentifierProvider identifierProvider,
+            IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider) {
         this.interpreter = Objects.requireNonNull(interpreter);
         this.objectService = Objects.requireNonNull(objectService);
         this.identifierProvider = Objects.requireNonNull(identifierProvider);
+        this.modelOperationHandlerSwitchProvider = Objects.requireNonNull(modelOperationHandlerSwitchProvider);
     }
 
     public ForDescription convert(org.eclipse.sirius.properties.DynamicMappingForDescription siriusForDescription) {
@@ -51,7 +56,7 @@ public class ForDescriptionConverter {
             return this.interpreter.evaluateExpression(variableManager.getVariables(), siriusForDescription.getIterableExpression()).asObjects()
                     .orElse(Collections.emptyList());
         };
-        IfDescriptionConverter converter = new IfDescriptionConverter(this.interpreter, this.objectService, this.identifierProvider);
+        IfDescriptionConverter converter = new IfDescriptionConverter(this.interpreter, this.objectService, this.identifierProvider, this.modelOperationHandlerSwitchProvider);
         List<IfDescription> ifDescriptions = siriusForDescription.getIfs().stream()
                 .flatMap(ifDescription -> converter.convert(ifDescription).stream())
                 .collect(Collectors.toUnmodifiableList());

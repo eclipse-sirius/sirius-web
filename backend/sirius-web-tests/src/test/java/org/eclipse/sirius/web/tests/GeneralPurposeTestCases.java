@@ -79,7 +79,7 @@ public class GeneralPurposeTestCases {
     //// @formatter:off
     private static final List<Pattern> COPYRIGHT_HEADER = List.of(
             Pattern.compile(Pattern.quote("/*******************************************************************************")), //$NON-NLS-1$
-            Pattern.compile(" \\* Copyright \\(c\\) [0-9]{4}(, [0-9]{4})* Obeo\\."), //$NON-NLS-1$
+            Pattern.compile(" \\* Copyright \\(c\\) [0-9]{4}(, [0-9]{4})* (.*)\\.$"), //$NON-NLS-1$
             Pattern.compile(Pattern.quote(" * This program and the accompanying materials")), //$NON-NLS-1$
             Pattern.compile(Pattern.quote(" * are made available under the terms of the Eclipse Public License v2.0")), //$NON-NLS-1$
             Pattern.compile(Pattern.quote(" * which accompanies this distribution, and is available at")), //$NON-NLS-1$

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,14 +16,14 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.web.forms.description.FormDescription;
-import org.eclipse.sirius.web.services.api.representations.IPropertiesDescriptionService;
+import org.eclipse.sirius.web.services.api.representations.IPropertiesDescriptionProvider;
 
 /**
  * Service used to query the properties descriptions available.
  *
  * @author hmarchadour
  */
-public class PropertiesDescriptionService implements IPropertiesDescriptionService {
+public class PropertiesDescriptionService implements IPropertiesDescriptionProvider {
 
     private final PropertiesDescriptionRegistry registry;
 

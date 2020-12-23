@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,8 +24,9 @@ import org.eclipse.sirius.diagram.description.AbstractNodeMapping;
 import org.eclipse.sirius.diagram.description.DiagramElementMapping;
 import org.eclipse.sirius.diagram.description.EdgeMapping;
 import org.eclipse.sirius.viewpoint.description.style.BasicLabelStyleDescription;
-import org.eclipse.sirius.web.compat.services.representations.IdentifierProvider;
-import org.eclipse.sirius.web.compat.utils.SemanticCandidatesProvider;
+import org.eclipse.sirius.web.compat.api.IIdentifierProvider;
+import org.eclipse.sirius.web.compat.api.IModelOperationHandlerSwitchProvider;
+import org.eclipse.sirius.web.compat.api.ISemanticCandidatesProviderFactory;
 import org.eclipse.sirius.web.compat.utils.StringValueProvider;
 import org.eclipse.sirius.web.components.Element;
 import org.eclipse.sirius.web.diagrams.EdgeStyle;
@@ -55,16 +56,23 @@ public class EdgeMappingConverter {
 
     private final AQLInterpreter interpreter;
 
-    private final IdentifierProvider identifierProvider;
+    private final IIdentifierProvider identifierProvider;
+
+    private final ISemanticCandidatesProviderFactory semanticCandidatesProviderFactory;
+
+    private final IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider;
 
     private final Map<UUID, NodeDescription> id2NodeDescriptions;
 
-    public EdgeMappingConverter(IObjectService objectService, IEditService editService, AQLInterpreter interpreter, IdentifierProvider identifierProvider,
+    public EdgeMappingConverter(IObjectService objectService, IEditService editService, AQLInterpreter interpreter, IIdentifierProvider identifierProvider,
+            ISemanticCandidatesProviderFactory semanticCandidatesProviderFactory, IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider,
             Map<UUID, NodeDescription> id2NodeDescriptions) {
         this.objectService = Objects.requireNonNull(objectService);
         this.editService = Objects.requireNonNull(editService);
         this.interpreter = Objects.requireNonNull(interpreter);
         this.identifierProvider = Objects.requireNonNull(identifierProvider);
+        this.semanticCandidatesProviderFactory = Objects.requireNonNull(semanticCandidatesProviderFactory);
+        this.modelOperationHandlerSwitchProvider = Objects.requireNonNull(modelOperationHandlerSwitchProvider);
         this.id2NodeDescriptions = Objects.requireNonNull(id2NodeDescriptions);
     }
 
@@ -109,7 +117,7 @@ public class EdgeMappingConverter {
                 .map(edgeStyle -> this.createLabelProvider(labelStyleDescriptionConverter, edgeStyle.getEndLabelStyleDescription(), "_endlabel")) //$NON-NLS-1$
                 .orElse(variableManager -> Optional.empty());
 
-        ToolConverter toolConverter = new ToolConverter(this.interpreter, this.editService);
+        ToolConverter toolConverter = new ToolConverter(this.interpreter, this.editService, this.modelOperationHandlerSwitchProvider);
         var deleteHandler = toolConverter.createDeleteToolHandler(edgeMapping.getDeletionDescription());
 
         return EdgeDescription.newEdgeDescription(UUID.fromString(this.identifierProvider.getIdentifier(edgeMapping)))
@@ -190,7 +198,7 @@ public class EdgeMappingConverter {
             String semanticCandidatesExpression = edgeMapping.getSemanticCandidatesExpression();
             String preconditionExpression = edgeMapping.getPreconditionExpression();
             String domainClass = Optional.ofNullable(edgeMapping.getDomainClass()).orElse(""); //$NON-NLS-1$
-            semanticElementsProvider = new SemanticCandidatesProvider(this.interpreter, domainClass, semanticCandidatesExpression, preconditionExpression);
+            semanticElementsProvider = this.semanticCandidatesProviderFactory.getSemanticCandidatesProvider(this.interpreter, domainClass, semanticCandidatesExpression, preconditionExpression);
         } else {
             // @formatter:off
             List<UUID> sourceNodeDescriptionIds = sourceNodeDescriptions.stream()

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.compat.diagrams;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -22,7 +21,7 @@ import java.util.function.Function;
 import org.eclipse.sirius.diagram.description.tool.DeleteElementDescription;
 import org.eclipse.sirius.diagram.description.tool.DirectEditLabel;
 import org.eclipse.sirius.viewpoint.description.tool.InitialOperation;
-import org.eclipse.sirius.web.compat.operations.ChildModelOperationHandler;
+import org.eclipse.sirius.web.compat.api.IModelOperationHandlerSwitchProvider;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
 import org.eclipse.sirius.web.representations.Status;
 import org.eclipse.sirius.web.representations.VariableManager;
@@ -39,12 +38,12 @@ public class ToolConverter {
 
     private final IEditService editService;
 
-    private final ChildModelOperationHandler childModelOperationHandler;
+    private final IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider;
 
-    public ToolConverter(AQLInterpreter interpreter, IEditService editService) {
+    public ToolConverter(AQLInterpreter interpreter, IEditService editService, IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider) {
         this.interpreter = Objects.requireNonNull(interpreter);
         this.editService = Objects.requireNonNull(editService);
-        this.childModelOperationHandler = new ChildModelOperationHandler();
+        this.modelOperationHandlerSwitchProvider = Objects.requireNonNull(modelOperationHandlerSwitchProvider);
     }
 
     public BiFunction<VariableManager, String, Status> createDirectEditToolHandler(DirectEditLabel labelEditDescription) {
@@ -54,7 +53,10 @@ public class ToolConverter {
             return (variableManager, newText) -> {
                 Map<String, Object> variables = variableManager.getVariables();
                 variables.put("arg0", newText); //$NON-NLS-1$
-                return this.childModelOperationHandler.handle(this.interpreter, variables, List.of(initialOperation.getFirstModelOperations()));
+                var modelOperationHandlerSwitch = this.modelOperationHandlerSwitchProvider.getModelOperationHandlerSwitch(this.interpreter);
+                return modelOperationHandlerSwitch.apply(initialOperation.getFirstModelOperations()).map(handler -> {
+                    return handler.handle(variables);
+                }).orElse(Status.ERROR);
             };
         } else {
             // If no direct edit tool is defined, nothing to do but consider this OK.
@@ -68,7 +70,10 @@ public class ToolConverter {
             InitialOperation initialOperation = optionalInitialOperation.get();
             return variableManager -> {
                 Map<String, Object> variables = variableManager.getVariables();
-                return this.childModelOperationHandler.handle(this.interpreter, variables, List.of(initialOperation.getFirstModelOperations()));
+                var modelOperationHandlerSwitch = this.modelOperationHandlerSwitchProvider.getModelOperationHandlerSwitch(this.interpreter);
+                return modelOperationHandlerSwitch.apply(initialOperation.getFirstModelOperations()).map(handler -> {
+                    return handler.handle(variables);
+                }).orElse(Status.ERROR);
             };
         } else {
             // If no delete tool is defined, execute the default behavior: delete the underlying semantic element.

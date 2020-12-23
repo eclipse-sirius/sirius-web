@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,8 +25,9 @@ import java.util.stream.Collectors;
 import org.eclipse.sirius.diagram.description.ContainerMapping;
 import org.eclipse.sirius.diagram.description.style.ContainerStyleDescription;
 import org.eclipse.sirius.diagram.description.style.WorkspaceImageDescription;
-import org.eclipse.sirius.web.compat.services.representations.IdentifierProvider;
-import org.eclipse.sirius.web.compat.utils.SemanticCandidatesProvider;
+import org.eclipse.sirius.web.compat.api.IIdentifierProvider;
+import org.eclipse.sirius.web.compat.api.IModelOperationHandlerSwitchProvider;
+import org.eclipse.sirius.web.compat.api.ISemanticCandidatesProviderFactory;
 import org.eclipse.sirius.web.compat.utils.StringValueProvider;
 import org.eclipse.sirius.web.diagrams.INodeStyle;
 import org.eclipse.sirius.web.diagrams.NodeType;
@@ -51,15 +52,22 @@ public class ContainerMappingConverter {
 
     private final AQLInterpreter interpreter;
 
-    private final IdentifierProvider identifierProvider;
+    private final IIdentifierProvider identifierProvider;
+
+    private final ISemanticCandidatesProviderFactory semanticCandidatesProviderFactory;
+
+    private final IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider;
 
     private final LabelStyleDescriptionConverter labelStyleDescriptionConverter;
 
-    public ContainerMappingConverter(IObjectService objectService, IEditService editService, AQLInterpreter interpreter, IdentifierProvider identifierProvider) {
+    public ContainerMappingConverter(IObjectService objectService, IEditService editService, AQLInterpreter interpreter, IIdentifierProvider identifierProvider,
+            ISemanticCandidatesProviderFactory semanticCandidatesProviderFactory, IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider) {
         this.objectService = Objects.requireNonNull(objectService);
         this.editService = Objects.requireNonNull(editService);
         this.interpreter = Objects.requireNonNull(interpreter);
         this.identifierProvider = Objects.requireNonNull(identifierProvider);
+        this.semanticCandidatesProviderFactory = Objects.requireNonNull(semanticCandidatesProviderFactory);
+        this.modelOperationHandlerSwitchProvider = Objects.requireNonNull(modelOperationHandlerSwitchProvider);
         this.labelStyleDescriptionConverter = new LabelStyleDescriptionConverter(this.interpreter, this.objectService);
     }
 
@@ -112,12 +120,12 @@ public class ContainerMappingConverter {
 
         List<NodeDescription> childNodeDescriptions = new ArrayList<>();
         // @formatter:off
-        NodeMappingConverter nodeMappingConverter = new NodeMappingConverter(this.objectService, this.editService, this.interpreter, this.identifierProvider);
+        NodeMappingConverter nodeMappingConverter = new NodeMappingConverter(this.objectService, this.editService, this.interpreter, this.identifierProvider, this.semanticCandidatesProviderFactory, this.modelOperationHandlerSwitchProvider);
         List<NodeDescription> childNodeMappingDescriptions = containerMapping.getSubNodeMappings().stream()
                 .map(childNodeMapping -> nodeMappingConverter.convert(childNodeMapping, id2NodeDescriptions))
                 .collect(Collectors.toList());
 
-        ContainerMappingConverter containerMappingConverter = new ContainerMappingConverter(this.objectService, this.editService, this.interpreter, this.identifierProvider);
+        ContainerMappingConverter containerMappingConverter = new ContainerMappingConverter(this.objectService, this.editService, this.interpreter, this.identifierProvider, this.semanticCandidatesProviderFactory, this.modelOperationHandlerSwitchProvider);
         List<NodeDescription> childContainerMappingDescriptions = containerMapping.getSubContainerMappings().stream()
                 .map(childContainerMapping -> containerMappingConverter.convert(childContainerMapping, id2NodeDescriptions))
                 .collect(Collectors.toList());
@@ -126,17 +134,18 @@ public class ContainerMappingConverter {
         childNodeDescriptions.addAll(childContainerMappingDescriptions);
 
         List<NodeDescription> borderNodeDescriptions = containerMapping.getBorderedNodeMappings().stream()
-                .map(borderNodeMapping -> new NodeMappingConverter(this.objectService, this.editService, this.interpreter, this.identifierProvider).convert(borderNodeMapping, id2NodeDescriptions))
+                .map(borderNodeMapping -> new NodeMappingConverter(this.objectService, this.editService, this.interpreter, this.identifierProvider, this.semanticCandidatesProviderFactory, this.modelOperationHandlerSwitchProvider).convert(borderNodeMapping, id2NodeDescriptions))
                 .collect(Collectors.toList());
         // @formatter:on
 
         String domainClass = containerMapping.getDomainClass();
         String semanticCandidatesExpression = containerMapping.getSemanticCandidatesExpression();
         String preconditionExpression = containerMapping.getPreconditionExpression();
-        Function<VariableManager, List<Object>> semanticElementsProvider = new SemanticCandidatesProvider(this.interpreter, domainClass, semanticCandidatesExpression, preconditionExpression);
+        Function<VariableManager, List<Object>> semanticElementsProvider = this.semanticCandidatesProviderFactory.getSemanticCandidatesProvider(this.interpreter, domainClass,
+                semanticCandidatesExpression, preconditionExpression);
         Function<VariableManager, INodeStyle> styleProvider = new ContainerMappingStyleProvider(this.interpreter, containerMapping);
 
-        ToolConverter toolConverter = new ToolConverter(this.interpreter, this.editService);
+        ToolConverter toolConverter = new ToolConverter(this.interpreter, this.editService, this.modelOperationHandlerSwitchProvider);
         var deleteHandler = toolConverter.createDeleteToolHandler(containerMapping.getDeletionDescription());
         var labelEditHandler = toolConverter.createDirectEditToolHandler(containerMapping.getLabelDirectEdit());
 

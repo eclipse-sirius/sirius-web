@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,8 +22,9 @@ import java.util.stream.Collectors;
 
 import org.eclipse.sirius.diagram.description.NodeMapping;
 import org.eclipse.sirius.diagram.description.style.WorkspaceImageDescription;
-import org.eclipse.sirius.web.compat.services.representations.IdentifierProvider;
-import org.eclipse.sirius.web.compat.utils.SemanticCandidatesProvider;
+import org.eclipse.sirius.web.compat.api.IIdentifierProvider;
+import org.eclipse.sirius.web.compat.api.IModelOperationHandlerSwitchProvider;
+import org.eclipse.sirius.web.compat.api.ISemanticCandidatesProviderFactory;
 import org.eclipse.sirius.web.compat.utils.StringValueProvider;
 import org.eclipse.sirius.web.diagrams.INodeStyle;
 import org.eclipse.sirius.web.diagrams.NodeType;
@@ -50,15 +51,22 @@ public class NodeMappingConverter {
 
     private final AQLInterpreter interpreter;
 
-    private final IdentifierProvider identifierProvider;
+    private final IIdentifierProvider identifierProvider;
+
+    private final ISemanticCandidatesProviderFactory semanticCandidatesProviderFactory;
+
+    private final IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider;
 
     private final LabelStyleDescriptionConverter labelStyleDescriptionConverter;
 
-    public NodeMappingConverter(IObjectService objectService, IEditService editService, AQLInterpreter interpreter, IdentifierProvider identifierProvider) {
+    public NodeMappingConverter(IObjectService objectService, IEditService editService, AQLInterpreter interpreter, IIdentifierProvider identifierProvider,
+            ISemanticCandidatesProviderFactory semanticCandidatesProviderFactory, IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider) {
         this.objectService = Objects.requireNonNull(objectService);
         this.editService = Objects.requireNonNull(editService);
         this.interpreter = Objects.requireNonNull(interpreter);
         this.identifierProvider = Objects.requireNonNull(identifierProvider);
+        this.semanticCandidatesProviderFactory = Objects.requireNonNull(semanticCandidatesProviderFactory);
+        this.modelOperationHandlerSwitchProvider = Objects.requireNonNull(modelOperationHandlerSwitchProvider);
         this.labelStyleDescriptionConverter = new LabelStyleDescriptionConverter(this.interpreter, this.objectService);
     }
 
@@ -102,15 +110,16 @@ public class NodeMappingConverter {
         String domainClass = nodeMapping.getDomainClass();
         String semanticCandidatesExpression = nodeMapping.getSemanticCandidatesExpression();
         String preconditionExpression = nodeMapping.getPreconditionExpression();
-        Function<VariableManager, List<Object>> semanticElementsProvider = new SemanticCandidatesProvider(this.interpreter, domainClass, semanticCandidatesExpression, preconditionExpression);
+        Function<VariableManager, List<Object>> semanticElementsProvider = this.semanticCandidatesProviderFactory.getSemanticCandidatesProvider(this.interpreter, domainClass,
+                semanticCandidatesExpression, preconditionExpression);
 
         // @formatter:off
         List<NodeDescription> borderNodeDescriptions = nodeMapping.getBorderedNodeMappings().stream()
-                .map(borderNodeMapping -> new NodeMappingConverter(this.objectService, this.editService, this.interpreter, this.identifierProvider).convert(borderNodeMapping, id2NodeDescriptions))
+                .map(borderNodeMapping -> new NodeMappingConverter(this.objectService, this.editService, this.interpreter, this.identifierProvider, this.semanticCandidatesProviderFactory, this.modelOperationHandlerSwitchProvider).convert(borderNodeMapping, id2NodeDescriptions))
                 .collect(Collectors.toList());
         // @formatter:on
 
-        ToolConverter toolConverter = new ToolConverter(this.interpreter, this.editService);
+        ToolConverter toolConverter = new ToolConverter(this.interpreter, this.editService, this.modelOperationHandlerSwitchProvider);
         var deleteHandler = toolConverter.createDeleteToolHandler(nodeMapping.getDeletionDescription());
         var labelEditHandler = toolConverter.createDirectEditToolHandler(nodeMapping.getLabelDirectEdit());
 

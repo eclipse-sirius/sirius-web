@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,8 +19,8 @@ import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import org.eclipse.sirius.web.compat.services.representations.IdentifierProvider;
-import org.eclipse.sirius.web.compat.utils.SemanticCandidatesProvider;
+import org.eclipse.sirius.web.compat.api.IIdentifierProvider;
+import org.eclipse.sirius.web.compat.api.ISemanticCandidatesProviderFactory;
 import org.eclipse.sirius.web.compat.utils.StringValueProvider;
 import org.eclipse.sirius.web.forms.description.GroupDescription;
 import org.eclipse.sirius.web.forms.description.PageDescription;
@@ -36,20 +36,24 @@ public class PageDescriptionConverter {
 
     private final AQLInterpreter interpreter;
 
-    private final IdentifierProvider identifierProvider;
+    private final IIdentifierProvider identifierProvider;
 
-    public PageDescriptionConverter(AQLInterpreter interpreter, IdentifierProvider identifierProvider) {
+    private final ISemanticCandidatesProviderFactory semanticCandidatesProviderFactory;
+
+    public PageDescriptionConverter(AQLInterpreter interpreter, IIdentifierProvider identifierProvider, ISemanticCandidatesProviderFactory semanticCandidatesProviderFactory) {
         this.interpreter = Objects.requireNonNull(interpreter);
         this.identifierProvider = Objects.requireNonNull(identifierProvider);
+        this.semanticCandidatesProviderFactory = Objects.requireNonNull(semanticCandidatesProviderFactory);
     }
 
-    public PageDescription convert(org.eclipse.sirius.properties.PageDescription siriusPageDescription, Map<org.eclipse.sirius.properties.GroupDescription, GroupDescription> siriusGroup2SiriusWebGroup) {
+    public PageDescription convert(org.eclipse.sirius.properties.PageDescription siriusPageDescription,
+            Map<org.eclipse.sirius.properties.GroupDescription, GroupDescription> siriusGroup2SiriusWebGroup) {
         StringValueProvider labelProvider = new StringValueProvider(this.interpreter, siriusPageDescription.getLabelExpression());
 
         String domainClass = Optional.ofNullable(siriusPageDescription.getDomainClass()).orElse(""); //$NON-NLS-1$
         String semanticCandidatesExpression = Optional.ofNullable(siriusPageDescription.getSemanticCandidateExpression()).orElse(""); //$NON-NLS-1$
         String preconditionExpression = Optional.ofNullable(siriusPageDescription.getPreconditionExpression()).orElse(""); //$NON-NLS-1$
-        SemanticCandidatesProvider semanticCandidatesProvider = new SemanticCandidatesProvider(this.interpreter, domainClass, semanticCandidatesExpression, preconditionExpression);
+        var semanticCandidatesProvider = this.semanticCandidatesProviderFactory.getSemanticCandidatesProvider(this.interpreter, domainClass, semanticCandidatesExpression, preconditionExpression);
 
         Predicate<VariableManager> canCreatePredicate = (variableManager) -> {
             Object object = variableManager.getVariables().get(VariableManager.SELF);

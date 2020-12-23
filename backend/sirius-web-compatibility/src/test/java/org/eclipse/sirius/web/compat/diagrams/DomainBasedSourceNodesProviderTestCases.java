@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,12 +17,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 import java.util.UUID;
 
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.sirius.diagram.description.DescriptionFactory;
 import org.eclipse.sirius.diagram.description.EdgeMapping;
 import org.eclipse.sirius.diagram.description.NodeMapping;
-import org.eclipse.sirius.web.compat.services.representations.IdentifierProvider;
+import org.eclipse.sirius.web.compat.api.IIdentifierProvider;
 import org.eclipse.sirius.web.components.Element;
 import org.eclipse.sirius.web.diagrams.INodeStyle;
 import org.eclipse.sirius.web.diagrams.ImageNodeStyle;
@@ -41,16 +40,6 @@ import org.junit.Test;
  * @author sbegaudeau
  */
 public class DomainBasedSourceNodesProviderTestCases {
-
-    private IdentifierProvider identifierProvider = new IdentifierProvider(new NoOpIdMappingRepository(), 1) {
-        @Override
-        public String getIdentifier(EObject vsmElement) {
-            if (vsmElement instanceof NodeMapping) {
-                return ((NodeMapping) vsmElement).getName();
-            }
-            return super.getIdentifier(vsmElement);
-        }
-    };
 
     @Test
     public void testComputeSourceNodes() {
@@ -72,7 +61,8 @@ public class DomainBasedSourceNodesProviderTestCases {
 
         variableManager.put(DiagramDescription.CACHE, cache);
 
-        List<Element> sourceNodes = new DomainBasedSourceNodesProvider(edgeMapping, interpreter, this.identifierProvider).apply(variableManager);
+        IIdentifierProvider identifierProvider = element -> nodeMapping.getName();
+        List<Element> sourceNodes = new DomainBasedSourceNodesProvider(edgeMapping, interpreter, identifierProvider).apply(variableManager);
         assertThat(sourceNodes).hasSize(1);
         assertThat(sourceNodes).contains(nodeElement);
     }

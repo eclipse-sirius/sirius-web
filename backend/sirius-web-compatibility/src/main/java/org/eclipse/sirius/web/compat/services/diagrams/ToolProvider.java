@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,8 +23,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EPackage.Registry;
 import org.eclipse.sirius.business.api.query.IdentifiedElementQuery;
 import org.eclipse.sirius.diagram.business.internal.metamodel.description.spec.LayerSpec;
 import org.eclipse.sirius.diagram.description.AbstractNodeMapping;
@@ -43,10 +41,10 @@ import org.eclipse.sirius.viewpoint.description.tool.InitEdgeCreationOperation;
 import org.eclipse.sirius.viewpoint.description.tool.InitialNodeCreationOperation;
 import org.eclipse.sirius.viewpoint.description.tool.InitialOperation;
 import org.eclipse.sirius.viewpoint.description.tool.ToolDescription;
-import org.eclipse.sirius.web.compat.operations.ChildModelOperationHandler;
-import org.eclipse.sirius.web.compat.services.diagrams.tools.ToolImageProvider;
-import org.eclipse.sirius.web.compat.services.representations.AQLInterpreterFactory;
-import org.eclipse.sirius.web.compat.services.representations.IdentifierProvider;
+import org.eclipse.sirius.web.compat.api.IAQLInterpreterFactory;
+import org.eclipse.sirius.web.compat.api.IIdentifierProvider;
+import org.eclipse.sirius.web.compat.api.IModelOperationHandlerSwitchProvider;
+import org.eclipse.sirius.web.compat.api.IToolImageProviderFactory;
 import org.eclipse.sirius.web.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.web.diagrams.description.NodeDescription;
 import org.eclipse.sirius.web.diagrams.tools.CreateEdgeTool;
@@ -57,7 +55,6 @@ import org.eclipse.sirius.web.diagrams.tools.ToolSection;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
 import org.eclipse.sirius.web.representations.Status;
 import org.eclipse.sirius.web.representations.VariableManager;
-import org.eclipse.sirius.web.services.api.objects.IObjectService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -68,23 +65,20 @@ import org.springframework.stereotype.Service;
 @Service
 public class ToolProvider implements IToolProvider {
 
-    private final AQLInterpreterFactory interpreterFactory;
+    private final IAQLInterpreterFactory interpreterFactory;
 
-    private final IObjectService objectService;
+    private final IIdentifierProvider identifierProvider;
 
-    private final Registry ePackageRegistry;
+    private final IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider;
 
-    private final IdentifierProvider identifierProvider;
+    private final IToolImageProviderFactory toolImageProviderFactory;
 
-    private final ChildModelOperationHandler childModelOperationHandler;
-
-    public ToolProvider(IObjectService objectService, Registry ePackageRegistry, IdentifierProvider identifierProvider, AQLInterpreterFactory interpreterFactory) {
-
+    public ToolProvider(IIdentifierProvider identifierProvider, IAQLInterpreterFactory interpreterFactory, IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider,
+            IToolImageProviderFactory toolImageProviderFactory) {
         this.interpreterFactory = Objects.requireNonNull(interpreterFactory);
-        this.objectService = Objects.requireNonNull(objectService);
-        this.ePackageRegistry = Objects.requireNonNull(ePackageRegistry);
         this.identifierProvider = Objects.requireNonNull(identifierProvider);
-        this.childModelOperationHandler = new ChildModelOperationHandler();
+        this.modelOperationHandlerSwitchProvider = Objects.requireNonNull(modelOperationHandlerSwitchProvider);
+        this.toolImageProviderFactory = Objects.requireNonNull(toolImageProviderFactory);
     }
 
     @Override
@@ -198,7 +192,7 @@ public class ToolProvider implements IToolProvider {
     private CreateNodeTool convertNodeCreationDescription(Map<UUID, NodeDescription> id2NodeDescriptions, AQLInterpreter interpreter, NodeCreationDescription nodeCreationTool) {
         String id = this.identifierProvider.getIdentifier(nodeCreationTool);
         String label = new IdentifiedElementQuery(nodeCreationTool).getLabel();
-        String imagePath = new ToolImageProvider(this.objectService, this.ePackageRegistry, nodeCreationTool).get();
+        String imagePath = this.toolImageProviderFactory.getToolImageProvider(nodeCreationTool).get();
         List<NodeDescription> targetDescriptions = this.getParentNodeDescriptions(nodeCreationTool.getNodeMappings(), id2NodeDescriptions);
         // @formatter:off
         return CreateNodeTool.newCreateNodeTool(id)
@@ -214,7 +208,7 @@ public class ToolProvider implements IToolProvider {
     private CreateNodeTool convertContainerCreationDescription(Map<UUID, NodeDescription> id2NodeDescriptions, AQLInterpreter interpreter, ContainerCreationDescription containerCreationDescription) {
         String id = this.identifierProvider.getIdentifier(containerCreationDescription);
         String label = new IdentifiedElementQuery(containerCreationDescription).getLabel();
-        String imagePath = new ToolImageProvider(this.objectService, this.ePackageRegistry, containerCreationDescription).get();
+        String imagePath = this.toolImageProviderFactory.getToolImageProvider(containerCreationDescription).get();
         List<NodeDescription> targetDescriptions = this.getParentNodeDescriptions(containerCreationDescription.getContainerMappings(), id2NodeDescriptions);
         // @formatter:off
         return CreateNodeTool.newCreateNodeTool(id)
@@ -231,7 +225,7 @@ public class ToolProvider implements IToolProvider {
             ToolDescription toolDescription) {
         String id = this.identifierProvider.getIdentifier(toolDescription);
         String label = new IdentifiedElementQuery(toolDescription).getLabel();
-        String imagePath = new ToolImageProvider(this.objectService, this.ePackageRegistry, toolDescription).get();
+        String imagePath = this.toolImageProviderFactory.getToolImageProvider(toolDescription).get();
 
         List<DiagramElementMapping> mappings = this.getAllDiagramElementMappings(siriusDiagramDescription);
 
@@ -265,7 +259,7 @@ public class ToolProvider implements IToolProvider {
         return mappings;
     }
 
-    private Collection<? extends DiagramElementMapping> getAllSubMappings(EList<ContainerMapping> containerMappings) {
+    private Collection<? extends DiagramElementMapping> getAllSubMappings(List<ContainerMapping> containerMappings) {
         List<DiagramElementMapping> result = new ArrayList<>();
         for (ContainerMapping containerMapping : containerMappings) {
             result.addAll(containerMapping.getSubNodeMappings());
@@ -279,7 +273,7 @@ public class ToolProvider implements IToolProvider {
     private CreateEdgeTool convertEdgeCreationDescription(Map<UUID, NodeDescription> id2NodeDescriptions, AQLInterpreter interpreter, EdgeCreationDescription edgeCreationDescription) {
         String id = this.identifierProvider.getIdentifier(edgeCreationDescription);
         String label = new IdentifiedElementQuery(edgeCreationDescription).getLabel();
-        String imagePath = new ToolImageProvider(this.objectService, this.ePackageRegistry, edgeCreationDescription).get();
+        String imagePath = this.toolImageProviderFactory.getToolImageProvider(edgeCreationDescription).get();
         // @formatter:off
         List<EdgeCandidate> edgeCandidates = new ArrayList<>();
         for (EdgeMapping edgeMapping : edgeCreationDescription.getEdgeMappings()) {
@@ -315,7 +309,10 @@ public class ToolProvider implements IToolProvider {
             InitialNodeCreationOperation initialOperation = toolDescription.getInitialOperation();
             return variableManager -> {
                 Map<String, Object> variables = variableManager.getVariables();
-                return this.childModelOperationHandler.handle(interpreter, variables, List.of(initialOperation.getFirstModelOperations()));
+                var modelOperationHandlerSwitch = this.modelOperationHandlerSwitchProvider.getModelOperationHandlerSwitch(interpreter);
+                return modelOperationHandlerSwitch.apply(initialOperation.getFirstModelOperations()).map(handler -> {
+                    return handler.handle(variables);
+                }).orElse(Status.ERROR);
             };
         } else {
             return variableManager -> Status.OK;
@@ -327,7 +324,10 @@ public class ToolProvider implements IToolProvider {
             InitialNodeCreationOperation initialOperation = toolDescription.getInitialOperation();
             return variableManager -> {
                 Map<String, Object> variables = variableManager.getVariables();
-                return this.childModelOperationHandler.handle(interpreter, variables, List.of(initialOperation.getFirstModelOperations()));
+                var modelOperationHandlerSwitch = this.modelOperationHandlerSwitchProvider.getModelOperationHandlerSwitch(interpreter);
+                return modelOperationHandlerSwitch.apply(initialOperation.getFirstModelOperations()).map(handler -> {
+                    return handler.handle(variables);
+                }).orElse(Status.ERROR);
             };
         } else {
             return variableManager -> Status.OK;
@@ -339,7 +339,10 @@ public class ToolProvider implements IToolProvider {
             InitialOperation initialOperation = toolDescription.getInitialOperation();
             return variableManager -> {
                 Map<String, Object> variables = variableManager.getVariables();
-                return this.childModelOperationHandler.handle(interpreter, variables, List.of(initialOperation.getFirstModelOperations()));
+                var modelOperationHandlerSwitch = this.modelOperationHandlerSwitchProvider.getModelOperationHandlerSwitch(interpreter);
+                return modelOperationHandlerSwitch.apply(initialOperation.getFirstModelOperations()).map(handler -> {
+                    return handler.handle(variables);
+                }).orElse(Status.ERROR);
             };
         } else {
             return variableManager -> Status.OK;
@@ -351,7 +354,10 @@ public class ToolProvider implements IToolProvider {
             InitEdgeCreationOperation initialOperation = edgeCreationDescription.getInitialOperation();
             return variableManager -> {
                 Map<String, Object> variables = variableManager.getVariables();
-                return this.childModelOperationHandler.handle(interpreter, variables, List.of(initialOperation.getFirstModelOperations()));
+                var modelOperationHandlerSwitch = this.modelOperationHandlerSwitchProvider.getModelOperationHandlerSwitch(interpreter);
+                return modelOperationHandlerSwitch.apply(initialOperation.getFirstModelOperations()).map(handler -> {
+                    return handler.handle(variables);
+                }).orElse(Status.ERROR);
             };
         } else {
             return variableManager -> Status.OK;

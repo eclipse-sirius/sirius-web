@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -198,7 +198,7 @@ public class EditService implements IEditService {
                 .map(EObject.class::cast);
         // @formatter:on
 
-        optionalEObject.ifPresent(o -> EcoreUtil.deleteAll(Collections.singleton(o), true));
+        optionalEObject.ifPresent(eObject -> EcoreUtil.deleteAll(Collections.singleton(eObject), true));
     }
 
     @Override
