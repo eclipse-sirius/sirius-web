@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,7 +19,6 @@ import org.eclipse.sirius.web.api.configuration.IPropertiesDescriptionRegistry;
 import org.eclipse.sirius.web.api.configuration.IPropertiesDescriptionRegistryConfigurer;
 import org.eclipse.sirius.web.api.configuration.IRepresentationDescriptionRegistry;
 import org.eclipse.sirius.web.api.configuration.IRepresentationDescriptionRegistryConfigurer;
-import org.eclipse.sirius.web.compat.services.ExplorerTreeDescriptionProvider;
 import org.eclipse.sirius.web.compat.services.api.ISiriusConfiguration;
 import org.eclipse.sirius.web.compat.services.representations.ODesignReader;
 import org.eclipse.sirius.web.compat.services.representations.SiriusRepresentationDescriptionProvider;
@@ -45,19 +44,15 @@ public class SiriusRepresentationDescriptionRegistryConfigurer implements IRepre
 
     private final SiriusRepresentationDescriptionProvider representationDescriptionProvider;
 
-    private final ExplorerTreeDescriptionProvider treeDescriptionProvider;
-
     public SiriusRepresentationDescriptionRegistryConfigurer(List<ISiriusConfiguration> siriusConfigurations, ODesignReader oDesignReader,
-            SiriusRepresentationDescriptionProvider representationDescriptionProvider, ExplorerTreeDescriptionProvider treeDescriptionProvider) {
+            SiriusRepresentationDescriptionProvider representationDescriptionProvider) {
         this.siriusConfigurations = Objects.requireNonNull(siriusConfigurations);
         this.oDesignReader = Objects.requireNonNull(oDesignReader);
         this.representationDescriptionProvider = Objects.requireNonNull(representationDescriptionProvider);
-        this.treeDescriptionProvider = Objects.requireNonNull(treeDescriptionProvider);
     }
 
     @Override
     public void addRepresentationDescriptions(IRepresentationDescriptionRegistry registry) {
-        registry.add(this.treeDescriptionProvider.getTreeDescription());
         // @formatter:off
         this.siriusConfigurations.stream()
             .map(ISiriusConfiguration::getODesignPaths)

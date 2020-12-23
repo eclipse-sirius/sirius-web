@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,20 @@ import org.eclipse.sirius.web.emf.architecture.CodingRulesTestCases;
 import org.eclipse.sirius.web.emf.architecture.ConfigurationTestCases;
 import org.eclipse.sirius.web.emf.architecture.ServiceTestCases;
 import org.eclipse.sirius.web.emf.architecture.SpringCodingRulesTestCases;
+import org.eclipse.sirius.web.emf.compatibility.DomainClassPredicateTestCases;
+import org.eclipse.sirius.web.emf.compatibility.diagrams.EdgeMappingConverterTestCases;
+import org.eclipse.sirius.web.emf.compatibility.diagrams.SemanticCandidatesProviderTestCases;
+import org.eclipse.sirius.web.emf.compatibility.diagrams.ToolImageProviderTestCases;
+import org.eclipse.sirius.web.emf.compatibility.operations.ChangeContextOperationHandlerTestCases;
+import org.eclipse.sirius.web.emf.compatibility.operations.CreateInstanceOperationHandlerTestCases;
+import org.eclipse.sirius.web.emf.compatibility.operations.ForOperationHandlerTestCases;
+import org.eclipse.sirius.web.emf.compatibility.operations.IfOperationHandlerTestCases;
+import org.eclipse.sirius.web.emf.compatibility.operations.LetOperationHandlerTestCases;
+import org.eclipse.sirius.web.emf.compatibility.operations.MoveElementOperationHandlerTestCases;
+import org.eclipse.sirius.web.emf.compatibility.operations.RemoveElementOperationHandlerTestCases;
+import org.eclipse.sirius.web.emf.compatibility.operations.SetValueOperationHandlerTestCases;
+import org.eclipse.sirius.web.emf.compatibility.operations.SwitchOperationHandlerTestCases;
+import org.eclipse.sirius.web.emf.compatibility.operations.UnsetOperationHandlerTestCases;
 import org.eclipse.sirius.web.emf.services.CreateDocumentEventHandlerTestCases;
 import org.eclipse.sirius.web.emf.services.DeleteDocumentEventHandlerTestCases;
 import org.eclipse.sirius.web.emf.services.EditingContextFactoryTestCases;
@@ -49,7 +63,24 @@ import org.junit.runners.Suite.SuiteClasses;
     RenameDocumentEventHandlerTestCases.class,
     ServiceTestCases.class,
     SpringCodingRulesTestCases.class,
-    UploadDocumentEventHandlerTestCases.class
+    UploadDocumentEventHandlerTestCases.class,
+
+    EdgeMappingConverterTestCases.class,
+    SemanticCandidatesProviderTestCases.class,
+    ToolImageProviderTestCases.class,
+
+    ChangeContextOperationHandlerTestCases.class,
+    CreateInstanceOperationHandlerTestCases.class,
+    ForOperationHandlerTestCases.class,
+    IfOperationHandlerTestCases.class,
+    LetOperationHandlerTestCases.class,
+    MoveElementOperationHandlerTestCases.class,
+    RemoveElementOperationHandlerTestCases.class,
+    SetValueOperationHandlerTestCases.class,
+    SwitchOperationHandlerTestCases.class,
+    UnsetOperationHandlerTestCases.class,
+
+    DomainClassPredicateTestCases.class,
  })
 // @formatter:on
 public final class AllSiriusWebEMFTests {

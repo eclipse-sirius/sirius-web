@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,8 @@ package org.eclipse.sirius.web.compat.services.representations;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import org.eclipse.emf.common.util.URI;
@@ -21,14 +23,15 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
+import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+import org.eclipse.emf.ecore.xmi.impl.XMLParserPoolImpl;
 import org.eclipse.sirius.properties.PropertiesPackage;
 import org.eclipse.sirius.properties.ext.widgets.reference.propertiesextwidgetsreference.PropertiesExtWidgetsReferencePackage;
 import org.eclipse.sirius.viewpoint.ViewpointPackage;
 import org.eclipse.sirius.viewpoint.description.DescriptionPackage;
 import org.eclipse.sirius.viewpoint.description.Group;
 import org.eclipse.sirius.viewpoint.description.validation.ValidationPackage;
-import org.eclipse.sirius.web.emf.utils.EMFResourceUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
@@ -80,7 +83,7 @@ public class ODesignReader {
         ClassPathResource environmentClassPathResource = new ClassPathResource(ENVIRONMENT_ODESIGN_PATH);
         Resource environmentResource = new XMIResourceFactoryImpl().createResource(URI.createURI(ENVIRONMENT_ODESIGN_URI));
         try (InputStream environmentInputStream = environmentClassPathResource.getInputStream()) {
-            environmentResource.load(environmentInputStream, new EMFResourceUtils().getFastXMILoadOptions());
+            environmentResource.load(environmentInputStream, this.getLoadOptions());
             resourceSet.getResources().add(environmentResource);
         } catch (IOException exception) {
             this.logger.error(exception.getMessage(), exception);
@@ -90,7 +93,7 @@ public class ODesignReader {
         Resource resource = resourceSet.createResource(uri);
 
         try {
-            resource.load(inputStream, new EMFResourceUtils().getFastXMILoadOptions());
+            resource.load(inputStream, this.getLoadOptions());
         } catch (IOException exception) {
             this.logger.error(exception.getMessage(), exception);
         }
@@ -101,5 +104,16 @@ public class ODesignReader {
                 .filter(Group.class::isInstance)
                 .map(Group.class::cast);
         // @formatter:on
+    }
+
+    private Map<String, Object> getLoadOptions() {
+        Map<String, Object> options = new HashMap<>();
+        options.put(XMLResource.OPTION_DEFER_ATTACHMENT, Boolean.TRUE);
+        options.put(XMLResource.OPTION_DEFER_IDREF_RESOLUTION, Boolean.TRUE);
+        options.put(XMLResource.OPTION_USE_DEPRECATED_METHODS, Boolean.TRUE);
+        options.put(XMLResource.OPTION_USE_PARSER_POOL, new XMLParserPoolImpl());
+        options.put(XMLResource.OPTION_USE_XML_NAME_TO_FEATURE_MAP, new HashMap<>());
+        return options;
+
     }
 }

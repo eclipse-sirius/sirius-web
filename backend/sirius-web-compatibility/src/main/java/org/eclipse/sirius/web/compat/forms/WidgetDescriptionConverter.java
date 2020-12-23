@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,10 +24,9 @@ import java.util.function.Function;
 import org.eclipse.sirius.properties.WidgetDescription;
 import org.eclipse.sirius.viewpoint.description.tool.InitialOperation;
 import org.eclipse.sirius.viewpoint.description.tool.ModelOperation;
-import org.eclipse.sirius.web.compat.operations.IModelOperationHandler;
-import org.eclipse.sirius.web.compat.operations.ModelOperationHandlerSwitch;
-import org.eclipse.sirius.web.compat.services.forms.WidgetIdProvider;
-import org.eclipse.sirius.web.compat.services.representations.IdentifierProvider;
+import org.eclipse.sirius.web.compat.api.IIdentifierProvider;
+import org.eclipse.sirius.web.compat.api.IModelOperationHandler;
+import org.eclipse.sirius.web.compat.api.IModelOperationHandlerSwitchProvider;
 import org.eclipse.sirius.web.compat.utils.BooleanValueProvider;
 import org.eclipse.sirius.web.compat.utils.StringValueProvider;
 import org.eclipse.sirius.web.forms.components.RadioComponent;
@@ -61,12 +60,16 @@ public class WidgetDescriptionConverter {
 
     private final IObjectService objectService;
 
-    private final IdentifierProvider identifierProvider;
+    private final IIdentifierProvider identifierProvider;
 
-    public WidgetDescriptionConverter(AQLInterpreter interpreter, IObjectService objectService, IdentifierProvider identifierProvider) {
+    private final IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider;
+
+    public WidgetDescriptionConverter(AQLInterpreter interpreter, IObjectService objectService, IIdentifierProvider identifierProvider,
+            IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider) {
         this.interpreter = Objects.requireNonNull(interpreter);
         this.objectService = Objects.requireNonNull(objectService);
         this.identifierProvider = Objects.requireNonNull(identifierProvider);
+        this.modelOperationHandlerSwitchProvider = Objects.requireNonNull(modelOperationHandlerSwitchProvider);
     }
 
     public Optional<AbstractWidgetDescription> convert(WidgetDescription controlDescription) {
@@ -134,7 +137,8 @@ public class WidgetDescriptionConverter {
 
             ModelOperation modelOperation = initialOperation.getFirstModelOperations();
 
-            Optional<IModelOperationHandler> optionalModelOperationHandler = new ModelOperationHandlerSwitch(this.interpreter).doSwitch(modelOperation);
+            var modelOperationHandlerSwitch = this.modelOperationHandlerSwitchProvider.getModelOperationHandlerSwitch(this.interpreter);
+            Optional<IModelOperationHandler> optionalModelOperationHandler = modelOperationHandlerSwitch.apply(modelOperation);
             return optionalModelOperationHandler.map(handler -> {
                 return handler.handle(childVariableManager.getVariables());
             }).orElse(Status.ERROR);
@@ -180,7 +184,8 @@ public class WidgetDescriptionConverter {
             InitialOperation initialOperation = radioDescription.getInitialOperation();
             ModelOperation modelOperation = initialOperation.getFirstModelOperations();
 
-            Optional<IModelOperationHandler> optionalModelOperationHandler = new ModelOperationHandlerSwitch(this.interpreter).doSwitch(modelOperation);
+            var modelOperationHandlerSwitch = this.modelOperationHandlerSwitchProvider.getModelOperationHandlerSwitch(this.interpreter);
+            Optional<IModelOperationHandler> optionalModelOperationHandler = modelOperationHandlerSwitch.apply(modelOperation);
             return optionalModelOperationHandler.map(handler -> {
                 return handler.handle(childVariableManager.getVariables());
             }).orElse(Status.ERROR);
@@ -229,7 +234,8 @@ public class WidgetDescriptionConverter {
             InitialOperation initialOperation = selectDescription.getInitialOperation();
             ModelOperation modelOperation = initialOperation.getFirstModelOperations();
 
-            Optional<IModelOperationHandler> optionalModelOperationHandler = new ModelOperationHandlerSwitch(this.interpreter).doSwitch(modelOperation);
+            var modelOperationHandlerSwitch = this.modelOperationHandlerSwitchProvider.getModelOperationHandlerSwitch(this.interpreter);
+            Optional<IModelOperationHandler> optionalModelOperationHandler = modelOperationHandlerSwitch.apply(modelOperation);
             return optionalModelOperationHandler.map(handler -> {
                 return handler.handle(variables);
             }).orElse(Status.ERROR);
@@ -259,7 +265,8 @@ public class WidgetDescriptionConverter {
             InitialOperation initialOperation = checkboxDescription.getInitialOperation();
             ModelOperation modelOperation = initialOperation.getFirstModelOperations();
 
-            Optional<IModelOperationHandler> optionalModelOperationHandler = new ModelOperationHandlerSwitch(this.interpreter).doSwitch(modelOperation);
+            var modelOperationHandlerSwitch = this.modelOperationHandlerSwitchProvider.getModelOperationHandlerSwitch(this.interpreter);
+            Optional<IModelOperationHandler> optionalModelOperationHandler = modelOperationHandlerSwitch.apply(modelOperation);
             return optionalModelOperationHandler.map(handler -> {
                 return handler.handle(variables);
             }).orElse(Status.ERROR);

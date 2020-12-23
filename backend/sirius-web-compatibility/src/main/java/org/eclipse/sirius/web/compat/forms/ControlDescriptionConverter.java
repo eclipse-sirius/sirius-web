@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,7 +18,8 @@ import java.util.Optional;
 import org.eclipse.sirius.properties.ControlDescription;
 import org.eclipse.sirius.properties.DynamicMappingForDescription;
 import org.eclipse.sirius.properties.WidgetDescription;
-import org.eclipse.sirius.web.compat.services.representations.IdentifierProvider;
+import org.eclipse.sirius.web.compat.api.IIdentifierProvider;
+import org.eclipse.sirius.web.compat.api.IModelOperationHandlerSwitchProvider;
 import org.eclipse.sirius.web.forms.description.AbstractControlDescription;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
 import org.eclipse.sirius.web.services.api.objects.IObjectService;
@@ -38,12 +39,16 @@ public class ControlDescriptionConverter {
 
     private final IObjectService objectService;
 
-    private final IdentifierProvider identifierProvider;
+    private final IIdentifierProvider identifierProvider;
 
-    public ControlDescriptionConverter(AQLInterpreter interpreter, IObjectService objectService, IdentifierProvider identifierProvider) {
+    private final IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider;
+
+    public ControlDescriptionConverter(AQLInterpreter interpreter, IObjectService objectService, IIdentifierProvider identifierProvider,
+            IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider) {
         this.interpreter = Objects.requireNonNull(interpreter);
         this.objectService = Objects.requireNonNull(objectService);
         this.identifierProvider = Objects.requireNonNull(identifierProvider);
+        this.modelOperationHandlerSwitchProvider = Objects.requireNonNull(modelOperationHandlerSwitchProvider);
     }
 
     public Optional<AbstractControlDescription> convert(ControlDescription controlDescription) {
@@ -59,11 +64,12 @@ public class ControlDescriptionConverter {
     }
 
     private Optional<AbstractControlDescription> convertWidget(WidgetDescription controlDescription) {
-        return new WidgetDescriptionConverter(this.interpreter, this.objectService, this.identifierProvider).convert(controlDescription).map(AbstractControlDescription.class::cast);
+        return new WidgetDescriptionConverter(this.interpreter, this.objectService, this.identifierProvider, this.modelOperationHandlerSwitchProvider).convert(controlDescription)
+                .map(AbstractControlDescription.class::cast);
     }
 
     private Optional<AbstractControlDescription> convertFor(DynamicMappingForDescription forDescription) {
-        return Optional.of(new ForDescriptionConverter(this.interpreter, this.objectService, this.identifierProvider).convert(forDescription));
+        return Optional.of(new ForDescriptionConverter(this.interpreter, this.objectService, this.identifierProvider, this.modelOperationHandlerSwitchProvider).convert(forDescription));
     }
 
 }

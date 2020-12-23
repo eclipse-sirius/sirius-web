@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 
 import org.eclipse.sirius.diagram.description.DiagramElementMapping;
 import org.eclipse.sirius.diagram.description.EdgeMapping;
-import org.eclipse.sirius.web.compat.services.representations.IdentifierProvider;
+import org.eclipse.sirius.web.compat.api.IIdentifierProvider;
 import org.eclipse.sirius.web.components.Element;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.web.diagrams.elements.NodeElementProps;
@@ -36,9 +36,9 @@ import org.eclipse.sirius.web.representations.VariableManager;
 public class RelationBasedSourceNodesProvider implements Function<VariableManager, List<Element>> {
     private final EdgeMapping edgeMapping;
 
-    private final IdentifierProvider identifierProvider;
+    private final IIdentifierProvider identifierProvider;
 
-    public RelationBasedSourceNodesProvider(EdgeMapping edgeMapping, IdentifierProvider identifierProvider) {
+    public RelationBasedSourceNodesProvider(EdgeMapping edgeMapping, IIdentifierProvider identifierProvider) {
         this.edgeMapping = Objects.requireNonNull(edgeMapping);
         this.identifierProvider = Objects.requireNonNull(identifierProvider);
     }

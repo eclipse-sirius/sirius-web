@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,14 +16,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.sirius.web.compat.services.representations.IdentifierProvider;
+import org.eclipse.sirius.web.compat.api.IIdentifierProvider;
+import org.eclipse.sirius.web.compat.api.IModelOperationHandlerSwitchProvider;
 import org.eclipse.sirius.web.compat.utils.StringValueProvider;
 import org.eclipse.sirius.web.forms.description.AbstractControlDescription;
 import org.eclipse.sirius.web.forms.description.GroupDescription;
@@ -42,34 +39,24 @@ public class GroupDescriptionConverter {
 
     private final IObjectService objectService;
 
-    private final IdentifierProvider identifierProvider;
+    private final IIdentifierProvider identifierProvider;
 
-    public GroupDescriptionConverter(AQLInterpreter interpreter, IObjectService objectService, IdentifierProvider identifierProvider) {
+    private final IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider;
+
+    public GroupDescriptionConverter(AQLInterpreter interpreter, IObjectService objectService, IIdentifierProvider identifierProvider,
+            IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider) {
         this.interpreter = Objects.requireNonNull(interpreter);
         this.objectService = Objects.requireNonNull(objectService);
         this.identifierProvider = Objects.requireNonNull(identifierProvider);
+        this.modelOperationHandlerSwitchProvider = Objects.requireNonNull(modelOperationHandlerSwitchProvider);
     }
 
     public GroupDescription convert(org.eclipse.sirius.properties.GroupDescription siriusGroupDescription,
             Map<org.eclipse.sirius.properties.GroupDescription, GroupDescription> siriusGroup2SiriusWebGroup) {
-        ControlDescriptionConverter controlDescriptionConverter = new ControlDescriptionConverter(this.interpreter, this.objectService, this.identifierProvider);
+        ControlDescriptionConverter controlDescriptionConverter = new ControlDescriptionConverter(this.interpreter, this.objectService, this.identifierProvider,
+                this.modelOperationHandlerSwitchProvider);
 
-        // @formatter:off
-        Supplier<String> fallbackIdProvider = () -> String.valueOf(siriusGroup2SiriusWebGroup.size());
-
-        Function<VariableManager, String> idProvider = variableManager -> {
-            var optionalEObject = Optional.of(variableManager.getVariables().get(VariableManager.SELF))
-                    .filter(EObject.class::isInstance)
-                    .map(EObject.class::cast);
-
-            var optionalLabel = this.interpreter.evaluateExpression(variableManager.getVariables(), siriusGroupDescription.getLabelExpression()).asString();
-
-            return optionalEObject.flatMap(eObject -> {
-                return optionalLabel.map(label -> EcoreUtil.getURI(eObject) + label);
-            }).orElseGet(fallbackIdProvider);
-        };
-        // @formatter:on
-
+        Function<VariableManager, String> idProvider = variableManager -> String.valueOf(siriusGroup2SiriusWebGroup.size());
         StringValueProvider labelProvider = new StringValueProvider(this.interpreter, siriusGroupDescription.getLabelExpression());
 
         // @formatter:off

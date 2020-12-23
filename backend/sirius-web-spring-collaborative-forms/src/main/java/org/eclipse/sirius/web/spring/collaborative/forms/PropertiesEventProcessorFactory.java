@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,20 +16,20 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.eclipse.sirius.web.api.configuration.IPropertiesDefaultFormDescriptionProvider;
 import org.eclipse.sirius.web.collaborative.api.services.IRepresentationConfiguration;
 import org.eclipse.sirius.web.collaborative.api.services.IRepresentationEventProcessor;
 import org.eclipse.sirius.web.collaborative.api.services.IRepresentationEventProcessorFactory;
 import org.eclipse.sirius.web.collaborative.api.services.ISubscriptionManagerFactory;
 import org.eclipse.sirius.web.collaborative.forms.api.IFormEventHandler;
 import org.eclipse.sirius.web.collaborative.forms.api.IFormEventProcessor;
+import org.eclipse.sirius.web.collaborative.forms.api.IPropertiesDefaultDescriptionProvider;
 import org.eclipse.sirius.web.collaborative.forms.api.IWidgetSubscriptionManagerFactory;
 import org.eclipse.sirius.web.collaborative.forms.api.PropertiesConfiguration;
 import org.eclipse.sirius.web.forms.description.FormDescription;
 import org.eclipse.sirius.web.services.api.Context;
 import org.eclipse.sirius.web.services.api.objects.IEditingContext;
 import org.eclipse.sirius.web.services.api.objects.IObjectService;
-import org.eclipse.sirius.web.services.api.representations.IPropertiesDescriptionService;
+import org.eclipse.sirius.web.services.api.representations.IPropertiesDescriptionProvider;
 import org.springframework.stereotype.Service;
 
 /**
@@ -40,9 +40,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class PropertiesEventProcessorFactory implements IRepresentationEventProcessorFactory {
 
-    private final IPropertiesDescriptionService propertiesDescriptionService;
+    private final IPropertiesDescriptionProvider propertiesDescriptionProvider;
 
-    private final IPropertiesDefaultFormDescriptionProvider defaultFormDescriptionProvider;
+    private final IPropertiesDefaultDescriptionProvider propertiesDefaultDescriptionProvider;
 
     private final IObjectService objectService;
 
@@ -52,11 +52,11 @@ public class PropertiesEventProcessorFactory implements IRepresentationEventProc
 
     private final IWidgetSubscriptionManagerFactory widgetSubscriptionManagerFactory;
 
-    public PropertiesEventProcessorFactory(IPropertiesDescriptionService propertiesDescriptionService, IPropertiesDefaultFormDescriptionProvider defaultFormDescriptionProvider,
+    public PropertiesEventProcessorFactory(IPropertiesDescriptionProvider propertiesDescriptionProvider, IPropertiesDefaultDescriptionProvider propertiesDefaultDescriptionProvider,
             IObjectService objectService, List<IFormEventHandler> formEventHandlers, ISubscriptionManagerFactory subscriptionManagerFactory,
             IWidgetSubscriptionManagerFactory widgetSubscriptionManagerFactory) {
-        this.propertiesDescriptionService = Objects.requireNonNull(propertiesDescriptionService);
-        this.defaultFormDescriptionProvider = Objects.requireNonNull(defaultFormDescriptionProvider);
+        this.propertiesDescriptionProvider = Objects.requireNonNull(propertiesDescriptionProvider);
+        this.propertiesDefaultDescriptionProvider = Objects.requireNonNull(propertiesDefaultDescriptionProvider);
         this.objectService = Objects.requireNonNull(objectService);
         this.formEventHandlers = Objects.requireNonNull(formEventHandlers);
         this.subscriptionManagerFactory = Objects.requireNonNull(subscriptionManagerFactory);
@@ -74,9 +74,7 @@ public class PropertiesEventProcessorFactory implements IRepresentationEventProc
         if (IFormEventProcessor.class.isAssignableFrom(representationEventProcessorClass) && configuration instanceof PropertiesConfiguration) {
             PropertiesConfiguration propertiesConfiguration = (PropertiesConfiguration) configuration;
 
-            // @formatter:off
-            List<FormDescription> formDescriptions = this.propertiesDescriptionService.getPropertiesDescriptions();
-            // @formatter:on
+            List<FormDescription> formDescriptions = this.propertiesDescriptionProvider.getPropertiesDescriptions();
             Optional<Object> optionalObject = this.objectService.getObject(editingContext, propertiesConfiguration.getObjectId());
             if (optionalObject.isPresent()) {
                 Object object = optionalObject.get();
@@ -84,7 +82,7 @@ public class PropertiesEventProcessorFactory implements IRepresentationEventProc
                 if (!formDescriptions.isEmpty()) {
                     optionalFormDescription = new FormDescriptionAggregator().aggregate(formDescriptions, object, this.objectService);
                 }
-                FormDescription formDescription = optionalFormDescription.orElse(this.defaultFormDescriptionProvider.getFormDescription());
+                FormDescription formDescription = optionalFormDescription.orElse(this.propertiesDefaultDescriptionProvider.getFormDescription());
                 IRepresentationEventProcessor formEventProcessor = new FormEventProcessor(editingContext, formDescription, propertiesConfiguration.getId(), object, this.formEventHandlers,
                         this.subscriptionManagerFactory.create(), this.widgetSubscriptionManagerFactory.create());
 
