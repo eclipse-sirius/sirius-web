@@ -10,23 +10,23 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { convertDiagram } from 'diagram/sprotty/convertDiagram';
 import {
-  EditLabelAction,
-  UpdateModelAction,
-  ModelSource,
   ApplyLabelEditAction,
-  SetViewportAction,
-  getWindowScroll,
-  GetViewportAction,
-  SelectAction,
-  GetSelectionAction,
   CenterAction,
+  EditLabelAction,
   getAbsoluteBounds,
+  GetSelectionAction,
+  GetViewportAction,
+  getWindowScroll,
+  ModelSource,
+  SEdge,
+  SelectAction,
+  SetViewportAction,
   SGraph,
   SNode,
-  SEdge,
+  UpdateModelAction,
 } from 'sprotty';
-import { convertDiagram } from 'diagram/sprotty/convertDiagram';
 /** Action to delete a sprotty element */
 export const SPROTTY_DELETE_ACTION = 'sprottyDeleteElement';
 /** Action to select a sprotty element */
@@ -222,48 +222,50 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
     }
   }
 
-  async handleSiriusUpdateModelAction(action) {
+  handleSiriusUpdateModelAction(action) {
     const { diagram } = action;
     if (diagram) {
       const convertedDiagram = convertDiagram(diagram);
       const sprottyModel = this.modelFactory.createRoot(convertedDiagram);
-      const selectionResult = await this.actionDispatcher.request(GetSelectionAction.create());
-      sprottyModel.index
-        .all()
-        .filter((element) => selectionResult.selectedElementsIDs.indexOf(element.id) >= 0)
-        .forEach((element) => (element.selected = true));
-      this.actionDispatcher.dispatch(new UpdateModelAction(sprottyModel));
+      this.actionDispatcher.request(GetSelectionAction.create()).then((selectionResult) => {
+        sprottyModel.index
+          .all()
+          .filter((element) => selectionResult.selectedElementsIDs.indexOf(element.id) >= 0)
+          .forEach((element) => (element.selected = true));
+        this.actionDispatcher.dispatch(new UpdateModelAction(sprottyModel));
+      });
     } else {
       this.actionDispatcher.dispatch(new UpdateModelAction(INITIAL_ROOT));
     }
   }
 
-  async handleSiriusSelectAction(action) {
+  handleSiriusSelectAction(action) {
     if (this.currentRoot.index) {
       const { selection } = action;
       const selectedElementsIDs = [];
-      const selectionResult = await this.actionDispatcher.request(GetSelectionAction.create());
-      const prevSelectedObjectIds = this.currentRoot.index
-        .all()
-        .filter((element) => selectionResult.selectedElementsIDs.indexOf(element.id) >= 0)
-        .map((element) => element.id);
-      const deselectedElementsIDs = [...prevSelectedObjectIds];
-      if (selection?.id !== this.currentRoot.id) {
-        const selectionElement = this.findElement(selection.id);
-        if (selectionElement && prevSelectedObjectIds.indexOf(selectionElement.id) < 0) {
-          // The React selection and the Sprotty selection does not match. We must update the Sprotty selection
-          selectedElementsIDs.push(selectionElement.id);
+      this.actionDispatcher.request(GetSelectionAction.create()).then((selectionResult) => {
+        const prevSelectedObjectIds = this.currentRoot.index
+          .all()
+          .filter((element) => selectionResult.selectedElementsIDs.indexOf(element.id) >= 0)
+          .map((element) => element.id);
+        const deselectedElementsIDs = [...prevSelectedObjectIds];
+        if (selection?.id !== this.currentRoot.id) {
+          const selectionElement = this.findElement(selection.id);
+          if (selectionElement && prevSelectedObjectIds.indexOf(selectionElement.id) < 0) {
+            // The React selection and the Sprotty selection does not match. We must update the Sprotty selection
+            selectedElementsIDs.push(selectionElement.id);
+          }
         }
-      }
-      const actions = [];
-      if (selectedElementsIDs.length > 0 || deselectedElementsIDs.length > 0) {
-        actions.push(new SelectAction(selectedElementsIDs, deselectedElementsIDs));
-      }
-      if (selectedElementsIDs.length > 0) {
-        actions.push(new CenterAction(selectedElementsIDs));
-        actions.push({ kind: HIDE_CONTEXTUAL_TOOLBAR_ACTION });
-      }
-      this.actionDispatcher.dispatchAll(actions);
+        const actions = [];
+        if (selectedElementsIDs.length > 0 || deselectedElementsIDs.length > 0) {
+          actions.push(new SelectAction(selectedElementsIDs, deselectedElementsIDs));
+        }
+        if (selectedElementsIDs.length > 0) {
+          actions.push(new CenterAction(selectedElementsIDs));
+          actions.push({ kind: HIDE_CONTEXTUAL_TOOLBAR_ACTION });
+        }
+        this.actionDispatcher.dispatchAll(actions);
+      });
     }
   }
 
@@ -287,39 +289,40 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
     this.diagramSourceElement = sourceElement;
   }
 
-  async handleShowContextualToolbarAction(action) {
+  handleShowContextualToolbarAction(action) {
     const { element } = action;
     if (element && (element.kind === 'Diagram' || element.parent)) {
-      const root = await this.actionDispatcher.request(GetViewportAction.create());
-      const { viewport, canvasBounds } = root;
-      const { scroll, zoom } = viewport;
-      const lastPositionOnDiagram = this.mousePositionTracker.lastPositionOnDiagram;
-      if (lastPositionOnDiagram) {
-        const bounds = {
-          x: (lastPositionOnDiagram.x - scroll.x) * zoom + canvasBounds.x + popupOffset.x,
-          y: (lastPositionOnDiagram.y - scroll.y) * zoom + canvasBounds.y + popupOffset.y,
-          width: -1,
-          height: -1,
-        };
-
-        const absoluteBounds = getAbsoluteBounds(element);
-        let origin = { x: 0, y: 0 };
-        if (element instanceof SNode) {
-          origin = {
-            x: absoluteBounds.x + (element.size.width / 2) * zoom,
-            y: absoluteBounds.y + (element.size.height / 2) * zoom,
+      this.actionDispatcher.request(GetViewportAction.create()).then((viewportResult) => {
+        const { viewport, canvasBounds } = viewportResult;
+        const { scroll, zoom } = viewport;
+        const lastPositionOnDiagram = this.mousePositionTracker.lastPositionOnDiagram;
+        if (lastPositionOnDiagram) {
+          const bounds = {
+            x: (lastPositionOnDiagram.x - scroll.x) * zoom + canvasBounds.x + popupOffset.x,
+            y: (lastPositionOnDiagram.y - scroll.y) * zoom + canvasBounds.y + popupOffset.y,
+            width: -1,
+            height: -1,
           };
-        }
 
-        const contextualPalette = {
-          canvasBounds: bounds,
-          origin,
-          element: element,
-          renameable: !(element instanceof SGraph) && !(element instanceof SEdge),
-          deletable: !(element instanceof SGraph),
-        };
-        this.setContextualPalette(contextualPalette);
-      }
+          const absoluteBounds = getAbsoluteBounds(element);
+          let origin = { x: 0, y: 0 };
+          if (element instanceof SNode) {
+            origin = {
+              x: absoluteBounds.x + (element.size.width / 2) * zoom,
+              y: absoluteBounds.y + (element.size.height / 2) * zoom,
+            };
+          }
+
+          const contextualPalette = {
+            canvasBounds: bounds,
+            origin,
+            element: element,
+            renameable: !(element instanceof SGraph) && !(element instanceof SEdge),
+            deletable: !(element instanceof SGraph),
+          };
+          this.setContextualPalette(contextualPalette);
+        }
+      });
     } else {
       const contextualPalette = undefined;
       this.setContextualPalette(contextualPalette);
@@ -330,44 +333,46 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
     const contextualPalette = undefined;
     this.setContextualPalette(contextualPalette);
   }
-  async handleZoomInAction(action) {
-    await this.doZoom(ZOOM_IN_FACTOR);
+  handleZoomInAction(action) {
+    this.doZoom(ZOOM_IN_FACTOR);
   }
 
-  async handleZoomOutAction(action) {
-    await this.doZoom(ZOOM_OUT_FACTOR);
+  handleZoomOutAction(action) {
+    this.doZoom(ZOOM_OUT_FACTOR);
   }
 
-  async handleZoomToAction(action) {
-    await this.doZoomLevel(action.level);
+  handleZoomToAction(action) {
+    this.doZoomLevel(action.level);
   }
 
-  async doZoom(zoomFactor) {
-    const root = await this.actionDispatcher.request(GetViewportAction.create());
-    const { viewport } = root;
-    await this.doZoomLevel(viewport.zoom * zoomFactor);
+  doZoom(zoomFactor) {
+    this.actionDispatcher.request(GetViewportAction.create()).then((viewportResult) => {
+      const { viewport } = viewportResult;
+      this.doZoomLevel(viewport.zoom * zoomFactor);
+    });
   }
 
-  async doZoomLevel(zoomLevel) {
-    const root = await this.actionDispatcher.request(GetViewportAction.create());
-    const { viewport, canvasBounds } = root;
-    const windowScroll = getWindowScroll();
-    const clientX = canvasBounds.x + canvasBounds.width / 2;
-    const clientY = canvasBounds.y + canvasBounds.height / 2;
+  doZoomLevel(zoomLevel) {
+    this.actionDispatcher.request(GetViewportAction.create()).then((viewportResult) => {
+      const { viewport, canvasBounds } = viewportResult;
+      const windowScroll = getWindowScroll();
+      const clientX = canvasBounds.x + canvasBounds.width / 2;
+      const clientY = canvasBounds.y + canvasBounds.height / 2;
 
-    const viewportOffset = {
-      x: clientX + windowScroll.x - canvasBounds.x,
-      y: clientY + windowScroll.y - canvasBounds.y,
-    };
-    const offsetFactor = 1.0 / zoomLevel - 1.0 / viewport.zoom;
-    const newViewport = {
-      zoom: zoomLevel,
-      scroll: {
-        x: viewport.scroll.x - offsetFactor * viewportOffset.x,
-        y: viewport.scroll.y - offsetFactor * viewportOffset.y,
-      },
-    };
-    await this.actionDispatcher.dispatch(new SetViewportAction(this.currentRoot.id, newViewport, true));
+      const viewportOffset = {
+        x: clientX + windowScroll.x - canvasBounds.x,
+        y: clientY + windowScroll.y - canvasBounds.y,
+      };
+      const offsetFactor = 1.0 / zoomLevel - 1.0 / viewport.zoom;
+      const newViewport = {
+        zoom: zoomLevel,
+        scroll: {
+          x: viewport.scroll.x - offsetFactor * viewportOffset.x,
+          y: viewport.scroll.y - offsetFactor * viewportOffset.y,
+        },
+      };
+      this.actionDispatcher.dispatch(new SetViewportAction(this.currentRoot.id, newViewport, true));
+    });
   }
 
   findElementWithTarget(element) {
