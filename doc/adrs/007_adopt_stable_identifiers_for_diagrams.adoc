@@ -1,4 +1,4 @@
-= ADR-006 - Adopt stable identifiers for diagrams
+= ADR-007 - Adopt stable identifiers for diagrams
 
 == Context
 
