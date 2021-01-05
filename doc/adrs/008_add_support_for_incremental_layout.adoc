@@ -1,0 +1,128 @@
+= ADR-008 - Add support for incremental layout
+
+== Context
+
+For the moment, the layout is automatic and applied on each refresh.
+Every time the diagram is refreshed, ELK is used to compute the layout from scratch.
+The `DiagramRenderer` does not compute any layout information.
+The end user cannot move diagram elements.
+
+
+== Decision
+
+Our end users want to change the layout manually.
+The automatic layout will be used when the diagram is created.
+After that, the layout will be incremental using information from the previously computed diagram.
+
+When the diagram will be refreshed, some changes may have occur in the semantic elements used.
+We will thus face multiple use cases:
+
+- Someone may have used a tool to create a new semantic element which will create a new node
+- Another tool may have been used to create 10 semantic elements with references which create new nodes and edges
+- A diagram has not been used for a month and it needs to be refreshed
+
+When we will refresh a diagram, we will thus have two use cases, either an element existed previously or it is new.
+If we have an existing diagram element, we can keep its layout information.
+If we have a new element, we will have to compute brand new layout information.
+
+The use of ELK will be deactivated when a diagram is refreshed by removing the call to `ILayoutService#layout` in `DiagramCreationService#doRender`.
+ELK will still be used at the creation of the diagram by using `ILayoutService#layout` in `DiagramCreationService#create`.
+An environment variable will be provided in order to keep using ELK automatically after each refresh for the moment.
+
+
+=== Node
+
+In order to provide incremental layout for nodes, we will have to compute the size and position of new nodes.
+We will introduce a `NodePositionProvider` to compute the positions of the new nodes.
+A `NodeSizeProvider` will also be created to handle the size of new nodes.
+It may return a default size of 50x70 for now but it may leverage some information provided by the specifier later.
+We may even compute the size of a node using the number of its child nodes too.
+
+```
+public class NodePositionProvider {
+  // @formatter:off
+  private Position startingPosition = Position.newPosition()
+    .x(0)
+    .y(0)
+    .build();
+  // @formatter:on
+
+  private Position lastPosition;
+
+  public Position getNextPosition() {
+    // Compute the next position and store it in the last position...
+  }
+}
+```
+
+The `NodeSizeProvider` can be created by the DiagramComponent and it will be given to the NodeComponent using their props.
+
+```
+public class NodeSizeProvider {
+  public Size getSize(List<Node> childNodes) {
+    // We could compute the size of a node from the size of its child nodes
+
+    // @formatter::off
+    return Size.newSize()
+      .width(50)
+      .height(70)
+      .build();
+    // @formatter:on
+  }
+}
+```
+
+=== Edge
+
+In order to provide incremental layout for edges, we will have to compute the routing points of new edges using a `EdgeRoutingPointsProvider`.
+We could use a basic strategy from the top left of the source node to the top left of the target node.
+
+```
+public class EdgeRoutingPointsProvider {
+  public List<Position> getRoutingPoints(Node sourceNode, Node targetNode) {
+    // @formatter:off
+    Position source = Position.newPosition()
+      .x(sourceNode.getPosition().x())
+      .y(sourceNode.getPosition().y())
+      .build();
+
+    Position target = Position.newPosition()
+      .x(targetNode.getPosition().x())
+      .y(targetNode.getPosition().y())
+      .build();
+    // @formatter:on
+    return List.of(source, target);
+  }
+}
+```
+
+
+== Status
+
+Accepted.
+
+
+== Consequences
+
+=== Label
+
+The size of the label should be taken into account to compute the size of the node.
+This would allow us to resize nodes after a direct edit for example.
+We already have a class which can compute the size of the label in Sirius Web Diagrams Layout.
+
+
+=== Node creation tool
+
+We will leverage the position where the user will click in order to layout the new nodes.
+For that, we will send to the server the positions where the user has clicked.
+This will require an update of the GraphQL API.
+The `NodePositionProvider` would thus be updated by using the given `x,y` instead of the default `0x0` starting position.
+
+
+=== Move node operation
+
+We will have to support moving elements in the frontend.
+A new mutation will be required to perform the move.
+We will need a new API to give the move information to the components involved in the diagram rendering.
+This API may look similar as the one for view creation requests.
+
