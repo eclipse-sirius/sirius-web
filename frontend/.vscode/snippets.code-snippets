@@ -1,6 +1,6 @@
 {
   "EPL 2.0 Copyright Header": {
-    "scope": "javascript,typescript,css,java",
+    "scope": "javascript,javascriptreact,typescript,typescriptreact,css,java",
     "prefix": "epl",
     "body": [
       "/*******************************************************************************",
