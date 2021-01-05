@@ -1,4 +1,4 @@
-= ADR-005 - Migrate our state machines to XState
+= ADR-006 - Migrate our state machines to XState
 
 == Context
 
