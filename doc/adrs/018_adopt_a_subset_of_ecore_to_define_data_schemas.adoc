@@ -1,0 +1,58 @@
+= ADR-018 - Adopt a subset of Ecore to define data schemas for modelers
+
+== Context
+
+We will need a way for modeler authors to describe their business domain as a "metamodel".
+For the first MVP, we will define a simple version with just the minimum features needed to define simple data schema.
+We do not want to use the same terminology as in EMF or MDA/MDE in general ("model", "metamodel", "EClass"):
+
+- outside of the (relatively small) modeling community, these terms can be seen negatively, and associated to e.g. UML
+- we want Sirius Web to be able to attract users from other communities who are not familiar with this terminology (and can be "scared" by terms like "metamodel")
+- while we will probably rely on EMF at first for the implementation, we want to be free in the future to diverge from EMF and support other kinds of data sources
+
+== Decision
+
+```ts
+// In pseudo-code (TypeScript type signatures)
+
+interface NamedElement {
+    name: string;
+}
+
+interface Domain extends NamedElement {
+    uri: string;
+    types: Entity[];
+}
+
+interface Entity extends NamedElement {
+    attributes: Attribute[];
+    relations: Relation[];
+}
+
+interface Feature extends NamedElement {
+    optional: boolean;
+    many: boolean;
+}
+
+type AttributeType = 'string' | 'boolean' | 'number';
+
+interface Attribute extends Feature {
+    type: AttributeType;
+}
+
+interface Relation extends Feature {
+    containment: boolean;
+    targetType: Entity;
+}
+```
+
+=== Implementation
+
+To simplify the implementation we will rely on Ecore, both at runtime and for the serialisation, but this should be seen as an implementation detail invisible to modeler authors, and is subject to change later on.
+
+== Status
+
+Accepted
+
+== Consequences
+
