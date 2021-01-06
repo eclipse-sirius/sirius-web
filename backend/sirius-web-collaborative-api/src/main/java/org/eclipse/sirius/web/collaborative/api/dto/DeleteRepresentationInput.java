@@ -48,7 +48,7 @@ public final class DeleteRepresentationInput implements IProjectInput {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'projectId: {1}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'representationId: {1}'}'"; //$NON-NLS-1$
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.representationId);
     }
 }
