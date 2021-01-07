@@ -111,6 +111,8 @@ export * from './views/edit-project/RepresentationNavigation';
 export * from './views/ErrorView';
 export * from './views/Footer';
 export * from './views/FormContainer';
+export * from './views/modelers/ModelersView';
+export * from './views/new-modeler/NewModelerView';
 export * from './views/new-project/NewProjectView';
 export * from './views/projects/ProjectActionsContextMenu';
 export * from './views/projects/ProjectCard';

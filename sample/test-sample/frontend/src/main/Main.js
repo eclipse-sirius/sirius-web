@@ -13,11 +13,13 @@
 import {
   EditProjectView,
   NewProjectView,
+  NewModelerView,
   ProjectsView,
+  ModelersView,
   UploadProjectView,
   withErrorBoundary,
   withCapabilities,
-  withProject
+  withProject,
 } from '@eclipse-sirius/sirius-components';
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
@@ -33,6 +35,16 @@ export const Main = () => {
       <Route exact path="/new/project" component={withErrorBoundary(withCapabilities(NewProjectView))} />
       <Route exact path="/upload/project" component={withErrorBoundary(withCapabilities(UploadProjectView))} />
       <Route exact path="/projects" component={withErrorBoundary(withCapabilities(ProjectsView))} />
+      <Route
+        exact
+        path="/projects/:projectId/modelers"
+        component={withErrorBoundary(withCapabilities(withProject(ModelersView)))}
+      />
+      <Route
+        exact
+        path="/projects/:projectId/new/modeler"
+        component={withErrorBoundary(withCapabilities(withProject(NewModelerView)))}
+      />
       <Route
         exact
         path="/projects/:projectId/edit/:representationId?"

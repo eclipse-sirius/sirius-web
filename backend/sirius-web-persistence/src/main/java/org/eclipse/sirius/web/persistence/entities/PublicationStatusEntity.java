@@ -10,21 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.services.messages;
+package org.eclipse.sirius.web.persistence.entities;
 
 /**
- * Interface of the services messages.
+ * Publication status for modelers.
  *
- * @author sbegaudeau
+ * @author pcdavid
  */
-public interface IServicesMessageService {
-
-    String invalidProjectName();
-
-    String invalidModelerName();
-
-    String projectNotFound();
-
-    String modelerNotFound();
-
+public enum PublicationStatusEntity {
+    DRAFT, PUBLISHED
 }

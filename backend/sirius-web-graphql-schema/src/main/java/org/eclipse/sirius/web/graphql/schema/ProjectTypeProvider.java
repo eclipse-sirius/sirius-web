@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -48,6 +48,7 @@ import graphql.schema.GraphQLTypeReference;
  *   representation(representationId: ID!): Representation
  *   representations: [Representation!]!
  *   accessLevel: AccessLevel!
+ *   modelers: [Modeler!]!
  * }
  * </pre>
  *
@@ -58,6 +59,8 @@ public class ProjectTypeProvider implements ITypeProvider {
     public static final String TYPE = "Project"; //$NON-NLS-1$
 
     public static final String REPRESENTATION_TYPE = "Representation"; //$NON-NLS-1$
+
+    public static final String MODELER_TYPE = "Modeler"; //$NON-NLS-1$
 
     public static final String NAME_FIELD = "name"; //$NON-NLS-1$
 
@@ -73,6 +76,8 @@ public class ProjectTypeProvider implements ITypeProvider {
 
     public static final String ACCESS_LEVEL_FIELD = "accessLevel"; //$NON-NLS-1$
 
+    public static final String MODELERS_FIELD = "modelers"; //$NON-NLS-1$
+
     private final GraphQLEnumTypeProvider graphQLEnumTypeProvider = new GraphQLEnumTypeProvider();
 
     @Override
@@ -87,6 +92,7 @@ public class ProjectTypeProvider implements ITypeProvider {
                 .field(this.getRepresentationField())
                 .field(this.getRepresentationsField())
                 .field(this.getAccessLevelField())
+                .field(this.getModelersField())
                 .build();
         // @formatter:on
 
@@ -155,6 +161,15 @@ public class ProjectTypeProvider implements ITypeProvider {
         return GraphQLFieldDefinition.newFieldDefinition()
                 .name(ACCESS_LEVEL_FIELD)
                 .type(new GraphQLNonNull(new GraphQLTypeReference(AccessLevel.class.getSimpleName())))
+                .build();
+        // @formatter:on
+    }
+
+    private GraphQLFieldDefinition getModelersField() {
+        // @formatter:off
+        return GraphQLFieldDefinition.newFieldDefinition()
+                .name(MODELERS_FIELD)
+                .type(new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(new GraphQLTypeReference(MODELER_TYPE)))))
                 .build();
         // @formatter:on
     }

@@ -18,11 +18,7 @@ package org.eclipse.sirius.web.spring.collaborative.messages;
  * @author sbegaudeau
  */
 public interface ICollaborativeMessageService {
-    String invalidProjectName();
-
     String invalidInput(String expectedInputTypeName, String receivedInputTypeName);
-
-    String projectNotFound();
 
     String objectCreationFailed();
 }
