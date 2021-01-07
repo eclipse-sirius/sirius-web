@@ -13,7 +13,9 @@
 import {
   EditProjectView,
   NewProjectView,
+  NewModelerView,
   ProjectsView,
+  ModelersView,
   UploadProjectView,
   withErrorBoundary,
   withCapabilities,
@@ -33,6 +35,8 @@ export const Main = () => {
       <Route exact path="/new/project" component={withErrorBoundary(withCapabilities(NewProjectView))} />
       <Route exact path="/upload/project" component={withErrorBoundary(withCapabilities(UploadProjectView))} />
       <Route exact path="/projects" component={withErrorBoundary(withCapabilities(ProjectsView))} />
+      <Route exact path="/projects/:projectId/modelers" component={withErrorBoundary(ModelersView)} />
+      <Route exact path="/projects/:projectId/new/modeler" component={withErrorBoundary(NewModelerView)} />
       <Route
         exact
         path="/projects/:projectId/edit/:representationId?"
