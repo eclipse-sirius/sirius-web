@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.tests;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.text.MatchesPattern.matchesPattern;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -23,6 +24,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -75,19 +77,19 @@ public class GeneralPurposeTestCases {
     private static final String HEIGHT_100 = "height: 100%;"; //$NON-NLS-1$
 
     //// @formatter:off
-    private static final List<String> COPYRIGHT_HEADER = List.of(
-            "/*******************************************************************************", //$NON-NLS-1$
-            " * Copyright (c) 2019, 2020 Obeo.", //$NON-NLS-1$
-            " * This program and the accompanying materials", //$NON-NLS-1$
-            " * are made available under the terms of the Eclipse Public License v2.0", //$NON-NLS-1$
-            " * which accompanies this distribution, and is available at", //$NON-NLS-1$
-            " * https://www.eclipse.org/legal/epl-2.0/", //$NON-NLS-1$
-            " *", //$NON-NLS-1$
-            " * SPDX-License-Identifier: EPL-2.0", //$NON-NLS-1$
-            " *", //$NON-NLS-1$
-            " * Contributors:", //$NON-NLS-1$
-            " *     Obeo - initial API and implementation", //$NON-NLS-1$
-            " *******************************************************************************/"); //$NON-NLS-1$
+    private static final List<Pattern> COPYRIGHT_HEADER = List.of(
+            Pattern.compile(Pattern.quote("/*******************************************************************************")), //$NON-NLS-1$
+            Pattern.compile(" \\* Copyright \\(c\\) [0-9]{4}(, [0-9]{4})* Obeo\\."), //$NON-NLS-1$
+            Pattern.compile(Pattern.quote(" * This program and the accompanying materials")), //$NON-NLS-1$
+            Pattern.compile(Pattern.quote(" * are made available under the terms of the Eclipse Public License v2.0")), //$NON-NLS-1$
+            Pattern.compile(Pattern.quote(" * which accompanies this distribution, and is available at")), //$NON-NLS-1$
+            Pattern.compile(Pattern.quote(" * https://www.eclipse.org/legal/epl-2.0/")), //$NON-NLS-1$
+            Pattern.compile(Pattern.quote(" *")), //$NON-NLS-1$
+            Pattern.compile(Pattern.quote(" * SPDX-License-Identifier: EPL-2.0")), //$NON-NLS-1$
+            Pattern.compile(Pattern.quote(" *")), //$NON-NLS-1$
+            Pattern.compile(Pattern.quote(" * Contributors:")), //$NON-NLS-1$
+            Pattern.compile(Pattern.quote(" *     Obeo - initial API and implementation")), //$NON-NLS-1$
+            Pattern.compile(Pattern.quote(" *******************************************************************************/"))); //$NON-NLS-1$
     // @formatter:on
 
     /**
@@ -159,7 +161,7 @@ public class GeneralPurposeTestCases {
     private void testCopyrightHeader(Path filePath, List<String> lines) {
         assertTrue(lines.size() >= COPYRIGHT_HEADER.size());
         for (int i = 0; i < COPYRIGHT_HEADER.size(); i++) {
-            assertEquals("Invalid copyright header in " + filePath, lines.get(i), COPYRIGHT_HEADER.get(i)); //$NON-NLS-1$
+            assertThat("Invalid copyright header in " + filePath, lines.get(i), matchesPattern(COPYRIGHT_HEADER.get(i))); //$NON-NLS-1$
         }
     }
 
