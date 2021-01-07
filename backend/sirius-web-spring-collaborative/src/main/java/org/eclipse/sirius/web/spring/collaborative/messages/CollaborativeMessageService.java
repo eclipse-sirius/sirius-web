@@ -33,18 +33,8 @@ public class CollaborativeMessageService implements ICollaborativeMessageService
     }
 
     @Override
-    public String invalidProjectName() {
-        return this.messageSourceAccessor.getMessage("INVALID_PROJECT_NAME"); //$NON-NLS-1$
-    }
-
-    @Override
     public String invalidInput(String expectedInputTypeName, String receivedInputTypeName) {
         return this.messageSourceAccessor.getMessage("INVALID_INPUT", new Object[] { expectedInputTypeName, receivedInputTypeName }); //$NON-NLS-1$
-    }
-
-    @Override
-    public String projectNotFound() {
-        return this.messageSourceAccessor.getMessage("PROJECT_NOT_FOUND"); //$NON-NLS-1$
     }
 
     @Override

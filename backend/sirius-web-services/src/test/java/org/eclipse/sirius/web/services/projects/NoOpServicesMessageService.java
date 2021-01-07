@@ -21,9 +21,26 @@ import org.eclipse.sirius.web.services.messages.IServicesMessageService;
  */
 public class NoOpServicesMessageService implements IServicesMessageService {
 
+    private static final String NO_MESSAGE = ""; //$NON-NLS-1$
+
     @Override
     public String invalidProjectName() {
-        return ""; //$NON-NLS-1$
+        return NO_MESSAGE;
+    }
+
+    @Override
+    public String invalidModelerName() {
+        return NO_MESSAGE;
+    }
+
+    @Override
+    public String projectNotFound() {
+        return NO_MESSAGE;
+    }
+
+    @Override
+    public String modelerNotFound() {
+        return NO_MESSAGE;
     }
 
 }
