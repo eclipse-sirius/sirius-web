@@ -20,7 +20,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import './fonts.css';
-import styles from './index.module.css';
 import './reset.css';
 import './Sprotty.css';
 import './variables.css';
@@ -32,12 +31,19 @@ const theme = createMuiTheme({
   }
 });
 
+const style = {
+  display: 'grid',
+  gridTemplateColumns: '1fr',
+  gridTemplateRows: '1fr',
+  minHeight: '100vh'
+};
+
 ReactDOM.render(
   <ApolloProvider client={ApolloGraphQLClient}>
     <BrowserRouter>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <div className={styles.app}>
+        <div style={style}>
           <Main />
         </div>
       </ThemeProvider>

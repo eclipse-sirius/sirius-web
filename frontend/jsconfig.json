@@ -1,8 +1,0 @@
-{
-  "compilerOptions": {
-    "baseUrl": "src",
-    "lib": ["es6"]
-  },
-  "include": ["src"],
-  "exclude": ["node_modules"]
-}

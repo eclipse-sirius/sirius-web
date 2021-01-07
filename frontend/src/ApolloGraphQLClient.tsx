@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { ApolloClient, HttpLink, InMemoryCache, split } from '@apollo/client';
+import { ApolloClient, DefaultOptions, HttpLink, InMemoryCache, split } from '@apollo/client';
 import { WebSocketLink } from '@apollo/client/link/ws';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { httpOrigin, wsOrigin } from '@eclipse-sirius/sirius-components';
@@ -36,7 +36,7 @@ const splitLink = split(
   httpLink
 );
 
-const defaultOptions = {
+const defaultOptions: DefaultOptions = {
   watchQuery: {
     fetchPolicy: 'no-cache'
   },
