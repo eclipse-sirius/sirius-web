@@ -30,7 +30,6 @@ import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.Edge;
 import org.eclipse.sirius.web.diagrams.EdgeStyle;
 import org.eclipse.sirius.web.diagrams.INodeStyle;
-import org.eclipse.sirius.web.diagrams.Label;
 import org.eclipse.sirius.web.diagrams.LineStyle;
 import org.eclipse.sirius.web.diagrams.Node;
 import org.eclipse.sirius.web.diagrams.RectangularNodeStyle;
@@ -244,14 +243,10 @@ public class DiagramRendererEdgeTestCases {
         };
 
 
-        Function<VariableManager, Optional<Label>> dummyLabelProvider = variableManager -> Optional.empty();
         return EdgeDescription.newEdgeDescription(EDGE_DESCRIPTION_ID)
                 .semanticElementsProvider(variableManager -> List.of(FIRST_OBJECT_ID))
                 .sourceNodesProvider(sourceNodesProvider)
                 .targetNodesProvider(targetNodesProvider)
-                .beginLabelProvider(dummyLabelProvider)
-                .centerLabelProvider(dummyLabelProvider)
-                .endLabelProvider(dummyLabelProvider)
                 .sourceNodeDescriptions(List.of(nodeDescription))
                 .targetNodeDescriptions(List.of(nodeDescription))
                 .targetObjectIdProvider(idProvider)

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,12 +13,16 @@
 package org.eclipse.sirius.web.diagrams.components;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import org.eclipse.sirius.web.components.Element;
 import org.eclipse.sirius.web.components.IComponent;
+import org.eclipse.sirius.web.diagrams.Label;
 import org.eclipse.sirius.web.diagrams.LabelStyle;
 import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.Size;
+import org.eclipse.sirius.web.diagrams.TextBounds;
+import org.eclipse.sirius.web.diagrams.TextBoundsProvider;
 import org.eclipse.sirius.web.diagrams.description.LabelDescription;
 import org.eclipse.sirius.web.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.web.diagrams.elements.LabelElementProps;
@@ -41,6 +45,9 @@ public class LabelComponent implements IComponent {
     public Element render() {
         VariableManager variableManager = this.props.getVariableManager();
         LabelDescription labelDescription = this.props.getLabelDescription();
+        Optional<Label> optionalPreviousLabel = this.props.getPreviousLabel();
+        ILabelPositionProvider labelBoundsProvider = this.props.getLabelBoundsProvider();
+        String type = this.props.getType();
 
         String id = labelDescription.getIdProvider().apply(variableManager);
         String text = labelDescription.getTextProvider().apply(variableManager);
@@ -68,12 +75,17 @@ public class LabelComponent implements IComponent {
         // @formatter:on
 
         // @formatter:off
+        TextBounds textBounds = new TextBoundsProvider().computeBounds(labelStyle, text);
+        Position position = labelBoundsProvider.getPosition(optionalPreviousLabel, textBounds, type);
+        Position alignment = optionalPreviousLabel.map(Label::getAlignment).orElse(textBounds.getAlignment());
+        Size size = optionalPreviousLabel.map(Label::getSize).orElse(textBounds.getSize());
+
         LabelElementProps labelElementProps = LabelElementProps.newLabelElementProps(id)
-                .type("label:inside-center") //$NON-NLS-1$
+                .type(type)
                 .text(text)
-                .position(Position.UNDEFINED)
-                .size(Size.UNDEFINED)
-                .alignment(Position.UNDEFINED)
+                .position(position)
+                .size(size)
+                .alignment(alignment)
                 .style(labelStyle)
                 .build();
         // @formatter:on

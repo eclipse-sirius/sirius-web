@@ -78,6 +78,7 @@ public class RelationBasedSourceNodesProviderTestCases {
                 .style(style)
                 .position(Position.UNDEFINED)
                 .size(Size.UNDEFINED)
+                .absolutePosition(Position.UNDEFINED)
                 .children(List.of())
                 .build();
         // @formatter:on

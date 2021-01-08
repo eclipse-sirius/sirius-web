@@ -37,6 +37,7 @@ import org.eclipse.sirius.web.services.api.representations.IRepresentationServic
 import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.MeterRegistry;
@@ -58,16 +59,19 @@ public class DiagramCreationService implements IDiagramCreationService {
 
     private final ILayoutService layoutService;
 
+    private boolean activateAutoLayout;
+
     private final Timer timer;
 
     private final Logger logger = LoggerFactory.getLogger(DiagramCreationService.class);
 
     public DiagramCreationService(IRepresentationDescriptionService representationDescriptionService, IRepresentationService representationService, IObjectService objectService,
-            ILayoutService layoutService, MeterRegistry meterRegistry) {
+            ILayoutService layoutService, @Value("${sirius.web.diagrams.autolayout.activate:false}") boolean activateAutoLayout, MeterRegistry meterRegistry) {
         this.representationDescriptionService = Objects.requireNonNull(representationDescriptionService);
         this.representationService = Objects.requireNonNull(representationService);
         this.objectService = Objects.requireNonNull(objectService);
         this.layoutService = Objects.requireNonNull(layoutService);
+        this.activateAutoLayout = activateAutoLayout;
         // @formatter:off
         this.timer = Timer.builder(Monitoring.REPRESENTATION_EVENT_PROCESSOR_REFRESH)
                 .tag(Monitoring.NAME, "diagram") //$NON-NLS-1$
@@ -77,7 +81,8 @@ public class DiagramCreationService implements IDiagramCreationService {
 
     @Override
     public Diagram create(String label, Object targetObject, DiagramDescription diagramDescription, IEditingContext editingContext) {
-        return this.doRender(null, label, targetObject, editingContext, diagramDescription, List.of(), Optional.empty());
+        Diagram newDiagram = this.doRender(label, targetObject, editingContext, diagramDescription, List.of(), Optional.empty());
+        return this.layoutService.layout(newDiagram);
     }
 
     @Override
@@ -95,14 +100,15 @@ public class DiagramCreationService implements IDiagramCreationService {
             DiagramDescription diagramDescription = optionalDiagramDescription.get();
             List<ViewCreationRequest> viewCreationRequests = diagramContext.getViewCreationRequests();
 
-            Diagram diagram = this.doRender(previousDiagram.getId(), previousDiagram.getLabel(), object, editingContext, diagramDescription, viewCreationRequests, Optional.of(previousDiagram));
+            Diagram diagram = this.doRender(previousDiagram.getLabel(), object, editingContext, diagramDescription, viewCreationRequests, Optional.of(previousDiagram));
             return Optional.of(diagram);
         }
         return Optional.empty();
     }
 
-    private Diagram doRender(UUID representationId, String label, Object targetObject, IEditingContext editingContext, DiagramDescription diagramDescription,
-            List<ViewCreationRequest> viewCreationRequests, Optional<Diagram> optionalPreviousDiagram) {
+    private Diagram doRender(String label, Object targetObject, IEditingContext editingContext, DiagramDescription diagramDescription, List<ViewCreationRequest> viewCreationRequests,
+            Optional<Diagram> optionalPreviousDiagram) {
+
         long start = System.currentTimeMillis();
 
         VariableManager variableManager = new VariableManager();
@@ -113,10 +119,10 @@ public class DiagramCreationService implements IDiagramCreationService {
         DiagramComponentProps props = new DiagramComponentProps(variableManager, diagramDescription, viewCreationRequests, optionalPreviousDiagram);
         Element element = new Element(DiagramComponent.class, props);
 
-        Diagram unlayoutedDiagram = new DiagramRenderer(this.logger).render(element);
-
-        Diagram newDiagram = this.layoutService.layout(unlayoutedDiagram);
-
+        Diagram newDiagram = new DiagramRenderer(this.logger).render(element);
+        if (this.activateAutoLayout) {
+            newDiagram = this.layoutService.layout(newDiagram);
+        }
         RepresentationDescriptor representationDescriptor = this.getRepresentationDescriptor(editingContext.getId(), newDiagram);
         this.representationService.save(representationDescriptor);
 

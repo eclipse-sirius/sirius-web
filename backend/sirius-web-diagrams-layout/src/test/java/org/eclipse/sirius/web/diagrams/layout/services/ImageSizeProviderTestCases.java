@@ -26,24 +26,24 @@ import java.util.Optional;
 
 import org.apache.commons.io.FilenameUtils;
 import org.assertj.core.data.Offset;
+import org.eclipse.sirius.web.diagrams.ImageSizeProvider;
 import org.eclipse.sirius.web.diagrams.Size;
-import org.eclipse.sirius.web.diagrams.layout.ImageSizeService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 /**
- * Unit tests of the image size service.
+ * Unit tests of the image size provider.
  *
  * @author hmarchadour
  */
 @RunWith(Parameterized.class)
-public class ImageSizeServiceTestCases {
+public class ImageSizeProviderTestCases {
 
     private static final List<String> FOLDERS = List.of("svg", "png", "jpg"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-    private final ImageSizeService imageSizeService = new ImageSizeService();
+    private final ImageSizeProvider imageSizeProvider = new ImageSizeProvider();
 
     private final String imagePath;
 
@@ -51,7 +51,7 @@ public class ImageSizeServiceTestCases {
 
     private final double height;
 
-    public ImageSizeServiceTestCases(String imagePath, double width, double height) {
+    public ImageSizeProviderTestCases(String imagePath, double width, double height) {
         this.imagePath = Objects.requireNonNull(imagePath);
         this.width = width;
         this.height = height;
@@ -60,7 +60,7 @@ public class ImageSizeServiceTestCases {
     @Parameters(name = "{index} - imagePath: {0}")
     public static List<Object[]> getImagePaths() {
         List<Object[]> result = new ArrayList<>();
-        ClassLoader classLoader = ImageSizeServiceTestCases.class.getClassLoader();
+        ClassLoader classLoader = ImageSizeProviderTestCases.class.getClassLoader();
 
         FOLDERS.forEach(folder -> {
             URL url = classLoader.getResource(folder);
@@ -100,7 +100,7 @@ public class ImageSizeServiceTestCases {
      */
     @Test
     public void testGetSize() throws IOException {
-        Optional<Size> optionalSize = this.imageSizeService.getSize(this.imagePath);
+        Optional<Size> optionalSize = this.imageSizeProvider.getSize(this.imagePath);
         assertThat(optionalSize).isPresent();
         Size size = optionalSize.get();
         assertThat(size.getWidth()).isCloseTo(this.width, Offset.offset(0.0001));

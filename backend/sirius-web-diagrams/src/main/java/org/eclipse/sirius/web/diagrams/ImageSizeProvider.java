@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.diagrams.layout;
+package org.eclipse.sirius.web.diagrams;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -19,6 +19,7 @@ import com.google.common.cache.LoadingCache;
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,7 +28,6 @@ import java.text.MessageFormat;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
-import javax.annotation.PreDestroy;
 import javax.imageio.ImageIO;
 
 import org.apache.batik.anim.dom.SAXSVGDocumentFactory;
@@ -39,23 +39,19 @@ import org.apache.batik.bridge.UserAgent;
 import org.apache.batik.bridge.UserAgentAdapter;
 import org.apache.batik.gvt.GraphicsNode;
 import org.apache.batik.util.XMLResourceDescriptor;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
-import org.eclipse.sirius.web.diagrams.Size;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
-import org.springframework.stereotype.Service;
 import org.w3c.dom.svg.SVGDocument;
 
 /**
- * Service used to compute the native image size.
+ * Provider used to compute the native image size.
  *
  * @author hmarchadour
+ * @author wpiers
  */
-@Service
-public class ImageSizeService {
+public class ImageSizeProvider {
 
     private static final String SVGZ_FILE_EXTENSION = "svgz"; //$NON-NLS-1$
 
@@ -67,20 +63,19 @@ public class ImageSizeService {
 
     private final UserAgent agent = new UserAgentAdapter();
 
-    // FIXME? The loader maintains a cache which may need to be disposed on day
     private final DocumentLoader loader = new DocumentLoader(this.agent);
 
     private final GVTBuilder builder = new GVTBuilder();
 
-    private final Logger logger = LoggerFactory.getLogger(ImageSizeService.class);
+    private final Logger logger = LoggerFactory.getLogger(ImageSizeProvider.class);
 
     private final LoadingCache<String, Optional<Size>> cache;
 
-    public ImageSizeService() {
+    public ImageSizeProvider() {
         var cacheLoader = new CacheLoader<String, Optional<Size>>() {
             @Override
             public Optional<Size> load(String path) throws Exception {
-                return ImageSizeService.this.computeSize(path);
+                return ImageSizeProvider.this.computeSize(path);
             }
         };
 
@@ -92,10 +87,10 @@ public class ImageSizeService {
         // @formatter:on
     }
 
-    @PreDestroy
     public void dispose() {
         this.logger.debug(this.cache.stats().toString());
         this.cache.invalidateAll();
+        this.loader.dispose();
     }
 
     /**
@@ -160,8 +155,8 @@ public class ImageSizeService {
             // We will copy the svg file to avoid jar in jar path problems.
             tmpSvg = java.io.File.createTempFile("sirius-web", extension); //$NON-NLS-1$
             try (FileOutputStream outputStream = new FileOutputStream(tmpSvg)) {
-                IOUtils.copy(inJarInputStream, outputStream);
-                try (InputStream onTmpInputStream = FileUtils.openInputStream(tmpSvg)) {
+                inJarInputStream.transferTo(outputStream);
+                try (InputStream onTmpInputStream = new FileInputStream(tmpSvg)) {
                     SVGDocument doc = this.factory.createSVGDocument(tmpSvg.toURI().toURL().toString(), onTmpInputStream);
                     BridgeContext context = new BridgeContext(this.agent, this.loader);
                     context.setDynamic(true);

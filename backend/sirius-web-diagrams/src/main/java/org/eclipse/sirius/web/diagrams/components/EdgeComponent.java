@@ -23,8 +23,10 @@ import org.eclipse.sirius.web.components.Element;
 import org.eclipse.sirius.web.components.Fragment;
 import org.eclipse.sirius.web.components.FragmentProps;
 import org.eclipse.sirius.web.components.IComponent;
+import org.eclipse.sirius.web.diagrams.Edge;
 import org.eclipse.sirius.web.diagrams.EdgeStyle;
 import org.eclipse.sirius.web.diagrams.Label;
+import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.web.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.web.diagrams.description.LabelDescription;
@@ -56,6 +58,7 @@ public class EdgeComponent implements IComponent {
         EdgeDescription edgeDescription = this.props.getEdgeDescription();
         IEdgesRequestor edgesRequestor = this.props.getEdgesRequestor();
         DiagramRenderingCache cache = this.props.getCache();
+        EdgeRoutingPointsProvider edgeRoutingPointsProvider = new EdgeRoutingPointsProvider();
 
         List<Element> children = new ArrayList<>();
 
@@ -96,29 +99,30 @@ public class EdgeComponent implements IComponent {
 
                             EdgeStyle style = edgeDescription.getStyleProvider().apply(edgeVariableManager);
 
-                            VariableManager labelVariableManager = edgeVariableManager.createChild();
-                            labelVariableManager.put(LabelDescription.OWNER_ID, id);
-                            Label beginLabel = edgeDescription.getBeginLabelProvider().apply(labelVariableManager).orElse(null);
-                            Label centerLabel = edgeDescription.getCenterLabelProvider().apply(labelVariableManager).orElse(null);
-                            Label endLabel = edgeDescription.getEndLabelProvider().apply(labelVariableManager).orElse(null);
-
                             UUID sourceId = this.getId(sourceNode);
                             UUID targetId = this.getId(targetNode);
 
                             // @formatter:off
+                            String edgeType = optionalPreviousEdge
+                                    .map(Edge::getType)
+                                    .orElse("edge:straight"); //$NON-NLS-1$
+
+                            List<Position> routingPoints = optionalPreviousEdge
+                                    .map(Edge::getRoutingPoints)
+                                    .orElseGet(()-> edgeRoutingPointsProvider.getRoutingPoints(sourceNode, targetNode));
+
+                            List<Element> edgeChildren = this.getLabelsChildren(edgeDescription, edgeVariableManager, optionalPreviousEdge, id, routingPoints);
                             EdgeElementProps edgeElementProps = EdgeElementProps.newEdgeElementProps(id)
-                                    .type("edge:straight") //$NON-NLS-1$
+                                    .type(edgeType)
                                     .descriptionId(edgeDescription.getId())
-                                    .beginLabel(beginLabel)
-                                    .centerLabel(centerLabel)
-                                    .endLabel(endLabel)
                                     .targetObjectId(targetObjectId)
                                     .targetObjectKind(targetObjectKind)
                                     .targetObjectLabel(targetObjectLabel)
                                     .sourceId(sourceId)
                                     .targetId(targetId)
                                     .style(style)
-                                    .routingPoints(List.of())
+                                    .routingPoints(routingPoints)
+                                    .children(edgeChildren)
                                     .build();
                             // @formatter:on
 
@@ -133,6 +137,35 @@ public class EdgeComponent implements IComponent {
 
         FragmentProps fragmentProps = new FragmentProps(children);
         return new Fragment(fragmentProps);
+    }
+
+    private List<Element> getLabelsChildren(EdgeDescription edgeDescription, VariableManager edgeVariableManager, Optional<Edge> optionalPreviousEdge, UUID edgeId, List<Position> routingPoints) {
+        List<Element> edgeChildren = new ArrayList<>();
+
+        VariableManager labelVariableManager = edgeVariableManager.createChild();
+        labelVariableManager.put(LabelDescription.OWNER_ID, edgeId);
+
+        EdgeLabelPositionProvider labelBoundsProvider = new EdgeLabelPositionProvider(routingPoints);
+
+        Optional.ofNullable(edgeDescription.getBeginLabelDescription()).map(labelDescription -> {
+            Optional<Label> optionalPreviousLabel = optionalPreviousEdge.map(Edge::getBeginLabel);
+            LabelComponentProps labelComponentProps = new LabelComponentProps(labelVariableManager, labelDescription, optionalPreviousLabel, labelBoundsProvider, LabelType.EDGE_BEGIN.getValue());
+            return new Element(LabelComponent.class, labelComponentProps);
+        }).ifPresent(edgeChildren::add);
+
+        Optional.ofNullable(edgeDescription.getBeginLabelDescription()).map(labelDescription -> {
+            Optional<Label> optionalPreviousLabel = optionalPreviousEdge.map(Edge::getCenterLabel);
+            LabelComponentProps labelComponentProps = new LabelComponentProps(labelVariableManager, labelDescription, optionalPreviousLabel, labelBoundsProvider, LabelType.EDGE_CENTER.getValue());
+            return new Element(LabelComponent.class, labelComponentProps);
+        }).ifPresent(edgeChildren::add);
+
+        Optional.ofNullable(edgeDescription.getBeginLabelDescription()).map(labelDescription -> {
+            Optional<Label> optionalPreviousLabel = optionalPreviousEdge.map(Edge::getEndLabel);
+            LabelComponentProps labelComponentProps = new LabelComponentProps(labelVariableManager, labelDescription, optionalPreviousLabel, labelBoundsProvider, LabelType.EDGE_END.getValue());
+            return new Element(LabelComponent.class, labelComponentProps);
+        }).ifPresent(edgeChildren::add);
+
+        return edgeChildren;
     }
 
     private UUID computeEdgeId(Element sourceNode, Element targetNode, int count) {
