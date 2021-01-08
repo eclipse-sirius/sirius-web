@@ -83,6 +83,7 @@ public class DomainBasedSourceNodesProviderTestCases {
                 .style(style)
                 .position(Position.UNDEFINED)
                 .size(Size.UNDEFINED)
+                .absolutePosition(Position.UNDEFINED)
                 .children(List.of())
                 .build();
         // @formatter:on

@@ -15,8 +15,8 @@ package org.eclipse.sirius.web.diagrams.layout;
 import org.eclipse.sirius.web.diagrams.layout.architecture.CodingRulesTestCases;
 import org.eclipse.sirius.web.diagrams.layout.architecture.ImmutableTestCases;
 import org.eclipse.sirius.web.diagrams.layout.services.DiagramConverterTestCases;
-import org.eclipse.sirius.web.diagrams.layout.services.ImageNodeStyleSizeServiceTestCases;
-import org.eclipse.sirius.web.diagrams.layout.services.ImageSizeServiceTestCases;
+import org.eclipse.sirius.web.diagrams.layout.services.ImageNodeStyleSizeProviderTestCases;
+import org.eclipse.sirius.web.diagrams.layout.services.ImageSizeProviderTestCases;
 import org.eclipse.sirius.web.diagrams.layout.services.LayoutedDiagramProviderTestCases;
 import org.eclipse.sirius.web.diagrams.layout.services.TextBoundsServiceTestCases;
 import org.junit.runner.RunWith;
@@ -29,7 +29,7 @@ import org.junit.runners.Suite.SuiteClasses;
  * @author sbegaudeau
  */
 @RunWith(Suite.class)
-@SuiteClasses({ CodingRulesTestCases.class, ImmutableTestCases.class, DiagramConverterTestCases.class, ImageNodeStyleSizeServiceTestCases.class, ImageSizeServiceTestCases.class,
+@SuiteClasses({ CodingRulesTestCases.class, ImmutableTestCases.class, DiagramConverterTestCases.class, ImageNodeStyleSizeProviderTestCases.class, ImageSizeProviderTestCases.class,
         LayoutedDiagramProviderTestCases.class, TextBoundsServiceTestCases.class })
 public final class AllSiriusWebDiagramsLayoutTests {
     private AllSiriusWebDiagramsLayoutTests() {

@@ -15,14 +15,12 @@ package org.eclipse.sirius.web.diagrams.description;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
 
 import org.eclipse.sirius.web.annotations.Immutable;
 import org.eclipse.sirius.web.components.Element;
 import org.eclipse.sirius.web.diagrams.EdgeStyle;
-import org.eclipse.sirius.web.diagrams.Label;
 import org.eclipse.sirius.web.representations.Status;
 import org.eclipse.sirius.web.representations.VariableManager;
 
@@ -46,11 +44,11 @@ public final class EdgeDescription {
 
     private Function<VariableManager, List<Object>> semanticElementsProvider;
 
-    private Function<VariableManager, Optional<Label>> beginLabelProvider;
+    private LabelDescription beginLabelDescription;
 
-    private Function<VariableManager, Optional<Label>> centerLabelProvider;
+    private LabelDescription centerLabelDescription;
 
-    private Function<VariableManager, Optional<Label>> endLabelProvider;
+    private LabelDescription endLabelDescription;
 
     private List<NodeDescription> sourceNodeDescriptions;
 
@@ -92,16 +90,16 @@ public final class EdgeDescription {
         return this.semanticElementsProvider;
     }
 
-    public Function<VariableManager, Optional<Label>> getBeginLabelProvider() {
-        return this.beginLabelProvider;
+    public LabelDescription getBeginLabelDescription() {
+        return this.beginLabelDescription;
     }
 
-    public Function<VariableManager, Optional<Label>> getCenterLabelProvider() {
-        return this.centerLabelProvider;
+    public LabelDescription getCenterLabelDescription() {
+        return this.centerLabelDescription;
     }
 
-    public Function<VariableManager, Optional<Label>> getEndLabelProvider() {
-        return this.endLabelProvider;
+    public LabelDescription getEndLabelDescription() {
+        return this.endLabelDescription;
     }
 
     public List<NodeDescription> getSourceNodeDescriptions() {
@@ -157,11 +155,11 @@ public final class EdgeDescription {
 
         private Function<VariableManager, List<Object>> semanticElementsProvider;
 
-        private Function<VariableManager, Optional<Label>> beginLabelProvider;
+        private LabelDescription beginLabelDescription;
 
-        private Function<VariableManager, Optional<Label>> centerLabelProvider;
+        private LabelDescription centerLabelDescription;
 
-        private Function<VariableManager, Optional<Label>> endLabelProvider;
+        private LabelDescription endLabelDescription;
 
         private List<NodeDescription> sourceNodeDescriptions;
 
@@ -204,18 +202,18 @@ public final class EdgeDescription {
             return this;
         }
 
-        public Builder beginLabelProvider(Function<VariableManager, Optional<Label>> beginLabelProvider) {
-            this.beginLabelProvider = Objects.requireNonNull(beginLabelProvider);
+        public Builder beginLabelDescription(LabelDescription beginLabelDescription) {
+            this.beginLabelDescription = Objects.requireNonNull(beginLabelDescription);
             return this;
         }
 
-        public Builder centerLabelProvider(Function<VariableManager, Optional<Label>> centerLabelProvider) {
-            this.centerLabelProvider = Objects.requireNonNull(centerLabelProvider);
+        public Builder centerLabelDescription(LabelDescription centerLabelDescription) {
+            this.centerLabelDescription = Objects.requireNonNull(centerLabelDescription);
             return this;
         }
 
-        public Builder endLabelProvider(Function<VariableManager, Optional<Label>> endLabelProvider) {
-            this.endLabelProvider = Objects.requireNonNull(endLabelProvider);
+        public Builder endLabelDescription(LabelDescription endLabelDescription) {
+            this.endLabelDescription = Objects.requireNonNull(endLabelDescription);
             return this;
         }
 
@@ -260,9 +258,9 @@ public final class EdgeDescription {
             edgeDescription.sourceNodeDescriptions = Objects.requireNonNull(this.sourceNodeDescriptions);
             edgeDescription.targetNodeDescriptions = Objects.requireNonNull(this.targetNodeDescriptions);
             edgeDescription.semanticElementsProvider = Objects.requireNonNull(this.semanticElementsProvider);
-            edgeDescription.beginLabelProvider = Objects.requireNonNull(this.beginLabelProvider);
-            edgeDescription.centerLabelProvider = Objects.requireNonNull(this.centerLabelProvider);
-            edgeDescription.endLabelProvider = Objects.requireNonNull(this.endLabelProvider);
+            edgeDescription.beginLabelDescription = this.beginLabelDescription;
+            edgeDescription.centerLabelDescription = this.centerLabelDescription;
+            edgeDescription.endLabelDescription = this.endLabelDescription;
             edgeDescription.sourceNodesProvider = Objects.requireNonNull(this.sourceNodesProvider);
             edgeDescription.targetNodesProvider = Objects.requireNonNull(this.targetNodesProvider);
             edgeDescription.styleProvider = Objects.requireNonNull(this.styleProvider);

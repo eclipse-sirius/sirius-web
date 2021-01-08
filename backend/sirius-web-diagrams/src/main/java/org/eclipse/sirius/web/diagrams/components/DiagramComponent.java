@@ -44,6 +44,7 @@ public class DiagramComponent implements IComponent {
     public Element render() {
         VariableManager variableManager = this.props.getVariableManager();
         DiagramDescription diagramDescription = this.props.getDiagramDescription();
+        NodePositionProvider nodePositionProvider = new NodePositionProvider(Double.valueOf(0), Double.valueOf(0));
         var optionalPreviousDiagram = this.props.getPreviousDiagram();
 
         String label = diagramDescription.getLabelProvider().apply(variableManager);
@@ -60,13 +61,26 @@ public class DiagramComponent implements IComponent {
                     var previousNodes = optionalPreviousDiagram.map(previousDiagram -> diagramElementRequestor.getRootNodes(previousDiagram, nodeDescription))
                             .orElse(List.of());
                     INodesRequestor nodesRequestor = new NodesRequestor(previousNodes);
-                    var nodeComponentProps = new NodeComponentProps(variableManager, nodeDescription, nodesRequestor, NodeContainmentKind.CHILD_NODE, cache, this.props.getViewCreationRequests(), diagramId);
-                    return new Element(NodeComponent.class, nodeComponentProps);
-                })
-                .collect(Collectors.toList());
-        // @formatter:on
+                    Position parentAbsolutePosition = Position.newPosition()
+                            .x(0)
+                            .y(0)
+                            .build();
 
-        // @formatter:off
+                    var nodeComponentProps = NodeComponentProps.newNodeComponentProps()
+                            .variableManager(variableManager)
+                            .nodeDescription(nodeDescription)
+                            .nodesRequestor(nodesRequestor)
+                            .containmentKind(NodeContainmentKind.CHILD_NODE)
+                            .cache(cache)
+                            .viewCreationRequests(this.props.getViewCreationRequests())
+                            .nodePositionProvider(nodePositionProvider)
+                            .parentElementId(diagramId)
+                            .previousParentElement(optionalPreviousDiagram.map(Object.class::cast))
+                            .parentAbsolutePosition(parentAbsolutePosition)
+                            .build();
+                    return new Element(NodeComponent.class, nodeComponentProps);
+                }).collect(Collectors.toList());
+
         var edges = diagramDescription.getEdgeDescriptions().stream()
                 .map(edgeDescription -> {
                     var previousEdges = optionalPreviousDiagram.map(previousDiagram -> diagramElementRequestor.getEdges(previousDiagram, edgeDescription))

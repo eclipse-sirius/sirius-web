@@ -54,6 +54,8 @@ public final class NodeElementProps implements IProps {
 
     private Size size;
 
+    private Position absolutePosition;
+
     private List<Element> children;
 
     private NodeElementProps() {
@@ -100,13 +102,17 @@ public final class NodeElementProps implements IProps {
         return this.size;
     }
 
-    @Override
-    public List<Element> getChildren() {
-        return this.children;
+    public Position getAbsolutePosition() {
+        return this.absolutePosition;
     }
 
     public static Builder newNodeElementProps(UUID id) {
         return new Builder(id);
+    }
+
+    @Override
+    public List<Element> getChildren() {
+        return this.children;
     }
 
     @Override
@@ -141,6 +147,8 @@ public final class NodeElementProps implements IProps {
         private Position position;
 
         private Size size;
+
+        private Position absolutePosition;
 
         private List<Element> children;
 
@@ -193,6 +201,11 @@ public final class NodeElementProps implements IProps {
             return this;
         }
 
+        public Builder absolutePosition(Position absolutePosition) {
+            this.absolutePosition = Objects.requireNonNull(absolutePosition);
+            return this;
+        }
+
         public Builder children(List<Element> children) {
             this.children = Objects.requireNonNull(children);
             return this;
@@ -211,6 +224,7 @@ public final class NodeElementProps implements IProps {
             nodeElementProps.position = Objects.requireNonNull(this.position);
             nodeElementProps.size = Objects.requireNonNull(this.size);
             nodeElementProps.children = Objects.requireNonNull(this.children);
+            nodeElementProps.absolutePosition = Objects.requireNonNull(this.absolutePosition);
             return nodeElementProps;
         }
     }

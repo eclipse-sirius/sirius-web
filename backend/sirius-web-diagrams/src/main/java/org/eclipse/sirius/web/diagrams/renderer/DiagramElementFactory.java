@@ -23,6 +23,7 @@ import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.Edge;
 import org.eclipse.sirius.web.diagrams.Label;
 import org.eclipse.sirius.web.diagrams.Node;
+import org.eclipse.sirius.web.diagrams.components.LabelType;
 import org.eclipse.sirius.web.diagrams.elements.DiagramElementProps;
 import org.eclipse.sirius.web.diagrams.elements.EdgeElementProps;
 import org.eclipse.sirius.web.diagrams.elements.LabelElementProps;
@@ -125,21 +126,36 @@ public class DiagramElementFactory implements IElementFactory {
 
     private Edge instantiateEdge(EdgeElementProps props, List<Object> children) {
         // @formatter:off
+        Label beginLabel = this.getLabel(children, LabelType.EDGE_BEGIN);
+        Label centerLabel = this.getLabel(children, LabelType.EDGE_CENTER);
+        Label endLabel = this.getLabel(children, LabelType.EDGE_END);
         return Edge.newEdge(props.getId())
                 .type(props.getType())
                 .targetObjectId(props.getTargetObjectId())
                 .targetObjectKind(props.getTargetObjectKind())
                 .targetObjectLabel(props.getTargetObjectLabel())
                 .descriptionId(props.getDescriptionId())
-                .beginLabel(props.getBeginLabel())
-                .centerLabel(props.getCenterLabel())
-                .endLabel(props.getEndLabel())
+                .beginLabel(beginLabel)
+                .centerLabel(centerLabel)
+                .endLabel(endLabel)
                 .sourceId(props.getSourceId())
                 .targetId(props.getTargetId())
                 .style(props.getStyle())
                 .routingPoints(props.getRoutingPoints())
                 .build();
         // @formatter:on
+    }
+
+    private Label getLabel(List<Object> children, LabelType labelType) {
+        // @formatter:off
+        return children.stream()
+                .filter(Label.class::isInstance)
+                .map(Label.class::cast)
+                .filter(label -> label.getType().equals(labelType.getValue()))
+                .findFirst()
+                .orElse(null);
+        // @formatter:on
+
     }
 
     private Label instantiateLabel(LabelElementProps props, List<Object> children) {

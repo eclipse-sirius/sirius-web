@@ -10,12 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.diagrams.layout;
+package org.eclipse.sirius.web.diagrams;
 
 import java.util.Objects;
-
-import org.eclipse.sirius.web.diagrams.Position;
-import org.eclipse.sirius.web.diagrams.Size;
 
 /**
  * Used to hold both the size of the text and its alignment.

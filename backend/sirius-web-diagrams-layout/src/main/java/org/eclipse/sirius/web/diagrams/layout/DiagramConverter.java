@@ -19,6 +19,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+import javax.annotation.PreDestroy;
+
 import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.core.options.EdgeLabelPlacement;
 import org.eclipse.elk.graph.ElkConnectableShape;
@@ -34,9 +36,12 @@ import org.eclipse.elk.graph.util.ElkGraphUtil;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.Edge;
 import org.eclipse.sirius.web.diagrams.ImageNodeStyle;
+import org.eclipse.sirius.web.diagrams.ImageNodeStyleSizeProvider;
+import org.eclipse.sirius.web.diagrams.ImageSizeProvider;
 import org.eclipse.sirius.web.diagrams.Label;
 import org.eclipse.sirius.web.diagrams.Node;
 import org.eclipse.sirius.web.diagrams.Size;
+import org.eclipse.sirius.web.diagrams.TextBounds;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -59,13 +64,16 @@ public class DiagramConverter {
 
     private final TextBoundsService textBoundsService;
 
-    private final ImageNodeStyleSizeService imageNodeStyleSizeService;
+    private final ImageSizeProvider imageSizeProvider;
+
+    private final ImageNodeStyleSizeProvider imageNodeStyleSizeProvider;
 
     private final Logger logger = LoggerFactory.getLogger(DiagramConverter.class);
 
-    public DiagramConverter(TextBoundsService textBoundsService, ImageNodeStyleSizeService imageNodeStyleSizeService) {
+    public DiagramConverter(TextBoundsService textBoundsService) {
         this.textBoundsService = Objects.requireNonNull(textBoundsService);
-        this.imageNodeStyleSizeService = Objects.requireNonNull(imageNodeStyleSizeService);
+        this.imageSizeProvider = new ImageSizeProvider();
+        this.imageNodeStyleSizeProvider = new ImageNodeStyleSizeProvider(this.imageSizeProvider);
     }
 
     public ConvertedDiagram convert(Diagram diagram) {
@@ -104,7 +112,7 @@ public class DiagramConverter {
             elkImage.setIdentifier(node.getId() + "_image"); //$NON-NLS-1$
             elkImage.setProperty(PROPERTY_TYPE, DEFAULT_IMAGE_TYPE);
 
-            Size imageSize = this.imageNodeStyleSizeService.getSize(imageNodeStyle);
+            Size imageSize = this.imageNodeStyleSizeProvider.getSize(imageNodeStyle);
             elkImage.setDimensions(imageSize.getWidth(), imageSize.getHeight());
 
             elkImage.setParent(elkNode);
@@ -130,7 +138,7 @@ public class DiagramConverter {
         connectableShapeIndex.put(elkPort.getIdentifier(), elkPort);
 
         if (borderNode.getStyle() instanceof ImageNodeStyle) {
-            Size imageSize = this.imageNodeStyleSizeService.getSize((ImageNodeStyle) borderNode.getStyle());
+            Size imageSize = this.imageNodeStyleSizeProvider.getSize((ImageNodeStyle) borderNode.getStyle());
             elkPort.setDimensions(imageSize.getWidth(), imageSize.getHeight());
         }
 
@@ -199,4 +207,8 @@ public class DiagramConverter {
         id2ElkGraphElements.put(edge.getId().toString(), elkEdge);
     }
 
+    @PreDestroy
+    private void dispose() {
+        this.imageSizeProvider.dispose();
+    }
 }
