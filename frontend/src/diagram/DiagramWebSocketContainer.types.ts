@@ -27,6 +27,7 @@ export interface Position {
 }
 
 export interface Palette {
+  startingPosition: Position;
   canvasBounds: Bounds;
   origin: Position;
   element: any;

@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.diagrams;
 
 import java.awt.Font;
+import java.awt.GraphicsEnvironment;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
@@ -29,11 +30,15 @@ public class TextBoundsProvider {
      */
     private static final String DEFAULT_LABEL_FONT_NAME = "Arial"; //$NON-NLS-1$
 
+    private static final String FALLBACK_LABEL_FONT_NAME = "Liberation Sans"; //$NON-NLS-1$
+
     private static final AffineTransform AFFINE_TRANSFORM = new AffineTransform();
 
     private static final FontRenderContext FONT_RENDER_CONTEXT = new FontRenderContext(AFFINE_TRANSFORM, true, true);
 
     private static final int SPACE_FOR_ICON = 20;
+
+    private static String fontName;
 
     /**
      * Computes the text bounds for a label with the given text.
@@ -52,7 +57,7 @@ public class TextBoundsProvider {
         if (labelStyle.isItalic()) {
             fontStyle = fontStyle | Font.ITALIC;
         }
-        Font font = new Font(DEFAULT_LABEL_FONT_NAME, fontStyle, labelStyle.getFontSize());
+        Font font = new Font(this.getFontName(), fontStyle, labelStyle.getFontSize());
         Rectangle2D stringBounds = font.getStringBounds(text, FONT_RENDER_CONTEXT);
         double width = stringBounds.getWidth();
         double height = stringBounds.getHeight();
@@ -80,5 +85,26 @@ public class TextBoundsProvider {
             // @formatter:on
 
         return new TextBounds(size, alignment);
+    }
+
+    private String getFontName() {
+        if (fontName == null) {
+            if (this.isDefaultFontAvailable()) {
+                fontName = DEFAULT_LABEL_FONT_NAME;
+            } else {
+                fontName = FALLBACK_LABEL_FONT_NAME;
+            }
+        }
+        return fontName;
+    }
+
+    private boolean isDefaultFontAvailable() {
+        GraphicsEnvironment e = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        for (String currentFont : e.getAvailableFontFamilyNames()) {
+            if (DEFAULT_LABEL_FONT_NAME.equals(currentFont)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

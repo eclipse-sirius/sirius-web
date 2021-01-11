@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2021 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -132,7 +132,14 @@ public class UnsynchronizedDiagramTestCases {
 
     private Diagram render(DiagramDescription diagramDescription, List<ViewCreationRequest> viewCreationRequests, Optional<Diagram> optionalPreviousDiagram) {
         VariableManager variableManager = new VariableManager();
-        DiagramComponentProps props = new DiagramComponentProps(variableManager, diagramDescription, viewCreationRequests, optionalPreviousDiagram);
+        // @formatter:off
+        DiagramComponentProps props = DiagramComponentProps.newDiagramComponentProps()
+                .variableManager(variableManager)
+                .diagramDescription(diagramDescription)
+                .viewCreationRequests(viewCreationRequests)
+                .previousDiagram(optionalPreviousDiagram)
+                .build();
+        // @formatter:on
         Element element = new Element(DiagramComponent.class, props);
         Diagram diagram = new DiagramRenderer(this.logger).render(element);
         return diagram;

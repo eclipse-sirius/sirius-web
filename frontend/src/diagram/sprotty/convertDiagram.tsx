@@ -21,6 +21,7 @@ import {
   popupFeature,
   selectFeature,
   viewportFeature,
+  moveFeature,
 } from 'sprotty';
 
 /**
@@ -97,6 +98,7 @@ const convertNode = (node, httpOrigin: string) => {
       fadeFeature,
       hoverFeedbackFeature,
       popupFeature,
+      moveFeature,
     ]),
     editableLabel: convertedLabel,
     children: [convertedLabel, ...borderNodes, ...childNodes],

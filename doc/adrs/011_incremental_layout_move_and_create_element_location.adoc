@@ -1,0 +1,79 @@
+= ADR-011 - Incremental layout: Make it possible to move or create a diagram element at a specific position
+
+== Context
+
+Since the support of the incremental layout, the automatic layout is just called at the diagram creation time. New added elements are not layouted. In addition, the user has no possibility to create or move an existing diagram element at a specific position.
+
+
+== Decision
+
+The frontend will make it possible to move an element on the diagram. The new position will be sent to the server at the end of the move action (mouse up).
+The position where a creation tool has been applied will be sent to the backend through the existing GraphQL API.
+
+
+=== Move position
+
+The sprotty move feature will be activated to allow this action. The new position of the moved element will be sent the backend through a new GraphQL API:
+```
+    type Mutation {
+        updateNodePosition(input: UpdateNodePositionInput!): UpdateNodePositionPayload!
+    }
+    UpdateNodePositionInput {
+        representationId: ID!,
+        diagramElementId: ID!,
+        newPositionX: Float!,
+        newPositionY: Float!,
+        projectId: ID!,
+    }
+```
+Since we do not handle the container resizing, the move out of the container bounds will be forbidden in the frontend. If the diagram user tries to move the node out of the container, the node will have to be snapped to the closest container border.
+
+
+=== Creation position
+
+The absolute position on the diagram can be easily retrieved at the time where the tool is applied. This position will be sent to the server by updating the existing graphQL API:
+```
+InvokeNodeToolOnDiagramInput {
+    representationId: ID!
+    toolId: ID!
+    diagramElementId: ID!
+    startingPositionX: Float!
+    startingPositionY: Float!
+    projectId: ID!
+}
+```
+
+=== Diagram rendering
+
+The `newPosition` from `UpdateNodePositionInput` and the `startingPosition` from `InvokeNodeToolOnDiagramInput` will be used during the next diagram refresh, triggered by those API calls. After the refresh, those information should be deleted since they will no longer be relevant for the next refresh. 
+
+The position information will be provided from the implied `IDiagramEventHandler` to the `DiagramComponent` (that will perform the rendering) through the `IDiagramContext` with a set of additional getters/setters:
+```
+    MoveEvent getMoveEvent();
+
+    void setMoveEvent(MoveEvent moveEvent);
+
+    Position getStartingPosition();
+
+    void setStartingPosition(Position startingPosition);
+```
+The moveEvent will store:
+
+- the moved element UUID
+- its new Position
+- the set of the moved element children (and sub children) UUIDs
+
+The startingPosition will store the absolute position on the diagram where the tool has been applied.
+
+In addition, The `NodePositionProvider`, responsible for providing the position of a given node, will be updated to store the new coordinates. This provider is built for each diagram rendering by the `DiagramComponent`. 
+
+The `EdgeComponent` will recompute its routing points if an element or any of its parent has moved. This checking will be achieved using the MoveEvent data if present.
+
+== Status
+
+Proposed
+
+
+== Consequences
+
+We will not handle the case of multiple elements moving. Moving several elements can also imply handling the case where some elements might face some layout constraints and in this case we cannot apply a single move delta to all moved elements. 

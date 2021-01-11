@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,6 +26,7 @@ import org.eclipse.sirius.web.components.IComponent;
 import org.eclipse.sirius.web.diagrams.Edge;
 import org.eclipse.sirius.web.diagrams.EdgeStyle;
 import org.eclipse.sirius.web.diagrams.Label;
+import org.eclipse.sirius.web.diagrams.MoveEvent;
 import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.web.diagrams.description.EdgeDescription;
@@ -107,11 +108,18 @@ public class EdgeComponent implements IComponent {
                                         .map(Edge::getType)
                                         .orElse("edge:straight"); //$NON-NLS-1$
 
-                                List<Position> routingPoints = optionalPreviousEdge
-                                        .map(Edge::getRoutingPoints)
-                                        .orElseGet(()-> edgeRoutingPointsProvider.getRoutingPoints(sourceNode, targetNode));
+                                List<Position> routingPoints;
+                                List<Element> labelChildren;
+                                if (this.props.getMoveEvent() != null && this.hasMoved(sourceId, targetId)) {
+                                    routingPoints = edgeRoutingPointsProvider.getRoutingPoints(sourceNode, targetNode);
+                                    labelChildren = this.getLabelsChildren(edgeDescription, edgeVariableManager, Optional.empty(), id, routingPoints);
+                                } else {
+                                    routingPoints = optionalPreviousEdge
+                                            .map(Edge::getRoutingPoints)
+                                            .orElseGet(()-> edgeRoutingPointsProvider.getRoutingPoints(sourceNode, targetNode));
+                                    labelChildren = this.getLabelsChildren(edgeDescription, edgeVariableManager, optionalPreviousEdge, id, routingPoints);
+                                }
 
-                                List<Element> edgeChildren = this.getLabelsChildren(edgeDescription, edgeVariableManager, optionalPreviousEdge, id, routingPoints);
                                 EdgeElementProps edgeElementProps = EdgeElementProps.newEdgeElementProps(id)
                                         .type(edgeType)
                                         .descriptionId(edgeDescription.getId())
@@ -122,7 +130,7 @@ public class EdgeComponent implements IComponent {
                                         .targetId(targetId)
                                         .style(style)
                                         .routingPoints(routingPoints)
-                                        .children(edgeChildren)
+                                        .children(labelChildren)
                                         .build();
                                 // @formatter:on
 
@@ -138,6 +146,16 @@ public class EdgeComponent implements IComponent {
 
         FragmentProps fragmentProps = new FragmentProps(children);
         return new Fragment(fragmentProps);
+    }
+
+    private boolean hasMoved(UUID sourceId, UUID targetId) {
+        Optional<MoveEvent> optionalMoveEvent = this.props.getMoveEvent();
+        if (optionalMoveEvent.isPresent()) {
+            MoveEvent moveEvent = optionalMoveEvent.get();
+            return sourceId.equals(moveEvent.getNodeId()) || targetId.equals(moveEvent.getNodeId()) || moveEvent.getAllChildrenIds().contains(sourceId)
+                    || moveEvent.getAllChildrenIds().contains(targetId);
+        }
+        return false;
     }
 
     private List<Element> getLabelsChildren(EdgeDescription edgeDescription, VariableManager edgeVariableManager, Optional<Edge> optionalPreviousEdge, UUID edgeId, List<Position> routingPoints) {
