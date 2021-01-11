@@ -35,7 +35,7 @@ import {
   SetToolSectionsEvent,
   ShowToastEvent,
   SubscribersUpdatedEvent,
-  SwithRepresentationEvent,
+  SwithRepresentationEvent
 } from 'diagram/DiagramWebSocketContainerMachine';
 import { ContextualPalette } from 'diagram/palette/ContextualPalette';
 import { edgeCreationFeedback } from 'diagram/sprotty/edgeCreationFeedback';
@@ -48,7 +48,7 @@ import {
   SPROTTY_SELECT_ACTION,
   ZOOM_IN_ACTION,
   ZOOM_OUT_ACTION,
-  ZOOM_TO_ACTION,
+  ZOOM_TO_ACTION
 } from 'diagram/sprotty/WebSocketDiagramServer';
 import { Toolbar } from 'diagram/Toolbar';
 import PropTypes from 'prop-types';
@@ -62,6 +62,7 @@ import {
   getToolSectionsQuery,
   invokeEdgeToolOnDiagramMutation,
   invokeNodeToolOnDiagramMutation,
+  updateNodePositionOp
 } from './operations';
 import { canInvokeTool } from './toolServices';
 
@@ -289,6 +290,7 @@ export const DiagramWebSocketContainer = ({
   const [invokeNodeToolMutation] = useMutation(invokeNodeToolOnDiagramMutation);
   const [invokeEdgeToolMutation] = useMutation(invokeEdgeToolOnDiagramMutation);
   const [editLabelMutation] = useMutation(editLabelMutationOp);
+  const [updateNodePositionMutation] = useMutation(updateNodePositionOp);
   const [getToolSectionData, { loading: toolSectionLoading, data: toolSectionData }] = useLazyQuery(
     getToolSectionsQuery
   );
@@ -390,13 +392,16 @@ export const DiagramWebSocketContainer = ({
           invokeEdgeToolMutation({ variables: { input } });
           edgeCreationFeedback.reset();
         } else {
-          const [diagramElementId] = params;
-
+          const [diagramElementId, startingPosition] = params;
+          let startingPositionX = startingPosition ? startingPosition.x : 0;
+          let startingPositionY = startingPosition ? startingPosition.y : 0;
           const input = {
             projectId,
             representationId,
             diagramElementId,
             toolId,
+            startingPositionX,
+            startingPositionY,
           };
           invokeNodeToolMutation({ variables: { input } });
         }
@@ -405,6 +410,19 @@ export const DiagramWebSocketContainer = ({
       }
     },
     [projectId, representationId, invokeNodeToolMutation, invokeEdgeToolMutation, dispatch]
+  );
+  const moveElement = useCallback(
+    (diagramElementId, newPositionX, newPositionY) => {
+      const input = {
+        projectId,
+        representationId,
+        diagramElementId,
+        newPositionX,
+        newPositionY
+      };
+      updateNodePositionMutation({ variables: { input } });
+    },
+    [projectId, representationId, updateNodePositionMutation]
   );
 
   /**
@@ -477,6 +495,7 @@ export const DiagramWebSocketContainer = ({
         diagramDomElement,
         deleteElements,
         invokeTool,
+        moveElement,
         editLabel,
         onSelectElement,
         getCursorOn,
@@ -493,6 +512,7 @@ export const DiagramWebSocketContainer = ({
     setSelection,
     deleteElements,
     invokeTool,
+    moveElement,
     editLabelMutation,
     toolSections,
     selection,
@@ -627,7 +647,7 @@ export const DiagramWebSocketContainer = ({
    */
   let contextualPaletteContent;
   if (!readOnly && contextualPalette) {
-    const { element, canvasBounds, origin, renameable, deletable } = contextualPalette;
+    const { element, startingPosition, canvasBounds, origin, renameable, deletable } = contextualPalette;
     const { x, y } = origin;
     const invokeCloseFromContextualPalette = () => {
       const setContextualPaletteEvent: SetContextualPaletteEvent = {
@@ -664,7 +684,7 @@ export const DiagramWebSocketContainer = ({
         edgeCreationFeedback.init(x, y);
         diagramServer.actionDispatcher.dispatch({ kind: SOURCE_ELEMENT_ACTION, sourceElement: element });
       } else if (tool.__typename === 'CreateNodeTool') {
-        invokeTool(tool, element.id);
+        invokeTool(tool, element.id, startingPosition);
         diagramServer.actionDispatcher.dispatch({ kind: SOURCE_ELEMENT_ACTION });
       }
       const setDefaultToolEvent: SetDefaultToolEvent = { type: 'SET_DEFAULT_TOOL', defaultTool: tool };

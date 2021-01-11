@@ -26,6 +26,7 @@ import org.eclipse.sirius.web.diagrams.elements.NodeElementProps;
  * @author fbarbin
  */
 public class EdgeRoutingPointsProvider {
+
     public List<Position> getRoutingPoints(Element source, Element target) {
         Optional<Position> sourceAbsolutePosition = this.getAbsoluteCenterPosition(source);
         Optional<Position> targetAbsolutePosition = this.getAbsoluteCenterPosition(target);

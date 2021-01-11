@@ -16,10 +16,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.diagrams.Diagram;
+import org.eclipse.sirius.web.diagrams.INodeStyle;
 import org.eclipse.sirius.web.diagrams.Label;
 import org.eclipse.sirius.web.diagrams.LabelStyle;
 import org.eclipse.sirius.web.diagrams.LineStyle;
@@ -39,77 +41,114 @@ public class NodePositionProviderTestCases {
 
     private static final Size DEFAULT_NODE_SIZE = Size.newSize().height(70).width(150).build();
 
-    private static final double STARTX = 20;
+    private static final double STARTX = 1000;
 
-    private static final double STARTY = 70;
+    private static final double STARTY = 1000;
 
     @Test
-    public void testNewNodesInDiagram() {
+    public void testNewNodesInClosedDiagram() {
         List<Node> nodes = new ArrayList<>();
         Diagram parent;
+        NodeSizeProvider nodeSizeProvider = new NodeSizeProvider();
+        INodeStyle style = this.getRectangularNodeStyle();
 
-        // Diagram created but closed
         parent = this.getDiagram(nodes);
-        NodePositionProvider nodePositionProvider = new NodePositionProvider(STARTX, STARTY);
-        Position nextPosition = nodePositionProvider.getNextPosition(Optional.of(parent), DEFAULT_NODE_SIZE);
+        NodePositionProvider nodePositionProvider = new NodePositionProvider(Optional.empty(), Map.of());
+
+        Position nextPosition = nodePositionProvider.getPosition(UUID.randomUUID(), Optional.empty(), Optional.of(parent), nodeSizeProvider, style);
         nodes.add(this.getNode(nextPosition, List.of()));
-        assertThat(nextPosition).extracting(Position::getX).isEqualTo(Double.valueOf(STARTX));
-        assertThat(nextPosition).extracting(Position::getY).isEqualTo(Double.valueOf(STARTY));
+        assertThat(nextPosition).extracting(Position::getX).isEqualTo(Double.valueOf(0));
+        assertThat(nextPosition).extracting(Position::getY).isEqualTo(Double.valueOf(0));
 
         parent = this.getDiagram(nodes);
-        nextPosition = nodePositionProvider.getNextPosition(Optional.of(parent), DEFAULT_NODE_SIZE);
+        nextPosition = nodePositionProvider.getPosition(UUID.randomUUID(), Optional.empty(), Optional.of(parent), nodeSizeProvider, style);
         nodes.add(this.getNode(nextPosition, List.of()));
-        assertThat(nextPosition).extracting(Position::getX).isEqualTo(Double.valueOf(STARTX));
-        assertThat(nextPosition).extracting(Position::getY).isEqualTo(Double.valueOf(STARTY + DEFAULT_NODE_SIZE.getHeight() + 30));
-
-        // Diagram opened (we recreate a provider each time)
-        parent = this.getDiagram(nodes);
-        nodePositionProvider = new NodePositionProvider(STARTX, STARTY);
-        nextPosition = nodePositionProvider.getNextPosition(Optional.of(parent), DEFAULT_NODE_SIZE);
-        nodes.add(this.getNode(nextPosition, List.of()));
-        assertThat(nextPosition).extracting(Position::getX).isEqualTo(Double.valueOf(STARTX));
-        assertThat(nextPosition).extracting(Position::getY).isEqualTo(Double.valueOf(STARTY + (DEFAULT_NODE_SIZE.getHeight() + 30) * 2));
-
-        parent = this.getDiagram(nodes);
-        nodePositionProvider = new NodePositionProvider(STARTX, STARTY);
-        nextPosition = nodePositionProvider.getNextPosition(Optional.of(parent), DEFAULT_NODE_SIZE);
-        assertThat(nextPosition).extracting(Position::getX).isEqualTo(Double.valueOf(STARTX));
-        assertThat(nextPosition).extracting(Position::getY).isEqualTo(Double.valueOf(STARTY + (DEFAULT_NODE_SIZE.getHeight() + 30) * 3));
+        assertThat(nextPosition).extracting(Position::getX).isEqualTo(Double.valueOf(0));
+        assertThat(nextPosition).extracting(Position::getY).isEqualTo(Double.valueOf(DEFAULT_NODE_SIZE.getHeight() + 30));
     }
 
     @Test
-    public void testNewNodesInNode() {
-        Position initialPosition = Position.newPosition().x(STARTX).y(STARTY).build();
+    public void testNewNodesInOpenedDiagram() {
+        List<Node> nodes = new ArrayList<>();
+        Diagram parent;
+        NodeSizeProvider nodeSizeProvider = new NodeSizeProvider();
+        INodeStyle style = this.getRectangularNodeStyle();
+
+        parent = this.getDiagram(nodes);
+        NodePositionProvider nodePositionProvider = new NodePositionProvider(Optional.empty(), Map.of());
+        Position nextPosition = nodePositionProvider.getPosition(UUID.randomUUID(), Optional.empty(), Optional.of(parent), nodeSizeProvider, style);
+        nodes.add(this.getNode(nextPosition, List.of()));
+        assertThat(nextPosition).extracting(Position::getX).isEqualTo(Double.valueOf(0));
+        assertThat(nextPosition).extracting(Position::getY).isEqualTo(Double.valueOf(0));
+
+        parent = this.getDiagram(nodes);
+        nodePositionProvider = new NodePositionProvider(Optional.empty(), Map.of());
+        nextPosition = nodePositionProvider.getPosition(UUID.randomUUID(), Optional.empty(), Optional.of(parent), nodeSizeProvider, style);
+        assertThat(nextPosition).extracting(Position::getX).isEqualTo(Double.valueOf(0));
+        assertThat(nextPosition).extracting(Position::getY).isEqualTo(Double.valueOf(DEFAULT_NODE_SIZE.getHeight() + 30));
+
+        // Test creation of a new node at a given position (creation tool)
+        Position startingPosition = Position.newPosition().x(STARTX).y(STARTY).build();
+        parent = this.getDiagram(nodes);
+        nodePositionProvider = new NodePositionProvider(Optional.of(startingPosition), Map.of());
+        nextPosition = nodePositionProvider.getPosition(UUID.randomUUID(), Optional.empty(), Optional.of(parent), nodeSizeProvider, style);
+        Size size = nodeSizeProvider.getSize(style, List.of());
+        assertThat(nextPosition).extracting(Position::getX).isEqualTo(STARTX - size.getWidth() / 2);
+        assertThat(nextPosition).extracting(Position::getY).isEqualTo(STARTY - size.getHeight() / 2);
+    }
+
+    @Test
+    public void testNewNodesInNodeInClosedDiagram() {
+        Position parentPosition = Position.newPosition().x(0).y(0).build();
         List<Node> nodes = new ArrayList<>();
         Node parent;
+        NodeSizeProvider nodeSizeProvider = new NodeSizeProvider();
+        INodeStyle style = this.getRectangularNodeStyle();
 
-        // Diagram created but closed
-        parent = this.getNode(initialPosition, nodes);
-        NodePositionProvider nodePositionProvider = new NodePositionProvider(STARTX, STARTY);
-        Position nextPosition = nodePositionProvider.getNextPosition(Optional.of(parent), DEFAULT_NODE_SIZE);
+        parent = this.getNode(parentPosition, nodes);
+        NodePositionProvider nodePositionProvider = new NodePositionProvider(Optional.empty(), Map.of());
+
+        Position nextPosition = nodePositionProvider.getPosition(UUID.randomUUID(), Optional.empty(), Optional.of(parent), nodeSizeProvider, style);
         nodes.add(this.getNode(nextPosition, List.of()));
-        assertThat(nextPosition).extracting(Position::getX).isEqualTo(Double.valueOf(STARTX));
-        assertThat(nextPosition).extracting(Position::getY).isEqualTo(Double.valueOf(STARTY));
+        assertThat(nextPosition).extracting(Position::getX).isEqualTo(Double.valueOf(0));
+        assertThat(nextPosition).extracting(Position::getY).isEqualTo(Double.valueOf(0));
 
-        parent = this.getNode(initialPosition, nodes);
-        nextPosition = nodePositionProvider.getNextPosition(Optional.of(parent), DEFAULT_NODE_SIZE);
+        parent = this.getNode(parentPosition, nodes);
+        nextPosition = nodePositionProvider.getPosition(UUID.randomUUID(), Optional.empty(), Optional.of(parent), nodeSizeProvider, style);
         nodes.add(this.getNode(nextPosition, List.of()));
-        assertThat(nextPosition).extracting(Position::getX).isEqualTo(Double.valueOf(STARTX));
-        assertThat(nextPosition).extracting(Position::getY).isEqualTo(Double.valueOf(STARTY + DEFAULT_NODE_SIZE.getHeight() + 30));
+        assertThat(nextPosition).extracting(Position::getX).isEqualTo(Double.valueOf(0));
+        assertThat(nextPosition).extracting(Position::getY).isEqualTo(Double.valueOf(DEFAULT_NODE_SIZE.getHeight() + 30));
+    }
 
-        // Diagram opened (we recreate a provider each time)
-        parent = this.getNode(initialPosition, nodes);
-        nodePositionProvider = new NodePositionProvider(STARTX, STARTY);
-        nextPosition = nodePositionProvider.getNextPosition(Optional.of(parent), DEFAULT_NODE_SIZE);
+    @Test
+    public void testNewNodesInNodeInOpenedDiagram() {
+        Position parentPosition = Position.newPosition().x(0).y(0).build();
+        List<Node> nodes = new ArrayList<>();
+        Node parent;
+        NodeSizeProvider nodeSizeProvider = new NodeSizeProvider();
+        INodeStyle style = this.getRectangularNodeStyle();
+
+        parent = this.getNode(parentPosition, nodes);
+        NodePositionProvider nodePositionProvider = new NodePositionProvider(Optional.empty(), Map.of());
+        Position nextPosition = nodePositionProvider.getPosition(UUID.randomUUID(), Optional.empty(), Optional.of(parent), nodeSizeProvider, style);
         nodes.add(this.getNode(nextPosition, List.of()));
-        assertThat(nextPosition).extracting(Position::getX).isEqualTo(Double.valueOf(STARTX));
-        assertThat(nextPosition).extracting(Position::getY).isEqualTo(Double.valueOf(STARTY + (DEFAULT_NODE_SIZE.getHeight() + 30) * 2));
+        assertThat(nextPosition).extracting(Position::getX).isEqualTo(Double.valueOf(0));
+        assertThat(nextPosition).extracting(Position::getY).isEqualTo(Double.valueOf(0));
 
-        parent = this.getNode(initialPosition, nodes);
-        nodePositionProvider = new NodePositionProvider(STARTX, STARTY);
-        nextPosition = nodePositionProvider.getNextPosition(Optional.of(parent), DEFAULT_NODE_SIZE);
-        assertThat(nextPosition).extracting(Position::getX).isEqualTo(Double.valueOf(STARTX));
-        assertThat(nextPosition).extracting(Position::getY).isEqualTo(Double.valueOf(STARTY + (DEFAULT_NODE_SIZE.getHeight() + 30) * 3));
+        parent = this.getNode(parentPosition, nodes);
+        nodePositionProvider = new NodePositionProvider(Optional.empty(), Map.of());
+        nextPosition = nodePositionProvider.getPosition(UUID.randomUUID(), Optional.empty(), Optional.of(parent), nodeSizeProvider, style);
+        assertThat(nextPosition).extracting(Position::getX).isEqualTo(Double.valueOf(0));
+        assertThat(nextPosition).extracting(Position::getY).isEqualTo(Double.valueOf(DEFAULT_NODE_SIZE.getHeight() + 30));
+
+        // Test creation of a new node at a given position (creation tool)
+        Position startingPosition = Position.newPosition().x(STARTX).y(STARTY).build();
+        parent = this.getNode(parentPosition, nodes);
+        nodePositionProvider = new NodePositionProvider(Optional.of(startingPosition), Map.of());
+        nextPosition = nodePositionProvider.getPosition(UUID.randomUUID(), Optional.empty(), Optional.of(parent), nodeSizeProvider, style);
+        Size size = nodeSizeProvider.getSize(style, List.of());
+        assertThat(nextPosition).extracting(Position::getX).isEqualTo(STARTX - size.getWidth() / 2);
+        assertThat(nextPosition).extracting(Position::getY).isEqualTo(STARTY - size.getHeight() / 2);
     }
 
     public Diagram getDiagram(List<Node> nodes) {

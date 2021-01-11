@@ -14,6 +14,8 @@ package org.eclipse.sirius.web.diagrams.components;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -44,7 +46,9 @@ public class DiagramComponent implements IComponent {
     public Element render() {
         VariableManager variableManager = this.props.getVariableManager();
         DiagramDescription diagramDescription = this.props.getDiagramDescription();
-        NodePositionProvider nodePositionProvider = new NodePositionProvider(Double.valueOf(0), Double.valueOf(0));
+        Map<UUID, Position> movedElementIdToNewPositionMap = this.props.getMovedElementIdToNewPositionMap();
+        Set<UUID> allMovedElementIds = this.props.getAllMovedElementIds();
+        NodePositionProvider nodePositionProvider = new NodePositionProvider(this.props.getOptionalStartingPosition(), movedElementIdToNewPositionMap);
         var optionalPreviousDiagram = this.props.getPreviousDiagram();
 
         String label = diagramDescription.getLabelProvider().apply(variableManager);
@@ -86,7 +90,7 @@ public class DiagramComponent implements IComponent {
                     var previousEdges = optionalPreviousDiagram.map(previousDiagram -> diagramElementRequestor.getEdges(previousDiagram, edgeDescription))
                             .orElse(List.of());
                     IEdgesRequestor edgesRequestor = new EdgesRequestor(previousEdges);
-                    var edgeComponentProps = new EdgeComponentProps(variableManager, edgeDescription, edgesRequestor, cache);
+                    var edgeComponentProps = new EdgeComponentProps(variableManager, edgeDescription, edgesRequestor, cache, allMovedElementIds);
                     return new Element(EdgeComponent.class, edgeComponentProps);
                 })
                 .collect(Collectors.toList());

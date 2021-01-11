@@ -219,6 +219,22 @@ export const editLabelMutation = gql`
   }
 `;
 
+export const updateNodePositionOp = gql`
+  mutation updateNodePosition($input: UpdateNodePositionInput!) {
+    updateNodePosition(input: $input) {
+      __typename
+      ... on UpdateNodePositionSuccessPayload {
+        diagram {
+          id
+        }
+      }
+      ... on ErrorPayload {
+        message
+      }
+    }
+  }
+`;
+
 export const invokeNodeToolOnDiagramMutation = gql`
   mutation invokeNodeToolOnDiagram($input: InvokeNodeToolOnDiagramInput!) {
     invokeNodeToolOnDiagram(input: $input) {

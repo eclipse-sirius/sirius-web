@@ -20,6 +20,7 @@ import {
   GetViewportAction,
   getWindowScroll,
   ModelSource,
+  MoveCommand,
   SEdge,
   SelectAction,
   SetViewportAction,
@@ -85,6 +86,7 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
   modelFactory;
   activeTool;
   editLabel;
+  moveElement;
   deleteElements;
 
   invokeTool;
@@ -99,6 +101,7 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
     registry.register(ApplyLabelEditAction.KIND, this);
     registry.register(EditLabelAction.KIND, this);
     registry.register(UpdateModelAction.KIND, this);
+    registry.register(MoveCommand.KIND, this);
     registry.register(SIRIUS_LABEL_EDIT_ACTION, this);
     registry.register(SIRIUS_UPDATE_MODEL_ACTION, this);
     registry.register(SIRIUS_SELECT_ACTION, this);
@@ -129,6 +132,9 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
         break;
       case EditLabelAction.KIND:
         this.handleEditLabelAction(action);
+        break;
+      case MoveCommand.KIND:
+        this.handleMoveAction(action);
         break;
       case SIRIUS_LABEL_EDIT_ACTION:
         this.handleSiriusLabelEditAction(action);
@@ -195,6 +201,14 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
           this.actionDispatcher.dispatchAll([{ kind: HIDE_CONTEXTUAL_TOOLBAR_ACTION }, new EditLabelAction(label.id)]);
         }
       });
+    }
+  }
+
+  handleMoveAction(action) {
+    const { finished, moves } = action;
+    if (finished && moves.length > 0) {
+      const { elementId, toPosition } = moves[0];
+      this.moveElement(elementId, toPosition?.x, toPosition?.y)
     }
   }
 
@@ -306,14 +320,16 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
 
           const absoluteBounds = getAbsoluteBounds(element);
           let origin = { x: 0, y: 0 };
+          let startingPosition = lastPositionOnDiagram;
           if (element instanceof SNode) {
+            startingPosition = { x: startingPosition.x - absoluteBounds.x, y: startingPosition.y - absoluteBounds.y };
             origin = {
               x: absoluteBounds.x + (element.size.width / 2) * zoom,
               y: absoluteBounds.y + (element.size.height / 2) * zoom,
             };
           }
-
           const contextualPalette = {
+            startingPosition,
             canvasBounds: bounds,
             origin,
             element: element,
@@ -404,6 +420,10 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
 
   setEditLabelListener(editLabel) {
     this.editLabel = editLabel;
+  }
+
+  setMoveElementListener(moveElement) {
+    this.moveElement = moveElement;
   }
 
   setDeleteElementsListener(deleteElements) {

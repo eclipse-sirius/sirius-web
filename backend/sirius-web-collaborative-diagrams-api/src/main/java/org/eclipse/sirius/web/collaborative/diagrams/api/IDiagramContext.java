@@ -13,8 +13,11 @@
 package org.eclipse.sirius.web.collaborative.diagrams.api;
 
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import org.eclipse.sirius.web.diagrams.Diagram;
+import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.ViewCreationRequest;
 
 /**
@@ -35,4 +38,9 @@ public interface IDiagramContext {
 
     List<ViewCreationRequest> getViewCreationRequests();
 
+    Map<UUID, Position> getMovedElementIDToNewPositionMap();
+
+    Position getStartingPosition();
+
+    void setStartingPosition(Position startingPosition);
 }

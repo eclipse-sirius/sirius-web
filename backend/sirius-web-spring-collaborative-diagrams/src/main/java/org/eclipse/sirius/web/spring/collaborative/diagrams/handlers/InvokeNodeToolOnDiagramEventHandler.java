@@ -30,6 +30,7 @@ import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.Node;
+import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.tools.CreateNodeTool;
 import org.eclipse.sirius.web.representations.Status;
 import org.eclipse.sirius.web.representations.VariableManager;
@@ -89,7 +90,7 @@ public class InvokeNodeToolOnDiagramEventHandler implements IDiagramEventHandler
                     .map(CreateNodeTool.class::cast);
             // @formatter:on
             if (optionalTool.isPresent()) {
-                Status status = this.executeTool(editingContext, diagramContext, input.getDiagramElementId(), optionalTool.get());
+                Status status = this.executeTool(editingContext, diagramContext, input.getDiagramElementId(), optionalTool.get(), input.getStartingPositionX(), input.getStartingPositionY());
                 if (Objects.equals(status, Status.OK)) {
                     return new EventHandlerResponse(true, representation -> true, new InvokeNodeToolOnDiagramSuccessPayload(diagram));
                 }
@@ -99,7 +100,7 @@ public class InvokeNodeToolOnDiagramEventHandler implements IDiagramEventHandler
         return new EventHandlerResponse(false, representation -> false, new ErrorPayload(message));
     }
 
-    private Status executeTool(IEditingContext editingContext, IDiagramContext diagramContext, UUID diagramElementId, CreateNodeTool tool) {
+    private Status executeTool(IEditingContext editingContext, IDiagramContext diagramContext, UUID diagramElementId, CreateNodeTool tool, double startingPositionX, double startingPositionY) {
         Status result = Status.ERROR;
         Diagram diagram = diagramContext.getDiagram();
         Optional<Node> node = this.diagramService.findNodeById(diagram, diagramElementId);
@@ -117,6 +118,14 @@ public class InvokeNodeToolOnDiagramEventHandler implements IDiagramEventHandler
             variableManager.put(VariableManager.SELF, self.get());
 
             result = tool.getHandler().apply(variableManager);
+
+            // @formatter:off
+            Position newPosition = Position.newPosition()
+                    .x(startingPositionX)
+                    .y(startingPositionY)
+                    .build();
+            // @formatter:on
+            diagramContext.setStartingPosition(newPosition);
         }
         return result;
     }

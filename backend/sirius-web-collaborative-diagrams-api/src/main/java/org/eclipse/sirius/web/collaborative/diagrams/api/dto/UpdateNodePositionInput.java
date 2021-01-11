@@ -22,23 +22,21 @@ import org.eclipse.sirius.web.annotations.graphql.GraphQLNonNull;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramInput;
 
 /**
- * The input for the "Invoke a node tool on diagram" mutation.
+ * The input for the "Update Node Position" mutation.
  *
- * @author pcdavid
+ * @author fbarbin
  */
 @GraphQLInputObjectType
-public final class InvokeNodeToolOnDiagramInput implements IDiagramInput {
+public final class UpdateNodePositionInput implements IDiagramInput {
     private UUID projectId;
 
     private UUID representationId;
 
     private UUID diagramElementId;
 
-    private String toolId;
+    private double newPositionX;
 
-    private double startingPositionX;
-
-    private double startingPositionY;
+    private double newPositionY;
 
     @GraphQLID
     @GraphQLField
@@ -62,29 +60,21 @@ public final class InvokeNodeToolOnDiagramInput implements IDiagramInput {
         return this.diagramElementId;
     }
 
-    @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public String getToolId() {
-        return this.toolId;
+    public double getNewPositionX() {
+        return this.newPositionX;
     }
 
     @GraphQLField
     @GraphQLNonNull
-    public double getStartingPositionX() {
-        return this.startingPositionX;
-    }
-
-    @GraphQLField
-    @GraphQLNonNull
-    public double getStartingPositionY() {
-        return this.startingPositionY;
+    public double getNewPositionY() {
+        return this.newPositionY;
     }
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'projectId: {1}, representationId: {2}, diagramElementId: {3}, toolId: {4}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.projectId, this.representationId, this.diagramElementId, this.toolId);
+        String pattern = "{0} '{'projectId: {1}, representationId: {2}, diagramElementId: {3}, newPositionX: {4}, newPositionY: {5}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.projectId, this.representationId, this.diagramElementId, this.newPositionX, this.newPositionY);
     }
-
 }
