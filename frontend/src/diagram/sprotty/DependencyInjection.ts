@@ -12,6 +12,7 @@
  *******************************************************************************/
 import { edgeCreationFeedback } from 'diagram/sprotty/edgeCreationFeedback';
 import { GraphFactory } from 'diagram/sprotty/GraphFactory';
+import siriusMoveModule from 'diagram/sprotty/siriusMoveModule';
 import { DiagramView } from 'diagram/sprotty/views/DiagramView';
 import { EdgeView } from 'diagram/sprotty/views/EdgeView';
 import { ImageView } from 'diagram/sprotty/views/ImageView';
@@ -46,9 +47,9 @@ import {
   LogLevel,
   modelSourceModule,
   MouseListener,
-  moveModule,
   overrideCommandStackOptions,
   overrideViewerOptions,
+  Point,
   PreRenderedView,
   RequestPopupModelAction,
   routingModule,
@@ -140,7 +141,7 @@ export const createDependencyInjectionContainer = (containerId, onSelectElement,
     defaultModule,
     boundsModule,
     selectModule,
-    moveModule,
+    siriusMoveModule,
     viewportModule,
     fadeModule,
     exportModule,
@@ -175,15 +176,25 @@ export const createDependencyInjectionContainer = (containerId, onSelectElement,
    */
   class DiagramMouseListener extends MouseListener {
     diagramServer: any;
+    previousCoordinates: Point;
     constructor(diagramServer) {
       super();
       this.diagramServer = diagramServer;
     }
 
     mouseDown(element, event) {
+      this.previousCoordinates = {
+        x: event.clientX,
+        y: event.clientY,
+      };
+      return super.mouseDown(element, event);
+    }
+    mouseUp(element, event) {
       if (event.button === 0) {
-        const elementWithTarget = findElementWithTarget(element);
-        onSelectElement(elementWithTarget, this.diagramServer);
+        if (this.previousCoordinates?.x === event.clientX && this.previousCoordinates?.y === event.clientY) {
+          const elementWithTarget = findElementWithTarget(element);
+          onSelectElement(elementWithTarget, this.diagramServer);
+        }
       } else if (event.button === 2) {
         edgeCreationFeedback.reset();
         setActiveTool();

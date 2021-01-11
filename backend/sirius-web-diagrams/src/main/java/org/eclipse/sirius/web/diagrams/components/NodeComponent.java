@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -116,11 +116,7 @@ public class NodeComponent implements IComponent {
 
         INodeStyle style = nodeDescription.getStyleProvider().apply(nodeVariableManager);
 
-        //@formatter:off
-        Position position = optionalPreviousNode
-                .map(Node::getPosition)
-                .orElseGet(() -> nodePositionProvider.getNextPosition(this.props.getPreviousParentElement(), nodeSizeProvider.getSize(style, List.of())));
-        //@formatter:on
+        Position position = nodePositionProvider.getPosition(nodeId, optionalPreviousNode, this.props.getPreviousParentElement(), nodeSizeProvider, style, this.props.getParentAbsolutePosition());
 
         Position absolutePosition = this.computeAbsolutePosition(position, this.props.getParentAbsolutePosition());
         var borderNodes = this.getBorderNodes(optionalPreviousNode, nodeVariableManager, nodeId, absolutePosition);

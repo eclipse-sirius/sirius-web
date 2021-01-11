@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,9 +25,12 @@ import org.eclipse.sirius.web.components.Element;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.diagrams.Diagram;
+import org.eclipse.sirius.web.diagrams.MoveEvent;
+import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.web.diagrams.components.DiagramComponent;
 import org.eclipse.sirius.web.diagrams.components.DiagramComponentProps;
+import org.eclipse.sirius.web.diagrams.components.DiagramComponentProps.Builder;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.web.diagrams.layout.api.ILayoutService;
 import org.eclipse.sirius.web.diagrams.renderer.DiagramRenderer;
@@ -81,7 +84,7 @@ public class DiagramCreationService implements IDiagramCreationService {
 
     @Override
     public Diagram create(String label, Object targetObject, DiagramDescription diagramDescription, IEditingContext editingContext) {
-        Diagram newDiagram = this.doRender(label, targetObject, editingContext, diagramDescription, List.of(), Optional.empty());
+        Diagram newDiagram = this.doRender(label, targetObject, editingContext, diagramDescription, Optional.empty());
         return this.layoutService.layout(newDiagram);
     }
 
@@ -98,16 +101,13 @@ public class DiagramCreationService implements IDiagramCreationService {
         if (optionalObject.isPresent() && optionalDiagramDescription.isPresent()) {
             Object object = optionalObject.get();
             DiagramDescription diagramDescription = optionalDiagramDescription.get();
-            List<ViewCreationRequest> viewCreationRequests = diagramContext.getViewCreationRequests();
-
-            Diagram diagram = this.doRender(previousDiagram.getLabel(), object, editingContext, diagramDescription, viewCreationRequests, Optional.of(previousDiagram));
+            Diagram diagram = this.doRender(previousDiagram.getLabel(), object, editingContext, diagramDescription, Optional.of(diagramContext));
             return Optional.of(diagram);
         }
         return Optional.empty();
     }
 
-    private Diagram doRender(String label, Object targetObject, IEditingContext editingContext, DiagramDescription diagramDescription, List<ViewCreationRequest> viewCreationRequests,
-            Optional<Diagram> optionalPreviousDiagram) {
+    private Diagram doRender(String label, Object targetObject, IEditingContext editingContext, DiagramDescription diagramDescription, Optional<IDiagramContext> optionalDiagramContext) {
 
         long start = System.currentTimeMillis();
 
@@ -116,7 +116,24 @@ public class DiagramCreationService implements IDiagramCreationService {
         variableManager.put(VariableManager.SELF, targetObject);
         variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
 
-        DiagramComponentProps props = new DiagramComponentProps(variableManager, diagramDescription, viewCreationRequests, optionalPreviousDiagram);
+        Optional<MoveEvent> optionalMoveEvent = optionalDiagramContext.map(IDiagramContext::getMoveEvent);
+        Optional<Diagram> optionalPreviousDiagram = optionalDiagramContext.map(IDiagramContext::getDiagram);
+        Optional<Position> optionalStartingPosition = optionalDiagramContext.map(IDiagramContext::getStartingPosition);
+        List<ViewCreationRequest> viewCreationRequests = optionalDiagramContext.map(IDiagramContext::getViewCreationRequests).orElse(List.of());
+        //@formatter:off
+        Builder builder = DiagramComponentProps.newDiagramComponentProps()
+                .variableManager(variableManager)
+                .diagramDescription(diagramDescription)
+                .viewCreationRequests(viewCreationRequests)
+                .previousDiagram(optionalPreviousDiagram);
+        //@formatter:on
+        if (optionalMoveEvent.isPresent()) {
+            builder.moveEvent(optionalMoveEvent.get());
+        }
+        if (optionalStartingPosition.isPresent()) {
+            builder.startingPosition(optionalStartingPosition.get());
+        }
+        DiagramComponentProps props = builder.build();
         Element element = new Element(DiagramComponent.class, props);
 
         Diagram newDiagram = new DiagramRenderer(this.logger).render(element);
@@ -125,7 +142,6 @@ public class DiagramCreationService implements IDiagramCreationService {
         }
         RepresentationDescriptor representationDescriptor = this.getRepresentationDescriptor(editingContext.getId(), newDiagram);
         this.representationService.save(representationDescriptor);
-
         long end = System.currentTimeMillis();
         this.timer.record(end - start, TimeUnit.MILLISECONDS);
         return newDiagram;

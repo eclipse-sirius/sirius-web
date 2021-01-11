@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,6 +30,7 @@ import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.Node;
+import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.services.api.IDiagramService;
 import org.eclipse.sirius.web.diagrams.tools.CreateNodeTool;
 import org.eclipse.sirius.web.representations.Status;
@@ -90,7 +91,7 @@ public class InvokeNodeToolOnDiagramEventHandler implements IDiagramEventHandler
                     .map(CreateNodeTool.class::cast);
             // @formatter:on
             if (optionalTool.isPresent()) {
-                Status status = this.executeTool(editingContext, diagramContext, input.getDiagramElementId(), optionalTool.get());
+                Status status = this.executeTool(editingContext, diagramContext, input.getDiagramElementId(), optionalTool.get(), input.getStartingPositionX(), input.getStartingPositionY());
                 if (Objects.equals(status, Status.OK)) {
                     return new EventHandlerResponse(ChangeKind.SEMANTIC_CHANGE, new InvokeNodeToolOnDiagramSuccessPayload(diagram));
                 }
@@ -100,7 +101,7 @@ public class InvokeNodeToolOnDiagramEventHandler implements IDiagramEventHandler
         return new EventHandlerResponse(ChangeKind.NOTHING, new ErrorPayload(message));
     }
 
-    private Status executeTool(IEditingContext editingContext, IDiagramContext diagramContext, UUID diagramElementId, CreateNodeTool tool) {
+    private Status executeTool(IEditingContext editingContext, IDiagramContext diagramContext, UUID diagramElementId, CreateNodeTool tool, double startingPositionX, double startingPositionY) {
         Status result = Status.ERROR;
         Diagram diagram = diagramContext.getDiagram();
         Optional<Node> node = this.diagramService.findNodeById(diagram, diagramElementId);
@@ -118,6 +119,14 @@ public class InvokeNodeToolOnDiagramEventHandler implements IDiagramEventHandler
             variableManager.put(VariableManager.SELF, self.get());
 
             result = tool.getHandler().apply(variableManager);
+
+            // @formatter:off
+            Position newPosition = Position.newPosition()
+                    .x(startingPositionX)
+                    .y(startingPositionY)
+                    .build();
+            // @formatter:on
+            diagramContext.setStartingPosition(newPosition);
         }
         return result;
     }

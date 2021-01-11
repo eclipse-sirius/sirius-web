@@ -20,6 +20,7 @@ import {
   fadeFeature,
   hoverFeedbackFeature,
   layoutContainerFeature,
+  moveFeature,
   popupFeature,
   selectFeature,
 } from 'sprotty';
@@ -100,6 +101,7 @@ describe('ModelConverter', () => {
             fadeFeature,
             hoverFeedbackFeature,
             popupFeature,
+            moveFeature,
           ])
         );
 
