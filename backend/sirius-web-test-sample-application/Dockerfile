@@ -1,5 +1,5 @@
 FROM openjdk:15-jdk-alpine
-COPY target/sirius-web-test-sample-application-0.1.0-SNAPSHOT.jar ./app.jar
+COPY target/sirius-web-test-sample-application-*.jar ./app.jar
 EXPOSE 8080
 RUN adduser -D myuser
 USER myuser
