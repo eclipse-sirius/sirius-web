@@ -4,6 +4,10 @@ on:
   push:
     paths-ignore:
       - 'doc/**'
+    branches:
+      - '*'
+    tags:
+      - '*'
   pull_request:
     branches:
       - '**:**'
@@ -102,15 +106,14 @@ jobs:
           working-directory: frontend
 
       - name: Publish the backend
-        if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch')  && github.ref == 'refs/heads/master'
+        if: github.event_name == 'tag' && github.ref == 'refs/heads/master'
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         run: mvn -B deploy -f backend/pom.xml
 
       - name: Publish the frontend
-        if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/master'
+        if: github.event_name == 'tag' && github.ref == 'refs/heads/master'
         run: |
-          npm version prerelease -preid ${GITHUB_SHA} -no-git-tag-version
           npm publish
         working-directory: frontend
         env:

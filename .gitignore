@@ -22,6 +22,7 @@ bin
 bin/
 target
 target/
+pom.xml.versionsBackup
 
 # Log file
 *.log
