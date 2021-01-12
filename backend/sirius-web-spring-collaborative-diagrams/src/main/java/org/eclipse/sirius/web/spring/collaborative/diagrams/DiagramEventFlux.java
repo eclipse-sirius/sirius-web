@@ -16,8 +16,8 @@ import java.util.Objects;
 
 import org.eclipse.sirius.web.collaborative.api.dto.PreDestroyPayload;
 import org.eclipse.sirius.web.collaborative.diagrams.api.dto.DiagramRefreshedEventPayload;
+import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.diagrams.Diagram;
-import org.eclipse.sirius.web.services.api.dto.IPayload;
 
 import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;

@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 import org.eclipse.sirius.web.collaborative.api.dto.Subscriber;
 import org.eclipse.sirius.web.collaborative.api.services.ISubscriptionManager;
 import org.eclipse.sirius.web.collaborative.api.services.SubscriptionDescription;
-import org.eclipse.sirius.web.services.api.dto.IPayload;
+import org.eclipse.sirius.web.core.api.IPayload;
 
 import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;

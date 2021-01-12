@@ -1,0 +1,59 @@
+= ADR-009 - Reduce the coupling of our collaborative support
+
+== Context
+
+Our collaborative support is tightly coupled with some of our core concepts such as `Project`.
+Indeed, the `ProjectEventProcessorRegistry` and the `ProjectEventProcessor` are expecting that the project is the central concept defining the editing context.
+This situation creates multiple issues.
+First of all, this collaborative support cannot be reused without dependencies to our project support.
+On top of that, we consider that the context of work is unique for a given project which may not be true in the future.
+
+
+== Decision
+
+We will extract everything not related to the collaborative support from Sirius Web Collaborative API and Sirius Web Spring Collaborative such as the project support.
+Said support will also be splitted into smaller classes in order to reduce the coupling even more.
+It will allow us to prepare some of the future improvements related to transaction support since we need to improve things in this area.
+
+
+=== Sirius Web Core API
+
+The project Sirius Web Core API will be introduced to contain a subset of our internal API which is used both by the collaborative part and the regular parts too.
+Concepts such as `IInput`, `IPayload` and `IEditingContext` will be moved to this project.
+This project is not intended to contain application specific concepts such as `Project` or `Document` which are intended to remain in Sirius Web Services API.
+Public API which should be manipulated by specifiers will remain in Sirius Web API.
+Consumers of our collaborative API will only have to rely on both Sirius Web Collaborative API and Sirius Web Core API.
+
+
+=== Sirius Web Services
+
+Other concepts will move out of the collaborative parts to only be used by other parts of the application.
+For that, we will introduce another project which was lost during the move to an open source project, the project Sirius Web Services.
+Here are some of the following classes will move out of the collaborative projects into `sirius-web-services`:
+
+- `ProjectService`
+- `RepresentationService`
+- `StereotypeDescriptionService`
+
+As a result, our collaborative support will depend on `sirius-web-core-api` but not on `sirius-web-services`.
+The dependency to `sirius-web-persistence` will also be removed from Sirius Web Collaborative API.
+
+
+=== Update to the collaborative parts
+
+The `ProjectEventProcessorRegistry` and `ProjectEventProcessor` will be renamed to `EditingContextEventProcessorRegistry` and `EditingContextEventProcessor`.
+They will rely on an `editingContextId` instead of a `projectId` as the unique identifier.
+For the moment, the `projectId` will still be used as the `editingContextId` but this will change soon.
+
+
+== Status
+
+Work in progress.
+
+
+== Consequences
+
+A ProjectEventProcessor may be introduced in the future in order to propagate project-specific events.
+This event processor may not need the editing context and it may not rely on the `EditingContextEventProcessorRegistry`.
+
+With the introduction of modeler supports, additional ADRs will be written to described how projects and modelers will leverage this smaller coupling.

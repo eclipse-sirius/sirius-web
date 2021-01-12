@@ -21,10 +21,10 @@ import org.eclipse.sirius.web.collaborative.forms.api.IFormInput;
 import org.eclipse.sirius.web.collaborative.forms.api.IFormService;
 import org.eclipse.sirius.web.collaborative.forms.api.dto.EditCheckboxInput;
 import org.eclipse.sirius.web.collaborative.forms.api.dto.EditCheckboxSuccessPayload;
+import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.forms.Checkbox;
 import org.eclipse.sirius.web.forms.Form;
 import org.eclipse.sirius.web.representations.Status;
-import org.eclipse.sirius.web.services.api.dto.ErrorPayload;
 import org.eclipse.sirius.web.spring.collaborative.forms.messages.ICollaborativeFormMessageService;
 import org.springframework.stereotype.Service;
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,15 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.services.api.objects;
+package org.eclipse.sirius.web.core.api;
 
 import java.util.UUID;
 
 /**
- * Interface used to save the editing context when a change has been performed.
+ * Common interface of all the input used to interact with a representation.
  *
  * @author sbegaudeau
  */
-public interface IEditingContextPersistenceService {
-    void persist(UUID projectId, IEditingContext editingContext);
+public interface IRepresentationInput extends IInput {
+    UUID getRepresentationId();
 }

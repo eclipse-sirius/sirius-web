@@ -20,8 +20,8 @@ import org.eclipse.sirius.web.collaborative.api.services.IRepresentationConfigur
 import org.eclipse.sirius.web.collaborative.api.services.IRepresentationEventProcessor;
 import org.eclipse.sirius.web.collaborative.api.services.IRepresentationEventProcessorComposedFactory;
 import org.eclipse.sirius.web.collaborative.api.services.IRepresentationEventProcessorFactory;
+import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.services.api.Context;
-import org.eclipse.sirius.web.services.api.objects.IEditingContext;
 import org.springframework.stereotype.Service;
 
 /**

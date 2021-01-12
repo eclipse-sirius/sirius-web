@@ -10,7 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.services.api.dto;
+package org.eclipse.sirius.web.services.api.projects;
+
+import org.eclipse.sirius.web.core.api.IInput;
 
 /**
  * Represents an input sent by a client which is not related to a specific representation.

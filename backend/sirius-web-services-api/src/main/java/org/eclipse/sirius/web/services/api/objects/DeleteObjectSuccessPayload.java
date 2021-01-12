@@ -16,8 +16,8 @@ import java.text.MessageFormat;
 
 import org.eclipse.sirius.web.annotations.graphql.GraphQLField;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLObjectType;
+import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.services.api.document.Document;
-import org.eclipse.sirius.web.services.api.dto.IPayload;
 
 /**
  * The payload returned by the delete object mutation.

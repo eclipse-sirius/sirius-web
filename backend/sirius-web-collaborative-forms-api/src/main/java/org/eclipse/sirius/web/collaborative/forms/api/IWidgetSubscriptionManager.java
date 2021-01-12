@@ -13,8 +13,8 @@
 package org.eclipse.sirius.web.collaborative.forms.api;
 
 import org.eclipse.sirius.web.collaborative.forms.api.dto.UpdateWidgetFocusInput;
+import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.services.api.Context;
-import org.eclipse.sirius.web.services.api.dto.IPayload;
 
 import reactor.core.publisher.Flux;
 

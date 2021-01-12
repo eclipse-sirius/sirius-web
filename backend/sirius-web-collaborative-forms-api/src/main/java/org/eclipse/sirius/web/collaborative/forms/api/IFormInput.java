@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.collaborative.forms.api;
 
-import org.eclipse.sirius.web.services.api.dto.IRepresentationInput;
+import org.eclipse.sirius.web.core.api.IRepresentationInput;
 
 /**
  * Represents an input sent by a client which concerns a form representation.

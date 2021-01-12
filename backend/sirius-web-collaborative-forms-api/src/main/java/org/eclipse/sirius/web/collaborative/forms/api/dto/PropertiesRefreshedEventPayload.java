@@ -18,8 +18,8 @@ import java.util.Objects;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLField;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLNonNull;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLObjectType;
+import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.forms.Form;
-import org.eclipse.sirius.web.services.api.dto.IPayload;
 
 /**
  * Payload used to indicate that the properties has been refreshed.

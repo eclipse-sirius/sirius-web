@@ -14,7 +14,7 @@ package org.eclipse.sirius.web.spring.collaborative.diagrams.handlers;
 
 import java.util.UUID;
 
-import org.eclipse.sirius.web.services.api.objects.IEditingContext;
+import org.eclipse.sirius.web.core.api.IEditingContext;
 
 /**
  * Implementation of the editing context which does nothing.

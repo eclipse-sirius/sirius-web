@@ -17,7 +17,7 @@ import java.util.Optional;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.sirius.web.services.api.objects.IEditingContext;
+import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.services.api.objects.IObjectService;
 
 /**

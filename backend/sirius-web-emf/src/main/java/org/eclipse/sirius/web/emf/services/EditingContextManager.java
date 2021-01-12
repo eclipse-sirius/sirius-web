@@ -15,10 +15,10 @@ package org.eclipse.sirius.web.emf.services;
 import java.util.Objects;
 import java.util.UUID;
 
-import org.eclipse.sirius.web.services.api.objects.IEditingContext;
-import org.eclipse.sirius.web.services.api.objects.IEditingContextFactory;
-import org.eclipse.sirius.web.services.api.objects.IEditingContextPersistenceService;
-import org.eclipse.sirius.web.services.api.projects.IEditingContextManager;
+import org.eclipse.sirius.web.core.api.IEditingContext;
+import org.eclipse.sirius.web.core.api.IEditingContextFactory;
+import org.eclipse.sirius.web.core.api.IEditingContextManager;
+import org.eclipse.sirius.web.core.api.IEditingContextPersistenceService;
 import org.springframework.stereotype.Service;
 
 /**

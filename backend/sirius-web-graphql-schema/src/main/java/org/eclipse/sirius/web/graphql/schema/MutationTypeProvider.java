@@ -26,11 +26,11 @@ import java.util.stream.Stream;
 
 import org.eclipse.sirius.web.annotations.graphql.GraphQLMutationTypes;
 import org.eclipse.sirius.web.annotations.spring.graphql.MutationDataFetcher;
+import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.graphql.utils.providers.GraphQLInputObjectTypeProvider;
 import org.eclipse.sirius.web.graphql.utils.providers.GraphQLNameProvider;
 import org.eclipse.sirius.web.graphql.utils.providers.GraphQLObjectTypeProvider;
 import org.eclipse.sirius.web.graphql.utils.schema.IMutationTypeProvider;
-import org.eclipse.sirius.web.services.api.dto.ErrorPayload;
 import org.eclipse.sirius.web.spring.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.springframework.stereotype.Service;
 

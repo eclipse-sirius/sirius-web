@@ -15,8 +15,8 @@ package org.eclipse.sirius.web.collaborative.api.services;
 import java.util.Objects;
 import java.util.function.Predicate;
 
+import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.representations.IRepresentation;
-import org.eclipse.sirius.web.services.api.dto.IPayload;
 
 /**
  * Response of the event handlers used to indicate how the execution of the event handler should impact the project.

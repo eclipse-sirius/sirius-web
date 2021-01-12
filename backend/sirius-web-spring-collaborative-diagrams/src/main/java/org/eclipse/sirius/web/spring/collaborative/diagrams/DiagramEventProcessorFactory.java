@@ -25,9 +25,9 @@ import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramCreationService
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramEventProcessor;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramService;
+import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.services.api.Context;
-import org.eclipse.sirius.web.services.api.objects.IEditingContext;
 import org.springframework.stereotype.Service;
 
 /**
