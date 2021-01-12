@@ -21,7 +21,7 @@ import org.eclipse.sirius.web.annotations.graphql.GraphQLID;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLInputObjectType;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLNonNull;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLUpload;
-import org.eclipse.sirius.web.services.api.dto.IProjectInput;
+import org.eclipse.sirius.web.services.api.projects.IProjectInput;
 import org.eclipse.sirius.web.spring.graphql.api.UploadFile;
 
 /**

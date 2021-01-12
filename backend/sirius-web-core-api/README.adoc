@@ -1,0 +1,11 @@
+= sirius-web-core-api
+
+== Goal
+
+This project is used to contain the API to manipulate core concepts that are not specific to the business of our application.
+
+== Dependencies
+
+- sirius-web-annotations
+
+This project should not depend on anything else without a good reason to do so.

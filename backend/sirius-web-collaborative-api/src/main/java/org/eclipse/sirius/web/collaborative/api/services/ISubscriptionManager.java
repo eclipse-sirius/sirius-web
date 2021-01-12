@@ -14,7 +14,7 @@ package org.eclipse.sirius.web.collaborative.api.services;
 
 import java.util.List;
 
-import org.eclipse.sirius.web.services.api.dto.IPayload;
+import org.eclipse.sirius.web.core.api.IPayload;
 
 import reactor.core.publisher.Flux;
 

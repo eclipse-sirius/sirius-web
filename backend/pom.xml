@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
- Copyright (c) 2020 Obeo.
+ Copyright (c) 2020, 2021 Obeo.
  All rights reserved. This program and the accompanying materials
  are made available under the terms of the Eclipse Public License v1.0
  which accompanies this distribution, and is available at
@@ -33,10 +33,12 @@
 		<module>sirius-web-annotations-spring</module>
 		<module>sirius-web-annotations</module>
 		<module>sirius-web-api</module>
+		<module>sirius-web-core-api</module>
 		<module>sirius-web-collaborative-api</module>
 		<module>sirius-web-collaborative-diagrams-api</module>
 		<module>sirius-web-collaborative-forms-api</module>
 		<module>sirius-web-collaborative-trees-api</module>
+		<module>sirius-web-services-api</module>
 		<module>sirius-web-components</module>
 		<module>sirius-web-diagrams-layout-api</module>
 		<module>sirius-web-diagrams-layout</module>
@@ -50,7 +52,6 @@
 		<module>sirius-web-graphql-voyager</module>
 		<module>sirius-web-graphql</module>
 		<module>sirius-web-representations</module>
-		<module>sirius-web-services-api</module>
 		<module>sirius-web-spring-collaborative-diagrams</module>
 		<module>sirius-web-spring-collaborative-forms</module>
 		<module>sirius-web-spring-collaborative-trees</module>

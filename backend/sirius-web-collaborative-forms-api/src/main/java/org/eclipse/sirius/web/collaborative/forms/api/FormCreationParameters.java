@@ -17,8 +17,8 @@ import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.annotations.Immutable;
+import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.forms.description.FormDescription;
-import org.eclipse.sirius.web.services.api.objects.IEditingContext;
 
 /**
  * This class is used because creating a form requires sending at once multiple parameters. Since this list of parameter

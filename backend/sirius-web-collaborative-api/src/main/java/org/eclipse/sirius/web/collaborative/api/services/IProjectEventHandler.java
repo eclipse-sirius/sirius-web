@@ -12,9 +12,9 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.collaborative.api.services;
 
+import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.services.api.Context;
-import org.eclipse.sirius.web.services.api.dto.IProjectInput;
-import org.eclipse.sirius.web.services.api.objects.IEditingContext;
+import org.eclipse.sirius.web.services.api.projects.IProjectInput;
 
 /**
  * Process the given input event.

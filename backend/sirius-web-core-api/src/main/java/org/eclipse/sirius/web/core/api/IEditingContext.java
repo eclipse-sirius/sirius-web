@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,13 +10,23 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.services.api.dto;
+package org.eclipse.sirius.web.core.api;
+
+import java.util.UUID;
 
 /**
- * Interface to be implemented by all payloads.
+ * Information used to perform some operations on the project.
  *
  * @author sbegaudeau
  */
-public interface IPayload {
-    // Do nothing on purpose
+public interface IEditingContext {
+
+    /**
+     * The name of the variable used to store and retrieve the editing context from a variable manager.
+     */
+    String EDITING_CONTEXT = "editingContext"; //$NON-NLS-1$
+
+    UUID getProjectId();
+
+    Object getDomain();
 }

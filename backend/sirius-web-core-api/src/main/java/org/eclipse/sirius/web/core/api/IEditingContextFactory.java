@@ -10,19 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.services.api.projects;
+package org.eclipse.sirius.web.core.api;
 
 import java.util.UUID;
 
-import org.eclipse.sirius.web.services.api.objects.IEditingContext;
-
 /**
- * Interface of the editing context manager.
+ * Service used to create the editing context of a project.
  *
- * @author gcoutable
+ * @author sbegaudeau
  */
-public interface IEditingContextManager {
-    IEditingContext createEditingContext(UUID projectID);
-
-    void persist(UUID projectId, IEditingContext editingContext);
+public interface IEditingContextFactory {
+    IEditingContext createEditingContext(UUID projectId);
 }

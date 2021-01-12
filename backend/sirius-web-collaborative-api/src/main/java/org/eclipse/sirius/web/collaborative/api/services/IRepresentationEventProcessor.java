@@ -14,10 +14,10 @@ package org.eclipse.sirius.web.collaborative.api.services;
 
 import java.util.Optional;
 
+import org.eclipse.sirius.web.core.api.IPayload;
+import org.eclipse.sirius.web.core.api.IRepresentationInput;
 import org.eclipse.sirius.web.representations.IRepresentation;
 import org.eclipse.sirius.web.services.api.Context;
-import org.eclipse.sirius.web.services.api.dto.IPayload;
-import org.eclipse.sirius.web.services.api.dto.IRepresentationInput;
 
 import reactor.core.publisher.Flux;
 

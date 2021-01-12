@@ -19,9 +19,9 @@ import java.util.UUID;
 
 import org.eclipse.sirius.web.collaborative.api.services.IProjectEventProcessor;
 import org.eclipse.sirius.web.collaborative.api.services.IProjectEventProcessorRegistry;
+import org.eclipse.sirius.web.core.api.IInput;
+import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.services.api.Context;
-import org.eclipse.sirius.web.services.api.dto.IInput;
-import org.eclipse.sirius.web.services.api.dto.IPayload;
 
 /**
  * Implementation of the project event processor registry which does nothing.

@@ -16,9 +16,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.eclipse.sirius.web.core.api.IInput;
+import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.services.api.Context;
-import org.eclipse.sirius.web.services.api.dto.IInput;
-import org.eclipse.sirius.web.services.api.dto.IPayload;
 
 /**
  * Registry of all the project event handlers.

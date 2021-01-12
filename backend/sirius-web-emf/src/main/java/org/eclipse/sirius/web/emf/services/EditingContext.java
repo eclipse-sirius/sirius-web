@@ -16,7 +16,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.emf.edit.domain.EditingDomain;
-import org.eclipse.sirius.web.services.api.objects.IEditingContext;
+import org.eclipse.sirius.web.core.api.IEditingContext;
 
 /**
  * Implementation of the editing context.

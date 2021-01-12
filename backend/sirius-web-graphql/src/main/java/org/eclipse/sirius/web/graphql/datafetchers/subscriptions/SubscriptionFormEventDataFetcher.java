@@ -27,9 +27,9 @@ import org.eclipse.sirius.web.collaborative.forms.api.IFormEventProcessor;
 import org.eclipse.sirius.web.collaborative.forms.api.dto.FormEventInput;
 import org.eclipse.sirius.web.collaborative.forms.api.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.web.collaborative.forms.api.dto.WidgetSubscriptionsUpdatedEventPayload;
+import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.graphql.datafetchers.IDataFetchingEnvironmentService;
 import org.eclipse.sirius.web.graphql.schema.SubscriptionTypeProvider;
-import org.eclipse.sirius.web.services.api.dto.IPayload;
 import org.eclipse.sirius.web.spring.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.reactivestreams.Publisher;
 

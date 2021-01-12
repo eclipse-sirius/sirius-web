@@ -19,7 +19,7 @@ import java.util.Objects;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLField;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLNonNull;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLObjectType;
-import org.eclipse.sirius.web.services.api.dto.IPayload;
+import org.eclipse.sirius.web.core.api.IPayload;
 
 /**
  * Payload used to indicates that the subscribers of a widget have been updated.

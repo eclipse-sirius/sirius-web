@@ -12,8 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.services.api.projects;
 
+import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.services.api.Context;
-import org.eclipse.sirius.web.services.api.dto.IPayload;
 import org.eclipse.sirius.web.spring.graphql.api.UploadFile;
 
 /**

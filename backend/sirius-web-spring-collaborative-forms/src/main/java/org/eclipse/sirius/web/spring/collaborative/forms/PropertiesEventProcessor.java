@@ -29,6 +29,9 @@ import org.eclipse.sirius.web.collaborative.forms.api.IWidgetSubscriptionManager
 import org.eclipse.sirius.web.collaborative.forms.api.dto.PropertiesRefreshedEventPayload;
 import org.eclipse.sirius.web.collaborative.forms.api.dto.UpdateWidgetFocusInput;
 import org.eclipse.sirius.web.components.Element;
+import org.eclipse.sirius.web.core.api.IEditingContext;
+import org.eclipse.sirius.web.core.api.IPayload;
+import org.eclipse.sirius.web.core.api.IRepresentationInput;
 import org.eclipse.sirius.web.forms.Form;
 import org.eclipse.sirius.web.forms.components.FormComponent;
 import org.eclipse.sirius.web.forms.components.FormComponentProps;
@@ -38,9 +41,6 @@ import org.eclipse.sirius.web.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.web.representations.IRepresentation;
 import org.eclipse.sirius.web.representations.VariableManager;
 import org.eclipse.sirius.web.services.api.Context;
-import org.eclipse.sirius.web.services.api.dto.IPayload;
-import org.eclipse.sirius.web.services.api.dto.IRepresentationInput;
-import org.eclipse.sirius.web.services.api.objects.IEditingContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

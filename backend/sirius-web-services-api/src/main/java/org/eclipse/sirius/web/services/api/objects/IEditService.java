@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.eclipse.sirius.web.core.api.IEditingContext;
+
 /**
  * Interface for the edition of the domain objects.
  *

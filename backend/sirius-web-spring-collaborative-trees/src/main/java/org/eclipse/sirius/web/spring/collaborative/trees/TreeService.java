@@ -14,9 +14,9 @@ package org.eclipse.sirius.web.spring.collaborative.trees;
 
 import org.eclipse.sirius.web.collaborative.trees.api.ITreeService;
 import org.eclipse.sirius.web.collaborative.trees.api.TreeCreationParameters;
+import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.web.representations.VariableManager;
-import org.eclipse.sirius.web.services.api.objects.IEditingContext;
 import org.eclipse.sirius.web.trees.Tree;
 import org.eclipse.sirius.web.trees.renderer.TreeRenderer;
 import org.springframework.stereotype.Service;

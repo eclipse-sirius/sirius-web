@@ -15,6 +15,8 @@ package org.eclipse.sirius.web.services.api.objects;
 import java.util.List;
 import java.util.Optional;
 
+import org.eclipse.sirius.web.core.api.IEditingContext;
+
 /**
  * Interface of the service interacting with domain objects.
  *
