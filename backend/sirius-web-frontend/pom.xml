@@ -28,6 +28,7 @@
 
 	<properties>
 		<java.version>11</java.version>
+		<sirius.components.version>0.1.33</sirius.components.version>
 	</properties>
 
 	<repositories>
@@ -53,12 +54,12 @@
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-api</artifactId>
-			<version>0.1.0-SNAPSHOT</version>
+			<version>${sirius.components.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-spring-starter</artifactId>
-			<version>0.1.0-SNAPSHOT</version>
+			<version>${sirius.components.version}</version>
 		</dependency>
 	</dependencies>
 </project>

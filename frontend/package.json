@@ -13,7 +13,7 @@
   "private": true,
   "dependencies": {
     "@apollo/client": "3.2.7",
-    "@eclipse-sirius/sirius-components": "0.1.31-a195fbb5cb0cd44b378a2cc980917eefac0efa24.0",
+    "@eclipse-sirius/sirius-components": "0.1.33",
     "@material-ui/core": "4.11.2",
     "@material-ui/icons": "4.11.2",
     "@xstate/react": "1.1.0",

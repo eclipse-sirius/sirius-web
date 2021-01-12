@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
- Copyright (c) 2019, 2020 Obeo.
+ Copyright (c) 2019, 2021 Obeo.
  This program and the accompanying materials
  are made available under the terms of the Eclipse Public License v2.0
  which accompanies this distribution, and is available at
@@ -29,7 +29,9 @@
 
 	<properties>
 		<java.version>11</java.version>
+		<sirius.components.version>0.1.33</sirius.components.version>
 		<flow.version>1.0.5-SNAPSHOT</flow.version>
+		<bpmn.version>4.0.3-SNAPSHOT</bpmn.version>
 	</properties>
 
 	<repositories>
@@ -82,7 +84,7 @@
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-spring-starter</artifactId>
-			<version>0.1.0-SNAPSHOT</version>
+			<version>${sirius.components.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
@@ -92,12 +94,12 @@
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-graphiql</artifactId>
-			<version>0.1.0-SNAPSHOT</version>
+			<version>${sirius.components.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-graphql-voyager</artifactId>
-			<version>0.1.0-SNAPSHOT</version>
+			<version>${sirius.components.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>fr.obeo.dsl.designer.sample.flow</groupId>
@@ -117,17 +119,17 @@
 		<dependency>
 			<groupId>BPMN2</groupId>
 			<artifactId>org.obeonetwork.dsl.bpmn2</artifactId>
-			<version>4.0.3-SNAPSHOT</version>
+			<version>${bpmn.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>BPMN2</groupId>
 			<artifactId>org.obeonetwork.dsl.bpmn2.edit</artifactId>
-			<version>4.0.3-SNAPSHOT</version>
+			<version>${bpmn.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>BPMN2</groupId>
 			<artifactId>org.obeonetwork.dsl.bpmn2.design</artifactId>
-			<version>4.0.3-SNAPSHOT</version>
+			<version>${bpmn.version}</version>
 		</dependency>
 	</dependencies>
 
