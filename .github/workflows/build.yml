@@ -106,13 +106,13 @@ jobs:
           working-directory: frontend
 
       - name: Publish the backend
-        if: github.event_name == 'tag' && github.ref == 'refs/heads/master'
+        if: startsWith(github.ref, 'refs/tags/v')
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         run: mvn -B deploy -f backend/pom.xml
 
       - name: Publish the frontend
-        if: github.event_name == 'tag' && github.ref == 'refs/heads/master'
+        if: startsWith(github.ref, 'refs/tags/v')
         run: |
           npm publish
         working-directory: frontend
