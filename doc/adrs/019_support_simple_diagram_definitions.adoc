@@ -1,0 +1,82 @@
+= ADR-019 - Support Simple Diagram Definitions by Reusing Sirius Desktop VSMs
+
+== Context
+
+We want to support the definition of Sirius Web modelers directly in the web interface.
+At first we will only consider diagrams definitions.
+
+For this, we need the equivalent of Sirius Desktop's VSMs to describe the structure, look & feel of the diagrams.
+The Sirius Desktop VSM is very complex, and has quite a lot of legacy conceptual issues.
+Its implementation is also not designed to be easily reused outside of an Eclipse Platform context (particularly the "edit support" which depend on the Eclipse UI).
+Ideally, we would like to have a completely new, non-EMF based set of POJOs to describe only a well-defined subset of the VSM model.
+
+However, after trying this approach it appears that the current Sirius Components code base still has quite a few dependencies on EMF, which are complex to remove.
+These would be needed to support the edition of non-EMF based "documents" representing diagram configurations.
+
+== Decision
+
+For the first version of "metamodeling support", we will reuse the existing Sirius VSM models and allow their edition directly in the Sirius Web UI.
+We will only support their visualisation and edition through the model explorer and the accompanying properties view.
+No graphical or even form-based representation will be provided for them.
+
+Only a subset of the VSM features will be actually supported, but in a first version we will use the default properties views rules.
+This means we will display all the properties of all the elements, even those which are not actually supported.
+If this causes too many issues we may programmatically define a custom `IPropertiesDescriptionRegistryConfigurer` to restrict which configuration attributes are displayed to the studio author.
+
+
+```ts
+// In pseudo-code (TypeScript type signatures)
+
+interface View {
+    name: string;
+}
+
+interface RepresentationDescription {
+  name: string;
+  domainType: string;
+  titleExpression: string;
+}
+
+interface DiagramDescription extends RepresentationDescription {
+  nodeDescriptions: NodeDescription[];
+  edgeDescriptions: EdgeDescription[];
+}
+
+interface DiagramElementDescription {
+  domainType: string;
+  semanticCandidatesExpression: string;
+  labelExpression: string;
+  creationMode: Mode;
+  style: Style
+}
+
+type Mode = 'AUTO' | 'EXPLICIT';
+
+interface NodeDescription extends DiagramElementDescription {
+  childrenDescriptions: NodeDescription[];
+}
+
+interface EdgeDescription extends DiagramElementDescription {
+  isDomainBasedEdge: boolean;
+  sourceNodesExpression: string;
+  sourceNodeDescription: NodeDescription;
+  targetNodesExpression: string;
+  targetNodeDescription: NodeDescription;
+}
+
+interface Style {
+  color: string;
+}
+```
+
+== Status
+
+Accepted.
+
+== Consequences
+
+The Sirius VSM metamodels are quite complex and use some EMF features which are not present in the sample metamodels we use (_Flow_ and _BPMN_).
+They will probably reveal bugs and limitations that will need to be addressed to make their visualization and edition possible.
+
+The reuse of these metamodels is a temporary stopgap and we still want to offer a better approach to configure diagram in the future, which does not inherit from all the "bagage" of the Sirius Desktop VSMs.
+This means we must start a separate effort to allow for the platform to support documents which are not based on EMF, so that we are not blocked again by this technical limitation.
