@@ -26,7 +26,7 @@ import org.eclipse.sirius.web.diagrams.Edge;
 import org.eclipse.sirius.web.diagrams.Node;
 import org.eclipse.sirius.web.persistence.repositories.IRepresentationRepository;
 import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;
-import org.eclipse.sirius.web.spring.collaborative.representations.RepresentationMapper;
+import org.eclipse.sirius.web.services.representations.RepresentationMapper;
 import org.springframework.stereotype.Service;
 
 /**

@@ -23,7 +23,7 @@ import org.eclipse.sirius.web.forms.AbstractWidget;
 import org.eclipse.sirius.web.forms.Form;
 import org.eclipse.sirius.web.persistence.repositories.IRepresentationRepository;
 import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;
-import org.eclipse.sirius.web.spring.collaborative.representations.RepresentationMapper;
+import org.eclipse.sirius.web.services.representations.RepresentationMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
