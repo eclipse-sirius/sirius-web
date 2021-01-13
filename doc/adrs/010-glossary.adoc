@@ -1,0 +1,40 @@
+= ADR-010 - Adopt a Shared Vocabulary
+
+== Context
+
+Given our long history with Sirius Desktop and the way it used modeling and EMF-specific terms, we tend to reuse these (at least in our discussions).
+For Sirius Web, we do not want to be limited to EMF, or even a modeling/MDE point of view, se we need to use different terms.
+
+We need to decide on a common vocabulary, both for the user-visible elements (e.g. do we talk about "Documents", or "Models"? is it "Modeler" or "Studio", or do both exist but represent slightly different things?) and also more internally on the technical terms.
+
+== Decision
+
+Roles:
+* end user
+    * viewer
+    * contributor
+* specifier
+* project admin
+* server/instance admin
+
+Concepts
+* Organisation
+* Project
+* Document (model instance)
+    * Data Model
+* Representation (instance)
+    * Diagram (instance)
+* Representation Description (or Definition?)
+* Data Schema, Domain Definition (metamodel)
+* Modeler/Studio (~equiv VSM): defines (or references) one or more Data Schema with one or more representation description that work together to provide actual modeling capabilities to end-users.
+
+== Status
+
+Draft.
+
+== Consequences
+
+We need to:
+* Update the frontend UI (if needed) to use the terms we agreed upon consistently.
+* Update the documentation accordingly.
+* Update the code if needed to avoid inconsistencies between the implementation and the UI.
