@@ -49,9 +49,7 @@ const deleteRepresentationMutation = gql`
     deleteRepresentation(input: $input) {
       __typename
       ... on DeleteRepresentationSuccessPayload {
-        project {
-          id
-        }
+        representationId
       }
       ... on ErrorPayload {
         message

@@ -24,10 +24,7 @@ import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IInput;
-import org.eclipse.sirius.web.services.api.accounts.Profile;
-import org.eclipse.sirius.web.services.api.projects.IProjectService;
-import org.eclipse.sirius.web.services.api.projects.Project;
-import org.eclipse.sirius.web.services.api.projects.Visibility;
+import org.eclipse.sirius.web.representations.IRepresentation;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationService;
 import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;
 import org.junit.Test;
@@ -47,7 +44,32 @@ public class DeleteRepresentationEventHandlerTestCases {
         IRepresentationService representationService = new NoOpRepresentationService() {
             @Override
             public Optional<RepresentationDescriptor> getRepresentation(UUID representationId) {
-                return Optional.of(new RepresentationDescriptor());
+                IRepresentation representation = new IRepresentation() {
+
+                    @Override
+                    public String getLabel() {
+                        return null;
+                    }
+
+                    @Override
+                    public String getKind() {
+                        return null;
+                    }
+
+                    @Override
+                    public UUID getId() {
+                        return null;
+                    }
+
+                    @Override
+                    public UUID getDescriptionId() {
+                        return null;
+                    }
+                };
+                RepresentationDescriptor representationDescriptor = RepresentationDescriptor.newRepresentationDescriptor(UUID.randomUUID()).projectId(UUID.randomUUID())
+                        .descriptionId(UUID.randomUUID()).targetObjectId(UUID.randomUUID().toString()).label("") //$NON-NLS-1$
+                        .representation(representation).build();
+                return Optional.of(representationDescriptor);
             }
 
             @Override
@@ -56,14 +78,7 @@ public class DeleteRepresentationEventHandlerTestCases {
             }
         };
 
-        IProjectService projectService = new NoOpProjectService() {
-            @Override
-            public Optional<Project> getProject(UUID projectId) {
-                return Optional.of(new Project(projectId, "projectName", new Profile(UUID.randomUUID(), "username"), Visibility.PUBLIC)); //$NON-NLS-1$ //$NON-NLS-2$
-            }
-        };
-
-        EventHandlerResponse response = this.handleEvent(representationService, projectService);
+        EventHandlerResponse response = this.handleEvent(representationService);
 
         assertThat(hasBeenCalled.get()).isTrue();
         assertThat(response.getPayload()).isInstanceOf(DeleteRepresentationSuccessPayload.class);
@@ -85,22 +100,15 @@ public class DeleteRepresentationEventHandlerTestCases {
             }
         };
 
-        IProjectService projectService = new NoOpProjectService() {
-            @Override
-            public Optional<Project> getProject(UUID projectId) {
-                return Optional.of(new Project(projectId, "projectName", new Profile(UUID.randomUUID(), "username"), Visibility.PUBLIC)); //$NON-NLS-1$ //$NON-NLS-2$
-            }
-        };
-
-        EventHandlerResponse response = this.handleEvent(representationService, projectService);
+        EventHandlerResponse response = this.handleEvent(representationService);
 
         assertThat(hasBeenCalled.get()).isFalse();
         assertThat(response.getPayload()).isInstanceOf(ErrorPayload.class);
     }
 
-    private EventHandlerResponse handleEvent(IRepresentationService representationService, IProjectService projectService) {
+    private EventHandlerResponse handleEvent(IRepresentationService representationService) {
         IInput input = new DeleteRepresentationInput(UUID.randomUUID());
-        DeleteRepresentationEventHandler handler = new DeleteRepresentationEventHandler(representationService, projectService, new NoOpCollaborativeMessageService(), new SimpleMeterRegistry());
+        DeleteRepresentationEventHandler handler = new DeleteRepresentationEventHandler(representationService, new NoOpCollaborativeMessageService(), new SimpleMeterRegistry());
         assertThat(handler.canHandle(input)).isTrue();
 
         IEditingContext editingContext = new NoOpEditingContext();

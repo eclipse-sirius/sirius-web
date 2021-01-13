@@ -14,12 +14,13 @@ package org.eclipse.sirius.web.collaborative.api.dto;
 
 import java.text.MessageFormat;
 import java.util.Objects;
+import java.util.UUID;
 
 import org.eclipse.sirius.web.annotations.graphql.GraphQLField;
+import org.eclipse.sirius.web.annotations.graphql.GraphQLID;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLNonNull;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLObjectType;
 import org.eclipse.sirius.web.core.api.IPayload;
-import org.eclipse.sirius.web.services.api.projects.Project;
 
 /**
  * The payload returned by the delete representation mutation.
@@ -29,21 +30,22 @@ import org.eclipse.sirius.web.services.api.projects.Project;
 @GraphQLObjectType
 public final class DeleteRepresentationSuccessPayload implements IPayload {
 
-    private final Project project;
+    private final UUID representationId;
 
-    public DeleteRepresentationSuccessPayload(Project project) {
-        this.project = Objects.requireNonNull(project);
+    public DeleteRepresentationSuccessPayload(UUID representationId) {
+        this.representationId = Objects.requireNonNull(representationId);
     }
 
+    @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public Project getproject() {
-        return this.project;
+    public UUID getRepresentationId() {
+        return this.representationId;
     }
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'project: '{'id: {1}, name: {2}'}''}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.project.getId(), this.project.getName());
+        String pattern = "{0} '{'representationId: {1}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.representationId);
     }
 }

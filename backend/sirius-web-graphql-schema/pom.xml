@@ -55,6 +55,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
+			<artifactId>sirius-web-services-api</artifactId>
+			<version>0.1.32</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-collaborative-api</artifactId>
 			<version>0.1.32</version>
 		</dependency>
