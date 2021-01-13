@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,14 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.collaborative.api.dto;
+package org.eclipse.sirius.web.services.api.events;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
+import org.eclipse.sirius.web.services.api.document.Document;
 
 /**
  * An internal event indicating that a new version of a set of documents has been persisted.
@@ -27,9 +26,9 @@ import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
 public class DocumentsModifiedEvent {
     private final UUID projectId;
 
-    private final List<DocumentEntity> documents;
+    private final List<Document> documents;
 
-    public DocumentsModifiedEvent(UUID projectId, List<DocumentEntity> documents) {
+    public DocumentsModifiedEvent(UUID projectId, List<Document> documents) {
         this.projectId = Objects.requireNonNull(projectId);
         this.documents = List.copyOf(Objects.requireNonNull(documents));
     }
@@ -38,7 +37,7 @@ public class DocumentsModifiedEvent {
         return this.projectId;
     }
 
-    public Collection<DocumentEntity> getDocuments() {
+    public List<Document> getDocuments() {
         return this.documents;
     }
 

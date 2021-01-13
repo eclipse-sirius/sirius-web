@@ -73,6 +73,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
+			<artifactId>sirius-web-services</artifactId>
+			<version>0.1.32</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-emf</artifactId>
 			<version>0.1.32</version>
 		</dependency>

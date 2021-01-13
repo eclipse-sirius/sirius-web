@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.spring.collaborative.projects;
+package org.eclipse.sirius.web.services.projects;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -28,8 +28,7 @@ import org.eclipse.sirius.web.persistence.repositories.IProjectRepository;
 import org.eclipse.sirius.web.services.api.projects.CreateProjectInput;
 import org.eclipse.sirius.web.services.api.projects.CreateProjectSuccessPayload;
 import org.eclipse.sirius.web.services.api.projects.Visibility;
-import org.eclipse.sirius.web.spring.collaborative.handlers.NoOpCollaborativeMessageService;
-import org.eclipse.sirius.web.spring.collaborative.messages.ICollaborativeMessageService;
+import org.eclipse.sirius.web.services.messages.IServicesMessageService;
 import org.junit.Test;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -47,7 +46,7 @@ public class ProjectServiceTestCases {
 
     private static final String OWNER_NAME = "jdoe"; //$NON-NLS-1$
 
-    private ICollaborativeMessageService noOpMessageService = new NoOpCollaborativeMessageService();
+    private IServicesMessageService noOpMessageService = new NoOpServicesMessageService();
 
     private IProjectRepository noOpProjectRepository = new NoOpProjectRepository() {
         @Override
