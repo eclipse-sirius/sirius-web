@@ -21,15 +21,17 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
-import org.eclipse.sirius.web.collaborative.api.dto.DocumentsModifiedEvent;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IEditingContextPersistenceService;
 import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
 import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
+import org.eclipse.sirius.web.services.api.document.Document;
+import org.eclipse.sirius.web.services.api.events.DocumentsModifiedEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
@@ -67,6 +69,13 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
     public void persist(UUID projectId, IEditingContext editingContext) {
         long start = System.currentTimeMillis();
 
+        Object domain = editingContext.getDomain();
+        if (domain instanceof EditingDomain) {
+            EditingDomain editingDomain = (EditingDomain) domain;
+            List<DocumentEntity> documentEntities = this.persist(editingDomain);
+            List<Document> documents = documentEntities.stream().map(new DocumentMapper()::toDTO).collect(Collectors.toList());
+            this.applicationEventPublisher.publishEvent(new DocumentsModifiedEvent(projectId, documents));
+        }
         // @formatter:off
         var optionalDocuments = Optional.ofNullable(editingContext)
             .map(IEditingContext::getDomain)
@@ -74,7 +83,6 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
             .map(EditingDomain.class::cast)
             .map(this::persist);
         optionalDocuments.ifPresent(documentEntities -> {
-            this.applicationEventPublisher.publishEvent(new DocumentsModifiedEvent(projectId, documentEntities));
         });
         // @formatter:on
 

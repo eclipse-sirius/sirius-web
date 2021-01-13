@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.spring.collaborative.projects;
+package org.eclipse.sirius.web.services.projects;
 
 import java.security.Principal;
 import java.util.List;
@@ -19,7 +19,6 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import org.eclipse.sirius.web.collaborative.api.dto.ProjectCreatedEvent;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.persistence.entities.AccountEntity;
@@ -27,12 +26,13 @@ import org.eclipse.sirius.web.persistence.entities.ProjectEntity;
 import org.eclipse.sirius.web.persistence.entities.VisibilityEntity;
 import org.eclipse.sirius.web.persistence.repositories.IAccountRepository;
 import org.eclipse.sirius.web.persistence.repositories.IProjectRepository;
+import org.eclipse.sirius.web.services.api.events.ProjectCreatedEvent;
 import org.eclipse.sirius.web.services.api.projects.CreateProjectInput;
 import org.eclipse.sirius.web.services.api.projects.CreateProjectSuccessPayload;
 import org.eclipse.sirius.web.services.api.projects.IProjectService;
 import org.eclipse.sirius.web.services.api.projects.Project;
 import org.eclipse.sirius.web.services.api.projects.Visibility;
-import org.eclipse.sirius.web.spring.collaborative.messages.ICollaborativeMessageService;
+import org.eclipse.sirius.web.services.messages.IServicesMessageService;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -47,7 +47,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProjectService implements IProjectService {
 
-    private final ICollaborativeMessageService messageService;
+    private final IServicesMessageService messageService;
 
     private final IProjectRepository projectRepository;
 
@@ -57,8 +57,7 @@ public class ProjectService implements IProjectService {
 
     private final ApplicationEventPublisher applicationEventPublisher;
 
-    public ProjectService(ICollaborativeMessageService messageService, IProjectRepository projectRepository, IAccountRepository accountRepository,
-            ApplicationEventPublisher applicationEventPublisher) {
+    public ProjectService(IServicesMessageService messageService, IProjectRepository projectRepository, IAccountRepository accountRepository, ApplicationEventPublisher applicationEventPublisher) {
         this.messageService = Objects.requireNonNull(messageService);
         this.projectRepository = Objects.requireNonNull(projectRepository);
         this.accountRepository = Objects.requireNonNull(accountRepository);
@@ -103,7 +102,7 @@ public class ProjectService implements IProjectService {
             if (!optionalOwner.isEmpty()) {
                 ProjectEntity projectEntity = this.createProjectEntity(name, optionalOwner.get(), input.getVisibility());
                 projectEntity = this.projectRepository.save(projectEntity);
-                this.applicationEventPublisher.publishEvent(new ProjectCreatedEvent(projectEntity));
+                this.applicationEventPublisher.publishEvent(new ProjectCreatedEvent(projectEntity.getId()));
 
                 Project project = this.projectMapper.toDTO(projectEntity);
                 payload = new CreateProjectSuccessPayload(project);

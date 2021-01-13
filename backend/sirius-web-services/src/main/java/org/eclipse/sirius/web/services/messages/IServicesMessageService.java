@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,19 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.spring.collaborative.projects;
-
-import org.springframework.context.ApplicationEventPublisher;
+package org.eclipse.sirius.web.services.messages;
 
 /**
- * Implementation of the application event publisher which does nothing.
+ * Interface of the services messages.
  *
  * @author sbegaudeau
  */
-public class NoOpApplicationEventPublisher implements ApplicationEventPublisher {
-
-    @Override
-    public void publishEvent(Object event) {
-    }
-
+public interface IServicesMessageService {
+    String invalidProjectName();
 }
