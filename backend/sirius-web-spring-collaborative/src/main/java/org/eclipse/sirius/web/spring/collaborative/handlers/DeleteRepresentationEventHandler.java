@@ -22,9 +22,10 @@ import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IInput;
-import org.eclipse.sirius.web.services.api.projects.IProjectService;
-import org.eclipse.sirius.web.services.api.projects.Project;
+import org.eclipse.sirius.web.representations.IRepresentation;
+import org.eclipse.sirius.web.services.api.representations.IRepresentationDescriptionService;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationService;
+import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;
 import org.eclipse.sirius.web.spring.collaborative.messages.ICollaborativeMessageService;
 import org.eclipse.sirius.web.trees.Tree;
 import org.springframework.stereotype.Service;
@@ -42,15 +43,12 @@ public class DeleteRepresentationEventHandler implements IProjectEventHandler {
 
     private final IRepresentationService representationService;
 
-    private final IProjectService projectService;
-
     private final ICollaborativeMessageService messageService;
 
     private final Counter counter;
 
-    public DeleteRepresentationEventHandler(IRepresentationService representationService, IProjectService projectService, ICollaborativeMessageService messageService, MeterRegistry meterRegistry) {
+    public DeleteRepresentationEventHandler(IRepresentationService representationService, ICollaborativeMessageService messageService, MeterRegistry meterRegistry) {
         this.representationService = Objects.requireNonNull(representationService);
-        this.projectService = Objects.requireNonNull(projectService);
         this.messageService = Objects.requireNonNull(messageService);
 
         // @formatter:off
@@ -76,18 +74,17 @@ public class DeleteRepresentationEventHandler implements IProjectEventHandler {
             var optionalRepresentation = this.representationService.getRepresentation(deleteRepresentationInput.getRepresentationId());
 
             if (optionalRepresentation.isPresent()) {
-                this.representationService.delete(deleteRepresentationInput.getRepresentationId());
+                RepresentationDescriptor representationDescriptor = optionalRepresentation.get();
+                this.representationService.delete(representationDescriptor.getId());
 
-                var optionalProject = this.projectService.getProject(editingContext.getProjectId());
-                if (optionalProject.isPresent()) {
-                    Project project = optionalProject.get();
-                    eventHandlerResponse = new EventHandlerResponse(false, Tree.class::isInstance, new DeleteRepresentationSuccessPayload(project));
-                } else {
-                    eventHandlerResponse = new EventHandlerResponse(false, representation -> false, new ErrorPayload(this.messageService.projectNotFound()));
-                }
+                eventHandlerResponse = new EventHandlerResponse(false, this::isExplorerTree, new DeleteRepresentationSuccessPayload(representationDescriptor.getId()));
             }
         }
 
         return eventHandlerResponse;
+    }
+
+    private boolean isExplorerTree(IRepresentation representation) {
+        return representation instanceof Tree && Objects.equals(((Tree) representation).getDescriptionId(), IRepresentationDescriptionService.EXPLORER_TREE_DESCRIPTION);
     }
 }
