@@ -28,13 +28,13 @@ import org.eclipse.sirius.web.collaborative.api.services.IProjectEventHandler;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
+import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.emf.services.messages.IEMFMessageService;
 import org.eclipse.sirius.web.services.api.document.CreateDocumentInput;
 import org.eclipse.sirius.web.services.api.document.CreateDocumentSuccessPayload;
 import org.eclipse.sirius.web.services.api.document.Document;
 import org.eclipse.sirius.web.services.api.document.IDocumentService;
-import org.eclipse.sirius.web.services.api.projects.IProjectInput;
 import org.eclipse.sirius.web.services.api.stereotypes.IStereotypeDescriptionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,22 +74,22 @@ public class CreateDocumentEventHandler implements IProjectEventHandler {
     }
 
     @Override
-    public boolean canHandle(IProjectInput projectInput) {
-        return projectInput instanceof CreateDocumentInput;
+    public boolean canHandle(IInput input) {
+        return input instanceof CreateDocumentInput;
     }
 
     @Override
-    public EventHandlerResponse handle(IEditingContext editingContext, IProjectInput projectInput) {
+    public EventHandlerResponse handle(IEditingContext editingContext, IInput input) {
         this.counter.increment();
 
         EventHandlerResponse response = new EventHandlerResponse(false, representation -> false, new ErrorPayload(this.messageService.unexpectedError()));
 
-        if (projectInput instanceof CreateDocumentInput) {
-            CreateDocumentInput input = (CreateDocumentInput) projectInput;
+        if (input instanceof CreateDocumentInput) {
+            CreateDocumentInput createDocumentInput = (CreateDocumentInput) input;
 
-            String name = input.getName().trim();
-            UUID projectId = input.getProjectId();
-            String stereotypeDescriptionId = input.getStereotypeDescriptionId();
+            String name = createDocumentInput.getName().trim();
+            UUID projectId = createDocumentInput.getProjectId();
+            String stereotypeDescriptionId = createDocumentInput.getStereotypeDescriptionId();
 
             Optional<StereotypeDescription> optionalStereotypeDescription = this.stereotypeDescriptionService.getStereotypeDescriptionById(stereotypeDescriptionId);
 

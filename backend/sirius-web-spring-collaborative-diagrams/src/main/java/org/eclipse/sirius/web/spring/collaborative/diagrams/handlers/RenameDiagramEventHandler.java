@@ -22,9 +22,9 @@ import org.eclipse.sirius.web.collaborative.api.services.IProjectEventHandler;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
+import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.representations.IRepresentation;
-import org.eclipse.sirius.web.services.api.projects.IProjectInput;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationService;
 import org.eclipse.sirius.web.services.api.representations.RenameRepresentationInput;
 import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;
@@ -61,18 +61,18 @@ public class RenameDiagramEventHandler implements IProjectEventHandler {
     }
 
     @Override
-    public boolean canHandle(IProjectInput projectInput) {
-        return projectInput instanceof RenameRepresentationInput;
+    public boolean canHandle(IInput input) {
+        return input instanceof RenameRepresentationInput;
     }
 
     @Override
-    public EventHandlerResponse handle(IEditingContext editingContext, IProjectInput projectInput) {
+    public EventHandlerResponse handle(IEditingContext editingContext, IInput input) {
         this.counter.increment();
 
-        if (projectInput instanceof RenameRepresentationInput) {
-            RenameRepresentationInput input = (RenameRepresentationInput) projectInput;
-            UUID representationId = input.getRepresentationId();
-            String newLabel = input.getNewLabel();
+        if (input instanceof RenameRepresentationInput) {
+            RenameRepresentationInput renameRepresentationInput = (RenameRepresentationInput) input;
+            UUID representationId = renameRepresentationInput.getRepresentationId();
+            String newLabel = renameRepresentationInput.getNewLabel();
             Optional<RepresentationDescriptor> optionalRepresentationDescriptor = this.representationService.getRepresentation(representationId);
             if (optionalRepresentationDescriptor.isPresent()) {
                 RepresentationDescriptor representationDescriptor = optionalRepresentationDescriptor.get();
@@ -83,7 +83,7 @@ public class RenameDiagramEventHandler implements IProjectEventHandler {
                 }
             }
         }
-        String message = this.messageService.invalidInput(projectInput.getClass().getSimpleName(), RenameRepresentationInput.class.getSimpleName());
+        String message = this.messageService.invalidInput(input.getClass().getSimpleName(), RenameRepresentationInput.class.getSimpleName());
         return new EventHandlerResponse(false, representation -> false, new ErrorPayload(message));
     }
 

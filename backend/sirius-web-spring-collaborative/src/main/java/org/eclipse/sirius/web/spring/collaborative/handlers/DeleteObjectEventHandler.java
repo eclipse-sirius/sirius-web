@@ -21,11 +21,11 @@ import org.eclipse.sirius.web.collaborative.api.services.IProjectEventHandler;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
+import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.services.api.objects.DeleteObjectInput;
 import org.eclipse.sirius.web.services.api.objects.DeleteObjectSuccessPayload;
 import org.eclipse.sirius.web.services.api.objects.IEditService;
 import org.eclipse.sirius.web.services.api.objects.IObjectService;
-import org.eclipse.sirius.web.services.api.projects.IProjectInput;
 import org.eclipse.sirius.web.spring.collaborative.messages.ICollaborativeMessageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,18 +65,18 @@ public class DeleteObjectEventHandler implements IProjectEventHandler {
     }
 
     @Override
-    public boolean canHandle(IProjectInput projectInput) {
-        return projectInput instanceof DeleteObjectInput;
+    public boolean canHandle(IInput input) {
+        return input instanceof DeleteObjectInput;
     }
 
     @Override
-    public EventHandlerResponse handle(IEditingContext editingContext, IProjectInput projectInput) {
+    public EventHandlerResponse handle(IEditingContext editingContext, IInput input) {
         this.counter.increment();
 
-        if (projectInput instanceof DeleteObjectInput) {
-            DeleteObjectInput input = (DeleteObjectInput) projectInput;
+        if (input instanceof DeleteObjectInput) {
+            DeleteObjectInput deleteObjectInput = (DeleteObjectInput) input;
 
-            Optional<Object> optionalObject = this.objectService.getObject(editingContext, input.getObjectId());
+            Optional<Object> optionalObject = this.objectService.getObject(editingContext, deleteObjectInput.getObjectId());
             if (optionalObject.isPresent()) {
                 Object object = optionalObject.get();
                 this.editService.delete(object);
@@ -84,11 +84,11 @@ public class DeleteObjectEventHandler implements IProjectEventHandler {
                 // FIXME Find the document in which the object is located
                 return new EventHandlerResponse(true, representation -> true, new DeleteObjectSuccessPayload(null));
             } else {
-                this.logger.warn(MessageFormat.format("The object with the id {0} does not exist", input.getObjectId())); //$NON-NLS-1$
+                this.logger.warn(MessageFormat.format("The object with the id {0} does not exist", deleteObjectInput.getObjectId())); //$NON-NLS-1$
             }
         }
 
-        String message = this.messageService.invalidInput(projectInput.getClass().getSimpleName(), DeleteObjectInput.class.getSimpleName());
+        String message = this.messageService.invalidInput(input.getClass().getSimpleName(), DeleteObjectInput.class.getSimpleName());
         return new EventHandlerResponse(false, representation -> false, new ErrorPayload(message));
     }
 

@@ -21,7 +21,7 @@ import org.eclipse.sirius.web.collaborative.api.services.IProjectEventHandler;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
-import org.eclipse.sirius.web.services.api.projects.IProjectInput;
+import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.services.api.projects.IProjectService;
 import org.eclipse.sirius.web.services.api.projects.Project;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationService;
@@ -61,22 +61,22 @@ public class DeleteRepresentationEventHandler implements IProjectEventHandler {
     }
 
     @Override
-    public boolean canHandle(IProjectInput projectInput) {
-        return projectInput instanceof DeleteRepresentationInput;
+    public boolean canHandle(IInput input) {
+        return input instanceof DeleteRepresentationInput;
     }
 
     @Override
-    public EventHandlerResponse handle(IEditingContext editingContext, IProjectInput deleteRepresentationInput) {
+    public EventHandlerResponse handle(IEditingContext editingContext, IInput input) {
         this.counter.increment();
 
-        String message = this.messageService.invalidInput(deleteRepresentationInput.getClass().getSimpleName(), DeleteRepresentationInput.class.getSimpleName());
+        String message = this.messageService.invalidInput(input.getClass().getSimpleName(), DeleteRepresentationInput.class.getSimpleName());
         EventHandlerResponse eventHandlerResponse = new EventHandlerResponse(false, representation -> false, new ErrorPayload(message));
-        if (deleteRepresentationInput instanceof DeleteRepresentationInput) {
-            DeleteRepresentationInput input = (DeleteRepresentationInput) deleteRepresentationInput;
-            var optionalRepresentation = this.representationService.getRepresentation(input.getRepresentationId());
+        if (input instanceof DeleteRepresentationInput) {
+            DeleteRepresentationInput deleteRepresentationInput = (DeleteRepresentationInput) input;
+            var optionalRepresentation = this.representationService.getRepresentation(deleteRepresentationInput.getRepresentationId());
 
             if (optionalRepresentation.isPresent()) {
-                this.representationService.delete(input.getRepresentationId());
+                this.representationService.delete(deleteRepresentationInput.getRepresentationId());
 
                 var optionalProject = this.projectService.getProject(editingContext.getProjectId());
                 if (optionalProject.isPresent()) {

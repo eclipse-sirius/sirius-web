@@ -38,6 +38,7 @@ import org.eclipse.sirius.web.collaborative.api.services.IProjectEventHandler;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
+import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.emf.services.messages.IEMFMessageService;
 import org.eclipse.sirius.web.emf.utils.EMFResourceUtils;
@@ -45,7 +46,6 @@ import org.eclipse.sirius.web.services.api.document.Document;
 import org.eclipse.sirius.web.services.api.document.IDocumentService;
 import org.eclipse.sirius.web.services.api.document.UploadDocumentInput;
 import org.eclipse.sirius.web.services.api.document.UploadDocumentSuccessPayload;
-import org.eclipse.sirius.web.services.api.projects.IProjectInput;
 import org.eclipse.sirius.web.spring.graphql.api.UploadFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -82,22 +82,22 @@ public class UploadDocumentEventHandler implements IProjectEventHandler {
     }
 
     @Override
-    public boolean canHandle(IProjectInput projectInput) {
-        return projectInput instanceof UploadDocumentInput;
+    public boolean canHandle(IInput input) {
+        return input instanceof UploadDocumentInput;
     }
 
     @Override
-    public EventHandlerResponse handle(IEditingContext editingContext, IProjectInput projectInput) {
+    public EventHandlerResponse handle(IEditingContext editingContext, IInput input) {
         this.counter.increment();
 
         EventHandlerResponse response = new EventHandlerResponse(false, representation -> false, new ErrorPayload(this.messageService.unexpectedError()));
-        if (!(projectInput instanceof UploadDocumentInput)) {
+        if (!(input instanceof UploadDocumentInput)) {
             return response;
         }
 
-        UploadDocumentInput input = (UploadDocumentInput) projectInput;
-        UUID projectId = input.getProjectId();
-        UploadFile file = input.getFile();
+        UploadDocumentInput uploadDocumentInput = (UploadDocumentInput) input;
+        UUID projectId = uploadDocumentInput.getProjectId();
+        UploadFile file = uploadDocumentInput.getFile();
 
         // @formatter:off
         Optional<AdapterFactoryEditingDomain> optionalEditingDomain = Optional.of(editingContext)

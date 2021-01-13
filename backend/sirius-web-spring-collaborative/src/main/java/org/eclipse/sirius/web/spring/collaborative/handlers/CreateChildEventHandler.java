@@ -20,11 +20,11 @@ import org.eclipse.sirius.web.collaborative.api.services.IProjectEventHandler;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
+import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.services.api.objects.CreateChildInput;
 import org.eclipse.sirius.web.services.api.objects.CreateChildSuccessPayload;
 import org.eclipse.sirius.web.services.api.objects.IEditService;
 import org.eclipse.sirius.web.services.api.objects.IObjectService;
-import org.eclipse.sirius.web.services.api.projects.IProjectInput;
 import org.eclipse.sirius.web.spring.collaborative.messages.ICollaborativeMessageService;
 import org.springframework.stereotype.Service;
 
@@ -60,19 +60,19 @@ public class CreateChildEventHandler implements IProjectEventHandler {
     }
 
     @Override
-    public boolean canHandle(IProjectInput projectInput) {
-        return projectInput instanceof CreateChildInput;
+    public boolean canHandle(IInput input) {
+        return input instanceof CreateChildInput;
     }
 
     @Override
-    public EventHandlerResponse handle(IEditingContext editingContext, IProjectInput projectInput) {
+    public EventHandlerResponse handle(IEditingContext editingContext, IInput input) {
         this.counter.increment();
 
-        String message = this.messageService.invalidInput(projectInput.getClass().getSimpleName(), CreateChildInput.class.getSimpleName());
-        if (projectInput instanceof CreateChildInput) {
-            CreateChildInput input = (CreateChildInput) projectInput;
-            String parentObjectId = input.getObjectId();
-            String childCreationDescriptionId = input.getChildCreationDescriptionId();
+        String message = this.messageService.invalidInput(input.getClass().getSimpleName(), CreateChildInput.class.getSimpleName());
+        if (input instanceof CreateChildInput) {
+            CreateChildInput createChildInput = (CreateChildInput) input;
+            String parentObjectId = createChildInput.getObjectId();
+            String childCreationDescriptionId = createChildInput.getChildCreationDescriptionId();
 
             Optional<Object> createdChildOptional = this.objectService.getObject(editingContext, parentObjectId).flatMap(parent -> {
                 return this.editService.createChild(editingContext, parent, childCreationDescriptionId);

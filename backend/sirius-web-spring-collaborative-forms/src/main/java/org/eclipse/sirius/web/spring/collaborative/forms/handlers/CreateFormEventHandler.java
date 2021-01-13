@@ -24,11 +24,11 @@ import org.eclipse.sirius.web.collaborative.api.services.IProjectEventHandler;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
+import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.forms.Form;
 import org.eclipse.sirius.web.forms.description.FormDescription;
 import org.eclipse.sirius.web.representations.IRepresentationDescription;
 import org.eclipse.sirius.web.services.api.objects.IObjectService;
-import org.eclipse.sirius.web.services.api.projects.IProjectInput;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationDescriptionService;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationService;
 import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;
@@ -72,11 +72,11 @@ public class CreateFormEventHandler implements IProjectEventHandler {
     }
 
     @Override
-    public boolean canHandle(IProjectInput projectInput) {
-        if (projectInput instanceof CreateRepresentationInput) {
-            CreateRepresentationInput input = (CreateRepresentationInput) projectInput;
+    public boolean canHandle(IInput input) {
+        if (input instanceof CreateRepresentationInput) {
+            CreateRepresentationInput createRepresentationInput = (CreateRepresentationInput) input;
             // @formatter:off
-            return this.representationDescriptionService.findRepresentationDescriptionById(input.getRepresentationDescriptionId())
+            return this.representationDescriptionService.findRepresentationDescriptionById(createRepresentationInput.getRepresentationDescriptionId())
                     .filter(FormDescription.class::isInstance)
                     .isPresent();
             // @formatter:on
@@ -85,14 +85,15 @@ public class CreateFormEventHandler implements IProjectEventHandler {
     }
 
     @Override
-    public EventHandlerResponse handle(IEditingContext editingContext, IProjectInput projectInput) {
+    public EventHandlerResponse handle(IEditingContext editingContext, IInput input) {
         this.counter.increment();
 
-        if (projectInput instanceof CreateRepresentationInput) {
-            CreateRepresentationInput input = (CreateRepresentationInput) projectInput;
+        if (input instanceof CreateRepresentationInput) {
+            CreateRepresentationInput createRepresentationInput = (CreateRepresentationInput) input;
 
-            Optional<IRepresentationDescription> optionalRepresentationDescription = this.representationDescriptionService.findRepresentationDescriptionById(input.getRepresentationDescriptionId());
-            Optional<Object> optionalObject = this.objectService.getObject(editingContext, input.getObjectId());
+            Optional<IRepresentationDescription> optionalRepresentationDescription = this.representationDescriptionService
+                    .findRepresentationDescriptionById(createRepresentationInput.getRepresentationDescriptionId());
+            Optional<Object> optionalObject = this.objectService.getObject(editingContext, createRepresentationInput.getObjectId());
 
             if (optionalRepresentationDescription.isPresent() && optionalObject.isPresent()) {
                 IRepresentationDescription representationDescription = optionalRepresentationDescription.get();
@@ -101,7 +102,7 @@ public class CreateFormEventHandler implements IProjectEventHandler {
                     // @formatter:off
 
                     Form form = Form.newForm(UUID.randomUUID())
-                            .label(input.getRepresentationName())
+                            .label(createRepresentationInput.getRepresentationName())
                             .targetObjectId(targetObjectId)
                             .descriptionId(representationDescription.getId())
                             .pages(List.of()) // We don't store form pages, it will be re-render by the FormProcessor.
@@ -123,7 +124,7 @@ public class CreateFormEventHandler implements IProjectEventHandler {
             }
         }
 
-        String message = this.messageService.invalidInput(projectInput.getClass().getSimpleName(), CreateRepresentationInput.class.getSimpleName());
+        String message = this.messageService.invalidInput(input.getClass().getSimpleName(), CreateRepresentationInput.class.getSimpleName());
         return new EventHandlerResponse(false, representation -> false, new ErrorPayload(message));
     }
 

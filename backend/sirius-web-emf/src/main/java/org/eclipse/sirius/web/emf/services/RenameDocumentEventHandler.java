@@ -23,12 +23,12 @@ import org.eclipse.sirius.web.collaborative.api.services.IProjectEventHandler;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
+import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.emf.services.messages.IEMFMessageService;
 import org.eclipse.sirius.web.services.api.document.Document;
 import org.eclipse.sirius.web.services.api.document.IDocumentService;
 import org.eclipse.sirius.web.services.api.document.RenameDocumentInput;
 import org.eclipse.sirius.web.services.api.document.RenameDocumentSuccessPayload;
-import org.eclipse.sirius.web.services.api.projects.IProjectInput;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
@@ -60,12 +60,12 @@ public class RenameDocumentEventHandler implements IProjectEventHandler {
     }
 
     @Override
-    public boolean canHandle(IProjectInput projectInput) {
-        return projectInput instanceof RenameDocumentInput;
+    public boolean canHandle(IInput input) {
+        return input instanceof RenameDocumentInput;
     }
 
     @Override
-    public EventHandlerResponse handle(IEditingContext editingContext, IProjectInput projectInput) {
+    public EventHandlerResponse handle(IEditingContext editingContext, IInput input) {
         this.counter.increment();
 
         // @formatter:off
@@ -75,10 +75,10 @@ public class RenameDocumentEventHandler implements IProjectEventHandler {
                 .map(AdapterFactoryEditingDomain.class::cast);
         // @formatter:on
 
-        if (projectInput instanceof RenameDocumentInput) {
-            RenameDocumentInput input = (RenameDocumentInput) projectInput;
-            UUID documentId = input.getDocumentId();
-            String newName = input.getNewName();
+        if (input instanceof RenameDocumentInput) {
+            RenameDocumentInput renameDocumentInput = (RenameDocumentInput) input;
+            UUID documentId = renameDocumentInput.getDocumentId();
+            String newName = renameDocumentInput.getNewName();
 
             Optional<Document> optionalDocument = this.documentService.rename(documentId, newName);
             if (optionalEditingDomain.isPresent() && optionalDocument.isPresent()) {
@@ -102,7 +102,7 @@ public class RenameDocumentEventHandler implements IProjectEventHandler {
                 return new EventHandlerResponse(true, representation -> true, new RenameDocumentSuccessPayload(document));
             }
         }
-        String message = this.messageService.invalidInput(projectInput.getClass().getSimpleName(), RenameDocumentInput.class.getSimpleName());
+        String message = this.messageService.invalidInput(input.getClass().getSimpleName(), RenameDocumentInput.class.getSimpleName());
         return new EventHandlerResponse(false, representation -> false, new ErrorPayload(message));
     }
 
