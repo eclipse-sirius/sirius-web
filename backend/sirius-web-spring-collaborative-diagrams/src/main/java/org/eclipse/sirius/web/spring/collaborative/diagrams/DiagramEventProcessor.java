@@ -28,7 +28,6 @@ import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.core.api.IRepresentationInput;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.representations.IRepresentation;
-import org.eclipse.sirius.web.services.api.Context;
 import org.eclipse.sirius.web.services.api.representations.RenameRepresentationInput;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,7 +83,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
     }
 
     @Override
-    public Optional<EventHandlerResponse> handle(IRepresentationInput representationInput, Context context) {
+    public Optional<EventHandlerResponse> handle(IRepresentationInput representationInput) {
         if (representationInput instanceof IDiagramInput) {
             IDiagramInput diagramInput = (IDiagramInput) representationInput;
 

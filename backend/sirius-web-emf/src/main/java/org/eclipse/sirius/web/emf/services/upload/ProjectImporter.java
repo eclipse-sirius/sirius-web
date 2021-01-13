@@ -25,7 +25,6 @@ import org.eclipse.sirius.web.collaborative.api.dto.CreateRepresentationSuccessP
 import org.eclipse.sirius.web.collaborative.api.services.IProjectEventProcessor;
 import org.eclipse.sirius.web.persistence.entities.IdMappingEntity;
 import org.eclipse.sirius.web.persistence.repositories.IIdMappingRepository;
-import org.eclipse.sirius.web.services.api.Context;
 import org.eclipse.sirius.web.services.api.document.Document;
 import org.eclipse.sirius.web.services.api.document.UploadDocumentInput;
 import org.eclipse.sirius.web.services.api.document.UploadDocumentSuccessPayload;
@@ -55,20 +54,17 @@ public class ProjectImporter {
 
     private final ProjectManifest projectManifest;
 
-    private final Context context;
-
     private final Map<String, Document> oldDocumentIdToNewDocument = new HashMap<>();
 
     private final IIdMappingRepository idMappingRepository;
 
     public ProjectImporter(UUID projectId, IProjectEventProcessor projectEventProcessor, Map<String, UploadFile> documents, List<RepresentationDescriptor> representations,
-            ProjectManifest projectManifest, Context context, IIdMappingRepository idMappingRepository) {
+            ProjectManifest projectManifest, IIdMappingRepository idMappingRepository) {
         this.projectId = Objects.requireNonNull(projectId);
         this.projectEventProcessor = Objects.requireNonNull(projectEventProcessor);
         this.documents = Objects.requireNonNull(documents);
         this.representations = Objects.requireNonNull(representations);
         this.projectManifest = Objects.requireNonNull(projectManifest);
-        this.context = Objects.requireNonNull(context);
         this.idMappingRepository = Objects.requireNonNull(idMappingRepository);
     }
 
@@ -118,12 +114,12 @@ public class ProjectImporter {
             CreateRepresentationInput input = new CreateRepresentationInput(this.projectId, representationDescriptionId, objectId, representationDescriptor.getLabel());
 
             // @formatter:off
-                representationCreated = this.projectEventProcessor.handle(input, this.context)
-                        .filter(CreateRepresentationSuccessPayload.class::isInstance)
-                        .map(CreateRepresentationSuccessPayload.class::cast)
-                        .map(CreateRepresentationSuccessPayload::getRepresentation)
-                        .isPresent();
-                // @formatter:on
+            representationCreated = this.projectEventProcessor.handle(input)
+                    .filter(CreateRepresentationSuccessPayload.class::isInstance)
+                    .map(CreateRepresentationSuccessPayload.class::cast)
+                    .map(CreateRepresentationSuccessPayload::getRepresentation)
+                    .isPresent();
+            // @formatter:on
 
             if (!representationCreated) {
                 this.logger.error(String.format("The representation %1$s has not been created", representationDescriptor.getLabel())); //$NON-NLS-1$
@@ -149,7 +145,7 @@ public class ProjectImporter {
             UploadDocumentInput input = new UploadDocumentInput(this.projectId, uploadFile);
 
             // @formatter:off
-            Document document = this.projectEventProcessor.handle(input, this.context)
+            Document document = this.projectEventProcessor.handle(input)
                     .filter(UploadDocumentSuccessPayload.class::isInstance)
                     .map(UploadDocumentSuccessPayload.class::cast)
                     .map(UploadDocumentSuccessPayload::getDocument)

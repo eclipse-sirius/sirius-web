@@ -77,7 +77,6 @@ public class MutationDeleteRepresentationDataFetcher implements IDataFetcherWith
     @Override
     public IPayload get(DataFetchingEnvironment environment) throws Exception {
         var input = this.dataFetchingEnvironmentService.getInput(environment, DeleteRepresentationInput.class);
-        var context = this.dataFetchingEnvironmentService.getContext(environment);
 
         IPayload payload = new ErrorPayload(this.messageService.unexpectedError());
 
@@ -88,7 +87,7 @@ public class MutationDeleteRepresentationDataFetcher implements IDataFetcherWith
             boolean canEdit = this.dataFetchingEnvironmentService.canEdit(environment, representation.getProjectId());
             if (canEdit) {
                 // @formatter:off
-                payload = this.projectEventProcessorRegistry.dispatchEvent(representation.getProjectId(), input, context)
+                payload = this.projectEventProcessorRegistry.dispatchEvent(representation.getProjectId(), input)
                         .orElse(new ErrorPayload(this.messageService.unexpectedError()));
                 // @formatter:on
             } else {

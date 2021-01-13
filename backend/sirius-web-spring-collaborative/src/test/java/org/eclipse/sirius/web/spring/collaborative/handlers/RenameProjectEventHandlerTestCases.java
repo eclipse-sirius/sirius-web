@@ -18,13 +18,11 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.eclipse.sirius.web.services.api.Context;
 import org.eclipse.sirius.web.services.api.projects.IProjectService;
 import org.eclipse.sirius.web.services.api.projects.Project;
 import org.eclipse.sirius.web.services.api.projects.RenameProjectInput;
 import org.eclipse.sirius.web.spring.collaborative.projects.RenameProjectEventHandler;
 import org.junit.Test;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 /**
  * Unit tests of the rename project event handler.
@@ -45,11 +43,10 @@ public class RenameProjectEventHandlerTestCases {
 
         RenameProjectEventHandler handler = new RenameProjectEventHandler(new NoOpCollaborativeMessageService(), projectService);
         var input = new RenameProjectInput(UUID.randomUUID(), "newName"); //$NON-NLS-1$
-        var context = new Context(new UsernamePasswordAuthenticationToken(null, null));
 
         assertThat(handler.canHandle(input)).isTrue();
 
-        handler.handle(null, input, context);
+        handler.handle(null, input);
         assertThat(hasBeenCalled.get()).isTrue();
     }
 }

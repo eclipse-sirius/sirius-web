@@ -14,7 +14,6 @@ package org.eclipse.sirius.web.collaborative.forms.api;
 
 import org.eclipse.sirius.web.collaborative.forms.api.dto.UpdateWidgetFocusInput;
 import org.eclipse.sirius.web.core.api.IPayload;
-import org.eclipse.sirius.web.services.api.Context;
 
 import reactor.core.publisher.Flux;
 
@@ -25,7 +24,7 @@ import reactor.core.publisher.Flux;
  */
 public interface IWidgetSubscriptionManager {
 
-    void handle(UpdateWidgetFocusInput input, Context context);
+    void handle(UpdateWidgetFocusInput input);
 
     Flux<IPayload> getFlux();
 

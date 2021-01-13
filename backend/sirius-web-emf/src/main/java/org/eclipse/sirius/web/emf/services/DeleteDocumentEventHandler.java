@@ -27,7 +27,6 @@ import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.emf.services.messages.IEMFMessageService;
-import org.eclipse.sirius.web.services.api.Context;
 import org.eclipse.sirius.web.services.api.document.DeleteDocumentInput;
 import org.eclipse.sirius.web.services.api.document.DeleteDocumentSuccessPayload;
 import org.eclipse.sirius.web.services.api.document.Document;
@@ -69,7 +68,7 @@ public class DeleteDocumentEventHandler implements IProjectEventHandler {
     }
 
     @Override
-    public EventHandlerResponse handle(IEditingContext editingContext, IProjectInput projectInput, Context context) {
+    public EventHandlerResponse handle(IEditingContext editingContext, IProjectInput projectInput) {
         this.counter.increment();
 
         // @formatter:off

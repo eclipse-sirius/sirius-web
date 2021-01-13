@@ -21,7 +21,6 @@ import org.eclipse.sirius.web.collaborative.api.services.IProjectEventHandler;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
-import org.eclipse.sirius.web.services.api.Context;
 import org.eclipse.sirius.web.services.api.projects.IProjectInput;
 import org.eclipse.sirius.web.services.api.projects.IProjectService;
 import org.eclipse.sirius.web.services.api.projects.Project;
@@ -67,7 +66,7 @@ public class DeleteRepresentationEventHandler implements IProjectEventHandler {
     }
 
     @Override
-    public EventHandlerResponse handle(IEditingContext editingContext, IProjectInput deleteRepresentationInput, Context context) {
+    public EventHandlerResponse handle(IEditingContext editingContext, IProjectInput deleteRepresentationInput) {
         this.counter.increment();
 
         String message = this.messageService.invalidInput(deleteRepresentationInput.getClass().getSimpleName(), DeleteRepresentationInput.class.getSimpleName());

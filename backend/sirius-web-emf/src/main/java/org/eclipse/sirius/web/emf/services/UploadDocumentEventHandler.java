@@ -41,7 +41,6 @@ import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.emf.services.messages.IEMFMessageService;
 import org.eclipse.sirius.web.emf.utils.EMFResourceUtils;
-import org.eclipse.sirius.web.services.api.Context;
 import org.eclipse.sirius.web.services.api.document.Document;
 import org.eclipse.sirius.web.services.api.document.IDocumentService;
 import org.eclipse.sirius.web.services.api.document.UploadDocumentInput;
@@ -88,7 +87,7 @@ public class UploadDocumentEventHandler implements IProjectEventHandler {
     }
 
     @Override
-    public EventHandlerResponse handle(IEditingContext editingContext, IProjectInput projectInput, Context context) {
+    public EventHandlerResponse handle(IEditingContext editingContext, IProjectInput projectInput) {
         this.counter.increment();
 
         EventHandlerResponse response = new EventHandlerResponse(false, representation -> false, new ErrorPayload(this.messageService.unexpectedError()));

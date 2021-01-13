@@ -13,7 +13,6 @@
 package org.eclipse.sirius.web.collaborative.api.services;
 
 import org.eclipse.sirius.web.core.api.IEditingContext;
-import org.eclipse.sirius.web.services.api.Context;
 import org.eclipse.sirius.web.services.api.projects.IProjectInput;
 
 /**
@@ -24,5 +23,5 @@ import org.eclipse.sirius.web.services.api.projects.IProjectInput;
 public interface IProjectEventHandler {
     boolean canHandle(IProjectInput projectInput);
 
-    EventHandlerResponse handle(IEditingContext editingContext, IProjectInput projectInput, Context context);
+    EventHandlerResponse handle(IEditingContext editingContext, IProjectInput projectInput);
 }

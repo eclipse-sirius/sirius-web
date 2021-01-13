@@ -16,8 +16,6 @@ import java.security.Principal;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.sirius.web.services.api.Context;
-
 import graphql.schema.DataFetchingEnvironment;
 
 /**
@@ -31,8 +29,6 @@ public interface IDataFetchingEnvironmentService {
     Optional<Principal> getPrincipal(DataFetchingEnvironment environment);
 
     String getSubscriptionId(DataFetchingEnvironment environment);
-
-    Context getContext(DataFetchingEnvironment environment);
 
     boolean canEdit(DataFetchingEnvironment environment, UUID projectId);
 

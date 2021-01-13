@@ -19,12 +19,10 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.sirius.web.core.api.IEditingContext;
-import org.eclipse.sirius.web.services.api.Context;
 import org.eclipse.sirius.web.services.api.objects.DeleteObjectInput;
 import org.eclipse.sirius.web.services.api.objects.IEditService;
 import org.eclipse.sirius.web.services.api.objects.IObjectService;
 import org.junit.Test;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 
@@ -53,11 +51,10 @@ public class DeleteObjectEventHandlerTestCases {
 
         DeleteObjectEventHandler handler = new DeleteObjectEventHandler(objectService, editService, new NoOpCollaborativeMessageService(), new SimpleMeterRegistry());
         var input = new DeleteObjectInput(UUID.randomUUID(), "objectId"); //$NON-NLS-1$
-        var context = new Context(new UsernamePasswordAuthenticationToken(null, null));
 
         assertThat(handler.canHandle(input)).isTrue();
 
-        handler.handle(null, input, context);
+        handler.handle(null, input);
         assertThat(hasBeenCalled.get()).isTrue();
     }
 }

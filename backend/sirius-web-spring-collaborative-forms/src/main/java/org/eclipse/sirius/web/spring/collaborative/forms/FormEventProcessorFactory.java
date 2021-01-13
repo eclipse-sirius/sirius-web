@@ -28,7 +28,6 @@ import org.eclipse.sirius.web.collaborative.forms.api.IWidgetSubscriptionManager
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.forms.Form;
 import org.eclipse.sirius.web.forms.description.FormDescription;
-import org.eclipse.sirius.web.services.api.Context;
 import org.eclipse.sirius.web.services.api.objects.IObjectService;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationDescriptionService;
 import org.springframework.stereotype.Service;
@@ -71,7 +70,7 @@ public class FormEventProcessorFactory implements IRepresentationEventProcessorF
 
     @Override
     public <T extends IRepresentationEventProcessor> Optional<T> createRepresentationEventProcessor(Class<T> representationEventProcessorClass, IRepresentationConfiguration configuration,
-            IEditingContext editingContext, Context context) {
+            IEditingContext editingContext) {
         if (IFormEventProcessor.class.isAssignableFrom(representationEventProcessorClass) && configuration instanceof FormConfiguration) {
             FormConfiguration formConfiguration = (FormConfiguration) configuration;
 

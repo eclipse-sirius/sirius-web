@@ -24,7 +24,6 @@ import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.representations.IRepresentation;
-import org.eclipse.sirius.web.services.api.Context;
 import org.eclipse.sirius.web.services.api.projects.IProjectInput;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationService;
 import org.eclipse.sirius.web.services.api.representations.RenameRepresentationInput;
@@ -67,7 +66,7 @@ public class RenameDiagramEventHandler implements IProjectEventHandler {
     }
 
     @Override
-    public EventHandlerResponse handle(IEditingContext editingContext, IProjectInput projectInput, Context context) {
+    public EventHandlerResponse handle(IEditingContext editingContext, IProjectInput projectInput) {
         this.counter.increment();
 
         if (projectInput instanceof RenameRepresentationInput) {
@@ -78,7 +77,7 @@ public class RenameDiagramEventHandler implements IProjectEventHandler {
             if (optionalRepresentationDescriptor.isPresent()) {
                 RepresentationDescriptor representationDescriptor = optionalRepresentationDescriptor.get();
                 IRepresentation representation = representationDescriptor.getRepresentation();
-                Optional<IRepresentation> optionalRepresentation = this.createDiagramWithNewLabel(representation, newLabel, editingContext, context);
+                Optional<IRepresentation> optionalRepresentation = this.createDiagramWithNewLabel(representation, newLabel, editingContext);
                 if (optionalRepresentation.isPresent()) {
                     return new EventHandlerResponse(true, r -> r instanceof Tree, new RenameRepresentationSuccessPayload(optionalRepresentation.get()));
                 }
@@ -88,7 +87,7 @@ public class RenameDiagramEventHandler implements IProjectEventHandler {
         return new EventHandlerResponse(false, representation -> false, new ErrorPayload(message));
     }
 
-    private Optional<IRepresentation> createDiagramWithNewLabel(IRepresentation representation, String newLabel, IEditingContext editingContext, Context context) {
+    private Optional<IRepresentation> createDiagramWithNewLabel(IRepresentation representation, String newLabel, IEditingContext editingContext) {
         if (representation instanceof Diagram) {
             Diagram previousDiagram = (Diagram) representation;
 

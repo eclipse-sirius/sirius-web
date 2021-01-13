@@ -78,7 +78,6 @@ public class SubscriptionPropertiesEventDataFetcher implements IDataFetcherWithF
     @Override
     public Publisher<IPayload> get(DataFetchingEnvironment environment) throws Exception {
         var input = this.dataFetchingEnvironmentService.getInput(environment, PropertiesEventInput.class);
-        var context = this.dataFetchingEnvironmentService.getContext(environment);
 
         Principal principal = this.dataFetchingEnvironmentService.getPrincipal(environment).orElse(null);
         String subscriptionId = this.dataFetchingEnvironmentService.getSubscriptionId(environment);
@@ -87,7 +86,7 @@ public class SubscriptionPropertiesEventDataFetcher implements IDataFetcherWithF
 
         // @formatter:off
         return this.projectEventProcessorRegistry.getOrCreateProjectEventProcessor(input.getProjectId())
-                .flatMap(processor -> processor.acquireRepresentationEventProcessor(IFormEventProcessor.class, propertiesConfiguration, new SubscriptionDescription(principal, subscriptionId), context))
+                .flatMap(processor -> processor.acquireRepresentationEventProcessor(IFormEventProcessor.class, propertiesConfiguration, new SubscriptionDescription(principal, subscriptionId)))
                 .map(IRepresentationEventProcessor::getOutputEvents)
                 .orElse(Flux.empty());
         // @formatter:on

@@ -21,7 +21,6 @@ import org.eclipse.sirius.web.collaborative.api.services.IProjectEventProcessor;
 import org.eclipse.sirius.web.collaborative.api.services.IProjectEventProcessorRegistry;
 import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.core.api.IPayload;
-import org.eclipse.sirius.web.services.api.Context;
 
 /**
  * Implementation of the project event processor registry which does nothing.
@@ -36,7 +35,7 @@ public class NoOpProjectEventProcessorRegistry implements IProjectEventProcessor
     }
 
     @Override
-    public Optional<IPayload> dispatchEvent(UUID projectId, IInput input, Context context) {
+    public Optional<IPayload> dispatchEvent(UUID projectId, IInput input) {
         return Optional.empty();
     }
 

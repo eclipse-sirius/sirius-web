@@ -23,7 +23,6 @@ import org.eclipse.sirius.web.collaborative.api.services.IRepresentationEventPro
 import org.eclipse.sirius.web.collaborative.api.services.SubscriptionDescription;
 import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.core.api.IPayload;
-import org.eclipse.sirius.web.services.api.Context;
 
 import reactor.core.publisher.Flux;
 
@@ -41,7 +40,7 @@ public class NoOpProjectEventProcessor implements IProjectEventProcessor {
 
     @Override
     public <T extends IRepresentationEventProcessor> Optional<T> acquireRepresentationEventProcessor(Class<T> representationEventProcessorClass, IRepresentationConfiguration configuration,
-            SubscriptionDescription subscriptionDescription, Context context) {
+            SubscriptionDescription subscriptionDescription) {
         return Optional.empty();
     }
 
@@ -51,11 +50,11 @@ public class NoOpProjectEventProcessor implements IProjectEventProcessor {
     }
 
     @Override
-    public void release(SubscriptionDescription subscriptionDescription, Context context) {
+    public void release(SubscriptionDescription subscriptionDescription) {
     }
 
     @Override
-    public Optional<IPayload> handle(IInput input, Context context) {
+    public Optional<IPayload> handle(IInput input) {
         return Optional.empty();
     }
 

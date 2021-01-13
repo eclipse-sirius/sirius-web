@@ -17,7 +17,6 @@ import java.util.Objects;
 
 import org.eclipse.sirius.web.collaborative.api.services.IProjectEventProcessorRegistry;
 import org.eclipse.sirius.web.collaborative.api.services.SubscriptionDescription;
-import org.eclipse.sirius.web.services.api.Context;
 import org.eclipse.sirius.web.spring.graphql.api.ISubscriptionTerminatedHandler;
 import org.springframework.stereotype.Service;
 
@@ -38,11 +37,9 @@ public class SubscriptionTerminatedHandler implements ISubscriptionTerminatedHan
     @Override
     public void dispose(Principal principal, String subscriptionId) {
         SubscriptionDescription subscriptionDescription = new SubscriptionDescription(principal, subscriptionId);
-        Context context = new Context(principal);
-
         // @formatter:off
         this.projectEventProcessorRegistry.getProjectEventProcessors().stream()
-                .forEach(projectEventProcessor -> projectEventProcessor.release(subscriptionDescription, context));
+                .forEach(projectEventProcessor -> projectEventProcessor.release(subscriptionDescription));
         // @formatter:on
     }
 

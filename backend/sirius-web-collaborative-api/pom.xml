@@ -50,6 +50,16 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
+			<artifactId>sirius-web-core-api</artifactId>
+			<version>0.1.32</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius.web</groupId>
+			<artifactId>sirius-web-representations</artifactId>
+			<version>0.1.32</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-tests</artifactId>
 			<version>0.1.32</version>
 			<scope>test</scope>

@@ -77,7 +77,6 @@ public class SubscriptionDiagramEventDataFetcher implements IDataFetcherWithFiel
     @Override
     public Publisher<IPayload> get(DataFetchingEnvironment environment) throws Exception {
         var input = this.dataFetchingEnvironmentService.getInput(environment, DiagramEventInput.class);
-        var context = this.dataFetchingEnvironmentService.getContext(environment);
 
         String subscriptionId = this.dataFetchingEnvironmentService.getSubscriptionId(environment);
         Principal principal = this.dataFetchingEnvironmentService.getPrincipal(environment).orElse(null);
@@ -86,7 +85,7 @@ public class SubscriptionDiagramEventDataFetcher implements IDataFetcherWithFiel
 
         // @formatter:off
         return this.projectEventProcessorRegistry.getOrCreateProjectEventProcessor(input.getProjectId())
-                .flatMap(processor -> processor.acquireRepresentationEventProcessor(IDiagramEventProcessor.class, diagramConfiguration, new SubscriptionDescription(principal, subscriptionId), context))
+                .flatMap(processor -> processor.acquireRepresentationEventProcessor(IDiagramEventProcessor.class, diagramConfiguration, new SubscriptionDescription(principal, subscriptionId)))
                 .map(IRepresentationEventProcessor::getOutputEvents)
                 .orElse(Flux.empty());
         // @formatter:on

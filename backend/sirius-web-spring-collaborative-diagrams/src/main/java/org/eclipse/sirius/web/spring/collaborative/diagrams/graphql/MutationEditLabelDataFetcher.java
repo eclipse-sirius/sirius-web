@@ -61,7 +61,8 @@ public class MutationEditLabelDataFetcher implements IDataFetcherWithFieldCoordi
 
     private final IGraphQLMessageService messageService;
 
-    public MutationEditLabelDataFetcher(IDataFetchingEnvironmentService dataFetchingEnvironmentService, IProjectEventProcessorRegistry projectEventProcessorRegistry, IGraphQLMessageService messageService) {
+    public MutationEditLabelDataFetcher(IDataFetchingEnvironmentService dataFetchingEnvironmentService, IProjectEventProcessorRegistry projectEventProcessorRegistry,
+            IGraphQLMessageService messageService) {
         this.dataFetchingEnvironmentService = Objects.requireNonNull(dataFetchingEnvironmentService);
         this.projectEventProcessorRegistry = Objects.requireNonNull(projectEventProcessorRegistry);
         this.messageService = Objects.requireNonNull(messageService);
@@ -70,13 +71,12 @@ public class MutationEditLabelDataFetcher implements IDataFetcherWithFieldCoordi
     @Override
     public IPayload get(DataFetchingEnvironment environment) throws Exception {
         var input = this.dataFetchingEnvironmentService.getInput(environment, EditLabelInput.class);
-        var context = this.dataFetchingEnvironmentService.getContext(environment);
 
         IPayload payload = new ErrorPayload(this.messageService.unauthorized());
         boolean canEdit = this.dataFetchingEnvironmentService.canEdit(environment, input.getProjectId());
         if (canEdit) {
             // @formatter:off
-            payload = this.projectEventProcessorRegistry.dispatchEvent(input.getProjectId(), input, context)
+            payload = this.projectEventProcessorRegistry.dispatchEvent(input.getProjectId(), input)
                     .orElse(new ErrorPayload(this.messageService.unexpectedError()));
             // @formatter:on
         }
