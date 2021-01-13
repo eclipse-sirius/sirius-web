@@ -61,3 +61,9 @@ Specifiers should not have to arbitrary create diagram elements, just provide in
 Otherwise, they would have to handle countless of tiny details as our API evolve over time.
 The creation of labels on edges should rely on the same API as the labels on nodes.
 There are no need to have two different APIs for the same need.
+
+One consequence of the rule used to compute node identifier is the a node identity is tied to its parent.
+This means that (when we support them), operations which change the visual containment hierarchy of diagram elements will lose the identity of the nodes.
+For example, moving a node _A_ inside a new container will create a new node _A'_ which will have a different id.
+We will need some mechanism to track these kinds of changes so that the result is as transparent as possible to the user.
+In particular, if _A_ and _A'_ use the same node description and style, _A'_ should be created with the same graphical attributes (size, any custom styling) as _A_ to give the user the illusion that the node is "the same" and has just moved.
