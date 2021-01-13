@@ -49,7 +49,6 @@ import org.eclipse.sirius.web.core.api.IRepresentationInput;
 import org.eclipse.sirius.web.representations.IRepresentation;
 import org.eclipse.sirius.web.representations.ISemanticRepresentation;
 import org.eclipse.sirius.web.services.api.objects.IObjectService;
-import org.eclipse.sirius.web.services.api.projects.IProjectInput;
 import org.eclipse.sirius.web.services.api.projects.Project;
 import org.eclipse.sirius.web.services.api.projects.RenameProjectInput;
 import org.eclipse.sirius.web.services.api.projects.RenameProjectSuccessPayload;
@@ -181,17 +180,13 @@ public class ProjectEventProcessor implements IProjectEventProcessor {
 
         Optional<EventHandlerResponse> optionalResponse = Optional.empty();
 
-        if (input instanceof IProjectInput) {
-            optionalResponse = this.handleProjectInput((IProjectInput) input);
-
-            if (input instanceof RenameRepresentationInput) {
-                UUID representationId = ((RenameRepresentationInput) input).getRepresentationId();
-                if (this.representationEventProcessors.containsKey(representationId)) {
-                    this.handleRepresentationInput((IRepresentationInput) input);
-                }
-            }
-        } else if (input instanceof IRepresentationInput) {
+        if (input instanceof IRepresentationInput) {
             optionalResponse = this.handleRepresentationInput((IRepresentationInput) input);
+            if (input instanceof RenameRepresentationInput) {
+                this.publishEvent(input, optionalResponse.map(EventHandlerResponse::getPayload));
+            }
+        } else {
+            optionalResponse = this.handleInput(input);
         }
 
         if (optionalResponse.isPresent()) {
@@ -273,25 +268,25 @@ public class ProjectEventProcessor implements IProjectEventProcessor {
         // @formatter:on
     }
 
-    private Optional<EventHandlerResponse> handleProjectInput(IProjectInput projectInput) {
-        if (projectInput instanceof DeleteRepresentationInput) {
-            DeleteRepresentationInput deleteRepresentationInput = (DeleteRepresentationInput) projectInput;
+    private Optional<EventHandlerResponse> handleInput(IInput input) {
+        if (input instanceof DeleteRepresentationInput) {
+            DeleteRepresentationInput deleteRepresentationInput = (DeleteRepresentationInput) input;
             this.disposeRepresentation(deleteRepresentationInput.getRepresentationId());
         }
 
         // @formatter:off
         Optional<IProjectEventHandler> optionalProjectEventHandler = this.projectEventHandlers.stream()
-                .filter(handler -> handler.canHandle(projectInput))
+                .filter(handler -> handler.canHandle(input))
                 .findFirst();
         // @formatter:on
 
         Optional<EventHandlerResponse> optionalResponse = Optional.empty();
         if (optionalProjectEventHandler.isPresent()) {
             IProjectEventHandler projectEventHandler = optionalProjectEventHandler.get();
-            EventHandlerResponse response = projectEventHandler.handle(this.editingContext, projectInput);
+            EventHandlerResponse response = projectEventHandler.handle(this.editingContext, input);
             optionalResponse = Optional.of(response);
         } else {
-            this.logger.warn("No handler found for event: {}", projectInput); //$NON-NLS-1$
+            this.logger.warn("No handler found for event: {}", input); //$NON-NLS-1$
         }
         return optionalResponse;
     }

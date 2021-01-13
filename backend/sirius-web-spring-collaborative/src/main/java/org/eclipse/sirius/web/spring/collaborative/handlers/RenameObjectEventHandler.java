@@ -19,11 +19,11 @@ import org.eclipse.sirius.web.collaborative.api.services.IProjectEventHandler;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
+import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.services.api.objects.IEditService;
 import org.eclipse.sirius.web.services.api.objects.IObjectService;
 import org.eclipse.sirius.web.services.api.objects.RenameObjectInput;
 import org.eclipse.sirius.web.services.api.objects.RenameObjectSuccessPayload;
-import org.eclipse.sirius.web.services.api.projects.IProjectInput;
 import org.eclipse.sirius.web.spring.collaborative.messages.ICollaborativeMessageService;
 import org.springframework.stereotype.Service;
 
@@ -59,18 +59,18 @@ public class RenameObjectEventHandler implements IProjectEventHandler {
     }
 
     @Override
-    public boolean canHandle(IProjectInput projectInput) {
-        return projectInput instanceof RenameObjectInput;
+    public boolean canHandle(IInput input) {
+        return input instanceof RenameObjectInput;
     }
 
     @Override
-    public EventHandlerResponse handle(IEditingContext editingContext, IProjectInput projectInput) {
+    public EventHandlerResponse handle(IEditingContext editingContext, IInput input) {
         this.counter.increment();
 
-        if (projectInput instanceof RenameObjectInput) {
-            RenameObjectInput input = (RenameObjectInput) projectInput;
-            String objectId = input.getObjectId();
-            String newName = input.getNewName();
+        if (input instanceof RenameObjectInput) {
+            RenameObjectInput renameObjectInput = (RenameObjectInput) input;
+            String objectId = renameObjectInput.getObjectId();
+            String newName = renameObjectInput.getNewName();
             var optionalObject = this.objectService.getObject(editingContext, objectId);
             if (optionalObject.isPresent()) {
                 Object object = optionalObject.get();
@@ -82,7 +82,7 @@ public class RenameObjectEventHandler implements IProjectEventHandler {
                 }
             }
         }
-        String message = this.messageService.invalidInput(projectInput.getClass().getSimpleName(), RenameObjectInput.class.getSimpleName());
+        String message = this.messageService.invalidInput(input.getClass().getSimpleName(), RenameObjectInput.class.getSimpleName());
         return new EventHandlerResponse(false, representation -> false, new ErrorPayload(message));
     }
 

@@ -21,10 +21,10 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.sirius.web.core.api.IEditingContext;
+import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.services.api.accounts.Profile;
 import org.eclipse.sirius.web.services.api.document.Document;
 import org.eclipse.sirius.web.services.api.document.RenameDocumentInput;
-import org.eclipse.sirius.web.services.api.projects.IProjectInput;
 import org.eclipse.sirius.web.services.api.projects.Project;
 import org.eclipse.sirius.web.services.api.projects.Visibility;
 import org.junit.Test;
@@ -52,7 +52,7 @@ public class RenameDocumentEventHandlerTestCases {
         RenameDocumentEventHandler handler = new RenameDocumentEventHandler(noOpDocumentService, new NoOpEMFMessageService(), new SimpleMeterRegistry());
 
         UUID documentId = UUID.randomUUID();
-        IProjectInput input = new RenameDocumentInput(documentId, NEW_NAME);
+        IInput input = new RenameDocumentInput(documentId, NEW_NAME);
 
         assertThat(handler.canHandle(input)).isTrue();
 

@@ -23,8 +23,8 @@ import org.eclipse.sirius.web.collaborative.api.dto.DeleteRepresentationSuccessP
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
+import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.services.api.accounts.Profile;
-import org.eclipse.sirius.web.services.api.projects.IProjectInput;
 import org.eclipse.sirius.web.services.api.projects.IProjectService;
 import org.eclipse.sirius.web.services.api.projects.Project;
 import org.eclipse.sirius.web.services.api.projects.Visibility;
@@ -99,7 +99,7 @@ public class DeleteRepresentationEventHandlerTestCases {
     }
 
     private EventHandlerResponse handleEvent(IRepresentationService representationService, IProjectService projectService) {
-        IProjectInput input = new DeleteRepresentationInput(UUID.randomUUID());
+        IInput input = new DeleteRepresentationInput(UUID.randomUUID());
         DeleteRepresentationEventHandler handler = new DeleteRepresentationEventHandler(representationService, projectService, new NoOpCollaborativeMessageService(), new SimpleMeterRegistry());
         assertThat(handler.canHandle(input)).isTrue();
 

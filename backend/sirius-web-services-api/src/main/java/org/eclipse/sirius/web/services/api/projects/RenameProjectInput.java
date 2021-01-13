@@ -20,6 +20,7 @@ import org.eclipse.sirius.web.annotations.graphql.GraphQLField;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLID;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLInputObjectType;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLNonNull;
+import org.eclipse.sirius.web.core.api.IInput;
 
 /**
  * The input of the rename project mutation.
@@ -27,7 +28,7 @@ import org.eclipse.sirius.web.annotations.graphql.GraphQLNonNull;
  * @author fbarbin
  */
 @GraphQLInputObjectType
-public final class RenameProjectInput implements IProjectInput {
+public final class RenameProjectInput implements IInput {
     private UUID projectId;
 
     private String newName;

@@ -23,10 +23,10 @@ import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramCreationService;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
+import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.web.services.api.objects.IObjectService;
-import org.eclipse.sirius.web.services.api.projects.IProjectInput;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationDescriptionService;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationService;
 import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;
@@ -74,11 +74,11 @@ public class CreateDiagramEventHandler implements IProjectEventHandler {
     }
 
     @Override
-    public boolean canHandle(IProjectInput projectInput) {
-        if (projectInput instanceof CreateRepresentationInput) {
-            CreateRepresentationInput input = (CreateRepresentationInput) projectInput;
+    public boolean canHandle(IInput input) {
+        if (input instanceof CreateRepresentationInput) {
+            CreateRepresentationInput createRepresentationInput = (CreateRepresentationInput) input;
             // @formatter:off
-            return this.representationDescriptionService.findRepresentationDescriptionById(input.getRepresentationDescriptionId())
+            return this.representationDescriptionService.findRepresentationDescriptionById(createRepresentationInput.getRepresentationDescriptionId())
                     .filter(DiagramDescription.class::isInstance)
                     .isPresent();
             // @formatter:on
@@ -87,24 +87,24 @@ public class CreateDiagramEventHandler implements IProjectEventHandler {
     }
 
     @Override
-    public EventHandlerResponse handle(IEditingContext editingContext, IProjectInput projectInput) {
+    public EventHandlerResponse handle(IEditingContext editingContext, IInput input) {
         this.counter.increment();
 
-        if (projectInput instanceof CreateRepresentationInput) {
-            CreateRepresentationInput input = (CreateRepresentationInput) projectInput;
+        if (input instanceof CreateRepresentationInput) {
+            CreateRepresentationInput createRepresentationInput = (CreateRepresentationInput) input;
 
             // @formatter:off
-            Optional<DiagramDescription> optionalDiagramDescription = this.representationDescriptionService.findRepresentationDescriptionById(input.getRepresentationDescriptionId())
+            Optional<DiagramDescription> optionalDiagramDescription = this.representationDescriptionService.findRepresentationDescriptionById(createRepresentationInput.getRepresentationDescriptionId())
                     .filter(DiagramDescription.class::isInstance)
                     .map(DiagramDescription.class::cast);
             // @formatter:on
-            Optional<Object> optionalObject = this.objectService.getObject(editingContext, input.getObjectId());
+            Optional<Object> optionalObject = this.objectService.getObject(editingContext, createRepresentationInput.getObjectId());
 
             if (optionalDiagramDescription.isPresent() && optionalObject.isPresent()) {
                 DiagramDescription diagramDescription = optionalDiagramDescription.get();
                 Object object = optionalObject.get();
 
-                Diagram diagram = this.diagramCreationService.create(input.getRepresentationName(), object, diagramDescription, editingContext);
+                Diagram diagram = this.diagramCreationService.create(createRepresentationInput.getRepresentationName(), object, diagramDescription, editingContext);
 
                 // @formatter:off
                 RepresentationDescriptor representationDescriptor = RepresentationDescriptor.newRepresentationDescriptor(diagram.getId())
@@ -122,7 +122,7 @@ public class CreateDiagramEventHandler implements IProjectEventHandler {
             }
         }
 
-        String message = this.messageService.invalidInput(projectInput.getClass().getSimpleName(), CreateRepresentationInput.class.getSimpleName());
+        String message = this.messageService.invalidInput(input.getClass().getSimpleName(), CreateRepresentationInput.class.getSimpleName());
         return new EventHandlerResponse(false, representation -> false, new ErrorPayload(message));
     }
 

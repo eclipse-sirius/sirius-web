@@ -26,12 +26,12 @@ import org.eclipse.sirius.web.collaborative.api.services.IProjectEventHandler;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
+import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.emf.services.messages.IEMFMessageService;
 import org.eclipse.sirius.web.services.api.document.DeleteDocumentInput;
 import org.eclipse.sirius.web.services.api.document.DeleteDocumentSuccessPayload;
 import org.eclipse.sirius.web.services.api.document.Document;
 import org.eclipse.sirius.web.services.api.document.IDocumentService;
-import org.eclipse.sirius.web.services.api.projects.IProjectInput;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
@@ -63,12 +63,12 @@ public class DeleteDocumentEventHandler implements IProjectEventHandler {
     }
 
     @Override
-    public boolean canHandle(IProjectInput projectInput) {
-        return projectInput instanceof DeleteDocumentInput;
+    public boolean canHandle(IInput input) {
+        return input instanceof DeleteDocumentInput;
     }
 
     @Override
-    public EventHandlerResponse handle(IEditingContext editingContext, IProjectInput projectInput) {
+    public EventHandlerResponse handle(IEditingContext editingContext, IInput input) {
         this.counter.increment();
 
         // @formatter:off
@@ -78,9 +78,9 @@ public class DeleteDocumentEventHandler implements IProjectEventHandler {
                 .map(AdapterFactoryEditingDomain.class::cast);
         // @formatter:on
 
-        if (projectInput instanceof DeleteDocumentInput) {
-            DeleteDocumentInput input = (DeleteDocumentInput) projectInput;
-            var optionalDocument = this.documentService.getDocument(input.getDocumentId());
+        if (input instanceof DeleteDocumentInput) {
+            DeleteDocumentInput deleteDocumentInput = (DeleteDocumentInput) input;
+            var optionalDocument = this.documentService.getDocument(deleteDocumentInput.getDocumentId());
 
             if (optionalEditingDomain.isPresent() && optionalDocument.isPresent()) {
                 AdapterFactoryEditingDomain adapterFactoryEditingDomain = optionalEditingDomain.get();
@@ -102,7 +102,7 @@ public class DeleteDocumentEventHandler implements IProjectEventHandler {
             }
         }
 
-        String message = this.messageService.invalidInput(projectInput.getClass().getSimpleName(), DeleteDocumentInput.class.getSimpleName());
+        String message = this.messageService.invalidInput(input.getClass().getSimpleName(), DeleteDocumentInput.class.getSimpleName());
         return new EventHandlerResponse(false, representation -> false, new ErrorPayload(message));
     }
 

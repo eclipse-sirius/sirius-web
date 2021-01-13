@@ -19,7 +19,7 @@ import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.IProjectEventHandler;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
-import org.eclipse.sirius.web.services.api.projects.IProjectInput;
+import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.services.api.projects.IProjectService;
 import org.eclipse.sirius.web.services.api.projects.Project;
 import org.eclipse.sirius.web.services.api.projects.RenameProjectInput;
@@ -45,21 +45,21 @@ public class RenameProjectEventHandler implements IProjectEventHandler {
     }
 
     @Override
-    public boolean canHandle(IProjectInput projectInput) {
-        return projectInput instanceof RenameProjectInput;
+    public boolean canHandle(IInput input) {
+        return input instanceof RenameProjectInput;
     }
 
     @Override
-    public EventHandlerResponse handle(IEditingContext editingContext, IProjectInput projectInput) {
-        if (projectInput instanceof RenameProjectInput) {
-            RenameProjectInput input = (RenameProjectInput) projectInput;
-            Optional<Project> optionalProject = this.projectService.renameProject(input.getProjectId(), input.getNewName());
+    public EventHandlerResponse handle(IEditingContext editingContext, IInput input) {
+        if (input instanceof RenameProjectInput) {
+            RenameProjectInput renameProjectInput = (RenameProjectInput) input;
+            Optional<Project> optionalProject = this.projectService.renameProject(renameProjectInput.getProjectId(), renameProjectInput.getNewName());
             if (optionalProject.isPresent()) {
                 RenameProjectSuccessPayload payload = new RenameProjectSuccessPayload(optionalProject.get());
                 return new EventHandlerResponse(false, representation -> false, payload);
             }
         }
-        String message = this.messageService.invalidInput(projectInput.getClass().getSimpleName(), RenameProjectInput.class.getSimpleName());
+        String message = this.messageService.invalidInput(input.getClass().getSimpleName(), RenameProjectInput.class.getSimpleName());
         return new EventHandlerResponse(false, representation -> false, new ErrorPayload(message));
     }
 

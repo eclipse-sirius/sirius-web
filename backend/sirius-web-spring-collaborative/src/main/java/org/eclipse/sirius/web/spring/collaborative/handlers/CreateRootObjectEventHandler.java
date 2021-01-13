@@ -20,10 +20,10 @@ import org.eclipse.sirius.web.collaborative.api.services.IProjectEventHandler;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
+import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.services.api.document.CreateRootObjectInput;
 import org.eclipse.sirius.web.services.api.document.CreateRootObjectSuccessPayload;
 import org.eclipse.sirius.web.services.api.objects.IEditService;
-import org.eclipse.sirius.web.services.api.projects.IProjectInput;
 import org.eclipse.sirius.web.spring.collaborative.messages.ICollaborativeMessageService;
 import org.eclipse.sirius.web.trees.Tree;
 import org.springframework.stereotype.Service;
@@ -57,19 +57,19 @@ public class CreateRootObjectEventHandler implements IProjectEventHandler {
     }
 
     @Override
-    public boolean canHandle(IProjectInput projectInput) {
-        return projectInput instanceof CreateRootObjectInput;
+    public boolean canHandle(IInput input) {
+        return input instanceof CreateRootObjectInput;
     }
 
     @Override
-    public EventHandlerResponse handle(IEditingContext editingContext, IProjectInput projectInput) {
+    public EventHandlerResponse handle(IEditingContext editingContext, IInput input) {
         this.counter.increment();
 
-        if (projectInput instanceof CreateRootObjectInput) {
-            CreateRootObjectInput input = (CreateRootObjectInput) projectInput;
-            UUID documentId = input.getDocumentId();
-            String rootObjectCreationDescriptionId = input.getRootObjectCreationDescriptionId();
-            String namespaceId = input.getNamespaceId();
+        if (input instanceof CreateRootObjectInput) {
+            CreateRootObjectInput createRootObjectInput = (CreateRootObjectInput) input;
+            UUID documentId = createRootObjectInput.getDocumentId();
+            String rootObjectCreationDescriptionId = createRootObjectInput.getRootObjectCreationDescriptionId();
+            String namespaceId = createRootObjectInput.getNamespaceId();
 
             var optionalObject = this.editService.createRootObject(editingContext, documentId, namespaceId, rootObjectCreationDescriptionId);
 
@@ -78,7 +78,7 @@ public class CreateRootObjectEventHandler implements IProjectEventHandler {
             }
         }
 
-        String message = this.messageService.invalidInput(projectInput.getClass().getSimpleName(), CreateRootObjectInput.class.getSimpleName());
+        String message = this.messageService.invalidInput(input.getClass().getSimpleName(), CreateRootObjectInput.class.getSimpleName());
         return new EventHandlerResponse(false, representation -> false, new ErrorPayload(message));
     }
 
