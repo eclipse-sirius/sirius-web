@@ -17,7 +17,6 @@ import java.util.Optional;
 import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.core.api.IRepresentationInput;
 import org.eclipse.sirius.web.representations.IRepresentation;
-import org.eclipse.sirius.web.services.api.Context;
 
 import reactor.core.publisher.Flux;
 
@@ -29,7 +28,7 @@ import reactor.core.publisher.Flux;
 public interface IRepresentationEventProcessor {
     IRepresentation getRepresentation();
 
-    Optional<EventHandlerResponse> handle(IRepresentationInput representationInput, Context context);
+    Optional<EventHandlerResponse> handle(IRepresentationInput representationInput);
 
     void refresh();
 

@@ -20,7 +20,6 @@ import org.eclipse.sirius.web.annotations.graphql.GraphQLMutationTypes;
 import org.eclipse.sirius.web.annotations.spring.graphql.MutationDataFetcher;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IPayload;
-import org.eclipse.sirius.web.graphql.datafetchers.IDataFetchingEnvironmentService;
 import org.eclipse.sirius.web.graphql.messages.IGraphQLMessageService;
 import org.eclipse.sirius.web.graphql.schema.MutationTypeProvider;
 import org.eclipse.sirius.web.services.api.projects.IProjectImportService;
@@ -61,14 +60,11 @@ public class MutationUploadProjectDataFetcher implements IDataFetcherWithFieldCo
 
     private static final String FILE = "file"; //$NON-NLS-1$
 
-    private final IDataFetchingEnvironmentService dataFetchingEnvironmentService;
-
     private final IGraphQLMessageService messageService;
 
     private final IProjectImportService projectImportService;
 
-    public MutationUploadProjectDataFetcher(IDataFetchingEnvironmentService dataFetchingEnvironmentService, IGraphQLMessageService messageService, IProjectImportService projectImportService) {
-        this.dataFetchingEnvironmentService = Objects.requireNonNull(dataFetchingEnvironmentService);
+    public MutationUploadProjectDataFetcher(IGraphQLMessageService messageService, IProjectImportService projectImportService) {
         this.messageService = Objects.requireNonNull(messageService);
         this.projectImportService = Objects.requireNonNull(projectImportService);
     }
@@ -76,13 +72,12 @@ public class MutationUploadProjectDataFetcher implements IDataFetcherWithFieldCo
     @Override
     public IPayload get(DataFetchingEnvironment environment) throws Exception {
         Map<Object, Object> input = environment.getArgument(MutationTypeProvider.INPUT_ARGUMENT);
-        var context = this.dataFetchingEnvironmentService.getContext(environment);
 
         // @formatter:off
         return Optional.of(input.get(FILE))
                 .filter(UploadFile.class::isInstance)
                 .map(UploadFile.class::cast)
-                .map(uploadFile -> this.projectImportService.importProject(uploadFile, context))
+                .map(uploadFile -> this.projectImportService.importProject(uploadFile))
                 .orElse(new ErrorPayload(this.messageService.unexpectedError()));
         // @formatter:on
     }

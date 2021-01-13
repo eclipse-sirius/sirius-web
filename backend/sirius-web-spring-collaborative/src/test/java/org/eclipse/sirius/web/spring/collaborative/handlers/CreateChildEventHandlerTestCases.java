@@ -20,13 +20,11 @@ import java.util.UUID;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
-import org.eclipse.sirius.web.services.api.Context;
 import org.eclipse.sirius.web.services.api.objects.CreateChildInput;
 import org.eclipse.sirius.web.services.api.objects.CreateChildSuccessPayload;
 import org.eclipse.sirius.web.services.api.objects.IEditService;
 import org.eclipse.sirius.web.services.api.objects.IObjectService;
 import org.junit.Test;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 
@@ -74,11 +72,10 @@ public class CreateChildEventHandlerTestCases {
 
         CreateChildEventHandler handler = new CreateChildEventHandler(objectService, editService, new NoOpCollaborativeMessageService(), new SimpleMeterRegistry());
         var input = new CreateChildInput(UUID.randomUUID(), "parentObjectId", "childCreationDescriptionId"); //$NON-NLS-1$//$NON-NLS-2$
-        var context = new Context(new UsernamePasswordAuthenticationToken(null, null));
 
         assertThat(handler.canHandle(input)).isTrue();
 
-        EventHandlerResponse response = handler.handle(null, input, context);
+        EventHandlerResponse response = handler.handle(null, input);
         return response;
     }
 }

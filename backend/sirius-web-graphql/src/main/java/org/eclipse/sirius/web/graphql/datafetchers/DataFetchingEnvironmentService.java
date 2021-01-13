@@ -20,7 +20,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.graphql.schema.MutationTypeProvider;
-import org.eclipse.sirius.web.services.api.Context;
 import org.eclipse.sirius.web.services.api.projects.IProjectAccessPolicy;
 import org.eclipse.sirius.web.spring.graphql.api.GraphQLConstants;
 import org.springframework.stereotype.Service;
@@ -65,11 +64,6 @@ public class DataFetchingEnvironmentService implements IDataFetchingEnvironmentS
     public String getSubscriptionId(DataFetchingEnvironment environment) {
         GraphQLContext graphQLContext = environment.getContext();
         return graphQLContext.getOrDefault(GraphQLConstants.SUBSCRIPTION_ID, ""); //$NON-NLS-1$
-    }
-
-    @Override
-    public Context getContext(DataFetchingEnvironment environment) {
-        return new Context(this.getPrincipal(environment).orElse(null));
     }
 
     @Override

@@ -21,7 +21,6 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.sirius.web.core.api.IEditingContext;
-import org.eclipse.sirius.web.services.api.Context;
 import org.eclipse.sirius.web.services.api.accounts.Profile;
 import org.eclipse.sirius.web.services.api.document.Document;
 import org.eclipse.sirius.web.services.api.document.RenameDocumentInput;
@@ -29,7 +28,6 @@ import org.eclipse.sirius.web.services.api.projects.IProjectInput;
 import org.eclipse.sirius.web.services.api.projects.Project;
 import org.eclipse.sirius.web.services.api.projects.Visibility;
 import org.junit.Test;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 
@@ -55,7 +53,6 @@ public class RenameDocumentEventHandlerTestCases {
 
         UUID documentId = UUID.randomUUID();
         IProjectInput input = new RenameDocumentInput(documentId, NEW_NAME);
-        var context = new Context(new UsernamePasswordAuthenticationToken(null, null));
 
         assertThat(handler.canHandle(input)).isTrue();
 
@@ -81,7 +78,7 @@ public class RenameDocumentEventHandlerTestCases {
             }
         };
 
-        handler.handle(editingContext, input, context);
+        handler.handle(editingContext, input);
 
         assertThat(editingDomain.getResourceSet().getResources().size()).isEqualTo(1);
         assertThat(adapter.getName()).isEqualTo(NEW_NAME);

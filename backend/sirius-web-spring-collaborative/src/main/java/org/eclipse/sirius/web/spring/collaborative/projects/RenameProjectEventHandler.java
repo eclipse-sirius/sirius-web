@@ -19,7 +19,6 @@ import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.IProjectEventHandler;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
-import org.eclipse.sirius.web.services.api.Context;
 import org.eclipse.sirius.web.services.api.projects.IProjectInput;
 import org.eclipse.sirius.web.services.api.projects.IProjectService;
 import org.eclipse.sirius.web.services.api.projects.Project;
@@ -51,7 +50,7 @@ public class RenameProjectEventHandler implements IProjectEventHandler {
     }
 
     @Override
-    public EventHandlerResponse handle(IEditingContext editingContext, IProjectInput projectInput, Context context) {
+    public EventHandlerResponse handle(IEditingContext editingContext, IProjectInput projectInput) {
         if (projectInput instanceof RenameProjectInput) {
             RenameProjectInput input = (RenameProjectInput) projectInput;
             Optional<Project> optionalProject = this.projectService.renameProject(input.getProjectId(), input.getNewName());

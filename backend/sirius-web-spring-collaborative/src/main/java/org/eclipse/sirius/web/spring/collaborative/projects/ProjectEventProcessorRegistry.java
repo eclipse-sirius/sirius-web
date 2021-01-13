@@ -30,7 +30,6 @@ import org.eclipse.sirius.web.collaborative.api.services.IRepresentationEventPro
 import org.eclipse.sirius.web.core.api.IEditingContextManager;
 import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.core.api.IPayload;
-import org.eclipse.sirius.web.services.api.Context;
 import org.eclipse.sirius.web.services.api.objects.IObjectService;
 import org.eclipse.sirius.web.services.api.projects.IProjectService;
 import org.slf4j.Logger;
@@ -79,11 +78,8 @@ public class ProjectEventProcessorRegistry implements IProjectEventProcessorRegi
     }
 
     @Override
-    public Optional<IPayload> dispatchEvent(UUID projectId, IInput input, Context context) {
-        // @formatter:off
-        return this.getOrCreateProjectEventProcessor(projectId)
-                .flatMap(processor -> processor.handle(input, context));
-        // @formatter:on
+    public Optional<IPayload> dispatchEvent(UUID projectId, IInput input) {
+        return this.getOrCreateProjectEventProcessor(projectId).flatMap(processor -> processor.handle(input));
     }
 
     @Override

@@ -21,7 +21,6 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.sirius.web.core.api.IEditingContext;
-import org.eclipse.sirius.web.services.api.Context;
 import org.eclipse.sirius.web.services.api.accounts.Profile;
 import org.eclipse.sirius.web.services.api.document.DeleteDocumentInput;
 import org.eclipse.sirius.web.services.api.document.Document;
@@ -29,7 +28,6 @@ import org.eclipse.sirius.web.services.api.document.IDocumentService;
 import org.eclipse.sirius.web.services.api.projects.Project;
 import org.eclipse.sirius.web.services.api.projects.Visibility;
 import org.junit.Test;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 
@@ -53,7 +51,6 @@ public class DeleteDocumentEventHandlerTestCases {
         DeleteDocumentEventHandler handler = new DeleteDocumentEventHandler(documentService, new NoOpEMFMessageService(), new SimpleMeterRegistry());
 
         var input = new DeleteDocumentInput(document.getId());
-        var context = new Context(new UsernamePasswordAuthenticationToken(null, null));
 
         assertThat(handler.canHandle(input)).isTrue();
 
@@ -75,7 +72,7 @@ public class DeleteDocumentEventHandlerTestCases {
             }
         };
 
-        handler.handle(editingContext, input, context);
+        handler.handle(editingContext, input);
         assertThat(editingDomain.getResourceSet().getResources().size()).isEqualTo(0);
     }
 }

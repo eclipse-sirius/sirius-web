@@ -27,12 +27,10 @@ import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.Size;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.web.diagrams.tests.TestDiagramDescriptionBuilder;
-import org.eclipse.sirius.web.services.api.Context;
 import org.eclipse.sirius.web.services.api.projects.IProjectInput;
 import org.eclipse.sirius.web.services.api.representations.RenameRepresentationInput;
 import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;
 import org.junit.Test;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 
@@ -84,10 +82,9 @@ public class RenameDiagramEventHandlerTestCases {
 
         IProjectInput input = new RenameRepresentationInput(projectId, representationId, NEW_LABEL);
 
-        var context = new Context(new UsernamePasswordAuthenticationToken(null, null));
         assertThat(handler.canHandle(input)).isTrue();
 
-        EventHandlerResponse handlerResponse = handler.handle(new NoOpEditingContext(), input, context);
+        EventHandlerResponse handlerResponse = handler.handle(new NoOpEditingContext(), input);
         IPayload payload = handlerResponse.getPayload();
         assertThat(payload).isInstanceOf(RenameRepresentationSuccessPayload.class);
     }

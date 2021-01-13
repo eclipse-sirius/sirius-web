@@ -23,7 +23,6 @@ import org.eclipse.sirius.web.collaborative.api.dto.DeleteRepresentationSuccessP
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
-import org.eclipse.sirius.web.services.api.Context;
 import org.eclipse.sirius.web.services.api.accounts.Profile;
 import org.eclipse.sirius.web.services.api.projects.IProjectInput;
 import org.eclipse.sirius.web.services.api.projects.IProjectService;
@@ -32,7 +31,6 @@ import org.eclipse.sirius.web.services.api.projects.Visibility;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationService;
 import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;
 import org.junit.Test;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 
@@ -106,8 +104,7 @@ public class DeleteRepresentationEventHandlerTestCases {
         assertThat(handler.canHandle(input)).isTrue();
 
         IEditingContext editingContext = new NoOpEditingContext();
-        var context = new Context(new UsernamePasswordAuthenticationToken(null, null));
-        return handler.handle(editingContext, input, context);
+        return handler.handle(editingContext, input);
     }
 
 }

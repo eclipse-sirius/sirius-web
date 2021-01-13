@@ -27,7 +27,6 @@ import org.eclipse.sirius.web.collaborative.trees.api.ITreeService;
 import org.eclipse.sirius.web.collaborative.trees.api.TreeConfiguration;
 import org.eclipse.sirius.web.collaborative.trees.api.TreeCreationParameters;
 import org.eclipse.sirius.web.core.api.IEditingContext;
-import org.eclipse.sirius.web.services.api.Context;
 import org.eclipse.sirius.web.trees.description.TreeDescription;
 import org.springframework.stereotype.Service;
 
@@ -64,7 +63,7 @@ public class TreeEventProcessorFactory implements IRepresentationEventProcessorF
 
     @Override
     public <T extends IRepresentationEventProcessor> Optional<T> createRepresentationEventProcessor(Class<T> representationEventProcessorClass, IRepresentationConfiguration configuration,
-            IEditingContext editingContext, Context context) {
+            IEditingContext editingContext) {
         if (ITreeEventProcessor.class.isAssignableFrom(representationEventProcessorClass) && configuration instanceof TreeConfiguration) {
             TreeConfiguration treeConfiguration = (TreeConfiguration) configuration;
 

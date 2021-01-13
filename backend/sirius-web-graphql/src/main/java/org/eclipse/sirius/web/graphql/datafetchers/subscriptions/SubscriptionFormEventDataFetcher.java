@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -79,7 +79,6 @@ public class SubscriptionFormEventDataFetcher implements IDataFetcherWithFieldCo
     @Override
     public Publisher<IPayload> get(DataFetchingEnvironment environment) throws Exception {
         var input = this.dataFetchingEnvironmentService.getInput(environment, FormEventInput.class);
-        var context = this.dataFetchingEnvironmentService.getContext(environment);
 
         Principal principal = this.dataFetchingEnvironmentService.getPrincipal(environment).orElse(null);
         String subscriptionId = this.dataFetchingEnvironmentService.getSubscriptionId(environment);
@@ -88,7 +87,7 @@ public class SubscriptionFormEventDataFetcher implements IDataFetcherWithFieldCo
 
         // @formatter:off
         return this.projectEventProcessorRegistry.getOrCreateProjectEventProcessor(input.getProjectId())
-                .flatMap(processor -> processor.acquireRepresentationEventProcessor(IFormEventProcessor.class, formConfiguration, new SubscriptionDescription(principal, subscriptionId), context))
+                .flatMap(processor -> processor.acquireRepresentationEventProcessor(IFormEventProcessor.class, formConfiguration, new SubscriptionDescription(principal, subscriptionId)))
                 .map(IRepresentationEventProcessor::getOutputEvents)
                 .orElse(Flux.empty());
         // @formatter:on

@@ -25,7 +25,6 @@ import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.emf.services.messages.IEMFMessageService;
 import org.eclipse.sirius.web.persistence.repositories.IIdMappingRepository;
-import org.eclipse.sirius.web.services.api.Context;
 import org.eclipse.sirius.web.services.api.projects.CreateProjectInput;
 import org.eclipse.sirius.web.services.api.projects.CreateProjectSuccessPayload;
 import org.eclipse.sirius.web.services.api.projects.IProjectImportService;
@@ -79,13 +78,11 @@ public class ProjectImportService implements IProjectImportService {
      *
      * @param file
      *            the file to upload
-     * @param context
-     *            the context in which the operation is performed
      * @return {@link UploadProjectSuccessPayload} whether the project import has been successful, {@link ErrorPayload}
      *         otherwise
      */
     @Override
-    public IPayload importProject(UploadFile file, Context context) {
+    public IPayload importProject(UploadFile file) {
         IPayload payload = new ErrorPayload(this.messageService.unexpectedError());
         ProjectUnzipper unzipper = new ProjectUnzipper(file.getInputStream(), this.objectMapper);
         Optional<UnzippedProject> optionalUnzippedProject = unzipper.unzipProject();
@@ -106,7 +103,7 @@ public class ProjectImportService implements IProjectImportService {
                 Map<String, UploadFile> documents = unzippedProject.getDocumentIdToUploadFile();
                 List<RepresentationDescriptor> representations = unzippedProject.getRepresentationDescriptors();
 
-                ProjectImporter projectImporter = new ProjectImporter(project.getId(), projectEventProcessor, documents, representations, manifest, context, this.idMappingRepository);
+                ProjectImporter projectImporter = new ProjectImporter(project.getId(), projectEventProcessor, documents, representations, manifest, this.idMappingRepository);
                 boolean hasBeenImported = projectImporter.importProject();
 
                 if (!hasBeenImported) {

@@ -40,7 +40,6 @@ import org.eclipse.sirius.web.forms.renderer.FormRenderer;
 import org.eclipse.sirius.web.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.web.representations.IRepresentation;
 import org.eclipse.sirius.web.representations.VariableManager;
-import org.eclipse.sirius.web.services.api.Context;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -107,13 +106,13 @@ public class PropertiesEventProcessor implements IPropertiesEventProcessor {
     }
 
     @Override
-    public Optional<EventHandlerResponse> handle(IRepresentationInput representationInput, Context context) {
+    public Optional<EventHandlerResponse> handle(IRepresentationInput representationInput) {
         if (representationInput instanceof IFormInput) {
             IFormInput formInput = (IFormInput) representationInput;
 
             if (formInput instanceof UpdateWidgetFocusInput) {
                 UpdateWidgetFocusInput input = (UpdateWidgetFocusInput) formInput;
-                this.widgetSubscriptionManager.handle(input, context);
+                this.widgetSubscriptionManager.handle(input);
             } else {
                 Optional<IFormEventHandler> optionalFormEventHandler = this.formEventHandlers.stream().filter(handler -> handler.canHandle(formInput)).findFirst();
 

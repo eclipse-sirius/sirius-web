@@ -18,7 +18,6 @@ import java.util.UUID;
 
 import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.core.api.IPayload;
-import org.eclipse.sirius.web.services.api.Context;
 
 /**
  * Registry of all the project event handlers.
@@ -28,7 +27,7 @@ import org.eclipse.sirius.web.services.api.Context;
 public interface IProjectEventProcessorRegistry {
     List<IProjectEventProcessor> getProjectEventProcessors();
 
-    Optional<IPayload> dispatchEvent(UUID projectId, IInput input, Context context);
+    Optional<IPayload> dispatchEvent(UUID projectId, IInput input);
 
     Optional<IProjectEventProcessor> getOrCreateProjectEventProcessor(UUID projectId);
 

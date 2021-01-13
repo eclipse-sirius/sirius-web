@@ -40,7 +40,6 @@ import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.emfjson.resource.JsonResourceImpl;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.emf.services.messages.IEMFMessageService;
-import org.eclipse.sirius.web.services.api.Context;
 import org.eclipse.sirius.web.services.api.accounts.Profile;
 import org.eclipse.sirius.web.services.api.document.Document;
 import org.eclipse.sirius.web.services.api.document.IDocumentService;
@@ -49,7 +48,6 @@ import org.eclipse.sirius.web.services.api.projects.Project;
 import org.eclipse.sirius.web.services.api.projects.Visibility;
 import org.eclipse.sirius.web.spring.graphql.api.UploadFile;
 import org.junit.Test;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 
@@ -164,7 +162,6 @@ public class UploadDocumentEventHandlerTestCases {
 
         UploadFile file = new UploadFile(FILE_NAME, inputstream);
         var input = new UploadDocumentInput(UUID.randomUUID(), file);
-        var context = new Context(new UsernamePasswordAuthenticationToken(null, null));
 
         assertThat(handler.canHandle(input)).isTrue();
 
@@ -182,7 +179,7 @@ public class UploadDocumentEventHandlerTestCases {
             }
         };
 
-        handler.handle(editingContext, input, context);
+        handler.handle(editingContext, input);
         return editingDomain;
     }
 
@@ -245,7 +242,6 @@ public class UploadDocumentEventHandlerTestCases {
         UploadFile file = new UploadFile(FILE_NAME, new ByteArrayInputStream(resourceBytes));
 
         var input = new UploadDocumentInput(UUID.randomUUID(), file);
-        var context = new Context(new UsernamePasswordAuthenticationToken(null, null));
 
         assertThat(handler.canHandle(input)).isTrue();
         IEditingContext editingContext = new IEditingContext() {
@@ -259,7 +255,7 @@ public class UploadDocumentEventHandlerTestCases {
                 return editingDomain;
             }
         };
-        handler.handle(editingContext, input, context);
+        handler.handle(editingContext, input);
     }
 
     /**

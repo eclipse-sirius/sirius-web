@@ -20,7 +20,6 @@ import org.eclipse.sirius.web.collaborative.api.services.IProjectEventHandler;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
-import org.eclipse.sirius.web.services.api.Context;
 import org.eclipse.sirius.web.services.api.objects.CreateChildInput;
 import org.eclipse.sirius.web.services.api.objects.CreateChildSuccessPayload;
 import org.eclipse.sirius.web.services.api.objects.IEditService;
@@ -66,7 +65,7 @@ public class CreateChildEventHandler implements IProjectEventHandler {
     }
 
     @Override
-    public EventHandlerResponse handle(IEditingContext editingContext, IProjectInput projectInput, Context context) {
+    public EventHandlerResponse handle(IEditingContext editingContext, IProjectInput projectInput) {
         this.counter.increment();
 
         String message = this.messageService.invalidInput(projectInput.getClass().getSimpleName(), CreateChildInput.class.getSimpleName());

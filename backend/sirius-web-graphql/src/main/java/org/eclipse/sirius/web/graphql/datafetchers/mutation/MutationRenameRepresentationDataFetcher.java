@@ -78,7 +78,6 @@ public class MutationRenameRepresentationDataFetcher implements IDataFetcherWith
     @Override
     public IPayload get(DataFetchingEnvironment environment) throws Exception {
         var input = this.dataFetchingEnvironmentService.getInput(environment, RenameRepresentationInput.class);
-        var context = this.dataFetchingEnvironmentService.getContext(environment);
 
         IPayload payload = new ErrorPayload(this.messageService.unexpectedError());
 
@@ -95,7 +94,7 @@ public class MutationRenameRepresentationDataFetcher implements IDataFetcherWith
                     boolean canEdit = this.dataFetchingEnvironmentService.canEdit(environment, representationDescriptor.getProjectId());
                     if (canEdit) {
                         // @formatter:off
-                        payload = this.projectEventProcessorRegistry.dispatchEvent(representationDescriptor.getProjectId(), input, context)
+                        payload = this.projectEventProcessorRegistry.dispatchEvent(representationDescriptor.getProjectId(), input)
                                 .orElse(new ErrorPayload(this.messageService.unexpectedError()));
                         // @formatter:on
                     } else {

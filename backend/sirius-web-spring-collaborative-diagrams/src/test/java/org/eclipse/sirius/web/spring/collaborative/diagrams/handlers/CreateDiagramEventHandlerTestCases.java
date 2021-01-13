@@ -27,11 +27,9 @@ import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.web.diagrams.tests.TestDiagramBuilder;
 import org.eclipse.sirius.web.representations.IRepresentationDescription;
-import org.eclipse.sirius.web.services.api.Context;
 import org.eclipse.sirius.web.services.api.objects.IObjectService;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationDescriptionService;
 import org.junit.Test;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 
@@ -83,10 +81,9 @@ public class CreateDiagramEventHandlerTestCases {
                 new NoOpCollaborativeDiagramMessageService(), new SimpleMeterRegistry());
 
         var input = new CreateRepresentationInput(UUID.randomUUID(), UUID.randomUUID(), "objectId", "representationName"); //$NON-NLS-1$//$NON-NLS-2$
-        var context = new Context(new UsernamePasswordAuthenticationToken(null, null));
         assertThat(handler.canHandle(input)).isTrue();
 
-        handler.handle(new NoOpEditingContext(), input, context);
+        handler.handle(new NoOpEditingContext(), input);
         assertThat(hasBeenCalled.get()).isTrue();
     }
 }

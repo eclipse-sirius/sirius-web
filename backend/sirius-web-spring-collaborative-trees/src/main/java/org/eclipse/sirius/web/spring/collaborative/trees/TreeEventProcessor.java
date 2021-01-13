@@ -32,7 +32,6 @@ import org.eclipse.sirius.web.collaborative.trees.api.TreeRefreshedEventPayload;
 import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.core.api.IRepresentationInput;
 import org.eclipse.sirius.web.representations.IRepresentation;
-import org.eclipse.sirius.web.services.api.Context;
 import org.eclipse.sirius.web.trees.Tree;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -101,7 +100,7 @@ public class TreeEventProcessor implements ITreeEventProcessor {
     }
 
     @Override
-    public Optional<EventHandlerResponse> handle(IRepresentationInput representationInput, Context context) {
+    public Optional<EventHandlerResponse> handle(IRepresentationInput representationInput) {
         if (representationInput instanceof ITreeInput) {
             ITreeInput treeInput = (ITreeInput) representationInput;
             Optional<ITreeEventHandler> optionalTreeEventHandler = this.treeEventHandlers.stream().filter(handler -> handler.canHandle(treeInput)).findFirst();

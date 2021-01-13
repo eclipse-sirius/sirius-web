@@ -72,7 +72,6 @@ public class MutationRenameObjectDataFetcher implements IDataFetcherWithFieldCoo
     @Override
     public IPayload get(DataFetchingEnvironment environment) throws Exception {
         var input = this.dataFetchingEnvironmentService.getInput(environment, RenameObjectInput.class);
-        var context = this.dataFetchingEnvironmentService.getContext(environment);
 
         IPayload payload = new ErrorPayload(this.messageService.unauthorized());
 
@@ -80,7 +79,7 @@ public class MutationRenameObjectDataFetcher implements IDataFetcherWithFieldCoo
         boolean canEdit = this.dataFetchingEnvironmentService.canEdit(environment, projectId);
         if (canEdit) {
             // @formatter:off
-            payload = this.projectEventProcessorRegistry.dispatchEvent(projectId, input, context)
+            payload = this.projectEventProcessorRegistry.dispatchEvent(projectId, input)
                     .orElse(new ErrorPayload(this.messageService.unexpectedError()));
             // @formatter:on
         }

@@ -79,7 +79,6 @@ public class MutationUploadDocumentDataFetcher implements IDataFetcherWithFieldC
     @Override
     public IPayload get(DataFetchingEnvironment environment) throws Exception {
         Map<Object, Object> inputArgument = environment.getArgument(MutationTypeProvider.INPUT_ARGUMENT);
-        var context = this.dataFetchingEnvironmentService.getContext(environment);
 
         // We cannot use directly UploadDocumentInput, the objectMapper cannot handle the file stream.
 
@@ -102,7 +101,7 @@ public class MutationUploadDocumentDataFetcher implements IDataFetcherWithFieldC
         boolean canEdit = this.dataFetchingEnvironmentService.canEdit(environment, projectId);
         if (canEdit) {
             // @formatter:off
-            payload = this.projectEventProcessorRegistry.dispatchEvent(projectId, input, context)
+            payload = this.projectEventProcessorRegistry.dispatchEvent(projectId, input)
                     .orElse(new ErrorPayload(this.messageService.unexpectedError()));
             // @formatter:on
         }

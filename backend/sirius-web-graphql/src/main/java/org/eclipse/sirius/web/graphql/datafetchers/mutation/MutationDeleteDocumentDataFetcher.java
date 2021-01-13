@@ -76,7 +76,6 @@ public class MutationDeleteDocumentDataFetcher implements IDataFetcherWithFieldC
     @Override
     public IPayload get(DataFetchingEnvironment environment) throws Exception {
         var input = this.dataFetchingEnvironmentService.getInput(environment, DeleteDocumentInput.class);
-        var context = this.dataFetchingEnvironmentService.getContext(environment);
 
         IPayload payload = new ErrorPayload(this.messageService.unexpectedError());
 
@@ -87,7 +86,7 @@ public class MutationDeleteDocumentDataFetcher implements IDataFetcherWithFieldC
             boolean canEdit = this.dataFetchingEnvironmentService.canEdit(environment, document.getProject().getId());
             if (canEdit) {
                 // @formatter:off
-                payload = this.projectEventProcessorRegistry.dispatchEvent(document.getProject().getId(), input, context)
+                payload = this.projectEventProcessorRegistry.dispatchEvent(document.getProject().getId(), input)
                         .orElse(new ErrorPayload(this.messageService.unexpectedError()));
                 // @formatter:on
             } else {

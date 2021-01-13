@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -48,7 +48,6 @@ import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.core.api.IRepresentationInput;
 import org.eclipse.sirius.web.representations.IRepresentation;
 import org.eclipse.sirius.web.representations.ISemanticRepresentation;
-import org.eclipse.sirius.web.services.api.Context;
 import org.eclipse.sirius.web.services.api.objects.IObjectService;
 import org.eclipse.sirius.web.services.api.projects.IProjectInput;
 import org.eclipse.sirius.web.services.api.projects.Project;
@@ -124,22 +123,22 @@ public class ProjectEventProcessor implements IProjectEventProcessor {
     }
 
     @Override
-    public Optional<IPayload> handle(IInput input, Context context) {
+    public Optional<IPayload> handle(IInput input) {
         if (this.executor.isShutdown()) {
             this.logger.warn("Handler for project {} is shutdown", this.projectId); //$NON-NLS-1$
             return Optional.empty();
         }
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
         Optional<IPayload> optionalPayload = Optional.empty();
         Future<Optional<EventHandlerResponse>> future = this.executor.submit(() -> {
             Optional<EventHandlerResponse> optionalResponse = Optional.empty();
-            if (context.getPrincipal() instanceof Authentication) {
-                try {
-                    SecurityContextHolder.getContext().setAuthentication((Authentication) context.getPrincipal());
-                    optionalResponse = this.doHandle(input, context);
-                } finally {
-                    SecurityContextHolder.getContext().setAuthentication(null);
-                }
+            try {
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+                optionalResponse = this.doHandle(input);
+            } finally {
+                SecurityContextHolder.getContext().setAuthentication(null);
             }
             return optionalResponse;
         });
@@ -177,28 +176,28 @@ public class ProjectEventProcessor implements IProjectEventProcessor {
      *            The input event
      * @return The response computed by the event handler
      */
-    private Optional<EventHandlerResponse> doHandle(IInput input, Context context) {
+    private Optional<EventHandlerResponse> doHandle(IInput input) {
         this.logger.debug(MessageFormat.format("Handling received event: {0}", input)); //$NON-NLS-1$
 
         Optional<EventHandlerResponse> optionalResponse = Optional.empty();
 
         if (input instanceof IProjectInput) {
-            optionalResponse = this.handleProjectInput((IProjectInput) input, context);
+            optionalResponse = this.handleProjectInput((IProjectInput) input);
 
             if (input instanceof RenameRepresentationInput) {
                 UUID representationId = ((RenameRepresentationInput) input).getRepresentationId();
                 if (this.representationEventProcessors.containsKey(representationId)) {
-                    this.handleRepresentationInput((IRepresentationInput) input, context);
+                    this.handleRepresentationInput((IRepresentationInput) input);
                 }
             }
         } else if (input instanceof IRepresentationInput) {
-            optionalResponse = this.handleRepresentationInput((IRepresentationInput) input, context);
+            optionalResponse = this.handleRepresentationInput((IRepresentationInput) input);
         }
 
         if (optionalResponse.isPresent()) {
             EventHandlerResponse response = optionalResponse.get();
 
-            this.disposeRepresentationIfNeeded(context);
+            this.disposeRepresentationIfNeeded();
 
             // @formatter:off
             this.representationEventProcessors.values().stream()
@@ -259,7 +258,7 @@ public class ProjectEventProcessor implements IProjectEventProcessor {
      * @param context
      *            the context
      */
-    private void disposeRepresentationIfNeeded(Context context) {
+    private void disposeRepresentationIfNeeded() {
         List<IRepresentationEventProcessor> representationEventProcessorToDispose = new ArrayList<>();
         for (IRepresentationEventProcessor representationEventProcessor : this.representationEventProcessors.values()) {
             if (this.isDangling(representationEventProcessor.getRepresentation())) {
@@ -274,7 +273,7 @@ public class ProjectEventProcessor implements IProjectEventProcessor {
         // @formatter:on
     }
 
-    private Optional<EventHandlerResponse> handleProjectInput(IProjectInput projectInput, Context context) {
+    private Optional<EventHandlerResponse> handleProjectInput(IProjectInput projectInput) {
         if (projectInput instanceof DeleteRepresentationInput) {
             DeleteRepresentationInput deleteRepresentationInput = (DeleteRepresentationInput) projectInput;
             this.disposeRepresentation(deleteRepresentationInput.getRepresentationId());
@@ -289,7 +288,7 @@ public class ProjectEventProcessor implements IProjectEventProcessor {
         Optional<EventHandlerResponse> optionalResponse = Optional.empty();
         if (optionalProjectEventHandler.isPresent()) {
             IProjectEventHandler projectEventHandler = optionalProjectEventHandler.get();
-            EventHandlerResponse response = projectEventHandler.handle(this.editingContext, projectInput, context);
+            EventHandlerResponse response = projectEventHandler.handle(this.editingContext, projectInput);
             optionalResponse = Optional.of(response);
         } else {
             this.logger.warn("No handler found for event: {}", projectInput); //$NON-NLS-1$
@@ -297,13 +296,13 @@ public class ProjectEventProcessor implements IProjectEventProcessor {
         return optionalResponse;
     }
 
-    private Optional<EventHandlerResponse> handleRepresentationInput(IRepresentationInput representationInput, Context context) {
+    private Optional<EventHandlerResponse> handleRepresentationInput(IRepresentationInput representationInput) {
         Optional<IRepresentationEventProcessor> optionalRepresentationEventProcessor = Optional.ofNullable(this.representationEventProcessors.get(representationInput.getRepresentationId()));
 
         Optional<EventHandlerResponse> optionalResponse = Optional.empty();
         if (optionalRepresentationEventProcessor.isPresent()) {
             IRepresentationEventProcessor representationEventProcessor = optionalRepresentationEventProcessor.get();
-            optionalResponse = representationEventProcessor.handle(representationInput, context);
+            optionalResponse = representationEventProcessor.handle(representationInput);
         } else {
             this.logger.warn("No representation event processor found for event: {}", representationInput); //$NON-NLS-1$
         }
@@ -312,7 +311,7 @@ public class ProjectEventProcessor implements IProjectEventProcessor {
 
     @Override
     public <T extends IRepresentationEventProcessor> Optional<T> acquireRepresentationEventProcessor(Class<T> representationEventProcessorClass, IRepresentationConfiguration configuration,
-            SubscriptionDescription subscriptionDescription, Context context) {
+            SubscriptionDescription subscriptionDescription) {
         // @formatter:off
         var optionalRepresentationEventProcessor = Optional.ofNullable(this.representationEventProcessors.get(configuration.getId()))
                 .filter(representationEventProcessorClass::isInstance)
@@ -320,7 +319,7 @@ public class ProjectEventProcessor implements IProjectEventProcessor {
         // @formatter:on
         if (!optionalRepresentationEventProcessor.isPresent()) {
             optionalRepresentationEventProcessor = this.representationEventProcessorComposedFactory.createRepresentationEventProcessor(representationEventProcessorClass, configuration,
-                    this.editingContext, context);
+                    this.editingContext);
             if (optionalRepresentationEventProcessor.isPresent()) {
                 var representationEventProcessor = optionalRepresentationEventProcessor.get();
                 this.representationEventProcessors.put(configuration.getId(), representationEventProcessor);
@@ -337,7 +336,7 @@ public class ProjectEventProcessor implements IProjectEventProcessor {
     }
 
     @Override
-    public void release(SubscriptionDescription subscriptionDescription, Context context) {
+    public void release(SubscriptionDescription subscriptionDescription) {
         Optional<UUID> representationIDToRemove = Optional.empty();
         // @formatter:off
         Set<Entry<UUID, IRepresentationEventProcessor>> entries = this.representationEventProcessors.entrySet();

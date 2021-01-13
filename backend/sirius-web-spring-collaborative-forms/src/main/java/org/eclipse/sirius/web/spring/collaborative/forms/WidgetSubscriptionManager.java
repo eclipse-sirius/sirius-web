@@ -15,7 +15,6 @@ package org.eclipse.sirius.web.spring.collaborative.forms;
 import org.eclipse.sirius.web.collaborative.forms.api.IWidgetSubscriptionManager;
 import org.eclipse.sirius.web.collaborative.forms.api.dto.UpdateWidgetFocusInput;
 import org.eclipse.sirius.web.core.api.IPayload;
-import org.eclipse.sirius.web.services.api.Context;
 
 import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
@@ -30,7 +29,7 @@ public class WidgetSubscriptionManager implements IWidgetSubscriptionManager {
     private final DirectProcessor<IPayload> flux = DirectProcessor.create();
 
     @Override
-    public void handle(UpdateWidgetFocusInput input, Context context) {
+    public void handle(UpdateWidgetFocusInput input) {
         // Do nothing for now
     }
 
