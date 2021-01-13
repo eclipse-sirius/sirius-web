@@ -44,6 +44,10 @@
 			<artifactId>spring-security-core</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-core</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-services-api</artifactId>
 			<version>0.1.32</version>
