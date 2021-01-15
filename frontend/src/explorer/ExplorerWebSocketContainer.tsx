@@ -30,18 +30,19 @@ import { getTreeEventSubscription } from './getTreeEventSubscription';
 import { initialState, reducer } from './reducer';
 
 const propTypes = {
+  editingContextId: PropTypes.string.isRequired,
   selection: PropTypes.object,
   setSelection: PropTypes.func.isRequired,
 };
 
-export const ExplorerWebSocketContainer = ({ projectId, selection, setSelection }) => {
+export const ExplorerWebSocketContainer = ({ editingContextId, selection, setSelection }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { viewState, tree, expanded, maxDepth, message } = state;
 
   const { error } = useSubscription(gql(getTreeEventSubscription(maxDepth)), {
     variables: {
       input: {
-        projectId,
+        editingContextId,
         expanded,
       },
     },
@@ -71,7 +72,13 @@ export const ExplorerWebSocketContainer = ({ projectId, selection, setSelection 
   }
 
   return (
-    <Explorer projectId={projectId} tree={tree} onExpand={onExpand} selection={selection} setSelection={setSelection} />
+    <Explorer
+      editingContextId={editingContextId}
+      tree={tree}
+      onExpand={onExpand}
+      selection={selection}
+      setSelection={setSelection}
+    />
   );
 };
 ExplorerWebSocketContainer.propTypes = propTypes;

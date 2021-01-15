@@ -119,6 +119,7 @@ const menuPositionDelta = {
 };
 
 const propTypes = {
+  editingContextId: PropTypes.string.isRequired,
   item: PropTypes.object.isRequired,
   depth: PropTypes.number.isRequired,
   onExpand: PropTypes.func.isRequired,
@@ -126,7 +127,7 @@ const propTypes = {
   setSelection: PropTypes.func.isRequired,
 };
 
-export const TreeItem = ({ projectId, item, depth, onExpand, selection, setSelection }) => {
+export const TreeItem = ({ editingContextId, item, depth, onExpand, selection, setSelection }) => {
   const initialState = {
     modalDisplayed: null,
     x: 0,
@@ -288,7 +289,7 @@ export const TreeItem = ({ projectId, item, depth, onExpand, selection, setSelec
         });
       contextMenu = (
         <TreeItemDocumentContextMenu
-          projectId={projectId}
+          projectId={editingContextId}
           documentId={item.id}
           x={x}
           y={y}
@@ -370,7 +371,7 @@ export const TreeItem = ({ projectId, item, depth, onExpand, selection, setSelec
       const onDeleteObject = () => {
         const variables = {
           input: {
-            projectId,
+            projectId: editingContextId,
             objectId: item.id,
           },
         };
@@ -430,10 +431,10 @@ export const TreeItem = ({ projectId, item, depth, onExpand, selection, setSelec
           renameDocument({ variables: { input: { documentId: item.id, newName: label } } });
         } else if (item?.kind === 'Diagram') {
           renameRepresentation({
-            variables: { input: { projectId: projectId, representationId: item.id, newLabel: label } },
+            variables: { input: { projectId: editingContextId, representationId: item.id, newLabel: label } },
           });
         } else {
-          renameObject({ variables: { input: { projectId: projectId, objectId: item.id, newName: label } } });
+          renameObject({ variables: { input: { projectId: editingContextId, objectId: item.id, newName: label } } });
         }
       } else {
         setState((prevState) => {
@@ -507,7 +508,7 @@ export const TreeItem = ({ projectId, item, depth, onExpand, selection, setSelec
     };
     modal = (
       <NewRootObjectModal
-        projectId={projectId}
+        projectId={editingContextId}
         documentId={item.id}
         onObjectCreated={onRootObjectCreated}
         onClose={onCloseModal}
@@ -535,7 +536,7 @@ export const TreeItem = ({ projectId, item, depth, onExpand, selection, setSelec
     };
     modal = (
       <NewObjectModal
-        projectId={projectId}
+        projectId={editingContextId}
         classId={item.kind}
         objectId={item.id}
         onObjectCreated={onObjectCreated}
@@ -564,7 +565,7 @@ export const TreeItem = ({ projectId, item, depth, onExpand, selection, setSelec
     };
     modal = (
       <NewRepresentationModal
-        projectId={projectId}
+        projectId={editingContextId}
         classId={item.kind}
         objectId={item.id}
         onRepresentationCreated={onRepresentationCreated}
@@ -581,7 +582,7 @@ export const TreeItem = ({ projectId, item, depth, onExpand, selection, setSelec
           return (
             <li key={childItem.id}>
               <TreeItem
-                projectId={projectId}
+                editingContextId={editingContextId}
                 item={childItem}
                 depth={depth + 1}
                 onExpand={onExpand}

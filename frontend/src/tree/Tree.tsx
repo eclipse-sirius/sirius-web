@@ -15,14 +15,14 @@ import React, { useEffect, useRef } from 'react';
 import { TreeItem } from 'tree/TreeItem';
 
 const propTypes = {
+  editingContextId: PropTypes.string.isRequired,
   tree: PropTypes.object.isRequired,
   onExpand: PropTypes.func.isRequired,
   selection: PropTypes.object,
-  displayedRepresentation: PropTypes.object,
   setSelection: PropTypes.func.isRequired,
 };
 
-export const Tree = ({ projectId, tree, onExpand, selection, displayedRepresentation, setSelection }) => {
+export const Tree = ({ editingContextId, tree, onExpand, selection, setSelection }) => {
   const treeElement = useRef(null);
 
   useEffect(() => {
@@ -88,12 +88,11 @@ export const Tree = ({ projectId, tree, onExpand, selection, displayedRepresenta
         {tree.children.map((item) => (
           <li key={item.id}>
             <TreeItem
-              projectId={projectId}
+              editingContextId={editingContextId}
               item={item}
               depth={1}
               onExpand={onExpand}
               selection={selection}
-              // displayedRepresentation={displayedRepresentation} TODO TreeItem has no such prop
               setSelection={setSelection}
             />
           </li>

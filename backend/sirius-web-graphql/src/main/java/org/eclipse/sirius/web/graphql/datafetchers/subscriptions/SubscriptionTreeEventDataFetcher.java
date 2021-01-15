@@ -81,10 +81,10 @@ public class SubscriptionTreeEventDataFetcher implements IDataFetcherWithFieldCo
         String subscriptionId = this.dataFetchingEnvironmentService.getSubscriptionId(environment);
         Principal principal = this.dataFetchingEnvironmentService.getPrincipal(environment).orElse(null);
 
-        var treeConfiguration = new TreeConfiguration(input.getProjectId(), input.getExpanded());
+        var treeConfiguration = new TreeConfiguration(input.getEditingContextId(), input.getExpanded());
 
         // @formatter:off
-        return this.editingContextEventProcessorRegistry.getOrCreateEditingContextEventProcessor(input.getProjectId())
+        return this.editingContextEventProcessorRegistry.getOrCreateEditingContextEventProcessor(input.getEditingContextId())
                 .flatMap(processor -> processor.acquireRepresentationEventProcessor(ITreeEventProcessor.class, treeConfiguration, new SubscriptionDescription(principal, subscriptionId)))
                 .map(IRepresentationEventProcessor::getOutputEvents)
                 .orElse(Flux.empty());
