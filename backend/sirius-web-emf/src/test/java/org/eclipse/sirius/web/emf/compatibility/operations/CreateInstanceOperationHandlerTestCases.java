@@ -26,7 +26,6 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreAdapterFactory;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
-import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
 import org.eclipse.sirius.viewpoint.description.tool.ChangeContext;
@@ -36,6 +35,7 @@ import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.emf.compatibility.EPackageService;
 import org.eclipse.sirius.web.emf.compatibility.modeloperations.ChildModelOperationHandler;
 import org.eclipse.sirius.web.emf.compatibility.modeloperations.CreateInstanceOperationHandler;
+import org.eclipse.sirius.web.emf.services.EditingContext;
 import org.eclipse.sirius.web.representations.Status;
 import org.junit.Before;
 import org.junit.Test;
@@ -72,19 +72,8 @@ public class CreateInstanceOperationHandlerTestCases {
         ResourceSet resourceSet = new ResourceSetImpl();
         resourceSet.setPackageRegistry(ePackageRegistry);
 
-        EditingDomain editingDomain = new AdapterFactoryEditingDomain(composedAdapterFactory, new BasicCommandStack(), resourceSet);
-        IEditingContext editingContext = new IEditingContext() {
-
-            @Override
-            public UUID getId() {
-                return null;
-            }
-
-            @Override
-            public Object getDomain() {
-                return editingDomain;
-            }
-        };
+        AdapterFactoryEditingDomain editingDomain = new AdapterFactoryEditingDomain(composedAdapterFactory, new BasicCommandStack(), resourceSet);
+        EditingContext editingContext = new EditingContext(UUID.randomUUID(), editingDomain);
         this.operationTestContext.getVariables().put(IEditingContext.EDITING_CONTEXT, editingContext);
 
         this.createInstanceOperation = ToolFactory.eINSTANCE.createCreateInstance();

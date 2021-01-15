@@ -138,10 +138,10 @@ public class EditService implements IEditService {
     @Override
     public Optional<Object> createChild(IEditingContext editingContext, Object object, String childCreationDescriptionId) {
         // @formatter:off
-        Optional<AdapterFactoryEditingDomain> optionalEditingDomain = Optional.of(editingContext)
-                .map(IEditingContext::getDomain)
-                .filter(AdapterFactoryEditingDomain.class::isInstance)
-                .map(AdapterFactoryEditingDomain.class::cast);
+        var optionalEditingDomain = Optional.of(editingContext)
+                .filter(EditingContext.class::isInstance)
+                .map(EditingContext.class::cast)
+                .map(EditingContext::getDomain);
 
         Optional<EObject> optionalEObject = Optional.of(object)
                 .filter(EObject.class::isInstance)
@@ -247,9 +247,9 @@ public class EditService implements IEditService {
 
         // @formatter:off
         var optionalEditingDomain = Optional.of(editingContext)
-                .map(IEditingContext::getDomain)
-                .filter(AdapterFactoryEditingDomain.class::isInstance)
-                .map(AdapterFactoryEditingDomain.class::cast);
+                .filter(EditingContext.class::isInstance)
+                .map(EditingContext.class::cast)
+                .map(EditingContext::getDomain);
         // @formatter:on
 
         if (optionalEClass.isPresent() && optionalEditingDomain.isPresent()) {

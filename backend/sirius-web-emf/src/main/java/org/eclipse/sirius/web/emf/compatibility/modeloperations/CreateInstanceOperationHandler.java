@@ -31,6 +31,7 @@ import org.eclipse.sirius.viewpoint.description.tool.ModelOperation;
 import org.eclipse.sirius.web.compat.api.IModelOperationHandler;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.emf.compatibility.EPackageService;
+import org.eclipse.sirius.web.emf.services.EditingContext;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
 import org.eclipse.sirius.web.representations.Status;
 import org.eclipse.sirius.web.representations.VariableManager;
@@ -81,11 +82,9 @@ public class CreateInstanceOperationHandler implements IModelOperationHandler {
                     .map(EObject.class::cast);
 
             Optional<EditingDomain> optionalEditingDomain = Optional.of(variables.get(IEditingContext.EDITING_CONTEXT))
-                    .filter(IEditingContext.class::isInstance)
-                    .map(IEditingContext.class::cast)
-                    .map(IEditingContext::getDomain)
-                    .filter(EditingDomain.class::isInstance)
-                    .map(EditingDomain.class::cast);
+                    .filter(EditingContext.class::isInstance)
+                    .map(EditingContext.class::cast)
+                    .map(EditingContext::getDomain);
             // @formatter:on
 
             Matcher matcher = SEPARATOR.matcher(typeName);

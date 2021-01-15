@@ -73,9 +73,9 @@ public class DeleteDocumentEventHandler implements IEditingContextEventHandler {
 
         // @formatter:off
         var optionalEditingDomain = Optional.of(editingContext)
-                .map(IEditingContext::getDomain)
-                .filter(AdapterFactoryEditingDomain.class::isInstance)
-                .map(AdapterFactoryEditingDomain.class::cast);
+                .filter(EditingContext.class::isInstance)
+                .map(EditingContext.class::cast)
+                .map(EditingContext::getDomain);
         // @formatter:on
 
         if (input instanceof DeleteDocumentInput) {
@@ -83,10 +83,10 @@ public class DeleteDocumentEventHandler implements IEditingContextEventHandler {
             var optionalDocument = this.documentService.getDocument(deleteDocumentInput.getDocumentId());
 
             if (optionalEditingDomain.isPresent() && optionalDocument.isPresent()) {
-                AdapterFactoryEditingDomain adapterFactoryEditingDomain = optionalEditingDomain.get();
+                AdapterFactoryEditingDomain editingDomain = optionalEditingDomain.get();
                 Document document = optionalDocument.get();
 
-                ResourceSet resourceSet = adapterFactoryEditingDomain.getResourceSet();
+                ResourceSet resourceSet = editingDomain.getResourceSet();
                 URI uri = URI.createURI(document.getId().toString());
 
                 // @formatter:off

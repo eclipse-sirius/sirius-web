@@ -27,6 +27,7 @@ import org.eclipse.sirius.web.collaborative.trees.api.IExplorerDescriptionProvid
 import org.eclipse.sirius.web.compat.services.ImageConstants;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.emf.services.DocumentMetadataAdapter;
+import org.eclipse.sirius.web.emf.services.EditingContext;
 import org.eclipse.sirius.web.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.web.representations.VariableManager;
 import org.eclipse.sirius.web.services.api.objects.IObjectService;
@@ -164,10 +165,9 @@ public class ExplorerDescriptionProvider implements IExplorerDescriptionProvider
         var optionalEditingContext = Optional.of(variableManager.getVariables().get(IEditingContext.EDITING_CONTEXT));
         // @formatter:off
         var optionalResourceSet = optionalEditingContext.filter(IEditingContext.class::isInstance)
-                .map(IEditingContext.class::cast)
-                .map(IEditingContext::getDomain)
-                .filter(EditingDomain.class::isInstance)
-                .map(EditingDomain.class::cast)
+                .filter(EditingContext.class::isInstance)
+                .map(EditingContext.class::cast)
+                .map(EditingContext::getDomain)
                 .map(EditingDomain::getResourceSet);
         // @formatter:on
 

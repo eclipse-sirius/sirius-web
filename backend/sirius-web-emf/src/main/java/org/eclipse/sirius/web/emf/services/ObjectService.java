@@ -178,34 +178,34 @@ public class ObjectService implements IObjectService {
     public Optional<Object> getObject(IEditingContext editingContext, String objectId) {
         // @formatter:off
         return Optional.of(editingContext)
-            .map(IEditingContext::getDomain)
-            .filter(EditingDomain.class::isInstance)
-            .map(EditingDomain.class::cast)
-            .map(EditingDomain::getResourceSet)
-            .flatMap(resourceSet -> {
-                Optional<EObject> optionalEObject = Optional.empty();
+                .filter(EditingContext.class::isInstance)
+                .map(EditingContext.class::cast)
+                .map(EditingContext::getDomain)
+                .map(EditingDomain::getResourceSet)
+                .flatMap(resourceSet -> {
+                    Optional<EObject> optionalEObject = Optional.empty();
 
-                int index = objectId.indexOf(ID_SEPARATOR);
-                if (index != -1) {
-                    String resourceLastSegment = objectId.substring(0, index);
-                    String eObjectURIFragment = objectId.substring(index + ID_SEPARATOR.length());
-                    optionalEObject = resourceSet.getResources().stream()
-                            .filter(resource -> resourceLastSegment.equals(resource.getURI().lastSegment())).findFirst()
-                            .map(resource -> resource.getEObject(eObjectURIFragment));
-                } else {
-                    optionalEObject = resourceSet.getResources().stream()
-                            .flatMap(resource -> Optional.ofNullable(resource.getEObject(objectId)).stream())
-                            .findFirst();
-                }
+                    int index = objectId.indexOf(ID_SEPARATOR);
+                    if (index != -1) {
+                        String resourceLastSegment = objectId.substring(0, index);
+                        String eObjectURIFragment = objectId.substring(index + ID_SEPARATOR.length());
+                        optionalEObject = resourceSet.getResources().stream()
+                                .filter(resource -> resourceLastSegment.equals(resource.getURI().lastSegment())).findFirst()
+                                .map(resource -> resource.getEObject(eObjectURIFragment));
+                    } else {
+                        optionalEObject = resourceSet.getResources().stream()
+                                .flatMap(resource -> Optional.ofNullable(resource.getEObject(objectId)).stream())
+                                .findFirst();
+                    }
 
-                // If not found in the resources of the ResourceSet, we search in the PackageRegistry resources
-                if (!optionalEObject.isPresent()) {
-                    URI uri = URI.createURI(objectId);
-                    EObject eObject = resourceSet.getEObject(uri, false);
-                    optionalEObject = Optional.ofNullable(eObject);
-                }
-                return optionalEObject;
-            });
+                    // If not found in the resources of the ResourceSet, we search in the PackageRegistry resources
+                    if (!optionalEObject.isPresent()) {
+                        URI uri = URI.createURI(objectId);
+                        EObject eObject = resourceSet.getEObject(uri, false);
+                        optionalEObject = Optional.ofNullable(eObject);
+                    }
+                    return optionalEObject;
+                });
         // @formatter:on
     }
 
@@ -214,7 +214,8 @@ public class ObjectService implements IObjectService {
         List<Object> contents = new ArrayList<>();
 
         // @formatter:off
-        this.getObject(editingContext, objectId).filter(EObject.class::isInstance)
+        this.getObject(editingContext, objectId)
+        .filter(EObject.class::isInstance)
                 .map(EObject.class::cast)
                 .ifPresent(eObject -> contents.addAll(eObject.eContents()));
         // @formatter:on
@@ -225,7 +226,8 @@ public class ObjectService implements IObjectService {
     @Override
     public Optional<String> getLabelField(Object object) {
      // @formatter:off
-        return Optional.of(object).filter(EObject.class::isInstance)
+        return Optional.of(object)
+                .filter(EObject.class::isInstance)
                 .map(EObject.class::cast)
                 .flatMap(this::getLabelEAttribute)
                 .map(EAttribute::getName);
