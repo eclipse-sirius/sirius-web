@@ -86,11 +86,6 @@ public class EditingContextPersistenceServiceTestCases {
             public UUID getId() {
                 return null;
             }
-
-            @Override
-            public Object getDomain() {
-                return editingDomain;
-            }
         };
 
         editingContextPersistenceService.persist(editingContext);

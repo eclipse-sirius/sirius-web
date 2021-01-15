@@ -15,7 +15,7 @@ package org.eclipse.sirius.web.emf.services;
 import java.util.Objects;
 import java.util.UUID;
 
-import org.eclipse.emf.edit.domain.EditingDomain;
+import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 
 /**
@@ -27,9 +27,9 @@ public class EditingContext implements IEditingContext {
 
     private final UUID projectId;
 
-    private final EditingDomain editingDomain;
+    private final AdapterFactoryEditingDomain editingDomain;
 
-    public EditingContext(UUID projectId, EditingDomain editingDomain) {
+    public EditingContext(UUID projectId, AdapterFactoryEditingDomain editingDomain) {
         this.projectId = Objects.requireNonNull(projectId);
         this.editingDomain = Objects.requireNonNull(editingDomain);
     }
@@ -39,8 +39,7 @@ public class EditingContext implements IEditingContext {
         return this.projectId;
     }
 
-    @Override
-    public Object getDomain() {
+    public AdapterFactoryEditingDomain getDomain() {
         return this.editingDomain;
     }
 

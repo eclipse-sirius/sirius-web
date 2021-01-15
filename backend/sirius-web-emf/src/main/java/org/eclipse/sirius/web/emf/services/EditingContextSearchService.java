@@ -27,7 +27,6 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
-import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.core.api.IEditingContext;
@@ -103,7 +102,7 @@ public class EditingContextSearchService implements IEditingContextSearchService
             }
         }
 
-        EditingDomain editingDomain = new AdapterFactoryEditingDomain(this.composedAdapterFactory, new BasicCommandStack(), resourceSet);
+        AdapterFactoryEditingDomain editingDomain = new AdapterFactoryEditingDomain(this.composedAdapterFactory, new BasicCommandStack(), resourceSet);
         this.logger.debug(MessageFormat.format("{0} documents loaded for the editing context \"{1}\"", documentEntities.size(), editingContextId)); //$NON-NLS-1$
 
         long end = System.currentTimeMillis();

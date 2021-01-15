@@ -172,11 +172,6 @@ public class UploadDocumentEventHandlerTestCases {
             public UUID getId() {
                 return null;
             }
-
-            @Override
-            public Object getDomain() {
-                return editingDomain;
-            }
         };
 
         handler.handle(editingContext, input);
@@ -248,11 +243,6 @@ public class UploadDocumentEventHandlerTestCases {
             @Override
             public UUID getId() {
                 return null;
-            }
-
-            @Override
-            public Object getDomain() {
-                return editingDomain;
             }
         };
         handler.handle(editingContext, input);

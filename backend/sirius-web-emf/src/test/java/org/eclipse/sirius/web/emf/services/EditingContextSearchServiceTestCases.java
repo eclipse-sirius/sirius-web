@@ -82,8 +82,8 @@ public class EditingContextSearchServiceTestCases {
                 new SimpleMeterRegistry());
         IEditingContext editingContext = editingContextSearchService.findById(projectId).get();
 
-        assertThat(editingContext.getDomain()).isInstanceOf(EditingDomain.class);
-        EditingDomain editingDomain = (EditingDomain) editingContext.getDomain();
+        assertThat(editingContext).isInstanceOf(EditingContext.class);
+        EditingDomain editingDomain = ((EditingContext) editingContext).getDomain();
         assertThat(editingDomain.getResourceSet().getResources()).hasSize(0);
     }
 
@@ -122,8 +122,8 @@ public class EditingContextSearchServiceTestCases {
                 new SimpleMeterRegistry());
         IEditingContext editingContext = editingContextSearchService.findById(projectId).get();
 
-        assertThat(editingContext.getDomain()).isInstanceOf(EditingDomain.class);
-        EditingDomain editingDomain = (EditingDomain) editingContext.getDomain();
+        assertThat(editingContext).isInstanceOf(EditingContext.class);
+        EditingDomain editingDomain = ((EditingContext) editingContext).getDomain();
 
         assertThat(editingDomain.getResourceSet().getResources()).hasSize(2);
         Resource firstResource = editingDomain.getResourceSet().getResource(URI.createURI(firstDocumentEntity.getId().toString()), true);

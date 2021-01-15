@@ -69,22 +69,12 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
     public void persist(IEditingContext editingContext) {
         long start = System.currentTimeMillis();
 
-        Object domain = editingContext.getDomain();
-        if (domain instanceof EditingDomain) {
-            EditingDomain editingDomain = (EditingDomain) domain;
+        if (editingContext instanceof EditingContext) {
+            EditingDomain editingDomain = ((EditingContext) editingContext).getDomain();
             List<DocumentEntity> documentEntities = this.persist(editingDomain);
             List<Document> documents = documentEntities.stream().map(new DocumentMapper()::toDTO).collect(Collectors.toList());
             this.applicationEventPublisher.publishEvent(new DocumentsModifiedEvent(editingContext.getId(), documents));
         }
-        // @formatter:off
-        var optionalDocuments = Optional.ofNullable(editingContext)
-            .map(IEditingContext::getDomain)
-            .filter(EditingDomain.class::isInstance)
-            .map(EditingDomain.class::cast)
-            .map(this::persist);
-        optionalDocuments.ifPresent(documentEntities -> {
-        });
-        // @formatter:on
 
         long end = System.currentTimeMillis();
         this.timer.record(end - start, TimeUnit.MILLISECONDS);

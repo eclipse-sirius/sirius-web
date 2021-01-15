@@ -101,9 +101,9 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
 
         // @formatter:off
         Optional<AdapterFactoryEditingDomain> optionalEditingDomain = Optional.of(editingContext)
-                .map(IEditingContext::getDomain)
-                .filter(AdapterFactoryEditingDomain.class::isInstance)
-                .map(AdapterFactoryEditingDomain.class::cast);
+                .filter(EditingContext.class::isInstance)
+                .map(EditingContext.class::cast)
+                .map(EditingContext::getDomain);
         // @formatter:on
 
         String name = file.getName().trim();

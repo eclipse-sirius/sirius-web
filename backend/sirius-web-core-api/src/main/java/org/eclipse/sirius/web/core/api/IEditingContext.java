@@ -27,6 +27,4 @@ public interface IEditingContext {
     String EDITING_CONTEXT = "editingContext"; //$NON-NLS-1$
 
     UUID getId();
-
-    Object getDomain();
 }

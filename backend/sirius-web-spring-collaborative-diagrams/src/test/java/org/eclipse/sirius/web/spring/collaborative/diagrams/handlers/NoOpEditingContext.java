@@ -28,9 +28,4 @@ public class NoOpEditingContext implements IEditingContext {
         return UUID.randomUUID();
     }
 
-    @Override
-    public Object getDomain() {
-        return null;
-    }
-
 }

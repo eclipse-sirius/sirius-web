@@ -18,9 +18,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.assertj.core.api.Condition;
-import org.eclipse.emf.edit.domain.EditingDomain;
+import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.web.api.configuration.StereotypeDescription;
-import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.emf.services.messages.IEMFMessageService;
 import org.eclipse.sirius.web.services.api.accounts.Profile;
 import org.eclipse.sirius.web.services.api.document.CreateDocumentInput;
@@ -97,19 +96,8 @@ public class CreateDocumentEventHandlerTestCases {
 
         assertThat(handler.canHandle(input)).isTrue();
 
-        EditingDomain editingDomain = new EditingDomainFactory().create();
-
-        IEditingContext editingContext = new IEditingContext() {
-            @Override
-            public UUID getId() {
-                return null;
-            }
-
-            @Override
-            public Object getDomain() {
-                return editingDomain;
-            }
-        };
+        AdapterFactoryEditingDomain editingDomain = new EditingDomainFactory().create();
+        EditingContext editingContext = new EditingContext(UUID.randomUUID(), editingDomain);
 
         handler.handle(editingContext, input);
 
@@ -134,31 +122,19 @@ public class CreateDocumentEventHandlerTestCases {
             }
         };
         IEMFMessageService messageService = new NoOpEMFMessageService();
-        EditingDomain editingDomain = new EditingDomainFactory().create();
-
-        IEditingContext editingContext = new IEditingContext() {
-            @Override
-            public UUID getId() {
-                return null;
-            }
-
-            @Override
-            public Object getDomain() {
-                return editingDomain;
-            }
-        };
-        UUID projectId = UUID.randomUUID();
+        AdapterFactoryEditingDomain editingDomain = new EditingDomainFactory().create();
+        EditingContext editingContext = new EditingContext(UUID.randomUUID(), editingDomain);
 
         CreateDocumentEventHandler handler = new CreateDocumentEventHandler(documentService, stereotypeDescriptionService, messageService, new SimpleMeterRegistry());
 
-        var firstCreateInput = new CreateDocumentInput(projectId, DOCUMENT_NAME, STEREOTYPE_DESCRIPTION_ID);
+        var firstCreateInput = new CreateDocumentInput(editingContext.getId(), DOCUMENT_NAME, STEREOTYPE_DESCRIPTION_ID);
         assertThat(handler.canHandle(firstCreateInput)).isTrue();
         Object firstPayload = handler.handle(editingContext, firstCreateInput).getPayload();
         assertThat(firstPayload).isInstanceOf(CreateDocumentSuccessPayload.class);
         Document firstDocument = ((CreateDocumentSuccessPayload) firstPayload).getDocument();
         assertThat(firstDocument.getName()).isEqualTo(DOCUMENT_NAME);
 
-        var secondCreatedInput = new CreateDocumentInput(projectId, DOCUMENT_NAME, STEREOTYPE_DESCRIPTION_ID);
+        var secondCreatedInput = new CreateDocumentInput(editingContext.getId(), DOCUMENT_NAME, STEREOTYPE_DESCRIPTION_ID);
         assertThat(handler.canHandle(secondCreatedInput)).isTrue();
         Object secondPayload = handler.handle(editingContext, secondCreatedInput).getPayload();
         assertThat(secondPayload).isInstanceOf(CreateDocumentSuccessPayload.class);
