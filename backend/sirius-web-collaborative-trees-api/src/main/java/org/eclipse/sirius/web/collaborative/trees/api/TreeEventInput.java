@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,15 +29,15 @@ import org.eclipse.sirius.web.core.api.IInput;
  */
 @GraphQLInputObjectType
 public final class TreeEventInput implements IInput {
-    private UUID projectId;
+    private UUID editingContextId;
 
     private List<String> expanded;
 
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getProjectId() {
-        return this.projectId;
+    public UUID getEditingContextId() {
+        return this.editingContextId;
     }
 
     @GraphQLField
@@ -48,7 +48,7 @@ public final class TreeEventInput implements IInput {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'projectId: {1}, expanded: {2}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.projectId, this.expanded);
+        String pattern = "{0} '{'editingContextId: {1}, expanded: {2}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.editingContextId, this.expanded);
     }
 }
