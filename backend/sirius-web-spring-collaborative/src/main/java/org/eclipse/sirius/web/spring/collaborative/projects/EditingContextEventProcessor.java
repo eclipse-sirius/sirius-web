@@ -30,6 +30,7 @@ import java.util.stream.Collectors;
 
 import org.eclipse.sirius.web.collaborative.api.dto.DeleteRepresentationInput;
 import org.eclipse.sirius.web.collaborative.api.dto.PreDestroyPayload;
+import org.eclipse.sirius.web.collaborative.api.dto.RenameRepresentationInput;
 import org.eclipse.sirius.web.collaborative.api.dto.RenameRepresentationSuccessPayload;
 import org.eclipse.sirius.web.collaborative.api.dto.RepresentationRefreshedEvent;
 import org.eclipse.sirius.web.collaborative.api.dto.RepresentationRenamedEventPayload;
@@ -48,7 +49,6 @@ import org.eclipse.sirius.web.core.api.IRepresentationInput;
 import org.eclipse.sirius.web.representations.IRepresentation;
 import org.eclipse.sirius.web.representations.ISemanticRepresentation;
 import org.eclipse.sirius.web.services.api.objects.IObjectService;
-import org.eclipse.sirius.web.services.api.representations.RenameRepresentationInput;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;

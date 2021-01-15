@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.eclipse.sirius.web.collaborative.api.dto.RenameRepresentationInput;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.ISubscriptionManager;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramContext;
@@ -28,7 +29,6 @@ import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.core.api.IRepresentationInput;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.representations.IRepresentation;
-import org.eclipse.sirius.web.services.api.representations.RenameRepresentationInput;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

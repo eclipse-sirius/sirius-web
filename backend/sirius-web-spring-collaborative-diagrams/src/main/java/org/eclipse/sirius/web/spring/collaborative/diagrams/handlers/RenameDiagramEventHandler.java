@@ -16,6 +16,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.eclipse.sirius.web.collaborative.api.dto.RenameRepresentationInput;
 import org.eclipse.sirius.web.collaborative.api.dto.RenameRepresentationSuccessPayload;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventHandler;
@@ -26,7 +27,6 @@ import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.representations.IRepresentation;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationService;
-import org.eclipse.sirius.web.services.api.representations.RenameRepresentationInput;
 import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;
 import org.eclipse.sirius.web.spring.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
 import org.eclipse.sirius.web.trees.Tree;

@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.services.api.representations;
+package org.eclipse.sirius.web.collaborative.api.dto;
 
 import java.text.MessageFormat;
 import java.util.Objects;

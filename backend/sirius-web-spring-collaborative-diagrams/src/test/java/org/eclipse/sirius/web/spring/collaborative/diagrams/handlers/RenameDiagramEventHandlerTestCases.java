@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.eclipse.sirius.web.collaborative.api.dto.RenameRepresentationInput;
 import org.eclipse.sirius.web.collaborative.api.dto.RenameRepresentationSuccessPayload;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.core.api.IInput;
@@ -28,7 +29,6 @@ import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.Size;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.web.diagrams.tests.TestDiagramDescriptionBuilder;
-import org.eclipse.sirius.web.services.api.representations.RenameRepresentationInput;
 import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;
 import org.junit.Test;
 
