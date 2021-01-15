@@ -24,9 +24,9 @@ import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramCreationService
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IInput;
+import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
-import org.eclipse.sirius.web.services.api.objects.IObjectService;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationDescriptionService;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationService;
 import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;

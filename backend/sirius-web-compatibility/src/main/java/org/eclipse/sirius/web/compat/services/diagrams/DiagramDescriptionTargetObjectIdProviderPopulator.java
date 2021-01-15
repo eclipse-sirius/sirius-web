@@ -16,10 +16,10 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 
+import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription.Builder;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
 import org.eclipse.sirius.web.representations.VariableManager;
-import org.eclipse.sirius.web.services.api.objects.IObjectService;
 import org.springframework.stereotype.Service;
 
 /**

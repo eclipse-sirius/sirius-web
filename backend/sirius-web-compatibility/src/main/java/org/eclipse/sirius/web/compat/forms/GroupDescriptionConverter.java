@@ -22,11 +22,11 @@ import java.util.stream.Collectors;
 import org.eclipse.sirius.web.compat.api.IIdentifierProvider;
 import org.eclipse.sirius.web.compat.api.IModelOperationHandlerSwitchProvider;
 import org.eclipse.sirius.web.compat.utils.StringValueProvider;
+import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.forms.description.AbstractControlDescription;
 import org.eclipse.sirius.web.forms.description.GroupDescription;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
 import org.eclipse.sirius.web.representations.VariableManager;
-import org.eclipse.sirius.web.services.api.objects.IObjectService;
 
 /**
  * This class is used to convert a Sirius GroupDescription to an Sirius Web GroupDescription.

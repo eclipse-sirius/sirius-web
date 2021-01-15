@@ -21,10 +21,10 @@ import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IInput;
+import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.services.api.objects.CreateChildInput;
 import org.eclipse.sirius.web.services.api.objects.CreateChildSuccessPayload;
 import org.eclipse.sirius.web.services.api.objects.IEditService;
-import org.eclipse.sirius.web.services.api.objects.IObjectService;
 import org.eclipse.sirius.web.spring.collaborative.messages.ICollaborativeMessageService;
 import org.springframework.stereotype.Service;
 

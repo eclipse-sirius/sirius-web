@@ -19,10 +19,10 @@ import org.eclipse.sirius.properties.DynamicMappingIfDescription;
 import org.eclipse.sirius.web.compat.api.IIdentifierProvider;
 import org.eclipse.sirius.web.compat.api.IModelOperationHandlerSwitchProvider;
 import org.eclipse.sirius.web.compat.utils.BooleanValueProvider;
+import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.forms.description.AbstractWidgetDescription;
 import org.eclipse.sirius.web.forms.description.IfDescription;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
-import org.eclipse.sirius.web.services.api.objects.IObjectService;
 
 /**
  * This class is used to convert a Sirius {@link DynamicMappingIfDescription} to an Sirius Web {@link IfDescription}.

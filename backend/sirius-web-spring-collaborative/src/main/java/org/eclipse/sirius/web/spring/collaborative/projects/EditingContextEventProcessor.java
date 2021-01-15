@@ -44,11 +44,11 @@ import org.eclipse.sirius.web.collaborative.api.services.SubscriptionDescription
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IEditingContextPersistenceService;
 import org.eclipse.sirius.web.core.api.IInput;
+import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.core.api.IRepresentationInput;
 import org.eclipse.sirius.web.representations.IRepresentation;
 import org.eclipse.sirius.web.representations.ISemanticRepresentation;
-import org.eclipse.sirius.web.services.api.objects.IObjectService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;

@@ -18,12 +18,12 @@ import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.forms.description.FormDescription;
 import org.eclipse.sirius.web.forms.description.GroupDescription;
 import org.eclipse.sirius.web.forms.description.PageDescription;
 import org.eclipse.sirius.web.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.web.representations.VariableManager;
-import org.eclipse.sirius.web.services.api.objects.IObjectService;
 
 /**
  * Aggregates all pages that can be created from the provided {@link FormDescription}s, according to the given object

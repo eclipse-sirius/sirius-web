@@ -19,8 +19,8 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.sirius.web.core.api.IEditingContext;
+import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.services.api.objects.IEditService;
-import org.eclipse.sirius.web.services.api.objects.IObjectService;
 import org.eclipse.sirius.web.services.api.objects.RenameObjectInput;
 import org.junit.Test;
 

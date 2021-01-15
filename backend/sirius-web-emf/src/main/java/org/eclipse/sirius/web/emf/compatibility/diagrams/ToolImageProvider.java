@@ -31,8 +31,8 @@ import org.eclipse.sirius.diagram.description.tool.NodeCreationDescription;
 import org.eclipse.sirius.ecore.extender.business.api.accessor.EcoreMetamodelDescriptor;
 import org.eclipse.sirius.ecore.extender.business.internal.accessor.ecore.EcoreIntrinsicExtender;
 import org.eclipse.sirius.viewpoint.description.tool.AbstractToolDescription;
+import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.emf.compatibility.EPackageService;
-import org.eclipse.sirius.web.services.api.objects.IObjectService;
 
 /**
  * Class used to compute the image of a tool.
