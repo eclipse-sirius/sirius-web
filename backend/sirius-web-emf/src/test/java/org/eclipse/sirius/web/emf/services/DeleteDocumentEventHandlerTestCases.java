@@ -62,7 +62,7 @@ public class DeleteDocumentEventHandlerTestCases {
         IEditingContext editingContext = new IEditingContext() {
 
             @Override
-            public UUID getProjectId() {
+            public UUID getId() {
                 return projectId;
             }
 

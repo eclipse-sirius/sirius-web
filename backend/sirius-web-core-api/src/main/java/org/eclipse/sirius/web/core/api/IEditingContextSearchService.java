@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2021 THALES GLOBAL SERVICES.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,18 +10,20 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.collaborative.api.services;
+package org.eclipse.sirius.web.core.api;
 
-import org.eclipse.sirius.web.core.api.IEditingContext;
-import org.eclipse.sirius.web.core.api.IInput;
+import java.util.Optional;
+import java.util.UUID;
 
 /**
- * Process the given input event.
+ * Interface used to determine if an editing context exist and to retrieve it.
  *
  * @author sbegaudeau
  */
-public interface IProjectEventHandler {
-    boolean canHandle(IInput input);
+public interface IEditingContextSearchService {
 
-    EventHandlerResponse handle(IEditingContext editingContext, IInput input);
+    boolean existsById(UUID editingContextId);
+
+    Optional<IEditingContext> findById(UUID editingContextId);
+
 }

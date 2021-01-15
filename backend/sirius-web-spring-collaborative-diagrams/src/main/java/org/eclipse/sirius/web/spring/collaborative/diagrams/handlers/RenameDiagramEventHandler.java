@@ -18,7 +18,7 @@ import java.util.UUID;
 
 import org.eclipse.sirius.web.collaborative.api.dto.RenameRepresentationSuccessPayload;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
-import org.eclipse.sirius.web.collaborative.api.services.IProjectEventHandler;
+import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventHandler;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
@@ -41,7 +41,7 @@ import io.micrometer.core.instrument.MeterRegistry;
  * @author arichard
  */
 @Service
-public class RenameDiagramEventHandler implements IProjectEventHandler {
+public class RenameDiagramEventHandler implements IEditingContextEventHandler {
 
     private final IRepresentationService representationService;
 
@@ -97,7 +97,7 @@ public class RenameDiagramEventHandler implements IProjectEventHandler {
                     .build();
 
             RepresentationDescriptor representationDescriptor = RepresentationDescriptor.newRepresentationDescriptor(renamedDiagram.getId())
-                    .projectId(editingContext.getProjectId())
+                    .projectId(editingContext.getId())
                     .descriptionId(renamedDiagram.getDescriptionId())
                     .targetObjectId(renamedDiagram.getTargetObjectId())
                     .label(renamedDiagram.getLabel())

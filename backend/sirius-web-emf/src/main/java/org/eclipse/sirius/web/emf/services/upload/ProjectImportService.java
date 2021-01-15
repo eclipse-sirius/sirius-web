@@ -19,8 +19,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.eclipse.sirius.web.collaborative.api.services.IProjectEventProcessor;
-import org.eclipse.sirius.web.collaborative.api.services.IProjectEventProcessorRegistry;
+import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventProcessor;
+import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.emf.services.messages.IEMFMessageService;
@@ -48,7 +48,7 @@ public class ProjectImportService implements IProjectImportService {
 
     private final IProjectService projectService;
 
-    private final IProjectEventProcessorRegistry projectEventProcessorRegistry;
+    private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
 
     private final ObjectMapper objectMapper;
 
@@ -56,11 +56,11 @@ public class ProjectImportService implements IProjectImportService {
 
     private final IIdMappingRepository idMappingRepository;
 
-    public ProjectImportService(IProjectService projectService, IProjectEventProcessorRegistry projectEventProcessorRegistry, ObjectMapper objectMapper, IEMFMessageService messageService,
-            IIdMappingRepository repository) {
+    public ProjectImportService(IProjectService projectService, IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry, ObjectMapper objectMapper,
+            IEMFMessageService messageService, IIdMappingRepository repository) {
         this.idMappingRepository = Objects.requireNonNull(repository);
         this.projectService = Objects.requireNonNull(projectService);
-        this.projectEventProcessorRegistry = Objects.requireNonNull(projectEventProcessorRegistry);
+        this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
         this.objectMapper = Objects.requireNonNull(objectMapper);
         this.messageService = Objects.requireNonNull(messageService);
     }
@@ -72,8 +72,8 @@ public class ProjectImportService implements IProjectImportService {
      * <p>
      * Unzip the given {@link UploadFile}, then creates a project with the name of the root directory in the zip file,
      * then use {@link ProjectImporter} to create documents and representations. If the project has not been imported,
-     * it disposes the {@link IProjectEventProcessor} used to create documents and representations then delete the
-     * created project in order to keep the server in the same state before the project upload attempt.
+     * it disposes the {@link IEditingContextEventProcessor} used to create documents and representations then delete
+     * the created project in order to keep the server in the same state before the project upload attempt.
      * </p>
      *
      * @param file
@@ -97,17 +97,17 @@ public class ProjectImportService implements IProjectImportService {
         IPayload createProjectPayload = this.projectService.createProject(createProjectInput);
         if (createProjectPayload instanceof CreateProjectSuccessPayload) {
             Project project = ((CreateProjectSuccessPayload) createProjectPayload).getProject();
-            Optional<IProjectEventProcessor> optionalProjectEventProcessor = this.projectEventProcessorRegistry.getOrCreateProjectEventProcessor(project.getId());
-            if (optionalProjectEventProcessor.isPresent()) {
-                IProjectEventProcessor projectEventProcessor = optionalProjectEventProcessor.get();
+            Optional<IEditingContextEventProcessor> optionalEditingContextEventProcessor = this.editingContextEventProcessorRegistry.getOrCreateEditingContextEventProcessor(project.getId());
+            if (optionalEditingContextEventProcessor.isPresent()) {
+                IEditingContextEventProcessor editingContextEventProcessor = optionalEditingContextEventProcessor.get();
                 Map<String, UploadFile> documents = unzippedProject.getDocumentIdToUploadFile();
                 List<RepresentationDescriptor> representations = unzippedProject.getRepresentationDescriptors();
 
-                ProjectImporter projectImporter = new ProjectImporter(project.getId(), projectEventProcessor, documents, representations, manifest, this.idMappingRepository);
+                ProjectImporter projectImporter = new ProjectImporter(project.getId(), editingContextEventProcessor, documents, representations, manifest, this.idMappingRepository);
                 boolean hasBeenImported = projectImporter.importProject();
 
                 if (!hasBeenImported) {
-                    this.projectEventProcessorRegistry.dispose(project.getId());
+                    this.editingContextEventProcessorRegistry.dispose(project.getId());
                     this.projectService.delete(project.getId());
                 } else {
                     payload = new UploadProjectSuccessPayload(project);

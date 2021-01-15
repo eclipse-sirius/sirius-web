@@ -20,7 +20,7 @@ import java.util.UUID;
 import org.eclipse.sirius.web.collaborative.api.dto.CreateRepresentationInput;
 import org.eclipse.sirius.web.collaborative.api.dto.CreateRepresentationSuccessPayload;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
-import org.eclipse.sirius.web.collaborative.api.services.IProjectEventHandler;
+import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventHandler;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
@@ -45,7 +45,7 @@ import io.micrometer.core.instrument.MeterRegistry;
  * @author hmarchadour
  */
 @Service
-public class CreateFormEventHandler implements IProjectEventHandler {
+public class CreateFormEventHandler implements IEditingContextEventHandler {
 
     private final IRepresentationDescriptionService representationDescriptionService;
 
@@ -109,7 +109,7 @@ public class CreateFormEventHandler implements IProjectEventHandler {
                             .build();
 
                     RepresentationDescriptor representationDescriptor = RepresentationDescriptor.newRepresentationDescriptor(form.getId())
-                            .projectId(editingContext.getProjectId())
+                            .projectId(editingContext.getId())
                             .descriptionId(form.getDescriptionId())
                             .targetObjectId(form.getTargetObjectId())
                             .label(form.getLabel())

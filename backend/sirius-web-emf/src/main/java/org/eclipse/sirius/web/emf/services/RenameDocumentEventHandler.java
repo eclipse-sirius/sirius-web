@@ -19,7 +19,7 @@ import java.util.UUID;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
-import org.eclipse.sirius.web.collaborative.api.services.IProjectEventHandler;
+import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventHandler;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
@@ -40,7 +40,7 @@ import io.micrometer.core.instrument.MeterRegistry;
  * @author fbarbin
  */
 @Service
-public class RenameDocumentEventHandler implements IProjectEventHandler {
+public class RenameDocumentEventHandler implements IEditingContextEventHandler {
 
     private final IDocumentService documentService;
 

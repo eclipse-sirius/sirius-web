@@ -16,7 +16,7 @@ import java.util.Objects;
 
 import org.eclipse.sirius.web.annotations.graphql.GraphQLMutationTypes;
 import org.eclipse.sirius.web.annotations.spring.graphql.MutationDataFetcher;
-import org.eclipse.sirius.web.collaborative.api.services.IProjectEventProcessorRegistry;
+import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.web.collaborative.diagrams.api.dto.InvokeEdgeToolOnDiagramInput;
 import org.eclipse.sirius.web.collaborative.diagrams.api.dto.InvokeEdgeToolOnDiagramSuccessPayload;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
@@ -58,14 +58,14 @@ public class MutationInvokeEdgeToolOnDiagramDataFetcher implements IDataFetcherW
 
     private final IDataFetchingEnvironmentService dataFetchingEnvironmentService;
 
-    private final IProjectEventProcessorRegistry projectEventProcessorRegistry;
+    private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
 
     private final IGraphQLMessageService messageService;
 
-    public MutationInvokeEdgeToolOnDiagramDataFetcher(IDataFetchingEnvironmentService dataFetchingEnvironmentService, IProjectEventProcessorRegistry projectEventProcessorRegistry,
+    public MutationInvokeEdgeToolOnDiagramDataFetcher(IDataFetchingEnvironmentService dataFetchingEnvironmentService, IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry,
             IGraphQLMessageService messageService) {
         this.dataFetchingEnvironmentService = Objects.requireNonNull(dataFetchingEnvironmentService);
-        this.projectEventProcessorRegistry = Objects.requireNonNull(projectEventProcessorRegistry);
+        this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
         this.messageService = Objects.requireNonNull(messageService);
     }
 
@@ -77,7 +77,7 @@ public class MutationInvokeEdgeToolOnDiagramDataFetcher implements IDataFetcherW
         boolean canEdit = this.dataFetchingEnvironmentService.canEdit(environment, input.getProjectId());
         if (canEdit) {
             // @formatter:off
-            payload = this.projectEventProcessorRegistry.dispatchEvent(input.getProjectId(), input)
+            payload = this.editingContextEventProcessorRegistry.dispatchEvent(input.getProjectId(), input)
                     .orElse(new ErrorPayload(this.messageService.unexpectedError()));
             // @formatter:on
         }

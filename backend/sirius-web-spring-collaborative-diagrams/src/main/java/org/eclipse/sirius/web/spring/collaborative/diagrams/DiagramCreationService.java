@@ -117,7 +117,7 @@ public class DiagramCreationService implements IDiagramCreationService {
 
         Diagram newDiagram = this.layoutService.layout(unlayoutedDiagram);
 
-        RepresentationDescriptor representationDescriptor = this.getRepresentationDescriptor(editingContext.getProjectId(), newDiagram);
+        RepresentationDescriptor representationDescriptor = this.getRepresentationDescriptor(editingContext.getId(), newDiagram);
         this.representationService.save(representationDescriptor);
 
         long end = System.currentTimeMillis();

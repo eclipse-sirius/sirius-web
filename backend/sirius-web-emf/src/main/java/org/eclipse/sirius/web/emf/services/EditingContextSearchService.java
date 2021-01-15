@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -30,27 +31,31 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.core.api.IEditingContext;
-import org.eclipse.sirius.web.core.api.IEditingContextFactory;
+import org.eclipse.sirius.web.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
 import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
+import org.eclipse.sirius.web.persistence.repositories.IProjectRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Timer;
 
 /**
- * Service used to create a new editing context.
+ * Service used to find and retrieve editing contexts.
  *
  * @author sbegaudeau
  */
 @Service
-public class EditingContextFactory implements IEditingContextFactory {
+public class EditingContextSearchService implements IEditingContextSearchService {
 
     private static final String TIMER_NAME = "siriusweb_editingcontext_load"; //$NON-NLS-1$
 
-    private final Logger logger = LoggerFactory.getLogger(EditingContextFactory.class);
+    private final Logger logger = LoggerFactory.getLogger(EditingContextSearchService.class);
+
+    private final IProjectRepository projectRepository;
 
     private final IDocumentRepository documentRepository;
 
@@ -60,7 +65,9 @@ public class EditingContextFactory implements IEditingContextFactory {
 
     private final Timer timer;
 
-    public EditingContextFactory(IDocumentRepository documentRepository, ComposedAdapterFactory composedAdapterFactory, EPackage.Registry ePackageRegistry, MeterRegistry meterRegistry) {
+    public EditingContextSearchService(IProjectRepository projectRepository, IDocumentRepository documentRepository, ComposedAdapterFactory composedAdapterFactory, EPackage.Registry ePackageRegistry,
+            MeterRegistry meterRegistry) {
+        this.projectRepository = Objects.requireNonNull(projectRepository);
         this.documentRepository = Objects.requireNonNull(documentRepository);
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.ePackageRegistry = Objects.requireNonNull(ePackageRegistry);
@@ -69,14 +76,20 @@ public class EditingContextFactory implements IEditingContextFactory {
     }
 
     @Override
-    public IEditingContext createEditingContext(UUID projectId) {
+    public boolean existsById(UUID editingContextId) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return this.projectRepository.existsByIdAndIsVisibleBy(editingContextId, username);
+    }
+
+    @Override
+    public Optional<IEditingContext> findById(UUID editingContextId) {
         long start = System.currentTimeMillis();
 
-        this.logger.debug(MessageFormat.format("Loading the editing context of the project \"{0}\"", projectId)); //$NON-NLS-1$
+        this.logger.debug(MessageFormat.format("Loading the editing context \"{0}\"", editingContextId)); //$NON-NLS-1$
         ResourceSet resourceSet = new ResourceSetImpl();
         resourceSet.setPackageRegistry(this.ePackageRegistry);
 
-        List<DocumentEntity> documentEntities = this.documentRepository.findAllByProjectId(projectId);
+        List<DocumentEntity> documentEntities = this.documentRepository.findAllByProjectId(editingContextId);
         for (DocumentEntity documentEntity : documentEntities) {
             URI uri = URI.createURI(documentEntity.getId().toString());
             JsonResource resource = new SiriusWebJSONResourceFactoryImpl().createResource(uri);
@@ -91,12 +104,12 @@ public class EditingContextFactory implements IEditingContextFactory {
         }
 
         EditingDomain editingDomain = new AdapterFactoryEditingDomain(this.composedAdapterFactory, new BasicCommandStack(), resourceSet);
-        this.logger.debug(MessageFormat.format("{0} documents loaded for the project \"{1}\"", documentEntities.size(), projectId)); //$NON-NLS-1$
+        this.logger.debug(MessageFormat.format("{0} documents loaded for the editing context \"{1}\"", documentEntities.size(), editingContextId)); //$NON-NLS-1$
 
         long end = System.currentTimeMillis();
         this.timer.record(end - start, TimeUnit.MILLISECONDS);
 
-        return new EditingContext(projectId, editingDomain);
+        return Optional.of(new EditingContext(editingContextId, editingDomain));
     }
 
 }

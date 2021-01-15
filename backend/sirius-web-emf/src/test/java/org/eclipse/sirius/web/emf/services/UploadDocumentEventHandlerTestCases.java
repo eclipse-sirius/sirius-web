@@ -169,7 +169,7 @@ public class UploadDocumentEventHandlerTestCases {
 
         IEditingContext editingContext = new IEditingContext() {
             @Override
-            public UUID getProjectId() {
+            public UUID getId() {
                 return null;
             }
 
@@ -246,7 +246,7 @@ public class UploadDocumentEventHandlerTestCases {
         assertThat(handler.canHandle(input)).isTrue();
         IEditingContext editingContext = new IEditingContext() {
             @Override
-            public UUID getProjectId() {
+            public UUID getId() {
                 return null;
             }
 

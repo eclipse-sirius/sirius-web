@@ -32,7 +32,7 @@ import org.eclipse.sirius.web.emf.compatibility.operations.SwitchOperationHandle
 import org.eclipse.sirius.web.emf.compatibility.operations.UnsetOperationHandlerTestCases;
 import org.eclipse.sirius.web.emf.services.CreateDocumentEventHandlerTestCases;
 import org.eclipse.sirius.web.emf.services.DeleteDocumentEventHandlerTestCases;
-import org.eclipse.sirius.web.emf.services.EditingContextFactoryTestCases;
+import org.eclipse.sirius.web.emf.services.EditingContextSearchServiceTestCases;
 import org.eclipse.sirius.web.emf.services.EditingContextPersistenceServiceTestCases;
 import org.eclipse.sirius.web.emf.services.IDManagerTestCases;
 import org.eclipse.sirius.web.emf.services.LabelFeatureProviderRegistryTestCases;
@@ -55,7 +55,7 @@ import org.junit.runners.Suite.SuiteClasses;
     ConfigurationTestCases.class,
     CreateDocumentEventHandlerTestCases.class,
     DeleteDocumentEventHandlerTestCases.class,
-    EditingContextFactoryTestCases.class,
+    EditingContextSearchServiceTestCases.class,
     EditingContextPersistenceServiceTestCases.class,
     IDManagerTestCases.class,
     LabelFeatureProviderRegistryTestCases.class,

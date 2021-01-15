@@ -30,11 +30,6 @@ import org.eclipse.sirius.web.services.api.projects.Project;
 public class NoOpProjectService implements IProjectService {
 
     @Override
-    public boolean existsById(UUID projectId) {
-        return false;
-    }
-
-    @Override
     public Optional<Project> getProject(UUID projectId) {
         return Optional.empty();
     }

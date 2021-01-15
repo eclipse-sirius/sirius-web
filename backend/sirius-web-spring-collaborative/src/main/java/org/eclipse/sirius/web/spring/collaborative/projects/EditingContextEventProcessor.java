@@ -34,14 +34,14 @@ import org.eclipse.sirius.web.collaborative.api.dto.RenameRepresentationSuccessP
 import org.eclipse.sirius.web.collaborative.api.dto.RepresentationRefreshedEvent;
 import org.eclipse.sirius.web.collaborative.api.dto.RepresentationRenamedEventPayload;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
-import org.eclipse.sirius.web.collaborative.api.services.IProjectEventHandler;
-import org.eclipse.sirius.web.collaborative.api.services.IProjectEventProcessor;
+import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventHandler;
+import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventProcessor;
 import org.eclipse.sirius.web.collaborative.api.services.IRepresentationConfiguration;
 import org.eclipse.sirius.web.collaborative.api.services.IRepresentationEventProcessor;
 import org.eclipse.sirius.web.collaborative.api.services.IRepresentationEventProcessorComposedFactory;
 import org.eclipse.sirius.web.collaborative.api.services.SubscriptionDescription;
 import org.eclipse.sirius.web.core.api.IEditingContext;
-import org.eclipse.sirius.web.core.api.IEditingContextManager;
+import org.eclipse.sirius.web.core.api.IEditingContextPersistenceService;
 import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.core.api.IRepresentationInput;
@@ -60,25 +60,23 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 
 /**
- * Handles all the inputs which concern a particular project one at a time, in order of arrival, and in a dedicated
- * thread and emit the output events.
+ * Handles all the inputs which concern a particular editing context one at a time, in order of arrival, and in a
+ * dedicated thread and emit the output events.
  *
  * @author sbegaudeau
  * @author pcdavid
  */
-public class ProjectEventProcessor implements IProjectEventProcessor {
+public class EditingContextEventProcessor implements IEditingContextEventProcessor {
 
-    private final Logger logger = LoggerFactory.getLogger(ProjectEventProcessor.class);
-
-    private final UUID projectId;
+    private final Logger logger = LoggerFactory.getLogger(EditingContextEventProcessor.class);
 
     private final IEditingContext editingContext;
 
-    private final IEditingContextManager editingContextManager;
+    private final IEditingContextPersistenceService editingContextPersistenceService;
 
     private final ApplicationEventPublisher applicationEventPublisher;
 
-    private final List<IProjectEventHandler> projectEventHandlers;
+    private final List<IEditingContextEventHandler> editingContextEventHandlers;
 
     private final IObjectService objectService;
 
@@ -92,19 +90,18 @@ public class ProjectEventProcessor implements IProjectEventProcessor {
 
     private final FluxSink<IPayload> sink;
 
-    public ProjectEventProcessor(UUID projectId, IEditingContextManager editingContextManager, ApplicationEventPublisher applicationEventPublisher, IObjectService objectService,
-            List<IProjectEventHandler> projectEventHandlers, IRepresentationEventProcessorComposedFactory representationEventProcessorComposedFactory) {
-        this.projectId = Objects.requireNonNull(projectId);
-        this.editingContextManager = Objects.requireNonNull(editingContextManager);
-        this.editingContext = this.editingContextManager.createEditingContext(projectId);
+    public EditingContextEventProcessor(IEditingContext editingContext, IEditingContextPersistenceService editingContextPersistenceService, ApplicationEventPublisher applicationEventPublisher,
+            IObjectService objectService, List<IEditingContextEventHandler> editingContextEventHandlers, IRepresentationEventProcessorComposedFactory representationEventProcessorComposedFactory) {
+        this.editingContext = Objects.requireNonNull(editingContext);
+        this.editingContextPersistenceService = Objects.requireNonNull(editingContextPersistenceService);
         this.applicationEventPublisher = Objects.requireNonNull(applicationEventPublisher);
         this.objectService = Objects.requireNonNull(objectService);
-        this.projectEventHandlers = Objects.requireNonNull(projectEventHandlers);
+        this.editingContextEventHandlers = Objects.requireNonNull(editingContextEventHandlers);
         this.representationEventProcessorComposedFactory = Objects.requireNonNull(representationEventProcessorComposedFactory);
 
         this.executor = Executors.newSingleThreadExecutor((Runnable runnable) -> {
             Thread thread = Executors.defaultThreadFactory().newThread(runnable);
-            thread.setName("FIFO Event Handler for project " + this.projectId); //$NON-NLS-1$
+            thread.setName("FIFO Event Handler for editing context " + this.editingContext.getId()); //$NON-NLS-1$
             return thread;
         });
 
@@ -113,14 +110,14 @@ public class ProjectEventProcessor implements IProjectEventProcessor {
     }
 
     @Override
-    public UUID getProjectId() {
-        return this.projectId;
+    public UUID getEditingContextId() {
+        return this.editingContext.getId();
     }
 
     @Override
     public Optional<IPayload> handle(IInput input) {
         if (this.executor.isShutdown()) {
-            this.logger.warn("Handler for project {} is shutdown", this.projectId); //$NON-NLS-1$
+            this.logger.warn("Handler for editing context {} is shutdown", this.editingContext.getId()); //$NON-NLS-1$
             return Optional.empty();
         }
 
@@ -210,12 +207,12 @@ public class ProjectEventProcessor implements IProjectEventProcessor {
                 .forEach(representationEventProcessor -> {
                     representationEventProcessor.refresh();
                     IRepresentation representation = representationEventProcessor.getRepresentation();
-                    this.applicationEventPublisher.publishEvent(new RepresentationRefreshedEvent(this.projectId, representation));
+                    this.applicationEventPublisher.publishEvent(new RepresentationRefreshedEvent(this.editingContext.getId(), representation));
                 });
             // @formatter:on
 
             if (response.isEditingContextDirty()) {
-                this.editingContextManager.persist(this.projectId, this.editingContext);
+                this.editingContextPersistenceService.persist(this.editingContext);
             }
         }
 
@@ -268,15 +265,15 @@ public class ProjectEventProcessor implements IProjectEventProcessor {
         }
 
         // @formatter:off
-        Optional<IProjectEventHandler> optionalProjectEventHandler = this.projectEventHandlers.stream()
+        Optional<IEditingContextEventHandler> optionalEditingContextEventHandler = this.editingContextEventHandlers.stream()
                 .filter(handler -> handler.canHandle(input))
                 .findFirst();
         // @formatter:on
 
         Optional<EventHandlerResponse> optionalResponse = Optional.empty();
-        if (optionalProjectEventHandler.isPresent()) {
-            IProjectEventHandler projectEventHandler = optionalProjectEventHandler.get();
-            EventHandlerResponse response = projectEventHandler.handle(this.editingContext, input);
+        if (optionalEditingContextEventHandler.isPresent()) {
+            IEditingContextEventHandler editingContextEventHandler = optionalEditingContextEventHandler.get();
+            EventHandlerResponse response = editingContextEventHandler.handle(this.editingContext, input);
             optionalResponse = Optional.of(response);
         } else {
             this.logger.warn("No handler found for event: {}", input); //$NON-NLS-1$
@@ -366,7 +363,7 @@ public class ProjectEventProcessor implements IProjectEventProcessor {
 
     public void preDestroy() {
         this.representationEventProcessors.values().stream().forEach(IRepresentationEventProcessor::preDestroy);
-        this.sink.next(new PreDestroyPayload(this.getProjectId()));
+        this.sink.next(new PreDestroyPayload(this.editingContext.getId()));
         this.dispose();
     }
 

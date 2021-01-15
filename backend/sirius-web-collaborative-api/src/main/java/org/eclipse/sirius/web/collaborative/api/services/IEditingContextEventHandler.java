@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,15 +10,18 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.core.api;
+package org.eclipse.sirius.web.collaborative.api.services;
 
-import java.util.UUID;
+import org.eclipse.sirius.web.core.api.IEditingContext;
+import org.eclipse.sirius.web.core.api.IInput;
 
 /**
- * Service used to create the editing context of a project.
+ * Process the given input event.
  *
  * @author sbegaudeau
  */
-public interface IEditingContextFactory {
-    IEditingContext createEditingContext(UUID projectId);
+public interface IEditingContextEventHandler {
+    boolean canHandle(IInput input);
+
+    EventHandlerResponse handle(IEditingContext editingContext, IInput input);
 }

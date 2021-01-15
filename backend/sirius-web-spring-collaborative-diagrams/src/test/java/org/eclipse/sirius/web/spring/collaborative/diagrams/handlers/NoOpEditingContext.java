@@ -24,7 +24,7 @@ import org.eclipse.sirius.web.core.api.IEditingContext;
 public class NoOpEditingContext implements IEditingContext {
 
     @Override
-    public UUID getProjectId() {
+    public UUID getId() {
         return UUID.randomUUID();
     }
 

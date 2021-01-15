@@ -16,7 +16,7 @@ import java.util.Objects;
 
 import org.eclipse.sirius.web.annotations.graphql.GraphQLMutationTypes;
 import org.eclipse.sirius.web.annotations.spring.graphql.MutationDataFetcher;
-import org.eclipse.sirius.web.collaborative.api.services.IProjectEventProcessorRegistry;
+import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.graphql.datafetchers.IDataFetchingEnvironmentService;
@@ -61,14 +61,14 @@ public class MutationDeleteDocumentDataFetcher implements IDataFetcherWithFieldC
 
     private final IDocumentService documentService;
 
-    private final IProjectEventProcessorRegistry projectEventProcessorRegistry;
+    private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
 
     private final IGraphQLMessageService messageService;
 
-    public MutationDeleteDocumentDataFetcher(IDataFetchingEnvironmentService dataFetchingEnvironmentService, IProjectEventProcessorRegistry projectEventProcessorRegistry,
+    public MutationDeleteDocumentDataFetcher(IDataFetchingEnvironmentService dataFetchingEnvironmentService, IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry,
             IDocumentService documentService, IGraphQLMessageService messageService) {
         this.dataFetchingEnvironmentService = Objects.requireNonNull(dataFetchingEnvironmentService);
-        this.projectEventProcessorRegistry = Objects.requireNonNull(projectEventProcessorRegistry);
+        this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
         this.documentService = Objects.requireNonNull(documentService);
         this.messageService = Objects.requireNonNull(messageService);
     }
@@ -86,7 +86,7 @@ public class MutationDeleteDocumentDataFetcher implements IDataFetcherWithFieldC
             boolean canEdit = this.dataFetchingEnvironmentService.canEdit(environment, document.getProject().getId());
             if (canEdit) {
                 // @formatter:off
-                payload = this.projectEventProcessorRegistry.dispatchEvent(document.getProject().getId(), input)
+                payload = this.editingContextEventProcessorRegistry.dispatchEvent(document.getProject().getId(), input)
                         .orElse(new ErrorPayload(this.messageService.unexpectedError()));
                 // @formatter:on
             } else {

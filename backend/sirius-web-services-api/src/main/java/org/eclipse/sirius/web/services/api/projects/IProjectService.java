@@ -25,8 +25,6 @@ import org.eclipse.sirius.web.core.api.IPayload;
  */
 public interface IProjectService {
 
-    boolean existsById(UUID projectId);
-
     Optional<Project> getProject(UUID projectId);
 
     List<Project> getProjects();

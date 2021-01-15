@@ -15,7 +15,7 @@ package org.eclipse.sirius.web.spring.collaborative.projects;
 import java.security.Principal;
 import java.util.Objects;
 
-import org.eclipse.sirius.web.collaborative.api.services.IProjectEventProcessorRegistry;
+import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.web.collaborative.api.services.SubscriptionDescription;
 import org.eclipse.sirius.web.spring.graphql.api.ISubscriptionTerminatedHandler;
 import org.springframework.stereotype.Service;
@@ -28,17 +28,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class SubscriptionTerminatedHandler implements ISubscriptionTerminatedHandler {
 
-    private final IProjectEventProcessorRegistry projectEventProcessorRegistry;
+    private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
 
-    public SubscriptionTerminatedHandler(IProjectEventProcessorRegistry projectEventProcessorRegistry) {
-        this.projectEventProcessorRegistry = Objects.requireNonNull(projectEventProcessorRegistry);
+    public SubscriptionTerminatedHandler(IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry) {
+        this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
     }
 
     @Override
     public void dispose(Principal principal, String subscriptionId) {
         SubscriptionDescription subscriptionDescription = new SubscriptionDescription(principal, subscriptionId);
         // @formatter:off
-        this.projectEventProcessorRegistry.getProjectEventProcessors().stream()
+        this.editingContextEventProcessorRegistry.getEditingContextEventProcessors().stream()
                 .forEach(projectEventProcessor -> projectEventProcessor.release(subscriptionDescription));
         // @formatter:on
     }

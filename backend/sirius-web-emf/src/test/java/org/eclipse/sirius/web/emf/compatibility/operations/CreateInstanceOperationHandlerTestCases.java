@@ -76,7 +76,7 @@ public class CreateInstanceOperationHandlerTestCases {
         IEditingContext editingContext = new IEditingContext() {
 
             @Override
-            public UUID getProjectId() {
+            public UUID getId() {
                 return null;
             }
 

@@ -16,7 +16,7 @@ import java.util.Objects;
 
 import org.eclipse.sirius.web.annotations.graphql.GraphQLMutationTypes;
 import org.eclipse.sirius.web.annotations.spring.graphql.MutationDataFetcher;
-import org.eclipse.sirius.web.collaborative.api.services.IProjectEventProcessorRegistry;
+import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.graphql.datafetchers.IDataFetchingEnvironmentService;
@@ -62,18 +62,18 @@ public class MutationDeleteProjectDataFetcher implements IDataFetcherWithFieldCo
 
     private final IViewerProvider viewerProvider;
 
-    private final IProjectEventProcessorRegistry projectEventProcessorRegistry;
+    private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
 
     private final IProjectService projectService;
 
     private final IGraphQLMessageService messageService;
 
     public MutationDeleteProjectDataFetcher(IDataFetchingEnvironmentService dataFetchingEnvironmentService, IViewerProvider viewerProvider, IProjectService projectService,
-            IProjectEventProcessorRegistry projectEventProcessorRegistry, IGraphQLMessageService messageService) {
+            IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry, IGraphQLMessageService messageService) {
         this.dataFetchingEnvironmentService = Objects.requireNonNull(dataFetchingEnvironmentService);
         this.viewerProvider = Objects.requireNonNull(viewerProvider);
         this.projectService = Objects.requireNonNull(projectService);
-        this.projectEventProcessorRegistry = Objects.requireNonNull(projectEventProcessorRegistry);
+        this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
         this.messageService = Objects.requireNonNull(messageService);
     }
 
@@ -86,7 +86,7 @@ public class MutationDeleteProjectDataFetcher implements IDataFetcherWithFieldCo
             IViewer viewer = optionalViewer.get();
             boolean canAdmin = this.dataFetchingEnvironmentService.canAdmin(environment, input.getProjectId());
             if (canAdmin) {
-                this.projectEventProcessorRegistry.dispose(input.getProjectId());
+                this.editingContextEventProcessorRegistry.dispose(input.getProjectId());
                 this.projectService.delete(input.getProjectId());
                 payload = new DeleteProjectSuccessPayload(viewer);
             } else {
