@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.eclipse.sirius.web.core.api.IEditingContext;
-import org.eclipse.sirius.web.services.api.objects.IObjectService;
+import org.eclipse.sirius.web.core.api.IObjectService;
 
 /**
  * Implementation of the object service which does nothing.

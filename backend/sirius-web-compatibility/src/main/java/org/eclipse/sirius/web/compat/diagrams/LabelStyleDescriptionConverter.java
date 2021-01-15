@@ -17,10 +17,10 @@ import java.util.Objects;
 import java.util.function.Function;
 
 import org.eclipse.sirius.viewpoint.FontFormat;
+import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
 import org.eclipse.sirius.web.representations.VariableManager;
-import org.eclipse.sirius.web.services.api.objects.IObjectService;
 
 /**
  * This class is used to convert a Sirius LabelStyleDescription to an Sirius Web LabelStyleDescription.

@@ -26,8 +26,8 @@ import org.eclipse.sirius.web.collaborative.forms.api.IPropertiesDefaultDescript
 import org.eclipse.sirius.web.collaborative.forms.api.IWidgetSubscriptionManagerFactory;
 import org.eclipse.sirius.web.collaborative.forms.api.PropertiesConfiguration;
 import org.eclipse.sirius.web.core.api.IEditingContext;
+import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.forms.description.FormDescription;
-import org.eclipse.sirius.web.services.api.objects.IObjectService;
 import org.eclipse.sirius.web.services.api.representations.IPropertiesDescriptionProvider;
 import org.springframework.stereotype.Service;
 
