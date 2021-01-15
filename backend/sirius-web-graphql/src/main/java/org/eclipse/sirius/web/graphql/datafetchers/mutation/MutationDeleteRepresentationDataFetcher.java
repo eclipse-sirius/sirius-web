@@ -18,7 +18,7 @@ import org.eclipse.sirius.web.annotations.graphql.GraphQLMutationTypes;
 import org.eclipse.sirius.web.annotations.spring.graphql.MutationDataFetcher;
 import org.eclipse.sirius.web.collaborative.api.dto.DeleteRepresentationInput;
 import org.eclipse.sirius.web.collaborative.api.dto.DeleteRepresentationSuccessPayload;
-import org.eclipse.sirius.web.collaborative.api.services.IProjectEventProcessorRegistry;
+import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.graphql.datafetchers.IDataFetchingEnvironmentService;
@@ -62,15 +62,15 @@ public class MutationDeleteRepresentationDataFetcher implements IDataFetcherWith
 
     private final IRepresentationService representationService;
 
-    private final IProjectEventProcessorRegistry projectEventProcessorRegistry;
+    private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
 
     private final IGraphQLMessageService messageService;
 
-    public MutationDeleteRepresentationDataFetcher(IDataFetchingEnvironmentService dataFetchingEnvironmentService, IProjectEventProcessorRegistry projectEventProcessorRegistry,
+    public MutationDeleteRepresentationDataFetcher(IDataFetchingEnvironmentService dataFetchingEnvironmentService, IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry,
             IRepresentationService representationService, IGraphQLMessageService messageService) {
         this.dataFetchingEnvironmentService = Objects.requireNonNull(dataFetchingEnvironmentService);
         this.representationService = Objects.requireNonNull(representationService);
-        this.projectEventProcessorRegistry = Objects.requireNonNull(projectEventProcessorRegistry);
+        this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
         this.messageService = Objects.requireNonNull(messageService);
     }
 
@@ -87,7 +87,7 @@ public class MutationDeleteRepresentationDataFetcher implements IDataFetcherWith
             boolean canEdit = this.dataFetchingEnvironmentService.canEdit(environment, representation.getProjectId());
             if (canEdit) {
                 // @formatter:off
-                payload = this.projectEventProcessorRegistry.dispatchEvent(representation.getProjectId(), input)
+                payload = this.editingContextEventProcessorRegistry.dispatchEvent(representation.getProjectId(), input)
                         .orElse(new ErrorPayload(this.messageService.unexpectedError()));
                 // @formatter:on
             } else {

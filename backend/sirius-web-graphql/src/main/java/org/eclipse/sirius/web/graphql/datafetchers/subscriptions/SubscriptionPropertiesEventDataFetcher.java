@@ -19,7 +19,7 @@ import org.eclipse.sirius.web.annotations.graphql.GraphQLSubscriptionTypes;
 import org.eclipse.sirius.web.annotations.spring.graphql.SubscriptionDataFetcher;
 import org.eclipse.sirius.web.collaborative.api.dto.PreDestroyPayload;
 import org.eclipse.sirius.web.collaborative.api.dto.SubscribersUpdatedEventPayload;
-import org.eclipse.sirius.web.collaborative.api.services.IProjectEventProcessorRegistry;
+import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.web.collaborative.api.services.IRepresentationEventProcessor;
 import org.eclipse.sirius.web.collaborative.api.services.SubscriptionDescription;
 import org.eclipse.sirius.web.collaborative.forms.api.IFormEventProcessor;
@@ -68,11 +68,11 @@ public class SubscriptionPropertiesEventDataFetcher implements IDataFetcherWithF
 
     private final IDataFetchingEnvironmentService dataFetchingEnvironmentService;
 
-    private final IProjectEventProcessorRegistry projectEventProcessorRegistry;
+    private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
 
-    public SubscriptionPropertiesEventDataFetcher(IDataFetchingEnvironmentService dataFetchingEnvironmentService, IProjectEventProcessorRegistry projectEventProcessorRegistry) {
+    public SubscriptionPropertiesEventDataFetcher(IDataFetchingEnvironmentService dataFetchingEnvironmentService, IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry) {
         this.dataFetchingEnvironmentService = Objects.requireNonNull(dataFetchingEnvironmentService);
-        this.projectEventProcessorRegistry = Objects.requireNonNull(projectEventProcessorRegistry);
+        this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
     }
 
     @Override
@@ -85,7 +85,7 @@ public class SubscriptionPropertiesEventDataFetcher implements IDataFetcherWithF
         var propertiesConfiguration = new PropertiesConfiguration(input.getObjectId());
 
         // @formatter:off
-        return this.projectEventProcessorRegistry.getOrCreateProjectEventProcessor(input.getProjectId())
+        return this.editingContextEventProcessorRegistry.getOrCreateEditingContextEventProcessor(input.getProjectId())
                 .flatMap(processor -> processor.acquireRepresentationEventProcessor(IFormEventProcessor.class, propertiesConfiguration, new SubscriptionDescription(principal, subscriptionId)))
                 .map(IRepresentationEventProcessor::getOutputEvents)
                 .orElse(Flux.empty());

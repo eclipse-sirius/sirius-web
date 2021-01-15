@@ -19,7 +19,7 @@ import java.util.UUID;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLMutationTypes;
 import org.eclipse.sirius.web.annotations.spring.graphql.MutationDataFetcher;
 import org.eclipse.sirius.web.collaborative.api.dto.RenameRepresentationSuccessPayload;
-import org.eclipse.sirius.web.collaborative.api.services.IProjectEventProcessorRegistry;
+import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.graphql.datafetchers.IDataFetchingEnvironmentService;
@@ -63,14 +63,14 @@ public class MutationRenameRepresentationDataFetcher implements IDataFetcherWith
 
     private final IRepresentationService representationService;
 
-    private final IProjectEventProcessorRegistry projectEventProcessorRegistry;
+    private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
 
     private final IGraphQLMessageService messageService;
 
-    public MutationRenameRepresentationDataFetcher(IDataFetchingEnvironmentService dataFetchingEnvironmentService, IProjectEventProcessorRegistry projectEventProcessorRegistry,
+    public MutationRenameRepresentationDataFetcher(IDataFetchingEnvironmentService dataFetchingEnvironmentService, IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry,
             IRepresentationService representationService, IGraphQLMessageService messageService) {
         this.dataFetchingEnvironmentService = Objects.requireNonNull(dataFetchingEnvironmentService);
-        this.projectEventProcessorRegistry = Objects.requireNonNull(projectEventProcessorRegistry);
+        this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
         this.representationService = Objects.requireNonNull(representationService);
         this.messageService = Objects.requireNonNull(messageService);
     }
@@ -94,7 +94,7 @@ public class MutationRenameRepresentationDataFetcher implements IDataFetcherWith
                     boolean canEdit = this.dataFetchingEnvironmentService.canEdit(environment, representationDescriptor.getProjectId());
                     if (canEdit) {
                         // @formatter:off
-                        payload = this.projectEventProcessorRegistry.dispatchEvent(representationDescriptor.getProjectId(), input)
+                        payload = this.editingContextEventProcessorRegistry.dispatchEvent(representationDescriptor.getProjectId(), input)
                                 .orElse(new ErrorPayload(this.messageService.unexpectedError()));
                         // @formatter:on
                     } else {

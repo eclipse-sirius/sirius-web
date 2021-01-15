@@ -22,7 +22,7 @@ import java.util.UUID;
 
 import org.eclipse.sirius.web.collaborative.api.dto.CreateRepresentationInput;
 import org.eclipse.sirius.web.collaborative.api.dto.CreateRepresentationSuccessPayload;
-import org.eclipse.sirius.web.collaborative.api.services.IProjectEventProcessor;
+import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventProcessor;
 import org.eclipse.sirius.web.persistence.entities.IdMappingEntity;
 import org.eclipse.sirius.web.persistence.repositories.IIdMappingRepository;
 import org.eclipse.sirius.web.services.api.document.Document;
@@ -46,7 +46,7 @@ public class ProjectImporter {
 
     private final UUID projectId;
 
-    private final IProjectEventProcessor projectEventProcessor;
+    private final IEditingContextEventProcessor editingContextEventProcessor;
 
     private final Map<String, UploadFile> documents;
 
@@ -58,10 +58,10 @@ public class ProjectImporter {
 
     private final IIdMappingRepository idMappingRepository;
 
-    public ProjectImporter(UUID projectId, IProjectEventProcessor projectEventProcessor, Map<String, UploadFile> documents, List<RepresentationDescriptor> representations,
+    public ProjectImporter(UUID projectId, IEditingContextEventProcessor editingContextEventProcessor, Map<String, UploadFile> documents, List<RepresentationDescriptor> representations,
             ProjectManifest projectManifest, IIdMappingRepository idMappingRepository) {
         this.projectId = Objects.requireNonNull(projectId);
-        this.projectEventProcessor = Objects.requireNonNull(projectEventProcessor);
+        this.editingContextEventProcessor = Objects.requireNonNull(editingContextEventProcessor);
         this.documents = Objects.requireNonNull(documents);
         this.representations = Objects.requireNonNull(representations);
         this.projectManifest = Objects.requireNonNull(projectManifest);
@@ -79,7 +79,7 @@ public class ProjectImporter {
     }
 
     /**
-     * Creates all representations in the project thanks to the {@link IProjectEventProcessor} and the create
+     * Creates all representations in the project thanks to the {@link IEditingContextEventProcessor} and the create
      * representation input. If at least one representation has not been created it will return <code>false</code>.
      *
      * @return <code>true</code> whether all representations has been created, <code>false</code> otherwise
@@ -114,7 +114,7 @@ public class ProjectImporter {
             CreateRepresentationInput input = new CreateRepresentationInput(this.projectId, representationDescriptionId, objectId, representationDescriptor.getLabel());
 
             // @formatter:off
-            representationCreated = this.projectEventProcessor.handle(input)
+            representationCreated = this.editingContextEventProcessor.handle(input)
                     .filter(CreateRepresentationSuccessPayload.class::isInstance)
                     .map(CreateRepresentationSuccessPayload.class::cast)
                     .map(CreateRepresentationSuccessPayload::getRepresentation)
@@ -132,7 +132,7 @@ public class ProjectImporter {
     }
 
     /**
-     * Creates all documents in the project thanks to the {@link IProjectEventProcessor} and the
+     * Creates all documents in the project thanks to the {@link IEditingContextEventProcessor} and the
      * {@link CreateDocumentFromUploadEvent}. If at least one document has not been created it will return
      * <code>false</code>.
      *
@@ -145,7 +145,7 @@ public class ProjectImporter {
             UploadDocumentInput input = new UploadDocumentInput(this.projectId, uploadFile);
 
             // @formatter:off
-            Document document = this.projectEventProcessor.handle(input)
+            Document document = this.editingContextEventProcessor.handle(input)
                     .filter(UploadDocumentSuccessPayload.class::isInstance)
                     .map(UploadDocumentSuccessPayload.class::cast)
                     .map(UploadDocumentSuccessPayload::getDocument)

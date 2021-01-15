@@ -35,7 +35,7 @@ public class EditingContext implements IEditingContext {
     }
 
     @Override
-    public UUID getProjectId() {
+    public UUID getId() {
         return this.projectId;
     }
 

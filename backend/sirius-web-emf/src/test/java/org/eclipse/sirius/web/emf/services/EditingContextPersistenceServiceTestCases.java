@@ -83,7 +83,7 @@ public class EditingContextPersistenceServiceTestCases {
 
         IEditingContext editingContext = new IEditingContext() {
             @Override
-            public UUID getProjectId() {
+            public UUID getId() {
                 return null;
             }
 
@@ -93,7 +93,7 @@ public class EditingContextPersistenceServiceTestCases {
             }
         };
 
-        editingContextPersistenceService.persist(projectId, editingContext);
+        editingContextPersistenceService.persist(editingContext);
         assertThat(entities).hasSize(1);
 
         DocumentEntity documentEntity = entities.get(0);

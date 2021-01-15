@@ -16,7 +16,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
-import org.eclipse.sirius.web.collaborative.api.services.IProjectEventHandler;
+import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventHandler;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IInput;
@@ -33,7 +33,7 @@ import org.springframework.stereotype.Service;
  * @author fbarbin
  */
 @Service
-public class RenameProjectEventHandler implements IProjectEventHandler {
+public class RenameProjectEventHandler implements IEditingContextEventHandler {
 
     private final ICollaborativeMessageService messageService;
 

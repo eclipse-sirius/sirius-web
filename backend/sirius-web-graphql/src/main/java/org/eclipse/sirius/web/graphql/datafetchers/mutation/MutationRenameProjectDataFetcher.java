@@ -16,7 +16,7 @@ import java.util.Objects;
 
 import org.eclipse.sirius.web.annotations.graphql.GraphQLMutationTypes;
 import org.eclipse.sirius.web.annotations.spring.graphql.MutationDataFetcher;
-import org.eclipse.sirius.web.collaborative.api.services.IProjectEventProcessorRegistry;
+import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.graphql.datafetchers.IDataFetchingEnvironmentService;
@@ -59,12 +59,12 @@ public class MutationRenameProjectDataFetcher implements IDataFetcherWithFieldCo
 
     private final IGraphQLMessageService messageService;
 
-    private IProjectEventProcessorRegistry projectEventProcessorRegistry;
+    private IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
 
-    public MutationRenameProjectDataFetcher(IDataFetchingEnvironmentService dataFetchingEnvironmentService, IProjectEventProcessorRegistry projectEventProcessorRegistry,
+    public MutationRenameProjectDataFetcher(IDataFetchingEnvironmentService dataFetchingEnvironmentService, IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry,
             IGraphQLMessageService messageService) {
         this.dataFetchingEnvironmentService = Objects.requireNonNull(dataFetchingEnvironmentService);
-        this.projectEventProcessorRegistry = Objects.requireNonNull(projectEventProcessorRegistry);
+        this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
         this.messageService = Objects.requireNonNull(messageService);
     }
 
@@ -76,7 +76,7 @@ public class MutationRenameProjectDataFetcher implements IDataFetcherWithFieldCo
         boolean canAdmin = this.dataFetchingEnvironmentService.canAdmin(environment, input.getProjectId());
         if (canAdmin) {
          // @formatter:off
-            payload = this.projectEventProcessorRegistry.dispatchEvent(input.getProjectId(), input)
+            payload = this.editingContextEventProcessorRegistry.dispatchEvent(input.getProjectId(), input)
                     .orElse(new ErrorPayload(this.messageService.unexpectedError()));
             // @formatter:on
         } else {

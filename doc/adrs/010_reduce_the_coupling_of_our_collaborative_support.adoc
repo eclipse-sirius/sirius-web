@@ -1,4 +1,4 @@
-= ADR-009 - Reduce the coupling of our collaborative support
+= ADR-010 - Reduce the coupling of our collaborative support
 
 == Context
 
@@ -44,6 +44,7 @@ The dependency to `sirius-web-persistence` will also be removed from Sirius Web 
 The `ProjectEventProcessorRegistry` and `ProjectEventProcessor` will be renamed to `EditingContextEventProcessorRegistry` and `EditingContextEventProcessor`.
 They will rely on an `editingContextId` instead of a `projectId` as the unique identifier.
 For the moment, the `projectId` will still be used as the `editingContextId` but this will change soon.
+The method `getDomain` of `IEditingContext` will be removed since it is not useful on this interface, it will only remain on our EMF implementation.
 
 
 == Status

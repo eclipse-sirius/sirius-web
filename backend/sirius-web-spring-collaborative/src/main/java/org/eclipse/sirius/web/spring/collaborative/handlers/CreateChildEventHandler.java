@@ -16,7 +16,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
-import org.eclipse.sirius.web.collaborative.api.services.IProjectEventHandler;
+import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventHandler;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
@@ -37,7 +37,7 @@ import io.micrometer.core.instrument.MeterRegistry;
  * @author sbegaudeau
  */
 @Service
-public class CreateChildEventHandler implements IProjectEventHandler {
+public class CreateChildEventHandler implements IEditingContextEventHandler {
 
     private final IObjectService objectService;
 

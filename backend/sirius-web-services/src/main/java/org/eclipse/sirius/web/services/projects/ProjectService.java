@@ -71,11 +71,6 @@ public class ProjectService implements IProjectService {
     }
 
     @Override
-    public boolean existsById(UUID projectId) {
-        return this.projectRepository.existsByIdAndIsVisibleBy(projectId, this.getCurrentUserName());
-    }
-
-    @Override
     public Optional<Project> getProject(UUID projectId) {
         return this.projectRepository.findByIdIfVisibleBy(projectId, this.getCurrentUserName()).map(this.projectMapper::toDTO);
     }

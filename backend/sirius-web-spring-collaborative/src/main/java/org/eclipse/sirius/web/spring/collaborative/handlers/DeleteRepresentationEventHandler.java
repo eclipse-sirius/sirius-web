@@ -17,7 +17,7 @@ import java.util.Objects;
 import org.eclipse.sirius.web.collaborative.api.dto.DeleteRepresentationInput;
 import org.eclipse.sirius.web.collaborative.api.dto.DeleteRepresentationSuccessPayload;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
-import org.eclipse.sirius.web.collaborative.api.services.IProjectEventHandler;
+import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventHandler;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
@@ -39,7 +39,7 @@ import io.micrometer.core.instrument.MeterRegistry;
  * @author lfasani
  */
 @Service
-public class DeleteRepresentationEventHandler implements IProjectEventHandler {
+public class DeleteRepresentationEventHandler implements IEditingContextEventHandler {
 
     private final IRepresentationService representationService;
 

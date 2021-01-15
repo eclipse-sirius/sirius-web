@@ -15,7 +15,7 @@ package org.eclipse.sirius.web.core.api;
 import java.util.UUID;
 
 /**
- * Information used to perform some operations on the project.
+ * Used to contain the semantic data.
  *
  * @author sbegaudeau
  */
@@ -26,7 +26,7 @@ public interface IEditingContext {
      */
     String EDITING_CONTEXT = "editingContext"; //$NON-NLS-1$
 
-    UUID getProjectId();
+    UUID getId();
 
     Object getDomain();
 }

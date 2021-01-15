@@ -12,13 +12,11 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.core.api;
 
-import java.util.UUID;
-
 /**
  * Interface used to save the editing context when a change has been performed.
  *
  * @author sbegaudeau
  */
 public interface IEditingContextPersistenceService {
-    void persist(UUID projectId, IEditingContext editingContext);
+    void persist(IEditingContext editingContext);
 }

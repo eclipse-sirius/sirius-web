@@ -18,7 +18,7 @@ import java.util.Optional;
 import org.eclipse.sirius.web.collaborative.api.dto.CreateRepresentationInput;
 import org.eclipse.sirius.web.collaborative.api.dto.CreateRepresentationSuccessPayload;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
-import org.eclipse.sirius.web.collaborative.api.services.IProjectEventHandler;
+import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventHandler;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramCreationService;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
@@ -44,7 +44,7 @@ import io.micrometer.core.instrument.MeterRegistry;
  * @author hmarchadour
  */
 @Service
-public class CreateDiagramEventHandler implements IProjectEventHandler {
+public class CreateDiagramEventHandler implements IEditingContextEventHandler {
 
     private final IRepresentationDescriptionService representationDescriptionService;
 
@@ -108,7 +108,7 @@ public class CreateDiagramEventHandler implements IProjectEventHandler {
 
                 // @formatter:off
                 RepresentationDescriptor representationDescriptor = RepresentationDescriptor.newRepresentationDescriptor(diagram.getId())
-                        .projectId(editingContext.getProjectId())
+                        .projectId(editingContext.getId())
                         .descriptionId(diagram.getDescriptionId())
                         .targetObjectId(diagram.getTargetObjectId())
                         .label(diagram.getLabel())

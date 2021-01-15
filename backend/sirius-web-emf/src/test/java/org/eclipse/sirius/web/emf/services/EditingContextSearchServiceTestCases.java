@@ -24,20 +24,21 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.web.core.api.IEditingContext;
-import org.eclipse.sirius.web.core.api.IEditingContextFactory;
+import org.eclipse.sirius.web.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
 import org.eclipse.sirius.web.persistence.entities.ProjectEntity;
 import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
+import org.eclipse.sirius.web.persistence.repositories.IProjectRepository;
 import org.junit.Test;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 
 /**
- * Unit tests of the editing context factory.
+ * Unit tests of the editing context search service.
  *
  * @author sbegaudeau
  */
-public class EditingContextFactoryTestCases {
+public class EditingContextSearchServiceTestCases {
     // @formatter:off
     private static final String CONTENT = "{" + System.lineSeparator() //$NON-NLS-1$
     + "    \"json\": {" + System.lineSeparator() //$NON-NLS-1$
@@ -70,14 +71,16 @@ public class EditingContextFactoryTestCases {
 
     @Test
     public void testEditingContextWithNoDocuments() {
+        IProjectRepository projectRepository = new NoOpProjectRepository();
         IDocumentRepository documentRepository = new NoOpDocumentRepository();
         ComposedAdapterFactory composedAdapterFactory = new ComposedAdapterFactory();
         EPackage.Registry ePackageRegistry = new EPackageRegistryImpl();
 
         UUID projectId = UUID.randomUUID();
 
-        IEditingContextFactory editingContextFactory = new EditingContextFactory(documentRepository, composedAdapterFactory, ePackageRegistry, new SimpleMeterRegistry());
-        IEditingContext editingContext = editingContextFactory.createEditingContext(projectId);
+        IEditingContextSearchService editingContextSearchService = new EditingContextSearchService(projectRepository, documentRepository, composedAdapterFactory, ePackageRegistry,
+                new SimpleMeterRegistry());
+        IEditingContext editingContext = editingContextSearchService.findById(projectId).get();
 
         assertThat(editingContext.getDomain()).isInstanceOf(EditingDomain.class);
         EditingDomain editingDomain = (EditingDomain) editingContext.getDomain();
@@ -104,6 +107,7 @@ public class EditingContextFactoryTestCases {
         secondDocumentEntity.setProject(projectEntity);
         secondDocumentEntity.setContent(CONTENT);
 
+        IProjectRepository projectRepository = new NoOpProjectRepository();
         IDocumentRepository documentRepository = new NoOpDocumentRepository() {
             @Override
             public List<DocumentEntity> findAllByProjectId(UUID projectId) {
@@ -114,8 +118,9 @@ public class EditingContextFactoryTestCases {
         ComposedAdapterFactory composedAdapterFactory = new ComposedAdapterFactory();
         EPackage.Registry ePackageRegistry = new EPackageRegistryImpl();
 
-        IEditingContextFactory editingContextFactory = new EditingContextFactory(documentRepository, composedAdapterFactory, ePackageRegistry, new SimpleMeterRegistry());
-        IEditingContext editingContext = editingContextFactory.createEditingContext(projectId);
+        IEditingContextSearchService editingContextSearchService = new EditingContextSearchService(projectRepository, documentRepository, composedAdapterFactory, ePackageRegistry,
+                new SimpleMeterRegistry());
+        IEditingContext editingContext = editingContextSearchService.findById(projectId).get();
 
         assertThat(editingContext.getDomain()).isInstanceOf(EditingDomain.class);
         EditingDomain editingDomain = (EditingDomain) editingContext.getDomain();

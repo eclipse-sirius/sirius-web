@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,17 +19,27 @@ import java.util.UUID;
 import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.core.api.IPayload;
 
+import reactor.core.publisher.Flux;
+
 /**
- * Registry of all the project event handlers.
+ * Handles all of the input events and emit output events of a specific project.
  *
  * @author sbegaudeau
  */
-public interface IProjectEventProcessorRegistry {
-    List<IProjectEventProcessor> getProjectEventProcessors();
+public interface IEditingContextEventProcessor {
+    UUID getEditingContextId();
 
-    Optional<IPayload> dispatchEvent(UUID projectId, IInput input);
+    <T extends IRepresentationEventProcessor> Optional<T> acquireRepresentationEventProcessor(Class<T> representationEventProcessorClass, IRepresentationConfiguration configuration,
+            SubscriptionDescription subscriptionDescription);
 
-    Optional<IProjectEventProcessor> getOrCreateProjectEventProcessor(UUID projectId);
+    List<IRepresentationEventProcessor> getRepresentationEventProcessors();
 
-    void dispose(UUID projectId);
+    void release(SubscriptionDescription subscriptionDescription);
+
+    Optional<IPayload> handle(IInput input);
+
+    void dispose();
+
+    Flux<IPayload> getOutputEvents();
+
 }

@@ -66,7 +66,7 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
     }
 
     @Override
-    public void persist(UUID projectId, IEditingContext editingContext) {
+    public void persist(IEditingContext editingContext) {
         long start = System.currentTimeMillis();
 
         Object domain = editingContext.getDomain();
@@ -74,7 +74,7 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
             EditingDomain editingDomain = (EditingDomain) domain;
             List<DocumentEntity> documentEntities = this.persist(editingDomain);
             List<Document> documents = documentEntities.stream().map(new DocumentMapper()::toDTO).collect(Collectors.toList());
-            this.applicationEventPublisher.publishEvent(new DocumentsModifiedEvent(projectId, documents));
+            this.applicationEventPublisher.publishEvent(new DocumentsModifiedEvent(editingContext.getId(), documents));
         }
         // @formatter:off
         var optionalDocuments = Optional.ofNullable(editingContext)

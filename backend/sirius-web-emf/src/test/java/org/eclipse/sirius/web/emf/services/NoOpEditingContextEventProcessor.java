@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.sirius.web.collaborative.api.services.IProjectEventProcessor;
+import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventProcessor;
 import org.eclipse.sirius.web.collaborative.api.services.IRepresentationConfiguration;
 import org.eclipse.sirius.web.collaborative.api.services.IRepresentationEventProcessor;
 import org.eclipse.sirius.web.collaborative.api.services.SubscriptionDescription;
@@ -27,21 +27,21 @@ import org.eclipse.sirius.web.core.api.IPayload;
 import reactor.core.publisher.Flux;
 
 /**
- * Implementation of the project event processor which does nothing.
+ * Implementation of the editing context event processor which does nothing.
  *
  * @author sbegaudeau
  */
-public class NoOpProjectEventProcessor implements IProjectEventProcessor {
-
-    @Override
-    public UUID getProjectId() {
-        return null;
-    }
+public class NoOpEditingContextEventProcessor implements IEditingContextEventProcessor {
 
     @Override
     public <T extends IRepresentationEventProcessor> Optional<T> acquireRepresentationEventProcessor(Class<T> representationEventProcessorClass, IRepresentationConfiguration configuration,
             SubscriptionDescription subscriptionDescription) {
         return Optional.empty();
+    }
+
+    @Override
+    public UUID getEditingContextId() {
+        return null;
     }
 
     @Override
