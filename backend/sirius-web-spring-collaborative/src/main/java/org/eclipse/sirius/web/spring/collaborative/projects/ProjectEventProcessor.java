@@ -30,7 +30,6 @@ import java.util.stream.Collectors;
 
 import org.eclipse.sirius.web.collaborative.api.dto.DeleteRepresentationInput;
 import org.eclipse.sirius.web.collaborative.api.dto.PreDestroyPayload;
-import org.eclipse.sirius.web.collaborative.api.dto.ProjectRenamedEventPayload;
 import org.eclipse.sirius.web.collaborative.api.dto.RenameRepresentationSuccessPayload;
 import org.eclipse.sirius.web.collaborative.api.dto.RepresentationRefreshedEvent;
 import org.eclipse.sirius.web.collaborative.api.dto.RepresentationRenamedEventPayload;
@@ -49,9 +48,6 @@ import org.eclipse.sirius.web.core.api.IRepresentationInput;
 import org.eclipse.sirius.web.representations.IRepresentation;
 import org.eclipse.sirius.web.representations.ISemanticRepresentation;
 import org.eclipse.sirius.web.services.api.objects.IObjectService;
-import org.eclipse.sirius.web.services.api.projects.Project;
-import org.eclipse.sirius.web.services.api.projects.RenameProjectInput;
-import org.eclipse.sirius.web.services.api.projects.RenameProjectSuccessPayload;
 import org.eclipse.sirius.web.services.api.representations.RenameRepresentationInput;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -161,9 +157,6 @@ public class ProjectEventProcessor implements IProjectEventProcessor {
                 UUID representationId = ((RenameRepresentationInput) input).getRepresentationId();
                 String newLabel = ((RenameRepresentationInput) input).getNewLabel();
                 this.sink.next(new RepresentationRenamedEventPayload(representationId, newLabel));
-            } else if (input instanceof RenameProjectInput && payload instanceof RenameProjectSuccessPayload) {
-                Project project = ((RenameProjectSuccessPayload) payload).getProject();
-                this.sink.next(new ProjectRenamedEventPayload(project.getId(), project.getName()));
             }
         }
     }
