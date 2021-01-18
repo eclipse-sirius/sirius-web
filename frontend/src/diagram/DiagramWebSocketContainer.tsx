@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  *******************************************************************************/
 import { useLazyQuery, useMutation, useSubscription } from '@apollo/client';
 import { Text } from 'core/text/Text';
+import { DiagramWebSocketContainerProps } from 'diagram/DiagramWebSocketContainer.types';
 import {
   COMPLETE__STATE,
   HANDLE_COMPLETE__ACTION,
@@ -226,7 +227,7 @@ export const DiagramWebSocketContainer = ({
   selection,
   setSelection,
   setSubscribers,
-}) => {
+}: DiagramWebSocketContainerProps) => {
   const diagramDomElement = useRef(null);
 
   const [state, dispatch] = useReducer(reducer, initialState);
