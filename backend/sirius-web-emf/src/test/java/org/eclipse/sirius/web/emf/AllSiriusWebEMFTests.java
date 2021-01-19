@@ -37,6 +37,7 @@ import org.eclipse.sirius.web.emf.services.EditingContextPersistenceServiceTestC
 import org.eclipse.sirius.web.emf.services.IDManagerTestCases;
 import org.eclipse.sirius.web.emf.services.LabelFeatureProviderRegistryTestCases;
 import org.eclipse.sirius.web.emf.services.LabelFeatureProviderTestCases;
+import org.eclipse.sirius.web.emf.services.ObjectServiceTestCases;
 import org.eclipse.sirius.web.emf.services.RenameDocumentEventHandlerTestCases;
 import org.eclipse.sirius.web.emf.services.UploadDocumentEventHandlerTestCases;
 import org.junit.runner.RunWith;
@@ -60,6 +61,7 @@ import org.junit.runners.Suite.SuiteClasses;
     IDManagerTestCases.class,
     LabelFeatureProviderRegistryTestCases.class,
     LabelFeatureProviderTestCases.class,
+    ObjectServiceTestCases.class,
     RenameDocumentEventHandlerTestCases.class,
     ServiceTestCases.class,
     SpringCodingRulesTestCases.class,
