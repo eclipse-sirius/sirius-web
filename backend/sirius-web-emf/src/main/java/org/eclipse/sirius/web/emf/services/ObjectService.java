@@ -28,6 +28,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
+import org.eclipse.emf.edit.provider.ComposedImage;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IObjectService;
@@ -154,14 +155,7 @@ public class ObjectService implements IObjectService {
             if (adapter instanceof IItemLabelProvider) {
                 IItemLabelProvider labelProvider = (IItemLabelProvider) adapter;
                 Object image = labelProvider.getImage(eObject);
-                String imagePath = null;
-                if (image instanceof URI) {
-                    URI uri = (URI) image;
-                    imagePath = uri.toString();
-                } else if (image instanceof URL) {
-                    URL url = (URL) image;
-                    imagePath = url.toString();
-                }
+                String imagePath = this.findImagePath(image);
                 if (imagePath != null) {
                     String[] uriSplit = imagePath.split("!"); //$NON-NLS-1$
                     if (uriSplit.length > 1) {
@@ -172,6 +166,27 @@ public class ObjectService implements IObjectService {
             }
         }
         return null;
+    }
+
+    private String findImagePath(Object image) {
+        String imagePath = null;
+        if (image instanceof URI) {
+            URI uri = (URI) image;
+            imagePath = uri.toString();
+        } else if (image instanceof URL) {
+            URL url = (URL) image;
+            imagePath = url.toString();
+        } else if (image instanceof ComposedImage) {
+            ComposedImage composite = (ComposedImage) image;
+            // @formatter:off
+            imagePath = composite.getImages().stream()
+                                 .map(this::findImagePath)
+                                 .filter(Objects::nonNull)
+                                 .findFirst()
+                                 .orElse(null);
+            // @formatter:on
+        }
+        return imagePath;
     }
 
     @Override
