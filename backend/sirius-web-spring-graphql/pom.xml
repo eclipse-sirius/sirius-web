@@ -22,7 +22,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius.web</groupId>
 	<artifactId>sirius-web-spring-graphql</artifactId>
-	<version>0.1.32</version>
+	<version>0.1.33</version>
 	<name>sirius-web-spring-graphql</name>
 	<description>Sirius Web Spring GraphQL</description>
 
@@ -68,17 +68,17 @@
     	<dependency>
     		<groupId>org.eclipse.sirius.web</groupId>
     		<artifactId>sirius-web-annotations</artifactId>
-    		<version>0.1.32</version>
+    		<version>0.1.33</version>
     	</dependency>
     	<dependency>
     		<groupId>org.eclipse.sirius.web</groupId>
     		<artifactId>sirius-web-graphql-utils</artifactId>
-    		<version>0.1.32</version>
+    		<version>0.1.33</version>
     	</dependency>
     	<dependency>
     		<groupId>org.eclipse.sirius.web</groupId>
     		<artifactId>sirius-web-spring-graphql-api</artifactId>
-    		<version>0.1.32</version>
+    		<version>0.1.33</version>
     	</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -88,13 +88,13 @@
     	<dependency>
     		<groupId>org.eclipse.sirius.web</groupId>
     		<artifactId>sirius-web-tests</artifactId>
-    		<version>0.1.32</version>
+    		<version>0.1.33</version>
     		<scope>test</scope>
     	</dependency>
     	<dependency>
     		<groupId>org.eclipse.sirius.web</groupId>
     		<artifactId>sirius-web-spring-tests</artifactId>
-    		<version>0.1.32</version>
+    		<version>0.1.33</version>
     		<scope>test</scope>
     	</dependency>
 	</dependencies>
