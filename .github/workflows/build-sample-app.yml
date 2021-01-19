@@ -3,8 +3,10 @@ name: Build and Publish Sample Application
 on:
   push:
     branches:
-      - master
+      - '**'
   pull_request:
+    branches:
+      - '**:**'
   workflow_dispatch:
 
 jobs:
