@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.services.api.representations;
+package org.eclipse.sirius.web.collaborative.forms.api;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ import org.eclipse.sirius.web.forms.description.FormDescription;
  *
  * @author hmarchadour
  */
-public interface IPropertiesDescriptionProvider {
+public interface IPropertiesDescriptionService {
 
     List<FormDescription> getPropertiesDescriptions();
 

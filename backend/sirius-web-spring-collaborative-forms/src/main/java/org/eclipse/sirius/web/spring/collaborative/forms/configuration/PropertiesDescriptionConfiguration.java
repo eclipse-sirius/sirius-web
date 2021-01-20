@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,14 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.spring.collaborative.configuration;
+package org.eclipse.sirius.web.spring.collaborative.forms.configuration;
 
 import java.util.List;
 
 import org.eclipse.sirius.web.api.configuration.IPropertiesDescriptionRegistryConfigurer;
 import org.eclipse.sirius.web.api.configuration.IRepresentationDescriptionRegistryConfigurer;
-import org.eclipse.sirius.web.spring.collaborative.representations.PropertiesDescriptionRegistry;
-import org.eclipse.sirius.web.spring.collaborative.representations.PropertiesDescriptionService;
+import org.eclipse.sirius.web.spring.collaborative.forms.services.PropertiesDescriptionRegistry;
+import org.eclipse.sirius.web.spring.collaborative.forms.services.PropertiesDescriptionService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
