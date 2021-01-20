@@ -10,20 +10,20 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.spring.collaborative.representations;
+package org.eclipse.sirius.web.spring.collaborative.forms.services;
 
 import java.util.List;
 import java.util.Objects;
 
+import org.eclipse.sirius.web.collaborative.forms.api.IPropertiesDescriptionService;
 import org.eclipse.sirius.web.forms.description.FormDescription;
-import org.eclipse.sirius.web.services.api.representations.IPropertiesDescriptionProvider;
 
 /**
  * Service used to query the properties descriptions available.
  *
  * @author hmarchadour
  */
-public class PropertiesDescriptionService implements IPropertiesDescriptionProvider {
+public class PropertiesDescriptionService implements IPropertiesDescriptionService {
 
     private final PropertiesDescriptionRegistry registry;
 
