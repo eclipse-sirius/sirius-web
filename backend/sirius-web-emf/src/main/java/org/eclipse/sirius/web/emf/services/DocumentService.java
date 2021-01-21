@@ -28,7 +28,6 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.xmi.XMIResource;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
-import org.eclipse.sirius.web.emf.utils.EMFResourceUtils;
 import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
 import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
 import org.eclipse.sirius.web.persistence.repositories.IProjectRepository;
@@ -116,10 +115,7 @@ public class DocumentService implements IDocumentService {
         Map<String, Object> options = new HashMap<>();
 
         if (RESOURCE_KIND_JSON.equals(resourceKind)) {
-            outputResource = new SiriusWebJSONResourceFactoryImpl().createResource(URI.createURI(document.getName()));
-            options = new EMFResourceUtils().getFastJSONSaveOptions();
-            options.put(JsonResource.OPTION_ENCODING, JsonResource.ENCODING_UTF_8);
-            options.put(JsonResource.OPTION_SCHEMA_LOCATION, Boolean.TRUE);
+            optionalBytes = Optional.of(document.getContent().getBytes());
         } else if (RESOURCE_KIND_XMI.equals(resourceKind)) {
             outputResource = new XMIResourceImpl(URI.createURI(document.getName()));
             options.put(XMIResource.OPTION_ENCODING, JsonResource.ENCODING_UTF_8);
