@@ -15,7 +15,6 @@ package org.eclipse.sirius.web.services.api.document;
 import java.text.MessageFormat;
 import java.util.UUID;
 
-import org.eclipse.sirius.web.annotations.graphql.GraphQLObjectType;
 import org.eclipse.sirius.web.services.api.projects.Project;
 
 /**
@@ -23,7 +22,6 @@ import org.eclipse.sirius.web.services.api.projects.Project;
  *
  * @author sbegaudeau
  */
-@GraphQLObjectType(name = "Document")
 public class Document {
 
     private UUID id;
