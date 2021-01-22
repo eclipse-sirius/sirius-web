@@ -208,7 +208,7 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
     const { finished, moves } = action;
     if (finished && moves.length > 0) {
       const { elementId, toPosition } = moves[0];
-      this.moveElement(elementId, toPosition?.x, toPosition?.y)
+      this.moveElement(elementId, toPosition?.x, toPosition?.y);
     }
   }
 

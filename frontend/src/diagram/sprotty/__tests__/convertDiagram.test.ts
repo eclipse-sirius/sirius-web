@@ -12,18 +12,18 @@
  *******************************************************************************/
 import 'reflect-metadata';
 import {
-  createFeatureSet,
-  connectableFeature,
-  deletableFeature,
-  selectFeature,
   boundsFeature,
-  layoutContainerFeature,
+  connectableFeature,
+  createFeatureSet,
+  deletableFeature,
   fadeFeature,
   hoverFeedbackFeature,
+  layoutContainerFeature,
+  moveFeature,
   popupFeature,
+  selectFeature,
 } from 'sprotty';
 import { convertDiagram } from '../convertDiagram';
-
 import siriusWebDiagram from './siriusWebDiagram.json';
 
 describe('ModelConverter', () => {
@@ -94,6 +94,7 @@ describe('ModelConverter', () => {
             fadeFeature,
             hoverFeedbackFeature,
             popupFeature,
+            moveFeature,
           ])
         );
 
