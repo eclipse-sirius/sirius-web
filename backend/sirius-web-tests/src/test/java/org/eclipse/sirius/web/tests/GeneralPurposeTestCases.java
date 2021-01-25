@@ -76,6 +76,8 @@ public class GeneralPurposeTestCases {
 
     private static final String HEIGHT_100 = "height: 100%;"; //$NON-NLS-1$
 
+    private static final String INVALID_MATERIALUI_IMPORT = "from '@material-ui/core';"; //$NON-NLS-1$
+
     //// @formatter:off
     private static final List<Pattern> COPYRIGHT_HEADER = List.of(
             Pattern.compile(Pattern.quote("/*******************************************************************************")), //$NON-NLS-1$
@@ -216,6 +218,7 @@ public class GeneralPurposeTestCases {
                     this.testNoAlert(index, line, javascriptFilePath);
                     this.testNoConfirm(index, line, javascriptFilePath);
                     this.testNoPrompt(index, line, javascriptFilePath);
+                    this.testNoInvalidMaterialUIImport(index, line, javascriptFilePath);
                 }
                 this.testCopyrightHeader(javascriptFilePath, lines);
             } catch (IOException exception) {
@@ -257,6 +260,12 @@ public class GeneralPurposeTestCases {
     private void testNoPrompt(int index, String line, Path javascriptFilePath) {
         if (line.contains(PROMPT)) {
             fail(this.createErrorMessage(PROMPT, javascriptFilePath, index));
+        }
+    }
+
+    private void testNoInvalidMaterialUIImport(int index, String line, Path javascriptFilePath) {
+        if (line.contains(INVALID_MATERIALUI_IMPORT)) {
+            fail(this.createErrorMessage(INVALID_MATERIALUI_IMPORT, javascriptFilePath, index));
         }
     }
 
