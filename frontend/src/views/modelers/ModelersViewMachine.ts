@@ -10,101 +10,195 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { Modeler } from 'views/modelers/ModelersView.types';
 import { assign, Machine } from 'xstate';
-
 export interface ModelersViewStateSchema {
   states: {
-    loading: {};
-    loaded: {};
-    empty: {};
-    error: {};
+    toast: {
+      states: {
+        visible: {};
+        hidden: {};
+      };
+    };
+    modelersView: {
+      states: {
+        loading: {};
+        loaded: {};
+        empty: {};
+        missing: {};
+      };
+    };
   };
 }
 
+export type SchemaValue = {
+  toast: 'visible' | 'hidden';
+  modelersView: 'loading' | 'loaded' | 'empty' | 'missing';
+};
+
+export type ModelersViewModal = 'Rename' | 'Publish';
+
 export interface ModelersViewContext {
-  modelers: any;
-  message: string;
+  modelers: Modeler[];
+  selectedModeler: Modeler | null;
+  menuAnchor: HTMLElement | null;
+  modalToDisplay: ModelersViewModal | null;
+  message: string | null;
 }
 
-export type FetchedModelersEvent = { type: 'FETCHED_MODELERS'; modelers: any };
-export type ErrorFetchingEvent = { type: 'ERROR_FETCHING'; message: string };
-export type ModelersUpdatedEvent = { type: 'MODELERS_UPDATED'; modelers: any };
-export type ModelersViewEvent = FetchedModelersEvent | ErrorFetchingEvent | ModelersUpdatedEvent;
+export type ShowToastEvent = { type: 'SHOW_TOAST'; message: string };
+export type HideToastEvent = { type: 'HIDE_TOAST' };
+export type FetchedModelersEvent = { type: 'HANDLE_FETCHED_MODELERS'; data: any };
+export type OpenMenuEvent = { type: 'OPEN_MENU'; menuAnchor: HTMLElement; modeler: Modeler };
+export type CloseMenuEvent = { type: 'CLOSE_MENU' };
+export type OpenModalEvent = { type: 'OPEN_MODAL'; modalToDisplay: ModelersViewModal };
+export type CloseModalEvent = { type: 'CLOSE_MODAL' };
+export type ModelersViewEvent =
+  | FetchedModelersEvent
+  | ShowToastEvent
+  | HideToastEvent
+  | OpenMenuEvent
+  | CloseMenuEvent
+  | OpenModalEvent
+  | CloseModalEvent;
 
 export const modelersViewMachine = Machine<ModelersViewContext, ModelersViewStateSchema, ModelersViewEvent>(
   {
-    initial: 'loading',
+    type: 'parallel',
     context: {
       modelers: [],
-      message: '',
+      selectedModeler: null,
+      menuAnchor: null,
+      modalToDisplay: null,
+      message: null,
     },
     states: {
-      loading: {
-        on: {
-          FETCHED_MODELERS: [
-            {
-              cond: 'isEmpty',
-              target: 'empty',
-              actions: 'updateModelers',
+      toast: {
+        initial: 'hidden',
+        states: {
+          hidden: {
+            on: {
+              SHOW_TOAST: {
+                target: 'visible',
+                actions: 'setMessage',
+              },
             },
-            {
-              target: 'loaded',
-              actions: 'updateModelers',
+          },
+          visible: {
+            on: {
+              HIDE_TOAST: {
+                target: 'hidden',
+                actions: 'clearMessage',
+              },
             },
-          ],
-          ERROR_FETCHING: [
-            {
-              target: 'error',
-              actions: 'setMessage',
-            },
-          ],
+          },
         },
       },
-      loaded: {
-        on: {
-          MODELERS_UPDATED: [
-            {
-              cond: 'isEmpty',
-              target: 'empty',
-              actions: 'updateModelers',
+      modelersView: {
+        initial: 'loading',
+        states: {
+          loading: {
+            on: {
+              HANDLE_FETCHED_MODELERS: [
+                {
+                  cond: 'isMissing',
+                  target: 'missing',
+                },
+                {
+                  cond: 'isEmpty',
+                  target: 'empty',
+                },
+                {
+                  target: 'loaded',
+                  actions: 'updateModelers',
+                },
+              ],
             },
-            {
-              target: 'loaded',
-              actions: 'updateModelers',
+          },
+          loaded: {
+            on: {
+              HANDLE_FETCHED_MODELERS: [
+                {
+                  cond: 'isMissing',
+                  target: 'missing',
+                },
+                {
+                  cond: 'isEmpty',
+                  target: 'empty',
+                },
+                {
+                  target: 'loaded',
+                  actions: 'updateModelers',
+                },
+              ],
+              OPEN_MENU: [
+                {
+                  actions: 'openMenu',
+                },
+              ],
+              CLOSE_MENU: [
+                {
+                  actions: 'closeMenu',
+                },
+              ],
+              OPEN_MODAL: [
+                {
+                  actions: 'openModal',
+                },
+              ],
+              CLOSE_MODAL: [
+                {
+                  actions: 'closeModal',
+                },
+              ],
             },
-          ],
-
-          ERROR_FETCHING: [
-            {
-              target: 'error',
-              actions: 'setMessage',
-            },
-          ],
+          },
+          empty: {
+            type: 'final',
+          },
+          missing: {
+            type: 'final',
+          },
         },
       },
-      empty: {},
-      error: {},
     },
   },
   {
     guards: {
+      isMissing: (_, event) => {
+        const { data } = event as FetchedModelersEvent;
+        return !data.viewer.project;
+      },
       isEmpty: (_, event) => {
-        const { modelers } = event as FetchedModelersEvent;
-        return modelers.length === 0;
+        const { data } = event as FetchedModelersEvent;
+        return data.viewer.project.modelers.length === 0;
       },
     },
     actions: {
       updateModelers: assign((_, event) => {
-        const { modelers } = event as ModelersUpdatedEvent;
-        return { modelers, message: '' };
+        const { data } = event as FetchedModelersEvent;
+        return { modelers: data.viewer.project.modelers };
+      }),
+      openMenu: assign((_, event) => {
+        const { menuAnchor, modeler } = event as OpenMenuEvent;
+        return { menuAnchor, selectedModeler: modeler };
+      }),
+      closeMenu: assign((_, event) => {
+        return { menuAnchor: null, selectedModeler: null };
+      }),
+      openModal: assign((_, event) => {
+        const { modalToDisplay } = event as OpenModalEvent;
+        return { menuAnchor: null, modalToDisplay };
+      }),
+      closeModal: assign((_, event) => {
+        return { modalToDisplay: null };
       }),
       setMessage: assign((_, event) => {
-        const { message } = event as ErrorFetchingEvent;
-        return {
-          message:
-            'An unexpected error has occured while retrieving the modeler, please contact your administrator. ' +
-            message,
-        };
+        const { message } = event as ShowToastEvent;
+        return { message };
+      }),
+      clearMessage: assign((_) => {
+        return { message: null };
       }),
     },
   }

@@ -11,8 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
-import { Checkbox, Snackbar } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
+import Checkbox from '@material-ui/core/Checkbox';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -21,6 +21,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormGroup from '@material-ui/core/FormGroup';
 import IconButton from '@material-ui/core/IconButton';
+import Snackbar from '@material-ui/core/Snackbar';
 import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
 import gql from 'graphql-tag';
@@ -57,11 +58,11 @@ const publishModelerMutation = gql`
 
 const propTypes = {
   modelerId: PropTypes.string.isRequired,
-  onModelerPublished: PropTypes.func.isRequired,
+  onPublish: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
 };
 
-export const PublishModelerModal = ({ modelerId, onModelerPublished, onClose }) => {
+export const PublishModelerModal = ({ modelerId, onPublish, onClose }) => {
   const [{ value, context }, dispatch] = useMachine<PublishModelerModalContext, PublishModelerModalEvent>(
     publishModelerModalMachine
   );
@@ -90,7 +91,7 @@ export const PublishModelerModal = ({ modelerId, onModelerPublished, onClose }) 
         if (publishModeler.__typename === 'PublishModelerSuccessPayload') {
           const successEvent: HandleResponseEvent = { type: 'HANDLE_RESPONSE', data: publishModeler };
           dispatch(successEvent);
-          onModelerPublished();
+          onPublish();
         } else if (publishModeler.__typename === 'ErrorPayload') {
           const { message } = publishModeler;
           const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
@@ -98,7 +99,7 @@ export const PublishModelerModal = ({ modelerId, onModelerPublished, onClose }) 
         }
       }
     }
-  }, [loading, data, error, onModelerPublished, dispatch]);
+  }, [loading, data, error, onPublish, dispatch]);
 
   const onPublishModeler = (event) => {
     event.preventDefault();

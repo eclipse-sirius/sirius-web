@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -54,7 +54,7 @@ const createModelerMutation = gql`
   }
 `;
 
-const useNewProjectViewStyles = makeStyles((theme) => ({
+const useNewModelerViewStyles = makeStyles((theme) => ({
   buttons: {
     display: 'flex',
     flexDirection: 'row',
@@ -63,7 +63,7 @@ const useNewProjectViewStyles = makeStyles((theme) => ({
 }));
 export const NewModelerView = () => {
   const { projectId } = useParams();
-  const classes = useNewProjectViewStyles();
+  const classes = useNewModelerViewStyles();
   const [{ value, context }, dispatch] = useMachine<NewModelerViewContext, NewModelerEvent>(newModelerViewMachine);
   const { newModelerView, toast } = value as SchemaValue;
   const { name, nameMessage, nameIsInvalid, message } = context;
@@ -75,7 +75,7 @@ export const NewModelerView = () => {
     dispatch(changeNameEvent);
   };
 
-  const onCreateNewModeler = async (event) => {
+  const onCreateNewModeler = (event) => {
     event.preventDefault();
     const variables = {
       input: {
