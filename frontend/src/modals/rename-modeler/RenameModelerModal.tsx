@@ -11,13 +11,13 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
-import { Snackbar } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Snackbar from '@material-ui/core/Snackbar';
 import TextField from '@material-ui/core/TextField';
 import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
@@ -56,11 +56,11 @@ const renameModelerMutation = gql`
 const propTypes = {
   modelerId: PropTypes.string.isRequired,
   initialModelerName: PropTypes.string.isRequired,
-  onModelerRenamed: PropTypes.func.isRequired,
+  onRename: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
 };
 
-export const RenameModelerModal = ({ modelerId, initialModelerName, onModelerRenamed, onClose }) => {
+export const RenameModelerModal = ({ modelerId, initialModelerName, onRename, onClose }) => {
   const [{ value, context }, dispatch] = useMachine<RenameModelerModalContext, RenameModelerEvent>(
     renameModelerModalMachine,
     {
@@ -101,7 +101,7 @@ export const RenameModelerModal = ({ modelerId, initialModelerName, onModelerRen
         if (renameModeler.__typename === 'RenameModelerSuccessPayload') {
           const successEvent: HandleResponseEvent = { type: 'HANDLE_RESPONSE', data: renameModeler };
           dispatch(successEvent);
-          onModelerRenamed();
+          onRename();
         } else if (renameModeler.__typename === 'ErrorPayload') {
           const { message } = renameModeler;
           const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
@@ -109,10 +109,10 @@ export const RenameModelerModal = ({ modelerId, initialModelerName, onModelerRen
         }
       }
     }
-  }, [loading, data, error, onModelerRenamed, dispatch]);
+  }, [loading, data, error, onRename, dispatch]);
 
   return (
-    <Dialog open={true} onClose={onClose} aria-labelledby="form-dialog-title">
+    <Dialog open={true} onClose={onClose} aria-labelledby="dialog-title">
       <DialogTitle id="dialog-title">Rename the modeler</DialogTitle>
       <DialogContent>
         <DialogContentText></DialogContentText>
