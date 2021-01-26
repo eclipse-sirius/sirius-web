@@ -10,30 +10,29 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { TYPES, MousePositionTracker } from 'sprotty';
-
 import {
-  machine,
-  EMPTY__STATE,
-  LOADING__STATE,
-  READY__STATE,
   COMPLETE__STATE,
-  INITIALIZE__ACTION,
-  HANDLE_DATA__ACTION,
-  HANDLE_CONNECTION_ERROR__ACTION,
-  HANDLE_ERROR__ACTION,
+  EMPTY__STATE,
   HANDLE_COMPLETE__ACTION,
+  HANDLE_CONNECTION_ERROR__ACTION,
+  HANDLE_DATA__ACTION,
+  HANDLE_ERROR__ACTION,
+  INITIALIZE__ACTION,
+  LOADING__STATE,
+  machine,
+  READY__STATE,
+  SELECTED_ELEMENT__ACTION,
+  SELECTION__ACTION,
+  SELECT_ZOOM_LEVEL__ACTION,
   SET_ACTIVE_TOOL__ACTION,
   SET_CONTEXTUAL_PALETTE__ACTION,
-  SELECTION__ACTION,
-  SELECTED_ELEMENT__ACTION,
-  SWITCH_REPRESENTATION__ACTION,
-  SELECT_ZOOM_LEVEL__ACTION,
-  SET_TOOL_SECTIONS__ACTION,
   SET_DEFAULT_TOOL__ACTION,
+  SET_TOOL_SECTIONS__ACTION,
+  SWITCH_REPRESENTATION__ACTION,
 } from 'diagram/machine';
 import { createDependencyInjectionContainer } from 'diagram/sprotty/DependencyInjection';
 import { SiriusWebWebSocketDiagramServer } from 'diagram/sprotty/WebSocketDiagramServer';
+import { MousePositionTracker, TYPES } from 'sprotty';
 
 export const initialState = {
   viewState: EMPTY__STATE,
@@ -135,11 +134,18 @@ const initializeAction = (prevState, action) => {
     invokeTool,
     editLabel,
     onSelectElement,
+    getCursorOn,
+    setActiveTool,
     toolSections,
     setContextualPalette,
   } = action;
 
-  const container = createDependencyInjectionContainer(diagramDomElement.current.id, onSelectElement);
+  const container = createDependencyInjectionContainer(
+    diagramDomElement.current.id,
+    onSelectElement,
+    getCursorOn,
+    setActiveTool
+  );
   const diagramServer = <SiriusWebWebSocketDiagramServer>container.get(TYPES.ModelSource);
   /**
    * workaround to inject objects in diagramServer from the injector.

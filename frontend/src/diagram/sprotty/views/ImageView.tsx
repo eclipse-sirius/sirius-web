@@ -35,7 +35,10 @@ export class ImageView extends RectangularNodeView {
       styleObject['outline'] = 'var(--blue-lagoon) solid 2px';
     }
     return (
-      <g attrs-data-testid={`Image - ${node.children[0]?.text}`}>
+      <g
+        attrs-data-testid={`Image - ${node.children[0]?.text}`}
+        attrs-data-nodeid={node.id}
+        attrs-data-descriptionid={node.descriptionId}>
         <image
           class-selected={selected}
           class-mouseover={hoverFeedback}

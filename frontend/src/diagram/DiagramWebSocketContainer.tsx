@@ -58,6 +58,7 @@ import {
   invokeEdgeToolOnDiagramMutation,
   invokeNodeToolOnDiagramMutation,
 } from './operations';
+import { canInvokeTool } from './toolServices';
 
 const propTypes = {
   projectId: PropTypes.string.isRequired,
@@ -389,6 +390,21 @@ export const DiagramWebSocketContainer = ({
        */
       diagServer.actionDispatcher.dispatch({ kind: SPROTTY_SELECT_ACTION, element: newSelectedElement });
     };
+    const getCursorOn = (element, diagServer) => {
+      let cursor = 'pointer';
+      if (diagServer.activeTool && diagServer.diagramSourceElement) {
+        const cursorAllowed = canInvokeTool(diagServer.activeTool, diagServer.diagramSourceElement, element);
+        if (cursorAllowed) {
+          cursor = 'copy';
+        } else {
+          cursor = 'not-allowed';
+        }
+      }
+      return cursor;
+    };
+    const setActiveTool = (tool?) => {
+      dispatch({ type: SET_ACTIVE_TOOL__ACTION, tool });
+    };
     const editLabel = (labelId, newText) => {
       const input = {
         projectId,
@@ -412,6 +428,8 @@ export const DiagramWebSocketContainer = ({
         invokeTool,
         editLabel,
         onSelectElement,
+        getCursorOn,
+        setActiveTool,
         toolSections,
         setContextualPalette,
       });

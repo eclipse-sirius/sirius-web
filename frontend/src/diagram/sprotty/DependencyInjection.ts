@@ -50,6 +50,7 @@ import {
   SetPopupModelAction,
   RequestPopupModelAction,
   overrideCommandStackOptions,
+  UpdateModelAction,
 } from 'sprotty';
 
 import { GraphFactory } from 'diagram/sprotty/GraphFactory';
@@ -122,7 +123,7 @@ const siriusWebContainerModule = new ContainerModule((bind, unbind, isBound, reb
  * @param containerId The identifier of the container
  * @param onSelectElement The selection call back
  */
-export const createDependencyInjectionContainer = (containerId, onSelectElement) => {
+export const createDependencyInjectionContainer = (containerId, onSelectElement, getCursorOn, setActiveTool) => {
   const container = new Container();
   container.load(
     defaultModule,
@@ -174,6 +175,7 @@ export const createDependencyInjectionContainer = (containerId, onSelectElement)
         onSelectElement(elementWithTarget, this.diagramServer);
       } else if (event.button === 2) {
         edgeCreationFeedback.reset();
+        setActiveTool();
         return [{ kind: ACTIVE_TOOL_ACTION, tool: undefined }];
       }
       return [];
@@ -186,6 +188,34 @@ export const createDependencyInjectionContainer = (containerId, onSelectElement)
   decorate(inject(TYPES.ModelSource), DiagramMouseListener, 0);
 
   container.bind(TYPES.MouseListener).to(DiagramMouseListener).inSingletonScope();
+
+  class CursorMouseListener extends MouseListener {
+    diagramServer: any;
+    constructor(diagramServer) {
+      super();
+      this.diagramServer = diagramServer;
+    }
+
+    mouseMove(element, event) {
+      const root = element.root;
+      const elementWithTarget = findElementWithTarget(element);
+      const expectedCursor = getCursorOn(elementWithTarget, this.diagramServer);
+      if (root.cursor !== expectedCursor) {
+        root.cursor = expectedCursor;
+        return [
+          {
+            kind: UpdateModelAction.KIND,
+            input: root,
+          },
+        ];
+      }
+
+      return [];
+    }
+  }
+  decorate(inject(TYPES.ModelSource), CursorMouseListener, 0);
+
+  container.bind(TYPES.MouseListener).to(CursorMouseListener).inSingletonScope();
 
   // The list of characters that will enable the direct edit mechanism.
   const directEditActivationValidCharacters = /[\w&é§èàùçÔØÁÛÊË"«»’”„´$¥€£\\¿?!=+-,;:%/{}[\]–#@*.]/;
