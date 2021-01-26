@@ -10,6 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+// Required because Sprotty uses Inversify and both frameworks are written in TypeScript with experimental features.
+import 'reflect-metadata';
 import { initialState, reducer } from '../reducer';
 import {
   EMPTY__STATE,
