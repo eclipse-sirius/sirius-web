@@ -10,8 +10,6 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-// Required because Sprotty uses Inversify and both frameworks are written in TypeScript with experimental features.
-import 'reflect-metadata';
 import { TYPES, MousePositionTracker } from 'sprotty';
 
 import {
