@@ -43,10 +43,6 @@ const createProjectMutation = gql`
       ... on CreateProjectSuccessPayload {
         project {
           id
-          owner {
-            id
-            username
-          }
         }
       }
       ... on ErrorPayload {
@@ -76,7 +72,7 @@ export const NewProjectView = () => {
     dispatch(changeNameEvent);
   };
 
-  const onCreateNewProject = async (event) => {
+  const onCreateNewProject = (event) => {
     event.preventDefault();
     const variables = {
       input: {
