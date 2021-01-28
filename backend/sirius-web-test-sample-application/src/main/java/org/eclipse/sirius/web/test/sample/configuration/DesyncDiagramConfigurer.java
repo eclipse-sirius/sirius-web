@@ -18,9 +18,12 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EPackage.Descriptor;
 import org.eclipse.sirius.web.api.configuration.IRepresentationDescriptionRegistry;
 import org.eclipse.sirius.web.api.configuration.IRepresentationDescriptionRegistryConfigurer;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramContext;
@@ -37,6 +40,7 @@ import org.eclipse.sirius.web.diagrams.description.LabelDescription;
 import org.eclipse.sirius.web.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.web.diagrams.description.NodeDescription;
 import org.eclipse.sirius.web.diagrams.description.SynchronizationPolicy;
+import org.eclipse.sirius.web.diagrams.tools.DropCandidate;
 import org.eclipse.sirius.web.diagrams.tools.DropTool;
 import org.eclipse.sirius.web.diagrams.tools.ToolSection;
 import org.eclipse.sirius.web.representations.Status;
@@ -54,8 +58,11 @@ public class DesyncDiagramConfigurer implements IRepresentationDescriptionRegist
 
     private final IObjectService objectService;
 
-    public DesyncDiagramConfigurer(IObjectService objectService) {
+    private final EPackage.Registry ePackageRegistry;
+
+    public DesyncDiagramConfigurer(IObjectService objectService, EPackage.Registry ePackageRegistry) {
         this.objectService = Objects.requireNonNull(objectService);
+        this.ePackageRegistry = Objects.requireNonNull(ePackageRegistry);
     }
 
     @Override
@@ -138,13 +145,47 @@ public class DesyncDiagramConfigurer implements IRepresentationDescriptionRegist
             }
            return Status.ERROR;
         };
+
+        DropCandidate dropCandidate = DropCandidate.newDropCandidate()
+                .sourceKinds(List.of("flow::System")) //$NON-NLS-1$
+                .targets(List.of())
+                .appliesToDiagramRoot(true)
+                .build();
         DropTool dropTool = DropTool.newDropTool(UUID.randomUUID().toString())
-            .label("dropTool")//$NON-NLS-1$
+            .label("dropTool#1")//$NON-NLS-1$
             .imageURL("") //$NON-NLS-1$
             .handler(handler)
-            .targetDescriptions(List.of(firstDesyncDescription))
-            .appliesToDiagramRoot(true)
+            .dropCandidates(List.of(dropCandidate))
             .build();
+
+
+        List<String> sourceKinds = this.ePackageRegistry.values().stream().map(value -> {
+            List<EClass> result = List.of();
+            if (value instanceof EPackage.Descriptor) {
+                EPackage.Descriptor descriptor = (Descriptor) value;
+                EPackage ePackage = descriptor.getEPackage();
+                result = ePackage.getEClassifiers().stream().filter(EClass.class::isInstance).map(EClass.class::cast).collect(Collectors.toList());
+            } else if (value instanceof EPackage) {
+                EPackage ePackage = (EPackage) value;
+                result = ePackage.getEClassifiers().stream().filter(EClass.class::isInstance).map(EClass.class::cast).collect(Collectors.toList());
+            }
+
+            return result;
+        }).flatMap(List::stream)
+                .map(this.objectService::getKind)
+                .collect(Collectors.toList());
+        DropCandidate dropCandidate2 = DropCandidate.newDropCandidate()
+                .sourceKinds(sourceKinds)
+                .targets(List.of(firstDesyncDescription))
+                .appliesToDiagramRoot(false)
+                .build();
+        DropTool dropTool2 = DropTool.newDropTool(UUID.randomUUID().toString())
+            .label("dropTool#2")//$NON-NLS-1$
+            .imageURL("") //$NON-NLS-1$
+            .handler(handler)
+            .dropCandidates(List.of(dropCandidate2))
+            .build();
+
         return DiagramDescription.newDiagramDescription(UUID.nameUUIDFromBytes("desync-diagram".getBytes())) //$NON-NLS-1$
                                  .label("Desync Diagram") //$NON-NLS-1$
                                  .labelProvider(variableManager -> variableManager.get(DiagramDescription.LABEL, String.class).orElse("Anonymous Domain")) //$NON-NLS-1$
@@ -154,7 +195,7 @@ public class DesyncDiagramConfigurer implements IRepresentationDescriptionRegist
                                  .edgeDescriptions(List.of())
                                  .toolSections(List.of(ToolSection.newToolSection("DropTools") //$NON-NLS-1$
                                          .tools(
-                                                 List.of(dropTool)
+                                                 List.of(dropTool, dropTool2)
                                          )
                                          .label("Drop Tools") //$NON-NLS-1$
                                          .imageURL("") //$NON-NLS-1$
