@@ -30,8 +30,8 @@ import org.eclipse.elk.graph.ElkNode;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.Edge;
 import org.eclipse.sirius.web.diagrams.Node;
-import org.eclipse.sirius.web.diagrams.layout.ConvertedDiagram;
-import org.eclipse.sirius.web.diagrams.layout.LayoutedDiagramProvider;
+import org.eclipse.sirius.web.diagrams.layout.ELKConvertedDiagram;
+import org.eclipse.sirius.web.diagrams.layout.ELKLayoutedDiagramProvider;
 import org.eclipse.sirius.web.diagrams.tests.IdPolicy;
 import org.eclipse.sirius.web.diagrams.tests.LayoutPolicy;
 import org.eclipse.sirius.web.diagrams.tests.TestDiagramBuilder;
@@ -87,16 +87,16 @@ public class LayoutedDiagramProviderTestCases {
                 .build();
         // @formatter:on
 
-        ConvertedDiagram convertedDiagram = this.getConvertedDiagram(originalDiagram);
+        ELKConvertedDiagram convertedDiagram = this.getConvertedDiagram(originalDiagram);
 
-        Diagram layoutedDiagram = new LayoutedDiagramProvider().getLayoutedDiagram(originalDiagram, convertedDiagram.getElkDiagram(), convertedDiagram.getId2ElkGraphElements());
+        Diagram layoutedDiagram = new ELKLayoutedDiagramProvider().getLayoutedDiagram(originalDiagram, convertedDiagram.getElkDiagram(), convertedDiagram.getId2ElkGraphElements());
         assertThat(layoutedDiagram).hasBounds(0, 0, 0, 0);
         assertThat(layoutedDiagram.getNodes()).hasSizeGreaterThan(0);
         assertThat(layoutedDiagram.getNodes().get(0)).hasBounds(NODE_X, NODE_Y, NODE_WIDTH, NODE_HEIGHT);
         assertThat(layoutedDiagram).matchesRecursively(originalDiagram, IdPolicy.WITH_ID, LayoutPolicy.WITHOUT_LAYOUT);
     }
 
-    private ConvertedDiagram getConvertedDiagram(Diagram originalDiagram) {
+    private ELKConvertedDiagram getConvertedDiagram(Diagram originalDiagram) {
         Map<String, ElkGraphElement> id2ElkGraphElements = new HashMap<>();
 
         ElkNode elkDiagram = ElkGraphFactory.eINSTANCE.createElkNode();
@@ -145,7 +145,7 @@ public class LayoutedDiagramProviderTestCases {
 
         id2ElkGraphElements.put(elkEdge.getIdentifier(), elkEdge);
 
-        return new ConvertedDiagram(elkDiagram, id2ElkGraphElements);
+        return new ELKConvertedDiagram(elkDiagram, id2ElkGraphElements);
     }
 
 }

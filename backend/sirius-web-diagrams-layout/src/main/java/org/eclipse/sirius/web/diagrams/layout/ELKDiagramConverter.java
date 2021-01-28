@@ -35,12 +35,12 @@ import org.eclipse.elk.graph.util.ElkGraphUtil;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.Edge;
 import org.eclipse.sirius.web.diagrams.ImageNodeStyle;
-import org.eclipse.sirius.web.diagrams.ImageNodeStyleSizeProvider;
-import org.eclipse.sirius.web.diagrams.ImageSizeProvider;
 import org.eclipse.sirius.web.diagrams.Label;
 import org.eclipse.sirius.web.diagrams.Node;
 import org.eclipse.sirius.web.diagrams.Size;
 import org.eclipse.sirius.web.diagrams.TextBounds;
+import org.eclipse.sirius.web.diagrams.layout.incremental.provider.ImageNodeStyleSizeProvider;
+import org.eclipse.sirius.web.diagrams.layout.incremental.provider.ImageSizeProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -53,7 +53,7 @@ import org.springframework.stereotype.Service;
  * @author sbegaudeau
  */
 @Service
-public class DiagramConverter {
+public class ELKDiagramConverter {
 
     public static final IProperty<String> PROPERTY_TYPE = new Property<>("org.eclipse.sirius.web.layout.type"); //$NON-NLS-1$
 
@@ -67,15 +67,15 @@ public class DiagramConverter {
 
     private final ImageNodeStyleSizeProvider imageNodeStyleSizeProvider;
 
-    private final Logger logger = LoggerFactory.getLogger(DiagramConverter.class);
+    private final Logger logger = LoggerFactory.getLogger(ELKDiagramConverter.class);
 
-    public DiagramConverter(TextBoundsService textBoundsService) {
+    public ELKDiagramConverter(TextBoundsService textBoundsService) {
         this.textBoundsService = Objects.requireNonNull(textBoundsService);
         this.imageSizeProvider = new ImageSizeProvider();
         this.imageNodeStyleSizeProvider = new ImageNodeStyleSizeProvider(this.imageSizeProvider);
     }
 
-    public ConvertedDiagram convert(Diagram diagram) {
+    public ELKConvertedDiagram convert(Diagram diagram) {
         ElkNode elkDiagram = this.convertDiagram(diagram);
 
         Map<String, ElkGraphElement> id2ElkGraphElements = new HashMap<>();
@@ -83,7 +83,7 @@ public class DiagramConverter {
         diagram.getNodes().stream().forEach(node -> this.convertNode(node, elkDiagram, connectableShapeIndex, id2ElkGraphElements));
         diagram.getEdges().stream().forEach(edge -> this.convertEdge(edge, elkDiagram, connectableShapeIndex, id2ElkGraphElements));
 
-        return new ConvertedDiagram(elkDiagram, id2ElkGraphElements);
+        return new ELKConvertedDiagram(elkDiagram, id2ElkGraphElements);
     }
 
     private ElkNode convertDiagram(Diagram diagram) {

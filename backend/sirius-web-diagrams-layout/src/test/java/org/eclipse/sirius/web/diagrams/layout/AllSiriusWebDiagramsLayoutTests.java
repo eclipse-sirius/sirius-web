@@ -14,6 +14,11 @@ package org.eclipse.sirius.web.diagrams.layout;
 
 import org.eclipse.sirius.web.diagrams.layout.architecture.CodingRulesTestCases;
 import org.eclipse.sirius.web.diagrams.layout.architecture.ImmutableTestCases;
+import org.eclipse.sirius.web.diagrams.layout.incremental.EdgeLabelPositionProviderTestCases;
+import org.eclipse.sirius.web.diagrams.layout.incremental.EdgeRoutingPointsProviderTestCases;
+import org.eclipse.sirius.web.diagrams.layout.incremental.NodeLabelPositionProviderTestCases;
+import org.eclipse.sirius.web.diagrams.layout.incremental.NodePositionProviderTestCases;
+import org.eclipse.sirius.web.diagrams.layout.incremental.NodeSizeProviderTestCases;
 import org.eclipse.sirius.web.diagrams.layout.services.DiagramConverterTestCases;
 import org.eclipse.sirius.web.diagrams.layout.services.ImageNodeStyleSizeProviderTestCases;
 import org.eclipse.sirius.web.diagrams.layout.services.ImageSizeProviderTestCases;
@@ -30,7 +35,8 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses({ CodingRulesTestCases.class, ImmutableTestCases.class, DiagramConverterTestCases.class, ImageNodeStyleSizeProviderTestCases.class, ImageSizeProviderTestCases.class,
-        LayoutedDiagramProviderTestCases.class, TextBoundsServiceTestCases.class })
+        LayoutedDiagramProviderTestCases.class, TextBoundsServiceTestCases.class, EdgeLabelPositionProviderTestCases.class, EdgeRoutingPointsProviderTestCases.class,
+        NodeLabelPositionProviderTestCases.class, NodePositionProviderTestCases.class, NodeSizeProviderTestCases.class })
 public final class AllSiriusWebDiagramsLayoutTests {
     private AllSiriusWebDiagramsLayoutTests() {
         // Prevent

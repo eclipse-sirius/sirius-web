@@ -18,9 +18,9 @@ import java.util.Optional;
 
 import org.assertj.core.data.Offset;
 import org.eclipse.sirius.web.diagrams.ImageNodeStyle;
-import org.eclipse.sirius.web.diagrams.ImageNodeStyleSizeProvider;
-import org.eclipse.sirius.web.diagrams.ImageSizeProvider;
 import org.eclipse.sirius.web.diagrams.Size;
+import org.eclipse.sirius.web.diagrams.layout.incremental.provider.ImageNodeStyleSizeProvider;
+import org.eclipse.sirius.web.diagrams.layout.incremental.provider.ImageSizeProvider;
 import org.junit.Test;
 
 /**

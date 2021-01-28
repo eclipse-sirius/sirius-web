@@ -12,13 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.spring.collaborative.diagrams.handlers;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
 
 import org.eclipse.sirius.web.collaborative.api.services.ChangeDescription;
 import org.eclipse.sirius.web.collaborative.api.services.ChangeKind;
@@ -93,8 +88,7 @@ public class UpdateNodePositionEventHandler implements IDiagramEventHandler {
 
         EventHandlerResponse result;
         if (optionalNode.isPresent()) {
-            Set<UUID> childrenIds = this.getAllChildrenIds(optionalNode.get());
-            diagramContext.setMoveEvent(new MoveEvent(diagramInput.getDiagramElementId(), newPosition, childrenIds));
+            diagramContext.setMoveEvent(new MoveEvent(diagramInput.getDiagramElementId(), newPosition));
             result = new EventHandlerResponse(new ChangeDescription(DiagramChangeKind.DIAGRAM_LAYOUT_CHANGE, diagramInput.getRepresentationId()),
                     new UpdateNodePositionSuccessPayload(diagramInput.getId(), diagramContext.getDiagram()));
         } else {
@@ -104,15 +98,4 @@ public class UpdateNodePositionEventHandler implements IDiagramEventHandler {
         return result;
     }
 
-    private Set<UUID> getAllChildrenIds(Node node) {
-        Set<UUID> res = new HashSet<>();
-        List<Node> subNodes = new ArrayList<>();
-        subNodes.addAll(node.getBorderNodes());
-        subNodes.addAll(node.getChildNodes());
-        for (Node subNode : subNodes) {
-            res.add(subNode.getId());
-            res.addAll(this.getAllChildrenIds(subNode));
-        }
-        return res;
-    }
 }

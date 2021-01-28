@@ -19,8 +19,6 @@ import java.util.Optional;
 import org.eclipse.sirius.web.annotations.Immutable;
 import org.eclipse.sirius.web.components.IProps;
 import org.eclipse.sirius.web.diagrams.Diagram;
-import org.eclipse.sirius.web.diagrams.MoveEvent;
-import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.web.representations.VariableManager;
@@ -39,10 +37,6 @@ public final class DiagramComponentProps implements IProps {
     private Optional<Diagram> previousDiagram;
 
     private List<ViewCreationRequest> viewCreationRequests;
-
-    private MoveEvent moveEvent;
-
-    private Position startingPosition;
 
     private DiagramComponentProps() {
         // Prevent instantiation
@@ -64,14 +58,6 @@ public final class DiagramComponentProps implements IProps {
         return this.viewCreationRequests;
     }
 
-    public Optional<MoveEvent> getMoveEvent() {
-        return Optional.ofNullable(this.moveEvent);
-    }
-
-    public Optional<Position> getStartingPosition() {
-        return Optional.ofNullable(this.startingPosition);
-    }
-
     public static Builder newDiagramComponentProps() {
         return new Builder();
     }
@@ -90,10 +76,6 @@ public final class DiagramComponentProps implements IProps {
         private Optional<Diagram> previousDiagram;
 
         private List<ViewCreationRequest> viewCreationRequests;
-
-        private MoveEvent moveEvent;
-
-        private Position startingPosition;
 
         public Builder variableManager(VariableManager variableManager) {
             this.variableManager = Objects.requireNonNull(variableManager);
@@ -115,24 +97,12 @@ public final class DiagramComponentProps implements IProps {
             return this;
         }
 
-        public Builder moveEvent(MoveEvent moveEvent) {
-            this.moveEvent = Objects.requireNonNull(moveEvent);
-            return this;
-        }
-
-        public Builder startingPosition(Position startingPosition) {
-            this.startingPosition = Objects.requireNonNull(startingPosition);
-            return this;
-        }
-
         public DiagramComponentProps build() {
             DiagramComponentProps diagramComponentProps = new DiagramComponentProps();
             diagramComponentProps.variableManager = Objects.requireNonNull(this.variableManager);
             diagramComponentProps.diagramDescription = Objects.requireNonNull(this.diagramDescription);
             diagramComponentProps.previousDiagram = Objects.requireNonNull(this.previousDiagram);
             diagramComponentProps.viewCreationRequests = List.copyOf(Objects.requireNonNull(this.viewCreationRequests));
-            diagramComponentProps.moveEvent = this.moveEvent;
-            diagramComponentProps.startingPosition = this.startingPosition;
             return diagramComponentProps;
         }
     }

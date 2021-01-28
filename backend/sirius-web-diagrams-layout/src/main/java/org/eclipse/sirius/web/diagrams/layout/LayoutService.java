@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.diagrams.layout;
 
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 
 import org.eclipse.elk.alg.layered.options.LayeredOptions;
 import org.eclipse.elk.core.IGraphLayoutEngine;
@@ -25,8 +26,16 @@ import org.eclipse.elk.core.util.ElkUtil;
 import org.eclipse.elk.graph.ElkGraphElement;
 import org.eclipse.elk.graph.ElkNode;
 import org.eclipse.sirius.web.diagrams.Diagram;
+import org.eclipse.sirius.web.diagrams.MoveEvent;
+import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.web.diagrams.layout.api.ILayoutService;
+import org.eclipse.sirius.web.diagrams.layout.incremental.IncrementalLayoutConvertedDiagram;
+import org.eclipse.sirius.web.diagrams.layout.incremental.IncrementalLayoutDiagramConverter;
+import org.eclipse.sirius.web.diagrams.layout.incremental.IncrementalLayoutEngine;
+import org.eclipse.sirius.web.diagrams.layout.incremental.IncrementalLayoutedDiagramProvider;
+import org.eclipse.sirius.web.diagrams.layout.incremental.data.DiagramLayoutData;
+import org.eclipse.sirius.web.diagrams.layout.incremental.data.ILayoutData;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationDescriptionService;
 import org.springframework.stereotype.Service;
 
@@ -38,25 +47,32 @@ import org.springframework.stereotype.Service;
 @Service
 public class LayoutService implements ILayoutService {
 
-    private final DiagramConverter diagramConverter;
+    private final ELKDiagramConverter elkDiagramConverter;
 
     private final LayoutConfiguratorRegistry layoutConfiguratorRegistry;
 
-    private final LayoutedDiagramProvider layoutedDiagramProvider;
+    private final ELKLayoutedDiagramProvider elkLayoutedDiagramProvider;
+
+    private final IncrementalLayoutedDiagramProvider incrementalLayoutedDiagramProvider;
 
     private final IRepresentationDescriptionService representationDescriptionService;
 
-    public LayoutService(DiagramConverter diagramConverter, LayoutConfiguratorRegistry layoutConfiguratorRegistry, LayoutedDiagramProvider layoutedDiagramProvider,
+    private final IncrementalLayoutDiagramConverter incrementalLayoutDiagramConverter;
+
+    public LayoutService(ELKDiagramConverter elkDiagramConverter, IncrementalLayoutDiagramConverter incrementalLayoutDiagramConverter, LayoutConfiguratorRegistry layoutConfiguratorRegistry,
+            ELKLayoutedDiagramProvider layoutedDiagramProvider, IncrementalLayoutedDiagramProvider incrementalLayoutedDiagramProvider,
             IRepresentationDescriptionService representationDescriptionService) {
-        this.diagramConverter = Objects.requireNonNull(diagramConverter);
+        this.elkDiagramConverter = Objects.requireNonNull(elkDiagramConverter);
+        this.incrementalLayoutDiagramConverter = Objects.requireNonNull(incrementalLayoutDiagramConverter);
         this.layoutConfiguratorRegistry = Objects.requireNonNull(layoutConfiguratorRegistry);
-        this.layoutedDiagramProvider = Objects.requireNonNull(layoutedDiagramProvider);
+        this.elkLayoutedDiagramProvider = Objects.requireNonNull(layoutedDiagramProvider);
+        this.incrementalLayoutedDiagramProvider = Objects.requireNonNull(incrementalLayoutedDiagramProvider);
         this.representationDescriptionService = Objects.requireNonNull(representationDescriptionService);
     }
 
     @Override
     public Diagram layout(Diagram diagram) {
-        ConvertedDiagram convertedDiagram = this.diagramConverter.convert(diagram);
+        ELKConvertedDiagram convertedDiagram = this.elkDiagramConverter.convert(diagram);
 
         ElkNode elkDiagram = convertedDiagram.getElkDiagram();
         var representationDescription = this.representationDescriptionService.findRepresentationDescriptionById(diagram.getDescriptionId());
@@ -74,9 +90,18 @@ public class LayoutService implements ILayoutService {
         engine.layout(elkDiagram, new BasicProgressMonitor());
 
         Map<String, ElkGraphElement> id2ElkGraphElements = convertedDiagram.getId2ElkGraphElements();
-        Diagram layoutedDiagram = this.layoutedDiagramProvider.getLayoutedDiagram(diagram, elkDiagram, id2ElkGraphElements);
+        Diagram layoutedDiagram = this.elkLayoutedDiagramProvider.getLayoutedDiagram(diagram, elkDiagram, id2ElkGraphElements);
 
         return layoutedDiagram;
+    }
+
+    @Override
+    public Diagram incrementalLayout(Diagram newDiagram, MoveEvent moveEvent, Position startingPosition) {
+        IncrementalLayoutConvertedDiagram convertedDiagram = this.incrementalLayoutDiagramConverter.convert(newDiagram);
+        DiagramLayoutData diagramLayoutData = convertedDiagram.getDiagramLayoutData();
+        new IncrementalLayoutEngine(moveEvent, startingPosition).layout(diagramLayoutData);
+        Map<UUID, ILayoutData> id2LayoutData = convertedDiagram.getId2LayoutData();
+        return this.incrementalLayoutedDiagramProvider.getLayoutedDiagram(newDiagram, diagramLayoutData, id2LayoutData);
     }
 
 }

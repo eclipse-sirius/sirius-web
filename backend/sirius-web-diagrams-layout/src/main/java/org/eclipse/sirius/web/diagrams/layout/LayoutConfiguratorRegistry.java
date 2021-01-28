@@ -69,7 +69,7 @@ public class LayoutConfiguratorRegistry {
     public LayoutConfigurator getDefaultLayoutConfigurator() {
         // @formatter:off
         SiriusWebLayoutConfigurator configurator = new SiriusWebLayoutConfigurator();
-        configurator.configureByType(DiagramConverter.DEFAULT_DIAGRAM_TYPE)
+        configurator.configureByType(ELKDiagramConverter.DEFAULT_DIAGRAM_TYPE)
                 .setProperty(CoreOptions.ALGORITHM, LayeredOptions.ALGORITHM_ID)
                 .setProperty(CoreOptions.HIERARCHY_HANDLING, HierarchyHandling.INCLUDE_CHILDREN)
                 .setProperty(LayeredOptions.LAYERING_STRATEGY, LayeringStrategy.NETWORK_SIMPLEX)
@@ -88,7 +88,7 @@ public class LayoutConfiguratorRegistry {
                 .setProperty(CoreOptions.NODE_LABELS_PLACEMENT, NodeLabelPlacement.outsideTopCenter());
 
         // This image type does not match any diagram item. We add it to define the image size as constraint for the node image parent.
-        configurator.configureByType(DiagramConverter.DEFAULT_IMAGE_TYPE)
+        configurator.configureByType(ELKDiagramConverter.DEFAULT_IMAGE_TYPE)
                 .setProperty(CoreOptions.NODE_SIZE_CONSTRAINTS, SizeConstraint.fixed());
         // @formatter:on
 

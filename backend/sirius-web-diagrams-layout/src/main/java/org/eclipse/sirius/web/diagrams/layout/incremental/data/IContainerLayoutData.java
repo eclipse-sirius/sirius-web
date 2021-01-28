@@ -10,27 +10,31 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.diagrams.components;
-
-import static org.assertj.core.api.Assertions.assertThat;
+package org.eclipse.sirius.web.diagrams.layout.incremental.data;
 
 import java.util.List;
 
+import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.Size;
-import org.junit.Test;
 
 /**
- * Test cases for {@link NodeSizeProvider}.
+ * The definition of a data structure for elements that can contain nodes.
  *
- * @author fbarbin
+ * @author wpiers
  */
-public class NodeSizeProviderTestCases {
+public interface IContainerLayoutData extends ILayoutData {
 
-    @Test
-    public void testNodeSize() {
-        NodeSizeProvider nodeSizeProvider = new NodeSizeProvider();
-        Size size = nodeSizeProvider.getSize(null, List.of());
-        assertThat(size).extracting(Size::getHeight).isEqualTo(Double.valueOf(70));
-        assertThat(size).extracting(Size::getWidth).isEqualTo(Double.valueOf(150));
-    }
+    Position getPosition();
+
+    void setPosition(Position position);
+
+    Size getSize();
+
+    void setSize(Size size);
+
+    List<NodeLayoutData> getChildrenNodes();
+
+    void setChildrenNodes(List<NodeLayoutData> nodes);
+
+    Position getAbsolutePosition();
 }

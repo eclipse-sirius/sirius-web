@@ -10,33 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.diagrams;
-
-import java.util.Objects;
-import java.util.UUID;
+package org.eclipse.sirius.web.diagrams.layout.incremental.data;
 
 /**
- * Represent an immutable move event.
+ * The definition of a data structure for elements that can be connected by edges.
  *
  * @author wpiers
  */
-public class MoveEvent {
+public interface IConnectable extends ILayoutData {
 
-    private final UUID nodeId;
+    boolean hasChanged();
 
-    private final Position newPosition;
-
-    public MoveEvent(UUID nodeId, Position newPosition) {
-        this.nodeId = Objects.requireNonNull(nodeId);
-        this.newPosition = Objects.requireNonNull(newPosition);
-    }
-
-    public UUID getNodeId() {
-        return this.nodeId;
-    }
-
-    public Position getNewPosition() {
-        return this.newPosition;
-    }
-
+    void setChanged(boolean hasChanged);
 }

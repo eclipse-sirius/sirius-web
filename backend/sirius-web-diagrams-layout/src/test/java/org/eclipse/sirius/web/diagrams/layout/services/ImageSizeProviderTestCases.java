@@ -26,8 +26,8 @@ import java.util.Optional;
 
 import org.apache.commons.io.FilenameUtils;
 import org.assertj.core.data.Offset;
-import org.eclipse.sirius.web.diagrams.ImageSizeProvider;
 import org.eclipse.sirius.web.diagrams.Size;
+import org.eclipse.sirius.web.diagrams.layout.incremental.provider.ImageSizeProvider;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;

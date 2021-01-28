@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2021 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,10 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.diagrams;
+package org.eclipse.sirius.web.diagrams.layout.incremental.provider;
 
 import java.util.Objects;
 import java.util.Optional;
+
+import org.eclipse.sirius.web.diagrams.ImageNodeStyle;
+import org.eclipse.sirius.web.diagrams.Size;
 
 /**
  * Service used to compute the size of the image for a node.
