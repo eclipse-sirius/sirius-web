@@ -1,0 +1,235 @@
+= ADR-011 - Refactor incremental layout
+
+== Context
+
+Following ADR-008, we implemented an incremental layout applied on each refresh.
+This algorithm follows the diagram rendering and adds layout informations on the fly, gathered either by:
+
+- previous layout informations
+- informations gathered from frontend mutations: moves, creation tools
+
+This implementation is straight-forward and simple but prevents us from anticipating crucial data.
+For instance: which size a container must have to hold all of its children, when some of them have been moved/resized.
+
+== Decision
+
+=== Process
+
+To be achieved correctly, the incremental layout must be aware of:
+
+- the whole diagram structure
+- the previous diagram layout data
+- the volatile layout data, gathered from the frontend mutations and meant to be used for a single rendering
+
+The first two items can be provided to us by the current rendering, which creates the diagram structure according to the VSM. The implementation made for ADR-008 showed that we can easily embed the previous layout data into it.
+This will constitute the first step of the rendering.
+
+The second step will consist on calling the incremental layout on the previously obtained diagram, the same way we used to call ELK automatic layout, to produce the final diagram with the layout data correctly set according to all the constraints, reconciled from the previous state with the volatile data.
+
+=== Layout Data
+
+The layout must produce the following data to achieve the incremental rendering:
+
+- the position of each node, label
+- the size of each node, label
+- the position of each routing point
+
+=== Input informations
+
+Several volatile layout informations must be taken in account when computing the layout. Some are already used:
+
+- the position of a node that has just been created
+- the new position of some nodes that have been moved
+
+Some will be relevant later and can be ignored for now :
+
+- the new size of a resized node
+- the new position of a moved label
+- the new position of a moved routing point
+
+=== Incremental principle
+
+Obviously the incremental layout does not need to recompute every metric. The rules leading to the computation of a position/size of a node/label are quite simple:
+
+- the element has no position/size
+- the element has been moved
+
+Some indirect computations can also happen, due to a direct change: for instance, when an element has been resized, its parent must be resized accordingly if necessary.
+
+For an edge and its routing points, the no position/size rule also applies, but edges cannot be moved.
+Although its source or target can have moved, directly or indirectly. So an edge must be layouted if :
+
+- the source/target has moved
+- one of the containers of the source/target has moved
+
+=== Expected result
+
+When computing the layout, a decision to move an element can change the position of its siblings, the size of its container, the routing points of the linked edges... each change is a factor that can update the whole layout.
+ELK manage this well, with long-time studied theories in application. That's how it come with solutions with no overlap, minimal crosses between edges and so on.
+
+The purpose of the incremental layout is quite different as another factor comes at play: ergonomy.
+We want the user not to be disturbed by the changes, i.e. the new diagram must look like the previous one. The only changes shown must be strongly related to the performed actions.
+The consequence of that is for instance when computing edges: the "keep crossings minimal" injonctions is no longer relevant, what we want here is to make the minimal changes to the routing points list to make the edge connected with the new positions, and still respect the edge layout mode.
+
+=== Layout data structure
+
+Between an actual diagram that need an incremental layout and the final layouted diagram, we need to compute and store the layout data. This intermediate data structure will be created and filled by the incremental layout engine, and finally used to recreate a new immutable diagram with the proper layout information.
+
+In the end this structure shall provide the following informations:
+
+- the size/position of a given diagram/node/label
+- the alignment of a given label
+- the routing points positions of a given edge
+
+The conception of this structure will depend of the needs of the engine implementation, to keep the incremental layout algorithm as clear and simple as possible.
+
+=== Layout computation
+
+The incremental layout engine will implement the following process:
+
+```
+layout(diagram) {
+	diagram.children.forEach(layoutNode(node))
+
+	resolveOverlaps(diagram)
+	resolveContainmentIssues(diagram)
+
+	diagram.edges.forEach(
+		if (hasChanged(edge.source) || hasChanged(edge.target)) {
+            		layoutEdge(edge)
+		}
+	)
+}
+
+layoutNode(node) {
+	diagram.border.forEach(layoutNode(borderNode))
+	diagram.children.forEach(layoutNode(childNode))
+
+	if (hasBeenResized(node)) {
+		node.setSize(newSize)
+	} else if (isNewNode(node)) {
+		node.setSize(computeNewSize)
+	}
+
+	if (hasBeenMoved(node)) {
+		node.setPosition(newPosition)
+	} else if (isNewNode(node)) {
+		node.setPosition(computeNewPosition)
+	}
+
+        resolveOverlaps(node)
+	resolveContainmentIssues(node)
+
+	node.label.setPosition(computeNewLabelPosition)
+    }
+
+layoutEdge(edge) {
+        edge.setRoutingPoints(computeRoutingPoints)
+	computeEdgeLabels(edge)
+}
+```
+
+The underlying sections describes the layout computation steps for each kind of graphical component.
+For each computation, we show the dependencies of it, i.e. what factor leads to a recomputation of the previous values.
+
+==== Node sizes and positions
+
+===== Dependencies
+
+An element or any of its children/siblings has been moved/resized.
+
+===== Computation
+
+The computation of the nodes size and positions is the key point of the algorithm : any change made by the algorithm itself, to follow a move/resize from the frontend, can imply another indirect move/resize that can imply other changes.
+To solve this kind of issues we can either:
+
+- relaunch the computation several times until it stabilizes
+- find the right order that makes the computation deterministic
+
+Obviously the better solution is the latter one.
+
+Node sizes and positions are sensitive as they can depend of the own node content, which consequently needs to be calculated first. So the leaf nodes, i.e. nodes without content, must be calculated first.
+The next step consists on considering all nodes, starting from the deepest, and to set their positions in their containers according to their siblings.
+Once all the positions & sizes of the child of a container has been set, we can set its size accordingly.
+We can then proceed and compute the position & sizes of the parent elements.
+
+==== Node labels sizes and positions
+
+===== Dependencies
+
+The node size, necessary to center the label position.
+The new text size VS the old one. This means that to only recompute labels that actually changed, we would have to keep a track of the old texts.
+As the label computation is quite trivial, for a first step it would be easier to always recompute all of them.
+
+===== Computation
+
+The Node labels size/positions can be set regardless of the other data as they are relative to the designated element.
+
+==== Edge routing points
+
+===== Dependencies
+
+The source/target positions & sizes.
+
+===== Computation
+
+The edge routing points consists on two mandatory points, the source & target anchors, and optional intermediary points. There are all stored as a whole in a list of positions for a given edge.
+As this is only a refactoring, that does not intend to solve all the issues at all, a first version can simply match what we had following ADR-008:
+
+- if an edge has moved, all intermediary routing points are removed
+- no intermediary routing points are recomputed
+- source & target anchor points to the middle of a given element
+
+==== Edge label sizes and positions
+
+===== Dependencies
+
+The new text size VS the old one.
+The edge routing points
+
+===== Computation
+
+As for the routing points, we will match the previous layout provided by ADR-008.
+
+==== Overlaps resolution
+
+At some point we need to reconsider the previous computations in order to fix overlapping elements, when possible.
+This computation can be isolated and triggered at the right moment, when all the children of a graphical container (diagram or node with children) have been rightfully computed.
+
+The point of this resolution is to move all elements that can be, in order to avoid an overlap. An element cannot be moved if it has been moved by the user, so the other elements needs to move around it.
+
+The expected feedback when an element A has been moved over an element B, is to move B along the axis of the centers of A & B, with a minimal distance between them.
+
+==== Containment resolution
+
+As for the overlap resolution, we want to avoid elements to be outside of their container.
+Any step that can move the children of a container must be done before that containment resolution.
+
+There can be two cases of invalid elements positions:
+
+- an element is on the right or at the bottom of its container: we must resize the container accordingly to make it visually contain the element
+- an element is on top or on the left of its container: we must move the container accordingly to make it visually contain the element, and resize it to avoid any other children to be outside
+
+=== Layouted Diagram production
+
+A provider similar to org.eclipse.sirius.web.diagrams.layout.LayoutedDiagramProvider will produce the final copy, using the rendered diagram & the computed layout data.
+
+== Status
+
+Proposed.
+
+== Consequences
+
+=== Current implementation adaptation
+
+The DiagramCreationService will have to call the new layout in the end of its refresh phase, using the rendered diagram (with the old layout) and providing all the relevant input informations.
+
+=== Implementation of new features
+
+This refactoring will fix existing features like "offline" node creation (i.e. creation of nodes, containers, before opening a diagram).
+It will also provide a better start to implement new features such as:
+- labels computation improvement
+- routing points computation improvement
+- resize
+- allowing move of nodes from a container to another
+- routing points edition
