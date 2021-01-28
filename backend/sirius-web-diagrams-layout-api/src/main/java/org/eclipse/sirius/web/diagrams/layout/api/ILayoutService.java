@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,8 @@
 package org.eclipse.sirius.web.diagrams.layout.api;
 
 import org.eclipse.sirius.web.diagrams.Diagram;
+import org.eclipse.sirius.web.diagrams.MoveEvent;
+import org.eclipse.sirius.web.diagrams.Position;
 
 /**
  * Implementation of this interface will layout the given diagram.
@@ -21,4 +23,18 @@ import org.eclipse.sirius.web.diagrams.Diagram;
  */
 public interface ILayoutService {
     Diagram layout(Diagram diagram);
+
+    /**
+     * A partial layout that layouts only impacted elements.
+     *
+     * @param diagram
+     *            The new diagram to layout.
+     * @param moveEvent
+     *            the {@link MoveEvent} that has trigger the new layout. Can be null if no event occurs.
+     * @param startingPosition
+     *            the {@link Position} to use to create new graphical elements (following a tool applied on the diagram
+     *            for instance.
+     * @return the new layouted diagram.
+     */
+    Diagram incrementalLayout(Diagram diagram, MoveEvent moveEvent, Position startingPosition);
 }

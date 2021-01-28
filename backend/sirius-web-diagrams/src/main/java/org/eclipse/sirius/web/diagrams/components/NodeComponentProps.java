@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2021 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,12 +14,10 @@ package org.eclipse.sirius.web.diagrams.components;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.annotations.Immutable;
 import org.eclipse.sirius.web.components.IProps;
-import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.web.diagrams.description.NodeDescription;
 import org.eclipse.sirius.web.diagrams.renderer.DiagramRenderingCache;
@@ -46,12 +44,6 @@ public final class NodeComponentProps implements IProps {
     private List<ViewCreationRequest> viewCreationRequests;
 
     private UUID parentElementId;
-
-    private NodePositionProvider nodePositionProvider;
-
-    private Optional<Object> previousParentElement;
-
-    private Position parentAbsolutePosition;
 
     private NodeComponentProps() {
         // Prevent instantiation
@@ -85,18 +77,6 @@ public final class NodeComponentProps implements IProps {
         return this.parentElementId;
     }
 
-    public NodePositionProvider getNodePositionProvider() {
-        return this.nodePositionProvider;
-    }
-
-    public Optional<Object> getPreviousParentElement() {
-        return this.previousParentElement;
-    }
-
-    public Position getParentAbsolutePosition() {
-        return this.parentAbsolutePosition;
-    }
-
     public static Builder newNodeComponentProps() {
         return new Builder();
     }
@@ -121,12 +101,6 @@ public final class NodeComponentProps implements IProps {
         private List<ViewCreationRequest> viewCreationRequests;
 
         private UUID parentElementId;
-
-        private NodePositionProvider nodePositionProvider;
-
-        private Optional<Object> previousParentElement;
-
-        private Position parentAbsolutePosition;
 
         public Builder variableManager(VariableManager variableManager) {
             this.variableManager = Objects.requireNonNull(variableManager);
@@ -163,21 +137,6 @@ public final class NodeComponentProps implements IProps {
             return this;
         }
 
-        public Builder nodePositionProvider(NodePositionProvider nodePositionProvider) {
-            this.nodePositionProvider = Objects.requireNonNull(nodePositionProvider);
-            return this;
-        }
-
-        public Builder previousParentElement(Optional<Object> previousParentElement) {
-            this.previousParentElement = Objects.requireNonNull(previousParentElement);
-            return this;
-        }
-
-        public Builder parentAbsolutePosition(Position parentAbsolutePosition) {
-            this.parentAbsolutePosition = Objects.requireNonNull(parentAbsolutePosition);
-            return this;
-        }
-
         public NodeComponentProps build() {
             NodeComponentProps nodeComponentProps = new NodeComponentProps();
             nodeComponentProps.variableManager = Objects.requireNonNull(this.variableManager);
@@ -187,9 +146,6 @@ public final class NodeComponentProps implements IProps {
             nodeComponentProps.cache = Objects.requireNonNull(this.cache);
             nodeComponentProps.viewCreationRequests = Objects.requireNonNull(this.viewCreationRequests);
             nodeComponentProps.parentElementId = Objects.requireNonNull(this.parentElementId);
-            nodeComponentProps.nodePositionProvider = Objects.requireNonNull(this.nodePositionProvider);
-            nodeComponentProps.previousParentElement = Objects.requireNonNull(this.previousParentElement);
-            nodeComponentProps.parentAbsolutePosition = Objects.requireNonNull(this.parentAbsolutePosition);
             return nodeComponentProps;
         }
     }

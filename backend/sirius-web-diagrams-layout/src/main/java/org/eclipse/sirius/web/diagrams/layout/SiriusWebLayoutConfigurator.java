@@ -48,7 +48,7 @@ public class SiriusWebLayoutConfigurator extends LayoutConfigurator {
     public void visit(final ElkGraphElement element) {
         super.visit(element);
 
-        IPropertyHolder typeProperties = this.getPropertiesByType(element.getProperty(DiagramConverter.PROPERTY_TYPE));
+        IPropertyHolder typeProperties = this.getPropertiesByType(element.getProperty(ELKDiagramConverter.PROPERTY_TYPE));
         this.applyProperties(element, typeProperties);
 
         IPropertyHolder idProperties = this.getPropertiesById(element.getIdentifier());

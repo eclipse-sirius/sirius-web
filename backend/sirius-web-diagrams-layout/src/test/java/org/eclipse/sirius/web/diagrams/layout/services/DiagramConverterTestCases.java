@@ -32,8 +32,8 @@ import org.eclipse.sirius.web.diagrams.Node;
 import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.Size;
 import org.eclipse.sirius.web.diagrams.TextBounds;
-import org.eclipse.sirius.web.diagrams.layout.ConvertedDiagram;
-import org.eclipse.sirius.web.diagrams.layout.DiagramConverter;
+import org.eclipse.sirius.web.diagrams.layout.ELKConvertedDiagram;
+import org.eclipse.sirius.web.diagrams.layout.ELKDiagramConverter;
 import org.eclipse.sirius.web.diagrams.layout.TextBoundsService;
 import org.eclipse.sirius.web.diagrams.tests.TestDiagramBuilder;
 import org.junit.Test;
@@ -78,7 +78,7 @@ public class DiagramConverterTestCases {
 
     @Test
     public void testDiagramOneRectangularNode() {
-        DiagramConverter diagramConverter = new DiagramConverter(this.textBoundsService);
+        ELKDiagramConverter diagramConverter = new ELKDiagramConverter(this.textBoundsService);
 
         // @formatter:off
         TestDiagramBuilder diagramBuilder = new TestDiagramBuilder();
@@ -89,7 +89,7 @@ public class DiagramConverterTestCases {
                 .build();
         // @formatter:on
 
-        ConvertedDiagram convertedDiagram = diagramConverter.convert(diagram);
+        ELKConvertedDiagram convertedDiagram = diagramConverter.convert(diagram);
 
         ElkNode elkDiagram = convertedDiagram.getElkDiagram();
         assertThat(elkDiagram.getChildren().size()).isEqualTo(1);
@@ -108,7 +108,7 @@ public class DiagramConverterTestCases {
 
     @Test
     public void testDiagramOneImageNode() {
-        DiagramConverter diagramConverter = new DiagramConverter(this.textBoundsService);
+        ELKDiagramConverter diagramConverter = new ELKDiagramConverter(this.textBoundsService);
 
         // @formatter:off
         TestDiagramBuilder diagramBuilder = new TestDiagramBuilder();
@@ -121,7 +121,7 @@ public class DiagramConverterTestCases {
                 .build();
         // @formatter:on
 
-        ConvertedDiagram convertedDiagram = diagramConverter.convert(diagram);
+        ELKConvertedDiagram convertedDiagram = diagramConverter.convert(diagram);
 
         ElkNode elkDiagram = convertedDiagram.getElkDiagram();
         assertThat(elkDiagram.getChildren().size()).isEqualTo(1);
@@ -144,7 +144,7 @@ public class DiagramConverterTestCases {
 
     @Test
     public void testDiagramOneNodeAndOneEdge() {
-        DiagramConverter diagramConverter = new DiagramConverter(this.textBoundsService);
+        ELKDiagramConverter diagramConverter = new ELKDiagramConverter(this.textBoundsService);
 
         // @formatter:off
         TestDiagramBuilder diagramBuilder = new TestDiagramBuilder();
@@ -161,7 +161,7 @@ public class DiagramConverterTestCases {
                 .build();
         // @formatter:on
 
-        ConvertedDiagram convertedDiagram = diagramConverter.convert(diagram);
+        ELKConvertedDiagram convertedDiagram = diagramConverter.convert(diagram);
 
         ElkNode elkDiagram = convertedDiagram.getElkDiagram();
         assertThat(elkDiagram.getContainedEdges().size()).isEqualTo(1);
@@ -172,7 +172,7 @@ public class DiagramConverterTestCases {
 
     @Test
     public void testDiagramOneNodeAndOneBorderNode() {
-        DiagramConverter diagramConverter = new DiagramConverter(this.textBoundsService);
+        ELKDiagramConverter diagramConverter = new ELKDiagramConverter(this.textBoundsService);
 
         // @formatter:off
         TestDiagramBuilder diagramBuilder = new TestDiagramBuilder();
@@ -191,7 +191,7 @@ public class DiagramConverterTestCases {
                 .build();
         // @formatter:on
 
-        ConvertedDiagram convertedDiagram = diagramConverter.convert(diagram);
+        ELKConvertedDiagram convertedDiagram = diagramConverter.convert(diagram);
 
         ElkNode elkDiagram = convertedDiagram.getElkDiagram();
         assertThat(elkDiagram.getChildren().size()).isEqualTo(1);
@@ -205,7 +205,7 @@ public class DiagramConverterTestCases {
 
     @Test
     public void testDiagramOneEdgeBetweenTwoBorderNodes() {
-        DiagramConverter diagramConverter = new DiagramConverter(this.textBoundsService);
+        ELKDiagramConverter diagramConverter = new ELKDiagramConverter(this.textBoundsService);
 
         // @formatter:off
         TestDiagramBuilder diagramBuilder = new TestDiagramBuilder();
@@ -231,7 +231,7 @@ public class DiagramConverterTestCases {
                 .build();
         // @formatter:on
 
-        ConvertedDiagram convertedDiagram = diagramConverter.convert(diagram);
+        ELKConvertedDiagram convertedDiagram = diagramConverter.convert(diagram);
         ElkNode elkDiagram = convertedDiagram.getElkDiagram();
         assertThat(elkDiagram.getChildren().size()).isEqualTo(1);
         assertThat(elkDiagram.getChildren().get(0)).isInstanceOf(ElkNode.class);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2021 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,8 +22,6 @@ import org.eclipse.sirius.web.diagrams.Label;
 import org.eclipse.sirius.web.diagrams.LabelStyle;
 import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.Size;
-import org.eclipse.sirius.web.diagrams.TextBounds;
-import org.eclipse.sirius.web.diagrams.TextBoundsProvider;
 import org.eclipse.sirius.web.diagrams.description.LabelDescription;
 import org.eclipse.sirius.web.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.web.diagrams.elements.LabelElementProps;
@@ -47,7 +45,6 @@ public class LabelComponent implements IComponent {
         VariableManager variableManager = this.props.getVariableManager();
         LabelDescription labelDescription = this.props.getLabelDescription();
         Optional<Label> optionalPreviousLabel = this.props.getPreviousLabel();
-        ILabelPositionProvider labelBoundsProvider = this.props.getLabelBoundsProvider();
         String type = this.props.getType();
         String idFromProvider = labelDescription.getIdProvider().apply(variableManager);
         UUID id = UUID.nameUUIDFromBytes(idFromProvider.getBytes());
@@ -63,6 +60,10 @@ public class LabelComponent implements IComponent {
         Boolean underline = labelStyleDescription.getUnderlineProvider().apply(variableManager);
         String iconURL = labelStyleDescription.getIconURLProvider().apply(variableManager);
 
+        Position position = optionalPreviousLabel.map(Label::getPosition).orElse(Position.UNDEFINED);
+        Size size = optionalPreviousLabel.map(Label::getSize).orElse(Size.UNDEFINED);
+        Position aligment = optionalPreviousLabel.map(Label::getAlignment).orElse(Position.UNDEFINED);
+
         // @formatter:off
         var labelStyle = LabelStyle.newLabelStyle()
                 .color(color)
@@ -73,20 +74,13 @@ public class LabelComponent implements IComponent {
                 .underline(underline)
                 .iconURL(iconURL)
                 .build();
-        // @formatter:on
-
-        // @formatter:off
-        TextBounds textBounds = new TextBoundsProvider().computeBounds(labelStyle, text);
-        Position position = labelBoundsProvider.getPosition(optionalPreviousLabel, textBounds, type);
-        Position alignment = optionalPreviousLabel.map(Label::getAlignment).orElse(textBounds.getAlignment());
-        Size size = optionalPreviousLabel.map(Label::getSize).orElse(textBounds.getSize());
 
         LabelElementProps labelElementProps = LabelElementProps.newLabelElementProps(id)
                 .type(type)
                 .text(text)
                 .position(position)
                 .size(size)
-                .alignment(alignment)
+                .alignment(aligment)
                 .style(labelStyle)
                 .build();
         // @formatter:on

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -54,8 +54,6 @@ public final class NodeElementProps implements IProps {
 
     private Size size;
 
-    private Position absolutePosition;
-
     private List<Element> children;
 
     private NodeElementProps() {
@@ -102,10 +100,6 @@ public final class NodeElementProps implements IProps {
         return this.size;
     }
 
-    public Position getAbsolutePosition() {
-        return this.absolutePosition;
-    }
-
     public static Builder newNodeElementProps(UUID id) {
         return new Builder(id);
     }
@@ -147,8 +141,6 @@ public final class NodeElementProps implements IProps {
         private Position position;
 
         private Size size;
-
-        private Position absolutePosition;
 
         private List<Element> children;
 
@@ -201,11 +193,6 @@ public final class NodeElementProps implements IProps {
             return this;
         }
 
-        public Builder absolutePosition(Position absolutePosition) {
-            this.absolutePosition = Objects.requireNonNull(absolutePosition);
-            return this;
-        }
-
         public Builder children(List<Element> children) {
             this.children = Objects.requireNonNull(children);
             return this;
@@ -224,7 +211,6 @@ public final class NodeElementProps implements IProps {
             nodeElementProps.position = Objects.requireNonNull(this.position);
             nodeElementProps.size = Objects.requireNonNull(this.size);
             nodeElementProps.children = Objects.requireNonNull(this.children);
-            nodeElementProps.absolutePosition = Objects.requireNonNull(this.absolutePosition);
             return nodeElementProps;
         }
     }

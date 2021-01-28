@@ -41,7 +41,7 @@ import org.springframework.stereotype.Service;
  * @author hmarchadour
  */
 @Service
-public class LayoutedDiagramProvider {
+public class ELKLayoutedDiagramProvider {
 
     public Diagram getLayoutedDiagram(Diagram diagram, ElkNode elkDiagram, Map<String, ElkGraphElement> id2ElkGraphElements) {
         Size size = Size.of(elkDiagram.getWidth(), elkDiagram.getHeight());

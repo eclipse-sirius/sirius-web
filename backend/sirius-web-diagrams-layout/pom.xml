@@ -109,6 +109,11 @@
 			<version>0.2.14</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+		    <groupId>org.apache.xmlgraphics</groupId>
+		    <artifactId>batik-bridge</artifactId>
+		    <version>1.11</version>
+		</dependency>
 	</dependencies>
 
 	<build>

@@ -10,33 +10,17 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.diagrams;
+package org.eclipse.sirius.web.diagrams.layout.incremental.data;
 
-import java.util.Objects;
 import java.util.UUID;
 
 /**
- * Represent an immutable move event.
+ * The definition of a layout data structure.
  *
  * @author wpiers
  */
-public class MoveEvent {
+public interface ILayoutData {
 
-    private final UUID nodeId;
-
-    private final Position newPosition;
-
-    public MoveEvent(UUID nodeId, Position newPosition) {
-        this.nodeId = Objects.requireNonNull(nodeId);
-        this.newPosition = Objects.requireNonNull(newPosition);
-    }
-
-    public UUID getNodeId() {
-        return this.nodeId;
-    }
-
-    public Position getNewPosition() {
-        return this.newPosition;
-    }
+    UUID getId();
 
 }

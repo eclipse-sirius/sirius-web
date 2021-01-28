@@ -115,9 +115,9 @@ public class DiagramCreationService implements IDiagramCreationService {
         variableManager.put(VariableManager.SELF, targetObject);
         variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
 
-        Optional<MoveEvent> optionalMoveEvent = optionalDiagramContext.map(IDiagramContext::getMoveEvent);
+        MoveEvent moveEvent = optionalDiagramContext.map(IDiagramContext::getMoveEvent).orElse(null);
         Optional<Diagram> optionalPreviousDiagram = optionalDiagramContext.map(IDiagramContext::getDiagram);
-        Optional<Position> optionalStartingPosition = optionalDiagramContext.map(IDiagramContext::getStartingPosition);
+        Position startingPosition = optionalDiagramContext.map(IDiagramContext::getStartingPosition).orElse(null);
         List<ViewCreationRequest> viewCreationRequests = optionalDiagramContext.map(IDiagramContext::getViewCreationRequests).orElse(List.of());
         //@formatter:off
         Builder builder = DiagramComponentProps.newDiagramComponentProps()
@@ -126,12 +126,6 @@ public class DiagramCreationService implements IDiagramCreationService {
                 .viewCreationRequests(viewCreationRequests)
                 .previousDiagram(optionalPreviousDiagram);
         //@formatter:on
-        if (optionalMoveEvent.isPresent()) {
-            builder.moveEvent(optionalMoveEvent.get());
-        }
-        if (optionalStartingPosition.isPresent()) {
-            builder.startingPosition(optionalStartingPosition.get());
-        }
         DiagramComponentProps props = builder.build();
         Element element = new Element(DiagramComponent.class, props);
 
@@ -140,6 +134,8 @@ public class DiagramCreationService implements IDiagramCreationService {
         // The auto layout is used for the first rendering and after that if it is activated
         if (optionalDiagramContext.isEmpty() || this.activateAutoLayout) {
             newDiagram = this.layoutService.layout(newDiagram);
+        } else if (optionalDiagramContext.isPresent()) {
+            newDiagram = this.layoutService.incrementalLayout(newDiagram, moveEvent, startingPosition);
         }
         RepresentationDescriptor representationDescriptor = this.getRepresentationDescriptor(editingContext.getId(), newDiagram);
         this.representationService.save(representationDescriptor);

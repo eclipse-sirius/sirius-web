@@ -33,15 +33,12 @@ public class LabelComponentProps implements IProps {
 
     private final Optional<Label> optionalPreviousLabel;
 
-    private final ILabelPositionProvider labelBoundsProvider;
-
     private final String type;
 
-    public LabelComponentProps(VariableManager variableManager, LabelDescription labelDescription, Optional<Label> optionalPreviousLabel, ILabelPositionProvider labelBoundsProvider, String type) {
+    public LabelComponentProps(VariableManager variableManager, LabelDescription labelDescription, Optional<Label> optionalPreviousLabel, String type) {
         this.variableManager = Objects.requireNonNull(variableManager);
         this.labelDescription = Objects.requireNonNull(labelDescription);
         this.optionalPreviousLabel = Objects.requireNonNull(optionalPreviousLabel);
-        this.labelBoundsProvider = Objects.requireNonNull(labelBoundsProvider);
         this.type = Objects.requireNonNull(type);
     }
 
@@ -55,10 +52,6 @@ public class LabelComponentProps implements IProps {
 
     public Optional<Label> getPreviousLabel() {
         return this.optionalPreviousLabel;
-    }
-
-    public ILabelPositionProvider getLabelBoundsProvider() {
-        return this.labelBoundsProvider;
     }
 
     public String getType() {

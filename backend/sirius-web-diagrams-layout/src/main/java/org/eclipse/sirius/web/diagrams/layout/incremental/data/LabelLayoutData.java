@@ -1,0 +1,58 @@
+/*******************************************************************************
+ * Copyright (c) 2021 THALES GLOBAL SERVICES.
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
+package org.eclipse.sirius.web.diagrams.layout.incremental.data;
+
+import java.util.UUID;
+
+import org.eclipse.sirius.web.diagrams.Position;
+import org.eclipse.sirius.web.diagrams.TextBounds;
+
+/**
+ * A mutable structure to store/update the labels layout.
+ *
+ * @author wpiers
+ */
+public class LabelLayoutData implements ILayoutData {
+
+    private TextBounds textBounds;
+
+    private Position position;
+
+    private UUID id;
+
+    @Override
+    public UUID getId() {
+        return this.id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public Position getPosition() {
+        return this.position;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
+    }
+
+    public TextBounds getTextBounds() {
+        return this.textBounds;
+    }
+
+    public void setTextBounds(TextBounds textBounds) {
+        this.textBounds = textBounds;
+    }
+
+}
