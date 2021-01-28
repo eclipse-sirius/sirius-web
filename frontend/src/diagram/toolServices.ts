@@ -23,13 +23,21 @@ export function isContextualTool(tool, element) {
   return result;
 }
 
-export function canDrop(tool, targetId, targetDescriptionId, representationId) {
+export function canDrop(tool, sourceKind, targetId, targetDescriptionId, representationId) {
   let result = false;
   if (tool.__typename === 'DropTool') {
     if (targetId === representationId) {
-      result = tool.appliesToDiagramRoot;
+      result = tool.dropCandidates.some(
+        (dropCandidate) =>
+          dropCandidate.sourceKinds.map((sourceKind) => sourceKind.toLowerCase()).includes(sourceKind.toLowerCase()) &&
+          dropCandidate.appliesToDiagramRoot
+      );
     } else {
-      result = tool.targetDescriptions.some((aTargetDescription) => aTargetDescription.id === targetDescriptionId);
+      result = tool.dropCandidates.some(
+        (dropCandidate) =>
+          dropCandidate.sourceKinds.map((sourceKind) => sourceKind.toLowerCase()).includes(sourceKind.toLowerCase()) &&
+          dropCandidate.targets.some((target) => target.id === targetDescriptionId)
+      );
     }
   }
   return result;

@@ -22,7 +22,6 @@ import org.eclipse.sirius.web.annotations.graphql.GraphQLField;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLID;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLNonNull;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLObjectType;
-import org.eclipse.sirius.web.diagrams.description.NodeDescription;
 import org.eclipse.sirius.web.representations.Status;
 import org.eclipse.sirius.web.representations.VariableManager;
 
@@ -43,9 +42,7 @@ public final class DropTool implements ITool {
 
     private Function<VariableManager, Status> handler;
 
-    private List<NodeDescription> targetDescriptions;
-
-    private boolean appliesToDiagramRoot;
+    private List<DropCandidate> dropCandidates;
 
     private DropTool() {
         // Prevent instantiation
@@ -53,14 +50,8 @@ public final class DropTool implements ITool {
 
     @GraphQLField
     @GraphQLNonNull
-    public List<@GraphQLNonNull NodeDescription> getTargetDescriptions() {
-        return this.targetDescriptions;
-    }
-
-    @GraphQLField
-    @GraphQLNonNull
-    public boolean isAppliesToDiagramRoot() {
-        return this.appliesToDiagramRoot;
+    public List<@GraphQLNonNull DropCandidate> getDropCandidates() {
+        return this.dropCandidates;
     }
 
     @Override
@@ -116,9 +107,7 @@ public final class DropTool implements ITool {
 
         private Function<VariableManager, Status> handler;
 
-        private List<NodeDescription> targetDescriptions;
-
-        private boolean appliesToDiagramRoot;
+        private List<DropCandidate> dropCandidates;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -134,13 +123,8 @@ public final class DropTool implements ITool {
             return this;
         }
 
-        public Builder targetDescriptions(List<NodeDescription> targetDescriptions) {
-            this.targetDescriptions = Objects.requireNonNull(targetDescriptions);
-            return this;
-        }
-
-        public Builder appliesToDiagramRoot(boolean appliesToDiagramRoot) {
-            this.appliesToDiagramRoot = appliesToDiagramRoot;
+        public Builder dropCandidates(List<DropCandidate> dropCandidates) {
+            this.dropCandidates = Objects.requireNonNull(dropCandidates);
             return this;
         }
 
@@ -155,8 +139,7 @@ public final class DropTool implements ITool {
             tool.imageURL = Objects.requireNonNull(this.imageURL);
             tool.label = Objects.requireNonNull(this.label);
             tool.handler = Objects.requireNonNull(this.handler);
-            tool.targetDescriptions = Objects.requireNonNull(this.targetDescriptions);
-            tool.appliesToDiagramRoot = this.appliesToDiagramRoot;
+            tool.dropCandidates = Objects.requireNonNull(this.dropCandidates);
             return tool;
         }
     }

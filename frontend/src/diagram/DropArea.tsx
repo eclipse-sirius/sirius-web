@@ -133,11 +133,11 @@ export const DropArea = ({ projectId, representationId, toolSections, invokeHove
     return null;
   };
 
-  const searchDropTool = (targetId, targetDescriptionId) => {
+  const searchDropTool = (sourceKind, targetId, targetDescriptionId) => {
     let firstValidDropTool;
     for (let toolSection of toolSections) {
       firstValidDropTool = toolSection.tools.find((tool) =>
-        canDrop(tool, targetId, targetDescriptionId, representationId)
+        canDrop(tool, sourceKind, targetId, targetDescriptionId, representationId)
       );
       if (firstValidDropTool) {
         break;
@@ -148,13 +148,33 @@ export const DropArea = ({ projectId, representationId, toolSections, invokeHove
 
   const handleDragOver = (e) => {
     e.preventDefault();
-    const id = searchId(e.target);
-    invokeHover(id, true);
-    const descriptionId = searchDescriptionId(e.target);
-    const tool = searchDropTool(id, descriptionId);
-    if (tool) {
-      e.dataTransfer.dropEffect = 'link';
+    let canDrop = false;
+    const targetId = searchId(e.target);
+    // use a standard array instead of a DataTransferItemList
+    const dataTransferItems = [...e.dataTransfer.items];
+    /**
+     * we cannot use e.dataTransfer.getData here (browser security limitation).
+     * But we can get dataTransfer item types...
+     * We detect a drag event that comes from a sirius-component UX when a dataTransfer item match with with the type 'sirius-component/selection'.
+     * We expect to find a second dataTransfer item that contains the source kind.
+     */
+    if (dataTransferItems.some((item) => item.type === 'sirius-component/selection')) {
+      /**
+       * To retrieve the source kind, we get the first dataTransfer without a 'sirius-component/selection' type.
+       * Warning, the browser use a lowercase on dataTransfer keys in all cases, we must adapt following equals comparisons.
+       */
+      const sourceItem = dataTransferItems.find((item) => item.type !== 'sirius-component/selection');
+      if (sourceItem) {
+        const sourceKind = sourceItem.type; // The source kind is "lowercased".
+        const descriptionId = searchDescriptionId(e.target);
+        if (searchDropTool(sourceKind, targetId, descriptionId)) {
+          // Update the cursor thanks to dropEffect (a drag'n'drop cursor does not use CSS rules)
+          e.dataTransfer.dropEffect = 'link';
+          canDrop = true;
+        }
+      }
     }
+    invokeHover(targetId, canDrop);
   };
 
   const handleDragLeave = (e) => {
@@ -165,18 +185,32 @@ export const DropArea = ({ projectId, representationId, toolSections, invokeHove
 
   const handleDrop = (e) => {
     e.preventDefault();
-    const objectId = e.dataTransfer.getData('id');
 
-    const id = searchId(e.target);
-    const descriptionId = searchDescriptionId(e.target);
-    const tool = searchDropTool(id, descriptionId);
+    const dragSourceStringified = e.dataTransfer.getData('sirius-component/selection');
+    if (dragSourceStringified) {
+      const source = JSON.parse(dragSourceStringified);
+      if (source?.id && source?.kind) {
+        const { id: sourceId, kind: sourceKind } = source;
 
-    if (tool && objectId) {
-      const diagramElementId = searchId(e.target);
-      if (diagramElementId) {
-        dropElement(tool, objectId, diagramElementId);
-      } else {
-        dropElement(tool, objectId);
+        const targetId = searchId(e.target);
+        const targetDescriptionId = searchDescriptionId(e.target);
+        const tool = searchDropTool(sourceKind, targetId, targetDescriptionId);
+
+        if (tool) {
+          const diagramElementId = searchId(e.target);
+          if (diagramElementId) {
+            dropElement(tool, sourceId, diagramElementId);
+          } else {
+            dropElement(tool, sourceId);
+          }
+        } else {
+          const label = source?.label ? source.label : 'this object';
+          const showToastEvent: ShowToastEvent = {
+            type: 'SHOW_TOAST',
+            message: `Cannot drop ${label} here: Cannot find a valid drop tool`,
+          };
+          dispatch(showToastEvent);
+        }
       }
     }
   };

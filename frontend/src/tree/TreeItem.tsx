@@ -669,7 +669,15 @@ export const TreeItem = ({ editingContextId, item, depth, onExpand, selection, s
   const draggable = kind !== 'Document' && kind !== 'Diagram';
   const dragStart = (e) => {
     if (selection?.kind !== 'Document' && selection?.kind !== 'Diagram') {
-      e.dataTransfer.setData('id', selection.id);
+      e.dataTransfer.setData('sirius-component/selection', JSON.stringify(selection));
+      /**
+       * We cannot use e.dataTransfer.getData outside a drop callback (browser security rule).
+       * To allow to retrieve the source kind in an dragOver callback,
+       * we store the source kind as a dedicated dataTransfer type.
+       * A drag'n'drop can come from another window/browser.
+       * We cannot just pass the current selection to the drop event callback thanks to a react property/hook or we break this cross window/browser tab feature.
+       */
+      e.dataTransfer.setData(selection.kind, selection.kind);
     }
   };
   const dragOver = (e) => {

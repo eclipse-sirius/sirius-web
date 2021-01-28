@@ -273,6 +273,13 @@ export const getToolSectionsQuery = gql`
       id
     }
   }
+  fragment dropCandidateField on DropCandidate {
+    sourceKinds
+    targets {
+      id
+    }
+    appliesToDiagramRoot
+  }
 
   query getToolSections($diagramId: ID!) {
     viewer {
@@ -297,10 +304,9 @@ export const getToolSectionsQuery = gql`
             }
           }
           ... on DropTool {
-            targetDescriptions {
-              id
+            dropCandidates {
+              ...dropCandidateField
             }
-            appliesToDiagramRoot
           }
         }
       }

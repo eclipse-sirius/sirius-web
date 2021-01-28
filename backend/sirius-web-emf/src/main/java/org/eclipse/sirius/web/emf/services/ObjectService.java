@@ -85,9 +85,12 @@ public class ObjectService implements IObjectService {
             kind = representation.getKind();
         } else if (object instanceof Resource) {
             kind = DOCUMENT_KIND;
+        } else if (object instanceof EClass) {
+            EClass eClass = (EClass) object;
+            kind = new ClassIdService().getClassId(eClass);
         } else if (object instanceof EObject) {
             EObject eObject = (EObject) object;
-            return new ClassIdService().getClassId(eObject.eClass());
+            kind = new ClassIdService().getClassId(eObject.eClass());
         }
         return kind;
     }
