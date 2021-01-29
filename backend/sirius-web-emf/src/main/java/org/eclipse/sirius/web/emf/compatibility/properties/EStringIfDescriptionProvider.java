@@ -17,6 +17,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -55,7 +56,10 @@ public class EStringIfDescriptionProvider {
     private Function<VariableManager, Boolean> getPredicate() {
         return variableManager -> {
             var optionalEAttribute = variableManager.get(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE, EAttribute.class);
-            return optionalEAttribute.filter(eAttribute -> eAttribute.getEType().equals(EcorePackage.Literals.ESTRING)).isPresent();
+            return optionalEAttribute.filter(eAttribute -> {
+                EClassifier eType = eAttribute.getEType();
+                return eType.equals(EcorePackage.Literals.ESTRING) || eType.getInstanceClassName().equals(String.class.getName());
+            }).isPresent();
         };
     }
 
