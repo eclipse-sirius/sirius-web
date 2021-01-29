@@ -68,6 +68,7 @@
 		<module>sirius-web-emf</module>
 		<module>sirius-web-interpreter</module>
 		<module>sirius-web-persistence</module>
+		<module>sirius-web-integration-tests</module>
 		<module>sirius-web-test-sample-application</module>
 		<module>sirius-web-test-diagrams-only-application</module>
 	</modules>
