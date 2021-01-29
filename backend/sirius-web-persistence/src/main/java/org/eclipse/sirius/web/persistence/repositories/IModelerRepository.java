@@ -21,6 +21,7 @@ import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
 import org.eclipse.sirius.web.persistence.entities.ModelerEntity;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.stereotype.Repository;
 
 /**
  * Persistence layer use to manipulate modelers.
@@ -31,6 +32,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  *
  * @author pcdavid
  */
+@Repository
 public interface IModelerRepository extends PagingAndSortingRepository<ModelerEntity, UUID> {
     @Audited
     List<ModelerEntity> findAllByProjectId(UUID projectId);
