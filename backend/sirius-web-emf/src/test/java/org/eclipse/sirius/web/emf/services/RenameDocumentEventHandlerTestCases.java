@@ -19,7 +19,7 @@ import java.util.UUID;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.edit.domain.EditingDomain;
+import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.services.api.accounts.Profile;
@@ -56,7 +56,7 @@ public class RenameDocumentEventHandlerTestCases {
 
         assertThat(handler.canHandle(input)).isTrue();
 
-        EditingDomain editingDomain = new EditingDomainFactory().create();
+        AdapterFactoryEditingDomain editingDomain = new EditingDomainFactory().create();
 
         DocumentMetadataAdapter adapter = new DocumentMetadataAdapter(OLD_NAME);
         Resource resource = new SiriusWebJSONResourceFactoryImpl().createResource(URI.createURI(documentId.toString()));
@@ -66,12 +66,7 @@ public class RenameDocumentEventHandlerTestCases {
         assertThat(editingDomain.getResourceSet().getResources().size()).isEqualTo(1);
         assertThat(adapter.getName()).isEqualTo(OLD_NAME);
 
-        IEditingContext editingContext = new IEditingContext() {
-            @Override
-            public UUID getId() {
-                return null;
-            }
-        };
+        IEditingContext editingContext = new EditingContext(UUID.randomUUID(), editingDomain);
 
         handler.handle(editingContext, input);
 

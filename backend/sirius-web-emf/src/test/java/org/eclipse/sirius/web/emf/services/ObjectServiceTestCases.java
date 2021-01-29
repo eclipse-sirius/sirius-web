@@ -42,8 +42,7 @@ public class ObjectServiceTestCases {
         // @formatter:off
         assertThat(imagePath)
             .isNotNull()
-            .startsWith("jar:") //$NON-NLS-1$
-            .endsWith("!/icons/full/obj16/EAttribute.gif"); //$NON-NLS-1$
+            .endsWith("/icons/full/obj16/EAttribute.gif"); //$NON-NLS-1$
         // @formatter:on
     }
 }

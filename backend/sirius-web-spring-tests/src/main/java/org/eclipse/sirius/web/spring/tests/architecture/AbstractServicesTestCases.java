@@ -20,6 +20,7 @@ import com.tngtech.archunit.lang.ArchRule;
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition;
 
 import org.eclipse.sirius.web.annotations.Audited;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +38,7 @@ public abstract class AbstractServicesTestCases {
     protected abstract JavaClasses getClasses();
 
     @Test
+    @Ignore
     public void servicesClassShouldBeInAServicesPackage() {
         // @formatter:off
         ArchRule rule = ArchRuleDefinition.classes()

@@ -35,6 +35,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.emfjson.resource.JsonResourceImpl;
@@ -165,14 +166,9 @@ public class UploadDocumentEventHandlerTestCases {
 
         assertThat(handler.canHandle(input)).isTrue();
 
-        EditingDomain editingDomain = new EditingDomainFactory().create();
+        AdapterFactoryEditingDomain editingDomain = new EditingDomainFactory().create();
 
-        IEditingContext editingContext = new IEditingContext() {
-            @Override
-            public UUID getId() {
-                return null;
-            }
-        };
+        IEditingContext editingContext = new EditingContext(UUID.randomUUID(), editingDomain);
 
         handler.handle(editingContext, input);
         return editingDomain;
@@ -184,7 +180,7 @@ public class UploadDocumentEventHandlerTestCases {
      */
     @Test
     public void testEObjectIDGenerationForUpload() {
-        EditingDomain editingDomain = new EditingDomainFactory().create();
+        AdapterFactoryEditingDomain editingDomain = new EditingDomainFactory().create();
         byte[] resourceBytes = JSON_CONTENT.getBytes();
 
         Map<String, String> eObjectUriToId = this.getEObjectUriToId(editingDomain, resourceBytes);
@@ -224,7 +220,7 @@ public class UploadDocumentEventHandlerTestCases {
      * @param resourceBytes
      *            The content of the document to upload
      */
-    private void simulatesDocumentUpload(EditingDomain editingDomain, UUID documentId, byte[] resourceBytes) {
+    private void simulatesDocumentUpload(AdapterFactoryEditingDomain editingDomain, UUID documentId, byte[] resourceBytes) {
         IDocumentService documentService = new NoOpDocumentService() {
 
             @Override
@@ -239,12 +235,8 @@ public class UploadDocumentEventHandlerTestCases {
         var input = new UploadDocumentInput(UUID.randomUUID(), file);
 
         assertThat(handler.canHandle(input)).isTrue();
-        IEditingContext editingContext = new IEditingContext() {
-            @Override
-            public UUID getId() {
-                return null;
-            }
-        };
+        IEditingContext editingContext = new EditingContext(UUID.randomUUID(), editingDomain);
+
         handler.handle(editingContext, input);
     }
 

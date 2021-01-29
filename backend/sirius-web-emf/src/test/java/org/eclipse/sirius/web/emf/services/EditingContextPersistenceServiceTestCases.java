@@ -22,10 +22,11 @@ import java.util.UUID;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EcoreFactory;
-import org.eclipse.emf.edit.domain.EditingDomain;
+import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IEditingContextPersistenceService;
+import org.eclipse.sirius.web.persistence.entities.AccountEntity;
 import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
 import org.eclipse.sirius.web.persistence.entities.ProjectEntity;
 import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
@@ -52,12 +53,16 @@ public class EditingContextPersistenceServiceTestCases {
         eClass.setName("Concept"); //$NON-NLS-1$
         resource.getContents().add(eClass);
 
-        EditingDomain editingDomain = new EditingDomainFactory().create();
+        AdapterFactoryEditingDomain editingDomain = new EditingDomainFactory().create();
         editingDomain.getResourceSet().getResources().add(resource);
 
         ProjectEntity projectEntity = new ProjectEntity();
         projectEntity.setId(projectId);
         projectEntity.setName(""); //$NON-NLS-1$
+        AccountEntity owner = new AccountEntity();
+        owner.setId(UUID.randomUUID());
+        owner.setUsername("jdoe"); //$NON-NLS-1$
+        projectEntity.setOwner(owner);
 
         DocumentEntity existingEntity = new DocumentEntity();
         existingEntity.setId(id);
@@ -81,12 +86,7 @@ public class EditingContextPersistenceServiceTestCases {
         IEditingContextPersistenceService editingContextPersistenceService = new EditingContextPersistenceService(documentRepository, new NoOpApplicationEventPublisher(), new SimpleMeterRegistry());
         assertThat(entities).hasSize(0);
 
-        IEditingContext editingContext = new IEditingContext() {
-            @Override
-            public UUID getId() {
-                return null;
-            }
-        };
+        IEditingContext editingContext = new EditingContext(UUID.randomUUID(), editingDomain);
 
         editingContextPersistenceService.persist(editingContext);
         assertThat(entities).hasSize(1);
