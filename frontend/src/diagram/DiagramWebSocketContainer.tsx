@@ -35,7 +35,7 @@ import {
   SetToolSectionsEvent,
   ShowToastEvent,
   SubscribersUpdatedEvent,
-  SwithRepresentationEvent
+  SwithRepresentationEvent,
 } from 'diagram/DiagramWebSocketContainerMachine';
 import { ContextualPalette } from 'diagram/palette/ContextualPalette';
 import { edgeCreationFeedback } from 'diagram/sprotty/edgeCreationFeedback';
@@ -48,7 +48,7 @@ import {
   SPROTTY_SELECT_ACTION,
   ZOOM_IN_ACTION,
   ZOOM_OUT_ACTION,
-  ZOOM_TO_ACTION
+  ZOOM_TO_ACTION,
 } from 'diagram/sprotty/WebSocketDiagramServer';
 import { Toolbar } from 'diagram/Toolbar';
 import PropTypes from 'prop-types';
@@ -62,7 +62,7 @@ import {
   getToolSectionsQuery,
   invokeEdgeToolOnDiagramMutation,
   invokeNodeToolOnDiagramMutation,
-  updateNodePositionOp
+  updateNodePositionOp,
 } from './operations';
 import { canInvokeTool } from './toolServices';
 
