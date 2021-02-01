@@ -49,6 +49,7 @@ import graphql.schema.GraphQLTypeReference;
  *   representations: [Representation!]!
  *   accessLevel: AccessLevel!
  *   modelers: [Modeler!]!
+ *   currentEditingContext: EditingContext!
  * }
  * </pre>
  *
@@ -78,6 +79,8 @@ public class ProjectTypeProvider implements ITypeProvider {
 
     public static final String MODELERS_FIELD = "modelers"; //$NON-NLS-1$
 
+    public static final String CURRENT_EDITING_CONTEXT_FIELD = "currentEditingContext"; //$NON-NLS-1$
+
     private final GraphQLEnumTypeProvider graphQLEnumTypeProvider = new GraphQLEnumTypeProvider();
 
     @Override
@@ -93,6 +96,7 @@ public class ProjectTypeProvider implements ITypeProvider {
                 .field(this.getRepresentationsField())
                 .field(this.getAccessLevelField())
                 .field(this.getModelersField())
+                .field(this.getCurrentEditingContextField())
                 .build();
         // @formatter:on
 
@@ -170,6 +174,15 @@ public class ProjectTypeProvider implements ITypeProvider {
         return GraphQLFieldDefinition.newFieldDefinition()
                 .name(MODELERS_FIELD)
                 .type(new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(new GraphQLTypeReference(MODELER_TYPE)))))
+                .build();
+        // @formatter:on
+    }
+
+    private GraphQLFieldDefinition getCurrentEditingContextField() {
+        // @formatter:off
+        return GraphQLFieldDefinition.newFieldDefinition()
+                .name(CURRENT_EDITING_CONTEXT_FIELD)
+                .type(new GraphQLNonNull(new GraphQLTypeReference(EditingContextTypeProvider.TYPE)))
                 .build();
         // @formatter:on
     }
