@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,20 +35,21 @@ public class DiagramEventFlux {
 
     private final FluxSink<IPayload> sink;
 
-    private final Diagram initialDiagram;
+    private Diagram currentDiagram;
 
-    public DiagramEventFlux(Diagram initialDiagram) {
+    public DiagramEventFlux(Diagram currentDiagram) {
         this.flux = DirectProcessor.create();
         this.sink = this.flux.sink();
-        this.initialDiagram = Objects.requireNonNull(initialDiagram);
+        this.currentDiagram = Objects.requireNonNull(currentDiagram);
     }
 
     public void diagramRefreshed(Diagram newDiagram) {
-        this.sink.next(new DiagramRefreshedEventPayload(newDiagram));
+        this.currentDiagram = newDiagram;
+        this.sink.next(new DiagramRefreshedEventPayload(this.currentDiagram));
     }
 
     public Flux<IPayload> getFlux() {
-        var initialRefresh = Mono.fromCallable(() -> new DiagramRefreshedEventPayload(this.initialDiagram));
+        var initialRefresh = Mono.fromCallable(() -> new DiagramRefreshedEventPayload(this.currentDiagram));
         return Flux.concat(initialRefresh, this.flux);
     }
 
@@ -57,6 +58,6 @@ public class DiagramEventFlux {
     }
 
     public void preDestroy() {
-        this.sink.next(new PreDestroyPayload(this.initialDiagram.getId()));
+        this.sink.next(new PreDestroyPayload(this.currentDiagram.getId()));
     }
 }
