@@ -42,6 +42,7 @@ import org.springframework.context.annotation.Configuration;
         "org.eclipse.sirius.web.spring.collaborative.trees",
         "org.eclipse.sirius.web.spring",
         "org.eclipse.sirius.web.services",
+        "org.eclipse.sirius.web.diagrams.services",
     }
 )
 // @formatter:on

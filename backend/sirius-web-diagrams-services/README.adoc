@@ -1,0 +1,9 @@
+= sirius-web-diagrams-services
+
+== Goal
+
+Used to remove the dependency to our business layer from the collaborative part
+
+== Dependencies
+
+- Sirius Web Services
