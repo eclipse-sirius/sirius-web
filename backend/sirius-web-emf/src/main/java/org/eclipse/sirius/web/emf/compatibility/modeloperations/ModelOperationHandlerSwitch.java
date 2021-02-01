@@ -32,7 +32,9 @@ import org.eclipse.sirius.viewpoint.description.tool.SetObject;
 import org.eclipse.sirius.viewpoint.description.tool.SetValue;
 import org.eclipse.sirius.viewpoint.description.tool.Switch;
 import org.eclipse.sirius.viewpoint.description.tool.Unset;
+import org.eclipse.sirius.web.compat.api.IIdentifierProvider;
 import org.eclipse.sirius.web.compat.api.IModelOperationHandler;
+import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.emf.compatibility.EPackageService;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
 import org.slf4j.Logger;
@@ -51,8 +53,14 @@ public class ModelOperationHandlerSwitch implements Function<ModelOperation, Opt
 
     private final ChildModelOperationHandler childModelOperationHandler;
 
-    public ModelOperationHandlerSwitch(AQLInterpreter interpreter) {
+    private final IIdentifierProvider identifierProvider;
+
+    private final IObjectService objectService;
+
+    public ModelOperationHandlerSwitch(AQLInterpreter interpreter, IIdentifierProvider identifierProvider, IObjectService objectService) {
         this.interpreter = Objects.requireNonNull(interpreter);
+        this.identifierProvider = Objects.requireNonNull(identifierProvider);
+        this.objectService = Objects.requireNonNull(objectService);
         this.childModelOperationHandler = new ChildModelOperationHandler();
     }
 
@@ -106,7 +114,7 @@ public class ModelOperationHandlerSwitch implements Function<ModelOperation, Opt
     }
 
     private Optional<IModelOperationHandler> caseCreateView(CreateView createViewOperation) {
-        return Optional.empty();
+        return Optional.of(new CreateViewOperationHandler(this.interpreter, new EPackageService(), this.objectService, this.identifierProvider, this.childModelOperationHandler, createViewOperation));
     }
 
     private Optional<IModelOperationHandler> caseDeleteView(DeleteView deleteViewOperation) {

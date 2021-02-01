@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.collaborative.diagrams.api;
 
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.core.api.IEditingContext;
+import org.eclipse.sirius.web.diagrams.IDiagramContext;
 
 /**
  * Interface of all the diagram event handlers.

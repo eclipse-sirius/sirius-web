@@ -10,12 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.collaborative.diagrams.api;
+package org.eclipse.sirius.web.diagrams;
 
 import java.util.List;
-
-import org.eclipse.sirius.web.diagrams.Diagram;
-import org.eclipse.sirius.web.diagrams.ViewCreationRequest;
 
 /**
  * Information used to perform some operations on the diagram.

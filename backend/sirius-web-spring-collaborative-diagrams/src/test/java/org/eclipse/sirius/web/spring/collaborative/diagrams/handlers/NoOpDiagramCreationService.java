@@ -14,10 +14,10 @@ package org.eclipse.sirius.web.spring.collaborative.diagrams.handlers;
 
 import java.util.Optional;
 
-import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramCreationService;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.diagrams.Diagram;
+import org.eclipse.sirius.web.diagrams.IDiagramContext;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
 
 /**

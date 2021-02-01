@@ -19,12 +19,12 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
-import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramCreationService;
 import org.eclipse.sirius.web.components.Element;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.diagrams.Diagram;
+import org.eclipse.sirius.web.diagrams.IDiagramContext;
 import org.eclipse.sirius.web.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.web.diagrams.components.DiagramComponent;
 import org.eclipse.sirius.web.diagrams.components.DiagramComponentProps;

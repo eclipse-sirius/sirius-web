@@ -19,7 +19,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import org.eclipse.sirius.diagram.description.ContainerMapping;
@@ -35,6 +34,7 @@ import org.eclipse.sirius.web.diagrams.NodeType;
 import org.eclipse.sirius.web.diagrams.description.LabelDescription;
 import org.eclipse.sirius.web.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.web.diagrams.description.NodeDescription;
+import org.eclipse.sirius.web.diagrams.description.SynchronizationPolicy;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
 import org.eclipse.sirius.web.representations.VariableManager;
 import org.eclipse.sirius.web.services.api.objects.IEditService;
@@ -74,19 +74,10 @@ public class ContainerMappingConverter {
     public NodeDescription convert(ContainerMapping containerMapping, Map<UUID, NodeDescription> id2NodeDescriptions) {
         // @formatter:off
         String labelExpression = Optional.ofNullable(containerMapping.getStyle()).map(ContainerStyleDescription::getLabelExpression).orElse(""); //$NON-NLS-1$
-        Supplier<LabelStyleDescription> defaultLabelStyleDescription = () -> LabelStyleDescription.newLabelStyleDescription()
-                .colorProvider(variableManager -> "#000000") //$NON-NLS-1$
-                .fontSizeProvider(variableManager -> 16)
-                .italicProvider(variableManager -> false)
-                .boldProvider(variableManager -> false)
-                .underlineProvider(variableManager -> false)
-                .strikeThroughProvider(variableManager -> false)
-                .iconURLProvider(variableManager -> "") //$NON-NLS-1$
-                .build();
 
         LabelStyleDescription labelStyleDescription = Optional.ofNullable(containerMapping.getStyle())
                 .map(this.labelStyleDescriptionConverter::convert)
-                .orElseGet(defaultLabelStyleDescription);
+                .orElseGet(this::getDefaultLabelStyleDescription);
 
         Function<VariableManager, String> labelIdProvider = variableManager -> {
             Object parentId = variableManager.getVariables().get(LabelDescription.OWNER_ID);
@@ -148,6 +139,10 @@ public class ContainerMappingConverter {
         ToolConverter toolConverter = new ToolConverter(this.interpreter, this.editService, this.modelOperationHandlerSwitchProvider);
         var deleteHandler = toolConverter.createDeleteToolHandler(containerMapping.getDeletionDescription());
         var labelEditHandler = toolConverter.createDirectEditToolHandler(containerMapping.getLabelDirectEdit());
+        SynchronizationPolicy synchronizationPolicy = SynchronizationPolicy.UNSYNCHRONIZED;
+        if (containerMapping.isCreateElements()) {
+            synchronizationPolicy = SynchronizationPolicy.SYNCHRONIZED;
+        }
 
         // @formatter:off
         NodeDescription description = NodeDescription.newNodeDescription(UUID.fromString(this.identifierProvider.getIdentifier(containerMapping)))
@@ -156,6 +151,7 @@ public class ContainerMappingConverter {
                 .targetObjectKindProvider(semanticTargetKindProvider)
                 .targetObjectLabelProvider(semanticTargetLabelProvider)
                 .semanticElementsProvider(semanticElementsProvider)
+                .synchronizationPolicy(synchronizationPolicy)
                 .labelDescription(labelDescription)
                 .styleProvider(styleProvider)
                 .childNodeDescriptions(childNodeDescriptions)
@@ -168,6 +164,20 @@ public class ContainerMappingConverter {
         id2NodeDescriptions.put(description.getId(), description);
 
         return description;
+    }
+
+    private LabelStyleDescription getDefaultLabelStyleDescription() {
+        // @formatter:off
+        return LabelStyleDescription.newLabelStyleDescription()
+            .colorProvider(variableManager -> "#000000") //$NON-NLS-1$
+            .fontSizeProvider(variableManager -> 16)
+            .italicProvider(variableManager -> false)
+            .boldProvider(variableManager -> false)
+            .underlineProvider(variableManager -> false)
+            .strikeThroughProvider(variableManager -> false)
+            .iconURLProvider(variableManager -> "") //$NON-NLS-1$
+            .build();
+        // @formatter:on
     }
 
 }
