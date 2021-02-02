@@ -83,7 +83,7 @@ public class MutationDeleteDocumentDataFetcher implements IDataFetcherWithFieldC
         if (optionalDocument.isPresent()) {
             Document document = optionalDocument.get();
 
-            boolean canEdit = this.dataFetchingEnvironmentService.canEdit(environment, document.getProject().getId());
+            boolean canEdit = this.dataFetchingEnvironmentService.canEditProject(environment, document.getProject().getId());
             if (canEdit) {
                 // @formatter:off
                 payload = this.editingContextEventProcessorRegistry.dispatchEvent(document.getProject().getId(), input)

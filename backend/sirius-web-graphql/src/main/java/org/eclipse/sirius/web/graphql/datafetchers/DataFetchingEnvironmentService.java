@@ -67,7 +67,7 @@ public class DataFetchingEnvironmentService implements IDataFetchingEnvironmentS
     }
 
     @Override
-    public boolean canEdit(DataFetchingEnvironment environment, UUID projectId) {
+    public boolean canEditProject(DataFetchingEnvironment environment, UUID projectId) {
         // @formatter:off
         return this.getPrincipal(environment)
                 .map(Principal::getName)
@@ -78,7 +78,7 @@ public class DataFetchingEnvironmentService implements IDataFetchingEnvironmentS
     }
 
     @Override
-    public boolean canAdmin(DataFetchingEnvironment environment, UUID projectId) {
+    public boolean canAdminProject(DataFetchingEnvironment environment, UUID projectId) {
         // @formatter:off
         return this.getPrincipal(environment)
                 .map(Principal::getName)
