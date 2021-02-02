@@ -18,6 +18,9 @@ export const diagramEventSubscription = gql`
       ... on PreDestroyPayload {
         id
       }
+      ... on ErrorPayload {
+        message
+      }
       ... on SubscribersUpdatedEventPayload {
         subscribers {
           username
