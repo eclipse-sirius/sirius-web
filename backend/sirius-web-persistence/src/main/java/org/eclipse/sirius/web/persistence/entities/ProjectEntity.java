@@ -23,6 +23,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
@@ -45,6 +46,10 @@ public class ProjectEntity {
     @ManyToOne
     @JoinColumn(name = "owner_id")
     private AccountEntity owner;
+
+    @OneToOne
+    @JoinColumn(name = "currenteditingcontext_id")
+    private EditingContextEntity currentEditingContext;
 
     @Enumerated(EnumType.STRING)
     @Type(type = "org.eclipse.sirius.web.persistence.util.VisibilityEnumType")
@@ -72,6 +77,14 @@ public class ProjectEntity {
 
     public void setOwner(AccountEntity owner) {
         this.owner = owner;
+    }
+
+    public EditingContextEntity getCurrentEditingContext() {
+        return this.currentEditingContext;
+    }
+
+    public void setCurrentEditingContext(EditingContextEntity currentEditingContext) {
+        this.currentEditingContext = currentEditingContext;
     }
 
     public VisibilityEntity getVisibility() {

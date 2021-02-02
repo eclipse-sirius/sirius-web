@@ -32,12 +32,19 @@ CREATE TABLE idmapping (
     externalid text NOT NULL
 );
 
+CREATE TABLE editingcontext (
+    id UUID DEFAULT gen_random_uuid() NOT NULL,
+    CONSTRAINT pk_editingcontext_id PRIMARY KEY (id)
+);
+
 CREATE TABLE project (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     name text NOT NULL,
     owner_id uuid NOT NULL,
     visibility visibility DEFAULT 'PUBLIC'::visibility NOT NULL,
-    CONSTRAINT project_name_length CHECK (((char_length(name) > 0) AND (char_length(name) <= 50)))
+    currenteditingcontext_id uuid NOT NULL,
+    CONSTRAINT project_name_length CHECK (((char_length(name) > 0) AND (char_length(name) <= 50))),
+    CONSTRAINT fk_project_currenteditingcontextid_id FOREIGN KEY (currenteditingcontext_id) REFERENCES editingcontext(id)
 );
 
 CREATE TABLE representation (
