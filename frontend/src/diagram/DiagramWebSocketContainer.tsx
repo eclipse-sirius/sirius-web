@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2021 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,26 +11,41 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useLazyQuery, useMutation, useSubscription } from '@apollo/client';
-import { Text } from 'core/text/Text';
+import IconButton from '@material-ui/core/IconButton';
+import Snackbar from '@material-ui/core/Snackbar';
+import makeStyles from '@material-ui/core/styles/makeStyles';
+import Typography from '@material-ui/core/Typography';
+import CloseIcon from '@material-ui/icons/Close';
+import { useMachine } from '@xstate/react';
+import { Palette, Tool } from 'diagram/DiagramWebSocketContainer.types';
 import {
-  COMPLETE__STATE,
-  HANDLE_COMPLETE__ACTION,
-  HANDLE_DATA__ACTION,
-  HANDLE_ERROR__ACTION,
-  INITIALIZE__ACTION,
-  LOADING__STATE,
-  READY__STATE,
-  SELECTED_ELEMENT__ACTION,
-  SELECTION__ACTION,
-  SELECT_ZOOM_LEVEL__ACTION,
-  SET_ACTIVE_TOOL__ACTION,
-  SET_CONTEXTUAL_PALETTE__ACTION,
-  SET_DEFAULT_TOOL__ACTION,
-  SET_TOOL_SECTIONS__ACTION,
-  SWITCH_REPRESENTATION__ACTION,
-} from 'diagram/machine';
+  DiagramRefreshedEvent,
+  DiagramWebSocketContainerContext,
+  DiagramWebSocketContainerEvent,
+  diagramWebSocketContainerMachine,
+  HideToastEvent,
+  InitializeRepresentationEvent,
+  SchemaValue,
+  SelectedElementEvent,
+  SelectionEvent,
+  SelectZoomLevelEvent,
+  SetActiveToolEvent,
+  SetContextualPaletteEvent,
+  SetDefaultToolEvent,
+  SetToolSectionsEvent,
+  ShowToastEvent,
+  SubscribersUpdatedEvent,
+  SwithRepresentationEvent,
+} from 'diagram/DiagramWebSocketContainerMachine';
+import {
+  deleteFromDiagramMutation,
+  diagramEventSubscription,
+  editLabelMutation as editLabelMutationOp,
+  getToolSectionsQuery,
+  invokeEdgeToolOnDiagramMutation,
+  invokeNodeToolOnDiagramMutation,
+} from 'diagram/operations';
 import { ContextualPalette } from 'diagram/palette/ContextualPalette';
-import { initialState, reducer } from 'diagram/reducer';
 import { edgeCreationFeedback } from 'diagram/sprotty/edgeCreationFeedback';
 import {
   ACTIVE_TOOL_ACTION,
@@ -44,20 +59,42 @@ import {
   ZOOM_TO_ACTION,
 } from 'diagram/sprotty/WebSocketDiagramServer';
 import { Toolbar } from 'diagram/Toolbar';
-import React, { useCallback, useEffect, useReducer, useRef } from 'react';
-import 'reflect-metadata'; // Required because Sprotty uses Inversify and both frameworks are written in TypeScript with experimental features.
+import { canInvokeTool } from 'diagram/toolServices';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { EditLabelAction, FitToScreenAction, SEdge, SNode } from 'sprotty';
 import { RepresentationComponentProps } from 'workbench/Workbench.types';
-import styles from './Diagram.module.css';
-import {
-  deleteFromDiagramMutation,
-  diagramEventSubscription,
-  editLabelMutation as editLabelMutationOp,
-  getToolSectionsQuery,
-  invokeEdgeToolOnDiagramMutation,
-  invokeNodeToolOnDiagramMutation,
-} from './operations';
-import { canInvokeTool } from './toolServices';
+
+const useDiagramWebSocketContainerStyle = makeStyles((theme) => ({
+  container: {
+    display: 'grid',
+    gridTemplateRows: 'min-content 1fr',
+    gridTemplateColumns: '1fr',
+  },
+  contextualPalette: {
+    position: 'absolute',
+  },
+  diagramContainer: {
+    display: 'grid',
+    gridTemplateColumns: '1fr',
+    gridTemplateRows: '1fr',
+  },
+  noDiagram: {
+    alignItems: 'center',
+    justifyItems: 'center',
+  },
+  diagramWrapper: {
+    display: 'flex',
+    alignItems: 'stretch',
+  },
+  diagram: {
+    display: 'flex',
+    alignItems: 'stretch',
+    flexGrow: 1,
+    '& > *': {
+      flexGrow: 1,
+    },
+  },
+}));
 
 /**
  * Here be dragons!
@@ -215,11 +252,12 @@ export const DiagramWebSocketContainer = ({
   setSelection,
 }: RepresentationComponentProps) => {
   const diagramDomElement = useRef(null);
-
-  const [state, dispatch] = useReducer(reducer, initialState);
-
+  const classes = useDiagramWebSocketContainerStyle();
+  const [{ value, context }, dispatch] = useMachine<DiagramWebSocketContainerContext, DiagramWebSocketContainerEvent>(
+    diagramWebSocketContainerMachine
+  );
+  const { toast, diagramWebSocketContainer } = value as SchemaValue;
   const {
-    viewState,
     displayedRepresentationId,
     diagramServer,
     diagram,
@@ -230,12 +268,24 @@ export const DiagramWebSocketContainer = ({
     zoomLevel,
     subscribers,
     message,
-  } = state;
+  } = context;
 
-  const [deleteElementsMutation] = useMutation(deleteFromDiagramMutation);
-  const [invokeNodeToolMutation] = useMutation(invokeNodeToolOnDiagramMutation);
-  const [invokeEdgeToolMutation] = useMutation(invokeEdgeToolOnDiagramMutation);
-  const [editLabelMutation] = useMutation(editLabelMutationOp);
+  const [
+    deleteElementsMutation,
+    { loading: deleteFromDiagramLoading, data: deleteFromDiagramData, error: deleteFromDiagramError },
+  ] = useMutation(deleteFromDiagramMutation);
+  const [
+    invokeNodeToolMutation,
+    { loading: invokeNodeToolLoading, data: invokeNodeToolData, error: invokeNodeToolError },
+  ] = useMutation(invokeNodeToolOnDiagramMutation);
+  const [
+    invokeEdgeToolMutation,
+    { loading: invokeEdgeToolLoading, data: invokeEdgeToolData, error: invokeEdgeToolError },
+  ] = useMutation(invokeEdgeToolOnDiagramMutation);
+  const [editLabelMutation, { loading: editLabelLoading, data: editLabelData, error: editLabelError }] = useMutation(
+    editLabelMutationOp
+  );
+
   const [getToolSectionData, { loading: toolSectionLoading, data: toolSectionData }] = useLazyQuery(
     getToolSectionsQuery
   );
@@ -264,16 +314,17 @@ export const DiagramWebSocketContainer = ({
     if (diagramServer) {
       diagramServer.actionDispatcher.dispatch({ kind: ACTIVE_TOOL_ACTION, tool: activeTool });
     }
-  }, [activeTool, diagramServer]);
+  }, [activeTool, diagramServer, dispatch]);
 
   /**
    * Dispatch the selection if our props indicate that selection has changed.
    */
   useEffect(() => {
-    if (viewState === READY__STATE) {
-      dispatch({ type: SELECTION__ACTION, selection });
+    if (diagramWebSocketContainer === 'ready') {
+      const selectionEvent: SelectionEvent = { type: 'SELECTION', selection };
+      dispatch(selectionEvent);
     }
-  }, [selection, diagramServer, viewState]);
+  }, [selection, diagramServer, diagramWebSocketContainer, dispatch]);
 
   /**
    * Dispatch the new selection to the diagramServer if our state indicate that new selection has changed.
@@ -282,7 +333,7 @@ export const DiagramWebSocketContainer = ({
     if (diagramServer && newSelection) {
       diagramServer.actionDispatcher.dispatch({ kind: SIRIUS_SELECT_ACTION, selection: newSelection });
     }
-  }, [newSelection, diagramServer]);
+  }, [newSelection, diagramServer, dispatch]);
 
   /**
    * Switch to another diagram if our props indicate that we should display a different diagram
@@ -293,9 +344,10 @@ export const DiagramWebSocketContainer = ({
    */
   useEffect(() => {
     if (displayedRepresentationId !== representationId) {
-      dispatch({ type: SWITCH_REPRESENTATION__ACTION, representationId });
+      const switchRepresentationEvent: SwithRepresentationEvent = { type: 'SWITCH_REPRESENTATION', representationId };
+      dispatch(switchRepresentationEvent);
     }
-  }, [displayedRepresentationId, representationId]);
+  }, [displayedRepresentationId, representationId, dispatch]);
 
   const deleteElements = useCallback(
     (diagramElements) => {
@@ -309,9 +361,13 @@ export const DiagramWebSocketContainer = ({
         edgeIds,
       };
       deleteElementsMutation({ variables: { input } });
-      dispatch({ type: SET_CONTEXTUAL_PALETTE__ACTION, contextualPalette: undefined });
+      const setContextualPaletteEvent: SetContextualPaletteEvent = {
+        type: 'SET_CONTEXTUAL_PALETTE',
+        contextualPalette: undefined,
+      };
+      dispatch(setContextualPaletteEvent);
     },
-    [editingContextId, representationId, deleteElementsMutation]
+    [editingContextId, representationId, deleteElementsMutation, dispatch]
   );
 
   const invokeTool = useCallback(
@@ -341,10 +397,11 @@ export const DiagramWebSocketContainer = ({
           };
           invokeNodeToolMutation({ variables: { input } });
         }
-        dispatch({ type: SET_ACTIVE_TOOL__ACTION });
+        const setActiveToolEvent: SetActiveToolEvent = { type: 'SET_ACTIVE_TOOL', activeTool: undefined };
+        dispatch(setActiveToolEvent);
       }
     },
-    [editingContextId, representationId, invokeNodeToolMutation, invokeEdgeToolMutation]
+    [editingContextId, representationId, invokeNodeToolMutation, invokeEdgeToolMutation, dispatch]
   );
 
   /**
@@ -366,7 +423,8 @@ export const DiagramWebSocketContainer = ({
         };
       }
       setSelection(newSelection);
-      dispatch({ type: SELECTED_ELEMENT__ACTION, selection: newSelection });
+      const selectedElementEvent: SelectedElementEvent = { type: 'SELECTED_ELEMENT', selection: newSelection };
+      dispatch(selectedElementEvent);
       /**
        * Dispatch the selected element to the diagramServer if our state indicate that selected element has changed.
        * We can't use useEffet hook here, because SPROTTY_SELECT_ACTION must be send to SiriusWebWebSocketDiagramServer even
@@ -387,8 +445,9 @@ export const DiagramWebSocketContainer = ({
       }
       return cursor;
     };
-    const setActiveTool = (tool?) => {
-      dispatch({ type: SET_ACTIVE_TOOL__ACTION, tool });
+    const setActiveTool = (tool: Tool) => {
+      const setActiveToolEvent: SetActiveToolEvent = { type: 'SET_ACTIVE_TOOL', activeTool: tool };
+      dispatch(setActiveToolEvent);
     };
     const editLabel = (labelId, newText) => {
       const input = {
@@ -399,15 +458,19 @@ export const DiagramWebSocketContainer = ({
       };
       editLabelMutation({ variables: { input } });
     };
-    const setContextualPalette = (contextualPalette) => {
+    const setContextualPalette = (contextualPalette: Palette) => {
       if (!readOnly) {
-        dispatch({ type: SET_CONTEXTUAL_PALETTE__ACTION, contextualPalette });
+        const setContextualPaletteEvent: SetContextualPaletteEvent = {
+          type: 'SET_CONTEXTUAL_PALETTE',
+          contextualPalette,
+        };
+        dispatch(setContextualPaletteEvent);
       }
     };
 
-    if (viewState === LOADING__STATE && diagramDomElement.current) {
-      dispatch({
-        type: INITIALIZE__ACTION,
+    if (diagramWebSocketContainer === 'loading' && diagramDomElement.current) {
+      const initializeRepresentationEvent: InitializeRepresentationEvent = {
+        type: 'INITIALIZE',
         diagramDomElement,
         deleteElements,
         invokeTool,
@@ -417,10 +480,11 @@ export const DiagramWebSocketContainer = ({
         setActiveTool,
         toolSections,
         setContextualPalette,
-      });
+      };
+      dispatch(initializeRepresentationEvent);
     }
   }, [
-    viewState,
+    diagramWebSocketContainer,
     displayedRepresentationId,
     diagramServer,
     setSelection,
@@ -432,18 +496,18 @@ export const DiagramWebSocketContainer = ({
     editingContextId,
     representationId,
     readOnly,
+    dispatch,
   ]);
 
   useEffect(() => {
-    if (!toolSectionLoading && viewState === READY__STATE) {
-      if (toolSectionData?.viewer?.toolSections) {
-        dispatch({
-          type: SET_TOOL_SECTIONS__ACTION,
-          toolSections: toolSectionData.viewer.toolSections,
-        });
+    if (!toolSectionLoading && diagramWebSocketContainer === 'ready') {
+      const toolSections = toolSectionData?.viewer?.toolSections;
+      if (toolSections) {
+        const setToolSectionsEvent: SetToolSectionsEvent = { type: 'SET_TOOL_SECTIONS', toolSections: toolSections };
+        dispatch(setToolSectionsEvent);
       }
     }
-  }, [toolSectionLoading, toolSectionData, viewState]);
+  }, [toolSectionLoading, toolSectionData, diagramWebSocketContainer, dispatch]);
 
   const { error } = useSubscription(diagramEventSubscription, {
     variables: {
@@ -452,15 +516,47 @@ export const DiagramWebSocketContainer = ({
         diagramId: representationId,
       },
     },
-    skip: viewState !== READY__STATE,
+    skip: diagramWebSocketContainer !== 'ready',
     onSubscriptionData: ({ subscriptionData }) => {
-      dispatch({ type: HANDLE_DATA__ACTION, message: subscriptionData });
+      if (subscriptionData?.data) {
+        const { diagramEvent } = subscriptionData.data;
+        if (diagramEvent.__typename === 'DiagramRefreshedEventPayload') {
+          const diagramRefreshedEvent: DiagramRefreshedEvent = {
+            type: 'HANDLE_DIAGRAM_REFRESHED',
+            diagram: diagramEvent.diagram,
+          };
+          dispatch(diagramRefreshedEvent);
+        } else if (diagramEvent.__typename === 'SubscribersUpdatedEventPayload') {
+          const subscribersUpdatedEvent: SubscribersUpdatedEvent = {
+            type: 'HANDLE_SUBSCRIBERS_UPDATED',
+            subscribers: diagramEvent.subscribers,
+          };
+          dispatch(subscribersUpdatedEvent);
+        } else if (diagramEvent.__typename === 'ErrorPayload') {
+          const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message: diagramEvent.message };
+          dispatch(showToastEvent);
+        } else if (diagramEvent.__typename === 'PreDestroyPayload') {
+          const showToastEvent: ShowToastEvent = {
+            type: 'SHOW_TOAST',
+            message: 'The connection with the server has been lost',
+          };
+          dispatch(showToastEvent);
+        }
+      }
     },
-    onSubscriptionComplete: () => dispatch({ type: HANDLE_COMPLETE__ACTION }),
+    onSubscriptionComplete: () => {
+      dispatch({ type: 'HANDLE_COMPLETE' });
+    },
   });
-  if (error) {
-    dispatch({ type: HANDLE_ERROR__ACTION, message: error });
-  }
+
+  useEffect(() => {
+    if (error) {
+      const message = 'An error has occured while trying to retrieve the diagram';
+      const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
+      dispatch(showToastEvent);
+      dispatch({ type: 'HANDLE_COMPLETE' });
+    }
+  }, [error, dispatch]);
 
   const onZoomIn = () => {
     if (diagramServer) {
@@ -483,9 +579,56 @@ export const DiagramWebSocketContainer = ({
   const setZoomLevel = (level) => {
     if (diagramServer) {
       diagramServer.actionDispatcher.dispatch({ kind: ZOOM_TO_ACTION, level: level });
-      dispatch({ type: SELECT_ZOOM_LEVEL__ACTION, level: level });
+      const selectZoomLevelEvent: SelectZoomLevelEvent = { type: 'SELECT_ZOOM_LEVEL', level };
+      dispatch(selectZoomLevelEvent);
     }
   };
+
+  const handleError = useCallback(
+    (loading, data, error) => {
+      if (!loading) {
+        if (error) {
+          const showToastEvent: ShowToastEvent = {
+            type: 'SHOW_TOAST',
+            message: 'An error has occurred while executing this action, please contact the server administrator',
+          };
+          dispatch(showToastEvent);
+        }
+        if (data) {
+          const keys = Object.keys(data);
+          if (keys.length > 0) {
+            const firstKey = keys[0];
+            const firstField = data[firstKey];
+            if (firstField.__typename === 'ErrorPayload') {
+              const { message } = firstField;
+              const showToastEvent: ShowToastEvent = {
+                type: 'SHOW_TOAST',
+                message,
+              };
+              dispatch(showToastEvent);
+            }
+          }
+        }
+      }
+    },
+    [dispatch]
+  );
+
+  useEffect(() => {
+    handleError(editLabelLoading, editLabelData, editLabelError);
+  }, [editLabelLoading, editLabelData, editLabelError, handleError]);
+
+  useEffect(() => {
+    handleError(deleteFromDiagramLoading, deleteFromDiagramData, deleteFromDiagramError);
+  }, [deleteFromDiagramLoading, deleteFromDiagramData, deleteFromDiagramError, handleError]);
+
+  useEffect(() => {
+    handleError(invokeNodeToolLoading, invokeNodeToolData, invokeNodeToolError);
+  }, [invokeNodeToolLoading, invokeNodeToolData, invokeNodeToolError, handleError]);
+
+  useEffect(() => {
+    handleError(invokeEdgeToolLoading, invokeEdgeToolData, invokeEdgeToolError);
+  }, [invokeEdgeToolLoading, invokeEdgeToolData, invokeEdgeToolError, handleError]);
 
   /**
    * Gather up, it's time for a story.
@@ -519,7 +662,13 @@ export const DiagramWebSocketContainer = ({
   if (!readOnly && contextualPalette) {
     const { element, canvasBounds, origin, renameable, deletable } = contextualPalette;
     const { x, y } = origin;
-    const invokeCloseFromContextualPalette = () => dispatch({ type: SET_CONTEXTUAL_PALETTE__ACTION });
+    const invokeCloseFromContextualPalette = () => {
+      const setContextualPaletteEvent: SetContextualPaletteEvent = {
+        type: 'SET_CONTEXTUAL_PALETTE',
+        contextualPalette: undefined,
+      };
+      dispatch(setContextualPaletteEvent);
+    };
     const style = {
       left: canvasBounds.x + 'px',
       top: canvasBounds.y + 'px',
@@ -538,49 +687,56 @@ export const DiagramWebSocketContainer = ({
     }
     const invokeToolFromContextualPalette = (tool) => {
       if (tool.__typename === 'CreateEdgeTool') {
-        dispatch({ type: SET_ACTIVE_TOOL__ACTION, activeTool: tool });
-        dispatch({ type: SET_CONTEXTUAL_PALETTE__ACTION });
+        const setActiveToolEvent: SetActiveToolEvent = { type: 'SET_ACTIVE_TOOL', activeTool: tool };
+        dispatch(setActiveToolEvent);
+        const setContextualPaletteEvent: SetContextualPaletteEvent = {
+          type: 'SET_CONTEXTUAL_PALETTE',
+          contextualPalette: undefined,
+        };
+        dispatch(setContextualPaletteEvent);
         edgeCreationFeedback.init(x, y);
         diagramServer.actionDispatcher.dispatch({ kind: SOURCE_ELEMENT_ACTION, sourceElement: element });
       } else if (tool.__typename === 'CreateNodeTool') {
         invokeTool(tool, element.id);
         diagramServer.actionDispatcher.dispatch({ kind: SOURCE_ELEMENT_ACTION });
       }
-      dispatch({ type: SET_DEFAULT_TOOL__ACTION, defaultTool: tool });
+      const setDefaultToolEvent: SetDefaultToolEvent = { type: 'SET_DEFAULT_TOOL', defaultTool: tool };
+      dispatch(setDefaultToolEvent);
     };
     contextualPaletteContent = (
-      <div className={styles.contextualPalette} style={style}>
+      <div className={classes.contextualPalette} style={style}>
         <ContextualPalette
           toolSections={toolSections}
           targetElement={element}
           invokeTool={invokeToolFromContextualPalette}
           invokeLabelEdit={invokeLabelEditFromContextualPalette}
           invokeDelete={invokeDeleteFromContextualPalette}
-          invokeClose={invokeCloseFromContextualPalette}></ContextualPalette>
+          invokeClose={invokeCloseFromContextualPalette}
+        />
       </div>
     );
   }
   let content = (
-    <div id="diagram-container" className={styles.diagramContainer}>
-      <div id="diagram-wrapper" className={styles.diagramWrapper}>
-        <div ref={diagramDomElement} id="diagram" className={styles.diagram} />
+    <div id="diagram-container" className={classes.diagramContainer}>
+      <div id="diagram-wrapper" className={classes.diagramWrapper}>
+        <div ref={diagramDomElement} id="diagram" className={classes.diagram} />
         {contextualPaletteContent}
       </div>
     </div>
   );
 
-  if (viewState === COMPLETE__STATE) {
+  if (diagramWebSocketContainer === 'complete') {
     content = (
-      <div id="diagram-container" className={styles.diagramContainer + ' ' + styles.noDiagram}>
-        <Text className={styles.noDiagramLabel} data-testid="diagram-complete-message">
-          {message}
-        </Text>
+      <div id="diagram-container" className={classes.diagramContainer + ' ' + classes.noDiagram}>
+        <Typography variant="h5" align="center" data-testid="diagram-complete-message">
+          The diagram does not exist
+        </Typography>
       </div>
     );
   }
 
   return (
-    <div className={styles.container}>
+    <div className={classes.container}>
       <Toolbar
         onZoomIn={onZoomIn}
         onZoomOut={onZoomOut}
@@ -590,6 +746,27 @@ export const DiagramWebSocketContainer = ({
         subscribers={subscribers}
       />
       {content}
+
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right',
+        }}
+        open={toast === 'visible'}
+        autoHideDuration={3000}
+        onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
+        message={message}
+        action={
+          <IconButton
+            size="small"
+            aria-label="close"
+            color="inherit"
+            onClick={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}>
+            <CloseIcon fontSize="small" />
+          </IconButton>
+        }
+        data-testid="error"
+      />
     </div>
   );
 };
