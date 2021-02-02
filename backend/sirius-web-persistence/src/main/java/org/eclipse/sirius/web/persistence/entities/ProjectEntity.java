@@ -97,7 +97,7 @@ public class ProjectEntity {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, name: {2}, owner: {3}, visibility: {4}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.name, this.owner, this.visibility);
+        String pattern = "{0} '{'id: {1}, name: {2}, owner: {3}, visibility: {4}, currentEditingContext: '{' id: {5} '}' '}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.name, this.owner, this.visibility, this.currentEditingContext.getId());
     }
 }
