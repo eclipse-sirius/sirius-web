@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -324,13 +324,13 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
         }
       });
     } else {
-      const contextualPalette = undefined;
+      const contextualPalette = null;
       this.setContextualPalette(contextualPalette);
     }
   }
 
   handleHideContextualToolbarAction(action) {
-    const contextualPalette = undefined;
+    const contextualPalette = null;
     this.setContextualPalette(contextualPalette);
   }
   handleZoomInAction(action) {
