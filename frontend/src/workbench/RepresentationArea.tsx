@@ -15,8 +15,7 @@ import { DiagramWebSocketContainer } from 'diagram/DiagramWebSocketContainer';
 import { FormWebSocketContainer } from 'form/FormWebSocketContainer';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { RepresentationNavigation } from 'views/edit-project/RepresentationNavigation';
-import { OnboardArea } from './OnboardArea';
+import { RepresentationNavigation } from 'workbench/RepresentationNavigation';
 import styles from './RepresentationArea.module.css';
 
 const propTypes = {
@@ -26,7 +25,6 @@ const propTypes = {
   selection: PropTypes.object,
   displayedRepresentation: PropTypes.object,
   setSelection: PropTypes.func.isRequired,
-  setSubscribers: PropTypes.func.isRequired,
 };
 export const RepresentationArea = ({
   projectId,
@@ -35,12 +33,9 @@ export const RepresentationArea = ({
   selection,
   displayedRepresentation,
   setSelection,
-  setSubscribers,
 }) => {
   let content;
-  if (!displayedRepresentation) {
-    content = <OnboardArea projectId={projectId} selection={selection} setSelection={setSelection} />;
-  } else if (displayedRepresentation.kind === 'Diagram') {
+  if (displayedRepresentation.kind === 'Diagram') {
     content = (
       <DiagramWebSocketContainer
         projectId={projectId}
@@ -48,7 +43,6 @@ export const RepresentationArea = ({
         readOnly={readOnly}
         selection={selection}
         setSelection={setSelection}
-        setSubscribers={setSubscribers}
       />
     );
   } else if (displayedRepresentation.kind === 'Form') {

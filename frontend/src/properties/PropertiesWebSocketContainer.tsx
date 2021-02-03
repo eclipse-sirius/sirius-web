@@ -108,9 +108,22 @@ const propertiesEventSubscription = gql`
 /**
  * Connect the Properties component to the GraphQL API over Web Socket.
  */
-export const PropertiesWebSocketContainer = ({ projectId, objectId }) => {
+export const PropertiesWebSocketContainer = ({ projectId, selection }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { viewState, form, displayedObjectId, subscribers, widgetSubscriptions, message } = state;
+
+  let objectId = null;
+  if (
+    selection &&
+    !(
+      selection.kind === 'Unknown' ||
+      selection.kind === 'Diagram' ||
+      selection.kind === 'Form' ||
+      selection.kind === 'Document'
+    )
+  ) {
+    objectId = selection.id;
+  }
 
   /**
    * Displays an other form if the selection indicates that we should display another properties view.

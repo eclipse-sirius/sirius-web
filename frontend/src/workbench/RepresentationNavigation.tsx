@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Text } from 'core/text/Text';
+import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styles from './RepresentationNavigation.module.css';
@@ -20,6 +20,7 @@ const propTypes = {
   displayedRepresentation: PropTypes.object,
   setSelection: PropTypes.func.isRequired,
 };
+
 export const RepresentationNavigation = ({ representations, displayedRepresentation, setSelection }) => {
   return (
     <ul className={styles.representationNavigation}>
@@ -37,7 +38,7 @@ export const RepresentationNavigation = ({ representations, displayedRepresentat
             onClick={() => setSelection({ id, label, kind })}
             data-testid={`representation-tab-${label}`}
             data-testselected={isSelected}>
-            <Text className={labelClassName}>{label}</Text>
+            <Typography className={labelClassName}>{label}</Typography>
           </li>
         );
       })}
