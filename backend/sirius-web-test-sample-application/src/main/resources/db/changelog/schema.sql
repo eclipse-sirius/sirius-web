@@ -80,6 +80,20 @@ ALTER TABLE ONLY project
 ALTER TABLE ONLY representation
     ADD CONSTRAINT fk_representation_project_id_id FOREIGN KEY (project_id) REFERENCES project(id) ON DELETE CASCADE;
 
+CREATE TYPE PublicationStatus AS ENUM (
+    'DRAFT',
+    'PUBLISHED'
+);
+ 
+CREATE TABLE Modeler (
+    id UUID DEFAULT gen_random_uuid() NOT NULL,
+    name TEXT NOT NULL,
+    project_id UUID NOT NULL,
+    publicationstatus PublicationStatus DEFAULT 'DRAFT'::PublicationStatus NOT NULL,
+    CONSTRAINT pk_modeler_id PRIMARY KEY (id),
+    CONSTRAINT fk_modeler_project_id_id FOREIGN KEY (project_id) REFERENCES project(id)
+);
+
 -- password is "012345678910" encrypted using Spring's BCryptPasswordEncoder
 INSERT INTO Account
 VALUES ('7d345191-8c47-4387-aac9-6e125d7cee60', 'system', '$2a$10$T99K83wmZ7BBwuh7JrZ8o.1n.J30ciaRPfUZzo2yLEWQ/cXBtFVPK', 'ADMIN'); 
