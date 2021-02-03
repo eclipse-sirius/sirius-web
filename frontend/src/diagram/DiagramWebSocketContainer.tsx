@@ -70,7 +70,6 @@ const propTypes = {
     kind: PropTypes.string.isRequired,
   }),
   setSelection: PropTypes.func.isRequired,
-  setSubscribers: PropTypes.func.isRequired,
 };
 
 /**
@@ -227,7 +226,6 @@ export const DiagramWebSocketContainer = ({
   readOnly,
   selection,
   setSelection,
-  setSubscribers,
 }: DiagramWebSocketContainerProps) => {
   const diagramDomElement = useRef(null);
 
@@ -477,14 +475,6 @@ export const DiagramWebSocketContainer = ({
     dispatch({ type: HANDLE_ERROR__ACTION, message: error });
   }
 
-  /**
-   * Each time the list of subscribers is updated, this will trigger the listener used to display the
-   * subscribers outside of this component.
-   */
-  useEffect(() => {
-    setSubscribers(subscribers);
-  }, [setSubscribers, subscribers]);
-
   const onZoomIn = () => {
     if (diagramServer) {
       diagramServer.actionDispatcher.dispatch({ kind: ZOOM_IN_ACTION });
@@ -610,6 +600,7 @@ export const DiagramWebSocketContainer = ({
         onFitToScreen={onFitToScreen}
         setZoomLevel={setZoomLevel}
         zoomLevel={zoomLevel}
+        subscribers={subscribers}
       />
       {content}
     </div>

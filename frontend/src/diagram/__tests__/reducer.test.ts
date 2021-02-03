@@ -12,23 +12,23 @@
  *******************************************************************************/
 // Required because Sprotty uses Inversify and both frameworks are written in TypeScript with experimental features.
 import 'reflect-metadata';
-import { initialState, reducer } from '../reducer';
 import {
+  COMPLETE__STATE,
   EMPTY__STATE,
+  HANDLE_COMPLETE__ACTION,
+  HANDLE_CONNECTION_ERROR__ACTION,
+  HANDLE_DATA__ACTION,
+  HANDLE_ERROR__ACTION,
   LOADING__STATE,
   READY__STATE,
-  COMPLETE__STATE,
-  HANDLE_DATA__ACTION,
-  HANDLE_CONNECTION_ERROR__ACTION,
-  HANDLE_ERROR__ACTION,
-  HANDLE_COMPLETE__ACTION,
-  SET_ACTIVE_TOOL__ACTION,
-  SWITCH_REPRESENTATION__ACTION,
-  SELECTION__ACTION,
   SELECTED_ELEMENT__ACTION,
+  SELECTION__ACTION,
   SELECT_ZOOM_LEVEL__ACTION,
+  SET_ACTIVE_TOOL__ACTION,
   SET_TOOL_SECTIONS__ACTION,
+  SWITCH_REPRESENTATION__ACTION,
 } from '../machine';
+import { initialState, reducer } from '../reducer';
 
 class ActionDispatcher {
   dispatch(action) {}
@@ -93,7 +93,7 @@ describe('DiagramWebSocketContainer - reducer', () => {
       newSelection: undefined,
       latestSelection: undefined,
       activeTool: undefined,
-      zoomLevel: undefined,
+      zoomLevel: '1',
       subscribers: [],
       message: undefined,
     });

@@ -10,12 +10,50 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-export type Selection = {
+export type Visibility = 'PUBLIC' | 'PRIVATE';
+export type AccessLevel = 'READ' | 'WRITE' | 'ADMIN';
+
+export type EditingContext = {
   id: string;
-  label: string;
-  kind: string;
 };
 
-export type Subscriber = {
-  username: string;
+export type Project = {
+  id: string;
+  name: string;
+  visibility: Visibility;
+  accessLevel: AccessLevel;
+  currentEditingContext: EditingContext;
+};
+
+export type GQLRepresentation = {
+  __typename: string;
+  id: string;
+  label: string;
+};
+
+export type GQLEditingContext = {
+  id: string;
+};
+
+export type GQLProject = {
+  id: string;
+  name: string;
+  visibility: Visibility;
+  accessLevel: AccessLevel;
+  currentEditingContext: GQLEditingContext;
+  representation: GQLRepresentation | undefined;
+};
+
+export type GQLViewer = {
+  project: GQLProject;
+};
+
+export type GQLGetProjectQueryData = {
+  viewer: GQLViewer;
+};
+
+export type GQLGetProjectQueryVariables = {
+  projectId: string;
+  representationId: string;
+  includeRepresentation: boolean;
 };

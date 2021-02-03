@@ -44,7 +44,7 @@ export const initialState = {
   contextualPalette: undefined,
   latestSelection: undefined,
   newSelection: undefined,
-  zoomLevel: undefined,
+  zoomLevel: '1',
   subscribers: [],
   message: undefined,
 };

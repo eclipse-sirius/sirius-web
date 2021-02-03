@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2021 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,15 +10,21 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-.editProjectView {
-  display: grid;
-  grid-template-rows: min-content minmax(0, 1fr);
-  grid-template-columns: 1fr;
-  height: 100vh;
-  width: 100vw;
-}
-.main {
-  display: grid;
-  grid-template-rows: minmax(0, 1fr);
-  grid-template-columns: 1fr;
-}
+export type Selection = {
+  id: string;
+  label: string;
+  kind: string;
+};
+
+export type Representation = {
+  id: string;
+  label: string;
+  kind: string;
+};
+
+export type WorkbenchProps = {
+  editingContextId: string;
+  initialRepresentationSelected: Representation;
+  onRepresentationSelected: (representation: Representation) => void;
+  readOnly: boolean;
+};

@@ -10,24 +10,21 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useAuth } from 'auth/useAuth';
 import { useBranding } from 'common/BrandingContext';
 import { IconButton } from 'core/button/Button';
 import { LARGE, LIGHT } from 'core/subscriber/Subscriber';
 import { Subscribers } from 'core/subscriber/Subscribers';
-import { Text } from 'core/text/Text';
 import { More } from 'icons';
 import { DeleteProjectModal } from 'modals/delete-project/DeleteProjectModal';
 import { NewDocumentModal } from 'modals/new-document/NewDocumentModal';
 import { RenameProjectModal } from 'modals/rename-project/RenameProjectModal';
 import { UploadDocumentModal } from 'modals/upload-document/UploadDocumentModal';
-import { EditProjectNavbarContextMenu } from 'navbar/EditProjectNavbarContextMenu';
 import { Logo } from 'navbar/Logo';
 import { Title } from 'navbar/Title';
-import { useProject } from 'project/ProjectProvider';
 import PropTypes from 'prop-types';
 import React, { useReducer } from 'react';
 import { Redirect } from 'react-router-dom';
+import { EditProjectNavbarContextMenu } from 'views/edit-project/EditProjectNavbar/EditProjectNavbarContextMenu';
 import styles from './EditProjectNavbar.module.css';
 import {
   CONTEXTUAL_MENU_DISPLAYED__STATE,
@@ -52,14 +49,7 @@ const menuPositionDelta = {
 const propTypes = {
   subscribers: PropTypes.array.isRequired,
 };
-export const EditProjectNavbar = ({ subscribers }) => {
-  const {
-    id,
-    name,
-    canEdit,
-    owner: { username: projectOwner },
-  } = useProject() as any;
-  const { username } = useAuth() as any;
+export const EditProjectNavbar = ({ projectId, name, subscribers }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { userStatus } = useBranding();
   const onMore = (event) => {
@@ -87,7 +77,7 @@ export const EditProjectNavbar = ({ subscribers }) => {
       <EditProjectNavbarContextMenu
         x={x}
         y={y}
-        projectId={id}
+        projectId={projectId}
         onCreateDocument={onCreateDocument}
         onUploadDocument={onUploadDocument}
         onRename={onRename}
@@ -115,32 +105,20 @@ export const EditProjectNavbar = ({ subscribers }) => {
 
   let modal = null;
   if (modalDisplayed === 'CreateDocument') {
-    modal = <NewDocumentModal projectId={id} onDocumentCreated={onCloseModal} onClose={onCloseModal} />;
+    modal = <NewDocumentModal projectId={projectId} onDocumentCreated={onCloseModal} onClose={onCloseModal} />;
   } else if (modalDisplayed === 'UploadDocument') {
-    modal = <UploadDocumentModal projectId={id} onDocumentUploaded={onCloseModal} onClose={onCloseModal} />;
+    modal = <UploadDocumentModal projectId={projectId} onDocumentUploaded={onCloseModal} onClose={onCloseModal} />;
   } else if (modalDisplayed === 'RenameProject') {
     modal = (
       <RenameProjectModal
-        projectId={id}
+        projectId={projectId}
         initialProjectName={name}
         onProjectRenamed={onCloseModal}
         onClose={onCloseModal}
       />
     );
   } else if (modalDisplayed === 'DeleteProject') {
-    modal = <DeleteProjectModal projectId={id} onProjectDeleted={onProjectDeleted} onClose={onCloseModal} />;
-  }
-  let accessDetails = undefined;
-  if (!canEdit) {
-    accessDetails = (
-      <Text
-        className={styles.accessDetails}
-        data-testid="project-access-details">{`View Only (owned by ${projectOwner})`}</Text>
-    );
-  } else if (projectOwner !== username) {
-    accessDetails = (
-      <Text className={styles.accessDetails} data-testid="project-access-details">{`(owned by ${projectOwner})`}</Text>
-    );
+    modal = <DeleteProjectModal projectId={projectId} onProjectDeleted={onProjectDeleted} onClose={onCloseModal} />;
   }
   return (
     <>
@@ -157,7 +135,6 @@ export const EditProjectNavbar = ({ subscribers }) => {
                   <More title="More" />
                 </IconButton>
               </div>
-              {accessDetails}
             </div>
           </div>
           <div className={styles.rightArea}>

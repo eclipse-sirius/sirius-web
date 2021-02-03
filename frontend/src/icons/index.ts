@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,7 +21,6 @@ export * from './Download';
 export * from './Drag';
 export * from './Edit';
 export * from './Exit';
-export * from './FitToScreen';
 export * from './Folder';
 export * from './Help';
 export * from './Hide';
@@ -40,10 +39,7 @@ export * from './Resource';
 export * from './Search';
 export * from './See';
 export * from './Settings';
-export * from './Share';
 export * from './SiriusIcon';
 export * from './Success';
 export * from './Upload';
 export * from './Warning';
-export * from './ZoomIn';
-export * from './ZoomOut';
