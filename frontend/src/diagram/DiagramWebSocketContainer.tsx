@@ -285,12 +285,25 @@ export const DiagramWebSocketContainer = ({
     subscribers,
     message,
   } = context;
-
-  const [deleteElementsMutation] = useMutation(deleteFromDiagramMutation);
-  const [invokeNodeToolMutation] = useMutation(invokeNodeToolOnDiagramMutation);
-  const [invokeEdgeToolMutation] = useMutation(invokeEdgeToolOnDiagramMutation);
-  const [editLabelMutation] = useMutation(editLabelMutationOp);
-  const [updateNodePositionMutation] = useMutation(updateNodePositionOp);
+  const [
+    deleteElementsMutation,
+    { loading: deleteFromDiagramLoading, data: deleteFromDiagramData, error: deleteFromDiagramError },
+  ] = useMutation(deleteFromDiagramMutation);
+  const [
+    invokeNodeToolMutation,
+    { loading: invokeNodeToolLoading, data: invokeNodeToolData, error: invokeNodeToolError },
+  ] = useMutation(invokeNodeToolOnDiagramMutation);
+  const [
+    invokeEdgeToolMutation,
+    { loading: invokeEdgeToolLoading, data: invokeEdgeToolData, error: invokeEdgeToolError },
+  ] = useMutation(invokeEdgeToolOnDiagramMutation);
+  const [editLabelMutation, { loading: editLabelLoading, data: editLabelData, error: editLabelError }] = useMutation(
+    editLabelMutationOp
+  );
+  const [
+    updateNodePositionMutation,
+    { loading: updateNodePositionLoading, data: updateNodePositionData, error: updateNodePositionError },
+  ] = useMutation(updateNodePositionOp);
   const [getToolSectionData, { loading: toolSectionLoading, data: toolSectionData }] = useLazyQuery(
     getToolSectionsQuery
   );
@@ -411,6 +424,7 @@ export const DiagramWebSocketContainer = ({
     },
     [projectId, representationId, invokeNodeToolMutation, invokeEdgeToolMutation, dispatch]
   );
+
   const moveElement = useCallback(
     (diagramElementId, newPositionX, newPositionY) => {
       const input = {
@@ -616,6 +630,52 @@ export const DiagramWebSocketContainer = ({
       dispatch(selectZoomLevelEvent);
     }
   };
+
+  const handleError = useCallback(
+    (loading, data, error) => {
+      let errorMessage = undefined;
+      if (!loading) {
+        if (error) {
+          errorMessage = error.message;
+        } else if (data && Object.keys.length > 0) {
+          const rootKey = Object.keys(data)[0];
+          const root = data[rootKey];
+          if (root.__typename === 'ErrorPayload') {
+            {
+              errorMessage = root.message;
+            }
+          }
+          if (errorMessage) {
+            const showToastEvent: ShowToastEvent = {
+              type: 'SHOW_TOAST',
+              message: errorMessage,
+            };
+            dispatch(showToastEvent);
+          }
+        }
+      }
+    },
+    [dispatch]
+  );
+  useEffect(() => {
+    handleError(updateNodePositionLoading, updateNodePositionData, updateNodePositionError);
+  }, [updateNodePositionLoading, updateNodePositionData, updateNodePositionError, handleError]);
+
+  useEffect(() => {
+    handleError(editLabelLoading, editLabelData, editLabelError);
+  }, [editLabelLoading, editLabelData, editLabelError, handleError]);
+
+  useEffect(() => {
+    handleError(deleteFromDiagramLoading, deleteFromDiagramData, deleteFromDiagramError);
+  }, [deleteFromDiagramLoading, deleteFromDiagramData, deleteFromDiagramError, handleError]);
+
+  useEffect(() => {
+    handleError(invokeNodeToolLoading, invokeNodeToolData, invokeNodeToolError);
+  }, [invokeNodeToolLoading, invokeNodeToolData, invokeNodeToolError, handleError]);
+
+  useEffect(() => {
+    handleError(invokeEdgeToolLoading, invokeEdgeToolData, invokeEdgeToolError);
+  }, [invokeEdgeToolLoading, invokeEdgeToolData, invokeEdgeToolError, handleError]);
 
   /**
    * Gather up, it's time for a story.
