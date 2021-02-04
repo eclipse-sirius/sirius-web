@@ -16,7 +16,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.annotations.Audited;
+import org.eclipse.sirius.web.persistence.entities.AccessLevelEntity;
 import org.eclipse.sirius.web.persistence.entities.EditingContextEntity;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
@@ -27,6 +29,10 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface IEditingContextRepository extends PagingAndSortingRepository<EditingContextEntity, UUID> {
+    @Audited
+    @Query(name = "EditingContext.getUserAccessLevel", nativeQuery = true)
+    AccessLevelEntity getUserAccessLevel(UUID editingContextId, String userName);
+
     @Audited
     @Override
     Optional<EditingContextEntity> findById(UUID id);

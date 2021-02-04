@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.eclipse.sirius.web.persistence.entities.AccessLevelEntity;
 import org.eclipse.sirius.web.persistence.entities.EditingContextEntity;
 import org.eclipse.sirius.web.persistence.repositories.IEditingContextRepository;
 import org.springframework.data.domain.Page;
@@ -88,6 +89,11 @@ public class NoOpEditingContextRepository implements IEditingContextRepository {
 
     @Override
     public void deleteById(UUID id) {
+    }
+
+    @Override
+    public AccessLevelEntity getUserAccessLevel(UUID editingContextId, String userName) {
+        return AccessLevelEntity.ADMIN;
     }
 
 }
