@@ -33,4 +33,9 @@ public interface IDataFetchingEnvironmentService {
     boolean canEditProject(DataFetchingEnvironment environment, UUID projectId);
 
     boolean canAdminProject(DataFetchingEnvironment environment, UUID projectId);
+
+    boolean canEditEditingContext(DataFetchingEnvironment environment, UUID editingContextId);
+
+    boolean canAdminEditingContext(DataFetchingEnvironment environment, UUID editingContextId);
+
 }

@@ -20,6 +20,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.graphql.schema.MutationTypeProvider;
+import org.eclipse.sirius.web.services.api.editingcontexts.IEditingContextAccessPolicy;
 import org.eclipse.sirius.web.services.api.projects.IProjectAccessPolicy;
 import org.eclipse.sirius.web.spring.graphql.api.GraphQLConstants;
 import org.springframework.stereotype.Service;
@@ -39,9 +40,12 @@ public class DataFetchingEnvironmentService implements IDataFetchingEnvironmentS
 
     private final IProjectAccessPolicy projectAccessPolicy;
 
-    public DataFetchingEnvironmentService(ObjectMapper objectMapper, IProjectAccessPolicy projectAccessPolicy) {
+    private final IEditingContextAccessPolicy editingContextAccessPolicy;
+
+    public DataFetchingEnvironmentService(ObjectMapper objectMapper, IProjectAccessPolicy projectAccessPolicy, IEditingContextAccessPolicy editingContextAccessPolicy) {
         this.objectMapper = Objects.requireNonNull(objectMapper);
         this.projectAccessPolicy = Objects.requireNonNull(projectAccessPolicy);
+        this.editingContextAccessPolicy = Objects.requireNonNull(editingContextAccessPolicy);
     }
 
     @Override
@@ -83,6 +87,28 @@ public class DataFetchingEnvironmentService implements IDataFetchingEnvironmentS
         return this.getPrincipal(environment)
                 .map(Principal::getName)
                 .map(username -> this.projectAccessPolicy.canAdmin(username, projectId))
+                .orElse(Boolean.FALSE)
+                .booleanValue();
+        // @formatter:on
+    }
+
+    @Override
+    public boolean canEditEditingContext(DataFetchingEnvironment environment, UUID editingContextId) {
+        // @formatter:off
+        return this.getPrincipal(environment)
+                .map(Principal::getName)
+                .map(username -> this.editingContextAccessPolicy.canEdit(username, editingContextId))
+                .orElse(Boolean.FALSE)
+                .booleanValue();
+        // @formatter:on
+    }
+
+    @Override
+    public boolean canAdminEditingContext(DataFetchingEnvironment environment, UUID editingContextId) {
+        // @formatter:off
+        return this.getPrincipal(environment)
+                .map(Principal::getName)
+                .map(username -> this.editingContextAccessPolicy.canAdmin(username, editingContextId))
                 .orElse(Boolean.FALSE)
                 .booleanValue();
         // @formatter:on
