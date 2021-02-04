@@ -82,6 +82,11 @@ public class ProjectService implements IProjectService {
     }
 
     @Override
+    public Optional<Project> getProjectByCurrentEditingContextId(UUID editingContextId) {
+        return this.projectRepository.findByCurrentEditingContextIfVisibleBy(editingContextId, this.getCurrentUserName()).map(this.projectMapper::toDTO);
+    }
+
+    @Override
     public List<Project> getProjects() {
         // @formatter:off
         return this.projectRepository.findAllVisibleBy(this.getCurrentUserName()).stream()

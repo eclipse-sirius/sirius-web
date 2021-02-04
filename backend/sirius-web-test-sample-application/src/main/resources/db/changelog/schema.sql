@@ -21,7 +21,7 @@ CREATE TABLE account (
 
 CREATE TABLE document (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
-    project_id uuid NOT NULL,
+    editingcontext_id uuid NOT NULL,
     name text NOT NULL,
     content text NOT NULL,
     CONSTRAINT document_name_length CHECK (((char_length(name) > 0) AND (char_length(name) <= 50)))
@@ -79,7 +79,7 @@ ALTER TABLE ONLY representation
     ADD CONSTRAINT pk_representation_id PRIMARY KEY (id);
 
 ALTER TABLE ONLY document
-    ADD CONSTRAINT fk_document_project_id_id2 FOREIGN KEY (project_id) REFERENCES project(id) ON DELETE CASCADE;
+    ADD CONSTRAINT fk_document_editingcontext_id_id2 FOREIGN KEY (editingcontext_id) REFERENCES editingcontext(id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY project
     ADD CONSTRAINT fk_project_owner_id_id FOREIGN KEY (owner_id) REFERENCES account(id);
@@ -99,7 +99,7 @@ CREATE TABLE Modeler (
     publicationstatus PublicationStatus DEFAULT 'DRAFT'::PublicationStatus NOT NULL,
     editingcontext_id uuid NOT NULL,
     CONSTRAINT pk_modeler_id PRIMARY KEY (id),
-    CONSTRAINT fk_modeler_project_id_id FOREIGN KEY (project_id) REFERENCES project(id),
+    CONSTRAINT fk_modeler_project_id_id FOREIGN KEY (project_id) REFERENCES project(id) ON DELETE CASCADE,
     CONSTRAINT fk_modeler_editingcontextid_id FOREIGN KEY (editingcontext_id) REFERENCES editingcontext(id) ON DELETE CASCADE
 );
 

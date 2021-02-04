@@ -62,7 +62,7 @@ public class DocumentService implements IDocumentService {
         var optionalProjectEntity = this.projectRepository.findById(projectId);
         return optionalProjectEntity.map(projectEntity -> {
             DocumentEntity documentEntity = new DocumentEntity();
-            documentEntity.setProject(projectEntity);
+            documentEntity.setEditingContext(projectEntity.getCurrentEditingContext());
             documentEntity.setName(name);
             documentEntity.setContent(content);
 
