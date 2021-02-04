@@ -22,7 +22,11 @@ import java.util.UUID;
 public interface IProjectAccessPolicy {
     AccessLevel getAccessLevel(String username, UUID projectId);
 
-    boolean canEdit(String username, UUID projectId);
+    default boolean canEdit(String username, UUID projectId) {
+        return this.getAccessLevel(username, projectId).compareTo(AccessLevel.EDIT) >= 0;
+    }
 
-    boolean canAdmin(String username, UUID projectId);
+    default boolean canAdmin(String username, UUID projectId) {
+        return this.getAccessLevel(username, projectId).compareTo(AccessLevel.ADMIN) >= 0;
+    }
 }
