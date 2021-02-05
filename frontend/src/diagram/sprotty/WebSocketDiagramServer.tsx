@@ -29,7 +29,7 @@ import {
   SNode,
   UpdateModelAction,
 } from 'sprotty';
-
+import { ResizeAction, SiriusResizeCommand } from './siriusResize';
 /** Action to delete a sprotty element */
 export const SPROTTY_DELETE_ACTION = 'sprottyDeleteElement';
 /** Action to select a sprotty element */
@@ -89,6 +89,7 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
   activeTool;
   editLabel;
   moveElement;
+  resizeElement;
   deleteElements;
 
   invokeTool;
@@ -106,6 +107,7 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
     registry.register(EditLabelAction.KIND, this);
     registry.register(UpdateModelAction.KIND, this);
     registry.register(MoveCommand.KIND, this);
+    registry.register(SiriusResizeCommand.KIND, this);
     registry.register(SIRIUS_LABEL_EDIT_ACTION, this);
     registry.register(SIRIUS_UPDATE_MODEL_ACTION, this);
     registry.register(SIRIUS_SELECT_ACTION, this);
@@ -139,6 +141,9 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
         break;
       case MoveCommand.KIND:
         this.handleMoveAction(action);
+        break;
+      case SiriusResizeCommand.KIND:
+        this.handleResizeAction(action);
         break;
       case SIRIUS_LABEL_EDIT_ACTION:
         this.handleSiriusLabelEditAction(action);
@@ -215,7 +220,13 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
       this.moveElement(elementId, toPosition?.x, toPosition?.y);
     }
   }
-
+  handleResizeAction(action: ResizeAction) {
+    const { finished, resize } = action;
+    if (finished && resize) {
+      const { elementId, newPosition, newSize } = resize;
+      this.resizeElement(elementId, newPosition?.x, newPosition?.y, newSize.width, newSize.height);
+    }
+  }
   handleSiriusLabelEditAction(action) {
     const { elementId } = action;
     this.actionDispatcher.dispatchAll([
@@ -427,6 +438,9 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
 
   setMoveElementListener(moveElement) {
     this.moveElement = moveElement;
+  }
+  setResizeElementListener(resizeElement) {
+    this.resizeElement = resizeElement;
   }
 
   setDeleteElementsListener(deleteElements) {

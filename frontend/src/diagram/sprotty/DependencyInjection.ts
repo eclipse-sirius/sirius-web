@@ -12,7 +12,8 @@
  *******************************************************************************/
 import { edgeCreationFeedback } from 'diagram/sprotty/edgeCreationFeedback';
 import { GraphFactory } from 'diagram/sprotty/GraphFactory';
-import siriusMoveModule from 'diagram/sprotty/siriusMoveModule';
+import siriusDragAndDropModule from 'diagram/sprotty/siriusDragAndDropModule';
+// import siriusResizeModule from 'diagram/sprotty/siriusResizeModule';
 import { DiagramView } from 'diagram/sprotty/views/DiagramView';
 import { EdgeView } from 'diagram/sprotty/views/EdgeView';
 import { ImageView } from 'diagram/sprotty/views/ImageView';
@@ -142,7 +143,8 @@ export const createDependencyInjectionContainer = (containerId, onSelectElement,
     defaultModule,
     boundsModule,
     selectModule,
-    siriusMoveModule,
+    siriusDragAndDropModule,
+    // siriusResizeModule,
     viewportModule,
     fadeModule,
     exportModule,

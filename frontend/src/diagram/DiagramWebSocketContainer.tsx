@@ -46,6 +46,7 @@ import {
   invokeEdgeToolOnDiagramMutation,
   invokeNodeToolOnDiagramMutation,
   updateNodePositionOp,
+  updateNodeBoundsOp,
 } from 'diagram/operations';
 import { ContextualPalette } from 'diagram/palette/ContextualPalette';
 import { edgeCreationFeedback } from 'diagram/sprotty/edgeCreationFeedback';
@@ -294,6 +295,10 @@ export const DiagramWebSocketContainer = ({
     updateNodePositionMutation,
     { loading: updateNodePositionLoading, data: updateNodePositionData, error: updateNodePositionError },
   ] = useMutation(updateNodePositionOp);
+  const [
+    updateNodeBoundsMutation,
+    { loading: updateNodeBoundsLoading, data: updateNodeBoundsData, error: updateNodeBoundsError },
+  ] = useMutation(updateNodeBoundsOp);
   const [getToolSectionData, { loading: toolSectionLoading, data: toolSectionData }] = useLazyQuery(
     getToolSectionsQuery
   );
@@ -433,6 +438,23 @@ export const DiagramWebSocketContainer = ({
     [editingContextId, representationId, updateNodePositionMutation]
   );
 
+  const resizeElement = useCallback(
+    (diagramElementId, newPositionX, newPositionY, newWidth, newHeight) => {
+      const input = {
+        id: uuid(),
+        projectId: editingContextId,
+        representationId,
+        diagramElementId,
+        newPositionX,
+        newPositionY,
+        newWidth,
+        newHeight,
+      };
+      updateNodeBoundsMutation({ variables: { input } });
+    },
+    [editingContextId, representationId, updateNodeBoundsMutation]
+  );
+
   /**
    * Initialize the diagram server used by Sprotty in order to perform the diagram edition. This
    * initialization will be done each time we are in the loading state.
@@ -505,6 +527,7 @@ export const DiagramWebSocketContainer = ({
         deleteElements,
         invokeTool,
         moveElement,
+        resizeElement,
         editLabel,
         onSelectElement,
         getCursorOn,
@@ -523,6 +546,7 @@ export const DiagramWebSocketContainer = ({
     deleteElements,
     invokeTool,
     moveElement,
+    resizeElement,
     editLabelMutation,
     toolSections,
     selection,
@@ -647,7 +671,9 @@ export const DiagramWebSocketContainer = ({
   useEffect(() => {
     handleError(updateNodePositionLoading, updateNodePositionData, updateNodePositionError);
   }, [updateNodePositionLoading, updateNodePositionData, updateNodePositionError, handleError]);
-
+  useEffect(() => {
+    handleError(updateNodeBoundsLoading, updateNodeBoundsData, updateNodeBoundsError);
+  }, [updateNodeBoundsLoading, updateNodeBoundsData, updateNodeBoundsError, handleError]);
   useEffect(() => {
     handleError(editLabelLoading, editLabelData, editLabelError);
   }, [editLabelLoading, editLabelData, editLabelError, handleError]);
