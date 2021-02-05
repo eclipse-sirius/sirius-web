@@ -10,17 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import {
-  MoveCommand,
-  MoveMouseListener,
-  Point,
-  ResolvedHandleMove,
-  SEdge,
-  SLabel,
-  SModelElement,
-  SNode,
-  SRoutableElement,
-} from 'sprotty';
+import { MoveCommand, Point, ResolvedHandleMove, SEdge, SLabel, SModelElement, SNode, SRoutableElement } from 'sprotty';
 
 export class SiriusMoveCommand extends MoveCommand {
   protected doMove(
@@ -30,7 +20,7 @@ export class SiriusMoveCommand extends MoveCommand {
     const allEdgesToReset = new Set<SEdge>();
     this.resolvedMoves.forEach((res) => {
       var element = res.element;
-      if (isSNode(element)) {
+      if (this.isSNode(element)) {
         this.collectAllEdges(element, allEdgesToReset);
       }
       element.position = res.toPosition;
@@ -69,48 +59,14 @@ export class SiriusMoveCommand extends MoveCommand {
   }
   private collectAllEdges(element: SNode, allEdgesToReset: Set<SEdge>) {
     element.children.forEach((child) => {
-      if (isSNode(child)) {
+      if (this.isSNode(child)) {
         this.collectAllEdges(child, allEdgesToReset);
       }
     });
     element.outgoingEdges.forEach((edge) => allEdgesToReset.add(edge));
     element.incomingEdges.forEach((edge) => allEdgesToReset.add(edge));
   }
-}
-const isSNode = (element: SModelElement): element is SNode => {
-  return element instanceof SNode;
-};
-export class SiriusMoveMouseListener extends MoveMouseListener {
-  protected snap(position: Point, element: SModelElement, isSnap: boolean): Point {
-    let newPosition = super.snap(position, element, isSnap);
-    if (isSNode(element)) {
-      return this.getValidPosition(element, newPosition);
-    }
-    return newPosition;
-  }
-
-  /**
-   * Provides the position within the parent bounding box.
-   * @param element the element currently moved.
-   * @param position the new candidate position.
-   */
-  private getValidPosition(element: SNode, position: Point): Point {
-    const parent = element.parent;
-    if (isSNode(parent)) {
-      const bottomRight = {
-        x: position.x + element.size.width,
-        y: position.y + element.size.height,
-      };
-      const inBoundsBottomRight = {
-        x: Math.min(bottomRight.x, parent.bounds.width),
-        y: Math.min(bottomRight.y, parent.bounds.height),
-      };
-      const newValidPosition = {
-        x: Math.max(0, inBoundsBottomRight.x - element.size.width),
-        y: Math.max(0, inBoundsBottomRight.y - element.size.height),
-      };
-      return newValidPosition;
-    }
-    return position;
+  private isSNode(element: SModelElement): element is SNode {
+    return element instanceof SNode;
   }
 }

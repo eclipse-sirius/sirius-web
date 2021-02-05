@@ -13,14 +13,17 @@
 
 import { ContainerModule } from 'inversify';
 import { configureCommand, LocationPostprocessor, TYPES } from 'sprotty';
-import { SiriusMoveCommand, SiriusMoveMouseListener } from './siriusMove';
+import { SiriusDragAndDropMouseListener } from './siriusDragAndDropMouseListener';
+import { SiriusMoveCommand } from './siriusMove';
+import { SiriusResizeCommand } from './siriusResize';
 
-const siriusMoveModule = new ContainerModule((bind, _unbind, isBound) => {
-  bind(TYPES.MouseListener).to(SiriusMoveMouseListener);
+const siriusDragAndDropModule = new ContainerModule((bind, _unbind, isBound) => {
+  bind(TYPES.MouseListener).to(SiriusDragAndDropMouseListener);
   configureCommand({ bind, isBound }, SiriusMoveCommand);
+  configureCommand({ bind, isBound }, SiriusResizeCommand);
   bind(LocationPostprocessor).toSelf().inSingletonScope();
   bind(TYPES.IVNodePostprocessor).toService(LocationPostprocessor);
   bind(TYPES.HiddenVNodePostprocessor).toService(LocationPostprocessor);
 });
 
-export default siriusMoveModule;
+export default siriusDragAndDropModule;
