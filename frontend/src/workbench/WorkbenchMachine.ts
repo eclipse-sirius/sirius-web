@@ -26,8 +26,9 @@ export interface WorkbenchContext {
 }
 
 export type ShowRepresentationEvent = { type: 'SHOW_REPRESENTATION'; representation: Representation };
+export type HideRepresentationEvent = { type: 'HIDE_REPRESENTATION'; representation: Representation };
 export type UpdateSelectionEvent = { type: 'UPDATE_SELECTION'; selection: Selection };
-export type WorkbenchEvent = UpdateSelectionEvent | ShowRepresentationEvent;
+export type WorkbenchEvent = UpdateSelectionEvent | ShowRepresentationEvent | HideRepresentationEvent;
 
 export const workbenchMachine = Machine<WorkbenchContext, WorkbenchStateSchema, WorkbenchEvent>(
   {
@@ -47,6 +48,10 @@ export const workbenchMachine = Machine<WorkbenchContext, WorkbenchStateSchema, 
           SHOW_REPRESENTATION: {
             target: 'initial',
             actions: 'showRepresentation',
+          },
+          HIDE_REPRESENTATION: {
+            target: 'initial',
+            actions: 'hideRepresentation',
           },
         },
       },
@@ -77,6 +82,37 @@ export const workbenchMachine = Machine<WorkbenchContext, WorkbenchStateSchema, 
       showRepresentation: assign((_, event) => {
         const { representation } = event as ShowRepresentationEvent;
         return { displayedRepresentation: representation };
+      }),
+      hideRepresentation: assign((context, event) => {
+        const { representation: representationToHide } = event as HideRepresentationEvent;
+
+        const previousIndex = context.representations.findIndex(
+          (representation) => representation.id === context.displayedRepresentation.id
+        );
+        const newRepresentations = context.representations.filter(
+          (representation) => representation.id !== representationToHide.id
+        );
+
+        if (newRepresentations.length === 0) {
+          // There are no representations anymore
+          return { displayedRepresentation: null, representations: [] };
+        } else {
+          const newIndex = newRepresentations.findIndex(
+            (representation) => representation.id === context.displayedRepresentation.id
+          );
+
+          if (newIndex !== -1) {
+            // The previously displayed representation has not been closed
+            return { representations: newRepresentations };
+          } else if (newRepresentations.length === previousIndex) {
+            // The previous representation has been closed and it was the last one
+            const displayedRepresentation = newRepresentations[previousIndex - 1];
+            return { displayedRepresentation, representations: newRepresentations };
+          } else {
+            const displayedRepresentation = newRepresentations[previousIndex];
+            return { displayedRepresentation, representations: newRepresentations };
+          }
+        }
       }),
     },
   }

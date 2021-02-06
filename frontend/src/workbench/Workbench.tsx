@@ -18,8 +18,15 @@ import { PropertiesWebSocketContainer } from 'properties/PropertiesWebSocketCont
 import React, { useEffect } from 'react';
 import { OnboardArea } from 'workbench/OnboardArea';
 import { RepresentationArea } from 'workbench/RepresentationArea';
-import { Selection, WorkbenchProps } from 'workbench/Workbench.types';
-import { UpdateSelectionEvent, WorkbenchContext, WorkbenchEvent, workbenchMachine } from 'workbench/WorkbenchMachine';
+import { Representation, Selection, WorkbenchProps } from 'workbench/Workbench.types';
+import {
+  HideRepresentationEvent,
+  ShowRepresentationEvent,
+  UpdateSelectionEvent,
+  WorkbenchContext,
+  WorkbenchEvent,
+  workbenchMachine,
+} from 'workbench/WorkbenchMachine';
 
 const useWorkbenchStyles = makeStyles((theme) => ({
   main: {
@@ -49,9 +56,21 @@ export const Workbench = ({
     dispatch(updateSelectionEvent);
   };
 
+  const onRepresentationClick = (representation: Representation) => {
+    const showRepresentationEvent: ShowRepresentationEvent = { type: 'SHOW_REPRESENTATION', representation };
+    dispatch(showRepresentationEvent);
+  };
+
+  const onClose = (representation: Representation) => {
+    const hideRepresentationEvent: HideRepresentationEvent = { type: 'HIDE_REPRESENTATION', representation };
+    dispatch(hideRepresentationEvent);
+  };
+
   useEffect(() => {
-    if (displayedRepresentation !== null && displayedRepresentation.id !== initialRepresentationSelected?.id) {
+    if (displayedRepresentation && displayedRepresentation.id !== initialRepresentationSelected?.id) {
       onRepresentationSelected(displayedRepresentation);
+    } else if (displayedRepresentation === null && initialRepresentationSelected) {
+      onRepresentationSelected(null);
     }
   }, [onRepresentationSelected, initialRepresentationSelected, displayedRepresentation]);
 
@@ -69,6 +88,8 @@ export const Workbench = ({
         displayedRepresentation={displayedRepresentation}
         selection={selection}
         setSelection={setSelection}
+        onRepresentationClick={onRepresentationClick}
+        onClose={onClose}
         readOnly={readOnly}
       />
     );

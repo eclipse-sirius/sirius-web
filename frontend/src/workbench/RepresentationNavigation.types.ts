@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,25 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-.representationNavigation {
-  display: flex;
-  flex-direction: row;
-  border-bottom: 1px solid var(--blue-lagoon);
-}
+import { Representation } from 'workbench/Workbench.types';
 
-.item {
-  padding: 8px;
-  border-right: 1px solid var(--blue-lagoon);
-}
-
-.label {
-  font-size: var(--font-size-5);
-  font-weight: var(--font-weight-bold);
-  color: var(--blue-lagoon-lighten-60);
-}
-.label:hover {
-  color: var(--blue-lagoon-lighten-10);
-}
-.selected {
-  color: var(--blue-lagoon-lighten-10);
-}
+export type RepresentationNavigationProps = {
+  representations: Representation[];
+  displayedRepresentation: Representation;
+  onRepresentationClick: (representation: Representation) => void;
+  onClose: (representation: Representation) => void;
+};
