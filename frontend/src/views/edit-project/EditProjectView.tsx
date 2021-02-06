@@ -107,19 +107,20 @@ export const EditProjectView = () => {
     if (representation && representation.id !== representationId) {
       const pathname = generatePath(routeMatch.path, { projectId, representationId: representation.id });
       history.push({ pathname });
+    } else if (editProjectView === 'loaded' && representation === null && representationId) {
+      const pathname = generatePath(routeMatch.path, { projectId, representationId: null });
+      history.push({ pathname });
     }
-  }, [projectId, routeMatch, history, representation, representationId]);
+  }, [editProjectView, projectId, routeMatch, history, representation, representationId]);
 
   let main = null;
   if (editProjectView === 'loaded') {
     const onRepresentationSelected = (representationSelected: Representation) => {
-      if (representationSelected.id !== representationId) {
-        const selectRepresentationEvent: SelectRepresentationEvent = {
-          type: 'SELECT_REPRESENTATION',
-          representation: representationSelected,
-        };
-        dispatch(selectRepresentationEvent);
-      }
+      const selectRepresentationEvent: SelectRepresentationEvent = {
+        type: 'SELECT_REPRESENTATION',
+        representation: representationSelected,
+      };
+      dispatch(selectRepresentationEvent);
     };
 
     main = (

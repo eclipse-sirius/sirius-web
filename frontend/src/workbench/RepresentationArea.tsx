@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,6 +24,7 @@ const propTypes = {
   representations: PropTypes.array.isRequired,
   selection: PropTypes.object,
   displayedRepresentation: PropTypes.object,
+  onRepresentationClick: PropTypes.func.isRequired,
   setSelection: PropTypes.func.isRequired,
 };
 export const RepresentationArea = ({
@@ -33,6 +34,8 @@ export const RepresentationArea = ({
   selection,
   displayedRepresentation,
   setSelection,
+  onRepresentationClick,
+  onClose,
 }) => {
   let content;
   if (displayedRepresentation.kind === 'Diagram') {
@@ -56,7 +59,8 @@ export const RepresentationArea = ({
       <RepresentationNavigation
         representations={representations}
         displayedRepresentation={displayedRepresentation}
-        setSelection={setSelection}
+        onRepresentationClick={onRepresentationClick}
+        onClose={onClose}
       />
       {content}
     </div>
