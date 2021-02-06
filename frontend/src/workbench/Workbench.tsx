@@ -15,10 +15,11 @@ import { useMachine } from '@xstate/react';
 import { HORIZONTAL, Panels, SECOND_PANEL } from 'core/panels/Panels';
 import { ExplorerWebSocketContainer } from 'explorer/ExplorerWebSocketContainer';
 import { PropertiesWebSocketContainer } from 'properties/PropertiesWebSocketContainer';
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { OnboardArea } from 'workbench/OnboardArea';
-import { RepresentationArea } from 'workbench/RepresentationArea';
-import { Representation, Selection, WorkbenchProps } from 'workbench/Workbench.types';
+import { RepresentationContext } from 'workbench/RepresentationContext';
+import { RepresentationNavigation } from 'workbench/RepresentationNavigation';
+import { Representation, RepresentationComponentProps, Selection, WorkbenchProps } from 'workbench/Workbench.types';
 import {
   HideRepresentationEvent,
   ShowRepresentationEvent,
@@ -34,6 +35,11 @@ const useWorkbenchStyles = makeStyles((theme) => ({
     gridTemplateRows: 'minmax(0, 1fr)',
     gridTemplateColumns: '1fr',
   },
+  representationArea: {
+    display: 'grid',
+    gridTemplateColumns: '1fr',
+    gridTemplateRows: 'min-content minmax(0, 1fr)',
+  },
 }));
 
 export const Workbench = ({
@@ -43,6 +49,7 @@ export const Workbench = ({
   readOnly,
 }: WorkbenchProps) => {
   const classes = useWorkbenchStyles();
+  const { registry } = useContext(RepresentationContext);
   const [{ context }, dispatch] = useMachine<WorkbenchContext, WorkbenchEvent>(workbenchMachine, {
     context: {
       displayedRepresentation: initialRepresentationSelected,
@@ -81,17 +88,24 @@ export const Workbench = ({
   const properties = <PropertiesWebSocketContainer projectId={editingContextId} selection={selection} />;
   let main = <OnboardArea projectId={editingContextId} selection={selection} setSelection={setSelection} />;
   if (displayedRepresentation) {
+    const RepresentationComponent = registry.getComponent(displayedRepresentation);
+    const props: RepresentationComponentProps = {
+      editingContextId,
+      readOnly,
+      representationId: displayedRepresentation.id,
+      selection,
+      setSelection,
+    };
     main = (
-      <RepresentationArea
-        projectId={editingContextId}
-        representations={representations}
-        displayedRepresentation={displayedRepresentation}
-        selection={selection}
-        setSelection={setSelection}
-        onRepresentationClick={onRepresentationClick}
-        onClose={onClose}
-        readOnly={readOnly}
-      />
+      <div className={classes.representationArea} data-testid="representation-area">
+        <RepresentationNavigation
+          representations={representations}
+          displayedRepresentation={displayedRepresentation}
+          onRepresentationClick={onRepresentationClick}
+          onClose={onClose}
+        />
+        <RepresentationComponent {...props} />
+      </div>
     );
   }
 

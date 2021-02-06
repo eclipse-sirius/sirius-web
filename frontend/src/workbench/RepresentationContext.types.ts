@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,14 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-.representationArea {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: min-content minmax(0, 1fr);
-}
+import { Representation, RepresentationComponent } from 'workbench/Workbench.types';
 
-.text {
-  font-size: var(--font-size-4);
-  color: var(--daintree);
-  font-weight: var(--font-weight-bold);
-}
+export type RepresentationComponentRegistry = {
+  getComponent: (representation: Representation) => RepresentationComponent | null;
+};

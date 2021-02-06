@@ -12,7 +12,6 @@
  *******************************************************************************/
 import { useLazyQuery, useMutation, useSubscription } from '@apollo/client';
 import { Text } from 'core/text/Text';
-import { DiagramWebSocketContainerProps } from 'diagram/DiagramWebSocketContainer.types';
 import {
   COMPLETE__STATE,
   HANDLE_COMPLETE__ACTION,
@@ -45,10 +44,10 @@ import {
   ZOOM_TO_ACTION,
 } from 'diagram/sprotty/WebSocketDiagramServer';
 import { Toolbar } from 'diagram/Toolbar';
-import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useReducer, useRef } from 'react';
 import 'reflect-metadata'; // Required because Sprotty uses Inversify and both frameworks are written in TypeScript with experimental features.
 import { EditLabelAction, FitToScreenAction, SEdge, SNode } from 'sprotty';
+import { RepresentationComponentProps } from 'workbench/Workbench.types';
 import styles from './Diagram.module.css';
 import {
   deleteFromDiagramMutation,
@@ -59,18 +58,6 @@ import {
   invokeNodeToolOnDiagramMutation,
 } from './operations';
 import { canInvokeTool } from './toolServices';
-
-const propTypes = {
-  projectId: PropTypes.string.isRequired,
-  representationId: PropTypes.string.isRequired,
-  readOnly: PropTypes.bool.isRequired,
-  selection: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    label: PropTypes.string.isRequired,
-    kind: PropTypes.string.isRequired,
-  }),
-  setSelection: PropTypes.func.isRequired,
-};
 
 /**
  * Here be dragons!
@@ -221,12 +208,12 @@ const propTypes = {
  * @author sbegaudeau
  */
 export const DiagramWebSocketContainer = ({
-  projectId,
+  editingContextId,
   representationId,
   readOnly,
   selection,
   setSelection,
-}: DiagramWebSocketContainerProps) => {
+}: RepresentationComponentProps) => {
   const diagramDomElement = useRef(null);
 
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -316,7 +303,7 @@ export const DiagramWebSocketContainer = ({
       const nodeIds = diagramElements.filter((diagramElement) => diagramElement instanceof SNode).map((elt) => elt.id);
 
       const input = {
-        projectId,
+        projectId: editingContextId,
         representationId,
         nodeIds,
         edgeIds,
@@ -324,7 +311,7 @@ export const DiagramWebSocketContainer = ({
       deleteElementsMutation({ variables: { input } });
       dispatch({ type: SET_CONTEXTUAL_PALETTE__ACTION, contextualPalette: undefined });
     },
-    [projectId, representationId, deleteElementsMutation]
+    [editingContextId, representationId, deleteElementsMutation]
   );
 
   const invokeTool = useCallback(
@@ -335,7 +322,7 @@ export const DiagramWebSocketContainer = ({
           const [diagramSourceElementId, diagramTargetElementId] = params;
 
           const input = {
-            projectId,
+            projectId: editingContextId,
             representationId,
             diagramSourceElementId,
             diagramTargetElementId,
@@ -347,7 +334,7 @@ export const DiagramWebSocketContainer = ({
           const [diagramElementId] = params;
 
           const input = {
-            projectId,
+            projectId: editingContextId,
             representationId,
             diagramElementId,
             toolId,
@@ -357,7 +344,7 @@ export const DiagramWebSocketContainer = ({
         dispatch({ type: SET_ACTIVE_TOOL__ACTION });
       }
     },
-    [projectId, representationId, invokeNodeToolMutation, invokeEdgeToolMutation]
+    [editingContextId, representationId, invokeNodeToolMutation, invokeEdgeToolMutation]
   );
 
   /**
@@ -405,7 +392,7 @@ export const DiagramWebSocketContainer = ({
     };
     const editLabel = (labelId, newText) => {
       const input = {
-        projectId,
+        projectId: editingContextId,
         representationId,
         labelId,
         newText,
@@ -442,7 +429,7 @@ export const DiagramWebSocketContainer = ({
     editLabelMutation,
     toolSections,
     selection,
-    projectId,
+    editingContextId,
     representationId,
     readOnly,
   ]);
@@ -461,7 +448,7 @@ export const DiagramWebSocketContainer = ({
   const { error } = useSubscription(diagramEventSubscription, {
     variables: {
       input: {
-        projectId,
+        projectId: editingContextId,
         diagramId: representationId,
       },
     },
@@ -606,4 +593,3 @@ export const DiagramWebSocketContainer = ({
     </div>
   );
 };
-DiagramWebSocketContainer.propTypes = propTypes;
