@@ -28,3 +28,13 @@ export type WorkbenchProps = {
   onRepresentationSelected: (representation: Representation) => void;
   readOnly: boolean;
 };
+
+export type RepresentationComponentProps = {
+  editingContextId: string;
+  representationId: string;
+  readOnly: boolean;
+  selection: Selection;
+  setSelection: (selection: Selection) => void;
+};
+
+export type RepresentationComponent = (props: RepresentationComponentProps) => JSX.Element;

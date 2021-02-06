@@ -10,16 +10,6 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Selection } from 'workbench/Workbench.types';
-
-export type DiagramWebSocketContainerProps = {
-  projectId: string;
-  representationId: string;
-  readOnly: boolean;
-  selection: Selection;
-  setSelection: (newSelection: Selection) => void;
-};
-
 export type Subscriber = {
   username: string;
 };

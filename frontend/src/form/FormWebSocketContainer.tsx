@@ -25,6 +25,7 @@ import { initialState, reducer } from 'form/reducer';
 import gql from 'graphql-tag';
 import { Properties } from 'properties/Properties';
 import React, { useEffect, useReducer } from 'react';
+import { RepresentationComponentProps } from 'workbench/Workbench.types';
 import styles from './FormWebSocketContainer.module.css';
 
 const formEventSubscription = gql`
@@ -108,7 +109,7 @@ const formEventSubscription = gql`
 /**
  * Connect the Form component to the GraphQL API over Web Socket.
  */
-export const FormWebSocketContainer = ({ projectId, formId }) => {
+export const FormWebSocketContainer = ({ editingContextId, representationId }: RepresentationComponentProps) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { viewState, form, displayedFormId, subscribers, widgetSubscriptions, message } = state;
 
@@ -116,10 +117,10 @@ export const FormWebSocketContainer = ({ projectId, formId }) => {
    * Displays an other form if the selection indicates that we should display another properties view.
    */
   useEffect(() => {
-    if (displayedFormId !== formId) {
-      dispatch({ type: SWITCH_FORM__ACTION, formId });
+    if (displayedFormId !== representationId) {
+      dispatch({ type: SWITCH_FORM__ACTION, formId: representationId });
     }
-  }, [formId, displayedFormId]);
+  }, [representationId, displayedFormId]);
 
   useEffect(() => {
     if (viewState === LOADING__STATE) {
@@ -130,8 +131,8 @@ export const FormWebSocketContainer = ({ projectId, formId }) => {
   const { error } = useSubscription(formEventSubscription, {
     variables: {
       input: {
-        projectId,
-        formId,
+        projectId: editingContextId,
+        formId: representationId,
       },
     },
     skip: viewState !== READY__STATE,
@@ -154,7 +155,7 @@ export const FormWebSocketContainer = ({ projectId, formId }) => {
   } else {
     view = (
       <Properties
-        projectId={projectId}
+        projectId={editingContextId}
         form={form}
         subscribers={subscribers}
         widgetSubscriptions={widgetSubscriptions}
