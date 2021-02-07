@@ -177,7 +177,7 @@ export const ModelersView = () => {
         <Grid item xs={8}>
           <div className={classes.modelersViewContainer}>
             <div className={classes.header}>
-              <Typography variant="h5">Modelers</Typography>
+              <Typography variant="h3">Modelers</Typography>
               <div className={classes.actions}>
                 <Button
                   to={`/projects/${projectId}/new/modeler`}
@@ -222,7 +222,7 @@ const Message = ({ content }) => {
   return (
     <Grid container justify="center">
       <Grid item xs={6}>
-        <Typography variant="h5" align="center" gutterBottom>
+        <Typography variant="h4" align="center" gutterBottom>
           {content}
         </Typography>
       </Grid>
