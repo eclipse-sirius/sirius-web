@@ -12,6 +12,7 @@
  *******************************************************************************/
 // Required because Sprotty uses Inversify and both frameworks are written in TypeScript with experimental features.
 import 'reflect-metadata';
+export * from 'theme';
 export * from './auth/useAuth';
 export * from './capabilities/CapabilitiesProvider';
 export * from './capabilities/useCapabilities';
