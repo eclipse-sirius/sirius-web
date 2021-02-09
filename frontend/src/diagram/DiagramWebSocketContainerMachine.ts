@@ -81,6 +81,7 @@ export type InitializeRepresentationEvent = {
   setActiveTool: (tool: Tool) => void;
   toolSections: ToolSection[];
   setContextualPalette: (contextualPalette: Palette) => void;
+  httpOrigin: string;
 };
 
 export type DiagramWebSocketContainerEvent =
@@ -255,6 +256,7 @@ export const diagramWebSocketContainerMachine = Machine<
           setActiveTool,
           toolSections,
           setContextualPalette,
+          httpOrigin,
         } = event as InitializeRepresentationEvent;
 
         const container = createDependencyInjectionContainer(
@@ -276,6 +278,7 @@ export const diagramWebSocketContainerMachine = Machine<
         diagramServer.setDeleteElementsListener(deleteElements);
         diagramServer.setInvokeToolListener(invokeTool);
         diagramServer.setContextualPaletteListener(setContextualPalette);
+        diagramServer.setHttpOrigin(httpOrigin);
 
         return {
           diagramServer,

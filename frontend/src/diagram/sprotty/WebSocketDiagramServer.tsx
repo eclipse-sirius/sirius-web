@@ -94,6 +94,8 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
   diagramSourceElement;
   currentRoot: Root = INITIAL_ROOT;
 
+  httpOrigin;
+
   initialize(registry) {
     super.initialize(registry);
     registry.register(ApplyLabelEditAction.KIND, this);
@@ -225,7 +227,7 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
   handleSiriusUpdateModelAction(action) {
     const { diagram } = action;
     if (diagram) {
-      const convertedDiagram = convertDiagram(diagram);
+      const convertedDiagram = convertDiagram(diagram, this.httpOrigin);
       const sprottyModel = this.modelFactory.createRoot(convertedDiagram);
       this.actionDispatcher.request(GetSelectionAction.create()).then((selectionResult) => {
         sprottyModel.index
@@ -416,5 +418,9 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
 
   setContextualPaletteListener(setContextualPalette) {
     this.setContextualPalette = setContextualPalette;
+  }
+
+  setHttpOrigin(httpOrigin) {
+    this.httpOrigin = httpOrigin;
   }
 }
