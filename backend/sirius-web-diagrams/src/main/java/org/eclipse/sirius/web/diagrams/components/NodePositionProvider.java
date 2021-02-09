@@ -68,9 +68,12 @@ public class NodePositionProvider {
      *            the node size provider
      * @param style
      *            the node style
+     * @param parentAbsolutePosition
+     *            the parent node absolute position use for computing the current node relative position
      * @return the new position of the node
      */
-    public Position getPosition(UUID nodeId, Optional<Node> optionalPreviousNode, Optional<Object> optionalPreviousParentElement, NodeSizeProvider nodeSizeProvider, INodeStyle style) {
+    public Position getPosition(UUID nodeId, Optional<Node> optionalPreviousNode, Optional<Object> optionalPreviousParentElement, NodeSizeProvider nodeSizeProvider, INodeStyle style,
+            Position parentAbsolutePosition) {
         Position position;
         if (this.movedElementIdToNewPositionMap.containsKey(nodeId)) {
             // The node has been moved
@@ -82,10 +85,14 @@ public class NodePositionProvider {
             // The node has been created by a tool and has a fixed position
             Size newSize = nodeSizeProvider.getSize(style, List.of());
             // we shift the position according to the node size, so the center of the node matches the mouse position
+            double xPosition = this.startingPosition.get().getX() - newSize.getWidth() / 2;
+            double yPosition = this.startingPosition.get().getY() - newSize.getHeight() / 2;
+            xPosition = xPosition - parentAbsolutePosition.getX();
+            yPosition = yPosition - parentAbsolutePosition.getY();
             // @formatter:off
             position = Position.newPosition()
-              .x(this.startingPosition.get().getX() - newSize.getWidth() / 2)
-              .y(this.startingPosition.get().getY() - newSize.getHeight() / 2)
+              .x(xPosition)
+              .y(yPosition)
               .build();
             // @formatter:on
         } else {

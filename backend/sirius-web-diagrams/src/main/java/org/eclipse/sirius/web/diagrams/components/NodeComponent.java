@@ -118,7 +118,7 @@ public class NodeComponent implements IComponent {
         IDiagramElementRequestor diagramElementRequestor = new DiagramElementRequestor();
         INodeStyle style = nodeDescription.getStyleProvider().apply(nodeVariableManager);
 
-        Position position = nodePositionProvider.getPosition(nodeId, optionalPreviousNode, this.props.getPreviousParentElement(), nodeSizeProvider, style);
+        Position position = nodePositionProvider.getPosition(nodeId, optionalPreviousNode, this.props.getPreviousParentElement(), nodeSizeProvider, style, this.props.getParentAbsolutePosition());
 
         //@formatter:off
         Position absolutePosition = this.computeAbsolutePosition(position, this.props.getParentAbsolutePosition());

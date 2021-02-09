@@ -320,16 +320,14 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
 
           const absoluteBounds = getAbsoluteBounds(element);
           let origin = { x: 0, y: 0 };
-          let startingPosition = lastPositionOnDiagram;
           if (element instanceof SNode) {
-            startingPosition = { x: startingPosition.x - absoluteBounds.x, y: startingPosition.y - absoluteBounds.y };
             origin = {
               x: absoluteBounds.x + (element.size.width / 2) * zoom,
               y: absoluteBounds.y + (element.size.height / 2) * zoom,
             };
           }
           const contextualPalette = {
-            startingPosition,
+            startingPosition: lastPositionOnDiagram,
             canvasBounds: bounds,
             origin,
             element: element,

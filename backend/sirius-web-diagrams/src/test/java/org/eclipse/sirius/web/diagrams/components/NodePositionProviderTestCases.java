@@ -41,6 +41,8 @@ public class NodePositionProviderTestCases {
 
     private static final Size DEFAULT_NODE_SIZE = Size.newSize().height(70).width(150).build();
 
+    private static final Position ZERO_POSITION = Position.newPosition().x(0).y(0).build();
+
     private static final double STARTX = 1000;
 
     private static final double STARTY = 1000;
@@ -55,13 +57,13 @@ public class NodePositionProviderTestCases {
         parent = this.getDiagram(nodes);
         NodePositionProvider nodePositionProvider = new NodePositionProvider(Optional.empty(), Map.of());
 
-        Position nextPosition = nodePositionProvider.getPosition(UUID.randomUUID(), Optional.empty(), Optional.of(parent), nodeSizeProvider, style);
+        Position nextPosition = nodePositionProvider.getPosition(UUID.randomUUID(), Optional.empty(), Optional.of(parent), nodeSizeProvider, style, ZERO_POSITION);
         nodes.add(this.getNode(nextPosition, List.of()));
         assertThat(nextPosition).extracting(Position::getX).isEqualTo(Double.valueOf(0));
         assertThat(nextPosition).extracting(Position::getY).isEqualTo(Double.valueOf(0));
 
         parent = this.getDiagram(nodes);
-        nextPosition = nodePositionProvider.getPosition(UUID.randomUUID(), Optional.empty(), Optional.of(parent), nodeSizeProvider, style);
+        nextPosition = nodePositionProvider.getPosition(UUID.randomUUID(), Optional.empty(), Optional.of(parent), nodeSizeProvider, style, ZERO_POSITION);
         nodes.add(this.getNode(nextPosition, List.of()));
         assertThat(nextPosition).extracting(Position::getX).isEqualTo(Double.valueOf(0));
         assertThat(nextPosition).extracting(Position::getY).isEqualTo(Double.valueOf(DEFAULT_NODE_SIZE.getHeight() + 30));
@@ -76,14 +78,14 @@ public class NodePositionProviderTestCases {
 
         parent = this.getDiagram(nodes);
         NodePositionProvider nodePositionProvider = new NodePositionProvider(Optional.empty(), Map.of());
-        Position nextPosition = nodePositionProvider.getPosition(UUID.randomUUID(), Optional.empty(), Optional.of(parent), nodeSizeProvider, style);
+        Position nextPosition = nodePositionProvider.getPosition(UUID.randomUUID(), Optional.empty(), Optional.of(parent), nodeSizeProvider, style, ZERO_POSITION);
         nodes.add(this.getNode(nextPosition, List.of()));
         assertThat(nextPosition).extracting(Position::getX).isEqualTo(Double.valueOf(0));
         assertThat(nextPosition).extracting(Position::getY).isEqualTo(Double.valueOf(0));
 
         parent = this.getDiagram(nodes);
         nodePositionProvider = new NodePositionProvider(Optional.empty(), Map.of());
-        nextPosition = nodePositionProvider.getPosition(UUID.randomUUID(), Optional.empty(), Optional.of(parent), nodeSizeProvider, style);
+        nextPosition = nodePositionProvider.getPosition(UUID.randomUUID(), Optional.empty(), Optional.of(parent), nodeSizeProvider, style, ZERO_POSITION);
         assertThat(nextPosition).extracting(Position::getX).isEqualTo(Double.valueOf(0));
         assertThat(nextPosition).extracting(Position::getY).isEqualTo(Double.valueOf(DEFAULT_NODE_SIZE.getHeight() + 30));
 
@@ -91,7 +93,7 @@ public class NodePositionProviderTestCases {
         Position startingPosition = Position.newPosition().x(STARTX).y(STARTY).build();
         parent = this.getDiagram(nodes);
         nodePositionProvider = new NodePositionProvider(Optional.of(startingPosition), Map.of());
-        nextPosition = nodePositionProvider.getPosition(UUID.randomUUID(), Optional.empty(), Optional.of(parent), nodeSizeProvider, style);
+        nextPosition = nodePositionProvider.getPosition(UUID.randomUUID(), Optional.empty(), Optional.of(parent), nodeSizeProvider, style, ZERO_POSITION);
         Size size = nodeSizeProvider.getSize(style, List.of());
         assertThat(nextPosition).extracting(Position::getX).isEqualTo(STARTX - size.getWidth() / 2);
         assertThat(nextPosition).extracting(Position::getY).isEqualTo(STARTY - size.getHeight() / 2);
@@ -108,13 +110,13 @@ public class NodePositionProviderTestCases {
         parent = this.getNode(parentPosition, nodes);
         NodePositionProvider nodePositionProvider = new NodePositionProvider(Optional.empty(), Map.of());
 
-        Position nextPosition = nodePositionProvider.getPosition(UUID.randomUUID(), Optional.empty(), Optional.of(parent), nodeSizeProvider, style);
+        Position nextPosition = nodePositionProvider.getPosition(UUID.randomUUID(), Optional.empty(), Optional.of(parent), nodeSizeProvider, style, ZERO_POSITION);
         nodes.add(this.getNode(nextPosition, List.of()));
         assertThat(nextPosition).extracting(Position::getX).isEqualTo(Double.valueOf(0));
         assertThat(nextPosition).extracting(Position::getY).isEqualTo(Double.valueOf(0));
 
         parent = this.getNode(parentPosition, nodes);
-        nextPosition = nodePositionProvider.getPosition(UUID.randomUUID(), Optional.empty(), Optional.of(parent), nodeSizeProvider, style);
+        nextPosition = nodePositionProvider.getPosition(UUID.randomUUID(), Optional.empty(), Optional.of(parent), nodeSizeProvider, style, ZERO_POSITION);
         nodes.add(this.getNode(nextPosition, List.of()));
         assertThat(nextPosition).extracting(Position::getX).isEqualTo(Double.valueOf(0));
         assertThat(nextPosition).extracting(Position::getY).isEqualTo(Double.valueOf(DEFAULT_NODE_SIZE.getHeight() + 30));
@@ -130,14 +132,14 @@ public class NodePositionProviderTestCases {
 
         parent = this.getNode(parentPosition, nodes);
         NodePositionProvider nodePositionProvider = new NodePositionProvider(Optional.empty(), Map.of());
-        Position nextPosition = nodePositionProvider.getPosition(UUID.randomUUID(), Optional.empty(), Optional.of(parent), nodeSizeProvider, style);
+        Position nextPosition = nodePositionProvider.getPosition(UUID.randomUUID(), Optional.empty(), Optional.of(parent), nodeSizeProvider, style, ZERO_POSITION);
         nodes.add(this.getNode(nextPosition, List.of()));
         assertThat(nextPosition).extracting(Position::getX).isEqualTo(Double.valueOf(0));
         assertThat(nextPosition).extracting(Position::getY).isEqualTo(Double.valueOf(0));
 
         parent = this.getNode(parentPosition, nodes);
         nodePositionProvider = new NodePositionProvider(Optional.empty(), Map.of());
-        nextPosition = nodePositionProvider.getPosition(UUID.randomUUID(), Optional.empty(), Optional.of(parent), nodeSizeProvider, style);
+        nextPosition = nodePositionProvider.getPosition(UUID.randomUUID(), Optional.empty(), Optional.of(parent), nodeSizeProvider, style, ZERO_POSITION);
         assertThat(nextPosition).extracting(Position::getX).isEqualTo(Double.valueOf(0));
         assertThat(nextPosition).extracting(Position::getY).isEqualTo(Double.valueOf(DEFAULT_NODE_SIZE.getHeight() + 30));
 
@@ -145,7 +147,7 @@ public class NodePositionProviderTestCases {
         Position startingPosition = Position.newPosition().x(STARTX).y(STARTY).build();
         parent = this.getNode(parentPosition, nodes);
         nodePositionProvider = new NodePositionProvider(Optional.of(startingPosition), Map.of());
-        nextPosition = nodePositionProvider.getPosition(UUID.randomUUID(), Optional.empty(), Optional.of(parent), nodeSizeProvider, style);
+        nextPosition = nodePositionProvider.getPosition(UUID.randomUUID(), Optional.empty(), Optional.of(parent), nodeSizeProvider, style, ZERO_POSITION);
         Size size = nodeSizeProvider.getSize(style, List.of());
         assertThat(nextPosition).extracting(Position::getX).isEqualTo(STARTX - size.getWidth() / 2);
         assertThat(nextPosition).extracting(Position::getY).isEqualTo(STARTY - size.getHeight() / 2);
