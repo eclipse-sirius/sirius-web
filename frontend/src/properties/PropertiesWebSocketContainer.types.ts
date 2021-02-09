@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,15 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-.empty {
-  display: grid;
-  grid-template-rows: 1fr;
-  grid-template-columns: 1fr;
-  padding: 16px;
-}
+import { Selection } from 'workbench/Workbench.types';
 
-.label {
-  color: var(--daintree);
-  font-size: var(--font-size-5);
-  font-weight: var(--font-weight-bold);
+export interface PropertiesWebSocketContainerProps {
+  editingContextId: string;
+  selection: Selection;
 }
