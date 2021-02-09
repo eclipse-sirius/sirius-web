@@ -14,21 +14,19 @@ package org.eclipse.sirius.web.sample.services;
 
 import java.util.UUID;
 
+import org.eclipse.sirius.web.services.api.editingcontexts.IEditingContextAccessPolicy;
 import org.eclipse.sirius.web.services.api.projects.AccessLevel;
-import org.eclipse.sirius.web.services.api.projects.IProjectAccessPolicy;
 import org.springframework.stereotype.Service;
 
 /**
- * The project access policy of Sirius Web.
+ * The editing context access policy for Sirius Web.
  *
- * @author sbegaudeau
+ * @author pcdavid
  */
 @Service
-public class ProjectAccessPolicy implements IProjectAccessPolicy {
-
+public class EditingContextAccessPolicy implements IEditingContextAccessPolicy {
     @Override
-    public AccessLevel getAccessLevel(String username, UUID projectId) {
+    public AccessLevel getAccessLevel(String username, UUID editingContextId) {
         return AccessLevel.ADMIN;
     }
-
 }
