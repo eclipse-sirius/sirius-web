@@ -85,7 +85,7 @@ export const Workbench = ({
     <ExplorerWebSocketContainer editingContextId={editingContextId} selection={selection} setSelection={setSelection} />
   );
 
-  const properties = <PropertiesWebSocketContainer projectId={editingContextId} selection={selection} />;
+  const properties = <PropertiesWebSocketContainer editingContextId={editingContextId} selection={selection} />;
   let main = <OnboardArea projectId={editingContextId} selection={selection} setSelection={setSelection} />;
   if (displayedRepresentation) {
     const RepresentationComponent = registry.getComponent(displayedRepresentation);
