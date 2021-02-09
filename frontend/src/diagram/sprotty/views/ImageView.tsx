@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 /** @jsx svg */
-import { httpOrigin } from 'common/URL';
 import { svg } from 'snabbdom-jsx';
 import { RectangularNodeView } from 'sprotty';
 
@@ -46,7 +45,7 @@ export class ImageView extends RectangularNodeView {
           y={0}
           width={Math.max(0, bounds.width)}
           height={Math.max(0, bounds.height)}
-          href={httpOrigin + style.imageURL}
+          href={style.imageURL}
           style={styleObject}
         />
         {context.renderChildren(node)}

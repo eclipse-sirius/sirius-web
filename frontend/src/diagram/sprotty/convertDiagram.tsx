@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,15 +11,15 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import {
-  createFeatureSet,
-  connectableFeature,
-  deletableFeature,
-  selectFeature,
   boundsFeature,
-  layoutContainerFeature,
+  connectableFeature,
+  createFeatureSet,
+  deletableFeature,
   fadeFeature,
   hoverFeedbackFeature,
+  layoutContainerFeature,
   popupFeature,
+  selectFeature,
   viewportFeature,
 } from 'sprotty';
 
@@ -30,12 +30,13 @@ import {
  * This converter will ensure the creation of a proper Sprotty diagram from a given Sirius Web diagram..
  *
  * @param diagram the diagram object to convert
+ * @param httpOrigin the URL of the server hosting the images
  * @return a Sprotty diagram object
  */
-export const convertDiagram = (diagram) => {
+export const convertDiagram = (diagram, httpOrigin: string) => {
   const { id, descriptionId, kind, targetObjectId, label, position, size } = diagram;
-  const nodes = diagram.nodes.map((node) => convertNode(node));
-  const edges = diagram.edges.map((edge) => convertEdge(edge));
+  const nodes = diagram.nodes.map((node) => convertNode(node, httpOrigin));
+  const edges = diagram.edges.map((edge) => convertEdge(edge, httpOrigin));
 
   return {
     id,
@@ -51,7 +52,7 @@ export const convertDiagram = (diagram) => {
   };
 };
 
-const convertNode = (node) => {
+const convertNode = (node, httpOrigin: string) => {
   const {
     id,
     type,
@@ -67,12 +68,15 @@ const convertNode = (node) => {
 
   let borderNodes = [];
   if (node.borderNodes) {
-    borderNodes = node.borderNodes.map((borderNode) => convertNode(borderNode));
+    borderNodes = node.borderNodes.map((borderNode) => convertNode(borderNode, httpOrigin));
   }
   let childNodes = [];
   if (node.childNodes) {
-    childNodes = node.childNodes.map((childNode) => convertNode(childNode));
+    childNodes = node.childNodes.map((childNode) => convertNode(childNode, httpOrigin));
   }
+
+  const convertedLabel = convertLabel(label, httpOrigin);
+  const convertedStyle = convertNodeStyle(style, httpOrigin);
 
   return {
     id,
@@ -81,7 +85,7 @@ const convertNode = (node) => {
     targetObjectKind,
     targetObjectLabel,
     descriptionId,
-    style,
+    style: convertedStyle,
     size,
     position,
     features: createFeatureSet([
@@ -94,12 +98,27 @@ const convertNode = (node) => {
       hoverFeedbackFeature,
       popupFeature,
     ]),
-    editableLabel: label,
-    children: [label, ...borderNodes, ...childNodes],
+    editableLabel: convertedLabel,
+    children: [convertedLabel, ...borderNodes, ...childNodes],
   };
 };
 
-const convertEdge = (edge) => {
+const convertLabel = (label, httpOrigin: string) => {
+  if (label?.style?.iconURL !== undefined && label?.style?.iconURL !== '') {
+    const { style } = label;
+    return { ...label, style: { ...style, iconURL: httpOrigin + style.iconURL } };
+  }
+  return label;
+};
+
+const convertNodeStyle = (style, httpOrigin: string) => {
+  if (style?.imageURL !== undefined && style?.imageURL !== '') {
+    return { ...style, imageURL: httpOrigin + style.imageURL };
+  }
+  return style;
+};
+
+const convertEdge = (edge, httpOrigin: string) => {
   const {
     id,
     type,
@@ -118,13 +137,16 @@ const convertEdge = (edge) => {
 
   let children = [];
   if (beginLabel) {
-    children.push(beginLabel);
+    const convertedBeginLabel = convertLabel(beginLabel, httpOrigin);
+    children.push(convertedBeginLabel);
   }
   if (centerLabel) {
-    children.push(centerLabel);
+    const convertedCenterLabel = convertLabel(centerLabel, httpOrigin);
+    children.push(convertedCenterLabel);
   }
   if (endLabel) {
-    children.push(endLabel);
+    const convertedEndLabel = convertLabel(endLabel, httpOrigin);
+    children.push(convertedEndLabel);
   }
 
   return {

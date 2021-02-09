@@ -17,6 +17,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
+import { ServerContext } from 'common/ServerContext';
 import { Palette, Tool } from 'diagram/DiagramWebSocketContainer.types';
 import {
   DiagramRefreshedEvent,
@@ -60,7 +61,7 @@ import {
 } from 'diagram/sprotty/WebSocketDiagramServer';
 import { Toolbar } from 'diagram/Toolbar';
 import { canInvokeTool } from 'diagram/toolServices';
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useContext, useEffect, useRef } from 'react';
 import { EditLabelAction, FitToScreenAction, SEdge, SNode } from 'sprotty';
 import { RepresentationComponentProps } from 'workbench/Workbench.types';
 
@@ -252,6 +253,7 @@ export const DiagramWebSocketContainer = ({
   setSelection,
 }: RepresentationComponentProps) => {
   const diagramDomElement = useRef(null);
+  const { httpOrigin } = useContext(ServerContext);
   const classes = useDiagramWebSocketContainerStyle();
   const [{ value, context }, dispatch] = useMachine<DiagramWebSocketContainerContext, DiagramWebSocketContainerEvent>(
     diagramWebSocketContainerMachine
@@ -480,6 +482,7 @@ export const DiagramWebSocketContainer = ({
         setActiveTool,
         toolSections,
         setContextualPalette,
+        httpOrigin,
       };
       dispatch(initializeRepresentationEvent);
     }
@@ -495,8 +498,9 @@ export const DiagramWebSocketContainer = ({
     selection,
     editingContextId,
     representationId,
-    readOnly,
+    httpOrigin,
     dispatch,
+    readOnly,
   ]);
 
   useEffect(() => {

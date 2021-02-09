@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ export * from './auth/useAuth';
 export * from './capabilities/CapabilitiesProvider';
 export * from './capabilities/useCapabilities';
 export * from './common/BrandingContext';
+export * from './common/ServerContext';
 export * from './common/URL';
 export * from './core/banner/Banner';
 export * from './core/button/Button';

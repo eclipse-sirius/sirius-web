@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,25 +10,25 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { httpOrigin } from 'common/URL';
 import 'reflect-metadata';
 import {
-  createFeatureSet,
-  connectableFeature,
-  deletableFeature,
-  selectFeature,
   boundsFeature,
-  layoutContainerFeature,
+  connectableFeature,
+  createFeatureSet,
+  deletableFeature,
   fadeFeature,
   hoverFeedbackFeature,
+  layoutContainerFeature,
   popupFeature,
+  selectFeature,
 } from 'sprotty';
 import { convertDiagram } from '../convertDiagram';
-
 import siriusWebDiagram from './siriusWebDiagram.json';
 
 describe('ModelConverter', () => {
   it('converts a diagram', () => {
-    const sprottyDiagram = convertDiagram(siriusWebDiagram);
+    const sprottyDiagram = convertDiagram(siriusWebDiagram, httpOrigin);
 
     expect(sprottyDiagram).not.toBeNull();
     expect(sprottyDiagram).not.toBeUndefined();
@@ -81,7 +81,13 @@ describe('ModelConverter', () => {
         expect(sprottyNode.type).toBe(type);
         expect(sprottyNode.targetObjectId).toBe(targetObjectId);
         expect(sprottyNode.descriptionId).toBe(descriptionId);
-        expect(sprottyNode.style).toBe(style);
+        let convertedStyle;
+        if (style?.imageURL !== undefined) {
+          convertedStyle = { ...style, imageURL: httpOrigin + style.imageURL };
+        } else {
+          convertedStyle = style;
+        }
+        expect(sprottyNode.style).toStrictEqual(convertedStyle);
         expect(sprottyNode.size).toBe(size);
         expect(sprottyNode.position).toBe(position);
         expect(sprottyNode.features).toStrictEqual(
