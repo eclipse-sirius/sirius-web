@@ -25,12 +25,20 @@ import org.eclipse.sirius.web.diagrams.Size;
  * Provides the Size to apply to a new node.
  *
  * @author fbarbin
+ * @author wpiers
  */
 public class NodeSizeProvider {
 
+    /**
+     * For ELK, a node with an image style is an image within a node. The margin between a node and its content is 12 on
+     * each side, so to obtain the same result we have to add 12*2 to the width & height.
+     */
+    private static final int ELK_SIZE_DIFF = 24;
+
     public Size getSize(INodeStyle style, List<Element> childElements) {
         if (style instanceof ImageNodeStyle) {
-            return new ImageNodeStyleSizeProvider(new ImageSizeProvider()).getSize((ImageNodeStyle) style);
+            Size size = new ImageNodeStyleSizeProvider(new ImageSizeProvider()).getSize((ImageNodeStyle) style);
+            return Size.newSize().width(size.getWidth() + ELK_SIZE_DIFF).height(size.getHeight() + ELK_SIZE_DIFF).build();
         }
         // @formatter:off
         return Size.newSize()
