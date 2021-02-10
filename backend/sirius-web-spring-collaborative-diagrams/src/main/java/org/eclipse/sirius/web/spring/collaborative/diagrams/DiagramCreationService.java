@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,9 +35,11 @@ import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.web.diagrams.components.DiagramComponent;
 import org.eclipse.sirius.web.diagrams.components.DiagramComponentProps;
+import org.eclipse.sirius.web.diagrams.components.DiagramComponentProps.Builder;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.web.diagrams.layout.api.ILayoutService;
 import org.eclipse.sirius.web.diagrams.renderer.DiagramRenderer;
+import org.eclipse.sirius.web.diagrams.utils.Pair;
 import org.eclipse.sirius.web.representations.VariableManager;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationDescriptionService;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationService;
@@ -123,15 +125,25 @@ public class DiagramCreationService implements IDiagramCreationService {
         variableManager.put(VariableManager.SELF, targetObject);
         variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
 
-        Map<UUID, Position> movedElementIdToNewPositionMap = optionalDiagramContext.map(IDiagramContext::getMovedElementIDToNewPositionMap).orElseGet(() -> Map.of());
+        Optional<Pair<UUID, Position>> optionalMovedElementIdToNewPositionPair = optionalDiagramContext.map(IDiagramContext::getMovedElementIDToNewPositionPair);
         Set<UUID> allMovedElementIds = Set.of();
-        if (!movedElementIdToNewPositionMap.isEmpty() && optionalDiagramContext.isPresent()) {
-            allMovedElementIds = this.getRelatedElementIDs(movedElementIdToNewPositionMap.keySet(), optionalDiagramContext.get().getDiagram());
-        }
         Optional<Diagram> optionalPreviousDiagram = optionalDiagramContext.map(IDiagramContext::getDiagram);
-        Optional<Position> optionalStartingPosition = Optional.ofNullable(optionalDiagramContext.map(IDiagramContext::getStartingPosition).orElse(null));
-        DiagramComponentProps props = new DiagramComponentProps(variableManager, diagramDescription, viewCreationRequests, optionalPreviousDiagram, movedElementIdToNewPositionMap, allMovedElementIds,
-                optionalStartingPosition);
+        Optional<Position> optionalStartingPosition = optionalDiagramContext.map(IDiagramContext::getStartingPosition);
+        //@formatter:off
+        Builder builder = DiagramComponentProps.newDiagramComponentProps()
+                .variableManager(variableManager)
+                .diagramDescription(diagramDescription)
+                .viewCreationRequests(viewCreationRequests)
+                .previousDiagram(optionalPreviousDiagram);
+        //@formatter:on
+        if (optionalMovedElementIdToNewPositionPair.isPresent()) {
+            allMovedElementIds = this.getRelatedElementIDs(optionalMovedElementIdToNewPositionPair.get().getKey(), optionalDiagramContext.get().getDiagram());
+            builder.movedElementIdToNewPositionPair(optionalMovedElementIdToNewPositionPair.get()).allMovedElementIds(allMovedElementIds);
+        }
+        if (optionalStartingPosition.isPresent()) {
+            builder.startingPosition(optionalStartingPosition.get());
+        }
+        DiagramComponentProps props = builder.build();
         Element element = new Element(DiagramComponent.class, props);
 
         Diagram newDiagram = new DiagramRenderer(this.logger).render(element);
@@ -142,11 +154,10 @@ public class DiagramCreationService implements IDiagramCreationService {
         this.representationService.save(representationDescriptor);
 
         // Reset move / creation tool data
-        if (!movedElementIdToNewPositionMap.isEmpty()) {
-            movedElementIdToNewPositionMap.clear();
-        }
+
         if (optionalDiagramContext.isPresent()) {
             optionalDiagramContext.get().setStartingPosition(null);
+            optionalDiagramContext.get().setMovedElementIDToNewPositionPair(null);
         }
 
         long end = System.currentTimeMillis();
@@ -166,15 +177,13 @@ public class DiagramCreationService implements IDiagramCreationService {
         // @formatter:on
     }
 
-    public Set<UUID> getRelatedElementIDs(Set<UUID> baseElements, Diagram diagram) {
+    public Set<UUID> getRelatedElementIDs(UUID baseElement, Diagram diagram) {
         Set<UUID> res = new HashSet<>();
-        res.addAll(baseElements);
+        res.add(baseElement);
         Map<UUID, Node> nodesPerIdMap = this.computeNodesPerIdMap(diagram);
-        for (UUID id : baseElements) {
-            Node node = nodesPerIdMap.get(id);
-            if (node != null) {
-                res.addAll(this.getAllChildrenIds(node));
-            }
+        Node node = nodesPerIdMap.get(baseElement);
+        if (node != null) {
+            res.addAll(this.getAllChildrenIds(node));
         }
         return res;
     }

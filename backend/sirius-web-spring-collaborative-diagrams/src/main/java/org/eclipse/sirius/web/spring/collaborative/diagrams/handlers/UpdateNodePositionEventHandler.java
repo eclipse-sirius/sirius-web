@@ -24,6 +24,7 @@ import org.eclipse.sirius.web.collaborative.diagrams.api.dto.UpdateNodePositionS
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.diagrams.Position;
+import org.eclipse.sirius.web.diagrams.utils.Pair;
 import org.eclipse.sirius.web.spring.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
 import org.springframework.stereotype.Service;
 
@@ -78,7 +79,7 @@ public class UpdateNodePositionEventHandler implements IDiagramEventHandler {
                 .y(diagramInput.getNewPositionY())
                 .build();
         // @formatter:on
-        diagramContext.getMovedElementIDToNewPositionMap().put(diagramInput.getDiagramElementId(), newPosition);
+        diagramContext.setMovedElementIDToNewPositionPair(new Pair<>(diagramInput.getDiagramElementId(), newPosition));
         return new EventHandlerResponse(true, representation -> true, new UpdateNodePositionSuccessPayload(diagramContext.getDiagram()));
     }
 }

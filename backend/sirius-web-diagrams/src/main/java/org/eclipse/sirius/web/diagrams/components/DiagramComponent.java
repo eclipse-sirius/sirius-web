@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,6 @@ package org.eclipse.sirius.web.diagrams.components;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -27,6 +26,7 @@ import org.eclipse.sirius.web.diagrams.Size;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.web.diagrams.elements.DiagramElementProps;
 import org.eclipse.sirius.web.diagrams.renderer.DiagramRenderingCache;
+import org.eclipse.sirius.web.diagrams.utils.Pair;
 import org.eclipse.sirius.web.representations.VariableManager;
 
 /**
@@ -46,9 +46,9 @@ public class DiagramComponent implements IComponent {
     public Element render() {
         VariableManager variableManager = this.props.getVariableManager();
         DiagramDescription diagramDescription = this.props.getDiagramDescription();
-        Map<UUID, Position> movedElementIdToNewPositionMap = this.props.getMovedElementIdToNewPositionMap();
+        Pair<UUID, Position> movedElementIdToNewPositionPair = this.props.getMovedElementIdToNewPositionPair();
         Set<UUID> allMovedElementIds = this.props.getAllMovedElementIds();
-        NodePositionProvider nodePositionProvider = new NodePositionProvider(this.props.getOptionalStartingPosition(), movedElementIdToNewPositionMap);
+        NodePositionProvider nodePositionProvider = new NodePositionProvider(this.props.getStartingPosition(), movedElementIdToNewPositionPair);
         var optionalPreviousDiagram = this.props.getPreviousDiagram();
 
         String label = diagramDescription.getLabelProvider().apply(variableManager);

@@ -15,7 +15,6 @@ package org.eclipse.sirius.web.diagrams.components;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -24,6 +23,7 @@ import org.eclipse.sirius.web.diagrams.INodeStyle;
 import org.eclipse.sirius.web.diagrams.Node;
 import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.Size;
+import org.eclipse.sirius.web.diagrams.utils.Pair;
 
 /**
  * Provides the Position to apply to a new node.
@@ -34,25 +34,32 @@ public class NodePositionProvider {
 
     private static final int NEXT_POSITION_DELTA = 30;
 
-    private Optional<Position> startingPosition;
+    private Position startingPosition;
 
     private Position lastPosition;
 
     private Size lastSize;
 
-    private Map<UUID, Position> movedElementIdToNewPositionMap;
+    private Pair<UUID, Position> movedElementIdToNewPositionPair;
 
     /**
      * Default constructor.
      *
      * @param startingPosition
-     *            the coordinates of the new element starting position.
-     * @param movedElementIdToNewPositionMap
-     *            a map containing the new position of diagram elements (identified by their UUID)
+     *            the coordinates of the new element starting position. can be null.
+     * @param movedElementIdToNewPositionPair
+     *            a pair of the new position of diagram element (identified by its UUID). can be null.
      */
-    public NodePositionProvider(Optional<Position> startingPosition, Map<UUID, Position> movedElementIdToNewPositionMap) {
+    public NodePositionProvider(Position startingPosition, Pair<UUID, Position> movedElementIdToNewPositionPair) {
         this.startingPosition = startingPosition;
-        this.movedElementIdToNewPositionMap = Map.copyOf(movedElementIdToNewPositionMap);
+        this.movedElementIdToNewPositionPair = movedElementIdToNewPositionPair;
+    }
+
+    /**
+     * Default constructor.
+     */
+    public NodePositionProvider() {
+        this(null, null);
     }
 
     /**
@@ -75,18 +82,18 @@ public class NodePositionProvider {
     public Position getPosition(UUID nodeId, Optional<Node> optionalPreviousNode, Optional<Object> optionalPreviousParentElement, NodeSizeProvider nodeSizeProvider, INodeStyle style,
             Position parentAbsolutePosition) {
         Position position;
-        if (this.movedElementIdToNewPositionMap.containsKey(nodeId)) {
+        if (this.movedElementIdToNewPositionPair != null && this.movedElementIdToNewPositionPair.getKey().equals(nodeId)) {
             // The node has been moved
-            position = this.movedElementIdToNewPositionMap.get(nodeId);
+            position = this.movedElementIdToNewPositionPair.getValue();
         } else if (optionalPreviousNode.isPresent()) {
             // The node already has a valid position
             position = optionalPreviousNode.get().getPosition();
-        } else if (this.startingPosition.isPresent() && this.lastPosition == null) {
+        } else if (this.startingPosition != null && this.lastPosition == null) {
             // The node has been created by a tool and has a fixed position
             Size newSize = nodeSizeProvider.getSize(style, List.of());
             // we shift the position according to the node size, so the center of the node matches the mouse position
-            double xPosition = this.startingPosition.get().getX() - newSize.getWidth() / 2;
-            double yPosition = this.startingPosition.get().getY() - newSize.getHeight() / 2;
+            double xPosition = this.startingPosition.getX() - newSize.getWidth() / 2;
+            double yPosition = this.startingPosition.getY() - newSize.getHeight() / 2;
             xPosition = xPosition - parentAbsolutePosition.getX();
             yPosition = yPosition - parentAbsolutePosition.getY();
             // @formatter:off
@@ -115,7 +122,7 @@ public class NodePositionProvider {
     private Position getNextPosition(Optional<Object> previousParentElement, Size newSize) {
         Position newPosition;
         if (this.lastPosition == null) {
-            newPosition = this.startingPosition.orElse(Position.newPosition().x(0).y(0).build());
+            newPosition = Optional.ofNullable(this.startingPosition).orElse(Position.newPosition().x(0).y(0).build());
         } else {
             // @formatter:off
             newPosition = Position.newPosition()
