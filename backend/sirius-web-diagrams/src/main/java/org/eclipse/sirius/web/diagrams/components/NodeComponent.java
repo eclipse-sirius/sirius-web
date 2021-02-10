@@ -105,10 +105,9 @@ public class NodeComponent implements IComponent {
     private Element doRender(VariableManager nodeVariableManager, String targetObjectId, Optional<Node> optionalPreviousNode) {
         NodeDescription nodeDescription = this.props.getNodeDescription();
         NodeContainmentKind containmentKind = this.props.getContainmentKind();
-        DiagramRenderingCache cache = this.props.getCache();
         NodePositionProvider nodePositionProvider = this.props.getNodePositionProvider();
-        NodeSizeProvider nodeSizeProvider = new NodeSizeProvider();
 
+        NodeSizeProvider nodeSizeProvider = new NodeSizeProvider();
         UUID nodeId = optionalPreviousNode.map(Node::getId).orElseGet(() -> this.computeNodeId(targetObjectId));
         Optional<Label> optionalPreviousLabel = optionalPreviousNode.map(Node::getLabel);
         String type = nodeDescription.getTypeProvider().apply(nodeVariableManager);
@@ -117,8 +116,6 @@ public class NodeComponent implements IComponent {
 
         INodeStyle style = nodeDescription.getStyleProvider().apply(nodeVariableManager);
 
-        IDiagramElementRequestor diagramElementRequestor = new DiagramElementRequestor();
-
         //@formatter:off
         Position position = optionalPreviousNode
                 .map(Node::getPosition)
@@ -126,52 +123,16 @@ public class NodeComponent implements IComponent {
         //@formatter:on
 
         Position absolutePosition = this.computeAbsolutePosition(position, this.props.getParentAbsolutePosition());
+        var borderNodes = this.getBorderNodes(optionalPreviousNode, nodeVariableManager, nodeId, absolutePosition);
+        var childNodes = this.getChildNodes(optionalPreviousNode, nodeVariableManager, nodeId, absolutePosition);
 
-        var borderNodes = nodeDescription.getBorderNodeDescriptions().stream().map(borderNodeDescription -> {
-            List<Node> previousBorderNodes = optionalPreviousNode.map(previousNode -> diagramElementRequestor.getBorderNodes(previousNode, borderNodeDescription)).orElse(List.of());
-            INodesRequestor borderNodesRequestor = new NodesRequestor(previousBorderNodes);
-            //@formatter:off
-                    var nodeComponentProps = NodeComponentProps.newNodeComponentProps()
-                            .variableManager(nodeVariableManager)
-                            .nodeDescription(borderNodeDescription)
-                            .nodesRequestor(borderNodesRequestor)
-                            .containmentKind(NodeContainmentKind.BORDER_NODE)
-                            .cache(cache)
-                            .viewCreationRequests(this.props.getViewCreationRequests())
-                            .parentElementId(nodeId)
-                            .nodePositionProvider(nodePositionProvider)
-                            .previousParentElement(optionalPreviousNode.map(Object.class::cast))
-                            .parentAbsolutePosition(absolutePosition)
-                            .build();
-                    //@formatter:on
-            return new Element(NodeComponent.class, nodeComponentProps);
-        }).collect(Collectors.toList());
+        Size size;
+        if (childNodes.isEmpty()) {
+            size = nodeSizeProvider.getSize(style, childNodes);
+        } else {
+            size = optionalPreviousNode.map(Node::getSize).orElseGet(() -> nodeSizeProvider.getSize(style, childNodes));
+        }
 
-        //@formatter:off
-        var childNodes = nodeDescription.getChildNodeDescriptions()
-                .stream()
-                .map(childNodeDescription -> {
-            List<Node> previousChildNodes = optionalPreviousNode
-                    .map(previousNode -> diagramElementRequestor.getChildNodes(previousNode, childNodeDescription))
-                    .orElse(List.of());
-            INodesRequestor childNodesRequestor = new NodesRequestor(previousChildNodes);
-            var nodeComponentProps = NodeComponentProps.newNodeComponentProps()
-                    .variableManager(nodeVariableManager)
-                    .nodeDescription(childNodeDescription)
-                    .nodesRequestor(childNodesRequestor)
-                    .containmentKind(NodeContainmentKind.CHILD_NODE)
-                    .cache(cache)
-                    .viewCreationRequests(this.props.getViewCreationRequests())
-                    .parentElementId(nodeId)
-                    .nodePositionProvider(nodePositionProvider)
-                    .previousParentElement(optionalPreviousNode.map(Object.class::cast))
-                    .parentAbsolutePosition(absolutePosition)
-                    .build();
-            return new Element(NodeComponent.class, nodeComponentProps);
-        }).collect(Collectors.toList());
-        //@formatter:on
-
-        Size size = optionalPreviousNode.map(Node::getSize).orElseGet(() -> nodeSizeProvider.getSize(style, childNodes));
         NodeLabelPositionProvider labelBoundsProvider = new NodeLabelPositionProvider(type, size);
         LabelDescription labelDescription = nodeDescription.getLabelDescription();
         nodeVariableManager.put(LabelDescription.OWNER_ID, nodeId);
@@ -198,6 +159,47 @@ public class NodeComponent implements IComponent {
                 .build();
         // @formatter:on
         return new Element(NodeElementProps.TYPE, nodeElementProps);
+    }
+
+    private List<Element> getBorderNodes(Optional<Node> optionalPreviousNode, VariableManager nodeVariableManager, UUID nodeId, Position absolutePosition) {
+        NodeDescription nodeDescription = this.props.getNodeDescription();
+        DiagramRenderingCache cache = this.props.getCache();
+        NodePositionProvider nodePositionProvider = this.props.getNodePositionProvider();
+
+        return nodeDescription.getBorderNodeDescriptions().stream().map(borderNodeDescription -> {
+            List<Node> previousBorderNodes = optionalPreviousNode.map(previousNode -> new DiagramElementRequestor().getBorderNodes(previousNode, borderNodeDescription)).orElse(List.of());
+            INodesRequestor borderNodesRequestor = new NodesRequestor(previousBorderNodes);
+            //@formatter:off
+            var nodeComponentProps = NodeComponentProps.newNodeComponentProps()
+                    .variableManager(nodeVariableManager)
+                    .nodeDescription(borderNodeDescription)
+                    .nodesRequestor(borderNodesRequestor)
+                    .containmentKind(NodeContainmentKind.BORDER_NODE)
+                    .cache(cache)
+                    .viewCreationRequests(this.props.getViewCreationRequests())
+                    .parentElementId(nodeId)
+                    .nodePositionProvider(nodePositionProvider)
+                    .previousParentElement(optionalPreviousNode.map(Object.class::cast))
+                    .parentAbsolutePosition(absolutePosition)
+                    .build();
+            //@formatter:on
+            return new Element(NodeComponent.class, nodeComponentProps);
+        }).collect(Collectors.toList());
+    }
+
+    private List<Element> getChildNodes(Optional<Node> optionalPreviousNode, VariableManager nodeVariableManager, UUID nodeId, Position absolutePosition) {
+        NodeDescription nodeDescription = this.props.getNodeDescription();
+        DiagramRenderingCache cache = this.props.getCache();
+        NodePositionProvider nodePositionProvider = this.props.getNodePositionProvider();
+
+        return nodeDescription.getChildNodeDescriptions().stream().map(childNodeDescription -> {
+            List<Node> previousChildNodes = optionalPreviousNode.map(previousNode -> new DiagramElementRequestor().getChildNodes(previousNode, childNodeDescription)).orElse(List.of());
+            INodesRequestor childNodesRequestor = new NodesRequestor(previousChildNodes);
+            var nodeComponentProps = NodeComponentProps.newNodeComponentProps().variableManager(nodeVariableManager).nodeDescription(childNodeDescription).nodesRequestor(childNodesRequestor)
+                    .containmentKind(NodeContainmentKind.CHILD_NODE).cache(cache).viewCreationRequests(this.props.getViewCreationRequests()).parentElementId(nodeId)
+                    .nodePositionProvider(nodePositionProvider).previousParentElement(optionalPreviousNode.map(Object.class::cast)).parentAbsolutePosition(absolutePosition).build();
+            return new Element(NodeComponent.class, nodeComponentProps);
+        }).collect(Collectors.toList());
     }
 
     private UUID computeNodeId(String targetObjectId) {
