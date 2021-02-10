@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -75,10 +75,6 @@ export const EditProjectNavbarContextMenu = ({
       <Permission requiredAccessLevel="EDIT">
         <Entry icon={<Delete title="" />} label="Delete" onClick={onDelete} data-testid="delete" />
       </Permission>
-      <Separator />
-      <Link to={`/projects/${projectId}/modelers`} data-testid="projects-link">
-        <Entry label="Modelers" data-testid="modelers" />
-      </Link>
       <Separator />
       <Link to={`/projects`} data-testid="projects-link">
         <Entry label="Back to all projects" data-testid="projects" />
