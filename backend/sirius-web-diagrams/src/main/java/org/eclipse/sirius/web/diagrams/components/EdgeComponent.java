@@ -153,13 +153,13 @@ public class EdgeComponent implements IComponent {
             return new Element(LabelComponent.class, labelComponentProps);
         }).ifPresent(edgeChildren::add);
 
-        Optional.ofNullable(edgeDescription.getBeginLabelDescription()).map(labelDescription -> {
+        Optional.ofNullable(edgeDescription.getCenterLabelDescription()).map(labelDescription -> {
             Optional<Label> optionalPreviousLabel = optionalPreviousEdge.map(Edge::getCenterLabel);
             LabelComponentProps labelComponentProps = new LabelComponentProps(labelVariableManager, labelDescription, optionalPreviousLabel, labelBoundsProvider, LabelType.EDGE_CENTER.getValue());
             return new Element(LabelComponent.class, labelComponentProps);
         }).ifPresent(edgeChildren::add);
 
-        Optional.ofNullable(edgeDescription.getBeginLabelDescription()).map(labelDescription -> {
+        Optional.ofNullable(edgeDescription.getEndLabelDescription()).map(labelDescription -> {
             Optional<Label> optionalPreviousLabel = optionalPreviousEdge.map(Edge::getEndLabel);
             LabelComponentProps labelComponentProps = new LabelComponentProps(labelVariableManager, labelDescription, optionalPreviousLabel, labelBoundsProvider, LabelType.EDGE_END.getValue());
             return new Element(LabelComponent.class, labelComponentProps);
