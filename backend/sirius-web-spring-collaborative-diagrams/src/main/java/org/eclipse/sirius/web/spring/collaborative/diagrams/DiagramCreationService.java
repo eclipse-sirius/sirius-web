@@ -90,7 +90,7 @@ public class DiagramCreationService implements IDiagramCreationService {
 
     @Override
     public Diagram create(String label, Object targetObject, DiagramDescription diagramDescription, IEditingContext editingContext) {
-        Diagram newDiagram = this.doRender(label, targetObject, editingContext, diagramDescription, List.of(), Optional.empty());
+        Diagram newDiagram = this.doRender(label, targetObject, editingContext, diagramDescription, Optional.empty());
         return this.layoutService.layout(newDiagram);
     }
 
@@ -107,16 +107,13 @@ public class DiagramCreationService implements IDiagramCreationService {
         if (optionalObject.isPresent() && optionalDiagramDescription.isPresent()) {
             Object object = optionalObject.get();
             DiagramDescription diagramDescription = optionalDiagramDescription.get();
-            List<ViewCreationRequest> viewCreationRequests = diagramContext.getViewCreationRequests();
-
-            Diagram diagram = this.doRender(previousDiagram.getLabel(), object, editingContext, diagramDescription, viewCreationRequests, Optional.of(diagramContext));
+            Diagram diagram = this.doRender(previousDiagram.getLabel(), object, editingContext, diagramDescription, Optional.of(diagramContext));
             return Optional.of(diagram);
         }
         return Optional.empty();
     }
 
-    private Diagram doRender(String label, Object targetObject, IEditingContext editingContext, DiagramDescription diagramDescription, List<ViewCreationRequest> viewCreationRequests,
-            Optional<IDiagramContext> optionalDiagramContext) {
+    private Diagram doRender(String label, Object targetObject, IEditingContext editingContext, DiagramDescription diagramDescription, Optional<IDiagramContext> optionalDiagramContext) {
 
         long start = System.currentTimeMillis();
 
@@ -129,6 +126,7 @@ public class DiagramCreationService implements IDiagramCreationService {
         Set<UUID> allMovedElementIds = Set.of();
         Optional<Diagram> optionalPreviousDiagram = optionalDiagramContext.map(IDiagramContext::getDiagram);
         Optional<Position> optionalStartingPosition = optionalDiagramContext.map(IDiagramContext::getStartingPosition);
+        List<ViewCreationRequest> viewCreationRequests = optionalDiagramContext.map(IDiagramContext::getViewCreationRequests).orElse(List.of());
         //@formatter:off
         Builder builder = DiagramComponentProps.newDiagramComponentProps()
                 .variableManager(variableManager)
