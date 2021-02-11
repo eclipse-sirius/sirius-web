@@ -18,6 +18,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
+import org.eclipse.sirius.web.annotations.Immutable;
 import org.eclipse.sirius.web.components.IProps;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.Position;
@@ -31,6 +32,7 @@ import org.eclipse.sirius.web.representations.VariableManager;
  *
  * @author sbegaudeau
  */
+@Immutable
 public final class DiagramComponentProps implements IProps {
     private VariableManager variableManager;
 
