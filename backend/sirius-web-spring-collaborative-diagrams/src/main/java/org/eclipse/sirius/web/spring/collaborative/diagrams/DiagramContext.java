@@ -76,4 +76,10 @@ public class DiagramContext implements IDiagramContext {
     public void setStartingPosition(Position startingPosition) {
         this.startingPosition = startingPosition;
     }
+
+    @Override
+    public void reset() {
+        this.moveEvent = null;
+        this.startingPosition = null;
+    }
 }

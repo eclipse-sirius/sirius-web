@@ -142,14 +142,6 @@ public class DiagramCreationService implements IDiagramCreationService {
         }
         RepresentationDescriptor representationDescriptor = this.getRepresentationDescriptor(editingContext.getId(), newDiagram);
         this.representationService.save(representationDescriptor);
-
-        // Reset move / creation tool data
-
-        if (optionalDiagramContext.isPresent()) {
-            optionalDiagramContext.get().setStartingPosition(null);
-            optionalDiagramContext.get().setMoveEvent(null);
-        }
-
         long end = System.currentTimeMillis();
         this.timer.record(end - start, TimeUnit.MILLISECONDS);
         return newDiagram;

@@ -118,6 +118,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
     @Override
     public void refresh() {
         Diagram refreshedDiagram = this.diagramCreationService.refresh(this.editingContext, this.diagramContext).orElse(null);
+        this.diagramContext.reset();
         this.diagramContext.update(refreshedDiagram);
         this.diagramEventFlux.diagramRefreshed(refreshedDiagram);
     }

@@ -35,6 +35,8 @@ public interface IDiagramContext {
 
     void update(Diagram updatedDiagram);
 
+    void reset();
+
     List<ViewCreationRequest> getViewCreationRequests();
 
     MoveEvent getMoveEvent();
