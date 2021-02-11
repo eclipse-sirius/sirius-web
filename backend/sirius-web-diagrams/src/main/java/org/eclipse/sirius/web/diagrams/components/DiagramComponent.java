@@ -14,19 +14,18 @@ package org.eclipse.sirius.web.diagrams.components;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.eclipse.sirius.web.components.Element;
 import org.eclipse.sirius.web.components.IComponent;
 import org.eclipse.sirius.web.diagrams.Diagram;
+import org.eclipse.sirius.web.diagrams.MoveEvent;
 import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.Size;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.web.diagrams.elements.DiagramElementProps;
 import org.eclipse.sirius.web.diagrams.renderer.DiagramRenderingCache;
-import org.eclipse.sirius.web.diagrams.utils.Pair;
 import org.eclipse.sirius.web.representations.VariableManager;
 
 /**
@@ -46,9 +45,8 @@ public class DiagramComponent implements IComponent {
     public Element render() {
         VariableManager variableManager = this.props.getVariableManager();
         DiagramDescription diagramDescription = this.props.getDiagramDescription();
-        Pair<UUID, Position> movedElementIdToNewPositionPair = this.props.getMovedElementIdToNewPositionPair();
-        Set<UUID> allMovedElementIds = this.props.getAllMovedElementIds();
-        NodePositionProvider nodePositionProvider = new NodePositionProvider(this.props.getStartingPosition(), movedElementIdToNewPositionPair);
+        MoveEvent moveEvent = this.props.getMoveEvent();
+        NodePositionProvider nodePositionProvider = new NodePositionProvider(this.props.getStartingPosition(), moveEvent);
         var optionalPreviousDiagram = this.props.getPreviousDiagram();
 
         String label = diagramDescription.getLabelProvider().apply(variableManager);
@@ -90,7 +88,7 @@ public class DiagramComponent implements IComponent {
                     var previousEdges = optionalPreviousDiagram.map(previousDiagram -> diagramElementRequestor.getEdges(previousDiagram, edgeDescription))
                             .orElse(List.of());
                     IEdgesRequestor edgesRequestor = new EdgesRequestor(previousEdges);
-                    var edgeComponentProps = new EdgeComponentProps(variableManager, edgeDescription, edgesRequestor, cache, allMovedElementIds);
+                    var edgeComponentProps = new EdgeComponentProps(variableManager, edgeDescription, edgesRequestor, cache, moveEvent);
                     return new Element(EdgeComponent.class, edgeComponentProps);
                 })
                 .collect(Collectors.toList());

@@ -17,7 +17,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.components.Element;
@@ -27,6 +26,7 @@ import org.eclipse.sirius.web.components.IComponent;
 import org.eclipse.sirius.web.diagrams.Edge;
 import org.eclipse.sirius.web.diagrams.EdgeStyle;
 import org.eclipse.sirius.web.diagrams.Label;
+import org.eclipse.sirius.web.diagrams.MoveEvent;
 import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.web.diagrams.description.EdgeDescription;
@@ -59,7 +59,6 @@ public class EdgeComponent implements IComponent {
         EdgeDescription edgeDescription = this.props.getEdgeDescription();
         IEdgesRequestor edgesRequestor = this.props.getEdgesRequestor();
         DiagramRenderingCache cache = this.props.getCache();
-        Set<UUID> movedElementIds = this.props.getMovedElementIds();
         EdgeRoutingPointsProvider edgeRoutingPointsProvider = new EdgeRoutingPointsProvider();
 
         List<Element> children = new ArrayList<>();
@@ -110,20 +109,19 @@ public class EdgeComponent implements IComponent {
 
                             List<Position> routingPoints;
                             List<Element> labelChildren;
-                            if (movedElementIds.contains(sourceId) || movedElementIds.contains(targetId)) {
+
+                            if (this.props.getMoveEvent() != null && this.hasMoved(sourceId, targetId, this.props.getMoveEvent())) {
                                 routingPoints = edgeRoutingPointsProvider.getRoutingPoints(sourceNode, targetNode);
                                 labelChildren = this.getLabelsChildren(edgeDescription, edgeVariableManager, Optional.empty(), id, routingPoints);
                             } else {
-                                routingPoints = optionalPreviousEdge
-                                        .map(Edge::getRoutingPoints)
-                                        .orElseGet(()-> edgeRoutingPointsProvider.getRoutingPoints(sourceNode, targetNode));
+                                routingPoints = optionalPreviousEdge.map(Edge::getRoutingPoints).orElseGet(() -> edgeRoutingPointsProvider.getRoutingPoints(sourceNode, targetNode));
                                 labelChildren = this.getLabelsChildren(edgeDescription, edgeVariableManager, optionalPreviousEdge, id, routingPoints);
                             }
 
                             EdgeElementProps edgeElementProps = EdgeElementProps.newEdgeElementProps(id)
-                                    .type(edgeType)
-                                    .descriptionId(edgeDescription.getId())
-                                    .targetObjectId(targetObjectId)
+                            		.type(edgeType)
+                            		.descriptionId(edgeDescription.getId())
+                            		.targetObjectId(targetObjectId)
                                     .targetObjectKind(targetObjectKind)
                                     .targetObjectLabel(targetObjectLabel)
                                     .sourceId(sourceId)
@@ -145,6 +143,10 @@ public class EdgeComponent implements IComponent {
 
         FragmentProps fragmentProps = new FragmentProps(children);
         return new Fragment(fragmentProps);
+    }
+
+    private boolean hasMoved(UUID sourceId, UUID targetId, MoveEvent moveEvent) {
+        return sourceId.equals(moveEvent.getNodeId()) || targetId.equals(moveEvent.getNodeId()) || moveEvent.getAllChildrenIds().contains(sourceId) || moveEvent.getAllChildrenIds().contains(targetId);
     }
 
     private List<Element> getLabelsChildren(EdgeDescription edgeDescription, VariableManager edgeVariableManager, Optional<Edge> optionalPreviousEdge, UUID edgeId, List<Position> routingPoints) {

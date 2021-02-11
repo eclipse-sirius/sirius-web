@@ -13,12 +13,11 @@
 package org.eclipse.sirius.web.collaborative.diagrams.api;
 
 import java.util.List;
-import java.util.UUID;
 
 import org.eclipse.sirius.web.diagrams.Diagram;
+import org.eclipse.sirius.web.diagrams.MoveEvent;
 import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.ViewCreationRequest;
-import org.eclipse.sirius.web.diagrams.utils.Pair;
 
 /**
  * Information used to perform some operations on the diagram.
@@ -38,9 +37,9 @@ public interface IDiagramContext {
 
     List<ViewCreationRequest> getViewCreationRequests();
 
-    Pair<UUID, Position> getMovedElementIDToNewPositionPair();
+    MoveEvent getMoveEvent();
 
-    void setMovedElementIDToNewPositionPair(Pair<UUID, Position> pair);
+    void setMoveEvent(MoveEvent moveEvent);
 
     Position getStartingPosition();
 

@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -95,7 +94,6 @@ public class DiagramRendererEdgeTestCases {
                 .diagramDescription(diagramDescription)
                 .viewCreationRequests(List.of())
                 .previousDiagram(Optional.empty())
-                .allMovedElementIds(Set.of())
                 .build();
         // @formatter:on
         Element element = new Element(DiagramComponent.class, props);
@@ -150,7 +148,6 @@ public class DiagramRendererEdgeTestCases {
                 .diagramDescription(diagramDescription)
                 .viewCreationRequests(List.of())
                 .previousDiagram(Optional.empty())
-                .allMovedElementIds(Set.of())
                 .build();
         // @formatter:on
         Element element = new Element(DiagramComponent.class, props);

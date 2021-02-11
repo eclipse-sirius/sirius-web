@@ -15,13 +15,12 @@ package org.eclipse.sirius.web.spring.collaborative.diagrams;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.web.diagrams.Diagram;
+import org.eclipse.sirius.web.diagrams.MoveEvent;
 import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.ViewCreationRequest;
-import org.eclipse.sirius.web.diagrams.utils.Pair;
 
 /**
  * The implementation of {@link IDiagramContext}.
@@ -34,7 +33,7 @@ public class DiagramContext implements IDiagramContext {
 
     private final List<ViewCreationRequest> viewCreationRequests;
 
-    private Pair<UUID, Position> movedElementIDToNewPositionPair;
+    private MoveEvent moveEvent;
 
     private Position startingPosition;
 
@@ -59,13 +58,13 @@ public class DiagramContext implements IDiagramContext {
     }
 
     @Override
-    public Pair<UUID, Position> getMovedElementIDToNewPositionPair() {
-        return this.movedElementIDToNewPositionPair;
+    public MoveEvent getMoveEvent() {
+        return this.moveEvent;
     }
 
     @Override
-    public void setMovedElementIDToNewPositionPair(Pair<UUID, Position> pair) {
-        this.movedElementIDToNewPositionPair = pair;
+    public void setMoveEvent(MoveEvent moveEvent) {
+        this.moveEvent = moveEvent;
     }
 
     @Override

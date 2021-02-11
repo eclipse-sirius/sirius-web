@@ -15,16 +15,14 @@ package org.eclipse.sirius.web.diagrams.components;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
 
 import org.eclipse.sirius.web.annotations.Immutable;
 import org.eclipse.sirius.web.components.IProps;
 import org.eclipse.sirius.web.diagrams.Diagram;
+import org.eclipse.sirius.web.diagrams.MoveEvent;
 import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
-import org.eclipse.sirius.web.diagrams.utils.Pair;
 import org.eclipse.sirius.web.representations.VariableManager;
 
 /**
@@ -42,9 +40,7 @@ public final class DiagramComponentProps implements IProps {
 
     private List<ViewCreationRequest> viewCreationRequests;
 
-    private Pair<UUID, Position> movedElementIdToNewPositionPair;
-
-    private Set<UUID> allMovedElementIds;
+    private MoveEvent moveEvent;
 
     private Position startingPosition;
 
@@ -68,12 +64,8 @@ public final class DiagramComponentProps implements IProps {
         return this.viewCreationRequests;
     }
 
-    public Pair<UUID, Position> getMovedElementIdToNewPositionPair() {
-        return this.movedElementIdToNewPositionPair;
-    }
-
-    public Set<UUID> getAllMovedElementIds() {
-        return this.allMovedElementIds;
+    public MoveEvent getMoveEvent() {
+        return this.moveEvent;
     }
 
     public Position getStartingPosition() {
@@ -99,9 +91,7 @@ public final class DiagramComponentProps implements IProps {
 
         private List<ViewCreationRequest> viewCreationRequests;
 
-        private Pair<UUID, Position> movedElementIdToNewPositionPair;
-
-        private Set<UUID> allMovedElementIds;
+        private MoveEvent moveEvent;
 
         private Position startingPosition;
 
@@ -125,13 +115,8 @@ public final class DiagramComponentProps implements IProps {
             return this;
         }
 
-        public Builder movedElementIdToNewPositionPair(Pair<UUID, Position> movedElementIdToNewPositionPair) {
-            this.movedElementIdToNewPositionPair = Objects.requireNonNull(movedElementIdToNewPositionPair);
-            return this;
-        }
-
-        public Builder allMovedElementIds(Set<UUID> allMovedElementIds) {
-            this.allMovedElementIds = Objects.requireNonNull(allMovedElementIds);
+        public Builder moveEvent(MoveEvent moveEvent) {
+            this.moveEvent = Objects.requireNonNull(moveEvent);
             return this;
         }
 
@@ -146,8 +131,7 @@ public final class DiagramComponentProps implements IProps {
             diagramComponentProps.diagramDescription = Objects.requireNonNull(this.diagramDescription);
             diagramComponentProps.previousDiagram = Objects.requireNonNull(this.previousDiagram);
             diagramComponentProps.viewCreationRequests = List.copyOf(Objects.requireNonNull(this.viewCreationRequests));
-            diagramComponentProps.movedElementIdToNewPositionPair = this.movedElementIdToNewPositionPair;
-            diagramComponentProps.allMovedElementIds = Set.copyOf(Objects.requireNonNull(this.allMovedElementIds));
+            diagramComponentProps.moveEvent = this.moveEvent;
             diagramComponentProps.startingPosition = this.startingPosition;
             return diagramComponentProps;
         }

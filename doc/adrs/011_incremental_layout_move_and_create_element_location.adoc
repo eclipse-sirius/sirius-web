@@ -42,24 +42,32 @@ InvokeNodeToolOnDiagramInput {
     projectId: ID!
 }
 ```
+
 === Diagram rendering
 
 The `newPosition` from `UpdateNodePositionInput` and the `startingPosition` from `InvokeNodeToolOnDiagramInput` will be used during the next diagram refresh, triggered by those API calls. After the refresh, those information should be deleted since they will no longer be relevant for the next refresh. 
 
-The position information will be provided from the implied `IDiagramEventHandler` to the `DiagramComponent` (that will perform the rendering) through the `IDiagramContext` with three additional methods:
+The position information will be provided from the implied `IDiagramEventHandler` to the `DiagramComponent` (that will perform the rendering) through the `IDiagramContext` with a set of additional getters/setters:
 ```
-    Pair<UUID, Position> getMovedElementIDToNewPosition();
+    MoveEvent getMoveEvent();
 
-    void setMovedElementIDToNewPosition();
+    void setMoveEvent(MoveEvent moveEvent);
 
     Position getStartingPosition();
 
     void setStartingPosition(Position startingPosition);
 ```
-The movedElementIDToNewPosition will store the moved element UUID to its new Position.
+The moveEvent will store:
+
+- the moved element UUID
+- its new Position
+- the set of the moved element children (and sub children) UUIDs
+
 The startingPosition will store the absolute position on the diagram where the tool has been applied.
 
 In addition, The `NodePositionProvider`, responsible for providing the position of a given node, will be updated to store the new coordinates. This provider is built for each diagram rendering by the `DiagramComponent`. 
+
+The `EdgeComponent` will recompute its routing points if an element or any of its parent has moved. This checking will be achieved using the MoveEvent data if present.
 
 == Status
 

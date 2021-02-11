@@ -17,7 +17,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 import java.util.function.Function;
 
@@ -197,7 +196,6 @@ public class DiagramRendererNodeTestCases {
                 .diagramDescription(diagramDescription)
                 .viewCreationRequests(List.of())
                 .previousDiagram(Optional.empty())
-                .allMovedElementIds(Set.of())
                 .build();
         // @formatter:on
         Element element = new Element(DiagramComponent.class, props);

@@ -13,10 +13,9 @@
 package org.eclipse.sirius.web.diagrams.components;
 
 import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
 
 import org.eclipse.sirius.web.components.IProps;
+import org.eclipse.sirius.web.diagrams.MoveEvent;
 import org.eclipse.sirius.web.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.web.diagrams.renderer.DiagramRenderingCache;
 import org.eclipse.sirius.web.representations.VariableManager;
@@ -36,14 +35,14 @@ public class EdgeComponentProps implements IProps {
 
     private final DiagramRenderingCache cache;
 
-    private final Set<UUID> movedElementIds;
+    private final MoveEvent moveEvent;
 
-    public EdgeComponentProps(VariableManager variableManager, EdgeDescription edgeDescription, IEdgesRequestor edgesRequestor, DiagramRenderingCache cache, Set<UUID> movedElementIds) {
+    public EdgeComponentProps(VariableManager variableManager, EdgeDescription edgeDescription, IEdgesRequestor edgesRequestor, DiagramRenderingCache cache, MoveEvent moveEvent) {
         this.variableManager = Objects.requireNonNull(variableManager);
         this.edgeDescription = Objects.requireNonNull(edgeDescription);
         this.edgesRequestor = Objects.requireNonNull(edgesRequestor);
         this.cache = Objects.requireNonNull(cache);
-        this.movedElementIds = Objects.requireNonNull(movedElementIds);
+        this.moveEvent = moveEvent;
     }
 
     public VariableManager getVariableManager() {
@@ -62,7 +61,7 @@ public class EdgeComponentProps implements IProps {
         return this.cache;
     }
 
-    public Set<UUID> getMovedElementIds() {
-        return this.movedElementIds;
+    public MoveEvent getMoveEvent() {
+        return this.moveEvent;
     }
 }

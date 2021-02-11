@@ -20,10 +20,10 @@ import java.util.UUID;
 
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.INodeStyle;
+import org.eclipse.sirius.web.diagrams.MoveEvent;
 import org.eclipse.sirius.web.diagrams.Node;
 import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.Size;
-import org.eclipse.sirius.web.diagrams.utils.Pair;
 
 /**
  * Provides the Position to apply to a new node.
@@ -40,19 +40,19 @@ public class NodePositionProvider {
 
     private Size lastSize;
 
-    private Pair<UUID, Position> movedElementIdToNewPositionPair;
+    private MoveEvent moveEvent;
 
     /**
      * Default constructor.
      *
      * @param startingPosition
      *            the coordinates of the new element starting position. can be null.
-     * @param movedElementIdToNewPositionPair
+     * @param moveEvent
      *            a pair of the new position of diagram element (identified by its UUID). can be null.
      */
-    public NodePositionProvider(Position startingPosition, Pair<UUID, Position> movedElementIdToNewPositionPair) {
+    public NodePositionProvider(Position startingPosition, MoveEvent moveEvent) {
         this.startingPosition = startingPosition;
-        this.movedElementIdToNewPositionPair = movedElementIdToNewPositionPair;
+        this.moveEvent = moveEvent;
     }
 
     /**
@@ -82,9 +82,9 @@ public class NodePositionProvider {
     public Position getPosition(UUID nodeId, Optional<Node> optionalPreviousNode, Optional<Object> optionalPreviousParentElement, NodeSizeProvider nodeSizeProvider, INodeStyle style,
             Position parentAbsolutePosition) {
         Position position;
-        if (this.movedElementIdToNewPositionPair != null && this.movedElementIdToNewPositionPair.getKey().equals(nodeId)) {
+        if (this.moveEvent != null && this.moveEvent.getNodeId().equals(nodeId)) {
             // The node has been moved
-            position = this.movedElementIdToNewPositionPair.getValue();
+            position = this.moveEvent.getNewPosition();
         } else if (optionalPreviousNode.isPresent()) {
             // The node already has a valid position
             position = optionalPreviousNode.get().getPosition();
