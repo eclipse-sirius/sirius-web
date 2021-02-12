@@ -1,0 +1,44 @@
+= ADR-017 - Improve the source and target edge anchors
+
+== Context
+
+At creation time, the diagram is currently automatically layouted with ELK. 
+The edges are properly layouted with a manhattan layout style.
+With the new incremental layout, we do not yet handle sophisticated edge routing. 
+Consequently, we systematically reset the edge routing points. We keep only two routing points: the source and target anchors. That concerns two cases:
+
+ . The new edge creation: in that case the new edge has only the source and target anchors.
+ . The edge source or target moving: if the source or the target of an edge is directly or indirectly (the container for instance) moved, we reset the routing points.
+
+In the first incremental layout, we choose to use the source and target node center as source and target anchor. 
+That is not satisfying: we expect to see the edge connected to the node border.
+
+
+== Decision
+
+We want a more natural layout with the source and the target anchor located on the nodes bounding box. 
+The source and target anchors will be located at the intersection point between:
+
+. The line formed by the source and target nodes centers 
+. The source and target nodes bounding box. 
+
+Since the line will cross the bounding box at two points, we choose the closest intersection point from the other edge end.
+
+This is the same algorithm applied by Sprotty: the frontend feedback will match the backend layout.
+
+The pure geometrical calculation will be isolated in a Geometry helper class.
+
+The `EdgeRoutingPointsProvider` will use the Geometry helper to compute the new source and target anchor.
+
+== Status
+
+Proposed
+
+
+== Consequences
+
+Since we cannot know the container size without knowing the children size and location, we might experience wrong routing point computation in this case. 
+This issue should be solved by the incremental layout refactoring that aims to perform the incremental layout after the complete diagram rendering: see  link:futurpath.adoc[ADR #011] for more details.
+
+For SVG images, the edge will be connected to the node bounding box, and not the image itself. 
+That could be an interesting feature in the future.
