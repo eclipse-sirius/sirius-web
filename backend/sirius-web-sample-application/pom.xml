@@ -23,13 +23,13 @@
 	</parent>
 	<groupId>org.eclipse.sirius.web</groupId>
 	<artifactId>sirius-web-sample-application</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.2.0</version>
 	<name>sirius-web-sample-application</name>
 	<description>Sirius Web Sample Application</description>
 
 	<properties>
 		<java.version>11</java.version>
-		<sirius.components.version>0.1.34</sirius.components.version>
+		<sirius.components.version>0.2.0</sirius.components.version>
 		<flow.version>1.0.5-SNAPSHOT</flow.version>
 		<bpmn.version>4.0.3-SNAPSHOT</bpmn.version>
 	</properties>
@@ -89,7 +89,7 @@
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-frontend</artifactId>
-			<version>0.1.0-SNAPSHOT</version>
+			<version>0.2.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>

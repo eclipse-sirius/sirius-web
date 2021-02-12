@@ -23,12 +23,12 @@
 	</parent>
 	<groupId>org.eclipse.sirius.web</groupId>
 	<artifactId>sirius-web-frontend</artifactId>
-	<version>0.1.0-SNAPSHOT</version>
+	<version>0.2.0</version>
 	<name>Sirius Web Frontend</name>
 
 	<properties>
 		<java.version>11</java.version>
-		<sirius.components.version>0.1.34</sirius.components.version>
+		<sirius.components.version>0.2.0</sirius.components.version>
 	</properties>
 
 	<repositories>
