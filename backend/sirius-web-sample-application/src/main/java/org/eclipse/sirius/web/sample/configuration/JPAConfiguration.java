@@ -23,7 +23,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
  */
 @Configuration
 @EntityScan(basePackages = { "org.eclipse.sirius.web.persistence.entities" })
-@EnableJpaRepositories(basePackages = { "org.eclipse.sirius.web.persistence.repositories" })
+@EnableJpaRepositories(basePackages = { "org.eclipse.sirius.web.persistence.repositories" }, namedQueriesLocation = "classpath:db/sirius-web-named-queries.properties")
 public class JPAConfiguration {
 
 }
