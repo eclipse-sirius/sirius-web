@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,10 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-.label {
-  font-size: var(--font-size-5);
-  font-weight: var(--font-weight-bold);
-  color: var(--daintree-lighten-20);
-  white-space: nowrap;
-  margin-bottom: 8px;
+import { Page, WidgetSubscription } from 'form/Form.types';
+
+export interface PageProps {
+  editingContextId: string;
+  formId: string;
+  page: Page;
+  widgetSubscriptions: WidgetSubscription[];
 }

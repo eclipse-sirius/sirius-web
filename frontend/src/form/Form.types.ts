@@ -52,7 +52,7 @@ export interface Textarea extends Widget {
 
 export interface Checkbox extends Widget {
   label: string;
-  booleanValue: string;
+  booleanValue: boolean;
 }
 
 export interface Select extends Widget {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,28 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-.group {
-  display: flex;
-  flex-direction: column;
-}
+import { List, Subscriber } from 'form/Form.types';
 
-.title {
-  color: var(--daintree);
-  font-weight: var(--font-weight-bold);
-  font-size: var(--font-size-4);
-  white-space: nowrap;
-  margin-bottom: 8px;
-}
-
-.sections {
-  display: flex;
-  flex-direction: column;
-}
-
-.propertySection {
-  display: flex;
-  flex-direction: column;
-  border-top: 1px solid var(--daintree-lighten-90);
-  padding-top: 8px;
-  padding-bottom: 8px;
+export interface ListPropertySectionProps {
+  widget: List;
+  subscribers: Subscriber[];
 }
