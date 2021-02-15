@@ -72,7 +72,7 @@ public class MutationEditRadioDataFetcher implements IDataFetcherWithFieldCoordi
     public IPayload get(DataFetchingEnvironment environment) throws Exception {
         var input = this.dataFetchingEnvironmentService.getInput(environment, EditRadioInput.class);
 
-        IPayload payload = new EditRadioSuccessPayload(this.messageService.unauthorized());
+        IPayload payload = new ErrorPayload(this.messageService.unauthorized());
         boolean canEdit = this.dataFetchingEnvironmentService.canEdit(environment, input.getProjectId());
         if (canEdit) {
             // @formatter:off

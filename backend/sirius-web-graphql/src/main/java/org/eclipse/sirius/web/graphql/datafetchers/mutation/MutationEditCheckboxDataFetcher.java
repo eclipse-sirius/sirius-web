@@ -36,7 +36,7 @@ import graphql.schema.DataFetchingEnvironment;
  *
  * <pre>
  * type Mutation {
- *   editTextfield(input: EditTextfieldInput!): EditTextfieldPayload!
+ *   editCheckbox(input: EditCheckboxInput!): EditCheckboxPayload!
  * }
  * </pre>
  *
@@ -72,7 +72,7 @@ public class MutationEditCheckboxDataFetcher implements IDataFetcherWithFieldCoo
     public IPayload get(DataFetchingEnvironment environment) throws Exception {
         var input = this.dataFetchingEnvironmentService.getInput(environment, EditCheckboxInput.class);
 
-        IPayload payload = new EditCheckboxSuccessPayload(this.messageService.unauthorized());
+        IPayload payload = new ErrorPayload(this.messageService.unauthorized());
         boolean canEdit = this.dataFetchingEnvironmentService.canEdit(environment, input.getProjectId());
         if (canEdit) {
             // @formatter:off
