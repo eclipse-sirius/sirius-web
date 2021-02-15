@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,18 +23,23 @@ import gql from 'graphql-tag';
 import React, { useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 import { FormContainer } from 'views/FormContainer';
-import { View } from 'views/View';
 import {
-  HandleChangedNameEvent,
-  HandleCreateProjectEvent,
+  GQLCreateProjectMutationData,
+  GQLCreateProjectPayload,
+  GQLErrorPayload,
+} from 'views/new-project/NewProjectView.types';
+import {
+  ChangeNamedEvent,
   HandleResponseEvent,
   HideToastEvent,
   NewProjectEvent,
   NewProjectViewContext,
   newProjectViewMachine,
+  RequestProjectCreationEvent,
   SchemaValue,
   ShowToastEvent,
-} from './NewProjectViewMachine';
+} from 'views/new-project/NewProjectViewMachine';
+import { View } from 'views/View';
 
 const createProjectMutation = gql`
   mutation createProject($input: CreateProjectInput!) {
@@ -59,16 +64,20 @@ const useNewProjectViewStyles = makeStyles((theme) => ({
     justifyContent: 'start',
   },
 }));
+
+const isErrorPayload = (payload: GQLCreateProjectPayload): payload is GQLErrorPayload =>
+  payload.__typename === 'ErrorPayload';
+
 export const NewProjectView = () => {
   const classes = useNewProjectViewStyles();
   const [{ value, context }, dispatch] = useMachine<NewProjectViewContext, NewProjectEvent>(newProjectViewMachine);
   const { newProjectView, toast } = value as SchemaValue;
   const { name, nameMessage, nameIsInvalid, message, newProjectId } = context;
-  const [createProject, { loading, data, error }] = useMutation(createProjectMutation);
+  const [createProject, { loading, data, error }] = useMutation<GQLCreateProjectMutationData>(createProjectMutation);
 
   const onNameChange = (event) => {
     const value = event.target.value;
-    const changeNameEvent: HandleChangedNameEvent = { type: 'HANDLE_CHANGED_NAME', name: value };
+    const changeNameEvent: ChangeNamedEvent = { type: 'CHANGE_NAME', name: value };
     dispatch(changeNameEvent);
   };
 
@@ -80,7 +89,7 @@ export const NewProjectView = () => {
         visibility: 'PUBLIC',
       },
     };
-    const submitEvent: HandleCreateProjectEvent = { type: 'HANDLE_CREATE_PROJECT' };
+    const submitEvent: RequestProjectCreationEvent = { type: 'REQUEST_PROJECT_CREATION' };
     dispatch(submitEvent);
     createProject({ variables });
   };
@@ -98,9 +107,9 @@ export const NewProjectView = () => {
         const handleResponseEvent: HandleResponseEvent = { type: 'HANDLE_RESPONSE', data };
         dispatch(handleResponseEvent);
 
-        const typename = data.createProject.__typename;
-        if (typename === 'ErrorPayload') {
-          const { message } = data.createProject;
+        const { createProject } = data;
+        if (isErrorPayload(createProject)) {
+          const { message } = createProject;
           const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
           dispatch(showToastEvent);
         }
