@@ -133,7 +133,7 @@ export const PropertiesWebSocketContainer = ({ editingContextId, selection }: Pr
   if ((propertiesWebSocketContainer === 'idle' && form) || propertiesWebSocketContainer === 'ready') {
     content = (
       <Properties
-        projectId={editingContextId}
+        editingContextId={editingContextId}
         form={form}
         subscribers={subscribers}
         widgetSubscriptions={widgetSubscriptions}

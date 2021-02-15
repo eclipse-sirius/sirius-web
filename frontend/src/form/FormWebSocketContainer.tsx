@@ -130,7 +130,7 @@ export const FormWebSocketContainer = ({ editingContextId, representationId }: R
   if (formWebSocketContainer === 'ready') {
     content = (
       <Properties
-        projectId={editingContextId}
+        editingContextId={editingContextId}
         form={form}
         subscribers={subscribers}
         widgetSubscriptions={widgetSubscriptions}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,14 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-.page {
-  display: flex;
-  flex-direction: column;
-}
+import { Form, Subscriber, WidgetSubscription } from 'form/Form.types';
 
-.page > * {
-  margin-bottom: 16px;
-}
-.page > *:last-child {
-  margin-bottom: 0px;
+export interface FormProps {
+  editingContextId: string;
+  form: Form;
+  subscribers: Subscriber[];
+  widgetSubscriptions: WidgetSubscription[];
 }

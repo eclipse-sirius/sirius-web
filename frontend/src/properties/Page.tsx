@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,17 +10,29 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Group } from 'properties/group/Group';
+import { makeStyles } from '@material-ui/core/styles';
+import { Group } from 'properties/Group';
+import { PageProps } from 'properties/Page.types';
 import React from 'react';
-import styles from './Page.module.css';
 
-export const Page = ({ projectId, formId, page, widgetSubscriptions }) => {
+const usePageStyles = makeStyles((theme) => ({
+  page: {
+    display: 'flex',
+    flexDirection: 'column',
+    '& > *': {
+      marginBottom: theme.spacing(2),
+    },
+  },
+}));
+
+export const Page = ({ editingContextId, formId, page, widgetSubscriptions }: PageProps) => {
+  const classes = usePageStyles();
   return (
-    <div className={styles.page}>
+    <div className={classes.page}>
       {page.groups.map((group) => {
         return (
           <Group
-            projectId={projectId}
+            editingContextId={editingContextId}
             formId={formId}
             group={group}
             widgetSubscriptions={widgetSubscriptions}
