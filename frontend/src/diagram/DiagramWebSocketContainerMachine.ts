@@ -150,6 +150,7 @@ export const diagramWebSocketContainerMachine = Machine<
               SWITCH_REPRESENTATION: [
                 {
                   target: 'loading',
+                  actions: 'switchRepresentation',
                 },
               ],
             },
@@ -160,6 +161,12 @@ export const diagramWebSocketContainerMachine = Machine<
                 {
                   target: 'ready',
                   actions: 'initialize',
+                },
+              ],
+              SWITCH_REPRESENTATION: [
+                {
+                  target: 'loading',
+                  actions: 'switchRepresentation',
                 },
               ],
             },
