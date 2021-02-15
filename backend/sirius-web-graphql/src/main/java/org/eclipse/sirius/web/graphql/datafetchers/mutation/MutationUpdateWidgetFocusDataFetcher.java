@@ -72,7 +72,7 @@ public class MutationUpdateWidgetFocusDataFetcher implements IDataFetcherWithFie
     public IPayload get(DataFetchingEnvironment environment) throws Exception {
         var input = this.dataFetchingEnvironmentService.getInput(environment, UpdateWidgetFocusInput.class);
 
-        IPayload payload = new ErrorPayload(this.messageService.unexpectedError());
+        IPayload payload = new ErrorPayload(this.messageService.unauthorized());
 
         boolean canEdit = this.dataFetchingEnvironmentService.canEdit(environment, input.getProjectId());
         if (canEdit) {
