@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+export * from './ArrangeAll';
 export * from './ArrowCollapsed';
 export * from './ArrowExpanded';
 export * from './Back';

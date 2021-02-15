@@ -137,7 +137,7 @@ public class DiagramCreationService implements IDiagramCreationService {
         Element element = new Element(DiagramComponent.class, props);
 
         Diagram newDiagram = new DiagramRenderer(this.logger).render(element);
-        if (this.activateAutoLayout) {
+        if (this.activateAutoLayout || optionalDiagramContext.map(IDiagramContext::isArrangeAll).orElse(false)) {
             newDiagram = this.layoutService.layout(newDiagram);
         }
         RepresentationDescriptor representationDescriptor = this.getRepresentationDescriptor(editingContext.getId(), newDiagram);

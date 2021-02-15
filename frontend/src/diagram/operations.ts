@@ -235,6 +235,22 @@ export const updateNodePositionOp = gql`
   }
 `;
 
+export const arrangeAllOp = gql`
+  mutation arrangeAll($input: ArrangeAllInput!) {
+    arrangeAll(input: $input) {
+      __typename
+      ... on ArrangeAllSuccessPayload {
+        diagram {
+          id
+        }
+      }
+      ... on ErrorPayload {
+        message
+      }
+    }
+  }
+`;
+
 export const invokeNodeToolOnDiagramMutation = gql`
   mutation invokeNodeToolOnDiagram($input: InvokeNodeToolOnDiagramInput!) {
     invokeNodeToolOnDiagram(input: $input) {

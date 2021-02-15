@@ -37,6 +37,8 @@ public class DiagramContext implements IDiagramContext {
 
     private Position startingPosition;
 
+    private boolean arrangeAll;
+
     public DiagramContext(Diagram initialDiagram) {
         this.diagram = Objects.requireNonNull(initialDiagram);
         this.viewCreationRequests = new ArrayList<>();
@@ -81,5 +83,16 @@ public class DiagramContext implements IDiagramContext {
     public void reset() {
         this.moveEvent = null;
         this.startingPosition = null;
+        this.setArrangeAll(false);
+    }
+
+    @Override
+    public boolean isArrangeAll() {
+        return this.arrangeAll;
+    }
+
+    @Override
+    public void setArrangeAll(boolean arrangeAll) {
+        this.arrangeAll = arrangeAll;
     }
 }

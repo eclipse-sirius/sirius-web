@@ -46,4 +46,8 @@ public interface IDiagramContext {
     Position getStartingPosition();
 
     void setStartingPosition(Position startingPosition);
+
+    boolean isArrangeAll();
+
+    void setArrangeAll(boolean arrangeAll);
 }

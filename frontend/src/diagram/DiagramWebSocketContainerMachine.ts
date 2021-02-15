@@ -74,6 +74,7 @@ export type InitializeRepresentationEvent = {
   deleteElements: any;
   invokeTool: any;
   moveElement: any;
+  arrangeAll: any;
   editLabel: any;
   onSelectElement: any;
   getCursorOn: any;
@@ -249,6 +250,7 @@ export const diagramWebSocketContainerMachine = Machine<
           deleteElements,
           invokeTool,
           moveElement,
+          arrangeAll,
           editLabel,
           onSelectElement,
           getCursorOn,
@@ -274,6 +276,7 @@ export const diagramWebSocketContainerMachine = Machine<
 
         diagramServer.setEditLabelListener(editLabel);
         diagramServer.setMoveElementListener(moveElement);
+        diagramServer.setArrangeAllListener(arrangeAll);
         diagramServer.setDeleteElementsListener(deleteElements);
         diagramServer.setInvokeToolListener(invokeTool);
         diagramServer.setContextualPaletteListener(setContextualPalette);

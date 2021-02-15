@@ -50,8 +50,10 @@ export const HIDE_CONTEXTUAL_TOOLBAR_ACTION = 'hideContextualToolbar';
 export const ZOOM_IN_ACTION = 'zoomIn';
 /** Action to zoom OUT */
 export const ZOOM_OUT_ACTION = 'zoomOut';
-/** Action to zoom to a specifi level*/
+/** Action to zoom to a specific level*/
 export const ZOOM_TO_ACTION = 'zoomTo';
+/** Action to layout a diagram*/
+export const ARRANGE_ALL_ACTION = 'arrangeAll';
 
 /** Where to open the contextual palette relative to the mouse position */
 const popupOffset = {
@@ -88,6 +90,7 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
   editLabel;
   moveElement;
   deleteElements;
+  arrangeAll;
 
   invokeTool;
   setContextualPalette;
@@ -114,6 +117,7 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
     registry.register(ZOOM_IN_ACTION, this);
     registry.register(ZOOM_OUT_ACTION, this);
     registry.register(ZOOM_TO_ACTION, this);
+    registry.register(ARRANGE_ALL_ACTION, this);
   }
 
   commitModel(newRoot) {
@@ -171,6 +175,9 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
         break;
       case ZOOM_TO_ACTION:
         this.handleZoomToAction(action);
+        break;
+      case ARRANGE_ALL_ACTION:
+        this.arrangeAll();
         break;
       default:
         this.logger.error(this, 'Invalid action', action);
@@ -422,6 +429,10 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
 
   setMoveElementListener(moveElement) {
     this.moveElement = moveElement;
+  }
+
+  setArrangeAllListener(arrangeAll) {
+    this.arrangeAll = arrangeAll;
   }
 
   setDeleteElementsListener(deleteElements) {

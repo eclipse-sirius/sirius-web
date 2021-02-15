@@ -12,7 +12,7 @@
  *******************************************************************************/
 import { IconButton } from 'core/button/Button';
 import { Select } from 'core/select/Select';
-import { FitToScreen, Share, ZoomIn, ZoomOut } from 'icons';
+import { ArrangeAll, FitToScreen, Share, ZoomIn, ZoomOut } from 'icons';
 import { ShareDiagramModal } from 'modals/share-diagram/ShareDiagramModal';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
@@ -36,10 +36,11 @@ const propTypes = {
   onZoomIn: PropTypes.func.isRequired,
   onZoomOut: PropTypes.func.isRequired,
   onFitToScreen: PropTypes.func.isRequired,
+  onArrangeAll: PropTypes.func.isRequired,
   setZoomLevel: PropTypes.func.isRequired,
   zoomLevel: PropTypes.string,
 };
-export const Toolbar = ({ onZoomIn, onZoomOut, onFitToScreen, setZoomLevel, zoomLevel }) => {
+export const Toolbar = ({ onZoomIn, onZoomOut, onFitToScreen, onArrangeAll, setZoomLevel, zoomLevel }) => {
   const [state, setState] = useState({ modal: undefined, currentZoomLevel: undefined });
   const onShare = () => setState({ modal: 'ShareDiagramModal', currentZoomLevel: state.currentZoomLevel });
   const closeModal = () => setState({ modal: undefined, currentZoomLevel: state.currentZoomLevel });
@@ -75,6 +76,9 @@ export const Toolbar = ({ onZoomIn, onZoomOut, onFitToScreen, setZoomLevel, zoom
         </IconButton>
         <IconButton className={styles.icon} onClick={onFitToScreen} data-testid="fit-to-screen">
           <FitToScreen title="Fit to screen" />
+        </IconButton>
+        <IconButton className={styles.icon} onClick={onArrangeAll} data-testid="arrangeAll">
+          <ArrangeAll title="Arrange All" />
         </IconButton>
         <Select
           name="zoom level"

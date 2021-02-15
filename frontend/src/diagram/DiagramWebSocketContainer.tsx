@@ -41,6 +41,7 @@ import { ContextualPalette } from 'diagram/palette/ContextualPalette';
 import { edgeCreationFeedback } from 'diagram/sprotty/edgeCreationFeedback';
 import {
   ACTIVE_TOOL_ACTION,
+  ARRANGE_ALL_ACTION,
   HIDE_CONTEXTUAL_TOOLBAR_ACTION,
   SIRIUS_SELECT_ACTION,
   SIRIUS_UPDATE_MODEL_ACTION,
@@ -56,6 +57,7 @@ import React, { useCallback, useEffect, useRef } from 'react';
 import 'reflect-metadata'; // Required because Sprotty uses Inversify and both frameworks are written in TypeScript with experimental features.
 import { EditLabelAction, FitToScreenAction, SEdge, SNode } from 'sprotty';
 import {
+  arrangeAllOp,
   deleteFromDiagramMutation,
   diagramEventSubscription,
   editLabelMutation as editLabelMutationOp,
@@ -307,6 +309,10 @@ export const DiagramWebSocketContainer = ({
   const [getToolSectionData, { loading: toolSectionLoading, data: toolSectionData }] = useLazyQuery(
     getToolSectionsQuery
   );
+  const [
+    arrangeAllMutation,
+    { loading: arrangeAllLoading, data: arrangeAllData, error: arrangeAllError },
+  ] = useMutation(arrangeAllOp);
   /**
    * We have choose to make only one query by diagram to get tools to avoid network flooding.
    * In consequence, a tool must contains all necessary properties to be filtered on a specific context (In the contextual palette for example).
@@ -439,6 +445,14 @@ export const DiagramWebSocketContainer = ({
     [projectId, representationId, updateNodePositionMutation]
   );
 
+  const arrangeAll = useCallback(() => {
+    const input = {
+      projectId,
+      representationId,
+    };
+    arrangeAllMutation({ variables: { input } });
+  }, [projectId, representationId, arrangeAllMutation]);
+
   /**
    * Initialize the diagram server used by Sprotty in order to perform the diagram edition. This
    * initialization will be done each time we are in the loading state.
@@ -510,6 +524,7 @@ export const DiagramWebSocketContainer = ({
         deleteElements,
         invokeTool,
         moveElement,
+        arrangeAll,
         editLabel,
         onSelectElement,
         getCursorOn,
@@ -527,6 +542,7 @@ export const DiagramWebSocketContainer = ({
     deleteElements,
     invokeTool,
     moveElement,
+    arrangeAll,
     editLabelMutation,
     toolSections,
     selection,
@@ -623,6 +639,12 @@ export const DiagramWebSocketContainer = ({
     }
   };
 
+  const onArrangeAll = () => {
+    if (diagramServer) {
+      diagramServer.actionDispatcher.dispatch({ kind: ARRANGE_ALL_ACTION });
+    }
+  };
+
   const setZoomLevel = (level) => {
     if (diagramServer) {
       diagramServer.actionDispatcher.dispatch({ kind: ZOOM_TO_ACTION, level: level });
@@ -660,6 +682,10 @@ export const DiagramWebSocketContainer = ({
   useEffect(() => {
     handleError(updateNodePositionLoading, updateNodePositionData, updateNodePositionError);
   }, [updateNodePositionLoading, updateNodePositionData, updateNodePositionError, handleError]);
+
+  useEffect(() => {
+    handleError(arrangeAllLoading, arrangeAllData, arrangeAllError);
+  }, [arrangeAllLoading, arrangeAllData, arrangeAllError, handleError]);
 
   useEffect(() => {
     handleError(editLabelLoading, editLabelData, editLabelError);
@@ -787,6 +813,7 @@ export const DiagramWebSocketContainer = ({
         onZoomIn={onZoomIn}
         onZoomOut={onZoomOut}
         onFitToScreen={onFitToScreen}
+        onArrangeAll={onArrangeAll}
         setZoomLevel={setZoomLevel}
         zoomLevel={zoomLevel}
       />
