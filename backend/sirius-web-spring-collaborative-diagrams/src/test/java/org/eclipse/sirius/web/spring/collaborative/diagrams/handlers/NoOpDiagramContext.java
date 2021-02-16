@@ -16,8 +16,7 @@ import java.util.List;
 
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.web.diagrams.Diagram;
-import org.eclipse.sirius.web.diagrams.MoveEvent;
-import org.eclipse.sirius.web.diagrams.Position;
+import org.eclipse.sirius.web.diagrams.IDiagramElementEvent;
 import org.eclipse.sirius.web.diagrams.ViewCreationRequest;
 
 /**
@@ -46,21 +45,12 @@ public class NoOpDiagramContext implements IDiagramContext {
     }
 
     @Override
-    public MoveEvent getMoveEvent() {
+    public IDiagramElementEvent getDiagramElementEvent() {
         return null;
     }
 
     @Override
-    public void setMoveEvent(MoveEvent moveEvent) {
-    }
-
-    @Override
-    public Position getStartingPosition() {
-        return null;
-    }
-
-    @Override
-    public void setStartingPosition(Position startingPosition) {
+    public void setDiagramElementEvent(IDiagramElementEvent diagramElementEvent) {
     }
 
 }

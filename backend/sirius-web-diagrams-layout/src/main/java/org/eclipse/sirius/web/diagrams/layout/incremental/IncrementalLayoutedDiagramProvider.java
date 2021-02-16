@@ -12,12 +12,15 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.diagrams.layout.incremental;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.eclipse.sirius.web.diagrams.CustomizableProperties;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.Edge;
 import org.eclipse.sirius.web.diagrams.Label;
@@ -69,6 +72,11 @@ public class IncrementalLayoutedDiagramProvider {
 
         List<Node> childNodes = this.getLayoutedNodes(node.getChildNodes(), id2LayoutData);
         List<Node> borderNodes = this.getLayoutedNodes(node.getBorderNodes(), id2LayoutData);
+
+        Set<CustomizableProperties> customizableProperties = new HashSet<>(node.getCustomizedProperties());
+        if (nodeLayoutData.isResizedByUser()) {
+            customizableProperties.add(CustomizableProperties.Size);
+        }
         // @formatter:off
         return Node.newNode(node)
                 .label(label)
@@ -76,6 +84,7 @@ public class IncrementalLayoutedDiagramProvider {
                 .position(nodeLayoutData.getPosition())
                 .childNodes(childNodes)
                 .borderNodes(borderNodes)
+                .customizedProperties(customizableProperties)
                 .build();
         // @formatter:on
     }

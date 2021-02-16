@@ -17,10 +17,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import java.util.function.Function;
 
 import org.eclipse.sirius.web.components.Element;
+import org.eclipse.sirius.web.diagrams.CustomizableProperties;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.INodeStyle;
 import org.eclipse.sirius.web.diagrams.ImageNodeStyle;
@@ -82,7 +84,7 @@ public class DiagramRendererNodeTestCases {
                     .build();
             // @formatter:on
         };
-        Diagram diagram = this.createDiagram(styleProvider, variableManager -> NODE_RECTANGULAR, VariableManager -> Size.UNDEFINED);
+        Diagram diagram = this.createDiagram(styleProvider, variableManager -> NODE_RECTANGULAR, VariableManager -> Size.UNDEFINED, Optional.empty());
 
         assertThat(diagram).isNotNull();
         assertThat(diagram.getId()).asString().isNotBlank();
@@ -119,7 +121,7 @@ public class DiagramRendererNodeTestCases {
                     .build();
             // @formatter:on
         };
-        Diagram diagram = this.createDiagram(styleProvider, variableManager -> NODE_RECTANGULAR, VariableManager -> Size.of(10, 200));
+        Diagram diagram = this.createDiagram(styleProvider, variableManager -> NODE_RECTANGULAR, VariableManager -> Size.of(10, 200), Optional.empty());
 
         assertThat(diagram).isNotNull();
         assertThat(diagram.getId()).asString().isNotBlank();
@@ -144,6 +146,56 @@ public class DiagramRendererNodeTestCases {
         assertThat(diagram.getNodes()).extracting(Node::getLabel).extracting(Label::getStyle).extracting(LabelStyle::isStrikeThrough).allMatch(strikeThrough -> strikeThrough);
     }
 
+    @Test
+    public void testSimpleNodeRenderingWithSizeProviderWithPreviousDiagram() {
+        Function<VariableManager, INodeStyle> styleProvider = variableManager -> {
+            // @formatter:off
+            return RectangularNodeStyle.newRectangularNodeStyle()
+                    .color("") //$NON-NLS-1$
+                    .borderColor("") //$NON-NLS-1$
+                    .borderSize(0)
+                    .borderStyle(LineStyle.Solid)
+                    .build();
+            // @formatter:on
+        };
+        Diagram diagram = this.createDiagram(styleProvider, variableManager -> NODE_RECTANGULAR, VariableManager -> Size.of(10, 200), Optional.empty());
+
+        // We modified the created diagram to change the node previous size.
+        Node node = diagram.getNodes().get(0);
+
+        // @formatter:off
+        Node nodeWithNewSize = Node.newNode(node)
+                .size(Size.of(50, 100))
+                .build();
+        Diagram newDiagram = Diagram.newDiagram(diagram)
+                .nodes(List.of(nodeWithNewSize))
+                .build();
+        // @formatter:on
+
+        diagram = this.createDiagram(styleProvider, variableManager -> NODE_RECTANGULAR, VariableManager -> Size.of(10, 200), Optional.of(newDiagram));
+
+        // We check that the node size is still the one provided by the VSM
+        assertThat(diagram.getNodes()).extracting(Node::getSize).allMatch(s -> s.getHeight() == 200 && s.getWidth() == 10);
+
+        // This time, the size provider return 0,0. The NodeComponent should use the previous size in this case
+        diagram = this.createDiagram(styleProvider, variableManager -> NODE_RECTANGULAR, VariableManager -> Size.of(0, 0), Optional.of(newDiagram));
+        // We check that the node size is the new one set in new diagram
+        assertThat(diagram.getNodes()).extracting(Node::getSize).allMatch(s -> s.getHeight() == 100 && s.getWidth() == 50);
+
+        // @formatter:off
+        nodeWithNewSize = Node.newNode(node)
+                .size(Size.of(50, 100))
+                .customizedProperties(Set.of(CustomizableProperties.Size))
+                .build();
+        newDiagram = Diagram.newDiagram(diagram)
+                .nodes(List.of(nodeWithNewSize))
+                .build();
+        // @formatter:on
+        diagram = this.createDiagram(styleProvider, variableManager -> NODE_RECTANGULAR, VariableManager -> Size.of(10, 200), Optional.of(newDiagram));
+        // We now check that we use the custom user size in priority over the VSM default one.
+        assertThat(diagram.getNodes()).extracting(Node::getSize).allMatch(s -> s.getHeight() == 100 && s.getWidth() == 50);
+    }
+
     /**
      * Creates a diagram with an image node.
      */
@@ -157,7 +209,7 @@ public class DiagramRendererNodeTestCases {
                     .build();
             // @formatter:on
         };
-        Diagram diagram = this.createDiagram(styleProvider, variableManager -> NODE_IMAGE, VariableManager -> Size.UNDEFINED);
+        Diagram diagram = this.createDiagram(styleProvider, variableManager -> NODE_IMAGE, VariableManager -> Size.UNDEFINED, Optional.empty());
 
         assertThat(diagram).isNotNull();
         assertThat(diagram.getId()).asString().isNotBlank();
@@ -185,7 +237,8 @@ public class DiagramRendererNodeTestCases {
     /**
      * Create a diagram with one element that match with the given styleProvider/typeProvider.
      */
-    private Diagram createDiagram(Function<VariableManager, INodeStyle> styleProvider, Function<VariableManager, String> typeProvider, Function<VariableManager, Size> sizeProvider) {
+    private Diagram createDiagram(Function<VariableManager, INodeStyle> styleProvider, Function<VariableManager, String> typeProvider, Function<VariableManager, Size> sizeProvider,
+            Optional<Diagram> previousDiagram) {
         // @formatter:off
         LabelStyleDescription labelStyleDescription = LabelStyleDescription.newLabelStyleDescription()
                 .italicProvider(VariableManager -> true)
@@ -235,7 +288,7 @@ public class DiagramRendererNodeTestCases {
                 .variableManager(variableManager)
                 .diagramDescription(diagramDescription)
                 .viewCreationRequests(List.of())
-                .previousDiagram(Optional.empty())
+                .previousDiagram(previousDiagram)
                 .build();
         // @formatter:on
         Element element = new Element(DiagramComponent.class, props);

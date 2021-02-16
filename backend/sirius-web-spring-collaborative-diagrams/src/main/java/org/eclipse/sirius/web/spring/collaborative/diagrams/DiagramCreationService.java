@@ -25,8 +25,7 @@ import org.eclipse.sirius.web.components.Element;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.diagrams.Diagram;
-import org.eclipse.sirius.web.diagrams.MoveEvent;
-import org.eclipse.sirius.web.diagrams.Position;
+import org.eclipse.sirius.web.diagrams.IDiagramElementEvent;
 import org.eclipse.sirius.web.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.web.diagrams.components.DiagramComponent;
 import org.eclipse.sirius.web.diagrams.components.DiagramComponentProps;
@@ -115,10 +114,10 @@ public class DiagramCreationService implements IDiagramCreationService {
         variableManager.put(VariableManager.SELF, targetObject);
         variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
 
-        MoveEvent moveEvent = optionalDiagramContext.map(IDiagramContext::getMoveEvent).orElse(null);
+        Optional<IDiagramElementEvent> optionalDiagramElementEvent = optionalDiagramContext.map(IDiagramContext::getDiagramElementEvent);
         Optional<Diagram> optionalPreviousDiagram = optionalDiagramContext.map(IDiagramContext::getDiagram);
-        Position startingPosition = optionalDiagramContext.map(IDiagramContext::getStartingPosition).orElse(null);
         List<ViewCreationRequest> viewCreationRequests = optionalDiagramContext.map(IDiagramContext::getViewCreationRequests).orElse(List.of());
+
         //@formatter:off
         Builder builder = DiagramComponentProps.newDiagramComponentProps()
                 .variableManager(variableManager)
@@ -126,6 +125,7 @@ public class DiagramCreationService implements IDiagramCreationService {
                 .viewCreationRequests(viewCreationRequests)
                 .previousDiagram(optionalPreviousDiagram);
         //@formatter:on
+
         DiagramComponentProps props = builder.build();
         Element element = new Element(DiagramComponent.class, props);
 
@@ -135,7 +135,7 @@ public class DiagramCreationService implements IDiagramCreationService {
         if (optionalDiagramContext.isEmpty() || this.activateAutoLayout) {
             newDiagram = this.layoutService.layout(newDiagram);
         } else if (optionalDiagramContext.isPresent()) {
-            newDiagram = this.layoutService.incrementalLayout(newDiagram, moveEvent, startingPosition);
+            newDiagram = this.layoutService.incrementalLayout(newDiagram, optionalDiagramElementEvent);
         }
         RepresentationDescriptor representationDescriptor = this.getRepresentationDescriptor(editingContext.getId(), newDiagram);
         this.representationService.save(representationDescriptor);

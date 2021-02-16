@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.diagrams.layout;
 
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.elk.alg.layered.options.LayeredOptions;
@@ -26,8 +27,7 @@ import org.eclipse.elk.core.util.ElkUtil;
 import org.eclipse.elk.graph.ElkGraphElement;
 import org.eclipse.elk.graph.ElkNode;
 import org.eclipse.sirius.web.diagrams.Diagram;
-import org.eclipse.sirius.web.diagrams.MoveEvent;
-import org.eclipse.sirius.web.diagrams.Position;
+import org.eclipse.sirius.web.diagrams.IDiagramElementEvent;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.web.diagrams.layout.api.ILayoutService;
 import org.eclipse.sirius.web.diagrams.layout.incremental.IncrementalLayoutConvertedDiagram;
@@ -93,17 +93,15 @@ public class LayoutService implements ILayoutService {
         engine.layout(elkDiagram, new BasicProgressMonitor());
 
         Map<String, ElkGraphElement> id2ElkGraphElements = convertedDiagram.getId2ElkGraphElements();
-        Diagram layoutedDiagram = this.elkLayoutedDiagramProvider.getLayoutedDiagram(diagram, elkDiagram, id2ElkGraphElements);
-
-        return layoutedDiagram;
+        return this.elkLayoutedDiagramProvider.getLayoutedDiagram(diagram, elkDiagram, id2ElkGraphElements);
     }
 
     @Override
-    public Diagram incrementalLayout(Diagram newDiagram, MoveEvent moveEvent, Position startingPosition) {
+    public Diagram incrementalLayout(Diagram newDiagram, Optional<IDiagramElementEvent> optionalDiagramElementEvent) {
         IncrementalLayoutConvertedDiagram convertedDiagram = this.incrementalLayoutDiagramConverter.convert(newDiagram);
         DiagramLayoutData diagramLayoutData = convertedDiagram.getDiagramLayoutData();
 
-        this.incrementalLayoutEngine.layout(moveEvent, startingPosition, diagramLayoutData);
+        this.incrementalLayoutEngine.layout(optionalDiagramElementEvent, diagramLayoutData);
 
         Map<UUID, ILayoutData> id2LayoutData = convertedDiagram.getId2LayoutData();
         return this.incrementalLayoutedDiagramProvider.getLayoutedDiagram(newDiagram, diagramLayoutData, id2LayoutData);

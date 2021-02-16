@@ -13,8 +13,9 @@
 package org.eclipse.sirius.web.diagrams.layout.incremental;
 
 import java.util.Objects;
+import java.util.Optional;
 
-import org.eclipse.sirius.web.diagrams.MoveEvent;
+import org.eclipse.sirius.web.diagrams.IDiagramElementEvent;
 import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.Size;
 import org.eclipse.sirius.web.diagrams.layout.incremental.data.DiagramLayoutData;
@@ -53,18 +54,18 @@ public class IncrementalLayoutEngine {
 
     private final EdgeLabelPositionProvider edgeLabelPositionProvider = new EdgeLabelPositionProvider();
 
+    private final NodePositionProvider nodePositionProvider = new NodePositionProvider();
+
     private final NodeSizeProvider nodeSizeProvider;
 
     public IncrementalLayoutEngine(NodeSizeProvider nodeSizeProvider) {
         this.nodeSizeProvider = Objects.requireNonNull(nodeSizeProvider);
     }
 
-    public void layout(MoveEvent moveEvent, Position startingPosition, DiagramLayoutData diagram) {
-        NodePositionProvider nodePositionProvider = new NodePositionProvider(startingPosition);
-
+    public void layout(Optional<IDiagramElementEvent> optionalDiagramElementEvent, DiagramLayoutData diagram) {
         // first we layout all the nodes
         for (NodeLayoutData node : diagram.getChildrenNodes()) {
-            this.layoutNode(moveEvent, nodePositionProvider, node);
+            this.layoutNode(optionalDiagramElementEvent, node);
         }
 
         // resolve overlaps due to previous changes
@@ -81,29 +82,25 @@ public class IncrementalLayoutEngine {
         }
     }
 
-    private void layoutNode(MoveEvent moveEvent, NodePositionProvider nodePositionProvider, NodeLayoutData node) {
+    private void layoutNode(Optional<IDiagramElementEvent> optionalDiagramElementEvent, NodeLayoutData node) {
         // first layout border & child nodes
         for (NodeLayoutData borderNode : node.getBorderNodes()) {
-            this.layoutNode(moveEvent, nodePositionProvider, borderNode);
+            this.layoutNode(optionalDiagramElementEvent, borderNode);
         }
         for (NodeLayoutData childNode : node.getChildrenNodes()) {
-            this.layoutNode(moveEvent, nodePositionProvider, childNode);
+            this.layoutNode(optionalDiagramElementEvent, childNode);
         }
 
         // compute the node size according to what has been done in the previous steps
-        Size size = this.nodeSizeProvider.getSize(node);
+        Size size = this.nodeSizeProvider.getSize(optionalDiagramElementEvent, node);
         if (!size.equals(node.getSize())) {
             node.setSize(size);
             node.setChanged(true);
         }
         // recompute the node position
-        if (moveEvent != null && moveEvent.getNodeId().equals(node.getId())) {
-            Position newPosition = moveEvent.getNewPosition();
-            node.setPosition(newPosition);
-            node.setChanged(true);
-            node.setPinned(true);
-        } else if (node.getPosition().getX() == -1 && node.getPosition().getY() == -1) {
-            node.setPosition(nodePositionProvider.getPosition(node));
+        Position position = this.nodePositionProvider.getPosition(optionalDiagramElementEvent, node);
+        if (!position.equals(node.getPosition())) {
+            node.setPosition(position);
             node.setChanged(true);
             node.setPinned(true);
         }
@@ -121,7 +118,7 @@ public class IncrementalLayoutEngine {
     }
 
     private void layoutEdge(EdgeLayoutData edge) {
-        // recompute the edge bendpoints
+        // recompute the edge routing points
         edge.setRoutingPoints(this.edgeRoutingPointsProvider.getRoutingPoints(edge));
 
         // recompute edge labels

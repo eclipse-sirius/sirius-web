@@ -22,13 +22,14 @@ import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramInput;
-import org.eclipse.sirius.web.collaborative.diagrams.api.dto.UpdateNodePositionInput;
-import org.eclipse.sirius.web.collaborative.diagrams.api.dto.UpdateNodePositionSuccessPayload;
+import org.eclipse.sirius.web.collaborative.diagrams.api.dto.UpdateNodeBoundsInput;
+import org.eclipse.sirius.web.collaborative.diagrams.api.dto.UpdateNodeBoundsSuccessPayload;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
-import org.eclipse.sirius.web.diagrams.MoveEvent;
 import org.eclipse.sirius.web.diagrams.Node;
 import org.eclipse.sirius.web.diagrams.Position;
+import org.eclipse.sirius.web.diagrams.ResizeEvent;
+import org.eclipse.sirius.web.diagrams.Size;
 import org.eclipse.sirius.web.diagrams.services.api.IDiagramService;
 import org.eclipse.sirius.web.spring.collaborative.diagrams.DiagramChangeKind;
 import org.eclipse.sirius.web.spring.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
@@ -38,12 +39,12 @@ import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
 
 /**
- * Handle "Update Node Position" events.
+ * Handle "Update Node Bounds" events.
  *
  * @author fbarbin
  */
 @Service
-public class UpdateNodePositionEventHandler implements IDiagramEventHandler {
+public class UpdateNodeBoundsEventHandler implements IDiagramEventHandler {
 
     private final ICollaborativeDiagramMessageService messageService;
 
@@ -51,7 +52,7 @@ public class UpdateNodePositionEventHandler implements IDiagramEventHandler {
 
     private final Counter counter;
 
-    public UpdateNodePositionEventHandler(ICollaborativeDiagramMessageService messageService, IDiagramService diagramService, MeterRegistry meterRegistry) {
+    public UpdateNodeBoundsEventHandler(ICollaborativeDiagramMessageService messageService, IDiagramService diagramService, MeterRegistry meterRegistry) {
         this.diagramService = Objects.requireNonNull(diagramService);
         this.messageService = Objects.requireNonNull(messageService);
 
@@ -64,7 +65,7 @@ public class UpdateNodePositionEventHandler implements IDiagramEventHandler {
 
     @Override
     public boolean canHandle(IDiagramInput diagramInput) {
-        return diagramInput instanceof UpdateNodePositionInput;
+        return diagramInput instanceof UpdateNodeBoundsInput;
     }
 
     @Override
@@ -72,25 +73,42 @@ public class UpdateNodePositionEventHandler implements IDiagramEventHandler {
         this.counter.increment();
 
         EventHandlerResponse result;
-        if (diagramInput instanceof UpdateNodePositionInput) {
-            result = this.handleUpdateNodePosition(diagramContext, (UpdateNodePositionInput) diagramInput);
+        if (diagramInput instanceof UpdateNodeBoundsInput) {
+            result = this.handleUpdateNodeBounds(diagramContext, (UpdateNodeBoundsInput) diagramInput);
         } else {
-            String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), UpdateNodePositionEventHandler.class.getSimpleName());
+            String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), UpdateNodeBoundsEventHandler.class.getSimpleName());
             result = new EventHandlerResponse(new ChangeDescription(ChangeKind.NOTHING, diagramInput.getRepresentationId()), new ErrorPayload(diagramInput.getId(), message));
         }
         return result;
     }
 
-    private EventHandlerResponse handleUpdateNodePosition(IDiagramContext diagramContext, UpdateNodePositionInput diagramInput) {
-        Position newPosition = Position.at(diagramInput.getNewPositionX(), diagramInput.getNewPositionY());
+    private EventHandlerResponse handleUpdateNodeBounds(IDiagramContext diagramContext, UpdateNodeBoundsInput diagramInput) {
+        // @formatter:off
+        Position newPosition = Position.newPosition()
+                .x(diagramInput.getNewPositionX())
+                .y(diagramInput.getNewPositionY())
+                .build();
+
+        Size newSize = Size.newSize()
+                .width(diagramInput.getNewWidth())
+                .height(diagramInput.getNewHeight())
+                .build();
+        // @formatter:on
 
         Optional<Node> optionalNode = this.diagramService.findNodeById(diagramContext.getDiagram(), diagramInput.getDiagramElementId());
 
         EventHandlerResponse result;
         if (optionalNode.isPresent()) {
-            diagramContext.setDiagramElementEvent(new MoveEvent(diagramInput.getDiagramElementId(), newPosition));
+            Position oldPosition = optionalNode.get().getPosition();
+            //@formatter:off
+            Position delta = Position.newPosition()
+                    .x(oldPosition.getX() - newPosition.getX())
+                    .y(oldPosition.getY() - newPosition.getY())
+                    .build();
+            //@formatter:on
+            diagramContext.setDiagramElementEvent(new ResizeEvent(diagramInput.getDiagramElementId(), delta, newSize));
             result = new EventHandlerResponse(new ChangeDescription(DiagramChangeKind.DIAGRAM_LAYOUT_CHANGE, diagramInput.getRepresentationId()),
-                    new UpdateNodePositionSuccessPayload(diagramInput.getId(), diagramContext.getDiagram()));
+                    new UpdateNodeBoundsSuccessPayload(diagramInput.getId(), diagramContext.getDiagram()));
         } else {
             String message = this.messageService.nodeNotFound(String.valueOf(diagramInput.getDiagramElementId()));
             result = new EventHandlerResponse(new ChangeDescription(ChangeKind.NOTHING, diagramInput.getRepresentationId()), new ErrorPayload(diagramInput.getId(), message));

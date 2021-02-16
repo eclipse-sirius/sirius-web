@@ -12,31 +12,12 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.diagrams;
 
-import java.util.Objects;
-import java.util.UUID;
-
 /**
- * Represent an immutable move event.
+ * The list of customizable features on a diagram element. Allows to indicate that a properties (size, style etc) has
+ * been manually modified and should not be reset to the default value.
  *
- * @author wpiers
+ * @author fbarbin
  */
-public class MoveEvent implements IDiagramElementEvent {
-
-    private final UUID nodeId;
-
-    private final Position newPosition;
-
-    public MoveEvent(UUID nodeId, Position newPosition) {
-        this.nodeId = Objects.requireNonNull(nodeId);
-        this.newPosition = Objects.requireNonNull(newPosition);
-    }
-
-    public UUID getNodeId() {
-        return this.nodeId;
-    }
-
-    public Position getNewPosition() {
-        return this.newPosition;
-    }
-
+public enum CustomizableProperties {
+    Size,
 }

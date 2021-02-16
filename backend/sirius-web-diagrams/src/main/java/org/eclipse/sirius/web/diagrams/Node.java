@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.diagrams;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.annotations.Immutable;
@@ -57,6 +58,8 @@ public final class Node {
     private List<Node> borderNodes;
 
     private List<Node> childNodes;
+
+    private Set<CustomizableProperties> customizedProperties;
 
     private Node() {
         // Prevent instantiation
@@ -140,6 +143,10 @@ public final class Node {
         return this.childNodes;
     }
 
+    public Set<CustomizableProperties> getCustomizedProperties() {
+        return this.customizedProperties;
+    }
+
     public static Builder newNode(UUID id) {
         return new Builder(id);
     }
@@ -188,6 +195,8 @@ public final class Node {
 
         private List<Node> childNodes;
 
+        private Set<CustomizableProperties> customizedProperties = Set.of();
+
         private Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -206,6 +215,7 @@ public final class Node {
             this.size = node.getSize();
             this.borderNodes = node.getBorderNodes();
             this.childNodes = node.getChildNodes();
+            this.customizedProperties = node.getCustomizedProperties();
         }
 
         public Builder type(String type) {
@@ -268,6 +278,11 @@ public final class Node {
             return this;
         }
 
+        public Builder customizedProperties(Set<CustomizableProperties> customizedProperties) {
+            this.customizedProperties = Objects.requireNonNull(customizedProperties);
+            return this;
+        }
+
         public Node build() {
             Node node = new Node();
             node.id = Objects.requireNonNull(this.id);
@@ -283,6 +298,7 @@ public final class Node {
             node.size = Objects.requireNonNull(this.size);
             node.borderNodes = Objects.requireNonNull(this.borderNodes);
             node.childNodes = Objects.requireNonNull(this.childNodes);
+            node.customizedProperties = this.customizedProperties;
             return node;
         }
     }

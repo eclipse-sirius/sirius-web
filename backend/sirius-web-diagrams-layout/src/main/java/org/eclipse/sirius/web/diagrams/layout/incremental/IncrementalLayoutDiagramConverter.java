@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.eclipse.sirius.web.diagrams.CustomizableProperties;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.Edge;
 import org.eclipse.sirius.web.diagrams.Label;
@@ -93,6 +94,8 @@ public class IncrementalLayoutDiagramConverter {
 
         LabelLayoutData labelLayoutData = this.convertLabel(node.getLabel(), id2LayoutData);
         layoutData.setLabel(labelLayoutData);
+
+        layoutData.setResizedByUser(node.getCustomizedProperties().contains(CustomizableProperties.Size));
 
         return layoutData;
     }

@@ -48,6 +48,8 @@ public class NodeLayoutData implements IContainerLayoutData, IConnectable {
 
     private boolean pinned;
 
+    private boolean resizedByUser;
+
     @Override
     public UUID getId() {
         return this.id;
@@ -143,6 +145,14 @@ public class NodeLayoutData implements IContainerLayoutData, IConnectable {
 
     public void setPinned(boolean pinned) {
         this.pinned = pinned;
+    }
+
+    public void setResizedByUser(boolean resized) {
+        this.resizedByUser = resized;
+    }
+
+    public boolean isResizedByUser() {
+        return this.resizedByUser;
     }
 
     @Override
