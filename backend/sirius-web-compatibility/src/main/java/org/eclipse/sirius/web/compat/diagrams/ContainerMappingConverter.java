@@ -139,6 +139,7 @@ public class ContainerMappingConverter {
         Function<VariableManager, List<Object>> semanticElementsProvider = this.semanticCandidatesProviderFactory.getSemanticCandidatesProvider(this.interpreter, domainClass,
                 semanticCandidatesExpression, preconditionExpression);
         Function<VariableManager, INodeStyle> styleProvider = new ContainerMappingStyleProvider(this.interpreter, containerMapping);
+        ContainerMappingSizeProvider containerMappingSizeProvider = new ContainerMappingSizeProvider(this.interpreter, containerMapping);
 
         ToolConverter toolConverter = new ToolConverter(this.interpreter, this.editService, this.modelOperationHandlerSwitchProvider);
         var deleteHandler = toolConverter.createDeleteToolHandler(containerMapping.getDeletionDescription());
@@ -153,6 +154,7 @@ public class ContainerMappingConverter {
                 .semanticElementsProvider(semanticElementsProvider)
                 .labelDescription(labelDescription)
                 .styleProvider(styleProvider)
+                .sizeProvider(containerMappingSizeProvider)
                 .childNodeDescriptions(childNodeDescriptions)
                 .borderNodeDescriptions(borderNodeDescriptions)
                 .labelEditHandler(labelEditHandler)

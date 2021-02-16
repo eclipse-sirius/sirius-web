@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,7 @@ import org.eclipse.sirius.diagram.description.ConditionalContainerStyleDescripti
 import org.eclipse.sirius.diagram.description.ContainerMapping;
 import org.eclipse.sirius.diagram.description.DescriptionFactory;
 import org.eclipse.sirius.diagram.description.style.ContainerStyleDescription;
+import org.eclipse.sirius.diagram.description.style.FlatContainerStyleDescription;
 import org.eclipse.sirius.diagram.description.style.StyleFactory;
 import org.eclipse.sirius.viewpoint.description.FixedColor;
 import org.eclipse.sirius.web.diagrams.INodeStyle;
@@ -75,8 +76,8 @@ public class ContainerMappingStyleProviderTestCases {
         return conditionalContainerStyle;
     }
 
-    private ContainerStyleDescription createFlatStyle(int red, int green, int blue) {
-        ContainerStyleDescription containerStyleDescription = StyleFactory.eINSTANCE.createFlatContainerStyleDescription();
+    private FlatContainerStyleDescription createFlatStyle(int red, int green, int blue) {
+        FlatContainerStyleDescription containerStyleDescription = StyleFactory.eINSTANCE.createFlatContainerStyleDescription();
 
         FixedColor fixedColor = org.eclipse.sirius.viewpoint.description.DescriptionFactory.eINSTANCE.createFixedColor();
         fixedColor.setRed(red);

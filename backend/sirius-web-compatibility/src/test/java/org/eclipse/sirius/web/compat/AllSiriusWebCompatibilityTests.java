@@ -17,12 +17,14 @@ import org.eclipse.sirius.web.compat.architecture.ConfigurationTestCases;
 import org.eclipse.sirius.web.compat.architecture.ServiceTestCases;
 import org.eclipse.sirius.web.compat.architecture.SpringCodingRulesTestCases;
 import org.eclipse.sirius.web.compat.diagrams.ColorDescriptionConverterTestCases;
+import org.eclipse.sirius.web.compat.diagrams.ContainerMappingSizeProviderTestCases;
 import org.eclipse.sirius.web.compat.diagrams.ContainerMappingStyleProviderTestCases;
 import org.eclipse.sirius.web.compat.diagrams.DiagramLabelProviderTestCases;
 import org.eclipse.sirius.web.compat.diagrams.DomainBasedSourceNodesProviderTestCases;
 import org.eclipse.sirius.web.compat.diagrams.EdgeMappingStyleProviderTestCases;
 import org.eclipse.sirius.web.compat.diagrams.LabelStyleDescriptionConverterTestCases;
 import org.eclipse.sirius.web.compat.diagrams.MappingConverterTestCases;
+import org.eclipse.sirius.web.compat.diagrams.NodeMappingSizeProviderTestCases;
 import org.eclipse.sirius.web.compat.diagrams.NodeMappingStyleProviderTestCases;
 import org.eclipse.sirius.web.compat.diagrams.RelationBasedSourceNodesProviderTestCases;
 import org.eclipse.sirius.web.compat.diagrams.WorkspaceImageDescriptionConverterTestCases;
@@ -45,6 +47,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
     ColorDescriptionConverterTestCases.class,
     ContainerMappingStyleProviderTestCases.class,
+    ContainerMappingSizeProviderTestCases.class,
     DiagramLabelProviderTestCases.class,
     DomainBasedSourceNodesProviderTestCases.class,
 
@@ -52,6 +55,7 @@ import org.junit.runners.Suite.SuiteClasses;
     LabelStyleDescriptionConverterTestCases.class,
     MappingConverterTestCases.class,
     NodeMappingStyleProviderTestCases.class,
+    NodeMappingSizeProviderTestCases.class,
     RelationBasedSourceNodesProviderTestCases.class,
     WorkspaceImageDescriptionConverterTestCases.class,
 })

@@ -99,7 +99,10 @@ public class ELKDiagramConverter {
         elkNode.setProperty(PROPERTY_TYPE, node.getType());
 
         TextBounds textBounds = this.textBoundsService.getBounds(node.getLabel());
-        elkNode.setDimensions(textBounds.getSize().getWidth(), textBounds.getSize().getHeight());
+        double width = Math.max(textBounds.getSize().getWidth(), node.getSize().getWidth());
+        double height = Math.max(textBounds.getSize().getHeight(), node.getSize().getHeight());
+
+        elkNode.setDimensions(width, height);
         elkNode.setParent(parent);
 
         connectableShapeIndex.put(elkNode.getIdentifier(), elkNode);
@@ -131,7 +134,10 @@ public class ELKDiagramConverter {
         elkPort.setProperty(PROPERTY_TYPE, borderNode.getType());
 
         TextBounds textBounds = this.textBoundsService.getBounds(borderNode.getLabel());
-        elkPort.setDimensions(textBounds.getSize().getWidth(), textBounds.getSize().getHeight());
+        double width = Math.max(textBounds.getSize().getWidth(), borderNode.getSize().getWidth());
+        double height = Math.max(textBounds.getSize().getHeight(), borderNode.getSize().getHeight());
+
+        elkNode.setDimensions(width, height);
         elkPort.setParent(elkNode);
 
         connectableShapeIndex.put(elkPort.getIdentifier(), elkPort);
