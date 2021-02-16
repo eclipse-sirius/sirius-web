@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,7 +23,7 @@ import org.eclipse.sirius.web.interpreter.AQLInterpreter;
 import org.eclipse.sirius.web.representations.VariableManager;
 
 /**
- * This class is used to convert a Sirius LabelStyleDescription to an Sirius Web LabelStyleDescription.
+ * This class is used to convert a Sirius LabelStyleDescription to a Sirius Web LabelStyleDescription.
  *
  * @author hmarchadour
  */
@@ -45,9 +45,17 @@ public class LabelStyleDescriptionConverter {
             String iconURL = ""; //$NON-NLS-1$
             if (labelStyleDescription.isShowIcon()) {
                 // @formatter:off
-                iconURL = variableManager.get(VariableManager.SELF, Object.class)
-                    .map(this.objectService::getImagePath)
-                    .orElse(""); //$NON-NLS-1$
+                String iconPath = labelStyleDescription.getIconPath();
+                if (iconPath != null && !iconPath.isEmpty()) {
+                    int indexOfSecondSlash = iconPath.indexOf('/', 1);
+                    if (indexOfSecondSlash != -1) {
+                        iconURL = iconPath.substring(indexOfSecondSlash);
+                    }
+                } else {
+                    iconURL = variableManager.get(VariableManager.SELF, Object.class)
+                            .map(this.objectService::getImagePath)
+                            .orElse(""); //$NON-NLS-1$
+                }
                 // @formatter:on
             }
             return iconURL;
