@@ -21,6 +21,7 @@ import AspectRatioIcon from '@material-ui/icons/AspectRatio';
 import ShareIcon from '@material-ui/icons/Share';
 import ZoomInIcon from '@material-ui/icons/ZoomIn';
 import ZoomOutIcon from '@material-ui/icons/ZoomOut';
+import { ToolbarProps, ToolbarState } from 'diagram/Toolbar.types';
 import { ShareDiagramModal } from 'modals/share-diagram/ShareDiagramModal';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
@@ -66,16 +67,16 @@ const useToolbarStyles = makeStyles((theme) => ({
   },
 }));
 
-export const Toolbar = ({ onZoomIn, onZoomOut, onFitToScreen, setZoomLevel, zoomLevel, subscribers }) => {
+export const Toolbar = ({ onZoomIn, onZoomOut, onFitToScreen, setZoomLevel, zoomLevel, subscribers }: ToolbarProps) => {
   const classes = useToolbarStyles();
-  const [state, setState] = useState({ modal: undefined, currentZoomLevel: zoomLevel });
+  const [state, setState] = useState<ToolbarState>({ modal: null, currentZoomLevel: zoomLevel });
   const onShare = () => setState({ modal: 'ShareDiagramModal', currentZoomLevel: state.currentZoomLevel });
-  const closeModal = () => setState({ modal: undefined, currentZoomLevel: state.currentZoomLevel });
+  const closeModal = () => setState({ modal: null, currentZoomLevel: state.currentZoomLevel });
 
   const { modal, currentZoomLevel } = state;
 
   useEffect(() => {
-    setState({ modal: undefined, currentZoomLevel: zoomLevel });
+    setState({ modal: null, currentZoomLevel: zoomLevel });
   }, [zoomLevel]);
 
   const updateZoomLevel = (event) => {

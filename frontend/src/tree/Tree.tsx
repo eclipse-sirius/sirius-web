@@ -36,11 +36,11 @@ export const Tree = ({ editingContextId, tree, onExpand, selection, setSelection
       ) {
         event.preventDefault();
 
-        const previousItem = document.activeElement;
+        const previousItem = document.activeElement as HTMLElement;
         const dataset = (previousItem as any).dataset;
         if (dataset.treeitemid) {
           const treeItemDomElements = document.querySelectorAll<HTMLElement>('[data-treeitemid]');
-          const index = [].indexOf.call(treeItemDomElements, previousItem);
+          const index = Array.from(treeItemDomElements).indexOf(previousItem);
           const id = dataset.treeitemid;
           const hasChildren = dataset.haschildren;
           const expanded = dataset.expanded;

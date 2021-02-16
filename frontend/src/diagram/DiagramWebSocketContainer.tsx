@@ -365,7 +365,7 @@ export const DiagramWebSocketContainer = ({
       deleteElementsMutation({ variables: { input } });
       const setContextualPaletteEvent: SetContextualPaletteEvent = {
         type: 'SET_CONTEXTUAL_PALETTE',
-        contextualPalette: undefined,
+        contextualPalette: null,
       };
       dispatch(setContextualPaletteEvent);
     },
@@ -399,7 +399,7 @@ export const DiagramWebSocketContainer = ({
           };
           invokeNodeToolMutation({ variables: { input } });
         }
-        const setActiveToolEvent: SetActiveToolEvent = { type: 'SET_ACTIVE_TOOL', activeTool: undefined };
+        const setActiveToolEvent: SetActiveToolEvent = { type: 'SET_ACTIVE_TOOL', activeTool: null };
         dispatch(setActiveToolEvent);
       }
     },
@@ -669,7 +669,7 @@ export const DiagramWebSocketContainer = ({
     const invokeCloseFromContextualPalette = () => {
       const setContextualPaletteEvent: SetContextualPaletteEvent = {
         type: 'SET_CONTEXTUAL_PALETTE',
-        contextualPalette: undefined,
+        contextualPalette: null,
       };
       dispatch(setContextualPaletteEvent);
     };
@@ -695,7 +695,7 @@ export const DiagramWebSocketContainer = ({
         dispatch(setActiveToolEvent);
         const setContextualPaletteEvent: SetContextualPaletteEvent = {
           type: 'SET_CONTEXTUAL_PALETTE',
-          contextualPalette: undefined,
+          contextualPalette: null,
         };
         dispatch(setContextualPaletteEvent);
         edgeCreationFeedback.init(x, y);
