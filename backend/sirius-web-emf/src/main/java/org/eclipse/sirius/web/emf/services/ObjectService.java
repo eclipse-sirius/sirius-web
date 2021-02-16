@@ -24,6 +24,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.EditingDomain;
@@ -71,6 +72,9 @@ public class ObjectService implements IObjectService {
             id = this.getIdFromIDAdapter(eObject);
             if (id == null) {
                 id = this.getIdFromURIFragment(eObject);
+            }
+            if (id == null && eObject.eIsProxy()) {
+                id = ((InternalEObject) eObject).eProxyURI().toString();
             }
         }
         return id;

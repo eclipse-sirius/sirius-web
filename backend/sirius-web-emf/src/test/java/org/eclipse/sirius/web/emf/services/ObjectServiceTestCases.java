@@ -16,12 +16,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.provider.EcoreItemProviderAdapterFactory;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.util.EcoreAdapterFactory;
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
+import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
 import org.eclipse.sirius.web.core.api.IObjectService;
-import org.eclipse.sirius.web.emf.configuration.EMFConfiguration;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -35,8 +40,10 @@ import org.junit.runners.JUnit4;
 public class ObjectServiceTestCases {
     @Test
     public void testFindImagePathOnCompositeImage() {
-        ComposedAdapterFactory adapterFactory = new EMFConfiguration().composedAdapterFactory(List.of(new EcoreItemProviderAdapterFactory()));
-        ObjectService objectService = new ObjectService(adapterFactory, new LabelFeatureProviderRegistry());
+        ComposedAdapterFactory composedAdapterFactory = new ComposedAdapterFactory(List.of(new EcoreItemProviderAdapterFactory()));
+        composedAdapterFactory.addAdapterFactory(new EcoreAdapterFactory());
+        composedAdapterFactory.addAdapterFactory(new ReflectiveItemProviderAdapterFactory());
+        ObjectService objectService = new ObjectService(composedAdapterFactory, new LabelFeatureProviderRegistry());
         EAttribute attr = EcoreFactory.eINSTANCE.createEAttribute();
         String imagePath = objectService.getImagePath(attr);
         // @formatter:off
@@ -45,4 +52,20 @@ public class ObjectServiceTestCases {
             .endsWith("/icons/full/obj16/EAttribute.gif"); //$NON-NLS-1$
         // @formatter:on
     }
+
+    @Test
+    public void testGetIdOnEMFProxy() {
+        ComposedAdapterFactory composedAdapterFactory = new ComposedAdapterFactory(List.of(new EcoreItemProviderAdapterFactory()));
+        composedAdapterFactory.addAdapterFactory(new EcoreAdapterFactory());
+        composedAdapterFactory.addAdapterFactory(new ReflectiveItemProviderAdapterFactory());
+        ObjectService objectService = new ObjectService(composedAdapterFactory, new LabelFeatureProviderRegistry());
+        Resource resource = new XMIResourceImpl();
+        resource.setURI(URI.createURI("test.xmi")); //$NON-NLS-1$
+        EObject eObject = EcoreFactory.eINSTANCE.createEClass();
+        resource.getContents().add(eObject);
+        resource.unload();
+        assertThat(eObject.eIsProxy()).isTrue();
+        assertThat(objectService.getId(eObject)).isNotNull();
+    }
+
 }
