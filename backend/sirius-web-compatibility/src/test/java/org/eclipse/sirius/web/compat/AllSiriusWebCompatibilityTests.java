@@ -21,6 +21,7 @@ import org.eclipse.sirius.web.compat.diagrams.ContainerMappingStyleProviderTestC
 import org.eclipse.sirius.web.compat.diagrams.DiagramLabelProviderTestCases;
 import org.eclipse.sirius.web.compat.diagrams.DomainBasedSourceNodesProviderTestCases;
 import org.eclipse.sirius.web.compat.diagrams.EdgeMappingStyleProviderTestCases;
+import org.eclipse.sirius.web.compat.diagrams.LabelStyleDescriptionConverterTestCases;
 import org.eclipse.sirius.web.compat.diagrams.NodeMappingStyleProviderTestCases;
 import org.eclipse.sirius.web.compat.diagrams.RelationBasedSourceNodesProviderTestCases;
 import org.eclipse.sirius.web.compat.diagrams.WorkspaceImageDescriptionConverterTestCases;
@@ -47,6 +48,7 @@ import org.junit.runners.Suite.SuiteClasses;
     DomainBasedSourceNodesProviderTestCases.class,
 
     EdgeMappingStyleProviderTestCases.class,
+    LabelStyleDescriptionConverterTestCases.class,
     NodeMappingStyleProviderTestCases.class,
     RelationBasedSourceNodesProviderTestCases.class,
     WorkspaceImageDescriptionConverterTestCases.class,
