@@ -38,7 +38,6 @@ public class LabelStyleDescriptionConverter {
     }
 
     public LabelStyleDescription convert(org.eclipse.sirius.viewpoint.description.style.BasicLabelStyleDescription labelStyleDescription) {
-        Objects.requireNonNull(labelStyleDescription);
         List<FontFormat> fontFormats = labelStyleDescription.getLabelFormat();
 
         Function<VariableManager, String> iconURLProvider = (variableManager) -> {

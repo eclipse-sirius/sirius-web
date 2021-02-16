@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
 import org.eclipse.sirius.diagram.description.NodeMapping;
 import org.eclipse.sirius.diagram.description.style.NodeStyleDescription;
 import org.eclipse.sirius.diagram.description.style.WorkspaceImageDescription;
+import org.eclipse.sirius.viewpoint.description.style.BasicLabelStyleDescription;
 import org.eclipse.sirius.viewpoint.description.style.StyleFactory;
 import org.eclipse.sirius.web.compat.api.IIdentifierProvider;
 import org.eclipse.sirius.web.compat.api.IModelOperationHandlerSwitchProvider;
@@ -71,18 +73,20 @@ public class NodeMappingConverter {
     }
 
     public NodeDescription convert(NodeMapping nodeMapping, Map<UUID, NodeDescription> id2NodeDescriptions) {
-        NodeStyleDescription nodeStyle = nodeMapping.getStyle();
+        NodeStyleDescriptionProvider nodeStyleDescriptionProvider = new NodeStyleDescriptionProvider(this.interpreter, nodeMapping);
 
-        String labelExpression = ""; //$NON-NLS-1$
-        if (nodeStyle != null) {
-            labelExpression = nodeStyle.getLabelExpression();
-        }
-        LabelStyleDescription labelStyleDescription;
-        if (nodeStyle != null) {
-            labelStyleDescription = this.labelStyleDescriptionConverter.convert(nodeStyle);
-        } else {
-            labelStyleDescription = this.labelStyleDescriptionConverter.convert(this.getDefaultLabelStyle());
-        }
+        Function<VariableManager, LabelStyleDescription> labelStyleDescriptionProvider = variableManager -> {
+            NodeStyleDescription styleDescription = nodeStyleDescriptionProvider.getNodeStyleDescription(variableManager);
+            BasicLabelStyleDescription basicLabelStyleDescription = Optional.ofNullable(styleDescription).map(BasicLabelStyleDescription.class::cast).orElse(this.getDefaultLabelStyle());
+            return this.labelStyleDescriptionConverter.convert(basicLabelStyleDescription);
+        };
+
+        Function<VariableManager, String> labelExpressionProvider = variableManager -> {
+            NodeStyleDescription styleDescription = nodeStyleDescriptionProvider.getNodeStyleDescription(variableManager);
+            String labelExpression = Optional.ofNullable(styleDescription).map(NodeStyleDescription::getLabelExpression).orElse(""); //$NON-NLS-1$
+            return new StringValueProvider(this.interpreter, labelExpression).apply(variableManager);
+        };
+
         Function<VariableManager, String> labelIdProvider = variableManager -> {
             Object parentId = variableManager.getVariables().get(LabelDescription.OWNER_ID);
             return String.valueOf(parentId) + LabelDescription.LABEL_SUFFIX;
@@ -91,8 +95,8 @@ public class NodeMappingConverter {
         // @formatter:off
         LabelDescription labelDescription = LabelDescription.newLabelDescription(this.identifierProvider.getIdentifier(nodeMapping) + LabelDescription.LABEL_SUFFIX)
                 .idProvider(labelIdProvider)
-                .textProvider(new StringValueProvider(this.interpreter, labelExpression))
-                .styleDescription(labelStyleDescription)
+                .textProvider(labelExpressionProvider)
+                .styleDescriptionProvider(labelStyleDescriptionProvider)
                 .build();
         // @formatter:on
 
@@ -106,6 +110,7 @@ public class NodeMappingConverter {
             return variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getLabel).orElse(null);
         };
         Function<VariableManager, String> typeProvider = variableManager -> {
+            NodeStyleDescription nodeStyle = nodeStyleDescriptionProvider.getNodeStyleDescription(variableManager);
             if (nodeStyle instanceof WorkspaceImageDescription) {
                 return NodeType.NODE_IMAGE;
             }
@@ -151,7 +156,7 @@ public class NodeMappingConverter {
         return description;
     }
 
-    private org.eclipse.sirius.viewpoint.description.style.BasicLabelStyleDescription getDefaultLabelStyle() {
+    private BasicLabelStyleDescription getDefaultLabelStyle() {
         var labelStyle = StyleFactory.eINSTANCE.createBasicLabelStyleDescription();
         labelStyle.setLabelExpression(""); //$NON-NLS-1$
         labelStyle.setShowIcon(true);
