@@ -19,12 +19,13 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import org.eclipse.sirius.diagram.description.ContainerMapping;
 import org.eclipse.sirius.diagram.description.style.ContainerStyleDescription;
 import org.eclipse.sirius.diagram.description.style.WorkspaceImageDescription;
+import org.eclipse.sirius.viewpoint.description.style.BasicLabelStyleDescription;
+import org.eclipse.sirius.viewpoint.description.style.StyleFactory;
 import org.eclipse.sirius.web.compat.api.IIdentifierProvider;
 import org.eclipse.sirius.web.compat.api.IModelOperationHandlerSwitchProvider;
 import org.eclipse.sirius.web.compat.api.ISemanticCandidatesProviderFactory;
@@ -72,34 +73,27 @@ public class ContainerMappingConverter {
     }
 
     public NodeDescription convert(ContainerMapping containerMapping, Map<UUID, NodeDescription> id2NodeDescriptions) {
-        // @formatter:off
-        String labelExpression = Optional.ofNullable(containerMapping.getStyle()).map(ContainerStyleDescription::getLabelExpression).orElse(""); //$NON-NLS-1$
-        Supplier<LabelStyleDescription> defaultLabelStyleDescription = () -> LabelStyleDescription.newLabelStyleDescription()
-                .colorProvider(variableManager -> "#000000") //$NON-NLS-1$
-                .fontSizeProvider(variableManager -> 16)
-                .italicProvider(variableManager -> false)
-                .boldProvider(variableManager -> false)
-                .underlineProvider(variableManager -> false)
-                .strikeThroughProvider(variableManager -> false)
-                .iconURLProvider(variableManager -> "") //$NON-NLS-1$
-                .build();
+        ContainerStyleDescriptionProvider containerStyleDescriptionProvider = new ContainerStyleDescriptionProvider(this.interpreter, containerMapping);
 
-        LabelStyleDescription labelStyleDescription = Optional.ofNullable(containerMapping.getStyle())
-                .map(this.labelStyleDescriptionConverter::convert)
-                .orElseGet(defaultLabelStyleDescription);
+        Function<VariableManager, LabelStyleDescription> labelStyleDescriptionProvider = variableManager -> {
+            ContainerStyleDescription styleDescription = containerStyleDescriptionProvider.getContainerStyleDescription(variableManager);
+            BasicLabelStyleDescription basicLabelStyleDescription = Optional.ofNullable(styleDescription).map(BasicLabelStyleDescription.class::cast).orElse(this.getDefaultLabelStyle());
+            return this.labelStyleDescriptionConverter.convert(basicLabelStyleDescription);
+        };
+
+        Function<VariableManager, String> labelExpressionProvider = variableManager -> {
+            ContainerStyleDescription styleDescription = containerStyleDescriptionProvider.getContainerStyleDescription(variableManager);
+            String labelExpression = Optional.ofNullable(styleDescription).map(ContainerStyleDescription::getLabelExpression).orElse(""); //$NON-NLS-1$
+            return new StringValueProvider(this.interpreter, labelExpression).apply(variableManager);
+        };
 
         Function<VariableManager, String> labelIdProvider = variableManager -> {
             Object parentId = variableManager.getVariables().get(LabelDescription.OWNER_ID);
             return String.valueOf(parentId) + LabelDescription.LABEL_SUFFIX;
         };
-        // @formatter:on
 
-        // @formatter:off
-        LabelDescription labelDescription = LabelDescription.newLabelDescription(this.identifierProvider.getIdentifier(containerMapping) + LabelDescription.LABEL_SUFFIX)
-                .idProvider(labelIdProvider)
-                .textProvider(new StringValueProvider(this.interpreter, labelExpression))
-                .styleDescription(labelStyleDescription)
-                .build();
+        LabelDescription labelDescription = LabelDescription.newLabelDescription(this.identifierProvider.getIdentifier(containerMapping) + LabelDescription.LABEL_SUFFIX).idProvider(labelIdProvider)
+                .textProvider(labelExpressionProvider).styleDescriptionProvider(labelStyleDescriptionProvider).build();
         // @formatter:on
 
         Function<VariableManager, String> semanticTargetIdProvider = variableManager -> {
@@ -112,7 +106,8 @@ public class ContainerMappingConverter {
             return variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getLabel).orElse(null);
         };
         Function<VariableManager, String> typeProvider = variableManager -> {
-            if (containerMapping.getStyle() instanceof WorkspaceImageDescription) {
+            ContainerStyleDescription containerStyle = containerStyleDescriptionProvider.getContainerStyleDescription(variableManager);
+            if (containerStyle instanceof WorkspaceImageDescription) {
                 return NodeType.NODE_IMAGE;
             }
             return NodeType.NODE_RECTANGLE;
@@ -170,4 +165,11 @@ public class ContainerMappingConverter {
         return description;
     }
 
+    private BasicLabelStyleDescription getDefaultLabelStyle() {
+        var labelStyle = StyleFactory.eINSTANCE.createBasicLabelStyleDescription();
+        labelStyle.setLabelExpression(""); //$NON-NLS-1$
+        labelStyle.setShowIcon(true);
+        labelStyle.setLabelSize(16);
+        return labelStyle;
+    }
 }

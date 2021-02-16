@@ -103,15 +103,17 @@ public class EdgeMappingConverter {
         LabelStyleDescriptionConverter labelStyleDescriptionConverter = new LabelStyleDescriptionConverter(this.interpreter, this.objectService);
 
         // @formatter:off
-        Optional<LabelDescription> optionalBeginLabelDescription = Optional.ofNullable(edgeMapping.getStyle())
+        EdgeStyleDescription style = edgeMapping.getStyle();
+
+        Optional<LabelDescription> optionalBeginLabelDescription = Optional.ofNullable(style)
                 .map(EdgeStyleDescription::getBeginLabelStyleDescription)
                 .map(labelDescription -> this.createLabelDescription(labelStyleDescriptionConverter, labelDescription,  "_beginlabel", edgeMapping)); //$NON-NLS-1$
 
-        Optional<LabelDescription> optionalCenterLabelDescription = Optional.ofNullable(edgeMapping.getStyle())
+        Optional<LabelDescription> optionalCenterLabelDescription = Optional.ofNullable(style)
                 .map(EdgeStyleDescription::getCenterLabelStyleDescription)
                 .map(labelDescription -> this.createLabelDescription(labelStyleDescriptionConverter, labelDescription,  "_centerlabel", edgeMapping)); //$NON-NLS-1$
 
-        Optional<LabelDescription> optionalEndLabelDescription = Optional.ofNullable(edgeMapping.getStyle())
+        Optional<LabelDescription> optionalEndLabelDescription = Optional.ofNullable(style)
                 .map(EdgeStyleDescription::getEndLabelStyleDescription)
                 .map(labelDescription -> this.createLabelDescription(labelStyleDescriptionConverter, labelDescription,  "_endlabel", edgeMapping)); //$NON-NLS-1$
 
@@ -139,7 +141,10 @@ public class EdgeMappingConverter {
     private LabelDescription createLabelDescription(LabelStyleDescriptionConverter labelStyleDescriptionConverter, BasicLabelStyleDescription siriusBasicLabelStyleDescription, String idSuffix,
             EdgeMapping edgeMapping) {
         String labelExpression = siriusBasicLabelStyleDescription.getLabelExpression();
-        LabelStyleDescription labelStyleDescription = labelStyleDescriptionConverter.convert(siriusBasicLabelStyleDescription);
+
+        Function<VariableManager, LabelStyleDescription> labelStyleDescriptionProvider = variableManager -> {
+            return labelStyleDescriptionConverter.convert(siriusBasicLabelStyleDescription);
+        };
 
         Function<VariableManager, String> labelIdProvider = variableManager -> {
             Object parentId = variableManager.getVariables().get(LabelDescription.OWNER_ID);
@@ -152,7 +157,7 @@ public class EdgeMappingConverter {
         return LabelDescription.newLabelDescription(id)
                 .idProvider(labelIdProvider)
                 .textProvider(textProvider)
-                .styleDescription(labelStyleDescription)
+                .styleDescriptionProvider(labelStyleDescriptionProvider)
                 .build();
         // @formatter:on
 

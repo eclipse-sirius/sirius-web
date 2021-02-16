@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -101,7 +101,7 @@ public class TestDiagramDescriptionBuilder {
         LabelDescription labelDescription = LabelDescription.newLabelDescription("labelDescriptionId") //$NON-NLS-1$
                 .idProvider(variableManager -> "labelId") //$NON-NLS-1$
                 .textProvider(variableManager -> "Node") //$NON-NLS-1$
-                .styleDescription(labelStyleDescription)
+                .styleDescriptionProvider(variableManager -> labelStyleDescription)
                 .build();
 
         Function<VariableManager, INodeStyle> nodeStyleProvider = variableManager -> {

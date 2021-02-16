@@ -52,7 +52,7 @@ public class LabelComponent implements IComponent {
         String id = labelDescription.getIdProvider().apply(variableManager);
         String text = labelDescription.getTextProvider().apply(variableManager);
 
-        LabelStyleDescription labelStyleDescription = labelDescription.getStyleDescription();
+        LabelStyleDescription labelStyleDescription = labelDescription.getStyleDescriptionProvider().apply(variableManager);
 
         String color = labelStyleDescription.getColorProvider().apply(variableManager);
         Integer fontSize = labelStyleDescription.getFontSizeProvider().apply(variableManager);

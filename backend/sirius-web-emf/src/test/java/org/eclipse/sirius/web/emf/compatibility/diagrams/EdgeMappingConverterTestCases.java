@@ -92,7 +92,7 @@ public class EdgeMappingConverterTestCases {
         LabelDescription labelDescription = LabelDescription.newLabelDescription(id.toString())
                 .idProvider(variableManager -> "") //$NON-NLS-1$
                 .textProvider(variableManager -> "") //$NON-NLS-1$
-                .styleDescription(styleDescription)
+                .styleDescriptionProvider(variableManager -> styleDescription)
                 .build();
 
         return NodeDescription.newNodeDescription(id)
