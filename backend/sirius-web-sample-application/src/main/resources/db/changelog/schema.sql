@@ -91,7 +91,7 @@ CREATE TABLE Modeler (
     project_id UUID NOT NULL,
     publicationstatus PublicationStatus DEFAULT 'DRAFT'::PublicationStatus NOT NULL,
     CONSTRAINT pk_modeler_id PRIMARY KEY (id),
-    CONSTRAINT fk_modeler_project_id_id FOREIGN KEY (project_id) REFERENCES project(id)
+    CONSTRAINT fk_modeler_project_id_id FOREIGN KEY (project_id) REFERENCES project(id) ON DELETE CASCADE
 );
  
 -- password is "012345678910" encrypted using Spring's BCryptPasswordEncoder
