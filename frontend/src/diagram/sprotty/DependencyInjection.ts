@@ -196,7 +196,7 @@ export const createDependencyInjectionContainer = (containerId, onSelectElement,
       return [];
     }
   }
-  decorate(inject(TYPES.ModelSource), DiagramMouseListener, 0);
+  decorate(inject(TYPES.ModelSource) as ParameterDecorator, DiagramMouseListener, 0);
 
   container.bind(TYPES.MouseListener).to(DiagramMouseListener).inSingletonScope();
 
@@ -224,7 +224,7 @@ export const createDependencyInjectionContainer = (containerId, onSelectElement,
       return [];
     }
   }
-  decorate(inject(TYPES.ModelSource), CursorMouseListener, 0);
+  decorate(inject(TYPES.ModelSource) as ParameterDecorator, CursorMouseListener, 0);
 
   container.bind(TYPES.MouseListener).to(CursorMouseListener).inSingletonScope();
 
