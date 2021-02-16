@@ -29,6 +29,7 @@ import org.eclipse.sirius.web.diagrams.LabelStyle;
 import org.eclipse.sirius.web.diagrams.LineStyle;
 import org.eclipse.sirius.web.diagrams.Node;
 import org.eclipse.sirius.web.diagrams.RectangularNodeStyle;
+import org.eclipse.sirius.web.diagrams.Size;
 import org.eclipse.sirius.web.diagrams.components.DiagramComponent;
 import org.eclipse.sirius.web.diagrams.components.DiagramComponentProps;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
@@ -81,7 +82,7 @@ public class DiagramRendererNodeTestCases {
                     .build();
             // @formatter:on
         };
-        Diagram diagram = this.createDiagram(styleProvider, variableManager -> NODE_RECTANGULAR);
+        Diagram diagram = this.createDiagram(styleProvider, variableManager -> NODE_RECTANGULAR, VariableManager -> Size.of(0, 0));
 
         assertThat(diagram).isNotNull();
         assertThat(diagram.getId()).asString().isNotBlank();
@@ -95,6 +96,44 @@ public class DiagramRendererNodeTestCases {
         assertThat(diagram.getNodes()).extracting(Node::getType).allMatch(t -> NODE_RECTANGULAR.equals(t));
         assertThat(diagram.getNodes()).extracting(Node::getBorderNodes).allMatch(List::isEmpty);
         assertThat(diagram.getNodes()).extracting(Node::getStyle).allMatch(s -> s instanceof RectangularNodeStyle);
+        assertThat(diagram.getNodes()).extracting(Node::getSize).allMatch(s -> s.getHeight() == -1 && s.getWidth() == -1);
+        assertThat(diagram.getNodes()).extracting(Node::getLabel).extracting(Label::getId).allMatch(id -> UUID.nameUUIDFromBytes(LABEL_ID.getBytes()).equals(id));
+        assertThat(diagram.getNodes()).extracting(Node::getLabel).extracting(Label::getText).allMatch(text -> LABEL_TEXT.equals(text));
+        assertThat(diagram.getNodes()).extracting(Node::getLabel).extracting(Label::getStyle).extracting(LabelStyle::getColor).allMatch(color -> LABEL_COLOR.equals(color));
+        assertThat(diagram.getNodes()).extracting(Node::getLabel).extracting(Label::getStyle).extracting(LabelStyle::getFontSize).allMatch(size -> LABEL_FONT_SIZE == size);
+        assertThat(diagram.getNodes()).extracting(Node::getLabel).extracting(Label::getStyle).extracting(LabelStyle::isBold).allMatch(bold -> bold);
+        assertThat(diagram.getNodes()).extracting(Node::getLabel).extracting(Label::getStyle).extracting(LabelStyle::isItalic).allMatch(italic -> italic);
+        assertThat(diagram.getNodes()).extracting(Node::getLabel).extracting(Label::getStyle).extracting(LabelStyle::isUnderline).allMatch(underline -> underline);
+        assertThat(diagram.getNodes()).extracting(Node::getLabel).extracting(Label::getStyle).extracting(LabelStyle::isStrikeThrough).allMatch(strikeThrough -> strikeThrough);
+    }
+
+    @Test
+    public void testSimpleNodeRenderingWithSizeProvider() {
+        Function<VariableManager, INodeStyle> styleProvider = variableManager -> {
+            // @formatter:off
+            return RectangularNodeStyle.newRectangularNodeStyle()
+                    .color("") //$NON-NLS-1$
+                    .borderColor("") //$NON-NLS-1$
+                    .borderSize(0)
+                    .borderStyle(LineStyle.Solid)
+                    .build();
+            // @formatter:on
+        };
+        Diagram diagram = this.createDiagram(styleProvider, variableManager -> NODE_RECTANGULAR, VariableManager -> Size.of(10, 200));
+
+        assertThat(diagram).isNotNull();
+        assertThat(diagram.getId()).asString().isNotBlank();
+        assertThat(diagram.getLabel()).isEqualTo(DIAGRAM_LABEL);
+        assertThat(diagram.getTargetObjectId()).isNotBlank();
+
+        assertThat(diagram.getNodes()).hasSize(1);
+        assertThat(diagram.getNodes()).extracting(Node::getTargetObjectId).noneMatch(String::isBlank);
+        assertThat(diagram.getNodes()).extracting(Node::getDescriptionId).noneMatch(t -> t.toString().isBlank());
+        assertThat(diagram.getNodes()).extracting(Node::getType).noneMatch(String::isBlank);
+        assertThat(diagram.getNodes()).extracting(Node::getType).allMatch(t -> NODE_RECTANGULAR.equals(t));
+        assertThat(diagram.getNodes()).extracting(Node::getBorderNodes).allMatch(List::isEmpty);
+        assertThat(diagram.getNodes()).extracting(Node::getStyle).allMatch(s -> s instanceof RectangularNodeStyle);
+        assertThat(diagram.getNodes()).extracting(Node::getSize).allMatch(s -> s.getHeight() == 200 && s.getWidth() == 10);
         assertThat(diagram.getNodes()).extracting(Node::getLabel).extracting(Label::getId).allMatch(id -> UUID.nameUUIDFromBytes(LABEL_ID.getBytes()).equals(id));
         assertThat(diagram.getNodes()).extracting(Node::getLabel).extracting(Label::getText).allMatch(text -> LABEL_TEXT.equals(text));
         assertThat(diagram.getNodes()).extracting(Node::getLabel).extracting(Label::getStyle).extracting(LabelStyle::getColor).allMatch(color -> LABEL_COLOR.equals(color));
@@ -118,7 +157,7 @@ public class DiagramRendererNodeTestCases {
                     .build();
             // @formatter:on
         };
-        Diagram diagram = this.createDiagram(styleProvider, variableManager -> NODE_IMAGE);
+        Diagram diagram = this.createDiagram(styleProvider, variableManager -> NODE_IMAGE, VariableManager -> Size.of(0, 0));
 
         assertThat(diagram).isNotNull();
         assertThat(diagram.getId()).asString().isNotBlank();
@@ -146,7 +185,7 @@ public class DiagramRendererNodeTestCases {
     /**
      * Create a diagram with one element that match with the given styleProvider/typeProvider.
      */
-    private Diagram createDiagram(Function<VariableManager, INodeStyle> styleProvider, Function<VariableManager, String> typeProvider) {
+    private Diagram createDiagram(Function<VariableManager, INodeStyle> styleProvider, Function<VariableManager, String> typeProvider, Function<VariableManager, Size> sizeProvider) {
         // @formatter:off
         LabelStyleDescription labelStyleDescription = LabelStyleDescription.newLabelStyleDescription()
                 .italicProvider(VariableManager -> true)
@@ -172,6 +211,7 @@ public class DiagramRendererNodeTestCases {
                 .targetObjectLabelProvider(variableManager -> "")//$NON-NLS-1$
                 .labelDescription(labelDescription)
                 .styleProvider(styleProvider)
+                .sizeProvider(sizeProvider)
                 .borderNodeDescriptions(new ArrayList<>())
                 .childNodeDescriptions(new ArrayList<>())
                 .labelEditHandler((variableManager, newLabel) -> Status.OK)

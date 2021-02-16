@@ -26,6 +26,7 @@ import org.eclipse.sirius.web.annotations.graphql.GraphQLID;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLNonNull;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLObjectType;
 import org.eclipse.sirius.web.diagrams.INodeStyle;
+import org.eclipse.sirius.web.diagrams.Size;
 import org.eclipse.sirius.web.representations.Status;
 import org.eclipse.sirius.web.representations.VariableManager;
 
@@ -54,6 +55,8 @@ public final class NodeDescription {
     private LabelDescription labelDescription;
 
     private Function<VariableManager, INodeStyle> styleProvider;
+
+    private Function<VariableManager, Size> sizeProvider;
 
     private List<NodeDescription> borderNodeDescriptions;
 
@@ -104,6 +107,10 @@ public final class NodeDescription {
 
     public Function<VariableManager, INodeStyle> getStyleProvider() {
         return this.styleProvider;
+    }
+
+    public Function<VariableManager, Size> getSizeProvider() {
+        return this.sizeProvider;
     }
 
     public List<NodeDescription> getBorderNodeDescriptions() {
@@ -157,6 +164,8 @@ public final class NodeDescription {
 
         private Function<VariableManager, INodeStyle> styleProvider;
 
+        private Function<VariableManager, Size> sizeProvider;
+
         private List<NodeDescription> borderNodeDescriptions;
 
         private List<NodeDescription> childNodeDescriptions;
@@ -209,6 +218,11 @@ public final class NodeDescription {
             return this;
         }
 
+        public Builder sizeProvider(Function<VariableManager, Size> sizeProvider) {
+            this.sizeProvider = Objects.requireNonNull(sizeProvider);
+            return this;
+        }
+
         public Builder borderNodeDescriptions(List<NodeDescription> borderNodeDescriptions) {
             this.borderNodeDescriptions = Objects.requireNonNull(borderNodeDescriptions);
             return this;
@@ -240,6 +254,7 @@ public final class NodeDescription {
             nodeDescription.semanticElementsProvider = Objects.requireNonNull(this.semanticElementsProvider);
             nodeDescription.labelDescription = Objects.requireNonNull(this.labelDescription);
             nodeDescription.styleProvider = Objects.requireNonNull(this.styleProvider);
+            nodeDescription.sizeProvider = Objects.requireNonNull(this.sizeProvider);
             nodeDescription.borderNodeDescriptions = Objects.requireNonNull(this.borderNodeDescriptions);
             nodeDescription.childNodeDescriptions = Objects.requireNonNull(this.childNodeDescriptions);
             nodeDescription.labelEditHandler = Objects.requireNonNull(this.labelEditHandler);
@@ -247,4 +262,5 @@ public final class NodeDescription {
             return nodeDescription;
         }
     }
+
 }

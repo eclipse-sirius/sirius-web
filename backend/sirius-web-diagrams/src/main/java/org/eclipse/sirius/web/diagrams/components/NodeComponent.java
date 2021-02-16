@@ -121,14 +121,18 @@ public class NodeComponent implements IComponent {
         nodeVariableManager.put(LabelDescription.OWNER_ID, nodeId);
         LabelComponentProps labelComponentProps = new LabelComponentProps(nodeVariableManager, labelDescription, optionalPreviousLabel, LabelType.INSIDE_CENTER.getValue());
         Element labelElement = new Element(LabelComponent.class, labelComponentProps);
+
         List<Element> nodeChildren = new ArrayList<>();
         nodeChildren.add(labelElement);
         nodeChildren.addAll(borderNodes);
         nodeChildren.addAll(childNodes);
-
-        Position position = optionalPreviousNode.map(Node::getPosition).orElse(Position.UNDEFINED);
-        Size size = optionalPreviousNode.map(Node::getSize).orElse(Size.UNDEFINED);
         // @formatter:off
+
+        Position position = optionalPreviousNode.map(Node::getPosition)
+                .orElse(Position.UNDEFINED);
+
+        Size size = this.getSize(optionalPreviousNode, nodeDescription, nodeVariableManager);
+
         NodeElementProps nodeElementProps = NodeElementProps.newNodeElementProps(nodeId)
                 .type(type)
                 .targetObjectId(targetObjectId)
@@ -143,6 +147,35 @@ public class NodeComponent implements IComponent {
                 .build();
         // @formatter:on
         return new Element(NodeElementProps.TYPE, nodeElementProps);
+    }
+
+    /**
+     * Computes the size of the node.
+     *
+     * <p>
+     * Three different sizes can be returned by this function:
+     * </p>
+     * <ul>
+     * <li>The size computed by the description if it is valid (width > 0 and height > 0)</li>
+     * <li>The size of the previous node if a previous node existed</li>
+     * <li>The undefined size (width = -1, height = -1) if the node did not exist before and if we have no valid size
+     * from the description</li>
+     * </ul>
+     *
+     * @param optionalPreviousNode
+     *            The previous node if this node existed during a previous rendering
+     * @param nodeDescription
+     *            The description of the node
+     * @param nodeVariableManager
+     *            The variable manager of the node
+     * @return The size of the node
+     */
+    private Size getSize(Optional<Node> optionalPreviousNode, NodeDescription nodeDescription, VariableManager nodeVariableManager) {
+        Size size = nodeDescription.getSizeProvider().apply(nodeVariableManager);
+        if (size.getHeight() < 0 || size.getWidth() < 0) {
+            size = optionalPreviousNode.map(Node::getSize).orElse(Size.UNDEFINED);
+        }
+        return size;
     }
 
     private List<Element> getBorderNodes(Optional<Node> optionalPreviousNode, VariableManager nodeVariableManager, UUID nodeId) {

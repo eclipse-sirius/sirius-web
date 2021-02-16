@@ -26,6 +26,7 @@ import org.eclipse.sirius.web.diagrams.INodeStyle;
 import org.eclipse.sirius.web.diagrams.LineStyle;
 import org.eclipse.sirius.web.diagrams.Node;
 import org.eclipse.sirius.web.diagrams.RectangularNodeStyle;
+import org.eclipse.sirius.web.diagrams.Size;
 import org.eclipse.sirius.web.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.web.diagrams.components.DiagramComponent;
 import org.eclipse.sirius.web.diagrams.components.DiagramComponentProps;
@@ -181,6 +182,7 @@ public class UnsynchronizedDiagramTestCases {
                 .targetObjectLabelProvider(variableManager -> "")//$NON-NLS-1$
                 .labelDescription(labelDescription)
                 .styleProvider(styleProvider)
+                .sizeProvider(variableManager -> Size.of(0, 0))
                 .borderNodeDescriptions(new ArrayList<>())
                 .childNodeDescriptions(new ArrayList<>())
                 .labelEditHandler((variableManager, newLabel) -> Status.OK)
@@ -195,6 +197,7 @@ public class UnsynchronizedDiagramTestCases {
                 .targetObjectLabelProvider(variableManager -> "")//$NON-NLS-1$
                 .labelDescription(labelDescription)
                 .styleProvider(styleProvider)
+                .sizeProvider(variableManager -> Size.of(0, 0))
                 .borderNodeDescriptions(new ArrayList<>())
                 .childNodeDescriptions(List.of(subUnsynchronizedNodeDescription))
                 .labelEditHandler((variableManager, newLabel) -> Status.OK)
@@ -210,6 +213,7 @@ public class UnsynchronizedDiagramTestCases {
                 .targetObjectLabelProvider(variableManager -> "")//$NON-NLS-1$
                 .labelDescription(labelDescription)
                 .styleProvider(styleProvider)
+                .sizeProvider(variableManager -> Size.of(0, 0))
                 .borderNodeDescriptions(new ArrayList<>())
                 .childNodeDescriptions(new ArrayList<>())
                 .labelEditHandler((variableManager, newLabel) -> Status.OK)

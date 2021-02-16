@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.diagrams;
 
 import java.text.MessageFormat;
+import java.util.Objects;
 
 import org.eclipse.sirius.web.annotations.Immutable;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLField;
@@ -54,6 +55,19 @@ public final class Size {
     @GraphQLNonNull
     public double getHeight() {
         return this.height;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Size) {
+            return this.getHeight() == ((Size) obj).getHeight() && this.getWidth() == ((Size) obj).getWidth();
+        }
+        return super.equals(obj);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.getHeight(), this.getWidth());
     }
 
     public static Builder newSize() {

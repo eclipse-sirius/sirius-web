@@ -26,6 +26,7 @@ import org.eclipse.sirius.web.compat.api.IIdentifierProvider;
 import org.eclipse.sirius.web.compat.api.IModelOperationHandlerSwitchProvider;
 import org.eclipse.sirius.web.compat.api.ISemanticCandidatesProviderFactory;
 import org.eclipse.sirius.web.compat.diagrams.EdgeMappingConverter;
+import org.eclipse.sirius.web.diagrams.Size;
 import org.eclipse.sirius.web.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.web.diagrams.description.LabelDescription;
 import org.eclipse.sirius.web.diagrams.description.LabelStyleDescription;
@@ -103,6 +104,7 @@ public class EdgeMappingConverterTestCases {
                 .semanticElementsProvider(variableManager -> List.of())
                 .labelDescription(labelDescription)
                 .styleProvider(variableManager -> null)
+                .sizeProvider(variableManager -> Size.of(0, 0))
                 .borderNodeDescriptions(List.of())
                 .childNodeDescriptions(List.of())
                 .labelEditHandler((variableManager, newLabel) -> Status.OK)

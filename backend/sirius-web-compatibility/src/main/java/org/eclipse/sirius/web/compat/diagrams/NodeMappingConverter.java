@@ -119,6 +119,8 @@ public class NodeMappingConverter {
 
         Function<VariableManager, INodeStyle> styleProvider = new NodeMappingStyleProvider(this.interpreter, nodeMapping);
 
+        NodeMappingSizeProvider nodeMappingSizeProvider = new NodeMappingSizeProvider(this.interpreter, nodeMapping);
+
         String domainClass = nodeMapping.getDomainClass();
         String semanticCandidatesExpression = nodeMapping.getSemanticCandidatesExpression();
         String preconditionExpression = nodeMapping.getPreconditionExpression();
@@ -144,6 +146,7 @@ public class NodeMappingConverter {
                 .semanticElementsProvider(semanticElementsProvider)
                 .labelDescription(labelDescription)
                 .styleProvider(styleProvider)
+                .sizeProvider(nodeMappingSizeProvider)
                 .borderNodeDescriptions(borderNodeDescriptions)
                 .childNodeDescriptions(new ArrayList<>())
                 .labelEditHandler(labelEditHandler)
