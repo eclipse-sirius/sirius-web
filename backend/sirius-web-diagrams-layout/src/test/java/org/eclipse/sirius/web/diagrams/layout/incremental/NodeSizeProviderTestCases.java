@@ -14,6 +14,12 @@ package org.eclipse.sirius.web.diagrams.layout.incremental;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.Optional;
+import java.util.UUID;
+
+import org.eclipse.sirius.web.diagrams.IDiagramElementEvent;
+import org.eclipse.sirius.web.diagrams.Position;
+import org.eclipse.sirius.web.diagrams.ResizeEvent;
 import org.eclipse.sirius.web.diagrams.Size;
 import org.eclipse.sirius.web.diagrams.layout.incremental.data.NodeLayoutData;
 import org.eclipse.sirius.web.diagrams.layout.incremental.provider.ImageSizeProvider;
@@ -40,7 +46,7 @@ public class NodeSizeProviderTestCases {
     public void testNodeSize() {
         ImageSizeProvider imageSizeProvider = new ImageSizeProvider();
         NodeSizeProvider nodeSizeProvider = new NodeSizeProvider(imageSizeProvider);
-        Size size = nodeSizeProvider.getSize(this.createNodeLayoutData(Size.UNDEFINED));
+        Size size = nodeSizeProvider.getSize(Optional.empty(), this.createNodeLayoutData(Size.UNDEFINED));
         assertThat(size).extracting(Size::getHeight).isEqualTo(Double.valueOf(HEIGHT_70));
         assertThat(size).extracting(Size::getWidth).isEqualTo(Double.valueOf(WIDTH_150));
 
@@ -51,7 +57,7 @@ public class NodeSizeProviderTestCases {
     public void testNodeSizeWithExistingSize() {
         ImageSizeProvider imageSizeProvider = new ImageSizeProvider();
         NodeSizeProvider nodeSizeProvider = new NodeSizeProvider(imageSizeProvider);
-        Size size = nodeSizeProvider.getSize(this.createNodeLayoutData(Size.of(WIDTH_80, HEIGHT_50)));
+        Size size = nodeSizeProvider.getSize(Optional.empty(), this.createNodeLayoutData(Size.of(WIDTH_80, HEIGHT_50)));
         assertThat(size).extracting(Size::getHeight).isEqualTo(Double.valueOf(HEIGHT_50));
         assertThat(size).extracting(Size::getWidth).isEqualTo(Double.valueOf(WIDTH_80));
 
@@ -62,8 +68,27 @@ public class NodeSizeProviderTestCases {
         TestDiagramBuilder testDiagramBuilder = new TestDiagramBuilder();
 
         NodeLayoutData nodeLayoutData = new NodeLayoutData();
+        nodeLayoutData.setId(UUID.randomUUID());
         nodeLayoutData.setSize(size);
         nodeLayoutData.setStyle(testDiagramBuilder.getRectangularNodeStyle());
         return nodeLayoutData;
     }
+
+    @Test
+    public void testResizeNodeEvent() {
+        Size initialNodeSize = Size.of(200, 100);
+        NodeLayoutData nodeLayoutData = this.createNodeLayoutData(initialNodeSize);
+        NodeLayoutData nodeLayoutData2 = this.createNodeLayoutData(initialNodeSize);
+        Size newSize = Size.of(100, 50);
+
+        ImageSizeProvider imageSizeProvider = new ImageSizeProvider();
+        NodeSizeProvider nodeSizeProvider = new NodeSizeProvider(imageSizeProvider);
+        Optional<IDiagramElementEvent> optionalEvent = Optional.of(new ResizeEvent(nodeLayoutData.getId(), Position.UNDEFINED, newSize));
+
+        Size newSizeFromProvider = nodeSizeProvider.getSize(optionalEvent, nodeLayoutData);
+        Size newSizeFromProvider2 = nodeSizeProvider.getSize(optionalEvent, nodeLayoutData2);
+        assertThat(newSizeFromProvider).isEqualTo(newSize);
+        assertThat(newSizeFromProvider2).isEqualTo(initialNodeSize);
+    }
+
 }

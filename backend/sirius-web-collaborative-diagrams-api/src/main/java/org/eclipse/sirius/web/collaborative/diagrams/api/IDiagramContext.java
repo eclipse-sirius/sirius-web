@@ -15,8 +15,7 @@ package org.eclipse.sirius.web.collaborative.diagrams.api;
 import java.util.List;
 
 import org.eclipse.sirius.web.diagrams.Diagram;
-import org.eclipse.sirius.web.diagrams.MoveEvent;
-import org.eclipse.sirius.web.diagrams.Position;
+import org.eclipse.sirius.web.diagrams.IDiagramElementEvent;
 import org.eclipse.sirius.web.diagrams.ViewCreationRequest;
 
 /**
@@ -39,11 +38,8 @@ public interface IDiagramContext {
 
     List<ViewCreationRequest> getViewCreationRequests();
 
-    MoveEvent getMoveEvent();
+    IDiagramElementEvent getDiagramElementEvent();
 
-    void setMoveEvent(MoveEvent moveEvent);
+    void setDiagramElementEvent(IDiagramElementEvent diagramElementEvent);
 
-    Position getStartingPosition();
-
-    void setStartingPosition(Position startingPosition);
 }

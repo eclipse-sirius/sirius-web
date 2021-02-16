@@ -12,9 +12,10 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.diagrams.layout.api;
 
+import java.util.Optional;
+
 import org.eclipse.sirius.web.diagrams.Diagram;
-import org.eclipse.sirius.web.diagrams.MoveEvent;
-import org.eclipse.sirius.web.diagrams.Position;
+import org.eclipse.sirius.web.diagrams.IDiagramElementEvent;
 
 /**
  * Implementation of this interface will layout the given diagram.
@@ -29,12 +30,10 @@ public interface ILayoutService {
      *
      * @param diagram
      *            The new diagram to layout.
-     * @param moveEvent
-     *            the {@link MoveEvent} that has trigger the new layout. Can be null if no event occurs.
-     * @param startingPosition
-     *            the {@link Position} to use to create new graphical elements (following a tool applied on the diagram
-     *            for instance.
+     * @param optionalDiagramElementEvent
+     *            the {@link IDiagramElementEvent} that has trigger the new layout. Can be null if no event occurs. for
+     *            instance.
      * @return the new layouted diagram.
      */
-    Diagram incrementalLayout(Diagram diagram, MoveEvent moveEvent, Position startingPosition);
+    Diagram incrementalLayout(Diagram diagram, Optional<IDiagramElementEvent> optionalDiagramElementEvent);
 }

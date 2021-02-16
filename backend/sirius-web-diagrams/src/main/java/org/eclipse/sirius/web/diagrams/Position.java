@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.diagrams;
 
 import java.text.MessageFormat;
+import java.util.Objects;
 
 import org.eclipse.sirius.web.annotations.Immutable;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLField;
@@ -58,6 +59,19 @@ public final class Position {
 
     public static Builder newPosition() {
         return new Builder();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Position) {
+            return this.getX() == ((Position) obj).getX() && this.getY() == ((Position) obj).getY();
+        }
+        return super.equals(obj);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.getX(), this.getY());
     }
 
     @Override

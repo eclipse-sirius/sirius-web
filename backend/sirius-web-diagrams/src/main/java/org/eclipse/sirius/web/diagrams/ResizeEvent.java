@@ -16,27 +16,34 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- * Represent an immutable move event.
+ * Represent an immutable resize event.
  *
- * @author wpiers
+ * @author fbarbin
  */
-public class MoveEvent implements IDiagramElementEvent {
+public class ResizeEvent implements IDiagramElementEvent {
 
     private final UUID nodeId;
 
-    private final Position newPosition;
+    private final Position positionDelta;
 
-    public MoveEvent(UUID nodeId, Position newPosition) {
+    private final Size newSize;
+
+    public ResizeEvent(UUID nodeId, Position positionDelta, Size newSize) {
         this.nodeId = Objects.requireNonNull(nodeId);
-        this.newPosition = Objects.requireNonNull(newPosition);
+        this.positionDelta = Objects.requireNonNull(positionDelta);
+        this.newSize = Objects.requireNonNull(newSize);
     }
 
     public UUID getNodeId() {
         return this.nodeId;
     }
 
-    public Position getNewPosition() {
-        return this.newPosition;
+    public Position getPositionDelta() {
+        return this.positionDelta;
+    }
+
+    public Size getNewSize() {
+        return this.newSize;
     }
 
 }

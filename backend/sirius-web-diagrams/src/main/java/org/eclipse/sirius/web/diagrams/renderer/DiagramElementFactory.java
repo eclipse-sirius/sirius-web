@@ -118,6 +118,7 @@ public class DiagramElementFactory implements IElementFactory {
                 .size(props.getSize())
                 .borderNodes(borderNodes)
                 .childNodes(childNodes)
+                .customizedProperties(props.getCustomizableProperties())
                 .build();
         // @formatter:on
     }

@@ -12,31 +12,11 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.diagrams;
 
-import java.util.Objects;
-import java.util.UUID;
-
 /**
- * Represent an immutable move event.
+ * Represent an event for a particular diagram element.
  *
- * @author wpiers
+ * @author fbarbin
  */
-public class MoveEvent implements IDiagramElementEvent {
-
-    private final UUID nodeId;
-
-    private final Position newPosition;
-
-    public MoveEvent(UUID nodeId, Position newPosition) {
-        this.nodeId = Objects.requireNonNull(nodeId);
-        this.newPosition = Objects.requireNonNull(newPosition);
-    }
-
-    public UUID getNodeId() {
-        return this.nodeId;
-    }
-
-    public Position getNewPosition() {
-        return this.newPosition;
-    }
+public interface IDiagramElementEvent {
 
 }

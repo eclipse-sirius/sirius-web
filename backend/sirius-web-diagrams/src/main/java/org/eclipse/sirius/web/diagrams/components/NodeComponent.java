@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -23,6 +24,7 @@ import org.eclipse.sirius.web.components.Element;
 import org.eclipse.sirius.web.components.Fragment;
 import org.eclipse.sirius.web.components.FragmentProps;
 import org.eclipse.sirius.web.components.IComponent;
+import org.eclipse.sirius.web.diagrams.CustomizableProperties;
 import org.eclipse.sirius.web.diagrams.INodeStyle;
 import org.eclipse.sirius.web.diagrams.Label;
 import org.eclipse.sirius.web.diagrams.Node;
@@ -132,6 +134,7 @@ public class NodeComponent implements IComponent {
                 .orElse(Position.UNDEFINED);
 
         Size size = this.getSize(optionalPreviousNode, nodeDescription, nodeVariableManager);
+        Set<CustomizableProperties> customizableProperties = optionalPreviousNode.map(Node::getCustomizedProperties).orElse(Set.of());
 
         NodeElementProps nodeElementProps = NodeElementProps.newNodeElementProps(nodeId)
                 .type(type)
@@ -144,6 +147,7 @@ public class NodeComponent implements IComponent {
                 .position(position)
                 .size(size)
                 .children(nodeChildren)
+                .customizableProperties(customizableProperties)
                 .build();
         // @formatter:on
         return new Element(NodeElementProps.TYPE, nodeElementProps);
@@ -153,9 +157,11 @@ public class NodeComponent implements IComponent {
      * Computes the size of the node.
      *
      * <p>
-     * Three different sizes can be returned by this function:
+     * Four different sizes can be returned by this function (by priority order):
      * </p>
      * <ul>
+     * <li>The size of the previous node if it exists and if this size has been customized by a user (manual
+     * resize)</li>
      * <li>The size computed by the description if it is valid (width > 0 and height > 0)</li>
      * <li>The size of the previous node if a previous node existed</li>
      * <li>The undefined size (width = -1, height = -1) if the node did not exist before and if we have no valid size
@@ -171,9 +177,19 @@ public class NodeComponent implements IComponent {
      * @return The size of the node
      */
     private Size getSize(Optional<Node> optionalPreviousNode, NodeDescription nodeDescription, VariableManager nodeVariableManager) {
-        Size size = nodeDescription.getSizeProvider().apply(nodeVariableManager);
-        if (size.getHeight() < 0 || size.getWidth() < 0) {
+        Size size;
+        //@formatter:off
+        boolean customizedSize = optionalPreviousNode.map(Node::getCustomizedProperties)
+                .filter(set -> set.contains(CustomizableProperties.Size))
+                .isPresent();
+        //@formatter:on
+        if (customizedSize) {
             size = optionalPreviousNode.map(Node::getSize).orElse(Size.UNDEFINED);
+        } else {
+            size = nodeDescription.getSizeProvider().apply(nodeVariableManager);
+            if (size.getHeight() <= 0 || size.getWidth() <= 0) {
+                size = optionalPreviousNode.map(Node::getSize).orElse(Size.UNDEFINED);
+            }
         }
         return size;
     }
