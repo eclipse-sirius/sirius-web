@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,12 +15,14 @@ package org.eclipse.sirius.web.spring.collaborative.forms;
 import java.util.List;
 
 import org.eclipse.sirius.web.api.services.IImagePathService;
+import org.springframework.stereotype.Service;
 
 /**
  * Add the images folder.
  *
  * @author sbegaudeau
  */
+@Service
 public class FormImagePathService implements IImagePathService {
     @Override
     public List<String> getPaths() {
