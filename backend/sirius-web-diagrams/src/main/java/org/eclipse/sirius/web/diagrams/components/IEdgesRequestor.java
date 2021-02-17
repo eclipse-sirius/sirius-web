@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.diagrams.components;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import org.eclipse.sirius.web.diagrams.Edge;
 
@@ -22,5 +23,5 @@ import org.eclipse.sirius.web.diagrams.Edge;
  * @author sbegaudeau
  */
 public interface IEdgesRequestor {
-    Optional<Edge> getByTargetObjectId(String targetObjectId);
+    Optional<Edge> getById(UUID edgeId);
 }
