@@ -84,51 +84,52 @@ public class EdgeComponent implements IComponent {
                 String targetObjectKind = edgeDescription.getTargetObjectKindProvider().apply(edgeVariableManager);
                 String targetObjectLabel = edgeDescription.getTargetObjectLabelProvider().apply(edgeVariableManager);
 
-                var optionalPreviousEdge = edgesRequestor.getByTargetObjectId(targetObjectId);
-                SynchronizationPolicy synchronizationPolicy = edgeDescription.getSynchronizationPolicy();
-                boolean shouldRender = synchronizationPolicy == SynchronizationPolicy.SYNCHRONIZED
-                        || (synchronizationPolicy == SynchronizationPolicy.UNSYNCHRONIZED && optionalPreviousEdge.isPresent());
-
                 List<Element> sourceNodes = edgeDescription.getSourceNodesProvider().apply(edgeVariableManager);
-                if (shouldRender && !sourceNodes.isEmpty()) {
+                if (!sourceNodes.isEmpty()) {
                     List<Element> targetNodes = edgeDescription.getTargetNodesProvider().apply(edgeVariableManager);
 
                     for (Element sourceNode : sourceNodes) {
                         for (Element targetNode : targetNodes) {
                             UUID id = this.computeEdgeId(sourceNode, targetNode, count);
+                            var optionalPreviousEdge = edgesRequestor.getById(id);
+                            SynchronizationPolicy synchronizationPolicy = edgeDescription.getSynchronizationPolicy();
+                            boolean shouldRender = synchronizationPolicy == SynchronizationPolicy.SYNCHRONIZED
+                                    || (synchronizationPolicy == SynchronizationPolicy.UNSYNCHRONIZED && optionalPreviousEdge.isPresent());
 
-                            EdgeStyle style = edgeDescription.getStyleProvider().apply(edgeVariableManager);
+                            if (shouldRender) {
+                                EdgeStyle style = edgeDescription.getStyleProvider().apply(edgeVariableManager);
 
-                            UUID sourceId = this.getId(sourceNode);
-                            UUID targetId = this.getId(targetNode);
+                                UUID sourceId = this.getId(sourceNode);
+                                UUID targetId = this.getId(targetNode);
 
-                            // @formatter:off
-                            String edgeType = optionalPreviousEdge
-                                    .map(Edge::getType)
-                                    .orElse("edge:straight"); //$NON-NLS-1$
+                                // @formatter:off
+                                String edgeType = optionalPreviousEdge
+                                        .map(Edge::getType)
+                                        .orElse("edge:straight"); //$NON-NLS-1$
 
-                            List<Position> routingPoints = optionalPreviousEdge
-                                    .map(Edge::getRoutingPoints)
-                                    .orElseGet(()-> edgeRoutingPointsProvider.getRoutingPoints(sourceNode, targetNode));
+                                List<Position> routingPoints = optionalPreviousEdge
+                                        .map(Edge::getRoutingPoints)
+                                        .orElseGet(()-> edgeRoutingPointsProvider.getRoutingPoints(sourceNode, targetNode));
 
-                            List<Element> edgeChildren = this.getLabelsChildren(edgeDescription, edgeVariableManager, optionalPreviousEdge, id, routingPoints);
-                            EdgeElementProps edgeElementProps = EdgeElementProps.newEdgeElementProps(id)
-                                    .type(edgeType)
-                                    .descriptionId(edgeDescription.getId())
-                                    .targetObjectId(targetObjectId)
-                                    .targetObjectKind(targetObjectKind)
-                                    .targetObjectLabel(targetObjectLabel)
-                                    .sourceId(sourceId)
-                                    .targetId(targetId)
-                                    .style(style)
-                                    .routingPoints(routingPoints)
-                                    .children(edgeChildren)
-                                    .build();
-                            // @formatter:on
+                                List<Element> edgeChildren = this.getLabelsChildren(edgeDescription, edgeVariableManager, optionalPreviousEdge, id, routingPoints);
+                                EdgeElementProps edgeElementProps = EdgeElementProps.newEdgeElementProps(id)
+                                        .type(edgeType)
+                                        .descriptionId(edgeDescription.getId())
+                                        .targetObjectId(targetObjectId)
+                                        .targetObjectKind(targetObjectKind)
+                                        .targetObjectLabel(targetObjectLabel)
+                                        .sourceId(sourceId)
+                                        .targetId(targetId)
+                                        .style(style)
+                                        .routingPoints(routingPoints)
+                                        .children(edgeChildren)
+                                        .build();
+                                // @formatter:on
 
-                            Element edgeElement = new Element(EdgeElementProps.TYPE, edgeElementProps);
-                            children.add(edgeElement);
-                            count++;
+                                Element edgeElement = new Element(EdgeElementProps.TYPE, edgeElementProps);
+                                children.add(edgeElement);
+                                count++;
+                            }
                         }
                     }
                 }
