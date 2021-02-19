@@ -12,18 +12,20 @@
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
 import Button from '@material-ui/core/Button';
+import Container from '@material-ui/core/Container';
 import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
+import { useBranding } from 'common/BrandingContext';
 import { Form } from 'core/form/Form';
 import gql from 'graphql-tag';
+import { ProjectNavbar } from 'navbar/ProjectNavbar';
 import React, { useEffect } from 'react';
 import { Redirect, useParams } from 'react-router-dom';
 import { FormContainer } from 'views/FormContainer';
-import { View } from 'views/View';
 import {
   HandleChangedNameEvent,
   HandleCreateModelerEvent,
@@ -55,6 +57,16 @@ const createModelerMutation = gql`
 `;
 
 const useNewModelerViewStyles = makeStyles((theme) => ({
+  newModelerView: {
+    display: 'grid',
+    gridTemplateColumns: '1fr',
+    gridTemplateRows: 'min-content 1fr min-content',
+    minHeight: '100vh',
+  },
+  main: {
+    paddingTop: theme.spacing(3),
+    paddingBottom: theme.spacing(3),
+  },
   buttons: {
     display: 'flex',
     flexDirection: 'row',
@@ -64,6 +76,7 @@ const useNewModelerViewStyles = makeStyles((theme) => ({
 export const NewModelerView = () => {
   const { projectId } = useParams();
   const classes = useNewModelerViewStyles();
+  const { footer } = useBranding();
   const [{ value, context }, dispatch] = useMachine<NewModelerViewContext, NewModelerEvent>(newModelerViewMachine);
   const { newModelerView, toast } = value as SchemaValue;
   const { name, nameMessage, nameIsInvalid, message } = context;
@@ -116,32 +129,40 @@ export const NewModelerView = () => {
   }
 
   return (
-    <View condensed>
-      <FormContainer title="Create a new modeler" subtitle="Get started by creating a new modeler">
-        <Form onSubmit={onCreateNewModeler}>
-          <TextField
-            error={nameIsInvalid}
-            helperText={nameMessage}
-            label="Name"
-            name="name"
-            value={name}
-            placeholder="Enter the modeler name"
-            data-testid="name"
-            autoFocus={true}
-            onChange={onNameChange}
-          />
-          <div className={classes.buttons}>
-            <Button
-              variant="contained"
-              type="submit"
-              disabled={newModelerView !== 'valid'}
-              data-testid="create-modeler"
-              color="primary">
-              Create
-            </Button>
-          </div>
-        </Form>
-      </FormContainer>
+    <>
+      <div className={classes.newModelerView}>
+        <ProjectNavbar />
+        <main className={classes.main}>
+          <Container maxWidth="sm">
+            <FormContainer title="Create a new modeler" subtitle="Get started by creating a new modeler">
+              <Form onSubmit={onCreateNewModeler}>
+                <TextField
+                  error={nameIsInvalid}
+                  helperText={nameMessage}
+                  label="Name"
+                  name="name"
+                  value={name}
+                  placeholder="Enter the modeler name"
+                  data-testid="name"
+                  autoFocus={true}
+                  onChange={onNameChange}
+                />
+                <div className={classes.buttons}>
+                  <Button
+                    variant="contained"
+                    type="submit"
+                    disabled={newModelerView !== 'valid'}
+                    data-testid="create-modeler"
+                    color="primary">
+                    Create
+                  </Button>
+                </div>
+              </Form>
+            </FormContainer>
+          </Container>
+        </main>
+        {footer}
+      </div>
       <Snackbar
         anchorOrigin={{
           vertical: 'bottom',
@@ -162,6 +183,6 @@ export const NewModelerView = () => {
         }
         data-testid="error"
       />
-    </View>
+    </>
   );
 };
