@@ -63,7 +63,8 @@ public class FormRendererTestCases {
     public void testEcoreModel() {
         ViewExtensionDescription viewExtensionDescription = this.createSiriusProperties();
 
-        AQLInterpreterFactory interpreterFactory = new AQLInterpreterFactory() {
+        AQLInterpreterFactory interpreterFactory = new AQLInterpreterFactory(List.of()) {
+
             @Override
             public AQLInterpreter create(ViewExtensionDescription viewExtensionDescription) {
                 return new AQLInterpreter(List.of(), List.of(EcorePackage.eINSTANCE));

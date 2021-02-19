@@ -15,10 +15,12 @@ package org.eclipse.sirius.web.emf.compatibility;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.BasicEList;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.sirius.diagram.description.DiagramDescription;
 import org.eclipse.sirius.properties.ViewExtensionDescription;
@@ -41,6 +43,12 @@ public class AQLInterpreterFactory implements IAQLInterpreterFactory {
 
     private final Logger logger = LoggerFactory.getLogger(AQLInterpreterFactory.class);
 
+    private final List<EPackage> contributedEPackages;
+
+    public AQLInterpreterFactory(List<EPackage> contributedEPackages) {
+        this.contributedEPackages = List.copyOf(Objects.requireNonNull(contributedEPackages));
+    }
+
     @Override
     public AQLInterpreter create(DiagramDescription diagramDescription) {
         // @formatter:off
@@ -52,6 +60,8 @@ public class AQLInterpreterFactory implements IAQLInterpreterFactory {
         // @formatter:on
 
         List<EPackage> ePackages = diagramDescription.getMetamodel();
+        ePackages.addAll(this.contributedEPackages);
+        ePackages.removeIf(EObject::eIsProxy);
         return new AQLInterpreter(javaClasses, ePackages);
     }
 
@@ -71,7 +81,8 @@ public class AQLInterpreterFactory implements IAQLInterpreterFactory {
         // @formatter:on
 
         List<EPackage> ePackages = viewExtensionDescription.getMetamodels();
-
+        ePackages.addAll(this.contributedEPackages);
+        ePackages.removeIf(EObject::eIsProxy);
         return new AQLInterpreter(javaClasses, ePackages);
     }
 
