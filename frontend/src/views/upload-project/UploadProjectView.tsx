@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import Button from '@material-ui/core/Button';
+import Container from '@material-ui/core/Container';
 import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles } from '@material-ui/core/styles';
@@ -20,10 +21,10 @@ import { sendFile } from 'common/sendFile';
 import { FileUpload } from 'core/file-upload/FileUpload';
 import { Form } from 'core/form/Form';
 import gql from 'graphql-tag';
+import { LoggedInNavbar } from 'navbar/LoggedInNavbar';
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { FormContainer } from 'views/FormContainer';
-import { View } from 'views/View';
 import {
   SchemaValue,
   UploadProjectEvent,
@@ -48,6 +49,16 @@ const uploadProjectMutation = gql`
 `.loc.source.body;
 
 const useUploadProjectViewStyles = makeStyles((theme) => ({
+  uploadProjectView: {
+    display: 'grid',
+    gridTemplateColumns: '1fr',
+    gridTemplateRows: 'min-content 1fr min-content',
+    minHeight: '100vh',
+  },
+  main: {
+    paddingTop: theme.spacing(3),
+    paddingBottom: theme.spacing(3),
+  },
   buttons: {
     display: 'flex',
     flexDirection: 'row',
@@ -97,22 +108,27 @@ export const UploadProjectView = () => {
     return <Redirect to={`/projects/${newProjectId}/edit`} />;
   }
   return (
-    <View condensed>
-      <FormContainer title="Upload a project" subtitle="Start with an existing project">
-        <Form onSubmit={onUploadProject} encType="multipart/form-data">
-          <FileUpload onFileSelected={onFileSelected} data-testid="file" />
-          <div className={classes.buttons}>
-            <Button
-              variant="contained"
-              type="submit"
-              color="primary"
-              disabled={uploadProjectView !== 'fileSelected'}
-              data-testid="upload-project">
-              Upload
-            </Button>
-          </div>
-        </Form>
-      </FormContainer>
+    <div className={classes.uploadProjectView}>
+      <LoggedInNavbar />
+      <main className={classes.main}>
+        <Container maxWidth="sm">
+          <FormContainer title="Upload a project" subtitle="Start with an existing project">
+            <Form onSubmit={onUploadProject} encType="multipart/form-data">
+              <FileUpload onFileSelected={onFileSelected} data-testid="file" />
+              <div className={classes.buttons}>
+                <Button
+                  variant="contained"
+                  type="submit"
+                  color="primary"
+                  disabled={uploadProjectView !== 'fileSelected'}
+                  data-testid="upload-project">
+                  Upload
+                </Button>
+              </div>
+            </Form>
+          </FormContainer>
+        </Container>
+      </main>
       <Snackbar
         anchorOrigin={{
           vertical: 'bottom',
@@ -129,6 +145,6 @@ export const UploadProjectView = () => {
           </IconButton>
         }
       />
-    </View>
+    </div>
   );
 };

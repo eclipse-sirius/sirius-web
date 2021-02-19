@@ -12,6 +12,7 @@
  *******************************************************************************/
 import { useQuery } from '@apollo/client';
 import Button from '@material-ui/core/Button';
+import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import Link from '@material-ui/core/Link';
@@ -35,13 +36,14 @@ import EditIcon from '@material-ui/icons/Edit';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import PublishIcon from '@material-ui/icons/Publish';
 import { useMachine } from '@xstate/react';
+import { useBranding } from 'common/BrandingContext';
 import gql from 'graphql-tag';
 import { PublishModelerModal } from 'modals/publish-modeler/PublishModelerModal';
 import { RenameModelerModal } from 'modals/rename-modeler/RenameModelerModal';
+import { ProjectNavbar } from 'navbar/ProjectNavbar';
 import React, { useEffect } from 'react';
 import { Link as RouterLink, useParams } from 'react-router-dom';
 import { Modeler } from 'views/modelers/ModelersView.types';
-import { View } from 'views/View';
 import {
   CloseMenuEvent,
   CloseModalEvent,
@@ -71,6 +73,16 @@ const getModelersQuery = gql`
 `;
 
 const useModelersViewStyles = makeStyles((theme) => ({
+  modelersView: {
+    display: 'grid',
+    gridTemplateColumns: '1fr',
+    gridTemplateRows: 'min-content 1fr min-content',
+    minHeight: '100vh',
+  },
+  main: {
+    paddingTop: theme.spacing(3),
+    paddingBottom: theme.spacing(3),
+  },
   modelersViewContainer: {
     display: 'flex',
     flexDirection: 'column',
@@ -91,6 +103,7 @@ const useModelersViewStyles = makeStyles((theme) => ({
 export const ModelersView = () => {
   const classes = useModelersViewStyles();
   const { projectId } = useParams();
+  const { footer } = useBranding();
   const [{ value, context }, dispatch] = useMachine<ModelersViewContext, ModelersViewEvent>(modelersViewMachine);
   const { toast, modelersView } = value as SchemaValue;
   const { modelers, selectedModeler, menuAnchor, modalToDisplay, message } = context;
@@ -172,28 +185,36 @@ export const ModelersView = () => {
   }
 
   return (
-    <View>
-      <Grid container justify="center">
-        <Grid item xs={8}>
-          <div className={classes.modelersViewContainer}>
-            <div className={classes.header}>
-              <Typography variant="h3">Modelers</Typography>
-              <div className={classes.actions}>
-                <Button
-                  to={`/projects/${projectId}/new/modeler`}
-                  component={RouterLink}
-                  data-testid="create"
-                  color="primary"
-                  variant="contained"
-                  disabled={modelersView === 'missing'}>
-                  New
-                </Button>
-              </div>
-            </div>
-            {main}
-          </div>
-        </Grid>
-      </Grid>
+    <>
+      <div className={classes.modelersView}>
+        <ProjectNavbar />
+        <main className={classes.main}>
+          <Container maxWidth="xl">
+            <Grid container justify="center">
+              <Grid item xs={8}>
+                <div className={classes.modelersViewContainer}>
+                  <div className={classes.header}>
+                    <Typography variant="h3">Modelers</Typography>
+                    <div className={classes.actions}>
+                      <Button
+                        to={`/projects/${projectId}/new/modeler`}
+                        component={RouterLink}
+                        data-testid="create"
+                        color="primary"
+                        variant="contained"
+                        disabled={modelersView === 'missing'}>
+                        New
+                      </Button>
+                    </div>
+                  </div>
+                  {main}
+                </div>
+              </Grid>
+            </Grid>
+          </Container>
+        </main>
+        {footer}
+      </div>
       <Snackbar
         anchorOrigin={{
           vertical: 'bottom',
@@ -214,7 +235,7 @@ export const ModelersView = () => {
         }
         data-testid="error"
       />
-    </View>
+    </>
   );
 };
 

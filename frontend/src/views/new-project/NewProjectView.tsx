@@ -12,14 +12,17 @@
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
 import Button from '@material-ui/core/Button';
+import Container from '@material-ui/core/Container';
 import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
+import { useBranding } from 'common/BrandingContext';
 import { Form } from 'core/form/Form';
 import gql from 'graphql-tag';
+import { LoggedInNavbar } from 'navbar/LoggedInNavbar';
 import React, { useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 import { FormContainer } from 'views/FormContainer';
@@ -39,7 +42,6 @@ import {
   SchemaValue,
   ShowToastEvent,
 } from 'views/new-project/NewProjectViewMachine';
-import { View } from 'views/View';
 
 const createProjectMutation = gql`
   mutation createProject($input: CreateProjectInput!) {
@@ -58,6 +60,16 @@ const createProjectMutation = gql`
 `;
 
 const useNewProjectViewStyles = makeStyles((theme) => ({
+  newProjectView: {
+    display: 'grid',
+    gridTemplateColumns: '1fr',
+    gridTemplateRows: 'min-content 1fr min-content',
+    minHeight: '100vh',
+  },
+  main: {
+    paddingTop: theme.spacing(3),
+    paddingBottom: theme.spacing(3),
+  },
   buttons: {
     display: 'flex',
     flexDirection: 'row',
@@ -70,6 +82,7 @@ const isErrorPayload = (payload: GQLCreateProjectPayload): payload is GQLErrorPa
 
 export const NewProjectView = () => {
   const classes = useNewProjectViewStyles();
+  const { footer } = useBranding();
   const [{ value, context }, dispatch] = useMachine<NewProjectViewContext, NewProjectEvent>(newProjectViewMachine);
   const { newProjectView, toast } = value as SchemaValue;
   const { name, nameMessage, nameIsInvalid, message, newProjectId } = context;
@@ -122,32 +135,40 @@ export const NewProjectView = () => {
   }
 
   return (
-    <View condensed>
-      <FormContainer title="Create a new project" subtitle="Get started by creating a new project">
-        <Form onSubmit={onCreateNewProject}>
-          <TextField
-            error={nameIsInvalid}
-            helperText={nameMessage}
-            label="Name"
-            name="name"
-            value={name}
-            placeholder="Enter the project name"
-            data-testid="name"
-            autoFocus={true}
-            onChange={onNameChange}
-          />
-          <div className={classes.buttons}>
-            <Button
-              variant="contained"
-              type="submit"
-              disabled={newProjectView !== 'valid'}
-              data-testid="create-project"
-              color="primary">
-              Create
-            </Button>
-          </div>
-        </Form>
-      </FormContainer>
+    <>
+      <div className={classes.newProjectView}>
+        <LoggedInNavbar />
+        <main className={classes.main}>
+          <Container maxWidth="sm">
+            <FormContainer title="Create a new project" subtitle="Get started by creating a new project">
+              <Form onSubmit={onCreateNewProject}>
+                <TextField
+                  error={nameIsInvalid}
+                  helperText={nameMessage}
+                  label="Name"
+                  name="name"
+                  value={name}
+                  placeholder="Enter the project name"
+                  data-testid="name"
+                  autoFocus={true}
+                  onChange={onNameChange}
+                />
+                <div className={classes.buttons}>
+                  <Button
+                    variant="contained"
+                    type="submit"
+                    disabled={newProjectView !== 'valid'}
+                    data-testid="create-project"
+                    color="primary">
+                    Create
+                  </Button>
+                </div>
+              </Form>
+            </FormContainer>
+          </Container>
+        </main>
+        {footer}
+      </div>
       <Snackbar
         anchorOrigin={{
           vertical: 'bottom',
@@ -168,6 +189,6 @@ export const NewProjectView = () => {
         }
         data-testid="error"
       />
-    </View>
+    </>
   );
 };
