@@ -1,0 +1,89 @@
+= ADR-015 - Add support for resizing diagram elements
+
+== Context
+
+We now have the ability to move a diagram element but it is still not possible to resize an element.
+In Sprotty, the move feature is available, and with some minor adjustments, it can meet our needs.
+The main part of the work would be the creation of a GraphQL API to handle this move event in the backend.
+Currently, sprotty does not offer the resize feature.
+
+
+== Decision
+
+We have to implement the resize feature in the frontend and the backend.
+
+
+=== Frontend
+
+When selecting an element, in addition to the displayed border, handles should appear in every corners and on every borders.
+That means eight handles to make it possible to resize an element in the four cardinal directions and the four intercardinal directions.
+
+==== Expected behavior and feedback
+
+When resizing a container, every contained element should keep the same absolute location.
+Indeed, if the user resizes the container toward the North-West direction, the container position is also changed.
+If contained elements keep the same relative position, every one of them, and their connected edges will move.
+In addition, if the user tries to reduce the size of a container, we should not have a child out of the parent bounds.
+The frontend feedback should keep a minimal size to keep all children within the container bounds.
+
+
+==== Technical choices
+
+There is two ways to display handles at element selection:
+
+* By creating new children elements in the sprotty model. They will have their counterpart view to display them as SVG.
+* By modifying the node view SVG to display handles as rectangles in the same SVG figure.
+
+We will privilege the second solution since handles are pure feedback in the same way the selection border is.
+We do not want to represent them as node children.
+
+We will extend the Sprotty `MoveMouseListener` to detect that the drag and drop is performed on a handle.
+That is possible by retrieving the DOM element target id.
+Each handle will have a unique ID to detect in which direction the resize is performed. 
+If a resize is detected by the listener, a `ResizeAction` will be created instead of a `MoveAction`.
+The new `ResizeCommand` will update the sprotty model to display the resize feedback.
+
+=== Backend
+
+The new position and size of the moved element will be sent the backend through a new GraphQL API:
+```
+    type Mutation {
+        updateNodeBounds(input: UpdateNodeBoundsInput!): UpdateNodeBoundsPayload!
+    }
+    UpdateNodeBoundsInput {
+        id: ID!
+        representationId: ID!,
+        diagramElementId: ID!,
+        newPositionX: Float!,
+        newPositionY: Float!,
+        newWidth: Float!,
+        newHeight: Float!,
+        projectId: ID!,
+    }
+```
+
+The information will be passed to the `NodePositionProvider` and `NodeSizeProvider` in the same way as the move API but through a new `ResizeEvent` containing the position delta and the new size.
+
+The `IDiagramContext` API will be modified to replace the `MoveEvent` by a common interface `ÌDiagramElementEvent`:
+```
+    IDiagramElementEvent getDiagramElementEvent();
+
+    void seDiagramElementEvent(IDiagramElementEvent diagramElementEvent);
+
+    Position getStartingPosition();
+
+    void setStartingPosition(Position startingPosition);
+```
+
+The backend will also have the responsibility to make sure that no children are out of the new container bounds even if the frontend also checks this constraint.
+Indeed, another event from another client may have occurred in the meantime.
+In that case, the data provided by the frontend may not be relevant anymore.
+
+== Status
+
+Proposed
+
+== Consequences
+
+The resize can lead to overlap, in the same way as the move action.
+The overlap will be handled in the exact same way than for the move: overlapped elements will be slightly moved to avoid them.
