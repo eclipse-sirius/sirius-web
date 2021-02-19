@@ -44,10 +44,10 @@ import org.eclipse.sirius.web.representations.VariableManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Sinks;
+import reactor.core.publisher.Sinks.Many;
 
 /**
  * Reacts to the input that target the property sheet of a specific object and publishes updated versions of the
@@ -73,9 +73,7 @@ public class FormEventProcessor implements IFormEventProcessor {
 
     private final IWidgetSubscriptionManager widgetSubscriptionManager;
 
-    private final DirectProcessor<IPayload> flux;
-
-    private final FluxSink<IPayload> sink;
+    private final Many<IPayload> sink = Sinks.many().multicast().directBestEffort();
 
     private final AtomicReference<Form> currentForm = new AtomicReference<>();
 
@@ -88,9 +86,6 @@ public class FormEventProcessor implements IFormEventProcessor {
         this.formEventHandlers = Objects.requireNonNull(formEventHandlers);
         this.subscriptionManager = Objects.requireNonNull(subscriptionManager);
         this.widgetSubscriptionManager = Objects.requireNonNull(widgetSubscriptionManager);
-
-        this.flux = DirectProcessor.create();
-        this.sink = this.flux.sink();
 
         Form form = this.refreshForm();
         this.currentForm.set(form);
@@ -140,7 +135,7 @@ public class FormEventProcessor implements IFormEventProcessor {
         Form form = this.refreshForm();
 
         this.currentForm.set(form);
-        this.sink.next(new FormRefreshedEventPayload(form));
+        this.sink.tryEmitNext(new FormRefreshedEventPayload(form));
     }
 
     private Form refreshForm() {
@@ -161,7 +156,7 @@ public class FormEventProcessor implements IFormEventProcessor {
     @Override
     public Flux<IPayload> getOutputEvents() {
         var initialRefresh = Mono.fromCallable(() -> new FormRefreshedEventPayload(this.currentForm.get()));
-        var refreshEventFlux = Flux.concat(initialRefresh, this.flux);
+        var refreshEventFlux = Flux.concat(initialRefresh, this.sink.asFlux());
 
         // @formatter:off
         return Flux.merge(
@@ -176,12 +171,12 @@ public class FormEventProcessor implements IFormEventProcessor {
     public void dispose() {
         this.subscriptionManager.dispose();
         this.widgetSubscriptionManager.dispose();
-        this.flux.onComplete();
+        this.sink.tryEmitComplete();
     }
 
     @Override
     public void preDestroy() {
-        this.sink.next(new PreDestroyPayload(this.getRepresentation().getId()));
+        this.sink.tryEmitNext(new PreDestroyPayload(this.getRepresentation().getId()));
     }
 
 }

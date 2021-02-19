@@ -16,8 +16,9 @@ import org.eclipse.sirius.web.collaborative.forms.api.IWidgetSubscriptionManager
 import org.eclipse.sirius.web.collaborative.forms.api.dto.UpdateWidgetFocusInput;
 import org.eclipse.sirius.web.core.api.IPayload;
 
-import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Sinks;
+import reactor.core.publisher.Sinks.Many;
 
 /**
  * The widget subscription manager.
@@ -26,7 +27,7 @@ import reactor.core.publisher.Flux;
  */
 public class WidgetSubscriptionManager implements IWidgetSubscriptionManager {
 
-    private final DirectProcessor<IPayload> flux = DirectProcessor.create();
+    private final Many<IPayload> sink = Sinks.many().multicast().directBestEffort();
 
     @Override
     public void handle(UpdateWidgetFocusInput input) {
@@ -35,11 +36,11 @@ public class WidgetSubscriptionManager implements IWidgetSubscriptionManager {
 
     @Override
     public Flux<IPayload> getFlux() {
-        return this.flux;
+        return this.sink.asFlux();
     }
 
     @Override
     public void dispose() {
-        this.flux.sink().complete();
+        this.sink.tryEmitComplete();
     }
 }

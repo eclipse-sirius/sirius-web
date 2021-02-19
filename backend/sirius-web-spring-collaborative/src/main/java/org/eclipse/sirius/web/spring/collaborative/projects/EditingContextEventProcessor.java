@@ -55,9 +55,9 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.FluxSink;
+import reactor.core.publisher.Sinks;
+import reactor.core.publisher.Sinks.Many;
 
 /**
  * Handles all the inputs which concern a particular editing context one at a time, in order of arrival, and in a
@@ -86,9 +86,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
 
     private final Map<UUID, IRepresentationEventProcessor> representationEventProcessors = new ConcurrentHashMap<>();
 
-    private final DirectProcessor<IPayload> flux;
-
-    private final FluxSink<IPayload> sink;
+    private final Many<IPayload> sink = Sinks.many().multicast().directBestEffort();
 
     public EditingContextEventProcessor(IEditingContext editingContext, IEditingContextPersistenceService editingContextPersistenceService, ApplicationEventPublisher applicationEventPublisher,
             IObjectService objectService, List<IEditingContextEventHandler> editingContextEventHandlers, IRepresentationEventProcessorComposedFactory representationEventProcessorComposedFactory) {
@@ -104,9 +102,6 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
             thread.setName("FIFO Event Handler for editing context " + this.editingContext.getId()); //$NON-NLS-1$
             return thread;
         });
-
-        this.flux = DirectProcessor.create();
-        this.sink = this.flux.sink();
     }
 
     @Override
@@ -153,7 +148,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
             if (input instanceof RenameRepresentationInput && payload instanceof RenameRepresentationSuccessPayload) {
                 UUID representationId = ((RenameRepresentationInput) input).getRepresentationId();
                 String newLabel = ((RenameRepresentationInput) input).getNewLabel();
-                this.sink.next(new RepresentationRenamedEventPayload(representationId, newLabel));
+                this.sink.tryEmitNext(new RepresentationRenamedEventPayload(representationId, newLabel));
             }
         }
     }
@@ -349,7 +344,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
 
     @Override
     public Flux<IPayload> getOutputEvents() {
-        return this.flux;
+        return this.sink.asFlux();
     }
 
     @Override
@@ -358,12 +353,12 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
 
         this.representationEventProcessors.values().stream().forEach(IRepresentationEventProcessor::dispose);
         this.representationEventProcessors.clear();
-        this.flux.onComplete();
+        this.sink.tryEmitComplete();
     }
 
     public void preDestroy() {
         this.representationEventProcessors.values().stream().forEach(IRepresentationEventProcessor::preDestroy);
-        this.sink.next(new PreDestroyPayload(this.editingContext.getId()));
+        this.sink.tryEmitNext(new PreDestroyPayload(this.editingContext.getId()));
         this.dispose();
     }
 

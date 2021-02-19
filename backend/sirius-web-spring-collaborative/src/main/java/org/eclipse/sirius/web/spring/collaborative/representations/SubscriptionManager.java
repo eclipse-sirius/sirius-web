@@ -23,8 +23,9 @@ import org.eclipse.sirius.web.collaborative.api.services.ISubscriptionManager;
 import org.eclipse.sirius.web.collaborative.api.services.SubscriptionDescription;
 import org.eclipse.sirius.web.core.api.IPayload;
 
-import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Sinks;
+import reactor.core.publisher.Sinks.Many;
 
 /**
  * Service used to managed the subscriptions of a representation or a project.
@@ -33,7 +34,7 @@ import reactor.core.publisher.Flux;
  */
 public class SubscriptionManager implements ISubscriptionManager {
 
-    private final DirectProcessor<IPayload> flux = DirectProcessor.create();
+    private final Many<IPayload> sink = Sinks.many().multicast().directBestEffort();
 
     private final List<SubscriptionDescription> subscriptionDescriptions = new ArrayList<>();
 
@@ -70,11 +71,11 @@ public class SubscriptionManager implements ISubscriptionManager {
 
     @Override
     public Flux<IPayload> getFlux() {
-        return this.flux;
+        return this.sink.asFlux();
     }
 
     @Override
     public void dispose() {
-        this.flux.sink().complete();
+        this.sink.tryEmitComplete();
     }
 }
