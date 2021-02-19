@@ -90,7 +90,7 @@ public class MultiValuedNonContainmentReferenceIfDescriptionProvider {
     private Function<VariableManager, String> getImageURLProvider() {
         return variableManager -> {
             // @formatter:off
-            return variableManager.get(VariableManager.SELF, EObject.class)
+            return variableManager.get(ListComponent.CANDIDATE_VARIABLE, EObject.class)
                                   .map(this.objectService::getImagePath)
                                   .orElse(ImageConstants.DEFAULT_SVG);
             // @formatter:on
