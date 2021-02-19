@@ -38,10 +38,10 @@ import org.slf4j.LoggerFactory;
 
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Timer;
-import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Sinks;
+import reactor.core.publisher.Sinks.Many;
 
 /**
  * Reacts to the input that target a tree representation and publishes updated versions of the {@link Tree} to
@@ -61,9 +61,7 @@ public class TreeEventProcessor implements ITreeEventProcessor {
 
     private final ISubscriptionManager subscriptionManager;
 
-    private final DirectProcessor<IPayload> flux;
-
-    private final FluxSink<IPayload> sink;
+    private final Many<IPayload> sink = Sinks.many().multicast().directBestEffort();
 
     private final AtomicReference<Tree> currentTree = new AtomicReference<>();
 
@@ -75,9 +73,6 @@ public class TreeEventProcessor implements ITreeEventProcessor {
         this.treeCreationParameters = Objects.requireNonNull(treeCreationParameters);
         this.treeEventHandlers = Objects.requireNonNull(treeEventHandlers);
         this.subscriptionManager = Objects.requireNonNull(subscriptionManager);
-
-        this.flux = DirectProcessor.create();
-        this.sink = this.flux.sink();
 
         // @formatter:off
         this.timer = Timer.builder(Monitoring.REPRESENTATION_EVENT_PROCESSOR_REFRESH)
@@ -127,7 +122,7 @@ public class TreeEventProcessor implements ITreeEventProcessor {
         Tree tree = this.refreshTree();
 
         this.currentTree.set(tree);
-        this.sink.next(new TreeRefreshedEventPayload(tree));
+        this.sink.tryEmitNext(new TreeRefreshedEventPayload(tree));
 
         long end = System.currentTimeMillis();
         this.timer.record(end - start, TimeUnit.MILLISECONDS);
@@ -142,7 +137,7 @@ public class TreeEventProcessor implements ITreeEventProcessor {
     @Override
     public Flux<IPayload> getOutputEvents() {
         var initialRefresh = Mono.fromCallable(() -> new TreeRefreshedEventPayload(this.currentTree.get()));
-        var refreshEventFlux = Flux.concat(initialRefresh, this.flux);
+        var refreshEventFlux = Flux.concat(initialRefresh, this.sink.asFlux());
 
         return Flux.merge(refreshEventFlux, this.subscriptionManager.getFlux());
     }
@@ -150,11 +145,11 @@ public class TreeEventProcessor implements ITreeEventProcessor {
     @Override
     public void dispose() {
         this.subscriptionManager.dispose();
-        this.flux.onComplete();
+        this.sink.tryEmitComplete();
     }
 
     @Override
     public void preDestroy() {
-        this.sink.next(new PreDestroyPayload(this.getRepresentation().getId()));
+        this.sink.tryEmitNext(new PreDestroyPayload(this.getRepresentation().getId()));
     }
 }

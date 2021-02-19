@@ -19,10 +19,10 @@ import org.eclipse.sirius.web.collaborative.diagrams.api.dto.DiagramRefreshedEve
 import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.diagrams.Diagram;
 
-import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Sinks;
+import reactor.core.publisher.Sinks.Many;
 
 /**
  * Service used to manage the diagram event flux.
@@ -31,33 +31,29 @@ import reactor.core.publisher.Mono;
  */
 public class DiagramEventFlux {
 
-    private final DirectProcessor<IPayload> flux;
-
-    private final FluxSink<IPayload> sink;
+    private final Many<IPayload> sink = Sinks.many().multicast().directBestEffort();
 
     private Diagram currentDiagram;
 
     public DiagramEventFlux(Diagram currentDiagram) {
-        this.flux = DirectProcessor.create();
-        this.sink = this.flux.sink();
         this.currentDiagram = Objects.requireNonNull(currentDiagram);
     }
 
     public void diagramRefreshed(Diagram newDiagram) {
         this.currentDiagram = newDiagram;
-        this.sink.next(new DiagramRefreshedEventPayload(this.currentDiagram));
+        this.sink.tryEmitNext(new DiagramRefreshedEventPayload(this.currentDiagram));
     }
 
     public Flux<IPayload> getFlux() {
         var initialRefresh = Mono.fromCallable(() -> new DiagramRefreshedEventPayload(this.currentDiagram));
-        return Flux.concat(initialRefresh, this.flux);
+        return Flux.concat(initialRefresh, this.sink.asFlux());
     }
 
     public void dispose() {
-        this.flux.onComplete();
+        this.sink.tryEmitComplete();
     }
 
     public void preDestroy() {
-        this.sink.next(new PreDestroyPayload(this.currentDiagram.getId()));
+        this.sink.tryEmitNext(new PreDestroyPayload(this.currentDiagram.getId()));
     }
 }
