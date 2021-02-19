@@ -42,8 +42,6 @@ public class GeneralPurposeTestCases {
 
     private static final String FRONTEND_SRC_FOLDER_PATH = "frontend/src"; //$NON-NLS-1$
 
-    private static final String INTEGRATION_TESTS_CYPRESS_FOLDER_PATH = "integration-tests/cypress"; //$NON-NLS-1$
-
     private static final String JAVASCRIPT_FILE_EXTENSION = "js"; //$NON-NLS-1$
 
     private static final String CSS_FILE_EXTENSION = "css"; //$NON-NLS-1$
