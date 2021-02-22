@@ -113,12 +113,12 @@ export const EditProjectNavbar = ({ projectId, name, subscribers }) => {
       <RenameProjectModal
         projectId={projectId}
         initialProjectName={name}
-        onProjectRenamed={onCloseModal}
+        onRename={onCloseModal}
         onClose={onCloseModal}
       />
     );
   } else if (modalDisplayed === 'DeleteProject') {
-    modal = <DeleteProjectModal projectId={projectId} onProjectDeleted={onProjectDeleted} onClose={onCloseModal} />;
+    modal = <DeleteProjectModal projectId={projectId} onDelete={onProjectDeleted} onClose={onCloseModal} />;
   }
   return (
     <>
