@@ -23,8 +23,8 @@ import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
 import { IconButton } from 'core/button/Button';
 import gql from 'graphql-tag';
-import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
+import { RenameModelerModalProps } from 'views/modelers/RenameModelerModal.types';
 import {
   HandleChangedNameEvent,
   HandleRenameModelerEvent,
@@ -35,7 +35,7 @@ import {
   renameModelerModalMachine,
   SchemaValue,
   ShowToastEvent,
-} from './RenameModelerModalMachine';
+} from 'views/modelers/RenameModelerModalMachine';
 
 const renameModelerMutation = gql`
   mutation renameModeler($input: RenameModelerInput!) {
@@ -53,14 +53,7 @@ const renameModelerMutation = gql`
   }
 `;
 
-const propTypes = {
-  modelerId: PropTypes.string.isRequired,
-  initialModelerName: PropTypes.string.isRequired,
-  onRename: PropTypes.func.isRequired,
-  onClose: PropTypes.func.isRequired,
-};
-
-export const RenameModelerModal = ({ modelerId, initialModelerName, onRename, onClose }) => {
+export const RenameModelerModal = ({ modelerId, initialModelerName, onRename, onClose }: RenameModelerModalProps) => {
   const [{ value, context }, dispatch] = useMachine<RenameModelerModalContext, RenameModelerEvent>(
     renameModelerModalMachine,
     {
@@ -161,4 +154,3 @@ export const RenameModelerModal = ({ modelerId, initialModelerName, onRename, on
     </Dialog>
   );
 };
-RenameModelerModal.propTypes = propTypes;
