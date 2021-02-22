@@ -25,8 +25,8 @@ import Snackbar from '@material-ui/core/Snackbar';
 import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
 import gql from 'graphql-tag';
-import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
+import { PublishModelerModalProps } from 'views/modelers/PublishModelerModal.types';
 import {
   ConfirmPublicationEvent,
   HandleResponseEvent,
@@ -38,7 +38,7 @@ import {
   SchemaValue,
   ShowToastEvent,
   UnconfirmPublicationEvent,
-} from './PublishModelerModalMachine';
+} from 'views/modelers/PublishModelerModalMachine';
 
 const publishModelerMutation = gql`
   mutation publishModeler($input: PublishModelerInput!) {
@@ -56,13 +56,7 @@ const publishModelerMutation = gql`
   }
 `;
 
-const propTypes = {
-  modelerId: PropTypes.string.isRequired,
-  onPublish: PropTypes.func.isRequired,
-  onClose: PropTypes.func.isRequired,
-};
-
-export const PublishModelerModal = ({ modelerId, onPublish, onClose }) => {
+export const PublishModelerModal = ({ modelerId, onPublish, onClose }: PublishModelerModalProps) => {
   const [{ value, context }, dispatch] = useMachine<PublishModelerModalContext, PublishModelerModalEvent>(
     publishModelerModalMachine
   );
@@ -86,7 +80,8 @@ export const PublishModelerModal = ({ modelerId, onPublish, onClose }) => {
           message: error.message,
         };
         dispatch(showToastEvent);
-      } else if (data?.publishModeler) {
+      }
+      if (data) {
         const { publishModeler } = data;
         if (publishModeler.__typename === 'PublishModelerSuccessPayload') {
           const successEvent: HandleResponseEvent = { type: 'HANDLE_RESPONSE', data: publishModeler };
@@ -111,57 +106,58 @@ export const PublishModelerModal = ({ modelerId, onPublish, onClose }) => {
   };
 
   return (
-    <Dialog open={true} onClose={onClose} aria-labelledby="form-dialog-title">
-      <DialogTitle id="dialog-title">Publish the modeler</DialogTitle>
-      <DialogContent>
-        <DialogContentText>
-          The new version will automatically apply to all user data which uses this modeler.
-          <br /> Are you sure?
-        </DialogContentText>
-        <FormGroup row>
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={publishModelerModal === 'confirmed' || publishModelerModal === 'publishingModeler'}
-                onChange={onToggleConfirmation}
-                name="publication-confirmed"
-              />
-            }
-            label="Yes I am sure"
-          />
-        </FormGroup>
-        <Snackbar
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'right',
-          }}
-          open={publicationError !== null}
-          autoHideDuration={3000}
-          onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
-          message={publicationError}
-          action={
-            <IconButton
-              size="small"
-              aria-label="close"
-              color="inherit"
-              onClick={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}>
-              <CloseIcon fontSize="small" />
-            </IconButton>
-          }
-          data-testid="error"
-        />
-      </DialogContent>
-      <DialogActions>
-        <Button
-          variant="contained"
-          disabled={publishModelerModal !== 'confirmed'}
-          onClick={onPublishModeler}
-          color="primary"
-          data-testid="rename-modeler">
-          Publish
-        </Button>
-      </DialogActions>
-    </Dialog>
+    <>
+      <Dialog open={true} onClose={onClose} aria-labelledby="dialog-title">
+        <DialogTitle id="dialog-title">Publish the modeler</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            The new version will automatically apply to all user data which uses this modeler.
+            <br /> Are you sure?
+          </DialogContentText>
+          <FormGroup row>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={publishModelerModal === 'confirmed' || publishModelerModal === 'publishingModeler'}
+                  onChange={onToggleConfirmation}
+                  name="publication-confirmed"
+                />
+              }
+              label="Yes I am sure"
+            />
+          </FormGroup>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            variant="contained"
+            disabled={publishModelerModal !== 'confirmed'}
+            onClick={onPublishModeler}
+            color="primary"
+            data-testid="rename-modeler">
+            Publish
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right',
+        }}
+        open={publicationError !== null}
+        autoHideDuration={3000}
+        onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
+        message={publicationError}
+        action={
+          <IconButton
+            size="small"
+            aria-label="close"
+            color="inherit"
+            onClick={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}>
+            <CloseIcon fontSize="small" />
+          </IconButton>
+        }
+        data-testid="error"
+      />
+    </>
   );
 };
-PublishModelerModal.propTypes = propTypes;

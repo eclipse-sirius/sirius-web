@@ -38,12 +38,16 @@ import PublishIcon from '@material-ui/icons/Publish';
 import { useMachine } from '@xstate/react';
 import { useBranding } from 'common/BrandingContext';
 import gql from 'graphql-tag';
-import { PublishModelerModal } from 'modals/publish-modeler/PublishModelerModal';
-import { RenameModelerModal } from 'modals/rename-modeler/RenameModelerModal';
 import { ProjectNavbar } from 'navbar/ProjectNavbar';
 import React, { useEffect } from 'react';
 import { Link as RouterLink, useParams } from 'react-router-dom';
-import { Modeler } from 'views/modelers/ModelersView.types';
+import {
+  GQLGetModelersQueryData,
+  GQLGetModelersQueryVariables,
+  Modeler,
+  ModelerContextMenuProps,
+  ModelersTableProps,
+} from 'views/modelers/ModelersView.types';
 import {
   CloseMenuEvent,
   CloseModalEvent,
@@ -56,7 +60,9 @@ import {
   OpenModalEvent,
   SchemaValue,
   ShowToastEvent,
-} from './ModelersViewMachine';
+} from 'views/modelers/ModelersViewMachine';
+import { PublishModelerModal } from 'views/modelers/PublishModelerModal';
+import { RenameModelerModal } from 'views/modelers/RenameModelerModal';
 
 const getModelersQuery = gql`
   query getModelers($projectId: ID!) {
@@ -108,9 +114,12 @@ export const ModelersView = () => {
   const { toast, modelersView } = value as SchemaValue;
   const { modelers, selectedModeler, menuAnchor, modalToDisplay, message } = context;
 
-  const { loading, data, error, refetch } = useQuery(getModelersQuery, {
-    variables: { projectId },
-  });
+  const { loading, data, error, refetch } = useQuery<GQLGetModelersQueryData, GQLGetModelersQueryVariables>(
+    getModelersQuery,
+    {
+      variables: { projectId },
+    }
+  );
   useEffect(() => {
     if (!loading) {
       if (error) {
@@ -177,8 +186,7 @@ export const ModelersView = () => {
         {modal}
       </>
     );
-  }
-  if (modelersView === 'empty') {
+  } else if (modelersView === 'empty') {
     main = <Message content="No modelers available, start by creating one" />;
   } else if (modelersView === 'missing') {
     main = <Message content="The project does not exist" />;
@@ -251,7 +259,7 @@ const Message = ({ content }) => {
   );
 };
 
-const ModelersTable = ({ projectId, modelers, onMore }) => {
+const ModelersTable = ({ projectId, modelers, onMore }: ModelersTableProps) => {
   return (
     <Paper>
       <TableContainer>
@@ -299,7 +307,7 @@ const ModelersTable = ({ projectId, modelers, onMore }) => {
   );
 };
 
-const ModelerContextMenu = ({ menuAnchor, onClose, onRename, onPublish, modeler }) => {
+const ModelerContextMenu = ({ menuAnchor, onClose, onRename, onPublish, modeler }: ModelerContextMenuProps) => {
   return (
     <Menu
       data-testid="modeler-actions-contextmenu"

@@ -12,8 +12,44 @@
  *******************************************************************************/
 export type Status = 'DRAFT' | 'PUBLISHED';
 
-export type Modeler = {
+export interface Modeler {
   id: string;
   name: string;
   status: Status;
-};
+}
+
+export interface GQLGetModelersQueryData {
+  viewer: GQLViewer;
+}
+
+export interface GQLViewer {
+  project: GQLProject;
+}
+
+export interface GQLProject {
+  modelers: GQLModeler[];
+}
+
+export interface GQLModeler {
+  id: string;
+  name: string;
+  status: Status;
+}
+
+export interface GQLGetModelersQueryVariables {
+  projectId: string;
+}
+
+export interface ModelersTableProps {
+  projectId: string;
+  modelers: Modeler[];
+  onMore: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, modeler: Modeler) => void;
+}
+
+export interface ModelerContextMenuProps {
+  menuAnchor: HTMLElement;
+  onClose: () => void;
+  onRename: () => void;
+  onPublish: () => void;
+  modeler: Modeler;
+}

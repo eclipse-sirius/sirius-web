@@ -10,8 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Modeler } from 'views/modelers/ModelersView.types';
+import { GQLGetModelersQueryData, Modeler } from 'views/modelers/ModelersView.types';
 import { assign, Machine } from 'xstate';
+
 export interface ModelersViewStateSchema {
   states: {
     toast: {
@@ -48,7 +49,7 @@ export interface ModelersViewContext {
 
 export type ShowToastEvent = { type: 'SHOW_TOAST'; message: string };
 export type HideToastEvent = { type: 'HIDE_TOAST' };
-export type FetchedModelersEvent = { type: 'HANDLE_FETCHED_MODELERS'; data: any };
+export type FetchedModelersEvent = { type: 'HANDLE_FETCHED_MODELERS'; data: GQLGetModelersQueryData };
 export type OpenMenuEvent = { type: 'OPEN_MENU'; menuAnchor: HTMLElement; modeler: Modeler };
 export type CloseMenuEvent = { type: 'CLOSE_MENU' };
 export type OpenModalEvent = { type: 'OPEN_MODAL'; modalToDisplay: ModelersViewModal };
@@ -107,6 +108,7 @@ export const modelersViewMachine = Machine<ModelersViewContext, ModelersViewStat
                 {
                   cond: 'isEmpty',
                   target: 'empty',
+                  actions: 'updateModelers',
                 },
                 {
                   target: 'loaded',
@@ -125,6 +127,7 @@ export const modelersViewMachine = Machine<ModelersViewContext, ModelersViewStat
                 {
                   cond: 'isEmpty',
                   target: 'empty',
+                  actions: 'updateModelers',
                 },
                 {
                   target: 'loaded',
