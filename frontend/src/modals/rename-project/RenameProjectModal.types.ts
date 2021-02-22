@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,9 +10,21 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import React from 'react';
-import { View } from 'views/View';
+export interface RenameProjectModalProps {
+  projectId: string;
+  initialProjectName: string;
+  onRename: () => void;
+  onClose: () => void;
+}
 
-export const ProjectsLoadingView = () => {
-  return <View />;
-};
+export interface GQLRenameProjectMutationData {
+  renameProject: GQLRenameProjectPayload;
+}
+
+export interface GQLRenameProjectPayload {
+  __typename: string;
+}
+
+export interface GQLErrorPayload extends GQLRenameProjectPayload {
+  message: string;
+}

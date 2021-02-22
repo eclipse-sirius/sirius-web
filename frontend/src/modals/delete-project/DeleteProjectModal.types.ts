@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,29 +10,20 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-.projectCard {
-  display: grid;
-  grid-template-columns: 1fr max-content;
-  grid-template-rows: 1fr;
-  align-items: center;
+export interface DeleteProjectModalProps {
+  projectId: string;
+  onDelete: () => void;
+  onClose: () => void;
 }
 
-.link {
-  font-size: var(--font-size-4);
+export interface GQLDeleteProjectMutationData {
+  deleteProject: GQLDeleteProjectPayload;
 }
 
-.actions {
-  justify-self: end;
+export interface GQLDeleteProjectPayload {
+  __typename: string;
 }
 
-.moreIcon {
-  fill: var(--blue-lagoon);
-  width: 24px;
-  height: 24px;
-}
-.moreIcon:hover {
-  background-color: var(--blue-lagoon-lighten-95);
-}
-.moreIcon:focus {
-  background-color: var(--blue-lagoon-lighten-90);
+export interface GQLErrorPayload extends GQLDeleteProjectPayload {
+  message: string;
 }
