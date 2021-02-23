@@ -93,12 +93,16 @@ public class EdgeComponent implements IComponent {
                         for (Element targetNode : targetNodes) {
                             UUID id = this.computeEdgeId(sourceNode, targetNode, count);
                             var optionalPreviousEdge = edgesRequestor.getById(id);
+                            var edgeInstanceVariableManager = edgeVariableManager.createChild();
+                            edgeInstanceVariableManager.put(EdgeDescription.SEMANTIC_EDGE_SOURCE, cache.getNodeToObject().get(sourceNode));
+                            edgeInstanceVariableManager.put(EdgeDescription.SEMANTIC_EDGE_TARGET, cache.getNodeToObject().get(targetNode));
+
                             SynchronizationPolicy synchronizationPolicy = edgeDescription.getSynchronizationPolicy();
                             boolean shouldRender = synchronizationPolicy == SynchronizationPolicy.SYNCHRONIZED
                                     || (synchronizationPolicy == SynchronizationPolicy.UNSYNCHRONIZED && optionalPreviousEdge.isPresent());
 
                             if (shouldRender) {
-                                EdgeStyle style = edgeDescription.getStyleProvider().apply(edgeVariableManager);
+                                EdgeStyle style = edgeDescription.getStyleProvider().apply(edgeInstanceVariableManager);
 
                                 UUID sourceId = this.getId(sourceNode);
                                 UUID targetId = this.getId(targetNode);

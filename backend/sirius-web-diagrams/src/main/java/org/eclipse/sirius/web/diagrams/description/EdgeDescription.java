@@ -31,6 +31,15 @@ import org.eclipse.sirius.web.representations.VariableManager;
  */
 @Immutable
 public final class EdgeDescription {
+    /**
+     * The name of the variables which points to the semantic element at the source/origin of a particular edge.
+     */
+    public static final String SEMANTIC_EDGE_SOURCE = "semanticEdgeSource"; //$NON-NLS-1$
+
+    /**
+     * The name of the variables which points to the semantic element at the destination/target of a particular edge.
+     */
+    public static final String SEMANTIC_EDGE_TARGET = "semanticEdgeTarget"; //$NON-NLS-1$
 
     private UUID id;
 
