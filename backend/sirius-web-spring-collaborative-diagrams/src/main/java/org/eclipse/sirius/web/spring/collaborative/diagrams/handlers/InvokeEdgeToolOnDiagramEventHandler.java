@@ -31,6 +31,7 @@ import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.Node;
+import org.eclipse.sirius.web.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.web.diagrams.services.api.IDiagramService;
 import org.eclipse.sirius.web.diagrams.tools.CreateEdgeTool;
 import org.eclipse.sirius.web.representations.Status;
@@ -121,6 +122,8 @@ public class InvokeEdgeToolOnDiagramEventHandler implements IDiagramEventHandler
             variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
             variableManager.put(CreateEdgeTool.EDGE_SOURCE, source.get());
             variableManager.put(CreateEdgeTool.EDGE_TARGET, target.get());
+            variableManager.put(EdgeDescription.SEMANTIC_EDGE_SOURCE, source.get());
+            variableManager.put(EdgeDescription.SEMANTIC_EDGE_TARGET, target.get());
 
             result = tool.getHandler().apply(variableManager);
         }

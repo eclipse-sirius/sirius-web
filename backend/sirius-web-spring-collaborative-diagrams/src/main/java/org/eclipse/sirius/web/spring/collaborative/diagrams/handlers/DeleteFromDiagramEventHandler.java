@@ -190,6 +190,14 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
                 VariableManager variableManager = new VariableManager();
                 variableManager.put(VariableManager.SELF, optionalSelf.get());
                 variableManager.put(IDiagramContext.DIAGRAM_CONTEXT, diagramContext);
+                // @formatter:off
+                this.diagramService.findNodeById(diagramContext.getDiagram(), edge.getSourceId())
+                                   .flatMap(node -> this.objectService.getObject(editingContext, node.getTargetObjectId()))
+                                   .ifPresent(semanticElement -> variableManager.put(EdgeDescription.SEMANTIC_EDGE_SOURCE, semanticElement));
+                this.diagramService.findNodeById(diagramContext.getDiagram(), edge.getTargetId())
+                                   .flatMap(node -> this.objectService.getObject(editingContext, node.getTargetObjectId()))
+                                   .ifPresent(semanticElement -> variableManager.put(EdgeDescription.SEMANTIC_EDGE_TARGET, semanticElement));
+                // @formatter:on
                 EdgeDescription edgeDescription = optionalEdgeDescription.get();
                 this.logger.debug("Deleted diagram edge {}", edge.getId()); //$NON-NLS-1$
                 result = edgeDescription.getDeleteHandler().apply(variableManager);
