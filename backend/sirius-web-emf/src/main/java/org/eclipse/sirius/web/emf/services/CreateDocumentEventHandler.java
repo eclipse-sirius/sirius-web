@@ -23,6 +23,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.api.configuration.StereotypeDescription;
+import org.eclipse.sirius.web.collaborative.api.services.ChangeKind;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventHandler;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
@@ -82,7 +83,7 @@ public class CreateDocumentEventHandler implements IEditingContextEventHandler {
     public EventHandlerResponse handle(IEditingContext editingContext, IInput input) {
         this.counter.increment();
 
-        EventHandlerResponse response = new EventHandlerResponse(false, representation -> false, new ErrorPayload(this.messageService.unexpectedError()));
+        EventHandlerResponse response = new EventHandlerResponse(ChangeKind.NOTHING, new ErrorPayload(this.messageService.unexpectedError()));
 
         if (input instanceof CreateDocumentInput) {
             CreateDocumentInput createDocumentInput = (CreateDocumentInput) input;
@@ -95,10 +96,10 @@ public class CreateDocumentEventHandler implements IEditingContextEventHandler {
 
             if (name.isBlank()) {
                 IPayload payload = new ErrorPayload(this.messageService.invalidDocumentName(name));
-                response = new EventHandlerResponse(false, representation -> false, payload);
+                response = new EventHandlerResponse(ChangeKind.NOTHING, payload);
             } else if (optionalStereotypeDescription.isEmpty()) {
                 IPayload payload = new ErrorPayload(this.messageService.stereotypeDescriptionNotFound(stereotypeDescriptionId));
-                response = new EventHandlerResponse(false, representation -> false, payload);
+                response = new EventHandlerResponse(ChangeKind.NOTHING, payload);
             } else if (optionalStereotypeDescription.isPresent()) {
                 StereotypeDescription stereotypeDescription = optionalStereotypeDescription.get();
                 response = this.createDocument(editingContext, projectId, name, stereotypeDescription);
@@ -136,11 +137,11 @@ public class CreateDocumentEventHandler implements IEditingContextEventHandler {
 
                 resourceSet.getResources().add(resource);
 
-                return new EventHandlerResponse(true, representation -> true, new CreateDocumentSuccessPayload(document));
+                return new EventHandlerResponse(ChangeKind.SEMANTIC_CHANGE, new CreateDocumentSuccessPayload(document));
             }
         }
 
-        return new EventHandlerResponse(false, representation -> false, new ErrorPayload(this.messageService.unexpectedError()));
+        return new EventHandlerResponse(ChangeKind.NOTHING, new ErrorPayload(this.messageService.unexpectedError()));
     }
 
 }

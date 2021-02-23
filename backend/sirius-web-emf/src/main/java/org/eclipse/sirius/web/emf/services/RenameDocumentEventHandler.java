@@ -18,6 +18,7 @@ import java.util.UUID;
 
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
+import org.eclipse.sirius.web.collaborative.api.services.ChangeKind;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventHandler;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
@@ -99,11 +100,11 @@ public class RenameDocumentEventHandler implements IEditingContextEventHandler {
                         });
                 // @formatter:on
 
-                return new EventHandlerResponse(true, representation -> true, new RenameDocumentSuccessPayload(document));
+                return new EventHandlerResponse(ChangeKind.SEMANTIC_CHANGE, new RenameDocumentSuccessPayload(document));
             }
         }
         String message = this.messageService.invalidInput(input.getClass().getSimpleName(), RenameDocumentInput.class.getSimpleName());
-        return new EventHandlerResponse(false, representation -> false, new ErrorPayload(message));
+        return new EventHandlerResponse(ChangeKind.NOTHING, new ErrorPayload(message));
     }
 
 }

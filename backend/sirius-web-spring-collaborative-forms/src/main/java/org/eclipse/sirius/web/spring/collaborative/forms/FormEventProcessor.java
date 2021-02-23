@@ -20,6 +20,7 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.sirius.web.collaborative.api.dto.PreDestroyPayload;
+import org.eclipse.sirius.web.collaborative.api.services.ChangeKind;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.ISubscriptionManager;
 import org.eclipse.sirius.web.collaborative.forms.api.IFormEventHandler;
@@ -110,16 +111,16 @@ public class FormEventProcessor implements IFormEventProcessor {
             if (formInput instanceof UpdateWidgetFocusInput) {
                 UpdateWidgetFocusInput input = (UpdateWidgetFocusInput) formInput;
                 this.widgetSubscriptionManager.handle(input);
-                result = Optional.of(new EventHandlerResponse(false, representation -> false, new UpdateWidgetFocusSuccessPayload(input.getWidgetId())));
+                result = Optional.of(new EventHandlerResponse(ChangeKind.FOCUS_CHANGE, new UpdateWidgetFocusSuccessPayload(input.getWidgetId())));
             } else {
                 Optional<IFormEventHandler> optionalFormEventHandler = this.formEventHandlers.stream().filter(handler -> handler.canHandle(formInput)).findFirst();
 
                 if (optionalFormEventHandler.isPresent()) {
                     IFormEventHandler formEventHandler = optionalFormEventHandler.get();
                     EventHandlerResponse eventHandlerResponse = formEventHandler.handle(this.currentForm.get(), formInput);
-                    if (eventHandlerResponse.getShouldRefreshPredicate().test(this.currentForm.get())) {
-                        this.refresh();
-                    }
+
+                    this.refresh(eventHandlerResponse.getChangeKind());
+
                     result = Optional.of(eventHandlerResponse);
                 } else {
                     this.logger.warn("No handler found for event: {}", formInput); //$NON-NLS-1$
@@ -131,11 +132,13 @@ public class FormEventProcessor implements IFormEventProcessor {
     }
 
     @Override
-    public void refresh() {
-        Form form = this.refreshForm();
+    public void refresh(String changeKind) {
+        if (ChangeKind.SEMANTIC_CHANGE.equals(changeKind)) {
+            Form form = this.refreshForm();
 
-        this.currentForm.set(form);
-        this.sink.tryEmitNext(new FormRefreshedEventPayload(form));
+            this.currentForm.set(form);
+            this.sink.tryEmitNext(new FormRefreshedEventPayload(form));
+        }
     }
 
     private Form refreshForm() {

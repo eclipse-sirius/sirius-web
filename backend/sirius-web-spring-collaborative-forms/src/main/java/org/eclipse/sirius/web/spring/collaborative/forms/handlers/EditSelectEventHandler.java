@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.spring.collaborative.forms.handlers;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.eclipse.sirius.web.collaborative.api.services.ChangeKind;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.collaborative.forms.api.IFormEventHandler;
@@ -78,9 +79,9 @@ public class EditSelectEventHandler implements IFormEventHandler {
                     .map(handler -> handler.apply(input.getNewValue()))
                     .orElse(Status.ERROR);
             // @formatter:on
-            return new EventHandlerResponse(true, representation -> true, new EditSelectSuccessPayload(status.toString()));
+            return new EventHandlerResponse(ChangeKind.SEMANTIC_CHANGE, new EditSelectSuccessPayload(status.toString()));
         }
         String message = this.messageService.invalidInput(formInput.getClass().getSimpleName(), EditSelectInput.class.getSimpleName());
-        return new EventHandlerResponse(false, representation -> false, new ErrorPayload(message));
+        return new EventHandlerResponse(ChangeKind.NOTHING, new ErrorPayload(message));
     }
 }

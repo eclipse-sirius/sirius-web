@@ -17,6 +17,7 @@ import java.util.Optional;
 
 import org.eclipse.sirius.web.collaborative.api.dto.CreateRepresentationInput;
 import org.eclipse.sirius.web.collaborative.api.dto.CreateRepresentationSuccessPayload;
+import org.eclipse.sirius.web.collaborative.api.services.ChangeKind;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventHandler;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
@@ -31,7 +32,6 @@ import org.eclipse.sirius.web.services.api.representations.IRepresentationDescri
 import org.eclipse.sirius.web.services.api.representations.IRepresentationService;
 import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;
 import org.eclipse.sirius.web.spring.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
-import org.eclipse.sirius.web.trees.Tree;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
@@ -118,12 +118,12 @@ public class CreateDiagramEventHandler implements IEditingContextEventHandler {
 
                 this.representationService.save(representationDescriptor);
 
-                return new EventHandlerResponse(false, representation -> representation instanceof Tree, new CreateRepresentationSuccessPayload(diagram));
+                return new EventHandlerResponse(ChangeKind.REPRESENTATION_CREATION, new CreateRepresentationSuccessPayload(diagram));
             }
         }
 
         String message = this.messageService.invalidInput(input.getClass().getSimpleName(), CreateRepresentationInput.class.getSimpleName());
-        return new EventHandlerResponse(false, representation -> false, new ErrorPayload(message));
+        return new EventHandlerResponse(ChangeKind.NOTHING, new ErrorPayload(message));
     }
 
 }

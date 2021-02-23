@@ -17,6 +17,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.sirius.web.collaborative.api.dto.RenameRepresentationInput;
+import org.eclipse.sirius.web.collaborative.api.services.ChangeKind;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.ISubscriptionManager;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramContext;
@@ -92,9 +93,9 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
             if (optionalDiagramEventHandler.isPresent()) {
                 IDiagramEventHandler diagramEventHandler = optionalDiagramEventHandler.get();
                 EventHandlerResponse eventHandlerResponse = diagramEventHandler.handle(this.editingContext, this.diagramContext, diagramInput);
-                if (eventHandlerResponse.getShouldRefreshPredicate().test(this.diagramContext.getDiagram())) {
-                    this.refresh();
-                }
+
+                this.refresh(eventHandlerResponse.getChangeKind());
+
                 return Optional.of(eventHandlerResponse);
             } else {
                 this.logger.warn("No handler found for event: {}", diagramInput); //$NON-NLS-1$
@@ -116,10 +117,12 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
     }
 
     @Override
-    public void refresh() {
-        Diagram refreshedDiagram = this.diagramCreationService.refresh(this.editingContext, this.diagramContext).orElse(null);
-        this.diagramContext.update(refreshedDiagram);
-        this.diagramEventFlux.diagramRefreshed(refreshedDiagram);
+    public void refresh(String changeKind) {
+        if (ChangeKind.SEMANTIC_CHANGE.equals(changeKind)) {
+            Diagram refreshedDiagram = this.diagramCreationService.refresh(this.editingContext, this.diagramContext).orElse(null);
+            this.diagramContext.update(refreshedDiagram);
+            this.diagramEventFlux.diagramRefreshed(refreshedDiagram);
+        }
     }
 
     @Override

@@ -16,6 +16,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.eclipse.sirius.web.collaborative.api.services.ChangeKind;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramContext;
@@ -97,13 +98,13 @@ public class EditLabelEventHandler implements IDiagramEventHandler {
                 var node = this.diagramService.findNodeById(diagram, UUID.fromString(nodeId));
                 if (node.isPresent()) {
                     this.invokeDirectEditTool(node.get(), editingContext, diagram, input.getNewText());
-                    return new EventHandlerResponse(true, representation -> true, new EditLabelSuccessPayload(diagram));
+                    return new EventHandlerResponse(ChangeKind.SEMANTIC_CHANGE, new EditLabelSuccessPayload(diagram));
                 }
             }
         }
 
         String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), EditLabelInput.class.getSimpleName());
-        return new EventHandlerResponse(false, representation -> false, new ErrorPayload(message));
+        return new EventHandlerResponse(ChangeKind.NOTHING, new ErrorPayload(message));
     }
 
     private String extractNodeId(String labelId) {

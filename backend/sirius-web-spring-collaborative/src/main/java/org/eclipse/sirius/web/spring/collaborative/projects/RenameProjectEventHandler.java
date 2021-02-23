@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.spring.collaborative.projects;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.eclipse.sirius.web.collaborative.api.services.ChangeKind;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventHandler;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
@@ -56,11 +57,11 @@ public class RenameProjectEventHandler implements IEditingContextEventHandler {
             Optional<Project> optionalProject = this.projectService.renameProject(renameProjectInput.getProjectId(), renameProjectInput.getNewName());
             if (optionalProject.isPresent()) {
                 RenameProjectSuccessPayload payload = new RenameProjectSuccessPayload(optionalProject.get());
-                return new EventHandlerResponse(false, representation -> false, payload);
+                return new EventHandlerResponse(ChangeKind.PROJECT_RENAMING, payload);
             }
         }
         String message = this.messageService.invalidInput(input.getClass().getSimpleName(), RenameProjectInput.class.getSimpleName());
-        return new EventHandlerResponse(false, representation -> false, new ErrorPayload(message));
+        return new EventHandlerResponse(ChangeKind.NOTHING, new ErrorPayload(message));
     }
 
 }

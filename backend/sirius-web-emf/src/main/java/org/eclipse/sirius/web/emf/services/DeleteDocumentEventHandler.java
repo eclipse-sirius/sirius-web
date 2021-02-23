@@ -21,6 +21,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
+import org.eclipse.sirius.web.collaborative.api.services.ChangeKind;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventHandler;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
@@ -98,12 +99,12 @@ public class DeleteDocumentEventHandler implements IEditingContextEventHandler {
 
                 this.documentService.delete(document.getId());
 
-                return new EventHandlerResponse(true, representation -> true, new DeleteDocumentSuccessPayload(document.getProject()));
+                return new EventHandlerResponse(ChangeKind.SEMANTIC_CHANGE, new DeleteDocumentSuccessPayload(document.getProject()));
             }
         }
 
         String message = this.messageService.invalidInput(input.getClass().getSimpleName(), DeleteDocumentInput.class.getSimpleName());
-        return new EventHandlerResponse(false, representation -> false, new ErrorPayload(message));
+        return new EventHandlerResponse(ChangeKind.NOTHING, new ErrorPayload(message));
     }
 
 }
