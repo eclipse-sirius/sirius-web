@@ -1,0 +1,92 @@
+= ADR-011 - Decouple the event handlers from the refresh
+
+== Context
+
+The `EventHandlerResponse` has too many responsibilities since it is in charge of:
+
+- indicating if the editing context should be persisted
+- indicating which representation should be refreshed
+- returning a proper payload to the GraphQL mutation which has triggered the event
+
+Two of those goals are quite similar and yet they are badly implemented.
+
+When an event is triggered by a mutation, an event handler can perform some kind of changes.
+After those changes some feature need to be executed such as saving the editing context or refreshing a representation.
+Instead of describing the changes and let the pieces of code in charge of those features determine if the changes are relevant to them, the current solution tries to solve this in one place.
+
+As a result, all the event handlers need to know the behavior of all those features.
+For example, the handler used to create a representation needs to know that since representations may be displayed in the explorer, then it needs to refresh a representation if it's a tree and only if said tree is the one used by the explorer.
+This creates a tight coupling between parts of the code that do not need to know each others and creates tons of opportunity for bugs.
+
+== Decision
+
+The `EventHandlerResponse` will describe the changes that have occurred and the representation event processors will determine if they should be refreshed or not given these changes.
+A new enumeration will be introduced in `sirius-web-collaborative-api` to describe the kind of changes that can occur:
+
+```
+public enum ChangeKind {
+  NOTHING,
+  REPRESENTATION_CREATION,
+  REPRESENTATION_DELETION,
+  REPRESENTATION_RENAMING,
+  PROJECT_RENAMING,
+  SEMANTIC_CHANGE,
+  GRAPHICAL_CHANGE,
+}
+```
+
+With this change, an event handler which may have performed a semantic change, will be able to return this information.
+It does not mean that we will perform a deep analysis of the editing context to find out if a real semantic change has been performed.
+We will just try our best to find out what has happened at a reasonnable cost.
+For example, if a Sirius RCP tool has ben triggered, we will consider that a semantic change has been performed.
+If the operation has not been performed then nothing has changed.
+
+This new API will also allow us to finally remove the dependency to the tree representation from the core part of the collaborative algorithm.
+
+Given the current state of our event handlers, this will be the impact, in case the event handler is successful:
+
+=== Form
+
+- CreateFormEventHandler: REPRESENTATION_CREATION
+- EditCheckboxEventHandler: SEMANTIC_CHANGE
+- EditRadioEventHandler: SEMANTIC_CHANGE
+- EditSelectEventHandler: SEMANTIC_CHANGE
+- EditTextfieldEventHandler: SEMANTIC_CHANGE
+
+
+=== Explorer
+
+- CreateDocumentEventHandler: SEMANTIC_CHANGE
+- DeleteDocumentEventHandler: SEMANTIC_CHANGE
+- RenameDocumentEventHandler: SEMANTIC_CHANGE
+- CreateChildEventHandler: SEMANTIC_CHANGE
+- CreateRootObjectEventHandler: SEMANTIC_CHANGE
+- DeleteObjectEventHandler: SEMANTIC_CHANGE
+- DeleteRepresentationEventHandler: REPRESENTATION_DELETION
+- RenameObjectEventHandler SEMANTIC_CHANGE
+- UploadDocumentEventHandler: SEMANTIC_CHANGE
+
+=== Diagram
+
+- CreateDiagramEventHandler: REPRESENTATION_CREATION
+- RenameDiagramEventHandler: REPRESENTATION_RENAMING
+- DeleteFromDiagramEventHandler: SEMANTIC_CHANGE
+- EditLabelEventHandler: SEMANTIC_CHANGE
+- InvokeEdgeToolOnDiagramEventHandler: SEMANTIC_CHANGE
+- InvokeNodeToolOnDiagramEventHandler: SEMANTIC_CHANGE
+
+
+Some layout-related operations which will arrive soon will introduce graphical changes.
+
+=== Other
+
+- RenameProjectEventHandler: PROJECT_RENAMING
+
+== Status
+
+Accepted.
+
+== Consequences
+
+In the future, we may find ourselves in a position where an event handler could perform multiple changes at once, since this does not seem to be the case for now, an event handler will return a single `ChangeKind` not multiple ones.
+It will be easier to support additional representations since we won't have to update all the event handlers to understand some new corner cases.

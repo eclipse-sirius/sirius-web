@@ -70,11 +70,6 @@
 			<version>0.2.4</version>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse.sirius.web</groupId>
-			<artifactId>sirius-web-trees</artifactId>
-			<version>0.2.4</version>
-		</dependency>
-		<dependency>
     		<groupId>org.eclipse.sirius.web</groupId>
     		<artifactId>sirius-web-tests</artifactId>
     		<version>0.2.4</version>

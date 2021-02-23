@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.spring.collaborative.handlers;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.eclipse.sirius.web.collaborative.api.services.ChangeKind;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventHandler;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
@@ -79,12 +80,12 @@ public class CreateChildEventHandler implements IEditingContextEventHandler {
             });
 
             if (createdChildOptional.isPresent()) {
-                return new EventHandlerResponse(true, representation -> true, new CreateChildSuccessPayload(createdChildOptional.get()));
+                return new EventHandlerResponse(ChangeKind.SEMANTIC_CHANGE, new CreateChildSuccessPayload(createdChildOptional.get()));
             } else {
                 message = this.messageService.objectCreationFailed();
             }
         }
 
-        return new EventHandlerResponse(false, representation -> false, new ErrorPayload(message));
+        return new EventHandlerResponse(ChangeKind.NOTHING, new ErrorPayload(message));
     }
 }

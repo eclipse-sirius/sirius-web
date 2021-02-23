@@ -20,6 +20,7 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.sirius.web.collaborative.api.dto.PreDestroyPayload;
+import org.eclipse.sirius.web.collaborative.api.services.ChangeKind;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.ISubscriptionManager;
 import org.eclipse.sirius.web.collaborative.forms.api.IFormEventHandler;
@@ -124,11 +125,13 @@ public class PropertiesEventProcessor implements IPropertiesEventProcessor {
     }
 
     @Override
-    public void refresh() {
-        Form form = this.refreshForm();
+    public void refresh(String changeKind) {
+        if (ChangeKind.SEMANTIC_CHANGE.equals(changeKind)) {
+            Form form = this.refreshForm();
 
-        this.currentForm.set(form);
-        this.sink.tryEmitNext(new PropertiesRefreshedEventPayload(form));
+            this.currentForm.set(form);
+            this.sink.tryEmitNext(new PropertiesRefreshedEventPayload(form));
+        }
     }
 
     private Form refreshForm() {

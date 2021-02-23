@@ -16,18 +16,16 @@ import java.util.Objects;
 
 import org.eclipse.sirius.web.collaborative.api.dto.DeleteRepresentationInput;
 import org.eclipse.sirius.web.collaborative.api.dto.DeleteRepresentationSuccessPayload;
+import org.eclipse.sirius.web.collaborative.api.services.ChangeKind;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventHandler;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IInput;
-import org.eclipse.sirius.web.representations.IRepresentation;
-import org.eclipse.sirius.web.services.api.representations.IRepresentationDescriptionService;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationService;
 import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;
 import org.eclipse.sirius.web.spring.collaborative.messages.ICollaborativeMessageService;
-import org.eclipse.sirius.web.trees.Tree;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
@@ -68,7 +66,7 @@ public class DeleteRepresentationEventHandler implements IEditingContextEventHan
         this.counter.increment();
 
         String message = this.messageService.invalidInput(input.getClass().getSimpleName(), DeleteRepresentationInput.class.getSimpleName());
-        EventHandlerResponse eventHandlerResponse = new EventHandlerResponse(false, representation -> false, new ErrorPayload(message));
+        EventHandlerResponse eventHandlerResponse = new EventHandlerResponse(ChangeKind.NOTHING, new ErrorPayload(message));
         if (input instanceof DeleteRepresentationInput) {
             DeleteRepresentationInput deleteRepresentationInput = (DeleteRepresentationInput) input;
             var optionalRepresentation = this.representationService.getRepresentation(deleteRepresentationInput.getRepresentationId());
@@ -77,14 +75,10 @@ public class DeleteRepresentationEventHandler implements IEditingContextEventHan
                 RepresentationDescriptor representationDescriptor = optionalRepresentation.get();
                 this.representationService.delete(representationDescriptor.getId());
 
-                eventHandlerResponse = new EventHandlerResponse(false, this::isExplorerTree, new DeleteRepresentationSuccessPayload(representationDescriptor.getId()));
+                eventHandlerResponse = new EventHandlerResponse(ChangeKind.REPRESENTATION_DELETION, new DeleteRepresentationSuccessPayload(representationDescriptor.getId()));
             }
         }
 
         return eventHandlerResponse;
-    }
-
-    private boolean isExplorerTree(IRepresentation representation) {
-        return representation instanceof Tree && Objects.equals(((Tree) representation).getDescriptionId(), IRepresentationDescriptionService.EXPLORER_TREE_DESCRIPTION);
     }
 }

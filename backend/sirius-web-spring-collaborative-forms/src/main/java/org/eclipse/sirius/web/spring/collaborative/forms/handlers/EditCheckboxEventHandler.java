@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.spring.collaborative.forms.handlers;
 
 import java.util.Objects;
 
+import org.eclipse.sirius.web.collaborative.api.services.ChangeKind;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.collaborative.forms.api.IFormEventHandler;
@@ -78,10 +79,10 @@ public class EditCheckboxEventHandler implements IFormEventHandler {
                     .orElse(Status.ERROR);
             // @formatter:on
 
-            return new EventHandlerResponse(true, representation -> true, new EditCheckboxSuccessPayload(status.toString()));
+            return new EventHandlerResponse(ChangeKind.SEMANTIC_CHANGE, new EditCheckboxSuccessPayload(status.toString()));
         }
 
         String message = this.messageService.invalidInput(formInput.getClass().getSimpleName(), EditCheckboxInput.class.getSimpleName());
-        return new EventHandlerResponse(false, representation -> false, new ErrorPayload(message));
+        return new EventHandlerResponse(ChangeKind.NOTHING, new ErrorPayload(message));
     }
 }

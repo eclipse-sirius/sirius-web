@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.spring.collaborative.handlers;
 import java.util.Objects;
 import java.util.UUID;
 
+import org.eclipse.sirius.web.collaborative.api.services.ChangeKind;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventHandler;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
@@ -25,7 +26,6 @@ import org.eclipse.sirius.web.services.api.document.CreateRootObjectInput;
 import org.eclipse.sirius.web.services.api.document.CreateRootObjectSuccessPayload;
 import org.eclipse.sirius.web.services.api.objects.IEditService;
 import org.eclipse.sirius.web.spring.collaborative.messages.ICollaborativeMessageService;
-import org.eclipse.sirius.web.trees.Tree;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
@@ -74,12 +74,12 @@ public class CreateRootObjectEventHandler implements IEditingContextEventHandler
             var optionalObject = this.editService.createRootObject(editingContext, documentId, namespaceId, rootObjectCreationDescriptionId);
 
             if (optionalObject.isPresent()) {
-                return new EventHandlerResponse(true, Tree.class::isInstance, new CreateRootObjectSuccessPayload(optionalObject.get()));
+                return new EventHandlerResponse(ChangeKind.SEMANTIC_CHANGE, new CreateRootObjectSuccessPayload(optionalObject.get()));
             }
         }
 
         String message = this.messageService.invalidInput(input.getClass().getSimpleName(), CreateRootObjectInput.class.getSimpleName());
-        return new EventHandlerResponse(false, representation -> false, new ErrorPayload(message));
+        return new EventHandlerResponse(ChangeKind.NOTHING, new ErrorPayload(message));
     }
 
 }

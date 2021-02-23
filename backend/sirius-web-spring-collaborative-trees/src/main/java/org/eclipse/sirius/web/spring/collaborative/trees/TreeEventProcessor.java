@@ -20,6 +20,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.sirius.web.collaborative.api.dto.PreDestroyPayload;
+import org.eclipse.sirius.web.collaborative.api.services.ChangeKind;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.ISubscriptionManager;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
@@ -103,9 +104,9 @@ public class TreeEventProcessor implements ITreeEventProcessor {
             if (optionalTreeEventHandler.isPresent()) {
                 ITreeEventHandler treeEventHandler = optionalTreeEventHandler.get();
                 EventHandlerResponse eventHandlerResponse = treeEventHandler.handle(this.currentTree.get(), treeInput);
-                if (eventHandlerResponse.getShouldRefreshPredicate().test(this.currentTree.get())) {
-                    this.refresh();
-                }
+
+                this.refresh(eventHandlerResponse.getChangeKind());
+
                 return Optional.of(eventHandlerResponse);
             } else {
                 this.logger.warn("No handler found for event: {}", treeInput); //$NON-NLS-1$
@@ -116,16 +117,41 @@ public class TreeEventProcessor implements ITreeEventProcessor {
     }
 
     @Override
-    public void refresh() {
-        long start = System.currentTimeMillis();
+    public void refresh(String changeKind) {
+        if (this.shouldRefresh(changeKind)) {
+            long start = System.currentTimeMillis();
 
-        Tree tree = this.refreshTree();
+            Tree tree = this.refreshTree();
 
-        this.currentTree.set(tree);
-        this.sink.tryEmitNext(new TreeRefreshedEventPayload(tree));
+            this.currentTree.set(tree);
+            this.sink.tryEmitNext(new TreeRefreshedEventPayload(tree));
 
-        long end = System.currentTimeMillis();
-        this.timer.record(end - start, TimeUnit.MILLISECONDS);
+            long end = System.currentTimeMillis();
+            this.timer.record(end - start, TimeUnit.MILLISECONDS);
+        }
+    }
+
+    private boolean shouldRefresh(String changeKind) {
+        boolean shouldRefresh = false;
+
+        switch (changeKind) {
+        case ChangeKind.SEMANTIC_CHANGE:
+            shouldRefresh = true;
+            break;
+        case ChangeKind.REPRESENTATION_CREATION:
+            shouldRefresh = true;
+            break;
+        case ChangeKind.REPRESENTATION_DELETION:
+            shouldRefresh = true;
+            break;
+        case ChangeKind.REPRESENTATION_RENAMING:
+            shouldRefresh = true;
+            break;
+        default:
+            shouldRefresh = false;
+        }
+
+        return shouldRefresh;
     }
 
     private Tree refreshTree() {

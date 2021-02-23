@@ -16,6 +16,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.eclipse.sirius.web.collaborative.api.services.ChangeKind;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramContext;
@@ -91,12 +92,12 @@ public class InvokeNodeToolOnDiagramEventHandler implements IDiagramEventHandler
             if (optionalTool.isPresent()) {
                 Status status = this.executeTool(editingContext, diagramContext, input.getDiagramElementId(), optionalTool.get());
                 if (Objects.equals(status, Status.OK)) {
-                    return new EventHandlerResponse(true, representation -> true, new InvokeNodeToolOnDiagramSuccessPayload(diagram));
+                    return new EventHandlerResponse(ChangeKind.SEMANTIC_CHANGE, new InvokeNodeToolOnDiagramSuccessPayload(diagram));
                 }
             }
         }
         String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), InvokeNodeToolOnDiagramInput.class.getSimpleName());
-        return new EventHandlerResponse(false, representation -> false, new ErrorPayload(message));
+        return new EventHandlerResponse(ChangeKind.NOTHING, new ErrorPayload(message));
     }
 
     private Status executeTool(IEditingContext editingContext, IDiagramContext diagramContext, UUID diagramElementId, CreateNodeTool tool) {

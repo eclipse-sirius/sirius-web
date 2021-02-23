@@ -30,7 +30,7 @@ public interface IRepresentationEventProcessor {
 
     Optional<EventHandlerResponse> handle(IRepresentationInput representationInput);
 
-    void refresh();
+    void refresh(String changeKind);
 
     ISubscriptionManager getSubscriptionManager();
 

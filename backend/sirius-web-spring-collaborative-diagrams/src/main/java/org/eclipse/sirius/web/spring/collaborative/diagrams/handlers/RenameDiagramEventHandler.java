@@ -18,6 +18,7 @@ import java.util.UUID;
 
 import org.eclipse.sirius.web.collaborative.api.dto.RenameRepresentationInput;
 import org.eclipse.sirius.web.collaborative.api.dto.RenameRepresentationSuccessPayload;
+import org.eclipse.sirius.web.collaborative.api.services.ChangeKind;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventHandler;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
@@ -29,7 +30,6 @@ import org.eclipse.sirius.web.representations.IRepresentation;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationService;
 import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;
 import org.eclipse.sirius.web.spring.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
-import org.eclipse.sirius.web.trees.Tree;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
@@ -79,12 +79,12 @@ public class RenameDiagramEventHandler implements IEditingContextEventHandler {
                 IRepresentation representation = representationDescriptor.getRepresentation();
                 Optional<IRepresentation> optionalRepresentation = this.createDiagramWithNewLabel(representation, newLabel, editingContext);
                 if (optionalRepresentation.isPresent()) {
-                    return new EventHandlerResponse(true, r -> r instanceof Tree, new RenameRepresentationSuccessPayload(optionalRepresentation.get()));
+                    return new EventHandlerResponse(ChangeKind.REPRESENTATION_RENAMING, new RenameRepresentationSuccessPayload(optionalRepresentation.get()));
                 }
             }
         }
         String message = this.messageService.invalidInput(input.getClass().getSimpleName(), RenameRepresentationInput.class.getSimpleName());
-        return new EventHandlerResponse(false, representation -> false, new ErrorPayload(message));
+        return new EventHandlerResponse(ChangeKind.NOTHING, new ErrorPayload(message));
     }
 
     private Optional<IRepresentation> createDiagramWithNewLabel(IRepresentation representation, String newLabel, IEditingContext editingContext) {

@@ -18,6 +18,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.eclipse.sirius.web.collaborative.api.services.ChangeKind;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramContext;
@@ -98,7 +99,7 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
             result = this.handleDelete(editingContext, diagramContext, (DeleteFromDiagramInput) diagramInput);
         } else {
             String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), DeleteFromDiagramInput.class.getSimpleName());
-            result = new EventHandlerResponse(false, representation -> false, new ErrorPayload(message));
+            result = new EventHandlerResponse(ChangeKind.NOTHING, new ErrorPayload(message));
         }
         return result;
     }
@@ -136,16 +137,22 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
     }
 
     private EventHandlerResponse computeResponse(List<String> errors, boolean atLeastOneSuccess, IDiagramContext diagramContext) {
+
         EventHandlerResponse result;
         if (errors.isEmpty()) {
-            result = new EventHandlerResponse(true, representation -> true, new DeleteFromDiagramSuccessPayload(diagramContext.getDiagram()));
+            result = new EventHandlerResponse(ChangeKind.SEMANTIC_CHANGE, new DeleteFromDiagramSuccessPayload(diagramContext.getDiagram()));
         } else {
-            StringBuilder sb = new StringBuilder();
-            sb.append(this.messageService.deleteFailed());
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(this.messageService.deleteFailed());
             for (String error : errors) {
-                sb.append(error);
+                stringBuilder.append(error);
             }
-            result = new EventHandlerResponse(atLeastOneSuccess, representation -> atLeastOneSuccess, new ErrorPayload(sb.toString()));
+
+            var changeKind = ChangeKind.NOTHING;
+            if (atLeastOneSuccess) {
+                changeKind = ChangeKind.SEMANTIC_CHANGE;
+            }
+            result = new EventHandlerResponse(changeKind, new ErrorPayload(stringBuilder.toString()));
         }
         return result;
     }
