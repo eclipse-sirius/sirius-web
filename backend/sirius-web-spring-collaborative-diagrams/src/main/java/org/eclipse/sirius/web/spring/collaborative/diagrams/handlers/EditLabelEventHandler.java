@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -98,13 +98,13 @@ public class EditLabelEventHandler implements IDiagramEventHandler {
                 var node = this.diagramService.findNodeById(diagram, UUID.fromString(nodeId));
                 if (node.isPresent()) {
                     this.invokeDirectEditTool(node.get(), editingContext, diagram, input.getNewText());
-                    return new EventHandlerResponse(ChangeKind.SEMANTIC_CHANGE, new EditLabelSuccessPayload(diagram));
+                    return new EventHandlerResponse(ChangeKind.SEMANTIC_CHANGE, new EditLabelSuccessPayload(diagramInput.getId(), diagram));
                 }
             }
         }
 
         String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), EditLabelInput.class.getSimpleName());
-        return new EventHandlerResponse(ChangeKind.NOTHING, new ErrorPayload(message));
+        return new EventHandlerResponse(ChangeKind.NOTHING, new ErrorPayload(diagramInput.getId(), message));
     }
 
     private String extractNodeId(String labelId) {

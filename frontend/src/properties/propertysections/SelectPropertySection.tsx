@@ -27,6 +27,7 @@ import {
   SelectPropertySectionProps,
 } from 'properties/propertysections/SelectPropertySection.types';
 import React, { useEffect, useState } from 'react';
+import { v4 as uuid } from 'uuid';
 
 export const editSelectMutation = gql`
   mutation editSelect($input: EditSelectInput!) {
@@ -67,6 +68,7 @@ export const SelectPropertySection = ({
     const newValue = event.target.value;
     const variables = {
       input: {
+        id: uuid(),
         projectId: editingContextId,
         representationId: formId,
         selectId: widget.id,
@@ -97,6 +99,7 @@ export const SelectPropertySection = ({
   const sendUpdateWidgetFocus = (selected: boolean) => {
     const variables = {
       input: {
+        id: uuid(),
         projectId: editingContextId,
         representationId: formId,
         widgetId: widget.id,

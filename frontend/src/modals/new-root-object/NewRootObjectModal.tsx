@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@ import gql from 'graphql-tag';
 import { Modal } from 'modals/Modal';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
+import { v4 as uuid } from 'uuid';
 import styles from './NewRootObjectModal.module.css';
 
 const createRootObjectMutation = gql`
@@ -161,6 +162,7 @@ export const NewRootObjectModal = ({ projectId, documentId, onObjectCreated, onC
   const onCreateRootObject = (event) => {
     event.preventDefault();
     const input = {
+      id: uuid(),
       projectId,
       documentId,
       namespaceId: selectedNamespaceId,

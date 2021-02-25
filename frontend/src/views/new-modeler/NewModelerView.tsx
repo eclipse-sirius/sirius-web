@@ -25,6 +25,7 @@ import gql from 'graphql-tag';
 import { ProjectNavbar } from 'navbar/ProjectNavbar';
 import React, { useEffect } from 'react';
 import { Redirect, useParams } from 'react-router-dom';
+import { v4 as uuid } from 'uuid';
 import { FormContainer } from 'views/FormContainer';
 import {
   HandleChangedNameEvent,
@@ -92,6 +93,7 @@ export const NewModelerView = () => {
     event.preventDefault();
     const variables = {
       input: {
+        id: uuid(),
         name: name.trim(),
         projectId,
       },

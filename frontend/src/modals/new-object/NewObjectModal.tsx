@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import gql from 'graphql-tag';
 import { Modal } from 'modals/Modal';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
+import { v4 as uuid } from 'uuid';
 
 const createChildMutation = gql`
   mutation createChild($input: CreateChildInput!) {
@@ -101,6 +102,7 @@ export const NewObjectModal = ({ projectId, classId, objectId, onObjectCreated, 
   const onCreateChild = (event) => {
     event.preventDefault();
     const input = {
+      id: uuid(),
       projectId,
       objectId,
       childCreationDescriptionId: selectedChildCreationDescriptionId,

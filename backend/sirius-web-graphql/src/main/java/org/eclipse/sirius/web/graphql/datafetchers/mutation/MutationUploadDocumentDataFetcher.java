@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -63,6 +63,8 @@ public class MutationUploadDocumentDataFetcher implements IDataFetcherWithFieldC
 
     private static final String FILE = "file"; //$NON-NLS-1$
 
+    private static final String ID = "id"; //$NON-NLS-1$
+
     private final IDataFetchingEnvironmentService dataFetchingEnvironmentService;
 
     private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
@@ -83,10 +85,16 @@ public class MutationUploadDocumentDataFetcher implements IDataFetcherWithFieldC
         // We cannot use directly UploadDocumentInput, the objectMapper cannot handle the file stream.
 
         // @formatter:off
+        UUID id = Optional.of(inputArgument.get(ID))
+                .filter(String.class::isInstance)
+                .map(String.class::cast)
+                .map(UUID::fromString)
+                .orElse(null);
+
         UUID projectId = Optional.of(inputArgument.get(PROJECT_ID))
                 .filter(String.class::isInstance)
                 .map(String.class::cast)
-                .map(id -> UUID.fromString(id))
+                .map(UUID::fromString)
                 .orElse(null);
 
         UploadFile file = Optional.of(inputArgument.get(FILE))
@@ -95,14 +103,14 @@ public class MutationUploadDocumentDataFetcher implements IDataFetcherWithFieldC
                 .orElse(null);
         // @formatter:on
 
-        UploadDocumentInput input = new UploadDocumentInput(projectId, file);
-        IPayload payload = new ErrorPayload(this.messageService.unauthorized());
+        UploadDocumentInput input = new UploadDocumentInput(id, projectId, file);
+        IPayload payload = new ErrorPayload(input.getId(), this.messageService.unauthorized());
 
         boolean canEdit = this.dataFetchingEnvironmentService.canEdit(environment, projectId);
         if (canEdit) {
             // @formatter:off
             payload = this.editingContextEventProcessorRegistry.dispatchEvent(projectId, input)
-                    .orElse(new ErrorPayload(this.messageService.unexpectedError()));
+                    .orElse(new ErrorPayload(input.getId(), this.messageService.unexpectedError()));
             // @formatter:on
         }
 

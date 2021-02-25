@@ -93,12 +93,12 @@ public class InvokeNodeToolOnDiagramEventHandler implements IDiagramEventHandler
             if (optionalTool.isPresent()) {
                 Status status = this.executeTool(editingContext, diagramContext, input.getDiagramElementId(), optionalTool.get(), input.getStartingPositionX(), input.getStartingPositionY());
                 if (Objects.equals(status, Status.OK)) {
-                    return new EventHandlerResponse(ChangeKind.SEMANTIC_CHANGE, new InvokeNodeToolOnDiagramSuccessPayload(diagram));
+                    return new EventHandlerResponse(ChangeKind.SEMANTIC_CHANGE, new InvokeNodeToolOnDiagramSuccessPayload(diagramInput.getId(), diagram));
                 }
             }
         }
         String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), InvokeNodeToolOnDiagramInput.class.getSimpleName());
-        return new EventHandlerResponse(ChangeKind.NOTHING, new ErrorPayload(message));
+        return new EventHandlerResponse(ChangeKind.NOTHING, new ErrorPayload(diagramInput.getId(), message));
     }
 
     private Status executeTool(IEditingContext editingContext, IDiagramContext diagramContext, UUID diagramElementId, CreateNodeTool tool, double startingPositionX, double startingPositionY) {

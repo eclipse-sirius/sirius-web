@@ -30,6 +30,7 @@ import {
   RadioPropertySectionProps,
 } from 'properties/propertysections/RadioPropertySection.types';
 import React, { useEffect, useState } from 'react';
+import { v4 as uuid } from 'uuid';
 
 export const editRadioMutation = gql`
   mutation editRadio($input: EditRadioInput!) {
@@ -72,6 +73,7 @@ export const RadioPropertySection = ({ editingContextId, formId, widget, subscri
     const newValue = event.target.value;
     const variables = {
       input: {
+        id: uuid(),
         projectId: editingContextId,
         representationId: formId,
         radioId: widget.id,
@@ -102,6 +104,7 @@ export const RadioPropertySection = ({ editingContextId, formId, widget, subscri
   const sendUpdateWidgetFocus = (selected: boolean) => {
     const variables = {
       input: {
+        id: uuid(),
         projectId: editingContextId,
         representationId: formId,
         widgetId: widget.id,

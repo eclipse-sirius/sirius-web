@@ -80,7 +80,7 @@ public class UpdateNodePositionEventHandler implements IDiagramEventHandler {
             result = this.handleUpdateNodePosition(editingContext, diagramContext, (UpdateNodePositionInput) diagramInput);
         } else {
             String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), UpdateNodePositionEventHandler.class.getSimpleName());
-            result = new EventHandlerResponse(ChangeKind.NOTHING, new ErrorPayload(message));
+            result = new EventHandlerResponse(ChangeKind.NOTHING, new ErrorPayload(diagramInput.getId(), message));
         }
         return result;
     }
@@ -99,10 +99,10 @@ public class UpdateNodePositionEventHandler implements IDiagramEventHandler {
         if (optionalNode.isPresent()) {
             Set<UUID> childrenIds = this.getAllChildrenIds(optionalNode.get());
             diagramContext.setMoveEvent(new MoveEvent(diagramInput.getDiagramElementId(), newPosition, childrenIds));
-            result = new EventHandlerResponse(DiagramChangeKind.DIAGRAM_LAYOUT_CHANGE, new UpdateNodePositionSuccessPayload(diagramContext.getDiagram()));
+            result = new EventHandlerResponse(DiagramChangeKind.DIAGRAM_LAYOUT_CHANGE, new UpdateNodePositionSuccessPayload(diagramInput.getId(), diagramContext.getDiagram()));
         } else {
             String message = this.messageService.nodeNotFound(String.valueOf(diagramInput.getDiagramElementId()));
-            result = new EventHandlerResponse(ChangeKind.NOTHING, new ErrorPayload(message));
+            result = new EventHandlerResponse(ChangeKind.NOTHING, new ErrorPayload(diagramInput.getId(), message));
         }
         return result;
     }

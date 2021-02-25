@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useQuery, useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { ActionButton, Buttons } from 'core/button/Button';
 import { Form } from 'core/form/Form';
 import { Label } from 'core/label/Label';
@@ -20,6 +20,7 @@ import gql from 'graphql-tag';
 import { Modal } from 'modals/Modal';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
+import { v4 as uuid } from 'uuid';
 
 const createRepresentationMutation = gql`
   mutation createRepresentation($input: CreateRepresentationInput!) {
@@ -148,6 +149,7 @@ export const NewRepresentationModal = ({ projectId, classId, objectId, onReprese
   const onCreateRepresentation = (event) => {
     event.preventDefault();
     const input = {
+      id: uuid(),
       projectId,
       objectId,
       representationDescriptionId: selectedRepresentationDescription.id,

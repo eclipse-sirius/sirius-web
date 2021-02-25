@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,6 +30,8 @@ import org.eclipse.sirius.web.core.api.IInput;
 @GraphQLInputObjectType
 public final class CreateRepresentationInput implements IInput {
 
+    private UUID id;
+
     private UUID projectId;
 
     private UUID representationDescriptionId;
@@ -42,11 +44,20 @@ public final class CreateRepresentationInput implements IInput {
         // Used by Jackson
     }
 
-    public CreateRepresentationInput(UUID projectId, UUID representationDescriptionId, String objectId, String representationName) {
+    public CreateRepresentationInput(UUID id, UUID projectId, UUID representationDescriptionId, String objectId, String representationName) {
+        this.id = Objects.requireNonNull(id);
         this.projectId = Objects.requireNonNull(projectId);
         this.representationDescriptionId = Objects.requireNonNull(representationDescriptionId);
         this.objectId = Objects.requireNonNull(objectId);
         this.representationName = Objects.requireNonNull(representationName);
+    }
+
+    @Override
+    @GraphQLID
+    @GraphQLField
+    @GraphQLNonNull
+    public UUID getId() {
+        return this.id;
     }
 
     @GraphQLID
@@ -78,7 +89,7 @@ public final class CreateRepresentationInput implements IInput {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'projectId: {1}, representationDescriptionId: {2}, objectId: {3}, representationName: {4}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.projectId, this.representationDescriptionId, this.objectId, this.representationName);
+        String pattern = "{0} '{'id: {1}, projectId: {2}, representationDescriptionId: {3}, objectId: {4}, representationName: {5}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.projectId, this.representationDescriptionId, this.objectId, this.representationName);
     }
 }

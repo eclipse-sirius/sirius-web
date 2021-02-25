@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -74,12 +74,12 @@ public class CreateRootObjectEventHandler implements IEditingContextEventHandler
             var optionalObject = this.editService.createRootObject(editingContext, documentId, namespaceId, rootObjectCreationDescriptionId);
 
             if (optionalObject.isPresent()) {
-                return new EventHandlerResponse(ChangeKind.SEMANTIC_CHANGE, new CreateRootObjectSuccessPayload(optionalObject.get()));
+                return new EventHandlerResponse(ChangeKind.SEMANTIC_CHANGE, new CreateRootObjectSuccessPayload(input.getId(), optionalObject.get()));
             }
         }
 
         String message = this.messageService.invalidInput(input.getClass().getSimpleName(), CreateRootObjectInput.class.getSimpleName());
-        return new EventHandlerResponse(ChangeKind.NOTHING, new ErrorPayload(message));
+        return new EventHandlerResponse(ChangeKind.NOTHING, new ErrorPayload(input.getId(), message));
     }
 
 }

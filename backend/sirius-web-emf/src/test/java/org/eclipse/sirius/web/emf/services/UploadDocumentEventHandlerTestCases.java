@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -162,7 +162,7 @@ public class UploadDocumentEventHandlerTestCases {
         UploadDocumentEventHandler handler = new UploadDocumentEventHandler(documentService, messageService, new SimpleMeterRegistry());
 
         UploadFile file = new UploadFile(FILE_NAME, inputstream);
-        var input = new UploadDocumentInput(UUID.randomUUID(), file);
+        var input = new UploadDocumentInput(UUID.randomUUID(), UUID.randomUUID(), file);
 
         assertThat(handler.canHandle(input)).isTrue();
 
@@ -232,7 +232,7 @@ public class UploadDocumentEventHandlerTestCases {
         UploadDocumentEventHandler handler = new UploadDocumentEventHandler(documentService, messageService, new SimpleMeterRegistry());
         UploadFile file = new UploadFile(FILE_NAME, new ByteArrayInputStream(resourceBytes));
 
-        var input = new UploadDocumentInput(UUID.randomUUID(), file);
+        var input = new UploadDocumentInput(UUID.randomUUID(), UUID.randomUUID(), file);
 
         assertThat(handler.canHandle(input)).isTrue();
         IEditingContext editingContext = new EditingContext(UUID.randomUUID(), editingDomain);

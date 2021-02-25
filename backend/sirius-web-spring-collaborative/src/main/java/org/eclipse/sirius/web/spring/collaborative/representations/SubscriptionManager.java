@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,11 +16,13 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.eclipse.sirius.web.collaborative.api.dto.Subscriber;
 import org.eclipse.sirius.web.collaborative.api.services.ISubscriptionManager;
 import org.eclipse.sirius.web.collaborative.api.services.SubscriptionDescription;
+import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.core.api.IPayload;
 
 import reactor.core.publisher.Flux;
@@ -44,12 +46,12 @@ public class SubscriptionManager implements ISubscriptionManager {
     }
 
     @Override
-    public void add(SubscriptionDescription subscriptionDescription) {
+    public void add(IInput input, SubscriptionDescription subscriptionDescription) {
         this.subscriptionDescriptions.add(subscriptionDescription);
     }
 
     @Override
-    public void remove(SubscriptionDescription subscriptionDescription) {
+    public void remove(UUID correlationId, SubscriptionDescription subscriptionDescription) {
         this.subscriptionDescriptions.remove(subscriptionDescription);
     }
 
@@ -70,7 +72,7 @@ public class SubscriptionManager implements ISubscriptionManager {
     }
 
     @Override
-    public Flux<IPayload> getFlux() {
+    public Flux<IPayload> getFlux(IInput input) {
         return this.sink.asFlux();
     }
 

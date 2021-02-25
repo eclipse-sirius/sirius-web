@@ -28,6 +28,8 @@ import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramInput;
  */
 @GraphQLInputObjectType
 public final class UpdateNodePositionInput implements IDiagramInput {
+    private UUID id;
+
     private UUID projectId;
 
     private UUID representationId;
@@ -37,6 +39,14 @@ public final class UpdateNodePositionInput implements IDiagramInput {
     private double newPositionX;
 
     private double newPositionY;
+
+    @Override
+    @GraphQLID
+    @GraphQLField
+    @GraphQLNonNull
+    public UUID getId() {
+        return this.id;
+    }
 
     @GraphQLID
     @GraphQLField
@@ -74,7 +84,7 @@ public final class UpdateNodePositionInput implements IDiagramInput {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'projectId: {1}, representationId: {2}, diagramElementId: {3}, newPositionX: {4}, newPositionY: {5}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'id: {1}, projectId: {2}, representationId: {3}, diagramElementId: {4}, newPositionX: {5}, newPositionY: {6}'}'"; //$NON-NLS-1$
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.projectId, this.representationId, this.diagramElementId, this.newPositionX, this.newPositionY);
     }
 }

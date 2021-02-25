@@ -38,6 +38,7 @@ import {
   textfieldPropertySectionMachine,
 } from 'properties/propertysections/TextfieldPropertySectionMachine';
 import React, { useEffect } from 'react';
+import { v4 as uuid } from 'uuid';
 
 const editTextfieldMutation = gql`
   mutation editTextfield($input: EditTextfieldInput!) {
@@ -101,6 +102,7 @@ export const TextfieldPropertySection = ({
     if (textfieldPropertySection === 'edited') {
       const variables = {
         input: {
+          id: uuid(),
           projectId: editingContextId,
           representationId: formId,
           textfieldId: widget.id,
@@ -148,6 +150,7 @@ export const TextfieldPropertySection = ({
   const sendUpdateWidgetFocus = (selected: boolean) => {
     const variables = {
       input: {
+        id: uuid(),
         projectId: editingContextId,
         representationId: formId,
         widgetId: widget.id,

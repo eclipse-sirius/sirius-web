@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -79,9 +79,9 @@ public class EditSelectEventHandler implements IFormEventHandler {
                     .map(handler -> handler.apply(input.getNewValue()))
                     .orElse(Status.ERROR);
             // @formatter:on
-            return new EventHandlerResponse(ChangeKind.SEMANTIC_CHANGE, new EditSelectSuccessPayload(status.toString()));
+            return new EventHandlerResponse(ChangeKind.SEMANTIC_CHANGE, new EditSelectSuccessPayload(formInput.getId(), status.toString()));
         }
         String message = this.messageService.invalidInput(formInput.getClass().getSimpleName(), EditSelectInput.class.getSimpleName());
-        return new EventHandlerResponse(ChangeKind.NOTHING, new ErrorPayload(message));
+        return new EventHandlerResponse(ChangeKind.NOTHING, new ErrorPayload(formInput.getId(), message));
     }
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -80,12 +80,12 @@ public class CreateChildEventHandler implements IEditingContextEventHandler {
             });
 
             if (createdChildOptional.isPresent()) {
-                return new EventHandlerResponse(ChangeKind.SEMANTIC_CHANGE, new CreateChildSuccessPayload(createdChildOptional.get()));
+                return new EventHandlerResponse(ChangeKind.SEMANTIC_CHANGE, new CreateChildSuccessPayload(input.getId(), createdChildOptional.get()));
             } else {
                 message = this.messageService.objectCreationFailed();
             }
         }
 
-        return new EventHandlerResponse(ChangeKind.NOTHING, new ErrorPayload(message));
+        return new EventHandlerResponse(ChangeKind.NOTHING, new ErrorPayload(input.getId(), message));
     }
 }

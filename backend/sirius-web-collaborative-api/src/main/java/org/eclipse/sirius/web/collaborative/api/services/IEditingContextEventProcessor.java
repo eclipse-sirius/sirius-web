@@ -30,7 +30,7 @@ public interface IEditingContextEventProcessor {
     UUID getEditingContextId();
 
     <T extends IRepresentationEventProcessor> Optional<T> acquireRepresentationEventProcessor(Class<T> representationEventProcessorClass, IRepresentationConfiguration configuration,
-            SubscriptionDescription subscriptionDescription);
+            SubscriptionDescription subscriptionDescription, IInput input);
 
     List<IRepresentationEventProcessor> getRepresentationEventProcessors();
 

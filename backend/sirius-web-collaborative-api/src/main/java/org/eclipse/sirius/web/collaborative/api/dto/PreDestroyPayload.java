@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,6 +35,7 @@ public final class PreDestroyPayload implements IPayload {
         this.id = id;
     }
 
+    @Override
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull

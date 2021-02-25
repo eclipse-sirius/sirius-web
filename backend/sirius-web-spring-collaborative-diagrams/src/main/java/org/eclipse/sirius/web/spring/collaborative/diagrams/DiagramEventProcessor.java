@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,6 +26,7 @@ import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramEventProcessor;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.web.core.api.IEditingContext;
+import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.core.api.IRepresentationInput;
 import org.eclipse.sirius.web.diagrams.Diagram;
@@ -94,7 +95,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
                 IDiagramEventHandler diagramEventHandler = optionalDiagramEventHandler.get();
                 EventHandlerResponse eventHandlerResponse = diagramEventHandler.handle(this.editingContext, this.diagramContext, diagramInput);
 
-                this.refresh(eventHandlerResponse.getChangeKind());
+                this.refresh(representationInput, eventHandlerResponse.getChangeKind());
 
                 return Optional.of(eventHandlerResponse);
             } else {
@@ -111,24 +112,24 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
             // @formatter:on
 
             this.diagramContext.update(renamedDiagram);
-            this.diagramEventFlux.diagramRefreshed(renamedDiagram);
+            this.diagramEventFlux.diagramRefreshed(representationInput, renamedDiagram);
         }
         return Optional.empty();
     }
 
     @Override
-    public void refresh(String changeKind) {
+    public void refresh(IInput input, String changeKind) {
         if (ChangeKind.SEMANTIC_CHANGE.equals(changeKind) || DiagramChangeKind.DIAGRAM_LAYOUT_CHANGE.equals(changeKind)) {
             Diagram refreshedDiagram = this.diagramCreationService.refresh(this.editingContext, this.diagramContext).orElse(null);
             this.diagramContext.reset();
             this.diagramContext.update(refreshedDiagram);
-            this.diagramEventFlux.diagramRefreshed(refreshedDiagram);
+            this.diagramEventFlux.diagramRefreshed(input, refreshedDiagram);
         }
     }
 
     @Override
-    public Flux<IPayload> getOutputEvents() {
-        return Flux.merge(this.diagramEventFlux.getFlux(), this.subscriptionManager.getFlux());
+    public Flux<IPayload> getOutputEvents(IInput input) {
+        return Flux.merge(this.diagramEventFlux.getFlux(input), this.subscriptionManager.getFlux(input));
     }
 
     @Override

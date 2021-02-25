@@ -32,6 +32,7 @@ import org.eclipse.sirius.web.collaborative.forms.api.dto.UpdateWidgetFocusInput
 import org.eclipse.sirius.web.collaborative.forms.api.dto.UpdateWidgetFocusSuccessPayload;
 import org.eclipse.sirius.web.components.Element;
 import org.eclipse.sirius.web.core.api.IEditingContext;
+import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.core.api.IRepresentationInput;
 import org.eclipse.sirius.web.forms.Form;
@@ -111,7 +112,7 @@ public class FormEventProcessor implements IFormEventProcessor {
             if (formInput instanceof UpdateWidgetFocusInput) {
                 UpdateWidgetFocusInput input = (UpdateWidgetFocusInput) formInput;
                 this.widgetSubscriptionManager.handle(input);
-                result = Optional.of(new EventHandlerResponse(ChangeKind.FOCUS_CHANGE, new UpdateWidgetFocusSuccessPayload(input.getWidgetId())));
+                result = Optional.of(new EventHandlerResponse(ChangeKind.FOCUS_CHANGE, new UpdateWidgetFocusSuccessPayload(representationInput.getId(), input.getWidgetId())));
             } else {
                 Optional<IFormEventHandler> optionalFormEventHandler = this.formEventHandlers.stream().filter(handler -> handler.canHandle(formInput)).findFirst();
 
@@ -119,7 +120,7 @@ public class FormEventProcessor implements IFormEventProcessor {
                     IFormEventHandler formEventHandler = optionalFormEventHandler.get();
                     EventHandlerResponse eventHandlerResponse = formEventHandler.handle(this.currentForm.get(), formInput);
 
-                    this.refresh(eventHandlerResponse.getChangeKind());
+                    this.refresh(representationInput, eventHandlerResponse.getChangeKind());
 
                     result = Optional.of(eventHandlerResponse);
                 } else {
@@ -132,12 +133,12 @@ public class FormEventProcessor implements IFormEventProcessor {
     }
 
     @Override
-    public void refresh(String changeKind) {
+    public void refresh(IInput input, String changeKind) {
         if (ChangeKind.SEMANTIC_CHANGE.equals(changeKind)) {
             Form form = this.refreshForm();
 
             this.currentForm.set(form);
-            this.sink.tryEmitNext(new FormRefreshedEventPayload(form));
+            this.sink.tryEmitNext(new FormRefreshedEventPayload(input.getId(), form));
         }
     }
 
@@ -157,15 +158,15 @@ public class FormEventProcessor implements IFormEventProcessor {
     }
 
     @Override
-    public Flux<IPayload> getOutputEvents() {
-        var initialRefresh = Mono.fromCallable(() -> new FormRefreshedEventPayload(this.currentForm.get()));
+    public Flux<IPayload> getOutputEvents(IInput input) {
+        var initialRefresh = Mono.fromCallable(() -> new FormRefreshedEventPayload(input.getId(), this.currentForm.get()));
         var refreshEventFlux = Flux.concat(initialRefresh, this.sink.asFlux());
 
         // @formatter:off
         return Flux.merge(
             refreshEventFlux,
-            this.widgetSubscriptionManager.getFlux(),
-            this.subscriptionManager.getFlux()
+            this.widgetSubscriptionManager.getFlux(input),
+            this.subscriptionManager.getFlux(input)
         );
         // @formatter:on
     }

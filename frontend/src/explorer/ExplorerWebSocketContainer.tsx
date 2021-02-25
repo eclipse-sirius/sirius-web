@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -37,11 +37,12 @@ const propTypes = {
 
 export const ExplorerWebSocketContainer = ({ editingContextId, selection, setSelection }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { viewState, tree, expanded, maxDepth, message } = state;
+  const { viewState, id, tree, expanded, maxDepth, message } = state;
 
   const { error } = useSubscription(gql(getTreeEventSubscription(maxDepth)), {
     variables: {
       input: {
+        id,
         editingContextId,
         expanded,
       },

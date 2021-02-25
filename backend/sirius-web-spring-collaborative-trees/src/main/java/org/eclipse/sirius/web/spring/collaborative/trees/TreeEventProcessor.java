@@ -30,6 +30,7 @@ import org.eclipse.sirius.web.collaborative.trees.api.ITreeInput;
 import org.eclipse.sirius.web.collaborative.trees.api.ITreeService;
 import org.eclipse.sirius.web.collaborative.trees.api.TreeCreationParameters;
 import org.eclipse.sirius.web.collaborative.trees.api.TreeRefreshedEventPayload;
+import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.core.api.IRepresentationInput;
 import org.eclipse.sirius.web.representations.IRepresentation;
@@ -105,7 +106,7 @@ public class TreeEventProcessor implements ITreeEventProcessor {
                 ITreeEventHandler treeEventHandler = optionalTreeEventHandler.get();
                 EventHandlerResponse eventHandlerResponse = treeEventHandler.handle(this.currentTree.get(), treeInput);
 
-                this.refresh(eventHandlerResponse.getChangeKind());
+                this.refresh(representationInput, eventHandlerResponse.getChangeKind());
 
                 return Optional.of(eventHandlerResponse);
             } else {
@@ -117,14 +118,14 @@ public class TreeEventProcessor implements ITreeEventProcessor {
     }
 
     @Override
-    public void refresh(String changeKind) {
+    public void refresh(IInput input, String changeKind) {
         if (this.shouldRefresh(changeKind)) {
             long start = System.currentTimeMillis();
 
             Tree tree = this.refreshTree();
 
             this.currentTree.set(tree);
-            this.sink.tryEmitNext(new TreeRefreshedEventPayload(tree));
+            this.sink.tryEmitNext(new TreeRefreshedEventPayload(input.getId(), tree));
 
             long end = System.currentTimeMillis();
             this.timer.record(end - start, TimeUnit.MILLISECONDS);
@@ -161,11 +162,11 @@ public class TreeEventProcessor implements ITreeEventProcessor {
     }
 
     @Override
-    public Flux<IPayload> getOutputEvents() {
-        var initialRefresh = Mono.fromCallable(() -> new TreeRefreshedEventPayload(this.currentTree.get()));
+    public Flux<IPayload> getOutputEvents(IInput input) {
+        var initialRefresh = Mono.fromCallable(() -> new TreeRefreshedEventPayload(input.getId(), this.currentTree.get()));
         var refreshEventFlux = Flux.concat(initialRefresh, this.sink.asFlux());
 
-        return Flux.merge(refreshEventFlux, this.subscriptionManager.getFlux());
+        return Flux.merge(refreshEventFlux, this.subscriptionManager.getFlux(input));
     }
 
     @Override

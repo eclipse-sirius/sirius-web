@@ -1,0 +1,56 @@
+= ADR-012 - Add a correlation identifier to inputs and payloads
+
+== Context
+
+We are having difficulties understanding how our collaborative layer works.
+It is complex to debug and we have several bugs and regressions in the past.
+In an effort to have a more rebust system, we should adopt some simple battle tested architectural patterns.
+
+== Decision
+
+In order to have a better understanding of the consequences of our actions, we will add a correlation identifier to our system.
+The goal is to allow clients to correlate between synchronous operations (mutations) and asynchronous effects (refreshed representations publications).
+
+This correlation identifier will be requested on all inputs using the field `id: ID!`.
+This identifiers will be generated client-side thanks to the https://www.npmjs.com/package/uuid[UUID package].
+
+```
+public interface IInput {
+  @GraphQLID
+  @GraphQLField
+  @GraphQLNonNull
+  UUID getId();
+}
+```
+
+All our payloads will then also provide the same identifier.
+
+```
+public interface IPayload {
+  @GraphQLID
+  @GraphQLField
+  @GraphQLNonNull
+  UUID getId();
+}
+```
+
+As a result, it will be possible to track that an `EditRadioInput` triggered from a form can be responsible for the creation of the following payloads:
+
+- EditRadioSuccessPayload
+- FormRefreshedEventPayload
+- DiagramRefreshedEventPayload
+- TreeRefreshedEventPayload
+
+== Status
+
+Accepted.
+
+== Consequences
+
+Since the frontend will be able to identify which payloads received are coming from inputs that it has sent to the server, we will be able to provide additional feedback to the end user.
+Such feedback may include, advanced loading feedbacks for the tools of our palette for example.
+
+== References
+
+- https://www.enterpriseintegrationpatterns.com/patterns/messaging/CorrelationIdentifier.html
+- GraphQL Relay `clientMutationId` field on inputs and payloads

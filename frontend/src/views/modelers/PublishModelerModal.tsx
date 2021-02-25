@@ -26,6 +26,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
 import gql from 'graphql-tag';
 import React, { useEffect } from 'react';
+import { v4 as uuid } from 'uuid';
 import { PublishModelerModalProps } from 'views/modelers/PublishModelerModal.types';
 import {
   ConfirmPublicationEvent,
@@ -100,6 +101,7 @@ export const PublishModelerModal = ({ modelerId, onPublish, onClose }: PublishMo
     event.preventDefault();
     dispatch({ type: 'PUBLISH' } as PublishModelerEvent);
     const input = {
+      id: uuid(),
       modelerId: modelerId,
     };
     publishModeler({ variables: { input } });

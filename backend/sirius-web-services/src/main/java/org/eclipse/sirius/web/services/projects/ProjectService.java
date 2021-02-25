@@ -90,7 +90,7 @@ public class ProjectService implements IProjectService {
         String name = input.getName().trim();
 
         if (!this.isValidProjectName(name)) {
-            payload = new ErrorPayload(this.messageService.invalidProjectName());
+            payload = new ErrorPayload(input.getId(), this.messageService.invalidProjectName());
         } else {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             var optionalOwner = this.accountRepository.findByUsername(authentication.getName());
@@ -100,7 +100,7 @@ public class ProjectService implements IProjectService {
                 this.applicationEventPublisher.publishEvent(new ProjectCreatedEvent(projectEntity.getId()));
 
                 Project project = this.projectMapper.toDTO(projectEntity);
-                payload = new CreateProjectSuccessPayload(project);
+                payload = new CreateProjectSuccessPayload(input.getId(), project);
             }
         }
         return payload;

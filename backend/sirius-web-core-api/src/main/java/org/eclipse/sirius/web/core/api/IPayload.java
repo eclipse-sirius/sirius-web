@@ -12,11 +12,25 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.core.api;
 
+import java.util.UUID;
+
+import org.eclipse.sirius.web.annotations.graphql.GraphQLField;
+import org.eclipse.sirius.web.annotations.graphql.GraphQLID;
+import org.eclipse.sirius.web.annotations.graphql.GraphQLNonNull;
+
 /**
  * Interface to be implemented by all payloads.
  *
  * @author sbegaudeau
  */
 public interface IPayload {
-    // Do nothing on purpose
+    /**
+     * Returns the correlation identifier from the IInput which is responsible for the creation of this payload.
+     *
+     * @return The correlation identifier
+     */
+    @GraphQLID
+    @GraphQLField
+    @GraphQLNonNull
+    UUID getId();
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -78,7 +78,7 @@ public class MutationDeleteRepresentationDataFetcher implements IDataFetcherWith
     public IPayload get(DataFetchingEnvironment environment) throws Exception {
         var input = this.dataFetchingEnvironmentService.getInput(environment, DeleteRepresentationInput.class);
 
-        IPayload payload = new ErrorPayload(this.messageService.unexpectedError());
+        IPayload payload = new ErrorPayload(input.getId(), this.messageService.unexpectedError());
 
         var optionalRepresentation = this.representationService.getRepresentation(input.getRepresentationId());
         if (optionalRepresentation.isPresent()) {
@@ -88,10 +88,10 @@ public class MutationDeleteRepresentationDataFetcher implements IDataFetcherWith
             if (canEdit) {
                 // @formatter:off
                 payload = this.editingContextEventProcessorRegistry.dispatchEvent(representation.getProjectId(), input)
-                        .orElse(new ErrorPayload(this.messageService.unexpectedError()));
+                        .orElse(new ErrorPayload(input.getId(), this.messageService.unexpectedError()));
                 // @formatter:on
             } else {
-                payload = new ErrorPayload(this.messageService.unauthorized());
+                payload = new ErrorPayload(input.getId(), this.messageService.unauthorized());
             }
         }
 

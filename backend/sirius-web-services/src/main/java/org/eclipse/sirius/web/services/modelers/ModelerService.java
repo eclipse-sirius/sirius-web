@@ -62,7 +62,7 @@ public class ModelerService implements IModelerService {
         return this.projectRepository.findById(input.getProjectId()).map(projectEntity -> {
             String name = input.getName().trim();
             if (!this.isValidModelerName(name)) {
-                return new ErrorPayload(this.messageService.invalidModelerName());
+                return new ErrorPayload(input.getId(), this.messageService.invalidModelerName());
             } else {
                 ModelerEntity modelerEntity = new ModelerEntity();
                 modelerEntity.setName(input.getName());
@@ -70,9 +70,9 @@ public class ModelerService implements IModelerService {
                 modelerEntity.setPublicationStatus(PublicationStatusEntity.DRAFT);
 
                 modelerEntity = this.modelerRepository.save(modelerEntity);
-                return new CreateModelerSuccessPayload(this.toDTO(modelerEntity));
+                return new CreateModelerSuccessPayload(input.getId(), this.toDTO(modelerEntity));
             }
-        }).orElse(new ErrorPayload(this.messageService.projectNotFound()));
+        }).orElse(new ErrorPayload(input.getId(), this.messageService.projectNotFound()));
 
     }
 
@@ -80,13 +80,13 @@ public class ModelerService implements IModelerService {
     public IPayload renameModeler(RenameModelerInput input) {
         return this.modelerRepository.findById(input.getModelerId()).map(modelerEntity -> {
             if (!this.isValidModelerName(input.getNewName())) {
-                return new ErrorPayload(this.messageService.invalidModelerName());
+                return new ErrorPayload(input.getId(), this.messageService.invalidModelerName());
             } else {
                 modelerEntity.setName(input.getNewName());
                 modelerEntity = this.modelerRepository.save(modelerEntity);
-                return new RenameModelerSuccessPayload(this.toDTO(modelerEntity));
+                return new RenameModelerSuccessPayload(input.getId(), this.toDTO(modelerEntity));
             }
-        }).orElse(new ErrorPayload(this.messageService.modelerNotFound()));
+        }).orElse(new ErrorPayload(input.getId(), this.messageService.modelerNotFound()));
     }
 
     @Override
@@ -95,8 +95,8 @@ public class ModelerService implements IModelerService {
         return optionalModelerEntity.map(modelerEntity -> {
             modelerEntity.setPublicationStatus(PublicationStatusEntity.PUBLISHED);
             modelerEntity = this.modelerRepository.save(modelerEntity);
-            return (IPayload) new PublishModelerSuccessPayload(this.toDTO(modelerEntity));
-        }).orElse(new ErrorPayload(this.messageService.modelerNotFound()));
+            return (IPayload) new PublishModelerSuccessPayload(input.getId(), this.toDTO(modelerEntity));
+        }).orElse(new ErrorPayload(input.getId(), this.messageService.modelerNotFound()));
     }
 
     @Override

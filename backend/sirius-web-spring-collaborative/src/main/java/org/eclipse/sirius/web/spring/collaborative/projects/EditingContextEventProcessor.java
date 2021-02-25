@@ -149,7 +149,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
             if (input instanceof RenameRepresentationInput && payload instanceof RenameRepresentationSuccessPayload) {
                 UUID representationId = ((RenameRepresentationInput) input).getRepresentationId();
                 String newLabel = ((RenameRepresentationInput) input).getNewLabel();
-                this.sink.tryEmitNext(new RepresentationRenamedEventPayload(representationId, newLabel));
+                this.sink.tryEmitNext(new RepresentationRenamedEventPayload(input.getId(), representationId, newLabel));
             }
         }
     }
@@ -183,7 +183,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
             EventHandlerResponse response = optionalResponse.get();
 
             this.disposeRepresentationIfNeeded();
-            this.refreshOtherRepresentations(representationId, response.getChangeKind());
+            this.refreshOtherRepresentations(input, representationId, response.getChangeKind());
 
             if (this.shouldPersistTheEditingContext(response.getChangeKind())) {
                 this.editingContextPersistenceService.persist(this.editingContext);
@@ -196,18 +196,21 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
     /**
      * Refresh all the representations except the one with the given representationId.
      *
+     *
+     * @param input
+     *            The input which has triggered the refresh sequence
      * @param representationId
      *            The identifier of the representation which should not be refreshed
      * @param changeKind
      *            The kind of change to consider in order to determine if the representation should be refreshed
      */
-    private void refreshOtherRepresentations(UUID representationId, String changeKind) {
+    private void refreshOtherRepresentations(IInput input, UUID representationId, String changeKind) {
         // @formatter:off
         this.representationEventProcessors.entrySet().stream()
             .filter(entry -> !Objects.equals(entry.getKey(), representationId))
             .map(Entry::getValue)
             .forEach(representationEventProcessor -> {
-                representationEventProcessor.refresh(changeKind);
+                representationEventProcessor.refresh(input, changeKind);
                 IRepresentation representation = representationEventProcessor.getRepresentation();
                 this.applicationEventPublisher.publishEvent(new RepresentationRefreshedEvent(this.editingContext.getId(), representation));
              });
@@ -295,7 +298,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
 
     @Override
     public <T extends IRepresentationEventProcessor> Optional<T> acquireRepresentationEventProcessor(Class<T> representationEventProcessorClass, IRepresentationConfiguration configuration,
-            SubscriptionDescription subscriptionDescription) {
+            SubscriptionDescription subscriptionDescription, IInput input) {
         // @formatter:off
         var optionalRepresentationEventProcessor = Optional.ofNullable(this.representationEventProcessors.get(configuration.getId()))
                 .filter(representationEventProcessorClass::isInstance)
@@ -307,13 +310,13 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
             if (optionalRepresentationEventProcessor.isPresent()) {
                 var representationEventProcessor = optionalRepresentationEventProcessor.get();
                 this.representationEventProcessors.put(configuration.getId(), representationEventProcessor);
-                representationEventProcessor.getSubscriptionManager().add(subscriptionDescription);
+                representationEventProcessor.getSubscriptionManager().add(input, subscriptionDescription);
             } else {
                 this.logger.warn("The representation with the id {} does not exist", configuration.getId()); //$NON-NLS-1$
             }
         } else {
             var representationEventProcessor = optionalRepresentationEventProcessor.get();
-            representationEventProcessor.getSubscriptionManager().add(subscriptionDescription);
+            representationEventProcessor.getSubscriptionManager().add(input, subscriptionDescription);
         }
 
         return optionalRepresentationEventProcessor;
@@ -321,12 +324,16 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
 
     @Override
     public void release(SubscriptionDescription subscriptionDescription) {
+        // Since the release is not triggered by an input, a random id is
+        // generated instead for the whole release sequence
+        UUID correlationId = UUID.randomUUID();
+
         Optional<UUID> representationIDToRemove = Optional.empty();
         // @formatter:off
         Set<Entry<UUID, IRepresentationEventProcessor>> entries = this.representationEventProcessors.entrySet();
         for (Entry<UUID, IRepresentationEventProcessor> entry : entries) {
             var subscriptionManager = entry.getValue().getSubscriptionManager();
-            subscriptionManager.remove(subscriptionDescription);
+            subscriptionManager.remove(correlationId, subscriptionDescription);
 
             if (subscriptionManager.isEmpty()) {
                 representationIDToRemove = Optional.of(entry.getKey());

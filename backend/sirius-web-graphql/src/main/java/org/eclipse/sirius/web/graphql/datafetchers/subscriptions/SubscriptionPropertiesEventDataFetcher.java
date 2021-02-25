@@ -20,7 +20,6 @@ import org.eclipse.sirius.web.annotations.spring.graphql.SubscriptionDataFetcher
 import org.eclipse.sirius.web.collaborative.api.dto.PreDestroyPayload;
 import org.eclipse.sirius.web.collaborative.api.dto.SubscribersUpdatedEventPayload;
 import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventProcessorRegistry;
-import org.eclipse.sirius.web.collaborative.api.services.IRepresentationEventProcessor;
 import org.eclipse.sirius.web.collaborative.api.services.SubscriptionDescription;
 import org.eclipse.sirius.web.collaborative.forms.api.IFormEventProcessor;
 import org.eclipse.sirius.web.collaborative.forms.api.PropertiesConfiguration;
@@ -86,8 +85,8 @@ public class SubscriptionPropertiesEventDataFetcher implements IDataFetcherWithF
 
         // @formatter:off
         return this.editingContextEventProcessorRegistry.getOrCreateEditingContextEventProcessor(input.getProjectId())
-                .flatMap(processor -> processor.acquireRepresentationEventProcessor(IFormEventProcessor.class, propertiesConfiguration, new SubscriptionDescription(principal, subscriptionId)))
-                .map(IRepresentationEventProcessor::getOutputEvents)
+                .flatMap(processor -> processor.acquireRepresentationEventProcessor(IFormEventProcessor.class, propertiesConfiguration, new SubscriptionDescription(principal, subscriptionId), input))
+                .map(representationEventProcessor -> representationEventProcessor.getOutputEvents(input))
                 .orElse(Flux.empty());
         // @formatter:on
     }

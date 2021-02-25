@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -119,13 +119,13 @@ public class CreateFormEventHandler implements IEditingContextEventHandler {
 
                     this.representationService.save(representationDescriptor);
 
-                    return new EventHandlerResponse(ChangeKind.REPRESENTATION_CREATION, new CreateRepresentationSuccessPayload(form));
+                    return new EventHandlerResponse(ChangeKind.REPRESENTATION_CREATION, new CreateRepresentationSuccessPayload(input.getId(), form));
                 }
             }
         }
 
         String message = this.messageService.invalidInput(input.getClass().getSimpleName(), CreateRepresentationInput.class.getSimpleName());
-        return new EventHandlerResponse(ChangeKind.NOTHING, new ErrorPayload(message));
+        return new EventHandlerResponse(ChangeKind.NOTHING, new ErrorPayload(input.getId(), message));
     }
 
 }

@@ -19,6 +19,7 @@ import {
   GQLSubscribersUpdatedEventPayload,
   GQLWidgetSubscriptionsUpdatedEventPayload,
 } from 'form/FormEventFragments.types';
+import { v4 as uuid } from 'uuid';
 import { assign, Machine } from 'xstate';
 
 export interface FormWebSocketContainerStateSchema {
@@ -45,6 +46,7 @@ export type SchemaValue = {
 };
 
 export interface FormWebSocketContainerContext {
+  id: string;
   formId: string;
   form: Form | null;
   subscribers: Subscriber[];
@@ -84,6 +86,7 @@ export const formWebSocketContainerMachine = Machine<
   {
     type: 'parallel',
     context: {
+      id: uuid(),
       formId: null,
       form: null,
       subscribers: [],
@@ -172,7 +175,7 @@ export const formWebSocketContainerMachine = Machine<
     actions: {
       switchForm: assign((_, event) => {
         const { formId } = event as SwitchFormEvent;
-        return { formId };
+        return { id: uuid(), formId };
       }),
       handleSubscriptionResult: assign((_, event) => {
         const { result } = event as HandleSubscriptionResultEvent;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -83,7 +83,7 @@ public class CreateDocumentEventHandler implements IEditingContextEventHandler {
     public EventHandlerResponse handle(IEditingContext editingContext, IInput input) {
         this.counter.increment();
 
-        EventHandlerResponse response = new EventHandlerResponse(ChangeKind.NOTHING, new ErrorPayload(this.messageService.unexpectedError()));
+        EventHandlerResponse response = new EventHandlerResponse(ChangeKind.NOTHING, new ErrorPayload(input.getId(), this.messageService.unexpectedError()));
 
         if (input instanceof CreateDocumentInput) {
             CreateDocumentInput createDocumentInput = (CreateDocumentInput) input;
@@ -95,21 +95,21 @@ public class CreateDocumentEventHandler implements IEditingContextEventHandler {
             Optional<StereotypeDescription> optionalStereotypeDescription = this.stereotypeDescriptionService.getStereotypeDescriptionById(stereotypeDescriptionId);
 
             if (name.isBlank()) {
-                IPayload payload = new ErrorPayload(this.messageService.invalidDocumentName(name));
+                IPayload payload = new ErrorPayload(input.getId(), this.messageService.invalidDocumentName(name));
                 response = new EventHandlerResponse(ChangeKind.NOTHING, payload);
             } else if (optionalStereotypeDescription.isEmpty()) {
-                IPayload payload = new ErrorPayload(this.messageService.stereotypeDescriptionNotFound(stereotypeDescriptionId));
+                IPayload payload = new ErrorPayload(input.getId(), this.messageService.stereotypeDescriptionNotFound(stereotypeDescriptionId));
                 response = new EventHandlerResponse(ChangeKind.NOTHING, payload);
             } else if (optionalStereotypeDescription.isPresent()) {
                 StereotypeDescription stereotypeDescription = optionalStereotypeDescription.get();
-                response = this.createDocument(editingContext, projectId, name, stereotypeDescription);
+                response = this.createDocument(createDocumentInput.getId(), editingContext, projectId, name, stereotypeDescription);
             }
         }
 
         return response;
     }
 
-    private EventHandlerResponse createDocument(IEditingContext editingContext, UUID projectId, String name, StereotypeDescription stereotypeDescription) {
+    private EventHandlerResponse createDocument(UUID inputId, IEditingContext editingContext, UUID projectId, String name, StereotypeDescription stereotypeDescription) {
         // @formatter:off
         Optional<AdapterFactoryEditingDomain> optionalEditingDomain = Optional.of(editingContext)
                 .filter(EditingContext.class::isInstance)
@@ -137,11 +137,11 @@ public class CreateDocumentEventHandler implements IEditingContextEventHandler {
 
                 resourceSet.getResources().add(resource);
 
-                return new EventHandlerResponse(ChangeKind.SEMANTIC_CHANGE, new CreateDocumentSuccessPayload(document));
+                return new EventHandlerResponse(ChangeKind.SEMANTIC_CHANGE, new CreateDocumentSuccessPayload(inputId, document));
             }
         }
 
-        return new EventHandlerResponse(ChangeKind.NOTHING, new ErrorPayload(this.messageService.unexpectedError()));
+        return new EventHandlerResponse(ChangeKind.NOTHING, new ErrorPayload(inputId, this.messageService.unexpectedError()));
     }
 
 }

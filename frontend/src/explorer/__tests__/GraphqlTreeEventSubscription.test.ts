@@ -21,6 +21,7 @@ const getDocumentSubscription = gql`
         id
       }
       ... on TreeRefreshedEventPayload {
+        id
         tree {
           id
           label

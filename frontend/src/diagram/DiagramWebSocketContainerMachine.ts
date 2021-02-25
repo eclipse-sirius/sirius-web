@@ -15,6 +15,7 @@ import { createDependencyInjectionContainer } from 'diagram/sprotty/DependencyIn
 import { SiriusWebWebSocketDiagramServer } from 'diagram/sprotty/WebSocketDiagramServer';
 import { MutableRefObject } from 'react';
 import { MousePositionTracker, TYPES } from 'sprotty';
+import { v4 as uuid } from 'uuid';
 import { Selection } from 'workbench/Workbench.types';
 import { assign, Machine } from 'xstate';
 
@@ -43,6 +44,7 @@ export type SchemaValue = {
 };
 
 export interface DiagramWebSocketContainerContext {
+  id: string;
   displayedRepresentationId: string | null;
   diagramServer: any;
   diagram: any;
@@ -109,6 +111,7 @@ export const diagramWebSocketContainerMachine = Machine<
   {
     type: 'parallel',
     context: {
+      id: uuid(),
       displayedRepresentationId: null,
       diagramServer: null,
       diagram: null,
@@ -251,7 +254,7 @@ export const diagramWebSocketContainerMachine = Machine<
     actions: {
       switchRepresentation: assign((_, event) => {
         const { representationId } = event as SwithRepresentationEvent;
-        return { displayedRepresentationId: representationId };
+        return { id: uuid(), displayedRepresentationId: representationId };
       }),
       initialize: assign((_, event) => {
         const {

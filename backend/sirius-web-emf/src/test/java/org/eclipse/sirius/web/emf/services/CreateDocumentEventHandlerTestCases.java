@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -92,7 +92,7 @@ public class CreateDocumentEventHandlerTestCases {
         IEMFMessageService messageService = new NoOpEMFMessageService();
 
         CreateDocumentEventHandler handler = new CreateDocumentEventHandler(documentService, stereotypeDescriptionService, messageService, new SimpleMeterRegistry());
-        var input = new CreateDocumentInput(UUID.randomUUID(), DOCUMENT_NAME, STEREOTYPE_DESCRIPTION_ID);
+        var input = new CreateDocumentInput(UUID.randomUUID(), UUID.randomUUID(), DOCUMENT_NAME, STEREOTYPE_DESCRIPTION_ID);
 
         assertThat(handler.canHandle(input)).isTrue();
 
@@ -127,14 +127,14 @@ public class CreateDocumentEventHandlerTestCases {
 
         CreateDocumentEventHandler handler = new CreateDocumentEventHandler(documentService, stereotypeDescriptionService, messageService, new SimpleMeterRegistry());
 
-        var firstCreateInput = new CreateDocumentInput(editingContext.getId(), DOCUMENT_NAME, STEREOTYPE_DESCRIPTION_ID);
+        var firstCreateInput = new CreateDocumentInput(UUID.randomUUID(), editingContext.getId(), DOCUMENT_NAME, STEREOTYPE_DESCRIPTION_ID);
         assertThat(handler.canHandle(firstCreateInput)).isTrue();
         Object firstPayload = handler.handle(editingContext, firstCreateInput).getPayload();
         assertThat(firstPayload).isInstanceOf(CreateDocumentSuccessPayload.class);
         Document firstDocument = ((CreateDocumentSuccessPayload) firstPayload).getDocument();
         assertThat(firstDocument.getName()).isEqualTo(DOCUMENT_NAME);
 
-        var secondCreatedInput = new CreateDocumentInput(editingContext.getId(), DOCUMENT_NAME, STEREOTYPE_DESCRIPTION_ID);
+        var secondCreatedInput = new CreateDocumentInput(UUID.randomUUID(), editingContext.getId(), DOCUMENT_NAME, STEREOTYPE_DESCRIPTION_ID);
         assertThat(handler.canHandle(secondCreatedInput)).isTrue();
         Object secondPayload = handler.handle(editingContext, secondCreatedInput).getPayload();
         assertThat(secondPayload).isInstanceOf(CreateDocumentSuccessPayload.class);

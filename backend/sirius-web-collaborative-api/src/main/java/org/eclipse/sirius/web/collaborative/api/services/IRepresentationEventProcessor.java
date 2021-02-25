@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.collaborative.api.services;
 
 import java.util.Optional;
 
+import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.core.api.IRepresentationInput;
 import org.eclipse.sirius.web.representations.IRepresentation;
@@ -30,11 +31,11 @@ public interface IRepresentationEventProcessor {
 
     Optional<EventHandlerResponse> handle(IRepresentationInput representationInput);
 
-    void refresh(String changeKind);
+    void refresh(IInput input, String changeKind);
 
     ISubscriptionManager getSubscriptionManager();
 
-    Flux<IPayload> getOutputEvents();
+    Flux<IPayload> getOutputEvents(IInput input);
 
     void dispose();
 

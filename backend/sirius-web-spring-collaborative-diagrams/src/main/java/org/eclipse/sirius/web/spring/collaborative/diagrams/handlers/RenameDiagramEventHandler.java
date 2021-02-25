@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -79,12 +79,12 @@ public class RenameDiagramEventHandler implements IEditingContextEventHandler {
                 IRepresentation representation = representationDescriptor.getRepresentation();
                 Optional<IRepresentation> optionalRepresentation = this.createDiagramWithNewLabel(representation, newLabel, editingContext);
                 if (optionalRepresentation.isPresent()) {
-                    return new EventHandlerResponse(ChangeKind.REPRESENTATION_RENAMING, new RenameRepresentationSuccessPayload(optionalRepresentation.get()));
+                    return new EventHandlerResponse(ChangeKind.REPRESENTATION_RENAMING, new RenameRepresentationSuccessPayload(input.getId(), optionalRepresentation.get()));
                 }
             }
         }
         String message = this.messageService.invalidInput(input.getClass().getSimpleName(), RenameRepresentationInput.class.getSimpleName());
-        return new EventHandlerResponse(ChangeKind.NOTHING, new ErrorPayload(message));
+        return new EventHandlerResponse(ChangeKind.NOTHING, new ErrorPayload(input.getId(), message));
     }
 
     private Optional<IRepresentation> createDiagramWithNewLabel(IRepresentation representation, String newLabel, IEditingContext editingContext) {

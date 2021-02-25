@@ -39,6 +39,7 @@ import {
   ShowToastEvent,
 } from 'modals/delete-project/DeleteProjectModalMachine';
 import React, { useEffect } from 'react';
+import { v4 as uuid } from 'uuid';
 
 const deleteProjectMutation = gql`
   mutation deleteProject($input: DeleteProjectInput!) {
@@ -91,6 +92,7 @@ export const DeleteProjectModal = ({ projectId, onDelete, onClose }: DeleteProje
     event.preventDefault();
     const variables = {
       input: {
+        id: uuid(),
         projectId,
       },
     };

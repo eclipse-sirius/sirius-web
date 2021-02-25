@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { v4 as uuid } from 'uuid';
 import {
   COMPLETE__STATE,
   ERROR__STATE,
@@ -25,6 +26,7 @@ import {
 
 export const initialState = {
   viewState: LOADING__STATE,
+  id: uuid(),
   tree: undefined,
   expanded: [],
   maxDepth: 1,
@@ -41,7 +43,7 @@ export const reducer = (prevState, action) => {
   let state = prevState;
   switch (action.type) {
     case HANDLE_CONNECTION_ERROR__ACTION:
-      state = handleConnectionErrorAction();
+      state = handleConnectionErrorAction(prevState);
       break;
     case HANDLE_DATA__ACTION:
       state = handleDataAction(prevState, action);
@@ -50,7 +52,7 @@ export const reducer = (prevState, action) => {
       state = handleErrorAction(prevState, action);
       break;
     case HANDLE_COMPLETE__ACTION:
-      state = handleCompleteAction();
+      state = handleCompleteAction(prevState);
       break;
     case HANDLE_EXPANDED__ACTION:
       state = handleExpandedAction(prevState, action);
@@ -67,9 +69,11 @@ export const reducer = (prevState, action) => {
   return state;
 };
 
-const handleConnectionErrorAction = () => {
+const handleConnectionErrorAction = (prevState) => {
+  const { id } = prevState;
   return {
     viewState: ERROR__STATE,
+    id,
     tree: undefined,
     expanded: [],
     maxDepth: 1,
@@ -79,14 +83,14 @@ const handleConnectionErrorAction = () => {
 };
 
 const handleDataAction = (prevState, action) => {
-  const { expanded, maxDepth, modal } = prevState;
+  const { id, expanded, maxDepth, modal } = prevState;
   const { message } = action;
 
   if (message?.data?.treeEvent) {
     const { treeEvent } = message.data;
     if (treeEvent.__typename === 'TreeRefreshedEventPayload') {
       const { tree } = treeEvent;
-      return { viewState: TREE_LOADED__STATE, tree, expanded, maxDepth, message: '', modal };
+      return { viewState: TREE_LOADED__STATE, id, tree, expanded, maxDepth, message: '', modal };
     }
   }
 
@@ -94,17 +98,19 @@ const handleDataAction = (prevState, action) => {
 };
 
 const handleErrorAction = (prevState, action) => {
-  const { viewState, tree, expanded, maxDepth, modal } = prevState;
+  const { viewState, id, tree, expanded, maxDepth, modal } = prevState;
   const { message } = action;
   if (viewState === TREE_LOADED__STATE) {
-    return { viewState: TREE_LOADED__STATE, tree, expanded, maxDepth, message, modal };
+    return { viewState: TREE_LOADED__STATE, id, tree, expanded, maxDepth, message, modal };
   }
-  return { viewState: ERROR__STATE, tree, expanded, maxDepth, message, modal };
+  return { viewState: ERROR__STATE, id, tree, expanded, maxDepth, message, modal };
 };
 
-const handleCompleteAction = () => {
+const handleCompleteAction = (prevState) => {
+  const { id } = prevState;
   return {
     viewState: COMPLETE__STATE,
+    id,
     tree: undefined,
     expanded: [],
     maxDepth: 1,
@@ -114,15 +120,15 @@ const handleCompleteAction = () => {
 };
 
 const handleExpandedAction = (prevState, action) => {
-  const { viewState, tree, expanded, maxDepth, message, modal } = prevState;
-  const { id, depth } = action;
+  const { viewState, id, tree, expanded, maxDepth, message, modal } = prevState;
+  const { id: elementId, depth } = action;
   let newExpanded;
-  if (expanded.includes(id)) {
+  if (expanded.includes(elementId)) {
     newExpanded = [...expanded];
-    newExpanded.splice(newExpanded.indexOf(id), 1);
+    newExpanded.splice(newExpanded.indexOf(elementId), 1);
   } else {
-    newExpanded = [...expanded, id];
+    newExpanded = [...expanded, elementId];
   }
 
-  return { viewState, tree, expanded: newExpanded, maxDepth: Math.max(maxDepth, depth), message, modal };
+  return { viewState, id, tree, expanded: newExpanded, maxDepth: Math.max(maxDepth, depth), message, modal };
 };

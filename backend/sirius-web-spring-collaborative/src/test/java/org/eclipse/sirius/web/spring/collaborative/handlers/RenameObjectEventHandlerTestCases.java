@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -55,7 +55,7 @@ public class RenameObjectEventHandlerTestCases {
         };
 
         RenameObjectEventHandler handler = new RenameObjectEventHandler(new NoOpCollaborativeMessageService(), objectService, editService, new SimpleMeterRegistry());
-        var input = new RenameObjectInput(UUID.randomUUID(), "objectId", "newName"); //$NON-NLS-1$ //$NON-NLS-2$
+        var input = new RenameObjectInput(UUID.randomUUID(), UUID.randomUUID(), "objectId", "newName"); //$NON-NLS-1$ //$NON-NLS-2$
 
         assertThat(handler.canHandle(input)).isTrue();
 

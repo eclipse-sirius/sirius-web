@@ -84,7 +84,7 @@ export const PropertiesWebSocketContainer = ({ editingContextId, selection }: Pr
     },
   });
   const { toast, propertiesWebSocketContainer } = value as SchemaValue;
-  const { currentSelection, form, subscribers, widgetSubscriptions, message } = context;
+  const { id, currentSelection, form, subscribers, widgetSubscriptions, message } = context;
 
   /**
    * Displays an other form if the selection indicates that we should display another properties view.
@@ -99,6 +99,7 @@ export const PropertiesWebSocketContainer = ({ editingContextId, selection }: Pr
   const { error } = useSubscription<GQLPropertiesEventSubscription>(propertiesEventSubscription, {
     variables: {
       input: {
+        id,
         projectId: editingContextId,
         objectId: currentSelection?.id,
       },
