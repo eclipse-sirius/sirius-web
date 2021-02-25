@@ -17,7 +17,6 @@ import java.util.Optional;
 import org.eclipse.sirius.web.diagrams.Label;
 import org.eclipse.sirius.web.diagrams.NodeType;
 import org.eclipse.sirius.web.diagrams.Position;
-import org.eclipse.sirius.web.diagrams.Position.Builder;
 import org.eclipse.sirius.web.diagrams.Size;
 import org.eclipse.sirius.web.diagrams.TextBounds;
 
@@ -51,15 +50,13 @@ public class NodeLabelPositionProvider implements ILabelPositionProvider {
 
         // We always recompute the position according to the textbounds as the text might have changed.
         double x = (this.parentNodeSize.getWidth() - textBounds.getSize().getWidth()) / 2;
-        Builder builder = Position.newPosition().x(x);
+        double y = 0;
         if (NodeType.NODE_IMAGE.equals(this.parentNodeType)) {
-            builder.y(-(textBounds.getSize().getHeight() + LABEL_Y_SPACING));
+            y = -(textBounds.getSize().getHeight() + LABEL_Y_SPACING);
         } else if (NodeType.NODE_RECTANGLE.equals(this.parentNodeType)) {
-            builder.y(LABEL_Y_SPACING);
-        } else {
-            builder.y(0);
+            y = LABEL_Y_SPACING;
         }
-        return builder.build();
+        return Position.at(x, y);
     }
 
 }

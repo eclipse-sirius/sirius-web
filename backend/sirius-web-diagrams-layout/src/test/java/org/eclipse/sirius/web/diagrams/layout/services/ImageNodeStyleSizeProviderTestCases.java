@@ -32,12 +32,7 @@ public class ImageNodeStyleSizeProviderTestCases {
 
     private static final String IMAGE_PNG = "/image.png"; //$NON-NLS-1$
 
-    // @formatter:off
-    private static final Size SIZE = Size.newSize()
-            .width(42)
-            .height(42)
-            .build();
-    // @formatter:on
+    private static final Size SIZE = Size.of(42, 42);
 
     private ImageSizeProvider imageSizeProvider = new ImageSizeProvider() {
         @Override

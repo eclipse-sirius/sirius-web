@@ -39,7 +39,7 @@ public class EdgeLabelPositionProviderTestCases {
 
     private static final String TEST_LABEL = "My Label"; //$NON-NLS-1$
 
-    private List<Position> routingPoints = Arrays.asList(Position.newPosition().x(0).y(0).build(), Position.newPosition().x(100).y(100).build());
+    private List<Position> routingPoints = Arrays.asList(Position.at(0, 0), Position.at(100, 100));
 
     @Test
     public void testEdgeLabelBoundsPosition() {

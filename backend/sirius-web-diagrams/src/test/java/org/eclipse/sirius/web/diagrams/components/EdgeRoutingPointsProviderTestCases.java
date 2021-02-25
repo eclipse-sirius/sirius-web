@@ -36,17 +36,8 @@ public class EdgeRoutingPointsProviderTestCases {
     public void testEdgeRoutingPoints() {
         EdgeRoutingPointsProvider edgeRoutingPointsProvider = new EdgeRoutingPointsProvider();
 
-        // @formatter:off
-        Position firstPosition = Position.newPosition()
-                .x(0)
-                .y(0)
-                .build();
-
-        Position secondPosition = Position.newPosition()
-                .x(200)
-                .y(200)
-                .build();
-        // @formatter:on
+        Position firstPosition = Position.at(0, 0);
+        Position secondPosition = Position.at(200, 200);
 
         Element sourceElement = this.createNodeElement(firstPosition);
         Element targetElement = this.createNodeElement(secondPosition);
@@ -64,15 +55,12 @@ public class EdgeRoutingPointsProviderTestCases {
     }
 
     private Element createNodeElement(Position position) {
+        Size size = Size.of(100, 50);
+
         // @formatter:off
         INodeStyle style = ImageNodeStyle.newImageNodeStyle()
                 .imageURL("") //$NON-NLS-1$
                 .scalingFactor(42)
-                .build();
-
-        Size size = Size.newSize()
-                .width(100)
-                .height(50)
                 .build();
 
         NodeElementProps nodeElementProps = NodeElementProps.newNodeElementProps(UUID.randomUUID())

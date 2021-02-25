@@ -39,7 +39,7 @@ public class NodeLabelPositionProviderTestCases {
 
     private static final String TEST_LABEL = "My Label"; //$NON-NLS-1$
 
-    private static final Size DEFAULT_NODE_SIZE = Size.newSize().height(70).width(150).build();
+    private static final Size DEFAULT_NODE_SIZE = Size.of(150, 70);
 
     @Test
     public void testNodeImageLabelBoundsPosition() {

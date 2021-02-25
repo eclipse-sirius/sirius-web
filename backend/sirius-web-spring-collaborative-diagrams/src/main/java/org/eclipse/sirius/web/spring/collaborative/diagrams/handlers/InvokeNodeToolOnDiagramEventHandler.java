@@ -122,12 +122,8 @@ public class InvokeNodeToolOnDiagramEventHandler implements IDiagramEventHandler
 
             result = tool.getHandler().apply(variableManager);
 
-            // @formatter:off
-            Position newPosition = Position.newPosition()
-                    .x(startingPositionX)
-                    .y(startingPositionY)
-                    .build();
-            // @formatter:on
+            Position newPosition = Position.at(startingPositionX, startingPositionY);
+
             diagramContext.setStartingPosition(newPosition);
         }
         return result;

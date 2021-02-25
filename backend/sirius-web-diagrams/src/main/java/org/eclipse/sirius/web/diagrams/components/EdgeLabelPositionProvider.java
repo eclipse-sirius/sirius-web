@@ -59,9 +59,7 @@ public class EdgeLabelPositionProvider implements ILabelPositionProvider {
     private Position computeNewPosition(TextBounds textBounds, Position sourceAnchor, Position targetAnchor) {
         double x = ((sourceAnchor.getX() + targetAnchor.getX()) / 2) - (textBounds.getSize().getWidth() / 2);
         double y = (sourceAnchor.getY() + targetAnchor.getY()) / 2;
-        // @formatter:off
-        return Position.newPosition().x(x).y(y).build();
-        // @formatter:on
+        return Position.at(x, y);
     }
 
 }

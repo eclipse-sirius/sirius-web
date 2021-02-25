@@ -97,10 +97,7 @@ public class NodePositionProvider {
             xPosition = xPosition - parentAbsolutePosition.getX();
             yPosition = yPosition - parentAbsolutePosition.getY();
             // @formatter:off
-            position = Position.newPosition()
-              .x(xPosition)
-              .y(yPosition)
-              .build();
+            position = Position.at(xPosition, yPosition);
             // @formatter:on
         } else {
             // The node has been created along with others, by a tool or a refresh
@@ -122,14 +119,11 @@ public class NodePositionProvider {
     private Position getNextPosition(Optional<Object> previousParentElement, Size newSize) {
         Position newPosition;
         if (this.lastPosition == null) {
-            newPosition = Optional.ofNullable(this.startingPosition).orElse(Position.newPosition().x(0).y(0).build());
+            newPosition = Optional.ofNullable(this.startingPosition).orElse(Position.at(0, 0));
         } else {
-            // @formatter:off
-            newPosition = Position.newPosition()
-              .x(this.lastPosition.getX())
-              .y(this.lastPosition.getY() + this.lastSize.getHeight() + NEXT_POSITION_DELTA)
-              .build();
-            // @formatter:on
+            double x = this.lastPosition.getX();
+            double y = this.lastPosition.getY() + this.lastSize.getHeight() + NEXT_POSITION_DELTA;
+            newPosition = Position.at(x, y);
         }
 
         // Shift the new position if necessary, according to existing elements
@@ -146,12 +140,9 @@ public class NodePositionProvider {
             if (!siblings.isEmpty()) {
                 Node element = this.findOverlappingElement(siblings, newSize, newPosition);
                 while (element != null) {
-                    // @formatter:off
-                    newPosition = Position.newPosition()
-                      .x(newPosition.getX())
-                      .y(element.getPosition().getY() + element.getSize().getHeight() + NEXT_POSITION_DELTA)
-                      .build();
-                    // @formatter:on
+                    double x = newPosition.getX();
+                    double y = element.getPosition().getY() + element.getSize().getHeight() + NEXT_POSITION_DELTA;
+                    newPosition = Position.at(x, y);
                     element = this.findOverlappingElement(siblings, newSize, newPosition);
                 }
             }

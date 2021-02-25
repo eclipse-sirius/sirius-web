@@ -87,12 +87,7 @@ public class UpdateNodePositionEventHandler implements IDiagramEventHandler {
     }
 
     private EventHandlerResponse handleUpdateNodePosition(IEditingContext editingContext, IDiagramContext diagramContext, UpdateNodePositionInput diagramInput) {
-        // @formatter:off
-        Position newPosition = Position.newPosition()
-                .x(diagramInput.getNewPositionX())
-                .y(diagramInput.getNewPositionY())
-                .build();
-        // @formatter:on
+        Position newPosition = Position.at(diagramInput.getNewPositionX(), diagramInput.getNewPositionY());
 
         Optional<Node> optionalNode = this.diagramService.findNodeById(diagramContext.getDiagram(), diagramInput.getDiagramElementId());
 

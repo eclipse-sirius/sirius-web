@@ -171,10 +171,7 @@ public class ImageSizeProvider {
                     double height = root.getGeometryBounds().getHeight();
 
                     // @formatter:off
-                    optionalSize = Optional.of(Size.newSize()
-                            .width(width)
-                            .height(height)
-                            .build());
+                    optionalSize = Optional.of(Size.of(width, height));
                     // @formatter:on
                 }
             }
@@ -202,12 +199,7 @@ public class ImageSizeProvider {
         try {
             BufferedImage bufferedImage = ImageIO.read(url);
 
-            // @formatter:off
-            optionalSize = Optional.of(Size.newSize()
-                    .height(bufferedImage.getHeight())
-                    .width(bufferedImage.getWidth())
-                    .build());
-            // @formatter:on
+            optionalSize = Optional.of(Size.of(bufferedImage.getWidth(), bufferedImage.getHeight()));
         } catch (IOException exception) {
             this.logger.error(exception.getMessage(), exception);
         }
