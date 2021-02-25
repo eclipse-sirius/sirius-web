@@ -148,7 +148,7 @@ public class EdgeMappingConverter {
 
         Function<VariableManager, String> labelIdProvider = variableManager -> {
             Object parentId = variableManager.getVariables().get(LabelDescription.OWNER_ID);
-            return String.valueOf(parentId) + LabelDescription.LABEL_SUFFIX;
+            return String.valueOf(parentId) + idSuffix;
         };
 
         String id = this.identifierProvider.getIdentifier(edgeMapping) + idSuffix;
