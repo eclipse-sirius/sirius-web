@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -42,7 +42,7 @@ public class RenameProjectEventHandlerTestCases {
         };
 
         RenameProjectEventHandler handler = new RenameProjectEventHandler(new NoOpCollaborativeMessageService(), projectService);
-        var input = new RenameProjectInput(UUID.randomUUID(), "newName"); //$NON-NLS-1$
+        var input = new RenameProjectInput(UUID.randomUUID(), UUID.randomUUID(), "newName"); //$NON-NLS-1$
 
         assertThat(handler.canHandle(input)).isTrue();
 

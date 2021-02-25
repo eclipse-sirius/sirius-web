@@ -26,6 +26,7 @@ import {
 } from 'properties/propertysections/CheckboxPropertySection.types';
 import { PropertySectionLabel } from 'properties/propertysections/PropertySectionLabel';
 import React, { useEffect, useState } from 'react';
+import { v4 as uuid } from 'uuid';
 
 const editCheckboxMutation = gql`
   mutation editCheckbox($input: EditCheckboxInput!) {
@@ -65,6 +66,7 @@ export const CheckboxPropertySection = ({
     const newValue = event.target.checked;
     const variables = {
       input: {
+        id: uuid(),
         projectId: editingContextId,
         representationId: formId,
         checkboxId: widget.id,
@@ -95,6 +97,7 @@ export const CheckboxPropertySection = ({
   const sendUpdateWidgetFocus = (selected: boolean) => {
     const variables = {
       input: {
+        id: uuid(),
         projectId: editingContextId,
         representationId: formId,
         widgetId: widget.id,

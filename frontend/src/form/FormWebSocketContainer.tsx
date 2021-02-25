@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -86,7 +86,7 @@ export const FormWebSocketContainer = ({ editingContextId, representationId }: R
     }
   );
   const { toast, formWebSocketContainer } = value as SchemaValue;
-  const { formId, form, subscribers, widgetSubscriptions, message } = context;
+  const { id, formId, form, subscribers, widgetSubscriptions, message } = context;
 
   /**
    * Displays an other form if the selection indicates that we should display another properties view.
@@ -101,6 +101,7 @@ export const FormWebSocketContainer = ({ editingContextId, representationId }: R
   const { error } = useSubscription<GQLFormEventSubscription>(formEventSubscription, {
     variables: {
       input: {
+        id,
         projectId: editingContextId,
         formId: representationId,
       },

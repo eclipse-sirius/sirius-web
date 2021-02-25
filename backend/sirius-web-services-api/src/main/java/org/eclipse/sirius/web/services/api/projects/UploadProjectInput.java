@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,8 +13,10 @@
 package org.eclipse.sirius.web.services.api.projects;
 
 import java.text.MessageFormat;
+import java.util.UUID;
 
 import org.eclipse.sirius.web.annotations.graphql.GraphQLField;
+import org.eclipse.sirius.web.annotations.graphql.GraphQLID;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLInputObjectType;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLNonNull;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLUpload;
@@ -28,7 +30,17 @@ import org.eclipse.sirius.web.spring.graphql.api.UploadFile;
  */
 @GraphQLInputObjectType
 public final class UploadProjectInput implements IInput {
+    private UUID id;
+
     private UploadFile file;
+
+    @Override
+    @GraphQLID
+    @GraphQLField
+    @GraphQLNonNull
+    public UUID getId() {
+        return this.id;
+    }
 
     @GraphQLUpload
     @GraphQLField

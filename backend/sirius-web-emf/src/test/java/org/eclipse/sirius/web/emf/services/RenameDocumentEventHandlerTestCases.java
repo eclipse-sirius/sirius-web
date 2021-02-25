@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -52,7 +52,7 @@ public class RenameDocumentEventHandlerTestCases {
         RenameDocumentEventHandler handler = new RenameDocumentEventHandler(noOpDocumentService, new NoOpEMFMessageService(), new SimpleMeterRegistry());
 
         UUID documentId = UUID.randomUUID();
-        IInput input = new RenameDocumentInput(documentId, NEW_NAME);
+        IInput input = new RenameDocumentInput(UUID.randomUUID(), documentId, NEW_NAME);
 
         assertThat(handler.canHandle(input)).isTrue();
 

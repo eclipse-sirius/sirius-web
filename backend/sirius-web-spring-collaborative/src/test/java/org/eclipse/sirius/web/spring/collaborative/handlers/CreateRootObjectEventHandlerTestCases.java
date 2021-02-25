@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -43,7 +43,7 @@ public class CreateRootObjectEventHandlerTestCases {
         };
 
         CreateRootObjectEventHandler handler = new CreateRootObjectEventHandler(editService, new NoOpCollaborativeMessageService(), new SimpleMeterRegistry());
-        var input = new CreateRootObjectInput(UUID.randomUUID(), UUID.randomUUID(), "namespaceId", "rootObjectCreationDescriptionId"); //$NON-NLS-1$//$NON-NLS-2$
+        var input = new CreateRootObjectInput(UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID(), "namespaceId", "rootObjectCreationDescriptionId"); //$NON-NLS-1$//$NON-NLS-2$
         assertThat(handler.canHandle(input)).isTrue();
 
         EventHandlerResponse handle = handler.handle(null, input);

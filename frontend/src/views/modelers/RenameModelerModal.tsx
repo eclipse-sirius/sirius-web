@@ -24,6 +24,7 @@ import { useMachine } from '@xstate/react';
 import { IconButton } from 'core/button/Button';
 import gql from 'graphql-tag';
 import React, { useEffect } from 'react';
+import { v4 as uuid } from 'uuid';
 import { RenameModelerModalProps } from 'views/modelers/RenameModelerModal.types';
 import {
   HandleChangedNameEvent,
@@ -74,6 +75,7 @@ export const RenameModelerModal = ({ modelerId, initialModelerName, onRename, on
     event.preventDefault();
     dispatch({ type: 'HANDLE_RENAME_MODELER' } as HandleRenameModelerEvent);
     const input = {
+      id: uuid(),
       modelerId: modelerId,
       newName: name,
     };

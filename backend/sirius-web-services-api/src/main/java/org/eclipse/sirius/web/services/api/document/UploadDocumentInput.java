@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,13 +32,24 @@ import org.eclipse.sirius.web.spring.graphql.api.UploadFile;
 @GraphQLInputObjectType
 public final class UploadDocumentInput implements IInput {
 
+    private final UUID id;
+
     private final UUID projectId;
 
     private final UploadFile file;
 
-    public UploadDocumentInput(UUID projectId, UploadFile file) {
+    public UploadDocumentInput(UUID id, UUID projectId, UploadFile file) {
+        this.id = Objects.requireNonNull(id);
         this.projectId = Objects.requireNonNull(projectId);
         this.file = Objects.requireNonNull(file);
+    }
+
+    @Override
+    @GraphQLID
+    @GraphQLField
+    @GraphQLNonNull
+    public UUID getId() {
+        return this.id;
     }
 
     @GraphQLID
@@ -57,8 +68,8 @@ public final class UploadDocumentInput implements IInput {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'projectId: {1}, file: '{'name: {2}'}''}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.projectId, this.file.getName());
+        String pattern = "{0} '{'id: {1}, projectId: {2}, file: '{'name: {3}'}''}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.projectId, this.file.getName());
     }
 
 }

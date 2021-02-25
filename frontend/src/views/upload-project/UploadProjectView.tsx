@@ -24,6 +24,7 @@ import gql from 'graphql-tag';
 import { LoggedInNavbar } from 'navbar/LoggedInNavbar';
 import React from 'react';
 import { Redirect } from 'react-router-dom';
+import { v4 as uuid } from 'uuid';
 import { FormContainer } from 'views/FormContainer';
 import {
   SchemaValue,
@@ -76,6 +77,7 @@ export const UploadProjectView = () => {
     event.preventDefault();
     const variables = {
       input: {
+        id: uuid(),
         file: null,
       },
     };

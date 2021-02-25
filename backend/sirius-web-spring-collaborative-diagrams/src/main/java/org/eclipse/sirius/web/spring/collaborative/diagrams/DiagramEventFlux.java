@@ -16,6 +16,7 @@ import java.util.Objects;
 
 import org.eclipse.sirius.web.collaborative.api.dto.PreDestroyPayload;
 import org.eclipse.sirius.web.collaborative.diagrams.api.dto.DiagramRefreshedEventPayload;
+import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.diagrams.Diagram;
 
@@ -39,13 +40,13 @@ public class DiagramEventFlux {
         this.currentDiagram = Objects.requireNonNull(currentDiagram);
     }
 
-    public void diagramRefreshed(Diagram newDiagram) {
+    public void diagramRefreshed(IInput input, Diagram newDiagram) {
         this.currentDiagram = newDiagram;
-        this.sink.tryEmitNext(new DiagramRefreshedEventPayload(this.currentDiagram));
+        this.sink.tryEmitNext(new DiagramRefreshedEventPayload(input.getId(), this.currentDiagram));
     }
 
-    public Flux<IPayload> getFlux() {
-        var initialRefresh = Mono.fromCallable(() -> new DiagramRefreshedEventPayload(this.currentDiagram));
+    public Flux<IPayload> getFlux(IInput input) {
+        var initialRefresh = Mono.fromCallable(() -> new DiagramRefreshedEventPayload(input.getId(), this.currentDiagram));
         return Flux.concat(initialRefresh, this.sink.asFlux());
     }
 

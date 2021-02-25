@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,6 +26,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { TreeItemDiagramContextMenu } from 'tree/TreeItemDiagramContextMenu';
 import { TreeItemDocumentContextMenu } from 'tree/TreeItemDocumentContextMenu';
 import { TreeItemObjectContextMenu } from 'tree/TreeItemObjectContextMenu';
+import { v4 as uuid } from 'uuid';
 import styles from './TreeItem.module.css';
 
 const deleteObjectMutation = gql`
@@ -304,6 +305,7 @@ export const TreeItem = ({ editingContextId, item, depth, onExpand, selection, s
       const onDeleteRepresentation = () => {
         const variables = {
           input: {
+            id: uuid(),
             representationId: item.id,
           },
         };
@@ -371,6 +373,7 @@ export const TreeItem = ({ editingContextId, item, depth, onExpand, selection, s
       const onDeleteObject = () => {
         const variables = {
           input: {
+            id: uuid(),
             projectId: editingContextId,
             objectId: item.id,
           },
@@ -428,13 +431,17 @@ export const TreeItem = ({ editingContextId, item, depth, onExpand, selection, s
       const isNameValid = label.length >= 1;
       if (isNameValid && item) {
         if (item.kind === 'Document') {
-          renameDocument({ variables: { input: { documentId: item.id, newName: label } } });
+          renameDocument({ variables: { input: { id: uuid(), documentId: item.id, newName: label } } });
         } else if (item?.kind === 'Diagram') {
           renameRepresentation({
-            variables: { input: { projectId: editingContextId, representationId: item.id, newLabel: label } },
+            variables: {
+              input: { id: uuid(), projectId: editingContextId, representationId: item.id, newLabel: label },
+            },
           });
         } else {
-          renameObject({ variables: { input: { projectId: editingContextId, objectId: item.id, newName: label } } });
+          renameObject({
+            variables: { input: { id: uuid(), projectId: editingContextId, objectId: item.id, newName: label } },
+          });
         }
       } else {
         setState((prevState) => {

@@ -79,7 +79,7 @@ public class ProjectServiceTestCases {
         Object principal = new User(OWNER_NAME, "", List.of()); //$NON-NLS-1$
         SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(principal, new Object()));
 
-        CreateProjectInput input = new CreateProjectInput("", Visibility.PRIVATE); //$NON-NLS-1$
+        CreateProjectInput input = new CreateProjectInput(UUID.randomUUID(), "", Visibility.PRIVATE); //$NON-NLS-1$
         IPayload payload = this.projectService.createProject(input);
         assertThat(payload).isInstanceOf(ErrorPayload.class);
 
@@ -91,7 +91,7 @@ public class ProjectServiceTestCases {
         Object principal = new User(OWNER_NAME, "", List.of()); //$NON-NLS-1$
         SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(principal, new Object()));
 
-        CreateProjectInput input = new CreateProjectInput(NEW_PROJECT, Visibility.PRIVATE);
+        CreateProjectInput input = new CreateProjectInput(UUID.randomUUID(), NEW_PROJECT, Visibility.PRIVATE);
         IPayload payload = this.projectService.createProject(input);
         assertThat(payload).isInstanceOf(CreateProjectSuccessPayload.class);
 
@@ -103,11 +103,11 @@ public class ProjectServiceTestCases {
         Object principal = new User(OWNER_NAME, "", List.of()); //$NON-NLS-1$
         SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(principal, new Object()));
 
-        CreateProjectInput firstInput = new CreateProjectInput(NEW_PROJECT, Visibility.PRIVATE);
+        CreateProjectInput firstInput = new CreateProjectInput(UUID.randomUUID(), NEW_PROJECT, Visibility.PRIVATE);
         IPayload payload = this.projectService.createProject(firstInput);
         assertThat(payload).isInstanceOf(CreateProjectSuccessPayload.class);
 
-        CreateProjectInput secondInput = new CreateProjectInput(NEW_PROJECT, Visibility.PRIVATE);
+        CreateProjectInput secondInput = new CreateProjectInput(UUID.randomUUID(), NEW_PROJECT, Visibility.PRIVATE);
         IPayload secondPayload = this.projectService.createProject(secondInput);
         assertThat(secondPayload).isInstanceOf(CreateProjectSuccessPayload.class);
 

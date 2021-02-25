@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.spring.collaborative.forms;
 
 import org.eclipse.sirius.web.collaborative.forms.api.IWidgetSubscriptionManager;
 import org.eclipse.sirius.web.collaborative.forms.api.dto.UpdateWidgetFocusInput;
+import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.core.api.IPayload;
 
 import reactor.core.publisher.Flux;
@@ -35,7 +36,7 @@ public class WidgetSubscriptionManager implements IWidgetSubscriptionManager {
     }
 
     @Override
-    public Flux<IPayload> getFlux() {
+    public Flux<IPayload> getFlux(IInput input) {
         return this.sink.asFlux();
     }
 

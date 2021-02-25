@@ -20,6 +20,7 @@ export const preDestroyPayloadFragment = gql`
 
 export const subscribersUpdatedEventPayloadFragment = gql`
   fragment subscribersUpdatedEventPayloadFragment on SubscribersUpdatedEventPayload {
+    id
     subscribers {
       username
     }
@@ -28,6 +29,7 @@ export const subscribersUpdatedEventPayloadFragment = gql`
 
 export const widgetSubscriptionsUpdatedEventPayloadFragment = gql`
   fragment widgetSubscriptionsUpdatedEventPayloadFragment on WidgetSubscriptionsUpdatedEventPayload {
+    id
     widgetSubscriptions {
       widgetId
       subscribers {
@@ -39,6 +41,7 @@ export const widgetSubscriptionsUpdatedEventPayloadFragment = gql`
 
 export const formRefreshedEventPayloadFragment = gql`
   fragment formRefreshedEventPayloadFragment on FormRefreshedEventPayload {
+    id
     form {
       id
       label

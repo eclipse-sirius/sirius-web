@@ -31,10 +31,12 @@ export interface GQLPreDestroyPayload extends GQLFormEventPayload, GQLProperties
 }
 
 export interface GQLSubscribersUpdatedEventPayload extends GQLFormEventPayload, GQLPropertiesEventPayload {
+  id: string;
   subscribers: GQLSubscriber[];
 }
 
 export interface GQLWidgetSubscriptionsUpdatedEventPayload extends GQLFormEventPayload, GQLPropertiesEventPayload {
+  id: string;
   widgetSubscriptions: GQLWidgetSubscription[];
 }
 
@@ -48,6 +50,7 @@ export interface GQLSubscriber {
 }
 
 export interface GQLFormRefreshedEventPayload extends GQLFormEventPayload, GQLPropertiesEventPayload {
+  id: string;
   form: GQLForm;
 }
 

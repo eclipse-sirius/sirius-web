@@ -93,12 +93,12 @@ public class InvokeEdgeToolOnDiagramEventHandler implements IDiagramEventHandler
             if (optionalTool.isPresent()) {
                 Status status = this.executeTool(editingContext, diagramContext, input.getDiagramSourceElementId(), input.getDiagramTargetElementId(), optionalTool.get());
                 if (Objects.equals(status, Status.OK)) {
-                    return new EventHandlerResponse(ChangeKind.SEMANTIC_CHANGE, new InvokeEdgeToolOnDiagramSuccessPayload(diagram));
+                    return new EventHandlerResponse(ChangeKind.SEMANTIC_CHANGE, new InvokeEdgeToolOnDiagramSuccessPayload(diagramInput.getId(), diagram));
                 }
             }
         }
         String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), InvokeEdgeToolOnDiagramInput.class.getSimpleName());
-        return new EventHandlerResponse(ChangeKind.NOTHING, new ErrorPayload(message));
+        return new EventHandlerResponse(ChangeKind.NOTHING, new ErrorPayload(diagramInput.getId(), message));
     }
 
     private Status executeTool(IEditingContext editingContext, IDiagramContext diagramContext, UUID sourceNodeId, UUID targetNodeId, CreateEdgeTool tool) {

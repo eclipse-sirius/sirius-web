@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,20 +10,22 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { initialState, reducer } from '../reducer';
+import { v4 as uuid } from 'uuid';
 import {
-  LOADING__STATE,
-  TREE_LOADED__STATE,
   COMPLETE__STATE,
   ERROR__STATE,
-  HANDLE_DATA__ACTION,
-  HANDLE_CONNECTION_ERROR__ACTION,
-  HANDLE_ERROR__ACTION,
   HANDLE_COMPLETE__ACTION,
+  HANDLE_CONNECTION_ERROR__ACTION,
+  HANDLE_DATA__ACTION,
+  HANDLE_ERROR__ACTION,
+  LOADING__STATE,
+  TREE_LOADED__STATE,
 } from '../machine';
+import { initialState, reducer } from '../reducer';
 
 const treeLoadedState = {
   viewState: TREE_LOADED__STATE,
+  id: uuid(),
   tree: {
     id: 'tree',
     label: 'Project',
@@ -36,6 +38,7 @@ const treeLoadedState = {
 
 const treeLoadedWithErrorState = {
   viewState: TREE_LOADED__STATE,
+  id: uuid(),
   tree: {
     id: 'tree',
     label: 'Project',
@@ -71,6 +74,7 @@ describe('ExplorerWebSocketContainer - reducer', () => {
   it('has a proper initial state', () => {
     expect(initialState).toStrictEqual({
       viewState: LOADING__STATE,
+      id: initialState.id,
       tree: undefined,
       expanded: [],
       maxDepth: 1,
@@ -89,6 +93,7 @@ describe('ExplorerWebSocketContainer - reducer', () => {
 
     expect(state).toStrictEqual({
       viewState: ERROR__STATE,
+      id: prevState.id,
       tree: undefined,
       expanded: [],
       maxDepth: 1,
@@ -105,6 +110,7 @@ describe('ExplorerWebSocketContainer - reducer', () => {
 
     expect(state).toStrictEqual({
       viewState: ERROR__STATE,
+      id: prevState.id,
       tree: undefined,
       expanded: [],
       maxDepth: 1,
@@ -121,6 +127,7 @@ describe('ExplorerWebSocketContainer - reducer', () => {
 
     expect(state).toStrictEqual({
       viewState: TREE_LOADED__STATE,
+      id: prevState.id,
       tree: message.data.treeEvent.tree,
       expanded: [],
       maxDepth: 1,
@@ -137,6 +144,7 @@ describe('ExplorerWebSocketContainer - reducer', () => {
 
     expect(state).toStrictEqual({
       viewState: TREE_LOADED__STATE,
+      id: prevState.id,
       tree: message.data.treeEvent.tree,
       expanded: [],
       maxDepth: 1,
@@ -153,6 +161,7 @@ describe('ExplorerWebSocketContainer - reducer', () => {
 
     expect(state).toStrictEqual({
       viewState: TREE_LOADED__STATE,
+      id: prevState.id,
       tree: prevState.tree,
       expanded: prevState.expanded,
       maxDepth: prevState.maxDepth,
@@ -169,6 +178,7 @@ describe('ExplorerWebSocketContainer - reducer', () => {
 
     expect(state).toStrictEqual({
       viewState: TREE_LOADED__STATE,
+      id: prevState.id,
       tree: message.data.treeEvent.tree,
       expanded: [],
       maxDepth: 1,
@@ -185,6 +195,7 @@ describe('ExplorerWebSocketContainer - reducer', () => {
 
     expect(state).toStrictEqual({
       viewState: COMPLETE__STATE,
+      id: prevState.id,
       tree: undefined,
       expanded: [],
       maxDepth: 1,

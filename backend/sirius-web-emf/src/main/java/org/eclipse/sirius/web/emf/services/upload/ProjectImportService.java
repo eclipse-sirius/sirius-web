@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventProcessor;
 import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventProcessorRegistry;
@@ -76,24 +77,26 @@ public class ProjectImportService implements IProjectImportService {
      * the created project in order to keep the server in the same state before the project upload attempt.
      * </p>
      *
+     * @param inputId
+     *            The identifier of the input which has triggered the upload
      * @param file
      *            the file to upload
      * @return {@link UploadProjectSuccessPayload} whether the project import has been successful, {@link ErrorPayload}
      *         otherwise
      */
     @Override
-    public IPayload importProject(UploadFile file) {
-        IPayload payload = new ErrorPayload(this.messageService.unexpectedError());
+    public IPayload importProject(UUID inputId, UploadFile file) {
+        IPayload payload = new ErrorPayload(inputId, this.messageService.unexpectedError());
         ProjectUnzipper unzipper = new ProjectUnzipper(file.getInputStream(), this.objectMapper);
         Optional<UnzippedProject> optionalUnzippedProject = unzipper.unzipProject();
         if (optionalUnzippedProject.isEmpty()) {
-            return new ErrorPayload(this.messageService.unexpectedError());
+            return new ErrorPayload(inputId, this.messageService.unexpectedError());
         }
         UnzippedProject unzippedProject = optionalUnzippedProject.get();
         ProjectManifest manifest = unzippedProject.getManifest();
         String projectName = unzippedProject.getProjectName();
 
-        CreateProjectInput createProjectInput = new CreateProjectInput(projectName, Visibility.PRIVATE);
+        CreateProjectInput createProjectInput = new CreateProjectInput(inputId, projectName, Visibility.PRIVATE);
         IPayload createProjectPayload = this.projectService.createProject(createProjectInput);
         if (createProjectPayload instanceof CreateProjectSuccessPayload) {
             Project project = ((CreateProjectSuccessPayload) createProjectPayload).getProject();
@@ -104,13 +107,13 @@ public class ProjectImportService implements IProjectImportService {
                 List<RepresentationDescriptor> representations = unzippedProject.getRepresentationDescriptors();
 
                 ProjectImporter projectImporter = new ProjectImporter(project.getId(), editingContextEventProcessor, documents, representations, manifest, this.idMappingRepository);
-                boolean hasBeenImported = projectImporter.importProject();
+                boolean hasBeenImported = projectImporter.importProject(inputId);
 
                 if (!hasBeenImported) {
                     this.editingContextEventProcessorRegistry.dispose(project.getId());
                     this.projectService.delete(project.getId());
                 } else {
-                    payload = new UploadProjectSuccessPayload(project);
+                    payload = new UploadProjectSuccessPayload(inputId, project);
                 }
             }
         }

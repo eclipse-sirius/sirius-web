@@ -35,7 +35,7 @@ public class NoOpEditingContextEventProcessor implements IEditingContextEventPro
 
     @Override
     public <T extends IRepresentationEventProcessor> Optional<T> acquireRepresentationEventProcessor(Class<T> representationEventProcessorClass, IRepresentationConfiguration configuration,
-            SubscriptionDescription subscriptionDescription) {
+            SubscriptionDescription subscriptionDescription, IInput input) {
         return Optional.empty();
     }
 

@@ -29,9 +29,19 @@ import org.eclipse.sirius.web.core.api.IInput;
  */
 @GraphQLInputObjectType
 public final class TreeEventInput implements IInput {
+    private UUID id;
+
     private UUID editingContextId;
 
     private List<String> expanded;
+
+    @Override
+    @GraphQLID
+    @GraphQLField
+    @GraphQLNonNull
+    public UUID getId() {
+        return this.id;
+    }
 
     @GraphQLID
     @GraphQLField
@@ -48,7 +58,7 @@ public final class TreeEventInput implements IInput {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'editingContextId: {1}, expanded: {2}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.editingContextId, this.expanded);
+        String pattern = "{0} '{'id: {1}, editingContextId: {2}, expanded: {3}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.editingContextId, this.expanded);
     }
 }

@@ -29,6 +29,9 @@ import org.eclipse.sirius.web.core.api.IInput;
  */
 @GraphQLInputObjectType
 public final class CreateModelerInput implements IInput {
+
+    private UUID id;
+
     private String name;
 
     private UUID projectId;
@@ -37,9 +40,18 @@ public final class CreateModelerInput implements IInput {
         // Used by Jackson
     }
 
-    public CreateModelerInput(String name, UUID projectId) {
+    public CreateModelerInput(UUID id, String name, UUID projectId) {
+        this.id = Objects.requireNonNull(id);
         this.name = Objects.requireNonNull(name);
         this.projectId = Objects.requireNonNull(projectId);
+    }
+
+    @Override
+    @GraphQLID
+    @GraphQLField
+    @GraphQLNonNull
+    public UUID getId() {
+        return this.id;
     }
 
     @GraphQLField
@@ -57,8 +69,8 @@ public final class CreateModelerInput implements IInput {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'name: {1}, projectId: {2}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.name, this.projectId);
+        String pattern = "{0} '{'id: {1}, name: {2}, projectId: {3}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.name, this.projectId);
     }
 
 }

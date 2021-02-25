@@ -64,6 +64,7 @@ import { Toolbar } from 'diagram/Toolbar';
 import { canInvokeTool } from 'diagram/toolServices';
 import React, { useCallback, useContext, useEffect, useRef } from 'react';
 import { EditLabelAction, FitToScreenAction, SEdge, SNode } from 'sprotty';
+import { v4 as uuid } from 'uuid';
 import { RepresentationComponentProps } from 'workbench/Workbench.types';
 
 const useDiagramWebSocketContainerStyle = makeStyles((theme) => ({
@@ -261,6 +262,7 @@ export const DiagramWebSocketContainer = ({
   );
   const { toast, diagramWebSocketContainer } = value as SchemaValue;
   const {
+    id,
     displayedRepresentationId,
     diagramServer,
     diagram,
@@ -361,6 +363,7 @@ export const DiagramWebSocketContainer = ({
       const nodeIds = diagramElements.filter((diagramElement) => diagramElement instanceof SNode).map((elt) => elt.id);
 
       const input = {
+        id: uuid(),
         projectId: editingContextId,
         representationId,
         nodeIds,
@@ -384,6 +387,7 @@ export const DiagramWebSocketContainer = ({
           const [diagramSourceElementId, diagramTargetElementId] = params;
 
           const input = {
+            id: uuid(),
             projectId: editingContextId,
             representationId,
             diagramSourceElementId,
@@ -397,6 +401,7 @@ export const DiagramWebSocketContainer = ({
           let startingPositionX = startingPosition ? startingPosition.x : 0;
           let startingPositionY = startingPosition ? startingPosition.y : 0;
           const input = {
+            id: uuid(),
             projectId: editingContextId,
             representationId,
             diagramElementId,
@@ -416,6 +421,7 @@ export const DiagramWebSocketContainer = ({
   const moveElement = useCallback(
     (diagramElementId, newPositionX, newPositionY) => {
       const input = {
+        id: uuid(),
         projectId: editingContextId,
         representationId,
         diagramElementId,
@@ -474,6 +480,7 @@ export const DiagramWebSocketContainer = ({
     };
     const editLabel = (labelId, newText) => {
       const input = {
+        id: uuid(),
         projectId: editingContextId,
         representationId,
         labelId,
@@ -539,6 +546,7 @@ export const DiagramWebSocketContainer = ({
   const { error } = useSubscription(diagramEventSubscription, {
     variables: {
       input: {
+        id,
         projectId: editingContextId,
         diagramId: representationId,
       },

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import gql from 'graphql-tag';
 import { Modal } from 'modals/Modal';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
+import { v4 as uuid } from 'uuid';
 import styles from './DeleteDocumentModal.module.css';
 
 const deleteDocumentMutation = gql`
@@ -50,6 +51,7 @@ export const DeleteDocumentModal = ({ documentName, documentId, onDocumentDelete
     event.preventDefault();
     const variables = {
       input: {
+        id: uuid(),
         documentId,
       },
     };

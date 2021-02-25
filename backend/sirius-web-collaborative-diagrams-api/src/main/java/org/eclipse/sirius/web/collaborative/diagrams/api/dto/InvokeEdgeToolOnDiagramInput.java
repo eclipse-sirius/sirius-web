@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,6 +29,8 @@ import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramInput;
  */
 @GraphQLInputObjectType
 public final class InvokeEdgeToolOnDiagramInput implements IDiagramInput {
+    private UUID id;
+
     private UUID projectId;
 
     private UUID representationId;
@@ -38,6 +40,14 @@ public final class InvokeEdgeToolOnDiagramInput implements IDiagramInput {
     private UUID diagramTargetElementId;
 
     private String toolId;
+
+    @Override
+    @GraphQLID
+    @GraphQLField
+    @GraphQLNonNull
+    public UUID getId() {
+        return this.id;
+    }
 
     @GraphQLID
     @GraphQLField
@@ -77,7 +87,7 @@ public final class InvokeEdgeToolOnDiagramInput implements IDiagramInput {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'projectId: {1}, representationId: {2}, diagramSourceElementId: {3}, diagramTargetElementId: {4}, toolId: {5}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.projectId, this.representationId, this.diagramSourceElementId, this.diagramTargetElementId, this.toolId);
+        String pattern = "{0} '{'id: {1}, projectId: {2}, representationId: {3}, diagramSourceElementId: {4}, diagramTargetElementId: {5}, toolId: {6}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.projectId, this.representationId, this.diagramSourceElementId, this.diagramTargetElementId, this.toolId);
     }
 }

@@ -73,7 +73,7 @@ public class MutationRenameModelerDataFetcher implements IDataFetcherWithFieldCo
     public IPayload get(DataFetchingEnvironment environment) throws Exception {
         var input = this.dataFetchingEnvironmentService.getInput(environment, RenameModelerInput.class);
 
-        IPayload payload = new ErrorPayload(this.messageService.unauthorized());
+        IPayload payload = new ErrorPayload(input.getId(), this.messageService.unauthorized());
 
         Optional<Modeler> optionalModeler = this.modelerService.getModeler(input.getModelerId());
         if (optionalModeler.isPresent()) {
@@ -83,7 +83,7 @@ public class MutationRenameModelerDataFetcher implements IDataFetcherWithFieldCo
             if (canEdit) {
                 payload = this.modelerService.renameModeler(input);
             } else {
-                payload = new ErrorPayload(this.messageService.unexpectedError());
+                payload = new ErrorPayload(input.getId(), this.messageService.unexpectedError());
             }
 
         }

@@ -79,12 +79,12 @@ public class RenameObjectEventHandler implements IEditingContextEventHandler {
                 if (optionalLabelField.isPresent()) {
                     String labelField = optionalLabelField.get();
                     this.editService.editLabel(object, labelField, newName);
-                    return new EventHandlerResponse(ChangeKind.SEMANTIC_CHANGE, new RenameObjectSuccessPayload(objectId, newName));
+                    return new EventHandlerResponse(ChangeKind.SEMANTIC_CHANGE, new RenameObjectSuccessPayload(input.getId(), objectId, newName));
                 }
             }
         }
         String message = this.messageService.invalidInput(input.getClass().getSimpleName(), RenameObjectInput.class.getSimpleName());
-        return new EventHandlerResponse(ChangeKind.NOTHING, new ErrorPayload(message));
+        return new EventHandlerResponse(ChangeKind.NOTHING, new ErrorPayload(input.getId(), message));
     }
 
 }

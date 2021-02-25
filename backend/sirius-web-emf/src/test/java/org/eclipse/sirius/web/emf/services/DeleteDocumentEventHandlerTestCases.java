@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -49,7 +49,7 @@ public class DeleteDocumentEventHandlerTestCases {
         };
         DeleteDocumentEventHandler handler = new DeleteDocumentEventHandler(documentService, new NoOpEMFMessageService(), new SimpleMeterRegistry());
 
-        var input = new DeleteDocumentInput(document.getId());
+        var input = new DeleteDocumentInput(UUID.randomUUID(), document.getId());
 
         assertThat(handler.canHandle(input)).isTrue();
 

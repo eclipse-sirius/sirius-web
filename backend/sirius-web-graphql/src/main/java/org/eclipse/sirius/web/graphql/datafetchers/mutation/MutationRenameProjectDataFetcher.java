@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -72,15 +72,15 @@ public class MutationRenameProjectDataFetcher implements IDataFetcherWithFieldCo
     public IPayload get(DataFetchingEnvironment environment) throws Exception {
         var input = this.dataFetchingEnvironmentService.getInput(environment, RenameProjectInput.class);
 
-        IPayload payload = new ErrorPayload(this.messageService.unexpectedError());
+        IPayload payload = new ErrorPayload(input.getId(), this.messageService.unexpectedError());
         boolean canAdmin = this.dataFetchingEnvironmentService.canAdmin(environment, input.getProjectId());
         if (canAdmin) {
          // @formatter:off
             payload = this.editingContextEventProcessorRegistry.dispatchEvent(input.getProjectId(), input)
-                    .orElse(new ErrorPayload(this.messageService.unexpectedError()));
+                    .orElse(new ErrorPayload(input.getId(), this.messageService.unexpectedError()));
             // @formatter:on
         } else {
-            payload = new ErrorPayload(this.messageService.unauthorized());
+            payload = new ErrorPayload(input.getId(), this.messageService.unauthorized());
         }
         return payload;
     }

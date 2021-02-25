@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,9 @@
 package org.eclipse.sirius.web.collaborative.api.services;
 
 import java.util.List;
+import java.util.UUID;
 
+import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.core.api.IPayload;
 
 import reactor.core.publisher.Flux;
@@ -26,13 +28,13 @@ import reactor.core.publisher.Flux;
 public interface ISubscriptionManager {
     List<SubscriptionDescription> getSubscriptionDescriptions();
 
-    void add(SubscriptionDescription subscriptionDescription);
+    void add(IInput input, SubscriptionDescription subscriptionDescription);
 
-    void remove(SubscriptionDescription subscriptionDescription);
+    void remove(UUID correlationId, SubscriptionDescription subscriptionDescription);
 
     boolean isEmpty();
 
-    Flux<IPayload> getFlux();
+    Flux<IPayload> getFlux(IInput input);
 
     void dispose();
 }

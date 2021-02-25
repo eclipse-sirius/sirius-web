@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,6 +29,8 @@ import org.eclipse.sirius.web.core.api.IInput;
  */
 @GraphQLInputObjectType
 public final class RenameDocumentInput implements IInput {
+    private UUID id;
+
     private UUID documentId;
 
     private String newName;
@@ -37,9 +39,18 @@ public final class RenameDocumentInput implements IInput {
         // Used by Jackson
     }
 
-    public RenameDocumentInput(UUID documentId, String newName) {
+    public RenameDocumentInput(UUID id, UUID documentId, String newName) {
+        this.id = Objects.requireNonNull(id);
         this.documentId = Objects.requireNonNull(documentId);
         this.newName = Objects.requireNonNull(newName);
+    }
+
+    @Override
+    @GraphQLID
+    @GraphQLField
+    @GraphQLNonNull
+    public UUID getId() {
+        return this.id;
     }
 
     @GraphQLID
@@ -57,7 +68,7 @@ public final class RenameDocumentInput implements IInput {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'documentId: {1}, newName: {2}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.documentId, this.newName);
+        String pattern = "{0} '{'id: {1}, documentId: {2}, newName: {3}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.documentId, this.newName);
     }
 }

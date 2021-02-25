@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -66,7 +66,7 @@ public class DeleteRepresentationEventHandler implements IEditingContextEventHan
         this.counter.increment();
 
         String message = this.messageService.invalidInput(input.getClass().getSimpleName(), DeleteRepresentationInput.class.getSimpleName());
-        EventHandlerResponse eventHandlerResponse = new EventHandlerResponse(ChangeKind.NOTHING, new ErrorPayload(message));
+        EventHandlerResponse eventHandlerResponse = new EventHandlerResponse(ChangeKind.NOTHING, new ErrorPayload(input.getId(), message));
         if (input instanceof DeleteRepresentationInput) {
             DeleteRepresentationInput deleteRepresentationInput = (DeleteRepresentationInput) input;
             var optionalRepresentation = this.representationService.getRepresentation(deleteRepresentationInput.getRepresentationId());
@@ -75,7 +75,7 @@ public class DeleteRepresentationEventHandler implements IEditingContextEventHan
                 RepresentationDescriptor representationDescriptor = optionalRepresentation.get();
                 this.representationService.delete(representationDescriptor.getId());
 
-                eventHandlerResponse = new EventHandlerResponse(ChangeKind.REPRESENTATION_DELETION, new DeleteRepresentationSuccessPayload(representationDescriptor.getId()));
+                eventHandlerResponse = new EventHandlerResponse(ChangeKind.REPRESENTATION_DELETION, new DeleteRepresentationSuccessPayload(input.getId(), representationDescriptor.getId()));
             }
         }
 

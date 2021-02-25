@@ -15,8 +15,10 @@ package org.eclipse.sirius.web.core.api;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 import org.eclipse.sirius.web.annotations.graphql.GraphQLField;
+import org.eclipse.sirius.web.annotations.graphql.GraphQLID;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLNonNull;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLObjectType;
 
@@ -27,18 +29,30 @@ import org.eclipse.sirius.web.annotations.graphql.GraphQLObjectType;
  */
 @GraphQLObjectType
 public final class ErrorPayload implements IPayload {
+    private final UUID id;
+
     private final String message;
 
     private final List<String> additionalMessages;
 
-    public ErrorPayload(String message) {
+    public ErrorPayload(UUID id, String message) {
+        this.id = Objects.requireNonNull(id);
         this.message = Objects.requireNonNull(message);
         this.additionalMessages = List.of();
     }
 
-    public ErrorPayload(String message, List<String> additionalMessages) {
+    public ErrorPayload(UUID id, String message, List<String> additionalMessages) {
+        this.id = Objects.requireNonNull(id);
         this.message = Objects.requireNonNull(message);
         this.additionalMessages = List.copyOf(Objects.requireNonNull(additionalMessages));
+    }
+
+    @Override
+    @GraphQLID
+    @GraphQLField
+    @GraphQLNonNull
+    public UUID getId() {
+        return this.id;
     }
 
     @GraphQLField
@@ -55,7 +69,7 @@ public final class ErrorPayload implements IPayload {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'message: {1}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.message);
+        String pattern = "{0} '{'id: {1}, message: {2}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.message);
     }
 }

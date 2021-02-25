@@ -68,11 +68,11 @@ public class ProjectImporter {
         this.idMappingRepository = Objects.requireNonNull(idMappingRepository);
     }
 
-    public boolean importProject() {
-        boolean errorOccurred = !this.createDocuments();
+    public boolean importProject(UUID inputId) {
+        boolean errorOccurred = !this.createDocuments(inputId);
 
         if (!errorOccurred) {
-            errorOccurred = !this.createRepresentations();
+            errorOccurred = !this.createRepresentations(inputId);
         }
 
         return !errorOccurred;
@@ -82,9 +82,12 @@ public class ProjectImporter {
      * Creates all representations in the project thanks to the {@link IEditingContextEventProcessor} and the create
      * representation input. If at least one representation has not been created it will return <code>false</code>.
      *
+     * @param inputId
+     *            The identifier of the input which has triggered this import
+     *
      * @return <code>true</code> whether all representations has been created, <code>false</code> otherwise
      */
-    private boolean createRepresentations() {
+    private boolean createRepresentations(UUID inputId) {
         boolean allRepresentationCreated = true;
         for (RepresentationDescriptor representationDescriptor : this.representations) {
             RepresentationManifest representationManifest = this.projectManifest.getRepresentations().get(representationDescriptor.getId().toString());
@@ -111,7 +114,7 @@ public class ProjectImporter {
                 .orElseGet(() -> UUID.fromString(descriptionURI));
             // @formatter:on
 
-            CreateRepresentationInput input = new CreateRepresentationInput(this.projectId, representationDescriptionId, objectId, representationDescriptor.getLabel());
+            CreateRepresentationInput input = new CreateRepresentationInput(inputId, this.projectId, representationDescriptionId, objectId, representationDescriptor.getLabel());
 
             // @formatter:off
             representationCreated = this.editingContextEventProcessor.handle(input)
@@ -136,13 +139,15 @@ public class ProjectImporter {
      * {@link CreateDocumentFromUploadEvent}. If at least one document has not been created it will return
      * <code>false</code>.
      *
+     * @param inputId
+     *
      * @return <code>true</code> whether all documents has been created, <code>false</code> otherwise
      */
-    private boolean createDocuments() {
+    private boolean createDocuments(UUID inputId) {
         for (Entry<String, UploadFile> entry : this.documents.entrySet()) {
             String oldDocumentId = entry.getKey();
             UploadFile uploadFile = entry.getValue();
-            UploadDocumentInput input = new UploadDocumentInput(this.projectId, uploadFile);
+            UploadDocumentInput input = new UploadDocumentInput(inputId, this.projectId, uploadFile);
 
             // @formatter:off
             Document document = this.editingContextEventProcessor.handle(input)

@@ -47,7 +47,7 @@ import graphql.schema.DataFetchingEnvironment;
 @GraphQLMutationTypes(
     input = UpdateNodePositionInput.class,
     payloads = {
-            UpdateNodePositionSuccessPayload.class
+        UpdateNodePositionSuccessPayload.class
     }
 )
 @MutationDataFetcher(type = MutationTypeProvider.TYPE, field = MutationUpdateNodePositionDataFetcher.UPDATE_NODE_POSITION_FIELD)
@@ -73,12 +73,12 @@ public class MutationUpdateNodePositionDataFetcher implements IDataFetcherWithFi
     public IPayload get(DataFetchingEnvironment environment) throws Exception {
         var input = this.dataFetchingEnvironmentService.getInput(environment, UpdateNodePositionInput.class);
 
-        IPayload payload = new ErrorPayload(this.messageService.unauthorized());
+        IPayload payload = new ErrorPayload(input.getId(), this.messageService.unauthorized());
         boolean canEdit = this.dataFetchingEnvironmentService.canEdit(environment, input.getProjectId());
         if (canEdit) {
             // @formatter:off
             payload = this.editingContextEventProcessorRegistry.dispatchEvent(input.getProjectId(), input)
-                    .orElse(new ErrorPayload(this.messageService.unexpectedError()));
+                    .orElse(new ErrorPayload(input.getId(), this.messageService.unexpectedError()));
             // @formatter:on
         }
 

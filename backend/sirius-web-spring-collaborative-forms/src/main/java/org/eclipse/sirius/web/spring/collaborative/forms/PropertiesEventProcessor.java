@@ -31,6 +31,7 @@ import org.eclipse.sirius.web.collaborative.forms.api.dto.PropertiesRefreshedEve
 import org.eclipse.sirius.web.collaborative.forms.api.dto.UpdateWidgetFocusInput;
 import org.eclipse.sirius.web.components.Element;
 import org.eclipse.sirius.web.core.api.IEditingContext;
+import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.core.api.IRepresentationInput;
 import org.eclipse.sirius.web.forms.Form;
@@ -114,7 +115,11 @@ public class PropertiesEventProcessor implements IPropertiesEventProcessor {
 
                 if (optionalFormEventHandler.isPresent()) {
                     IFormEventHandler formEventHandler = optionalFormEventHandler.get();
-                    return Optional.of(formEventHandler.handle(this.currentForm.get(), formInput));
+                    EventHandlerResponse eventHandlerResponse = formEventHandler.handle(this.currentForm.get(), formInput);
+
+                    this.refresh(representationInput, eventHandlerResponse.getChangeKind());
+
+                    return Optional.of(eventHandlerResponse);
                 } else {
                     this.logger.warn("No handler found for event: {}", formInput); //$NON-NLS-1$
                 }
@@ -125,12 +130,12 @@ public class PropertiesEventProcessor implements IPropertiesEventProcessor {
     }
 
     @Override
-    public void refresh(String changeKind) {
+    public void refresh(IInput input, String changeKind) {
         if (ChangeKind.SEMANTIC_CHANGE.equals(changeKind)) {
             Form form = this.refreshForm();
 
             this.currentForm.set(form);
-            this.sink.tryEmitNext(new PropertiesRefreshedEventPayload(form));
+            this.sink.tryEmitNext(new PropertiesRefreshedEventPayload(input.getId(), form));
         }
     }
 
@@ -150,15 +155,15 @@ public class PropertiesEventProcessor implements IPropertiesEventProcessor {
     }
 
     @Override
-    public Flux<IPayload> getOutputEvents() {
-        var initialRefresh = Mono.fromCallable(() -> new PropertiesRefreshedEventPayload(this.currentForm.get()));
+    public Flux<IPayload> getOutputEvents(IInput input) {
+        var initialRefresh = Mono.fromCallable(() -> new PropertiesRefreshedEventPayload(input.getId(), this.currentForm.get()));
         var refreshEventFlux = Flux.concat(initialRefresh, this.sink.asFlux());
 
         // @formatter:off
         return Flux.merge(
             refreshEventFlux,
-            this.widgetSubscriptionManager.getFlux(),
-            this.subscriptionManager.getFlux()
+            this.widgetSubscriptionManager.getFlux(input),
+            this.subscriptionManager.getFlux(input)
         );
         // @formatter:on
     }

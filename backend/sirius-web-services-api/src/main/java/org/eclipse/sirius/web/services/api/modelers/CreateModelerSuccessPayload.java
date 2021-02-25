@@ -14,8 +14,10 @@ package org.eclipse.sirius.web.services.api.modelers;
 
 import java.text.MessageFormat;
 import java.util.Objects;
+import java.util.UUID;
 
 import org.eclipse.sirius.web.annotations.graphql.GraphQLField;
+import org.eclipse.sirius.web.annotations.graphql.GraphQLID;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLNonNull;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLObjectType;
 import org.eclipse.sirius.web.core.api.IPayload;
@@ -27,10 +29,21 @@ import org.eclipse.sirius.web.core.api.IPayload;
  */
 @GraphQLObjectType
 public final class CreateModelerSuccessPayload implements IPayload {
+    private final UUID id;
+
     private final Modeler modeler;
 
-    public CreateModelerSuccessPayload(Modeler modeler) {
+    public CreateModelerSuccessPayload(UUID id, Modeler modeler) {
+        this.id = Objects.requireNonNull(id);
         this.modeler = Objects.requireNonNull(modeler);
+    }
+
+    @Override
+    @GraphQLID
+    @GraphQLField
+    @GraphQLNonNull
+    public UUID getId() {
+        return this.id;
     }
 
     @GraphQLField
@@ -41,8 +54,8 @@ public final class CreateModelerSuccessPayload implements IPayload {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'modeler: '{'id: {1}, name: {2}, status: {3} '}''}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.modeler.getId(), this.modeler.getName(), this.modeler.getStatus());
+        String pattern = "{0} '{'id: {1}, modeler: '{'id: {2}, name: {3}, status: {4} '}''}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.modeler.getId(), this.modeler.getName(), this.modeler.getStatus());
     }
 
 }

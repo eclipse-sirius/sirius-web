@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,6 +30,8 @@ import org.eclipse.sirius.web.core.api.IInput;
 @GraphQLInputObjectType
 public final class RenameObjectInput implements IInput {
 
+    private UUID id;
+
     private UUID projectId;
 
     private String objectId;
@@ -40,10 +42,19 @@ public final class RenameObjectInput implements IInput {
         // Used by Jackson
     }
 
-    public RenameObjectInput(UUID projectId, String objectId, String newName) {
+    public RenameObjectInput(UUID id, UUID projectId, String objectId, String newName) {
+        this.id = Objects.requireNonNull(id);
         this.projectId = Objects.requireNonNull(projectId);
         this.objectId = Objects.requireNonNull(objectId);
         this.newName = Objects.requireNonNull(newName);
+    }
+
+    @Override
+    @GraphQLID
+    @GraphQLField
+    @GraphQLNonNull
+    public UUID getId() {
+        return this.id;
     }
 
     @GraphQLID
@@ -68,7 +79,7 @@ public final class RenameObjectInput implements IInput {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'objectId: {1}, newName: {2}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.objectId, this.newName);
+        String pattern = "{0} '{'id: {1}, objectId: {2}, newName: {3}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.objectId, this.newName);
     }
 }

@@ -99,7 +99,7 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
             result = this.handleDelete(editingContext, diagramContext, (DeleteFromDiagramInput) diagramInput);
         } else {
             String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), DeleteFromDiagramInput.class.getSimpleName());
-            result = new EventHandlerResponse(ChangeKind.NOTHING, new ErrorPayload(message));
+            result = new EventHandlerResponse(ChangeKind.NOTHING, new ErrorPayload(diagramInput.getId(), message));
         }
         return result;
     }
@@ -133,14 +133,13 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
             }
         }
 
-        return this.computeResponse(errors, atLeastOneOk, diagramContext);
+        return this.computeResponse(errors, atLeastOneOk, diagramContext, diagramInput);
     }
 
-    private EventHandlerResponse computeResponse(List<String> errors, boolean atLeastOneSuccess, IDiagramContext diagramContext) {
-
+    private EventHandlerResponse computeResponse(List<String> errors, boolean atLeastOneSuccess, IDiagramContext diagramContext, DeleteFromDiagramInput diagramInput) {
         EventHandlerResponse result;
         if (errors.isEmpty()) {
-            result = new EventHandlerResponse(ChangeKind.SEMANTIC_CHANGE, new DeleteFromDiagramSuccessPayload(diagramContext.getDiagram()));
+            result = new EventHandlerResponse(ChangeKind.SEMANTIC_CHANGE, new DeleteFromDiagramSuccessPayload(diagramInput.getId(), diagramContext.getDiagram()));
         } else {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append(this.messageService.deleteFailed());
@@ -152,7 +151,7 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
             if (atLeastOneSuccess) {
                 changeKind = ChangeKind.SEMANTIC_CHANGE;
             }
-            result = new EventHandlerResponse(changeKind, new ErrorPayload(stringBuilder.toString()));
+            result = new EventHandlerResponse(changeKind, new ErrorPayload(diagramInput.getId(), stringBuilder.toString()));
         }
         return result;
     }

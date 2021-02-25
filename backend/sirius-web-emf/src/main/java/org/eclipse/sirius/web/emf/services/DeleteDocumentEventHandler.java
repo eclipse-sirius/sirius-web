@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -99,12 +99,12 @@ public class DeleteDocumentEventHandler implements IEditingContextEventHandler {
 
                 this.documentService.delete(document.getId());
 
-                return new EventHandlerResponse(ChangeKind.SEMANTIC_CHANGE, new DeleteDocumentSuccessPayload(document.getProject()));
+                return new EventHandlerResponse(ChangeKind.SEMANTIC_CHANGE, new DeleteDocumentSuccessPayload(input.getId(), document.getProject()));
             }
         }
 
         String message = this.messageService.invalidInput(input.getClass().getSimpleName(), DeleteDocumentInput.class.getSimpleName());
-        return new EventHandlerResponse(ChangeKind.NOTHING, new ErrorPayload(message));
+        return new EventHandlerResponse(ChangeKind.NOTHING, new ErrorPayload(input.getId(), message));
     }
 
 }

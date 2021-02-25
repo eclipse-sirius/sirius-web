@@ -29,14 +29,25 @@ import org.eclipse.sirius.web.core.api.IInput;
  */
 @GraphQLInputObjectType
 public final class PublishModelerInput implements IInput {
+    private UUID id;
+
     private UUID modelerId;
 
     public PublishModelerInput() {
         // Used by Jackson
     }
 
-    public PublishModelerInput(UUID modelerId) {
+    public PublishModelerInput(UUID id, UUID modelerId) {
+        this.id = Objects.requireNonNull(id);
         this.modelerId = Objects.requireNonNull(modelerId);
+    }
+
+    @Override
+    @GraphQLID
+    @GraphQLField
+    @GraphQLNonNull
+    public UUID getId() {
+        return this.id;
     }
 
     @GraphQLID
@@ -48,8 +59,8 @@ public final class PublishModelerInput implements IInput {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{' modelerId: {1} '}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.modelerId);
+        String pattern = "{0} '{'id: {1}, modelerId: {2}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.modelerId);
     }
 
 }

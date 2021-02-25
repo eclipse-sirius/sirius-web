@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -81,16 +81,16 @@ public class MutationDeleteProjectDataFetcher implements IDataFetcherWithFieldCo
     public IPayload get(DataFetchingEnvironment environment) throws Exception {
         var input = this.dataFetchingEnvironmentService.getInput(environment, DeleteProjectInput.class);
         var optionalViewer = this.viewerProvider.getViewer(environment);
-        IPayload payload = new ErrorPayload(this.messageService.unexpectedError());
+        IPayload payload = new ErrorPayload(input.getId(), this.messageService.unexpectedError());
         if (optionalViewer.isPresent()) {
             IViewer viewer = optionalViewer.get();
             boolean canAdmin = this.dataFetchingEnvironmentService.canAdmin(environment, input.getProjectId());
             if (canAdmin) {
                 this.editingContextEventProcessorRegistry.dispose(input.getProjectId());
                 this.projectService.delete(input.getProjectId());
-                payload = new DeleteProjectSuccessPayload(viewer);
+                payload = new DeleteProjectSuccessPayload(input.getId(), viewer);
             } else {
-                payload = new ErrorPayload(this.messageService.unauthorized());
+                payload = new ErrorPayload(input.getId(), this.messageService.unauthorized());
             }
         }
 

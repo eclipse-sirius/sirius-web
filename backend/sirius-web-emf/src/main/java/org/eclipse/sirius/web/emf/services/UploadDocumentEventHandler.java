@@ -91,7 +91,7 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
     public EventHandlerResponse handle(IEditingContext editingContext, IInput input) {
         this.counter.increment();
 
-        EventHandlerResponse response = new EventHandlerResponse(ChangeKind.NOTHING, new ErrorPayload(this.messageService.unexpectedError()));
+        EventHandlerResponse response = new EventHandlerResponse(ChangeKind.NOTHING, new ErrorPayload(input.getId(), this.messageService.unexpectedError()));
         if (!(input instanceof UploadDocumentInput)) {
             return response;
         }
@@ -131,7 +131,7 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
                     resource.eAdapters().add(new DocumentMetadataAdapter(name));
                     resourceSet.getResources().add(resource);
 
-                    IPayload payload = new UploadDocumentSuccessPayload(document);
+                    IPayload payload = new UploadDocumentSuccessPayload(input.getId(), document);
                     response = new EventHandlerResponse(ChangeKind.SEMANTIC_CHANGE, payload);
                 }
             }

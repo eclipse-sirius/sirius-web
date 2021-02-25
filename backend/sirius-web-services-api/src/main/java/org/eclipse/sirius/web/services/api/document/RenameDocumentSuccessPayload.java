@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,8 +14,10 @@ package org.eclipse.sirius.web.services.api.document;
 
 import java.text.MessageFormat;
 import java.util.Objects;
+import java.util.UUID;
 
 import org.eclipse.sirius.web.annotations.graphql.GraphQLField;
+import org.eclipse.sirius.web.annotations.graphql.GraphQLID;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLNonNull;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLObjectType;
 import org.eclipse.sirius.web.core.api.IPayload;
@@ -28,10 +30,21 @@ import org.eclipse.sirius.web.core.api.IPayload;
 @GraphQLObjectType
 public final class RenameDocumentSuccessPayload implements IPayload {
 
+    private final UUID id;
+
     private final Document document;
 
-    public RenameDocumentSuccessPayload(Document document) {
+    public RenameDocumentSuccessPayload(UUID id, Document document) {
+        this.id = Objects.requireNonNull(id);
         this.document = Objects.requireNonNull(document);
+    }
+
+    @Override
+    @GraphQLID
+    @GraphQLField
+    @GraphQLNonNull
+    public UUID getId() {
+        return this.id;
     }
 
     @GraphQLField
@@ -42,7 +55,7 @@ public final class RenameDocumentSuccessPayload implements IPayload {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'document: '{'id: {1}, name: {2}'}''}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.document.getId(), this.document.getName());
+        String pattern = "{0} '{'id: {1}, document: '{'id: {2}, name: {3}'}''}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.document.getId(), this.document.getName());
     }
 }

@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.core.api;
 
+import java.util.UUID;
+
 /**
  * Interface implemented by all the inputs coming from the clients. An input represents a request from the client to
  * perform some operation on the system that will change its state (i.e. a mutation). Performing the operation will
@@ -20,5 +22,11 @@ package org.eclipse.sirius.web.core.api;
  * @author sbegaudeau
  */
 public interface IInput {
-    // Do nothing on purpose
+    /**
+     * Returns the correlation identifier provided by the end user and used as the id of the various payloads and events
+     * created from this input.
+     *
+     * @return The correlation identifier
+     */
+    UUID getId();
 }

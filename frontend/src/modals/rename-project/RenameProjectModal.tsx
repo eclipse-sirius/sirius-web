@@ -40,6 +40,7 @@ import {
   ShowToastEvent,
 } from 'modals/rename-project/RenameProjectModalMachine';
 import React, { useEffect } from 'react';
+import { v4 as uuid } from 'uuid';
 
 const renameProjectMutation = gql`
   mutation renameProject($input: RenameProjectInput!) {
@@ -104,6 +105,7 @@ export const RenameProjectModal = ({ projectId, initialProjectName, onRename, on
     event.preventDefault();
     const variables = {
       input: {
+        id: uuid(),
         projectId,
         newName: name,
       },

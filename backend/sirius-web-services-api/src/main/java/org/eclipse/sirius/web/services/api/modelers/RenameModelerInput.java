@@ -29,6 +29,8 @@ import org.eclipse.sirius.web.core.api.IInput;
  */
 @GraphQLInputObjectType
 public final class RenameModelerInput implements IInput {
+    private UUID id;
+
     private UUID modelerId;
 
     private String newName;
@@ -37,9 +39,18 @@ public final class RenameModelerInput implements IInput {
         // Used by Jackson
     }
 
-    public RenameModelerInput(UUID modelerId, String newName) {
+    public RenameModelerInput(UUID id, UUID modelerId, String newName) {
+        this.id = Objects.requireNonNull(id);
         this.modelerId = Objects.requireNonNull(modelerId);
         this.newName = Objects.requireNonNull(newName);
+    }
+
+    @Override
+    @GraphQLID
+    @GraphQLField
+    @GraphQLNonNull
+    public UUID getId() {
+        return this.id;
     }
 
     @GraphQLID
@@ -57,8 +68,8 @@ public final class RenameModelerInput implements IInput {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'modelerId: {1}, newName: {2}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.modelerId, this.newName);
+        String pattern = "{0} '{'id: {1}, modelerId: {2}, newName: {3}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.modelerId, this.newName);
     }
 
 }
