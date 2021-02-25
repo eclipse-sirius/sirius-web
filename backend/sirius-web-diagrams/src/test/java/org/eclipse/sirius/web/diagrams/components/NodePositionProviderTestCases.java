@@ -38,9 +38,9 @@ import org.junit.Test;
  */
 public class NodePositionProviderTestCases {
 
-    private static final Size DEFAULT_NODE_SIZE = Size.newSize().height(70).width(150).build();
+    private static final Size DEFAULT_NODE_SIZE = Size.of(150, 70);
 
-    private static final Position ZERO_POSITION = Position.newPosition().x(0).y(0).build();
+    private static final Position ZERO_POSITION = Position.at(0, 0);
 
     private static final double STARTX = 1000;
 
@@ -89,7 +89,7 @@ public class NodePositionProviderTestCases {
         assertThat(nextPosition).extracting(Position::getY).isEqualTo(Double.valueOf(DEFAULT_NODE_SIZE.getHeight() + 30));
 
         // Test creation of a new node at a given position (creation tool)
-        Position startingPosition = Position.newPosition().x(STARTX).y(STARTY).build();
+        Position startingPosition = Position.at(STARTX, STARTY);
         parent = this.getDiagram(nodes);
         nodePositionProvider = new NodePositionProvider(startingPosition, null);
         nextPosition = nodePositionProvider.getPosition(UUID.randomUUID(), Optional.empty(), Optional.of(parent), nodeSizeProvider, style, ZERO_POSITION);
@@ -100,7 +100,7 @@ public class NodePositionProviderTestCases {
 
     @Test
     public void testNewNodesInNodeInClosedDiagram() {
-        Position parentPosition = Position.newPosition().x(0).y(0).build();
+        Position parentPosition = Position.at(0, 0);
         List<Node> nodes = new ArrayList<>();
         Node parent;
         NodeSizeProvider nodeSizeProvider = new NodeSizeProvider();
@@ -123,7 +123,7 @@ public class NodePositionProviderTestCases {
 
     @Test
     public void testNewNodesInNodeInOpenedDiagram() {
-        Position parentPosition = Position.newPosition().x(0).y(0).build();
+        Position parentPosition = Position.at(0, 0);
         List<Node> nodes = new ArrayList<>();
         Node parent;
         NodeSizeProvider nodeSizeProvider = new NodeSizeProvider();
@@ -143,7 +143,7 @@ public class NodePositionProviderTestCases {
         assertThat(nextPosition).extracting(Position::getY).isEqualTo(Double.valueOf(DEFAULT_NODE_SIZE.getHeight() + 30));
 
         // Test creation of a new node at a given position (creation tool)
-        Position startingPosition = Position.newPosition().x(STARTX).y(STARTY).build();
+        Position startingPosition = Position.at(STARTX, STARTY);
         parent = this.getNode(parentPosition, nodes);
         nodePositionProvider = new NodePositionProvider(startingPosition, null);
         nextPosition = nodePositionProvider.getPosition(UUID.randomUUID(), Optional.empty(), Optional.of(parent), nodeSizeProvider, style, ZERO_POSITION);

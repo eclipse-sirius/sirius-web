@@ -38,13 +38,8 @@ public class NodeSizeProvider {
     public Size getSize(INodeStyle style, List<Element> childElements) {
         if (style instanceof ImageNodeStyle) {
             Size size = new ImageNodeStyleSizeProvider(new ImageSizeProvider()).getSize((ImageNodeStyle) style);
-            return Size.newSize().width(size.getWidth() + ELK_SIZE_DIFF).height(size.getHeight() + ELK_SIZE_DIFF).build();
+            return Size.of(size.getWidth() + ELK_SIZE_DIFF, size.getHeight() + ELK_SIZE_DIFF);
         }
-        // @formatter:off
-        return Size.newSize()
-                .width(150)
-                .height(70)
-                .build();
-        // @formatter:on
+        return Size.of(150, 70);
     }
 }

@@ -57,8 +57,8 @@ public class RenameDiagramEventHandlerTestCases {
                 .label(OLD_LABEL)
                 .descriptionId(diagramDescription.getId())
                 .targetObjectId(targetObjectId.toString())
-                .size(Size.newSize().height(10).width(10).build())
-                .position(Position.newPosition().x(0).y(0).build())
+                .size(Size.of(10, 10))
+                .position(Position.at(0, 0))
                 .nodes(Collections.emptyList())
                 .edges(Collections.emptyList())
                 .build();

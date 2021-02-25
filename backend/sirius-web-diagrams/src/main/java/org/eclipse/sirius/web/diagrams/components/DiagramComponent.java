@@ -64,10 +64,7 @@ public class DiagramComponent implements IComponent {
                     var previousNodes = optionalPreviousDiagram.map(previousDiagram -> diagramElementRequestor.getRootNodes(previousDiagram, nodeDescription))
                             .orElse(List.of());
                     INodesRequestor nodesRequestor = new NodesRequestor(previousNodes);
-                    Position parentAbsolutePosition = Position.newPosition()
-                            .x(0)
-                            .y(0)
-                            .build();
+                    Position parentAbsolutePosition = Position.at(0, 0);
 
                     var nodeComponentProps = NodeComponentProps.newNodeComponentProps()
                             .variableManager(variableManager)

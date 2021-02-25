@@ -46,13 +46,7 @@ public class ImageNodeStyleSizeProvider {
         String imageURL = imageNodeStyle.getImageURL();
         Optional<Size> imageSize = this.imageSizeProvider.getSize(imageURL);
 
-        // @formatter:off
-        Size defaultSize = Size.newSize()
-                .height(DEFAULT_NATIVE_IMAGE_SIZE)
-                .width(DEFAULT_NATIVE_IMAGE_SIZE)
-                .build();
-        // @formatter:on
-
+        Size defaultSize = Size.of(DEFAULT_NATIVE_IMAGE_SIZE, DEFAULT_NATIVE_IMAGE_SIZE);
         Size nativeSize = imageSize.orElse(defaultSize);
 
         Size size = null;
@@ -64,12 +58,7 @@ public class ImageNodeStyleSizeProvider {
 
             int width = scalingFactor * SCALE;
             double height = width * ratio;
-            // @formatter:off
-            size = Size.newSize()
-                    .height(height)
-                    .width(width)
-                    .build();
-            // @formatter:on
+            size = Size.of(width, height);
         }
         return size;
     }

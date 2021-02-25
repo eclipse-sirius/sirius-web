@@ -208,12 +208,9 @@ public class NodeComponent implements IComponent {
     }
 
     private Position computeAbsolutePosition(Position currentNodeRelativePosition, Position parentNodeAbsolutePosition) {
-        // @formatter:off
-        return Position.newPosition()
-                .x(parentNodeAbsolutePosition.getX() + currentNodeRelativePosition.getX())
-                .y(parentNodeAbsolutePosition.getY() + currentNodeRelativePosition.getY())
-                .build();
-        // @formatter:on
+        double x = parentNodeAbsolutePosition.getX() + currentNodeRelativePosition.getX();
+        double y = parentNodeAbsolutePosition.getY() + currentNodeRelativePosition.getY();
+        return Position.at(x, y);
     }
 
 }

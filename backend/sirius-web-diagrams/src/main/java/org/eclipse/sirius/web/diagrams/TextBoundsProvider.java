@@ -71,18 +71,10 @@ public class TextBoundsProvider {
             }
         }
 
-        // @formatter:off
-            Size size = Size.newSize()
-                    .width(width + iconWidth)
-                    .height(height + iconHeight)
-                    .build();
+        Size size = Size.of(width + iconWidth, height + iconHeight);
 
-            // Sprotty needs the inverse of the x and y for the alignment, so it's "0 - x" and "0 - y" on purpose
-            Position alignment = Position.newPosition()
-                    .x(0 - stringBounds.getX() + iconWidth)
-                    .y(0 - stringBounds.getY())
-                    .build();
-            // @formatter:on
+        // Sprotty needs the inverse of the x and y for the alignment, so it's "0 - x" and "0 - y" on purpose
+        Position alignment = Position.at(0 - stringBounds.getX() + iconWidth, 0 - stringBounds.getY());
 
         return new TextBounds(size, alignment);
     }

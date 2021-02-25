@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,12 +27,7 @@ import org.eclipse.sirius.web.annotations.graphql.GraphQLObjectType;
 @Immutable
 @GraphQLObjectType
 public final class Size {
-    // @formatter:off
-    public static final Size UNDEFINED = Size.newSize()
-            .width(-1)
-            .height(-1)
-            .build();
-    // @formatter:on
+    public static final Size UNDEFINED = Size.of(-1, -1);
 
     private double width;
 
@@ -40,6 +35,13 @@ public final class Size {
 
     private Size() {
         // Prevent instantiation
+    }
+
+    public static Size of(double width, double height) {
+        Size size = new Size();
+        size.width = width;
+        size.height = height;
+        return size;
     }
 
     @GraphQLField

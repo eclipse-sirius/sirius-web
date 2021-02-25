@@ -52,12 +52,8 @@ public class EdgeRoutingPointsProvider {
     }
 
     private Position getCenter(Position absoluteNodePosition, Size nodeSize) {
-        // @formatter:off
-        return Position.newPosition()
-                .x(absoluteNodePosition.getX() + (nodeSize.getWidth() / 2))
-                .y(absoluteNodePosition.getY() + (nodeSize.getHeight() / 2))
-                .build();
-        // @formatter:on
-
+        double x = absoluteNodePosition.getX() + (nodeSize.getWidth() / 2);
+        double y = absoluteNodePosition.getY() + (nodeSize.getHeight() / 2);
+        return Position.at(x, y);
     }
 }

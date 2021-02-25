@@ -65,7 +65,7 @@ public class DiagramConverterTestCases {
     private TextBoundsService textBoundsService = new TextBoundsService() {
         @Override
         public TextBounds getBounds(Label label) {
-            Size size = Size.newSize().width(TEXT_WIDTH).height(TEXT_HEIGHT).build();
+            Size size = Size.of(TEXT_WIDTH, TEXT_HEIGHT);
             Position alignment = Position.UNDEFINED;
             return new TextBounds(size, alignment);
         }
