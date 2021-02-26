@@ -19,10 +19,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.sirius.web.collaborative.api.dto.RenameRepresentationInput;
 import org.eclipse.sirius.web.collaborative.api.dto.RenameRepresentationSuccessPayload;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
-import org.eclipse.sirius.web.core.api.IInput;
+import org.eclipse.sirius.web.collaborative.diagrams.api.dto.RenameDiagramInput;
 import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.Position;
@@ -80,11 +79,11 @@ public class RenameDiagramEventHandlerTestCases {
 
         RenameDiagramEventHandler handler = new RenameDiagramEventHandler(noOpRepresentationService, new NoOpCollaborativeDiagramMessageService(), new SimpleMeterRegistry());
 
-        IInput input = new RenameRepresentationInput(UUID.randomUUID(), projectId, representationId, NEW_LABEL);
+        var input = new RenameDiagramInput(UUID.randomUUID(), projectId, representationId, NEW_LABEL);
 
         assertThat(handler.canHandle(input)).isTrue();
 
-        EventHandlerResponse handlerResponse = handler.handle(new NoOpEditingContext(), input);
+        EventHandlerResponse handlerResponse = handler.handle(new NoOpEditingContext(), new NoOpDiagramContext(), input);
         IPayload payload = handlerResponse.getPayload();
         assertThat(payload).isInstanceOf(RenameRepresentationSuccessPayload.class);
     }

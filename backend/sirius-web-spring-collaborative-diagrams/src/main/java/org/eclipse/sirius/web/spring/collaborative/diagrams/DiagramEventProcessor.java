@@ -26,6 +26,7 @@ import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramCreationService
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramEventProcessor;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramInput;
+import org.eclipse.sirius.web.collaborative.diagrams.api.dto.RenameDiagramInput;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.core.api.IPayload;
@@ -87,8 +88,14 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
 
     @Override
     public Optional<EventHandlerResponse> handle(IRepresentationInput representationInput) {
-        if (representationInput instanceof IDiagramInput) {
-            IDiagramInput diagramInput = (IDiagramInput) representationInput;
+        IRepresentationInput effectiveInput = representationInput;
+        if (representationInput instanceof RenameRepresentationInput) {
+            RenameRepresentationInput renameRepresentationInput = (RenameRepresentationInput) representationInput;
+            effectiveInput = new RenameDiagramInput(renameRepresentationInput.getId(), renameRepresentationInput.getProjectId(), renameRepresentationInput.getRepresentationId(),
+                    renameRepresentationInput.getNewLabel());
+        }
+        if (effectiveInput instanceof IDiagramInput) {
+            IDiagramInput diagramInput = (IDiagramInput) effectiveInput;
 
             Optional<IDiagramEventHandler> optionalDiagramEventHandler = this.diagramEventHandlers.stream().filter(handler -> handler.canHandle(diagramInput)).findFirst();
 
@@ -102,18 +109,6 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
             } else {
                 this.logger.warn("No handler found for event: {}", diagramInput); //$NON-NLS-1$
             }
-        } else if (representationInput instanceof RenameRepresentationInput) {
-            String newName = ((RenameRepresentationInput) representationInput).getNewLabel();
-            Diagram diagram = this.diagramContext.getDiagram();
-
-            // @formatter:off
-            Diagram renamedDiagram = Diagram.newDiagram(diagram)
-                    .label(newName)
-                    .build();
-            // @formatter:on
-
-            this.diagramContext.update(renamedDiagram);
-            this.diagramEventFlux.diagramRefreshed(representationInput, renamedDiagram);
         }
         return Optional.empty();
     }

@@ -16,16 +16,17 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.sirius.web.collaborative.api.dto.RenameRepresentationInput;
 import org.eclipse.sirius.web.collaborative.api.dto.RenameRepresentationSuccessPayload;
 import org.eclipse.sirius.web.collaborative.api.services.ChangeDescription;
 import org.eclipse.sirius.web.collaborative.api.services.ChangeKind;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
-import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventHandler;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
+import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramEventHandler;
+import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramInput;
+import org.eclipse.sirius.web.collaborative.diagrams.api.dto.RenameDiagramInput;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
-import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.representations.IRepresentation;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationService;
@@ -42,7 +43,7 @@ import io.micrometer.core.instrument.MeterRegistry;
  * @author arichard
  */
 @Service
-public class RenameDiagramEventHandler implements IEditingContextEventHandler {
+public class RenameDiagramEventHandler implements IDiagramEventHandler {
 
     private final IRepresentationService representationService;
 
@@ -62,16 +63,16 @@ public class RenameDiagramEventHandler implements IEditingContextEventHandler {
     }
 
     @Override
-    public boolean canHandle(IInput input) {
-        return input instanceof RenameRepresentationInput;
+    public boolean canHandle(IDiagramInput diagramInput) {
+        return diagramInput instanceof RenameDiagramInput;
     }
 
     @Override
-    public EventHandlerResponse handle(IEditingContext editingContext, IInput input) {
+    public EventHandlerResponse handle(IEditingContext editingContext, IDiagramContext diagramContext, IDiagramInput diagramInput) {
         this.counter.increment();
 
-        if (input instanceof RenameRepresentationInput) {
-            RenameRepresentationInput renameRepresentationInput = (RenameRepresentationInput) input;
+        if (diagramInput instanceof RenameDiagramInput) {
+            RenameDiagramInput renameRepresentationInput = (RenameDiagramInput) diagramInput;
             UUID representationId = renameRepresentationInput.getRepresentationId();
             String newLabel = renameRepresentationInput.getNewLabel();
             Optional<RepresentationDescriptor> optionalRepresentationDescriptor = this.representationService.getRepresentation(representationId);
@@ -80,13 +81,14 @@ public class RenameDiagramEventHandler implements IEditingContextEventHandler {
                 IRepresentation representation = representationDescriptor.getRepresentation();
                 Optional<IRepresentation> optionalRepresentation = this.createDiagramWithNewLabel(representation, newLabel, editingContext);
                 if (optionalRepresentation.isPresent()) {
+                    diagramContext.update((Diagram) optionalRepresentation.get());
                     return new EventHandlerResponse(new ChangeDescription(ChangeKind.REPRESENTATION_RENAMING, renameRepresentationInput.getRepresentationId()),
-                            new RenameRepresentationSuccessPayload(input.getId(), optionalRepresentation.get()));
+                            new RenameRepresentationSuccessPayload(diagramInput.getId(), optionalRepresentation.get()));
                 }
             }
         }
-        String message = this.messageService.invalidInput(input.getClass().getSimpleName(), RenameRepresentationInput.class.getSimpleName());
-        return new EventHandlerResponse(new ChangeDescription(ChangeKind.NOTHING, editingContext.getId()), new ErrorPayload(input.getId(), message));
+        String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), RenameDiagramInput.class.getSimpleName());
+        return new EventHandlerResponse(new ChangeDescription(ChangeKind.NOTHING, editingContext.getId()), new ErrorPayload(diagramInput.getId(), message));
     }
 
     private Optional<IRepresentation> createDiagramWithNewLabel(IRepresentation representation, String newLabel, IEditingContext editingContext) {
