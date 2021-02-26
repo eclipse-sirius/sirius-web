@@ -22,7 +22,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius.web</groupId>
 	<artifactId>sirius-web-collaborative-trees-api</artifactId>
-	<version>0.2.6</version>
+	<version>0.2.7</version>
 	<name>sirius-web-collaborative-trees-api</name>
 	<description>Sirius Web Collaborative Trees API</description>
 
@@ -42,17 +42,17 @@
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-collaborative-api</artifactId>
-			<version>0.2.6</version>
+			<version>0.2.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-trees</artifactId>
-			<version>0.2.6</version>
+			<version>0.2.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-tests</artifactId>
-			<version>0.2.6</version>
+			<version>0.2.7</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
