@@ -19,8 +19,10 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.sirius.ecore.extender.business.internal.accessor.ecore.EcoreIntrinsicExtender;
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.viewpoint.description.tool.ModelOperation;
 import org.eclipse.sirius.viewpoint.description.tool.Unset;
 import org.eclipse.sirius.web.compat.api.IModelOperationHandler;
@@ -49,40 +51,65 @@ public class UnsetOperationHandler implements IModelOperationHandler {
 
     @Override
     public Status handle(Map<String, Object> variables) {
-        String featureName = this.unsetOperation.getFeatureName();
-        String elementExpression = this.unsetOperation.getElementExpression();
+        var optionalContext = this.getContext(variables);
+        var optionalFeature = optionalContext.flatMap(context -> this.computeFeature(context, variables));
+        if (optionalContext.isPresent() && optionalFeature.isPresent()) {
+            List<EObject> elementsToUnset = this.computeElementsToUnset(variables, this.unsetOperation.getElementExpression());
+            this.unset(optionalContext.get(), optionalFeature.get(), elementsToUnset);
+        }
+        return this.executeChildrenOperations(variables);
+    }
 
-        if (featureName != null && !featureName.isBlank()) {
+    private Optional<EObject> getContext(Map<String, Object> variables) {
+        // @formatter:off
+        return Optional.ofNullable(variables.get(VariableManager.SELF))
+                       .filter(EObject.class::isInstance)
+                       .map(EObject.class::cast);
+        // @formatter:on
+    }
+
+    private Optional<EStructuralFeature> computeFeature(EObject context, Map<String, Object> variables) {
+        String featureNameExpression = this.unsetOperation.getFeatureName();
+        if (featureNameExpression != null && !featureNameExpression.isBlank()) {
             // @formatter:off
-            Optional<EObject> optionalOwnerObject = Optional.ofNullable(variables.get(VariableManager.SELF))
-                    .filter(EObject.class::isInstance)
-                    .map(EObject.class::cast);
+            return this.interpreter.evaluateExpression(variables, featureNameExpression).asString()
+                                   .map(featureName -> context.eClass().getEStructuralFeature(featureName));
+            // @formatter:on
+        } else {
+            return Optional.empty();
+        }
+    }
 
-            if (optionalOwnerObject.isPresent()) {
-                EObject ownerObject = optionalOwnerObject.get();
-                List<EObject> elementsToUnset = null;
-                if (elementExpression != null && !elementExpression.isBlank()) {
-                    Optional<List<Object>> optionalObjectsToUnset = this.interpreter.evaluateExpression(variables, elementExpression).asObjects();
-                    if (optionalObjectsToUnset.isPresent()) {
-                        elementsToUnset = optionalObjectsToUnset.get().stream()
-                            .filter(EObject.class::isInstance)
-                            .map(EObject.class::cast)
-                            .collect(Collectors.toList());
-                    }
-                    // @formatter:on
-                }
-
-                // This implementation is the one in Sirius
-                EcoreIntrinsicExtender ecoreIntrinsicExtender = new EcoreIntrinsicExtender();
-                Boolean eIsMany = ecoreIntrinsicExtender.eIsMany(ownerObject, featureName);
-                if (eIsMany) {
-                    ecoreIntrinsicExtender.eAdd(ownerObject, featureName, elementsToUnset);
-                } else {
-                    ecoreIntrinsicExtender.eSet(ownerObject, featureName, elementsToUnset);
-                }
+    private List<EObject> computeElementsToUnset(Map<String, Object> variables, String elementExpression) {
+        List<EObject> elementsToUnset = null;
+        if (elementExpression != null && !elementExpression.isBlank()) {
+            Optional<List<Object>> optionalObjectsToUnset = this.interpreter.evaluateExpression(variables, elementExpression).asObjects();
+            if (optionalObjectsToUnset.isPresent()) {
+                // @formatter:off
+                elementsToUnset = optionalObjectsToUnset.get().stream()
+                                      .filter(EObject.class::isInstance)
+                                      .map(EObject.class::cast)
+                                      .collect(Collectors.toList());
+                // @formatter:on
             }
         }
+        return elementsToUnset;
+    }
 
+    private void unset(EObject context, EStructuralFeature featureToEdit, List<EObject> elementsToUnset) {
+        if (elementsToUnset == null) {
+            if (featureToEdit.isMany()) {
+                EList<?> values = (EList<?>) context.eGet(featureToEdit);
+                values.clear();
+            } else {
+                context.eSet(featureToEdit, null);
+            }
+        } else {
+            elementsToUnset.stream().forEach(value -> EcoreUtil.remove(context, featureToEdit, value));
+        }
+    }
+
+    private Status executeChildrenOperations(Map<String, Object> variables) {
         Map<String, Object> childVariables = new HashMap<>(variables);
         List<ModelOperation> subModelOperations = this.unsetOperation.getSubModelOperations();
         return this.childModelOperationHandler.handle(this.interpreter, childVariables, subModelOperations);
