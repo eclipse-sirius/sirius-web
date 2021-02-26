@@ -18,6 +18,7 @@ import java.text.MessageFormat;
 import java.util.UUID;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.sirius.viewpoint.description.tool.ChangeContext;
@@ -89,15 +90,12 @@ public class UnsetOperationHandlerTestCases {
         // check that class1 has been removed from rootPackage
         this.unset.setFeatureName(ECLASSIFIERS_FEATURE);
         this.unset.setElementExpression("aql:self.eClassifiers->first()"); //$NON-NLS-1$
-
+        EClassifier secondClass = this.operationTestContext.getRootPackage().getEClassifiers().get(1);
         Status handleResult = this.unsetOperationHandler.handle(this.operationTestContext.getVariables());
 
         assertEquals(Status.OK, handleResult);
-        // This result is functionally unexpected but is the one in Sirius
-        // The expected size is 1
-        assertEquals(2, this.operationTestContext.getRootPackage().getEClassifiers().size());
-        // the expected should be NotSame
-        assertEquals(this.operationTestContext.getClass1(), this.operationTestContext.getRootPackage().getEClassifiers().get(0));
+        assertEquals(1, this.operationTestContext.getRootPackage().getEClassifiers().size());
+        assertEquals(secondClass, this.operationTestContext.getRootPackage().getEClassifiers().get(0));
 
         // check that all classes are removed from rootPackage
         this.unset.setFeatureName(ECLASSIFIERS_FEATURE);
@@ -108,9 +106,7 @@ public class UnsetOperationHandlerTestCases {
         assertEquals(Status.OK, handleResult);
         // This result is functionally unexpected but is the one in Sirius
         // The expected size is 0
-        assertEquals(2, this.operationTestContext.getRootPackage().getEClassifiers().size());
-        // the expected should be NotSame
-        assertEquals(this.operationTestContext.getClass1(), this.operationTestContext.getRootPackage().getEClassifiers().get(0));
+        assertEquals(0, this.operationTestContext.getRootPackage().getEClassifiers().size());
     }
 
     /**
@@ -131,6 +127,20 @@ public class UnsetOperationHandlerTestCases {
 
         // Check expression with exception case
         this.handleAndCheckExecution(NAME_FEATURE, ModelOperationServices.AQL_THROW_ERROR_EXPRESSION, this.operationTestContext.getRootPackage());
+    }
+
+    /**
+     * Check that the operation's featureName is correctly evaluated as a dynamic expression.
+     */
+    @Test
+    public void unsetFromDynamicFeatureName() {
+        this.unset.setFeatureName("aql:'na' + 'me'"); //$NON-NLS-1$
+        this.unset.setElementExpression(null);
+
+        Status handleResult = this.unsetOperationHandler.handle(this.operationTestContext.getVariables());
+
+        assertEquals(Status.OK, handleResult);
+        assertEquals(null, this.operationTestContext.getRootPackage().getName());
     }
 
     /**
