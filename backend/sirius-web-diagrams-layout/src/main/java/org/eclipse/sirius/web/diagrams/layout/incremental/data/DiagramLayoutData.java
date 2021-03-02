@@ -25,6 +25,8 @@ import org.eclipse.sirius.web.diagrams.Size;
  */
 public class DiagramLayoutData implements IContainerLayoutData {
 
+    private UUID id;
+
     private Position position;
 
     private Size size;
@@ -32,8 +34,6 @@ public class DiagramLayoutData implements IContainerLayoutData {
     private List<NodeLayoutData> nodes;
 
     private List<EdgeLayoutData> edges;
-
-    private UUID id;
 
     @Override
     public UUID getId() {

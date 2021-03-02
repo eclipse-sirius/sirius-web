@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.eclipse.sirius.web.diagrams.Position;
@@ -23,6 +24,8 @@ import org.eclipse.sirius.web.diagrams.Size;
 import org.eclipse.sirius.web.diagrams.layout.incremental.IncrementalLayoutEngine;
 import org.eclipse.sirius.web.diagrams.layout.incremental.data.IContainerLayoutData;
 import org.eclipse.sirius.web.diagrams.layout.incremental.data.NodeLayoutData;
+import org.eclipse.sirius.web.diagrams.layout.incremental.utils.Bounds;
+import org.eclipse.sirius.web.diagrams.layout.incremental.utils.Geometry;
 
 /**
  * An algorithm dedicated to solve overlaps issues. Any node in a given container might be moved to avoid overlaps,
@@ -119,116 +122,35 @@ public class OverlapsUpdater {
         return Position.newPosition().x(x).y(y).build();
     }
 
-    private double computeDistance(Position source, Position target) {
-        double ac = Math.abs(target.getY() - source.getY());
-        double cb = Math.abs(target.getX() - source.getX());
-        return Math.hypot(ac, cb);
-    }
-
     /**
-     * Computes the distance between the center
+     * Computes the shortest distance between the center1 point and the given node bounds intersection with the segment
+     * (center1, center2).
      *
      * @param center1
+     *            the first node center.
      * @param center2
+     *            the second node center.
      * @param node
-     * @return
+     *            the node used for computing the intersection.
+     * @return the shortest distance.
      */
     private double computeDistanceToBorder(Position center1, Position center2, NodeLayoutData node) {
-        Position intersection = this.getIntersection(center1, center2, node, center2);
-        return this.computeDistance(center1, intersection);
-    }
-
-    /**
-     * Finds the closest intersection from a given point, along a given line, with a rectangle.
-     *
-     * @param lineA
-     *            the line first point
-     * @param lineB
-     *            the line second point
-     * @param closest
-     *            the closest point to the intersection
-     * @return the intersection
-     */
-    private Position getIntersection(Position lineA, Position lineB, NodeLayoutData node, Position closest) {
-        Position topLeft = node.getPosition();
-        Position topRight = Position.newPosition().x(node.getPosition().getX() + node.getSize().getWidth()).y(node.getPosition().getY()).build();
-        Position bottomLeft = Position.newPosition().x(node.getPosition().getX()).y(node.getPosition().getY() + node.getSize().getHeight()).build();
-        Position bottomRight = Position.newPosition().x(node.getPosition().getX() + node.getSize().getWidth()).y(node.getPosition().getY() + node.getSize().getHeight()).build();
-
-        Position topIntersection = this.getIntersection(lineA, lineB, topLeft, topRight);
-        Position bottomIntersection = this.getIntersection(lineA, lineB, bottomLeft, bottomRight);
-        Position leftIntersection = this.getIntersection(lineA, lineB, topLeft, bottomLeft);
-        Position rightIntersection = this.getIntersection(lineA, lineB, topRight, bottomRight);
-
-        Position minDistancePosition = this.getMinDistancePosition(closest, topIntersection, bottomIntersection, leftIntersection, rightIntersection);
-        return minDistancePosition;
-
-    }
-
-    /**
-     * Returns the closest point from the source.
-     *
-     * @param source
-     *            the source point
-     * @param candidates
-     *            the target candidates
-     * @return the closest point
-     */
-    private Position getMinDistancePosition(Position source, Position... candidates) {
-        Position minPosition = null;
-        Double minDistance = null;
-        for (Position intersection : candidates) {
-            if (intersection != null) {
-                double tmp = this.computeDistance(source, intersection);
-                if (minDistance == null) {
-                    minDistance = tmp;
-                    minPosition = intersection;
-                } else if (tmp < minDistance) {
-                    minDistance = tmp;
-                    minPosition = intersection;
-                }
-            }
+        Geometry geometry = new Geometry();
+        Optional<Position> optionalIntersection = geometry.getIntersection(center2, center1, this.getBounds(node));
+        if (optionalIntersection.isPresent()) {
+            return geometry.computeDistance(center1, optionalIntersection.get());
+        } else {
+            return 0;
         }
-        return minPosition;
     }
 
-    /**
-     * Returns the intersection between a line and a segment.
-     *
-     * @param lineA
-     *            the line first point
-     * @param lineB
-     *            the line second point
-     * @param segmentSource
-     *            the segment source
-     * @param segmentTarget
-     *            the segment target
-     * @return the intersection or <null>
-     */
-    private Position getIntersection(Position lineA, Position lineB, Position segmentSource, Position segmentTarget) {
-        double x1 = lineA.getX();
-        double y1 = lineA.getY();
-        double x2 = lineB.getX();
-        double y2 = lineB.getY();
-
-        double x3 = segmentSource.getX();
-        double y3 = segmentSource.getY();
-        double x4 = segmentTarget.getX();
-        double y4 = segmentTarget.getY();
-
-        Position p = null;
-        double d = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
-        if (d != 0) {
-            double xi = ((x3 - x4) * (x1 * y2 - y1 * x2) - (x1 - x2) * (x3 * y4 - y3 * x4)) / d;
-            double yi = ((y3 - y4) * (x1 * y2 - y1 * x2) - (y1 - y2) * (x3 * y4 - y3 * x4)) / d;
-            if (x3 == x4 && yi <= y4 && yi >= y3) {
-                p = Position.newPosition().x(xi).y(yi).build();
-            }
-            if (y3 == y4 && xi <= x4 && xi >= x3) {
-                p = Position.newPosition().x(xi).y(yi).build();
-            }
-        }
-        return p;
+    private Bounds getBounds(NodeLayoutData nodeLayoutData) {
+        // @formatter:off
+        return Bounds.newBounds()
+                .position(nodeLayoutData.getPosition())
+                .size(nodeLayoutData.getSize())
+                .build();
+        // @formatter:on
     }
 
 }

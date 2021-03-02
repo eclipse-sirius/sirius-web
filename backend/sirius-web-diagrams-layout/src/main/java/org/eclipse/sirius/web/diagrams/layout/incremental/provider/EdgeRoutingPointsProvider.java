@@ -12,13 +12,14 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.diagrams.layout.incremental.provider;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.eclipse.sirius.web.diagrams.Position;
-import org.eclipse.sirius.web.diagrams.Size;
 import org.eclipse.sirius.web.diagrams.layout.incremental.data.EdgeLayoutData;
 import org.eclipse.sirius.web.diagrams.layout.incremental.data.NodeLayoutData;
+import org.eclipse.sirius.web.diagrams.layout.incremental.utils.Bounds;
+import org.eclipse.sirius.web.diagrams.layout.incremental.utils.Geometry;
 
 /**
  * Provides the routing points to apply to an Edge.
@@ -28,21 +29,36 @@ import org.eclipse.sirius.web.diagrams.layout.incremental.data.NodeLayoutData;
 public class EdgeRoutingPointsProvider {
 
     public List<Position> getRoutingPoints(EdgeLayoutData edge) {
-        List<Position> routingPoints = new ArrayList<>();
-        routingPoints.add(this.getCenter(edge.getSource()));
-        routingPoints.add(this.getCenter(edge.getTarget()));
-        return routingPoints;
+        Bounds sourceBounds = this.getAbsoluteBounds(edge.getSource());
+        Bounds targetBounds = this.getAbsoluteBounds(edge.getTarget());
+        Position sourceAbsolutePosition = this.getCenter(sourceBounds);
+        Position targetAbsolutePosition = this.getCenter(targetBounds);
+        Geometry geometry = new Geometry();
+        Optional<Position> optionalSourceIntersection = geometry.getIntersection(targetAbsolutePosition, sourceAbsolutePosition, sourceBounds);
+        Optional<Position> optionalTargetIntersection = geometry.getIntersection(sourceAbsolutePosition, targetAbsolutePosition, targetBounds);
+        if (optionalSourceIntersection.isPresent() && optionalTargetIntersection.isPresent()) {
+            return List.of(optionalSourceIntersection.get(), optionalTargetIntersection.get());
+        }
+        return List.of();
     }
 
-    private Position getCenter(NodeLayoutData nodeLayoutData) {
-        Position absoluteNodePosition = nodeLayoutData.getAbsolutePosition();
-        Size nodeSize = nodeLayoutData.getSize();
+    private Bounds getAbsoluteBounds(NodeLayoutData nodeLayoutData) {
+        // @formatter:off
+            return Bounds.newBounds()
+                    .position(nodeLayoutData.getAbsolutePosition())
+                    .size(nodeLayoutData.getSize())
+                    .build();
+            // @formatter:on
+    }
+
+    private Position getCenter(Bounds bounds) {
         // @formatter:off
         return Position.newPosition()
-                .x(absoluteNodePosition.getX() + (nodeSize.getWidth() / 2))
-                .y(absoluteNodePosition.getY() + (nodeSize.getHeight() / 2))
+                .x(bounds.getPosition().getX() + (bounds.getSize().getWidth() / 2))
+                .y(bounds.getPosition().getY() + (bounds.getSize().getHeight() / 2))
                 .build();
         // @formatter:on
+
     }
 
 }
