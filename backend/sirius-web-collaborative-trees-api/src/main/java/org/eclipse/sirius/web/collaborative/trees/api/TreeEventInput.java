@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.collaborative.trees.api;
 
 import java.text.MessageFormat;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.annotations.graphql.GraphQLField;
@@ -34,6 +35,16 @@ public final class TreeEventInput implements IInput {
     private UUID editingContextId;
 
     private List<String> expanded;
+
+    public TreeEventInput() {
+        // Used by Jackson
+    }
+
+    public TreeEventInput(UUID id, UUID editingContextId, List<String> expanded) {
+        this.id = Objects.requireNonNull(id);
+        this.editingContextId = Objects.requireNonNull(editingContextId);
+        this.expanded = Objects.requireNonNull(expanded);
+    }
 
     @Override
     @GraphQLID

@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.collaborative.forms.api.dto;
 
 import java.text.MessageFormat;
+import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.annotations.graphql.GraphQLField;
@@ -35,6 +36,16 @@ public final class FormEventInput implements IInput {
     private UUID projectId;
 
     private UUID formId;
+
+    public FormEventInput() {
+        // Used by Jackson
+    }
+
+    public FormEventInput(UUID id, UUID projectId, UUID formId) {
+        this.id = Objects.requireNonNull(id);
+        this.projectId = Objects.requireNonNull(projectId);
+        this.formId = Objects.requireNonNull(formId);
+    }
 
     @Override
     @GraphQLID

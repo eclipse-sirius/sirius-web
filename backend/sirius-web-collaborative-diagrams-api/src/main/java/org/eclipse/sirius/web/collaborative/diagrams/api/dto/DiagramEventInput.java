@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.collaborative.diagrams.api.dto;
 
 import java.text.MessageFormat;
+import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.annotations.graphql.GraphQLField;
@@ -33,6 +34,16 @@ public final class DiagramEventInput implements IInput {
     private UUID projectId;
 
     private UUID diagramId;
+
+    public DiagramEventInput() {
+        // Used by Jackson
+    }
+
+    public DiagramEventInput(UUID id, UUID projectId, UUID diagramId) {
+        this.id = Objects.requireNonNull(id);
+        this.projectId = Objects.requireNonNull(projectId);
+        this.diagramId = Objects.requireNonNull(diagramId);
+    }
 
     @Override
     @GraphQLID
