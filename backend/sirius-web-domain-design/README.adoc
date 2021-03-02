@@ -1,0 +1,9 @@
+= sirius-web-domain-design
+
+== Goal
+
+This project provides the definition of a graphical modeler for instances of the Domain DSL, using a Sirius Desktop VSM.
+
+== Dependencies
+
+None.
