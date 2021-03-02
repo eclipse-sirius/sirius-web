@@ -108,7 +108,6 @@ public class DiagramCreationService implements IDiagramCreationService {
     }
 
     private Diagram doRender(String label, Object targetObject, IEditingContext editingContext, DiagramDescription diagramDescription, Optional<IDiagramContext> optionalDiagramContext) {
-
         long start = System.currentTimeMillis();
 
         VariableManager variableManager = new VariableManager();
@@ -137,7 +136,9 @@ public class DiagramCreationService implements IDiagramCreationService {
         Element element = new Element(DiagramComponent.class, props);
 
         Diagram newDiagram = new DiagramRenderer(this.logger).render(element);
-        if (this.activateAutoLayout) {
+
+        // The auto layout is used for the first rendering and after that if it is activated
+        if (optionalDiagramContext.isEmpty() || this.activateAutoLayout) {
             newDiagram = this.layoutService.layout(newDiagram);
         }
         RepresentationDescriptor representationDescriptor = this.getRepresentationDescriptor(editingContext.getId(), newDiagram);
