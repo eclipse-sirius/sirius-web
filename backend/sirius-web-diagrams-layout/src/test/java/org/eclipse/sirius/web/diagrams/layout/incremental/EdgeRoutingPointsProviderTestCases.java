@@ -44,12 +44,12 @@ public class EdgeRoutingPointsProviderTestCases {
         assertThat(routingPoints).hasSize(2);
 
         Position firstRoutingPoint = routingPoints.get(0);
-        assertThat(firstRoutingPoint).extracting(Position::getX).isEqualTo(50.0);
-        assertThat(firstRoutingPoint).extracting(Position::getY).isEqualTo(25.0);
+        assertThat(firstRoutingPoint).extracting(Position::getX).isEqualTo(75.0);
+        assertThat(firstRoutingPoint).extracting(Position::getY).isEqualTo(50.0);
 
         Position secondRoutingPoint = routingPoints.get(1);
-        assertThat(secondRoutingPoint).extracting(Position::getX).isEqualTo(250.0);
-        assertThat(secondRoutingPoint).extracting(Position::getY).isEqualTo(225.0);
+        assertThat(secondRoutingPoint).extracting(Position::getX).isEqualTo(225.0);
+        assertThat(secondRoutingPoint).extracting(Position::getY).isEqualTo(200.0);
     }
 
     private DiagramLayoutData createDiagramLayoutData() {
