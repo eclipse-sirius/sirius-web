@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel"
+    modelDirectory="/sirius-web-view/src-gen" creationIcons="false"
+    editDirectory="/sirius-web-view-edit/src-gen" editorDirectory="/sirius-web-view-editor/src-gen"
+    modelPluginID="sirius-web-view" modelName="View" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    codeFormatting="true" importerID="org.eclipse.emf.importer.ecore" complianceLevel="11.0"
+    copyrightFields="false" editPluginID="sirius-web-view-edit" editorPluginID="sirius-web-view-editor"
+    operationReflection="true" importOrganizing="true">
+  <foreignModel>view.ecore</foreignModel>
+  <testsDirectory xsi:nil="true"/>
+  <genPackages prefix="View" basePackage="org.eclipse.sirius.web" disposableProviderFactory="true"
+      ecorePackage="view.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="view.ecore#//Mode">
+      <genEnumLiterals ecoreEnumLiteral="view.ecore#//Mode/AUTO"/>
+      <genEnumLiterals ecoreEnumLiteral="view.ecore#//Mode/EXPLICIT"/>
+    </genEnums>
+    <genClasses ecoreClass="view.ecore#//View">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//View/descriptions"/>
+    </genClasses>
+    <genClasses ecoreClass="view.ecore#//RepresentationDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//RepresentationDescription/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//RepresentationDescription/domainType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//RepresentationDescription/titleExpression"/>
+    </genClasses>
+    <genClasses ecoreClass="view.ecore#//DiagramDescription">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//DiagramDescription/nodeDescriptions"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//DiagramDescription/edgeDescriptions"/>
+    </genClasses>
+    <genClasses ecoreClass="view.ecore#//DiagramElementDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//DiagramElementDescription/domainType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//DiagramElementDescription/semanticCandidatesExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//DiagramElementDescription/creationMode"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//DiagramElementDescription/labelExpression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//DiagramElementDescription/style"/>
+    </genClasses>
+    <genClasses ecoreClass="view.ecore#//NodeDescription">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//NodeDescription/childrenDescriptions"/>
+    </genClasses>
+    <genClasses ecoreClass="view.ecore#//EdgeDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//EdgeDescription/isDomainBasedEdge"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference view.ecore#//EdgeDescription/sourceNodeDescriptions"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference view.ecore#//EdgeDescription/targetNodeDescriptions"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//EdgeDescription/sourceNodesExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//EdgeDescription/targetNodesExpression"/>
+    </genClasses>
+    <genClasses ecoreClass="view.ecore#//Style">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//Style/color"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>
