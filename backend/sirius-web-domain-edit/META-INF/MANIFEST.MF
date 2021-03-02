@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-SymbolicName: sirius-web-domain-edit;singleton:=true
+Automatic-Module-Name: sirius-web-domain-edit
+Bundle-Version: 1.0.0.qualifier
+Bundle-ClassPath: .
+Bundle-Activator: org.eclipse.sirius.web.domain.provider.DomainEditPlugin$Implementation
+Bundle-Vendor: %providerName
+Bundle-Localization: plugin
+Export-Package: org.eclipse.sirius.web.domain.provider
+Require-Bundle: org.eclipse.core.runtime,
+ sirius-web-domain;visibility:=reexport,
+ org.eclipse.emf.edit;visibility:=reexport
+Bundle-ActivationPolicy: lazy
