@@ -124,6 +124,8 @@ public class GeneralPurposeTestCases {
             List<Path> filePaths = paths.filter(Files::isRegularFile)
                     .filter(filePath -> filePath.toFile().getName().endsWith(extension))
                     .filter(filePath -> !filePath.toString().replace("\\", "/").contains("/.mvn/wrapper/")) //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                    .filter(filePath -> !filePath.toString().contains("/sirius-web-domain")) //$NON-NLS-1$
+                    .filter(filePath -> !filePath.toString().contains("/sirius-web-view")) //$NON-NLS-1$
                     .collect(Collectors.toList());
             // @formatter:on
 
