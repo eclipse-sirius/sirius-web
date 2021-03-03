@@ -16,9 +16,6 @@ export const getTreeEventSubscription = (depth) => {
 subscription treeEvent($input: TreeEventInput!) {
   treeEvent(input: $input) {
     __typename
-    ... on PreDestroyPayload {
-      id
-    }
     ... on TreeRefreshedEventPayload {
       id
       tree {

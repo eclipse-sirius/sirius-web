@@ -38,6 +38,4 @@ public interface IRepresentationEventProcessor {
     Flux<IPayload> getOutputEvents(IInput input);
 
     void dispose();
-
-    void preDestroy();
 }

@@ -19,7 +19,6 @@ import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
 import {
   formRefreshedEventPayloadFragment,
-  preDestroyPayloadFragment,
   subscribersUpdatedEventPayloadFragment,
   widgetSubscriptionsUpdatedEventPayloadFragment,
 } from 'form/FormEventFragments';
@@ -44,9 +43,6 @@ const propertiesEventSubscription = gql`
   subscription propertiesEvent($input: PropertiesEventInput!) {
     propertiesEvent(input: $input) {
       __typename
-      ... on PreDestroyPayload {
-        ...preDestroyPayloadFragment
-      }
       ... on SubscribersUpdatedEventPayload {
         ...subscribersUpdatedEventPayloadFragment
       }
@@ -58,7 +54,6 @@ const propertiesEventSubscription = gql`
       }
     }
   }
-  ${preDestroyPayloadFragment}
   ${subscribersUpdatedEventPayloadFragment}
   ${widgetSubscriptionsUpdatedEventPayloadFragment}
   ${formRefreshedEventPayloadFragment}

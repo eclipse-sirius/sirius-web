@@ -570,12 +570,6 @@ export const DiagramWebSocketContainer = ({
         } else if (diagramEvent.__typename === 'ErrorPayload') {
           const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message: diagramEvent.message };
           dispatch(showToastEvent);
-        } else if (diagramEvent.__typename === 'PreDestroyPayload') {
-          const showToastEvent: ShowToastEvent = {
-            type: 'SHOW_TOAST',
-            message: 'The connection with the server has been lost',
-          };
-          dispatch(showToastEvent);
         }
       }
     },

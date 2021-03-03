@@ -19,7 +19,6 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.eclipse.sirius.web.collaborative.api.dto.PreDestroyPayload;
 import org.eclipse.sirius.web.collaborative.api.services.ChangeDescription;
 import org.eclipse.sirius.web.collaborative.api.services.ChangeKind;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
@@ -181,15 +180,6 @@ public class PropertiesEventProcessor implements IPropertiesEventProcessor {
         EmitResult emitResult = this.sink.tryEmitComplete();
         if (emitResult.isFailure()) {
             String pattern = "An error has occurred while marking the publisher as complete: {0}"; //$NON-NLS-1$
-            this.logger.warn(MessageFormat.format(pattern, emitResult));
-        }
-    }
-
-    @Override
-    public void preDestroy() {
-        EmitResult emitResult = this.sink.tryEmitNext(new PreDestroyPayload(this.getRepresentation().getId()));
-        if (emitResult.isFailure()) {
-            String pattern = "An error has occurred while emitting a PreDestroyPayload: {0}"; //$NON-NLS-1$
             this.logger.warn(MessageFormat.format(pattern, emitResult));
         }
     }

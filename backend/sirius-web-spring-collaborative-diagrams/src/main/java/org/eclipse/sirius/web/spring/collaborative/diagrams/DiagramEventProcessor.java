@@ -147,8 +147,4 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
         this.diagramEventFlux.dispose();
     }
 
-    @Override
-    public void preDestroy() {
-        this.diagramEventFlux.preDestroy();
-    }
 }

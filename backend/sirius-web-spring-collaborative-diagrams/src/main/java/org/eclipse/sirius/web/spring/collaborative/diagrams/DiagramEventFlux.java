@@ -15,7 +15,6 @@ package org.eclipse.sirius.web.spring.collaborative.diagrams;
 import java.text.MessageFormat;
 import java.util.Objects;
 
-import org.eclipse.sirius.web.collaborative.api.dto.PreDestroyPayload;
 import org.eclipse.sirius.web.collaborative.diagrams.api.dto.DiagramRefreshedEventPayload;
 import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.core.api.IPayload;
@@ -68,11 +67,4 @@ public class DiagramEventFlux {
         }
     }
 
-    public void preDestroy() {
-        EmitResult emitResult = this.sink.tryEmitNext(new PreDestroyPayload(this.currentDiagram.getId()));
-        if (emitResult.isFailure()) {
-            String pattern = "An error has occurred while emitting a PreDestroyPayload: {0}"; //$NON-NLS-1$
-            this.logger.warn(MessageFormat.format(pattern, emitResult));
-        }
-    }
 }

@@ -17,7 +17,6 @@ import java.util.UUID;
 
 import org.eclipse.sirius.web.annotations.graphql.GraphQLSubscriptionTypes;
 import org.eclipse.sirius.web.annotations.spring.graphql.SubscriptionDataFetcher;
-import org.eclipse.sirius.web.collaborative.api.dto.PreDestroyPayload;
 import org.eclipse.sirius.web.collaborative.api.dto.ProjectEventInput;
 import org.eclipse.sirius.web.collaborative.api.dto.RepresentationRenamedEventPayload;
 import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventProcessor;
@@ -50,7 +49,6 @@ import reactor.core.publisher.Flux;
     input = ProjectEventInput.class,
     payloads = {
         RepresentationRenamedEventPayload.class,
-        PreDestroyPayload.class,
     }
 )
 @SubscriptionDataFetcher(type = SubscriptionTypeProvider.TYPE, field = SubscriptionProjectEventDataFetcher.PROJECT_EVENT_FIELD)

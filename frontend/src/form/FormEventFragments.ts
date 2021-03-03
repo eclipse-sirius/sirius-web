@@ -12,12 +12,6 @@
  *******************************************************************************/
 import gql from 'graphql-tag';
 
-export const preDestroyPayloadFragment = gql`
-  fragment preDestroyPayloadFragment on PreDestroyPayload {
-    id
-  }
-`;
-
 export const subscribersUpdatedEventPayloadFragment = gql`
   fragment subscribersUpdatedEventPayloadFragment on SubscribersUpdatedEventPayload {
     id

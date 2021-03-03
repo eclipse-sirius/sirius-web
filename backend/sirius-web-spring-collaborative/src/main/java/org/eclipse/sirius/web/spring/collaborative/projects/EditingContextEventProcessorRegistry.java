@@ -111,8 +111,10 @@ public class EditingContextEventProcessorRegistry implements IEditingContextEven
     }
 
     @PreDestroy
-    public void preDestroy() {
+    public void dispose() {
         this.logger.debug("Shutting down all the editing context event processors"); //$NON-NLS-1$
-        this.editingContextEventProcessors.values().forEach(EditingContextEventProcessor::preDestroy);
+
+        this.editingContextEventProcessors.values().forEach(EditingContextEventProcessor::dispose);
+        this.editingContextEventProcessors.clear();
     }
 }
