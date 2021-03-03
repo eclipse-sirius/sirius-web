@@ -1,15 +1,15 @@
-/*******************************************************************************
+/**
  * Copyright (c) 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
- *
+ * 
  * SPDX-License-Identifier: EPL-2.0
- *
+ * 
  * Contributors:
  *     Obeo - initial API and implementation
- *******************************************************************************/
+ */
 package org.eclipse.sirius.web.domain.impl;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -36,7 +36,7 @@ public class AttributeImpl extends MinimalEObjectImpl.Container implements Attri
     /**
      * The default value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
-     *
+     * 
      * @see #getName()
      * @generated
      * @ordered
@@ -46,7 +46,7 @@ public class AttributeImpl extends MinimalEObjectImpl.Container implements Attri
     /**
      * The cached value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
-     *
+     * 
      * @see #getName()
      * @generated
      * @ordered
@@ -56,7 +56,7 @@ public class AttributeImpl extends MinimalEObjectImpl.Container implements Attri
     /**
      * The default value of the '{@link #getType() <em>Type</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
-     *
+     * 
      * @see #getType()
      * @generated
      * @ordered
@@ -66,7 +66,7 @@ public class AttributeImpl extends MinimalEObjectImpl.Container implements Attri
     /**
      * The cached value of the '{@link #getType() <em>Type</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
-     *
+     * 
      * @see #getType()
      * @generated
      * @ordered
@@ -75,7 +75,7 @@ public class AttributeImpl extends MinimalEObjectImpl.Container implements Attri
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     protected AttributeImpl() {
@@ -84,7 +84,7 @@ public class AttributeImpl extends MinimalEObjectImpl.Container implements Attri
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -94,79 +94,79 @@ public class AttributeImpl extends MinimalEObjectImpl.Container implements Attri
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
     public String getName() {
-        return this.name;
+        return name;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
     public void setName(String newName) {
-        String oldName = this.name;
-        this.name = newName;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DomainPackage.ATTRIBUTE__NAME, oldName, this.name));
+        String oldName = name;
+        name = newName;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, DomainPackage.ATTRIBUTE__NAME, oldName, name));
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
     public Type getType() {
-        return this.type;
+        return type;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
     public void setType(Type newType) {
-        Type oldType = this.type;
-        this.type = newType == null ? TYPE_EDEFAULT : newType;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DomainPackage.ATTRIBUTE__TYPE, oldType, this.type));
+        Type oldType = type;
+        type = newType == null ? TYPE_EDEFAULT : newType;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, DomainPackage.ATTRIBUTE__TYPE, oldType, type));
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
         case DomainPackage.ATTRIBUTE__NAME:
-            return this.getName();
+            return getName();
         case DomainPackage.ATTRIBUTE__TYPE:
-            return this.getType();
+            return getType();
         }
         return super.eGet(featureID, resolve, coreType);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
         case DomainPackage.ATTRIBUTE__NAME:
-            this.setName((String) newValue);
+            setName((String) newValue);
             return;
         case DomainPackage.ATTRIBUTE__TYPE:
-            this.setType((Type) newValue);
+            setType((Type) newValue);
             return;
         }
         super.eSet(featureID, newValue);
@@ -174,17 +174,17 @@ public class AttributeImpl extends MinimalEObjectImpl.Container implements Attri
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
         case DomainPackage.ATTRIBUTE__NAME:
-            this.setName(NAME_EDEFAULT);
+            setName(NAME_EDEFAULT);
             return;
         case DomainPackage.ATTRIBUTE__TYPE:
-            this.setType(TYPE_EDEFAULT);
+            setType(TYPE_EDEFAULT);
             return;
         }
         super.eUnset(featureID);
@@ -192,35 +192,35 @@ public class AttributeImpl extends MinimalEObjectImpl.Container implements Attri
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
         case DomainPackage.ATTRIBUTE__NAME:
-            return NAME_EDEFAULT == null ? this.name != null : !NAME_EDEFAULT.equals(this.name);
+            return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
         case DomainPackage.ATTRIBUTE__TYPE:
-            return this.type != TYPE_EDEFAULT;
+            return type != TYPE_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
     public String toString() {
-        if (this.eIsProxy())
+        if (eIsProxy())
             return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (name: "); //$NON-NLS-1$
-        result.append(this.name);
+        result.append(name);
         result.append(", type: "); //$NON-NLS-1$
-        result.append(this.type);
+        result.append(type);
         result.append(')');
         return result.toString();
     }

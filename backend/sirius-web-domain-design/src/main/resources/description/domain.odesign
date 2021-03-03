@@ -4,7 +4,7 @@
     <ownedRepresentations xsi:type="description_1:DiagramDescription" name="Domain" titleExpression="Domain" domainClass="domain::Domain" enablePopupBars="true">
       <metamodel href="http://www.eclipse.org/sirius-web/domain#/"/>
       <defaultLayer name="Default">
-        <edgeMappings name="Relation" sourceMapping="//@ownedViewpoints[name='Domain']/@ownedRepresentations[name='Domain']/@defaultLayer/@containerMappings[name='Entity']" targetMapping="//@ownedViewpoints[name='Domain']/@ownedRepresentations[name='Domain']/@defaultLayer/@containerMappings[name='Entity']" targetFinderExpression="aql:self.targetTypes" sourceFinderExpression="aql:self.eContainer()" domainClass="domain::Relation" useDomainElement="true">
+        <edgeMappings name="Relation" sourceMapping="//@ownedViewpoints[name='Domain']/@ownedRepresentations[name='Domain']/@defaultLayer/@containerMappings[name='Entity']" targetMapping="//@ownedViewpoints[name='Domain']/@ownedRepresentations[name='Domain']/@defaultLayer/@containerMappings[name='Entity']" targetFinderExpression="aql:self.targetType" sourceFinderExpression="aql:self.eContainer()" domainClass="domain::Relation" useDomainElement="true">
           <style>
             <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
             <centerLabelStyleDescription labelSize="12" showIcon="false" labelExpression="aql:self.name">

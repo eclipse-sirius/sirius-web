@@ -1,15 +1,15 @@
-/*******************************************************************************
+/**
  * Copyright (c) 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
- *
+ * 
  * SPDX-License-Identifier: EPL-2.0
- *
+ * 
  * Contributors:
  *     Obeo - initial API and implementation
- *******************************************************************************/
+ */
 package org.eclipse.sirius.web.domain.impl;
 
 import org.eclipse.emf.ecore.EClass;
@@ -28,13 +28,13 @@ import org.eclipse.sirius.web.domain.Type;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Factory</b>. <!-- end-user-doc -->
- *
+ * 
  * @generated
  */
 public class DomainFactoryImpl extends EFactoryImpl implements DomainFactory {
     /**
      * Creates the default factory implementation. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static DomainFactory init() {
@@ -51,7 +51,7 @@ public class DomainFactoryImpl extends EFactoryImpl implements DomainFactory {
 
     /**
      * Creates an instance of the factory. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public DomainFactoryImpl() {
@@ -60,20 +60,20 @@ public class DomainFactoryImpl extends EFactoryImpl implements DomainFactory {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
     public EObject create(EClass eClass) {
         switch (eClass.getClassifierID()) {
         case DomainPackage.DOMAIN:
-            return this.createDomain();
+            return createDomain();
         case DomainPackage.ENTITY:
-            return this.createEntity();
+            return createEntity();
         case DomainPackage.ATTRIBUTE:
-            return this.createAttribute();
+            return createAttribute();
         case DomainPackage.RELATION:
-            return this.createRelation();
+            return createRelation();
         default:
             throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
         }
@@ -81,14 +81,14 @@ public class DomainFactoryImpl extends EFactoryImpl implements DomainFactory {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
     public Object createFromString(EDataType eDataType, String initialValue) {
         switch (eDataType.getClassifierID()) {
         case DomainPackage.TYPE:
-            return this.createTypeFromString(eDataType, initialValue);
+            return createTypeFromString(eDataType, initialValue);
         default:
             throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
         }
@@ -96,14 +96,14 @@ public class DomainFactoryImpl extends EFactoryImpl implements DomainFactory {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
     public String convertToString(EDataType eDataType, Object instanceValue) {
         switch (eDataType.getClassifierID()) {
         case DomainPackage.TYPE:
-            return this.convertTypeToString(eDataType, instanceValue);
+            return convertTypeToString(eDataType, instanceValue);
         default:
             throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
         }
@@ -111,7 +111,7 @@ public class DomainFactoryImpl extends EFactoryImpl implements DomainFactory {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -122,7 +122,7 @@ public class DomainFactoryImpl extends EFactoryImpl implements DomainFactory {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -133,7 +133,7 @@ public class DomainFactoryImpl extends EFactoryImpl implements DomainFactory {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -144,7 +144,7 @@ public class DomainFactoryImpl extends EFactoryImpl implements DomainFactory {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -155,7 +155,7 @@ public class DomainFactoryImpl extends EFactoryImpl implements DomainFactory {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public Type createTypeFromString(EDataType eDataType, String initialValue) {
@@ -167,7 +167,7 @@ public class DomainFactoryImpl extends EFactoryImpl implements DomainFactory {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public String convertTypeToString(EDataType eDataType, Object instanceValue) {
@@ -176,17 +176,17 @@ public class DomainFactoryImpl extends EFactoryImpl implements DomainFactory {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
     public DomainPackage getDomainPackage() {
-        return (DomainPackage) this.getEPackage();
+        return (DomainPackage) getEPackage();
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @deprecated
      * @generated
      */
