@@ -50,6 +50,7 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
+import reactor.core.publisher.Sinks.EmitResult;
 import reactor.core.publisher.Sinks.Many;
 
 /**
@@ -140,7 +141,11 @@ public class FormEventProcessor implements IFormEventProcessor {
             Form form = this.refreshForm();
 
             this.currentForm.set(form);
-            this.sink.tryEmitNext(new FormRefreshedEventPayload(input.getId(), form));
+            EmitResult emitResult = this.sink.tryEmitNext(new FormRefreshedEventPayload(input.getId(), form));
+            if (emitResult.isFailure()) {
+                String pattern = "An error has occurred while emitting a FormRefreshedEventPayload: {0}"; //$NON-NLS-1$
+                this.logger.warn(MessageFormat.format(pattern, emitResult));
+            }
         }
     }
 
@@ -177,12 +182,20 @@ public class FormEventProcessor implements IFormEventProcessor {
     public void dispose() {
         this.subscriptionManager.dispose();
         this.widgetSubscriptionManager.dispose();
-        this.sink.tryEmitComplete();
+        EmitResult emitResult = this.sink.tryEmitComplete();
+        if (emitResult.isFailure()) {
+            String pattern = "An error has occurred while marking the publisher as complete: {0}"; //$NON-NLS-1$
+            this.logger.warn(MessageFormat.format(pattern, emitResult));
+        }
     }
 
     @Override
     public void preDestroy() {
-        this.sink.tryEmitNext(new PreDestroyPayload(this.getRepresentation().getId()));
+        EmitResult emitResult = this.sink.tryEmitNext(new PreDestroyPayload(this.getRepresentation().getId()));
+        if (emitResult.isFailure()) {
+            String pattern = "An error has occurred while emitting a PreDestroyPayload: {0}"; //$NON-NLS-1$
+            this.logger.warn(MessageFormat.format(pattern, emitResult));
+        }
     }
 
 }

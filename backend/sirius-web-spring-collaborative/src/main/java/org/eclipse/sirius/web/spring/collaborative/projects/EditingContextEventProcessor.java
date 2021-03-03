@@ -59,6 +59,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
+import reactor.core.publisher.Sinks.EmitResult;
 import reactor.core.publisher.Sinks.Many;
 
 /**
@@ -150,7 +151,11 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
             if (input instanceof RenameRepresentationInput && payload instanceof RenameRepresentationSuccessPayload) {
                 UUID representationId = ((RenameRepresentationInput) input).getRepresentationId();
                 String newLabel = ((RenameRepresentationInput) input).getNewLabel();
-                this.sink.tryEmitNext(new RepresentationRenamedEventPayload(input.getId(), representationId, newLabel));
+                EmitResult emitResult = this.sink.tryEmitNext(new RepresentationRenamedEventPayload(input.getId(), representationId, newLabel));
+                if (emitResult.isFailure()) {
+                    String pattern = "An error has occurred while emitting a RepresentationRenamedEventPayload: {0}"; //$NON-NLS-1$
+                    this.logger.warn(MessageFormat.format(pattern, emitResult));
+                }
             }
         }
     }
@@ -365,12 +370,20 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
 
         this.representationEventProcessors.values().stream().forEach(IRepresentationEventProcessor::dispose);
         this.representationEventProcessors.clear();
-        this.sink.tryEmitComplete();
+        EmitResult emitResult = this.sink.tryEmitComplete();
+        if (emitResult.isFailure()) {
+            String pattern = "An error has occurred while marking the publisher as complete: {0}"; //$NON-NLS-1$
+            this.logger.warn(MessageFormat.format(pattern, emitResult));
+        }
     }
 
     public void preDestroy() {
         this.representationEventProcessors.values().stream().forEach(IRepresentationEventProcessor::preDestroy);
-        this.sink.tryEmitNext(new PreDestroyPayload(this.editingContext.getId()));
+        EmitResult emitResult = this.sink.tryEmitNext(new PreDestroyPayload(this.editingContext.getId()));
+        if (emitResult.isFailure()) {
+            String pattern = "An error has occurred while emitting a PreDestroyPayload: {0}"; //$NON-NLS-1$
+            this.logger.warn(MessageFormat.format(pattern, emitResult));
+        }
         this.dispose();
     }
 

@@ -12,13 +12,18 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.spring.collaborative.forms;
 
+import java.text.MessageFormat;
+
 import org.eclipse.sirius.web.collaborative.forms.api.IWidgetSubscriptionManager;
 import org.eclipse.sirius.web.collaborative.forms.api.dto.UpdateWidgetFocusInput;
 import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.core.api.IPayload;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
+import reactor.core.publisher.Sinks.EmitResult;
 import reactor.core.publisher.Sinks.Many;
 
 /**
@@ -27,6 +32,8 @@ import reactor.core.publisher.Sinks.Many;
  * @author sbegaudeau
  */
 public class WidgetSubscriptionManager implements IWidgetSubscriptionManager {
+
+    private final Logger logger = LoggerFactory.getLogger(WidgetSubscriptionManager.class);
 
     private final Many<IPayload> sink = Sinks.many().multicast().directBestEffort();
 
@@ -42,6 +49,10 @@ public class WidgetSubscriptionManager implements IWidgetSubscriptionManager {
 
     @Override
     public void dispose() {
-        this.sink.tryEmitComplete();
+        EmitResult emitResult = this.sink.tryEmitComplete();
+        if (emitResult.isFailure()) {
+            String pattern = "An error has occurred while marking the publisher as complete: {0}"; //$NON-NLS-1$
+            this.logger.warn(MessageFormat.format(pattern, emitResult));
+        }
     }
 }
