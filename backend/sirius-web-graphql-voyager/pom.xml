@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius.web</groupId>
 	<artifactId>sirius-web-graphql-voyager</artifactId>
-	<version>0.2.8</version>
+	<version>0.2.9</version>
 	<name>sirius-web-graphql-voyager</name>
 	<description>Sirius Web Graph Voyager. This project contribute a GraphQL API UX thanks to the https://github.com/APIs-guru/graphql-voyager project.</description>
 
