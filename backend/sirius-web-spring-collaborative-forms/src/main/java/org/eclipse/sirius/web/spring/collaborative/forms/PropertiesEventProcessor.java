@@ -20,6 +20,7 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.sirius.web.collaborative.api.dto.PreDestroyPayload;
+import org.eclipse.sirius.web.collaborative.api.services.ChangeDescription;
 import org.eclipse.sirius.web.collaborative.api.services.ChangeKind;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.ISubscriptionManager;
@@ -117,7 +118,7 @@ public class PropertiesEventProcessor implements IPropertiesEventProcessor {
                     IFormEventHandler formEventHandler = optionalFormEventHandler.get();
                     EventHandlerResponse eventHandlerResponse = formEventHandler.handle(this.currentForm.get(), formInput);
 
-                    this.refresh(representationInput, eventHandlerResponse.getChangeKind());
+                    this.refresh(representationInput, eventHandlerResponse.getChangeDescription());
 
                     return Optional.of(eventHandlerResponse);
                 } else {
@@ -130,8 +131,8 @@ public class PropertiesEventProcessor implements IPropertiesEventProcessor {
     }
 
     @Override
-    public void refresh(IInput input, String changeKind) {
-        if (ChangeKind.SEMANTIC_CHANGE.equals(changeKind)) {
+    public void refresh(IInput input, ChangeDescription changeDescription) {
+        if (ChangeKind.SEMANTIC_CHANGE.equals(changeDescription.getKind())) {
             Form form = this.refreshForm();
 
             this.currentForm.set(form);

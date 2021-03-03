@@ -16,6 +16,7 @@ import java.util.Objects;
 
 import org.eclipse.sirius.web.collaborative.api.dto.DeleteRepresentationInput;
 import org.eclipse.sirius.web.collaborative.api.dto.DeleteRepresentationSuccessPayload;
+import org.eclipse.sirius.web.collaborative.api.services.ChangeDescription;
 import org.eclipse.sirius.web.collaborative.api.services.ChangeKind;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventHandler;
@@ -66,7 +67,7 @@ public class DeleteRepresentationEventHandler implements IEditingContextEventHan
         this.counter.increment();
 
         String message = this.messageService.invalidInput(input.getClass().getSimpleName(), DeleteRepresentationInput.class.getSimpleName());
-        EventHandlerResponse eventHandlerResponse = new EventHandlerResponse(ChangeKind.NOTHING, new ErrorPayload(input.getId(), message));
+        EventHandlerResponse eventHandlerResponse = new EventHandlerResponse(new ChangeDescription(ChangeKind.NOTHING, editingContext.getId()), new ErrorPayload(input.getId(), message));
         if (input instanceof DeleteRepresentationInput) {
             DeleteRepresentationInput deleteRepresentationInput = (DeleteRepresentationInput) input;
             var optionalRepresentation = this.representationService.getRepresentation(deleteRepresentationInput.getRepresentationId());
@@ -75,7 +76,8 @@ public class DeleteRepresentationEventHandler implements IEditingContextEventHan
                 RepresentationDescriptor representationDescriptor = optionalRepresentation.get();
                 this.representationService.delete(representationDescriptor.getId());
 
-                eventHandlerResponse = new EventHandlerResponse(ChangeKind.REPRESENTATION_DELETION, new DeleteRepresentationSuccessPayload(input.getId(), representationDescriptor.getId()));
+                eventHandlerResponse = new EventHandlerResponse(new ChangeDescription(ChangeKind.REPRESENTATION_DELETION, editingContext.getId()),
+                        new DeleteRepresentationSuccessPayload(input.getId(), representationDescriptor.getId()));
             }
         }
 

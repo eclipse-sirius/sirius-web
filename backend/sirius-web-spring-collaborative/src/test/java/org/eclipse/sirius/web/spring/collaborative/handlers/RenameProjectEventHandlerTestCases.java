@@ -18,6 +18,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.services.api.projects.IProjectService;
 import org.eclipse.sirius.web.services.api.projects.Project;
 import org.eclipse.sirius.web.services.api.projects.RenameProjectInput;
@@ -46,7 +47,9 @@ public class RenameProjectEventHandlerTestCases {
 
         assertThat(handler.canHandle(input)).isTrue();
 
-        handler.handle(null, input);
+        IEditingContext editingContext = () -> UUID.randomUUID();
+
+        handler.handle(editingContext, input);
         assertThat(hasBeenCalled.get()).isTrue();
     }
 }

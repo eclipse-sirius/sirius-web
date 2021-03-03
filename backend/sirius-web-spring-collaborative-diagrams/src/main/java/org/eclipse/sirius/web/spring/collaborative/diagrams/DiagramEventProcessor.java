@@ -17,6 +17,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.sirius.web.collaborative.api.dto.RenameRepresentationInput;
+import org.eclipse.sirius.web.collaborative.api.services.ChangeDescription;
 import org.eclipse.sirius.web.collaborative.api.services.ChangeKind;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.ISubscriptionManager;
@@ -95,7 +96,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
                 IDiagramEventHandler diagramEventHandler = optionalDiagramEventHandler.get();
                 EventHandlerResponse eventHandlerResponse = diagramEventHandler.handle(this.editingContext, this.diagramContext, diagramInput);
 
-                this.refresh(representationInput, eventHandlerResponse.getChangeKind());
+                this.refresh(representationInput, eventHandlerResponse.getChangeDescription());
 
                 return Optional.of(eventHandlerResponse);
             } else {
@@ -118,13 +119,26 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
     }
 
     @Override
-    public void refresh(IInput input, String changeKind) {
-        if (ChangeKind.SEMANTIC_CHANGE.equals(changeKind) || DiagramChangeKind.DIAGRAM_LAYOUT_CHANGE.equals(changeKind)) {
+    public void refresh(IInput input, ChangeDescription changeDescription) {
+        if (this.shouldRefresh(changeDescription)) {
             Diagram refreshedDiagram = this.diagramCreationService.refresh(this.editingContext, this.diagramContext).orElse(null);
             this.diagramContext.reset();
             this.diagramContext.update(refreshedDiagram);
             this.diagramEventFlux.diagramRefreshed(input, refreshedDiagram);
         }
+    }
+
+    /**
+     * A diagram is refresh if there is a semantic change or if there is a diagram layout change coming from this very
+     * diagram (not other diagrams)
+     *
+     * @param changeDescription
+     *            The change description
+     * @return <code>true</code> if the diagram should be refreshed, <code>false</code> otherwise
+     */
+    private boolean shouldRefresh(ChangeDescription changeDescription) {
+        return ChangeKind.SEMANTIC_CHANGE.equals(changeDescription.getKind())
+                || (DiagramChangeKind.DIAGRAM_LAYOUT_CHANGE.equals(changeDescription.getKind()) && changeDescription.getSourceId().equals(this.diagramContext.getDiagram().getId()));
     }
 
     @Override
