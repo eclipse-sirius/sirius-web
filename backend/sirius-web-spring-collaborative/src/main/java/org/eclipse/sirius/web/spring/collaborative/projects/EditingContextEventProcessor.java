@@ -29,7 +29,6 @@ import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
 import org.eclipse.sirius.web.collaborative.api.dto.DeleteRepresentationInput;
-import org.eclipse.sirius.web.collaborative.api.dto.PreDestroyPayload;
 import org.eclipse.sirius.web.collaborative.api.dto.RenameRepresentationInput;
 import org.eclipse.sirius.web.collaborative.api.dto.RenameRepresentationSuccessPayload;
 import org.eclipse.sirius.web.collaborative.api.dto.RepresentationRefreshedEvent;
@@ -375,16 +374,6 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
             String pattern = "An error has occurred while marking the publisher as complete: {0}"; //$NON-NLS-1$
             this.logger.warn(MessageFormat.format(pattern, emitResult));
         }
-    }
-
-    public void preDestroy() {
-        this.representationEventProcessors.values().stream().forEach(IRepresentationEventProcessor::preDestroy);
-        EmitResult emitResult = this.sink.tryEmitNext(new PreDestroyPayload(this.editingContext.getId()));
-        if (emitResult.isFailure()) {
-            String pattern = "An error has occurred while emitting a PreDestroyPayload: {0}"; //$NON-NLS-1$
-            this.logger.warn(MessageFormat.format(pattern, emitResult));
-        }
-        this.dispose();
     }
 
 }

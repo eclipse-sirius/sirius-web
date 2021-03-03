@@ -15,9 +15,6 @@ export const diagramEventSubscription = gql`
   subscription diagramEvent($input: DiagramEventInput!) {
     diagramEvent(input: $input) {
       __typename
-      ... on PreDestroyPayload {
-        id
-      }
       ... on ErrorPayload {
         id
         message

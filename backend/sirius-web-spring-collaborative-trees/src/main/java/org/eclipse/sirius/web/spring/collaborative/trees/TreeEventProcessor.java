@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,7 +19,6 @@ import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.eclipse.sirius.web.collaborative.api.dto.PreDestroyPayload;
 import org.eclipse.sirius.web.collaborative.api.services.ChangeDescription;
 import org.eclipse.sirius.web.collaborative.api.services.ChangeKind;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
@@ -185,12 +184,4 @@ public class TreeEventProcessor implements ITreeEventProcessor {
         }
     }
 
-    @Override
-    public void preDestroy() {
-        EmitResult emitResult = this.sink.tryEmitNext(new PreDestroyPayload(this.getRepresentation().getId()));
-        if (emitResult.isFailure()) {
-            String pattern = "An error has occurred while emitting a PreDestroyPayload: {0}"; //$NON-NLS-1$
-            this.logger.warn(MessageFormat.format(pattern, emitResult));
-        }
-    }
 }

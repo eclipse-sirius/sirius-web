@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,7 +17,6 @@ import java.util.Objects;
 
 import org.eclipse.sirius.web.annotations.graphql.GraphQLSubscriptionTypes;
 import org.eclipse.sirius.web.annotations.spring.graphql.SubscriptionDataFetcher;
-import org.eclipse.sirius.web.collaborative.api.dto.PreDestroyPayload;
 import org.eclipse.sirius.web.collaborative.api.dto.SubscribersUpdatedEventPayload;
 import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.web.collaborative.api.services.SubscriptionDescription;
@@ -56,7 +55,6 @@ import reactor.core.publisher.Flux;
         FormRefreshedEventPayload.class,
         WidgetSubscriptionsUpdatedEventPayload.class,
         SubscribersUpdatedEventPayload.class,
-        PreDestroyPayload.class,
     }
 )
 @SubscriptionDataFetcher(type = SubscriptionTypeProvider.TYPE, field = SubscriptionPropertiesEventDataFetcher.PROPERTIES_EVENT_FIELD)

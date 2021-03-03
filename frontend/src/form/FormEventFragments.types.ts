@@ -26,10 +26,6 @@ export interface GQLPropertiesEventPayload {
   __typename: string;
 }
 
-export interface GQLPreDestroyPayload extends GQLFormEventPayload, GQLPropertiesEventPayload {
-  id: string;
-}
-
 export interface GQLSubscribersUpdatedEventPayload extends GQLFormEventPayload, GQLPropertiesEventPayload {
   id: string;
   subscribers: GQLSubscriber[];
