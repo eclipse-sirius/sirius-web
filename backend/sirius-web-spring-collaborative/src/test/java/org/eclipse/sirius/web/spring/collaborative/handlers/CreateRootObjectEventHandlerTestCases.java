@@ -46,7 +46,8 @@ public class CreateRootObjectEventHandlerTestCases {
         var input = new CreateRootObjectInput(UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID(), "namespaceId", "rootObjectCreationDescriptionId"); //$NON-NLS-1$//$NON-NLS-2$
         assertThat(handler.canHandle(input)).isTrue();
 
-        EventHandlerResponse handle = handler.handle(null, input);
+        IEditingContext editingContext = () -> UUID.randomUUID();
+        EventHandlerResponse handle = handler.handle(editingContext, input);
         assertThat(handle.getPayload()).isInstanceOf(CreateRootObjectSuccessPayload.class);
         assertThat(((CreateRootObjectSuccessPayload) handle.getPayload()).getObject()).isEqualTo(object);
     }

@@ -18,6 +18,7 @@ import java.util.UUID;
 
 import org.eclipse.sirius.web.collaborative.api.dto.RenameRepresentationInput;
 import org.eclipse.sirius.web.collaborative.api.dto.RenameRepresentationSuccessPayload;
+import org.eclipse.sirius.web.collaborative.api.services.ChangeDescription;
 import org.eclipse.sirius.web.collaborative.api.services.ChangeKind;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventHandler;
@@ -79,12 +80,13 @@ public class RenameDiagramEventHandler implements IEditingContextEventHandler {
                 IRepresentation representation = representationDescriptor.getRepresentation();
                 Optional<IRepresentation> optionalRepresentation = this.createDiagramWithNewLabel(representation, newLabel, editingContext);
                 if (optionalRepresentation.isPresent()) {
-                    return new EventHandlerResponse(ChangeKind.REPRESENTATION_RENAMING, new RenameRepresentationSuccessPayload(input.getId(), optionalRepresentation.get()));
+                    return new EventHandlerResponse(new ChangeDescription(ChangeKind.REPRESENTATION_RENAMING, renameRepresentationInput.getRepresentationId()),
+                            new RenameRepresentationSuccessPayload(input.getId(), optionalRepresentation.get()));
                 }
             }
         }
         String message = this.messageService.invalidInput(input.getClass().getSimpleName(), RenameRepresentationInput.class.getSimpleName());
-        return new EventHandlerResponse(ChangeKind.NOTHING, new ErrorPayload(input.getId(), message));
+        return new EventHandlerResponse(new ChangeDescription(ChangeKind.NOTHING, editingContext.getId()), new ErrorPayload(input.getId(), message));
     }
 
     private Optional<IRepresentation> createDiagramWithNewLabel(IRepresentation representation, String newLabel, IEditingContext editingContext) {

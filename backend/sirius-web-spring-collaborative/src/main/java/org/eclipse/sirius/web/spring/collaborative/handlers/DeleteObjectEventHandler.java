@@ -16,6 +16,7 @@ import java.text.MessageFormat;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.eclipse.sirius.web.collaborative.api.services.ChangeDescription;
 import org.eclipse.sirius.web.collaborative.api.services.ChangeKind;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventHandler;
@@ -83,14 +84,14 @@ public class DeleteObjectEventHandler implements IEditingContextEventHandler {
                 this.editService.delete(object);
 
                 // FIXME Find the document in which the object is located
-                return new EventHandlerResponse(ChangeKind.SEMANTIC_CHANGE, new DeleteObjectSuccessPayload(input.getId(), null));
+                return new EventHandlerResponse(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId()), new DeleteObjectSuccessPayload(input.getId(), null));
             } else {
                 this.logger.warn(MessageFormat.format("The object with the id {0} does not exist", deleteObjectInput.getObjectId())); //$NON-NLS-1$
             }
         }
 
         String message = this.messageService.invalidInput(input.getClass().getSimpleName(), DeleteObjectInput.class.getSimpleName());
-        return new EventHandlerResponse(ChangeKind.NOTHING, new ErrorPayload(input.getId(), message));
+        return new EventHandlerResponse(new ChangeDescription(ChangeKind.NOTHING, editingContext.getId()), new ErrorPayload(input.getId(), message));
     }
 
 }

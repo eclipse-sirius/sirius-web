@@ -31,7 +31,7 @@ public interface IRepresentationEventProcessor {
 
     Optional<EventHandlerResponse> handle(IRepresentationInput representationInput);
 
-    void refresh(IInput input, String changeKind);
+    void refresh(IInput input, ChangeDescription changeDescription);
 
     ISubscriptionManager getSubscriptionManager();
 

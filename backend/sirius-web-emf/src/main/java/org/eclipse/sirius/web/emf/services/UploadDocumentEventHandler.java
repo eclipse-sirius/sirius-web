@@ -33,6 +33,7 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.emfjson.resource.JsonResourceImpl;
+import org.eclipse.sirius.web.collaborative.api.services.ChangeDescription;
 import org.eclipse.sirius.web.collaborative.api.services.ChangeKind;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventHandler;
@@ -91,7 +92,8 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
     public EventHandlerResponse handle(IEditingContext editingContext, IInput input) {
         this.counter.increment();
 
-        EventHandlerResponse response = new EventHandlerResponse(ChangeKind.NOTHING, new ErrorPayload(input.getId(), this.messageService.unexpectedError()));
+        EventHandlerResponse response = new EventHandlerResponse(new ChangeDescription(ChangeKind.NOTHING, editingContext.getId()),
+                new ErrorPayload(input.getId(), this.messageService.unexpectedError()));
         if (!(input instanceof UploadDocumentInput)) {
             return response;
         }
@@ -132,7 +134,7 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
                     resourceSet.getResources().add(resource);
 
                     IPayload payload = new UploadDocumentSuccessPayload(input.getId(), document);
-                    response = new EventHandlerResponse(ChangeKind.SEMANTIC_CHANGE, payload);
+                    response = new EventHandlerResponse(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId()), payload);
                 }
             }
         }

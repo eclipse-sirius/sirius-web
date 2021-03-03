@@ -75,7 +75,8 @@ public class CreateChildEventHandlerTestCases {
 
         assertThat(handler.canHandle(input)).isTrue();
 
-        EventHandlerResponse response = handler.handle(null, input);
+        IEditingContext editingContext = () -> UUID.randomUUID();
+        EventHandlerResponse response = handler.handle(editingContext, input);
         return response;
     }
 }

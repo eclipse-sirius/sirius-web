@@ -20,6 +20,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.sirius.web.collaborative.api.dto.PreDestroyPayload;
+import org.eclipse.sirius.web.collaborative.api.services.ChangeDescription;
 import org.eclipse.sirius.web.collaborative.api.services.ChangeKind;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.ISubscriptionManager;
@@ -106,7 +107,7 @@ public class TreeEventProcessor implements ITreeEventProcessor {
                 ITreeEventHandler treeEventHandler = optionalTreeEventHandler.get();
                 EventHandlerResponse eventHandlerResponse = treeEventHandler.handle(this.currentTree.get(), treeInput);
 
-                this.refresh(representationInput, eventHandlerResponse.getChangeKind());
+                this.refresh(representationInput, eventHandlerResponse.getChangeDescription());
 
                 return Optional.of(eventHandlerResponse);
             } else {
@@ -118,8 +119,8 @@ public class TreeEventProcessor implements ITreeEventProcessor {
     }
 
     @Override
-    public void refresh(IInput input, String changeKind) {
-        if (this.shouldRefresh(changeKind)) {
+    public void refresh(IInput input, ChangeDescription changeDescription) {
+        if (this.shouldRefresh(changeDescription.getKind())) {
             long start = System.currentTimeMillis();
 
             Tree tree = this.refreshTree();

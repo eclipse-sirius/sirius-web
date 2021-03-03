@@ -20,6 +20,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
+import org.eclipse.sirius.web.collaborative.api.services.ChangeDescription;
 import org.eclipse.sirius.web.collaborative.api.services.ChangeKind;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
@@ -80,7 +81,7 @@ public class UpdateNodePositionEventHandler implements IDiagramEventHandler {
             result = this.handleUpdateNodePosition(editingContext, diagramContext, (UpdateNodePositionInput) diagramInput);
         } else {
             String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), UpdateNodePositionEventHandler.class.getSimpleName());
-            result = new EventHandlerResponse(ChangeKind.NOTHING, new ErrorPayload(diagramInput.getId(), message));
+            result = new EventHandlerResponse(new ChangeDescription(ChangeKind.NOTHING, diagramInput.getRepresentationId()), new ErrorPayload(diagramInput.getId(), message));
         }
         return result;
     }
@@ -99,10 +100,11 @@ public class UpdateNodePositionEventHandler implements IDiagramEventHandler {
         if (optionalNode.isPresent()) {
             Set<UUID> childrenIds = this.getAllChildrenIds(optionalNode.get());
             diagramContext.setMoveEvent(new MoveEvent(diagramInput.getDiagramElementId(), newPosition, childrenIds));
-            result = new EventHandlerResponse(DiagramChangeKind.DIAGRAM_LAYOUT_CHANGE, new UpdateNodePositionSuccessPayload(diagramInput.getId(), diagramContext.getDiagram()));
+            result = new EventHandlerResponse(new ChangeDescription(DiagramChangeKind.DIAGRAM_LAYOUT_CHANGE, diagramInput.getRepresentationId()),
+                    new UpdateNodePositionSuccessPayload(diagramInput.getId(), diagramContext.getDiagram()));
         } else {
             String message = this.messageService.nodeNotFound(String.valueOf(diagramInput.getDiagramElementId()));
-            result = new EventHandlerResponse(ChangeKind.NOTHING, new ErrorPayload(diagramInput.getId(), message));
+            result = new EventHandlerResponse(new ChangeDescription(ChangeKind.NOTHING, diagramInput.getRepresentationId()), new ErrorPayload(diagramInput.getId(), message));
         }
         return result;
     }

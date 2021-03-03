@@ -16,6 +16,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.eclipse.sirius.web.collaborative.api.services.ChangeDescription;
 import org.eclipse.sirius.web.collaborative.api.services.ChangeKind;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
@@ -93,12 +94,13 @@ public class InvokeEdgeToolOnDiagramEventHandler implements IDiagramEventHandler
             if (optionalTool.isPresent()) {
                 Status status = this.executeTool(editingContext, diagramContext, input.getDiagramSourceElementId(), input.getDiagramTargetElementId(), optionalTool.get());
                 if (Objects.equals(status, Status.OK)) {
-                    return new EventHandlerResponse(ChangeKind.SEMANTIC_CHANGE, new InvokeEdgeToolOnDiagramSuccessPayload(diagramInput.getId(), diagram));
+                    return new EventHandlerResponse(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, diagramInput.getRepresentationId()),
+                            new InvokeEdgeToolOnDiagramSuccessPayload(diagramInput.getId(), diagram));
                 }
             }
         }
         String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), InvokeEdgeToolOnDiagramInput.class.getSimpleName());
-        return new EventHandlerResponse(ChangeKind.NOTHING, new ErrorPayload(diagramInput.getId(), message));
+        return new EventHandlerResponse(new ChangeDescription(ChangeKind.NOTHING, diagramInput.getRepresentationId()), new ErrorPayload(diagramInput.getId(), message));
     }
 
     private Status executeTool(IEditingContext editingContext, IDiagramContext diagramContext, UUID sourceNodeId, UUID targetNodeId, CreateEdgeTool tool) {

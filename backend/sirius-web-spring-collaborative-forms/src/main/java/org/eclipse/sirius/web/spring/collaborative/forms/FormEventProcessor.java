@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.sirius.web.collaborative.api.dto.PreDestroyPayload;
+import org.eclipse.sirius.web.collaborative.api.services.ChangeDescription;
 import org.eclipse.sirius.web.collaborative.api.services.ChangeKind;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.ISubscriptionManager;
@@ -112,7 +113,8 @@ public class FormEventProcessor implements IFormEventProcessor {
             if (formInput instanceof UpdateWidgetFocusInput) {
                 UpdateWidgetFocusInput input = (UpdateWidgetFocusInput) formInput;
                 this.widgetSubscriptionManager.handle(input);
-                result = Optional.of(new EventHandlerResponse(ChangeKind.FOCUS_CHANGE, new UpdateWidgetFocusSuccessPayload(representationInput.getId(), input.getWidgetId())));
+                result = Optional.of(new EventHandlerResponse(new ChangeDescription(ChangeKind.FOCUS_CHANGE, representationInput.getRepresentationId()),
+                        new UpdateWidgetFocusSuccessPayload(representationInput.getId(), input.getWidgetId())));
             } else {
                 Optional<IFormEventHandler> optionalFormEventHandler = this.formEventHandlers.stream().filter(handler -> handler.canHandle(formInput)).findFirst();
 
@@ -120,7 +122,7 @@ public class FormEventProcessor implements IFormEventProcessor {
                     IFormEventHandler formEventHandler = optionalFormEventHandler.get();
                     EventHandlerResponse eventHandlerResponse = formEventHandler.handle(this.currentForm.get(), formInput);
 
-                    this.refresh(representationInput, eventHandlerResponse.getChangeKind());
+                    this.refresh(representationInput, eventHandlerResponse.getChangeDescription());
 
                     result = Optional.of(eventHandlerResponse);
                 } else {
@@ -133,8 +135,8 @@ public class FormEventProcessor implements IFormEventProcessor {
     }
 
     @Override
-    public void refresh(IInput input, String changeKind) {
-        if (ChangeKind.SEMANTIC_CHANGE.equals(changeKind)) {
+    public void refresh(IInput input, ChangeDescription changeDescription) {
+        if (ChangeKind.SEMANTIC_CHANGE.equals(changeDescription.getKind())) {
             Form form = this.refreshForm();
 
             this.currentForm.set(form);

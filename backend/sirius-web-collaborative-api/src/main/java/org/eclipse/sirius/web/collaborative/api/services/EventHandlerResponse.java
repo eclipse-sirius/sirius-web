@@ -22,17 +22,17 @@ import org.eclipse.sirius.web.core.api.IPayload;
  * @author sbegaudeau
  */
 public class EventHandlerResponse {
-    private final String changeKind;
+    private final ChangeDescription changeDescription;
 
     private final IPayload payload;
 
-    public EventHandlerResponse(String changeKind, IPayload payload) {
-        this.changeKind = Objects.requireNonNull(changeKind);
+    public EventHandlerResponse(ChangeDescription changeDescription, IPayload payload) {
+        this.changeDescription = Objects.requireNonNull(changeDescription);
         this.payload = Objects.requireNonNull(payload);
     }
 
-    public String getChangeKind() {
-        return this.changeKind;
+    public ChangeDescription getChangeDescription() {
+        return this.changeDescription;
     }
 
     public IPayload getPayload() {

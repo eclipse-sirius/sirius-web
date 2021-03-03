@@ -59,7 +59,8 @@ public class RenameObjectEventHandlerTestCases {
 
         assertThat(handler.canHandle(input)).isTrue();
 
-        handler.handle(null, input);
+        IEditingContext editingContext = () -> UUID.randomUUID();
+        handler.handle(editingContext, input);
         assertThat(hasBeenCalled.get()).isTrue();
     }
 }

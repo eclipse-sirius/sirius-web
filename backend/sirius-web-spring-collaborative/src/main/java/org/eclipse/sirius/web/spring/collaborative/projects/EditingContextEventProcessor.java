@@ -34,6 +34,7 @@ import org.eclipse.sirius.web.collaborative.api.dto.RenameRepresentationInput;
 import org.eclipse.sirius.web.collaborative.api.dto.RenameRepresentationSuccessPayload;
 import org.eclipse.sirius.web.collaborative.api.dto.RepresentationRefreshedEvent;
 import org.eclipse.sirius.web.collaborative.api.dto.RepresentationRenamedEventPayload;
+import org.eclipse.sirius.web.collaborative.api.services.ChangeDescription;
 import org.eclipse.sirius.web.collaborative.api.services.ChangeKind;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventHandler;
@@ -183,9 +184,9 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
             EventHandlerResponse response = optionalResponse.get();
 
             this.disposeRepresentationIfNeeded();
-            this.refreshOtherRepresentations(input, representationId, response.getChangeKind());
+            this.refreshOtherRepresentations(input, representationId, response.getChangeDescription());
 
-            if (this.shouldPersistTheEditingContext(response.getChangeKind())) {
+            if (this.shouldPersistTheEditingContext(response.getChangeDescription())) {
                 this.editingContextPersistenceService.persist(this.editingContext);
             }
         }
@@ -201,24 +202,24 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
      *            The input which has triggered the refresh sequence
      * @param representationId
      *            The identifier of the representation which should not be refreshed
-     * @param changeKind
-     *            The kind of change to consider in order to determine if the representation should be refreshed
+     * @param changeDescription
+     *            The description of change to consider in order to determine if the representation should be refreshed
      */
-    private void refreshOtherRepresentations(IInput input, UUID representationId, String changeKind) {
+    private void refreshOtherRepresentations(IInput input, UUID representationId, ChangeDescription changeDescription) {
         // @formatter:off
         this.representationEventProcessors.entrySet().stream()
             .filter(entry -> !Objects.equals(entry.getKey(), representationId))
             .map(Entry::getValue)
             .forEach(representationEventProcessor -> {
-                representationEventProcessor.refresh(input, changeKind);
+                representationEventProcessor.refresh(input, changeDescription);
                 IRepresentation representation = representationEventProcessor.getRepresentation();
                 this.applicationEventPublisher.publishEvent(new RepresentationRefreshedEvent(this.editingContext.getId(), representation));
              });
         // @formatter:on
     }
 
-    private boolean shouldPersistTheEditingContext(String changeKind) {
-        return ChangeKind.SEMANTIC_CHANGE.equals(changeKind);
+    private boolean shouldPersistTheEditingContext(ChangeDescription changeDescription) {
+        return ChangeKind.SEMANTIC_CHANGE.equals(changeDescription.getKind());
     }
 
     /**
