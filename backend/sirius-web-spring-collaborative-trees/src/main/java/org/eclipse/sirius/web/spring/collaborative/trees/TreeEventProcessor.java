@@ -44,6 +44,7 @@ import io.micrometer.core.instrument.Timer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
+import reactor.core.publisher.Sinks.EmitResult;
 import reactor.core.publisher.Sinks.Many;
 
 /**
@@ -126,7 +127,11 @@ public class TreeEventProcessor implements ITreeEventProcessor {
             Tree tree = this.refreshTree();
 
             this.currentTree.set(tree);
-            this.sink.tryEmitNext(new TreeRefreshedEventPayload(input.getId(), tree));
+            EmitResult emitResult = this.sink.tryEmitNext(new TreeRefreshedEventPayload(input.getId(), tree));
+            if (emitResult.isFailure()) {
+                String pattern = "An error has occurred while emitting a TreeRefreshedEventPayload: {0}"; //$NON-NLS-1$
+                this.logger.warn(MessageFormat.format(pattern, emitResult));
+            }
 
             long end = System.currentTimeMillis();
             this.timer.record(end - start, TimeUnit.MILLISECONDS);
@@ -173,11 +178,19 @@ public class TreeEventProcessor implements ITreeEventProcessor {
     @Override
     public void dispose() {
         this.subscriptionManager.dispose();
-        this.sink.tryEmitComplete();
+        EmitResult emitResult = this.sink.tryEmitComplete();
+        if (emitResult.isFailure()) {
+            String pattern = "An error has occurred while marking the publisher as complete: {0}"; //$NON-NLS-1$
+            this.logger.warn(MessageFormat.format(pattern, emitResult));
+        }
     }
 
     @Override
     public void preDestroy() {
-        this.sink.tryEmitNext(new PreDestroyPayload(this.getRepresentation().getId()));
+        EmitResult emitResult = this.sink.tryEmitNext(new PreDestroyPayload(this.getRepresentation().getId()));
+        if (emitResult.isFailure()) {
+            String pattern = "An error has occurred while emitting a PreDestroyPayload: {0}"; //$NON-NLS-1$
+            this.logger.warn(MessageFormat.format(pattern, emitResult));
+        }
     }
 }
