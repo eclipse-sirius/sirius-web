@@ -1,15 +1,15 @@
-/*******************************************************************************
+/**
  * Copyright (c) 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
- *
+ * 
  * SPDX-License-Identifier: EPL-2.0
- *
+ * 
  * Contributors:
  *     Obeo - initial API and implementation
- *******************************************************************************/
+ */
 package org.eclipse.sirius.web.domain;
 
 import java.util.Arrays;
@@ -21,7 +21,7 @@ import org.eclipse.emf.common.util.Enumerator;
 /**
  * <!-- begin-user-doc --> A representation of the literals of the enumeration '<em><b>Type</b></em>', and utility
  * methods for working with them. <!-- end-user-doc -->
- *
+ * 
  * @see org.eclipse.sirius.web.domain.DomainPackage#getType()
  * @model
  * @generated
@@ -29,7 +29,7 @@ import org.eclipse.emf.common.util.Enumerator;
 public enum Type implements Enumerator {
     /**
      * The '<em><b>STRING</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @see #STRING_VALUE
      * @generated
      * @ordered
@@ -38,7 +38,7 @@ public enum Type implements Enumerator {
 
     /**
      * The '<em><b>BOOLEAN</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @see #BOOLEAN_VALUE
      * @generated
      * @ordered
@@ -47,7 +47,7 @@ public enum Type implements Enumerator {
 
     /**
      * The '<em><b>NUMBER</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @see #NUMBER_VALUE
      * @generated
      * @ordered
@@ -56,7 +56,7 @@ public enum Type implements Enumerator {
 
     /**
      * The '<em><b>STRING</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @see #STRING
      * @model
      * @generated
@@ -66,7 +66,7 @@ public enum Type implements Enumerator {
 
     /**
      * The '<em><b>BOOLEAN</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @see #BOOLEAN
      * @model
      * @generated
@@ -76,7 +76,7 @@ public enum Type implements Enumerator {
 
     /**
      * The '<em><b>NUMBER</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @see #NUMBER
      * @model
      * @generated
@@ -86,7 +86,7 @@ public enum Type implements Enumerator {
 
     /**
      * An array of all the '<em><b>Type</b></em>' enumerators. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     private static final Type[] VALUES_ARRAY = new Type[] { STRING, BOOLEAN, NUMBER, };
@@ -94,7 +94,7 @@ public enum Type implements Enumerator {
     /**
      * A public read-only list of all the '<em><b>Type</b></em>' enumerators. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
-     *
+     * 
      * @generated
      */
     public static final List<Type> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
@@ -102,7 +102,7 @@ public enum Type implements Enumerator {
     /**
      * Returns the '<em><b>Type</b></em>' literal with the specified literal value. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @param literal
      *            the literal.
      * @return the matching enumerator or <code>null</code>.
@@ -120,7 +120,7 @@ public enum Type implements Enumerator {
 
     /**
      * Returns the '<em><b>Type</b></em>' literal with the specified name. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @param name
      *            the name.
      * @return the matching enumerator or <code>null</code>.
@@ -139,7 +139,7 @@ public enum Type implements Enumerator {
     /**
      * Returns the '<em><b>Type</b></em>' literal with the specified integer value. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @param value
      *            the integer value.
      * @return the matching enumerator or <code>null</code>.
@@ -159,28 +159,28 @@ public enum Type implements Enumerator {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     private final int value;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     private final String name;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     private final String literal;
 
     /**
      * Only this class can construct instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     private Type(int value, String name, String literal) {
@@ -191,43 +191,43 @@ public enum Type implements Enumerator {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
     public int getValue() {
-        return this.value;
+        return value;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
     public String getName() {
-        return this.name;
+        return name;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
     public String getLiteral() {
-        return this.literal;
+        return literal;
     }
 
     /**
      * Returns the literal value of the enumerator, which is its string representation. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
     public String toString() {
-        return this.literal;
+        return literal;
     }
 
 } // Type
