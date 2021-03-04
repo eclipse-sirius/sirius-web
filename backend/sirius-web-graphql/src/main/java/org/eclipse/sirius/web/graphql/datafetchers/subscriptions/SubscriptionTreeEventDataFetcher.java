@@ -12,14 +12,12 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.graphql.datafetchers.subscriptions;
 
-import java.security.Principal;
 import java.util.Objects;
 
 import org.eclipse.sirius.web.annotations.graphql.GraphQLSubscriptionTypes;
 import org.eclipse.sirius.web.annotations.spring.graphql.SubscriptionDataFetcher;
 import org.eclipse.sirius.web.collaborative.api.dto.SubscribersUpdatedEventPayload;
 import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventProcessorRegistry;
-import org.eclipse.sirius.web.collaborative.api.services.SubscriptionDescription;
 import org.eclipse.sirius.web.collaborative.trees.api.ITreeEventProcessor;
 import org.eclipse.sirius.web.collaborative.trees.api.TreeConfiguration;
 import org.eclipse.sirius.web.collaborative.trees.api.TreeEventInput;
@@ -74,15 +72,11 @@ public class SubscriptionTreeEventDataFetcher implements IDataFetcherWithFieldCo
     @Override
     public Publisher<IPayload> get(DataFetchingEnvironment environment) throws Exception {
         var input = this.dataFetchingEnvironmentService.getInput(environment, TreeEventInput.class);
-
-        String subscriptionId = this.dataFetchingEnvironmentService.getSubscriptionId(environment);
-        Principal principal = this.dataFetchingEnvironmentService.getPrincipal(environment).orElse(null);
-
         var treeConfiguration = new TreeConfiguration(input.getEditingContextId(), input.getExpanded());
 
         // @formatter:off
         return this.editingContextEventProcessorRegistry.getOrCreateEditingContextEventProcessor(input.getEditingContextId())
-                .flatMap(processor -> processor.acquireRepresentationEventProcessor(ITreeEventProcessor.class, treeConfiguration, new SubscriptionDescription(principal, subscriptionId), input))
+                .flatMap(processor -> processor.acquireRepresentationEventProcessor(ITreeEventProcessor.class, treeConfiguration, input))
                 .map(representationEventProcessor -> representationEventProcessor.getOutputEvents(input))
                 .orElse(Flux.empty());
         // @formatter:on

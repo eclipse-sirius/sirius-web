@@ -32,8 +32,6 @@ public interface ISubscriptionManager {
 
     void remove(UUID correlationId, String username);
 
-    void add(IInput input, SubscriptionDescription subscriptionDescription);
-
     void remove(UUID correlationId, SubscriptionDescription subscriptionDescription);
 
     boolean isEmpty();

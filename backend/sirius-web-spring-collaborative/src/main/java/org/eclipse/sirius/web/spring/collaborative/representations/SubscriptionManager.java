@@ -66,10 +66,6 @@ public class SubscriptionManager implements ISubscriptionManager {
     }
 
     @Override
-    public void add(IInput input, SubscriptionDescription subscriptionDescription) {
-    }
-
-    @Override
     public void remove(UUID correlationId, SubscriptionDescription subscriptionDescription) {
     }
 
