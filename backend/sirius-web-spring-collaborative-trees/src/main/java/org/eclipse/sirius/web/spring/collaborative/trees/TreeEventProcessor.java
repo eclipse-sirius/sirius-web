@@ -16,6 +16,7 @@ import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -37,6 +38,7 @@ import org.eclipse.sirius.web.representations.IRepresentation;
 import org.eclipse.sirius.web.trees.Tree;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Timer;
@@ -171,7 +173,22 @@ public class TreeEventProcessor implements ITreeEventProcessor {
         var initialRefresh = Mono.fromCallable(() -> new TreeRefreshedEventPayload(input.getId(), this.currentTree.get()));
         var refreshEventFlux = Flux.concat(initialRefresh, this.sink.asFlux());
 
-        return Flux.merge(refreshEventFlux, this.subscriptionManager.getFlux(input));
+        // @formatter:off
+        return Flux.merge(
+            refreshEventFlux,
+            this.subscriptionManager.getFlux(input)
+        )
+        .doOnSubscribe(subscription -> {
+            String username = SecurityContextHolder.getContext().getAuthentication().getName();
+            this.subscriptionManager.add(input, username);
+            this.logger.debug(MessageFormat.format("{0} has subscribed to the tree {1}", username, this.treeCreationParameters.getEditingContext().getId())); //$NON-NLS-1$
+        })
+        .doOnCancel(() -> {
+            String username = SecurityContextHolder.getContext().getAuthentication().getName();
+            this.subscriptionManager.remove(UUID.randomUUID(), username);
+            this.logger.debug(MessageFormat.format("{0} has unsubscribed from the tree {1}", username, this.treeCreationParameters.getEditingContext().getId())); //$NON-NLS-1$
+        });
+        // @formatter:on
     }
 
     @Override

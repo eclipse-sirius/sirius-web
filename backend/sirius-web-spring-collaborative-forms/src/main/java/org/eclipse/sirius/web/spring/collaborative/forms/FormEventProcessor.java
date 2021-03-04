@@ -45,6 +45,7 @@ import org.eclipse.sirius.web.representations.IRepresentation;
 import org.eclipse.sirius.web.representations.VariableManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -173,7 +174,17 @@ public class FormEventProcessor implements IFormEventProcessor {
             refreshEventFlux,
             this.widgetSubscriptionManager.getFlux(input),
             this.subscriptionManager.getFlux(input)
-        );
+        )
+        .doOnSubscribe(subscription -> {
+            String username = SecurityContextHolder.getContext().getAuthentication().getName();
+            this.subscriptionManager.add(input, username);
+            this.logger.debug(MessageFormat.format("{0} has subscribed to the form {1}", username, this.formId)); //$NON-NLS-1$
+        })
+        .doOnCancel(() -> {
+            String username = SecurityContextHolder.getContext().getAuthentication().getName();
+            this.subscriptionManager.remove(UUID.randomUUID(), username);
+            this.logger.debug(MessageFormat.format("{0} has unsubscribed from the form {1}", username, this.formId)); //$NON-NLS-1$
+        });
         // @formatter:on
     }
 

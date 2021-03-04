@@ -28,6 +28,10 @@ import reactor.core.publisher.Flux;
 public interface ISubscriptionManager {
     List<SubscriptionDescription> getSubscriptionDescriptions();
 
+    void add(IInput input, String username);
+
+    void remove(UUID correlationId, String username);
+
     void add(IInput input, SubscriptionDescription subscriptionDescription);
 
     void remove(UUID correlationId, SubscriptionDescription subscriptionDescription);

@@ -12,11 +12,11 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.spring.collaborative.representations;
 
-import java.security.Principal;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -44,21 +44,33 @@ public class SubscriptionManager implements ISubscriptionManager {
 
     private final Many<IPayload> sink = Sinks.many().multicast().directBestEffort();
 
-    private final List<SubscriptionDescription> subscriptionDescriptions = new ArrayList<>();
+    private final Map<String, Integer> username2subscriptionCount = new HashMap<>();
 
     @Override
     public List<SubscriptionDescription> getSubscriptionDescriptions() {
-        return Collections.unmodifiableList(this.subscriptionDescriptions);
+        return List.of();
+    }
+
+    @Override
+    public void add(IInput input, String username) {
+        int subscriptionCount = this.username2subscriptionCount.getOrDefault(username, 0).intValue();
+        this.username2subscriptionCount.put(username, subscriptionCount + 1);
+    }
+
+    @Override
+    public void remove(UUID correlationId, String username) {
+        int subscriptionCount = this.username2subscriptionCount.getOrDefault(username, 0).intValue();
+        if (subscriptionCount > 0) {
+            this.username2subscriptionCount.put(username, subscriptionCount - 1);
+        }
     }
 
     @Override
     public void add(IInput input, SubscriptionDescription subscriptionDescription) {
-        this.subscriptionDescriptions.add(subscriptionDescription);
     }
 
     @Override
     public void remove(UUID correlationId, SubscriptionDescription subscriptionDescription) {
-        this.subscriptionDescriptions.remove(subscriptionDescription);
     }
 
     @Override
@@ -68,10 +80,9 @@ public class SubscriptionManager implements ISubscriptionManager {
 
     private List<Subscriber> getSubscribers() {
         // @formatter:off
-        return this.subscriptionDescriptions.stream()
-                .map(SubscriptionDescription::getPrincipal)
-                .map(Principal::getName)
-                .distinct()
+        return this.username2subscriptionCount.entrySet().stream()
+                .filter(entry -> entry.getValue().intValue() > 0)
+                .map(Entry::getKey)
                 .map(Subscriber::new)
                 .collect(Collectors.toUnmodifiableList());
         // @formatter:on

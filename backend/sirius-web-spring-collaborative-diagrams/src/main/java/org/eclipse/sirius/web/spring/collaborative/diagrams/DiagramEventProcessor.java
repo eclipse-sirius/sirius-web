@@ -12,9 +12,11 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.spring.collaborative.diagrams;
 
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.eclipse.sirius.web.collaborative.api.dto.RenameRepresentationInput;
 import org.eclipse.sirius.web.collaborative.api.services.ChangeDescription;
@@ -35,6 +37,7 @@ import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.representations.IRepresentation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import reactor.core.publisher.Flux;
 
@@ -138,7 +141,22 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
 
     @Override
     public Flux<IPayload> getOutputEvents(IInput input) {
-        return Flux.merge(this.diagramEventFlux.getFlux(input), this.subscriptionManager.getFlux(input));
+        // @formatter:off
+        return Flux.merge(
+            this.diagramEventFlux.getFlux(input),
+            this.subscriptionManager.getFlux(input)
+        )
+        .doOnSubscribe(subscription -> {
+            String username = SecurityContextHolder.getContext().getAuthentication().getName();
+            this.subscriptionManager.add(input, username);
+            this.logger.debug(MessageFormat.format("{0} has subscribed to the diagram {1}", username, this.diagramContext.getDiagram().getId())); //$NON-NLS-1$
+        })
+        .doOnCancel(() -> {
+            String username = SecurityContextHolder.getContext().getAuthentication().getName();
+            this.subscriptionManager.remove(UUID.randomUUID(), username);
+            this.logger.debug(MessageFormat.format("{0} has unsubscribed from the diagram {1}", username, this.diagramContext.getDiagram().getId())); //$NON-NLS-1$
+        });
+        // @formatter:on
     }
 
     @Override
