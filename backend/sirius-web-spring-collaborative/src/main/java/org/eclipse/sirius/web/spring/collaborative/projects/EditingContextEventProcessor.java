@@ -303,25 +303,22 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
 
     @Override
     public <T extends IRepresentationEventProcessor> Optional<T> acquireRepresentationEventProcessor(Class<T> representationEventProcessorClass, IRepresentationConfiguration configuration,
-            SubscriptionDescription subscriptionDescription, IInput input) {
+            IInput input) {
         // @formatter:off
         var optionalRepresentationEventProcessor = Optional.ofNullable(this.representationEventProcessors.get(configuration.getId()))
                 .filter(representationEventProcessorClass::isInstance)
                 .map(representationEventProcessorClass::cast);
         // @formatter:on
+
         if (!optionalRepresentationEventProcessor.isPresent()) {
             optionalRepresentationEventProcessor = this.representationEventProcessorComposedFactory.createRepresentationEventProcessor(representationEventProcessorClass, configuration,
                     this.editingContext);
             if (optionalRepresentationEventProcessor.isPresent()) {
                 var representationEventProcessor = optionalRepresentationEventProcessor.get();
                 this.representationEventProcessors.put(configuration.getId(), representationEventProcessor);
-                representationEventProcessor.getSubscriptionManager().add(input, subscriptionDescription);
             } else {
                 this.logger.warn("The representation with the id {} does not exist", configuration.getId()); //$NON-NLS-1$
             }
-        } else {
-            var representationEventProcessor = optionalRepresentationEventProcessor.get();
-            representationEventProcessor.getSubscriptionManager().add(input, subscriptionDescription);
         }
 
         return optionalRepresentationEventProcessor;

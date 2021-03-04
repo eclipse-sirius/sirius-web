@@ -55,9 +55,6 @@ public class StartMessageHandler implements IWebSocketMessageHandler {
 
     private static final String COUNTER_METRIC_NAME = "siriusweb_graphql_ws"; //$NON-NLS-1$
 
-    /** Used to separate the session id from the operation id in the creation of the subscription id. */
-    private static final String SEPARATOR = "#"; //$NON-NLS-1$
-
     private Logger logger = LoggerFactory.getLogger(StartMessageHandler.class);
 
     private final WebSocketSession session;
@@ -89,7 +86,6 @@ public class StartMessageHandler implements IWebSocketMessageHandler {
 
         // @formatter:off
         GraphQLContext graphQLContext = GraphQLContext.newContext()
-                .of(GraphQLConstants.SUBSCRIPTION_ID, this.session.getId() + SEPARATOR + id)
                 .of(GraphQLConstants.PRINCIPAL, this.session.getPrincipal())
                 .build();
 

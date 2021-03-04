@@ -29,8 +29,7 @@ import reactor.core.publisher.Flux;
 public interface IEditingContextEventProcessor {
     UUID getEditingContextId();
 
-    <T extends IRepresentationEventProcessor> Optional<T> acquireRepresentationEventProcessor(Class<T> representationEventProcessorClass, IRepresentationConfiguration configuration,
-            SubscriptionDescription subscriptionDescription, IInput input);
+    <T extends IRepresentationEventProcessor> Optional<T> acquireRepresentationEventProcessor(Class<T> representationEventProcessorClass, IRepresentationConfiguration configuration, IInput input);
 
     List<IRepresentationEventProcessor> getRepresentationEventProcessors();
 
