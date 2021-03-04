@@ -143,8 +143,7 @@ public class ExplorerDescriptionProvider implements IExplorerDescriptionProvider
 
         String imageURL = null;
         if (self instanceof EObject) {
-            String imagePath = this.objectService.getImagePath(self);
-            imageURL = imagePath;
+            imageURL = this.objectService.getImagePath(self);
         } else if (self instanceof RepresentationDescriptor) {
             RepresentationDescriptor representationDescriptor = (RepresentationDescriptor) self;
 
@@ -158,7 +157,7 @@ public class ExplorerDescriptionProvider implements IExplorerDescriptionProvider
         } else if (self instanceof Resource) {
             imageURL = ImageConstants.RESOURCE_SVG;
         }
-        return imageURL;
+        return Optional.ofNullable(imageURL).orElse(ImageConstants.DEFAULT_SVG);
     }
 
     private List<Object> getElements(VariableManager variableManager) {
