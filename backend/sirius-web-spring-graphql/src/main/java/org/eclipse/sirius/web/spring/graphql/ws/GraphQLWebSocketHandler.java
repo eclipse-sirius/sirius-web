@@ -254,7 +254,7 @@ public class GraphQLWebSocketHandler extends TextWebSocketHandler implements Sub
 
             IOperationMessage operationMessage = optionalOperationMessage.get();
 
-            this.logger.debug(MessageFormat.format("Message received: {0}", operationMessage)); //$NON-NLS-1$
+            this.logger.trace(MessageFormat.format("Message received: {0}", operationMessage)); //$NON-NLS-1$
 
             if (operationMessage instanceof ConnectionInitMessage) {
                 new ConnectionInitMessageHandler(session, this.objectMapper).handle();
@@ -286,7 +286,7 @@ public class GraphQLWebSocketHandler extends TextWebSocketHandler implements Sub
             String responsePayload = this.objectMapper.writeValueAsString(message);
             TextMessage textMessage = new TextMessage(responsePayload);
 
-            this.logger.debug(MessageFormat.format("Message sent: {0}", message)); //$NON-NLS-1$
+            this.logger.trace(MessageFormat.format("Message sent: {0}", message)); //$NON-NLS-1$
 
             session.sendMessage(textMessage);
         } catch (IOException exception) {
@@ -353,6 +353,11 @@ public class GraphQLWebSocketHandler extends TextWebSocketHandler implements Sub
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+        Principal principal = session.getPrincipal();
+        if (principal instanceof Authentication) {
+            SecurityContextHolder.setContext(new SecurityContextImpl((Authentication) principal));
+        }
+
         Disposable keepAliveSubscription = this.sessions2keepAliveSubscriptions.remove(session);
         keepAliveSubscription.dispose();
 
