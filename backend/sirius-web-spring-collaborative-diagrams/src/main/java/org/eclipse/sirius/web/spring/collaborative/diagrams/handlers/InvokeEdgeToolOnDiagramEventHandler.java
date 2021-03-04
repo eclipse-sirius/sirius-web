@@ -120,8 +120,6 @@ public class InvokeEdgeToolOnDiagramEventHandler implements IDiagramEventHandler
             VariableManager variableManager = new VariableManager();
             variableManager.put(IDiagramContext.DIAGRAM_CONTEXT, diagramContext);
             variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
-            variableManager.put(CreateEdgeTool.EDGE_SOURCE, source.get());
-            variableManager.put(CreateEdgeTool.EDGE_TARGET, target.get());
             variableManager.put(EdgeDescription.SEMANTIC_EDGE_SOURCE, source.get());
             variableManager.put(EdgeDescription.SEMANTIC_EDGE_TARGET, target.get());
 

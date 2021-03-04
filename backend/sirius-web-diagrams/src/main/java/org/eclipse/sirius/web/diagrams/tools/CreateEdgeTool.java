@@ -35,16 +35,6 @@ import org.eclipse.sirius.web.representations.VariableManager;
 @GraphQLObjectType
 public final class CreateEdgeTool implements ITool {
 
-    /**
-     * The name of the variable used to store and retrieve the edge source from a variable manager.
-     */
-    public static final String EDGE_SOURCE = "source"; //$NON-NLS-1$
-
-    /**
-     * The name of the variable used to store and retrieve the edge target from a variable manager.
-     */
-    public static final String EDGE_TARGET = "target"; //$NON-NLS-1$
-
     private String id;
 
     private String imageURL;

@@ -65,6 +65,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class ToolProvider implements IToolProvider {
 
+    /**
+     * The name of the compatibility variable used to store and retrieve the edge source from a variable manager.
+     */
+    public static final String EDGE_SOURCE = "source"; //$NON-NLS-1$
+
+    /**
+     * The name of the compatibility variable used to store and retrieve the edge target from a variable manager.
+     */
+    public static final String EDGE_TARGET = "target"; //$NON-NLS-1$
+
     private final IAQLInterpreterFactory interpreterFactory;
 
     private final IIdentifierProvider identifierProvider;
@@ -354,6 +364,9 @@ public class ToolProvider implements IToolProvider {
             InitEdgeCreationOperation initialOperation = edgeCreationDescription.getInitialOperation();
             return variableManager -> {
                 Map<String, Object> variables = variableManager.getVariables();
+                // Provide compatibility aliases for these two variables
+                variables.put(EDGE_SOURCE, variables.get(EdgeDescription.SEMANTIC_EDGE_SOURCE));
+                variables.put(EDGE_TARGET, variables.get(EdgeDescription.SEMANTIC_EDGE_TARGET));
                 var modelOperationHandlerSwitch = this.modelOperationHandlerSwitchProvider.getModelOperationHandlerSwitch(interpreter);
                 return modelOperationHandlerSwitch.apply(initialOperation.getFirstModelOperations()).map(handler -> {
                     return handler.handle(variables);
