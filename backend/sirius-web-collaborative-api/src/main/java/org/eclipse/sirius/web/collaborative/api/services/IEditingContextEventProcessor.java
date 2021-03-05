@@ -33,8 +33,6 @@ public interface IEditingContextEventProcessor {
 
     List<IRepresentationEventProcessor> getRepresentationEventProcessors();
 
-    void release(SubscriptionDescription subscriptionDescription);
-
     Optional<IPayload> handle(IInput input);
 
     void dispose();

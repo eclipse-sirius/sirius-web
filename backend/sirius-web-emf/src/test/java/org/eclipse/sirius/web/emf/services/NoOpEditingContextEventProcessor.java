@@ -20,7 +20,6 @@ import java.util.UUID;
 import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventProcessor;
 import org.eclipse.sirius.web.collaborative.api.services.IRepresentationConfiguration;
 import org.eclipse.sirius.web.collaborative.api.services.IRepresentationEventProcessor;
-import org.eclipse.sirius.web.collaborative.api.services.SubscriptionDescription;
 import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.core.api.IPayload;
 
@@ -47,10 +46,6 @@ public class NoOpEditingContextEventProcessor implements IEditingContextEventPro
     @Override
     public List<IRepresentationEventProcessor> getRepresentationEventProcessors() {
         return new ArrayList<>();
-    }
-
-    @Override
-    public void release(SubscriptionDescription subscriptionDescription) {
     }
 
     @Override

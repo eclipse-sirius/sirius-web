@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.collaborative.api.services;
 import java.util.List;
 import java.util.UUID;
 
+import org.eclipse.sirius.web.collaborative.api.dto.Subscriber;
 import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.core.api.IPayload;
 
@@ -26,15 +27,13 @@ import reactor.core.publisher.Flux;
  * @author sbegaudeau
  */
 public interface ISubscriptionManager {
-    List<SubscriptionDescription> getSubscriptionDescriptions();
-
     void add(IInput input, String username);
 
     void remove(UUID correlationId, String username);
 
-    void remove(UUID correlationId, SubscriptionDescription subscriptionDescription);
-
     boolean isEmpty();
+
+    List<Subscriber> getSubscribers();
 
     Flux<IPayload> getFlux(IInput input);
 
