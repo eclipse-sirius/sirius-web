@@ -88,4 +88,9 @@ public class SubscriptionManager implements ISubscriptionManager {
             this.logger.warn(MessageFormat.format(pattern, emitResult));
         }
     }
+
+    @Override
+    public String toString() {
+        return this.username2subscriptionCount.toString();
+    }
 }

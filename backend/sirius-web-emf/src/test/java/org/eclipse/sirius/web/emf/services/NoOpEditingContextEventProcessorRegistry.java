@@ -35,17 +35,17 @@ public class NoOpEditingContextEventProcessorRegistry implements IEditingContext
     }
 
     @Override
-    public Optional<IPayload> dispatchEvent(UUID projectId, IInput input) {
+    public Optional<IPayload> dispatchEvent(UUID editingContextId, IInput input) {
         return Optional.empty();
     }
 
     @Override
-    public Optional<IEditingContextEventProcessor> getOrCreateEditingContextEventProcessor(UUID projectId) {
+    public Optional<IEditingContextEventProcessor> getOrCreateEditingContextEventProcessor(UUID editingContextId) {
         return Optional.empty();
     }
 
     @Override
-    public void dispose(UUID projectId) {
+    public void disposeEditingContextEventProcessor(UUID editingContextId) {
     }
 
 }

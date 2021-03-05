@@ -83,11 +83,13 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
 
     private final IRepresentationEventProcessorComposedFactory representationEventProcessorComposedFactory;
 
-    private final ExecutorService executor;
-
     private final Map<UUID, RepresentationEventProcessorEntry> representationEventProcessors = new ConcurrentHashMap<>();
 
     private final Many<IPayload> sink = Sinks.many().multicast().directBestEffort();
+
+    private final Many<Boolean> canBeDisposedSink = Sinks.many().unicast().onBackpressureBuffer();
+
+    private final ExecutorService executor;
 
     public EditingContextEventProcessor(IEditingContext editingContext, IEditingContextPersistenceService editingContextPersistenceService, ApplicationEventPublisher applicationEventPublisher,
             IObjectService objectService, List<IEditingContextEventHandler> editingContextEventHandlers, IRepresentationEventProcessorComposedFactory representationEventProcessorComposedFactory) {
@@ -328,6 +330,8 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
             }
         }
 
+        this.logger.trace(MessageFormat.format("Representation event processors count: {0}", this.representationEventProcessors.size())); //$NON-NLS-1$
+
         return optionalRepresentationEventProcessor;
     }
 
@@ -345,6 +349,14 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
             entry.getDisposable().dispose();
             entry.getRepresentationEventProcessor().dispose();
         });
+
+        if (this.representationEventProcessors.isEmpty()) {
+            EmitResult emitResult = this.canBeDisposedSink.tryEmitNext(Boolean.TRUE);
+            if (emitResult.isFailure()) {
+                String pattern = "An error has occurred while emitting that the processor can be disposed: {0}"; //$NON-NLS-1$
+                this.logger.warn(MessageFormat.format(pattern, emitResult));
+            }
+        }
     }
 
     @Override
@@ -353,12 +365,17 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
     }
 
     @Override
+    public Flux<Boolean> canBeDisposed() {
+        return this.canBeDisposedSink.asFlux();
+    }
+
+    @Override
     public void dispose() {
-        this.logger.trace(MessageFormat.format("Disposing the editing context \"{0}\"", this.editingContext.getId())); //$NON-NLS-1$
+        this.logger.trace(MessageFormat.format("Disposing the editing context event processor {0}", this.editingContext.getId())); //$NON-NLS-1$
 
         this.executor.shutdown();
 
-        this.representationEventProcessors.values().stream().forEach(entry -> {
+        this.representationEventProcessors.values().forEach(entry -> {
             entry.getDisposable().dispose();
             entry.getRepresentationEventProcessor().dispose();
         });
@@ -368,6 +385,14 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
         if (emitResult.isFailure()) {
             String pattern = "An error has occurred while marking the publisher as complete: {0}"; //$NON-NLS-1$
             this.logger.warn(MessageFormat.format(pattern, emitResult));
+        }
+
+        if (this.canBeDisposedSink.currentSubscriberCount() > 0) {
+            EmitResult canBeDisposedEmitResult = this.canBeDisposedSink.tryEmitComplete();
+            if (canBeDisposedEmitResult.isFailure()) {
+                String pattern = "An error has occurred while marking the canBeDisposed flux as complete: {0}"; //$NON-NLS-1$
+                this.logger.warn(MessageFormat.format(pattern, canBeDisposedEmitResult));
+            }
         }
     }
 
