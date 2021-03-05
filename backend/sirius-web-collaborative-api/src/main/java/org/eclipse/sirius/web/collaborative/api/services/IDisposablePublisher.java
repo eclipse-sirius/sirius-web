@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.collaborative.api.services;
 
-import reactor.core.publisher.Mono;
+import reactor.core.publisher.Flux;
 
 /**
  * Interface used by a publisher that can be disposed.
@@ -23,11 +23,12 @@ public interface IDisposablePublisher {
     /**
      * Used to be notified that this instance can be disposed.
      *
-     * @return A mono which can send a next event in order to indicate that it can be disposed. This mono can only emit
+     * @return A flux which can send a next event in order to indicate that it can be disposed. This flux can only emit
      *         a Boolean.TRUE value. When this publisher is disposed, it will still send a complete event which can be
-     *         then be safely ignored.
+     *         then be safely ignored. This publisher is a flux and not a mono since the editing context event processor
+     *         may be kept in memory even it can be disposed.
      */
-    Mono<Boolean> canBeDisposed();
+    Flux<Boolean> canBeDisposed();
 
     /**
      * Used to dispose this instance.

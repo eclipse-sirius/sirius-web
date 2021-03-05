@@ -12,12 +12,14 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.spring.collaborative.projects;
 
+import java.text.MessageFormat;
+import java.time.Duration;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
 
 import javax.annotation.PreDestroy;
@@ -36,6 +38,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+
+import reactor.core.Disposable;
 
 /**
  * Registry of the editing context event processors.
@@ -59,7 +63,7 @@ public class EditingContextEventProcessorRegistry implements IEditingContextEven
 
     private final IRepresentationEventProcessorComposedFactory representationEventProcessorComposedFactory;
 
-    private final ConcurrentMap<UUID, EditingContextEventProcessor> editingContextEventProcessors = new ConcurrentHashMap<>();
+    private final Map<UUID, EditingContextEventProcessorEntry> editingContextEventProcessors = new ConcurrentHashMap<>();
 
     public EditingContextEventProcessorRegistry(IEditingContextSearchService editingContextSearchService, IEditingContextPersistenceService editingContextPersistenceService,
             IObjectService objectService, ApplicationEventPublisher applicationEventPublisher, List<IEditingContextEventHandler> editingContextEventHandlers,
@@ -74,7 +78,11 @@ public class EditingContextEventProcessorRegistry implements IEditingContextEven
 
     @Override
     public List<IEditingContextEventProcessor> getEditingContextEventProcessors() {
-        return this.editingContextEventProcessors.values().stream().collect(Collectors.toUnmodifiableList());
+        // @formatter:off
+        return this.editingContextEventProcessors.values().stream()
+                .map(EditingContextEventProcessorEntry::getEditingContextEventProcessor)
+                .collect(Collectors.toUnmodifiableList());
+        // @formatter:on
     }
 
     @Override
@@ -86,35 +94,54 @@ public class EditingContextEventProcessorRegistry implements IEditingContextEven
     public Optional<IEditingContextEventProcessor> getOrCreateEditingContextEventProcessor(UUID editingContextId) {
         Optional<IEditingContextEventProcessor> optionalEditingContextEventProcessor = Optional.empty();
         if (this.editingContextSearchService.existsById(editingContextId)) {
-            EditingContextEventProcessor editingContextEventProcessor = this.editingContextEventProcessors.get(editingContextId);
-            if (editingContextEventProcessor == null) {
+            optionalEditingContextEventProcessor = Optional.ofNullable(this.editingContextEventProcessors.get(editingContextId))
+                    .map(EditingContextEventProcessorEntry::getEditingContextEventProcessor);
+            if (optionalEditingContextEventProcessor.isEmpty()) {
                 Optional<IEditingContext> optionalEditingContext = this.editingContextSearchService.findById(editingContextId);
                 if (optionalEditingContext.isPresent()) {
                     IEditingContext editingContext = optionalEditingContext.get();
-                    editingContextEventProcessor = new EditingContextEventProcessor(editingContext, this.editingContextPersistenceService, this.applicationEventPublisher, this.objectService,
+
+                    var editingContextEventProcessor = new EditingContextEventProcessor(editingContext, this.editingContextPersistenceService, this.applicationEventPublisher, this.objectService,
                             this.editingContextEventHandlers, this.representationEventProcessorComposedFactory);
-                    this.editingContextEventProcessors.put(editingContextId, editingContextEventProcessor);
+                    Disposable subscription = editingContextEventProcessor.canBeDisposed().delayElements(Duration.ofSeconds(30)).subscribe(canBeDisposed -> {
+                        // We will wait for 30s before trying to dispose the editing context event processor
+                        // We will check if the editing context event processor is still empty
+                        if (canBeDisposed.booleanValue() && editingContextEventProcessor.getRepresentationEventProcessors().isEmpty()) {
+                            this.disposeEditingContextEventProcessor(editingContextId);
+                        } else {
+                            this.logger.trace("Stopping the disposal of the editing context"); //$NON-NLS-1$
+                        }
+                    });
+
+                    var editingContextEventProcessorEntry = new EditingContextEventProcessorEntry(editingContextEventProcessor, subscription);
+                    this.editingContextEventProcessors.put(editingContextId, editingContextEventProcessorEntry);
+
+                    optionalEditingContextEventProcessor = Optional.of(editingContextEventProcessor);
                 }
             }
-            optionalEditingContextEventProcessor = Optional.of(editingContextEventProcessor);
         }
 
         return optionalEditingContextEventProcessor;
     }
 
     @Override
-    public void dispose(UUID editingContextId) {
-        // @formatter:off
-        Optional.ofNullable(this.editingContextEventProcessors.remove(editingContextId))
-                .ifPresent(EditingContextEventProcessor::dispose);
-        // @formatter:on
+    public void disposeEditingContextEventProcessor(UUID editingContextId) {
+        Optional.ofNullable(this.editingContextEventProcessors.remove(editingContextId)).ifPresent(entry -> {
+            entry.getDisposable().dispose();
+            entry.getEditingContextEventProcessor().dispose();
+        });
+
+        this.logger.trace(MessageFormat.format("Editing context event processors count: {0}", this.editingContextEventProcessors.size())); //$NON-NLS-1$
     }
 
     @PreDestroy
     public void dispose() {
         this.logger.debug("Shutting down all the editing context event processors"); //$NON-NLS-1$
 
-        this.editingContextEventProcessors.values().forEach(EditingContextEventProcessor::dispose);
+        this.editingContextEventProcessors.values().forEach(entry -> {
+            entry.getDisposable().dispose();
+            entry.getEditingContextEventProcessor().dispose();
+        });
         this.editingContextEventProcessors.clear();
     }
 }

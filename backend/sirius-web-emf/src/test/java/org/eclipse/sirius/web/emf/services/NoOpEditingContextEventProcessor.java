@@ -54,6 +54,11 @@ public class NoOpEditingContextEventProcessor implements IEditingContextEventPro
     }
 
     @Override
+    public Flux<Boolean> canBeDisposed() {
+        return Flux.empty();
+    }
+
+    @Override
     public void dispose() {
     }
 

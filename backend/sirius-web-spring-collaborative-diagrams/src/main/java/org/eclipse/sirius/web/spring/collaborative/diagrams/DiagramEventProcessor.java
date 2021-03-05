@@ -40,10 +40,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
 import reactor.core.publisher.Sinks.EmitResult;
-import reactor.core.publisher.Sinks.One;
+import reactor.core.publisher.Sinks.Many;
 
 /**
  * Reacts to input that target a specific diagram, and {@link #getDiagramUpdates() publishes} updated versions of the
@@ -66,7 +65,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
 
     private final IDiagramCreationService diagramCreationService;
 
-    private final One<Boolean> canBeDisposedSink = Sinks.<Boolean> one();
+    private final Many<Boolean> canBeDisposedSink = Sinks.many().unicast().onBackpressureBuffer();
 
     private final DiagramEventFlux diagramEventFlux;
 
@@ -162,15 +161,15 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
         .doOnSubscribe(subscription -> {
             String username = SecurityContextHolder.getContext().getAuthentication().getName();
             this.subscriptionManager.add(input, username);
-            this.logger.trace(MessageFormat.format("{0} has subscribed to the diagram {1}", username, this.diagramContext.getDiagram().getId())); //$NON-NLS-1$
+            this.logger.trace(MessageFormat.format("{0} has subscribed to the diagram {1} {2}", username, this.diagramContext.getDiagram().getId(), this.subscriptionManager.toString())); //$NON-NLS-1$
         })
         .doOnCancel(() -> {
             String username = SecurityContextHolder.getContext().getAuthentication().getName();
             this.subscriptionManager.remove(UUID.randomUUID(), username);
-            this.logger.trace(MessageFormat.format("{0} has unsubscribed from the diagram {1}", username, this.diagramContext.getDiagram().getId())); //$NON-NLS-1$
+            this.logger.trace(MessageFormat.format("{0} has unsubscribed from the diagram {1} {2}", username, this.diagramContext.getDiagram().getId(), this.subscriptionManager.toString())); //$NON-NLS-1$
 
             if (this.subscriptionManager.isEmpty()) {
-                EmitResult emitResult = this.canBeDisposedSink.tryEmitValue(Boolean.TRUE);
+                EmitResult emitResult = this.canBeDisposedSink.tryEmitNext(Boolean.TRUE);
                 if (emitResult.isFailure()) {
                     String pattern = "An error has occurred while emitting that the processor can be disposed: {0}"; //$NON-NLS-1$
                     this.logger.warn(MessageFormat.format(pattern, emitResult));
@@ -181,8 +180,8 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
     }
 
     @Override
-    public Mono<Boolean> canBeDisposed() {
-        return this.canBeDisposedSink.asMono();
+    public Flux<Boolean> canBeDisposed() {
+        return this.canBeDisposedSink.asFlux();
     }
 
     @Override
@@ -190,9 +189,9 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
         this.logger.trace(MessageFormat.format("Disposing the diagram event processor {0}", this.diagramContext.getDiagram().getId())); //$NON-NLS-1$
 
         if (this.canBeDisposedSink.currentSubscriberCount() > 0) {
-            EmitResult canBeDisposedEmitResult = this.canBeDisposedSink.tryEmitEmpty();
+            EmitResult canBeDisposedEmitResult = this.canBeDisposedSink.tryEmitComplete();
             if (canBeDisposedEmitResult.isFailure()) {
-                String pattern = "An error has occurred while marking the canBeDisposed mono as complete: {0}"; //$NON-NLS-1$
+                String pattern = "An error has occurred while marking the canBeDisposed flux as complete: {0}"; //$NON-NLS-1$
                 this.logger.warn(MessageFormat.format(pattern, canBeDisposedEmitResult));
             }
         }

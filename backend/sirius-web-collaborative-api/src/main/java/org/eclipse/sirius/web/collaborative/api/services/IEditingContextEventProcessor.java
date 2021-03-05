@@ -26,7 +26,7 @@ import reactor.core.publisher.Flux;
  *
  * @author sbegaudeau
  */
-public interface IEditingContextEventProcessor {
+public interface IEditingContextEventProcessor extends IDisposablePublisher {
     UUID getEditingContextId();
 
     <T extends IRepresentationEventProcessor> Optional<T> acquireRepresentationEventProcessor(Class<T> representationEventProcessorClass, IRepresentationConfiguration configuration, IInput input);
@@ -34,8 +34,6 @@ public interface IEditingContextEventProcessor {
     List<IRepresentationEventProcessor> getRepresentationEventProcessors();
 
     Optional<IPayload> handle(IInput input);
-
-    void dispose();
 
     Flux<IPayload> getOutputEvents();
 

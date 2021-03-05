@@ -31,5 +31,5 @@ public interface IEditingContextEventProcessorRegistry {
 
     Optional<IEditingContextEventProcessor> getOrCreateEditingContextEventProcessor(UUID editingContextId);
 
-    void dispose(UUID editingContextId);
+    void disposeEditingContextEventProcessor(UUID editingContextId);
 }

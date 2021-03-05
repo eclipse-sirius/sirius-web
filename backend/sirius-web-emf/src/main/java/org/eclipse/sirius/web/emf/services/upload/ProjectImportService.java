@@ -110,7 +110,7 @@ public class ProjectImportService implements IProjectImportService {
                 boolean hasBeenImported = projectImporter.importProject(inputId);
 
                 if (!hasBeenImported) {
-                    this.editingContextEventProcessorRegistry.dispose(project.getId());
+                    this.editingContextEventProcessorRegistry.disposeEditingContextEventProcessor(project.getId());
                     this.projectService.delete(project.getId());
                 } else {
                     payload = new UploadProjectSuccessPayload(inputId, project);
