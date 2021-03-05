@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.sirius.web.spring.graphql.api.ISubscriptionTerminatedHandler;
 import org.eclipse.sirius.web.spring.graphql.controllers.GraphQLPayload;
 import org.eclipse.sirius.web.spring.graphql.ws.dto.input.StartMessage;
 import org.eclipse.sirius.web.spring.graphql.ws.dto.input.StopMessage;
@@ -172,13 +171,11 @@ public class WebSocketHandlerTestCases {
         subscriptionEntries.add(new SubscriptionEntry("subscriptionId", subscription)); //$NON-NLS-1$
         sessions2entries.put(session, subscriptionEntries);
 
-        ISubscriptionTerminatedHandler subscriptionTerminatedHandler = (principal, subscriptionId) -> {
-        };
         StopMessage stopMessage = new StopMessage("subscriptionId"); //$NON-NLS-1$
 
         assertThat(sessions2entries.get(session).size()).isEqualTo(1);
 
-        new StopMessageHandler(session, sessions2entries, subscriptionTerminatedHandler).handle(stopMessage);
+        new StopMessageHandler(session, sessions2entries).handle(stopMessage);
 
         assertThat(sessions2entries.get(session).size()).isEqualTo(0);
     }
@@ -194,12 +191,9 @@ public class WebSocketHandlerTestCases {
         };
         sessions2entries.put(session, List.of(new SubscriptionEntry("id", subscription))); //$NON-NLS-1$
 
-        ISubscriptionTerminatedHandler subscriptionTerminatedHandler = (principal, subscriptionId) -> {
-        };
-
         assertThat(sessions2entries.size()).isEqualTo(1);
 
-        new ConnectionTerminateMessageHandler(session, sessions2entries, subscriptionTerminatedHandler).handle();
+        new ConnectionTerminateMessageHandler(session, sessions2entries).handle();
 
         assertThat(sessions2entries.size()).isEqualTo(0);
     }

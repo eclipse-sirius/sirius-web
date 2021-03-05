@@ -52,6 +52,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
 import reactor.core.publisher.Sinks.EmitResult;
 import reactor.core.publisher.Sinks.Many;
+import reactor.core.publisher.Sinks.One;
 
 /**
  * Reacts to the input that target the property sheet of a specific object and publishes updated versions of the
@@ -79,10 +80,14 @@ public class FormEventProcessor implements IFormEventProcessor {
 
     private final Many<IPayload> sink = Sinks.many().multicast().directBestEffort();
 
+    private final One<Boolean> canBeDisposedSink = Sinks.<Boolean> one();
+
     private final AtomicReference<Form> currentForm = new AtomicReference<>();
 
     public FormEventProcessor(IEditingContext editingContext, FormDescription formDescription, UUID formId, Object object, List<IFormEventHandler> formEventHandlers,
             ISubscriptionManager subscriptionManager, IWidgetSubscriptionManager widgetSubscriptionManager) {
+        this.logger.trace(MessageFormat.format("Creating the form event processor {0}", formId)); //$NON-NLS-1$
+
         this.formDescription = Objects.requireNonNull(formDescription);
         this.editingContext = Objects.requireNonNull(editingContext);
         this.formId = Objects.requireNonNull(formId);
@@ -93,6 +98,7 @@ public class FormEventProcessor implements IFormEventProcessor {
 
         Form form = this.refreshForm();
         this.currentForm.set(form);
+
     }
 
     @Override
@@ -159,7 +165,7 @@ public class FormEventProcessor implements IFormEventProcessor {
         Element element = new Element(FormComponent.class, formComponentProps);
         Form form = new FormRenderer(this.logger).render(element);
 
-        this.logger.debug(MessageFormat.format("Form refreshed: {0})", form)); //$NON-NLS-1$
+        this.logger.trace(MessageFormat.format("Form refreshed: {0}", form.getId())); //$NON-NLS-1$
 
         return form;
     }
@@ -178,20 +184,44 @@ public class FormEventProcessor implements IFormEventProcessor {
         .doOnSubscribe(subscription -> {
             String username = SecurityContextHolder.getContext().getAuthentication().getName();
             this.subscriptionManager.add(input, username);
-            this.logger.debug(MessageFormat.format("{0} has subscribed to the form {1}", username, this.formId)); //$NON-NLS-1$
+            this.logger.trace(MessageFormat.format("{0} has subscribed to the form {1}", username, this.formId)); //$NON-NLS-1$
         })
         .doOnCancel(() -> {
             String username = SecurityContextHolder.getContext().getAuthentication().getName();
             this.subscriptionManager.remove(UUID.randomUUID(), username);
-            this.logger.debug(MessageFormat.format("{0} has unsubscribed from the form {1}", username, this.formId)); //$NON-NLS-1$
+            this.logger.trace(MessageFormat.format("{0} has unsubscribed from the form {1}", username, this.formId)); //$NON-NLS-1$
+
+            if (this.subscriptionManager.isEmpty()) {
+                EmitResult emitResult = this.canBeDisposedSink.tryEmitValue(Boolean.TRUE);
+                if (emitResult.isFailure()) {
+                    String pattern = "An error has occurred while emitting that the processor can be disposed: {0}"; //$NON-NLS-1$
+                    this.logger.warn(MessageFormat.format(pattern, emitResult));
+                }
+            }
         });
         // @formatter:on
     }
 
     @Override
+    public Mono<Boolean> canBeDisposed() {
+        return this.canBeDisposedSink.asMono();
+    }
+
+    @Override
     public void dispose() {
+        this.logger.trace(MessageFormat.format("Disposing the form event processor {0}", this.formId)); //$NON-NLS-1$
+
+        if (this.canBeDisposedSink.currentSubscriberCount() > 0) {
+            EmitResult canBeDisposedEmitResult = this.canBeDisposedSink.tryEmitEmpty();
+            if (canBeDisposedEmitResult.isFailure()) {
+                String pattern = "An error has occurred while marking the canBeDisposed mono as complete: {0}"; //$NON-NLS-1$
+                this.logger.warn(MessageFormat.format(pattern, canBeDisposedEmitResult));
+            }
+        }
+
         this.subscriptionManager.dispose();
         this.widgetSubscriptionManager.dispose();
+
         EmitResult emitResult = this.sink.tryEmitComplete();
         if (emitResult.isFailure()) {
             String pattern = "An error has occurred while marking the publisher as complete: {0}"; //$NON-NLS-1$

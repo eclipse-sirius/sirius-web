@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,7 +27,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.eclipse.sirius.web.spring.graphql.api.ISubscriptionTerminatedHandler;
 import org.eclipse.sirius.web.spring.graphql.ws.dto.IOperationMessage;
 import org.eclipse.sirius.web.spring.graphql.ws.dto.input.ConnectionInitMessage;
 import org.eclipse.sirius.web.spring.graphql.ws.dto.input.ConnectionTerminateMessage;
@@ -196,8 +195,6 @@ public class GraphQLWebSocketHandler extends TextWebSocketHandler implements Sub
 
     private final Map<WebSocketSession, Disposable> sessions2keepAliveSubscriptions = new ConcurrentHashMap<>();
 
-    private final ISubscriptionTerminatedHandler subscriptionTerminatedHandler;
-
     private final Counter connectionInitCounter;
 
     private final Counter startMessageCounter;
@@ -210,10 +207,9 @@ public class GraphQLWebSocketHandler extends TextWebSocketHandler implements Sub
 
     private final MeterRegistry meterRegistry;
 
-    public GraphQLWebSocketHandler(ObjectMapper objectMapper, GraphQL graphQL, ISubscriptionTerminatedHandler subscriptionTerminatedHandler, MeterRegistry meterRegistry) {
+    public GraphQLWebSocketHandler(ObjectMapper objectMapper, GraphQL graphQL, MeterRegistry meterRegistry) {
         this.objectMapper = Objects.requireNonNull(objectMapper);
         this.graphQL = Objects.requireNonNull(graphQL);
-        this.subscriptionTerminatedHandler = Objects.requireNonNull(subscriptionTerminatedHandler);
         this.meterRegistry = Objects.requireNonNull(meterRegistry);
 
         // @formatter:off
@@ -266,10 +262,10 @@ public class GraphQLWebSocketHandler extends TextWebSocketHandler implements Sub
                 this.startMessageCounter.increment();
             } else if (operationMessage instanceof StopMessage) {
                 StopMessage stopMessage = (StopMessage) operationMessage;
-                new StopMessageHandler(session, this.sessions2entries, this.subscriptionTerminatedHandler).handle(stopMessage);
+                new StopMessageHandler(session, this.sessions2entries).handle(stopMessage);
                 this.stopMessageCounter.increment();
             } else if (operationMessage instanceof ConnectionTerminateMessage) {
-                new ConnectionTerminateMessageHandler(session, this.sessions2entries, this.subscriptionTerminatedHandler);
+                new ConnectionTerminateMessageHandler(session, this.sessions2entries);
                 this.connectionTerminateCounter.increment();
             } else {
                 this.send(session, new ConnectionErrorMessage());
@@ -362,7 +358,7 @@ public class GraphQLWebSocketHandler extends TextWebSocketHandler implements Sub
         keepAliveSubscription.dispose();
 
         // Closing the connection will trigger the same behavior as indicating that the connection should be closed
-        new ConnectionTerminateMessageHandler(session, this.sessions2entries, this.subscriptionTerminatedHandler).handle();
+        new ConnectionTerminateMessageHandler(session, this.sessions2entries).handle();
     }
 
 }

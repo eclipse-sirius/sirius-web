@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
 
 import org.eclipse.sirius.web.collaborative.api.dto.Subscriber;
 import org.eclipse.sirius.web.collaborative.api.services.ISubscriptionManager;
-import org.eclipse.sirius.web.collaborative.api.services.SubscriptionDescription;
 import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.core.api.IPayload;
 import org.slf4j.Logger;
@@ -47,11 +46,6 @@ public class SubscriptionManager implements ISubscriptionManager {
     private final Map<String, Integer> username2subscriptionCount = new HashMap<>();
 
     @Override
-    public List<SubscriptionDescription> getSubscriptionDescriptions() {
-        return List.of();
-    }
-
-    @Override
     public void add(IInput input, String username) {
         int subscriptionCount = this.username2subscriptionCount.getOrDefault(username, 0).intValue();
         this.username2subscriptionCount.put(username, subscriptionCount + 1);
@@ -66,15 +60,12 @@ public class SubscriptionManager implements ISubscriptionManager {
     }
 
     @Override
-    public void remove(UUID correlationId, SubscriptionDescription subscriptionDescription) {
-    }
-
-    @Override
     public boolean isEmpty() {
         return this.getSubscribers().isEmpty();
     }
 
-    private List<Subscriber> getSubscribers() {
+    @Override
+    public List<Subscriber> getSubscribers() {
         // @formatter:off
         return this.username2subscriptionCount.entrySet().stream()
                 .filter(entry -> entry.getValue().intValue() > 0)

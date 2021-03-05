@@ -19,7 +19,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
@@ -41,7 +40,6 @@ import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventPro
 import org.eclipse.sirius.web.collaborative.api.services.IRepresentationConfiguration;
 import org.eclipse.sirius.web.collaborative.api.services.IRepresentationEventProcessor;
 import org.eclipse.sirius.web.collaborative.api.services.IRepresentationEventProcessorComposedFactory;
-import org.eclipse.sirius.web.collaborative.api.services.SubscriptionDescription;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IEditingContextPersistenceService;
 import org.eclipse.sirius.web.core.api.IInput;
@@ -56,6 +54,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
 import reactor.core.publisher.Sinks.EmitResult;
@@ -86,7 +85,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
 
     private final ExecutorService executor;
 
-    private final Map<UUID, IRepresentationEventProcessor> representationEventProcessors = new ConcurrentHashMap<>();
+    private final Map<UUID, RepresentationEventProcessorEntry> representationEventProcessors = new ConcurrentHashMap<>();
 
     private final Many<IPayload> sink = Sinks.many().multicast().directBestEffort();
 
@@ -167,7 +166,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
      * @return The response computed by the event handler
      */
     private Optional<EventHandlerResponse> doHandle(IInput input) {
-        this.logger.debug(MessageFormat.format("Handling received event: {0}", input)); //$NON-NLS-1$
+        this.logger.trace(MessageFormat.format("Input received: {0}", input)); //$NON-NLS-1$
 
         Optional<EventHandlerResponse> optionalResponse = Optional.empty();
 
@@ -214,6 +213,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
         this.representationEventProcessors.entrySet().stream()
             .filter(entry -> !Objects.equals(entry.getKey(), representationId))
             .map(Entry::getValue)
+            .map(RepresentationEventProcessorEntry::getRepresentationEventProcessor)
             .forEach(representationEventProcessor -> {
                 representationEventProcessor.refresh(input, changeDescription);
                 IRepresentation representation = representationEventProcessor.getRepresentation();
@@ -246,19 +246,17 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
 
     /**
      * Disposes the representation when its target object has been removed.
-     *
-     * @param context
-     *            the context
      */
     private void disposeRepresentationIfNeeded() {
-        List<IRepresentationEventProcessor> representationEventProcessorToDispose = new ArrayList<>();
-        for (IRepresentationEventProcessor representationEventProcessor : this.representationEventProcessors.values()) {
-            if (this.isDangling(representationEventProcessor.getRepresentation())) {
-                representationEventProcessorToDispose.add(representationEventProcessor);
+        List<RepresentationEventProcessorEntry> entriesToDispose = new ArrayList<>();
+        for (var entry : this.representationEventProcessors.values()) {
+            if (this.isDangling(entry.getRepresentationEventProcessor().getRepresentation())) {
+                entriesToDispose.add(entry);
             }
         }
         // @formatter:off
-        representationEventProcessorToDispose.stream()
+        entriesToDispose.stream()
+            .map(RepresentationEventProcessorEntry::getRepresentationEventProcessor)
             .map(IRepresentationEventProcessor::getRepresentation)
             .map(IRepresentation::getId)
             .forEach(this::disposeRepresentation);
@@ -289,7 +287,8 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
     }
 
     private Optional<EventHandlerResponse> handleRepresentationInput(IRepresentationInput representationInput) {
-        Optional<IRepresentationEventProcessor> optionalRepresentationEventProcessor = Optional.ofNullable(this.representationEventProcessors.get(representationInput.getRepresentationId()));
+        Optional<IRepresentationEventProcessor> optionalRepresentationEventProcessor = Optional.ofNullable(this.representationEventProcessors.get(representationInput.getRepresentationId()))
+                .map(RepresentationEventProcessorEntry::getRepresentationEventProcessor);
 
         Optional<EventHandlerResponse> optionalResponse = Optional.empty();
         if (optionalRepresentationEventProcessor.isPresent()) {
@@ -306,6 +305,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
             IInput input) {
         // @formatter:off
         var optionalRepresentationEventProcessor = Optional.ofNullable(this.representationEventProcessors.get(configuration.getId()))
+                .map(RepresentationEventProcessorEntry::getRepresentationEventProcessor)
                 .filter(representationEventProcessorClass::isInstance)
                 .map(representationEventProcessorClass::cast);
         // @formatter:on
@@ -315,7 +315,14 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
                     this.editingContext);
             if (optionalRepresentationEventProcessor.isPresent()) {
                 var representationEventProcessor = optionalRepresentationEventProcessor.get();
-                this.representationEventProcessors.put(configuration.getId(), representationEventProcessor);
+                Disposable subscription = representationEventProcessor.canBeDisposed().subscribe(canBeDisposed -> {
+                    if (canBeDisposed.booleanValue()) {
+                        this.disposeRepresentation(configuration.getId());
+                    }
+                });
+
+                var representationEventProcessorEntry = new RepresentationEventProcessorEntry(representationEventProcessor, subscription);
+                this.representationEventProcessors.put(configuration.getId(), representationEventProcessorEntry);
             } else {
                 this.logger.warn("The representation with the id {} does not exist", configuration.getId()); //$NON-NLS-1$
             }
@@ -325,34 +332,19 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
     }
 
     @Override
-    public void release(SubscriptionDescription subscriptionDescription) {
-        // Since the release is not triggered by an input, a random id is
-        // generated instead for the whole release sequence
-        UUID correlationId = UUID.randomUUID();
-
-        Optional<UUID> representationIDToRemove = Optional.empty();
+    public List<IRepresentationEventProcessor> getRepresentationEventProcessors() {
         // @formatter:off
-        Set<Entry<UUID, IRepresentationEventProcessor>> entries = this.representationEventProcessors.entrySet();
-        for (Entry<UUID, IRepresentationEventProcessor> entry : entries) {
-            var subscriptionManager = entry.getValue().getSubscriptionManager();
-            subscriptionManager.remove(correlationId, subscriptionDescription);
-
-            if (subscriptionManager.isEmpty()) {
-                representationIDToRemove = Optional.of(entry.getKey());
-            }
-        }
-
-        representationIDToRemove.ifPresent(this::disposeRepresentation);
+        return this.representationEventProcessors.values().stream()
+                .map(RepresentationEventProcessorEntry::getRepresentationEventProcessor)
+                .collect(Collectors.toUnmodifiableList());
         // @formatter:on
     }
 
-    @Override
-    public List<IRepresentationEventProcessor> getRepresentationEventProcessors() {
-        return this.representationEventProcessors.values().stream().collect(Collectors.toUnmodifiableList());
-    }
-
     private void disposeRepresentation(UUID representationId) {
-        Optional.ofNullable(this.representationEventProcessors.remove(representationId)).ifPresent(IRepresentationEventProcessor::dispose);
+        Optional.ofNullable(this.representationEventProcessors.remove(representationId)).ifPresent(entry -> {
+            entry.getDisposable().dispose();
+            entry.getRepresentationEventProcessor().dispose();
+        });
     }
 
     @Override
@@ -362,10 +354,16 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
 
     @Override
     public void dispose() {
+        this.logger.trace(MessageFormat.format("Disposing the editing context \"{0}\"", this.editingContext.getId())); //$NON-NLS-1$
+
         this.executor.shutdown();
 
-        this.representationEventProcessors.values().stream().forEach(IRepresentationEventProcessor::dispose);
+        this.representationEventProcessors.values().stream().forEach(entry -> {
+            entry.getDisposable().dispose();
+            entry.getRepresentationEventProcessor().dispose();
+        });
         this.representationEventProcessors.clear();
+
         EmitResult emitResult = this.sink.tryEmitComplete();
         if (emitResult.isFailure()) {
             String pattern = "An error has occurred while marking the publisher as complete: {0}"; //$NON-NLS-1$

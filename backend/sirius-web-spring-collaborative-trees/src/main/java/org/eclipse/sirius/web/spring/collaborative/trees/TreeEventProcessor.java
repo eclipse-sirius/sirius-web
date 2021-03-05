@@ -47,6 +47,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
 import reactor.core.publisher.Sinks.EmitResult;
 import reactor.core.publisher.Sinks.Many;
+import reactor.core.publisher.Sinks.One;
 
 /**
  * Reacts to the input that target a tree representation and publishes updated versions of the {@link Tree} to
@@ -68,12 +69,16 @@ public class TreeEventProcessor implements ITreeEventProcessor {
 
     private final Many<IPayload> sink = Sinks.many().multicast().directBestEffort();
 
+    private final One<Boolean> canBeDisposedSink = Sinks.<Boolean> one();
+
     private final AtomicReference<Tree> currentTree = new AtomicReference<>();
 
     private final Timer timer;
 
     public TreeEventProcessor(ITreeService treeService, TreeCreationParameters treeCreationParameters, List<ITreeEventHandler> treeEventHandlers, ISubscriptionManager subscriptionManager,
             MeterRegistry meterRegistry) {
+        this.logger.trace(MessageFormat.format("Creating the tree event processor {0}", treeCreationParameters.getEditingContext().getId())); //$NON-NLS-1$
+
         this.treeService = Objects.requireNonNull(treeService);
         this.treeCreationParameters = Objects.requireNonNull(treeCreationParameters);
         this.treeEventHandlers = Objects.requireNonNull(treeEventHandlers);
@@ -164,7 +169,7 @@ public class TreeEventProcessor implements ITreeEventProcessor {
 
     private Tree refreshTree() {
         Tree tree = this.treeService.create(this.treeCreationParameters);
-        this.logger.debug(MessageFormat.format("Tree refreshed: {0})", tree)); //$NON-NLS-1$
+        this.logger.trace(MessageFormat.format("Tree refreshed: {0}", this.treeCreationParameters.getEditingContext().getId())); //$NON-NLS-1$
         return tree;
     }
 
@@ -181,19 +186,43 @@ public class TreeEventProcessor implements ITreeEventProcessor {
         .doOnSubscribe(subscription -> {
             String username = SecurityContextHolder.getContext().getAuthentication().getName();
             this.subscriptionManager.add(input, username);
-            this.logger.debug(MessageFormat.format("{0} has subscribed to the tree {1}", username, this.treeCreationParameters.getEditingContext().getId())); //$NON-NLS-1$
+            this.logger.trace(MessageFormat.format("{0} has subscribed to the tree {1}", username, this.treeCreationParameters.getEditingContext().getId())); //$NON-NLS-1$
         })
         .doOnCancel(() -> {
             String username = SecurityContextHolder.getContext().getAuthentication().getName();
             this.subscriptionManager.remove(UUID.randomUUID(), username);
-            this.logger.debug(MessageFormat.format("{0} has unsubscribed from the tree {1}", username, this.treeCreationParameters.getEditingContext().getId())); //$NON-NLS-1$
+            this.logger.trace(MessageFormat.format("{0} has unsubscribed from the tree {1}", username, this.treeCreationParameters.getEditingContext().getId())); //$NON-NLS-1$
+
+            if (this.subscriptionManager.isEmpty()) {
+                EmitResult emitResult = this.canBeDisposedSink.tryEmitValue(Boolean.TRUE);
+                if (emitResult.isFailure()) {
+                    String pattern = "An error has occurred while emitting that the processor can be disposed: {0}"; //$NON-NLS-1$
+                    this.logger.warn(MessageFormat.format(pattern, emitResult));
+                }
+            }
         });
         // @formatter:on
     }
 
     @Override
+    public Mono<Boolean> canBeDisposed() {
+        return this.canBeDisposedSink.asMono();
+    }
+
+    @Override
     public void dispose() {
+        this.logger.trace(MessageFormat.format("Disposing the tree event processor \"{0}\"", this.treeCreationParameters.getEditingContext().getId())); //$NON-NLS-1$
+
+        if (this.canBeDisposedSink.currentSubscriberCount() > 0) {
+            EmitResult canBeDisposedEmitResult = this.canBeDisposedSink.tryEmitEmpty();
+            if (canBeDisposedEmitResult.isFailure()) {
+                String pattern = "An error has occurred while marking the canBeDisposed mono as complete: {0}"; //$NON-NLS-1$
+                this.logger.warn(MessageFormat.format(pattern, canBeDisposedEmitResult));
+            }
+        }
+
         this.subscriptionManager.dispose();
+
         EmitResult emitResult = this.sink.tryEmitComplete();
         if (emitResult.isFailure()) {
             String pattern = "An error has occurred while marking the publisher as complete: {0}"; //$NON-NLS-1$

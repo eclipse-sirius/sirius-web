@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,7 +16,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.Objects;
 
-import org.eclipse.sirius.web.spring.graphql.api.ISubscriptionTerminatedHandler;
 import org.eclipse.sirius.web.spring.graphql.api.URLConstants;
 import org.eclipse.sirius.web.spring.graphql.ws.GraphQLWebSocketHandler;
 import org.springframework.beans.factory.annotation.Value;
@@ -49,22 +48,18 @@ public class WebSocketConfiguration implements WebSocketConfigurer {
 
     private final ObjectMapper objectMapper;
 
-    private final ISubscriptionTerminatedHandler subscriptionTerminatedHandler;
-
     private final MeterRegistry meterRegistry;
 
-    public WebSocketConfiguration(@Value("${sirius.web.graphql.websocket.allowed.origins}") String allowedOrigins, GraphQL graphQL, ObjectMapper objectMapper,
-            ISubscriptionTerminatedHandler subscriptionTerminatedHandler, MeterRegistry meterRegistry) {
+    public WebSocketConfiguration(@Value("${sirius.web.graphql.websocket.allowed.origins}") String allowedOrigins, GraphQL graphQL, ObjectMapper objectMapper, MeterRegistry meterRegistry) {
         this.allowedOrigins = Objects.requireNonNull(allowedOrigins);
         this.graphQL = Objects.requireNonNull(graphQL);
         this.objectMapper = Objects.requireNonNull(objectMapper);
-        this.subscriptionTerminatedHandler = Objects.requireNonNull(subscriptionTerminatedHandler);
         this.meterRegistry = Objects.requireNonNull(meterRegistry);
     }
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        GraphQLWebSocketHandler graphQLWebSocketHandler = new GraphQLWebSocketHandler(this.objectMapper, this.graphQL, this.subscriptionTerminatedHandler, this.meterRegistry);
+        GraphQLWebSocketHandler graphQLWebSocketHandler = new GraphQLWebSocketHandler(this.objectMapper, this.graphQL, this.meterRegistry);
         WebSocketHandlerRegistration graphQLWebSocketRegistration = registry.addHandler(graphQLWebSocketHandler, URLConstants.GRAPHQL_SUBSCRIPTION_PATH);
         graphQLWebSocketRegistration.setAllowedOrigins(this.allowedOrigins);
     }

@@ -40,6 +40,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.core.publisher.Sinks;
+import reactor.core.publisher.Sinks.EmitResult;
+import reactor.core.publisher.Sinks.One;
 
 /**
  * Reacts to input that target a specific diagram, and {@link #getDiagramUpdates() publishes} updated versions of the
@@ -62,10 +66,14 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
 
     private final IDiagramCreationService diagramCreationService;
 
+    private final One<Boolean> canBeDisposedSink = Sinks.<Boolean> one();
+
     private final DiagramEventFlux diagramEventFlux;
 
     public DiagramEventProcessor(IEditingContext editingContext, IDiagramContext diagramContext, List<IDiagramEventHandler> diagramEventHandlers, ISubscriptionManager subscriptionManager,
             IDiagramCreationService diagramCreationService) {
+        this.logger.trace(MessageFormat.format("Creating the diagram event processor {0}", diagramContext.getDiagram().getId())); //$NON-NLS-1$
+
         this.editingContext = Objects.requireNonNull(editingContext);
         this.diagramContext = Objects.requireNonNull(diagramContext);
         this.diagramEventHandlers = Objects.requireNonNull(diagramEventHandlers);
@@ -77,6 +85,8 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
         Diagram diagram = this.diagramCreationService.refresh(editingContext, diagramContext).orElse(null);
         diagramContext.update(diagram);
         this.diagramEventFlux = new DiagramEventFlux(diagram);
+
+        this.logger.trace(MessageFormat.format("Diagram refreshed: {0})", diagram.getId())); //$NON-NLS-1$
     }
 
     @Override
@@ -120,6 +130,9 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
     public void refresh(IInput input, ChangeDescription changeDescription) {
         if (this.shouldRefresh(changeDescription)) {
             Diagram refreshedDiagram = this.diagramCreationService.refresh(this.editingContext, this.diagramContext).orElse(null);
+
+            this.logger.trace(MessageFormat.format("Diagram refreshed: {0}", refreshedDiagram.getId())); //$NON-NLS-1$
+
             this.diagramContext.reset();
             this.diagramContext.update(refreshedDiagram);
             this.diagramEventFlux.diagramRefreshed(input, refreshedDiagram);
@@ -149,18 +162,41 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
         .doOnSubscribe(subscription -> {
             String username = SecurityContextHolder.getContext().getAuthentication().getName();
             this.subscriptionManager.add(input, username);
-            this.logger.debug(MessageFormat.format("{0} has subscribed to the diagram {1}", username, this.diagramContext.getDiagram().getId())); //$NON-NLS-1$
+            this.logger.trace(MessageFormat.format("{0} has subscribed to the diagram {1}", username, this.diagramContext.getDiagram().getId())); //$NON-NLS-1$
         })
         .doOnCancel(() -> {
             String username = SecurityContextHolder.getContext().getAuthentication().getName();
             this.subscriptionManager.remove(UUID.randomUUID(), username);
-            this.logger.debug(MessageFormat.format("{0} has unsubscribed from the diagram {1}", username, this.diagramContext.getDiagram().getId())); //$NON-NLS-1$
+            this.logger.trace(MessageFormat.format("{0} has unsubscribed from the diagram {1}", username, this.diagramContext.getDiagram().getId())); //$NON-NLS-1$
+
+            if (this.subscriptionManager.isEmpty()) {
+                EmitResult emitResult = this.canBeDisposedSink.tryEmitValue(Boolean.TRUE);
+                if (emitResult.isFailure()) {
+                    String pattern = "An error has occurred while emitting that the processor can be disposed: {0}"; //$NON-NLS-1$
+                    this.logger.warn(MessageFormat.format(pattern, emitResult));
+                }
+            }
         });
         // @formatter:on
     }
 
     @Override
+    public Mono<Boolean> canBeDisposed() {
+        return this.canBeDisposedSink.asMono();
+    }
+
+    @Override
     public void dispose() {
+        this.logger.trace(MessageFormat.format("Disposing the diagram event processor {0}", this.diagramContext.getDiagram().getId())); //$NON-NLS-1$
+
+        if (this.canBeDisposedSink.currentSubscriberCount() > 0) {
+            EmitResult canBeDisposedEmitResult = this.canBeDisposedSink.tryEmitEmpty();
+            if (canBeDisposedEmitResult.isFailure()) {
+                String pattern = "An error has occurred while marking the canBeDisposed mono as complete: {0}"; //$NON-NLS-1$
+                this.logger.warn(MessageFormat.format(pattern, canBeDisposedEmitResult));
+            }
+        }
+
         this.subscriptionManager.dispose();
         this.diagramEventFlux.dispose();
     }

@@ -26,7 +26,7 @@ import reactor.core.publisher.Flux;
  *
  * @author sbegaudeau
  */
-public interface IRepresentationEventProcessor {
+public interface IRepresentationEventProcessor extends IDisposablePublisher {
     IRepresentation getRepresentation();
 
     Optional<EventHandlerResponse> handle(IRepresentationInput representationInput);
@@ -37,5 +37,4 @@ public interface IRepresentationEventProcessor {
 
     Flux<IPayload> getOutputEvents(IInput input);
 
-    void dispose();
 }
