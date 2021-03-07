@@ -14,7 +14,8 @@ package org.eclipse.sirius.web.collaborative.api.services;
 
 import java.util.Optional;
 
-import org.eclipse.sirius.web.core.api.IEditingContext;
+import org.eclipse.sirius.web.services.api.Context;
+import org.eclipse.sirius.web.services.api.objects.IEditingContext;
 
 /**
  * Interface used to create the various representation event processors.
@@ -23,5 +24,5 @@ import org.eclipse.sirius.web.core.api.IEditingContext;
  */
 public interface IRepresentationEventProcessorComposedFactory {
     <T extends IRepresentationEventProcessor> Optional<T> createRepresentationEventProcessor(Class<T> representationEventProcessorClass, IRepresentationConfiguration configuration,
-            IEditingContext editingContext);
+            IEditingContext editingContext, Context context);
 }

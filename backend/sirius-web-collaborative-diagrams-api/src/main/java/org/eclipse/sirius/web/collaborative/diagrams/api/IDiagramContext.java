@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo and others.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,8 +15,6 @@ package org.eclipse.sirius.web.collaborative.diagrams.api;
 import java.util.List;
 
 import org.eclipse.sirius.web.diagrams.Diagram;
-import org.eclipse.sirius.web.diagrams.MoveEvent;
-import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.ViewCreationRequest;
 
 /**
@@ -35,15 +33,6 @@ public interface IDiagramContext {
 
     void update(Diagram updatedDiagram);
 
-    void reset();
-
     List<ViewCreationRequest> getViewCreationRequests();
 
-    MoveEvent getMoveEvent();
-
-    void setMoveEvent(MoveEvent moveEvent);
-
-    Position getStartingPosition();
-
-    void setStartingPosition(Position startingPosition);
 }

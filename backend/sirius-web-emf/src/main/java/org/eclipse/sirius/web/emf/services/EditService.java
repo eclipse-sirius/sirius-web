@@ -43,9 +43,9 @@ import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 import org.eclipse.sirius.emfjson.resource.JsonResourceImpl;
-import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.services.api.objects.ChildCreationDescription;
 import org.eclipse.sirius.web.services.api.objects.IEditService;
+import org.eclipse.sirius.web.services.api.objects.IEditingContext;
 import org.eclipse.sirius.web.services.api.objects.Namespace;
 import org.springframework.stereotype.Service;
 
@@ -134,14 +134,14 @@ public class EditService implements IEditService {
 
         return childCreationDescriptions;
     }
-
+    
     @Override
     public Optional<Object> createChild(IEditingContext editingContext, Object object, String childCreationDescriptionId) {
         // @formatter:off
-        var optionalEditingDomain = Optional.of(editingContext)
-                .filter(EditingContext.class::isInstance)
-                .map(EditingContext.class::cast)
-                .map(EditingContext::getDomain);
+        Optional<AdapterFactoryEditingDomain> optionalEditingDomain = Optional.of(editingContext)
+                .map(IEditingContext::getDomain)
+                .filter(AdapterFactoryEditingDomain.class::isInstance)
+                .map(AdapterFactoryEditingDomain.class::cast);
 
         Optional<EObject> optionalEObject = Optional.of(object)
                 .filter(EObject.class::isInstance)
@@ -247,9 +247,9 @@ public class EditService implements IEditService {
 
         // @formatter:off
         var optionalEditingDomain = Optional.of(editingContext)
-                .filter(EditingContext.class::isInstance)
-                .map(EditingContext.class::cast)
-                .map(EditingContext::getDomain);
+                .map(IEditingContext::getDomain)
+                .filter(AdapterFactoryEditingDomain.class::isInstance)
+                .map(AdapterFactoryEditingDomain.class::cast);
         // @formatter:on
 
         if (optionalEClass.isPresent() && optionalEditingDomain.isPresent()) {

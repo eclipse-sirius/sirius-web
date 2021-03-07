@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo and others.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,14 +14,12 @@ package org.eclipse.sirius.web.diagrams.components;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.eclipse.sirius.web.components.Element;
 import org.eclipse.sirius.web.components.IComponent;
 import org.eclipse.sirius.web.diagrams.Diagram;
-import org.eclipse.sirius.web.diagrams.MoveEvent;
 import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.Size;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
@@ -46,8 +44,6 @@ public class DiagramComponent implements IComponent {
     public Element render() {
         VariableManager variableManager = this.props.getVariableManager();
         DiagramDescription diagramDescription = this.props.getDiagramDescription();
-        Optional<MoveEvent> optionalMoveEvent = this.props.getMoveEvent();
-        NodePositionProvider nodePositionProvider = new NodePositionProvider(this.props.getStartingPosition().orElse(null), optionalMoveEvent.orElse(null));
         var optionalPreviousDiagram = this.props.getPreviousDiagram();
 
         String label = diagramDescription.getLabelProvider().apply(variableManager);
@@ -64,29 +60,19 @@ public class DiagramComponent implements IComponent {
                     var previousNodes = optionalPreviousDiagram.map(previousDiagram -> diagramElementRequestor.getRootNodes(previousDiagram, nodeDescription))
                             .orElse(List.of());
                     INodesRequestor nodesRequestor = new NodesRequestor(previousNodes);
-                    Position parentAbsolutePosition = Position.at(0, 0);
-
-                    var nodeComponentProps = NodeComponentProps.newNodeComponentProps()
-                            .variableManager(variableManager)
-                            .nodeDescription(nodeDescription)
-                            .nodesRequestor(nodesRequestor)
-                            .containmentKind(NodeContainmentKind.CHILD_NODE)
-                            .cache(cache)
-                            .viewCreationRequests(this.props.getViewCreationRequests())
-                            .nodePositionProvider(nodePositionProvider)
-                            .parentElementId(diagramId)
-                            .previousParentElement(optionalPreviousDiagram.map(Object.class::cast))
-                            .parentAbsolutePosition(parentAbsolutePosition)
-                            .build();
+                    var nodeComponentProps = new NodeComponentProps(variableManager, nodeDescription, nodesRequestor, NodeContainmentKind.CHILD_NODE, cache, this.props.getViewCreationRequests(), diagramId);
                     return new Element(NodeComponent.class, nodeComponentProps);
-                }).collect(Collectors.toList());
+                })
+                .collect(Collectors.toList());
+        // @formatter:on
 
+        // @formatter:off
         var edges = diagramDescription.getEdgeDescriptions().stream()
                 .map(edgeDescription -> {
                     var previousEdges = optionalPreviousDiagram.map(previousDiagram -> diagramElementRequestor.getEdges(previousDiagram, edgeDescription))
                             .orElse(List.of());
                     IEdgesRequestor edgesRequestor = new EdgesRequestor(previousEdges);
-                    var edgeComponentProps = new EdgeComponentProps(variableManager, edgeDescription, edgesRequestor, cache, optionalMoveEvent.orElse(null));
+                    var edgeComponentProps = new EdgeComponentProps(variableManager, edgeDescription, edgesRequestor, cache);
                     return new Element(EdgeComponent.class, edgeComponentProps);
                 })
                 .collect(Collectors.toList());

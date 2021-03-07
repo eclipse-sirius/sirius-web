@@ -23,8 +23,8 @@
   padding: 4px 8px;
 }
 .userName:hover {
-  background-color: var(--daintree);
+  background-color: #000000;
 }
 .userName:focus {
-  background-color: var(--daintree);
+  background-color: #000000;
 }

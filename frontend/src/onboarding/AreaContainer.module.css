@@ -27,7 +27,7 @@
 .title {
   font-size: var(--font-size-3);
   font-weight: var(--font-weight-bold);
-  color: var(--daintree);
+  color: #000000;
   white-space: nowrap;
 }
 

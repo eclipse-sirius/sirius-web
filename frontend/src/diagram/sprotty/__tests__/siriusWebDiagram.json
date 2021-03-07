@@ -44,7 +44,7 @@
         }
       },
       "style": {
-        "imageURL": "/api/images/images/antenna.svg"
+        "imageURL": "http://192.168.1.17:8080/api/images/images/antenna.svg"
       },
       "position": {
         "x": 314,
@@ -133,7 +133,7 @@
             }
           },
           "style": {
-            "imageURL": "/api/images/images/power_output.svg"
+            "imageURL": "http://192.168.1.17:8080/api/images/images/power_output.svg"
           },
           "position": {
             "x": -30,
@@ -179,7 +179,7 @@
             }
           },
           "style": {
-            "imageURL": "/api/images/images/chipset_standard.svg"
+            "imageURL": "http://192.168.1.17:8080/api/images/images/chipset_standard.svg"
           },
           "position": {
             "x": 86,
@@ -223,7 +223,7 @@
             }
           },
           "style": {
-            "imageURL": "/api/images/images/chipset2_high.svg"
+            "imageURL": "http://192.168.1.17:8080/api/images/images/chipset2_high.svg"
           },
           "position": {
             "x": 180,
@@ -267,7 +267,7 @@
             }
           },
           "style": {
-            "imageURL": "/api/images/images/fan.svg"
+            "imageURL": "http://192.168.1.17:8080/api/images/images/fan.svg"
           },
           "position": {
             "x": 12,
@@ -358,7 +358,7 @@
             }
           },
           "style": {
-            "imageURL": "/api/images/images/power_input.svg"
+            "imageURL": "http://192.168.1.17:8080/api/images/images/power_input.svg"
           },
           "position": {
             "x": -30,
@@ -404,7 +404,7 @@
             }
           },
           "style": {
-            "imageURL": "/api/images/images/cpu_standard.svg"
+            "imageURL": "http://192.168.1.17:8080/api/images/images/cpu_standard.svg"
           },
           "position": {
             "x": 136,
@@ -448,7 +448,7 @@
             }
           },
           "style": {
-            "imageURL": "/api/images/images/chipset2_standard.svg"
+            "imageURL": "http://192.168.1.17:8080/api/images/images/chipset2_standard.svg"
           },
           "position": {
             "x": 240,
@@ -492,7 +492,7 @@
             }
           },
           "style": {
-            "imageURL": "/api/images/images/cpu_standard.svg"
+            "imageURL": "http://192.168.1.17:8080/api/images/images/cpu_standard.svg"
           },
           "position": {
             "x": 136,
@@ -536,7 +536,7 @@
             }
           },
           "style": {
-            "imageURL": "/api/images/images/camera.svg"
+            "imageURL": "http://192.168.1.17:8080/api/images/images/camera.svg"
           },
           "position": {
             "x": 32,
@@ -580,7 +580,7 @@
             }
           },
           "style": {
-            "imageURL": "/api/images/images/radar.svg"
+            "imageURL": "http://192.168.1.17:8080/api/images/images/radar.svg"
           },
           "position": {
             "x": 12,
@@ -624,7 +624,7 @@
             }
           },
           "style": {
-            "imageURL": "/api/images/images/fan.svg"
+            "imageURL": "http://192.168.1.17:8080/api/images/images/fan.svg"
           },
           "position": {
             "x": 52,

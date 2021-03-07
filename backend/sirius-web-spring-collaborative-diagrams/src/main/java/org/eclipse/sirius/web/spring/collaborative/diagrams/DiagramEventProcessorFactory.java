@@ -24,9 +24,10 @@ import org.eclipse.sirius.web.collaborative.diagrams.api.DiagramConfiguration;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramCreationService;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramEventProcessor;
-import org.eclipse.sirius.web.core.api.IEditingContext;
+import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramService;
 import org.eclipse.sirius.web.diagrams.Diagram;
-import org.eclipse.sirius.web.diagrams.services.api.IDiagramService;
+import org.eclipse.sirius.web.services.api.Context;
+import org.eclipse.sirius.web.services.api.objects.IEditingContext;
 import org.springframework.stereotype.Service;
 
 /**
@@ -60,7 +61,7 @@ public class DiagramEventProcessorFactory implements IRepresentationEventProcess
 
     @Override
     public <T extends IRepresentationEventProcessor> Optional<T> createRepresentationEventProcessor(Class<T> representationEventProcessorClass, IRepresentationConfiguration configuration,
-            IEditingContext editingContext) {
+            IEditingContext editingContext, Context context) {
         if (IDiagramEventProcessor.class.isAssignableFrom(representationEventProcessorClass) && configuration instanceof DiagramConfiguration) {
             DiagramConfiguration diagramConfiguration = (DiagramConfiguration) configuration;
             var optionalDiagram = this.diagramService.findById(diagramConfiguration.getId());

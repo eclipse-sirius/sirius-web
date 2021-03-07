@@ -15,14 +15,14 @@ import React, { useEffect, useRef } from 'react';
 import { TreeItem } from 'tree/TreeItem';
 
 const propTypes = {
-  editingContextId: PropTypes.string.isRequired,
   tree: PropTypes.object.isRequired,
   onExpand: PropTypes.func.isRequired,
   selection: PropTypes.object,
+  displayedRepresentation: PropTypes.object,
   setSelection: PropTypes.func.isRequired,
 };
 
-export const Tree = ({ editingContextId, tree, onExpand, selection, setSelection }) => {
+export const Tree = ({ projectId, tree, onExpand, selection, displayedRepresentation, setSelection }) => {
   const treeElement = useRef(null);
 
   useEffect(() => {
@@ -36,11 +36,11 @@ export const Tree = ({ editingContextId, tree, onExpand, selection, setSelection
       ) {
         event.preventDefault();
 
-        const previousItem = document.activeElement as HTMLElement;
+        const previousItem = document.activeElement;
         const dataset = (previousItem as any).dataset;
         if (dataset.treeitemid) {
           const treeItemDomElements = document.querySelectorAll<HTMLElement>('[data-treeitemid]');
-          const index = Array.from(treeItemDomElements).indexOf(previousItem);
+          const index = [].indexOf.call(treeItemDomElements, previousItem);
           const id = dataset.treeitemid;
           const hasChildren = dataset.haschildren;
           const expanded = dataset.expanded;
@@ -88,11 +88,12 @@ export const Tree = ({ editingContextId, tree, onExpand, selection, setSelection
         {tree.children.map((item) => (
           <li key={item.id}>
             <TreeItem
-              editingContextId={editingContextId}
+              projectId={projectId}
               item={item}
               depth={1}
               onExpand={onExpand}
               selection={selection}
+              // displayedRepresentation={displayedRepresentation} TODO TreeItem has no such prop
               setSelection={setSelection}
             />
           </li>

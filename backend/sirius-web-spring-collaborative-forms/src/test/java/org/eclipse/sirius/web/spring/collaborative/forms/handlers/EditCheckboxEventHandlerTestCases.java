@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -44,7 +44,7 @@ public class EditCheckboxEventHandlerTestCases {
     public void testCheckboxEdition() {
         String id = "Checkbox id"; //$NON-NLS-1$
 
-        var input = new EditCheckboxInput(UUID.randomUUID(), UUID.randomUUID(), FORM_ID, id, true);
+        var input = new EditCheckboxInput(UUID.randomUUID(), FORM_ID, id, true);
 
         AtomicBoolean hasBeenExecuted = new AtomicBoolean();
         Function<Boolean, Status> newValueHandler = newValue -> {

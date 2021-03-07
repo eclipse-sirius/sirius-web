@@ -11,17 +11,17 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 .footer {
-  display: flex;
-  justify-content: center;
+  display: grid;
+  justify-items: center;
   margin: 16px;
 }
 
 .copyright {
-  color: var(--daintree-lighten-30);
+  color: rgb(0 0 0);
   font-size: var(--font-size-5);
   line-height: var(--line-height-default);
 }
 
 .link {
-  color: var(--daintree);
+  color: #000000;
 }

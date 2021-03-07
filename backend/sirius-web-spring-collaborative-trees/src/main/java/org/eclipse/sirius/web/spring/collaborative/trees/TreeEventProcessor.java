@@ -20,8 +20,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.sirius.web.collaborative.api.dto.PreDestroyPayload;
-import org.eclipse.sirius.web.collaborative.api.services.ChangeDescription;
-import org.eclipse.sirius.web.collaborative.api.services.ChangeKind;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.ISubscriptionManager;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
@@ -31,20 +29,20 @@ import org.eclipse.sirius.web.collaborative.trees.api.ITreeInput;
 import org.eclipse.sirius.web.collaborative.trees.api.ITreeService;
 import org.eclipse.sirius.web.collaborative.trees.api.TreeCreationParameters;
 import org.eclipse.sirius.web.collaborative.trees.api.TreeRefreshedEventPayload;
-import org.eclipse.sirius.web.core.api.IInput;
-import org.eclipse.sirius.web.core.api.IPayload;
-import org.eclipse.sirius.web.core.api.IRepresentationInput;
 import org.eclipse.sirius.web.representations.IRepresentation;
+import org.eclipse.sirius.web.services.api.Context;
+import org.eclipse.sirius.web.services.api.dto.IPayload;
+import org.eclipse.sirius.web.services.api.dto.IRepresentationInput;
 import org.eclipse.sirius.web.trees.Tree;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Timer;
+import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.Sinks;
-import reactor.core.publisher.Sinks.Many;
 
 /**
  * Reacts to the input that target a tree representation and publishes updated versions of the {@link Tree} to
@@ -64,7 +62,9 @@ public class TreeEventProcessor implements ITreeEventProcessor {
 
     private final ISubscriptionManager subscriptionManager;
 
-    private final Many<IPayload> sink = Sinks.many().multicast().directBestEffort();
+    private final DirectProcessor<IPayload> flux;
+
+    private final FluxSink<IPayload> sink;
 
     private final AtomicReference<Tree> currentTree = new AtomicReference<>();
 
@@ -76,6 +76,9 @@ public class TreeEventProcessor implements ITreeEventProcessor {
         this.treeCreationParameters = Objects.requireNonNull(treeCreationParameters);
         this.treeEventHandlers = Objects.requireNonNull(treeEventHandlers);
         this.subscriptionManager = Objects.requireNonNull(subscriptionManager);
+
+        this.flux = DirectProcessor.create();
+        this.sink = this.flux.sink();
 
         // @formatter:off
         this.timer = Timer.builder(Monitoring.REPRESENTATION_EVENT_PROCESSOR_REFRESH)
@@ -98,7 +101,7 @@ public class TreeEventProcessor implements ITreeEventProcessor {
     }
 
     @Override
-    public Optional<EventHandlerResponse> handle(IRepresentationInput representationInput) {
+    public Optional<EventHandlerResponse> handle(IRepresentationInput representationInput, Context context) {
         if (representationInput instanceof ITreeInput) {
             ITreeInput treeInput = (ITreeInput) representationInput;
             Optional<ITreeEventHandler> optionalTreeEventHandler = this.treeEventHandlers.stream().filter(handler -> handler.canHandle(treeInput)).findFirst();
@@ -106,9 +109,9 @@ public class TreeEventProcessor implements ITreeEventProcessor {
             if (optionalTreeEventHandler.isPresent()) {
                 ITreeEventHandler treeEventHandler = optionalTreeEventHandler.get();
                 EventHandlerResponse eventHandlerResponse = treeEventHandler.handle(this.currentTree.get(), treeInput);
-
-                this.refresh(representationInput, eventHandlerResponse.getChangeDescription());
-
+                if (eventHandlerResponse.getShouldRefreshPredicate().test(this.currentTree.get())) {
+                    this.refresh();
+                }
                 return Optional.of(eventHandlerResponse);
             } else {
                 this.logger.warn("No handler found for event: {}", treeInput); //$NON-NLS-1$
@@ -119,41 +122,16 @@ public class TreeEventProcessor implements ITreeEventProcessor {
     }
 
     @Override
-    public void refresh(IInput input, ChangeDescription changeDescription) {
-        if (this.shouldRefresh(changeDescription.getKind())) {
-            long start = System.currentTimeMillis();
+    public void refresh() {
+        long start = System.currentTimeMillis();
 
-            Tree tree = this.refreshTree();
+        Tree tree = this.refreshTree();
 
-            this.currentTree.set(tree);
-            this.sink.tryEmitNext(new TreeRefreshedEventPayload(input.getId(), tree));
+        this.currentTree.set(tree);
+        this.sink.next(new TreeRefreshedEventPayload(tree));
 
-            long end = System.currentTimeMillis();
-            this.timer.record(end - start, TimeUnit.MILLISECONDS);
-        }
-    }
-
-    private boolean shouldRefresh(String changeKind) {
-        boolean shouldRefresh = false;
-
-        switch (changeKind) {
-        case ChangeKind.SEMANTIC_CHANGE:
-            shouldRefresh = true;
-            break;
-        case ChangeKind.REPRESENTATION_CREATION:
-            shouldRefresh = true;
-            break;
-        case ChangeKind.REPRESENTATION_DELETION:
-            shouldRefresh = true;
-            break;
-        case ChangeKind.REPRESENTATION_RENAMING:
-            shouldRefresh = true;
-            break;
-        default:
-            shouldRefresh = false;
-        }
-
-        return shouldRefresh;
+        long end = System.currentTimeMillis();
+        this.timer.record(end - start, TimeUnit.MILLISECONDS);
     }
 
     private Tree refreshTree() {
@@ -163,21 +141,21 @@ public class TreeEventProcessor implements ITreeEventProcessor {
     }
 
     @Override
-    public Flux<IPayload> getOutputEvents(IInput input) {
-        var initialRefresh = Mono.fromCallable(() -> new TreeRefreshedEventPayload(input.getId(), this.currentTree.get()));
-        var refreshEventFlux = Flux.concat(initialRefresh, this.sink.asFlux());
+    public Flux<IPayload> getOutputEvents() {
+        var initialRefresh = Mono.fromCallable(() -> new TreeRefreshedEventPayload(this.currentTree.get()));
+        var refreshEventFlux = Flux.concat(initialRefresh, this.flux);
 
-        return Flux.merge(refreshEventFlux, this.subscriptionManager.getFlux(input));
+        return Flux.merge(refreshEventFlux, this.subscriptionManager.getFlux());
     }
 
     @Override
     public void dispose() {
         this.subscriptionManager.dispose();
-        this.sink.tryEmitComplete();
+        this.flux.onComplete();
     }
 
     @Override
     public void preDestroy() {
-        this.sink.tryEmitNext(new PreDestroyPayload(this.getRepresentation().getId()));
+        this.sink.next(new PreDestroyPayload(this.getRepresentation().getId()));
     }
 }

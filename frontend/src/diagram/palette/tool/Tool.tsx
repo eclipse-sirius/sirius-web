@@ -47,7 +47,7 @@ export const Tool = ({ tool, selected, onClick, disabled, thumbnail }) => {
     } else {
       imageSrc = httpOrigin + imageURL;
     }
-    image = <img height="16" width="16" alt="" src={imageSrc} title={label} />;
+    image = <img height="20" width="20" alt="" src={imageSrc} title={label} />;
   }
   let labelContent;
   if (!thumbnail) {

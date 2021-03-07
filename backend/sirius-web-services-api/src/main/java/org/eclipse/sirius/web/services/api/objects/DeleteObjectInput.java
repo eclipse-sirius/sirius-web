@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,7 +20,7 @@ import org.eclipse.sirius.web.annotations.graphql.GraphQLField;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLID;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLInputObjectType;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLNonNull;
-import org.eclipse.sirius.web.core.api.IInput;
+import org.eclipse.sirius.web.services.api.dto.IProjectInput;
 
 /**
  * The input of the delete object mutation.
@@ -28,9 +28,7 @@ import org.eclipse.sirius.web.core.api.IInput;
  * @author sbegaudeau
  */
 @GraphQLInputObjectType
-public final class DeleteObjectInput implements IInput {
-    private UUID id;
-
+public final class DeleteObjectInput implements IProjectInput {
     private UUID projectId;
 
     private String objectId;
@@ -39,18 +37,9 @@ public final class DeleteObjectInput implements IInput {
         // Used by Jackson
     }
 
-    public DeleteObjectInput(UUID id, UUID projectId, String objectId) {
-        this.id = Objects.requireNonNull(id);
+    public DeleteObjectInput(UUID projectId, String objectId) {
         this.projectId = Objects.requireNonNull(projectId);
         this.objectId = Objects.requireNonNull(objectId);
-    }
-
-    @Override
-    @GraphQLID
-    @GraphQLField
-    @GraphQLNonNull
-    public UUID getId() {
-        return this.id;
     }
 
     @GraphQLID
@@ -69,7 +58,7 @@ public final class DeleteObjectInput implements IInput {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, projectId: {2}, objectId: {3}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.projectId, this.objectId);
+        String pattern = "{0} '{'projectId: {1}, objectId: {2}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.projectId, this.objectId);
     }
 }

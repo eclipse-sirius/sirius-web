@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,22 +17,22 @@ import java.util.Optional;
 
 import org.eclipse.sirius.web.collaborative.api.dto.CreateRepresentationInput;
 import org.eclipse.sirius.web.collaborative.api.dto.CreateRepresentationSuccessPayload;
-import org.eclipse.sirius.web.collaborative.api.services.ChangeDescription;
-import org.eclipse.sirius.web.collaborative.api.services.ChangeKind;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
-import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventHandler;
+import org.eclipse.sirius.web.collaborative.api.services.IProjectEventHandler;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramCreationService;
-import org.eclipse.sirius.web.core.api.ErrorPayload;
-import org.eclipse.sirius.web.core.api.IEditingContext;
-import org.eclipse.sirius.web.core.api.IInput;
-import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
+import org.eclipse.sirius.web.services.api.Context;
+import org.eclipse.sirius.web.services.api.dto.ErrorPayload;
+import org.eclipse.sirius.web.services.api.dto.IProjectInput;
+import org.eclipse.sirius.web.services.api.objects.IEditingContext;
+import org.eclipse.sirius.web.services.api.objects.IObjectService;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationDescriptionService;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationService;
 import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;
 import org.eclipse.sirius.web.spring.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
+import org.eclipse.sirius.web.trees.Tree;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
@@ -45,7 +45,7 @@ import io.micrometer.core.instrument.MeterRegistry;
  * @author hmarchadour
  */
 @Service
-public class CreateDiagramEventHandler implements IEditingContextEventHandler {
+public class CreateDiagramEventHandler implements IProjectEventHandler {
 
     private final IRepresentationDescriptionService representationDescriptionService;
 
@@ -75,11 +75,11 @@ public class CreateDiagramEventHandler implements IEditingContextEventHandler {
     }
 
     @Override
-    public boolean canHandle(IInput input) {
-        if (input instanceof CreateRepresentationInput) {
-            CreateRepresentationInput createRepresentationInput = (CreateRepresentationInput) input;
+    public boolean canHandle(IProjectInput projectInput) {
+        if (projectInput instanceof CreateRepresentationInput) {
+            CreateRepresentationInput input = (CreateRepresentationInput) projectInput;
             // @formatter:off
-            return this.representationDescriptionService.findRepresentationDescriptionById(createRepresentationInput.getRepresentationDescriptionId())
+            return this.representationDescriptionService.findRepresentationDescriptionById(input.getRepresentationDescriptionId())
                     .filter(DiagramDescription.class::isInstance)
                     .isPresent();
             // @formatter:on
@@ -88,28 +88,28 @@ public class CreateDiagramEventHandler implements IEditingContextEventHandler {
     }
 
     @Override
-    public EventHandlerResponse handle(IEditingContext editingContext, IInput input) {
+    public EventHandlerResponse handle(IEditingContext editingContext, IProjectInput projectInput, Context context) {
         this.counter.increment();
 
-        if (input instanceof CreateRepresentationInput) {
-            CreateRepresentationInput createRepresentationInput = (CreateRepresentationInput) input;
+        if (projectInput instanceof CreateRepresentationInput) {
+            CreateRepresentationInput input = (CreateRepresentationInput) projectInput;
 
             // @formatter:off
-            Optional<DiagramDescription> optionalDiagramDescription = this.representationDescriptionService.findRepresentationDescriptionById(createRepresentationInput.getRepresentationDescriptionId())
+            Optional<DiagramDescription> optionalDiagramDescription = this.representationDescriptionService.findRepresentationDescriptionById(input.getRepresentationDescriptionId())
                     .filter(DiagramDescription.class::isInstance)
                     .map(DiagramDescription.class::cast);
             // @formatter:on
-            Optional<Object> optionalObject = this.objectService.getObject(editingContext, createRepresentationInput.getObjectId());
+            Optional<Object> optionalObject = this.objectService.getObject(editingContext, input.getObjectId());
 
             if (optionalDiagramDescription.isPresent() && optionalObject.isPresent()) {
                 DiagramDescription diagramDescription = optionalDiagramDescription.get();
                 Object object = optionalObject.get();
 
-                Diagram diagram = this.diagramCreationService.create(createRepresentationInput.getRepresentationName(), object, diagramDescription, editingContext);
+                Diagram diagram = this.diagramCreationService.create(input.getRepresentationName(), object, diagramDescription, editingContext);
 
                 // @formatter:off
                 RepresentationDescriptor representationDescriptor = RepresentationDescriptor.newRepresentationDescriptor(diagram.getId())
-                        .projectId(editingContext.getId())
+                        .projectId(editingContext.getProjectId())
                         .descriptionId(diagram.getDescriptionId())
                         .targetObjectId(diagram.getTargetObjectId())
                         .label(diagram.getLabel())
@@ -119,12 +119,12 @@ public class CreateDiagramEventHandler implements IEditingContextEventHandler {
 
                 this.representationService.save(representationDescriptor);
 
-                return new EventHandlerResponse(new ChangeDescription(ChangeKind.REPRESENTATION_CREATION, editingContext.getId()), new CreateRepresentationSuccessPayload(input.getId(), diagram));
+                return new EventHandlerResponse(false, representation -> representation instanceof Tree, new CreateRepresentationSuccessPayload(diagram));
             }
         }
 
-        String message = this.messageService.invalidInput(input.getClass().getSimpleName(), CreateRepresentationInput.class.getSimpleName());
-        return new EventHandlerResponse(new ChangeDescription(ChangeKind.NOTHING, editingContext.getId()), new ErrorPayload(input.getId(), message));
+        String message = this.messageService.invalidInput(projectInput.getClass().getSimpleName(), CreateRepresentationInput.class.getSimpleName());
+        return new EventHandlerResponse(false, representation -> false, new ErrorPayload(message));
     }
 
 }

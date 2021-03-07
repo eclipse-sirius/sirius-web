@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.sirius.web.core.api.IPayload;
+import org.eclipse.sirius.web.services.api.dto.IPayload;
 
 /**
  * Interface of the service used to manipulate projects.
@@ -24,6 +24,8 @@ import org.eclipse.sirius.web.core.api.IPayload;
  * @author sbegaudeau
  */
 public interface IProjectService {
+
+    boolean existsById(UUID projectId);
 
     Optional<Project> getProject(UUID projectId);
 

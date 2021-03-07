@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo and others.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,8 +28,6 @@ import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramInput;
  */
 @GraphQLInputObjectType
 public final class InvokeNodeToolOnDiagramInput implements IDiagramInput {
-    private UUID id;
-
     private UUID projectId;
 
     private UUID representationId;
@@ -37,18 +35,6 @@ public final class InvokeNodeToolOnDiagramInput implements IDiagramInput {
     private UUID diagramElementId;
 
     private String toolId;
-
-    private double startingPositionX;
-
-    private double startingPositionY;
-
-    @Override
-    @GraphQLID
-    @GraphQLField
-    @GraphQLNonNull
-    public UUID getId() {
-        return this.id;
-    }
 
     @GraphQLID
     @GraphQLField
@@ -79,22 +65,10 @@ public final class InvokeNodeToolOnDiagramInput implements IDiagramInput {
         return this.toolId;
     }
 
-    @GraphQLField
-    @GraphQLNonNull
-    public double getStartingPositionX() {
-        return this.startingPositionX;
-    }
-
-    @GraphQLField
-    @GraphQLNonNull
-    public double getStartingPositionY() {
-        return this.startingPositionY;
-    }
-
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, projectId: {2}, representationId: {3}, diagramElementId: {4}, toolId: {5}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.projectId, this.representationId, this.diagramElementId, this.toolId);
+        String pattern = "{0} '{'projectId: {1}, representationId: {2}, diagramElementId: {3}, toolId: {4}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.projectId, this.representationId, this.diagramElementId, this.toolId);
     }
 
 }

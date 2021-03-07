@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,13 +14,11 @@ package org.eclipse.sirius.web.services.api.projects;
 
 import java.text.MessageFormat;
 import java.util.Objects;
-import java.util.UUID;
 
 import org.eclipse.sirius.web.annotations.graphql.GraphQLField;
-import org.eclipse.sirius.web.annotations.graphql.GraphQLID;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLNonNull;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLObjectType;
-import org.eclipse.sirius.web.core.api.IPayload;
+import org.eclipse.sirius.web.services.api.dto.IPayload;
 import org.eclipse.sirius.web.services.api.viewer.IViewer;
 
 /**
@@ -31,21 +29,10 @@ import org.eclipse.sirius.web.services.api.viewer.IViewer;
 @GraphQLObjectType
 public final class DeleteProjectSuccessPayload implements IPayload {
 
-    private final UUID id;
-
     private final IViewer viewer;
 
-    public DeleteProjectSuccessPayload(UUID id, IViewer viewer) {
-        this.id = Objects.requireNonNull(id);
+    public DeleteProjectSuccessPayload(IViewer viewer) {
         this.viewer = Objects.requireNonNull(viewer);
-    }
-
-    @Override
-    @GraphQLID
-    @GraphQLField
-    @GraphQLNonNull
-    public UUID getId() {
-        return this.id;
     }
 
     @GraphQLField
@@ -56,7 +43,7 @@ public final class DeleteProjectSuccessPayload implements IPayload {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, viewer: '{'id: {2}, username: {3}'}''}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.viewer.getId(), this.viewer.getUsername());
+        String pattern = "{0} '{'viewer: '{'id: {1}, username: {2}'}''}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.viewer.getId(), this.viewer.getUsername());
     }
 }

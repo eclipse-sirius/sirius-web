@@ -24,16 +24,14 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
-import org.eclipse.emf.edit.provider.ComposedImage;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
-import org.eclipse.sirius.web.core.api.IEditingContext;
-import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.representations.IRepresentation;
+import org.eclipse.sirius.web.services.api.objects.IEditingContext;
+import org.eclipse.sirius.web.services.api.objects.IObjectService;
 import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;
 import org.springframework.stereotype.Service;
 
@@ -72,9 +70,6 @@ public class ObjectService implements IObjectService {
             id = this.getIdFromIDAdapter(eObject);
             if (id == null) {
                 id = this.getIdFromURIFragment(eObject);
-            }
-            if (id == null && eObject.eIsProxy()) {
-                id = ((InternalEObject) eObject).eProxyURI().toString();
             }
         }
         return id;
@@ -159,7 +154,14 @@ public class ObjectService implements IObjectService {
             if (adapter instanceof IItemLabelProvider) {
                 IItemLabelProvider labelProvider = (IItemLabelProvider) adapter;
                 Object image = labelProvider.getImage(eObject);
-                String imagePath = this.findImagePath(image);
+                String imagePath = null;
+                if (image instanceof URI) {
+                    URI uri = (URI) image;
+                    imagePath = uri.toString();
+                } else if (image instanceof URL) {
+                    URL url = (URL) image;
+                    imagePath = url.toString();
+                }
                 if (imagePath != null) {
                     String[] uriSplit = imagePath.split("!"); //$NON-NLS-1$
                     if (uriSplit.length > 1) {
@@ -172,59 +174,38 @@ public class ObjectService implements IObjectService {
         return null;
     }
 
-    private String findImagePath(Object image) {
-        String imagePath = null;
-        if (image instanceof URI) {
-            URI uri = (URI) image;
-            imagePath = uri.toString();
-        } else if (image instanceof URL) {
-            URL url = (URL) image;
-            imagePath = url.toString();
-        } else if (image instanceof ComposedImage) {
-            ComposedImage composite = (ComposedImage) image;
-            // @formatter:off
-            imagePath = composite.getImages().stream()
-                                 .map(this::findImagePath)
-                                 .filter(Objects::nonNull)
-                                 .findFirst()
-                                 .orElse(null);
-            // @formatter:on
-        }
-        return imagePath;
-    }
-
     @Override
     public Optional<Object> getObject(IEditingContext editingContext, String objectId) {
         // @formatter:off
         return Optional.of(editingContext)
-                .filter(EditingContext.class::isInstance)
-                .map(EditingContext.class::cast)
-                .map(EditingContext::getDomain)
-                .map(EditingDomain::getResourceSet)
-                .flatMap(resourceSet -> {
-                    Optional<EObject> optionalEObject = Optional.empty();
+            .map(IEditingContext::getDomain)
+            .filter(EditingDomain.class::isInstance)
+            .map(EditingDomain.class::cast)
+            .map(EditingDomain::getResourceSet)
+            .flatMap(resourceSet -> {
+                Optional<EObject> optionalEObject = Optional.empty();
 
-                    int index = objectId.indexOf(ID_SEPARATOR);
-                    if (index != -1) {
-                        String resourceLastSegment = objectId.substring(0, index);
-                        String eObjectURIFragment = objectId.substring(index + ID_SEPARATOR.length());
-                        optionalEObject = resourceSet.getResources().stream()
-                                .filter(resource -> resourceLastSegment.equals(resource.getURI().lastSegment())).findFirst()
-                                .map(resource -> resource.getEObject(eObjectURIFragment));
-                    } else {
-                        optionalEObject = resourceSet.getResources().stream()
-                                .flatMap(resource -> Optional.ofNullable(resource.getEObject(objectId)).stream())
-                                .findFirst();
-                    }
+                int index = objectId.indexOf(ID_SEPARATOR);
+                if (index != -1) {
+                    String resourceLastSegment = objectId.substring(0, index);
+                    String eObjectURIFragment = objectId.substring(index + ID_SEPARATOR.length());
+                    optionalEObject = resourceSet.getResources().stream()
+                            .filter(resource -> resourceLastSegment.equals(resource.getURI().lastSegment())).findFirst()
+                            .map(resource -> resource.getEObject(eObjectURIFragment));
+                } else {
+                    optionalEObject = resourceSet.getResources().stream()
+                            .flatMap(resource -> Optional.ofNullable(resource.getEObject(objectId)).stream())
+                            .findFirst();
+                }
 
-                    // If not found in the resources of the ResourceSet, we search in the PackageRegistry resources
-                    if (!optionalEObject.isPresent()) {
-                        URI uri = URI.createURI(objectId);
-                        EObject eObject = resourceSet.getEObject(uri, false);
-                        optionalEObject = Optional.ofNullable(eObject);
-                    }
-                    return optionalEObject;
-                });
+                // If not found in the resources of the ResourceSet, we search in the PackageRegistry resources
+                if (!optionalEObject.isPresent()) {
+                    URI uri = URI.createURI(objectId);
+                    EObject eObject = resourceSet.getEObject(uri, false);
+                    optionalEObject = Optional.ofNullable(eObject);
+                }
+                return optionalEObject;
+            });
         // @formatter:on
     }
 
@@ -233,8 +214,7 @@ public class ObjectService implements IObjectService {
         List<Object> contents = new ArrayList<>();
 
         // @formatter:off
-        this.getObject(editingContext, objectId)
-        .filter(EObject.class::isInstance)
+        this.getObject(editingContext, objectId).filter(EObject.class::isInstance)
                 .map(EObject.class::cast)
                 .ifPresent(eObject -> contents.addAll(eObject.eContents()));
         // @formatter:on
@@ -245,8 +225,7 @@ public class ObjectService implements IObjectService {
     @Override
     public Optional<String> getLabelField(Object object) {
      // @formatter:off
-        return Optional.of(object)
-                .filter(EObject.class::isInstance)
+        return Optional.of(object).filter(EObject.class::isInstance)
                 .map(EObject.class::cast)
                 .flatMap(this::getLabelEAttribute)
                 .map(EAttribute::getName);

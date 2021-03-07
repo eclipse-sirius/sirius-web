@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo and others.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,10 +13,8 @@
 package org.eclipse.sirius.web.diagrams.components;
 
 import java.util.Objects;
-import java.util.Optional;
 
 import org.eclipse.sirius.web.components.IProps;
-import org.eclipse.sirius.web.diagrams.MoveEvent;
 import org.eclipse.sirius.web.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.web.diagrams.renderer.DiagramRenderingCache;
 import org.eclipse.sirius.web.representations.VariableManager;
@@ -36,14 +34,11 @@ public class EdgeComponentProps implements IProps {
 
     private final DiagramRenderingCache cache;
 
-    private final MoveEvent moveEvent;
-
-    public EdgeComponentProps(VariableManager variableManager, EdgeDescription edgeDescription, IEdgesRequestor edgesRequestor, DiagramRenderingCache cache, MoveEvent moveEvent) {
+    public EdgeComponentProps(VariableManager variableManager, EdgeDescription edgeDescription, IEdgesRequestor edgesRequestor, DiagramRenderingCache cache) {
         this.variableManager = Objects.requireNonNull(variableManager);
         this.edgeDescription = Objects.requireNonNull(edgeDescription);
         this.edgesRequestor = Objects.requireNonNull(edgesRequestor);
         this.cache = Objects.requireNonNull(cache);
-        this.moveEvent = moveEvent;
     }
 
     public VariableManager getVariableManager() {
@@ -60,9 +55,5 @@ public class EdgeComponentProps implements IProps {
 
     public DiagramRenderingCache getCache() {
         return this.cache;
-    }
-
-    public Optional<MoveEvent> getMoveEvent() {
-        return Optional.ofNullable(this.moveEvent);
     }
 }

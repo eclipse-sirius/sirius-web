@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,18 +18,12 @@ export const diagramEventSubscription = gql`
       ... on PreDestroyPayload {
         id
       }
-      ... on ErrorPayload {
-        id
-        message
-      }
       ... on SubscribersUpdatedEventPayload {
-        id
         subscribers {
           username
         }
       }
       ... on DiagramRefreshedEventPayload {
-        id
         diagram {
           id
           kind
@@ -211,22 +205,6 @@ export const editLabelMutation = gql`
     editLabel(input: $input) {
       __typename
       ... on EditLabelSuccessPayload {
-        diagram {
-          id
-        }
-      }
-      ... on ErrorPayload {
-        message
-      }
-    }
-  }
-`;
-
-export const updateNodePositionOp = gql`
-  mutation updateNodePosition($input: UpdateNodePositionInput!) {
-    updateNodePosition(input: $input) {
-      __typename
-      ... on UpdateNodePositionSuccessPayload {
         diagram {
           id
         }

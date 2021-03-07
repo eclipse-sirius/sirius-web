@@ -29,7 +29,6 @@ import org.eclipse.sirius.web.compat.forms.GroupDescriptionConverter;
 import org.eclipse.sirius.web.compat.forms.PageDescriptionConverter;
 import org.eclipse.sirius.web.compat.services.forms.api.IViewExtensionDescriptionConverter;
 import org.eclipse.sirius.web.compat.services.representations.IdentifiedElementLabelProvider;
-import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.emf.compatibility.AQLInterpreterFactory;
 import org.eclipse.sirius.web.forms.description.FormDescription;
 import org.eclipse.sirius.web.forms.description.GroupDescription;
@@ -37,6 +36,7 @@ import org.eclipse.sirius.web.forms.description.PageDescription;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
 import org.eclipse.sirius.web.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.web.representations.VariableManager;
+import org.eclipse.sirius.web.services.api.objects.IObjectService;
 import org.springframework.stereotype.Service;
 
 /**

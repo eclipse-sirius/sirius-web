@@ -27,9 +27,9 @@
 
 .tableItem:first-child {
   border-top: solid 2px;
-  border-top-color: var(--blue-lagoon);
+  border-top-color: #de1000;
 }
 
 .tableItem:hover {
-  background-color: var(--blue-lagoon-lighten-95);
+  background-color: #d4392dab;
 }

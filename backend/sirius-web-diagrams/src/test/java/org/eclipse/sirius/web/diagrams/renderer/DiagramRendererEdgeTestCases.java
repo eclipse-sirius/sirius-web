@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo and others.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,6 +30,7 @@ import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.Edge;
 import org.eclipse.sirius.web.diagrams.EdgeStyle;
 import org.eclipse.sirius.web.diagrams.INodeStyle;
+import org.eclipse.sirius.web.diagrams.Label;
 import org.eclipse.sirius.web.diagrams.LineStyle;
 import org.eclipse.sirius.web.diagrams.Node;
 import org.eclipse.sirius.web.diagrams.RectangularNodeStyle;
@@ -88,14 +89,7 @@ public class DiagramRendererEdgeTestCases {
         // @formatter:on
 
         VariableManager variableManager = new VariableManager();
-        // @formatter:off
-        DiagramComponentProps props = DiagramComponentProps.newDiagramComponentProps()
-                .variableManager(variableManager)
-                .diagramDescription(diagramDescription)
-                .viewCreationRequests(List.of())
-                .previousDiagram(Optional.empty())
-                .build();
-        // @formatter:on
+        DiagramComponentProps props = new DiagramComponentProps(variableManager, diagramDescription, List.of(), Optional.empty());
         Element element = new Element(DiagramComponent.class, props);
         Diagram diagram = new DiagramRenderer(this.logger).render(element);
 
@@ -142,14 +136,7 @@ public class DiagramRendererEdgeTestCases {
         // @formatter:on
 
         VariableManager variableManager = new VariableManager();
-        // @formatter:off
-        DiagramComponentProps props = DiagramComponentProps.newDiagramComponentProps()
-                .variableManager(variableManager)
-                .diagramDescription(diagramDescription)
-                .viewCreationRequests(List.of())
-                .previousDiagram(Optional.empty())
-                .build();
-        // @formatter:on
+        DiagramComponentProps props = new DiagramComponentProps(variableManager, diagramDescription, List.of(), Optional.empty());
         Element element = new Element(DiagramComponent.class, props);
         Diagram diagram = new DiagramRenderer(this.logger).render(element);
 
@@ -180,7 +167,7 @@ public class DiagramRendererEdgeTestCases {
         LabelDescription labelDescription = LabelDescription.newLabelDescription("labelDescriptionId") //$NON-NLS-1$
                 .idProvider(variableManager -> "labelId") //$NON-NLS-1$
                 .textProvider(variableManager -> "Node") //$NON-NLS-1$
-                .styleDescriptionProvider(variableManager -> labelStyleDescription)
+                .styleDescription(labelStyleDescription)
                 .build();
 
         Function<VariableManager, INodeStyle> nodeStyleProvider = variableManager -> {
@@ -257,10 +244,14 @@ public class DiagramRendererEdgeTestCases {
         };
 
 
+        Function<VariableManager, Optional<Label>> dummyLabelProvider = variableManager -> Optional.empty();
         return EdgeDescription.newEdgeDescription(EDGE_DESCRIPTION_ID)
                 .semanticElementsProvider(variableManager -> List.of(FIRST_OBJECT_ID))
                 .sourceNodesProvider(sourceNodesProvider)
                 .targetNodesProvider(targetNodesProvider)
+                .beginLabelProvider(dummyLabelProvider)
+                .centerLabelProvider(dummyLabelProvider)
+                .endLabelProvider(dummyLabelProvider)
                 .sourceNodeDescriptions(List.of(nodeDescription))
                 .targetNodeDescriptions(List.of(nodeDescription))
                 .targetObjectIdProvider(idProvider)

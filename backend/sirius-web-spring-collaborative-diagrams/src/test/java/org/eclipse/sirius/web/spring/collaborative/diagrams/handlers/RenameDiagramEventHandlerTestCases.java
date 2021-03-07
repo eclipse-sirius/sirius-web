@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,15 +21,18 @@ import java.util.UUID;
 
 import org.eclipse.sirius.web.collaborative.api.dto.RenameRepresentationSuccessPayload;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
-import org.eclipse.sirius.web.collaborative.diagrams.api.dto.RenameDiagramInput;
-import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.Size;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.web.diagrams.tests.TestDiagramDescriptionBuilder;
+import org.eclipse.sirius.web.services.api.Context;
+import org.eclipse.sirius.web.services.api.dto.IPayload;
+import org.eclipse.sirius.web.services.api.dto.IProjectInput;
+import org.eclipse.sirius.web.services.api.representations.RenameRepresentationInput;
 import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;
 import org.junit.Test;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 
@@ -56,8 +59,8 @@ public class RenameDiagramEventHandlerTestCases {
                 .label(OLD_LABEL)
                 .descriptionId(diagramDescription.getId())
                 .targetObjectId(targetObjectId.toString())
-                .size(Size.of(10, 10))
-                .position(Position.at(0, 0))
+                .size(Size.newSize().height(10).width(10).build())
+                .position(Position.newPosition().x(0).y(0).build())
                 .nodes(Collections.emptyList())
                 .edges(Collections.emptyList())
                 .build();
@@ -79,11 +82,12 @@ public class RenameDiagramEventHandlerTestCases {
 
         RenameDiagramEventHandler handler = new RenameDiagramEventHandler(noOpRepresentationService, new NoOpCollaborativeDiagramMessageService(), new SimpleMeterRegistry());
 
-        var input = new RenameDiagramInput(UUID.randomUUID(), projectId, representationId, NEW_LABEL);
+        IProjectInput input = new RenameRepresentationInput(projectId, representationId, NEW_LABEL);
 
+        var context = new Context(new UsernamePasswordAuthenticationToken(null, null));
         assertThat(handler.canHandle(input)).isTrue();
 
-        EventHandlerResponse handlerResponse = handler.handle(new NoOpEditingContext(), new NoOpDiagramContext(), input);
+        EventHandlerResponse handlerResponse = handler.handle(new NoOpEditingContext(), input, context);
         IPayload payload = handlerResponse.getPayload();
         assertThat(payload).isInstanceOf(RenameRepresentationSuccessPayload.class);
     }

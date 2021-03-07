@@ -33,13 +33,13 @@
   <servers>
     <server>
       <id>github-sirius-emfjson</id>
-      <username>${env.USERNAME}</username>
-      <password>${env.PASSWORD}</password>
+      <username>alejandrorueda</username>
+      <password>28cb6988cecc69d54b09129974d31792ce73cc6d</password>
     </server>
     <server>
       <id>github-flow</id>
-      <username>${env.USERNAME}</username>
-      <password>${env.PASSWORD}</password>
+      <username>alejandrorueda</username>
+      <password>28cb6988cecc69d54b09129974d31792ce73cc6d</password>
     </server>
   </servers>
 </settings>

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,18 +15,18 @@ package org.eclipse.sirius.web.spring.collaborative.handlers;
 import java.util.Objects;
 import java.util.UUID;
 
-import org.eclipse.sirius.web.collaborative.api.services.ChangeDescription;
-import org.eclipse.sirius.web.collaborative.api.services.ChangeKind;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
-import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventHandler;
+import org.eclipse.sirius.web.collaborative.api.services.IProjectEventHandler;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
-import org.eclipse.sirius.web.core.api.ErrorPayload;
-import org.eclipse.sirius.web.core.api.IEditingContext;
-import org.eclipse.sirius.web.core.api.IInput;
+import org.eclipse.sirius.web.services.api.Context;
 import org.eclipse.sirius.web.services.api.document.CreateRootObjectInput;
 import org.eclipse.sirius.web.services.api.document.CreateRootObjectSuccessPayload;
+import org.eclipse.sirius.web.services.api.dto.ErrorPayload;
+import org.eclipse.sirius.web.services.api.dto.IProjectInput;
 import org.eclipse.sirius.web.services.api.objects.IEditService;
+import org.eclipse.sirius.web.services.api.objects.IEditingContext;
 import org.eclipse.sirius.web.spring.collaborative.messages.ICollaborativeMessageService;
+import org.eclipse.sirius.web.trees.Tree;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
@@ -38,7 +38,7 @@ import io.micrometer.core.instrument.MeterRegistry;
  * @author lfasani
  */
 @Service
-public class CreateRootObjectEventHandler implements IEditingContextEventHandler {
+public class CreateRootObjectEventHandler implements IProjectEventHandler {
 
     private final IEditService editService;
 
@@ -58,29 +58,29 @@ public class CreateRootObjectEventHandler implements IEditingContextEventHandler
     }
 
     @Override
-    public boolean canHandle(IInput input) {
-        return input instanceof CreateRootObjectInput;
+    public boolean canHandle(IProjectInput projectInput) {
+        return projectInput instanceof CreateRootObjectInput;
     }
 
     @Override
-    public EventHandlerResponse handle(IEditingContext editingContext, IInput input) {
+    public EventHandlerResponse handle(IEditingContext editingContext, IProjectInput projectInput, Context context) {
         this.counter.increment();
 
-        if (input instanceof CreateRootObjectInput) {
-            CreateRootObjectInput createRootObjectInput = (CreateRootObjectInput) input;
-            UUID documentId = createRootObjectInput.getDocumentId();
-            String rootObjectCreationDescriptionId = createRootObjectInput.getRootObjectCreationDescriptionId();
-            String namespaceId = createRootObjectInput.getNamespaceId();
+        if (projectInput instanceof CreateRootObjectInput) {
+            CreateRootObjectInput input = (CreateRootObjectInput) projectInput;
+            UUID documentId = input.getDocumentId();
+            String rootObjectCreationDescriptionId = input.getRootObjectCreationDescriptionId();
+            String namespaceId = input.getNamespaceId();
 
             var optionalObject = this.editService.createRootObject(editingContext, documentId, namespaceId, rootObjectCreationDescriptionId);
 
             if (optionalObject.isPresent()) {
-                return new EventHandlerResponse(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId()), new CreateRootObjectSuccessPayload(input.getId(), optionalObject.get()));
+                return new EventHandlerResponse(true, Tree.class::isInstance, new CreateRootObjectSuccessPayload(optionalObject.get()));
             }
         }
 
-        String message = this.messageService.invalidInput(input.getClass().getSimpleName(), CreateRootObjectInput.class.getSimpleName());
-        return new EventHandlerResponse(new ChangeDescription(ChangeKind.NOTHING, editingContext.getId()), new ErrorPayload(input.getId(), message));
+        String message = this.messageService.invalidInput(projectInput.getClass().getSimpleName(), CreateRootObjectInput.class.getSimpleName());
+        return new EventHandlerResponse(false, representation -> false, new ErrorPayload(message));
     }
 
 }

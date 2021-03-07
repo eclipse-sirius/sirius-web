@@ -25,12 +25,11 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.sirius.web.collaborative.api.services.IRepresentationImageProvider;
 import org.eclipse.sirius.web.collaborative.trees.api.IExplorerDescriptionProvider;
 import org.eclipse.sirius.web.compat.services.ImageConstants;
-import org.eclipse.sirius.web.core.api.IEditingContext;
-import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.emf.services.DocumentMetadataAdapter;
-import org.eclipse.sirius.web.emf.services.EditingContext;
 import org.eclipse.sirius.web.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.web.representations.VariableManager;
+import org.eclipse.sirius.web.services.api.objects.IEditingContext;
+import org.eclipse.sirius.web.services.api.objects.IObjectService;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationDescriptionService;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationService;
 import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;
@@ -165,9 +164,10 @@ public class ExplorerDescriptionProvider implements IExplorerDescriptionProvider
         var optionalEditingContext = Optional.of(variableManager.getVariables().get(IEditingContext.EDITING_CONTEXT));
         // @formatter:off
         var optionalResourceSet = optionalEditingContext.filter(IEditingContext.class::isInstance)
-                .filter(EditingContext.class::isInstance)
-                .map(EditingContext.class::cast)
-                .map(EditingContext::getDomain)
+                .map(IEditingContext.class::cast)
+                .map(IEditingContext::getDomain)
+                .filter(EditingDomain.class::isInstance)
+                .map(EditingDomain.class::cast)
                 .map(EditingDomain::getResourceSet);
         // @formatter:on
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,12 +18,12 @@ import org.eclipse.sirius.web.annotations.graphql.GraphQLMutationTypes;
 import org.eclipse.sirius.web.annotations.spring.graphql.MutationDataFetcher;
 import org.eclipse.sirius.web.collaborative.api.dto.DeleteRepresentationInput;
 import org.eclipse.sirius.web.collaborative.api.dto.DeleteRepresentationSuccessPayload;
-import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventProcessorRegistry;
-import org.eclipse.sirius.web.core.api.ErrorPayload;
-import org.eclipse.sirius.web.core.api.IPayload;
+import org.eclipse.sirius.web.collaborative.api.services.IProjectEventProcessorRegistry;
 import org.eclipse.sirius.web.graphql.datafetchers.IDataFetchingEnvironmentService;
 import org.eclipse.sirius.web.graphql.messages.IGraphQLMessageService;
 import org.eclipse.sirius.web.graphql.schema.MutationTypeProvider;
+import org.eclipse.sirius.web.services.api.dto.ErrorPayload;
+import org.eclipse.sirius.web.services.api.dto.IPayload;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationService;
 import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;
 import org.eclipse.sirius.web.spring.graphql.api.IDataFetcherWithFieldCoordinates;
@@ -62,23 +62,24 @@ public class MutationDeleteRepresentationDataFetcher implements IDataFetcherWith
 
     private final IRepresentationService representationService;
 
-    private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
+    private final IProjectEventProcessorRegistry projectEventProcessorRegistry;
 
     private final IGraphQLMessageService messageService;
 
-    public MutationDeleteRepresentationDataFetcher(IDataFetchingEnvironmentService dataFetchingEnvironmentService, IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry,
+    public MutationDeleteRepresentationDataFetcher(IDataFetchingEnvironmentService dataFetchingEnvironmentService, IProjectEventProcessorRegistry projectEventProcessorRegistry,
             IRepresentationService representationService, IGraphQLMessageService messageService) {
         this.dataFetchingEnvironmentService = Objects.requireNonNull(dataFetchingEnvironmentService);
         this.representationService = Objects.requireNonNull(representationService);
-        this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
+        this.projectEventProcessorRegistry = Objects.requireNonNull(projectEventProcessorRegistry);
         this.messageService = Objects.requireNonNull(messageService);
     }
 
     @Override
     public IPayload get(DataFetchingEnvironment environment) throws Exception {
         var input = this.dataFetchingEnvironmentService.getInput(environment, DeleteRepresentationInput.class);
+        var context = this.dataFetchingEnvironmentService.getContext(environment);
 
-        IPayload payload = new ErrorPayload(input.getId(), this.messageService.unexpectedError());
+        IPayload payload = new ErrorPayload(this.messageService.unexpectedError());
 
         var optionalRepresentation = this.representationService.getRepresentation(input.getRepresentationId());
         if (optionalRepresentation.isPresent()) {
@@ -87,11 +88,11 @@ public class MutationDeleteRepresentationDataFetcher implements IDataFetcherWith
             boolean canEdit = this.dataFetchingEnvironmentService.canEdit(environment, representation.getProjectId());
             if (canEdit) {
                 // @formatter:off
-                payload = this.editingContextEventProcessorRegistry.dispatchEvent(representation.getProjectId(), input)
-                        .orElse(new ErrorPayload(input.getId(), this.messageService.unexpectedError()));
+                payload = this.projectEventProcessorRegistry.dispatchEvent(representation.getProjectId(), input, context)
+                        .orElse(new ErrorPayload(this.messageService.unexpectedError()));
                 // @formatter:on
             } else {
-                payload = new ErrorPayload(input.getId(), this.messageService.unauthorized());
+                payload = new ErrorPayload(this.messageService.unauthorized());
             }
         }
 

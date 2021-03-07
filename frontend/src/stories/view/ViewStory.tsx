@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { Border } from 'stories/common/Border';
 import { View } from 'views/View';
+
 import styles from './ViewStory.module.css';
 
 export const ViewStory = () => {
@@ -24,6 +25,16 @@ export const ViewStory = () => {
         <Border>
           <MemoryRouter>
             <View>
+              <div className={styles.placeholder}></div>
+            </View>
+          </MemoryRouter>
+        </Border>
+      </div>
+      <div className={styles.condensed}>
+        Condensed view
+        <Border>
+          <MemoryRouter>
+            <View condensed>
               <div className={styles.placeholder}></div>
             </View>
           </MemoryRouter>

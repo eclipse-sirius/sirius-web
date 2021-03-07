@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,8 +13,10 @@
 package org.eclipse.sirius.web.collaborative.api.services;
 
 import java.util.Objects;
+import java.util.function.Predicate;
 
-import org.eclipse.sirius.web.core.api.IPayload;
+import org.eclipse.sirius.web.representations.IRepresentation;
+import org.eclipse.sirius.web.services.api.dto.IPayload;
 
 /**
  * Response of the event handlers used to indicate how the execution of the event handler should impact the project.
@@ -22,17 +24,24 @@ import org.eclipse.sirius.web.core.api.IPayload;
  * @author sbegaudeau
  */
 public class EventHandlerResponse {
-    private final ChangeDescription changeDescription;
+    private final boolean isEditingContextDirty;
+
+    private final Predicate<IRepresentation> shouldRefreshPredicate;
 
     private final IPayload payload;
 
-    public EventHandlerResponse(ChangeDescription changeDescription, IPayload payload) {
-        this.changeDescription = Objects.requireNonNull(changeDescription);
+    public EventHandlerResponse(boolean isEditingContextDirty, Predicate<IRepresentation> shouldRefreshPredicate, IPayload payload) {
+        this.isEditingContextDirty = Objects.requireNonNull(isEditingContextDirty);
+        this.shouldRefreshPredicate = Objects.requireNonNull(shouldRefreshPredicate);
         this.payload = Objects.requireNonNull(payload);
     }
 
-    public ChangeDescription getChangeDescription() {
-        return this.changeDescription;
+    public boolean isEditingContextDirty() {
+        return this.isEditingContextDirty;
+    }
+
+    public Predicate<IRepresentation> getShouldRefreshPredicate() {
+        return this.shouldRefreshPredicate;
     }
 
     public IPayload getPayload() {

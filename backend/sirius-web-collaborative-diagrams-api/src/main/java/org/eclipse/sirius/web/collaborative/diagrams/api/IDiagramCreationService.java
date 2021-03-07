@@ -14,9 +14,9 @@ package org.eclipse.sirius.web.collaborative.diagrams.api;
 
 import java.util.Optional;
 
-import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
+import org.eclipse.sirius.web.services.api.objects.IEditingContext;
 
 /**
  * Service used to create diagrams from scratch or from an existing diagram.

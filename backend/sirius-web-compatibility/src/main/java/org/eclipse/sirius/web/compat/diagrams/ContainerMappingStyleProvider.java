@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,9 +12,11 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.compat.diagrams;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 
+import org.eclipse.sirius.diagram.description.ConditionalContainerStyleDescription;
 import org.eclipse.sirius.diagram.description.ContainerMapping;
 import org.eclipse.sirius.diagram.description.style.ContainerStyleDescription;
 import org.eclipse.sirius.diagram.description.style.FlatContainerStyleDescription;
@@ -44,8 +46,24 @@ public class ContainerMappingStyleProvider implements Function<VariableManager, 
 
     @Override
     public INodeStyle apply(VariableManager variableManager) {
-        ContainerStyleDescription containerStyleDescription = new ContainerStyleDescriptionProvider(this.interpreter, this.containerMapping).getContainerStyleDescription(variableManager);
-        return this.getNodeStyle(variableManager, containerStyleDescription);
+        INodeStyle style = null;
+
+        List<ConditionalContainerStyleDescription> conditionnalStyles = this.containerMapping.getConditionnalStyles();
+        for (ConditionalContainerStyleDescription conditionalStyle : conditionnalStyles) {
+            String predicateExpression = conditionalStyle.getPredicateExpression();
+            Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), predicateExpression);
+            boolean shouldUseStyle = result.asBoolean().orElse(Boolean.FALSE).booleanValue();
+            if (shouldUseStyle) {
+                style = this.getNodeStyle(variableManager, conditionalStyle.getStyle());
+                break;
+            }
+        }
+
+        if (style == null) {
+            style = this.getNodeStyle(variableManager, this.containerMapping.getStyle());
+        }
+
+        return style;
     }
 
     private INodeStyle getNodeStyle(VariableManager variableManager, ContainerStyleDescription containerStyleDescription) {

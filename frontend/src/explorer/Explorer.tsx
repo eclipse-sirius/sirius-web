@@ -16,23 +16,16 @@ import { Tree } from 'tree/Tree';
 import styles from './Explorer.module.css';
 
 const propTypes = {
-  editingContextId: PropTypes.string.isRequired,
   tree: PropTypes.object.isRequired,
   onExpand: PropTypes.func.isRequired,
   selection: PropTypes.object,
   setSelection: PropTypes.func.isRequired,
 };
 
-export const Explorer = ({ editingContextId, tree, onExpand, selection, setSelection }) => {
+export const Explorer = ({ projectId, tree, onExpand, selection, setSelection }) => {
   return (
     <div className={styles.explorer} data-testid="explorer">
-      <Tree
-        editingContextId={editingContextId}
-        tree={tree}
-        onExpand={onExpand}
-        selection={selection}
-        setSelection={setSelection}
-      />
+      <Tree projectId={projectId} tree={tree} onExpand={onExpand} selection={selection} setSelection={setSelection} />
     </div>
   );
 };

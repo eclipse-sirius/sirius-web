@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo and others.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -132,14 +132,7 @@ public class UnsynchronizedDiagramTestCases {
 
     private Diagram render(DiagramDescription diagramDescription, List<ViewCreationRequest> viewCreationRequests, Optional<Diagram> optionalPreviousDiagram) {
         VariableManager variableManager = new VariableManager();
-        // @formatter:off
-        DiagramComponentProps props = DiagramComponentProps.newDiagramComponentProps()
-                .variableManager(variableManager)
-                .diagramDescription(diagramDescription)
-                .viewCreationRequests(viewCreationRequests)
-                .previousDiagram(optionalPreviousDiagram)
-                .build();
-        // @formatter:on
+        DiagramComponentProps props = new DiagramComponentProps(variableManager, diagramDescription, viewCreationRequests, optionalPreviousDiagram);
         Element element = new Element(DiagramComponent.class, props);
         Diagram diagram = new DiagramRenderer(this.logger).render(element);
         return diagram;
@@ -160,7 +153,7 @@ public class UnsynchronizedDiagramTestCases {
         LabelDescription labelDescription = LabelDescription.newLabelDescription("labelDescriptionId") //$NON-NLS-1$
                 .idProvider(variableManager -> "labelid") //$NON-NLS-1$
                 .textProvider(variableManager -> "label") //$NON-NLS-1$
-                .styleDescriptionProvider(variableManager -> labelStyleDescription)
+                .styleDescription(labelStyleDescription)
                 .build();
 
         Function<VariableManager, INodeStyle> styleProvider = variableManager -> {

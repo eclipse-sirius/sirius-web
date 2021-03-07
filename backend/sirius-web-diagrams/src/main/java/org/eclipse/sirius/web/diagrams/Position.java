@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,7 +27,12 @@ import org.eclipse.sirius.web.annotations.graphql.GraphQLObjectType;
 @Immutable
 @GraphQLObjectType
 public final class Position {
-    public static final Position UNDEFINED = Position.at(-1, -1);
+    // @formatter:off
+    public static final Position UNDEFINED = Position.newPosition()
+            .x(-1)
+            .y(-1)
+            .build();
+    // @formatter:on
 
     private double x;
 
@@ -35,13 +40,6 @@ public final class Position {
 
     private Position() {
         // Prevent instantiation
-    }
-
-    public static Position at(double x, double y) {
-        Position position = new Position();
-        position.x = x;
-        position.y = y;
-        return position;
     }
 
     @GraphQLField

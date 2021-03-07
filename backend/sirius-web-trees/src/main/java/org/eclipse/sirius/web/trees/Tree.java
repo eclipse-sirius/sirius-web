@@ -62,7 +62,7 @@ public final class Tree implements IRepresentation {
     @GraphQLField
     @GraphQLNonNull
     public UUID getDescriptionId() {
-        return this.descriptionId;
+        return null;
     }
 
     @Override

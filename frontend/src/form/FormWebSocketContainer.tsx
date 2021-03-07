@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,165 +11,155 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useSubscription } from '@apollo/client';
-import IconButton from '@material-ui/core/IconButton';
-import Snackbar from '@material-ui/core/Snackbar';
-import makeStyles from '@material-ui/core/styles/makeStyles';
-import Typography from '@material-ui/core/Typography';
-import CloseIcon from '@material-ui/icons/Close';
-import { useMachine } from '@xstate/react';
+import { Text } from 'core/text/Text';
 import {
-  formRefreshedEventPayloadFragment,
-  preDestroyPayloadFragment,
-  subscribersUpdatedEventPayloadFragment,
-  widgetSubscriptionsUpdatedEventPayloadFragment,
-} from 'form/FormEventFragments';
-import { GQLFormEventSubscription } from 'form/FormEventFragments.types';
-import {
-  FormWebSocketContainerContext,
-  FormWebSocketContainerEvent,
-  formWebSocketContainerMachine,
-  HandleCompleteEvent,
-  HandleSubscriptionResultEvent,
-  HideToastEvent,
-  SchemaValue,
-  ShowToastEvent,
-  SwitchFormEvent,
-} from 'form/FormWebSocketContainerMachine';
+  HANDLE_COMPLETE__ACTION,
+  HANDLE_DATA__ACTION,
+  HANDLE_ERROR__ACTION,
+  INITIALIZE__ACTION,
+  LOADING__STATE,
+  READY__STATE,
+  SWITCH_FORM__ACTION,
+} from 'form/machine';
+import { initialState, reducer } from 'form/reducer';
 import gql from 'graphql-tag';
 import { Properties } from 'properties/Properties';
-import React, { useEffect } from 'react';
-import { RepresentationComponentProps } from 'workbench/Workbench.types';
+import React, { useEffect, useReducer } from 'react';
+import styles from './FormWebSocketContainer.module.css';
 
 const formEventSubscription = gql`
   subscription formEvent($input: FormEventInput!) {
     formEvent(input: $input) {
       __typename
       ... on PreDestroyPayload {
-        ...preDestroyPayloadFragment
+        id
       }
       ... on SubscribersUpdatedEventPayload {
-        ...subscribersUpdatedEventPayloadFragment
+        subscribers {
+          username
+        }
       }
       ... on WidgetSubscriptionsUpdatedEventPayload {
-        ...widgetSubscriptionsUpdatedEventPayloadFragment
+        widgetSubscriptions {
+          widgetId
+          subscribers {
+            username
+          }
+        }
       }
       ... on FormRefreshedEventPayload {
-        ...formRefreshedEventPayloadFragment
+        form {
+          label
+          id
+          pages {
+            label
+            id
+            groups {
+              label
+              id
+              widgets {
+                id
+                __typename
+                ... on Textfield {
+                  label
+                  stringValue: value
+                }
+                ... on Textarea {
+                  label
+                  stringValue: value
+                }
+                ... on Checkbox {
+                  label
+                  booleanValue: value
+                }
+                ... on Select {
+                  label
+                  value
+                  options {
+                    id
+                    label
+                  }
+                }
+                ... on Radio {
+                  label
+                  options {
+                    id
+                    label
+                    selected
+                  }
+                }
+                ... on List {
+                  label
+                  items {
+                    id
+                    label
+                    imageURL
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     }
   }
-  ${preDestroyPayloadFragment}
-  ${subscribersUpdatedEventPayloadFragment}
-  ${widgetSubscriptionsUpdatedEventPayloadFragment}
-  ${formRefreshedEventPayloadFragment}
 `;
-
-const useFormWebSocketContainerStyles = makeStyles((theme) => ({
-  complete: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-}));
 
 /**
  * Connect the Form component to the GraphQL API over Web Socket.
  */
-export const FormWebSocketContainer = ({ editingContextId, representationId }: RepresentationComponentProps) => {
-  const classes = useFormWebSocketContainerStyles();
-  const [{ value, context }, dispatch] = useMachine<FormWebSocketContainerContext, FormWebSocketContainerEvent>(
-    formWebSocketContainerMachine,
-    {
-      context: {
-        formId: representationId,
-      },
-    }
-  );
-  const { toast, formWebSocketContainer } = value as SchemaValue;
-  const { id, formId, form, subscribers, widgetSubscriptions, message } = context;
+export const FormWebSocketContainer = ({ projectId, formId }) => {
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const { viewState, form, displayedFormId, subscribers, widgetSubscriptions, message } = state;
 
   /**
    * Displays an other form if the selection indicates that we should display another properties view.
    */
   useEffect(() => {
-    if (formId !== representationId) {
-      const switchFormEvent: SwitchFormEvent = { type: 'SWITCH_FORM', formId: representationId };
-      dispatch(switchFormEvent);
+    if (displayedFormId !== formId) {
+      dispatch({ type: SWITCH_FORM__ACTION, formId });
     }
-  }, [representationId, formId, dispatch]);
-
-  const { error } = useSubscription<GQLFormEventSubscription>(formEventSubscription, {
-    variables: {
-      input: {
-        id,
-        projectId: editingContextId,
-        formId: representationId,
-      },
-    },
-    onSubscriptionData: ({ subscriptionData }) => {
-      const handleDataEvent: HandleSubscriptionResultEvent = {
-        type: 'HANDLE_SUBSCRIPTION_RESULT',
-        result: subscriptionData,
-      };
-      dispatch(handleDataEvent);
-    },
-    onSubscriptionComplete: () => {
-      const completeEvent: HandleCompleteEvent = { type: 'HANDLE_COMPLETE' };
-      dispatch(completeEvent);
-    },
-  });
+  }, [formId, displayedFormId]);
 
   useEffect(() => {
-    if (error) {
-      const { message } = error;
-      const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
-      dispatch(showToastEvent);
+    if (viewState === LOADING__STATE) {
+      dispatch({ type: INITIALIZE__ACTION });
     }
-  }, [error, dispatch]);
+  }, [viewState]);
 
-  let content = null;
-  if (formWebSocketContainer === 'ready') {
-    content = (
+  const { error } = useSubscription(formEventSubscription, {
+    variables: {
+      input: {
+        projectId,
+        formId,
+      },
+    },
+    skip: viewState !== READY__STATE,
+    onSubscriptionData: ({ subscriptionData }) => {
+      dispatch({ type: HANDLE_DATA__ACTION, message: subscriptionData });
+    },
+    onSubscriptionComplete: () => dispatch({ type: HANDLE_COMPLETE__ACTION }),
+  });
+  if (error) {
+    dispatch({ type: HANDLE_ERROR__ACTION, message: error.message });
+  }
+
+  let view = <div />;
+  if (!form) {
+    view = (
+      <div className={styles.empty}>
+        <Text className={styles.label}>{message}</Text>
+      </div>
+    );
+  } else {
+    view = (
       <Properties
-        editingContextId={editingContextId}
+        projectId={projectId}
         form={form}
         subscribers={subscribers}
         widgetSubscriptions={widgetSubscriptions}
       />
     );
-  } else if (formWebSocketContainer === 'complete') {
-    content = (
-      <div className={classes.complete}>
-        <Typography variant="h5" align="center">
-          The form does not exist anymore
-        </Typography>
-      </div>
-    );
   }
-
-  return (
-    <>
-      {content}
-      <Snackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-        open={toast === 'visible'}
-        autoHideDuration={3000}
-        onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
-        message={message}
-        action={
-          <IconButton
-            size="small"
-            aria-label="close"
-            color="inherit"
-            onClick={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}>
-            <CloseIcon fontSize="small" />
-          </IconButton>
-        }
-        data-testid="error"
-      />
-    </>
-  );
+  return view;
 };

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,7 +22,17 @@ import org.eclipse.sirius.web.spring.collaborative.messages.ICollaborativeMessag
 public class NoOpCollaborativeMessageService implements ICollaborativeMessageService {
 
     @Override
+    public String invalidProjectName() {
+        return ""; //$NON-NLS-1$
+    }
+
+    @Override
     public String invalidInput(String expectedInputTypeName, String receivedInputTypeName) {
+        return ""; //$NON-NLS-1$
+    }
+
+    @Override
+    public String projectNotFound() {
         return ""; //$NON-NLS-1$
     }
 

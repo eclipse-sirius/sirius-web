@@ -43,7 +43,7 @@ public final class LabelDescription {
 
     private Function<VariableManager, String> textProvider;
 
-    private Function<VariableManager, LabelStyleDescription> styleDescriptionProvider;
+    private LabelStyleDescription styleDescription;
 
     private LabelDescription() {
         // Prevent instantiation
@@ -65,8 +65,8 @@ public final class LabelDescription {
         return new Builder(id);
     }
 
-    public Function<VariableManager, LabelStyleDescription> getStyleDescriptionProvider() {
-        return this.styleDescriptionProvider;
+    public LabelStyleDescription getStyleDescription() {
+        return this.styleDescription;
     }
 
     @Override
@@ -88,7 +88,7 @@ public final class LabelDescription {
 
         private Function<VariableManager, String> textProvider;
 
-        private Function<VariableManager, LabelStyleDescription> styleDescriptionProvider;
+        private LabelStyleDescription styleDescription;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -104,8 +104,8 @@ public final class LabelDescription {
             return this;
         }
 
-        public Builder styleDescriptionProvider(Function<VariableManager, LabelStyleDescription> styleDescriptionProvider) {
-            this.styleDescriptionProvider = Objects.requireNonNull(styleDescriptionProvider);
+        public Builder styleDescription(LabelStyleDescription styleDescription) {
+            this.styleDescription = Objects.requireNonNull(styleDescription);
             return this;
         }
 
@@ -114,7 +114,7 @@ public final class LabelDescription {
             labelDescription.id = Objects.requireNonNull(this.id);
             labelDescription.idProvider = Objects.requireNonNull(this.idProvider);
             labelDescription.textProvider = Objects.requireNonNull(this.textProvider);
-            labelDescription.styleDescriptionProvider = Objects.requireNonNull(this.styleDescriptionProvider);
+            labelDescription.styleDescription = Objects.requireNonNull(this.styleDescription);
             return labelDescription;
         }
     }

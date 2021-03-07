@@ -14,7 +14,7 @@
   display: grid;
   grid-template-rows: 4px 56px;
 
-  background-color: var(--blue-lagoon);
+  background-color:#f52414fa;
 }
 
 .container {
@@ -28,5 +28,5 @@
 
   padding-left: 16px;
 
-  background-color: var(--daintree);
+  background-color: #000000;
 }

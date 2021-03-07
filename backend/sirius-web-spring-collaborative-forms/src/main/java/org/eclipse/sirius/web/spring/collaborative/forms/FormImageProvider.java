@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,14 +17,12 @@ import java.util.Optional;
 import org.eclipse.sirius.web.collaborative.api.services.IRepresentationImageProvider;
 import org.eclipse.sirius.web.forms.Form;
 import org.eclipse.sirius.web.representations.IRepresentation;
-import org.springframework.stereotype.Service;
 
 /**
  * Provide the image representing a form.
  *
  * @author sbegaudeau
  */
-@Service
 public class FormImageProvider implements IRepresentationImageProvider {
 
     @Override

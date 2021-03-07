@@ -22,9 +22,10 @@ import java.util.UUID;
 
 import org.eclipse.sirius.web.collaborative.api.dto.CreateRepresentationInput;
 import org.eclipse.sirius.web.collaborative.api.dto.CreateRepresentationSuccessPayload;
-import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventProcessor;
+import org.eclipse.sirius.web.collaborative.api.services.IProjectEventProcessor;
 import org.eclipse.sirius.web.persistence.entities.IdMappingEntity;
 import org.eclipse.sirius.web.persistence.repositories.IIdMappingRepository;
+import org.eclipse.sirius.web.services.api.Context;
 import org.eclipse.sirius.web.services.api.document.Document;
 import org.eclipse.sirius.web.services.api.document.UploadDocumentInput;
 import org.eclipse.sirius.web.services.api.document.UploadDocumentSuccessPayload;
@@ -46,7 +47,7 @@ public class ProjectImporter {
 
     private final UUID projectId;
 
-    private final IEditingContextEventProcessor editingContextEventProcessor;
+    private final IProjectEventProcessor projectEventProcessor;
 
     private final Map<String, UploadFile> documents;
 
@@ -54,40 +55,40 @@ public class ProjectImporter {
 
     private final ProjectManifest projectManifest;
 
+    private final Context context;
+
     private final Map<String, Document> oldDocumentIdToNewDocument = new HashMap<>();
 
     private final IIdMappingRepository idMappingRepository;
 
-    public ProjectImporter(UUID projectId, IEditingContextEventProcessor editingContextEventProcessor, Map<String, UploadFile> documents, List<RepresentationDescriptor> representations,
-            ProjectManifest projectManifest, IIdMappingRepository idMappingRepository) {
+    public ProjectImporter(UUID projectId, IProjectEventProcessor projectEventProcessor, Map<String, UploadFile> documents, List<RepresentationDescriptor> representations,
+            ProjectManifest projectManifest, Context context, IIdMappingRepository idMappingRepository) {
         this.projectId = Objects.requireNonNull(projectId);
-        this.editingContextEventProcessor = Objects.requireNonNull(editingContextEventProcessor);
+        this.projectEventProcessor = Objects.requireNonNull(projectEventProcessor);
         this.documents = Objects.requireNonNull(documents);
         this.representations = Objects.requireNonNull(representations);
         this.projectManifest = Objects.requireNonNull(projectManifest);
+        this.context = Objects.requireNonNull(context);
         this.idMappingRepository = Objects.requireNonNull(idMappingRepository);
     }
 
-    public boolean importProject(UUID inputId) {
-        boolean errorOccurred = !this.createDocuments(inputId);
+    public boolean importProject() {
+        boolean errorOccurred = !this.createDocuments();
 
         if (!errorOccurred) {
-            errorOccurred = !this.createRepresentations(inputId);
+            errorOccurred = !this.createRepresentations();
         }
 
         return !errorOccurred;
     }
 
     /**
-     * Creates all representations in the project thanks to the {@link IEditingContextEventProcessor} and the create
+     * Creates all representations in the project thanks to the {@link IProjectEventProcessor} and the create
      * representation input. If at least one representation has not been created it will return <code>false</code>.
-     *
-     * @param inputId
-     *            The identifier of the input which has triggered this import
      *
      * @return <code>true</code> whether all representations has been created, <code>false</code> otherwise
      */
-    private boolean createRepresentations(UUID inputId) {
+    private boolean createRepresentations() {
         boolean allRepresentationCreated = true;
         for (RepresentationDescriptor representationDescriptor : this.representations) {
             RepresentationManifest representationManifest = this.projectManifest.getRepresentations().get(representationDescriptor.getId().toString());
@@ -114,15 +115,15 @@ public class ProjectImporter {
                 .orElseGet(() -> UUID.fromString(descriptionURI));
             // @formatter:on
 
-            CreateRepresentationInput input = new CreateRepresentationInput(inputId, this.projectId, representationDescriptionId, objectId, representationDescriptor.getLabel());
+            CreateRepresentationInput input = new CreateRepresentationInput(this.projectId, representationDescriptionId, objectId, representationDescriptor.getLabel());
 
             // @formatter:off
-            representationCreated = this.editingContextEventProcessor.handle(input)
-                    .filter(CreateRepresentationSuccessPayload.class::isInstance)
-                    .map(CreateRepresentationSuccessPayload.class::cast)
-                    .map(CreateRepresentationSuccessPayload::getRepresentation)
-                    .isPresent();
-            // @formatter:on
+                representationCreated = this.projectEventProcessor.handle(input, this.context)
+                        .filter(CreateRepresentationSuccessPayload.class::isInstance)
+                        .map(CreateRepresentationSuccessPayload.class::cast)
+                        .map(CreateRepresentationSuccessPayload::getRepresentation)
+                        .isPresent();
+                // @formatter:on
 
             if (!representationCreated) {
                 this.logger.error(String.format("The representation %1$s has not been created", representationDescriptor.getLabel())); //$NON-NLS-1$
@@ -135,22 +136,20 @@ public class ProjectImporter {
     }
 
     /**
-     * Creates all documents in the project thanks to the {@link IEditingContextEventProcessor} and the
+     * Creates all documents in the project thanks to the {@link IProjectEventProcessor} and the
      * {@link CreateDocumentFromUploadEvent}. If at least one document has not been created it will return
      * <code>false</code>.
      *
-     * @param inputId
-     *
      * @return <code>true</code> whether all documents has been created, <code>false</code> otherwise
      */
-    private boolean createDocuments(UUID inputId) {
+    private boolean createDocuments() {
         for (Entry<String, UploadFile> entry : this.documents.entrySet()) {
             String oldDocumentId = entry.getKey();
             UploadFile uploadFile = entry.getValue();
-            UploadDocumentInput input = new UploadDocumentInput(inputId, this.projectId, uploadFile);
+            UploadDocumentInput input = new UploadDocumentInput(this.projectId, uploadFile);
 
             // @formatter:off
-            Document document = this.editingContextEventProcessor.handle(input)
+            Document document = this.projectEventProcessor.handle(input, this.context)
                     .filter(UploadDocumentSuccessPayload.class::isInstance)
                     .map(UploadDocumentSuccessPayload.class::cast)
                     .map(UploadDocumentSuccessPayload::getDocument)

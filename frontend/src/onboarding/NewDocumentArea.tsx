@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,15 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import { useMutation } from '@apollo/client';
+import { AreaContainer } from './AreaContainer';
 import { LinkButton } from 'core/linkbutton/LinkButton';
 import { Select } from 'core/select/Select';
-import gql from 'graphql-tag';
 import { NewDocument } from 'icons';
-import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
-import { v4 as uuid } from 'uuid';
-import { AreaContainer } from './AreaContainer';
+import gql from 'graphql-tag';
 import styles from './NewDocumentArea.module.css';
 
 const createDocumentMutation = gql`
@@ -58,7 +57,6 @@ export const NewDocumentArea = ({ stereotypeDescriptions, projectId, maxDisplay,
     const selected = stereotypeDescriptions.find((candidate) => candidate.id === stereotypeDescriptionId);
     const variables = {
       input: {
-        id: uuid(),
         projectId,
         name: 'Untitled ' + selected.label,
         stereotypeDescriptionId: stereotypeDescriptionId,

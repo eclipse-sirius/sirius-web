@@ -13,8 +13,8 @@
 
 html {
   /* Primary Colors */
-  --daintree: #261e58;
-  --blue-lagoon: #be1a78;
+  --daintree: rgb(0 0 0);
+  --blue-lagoon: rgba(245,36,20,.9803921568627451);
   --bondi-blue: #7269a4;
   --white: #ffffff;
 
@@ -41,7 +41,7 @@ html {
   --blue-lagoon-lighten-60: #f097ca;
   --blue-lagoon-lighten-30: #e649a3;
   --blue-lagoon-lighten-20: #e23096;
-  --blue-lagoon-lighten-10: #d71d88;
+  --blue-lagoon-lighten-10: #da1721;
   /* --blue-lagoon */
   --blue-lagoon-darken-10: #ab176c;
   --blue-lagoon-darken-20: #981460;

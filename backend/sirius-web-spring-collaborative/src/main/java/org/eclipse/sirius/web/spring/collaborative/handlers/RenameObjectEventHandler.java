@@ -14,16 +14,15 @@ package org.eclipse.sirius.web.spring.collaborative.handlers;
 
 import java.util.Objects;
 
-import org.eclipse.sirius.web.collaborative.api.services.ChangeDescription;
-import org.eclipse.sirius.web.collaborative.api.services.ChangeKind;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
-import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventHandler;
+import org.eclipse.sirius.web.collaborative.api.services.IProjectEventHandler;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
-import org.eclipse.sirius.web.core.api.ErrorPayload;
-import org.eclipse.sirius.web.core.api.IEditingContext;
-import org.eclipse.sirius.web.core.api.IInput;
-import org.eclipse.sirius.web.core.api.IObjectService;
+import org.eclipse.sirius.web.services.api.Context;
+import org.eclipse.sirius.web.services.api.dto.ErrorPayload;
+import org.eclipse.sirius.web.services.api.dto.IProjectInput;
 import org.eclipse.sirius.web.services.api.objects.IEditService;
+import org.eclipse.sirius.web.services.api.objects.IEditingContext;
+import org.eclipse.sirius.web.services.api.objects.IObjectService;
 import org.eclipse.sirius.web.services.api.objects.RenameObjectInput;
 import org.eclipse.sirius.web.services.api.objects.RenameObjectSuccessPayload;
 import org.eclipse.sirius.web.spring.collaborative.messages.ICollaborativeMessageService;
@@ -38,7 +37,7 @@ import io.micrometer.core.instrument.MeterRegistry;
  * @author arichard
  */
 @Service
-public class RenameObjectEventHandler implements IEditingContextEventHandler {
+public class RenameObjectEventHandler implements IProjectEventHandler {
 
     private final ICollaborativeMessageService messageService;
 
@@ -61,18 +60,18 @@ public class RenameObjectEventHandler implements IEditingContextEventHandler {
     }
 
     @Override
-    public boolean canHandle(IInput input) {
-        return input instanceof RenameObjectInput;
+    public boolean canHandle(IProjectInput projectInput) {
+        return projectInput instanceof RenameObjectInput;
     }
 
     @Override
-    public EventHandlerResponse handle(IEditingContext editingContext, IInput input) {
+    public EventHandlerResponse handle(IEditingContext editingContext, IProjectInput projectInput, Context context) {
         this.counter.increment();
 
-        if (input instanceof RenameObjectInput) {
-            RenameObjectInput renameObjectInput = (RenameObjectInput) input;
-            String objectId = renameObjectInput.getObjectId();
-            String newName = renameObjectInput.getNewName();
+        if (projectInput instanceof RenameObjectInput) {
+            RenameObjectInput input = (RenameObjectInput) projectInput;
+            String objectId = input.getObjectId();
+            String newName = input.getNewName();
             var optionalObject = this.objectService.getObject(editingContext, objectId);
             if (optionalObject.isPresent()) {
                 Object object = optionalObject.get();
@@ -80,12 +79,12 @@ public class RenameObjectEventHandler implements IEditingContextEventHandler {
                 if (optionalLabelField.isPresent()) {
                     String labelField = optionalLabelField.get();
                     this.editService.editLabel(object, labelField, newName);
-                    return new EventHandlerResponse(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId()), new RenameObjectSuccessPayload(input.getId(), objectId, newName));
+                    return new EventHandlerResponse(true, representation -> true, new RenameObjectSuccessPayload(objectId, newName));
                 }
             }
         }
-        String message = this.messageService.invalidInput(input.getClass().getSimpleName(), RenameObjectInput.class.getSimpleName());
-        return new EventHandlerResponse(new ChangeDescription(ChangeKind.NOTHING, editingContext.getId()), new ErrorPayload(input.getId(), message));
+        String message = this.messageService.invalidInput(projectInput.getClass().getSimpleName(), RenameObjectInput.class.getSimpleName());
+        return new EventHandlerResponse(false, representation -> false, new ErrorPayload(message));
     }
 
 }

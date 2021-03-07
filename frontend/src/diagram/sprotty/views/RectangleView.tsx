@@ -35,11 +35,11 @@ export class RectangleView extends RectangularNodeView {
     };
 
     if (node.selected) {
-      styleObject['outline'] = 'var(--blue-lagoon) solid 1px';
+      styleObject['outline'] = 'var(--red) solid 1px';
     }
 
     if (node.hoverFeedback) {
-      styleObject['outline'] = 'var(--blue-lagoon) solid 2px';
+      styleObject['outline'] = 'var(--red) solid 2px';
     }
 
     switch (nodeStyle.borderStyle) {
@@ -57,11 +57,7 @@ export class RectangleView extends RectangularNodeView {
     }
 
     return (
-      <g
-        attrs-data-testid={`Rectangle - ${node.children[0]?.text}`}
-        attrs-data-testselected={`${node.selected}`}
-        attrs-data-nodeid={node.id}
-        attrs-data-descriptionid={node.descriptionId}>
+      <g attrs-data-testid={`Rectangle - ${node.children[0]?.text}`} attrs-data-testselected={`${node.selected}`}>
         <rect
           class-selected={node.selected}
           class-mouseover={node.hoverFeedback}

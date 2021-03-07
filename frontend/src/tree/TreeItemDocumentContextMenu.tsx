@@ -23,6 +23,7 @@ const propTypes = {
   x: PropTypes.number.isRequired,
   y: PropTypes.number.isRequired,
   onNewObject: PropTypes.func.isRequired,
+  onNewCode: PropTypes.func.isRequired,
   onRenameDocument: PropTypes.func.isRequired,
   onDownload: PropTypes.func.isRequired,
   onDeleteDocument: PropTypes.func.isRequired,
@@ -34,6 +35,7 @@ export const TreeItemDocumentContextMenu = ({
   documentId,
   x,
   y,
+  onNewCode,
   onNewObject,
   onRenameDocument,
   onDownload,
@@ -47,6 +49,9 @@ export const TreeItemDocumentContextMenu = ({
       </Permission>
       <Permission requiredAccessLevel="EDIT">
         <Entry icon={<Edit title="" />} label="Rename" onClick={onRenameDocument} data-testid="rename" />
+      </Permission>
+      <Permission requiredAccessLevel="EDIT">
+        <Entry label="Run Code Generator" onClick={onNewCode} data-testid="new-code" />
       </Permission>
       <a
         href={`${httpOrigin}/api/projects/${projectId}/documents/${documentId}`}

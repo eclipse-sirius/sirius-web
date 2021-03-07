@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,11 +18,13 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
-import org.eclipse.sirius.web.core.api.IEditingContext;
+import org.eclipse.sirius.web.services.api.Context;
 import org.eclipse.sirius.web.services.api.document.CreateRootObjectInput;
 import org.eclipse.sirius.web.services.api.document.CreateRootObjectSuccessPayload;
 import org.eclipse.sirius.web.services.api.objects.IEditService;
+import org.eclipse.sirius.web.services.api.objects.IEditingContext;
 import org.junit.Test;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 
@@ -43,11 +45,11 @@ public class CreateRootObjectEventHandlerTestCases {
         };
 
         CreateRootObjectEventHandler handler = new CreateRootObjectEventHandler(editService, new NoOpCollaborativeMessageService(), new SimpleMeterRegistry());
-        var input = new CreateRootObjectInput(UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID(), "namespaceId", "rootObjectCreationDescriptionId"); //$NON-NLS-1$//$NON-NLS-2$
+        var input = new CreateRootObjectInput(UUID.randomUUID(), UUID.randomUUID(), "namespaceId", "rootObjectCreationDescriptionId"); //$NON-NLS-1$//$NON-NLS-2$
+        var context = new Context(new UsernamePasswordAuthenticationToken(null, null));
         assertThat(handler.canHandle(input)).isTrue();
 
-        IEditingContext editingContext = () -> UUID.randomUUID();
-        EventHandlerResponse handle = handler.handle(editingContext, input);
+        EventHandlerResponse handle = handler.handle(null, input, context);
         assertThat(handle.getPayload()).isInstanceOf(CreateRootObjectSuccessPayload.class);
         assertThat(((CreateRootObjectSuccessPayload) handle.getPayload()).getObject()).isEqualTo(object);
     }

@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.sirius.viewpoint.description.tool.ToolDescription;
 import org.eclipse.sirius.viewpoint.description.tool.ToolFactory;
-import org.eclipse.sirius.web.core.api.IObjectService;
+import org.eclipse.sirius.web.services.api.objects.IObjectService;
 import org.junit.Test;
 
 /**

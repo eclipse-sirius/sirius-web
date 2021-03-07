@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,8 +30,6 @@ import org.eclipse.sirius.web.collaborative.forms.api.IFormInput;
 @GraphQLInputObjectType
 public final class EditTextfieldInput implements IFormInput {
 
-    private UUID id;
-
     private UUID projectId;
 
     private UUID representationId;
@@ -44,20 +42,11 @@ public final class EditTextfieldInput implements IFormInput {
         // Used by Jackson
     }
 
-    public EditTextfieldInput(UUID id, UUID projectId, UUID representationId, String textfieldId, String newValue) {
-        this.id = Objects.requireNonNull(id);
+    public EditTextfieldInput(UUID projectId, UUID representationId, String textfieldId, String newValue) {
         this.projectId = Objects.requireNonNull(projectId);
         this.representationId = Objects.requireNonNull(representationId);
         this.textfieldId = Objects.requireNonNull(textfieldId);
         this.newValue = Objects.requireNonNull(newValue);
-    }
-
-    @Override
-    @GraphQLID
-    @GraphQLField
-    @GraphQLNonNull
-    public UUID getId() {
-        return this.id;
     }
 
     @GraphQLID
@@ -90,8 +79,8 @@ public final class EditTextfieldInput implements IFormInput {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, projectId: {2}, representationId: {3}, textfieldId: {4}, newValue: {5}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.projectId, this.representationId, this.textfieldId, this.newValue);
+        String pattern = "{0} '{'projectId: {1}, representationId: {2}, textfieldId: {3}, newValue: {4}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.projectId, this.representationId, this.textfieldId, this.newValue);
     }
 
 }

@@ -33,21 +33,20 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.emfjson.resource.JsonResourceImpl;
-import org.eclipse.sirius.web.collaborative.api.services.ChangeDescription;
-import org.eclipse.sirius.web.collaborative.api.services.ChangeKind;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
-import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventHandler;
+import org.eclipse.sirius.web.collaborative.api.services.IProjectEventHandler;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
-import org.eclipse.sirius.web.core.api.ErrorPayload;
-import org.eclipse.sirius.web.core.api.IEditingContext;
-import org.eclipse.sirius.web.core.api.IInput;
-import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.emf.services.messages.IEMFMessageService;
 import org.eclipse.sirius.web.emf.utils.EMFResourceUtils;
+import org.eclipse.sirius.web.services.api.Context;
 import org.eclipse.sirius.web.services.api.document.Document;
 import org.eclipse.sirius.web.services.api.document.IDocumentService;
 import org.eclipse.sirius.web.services.api.document.UploadDocumentInput;
 import org.eclipse.sirius.web.services.api.document.UploadDocumentSuccessPayload;
+import org.eclipse.sirius.web.services.api.dto.ErrorPayload;
+import org.eclipse.sirius.web.services.api.dto.IPayload;
+import org.eclipse.sirius.web.services.api.dto.IProjectInput;
+import org.eclipse.sirius.web.services.api.objects.IEditingContext;
 import org.eclipse.sirius.web.spring.graphql.api.UploadFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,7 +61,7 @@ import io.micrometer.core.instrument.MeterRegistry;
  * @author sbegaudeau
  */
 @Service
-public class UploadDocumentEventHandler implements IEditingContextEventHandler {
+public class UploadDocumentEventHandler implements IProjectEventHandler {
 
     private final Logger logger = LoggerFactory.getLogger(UploadDocumentEventHandler.class);
 
@@ -84,29 +83,28 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
     }
 
     @Override
-    public boolean canHandle(IInput input) {
-        return input instanceof UploadDocumentInput;
+    public boolean canHandle(IProjectInput projectInput) {
+        return projectInput instanceof UploadDocumentInput;
     }
 
     @Override
-    public EventHandlerResponse handle(IEditingContext editingContext, IInput input) {
+    public EventHandlerResponse handle(IEditingContext editingContext, IProjectInput projectInput, Context context) {
         this.counter.increment();
 
-        EventHandlerResponse response = new EventHandlerResponse(new ChangeDescription(ChangeKind.NOTHING, editingContext.getId()),
-                new ErrorPayload(input.getId(), this.messageService.unexpectedError()));
-        if (!(input instanceof UploadDocumentInput)) {
+        EventHandlerResponse response = new EventHandlerResponse(false, representation -> false, new ErrorPayload(this.messageService.unexpectedError()));
+        if (!(projectInput instanceof UploadDocumentInput)) {
             return response;
         }
 
-        UploadDocumentInput uploadDocumentInput = (UploadDocumentInput) input;
-        UUID projectId = uploadDocumentInput.getProjectId();
-        UploadFile file = uploadDocumentInput.getFile();
+        UploadDocumentInput input = (UploadDocumentInput) projectInput;
+        UUID projectId = input.getProjectId();
+        UploadFile file = input.getFile();
 
         // @formatter:off
         Optional<AdapterFactoryEditingDomain> optionalEditingDomain = Optional.of(editingContext)
-                .filter(EditingContext.class::isInstance)
-                .map(EditingContext.class::cast)
-                .map(EditingContext::getDomain);
+                .map(IEditingContext::getDomain)
+                .filter(AdapterFactoryEditingDomain.class::isInstance)
+                .map(AdapterFactoryEditingDomain.class::cast);
         // @formatter:on
 
         String name = file.getName().trim();
@@ -133,8 +131,8 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
                     resource.eAdapters().add(new DocumentMetadataAdapter(name));
                     resourceSet.getResources().add(resource);
 
-                    IPayload payload = new UploadDocumentSuccessPayload(input.getId(), document);
-                    response = new EventHandlerResponse(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId()), payload);
+                    IPayload payload = new UploadDocumentSuccessPayload(document);
+                    response = new EventHandlerResponse(true, representation -> true, payload);
                 }
             }
         }

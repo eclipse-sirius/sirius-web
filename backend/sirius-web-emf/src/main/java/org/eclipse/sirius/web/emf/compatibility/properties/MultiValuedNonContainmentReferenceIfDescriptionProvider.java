@@ -23,11 +23,11 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.web.compat.forms.WidgetIdProvider;
 import org.eclipse.sirius.web.compat.services.ImageConstants;
-import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.forms.components.ListComponent;
 import org.eclipse.sirius.web.forms.description.IfDescription;
 import org.eclipse.sirius.web.forms.description.ListDescription;
 import org.eclipse.sirius.web.representations.VariableManager;
+import org.eclipse.sirius.web.services.api.objects.IObjectService;
 
 /**
  * Provides the default description of the widget to use to support multi-valued non-containment reference.
@@ -90,7 +90,7 @@ public class MultiValuedNonContainmentReferenceIfDescriptionProvider {
     private Function<VariableManager, String> getImageURLProvider() {
         return variableManager -> {
             // @formatter:off
-            return variableManager.get(ListComponent.CANDIDATE_VARIABLE, EObject.class)
+            return variableManager.get(VariableManager.SELF, EObject.class)
                                   .map(this.objectService::getImagePath)
                                   .orElse(ImageConstants.DEFAULT_SVG);
             // @formatter:on

@@ -20,8 +20,6 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.sirius.web.collaborative.api.dto.PreDestroyPayload;
-import org.eclipse.sirius.web.collaborative.api.services.ChangeDescription;
-import org.eclipse.sirius.web.collaborative.api.services.ChangeKind;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.ISubscriptionManager;
 import org.eclipse.sirius.web.collaborative.forms.api.IFormEventHandler;
@@ -31,10 +29,6 @@ import org.eclipse.sirius.web.collaborative.forms.api.IWidgetSubscriptionManager
 import org.eclipse.sirius.web.collaborative.forms.api.dto.PropertiesRefreshedEventPayload;
 import org.eclipse.sirius.web.collaborative.forms.api.dto.UpdateWidgetFocusInput;
 import org.eclipse.sirius.web.components.Element;
-import org.eclipse.sirius.web.core.api.IEditingContext;
-import org.eclipse.sirius.web.core.api.IInput;
-import org.eclipse.sirius.web.core.api.IPayload;
-import org.eclipse.sirius.web.core.api.IRepresentationInput;
 import org.eclipse.sirius.web.forms.Form;
 import org.eclipse.sirius.web.forms.components.FormComponent;
 import org.eclipse.sirius.web.forms.components.FormComponentProps;
@@ -43,13 +37,17 @@ import org.eclipse.sirius.web.forms.renderer.FormRenderer;
 import org.eclipse.sirius.web.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.web.representations.IRepresentation;
 import org.eclipse.sirius.web.representations.VariableManager;
+import org.eclipse.sirius.web.services.api.Context;
+import org.eclipse.sirius.web.services.api.dto.IPayload;
+import org.eclipse.sirius.web.services.api.dto.IRepresentationInput;
+import org.eclipse.sirius.web.services.api.objects.IEditingContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.Sinks;
-import reactor.core.publisher.Sinks.Many;
 
 /**
  * Reacts to the input that target the property sheet of a specific object and publishes updated versions of the
@@ -75,7 +73,9 @@ public class PropertiesEventProcessor implements IPropertiesEventProcessor {
 
     private final IWidgetSubscriptionManager widgetSubscriptionManager;
 
-    private final Many<IPayload> sink = Sinks.many().multicast().directBestEffort();
+    private final DirectProcessor<IPayload> flux;
+
+    private final FluxSink<IPayload> sink;
 
     private final AtomicReference<Form> currentForm = new AtomicReference<>();
 
@@ -88,6 +88,9 @@ public class PropertiesEventProcessor implements IPropertiesEventProcessor {
         this.formEventHandlers = Objects.requireNonNull(formEventHandlers);
         this.subscriptionManager = Objects.requireNonNull(subscriptionManager);
         this.widgetSubscriptionManager = Objects.requireNonNull(widgetSubscriptionManager);
+
+        this.flux = DirectProcessor.create();
+        this.sink = this.flux.sink();
 
         Form form = this.refreshForm();
         this.currentForm.set(form);
@@ -104,23 +107,19 @@ public class PropertiesEventProcessor implements IPropertiesEventProcessor {
     }
 
     @Override
-    public Optional<EventHandlerResponse> handle(IRepresentationInput representationInput) {
+    public Optional<EventHandlerResponse> handle(IRepresentationInput representationInput, Context context) {
         if (representationInput instanceof IFormInput) {
             IFormInput formInput = (IFormInput) representationInput;
 
             if (formInput instanceof UpdateWidgetFocusInput) {
                 UpdateWidgetFocusInput input = (UpdateWidgetFocusInput) formInput;
-                this.widgetSubscriptionManager.handle(input);
+                this.widgetSubscriptionManager.handle(input, context);
             } else {
                 Optional<IFormEventHandler> optionalFormEventHandler = this.formEventHandlers.stream().filter(handler -> handler.canHandle(formInput)).findFirst();
 
                 if (optionalFormEventHandler.isPresent()) {
                     IFormEventHandler formEventHandler = optionalFormEventHandler.get();
-                    EventHandlerResponse eventHandlerResponse = formEventHandler.handle(this.currentForm.get(), formInput);
-
-                    this.refresh(representationInput, eventHandlerResponse.getChangeDescription());
-
-                    return Optional.of(eventHandlerResponse);
+                    return Optional.of(formEventHandler.handle(this.currentForm.get(), formInput));
                 } else {
                     this.logger.warn("No handler found for event: {}", formInput); //$NON-NLS-1$
                 }
@@ -131,13 +130,11 @@ public class PropertiesEventProcessor implements IPropertiesEventProcessor {
     }
 
     @Override
-    public void refresh(IInput input, ChangeDescription changeDescription) {
-        if (ChangeKind.SEMANTIC_CHANGE.equals(changeDescription.getKind())) {
-            Form form = this.refreshForm();
+    public void refresh() {
+        Form form = this.refreshForm();
 
-            this.currentForm.set(form);
-            this.sink.tryEmitNext(new PropertiesRefreshedEventPayload(input.getId(), form));
-        }
+        this.currentForm.set(form);
+        this.sink.next(new PropertiesRefreshedEventPayload(form));
     }
 
     private Form refreshForm() {
@@ -156,15 +153,15 @@ public class PropertiesEventProcessor implements IPropertiesEventProcessor {
     }
 
     @Override
-    public Flux<IPayload> getOutputEvents(IInput input) {
-        var initialRefresh = Mono.fromCallable(() -> new PropertiesRefreshedEventPayload(input.getId(), this.currentForm.get()));
-        var refreshEventFlux = Flux.concat(initialRefresh, this.sink.asFlux());
+    public Flux<IPayload> getOutputEvents() {
+        var initialRefresh = Mono.fromCallable(() -> new PropertiesRefreshedEventPayload(this.currentForm.get()));
+        var refreshEventFlux = Flux.concat(initialRefresh, this.flux);
 
         // @formatter:off
         return Flux.merge(
             refreshEventFlux,
-            this.widgetSubscriptionManager.getFlux(input),
-            this.subscriptionManager.getFlux(input)
+            this.widgetSubscriptionManager.getFlux(),
+            this.subscriptionManager.getFlux()
         );
         // @formatter:on
     }
@@ -173,12 +170,12 @@ public class PropertiesEventProcessor implements IPropertiesEventProcessor {
     public void dispose() {
         this.subscriptionManager.dispose();
         this.widgetSubscriptionManager.dispose();
-        this.sink.tryEmitComplete();
+        this.flux.onComplete();
     }
 
     @Override
     public void preDestroy() {
-        this.sink.tryEmitNext(new PreDestroyPayload(this.getRepresentation().getId()));
+        this.sink.next(new PreDestroyPayload(this.getRepresentation().getId()));
     }
 
 }

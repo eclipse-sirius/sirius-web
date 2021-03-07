@@ -26,12 +26,12 @@
   font-size: var(--font-size-5);
   font-weight: var(--font-weight-600);
   line-height: var(--line-height-1);
+  color: var(--white);
   white-space: nowrap;
 }
 
 .action {
-  background-color: var(--blue-lagoon);
-  color: var(--white) !important;
+  background-color: #de1000;
 }
 
 .action:focus {
@@ -43,34 +43,12 @@
 }
 
 .action:active {
-  background-color: var(--blue-lagoon);
-  box-shadow: 0px 0px 6px var(--blue-lagoon-lighten-30);
-}
-
-.secondary {
-  border: 1px solid var(--blue-lagoon);
-  color: var(--blue-lagoon) !important;
-}
-
-.secondary:focus {
-  border: 1px solid var(--blue-lagoon-lighten-30);
-  color: var(--blue-lagoon-lighten-30) !important;
-}
-
-.secondary:hover {
-  border: 1px solid var(--blue-lagoon-darken-30);
-  color: var(--blue-lagoon-darken-30) !important;
-}
-
-.secondary:active {
-  border: 1px solid var(--blue-lagoon);
-  color: var(--blue-lagoon) !important;
+  background-color: #de1000;
   box-shadow: 0px 0px 6px var(--blue-lagoon-lighten-30);
 }
 
 .danger {
   background-color: var(--red);
-  color: var(--white) !important;
 }
 
 .danger:focus {
@@ -86,39 +64,16 @@
   box-shadow: 0px 0px 6px var(--red-lighten-30);
 }
 
-.dangerSecondary {
-  color: var(--red) !important;
-  border: 1px solid var(--red);
-}
-
-.dangerSecondary:focus {
-  color: var(--red-lighten-30) !important;
-  border: 1px solid var(--red-lighten-30);
-}
-
-.dangerSecondary:hover {
-  color: var(--red-darken-30) !important;
-  border: 1px solid var(--red-darken-30);
-}
-
-.dangerSecondary:active {
-  color: var(--red) !important;
-  border: 1px solid var(--red-lighten-30);
-  box-shadow: 0px 0px 6px var(--red-lighten-30);
-}
-
 .rectangularButton:disabled,
 .rectangularButton.disabled {
   background-color: var(--daintree-lighten-90);
 }
 
 .iconButton {
-  color: var(--white) !important;
   display: grid;
   cursor: pointer;
   padding: 4px;
   border-radius: 50%;
-  align-items: center;
 }
 
 .iconButton:active {
@@ -127,17 +82,4 @@
 .iconButton:disabled,
 .iconButton.disabled {
   stroke: var(--daintree-lighten-90);
-}
-
-.buttons {
-  display: flex;
-  justify-content: center;
-}
-
-.buttons > * {
-  margin-left: 16px;
-}
-
-.buttons > *:first-child {
-  margin-left: 0px;
 }

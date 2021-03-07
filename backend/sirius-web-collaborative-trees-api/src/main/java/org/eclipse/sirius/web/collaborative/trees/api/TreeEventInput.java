@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,14 +14,13 @@ package org.eclipse.sirius.web.collaborative.trees.api;
 
 import java.text.MessageFormat;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.annotations.graphql.GraphQLField;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLID;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLInputObjectType;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLNonNull;
-import org.eclipse.sirius.web.core.api.IInput;
+import org.eclipse.sirius.web.services.api.dto.IInput;
 
 /**
  * The input of the tree event subscription.
@@ -30,35 +29,15 @@ import org.eclipse.sirius.web.core.api.IInput;
  */
 @GraphQLInputObjectType
 public final class TreeEventInput implements IInput {
-    private UUID id;
-
-    private UUID editingContextId;
+    private UUID projectId;
 
     private List<String> expanded;
 
-    public TreeEventInput() {
-        // Used by Jackson
-    }
-
-    public TreeEventInput(UUID id, UUID editingContextId, List<String> expanded) {
-        this.id = Objects.requireNonNull(id);
-        this.editingContextId = Objects.requireNonNull(editingContextId);
-        this.expanded = Objects.requireNonNull(expanded);
-    }
-
-    @Override
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getId() {
-        return this.id;
-    }
-
-    @GraphQLID
-    @GraphQLField
-    @GraphQLNonNull
-    public UUID getEditingContextId() {
-        return this.editingContextId;
+    public UUID getProjectId() {
+        return this.projectId;
     }
 
     @GraphQLField
@@ -69,7 +48,7 @@ public final class TreeEventInput implements IInput {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, editingContextId: {2}, expanded: {3}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.editingContextId, this.expanded);
+        String pattern = "{0} '{'projectId: {1}, expanded: {2}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.projectId, this.expanded);
     }
 }

@@ -36,15 +36,15 @@
 .message {
   font-weight: var(--font-weight-bold);
   font-size: var(--font-size-4);
-  color: var(--daintree);
+  color: #000000;
 }
 
 .additionalMessages {
   font-size: var(--font-size-4);
-  color: var(--daintree);
+  color: #000000;
 }
 
 .label {
   font-size: var(--font-size-4);
-  color: var(--daintree);
+  color: #000000;
 }

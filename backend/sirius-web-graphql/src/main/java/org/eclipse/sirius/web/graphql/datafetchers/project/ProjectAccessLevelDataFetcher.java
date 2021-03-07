@@ -57,7 +57,7 @@ public class ProjectAccessLevelDataFetcher implements IDataFetcherWithFieldCoord
         var optionalUsername = this.dataFetchingEnvironmentService.getPrincipal(environment).map(Principal::getName);
         if (optionalUsername.isPresent()) {
             String username = optionalUsername.get();
-            return this.projectAccessPolicy.getAccessLevel(username, project.getId()).orElse(null);
+            return this.projectAccessPolicy.getAccessLevel(username, project.getId());
         }
         return AccessLevel.READ;
     }

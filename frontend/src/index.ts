@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,14 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-// Required because Sprotty uses Inversify and both frameworks are written in TypeScript with experimental features.
-import 'reflect-metadata';
-export * from 'theme';
+
 export * from './auth/useAuth';
 export * from './capabilities/CapabilitiesProvider';
 export * from './capabilities/useCapabilities';
 export * from './common/BrandingContext';
-export * from './common/ServerContext';
 export * from './common/URL';
 export * from './core/banner/Banner';
 export * from './core/button/Button';
@@ -63,7 +60,6 @@ export * from './diagram/Toolbar';
 export * from './errors/ErrorBoundary';
 export * from './explorer/Explorer';
 export * from './explorer/ExplorerWebSocketContainer';
-export * from './form/FormWebSocketContainer';
 export * from './icons';
 export * from './modals/delete-document/DeleteDocumentModal';
 export * from './modals/delete-project/DeleteProjectModal';
@@ -73,8 +69,11 @@ export * from './modals/new-document/NewDocumentModal';
 export * from './modals/new-object/NewObjectModal';
 export * from './modals/new-representation/NewRepresentationModal';
 export * from './modals/new-root-object/NewRootObjectModal';
+export * from './modals/rename-project/RenameProjectModal';
 export * from './modals/share-diagram/ShareDiagramModal';
 export * from './modals/upload-document/UploadDocumentModal';
+export * from './navbar/EditProjectNavbar/EditProjectNavbar';
+export * from './navbar/EditProjectNavbarContextMenu';
 export * from './navbar/LoggedInNavbar';
 export * from './navbar/LoggedOutNavbar';
 export * from './navbar/Logo';
@@ -88,32 +87,38 @@ export * from './onboarding/NewRepresentationArea';
 export * from './onboarding/RepresentationsArea';
 export * from './project/Permission';
 export * from './project/ProjectProvider';
-export * from './properties/Group';
-export * from './properties/Page';
+export * from './properties/group/Group';
+export * from './properties/page/Page';
 export * from './properties/pagelist/PageList';
 export * from './properties/Properties';
 export * from './properties/PropertiesWebSocketContainer';
 export * from './properties/propertysections/CheckboxPropertySection';
 export * from './properties/propertysections/ListPropertySection';
+export * from './properties/propertysections/PropertySectionSubscribers';
 export * from './properties/propertysections/RadioPropertySection';
 export * from './properties/propertysections/SelectPropertySection';
+export * from './properties/propertysections/TextareaPropertySection';
 export * from './properties/propertysections/TextfieldPropertySection';
 export * from './tree/Tree';
 export * from './tree/TreeItem';
 export * from './tree/TreeItemDiagramContextMenu';
 export * from './tree/TreeItemObjectContextMenu';
-export * from './views/edit-project/EditProjectNavbar/EditProjectNavbar';
+export * from './views/edit-project/EditProjectLoadedView';
 export * from './views/edit-project/EditProjectView';
+export * from './views/edit-project/OnboardArea';
+export * from './views/edit-project/RepresentationArea';
+export * from './views/edit-project/RepresentationNavigation';
 export * from './views/ErrorView';
 export * from './views/Footer';
 export * from './views/FormContainer';
-export * from './views/modelers/ModelersView';
-export * from './views/new-modeler/NewModelerView';
 export * from './views/new-project/NewProjectView';
+export * from './views/projects/ProjectActionsContextMenu';
+export * from './views/projects/ProjectCard';
+export * from './views/projects/ProjectsEmptyView';
+export * from './views/projects/ProjectsErrorView';
+export * from './views/projects/ProjectsLoadedView';
+export * from './views/projects/ProjectsLoadingView';
 export * from './views/projects/ProjectsView';
+export * from './views/projects/ProjectsViewContainer';
 export * from './views/upload-project/UploadProjectView';
 export * from './views/View';
-export * from './workbench/OnboardArea';
-export * from './workbench/RepresentationContext';
-export * from './workbench/RepresentationNavigation';
-export * from './workbench/Workbench';

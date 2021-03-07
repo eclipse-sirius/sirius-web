@@ -18,7 +18,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.annotations.Immutable;
-import org.eclipse.sirius.web.core.api.IEditingContext;
+import org.eclipse.sirius.web.services.api.objects.IEditingContext;
 import org.eclipse.sirius.web.trees.description.TreeDescription;
 
 /**

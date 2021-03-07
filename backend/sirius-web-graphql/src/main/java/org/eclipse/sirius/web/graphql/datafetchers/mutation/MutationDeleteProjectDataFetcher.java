@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,13 +16,13 @@ import java.util.Objects;
 
 import org.eclipse.sirius.web.annotations.graphql.GraphQLMutationTypes;
 import org.eclipse.sirius.web.annotations.spring.graphql.MutationDataFetcher;
-import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventProcessorRegistry;
-import org.eclipse.sirius.web.core.api.ErrorPayload;
-import org.eclipse.sirius.web.core.api.IPayload;
+import org.eclipse.sirius.web.collaborative.api.services.IProjectEventProcessorRegistry;
 import org.eclipse.sirius.web.graphql.datafetchers.IDataFetchingEnvironmentService;
 import org.eclipse.sirius.web.graphql.datafetchers.IViewerProvider;
 import org.eclipse.sirius.web.graphql.messages.IGraphQLMessageService;
 import org.eclipse.sirius.web.graphql.schema.MutationTypeProvider;
+import org.eclipse.sirius.web.services.api.dto.ErrorPayload;
+import org.eclipse.sirius.web.services.api.dto.IPayload;
 import org.eclipse.sirius.web.services.api.projects.DeleteProjectInput;
 import org.eclipse.sirius.web.services.api.projects.DeleteProjectSuccessPayload;
 import org.eclipse.sirius.web.services.api.projects.IProjectService;
@@ -62,18 +62,18 @@ public class MutationDeleteProjectDataFetcher implements IDataFetcherWithFieldCo
 
     private final IViewerProvider viewerProvider;
 
-    private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
+    private final IProjectEventProcessorRegistry projectEventProcessorRegistry;
 
     private final IProjectService projectService;
 
     private final IGraphQLMessageService messageService;
 
     public MutationDeleteProjectDataFetcher(IDataFetchingEnvironmentService dataFetchingEnvironmentService, IViewerProvider viewerProvider, IProjectService projectService,
-            IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry, IGraphQLMessageService messageService) {
+            IProjectEventProcessorRegistry projectEventProcessorRegistry, IGraphQLMessageService messageService) {
         this.dataFetchingEnvironmentService = Objects.requireNonNull(dataFetchingEnvironmentService);
         this.viewerProvider = Objects.requireNonNull(viewerProvider);
         this.projectService = Objects.requireNonNull(projectService);
-        this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
+        this.projectEventProcessorRegistry = Objects.requireNonNull(projectEventProcessorRegistry);
         this.messageService = Objects.requireNonNull(messageService);
     }
 
@@ -81,16 +81,16 @@ public class MutationDeleteProjectDataFetcher implements IDataFetcherWithFieldCo
     public IPayload get(DataFetchingEnvironment environment) throws Exception {
         var input = this.dataFetchingEnvironmentService.getInput(environment, DeleteProjectInput.class);
         var optionalViewer = this.viewerProvider.getViewer(environment);
-        IPayload payload = new ErrorPayload(input.getId(), this.messageService.unexpectedError());
+        IPayload payload = new ErrorPayload(this.messageService.unexpectedError());
         if (optionalViewer.isPresent()) {
             IViewer viewer = optionalViewer.get();
             boolean canAdmin = this.dataFetchingEnvironmentService.canAdmin(environment, input.getProjectId());
             if (canAdmin) {
-                this.editingContextEventProcessorRegistry.dispose(input.getProjectId());
+                this.projectEventProcessorRegistry.dispose(input.getProjectId());
                 this.projectService.delete(input.getProjectId());
-                payload = new DeleteProjectSuccessPayload(input.getId(), viewer);
+                payload = new DeleteProjectSuccessPayload(viewer);
             } else {
-                payload = new ErrorPayload(input.getId(), this.messageService.unauthorized());
+                payload = new ErrorPayload(this.messageService.unauthorized());
             }
         }
 

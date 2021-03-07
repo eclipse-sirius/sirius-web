@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,15 +18,15 @@ import java.util.UUID;
 
 import org.eclipse.sirius.web.annotations.graphql.GraphQLMutationTypes;
 import org.eclipse.sirius.web.annotations.spring.graphql.MutationDataFetcher;
-import org.eclipse.sirius.web.collaborative.api.dto.RenameRepresentationInput;
 import org.eclipse.sirius.web.collaborative.api.dto.RenameRepresentationSuccessPayload;
-import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventProcessorRegistry;
-import org.eclipse.sirius.web.core.api.ErrorPayload;
-import org.eclipse.sirius.web.core.api.IPayload;
+import org.eclipse.sirius.web.collaborative.api.services.IProjectEventProcessorRegistry;
 import org.eclipse.sirius.web.graphql.datafetchers.IDataFetchingEnvironmentService;
 import org.eclipse.sirius.web.graphql.messages.IGraphQLMessageService;
 import org.eclipse.sirius.web.graphql.schema.MutationTypeProvider;
+import org.eclipse.sirius.web.services.api.dto.ErrorPayload;
+import org.eclipse.sirius.web.services.api.dto.IPayload;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationService;
+import org.eclipse.sirius.web.services.api.representations.RenameRepresentationInput;
 import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;
 import org.eclipse.sirius.web.spring.graphql.api.IDataFetcherWithFieldCoordinates;
 
@@ -63,14 +63,14 @@ public class MutationRenameRepresentationDataFetcher implements IDataFetcherWith
 
     private final IRepresentationService representationService;
 
-    private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
+    private final IProjectEventProcessorRegistry projectEventProcessorRegistry;
 
     private final IGraphQLMessageService messageService;
 
-    public MutationRenameRepresentationDataFetcher(IDataFetchingEnvironmentService dataFetchingEnvironmentService, IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry,
+    public MutationRenameRepresentationDataFetcher(IDataFetchingEnvironmentService dataFetchingEnvironmentService, IProjectEventProcessorRegistry projectEventProcessorRegistry,
             IRepresentationService representationService, IGraphQLMessageService messageService) {
         this.dataFetchingEnvironmentService = Objects.requireNonNull(dataFetchingEnvironmentService);
-        this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
+        this.projectEventProcessorRegistry = Objects.requireNonNull(projectEventProcessorRegistry);
         this.representationService = Objects.requireNonNull(representationService);
         this.messageService = Objects.requireNonNull(messageService);
     }
@@ -78,14 +78,15 @@ public class MutationRenameRepresentationDataFetcher implements IDataFetcherWith
     @Override
     public IPayload get(DataFetchingEnvironment environment) throws Exception {
         var input = this.dataFetchingEnvironmentService.getInput(environment, RenameRepresentationInput.class);
+        var context = this.dataFetchingEnvironmentService.getContext(environment);
 
-        IPayload payload = new ErrorPayload(input.getId(), this.messageService.unexpectedError());
+        IPayload payload = new ErrorPayload(this.messageService.unexpectedError());
 
         UUID projectId = input.getProjectId();
         if (projectId != null) {
             boolean canEditProject = this.dataFetchingEnvironmentService.canEdit(environment, projectId);
             if (!canEditProject) {
-                payload = new ErrorPayload(input.getId(), this.messageService.unauthorized());
+                payload = new ErrorPayload(this.messageService.unauthorized());
             } else {
                 Optional<RepresentationDescriptor> optionalRepresentationDescriptor = this.representationService.getRepresentation(input.getRepresentationId());
                 if (optionalRepresentationDescriptor.isPresent()) {
@@ -94,11 +95,11 @@ public class MutationRenameRepresentationDataFetcher implements IDataFetcherWith
                     boolean canEdit = this.dataFetchingEnvironmentService.canEdit(environment, representationDescriptor.getProjectId());
                     if (canEdit) {
                         // @formatter:off
-                        payload = this.editingContextEventProcessorRegistry.dispatchEvent(representationDescriptor.getProjectId(), input)
-                                .orElse(new ErrorPayload(input.getId(), this.messageService.unexpectedError()));
+                        payload = this.projectEventProcessorRegistry.dispatchEvent(representationDescriptor.getProjectId(), input, context)
+                                .orElse(new ErrorPayload(this.messageService.unexpectedError()));
                         // @formatter:on
                     } else {
-                        payload = new ErrorPayload(input.getId(), this.messageService.unauthorized());
+                        payload = new ErrorPayload(this.messageService.unauthorized());
                     }
 
                 }

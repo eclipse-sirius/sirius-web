@@ -85,10 +85,10 @@ export class EdgeView extends PolylineEdgeView {
    */
   applyFeedback(edge, styleObject) {
     if (edge.selected) {
-      styleObject['stroke'] = 'var(--blue-lagoon)';
+      styleObject['stroke'] = 'var(--red)';
     }
     if (edge.hoverFeedback) {
-      styleObject['stroke'] = 'var(--blue-lagoon)';
+      styleObject['stroke'] = 'var(--red)';
       styleObject['stroke-width'] = 2;
     }
   }

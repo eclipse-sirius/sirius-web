@@ -13,11 +13,7 @@
     "esModuleInterop": true,
     "noUnusedLocals": true,
     "types": ["node", "reflect-metadata", "jest"],
-    "resolveJsonModule": true,
-    "noImplicitThis": true,
-    "alwaysStrict": true,
-    "strictBindCallApply": true,
-    "strictFunctionTypes": true
+    "resolveJsonModule": true
   },
   "include": ["src/**/*"],
   "exclude": [

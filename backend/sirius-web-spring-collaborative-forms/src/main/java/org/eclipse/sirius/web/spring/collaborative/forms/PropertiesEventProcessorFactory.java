@@ -23,12 +23,13 @@ import org.eclipse.sirius.web.collaborative.api.services.ISubscriptionManagerFac
 import org.eclipse.sirius.web.collaborative.forms.api.IFormEventHandler;
 import org.eclipse.sirius.web.collaborative.forms.api.IFormEventProcessor;
 import org.eclipse.sirius.web.collaborative.forms.api.IPropertiesDefaultDescriptionProvider;
-import org.eclipse.sirius.web.collaborative.forms.api.IPropertiesDescriptionService;
 import org.eclipse.sirius.web.collaborative.forms.api.IWidgetSubscriptionManagerFactory;
 import org.eclipse.sirius.web.collaborative.forms.api.PropertiesConfiguration;
-import org.eclipse.sirius.web.core.api.IEditingContext;
-import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.forms.description.FormDescription;
+import org.eclipse.sirius.web.services.api.Context;
+import org.eclipse.sirius.web.services.api.objects.IEditingContext;
+import org.eclipse.sirius.web.services.api.objects.IObjectService;
+import org.eclipse.sirius.web.services.api.representations.IPropertiesDescriptionProvider;
 import org.springframework.stereotype.Service;
 
 /**
@@ -39,7 +40,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class PropertiesEventProcessorFactory implements IRepresentationEventProcessorFactory {
 
-    private final IPropertiesDescriptionService propertiesDescriptionService;
+    private final IPropertiesDescriptionProvider propertiesDescriptionProvider;
 
     private final IPropertiesDefaultDescriptionProvider propertiesDefaultDescriptionProvider;
 
@@ -51,10 +52,10 @@ public class PropertiesEventProcessorFactory implements IRepresentationEventProc
 
     private final IWidgetSubscriptionManagerFactory widgetSubscriptionManagerFactory;
 
-    public PropertiesEventProcessorFactory(IPropertiesDescriptionService propertiesDescriptionService, IPropertiesDefaultDescriptionProvider propertiesDefaultDescriptionProvider,
+    public PropertiesEventProcessorFactory(IPropertiesDescriptionProvider propertiesDescriptionProvider, IPropertiesDefaultDescriptionProvider propertiesDefaultDescriptionProvider,
             IObjectService objectService, List<IFormEventHandler> formEventHandlers, ISubscriptionManagerFactory subscriptionManagerFactory,
             IWidgetSubscriptionManagerFactory widgetSubscriptionManagerFactory) {
-        this.propertiesDescriptionService = Objects.requireNonNull(propertiesDescriptionService);
+        this.propertiesDescriptionProvider = Objects.requireNonNull(propertiesDescriptionProvider);
         this.propertiesDefaultDescriptionProvider = Objects.requireNonNull(propertiesDefaultDescriptionProvider);
         this.objectService = Objects.requireNonNull(objectService);
         this.formEventHandlers = Objects.requireNonNull(formEventHandlers);
@@ -69,11 +70,11 @@ public class PropertiesEventProcessorFactory implements IRepresentationEventProc
 
     @Override
     public <T extends IRepresentationEventProcessor> Optional<T> createRepresentationEventProcessor(Class<T> representationEventProcessorClass, IRepresentationConfiguration configuration,
-            IEditingContext editingContext) {
+            IEditingContext editingContext, Context context) {
         if (IFormEventProcessor.class.isAssignableFrom(representationEventProcessorClass) && configuration instanceof PropertiesConfiguration) {
             PropertiesConfiguration propertiesConfiguration = (PropertiesConfiguration) configuration;
 
-            List<FormDescription> formDescriptions = this.propertiesDescriptionService.getPropertiesDescriptions();
+            List<FormDescription> formDescriptions = this.propertiesDescriptionProvider.getPropertiesDescriptions();
             Optional<Object> optionalObject = this.objectService.getObject(editingContext, propertiesConfiguration.getObjectId());
             if (optionalObject.isPresent()) {
                 Object object = optionalObject.get();

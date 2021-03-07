@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2021 Obeo.
+ * Copyright (c) 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,11 +10,6 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import {
-  GQLCreateProjectMutationData,
-  GQLCreateProjectPayload,
-  GQLCreateProjectSuccessPayload,
-} from 'views/new-project/NewProjectView.types';
 import { assign, Machine } from 'xstate';
 
 export interface NewProjectViewStateSchema {
@@ -46,26 +41,23 @@ export interface NewProjectViewContext {
   name: string;
   nameMessage: string;
   nameIsInvalid: boolean;
-  message: string | null;
-  newProjectId: string | null;
+  message: string;
+  newProjectId: string;
 }
 
 export type ShowToastEvent = { type: 'SHOW_TOAST'; message: string };
 export type HideToastEvent = { type: 'HIDE_TOAST' };
-export type ChangeNamedEvent = { type: 'CHANGE_NAME'; name: string };
-export type HandleResponseEvent = { type: 'HANDLE_RESPONSE'; data: GQLCreateProjectMutationData };
-export type RequestProjectCreationEvent = { type: 'REQUEST_PROJECT_CREATION' };
+export type HandleChangedNameEvent = { type: 'HANDLE_CHANGED_NAME'; name: string };
+export type HandleResponseEvent = { type: 'HANDLE_RESPONSE'; data: any };
+export type HandleCreateProjectEvent = { type: 'HANDLE_CREATE_PROJECT' };
 export type NewProjectEvent =
-  | ChangeNamedEvent
-  | RequestProjectCreationEvent
+  | HandleChangedNameEvent
+  | HandleCreateProjectEvent
   | HandleResponseEvent
   | ShowToastEvent
   | HideToastEvent;
 
-const isChangeNameEvent = (event: NewProjectEvent): event is ChangeNamedEvent => !!(event as ChangeNamedEvent).name;
 const isNameInvalid = (name: string) => name.trim().length < 3 || name.trim().length > 20;
-const isCreateProjectSuccessPayload = (payload: GQLCreateProjectPayload): payload is GQLCreateProjectSuccessPayload =>
-  payload.__typename === 'CreateProjectSuccessPayload';
 export const newProjectViewMachine = Machine<NewProjectViewContext, NewProjectViewStateSchema, NewProjectEvent>(
   {
     id: 'NewProjectView',
@@ -104,7 +96,7 @@ export const newProjectViewMachine = Machine<NewProjectViewContext, NewProjectVi
         states: {
           pristine: {
             on: {
-              CHANGE_NAME: [
+              HANDLE_CHANGED_NAME: [
                 {
                   cond: 'isFormInvalid',
                   target: 'invalid',
@@ -119,7 +111,7 @@ export const newProjectViewMachine = Machine<NewProjectViewContext, NewProjectVi
           },
           invalid: {
             on: {
-              CHANGE_NAME: [
+              HANDLE_CHANGED_NAME: [
                 {
                   cond: 'isFormInvalid',
                   target: 'invalid',
@@ -134,7 +126,7 @@ export const newProjectViewMachine = Machine<NewProjectViewContext, NewProjectVi
           },
           valid: {
             on: {
-              CHANGE_NAME: [
+              HANDLE_CHANGED_NAME: [
                 {
                   cond: 'isFormInvalid',
                   target: 'invalid',
@@ -145,7 +137,7 @@ export const newProjectViewMachine = Machine<NewProjectViewContext, NewProjectVi
                   actions: 'updateName',
                 },
               ],
-              REQUEST_PROJECT_CREATION: [
+              HANDLE_CREATE_PROJECT: [
                 {
                   target: 'creatingProject',
                 },
@@ -176,11 +168,8 @@ export const newProjectViewMachine = Machine<NewProjectViewContext, NewProjectVi
   {
     guards: {
       isFormInvalid: (_, event) => {
-        if (isChangeNameEvent(event)) {
-          const { name } = event;
-          return isNameInvalid(name);
-        }
-        return true;
+        const { name } = event as HandleChangedNameEvent;
+        return isNameInvalid(name);
       },
       isResponseSuccessful: (_, event) => {
         const { data } = event as HandleResponseEvent;
@@ -189,16 +178,12 @@ export const newProjectViewMachine = Machine<NewProjectViewContext, NewProjectVi
     },
     actions: {
       updateName: assign((_, event) => {
-        const { name } = event as ChangeNamedEvent;
+        const { name } = event as HandleChangedNameEvent;
         return { name, nameIsInvalid: isNameInvalid(name) };
       }),
       updateProjectId: assign((_, event) => {
         const { data } = event as HandleResponseEvent;
-        const { createProject } = data;
-        if (isCreateProjectSuccessPayload(createProject)) {
-          return { newProjectId: createProject.project.id };
-        }
-        return {};
+        return { newProjectId: data.createProject.project.id };
       }),
       setMessage: assign((_, event) => {
         const { message } = event as ShowToastEvent;

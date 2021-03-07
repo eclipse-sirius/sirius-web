@@ -5,7 +5,6 @@ subscription treeEvent($input: TreeEventInput!) {
       id
     }
     ... on TreeRefreshedEventPayload {
-      id
       tree {
         id
         label

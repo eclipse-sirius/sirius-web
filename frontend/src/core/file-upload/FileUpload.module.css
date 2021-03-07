@@ -21,12 +21,12 @@
   align-items: center;
   justify-items: center;
 
-  border: 1px dashed var(--daintree);
+  border: 1px dashed #000000;
 }
 
 .message {
   font-size: var(--font-size-4);
-  color: var(--daintree);
+  color: #000000;
   font-weight: var(--font-weight-bold);
 }
 

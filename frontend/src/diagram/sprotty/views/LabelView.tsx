@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,8 @@
  *******************************************************************************/
 /** @jsx svg */
 import { svg } from 'snabbdom-jsx';
-import { getSubType, setAttr, SLabelView } from 'sprotty';
+import { SLabelView, getSubType, setAttr } from 'sprotty';
+import { httpOrigin } from 'common/URL';
 
 /**
  * The view used to display labels.
@@ -52,7 +53,7 @@ export class LabelView extends SLabelView {
     const iconVerticalOffset = label.text ? -12 : -6;
     const vnode = (
       <g attrs-data-testid={`Label - ${label.text}`}>
-        {iconURL ? <image href={iconURL} y={iconVerticalOffset} x="-20" /> : ''}
+        {iconURL ? <image href={httpOrigin + iconURL} y={iconVerticalOffset} x="-20" /> : ''}
         <text class-sprotty-label={true} style={styleObject}>
           {label.text}
         </text>

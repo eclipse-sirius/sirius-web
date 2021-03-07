@@ -15,13 +15,13 @@ import React, { useContext } from 'react';
 import { SiriusIcon, Help } from 'icons';
 import { Footer } from 'views/Footer';
 
-export const defaultIcon = <SiriusIcon title="" style={{ fill: 'var(--white)' }} />;
+export const defaultIcon = <SiriusIcon title="" style={{ fill: 'var(--red)' }} />;
 
 const defaultValue = {
   icon: defaultIcon,
-  productName: 'Sirius Web',
+  productName: 'Vanth Modeling',
   userStatus: (
-    <a href="https://www.eclipse.org/sirius" rel="noopener noreferrer" target="_blank">
+    <a href="http://vanthsec.com/" rel="noopener noreferrer" target="_blank">
       <Help style={{ fill: 'var(--white)', marginTop: 16, width: 32, height: 32 }} title="Help" />
     </a>
   ),

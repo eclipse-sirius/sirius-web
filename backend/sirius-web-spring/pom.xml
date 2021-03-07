@@ -5,9 +5,7 @@
  are made available under the terms of the Eclipse Public License v2.0
  which accompanies this distribution, and is available at
  https://www.eclipse.org/legal/epl-2.0/
-
  SPDX-License-Identifier: EPL-2.0
-
  Contributors:
      Obeo - initial API and implementation
 -->
@@ -22,13 +20,99 @@
 	</parent>
 	<groupId>org.eclipse.sirius.web</groupId>
 	<artifactId>sirius-web-spring</artifactId>
-	<version>0.2.9</version>
+	<version>0.1.33</version>
 	<name>sirius-web-spring</name>
 	<description>Sirius Web Spring</description>
 
 	<properties>
 		<java.version>11</java.version>
 	</properties>
+
+	<repositories>
+		<repository>
+		   <id>vanth</id>
+		   <url>file://${project.basedir}/lib</url>
+	    </repository>
+		<repository>
+			<id>atl</id>
+			<url>https://repo.eclipse.org/content/groups/atl</url>
+		</repository>
+		<repository>
+			<id>ow2</id>
+			<url>https://mvnrepository.com/artifact/org.ow2.asm/asm</url>
+		</repository>
+		<repository>
+			<id>maven</id>
+			<url>https://mvnrepository.com/artifact/org.eclipse.acceleo/org.eclipse.acceleo.maven</url>
+		</repository>
+		<repository>
+			<id>ATL trace</id>
+			<url>https://mvnrepository.com/artifact/org.eclipse.m2m.atl/org.eclipse.m2m.atl.emftvm.trace</url>
+		</repository>
+		<repository>
+			<id>ATL core</id>
+			<url>https://mvnrepository.com/artifact/org.eclipse.m2m.atl/org.eclipse.m2m.atl.core</url>
+		</repository>
+		<repository>
+			<id>ATL common</id>
+			<url>https://mvnrepository.com/artifact/org.eclipse.m2m.atl/org.eclipse.m2m.atl.common</url>
+		</repository>
+		<repository>
+			<id>AT emfL</id>
+			<url>https://mvnrepository.com/artifact/org.eclipse.m2m.atl/org.eclipse.m2m.atl.emftvm</url>
+		</repository>
+		<repository>
+		   <id>Eclipse - Acceleo Snapshots</id>
+		   <url>https://repo.eclipse.org/content/repositories/acceleo-snapshots</url>
+		 </repository>
+		   <repository>
+		   <id>Eclipse - Acceleo Release</id>
+		   <url>https://repo.eclipse.org/content/repositories/acceleo-releases</url>
+		 </repository>
+		    <repository>
+      <id>github snapshot</id>
+      <url>https://github.com/sbegaudeau/maven-repository/raw/master/snapshots</url>
+    </repository>
+    <repository>
+      <id>github release</id>
+      <url>https://github.com/sbegaudeau/maven-repository/raw/master/releases</url>
+    </repository>
+	<repository>
+      <id>Indigo Release</id>
+      <url>https://raw.github.com/eclipse/acceleo/master/maven/repository/releases/indigo</url>
+    </repository>
+	<repository>
+      <id>Juno Release</id>
+      <url>https://raw.github.com/eclipse/acceleo/master/maven/repository/releases/juno</url>
+    </repository>
+	<repository>
+      <id>Snapshots</id>
+      <url>https://raw.github.com/eclipse/acceleo/master/maven/repository/snapshots</url>
+    </repository>
+	<repository>
+      <id>Runtime</id>
+      <url>https://mvnrepository.com/artifact/org.eclipse.core/org.eclipse.core.runtime</url>
+    </repository>
+	<repository>
+      <id>Neon update site </id>
+      <layout>p2</layout>
+      <url>http://download.eclipse.org/releases/neon/</url>
+    </repository>
+	<repository>
+      <id>EMF ATL</id>
+      <url>https://mvnrepository.com/artifact/org.eclipse.m2m.atl/org.eclipse.m2m.atl.core.emf</url>
+    </repository>
+	<repository>
+      <id>Engine ATL</id>
+      <url>https://mvnrepository.com/artifact/org.eclipse.m2m.atl/org.eclipse.m2m.atl.engine.emfvm</url>
+    </repository>
+    <repository>
+      <id>Website Generator</id>
+      <layout>p2</layout>
+      <url>http://www.obeo.fr/download/release/designer/9.0/community/latest/repository
+      </url>
+    </repository>
+	</repositories>
 	
 	<distributionManagement>
 		<repository>
@@ -39,6 +123,61 @@
 	</distributionManagement>
 
 	<dependencies>
+			<dependency>
+			<groupId>org.eclipse.m2m.atl</groupId>
+			<artifactId>org.eclipse.m2m.atl.engine.emfvm</artifactId>
+			<version>4.2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.m2m.atl</groupId>
+			<artifactId>org.eclipse.m2m.atl.core.emf</artifactId>
+			<version>4.1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.m2m.atl</groupId>
+			<artifactId>org.eclipse.m2m.atl.core</artifactId>
+			<version>4.2.0</version>
+		</dependency>
+	<dependency>
+		<groupId>org.eclipse.m2m.atl</groupId>
+		<artifactId>org.eclipse.m2m.atl.common</artifactId>
+		<version>4.2.0</version>
+	</dependency>
+	<dependency>
+		<groupId>org.eclipse.m2m.atl</groupId>
+		<artifactId>org.eclipse.m2m.atl.emftvm</artifactId>
+		<version>4.2.0</version>
+	</dependency>
+	<dependency>
+		<groupId>org.eclipse.m2m.atl</groupId>
+		<artifactId>org.eclipse.m2m.atl.emftvm.trace</artifactId>
+		<version>4.0.0-1</version>
+	</dependency>
+	<dependency>
+		<groupId>org.zeroturnaround</groupId>
+		<artifactId>zt-zip</artifactId>
+		<version>1.14</version>
+	</dependency>
+	<dependency>
+		<groupId>com.amazonaws</groupId>
+		<artifactId>aws-java-sdk</artifactId>
+		<version>1.11.133</version>
+	</dependency>
+			<dependency>
+		<groupId>org.eclipse.acceleo</groupId>
+		<artifactId>org.eclipse.acceleo.maven</artifactId>
+		<version>3.6.4</version>
+	</dependency>
+	<dependency>
+    	<groupId>acceleo</groupId>
+    	<artifactId>org.eclipse.acceleo.model</artifactId>
+    	<version>3.7.10.202002210922</version>
+    </dependency>
+	<dependency>
+       <groupId>acceleo</groupId>
+       <artifactId>org.eclipse.acceleo.engine</artifactId>
+       <version>3.7.10.202002210922</version>
+     </dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -50,36 +189,75 @@
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-services-api</artifactId>
-			<version>0.2.9</version>
+			<version>0.1.32</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-        <dependency>
-            <groupId>org.junit.vintage</groupId>
-            <artifactId>junit-vintage-engine</artifactId>
-            <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.hamcrest</groupId>
-                    <artifactId>hamcrest-core</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
 		<dependency>
     		<groupId>org.eclipse.sirius.web</groupId>
     		<artifactId>sirius-web-tests</artifactId>
-    		<version>0.2.9</version>
+    		<version>0.1.32</version>
     		<scope>test</scope>
     	</dependency>
     	<dependency>
     		<groupId>org.eclipse.sirius.web</groupId>
     		<artifactId>sirius-web-spring-tests</artifactId>
-    		<version>0.2.9</version>
+    		<version>0.1.32</version>
     		<scope>test</scope>
     	</dependency>
+		<dependency>
+			<groupId>vanth</groupId>
+			<artifactId>vanth</artifactId>
+			<version>0.1.0</version>
+		</dependency>
+		 <dependency>
+			<groupId>vanth</groupId>
+			<artifactId>vanth.edit</artifactId>
+			<version>0.1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>vanth</groupId>
+			<artifactId>vanth.project.design</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>vanth</groupId>
+			<artifactId>vanth2api</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>vanth</groupId>
+			<artifactId>vanth2polymer.plugin</artifactId>
+			<version>0.1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>tags</groupId>
+			<artifactId>tags</artifactId>
+			<version>0.1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>tags</groupId>
+			<artifactId>tags.edit</artifactId>
+			<version>0.1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>vanth</groupId>
+			<artifactId>vanth2django</artifactId>
+			<version>0.1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>tags</groupId>
+			<artifactId>tags2src</artifactId>
+			<version>0.1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.platform</groupId>
+			<artifactId>org.eclipse.core.runtime</artifactId>
+			<version>3.18.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>

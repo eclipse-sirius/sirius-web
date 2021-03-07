@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,20 +23,19 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.api.configuration.StereotypeDescription;
-import org.eclipse.sirius.web.collaborative.api.services.ChangeDescription;
-import org.eclipse.sirius.web.collaborative.api.services.ChangeKind;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
-import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventHandler;
+import org.eclipse.sirius.web.collaborative.api.services.IProjectEventHandler;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
-import org.eclipse.sirius.web.core.api.ErrorPayload;
-import org.eclipse.sirius.web.core.api.IEditingContext;
-import org.eclipse.sirius.web.core.api.IInput;
-import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.emf.services.messages.IEMFMessageService;
+import org.eclipse.sirius.web.services.api.Context;
 import org.eclipse.sirius.web.services.api.document.CreateDocumentInput;
 import org.eclipse.sirius.web.services.api.document.CreateDocumentSuccessPayload;
 import org.eclipse.sirius.web.services.api.document.Document;
 import org.eclipse.sirius.web.services.api.document.IDocumentService;
+import org.eclipse.sirius.web.services.api.dto.ErrorPayload;
+import org.eclipse.sirius.web.services.api.dto.IPayload;
+import org.eclipse.sirius.web.services.api.dto.IProjectInput;
+import org.eclipse.sirius.web.services.api.objects.IEditingContext;
 import org.eclipse.sirius.web.services.api.stereotypes.IStereotypeDescriptionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,7 +50,7 @@ import io.micrometer.core.instrument.MeterRegistry;
  * @author sbegaudeau
  */
 @Service
-public class CreateDocumentEventHandler implements IEditingContextEventHandler {
+public class CreateDocumentEventHandler implements IProjectEventHandler {
 
     private final Logger logger = LoggerFactory.getLogger(CreateDocumentEventHandler.class);
 
@@ -76,47 +75,46 @@ public class CreateDocumentEventHandler implements IEditingContextEventHandler {
     }
 
     @Override
-    public boolean canHandle(IInput input) {
-        return input instanceof CreateDocumentInput;
+    public boolean canHandle(IProjectInput projectInput) {
+        return projectInput instanceof CreateDocumentInput;
     }
 
     @Override
-    public EventHandlerResponse handle(IEditingContext editingContext, IInput input) {
+    public EventHandlerResponse handle(IEditingContext editingContext, IProjectInput projectInput, Context context) {
         this.counter.increment();
 
-        EventHandlerResponse response = new EventHandlerResponse(new ChangeDescription(ChangeKind.NOTHING, editingContext.getId()),
-                new ErrorPayload(input.getId(), this.messageService.unexpectedError()));
+        EventHandlerResponse response = new EventHandlerResponse(false, representation -> false, new ErrorPayload(this.messageService.unexpectedError()));
 
-        if (input instanceof CreateDocumentInput) {
-            CreateDocumentInput createDocumentInput = (CreateDocumentInput) input;
+        if (projectInput instanceof CreateDocumentInput) {
+            CreateDocumentInput input = (CreateDocumentInput) projectInput;
 
-            String name = createDocumentInput.getName().trim();
-            UUID projectId = createDocumentInput.getProjectId();
-            String stereotypeDescriptionId = createDocumentInput.getStereotypeDescriptionId();
+            String name = input.getName().trim();
+            UUID projectId = input.getProjectId();
+            String stereotypeDescriptionId = input.getStereotypeDescriptionId();
 
             Optional<StereotypeDescription> optionalStereotypeDescription = this.stereotypeDescriptionService.getStereotypeDescriptionById(stereotypeDescriptionId);
 
             if (name.isBlank()) {
-                IPayload payload = new ErrorPayload(input.getId(), this.messageService.invalidDocumentName(name));
-                response = new EventHandlerResponse(new ChangeDescription(ChangeKind.NOTHING, editingContext.getId()), payload);
+                IPayload payload = new ErrorPayload(this.messageService.invalidDocumentName(name));
+                response = new EventHandlerResponse(false, representation -> false, payload);
             } else if (optionalStereotypeDescription.isEmpty()) {
-                IPayload payload = new ErrorPayload(input.getId(), this.messageService.stereotypeDescriptionNotFound(stereotypeDescriptionId));
-                response = new EventHandlerResponse(new ChangeDescription(ChangeKind.NOTHING, editingContext.getId()), payload);
+                IPayload payload = new ErrorPayload(this.messageService.stereotypeDescriptionNotFound(stereotypeDescriptionId));
+                response = new EventHandlerResponse(false, representation -> false, payload);
             } else if (optionalStereotypeDescription.isPresent()) {
                 StereotypeDescription stereotypeDescription = optionalStereotypeDescription.get();
-                response = this.createDocument(createDocumentInput.getId(), editingContext, projectId, name, stereotypeDescription);
+                response = this.createDocument(editingContext, projectId, name, stereotypeDescription);
             }
         }
 
         return response;
     }
 
-    private EventHandlerResponse createDocument(UUID inputId, IEditingContext editingContext, UUID projectId, String name, StereotypeDescription stereotypeDescription) {
+    private EventHandlerResponse createDocument(IEditingContext editingContext, UUID projectId, String name, StereotypeDescription stereotypeDescription) {
         // @formatter:off
         Optional<AdapterFactoryEditingDomain> optionalEditingDomain = Optional.of(editingContext)
-                .filter(EditingContext.class::isInstance)
-                .map(EditingContext.class::cast)
-                .map(EditingContext::getDomain);
+                .map(IEditingContext::getDomain)
+                .filter(AdapterFactoryEditingDomain.class::isInstance)
+                .map(AdapterFactoryEditingDomain.class::cast);
         // @formatter:on
 
         if (optionalEditingDomain.isPresent()) {
@@ -139,11 +137,11 @@ public class CreateDocumentEventHandler implements IEditingContextEventHandler {
 
                 resourceSet.getResources().add(resource);
 
-                return new EventHandlerResponse(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId()), new CreateDocumentSuccessPayload(inputId, document));
+                return new EventHandlerResponse(true, representation -> true, new CreateDocumentSuccessPayload(document));
             }
         }
 
-        return new EventHandlerResponse(new ChangeDescription(ChangeKind.NOTHING, editingContext.getId()), new ErrorPayload(inputId, this.messageService.unexpectedError()));
+        return new EventHandlerResponse(false, representation -> false, new ErrorPayload(this.messageService.unexpectedError()));
     }
 
 }

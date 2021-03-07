@@ -27,11 +27,11 @@ import java.util.stream.Collectors;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLSubscriptionTypes;
 import org.eclipse.sirius.web.annotations.spring.graphql.SubscriptionDataFetcher;
 import org.eclipse.sirius.web.collaborative.api.dto.Subscriber;
-import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.graphql.utils.providers.GraphQLInputObjectTypeProvider;
 import org.eclipse.sirius.web.graphql.utils.providers.GraphQLNameProvider;
 import org.eclipse.sirius.web.graphql.utils.providers.GraphQLObjectTypeProvider;
 import org.eclipse.sirius.web.graphql.utils.schema.ISubscriptionTypeProvider;
+import org.eclipse.sirius.web.services.api.dto.ErrorPayload;
 import org.eclipse.sirius.web.spring.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.springframework.stereotype.Service;
 

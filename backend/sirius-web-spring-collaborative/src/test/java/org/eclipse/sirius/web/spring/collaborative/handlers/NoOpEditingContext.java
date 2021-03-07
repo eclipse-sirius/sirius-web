@@ -14,7 +14,7 @@ package org.eclipse.sirius.web.spring.collaborative.handlers;
 
 import java.util.UUID;
 
-import org.eclipse.sirius.web.core.api.IEditingContext;
+import org.eclipse.sirius.web.services.api.objects.IEditingContext;
 
 /**
  * Implementation of the editing context which does nothing.
@@ -24,8 +24,13 @@ import org.eclipse.sirius.web.core.api.IEditingContext;
 public class NoOpEditingContext implements IEditingContext {
 
     @Override
-    public UUID getId() {
+    public UUID getProjectId() {
         return UUID.randomUUID();
+    }
+
+    @Override
+    public Object getDomain() {
+        return null;
     }
 
 }

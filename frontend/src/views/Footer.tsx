@@ -23,9 +23,9 @@ export const Footer = () => {
   return (
     <footer className={styles.footer}>
       <Text className={styles.copyright}>
-        &copy; {new Date().getFullYear()} Obeo. Powered by{' '}
+        &copy; {new Date().getFullYear()}. Powered by{' '}
         <span className={styles.link}>
-          <a href="https://www.eclipse.org/sirius/sirius-web.html">Sirius Web</a>
+          <a href="http://vanthsec.com/">Vanth Security</a>
         </span>
       </Text>
     </footer>

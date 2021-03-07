@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,9 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.test.diagrams.only.services;
+package org.eclipse.sirius.web.test.sample.services;
 
-import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.services.api.projects.AccessLevel;
@@ -28,8 +27,8 @@ import org.springframework.stereotype.Service;
 public class ProjectAccessPolicy implements IProjectAccessPolicy {
 
     @Override
-    public Optional<AccessLevel> getAccessLevel(String username, UUID projectId) {
-        return Optional.of(AccessLevel.ADMIN);
+    public AccessLevel getAccessLevel(String username, UUID projectId) {
+        return AccessLevel.ADMIN;
     }
 
     @Override

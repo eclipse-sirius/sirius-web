@@ -25,19 +25,19 @@
 
   font-family: var(--font-family);
   font-size: var(--font-size-4);
-  line-height: var(--line-height-default);
+  line-height: #000000;
   color: var(--daintree-lighten-30);
 
-  border-radius: 5px;
+  border-radius: 0px;
   border: 1px solid transparent;
-  border-bottom: 1px solid var(--daintree);
+  border-bottom: 1px solid var(--red);
 }
 .select::-ms-expand {
   display: none;
 }
 
 .select:hover {
-  border: 1px solid var(--daintree);
+  border: 1px solid var(--red);
 }
 
 .select:focus,
@@ -51,15 +51,11 @@
 }
 
 .small:hover {
-  border: 1px solid var(--daintree);
+  border: 1px solid var(--red);
   background-color: var(--blue-lagoon-lighten-90);
 }
 
 .small:focus,
 .small:active {
   background-color: var(--blue-lagoon-lighten-90);
-}
-
-.disabled {
-  color: var(--daintree-lighten-70);
 }

@@ -29,8 +29,6 @@ import org.eclipse.sirius.web.compat.api.IModelOperationHandler;
 import org.eclipse.sirius.web.compat.api.IModelOperationHandlerSwitchProvider;
 import org.eclipse.sirius.web.compat.utils.BooleanValueProvider;
 import org.eclipse.sirius.web.compat.utils.StringValueProvider;
-import org.eclipse.sirius.web.core.api.IEditingContext;
-import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.forms.components.RadioComponent;
 import org.eclipse.sirius.web.forms.components.SelectComponent;
 import org.eclipse.sirius.web.forms.description.AbstractWidgetDescription;
@@ -42,6 +40,8 @@ import org.eclipse.sirius.web.forms.description.TextfieldDescription;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
 import org.eclipse.sirius.web.representations.Status;
 import org.eclipse.sirius.web.representations.VariableManager;
+import org.eclipse.sirius.web.services.api.objects.IEditingContext;
+import org.eclipse.sirius.web.services.api.objects.IObjectService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

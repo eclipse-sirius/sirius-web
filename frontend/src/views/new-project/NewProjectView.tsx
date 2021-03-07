@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,37 +12,29 @@
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
 import Button from '@material-ui/core/Button';
-import Container from '@material-ui/core/Container';
 import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
-import { useBranding } from 'common/BrandingContext';
 import { Form } from 'core/form/Form';
 import gql from 'graphql-tag';
-import { LoggedInNavbar } from 'navbar/LoggedInNavbar';
 import React, { useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
-import { v4 as uuid } from 'uuid';
 import { FormContainer } from 'views/FormContainer';
+import { View } from 'views/View';
 import {
-  GQLCreateProjectMutationData,
-  GQLCreateProjectPayload,
-  GQLErrorPayload,
-} from 'views/new-project/NewProjectView.types';
-import {
-  ChangeNamedEvent,
+  HandleChangedNameEvent,
+  HandleCreateProjectEvent,
   HandleResponseEvent,
   HideToastEvent,
   NewProjectEvent,
   NewProjectViewContext,
   newProjectViewMachine,
-  RequestProjectCreationEvent,
   SchemaValue,
   ShowToastEvent,
-} from 'views/new-project/NewProjectViewMachine';
+} from './NewProjectViewMachine';
 
 const createProjectMutation = gql`
   mutation createProject($input: CreateProjectInput!) {
@@ -51,6 +43,10 @@ const createProjectMutation = gql`
       ... on CreateProjectSuccessPayload {
         project {
           id
+          owner {
+            id
+            username
+          }
         }
       }
       ... on ErrorPayload {
@@ -61,50 +57,34 @@ const createProjectMutation = gql`
 `;
 
 const useNewProjectViewStyles = makeStyles((theme) => ({
-  newProjectView: {
-    display: 'grid',
-    gridTemplateColumns: '1fr',
-    gridTemplateRows: 'min-content 1fr min-content',
-    minHeight: '100vh',
-  },
-  main: {
-    paddingTop: theme.spacing(3),
-    paddingBottom: theme.spacing(3),
-  },
   buttons: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'start',
   },
 }));
-
-const isErrorPayload = (payload: GQLCreateProjectPayload): payload is GQLErrorPayload =>
-  payload.__typename === 'ErrorPayload';
-
 export const NewProjectView = () => {
   const classes = useNewProjectViewStyles();
-  const { footer } = useBranding();
   const [{ value, context }, dispatch] = useMachine<NewProjectViewContext, NewProjectEvent>(newProjectViewMachine);
   const { newProjectView, toast } = value as SchemaValue;
   const { name, nameMessage, nameIsInvalid, message, newProjectId } = context;
-  const [createProject, { loading, data, error }] = useMutation<GQLCreateProjectMutationData>(createProjectMutation);
+  const [createProject, { loading, data, error }] = useMutation(createProjectMutation);
 
   const onNameChange = (event) => {
     const value = event.target.value;
-    const changeNameEvent: ChangeNamedEvent = { type: 'CHANGE_NAME', name: value };
+    const changeNameEvent: HandleChangedNameEvent = { type: 'HANDLE_CHANGED_NAME', name: value };
     dispatch(changeNameEvent);
   };
 
-  const onCreateNewProject = (event) => {
+  const onCreateNewProject = async (event) => {
     event.preventDefault();
     const variables = {
       input: {
-        id: uuid(),
         name: name.trim(),
         visibility: 'PUBLIC',
       },
     };
-    const submitEvent: RequestProjectCreationEvent = { type: 'REQUEST_PROJECT_CREATION' };
+    const submitEvent: HandleCreateProjectEvent = { type: 'HANDLE_CREATE_PROJECT' };
     dispatch(submitEvent);
     createProject({ variables });
   };
@@ -122,9 +102,9 @@ export const NewProjectView = () => {
         const handleResponseEvent: HandleResponseEvent = { type: 'HANDLE_RESPONSE', data };
         dispatch(handleResponseEvent);
 
-        const { createProject } = data;
-        if (isErrorPayload(createProject)) {
-          const { message } = createProject;
+        const typename = data.createProject.__typename;
+        if (typename === 'ErrorPayload') {
+          const { message } = data.createProject;
           const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
           dispatch(showToastEvent);
         }
@@ -137,40 +117,32 @@ export const NewProjectView = () => {
   }
 
   return (
-    <>
-      <div className={classes.newProjectView}>
-        <LoggedInNavbar />
-        <main className={classes.main}>
-          <Container maxWidth="sm">
-            <FormContainer title="Create a new project" subtitle="Get started by creating a new project">
-              <Form onSubmit={onCreateNewProject}>
-                <TextField
-                  error={nameIsInvalid}
-                  helperText={nameMessage}
-                  label="Name"
-                  name="name"
-                  value={name}
-                  placeholder="Enter the project name"
-                  data-testid="name"
-                  autoFocus={true}
-                  onChange={onNameChange}
-                />
-                <div className={classes.buttons}>
-                  <Button
-                    variant="contained"
-                    type="submit"
-                    disabled={newProjectView !== 'valid'}
-                    data-testid="create-project"
-                    color="primary">
-                    Create
-                  </Button>
-                </div>
-              </Form>
-            </FormContainer>
-          </Container>
-        </main>
-        {footer}
-      </div>
+    <View condensed>
+      <FormContainer title="Create a new project" subtitle="Get started by creating a new project">
+        <Form onSubmit={onCreateNewProject}>
+          <TextField
+            error={nameIsInvalid}
+            helperText={nameMessage}
+            label="Name"
+            name="name"
+            value={name}
+            placeholder="Enter the project name"
+            data-testid="name"
+            autoFocus={true}
+            onChange={onNameChange}
+          />
+          <div className={classes.buttons}>
+            <Button
+              variant="contained"
+              type="submit"
+              disabled={newProjectView !== 'valid'}
+              data-testid="create-project"
+              color="primary">
+              Create
+            </Button>
+          </div>
+        </Form>
+      </FormContainer>
       <Snackbar
         anchorOrigin={{
           vertical: 'bottom',
@@ -191,6 +163,6 @@ export const NewProjectView = () => {
         }
         data-testid="error"
       />
-    </>
+    </View>
   );
 };

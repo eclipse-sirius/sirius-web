@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useQuery } from '@apollo/client';
+import { useQuery, useSubscription } from '@apollo/client';
 import gql from 'graphql-tag';
 import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -28,6 +28,18 @@ const getProjectQuery = gql`
         owner {
           username
         }
+      }
+    }
+  }
+`;
+
+const projectEventSubscription = gql`
+  subscription projectEvent($input: ProjectEventInput!) {
+    projectEvent(input: $input) {
+      __typename
+      ... on ProjectRenamedEventPayload {
+        projectId
+        newLabel
       }
     }
   }
@@ -58,6 +70,25 @@ const ProjectProvider = ({ children }) => {
       setState(newState);
     }
   }, [loading, data, error, setState]);
+
+  useSubscription(projectEventSubscription, {
+    variables: {
+      input: {
+        projectId: state.id,
+      },
+    },
+    skip: !state.id,
+    onSubscriptionData: ({ subscriptionData }) => {
+      if (subscriptionData.data.projectEvent) {
+        const { projectEvent } = subscriptionData.data;
+        if (projectEvent.__typename === 'ProjectRenamedEventPayload') {
+          setState((prevState) => {
+            return { ...prevState, name: projectEvent.newLabel };
+          });
+        }
+      }
+    },
+  });
 
   return <ProjectContext.Provider value={state}>{children}</ProjectContext.Provider>;
 };

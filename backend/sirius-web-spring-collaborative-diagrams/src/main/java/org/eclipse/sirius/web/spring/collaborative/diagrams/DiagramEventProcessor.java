@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,9 +16,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.eclipse.sirius.web.collaborative.api.dto.RenameRepresentationInput;
-import org.eclipse.sirius.web.collaborative.api.services.ChangeDescription;
-import org.eclipse.sirius.web.collaborative.api.services.ChangeKind;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.ISubscriptionManager;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramContext;
@@ -26,13 +23,13 @@ import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramCreationService
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramEventProcessor;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramInput;
-import org.eclipse.sirius.web.collaborative.diagrams.api.dto.RenameDiagramInput;
-import org.eclipse.sirius.web.core.api.IEditingContext;
-import org.eclipse.sirius.web.core.api.IInput;
-import org.eclipse.sirius.web.core.api.IPayload;
-import org.eclipse.sirius.web.core.api.IRepresentationInput;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.representations.IRepresentation;
+import org.eclipse.sirius.web.services.api.Context;
+import org.eclipse.sirius.web.services.api.dto.IPayload;
+import org.eclipse.sirius.web.services.api.dto.IRepresentationInput;
+import org.eclipse.sirius.web.services.api.objects.IEditingContext;
+import org.eclipse.sirius.web.services.api.representations.RenameRepresentationInput;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -87,58 +84,48 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
     }
 
     @Override
-    public Optional<EventHandlerResponse> handle(IRepresentationInput representationInput) {
-        IRepresentationInput effectiveInput = representationInput;
-        if (representationInput instanceof RenameRepresentationInput) {
-            RenameRepresentationInput renameRepresentationInput = (RenameRepresentationInput) representationInput;
-            effectiveInput = new RenameDiagramInput(renameRepresentationInput.getId(), renameRepresentationInput.getProjectId(), renameRepresentationInput.getRepresentationId(),
-                    renameRepresentationInput.getNewLabel());
-        }
-        if (effectiveInput instanceof IDiagramInput) {
-            IDiagramInput diagramInput = (IDiagramInput) effectiveInput;
+    public Optional<EventHandlerResponse> handle(IRepresentationInput representationInput, Context context) {
+        if (representationInput instanceof IDiagramInput) {
+            IDiagramInput diagramInput = (IDiagramInput) representationInput;
 
             Optional<IDiagramEventHandler> optionalDiagramEventHandler = this.diagramEventHandlers.stream().filter(handler -> handler.canHandle(diagramInput)).findFirst();
 
             if (optionalDiagramEventHandler.isPresent()) {
                 IDiagramEventHandler diagramEventHandler = optionalDiagramEventHandler.get();
                 EventHandlerResponse eventHandlerResponse = diagramEventHandler.handle(this.editingContext, this.diagramContext, diagramInput);
-
-                this.refresh(representationInput, eventHandlerResponse.getChangeDescription());
-
+                if (eventHandlerResponse.getShouldRefreshPredicate().test(this.diagramContext.getDiagram())) {
+                    this.refresh();
+                }
                 return Optional.of(eventHandlerResponse);
             } else {
                 this.logger.warn("No handler found for event: {}", diagramInput); //$NON-NLS-1$
             }
+        } else if (representationInput instanceof RenameRepresentationInput) {
+            String newName = ((RenameRepresentationInput) representationInput).getNewLabel();
+            Diagram diagram = this.diagramContext.getDiagram();
+
+            // @formatter:off
+            Diagram renamedDiagram = Diagram.newDiagram(diagram)
+                    .label(newName)
+                    .build();
+            // @formatter:on
+
+            this.diagramContext.update(renamedDiagram);
+            this.diagramEventFlux.diagramRefreshed(renamedDiagram);
         }
         return Optional.empty();
     }
 
     @Override
-    public void refresh(IInput input, ChangeDescription changeDescription) {
-        if (this.shouldRefresh(changeDescription)) {
-            Diagram refreshedDiagram = this.diagramCreationService.refresh(this.editingContext, this.diagramContext).orElse(null);
-            this.diagramContext.reset();
-            this.diagramContext.update(refreshedDiagram);
-            this.diagramEventFlux.diagramRefreshed(input, refreshedDiagram);
-        }
-    }
-
-    /**
-     * A diagram is refresh if there is a semantic change or if there is a diagram layout change coming from this very
-     * diagram (not other diagrams)
-     *
-     * @param changeDescription
-     *            The change description
-     * @return <code>true</code> if the diagram should be refreshed, <code>false</code> otherwise
-     */
-    private boolean shouldRefresh(ChangeDescription changeDescription) {
-        return ChangeKind.SEMANTIC_CHANGE.equals(changeDescription.getKind())
-                || (DiagramChangeKind.DIAGRAM_LAYOUT_CHANGE.equals(changeDescription.getKind()) && changeDescription.getSourceId().equals(this.diagramContext.getDiagram().getId()));
+    public void refresh() {
+        Diagram refreshedDiagram = this.diagramCreationService.refresh(this.editingContext, this.diagramContext).orElse(null);
+        this.diagramContext.update(refreshedDiagram);
+        this.diagramEventFlux.diagramRefreshed(refreshedDiagram);
     }
 
     @Override
-    public Flux<IPayload> getOutputEvents(IInput input) {
-        return Flux.merge(this.diagramEventFlux.getFlux(input), this.subscriptionManager.getFlux(input));
+    public Flux<IPayload> getOutputEvents() {
+        return Flux.merge(this.diagramEventFlux.getFlux(), this.subscriptionManager.getFlux());
     }
 
     @Override

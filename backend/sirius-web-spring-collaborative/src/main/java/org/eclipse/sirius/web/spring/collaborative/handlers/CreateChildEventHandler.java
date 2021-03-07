@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,18 +15,17 @@ package org.eclipse.sirius.web.spring.collaborative.handlers;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.eclipse.sirius.web.collaborative.api.services.ChangeDescription;
-import org.eclipse.sirius.web.collaborative.api.services.ChangeKind;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
-import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventHandler;
+import org.eclipse.sirius.web.collaborative.api.services.IProjectEventHandler;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
-import org.eclipse.sirius.web.core.api.ErrorPayload;
-import org.eclipse.sirius.web.core.api.IEditingContext;
-import org.eclipse.sirius.web.core.api.IInput;
-import org.eclipse.sirius.web.core.api.IObjectService;
+import org.eclipse.sirius.web.services.api.Context;
+import org.eclipse.sirius.web.services.api.dto.ErrorPayload;
+import org.eclipse.sirius.web.services.api.dto.IProjectInput;
 import org.eclipse.sirius.web.services.api.objects.CreateChildInput;
 import org.eclipse.sirius.web.services.api.objects.CreateChildSuccessPayload;
 import org.eclipse.sirius.web.services.api.objects.IEditService;
+import org.eclipse.sirius.web.services.api.objects.IEditingContext;
+import org.eclipse.sirius.web.services.api.objects.IObjectService;
 import org.eclipse.sirius.web.spring.collaborative.messages.ICollaborativeMessageService;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +38,7 @@ import io.micrometer.core.instrument.MeterRegistry;
  * @author sbegaudeau
  */
 @Service
-public class CreateChildEventHandler implements IEditingContextEventHandler {
+public class CreateChildEventHandler implements IProjectEventHandler {
 
     private final IObjectService objectService;
 
@@ -62,32 +61,31 @@ public class CreateChildEventHandler implements IEditingContextEventHandler {
     }
 
     @Override
-    public boolean canHandle(IInput input) {
-        return input instanceof CreateChildInput;
+    public boolean canHandle(IProjectInput projectInput) {
+        return projectInput instanceof CreateChildInput;
     }
 
     @Override
-    public EventHandlerResponse handle(IEditingContext editingContext, IInput input) {
+    public EventHandlerResponse handle(IEditingContext editingContext, IProjectInput projectInput, Context context) {
         this.counter.increment();
 
-        String message = this.messageService.invalidInput(input.getClass().getSimpleName(), CreateChildInput.class.getSimpleName());
-        if (input instanceof CreateChildInput) {
-            CreateChildInput createChildInput = (CreateChildInput) input;
-            String parentObjectId = createChildInput.getObjectId();
-            String childCreationDescriptionId = createChildInput.getChildCreationDescriptionId();
+        String message = this.messageService.invalidInput(projectInput.getClass().getSimpleName(), CreateChildInput.class.getSimpleName());
+        if (projectInput instanceof CreateChildInput) {
+            CreateChildInput input = (CreateChildInput) projectInput;
+            String parentObjectId = input.getObjectId();
+            String childCreationDescriptionId = input.getChildCreationDescriptionId();
 
             Optional<Object> createdChildOptional = this.objectService.getObject(editingContext, parentObjectId).flatMap(parent -> {
                 return this.editService.createChild(editingContext, parent, childCreationDescriptionId);
             });
 
             if (createdChildOptional.isPresent()) {
-                var payload = new CreateChildSuccessPayload(input.getId(), createdChildOptional.get());
-                return new EventHandlerResponse(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId()), payload);
+                return new EventHandlerResponse(true, representation -> true, new CreateChildSuccessPayload(createdChildOptional.get()));
             } else {
                 message = this.messageService.objectCreationFailed();
             }
         }
 
-        return new EventHandlerResponse(new ChangeDescription(ChangeKind.NOTHING, editingContext.getId()), new ErrorPayload(input.getId(), message));
+        return new EventHandlerResponse(false, representation -> false, new ErrorPayload(message));
     }
 }

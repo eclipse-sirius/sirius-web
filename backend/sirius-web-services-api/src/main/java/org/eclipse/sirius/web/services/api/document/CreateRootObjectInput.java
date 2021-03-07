@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,7 +20,7 @@ import org.eclipse.sirius.web.annotations.graphql.GraphQLField;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLID;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLInputObjectType;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLNonNull;
-import org.eclipse.sirius.web.core.api.IInput;
+import org.eclipse.sirius.web.services.api.dto.IProjectInput;
 
 /**
  * The input object of the create root objec mutation.
@@ -28,9 +28,7 @@ import org.eclipse.sirius.web.core.api.IInput;
  * @author lfasani
  */
 @GraphQLInputObjectType
-public final class CreateRootObjectInput implements IInput {
-    private UUID id;
-
+public final class CreateRootObjectInput implements IProjectInput {
     private UUID projectId;
 
     private UUID documentId;
@@ -43,20 +41,11 @@ public final class CreateRootObjectInput implements IInput {
         // Used by Jackson
     }
 
-    public CreateRootObjectInput(UUID id, UUID projectId, UUID documentId, String namespaceId, String rootObjectCreationDescriptionId) {
-        this.id = Objects.requireNonNull(id);
+    public CreateRootObjectInput(UUID projectId, UUID documentId, String namespaceId, String rootObjectCreationDescriptionId) {
         this.projectId = Objects.requireNonNull(projectId);
         this.documentId = Objects.requireNonNull(documentId);
         this.namespaceId = Objects.requireNonNull(namespaceId);
         this.rootObjectCreationDescriptionId = Objects.requireNonNull(rootObjectCreationDescriptionId);
-    }
-
-    @Override
-    @GraphQLID
-    @GraphQLField
-    @GraphQLNonNull
-    public UUID getId() {
-        return this.id;
     }
 
     @GraphQLID
@@ -89,7 +78,7 @@ public final class CreateRootObjectInput implements IInput {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, projectId: {2}, documentId: {3}, namespaceId: {4}, rootObjectCreationDescriptionId: {5}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.projectId, this.documentId, this.namespaceId, this.rootObjectCreationDescriptionId);
+        String pattern = "{0} '{'projectId: {1}, documentId: {2}, namespaceId: {3}, rootObjectCreationDescriptionId: {4}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.projectId, this.documentId, this.namespaceId, this.rootObjectCreationDescriptionId);
     }
 }

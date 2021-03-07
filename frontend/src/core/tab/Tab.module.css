@@ -37,11 +37,11 @@
 .tab:hover .tabLabel,
 .tab.active:hover .tabLabel,
 .tab.active .tabLabel {
-  color: var(--blue-lagoon);
+  color: #de1000;
 }
 
 .tab:hover,
 .tab.active:hover,
 .tab.active {
-  border-bottom-color: var(--blue-lagoon);
+  border-bottom-color: #de1000;
 }

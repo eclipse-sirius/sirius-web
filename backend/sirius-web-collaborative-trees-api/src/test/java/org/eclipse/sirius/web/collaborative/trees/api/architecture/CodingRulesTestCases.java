@@ -19,8 +19,8 @@ import com.tngtech.archunit.lang.syntax.ArchRuleDefinition;
 
 import org.eclipse.sirius.web.annotations.graphql.GraphQLInputObjectType;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLObjectType;
-import org.eclipse.sirius.web.core.api.IInput;
-import org.eclipse.sirius.web.core.api.IPayload;
+import org.eclipse.sirius.web.services.api.dto.IInput;
+import org.eclipse.sirius.web.services.api.dto.IPayload;
 import org.eclipse.sirius.web.tests.architecture.AbstractCodingRulesTestCases;
 import org.junit.Test;
 

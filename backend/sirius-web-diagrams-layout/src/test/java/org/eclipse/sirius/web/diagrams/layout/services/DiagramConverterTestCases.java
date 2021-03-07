@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.assertj.core.data.Offset;
@@ -27,13 +28,16 @@ import org.eclipse.elk.graph.ElkPort;
 import org.eclipse.elk.graph.ElkShape;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.Edge;
+import org.eclipse.sirius.web.diagrams.ImageNodeStyle;
 import org.eclipse.sirius.web.diagrams.Label;
 import org.eclipse.sirius.web.diagrams.Node;
 import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.Size;
-import org.eclipse.sirius.web.diagrams.TextBounds;
 import org.eclipse.sirius.web.diagrams.layout.ConvertedDiagram;
 import org.eclipse.sirius.web.diagrams.layout.DiagramConverter;
+import org.eclipse.sirius.web.diagrams.layout.ImageNodeStyleSizeService;
+import org.eclipse.sirius.web.diagrams.layout.ImageSizeService;
+import org.eclipse.sirius.web.diagrams.layout.TextBounds;
 import org.eclipse.sirius.web.diagrams.layout.TextBoundsService;
 import org.eclipse.sirius.web.diagrams.tests.TestDiagramBuilder;
 import org.junit.Test;
@@ -48,9 +52,9 @@ public class DiagramConverterTestCases {
 
     private static final double TEXT_HEIGHT = 10;
 
-    private static final double IMAGE_WIDTH = 100;
+    private static final double IMAGE_WIDTH = 150;
 
-    private static final double IMAGE_HEIGHT = 100;
+    private static final double IMAGE_HEIGHT = 150;
 
     private static final UUID DIAGRAM_ID = UUID.randomUUID();
 
@@ -62,12 +66,26 @@ public class DiagramConverterTestCases {
 
     private static final UUID FIRST_EDGE_ID = UUID.randomUUID();
 
-    private TextBoundsService textBoundsService = new TextBoundsService() {
+    private TextBoundsService textSizeService = new TextBoundsService() {
         @Override
         public TextBounds getBounds(Label label) {
-            Size size = Size.of(TEXT_WIDTH, TEXT_HEIGHT);
+            Size size = Size.newSize().width(TEXT_WIDTH).height(TEXT_HEIGHT).build();
             Position alignment = Position.UNDEFINED;
             return new TextBounds(size, alignment);
+        }
+    };
+
+    private ImageSizeService imageSizeService = new ImageSizeService() {
+        @Override
+        public Optional<Size> getSize(String imagePath) {
+            return Optional.of(Size.newSize().width(IMAGE_WIDTH).height(IMAGE_HEIGHT).build());
+        }
+    };
+
+    private ImageNodeStyleSizeService imageNodeStyleSizeService = new ImageNodeStyleSizeService(this.imageSizeService) {
+        @Override
+        public Size getSize(ImageNodeStyle imageNodeStyle) {
+            return Size.newSize().width(IMAGE_WIDTH).height(IMAGE_HEIGHT).build();
         }
     };
 
@@ -78,7 +96,7 @@ public class DiagramConverterTestCases {
 
     @Test
     public void testDiagramOneRectangularNode() {
-        DiagramConverter diagramConverter = new DiagramConverter(this.textBoundsService);
+        DiagramConverter diagramConverter = new DiagramConverter(this.textSizeService, this.imageNodeStyleSizeService);
 
         // @formatter:off
         TestDiagramBuilder diagramBuilder = new TestDiagramBuilder();
@@ -108,7 +126,7 @@ public class DiagramConverterTestCases {
 
     @Test
     public void testDiagramOneImageNode() {
-        DiagramConverter diagramConverter = new DiagramConverter(this.textBoundsService);
+        DiagramConverter diagramConverter = new DiagramConverter(this.textSizeService, this.imageNodeStyleSizeService);
 
         // @formatter:off
         TestDiagramBuilder diagramBuilder = new TestDiagramBuilder();
@@ -144,7 +162,7 @@ public class DiagramConverterTestCases {
 
     @Test
     public void testDiagramOneNodeAndOneEdge() {
-        DiagramConverter diagramConverter = new DiagramConverter(this.textBoundsService);
+        DiagramConverter diagramConverter = new DiagramConverter(this.textSizeService, this.imageNodeStyleSizeService);
 
         // @formatter:off
         TestDiagramBuilder diagramBuilder = new TestDiagramBuilder();
@@ -172,7 +190,7 @@ public class DiagramConverterTestCases {
 
     @Test
     public void testDiagramOneNodeAndOneBorderNode() {
-        DiagramConverter diagramConverter = new DiagramConverter(this.textBoundsService);
+        DiagramConverter diagramConverter = new DiagramConverter(this.textSizeService, this.imageNodeStyleSizeService);
 
         // @formatter:off
         TestDiagramBuilder diagramBuilder = new TestDiagramBuilder();
@@ -205,7 +223,7 @@ public class DiagramConverterTestCases {
 
     @Test
     public void testDiagramOneEdgeBetweenTwoBorderNodes() {
-        DiagramConverter diagramConverter = new DiagramConverter(this.textBoundsService);
+        DiagramConverter diagramConverter = new DiagramConverter(this.textSizeService, this.imageNodeStyleSizeService);
 
         // @formatter:off
         TestDiagramBuilder diagramBuilder = new TestDiagramBuilder();

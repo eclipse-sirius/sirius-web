@@ -18,28 +18,26 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.sirius.web.collaborative.api.services.ChangeDescription;
-import org.eclipse.sirius.web.collaborative.api.services.ChangeKind;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramDescriptionService;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramInput;
+import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramService;
 import org.eclipse.sirius.web.collaborative.diagrams.api.dto.DeleteFromDiagramInput;
 import org.eclipse.sirius.web.collaborative.diagrams.api.dto.DeleteFromDiagramSuccessPayload;
-import org.eclipse.sirius.web.core.api.ErrorPayload;
-import org.eclipse.sirius.web.core.api.IEditingContext;
-import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.Edge;
 import org.eclipse.sirius.web.diagrams.Node;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.web.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.web.diagrams.description.NodeDescription;
-import org.eclipse.sirius.web.diagrams.services.api.IDiagramService;
 import org.eclipse.sirius.web.representations.Status;
 import org.eclipse.sirius.web.representations.VariableManager;
+import org.eclipse.sirius.web.services.api.dto.ErrorPayload;
+import org.eclipse.sirius.web.services.api.objects.IEditingContext;
+import org.eclipse.sirius.web.services.api.objects.IObjectService;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationDescriptionService;
 import org.eclipse.sirius.web.spring.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
 import org.slf4j.Logger;
@@ -100,7 +98,7 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
             result = this.handleDelete(editingContext, diagramContext, (DeleteFromDiagramInput) diagramInput);
         } else {
             String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), DeleteFromDiagramInput.class.getSimpleName());
-            result = new EventHandlerResponse(new ChangeDescription(ChangeKind.NOTHING, diagramInput.getRepresentationId()), new ErrorPayload(diagramInput.getId(), message));
+            result = new EventHandlerResponse(false, representation -> false, new ErrorPayload(message));
         }
         return result;
     }
@@ -134,26 +132,20 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
             }
         }
 
-        return this.computeResponse(errors, atLeastOneOk, diagramContext, diagramInput);
+        return this.computeResponse(errors, atLeastOneOk, diagramContext);
     }
 
-    private EventHandlerResponse computeResponse(List<String> errors, boolean atLeastOneSuccess, IDiagramContext diagramContext, DeleteFromDiagramInput diagramInput) {
+    private EventHandlerResponse computeResponse(List<String> errors, boolean atLeastOneSuccess, IDiagramContext diagramContext) {
         EventHandlerResponse result;
         if (errors.isEmpty()) {
-            result = new EventHandlerResponse(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, diagramInput.getRepresentationId()),
-                    new DeleteFromDiagramSuccessPayload(diagramInput.getId(), diagramContext.getDiagram()));
+            result = new EventHandlerResponse(true, representation -> true, new DeleteFromDiagramSuccessPayload(diagramContext.getDiagram()));
         } else {
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append(this.messageService.deleteFailed());
+            StringBuilder sb = new StringBuilder();
+            sb.append(this.messageService.deleteFailed());
             for (String error : errors) {
-                stringBuilder.append(error);
+                sb.append(error);
             }
-
-            var changeDescription = new ChangeDescription(ChangeKind.NOTHING, diagramInput.getRepresentationId());
-            if (atLeastOneSuccess) {
-                changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, diagramInput.getRepresentationId());
-            }
-            result = new EventHandlerResponse(changeDescription, new ErrorPayload(diagramInput.getId(), stringBuilder.toString()));
+            result = new EventHandlerResponse(atLeastOneSuccess, representation -> atLeastOneSuccess, new ErrorPayload(sb.toString()));
         }
         return result;
     }

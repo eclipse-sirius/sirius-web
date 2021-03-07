@@ -29,12 +29,11 @@ import org.eclipse.sirius.ecore.extender.business.internal.accessor.ecore.EcoreI
 import org.eclipse.sirius.viewpoint.description.tool.CreateInstance;
 import org.eclipse.sirius.viewpoint.description.tool.ModelOperation;
 import org.eclipse.sirius.web.compat.api.IModelOperationHandler;
-import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.emf.compatibility.EPackageService;
-import org.eclipse.sirius.web.emf.services.EditingContext;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
 import org.eclipse.sirius.web.representations.Status;
 import org.eclipse.sirius.web.representations.VariableManager;
+import org.eclipse.sirius.web.services.api.objects.IEditingContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -82,9 +81,11 @@ public class CreateInstanceOperationHandler implements IModelOperationHandler {
                     .map(EObject.class::cast);
 
             Optional<EditingDomain> optionalEditingDomain = Optional.of(variables.get(IEditingContext.EDITING_CONTEXT))
-                    .filter(EditingContext.class::isInstance)
-                    .map(EditingContext.class::cast)
-                    .map(EditingContext::getDomain);
+                    .filter(IEditingContext.class::isInstance)
+                    .map(IEditingContext.class::cast)
+                    .map(IEditingContext::getDomain)
+                    .filter(EditingDomain.class::isInstance)
+                    .map(EditingDomain.class::cast);
             // @formatter:on
 
             Matcher matcher = SEPARATOR.matcher(typeName);

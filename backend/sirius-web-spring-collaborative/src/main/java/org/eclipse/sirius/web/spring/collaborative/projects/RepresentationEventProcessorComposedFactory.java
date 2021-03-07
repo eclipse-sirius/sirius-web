@@ -20,7 +20,8 @@ import org.eclipse.sirius.web.collaborative.api.services.IRepresentationConfigur
 import org.eclipse.sirius.web.collaborative.api.services.IRepresentationEventProcessor;
 import org.eclipse.sirius.web.collaborative.api.services.IRepresentationEventProcessorComposedFactory;
 import org.eclipse.sirius.web.collaborative.api.services.IRepresentationEventProcessorFactory;
-import org.eclipse.sirius.web.core.api.IEditingContext;
+import org.eclipse.sirius.web.services.api.Context;
+import org.eclipse.sirius.web.services.api.objects.IEditingContext;
 import org.springframework.stereotype.Service;
 
 /**
@@ -43,12 +44,12 @@ public class RepresentationEventProcessorComposedFactory implements IRepresentat
 
     @Override
     public <T extends IRepresentationEventProcessor> Optional<T> createRepresentationEventProcessor(Class<T> representationEventProcessorClass, IRepresentationConfiguration configuration,
-            IEditingContext editingContext) {
+            IEditingContext editingContext, Context context) {
         // @formatter:off
         return this.factories.stream()
                 .filter(factory -> factory.canHandle(representationEventProcessorClass, configuration))
                 .findFirst()
-                .flatMap(factory -> factory.createRepresentationEventProcessor(representationEventProcessorClass, configuration, editingContext));
+                .flatMap(factory -> factory.createRepresentationEventProcessor(representationEventProcessorClass, configuration, editingContext, context));
         // @formatter:on
     }
 

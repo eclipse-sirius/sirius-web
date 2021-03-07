@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,72 +10,26 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
-import { httpOrigin } from 'common/URL';
+import { List } from 'core/list/List';
+import { Text } from 'core/text/Text';
 import { Permission } from 'project/Permission';
-import { ListPropertySectionProps } from 'properties/propertysections/ListPropertySection.types';
-import { PropertySectionLabel } from 'properties/propertysections/PropertySectionLabel';
+import PropTypes from 'prop-types';
 import React from 'react';
+import styles from './PropertySection.module.css';
 
-const useListPropertySectionStyles = makeStyles((theme) => ({
-  table: {
-    borderStyle: 'solid',
-    borderWidth: '1px',
-    borderColor: theme.palette.divider,
-  },
-  cell: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  icon: {
-    width: '16px',
-    height: '16px',
-    marginRight: theme.spacing(2),
-  },
-}));
+const propTypes = {
+  label: PropTypes.string.isRequired,
+  items: PropTypes.array.isRequired,
+};
 
-export const ListPropertySection = ({ widget, subscribers }: ListPropertySectionProps) => {
-  const classes = useListPropertySectionStyles();
-
-  let items = widget.items;
-  if (items.length === 0) {
-    items.push({
-      id: 'none',
-      imageURL: '',
-      label: 'None',
-    });
-  }
-
+export const ListPropertySection = ({ label, items }) => {
   return (
-    <div>
-      <PropertySectionLabel label={widget.label} subscribers={subscribers} />
+    <>
+      <Text className={styles.label}>{label}</Text>
       <Permission requiredAccessLevel="EDIT">
-        <Table className={classes.table}>
-          <TableBody>
-            {widget.items.map((item) => (
-              <TableRow key={item.id}>
-                <TableCell className={classes.cell}>
-                  {item.imageURL ? (
-                    <img
-                      className={classes.icon}
-                      width="16"
-                      height="16"
-                      alt={item.label}
-                      src={httpOrigin + item.imageURL}
-                    />
-                  ) : null}
-                  {item.label}
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+        <List items={items} />
       </Permission>
-    </div>
+    </>
   );
 };
+ListPropertySection.propTypes = propTypes;

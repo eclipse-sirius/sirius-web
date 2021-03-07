@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.sirius.web.core.api.IPayload;
+import org.eclipse.sirius.web.services.api.dto.IPayload;
 import org.eclipse.sirius.web.services.api.projects.CreateProjectInput;
 import org.eclipse.sirius.web.services.api.projects.IProjectService;
 import org.eclipse.sirius.web.services.api.projects.Project;
@@ -28,6 +28,11 @@ import org.eclipse.sirius.web.services.api.projects.Project;
  * @author sbegaudeau
  */
 public class NoOpProjectService implements IProjectService {
+
+    @Override
+    public boolean existsById(UUID projectId) {
+        return false;
+    }
 
     @Override
     public Optional<Project> getProject(UUID projectId) {

@@ -20,9 +20,9 @@ import org.eclipse.sirius.properties.DynamicMappingForDescription;
 import org.eclipse.sirius.properties.WidgetDescription;
 import org.eclipse.sirius.web.compat.api.IIdentifierProvider;
 import org.eclipse.sirius.web.compat.api.IModelOperationHandlerSwitchProvider;
-import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.forms.description.AbstractControlDescription;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
+import org.eclipse.sirius.web.services.api.objects.IObjectService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,19 +21,18 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
-import org.eclipse.sirius.web.collaborative.api.services.ChangeDescription;
-import org.eclipse.sirius.web.collaborative.api.services.ChangeKind;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
-import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventHandler;
+import org.eclipse.sirius.web.collaborative.api.services.IProjectEventHandler;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
-import org.eclipse.sirius.web.core.api.ErrorPayload;
-import org.eclipse.sirius.web.core.api.IEditingContext;
-import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.emf.services.messages.IEMFMessageService;
+import org.eclipse.sirius.web.services.api.Context;
 import org.eclipse.sirius.web.services.api.document.DeleteDocumentInput;
 import org.eclipse.sirius.web.services.api.document.DeleteDocumentSuccessPayload;
 import org.eclipse.sirius.web.services.api.document.Document;
 import org.eclipse.sirius.web.services.api.document.IDocumentService;
+import org.eclipse.sirius.web.services.api.dto.ErrorPayload;
+import org.eclipse.sirius.web.services.api.dto.IProjectInput;
+import org.eclipse.sirius.web.services.api.objects.IEditingContext;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
@@ -45,7 +44,7 @@ import io.micrometer.core.instrument.MeterRegistry;
  * @author sbegaudeau
  */
 @Service
-public class DeleteDocumentEventHandler implements IEditingContextEventHandler {
+public class DeleteDocumentEventHandler implements IProjectEventHandler {
 
     private final IDocumentService documentService;
 
@@ -65,30 +64,30 @@ public class DeleteDocumentEventHandler implements IEditingContextEventHandler {
     }
 
     @Override
-    public boolean canHandle(IInput input) {
-        return input instanceof DeleteDocumentInput;
+    public boolean canHandle(IProjectInput projectInput) {
+        return projectInput instanceof DeleteDocumentInput;
     }
 
     @Override
-    public EventHandlerResponse handle(IEditingContext editingContext, IInput input) {
+    public EventHandlerResponse handle(IEditingContext editingContext, IProjectInput projectInput, Context context) {
         this.counter.increment();
 
         // @formatter:off
         var optionalEditingDomain = Optional.of(editingContext)
-                .filter(EditingContext.class::isInstance)
-                .map(EditingContext.class::cast)
-                .map(EditingContext::getDomain);
+                .map(IEditingContext::getDomain)
+                .filter(AdapterFactoryEditingDomain.class::isInstance)
+                .map(AdapterFactoryEditingDomain.class::cast);
         // @formatter:on
 
-        if (input instanceof DeleteDocumentInput) {
-            DeleteDocumentInput deleteDocumentInput = (DeleteDocumentInput) input;
-            var optionalDocument = this.documentService.getDocument(deleteDocumentInput.getDocumentId());
+        if (projectInput instanceof DeleteDocumentInput) {
+            DeleteDocumentInput input = (DeleteDocumentInput) projectInput;
+            var optionalDocument = this.documentService.getDocument(input.getDocumentId());
 
             if (optionalEditingDomain.isPresent() && optionalDocument.isPresent()) {
-                AdapterFactoryEditingDomain editingDomain = optionalEditingDomain.get();
+                AdapterFactoryEditingDomain adapterFactoryEditingDomain = optionalEditingDomain.get();
                 Document document = optionalDocument.get();
 
-                ResourceSet resourceSet = editingDomain.getResourceSet();
+                ResourceSet resourceSet = adapterFactoryEditingDomain.getResourceSet();
                 URI uri = URI.createURI(document.getId().toString());
 
                 // @formatter:off
@@ -100,12 +99,12 @@ public class DeleteDocumentEventHandler implements IEditingContextEventHandler {
 
                 this.documentService.delete(document.getId());
 
-                return new EventHandlerResponse(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId()), new DeleteDocumentSuccessPayload(input.getId(), document.getProject()));
+                return new EventHandlerResponse(true, representation -> true, new DeleteDocumentSuccessPayload(document.getProject()));
             }
         }
 
-        String message = this.messageService.invalidInput(input.getClass().getSimpleName(), DeleteDocumentInput.class.getSimpleName());
-        return new EventHandlerResponse(new ChangeDescription(ChangeKind.NOTHING, editingContext.getId()), new ErrorPayload(input.getId(), message));
+        String message = this.messageService.invalidInput(projectInput.getClass().getSimpleName(), DeleteDocumentInput.class.getSimpleName());
+        return new EventHandlerResponse(false, representation -> false, new ErrorPayload(message));
     }
 
 }

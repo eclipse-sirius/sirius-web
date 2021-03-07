@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,21 +17,20 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.collaborative.api.dto.RenameRepresentationSuccessPayload;
-import org.eclipse.sirius.web.collaborative.api.services.ChangeDescription;
-import org.eclipse.sirius.web.collaborative.api.services.ChangeKind;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
+import org.eclipse.sirius.web.collaborative.api.services.IProjectEventHandler;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
-import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramContext;
-import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramEventHandler;
-import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramInput;
-import org.eclipse.sirius.web.collaborative.diagrams.api.dto.RenameDiagramInput;
-import org.eclipse.sirius.web.core.api.ErrorPayload;
-import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.representations.IRepresentation;
+import org.eclipse.sirius.web.services.api.Context;
+import org.eclipse.sirius.web.services.api.dto.ErrorPayload;
+import org.eclipse.sirius.web.services.api.dto.IProjectInput;
+import org.eclipse.sirius.web.services.api.objects.IEditingContext;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationService;
+import org.eclipse.sirius.web.services.api.representations.RenameRepresentationInput;
 import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;
 import org.eclipse.sirius.web.spring.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
+import org.eclipse.sirius.web.trees.Tree;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
@@ -43,7 +42,7 @@ import io.micrometer.core.instrument.MeterRegistry;
  * @author arichard
  */
 @Service
-public class RenameDiagramEventHandler implements IDiagramEventHandler {
+public class RenameDiagramEventHandler implements IProjectEventHandler {
 
     private final IRepresentationService representationService;
 
@@ -63,35 +62,33 @@ public class RenameDiagramEventHandler implements IDiagramEventHandler {
     }
 
     @Override
-    public boolean canHandle(IDiagramInput diagramInput) {
-        return diagramInput instanceof RenameDiagramInput;
+    public boolean canHandle(IProjectInput projectInput) {
+        return projectInput instanceof RenameRepresentationInput;
     }
 
     @Override
-    public EventHandlerResponse handle(IEditingContext editingContext, IDiagramContext diagramContext, IDiagramInput diagramInput) {
+    public EventHandlerResponse handle(IEditingContext editingContext, IProjectInput projectInput, Context context) {
         this.counter.increment();
 
-        if (diagramInput instanceof RenameDiagramInput) {
-            RenameDiagramInput renameRepresentationInput = (RenameDiagramInput) diagramInput;
-            UUID representationId = renameRepresentationInput.getRepresentationId();
-            String newLabel = renameRepresentationInput.getNewLabel();
+        if (projectInput instanceof RenameRepresentationInput) {
+            RenameRepresentationInput input = (RenameRepresentationInput) projectInput;
+            UUID representationId = input.getRepresentationId();
+            String newLabel = input.getNewLabel();
             Optional<RepresentationDescriptor> optionalRepresentationDescriptor = this.representationService.getRepresentation(representationId);
             if (optionalRepresentationDescriptor.isPresent()) {
                 RepresentationDescriptor representationDescriptor = optionalRepresentationDescriptor.get();
                 IRepresentation representation = representationDescriptor.getRepresentation();
-                Optional<IRepresentation> optionalRepresentation = this.createDiagramWithNewLabel(representation, newLabel, editingContext);
+                Optional<IRepresentation> optionalRepresentation = this.createDiagramWithNewLabel(representation, newLabel, editingContext, context);
                 if (optionalRepresentation.isPresent()) {
-                    diagramContext.update((Diagram) optionalRepresentation.get());
-                    return new EventHandlerResponse(new ChangeDescription(ChangeKind.REPRESENTATION_RENAMING, renameRepresentationInput.getRepresentationId()),
-                            new RenameRepresentationSuccessPayload(diagramInput.getId(), optionalRepresentation.get()));
+                    return new EventHandlerResponse(true, r -> r instanceof Tree, new RenameRepresentationSuccessPayload(optionalRepresentation.get()));
                 }
             }
         }
-        String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), RenameDiagramInput.class.getSimpleName());
-        return new EventHandlerResponse(new ChangeDescription(ChangeKind.NOTHING, editingContext.getId()), new ErrorPayload(diagramInput.getId(), message));
+        String message = this.messageService.invalidInput(projectInput.getClass().getSimpleName(), RenameRepresentationInput.class.getSimpleName());
+        return new EventHandlerResponse(false, representation -> false, new ErrorPayload(message));
     }
 
-    private Optional<IRepresentation> createDiagramWithNewLabel(IRepresentation representation, String newLabel, IEditingContext editingContext) {
+    private Optional<IRepresentation> createDiagramWithNewLabel(IRepresentation representation, String newLabel, IEditingContext editingContext, Context context) {
         if (representation instanceof Diagram) {
             Diagram previousDiagram = (Diagram) representation;
 
@@ -101,7 +98,7 @@ public class RenameDiagramEventHandler implements IDiagramEventHandler {
                     .build();
 
             RepresentationDescriptor representationDescriptor = RepresentationDescriptor.newRepresentationDescriptor(renamedDiagram.getId())
-                    .projectId(editingContext.getId())
+                    .projectId(editingContext.getProjectId())
                     .descriptionId(renamedDiagram.getDescriptionId())
                     .targetObjectId(renamedDiagram.getTargetObjectId())
                     .label(renamedDiagram.getLabel())

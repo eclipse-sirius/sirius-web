@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,18 +18,21 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.assertj.core.api.Condition;
-import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
+import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.sirius.web.api.configuration.StereotypeDescription;
 import org.eclipse.sirius.web.emf.services.messages.IEMFMessageService;
+import org.eclipse.sirius.web.services.api.Context;
 import org.eclipse.sirius.web.services.api.accounts.Profile;
 import org.eclipse.sirius.web.services.api.document.CreateDocumentInput;
 import org.eclipse.sirius.web.services.api.document.CreateDocumentSuccessPayload;
 import org.eclipse.sirius.web.services.api.document.Document;
 import org.eclipse.sirius.web.services.api.document.IDocumentService;
+import org.eclipse.sirius.web.services.api.objects.IEditingContext;
 import org.eclipse.sirius.web.services.api.projects.Project;
 import org.eclipse.sirius.web.services.api.projects.Visibility;
 import org.eclipse.sirius.web.services.api.stereotypes.IStereotypeDescriptionService;
 import org.junit.Test;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 
@@ -92,14 +95,26 @@ public class CreateDocumentEventHandlerTestCases {
         IEMFMessageService messageService = new NoOpEMFMessageService();
 
         CreateDocumentEventHandler handler = new CreateDocumentEventHandler(documentService, stereotypeDescriptionService, messageService, new SimpleMeterRegistry());
-        var input = new CreateDocumentInput(UUID.randomUUID(), UUID.randomUUID(), DOCUMENT_NAME, STEREOTYPE_DESCRIPTION_ID);
+        var input = new CreateDocumentInput(UUID.randomUUID(), DOCUMENT_NAME, STEREOTYPE_DESCRIPTION_ID);
+        var context = new Context(new UsernamePasswordAuthenticationToken(null, null));
 
         assertThat(handler.canHandle(input)).isTrue();
 
-        AdapterFactoryEditingDomain editingDomain = new EditingDomainFactory().create();
-        EditingContext editingContext = new EditingContext(UUID.randomUUID(), editingDomain);
+        EditingDomain editingDomain = new EditingDomainFactory().create();
 
-        handler.handle(editingContext, input);
+        IEditingContext editingContext = new IEditingContext() {
+            @Override
+            public UUID getProjectId() {
+                return null;
+            }
+
+            @Override
+            public Object getDomain() {
+                return editingDomain;
+            }
+        };
+
+        handler.handle(editingContext, input, context);
 
         assertThat(editingDomain.getResourceSet().getResources().size()).isEqualTo(1);
         Condition<Object> condition = new Condition<>(adapter -> adapter instanceof DocumentMetadataAdapter, "has an DocumentMetadataAdapter"); //$NON-NLS-1$
@@ -122,21 +137,34 @@ public class CreateDocumentEventHandlerTestCases {
             }
         };
         IEMFMessageService messageService = new NoOpEMFMessageService();
-        AdapterFactoryEditingDomain editingDomain = new EditingDomainFactory().create();
-        EditingContext editingContext = new EditingContext(UUID.randomUUID(), editingDomain);
+        EditingDomain editingDomain = new EditingDomainFactory().create();
+
+        IEditingContext editingContext = new IEditingContext() {
+            @Override
+            public UUID getProjectId() {
+                return null;
+            }
+
+            @Override
+            public Object getDomain() {
+                return editingDomain;
+            }
+        };
+        UUID projectId = UUID.randomUUID();
 
         CreateDocumentEventHandler handler = new CreateDocumentEventHandler(documentService, stereotypeDescriptionService, messageService, new SimpleMeterRegistry());
+        var context = new Context(new UsernamePasswordAuthenticationToken(null, null));
 
-        var firstCreateInput = new CreateDocumentInput(UUID.randomUUID(), editingContext.getId(), DOCUMENT_NAME, STEREOTYPE_DESCRIPTION_ID);
+        var firstCreateInput = new CreateDocumentInput(projectId, DOCUMENT_NAME, STEREOTYPE_DESCRIPTION_ID);
         assertThat(handler.canHandle(firstCreateInput)).isTrue();
-        Object firstPayload = handler.handle(editingContext, firstCreateInput).getPayload();
+        Object firstPayload = handler.handle(editingContext, firstCreateInput, context).getPayload();
         assertThat(firstPayload).isInstanceOf(CreateDocumentSuccessPayload.class);
         Document firstDocument = ((CreateDocumentSuccessPayload) firstPayload).getDocument();
         assertThat(firstDocument.getName()).isEqualTo(DOCUMENT_NAME);
 
-        var secondCreatedInput = new CreateDocumentInput(UUID.randomUUID(), editingContext.getId(), DOCUMENT_NAME, STEREOTYPE_DESCRIPTION_ID);
+        var secondCreatedInput = new CreateDocumentInput(projectId, DOCUMENT_NAME, STEREOTYPE_DESCRIPTION_ID);
         assertThat(handler.canHandle(secondCreatedInput)).isTrue();
-        Object secondPayload = handler.handle(editingContext, secondCreatedInput).getPayload();
+        Object secondPayload = handler.handle(editingContext, secondCreatedInput, context).getPayload();
         assertThat(secondPayload).isInstanceOf(CreateDocumentSuccessPayload.class);
         Document secondDocument = ((CreateDocumentSuccessPayload) secondPayload).getDocument();
         assertThat(secondDocument.getName()).isEqualTo(DOCUMENT_NAME);

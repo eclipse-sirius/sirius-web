@@ -46,9 +46,9 @@
 }
 .arrow {
   cursor: pointer;
-  height: 14px;
-  width: 14px;
-  margin-left: -5px;
+  height: 32px;
+  width: 29px;
+  margin-left: 14px;
   margin-top: 12px;
 }
 

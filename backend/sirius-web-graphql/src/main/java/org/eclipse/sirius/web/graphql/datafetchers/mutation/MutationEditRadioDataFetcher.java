@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,14 +16,14 @@ import java.util.Objects;
 
 import org.eclipse.sirius.web.annotations.graphql.GraphQLMutationTypes;
 import org.eclipse.sirius.web.annotations.spring.graphql.MutationDataFetcher;
-import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventProcessorRegistry;
+import org.eclipse.sirius.web.collaborative.api.services.IProjectEventProcessorRegistry;
 import org.eclipse.sirius.web.collaborative.forms.api.dto.EditRadioInput;
 import org.eclipse.sirius.web.collaborative.forms.api.dto.EditRadioSuccessPayload;
-import org.eclipse.sirius.web.core.api.ErrorPayload;
-import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.graphql.datafetchers.IDataFetchingEnvironmentService;
 import org.eclipse.sirius.web.graphql.messages.IGraphQLMessageService;
 import org.eclipse.sirius.web.graphql.schema.MutationTypeProvider;
+import org.eclipse.sirius.web.services.api.dto.ErrorPayload;
+import org.eclipse.sirius.web.services.api.dto.IPayload;
 import org.eclipse.sirius.web.spring.graphql.api.IDataFetcherWithFieldCoordinates;
 
 import graphql.schema.DataFetchingEnvironment;
@@ -57,27 +57,27 @@ public class MutationEditRadioDataFetcher implements IDataFetcherWithFieldCoordi
 
     private final IDataFetchingEnvironmentService dataFetchingEnvironmentService;
 
-    private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
+    private final IProjectEventProcessorRegistry projectEventProcessorRegistry;
 
     private final IGraphQLMessageService messageService;
 
-    public MutationEditRadioDataFetcher(IDataFetchingEnvironmentService dataFetchingEnvironmentService, IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry,
-            IGraphQLMessageService messageService) {
+    public MutationEditRadioDataFetcher(IDataFetchingEnvironmentService dataFetchingEnvironmentService, IProjectEventProcessorRegistry projectEventProcessorRegistry, IGraphQLMessageService messageService) {
         this.dataFetchingEnvironmentService = Objects.requireNonNull(dataFetchingEnvironmentService);
-        this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
+        this.projectEventProcessorRegistry = Objects.requireNonNull(projectEventProcessorRegistry);
         this.messageService = Objects.requireNonNull(messageService);
     }
 
     @Override
     public IPayload get(DataFetchingEnvironment environment) throws Exception {
         var input = this.dataFetchingEnvironmentService.getInput(environment, EditRadioInput.class);
+        var context = this.dataFetchingEnvironmentService.getContext(environment);
 
-        IPayload payload = new ErrorPayload(input.getId(), this.messageService.unauthorized());
+        IPayload payload = new EditRadioSuccessPayload(this.messageService.unauthorized());
         boolean canEdit = this.dataFetchingEnvironmentService.canEdit(environment, input.getProjectId());
         if (canEdit) {
             // @formatter:off
-            payload = this.editingContextEventProcessorRegistry.dispatchEvent(input.getProjectId(), input)
-                    .orElse(new ErrorPayload(input.getId(), this.messageService.unexpectedError()));
+            payload = this.projectEventProcessorRegistry.dispatchEvent(input.getProjectId(), input, context)
+                    .orElse(new ErrorPayload(this.messageService.unexpectedError()));
             // @formatter:on
         }
 

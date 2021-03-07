@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo and others.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -161,7 +161,7 @@ public class DiagramRendererNodeTestCases {
         LabelDescription labelDescription = LabelDescription.newLabelDescription("labelDescriptionId") //$NON-NLS-1$
                 .idProvider(variableManager -> LABEL_ID)
                 .textProvider(variableManager -> LABEL_TEXT)
-                .styleDescriptionProvider(variableManager -> labelStyleDescription)
+                .styleDescription(labelStyleDescription)
                 .build();
 
         NodeDescription nodeDescription = NodeDescription.newNodeDescription(NODE_DESCRIPTION_ID)
@@ -190,14 +190,8 @@ public class DiagramRendererNodeTestCases {
         // @formatter:on
 
         VariableManager variableManager = new VariableManager();
-        // @formatter:off
-        DiagramComponentProps props = DiagramComponentProps.newDiagramComponentProps()
-                .variableManager(variableManager)
-                .diagramDescription(diagramDescription)
-                .viewCreationRequests(List.of())
-                .previousDiagram(Optional.empty())
-                .build();
-        // @formatter:on
+
+        DiagramComponentProps props = new DiagramComponentProps(variableManager, diagramDescription, List.of(), Optional.empty());
         Element element = new Element(DiagramComponent.class, props);
         return new DiagramRenderer(this.logger).render(element);
     }

@@ -10,20 +10,6 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { edgeCreationFeedback } from 'diagram/sprotty/edgeCreationFeedback';
-import { GraphFactory } from 'diagram/sprotty/GraphFactory';
-import siriusMoveModule from 'diagram/sprotty/siriusMoveModule';
-import { DiagramView } from 'diagram/sprotty/views/DiagramView';
-import { EdgeView } from 'diagram/sprotty/views/EdgeView';
-import { ImageView } from 'diagram/sprotty/views/ImageView';
-import { LabelView } from 'diagram/sprotty/views/LabelView';
-import { RectangleView } from 'diagram/sprotty/views/RectangleView';
-import {
-  ACTIVE_TOOL_ACTION,
-  HIDE_CONTEXTUAL_TOOLBAR_ACTION,
-  SiriusWebWebSocketDiagramServer,
-  SPROTTY_DELETE_ACTION,
-} from 'diagram/sprotty/WebSocketDiagramServer';
 import { Container, ContainerModule, decorate, inject } from 'inversify';
 import {
   boundsModule,
@@ -32,9 +18,9 @@ import {
   configureViewerOptions,
   ConsoleLogger,
   defaultModule,
+  EditLabelAction,
   edgeEditModule,
   edgeLayoutModule,
-  EditLabelAction,
   editLabelFeature,
   exportModule,
   fadeModule,
@@ -46,26 +32,39 @@ import {
   labelEditUiModule,
   LogLevel,
   modelSourceModule,
-  MouseListener,
-  overrideCommandStackOptions,
+  moveModule,
   overrideViewerOptions,
-  Point,
   PreRenderedView,
-  RequestPopupModelAction,
   routingModule,
   SCompartmentView,
   selectModule,
-  SetPopupModelAction,
   SLabel,
   SNode,
   SRoutingHandleView,
   TYPES,
-  UpdateModelAction,
   updateModule,
   viewportModule,
   withEditLabelFeature,
   zorderModule,
+  MouseListener,
+  SetPopupModelAction,
+  RequestPopupModelAction,
+  overrideCommandStackOptions,
 } from 'sprotty';
+
+import { GraphFactory } from 'diagram/sprotty/GraphFactory';
+import { DiagramView } from 'diagram/sprotty/views/DiagramView';
+import { EdgeView } from 'diagram/sprotty/views/EdgeView';
+import { ImageView } from 'diagram/sprotty/views/ImageView';
+import { LabelView } from 'diagram/sprotty/views/LabelView';
+import { RectangleView } from 'diagram/sprotty/views/RectangleView';
+import {
+  SiriusWebWebSocketDiagramServer,
+  SPROTTY_DELETE_ACTION,
+  HIDE_CONTEXTUAL_TOOLBAR_ACTION,
+  ACTIVE_TOOL_ACTION,
+} from 'diagram/sprotty/WebSocketDiagramServer';
+import { edgeCreationFeedback } from 'diagram/sprotty/edgeCreationFeedback';
 
 const siriusWebContainerModule = new ContainerModule((bind, unbind, isBound, rebind) => {
   rebind(TYPES.ILogger).to(ConsoleLogger).inSingletonScope();
@@ -99,18 +98,6 @@ const siriusWebContainerModule = new ContainerModule((bind, unbind, isBound, reb
     enable: [editLabelFeature],
   });
   // @ts-ignore
-  configureModelElement(context, 'label:edge-begin', SLabel, LabelView, {
-    enable: [editLabelFeature],
-  });
-  // @ts-ignore
-  configureModelElement(context, 'label:edge-center', SLabel, LabelView, {
-    enable: [editLabelFeature],
-  });
-  // @ts-ignore
-  configureModelElement(context, 'label:edge-end', SLabel, LabelView, {
-    enable: [editLabelFeature],
-  });
-  // @ts-ignore
   configureView({ bind, isBound }, 'label:inside-right', LabelView);
   // @ts-ignore
   configureView({ bind, isBound }, 'label:outside-left', LabelView);
@@ -135,13 +122,13 @@ const siriusWebContainerModule = new ContainerModule((bind, unbind, isBound, reb
  * @param containerId The identifier of the container
  * @param onSelectElement The selection call back
  */
-export const createDependencyInjectionContainer = (containerId, onSelectElement, getCursorOn, setActiveTool) => {
+export const createDependencyInjectionContainer = (containerId, onSelectElement) => {
   const container = new Container();
   container.load(
     defaultModule,
     boundsModule,
     selectModule,
-    siriusMoveModule,
+    moveModule,
     viewportModule,
     fadeModule,
     exportModule,
@@ -176,28 +163,17 @@ export const createDependencyInjectionContainer = (containerId, onSelectElement,
    */
   class DiagramMouseListener extends MouseListener {
     diagramServer: any;
-    previousCoordinates: Point;
     constructor(diagramServer) {
       super();
       this.diagramServer = diagramServer;
     }
 
     mouseDown(element, event) {
-      this.previousCoordinates = {
-        x: event.clientX,
-        y: event.clientY,
-      };
-      return super.mouseDown(element, event);
-    }
-    mouseUp(element, event) {
       if (event.button === 0) {
-        if (this.previousCoordinates?.x === event.clientX && this.previousCoordinates?.y === event.clientY) {
-          const elementWithTarget = findElementWithTarget(element);
-          onSelectElement(elementWithTarget, this.diagramServer);
-        }
+        const elementWithTarget = findElementWithTarget(element);
+        onSelectElement(elementWithTarget, this.diagramServer);
       } else if (event.button === 2) {
         edgeCreationFeedback.reset();
-        setActiveTool();
         return [{ kind: ACTIVE_TOOL_ACTION, tool: undefined }];
       }
       return [];
@@ -207,37 +183,9 @@ export const createDependencyInjectionContainer = (containerId, onSelectElement,
       return [];
     }
   }
-  decorate(inject(TYPES.ModelSource) as ParameterDecorator, DiagramMouseListener, 0);
+  decorate(inject(TYPES.ModelSource), DiagramMouseListener, 0);
 
   container.bind(TYPES.MouseListener).to(DiagramMouseListener).inSingletonScope();
-
-  class CursorMouseListener extends MouseListener {
-    diagramServer: any;
-    constructor(diagramServer) {
-      super();
-      this.diagramServer = diagramServer;
-    }
-
-    mouseMove(element, event) {
-      const root = element.root;
-      const elementWithTarget = findElementWithTarget(element);
-      const expectedCursor = getCursorOn(elementWithTarget, this.diagramServer);
-      if (root.cursor !== expectedCursor) {
-        root.cursor = expectedCursor;
-        return [
-          {
-            kind: UpdateModelAction.KIND,
-            input: root,
-          },
-        ];
-      }
-
-      return [];
-    }
-  }
-  decorate(inject(TYPES.ModelSource) as ParameterDecorator, CursorMouseListener, 0);
-
-  container.bind(TYPES.MouseListener).to(CursorMouseListener).inSingletonScope();
 
   // The list of characters that will enable the direct edit mechanism.
   const directEditActivationValidCharacters = /[\w&é§èàùçÔØÁÛÊË"«»’”„´$¥€£\\¿?!=+-,;:%/{}[\]–#@*.]/;

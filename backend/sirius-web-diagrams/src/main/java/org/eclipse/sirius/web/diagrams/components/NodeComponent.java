@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo and others.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,7 +24,6 @@ import org.eclipse.sirius.web.components.Fragment;
 import org.eclipse.sirius.web.components.FragmentProps;
 import org.eclipse.sirius.web.components.IComponent;
 import org.eclipse.sirius.web.diagrams.INodeStyle;
-import org.eclipse.sirius.web.diagrams.Label;
 import org.eclipse.sirius.web.diagrams.Node;
 import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.Size;
@@ -105,35 +104,43 @@ public class NodeComponent implements IComponent {
     private Element doRender(VariableManager nodeVariableManager, String targetObjectId, Optional<Node> optionalPreviousNode) {
         NodeDescription nodeDescription = this.props.getNodeDescription();
         NodeContainmentKind containmentKind = this.props.getContainmentKind();
-        NodePositionProvider nodePositionProvider = this.props.getNodePositionProvider();
+        DiagramRenderingCache cache = this.props.getCache();
 
-        NodeSizeProvider nodeSizeProvider = new NodeSizeProvider();
         UUID nodeId = optionalPreviousNode.map(Node::getId).orElseGet(() -> this.computeNodeId(targetObjectId));
-        Optional<Label> optionalPreviousLabel = optionalPreviousNode.map(Node::getLabel);
         String type = nodeDescription.getTypeProvider().apply(nodeVariableManager);
         String targetObjectKind = nodeDescription.getTargetObjectKindProvider().apply(nodeVariableManager);
         String targetObjectLabel = nodeDescription.getTargetObjectLabelProvider().apply(nodeVariableManager);
 
-        INodeStyle style = nodeDescription.getStyleProvider().apply(nodeVariableManager);
-
-        Position position = nodePositionProvider.getPosition(nodeId, optionalPreviousNode, this.props.getPreviousParentElement(), nodeSizeProvider, style, this.props.getParentAbsolutePosition());
-
-        Position absolutePosition = this.computeAbsolutePosition(position, this.props.getParentAbsolutePosition());
-        var borderNodes = this.getBorderNodes(optionalPreviousNode, nodeVariableManager, nodeId, absolutePosition);
-        var childNodes = this.getChildNodes(optionalPreviousNode, nodeVariableManager, nodeId, absolutePosition);
-
-        Size size;
-        if (childNodes.isEmpty()) {
-            size = nodeSizeProvider.getSize(style, childNodes);
-        } else {
-            size = optionalPreviousNode.map(Node::getSize).orElseGet(() -> nodeSizeProvider.getSize(style, childNodes));
-        }
-
-        NodeLabelPositionProvider labelBoundsProvider = new NodeLabelPositionProvider(type, size);
         LabelDescription labelDescription = nodeDescription.getLabelDescription();
         nodeVariableManager.put(LabelDescription.OWNER_ID, nodeId);
-        LabelComponentProps labelComponentProps = new LabelComponentProps(nodeVariableManager, labelDescription, optionalPreviousLabel, labelBoundsProvider, LabelType.INSIDE_CENTER.getValue());
+        LabelComponentProps labelComponentProps = new LabelComponentProps(nodeVariableManager, labelDescription);
         Element labelElement = new Element(LabelComponent.class, labelComponentProps);
+
+        INodeStyle style = nodeDescription.getStyleProvider().apply(nodeVariableManager);
+
+        IDiagramElementRequestor diagramElementRequestor = new DiagramElementRequestor();
+        // @formatter:off
+        var borderNodes = nodeDescription.getBorderNodeDescriptions().stream()
+                .map(borderNodeDescription -> {
+                    List<Node> previousBorderNodes = optionalPreviousNode.map(previousNode -> diagramElementRequestor.getBorderNodes(previousNode, borderNodeDescription))
+                            .orElse(List.of());
+                    INodesRequestor borderNodesRequestor = new NodesRequestor(previousBorderNodes);
+                    var nodeComponentProps = new NodeComponentProps(nodeVariableManager, borderNodeDescription, borderNodesRequestor, NodeContainmentKind.BORDER_NODE, cache, this.props.getViewCreationRequests(), nodeId);
+                    return new Element(NodeComponent.class, nodeComponentProps);
+                })
+                .collect(Collectors.toList());
+
+        var childNodes = nodeDescription.getChildNodeDescriptions().stream()
+                .map(childNodeDescription -> {
+                    List<Node> previousChildNodes = optionalPreviousNode.map(previousNode -> diagramElementRequestor.getChildNodes(previousNode, childNodeDescription))
+                            .orElse(List.of());
+                    INodesRequestor childNodesRequestor = new NodesRequestor(previousChildNodes);
+                    var nodeComponentProps = new NodeComponentProps(nodeVariableManager, childNodeDescription, childNodesRequestor, NodeContainmentKind.CHILD_NODE, cache, this.props.getViewCreationRequests(), nodeId);
+                    return new Element(NodeComponent.class, nodeComponentProps);
+                })
+                .collect(Collectors.toList());
+        // @formatter:on
+
         List<Element> nodeChildren = new ArrayList<>();
         nodeChildren.add(labelElement);
         nodeChildren.addAll(borderNodes);
@@ -148,54 +155,13 @@ public class NodeComponent implements IComponent {
                 .descriptionId(nodeDescription.getId())
                 .borderNode(containmentKind == NodeContainmentKind.BORDER_NODE)
                 .style(style)
-                .position(position)
-                .size(size)
+                .position(Position.UNDEFINED)
+                .size(Size.UNDEFINED)
                 .children(nodeChildren)
-                .absolutePosition(absolutePosition)
                 .build();
         // @formatter:on
+
         return new Element(NodeElementProps.TYPE, nodeElementProps);
-    }
-
-    private List<Element> getBorderNodes(Optional<Node> optionalPreviousNode, VariableManager nodeVariableManager, UUID nodeId, Position absolutePosition) {
-        NodeDescription nodeDescription = this.props.getNodeDescription();
-        DiagramRenderingCache cache = this.props.getCache();
-        NodePositionProvider nodePositionProvider = this.props.getNodePositionProvider();
-
-        return nodeDescription.getBorderNodeDescriptions().stream().map(borderNodeDescription -> {
-            List<Node> previousBorderNodes = optionalPreviousNode.map(previousNode -> new DiagramElementRequestor().getBorderNodes(previousNode, borderNodeDescription)).orElse(List.of());
-            INodesRequestor borderNodesRequestor = new NodesRequestor(previousBorderNodes);
-            //@formatter:off
-            var nodeComponentProps = NodeComponentProps.newNodeComponentProps()
-                    .variableManager(nodeVariableManager)
-                    .nodeDescription(borderNodeDescription)
-                    .nodesRequestor(borderNodesRequestor)
-                    .containmentKind(NodeContainmentKind.BORDER_NODE)
-                    .cache(cache)
-                    .viewCreationRequests(this.props.getViewCreationRequests())
-                    .parentElementId(nodeId)
-                    .nodePositionProvider(nodePositionProvider)
-                    .previousParentElement(optionalPreviousNode.map(Object.class::cast))
-                    .parentAbsolutePosition(absolutePosition)
-                    .build();
-            //@formatter:on
-            return new Element(NodeComponent.class, nodeComponentProps);
-        }).collect(Collectors.toList());
-    }
-
-    private List<Element> getChildNodes(Optional<Node> optionalPreviousNode, VariableManager nodeVariableManager, UUID nodeId, Position absolutePosition) {
-        NodeDescription nodeDescription = this.props.getNodeDescription();
-        DiagramRenderingCache cache = this.props.getCache();
-        NodePositionProvider nodePositionProvider = this.props.getNodePositionProvider();
-
-        return nodeDescription.getChildNodeDescriptions().stream().map(childNodeDescription -> {
-            List<Node> previousChildNodes = optionalPreviousNode.map(previousNode -> new DiagramElementRequestor().getChildNodes(previousNode, childNodeDescription)).orElse(List.of());
-            INodesRequestor childNodesRequestor = new NodesRequestor(previousChildNodes);
-            var nodeComponentProps = NodeComponentProps.newNodeComponentProps().variableManager(nodeVariableManager).nodeDescription(childNodeDescription).nodesRequestor(childNodesRequestor)
-                    .containmentKind(NodeContainmentKind.CHILD_NODE).cache(cache).viewCreationRequests(this.props.getViewCreationRequests()).parentElementId(nodeId)
-                    .nodePositionProvider(nodePositionProvider).previousParentElement(optionalPreviousNode.map(Object.class::cast)).parentAbsolutePosition(absolutePosition).build();
-            return new Element(NodeComponent.class, nodeComponentProps);
-        }).collect(Collectors.toList());
     }
 
     private UUID computeNodeId(String targetObjectId) {
@@ -205,12 +171,6 @@ public class NodeComponent implements IComponent {
 
         String rawIdentifier = parentElementId.toString() + containmentKind.toString() + nodeDescription.getId().toString() + targetObjectId;
         return UUID.nameUUIDFromBytes(rawIdentifier.getBytes());
-    }
-
-    private Position computeAbsolutePosition(Position currentNodeRelativePosition, Position parentNodeAbsolutePosition) {
-        double x = parentNodeAbsolutePosition.getX() + currentNodeRelativePosition.getX();
-        double y = parentNodeAbsolutePosition.getY() + currentNodeRelativePosition.getY();
-        return Position.at(x, y);
     }
 
 }

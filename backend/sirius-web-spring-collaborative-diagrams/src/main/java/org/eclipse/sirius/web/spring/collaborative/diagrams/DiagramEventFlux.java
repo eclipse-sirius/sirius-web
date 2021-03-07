@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,14 +16,13 @@ import java.util.Objects;
 
 import org.eclipse.sirius.web.collaborative.api.dto.PreDestroyPayload;
 import org.eclipse.sirius.web.collaborative.diagrams.api.dto.DiagramRefreshedEventPayload;
-import org.eclipse.sirius.web.core.api.IInput;
-import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.diagrams.Diagram;
+import org.eclipse.sirius.web.services.api.dto.IPayload;
 
+import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.Sinks;
-import reactor.core.publisher.Sinks.Many;
 
 /**
  * Service used to manage the diagram event flux.
@@ -32,29 +31,32 @@ import reactor.core.publisher.Sinks.Many;
  */
 public class DiagramEventFlux {
 
-    private final Many<IPayload> sink = Sinks.many().multicast().directBestEffort();
+    private final DirectProcessor<IPayload> flux;
 
-    private Diagram currentDiagram;
+    private final FluxSink<IPayload> sink;
 
-    public DiagramEventFlux(Diagram currentDiagram) {
-        this.currentDiagram = Objects.requireNonNull(currentDiagram);
+    private final Diagram initialDiagram;
+
+    public DiagramEventFlux(Diagram initialDiagram) {
+        this.flux = DirectProcessor.create();
+        this.sink = this.flux.sink();
+        this.initialDiagram = Objects.requireNonNull(initialDiagram);
     }
 
-    public void diagramRefreshed(IInput input, Diagram newDiagram) {
-        this.currentDiagram = newDiagram;
-        this.sink.tryEmitNext(new DiagramRefreshedEventPayload(input.getId(), this.currentDiagram));
+    public void diagramRefreshed(Diagram newDiagram) {
+        this.sink.next(new DiagramRefreshedEventPayload(newDiagram));
     }
 
-    public Flux<IPayload> getFlux(IInput input) {
-        var initialRefresh = Mono.fromCallable(() -> new DiagramRefreshedEventPayload(input.getId(), this.currentDiagram));
-        return Flux.concat(initialRefresh, this.sink.asFlux());
+    public Flux<IPayload> getFlux() {
+        var initialRefresh = Mono.fromCallable(() -> new DiagramRefreshedEventPayload(this.initialDiagram));
+        return Flux.concat(initialRefresh, this.flux);
     }
 
     public void dispose() {
-        this.sink.tryEmitComplete();
+        this.flux.onComplete();
     }
 
     public void preDestroy() {
-        this.sink.tryEmitNext(new PreDestroyPayload(this.currentDiagram.getId()));
+        this.sink.next(new PreDestroyPayload(this.initialDiagram.getId()));
     }
 }

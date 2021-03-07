@@ -17,11 +17,11 @@ import org.eclipse.sirius.web.compat.api.ICanCreateDiagramPredicateFactory;
 import org.eclipse.sirius.web.compat.api.IModelOperationHandlerSwitchProvider;
 import org.eclipse.sirius.web.compat.api.ISemanticCandidatesProviderFactory;
 import org.eclipse.sirius.web.compat.api.IToolImageProviderFactory;
-import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.emf.compatibility.SemanticCandidatesProvider;
 import org.eclipse.sirius.web.emf.compatibility.diagrams.CanCreateDiagramPredicate;
 import org.eclipse.sirius.web.emf.compatibility.diagrams.ToolImageProvider;
 import org.eclipse.sirius.web.emf.compatibility.modeloperations.ModelOperationHandlerSwitch;
+import org.eclipse.sirius.web.services.api.objects.IObjectService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

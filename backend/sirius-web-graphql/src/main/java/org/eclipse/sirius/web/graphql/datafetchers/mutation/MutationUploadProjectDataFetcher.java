@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,14 +15,14 @@ package org.eclipse.sirius.web.graphql.datafetchers.mutation;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.eclipse.sirius.web.annotations.graphql.GraphQLMutationTypes;
 import org.eclipse.sirius.web.annotations.spring.graphql.MutationDataFetcher;
-import org.eclipse.sirius.web.core.api.ErrorPayload;
-import org.eclipse.sirius.web.core.api.IPayload;
+import org.eclipse.sirius.web.graphql.datafetchers.IDataFetchingEnvironmentService;
 import org.eclipse.sirius.web.graphql.messages.IGraphQLMessageService;
 import org.eclipse.sirius.web.graphql.schema.MutationTypeProvider;
+import org.eclipse.sirius.web.services.api.dto.ErrorPayload;
+import org.eclipse.sirius.web.services.api.dto.IPayload;
 import org.eclipse.sirius.web.services.api.projects.IProjectImportService;
 import org.eclipse.sirius.web.services.api.projects.Project;
 import org.eclipse.sirius.web.services.api.projects.UploadProjectInput;
@@ -59,15 +59,16 @@ public class MutationUploadProjectDataFetcher implements IDataFetcherWithFieldCo
 
     public static final String UPLOAD_PROJECT_FIELD = "uploadProject"; //$NON-NLS-1$
 
-    private static final String ID = "id"; //$NON-NLS-1$
-
     private static final String FILE = "file"; //$NON-NLS-1$
+
+    private final IDataFetchingEnvironmentService dataFetchingEnvironmentService;
 
     private final IGraphQLMessageService messageService;
 
     private final IProjectImportService projectImportService;
 
-    public MutationUploadProjectDataFetcher(IGraphQLMessageService messageService, IProjectImportService projectImportService) {
+    public MutationUploadProjectDataFetcher(IDataFetchingEnvironmentService dataFetchingEnvironmentService, IGraphQLMessageService messageService, IProjectImportService projectImportService) {
+        this.dataFetchingEnvironmentService = Objects.requireNonNull(dataFetchingEnvironmentService);
         this.messageService = Objects.requireNonNull(messageService);
         this.projectImportService = Objects.requireNonNull(projectImportService);
     }
@@ -75,18 +76,14 @@ public class MutationUploadProjectDataFetcher implements IDataFetcherWithFieldCo
     @Override
     public IPayload get(DataFetchingEnvironment environment) throws Exception {
         Map<Object, Object> input = environment.getArgument(MutationTypeProvider.INPUT_ARGUMENT);
-        // @formatter:off
-        UUID id = Optional.of(input.get(ID))
-                .filter(String.class::isInstance)
-                .map(String.class::cast)
-                .map(UUID::fromString)
-                .orElse(null);
+        var context = this.dataFetchingEnvironmentService.getContext(environment);
 
+        // @formatter:off
         return Optional.of(input.get(FILE))
                 .filter(UploadFile.class::isInstance)
                 .map(UploadFile.class::cast)
-                .map(uploadFile -> this.projectImportService.importProject(id, uploadFile))
-                .orElse(new ErrorPayload(id, this.messageService.unexpectedError()));
+                .map(uploadFile -> this.projectImportService.importProject(uploadFile, context))
+                .orElse(new ErrorPayload(this.messageService.unexpectedError()));
         // @formatter:on
     }
 

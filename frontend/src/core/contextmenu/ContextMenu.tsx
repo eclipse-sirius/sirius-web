@@ -10,18 +10,19 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { forbidExtraProps } from 'airbnb-prop-types';
 import { Text } from 'core/text/Text';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useRef } from 'react';
 import styles from './ContextMenu.module.css';
 
-const entryPropTypes = {
+const entryPropTypes = forbidExtraProps({
   icon: PropTypes.node,
   label: PropTypes.node.isRequired,
   disabled: PropTypes.bool,
   onClick: PropTypes.func,
   'data-testid': PropTypes.string.isRequired,
-};
+});
 export const Entry = ({ icon, label, disabled, onClick, 'data-testid': dataTestId }) => {
   let textClassName = styles.label;
   if (disabled) {

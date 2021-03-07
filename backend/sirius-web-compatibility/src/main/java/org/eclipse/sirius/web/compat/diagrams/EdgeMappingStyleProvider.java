@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,12 +15,14 @@ package org.eclipse.sirius.web.compat.diagrams;
 import java.util.Objects;
 import java.util.function.Function;
 
+import org.eclipse.sirius.diagram.description.ConditionalEdgeStyleDescription;
 import org.eclipse.sirius.diagram.description.EdgeMapping;
 import org.eclipse.sirius.diagram.description.style.EdgeStyleDescription;
 import org.eclipse.sirius.web.diagrams.ArrowStyle;
 import org.eclipse.sirius.web.diagrams.EdgeStyle;
 import org.eclipse.sirius.web.diagrams.LineStyle;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
+import org.eclipse.sirius.web.interpreter.Result;
 import org.eclipse.sirius.web.representations.VariableManager;
 
 /**
@@ -41,8 +43,23 @@ public class EdgeMappingStyleProvider implements Function<VariableManager, EdgeS
 
     @Override
     public EdgeStyle apply(VariableManager variableManager) {
-        EdgeStyleDescription edgeStyleDescription = new EdgeStyleDescriptionProvider(this.interpreter, this.edgeMapping).getEdgeStyleDescription(variableManager);
-        return this.getEdgeStyle(variableManager, edgeStyleDescription);
+        EdgeStyle edgeStyle = null;
+
+        var conditionnalStyles = this.edgeMapping.getConditionnalStyles();
+        for (ConditionalEdgeStyleDescription conditionalStyle : conditionnalStyles) {
+            String predicateExpression = conditionalStyle.getPredicateExpression();
+            Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), predicateExpression);
+            boolean shouldUseStyle = result.asBoolean().orElse(Boolean.FALSE).booleanValue();
+            if (shouldUseStyle) {
+                edgeStyle = this.getEdgeStyle(variableManager, conditionalStyle.getStyle());
+                break;
+            }
+        }
+
+        if (edgeStyle == null) {
+            edgeStyle = this.getEdgeStyle(variableManager, this.edgeMapping.getStyle());
+        }
+        return edgeStyle;
     }
 
     private EdgeStyle getEdgeStyle(VariableManager variableManager, EdgeStyleDescription style) {

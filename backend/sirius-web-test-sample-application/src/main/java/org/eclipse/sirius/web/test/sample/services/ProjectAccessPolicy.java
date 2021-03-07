@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.test.sample.services;
 
-import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.services.api.projects.AccessLevel;
@@ -28,8 +27,8 @@ import org.springframework.stereotype.Service;
 public class ProjectAccessPolicy implements IProjectAccessPolicy {
 
     @Override
-    public Optional<AccessLevel> getAccessLevel(String username, UUID projectId) {
-        return Optional.of(AccessLevel.ADMIN);
+    public AccessLevel getAccessLevel(String username, UUID projectId) {
+        return AccessLevel.ADMIN;
     }
 
     @Override

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,14 +14,12 @@ package org.eclipse.sirius.web.collaborative.api.dto;
 
 import java.text.MessageFormat;
 import java.util.Objects;
-import java.util.UUID;
 
 import org.eclipse.sirius.web.annotations.graphql.GraphQLField;
-import org.eclipse.sirius.web.annotations.graphql.GraphQLID;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLNonNull;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLObjectType;
-import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.representations.IRepresentation;
+import org.eclipse.sirius.web.services.api.dto.IPayload;
 
 /**
  * The payload returned by the rename representation mutation.
@@ -31,21 +29,10 @@ import org.eclipse.sirius.web.representations.IRepresentation;
 @GraphQLObjectType
 public final class RenameRepresentationSuccessPayload implements IPayload {
 
-    private final UUID id;
-
     private final IRepresentation representation;
 
-    public RenameRepresentationSuccessPayload(UUID id, IRepresentation representation) {
-        this.id = Objects.requireNonNull(id);
+    public RenameRepresentationSuccessPayload(IRepresentation representation) {
         this.representation = Objects.requireNonNull(representation);
-    }
-
-    @Override
-    @GraphQLID
-    @GraphQLField
-    @GraphQLNonNull
-    public UUID getId() {
-        return this.id;
     }
 
     @GraphQLField
@@ -56,7 +43,7 @@ public final class RenameRepresentationSuccessPayload implements IPayload {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, representation: '{'id: {2}, label: {3}'}''}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.representation.getId(), this.representation.getLabel());
+        String pattern = "{0} '{'representation: '{'id: {1}, label: {2}'}''}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.representation.getId(), this.representation.getLabel());
     }
 }

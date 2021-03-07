@@ -14,20 +14,20 @@
   font-family: var(--font-family);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: var(--blue-lagoon) !important;
+  color: #b62d2dd9 !important;
   font-size: var(--font-size-5);
   font-weight: var(--font-weight-bold) !important;
   white-space: nowrap;
 }
 
 .link:focus {
-  color: var(--blue-lagoon-lighten-30) !important;
+  color: #d30303 !important;
 }
 
 .link:hover {
-  color: var(--blue-lagoon-darken-30) !important;
+  color: #d30303 !important;
 }
 
 .link:active {
-  color: var(--blue-lagoon) !important;
+  color: #b62d2dd9 !important;
 }

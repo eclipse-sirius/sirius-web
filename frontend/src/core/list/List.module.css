@@ -18,8 +18,7 @@
   max-height: 160px;
   overflow-y: scroll;
 
-  border: 1px solid var(--daintree);
-  border-radius: 5px;
+  border: 1px solid #000000;
   padding: 8px;
 }
 
@@ -39,8 +38,4 @@
 .label {
   font-size: var(--font-size-4);
   color: var(--daintree-lighten-30);
-}
-
-.disabled li {
-  color: var(--daintree-lighten-70);
 }

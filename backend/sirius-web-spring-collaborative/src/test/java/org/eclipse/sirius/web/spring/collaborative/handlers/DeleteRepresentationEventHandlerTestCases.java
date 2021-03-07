@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,13 +21,18 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.eclipse.sirius.web.collaborative.api.dto.DeleteRepresentationInput;
 import org.eclipse.sirius.web.collaborative.api.dto.DeleteRepresentationSuccessPayload;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
-import org.eclipse.sirius.web.core.api.ErrorPayload;
-import org.eclipse.sirius.web.core.api.IEditingContext;
-import org.eclipse.sirius.web.core.api.IInput;
-import org.eclipse.sirius.web.representations.IRepresentation;
+import org.eclipse.sirius.web.services.api.Context;
+import org.eclipse.sirius.web.services.api.accounts.Profile;
+import org.eclipse.sirius.web.services.api.dto.ErrorPayload;
+import org.eclipse.sirius.web.services.api.dto.IProjectInput;
+import org.eclipse.sirius.web.services.api.objects.IEditingContext;
+import org.eclipse.sirius.web.services.api.projects.IProjectService;
+import org.eclipse.sirius.web.services.api.projects.Project;
+import org.eclipse.sirius.web.services.api.projects.Visibility;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationService;
 import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;
 import org.junit.Test;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 
@@ -44,32 +49,7 @@ public class DeleteRepresentationEventHandlerTestCases {
         IRepresentationService representationService = new NoOpRepresentationService() {
             @Override
             public Optional<RepresentationDescriptor> getRepresentation(UUID representationId) {
-                IRepresentation representation = new IRepresentation() {
-
-                    @Override
-                    public String getLabel() {
-                        return null;
-                    }
-
-                    @Override
-                    public String getKind() {
-                        return null;
-                    }
-
-                    @Override
-                    public UUID getId() {
-                        return null;
-                    }
-
-                    @Override
-                    public UUID getDescriptionId() {
-                        return null;
-                    }
-                };
-                RepresentationDescriptor representationDescriptor = RepresentationDescriptor.newRepresentationDescriptor(UUID.randomUUID()).projectId(UUID.randomUUID())
-                        .descriptionId(UUID.randomUUID()).targetObjectId(UUID.randomUUID().toString()).label("") //$NON-NLS-1$
-                        .representation(representation).build();
-                return Optional.of(representationDescriptor);
+                return Optional.of(new RepresentationDescriptor());
             }
 
             @Override
@@ -78,7 +58,14 @@ public class DeleteRepresentationEventHandlerTestCases {
             }
         };
 
-        EventHandlerResponse response = this.handleEvent(representationService);
+        IProjectService projectService = new NoOpProjectService() {
+            @Override
+            public Optional<Project> getProject(UUID projectId) {
+                return Optional.of(new Project(projectId, "projectName", new Profile(UUID.randomUUID(), "username"), Visibility.PUBLIC)); //$NON-NLS-1$ //$NON-NLS-2$
+            }
+        };
+
+        EventHandlerResponse response = this.handleEvent(representationService, projectService);
 
         assertThat(hasBeenCalled.get()).isTrue();
         assertThat(response.getPayload()).isInstanceOf(DeleteRepresentationSuccessPayload.class);
@@ -100,19 +87,27 @@ public class DeleteRepresentationEventHandlerTestCases {
             }
         };
 
-        EventHandlerResponse response = this.handleEvent(representationService);
+        IProjectService projectService = new NoOpProjectService() {
+            @Override
+            public Optional<Project> getProject(UUID projectId) {
+                return Optional.of(new Project(projectId, "projectName", new Profile(UUID.randomUUID(), "username"), Visibility.PUBLIC)); //$NON-NLS-1$ //$NON-NLS-2$
+            }
+        };
+
+        EventHandlerResponse response = this.handleEvent(representationService, projectService);
 
         assertThat(hasBeenCalled.get()).isFalse();
         assertThat(response.getPayload()).isInstanceOf(ErrorPayload.class);
     }
 
-    private EventHandlerResponse handleEvent(IRepresentationService representationService) {
-        IInput input = new DeleteRepresentationInput(UUID.randomUUID(), UUID.randomUUID());
-        DeleteRepresentationEventHandler handler = new DeleteRepresentationEventHandler(representationService, new NoOpCollaborativeMessageService(), new SimpleMeterRegistry());
+    private EventHandlerResponse handleEvent(IRepresentationService representationService, IProjectService projectService) {
+        IProjectInput input = new DeleteRepresentationInput(UUID.randomUUID());
+        DeleteRepresentationEventHandler handler = new DeleteRepresentationEventHandler(representationService, projectService, new NoOpCollaborativeMessageService(), new SimpleMeterRegistry());
         assertThat(handler.canHandle(input)).isTrue();
 
         IEditingContext editingContext = new NoOpEditingContext();
-        return handler.handle(editingContext, input);
+        var context = new Context(new UsernamePasswordAuthenticationToken(null, null));
+        return handler.handle(editingContext, input, context);
     }
 
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,40 +11,24 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import IconButton from '@material-ui/core/IconButton';
-import Snackbar from '@material-ui/core/Snackbar';
-import CloseIcon from '@material-ui/icons/Close';
-import { useMachine } from '@xstate/react';
+import { Banner } from 'core/banner/Banner';
+import { Buttons, DangerButton } from 'core/button/Button';
+import { Text } from 'core/text/Text';
 import gql from 'graphql-tag';
-import {
-  DeleteProjectModalProps,
-  GQLDeleteProjectMutationData,
-  GQLDeleteProjectPayload,
-  GQLErrorPayload,
-} from 'modals/delete-project/DeleteProjectModal.types';
-import {
-  DeleteProjectModalContext,
-  DeleteProjectModalEvent,
-  deleteProjectModalMachine,
-  HandleResponseEvent,
-  HideToastEvent,
-  RequestProjectDeletionEvent,
-  SchemaValue,
-  ShowToastEvent,
-} from 'modals/delete-project/DeleteProjectModalMachine';
-import React, { useEffect } from 'react';
-import { v4 as uuid } from 'uuid';
+import { Modal } from 'modals/Modal';
+import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react';
+import styles from './DeleteProjectModal.module.css';
 
 const deleteProjectMutation = gql`
   mutation deleteProject($input: DeleteProjectInput!) {
     deleteProject(input: $input) {
       __typename
+      ... on DeleteProjectSuccessPayload {
+        viewer {
+          id
+        }
+      }
       ... on ErrorPayload {
         message
       }
@@ -52,99 +36,58 @@ const deleteProjectMutation = gql`
   }
 `;
 
-const isErrorPayload = (payload: GQLDeleteProjectPayload): payload is GQLErrorPayload =>
-  payload.__typename === 'ErrorPayload';
-export const DeleteProjectModal = ({ projectId, onDelete, onClose }: DeleteProjectModalProps) => {
-  const [{ value, context }, dispatch] = useMachine<DeleteProjectModalContext, DeleteProjectModalEvent>(
-    deleteProjectModalMachine
-  );
-  const { toast, deleteProjectModal } = value as SchemaValue;
-  const { message } = context;
+const propTypes = {
+  projectId: PropTypes.string.isRequired,
+  onProjectDeleted: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
+};
 
-  const [deleteProject, { loading, data, error }] = useMutation<GQLDeleteProjectMutationData>(deleteProjectMutation);
-  useEffect(() => {
-    if (!loading) {
-      if (error) {
-        const showToastEvent: ShowToastEvent = {
-          type: 'SHOW_TOAST',
-          message: error.message,
-        };
-        dispatch(showToastEvent);
-      }
-      if (data) {
-        const event: HandleResponseEvent = { type: 'HANDLE_RESPONSE', data };
-        dispatch(event);
-
-        const { deleteProject } = data;
-        if (isErrorPayload(deleteProject)) {
-          const { message } = deleteProject;
-          const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
-          dispatch(showToastEvent);
-        }
-      }
-    }
-  }, [loading, data, error, onDelete, dispatch]);
-
-  const onDeleteProject = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    const requestProjectDeletionEvent: RequestProjectDeletionEvent = { type: 'REQUEST_PROJECT_DELETION' };
-    dispatch(requestProjectDeletionEvent);
-
+export const DeleteProjectModal = ({ projectId, onProjectDeleted, onClose }) => {
+  const [errorMessage, setErrorMessage] = useState('');
+  const [performProjectDeletion, { loading, data, error }] = useMutation(deleteProjectMutation);
+  const onDeleteProject = async (event) => {
     event.preventDefault();
     const variables = {
       input: {
-        id: uuid(),
         projectId,
       },
     };
-    deleteProject({ variables });
+    performProjectDeletion({ variables });
   };
 
   useEffect(() => {
-    if (deleteProjectModal === 'success') {
-      onDelete();
-    }
-  }, [deleteProjectModal, onDelete]);
-
-  return (
-    <>
-      <Dialog open={true} onClose={onClose} aria-labelledby="dialog-title">
-        <DialogTitle id="dialog-title">Delete the project</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            This action will delete everything in the project, it cannot be reversed.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            variant="contained"
-            disabled={deleteProjectModal !== 'idle'}
-            onClick={onDeleteProject}
-            color="primary"
-            data-testid="delete-project">
-            Delete
-          </Button>
-        </DialogActions>
-      </Dialog>
-      <Snackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-        open={toast === 'visible'}
-        autoHideDuration={3000}
-        onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
-        message={message}
-        action={
-          <IconButton
-            size="small"
-            aria-label="close"
-            color="inherit"
-            onClick={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}>
-            <CloseIcon fontSize="small" />
-          </IconButton>
+    if (!loading) {
+      if (error) {
+        setErrorMessage(error.message);
+      } else if (data?.deleteProject) {
+        const { deleteProject } = data;
+        if (deleteProject.__typename === 'DeleteProjectSuccessPayload') {
+          onProjectDeleted();
+        } else if (deleteProject.__typename === 'ErrorPayload') {
+          setErrorMessage(deleteProject.message);
         }
-        data-testid="error"
-      />
-    </>
+      }
+    }
+  }, [loading, data, error, onProjectDeleted]);
+
+  let bannerContent = null;
+  if (errorMessage) {
+    bannerContent = <Banner data-testid="banner" content={errorMessage} />;
+  }
+  return (
+    <Modal title="Delete the project" onClose={onClose}>
+      <div className={styles.container}>
+        <div className={styles.content}>
+          <Text className={styles.subtitle}>
+            This action will delete everything in the project, it cannot be reversed.
+          </Text>
+          <div className={styles.bannerArea}>{bannerContent}</div>
+        </div>
+        <Buttons>
+          <DangerButton type="button" onClick={onDeleteProject} label="Delete" data-testid="delete-project" />
+        </Buttons>
+      </div>
+    </Modal>
   );
 };
+DeleteProjectModal.propTypes = propTypes;

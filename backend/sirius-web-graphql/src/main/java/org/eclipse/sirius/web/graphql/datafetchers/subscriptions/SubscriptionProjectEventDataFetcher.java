@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,12 +19,13 @@ import org.eclipse.sirius.web.annotations.graphql.GraphQLSubscriptionTypes;
 import org.eclipse.sirius.web.annotations.spring.graphql.SubscriptionDataFetcher;
 import org.eclipse.sirius.web.collaborative.api.dto.PreDestroyPayload;
 import org.eclipse.sirius.web.collaborative.api.dto.ProjectEventInput;
+import org.eclipse.sirius.web.collaborative.api.dto.ProjectRenamedEventPayload;
 import org.eclipse.sirius.web.collaborative.api.dto.RepresentationRenamedEventPayload;
-import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventProcessor;
-import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventProcessorRegistry;
-import org.eclipse.sirius.web.core.api.IPayload;
+import org.eclipse.sirius.web.collaborative.api.services.IProjectEventProcessor;
+import org.eclipse.sirius.web.collaborative.api.services.IProjectEventProcessorRegistry;
 import org.eclipse.sirius.web.graphql.datafetchers.IDataFetchingEnvironmentService;
 import org.eclipse.sirius.web.graphql.schema.SubscriptionTypeProvider;
+import org.eclipse.sirius.web.services.api.dto.IPayload;
 import org.eclipse.sirius.web.spring.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.reactivestreams.Publisher;
 
@@ -49,6 +50,7 @@ import reactor.core.publisher.Flux;
 @GraphQLSubscriptionTypes(
     input = ProjectEventInput.class,
     payloads = {
+        ProjectRenamedEventPayload.class,
         RepresentationRenamedEventPayload.class,
         PreDestroyPayload.class,
     }
@@ -61,11 +63,11 @@ public class SubscriptionProjectEventDataFetcher implements IDataFetcherWithFiel
 
     private final IDataFetchingEnvironmentService dataFetchingEnvironmentService;
 
-    private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
+    private final IProjectEventProcessorRegistry projectEventProcessorRegistry;
 
-    public SubscriptionProjectEventDataFetcher(IDataFetchingEnvironmentService dataFetchingEnvironmentService, IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry) {
+    public SubscriptionProjectEventDataFetcher(IDataFetchingEnvironmentService dataFetchingEnvironmentService, IProjectEventProcessorRegistry projectEventProcessorRegistry) {
         this.dataFetchingEnvironmentService = Objects.requireNonNull(dataFetchingEnvironmentService);
-        this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
+        this.projectEventProcessorRegistry = Objects.requireNonNull(projectEventProcessorRegistry);
     }
 
     @Override
@@ -74,8 +76,8 @@ public class SubscriptionProjectEventDataFetcher implements IDataFetcherWithFiel
 
         // @formatter:off
         UUID projectId = input.getProjectId();
-        return this.editingContextEventProcessorRegistry.getOrCreateEditingContextEventProcessor(projectId)
-                .map(IEditingContextEventProcessor::getOutputEvents)
+        return this.projectEventProcessorRegistry.getOrCreateProjectEventProcessor(projectId)
+                .map(IProjectEventProcessor::getOutputEvents)
                 .orElse(Flux.empty());
         // @formatter:on
     }

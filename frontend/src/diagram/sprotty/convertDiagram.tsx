@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,17 +11,15 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import {
-  boundsFeature,
-  connectableFeature,
   createFeatureSet,
+  connectableFeature,
   deletableFeature,
+  selectFeature,
+  boundsFeature,
+  layoutContainerFeature,
   fadeFeature,
   hoverFeedbackFeature,
-  layoutContainerFeature,
   popupFeature,
-  selectFeature,
-  viewportFeature,
-  moveFeature,
 } from 'sprotty';
 
 /**
@@ -31,29 +29,17 @@ import {
  * This converter will ensure the creation of a proper Sprotty diagram from a given Sirius Web diagram..
  *
  * @param diagram the diagram object to convert
- * @param httpOrigin the URL of the server hosting the images
  * @return a Sprotty diagram object
  */
-export const convertDiagram = (diagram, httpOrigin: string) => {
-  const { id, descriptionId, kind, targetObjectId, label, position, size } = diagram;
-  const nodes = diagram.nodes.map((node) => convertNode(node, httpOrigin));
-  const edges = diagram.edges.map((edge) => convertEdge(edge, httpOrigin));
+export const convertDiagram = (diagram) => {
+  const { id, kind, targetObjectId, label, position, size } = diagram;
+  const nodes = diagram.nodes.map((node) => convertNode(node));
+  const edges = diagram.edges.map((edge) => convertEdge(edge));
 
-  return {
-    id,
-    descriptionId,
-    kind,
-    type: 'graph',
-    targetObjectId,
-    label,
-    position,
-    features: createFeatureSet([hoverFeedbackFeature, viewportFeature]),
-    size,
-    children: [...nodes, ...edges],
-  };
+  return { id, kind, type: 'graph', targetObjectId, label, position, size, children: [...nodes, ...edges] };
 };
 
-const convertNode = (node, httpOrigin: string) => {
+const convertNode = (node) => {
   const {
     id,
     type,
@@ -69,15 +55,12 @@ const convertNode = (node, httpOrigin: string) => {
 
   let borderNodes = [];
   if (node.borderNodes) {
-    borderNodes = node.borderNodes.map((borderNode) => convertNode(borderNode, httpOrigin));
+    borderNodes = node.borderNodes.map((borderNode) => convertNode(borderNode));
   }
   let childNodes = [];
   if (node.childNodes) {
-    childNodes = node.childNodes.map((childNode) => convertNode(childNode, httpOrigin));
+    childNodes = node.childNodes.map((childNode) => convertNode(childNode));
   }
-
-  const convertedLabel = convertLabel(label, httpOrigin);
-  const convertedStyle = convertNodeStyle(style, httpOrigin);
 
   return {
     id,
@@ -86,7 +69,7 @@ const convertNode = (node, httpOrigin: string) => {
     targetObjectKind,
     targetObjectLabel,
     descriptionId,
-    style: convertedStyle,
+    style,
     size,
     position,
     features: createFeatureSet([
@@ -98,29 +81,13 @@ const convertNode = (node, httpOrigin: string) => {
       fadeFeature,
       hoverFeedbackFeature,
       popupFeature,
-      moveFeature,
     ]),
-    editableLabel: convertedLabel,
-    children: [convertedLabel, ...borderNodes, ...childNodes],
+    editableLabel: label,
+    children: [label, ...borderNodes, ...childNodes],
   };
 };
 
-const convertLabel = (label, httpOrigin: string) => {
-  if (label?.style?.iconURL !== undefined && label?.style?.iconURL !== '') {
-    const { style } = label;
-    return { ...label, style: { ...style, iconURL: httpOrigin + style.iconURL } };
-  }
-  return label;
-};
-
-const convertNodeStyle = (style, httpOrigin: string) => {
-  if (style?.imageURL !== undefined && style?.imageURL !== '') {
-    return { ...style, imageURL: httpOrigin + style.imageURL };
-  }
-  return style;
-};
-
-const convertEdge = (edge, httpOrigin: string) => {
+const convertEdge = (edge) => {
   const {
     id,
     type,
@@ -139,16 +106,13 @@ const convertEdge = (edge, httpOrigin: string) => {
 
   let children = [];
   if (beginLabel) {
-    const convertedBeginLabel = convertLabel(beginLabel, httpOrigin);
-    children.push(convertedBeginLabel);
+    children.push(beginLabel);
   }
   if (centerLabel) {
-    const convertedCenterLabel = convertLabel(centerLabel, httpOrigin);
-    children.push(convertedCenterLabel);
+    children.push(centerLabel);
   }
   if (endLabel) {
-    const convertedEndLabel = convertLabel(endLabel, httpOrigin);
-    children.push(convertedEndLabel);
+    children.push(endLabel);
   }
 
   return {

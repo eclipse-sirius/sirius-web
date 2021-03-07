@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.services.api.projects;
 
-import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -21,7 +20,7 @@ import java.util.UUID;
  * @author pcdavid
  */
 public interface IProjectAccessPolicy {
-    Optional<AccessLevel> getAccessLevel(String username, UUID projectId);
+    AccessLevel getAccessLevel(String username, UUID projectId);
 
     boolean canEdit(String username, UUID projectId);
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,88 +10,36 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import Avatar from '@material-ui/core/Avatar';
-import { makeStyles } from '@material-ui/core/styles';
-import Toolbar from '@material-ui/core/Toolbar';
-import Tooltip from '@material-ui/core/Tooltip';
-import Typography from '@material-ui/core/Typography';
-import { Page } from 'properties/Page';
+import { DARK, MEDIUM } from 'core/subscriber/Subscriber';
+import { Subscribers } from 'core/subscriber/Subscribers';
+import { Text } from 'core/text/Text';
+import { Page } from 'properties/page/Page';
 import { PageList } from 'properties/pagelist/PageList';
-import { FormProps } from 'properties/Properties.types';
 import React from 'react';
+import styles from './Properties.module.css';
 
-const usePropertiesStyles = makeStyles((theme) => ({
-  properties: {
-    display: 'flex',
-    flexDirection: 'column',
-    paddingLeft: theme.spacing(1),
-    paddingRight: theme.spacing(1),
-  },
-  content: {
-    overflowX: 'hidden',
-    overflowY: 'auto',
-    backgroundColor: theme.palette.background.default,
-  },
-  subscribers: {
-    marginLeft: 'auto',
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    '& > *': {
-      marginLeft: theme.spacing(0.5),
-      marginRight: theme.spacing(0.5),
-    },
-  },
-  avatar: {
-    fontSize: '1rem',
-    width: theme.spacing(3),
-    height: theme.spacing(3),
-    backgroundColor: theme.palette.primary.main,
-  },
-  container: {
-    display: 'grid',
-    gridTemplateRows: '1fr',
-    gridTemplateColumns: 'min-content 1fr',
-  },
-}));
-
-export const Properties = ({ editingContextId, form, subscribers, widgetSubscriptions }: FormProps) => {
-  const classes = usePropertiesStyles();
+export const Properties = ({ projectId, form, subscribers, widgetSubscriptions }) => {
   const { id, label, pages } = form;
+  const currentPage = pages[0];
 
   let content;
   if (pages.length > 1) {
     content = (
-      <div className={classes.container}>
+      <div className={styles.container}>
         <PageList pages={pages} />
-        <Page
-          editingContextId={editingContextId}
-          formId={id}
-          page={pages[0]}
-          widgetSubscriptions={widgetSubscriptions}
-        />
+        <Page projectId={projectId} formId={id} page={currentPage} widgetSubscriptions={widgetSubscriptions} />
       </div>
     );
-  } else if (pages.length === 1) {
-    content = (
-      <Page editingContextId={editingContextId} formId={id} page={pages[0]} widgetSubscriptions={widgetSubscriptions} />
-    );
+  } else {
+    content = <Page projectId={projectId} formId={id} page={currentPage} widgetSubscriptions={widgetSubscriptions} />;
   }
   return (
-    <div data-testid="properties" className={classes.properties}>
-      <Toolbar variant="dense" disableGutters>
-        <Typography variant="h6" noWrap>
-          {label}
-        </Typography>
-        <div className={classes.subscribers}>
-          {subscribers.map((subscriber) => (
-            <Tooltip title={subscriber.username} arrow key={subscriber.username}>
-              <Avatar classes={{ root: classes.avatar }}>{subscriber.username.substring(0, 1).toUpperCase()}</Avatar>
-            </Tooltip>
-          ))}
-        </div>
-      </Toolbar>
-      <div className={classes.content}>{content}</div>
+    <div data-testid="properties" className={styles.properties}>
+      <div className={styles.header} data-testid="header">
+        <Text className={styles.label}>{label}</Text>
+        <Subscribers subscribers={subscribers} size={MEDIUM} kind={DARK} limit={3} />
+      </div>
+      {content}
     </div>
   );
 };

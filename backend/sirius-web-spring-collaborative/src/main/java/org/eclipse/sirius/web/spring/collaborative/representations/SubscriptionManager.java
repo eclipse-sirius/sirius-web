@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,18 +16,15 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.eclipse.sirius.web.collaborative.api.dto.Subscriber;
 import org.eclipse.sirius.web.collaborative.api.services.ISubscriptionManager;
 import org.eclipse.sirius.web.collaborative.api.services.SubscriptionDescription;
-import org.eclipse.sirius.web.core.api.IInput;
-import org.eclipse.sirius.web.core.api.IPayload;
+import org.eclipse.sirius.web.services.api.dto.IPayload;
 
+import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Sinks;
-import reactor.core.publisher.Sinks.Many;
 
 /**
  * Service used to managed the subscriptions of a representation or a project.
@@ -36,7 +33,7 @@ import reactor.core.publisher.Sinks.Many;
  */
 public class SubscriptionManager implements ISubscriptionManager {
 
-    private final Many<IPayload> sink = Sinks.many().multicast().directBestEffort();
+    private final DirectProcessor<IPayload> flux = DirectProcessor.create();
 
     private final List<SubscriptionDescription> subscriptionDescriptions = new ArrayList<>();
 
@@ -46,12 +43,12 @@ public class SubscriptionManager implements ISubscriptionManager {
     }
 
     @Override
-    public void add(IInput input, SubscriptionDescription subscriptionDescription) {
+    public void add(SubscriptionDescription subscriptionDescription) {
         this.subscriptionDescriptions.add(subscriptionDescription);
     }
 
     @Override
-    public void remove(UUID correlationId, SubscriptionDescription subscriptionDescription) {
+    public void remove(SubscriptionDescription subscriptionDescription) {
         this.subscriptionDescriptions.remove(subscriptionDescription);
     }
 
@@ -72,12 +69,12 @@ public class SubscriptionManager implements ISubscriptionManager {
     }
 
     @Override
-    public Flux<IPayload> getFlux(IInput input) {
-        return this.sink.asFlux();
+    public Flux<IPayload> getFlux() {
+        return this.flux;
     }
 
     @Override
     public void dispose() {
-        this.sink.tryEmitComplete();
+        this.flux.sink().complete();
     }
 }

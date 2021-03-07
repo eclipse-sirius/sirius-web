@@ -13,15 +13,14 @@
 package org.eclipse.sirius.web.diagrams.elements;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.annotations.Immutable;
-import org.eclipse.sirius.web.components.Element;
 import org.eclipse.sirius.web.components.IProps;
 import org.eclipse.sirius.web.diagrams.EdgeStyle;
+import org.eclipse.sirius.web.diagrams.Label;
 import org.eclipse.sirius.web.diagrams.Position;
 
 /**
@@ -46,6 +45,12 @@ public final class EdgeElementProps implements IProps {
 
     private UUID descriptionId;
 
+    private Label beginLabel;
+
+    private Label centerLabel;
+
+    private Label endLabel;
+
     private UUID sourceId;
 
     private UUID targetId;
@@ -53,8 +58,6 @@ public final class EdgeElementProps implements IProps {
     private EdgeStyle style;
 
     private List<Position> routingPoints;
-
-    private List<Element> children;
 
     private EdgeElementProps() {
         // Prevent instantiation
@@ -84,6 +87,18 @@ public final class EdgeElementProps implements IProps {
         return this.descriptionId;
     }
 
+    public Label getBeginLabel() {
+        return this.beginLabel;
+    }
+
+    public Label getCenterLabel() {
+        return this.centerLabel;
+    }
+
+    public Label getEndLabel() {
+        return this.endLabel;
+    }
+
     public UUID getSourceId() {
         return this.sourceId;
     }
@@ -98,11 +113,6 @@ public final class EdgeElementProps implements IProps {
 
     public List<Position> getRoutingPoints() {
         return this.routingPoints;
-    }
-
-    @Override
-    public List<Element> getChildren() {
-        return this.children;
     }
 
     public static Builder newEdgeElementProps(UUID id) {
@@ -134,6 +144,12 @@ public final class EdgeElementProps implements IProps {
 
         private UUID descriptionId;
 
+        private Label beginLabel;
+
+        private Label centerLabel;
+
+        private Label endLabel;
+
         private UUID sourceId;
 
         private UUID targetId;
@@ -141,8 +157,6 @@ public final class EdgeElementProps implements IProps {
         private EdgeStyle style;
 
         private List<Position> routingPoints;
-
-        private List<Element> children = new ArrayList<>();
 
         private Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
@@ -173,6 +187,21 @@ public final class EdgeElementProps implements IProps {
             return this;
         }
 
+        public Builder beginLabel(Label beginLabel) {
+            this.beginLabel = beginLabel;
+            return this;
+        }
+
+        public Builder centerLabel(Label centerLabel) {
+            this.centerLabel = centerLabel;
+            return this;
+        }
+
+        public Builder endLabel(Label endLabel) {
+            this.endLabel = endLabel;
+            return this;
+        }
+
         public Builder sourceId(UUID sourceId) {
             this.sourceId = Objects.requireNonNull(sourceId);
             return this;
@@ -193,11 +222,6 @@ public final class EdgeElementProps implements IProps {
             return this;
         }
 
-        public Builder children(List<Element> children) {
-            this.children = children;
-            return this;
-        }
-
         public EdgeElementProps build() {
             EdgeElementProps edgeElementProps = new EdgeElementProps();
             edgeElementProps.id = Objects.requireNonNull(this.id);
@@ -206,11 +230,13 @@ public final class EdgeElementProps implements IProps {
             edgeElementProps.targetObjectKind = Objects.requireNonNull(this.targetObjectKind);
             edgeElementProps.targetObjectLabel = Objects.requireNonNull(this.targetObjectLabel);
             edgeElementProps.descriptionId = Objects.requireNonNull(this.descriptionId);
+            edgeElementProps.beginLabel = this.beginLabel;
+            edgeElementProps.centerLabel = this.centerLabel;
+            edgeElementProps.endLabel = this.endLabel;
             edgeElementProps.sourceId = Objects.requireNonNull(this.sourceId);
             edgeElementProps.targetId = Objects.requireNonNull(this.targetId);
             edgeElementProps.style = Objects.requireNonNull(this.style);
             edgeElementProps.routingPoints = Objects.requireNonNull(this.routingPoints);
-            edgeElementProps.children = this.children;
             return edgeElementProps;
         }
     }

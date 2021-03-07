@@ -47,26 +47,12 @@ label.radio > input[type='radio'] + *::before {
 }
 
 label.radio > input[type='radio']:checked + *::before {
-  background: radial-gradient(var(--white) 0%, var(--white) 30%, var(--blue-lagoon) 40%, var(--blue-lagoon));
-  border-color: var(--blue-lagoon);
-}
-
-label.radio.disabled > input[type='radio']:checked + *::before {
-  background: radial-gradient(
-    var(--white) 0%,
-    var(--white) 30%,
-    var(--daintree-lighten-70) 40%,
-    var(--daintree-lighten-70)
-  );
-  border-color: var(--daintree-lighten-70);
+  background: radial-gradient(var(--white) 0%, var(--white) 30%,  #d30303 40%,  #d30303);
+  border-color: #de1000;
 }
 
 .selected {
-  color: var(--blue-lagoon);
-}
-
-.selected.disabled {
-  color: var(--daintree-lighten-70);
+  color: #de1000;
 }
 
 label.radio:hover > input[type='radio']:checked + *::before {
@@ -79,22 +65,8 @@ label.radio:hover > input[type='radio']:checked + *::before {
   border-color: var(--blue-lagoon-darken-20);
 }
 
-label.radio.disabled:hover > input[type='radio']:checked + *::before {
-  background: radial-gradient(
-    var(--white) 0%,
-    var(--white) 30%,
-    var(--daintree-lighten-70) 40%,
-    var(--daintree-lighten-70)
-  );
-  border-color: var(--daintree-lighten-70);
-}
-
 label.radio:hover {
   color: var(--blue-lagoon-darken-20);
-}
-
-label.radio.disabled:hover {
-  color: var(--daintree-lighten-70);
 }
 
 label.radio:active > input[type='radio']:checked + *::before {
@@ -107,29 +79,11 @@ label.radio:active > input[type='radio']:checked + *::before {
   border-color: var(--blue-lagoon-lighten-20);
 }
 
-label.radio.disabled:active > input[type='radio']:checked + *::before {
-  background: radial-gradient(
-    var(--white) 0%,
-    var(--white) 30%,
-    var(--daintree-lighten-70) 40%,
-    var(--daintree-lighten-70)
-  );
-  border-color: var(--daintree-lighten-70);
-}
-
 label.radio:active {
   color: var(--blue-lagoon-lighten-20);
-}
-
-label.radio.disabled:active {
-  color: var(--daintree-lighten-70);
 }
 
 .radiogroupVertical label.radio {
   padding-top: 0.5em;
   padding-bottom: 0.5em;
-}
-
-.disabled {
-  color: var(--daintree-lighten-70);
 }

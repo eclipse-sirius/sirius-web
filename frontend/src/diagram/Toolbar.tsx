@@ -10,21 +10,27 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import Avatar from '@material-ui/core/Avatar';
-import FormControl from '@material-ui/core/FormControl';
-import IconButton from '@material-ui/core/IconButton';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import { makeStyles } from '@material-ui/core/styles';
-import Tooltip from '@material-ui/core/Tooltip';
-import AspectRatioIcon from '@material-ui/icons/AspectRatio';
-import ShareIcon from '@material-ui/icons/Share';
-import ZoomInIcon from '@material-ui/icons/ZoomIn';
-import ZoomOutIcon from '@material-ui/icons/ZoomOut';
-import { ToolbarProps, ToolbarState } from 'diagram/Toolbar.types';
+import { IconButton } from 'core/button/Button';
+import { Select } from 'core/select/Select';
+import { FitToScreen, Share, ZoomIn, ZoomOut } from 'icons';
 import { ShareDiagramModal } from 'modals/share-diagram/ShareDiagramModal';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
+import styles from './Toolbar.module.css';
+
+const zooms = [
+  { id: '4', label: '400%' },
+  { id: '2', label: '200%' },
+  { id: '1.75', label: '175%' },
+  { id: '1.5', label: '150%' },
+  { id: '1.25', label: '125%' },
+  { id: '1', label: '100%' },
+  { id: '0.75', label: '75%' },
+  { id: '0.5', label: '50%' },
+  { id: '0.25', label: '25%' },
+  { id: '0.1', label: '10%' },
+  { id: '0.05', label: '5%' },
+];
 
 const propTypes = {
   onZoomIn: PropTypes.func.isRequired,
@@ -32,51 +38,16 @@ const propTypes = {
   onFitToScreen: PropTypes.func.isRequired,
   setZoomLevel: PropTypes.func.isRequired,
   zoomLevel: PropTypes.string,
-  subscribers: PropTypes.array.isRequired,
 };
-
-const useToolbarStyles = makeStyles((theme) => ({
-  toolbar: {
-    display: 'flex',
-    flexDirection: 'row',
-    height: theme.spacing(4),
-    paddingLeft: theme.spacing(1),
-    paddingRight: theme.spacing(1),
-    borderBottomWidth: '1px',
-    borderBottomStyle: 'solid',
-    borderBottomColor: theme.palette.divider,
-  },
-  selectFormControl: {
-    minWidth: 70,
-  },
-  subscribers: {
-    marginLeft: 'auto',
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    '& > *': {
-      marginLeft: theme.spacing(0.5),
-      marginRight: theme.spacing(0.5),
-    },
-  },
-  avatar: {
-    fontSize: '1rem',
-    width: theme.spacing(3),
-    height: theme.spacing(3),
-    backgroundColor: theme.palette.primary.main,
-  },
-}));
-
-export const Toolbar = ({ onZoomIn, onZoomOut, onFitToScreen, setZoomLevel, zoomLevel, subscribers }: ToolbarProps) => {
-  const classes = useToolbarStyles();
-  const [state, setState] = useState<ToolbarState>({ modal: null, currentZoomLevel: zoomLevel });
+export const Toolbar = ({ onZoomIn, onZoomOut, onFitToScreen, setZoomLevel, zoomLevel }) => {
+  const [state, setState] = useState({ modal: undefined, currentZoomLevel: undefined });
   const onShare = () => setState({ modal: 'ShareDiagramModal', currentZoomLevel: state.currentZoomLevel });
-  const closeModal = () => setState({ modal: null, currentZoomLevel: state.currentZoomLevel });
+  const closeModal = () => setState({ modal: undefined, currentZoomLevel: state.currentZoomLevel });
 
   const { modal, currentZoomLevel } = state;
 
   useEffect(() => {
-    setState({ modal: null, currentZoomLevel: zoomLevel });
+    setState({ modal: undefined, currentZoomLevel: zoomLevel });
   }, [zoomLevel]);
 
   const updateZoomLevel = (event) => {
@@ -91,52 +62,28 @@ export const Toolbar = ({ onZoomIn, onZoomOut, onFitToScreen, setZoomLevel, zoom
   }
   return (
     <>
-      <div className={classes.toolbar}>
-        <FormControl className={classes.selectFormControl}>
-          <Select
-            value={currentZoomLevel}
-            onChange={updateZoomLevel}
-            variant="standard"
-            disableUnderline
-            data-testid="zoom-level">
-            <MenuItem value={'4'}>400%</MenuItem>
-            <MenuItem value={'2'}>200%</MenuItem>
-            <MenuItem value={'1.75'}>175%</MenuItem>
-            <MenuItem value={'1.5'}>150%</MenuItem>
-            <MenuItem value={'1.25'}>125%</MenuItem>
-            <MenuItem value={'1'}>100%</MenuItem>
-            <MenuItem value={'0.75'}>75%</MenuItem>
-            <MenuItem value={'0.5'}>50%</MenuItem>
-            <MenuItem value={'0.25'}>25%</MenuItem>
-            <MenuItem value={'0.1'}>10%</MenuItem>
-            <MenuItem value={'0.05'}>5%</MenuItem>
-          </Select>
-        </FormControl>
-        <IconButton size="small" color="inherit" aria-label="zoom in" onClick={onZoomIn} data-testid="zoom-in">
-          <ZoomInIcon fontSize="small" />
+      <div className={styles.toolbar}>
+        <IconButton className={styles.icon} onClick={onShare} data-testid="share">
+          <Share title="Share" />
         </IconButton>
-        <IconButton size="small" color="inherit" aria-label="zoom out" onClick={onZoomOut} data-testid="zoom-out">
-          <ZoomOutIcon fontSize="small" />
+        <div className={styles.separator} />
+        <IconButton className={styles.icon} onClick={onZoomIn} data-testid="zoom-in">
+          <ZoomIn />
         </IconButton>
-        <IconButton
-          size="small"
-          color="inherit"
-          aria-label="fit to screen"
-          onClick={onFitToScreen}
-          data-testid="fit-to-screen">
-          <AspectRatioIcon fontSize="small" />
+        <IconButton className={styles.icon} onClick={onZoomOut} data-testid="zoom-out">
+          <ZoomOut />
         </IconButton>
-        <IconButton size="small" color="inherit" aria-label="share" onClick={onShare} data-testid="share">
-          <ShareIcon fontSize="small" />
+        <IconButton className={styles.icon} onClick={onFitToScreen} data-testid="fit-to-screen">
+          <FitToScreen title="Fit to screen" />
         </IconButton>
-
-        <div className={classes.subscribers}>
-          {subscribers.map((subscriber) => (
-            <Tooltip title={subscriber.username} arrow key={subscriber.username}>
-              <Avatar classes={{ root: classes.avatar }}>{subscriber.username.substring(0, 1).toUpperCase()}</Avatar>
-            </Tooltip>
-          ))}
-        </div>
+        <Select
+          name="zoom level"
+          value={currentZoomLevel}
+          options={zooms}
+          onChange={updateZoomLevel}
+          small={true}
+          data-testid="zoom-level"
+        />
       </div>
       {modalElement}
     </>

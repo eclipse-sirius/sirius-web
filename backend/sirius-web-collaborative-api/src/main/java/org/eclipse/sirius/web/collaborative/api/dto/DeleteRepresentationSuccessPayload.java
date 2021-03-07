@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,13 +14,12 @@ package org.eclipse.sirius.web.collaborative.api.dto;
 
 import java.text.MessageFormat;
 import java.util.Objects;
-import java.util.UUID;
 
 import org.eclipse.sirius.web.annotations.graphql.GraphQLField;
-import org.eclipse.sirius.web.annotations.graphql.GraphQLID;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLNonNull;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLObjectType;
-import org.eclipse.sirius.web.core.api.IPayload;
+import org.eclipse.sirius.web.services.api.dto.IPayload;
+import org.eclipse.sirius.web.services.api.projects.Project;
 
 /**
  * The payload returned by the delete representation mutation.
@@ -30,33 +29,21 @@ import org.eclipse.sirius.web.core.api.IPayload;
 @GraphQLObjectType
 public final class DeleteRepresentationSuccessPayload implements IPayload {
 
-    private final UUID id;
+    private final Project project;
 
-    private final UUID representationId;
-
-    public DeleteRepresentationSuccessPayload(UUID id, UUID representationId) {
-        this.id = Objects.requireNonNull(id);
-        this.representationId = Objects.requireNonNull(representationId);
+    public DeleteRepresentationSuccessPayload(Project project) {
+        this.project = Objects.requireNonNull(project);
     }
 
-    @Override
-    @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getId() {
-        return this.id;
-    }
-
-    @GraphQLID
-    @GraphQLField
-    @GraphQLNonNull
-    public UUID getRepresentationId() {
-        return this.representationId;
+    public Project getproject() {
+        return this.project;
     }
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, representationId: {2}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.representationId);
+        String pattern = "{0} '{'project: '{'id: {1}, name: {2}'}''}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.project.getId(), this.project.getName());
     }
 }

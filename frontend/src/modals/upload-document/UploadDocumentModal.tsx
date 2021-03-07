@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,7 +25,6 @@ import {
 import { initialState, reducer } from 'modals/upload-document/reducer';
 import PropTypes from 'prop-types';
 import React, { useEffect, useReducer } from 'react';
-import { v4 as uuid } from 'uuid';
 
 const uploadDocumentMutationFile = gql`
   mutation uploadDocument($input: UploadDocumentInput!) {
@@ -58,7 +57,6 @@ export const UploadDocumentModal = ({ projectId, onDocumentUploaded, onClose }) 
     const uploadDocumentMutation = uploadDocumentMutationFile.loc.source.body;
     const variables = {
       input: {
-        id: uuid(),
         projectId,
         file: null, // the file will be send as a part of the multipart POST query.
       },

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,17 +16,18 @@ import java.util.Objects;
 
 import org.eclipse.sirius.web.collaborative.api.dto.DeleteRepresentationInput;
 import org.eclipse.sirius.web.collaborative.api.dto.DeleteRepresentationSuccessPayload;
-import org.eclipse.sirius.web.collaborative.api.services.ChangeDescription;
-import org.eclipse.sirius.web.collaborative.api.services.ChangeKind;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
-import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventHandler;
+import org.eclipse.sirius.web.collaborative.api.services.IProjectEventHandler;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
-import org.eclipse.sirius.web.core.api.ErrorPayload;
-import org.eclipse.sirius.web.core.api.IEditingContext;
-import org.eclipse.sirius.web.core.api.IInput;
+import org.eclipse.sirius.web.services.api.Context;
+import org.eclipse.sirius.web.services.api.dto.ErrorPayload;
+import org.eclipse.sirius.web.services.api.dto.IProjectInput;
+import org.eclipse.sirius.web.services.api.objects.IEditingContext;
+import org.eclipse.sirius.web.services.api.projects.IProjectService;
+import org.eclipse.sirius.web.services.api.projects.Project;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationService;
-import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;
 import org.eclipse.sirius.web.spring.collaborative.messages.ICollaborativeMessageService;
+import org.eclipse.sirius.web.trees.Tree;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
@@ -38,16 +39,19 @@ import io.micrometer.core.instrument.MeterRegistry;
  * @author lfasani
  */
 @Service
-public class DeleteRepresentationEventHandler implements IEditingContextEventHandler {
+public class DeleteRepresentationEventHandler implements IProjectEventHandler {
 
     private final IRepresentationService representationService;
+
+    private final IProjectService projectService;
 
     private final ICollaborativeMessageService messageService;
 
     private final Counter counter;
 
-    public DeleteRepresentationEventHandler(IRepresentationService representationService, ICollaborativeMessageService messageService, MeterRegistry meterRegistry) {
+    public DeleteRepresentationEventHandler(IRepresentationService representationService, IProjectService projectService, ICollaborativeMessageService messageService, MeterRegistry meterRegistry) {
         this.representationService = Objects.requireNonNull(representationService);
+        this.projectService = Objects.requireNonNull(projectService);
         this.messageService = Objects.requireNonNull(messageService);
 
         // @formatter:off
@@ -58,26 +62,30 @@ public class DeleteRepresentationEventHandler implements IEditingContextEventHan
     }
 
     @Override
-    public boolean canHandle(IInput input) {
-        return input instanceof DeleteRepresentationInput;
+    public boolean canHandle(IProjectInput projectInput) {
+        return projectInput instanceof DeleteRepresentationInput;
     }
 
     @Override
-    public EventHandlerResponse handle(IEditingContext editingContext, IInput input) {
+    public EventHandlerResponse handle(IEditingContext editingContext, IProjectInput deleteRepresentationInput, Context context) {
         this.counter.increment();
 
-        String message = this.messageService.invalidInput(input.getClass().getSimpleName(), DeleteRepresentationInput.class.getSimpleName());
-        EventHandlerResponse eventHandlerResponse = new EventHandlerResponse(new ChangeDescription(ChangeKind.NOTHING, editingContext.getId()), new ErrorPayload(input.getId(), message));
-        if (input instanceof DeleteRepresentationInput) {
-            DeleteRepresentationInput deleteRepresentationInput = (DeleteRepresentationInput) input;
-            var optionalRepresentation = this.representationService.getRepresentation(deleteRepresentationInput.getRepresentationId());
+        String message = this.messageService.invalidInput(deleteRepresentationInput.getClass().getSimpleName(), DeleteRepresentationInput.class.getSimpleName());
+        EventHandlerResponse eventHandlerResponse = new EventHandlerResponse(false, representation -> false, new ErrorPayload(message));
+        if (deleteRepresentationInput instanceof DeleteRepresentationInput) {
+            DeleteRepresentationInput input = (DeleteRepresentationInput) deleteRepresentationInput;
+            var optionalRepresentation = this.representationService.getRepresentation(input.getRepresentationId());
 
             if (optionalRepresentation.isPresent()) {
-                RepresentationDescriptor representationDescriptor = optionalRepresentation.get();
-                this.representationService.delete(representationDescriptor.getId());
+                this.representationService.delete(input.getRepresentationId());
 
-                eventHandlerResponse = new EventHandlerResponse(new ChangeDescription(ChangeKind.REPRESENTATION_DELETION, editingContext.getId()),
-                        new DeleteRepresentationSuccessPayload(input.getId(), representationDescriptor.getId()));
+                var optionalProject = this.projectService.getProject(editingContext.getProjectId());
+                if (optionalProject.isPresent()) {
+                    Project project = optionalProject.get();
+                    eventHandlerResponse = new EventHandlerResponse(false, Tree.class::isInstance, new DeleteRepresentationSuccessPayload(project));
+                } else {
+                    eventHandlerResponse = new EventHandlerResponse(false, representation -> false, new ErrorPayload(this.messageService.projectNotFound()));
+                }
             }
         }
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import gql from 'graphql-tag';
 import { ArrowCollapsed, ArrowExpanded, More, NoIcon } from 'icons';
 import { DeleteDocumentModal } from 'modals/delete-document/DeleteDocumentModal';
 import { NewObjectModal } from 'modals/new-object/NewObjectModal';
+import { NewCodeModal } from 'modals/new-code/NewGenerateCode';
 import { NewRepresentationModal } from 'modals/new-representation/NewRepresentationModal';
 import { NewRootObjectModal } from 'modals/new-root-object/NewRootObjectModal';
 import PropTypes from 'prop-types';
@@ -26,7 +27,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { TreeItemDiagramContextMenu } from 'tree/TreeItemDiagramContextMenu';
 import { TreeItemDocumentContextMenu } from 'tree/TreeItemDocumentContextMenu';
 import { TreeItemObjectContextMenu } from 'tree/TreeItemObjectContextMenu';
-import { v4 as uuid } from 'uuid';
 import styles from './TreeItem.module.css';
 
 const deleteObjectMutation = gql`
@@ -50,7 +50,9 @@ const deleteRepresentationMutation = gql`
     deleteRepresentation(input: $input) {
       __typename
       ... on DeleteRepresentationSuccessPayload {
-        representationId
+        project {
+          id
+        }
       }
       ... on ErrorPayload {
         message
@@ -120,7 +122,6 @@ const menuPositionDelta = {
 };
 
 const propTypes = {
-  editingContextId: PropTypes.string.isRequired,
   item: PropTypes.object.isRequired,
   depth: PropTypes.number.isRequired,
   onExpand: PropTypes.func.isRequired,
@@ -128,7 +129,7 @@ const propTypes = {
   setSelection: PropTypes.func.isRequired,
 };
 
-export const TreeItem = ({ editingContextId, item, depth, onExpand, selection, setSelection }) => {
+export const TreeItem = ({ projectId, item, depth, onExpand, selection, setSelection }) => {
   const initialState = {
     modalDisplayed: null,
     x: 0,
@@ -240,6 +241,19 @@ export const TreeItem = ({ editingContextId, item, depth, onExpand, selection, s
     };
 
     if (item.kind === 'Document') {
+      //VANTH
+      const onNewCode = () =>
+      setState((prevState) => {
+        return {
+          modalDisplayed: 'CreateNewCode',
+          x: 0,
+          y: 0,
+          showContextMenu: false,
+          editingMode: false,
+          label: item.label,
+          prevSelectionId: prevState.prevSelectionId,
+        };
+      });
       const onNewObject = () =>
         setState((prevState) => {
           return {
@@ -290,10 +304,11 @@ export const TreeItem = ({ editingContextId, item, depth, onExpand, selection, s
         });
       contextMenu = (
         <TreeItemDocumentContextMenu
-          projectId={editingContextId}
+          projectId={projectId}
           documentId={item.id}
           x={x}
           y={y}
+          onNewCode={onNewCode}
           onNewObject={onNewObject}
           onRenameDocument={onRenameDocument}
           onDownload={onDownload}
@@ -305,7 +320,6 @@ export const TreeItem = ({ editingContextId, item, depth, onExpand, selection, s
       const onDeleteRepresentation = () => {
         const variables = {
           input: {
-            id: uuid(),
             representationId: item.id,
           },
         };
@@ -373,8 +387,7 @@ export const TreeItem = ({ editingContextId, item, depth, onExpand, selection, s
       const onDeleteObject = () => {
         const variables = {
           input: {
-            id: uuid(),
-            projectId: editingContextId,
+            projectId,
             objectId: item.id,
           },
         };
@@ -431,17 +444,13 @@ export const TreeItem = ({ editingContextId, item, depth, onExpand, selection, s
       const isNameValid = label.length >= 1;
       if (isNameValid && item) {
         if (item.kind === 'Document') {
-          renameDocument({ variables: { input: { id: uuid(), documentId: item.id, newName: label } } });
+          renameDocument({ variables: { input: { documentId: item.id, newName: label } } });
         } else if (item?.kind === 'Diagram') {
           renameRepresentation({
-            variables: {
-              input: { id: uuid(), projectId: editingContextId, representationId: item.id, newLabel: label },
-            },
+            variables: { input: { projectId: projectId, representationId: item.id, newLabel: label } },
           });
         } else {
-          renameObject({
-            variables: { input: { id: uuid(), projectId: editingContextId, objectId: item.id, newName: label } },
-          });
+          renameObject({ variables: { input: { projectId: projectId, objectId: item.id, newName: label } } });
         }
       } else {
         setState((prevState) => {
@@ -515,7 +524,7 @@ export const TreeItem = ({ editingContextId, item, depth, onExpand, selection, s
     };
     modal = (
       <NewRootObjectModal
-        projectId={editingContextId}
+        projectId={projectId}
         documentId={item.id}
         onObjectCreated={onRootObjectCreated}
         onClose={onCloseModal}
@@ -543,10 +552,39 @@ export const TreeItem = ({ editingContextId, item, depth, onExpand, selection, s
     };
     modal = (
       <NewObjectModal
-        projectId={editingContextId}
+        projectId={projectId}
         classId={item.kind}
         objectId={item.id}
         onObjectCreated={onObjectCreated}
+        onClose={onCloseModal}
+      />
+    );
+  } else if (modalDisplayed === 'CreateNewCode') {
+    const onCodeCreated = (object) => {
+      if (!item.expanded && item.hasChildren) {
+        onExpand(item.id, depth);
+      }
+
+      const { id, label, kind } = object;
+      setSelection({ id, label, kind });
+      setState((prevState) => {
+        return {
+          modalDisplayed: null,
+          x: 0,
+          y: 0,
+          showContextMenu: false,
+          editingMode: false,
+          label: label,
+          prevSelectionId: prevState.prevSelectionId,
+        };
+      });
+    };
+    //vanth
+    modal = (
+      <NewCodeModal
+        projectId={projectId}
+        documentId={item.id}
+        onObjectCreated={onCodeCreated}
         onClose={onCloseModal}
       />
     );
@@ -572,7 +610,7 @@ export const TreeItem = ({ editingContextId, item, depth, onExpand, selection, s
     };
     modal = (
       <NewRepresentationModal
-        projectId={editingContextId}
+        projectId={projectId}
         classId={item.kind}
         objectId={item.id}
         onRepresentationCreated={onRepresentationCreated}
@@ -589,7 +627,7 @@ export const TreeItem = ({ editingContextId, item, depth, onExpand, selection, s
           return (
             <li key={childItem.id}>
               <TreeItem
-                editingContextId={editingContextId}
+                projectId={projectId}
                 item={childItem}
                 depth={depth + 1}
                 onExpand={onExpand}

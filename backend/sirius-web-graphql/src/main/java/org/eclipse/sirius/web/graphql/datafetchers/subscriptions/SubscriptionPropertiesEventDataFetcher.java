@@ -19,16 +19,17 @@ import org.eclipse.sirius.web.annotations.graphql.GraphQLSubscriptionTypes;
 import org.eclipse.sirius.web.annotations.spring.graphql.SubscriptionDataFetcher;
 import org.eclipse.sirius.web.collaborative.api.dto.PreDestroyPayload;
 import org.eclipse.sirius.web.collaborative.api.dto.SubscribersUpdatedEventPayload;
-import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventProcessorRegistry;
+import org.eclipse.sirius.web.collaborative.api.services.IProjectEventProcessorRegistry;
+import org.eclipse.sirius.web.collaborative.api.services.IRepresentationEventProcessor;
 import org.eclipse.sirius.web.collaborative.api.services.SubscriptionDescription;
 import org.eclipse.sirius.web.collaborative.forms.api.IFormEventProcessor;
 import org.eclipse.sirius.web.collaborative.forms.api.PropertiesConfiguration;
 import org.eclipse.sirius.web.collaborative.forms.api.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.web.collaborative.forms.api.dto.PropertiesEventInput;
 import org.eclipse.sirius.web.collaborative.forms.api.dto.WidgetSubscriptionsUpdatedEventPayload;
-import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.graphql.datafetchers.IDataFetchingEnvironmentService;
 import org.eclipse.sirius.web.graphql.schema.SubscriptionTypeProvider;
+import org.eclipse.sirius.web.services.api.dto.IPayload;
 import org.eclipse.sirius.web.spring.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.reactivestreams.Publisher;
 
@@ -67,16 +68,17 @@ public class SubscriptionPropertiesEventDataFetcher implements IDataFetcherWithF
 
     private final IDataFetchingEnvironmentService dataFetchingEnvironmentService;
 
-    private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
+    private final IProjectEventProcessorRegistry projectEventProcessorRegistry;
 
-    public SubscriptionPropertiesEventDataFetcher(IDataFetchingEnvironmentService dataFetchingEnvironmentService, IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry) {
+    public SubscriptionPropertiesEventDataFetcher(IDataFetchingEnvironmentService dataFetchingEnvironmentService, IProjectEventProcessorRegistry projectEventProcessorRegistry) {
         this.dataFetchingEnvironmentService = Objects.requireNonNull(dataFetchingEnvironmentService);
-        this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
+        this.projectEventProcessorRegistry = Objects.requireNonNull(projectEventProcessorRegistry);
     }
 
     @Override
     public Publisher<IPayload> get(DataFetchingEnvironment environment) throws Exception {
         var input = this.dataFetchingEnvironmentService.getInput(environment, PropertiesEventInput.class);
+        var context = this.dataFetchingEnvironmentService.getContext(environment);
 
         Principal principal = this.dataFetchingEnvironmentService.getPrincipal(environment).orElse(null);
         String subscriptionId = this.dataFetchingEnvironmentService.getSubscriptionId(environment);
@@ -84,9 +86,9 @@ public class SubscriptionPropertiesEventDataFetcher implements IDataFetcherWithF
         var propertiesConfiguration = new PropertiesConfiguration(input.getObjectId());
 
         // @formatter:off
-        return this.editingContextEventProcessorRegistry.getOrCreateEditingContextEventProcessor(input.getProjectId())
-                .flatMap(processor -> processor.acquireRepresentationEventProcessor(IFormEventProcessor.class, propertiesConfiguration, new SubscriptionDescription(principal, subscriptionId), input))
-                .map(representationEventProcessor -> representationEventProcessor.getOutputEvents(input))
+        return this.projectEventProcessorRegistry.getOrCreateProjectEventProcessor(input.getProjectId())
+                .flatMap(processor -> processor.acquireRepresentationEventProcessor(IFormEventProcessor.class, propertiesConfiguration, new SubscriptionDescription(principal, subscriptionId), context))
+                .map(IRepresentationEventProcessor::getOutputEvents)
                 .orElse(Flux.empty());
         // @formatter:on
     }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,13 +14,11 @@ package org.eclipse.sirius.web.services.api.document;
 
 import java.text.MessageFormat;
 import java.util.Objects;
-import java.util.UUID;
 
 import org.eclipse.sirius.web.annotations.graphql.GraphQLField;
-import org.eclipse.sirius.web.annotations.graphql.GraphQLID;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLNonNull;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLObjectType;
-import org.eclipse.sirius.web.core.api.IPayload;
+import org.eclipse.sirius.web.services.api.dto.IPayload;
 
 /**
  * The payload of the create root object mutation.
@@ -30,21 +28,10 @@ import org.eclipse.sirius.web.core.api.IPayload;
 @GraphQLObjectType
 public final class CreateRootObjectSuccessPayload implements IPayload {
 
-    private final UUID id;
-
     private final Object object;
 
-    public CreateRootObjectSuccessPayload(UUID id, Object object) {
-        this.id = Objects.requireNonNull(id);
+    public CreateRootObjectSuccessPayload(Object object) {
         this.object = Objects.requireNonNull(object);
-    }
-
-    @Override
-    @GraphQLID
-    @GraphQLField
-    @GraphQLNonNull
-    public UUID getId() {
-        return this.id;
     }
 
     @GraphQLField
@@ -55,7 +42,7 @@ public final class CreateRootObjectSuccessPayload implements IPayload {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id);
+        String pattern = "{0} '{''}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName());
     }
 }

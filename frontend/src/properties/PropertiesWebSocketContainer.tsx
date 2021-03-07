@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,159 +11,155 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useSubscription } from '@apollo/client';
-import IconButton from '@material-ui/core/IconButton';
-import Snackbar from '@material-ui/core/Snackbar';
-import makeStyles from '@material-ui/core/styles/makeStyles';
-import Typography from '@material-ui/core/Typography';
-import CloseIcon from '@material-ui/icons/Close';
-import { useMachine } from '@xstate/react';
-import {
-  formRefreshedEventPayloadFragment,
-  preDestroyPayloadFragment,
-  subscribersUpdatedEventPayloadFragment,
-  widgetSubscriptionsUpdatedEventPayloadFragment,
-} from 'form/FormEventFragments';
-import { GQLPropertiesEventSubscription } from 'form/FormEventFragments.types';
+import { Text } from 'core/text/Text';
 import gql from 'graphql-tag';
-import { Properties } from 'properties/Properties';
-import { PropertiesWebSocketContainerProps } from 'properties/PropertiesWebSocketContainer.types';
 import {
-  HandleCompleteEvent,
-  HandleSubscriptionResultEvent,
-  HideToastEvent,
-  PropertiesWebSocketContainerContext,
-  PropertiesWebSocketContainerEvent,
-  propertiesWebSocketContainerMachine,
-  SchemaValue,
-  ShowToastEvent,
-  SwitchSelectionEvent,
-} from 'properties/PropertiesWebSocketContainerMachine';
-import React, { useEffect } from 'react';
+  HANDLE_COMPLETE__ACTION,
+  HANDLE_DATA__ACTION,
+  HANDLE_ERROR__ACTION,
+  INITIALIZE__ACTION,
+  LOADING__STATE,
+  READY__STATE,
+  SWITCH_FORM__ACTION,
+} from 'properties/machine';
+import { Properties } from 'properties/Properties';
+import { initialState, reducer } from 'properties/reducer';
+import React, { useEffect, useReducer } from 'react';
+import styles from './PropertiesWebSocketContainer.module.css';
 
 const propertiesEventSubscription = gql`
   subscription propertiesEvent($input: PropertiesEventInput!) {
     propertiesEvent(input: $input) {
       __typename
       ... on PreDestroyPayload {
-        ...preDestroyPayloadFragment
+        id
       }
       ... on SubscribersUpdatedEventPayload {
-        ...subscribersUpdatedEventPayloadFragment
+        subscribers {
+          username
+        }
       }
       ... on WidgetSubscriptionsUpdatedEventPayload {
-        ...widgetSubscriptionsUpdatedEventPayloadFragment
+        widgetSubscriptions {
+          widgetId
+          subscribers {
+            username
+          }
+        }
       }
       ... on FormRefreshedEventPayload {
-        ...formRefreshedEventPayloadFragment
+        form {
+          label
+          id
+          pages {
+            label
+            id
+            groups {
+              label
+              id
+              widgets {
+                id
+                __typename
+                ... on Textfield {
+                  label
+                  stringValue: value
+                }
+                ... on Textarea {
+                  label
+                  stringValue: value
+                }
+                ... on Checkbox {
+                  label
+                  booleanValue: value
+                }
+                ... on Select {
+                  label
+                  value
+                  options {
+                    id
+                    label
+                  }
+                }
+                ... on Radio {
+                  label
+                  options {
+                    id
+                    label
+                    selected
+                  }
+                }
+                ... on List {
+                  label
+                  items {
+                    id
+                    label
+                    imageURL
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     }
   }
-  ${preDestroyPayloadFragment}
-  ${subscribersUpdatedEventPayloadFragment}
-  ${widgetSubscriptionsUpdatedEventPayloadFragment}
-  ${formRefreshedEventPayloadFragment}
 `;
-
-const usePropertiesWebSocketContainerStyles = makeStyles((theme) => ({
-  idle: {
-    padding: theme.spacing(1),
-  },
-}));
 
 /**
  * Connect the Properties component to the GraphQL API over Web Socket.
  */
-export const PropertiesWebSocketContainer = ({ editingContextId, selection }: PropertiesWebSocketContainerProps) => {
-  const classes = usePropertiesWebSocketContainerStyles();
-  const [{ value, context }, dispatch] = useMachine<
-    PropertiesWebSocketContainerContext,
-    PropertiesWebSocketContainerEvent
-  >(propertiesWebSocketContainerMachine, {
-    context: {
-      currentSelection: selection,
-    },
-  });
-  const { toast, propertiesWebSocketContainer } = value as SchemaValue;
-  const { id, currentSelection, form, subscribers, widgetSubscriptions, message } = context;
+export const PropertiesWebSocketContainer = ({ projectId, objectId }) => {
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const { viewState, form, displayedObjectId, subscribers, widgetSubscriptions, message } = state;
 
   /**
    * Displays an other form if the selection indicates that we should display another properties view.
    */
   useEffect(() => {
-    if (currentSelection?.id !== selection?.id) {
-      const switchSelectionEvent: SwitchSelectionEvent = { type: 'SWITCH_SELECTION', selection };
-      dispatch(switchSelectionEvent);
+    if (displayedObjectId !== objectId) {
+      dispatch({ type: SWITCH_FORM__ACTION, objectId });
     }
-  }, [currentSelection, selection, dispatch]);
-
-  const { error } = useSubscription<GQLPropertiesEventSubscription>(propertiesEventSubscription, {
-    variables: {
-      input: {
-        id,
-        projectId: editingContextId,
-        objectId: currentSelection?.id,
-      },
-    },
-    skip: propertiesWebSocketContainer === 'empty',
-    onSubscriptionData: ({ subscriptionData }) => {
-      const handleDataEvent: HandleSubscriptionResultEvent = {
-        type: 'HANDLE_SUBSCRIPTION_RESULT',
-        result: subscriptionData,
-      };
-      dispatch(handleDataEvent);
-    },
-    onSubscriptionComplete: () => {
-      const completeEvent: HandleCompleteEvent = { type: 'HANDLE_COMPLETE' };
-      dispatch(completeEvent);
-    },
-  });
+  }, [objectId, displayedObjectId]);
 
   useEffect(() => {
-    if (error) {
-      const { message } = error;
-      const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
-      dispatch(showToastEvent);
+    if (viewState === LOADING__STATE) {
+      dispatch({ type: INITIALIZE__ACTION });
     }
-  }, [error, dispatch]);
+  }, [viewState]);
 
-  let content = (
-    <div className={classes.idle}>
-      <Typography variant="subtitle2">No object selected</Typography>
-    </div>
-  );
-  if ((propertiesWebSocketContainer === 'idle' && form) || propertiesWebSocketContainer === 'ready') {
-    content = (
+  const { error } = useSubscription(propertiesEventSubscription, {
+    variables: {
+      input: {
+        projectId,
+        objectId,
+      },
+    },
+    skip: viewState !== READY__STATE,
+    onSubscriptionData: ({ subscriptionData }) => {
+      dispatch({ type: HANDLE_DATA__ACTION, message: subscriptionData });
+    },
+    onSubscriptionComplete: () => dispatch({ type: HANDLE_COMPLETE__ACTION }),
+  });
+  if (error) {
+    dispatch({ type: HANDLE_ERROR__ACTION, message: error });
+  }
+
+  let view = <div />;
+  if (!form) {
+    view = (
+      <div className={styles.empty}>
+        <Text className={styles.label}>{message}</Text>
+      </div>
+    );
+  } else {
+    view = (
       <Properties
-        editingContextId={editingContextId}
+        projectId={projectId}
         form={form}
         subscribers={subscribers}
         widgetSubscriptions={widgetSubscriptions}
       />
     );
   }
-  return (
-    <>
-      {content}
-      <Snackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-        open={toast === 'visible'}
-        autoHideDuration={3000}
-        onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
-        message={message}
-        action={
-          <IconButton
-            size="small"
-            aria-label="close"
-            color="inherit"
-            onClick={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}>
-            <CloseIcon fontSize="small" />
-          </IconButton>
-        }
-        data-testid="error"
-      />
-    </>
-  );
+  return view;
 };

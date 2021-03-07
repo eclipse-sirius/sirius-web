@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,168 +11,50 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
-import IconButton from '@material-ui/core/IconButton';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import Snackbar from '@material-ui/core/Snackbar';
-import CloseIcon from '@material-ui/icons/Close';
-import gql from 'graphql-tag';
+import { Select } from 'core/select/Select';
+import { Text } from 'core/text/Text';
 import { Permission } from 'project/Permission';
-import { PropertySectionLabel } from 'properties/propertysections/PropertySectionLabel';
-import {
-  GQLEditSelectMutationData,
-  GQLEditSelectPayload,
-  GQLErrorPayload,
-  GQLUpdateWidgetFocusMutationData,
-  SelectPropertySectionProps,
-} from 'properties/propertysections/SelectPropertySection.types';
-import React, { useEffect, useState } from 'react';
-import { v4 as uuid } from 'uuid';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { editSelectMutation } from './mutations';
+import styles from './PropertySection.module.css';
 
-export const editSelectMutation = gql`
-  mutation editSelect($input: EditSelectInput!) {
-    editSelect(input: $input) {
-      __typename
-      ... on ErrorPayload {
-        message
-      }
-    }
-  }
-`;
+const propTypes = {
+  label: PropTypes.string.isRequired,
+  value: PropTypes.string,
+  options: PropTypes.array.isRequired,
+};
 
-const updateWidgetFocusMutation = gql`
-  mutation updateWidgetFocus($input: UpdateWidgetFocusInput!) {
-    updateWidgetFocus(input: $input) {
-      __typename
-      ... on ErrorPayload {
-        message
-      }
-    }
-  }
-`;
+export const SelectPropertySection = ({ projectId, formId, widgetId, label, value, options }) => {
+  const optionsWithEmptySelection = [{ id: '', label: '' }].concat(options);
 
-const isErrorPayload = (payload: GQLEditSelectPayload): payload is GQLErrorPayload =>
-  payload.__typename === 'ErrorPayload';
-
-export const SelectPropertySection = ({
-  editingContextId,
-  formId,
-  widget,
-  subscribers,
-}: SelectPropertySectionProps) => {
-  const [message, setMessage] = useState(null);
-  const [isFocused, setFocus] = useState(false);
-
-  const [editSelect, { loading, error, data }] = useMutation<GQLEditSelectMutationData>(editSelectMutation);
-  const onChange = (event) => {
+  const [editSelect] = useMutation(editSelectMutation);
+  const onChange = async (event) => {
     const newValue = event.target.value;
     const variables = {
       input: {
-        id: uuid(),
-        projectId: editingContextId,
+        projectId,
         representationId: formId,
-        selectId: widget.id,
+        selectId: widgetId,
         newValue,
       },
     };
-    editSelect({ variables });
-  };
-
-  useEffect(() => {
-    if (!loading) {
-      if (error) {
-        setMessage('An unexpected error has occurred, please refresh the page');
-      }
-      if (data) {
-        const { editSelect } = data;
-        if (isErrorPayload(editSelect)) {
-          setMessage(editSelect.message);
-        }
-      }
-    }
-  }, [loading, error, data]);
-
-  const [
-    updateWidgetFocus,
-    { loading: updateWidgetFocusLoading, data: updateWidgetFocusData, error: updateWidgetFocusError },
-  ] = useMutation<GQLUpdateWidgetFocusMutationData>(updateWidgetFocusMutation);
-  const sendUpdateWidgetFocus = (selected: boolean) => {
-    const variables = {
-      input: {
-        id: uuid(),
-        projectId: editingContextId,
-        representationId: formId,
-        widgetId: widget.id,
-        selected,
-      },
-    };
-    updateWidgetFocus({ variables });
-  };
-
-  useEffect(() => {
-    if (!updateWidgetFocusLoading) {
-      if (updateWidgetFocusError) {
-        setMessage('An unexpected error has occurred, please refresh the page');
-      }
-      if (updateWidgetFocusData) {
-        const { updateWidgetFocus } = updateWidgetFocusData;
-        if (isErrorPayload(updateWidgetFocus)) {
-          const { message } = updateWidgetFocus;
-          setMessage(message);
-        }
-      }
-    }
-  }, [updateWidgetFocusLoading, updateWidgetFocusData, updateWidgetFocusError]);
-
-  const onFocus = () => {
-    if (!isFocused) {
-      setFocus(true);
-      sendUpdateWidgetFocus(true);
-    }
-  };
-  const onBlur = () => {
-    setFocus(false);
-    sendUpdateWidgetFocus(false);
+    await editSelect({ variables });
   };
 
   return (
-    <div>
-      <PropertySectionLabel label={widget.label} subscribers={subscribers} />
+    <>
+      <Text className={styles.label}>{label}</Text>
       <Permission requiredAccessLevel="EDIT">
         <Select
-          value={widget.value}
+          name={label}
+          options={optionsWithEmptySelection}
+          value={value}
           onChange={onChange}
-          displayEmpty
-          onFocus={onFocus}
-          onBlur={onBlur}
-          fullWidth
-          data-testid={widget.label}>
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
-          {widget.options.map((option) => (
-            <MenuItem value={option.id} key={option.id}>
-              {option.label}
-            </MenuItem>
-          ))}
-        </Select>
+          data-testid={label}
+        />
       </Permission>
-      <Snackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-        open={!!message}
-        autoHideDuration={3000}
-        onClose={() => setMessage(null)}
-        message={message}
-        action={
-          <IconButton size="small" aria-label="close" color="inherit" onClick={() => setMessage(null)}>
-            <CloseIcon fontSize="small" />
-          </IconButton>
-        }
-        data-testid="error"
-      />
-    </div>
+    </>
   );
 };
+SelectPropertySection.propTypes = propTypes;

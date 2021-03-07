@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,15 +19,17 @@ import java.util.UUID;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
-import org.eclipse.sirius.web.core.api.IEditingContext;
-import org.eclipse.sirius.web.core.api.IInput;
+import org.eclipse.emf.edit.domain.EditingDomain;
+import org.eclipse.sirius.web.services.api.Context;
 import org.eclipse.sirius.web.services.api.accounts.Profile;
 import org.eclipse.sirius.web.services.api.document.Document;
 import org.eclipse.sirius.web.services.api.document.RenameDocumentInput;
+import org.eclipse.sirius.web.services.api.dto.IProjectInput;
+import org.eclipse.sirius.web.services.api.objects.IEditingContext;
 import org.eclipse.sirius.web.services.api.projects.Project;
 import org.eclipse.sirius.web.services.api.projects.Visibility;
 import org.junit.Test;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 
@@ -52,11 +54,12 @@ public class RenameDocumentEventHandlerTestCases {
         RenameDocumentEventHandler handler = new RenameDocumentEventHandler(noOpDocumentService, new NoOpEMFMessageService(), new SimpleMeterRegistry());
 
         UUID documentId = UUID.randomUUID();
-        IInput input = new RenameDocumentInput(UUID.randomUUID(), documentId, NEW_NAME);
+        IProjectInput input = new RenameDocumentInput(documentId, NEW_NAME);
+        var context = new Context(new UsernamePasswordAuthenticationToken(null, null));
 
         assertThat(handler.canHandle(input)).isTrue();
 
-        AdapterFactoryEditingDomain editingDomain = new EditingDomainFactory().create();
+        EditingDomain editingDomain = new EditingDomainFactory().create();
 
         DocumentMetadataAdapter adapter = new DocumentMetadataAdapter(OLD_NAME);
         Resource resource = new SiriusWebJSONResourceFactoryImpl().createResource(URI.createURI(documentId.toString()));
@@ -66,9 +69,19 @@ public class RenameDocumentEventHandlerTestCases {
         assertThat(editingDomain.getResourceSet().getResources().size()).isEqualTo(1);
         assertThat(adapter.getName()).isEqualTo(OLD_NAME);
 
-        IEditingContext editingContext = new EditingContext(UUID.randomUUID(), editingDomain);
+        IEditingContext editingContext = new IEditingContext() {
+            @Override
+            public UUID getProjectId() {
+                return null;
+            }
 
-        handler.handle(editingContext, input);
+            @Override
+            public Object getDomain() {
+                return editingDomain;
+            }
+        };
+
+        handler.handle(editingContext, input, context);
 
         assertThat(editingDomain.getResourceSet().getResources().size()).isEqualTo(1);
         assertThat(adapter.getName()).isEqualTo(NEW_NAME);

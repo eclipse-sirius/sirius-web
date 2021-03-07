@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,19 +18,18 @@ import java.util.UUID;
 
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
-import org.eclipse.sirius.web.collaborative.api.services.ChangeDescription;
-import org.eclipse.sirius.web.collaborative.api.services.ChangeKind;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
-import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventHandler;
+import org.eclipse.sirius.web.collaborative.api.services.IProjectEventHandler;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
-import org.eclipse.sirius.web.core.api.ErrorPayload;
-import org.eclipse.sirius.web.core.api.IEditingContext;
-import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.emf.services.messages.IEMFMessageService;
+import org.eclipse.sirius.web.services.api.Context;
 import org.eclipse.sirius.web.services.api.document.Document;
 import org.eclipse.sirius.web.services.api.document.IDocumentService;
 import org.eclipse.sirius.web.services.api.document.RenameDocumentInput;
 import org.eclipse.sirius.web.services.api.document.RenameDocumentSuccessPayload;
+import org.eclipse.sirius.web.services.api.dto.ErrorPayload;
+import org.eclipse.sirius.web.services.api.dto.IProjectInput;
+import org.eclipse.sirius.web.services.api.objects.IEditingContext;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
@@ -42,7 +41,7 @@ import io.micrometer.core.instrument.MeterRegistry;
  * @author fbarbin
  */
 @Service
-public class RenameDocumentEventHandler implements IEditingContextEventHandler {
+public class RenameDocumentEventHandler implements IProjectEventHandler {
 
     private final IDocumentService documentService;
 
@@ -62,25 +61,25 @@ public class RenameDocumentEventHandler implements IEditingContextEventHandler {
     }
 
     @Override
-    public boolean canHandle(IInput input) {
-        return input instanceof RenameDocumentInput;
+    public boolean canHandle(IProjectInput projectInput) {
+        return projectInput instanceof RenameDocumentInput;
     }
 
     @Override
-    public EventHandlerResponse handle(IEditingContext editingContext, IInput input) {
+    public EventHandlerResponse handle(IEditingContext editingContext, IProjectInput projectInput, Context context) {
         this.counter.increment();
 
         // @formatter:off
         Optional<AdapterFactoryEditingDomain> optionalEditingDomain = Optional.of(editingContext)
-                .filter(EditingContext.class::isInstance)
-                .map(EditingContext.class::cast)
-                .map(EditingContext::getDomain);
+                .map(IEditingContext::getDomain)
+                .filter(AdapterFactoryEditingDomain.class::isInstance)
+                .map(AdapterFactoryEditingDomain.class::cast);
         // @formatter:on
 
-        if (input instanceof RenameDocumentInput) {
-            RenameDocumentInput renameDocumentInput = (RenameDocumentInput) input;
-            UUID documentId = renameDocumentInput.getDocumentId();
-            String newName = renameDocumentInput.getNewName();
+        if (projectInput instanceof RenameDocumentInput) {
+            RenameDocumentInput input = (RenameDocumentInput) projectInput;
+            UUID documentId = input.getDocumentId();
+            String newName = input.getNewName();
 
             Optional<Document> optionalDocument = this.documentService.rename(documentId, newName);
             if (optionalEditingDomain.isPresent() && optionalDocument.isPresent()) {
@@ -101,11 +100,11 @@ public class RenameDocumentEventHandler implements IEditingContextEventHandler {
                         });
                 // @formatter:on
 
-                return new EventHandlerResponse(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId()), new RenameDocumentSuccessPayload(input.getId(), document));
+                return new EventHandlerResponse(true, representation -> true, new RenameDocumentSuccessPayload(document));
             }
         }
-        String message = this.messageService.invalidInput(input.getClass().getSimpleName(), RenameDocumentInput.class.getSimpleName());
-        return new EventHandlerResponse(new ChangeDescription(ChangeKind.NOTHING, editingContext.getId()), new ErrorPayload(input.getId(), message));
+        String message = this.messageService.invalidInput(projectInput.getClass().getSimpleName(), RenameDocumentInput.class.getSimpleName());
+        return new EventHandlerResponse(false, representation -> false, new ErrorPayload(message));
     }
 
 }

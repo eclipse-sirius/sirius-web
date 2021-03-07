@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,20 +30,18 @@ import { getTreeEventSubscription } from './getTreeEventSubscription';
 import { initialState, reducer } from './reducer';
 
 const propTypes = {
-  editingContextId: PropTypes.string.isRequired,
   selection: PropTypes.object,
   setSelection: PropTypes.func.isRequired,
 };
 
-export const ExplorerWebSocketContainer = ({ editingContextId, selection, setSelection }) => {
+export const ExplorerWebSocketContainer = ({ projectId, selection, setSelection }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { viewState, id, tree, expanded, maxDepth, message } = state;
+  const { viewState, tree, expanded, maxDepth, message } = state;
 
   const { error } = useSubscription(gql(getTreeEventSubscription(maxDepth)), {
     variables: {
       input: {
-        id,
-        editingContextId,
+        projectId,
         expanded,
       },
     },
@@ -73,13 +71,7 @@ export const ExplorerWebSocketContainer = ({ editingContextId, selection, setSel
   }
 
   return (
-    <Explorer
-      editingContextId={editingContextId}
-      tree={tree}
-      onExpand={onExpand}
-      selection={selection}
-      setSelection={setSelection}
-    />
+    <Explorer projectId={projectId} tree={tree} onExpand={onExpand} selection={selection} setSelection={setSelection} />
   );
 };
 ExplorerWebSocketContainer.propTypes = propTypes;

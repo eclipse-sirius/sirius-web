@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,9 +10,10 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { DeleteProjectModal } from 'modals/delete-project/DeleteProjectModal';
 import React, { useState } from 'react';
 import { MemoryRouter } from 'react-router-dom';
+
+import { DeleteProjectModal } from 'modals/delete-project/DeleteProjectModal';
 import { Border } from 'stories/common/Border';
 import { View } from 'views/View';
 
@@ -21,7 +22,9 @@ export const DeleteProjectModalStory = () => {
 
   let modal;
   if (state) {
-    modal = <DeleteProjectModal projectId="" onDelete={() => setState(false)} onClose={() => setState(false)} />;
+    modal = (
+      <DeleteProjectModal projectId="" onProjectDeleted={() => setState(false)} onClose={() => setState(false)} />
+    );
   }
 
   return (

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,20 +35,21 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.emfjson.resource.JsonResourceImpl;
-import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.emf.services.messages.IEMFMessageService;
+import org.eclipse.sirius.web.services.api.Context;
 import org.eclipse.sirius.web.services.api.accounts.Profile;
 import org.eclipse.sirius.web.services.api.document.Document;
 import org.eclipse.sirius.web.services.api.document.IDocumentService;
 import org.eclipse.sirius.web.services.api.document.UploadDocumentInput;
+import org.eclipse.sirius.web.services.api.objects.IEditingContext;
 import org.eclipse.sirius.web.services.api.projects.Project;
 import org.eclipse.sirius.web.services.api.projects.Visibility;
 import org.eclipse.sirius.web.spring.graphql.api.UploadFile;
 import org.junit.Test;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 
@@ -162,15 +163,26 @@ public class UploadDocumentEventHandlerTestCases {
         UploadDocumentEventHandler handler = new UploadDocumentEventHandler(documentService, messageService, new SimpleMeterRegistry());
 
         UploadFile file = new UploadFile(FILE_NAME, inputstream);
-        var input = new UploadDocumentInput(UUID.randomUUID(), UUID.randomUUID(), file);
+        var input = new UploadDocumentInput(UUID.randomUUID(), file);
+        var context = new Context(new UsernamePasswordAuthenticationToken(null, null));
 
         assertThat(handler.canHandle(input)).isTrue();
 
-        AdapterFactoryEditingDomain editingDomain = new EditingDomainFactory().create();
+        EditingDomain editingDomain = new EditingDomainFactory().create();
 
-        IEditingContext editingContext = new EditingContext(UUID.randomUUID(), editingDomain);
+        IEditingContext editingContext = new IEditingContext() {
+            @Override
+            public UUID getProjectId() {
+                return null;
+            }
 
-        handler.handle(editingContext, input);
+            @Override
+            public Object getDomain() {
+                return editingDomain;
+            }
+        };
+
+        handler.handle(editingContext, input, context);
         return editingDomain;
     }
 
@@ -180,7 +192,7 @@ public class UploadDocumentEventHandlerTestCases {
      */
     @Test
     public void testEObjectIDGenerationForUpload() {
-        AdapterFactoryEditingDomain editingDomain = new EditingDomainFactory().create();
+        EditingDomain editingDomain = new EditingDomainFactory().create();
         byte[] resourceBytes = JSON_CONTENT.getBytes();
 
         Map<String, String> eObjectUriToId = this.getEObjectUriToId(editingDomain, resourceBytes);
@@ -220,7 +232,7 @@ public class UploadDocumentEventHandlerTestCases {
      * @param resourceBytes
      *            The content of the document to upload
      */
-    private void simulatesDocumentUpload(AdapterFactoryEditingDomain editingDomain, UUID documentId, byte[] resourceBytes) {
+    private void simulatesDocumentUpload(EditingDomain editingDomain, UUID documentId, byte[] resourceBytes) {
         IDocumentService documentService = new NoOpDocumentService() {
 
             @Override
@@ -232,12 +244,22 @@ public class UploadDocumentEventHandlerTestCases {
         UploadDocumentEventHandler handler = new UploadDocumentEventHandler(documentService, messageService, new SimpleMeterRegistry());
         UploadFile file = new UploadFile(FILE_NAME, new ByteArrayInputStream(resourceBytes));
 
-        var input = new UploadDocumentInput(UUID.randomUUID(), UUID.randomUUID(), file);
+        var input = new UploadDocumentInput(UUID.randomUUID(), file);
+        var context = new Context(new UsernamePasswordAuthenticationToken(null, null));
 
         assertThat(handler.canHandle(input)).isTrue();
-        IEditingContext editingContext = new EditingContext(UUID.randomUUID(), editingDomain);
+        IEditingContext editingContext = new IEditingContext() {
+            @Override
+            public UUID getProjectId() {
+                return null;
+            }
 
-        handler.handle(editingContext, input);
+            @Override
+            public Object getDomain() {
+                return editingDomain;
+            }
+        };
+        handler.handle(editingContext, input, context);
     }
 
     /**

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo and others.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,6 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Palette } from 'diagram/DiagramWebSocketContainer.types';
 import { convertDiagram } from 'diagram/sprotty/convertDiagram';
 import {
   ApplyLabelEditAction,
@@ -21,7 +20,6 @@ import {
   GetViewportAction,
   getWindowScroll,
   ModelSource,
-  MoveCommand,
   SEdge,
   SelectAction,
   SetViewportAction,
@@ -29,7 +27,6 @@ import {
   SNode,
   UpdateModelAction,
 } from 'sprotty';
-
 /** Action to delete a sprotty element */
 export const SPROTTY_DELETE_ACTION = 'sprottyDeleteElement';
 /** Action to select a sprotty element */
@@ -88,7 +85,6 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
   modelFactory;
   activeTool;
   editLabel;
-  moveElement;
   deleteElements;
 
   invokeTool;
@@ -98,14 +94,11 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
   diagramSourceElement;
   currentRoot: Root = INITIAL_ROOT;
 
-  httpOrigin;
-
   initialize(registry) {
     super.initialize(registry);
     registry.register(ApplyLabelEditAction.KIND, this);
     registry.register(EditLabelAction.KIND, this);
     registry.register(UpdateModelAction.KIND, this);
-    registry.register(MoveCommand.KIND, this);
     registry.register(SIRIUS_LABEL_EDIT_ACTION, this);
     registry.register(SIRIUS_UPDATE_MODEL_ACTION, this);
     registry.register(SIRIUS_SELECT_ACTION, this);
@@ -136,9 +129,6 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
         break;
       case EditLabelAction.KIND:
         this.handleEditLabelAction(action);
-        break;
-      case MoveCommand.KIND:
-        this.handleMoveAction(action);
         break;
       case SIRIUS_LABEL_EDIT_ACTION:
         this.handleSiriusLabelEditAction(action);
@@ -208,14 +198,6 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
     }
   }
 
-  handleMoveAction(action) {
-    const { finished, moves } = action;
-    if (finished && moves.length > 0) {
-      const { elementId, toPosition } = moves[0];
-      this.moveElement(elementId, toPosition?.x, toPosition?.y);
-    }
-  }
-
   handleSiriusLabelEditAction(action) {
     const { elementId } = action;
     this.actionDispatcher.dispatchAll([
@@ -243,7 +225,7 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
   handleSiriusUpdateModelAction(action) {
     const { diagram } = action;
     if (diagram) {
-      const convertedDiagram = convertDiagram(diagram, this.httpOrigin);
+      const convertedDiagram = convertDiagram(diagram);
       const sprottyModel = this.modelFactory.createRoot(convertedDiagram);
       this.actionDispatcher.request(GetSelectionAction.create()).then((selectionResult) => {
         sprottyModel.index
@@ -330,8 +312,8 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
               y: absoluteBounds.y + (element.size.height / 2) * zoom,
             };
           }
-          const contextualPalette: Palette = {
-            startingPosition: lastPositionOnDiagram,
+
+          const contextualPalette = {
             canvasBounds: bounds,
             origin,
             element: element,
@@ -342,13 +324,13 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
         }
       });
     } else {
-      const contextualPalette = null;
+      const contextualPalette = undefined;
       this.setContextualPalette(contextualPalette);
     }
   }
 
   handleHideContextualToolbarAction(action) {
-    const contextualPalette = null;
+    const contextualPalette = undefined;
     this.setContextualPalette(contextualPalette);
   }
   handleZoomInAction(action) {
@@ -424,10 +406,6 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
     this.editLabel = editLabel;
   }
 
-  setMoveElementListener(moveElement) {
-    this.moveElement = moveElement;
-  }
-
   setDeleteElementsListener(deleteElements) {
     this.deleteElements = deleteElements;
   }
@@ -438,9 +416,5 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
 
   setContextualPaletteListener(setContextualPalette) {
     this.setContextualPalette = setContextualPalette;
-  }
-
-  setHttpOrigin(httpOrigin) {
-    this.httpOrigin = httpOrigin;
   }
 }

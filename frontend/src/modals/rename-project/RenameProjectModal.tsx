@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,41 +11,24 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import IconButton from '@material-ui/core/IconButton';
-import Snackbar from '@material-ui/core/Snackbar';
-import TextField from '@material-ui/core/TextField';
-import CloseIcon from '@material-ui/icons/Close';
-import { useMachine } from '@xstate/react';
+import { ActionButton, Buttons } from 'core/button/Button';
+import { Form } from 'core/form/Form';
+import { Label } from 'core/label/Label';
+import { Textfield } from 'core/textfield/Textfield';
 import gql from 'graphql-tag';
-import {
-  GQLErrorPayload,
-  GQLRenameProjectMutationData,
-  GQLRenameProjectPayload,
-  RenameProjectModalProps,
-} from 'modals/rename-project/RenameProjectModal.types';
-import {
-  ChangeNameEvent,
-  HandleResponseEvent,
-  HideToastEvent,
-  RenameProjectModalContext,
-  RenameProjectModalEvent,
-  renameProjectModalMachine,
-  RequestProjectRenamingEvent,
-  SchemaValue,
-  ShowToastEvent,
-} from 'modals/rename-project/RenameProjectModalMachine';
-import React, { useEffect } from 'react';
-import { v4 as uuid } from 'uuid';
+import { Modal } from 'modals/Modal';
+import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react';
 
 const renameProjectMutation = gql`
   mutation renameProject($input: RenameProjectInput!) {
     renameProject(input: $input) {
       __typename
+      ... on RenameProjectSuccessPayload {
+        project {
+          name
+        }
+      }
       ... on ErrorPayload {
         message
       }
@@ -53,120 +36,95 @@ const renameProjectMutation = gql`
   }
 `;
 
-const isErrorPayload = (payload: GQLRenameProjectPayload): payload is GQLErrorPayload =>
-  payload.__typename === 'ErrorPayload';
-export const RenameProjectModal = ({ projectId, initialProjectName, onRename, onClose }: RenameProjectModalProps) => {
-  const [{ value, context }, dispatch] = useMachine<RenameProjectModalContext, RenameProjectModalEvent>(
-    renameProjectModalMachine,
-    {
-      context: {
-        name: initialProjectName,
-        initialName: initialProjectName,
-      },
-    }
-  );
-  const { toast, renameProjectModal } = value as SchemaValue;
-  const { name, nameIsInvalid, nameMessage, message } = context;
+const propTypes = {
+  projectId: PropTypes.string.isRequired,
+  initialProjectName: PropTypes.string.isRequired,
+  onProjectRenamed: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
+};
 
-  const onNewName = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const name = event.target.value;
-    const changeNameEvent: ChangeNameEvent = { type: 'CHANGE_NAME', name };
-    dispatch(changeNameEvent);
+/*
+ * TODO: state.isNameValid is not used. It used to be passed to the <Textfield> as invalid={!isNameValid}, but
+ * 'invalid' is not a prop supported by Textfield...
+ */
+
+export const RenameProjectModal = ({ projectId, initialProjectName, onProjectRenamed, onClose }) => {
+  const initialState = {
+    name: initialProjectName,
+    isNameValid: false,
+    error: '',
+    isValid: false,
+  };
+  const [state, setState] = useState(initialState);
+  const { name, isValid } = state;
+
+  const onNewName = (event) => {
+    const newName = event.target.value;
+
+    setState(() => {
+      let isNameValid = newName && newName.length >= 1;
+      let error = '';
+      if (!isNameValid) {
+        error = 'The name is required';
+      }
+      return {
+        name: newName,
+        isNameValid,
+        error,
+        isValid: isNameValid,
+      };
+    });
   };
 
-  const [renameProject, { loading, data, error }] = useMutation<GQLRenameProjectMutationData>(renameProjectMutation);
+  const [renameProject, { loading, data, error }] = useMutation(renameProjectMutation);
   useEffect(() => {
     if (!loading) {
       if (error) {
-        const showToastEvent: ShowToastEvent = {
-          type: 'SHOW_TOAST',
-          message: error.message,
-        };
-        dispatch(showToastEvent);
-      }
-      if (data) {
-        const event: HandleResponseEvent = { type: 'HANDLE_RESPONSE', data };
-        dispatch(event);
-
+        setState((prevState) => {
+          const { name, isNameValid } = prevState;
+          return { name, isNameValid, error: error.message, isValid: false };
+        });
+      } else if (data?.renameProject) {
         const { renameProject } = data;
-        if (isErrorPayload(renameProject)) {
-          const { message } = renameProject;
-          const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
-          dispatch(showToastEvent);
+        if (renameProject.__typename === 'RenameProjectSuccessPayload') {
+          onProjectRenamed();
+        } else if (renameProject.__typename === 'ErrorPayload') {
+          const error = renameProject.message;
+          setState((prevState) => {
+            const { name, isNameValid } = prevState;
+            return { name, isNameValid, error, isValid: false };
+          });
         }
       }
     }
-  }, [loading, data, error, onRename, dispatch]);
+  }, [loading, data, error, onProjectRenamed]);
 
-  const onRenameProject = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    const requestProjectRenamingEvent: RequestProjectRenamingEvent = { type: 'REQUEST_PROJECT_RENAMING' };
-    dispatch(requestProjectRenamingEvent);
-
+  const onRenameProject = (event) => {
     event.preventDefault();
-    const variables = {
-      input: {
-        id: uuid(),
-        projectId,
-        newName: name,
-      },
+    const input = {
+      projectId,
+      newName: name,
     };
-    renameProject({ variables });
+    renameProject({ variables: { input } });
   };
 
-  useEffect(() => {
-    if (renameProjectModal === 'success') {
-      onRename();
-    }
-  }, [renameProjectModal, onRename]);
-
   return (
-    <>
-      <Dialog open={true} onClose={onClose} aria-labelledby="dialog-title">
-        <DialogTitle id="dialog-title">Rename the project</DialogTitle>
-        <DialogContent>
-          <TextField
+    <Modal title="Rename the project" onClose={onClose}>
+      <Form onSubmit={onRenameProject}>
+        <Label value="Name">
+          <Textfield
+            name="name"
+            placeholder="Enter the new project name"
             value={name}
             onChange={onNewName}
-            error={nameIsInvalid}
-            helperText={nameMessage}
-            label="Name"
-            placeholder="Enter the new modeler name"
             data-testid="name"
-            autoFocus
-            fullWidth
           />
-        </DialogContent>
-        <DialogActions>
-          <Button
-            variant="contained"
-            disabled={renameProjectModal !== 'valid'}
-            onClick={onRenameProject}
-            color="primary"
-            data-testid="rename-project">
-            Rename
-          </Button>
-        </DialogActions>
-      </Dialog>
-      <Snackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-        open={toast === 'visible'}
-        autoHideDuration={3000}
-        onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
-        message={message}
-        action={
-          <IconButton
-            size="small"
-            aria-label="close"
-            color="inherit"
-            onClick={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}>
-            <CloseIcon fontSize="small" />
-          </IconButton>
-        }
-        data-testid="error"
-      />
-    </>
+        </Label>
+        <Buttons>
+          <ActionButton type="submit" disabled={!isValid} label="Rename" data-testid="rename-project" />
+        </Buttons>
+      </Form>
+    </Modal>
   );
 };
+RenameProjectModal.propTypes = propTypes;

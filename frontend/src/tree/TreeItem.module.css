@@ -24,8 +24,8 @@
 }
 
 .treeItem:not(.selected):hover {
-  stroke: var(--daintree);
-  fill: var(--daintree);
+  stroke: #000000;
+  fill: #000000;
   background-color: var(--blue-lagoon-lighten-95);
 }
 
@@ -41,14 +41,14 @@
 }
 
 .more:hover {
-  stroke: var(--daintree);
-  fill: var(--daintree);
+  stroke: #000000;
+  fill: #000000;
   background-color: var(--blue-lagoon-lighten-95);
 }
 
 .more:focus {
-  stroke: var(--daintree);
-  fill: var(--daintree);
+  stroke: #000000;
+  fill: #000000;
   background-color: var(--blue-lagoon-lighten-90);
 }
 
@@ -77,7 +77,7 @@
 }
 
 .label {
-  color: var(--daintree);
+  color: #000000;
   font-size: var(--font-size-5);
 }
 
