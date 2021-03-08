@@ -22,16 +22,16 @@ import org.eclipse.sirius.web.annotations.graphql.GraphQLNonNull;
 import org.eclipse.sirius.web.core.api.IInput;
 
 /**
- * The input of the project event subscription.
+ * The input of the editing context event subscription.
  *
  * @author arichard
  */
 @GraphQLInputObjectType
-public final class ProjectEventInput implements IInput {
+public final class EditingContextEventInput implements IInput {
 
     private UUID id;
 
-    private UUID projectId;
+    private UUID editingContextId;
 
     @Override
     @GraphQLID
@@ -44,13 +44,13 @@ public final class ProjectEventInput implements IInput {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getProjectId() {
-        return this.projectId;
+    public UUID getEditingContextId() {
+        return this.editingContextId;
     }
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, projectId: {2}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.projectId);
+        String pattern = "{0} '{'id: {1}, editingContextId: {2}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.editingContextId);
     }
 }
