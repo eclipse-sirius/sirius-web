@@ -1,0 +1,42 @@
+= ADR-016 - Remove SubscriptionDescription
+
+== Context
+
+The class `SubscriptionDescription` was introduced in order to associate a `Principal` with a given subscription.
+It has given us the ability to track whether a representation could be disposed since nobody was using it anymore for example.
+While efficient, it is built on top of Reactor and GraphQL Java and it ties our GraphQL WebSocket integration with some of our collaborative classes such as `IEditingContextEventProcessorRegistry`.
+While it may not have been a critical issue in the past, it is getting in our way to provide some other feature.
+
+
+== Decision
+
+We will stop relying on `SubscriptionDescription` in order to retrieve the `Principal` of a subscription.
+Instead, we will make sure that the `Principal` is available at all time in our WebSocket integration.
+On top of that, we will leverage existing Reactor mechanisms to detect when a WebSocket session is subscribing or unsubscribing from our reactive publishers.
+
+As a result, the flux of `IPayload` of our `IRepresentationEventProcessor` will be created using the following pattern:
+
+```
+    @Override
+    public Flux<IPayload> getOutputEvents(IInput input) {
+        // @formatter:off
+        return this.flux   // The real content of the flux is not relevant here
+        .doOnSubscribe(subscription -> {
+            var authentication = SecurityContextHolder.getContext().getAuthentication();
+            // The principal has subscribed
+        })
+        .doOnCancel(() -> {
+            var authentication = SecurityContextHolder.getContext().getAuthentication();
+            // The principal has unsubscribed
+        });
+        // @formatter:on
+    }
+```
+
+== Status
+
+Accepted.
+
+== Consequences
+
+We will remove all usage of SubscriptionDescription and simplify the code accordingly.
