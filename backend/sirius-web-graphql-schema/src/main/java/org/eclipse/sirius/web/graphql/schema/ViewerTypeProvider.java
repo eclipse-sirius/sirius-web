@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,14 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 package org.eclipse.sirius.web.graphql.schema;
+
+import static graphql.schema.GraphQLArgument.newArgument;
+import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition;
+import static graphql.schema.GraphQLInterfaceType.newInterface;
+import static graphql.schema.GraphQLList.list;
+import static graphql.schema.GraphQLNonNull.nonNull;
+import static graphql.schema.GraphQLObjectType.newObject;
+import static graphql.schema.GraphQLTypeReference.typeRef;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +34,6 @@ import graphql.Scalars;
 import graphql.schema.GraphQLArgument;
 import graphql.schema.GraphQLFieldDefinition;
 import graphql.schema.GraphQLInterfaceType;
-import graphql.schema.GraphQLList;
-import graphql.schema.GraphQLNonNull;
 import graphql.schema.GraphQLObjectType;
 import graphql.schema.GraphQLType;
 import graphql.schema.GraphQLTypeReference;
@@ -42,9 +48,9 @@ import graphql.schema.GraphQLTypeReference;
  * interface Viewer {
  *   id: ID!
  *   username: String!
- *   stereotypeDescriptions: [StereotypeDescription!]!
  *   projects: [Project!]!
  *   project(projectId: ID!): Project
+ *   editingContext(editingContextId: ID!): EditingContext
  *   representationDescriptions(classId: ID): ViewerRepresentationDescriptionConnection!
  *   childCreationDescriptions(classId: ID!): [ChildCreationDescription!]!
  *   rootObjectCreationDescriptions(namespaceId: ID!, suggested: Boolean!): [ChildCreationDescription!]!
@@ -55,7 +61,6 @@ import graphql.schema.GraphQLTypeReference;
  * type User implements Viewer {
  *   id: ID!
  *   username: String!
- *   stereotypeDescriptions: [StereotypeDescription!]!
  *   projects: [Project!]!
  *   project(projectId: ID!): Project
  *   representationDescriptions(classId: ID): ViewerRepresentationDescriptionConnection!
@@ -89,11 +94,13 @@ public class ViewerTypeProvider implements ITypeProvider {
 
     public static final String PROJECT_FIELD = "project"; //$NON-NLS-1$
 
-    public static final String STEREOTYPE_DESCRIPTIONS_FIELD = "stereotypeDescriptions"; //$NON-NLS-1$
-
     public static final String SCHEMA_ID_ARGUMENT = "schemaId"; //$NON-NLS-1$
 
     public static final String PROJECT_ID_ARGUMENT = "projectId"; //$NON-NLS-1$
+
+    public static final String EDITING_CONTEXT_FIELD = "editingContext"; //$NON-NLS-1$
+
+    public static final String EDITING_CONTEXT_ID_ARGUMENT = "editingContextId"; //$NON-NLS-1$
 
     public static final String NAMESPACES_FIELD = "namespaces"; //$NON-NLS-1$
 
@@ -129,7 +136,7 @@ public class ViewerTypeProvider implements ITypeProvider {
 
     private GraphQLInterfaceType getViewerInterface() {
         // @formatter:off
-        return GraphQLInterfaceType.newInterface()
+        return newInterface()
                 .name(TYPE)
                 .fields(this.getViewerFieldDefinitions())
                 .build();
@@ -138,7 +145,7 @@ public class ViewerTypeProvider implements ITypeProvider {
 
     private GraphQLObjectType getUserType() {
         // @formatter:off
-        return GraphQLObjectType.newObject()
+        return newObject()
                 .name(USER_TYPE)
                 .fields(this.getViewerFieldDefinitions())
                 .withInterface(new GraphQLTypeReference(TYPE))
@@ -150,9 +157,9 @@ public class ViewerTypeProvider implements ITypeProvider {
         List<GraphQLFieldDefinition> viewerFieldsDefinition = new ArrayList<>();
         viewerFieldsDefinition.add(new IdFieldProvider().getField());
         viewerFieldsDefinition.add(this.getUsernameField());
-        viewerFieldsDefinition.add(this.getStereotypeDescriptionsField());
         viewerFieldsDefinition.add(this.getProjectsField());
         viewerFieldsDefinition.add(this.getProjectField());
+        viewerFieldsDefinition.add(this.getEditingContextField());
         viewerFieldsDefinition.add(this.getNamespaceField());
         viewerFieldsDefinition.add(this.getRootObjectCreationDescriptionsField());
         viewerFieldsDefinition.add(this.getRepresentationDescriptionField());
@@ -163,27 +170,18 @@ public class ViewerTypeProvider implements ITypeProvider {
 
     private GraphQLFieldDefinition getUsernameField() {
         // @formatter:off
-        return GraphQLFieldDefinition.newFieldDefinition()
+        return newFieldDefinition()
                 .name(USERNAME_FIELD)
-                .type(new GraphQLNonNull(Scalars.GraphQLString))
-                .build();
-        // @formatter:on
-    }
-
-    private GraphQLFieldDefinition getStereotypeDescriptionsField() {
-        // @formatter:off
-        return GraphQLFieldDefinition.newFieldDefinition()
-                .name(STEREOTYPE_DESCRIPTIONS_FIELD)
-                .type(new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(new GraphQLTypeReference(StereotypeDescriptionTypeProvider.TYPE)))))
+                .type(nonNull(Scalars.GraphQLString))
                 .build();
         // @formatter:on
     }
 
     private GraphQLFieldDefinition getProjectField() {
         // @formatter:off
-        return GraphQLFieldDefinition.newFieldDefinition()
+        return newFieldDefinition()
                 .name(PROJECT_FIELD)
-                .type(new GraphQLTypeReference(ProjectTypeProvider.TYPE))
+                .type(typeRef(ProjectTypeProvider.TYPE))
                 .argument(this.getProjectIdArgument())
                 .build();
         // @formatter:on
@@ -191,9 +189,9 @@ public class ViewerTypeProvider implements ITypeProvider {
 
     private GraphQLFieldDefinition getProjectsField() {
         // @formatter:off
-        return GraphQLFieldDefinition.newFieldDefinition()
+        return newFieldDefinition()
                 .name(PROJECTS_FIELD)
-                .type(new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(new GraphQLTypeReference(ProjectTypeProvider.TYPE)))))
+                .type(nonNull(list(nonNull(typeRef(ProjectTypeProvider.TYPE)))))
                 .build();
         // @formatter:on
     }
@@ -202,25 +200,37 @@ public class ViewerTypeProvider implements ITypeProvider {
         // @formatter:off
         return GraphQLArgument.newArgument()
                 .name(PROJECT_ID_ARGUMENT)
-                .type(new GraphQLNonNull(Scalars.GraphQLID))
+                .type(nonNull(Scalars.GraphQLID))
+                .build();
+        // @formatter:on
+    }
+
+    private GraphQLFieldDefinition getEditingContextField() {
+        // @formatter:off
+        return GraphQLFieldDefinition.newFieldDefinition()
+                .name(EDITING_CONTEXT_FIELD)
+                .type(typeRef(EditingContextTypeProvider.TYPE))
+                .argument(newArgument()
+                            .name(EDITING_CONTEXT_ID_ARGUMENT)
+                            .type(nonNull(Scalars.GraphQLID)))
                 .build();
         // @formatter:on
     }
 
     private GraphQLFieldDefinition getNamespaceField() {
         // @formatter:off
-        return GraphQLFieldDefinition.newFieldDefinition()
+        return newFieldDefinition()
                 .name(NAMESPACES_FIELD)
-                .type(new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(new GraphQLTypeReference(Namespace.class.getSimpleName())))))
+                .type(nonNull(list(nonNull(typeRef(Namespace.class.getSimpleName())))))
                 .build();
         // @formatter:on
     }
 
     private GraphQLFieldDefinition getRootObjectCreationDescriptionsField() {
         // @formatter:off
-        return GraphQLFieldDefinition.newFieldDefinition()
+        return newFieldDefinition()
                 .name(ROOT_OBJECT_CREATION_DESCRIPTIONS_FIELD)
-                .type(new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(new GraphQLTypeReference(ChildCreationDescription.class.getSimpleName())))))
+                .type(nonNull(list(nonNull(typeRef(ChildCreationDescription.class.getSimpleName())))))
                 .argument(this.getNamespaceIdArgument())
                 .argument(this.getSuggestedArgument())
                 .build();
@@ -229,56 +239,56 @@ public class ViewerTypeProvider implements ITypeProvider {
 
     private GraphQLArgument getNamespaceIdArgument() {
         // @formatter:off
-        return GraphQLArgument.newArgument()
+        return newArgument()
                 .name(NAMESPACE_ID_ARGUMENT)
-                .type(new GraphQLNonNull(Scalars.GraphQLID))
+                .type(nonNull(Scalars.GraphQLID))
                 .build();
         // @formatter:on
     }
 
     private GraphQLArgument getSuggestedArgument() {
         // @formatter:off
-        return GraphQLArgument.newArgument()
+        return newArgument()
                 .name(SUGGESTED_ARGUMENT)
-                .type(new GraphQLNonNull(Scalars.GraphQLBoolean))
+                .type(nonNull(Scalars.GraphQLBoolean))
                 .build();
         // @formatter:on
     }
 
     private GraphQLFieldDefinition getRepresentationDescriptionField() {
         // @formatter:off
-        return GraphQLFieldDefinition.newFieldDefinition()
+        return newFieldDefinition()
                 .name(REPRESENTATION_DESCRIPTIONS_FIELD)
                 .argument(this.getClassIdArgument())
-                .type(new GraphQLNonNull(new GraphQLTypeReference(VIEWER_REPRESENTATION_DESCRIPTIONS_CONNECTION)))
+                .type(nonNull(typeRef(VIEWER_REPRESENTATION_DESCRIPTIONS_CONNECTION)))
                 .build();
         // @formatter:on
     }
 
     private GraphQLFieldDefinition getChildCreationDescriptionsField() {
         // @formatter:off
-        return GraphQLFieldDefinition.newFieldDefinition()
+        return newFieldDefinition()
                 .name(CHILD_CREATION_DESCRIPTIONS_FIELD)
                 .argument(this.getClassIdArgument())
-                .type(new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(new GraphQLTypeReference(ChildCreationDescription.class.getSimpleName())))))
+                .type(nonNull(list(nonNull(typeRef(ChildCreationDescription.class.getSimpleName())))))
                 .build();
         // @formatter:on
     }
 
     private GraphQLArgument getClassIdArgument() {
         // @formatter:off
-        return GraphQLArgument.newArgument()
+        return newArgument()
                 .name(CLASS_ID_ARGUMENT)
-                .type(new GraphQLNonNull(Scalars.GraphQLID))
+                .type(nonNull(Scalars.GraphQLID))
                 .build();
         // @formatter:on
     }
 
     private GraphQLFieldDefinition getCapabilitiesField() {
         // @formatter:off
-        return GraphQLFieldDefinition.newFieldDefinition()
+        return newFieldDefinition()
                 .name(CAPABILITIES_FIELD)
-                .type(new GraphQLNonNull(new GraphQLTypeReference(Capabilities.class.getSimpleName())))
+                .type(nonNull(typeRef(Capabilities.class.getSimpleName())))
                 .build();
         // @formatter:on
     }

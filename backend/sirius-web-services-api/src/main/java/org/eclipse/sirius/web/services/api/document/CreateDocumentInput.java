@@ -31,19 +31,19 @@ import org.eclipse.sirius.web.core.api.IInput;
 public final class CreateDocumentInput implements IInput {
     private UUID id;
 
-    private UUID projectId;
+    private UUID editingContextId;
 
     private String name;
 
-    private String stereotypeDescriptionId;
+    private UUID stereotypeDescriptionId;
 
     public CreateDocumentInput() {
         // Used by Jackson
     }
 
-    public CreateDocumentInput(UUID id, UUID projectId, String name, String stereotypeDescriptionId) {
+    public CreateDocumentInput(UUID id, UUID editingContextId, String name, UUID stereotypeDescriptionId) {
         this.id = Objects.requireNonNull(id);
-        this.projectId = Objects.requireNonNull(projectId);
+        this.editingContextId = Objects.requireNonNull(editingContextId);
         this.name = Objects.requireNonNull(name);
         this.stereotypeDescriptionId = Objects.requireNonNull(stereotypeDescriptionId);
     }
@@ -59,8 +59,8 @@ public final class CreateDocumentInput implements IInput {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getProjectId() {
-        return this.projectId;
+    public UUID getEditingContextId() {
+        return this.editingContextId;
     }
 
     @GraphQLField
@@ -72,13 +72,13 @@ public final class CreateDocumentInput implements IInput {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public String getStereotypeDescriptionId() {
+    public UUID getStereotypeDescriptionId() {
         return this.stereotypeDescriptionId;
     }
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, projectId: {2}, name: {3}, stereotypeDescriptionId: {4}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.projectId, this.name, this.stereotypeDescriptionId);
+        String pattern = "{0} '{'id: {1}, editingContextId: {2}, name: {3}, stereotypeDescriptionId: {4}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.editingContextId, this.name, this.stereotypeDescriptionId);
     }
 }

@@ -105,7 +105,7 @@ export const EditProjectNavbar = ({ projectId, name, subscribers }) => {
 
   let modal = null;
   if (modalDisplayed === 'CreateDocument') {
-    modal = <NewDocumentModal projectId={projectId} onDocumentCreated={onCloseModal} onClose={onCloseModal} />;
+    modal = <NewDocumentModal editingContextId={projectId} onDocumentCreated={onCloseModal} onClose={onCloseModal} />;
   } else if (modalDisplayed === 'UploadDocument') {
     modal = <UploadDocumentModal projectId={projectId} onDocumentUploaded={onCloseModal} onClose={onCloseModal} />;
   } else if (modalDisplayed === 'RenameProject') {

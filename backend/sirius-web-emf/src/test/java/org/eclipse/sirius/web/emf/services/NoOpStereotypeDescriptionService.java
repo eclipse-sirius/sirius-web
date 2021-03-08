@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.emf.services;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.eclipse.sirius.web.api.configuration.StereotypeDescription;
 import org.eclipse.sirius.web.services.api.stereotypes.IStereotypeDescriptionService;
@@ -27,12 +28,12 @@ import org.eclipse.sirius.web.services.api.stereotypes.IStereotypeDescriptionSer
 public class NoOpStereotypeDescriptionService implements IStereotypeDescriptionService {
 
     @Override
-    public List<StereotypeDescription> getStereotypeDescriptions() {
+    public List<StereotypeDescription> getStereotypeDescriptions(UUID editingContextId) {
         return new ArrayList<>();
     }
 
     @Override
-    public Optional<StereotypeDescription> getStereotypeDescriptionById(String stereotypeId) {
+    public Optional<StereotypeDescription> getStereotypeDescriptionById(UUID editingContextId, UUID stereotypeId) {
         return Optional.empty();
     }
 

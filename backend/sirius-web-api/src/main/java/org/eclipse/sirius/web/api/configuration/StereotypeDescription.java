@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.api.configuration;
 
 import java.text.MessageFormat;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.function.Supplier;
 
 import org.eclipse.sirius.web.annotations.PublicApi;
@@ -26,19 +27,19 @@ import org.eclipse.sirius.web.annotations.PublicApi;
 @PublicApi
 public class StereotypeDescription {
 
-    private final String id;
+    private final UUID id;
 
     private final String label;
 
     private final Supplier<String> contentProvider;
 
-    public StereotypeDescription(String id, String label, Supplier<String> contentProvider) {
+    public StereotypeDescription(UUID id, String label, Supplier<String> contentProvider) {
         this.id = Objects.requireNonNull(id);
         this.label = Objects.requireNonNull(label);
         this.contentProvider = Objects.requireNonNull(contentProvider);
     }
 
-    public String getId() {
+    public UUID getId() {
         return this.id;
     }
 

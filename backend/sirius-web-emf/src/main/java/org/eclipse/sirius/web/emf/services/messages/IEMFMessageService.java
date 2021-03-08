@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.emf.services.messages;
 
+import java.util.UUID;
+
 /**
  * Interface of the EMF message service.
  *
@@ -23,7 +25,7 @@ public interface IEMFMessageService {
 
     String invalidDocumentName(String name);
 
-    String stereotypeDescriptionNotFound(String stereotypeDescriptionId);
+    String stereotypeDescriptionNotFound(UUID stereotypeDescriptionId);
 
     String invalidInput(String expectedInputTypeName, String receivedInputTypeName);
 

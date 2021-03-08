@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.spring.collaborative.stereotypes;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.eclipse.sirius.web.api.configuration.StereotypeDescription;
 import org.eclipse.sirius.web.services.api.stereotypes.IStereotypeDescriptionService;
@@ -32,12 +33,12 @@ public class StereotypeDescriptionService implements IStereotypeDescriptionServi
     }
 
     @Override
-    public List<StereotypeDescription> getStereotypeDescriptions() {
+    public List<StereotypeDescription> getStereotypeDescriptions(UUID editingContextId) {
         return this.registry.getStereotypeDescriptions();
     }
 
     @Override
-    public Optional<StereotypeDescription> getStereotypeDescriptionById(String id) {
+    public Optional<StereotypeDescription> getStereotypeDescriptionById(UUID editingContextId, UUID id) {
         return this.registry.getStereotypeDescription(id);
     }
 }
