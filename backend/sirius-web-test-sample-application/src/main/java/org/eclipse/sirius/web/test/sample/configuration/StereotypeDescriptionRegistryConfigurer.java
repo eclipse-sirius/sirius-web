@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import org.eclipse.emf.common.util.URI;
@@ -50,15 +51,15 @@ import io.micrometer.core.instrument.Timer;
 @Configuration
 public class StereotypeDescriptionRegistryConfigurer implements IStereotypeDescriptionRegistryConfigurer {
 
-    public static final String EMPTY_FLOW_ID = "empty_flow"; //$NON-NLS-1$
+    public static final UUID EMPTY_FLOW_ID = UUID.nameUUIDFromBytes("empty_flow".getBytes()); //$NON-NLS-1$
 
     public static final String EMPTY_FLOW_LABEL = "Empty Flow model"; //$NON-NLS-1$
 
-    public static final String ROBOT_FLOW_ID = "robot_flow"; //$NON-NLS-1$
+    public static final UUID ROBOT_FLOW_ID = UUID.nameUUIDFromBytes("robot_flow".getBytes()); //$NON-NLS-1$
 
     public static final String ROBOT_FLOW_LABEL = "Robot Flow model"; //$NON-NLS-1$
 
-    public static final String BIG_GUY_FLOW_ID = "big_guy_flow"; //$NON-NLS-1$
+    public static final UUID BIG_GUY_FLOW_ID = UUID.nameUUIDFromBytes("big_guy_flow".getBytes()); //$NON-NLS-1$
 
     public static final String BIG_GUY_FLOW_LABEL = "Big Guy Flow (17k elements)"; //$NON-NLS-1$
 

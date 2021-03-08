@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.eclipse.sirius.web.api.configuration.IStereotypeDescriptionRegistry;
@@ -27,14 +28,14 @@ import org.eclipse.sirius.web.api.configuration.StereotypeDescription;
  * @author sbegaudeau
  */
 public class StereotypeDescriptionRegistry implements IStereotypeDescriptionRegistry {
-    private final Map<String, StereotypeDescription> id2stereotypeDescriptions = new LinkedHashMap<>();
+    private final Map<UUID, StereotypeDescription> id2stereotypeDescriptions = new LinkedHashMap<>();
 
     @Override
     public void add(StereotypeDescription stereotypeDescription) {
         this.id2stereotypeDescriptions.put(stereotypeDescription.getId(), stereotypeDescription);
     }
 
-    public Optional<StereotypeDescription> getStereotypeDescription(String id) {
+    public Optional<StereotypeDescription> getStereotypeDescription(UUID id) {
         return Optional.ofNullable(this.id2stereotypeDescriptions.get(id));
     }
 

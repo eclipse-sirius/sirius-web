@@ -11,26 +11,49 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMutation, useQuery } from '@apollo/client';
-import { ActionButton, Buttons } from 'core/button/Button';
-import { Form } from 'core/form/Form';
-import { Label } from 'core/label/Label';
-import { Select } from 'core/select/Select';
-import { Textfield } from 'core/textfield/Textfield';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import IconButton from '@material-ui/core/IconButton';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import Snackbar from '@material-ui/core/Snackbar';
+import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import CloseIcon from '@material-ui/icons/Close';
+import { useMachine } from '@xstate/react';
 import gql from 'graphql-tag';
-import { Modal } from 'modals/Modal';
-import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
+import {
+  GQLCreateDocumentMutationData,
+  GQLCreateDocumentPayload,
+  GQLErrorPayload,
+  GQLGetStereotypeDescriptionsQueryData,
+  GQLGetStereotypeDescriptionsQueryVariables,
+  NewDocumentModalProps,
+} from 'modals/new-document/NewDocumentModal.types';
+import {
+  ChangeNameEvent,
+  ChangeStereotypeDescriptionEvent,
+  CreateDocumentEvent,
+  FetchedStereotypeDescriptionsEvent,
+  HandleResponseEvent,
+  HideToastEvent,
+  NewDocumentModalContext,
+  NewDocumentModalEvent,
+  newDocumentModalMachine,
+  SchemaValue,
+  ShowToastEvent,
+} from 'modals/new-document/NewDocumentModalMachine';
+import React, { useEffect } from 'react';
 import { v4 as uuid } from 'uuid';
 
 const createDocumentMutation = gql`
   mutation createDocument($input: CreateDocumentInput!) {
     createDocument(input: $input) {
       __typename
-      ... on CreateDocumentSuccessPayload {
-        document {
-          id
-        }
-      }
       ... on ErrorPayload {
         message
       }
@@ -39,147 +62,197 @@ const createDocumentMutation = gql`
 `;
 
 const getStereotypeDescriptionsQuery = gql`
-  query getStereotypeDescriptions {
+  query getStereotypeDescriptions($editingContextId: ID!) {
     viewer {
-      stereotypeDescriptions {
-        id
-        label
+      editingContext(editingContextId: $editingContextId) {
+        stereotypeDescriptions {
+          id
+          label
+        }
       }
     }
   }
 `;
 
-const propTypes = {
-  projectId: PropTypes.string.isRequired,
-  onDocumentCreated: PropTypes.func.isRequired,
-  onClose: PropTypes.func.isRequired,
-};
+const useNewDocumentModalStyles = makeStyles((theme) => ({
+  form: {
+    display: 'flex',
+    flexDirection: 'column',
+    '& > *': {
+      marginBottom: theme.spacing(1),
+    },
+  },
+}));
 
-export const NewDocumentModal = ({ projectId, onDocumentCreated, onClose }) => {
-  const initialState = {
-    name: '',
-    stereotypeDescriptions: [],
-    selectedStereotypeDescriptionId: undefined,
-    isValid: false,
-    message: undefined,
-  };
-  const [state, setState] = useState(initialState);
-  const { name, stereotypeDescriptions, selectedStereotypeDescriptionId, isValid } = state;
+const isErrorPayload = (payload: GQLCreateDocumentPayload): payload is GQLErrorPayload =>
+  payload.__typename === 'ErrorPayload';
 
-  // Retrieve the available stereotypeDescriptions
-  const { loading, data, error } = useQuery(getStereotypeDescriptionsQuery);
+export const NewDocumentModal = ({ editingContextId, onDocumentCreated, onClose }: NewDocumentModalProps) => {
+  const classes = useNewDocumentModalStyles();
+  const [{ value, context }, dispatch] = useMachine<NewDocumentModalContext, NewDocumentModalEvent>(
+    newDocumentModalMachine
+  );
+  const { newDocumentModal, toast } = value as SchemaValue;
+  const {
+    name,
+    nameMessage,
+    nameIsInvalid,
+    selectedStereotypeDescriptionId,
+    stereotypeDescriptions,
+    message,
+  } = context;
+
+  const {
+    loading: stereotypeDescriptionsLoading,
+    data: stereotypeDescriptionsData,
+    error: stereotypeDescriptionsError,
+  } = useQuery<GQLGetStereotypeDescriptionsQueryData, GQLGetStereotypeDescriptionsQueryVariables>(
+    getStereotypeDescriptionsQuery,
+    { variables: { editingContextId } }
+  );
   useEffect(() => {
-    if (!loading && !error && data?.viewer?.stereotypeDescriptions) {
-      const { stereotypeDescriptions } = data.viewer;
-
-      setState((prevState) => {
-        const newState = { ...prevState };
-        newState.stereotypeDescriptions = [...prevState.stereotypeDescriptions, ...stereotypeDescriptions];
-        if (newState.stereotypeDescriptions.length > 0) {
-          newState.selectedStereotypeDescriptionId = newState.stereotypeDescriptions[0].id;
-        }
-        return newState;
-      });
+    if (!stereotypeDescriptionsLoading) {
+      if (stereotypeDescriptionsError) {
+        const showToastEvent: ShowToastEvent = {
+          type: 'SHOW_TOAST',
+          message: 'An unexpected error has occurred, please refresh the page',
+        };
+        dispatch(showToastEvent);
+      }
+      if (stereotypeDescriptionsData) {
+        const fetchStereotypeDescriptionsEvent: FetchedStereotypeDescriptionsEvent = {
+          type: 'HANDLE_FETCHED_STEREOTYPE_DESCRIPTIONS',
+          data: stereotypeDescriptionsData,
+        };
+        dispatch(fetchStereotypeDescriptionsEvent);
+      }
     }
-  }, [loading, error, data]);
+  }, [stereotypeDescriptionsLoading, stereotypeDescriptionsData, stereotypeDescriptionsError, dispatch]);
 
-  // Update the name in the state
-  const onNewName = (event) => {
-    const newName = event.target.value;
-
-    setState((prevState) => {
-      const newState = { ...prevState };
-      newState.name = newName;
-      newState.isValid = newName != null && newName.length > 0;
-      newState.message = 'Please enter a name for the new project.';
-      return newState;
-    });
-  };
-
-  // Update the currently selected stereotypeDescription
-  const onNewSelectedStereotypeDescription = (event) => {
+  const onNameChange = (event) => {
     const value = event.target.value;
-
-    setState((prevState) => {
-      const newState = { ...prevState };
-      newState.selectedStereotypeDescriptionId = value;
-      return newState;
-    });
+    const changeNamedEvent: ChangeNameEvent = { type: 'CHANGE_NAME', name: value };
+    dispatch(changeNamedEvent);
   };
 
-  // Validate the form
-  useEffect(() => {
-    let isValid = true;
+  const onStereotypeDescriptionChange = (event) => {
+    const value = event.target.value;
+    const changeStereotypeDescriptionEvent: ChangeStereotypeDescriptionEvent = {
+      type: 'CHANGE_STEREOTYPE_DESCRIPTION',
+      stereotypeDescriptionId: value,
+    };
+    dispatch(changeStereotypeDescriptionEvent);
+  };
 
-    isValid = isValid && name && name.trim().length > 0;
-    isValid = isValid && selectedStereotypeDescriptionId;
-
-    setState((prevState) => {
-      return { ...prevState, isValid };
-    });
-  }, [name, selectedStereotypeDescriptionId]);
-
-  // Execute the creation of a new document and redirect to the newly created document
   const [
     createDocument,
     { loading: createDocumentLoading, data: createDocumentData, error: createDocumentError },
-  ] = useMutation(createDocumentMutation);
-  const createNewDocument = async (event) => {
-    event.preventDefault();
-    const variables = {
-      input: {
-        id: uuid(),
-        projectId,
-        name: name.trim(),
-        stereotypeDescriptionId: selectedStereotypeDescriptionId,
-      },
-    };
-    createDocument({ variables });
-  };
+  ] = useMutation<GQLCreateDocumentMutationData>(createDocumentMutation);
   useEffect(() => {
-    if (!createDocumentLoading && !createDocumentError && createDocumentData?.createDocument) {
-      const { createDocument } = createDocumentData;
-      if (createDocument.__typename === 'CreateDocumentSuccessPayload') {
-        const { id } = createDocument.document;
-        onDocumentCreated(id);
-      } else if (createDocument.__typename === 'ErrorPayload') {
-        setState((prevState) => {
-          const newState = { ...prevState };
-          newState.message = createDocument.message;
-          newState.isValid = false;
-          return newState;
-        });
+    if (!createDocumentLoading) {
+      if (createDocumentError) {
+        const showToastEvent: ShowToastEvent = {
+          type: 'SHOW_TOAST',
+          message: 'An unexpected error has occurred, please refresh the page',
+        };
+        dispatch(showToastEvent);
+      }
+      if (createDocumentData) {
+        const handleResponseEvent: HandleResponseEvent = { type: 'HANDLE_RESPONSE', data: createDocumentData };
+        dispatch(handleResponseEvent);
+
+        const { createDocument } = createDocumentData;
+        if (isErrorPayload(createDocument)) {
+          const { message } = createDocument;
+          const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
+          dispatch(showToastEvent);
+        }
       }
     }
-  }, [createDocumentLoading, createDocumentData, createDocumentError, onDocumentCreated]);
+  }, [createDocumentLoading, createDocumentData, createDocumentError, dispatch]);
+
+  const onCreateDocument = () => {
+    dispatch({ type: 'CREATE_DOCUMENT' } as CreateDocumentEvent);
+    const input = {
+      id: uuid(),
+      editingContextId,
+      name,
+      stereotypeDescriptionId: selectedStereotypeDescriptionId,
+    };
+    createDocument({ variables: { input } });
+  };
+
+  useEffect(() => {
+    if (newDocumentModal === 'success') {
+      onDocumentCreated();
+    }
+  }, [newDocumentModal, onDocumentCreated]);
 
   return (
-    <Modal title="Create a new model" onClose={onClose}>
-      <Form onSubmit={createNewDocument}>
-        <Label value="Name">
-          <Textfield
-            name="name"
-            placeholder="Enter the model name"
-            value={name}
-            onChange={onNewName}
-            autoFocus
-            data-testid="name"
-          />
-        </Label>
-        <Label value="Model type">
-          <Select
-            name="stereotype"
-            value={selectedStereotypeDescriptionId}
-            options={stereotypeDescriptions}
-            onChange={onNewSelectedStereotypeDescription}
-            data-testid="stereotype"
-          />
-        </Label>
-        <Buttons>
-          <ActionButton type="submit" disabled={!isValid} label="Create" data-testid="create-document" />
-        </Buttons>
-      </Form>
-    </Modal>
+    <>
+      <Dialog open={true} onClose={onClose} aria-labelledby="dialog-title" maxWidth="xs" fullWidth>
+        <DialogTitle id="dialog-title">Create a new model</DialogTitle>
+        <DialogContent>
+          <div className={classes.form}>
+            <TextField
+              error={nameIsInvalid}
+              helperText={nameMessage}
+              label="Name"
+              name="name"
+              value={name}
+              placeholder="Enter the name of the model"
+              data-testid="name"
+              autoFocus={true}
+              onChange={onNameChange}
+              disabled={newDocumentModal === 'loading' || newDocumentModal === 'creatingDocument'}
+            />
+            <InputLabel id="newDocumentModalStereotypeDescriptionLabel">Model type</InputLabel>
+            <Select
+              value={selectedStereotypeDescriptionId}
+              onChange={onStereotypeDescriptionChange}
+              disabled={newDocumentModal === 'loading' || newDocumentModal === 'creatingDocument'}
+              labelId="newDocumentModalStereotypeDescriptionLabel"
+              fullWidth
+              data-testid="stereotype">
+              {stereotypeDescriptions.map((stereotypeDescription) => (
+                <MenuItem value={stereotypeDescription.id} key={stereotypeDescription.id}>
+                  {stereotypeDescription.label}
+                </MenuItem>
+              ))}
+            </Select>
+          </div>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            variant="contained"
+            disabled={newDocumentModal !== 'valid'}
+            data-testid="create-document"
+            color="primary"
+            onClick={onCreateDocument}>
+            Create
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right',
+        }}
+        open={toast === 'visible'}
+        autoHideDuration={3000}
+        onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
+        message={message}
+        action={
+          <IconButton
+            size="small"
+            aria-label="close"
+            color="inherit"
+            onClick={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}>
+            <CloseIcon fontSize="small" />
+          </IconButton>
+        }
+        data-testid="error"
+      />
+    </>
   );
 };
-NewDocumentModal.propTypes = propTypes;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.services.api.stereotypes;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.eclipse.sirius.web.api.configuration.StereotypeDescription;
 
@@ -23,7 +24,7 @@ import org.eclipse.sirius.web.api.configuration.StereotypeDescription;
  * @author sbegaudeau
  */
 public interface IStereotypeDescriptionService {
-    List<StereotypeDescription> getStereotypeDescriptions();
+    List<StereotypeDescription> getStereotypeDescriptions(UUID editingContextId);
 
-    Optional<StereotypeDescription> getStereotypeDescriptionById(String stereotypeId);
+    Optional<StereotypeDescription> getStereotypeDescriptionById(UUID editingContextId, UUID stereotypeId);
 }

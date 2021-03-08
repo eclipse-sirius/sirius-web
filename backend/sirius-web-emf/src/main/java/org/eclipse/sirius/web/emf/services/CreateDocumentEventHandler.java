@@ -91,10 +91,10 @@ public class CreateDocumentEventHandler implements IEditingContextEventHandler {
             CreateDocumentInput createDocumentInput = (CreateDocumentInput) input;
 
             String name = createDocumentInput.getName().trim();
-            UUID projectId = createDocumentInput.getProjectId();
-            String stereotypeDescriptionId = createDocumentInput.getStereotypeDescriptionId();
+            UUID editingContextId = createDocumentInput.getEditingContextId();
+            UUID stereotypeDescriptionId = createDocumentInput.getStereotypeDescriptionId();
 
-            Optional<StereotypeDescription> optionalStereotypeDescription = this.stereotypeDescriptionService.getStereotypeDescriptionById(stereotypeDescriptionId);
+            Optional<StereotypeDescription> optionalStereotypeDescription = this.stereotypeDescriptionService.getStereotypeDescriptionById(editingContextId, stereotypeDescriptionId);
 
             if (name.isBlank()) {
                 IPayload payload = new ErrorPayload(input.getId(), this.messageService.invalidDocumentName(name));
@@ -104,14 +104,14 @@ public class CreateDocumentEventHandler implements IEditingContextEventHandler {
                 response = new EventHandlerResponse(new ChangeDescription(ChangeKind.NOTHING, editingContext.getId()), payload);
             } else if (optionalStereotypeDescription.isPresent()) {
                 StereotypeDescription stereotypeDescription = optionalStereotypeDescription.get();
-                response = this.createDocument(createDocumentInput.getId(), editingContext, projectId, name, stereotypeDescription);
+                response = this.createDocument(createDocumentInput.getId(), editingContext, editingContextId, name, stereotypeDescription);
             }
         }
 
         return response;
     }
 
-    private EventHandlerResponse createDocument(UUID inputId, IEditingContext editingContext, UUID projectId, String name, StereotypeDescription stereotypeDescription) {
+    private EventHandlerResponse createDocument(UUID inputId, IEditingContext editingContext, UUID editingContextId, String name, StereotypeDescription stereotypeDescription) {
         // @formatter:off
         Optional<AdapterFactoryEditingDomain> optionalEditingDomain = Optional.of(editingContext)
                 .filter(EditingContext.class::isInstance)
@@ -123,7 +123,7 @@ public class CreateDocumentEventHandler implements IEditingContextEventHandler {
             AdapterFactoryEditingDomain adapterFactoryEditingDomain = optionalEditingDomain.get();
             ResourceSet resourceSet = adapterFactoryEditingDomain.getResourceSet();
 
-            var optionalDocument = this.documentService.createDocument(projectId, name, stereotypeDescription.getContent());
+            var optionalDocument = this.documentService.createDocument(editingContextId, name, stereotypeDescription.getContent());
             if (optionalDocument.isPresent()) {
                 Document document = optionalDocument.get();
                 URI uri = URI.createURI(document.getId().toString());

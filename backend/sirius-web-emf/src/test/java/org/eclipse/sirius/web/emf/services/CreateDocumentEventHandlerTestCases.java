@@ -72,7 +72,7 @@ public class CreateDocumentEventHandlerTestCases {
 
     private static final String DOCUMENT_NAME = "name"; //$NON-NLS-1$
 
-    private static final String STEREOTYPE_DESCRIPTION_ID = "stereotypeDescriptionId"; //$NON-NLS-1$
+    private static final UUID STEREOTYPE_DESCRIPTION_ID = UUID.nameUUIDFromBytes("stereotypeDescriptionId".getBytes()); //$NON-NLS-1$
 
     @Test
     public void testCreateDocument() {
@@ -84,7 +84,7 @@ public class CreateDocumentEventHandlerTestCases {
         };
         IStereotypeDescriptionService stereotypeDescriptionService = new NoOpStereotypeDescriptionService() {
             @Override
-            public Optional<StereotypeDescription> getStereotypeDescriptionById(String stereotypeId) {
+            public Optional<StereotypeDescription> getStereotypeDescriptionById(UUID editingContextId, UUID stereotypeId) {
                 StereotypeDescription stereotypeDescription = new StereotypeDescription(stereotypeId, "label", () -> CONTENT); //$NON-NLS-1$
                 return Optional.of(stereotypeDescription);
             }
@@ -116,7 +116,7 @@ public class CreateDocumentEventHandlerTestCases {
         };
         IStereotypeDescriptionService stereotypeDescriptionService = new NoOpStereotypeDescriptionService() {
             @Override
-            public Optional<StereotypeDescription> getStereotypeDescriptionById(String stereotypeId) {
+            public Optional<StereotypeDescription> getStereotypeDescriptionById(UUID editingContextId, UUID stereotypeId) {
                 StereotypeDescription stereotypeDescription = new StereotypeDescription(stereotypeId, "label", () -> CONTENT); //$NON-NLS-1$
                 return Optional.of(stereotypeDescription);
             }

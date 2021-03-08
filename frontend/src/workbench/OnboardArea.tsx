@@ -23,9 +23,11 @@ import styles from './OnboardArea.module.css';
 const getOnboardDataQuery = gql`
   query getOnboardData($projectId: ID!, $classId: ID!) {
     viewer {
-      stereotypeDescriptions {
-        id
-        label
+      editingContext(editingContextId: $projectId) {
+        stereotypeDescriptions {
+          id
+          label
+        }
       }
       project(projectId: $projectId) {
         representations {
@@ -75,7 +77,7 @@ export const OnboardArea = ({ projectId, selection, setSelection }) => {
       let representationDescriptions = viewer.representationDescriptions.edges.map((edge) => edge.node);
       setState({
         representations: viewer.project.representations,
-        stereotypeDescriptions: viewer.stereotypeDescriptions,
+        stereotypeDescriptions: viewer.editingContext.stereotypeDescriptions,
         representationDescriptions,
       });
     }
