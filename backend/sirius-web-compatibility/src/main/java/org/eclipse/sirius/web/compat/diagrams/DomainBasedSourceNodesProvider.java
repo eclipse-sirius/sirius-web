@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.compat.diagrams;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
@@ -64,7 +63,7 @@ public class DomainBasedSourceNodesProvider implements Function<VariableManager,
 
         // @formatter:off
         return semanticCandidates.stream()
-                .flatMap(semanticObject-> cache.getObjectToNodes().getOrDefault(semanticObject, Collections.emptyList()).stream())
+                .flatMap(semanticObject-> cache.getElementsRepresenting(semanticObject).stream())
                 .filter(this.isFromCompatibleSourceMapping())
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());

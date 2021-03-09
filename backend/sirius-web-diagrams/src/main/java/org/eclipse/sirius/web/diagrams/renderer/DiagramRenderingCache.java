@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.diagrams.renderer;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,6 +49,10 @@ public class DiagramRenderingCache {
 
     public Map<Element, Object> getNodeToObject() {
         return this.nodeToObject;
+    }
+
+    public List<Element> getElementsRepresenting(Object semanticObject) {
+        return this.objectToNodes.getOrDefault(semanticObject, Collections.emptyList());
     }
 
     public Map<Object, List<Element>> getObjectToNodes() {
