@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.compat.diagrams;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
@@ -62,7 +61,7 @@ public class TargetNodesProvider implements Function<VariableManager, List<Eleme
         // @formatter:off
         Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), this.edgeMapping.getTargetFinderExpression());
         return result.asObjects().orElse(List.of()).stream()
-                .flatMap(semanticObject-> cache.getObjectToNodes().getOrDefault(semanticObject, Collections.emptyList()).stream())
+                .flatMap(semanticObject-> cache.getElementsRepresenting(semanticObject).stream())
                 .filter(this.isFromCompatibleTargetMapping())
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());

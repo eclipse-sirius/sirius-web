@@ -78,7 +78,7 @@
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-domain</artifactId>
-			<version>0.2.8</version>
+			<version>0.2.9</version>
 		</dependency>
 	</dependencies>
 </project>

@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.compat.diagrams;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
@@ -55,7 +54,7 @@ public class RelationBasedSourceNodesProvider implements Function<VariableManage
         Object object = optionalObject.get();
 
         // @formatter:off
-        return cache.getObjectToNodes().getOrDefault(object, Collections.emptyList()).stream()
+        return cache.getElementsRepresenting(object).stream()
                 .filter(this.isFromCompatibleSourceMapping())
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
