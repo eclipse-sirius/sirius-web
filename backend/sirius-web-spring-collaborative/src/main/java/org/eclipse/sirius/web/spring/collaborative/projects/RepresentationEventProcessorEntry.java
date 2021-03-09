@@ -40,4 +40,9 @@ public class RepresentationEventProcessorEntry {
     public Disposable getDisposable() {
         return this.disposable;
     }
+
+    public void dispose() {
+        this.disposable.dispose();
+        this.representationEventProcessor.dispose();
+    }
 }

@@ -12,12 +12,12 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.spring.collaborative.representations;
 
-import java.text.MessageFormat;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import org.eclipse.sirius.web.collaborative.api.dto.Subscriber;
@@ -43,20 +43,18 @@ public class SubscriptionManager implements ISubscriptionManager {
 
     private final Many<IPayload> sink = Sinks.many().multicast().directBestEffort();
 
-    private final Map<String, Integer> username2subscriptionCount = new HashMap<>();
+    private final Map<String, AtomicInteger> username2subscriptionCount = new ConcurrentHashMap<>();
 
     @Override
     public void add(IInput input, String username) {
-        int subscriptionCount = this.username2subscriptionCount.getOrDefault(username, 0).intValue();
-        this.username2subscriptionCount.put(username, subscriptionCount + 1);
+        var subscriptionCount = this.username2subscriptionCount.computeIfAbsent(username, name -> new AtomicInteger());
+        subscriptionCount.getAndIncrement();
     }
 
     @Override
     public void remove(UUID correlationId, String username) {
-        int subscriptionCount = this.username2subscriptionCount.getOrDefault(username, 0).intValue();
-        if (subscriptionCount > 0) {
-            this.username2subscriptionCount.put(username, subscriptionCount - 1);
-        }
+        var subscriptionCount = this.username2subscriptionCount.computeIfAbsent(username, name -> new AtomicInteger());
+        subscriptionCount.updateAndGet(current -> Math.max(0, current - 1));
     }
 
     @Override
@@ -84,8 +82,8 @@ public class SubscriptionManager implements ISubscriptionManager {
     public void dispose() {
         EmitResult emitResult = this.sink.tryEmitComplete();
         if (emitResult.isFailure()) {
-            String pattern = "An error has occurred while marking the publisher as complete: {0}"; //$NON-NLS-1$
-            this.logger.warn(MessageFormat.format(pattern, emitResult));
+            String pattern = "An error has occurred while marking the publisher as complete: {}"; //$NON-NLS-1$
+            this.logger.warn(pattern, emitResult);
         }
     }
 

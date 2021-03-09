@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.emf.compatibility.modeloperations;
 
-import java.text.MessageFormat;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
@@ -90,8 +89,8 @@ public class ModelOperationHandlerSwitch implements Function<ModelOperation, Opt
         }
 
         if (optionalModelOperationHandler.isEmpty()) {
-            String pattern = "The model operation {0} is not currently supported"; //$NON-NLS-1$
-            this.logger.warn(MessageFormat.format(pattern, modelOperation.getClass().getSimpleName()));
+            String pattern = "The model operation {} is not currently supported"; //$NON-NLS-1$
+            this.logger.warn(pattern, modelOperation.getClass().getSimpleName());
         }
 
         return optionalModelOperationHandler;

@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.spring.collaborative.forms;
 
-import java.text.MessageFormat;
-
 import org.eclipse.sirius.web.collaborative.forms.api.IWidgetSubscriptionManager;
 import org.eclipse.sirius.web.collaborative.forms.api.dto.UpdateWidgetFocusInput;
 import org.eclipse.sirius.web.core.api.IInput;
@@ -51,8 +49,8 @@ public class WidgetSubscriptionManager implements IWidgetSubscriptionManager {
     public void dispose() {
         EmitResult emitResult = this.sink.tryEmitComplete();
         if (emitResult.isFailure()) {
-            String pattern = "An error has occurred while marking the publisher as complete: {0}"; //$NON-NLS-1$
-            this.logger.warn(MessageFormat.format(pattern, emitResult));
+            String pattern = "An error has occurred while marking the publisher as complete: {}"; //$NON-NLS-1$
+            this.logger.warn(pattern, emitResult);
         }
     }
 }

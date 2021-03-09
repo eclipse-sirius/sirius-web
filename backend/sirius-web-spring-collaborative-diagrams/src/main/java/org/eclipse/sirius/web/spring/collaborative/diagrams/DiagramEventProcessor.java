@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.spring.collaborative.diagrams;
 
-import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -71,7 +70,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
 
     public DiagramEventProcessor(IEditingContext editingContext, IDiagramContext diagramContext, List<IDiagramEventHandler> diagramEventHandlers, ISubscriptionManager subscriptionManager,
             IDiagramCreationService diagramCreationService) {
-        this.logger.trace(MessageFormat.format("Creating the diagram event processor {0}", diagramContext.getDiagram().getId())); //$NON-NLS-1$
+        this.logger.trace("Creating the diagram event processor {}", diagramContext.getDiagram().getId()); //$NON-NLS-1$
 
         this.editingContext = Objects.requireNonNull(editingContext);
         this.diagramContext = Objects.requireNonNull(diagramContext);
@@ -85,7 +84,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
         diagramContext.update(diagram);
         this.diagramEventFlux = new DiagramEventFlux(diagram);
 
-        this.logger.trace(MessageFormat.format("Diagram refreshed: {0})", diagram.getId())); //$NON-NLS-1$
+        this.logger.trace("Diagram refreshed: {})", diagram.getId()); //$NON-NLS-1$
     }
 
     @Override
@@ -130,7 +129,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
         if (this.shouldRefresh(changeDescription)) {
             Diagram refreshedDiagram = this.diagramCreationService.refresh(this.editingContext, this.diagramContext).orElse(null);
 
-            this.logger.trace(MessageFormat.format("Diagram refreshed: {0}", refreshedDiagram.getId())); //$NON-NLS-1$
+            this.logger.trace("Diagram refreshed: {}", refreshedDiagram.getId()); //$NON-NLS-1$
 
             this.diagramContext.reset();
             this.diagramContext.update(refreshedDiagram);
@@ -161,18 +160,18 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
         .doOnSubscribe(subscription -> {
             String username = SecurityContextHolder.getContext().getAuthentication().getName();
             this.subscriptionManager.add(input, username);
-            this.logger.trace(MessageFormat.format("{0} has subscribed to the diagram {1} {2}", username, this.diagramContext.getDiagram().getId(), this.subscriptionManager.toString())); //$NON-NLS-1$
+            this.logger.trace("{} has subscribed to the diagram {} {}", username, this.diagramContext.getDiagram().getId(), this.subscriptionManager); //$NON-NLS-1$
         })
         .doOnCancel(() -> {
             String username = SecurityContextHolder.getContext().getAuthentication().getName();
             this.subscriptionManager.remove(UUID.randomUUID(), username);
-            this.logger.trace(MessageFormat.format("{0} has unsubscribed from the diagram {1} {2}", username, this.diagramContext.getDiagram().getId(), this.subscriptionManager.toString())); //$NON-NLS-1$
+            this.logger.trace("{} has unsubscribed from the diagram {} {}", username, this.diagramContext.getDiagram().getId(), this.subscriptionManager); //$NON-NLS-1$
 
             if (this.subscriptionManager.isEmpty()) {
                 EmitResult emitResult = this.canBeDisposedSink.tryEmitNext(Boolean.TRUE);
                 if (emitResult.isFailure()) {
-                    String pattern = "An error has occurred while emitting that the processor can be disposed: {0}"; //$NON-NLS-1$
-                    this.logger.warn(MessageFormat.format(pattern, emitResult));
+                    String pattern = "An error has occurred while emitting that the processor can be disposed: {}"; //$NON-NLS-1$
+                    this.logger.warn(pattern, emitResult);
                 }
             }
         });
@@ -186,15 +185,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
 
     @Override
     public void dispose() {
-        this.logger.trace(MessageFormat.format("Disposing the diagram event processor {0}", this.diagramContext.getDiagram().getId())); //$NON-NLS-1$
-
-        if (this.canBeDisposedSink.currentSubscriberCount() > 0) {
-            EmitResult canBeDisposedEmitResult = this.canBeDisposedSink.tryEmitComplete();
-            if (canBeDisposedEmitResult.isFailure()) {
-                String pattern = "An error has occurred while marking the canBeDisposed flux as complete: {0}"; //$NON-NLS-1$
-                this.logger.warn(MessageFormat.format(pattern, canBeDisposedEmitResult));
-            }
-        }
+        this.logger.trace("Disposing the diagram event processor {}", this.diagramContext.getDiagram().getId()); //$NON-NLS-1$
 
         this.subscriptionManager.dispose();
         this.diagramEventFlux.dispose();

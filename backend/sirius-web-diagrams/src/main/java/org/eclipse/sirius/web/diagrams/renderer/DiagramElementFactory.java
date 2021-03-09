@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.diagrams.renderer;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -69,8 +68,7 @@ public class DiagramElementFactory implements IElementFactory {
             } else if (child instanceof Edge) {
                 edges.add((Edge) child);
             } else {
-                String message = MessageFormat.format("Unsupported child {0}", child); //$NON-NLS-1$
-                this.logger.error(message);
+                this.logger.error("Unsupported child {}", child); //$NON-NLS-1$
             }
         });
 

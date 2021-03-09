@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.spring.collaborative.forms;
 
-import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -85,7 +84,7 @@ public class FormEventProcessor implements IFormEventProcessor {
 
     public FormEventProcessor(IEditingContext editingContext, FormDescription formDescription, UUID formId, Object object, List<IFormEventHandler> formEventHandlers,
             ISubscriptionManager subscriptionManager, IWidgetSubscriptionManager widgetSubscriptionManager) {
-        this.logger.trace(MessageFormat.format("Creating the form event processor {0}", formId)); //$NON-NLS-1$
+        this.logger.trace("Creating the form event processor {}", formId); //$NON-NLS-1$
 
         this.formDescription = Objects.requireNonNull(formDescription);
         this.editingContext = Objects.requireNonNull(editingContext);
@@ -148,8 +147,8 @@ public class FormEventProcessor implements IFormEventProcessor {
             this.currentForm.set(form);
             EmitResult emitResult = this.sink.tryEmitNext(new FormRefreshedEventPayload(input.getId(), form));
             if (emitResult.isFailure()) {
-                String pattern = "An error has occurred while emitting a FormRefreshedEventPayload: {0}"; //$NON-NLS-1$
-                this.logger.warn(MessageFormat.format(pattern, emitResult));
+                String pattern = "An error has occurred while emitting a FormRefreshedEventPayload: {}"; //$NON-NLS-1$
+                this.logger.warn(pattern, emitResult);
             }
         }
     }
@@ -164,7 +163,7 @@ public class FormEventProcessor implements IFormEventProcessor {
         Element element = new Element(FormComponent.class, formComponentProps);
         Form form = new FormRenderer(this.logger).render(element);
 
-        this.logger.trace(MessageFormat.format("Form refreshed: {0}", form.getId())); //$NON-NLS-1$
+        this.logger.trace("Form refreshed: {}", form.getId()); //$NON-NLS-1$
 
         return form;
     }
@@ -183,18 +182,18 @@ public class FormEventProcessor implements IFormEventProcessor {
         .doOnSubscribe(subscription -> {
             String username = SecurityContextHolder.getContext().getAuthentication().getName();
             this.subscriptionManager.add(input, username);
-            this.logger.trace(MessageFormat.format("{0} has subscribed to the form {1} {2}", username, this.formId, this.subscriptionManager.toString())); //$NON-NLS-1$
+            this.logger.trace("{} has subscribed to the form {} {}", username, this.formId, this.subscriptionManager); //$NON-NLS-1$
         })
         .doOnCancel(() -> {
             String username = SecurityContextHolder.getContext().getAuthentication().getName();
             this.subscriptionManager.remove(UUID.randomUUID(), username);
-            this.logger.trace(MessageFormat.format("{0} has unsubscribed from the form {1} {2}", username, this.formId, this.subscriptionManager.toString())); //$NON-NLS-1$
+            this.logger.trace("{} has unsubscribed from the form {} {}", username, this.formId, this.subscriptionManager); //$NON-NLS-1$
 
             if (this.subscriptionManager.isEmpty()) {
                 EmitResult emitResult = this.canBeDisposedSink.tryEmitNext(Boolean.TRUE);
                 if (emitResult.isFailure()) {
-                    String pattern = "An error has occurred while emitting that the processor can be disposed: {0}"; //$NON-NLS-1$
-                    this.logger.warn(MessageFormat.format(pattern, emitResult));
+                    String pattern = "An error has occurred while emitting that the processor can be disposed: {}"; //$NON-NLS-1$
+                    this.logger.warn(pattern, emitResult);
                 }
             }
         });
@@ -208,23 +207,15 @@ public class FormEventProcessor implements IFormEventProcessor {
 
     @Override
     public void dispose() {
-        this.logger.trace(MessageFormat.format("Disposing the form event processor {0}", this.formId)); //$NON-NLS-1$
-
-        if (this.canBeDisposedSink.currentSubscriberCount() > 0) {
-            EmitResult canBeDisposedEmitResult = this.canBeDisposedSink.tryEmitComplete();
-            if (canBeDisposedEmitResult.isFailure()) {
-                String pattern = "An error has occurred while marking the canBeDisposed flux as complete: {0}"; //$NON-NLS-1$
-                this.logger.warn(MessageFormat.format(pattern, canBeDisposedEmitResult));
-            }
-        }
+        this.logger.trace("Disposing the form event processor {}", this.formId); //$NON-NLS-1$
 
         this.subscriptionManager.dispose();
         this.widgetSubscriptionManager.dispose();
 
         EmitResult emitResult = this.sink.tryEmitComplete();
         if (emitResult.isFailure()) {
-            String pattern = "An error has occurred while marking the publisher as complete: {0}"; //$NON-NLS-1$
-            this.logger.warn(MessageFormat.format(pattern, emitResult));
+            String pattern = "An error has occurred while marking the publisher as complete: {}"; //$NON-NLS-1$
+            this.logger.warn(pattern, emitResult);
         }
     }
 

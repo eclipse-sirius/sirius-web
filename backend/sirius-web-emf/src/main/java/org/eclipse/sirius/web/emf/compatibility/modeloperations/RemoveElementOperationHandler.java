@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.emf.compatibility.modeloperations;
 
-import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,7 +42,7 @@ public class RemoveElementOperationHandler implements IModelOperationHandler {
 
     private final RemoveElement removeElementOperation;
 
-    private final Logger logger = LoggerFactory.getLogger(CreateInstanceOperationHandler.class);
+    private final Logger logger = LoggerFactory.getLogger(RemoveElementOperationHandler.class);
 
     public RemoveElementOperationHandler(AQLInterpreter interpreter, ChildModelOperationHandler childModelOperationHandler, RemoveElement removeElementOperation) {
         this.interpreter = Objects.requireNonNull(interpreter);
@@ -67,7 +66,7 @@ public class RemoveElementOperationHandler implements IModelOperationHandler {
             EObject container = ecoreIntrinsicExtender.eContainer(objectToRemove);
             Object removedElement = ecoreIntrinsicExtender.eRemove(container, containingFeatureName, objectToRemove);
             if (removedElement == null) {
-                this.logger.error(MessageFormat.format("The removal of the object {0} from the instance {1} on the feature {2} failed.", objectToRemove, container, containingFeatureName)); //$NON-NLS-1$
+                this.logger.warn("The removal of the object {} from the instance {} on the feature {} failed.", objectToRemove, container, containingFeatureName); //$NON-NLS-1$
             }
         }
 

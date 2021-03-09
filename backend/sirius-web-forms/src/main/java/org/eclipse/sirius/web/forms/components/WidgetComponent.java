@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.forms.components;
 
-import java.text.MessageFormat;
 import java.util.Objects;
 
 import org.eclipse.sirius.web.components.Element;
@@ -68,8 +67,8 @@ public class WidgetComponent implements IComponent {
             ListComponentProps listProps = new ListComponentProps(variableManager, (ListDescription) widgetDescription);
             element = new Element(ListComponent.class, listProps);
         } else {
-            String pattern = "Unsupported widget description: {0}"; //$NON-NLS-1$
-            this.logger.error(MessageFormat.format(pattern, widgetDescription.getClass().getSimpleName()));
+            String pattern = "Unsupported widget description: {}"; //$NON-NLS-1$
+            this.logger.warn(pattern, widgetDescription.getClass().getSimpleName());
         }
         return element;
     }

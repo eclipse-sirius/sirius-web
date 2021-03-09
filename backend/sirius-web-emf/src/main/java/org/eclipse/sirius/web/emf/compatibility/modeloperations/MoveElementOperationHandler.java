@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.emf.compatibility.modeloperations;
 
-import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -87,12 +86,12 @@ public class MoveElementOperationHandler implements IModelOperationHandler {
         EcoreIntrinsicExtender ecoreIntrinsicExtender = new EcoreIntrinsicExtender();
         Boolean isMany = ecoreIntrinsicExtender.eIsMany(newContainer, featureName);
         if (isMany == null) {
-            this.logger.error(MessageFormat.format("The feature {0} is unknown on the object {1}", featureName, newContainer)); //$NON-NLS-1$
+            this.logger.warn("The feature {} is unknown on the object {}", featureName, newContainer); //$NON-NLS-1$
         } else {
             if (!isMany) {
                 Object currentValueOnContainer = ecoreIntrinsicExtender.eGet(newContainer, featureName);
                 if (currentValueOnContainer == null) {
-                    this.logger.error(MessageFormat.format("Impossible to add a value to the reference {0} of the object {1}", featureName, newContainer)); //$NON-NLS-1$
+                    this.logger.warn("Impossible to add a value to the reference {} of the object {}", featureName, newContainer); //$NON-NLS-1$
                     return;
                 }
             } else {

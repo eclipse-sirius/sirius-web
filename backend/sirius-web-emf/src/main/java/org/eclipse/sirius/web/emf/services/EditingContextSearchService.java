@@ -14,7 +14,6 @@ package org.eclipse.sirius.web.emf.services;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -84,7 +83,7 @@ public class EditingContextSearchService implements IEditingContextSearchService
     public Optional<IEditingContext> findById(UUID editingContextId) {
         long start = System.currentTimeMillis();
 
-        this.logger.debug(MessageFormat.format("Loading the editing context \"{0}\"", editingContextId)); //$NON-NLS-1$
+        this.logger.debug("Loading the editing context {}", editingContextId); //$NON-NLS-1$
         ResourceSet resourceSet = new ResourceSetImpl();
         resourceSet.setPackageRegistry(this.ePackageRegistry);
 
@@ -103,7 +102,7 @@ public class EditingContextSearchService implements IEditingContextSearchService
         }
 
         AdapterFactoryEditingDomain editingDomain = new AdapterFactoryEditingDomain(this.composedAdapterFactory, new BasicCommandStack(), resourceSet);
-        this.logger.debug(MessageFormat.format("{0} documents loaded for the editing context \"{1}\"", documentEntities.size(), editingContextId)); //$NON-NLS-1$
+        this.logger.debug("{} documents loaded for the editing context {}", documentEntities.size(), editingContextId); //$NON-NLS-1$
 
         long end = System.currentTimeMillis();
         this.timer.record(end - start, TimeUnit.MILLISECONDS);

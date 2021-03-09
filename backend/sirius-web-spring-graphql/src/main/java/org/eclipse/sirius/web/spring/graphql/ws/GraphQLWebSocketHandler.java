@@ -18,7 +18,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.security.Principal;
-import java.text.MessageFormat;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
@@ -250,7 +249,7 @@ public class GraphQLWebSocketHandler extends TextWebSocketHandler implements Sub
 
             IOperationMessage operationMessage = optionalOperationMessage.get();
 
-            this.logger.trace(MessageFormat.format("Message received: {0}", operationMessage)); //$NON-NLS-1$
+            this.logger.trace("Message received: {}", operationMessage); //$NON-NLS-1$
 
             if (operationMessage instanceof ConnectionInitMessage) {
                 new ConnectionInitMessageHandler(session, this.objectMapper).handle();
@@ -282,7 +281,7 @@ public class GraphQLWebSocketHandler extends TextWebSocketHandler implements Sub
             String responsePayload = this.objectMapper.writeValueAsString(message);
             TextMessage textMessage = new TextMessage(responsePayload);
 
-            this.logger.trace(MessageFormat.format("Message sent: {0}", message)); //$NON-NLS-1$
+            this.logger.trace("Message sent: {}", message); //$NON-NLS-1$
 
             session.sendMessage(textMessage);
         } catch (IOException exception) {
