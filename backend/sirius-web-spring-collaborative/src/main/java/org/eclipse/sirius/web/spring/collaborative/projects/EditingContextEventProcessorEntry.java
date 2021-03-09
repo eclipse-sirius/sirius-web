@@ -40,4 +40,9 @@ public class EditingContextEventProcessorEntry {
     public Disposable getDisposable() {
         return this.disposable;
     }
+
+    public void dispose() {
+        this.disposable.dispose();
+        this.editingContextEventProcessor.dispose();
+    }
 }

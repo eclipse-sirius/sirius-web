@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.spring.collaborative.diagrams;
 
-import java.text.MessageFormat;
 import java.util.Objects;
 
 import org.eclipse.sirius.web.collaborative.diagrams.api.dto.DiagramRefreshedEventPayload;
@@ -49,8 +48,8 @@ public class DiagramEventFlux {
         this.currentDiagram = newDiagram;
         EmitResult emitResult = this.sink.tryEmitNext(new DiagramRefreshedEventPayload(input.getId(), this.currentDiagram));
         if (emitResult.isFailure()) {
-            String pattern = "An error has occurred while emitting a DiagramRefreshedEventPayload: {0}"; //$NON-NLS-1$
-            this.logger.warn(MessageFormat.format(pattern, emitResult));
+            String pattern = "An error has occurred while emitting a DiagramRefreshedEventPayload: {}"; //$NON-NLS-1$
+            this.logger.warn(pattern, emitResult);
         }
     }
 
@@ -62,8 +61,8 @@ public class DiagramEventFlux {
     public void dispose() {
         EmitResult emitResult = this.sink.tryEmitComplete();
         if (emitResult.isFailure()) {
-            String pattern = "An error has occurred while marking the publisher as complete: {0}"; //$NON-NLS-1$
-            this.logger.warn(MessageFormat.format(pattern, emitResult));
+            String pattern = "An error has occurred while marking the publisher as complete: {}"; //$NON-NLS-1$
+            this.logger.warn(pattern, emitResult);
         }
     }
 

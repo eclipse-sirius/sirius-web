@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.diagrams.layout;
 
-import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -180,15 +179,15 @@ public class DiagramConverter {
         if (source != null) {
             elkEdge.getSources().add(source);
         } else {
-            String pattern = "The source with the id {0} has not been found"; //$NON-NLS-1$
-            this.logger.warn(MessageFormat.format(pattern, edge.getSourceId()));
+            String pattern = "The source with the id {} has not been found"; //$NON-NLS-1$
+            this.logger.warn(pattern, edge.getSourceId());
         }
 
         if (target != null) {
             elkEdge.getTargets().add(target);
         } else {
-            String pattern = "The target with the id {0} has not been found"; //$NON-NLS-1$
-            this.logger.warn(MessageFormat.format(pattern, edge.getTargetId()));
+            String pattern = "The target with the id {} has not been found"; //$NON-NLS-1$
+            this.logger.warn(pattern, edge.getTargetId());
         }
 
         if (source != null && target != null) {

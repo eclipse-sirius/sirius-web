@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.spring.collaborative.projects;
 
-import java.text.MessageFormat;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
@@ -48,6 +47,11 @@ import reactor.core.Disposable;
  */
 @Service
 public class EditingContextEventProcessorRegistry implements IEditingContextEventProcessorRegistry {
+
+    /**
+     * The delay to wait before considering if we should dispose an EditingContextEventProcessor.
+     */
+    private static final Duration DISPOSE_DELAY = Duration.ofSeconds(30);
 
     private final Logger logger = LoggerFactory.getLogger(EditingContextEventProcessorRegistry.class);
 
@@ -103,8 +107,8 @@ public class EditingContextEventProcessorRegistry implements IEditingContextEven
 
                     var editingContextEventProcessor = new EditingContextEventProcessor(editingContext, this.editingContextPersistenceService, this.applicationEventPublisher, this.objectService,
                             this.editingContextEventHandlers, this.representationEventProcessorComposedFactory);
-                    Disposable subscription = editingContextEventProcessor.canBeDisposed().delayElements(Duration.ofSeconds(30)).subscribe(canBeDisposed -> {
-                        // We will wait for 30s before trying to dispose the editing context event processor
+                    Disposable subscription = editingContextEventProcessor.canBeDisposed().delayElements(DISPOSE_DELAY).subscribe(canBeDisposed -> {
+                        // We will wait for the delay before trying to dispose the editing context event processor
                         // We will check if the editing context event processor is still empty
                         if (canBeDisposed.booleanValue() && editingContextEventProcessor.getRepresentationEventProcessors().isEmpty()) {
                             this.disposeEditingContextEventProcessor(editingContextId);
@@ -126,22 +130,16 @@ public class EditingContextEventProcessorRegistry implements IEditingContextEven
 
     @Override
     public void disposeEditingContextEventProcessor(UUID editingContextId) {
-        Optional.ofNullable(this.editingContextEventProcessors.remove(editingContextId)).ifPresent(entry -> {
-            entry.getDisposable().dispose();
-            entry.getEditingContextEventProcessor().dispose();
-        });
+        Optional.ofNullable(this.editingContextEventProcessors.remove(editingContextId)).ifPresent(EditingContextEventProcessorEntry::dispose);
 
-        this.logger.trace(MessageFormat.format("Editing context event processors count: {0}", this.editingContextEventProcessors.size())); //$NON-NLS-1$
+        this.logger.trace("Editing context event processors count: {}", this.editingContextEventProcessors.size()); //$NON-NLS-1$
     }
 
     @PreDestroy
     public void dispose() {
         this.logger.debug("Shutting down all the editing context event processors"); //$NON-NLS-1$
 
-        this.editingContextEventProcessors.values().forEach(entry -> {
-            entry.getDisposable().dispose();
-            entry.getEditingContextEventProcessor().dispose();
-        });
+        this.editingContextEventProcessors.values().forEach(EditingContextEventProcessorEntry::dispose);
         this.editingContextEventProcessors.clear();
     }
 }

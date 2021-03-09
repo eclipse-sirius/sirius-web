@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.spring.collaborative.trees;
 
-import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -76,7 +75,7 @@ public class TreeEventProcessor implements ITreeEventProcessor {
 
     public TreeEventProcessor(ITreeService treeService, TreeCreationParameters treeCreationParameters, List<ITreeEventHandler> treeEventHandlers, ISubscriptionManager subscriptionManager,
             MeterRegistry meterRegistry) {
-        this.logger.trace(MessageFormat.format("Creating the tree event processor {0}", treeCreationParameters.getEditingContext().getId())); //$NON-NLS-1$
+        this.logger.trace("Creating the tree event processor {}", treeCreationParameters.getEditingContext().getId()); //$NON-NLS-1$
 
         this.treeService = Objects.requireNonNull(treeService);
         this.treeCreationParameters = Objects.requireNonNull(treeCreationParameters);
@@ -134,8 +133,8 @@ public class TreeEventProcessor implements ITreeEventProcessor {
             this.currentTree.set(tree);
             EmitResult emitResult = this.sink.tryEmitNext(new TreeRefreshedEventPayload(input.getId(), tree));
             if (emitResult.isFailure()) {
-                String pattern = "An error has occurred while emitting a TreeRefreshedEventPayload: {0}"; //$NON-NLS-1$
-                this.logger.warn(MessageFormat.format(pattern, emitResult));
+                String pattern = "An error has occurred while emitting a TreeRefreshedEventPayload: {}"; //$NON-NLS-1$
+                this.logger.warn(pattern, emitResult);
             }
 
             long end = System.currentTimeMillis();
@@ -168,7 +167,7 @@ public class TreeEventProcessor implements ITreeEventProcessor {
 
     private Tree refreshTree() {
         Tree tree = this.treeService.create(this.treeCreationParameters);
-        this.logger.trace(MessageFormat.format("Tree refreshed: {0}", this.treeCreationParameters.getEditingContext().getId())); //$NON-NLS-1$
+        this.logger.trace("Tree refreshed: {}", this.treeCreationParameters.getEditingContext().getId()); //$NON-NLS-1$
         return tree;
     }
 
@@ -185,18 +184,18 @@ public class TreeEventProcessor implements ITreeEventProcessor {
         .doOnSubscribe(subscription -> {
             String username = SecurityContextHolder.getContext().getAuthentication().getName();
             this.subscriptionManager.add(input, username);
-            this.logger.trace(MessageFormat.format("{0} has subscribed to the tree {1} {2}", username, this.treeCreationParameters.getEditingContext().getId(), this.subscriptionManager.toString())); //$NON-NLS-1$
+            this.logger.trace("{} has subscribed to the tree {} {}", username, this.treeCreationParameters.getEditingContext().getId(), this.subscriptionManager); //$NON-NLS-1$
         })
         .doOnCancel(() -> {
             String username = SecurityContextHolder.getContext().getAuthentication().getName();
             this.subscriptionManager.remove(UUID.randomUUID(), username);
-            this.logger.trace(MessageFormat.format("{0} has unsubscribed from the tree {1} {2}", username, this.treeCreationParameters.getEditingContext().getId(), this.subscriptionManager.toString())); //$NON-NLS-1$
+            this.logger.trace("{} has unsubscribed from the tree {} {}", username, this.treeCreationParameters.getEditingContext().getId(), this.subscriptionManager); //$NON-NLS-1$
 
             if (this.subscriptionManager.isEmpty()) {
                 EmitResult emitResult = this.canBeDisposedSink.tryEmitNext(Boolean.TRUE);
                 if (emitResult.isFailure()) {
-                    String pattern = "An error has occurred while emitting that the processor can be disposed: {0}"; //$NON-NLS-1$
-                    this.logger.warn(MessageFormat.format(pattern, emitResult));
+                    String pattern = "An error has occurred while emitting that the processor can be disposed: {}"; //$NON-NLS-1$
+                    this.logger.warn(pattern, emitResult);
                 }
             }
         });
@@ -210,22 +209,14 @@ public class TreeEventProcessor implements ITreeEventProcessor {
 
     @Override
     public void dispose() {
-        this.logger.trace(MessageFormat.format("Disposing the tree event processor {0}", this.treeCreationParameters.getEditingContext().getId())); //$NON-NLS-1$
-
-        if (this.canBeDisposedSink.currentSubscriberCount() > 0) {
-            EmitResult canBeDisposedEmitResult = this.canBeDisposedSink.tryEmitComplete();
-            if (canBeDisposedEmitResult.isFailure()) {
-                String pattern = "An error has occurred while marking the canBeDisposed flux as complete: {0}"; //$NON-NLS-1$
-                this.logger.warn(MessageFormat.format(pattern, canBeDisposedEmitResult));
-            }
-        }
+        this.logger.trace("Disposing the tree event processor {}", this.treeCreationParameters.getEditingContext().getId()); //$NON-NLS-1$
 
         this.subscriptionManager.dispose();
 
         EmitResult emitResult = this.sink.tryEmitComplete();
         if (emitResult.isFailure()) {
-            String pattern = "An error has occurred while marking the publisher as complete: {0}"; //$NON-NLS-1$
-            this.logger.warn(MessageFormat.format(pattern, emitResult));
+            String pattern = "An error has occurred while marking the publisher as complete: {}"; //$NON-NLS-1$
+            this.logger.warn(pattern, emitResult);
         }
     }
 

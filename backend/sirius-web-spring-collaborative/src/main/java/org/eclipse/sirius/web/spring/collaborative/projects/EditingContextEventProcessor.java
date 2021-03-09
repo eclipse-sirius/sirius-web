@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.spring.collaborative.projects;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -153,8 +152,8 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
                 String newLabel = ((RenameRepresentationInput) input).getNewLabel();
                 EmitResult emitResult = this.sink.tryEmitNext(new RepresentationRenamedEventPayload(input.getId(), representationId, newLabel));
                 if (emitResult.isFailure()) {
-                    String pattern = "An error has occurred while emitting a RepresentationRenamedEventPayload: {0}"; //$NON-NLS-1$
-                    this.logger.warn(MessageFormat.format(pattern, emitResult));
+                    String pattern = "An error has occurred while emitting a RepresentationRenamedEventPayload: {}"; //$NON-NLS-1$
+                    this.logger.warn(pattern, emitResult);
                 }
             }
         }
@@ -168,7 +167,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
      * @return The response computed by the event handler
      */
     private Optional<EventHandlerResponse> doHandle(IInput input) {
-        this.logger.trace(MessageFormat.format("Input received: {0}", input)); //$NON-NLS-1$
+        this.logger.trace("Input received: {}", input); //$NON-NLS-1$
 
         Optional<EventHandlerResponse> optionalResponse = Optional.empty();
 
@@ -330,7 +329,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
             }
         }
 
-        this.logger.trace(MessageFormat.format("Representation event processors count: {0}", this.representationEventProcessors.size())); //$NON-NLS-1$
+        this.logger.trace("Representation event processors count: {}", this.representationEventProcessors.size()); //$NON-NLS-1$
 
         return optionalRepresentationEventProcessor;
     }
@@ -345,16 +344,13 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
     }
 
     private void disposeRepresentation(UUID representationId) {
-        Optional.ofNullable(this.representationEventProcessors.remove(representationId)).ifPresent(entry -> {
-            entry.getDisposable().dispose();
-            entry.getRepresentationEventProcessor().dispose();
-        });
+        Optional.ofNullable(this.representationEventProcessors.remove(representationId)).ifPresent(RepresentationEventProcessorEntry::dispose);
 
         if (this.representationEventProcessors.isEmpty()) {
             EmitResult emitResult = this.canBeDisposedSink.tryEmitNext(Boolean.TRUE);
             if (emitResult.isFailure()) {
-                String pattern = "An error has occurred while emitting that the processor can be disposed: {0}"; //$NON-NLS-1$
-                this.logger.warn(MessageFormat.format(pattern, emitResult));
+                String pattern = "An error has occurred while emitting that the processor can be disposed: {}"; //$NON-NLS-1$
+                this.logger.warn(pattern, emitResult);
             }
         }
     }
@@ -371,29 +367,19 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
 
     @Override
     public void dispose() {
-        this.logger.trace(MessageFormat.format("Disposing the editing context event processor {0}", this.editingContext.getId())); //$NON-NLS-1$
+        this.logger.trace("Disposing the editing context event processor {}", this.editingContext.getId()); //$NON-NLS-1$
 
         this.executor.shutdown();
 
-        this.representationEventProcessors.values().forEach(entry -> {
-            entry.getDisposable().dispose();
-            entry.getRepresentationEventProcessor().dispose();
-        });
+        this.representationEventProcessors.values().forEach(RepresentationEventProcessorEntry::dispose);
         this.representationEventProcessors.clear();
 
         EmitResult emitResult = this.sink.tryEmitComplete();
         if (emitResult.isFailure()) {
-            String pattern = "An error has occurred while marking the publisher as complete: {0}"; //$NON-NLS-1$
-            this.logger.warn(MessageFormat.format(pattern, emitResult));
+            String pattern = "An error has occurred while marking the publisher as complete: {}"; //$NON-NLS-1$
+            this.logger.warn(pattern, emitResult);
         }
 
-        if (this.canBeDisposedSink.currentSubscriberCount() > 0) {
-            EmitResult canBeDisposedEmitResult = this.canBeDisposedSink.tryEmitComplete();
-            if (canBeDisposedEmitResult.isFailure()) {
-                String pattern = "An error has occurred while marking the canBeDisposed flux as complete: {0}"; //$NON-NLS-1$
-                this.logger.warn(MessageFormat.format(pattern, canBeDisposedEmitResult));
-            }
-        }
     }
 
 }

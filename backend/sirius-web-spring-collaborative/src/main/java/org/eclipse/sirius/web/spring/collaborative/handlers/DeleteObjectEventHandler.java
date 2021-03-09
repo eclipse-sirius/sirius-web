@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.spring.collaborative.handlers;
 
-import java.text.MessageFormat;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -86,7 +85,7 @@ public class DeleteObjectEventHandler implements IEditingContextEventHandler {
                 // FIXME Find the document in which the object is located
                 return new EventHandlerResponse(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId()), new DeleteObjectSuccessPayload(input.getId(), null));
             } else {
-                this.logger.warn(MessageFormat.format("The object with the id {0} does not exist", deleteObjectInput.getObjectId())); //$NON-NLS-1$
+                this.logger.warn("The object with the id {} does not exist", deleteObjectInput.getObjectId()); //$NON-NLS-1$
             }
         }
 
