@@ -22,7 +22,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius.web</groupId>
 	<artifactId>sirius-web-graphql-schema</artifactId>
-	<version>0.2.11</version>
+	<version>0.2.12</version>
 	<name>sirius-web-graphql-schema</name>
 	<description>Sirius Web GraphQL Schema</description>
 
@@ -46,38 +46,38 @@
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-graphql-utils</artifactId>
-			<version>0.2.11</version>
+			<version>0.2.12</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-spring-graphql-api</artifactId>
-			<version>0.2.11</version>
+			<version>0.2.12</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-services-api</artifactId>
-			<version>0.2.11</version>
+			<version>0.2.12</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-collaborative-api</artifactId>
-			<version>0.2.11</version>
+			<version>0.2.12</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-collaborative-trees-api</artifactId>
-			<version>0.2.11</version>
+			<version>0.2.12</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-tests</artifactId>
-			<version>0.2.11</version>
+			<version>0.2.12</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-spring-tests</artifactId>
-			<version>0.2.11</version>
+			<version>0.2.12</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
