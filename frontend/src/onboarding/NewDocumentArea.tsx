@@ -59,7 +59,7 @@ export const NewDocumentArea = ({ stereotypeDescriptions, projectId, maxDisplay,
     const variables = {
       input: {
         id: uuid(),
-        projectId,
+        editingContextId: projectId,
         name: 'Untitled ' + selected.label,
         stereotypeDescriptionId: stereotypeDescriptionId,
       },
