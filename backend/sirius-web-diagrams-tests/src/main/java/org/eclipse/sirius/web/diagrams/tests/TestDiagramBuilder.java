@@ -84,7 +84,7 @@ public class TestDiagramBuilder {
                 .fontSize(16)
                 .iconURL("") //$NON-NLS-1$
                 .build();
-        Label label = Label.newLabel("labelId") //$NON-NLS-1$
+        Label label = Label.newLabel(UUID.randomUUID())
                 .type("labelType") //$NON-NLS-1$
                 .text("text") //$NON-NLS-1$
                 .position(Position.UNDEFINED)
