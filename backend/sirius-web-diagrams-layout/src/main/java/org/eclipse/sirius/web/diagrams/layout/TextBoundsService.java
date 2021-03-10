@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.diagrams.layout;
 
+import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -60,7 +61,7 @@ public class TextBoundsService {
                     .color("#000000") //$NON-NLS-1$
                     .iconURL("") //$NON-NLS-1$
                     .build();
-            Label label = Label.newLabel("defaultLabelID") //$NON-NLS-1$
+            Label label = Label.newLabel(UUID.randomUUID())
                     .type("labelType") //$NON-NLS-1$
                     .position(Position.UNDEFINED)
                     .size(Size.UNDEFINED)

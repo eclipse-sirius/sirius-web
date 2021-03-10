@@ -175,10 +175,10 @@ public class DiagramAssert extends AbstractAssert<DiagramAssert, Diagram> {
 
     private void visitLabelId(List<String> ids, Label label) {
         if (label != null) {
-            if (ids.contains(label.getId())) {
+            if (ids.contains(label.getId().toString())) {
                 this.failWithMessage("The id of the label <%s> already exist in the diagram", label.getId()); //$NON-NLS-1$
             }
-            ids.add(label.getId());
+            ids.add(label.getId().toString());
         }
     }
 }

@@ -14,6 +14,8 @@ package org.eclipse.sirius.web.diagrams.layout.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.UUID;
+
 import org.assertj.core.data.Offset;
 import org.eclipse.sirius.web.diagrams.Label;
 import org.eclipse.sirius.web.diagrams.LabelStyle;
@@ -39,7 +41,7 @@ public class TextBoundsServiceTestCases {
 
     private static final String ICON_URL = ""; //$NON-NLS-1$
 
-    private static final String ID = "ID"; //$NON-NLS-1$
+    private static final UUID LABEL_ID = UUID.randomUUID();
 
     @Test
     @Ignore
@@ -51,7 +53,7 @@ public class TextBoundsServiceTestCases {
                 .iconURL(ICON_URL)
                 .build();
 
-        Label label = Label.newLabel(ID)
+        Label label = Label.newLabel(LABEL_ID)
                 .type(LABEL_TYPE)
                 .position(Position.UNDEFINED)
                 .size(Size.UNDEFINED)
@@ -75,7 +77,7 @@ public class TextBoundsServiceTestCases {
                 .fontSize(FONT_SIZE)
                 .iconURL(ICON_URL)
                 .build();
-        Label label = Label.newLabel(ID)
+        Label label = Label.newLabel(LABEL_ID)
                 .type(LABEL_TYPE)
                 .position(Position.UNDEFINED)
                 .size(Size.UNDEFINED)
@@ -99,7 +101,7 @@ public class TextBoundsServiceTestCases {
                 .fontSize(FONT_SIZE)
                 .iconURL(ICON_URL)
                 .build();
-        Label label = Label.newLabel(ID)
+        Label label = Label.newLabel(LABEL_ID)
                 .type(LABEL_TYPE)
                 .position(Position.UNDEFINED)
                 .size(Size.UNDEFINED)

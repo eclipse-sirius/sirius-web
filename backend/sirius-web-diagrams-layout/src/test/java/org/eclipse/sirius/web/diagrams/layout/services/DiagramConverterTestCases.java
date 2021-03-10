@@ -96,7 +96,7 @@ public class DiagramConverterTestCases {
 
         Map<String, ElkGraphElement> id2ElkGraphElements = convertedDiagram.getId2ElkGraphElements();
         assertThat(id2ElkGraphElements.get(node.getId().toString())).isInstanceOf(ElkNode.class);
-        assertThat(id2ElkGraphElements.get(node.getLabel().getId())).isInstanceOf(ElkLabel.class);
+        assertThat(id2ElkGraphElements.get(node.getLabel().getId().toString())).isInstanceOf(ElkLabel.class);
 
         ElkNode elkNode = (ElkNode) id2ElkGraphElements.get(node.getId().toString());
         this.assertSize(elkNode, TEXT_WIDTH, TEXT_HEIGHT);
@@ -128,7 +128,7 @@ public class DiagramConverterTestCases {
 
         Map<String, ElkGraphElement> id2ElkGraphElements = convertedDiagram.getId2ElkGraphElements();
         assertThat(id2ElkGraphElements.get(node.getId().toString())).isInstanceOf(ElkNode.class);
-        assertThat(id2ElkGraphElements.get(node.getLabel().getId())).isInstanceOf(ElkLabel.class);
+        assertThat(id2ElkGraphElements.get(node.getLabel().getId().toString())).isInstanceOf(ElkLabel.class);
 
         ElkNode elkNode = (ElkNode) id2ElkGraphElements.get(node.getId().toString());
         this.assertSize(elkNode, TEXT_WIDTH, TEXT_HEIGHT);

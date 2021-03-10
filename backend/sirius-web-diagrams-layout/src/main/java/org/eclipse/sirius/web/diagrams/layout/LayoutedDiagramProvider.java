@@ -160,7 +160,7 @@ public class LayoutedDiagramProvider {
 
     private Label getLayoutedLabel(Label label, Map<String, ElkGraphElement> id2ElkGraphElements, double xOffset, double yOffset) {
         Label layoutedLabel = label;
-        var optionalElkBeginLabel = Optional.of(id2ElkGraphElements.get(label.getId())).filter(ElkLabel.class::isInstance).map(ElkLabel.class::cast);
+        var optionalElkBeginLabel = Optional.of(id2ElkGraphElements.get(label.getId().toString())).filter(ElkLabel.class::isInstance).map(ElkLabel.class::cast);
         if (optionalElkBeginLabel.isPresent()) {
             ElkLabel elkLabel = optionalElkBeginLabel.get();
 

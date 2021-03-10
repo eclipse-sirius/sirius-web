@@ -111,7 +111,7 @@ public class LayoutedDiagramProviderTestCases {
         elkNode.setParent(elkDiagram);
 
         ElkLabel elkLabel = ElkGraphFactory.eINSTANCE.createElkLabel();
-        elkLabel.setIdentifier(node.getLabel().getId());
+        elkLabel.setIdentifier(node.getLabel().getId().toString());
         elkLabel.setDimensions(LABEL_WIDTH, LABEL_HEIGHT);
         elkLabel.setX(LABEL_X);
         elkLabel.setY(LABEL_Y);

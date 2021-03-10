@@ -148,7 +148,7 @@ public class DiagramConverter {
 
     private void convertLabel(Label label, TextBounds textBounds, ElkGraphElement elkGraphElement, Map<String, ElkGraphElement> id2ElkGraphElements, EdgeLabelPlacement placement) {
         ElkLabel elkLabel = ElkGraphFactory.eINSTANCE.createElkLabel();
-        elkLabel.setIdentifier(label.getId());
+        elkLabel.setIdentifier(label.getId().toString());
         elkLabel.setProperty(PROPERTY_TYPE, label.getType());
         elkLabel.setDimensions(textBounds.getSize().getWidth(), textBounds.getSize().getHeight());
 
@@ -166,7 +166,7 @@ public class DiagramConverter {
 
         elkLabel.eAdapters().add(new AlignmentHolder(textBounds.getAlignment()));
 
-        id2ElkGraphElements.put(label.getId(), elkLabel);
+        id2ElkGraphElements.put(label.getId().toString(), elkLabel);
     }
 
     private void convertEdge(Edge edge, ElkNode elkDiagram, Map<String, ElkConnectableShape> connectableShapeIndex, Map<String, ElkGraphElement> id2ElkGraphElements) {

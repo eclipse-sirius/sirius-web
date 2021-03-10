@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.diagrams.elements;
 
 import java.text.MessageFormat;
 import java.util.Objects;
+import java.util.UUID;
 
 import org.eclipse.sirius.web.annotations.Immutable;
 import org.eclipse.sirius.web.components.IProps;
@@ -31,7 +32,7 @@ public final class LabelElementProps implements IProps {
 
     public static final String TYPE = "Label"; //$NON-NLS-1$
 
-    private String id;
+    private UUID id;
 
     private String type;
 
@@ -49,7 +50,7 @@ public final class LabelElementProps implements IProps {
         // Prevent instantiation
     }
 
-    public String getId() {
+    public UUID getId() {
         return this.id;
     }
 
@@ -77,7 +78,7 @@ public final class LabelElementProps implements IProps {
         return this.style;
     }
 
-    public static Builder newLabelElementProps(String id) {
+    public static Builder newLabelElementProps(UUID id) {
         return new Builder(id);
     }
 
@@ -94,7 +95,7 @@ public final class LabelElementProps implements IProps {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private String id;
+        private UUID id;
 
         private String type;
 
@@ -108,7 +109,7 @@ public final class LabelElementProps implements IProps {
 
         private LabelStyle style;
 
-        private Builder(String id) {
+        private Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
         }
 
