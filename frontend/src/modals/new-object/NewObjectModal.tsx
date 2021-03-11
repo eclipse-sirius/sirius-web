@@ -11,14 +11,39 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMutation, useQuery } from '@apollo/client';
-import { ActionButton, Buttons } from 'core/button/Button';
-import { Form } from 'core/form/Form';
-import { Label } from 'core/label/Label';
-import { Select } from 'core/select/Select';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import IconButton from '@material-ui/core/IconButton';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import Snackbar from '@material-ui/core/Snackbar';
+import { makeStyles } from '@material-ui/core/styles';
+import CloseIcon from '@material-ui/icons/Close';
+import { useMachine } from '@xstate/react';
 import gql from 'graphql-tag';
-import { Modal } from 'modals/Modal';
-import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
+import {
+  GQLCreateChildMutationData,
+  GQLGetChildCreationDescriptionsQueryData,
+  GQLGetChildCreationDescriptionsQueryVariables,
+  NewObjectModalProps,
+} from 'modals/new-object/NewObjectModal.types';
+import {
+  ChangeChildCreationDescriptionEvent,
+  CreateChildEvent,
+  FetchedChildCreationDescriptionsEvent,
+  HandleResponseEvent,
+  HideToastEvent,
+  NewObjectModalContext,
+  NewObjectModalEvent,
+  newObjectModalMachine,
+  SchemaValue,
+  ShowToastEvent,
+} from 'modals/new-object/NewObjectModalMachine';
+import React, { useEffect } from 'react';
 import { v4 as uuid } from 'uuid';
 
 const createChildMutation = gql`
@@ -40,99 +65,165 @@ const createChildMutation = gql`
 `;
 
 const getChildCreationDescriptionsQuery = gql`
-  query getChildCreationDescriptions($classId: ID!) {
+  query getChildCreationDescriptions($editingContextId: ID!, $classId: ID!) {
     viewer {
-      childCreationDescriptions(classId: $classId) {
-        id
-        label
+      editingContext(editingContextId: $editingContextId) {
+        childCreationDescriptions(classId: $classId) {
+          id
+          label
+        }
       }
     }
   }
 `;
 
-const propTypes = {
-  projectId: PropTypes.string.isRequired,
-  classId: PropTypes.string.isRequired,
-  objectId: PropTypes.string.isRequired,
-  onObjectCreated: PropTypes.func.isRequired,
-  onClose: PropTypes.func.isRequired,
-};
+const useNewObjectModalStyles = makeStyles((theme) => ({
+  form: {
+    display: 'flex',
+    flexDirection: 'column',
+    '& > *': {
+      marginBottom: theme.spacing(1),
+    },
+  },
+}));
 
-export const NewObjectModal = ({ projectId, classId, objectId, onObjectCreated, onClose }) => {
-  const initialState = {
-    selectedChildCreationDescriptionId: undefined,
-    childCreationDescriptions: [],
-  };
-  const [state, setState] = useState(initialState);
-  const { selectedChildCreationDescriptionId, childCreationDescriptions } = state;
+export const NewObjectModal = ({
+  editingContextId,
+  classId,
+  objectId,
+  onObjectCreated,
+  onClose,
+}: NewObjectModalProps) => {
+  const classes = useNewObjectModalStyles();
+  const [{ value, context }, dispatch] = useMachine<NewObjectModalContext, NewObjectModalEvent>(newObjectModalMachine);
+  const { newObjectModal, toast } = value as SchemaValue;
+  const { selectedChildCreationDescriptionId, childCreationDescriptions, objectToSelect, message } = context;
 
   const {
-    loading: descriptionsLoading,
-    data: descriptionsResult,
-    error: descriptionError,
-  } = useQuery(getChildCreationDescriptionsQuery, { variables: { classId } });
+    loading: childCreationDescriptionsLoading,
+    data: childCreationDescriptionsData,
+    error: childCreationDescriptionsError,
+  } = useQuery<GQLGetChildCreationDescriptionsQueryData, GQLGetChildCreationDescriptionsQueryVariables>(
+    getChildCreationDescriptionsQuery,
+    { variables: { editingContextId, classId } }
+  );
   useEffect(() => {
-    if (!descriptionsLoading && !descriptionError && descriptionsResult?.viewer) {
-      setState((prevState) => {
-        const newState = { ...prevState };
-        newState.childCreationDescriptions = descriptionsResult.viewer.childCreationDescriptions;
-
-        if (newState.childCreationDescriptions.length > 0) {
-          newState.selectedChildCreationDescriptionId = newState.childCreationDescriptions[0].id;
-        }
-
-        return newState;
-      });
+    if (!childCreationDescriptionsLoading) {
+      if (childCreationDescriptionsError) {
+        const showToastEvent: ShowToastEvent = {
+          type: 'SHOW_TOAST',
+          message: 'An unexpected error has occurred, please refresh the page',
+        };
+        dispatch(showToastEvent);
+      }
+      if (childCreationDescriptionsData) {
+        const fetchChildCreationDescriptionsEvent: FetchedChildCreationDescriptionsEvent = {
+          type: 'HANDLE_FETCHED_CHILD_CREATION_DESCRIPTIONS',
+          data: childCreationDescriptionsData,
+        };
+        dispatch(fetchChildCreationDescriptionsEvent);
+      }
     }
-  }, [descriptionsLoading, descriptionsResult, descriptionError]);
+  }, [childCreationDescriptionsLoading, childCreationDescriptionsData, childCreationDescriptionsError, dispatch]);
 
-  // Used to update the selected child creation description id
-  const setSelectedChildCreationDescriptionId = (event) => {
-    const selectedChildCreationDescriptionId = event.target.value;
-
-    setState((prevState) => {
-      const newState = { ...prevState };
-      newState.selectedChildCreationDescriptionId = selectedChildCreationDescriptionId;
-      return newState;
-    });
+  const onChildCreationDescriptionChange = (event) => {
+    const value = event.target.value;
+    const changeChildCreationDescriptionEvent: ChangeChildCreationDescriptionEvent = {
+      type: 'CHANGE_CHILD_CREATION_DESCRIPTION',
+      childCreationDescriptionId: value,
+    };
+    dispatch(changeChildCreationDescriptionEvent);
   };
 
-  // Create the new child
-  const [createChild, { loading, data, error }] = useMutation(createChildMutation);
-  const onCreateChild = (event) => {
-    event.preventDefault();
+  const [createChild, { loading: createChildLoading, data: createChildData, error: createChildError }] = useMutation<
+    GQLCreateChildMutationData
+  >(createChildMutation);
+  useEffect(() => {
+    if (!createChildLoading) {
+      if (createChildError) {
+        const showToastEvent: ShowToastEvent = {
+          type: 'SHOW_TOAST',
+          message: 'An unexpected error has occurred, please refresh the page',
+        };
+        dispatch(showToastEvent);
+      }
+      if (createChildData) {
+        const handleResponseEvent: HandleResponseEvent = { type: 'HANDLE_RESPONSE', data: createChildData };
+        dispatch(handleResponseEvent);
+      }
+    }
+  }, [createChildLoading, createChildData, createChildError, dispatch]);
+
+  const onCreateObject = () => {
+    dispatch({ type: 'CREATE_CHILD' } as CreateChildEvent);
     const input = {
       id: uuid(),
-      projectId,
+      editingContextId,
       objectId,
       childCreationDescriptionId: selectedChildCreationDescriptionId,
     };
     createChild({ variables: { input } });
   };
+
   useEffect(() => {
-    if (!loading && !error && data?.createChild?.object) {
-      onObjectCreated(data.createChild.object);
+    if (newObjectModal === 'success') {
+      onObjectCreated(objectToSelect);
     }
-  }, [loading, data, error, onObjectCreated]);
+  }, [newObjectModal, onObjectCreated, objectToSelect]);
 
   return (
-    <Modal title="Create a new object" onClose={onClose}>
-      <Form onSubmit={onCreateChild}>
-        <Label value="Object type">
-          <Select
-            name="stereotype"
-            value={selectedChildCreationDescriptionId}
-            options={childCreationDescriptions}
-            onChange={setSelectedChildCreationDescriptionId}
-            autoFocus
-            data-testid="stereotype"
-          />
-        </Label>
-        <Buttons>
-          <ActionButton type="submit" label="Create" data-testid="create-object" />
-        </Buttons>
-      </Form>
-    </Modal>
+    <>
+      <Dialog open={true} onClose={onClose} aria-labelledby="dialog-title" maxWidth="xs" fullWidth>
+        <DialogTitle id="dialog-title">Create a new object</DialogTitle>
+        <DialogContent>
+          <div className={classes.form}>
+            <InputLabel id="newObjectModalChildCreationDescriptionLabel">Object type</InputLabel>
+            <Select
+              value={selectedChildCreationDescriptionId}
+              onChange={onChildCreationDescriptionChange}
+              disabled={newObjectModal === 'loading' || newObjectModal === 'creatingChild'}
+              labelId="newObjectModalChildCreationDescriptionLabel"
+              fullWidth
+              data-testid="childCreationDescription">
+              {childCreationDescriptions.map((childCreationDescription) => (
+                <MenuItem value={childCreationDescription.id} key={childCreationDescription.id}>
+                  {childCreationDescription.label}
+                </MenuItem>
+              ))}
+            </Select>
+          </div>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            variant="contained"
+            disabled={newObjectModal !== 'valid'}
+            data-testid="create-object"
+            color="primary"
+            onClick={onCreateObject}>
+            Create
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right',
+        }}
+        open={toast === 'visible'}
+        autoHideDuration={3000}
+        onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
+        message={message}
+        action={
+          <IconButton
+            size="small"
+            aria-label="close"
+            color="inherit"
+            onClick={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}>
+            <CloseIcon fontSize="small" />
+          </IconButton>
+        }
+        data-testid="error"
+      />
+    </>
   );
 };
-NewObjectModal.propTypes = propTypes;

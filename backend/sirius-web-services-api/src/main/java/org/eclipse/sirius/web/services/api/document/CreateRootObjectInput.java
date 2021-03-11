@@ -23,7 +23,7 @@ import org.eclipse.sirius.web.annotations.graphql.GraphQLNonNull;
 import org.eclipse.sirius.web.core.api.IInput;
 
 /**
- * The input object of the create root objec mutation.
+ * The input object of the create root object mutation.
  *
  * @author lfasani
  */
@@ -31,7 +31,7 @@ import org.eclipse.sirius.web.core.api.IInput;
 public final class CreateRootObjectInput implements IInput {
     private UUID id;
 
-    private UUID projectId;
+    private UUID editingContextId;
 
     private UUID documentId;
 
@@ -43,9 +43,9 @@ public final class CreateRootObjectInput implements IInput {
         // Used by Jackson
     }
 
-    public CreateRootObjectInput(UUID id, UUID projectId, UUID documentId, String namespaceId, String rootObjectCreationDescriptionId) {
+    public CreateRootObjectInput(UUID id, UUID editingContextId, UUID documentId, String namespaceId, String rootObjectCreationDescriptionId) {
         this.id = Objects.requireNonNull(id);
-        this.projectId = Objects.requireNonNull(projectId);
+        this.editingContextId = Objects.requireNonNull(editingContextId);
         this.documentId = Objects.requireNonNull(documentId);
         this.namespaceId = Objects.requireNonNull(namespaceId);
         this.rootObjectCreationDescriptionId = Objects.requireNonNull(rootObjectCreationDescriptionId);
@@ -62,8 +62,8 @@ public final class CreateRootObjectInput implements IInput {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getProjectId() {
-        return this.projectId;
+    public UUID getEditingContextId() {
+        return this.editingContextId;
     }
 
     @GraphQLID
@@ -89,7 +89,7 @@ public final class CreateRootObjectInput implements IInput {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, projectId: {2}, documentId: {3}, namespaceId: {4}, rootObjectCreationDescriptionId: {5}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.projectId, this.documentId, this.namespaceId, this.rootObjectCreationDescriptionId);
+        String pattern = "{0} '{'id: {1}, editingContextId: {2}, documentId: {3}, namespaceId: {4}, rootObjectCreationDescriptionId: {5}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.editingContextId, this.documentId, this.namespaceId, this.rootObjectCreationDescriptionId);
     }
 }

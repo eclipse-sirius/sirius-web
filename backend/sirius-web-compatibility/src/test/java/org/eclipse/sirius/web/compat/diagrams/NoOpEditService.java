@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,7 +35,7 @@ public class NoOpEditService implements IEditService {
     }
 
     @Override
-    public List<ChildCreationDescription> getChildCreationDescriptions(String classId) {
+    public List<ChildCreationDescription> getChildCreationDescriptions(UUID editingContextId, String classId) {
         return new ArrayList<>();
     }
 
@@ -50,12 +50,12 @@ public class NoOpEditService implements IEditService {
     }
 
     @Override
-    public List<Namespace> getNamespaces() {
+    public List<Namespace> getNamespaces(UUID editingContextId) {
         return new ArrayList<>();
     }
 
     @Override
-    public List<ChildCreationDescription> getRootCreationDescriptions(String namespaceId, boolean suggested) {
+    public List<ChildCreationDescription> getRootCreationDescriptions(UUID editingContextId, String namespaceId, boolean suggested) {
         return new ArrayList<>();
     }
 
