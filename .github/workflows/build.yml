@@ -92,7 +92,7 @@ jobs:
         env:
           USERNAME: ${{github.actor}}
           PASSWORD: ${{secrets.GITHUB_TOKEN}}
-        run: mvn -U -B clean verify -f backend/pom.xml --settings settings.xml
+        run: mvn -U -B -e clean verify -f backend/pom.xml --settings settings.xml
 
       - name: Run end to end tests against the test-sample
         uses: cypress-io/github-action@v2
@@ -107,7 +107,7 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/v')
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        run: mvn -B deploy -f backend/pom.xml
+        run: mvn -B -X deploy -f backend/pom.xml
 
       - name: Publish the frontend
         if: startsWith(github.ref, 'refs/tags/v')
