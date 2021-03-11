@@ -1,6 +1,6 @@
 {
   "name": "@eclipse-sirius/sirius-components",
-  "version": "0.2.13",
+  "version": "0.2.14",
   "author": "Eclipse Sirius",
   "license": "EPL-2.0",
   "description": "Reusable components used to build the Sirius Web frontend",
