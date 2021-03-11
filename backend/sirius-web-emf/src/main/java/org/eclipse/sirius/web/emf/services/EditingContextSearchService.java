@@ -23,6 +23,7 @@ import java.util.concurrent.TimeUnit;
 import org.eclipse.emf.common.command.BasicCommandStack;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.impl.EPackageRegistryImpl;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
@@ -57,18 +58,21 @@ public class EditingContextSearchService implements IEditingContextSearchService
 
     private final IDocumentRepository documentRepository;
 
+    private final IEditingContextEPackageService editingContextEPackageService;
+
     private final ComposedAdapterFactory composedAdapterFactory;
 
-    private final EPackage.Registry ePackageRegistry;
+    private final EPackage.Registry globalEPackageRegistry;
 
     private final Timer timer;
 
-    public EditingContextSearchService(IProjectRepository projectRepository, IDocumentRepository documentRepository, ComposedAdapterFactory composedAdapterFactory, EPackage.Registry ePackageRegistry,
-            MeterRegistry meterRegistry) {
+    public EditingContextSearchService(IProjectRepository projectRepository, IDocumentRepository documentRepository, IEditingContextEPackageService editingContextEPackageService,
+            ComposedAdapterFactory composedAdapterFactory, EPackage.Registry globalEPackageRegistry, MeterRegistry meterRegistry) {
         this.projectRepository = Objects.requireNonNull(projectRepository);
         this.documentRepository = Objects.requireNonNull(documentRepository);
+        this.editingContextEPackageService = Objects.requireNonNull(editingContextEPackageService);
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
-        this.ePackageRegistry = Objects.requireNonNull(ePackageRegistry);
+        this.globalEPackageRegistry = Objects.requireNonNull(globalEPackageRegistry);
 
         this.timer = Timer.builder(TIMER_NAME).register(meterRegistry);
     }
@@ -85,7 +89,11 @@ public class EditingContextSearchService implements IEditingContextSearchService
 
         this.logger.debug("Loading the editing context {}", editingContextId); //$NON-NLS-1$
         ResourceSet resourceSet = new ResourceSetImpl();
-        resourceSet.setPackageRegistry(this.ePackageRegistry);
+
+        EPackageRegistryImpl ePackageRegistry = new EPackageRegistryImpl(this.globalEPackageRegistry);
+        List<EPackage> additionalEPackages = this.editingContextEPackageService.getEPackages(editingContextId);
+        additionalEPackages.forEach(ePackage -> ePackageRegistry.put(ePackage.getNsURI(), ePackage));
+        resourceSet.setPackageRegistry(ePackageRegistry);
 
         List<DocumentEntity> documentEntities = this.documentRepository.findAllByProjectId(editingContextId);
         for (DocumentEntity documentEntity : documentEntities) {

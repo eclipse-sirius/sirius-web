@@ -32,6 +32,10 @@ public interface IDocumentRepository extends PagingAndSortingRepository<Document
 
     @Audited
     @Override
+    Iterable<DocumentEntity> findAll();
+
+    @Audited
+    @Override
     Optional<DocumentEntity> findById(UUID id);
 
     @Audited
