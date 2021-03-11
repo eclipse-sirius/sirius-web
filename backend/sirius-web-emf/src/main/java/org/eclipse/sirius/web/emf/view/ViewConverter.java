@@ -10,9 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.view.util;
+package org.eclipse.sirius.web.emf.view;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,8 +76,8 @@ public class ViewConverter {
 
     private final Function<VariableManager, String> semanticTargetLabelProvider;
 
-    // TODO: DiagramElementDescription should have a proper id.
     private final Function<DiagramElementDescription, UUID> idProvider = (diagramElementDescription) -> {
+        // DiagramElementDescription should have a proper id.
         return UUID.nameUUIDFromBytes(EcoreUtil.getURI(diagramElementDescription).toString().getBytes());
     };
 
@@ -139,12 +138,16 @@ public class ViewConverter {
                 .borderStyle(LineStyle.Solid)
                 .build();
 
+        SynchronizationPolicy synchronizationPolicy = SynchronizationPolicy.UNSYNCHRONIZED;
+        if (viewNodeDescription.getCreationMode() == Mode.AUTO) {
+            synchronizationPolicy = SynchronizationPolicy.SYNCHRONIZED;
+        }
         NodeDescription result = NodeDescription.newNodeDescription(this.idProvider.apply(viewNodeDescription))
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .targetObjectKindProvider(this.semanticTargetKindProvider)
                 .targetObjectLabelProvider(this.semanticTargetLabelProvider)
                 .semanticElementsProvider(this.getSemanticElementsProvider(viewNodeDescription))
-                .synchronizationPolicy(viewNodeDescription.getCreationMode() == Mode.AUTO ? SynchronizationPolicy.SYNCHRONIZED : SynchronizationPolicy.UNSYNCHRONIZED)
+                .synchronizationPolicy(synchronizationPolicy)
                 .typeProvider(variableManager -> NodeType.NODE_RECTANGLE)
                 .labelDescription(this.getLabelDescription(viewNodeDescription))
                 .styleProvider(variableManager -> nodeStyle)
@@ -188,7 +191,6 @@ public class ViewConverter {
     }
 
     private EdgeDescription convert(org.eclipse.sirius.web.view.EdgeDescription viewEdgeDescription, Map<org.eclipse.sirius.web.view.NodeDescription, NodeDescription> convertedNodes) {
-
         Function<VariableManager, List<Object>> semanticElementsProvider;
         if (viewEdgeDescription.isIsDomainBasedEdge()) {
             // Same logic as for nodes.
@@ -242,7 +244,7 @@ public class ViewConverter {
             };
         }
 
-        Function<VariableManager, List<Element>> targetNodesProvider = null;
+        Function<VariableManager, List<Element>> targetNodesProvider = new TargetNodesProvider(this.idProvider, viewEdgeDescription, this.interpreter);
 
         Function<VariableManager, EdgeStyle> styleProvider = variableManager -> {
             // @formatter:off
@@ -285,88 +287,8 @@ public class ViewConverter {
     private boolean isFromDescription(Element nodeElement, DiagramElementDescription diagramElementDescription) {
         if (nodeElement.getProps() instanceof NodeElementProps) {
             NodeElementProps props = (NodeElementProps) nodeElement.getProps();
-            return Objects.equals(EcoreUtil.getURI(diagramElementDescription), props.getDescriptionId().toString());
+            return Objects.equals(EcoreUtil.getURI(diagramElementDescription).toString(), props.getDescriptionId().toString());
         }
         return false;
-    }
-
-    // Copied from org.eclipse.sirius.web.compat.diagrams.RelationBasedSemanticElementsProvider
-    class RelationBasedSemanticElementsProvider implements Function<VariableManager, List<Object>> {
-
-        private final List<UUID> sourceNodeDescriptionIds;
-
-        public RelationBasedSemanticElementsProvider(List<UUID> sourceNodeDescriptionIds) {
-            this.sourceNodeDescriptionIds = Objects.requireNonNull(sourceNodeDescriptionIds);
-        }
-
-        @Override
-        public List<Object> apply(VariableManager variableManager) {
-            List<Object> objects = new ArrayList<>();
-
-            var optionalCache = variableManager.get(DiagramDescription.CACHE, DiagramRenderingCache.class);
-            if (optionalCache.isEmpty()) {
-                return List.of();
-            }
-
-            DiagramRenderingCache cache = optionalCache.get();
-            for (Element nodeElement : cache.getNodeToObject().keySet()) {
-                if (nodeElement.getProps() instanceof NodeElementProps) {
-                    NodeElementProps props = (NodeElementProps) nodeElement.getProps();
-                    if (this.sourceNodeDescriptionIds.contains(props.getDescriptionId())) {
-                        Object object = cache.getNodeToObject().get(nodeElement);
-                        objects.add(object);
-                    }
-                }
-            }
-
-            return objects;
-        }
-
-    }
-
-    class TargetNodesProvider implements Function<VariableManager, List<Element>> {
-
-        private final org.eclipse.sirius.web.view.EdgeDescription edgeMapping;
-
-        private final AQLInterpreter interpreter;
-
-        public TargetNodesProvider(org.eclipse.sirius.web.view.EdgeDescription edgeMapping, AQLInterpreter interpreter) {
-            this.edgeMapping = Objects.requireNonNull(edgeMapping);
-            this.interpreter = Objects.requireNonNull(interpreter);
-        }
-
-        @Override
-        public List<Element> apply(VariableManager variableManager) {
-
-            var optionalCache = variableManager.get(DiagramDescription.CACHE, DiagramRenderingCache.class);
-            if (optionalCache.isEmpty()) {
-                return List.of();
-            }
-
-            DiagramRenderingCache cache = optionalCache.get();
-
-            // @formatter:off
-            Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), this.edgeMapping.getTargetNodesExpression());
-            return result.asObjects().orElse(List.of()).stream()
-                    .flatMap(semanticObject-> cache.getElementsRepresenting(semanticObject).stream())
-                    .filter(this.isFromCompatibleTargetMapping())
-                    .filter(Objects::nonNull)
-                    .collect(Collectors.toList());
-            // @formatter:on
-        }
-
-        private Predicate<Element> isFromCompatibleTargetMapping() {
-            return nodeElement -> {
-                return this.edgeMapping.getTargetNodeDescriptions().stream().anyMatch(targetMapping -> this.isFromDescription(nodeElement, targetMapping));
-            };
-        }
-
-        private boolean isFromDescription(Element nodeElement, DiagramElementDescription description) {
-            if (nodeElement.getProps() instanceof NodeElementProps) {
-                NodeElementProps props = (NodeElementProps) nodeElement.getProps();
-                return Objects.equals(ViewConverter.this.idProvider.apply(description), props.getDescriptionId().toString());
-            }
-            return false;
-        }
     }
 }

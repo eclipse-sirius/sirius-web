@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.util;
+package org.eclipse.sirius.web.emf.domain;
 
 import java.util.HashMap;
 import java.util.Map;
