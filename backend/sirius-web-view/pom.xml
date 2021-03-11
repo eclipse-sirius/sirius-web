@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
- Copyright (c) 2019, 2021 Obeo.
+ Copyright (c) 2021 Obeo.
  This program and the accompanying materials
  are made available under the terms of the Eclipse Public License v2.0
  which accompanies this distribution, and is available at
@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius.web</groupId>
 	<artifactId>sirius-web-view</artifactId>
-	<version>0.2.9</version>
+	<version>0.2.13</version>
 	<name>sirius-web-view</name>
 	<description>Sirius Web View Definition DSL</description>
 
@@ -64,21 +64,6 @@
 			<groupId>org.eclipse.emf</groupId>
 			<artifactId>org.eclipse.emf.ecore</artifactId>
 			<version>2.23.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius.web</groupId>
-			<artifactId>sirius-web-diagrams</artifactId>
-			<version>0.2.9</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius.web</groupId>
-			<artifactId>sirius-web-core-api</artifactId>
-			<version>0.2.9</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius.web</groupId>
-			<artifactId>sirius-web-interpreter</artifactId>
-			<version>0.2.9</version>
 		</dependency>
 	</dependencies>
 
