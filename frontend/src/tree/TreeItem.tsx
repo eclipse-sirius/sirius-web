@@ -515,7 +515,7 @@ export const TreeItem = ({ editingContextId, item, depth, onExpand, selection, s
     };
     modal = (
       <NewRootObjectModal
-        projectId={editingContextId}
+        editingContextId={editingContextId}
         documentId={item.id}
         onObjectCreated={onRootObjectCreated}
         onClose={onCloseModal}
@@ -543,7 +543,7 @@ export const TreeItem = ({ editingContextId, item, depth, onExpand, selection, s
     };
     modal = (
       <NewObjectModal
-        projectId={editingContextId}
+        editingContextId={editingContextId}
         classId={item.kind}
         objectId={item.id}
         onObjectCreated={onObjectCreated}

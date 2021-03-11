@@ -75,10 +75,10 @@ public class MutationCreateChildDataFetcher implements IDataFetcherWithFieldCoor
 
         IPayload payload = new ErrorPayload(input.getId(), this.messageService.unauthorized());
 
-        boolean canEdit = this.dataFetchingEnvironmentService.canEdit(environment, input.getProjectId());
+        boolean canEdit = this.dataFetchingEnvironmentService.canEdit(environment, input.getEditingContextId());
         if (canEdit) {
             // @formatter:off
-            payload = this.editingContextEventProcessorRegistry.dispatchEvent(input.getProjectId(), input)
+            payload = this.editingContextEventProcessorRegistry.dispatchEvent(input.getEditingContextId(), input)
                     .orElse(new ErrorPayload(input.getId(), this.messageService.unexpectedError()));
             // @formatter:on
         }

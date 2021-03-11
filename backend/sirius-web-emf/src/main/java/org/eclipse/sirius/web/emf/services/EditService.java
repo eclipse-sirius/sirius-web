@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.emf.services;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -31,6 +32,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.impl.EPackageRegistryImpl;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -58,15 +60,19 @@ import org.springframework.stereotype.Service;
 @Service
 public class EditService implements IEditService {
 
+    private final IEditingContextEPackageService editingContextEPackageService;
+
     private final ComposedAdapterFactory composedAdapterFactory;
 
-    private final EPackage.Registry ePackageRegistry;
+    private final EPackage.Registry globalEPackageRegistry;
 
     private final ISuggestedRootObjectTypesProvider suggestedRootObjectTypesProvider;
 
-    public EditService(ComposedAdapterFactory composedAdapterFactory, EPackage.Registry ePackageRegistry, ISuggestedRootObjectTypesProvider suggestedRootObjectsProvider) {
+    public EditService(IEditingContextEPackageService editingContextEPackageService, ComposedAdapterFactory composedAdapterFactory, EPackage.Registry globalEPackageRegistry,
+            ISuggestedRootObjectTypesProvider suggestedRootObjectsProvider) {
+        this.editingContextEPackageService = Objects.requireNonNull(editingContextEPackageService);
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
-        this.ePackageRegistry = Objects.requireNonNull(ePackageRegistry);
+        this.globalEPackageRegistry = Objects.requireNonNull(globalEPackageRegistry);
         this.suggestedRootObjectTypesProvider = Objects.requireNonNull(suggestedRootObjectsProvider);
     }
 
@@ -77,7 +83,7 @@ public class EditService implements IEditService {
         String eClassName = classIdService.getEClassName(classId);
 
         // @formatter:off
-        return classIdService.findEPackage(this.ePackageRegistry, ePackageName)
+        return classIdService.findEPackage(this.globalEPackageRegistry, ePackageName)
                 .map(ePackage -> ePackage.getEClassifier(eClassName))
                 .filter(EClass.class::isInstance)
                 .map(EClass.class::cast)
@@ -86,12 +92,21 @@ public class EditService implements IEditService {
         // @formatter:on
     }
 
+    private EPackage.Registry getPackageRegistry(UUID editingContextId) {
+        EPackageRegistryImpl ePackageRegistry = new EPackageRegistryImpl(this.globalEPackageRegistry);
+        List<EPackage> additionalEPackages = this.editingContextEPackageService.getEPackages(editingContextId);
+        additionalEPackages.forEach(ePackage -> ePackageRegistry.put(ePackage.getNsURI(), ePackage));
+        return ePackageRegistry;
+    }
+
     @Override
-    public List<ChildCreationDescription> getChildCreationDescriptions(String classId) {
+    public List<ChildCreationDescription> getChildCreationDescriptions(UUID editingContextId, String classId) {
         List<ChildCreationDescription> childCreationDescriptions = new ArrayList<>();
 
+        EPackage.Registry ePackageRegistry = this.getPackageRegistry(editingContextId);
+
         ResourceSet resourceSet = new ResourceSetImpl();
-        resourceSet.setPackageRegistry(this.ePackageRegistry);
+        resourceSet.setPackageRegistry(ePackageRegistry);
         AdapterFactoryEditingDomain editingDomain = new AdapterFactoryEditingDomain(this.composedAdapterFactory, new BasicCommandStack(), resourceSet);
         Resource resource = new JsonResourceImpl(URI.createURI("inmemory"), Map.of()); //$NON-NLS-1$
         resourceSet.getResources().add(resource);
@@ -202,23 +217,35 @@ public class EditService implements IEditService {
     }
 
     @Override
-    public List<Namespace> getNamespaces() {
+    public List<Namespace> getNamespaces(UUID editingContextId) {
+        Map<String, EPackage> nsURI2EPackages = new LinkedHashMap<>();
+
+        this.globalEPackageRegistry.keySet().forEach(nsURI -> nsURI2EPackages.put(nsURI, this.globalEPackageRegistry.getEPackage(nsURI)));
+
         // @formatter:off
-        return this.ePackageRegistry.keySet().stream()
-                .map(nsUri -> new Namespace(nsUri, nsUri))
+        this.editingContextEPackageService.getEPackages(editingContextId).stream()
+            .forEach(ePackage -> nsURI2EPackages.put(ePackage.getNsURI(), ePackage));
+
+        return nsURI2EPackages.values().stream()
+                .map(ePackage -> new Namespace(ePackage.getNsURI(), ePackage.getNsURI()))
                 .collect(Collectors.toList());
         // @formatter:on
     }
 
     @Override
-    public List<ChildCreationDescription> getRootCreationDescriptions(String namespaceId, boolean suggested) {
+    public List<ChildCreationDescription> getRootCreationDescriptions(UUID editingContextId, String namespaceId, boolean suggested) {
         List<ChildCreationDescription> rootObjectCreationDescription = new ArrayList<>();
 
-        EPackage ePackage = this.ePackageRegistry.getEPackage(namespaceId);
+        EPackage.Registry ePackageRegistry = this.getPackageRegistry(editingContextId);
+
+        EPackage ePackage = ePackageRegistry.getEPackage(namespaceId);
         if (ePackage != null) {
             List<EClass> classes = new ArrayList<>();
             if (suggested) {
                 classes = this.suggestedRootObjectTypesProvider.getSuggestedRootObjectTypes(ePackage);
+                if (classes.isEmpty()) {
+                    classes = this.getConcreteClasses(ePackage);
+                }
             } else {
                 classes = this.getConcreteClasses(ePackage);
             }
@@ -243,7 +270,7 @@ public class EditService implements IEditService {
     public Optional<Object> createRootObject(IEditingContext editingContext, UUID documentId, String namespaceId, String rootObjectCreationDescriptionId) {
         Optional<Object> createdObjectOptional = Optional.empty();
 
-        var optionalEClass = this.getMatchingEClass(namespaceId, rootObjectCreationDescriptionId);
+        var optionalEClass = this.getMatchingEClass(editingContext.getId(), namespaceId, rootObjectCreationDescriptionId);
 
         // @formatter:off
         var optionalEditingDomain = Optional.of(editingContext)
@@ -275,9 +302,11 @@ public class EditService implements IEditService {
         return createdObjectOptional;
     }
 
-    private Optional<EClass> getMatchingEClass(String namespaceId, String rootObjectCreationDescriptionId) {
+    private Optional<EClass> getMatchingEClass(UUID editingContextId, String namespaceId, String rootObjectCreationDescriptionId) {
+        EPackage.Registry ePackageRegistry = this.getPackageRegistry(editingContextId);
+
         // @formatter:off
-        return Optional.ofNullable(this.ePackageRegistry.getEPackage(namespaceId))
+        return Optional.ofNullable(ePackageRegistry.getEPackage(namespaceId))
                 .map(ePackage -> ePackage.getEClassifier(rootObjectCreationDescriptionId))
                 .filter(EClass.class::isInstance)
                 .map(EClass.class::cast)

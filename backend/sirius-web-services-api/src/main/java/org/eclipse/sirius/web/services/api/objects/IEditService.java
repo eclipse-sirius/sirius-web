@@ -27,13 +27,13 @@ public interface IEditService {
 
     Optional<Object> findClass(String classId);
 
-    List<ChildCreationDescription> getChildCreationDescriptions(String classId);
+    List<Namespace> getNamespaces(UUID editingContextId);
+
+    List<ChildCreationDescription> getRootCreationDescriptions(UUID editingContextId, String namespaceId, boolean suggested);
+
+    List<ChildCreationDescription> getChildCreationDescriptions(UUID editingContextId, String classId);
 
     Optional<Object> createChild(IEditingContext editingContext, Object object, String childCreationDescriptionId);
-
-    List<Namespace> getNamespaces();
-
-    List<ChildCreationDescription> getRootCreationDescriptions(String namespaceId, boolean suggested);
 
     Optional<Object> createRootObject(IEditingContext editingContext, UUID documentId, String namespaceId, String rootObjectCreationDescriptionId);
 

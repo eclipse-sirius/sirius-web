@@ -26,8 +26,6 @@ import java.util.Set;
 
 import org.eclipse.sirius.web.graphql.utils.schema.ITypeProvider;
 import org.eclipse.sirius.web.services.api.accounts.Capabilities;
-import org.eclipse.sirius.web.services.api.objects.ChildCreationDescription;
-import org.eclipse.sirius.web.services.api.objects.Namespace;
 import org.springframework.stereotype.Service;
 
 import graphql.Scalars;
@@ -52,8 +50,6 @@ import graphql.schema.GraphQLTypeReference;
  *   project(projectId: ID!): Project
  *   editingContext(editingContextId: ID!): EditingContext
  *   representationDescriptions(classId: ID): ViewerRepresentationDescriptionConnection!
- *   childCreationDescriptions(classId: ID!): [ChildCreationDescription!]!
- *   rootObjectCreationDescriptions(namespaceId: ID!, suggested: Boolean!): [ChildCreationDescription!]!
  *   namespaces: [Namespace!]!
  *   capabilities: Capabilities!
  * }
@@ -64,8 +60,6 @@ import graphql.schema.GraphQLTypeReference;
  *   projects: [Project!]!
  *   project(projectId: ID!): Project
  *   representationDescriptions(classId: ID): ViewerRepresentationDescriptionConnection!
- *   childCreationDescriptions(classId: ID!): [ChildCreationDescription!]!
- *   rootObjectCreationDescriptions(namespaceId: ID!, suggested: Boolean!): [ChildCreationDescription!]!
  *   namespaces: [Namespace!]!
  *   capabilities: Capabilities!
  * }
@@ -102,23 +96,13 @@ public class ViewerTypeProvider implements ITypeProvider {
 
     public static final String EDITING_CONTEXT_ID_ARGUMENT = "editingContextId"; //$NON-NLS-1$
 
-    public static final String NAMESPACES_FIELD = "namespaces"; //$NON-NLS-1$
-
-    public static final String ROOT_OBJECT_CREATION_DESCRIPTIONS_FIELD = "rootObjectCreationDescriptions"; //$NON-NLS-1$
-
-    public static final String NAMESPACE_ID_ARGUMENT = "namespaceId"; //$NON-NLS-1$
-
-    public static final String SUGGESTED_ARGUMENT = "suggested"; //$NON-NLS-1$
+    public static final String CLASS_ID_ARGUMENT = "classId"; //$NON-NLS-1$
 
     public static final String REPRESENTATION_DESCRIPTIONS_FIELD = "representationDescriptions"; //$NON-NLS-1$
 
     public static final String VIEWER_REPRESENTATION_DESCRIPTIONS_CONNECTION = TYPE + RepresentationDescriptionTypeProvider.TYPE + GraphQLConstants.CONNECTION;
 
     public static final String VIEWER_REPRESENTATION_DESCRIPTIONS_EDGE = TYPE + RepresentationDescriptionTypeProvider.TYPE + GraphQLConstants.EDGE;
-
-    public static final String CHILD_CREATION_DESCRIPTIONS_FIELD = "childCreationDescriptions"; //$NON-NLS-1$
-
-    public static final String CLASS_ID_ARGUMENT = "classId"; //$NON-NLS-1$
 
     public static final String CAPABILITIES_FIELD = "capabilities"; //$NON-NLS-1$
 
@@ -160,10 +144,7 @@ public class ViewerTypeProvider implements ITypeProvider {
         viewerFieldsDefinition.add(this.getProjectsField());
         viewerFieldsDefinition.add(this.getProjectField());
         viewerFieldsDefinition.add(this.getEditingContextField());
-        viewerFieldsDefinition.add(this.getNamespaceField());
-        viewerFieldsDefinition.add(this.getRootObjectCreationDescriptionsField());
         viewerFieldsDefinition.add(this.getRepresentationDescriptionField());
-        viewerFieldsDefinition.add(this.getChildCreationDescriptionsField());
         viewerFieldsDefinition.add(this.getCapabilitiesField());
         return viewerFieldsDefinition;
     }
@@ -217,60 +198,12 @@ public class ViewerTypeProvider implements ITypeProvider {
         // @formatter:on
     }
 
-    private GraphQLFieldDefinition getNamespaceField() {
-        // @formatter:off
-        return newFieldDefinition()
-                .name(NAMESPACES_FIELD)
-                .type(nonNull(list(nonNull(typeRef(Namespace.class.getSimpleName())))))
-                .build();
-        // @formatter:on
-    }
-
-    private GraphQLFieldDefinition getRootObjectCreationDescriptionsField() {
-        // @formatter:off
-        return newFieldDefinition()
-                .name(ROOT_OBJECT_CREATION_DESCRIPTIONS_FIELD)
-                .type(nonNull(list(nonNull(typeRef(ChildCreationDescription.class.getSimpleName())))))
-                .argument(this.getNamespaceIdArgument())
-                .argument(this.getSuggestedArgument())
-                .build();
-        // @formatter:on
-    }
-
-    private GraphQLArgument getNamespaceIdArgument() {
-        // @formatter:off
-        return newArgument()
-                .name(NAMESPACE_ID_ARGUMENT)
-                .type(nonNull(Scalars.GraphQLID))
-                .build();
-        // @formatter:on
-    }
-
-    private GraphQLArgument getSuggestedArgument() {
-        // @formatter:off
-        return newArgument()
-                .name(SUGGESTED_ARGUMENT)
-                .type(nonNull(Scalars.GraphQLBoolean))
-                .build();
-        // @formatter:on
-    }
-
     private GraphQLFieldDefinition getRepresentationDescriptionField() {
         // @formatter:off
         return newFieldDefinition()
                 .name(REPRESENTATION_DESCRIPTIONS_FIELD)
                 .argument(this.getClassIdArgument())
                 .type(nonNull(typeRef(VIEWER_REPRESENTATION_DESCRIPTIONS_CONNECTION)))
-                .build();
-        // @formatter:on
-    }
-
-    private GraphQLFieldDefinition getChildCreationDescriptionsField() {
-        // @formatter:off
-        return newFieldDefinition()
-                .name(CHILD_CREATION_DESCRIPTIONS_FIELD)
-                .argument(this.getClassIdArgument())
-                .type(nonNull(list(nonNull(typeRef(ChildCreationDescription.class.getSimpleName())))))
                 .build();
         // @formatter:on
     }
