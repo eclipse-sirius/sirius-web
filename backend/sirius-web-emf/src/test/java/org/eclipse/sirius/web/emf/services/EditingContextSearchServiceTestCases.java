@@ -78,8 +78,9 @@ public class EditingContextSearchServiceTestCases {
 
         UUID projectId = UUID.randomUUID();
 
-        IEditingContextSearchService editingContextSearchService = new EditingContextSearchService(projectRepository, documentRepository, composedAdapterFactory, ePackageRegistry,
-                new SimpleMeterRegistry());
+        IEditingContextEPackageService editingContextEPackageService = editingContextId -> List.of();
+        IEditingContextSearchService editingContextSearchService = new EditingContextSearchService(projectRepository, documentRepository, editingContextEPackageService, composedAdapterFactory,
+                ePackageRegistry, new SimpleMeterRegistry());
         IEditingContext editingContext = editingContextSearchService.findById(projectId).get();
 
         assertThat(editingContext).isInstanceOf(EditingContext.class);
@@ -118,8 +119,9 @@ public class EditingContextSearchServiceTestCases {
         ComposedAdapterFactory composedAdapterFactory = new ComposedAdapterFactory();
         EPackage.Registry ePackageRegistry = new EPackageRegistryImpl();
 
-        IEditingContextSearchService editingContextSearchService = new EditingContextSearchService(projectRepository, documentRepository, composedAdapterFactory, ePackageRegistry,
-                new SimpleMeterRegistry());
+        IEditingContextEPackageService editingContextEPackageService = editingContextId -> List.of();
+        IEditingContextSearchService editingContextSearchService = new EditingContextSearchService(projectRepository, documentRepository, editingContextEPackageService, composedAdapterFactory,
+                ePackageRegistry, new SimpleMeterRegistry());
         IEditingContext editingContext = editingContextSearchService.findById(projectId).get();
 
         assertThat(editingContext).isInstanceOf(EditingContext.class);
