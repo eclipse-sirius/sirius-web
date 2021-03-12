@@ -10,14 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.emf.view;
+package org.eclipse.sirius.web.emf.configuration;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 import org.eclipse.sirius.web.api.configuration.IRepresentationDescriptionRegistry;
 import org.eclipse.sirius.web.api.configuration.IRepresentationDescriptionRegistryConfigurer;
 import org.eclipse.sirius.web.representations.IRepresentationDescription;
+import org.eclipse.sirius.web.services.api.representations.IDynamicRepresentationDescriptionService;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -29,15 +31,15 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ViewBasedRepresentationDescriptionRegistryConfigurer implements IRepresentationDescriptionRegistryConfigurer {
 
-    private final DynamicRepresentationDescriptionService dynamicDiagramDescriptionService;
+    private final IDynamicRepresentationDescriptionService dynamicDiagramDescriptionService;
 
-    public ViewBasedRepresentationDescriptionRegistryConfigurer(DynamicRepresentationDescriptionService dynamicDiagramDescriptionService) {
+    public ViewBasedRepresentationDescriptionRegistryConfigurer(IDynamicRepresentationDescriptionService dynamicDiagramDescriptionService) {
         this.dynamicDiagramDescriptionService = Objects.requireNonNull(dynamicDiagramDescriptionService);
     }
 
     @Override
     public void addRepresentationDescriptions(IRepresentationDescriptionRegistry registry) {
-        List<IRepresentationDescription> dynamicDiagramDescriptions = this.dynamicDiagramDescriptionService.findDynamicRepresentationDescriptions();
+        List<IRepresentationDescription> dynamicDiagramDescriptions = this.dynamicDiagramDescriptionService.findDynamicRepresentationDescriptions(UUID.randomUUID());
         dynamicDiagramDescriptions.forEach(registry::add);
     }
 
