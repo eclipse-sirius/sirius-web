@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
@@ -31,6 +32,7 @@ import org.eclipse.sirius.web.interpreter.AQLInterpreter;
 import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
 import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
 import org.eclipse.sirius.web.representations.IRepresentationDescription;
+import org.eclipse.sirius.web.services.api.representations.IDynamicRepresentationDescriptionService;
 import org.eclipse.sirius.web.view.View;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +44,7 @@ import org.springframework.stereotype.Service;
  * @author pcdavid
  */
 @Service
-public class DynamicRepresentationDescriptionService {
+public class DynamicRepresentationDescriptionService implements IDynamicRepresentationDescriptionService {
     private final Logger logger = LoggerFactory.getLogger(DynamicRepresentationDescriptionService.class);
 
     private final IDocumentRepository documentRepository;
@@ -58,7 +60,7 @@ public class DynamicRepresentationDescriptionService {
         this.viewConverter = new ViewConverter(Objects.requireNonNull(interpreter), Objects.requireNonNull(objectService));
     }
 
-    public List<IRepresentationDescription> findDynamicRepresentationDescriptions() {
+    public List<IRepresentationDescription> findDynamicRepresentationDescriptions(UUID editingContextId) {
         List<IRepresentationDescription> dynamicRepresentationDescriptions = new ArrayList<>();
         this.documentRepository.findAll().forEach(documentEntity -> {
             Resource res = this.loadDocumentAsEMF(documentEntity);

@@ -13,14 +13,18 @@
 package org.eclipse.sirius.web.spring.collaborative.representations;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import org.eclipse.sirius.web.representations.IRepresentationDescription;
 import org.eclipse.sirius.web.representations.VariableManager;
+import org.eclipse.sirius.web.services.api.representations.IDynamicRepresentationDescriptionService;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationDescriptionService;
 
 /**
@@ -33,14 +37,18 @@ public class RepresentationDescriptionService implements IRepresentationDescript
 
     private final RepresentationDescriptionRegistry registry;
 
-    public RepresentationDescriptionService(RepresentationDescriptionRegistry registry) {
+    private final IDynamicRepresentationDescriptionService dynamicRepresentationDescriptionService;
+
+    public RepresentationDescriptionService(RepresentationDescriptionRegistry registry, IDynamicRepresentationDescriptionService dynamicRepresentationDescriptionService) {
         this.registry = Objects.requireNonNull(registry);
+        this.dynamicRepresentationDescriptionService = Objects.requireNonNull(dynamicRepresentationDescriptionService);
     }
 
     @Override
     public List<IRepresentationDescription> getRepresentationDescriptions(Object clazz) {
         List<IRepresentationDescription> result = new ArrayList<>();
-        for (IRepresentationDescription description : this.registry.getRepresentationDescriptions()) {
+        Map<UUID, IRepresentationDescription> allRepresentationDescriptions = this.getAllRepresentationDescriptions();
+        for (IRepresentationDescription description : allRepresentationDescriptions.values()) {
             VariableManager variableManager = new VariableManager();
             variableManager.put(IRepresentationDescription.CLASS, clazz);
             Predicate<VariableManager> canCreatePredicate = description.getCanCreatePredicate();
@@ -52,14 +60,26 @@ public class RepresentationDescriptionService implements IRepresentationDescript
         return result;
     }
 
+    private Map<UUID, IRepresentationDescription> getAllRepresentationDescriptions() {
+        Map<UUID, IRepresentationDescription> allRepresentationDescriptions = new LinkedHashMap<>();
+        this.registry.getRepresentationDescriptions().forEach(representationDescription -> {
+            allRepresentationDescriptions.put(representationDescription.getId(), representationDescription);
+        });
+        this.dynamicRepresentationDescriptionService.findDynamicRepresentationDescriptions(UUID.randomUUID()).forEach(representationDescription -> {
+            // The dynamically discovered version wins over the version discovered on startup.
+            allRepresentationDescriptions.put(representationDescription.getId(), representationDescription);
+        });
+        return allRepresentationDescriptions;
+    }
+
     @Override
     public List<IRepresentationDescription> getRepresentationDescriptions() {
-        return this.registry.getRepresentationDescriptions();
+        return this.getAllRepresentationDescriptions().values().stream().collect(Collectors.toList());
     }
 
     @Override
     public Optional<IRepresentationDescription> findRepresentationDescriptionById(UUID id) {
-        return this.registry.getRepresentationDescription(id);
+        return Optional.ofNullable(this.getAllRepresentationDescriptions().get(id));
     }
 
 }
