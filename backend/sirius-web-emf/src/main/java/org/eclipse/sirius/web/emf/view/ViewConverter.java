@@ -163,7 +163,7 @@ public class ViewConverter {
 
     private LabelDescription getLabelDescription(org.eclipse.sirius.web.view.NodeDescription viewNodeDescription) {
         Function<VariableManager, String> labelIdProvider = variableManager -> {
-            Object parentId = variableManager.get(LabelDescription.OWNER_ID, Objects.class).orElse(null);
+            Object parentId = variableManager.get(LabelDescription.OWNER_ID, Object.class).orElse(null);
             return String.valueOf(parentId) + LabelDescription.LABEL_SUFFIX;
         };
 
@@ -224,8 +224,6 @@ public class ViewConverter {
             };
         } else {
             sourceNodesProvider = variableManager -> {
-                List<UUID> sourceNodeDescriptionIds = viewEdgeDescription.getSourceNodeDescriptions().stream().map(this.idProvider).collect(Collectors.toList());
-
                 var optionalObject = variableManager.get(VariableManager.SELF, Object.class);
                 var optionalCache = variableManager.get(DiagramDescription.CACHE, DiagramRenderingCache.class);
                 if (optionalObject.isEmpty() || optionalCache.isEmpty()) {
