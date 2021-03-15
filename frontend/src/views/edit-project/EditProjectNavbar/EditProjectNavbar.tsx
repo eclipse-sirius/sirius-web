@@ -12,8 +12,6 @@
  *******************************************************************************/
 import { useBranding } from 'common/BrandingContext';
 import { IconButton } from 'core/button/Button';
-import { LARGE, LIGHT } from 'core/subscriber/Subscriber';
-import { Subscribers } from 'core/subscriber/Subscribers';
 import { More } from 'icons';
 import { DeleteProjectModal } from 'modals/delete-project/DeleteProjectModal';
 import { NewDocumentModal } from 'modals/new-document/NewDocumentModal';
@@ -137,10 +135,7 @@ export const EditProjectNavbar = ({ projectId, name, subscribers }) => {
               </div>
             </div>
           </div>
-          <div className={styles.rightArea}>
-            <Subscribers subscribers={subscribers} size={LARGE} kind={LIGHT} limit={3} />
-            {userStatus}
-          </div>
+          <div className={styles.rightArea}>{userStatus}</div>
         </div>
       </div>
       {contextMenu}

@@ -35,8 +35,6 @@ export * from './core/panels/Panels';
 export * from './core/radio/Radio';
 export * from './core/select/Select';
 export * from './core/spacing/Spacing';
-export * from './core/subscriber/Subscriber';
-export * from './core/subscriber/Subscribers';
 export * from './core/tab/Tab';
 export * from './core/tab/TabBar';
 export * from './core/table/Table';
