@@ -133,7 +133,7 @@ export const NewProjectView = () => {
   }, [loading, data, error, dispatch]);
 
   if (newProjectView === 'success') {
-    return <Redirect to={`/projects/${newProjectId}/edit`} />;
+    return <Redirect to={`/projects/${newProjectId}/edit`} push />;
   }
 
   return (

@@ -100,7 +100,7 @@ export const EditProjectNavbar = ({ projectId, name, subscribers }) => {
   };
 
   if (viewState === REDIRECT__STATE) {
-    return <Redirect to={to} />;
+    return <Redirect to={to} push />;
   }
 
   let modal = null;
