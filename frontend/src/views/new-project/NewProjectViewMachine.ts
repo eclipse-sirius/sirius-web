@@ -52,17 +52,17 @@ export interface NewProjectViewContext {
 
 export type ShowToastEvent = { type: 'SHOW_TOAST'; message: string };
 export type HideToastEvent = { type: 'HIDE_TOAST' };
-export type ChangeNamedEvent = { type: 'CHANGE_NAME'; name: string };
+export type ChangeNameEvent = { type: 'CHANGE_NAME'; name: string };
 export type HandleResponseEvent = { type: 'HANDLE_RESPONSE'; data: GQLCreateProjectMutationData };
 export type RequestProjectCreationEvent = { type: 'REQUEST_PROJECT_CREATION' };
 export type NewProjectEvent =
-  | ChangeNamedEvent
+  | ChangeNameEvent
   | RequestProjectCreationEvent
   | HandleResponseEvent
   | ShowToastEvent
   | HideToastEvent;
 
-const isChangeNameEvent = (event: NewProjectEvent): event is ChangeNamedEvent => !!(event as ChangeNamedEvent).name;
+const isChangeNameEvent = (event: NewProjectEvent): event is ChangeNameEvent => !!(event as ChangeNameEvent).name;
 const isNameInvalid = (name: string) => name.trim().length < 3 || name.trim().length > 20;
 const isCreateProjectSuccessPayload = (payload: GQLCreateProjectPayload): payload is GQLCreateProjectSuccessPayload =>
   payload.__typename === 'CreateProjectSuccessPayload';
@@ -189,7 +189,7 @@ export const newProjectViewMachine = Machine<NewProjectViewContext, NewProjectVi
     },
     actions: {
       updateName: assign((_, event) => {
-        const { name } = event as ChangeNamedEvent;
+        const { name } = event as ChangeNameEvent;
         return { name, nameIsInvalid: isNameInvalid(name) };
       }),
       updateProjectId: assign((_, event) => {
