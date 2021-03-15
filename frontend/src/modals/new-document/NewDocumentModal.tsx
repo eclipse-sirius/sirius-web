@@ -131,8 +131,8 @@ export const NewDocumentModal = ({ editingContextId, onDocumentCreated, onClose 
 
   const onNameChange = (event) => {
     const value = event.target.value;
-    const changeNamedEvent: ChangeNameEvent = { type: 'CHANGE_NAME', name: value };
-    dispatch(changeNamedEvent);
+    const changeNameEvent: ChangeNameEvent = { type: 'CHANGE_NAME', name: value };
+    dispatch(changeNameEvent);
   };
 
   const onStereotypeDescriptionChange = (event) => {

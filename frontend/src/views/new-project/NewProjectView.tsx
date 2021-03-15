@@ -33,7 +33,7 @@ import {
   GQLErrorPayload,
 } from 'views/new-project/NewProjectView.types';
 import {
-  ChangeNamedEvent,
+  ChangeNameEvent,
   HandleResponseEvent,
   HideToastEvent,
   NewProjectEvent,
@@ -91,7 +91,7 @@ export const NewProjectView = () => {
 
   const onNameChange = (event) => {
     const value = event.target.value;
-    const changeNameEvent: ChangeNamedEvent = { type: 'CHANGE_NAME', name: value };
+    const changeNameEvent: ChangeNameEvent = { type: 'CHANGE_NAME', name: value };
     dispatch(changeNameEvent);
   };
 
