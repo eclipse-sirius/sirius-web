@@ -551,6 +551,7 @@ export const DiagramWebSocketContainer = ({
         diagramId: representationId,
       },
     },
+    fetchPolicy: 'no-cache',
     skip: diagramWebSocketContainer !== 'ready',
     onSubscriptionData: ({ subscriptionData }) => {
       if (subscriptionData?.data) {
