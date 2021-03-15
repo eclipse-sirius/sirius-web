@@ -127,7 +127,7 @@ export const NewModelerView = () => {
   }, [loading, data, error, dispatch]);
 
   if (newModelerView === 'success') {
-    return <Redirect to={`/projects/${projectId}/modelers`} />;
+    return <Redirect to={`/projects/${projectId}/modelers`} push />;
   }
 
   return (

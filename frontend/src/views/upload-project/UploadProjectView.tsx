@@ -107,7 +107,7 @@ export const UploadProjectView = () => {
   };
 
   if (uploadProjectView === 'success') {
-    return <Redirect to={`/projects/${newProjectId}/edit`} />;
+    return <Redirect to={`/projects/${newProjectId}/edit`} push />;
   }
   return (
     <div className={classes.uploadProjectView}>
