@@ -101,6 +101,7 @@ export const FormWebSocketContainer = ({ editingContextId, representationId }: R
         formId: representationId,
       },
     },
+    fetchPolicy: 'no-cache',
     onSubscriptionData: ({ subscriptionData }) => {
       const handleDataEvent: HandleSubscriptionResultEvent = {
         type: 'HANDLE_SUBSCRIPTION_RESULT',

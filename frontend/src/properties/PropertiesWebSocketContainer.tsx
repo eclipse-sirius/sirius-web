@@ -99,6 +99,7 @@ export const PropertiesWebSocketContainer = ({ editingContextId, selection }: Pr
         objectId: currentSelection?.id,
       },
     },
+    fetchPolicy: 'no-cache',
     skip: propertiesWebSocketContainer === 'empty',
     onSubscriptionData: ({ subscriptionData }) => {
       const handleDataEvent: HandleSubscriptionResultEvent = {

@@ -47,6 +47,7 @@ export const ExplorerWebSocketContainer = ({ editingContextId, selection, setSel
         expanded,
       },
     },
+    fetchPolicy: 'no-cache',
     skip: viewState === COMPLETE__STATE,
     onSubscriptionData: ({ subscriptionData }) => {
       dispatch({ type: HANDLE_DATA__ACTION, message: subscriptionData });
