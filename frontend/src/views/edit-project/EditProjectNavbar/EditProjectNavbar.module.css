@@ -54,9 +54,8 @@
 
 .rightArea {
   display: grid;
-  grid-template-columns: repeat(2, min-content);
+  grid-template-columns: min-content;
   grid-template-rows: 1fr;
-  column-gap: 24px;
   justify-self: end;
   padding-right: 24px;
 }
