@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Obeo - initial API and implementation
  */
@@ -34,7 +34,7 @@ import org.eclipse.emf.ecore.EObject;
 public interface Domain extends EObject {
     /**
      * Returns the value of the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @return the value of the '<em>Name</em>' attribute.
      * @see #setName(String)
      * @see org.eclipse.sirius.web.domain.DomainPackage#getDomain_Name()
@@ -46,7 +46,7 @@ public interface Domain extends EObject {
     /**
      * Sets the value of the '{@link org.eclipse.sirius.web.domain.Domain#getName <em>Name</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @param value
      *            the new value of the '<em>Name</em>' attribute.
      * @see #getName()
@@ -56,7 +56,7 @@ public interface Domain extends EObject {
 
     /**
      * Returns the value of the '<em><b>Uri</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @return the value of the '<em>Uri</em>' attribute.
      * @see #setUri(String)
      * @see org.eclipse.sirius.web.domain.DomainPackage#getDomain_Uri()
@@ -68,7 +68,7 @@ public interface Domain extends EObject {
     /**
      * Sets the value of the '{@link org.eclipse.sirius.web.domain.Domain#getUri <em>Uri</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @param value
      *            the new value of the '<em>Uri</em>' attribute.
      * @see #getUri()
@@ -79,7 +79,7 @@ public interface Domain extends EObject {
     /**
      * Returns the value of the '<em><b>Types</b></em>' containment reference list. The list contents are of type
      * {@link org.eclipse.sirius.web.domain.Entity}. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @return the value of the '<em>Types</em>' containment reference list.
      * @see org.eclipse.sirius.web.domain.DomainPackage#getDomain_Types()
      * @model containment="true"

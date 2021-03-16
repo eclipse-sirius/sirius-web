@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel"
-    copyrightText="/*******************************************************************************&#xA; * Copyright (c) 2021 Obeo.&#xA; * This program and the accompanying materials&#xA; * are made available under the terms of the Eclipse Public License v2.0&#xA; * which accompanies this distribution, and is available at&#xA; * https://www.eclipse.org/legal/epl-2.0/&#xA; *&#xA; * SPDX-License-Identifier: EPL-2.0&#xA; *&#xA; * Contributors:&#xA; *     Obeo - initial API and implementation&#xA; *******************************************************************************/&#xA;"
-    modelDirectory="/sirius-web-domain/src-gen" creationIcons="false" editDirectory="/sirius-web-domain-edit/src-gen"
+    copyrightText="Copyright (c) 2021 Obeo.&#xA;This program and the accompanying materials&#xA;are made available under the terms of the Eclipse Public License v2.0&#xA;which accompanies this distribution, and is available at&#xA;https://www.eclipse.org/legal/epl-2.0/&#xA;&#xA;SPDX-License-Identifier: EPL-2.0&#xA;&#xA;Contributors:&#xA;     Obeo - initial API and implementation"
+    modelDirectory="/sirius-web-domain/src/main/java" creationIcons="false" editDirectory="/sirius-web-domain-edit/src/main/java"
     editorDirectory="/sirius-web-domain-editor/src-gen" modelPluginID="sirius-web-domain"
     modelName="Domain" updateClasspath="false" nonNLSMarkers="true" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
     codeFormatting="true" importerID="org.eclipse.emf.importer.ecore" bundleManifest="false"
@@ -34,7 +34,8 @@
     </genClasses>
     <genClasses ecoreClass="domain.ecore#//Relation">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute domain.ecore#//Relation/name"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference domain.ecore#//Relation/targetTypes"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute domain.ecore#//Relation/containment"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference domain.ecore#//Relation/targetType"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

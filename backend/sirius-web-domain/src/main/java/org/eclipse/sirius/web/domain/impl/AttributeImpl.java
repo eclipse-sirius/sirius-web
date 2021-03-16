@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Obeo - initial API and implementation
  */
@@ -36,7 +36,7 @@ public class AttributeImpl extends MinimalEObjectImpl.Container implements Attri
     /**
      * The default value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
-     * 
+     *
      * @see #getName()
      * @generated
      * @ordered
@@ -46,7 +46,7 @@ public class AttributeImpl extends MinimalEObjectImpl.Container implements Attri
     /**
      * The cached value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
-     * 
+     *
      * @see #getName()
      * @generated
      * @ordered
@@ -56,7 +56,7 @@ public class AttributeImpl extends MinimalEObjectImpl.Container implements Attri
     /**
      * The default value of the '{@link #getType() <em>Type</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
-     * 
+     *
      * @see #getType()
      * @generated
      * @ordered
@@ -66,7 +66,7 @@ public class AttributeImpl extends MinimalEObjectImpl.Container implements Attri
     /**
      * The cached value of the '{@link #getType() <em>Type</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
-     * 
+     *
      * @see #getType()
      * @generated
      * @ordered
@@ -75,7 +75,7 @@ public class AttributeImpl extends MinimalEObjectImpl.Container implements Attri
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected AttributeImpl() {
@@ -84,7 +84,7 @@ public class AttributeImpl extends MinimalEObjectImpl.Container implements Attri
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -94,133 +94,139 @@ public class AttributeImpl extends MinimalEObjectImpl.Container implements Attri
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public String getName() {
-        return name;
+        return this.name;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public void setName(String newName) {
-        String oldName = name;
-        name = newName;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, DomainPackage.ATTRIBUTE__NAME, oldName, name));
+        String oldName = this.name;
+        this.name = newName;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DomainPackage.ATTRIBUTE__NAME, oldName, this.name));
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public Type getType() {
-        return type;
+        return this.type;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public void setType(Type newType) {
-        Type oldType = type;
-        type = newType == null ? TYPE_EDEFAULT : newType;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, DomainPackage.ATTRIBUTE__TYPE, oldType, type));
+        Type oldType = this.type;
+        this.type = newType == null ? TYPE_EDEFAULT : newType;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DomainPackage.ATTRIBUTE__TYPE, oldType, this.type));
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
         case DomainPackage.ATTRIBUTE__NAME:
-            return getName();
+            return this.getName();
         case DomainPackage.ATTRIBUTE__TYPE:
-            return getType();
+            return this.getType();
+        default:
+            return super.eGet(featureID, resolve, coreType);
         }
-        return super.eGet(featureID, resolve, coreType);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
         case DomainPackage.ATTRIBUTE__NAME:
-            setName((String) newValue);
+            this.setName((String) newValue);
             return;
         case DomainPackage.ATTRIBUTE__TYPE:
-            setType((Type) newValue);
+            this.setType((Type) newValue);
+            return;
+        default:
+            super.eSet(featureID, newValue);
             return;
         }
-        super.eSet(featureID, newValue);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
         case DomainPackage.ATTRIBUTE__NAME:
-            setName(NAME_EDEFAULT);
+            this.setName(NAME_EDEFAULT);
             return;
         case DomainPackage.ATTRIBUTE__TYPE:
-            setType(TYPE_EDEFAULT);
+            this.setType(TYPE_EDEFAULT);
+            return;
+        default:
+            super.eUnset(featureID);
             return;
         }
-        super.eUnset(featureID);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
         case DomainPackage.ATTRIBUTE__NAME:
-            return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+            return NAME_EDEFAULT == null ? this.name != null : !NAME_EDEFAULT.equals(this.name);
         case DomainPackage.ATTRIBUTE__TYPE:
-            return type != TYPE_EDEFAULT;
+            return this.type != TYPE_EDEFAULT;
+        default:
+            return super.eIsSet(featureID);
         }
-        return super.eIsSet(featureID);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public String toString() {
-        if (eIsProxy())
+        if (this.eIsProxy())
             return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (name: "); //$NON-NLS-1$
-        result.append(name);
+        result.append(this.name);
         result.append(", type: "); //$NON-NLS-1$
-        result.append(type);
+        result.append(this.type);
         result.append(')');
         return result.toString();
     }

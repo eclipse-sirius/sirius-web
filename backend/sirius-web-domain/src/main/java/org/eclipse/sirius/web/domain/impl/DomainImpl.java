@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Obeo - initial API and implementation
  */
@@ -44,7 +44,7 @@ public class DomainImpl extends MinimalEObjectImpl.Container implements Domain {
     /**
      * The default value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
-     * 
+     *
      * @see #getName()
      * @generated
      * @ordered
@@ -54,7 +54,7 @@ public class DomainImpl extends MinimalEObjectImpl.Container implements Domain {
     /**
      * The cached value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
-     * 
+     *
      * @see #getName()
      * @generated
      * @ordered
@@ -64,7 +64,7 @@ public class DomainImpl extends MinimalEObjectImpl.Container implements Domain {
     /**
      * The default value of the '{@link #getUri() <em>Uri</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
-     * 
+     *
      * @see #getUri()
      * @generated
      * @ordered
@@ -73,7 +73,7 @@ public class DomainImpl extends MinimalEObjectImpl.Container implements Domain {
 
     /**
      * The cached value of the '{@link #getUri() <em>Uri</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see #getUri()
      * @generated
      * @ordered
@@ -83,7 +83,7 @@ public class DomainImpl extends MinimalEObjectImpl.Container implements Domain {
     /**
      * The cached value of the '{@link #getTypes() <em>Types</em>}' containment reference list. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
+     *
      * @see #getTypes()
      * @generated
      * @ordered
@@ -92,7 +92,7 @@ public class DomainImpl extends MinimalEObjectImpl.Container implements Domain {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected DomainImpl() {
@@ -101,7 +101,7 @@ public class DomainImpl extends MinimalEObjectImpl.Container implements Domain {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -111,98 +111,100 @@ public class DomainImpl extends MinimalEObjectImpl.Container implements Domain {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public String getName() {
-        return name;
+        return this.name;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public void setName(String newName) {
-        String oldName = name;
-        name = newName;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, DomainPackage.DOMAIN__NAME, oldName, name));
+        String oldName = this.name;
+        this.name = newName;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DomainPackage.DOMAIN__NAME, oldName, this.name));
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public String getUri() {
-        return uri;
+        return this.uri;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public void setUri(String newUri) {
-        String oldUri = uri;
-        uri = newUri;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, DomainPackage.DOMAIN__URI, oldUri, uri));
+        String oldUri = this.uri;
+        this.uri = newUri;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DomainPackage.DOMAIN__URI, oldUri, this.uri));
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public EList<Entity> getTypes() {
-        if (types == null) {
-            types = new EObjectContainmentEList<Entity>(Entity.class, this, DomainPackage.DOMAIN__TYPES);
+        if (this.types == null) {
+            this.types = new EObjectContainmentEList<>(Entity.class, this, DomainPackage.DOMAIN__TYPES);
         }
-        return types;
+        return this.types;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
         case DomainPackage.DOMAIN__TYPES:
-            return ((InternalEList<?>) getTypes()).basicRemove(otherEnd, msgs);
+            return ((InternalEList<?>) this.getTypes()).basicRemove(otherEnd, msgs);
+        default:
+            return super.eInverseRemove(otherEnd, featureID, msgs);
         }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
         case DomainPackage.DOMAIN__NAME:
-            return getName();
+            return this.getName();
         case DomainPackage.DOMAIN__URI:
-            return getUri();
+            return this.getUri();
         case DomainPackage.DOMAIN__TYPES:
-            return getTypes();
+            return this.getTypes();
+        default:
+            return super.eGet(featureID, resolve, coreType);
         }
-        return super.eGet(featureID, resolve, coreType);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @SuppressWarnings("unchecked")
@@ -210,73 +212,78 @@ public class DomainImpl extends MinimalEObjectImpl.Container implements Domain {
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
         case DomainPackage.DOMAIN__NAME:
-            setName((String) newValue);
+            this.setName((String) newValue);
             return;
         case DomainPackage.DOMAIN__URI:
-            setUri((String) newValue);
+            this.setUri((String) newValue);
             return;
         case DomainPackage.DOMAIN__TYPES:
-            getTypes().clear();
-            getTypes().addAll((Collection<? extends Entity>) newValue);
+            this.getTypes().clear();
+            this.getTypes().addAll((Collection<? extends Entity>) newValue);
+            return;
+        default:
+            super.eSet(featureID, newValue);
             return;
         }
-        super.eSet(featureID, newValue);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
         case DomainPackage.DOMAIN__NAME:
-            setName(NAME_EDEFAULT);
+            this.setName(NAME_EDEFAULT);
             return;
         case DomainPackage.DOMAIN__URI:
-            setUri(URI_EDEFAULT);
+            this.setUri(URI_EDEFAULT);
             return;
         case DomainPackage.DOMAIN__TYPES:
-            getTypes().clear();
+            this.getTypes().clear();
+            return;
+        default:
+            super.eUnset(featureID);
             return;
         }
-        super.eUnset(featureID);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
         case DomainPackage.DOMAIN__NAME:
-            return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+            return NAME_EDEFAULT == null ? this.name != null : !NAME_EDEFAULT.equals(this.name);
         case DomainPackage.DOMAIN__URI:
-            return URI_EDEFAULT == null ? uri != null : !URI_EDEFAULT.equals(uri);
+            return URI_EDEFAULT == null ? this.uri != null : !URI_EDEFAULT.equals(this.uri);
         case DomainPackage.DOMAIN__TYPES:
-            return types != null && !types.isEmpty();
+            return this.types != null && !this.types.isEmpty();
+        default:
+            return super.eIsSet(featureID);
         }
-        return super.eIsSet(featureID);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public String toString() {
-        if (eIsProxy())
+        if (this.eIsProxy())
             return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (name: "); //$NON-NLS-1$
-        result.append(name);
+        result.append(this.name);
         result.append(", uri: "); //$NON-NLS-1$
-        result.append(uri);
+        result.append(this.uri);
         result.append(')');
         return result.toString();
     }
