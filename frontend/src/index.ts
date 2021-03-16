@@ -71,6 +71,7 @@ export * from './modals/new-document/NewDocumentModal';
 export * from './modals/new-object/NewObjectModal';
 export * from './modals/new-representation/NewRepresentationModal';
 export * from './modals/new-root-object/NewRootObjectModal';
+export * from './modals/rename-project/RenameProjectModal';
 export * from './modals/share-diagram/ShareDiagramModal';
 export * from './modals/upload-document/UploadDocumentModal';
 export * from './navbar/LoggedInNavbar';
