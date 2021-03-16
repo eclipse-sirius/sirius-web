@@ -107,7 +107,7 @@ export const DeleteProjectModal = ({ projectId, onDelete, onClose }: DeleteProje
 
   return (
     <>
-      <Dialog open={true} onClose={onClose} aria-labelledby="dialog-title">
+      <Dialog open={true} onClose={onClose} aria-labelledby="dialog-title" maxWidth="xs" fullWidth>
         <DialogTitle id="dialog-title">Delete the project</DialogTitle>
         <DialogContent>
           <DialogContentText>

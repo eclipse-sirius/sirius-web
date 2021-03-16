@@ -121,7 +121,7 @@ export const RenameProjectModal = ({ projectId, initialProjectName, onRename, on
 
   return (
     <>
-      <Dialog open={true} onClose={onClose} aria-labelledby="dialog-title">
+      <Dialog open={true} onClose={onClose} aria-labelledby="dialog-title" maxWidth="xs" fullWidth>
         <DialogTitle id="dialog-title">Rename the project</DialogTitle>
         <DialogContent>
           <TextField
