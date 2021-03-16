@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,12 +10,10 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { RenameProjectModal } from 'modals/rename-project/RenameProjectModal';
 import React, { useState } from 'react';
 import { MemoryRouter } from 'react-router-dom';
-
-import { RenameProjectModal } from 'modals/rename-project/RenameProjectModal';
 import { Border } from 'stories/common/Border';
-import { View } from 'views/View';
 
 export const RenameProjectModalStory = () => {
   const [state, setState] = useState(true);
@@ -26,7 +24,7 @@ export const RenameProjectModalStory = () => {
       <RenameProjectModal
         projectId=""
         initialProjectName=""
-        onProjectRenamed={() => setState(false)}
+        onRename={() => setState(false)}
         onClose={() => setState(false)}
       />
     );
@@ -35,9 +33,9 @@ export const RenameProjectModalStory = () => {
   return (
     <Border>
       <MemoryRouter>
-        <View>
+        <div>
           <div>{modal}</div>
-        </View>
+        </div>
       </MemoryRouter>
     </Border>
   );

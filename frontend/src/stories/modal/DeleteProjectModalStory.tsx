@@ -14,7 +14,6 @@ import { DeleteProjectModal } from 'modals/delete-project/DeleteProjectModal';
 import React, { useState } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { Border } from 'stories/common/Border';
-import { View } from 'views/View';
 
 export const DeleteProjectModalStory = () => {
   const [state, setState] = useState(true);
@@ -27,9 +26,9 @@ export const DeleteProjectModalStory = () => {
   return (
     <Border>
       <MemoryRouter>
-        <View>
+        <div>
           <div>{modal}</div>
-        </View>
+        </div>
       </MemoryRouter>
     </Border>
   );
