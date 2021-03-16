@@ -12,7 +12,7 @@
  *******************************************************************************/
 import { LinkButton } from 'core/linkbutton/LinkButton';
 import { Select } from 'core/select/Select';
-import { Representation } from 'icons';
+import { Representation } from 'icons/Representation';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { AreaContainer } from './AreaContainer';

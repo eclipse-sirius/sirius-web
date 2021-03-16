@@ -115,3 +115,4 @@ export * from './workbench/OnboardArea';
 export * from './workbench/RepresentationContext';
 export * from './workbench/RepresentationNavigation';
 export * from './workbench/Workbench';
+export * from './workbench/Workbench.types';
