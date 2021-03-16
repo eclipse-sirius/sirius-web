@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Obeo - initial API and implementation
  */
@@ -36,14 +36,14 @@ import org.eclipse.sirius.web.domain.util.DomainAdapterFactory;
  * factory convert EMF adapter notifications into calls to {@link #fireNotifyChanged fireNotifyChanged}. The adapters
  * also support Eclipse property sheets. Note that most of the adapters are shared among multiple instances. <!--
  * begin-user-doc --> <!-- end-user-doc -->
- * 
+ *
  * @generated
  */
 public class DomainItemProviderAdapterFactory extends DomainAdapterFactory implements ComposeableAdapterFactory, IChangeNotifier, IDisposable {
     /**
      * This keeps track of the root adapter factory that delegates to this adapter factory. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected ComposedAdapterFactory parentAdapterFactory;
@@ -51,7 +51,7 @@ public class DomainItemProviderAdapterFactory extends DomainAdapterFactory imple
     /**
      * This is used to implement {@link org.eclipse.emf.edit.provider.IChangeNotifier}. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected IChangeNotifier changeNotifier = new ChangeNotifier();
@@ -59,28 +59,28 @@ public class DomainItemProviderAdapterFactory extends DomainAdapterFactory imple
     /**
      * This keeps track of all the supported types checked by {@link #isFactoryForType isFactoryForType}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
-    protected Collection<Object> supportedTypes = new ArrayList<Object>();
+    protected Collection<Object> supportedTypes = new ArrayList<>();
 
     /**
      * This constructs an instance. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     public DomainItemProviderAdapterFactory() {
-        supportedTypes.add(IEditingDomainItemProvider.class);
-        supportedTypes.add(IStructuredItemContentProvider.class);
-        supportedTypes.add(ITreeItemContentProvider.class);
-        supportedTypes.add(IItemLabelProvider.class);
-        supportedTypes.add(IItemPropertySource.class);
+        this.supportedTypes.add(IEditingDomainItemProvider.class);
+        this.supportedTypes.add(IStructuredItemContentProvider.class);
+        this.supportedTypes.add(ITreeItemContentProvider.class);
+        this.supportedTypes.add(IItemLabelProvider.class);
+        this.supportedTypes.add(IItemPropertySource.class);
     }
 
     /**
      * This keeps track of the one adapter used for all {@link org.eclipse.sirius.web.domain.Domain} instances. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected DomainItemProvider domainItemProvider;
@@ -88,22 +88,22 @@ public class DomainItemProviderAdapterFactory extends DomainAdapterFactory imple
     /**
      * This creates an adapter for a {@link org.eclipse.sirius.web.domain.Domain}. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public Adapter createDomainAdapter() {
-        if (domainItemProvider == null) {
-            domainItemProvider = new DomainItemProvider(this);
+        if (this.domainItemProvider == null) {
+            this.domainItemProvider = new DomainItemProvider(this);
         }
 
-        return domainItemProvider;
+        return this.domainItemProvider;
     }
 
     /**
      * This keeps track of the one adapter used for all {@link org.eclipse.sirius.web.domain.Entity} instances. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected EntityItemProvider entityItemProvider;
@@ -111,22 +111,22 @@ public class DomainItemProviderAdapterFactory extends DomainAdapterFactory imple
     /**
      * This creates an adapter for a {@link org.eclipse.sirius.web.domain.Entity}. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public Adapter createEntityAdapter() {
-        if (entityItemProvider == null) {
-            entityItemProvider = new EntityItemProvider(this);
+        if (this.entityItemProvider == null) {
+            this.entityItemProvider = new EntityItemProvider(this);
         }
 
-        return entityItemProvider;
+        return this.entityItemProvider;
     }
 
     /**
      * This keeps track of the one adapter used for all {@link org.eclipse.sirius.web.domain.Attribute} instances. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected AttributeItemProvider attributeItemProvider;
@@ -134,22 +134,22 @@ public class DomainItemProviderAdapterFactory extends DomainAdapterFactory imple
     /**
      * This creates an adapter for a {@link org.eclipse.sirius.web.domain.Attribute}. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public Adapter createAttributeAdapter() {
-        if (attributeItemProvider == null) {
-            attributeItemProvider = new AttributeItemProvider(this);
+        if (this.attributeItemProvider == null) {
+            this.attributeItemProvider = new AttributeItemProvider(this);
         }
 
-        return attributeItemProvider;
+        return this.attributeItemProvider;
     }
 
     /**
      * This keeps track of the one adapter used for all {@link org.eclipse.sirius.web.domain.Relation} instances. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected RelationItemProvider relationItemProvider;
@@ -157,31 +157,31 @@ public class DomainItemProviderAdapterFactory extends DomainAdapterFactory imple
     /**
      * This creates an adapter for a {@link org.eclipse.sirius.web.domain.Relation}. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public Adapter createRelationAdapter() {
-        if (relationItemProvider == null) {
-            relationItemProvider = new RelationItemProvider(this);
+        if (this.relationItemProvider == null) {
+            this.relationItemProvider = new RelationItemProvider(this);
         }
 
-        return relationItemProvider;
+        return this.relationItemProvider;
     }
 
     /**
      * This returns the root adapter factory that contains this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public ComposeableAdapterFactory getRootAdapterFactory() {
-        return parentAdapterFactory == null ? this : parentAdapterFactory.getRootAdapterFactory();
+        return this.parentAdapterFactory == null ? this : this.parentAdapterFactory.getRootAdapterFactory();
     }
 
     /**
      * This sets the composed adapter factory that contains this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -191,18 +191,18 @@ public class DomainItemProviderAdapterFactory extends DomainAdapterFactory imple
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public boolean isFactoryForType(Object type) {
-        return supportedTypes.contains(type) || super.isFactoryForType(type);
+        return this.supportedTypes.contains(type) || super.isFactoryForType(type);
     }
 
     /**
      * This implementation substitutes the factory itself as the key for the adapter. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -212,12 +212,12 @@ public class DomainItemProviderAdapterFactory extends DomainAdapterFactory imple
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public Object adapt(Object object, Object type) {
-        if (isFactoryForType(type)) {
+        if (this.isFactoryForType(type)) {
             Object adapter = super.adapt(object, type);
             if (!(type instanceof Class<?>) || (((Class<?>) type).isInstance(adapter))) {
                 return adapter;
@@ -229,54 +229,54 @@ public class DomainItemProviderAdapterFactory extends DomainAdapterFactory imple
 
     /**
      * This adds a listener. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public void addListener(INotifyChangedListener notifyChangedListener) {
-        changeNotifier.addListener(notifyChangedListener);
+        this.changeNotifier.addListener(notifyChangedListener);
     }
 
     /**
      * This removes a listener. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public void removeListener(INotifyChangedListener notifyChangedListener) {
-        changeNotifier.removeListener(notifyChangedListener);
+        this.changeNotifier.removeListener(notifyChangedListener);
     }
 
     /**
      * This delegates to {@link #changeNotifier} and to {@link #parentAdapterFactory}. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public void fireNotifyChanged(Notification notification) {
-        changeNotifier.fireNotifyChanged(notification);
+        this.changeNotifier.fireNotifyChanged(notification);
 
-        if (parentAdapterFactory != null) {
-            parentAdapterFactory.fireNotifyChanged(notification);
+        if (this.parentAdapterFactory != null) {
+            this.parentAdapterFactory.fireNotifyChanged(notification);
         }
     }
 
     /**
      * This disposes all of the item providers created by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public void dispose() {
-        if (domainItemProvider != null)
-            domainItemProvider.dispose();
-        if (entityItemProvider != null)
-            entityItemProvider.dispose();
-        if (attributeItemProvider != null)
-            attributeItemProvider.dispose();
-        if (relationItemProvider != null)
-            relationItemProvider.dispose();
+        if (this.domainItemProvider != null)
+            this.domainItemProvider.dispose();
+        if (this.entityItemProvider != null)
+            this.entityItemProvider.dispose();
+        if (this.attributeItemProvider != null)
+            this.attributeItemProvider.dispose();
+        if (this.relationItemProvider != null)
+            this.relationItemProvider.dispose();
     }
 
 }

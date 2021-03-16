@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Obeo - initial API and implementation
  */
@@ -36,13 +36,13 @@ import org.eclipse.sirius.web.domain.DomainPackage;
 /**
  * This is the item provider adapter for a {@link org.eclipse.sirius.web.domain.Domain} object. <!-- begin-user-doc -->
  * <!-- end-user-doc -->
- * 
+ *
  * @generated
  */
 public class DomainItemProvider extends ItemProviderAdapter implements IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource {
     /**
      * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     public DomainItemProvider(AdapterFactory adapterFactory) {
@@ -51,40 +51,42 @@ public class DomainItemProvider extends ItemProviderAdapter implements IEditingD
 
     /**
      * This returns the property descriptors for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public List<IItemPropertyDescriptor> getPropertyDescriptors(Object object) {
-        if (itemPropertyDescriptors == null) {
+        if (this.itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
-            addNamePropertyDescriptor(object);
-            addUriPropertyDescriptor(object);
+            this.addNamePropertyDescriptor(object);
+            this.addUriPropertyDescriptor(object);
         }
-        return itemPropertyDescriptors;
+        return this.itemPropertyDescriptors;
     }
 
     /**
      * This adds a property descriptor for the Name feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected void addNamePropertyDescriptor(Object object) {
-        itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(), getString("_UI_Domain_name_feature"), //$NON-NLS-1$
-                getString("_UI_PropertyDescriptor_description", "_UI_Domain_name_feature", "_UI_Domain_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                DomainPackage.Literals.DOMAIN__NAME, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+        this.itemPropertyDescriptors
+                .add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(), this.getString("_UI_Domain_name_feature"), //$NON-NLS-1$
+                        this.getString("_UI_PropertyDescriptor_description", "_UI_Domain_name_feature", "_UI_Domain_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                        DomainPackage.Literals.DOMAIN__NAME, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
      * This adds a property descriptor for the Uri feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected void addUriPropertyDescriptor(Object object) {
-        itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(), getString("_UI_Domain_uri_feature"), //$NON-NLS-1$
-                getString("_UI_PropertyDescriptor_description", "_UI_Domain_uri_feature", "_UI_Domain_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                DomainPackage.Literals.DOMAIN__URI, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+        this.itemPropertyDescriptors
+                .add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(), this.getString("_UI_Domain_uri_feature"), //$NON-NLS-1$
+                        this.getString("_UI_PropertyDescriptor_description", "_UI_Domain_uri_feature", "_UI_Domain_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                        DomainPackage.Literals.DOMAIN__URI, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -92,21 +94,21 @@ public class DomainItemProvider extends ItemProviderAdapter implements IEditingD
      * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
      * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
-        if (childrenFeatures == null) {
+        if (this.childrenFeatures == null) {
             super.getChildrenFeatures(object);
-            childrenFeatures.add(DomainPackage.Literals.DOMAIN__TYPES);
+            this.childrenFeatures.add(DomainPackage.Literals.DOMAIN__TYPES);
         }
-        return childrenFeatures;
+        return this.childrenFeatures;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -119,17 +121,17 @@ public class DomainItemProvider extends ItemProviderAdapter implements IEditingD
 
     /**
      * This returns Domain.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public Object getImage(Object object) {
-        return overlayImage(object, getResourceLocator().getImage("full/obj16/Domain")); //$NON-NLS-1$
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/Domain")); //$NON-NLS-1$
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -139,55 +141,57 @@ public class DomainItemProvider extends ItemProviderAdapter implements IEditingD
 
     /**
      * This returns the label text for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public String getText(Object object) {
         String label = ((Domain) object).getName();
-        return label == null || label.length() == 0 ? getString("_UI_Domain_type") : //$NON-NLS-1$
-                getString("_UI_Domain_type") + " " + label; //$NON-NLS-1$ //$NON-NLS-2$
+        return label == null || label.length() == 0 ? this.getString("_UI_Domain_type") : //$NON-NLS-1$
+                this.getString("_UI_Domain_type") + " " + label; //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /**
      * This handles model notifications by calling {@link #updateChildren} to update any cached children and by creating
      * a viewer notification, which it passes to {@link #fireNotifyChanged}. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
-     * 
+     *
      * @generated
      */
     @Override
     public void notifyChanged(Notification notification) {
-        updateChildren(notification);
+        this.updateChildren(notification);
 
         switch (notification.getFeatureID(Domain.class)) {
         case DomainPackage.DOMAIN__NAME:
         case DomainPackage.DOMAIN__URI:
-            fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
             return;
         case DomainPackage.DOMAIN__TYPES:
-            fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+            return;
+        default:
+            super.notifyChanged(notification);
             return;
         }
-        super.notifyChanged(notification);
     }
 
     /**
      * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created
      * under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
 
-        newChildDescriptors.add(createChildParameter(DomainPackage.Literals.DOMAIN__TYPES, DomainFactory.eINSTANCE.createEntity()));
+        newChildDescriptors.add(this.createChildParameter(DomainPackage.Literals.DOMAIN__TYPES, DomainFactory.eINSTANCE.createEntity()));
     }
 
     /**
      * Return the resource locator for this item provider's resources. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override

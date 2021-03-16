@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Obeo - initial API and implementation
  */
@@ -45,7 +45,7 @@ public class EntityImpl extends MinimalEObjectImpl.Container implements Entity {
     /**
      * The default value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
-     * 
+     *
      * @see #getName()
      * @generated
      * @ordered
@@ -55,7 +55,7 @@ public class EntityImpl extends MinimalEObjectImpl.Container implements Entity {
     /**
      * The cached value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
-     * 
+     *
      * @see #getName()
      * @generated
      * @ordered
@@ -65,7 +65,7 @@ public class EntityImpl extends MinimalEObjectImpl.Container implements Entity {
     /**
      * The cached value of the '{@link #getAttributes() <em>Attributes</em>}' containment reference list. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see #getAttributes()
      * @generated
      * @ordered
@@ -75,7 +75,7 @@ public class EntityImpl extends MinimalEObjectImpl.Container implements Entity {
     /**
      * The cached value of the '{@link #getRelations() <em>Relations</em>}' containment reference list. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see #getRelations()
      * @generated
      * @ordered
@@ -84,7 +84,7 @@ public class EntityImpl extends MinimalEObjectImpl.Container implements Entity {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected EntityImpl() {
@@ -93,7 +93,7 @@ public class EntityImpl extends MinimalEObjectImpl.Container implements Entity {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -103,90 +103,92 @@ public class EntityImpl extends MinimalEObjectImpl.Container implements Entity {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public String getName() {
-        return name;
+        return this.name;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public void setName(String newName) {
-        String oldName = name;
-        name = newName;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, DomainPackage.ENTITY__NAME, oldName, name));
+        String oldName = this.name;
+        this.name = newName;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DomainPackage.ENTITY__NAME, oldName, this.name));
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public EList<Attribute> getAttributes() {
-        if (attributes == null) {
-            attributes = new EObjectContainmentEList<Attribute>(Attribute.class, this, DomainPackage.ENTITY__ATTRIBUTES);
+        if (this.attributes == null) {
+            this.attributes = new EObjectContainmentEList<>(Attribute.class, this, DomainPackage.ENTITY__ATTRIBUTES);
         }
-        return attributes;
+        return this.attributes;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public EList<Relation> getRelations() {
-        if (relations == null) {
-            relations = new EObjectContainmentEList<Relation>(Relation.class, this, DomainPackage.ENTITY__RELATIONS);
+        if (this.relations == null) {
+            this.relations = new EObjectContainmentEList<>(Relation.class, this, DomainPackage.ENTITY__RELATIONS);
         }
-        return relations;
+        return this.relations;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
         case DomainPackage.ENTITY__ATTRIBUTES:
-            return ((InternalEList<?>) getAttributes()).basicRemove(otherEnd, msgs);
+            return ((InternalEList<?>) this.getAttributes()).basicRemove(otherEnd, msgs);
         case DomainPackage.ENTITY__RELATIONS:
-            return ((InternalEList<?>) getRelations()).basicRemove(otherEnd, msgs);
+            return ((InternalEList<?>) this.getRelations()).basicRemove(otherEnd, msgs);
+        default:
+            return super.eInverseRemove(otherEnd, featureID, msgs);
         }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
         case DomainPackage.ENTITY__NAME:
-            return getName();
+            return this.getName();
         case DomainPackage.ENTITY__ATTRIBUTES:
-            return getAttributes();
+            return this.getAttributes();
         case DomainPackage.ENTITY__RELATIONS:
-            return getRelations();
+            return this.getRelations();
+        default:
+            return super.eGet(featureID, resolve, coreType);
         }
-        return super.eGet(featureID, resolve, coreType);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @SuppressWarnings("unchecked")
@@ -194,72 +196,77 @@ public class EntityImpl extends MinimalEObjectImpl.Container implements Entity {
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
         case DomainPackage.ENTITY__NAME:
-            setName((String) newValue);
+            this.setName((String) newValue);
             return;
         case DomainPackage.ENTITY__ATTRIBUTES:
-            getAttributes().clear();
-            getAttributes().addAll((Collection<? extends Attribute>) newValue);
+            this.getAttributes().clear();
+            this.getAttributes().addAll((Collection<? extends Attribute>) newValue);
             return;
         case DomainPackage.ENTITY__RELATIONS:
-            getRelations().clear();
-            getRelations().addAll((Collection<? extends Relation>) newValue);
+            this.getRelations().clear();
+            this.getRelations().addAll((Collection<? extends Relation>) newValue);
+            return;
+        default:
+            super.eSet(featureID, newValue);
             return;
         }
-        super.eSet(featureID, newValue);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
         case DomainPackage.ENTITY__NAME:
-            setName(NAME_EDEFAULT);
+            this.setName(NAME_EDEFAULT);
             return;
         case DomainPackage.ENTITY__ATTRIBUTES:
-            getAttributes().clear();
+            this.getAttributes().clear();
             return;
         case DomainPackage.ENTITY__RELATIONS:
-            getRelations().clear();
+            this.getRelations().clear();
+            return;
+        default:
+            super.eUnset(featureID);
             return;
         }
-        super.eUnset(featureID);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
         case DomainPackage.ENTITY__NAME:
-            return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+            return NAME_EDEFAULT == null ? this.name != null : !NAME_EDEFAULT.equals(this.name);
         case DomainPackage.ENTITY__ATTRIBUTES:
-            return attributes != null && !attributes.isEmpty();
+            return this.attributes != null && !this.attributes.isEmpty();
         case DomainPackage.ENTITY__RELATIONS:
-            return relations != null && !relations.isEmpty();
+            return this.relations != null && !this.relations.isEmpty();
+        default:
+            return super.eIsSet(featureID);
         }
-        return super.eIsSet(featureID);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public String toString() {
-        if (eIsProxy())
+        if (this.eIsProxy())
             return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (name: "); //$NON-NLS-1$
-        result.append(name);
+        result.append(this.name);
         result.append(')');
         return result.toString();
     }

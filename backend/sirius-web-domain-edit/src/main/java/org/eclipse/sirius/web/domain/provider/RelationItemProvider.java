@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Obeo - initial API and implementation
  */
@@ -34,13 +34,13 @@ import org.eclipse.sirius.web.domain.Relation;
 /**
  * This is the item provider adapter for a {@link org.eclipse.sirius.web.domain.Relation} object. <!-- begin-user-doc
  * --> <!-- end-user-doc -->
- * 
+ *
  * @generated
  */
 public class RelationItemProvider extends ItemProviderAdapter implements IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource {
     /**
      * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     public RelationItemProvider(AdapterFactory adapterFactory) {
@@ -49,56 +49,70 @@ public class RelationItemProvider extends ItemProviderAdapter implements IEditin
 
     /**
      * This returns the property descriptors for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public List<IItemPropertyDescriptor> getPropertyDescriptors(Object object) {
-        if (itemPropertyDescriptors == null) {
+        if (this.itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
-            addNamePropertyDescriptor(object);
-            addTargetTypePropertyDescriptor(object);
+            this.addNamePropertyDescriptor(object);
+            this.addContainmentPropertyDescriptor(object);
+            this.addTargetTypePropertyDescriptor(object);
         }
-        return itemPropertyDescriptors;
+        return this.itemPropertyDescriptors;
     }
 
     /**
      * This adds a property descriptor for the Name feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected void addNamePropertyDescriptor(Object object) {
-        itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(), getString("_UI_Relation_name_feature"), //$NON-NLS-1$
-                getString("_UI_PropertyDescriptor_description", "_UI_Relation_name_feature", "_UI_Relation_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                DomainPackage.Literals.RELATION__NAME, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+        this.itemPropertyDescriptors.add(
+                this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(), this.getString("_UI_Relation_name_feature"), //$NON-NLS-1$
+                        this.getString("_UI_PropertyDescriptor_description", "_UI_Relation_name_feature", "_UI_Relation_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                        DomainPackage.Literals.RELATION__NAME, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Containment feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addContainmentPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_Relation_containment_feature"), //$NON-NLS-1$
+                this.getString("_UI_PropertyDescriptor_description", "_UI_Relation_containment_feature", "_UI_Relation_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                DomainPackage.Literals.RELATION__CONTAINMENT, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
     }
 
     /**
      * This adds a property descriptor for the Target Type feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected void addTargetTypePropertyDescriptor(Object object) {
-        itemPropertyDescriptors
-                .add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(), getString("_UI_Relation_targetType_feature"), //$NON-NLS-1$
-                        getString("_UI_PropertyDescriptor_description", "_UI_Relation_targetType_feature", "_UI_Relation_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                        DomainPackage.Literals.RELATION__TARGET_TYPE, true, false, true, null, null, null));
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_Relation_targetType_feature"), //$NON-NLS-1$
+                this.getString("_UI_PropertyDescriptor_description", "_UI_Relation_targetType_feature", "_UI_Relation_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                DomainPackage.Literals.RELATION__TARGET_TYPE, true, false, true, null, null, null));
     }
 
     /**
      * This returns Relation.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public Object getImage(Object object) {
-        return overlayImage(object, getResourceLocator().getImage("full/obj16/Relation")); //$NON-NLS-1$
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/Relation")); //$NON-NLS-1$
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -108,39 +122,42 @@ public class RelationItemProvider extends ItemProviderAdapter implements IEditin
 
     /**
      * This returns the label text for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public String getText(Object object) {
         String label = ((Relation) object).getName();
-        return label == null || label.length() == 0 ? getString("_UI_Relation_type") : //$NON-NLS-1$
-                getString("_UI_Relation_type") + " " + label; //$NON-NLS-1$ //$NON-NLS-2$
+        return label == null || label.length() == 0 ? this.getString("_UI_Relation_type") : //$NON-NLS-1$
+                this.getString("_UI_Relation_type") + " " + label; //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /**
      * This handles model notifications by calling {@link #updateChildren} to update any cached children and by creating
      * a viewer notification, which it passes to {@link #fireNotifyChanged}. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
-     * 
+     *
      * @generated
      */
     @Override
     public void notifyChanged(Notification notification) {
-        updateChildren(notification);
+        this.updateChildren(notification);
 
         switch (notification.getFeatureID(Relation.class)) {
         case DomainPackage.RELATION__NAME:
-            fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+        case DomainPackage.RELATION__CONTAINMENT:
+            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+            return;
+        default:
+            super.notifyChanged(notification);
             return;
         }
-        super.notifyChanged(notification);
     }
 
     /**
      * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created
      * under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -150,7 +167,7 @@ public class RelationItemProvider extends ItemProviderAdapter implements IEditin
 
     /**
      * Return the resource locator for this item provider's resources. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override

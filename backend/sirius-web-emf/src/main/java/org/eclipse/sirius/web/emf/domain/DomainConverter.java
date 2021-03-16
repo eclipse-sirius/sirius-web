@@ -85,6 +85,7 @@ public class DomainConverter {
     private EReference convert(Relation relation, Map<Entity, EClass> convertedTypes) {
         EReference eReference = EcoreFactory.eINSTANCE.createEReference();
         eReference.setName(relation.getName());
+        eReference.setContainment(relation.isContainment());
         eReference.setEType(convertedTypes.get(relation.getTargetType()));
         return eReference;
     }
