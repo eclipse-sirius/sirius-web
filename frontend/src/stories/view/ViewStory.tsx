@@ -13,7 +13,6 @@
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { Border } from 'stories/common/Border';
-import { View } from 'views/View';
 import styles from './ViewStory.module.css';
 
 export const ViewStory = () => {
@@ -23,9 +22,9 @@ export const ViewStory = () => {
         Regular view
         <Border>
           <MemoryRouter>
-            <View>
+            <div>
               <div className={styles.placeholder}></div>
-            </View>
+            </div>
           </MemoryRouter>
         </Border>
       </div>

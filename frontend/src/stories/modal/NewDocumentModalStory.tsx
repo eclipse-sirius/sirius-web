@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,27 +10,25 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { NewDocumentModal } from 'modals/new-document/NewDocumentModal';
 import React, { useState } from 'react';
 import { MemoryRouter } from 'react-router-dom';
-
-import { NewDocumentModal } from 'modals/new-document/NewDocumentModal';
 import { Border } from 'stories/common/Border';
-import { View } from 'views/View';
 
 export const NewDocumentModalStory = () => {
   const [state, setState] = useState(true);
 
   let modal;
   if (state) {
-    modal = <NewDocumentModal projectId="" onDocumentCreated={() => {}} onClose={() => setState(false)} />;
+    modal = <NewDocumentModal editingContextId="" onDocumentCreated={() => {}} onClose={() => setState(false)} />;
   }
 
   return (
     <Border>
       <MemoryRouter>
-        <View>
+        <div>
           <div>{modal}</div>
-        </View>
+        </div>
       </MemoryRouter>
     </Border>
   );
