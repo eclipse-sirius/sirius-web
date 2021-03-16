@@ -34,7 +34,6 @@ export * from './NewDocument';
 export * from './NewRepresentation';
 export * from './NoIcon';
 export * from './Profile';
-export * from './Representation';
 export * from './Resource';
 export * from './Search';
 export * from './See';
