@@ -55,7 +55,6 @@ public class EditingContextEPackageService implements IEditingContextEPackageSer
     public List<EPackage> getEPackages(UUID editingContextId) {
         // @formatter:off
         List<DocumentEntity> entities = StreamSupport.stream(this.documentRepository.findAll().spliterator(), false)
-            .filter(documentEntity -> documentEntity.getName().contains(".domain")) //$NON-NLS-1$
             .collect(Collectors.toList());
         // @formatter:on
 

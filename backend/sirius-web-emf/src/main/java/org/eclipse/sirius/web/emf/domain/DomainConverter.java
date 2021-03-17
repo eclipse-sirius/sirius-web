@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.emf.domain;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -36,7 +37,7 @@ public class DomainConverter {
     public EPackage convert(Domain domain) {
         EPackage ePackage = EcoreFactory.eINSTANCE.createEPackage();
         ePackage.setName(domain.getName());
-        ePackage.setNsPrefix(domain.getName().toLowerCase());
+        ePackage.setNsPrefix(Optional.ofNullable(domain.getName()).orElse("").toLowerCase()); //$NON-NLS-1$
         ePackage.setNsURI(domain.getUri());
 
         Map<Entity, EClass> convertedTypes = new HashMap<>();
