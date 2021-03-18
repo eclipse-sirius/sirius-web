@@ -10,17 +10,46 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+
 import { useMutation, useQuery } from '@apollo/client';
-import { ActionButton, Buttons } from 'core/button/Button';
-import { Form } from 'core/form/Form';
-import { Label } from 'core/label/Label';
-import { Select } from 'core/select/Select';
-import { Textfield } from 'core/textfield/Textfield';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import IconButton from '@material-ui/core/IconButton';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import Snackbar from '@material-ui/core/Snackbar';
+import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import CloseIcon from '@material-ui/icons/Close';
+import { useMachine } from '@xstate/react';
 import gql from 'graphql-tag';
-import { Modal } from 'modals/Modal';
-import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { v4 as uuid } from 'uuid';
+import {
+  GQLCreateRepresentationMutationData,
+  GQLCreateRepresentationPayload,
+  GQLErrorPayload,
+  GQLGetRepresentationDescriptionsQueryData,
+  GQLGetRepresentationDescriptionsQueryVariables,
+  NewRepresentationModalProps,
+} from './NewRepresentationModal.types';
+import {
+  ChangeNameEvent,
+  ChangeRepresentationDescriptionEvent,
+  CreateRepresentationEvent,
+  FetchedRepresentationDescriptionsEvent,
+  HandleResponseEvent,
+  HideToastEvent,
+  NewRepresentationModalContext,
+  NewRepresentationModalEvent,
+  newRepresentationModalMachine,
+  SchemaValue,
+  ShowToastEvent,
+} from './NewRepresentationModalMachine';
 
 const createRepresentationMutation = gql`
   mutation createRepresentation($input: CreateRepresentationInput!) {
@@ -42,156 +71,229 @@ const createRepresentationMutation = gql`
 `;
 
 const getRepresentationDescriptionsQuery = gql`
-  query getRepresentationDescriptions($classId: ID!) {
+  query getRepresentationDescriptions($editingContextId: ID!, $classId: ID!) {
     viewer {
-      representationDescriptions(classId: $classId) {
-        edges {
-          node {
-            id
-            label
+      editingContext(editingContextId: $editingContextId) {
+        representationDescriptions(classId: $classId) {
+          edges {
+            node {
+              id
+              label
+            }
           }
-        }
-        pageInfo {
-          hasNextPage
-          hasPreviousPage
-          startCursor
-          endCursor
+          pageInfo {
+            hasNextPage
+            hasPreviousPage
+            startCursor
+            endCursor
+          }
         }
       }
     }
   }
 `;
 
-const propTypes = {
-  projectId: PropTypes.string.isRequired,
-  classId: PropTypes.string.isRequired,
-  objectId: PropTypes.string.isRequired,
-  onRepresentationCreated: PropTypes.func.isRequired,
-  onClose: PropTypes.func.isRequired,
-};
+const useNewRepresentationModalStyles = makeStyles((theme) => ({
+  form: {
+    display: 'flex',
+    flexDirection: 'column',
+    '& > *': {
+      marginBottom: theme.spacing(1),
+    },
+  },
+}));
 
-export const NewRepresentationModal = ({ projectId, classId, objectId, onRepresentationCreated, onClose }) => {
-  const initialState = {
-    representationDescriptions: [],
-    selectedRepresentationDescription: undefined,
-    name: '',
-    userChosenName: false,
-  };
-  const [state, setState] = useState(initialState);
-  const { representationDescriptions, selectedRepresentationDescription, name } = state;
+const isErrorPayload = (payload: GQLCreateRepresentationPayload): payload is GQLErrorPayload =>
+  payload.__typename === 'ErrorPayload';
 
-  const { loading, data: queryResult, error } = useQuery(getRepresentationDescriptionsQuery, {
-    variables: { classId },
-  });
+export const NewRepresentationModal = ({
+  editingContextId,
+  classId,
+  objectId,
+  onRepresentationCreated,
+  onClose,
+}: NewRepresentationModalProps) => {
+  const classes = useNewRepresentationModalStyles();
+  const [{ value, context }, dispatch] = useMachine<NewRepresentationModalContext, NewRepresentationModalEvent>(
+    newRepresentationModalMachine
+  );
+  const { newRepresentationModal, toast } = value as SchemaValue;
+  const {
+    name,
+    nameMessage,
+    nameIsInvalid,
+    selectedRepresentationDescriptionId,
+    representationDescriptions,
+    createdRepresentationId,
+    createdRepresentationLabel,
+    createdRepresentationKind,
+    message,
+  } = context;
+
+  const {
+    loading: representationDescriptionsLoading,
+    data: representationDescriptionsData,
+    error: representationDescriptionsError,
+  } = useQuery<GQLGetRepresentationDescriptionsQueryData, GQLGetRepresentationDescriptionsQueryVariables>(
+    getRepresentationDescriptionsQuery,
+    { variables: { editingContextId, classId } }
+  );
+
   useEffect(() => {
-    if (!loading && !error && queryResult) {
-      const representationDescriptions = queryResult.viewer.representationDescriptions.edges.map((edge) => edge.node);
-
-      setState((prevState) => {
-        const newState = { ...prevState };
-        newState.representationDescriptions = representationDescriptions;
-
-        if (newState.representationDescriptions.length > 0) {
-          newState.selectedRepresentationDescription = newState.representationDescriptions[0];
-          if (!prevState.userChosenName) {
-            newState.name = newState.selectedRepresentationDescription.label;
-          }
-        }
-        return newState;
-      });
-    }
-  }, [loading, queryResult, error]);
-
-  const setSelectedRepresentationDescription = (event) => {
-    const selectedId = event.target.value;
-
-    setState((prevState) => {
-      const newState = { ...prevState };
-      const selectedRepresentationDescription = representationDescriptions.find(
-        (candidate) => candidate.id === selectedId
-      );
-      if (selectedRepresentationDescription) {
-        newState.selectedRepresentationDescription = selectedRepresentationDescription;
-        if (!prevState.userChosenName) {
-          newState.name = newState.selectedRepresentationDescription.label;
-        }
+    if (!representationDescriptionsLoading) {
+      if (representationDescriptionsError) {
+        const showToastEvent: ShowToastEvent = {
+          type: 'SHOW_TOAST',
+          message: 'An unexpected error has occurred, please refresh the page',
+        };
+        dispatch(showToastEvent);
       }
-      return newState;
-    });
+      if (representationDescriptionsData) {
+        const fetchRepresentationDescriptionsEvent: FetchedRepresentationDescriptionsEvent = {
+          type: 'HANDLE_FETCHED_REPRESENTATION_DESCRIPTIONS',
+          data: representationDescriptionsData,
+        };
+        dispatch(fetchRepresentationDescriptionsEvent);
+      }
+    }
+  }, [representationDescriptionsLoading, representationDescriptionsData, representationDescriptionsError, dispatch]);
+
+  const onNameChange = (event) => {
+    const value = event.target.value;
+    const changeNamedEvent: ChangeNameEvent = { type: 'CHANGE_NAME', name: value };
+    dispatch(changeNamedEvent);
   };
 
-  const onNewName = (event) => {
-    const newName = event.target.value;
-
-    setState((prevState) => {
-      const newState = { ...prevState };
-      newState.name = newName;
-      newState.userChosenName = true;
-      return newState;
-    });
+  const onRepresentationDescriptionChange = (event) => {
+    const value = event.target.value;
+    const changeRepresentationDescriptionEvent: ChangeRepresentationDescriptionEvent = {
+      type: 'CHANGE_REPRESENTATION_DESCRIPTION',
+      representationDescriptionId: value,
+    };
+    dispatch(changeRepresentationDescriptionEvent);
   };
 
   const [
     createRepresentation,
     { loading: createRepresentationLoading, data: createRepresentationData, error: createRepresentationError },
-  ] = useMutation(createRepresentationMutation);
+  ] = useMutation<GQLCreateRepresentationMutationData>(createRepresentationMutation);
   useEffect(() => {
-    if (
-      !createRepresentationLoading &&
-      !createRepresentationError &&
-      createRepresentationData?.createRepresentation?.representation
-    ) {
-      const { id, label, __typename } = createRepresentationData.createRepresentation.representation;
-      onRepresentationCreated({ id, label, kind: __typename });
-    }
-  }, [createRepresentationLoading, createRepresentationData, createRepresentationError, onRepresentationCreated]);
+    if (!createRepresentationLoading) {
+      if (createRepresentationError) {
+        const showToastEvent: ShowToastEvent = {
+          type: 'SHOW_TOAST',
+          message: 'An unexpected error has occurred, please refresh the page',
+        };
+        dispatch(showToastEvent);
+      }
+      if (createRepresentationData) {
+        const handleResponseEvent: HandleResponseEvent = { type: 'HANDLE_RESPONSE', data: createRepresentationData };
+        dispatch(handleResponseEvent);
 
-  const onCreateRepresentation = (event) => {
-    event.preventDefault();
+        const { createRepresentation } = createRepresentationData;
+        if (isErrorPayload(createRepresentation)) {
+          const { message } = createRepresentation;
+          const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
+          dispatch(showToastEvent);
+        }
+      }
+    }
+  }, [createRepresentationLoading, createRepresentationData, createRepresentationError, dispatch]);
+
+  const onCreateRepresentation = () => {
+    dispatch({ type: 'CREATE_REPRESENTATION' } as CreateRepresentationEvent);
     const input = {
       id: uuid(),
-      projectId,
+      projectId: editingContextId,
       objectId,
-      representationDescriptionId: selectedRepresentationDescription.id,
+      representationDescriptionId: selectedRepresentationDescriptionId,
       representationName: name,
     };
+
     createRepresentation({ variables: { input } });
   };
 
-  let invalid = !(name != null && name.length > 0 && selectedRepresentationDescription); // TODO Textfield does not actually support an "invalid" prop
-
-  let selectedValue = undefined;
-  if (selectedRepresentationDescription) {
-    selectedValue = selectedRepresentationDescription.id;
-  }
+  useEffect(() => {
+    if (newRepresentationModal === 'success') {
+      onRepresentationCreated({
+        id: createdRepresentationId,
+        label: createdRepresentationLabel,
+        kind: createdRepresentationKind,
+      });
+    }
+  }, [
+    createdRepresentationId,
+    createdRepresentationKind,
+    createdRepresentationLabel,
+    newRepresentationModal,
+    onRepresentationCreated,
+  ]);
 
   return (
-    <Modal title="Create a new representation" onClose={onClose}>
-      <Form onSubmit={onCreateRepresentation}>
-        <Label value="Name">
-          <Textfield
-            name="name"
-            placeholder="Enter the representation name"
-            value={name}
-            onChange={onNewName}
-            autoFocus
-            data-testid="name"
-          />
-        </Label>
-        <Label value="Description">
-          <Select
-            name="description"
-            value={selectedValue}
-            options={representationDescriptions}
-            onChange={setSelectedRepresentationDescription}
-            data-testid="description"
-          />
-        </Label>
-        <Buttons>
-          <ActionButton type="submit" disabled={invalid} label="Create" data-testid="create-representation" />
-        </Buttons>
-      </Form>
-    </Modal>
+    <>
+      <Dialog open={true} onClose={onClose} aria-labelledby="dialog-title" maxWidth="xs" fullWidth>
+        <DialogTitle id="dialog-title">Create a new representation</DialogTitle>
+        <DialogContent>
+          <div className={classes.form}>
+            <TextField
+              error={nameIsInvalid}
+              helperText={nameMessage}
+              label="Name"
+              name="name"
+              value={name}
+              placeholder="Enter the name of the representation"
+              data-testid="name"
+              autoFocus={true}
+              onChange={onNameChange}
+              disabled={newRepresentationModal === 'loading' || newRepresentationModal === 'creatingRepresentation'}
+            />
+            <InputLabel id="newRepresentationModalRepresentationDescriptionLabel">Representation type</InputLabel>
+            <Select
+              value={selectedRepresentationDescriptionId}
+              onChange={onRepresentationDescriptionChange}
+              disabled={newRepresentationModal === 'loading' || newRepresentationModal === 'creatingRepresentation'}
+              labelId="newDocumentModalStereotypeDescriptionLabel"
+              fullWidth
+              data-testid="representationDescription">
+              {representationDescriptions.map((representationDescription) => (
+                <MenuItem value={representationDescription.id} key={representationDescription.id}>
+                  {representationDescription.label}
+                </MenuItem>
+              ))}
+            </Select>
+          </div>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            variant="contained"
+            disabled={newRepresentationModal !== 'valid'}
+            data-testid="create-representation"
+            color="primary"
+            onClick={onCreateRepresentation}>
+            Create
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right',
+        }}
+        open={toast === 'visible'}
+        autoHideDuration={3000}
+        onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
+        message={message}
+        action={
+          <IconButton
+            size="small"
+            aria-label="close"
+            color="inherit"
+            onClick={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}>
+            <CloseIcon fontSize="small" />
+          </IconButton>
+        }
+        data-testid="error"
+      />
+    </>
   );
 };
-NewRepresentationModal.propTypes = propTypes;

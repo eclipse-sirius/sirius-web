@@ -45,6 +45,7 @@ import graphql.schema.GraphQLType;
  *   childCreationDescriptions(classId: ID!): [ChildCreationDescription!]!
  *   rootObjectCreationDescriptions(namespaceId: ID!, suggested: Boolean!): [ChildCreationDescription!]!
  *   namespaces: [Namespace!]!
+ *   representationDescriptions(classId: ID): EditingContextRepresentationDescriptionConnection!
  * }
  * </pre>
  *
@@ -69,6 +70,12 @@ public class EditingContextTypeProvider implements ITypeProvider {
 
     public static final String NAMESPACES_FIELD = "namespaces"; //$NON-NLS-1$
 
+    public static final String REPRESENTATION_DESCRIPTIONS_FIELD = "representationDescriptions"; //$NON-NLS-1$
+
+    public static final String EDITING_CONTEXT_REPRESENTATION_DESCRIPTIONS_CONNECTION = TYPE + RepresentationDescriptionTypeProvider.TYPE + GraphQLConstants.CONNECTION;
+
+    public static final String EDITING_CONTEXT_REPRESENTATION_DESCRIPTIONS_EDGE = TYPE + RepresentationDescriptionTypeProvider.TYPE + GraphQLConstants.EDGE;
+
     @Override
     public Set<GraphQLType> getTypes() {
         // @formatter:off
@@ -79,12 +86,18 @@ public class EditingContextTypeProvider implements ITypeProvider {
                 .field(this.getChildCreationDescriptionsField())
                 .field(this.getRootObjectCreationDescriptionsField())
                 .field(this.getNamespaceField())
+                .field(this.getRepresentationDescriptionField())
                 .build();
         // @formatter:on
 
+        GraphQLObjectType viewerRepresentationDescriptionEdge = new PaginationEdgeTypeProvider(EDITING_CONTEXT_REPRESENTATION_DESCRIPTIONS_EDGE, RepresentationDescriptionTypeProvider.TYPE).getType();
+        GraphQLObjectType viewerRepresentationDescriptionConnection = new PaginationConnectionTypeProvider(EDITING_CONTEXT_REPRESENTATION_DESCRIPTIONS_CONNECTION,
+                EDITING_CONTEXT_REPRESENTATION_DESCRIPTIONS_EDGE).getType();
+
         Set<GraphQLType> types = new LinkedHashSet<>();
         types.add(editingContextType);
-
+        types.add(viewerRepresentationDescriptionEdge);
+        types.add(viewerRepresentationDescriptionConnection);
         return types;
     }
 
@@ -154,4 +167,13 @@ public class EditingContextTypeProvider implements ITypeProvider {
         // @formatter:on
     }
 
+    private GraphQLFieldDefinition getRepresentationDescriptionField() {
+        // @formatter:off
+        return newFieldDefinition()
+                .name(REPRESENTATION_DESCRIPTIONS_FIELD)
+                .argument(this.getClassIdArgument())
+                .type(nonNull(typeRef(EDITING_CONTEXT_REPRESENTATION_DESCRIPTIONS_CONNECTION)))
+                .build();
+        // @formatter:on
+    }
 }

@@ -60,6 +60,7 @@ public class DynamicRepresentationDescriptionService implements IDynamicRepresen
         this.viewConverter = new ViewConverter(Objects.requireNonNull(interpreter), Objects.requireNonNull(objectService));
     }
 
+    @Override
     public List<IRepresentationDescription> findDynamicRepresentationDescriptions(UUID editingContextId) {
         List<IRepresentationDescription> dynamicRepresentationDescriptions = new ArrayList<>();
         this.documentRepository.findAll().forEach(documentEntity -> {
@@ -85,7 +86,7 @@ public class DynamicRepresentationDescriptionService implements IDynamicRepresen
         resourceSet.getResources().add(resource);
         try (var inputStream = new ByteArrayInputStream(documentEntity.getContent().getBytes())) {
             resource.load(inputStream, null);
-        } catch (IOException exception) {
+        } catch (IOException | IllegalArgumentException exception) {
             this.logger.error(exception.getMessage(), exception);
         }
         return resource;

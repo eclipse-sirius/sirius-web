@@ -28,20 +28,20 @@ const getOnboardDataQuery = gql`
           id
           label
         }
+        representationDescriptions(classId: $classId) {
+          edges {
+            node {
+              id
+              label
+            }
+          }
+        }
       }
       project(projectId: $projectId) {
         representations {
           __typename
           id
           label
-        }
-      }
-      representationDescriptions(classId: $classId) {
-        edges {
-          node {
-            id
-            label
-          }
         }
       }
     }
@@ -74,7 +74,7 @@ export const OnboardArea = ({ projectId, selection, setSelection }) => {
   useEffect(() => {
     if (!loading && !error && data?.viewer) {
       const { viewer } = data;
-      let representationDescriptions = viewer.representationDescriptions.edges.map((edge) => edge.node);
+      let representationDescriptions = viewer.editingContext.representationDescriptions.edges.map((edge) => edge.node);
       setState({
         representations: viewer.project.representations,
         stereotypeDescriptions: viewer.editingContext.stereotypeDescriptions,
