@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.graphql.datafetchers.user;
+package org.eclipse.sirius.web.graphql.datafetchers.editingcontext;
 
 import java.util.ArrayList;
 import java.util.Base64;
@@ -19,7 +19,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.eclipse.sirius.web.annotations.spring.graphql.QueryDataFetcher;
-import org.eclipse.sirius.web.graphql.schema.ViewerTypeProvider;
+import org.eclipse.sirius.web.graphql.schema.EditingContextTypeProvider;
 import org.eclipse.sirius.web.representations.IRepresentationDescription;
 import org.eclipse.sirius.web.services.api.objects.IEditService;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationDescriptionService;
@@ -42,29 +42,29 @@ import graphql.schema.DataFetchingEnvironment;
  * </p>
  *
  * <pre>
- * type Viewer {
- *   representationDescriptions(classId: ID): ViewerRepresentationDescriptionConnection!
+ * type EditingContext {
+ *   representationDescriptions(classId: ID): EditingContextRepresentationDescriptionConnection!
  * }
  * </pre>
  *
  * @author pcdavid
  * @author sbegaudeau
  */
-@QueryDataFetcher(type = ViewerTypeProvider.USER_TYPE, field = ViewerTypeProvider.REPRESENTATION_DESCRIPTIONS_FIELD)
-public class UserRepresentationDescriptionsDataFetcher implements IDataFetcherWithFieldCoordinates<Connection<IRepresentationDescription>> {
+@QueryDataFetcher(type = EditingContextTypeProvider.TYPE, field = EditingContextTypeProvider.REPRESENTATION_DESCRIPTIONS_FIELD)
+public class EditingContextRepresentationDescriptionsDataFetcher implements IDataFetcherWithFieldCoordinates<Connection<IRepresentationDescription>> {
 
     private final IRepresentationDescriptionService representationDescriptionService;
 
     private final IEditService editService;
 
-    public UserRepresentationDescriptionsDataFetcher(IRepresentationDescriptionService representationDescriptionService, IEditService editService) {
+    public EditingContextRepresentationDescriptionsDataFetcher(IRepresentationDescriptionService representationDescriptionService, IEditService editService) {
         this.representationDescriptionService = Objects.requireNonNull(representationDescriptionService);
         this.editService = Objects.requireNonNull(editService);
     }
 
     @Override
     public Connection<IRepresentationDescription> get(DataFetchingEnvironment environment) throws Exception {
-        String classId = environment.getArgument(ViewerTypeProvider.CLASS_ID_ARGUMENT);
+        String classId = environment.getArgument(EditingContextTypeProvider.CLASS_ID_ARGUMENT);
 
         // @formatter:off
         var representationDescriptions = this.editService.findClass(classId)
@@ -84,7 +84,7 @@ public class UserRepresentationDescriptionsDataFetcher implements IDataFetcherWi
 
         ConnectionCursor startCursor = representationDescriptionEdges.stream().findFirst().map(Edge::getCursor).orElse(null);
         ConnectionCursor endCursor = null;
-        if (representationDescriptionEdges.size() > 0) {
+        if (!representationDescriptionEdges.isEmpty()) {
             endCursor = representationDescriptionEdges.get(representationDescriptionEdges.size() - 1).getCursor();
         }
         PageInfo pageInfo = new DefaultPageInfo(startCursor, endCursor, false, false);

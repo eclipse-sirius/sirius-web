@@ -96,26 +96,13 @@ public class ViewerTypeProvider implements ITypeProvider {
 
     public static final String EDITING_CONTEXT_ID_ARGUMENT = "editingContextId"; //$NON-NLS-1$
 
-    public static final String CLASS_ID_ARGUMENT = "classId"; //$NON-NLS-1$
-
-    public static final String REPRESENTATION_DESCRIPTIONS_FIELD = "representationDescriptions"; //$NON-NLS-1$
-
-    public static final String VIEWER_REPRESENTATION_DESCRIPTIONS_CONNECTION = TYPE + RepresentationDescriptionTypeProvider.TYPE + GraphQLConstants.CONNECTION;
-
-    public static final String VIEWER_REPRESENTATION_DESCRIPTIONS_EDGE = TYPE + RepresentationDescriptionTypeProvider.TYPE + GraphQLConstants.EDGE;
-
     public static final String CAPABILITIES_FIELD = "capabilities"; //$NON-NLS-1$
 
     @Override
     public Set<GraphQLType> getTypes() {
         GraphQLInterfaceType viewerInterface = this.getViewerInterface();
         GraphQLObjectType userType = this.getUserType();
-
-        GraphQLObjectType viewerRepresentationDescriptionEdge = new PaginationEdgeTypeProvider(VIEWER_REPRESENTATION_DESCRIPTIONS_EDGE, RepresentationDescriptionTypeProvider.TYPE).getType();
-        GraphQLObjectType viewerRepresentationDescriptionConnection = new PaginationConnectionTypeProvider(VIEWER_REPRESENTATION_DESCRIPTIONS_CONNECTION, VIEWER_REPRESENTATION_DESCRIPTIONS_EDGE)
-                .getType();
-
-        return Set.of(viewerInterface, userType, viewerRepresentationDescriptionEdge, viewerRepresentationDescriptionConnection);
+        return Set.of(viewerInterface, userType);
     }
 
     private GraphQLInterfaceType getViewerInterface() {
@@ -144,7 +131,6 @@ public class ViewerTypeProvider implements ITypeProvider {
         viewerFieldsDefinition.add(this.getProjectsField());
         viewerFieldsDefinition.add(this.getProjectField());
         viewerFieldsDefinition.add(this.getEditingContextField());
-        viewerFieldsDefinition.add(this.getRepresentationDescriptionField());
         viewerFieldsDefinition.add(this.getCapabilitiesField());
         return viewerFieldsDefinition;
     }
@@ -197,26 +183,7 @@ public class ViewerTypeProvider implements ITypeProvider {
                 .build();
         // @formatter:on
     }
-
-    private GraphQLFieldDefinition getRepresentationDescriptionField() {
-        // @formatter:off
-        return newFieldDefinition()
-                .name(REPRESENTATION_DESCRIPTIONS_FIELD)
-                .argument(this.getClassIdArgument())
-                .type(nonNull(typeRef(VIEWER_REPRESENTATION_DESCRIPTIONS_CONNECTION)))
-                .build();
-        // @formatter:on
-    }
-
-    private GraphQLArgument getClassIdArgument() {
-        // @formatter:off
-        return newArgument()
-                .name(CLASS_ID_ARGUMENT)
-                .type(nonNull(Scalars.GraphQLID))
-                .build();
-        // @formatter:on
-    }
-
+    
     private GraphQLFieldDefinition getCapabilitiesField() {
         // @formatter:off
         return newFieldDefinition()

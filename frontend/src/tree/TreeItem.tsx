@@ -572,7 +572,7 @@ export const TreeItem = ({ editingContextId, item, depth, onExpand, selection, s
     };
     modal = (
       <NewRepresentationModal
-        projectId={editingContextId}
+        editingContextId={editingContextId}
         classId={item.kind}
         objectId={item.id}
         onRepresentationCreated={onRepresentationCreated}
