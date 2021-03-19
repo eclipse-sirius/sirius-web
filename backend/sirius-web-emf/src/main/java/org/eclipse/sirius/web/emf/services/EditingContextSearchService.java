@@ -100,12 +100,12 @@ public class EditingContextSearchService implements IEditingContextSearchService
             URI uri = URI.createURI(documentEntity.getId().toString());
             JsonResource resource = new SiriusWebJSONResourceFactoryImpl().createResource(uri);
             try (var inputStream = new ByteArrayInputStream(documentEntity.getContent().getBytes())) {
+                resourceSet.getResources().add(resource);
                 resource.load(inputStream, null);
 
                 resource.eAdapters().add(new DocumentMetadataAdapter(documentEntity.getName()));
-                resourceSet.getResources().add(resource);
-            } catch (IOException exception) {
-                this.logger.error(exception.getMessage(), exception);
+            } catch (IOException | IllegalArgumentException exception) {
+                this.logger.warn(exception.getMessage(), exception);
             }
         }
 

@@ -19,6 +19,7 @@ import java.util.UUID;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EPackageRegistryImpl;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.EditingDomain;
@@ -75,6 +76,7 @@ public class EditingContextSearchServiceTestCases {
         IDocumentRepository documentRepository = new NoOpDocumentRepository();
         ComposedAdapterFactory composedAdapterFactory = new ComposedAdapterFactory();
         EPackage.Registry ePackageRegistry = new EPackageRegistryImpl();
+        ePackageRegistry.put(EcorePackage.eNS_URI, EcorePackage.eINSTANCE);
 
         UUID projectId = UUID.randomUUID();
 
@@ -118,6 +120,7 @@ public class EditingContextSearchServiceTestCases {
 
         ComposedAdapterFactory composedAdapterFactory = new ComposedAdapterFactory();
         EPackage.Registry ePackageRegistry = new EPackageRegistryImpl();
+        ePackageRegistry.put(EcorePackage.eNS_URI, EcorePackage.eINSTANCE);
 
         IEditingContextEPackageService editingContextEPackageService = editingContextId -> List.of();
         IEditingContextSearchService editingContextSearchService = new EditingContextSearchService(projectRepository, documentRepository, editingContextEPackageService, composedAdapterFactory,

@@ -27,7 +27,6 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.domain.Domain;
-import org.eclipse.sirius.web.domain.DomainPackage;
 import org.eclipse.sirius.web.emf.domain.DomainConverter;
 import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
 import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
@@ -45,9 +44,12 @@ public class EditingContextEPackageService implements IEditingContextEPackageSer
 
     private final Logger logger = LoggerFactory.getLogger(EditingContextEPackageService.class);
 
+    private final EPackage.Registry globalEPackageRegistry;
+
     private final IDocumentRepository documentRepository;
 
-    public EditingContextEPackageService(IDocumentRepository documentRepository) {
+    public EditingContextEPackageService(EPackage.Registry globalEPackageRegistry, IDocumentRepository documentRepository) {
+        this.globalEPackageRegistry = Objects.requireNonNull(globalEPackageRegistry);
         this.documentRepository = Objects.requireNonNull(documentRepository);
     }
 
@@ -58,8 +60,7 @@ public class EditingContextEPackageService implements IEditingContextEPackageSer
             .collect(Collectors.toList());
         // @formatter:on
 
-        EPackageRegistryImpl ePackageRegistry = new EPackageRegistryImpl();
-        ePackageRegistry.put(DomainPackage.eNS_URI, DomainPackage.eINSTANCE);
+        EPackageRegistryImpl ePackageRegistry = new EPackageRegistryImpl(this.globalEPackageRegistry);
         ResourceSet resourceSet = new ResourceSetImpl();
         resourceSet.setPackageRegistry(ePackageRegistry);
 
@@ -71,8 +72,8 @@ public class EditingContextEPackageService implements IEditingContextEPackageSer
                 resource.load(inputStream, null);
 
                 resource.eAdapters().add(new DocumentMetadataAdapter(documentEntity.getName()));
-            } catch (IOException exception) {
-                this.logger.error(exception.getMessage(), exception);
+            } catch (IOException | IllegalArgumentException exception) {
+                this.logger.warn(exception.getMessage(), exception);
             }
         }
 
