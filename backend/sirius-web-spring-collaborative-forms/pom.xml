@@ -22,7 +22,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius.web</groupId>
 	<artifactId>sirius-web-spring-collaborative-forms</artifactId>
-	<version>0.2.16</version>
+	<version>0.2.17</version>
 	<name>sirius-web-spring-collaborative-forms</name>
 	<description>Sirius Web Spring Collaborative Forms</description>
 
@@ -50,33 +50,33 @@
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-collaborative-forms-api</artifactId>
-			<version>0.2.16</version>
+			<version>0.2.17</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-spring-collaborative</artifactId>
-			<version>0.2.16</version>
+			<version>0.2.17</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-services</artifactId>
-			<version>0.2.16</version>
+			<version>0.2.17</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-graphql-utils</artifactId>
-			<version>0.2.16</version>
+			<version>0.2.17</version>
 		</dependency>
 		<dependency>
     		<groupId>org.eclipse.sirius.web</groupId>
     		<artifactId>sirius-web-tests</artifactId>
-    		<version>0.2.16</version>
+    		<version>0.2.17</version>
     		<scope>test</scope>
     	</dependency>
     	<dependency>
     		<groupId>org.eclipse.sirius.web</groupId>
     		<artifactId>sirius-web-spring-tests</artifactId>
-    		<version>0.2.16</version>
+    		<version>0.2.17</version>
     		<scope>test</scope>
     	</dependency>
     	<dependency>
