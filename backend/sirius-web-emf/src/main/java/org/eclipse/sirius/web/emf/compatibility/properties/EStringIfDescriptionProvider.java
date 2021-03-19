@@ -21,7 +21,6 @@ import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.web.compat.forms.WidgetIdProvider;
 import org.eclipse.sirius.web.forms.description.IfDescription;
 import org.eclipse.sirius.web.forms.description.TextfieldDescription;
@@ -37,12 +36,6 @@ public class EStringIfDescriptionProvider {
     private static final String IF_DESCRIPTION_ID = "EString"; //$NON-NLS-1$
 
     private static final String TEXTFIELD_DESCRIPTION_ID = "Textfield"; //$NON-NLS-1$
-
-    private final ComposedAdapterFactory composedAdapterFactory;
-
-    public EStringIfDescriptionProvider(ComposedAdapterFactory composedAdapterFactory) {
-        this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
-    }
 
     public IfDescription getIfDescription() {
         // @formatter:off
@@ -75,7 +68,7 @@ public class EStringIfDescriptionProvider {
     }
 
     private Function<VariableManager, String> getLabelProvider() {
-        return new EStructuralFeatureLabelProvider(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE, this.composedAdapterFactory);
+        return new EStructuralFeatureLabelProvider(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE);
     }
 
     private Function<VariableManager, String> getValueProvider() {

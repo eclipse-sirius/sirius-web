@@ -20,7 +20,6 @@ import java.util.function.Function;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.web.compat.forms.WidgetIdProvider;
 import org.eclipse.sirius.web.compat.services.ImageConstants;
 import org.eclipse.sirius.web.core.api.IObjectService;
@@ -40,12 +39,9 @@ public class MultiValuedNonContainmentReferenceIfDescriptionProvider {
 
     private static final String LIST_DESCRIPTION_ID = "List"; //$NON-NLS-1$
 
-    private final ComposedAdapterFactory composedAdapterFactory;
-
     private final IObjectService objectService;
 
-    public MultiValuedNonContainmentReferenceIfDescriptionProvider(ComposedAdapterFactory composedAdapterFactory, IObjectService objectService) {
-        this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
+    public MultiValuedNonContainmentReferenceIfDescriptionProvider(IObjectService objectService) {
         this.objectService = Objects.requireNonNull(objectService);
     }
 
@@ -84,7 +80,7 @@ public class MultiValuedNonContainmentReferenceIfDescriptionProvider {
     }
 
     private Function<VariableManager, String> getLabelProvider() {
-        return new EStructuralFeatureLabelProvider(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE, this.composedAdapterFactory);
+        return new EStructuralFeatureLabelProvider(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE);
     }
 
     private Function<VariableManager, String> getImageURLProvider() {

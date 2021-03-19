@@ -19,7 +19,6 @@ import java.util.function.Function;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.web.compat.forms.WidgetIdProvider;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IObjectService;
@@ -42,14 +41,11 @@ public class MonoValuedNonContainmentReferenceIfDescriptionProvider {
 
     private static final String SELECT_DESCRIPTION_ID = "Select"; //$NON-NLS-1$
 
-    private final ComposedAdapterFactory composedAdapterFactory;
-
     private final IObjectService objectService;
 
     private final Logger logger = LoggerFactory.getLogger(MonoValuedNonContainmentReferenceIfDescriptionProvider.class);
 
-    public MonoValuedNonContainmentReferenceIfDescriptionProvider(ComposedAdapterFactory composedAdapterFactory, IObjectService objectService) {
-        this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
+    public MonoValuedNonContainmentReferenceIfDescriptionProvider(IObjectService objectService) {
         this.objectService = Objects.requireNonNull(objectService);
     }
 
@@ -122,7 +118,7 @@ public class MonoValuedNonContainmentReferenceIfDescriptionProvider {
     }
 
     private Function<VariableManager, String> getLabelProvider() {
-        return new EStructuralFeatureLabelProvider(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE, this.composedAdapterFactory);
+        return new EStructuralFeatureLabelProvider(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE);
     }
 
     private Function<VariableManager, String> getValueProvider() {
@@ -144,7 +140,7 @@ public class MonoValuedNonContainmentReferenceIfDescriptionProvider {
     }
 
     private Function<VariableManager, List<Object>> getOptionsProvider() {
-        return new EStructuralFeatureChoiceOfValueProvider(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE, this.composedAdapterFactory);
+        return new EStructuralFeatureChoiceOfValueProvider(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE);
     }
 
     private Function<VariableManager, String> getOptionIdProvider() {

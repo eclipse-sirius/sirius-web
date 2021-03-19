@@ -21,7 +21,6 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.web.forms.description.IfDescription;
 import org.eclipse.sirius.web.forms.description.TextfieldDescription;
 import org.eclipse.sirius.web.representations.Status;
@@ -38,11 +37,8 @@ public class NumberIfDescriptionProvider {
 
     private final EDataType eDataType;
 
-    private final ComposedAdapterFactory composedAdapterFactory;
-
-    public NumberIfDescriptionProvider(EDataType eDataType, ComposedAdapterFactory composedAdapterFactory) {
+    public NumberIfDescriptionProvider(EDataType eDataType) {
         this.eDataType = Objects.requireNonNull(eDataType);
-        this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
     }
 
     public IfDescription getIfDescription() {
@@ -89,7 +85,7 @@ public class NumberIfDescriptionProvider {
     }
 
     private Function<VariableManager, String> getLabelProvider() {
-        return new EStructuralFeatureLabelProvider(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE, this.composedAdapterFactory);
+        return new EStructuralFeatureLabelProvider(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE);
     }
 
     private Function<VariableManager, String> getValueProvider() {

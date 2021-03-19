@@ -16,11 +16,12 @@ import java.util.Objects;
 import java.util.function.Function;
 
 import org.eclipse.emf.common.notify.Adapter;
-import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
+import org.eclipse.sirius.web.core.api.IEditingContext;
+import org.eclipse.sirius.web.emf.services.EditingContext;
 import org.eclipse.sirius.web.representations.VariableManager;
 
 /**
@@ -32,23 +33,22 @@ public class EStructuralFeatureLabelProvider implements Function<VariableManager
 
     private String featureVariableName;
 
-    private AdapterFactory adapterFactory;
-
-    public EStructuralFeatureLabelProvider(String featureVariableName, AdapterFactory adapterFactory) {
+    public EStructuralFeatureLabelProvider(String featureVariableName) {
         this.featureVariableName = Objects.requireNonNull(featureVariableName);
-        this.adapterFactory = Objects.requireNonNull(adapterFactory);
     }
 
     @Override
     public String apply(VariableManager variableManager) {
         Object object = variableManager.getVariables().get(VariableManager.SELF);
         Object feature = variableManager.getVariables().get(this.featureVariableName);
+        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, EditingContext.class);
 
-        if (object instanceof EObject && feature instanceof EStructuralFeature) {
+        if (object instanceof EObject && feature instanceof EStructuralFeature && optionalEditingContext.isPresent()) {
             EObject eObject = (EObject) object;
             EStructuralFeature eStructuralFeature = (EStructuralFeature) feature;
+            EditingContext editingContext = optionalEditingContext.get();
 
-            Adapter adapter = this.adapterFactory.adapt(eObject, IItemPropertySource.class);
+            Adapter adapter = editingContext.getDomain().getAdapterFactory().adapt(eObject, IItemPropertySource.class);
             if (adapter instanceof IItemPropertySource) {
                 IItemPropertySource itemPropertySource = (IItemPropertySource) adapter;
                 IItemPropertyDescriptor descriptor = itemPropertySource.getPropertyDescriptor(eObject, eStructuralFeature);

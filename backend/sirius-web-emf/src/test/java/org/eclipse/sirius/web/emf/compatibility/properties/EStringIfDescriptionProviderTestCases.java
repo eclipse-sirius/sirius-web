@@ -15,12 +15,8 @@ package org.eclipse.sirius.web.emf.compatibility.properties;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EcorePackage;
-import org.eclipse.emf.ecore.provider.EcoreItemProviderAdapterFactory;
-import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
-import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
 import org.eclipse.sirius.viewpoint.description.DescriptionPackage;
 import org.eclipse.sirius.web.forms.description.IfDescription;
 import org.eclipse.sirius.web.representations.VariableManager;
@@ -39,9 +35,8 @@ public class EStringIfDescriptionProviderTestCases {
      */
     @Test
     public void testEStringAttributeProducesTextfieldDescription() {
-        AdapterFactory adapterFactory = new EcoreItemProviderAdapterFactory();
         EAttribute attribute = EcorePackage.Literals.ENAMED_ELEMENT__NAME;
-        assertTrue(this.checkPredicate(adapterFactory, attribute));
+        assertTrue(this.checkPredicate(attribute));
     }
 
     /**
@@ -50,9 +45,8 @@ public class EStringIfDescriptionProviderTestCases {
      */
     @Test
     public void testStringDataTypeAttributeProducesTextfieldDescription() {
-        AdapterFactory adapterFactory = new ReflectiveItemProviderAdapterFactory();
         EAttribute attribute = DescriptionPackage.Literals.CONDITIONAL_STYLE_DESCRIPTION__PREDICATE_EXPRESSION;
-        assertTrue(this.checkPredicate(adapterFactory, attribute));
+        assertTrue(this.checkPredicate(attribute));
     }
 
     /**
@@ -61,14 +55,12 @@ public class EStringIfDescriptionProviderTestCases {
      */
     @Test
     public void testEBooleanAttributeDoesNotProducesTextfieldDescription() {
-        AdapterFactory adapterFactory = new EcoreItemProviderAdapterFactory();
         EAttribute attribute = EcorePackage.Literals.ECLASS__ABSTRACT;
-        assertFalse(this.checkPredicate(adapterFactory, attribute));
+        assertFalse(this.checkPredicate(attribute));
     }
 
-    private Boolean checkPredicate(AdapterFactory adapterFactory, EAttribute attribute) {
-        ComposedAdapterFactory composedAdapterFactory = new ComposedAdapterFactory(adapterFactory);
-        EStringIfDescriptionProvider descriptionProvider = new EStringIfDescriptionProvider(composedAdapterFactory);
+    private Boolean checkPredicate(EAttribute attribute) {
+        EStringIfDescriptionProvider descriptionProvider = new EStringIfDescriptionProvider();
         IfDescription ifDescription = descriptionProvider.getIfDescription();
 
         VariableManager variableManager = new VariableManager();

@@ -12,14 +12,12 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.emf.compatibility.properties;
 
-import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcorePackage;
-import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.web.compat.forms.WidgetIdProvider;
 import org.eclipse.sirius.web.forms.description.CheckboxDescription;
 import org.eclipse.sirius.web.forms.description.IfDescription;
@@ -36,12 +34,6 @@ public class EBooleanIfDescriptionProvider {
     private static final String IF_DESCRIPTION_ID = "EBoolean"; //$NON-NLS-1$
 
     private static final String CHECKBOX_DESCRIPTION_ID = "Checkbox"; //$NON-NLS-1$
-
-    private final ComposedAdapterFactory composedAdapterFactory;
-
-    public EBooleanIfDescriptionProvider(ComposedAdapterFactory composedAdapterFactory) {
-        this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
-    }
 
     public IfDescription getIfDescription() {
         // @formatter:off
@@ -71,7 +63,7 @@ public class EBooleanIfDescriptionProvider {
     }
 
     private Function<VariableManager, String> getLabelProvider() {
-        return new EStructuralFeatureLabelProvider(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE, this.composedAdapterFactory);
+        return new EStructuralFeatureLabelProvider(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE);
     }
 
     private Function<VariableManager, Boolean> getValueProvider() {

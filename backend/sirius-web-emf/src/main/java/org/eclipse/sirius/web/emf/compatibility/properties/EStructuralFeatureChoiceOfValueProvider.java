@@ -18,11 +18,12 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
+import org.eclipse.sirius.web.core.api.IEditingContext;
+import org.eclipse.sirius.web.emf.services.EditingContext;
 import org.eclipse.sirius.web.representations.VariableManager;
 
 /**
@@ -34,23 +35,22 @@ public class EStructuralFeatureChoiceOfValueProvider implements Function<Variabl
 
     private String featureVariableName;
 
-    private AdapterFactory adapterFactory;
-
-    public EStructuralFeatureChoiceOfValueProvider(String featureVariableName, AdapterFactory adapterFactory) {
+    public EStructuralFeatureChoiceOfValueProvider(String featureVariableName) {
         this.featureVariableName = Objects.requireNonNull(featureVariableName);
-        this.adapterFactory = Objects.requireNonNull(adapterFactory);
     }
 
     @Override
     public List<Object> apply(VariableManager variableManager) {
         var optionalEObject = variableManager.get(VariableManager.SELF, EObject.class);
         var optionalEReference = variableManager.get(this.featureVariableName, EReference.class);
+        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, EditingContext.class);
 
-        if (optionalEObject.isPresent() && optionalEReference.isPresent()) {
+        if (optionalEObject.isPresent() && optionalEReference.isPresent() && optionalEditingContext.isPresent()) {
             EObject eObject = optionalEObject.get();
             EReference eReference = optionalEReference.get();
+            EditingContext editingContext = optionalEditingContext.get();
 
-            Object adapter = this.adapterFactory.adapt(eObject, IItemPropertySource.class);
+            Object adapter = editingContext.getDomain().getAdapterFactory().adapt(eObject, IItemPropertySource.class);
             if (adapter instanceof IItemPropertySource) {
                 IItemPropertySource itemPropertySource = (IItemPropertySource) adapter;
                 IItemPropertyDescriptor descriptor = itemPropertySource.getPropertyDescriptor(eObject, eReference);

@@ -131,23 +131,23 @@ public class PropertiesDefaultDescriptionProvider implements IPropertiesDefaultD
         };
 
         List<IfDescription> ifDescriptions = new ArrayList<>();
-        ifDescriptions.add(new EStringIfDescriptionProvider(this.composedAdapterFactory).getIfDescription());
-        ifDescriptions.add(new EBooleanIfDescriptionProvider(this.composedAdapterFactory).getIfDescription());
-        ifDescriptions.add(new EEnumIfDescriptionProvider(this.composedAdapterFactory).getIfDescription());
+        ifDescriptions.add(new EStringIfDescriptionProvider().getIfDescription());
+        ifDescriptions.add(new EBooleanIfDescriptionProvider().getIfDescription());
+        ifDescriptions.add(new EEnumIfDescriptionProvider().getIfDescription());
 
-        ifDescriptions.add(new MonoValuedNonContainmentReferenceIfDescriptionProvider(this.composedAdapterFactory, this.objectService).getIfDescription());
-        ifDescriptions.add(new MultiValuedNonContainmentReferenceIfDescriptionProvider(this.composedAdapterFactory, this.objectService).getIfDescription());
+        ifDescriptions.add(new MonoValuedNonContainmentReferenceIfDescriptionProvider(this.objectService).getIfDescription());
+        ifDescriptions.add(new MultiValuedNonContainmentReferenceIfDescriptionProvider(this.objectService).getIfDescription());
 
-        ifDescriptions.add(new NumberIfDescriptionProvider(EcorePackage.Literals.EINT, this.composedAdapterFactory).getIfDescription());
-        ifDescriptions.add(new NumberIfDescriptionProvider(EcorePackage.Literals.EINTEGER_OBJECT, this.composedAdapterFactory).getIfDescription());
-        ifDescriptions.add(new NumberIfDescriptionProvider(EcorePackage.Literals.EDOUBLE, this.composedAdapterFactory).getIfDescription());
-        ifDescriptions.add(new NumberIfDescriptionProvider(EcorePackage.Literals.EDOUBLE_OBJECT, this.composedAdapterFactory).getIfDescription());
-        ifDescriptions.add(new NumberIfDescriptionProvider(EcorePackage.Literals.EFLOAT, this.composedAdapterFactory).getIfDescription());
-        ifDescriptions.add(new NumberIfDescriptionProvider(EcorePackage.Literals.EFLOAT_OBJECT, this.composedAdapterFactory).getIfDescription());
-        ifDescriptions.add(new NumberIfDescriptionProvider(EcorePackage.Literals.ELONG, this.composedAdapterFactory).getIfDescription());
-        ifDescriptions.add(new NumberIfDescriptionProvider(EcorePackage.Literals.ELONG_OBJECT, this.composedAdapterFactory).getIfDescription());
-        ifDescriptions.add(new NumberIfDescriptionProvider(EcorePackage.Literals.ESHORT, this.composedAdapterFactory).getIfDescription());
-        ifDescriptions.add(new NumberIfDescriptionProvider(EcorePackage.Literals.ESHORT_OBJECT, this.composedAdapterFactory).getIfDescription());
+        ifDescriptions.add(new NumberIfDescriptionProvider(EcorePackage.Literals.EINT).getIfDescription());
+        ifDescriptions.add(new NumberIfDescriptionProvider(EcorePackage.Literals.EINTEGER_OBJECT).getIfDescription());
+        ifDescriptions.add(new NumberIfDescriptionProvider(EcorePackage.Literals.EDOUBLE).getIfDescription());
+        ifDescriptions.add(new NumberIfDescriptionProvider(EcorePackage.Literals.EDOUBLE_OBJECT).getIfDescription());
+        ifDescriptions.add(new NumberIfDescriptionProvider(EcorePackage.Literals.EFLOAT).getIfDescription());
+        ifDescriptions.add(new NumberIfDescriptionProvider(EcorePackage.Literals.EFLOAT_OBJECT).getIfDescription());
+        ifDescriptions.add(new NumberIfDescriptionProvider(EcorePackage.Literals.ELONG).getIfDescription());
+        ifDescriptions.add(new NumberIfDescriptionProvider(EcorePackage.Literals.ELONG_OBJECT).getIfDescription());
+        ifDescriptions.add(new NumberIfDescriptionProvider(EcorePackage.Literals.ESHORT).getIfDescription());
+        ifDescriptions.add(new NumberIfDescriptionProvider(EcorePackage.Literals.ESHORT_OBJECT).getIfDescription());
 
         // @formatter:off
         ForDescription forDescription = ForDescription.newForDescription("forId") //$NON-NLS-1$

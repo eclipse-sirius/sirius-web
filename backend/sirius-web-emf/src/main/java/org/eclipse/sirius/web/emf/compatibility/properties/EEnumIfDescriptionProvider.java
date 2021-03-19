@@ -14,7 +14,6 @@ package org.eclipse.sirius.web.emf.compatibility.properties;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -28,7 +27,6 @@ import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.web.compat.forms.WidgetIdProvider;
 import org.eclipse.sirius.web.forms.components.SelectComponent;
 import org.eclipse.sirius.web.forms.description.IfDescription;
@@ -50,12 +48,6 @@ public class EEnumIfDescriptionProvider {
     private static final String RADIO_DESCRIPTION_ID = "Radio"; //$NON-NLS-1$
 
     private final Logger logger = LoggerFactory.getLogger(EEnumIfDescriptionProvider.class);
-
-    private final ComposedAdapterFactory composedAdapterFactory;
-
-    public EEnumIfDescriptionProvider(ComposedAdapterFactory composedAdapterFactory) {
-        this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
-    }
 
     public IfDescription getIfDescription() {
         // @formatter:off
@@ -92,7 +84,7 @@ public class EEnumIfDescriptionProvider {
     }
 
     private Function<VariableManager, String> getLabelProvider() {
-        return new EStructuralFeatureLabelProvider(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE, this.composedAdapterFactory);
+        return new EStructuralFeatureLabelProvider(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE);
     }
 
     private Function<VariableManager, List<Object>> getOptionsProvider() {
