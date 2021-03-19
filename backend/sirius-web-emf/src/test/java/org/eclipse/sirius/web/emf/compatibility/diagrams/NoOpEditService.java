@@ -30,7 +30,7 @@ import org.eclipse.sirius.web.services.api.objects.Namespace;
 public class NoOpEditService implements IEditService {
 
     @Override
-    public Optional<Object> findClass(String classId) {
+    public Optional<Object> findClass(UUID editingContextId, String classId) {
         return Optional.empty();
     }
 

@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.eclipse.sirius.web.annotations.spring.graphql.QueryDataFetcher;
@@ -64,10 +65,11 @@ public class EditingContextRepresentationDescriptionsDataFetcher implements IDat
 
     @Override
     public Connection<IRepresentationDescription> get(DataFetchingEnvironment environment) throws Exception {
+        UUID editingContextId = environment.getSource();
         String classId = environment.getArgument(EditingContextTypeProvider.CLASS_ID_ARGUMENT);
 
         // @formatter:off
-        var representationDescriptions = this.editService.findClass(classId)
+        var representationDescriptions = this.editService.findClass(editingContextId, classId)
                 .map(this.representationDescriptionService::getRepresentationDescriptions)
                 .orElseGet(ArrayList::new);
         // @formatter:on

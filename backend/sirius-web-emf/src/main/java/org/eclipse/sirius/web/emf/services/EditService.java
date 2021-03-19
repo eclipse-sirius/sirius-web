@@ -77,18 +77,21 @@ public class EditService implements IEditService {
     }
 
     @Override
-    public Optional<Object> findClass(String classId) {
+    public Optional<Object> findClass(UUID editingContextId, String classId) {
+        EPackage.Registry ePackageRegistry = this.getPackageRegistry(editingContextId);
+        return this.getEClass(ePackageRegistry, classId).map(Object.class::cast);
+    }
+
+    private Optional<EClass> getEClass(EPackage.Registry ePackageRegistry, String classId) {
         ClassIdService classIdService = new ClassIdService();
         String ePackageName = classIdService.getEPackageName(classId);
         String eClassName = classIdService.getEClassName(classId);
 
         // @formatter:off
-        return classIdService.findEPackage(this.globalEPackageRegistry, ePackageName)
+        return classIdService.findEPackage(ePackageRegistry, ePackageName)
                 .map(ePackage -> ePackage.getEClassifier(eClassName))
                 .filter(EClass.class::isInstance)
-                .map(EClass.class::cast)
-                .filter(eClass -> !eClass.isAbstract() && !eClass.isInterface())
-                .map(Object.class::cast);
+                .map(EClass.class::cast);
         // @formatter:on
     }
 
@@ -112,9 +115,7 @@ public class EditService implements IEditService {
         resourceSet.getResources().add(resource);
 
         // @formatter:off
-        var optionalEClass = this.findClass(classId)
-                .filter(EClass.class::isInstance)
-                .map(EClass.class::cast)
+        var optionalEClass = this.getEClass(ePackageRegistry, classId)
                 .filter(eClass -> !eClass.isAbstract() && !eClass.isInterface());
         // @formatter:on
 

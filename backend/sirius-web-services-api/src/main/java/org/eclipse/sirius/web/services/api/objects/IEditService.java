@@ -25,7 +25,7 @@ import org.eclipse.sirius.web.core.api.IEditingContext;
  */
 public interface IEditService {
 
-    Optional<Object> findClass(String classId);
+    Optional<Object> findClass(UUID editingContextId, String classId);
 
     List<Namespace> getNamespaces(UUID editingContextId);
 
