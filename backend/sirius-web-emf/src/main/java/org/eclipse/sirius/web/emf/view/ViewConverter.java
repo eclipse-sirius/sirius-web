@@ -110,7 +110,7 @@ public class ViewConverter {
                 .collect(Collectors.toList());
         // @formatter:off
         return DiagramDescription.newDiagramDescription(UUID.nameUUIDFromBytes(("Domain Diagram " + viewDiagramDescription.getName()).getBytes())) //$NON-NLS-1$
-                .label(viewDiagramDescription.getName())
+                .label(Optional.ofNullable(viewDiagramDescription.getName()).orElse("")) //$NON-NLS-1$
                 .labelProvider(variableManager -> this.evaluateString(variableManager, viewDiagramDescription.getTitleExpression()))
                 .canCreatePredicate(variableManager -> true)
                 .targetObjectIdProvider(variableManager -> this.self(variableManager).map(this.objectService::getId).orElse("")) //$NON-NLS-1$
