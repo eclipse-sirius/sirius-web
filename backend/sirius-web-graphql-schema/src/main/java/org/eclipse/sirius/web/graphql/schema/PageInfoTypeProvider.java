@@ -90,7 +90,7 @@ public class PageInfoTypeProvider implements ITypeProvider {
         // @formatter:off
         return GraphQLFieldDefinition.newFieldDefinition()
                 .name(START_CURSOR_FIELD)
-                .type(new GraphQLNonNull(Scalars.GraphQLString))
+                .type(Scalars.GraphQLString)
                 .build();
         // @formatter:on
     }
@@ -99,7 +99,7 @@ public class PageInfoTypeProvider implements ITypeProvider {
         // @formatter:off
         return GraphQLFieldDefinition.newFieldDefinition()
                 .name(END_CURSOR_FIELD)
-                .type(new GraphQLNonNull(Scalars.GraphQLString))
+                .type(Scalars.GraphQLString)
                 .build();
         // @formatter:on
     }
