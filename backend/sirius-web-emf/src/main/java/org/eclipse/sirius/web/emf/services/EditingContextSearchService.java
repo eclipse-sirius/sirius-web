@@ -90,7 +90,8 @@ public class EditingContextSearchService implements IEditingContextSearchService
         this.logger.debug("Loading the editing context {}", editingContextId); //$NON-NLS-1$
         ResourceSet resourceSet = new ResourceSetImpl();
 
-        EPackageRegistryImpl ePackageRegistry = new EPackageRegistryImpl(this.globalEPackageRegistry);
+        EPackageRegistryImpl ePackageRegistry = new EPackageRegistryImpl();
+        this.globalEPackageRegistry.forEach(ePackageRegistry::put);
         List<EPackage> additionalEPackages = this.editingContextEPackageService.getEPackages(editingContextId);
         additionalEPackages.forEach(ePackage -> ePackageRegistry.put(ePackage.getNsURI(), ePackage));
         resourceSet.setPackageRegistry(ePackageRegistry);
