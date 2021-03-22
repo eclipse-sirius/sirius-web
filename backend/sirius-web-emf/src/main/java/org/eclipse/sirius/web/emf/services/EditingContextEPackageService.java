@@ -60,7 +60,8 @@ public class EditingContextEPackageService implements IEditingContextEPackageSer
             .collect(Collectors.toList());
         // @formatter:on
 
-        EPackageRegistryImpl ePackageRegistry = new EPackageRegistryImpl(this.globalEPackageRegistry);
+        EPackageRegistryImpl ePackageRegistry = new EPackageRegistryImpl();
+        this.globalEPackageRegistry.forEach(ePackageRegistry::put);
         ResourceSet resourceSet = new ResourceSetImpl();
         resourceSet.setPackageRegistry(ePackageRegistry);
 

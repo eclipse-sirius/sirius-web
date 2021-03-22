@@ -96,7 +96,8 @@ public class EditService implements IEditService {
     }
 
     private EPackage.Registry getPackageRegistry(UUID editingContextId) {
-        EPackageRegistryImpl ePackageRegistry = new EPackageRegistryImpl(this.globalEPackageRegistry);
+        EPackageRegistryImpl ePackageRegistry = new EPackageRegistryImpl();
+        this.globalEPackageRegistry.forEach(ePackageRegistry::put);
         List<EPackage> additionalEPackages = this.editingContextEPackageService.getEPackages(editingContextId);
         additionalEPackages.forEach(ePackage -> ePackageRegistry.put(ePackage.getNsURI(), ePackage));
         return ePackageRegistry;
