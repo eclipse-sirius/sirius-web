@@ -32,6 +32,7 @@ import org.eclipse.sirius.web.interpreter.AQLInterpreter;
 import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
 import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
 import org.eclipse.sirius.web.representations.IRepresentationDescription;
+import org.eclipse.sirius.web.services.api.objects.IEditService;
 import org.eclipse.sirius.web.services.api.representations.IDynamicRepresentationDescriptionService;
 import org.eclipse.sirius.web.view.View;
 import org.slf4j.Logger;
@@ -53,11 +54,11 @@ public class DynamicRepresentationDescriptionService implements IDynamicRepresen
 
     private final ViewConverter viewConverter;
 
-    public DynamicRepresentationDescriptionService(IDocumentRepository documentRepository, EPackage.Registry ePackageRegistry, IObjectService objectService) {
+    public DynamicRepresentationDescriptionService(IDocumentRepository documentRepository, EPackage.Registry ePackageRegistry, IObjectService objectService, IEditService editService) {
         this.documentRepository = Objects.requireNonNull(documentRepository);
         this.ePackageRegistry = Objects.requireNonNull(ePackageRegistry);
         AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of());
-        this.viewConverter = new ViewConverter(Objects.requireNonNull(interpreter), Objects.requireNonNull(objectService));
+        this.viewConverter = new ViewConverter(Objects.requireNonNull(interpreter), Objects.requireNonNull(objectService), Objects.requireNonNull(editService));
     }
 
     @Override
