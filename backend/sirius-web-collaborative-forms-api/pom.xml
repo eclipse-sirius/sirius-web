@@ -22,7 +22,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius.web</groupId>
 	<artifactId>sirius-web-collaborative-forms-api</artifactId>
-	<version>0.2.17</version>
+	<version>0.2.18</version>
 	<name>sirius-web-collaborative-forms-api</name>
 	<description>Sirius Web Collaborative Forms API</description>
 
@@ -42,17 +42,17 @@
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-collaborative-api</artifactId>
-			<version>0.2.17</version>
+			<version>0.2.18</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-forms</artifactId>
-			<version>0.2.17</version>
+			<version>0.2.18</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-tests</artifactId>
-			<version>0.2.17</version>
+			<version>0.2.18</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
