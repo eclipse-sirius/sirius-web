@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.emf.compatibility.diagrams;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -37,8 +38,8 @@ public class CanCreateDiagramPredicate implements Predicate<VariableManager> {
     private final AQLInterpreter interpreter;
 
     public CanCreateDiagramPredicate(DiagramDescription diagramDescription, AQLInterpreter interpreter) {
-        this.diagramDescription = diagramDescription;
-        this.interpreter = interpreter;
+        this.diagramDescription = Objects.requireNonNull(diagramDescription);
+        this.interpreter = Objects.requireNonNull(interpreter);
     }
 
     @Override
@@ -48,9 +49,7 @@ public class CanCreateDiagramPredicate implements Predicate<VariableManager> {
         String domainClass = this.diagramDescription.getDomainClass();
 
         // @formatter:off
-        Optional<EObject> optionalEObject = Optional.ofNullable(variableManager.getVariables().get(IRepresentationDescription.CLASS))
-                .filter(EClass.class::isInstance)
-                .map(EClass.class::cast)
+        Optional<EObject> optionalEObject = variableManager.get(IRepresentationDescription.CLASS, EClass.class)
                 .map(EcoreUtil::create)
                 .filter(new DomainClassPredicate(domainClass));
         // @formatter:on
