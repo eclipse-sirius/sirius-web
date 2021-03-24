@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.compat.diagrams;
 
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 
@@ -46,11 +47,12 @@ public class EdgeMappingStyleProvider implements Function<VariableManager, EdgeS
     }
 
     private EdgeStyle getEdgeStyle(VariableManager variableManager, EdgeStyleDescription style) {
-        ColorDescriptionConverter colorDescriptionConverter = new ColorDescriptionConverter(this.interpreter, variableManager);
+        Map<String, Object> variables = variableManager.getVariables();
+        ColorDescriptionConverter colorDescriptionConverter = new ColorDescriptionConverter(this.interpreter, variables);
         LineStyleConverter lineStyleConverter = new LineStyleConverter();
         ArrowStyleConverter arrowStyleConverter = new ArrowStyleConverter();
 
-        int size = 1;
+        int size = this.interpreter.evaluateExpression(variables, style.getSizeComputationExpression()).asInt().orElse(1);
         LineStyle lineStyle = lineStyleConverter.getStyle(style.getLineStyle());
         ArrowStyle sourceArrow = arrowStyleConverter.getStyle(style.getSourceArrow());
         ArrowStyle targetArrow = arrowStyleConverter.getStyle(style.getTargetArrow());

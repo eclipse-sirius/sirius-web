@@ -69,7 +69,7 @@ public class LabelStyleDescriptionConverter {
         };
 
         Function<VariableManager, String> colorProvider = variableManager -> {
-            return new ColorDescriptionConverter(this.interpreter, variableManager).convert(labelStyleDescription.getLabelColor());
+            return new ColorDescriptionConverter(this.interpreter, variableManager.getVariables()).convert(labelStyleDescription.getLabelColor());
         };
 
         // @formatter:off

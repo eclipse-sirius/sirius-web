@@ -76,11 +76,10 @@ public class NodeMappingStyleProvider implements Function<VariableManager, INode
     }
 
     private RectangularNodeStyle createRectangularNodeStyle(VariableManager variableManager, SquareDescription squareDescription) {
-        ColorDescriptionConverter colorProvider = new ColorDescriptionConverter(this.interpreter, variableManager);
-        ColorDescriptionConverter borderColorProvider = new ColorDescriptionConverter(this.interpreter, variableManager);
+        ColorDescriptionConverter colorProvider = new ColorDescriptionConverter(this.interpreter, variableManager.getVariables());
 
         String color = colorProvider.convert(squareDescription.getColor());
-        String borderColor = borderColorProvider.convert(squareDescription.getBorderColor());
+        String borderColor = colorProvider.convert(squareDescription.getBorderColor());
 
         LineStyle borderStyle = new LineStyleConverter().getStyle(squareDescription.getBorderLineStyle());
 
