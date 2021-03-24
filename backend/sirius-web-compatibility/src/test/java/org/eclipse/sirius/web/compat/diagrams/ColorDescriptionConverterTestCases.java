@@ -14,13 +14,13 @@ package org.eclipse.sirius.web.compat.diagrams;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.sirius.viewpoint.description.DescriptionFactory;
 import org.eclipse.sirius.viewpoint.description.FixedColor;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
-import org.eclipse.sirius.web.representations.VariableManager;
 import org.junit.Test;
 
 /**
@@ -38,8 +38,7 @@ public class ColorDescriptionConverterTestCases {
         fixedColor.setBlue(16);
 
         AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(EcorePackage.eINSTANCE));
-        VariableManager variableManager = new VariableManager();
-        ColorDescriptionConverter colorProvider = new ColorDescriptionConverter(interpreter, variableManager);
+        ColorDescriptionConverter colorProvider = new ColorDescriptionConverter(interpreter, Collections.emptyMap());
         String color = colorProvider.convert(fixedColor);
         assertThat(color).isEqualTo("#0f0110"); //$NON-NLS-1$
     }

@@ -19,7 +19,6 @@ import org.eclipse.sirius.viewpoint.description.ColorDescription;
 import org.eclipse.sirius.viewpoint.description.ComputedColor;
 import org.eclipse.sirius.viewpoint.description.FixedColor;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
-import org.eclipse.sirius.web.representations.VariableManager;
 
 /**
  * Provides a unified color format from a Sirius {@link ColorDescription}.
@@ -32,11 +31,11 @@ public class ColorDescriptionConverter {
 
     private final AQLInterpreter interpreter;
 
-    private final VariableManager variableManager;
+    private final Map<String, Object> variables;
 
-    public ColorDescriptionConverter(AQLInterpreter interpreter, VariableManager variableManager) {
+    public ColorDescriptionConverter(AQLInterpreter interpreter, Map<String, Object> variables) {
         this.interpreter = Objects.requireNonNull(interpreter);
-        this.variableManager = Objects.requireNonNull(variableManager);
+        this.variables = Objects.requireNonNull(variables);
     }
 
     public String convert(ColorDescription colorDescription) {
@@ -46,11 +45,9 @@ public class ColorDescriptionConverter {
             value = this.toHex(fixedColor.getRed(), fixedColor.getGreen(), fixedColor.getBlue());
         } else if (colorDescription instanceof ComputedColor) {
             ComputedColor computedColor = (ComputedColor) colorDescription;
-
-            Map<String, Object> variables = this.variableManager.getVariables();
-            int red = this.interpreter.evaluateExpression(variables, computedColor.getRed()).asInt().orElse(0);
-            int green = this.interpreter.evaluateExpression(variables, computedColor.getGreen()).asInt().orElse(0);
-            int blue = this.interpreter.evaluateExpression(variables, computedColor.getBlue()).asInt().orElse(0);
+            int red = this.interpreter.evaluateExpression(this.variables, computedColor.getRed()).asInt().orElse(0);
+            int green = this.interpreter.evaluateExpression(this.variables, computedColor.getGreen()).asInt().orElse(0);
+            int blue = this.interpreter.evaluateExpression(this.variables, computedColor.getBlue()).asInt().orElse(0);
 
             value = this.toHex(red, green, blue);
         }

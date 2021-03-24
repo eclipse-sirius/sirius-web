@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.compat.diagrams;
 
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 
@@ -64,15 +65,15 @@ public class ContainerMappingStyleProvider implements Function<VariableManager, 
     }
 
     private RectangularNodeStyle createRectangularNodeStyle(VariableManager variableManager, FlatContainerStyleDescription flatContainerStyleDescription) {
-        ColorDescriptionConverter backgroundColorProvider = new ColorDescriptionConverter(this.interpreter, variableManager);
-        ColorDescriptionConverter borderColorProvider = new ColorDescriptionConverter(this.interpreter, variableManager);
+        Map<String, Object> variables = variableManager.getVariables();
+        ColorDescriptionConverter colorProvider = new ColorDescriptionConverter(this.interpreter, variables);
 
-        String color = backgroundColorProvider.convert(flatContainerStyleDescription.getBackgroundColor());
-        String borderColor = borderColorProvider.convert(flatContainerStyleDescription.getBorderColor());
+        String color = colorProvider.convert(flatContainerStyleDescription.getBackgroundColor());
+        String borderColor = colorProvider.convert(flatContainerStyleDescription.getBorderColor());
 
         LineStyle borderStyle = new LineStyleConverter().getStyle(flatContainerStyleDescription.getBorderLineStyle());
 
-        Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), flatContainerStyleDescription.getBorderSizeComputationExpression());
+        Result result = this.interpreter.evaluateExpression(variables, flatContainerStyleDescription.getBorderSizeComputationExpression());
         int borderSize = result.asInt().getAsInt();
 
         // @formatter:off
