@@ -70,6 +70,9 @@ public class ToolConverter {
             InitialOperation initialOperation = optionalInitialOperation.get();
             return variableManager -> {
                 Map<String, Object> variables = variableManager.getVariables();
+                // Sirius Desktop Delete Tools expect an "element" variable to be available with the value
+                // of the initial invocation context (self).
+                variables.put("element", variables.get(VariableManager.SELF)); //$NON-NLS-1$
                 var modelOperationHandlerSwitch = this.modelOperationHandlerSwitchProvider.getModelOperationHandlerSwitch(this.interpreter);
                 return modelOperationHandlerSwitch.apply(initialOperation.getFirstModelOperations()).map(handler -> {
                     return handler.handle(variables);
