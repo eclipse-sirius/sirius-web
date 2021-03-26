@@ -251,7 +251,7 @@ public class ViewConverter {
                     .lineStyle(LineStyle.Solid)
                     .size(1)
                     .sourceArrow(ArrowStyle.None)
-                    .targetArrow(ArrowStyle.OutputArrow)
+                    .targetArrow(ArrowStyle.InputArrow)
                     .build();
             // @formatter:on
         };
