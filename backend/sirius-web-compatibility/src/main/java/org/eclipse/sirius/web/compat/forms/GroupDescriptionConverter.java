@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -57,7 +58,7 @@ public class GroupDescriptionConverter {
                 this.modelOperationHandlerSwitchProvider);
 
         Function<VariableManager, String> idProvider = variableManager -> String.valueOf(siriusGroup2SiriusWebGroup.size());
-        StringValueProvider labelProvider = new StringValueProvider(this.interpreter, siriusGroupDescription.getLabelExpression());
+        StringValueProvider labelProvider = new StringValueProvider(this.interpreter, Optional.ofNullable(siriusGroupDescription.getLabelExpression()).orElse("")); //$NON-NLS-1$
 
         // @formatter:off
         List<AbstractControlDescription> controlDescriptions = siriusGroupDescription.getControls().stream()
