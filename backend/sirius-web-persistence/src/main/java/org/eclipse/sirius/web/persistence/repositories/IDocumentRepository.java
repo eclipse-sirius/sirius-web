@@ -39,6 +39,10 @@ public interface IDocumentRepository extends PagingAndSortingRepository<Document
     Iterable<DocumentEntity> findAll();
 
     @Audited
+    @Query(name = "Document.findAllByType", nativeQuery = true)
+    Iterable<DocumentEntity> findAllByType(String name, String uri);
+
+    @Audited
     List<DocumentEntity> findAllByProjectId(UUID projectId);
 
     @Audited

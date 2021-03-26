@@ -34,6 +34,7 @@ import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
 import org.eclipse.sirius.web.representations.IRepresentationDescription;
 import org.eclipse.sirius.web.services.api.representations.IDynamicRepresentationDescriptionService;
 import org.eclipse.sirius.web.view.View;
+import org.eclipse.sirius.web.view.ViewPackage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -63,7 +64,7 @@ public class DynamicRepresentationDescriptionService implements IDynamicRepresen
     @Override
     public List<IRepresentationDescription> findDynamicRepresentationDescriptions(UUID editingContextId) {
         List<IRepresentationDescription> dynamicRepresentationDescriptions = new ArrayList<>();
-        this.documentRepository.findAll().forEach(documentEntity -> {
+        this.documentRepository.findAllByType(ViewPackage.eNAME, ViewPackage.eNS_URI).forEach(documentEntity -> {
             Resource res = this.loadDocumentAsEMF(documentEntity);
             this.getViewDefinition(res).ifPresent(view -> this.viewConverter.convert(view).forEach(dynamicRepresentationDescriptions::add));
         });
