@@ -27,6 +27,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.domain.Domain;
+import org.eclipse.sirius.web.domain.DomainPackage;
 import org.eclipse.sirius.web.emf.domain.DomainConverter;
 import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
 import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
@@ -56,7 +57,7 @@ public class EditingContextEPackageService implements IEditingContextEPackageSer
     @Override
     public List<EPackage> getEPackages(UUID editingContextId) {
         // @formatter:off
-        List<DocumentEntity> entities = StreamSupport.stream(this.documentRepository.findAll().spliterator(), false)
+        List<DocumentEntity> entities = StreamSupport.stream(this.documentRepository.findAllByType(DomainPackage.eNAME, DomainPackage.eNS_URI).spliterator(), false)
             .collect(Collectors.toList());
         // @formatter:on
 

@@ -102,4 +102,9 @@ public class NoOpDocumentRepository implements IDocumentRepository {
         return Optional.empty();
     }
 
+    @Override
+    public Iterable<DocumentEntity> findAllByType(String name, String uri) {
+        return List.of();
+    }
+
 }
