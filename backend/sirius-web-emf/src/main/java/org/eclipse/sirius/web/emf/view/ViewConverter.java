@@ -217,7 +217,7 @@ public class ViewConverter {
 
                 // @formatter:off
                 return nodeCandidates
-                        .filter(nodeElement -> viewEdgeDescription.getSourceNodeDescriptions().stream().anyMatch(srcMapping -> this.isFromDescription(nodeElement, viewEdgeDescription)))
+                        .filter(nodeElement -> viewEdgeDescription.getSourceNodeDescriptions().stream().anyMatch(srcMapping -> this.isFromDescription(nodeElement, srcMapping)))
                         .filter(Objects::nonNull)
                         .collect(Collectors.toList());
                 // @formatter:on
@@ -285,7 +285,7 @@ public class ViewConverter {
     private boolean isFromDescription(Element nodeElement, DiagramElementDescription diagramElementDescription) {
         if (nodeElement.getProps() instanceof NodeElementProps) {
             NodeElementProps props = (NodeElementProps) nodeElement.getProps();
-            return Objects.equals(EcoreUtil.getURI(diagramElementDescription).toString(), props.getDescriptionId().toString());
+            return Objects.equals(this.idProvider.apply(diagramElementDescription), props.getDescriptionId());
         }
         return false;
     }
