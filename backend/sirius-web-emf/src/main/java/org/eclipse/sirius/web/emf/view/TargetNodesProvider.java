@@ -76,7 +76,7 @@ public class TargetNodesProvider implements Function<VariableManager, List<Eleme
     private boolean isFromDescription(Element nodeElement, DiagramElementDescription description) {
         if (nodeElement.getProps() instanceof NodeElementProps) {
             NodeElementProps props = (NodeElementProps) nodeElement.getProps();
-            return Objects.equals(this.idProvider.apply(description), props.getDescriptionId().toString());
+            return Objects.equals(this.idProvider.apply(description), props.getDescriptionId());
         }
         return false;
     }
