@@ -51,7 +51,6 @@ import io.micrometer.core.instrument.MeterRegistry;
  */
 @Service
 public class EditLabelEventHandler implements IDiagramEventHandler {
-    private static final String LABEL_SUFFIX = "_label"; //$NON-NLS-1$
 
     private final IObjectService objectService;
 
@@ -93,23 +92,16 @@ public class EditLabelEventHandler implements IDiagramEventHandler {
 
         if (diagramInput instanceof EditLabelInput) {
             EditLabelInput input = (EditLabelInput) diagramInput;
-            if (input.getLabelId().endsWith(LABEL_SUFFIX)) {
-                Diagram diagram = diagramContext.getDiagram();
-                String nodeId = this.extractNodeId(input.getLabelId());
-                var node = this.diagramService.findNodeById(diagram, UUID.fromString(nodeId));
-                if (node.isPresent()) {
-                    this.invokeDirectEditTool(node.get(), editingContext, diagram, input.getNewText());
-                    return new EventHandlerResponse(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, diagramInput.getRepresentationId()), new EditLabelSuccessPayload(diagramInput.getId(), diagram));
-                }
+            Diagram diagram = diagramContext.getDiagram();
+            var node = this.diagramService.findNodeByLabelId(diagram, UUID.fromString(input.getLabelId()));
+            if (node.isPresent()) {
+                this.invokeDirectEditTool(node.get(), editingContext, diagram, input.getNewText());
+                return new EventHandlerResponse(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, diagramInput.getRepresentationId()), new EditLabelSuccessPayload(diagramInput.getId(), diagram));
             }
         }
 
         String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), EditLabelInput.class.getSimpleName());
         return new EventHandlerResponse(new ChangeDescription(ChangeKind.NOTHING, diagramInput.getRepresentationId()), new ErrorPayload(diagramInput.getId(), message));
-    }
-
-    private String extractNodeId(String labelId) {
-        return labelId.substring(0, labelId.length() - LABEL_SUFFIX.length());
     }
 
     private void invokeDirectEditTool(Node node, IEditingContext editingContext, Diagram diagram, String newText) {

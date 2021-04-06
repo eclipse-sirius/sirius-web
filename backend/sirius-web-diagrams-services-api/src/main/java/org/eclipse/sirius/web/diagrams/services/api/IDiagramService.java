@@ -30,6 +30,8 @@ public interface IDiagramService {
 
     Optional<Node> findNodeById(Diagram diagram, UUID nodeId);
 
+    Optional<Node> findNodeByLabelId(Diagram diagram, UUID labelId);
+
     Optional<Edge> findEdgeById(Diagram diagram, UUID edgeId);
 
 }
