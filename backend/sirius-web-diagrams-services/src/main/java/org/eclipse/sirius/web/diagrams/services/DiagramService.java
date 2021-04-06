@@ -51,6 +51,11 @@ public class DiagramService implements IDiagramService {
         return this.findNode(node -> Objects.equals(node.getId(), nodeId), diagram.getNodes());
     }
 
+    @Override
+    public Optional<Node> findNodeByLabelId(Diagram diagram, UUID labelId) {
+        return this.findNode(node -> Objects.equals(node.getLabel().getId(), labelId), diagram.getNodes());
+    }
+
     private Optional<Node> findNode(Predicate<Node> condition, List<Node> candidates) {
         Optional<Node> result = Optional.empty();
         for (Node node : candidates) {
