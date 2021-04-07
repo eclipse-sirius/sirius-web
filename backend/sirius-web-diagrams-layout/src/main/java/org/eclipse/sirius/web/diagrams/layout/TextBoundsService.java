@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -37,6 +37,11 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class TextBoundsService {
+
+    /**
+     * The text label minimum characters needed to consider an empty node easily clickable.
+     */
+    private static final String MINIMUM_TEXT_LABEL_CHARACTERS = "    "; //$NON-NLS-1$
 
     private final Logger logger = LoggerFactory.getLogger(TextBoundsService.class);
 
@@ -88,6 +93,17 @@ public class TextBoundsService {
 
     public TextBounds getBounds(Label label) {
         return this.textBoundsProvider.computeBounds(label.getStyle(), label.getText());
+    }
+
+    public TextBounds getTextMinimumBounds() {
+        // @formatter:off
+        LabelStyle labelStyle = LabelStyle.newLabelStyle()
+                .fontSize(16)
+                .color("#000000") //$NON-NLS-1$
+                .iconURL("") //$NON-NLS-1$
+                .build();
+        // @formatter:on
+        return this.textBoundsProvider.computeBounds(labelStyle, MINIMUM_TEXT_LABEL_CHARACTERS);
     }
 
 }

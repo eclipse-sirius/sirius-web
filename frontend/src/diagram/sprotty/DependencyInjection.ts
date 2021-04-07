@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,8 @@ import { DiagramView } from 'diagram/sprotty/views/DiagramView';
 import { EdgeView } from 'diagram/sprotty/views/EdgeView';
 import { ImageView } from 'diagram/sprotty/views/ImageView';
 import { LabelView } from 'diagram/sprotty/views/LabelView';
+import { ListItemView } from 'diagram/sprotty/views/ListItemView';
+import { ListView } from 'diagram/sprotty/views/ListView';
 import { RectangleView } from 'diagram/sprotty/views/RectangleView';
 import {
   ACTIVE_TOOL_ACTION,
@@ -85,6 +87,10 @@ const siriusWebContainerModule = new ContainerModule((bind, unbind, isBound, reb
   configureModelElement(context, 'node:rectangle', SNode, RectangleView);
   // @ts-ignore
   configureModelElement(context, 'node:image', SNode, ImageView);
+  // @ts-ignore
+  configureModelElement(context, 'node:list', SNode, ListView);
+  // @ts-ignore
+  configureModelElement(context, 'node:list:item', SNode, ListItemView);
   // @ts-ignore
   configureView({ bind, isBound }, 'port:square', RectangleView);
   configureView({ bind, isBound }, 'edge:straight', EdgeView);

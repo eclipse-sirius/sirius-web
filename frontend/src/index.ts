@@ -50,6 +50,8 @@ export * from './diagram/sprotty/views/DiagramView';
 export * from './diagram/sprotty/views/EdgeView';
 export * from './diagram/sprotty/views/ImageView';
 export * from './diagram/sprotty/views/LabelView';
+export * from './diagram/sprotty/views/ListItemView';
+export * from './diagram/sprotty/views/ListView';
 export * from './diagram/sprotty/views/RectangleView';
 export * from './diagram/sprotty/WebSocketDiagramServer';
 export * from './diagram/Toolbar';

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,10 @@ public final class NodeType {
     public static final String NODE_RECTANGLE = "node:rectangle"; //$NON-NLS-1$
 
     public static final String NODE_IMAGE = "node:image"; //$NON-NLS-1$
+
+    public static final String NODE_LIST = "node:list"; //$NON-NLS-1$
+
+    public static final String NODE_LIST_ITEM = "node:list:item"; //$NON-NLS-1$
 
     private NodeType() {
         // Prevent instantiation
