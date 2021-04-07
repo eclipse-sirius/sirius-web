@@ -21,8 +21,10 @@ import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import org.eclipse.sirius.diagram.ContainerLayout;
 import org.eclipse.sirius.diagram.description.AbstractNodeMapping;
 import org.eclipse.sirius.diagram.description.ContainerMapping;
+import org.eclipse.sirius.diagram.description.style.FlatContainerStyleDescription;
 import org.eclipse.sirius.diagram.description.style.WorkspaceImageDescription;
 import org.eclipse.sirius.viewpoint.description.style.BasicLabelStyleDescription;
 import org.eclipse.sirius.viewpoint.description.style.StyleFactory;
@@ -110,10 +112,20 @@ public class AbstractNodeMappingConverter {
         };
         Function<VariableManager, String> typeProvider = variableManager -> {
             org.eclipse.sirius.viewpoint.description.style.LabelStyleDescription style = abstractNodeMappingDescriptionProvider.apply(variableManager);
+            String nodeType = NodeType.NODE_RECTANGLE;
             if (style instanceof WorkspaceImageDescription) {
-                return NodeType.NODE_IMAGE;
+                nodeType = NodeType.NODE_IMAGE;
+            } else if (style instanceof FlatContainerStyleDescription && abstractNodeMapping instanceof ContainerMapping
+                    && ContainerLayout.LIST.equals(((ContainerMapping) abstractNodeMapping).getChildrenPresentation())) {
+                nodeType = NodeType.NODE_LIST;
+            } else if (style.eContainer() != null && style.eContainer().eContainer() instanceof ContainerMapping) {
+                ContainerMapping parentMapping = (ContainerMapping) style.eContainer().eContainer();
+                org.eclipse.sirius.viewpoint.description.style.LabelStyleDescription labelStyleDescription = new LabelStyleDescriptionProvider(interpreter, parentMapping).apply(variableManager);
+                if (labelStyleDescription instanceof FlatContainerStyleDescription && ContainerLayout.LIST.equals(parentMapping.getChildrenPresentation())) {
+                    nodeType = NodeType.NODE_LIST_ITEM;
+                }
             }
-            return NodeType.NODE_RECTANGLE;
+            return nodeType;
         };
 
         Function<VariableManager, INodeStyle> styleProvider = new AbstractNodeMappingStyleProvider(interpreter, abstractNodeMapping);

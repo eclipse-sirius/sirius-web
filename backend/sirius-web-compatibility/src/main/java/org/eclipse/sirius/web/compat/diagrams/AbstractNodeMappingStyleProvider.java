@@ -16,13 +16,19 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 
+import org.eclipse.sirius.diagram.ContainerLayout;
 import org.eclipse.sirius.diagram.description.AbstractNodeMapping;
+import org.eclipse.sirius.diagram.description.ContainerMapping;
+import org.eclipse.sirius.diagram.description.style.EllipseNodeDescription;
 import org.eclipse.sirius.diagram.description.style.FlatContainerStyleDescription;
+import org.eclipse.sirius.diagram.description.style.LozengeNodeDescription;
 import org.eclipse.sirius.diagram.description.style.SquareDescription;
 import org.eclipse.sirius.diagram.description.style.WorkspaceImageDescription;
 import org.eclipse.sirius.viewpoint.description.style.LabelStyleDescription;
 import org.eclipse.sirius.web.diagrams.INodeStyle;
 import org.eclipse.sirius.web.diagrams.LineStyle;
+import org.eclipse.sirius.web.diagrams.ListItemNodeStyle;
+import org.eclipse.sirius.web.diagrams.ListNodeStyle;
 import org.eclipse.sirius.web.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
 import org.eclipse.sirius.web.interpreter.Result;
@@ -53,12 +59,18 @@ public class AbstractNodeMappingStyleProvider implements Function<VariableManage
     private INodeStyle getNodeStyle(VariableManager variableManager, LabelStyleDescription nodeStyleDescription) {
         INodeStyle style = null;
 
-        if (nodeStyleDescription instanceof SquareDescription) {
+        if (this.shouldBeConsideredAsListItemNodeStyle(variableManager, nodeStyleDescription)) {
+            style = this.createListItemNodeStyle(variableManager, nodeStyleDescription);
+        } else if (nodeStyleDescription instanceof SquareDescription) {
             SquareDescription squareDescription = (SquareDescription) nodeStyleDescription;
             style = this.createRectangularNodeStyle(variableManager, squareDescription);
         } else if (nodeStyleDescription instanceof FlatContainerStyleDescription) {
             FlatContainerStyleDescription flatContainerStyleDescription = (FlatContainerStyleDescription) nodeStyleDescription;
-            style = this.createRectangularNodeStyle(variableManager, flatContainerStyleDescription);
+            if (this.abstractNodeMapping instanceof ContainerMapping && ContainerLayout.LIST.equals(((ContainerMapping) this.abstractNodeMapping).getChildrenPresentation())) {
+                style = this.createListNodeStyle(variableManager, flatContainerStyleDescription);
+            } else {
+                style = this.createRectangularNodeStyle(variableManager, flatContainerStyleDescription);
+            }
         } else if (nodeStyleDescription instanceof WorkspaceImageDescription) {
             WorkspaceImageDescription workspaceImageDescription = (WorkspaceImageDescription) nodeStyleDescription;
             WorkspaceImageDescriptionConverter workspaceImageDescriptionConverter = new WorkspaceImageDescriptionConverter(this.interpreter, variableManager, workspaceImageDescription);
@@ -77,6 +89,56 @@ public class AbstractNodeMappingStyleProvider implements Function<VariableManage
         }
 
         return style;
+    }
+
+    /**
+     * Returns <code>true</code> if the <em>nodeStyleDescription</em> represents a simple figure (square, ellipse or
+     * lozenge) and the {@link #nodeMapping} container represents his children in a list, <code>false</code> otherwise.
+     *
+     * @param variableManager
+     *            The variable manager
+     * @param nodeStyleDescription
+     *            the node style description that could be considered as a list item node style
+     * @return <code>true</code> if the <em>nodeStyleDescription</em> should be considered as a list item node style
+     */
+    private boolean shouldBeConsideredAsListItemNodeStyle(VariableManager variableManager, LabelStyleDescription nodeStyleDescription) {
+        if ((nodeStyleDescription instanceof SquareDescription || nodeStyleDescription instanceof EllipseNodeDescription || nodeStyleDescription instanceof LozengeNodeDescription)
+                && this.abstractNodeMapping.eContainer() instanceof ContainerMapping) {
+            ContainerMapping parentMapping = (ContainerMapping) this.abstractNodeMapping.eContainer();
+            LabelStyleDescription labelStyleDescription = new LabelStyleDescriptionProvider(this.interpreter, parentMapping).apply(variableManager);
+            return labelStyleDescription instanceof FlatContainerStyleDescription && ContainerLayout.LIST.equals(parentMapping.getChildrenPresentation());
+        }
+        return false;
+    }
+
+    private INodeStyle createListItemNodeStyle(VariableManager variableManager, LabelStyleDescription nodeStyleDescription) {
+        // @formatter:off
+        return ListItemNodeStyle.newListItemNodeStyle()
+                .backgroundColor("transparent") //$NON-NLS-1$
+                .build();
+        // @formatter:on
+    }
+
+    private INodeStyle createListNodeStyle(VariableManager variableManager, FlatContainerStyleDescription flatContainerStyleDescription) {
+        ColorDescriptionConverter backgroundColorProvider = new ColorDescriptionConverter(this.interpreter, variableManager.getVariables());
+        ColorDescriptionConverter borderColorProvider = new ColorDescriptionConverter(this.interpreter, variableManager.getVariables());
+
+        String color = backgroundColorProvider.convert(flatContainerStyleDescription.getBackgroundColor());
+        String borderColor = borderColorProvider.convert(flatContainerStyleDescription.getBorderColor());
+
+        LineStyle borderStyle = new LineStyleConverter().getStyle(flatContainerStyleDescription.getBorderLineStyle());
+
+        Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), flatContainerStyleDescription.getBorderSizeComputationExpression());
+        int borderSize = result.asInt().getAsInt();
+
+        // @formatter:off
+        return ListNodeStyle.newListNodeStyle()
+                .color(color)
+                .borderColor(borderColor)
+                .borderSize(borderSize)
+                .borderStyle(borderStyle)
+                .build();
+        // @formatter:on
     }
 
     private RectangularNodeStyle createRectangularNodeStyle(VariableManager variableManager, SquareDescription squareDescription) {

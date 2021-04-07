@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,6 +24,10 @@ import java.io.IOException;
 
 import org.eclipse.sirius.web.diagrams.INodeStyle;
 import org.eclipse.sirius.web.diagrams.ImageNodeStyle;
+import org.eclipse.sirius.web.diagrams.ListItemNodeStyle;
+import org.eclipse.sirius.web.diagrams.ListNodeStyle;
+import org.eclipse.sirius.web.diagrams.Node;
+import org.eclipse.sirius.web.diagrams.NodeType;
 import org.eclipse.sirius.web.diagrams.RectangularNodeStyle;
 
 /**
@@ -51,10 +55,26 @@ public class INodeStyleDeserializer extends StdDeserializer<INodeStyle> {
             ObjectMapper mapper = (ObjectMapper) objectCodec;
             ObjectNode root = mapper.readTree(jsonParser);
 
-            if (root.has("imageURL")) { //$NON-NLS-1$
-                nodeStyle = mapper.readValue(root.toString(), ImageNodeStyle.class);
-            } else {
-                nodeStyle = mapper.readValue(root.toString(), RectangularNodeStyle.class);
+            Object parent = jsonParser.getParsingContext().getCurrentValue();
+            if (parent instanceof Node) {
+                Node parentNode = (Node) parent;
+                switch (parentNode.getType()) {
+                case NodeType.NODE_RECTANGLE:
+                    nodeStyle = mapper.readValue(root.toString(), RectangularNodeStyle.class);
+                    break;
+                case NodeType.NODE_IMAGE:
+                    nodeStyle = mapper.readValue(root.toString(), ImageNodeStyle.class);
+                    break;
+                case NodeType.NODE_LIST:
+                    nodeStyle = mapper.readValue(root.toString(), ListNodeStyle.class);
+                    break;
+                case NodeType.NODE_LIST_ITEM:
+                    nodeStyle = mapper.readValue(root.toString(), ListItemNodeStyle.class);
+                    break;
+                default:
+                    nodeStyle = mapper.readValue(root.toString(), RectangularNodeStyle.class);
+                    break;
+                }
             }
         }
         return nodeStyle;

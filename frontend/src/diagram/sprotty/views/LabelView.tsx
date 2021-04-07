@@ -48,8 +48,7 @@ export class LabelView extends SLabelView {
         styleObject['text-decoration'] += ' line-through';
       }
     }
-
-    const iconVerticalOffset = label.text ? -12 : -6;
+    const iconVerticalOffset = -12;
     const vnode = (
       <g attrs-data-testid={`Label - ${label.text}`}>
         {iconURL ? <image href={iconURL} y={iconVerticalOffset} x="-20" /> : ''}

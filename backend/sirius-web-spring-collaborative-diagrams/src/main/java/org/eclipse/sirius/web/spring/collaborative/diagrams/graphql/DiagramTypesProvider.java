@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,6 +26,8 @@ import org.eclipse.sirius.web.diagrams.ImageNodeStyle;
 import org.eclipse.sirius.web.diagrams.Label;
 import org.eclipse.sirius.web.diagrams.LabelStyle;
 import org.eclipse.sirius.web.diagrams.LineStyle;
+import org.eclipse.sirius.web.diagrams.ListItemNodeStyle;
+import org.eclipse.sirius.web.diagrams.ListNodeStyle;
 import org.eclipse.sirius.web.diagrams.Node;
 import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.RectangularNodeStyle;
@@ -78,6 +80,8 @@ public class DiagramTypesProvider implements ITypeProvider {
             LabelStyle.class,
             RectangularNodeStyle.class,
             ImageNodeStyle.class,
+            ListNodeStyle.class,
+            ListItemNodeStyle.class,
             Edge.class,
             EdgeStyle.class,
             DiagramDescription.class,
@@ -113,6 +117,8 @@ public class DiagramTypesProvider implements ITypeProvider {
                 .name(INodeStyle.class.getSimpleName())
                 .possibleType(new GraphQLTypeReference(RectangularNodeStyle.class.getSimpleName()))
                 .possibleType(new GraphQLTypeReference(ImageNodeStyle.class.getSimpleName()))
+                .possibleType(new GraphQLTypeReference(ListNodeStyle.class.getSimpleName()))
+                .possibleType(new GraphQLTypeReference(ListItemNodeStyle.class.getSimpleName()))
                 .build();
         // @formatter:on
     }

@@ -17,6 +17,7 @@ import {
   deletableFeature,
   editLabelFeature,
   fadeFeature,
+  FeatureSet,
   hoverFeedbackFeature,
   layoutContainerFeature,
   moveFeature,
@@ -84,7 +85,7 @@ const convertNode = (node, httpOrigin: string, readOnly: boolean) => {
   const convertedLabel = convertLabel(label, httpOrigin, readOnly);
   const convertedStyle = convertNodeStyle(style, httpOrigin);
 
-  const features = handleNodeFeatures(readOnly);
+  const features = handleNodeFeatures(node, readOnly);
 
   const editableLabel = handleNodeLabel(convertedLabel, readOnly);
 
@@ -113,20 +114,8 @@ const handleNodeLabel = (label, readOnly: boolean) => {
   return editableLabel;
 };
 
-const handleNodeFeatures = (readOnly: boolean) => {
-  if (readOnly) {
-    return createFeatureSet([
-      connectableFeature,
-      selectFeature,
-      boundsFeature,
-      layoutContainerFeature,
-      fadeFeature,
-      hoverFeedbackFeature,
-      popupFeature,
-    ]);
-  }
-
-  return createFeatureSet([
+const handleNodeFeatures = (node, readOnly: boolean): FeatureSet => {
+  const features = new Set<symbol>([
     connectableFeature,
     deletableFeature,
     selectFeature,
@@ -139,6 +128,22 @@ const handleNodeFeatures = (readOnly: boolean) => {
     resizeFeature,
     withEditLabelFeature,
   ]);
+
+  if (node.type === 'node:list') {
+    features.delete(resizeFeature);
+  } else if (node.type === 'node:list:item') {
+    features.delete(resizeFeature);
+    features.delete(connectableFeature);
+    features.delete(moveFeature);
+  }
+
+  if (readOnly) {
+    features.delete(resizeFeature);
+    features.delete(moveFeature);
+    features.delete(withEditLabelFeature);
+  }
+
+  return features;
 };
 
 const convertLabel = (label, httpOrigin: string, readOnly: boolean) => {
