@@ -31,10 +31,10 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EdgeDescription" eSuperTypes="#//DiagramElementDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="isDomainBasedEdge" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="sourceNodeDescriptions"
-        upperBound="-1" eType="#//NodeDescription"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="targetNodeDescriptions"
-        upperBound="-1" eType="#//NodeDescription"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="sourceNodeDescription"
+        lowerBound="1" eType="#//NodeDescription"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="targetNodeDescription"
+        lowerBound="1" eType="#//NodeDescription"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="sourceNodesExpression"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="targetNodesExpression"

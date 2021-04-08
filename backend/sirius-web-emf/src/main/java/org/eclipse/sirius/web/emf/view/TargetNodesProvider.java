@@ -68,9 +68,7 @@ public class TargetNodesProvider implements Function<VariableManager, List<Eleme
     }
 
     private Predicate<Element> isFromCompatibleTargetMapping() {
-        return nodeElement -> {
-            return this.edgeDescription.getTargetNodeDescriptions().stream().anyMatch(targetMapping -> this.isFromDescription(nodeElement, targetMapping));
-        };
+        return nodeElement -> this.isFromDescription(nodeElement, this.edgeDescription.getTargetNodeDescription());
     }
 
     private boolean isFromDescription(Element nodeElement, DiagramElementDescription description) {

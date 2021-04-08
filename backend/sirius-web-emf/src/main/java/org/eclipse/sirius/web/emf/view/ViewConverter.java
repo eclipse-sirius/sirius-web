@@ -202,8 +202,8 @@ public class ViewConverter {
                     .label("New edge" + edgeDescription.getDomainType()) //$NON-NLS-1$
                     .imageURL(EDGE_CREATION_TOOL_ICON)
                     .edgeCandidates(List.of(EdgeCandidate.newEdgeCandidate()
-                                                         .sources(edgeDescription.getSourceNodeDescriptions().stream().map(this.convertedNodes::get).collect(Collectors.toList()))
-                                                         .targets(edgeDescription.getTargetNodeDescriptions().stream().map(this.convertedNodes::get).collect(Collectors.toList()))
+                                                         .sources(List.of(this.convert(edgeDescription.getSourceNodeDescription())))
+                                                         .targets(List.of(this.convert(edgeDescription.getTargetNodeDescription())))
                                                          .build()))
                     .handler(variableManager -> this.canonicalBehaviors.createNewEdge(variableManager, edgeDescription))
                     .build();
@@ -253,8 +253,8 @@ public class ViewConverter {
             semanticElementsProvider = this.getSemanticElementsProvider(viewEdgeDescription);
         } else {
             //
-            var sourceNodeDescriptions = viewEdgeDescription.getSourceNodeDescriptions().stream().map(this.convertedNodes::get);
-            semanticElementsProvider = new RelationBasedSemanticElementsProvider(sourceNodeDescriptions.map(NodeDescription::getId).collect(Collectors.toList()));
+            var sourceNodeDescription = this.convert(viewEdgeDescription.getSourceNodeDescription());
+            semanticElementsProvider = new RelationBasedSemanticElementsProvider(List.of(sourceNodeDescription.getId()));
         }
 
         Function<VariableManager, List<Element>> sourceNodesProvider = null;
@@ -273,7 +273,7 @@ public class ViewConverter {
 
                 // @formatter:off
                 return nodeCandidates
-                        .filter(nodeElement -> viewEdgeDescription.getSourceNodeDescriptions().stream().anyMatch(srcMapping -> this.isFromDescription(nodeElement, srcMapping)))
+                        .filter(nodeElement -> this.isFromDescription(nodeElement, viewEdgeDescription.getSourceNodeDescription()))
                         .filter(Objects::nonNull)
                         .collect(Collectors.toList());
                 // @formatter:on
@@ -305,8 +305,8 @@ public class ViewConverter {
                                      .targetObjectIdProvider(this.semanticTargetIdProvider)
                                      .targetObjectKindProvider(this.semanticTargetKindProvider)
                                      .targetObjectLabelProvider(this.semanticTargetLabelProvider)
-                                     .sourceNodeDescriptions(viewEdgeDescription.getSourceNodeDescriptions().stream().map(this.convertedNodes::get).collect(Collectors.toList()))
-                                     .targetNodeDescriptions(viewEdgeDescription.getTargetNodeDescriptions().stream().map(this.convertedNodes::get).collect(Collectors.toList()))
+                                     .sourceNodeDescriptions(List.of(this.convertedNodes.get(viewEdgeDescription.getSourceNodeDescription())))
+                                     .targetNodeDescriptions(List.of(this.convertedNodes.get(viewEdgeDescription.getTargetNodeDescription())))
                                      .semanticElementsProvider(semanticElementsProvider)
                                      .sourceNodesProvider(sourceNodesProvider)
                                      .targetNodesProvider(targetNodesProvider)
@@ -319,7 +319,7 @@ public class ViewConverter {
     }
 
     private Predicate<Element> isFromCompatibleSourceMapping(org.eclipse.sirius.web.view.EdgeDescription edgeDescription) {
-        return nodeElement -> edgeDescription.getSourceNodeDescriptions().stream().anyMatch(srcDescription -> this.isFromDescription(nodeElement, srcDescription));
+        return nodeElement -> this.isFromDescription(nodeElement, edgeDescription.getSourceNodeDescription());
     }
 
     private boolean isFromDescription(Element nodeElement, DiagramElementDescription diagramElementDescription) {
