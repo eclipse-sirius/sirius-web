@@ -64,6 +64,7 @@ import {
   updateModule,
   viewportModule,
   withEditLabelFeature,
+  ZoomMouseListener,
   zorderModule,
 } from 'sprotty';
 
@@ -204,12 +205,25 @@ export const createDependencyInjectionContainer = (containerId, onSelectElement,
     }
     mouseMove(target, event) {
       edgeCreationFeedback.update(event.offsetX, event.offsetY);
-      return [];
+      if (event.buttons !== 0) {
+        // Hide the palette during scrolling/panning
+        return [{ kind: HIDE_CONTEXTUAL_TOOLBAR_ACTION }];
+      } else {
+        return [];
+      }
     }
   }
   decorate(inject(TYPES.ModelSource) as ParameterDecorator, DiagramMouseListener, 0);
 
   container.bind(TYPES.MouseListener).to(DiagramMouseListener).inSingletonScope();
+
+  class DiagramZoomMouseListener extends ZoomMouseListener {
+    wheel(target, event) {
+      // Hide the palette during zoom
+      return [{ kind: HIDE_CONTEXTUAL_TOOLBAR_ACTION }];
+    }
+  }
+  container.bind(TYPES.MouseListener).to(DiagramZoomMouseListener).inSingletonScope();
 
   class CursorMouseListener extends MouseListener {
     diagramServer: any;
