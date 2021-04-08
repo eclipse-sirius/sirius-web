@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *     Obeo - initial API and implementation
+ *      Obeo - initial API and implementation
  */
 package org.eclipse.sirius.web.domain.util;
 
@@ -19,6 +19,8 @@ import org.eclipse.sirius.web.domain.Attribute;
 import org.eclipse.sirius.web.domain.Domain;
 import org.eclipse.sirius.web.domain.DomainPackage;
 import org.eclipse.sirius.web.domain.Entity;
+import org.eclipse.sirius.web.domain.Feature;
+import org.eclipse.sirius.web.domain.NamedElement;
 import org.eclipse.sirius.web.domain.Relation;
 
 /**
@@ -72,9 +74,18 @@ public class DomainSwitch<T> extends Switch<T> {
     @Override
     protected T doSwitch(int classifierID, EObject theEObject) {
         switch (classifierID) {
+        case DomainPackage.NAMED_ELEMENT: {
+            NamedElement namedElement = (NamedElement) theEObject;
+            T result = this.caseNamedElement(namedElement);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
         case DomainPackage.DOMAIN: {
             Domain domain = (Domain) theEObject;
             T result = this.caseDomain(domain);
+            if (result == null)
+                result = this.caseNamedElement(domain);
             if (result == null)
                 result = this.defaultCase(theEObject);
             return result;
@@ -83,12 +94,27 @@ public class DomainSwitch<T> extends Switch<T> {
             Entity entity = (Entity) theEObject;
             T result = this.caseEntity(entity);
             if (result == null)
+                result = this.caseNamedElement(entity);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case DomainPackage.FEATURE: {
+            Feature feature = (Feature) theEObject;
+            T result = this.caseFeature(feature);
+            if (result == null)
+                result = this.caseNamedElement(feature);
+            if (result == null)
                 result = this.defaultCase(theEObject);
             return result;
         }
         case DomainPackage.ATTRIBUTE: {
             Attribute attribute = (Attribute) theEObject;
             T result = this.caseAttribute(attribute);
+            if (result == null)
+                result = this.caseFeature(attribute);
+            if (result == null)
+                result = this.caseNamedElement(attribute);
             if (result == null)
                 result = this.defaultCase(theEObject);
             return result;
@@ -97,12 +123,30 @@ public class DomainSwitch<T> extends Switch<T> {
             Relation relation = (Relation) theEObject;
             T result = this.caseRelation(relation);
             if (result == null)
+                result = this.caseFeature(relation);
+            if (result == null)
+                result = this.caseNamedElement(relation);
+            if (result == null)
                 result = this.defaultCase(theEObject);
             return result;
         }
         default:
             return this.defaultCase(theEObject);
         }
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Named Element</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Named Element</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseNamedElement(NamedElement object) {
+        return null;
     }
 
     /**
@@ -130,6 +174,20 @@ public class DomainSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseEntity(Entity object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Feature</em>'. <!-- begin-user-doc --> This
+     * implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Feature</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseFeature(Feature object) {
         return null;
     }
 

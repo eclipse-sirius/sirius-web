@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *     Obeo - initial API and implementation
+ *      Obeo - initial API and implementation
  */
 package org.eclipse.sirius.web.domain.util;
 
@@ -20,6 +20,8 @@ import org.eclipse.sirius.web.domain.Attribute;
 import org.eclipse.sirius.web.domain.Domain;
 import org.eclipse.sirius.web.domain.DomainPackage;
 import org.eclipse.sirius.web.domain.Entity;
+import org.eclipse.sirius.web.domain.Feature;
+import org.eclipse.sirius.web.domain.NamedElement;
 import org.eclipse.sirius.web.domain.Relation;
 
 /**
@@ -74,6 +76,11 @@ public class DomainAdapterFactory extends AdapterFactoryImpl {
      */
     protected DomainSwitch<Adapter> modelSwitch = new DomainSwitch<>() {
         @Override
+        public Adapter caseNamedElement(NamedElement object) {
+            return DomainAdapterFactory.this.createNamedElementAdapter();
+        }
+
+        @Override
         public Adapter caseDomain(Domain object) {
             return DomainAdapterFactory.this.createDomainAdapter();
         }
@@ -81,6 +88,11 @@ public class DomainAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseEntity(Entity object) {
             return DomainAdapterFactory.this.createEntityAdapter();
+        }
+
+        @Override
+        public Adapter caseFeature(Feature object) {
+            return DomainAdapterFactory.this.createFeatureAdapter();
         }
 
         @Override
@@ -113,6 +125,19 @@ public class DomainAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.web.domain.NamedElement <em>Named
+     * Element</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.web.domain.NamedElement
+     * @generated
+     */
+    public Adapter createNamedElementAdapter() {
+        return null;
+    }
+
+    /**
      * Creates a new adapter for an object of class '{@link org.eclipse.sirius.web.domain.Domain <em>Domain</em>}'. <!--
      * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful to
      * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
@@ -135,6 +160,19 @@ public class DomainAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createEntityAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.web.domain.Feature <em>Feature</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.web.domain.Feature
+     * @generated
+     */
+    public Adapter createFeatureAdapter() {
         return null;
     }
 

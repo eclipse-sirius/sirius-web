@@ -13,27 +13,30 @@
   <testsDirectory xsi:nil="true"/>
   <genPackages prefix="Domain" basePackage="org.eclipse.sirius.web" disposableProviderFactory="true"
       ecorePackage="domain.ecore#/">
-    <genEnums typeSafeEnumCompatible="false" ecoreEnum="domain.ecore#//Type">
-      <genEnumLiterals ecoreEnumLiteral="domain.ecore#//Type/STRING"/>
-      <genEnumLiterals ecoreEnumLiteral="domain.ecore#//Type/BOOLEAN"/>
-      <genEnumLiterals ecoreEnumLiteral="domain.ecore#//Type/NUMBER"/>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="domain.ecore#//DataType">
+      <genEnumLiterals ecoreEnumLiteral="domain.ecore#//DataType/STRING"/>
+      <genEnumLiterals ecoreEnumLiteral="domain.ecore#//DataType/BOOLEAN"/>
+      <genEnumLiterals ecoreEnumLiteral="domain.ecore#//DataType/NUMBER"/>
     </genEnums>
+    <genClasses ecoreClass="domain.ecore#//NamedElement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute domain.ecore#//NamedElement/name"/>
+    </genClasses>
     <genClasses ecoreClass="domain.ecore#//Domain">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute domain.ecore#//Domain/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute domain.ecore#//Domain/uri"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference domain.ecore#//Domain/types"/>
     </genClasses>
     <genClasses ecoreClass="domain.ecore#//Entity">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute domain.ecore#//Entity/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference domain.ecore#//Entity/attributes"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference domain.ecore#//Entity/relations"/>
     </genClasses>
+    <genClasses ecoreClass="domain.ecore#//Feature">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute domain.ecore#//Feature/optional"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute domain.ecore#//Feature/many"/>
+    </genClasses>
     <genClasses ecoreClass="domain.ecore#//Attribute">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute domain.ecore#//Attribute/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute domain.ecore#//Attribute/type"/>
     </genClasses>
     <genClasses ecoreClass="domain.ecore#//Relation">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute domain.ecore#//Relation/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute domain.ecore#//Relation/containment"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference domain.ecore#//Relation/targetType"/>
     </genClasses>

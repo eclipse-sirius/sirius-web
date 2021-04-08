@@ -8,12 +8,11 @@
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *     Obeo - initial API and implementation
+ *      Obeo - initial API and implementation
  */
 package org.eclipse.sirius.web.domain;
 
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc --> A representation of the model object '<em><b>Domain</b></em>'. <!-- end-user-doc -->
@@ -22,7 +21,6 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.web.domain.Domain#getName <em>Name</em>}</li>
  * <li>{@link org.eclipse.sirius.web.domain.Domain#getUri <em>Uri</em>}</li>
  * <li>{@link org.eclipse.sirius.web.domain.Domain#getTypes <em>Types</em>}</li>
  * </ul>
@@ -31,29 +29,7 @@ import org.eclipse.emf.ecore.EObject;
  * @model
  * @generated
  */
-public interface Domain extends EObject {
-    /**
-     * Returns the value of the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Name</em>' attribute.
-     * @see #setName(String)
-     * @see org.eclipse.sirius.web.domain.DomainPackage#getDomain_Name()
-     * @model
-     * @generated
-     */
-    String getName();
-
-    /**
-     * Sets the value of the '{@link org.eclipse.sirius.web.domain.Domain#getName <em>Name</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Name</em>' attribute.
-     * @see #getName()
-     * @generated
-     */
-    void setName(String value);
-
+public interface Domain extends NamedElement {
     /**
      * Returns the value of the '<em><b>Uri</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *

@@ -17,26 +17,34 @@ import java.util.List;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.common.util.ResourceLocator;
+import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
+import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
+import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
+import org.eclipse.emf.edit.provider.IItemPropertySource;
+import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
+import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
+import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
+import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
-import org.eclipse.sirius.web.domain.DomainFactory;
 import org.eclipse.sirius.web.domain.DomainPackage;
-import org.eclipse.sirius.web.domain.Entity;
+import org.eclipse.sirius.web.domain.NamedElement;
 
 /**
- * This is the item provider adapter for a {@link org.eclipse.sirius.web.domain.Entity} object. <!-- begin-user-doc -->
- * <!-- end-user-doc -->
+ * This is the item provider adapter for a {@link org.eclipse.sirius.web.domain.NamedElement} object. <!--
+ * begin-user-doc --> <!-- end-user-doc -->
  *
  * @generated
  */
-public class EntityItemProvider extends NamedElementItemProvider {
+public class NamedElementItemProvider extends ItemProviderAdapter
+        implements IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource {
     /**
      * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
-    public EntityItemProvider(AdapterFactory adapterFactory) {
+    public NamedElementItemProvider(AdapterFactory adapterFactory) {
         super(adapterFactory);
     }
 
@@ -50,49 +58,31 @@ public class EntityItemProvider extends NamedElementItemProvider {
         if (this.itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
+            this.addNamePropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
 
     /**
-     * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
-     * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
-     * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * This adds a property descriptor for the Name feature. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
-    @Override
-    public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
-        if (this.childrenFeatures == null) {
-            super.getChildrenFeatures(object);
-            this.childrenFeatures.add(DomainPackage.Literals.ENTITY__ATTRIBUTES);
-            this.childrenFeatures.add(DomainPackage.Literals.ENTITY__RELATIONS);
-        }
-        return this.childrenFeatures;
+    protected void addNamePropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(
+                this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(), this.getString("_UI_NamedElement_name_feature"), //$NON-NLS-1$
+                        this.getString("_UI_PropertyDescriptor_description", "_UI_NamedElement_name_feature", "_UI_NamedElement_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                        DomainPackage.Literals.NAMED_ELEMENT__NAME, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    protected EStructuralFeature getChildFeature(Object object, Object child) {
-        // Check the type of the specified child object and return the proper feature to use for
-        // adding (see {@link AddCommand}) it as a child.
-
-        return super.getChildFeature(object, child);
-    }
-
-    /**
-     * This returns Entity.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This returns NamedElement.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/Entity")); //$NON-NLS-1$
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/NamedElement")); //$NON-NLS-1$
     }
 
     /**
@@ -112,9 +102,9 @@ public class EntityItemProvider extends NamedElementItemProvider {
      */
     @Override
     public String getText(Object object) {
-        String label = ((Entity) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_Entity_type") : //$NON-NLS-1$
-                this.getString("_UI_Entity_type") + " " + label; //$NON-NLS-1$ //$NON-NLS-2$
+        String label = ((NamedElement) object).getName();
+        return label == null || label.length() == 0 ? this.getString("_UI_NamedElement_type") : //$NON-NLS-1$
+                this.getString("_UI_NamedElement_type") + " " + label; //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /**
@@ -128,10 +118,9 @@ public class EntityItemProvider extends NamedElementItemProvider {
     public void notifyChanged(Notification notification) {
         this.updateChildren(notification);
 
-        switch (notification.getFeatureID(Entity.class)) {
-        case DomainPackage.ENTITY__ATTRIBUTES:
-        case DomainPackage.ENTITY__RELATIONS:
-            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+        switch (notification.getFeatureID(NamedElement.class)) {
+        case DomainPackage.NAMED_ELEMENT__NAME:
+            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
             return;
         }
         super.notifyChanged(notification);
@@ -146,10 +135,16 @@ public class EntityItemProvider extends NamedElementItemProvider {
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
+    }
 
-        newChildDescriptors.add(this.createChildParameter(DomainPackage.Literals.ENTITY__ATTRIBUTES, DomainFactory.eINSTANCE.createAttribute()));
-
-        newChildDescriptors.add(this.createChildParameter(DomainPackage.Literals.ENTITY__RELATIONS, DomainFactory.eINSTANCE.createRelation()));
+    /**
+     * Return the resource locator for this item provider's resources. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public ResourceLocator getResourceLocator() {
+        return DomainEditPlugin.INSTANCE;
     }
 
 }

@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *     Obeo - initial API and implementation
+ *      Obeo - initial API and implementation
  */
 package org.eclipse.sirius.web.domain.impl;
 
@@ -20,7 +20,6 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.sirius.web.domain.Domain;
@@ -33,34 +32,13 @@ import org.eclipse.sirius.web.domain.Entity;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.web.domain.impl.DomainImpl#getName <em>Name</em>}</li>
  * <li>{@link org.eclipse.sirius.web.domain.impl.DomainImpl#getUri <em>Uri</em>}</li>
  * <li>{@link org.eclipse.sirius.web.domain.impl.DomainImpl#getTypes <em>Types</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class DomainImpl extends MinimalEObjectImpl.Container implements Domain {
-    /**
-     * The default value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
-     *
-     * @see #getName()
-     * @generated
-     * @ordered
-     */
-    protected static final String NAME_EDEFAULT = null;
-
-    /**
-     * The cached value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
-     *
-     * @see #getName()
-     * @generated
-     * @ordered
-     */
-    protected String name = NAME_EDEFAULT;
-
+public class DomainImpl extends NamedElementImpl implements Domain {
     /**
      * The default value of the '{@link #getUri() <em>Uri</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
@@ -115,29 +93,6 @@ public class DomainImpl extends MinimalEObjectImpl.Container implements Domain {
      * @generated
      */
     @Override
-    public String getName() {
-        return this.name;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public void setName(String newName) {
-        String oldName = this.name;
-        this.name = newName;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DomainPackage.DOMAIN__NAME, oldName, this.name));
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
     public String getUri() {
         return this.uri;
     }
@@ -178,9 +133,8 @@ public class DomainImpl extends MinimalEObjectImpl.Container implements Domain {
         switch (featureID) {
         case DomainPackage.DOMAIN__TYPES:
             return ((InternalEList<?>) this.getTypes()).basicRemove(otherEnd, msgs);
-        default:
-            return super.eInverseRemove(otherEnd, featureID, msgs);
         }
+        return super.eInverseRemove(otherEnd, featureID, msgs);
     }
 
     /**
@@ -191,15 +145,12 @@ public class DomainImpl extends MinimalEObjectImpl.Container implements Domain {
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-        case DomainPackage.DOMAIN__NAME:
-            return this.getName();
         case DomainPackage.DOMAIN__URI:
             return this.getUri();
         case DomainPackage.DOMAIN__TYPES:
             return this.getTypes();
-        default:
-            return super.eGet(featureID, resolve, coreType);
         }
+        return super.eGet(featureID, resolve, coreType);
     }
 
     /**
@@ -211,9 +162,6 @@ public class DomainImpl extends MinimalEObjectImpl.Container implements Domain {
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-        case DomainPackage.DOMAIN__NAME:
-            this.setName((String) newValue);
-            return;
         case DomainPackage.DOMAIN__URI:
             this.setUri((String) newValue);
             return;
@@ -221,10 +169,8 @@ public class DomainImpl extends MinimalEObjectImpl.Container implements Domain {
             this.getTypes().clear();
             this.getTypes().addAll((Collection<? extends Entity>) newValue);
             return;
-        default:
-            super.eSet(featureID, newValue);
-            return;
         }
+        super.eSet(featureID, newValue);
     }
 
     /**
@@ -235,19 +181,14 @@ public class DomainImpl extends MinimalEObjectImpl.Container implements Domain {
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-        case DomainPackage.DOMAIN__NAME:
-            this.setName(NAME_EDEFAULT);
-            return;
         case DomainPackage.DOMAIN__URI:
             this.setUri(URI_EDEFAULT);
             return;
         case DomainPackage.DOMAIN__TYPES:
             this.getTypes().clear();
             return;
-        default:
-            super.eUnset(featureID);
-            return;
         }
+        super.eUnset(featureID);
     }
 
     /**
@@ -258,15 +199,12 @@ public class DomainImpl extends MinimalEObjectImpl.Container implements Domain {
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-        case DomainPackage.DOMAIN__NAME:
-            return NAME_EDEFAULT == null ? this.name != null : !NAME_EDEFAULT.equals(this.name);
         case DomainPackage.DOMAIN__URI:
             return URI_EDEFAULT == null ? this.uri != null : !URI_EDEFAULT.equals(this.uri);
         case DomainPackage.DOMAIN__TYPES:
             return this.types != null && !this.types.isEmpty();
-        default:
-            return super.eIsSet(featureID);
         }
+        return super.eIsSet(featureID);
     }
 
     /**
@@ -280,9 +218,7 @@ public class DomainImpl extends MinimalEObjectImpl.Container implements Domain {
             return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (name: "); //$NON-NLS-1$
-        result.append(this.name);
-        result.append(", uri: "); //$NON-NLS-1$
+        result.append(" (uri: "); //$NON-NLS-1$
         result.append(this.uri);
         result.append(')');
         return result.toString();
