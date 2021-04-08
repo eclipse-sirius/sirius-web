@@ -106,13 +106,19 @@ public class ViewConverter {
      * {@link DiagramDescription}s are supported. <b>Warning:</b> this code is not re-entrant.
      */
     public List<IRepresentationDescription> convert(View view) {
-        // @formatter:off
-        return view.getDescriptions().stream()
-                   .filter(org.eclipse.sirius.web.view.DiagramDescription.class::isInstance)
-                   .map(org.eclipse.sirius.web.view.DiagramDescription.class::cast)
-                   .map(this::convert)
-                   .collect(Collectors.toList());
-        // @formatter:on
+        try {
+            // @formatter:off
+            return view.getDescriptions().stream()
+                       .filter(org.eclipse.sirius.web.view.DiagramDescription.class::isInstance)
+                       .map(org.eclipse.sirius.web.view.DiagramDescription.class::cast)
+                       .map(this::convert)
+                       .collect(Collectors.toList());
+            // @formatter:on
+        } catch (NullPointerException e) {
+            // Can easily happen if the View model is currently invalid/inconsistent, typically because it is
+            // currently being created or edited.
+            return List.of();
+        }
     }
 
     private DiagramDescription convert(org.eclipse.sirius.web.view.DiagramDescription viewDiagramDescription) {
