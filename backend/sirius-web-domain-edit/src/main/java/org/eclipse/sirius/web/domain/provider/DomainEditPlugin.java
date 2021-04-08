@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *     Obeo - initial API and implementation
+ *      Obeo - initial API and implementation
  */
 package org.eclipse.sirius.web.domain.provider;
 

@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *     Obeo - initial API and implementation
+ *      Obeo - initial API and implementation
  */
 package org.eclipse.sirius.web.domain;
 
@@ -63,14 +63,14 @@ public interface DomainPackage extends EPackage {
     DomainPackage eINSTANCE = org.eclipse.sirius.web.domain.impl.DomainPackageImpl.init();
 
     /**
-     * The meta object id for the '{@link org.eclipse.sirius.web.domain.impl.DomainImpl <em>Domain</em>}' class. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * The meta object id for the '{@link org.eclipse.sirius.web.domain.impl.NamedElementImpl <em>Named Element</em>}'
+     * class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see org.eclipse.sirius.web.domain.impl.DomainImpl
-     * @see org.eclipse.sirius.web.domain.impl.DomainPackageImpl#getDomain()
+     * @see org.eclipse.sirius.web.domain.impl.NamedElementImpl
+     * @see org.eclipse.sirius.web.domain.impl.DomainPackageImpl#getNamedElement()
      * @generated
      */
-    int DOMAIN = 0;
+    int NAMED_ELEMENT = 0;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -78,7 +78,42 @@ public interface DomainPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DOMAIN__NAME = 0;
+    int NAMED_ELEMENT__NAME = 0;
+
+    /**
+     * The number of structural features of the '<em>Named Element</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NAMED_ELEMENT_FEATURE_COUNT = 1;
+
+    /**
+     * The number of operations of the '<em>Named Element</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NAMED_ELEMENT_OPERATION_COUNT = 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.web.domain.impl.DomainImpl <em>Domain</em>}' class. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.web.domain.impl.DomainImpl
+     * @see org.eclipse.sirius.web.domain.impl.DomainPackageImpl#getDomain()
+     * @generated
+     */
+    int DOMAIN = 1;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DOMAIN__NAME = NAMED_ELEMENT__NAME;
 
     /**
      * The feature id for the '<em><b>Uri</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -86,7 +121,7 @@ public interface DomainPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DOMAIN__URI = 1;
+    int DOMAIN__URI = NAMED_ELEMENT_FEATURE_COUNT + 0;
 
     /**
      * The feature id for the '<em><b>Types</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -95,7 +130,7 @@ public interface DomainPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DOMAIN__TYPES = 2;
+    int DOMAIN__TYPES = NAMED_ELEMENT_FEATURE_COUNT + 1;
 
     /**
      * The number of structural features of the '<em>Domain</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -103,7 +138,7 @@ public interface DomainPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DOMAIN_FEATURE_COUNT = 3;
+    int DOMAIN_FEATURE_COUNT = NAMED_ELEMENT_FEATURE_COUNT + 2;
 
     /**
      * The number of operations of the '<em>Domain</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -111,7 +146,7 @@ public interface DomainPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DOMAIN_OPERATION_COUNT = 0;
+    int DOMAIN_OPERATION_COUNT = NAMED_ELEMENT_OPERATION_COUNT + 0;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.web.domain.impl.EntityImpl <em>Entity</em>}' class. <!--
@@ -121,7 +156,7 @@ public interface DomainPackage extends EPackage {
      * @see org.eclipse.sirius.web.domain.impl.DomainPackageImpl#getEntity()
      * @generated
      */
-    int ENTITY = 1;
+    int ENTITY = 2;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -129,7 +164,7 @@ public interface DomainPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ENTITY__NAME = 0;
+    int ENTITY__NAME = NAMED_ELEMENT__NAME;
 
     /**
      * The feature id for the '<em><b>Attributes</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -138,7 +173,7 @@ public interface DomainPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ENTITY__ATTRIBUTES = 1;
+    int ENTITY__ATTRIBUTES = NAMED_ELEMENT_FEATURE_COUNT + 0;
 
     /**
      * The feature id for the '<em><b>Relations</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -147,7 +182,7 @@ public interface DomainPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ENTITY__RELATIONS = 2;
+    int ENTITY__RELATIONS = NAMED_ELEMENT_FEATURE_COUNT + 1;
 
     /**
      * The number of structural features of the '<em>Entity</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -155,7 +190,7 @@ public interface DomainPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ENTITY_FEATURE_COUNT = 3;
+    int ENTITY_FEATURE_COUNT = NAMED_ELEMENT_FEATURE_COUNT + 2;
 
     /**
      * The number of operations of the '<em>Entity</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -163,7 +198,57 @@ public interface DomainPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ENTITY_OPERATION_COUNT = 0;
+    int ENTITY_OPERATION_COUNT = NAMED_ELEMENT_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.web.domain.impl.FeatureImpl <em>Feature</em>}' class. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.web.domain.impl.FeatureImpl
+     * @see org.eclipse.sirius.web.domain.impl.DomainPackageImpl#getFeature()
+     * @generated
+     */
+    int FEATURE = 3;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FEATURE__NAME = NAMED_ELEMENT__NAME;
+
+    /**
+     * The feature id for the '<em><b>Optional</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FEATURE__OPTIONAL = NAMED_ELEMENT_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Many</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FEATURE__MANY = NAMED_ELEMENT_FEATURE_COUNT + 1;
+
+    /**
+     * The number of structural features of the '<em>Feature</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FEATURE_FEATURE_COUNT = NAMED_ELEMENT_FEATURE_COUNT + 2;
+
+    /**
+     * The number of operations of the '<em>Feature</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FEATURE_OPERATION_COUNT = NAMED_ELEMENT_OPERATION_COUNT + 0;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.web.domain.impl.AttributeImpl <em>Attribute</em>}' class.
@@ -173,7 +258,7 @@ public interface DomainPackage extends EPackage {
      * @see org.eclipse.sirius.web.domain.impl.DomainPackageImpl#getAttribute()
      * @generated
      */
-    int ATTRIBUTE = 2;
+    int ATTRIBUTE = 4;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -181,7 +266,23 @@ public interface DomainPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ATTRIBUTE__NAME = 0;
+    int ATTRIBUTE__NAME = FEATURE__NAME;
+
+    /**
+     * The feature id for the '<em><b>Optional</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ATTRIBUTE__OPTIONAL = FEATURE__OPTIONAL;
+
+    /**
+     * The feature id for the '<em><b>Many</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ATTRIBUTE__MANY = FEATURE__MANY;
 
     /**
      * The feature id for the '<em><b>Type</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -189,7 +290,7 @@ public interface DomainPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ATTRIBUTE__TYPE = 1;
+    int ATTRIBUTE__TYPE = FEATURE_FEATURE_COUNT + 0;
 
     /**
      * The number of structural features of the '<em>Attribute</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
@@ -198,7 +299,7 @@ public interface DomainPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ATTRIBUTE_FEATURE_COUNT = 2;
+    int ATTRIBUTE_FEATURE_COUNT = FEATURE_FEATURE_COUNT + 1;
 
     /**
      * The number of operations of the '<em>Attribute</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -206,7 +307,7 @@ public interface DomainPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ATTRIBUTE_OPERATION_COUNT = 0;
+    int ATTRIBUTE_OPERATION_COUNT = FEATURE_OPERATION_COUNT + 0;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.web.domain.impl.RelationImpl <em>Relation</em>}' class.
@@ -216,7 +317,7 @@ public interface DomainPackage extends EPackage {
      * @see org.eclipse.sirius.web.domain.impl.DomainPackageImpl#getRelation()
      * @generated
      */
-    int RELATION = 3;
+    int RELATION = 5;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -224,7 +325,23 @@ public interface DomainPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int RELATION__NAME = 0;
+    int RELATION__NAME = FEATURE__NAME;
+
+    /**
+     * The feature id for the '<em><b>Optional</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int RELATION__OPTIONAL = FEATURE__OPTIONAL;
+
+    /**
+     * The feature id for the '<em><b>Many</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int RELATION__MANY = FEATURE__MANY;
 
     /**
      * The feature id for the '<em><b>Containment</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -232,7 +349,7 @@ public interface DomainPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int RELATION__CONTAINMENT = 1;
+    int RELATION__CONTAINMENT = FEATURE_FEATURE_COUNT + 0;
 
     /**
      * The feature id for the '<em><b>Target Type</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -240,7 +357,7 @@ public interface DomainPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int RELATION__TARGET_TYPE = 2;
+    int RELATION__TARGET_TYPE = FEATURE_FEATURE_COUNT + 1;
 
     /**
      * The number of structural features of the '<em>Relation</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -248,7 +365,7 @@ public interface DomainPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int RELATION_FEATURE_COUNT = 3;
+    int RELATION_FEATURE_COUNT = FEATURE_FEATURE_COUNT + 2;
 
     /**
      * The number of operations of the '<em>Relation</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -256,17 +373,38 @@ public interface DomainPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int RELATION_OPERATION_COUNT = 0;
+    int RELATION_OPERATION_COUNT = FEATURE_OPERATION_COUNT + 0;
 
     /**
-     * The meta object id for the '{@link org.eclipse.sirius.web.domain.Type <em>Type</em>}' enum. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
+     * The meta object id for the '{@link org.eclipse.sirius.web.domain.DataType <em>Data Type</em>}' enum. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see org.eclipse.sirius.web.domain.Type
-     * @see org.eclipse.sirius.web.domain.impl.DomainPackageImpl#getType()
+     * @see org.eclipse.sirius.web.domain.DataType
+     * @see org.eclipse.sirius.web.domain.impl.DomainPackageImpl#getDataType()
      * @generated
      */
-    int TYPE = 4;
+    int DATA_TYPE = 6;
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.web.domain.NamedElement <em>Named Element</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Named Element</em>'.
+     * @see org.eclipse.sirius.web.domain.NamedElement
+     * @generated
+     */
+    EClass getNamedElement();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.web.domain.NamedElement#getName
+     * <em>Name</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Name</em>'.
+     * @see org.eclipse.sirius.web.domain.NamedElement#getName()
+     * @see #getNamedElement()
+     * @generated
+     */
+    EAttribute getNamedElement_Name();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.web.domain.Domain <em>Domain</em>}'. <!--
@@ -277,17 +415,6 @@ public interface DomainPackage extends EPackage {
      * @generated
      */
     EClass getDomain();
-
-    /**
-     * Returns the meta object for the attribute '{@link org.eclipse.sirius.web.domain.Domain#getName <em>Name</em>}'.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the attribute '<em>Name</em>'.
-     * @see org.eclipse.sirius.web.domain.Domain#getName()
-     * @see #getDomain()
-     * @generated
-     */
-    EAttribute getDomain_Name();
 
     /**
      * Returns the meta object for the attribute '{@link org.eclipse.sirius.web.domain.Domain#getUri <em>Uri</em>}'.
@@ -322,17 +449,6 @@ public interface DomainPackage extends EPackage {
     EClass getEntity();
 
     /**
-     * Returns the meta object for the attribute '{@link org.eclipse.sirius.web.domain.Entity#getName <em>Name</em>}'.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the attribute '<em>Name</em>'.
-     * @see org.eclipse.sirius.web.domain.Entity#getName()
-     * @see #getEntity()
-     * @generated
-     */
-    EAttribute getEntity_Name();
-
-    /**
      * Returns the meta object for the containment reference list
      * '{@link org.eclipse.sirius.web.domain.Entity#getAttributes <em>Attributes</em>}'. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -357,6 +473,38 @@ public interface DomainPackage extends EPackage {
     EReference getEntity_Relations();
 
     /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.web.domain.Feature <em>Feature</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Feature</em>'.
+     * @see org.eclipse.sirius.web.domain.Feature
+     * @generated
+     */
+    EClass getFeature();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.web.domain.Feature#isOptional
+     * <em>Optional</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Optional</em>'.
+     * @see org.eclipse.sirius.web.domain.Feature#isOptional()
+     * @see #getFeature()
+     * @generated
+     */
+    EAttribute getFeature_Optional();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.web.domain.Feature#isMany <em>Many</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Many</em>'.
+     * @see org.eclipse.sirius.web.domain.Feature#isMany()
+     * @see #getFeature()
+     * @generated
+     */
+    EAttribute getFeature_Many();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.web.domain.Attribute <em>Attribute</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
@@ -365,17 +513,6 @@ public interface DomainPackage extends EPackage {
      * @generated
      */
     EClass getAttribute();
-
-    /**
-     * Returns the meta object for the attribute '{@link org.eclipse.sirius.web.domain.Attribute#getName
-     * <em>Name</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the attribute '<em>Name</em>'.
-     * @see org.eclipse.sirius.web.domain.Attribute#getName()
-     * @see #getAttribute()
-     * @generated
-     */
-    EAttribute getAttribute_Name();
 
     /**
      * Returns the meta object for the attribute '{@link org.eclipse.sirius.web.domain.Attribute#getType
@@ -397,17 +534,6 @@ public interface DomainPackage extends EPackage {
      * @generated
      */
     EClass getRelation();
-
-    /**
-     * Returns the meta object for the attribute '{@link org.eclipse.sirius.web.domain.Relation#getName <em>Name</em>}'.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the attribute '<em>Name</em>'.
-     * @see org.eclipse.sirius.web.domain.Relation#getName()
-     * @see #getRelation()
-     * @generated
-     */
-    EAttribute getRelation_Name();
 
     /**
      * Returns the meta object for the attribute '{@link org.eclipse.sirius.web.domain.Relation#isContainment
@@ -432,14 +558,14 @@ public interface DomainPackage extends EPackage {
     EReference getRelation_TargetType();
 
     /**
-     * Returns the meta object for enum '{@link org.eclipse.sirius.web.domain.Type <em>Type</em>}'. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
+     * Returns the meta object for enum '{@link org.eclipse.sirius.web.domain.DataType <em>Data Type</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return the meta object for enum '<em>Type</em>'.
-     * @see org.eclipse.sirius.web.domain.Type
+     * @return the meta object for enum '<em>Data Type</em>'.
+     * @see org.eclipse.sirius.web.domain.DataType
      * @generated
      */
-    EEnum getType();
+    EEnum getDataType();
 
     /**
      * Returns the factory that creates the instances of the model. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -464,6 +590,24 @@ public interface DomainPackage extends EPackage {
      */
     interface Literals {
         /**
+         * The meta object literal for the '{@link org.eclipse.sirius.web.domain.impl.NamedElementImpl <em>Named
+         * Element</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.web.domain.impl.NamedElementImpl
+         * @see org.eclipse.sirius.web.domain.impl.DomainPackageImpl#getNamedElement()
+         * @generated
+         */
+        EClass NAMED_ELEMENT = eINSTANCE.getNamedElement();
+
+        /**
+         * The meta object literal for the '<em><b>Name</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute NAMED_ELEMENT__NAME = eINSTANCE.getNamedElement_Name();
+
+        /**
          * The meta object literal for the '{@link org.eclipse.sirius.web.domain.impl.DomainImpl <em>Domain</em>}'
          * class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
@@ -472,14 +616,6 @@ public interface DomainPackage extends EPackage {
          * @generated
          */
         EClass DOMAIN = eINSTANCE.getDomain();
-
-        /**
-         * The meta object literal for the '<em><b>Name</b></em>' attribute feature. <!-- begin-user-doc --> <!--
-         * end-user-doc -->
-         *
-         * @generated
-         */
-        EAttribute DOMAIN__NAME = eINSTANCE.getDomain_Name();
 
         /**
          * The meta object literal for the '<em><b>Uri</b></em>' attribute feature. <!-- begin-user-doc --> <!--
@@ -508,14 +644,6 @@ public interface DomainPackage extends EPackage {
         EClass ENTITY = eINSTANCE.getEntity();
 
         /**
-         * The meta object literal for the '<em><b>Name</b></em>' attribute feature. <!-- begin-user-doc --> <!--
-         * end-user-doc -->
-         *
-         * @generated
-         */
-        EAttribute ENTITY__NAME = eINSTANCE.getEntity_Name();
-
-        /**
          * The meta object literal for the '<em><b>Attributes</b></em>' containment reference list feature. <!--
          * begin-user-doc --> <!-- end-user-doc -->
          *
@@ -532,6 +660,32 @@ public interface DomainPackage extends EPackage {
         EReference ENTITY__RELATIONS = eINSTANCE.getEntity_Relations();
 
         /**
+         * The meta object literal for the '{@link org.eclipse.sirius.web.domain.impl.FeatureImpl <em>Feature</em>}'
+         * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.web.domain.impl.FeatureImpl
+         * @see org.eclipse.sirius.web.domain.impl.DomainPackageImpl#getFeature()
+         * @generated
+         */
+        EClass FEATURE = eINSTANCE.getFeature();
+
+        /**
+         * The meta object literal for the '<em><b>Optional</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute FEATURE__OPTIONAL = eINSTANCE.getFeature_Optional();
+
+        /**
+         * The meta object literal for the '<em><b>Many</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute FEATURE__MANY = eINSTANCE.getFeature_Many();
+
+        /**
          * The meta object literal for the '{@link org.eclipse.sirius.web.domain.impl.AttributeImpl <em>Attribute</em>}'
          * class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
@@ -540,14 +694,6 @@ public interface DomainPackage extends EPackage {
          * @generated
          */
         EClass ATTRIBUTE = eINSTANCE.getAttribute();
-
-        /**
-         * The meta object literal for the '<em><b>Name</b></em>' attribute feature. <!-- begin-user-doc --> <!--
-         * end-user-doc -->
-         *
-         * @generated
-         */
-        EAttribute ATTRIBUTE__NAME = eINSTANCE.getAttribute_Name();
 
         /**
          * The meta object literal for the '<em><b>Type</b></em>' attribute feature. <!-- begin-user-doc --> <!--
@@ -568,14 +714,6 @@ public interface DomainPackage extends EPackage {
         EClass RELATION = eINSTANCE.getRelation();
 
         /**
-         * The meta object literal for the '<em><b>Name</b></em>' attribute feature. <!-- begin-user-doc --> <!--
-         * end-user-doc -->
-         *
-         * @generated
-         */
-        EAttribute RELATION__NAME = eINSTANCE.getRelation_Name();
-
-        /**
          * The meta object literal for the '<em><b>Containment</b></em>' attribute feature. <!-- begin-user-doc --> <!--
          * end-user-doc -->
          *
@@ -592,14 +730,14 @@ public interface DomainPackage extends EPackage {
         EReference RELATION__TARGET_TYPE = eINSTANCE.getRelation_TargetType();
 
         /**
-         * The meta object literal for the '{@link org.eclipse.sirius.web.domain.Type <em>Type</em>}' enum. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
+         * The meta object literal for the '{@link org.eclipse.sirius.web.domain.DataType <em>Data Type</em>}' enum.
+         * <!-- begin-user-doc --> <!-- end-user-doc -->
          *
-         * @see org.eclipse.sirius.web.domain.Type
-         * @see org.eclipse.sirius.web.domain.impl.DomainPackageImpl#getType()
+         * @see org.eclipse.sirius.web.domain.DataType
+         * @see org.eclipse.sirius.web.domain.impl.DomainPackageImpl#getDataType()
          * @generated
          */
-        EEnum TYPE = eINSTANCE.getType();
+        EEnum DATA_TYPE = eINSTANCE.getDataType();
 
     }
 

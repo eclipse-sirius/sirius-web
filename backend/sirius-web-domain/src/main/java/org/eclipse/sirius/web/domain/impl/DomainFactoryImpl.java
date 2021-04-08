@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *     Obeo - initial API and implementation
+ *      Obeo - initial API and implementation
  */
 package org.eclipse.sirius.web.domain.impl;
 
@@ -19,12 +19,14 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.eclipse.sirius.web.domain.Attribute;
+import org.eclipse.sirius.web.domain.DataType;
 import org.eclipse.sirius.web.domain.Domain;
 import org.eclipse.sirius.web.domain.DomainFactory;
 import org.eclipse.sirius.web.domain.DomainPackage;
 import org.eclipse.sirius.web.domain.Entity;
+import org.eclipse.sirius.web.domain.Feature;
+import org.eclipse.sirius.web.domain.NamedElement;
 import org.eclipse.sirius.web.domain.Relation;
-import org.eclipse.sirius.web.domain.Type;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Factory</b>. <!-- end-user-doc -->
@@ -66,10 +68,14 @@ public class DomainFactoryImpl extends EFactoryImpl implements DomainFactory {
     @Override
     public EObject create(EClass eClass) {
         switch (eClass.getClassifierID()) {
+        case DomainPackage.NAMED_ELEMENT:
+            return this.createNamedElement();
         case DomainPackage.DOMAIN:
             return this.createDomain();
         case DomainPackage.ENTITY:
             return this.createEntity();
+        case DomainPackage.FEATURE:
+            return this.createFeature();
         case DomainPackage.ATTRIBUTE:
             return this.createAttribute();
         case DomainPackage.RELATION:
@@ -87,8 +93,8 @@ public class DomainFactoryImpl extends EFactoryImpl implements DomainFactory {
     @Override
     public Object createFromString(EDataType eDataType, String initialValue) {
         switch (eDataType.getClassifierID()) {
-        case DomainPackage.TYPE:
-            return this.createTypeFromString(eDataType, initialValue);
+        case DomainPackage.DATA_TYPE:
+            return this.createDataTypeFromString(eDataType, initialValue);
         default:
             throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
         }
@@ -102,11 +108,22 @@ public class DomainFactoryImpl extends EFactoryImpl implements DomainFactory {
     @Override
     public String convertToString(EDataType eDataType, Object instanceValue) {
         switch (eDataType.getClassifierID()) {
-        case DomainPackage.TYPE:
-            return this.convertTypeToString(eDataType, instanceValue);
+        case DomainPackage.DATA_TYPE:
+            return this.convertDataTypeToString(eDataType, instanceValue);
         default:
             throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
         }
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public NamedElement createNamedElement() {
+        NamedElementImpl namedElement = new NamedElementImpl();
+        return namedElement;
     }
 
     /**
@@ -137,6 +154,17 @@ public class DomainFactoryImpl extends EFactoryImpl implements DomainFactory {
      * @generated
      */
     @Override
+    public Feature createFeature() {
+        FeatureImpl feature = new FeatureImpl();
+        return feature;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public Attribute createAttribute() {
         AttributeImpl attribute = new AttributeImpl();
         return attribute;
@@ -158,8 +186,8 @@ public class DomainFactoryImpl extends EFactoryImpl implements DomainFactory {
      *
      * @generated
      */
-    public Type createTypeFromString(EDataType eDataType, String initialValue) {
-        Type result = Type.get(initialValue);
+    public DataType createDataTypeFromString(EDataType eDataType, String initialValue) {
+        DataType result = DataType.get(initialValue);
         if (result == null)
             throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         return result;
@@ -170,7 +198,7 @@ public class DomainFactoryImpl extends EFactoryImpl implements DomainFactory {
      *
      * @generated
      */
-    public String convertTypeToString(EDataType eDataType, Object instanceValue) {
+    public String convertDataTypeToString(EDataType eDataType, Object instanceValue) {
         return instanceValue == null ? null : instanceValue.toString();
     }
 

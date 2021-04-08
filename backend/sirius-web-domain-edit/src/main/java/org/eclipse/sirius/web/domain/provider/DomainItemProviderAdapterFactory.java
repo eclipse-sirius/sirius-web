@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *     Obeo - initial API and implementation
+ *      Obeo - initial API and implementation
  */
 package org.eclipse.sirius.web.domain.provider;
 
@@ -78,6 +78,29 @@ public class DomainItemProviderAdapterFactory extends DomainAdapterFactory imple
     }
 
     /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.web.domain.NamedElement} instances.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected NamedElementItemProvider namedElementItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.web.domain.NamedElement}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createNamedElementAdapter() {
+        if (this.namedElementItemProvider == null) {
+            this.namedElementItemProvider = new NamedElementItemProvider(this);
+        }
+
+        return this.namedElementItemProvider;
+    }
+
+    /**
      * This keeps track of the one adapter used for all {@link org.eclipse.sirius.web.domain.Domain} instances. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
@@ -121,6 +144,29 @@ public class DomainItemProviderAdapterFactory extends DomainAdapterFactory imple
         }
 
         return this.entityItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.web.domain.Feature} instances. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected FeatureItemProvider featureItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.web.domain.Feature}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createFeatureAdapter() {
+        if (this.featureItemProvider == null) {
+            this.featureItemProvider = new FeatureItemProvider(this);
+        }
+
+        return this.featureItemProvider;
     }
 
     /**
@@ -269,10 +315,14 @@ public class DomainItemProviderAdapterFactory extends DomainAdapterFactory imple
      */
     @Override
     public void dispose() {
+        if (this.namedElementItemProvider != null)
+            this.namedElementItemProvider.dispose();
         if (this.domainItemProvider != null)
             this.domainItemProvider.dispose();
         if (this.entityItemProvider != null)
             this.entityItemProvider.dispose();
+        if (this.featureItemProvider != null)
+            this.featureItemProvider.dispose();
         if (this.attributeItemProvider != null)
             this.attributeItemProvider.dispose();
         if (this.relationItemProvider != null)

@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *     Obeo - initial API and implementation
+ *      Obeo - initial API and implementation
  */
 package org.eclipse.sirius.web.domain;
 
@@ -19,14 +19,14 @@ import java.util.List;
 import org.eclipse.emf.common.util.Enumerator;
 
 /**
- * <!-- begin-user-doc --> A representation of the literals of the enumeration '<em><b>Type</b></em>', and utility
+ * <!-- begin-user-doc --> A representation of the literals of the enumeration '<em><b>Data Type</b></em>', and utility
  * methods for working with them. <!-- end-user-doc -->
  *
- * @see org.eclipse.sirius.web.domain.DomainPackage#getType()
+ * @see org.eclipse.sirius.web.domain.DomainPackage#getDataType()
  * @model
  * @generated
  */
-public enum Type implements Enumerator {
+public enum DataType implements Enumerator {
     /**
      * The '<em><b>STRING</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -85,22 +85,22 @@ public enum Type implements Enumerator {
     public static final int NUMBER_VALUE = 2;
 
     /**
-     * An array of all the '<em><b>Type</b></em>' enumerators. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * An array of all the '<em><b>Data Type</b></em>' enumerators. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
-    private static final Type[] VALUES_ARRAY = new Type[] { STRING, BOOLEAN, NUMBER, };
+    private static final DataType[] VALUES_ARRAY = new DataType[] { STRING, BOOLEAN, NUMBER, };
 
     /**
-     * A public read-only list of all the '<em><b>Type</b></em>' enumerators. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
+     * A public read-only list of all the '<em><b>Data Type</b></em>' enumerators. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
      *
      * @generated
      */
-    public static final List<Type> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
+    public static final List<DataType> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
 
     /**
-     * Returns the '<em><b>Type</b></em>' literal with the specified literal value. <!-- begin-user-doc --> <!--
+     * Returns the '<em><b>Data Type</b></em>' literal with the specified literal value. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @param literal
@@ -108,9 +108,9 @@ public enum Type implements Enumerator {
      * @return the matching enumerator or <code>null</code>.
      * @generated
      */
-    public static Type get(String literal) {
+    public static DataType get(String literal) {
         for (int i = 0; i < VALUES_ARRAY.length; ++i) {
-            Type result = VALUES_ARRAY[i];
+            DataType result = VALUES_ARRAY[i];
             if (result.toString().equals(literal)) {
                 return result;
             }
@@ -119,16 +119,17 @@ public enum Type implements Enumerator {
     }
 
     /**
-     * Returns the '<em><b>Type</b></em>' literal with the specified name. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the '<em><b>Data Type</b></em>' literal with the specified name. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
      *
      * @param name
      *            the name.
      * @return the matching enumerator or <code>null</code>.
      * @generated
      */
-    public static Type getByName(String name) {
+    public static DataType getByName(String name) {
         for (int i = 0; i < VALUES_ARRAY.length; ++i) {
-            Type result = VALUES_ARRAY[i];
+            DataType result = VALUES_ARRAY[i];
             if (result.getName().equals(name)) {
                 return result;
             }
@@ -137,7 +138,7 @@ public enum Type implements Enumerator {
     }
 
     /**
-     * Returns the '<em><b>Type</b></em>' literal with the specified integer value. <!-- begin-user-doc --> <!--
+     * Returns the '<em><b>Data Type</b></em>' literal with the specified integer value. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @param value
@@ -145,7 +146,7 @@ public enum Type implements Enumerator {
      * @return the matching enumerator or <code>null</code>.
      * @generated
      */
-    public static Type get(int value) {
+    public static DataType get(int value) {
         switch (value) {
         case STRING_VALUE:
             return STRING;
@@ -153,9 +154,8 @@ public enum Type implements Enumerator {
             return BOOLEAN;
         case NUMBER_VALUE:
             return NUMBER;
-        default:
-            return null;
         }
+        return null;
     }
 
     /**
@@ -184,7 +184,7 @@ public enum Type implements Enumerator {
      *
      * @generated
      */
-    private Type(int value, String name, String literal) {
+    private DataType(int value, String name, String literal) {
         this.value = value;
         this.name = name;
         this.literal = literal;
@@ -231,4 +231,4 @@ public enum Type implements Enumerator {
         return this.literal;
     }
 
-} // Type
+} // DataType

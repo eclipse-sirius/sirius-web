@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *     Obeo - initial API and implementation
+ *      Obeo - initial API and implementation
  */
 package org.eclipse.sirius.web.domain.impl;
 
@@ -16,7 +16,6 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.sirius.web.domain.DomainPackage;
 import org.eclipse.sirius.web.domain.Entity;
 import org.eclipse.sirius.web.domain.Relation;
@@ -27,34 +26,13 @@ import org.eclipse.sirius.web.domain.Relation;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.web.domain.impl.RelationImpl#getName <em>Name</em>}</li>
  * <li>{@link org.eclipse.sirius.web.domain.impl.RelationImpl#isContainment <em>Containment</em>}</li>
  * <li>{@link org.eclipse.sirius.web.domain.impl.RelationImpl#getTargetType <em>Target Type</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class RelationImpl extends MinimalEObjectImpl.Container implements Relation {
-    /**
-     * The default value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
-     *
-     * @see #getName()
-     * @generated
-     * @ordered
-     */
-    protected static final String NAME_EDEFAULT = null;
-
-    /**
-     * The cached value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
-     *
-     * @see #getName()
-     * @generated
-     * @ordered
-     */
-    protected String name = NAME_EDEFAULT;
-
+public class RelationImpl extends FeatureImpl implements Relation {
     /**
      * The default value of the '{@link #isContainment() <em>Containment</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -102,29 +80,6 @@ public class RelationImpl extends MinimalEObjectImpl.Container implements Relati
     @Override
     protected EClass eStaticClass() {
         return DomainPackage.Literals.RELATION;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public String getName() {
-        return this.name;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public void setName(String newName) {
-        String oldName = this.name;
-        this.name = newName;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DomainPackage.RELATION__NAME, oldName, this.name));
     }
 
     /**
@@ -198,17 +153,14 @@ public class RelationImpl extends MinimalEObjectImpl.Container implements Relati
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-        case DomainPackage.RELATION__NAME:
-            return this.getName();
         case DomainPackage.RELATION__CONTAINMENT:
             return this.isContainment();
         case DomainPackage.RELATION__TARGET_TYPE:
             if (resolve)
                 return this.getTargetType();
             return this.basicGetTargetType();
-        default:
-            return super.eGet(featureID, resolve, coreType);
         }
+        return super.eGet(featureID, resolve, coreType);
     }
 
     /**
@@ -219,19 +171,14 @@ public class RelationImpl extends MinimalEObjectImpl.Container implements Relati
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-        case DomainPackage.RELATION__NAME:
-            this.setName((String) newValue);
-            return;
         case DomainPackage.RELATION__CONTAINMENT:
             this.setContainment((Boolean) newValue);
             return;
         case DomainPackage.RELATION__TARGET_TYPE:
             this.setTargetType((Entity) newValue);
             return;
-        default:
-            super.eSet(featureID, newValue);
-            return;
         }
+        super.eSet(featureID, newValue);
     }
 
     /**
@@ -242,19 +189,14 @@ public class RelationImpl extends MinimalEObjectImpl.Container implements Relati
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-        case DomainPackage.RELATION__NAME:
-            this.setName(NAME_EDEFAULT);
-            return;
         case DomainPackage.RELATION__CONTAINMENT:
             this.setContainment(CONTAINMENT_EDEFAULT);
             return;
         case DomainPackage.RELATION__TARGET_TYPE:
             this.setTargetType((Entity) null);
             return;
-        default:
-            super.eUnset(featureID);
-            return;
         }
+        super.eUnset(featureID);
     }
 
     /**
@@ -265,15 +207,12 @@ public class RelationImpl extends MinimalEObjectImpl.Container implements Relati
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-        case DomainPackage.RELATION__NAME:
-            return NAME_EDEFAULT == null ? this.name != null : !NAME_EDEFAULT.equals(this.name);
         case DomainPackage.RELATION__CONTAINMENT:
             return this.containment != CONTAINMENT_EDEFAULT;
         case DomainPackage.RELATION__TARGET_TYPE:
             return this.targetType != null;
-        default:
-            return super.eIsSet(featureID);
         }
+        return super.eIsSet(featureID);
     }
 
     /**
@@ -287,9 +226,7 @@ public class RelationImpl extends MinimalEObjectImpl.Container implements Relati
             return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (name: "); //$NON-NLS-1$
-        result.append(this.name);
-        result.append(", containment: "); //$NON-NLS-1$
+        result.append(" (containment: "); //$NON-NLS-1$
         result.append(this.containment);
         result.append(')');
         return result.toString();

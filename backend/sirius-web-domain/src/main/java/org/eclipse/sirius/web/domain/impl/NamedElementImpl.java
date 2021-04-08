@@ -15,48 +15,48 @@ package org.eclipse.sirius.web.domain.impl;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.sirius.web.domain.Attribute;
-import org.eclipse.sirius.web.domain.DataType;
+import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.sirius.web.domain.DomainPackage;
+import org.eclipse.sirius.web.domain.NamedElement;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '<em><b>Attribute</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Named Element</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.web.domain.impl.AttributeImpl#getType <em>Type</em>}</li>
+ * <li>{@link org.eclipse.sirius.web.domain.impl.NamedElementImpl#getName <em>Name</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class AttributeImpl extends FeatureImpl implements Attribute {
+public class NamedElementImpl extends MinimalEObjectImpl.Container implements NamedElement {
     /**
-     * The default value of the '{@link #getType() <em>Type</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * The default value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
-     * @see #getType()
+     * @see #getName()
      * @generated
      * @ordered
      */
-    protected static final DataType TYPE_EDEFAULT = DataType.STRING;
+    protected static final String NAME_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getType() <em>Type</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * The cached value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
-     * @see #getType()
+     * @see #getName()
      * @generated
      * @ordered
      */
-    protected DataType type = TYPE_EDEFAULT;
+    protected String name = NAME_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
-    protected AttributeImpl() {
+    protected NamedElementImpl() {
         super();
     }
 
@@ -67,7 +67,7 @@ public class AttributeImpl extends FeatureImpl implements Attribute {
      */
     @Override
     protected EClass eStaticClass() {
-        return DomainPackage.Literals.ATTRIBUTE;
+        return DomainPackage.Literals.NAMED_ELEMENT;
     }
 
     /**
@@ -76,8 +76,8 @@ public class AttributeImpl extends FeatureImpl implements Attribute {
      * @generated
      */
     @Override
-    public DataType getType() {
-        return this.type;
+    public String getName() {
+        return this.name;
     }
 
     /**
@@ -86,11 +86,11 @@ public class AttributeImpl extends FeatureImpl implements Attribute {
      * @generated
      */
     @Override
-    public void setType(DataType newType) {
-        DataType oldType = this.type;
-        this.type = newType == null ? TYPE_EDEFAULT : newType;
+    public void setName(String newName) {
+        String oldName = this.name;
+        this.name = newName;
         if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DomainPackage.ATTRIBUTE__TYPE, oldType, this.type));
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DomainPackage.NAMED_ELEMENT__NAME, oldName, this.name));
     }
 
     /**
@@ -101,8 +101,8 @@ public class AttributeImpl extends FeatureImpl implements Attribute {
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-        case DomainPackage.ATTRIBUTE__TYPE:
-            return this.getType();
+        case DomainPackage.NAMED_ELEMENT__NAME:
+            return this.getName();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -115,8 +115,8 @@ public class AttributeImpl extends FeatureImpl implements Attribute {
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-        case DomainPackage.ATTRIBUTE__TYPE:
-            this.setType((DataType) newValue);
+        case DomainPackage.NAMED_ELEMENT__NAME:
+            this.setName((String) newValue);
             return;
         }
         super.eSet(featureID, newValue);
@@ -130,8 +130,8 @@ public class AttributeImpl extends FeatureImpl implements Attribute {
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-        case DomainPackage.ATTRIBUTE__TYPE:
-            this.setType(TYPE_EDEFAULT);
+        case DomainPackage.NAMED_ELEMENT__NAME:
+            this.setName(NAME_EDEFAULT);
             return;
         }
         super.eUnset(featureID);
@@ -145,8 +145,8 @@ public class AttributeImpl extends FeatureImpl implements Attribute {
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-        case DomainPackage.ATTRIBUTE__TYPE:
-            return this.type != TYPE_EDEFAULT;
+        case DomainPackage.NAMED_ELEMENT__NAME:
+            return NAME_EDEFAULT == null ? this.name != null : !NAME_EDEFAULT.equals(this.name);
         }
         return super.eIsSet(featureID);
     }
@@ -162,10 +162,10 @@ public class AttributeImpl extends FeatureImpl implements Attribute {
             return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (type: "); //$NON-NLS-1$
-        result.append(this.type);
+        result.append(" (name: "); //$NON-NLS-1$
+        result.append(this.name);
         result.append(')');
         return result.toString();
     }
 
-} // AttributeImpl
+} // NamedElementImpl

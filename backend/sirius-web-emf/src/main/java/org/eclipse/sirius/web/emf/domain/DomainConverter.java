@@ -20,11 +20,13 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.sirius.web.domain.Attribute;
 import org.eclipse.sirius.web.domain.Domain;
 import org.eclipse.sirius.web.domain.Entity;
+import org.eclipse.sirius.web.domain.Feature;
 import org.eclipse.sirius.web.domain.Relation;
 
 /**
@@ -66,6 +68,7 @@ public class DomainConverter {
     private EAttribute convert(Attribute attribute) {
         EAttribute eAttribute = EcoreFactory.eINSTANCE.createEAttribute();
         eAttribute.setName(attribute.getName());
+        this.convertCardinality(attribute, eAttribute);
         switch (attribute.getType()) {
         case BOOLEAN:
             eAttribute.setEType(EcorePackage.Literals.EBOOLEAN);
@@ -85,8 +88,23 @@ public class DomainConverter {
     private EReference convert(Relation relation, Map<Entity, EClass> convertedTypes) {
         EReference eReference = EcoreFactory.eINSTANCE.createEReference();
         eReference.setName(relation.getName());
+        this.convertCardinality(relation, eReference);
         eReference.setContainment(relation.isContainment());
         eReference.setEType(convertedTypes.get(relation.getTargetType()));
         return eReference;
     }
+
+    private void convertCardinality(Feature feature, EStructuralFeature eStructuralFeature) {
+        if (feature.isOptional()) {
+            eStructuralFeature.setLowerBound(0);
+        } else {
+            eStructuralFeature.setLowerBound(1);
+        }
+        if (feature.isMany()) {
+            eStructuralFeature.setUpperBound(-1);
+        } else {
+            eStructuralFeature.setUpperBound(1);
+        }
+    }
+
 }
