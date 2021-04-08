@@ -364,6 +364,7 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
   }
 
   doZoom(zoomFactor) {
+    this.setContextualPalette(null);
     this.actionDispatcher.request(GetViewportAction.create()).then((viewportResult) => {
       const { viewport } = viewportResult;
       this.doZoomLevel(viewport.zoom * zoomFactor);
