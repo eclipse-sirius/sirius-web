@@ -12,16 +12,14 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.emf.view;
 
-import java.util.Collection;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IObjectService;
-import org.eclipse.sirius.web.emf.services.EditingContext;
 import org.eclipse.sirius.web.representations.Status;
 import org.eclipse.sirius.web.representations.VariableManager;
 import org.eclipse.sirius.web.services.api.objects.IEditService;
@@ -30,7 +28,7 @@ import org.eclipse.sirius.web.view.EdgeDescription;
 /**
  * Canonical implementations of the basic behaviors/tools expected on a diagram. The implementation makes some
  * assumptions on both the structure of the domain and that of the view definition, and may not work (or not as
- * expected) on pretty normal but non trivial cases.
+ * expected) on quite normal but non trivial cases.
  *
  * @author pcdavid
  */
@@ -47,7 +45,7 @@ public class CanonicalBehaviors {
     public Status createNewNode(org.eclipse.sirius.web.view.NodeDescription nodeDescription, VariableManager variableManager) {
         EObject self = variableManager.get(VariableManager.SELF, EObject.class).orElse(null);
         String domainType = nodeDescription.getDomainType();
-        EObject instance = this.createSemanticInstance(self, domainType, variableManager);
+        EObject instance = this.createSemanticInstance(self, domainType);
         this.addInParent(self, instance);
         return Status.OK;
     }
@@ -56,7 +54,7 @@ public class CanonicalBehaviors {
         EObject semanticSource = variableManager.get(org.eclipse.sirius.web.diagrams.description.EdgeDescription.SEMANTIC_EDGE_SOURCE, EObject.class).get();
         EObject semanticTarget = variableManager.get(org.eclipse.sirius.web.diagrams.description.EdgeDescription.SEMANTIC_EDGE_TARGET, EObject.class).get();
         if (edgeDescription.isIsDomainBasedEdge()) {
-            EObject instance = this.createSemanticInstance(semanticSource, edgeDescription.getDomainType(), variableManager);
+            EObject instance = this.createSemanticInstance(semanticSource, edgeDescription.getDomainType());
             this.addInParent(semanticSource, instance);
             this.addReferenceTo(instance, semanticSource);
             this.addReferenceTo(instance, semanticTarget);
@@ -85,10 +83,9 @@ public class CanonicalBehaviors {
         return variableManager.get(VariableManager.SELF, Object.class);
     }
 
-    private EObject createSemanticInstance(EObject self, String domainType, VariableManager variableManager) {
-        EditingContext editingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, EditingContext.class).orElse(null);
+    private EObject createSemanticInstance(EObject self, String domainType) {
+        EPackage ePackage = self.eClass().getEPackage();
         // @formatter:off
-        EPackage ePackage = editingContext.getDomain().getResourceSet().getPackageRegistry().getEPackage(self.eClass().getEPackage().getNsURI());
         EClass klass = ePackage
                       .getEClassifiers().stream()
                       .filter(classifier -> classifier instanceof EClass && Objects.equals(domainType, classifier.getName()))
@@ -109,7 +106,7 @@ public class CanonicalBehaviors {
     private void addInParent(EObject parent, EObject instance) {
         parent.eClass().getEAllContainments().stream().filter(ref -> ref.getEType().isInstance(instance)).findFirst().ifPresent(ref -> {
             if (ref.isMany()) {
-                ((Collection<EObject>) parent.eGet(ref)).add(instance);
+                ((EList<EObject>) parent.eGet(ref)).add(instance);
             } else {
                 parent.eSet(ref, instance);
             }
@@ -119,7 +116,7 @@ public class CanonicalBehaviors {
     private void addReferenceTo(EObject source, EObject target) {
         source.eClass().getEAllReferences().stream().filter(ref -> ref.getEType().isInstance(target)).findFirst().ifPresent(ref -> {
             if (ref.isMany()) {
-                ((Collection<EObject>) source.eGet(ref)).add(target);
+                ((EList<EObject>) source.eGet(ref)).add(target);
             } else {
                 source.eSet(ref, target);
             }
