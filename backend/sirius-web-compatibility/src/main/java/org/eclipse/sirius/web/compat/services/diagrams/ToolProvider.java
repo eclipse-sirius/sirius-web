@@ -364,7 +364,8 @@ public class ToolProvider implements IToolProvider {
             InitEdgeCreationOperation initialOperation = edgeCreationDescription.getInitialOperation();
             return variableManager -> {
                 Map<String, Object> variables = variableManager.getVariables();
-                // Provide compatibility aliases for these two variables
+                // Provide compatibility aliases for these variables
+                variables.put(VariableManager.SELF, variables.get(EdgeDescription.SEMANTIC_EDGE_SOURCE));
                 variables.put(EDGE_SOURCE, variables.get(EdgeDescription.SEMANTIC_EDGE_SOURCE));
                 variables.put(EDGE_TARGET, variables.get(EdgeDescription.SEMANTIC_EDGE_TARGET));
                 var modelOperationHandlerSwitch = this.modelOperationHandlerSwitchProvider.getModelOperationHandlerSwitch(interpreter);
