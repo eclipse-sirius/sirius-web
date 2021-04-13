@@ -26,6 +26,7 @@ import org.eclipse.elk.core.util.BasicProgressMonitor;
 import org.eclipse.elk.core.util.ElkUtil;
 import org.eclipse.elk.graph.ElkGraphElement;
 import org.eclipse.elk.graph.ElkNode;
+import org.eclipse.elk.graph.json.ElkGraphJson;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.IDiagramElementEvent;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
@@ -37,6 +38,8 @@ import org.eclipse.sirius.web.diagrams.layout.incremental.IncrementalLayoutedDia
 import org.eclipse.sirius.web.diagrams.layout.incremental.data.DiagramLayoutData;
 import org.eclipse.sirius.web.diagrams.layout.incremental.data.ILayoutData;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationDescriptionService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 /**
@@ -60,6 +63,8 @@ public class LayoutService implements ILayoutService {
     private final IncrementalLayoutDiagramConverter incrementalLayoutDiagramConverter;
 
     private final IncrementalLayoutEngine incrementalLayoutEngine;
+
+    private final Logger logger = LoggerFactory.getLogger(LayoutService.class);
 
     public LayoutService(ELKDiagramConverter elkDiagramConverter, IncrementalLayoutDiagramConverter incrementalLayoutDiagramConverter, LayoutConfiguratorRegistry layoutConfiguratorRegistry,
             ELKLayoutedDiagramProvider layoutedDiagramProvider, IncrementalLayoutedDiagramProvider incrementalLayoutedDiagramProvider,
@@ -93,7 +98,22 @@ public class LayoutService implements ILayoutService {
         engine.layout(elkDiagram, new BasicProgressMonitor());
 
         Map<String, ElkGraphElement> id2ElkGraphElements = convertedDiagram.getId2ElkGraphElements();
-        return this.elkLayoutedDiagramProvider.getLayoutedDiagram(diagram, elkDiagram, id2ElkGraphElements);
+        Diagram layoutedDiagram = this.elkLayoutedDiagramProvider.getLayoutedDiagram(diagram, elkDiagram, id2ElkGraphElements);
+
+        if (this.logger.isDebugEnabled()) {
+            // @formatter:off
+            String json = ElkGraphJson.forGraph(elkDiagram)
+                    .omitLayout(true)
+                    .omitZeroDimension(true)
+                    .omitZeroPositions(true)
+                    .shortLayoutOptionKeys(false)
+                    .prettyPrint(true)
+                    .toJson();
+            // @formatter:on
+            this.logger.debug(json);
+        }
+
+        return layoutedDiagram;
     }
 
     @Override
