@@ -36,6 +36,11 @@ import org.junit.Test;
  * @author sbegaudeau
  */
 public class GeneralPurposeTestCases {
+
+    private static final String UNIX_PATH_SEPARATOR = "/"; //$NON-NLS-1$
+
+    private static final String WINDOWS_PATH_SEPARATOR = "\\"; //$NON-NLS-1$
+
     private static final String GIT_FOLDER_NAME = ".git"; //$NON-NLS-1$
 
     private static final String BACKEND_FOLDER_PATH = "backend"; //$NON-NLS-1$
@@ -123,9 +128,9 @@ public class GeneralPurposeTestCases {
             // @formatter:off
             List<Path> filePaths = paths.filter(Files::isRegularFile)
                     .filter(filePath -> filePath.toFile().getName().endsWith(extension))
-                    .filter(filePath -> !filePath.toString().replace("\\", "/").contains("/.mvn/wrapper/")) //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                    .filter(filePath -> !filePath.toString().contains("/sirius-web-domain")) //$NON-NLS-1$
-                    .filter(filePath -> !filePath.toString().contains("/sirius-web-view")) //$NON-NLS-1$
+                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/.mvn/wrapper/")) //$NON-NLS-1$
+                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/sirius-web-domain")) //$NON-NLS-1$
+                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/sirius-web-view")) //$NON-NLS-1$
                     .collect(Collectors.toList());
             // @formatter:on
 
