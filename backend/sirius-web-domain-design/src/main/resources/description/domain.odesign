@@ -48,7 +48,7 @@
               <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="aql:self">
                 <subModelOperations xsi:type="tool_1:CreateInstance" typeName="domain::Relation" referenceName="relations">
                   <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="aql:target.name.toLowerFirst()"/>
-                  <subModelOperations xsi:type="tool_1:SetValue" featureName="targetTypes" valueExpression="aql:target"/>
+                  <subModelOperations xsi:type="tool_1:SetValue" featureName="targetType" valueExpression="aql:target"/>
                 </subModelOperations>
               </firstModelOperations>
             </initialOperation>
