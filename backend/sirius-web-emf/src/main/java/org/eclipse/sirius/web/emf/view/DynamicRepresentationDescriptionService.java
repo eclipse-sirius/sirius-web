@@ -67,7 +67,7 @@ public class DynamicRepresentationDescriptionService implements IDynamicRepresen
         List<IRepresentationDescription> dynamicRepresentationDescriptions = new ArrayList<>();
         this.documentRepository.findAllByType(ViewPackage.eNAME, ViewPackage.eNS_URI).forEach(documentEntity -> {
             Resource res = this.loadDocumentAsEMF(documentEntity);
-            this.getViewDefinition(res).ifPresent(view -> this.viewConverter.convert(view).forEach(dynamicRepresentationDescriptions::add));
+            this.getViewDefinition(res).ifPresent(view -> this.viewConverter.convert(view).stream().filter(Objects::nonNull).forEach(dynamicRepresentationDescriptions::add));
         });
         return dynamicRepresentationDescriptions;
     }
