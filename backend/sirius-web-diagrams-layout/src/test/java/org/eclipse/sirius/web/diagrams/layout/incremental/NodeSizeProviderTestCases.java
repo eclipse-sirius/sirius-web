@@ -16,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.eclipse.sirius.web.diagrams.Size;
 import org.eclipse.sirius.web.diagrams.layout.incremental.data.NodeLayoutData;
+import org.eclipse.sirius.web.diagrams.layout.incremental.provider.ImageSizeProvider;
 import org.eclipse.sirius.web.diagrams.layout.incremental.provider.NodeSizeProvider;
 import org.eclipse.sirius.web.diagrams.tests.TestDiagramBuilder;
 import org.junit.Test;
@@ -37,18 +38,24 @@ public class NodeSizeProviderTestCases {
 
     @Test
     public void testNodeSize() {
-        NodeSizeProvider nodeSizeProvider = new NodeSizeProvider();
+        ImageSizeProvider imageSizeProvider = new ImageSizeProvider();
+        NodeSizeProvider nodeSizeProvider = new NodeSizeProvider(imageSizeProvider);
         Size size = nodeSizeProvider.getSize(this.createNodeLayoutData(Size.UNDEFINED));
         assertThat(size).extracting(Size::getHeight).isEqualTo(Double.valueOf(HEIGHT_70));
         assertThat(size).extracting(Size::getWidth).isEqualTo(Double.valueOf(WIDTH_150));
+
+        imageSizeProvider.dispose();
     }
 
     @Test
     public void testNodeSizeWithExistingSize() {
-        NodeSizeProvider nodeSizeProvider = new NodeSizeProvider();
+        ImageSizeProvider imageSizeProvider = new ImageSizeProvider();
+        NodeSizeProvider nodeSizeProvider = new NodeSizeProvider(imageSizeProvider);
         Size size = nodeSizeProvider.getSize(this.createNodeLayoutData(Size.of(WIDTH_80, HEIGHT_50)));
         assertThat(size).extracting(Size::getHeight).isEqualTo(Double.valueOf(HEIGHT_50));
         assertThat(size).extracting(Size::getWidth).isEqualTo(Double.valueOf(WIDTH_80));
+
+        imageSizeProvider.dispose();
     }
 
     private NodeLayoutData createNodeLayoutData(Size size) {

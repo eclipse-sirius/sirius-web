@@ -35,6 +35,7 @@ import org.eclipse.sirius.web.diagrams.TextBounds;
 import org.eclipse.sirius.web.diagrams.layout.ELKConvertedDiagram;
 import org.eclipse.sirius.web.diagrams.layout.ELKDiagramConverter;
 import org.eclipse.sirius.web.diagrams.layout.TextBoundsService;
+import org.eclipse.sirius.web.diagrams.layout.incremental.provider.ImageSizeProvider;
 import org.eclipse.sirius.web.diagrams.tests.TestDiagramBuilder;
 import org.junit.Test;
 
@@ -78,7 +79,8 @@ public class DiagramConverterTestCases {
 
     @Test
     public void testDiagramOneRectangularNode() {
-        ELKDiagramConverter diagramConverter = new ELKDiagramConverter(this.textBoundsService);
+        ImageSizeProvider imageSizeProvider = new ImageSizeProvider();
+        ELKDiagramConverter diagramConverter = new ELKDiagramConverter(this.textBoundsService, imageSizeProvider);
 
         // @formatter:off
         TestDiagramBuilder diagramBuilder = new TestDiagramBuilder();
@@ -104,11 +106,14 @@ public class DiagramConverterTestCases {
         assertThat(elkNode.getLabels().size()).isEqualTo(1);
         ElkLabel elkLabel = elkNode.getLabels().get(0);
         this.assertSize(elkLabel, TEXT_WIDTH, TEXT_HEIGHT);
+
+        imageSizeProvider.dispose();
     }
 
     @Test
     public void testDiagramOneImageNode() {
-        ELKDiagramConverter diagramConverter = new ELKDiagramConverter(this.textBoundsService);
+        ImageSizeProvider imageSizeProvider = new ImageSizeProvider();
+        ELKDiagramConverter diagramConverter = new ELKDiagramConverter(this.textBoundsService, imageSizeProvider);
 
         // @formatter:off
         TestDiagramBuilder diagramBuilder = new TestDiagramBuilder();
@@ -140,11 +145,14 @@ public class DiagramConverterTestCases {
         assertThat(elkNode.getLabels().size()).isEqualTo(1);
         ElkLabel elkLabel = elkNode.getLabels().get(0);
         this.assertSize(elkLabel, TEXT_WIDTH, TEXT_HEIGHT);
+
+        imageSizeProvider.dispose();
     }
 
     @Test
     public void testDiagramOneNodeAndOneEdge() {
-        ELKDiagramConverter diagramConverter = new ELKDiagramConverter(this.textBoundsService);
+        ImageSizeProvider imageSizeProvider = new ImageSizeProvider();
+        ELKDiagramConverter diagramConverter = new ELKDiagramConverter(this.textBoundsService, imageSizeProvider);
 
         // @formatter:off
         TestDiagramBuilder diagramBuilder = new TestDiagramBuilder();
@@ -168,11 +176,14 @@ public class DiagramConverterTestCases {
 
         ElkEdge elkEdge = elkDiagram.getContainedEdges().get(0);
         assertThat(elkEdge.getIdentifier()).isEqualTo(edge.getId().toString());
+
+        imageSizeProvider.dispose();
     }
 
     @Test
     public void testDiagramOneNodeAndOneBorderNode() {
-        ELKDiagramConverter diagramConverter = new ELKDiagramConverter(this.textBoundsService);
+        ImageSizeProvider imageSizeProvider = new ImageSizeProvider();
+        ELKDiagramConverter diagramConverter = new ELKDiagramConverter(this.textBoundsService, imageSizeProvider);
 
         // @formatter:off
         TestDiagramBuilder diagramBuilder = new TestDiagramBuilder();
@@ -201,11 +212,14 @@ public class DiagramConverterTestCases {
 
         ElkPort elkPort = elkNode.getPorts().get(0);
         assertThat(elkPort.getIdentifier()).isEqualTo(borderNode.getId().toString());
+
+        imageSizeProvider.dispose();
     }
 
     @Test
     public void testDiagramOneEdgeBetweenTwoBorderNodes() {
-        ELKDiagramConverter diagramConverter = new ELKDiagramConverter(this.textBoundsService);
+        ImageSizeProvider imageSizeProvider = new ImageSizeProvider();
+        ELKDiagramConverter diagramConverter = new ELKDiagramConverter(this.textBoundsService, imageSizeProvider);
 
         // @formatter:off
         TestDiagramBuilder diagramBuilder = new TestDiagramBuilder();
@@ -243,5 +257,7 @@ public class DiagramConverterTestCases {
         assertThat(elkEdge.getSources().get(0).getIdentifier()).isEqualTo(firstBorderNode.getId().toString());
         assertThat(elkEdge.getTargets().size()).isEqualTo(1);
         assertThat(elkEdge.getTargets().get(0).getIdentifier()).isEqualTo(secondBorderNode.getId().toString());
+
+        imageSizeProvider.dispose();
     }
 }
