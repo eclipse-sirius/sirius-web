@@ -59,15 +59,18 @@ public class LayoutService implements ILayoutService {
 
     private final IncrementalLayoutDiagramConverter incrementalLayoutDiagramConverter;
 
+    private final IncrementalLayoutEngine incrementalLayoutEngine;
+
     public LayoutService(ELKDiagramConverter elkDiagramConverter, IncrementalLayoutDiagramConverter incrementalLayoutDiagramConverter, LayoutConfiguratorRegistry layoutConfiguratorRegistry,
             ELKLayoutedDiagramProvider layoutedDiagramProvider, IncrementalLayoutedDiagramProvider incrementalLayoutedDiagramProvider,
-            IRepresentationDescriptionService representationDescriptionService) {
+            IRepresentationDescriptionService representationDescriptionService, IncrementalLayoutEngine incrementalLayoutEngine) {
         this.elkDiagramConverter = Objects.requireNonNull(elkDiagramConverter);
         this.incrementalLayoutDiagramConverter = Objects.requireNonNull(incrementalLayoutDiagramConverter);
         this.layoutConfiguratorRegistry = Objects.requireNonNull(layoutConfiguratorRegistry);
         this.elkLayoutedDiagramProvider = Objects.requireNonNull(layoutedDiagramProvider);
         this.incrementalLayoutedDiagramProvider = Objects.requireNonNull(incrementalLayoutedDiagramProvider);
         this.representationDescriptionService = Objects.requireNonNull(representationDescriptionService);
+        this.incrementalLayoutEngine = Objects.requireNonNull(incrementalLayoutEngine);
     }
 
     @Override
@@ -99,7 +102,9 @@ public class LayoutService implements ILayoutService {
     public Diagram incrementalLayout(Diagram newDiagram, MoveEvent moveEvent, Position startingPosition) {
         IncrementalLayoutConvertedDiagram convertedDiagram = this.incrementalLayoutDiagramConverter.convert(newDiagram);
         DiagramLayoutData diagramLayoutData = convertedDiagram.getDiagramLayoutData();
-        new IncrementalLayoutEngine(moveEvent, startingPosition).layout(diagramLayoutData);
+
+        this.incrementalLayoutEngine.layout(moveEvent, startingPosition, diagramLayoutData);
+
         Map<UUID, ILayoutData> id2LayoutData = convertedDiagram.getId2LayoutData();
         return this.incrementalLayoutedDiagramProvider.getLayoutedDiagram(newDiagram, diagramLayoutData, id2LayoutData);
     }

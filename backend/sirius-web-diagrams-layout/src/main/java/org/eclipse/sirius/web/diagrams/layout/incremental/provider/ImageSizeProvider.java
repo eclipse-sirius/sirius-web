@@ -28,6 +28,7 @@ import java.text.MessageFormat;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
+import javax.annotation.PreDestroy;
 import javax.imageio.ImageIO;
 
 import org.apache.batik.anim.dom.SAXSVGDocumentFactory;
@@ -44,6 +45,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.stereotype.Service;
 import org.w3c.dom.svg.SVGDocument;
 
 /**
@@ -52,6 +54,7 @@ import org.w3c.dom.svg.SVGDocument;
  * @author hmarchadour
  * @author wpiers
  */
+@Service
 public class ImageSizeProvider {
 
     private static final String SVGZ_FILE_EXTENSION = "svgz"; //$NON-NLS-1$
@@ -88,8 +91,11 @@ public class ImageSizeProvider {
         // @formatter:on
     }
 
+    @PreDestroy
     public void dispose() {
-        this.logger.debug(this.cache.stats().toString());
+        if (this.logger.isDebugEnabled()) {
+            this.logger.debug(this.cache.stats().toString());
+        }
         this.cache.invalidateAll();
         this.loader.dispose();
     }

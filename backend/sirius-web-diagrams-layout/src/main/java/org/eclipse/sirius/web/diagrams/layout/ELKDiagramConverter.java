@@ -18,8 +18,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import javax.annotation.PreDestroy;
-
 import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.core.options.EdgeLabelPlacement;
 import org.eclipse.elk.graph.ElkConnectableShape;
@@ -69,9 +67,9 @@ public class ELKDiagramConverter {
 
     private final Logger logger = LoggerFactory.getLogger(ELKDiagramConverter.class);
 
-    public ELKDiagramConverter(TextBoundsService textBoundsService) {
+    public ELKDiagramConverter(TextBoundsService textBoundsService, ImageSizeProvider imageSizeProvider) {
         this.textBoundsService = Objects.requireNonNull(textBoundsService);
-        this.imageSizeProvider = new ImageSizeProvider();
+        this.imageSizeProvider = Objects.requireNonNull(imageSizeProvider);
         this.imageNodeStyleSizeProvider = new ImageNodeStyleSizeProvider(this.imageSizeProvider);
     }
 
@@ -210,10 +208,5 @@ public class ELKDiagramConverter {
         Optional.ofNullable(edge.getEndLabel()).ifPresent(label -> this.convertLabel(label, this.textBoundsService.getBounds(label), elkEdge, id2ElkGraphElements, EdgeLabelPlacement.TAIL));
 
         id2ElkGraphElements.put(edge.getId().toString(), elkEdge);
-    }
-
-    @PreDestroy
-    private void dispose() {
-        this.imageSizeProvider.dispose();
     }
 }

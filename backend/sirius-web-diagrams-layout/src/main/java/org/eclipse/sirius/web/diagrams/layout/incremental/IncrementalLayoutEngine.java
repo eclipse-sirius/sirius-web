@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.diagrams.layout.incremental;
 
+import java.util.Objects;
+
 import org.eclipse.sirius.web.diagrams.MoveEvent;
 import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.Size;
@@ -26,6 +28,7 @@ import org.eclipse.sirius.web.diagrams.layout.incremental.provider.NodePositionP
 import org.eclipse.sirius.web.diagrams.layout.incremental.provider.NodeSizeProvider;
 import org.eclipse.sirius.web.diagrams.layout.incremental.updater.ContainmentUpdater;
 import org.eclipse.sirius.web.diagrams.layout.incremental.updater.OverlapsUpdater;
+import org.springframework.stereotype.Service;
 
 /**
  * The engine that computes the incremental layout, using informations from:
@@ -36,6 +39,7 @@ import org.eclipse.sirius.web.diagrams.layout.incremental.updater.OverlapsUpdate
  *
  * @author wpiers
  */
+@Service
 public class IncrementalLayoutEngine {
 
     /**
@@ -43,31 +47,24 @@ public class IncrementalLayoutEngine {
      */
     public static final double NODES_GAP = 30;
 
-    private MoveEvent moveEvent;
+    private final NodeLabelPositionProvider nodeLabelPositionProvider = new NodeLabelPositionProvider();
 
-    private NodeLabelPositionProvider nodeLabelPositionProvider;
+    private final EdgeRoutingPointsProvider edgeRoutingPointsProvider = new EdgeRoutingPointsProvider();
 
-    private EdgeRoutingPointsProvider edgeRoutingPointsProvider;
+    private final EdgeLabelPositionProvider edgeLabelPositionProvider = new EdgeLabelPositionProvider();
 
-    private EdgeLabelPositionProvider edgeLabelPositionProvider;
+    private final NodeSizeProvider nodeSizeProvider;
 
-    private NodeSizeProvider nodeSizeProvider;
-
-    private NodePositionProvider nodePositionProvider;
-
-    public IncrementalLayoutEngine(MoveEvent moveEvent, Position startingPosition) {
-        this.moveEvent = moveEvent;
-        this.edgeRoutingPointsProvider = new EdgeRoutingPointsProvider();
-        this.nodeLabelPositionProvider = new NodeLabelPositionProvider();
-        this.edgeLabelPositionProvider = new EdgeLabelPositionProvider();
-        this.nodeSizeProvider = new NodeSizeProvider();
-        this.nodePositionProvider = new NodePositionProvider(startingPosition);
+    public IncrementalLayoutEngine(NodeSizeProvider nodeSizeProvider) {
+        this.nodeSizeProvider = Objects.requireNonNull(nodeSizeProvider);
     }
 
-    public void layout(DiagramLayoutData diagram) {
+    public void layout(MoveEvent moveEvent, Position startingPosition, DiagramLayoutData diagram) {
+        NodePositionProvider nodePositionProvider = new NodePositionProvider(startingPosition);
+
         // first we layout all the nodes
         for (NodeLayoutData node : diagram.getChildrenNodes()) {
-            this.layoutNode(node);
+            this.layoutNode(moveEvent, nodePositionProvider, node);
         }
 
         // resolve overlaps due to previous changes
@@ -84,13 +81,13 @@ public class IncrementalLayoutEngine {
         }
     }
 
-    private void layoutNode(NodeLayoutData node) {
+    private void layoutNode(MoveEvent moveEvent, NodePositionProvider nodePositionProvider, NodeLayoutData node) {
         // first layout border & child nodes
         for (NodeLayoutData borderNode : node.getBorderNodes()) {
-            this.layoutNode(borderNode);
+            this.layoutNode(moveEvent, nodePositionProvider, borderNode);
         }
         for (NodeLayoutData childNode : node.getChildrenNodes()) {
-            this.layoutNode(childNode);
+            this.layoutNode(moveEvent, nodePositionProvider, childNode);
         }
 
         // compute the node size according to what has been done in the previous steps
@@ -100,13 +97,13 @@ public class IncrementalLayoutEngine {
             node.setChanged(true);
         }
         // recompute the node position
-        if (this.moveEvent != null && this.moveEvent.getNodeId().equals(node.getId())) {
-            Position newPosition = this.moveEvent.getNewPosition();
+        if (moveEvent != null && moveEvent.getNodeId().equals(node.getId())) {
+            Position newPosition = moveEvent.getNewPosition();
             node.setPosition(newPosition);
             node.setChanged(true);
             node.setPinned(true);
         } else if (node.getPosition().getX() == -1 && node.getPosition().getY() == -1) {
-            node.setPosition(this.nodePositionProvider.getPosition(node));
+            node.setPosition(nodePositionProvider.getPosition(node));
             node.setChanged(true);
             node.setPinned(true);
         }
@@ -142,16 +139,16 @@ public class IncrementalLayoutEngine {
      * @return <true> if the node has moved / been resized
      */
     private boolean hasChanged(NodeLayoutData node) {
-        boolean res = false;
+        boolean result = false;
         if (node.hasChanged()) {
-            res = true;
+            result = true;
         } else {
             IContainerLayoutData parent = node.getParent();
             if (parent instanceof NodeLayoutData) {
-                res = this.hasChanged((NodeLayoutData) parent);
+                result = this.hasChanged((NodeLayoutData) parent);
             }
         }
-        return res;
+        return result;
     }
 
 }

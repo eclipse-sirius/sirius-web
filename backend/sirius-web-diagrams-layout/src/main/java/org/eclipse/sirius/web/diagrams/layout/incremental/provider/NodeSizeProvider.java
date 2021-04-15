@@ -12,10 +12,13 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.diagrams.layout.incremental.provider;
 
+import java.util.Objects;
+
 import org.eclipse.sirius.web.diagrams.INodeStyle;
 import org.eclipse.sirius.web.diagrams.ImageNodeStyle;
 import org.eclipse.sirius.web.diagrams.Size;
 import org.eclipse.sirius.web.diagrams.layout.incremental.data.NodeLayoutData;
+import org.springframework.stereotype.Service;
 
 /**
  * Provides the minimal size of a Node.
@@ -23,6 +26,7 @@ import org.eclipse.sirius.web.diagrams.layout.incremental.data.NodeLayoutData;
  * @author fbarbin
  * @author wpiers
  */
+@Service
 public class NodeSizeProvider {
 
     /**
@@ -34,6 +38,12 @@ public class NodeSizeProvider {
     private static final int DEFAULT_WIDTH = 150;
 
     private static final int DEFAULT_HEIGHT = 70;
+
+    private final ImageSizeProvider imageSizeProvider;
+
+    public NodeSizeProvider(ImageSizeProvider imageSizeProvider) {
+        this.imageSizeProvider = Objects.requireNonNull(imageSizeProvider);
+    }
 
     /**
      * Provides the new {@link Size} of the given node. If the node size is no need to be updated, the current size is
@@ -58,7 +68,7 @@ public class NodeSizeProvider {
         double height = DEFAULT_HEIGHT;
         INodeStyle style = node.getStyle();
         if (style instanceof ImageNodeStyle) {
-            Size imageSize = new ImageNodeStyleSizeProvider(new ImageSizeProvider()).getSize((ImageNodeStyle) style);
+            Size imageSize = new ImageNodeStyleSizeProvider(this.imageSizeProvider).getSize((ImageNodeStyle) style);
             width = imageSize.getWidth() + ELK_SIZE_DIFF;
             height = imageSize.getHeight() + ELK_SIZE_DIFF;
         }
