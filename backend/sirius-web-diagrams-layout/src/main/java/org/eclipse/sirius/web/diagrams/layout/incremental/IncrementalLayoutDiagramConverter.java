@@ -130,6 +130,7 @@ public class IncrementalLayoutDiagramConverter {
         id2LayoutData.put(id, layoutData);
 
         layoutData.setPosition(label.getPosition());
+        layoutData.setLabelType(label.getType());
 
         TextBounds textBounds = new TextBoundsProvider().computeBounds(label.getStyle(), label.getText());
         layoutData.setTextBounds(textBounds);

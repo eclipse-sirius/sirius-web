@@ -17,11 +17,14 @@ import java.util.Optional;
 import org.eclipse.sirius.web.diagrams.CreationEvent;
 import org.eclipse.sirius.web.diagrams.IDiagramElementEvent;
 import org.eclipse.sirius.web.diagrams.MoveEvent;
+import org.eclipse.sirius.web.diagrams.NodeType;
 import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.ResizeEvent;
 import org.eclipse.sirius.web.diagrams.Size;
+import org.eclipse.sirius.web.diagrams.layout.LayoutOptionValues;
 import org.eclipse.sirius.web.diagrams.layout.incremental.IncrementalLayoutEngine;
 import org.eclipse.sirius.web.diagrams.layout.incremental.data.IContainerLayoutData;
+import org.eclipse.sirius.web.diagrams.layout.incremental.data.LabelLayoutData;
 import org.eclipse.sirius.web.diagrams.layout.incremental.data.NodeLayoutData;
 
 /**
@@ -50,12 +53,11 @@ public class NodePositionProvider {
         Position position = node.getPosition();
 
         Optional<Position> optionalPosition = this.getSpecificNodePositionFromEvent(optionalDiagramElementEvent, node);
-        if (optionalPosition.isPresent()) {
+        if (optionalPosition.isPresent() && !NodeType.NODE_LIST_ITEM.equals(node.getNodeType())) {
             position = optionalPosition.get();
-
-        } else if (!this.isAlreadyPositioned(node)) {
+        } else if (!this.isAlreadyPositioned(node) || !NodeType.NODE_LIST_ITEM.equals(node.getNodeType())) {
             Optional<Position> optionalStartingPosition = this.getOptionalStartingPositionFromEvent(optionalDiagramElementEvent);
-            if (optionalStartingPosition.isPresent() && this.last == null) {
+            if (optionalStartingPosition.isPresent() && this.last == null && !NodeType.NODE_LIST_ITEM.equals(node.getNodeType())) {
                 // The node has been created by a tool and has a fixed position
                 Position parentPosition = node.getParent().getAbsolutePosition();
                 double xPosition = optionalStartingPosition.get().getX() - parentPosition.getX();
@@ -91,17 +93,17 @@ public class NodePositionProvider {
         if (this.last == null) {
             // We are positioning the first element during this layout
             Double maxBottom = this.findMaxBottom(node.getParent());
-            // there is no other located node so we start at 0,0.
             if (maxBottom == null) {
-                newPosition = Position.at(0, 0);
+                newPosition = this.getNewChildPosition(node);
             } else {
-                newPosition = Position.at(0, maxBottom + IncrementalLayoutEngine.NODES_GAP);
+                double newY = maxBottom + this.getNodeGap(node);
+                newPosition = Position.at(0, newY);
             }
         } else {
             Position lastPosition = this.last.getPosition();
             Size lastSize = this.last.getSize();
             double x = lastPosition.getX();
-            double y = lastPosition.getY() + lastSize.getHeight() + IncrementalLayoutEngine.NODES_GAP;
+            double y = lastPosition.getY() + lastSize.getHeight() + this.getNodeGap(node);
             newPosition = Position.at(x, y);
         }
         this.last = node;
@@ -148,6 +150,36 @@ public class NodePositionProvider {
             position = Position.at(newX, newY);
         }
         return position;
+    }
+
+    /**
+     * Returns the position of the child that have been created.
+     *
+     * <p>
+     * If the node being positioned is a {@link NodeType#NODE_LIST_ITEM},
+     * </p>
+     *
+     * @param node
+     *            the being positioned
+     * @return the position of the child that have been created
+     */
+    private Position getNewChildPosition(NodeLayoutData node) {
+        double posX = 0;
+        double posY = 0;
+        if (NodeType.NODE_LIST_ITEM.equals(node.getNodeType()) && node.getParent() instanceof NodeLayoutData && NodeType.NODE_LIST.equals(((NodeLayoutData) node.getParent()).getNodeType())) {
+            NodeLayoutData parentLayoutData = (NodeLayoutData) node.getParent();
+            LabelLayoutData parentLabelLayoutData = parentLayoutData.getLabel();
+            posY = parentLabelLayoutData.getPosition().getY() + parentLabelLayoutData.getTextBounds().getSize().getHeight() + LayoutOptionValues.NODE_LIST_ELK_PADDING_TOP
+                    + LayoutOptionValues.DEFAULT_ELK_NODE_LABELS_PADDING;
+        }
+        return Position.at(posX, posY);
+    }
+
+    private double getNodeGap(NodeLayoutData node) {
+        if (NodeType.NODE_LIST_ITEM.equals(node.getNodeType())) {
+            return LayoutOptionValues.NODE_LIST_ELK_NODE_NODE_GAP;
+        }
+        return IncrementalLayoutEngine.NODES_GAP;
     }
 
     /**
