@@ -18,8 +18,10 @@ import java.util.Optional;
 import org.eclipse.sirius.web.diagrams.IDiagramElementEvent;
 import org.eclipse.sirius.web.diagrams.INodeStyle;
 import org.eclipse.sirius.web.diagrams.ImageNodeStyle;
+import org.eclipse.sirius.web.diagrams.NodeType;
 import org.eclipse.sirius.web.diagrams.ResizeEvent;
 import org.eclipse.sirius.web.diagrams.Size;
+import org.eclipse.sirius.web.diagrams.layout.LayoutOptionValues;
 import org.eclipse.sirius.web.diagrams.layout.incremental.data.NodeLayoutData;
 import org.springframework.stereotype.Service;
 
@@ -33,10 +35,10 @@ import org.springframework.stereotype.Service;
 public class NodeSizeProvider {
 
     /**
-     * For ELK, a node with an image style is an image within a node. The margin between a node and its content is 12 on
-     * each side, so to obtain the same result we have to add 12*2 to the width & height.
+     * For ELK, a node with an image style is an image within a node. The padding between a node and its content is 12
+     * on each side, so to obtain the same result we have to add 12*2 to the width & height.
      */
-    private static final int ELK_SIZE_DIFF = 24;
+    private static final double ELK_SIZE_DIFF = 2 * LayoutOptionValues.DEFAULT_ELK_PADDING;
 
     private static final int DEFAULT_WIDTH = 150;
 
@@ -95,6 +97,10 @@ public class NodeSizeProvider {
             Size imageSize = new ImageNodeStyleSizeProvider(this.imageSizeProvider).getSize((ImageNodeStyle) style);
             width = imageSize.getWidth() + ELK_SIZE_DIFF;
             height = imageSize.getHeight() + ELK_SIZE_DIFF;
+        } else if (NodeType.NODE_LIST_ITEM.equals(node.getNodeType())) {
+            Size nodeItemSize = node.getLabel().getTextBounds().getSize();
+            width = nodeItemSize.getWidth() + LayoutOptionValues.NODE_LIST_ELK_NODE_LABELS_PADDING_RIGHT + LayoutOptionValues.NODE_LIST_ELK_NODE_LABELS_PADDING_LEFT;
+            height = nodeItemSize.getHeight();
         }
         return Size.of(width, height);
     }

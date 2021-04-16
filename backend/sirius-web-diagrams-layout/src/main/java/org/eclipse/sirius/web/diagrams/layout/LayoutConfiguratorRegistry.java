@@ -41,19 +41,10 @@ import org.springframework.stereotype.Service;
  *
  * @author sbegaudeau
  * @author hmarchadour
+ * @author gcoutable
  */
 @Service
 public class LayoutConfiguratorRegistry {
-
-    /**
-     * The minimum height constraint value.
-     */
-    private static final int MIN_HEIGHT_CONSTRAINT = 25;
-
-    /**
-     * The minimum width constraint value.
-     */
-    private static final int MIN_WIDTH_CONSTRAINT = 50;
 
     /**
      * The space between two nodes.
@@ -88,15 +79,15 @@ public class LayoutConfiguratorRegistry {
 
         configurator.configureByType(NodeType.NODE_RECTANGLE)
                 .setProperty(CoreOptions.NODE_SIZE_CONSTRAINTS, SizeConstraint.free())
-                .setProperty(CoreOptions.NODE_SIZE_MINIMUM, new KVector(MIN_WIDTH_CONSTRAINT, MIN_HEIGHT_CONSTRAINT))
+                .setProperty(CoreOptions.NODE_SIZE_MINIMUM, new KVector(LayoutOptionValues.MIN_WIDTH_CONSTRAINT, LayoutOptionValues.MIN_HEIGHT_CONSTRAINT))
                 .setProperty(CoreOptions.NODE_LABELS_PLACEMENT, NodeLabelPlacement.insideTopCenter());
 
         configurator.configureByType(NodeType.NODE_LIST)
                 .setProperty(CoreOptions.NODE_SIZE_CONSTRAINTS, SizeConstraint.free())
-                .setProperty(CoreOptions.NODE_SIZE_MINIMUM, new KVector(MIN_WIDTH_CONSTRAINT, MIN_HEIGHT_CONSTRAINT))
-                .setProperty(CoreOptions.PADDING, new ElkPadding(6d, 12d, 12d, 0))
-                .setProperty(CoreOptions.NODE_LABELS_PADDING, new ElkPadding())
-                .setProperty(CoreOptions.SPACING_NODE_NODE, 6d)
+                .setProperty(CoreOptions.NODE_SIZE_MINIMUM, new KVector(LayoutOptionValues.MIN_WIDTH_CONSTRAINT, LayoutOptionValues.MIN_HEIGHT_CONSTRAINT))
+                .setProperty(CoreOptions.PADDING, new ElkPadding(LayoutOptionValues.NODE_LIST_ELK_PADDING_TOP, LayoutOptionValues.DEFAULT_ELK_PADDING, LayoutOptionValues.DEFAULT_ELK_PADDING, LayoutOptionValues.NODE_LIST_ELK_PADDING_LEFT))
+                .setProperty(CoreOptions.NODE_LABELS_PADDING, new ElkPadding(LayoutOptionValues.NODE_LIST_ELK_NODE_LABELS_PADDING_TOP, LayoutOptionValues.NODE_LIST_ELK_NODE_LABELS_PADDING_RIGHT, LayoutOptionValues.NODE_LIST_ELK_NODE_LABELS_PADDING_BOTTOM, LayoutOptionValues.NODE_LIST_ELK_NODE_LABELS_PADDING_LEFT))
+                .setProperty(CoreOptions.SPACING_NODE_NODE, LayoutOptionValues.NODE_LIST_ELK_NODE_NODE_GAP)
                 .setProperty(LayeredOptions.CONSIDER_MODEL_ORDER, OrderingStrategy.NODES_AND_EDGES)
                 .setProperty(CoreOptions.NODE_LABELS_PLACEMENT, NodeLabelPlacement.insideTopCenter());
 

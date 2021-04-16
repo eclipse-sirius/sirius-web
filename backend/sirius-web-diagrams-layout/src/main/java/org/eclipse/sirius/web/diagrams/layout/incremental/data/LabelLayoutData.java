@@ -28,6 +28,8 @@ public class LabelLayoutData implements ILayoutData {
 
     private Position position;
 
+    private String labelType;
+
     private UUID id;
 
     @Override
@@ -45,6 +47,14 @@ public class LabelLayoutData implements ILayoutData {
 
     public void setPosition(Position position) {
         this.position = position;
+    }
+
+    public String getLabelType() {
+        return this.labelType;
+    }
+
+    public void setLabelType(String labelType) {
+        this.labelType = labelType;
     }
 
     public TextBounds getTextBounds() {

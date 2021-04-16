@@ -18,6 +18,7 @@ import java.util.Optional;
 import org.eclipse.sirius.web.diagrams.IDiagramElementEvent;
 import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.Size;
+import org.eclipse.sirius.web.diagrams.layout.TextBoundsService;
 import org.eclipse.sirius.web.diagrams.layout.incremental.data.DiagramLayoutData;
 import org.eclipse.sirius.web.diagrams.layout.incremental.data.EdgeLayoutData;
 import org.eclipse.sirius.web.diagrams.layout.incremental.data.IContainerLayoutData;
@@ -58,8 +59,11 @@ public class IncrementalLayoutEngine {
 
     private final NodeSizeProvider nodeSizeProvider;
 
-    public IncrementalLayoutEngine(NodeSizeProvider nodeSizeProvider) {
+    private TextBoundsService textBoundsService;
+
+    public IncrementalLayoutEngine(NodeSizeProvider nodeSizeProvider, TextBoundsService textBoundsService) {
         this.nodeSizeProvider = Objects.requireNonNull(nodeSizeProvider);
+        this.textBoundsService = textBoundsService;
     }
 
     public void layout(Optional<IDiagramElementEvent> optionalDiagramElementEvent, DiagramLayoutData diagram) {
@@ -74,7 +78,7 @@ public class IncrementalLayoutEngine {
         new OverlapsUpdater().update(diagram);
 
         // resize according to the content
-        new ContainmentUpdater().update(diagram);
+        new ContainmentUpdater(this.textBoundsService).update(diagram);
 
         // finally we recompute the edges that needs to
         for (EdgeLayoutData edge : diagram.getEdges()) {
@@ -111,7 +115,7 @@ public class IncrementalLayoutEngine {
         new OverlapsUpdater().update(node);
 
         // resize / change position according to the content
-        new ContainmentUpdater().update(node);
+        new ContainmentUpdater(this.textBoundsService).update(node);
 
         // recompute the label
         if (node.getLabel() != null) {

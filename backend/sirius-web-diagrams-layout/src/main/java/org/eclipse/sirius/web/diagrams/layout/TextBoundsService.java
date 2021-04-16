@@ -98,7 +98,7 @@ public class TextBoundsService {
     public TextBounds getTextMinimumBounds() {
         // @formatter:off
         LabelStyle labelStyle = LabelStyle.newLabelStyle()
-                .fontSize(16)
+                .fontSize(12) // Should get the value from Sirius NodeMapping
                 .color("#000000") //$NON-NLS-1$
                 .iconURL("") //$NON-NLS-1$
                 .build();
