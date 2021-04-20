@@ -58,15 +58,13 @@ public class RelationBasedSourceNodesProviderTestCases {
 
         IIdentifierProvider identifierProvider = element -> nodeMapping.getName();
         List<Element> sourceNodes = new RelationBasedSourceNodesProvider(edgeMapping, identifierProvider).apply(variableManager);
-        assertThat(sourceNodes).hasSize(1);
-        assertThat(sourceNodes).contains(nodeElement);
+        assertThat(sourceNodes).hasSize(1).contains(nodeElement);
     }
 
     private Element createNodeElement(UUID descriptionId) {
         // @formatter:off
         INodeStyle style = ImageNodeStyle.newImageNodeStyle()
                 .imageURL("") //$NON-NLS-1$
-                .scalingFactor(42)
                 .build();
 
         NodeElementProps nodeElementProps = NodeElementProps.newNodeElementProps(UUID.randomUUID())

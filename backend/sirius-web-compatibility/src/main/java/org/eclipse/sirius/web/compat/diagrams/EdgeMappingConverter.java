@@ -40,19 +40,19 @@ import org.eclipse.sirius.web.diagrams.description.NodeDescription;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
 import org.eclipse.sirius.web.representations.VariableManager;
 import org.eclipse.sirius.web.services.api.objects.IEditService;
+import org.springframework.stereotype.Service;
 
 /**
  * This class is used to convert a Sirius EdgeMapping to an Sirius Web EdgeDescription.
  *
  * @author sbegaudeau
  */
+@Service
 public class EdgeMappingConverter {
 
     private final IObjectService objectService;
 
     private final IEditService editService;
-
-    private final AQLInterpreter interpreter;
 
     private final IIdentifierProvider identifierProvider;
 
@@ -60,21 +60,16 @@ public class EdgeMappingConverter {
 
     private final IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider;
 
-    private final Map<UUID, NodeDescription> id2NodeDescriptions;
-
-    public EdgeMappingConverter(IObjectService objectService, IEditService editService, AQLInterpreter interpreter, IIdentifierProvider identifierProvider,
-            ISemanticCandidatesProviderFactory semanticCandidatesProviderFactory, IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider,
-            Map<UUID, NodeDescription> id2NodeDescriptions) {
+    public EdgeMappingConverter(IObjectService objectService, IEditService editService, IIdentifierProvider identifierProvider, ISemanticCandidatesProviderFactory semanticCandidatesProviderFactory,
+            IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider) {
         this.objectService = Objects.requireNonNull(objectService);
         this.editService = Objects.requireNonNull(editService);
-        this.interpreter = Objects.requireNonNull(interpreter);
         this.identifierProvider = Objects.requireNonNull(identifierProvider);
         this.semanticCandidatesProviderFactory = Objects.requireNonNull(semanticCandidatesProviderFactory);
         this.modelOperationHandlerSwitchProvider = Objects.requireNonNull(modelOperationHandlerSwitchProvider);
-        this.id2NodeDescriptions = Objects.requireNonNull(id2NodeDescriptions);
     }
 
-    public EdgeDescription convert(EdgeMapping edgeMapping) {
+    public EdgeDescription convert(EdgeMapping edgeMapping, AQLInterpreter interpreter, Map<UUID, NodeDescription> id2NodeDescriptions) {
         Function<VariableManager, String> targetIdProvider = variableManager -> {
             return variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null);
         };
@@ -85,39 +80,39 @@ public class EdgeMappingConverter {
             return variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getLabel).orElse(null);
         };
 
-        List<NodeDescription> sourceNodeDescriptions = this.getNodeDescriptions(edgeMapping.getSourceMapping());
-        List<NodeDescription> targetNodeDescriptions = this.getNodeDescriptions(edgeMapping.getTargetMapping());
+        List<NodeDescription> sourceNodeDescriptions = this.getNodeDescriptions(edgeMapping.getSourceMapping(), id2NodeDescriptions);
+        List<NodeDescription> targetNodeDescriptions = this.getNodeDescriptions(edgeMapping.getTargetMapping(), id2NodeDescriptions);
 
-        Function<VariableManager, List<Object>> semanticElementsProvider = this.getSemanticElementsProvider(edgeMapping, sourceNodeDescriptions);
+        Function<VariableManager, List<Object>> semanticElementsProvider = this.getSemanticElementsProvider(interpreter, edgeMapping, sourceNodeDescriptions);
 
         Function<VariableManager, List<Element>> sourceNodesProvider = null;
         if (edgeMapping.isUseDomainElement()) {
-            sourceNodesProvider = new DomainBasedSourceNodesProvider(edgeMapping, this.interpreter, this.identifierProvider);
+            sourceNodesProvider = new DomainBasedSourceNodesProvider(edgeMapping, interpreter, this.identifierProvider);
         } else {
             sourceNodesProvider = new RelationBasedSourceNodesProvider(edgeMapping, this.identifierProvider);
         }
 
-        Function<VariableManager, List<Element>> targetNodesProvider = new TargetNodesProvider(edgeMapping, this.interpreter, this.identifierProvider);
-        Function<VariableManager, EdgeStyle> styleProvider = new EdgeMappingStyleProvider(this.interpreter, edgeMapping);
+        Function<VariableManager, List<Element>> targetNodesProvider = new TargetNodesProvider(edgeMapping, interpreter, this.identifierProvider);
+        Function<VariableManager, EdgeStyle> styleProvider = new EdgeMappingStyleProvider(interpreter, edgeMapping);
 
-        LabelStyleDescriptionConverter labelStyleDescriptionConverter = new LabelStyleDescriptionConverter(this.interpreter, this.objectService);
+        LabelStyleDescriptionConverter labelStyleDescriptionConverter = new LabelStyleDescriptionConverter(interpreter, this.objectService);
 
         // @formatter:off
         EdgeStyleDescription style = edgeMapping.getStyle();
 
         Optional<LabelDescription> optionalBeginLabelDescription = Optional.ofNullable(style)
                 .map(EdgeStyleDescription::getBeginLabelStyleDescription)
-                .map(labelDescription -> this.createLabelDescription(labelStyleDescriptionConverter, labelDescription,  "_beginlabel", edgeMapping)); //$NON-NLS-1$
+                .map(labelDescription -> this.createLabelDescription(interpreter, labelStyleDescriptionConverter, labelDescription,  "_beginlabel", edgeMapping)); //$NON-NLS-1$
 
         Optional<LabelDescription> optionalCenterLabelDescription = Optional.ofNullable(style)
                 .map(EdgeStyleDescription::getCenterLabelStyleDescription)
-                .map(labelDescription -> this.createLabelDescription(labelStyleDescriptionConverter, labelDescription,  "_centerlabel", edgeMapping)); //$NON-NLS-1$
+                .map(labelDescription -> this.createLabelDescription(interpreter, labelStyleDescriptionConverter, labelDescription,  "_centerlabel", edgeMapping)); //$NON-NLS-1$
 
         Optional<LabelDescription> optionalEndLabelDescription = Optional.ofNullable(style)
                 .map(EdgeStyleDescription::getEndLabelStyleDescription)
-                .map(labelDescription -> this.createLabelDescription(labelStyleDescriptionConverter, labelDescription,  "_endlabel", edgeMapping)); //$NON-NLS-1$
+                .map(labelDescription -> this.createLabelDescription(interpreter, labelStyleDescriptionConverter, labelDescription,  "_endlabel", edgeMapping)); //$NON-NLS-1$
 
-        ToolConverter toolConverter = new ToolConverter(this.interpreter, this.editService, this.modelOperationHandlerSwitchProvider);
+        ToolConverter toolConverter = new ToolConverter(interpreter, this.editService, this.modelOperationHandlerSwitchProvider);
         var deleteHandler = toolConverter.createDeleteToolHandler(edgeMapping.getDeletionDescription());
 
         Builder builder = EdgeDescription.newEdgeDescription(UUID.fromString(this.identifierProvider.getIdentifier(edgeMapping)))
@@ -138,8 +133,8 @@ public class EdgeMappingConverter {
         // @formatter:on
     }
 
-    private LabelDescription createLabelDescription(LabelStyleDescriptionConverter labelStyleDescriptionConverter, BasicLabelStyleDescription siriusBasicLabelStyleDescription, String idSuffix,
-            EdgeMapping edgeMapping) {
+    private LabelDescription createLabelDescription(AQLInterpreter interpreter, LabelStyleDescriptionConverter labelStyleDescriptionConverter,
+            BasicLabelStyleDescription siriusBasicLabelStyleDescription, String idSuffix, EdgeMapping edgeMapping) {
         String labelExpression = siriusBasicLabelStyleDescription.getLabelExpression();
 
         Function<VariableManager, LabelStyleDescription> labelStyleDescriptionProvider = variableManager -> {
@@ -152,7 +147,7 @@ public class EdgeMappingConverter {
         };
 
         String id = this.identifierProvider.getIdentifier(edgeMapping) + idSuffix;
-        StringValueProvider textProvider = new StringValueProvider(this.interpreter, labelExpression);
+        StringValueProvider textProvider = new StringValueProvider(interpreter, labelExpression);
         // @formatter:off
         return LabelDescription.newLabelDescription(id)
                 .idProvider(labelIdProvider)
@@ -170,26 +165,26 @@ public class EdgeMappingConverter {
      *            The mappings referenced by the edge description (source or target)
      * @return The relevant node descriptions created by the node and container description converters
      */
-    private List<NodeDescription> getNodeDescriptions(List<DiagramElementMapping> mappings) {
+    private List<NodeDescription> getNodeDescriptions(List<DiagramElementMapping> mappings, Map<UUID, NodeDescription> id2NodeDescriptions) {
         // @formatter:off
         return mappings.stream()
                 .filter(AbstractNodeMapping.class::isInstance)
                 .map(AbstractNodeMapping.class::cast)
                 .map(mapping->UUID.fromString(this.identifierProvider.getIdentifier(mapping)))
-                .map(this.id2NodeDescriptions::get)
+                .map(id2NodeDescriptions::get)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
         // @formatter:on
     }
 
-    private Function<VariableManager, List<Object>> getSemanticElementsProvider(EdgeMapping edgeMapping, List<NodeDescription> sourceNodeDescriptions) {
+    private Function<VariableManager, List<Object>> getSemanticElementsProvider(AQLInterpreter interpreter, EdgeMapping edgeMapping, List<NodeDescription> sourceNodeDescriptions) {
         Function<VariableManager, List<Object>> semanticElementsProvider = variableManager -> List.of();
 
         if (edgeMapping.isUseDomainElement()) {
             String semanticCandidatesExpression = edgeMapping.getSemanticCandidatesExpression();
             String preconditionExpression = edgeMapping.getPreconditionExpression();
             String domainClass = Optional.ofNullable(edgeMapping.getDomainClass()).orElse(""); //$NON-NLS-1$
-            semanticElementsProvider = this.semanticCandidatesProviderFactory.getSemanticCandidatesProvider(this.interpreter, domainClass, semanticCandidatesExpression, preconditionExpression);
+            semanticElementsProvider = this.semanticCandidatesProviderFactory.getSemanticCandidatesProvider(interpreter, domainClass, semanticCandidatesExpression, preconditionExpression);
         } else {
             // @formatter:off
             List<UUID> sourceNodeDescriptionIds = sourceNodeDescriptions.stream()

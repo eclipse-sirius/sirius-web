@@ -24,18 +24,12 @@ import org.eclipse.sirius.diagram.description.AdditionalLayer;
 import org.eclipse.sirius.diagram.description.ContainerMappingImport;
 import org.eclipse.sirius.diagram.description.DiagramDescription;
 import org.eclipse.sirius.diagram.description.Layer;
-import org.eclipse.sirius.web.compat.api.IIdentifierProvider;
-import org.eclipse.sirius.web.compat.api.IModelOperationHandlerSwitchProvider;
-import org.eclipse.sirius.web.compat.api.ISemanticCandidatesProviderFactory;
-import org.eclipse.sirius.web.compat.diagrams.ContainerMappingConverter;
+import org.eclipse.sirius.web.compat.diagrams.AbstractNodeMappingConverter;
 import org.eclipse.sirius.web.compat.diagrams.EdgeMappingConverter;
-import org.eclipse.sirius.web.compat.diagrams.NodeMappingConverter;
-import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription.Builder;
 import org.eclipse.sirius.web.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.web.diagrams.description.NodeDescription;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
-import org.eclipse.sirius.web.services.api.objects.IEditService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -47,26 +41,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class DiagramDescriptionNodeAndEdgeDescriptionsPopulator implements IDiagramDescriptionPopulator {
 
-    private final IObjectService objectService;
-
-    private final IEditService editService;
-
-    private final IIdentifierProvider identifierProvider;
-
-    private final ISemanticCandidatesProviderFactory semanticCandidatesProviderFactory;
-
-    private final IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider;
-
     private final IToolProvider toolProvider;
 
-    public DiagramDescriptionNodeAndEdgeDescriptionsPopulator(IObjectService objectService, IEditService editService, IIdentifierProvider identifierProvider,
-            ISemanticCandidatesProviderFactory semanticCandidatesProviderFactory, IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider, IToolProvider toolProvider) {
-        this.objectService = Objects.requireNonNull(objectService);
-        this.editService = Objects.requireNonNull(editService);
-        this.identifierProvider = Objects.requireNonNull(identifierProvider);
-        this.semanticCandidatesProviderFactory = Objects.requireNonNull(semanticCandidatesProviderFactory);
-        this.modelOperationHandlerSwitchProvider = Objects.requireNonNull(modelOperationHandlerSwitchProvider);
+    private final AbstractNodeMappingConverter abstractNodeMappingConverter;
+
+    private final EdgeMappingConverter edgeMappingConverter;
+
+    public DiagramDescriptionNodeAndEdgeDescriptionsPopulator(IToolProvider toolProvider, AbstractNodeMappingConverter abstractNodeMappingConverter, EdgeMappingConverter edgeMappingConverter) {
         this.toolProvider = Objects.requireNonNull(toolProvider);
+        this.abstractNodeMappingConverter = Objects.requireNonNull(abstractNodeMappingConverter);
+        this.edgeMappingConverter = Objects.requireNonNull(edgeMappingConverter);
     }
 
     @Override
@@ -74,31 +58,28 @@ public class DiagramDescriptionNodeAndEdgeDescriptionsPopulator implements IDiag
         Map<UUID, NodeDescription> id2NodeDescriptions = new HashMap<>();
 
         // @formatter:off
-        ContainerMappingConverter containerMappingConverter = new ContainerMappingConverter(this.objectService, this.editService, interpreter, this.identifierProvider, this.semanticCandidatesProviderFactory, this.modelOperationHandlerSwitchProvider);
         List<Layer> layers = LayerHelper.getAllLayers(siriusDiagramDescription).stream()
                 .filter(this::isEnabledByDefault)
                 .collect(Collectors.toList());
 
         List<NodeDescription> containerDescriptions = layers.stream()
                 .flatMap(layer -> layer.getContainerMappings().stream().filter(containerMapping -> !(containerMapping instanceof ContainerMappingImport)))
-                .map(containerMapping -> containerMappingConverter.convert(containerMapping, id2NodeDescriptions))
+                .map(containerMapping -> this.abstractNodeMappingConverter.convert(containerMapping, interpreter, id2NodeDescriptions))
                 .collect(Collectors.toList());
         // @formatter:on
 
         // @formatter:off
-        NodeMappingConverter nodeMappingConverter = new NodeMappingConverter(this.objectService, this.editService, interpreter, this.identifierProvider, this.semanticCandidatesProviderFactory, this.modelOperationHandlerSwitchProvider);
         List<NodeDescription> nodeDescriptions = layers.stream()
                 .flatMap(layer -> layer.getNodeMappings().stream())
-                .map(nodeMapping -> nodeMappingConverter.convert(nodeMapping, id2NodeDescriptions))
+                .map(nodeMapping -> this.abstractNodeMappingConverter.convert(nodeMapping, interpreter, id2NodeDescriptions))
                 .collect(Collectors.toList());
         // @formatter:on
         nodeDescriptions.addAll(containerDescriptions);
 
         // @formatter:off
-        EdgeMappingConverter edgeMappingConverter = new EdgeMappingConverter(this.objectService, this.editService, interpreter, this.identifierProvider, this.semanticCandidatesProviderFactory, this.modelOperationHandlerSwitchProvider, id2NodeDescriptions);
         List<EdgeDescription> edgeDescriptions = layers.stream()
                 .flatMap(layer -> layer.getEdgeMappings().stream())
-                .map(edgeMappingConverter::convert)
+                .map(edgeMapping -> this.edgeMappingConverter.convert(edgeMapping, interpreter, id2NodeDescriptions))
                 .collect(Collectors.toList());
         // @formatter:on
         return builder.nodeDescriptions(nodeDescriptions).edgeDescriptions(edgeDescriptions)

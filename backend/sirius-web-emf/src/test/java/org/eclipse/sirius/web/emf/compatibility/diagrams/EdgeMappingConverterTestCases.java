@@ -71,10 +71,10 @@ public class EdgeMappingConverterTestCases {
         IIdentifierProvider identifierProvider = element -> containerMappingUUID.toString();
         ISemanticCandidatesProviderFactory semanticCandidatesProviderFactory = SemanticCandidatesProvider::new;
         IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider = ModelOperationHandlerSwitch::new;
-        EdgeMappingConverter edgeMappingConverter = new EdgeMappingConverter(new NoOpObjectService(), new NoOpEditService(), new AQLInterpreter(List.of(), List.of()), identifierProvider,
-                semanticCandidatesProviderFactory, modelOperationHandlerSwitchProvider, id2NodeDescriptions);
+        EdgeMappingConverter edgeMappingConverter = new EdgeMappingConverter(new NoOpObjectService(), new NoOpEditService(), identifierProvider, semanticCandidatesProviderFactory,
+                modelOperationHandlerSwitchProvider);
 
-        EdgeDescription edgeDescription = edgeMappingConverter.convert(edgeMapping);
+        EdgeDescription edgeDescription = edgeMappingConverter.convert(edgeMapping, new AQLInterpreter(List.of(), List.of()), id2NodeDescriptions);
         assertThat(edgeDescription.getTargetNodeDescriptions()).contains(id2NodeDescriptions.get(containerMappingUUID));
     }
 
@@ -104,7 +104,7 @@ public class EdgeMappingConverterTestCases {
                 .semanticElementsProvider(variableManager -> List.of())
                 .labelDescription(labelDescription)
                 .styleProvider(variableManager -> null)
-                .sizeProvider(variableManager -> Size.of(0, 0))
+                .sizeProvider(variableManager -> Size.UNDEFINED)
                 .borderNodeDescriptions(List.of())
                 .childNodeDescriptions(List.of())
                 .labelEditHandler((variableManager, newLabel) -> Status.OK)
@@ -138,10 +138,10 @@ public class EdgeMappingConverterTestCases {
         IIdentifierProvider identifierProvider = element -> containerMappingUUID.toString();
         ISemanticCandidatesProviderFactory semanticCandidatesProviderFactory = SemanticCandidatesProvider::new;
         IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider = ModelOperationHandlerSwitch::new;
-        EdgeMappingConverter edgeMappingConverter = new EdgeMappingConverter(new NoOpObjectService(), new NoOpEditService(), new AQLInterpreter(List.of(), List.of()), identifierProvider,
-                semanticCandidatesProviderFactory, modelOperationHandlerSwitchProvider, id2NodeDescriptions);
+        EdgeMappingConverter edgeMappingConverter = new EdgeMappingConverter(new NoOpObjectService(), new NoOpEditService(), identifierProvider, semanticCandidatesProviderFactory,
+                modelOperationHandlerSwitchProvider);
 
-        EdgeDescription edgeDescription = edgeMappingConverter.convert(edgeMapping);
+        EdgeDescription edgeDescription = edgeMappingConverter.convert(edgeMapping, new AQLInterpreter(List.of(), List.of()), id2NodeDescriptions);
         assertThat(edgeDescription.getSourceNodeDescriptions()).contains(id2NodeDescriptions.get(containerMappingUUID));
     }
 
@@ -170,10 +170,10 @@ public class EdgeMappingConverterTestCases {
         IIdentifierProvider identifierProvider = element -> targetContainerMappingUUID.toString();
         ISemanticCandidatesProviderFactory semanticCandidatesProviderFactory = SemanticCandidatesProvider::new;
         IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider = ModelOperationHandlerSwitch::new;
-        EdgeMappingConverter edgeMappingConverter = new EdgeMappingConverter(new NoOpObjectService(), new NoOpEditService(), new AQLInterpreter(List.of(), List.of()), identifierProvider,
-                semanticCandidatesProviderFactory, modelOperationHandlerSwitchProvider, id2NodeDescriptions);
+        EdgeMappingConverter edgeMappingConverter = new EdgeMappingConverter(new NoOpObjectService(), new NoOpEditService(), identifierProvider, semanticCandidatesProviderFactory,
+                modelOperationHandlerSwitchProvider);
 
-        EdgeDescription edgeDescription = edgeMappingConverter.convert(edgeMapping);
+        EdgeDescription edgeDescription = edgeMappingConverter.convert(edgeMapping, new AQLInterpreter(List.of(), List.of()), id2NodeDescriptions);
         edgeDescription.getSourceNodeDescriptions().contains(id2NodeDescriptions.get(sourceContainerMappingUUID));
         assertThat(edgeDescription.getTargetNodeDescriptions()).contains(id2NodeDescriptions.get(targetContainerMappingUUID));
     }

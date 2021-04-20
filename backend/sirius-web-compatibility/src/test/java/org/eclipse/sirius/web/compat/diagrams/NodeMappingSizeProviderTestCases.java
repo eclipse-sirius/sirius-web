@@ -44,7 +44,7 @@ public class NodeMappingSizeProviderTestCases {
         VariableManager variableManager = new VariableManager();
         AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(EcorePackage.eINSTANCE));
 
-        NodeMappingSizeProvider nodeMappingSizeProvider = new NodeMappingSizeProvider(interpreter, nodeMapping);
+        AbstractNodeMappingSizeProvider nodeMappingSizeProvider = new AbstractNodeMappingSizeProvider(interpreter, nodeMapping);
         Size size = nodeMappingSizeProvider.apply(variableManager);
 
         // by default, the size computation expression is 3.
@@ -62,7 +62,7 @@ public class NodeMappingSizeProviderTestCases {
         VariableManager variableManager = new VariableManager();
         AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(EcorePackage.eINSTANCE));
 
-        NodeMappingSizeProvider nodeMappingSizeProvider = new NodeMappingSizeProvider(interpreter, nodeMapping);
+        AbstractNodeMappingSizeProvider nodeMappingSizeProvider = new AbstractNodeMappingSizeProvider(interpreter, nodeMapping);
         Size size = nodeMappingSizeProvider.apply(variableManager);
         assertThat(size).extracting(Size::getHeight).isEqualTo(100.0);
         assertThat(size).extracting(Size::getWidth).isEqualTo(100.0);

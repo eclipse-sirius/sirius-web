@@ -62,7 +62,7 @@ public class ContainerMappingStyleProviderTestCases {
 
         VariableManager variableManager = new VariableManager();
         AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(EcorePackage.eINSTANCE));
-        INodeStyle nodeStyle = new ContainerMappingStyleProvider(interpreter, containerMapping).apply(variableManager);
+        INodeStyle nodeStyle = new AbstractNodeMappingStyleProvider(interpreter, containerMapping).apply(variableManager);
 
         assertThat(nodeStyle).isInstanceOf(RectangularNodeStyle.class);
         RectangularNodeStyle rectangularNodeStyle = (RectangularNodeStyle) nodeStyle;
@@ -105,7 +105,7 @@ public class ContainerMappingStyleProviderTestCases {
 
             VariableManager variableManager = new VariableManager();
             AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(EcorePackage.eINSTANCE));
-            INodeStyle nodeStyle = new ContainerMappingStyleProvider(interpreter, containerMapping).apply(variableManager);
+            INodeStyle nodeStyle = new AbstractNodeMappingStyleProvider(interpreter, containerMapping).apply(variableManager);
             assertThat(nodeStyle).isInstanceOf(RectangularNodeStyle.class);
             RectangularNodeStyle rectangularNodeStyle = (RectangularNodeStyle) nodeStyle;
             assertThat(rectangularNodeStyle.getBorderStyle()).isEqualTo(entry.getValue());

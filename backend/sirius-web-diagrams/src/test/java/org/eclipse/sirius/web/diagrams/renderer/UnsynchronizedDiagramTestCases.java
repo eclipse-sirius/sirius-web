@@ -182,7 +182,7 @@ public class UnsynchronizedDiagramTestCases {
                 .targetObjectLabelProvider(variableManager -> "")//$NON-NLS-1$
                 .labelDescription(labelDescription)
                 .styleProvider(styleProvider)
-                .sizeProvider(variableManager -> Size.of(0, 0))
+                .sizeProvider(variableManager -> Size.UNDEFINED)
                 .borderNodeDescriptions(new ArrayList<>())
                 .childNodeDescriptions(new ArrayList<>())
                 .labelEditHandler((variableManager, newLabel) -> Status.OK)
@@ -197,7 +197,7 @@ public class UnsynchronizedDiagramTestCases {
                 .targetObjectLabelProvider(variableManager -> "")//$NON-NLS-1$
                 .labelDescription(labelDescription)
                 .styleProvider(styleProvider)
-                .sizeProvider(variableManager -> Size.of(0, 0))
+                .sizeProvider(variableManager -> Size.UNDEFINED)
                 .borderNodeDescriptions(new ArrayList<>())
                 .childNodeDescriptions(List.of(subUnsynchronizedNodeDescription))
                 .labelEditHandler((variableManager, newLabel) -> Status.OK)
@@ -213,7 +213,7 @@ public class UnsynchronizedDiagramTestCases {
                 .targetObjectLabelProvider(variableManager -> "")//$NON-NLS-1$
                 .labelDescription(labelDescription)
                 .styleProvider(styleProvider)
-                .sizeProvider(variableManager -> Size.of(0, 0))
+                .sizeProvider(variableManager -> Size.UNDEFINED)
                 .borderNodeDescriptions(new ArrayList<>())
                 .childNodeDescriptions(new ArrayList<>())
                 .labelEditHandler((variableManager, newLabel) -> Status.OK)

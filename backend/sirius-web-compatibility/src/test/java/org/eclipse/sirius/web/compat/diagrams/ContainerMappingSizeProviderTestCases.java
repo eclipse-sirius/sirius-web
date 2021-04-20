@@ -46,10 +46,10 @@ public class ContainerMappingSizeProviderTestCases {
         VariableManager variableManager = new VariableManager();
         AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(EcorePackage.eINSTANCE));
 
-        ContainerMappingSizeProvider containerMappingSizeProvider = new ContainerMappingSizeProvider(interpreter, containerMapping);
-        Size size = containerMappingSizeProvider.apply(variableManager);
-        assertThat(size).extracting(Size::getHeight).isEqualTo(0.0);
-        assertThat(size).extracting(Size::getWidth).isEqualTo(0.0);
+        var abstractNodeMappingSizeProvider = new AbstractNodeMappingSizeProvider(interpreter, containerMapping);
+        Size size = abstractNodeMappingSizeProvider.apply(variableManager);
+        assertThat(size).extracting(Size::getHeight).isEqualTo(-1.0);
+        assertThat(size).extracting(Size::getWidth).isEqualTo(-1.0);
     }
 
     @Test
@@ -63,8 +63,8 @@ public class ContainerMappingSizeProviderTestCases {
         VariableManager variableManager = new VariableManager();
         AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(EcorePackage.eINSTANCE));
 
-        ContainerMappingSizeProvider containerMappingSizeProvider = new ContainerMappingSizeProvider(interpreter, containerMapping);
-        Size size = containerMappingSizeProvider.apply(variableManager);
+        var abstractNodeMappingSizeProvider = new AbstractNodeMappingSizeProvider(interpreter, containerMapping);
+        Size size = abstractNodeMappingSizeProvider.apply(variableManager);
         assertThat(size).extracting(Size::getHeight).isEqualTo(100.0);
         assertThat(size).extracting(Size::getWidth).isEqualTo(200.0);
     }
