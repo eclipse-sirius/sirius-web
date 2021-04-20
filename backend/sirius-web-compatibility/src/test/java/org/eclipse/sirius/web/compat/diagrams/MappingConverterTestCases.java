@@ -102,10 +102,9 @@ public class MappingConverterTestCases {
 
         VariableManager variableManager = new VariableManager();
         AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(EcorePackage.eINSTANCE));
-        ContainerMappingConverter converter = new ContainerMappingConverter(new NoOpObjectService(), new NoOpEditService(), interpreter, identifierProvider, semanticCandidatesProviderFactory,
-                modelOperationHandlerSwitchProvider);
+        var converter = new AbstractNodeMappingConverter(new NoOpObjectService(), new NoOpEditService(), identifierProvider, semanticCandidatesProviderFactory, modelOperationHandlerSwitchProvider);
 
-        NodeDescription convertedNodeDescription = converter.convert(containerMapping, new HashMap<UUID, NodeDescription>());
+        NodeDescription convertedNodeDescription = converter.convert(containerMapping, interpreter, new HashMap<UUID, NodeDescription>());
         LabelDescription labelDescription = convertedNodeDescription.getLabelDescription();
 
         String text = labelDescription.getTextProvider().apply(variableManager);
@@ -176,10 +175,9 @@ public class MappingConverterTestCases {
 
         VariableManager variableManager = new VariableManager();
         AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(EcorePackage.eINSTANCE));
-        NodeMappingConverter converter = new NodeMappingConverter(new NoOpObjectService(), new NoOpEditService(), interpreter, identifierProvider, semanticCandidatesProviderFactory,
-                modelOperationHandlerSwitchProvider);
+        var converter = new AbstractNodeMappingConverter(new NoOpObjectService(), new NoOpEditService(), identifierProvider, semanticCandidatesProviderFactory, modelOperationHandlerSwitchProvider);
 
-        NodeDescription convertedNodeDescription = converter.convert(nodeMapping, new HashMap<UUID, NodeDescription>());
+        NodeDescription convertedNodeDescription = converter.convert(nodeMapping, interpreter, new HashMap<UUID, NodeDescription>());
         LabelDescription labelDescription = convertedNodeDescription.getLabelDescription();
 
         String text = labelDescription.getTextProvider().apply(variableManager);

@@ -15,9 +15,10 @@ package org.eclipse.sirius.web.compat.diagrams;
 import java.util.Objects;
 import java.util.function.Function;
 
-import org.eclipse.sirius.diagram.description.NodeMapping;
-import org.eclipse.sirius.diagram.description.style.NodeStyleDescription;
+import org.eclipse.sirius.diagram.description.AbstractNodeMapping;
+import org.eclipse.sirius.diagram.description.style.FlatContainerStyleDescription;
 import org.eclipse.sirius.diagram.description.style.SquareDescription;
+import org.eclipse.sirius.viewpoint.description.style.LabelStyleDescription;
 import org.eclipse.sirius.web.diagrams.Size;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
 import org.eclipse.sirius.web.interpreter.Result;
@@ -28,7 +29,7 @@ import org.eclipse.sirius.web.representations.VariableManager;
  *
  * @author fbarbin
  */
-public class NodeMappingSizeProvider implements Function<VariableManager, Size> {
+public class AbstractNodeMappingSizeProvider implements Function<VariableManager, Size> {
     /**
      * Inherit from Sirius Desktop. Currently, the size specified in the VSM is multiplied by 10.
      */
@@ -36,25 +37,22 @@ public class NodeMappingSizeProvider implements Function<VariableManager, Size> 
 
     private final AQLInterpreter interpreter;
 
-    private final NodeMapping nodeMapping;
+    private final AbstractNodeMapping abstractNodeMapping;
 
-    public NodeMappingSizeProvider(AQLInterpreter interpreter, NodeMapping nodeMapping) {
+    public AbstractNodeMappingSizeProvider(AQLInterpreter interpreter, AbstractNodeMapping abstractNodeMapping) {
         this.interpreter = Objects.requireNonNull(interpreter);
-        this.nodeMapping = Objects.requireNonNull(nodeMapping);
+        this.abstractNodeMapping = Objects.requireNonNull(abstractNodeMapping);
     }
 
     @Override
     public Size apply(VariableManager variableManager) {
-        NodeStyleDescription nodeStyleDescription = new NodeStyleDescriptionProvider(this.interpreter, this.nodeMapping).getNodeStyleDescription(variableManager);
-        return this.getNodeSize(variableManager, nodeStyleDescription);
-    }
+        LabelStyleDescription labelStyleDescription = new LabelStyleDescriptionProvider(this.interpreter, this.abstractNodeMapping).apply(variableManager);
 
-    private Size getNodeSize(VariableManager variableManager, NodeStyleDescription nodeStyleDescription) {
-        Size size = Size.of(0, 0);
-        if (nodeStyleDescription instanceof SquareDescription) {
-            SquareDescription squareDescription = (SquareDescription) nodeStyleDescription;
-            Integer width = squareDescription.getWidth() * SIZE_FACTOR;
-            Integer height = squareDescription.getHeight() * SIZE_FACTOR;
+        Size size = Size.UNDEFINED;
+        if (labelStyleDescription instanceof SquareDescription) {
+            SquareDescription squareDescription = (SquareDescription) labelStyleDescription;
+            int width = squareDescription.getWidth() * SIZE_FACTOR;
+            int height = squareDescription.getHeight() * SIZE_FACTOR;
 
             // If the initial width and/or height have not been set by the specifier, we interpret the size computation
             // expression to set the width and/or height
@@ -71,7 +69,23 @@ public class NodeMappingSizeProvider implements Function<VariableManager, Size> 
                 }
             }
             size = Size.of(width, height);
+        } else if (labelStyleDescription instanceof FlatContainerStyleDescription) {
+            int width = -1;
+            int height = -1;
+            FlatContainerStyleDescription flatContainerStyleDescription = (FlatContainerStyleDescription) labelStyleDescription;
+            Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), flatContainerStyleDescription.getWidthComputationExpression());
+            int computedWidth = result.asInt().getAsInt();
+            if (computedWidth > 0) {
+                width = computedWidth * SIZE_FACTOR;
+            }
+            result = this.interpreter.evaluateExpression(variableManager.getVariables(), flatContainerStyleDescription.getHeightComputationExpression());
+            int computedHeight = result.asInt().getAsInt();
+            if (computedHeight > 0) {
+                height = computedHeight * SIZE_FACTOR;
+            }
+            size = Size.of(width, height);
         }
         return size;
     }
+
 }
