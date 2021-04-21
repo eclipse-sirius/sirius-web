@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius.web</groupId>
 	<artifactId>sirius-web-domain-design</artifactId>
-	<version>0.2.18</version>
+	<version>0.2.19</version>
 	<name>sirius-web-domain-design</name>
 	<description>Sirius Web Domain Definition DSL - Graphical Modeler Definition</description>
 
