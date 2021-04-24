@@ -38,11 +38,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class TextBoundsService {
 
-    /**
-     * The text label minimum characters needed to consider an empty node easily clickable.
-     */
-    private static final String MINIMUM_TEXT_LABEL_CHARACTERS = "    "; //$NON-NLS-1$
-
     private final Logger logger = LoggerFactory.getLogger(TextBoundsService.class);
 
     private final TextBoundsProvider textBoundsProvider;
@@ -93,17 +88,6 @@ public class TextBoundsService {
 
     public TextBounds getBounds(Label label) {
         return this.textBoundsProvider.computeBounds(label.getStyle(), label.getText());
-    }
-
-    public TextBounds getTextMinimumBounds() {
-        // @formatter:off
-        LabelStyle labelStyle = LabelStyle.newLabelStyle()
-                .fontSize(12) // Should get the value from Sirius NodeMapping
-                .color("#000000") //$NON-NLS-1$
-                .iconURL("") //$NON-NLS-1$
-                .build();
-        // @formatter:on
-        return this.textBoundsProvider.computeBounds(labelStyle, MINIMUM_TEXT_LABEL_CHARACTERS);
     }
 
 }

@@ -98,9 +98,9 @@ public class NodeSizeProvider {
             width = imageSize.getWidth() + ELK_SIZE_DIFF;
             height = imageSize.getHeight() + ELK_SIZE_DIFF;
         } else if (NodeType.NODE_LIST_ITEM.equals(node.getNodeType())) {
-            Size nodeItemSize = node.getLabel().getTextBounds().getSize();
-            width = nodeItemSize.getWidth() + LayoutOptionValues.NODE_LIST_ELK_NODE_LABELS_PADDING_RIGHT + LayoutOptionValues.NODE_LIST_ELK_NODE_LABELS_PADDING_LEFT;
-            height = nodeItemSize.getHeight();
+            Size nodeItemLabelSize = node.getLabel().getTextBounds().getSize();
+            width = nodeItemLabelSize.getWidth() + LayoutOptionValues.NODE_LIST_ELK_NODE_LABELS_PADDING_RIGHT + LayoutOptionValues.NODE_LIST_ELK_NODE_LABELS_PADDING_LEFT;
+            height = nodeItemLabelSize.getHeight() + LayoutOptionValues.NODE_LIST_ELK_NODE_LABELS_PADDING_TOP + LayoutOptionValues.NODE_LIST_ELK_NODE_LABELS_PADDING_BOTTOM;
         }
         return Size.of(width, height);
     }

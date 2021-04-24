@@ -42,18 +42,6 @@ public final class LayoutOptionValues {
     public static final int MIN_WIDTH_CONSTRAINT = 50;
 
     /**
-     * The value defined for NodeList in the elk configuration to set the padding top between a NodeListItem to its
-     * label.
-     */
-    public static final double NODE_LIST_ELK_NODE_LABELS_PADDING_TOP = 0d;
-
-    /**
-     * The value defined for NodeList in the elk configuration to set the padding bottom between a NodeListItem to its
-     * label.
-     */
-    public static final double NODE_LIST_ELK_NODE_LABELS_PADDING_BOTTOM = 0d;
-
-    /**
      * The value defined for NodeList in the elk configuration to set the padding top between a NodeList and its
      * NodeListItems.
      */
@@ -64,6 +52,12 @@ public final class LayoutOptionValues {
      * NodeListItems.
      */
     public static final double NODE_LIST_ELK_PADDING_LEFT = 0d;
+
+    /**
+     * The value defined for NodeList in the elk configuration to set the padding right between a NodeList and its
+     * NodeListItems.
+     */
+    public static final double NODE_LIST_ELK_PADDING_RIGHT = 0d;
 
     /**
      * The value defined for NodeList in the elk configuration to set the gap between two containing NodeListItems.
@@ -80,6 +74,18 @@ public final class LayoutOptionValues {
      * The value defined for NodeList in the elk configuration to set the padding right of the containing NodeListItem
      * labels.
      */
-    public static final double NODE_LIST_ELK_NODE_LABELS_PADDING_RIGHT = 2d;
+    public static final double NODE_LIST_ELK_NODE_LABELS_PADDING_RIGHT = 12d;
+
+    /**
+     * The value defined for NodeList in the elk configuration to set the padding top between a NodeListItem to its
+     * label.
+     */
+    public static final double NODE_LIST_ELK_NODE_LABELS_PADDING_TOP = 0d;
+
+    /**
+     * The value defined for NodeList in the elk configuration to set the padding bottom between a NodeListItem to its
+     * label.
+     */
+    public static final double NODE_LIST_ELK_NODE_LABELS_PADDING_BOTTOM = 0d;
 
 }

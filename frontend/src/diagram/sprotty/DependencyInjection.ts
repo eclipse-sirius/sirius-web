@@ -97,14 +97,14 @@ const siriusWebContainerModule = new ContainerModule((bind, unbind, isBound, reb
   // @ts-ignore
   configureModelElement(context, 'label:inside-center', SLabel, LabelView);
   // @ts-ignore
+  configureModelElement(context, 'label:outside-center', SLabel, LabelView);
+  // @ts-ignore
   configureModelElement(context, 'label:edge-begin', SLabel, LabelView);
   // @ts-ignore
   configureModelElement(context, 'label:edge-center', SLabel, LabelView);
   // @ts-ignore
   configureModelElement(context, 'label:edge-end', SLabel, LabelView);
   // @ts-ignore
-  configureModelElement(context, 'label:text', SLabel, LabelView);
-
   configureView({ bind, isBound }, 'comp:main', SCompartmentView);
   configureView({ bind, isBound }, 'html', HtmlRootView);
   // @ts-ignore

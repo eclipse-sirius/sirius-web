@@ -12,8 +12,11 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.diagrams.layout;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -35,6 +38,8 @@ import org.eclipse.sirius.web.diagrams.Edge;
 import org.eclipse.sirius.web.diagrams.ImageNodeStyle;
 import org.eclipse.sirius.web.diagrams.Label;
 import org.eclipse.sirius.web.diagrams.Node;
+import org.eclipse.sirius.web.diagrams.NodeType;
+import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.Size;
 import org.eclipse.sirius.web.diagrams.TextBounds;
 import org.eclipse.sirius.web.diagrams.layout.incremental.provider.ImageNodeStyleSizeProvider;
@@ -74,14 +79,223 @@ public class ELKDiagramConverter {
     }
 
     public ELKConvertedDiagram convert(Diagram diagram) {
-        ElkNode elkDiagram = this.convertDiagram(diagram);
+        Diagram initializedDiagram = this.initializeDiagram(diagram);
+
+        ElkNode elkDiagram = this.convertDiagram(initializedDiagram);
 
         Map<String, ElkGraphElement> id2ElkGraphElements = new HashMap<>();
         Map<String, ElkConnectableShape> connectableShapeIndex = new LinkedHashMap<>();
-        diagram.getNodes().stream().forEach(node -> this.convertNode(node, elkDiagram, connectableShapeIndex, id2ElkGraphElements));
-        diagram.getEdges().stream().forEach(edge -> this.convertEdge(edge, elkDiagram, connectableShapeIndex, id2ElkGraphElements));
+        initializedDiagram.getNodes().stream().forEach(node -> this.convertNode(node, elkDiagram, connectableShapeIndex, id2ElkGraphElements));
+        initializedDiagram.getEdges().stream().forEach(edge -> this.convertEdge(edge, elkDiagram, connectableShapeIndex, id2ElkGraphElements));
 
         return new ELKConvertedDiagram(elkDiagram, id2ElkGraphElements);
+    }
+
+    /**
+     * Looks for {@link NodeType#NODE_LIST} {@link Node} in the <em>diagram</em> in order to initialize them.
+     *
+     * @param diagram
+     *            The {@link Diagram} in which {@link NodeType#NODE_LIST} {@link Node} will be initialized
+     * @return A new {@link Diagram} containing initialized {@link NodeType#NODE_LIST} {@link Node}
+     */
+    private Diagram initializeDiagram(Diagram diagram) {
+        List<Node> childNodes = this.initializeNodes(diagram.getNodes());
+        // @formatter:off
+        return Diagram.newDiagram(diagram)
+                .nodes(childNodes)
+                .build();
+        // @formatter:on
+    }
+
+    /**
+     * Looks for {@link NodeType#NODE_LIST} {@link Node} in the <em>nodes</em> list in order to initialize them.
+     *
+     * <p>
+     * If a node has children, the node is initialized.
+     * </p>
+     *
+     * @param nodes
+     *            the list of {@link Node} in which {@link NodeType#NODE_LIST} {@link Node} will be initialized
+     * @return A new list of {@link Node} containing initialized {@link NodeType#NODE_LIST} {@link Node}
+     */
+    private List<Node> initializeNodes(List<Node> nodes) {
+        List<Node> childNodes = new ArrayList<>();
+        for (Node node : nodes) {
+            Node childNode = node;
+            if (NodeType.NODE_LIST.equals(node.getType())) {
+                childNode = this.initializeNodeList(node);
+            } else if (!node.getChildNodes().isEmpty()) {
+                childNode = this.initializeNode(node);
+            }
+            childNodes.add(childNode);
+        }
+        return childNodes;
+    }
+
+    /**
+     * Looks for {@link NodeType#NODE_LIST} Node in the <em>node</em> children in order to initialize them.
+     *
+     * @param node
+     *            the {@link Node} in which {@link NodeType#NODE_LIST} children {@link Node} will be initialized
+     * @return
+     */
+    private Node initializeNode(Node node) {
+        List<Node> childNodes = this.initializeNodes(node.getChildNodes());
+        // @formatter:off
+        return Node.newNode(node)
+                .childNodes(childNodes)
+                .build();
+        // @formatter:on
+    }
+
+    private double getLargestNodeListItemWidth(List<Node> nodeListItems) {
+        double largestNodeListItemWidth = -1;
+
+        for (Node nodeListItem : nodeListItems) {
+            TextBounds nodeListItemTextBounds = this.textBoundsService.getBounds(nodeListItem.getLabel());
+            double nodeListItemWidth = nodeListItemTextBounds.getSize().getWidth() + LayoutOptionValues.NODE_LIST_ELK_NODE_LABELS_PADDING_RIGHT
+                    + LayoutOptionValues.NODE_LIST_ELK_NODE_LABELS_PADDING_LEFT;
+            if (largestNodeListItemWidth < nodeListItemWidth) {
+                largestNodeListItemWidth = nodeListItemWidth;
+            }
+        }
+
+        return largestNodeListItemWidth;
+    }
+
+    /**
+     * Returns the size of the given {@link NodeType#NODE_LIST}, which is the max value between the highest children
+     * item width, the node label width and {@link} LayoutOptionValues#MIN_WIDTH_CONSTRAINT}.
+     *
+     * @param nodeList
+     *            The node list we want the width
+     * @return the size of the given {@link NodeType#NODE_LIST}
+     */
+    private double getNodeListWidth(Node nodeList) {
+        TextBounds nodeListLabelTextBounds = this.textBoundsService.getBounds(nodeList.getLabel());
+        double largestNodeListItemWidth = this.getLargestNodeListItemWidth(nodeList.getChildNodes());
+
+        // @formatter:off
+         return Arrays.asList(
+                largestNodeListItemWidth,
+                nodeListLabelTextBounds.getSize().getWidth(),
+                LayoutOptionValues.MIN_WIDTH_CONSTRAINT)
+              .stream()
+              .mapToDouble(Number::doubleValue)
+              .max()
+              .orElse(LayoutOptionValues.MIN_WIDTH_CONSTRAINT);
+    }
+
+    /**
+     * Initializes the given {@link NodeType#NODE_LIST} with size and its {@link NodeType#NODE_LIST_ITEM} with size and
+     * position in order let ELK use the size and position for these elements.
+     *
+     * <p>
+     * It is possible to let ELK use the size and position for these elements thanks to ELK options that have been used
+     * in the ELK configuration.
+     * </p>
+     *
+     * @see LayoutConfiguratorRegistry#getDefaultLayoutConfigurator()
+     * @param nodeList
+     *            The {@link NodeType#NODE_LIST} node to initialize
+     * @return a new initialized {@link Node}
+     */
+    private Node initializeNodeList(Node nodeList) {
+        List<Node> childNodes = nodeList.getChildNodes();
+
+        double nodeListWidth = this.getNodeListWidth(nodeList);
+        List<Node> nodeListItems = this.initializeNodeListItems(childNodes, nodeListWidth);
+        double nodeListHeight = this.getNodeListHeight(nodeListItems);
+
+        Size nodelistSize = Size.of(nodeListWidth, nodeListHeight);
+
+        // @formatter:off
+        return Node.newNode(nodeList)
+                .size(nodelistSize)
+                .childNodes(nodeListItems)
+                .build();
+        // @formatter:on
+    }
+
+    /**
+     * Returns the node list height.
+     *
+     * <p>
+     * The height of a node list is the sum of the vertical position of the last children, the height of the last
+     * children and {@link LayoutOptionValues#DEFAULT_ELK_PADDING}. The height cannot be smaller than
+     * {@link LayoutOptionValues#MIN_HEIGHT_CONSTRAINT}.
+     * </p>
+     *
+     * @param nodeListItems
+     *            The list of children
+     * @return the node list height
+     */
+    private double getNodeListHeight(List<Node> nodeListItems) {
+        double nodeListHeight = 0;
+        if (!nodeListItems.isEmpty()) {
+            Node lastNodeListItem = nodeListItems.get(nodeListItems.size() - 1);
+            nodeListHeight = lastNodeListItem.getPosition().getY() + lastNodeListItem.getSize().getHeight() + LayoutOptionValues.DEFAULT_ELK_PADDING;
+        }
+
+        if (nodeListHeight < LayoutOptionValues.MIN_HEIGHT_CONSTRAINT) {
+            nodeListHeight = LayoutOptionValues.MIN_HEIGHT_CONSTRAINT;
+        }
+        return nodeListHeight;
+    }
+
+    private List<Node> initializeNodeListItems(List<Node> childNodes, double nodeListWidth) {
+        List<Node> nodeListItems = new ArrayList<>();
+        for (int i = 0; i < childNodes.size(); ++i) {
+            Node nodeListItem = childNodes.get(i);
+
+            double nodeListItemHeight = this.getNodeListItemHeight(nodeListItem);
+            Size nodelistItemSize = Size.of(nodeListWidth, nodeListItemHeight);
+
+            double nodeListItemPosY = this.getCurrentListItemYPosition(nodeListItems);
+            Position nodeListItemPosition = Position.at(0, nodeListItemPosY);
+
+            // @formatter:off
+            Node newNodeListItem = Node.newNode(nodeListItem)
+                    .size(nodelistItemSize)
+                    .position(nodeListItemPosition)
+                    .build();
+            // @formatter:on
+            nodeListItems.add(newNodeListItem);
+        }
+        return nodeListItems;
+    }
+
+    /**
+     * Return the current list item Y position.
+     *
+     * <p>
+     * If the list of eldest siblings is empty the position of the current list item in the node list is the sum of
+     * {@link LayoutOptionValues#NODE_LIST_ELK_PADDING_TOP} and
+     * {@link LayoutOptionValues#DEFAULT_ELK_NODE_LABELS_PADDING}. Otherwise, the list of the current list item in the
+     * node list is the sum of the Y position of the previous sibling, the height of the previous sibling and the
+     * {@link LayoutOptionValues#NODE_LIST_ELK_NODE_NODE_GAP}.
+     * </p>
+     *
+     * @param handledListItems
+     *            The list of the eldest siblings
+     * @return the current list item Y position
+     */
+    private double getCurrentListItemYPosition(List<Node> handledListItems) {
+        double nodeListItemYPosition = 0;
+        if (handledListItems.isEmpty()) {
+            nodeListItemYPosition = LayoutOptionValues.NODE_LIST_ELK_PADDING_TOP + LayoutOptionValues.DEFAULT_ELK_NODE_LABELS_PADDING;
+        } else {
+            Node previousNodeListItemSibling = handledListItems.get(handledListItems.size() - 1);
+            nodeListItemYPosition = previousNodeListItemSibling.getPosition().getY() + previousNodeListItemSibling.getSize().getHeight() + LayoutOptionValues.NODE_LIST_ELK_NODE_NODE_GAP;
+        }
+        return nodeListItemYPosition;
+    }
+
+    private double getNodeListItemHeight(Node nodeListItem) {
+        TextBounds nodeListItemTextBounds = this.textBoundsService.getBounds(nodeListItem.getLabel());
+        double nodeListItemHeight = nodeListItemTextBounds.getSize().getHeight() + LayoutOptionValues.NODE_LIST_ELK_NODE_LABELS_PADDING_TOP
+                + LayoutOptionValues.NODE_LIST_ELK_NODE_LABELS_PADDING_BOTTOM;
+        return nodeListItemHeight;
     }
 
     private ElkNode convertDiagram(Diagram diagram) {
@@ -97,12 +311,19 @@ public class ELKDiagramConverter {
         elkNode.setProperty(PROPERTY_TYPE, node.getType());
 
         TextBounds textBounds = this.textBoundsService.getBounds(node.getLabel());
-        double width = Math.max(textBounds.getSize().getWidth(), node.getSize().getWidth());
-        double height = Math.max(textBounds.getSize().getHeight(), node.getSize().getHeight());
 
-        elkNode.setDimensions(width, height);
+        if (NodeType.NODE_LIST.equals(node.getType())) {
+            elkNode.setDimensions(node.getSize().getWidth(), node.getSize().getHeight());
+        } else if (NodeType.NODE_LIST_ITEM.equals(node.getType())) {
+            elkNode.setDimensions(node.getSize().getWidth(), node.getSize().getHeight());
+            elkNode.setLocation(node.getPosition().getX(), node.getPosition().getY());
+        } else {
+            double width = Math.max(textBounds.getSize().getWidth(), node.getSize().getWidth());
+            double height = Math.max(textBounds.getSize().getHeight(), node.getSize().getHeight());
+            elkNode.setDimensions(width, height);
+        }
+
         elkNode.setParent(parent);
-
         connectableShapeIndex.put(elkNode.getIdentifier(), elkNode);
 
         if (node.getStyle() instanceof ImageNodeStyle) {
