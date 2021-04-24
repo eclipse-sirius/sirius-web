@@ -16,7 +16,6 @@ import org.eclipse.sirius.web.diagrams.NodeType;
 import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.Size;
 import org.eclipse.sirius.web.diagrams.layout.LayoutOptionValues;
-import org.eclipse.sirius.web.diagrams.layout.TextBoundsService;
 import org.eclipse.sirius.web.diagrams.layout.incremental.data.IConnectable;
 import org.eclipse.sirius.web.diagrams.layout.incremental.data.IContainerLayoutData;
 import org.eclipse.sirius.web.diagrams.layout.incremental.data.LabelLayoutData;
@@ -56,42 +55,52 @@ public class ContainmentUpdater {
 
     /**
      * For elk, all nodes have a padding in four directions (top, right, bottom and left) to place the node content. In
-     * our elk configuration the default value for the NodeList padding top has been overridden, so to have the real
-     * height of a node we must add the {@link LayoutOptionValues#NODE_LIST_ELK_PADDING_TOP} and the
-     * {@link LayoutOptionValues#DEFAULT_ELK_PADDING} to the node content height.
-     */
-    private static final double NODE_LIST_PADDING_HEIGHT = LayoutOptionValues.NODE_LIST_ELK_PADDING_TOP + LayoutOptionValues.DEFAULT_ELK_PADDING;
-
-    /**
-     * For elk, all nodes have a padding in four directions (top, right, bottom and left) to place the node content. In
      * our elk configuration the default value for the NodeList padding left has been overridden, so to have the real
      * width of a node we must add the {@link LayoutOptionValues#NODE_LIST_ELK_PADDING_LEFT} and the
      * {@link LayoutOptionValues#DEFAULT_ELK_PADDING} to the node content width.
      */
-    private static final double NODE_LIST_PADDING_WIDTH = LayoutOptionValues.NODE_LIST_ELK_PADDING_LEFT + LayoutOptionValues.DEFAULT_ELK_PADDING;
+    private static final double NODE_LIST_PADDING_WIDTH = LayoutOptionValues.NODE_LIST_ELK_PADDING_LEFT + LayoutOptionValues.NODE_LIST_ELK_PADDING_RIGHT;
 
-    private TextBoundsService textBoundsService;
-
-    public ContainmentUpdater(TextBoundsService textBoundsService) {
-        this.textBoundsService = textBoundsService;
+    public ContainmentUpdater() {
     }
 
     public void update(IContainerLayoutData container) {
         if (this.shouldUpdate(container)) {
             if (container instanceof NodeLayoutData) {
                 NodeLayoutData nodeLayoutData = (NodeLayoutData) container;
-                if (NodeType.NODE_LIST.equals(nodeLayoutData.getNodeType())) {
+                switch (nodeLayoutData.getNodeType()) {
+                case NodeType.NODE_LIST:
+                    // No need to change the position of a Node List as contained list items are fixed.
                     this.updateContentPosition(nodeLayoutData);
+                    this.updateBottomRight(nodeLayoutData);
+                    break;
+                case NodeType.NODE_LIST_ITEM:
+                    // Update the size of a list item regarding the size of its label.
+                    this.updateNodeListItem(nodeLayoutData);
+                    break;
+                default:
+                    // We do not change the position of diagrams as it disturbs the feedback
+                    this.updateTopLeft(nodeLayoutData);
+                    this.updateBottomRight(nodeLayoutData);
+                    break;
                 }
-                // We do not change the position of diagrams as it disturbs the feedback
-                this.updateTopLeft(nodeLayoutData);
+            } else {
+                this.updateBottomRight(container);
             }
-            this.updateBottomRight(container);
         }
     }
 
     private boolean shouldUpdate(IContainerLayoutData container) {
-        return !container.getChildrenNodes().isEmpty() || this.isLabelContained(container);
+        boolean shouldUpdate = true;
+
+        if (container instanceof NodeLayoutData) {
+            NodeLayoutData nodeLayoutData = (NodeLayoutData) container;
+            shouldUpdate = !nodeLayoutData.isResizedByUser();
+        }
+
+        shouldUpdate = shouldUpdate && (!container.getChildrenNodes().isEmpty() || this.isLabelContained(container));
+
+        return shouldUpdate;
     }
 
     private boolean isLabelContained(IContainerLayoutData container) {
@@ -135,21 +144,25 @@ public class ContainmentUpdater {
         }
     }
 
+    private void updateNodeListItem(NodeLayoutData nodeLayoutData) {
+        Size labelSize = nodeLayoutData.getLabel().getTextBounds().getSize();
+        double width = labelSize.getWidth() + LayoutOptionValues.NODE_LIST_ELK_NODE_LABELS_PADDING_RIGHT + LayoutOptionValues.NODE_LIST_ELK_NODE_LABELS_PADDING_LEFT;
+        double height = labelSize.getHeight() + LayoutOptionValues.NODE_LIST_ELK_NODE_LABELS_PADDING_TOP + LayoutOptionValues.NODE_LIST_ELK_NODE_LABELS_PADDING_BOTTOM;
+
+        Size nodeSize = nodeLayoutData.getSize();
+        if (width != nodeSize.getWidth() || height != nodeSize.getHeight()) {
+            nodeLayoutData.setSize(Size.of(width, height));
+            if (nodeLayoutData instanceof IConnectable) {
+                ((IConnectable) nodeLayoutData).setChanged(true);
+            }
+        }
+    }
+
     private void updateBottomRight(IContainerLayoutData container) {
         double width = container.getSize().getWidth();
         double height = container.getSize().getHeight();
         double maxWidth = LayoutOptionValues.MIN_WIDTH_CONSTRAINT;
         double maxHeight = LayoutOptionValues.MIN_HEIGHT_CONSTRAINT;
-
-        // NodeListItem size is equals to its containing label size
-        if (container instanceof NodeLayoutData) {
-            NodeLayoutData nodeLayoutData = (NodeLayoutData) container;
-            if (NodeType.NODE_LIST_ITEM.equals(nodeLayoutData.getNodeType())) {
-                Size minimumLabelSize = this.textBoundsService.getTextMinimumBounds().getSize();
-                maxWidth = minimumLabelSize.getWidth();
-                maxHeight = minimumLabelSize.getHeight();
-            }
-        }
 
         if (this.isLabelContained(container)) {
             LabelLayoutData label = ((NodeLayoutData) container).getLabel();
@@ -168,6 +181,16 @@ public class ContainmentUpdater {
                 ((IConnectable) container).setChanged(true);
             }
         }
+
+        if (container instanceof NodeLayoutData && NodeType.NODE_LIST.equals(((NodeLayoutData) container).getNodeType())) {
+            for (NodeLayoutData child : container.getChildrenNodes()) {
+                child.setSize(Size.of(container.getSize().getWidth(), child.getSize().getHeight()));
+                if (child instanceof IConnectable) {
+                    ((IConnectable) container).setChanged(true);
+                }
+            }
+        }
+
     }
 
     private double getNodeLabelPaddingHeight(IContainerLayoutData container) {
@@ -192,7 +215,7 @@ public class ContainmentUpdater {
         if (container instanceof NodeLayoutData) {
             NodeLayoutData nodeLayoutData = (NodeLayoutData) container;
             if (NodeType.NODE_LIST.equals(nodeLayoutData.getNodeType())) {
-                nodeLabelPaddingHeight = NODE_LIST_PADDING_HEIGHT;
+                nodeLabelPaddingHeight = LayoutOptionValues.DEFAULT_ELK_PADDING;
             } else if (NodeType.NODE_LIST_ITEM.equals(nodeLayoutData.getNodeType())) {
                 nodeLabelPaddingHeight = NODE_LIST_NODE_LABELS_PADDING_HEIGHT;
             }

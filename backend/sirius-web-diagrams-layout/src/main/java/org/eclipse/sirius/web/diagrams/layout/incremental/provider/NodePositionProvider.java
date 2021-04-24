@@ -55,7 +55,7 @@ public class NodePositionProvider {
         Optional<Position> optionalPosition = this.getSpecificNodePositionFromEvent(optionalDiagramElementEvent, node);
         if (optionalPosition.isPresent() && !NodeType.NODE_LIST_ITEM.equals(node.getNodeType())) {
             position = optionalPosition.get();
-        } else if (!this.isAlreadyPositioned(node) || !NodeType.NODE_LIST_ITEM.equals(node.getNodeType())) {
+        } else if (!this.isAlreadyPositioned(node) || NodeType.NODE_LIST_ITEM.equals(node.getNodeType())) {
             Optional<Position> optionalStartingPosition = this.getOptionalStartingPositionFromEvent(optionalDiagramElementEvent);
             if (optionalStartingPosition.isPresent() && this.last == null && !NodeType.NODE_LIST_ITEM.equals(node.getNodeType())) {
                 // The node has been created by a tool and has a fixed position

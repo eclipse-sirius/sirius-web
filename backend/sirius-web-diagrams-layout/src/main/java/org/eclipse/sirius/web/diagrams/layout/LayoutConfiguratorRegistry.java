@@ -12,24 +12,20 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.diagrams.layout;
 
-import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.elk.alg.layered.options.LayeredOptions;
 import org.eclipse.elk.alg.layered.options.LayeringStrategy;
-import org.eclipse.elk.alg.layered.options.OrderingStrategy;
 import org.eclipse.elk.core.LayoutConfigurator;
-import org.eclipse.elk.core.math.ElkPadding;
 import org.eclipse.elk.core.math.KVector;
-import org.eclipse.elk.core.options.Alignment;
 import org.eclipse.elk.core.options.CoreOptions;
+import org.eclipse.elk.core.options.FixedLayouterOptions;
 import org.eclipse.elk.core.options.HierarchyHandling;
 import org.eclipse.elk.core.options.NodeLabelPlacement;
 import org.eclipse.elk.core.options.SizeConstraint;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.NodeType;
-import org.eclipse.sirius.web.diagrams.Size;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
 import org.springframework.stereotype.Service;
 
@@ -58,10 +54,7 @@ public class LayoutConfiguratorRegistry {
 
     private final List<IDiagramLayoutConfiguratorProvider> customLayoutProviders;
 
-    private TextBoundsService textBoundsService;
-
-    public LayoutConfiguratorRegistry(List<IDiagramLayoutConfiguratorProvider> customLayoutProviders, TextBoundsService textBoundsService) {
-        this.textBoundsService = textBoundsService;
+    public LayoutConfiguratorRegistry(List<IDiagramLayoutConfiguratorProvider> customLayoutProviders) {
         this.customLayoutProviders = List.copyOf(Objects.requireNonNull(customLayoutProviders));
     }
 
@@ -83,21 +76,10 @@ public class LayoutConfiguratorRegistry {
                 .setProperty(CoreOptions.NODE_LABELS_PLACEMENT, NodeLabelPlacement.insideTopCenter());
 
         configurator.configureByType(NodeType.NODE_LIST)
-                .setProperty(CoreOptions.NODE_SIZE_CONSTRAINTS, SizeConstraint.free())
-                .setProperty(CoreOptions.NODE_SIZE_MINIMUM, new KVector(LayoutOptionValues.MIN_WIDTH_CONSTRAINT, LayoutOptionValues.MIN_HEIGHT_CONSTRAINT))
-                .setProperty(CoreOptions.PADDING, new ElkPadding(LayoutOptionValues.NODE_LIST_ELK_PADDING_TOP, LayoutOptionValues.DEFAULT_ELK_PADDING, LayoutOptionValues.DEFAULT_ELK_PADDING, LayoutOptionValues.NODE_LIST_ELK_PADDING_LEFT))
-                .setProperty(CoreOptions.NODE_LABELS_PADDING, new ElkPadding(LayoutOptionValues.NODE_LIST_ELK_NODE_LABELS_PADDING_TOP, LayoutOptionValues.NODE_LIST_ELK_NODE_LABELS_PADDING_RIGHT, LayoutOptionValues.NODE_LIST_ELK_NODE_LABELS_PADDING_BOTTOM, LayoutOptionValues.NODE_LIST_ELK_NODE_LABELS_PADDING_LEFT))
-                .setProperty(CoreOptions.SPACING_NODE_NODE, LayoutOptionValues.NODE_LIST_ELK_NODE_NODE_GAP)
-                .setProperty(LayeredOptions.CONSIDER_MODEL_ORDER, OrderingStrategy.NODES_AND_EDGES)
-                .setProperty(CoreOptions.NODE_LABELS_PLACEMENT, NodeLabelPlacement.insideTopCenter());
+                    .setProperty(CoreOptions.ALGORITHM, FixedLayouterOptions.ALGORITHM_ID)
+                    .setProperty(CoreOptions.NODE_SIZE_FIXED_GRAPH_SIZE, true);
 
-
-        Size minimumLabelSize = this.textBoundsService.getTextMinimumBounds().getSize();
-        configurator.configureByType(NodeType.NODE_LIST_ITEM)
-                .setProperty(CoreOptions.NODE_SIZE_CONSTRAINTS, EnumSet.of(SizeConstraint.NODE_LABELS, SizeConstraint.MINIMUM_SIZE))
-                .setProperty(CoreOptions.NODE_SIZE_MINIMUM, new KVector(minimumLabelSize.getWidth(), minimumLabelSize.getHeight()))
-                .setProperty(CoreOptions.NODE_LABELS_PLACEMENT, NodeLabelPlacement.insideCenter())
-                .setProperty(CoreOptions.ALIGNMENT, Alignment.LEFT);
+        configurator.configureByType(NodeType.NODE_LIST_ITEM).setProperty(CoreOptions.NO_LAYOUT, true);
 
         configurator.configureByType(NodeType.NODE_IMAGE)
                 .setProperty(CoreOptions.NODE_SIZE_CONSTRAINTS, SizeConstraint.free())

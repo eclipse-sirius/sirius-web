@@ -28,6 +28,7 @@ import org.eclipse.sirius.web.diagrams.CustomizableProperties;
 import org.eclipse.sirius.web.diagrams.INodeStyle;
 import org.eclipse.sirius.web.diagrams.Label;
 import org.eclipse.sirius.web.diagrams.Node;
+import org.eclipse.sirius.web.diagrams.NodeType;
 import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.Size;
 import org.eclipse.sirius.web.diagrams.description.LabelDescription;
@@ -121,7 +122,13 @@ public class NodeComponent implements IComponent {
 
         LabelDescription labelDescription = nodeDescription.getLabelDescription();
         nodeVariableManager.put(LabelDescription.OWNER_ID, nodeId);
-        LabelComponentProps labelComponentProps = new LabelComponentProps(nodeVariableManager, labelDescription, optionalPreviousLabel, LabelType.INSIDE_CENTER.getValue());
+
+        LabelType nodeLabelType = LabelType.INSIDE_CENTER;
+        if (NodeType.NODE_IMAGE.equals(type)) {
+            nodeLabelType = LabelType.OUTSIDE_CENTER;
+        }
+
+        LabelComponentProps labelComponentProps = new LabelComponentProps(nodeVariableManager, labelDescription, optionalPreviousLabel, nodeLabelType.getValue());
         Element labelElement = new Element(LabelComponent.class, labelComponentProps);
 
         List<Element> nodeChildren = new ArrayList<>();

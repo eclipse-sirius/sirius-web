@@ -60,7 +60,7 @@ export class SiriusDragAndDropMouseListener extends MoveMouseListener {
   public mouseMove(target: SModelElement, event: MouseEvent): Action[] {
     if (this.isResizing()) {
       const result: Action[] = [];
-      const action = this.getResizeAction(event, false);
+      const action = this.getMouseMoveResizeAction(event);
       if (action) {
         result.push(action);
       }
@@ -77,7 +77,7 @@ export class SiriusDragAndDropMouseListener extends MoveMouseListener {
     let result: Action[];
     if (this.isResizing()) {
       result = [];
-      const action = this.getResizeAction(event, true);
+      const action = this.getMouseUpResizeAction();
       if (action) {
         result.push(action);
       }
@@ -144,7 +144,11 @@ export class SiriusDragAndDropMouseListener extends MoveMouseListener {
     return element instanceof SNode;
   }
 
-  protected getResizeAction(event: MouseEvent, isFinished: boolean): ResizeAction | undefined {
+  /**
+   * Computes the potential new position and new size of the element being resized.
+   * It is only "potential" because the ResizeAction can prevent the resize.
+   */
+  protected getMouseMoveResizeAction(event: MouseEvent): ResizeAction | undefined {
     if (!this.startResizePosition) return undefined;
     const viewport = findParentByFeature(this.intialTarget, isViewport);
     const zoom = viewport ? viewport.zoom : 1;
@@ -154,9 +158,24 @@ export class SiriusDragAndDropMouseListener extends MoveMouseListener {
     };
     const resizeElement = this.computeElementResize(delta);
     if (resizeElement) {
-      return new ResizeAction(resizeElement, isFinished);
+      return new ResizeAction(resizeElement, false);
     }
     return undefined;
+  }
+
+  /**
+   * When the mouse up comes, the size and the position of the element being resize have already
+   * been calculated by the last ResizeAction during the mouseMove, and thus, it only returns a
+   * new ResizeAction with the size and position of the element being resize and mark the ResizeAction as finished.
+   */
+  protected getMouseUpResizeAction(): ResizeAction | undefined {
+    if (!this.startResizePosition) return undefined;
+    const resizeElement = {
+      newSize: this.intialTarget.size,
+      newPosition: this.intialTarget.position,
+      elementId: this.intialTarget.id,
+    };
+    return new ResizeAction(resizeElement, true);
   }
 
   private computeElementResize(delta: Point): ElementResize {
