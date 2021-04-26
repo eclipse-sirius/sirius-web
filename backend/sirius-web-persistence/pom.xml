@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius.web</groupId>
 	<artifactId>sirius-web-persistence</artifactId>
-	<version>0.2.19</version>
+	<version>0.2.20</version>
 	<name>sirius-web-persistence</name>
 	<description>Sirius Web Persistence</description>
 
@@ -60,7 +60,7 @@
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-annotations</artifactId>
-			<version>0.2.19</version>
+			<version>0.2.20</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -81,13 +81,13 @@
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-spring-tests</artifactId>
-			<version>0.2.19</version>
+			<version>0.2.20</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-tests</artifactId>
-			<version>0.2.19</version>
+			<version>0.2.20</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>

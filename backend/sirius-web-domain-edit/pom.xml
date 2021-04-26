@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius.web</groupId>
 	<artifactId>sirius-web-domain-edit</artifactId>
-	<version>0.2.19</version>
+	<version>0.2.20</version>
 	<name>sirius-web-domain-edit</name>
 	<description>Sirius Web Domain Definition DSL - Edit Support</description>
 
@@ -68,7 +68,7 @@
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-domain</artifactId>
-			<version>0.2.19</version>
+			<version>0.2.20</version>
 		</dependency>
 	</dependencies>
 </project>
