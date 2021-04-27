@@ -29,7 +29,7 @@
 
 	<properties>
 		<java.version>11</java.version>
-		<sirius.components.version>0.2.19</sirius.components.version>
+		<sirius.components.version>0.2.20</sirius.components.version>
 		<flow.version>1.0.5-SNAPSHOT</flow.version>
 		<bpmn.version>4.0.3-SNAPSHOT</bpmn.version>
 	</properties>

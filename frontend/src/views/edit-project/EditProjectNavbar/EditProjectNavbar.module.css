@@ -1,0 +1,93 @@
+/*******************************************************************************
+ * Copyright (c) 2019, 2020 Obeo.
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
+.editProjectNavbar {
+  display: grid;
+  grid-template-rows: 4px 56px;
+
+  background-color: var(--blue-lagoon);
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 1fr min-content 1fr;
+  grid-template-rows: 1fr;
+  justify-content: space-between;
+
+  grid-row-start: 2;
+  grid-row-end: 3;
+
+  background-color: var(--daintree);
+}
+
+.leftArea {
+  display: grid;
+  grid-template-columns: 32px min-content min-content;
+  grid-template-rows: 1fr;
+  align-items: center;
+
+  padding-left: 16px;
+}
+
+.centerArea {
+  display: grid;
+  grid-template-columns: min-content;
+  align-items: center;
+  grid-template-rows: 1fr;
+}
+
+.centerArea > div {
+  display: grid;
+  grid-template-columns: min-content min-content max-content;
+  column-gap: 8px;
+  align-items: baseline;
+}
+
+.rightArea {
+  display: grid;
+  grid-template-columns: min-content;
+  grid-template-rows: 1fr;
+  justify-self: end;
+  padding-right: 24px;
+}
+
+.settings {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  padding-bottom: 10px;
+}
+
+.link {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+}
+
+.moreIcon {
+  fill: var(--white);
+  width: 24px;
+  height: 24px;
+}
+.moreIcon:hover {
+  background-color: var(--blue-lagoon-lighten-95);
+  fill: black;
+}
+.moreIcon:focus {
+  background-color: var(--blue-lagoon-lighten-90);
+  fill: black;
+}
+
+.accessDetails {
+  color: var(--daintree-lighten-40);
+  align-self: center;
+}

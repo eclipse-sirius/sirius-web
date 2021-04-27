@@ -10,19 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import {
-  EditProjectView,
-  NewProjectView,
-  NewModelerView,
-  ProjectsView,
-  ModelersView,
-  UploadProjectView,
-  withErrorBoundary,
-  withCapabilities,
-  withProject
-} from '@eclipse-sirius/sirius-components';
+import { withErrorBoundary } from '@eclipse-sirius/sirius-components';
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
+
+import { NewProjectView } from 'views/new-project/NewProjectView';
+import { UploadProjectView } from 'views/upload-project/UploadProjectView';
+import { ProjectsView } from 'views/projects/ProjectsView';
+import { EditProjectView } from 'views/edit-project/EditProjectView';
 
 /**
  * Defines the content of the main part of the user interface.
@@ -32,16 +27,10 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 export const Main = () => {
   return (
     <Switch>
-      <Route exact path="/new/project" component={withErrorBoundary(withCapabilities(NewProjectView))} />
-      <Route exact path="/upload/project" component={withErrorBoundary(withCapabilities(UploadProjectView))} />
-      <Route exact path="/projects" component={withErrorBoundary(withCapabilities(ProjectsView))} />
-      <Route exact path="/projects/:projectId/modelers" component={withErrorBoundary(ModelersView)} />
-      <Route exact path="/projects/:projectId/new/modeler" component={withErrorBoundary(NewModelerView)} />
-      <Route
-        exact
-        path="/projects/:projectId/edit/:representationId?"
-        component={withErrorBoundary(withCapabilities(withProject(EditProjectView)))}
-      />
+      <Route exact path="/new/project" component={withErrorBoundary(NewProjectView)} />
+      <Route exact path="/upload/project" component={withErrorBoundary(UploadProjectView)} />
+      <Route exact path="/projects" component={withErrorBoundary(ProjectsView)} />
+      <Route exact path="/projects/:projectId/edit/:representationId?" component={withErrorBoundary(EditProjectView)} />
       <Redirect to="/projects" />
     </Switch>
   );
