@@ -58,21 +58,6 @@ jobs:
           yalc publish
         working-directory: frontend
 
-      - name: Build the frontend of the test-sample
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        run: |
-          echo '//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}' >> .npmrc
-          npm ci
-          yalc add @eclipse-sirius/sirius-components
-          npm run build
-        working-directory: sample/test-sample/frontend
-
-      - name: Copy the test-sample frontend into its backend
-        run: |
-          mkdir -p "backend/sirius-web-test-sample-application/src/main/resources/static"
-          cp -R sample/test-sample/frontend/build/* backend/sirius-web-test-sample-application/src/main/resources/static
-      
       - name: Build the frontend of the diagrams-only sample
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
@@ -93,15 +78,6 @@ jobs:
           USERNAME: ${{github.actor}}
           PASSWORD: ${{secrets.GITHUB_TOKEN}}
         run: mvn -U -B -e clean verify -f backend/pom.xml --settings settings.xml
-
-      - name: Run end to end tests against the test-sample
-        uses: cypress-io/github-action@v2
-        with:
-          build: docker-compose -f ../backend/sirius-web-test-sample-application/docker-compose.yml up -d --build
-          start: docker-compose -f ../backend/sirius-web-test-sample-application/docker-compose.yml ps
-          wait-on: 'http://localhost:8080/projects'
-          wait-on-timeout: 180
-          working-directory: frontend
 
       - name: Publish the backend
         if: startsWith(github.ref, 'refs/tags/v')
