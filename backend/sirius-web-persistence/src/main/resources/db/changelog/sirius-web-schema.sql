@@ -93,6 +93,13 @@ CREATE TABLE Modeler (
     CONSTRAINT pk_modeler_id PRIMARY KEY (id),
     CONSTRAINT fk_modeler_project_id_id FOREIGN KEY (project_id) REFERENCES project(id) ON DELETE CASCADE
 );
+
+CREATE TABLE CustomImage (
+	id UUID DEFAULT gen_random_uuid() NOT NULL,
+	label TEXT NOT NULL,
+	filename TEXT NOT NULL,
+	content BYTEA NOT NULL
+);
  
 -- password is "012345678910" encrypted using Spring's BCryptPasswordEncoder
 INSERT INTO Account
