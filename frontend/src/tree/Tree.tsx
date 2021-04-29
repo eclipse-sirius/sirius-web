@@ -10,19 +10,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import PropTypes from 'prop-types';
 import React, { useEffect, useRef } from 'react';
+import { TreeProps } from 'tree/Tree.types';
 import { TreeItem } from 'tree/TreeItem';
+import { TreeItemType } from 'tree/TreeItem.types';
 
-const propTypes = {
-  editingContextId: PropTypes.string.isRequired,
-  tree: PropTypes.object.isRequired,
-  onExpand: PropTypes.func.isRequired,
-  selection: PropTypes.object,
-  setSelection: PropTypes.func.isRequired,
-};
-
-export const Tree = ({ editingContextId, tree, onExpand, selection, setSelection }) => {
+export const Tree = ({ editingContextId, tree, onExpand, selection, setSelection, readOnly }: TreeProps) => {
   const treeElement = useRef(null);
 
   useEffect(() => {
@@ -85,7 +78,7 @@ export const Tree = ({ editingContextId, tree, onExpand, selection, setSelection
   return (
     <div ref={treeElement}>
       <ul>
-        {tree.children.map((item) => (
+        {tree.children.map((item: TreeItemType) => (
           <li key={item.id}>
             <TreeItem
               editingContextId={editingContextId}
@@ -94,6 +87,7 @@ export const Tree = ({ editingContextId, tree, onExpand, selection, setSelection
               onExpand={onExpand}
               selection={selection}
               setSelection={setSelection}
+              readOnly={readOnly}
             />
           </li>
         ))}
@@ -101,4 +95,3 @@ export const Tree = ({ editingContextId, tree, onExpand, selection, setSelection
     </div>
   );
 };
-Tree.propTypes = propTypes;

@@ -12,37 +12,34 @@
  *******************************************************************************/
 import { ContextMenu, Entry, LEFT_START, Separator } from 'core/contextmenu/ContextMenu';
 import { Delete, Edit } from 'icons';
-import { Permission } from 'project/Permission';
-import PropTypes from 'prop-types';
 import React from 'react';
+import { TreeItemDiagramContextMenuProps } from './TreeItemDiagramContextMenu.types';
 
-const propTypes = {
-  x: PropTypes.number.isRequired,
-  y: PropTypes.number.isRequired,
-  onRenameRepresentation: PropTypes.func.isRequired,
-  onClose: PropTypes.func.isRequired,
-};
-export const TreeItemDiagramContextMenu = ({ x, y, onDeleteRepresentation, onRenameRepresentation, onClose }) => {
+export const TreeItemDiagramContextMenu = ({
+  x,
+  y,
+  onDeleteRepresentation,
+  onRenameRepresentation,
+  onClose,
+  readOnly,
+}: TreeItemDiagramContextMenuProps) => {
   return (
     <ContextMenu x={x} y={y} caretPosition={LEFT_START} onClose={onClose} data-testid="treeitemdiagram-contextmenu">
-      <Permission requiredAccessLevel="EDIT">
-        <Entry
-          icon={<Edit title="" />}
-          label="Rename"
-          onClick={onRenameRepresentation}
-          data-testid="rename-representation"
-        />
-      </Permission>
+      <Entry
+        icon={<Edit title="" />}
+        label="Rename"
+        onClick={onRenameRepresentation}
+        data-testid="rename-representation"
+        disabled={readOnly}
+      />
       <Separator />
-      <Permission requiredAccessLevel="EDIT">
-        <Entry
-          icon={<Delete title="" />}
-          label="Delete"
-          onClick={onDeleteRepresentation}
-          data-testid="delete-representation"
-        />
-      </Permission>
+      <Entry
+        icon={<Delete title="" />}
+        label="Delete"
+        onClick={onDeleteRepresentation}
+        data-testid="delete-representation"
+        disabled={readOnly}
+      />
     </ContextMenu>
   );
 };
-TreeItemDiagramContextMenu.propTypes = propTypes;

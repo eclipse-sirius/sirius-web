@@ -82,7 +82,12 @@ export const Workbench = ({
   }, [onRepresentationSelected, initialRepresentationSelected, displayedRepresentation]);
 
   const explorer = (
-    <ExplorerWebSocketContainer editingContextId={editingContextId} selection={selection} setSelection={setSelection} />
+    <ExplorerWebSocketContainer
+      editingContextId={editingContextId}
+      selection={selection}
+      setSelection={setSelection}
+      readOnly={readOnly}
+    />
   );
 
   const properties = (
