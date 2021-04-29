@@ -10,23 +10,20 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import SvgIcon, { SvgIconProps } from '@material-ui/core/SvgIcon';
 import React from 'react';
-import PropTypes from 'prop-types';
 
-const propTypes = {
-  title: PropTypes.string.isRequired,
-};
-
-export const SiriusIcon = ({ title, ...props }) => {
+export const SiriusIcon = (props: SvgIconProps) => {
+  debugger;
   return (
-    <svg
+    <SvgIcon
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 25"
       aria-labelledby="title"
       aria-describedby="desc"
       role="img"
       {...props}>
-      <title>{title}</title>
+      <title>{props.titleAccess}</title>
       <g clipPath="url(#clip0)">
         <path d="M10.1054 17.4819C13.7518 18.4703 16.5064 21.1326 17.7781 24.4164C15.9477 22.008 13.1123 20.0623 9.66922 19.1289C6.21873 18.1936 2.80132 18.4462 0.0227487 19.6124C2.74792 17.4056 6.45436 16.4922 10.1054 17.4819Z"></path>
         <path d="M6.936 11.9146C7.90778 8.24374 6.97835 4.50902 4.76483 1.75357C5.93765 4.55604 6.20426 8.00141 5.28665 11.4677C4.36706 14.9414 2.43235 17.79 0.024883 19.6238C3.30927 18.3588 5.96295 15.5903 6.936 11.9146Z"></path>
@@ -40,7 +37,6 @@ export const SiriusIcon = ({ title, ...props }) => {
           <rect width="24.0006" height="25" />
         </clipPath>
       </defs>
-    </svg>
+    </SvgIcon>
   );
 };
-SiriusIcon.propTypes = propTypes;

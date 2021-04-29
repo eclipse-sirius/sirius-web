@@ -11,18 +11,18 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { Help, SiriusIcon } from 'icons';
 import React, { useContext } from 'react';
-import { SiriusIcon, Help } from 'icons';
 import { Footer } from 'views/Footer';
 
-export const defaultIcon = <SiriusIcon title="" style={{ fill: 'var(--white)' }} />;
+export const defaultIcon = <SiriusIcon titleAccess="" style={{ fill: 'var(--white)' }} />;
 
 const defaultValue = {
   icon: defaultIcon,
   productName: 'Sirius Web',
   userStatus: (
     <a href="https://www.eclipse.org/sirius" rel="noopener noreferrer" target="_blank">
-      <Help style={{ fill: 'var(--white)', marginTop: 16, width: 32, height: 32 }} title="Help" />
+      <Help style={{ fill: 'var(--white)', marginTop: 16, width: 32, height: 32 }} titleAccess="Help" />
     </a>
   ),
   footer: <Footer />,

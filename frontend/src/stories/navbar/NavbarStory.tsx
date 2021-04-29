@@ -10,13 +10,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { EditProjectNavbar } from 'navbar/EditProjectNavbar/EditProjectNavbar';
+import { LoggedOutNavbar } from 'navbar/LoggedOutNavbar';
+import { NavigationBar } from 'navbar/NavigationBar';
+import { ProjectContext } from 'project/ProjectProvider';
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
-
-import { EditProjectNavbar } from 'navbar/EditProjectNavbar/EditProjectNavbar';
-import { LoggedInNavbar } from 'navbar/LoggedInNavbar';
-import { LoggedOutNavbar } from 'navbar/LoggedOutNavbar';
-import { ProjectContext } from 'project/ProjectProvider';
 import styles from './NavbarStory.module.css';
 
 export const NavbarStory = () => {
@@ -45,7 +44,7 @@ const LoggedInNavbarSection = () => {
     <div className={styles.section}>
       LoggedInNavbar
       <MemoryRouter>
-        <LoggedInNavbar />
+        <NavigationBar />
       </MemoryRouter>
     </div>
   );

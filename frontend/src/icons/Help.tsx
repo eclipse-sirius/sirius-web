@@ -19,16 +19,13 @@
  *     Remix Design Studio - initial implementation as SVG
  *     Obeo - conversion into JSX
  *******************************************************************************/
+import SvgIcon, { SvgIconProps } from '@material-ui/core/SvgIcon';
 import React from 'react';
-import PropTypes from 'prop-types';
 
-const propTypes = {
-  title: PropTypes.string.isRequired,
-};
-
-export const Help = ({ title, ...props }) => {
+export const Help = (props: SvgIconProps) => {
+  debugger;
   return (
-    <svg
+    <SvgIcon
       xmlns="http://www.w3.org/2000/svg"
       viewBox="2 2 26 26"
       width="24"
@@ -37,10 +34,8 @@ export const Help = ({ title, ...props }) => {
       aria-describedby="desc"
       role="img"
       {...props}>
-      <title>{title}</title>
+      <title>{props.titleAccess}</title>
       <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm-1-5h2v2h-2v-2zm2-1.645V14h-2v-1.5a1 1 0 0 1 1-1 1.5 1.5 0 1 0-1.471-1.794l-1.962-.393A3.501 3.501 0 1 1 13 13.355z" />
-    </svg>
+    </SvgIcon>
   );
 };
-
-Help.propTypes = propTypes;

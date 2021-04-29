@@ -11,14 +11,14 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useAuth } from 'auth/useAuth';
-import { LoggedInNavbar } from 'navbar/LoggedInNavbar';
 import { LoggedOutNavbar } from 'navbar/LoggedOutNavbar';
+import { NavigationBar } from 'navbar/NavigationBar';
 import React from 'react';
 
 export const Navbar = () => {
   const { username } = useAuth() as any;
   if (username) {
-    return <LoggedInNavbar />;
+    return <NavigationBar />;
   }
   return <LoggedOutNavbar />;
 };
