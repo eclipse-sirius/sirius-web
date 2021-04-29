@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,20 +10,19 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { EditProjectNavbar } from 'navbar/EditProjectNavbar/EditProjectNavbar';
+import { LoggedOutNavbar } from 'navbar/LoggedOutNavbar';
+import { NavigationBar } from 'navbar/NavigationBar';
+import { ProjectContext } from 'project/ProjectProvider';
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
-
-import { EditProjectNavbar } from 'navbar/EditProjectNavbar/EditProjectNavbar';
-import { LoggedInNavbar } from 'navbar/LoggedInNavbar';
-import { LoggedOutNavbar } from 'navbar/LoggedOutNavbar';
-import { ProjectContext } from 'project/ProjectProvider';
 import styles from './NavbarStory.module.css';
 
 export const NavbarStory = () => {
   return (
     <div className={styles.navbar}>
       <LoggedOutNavbarSection />
-      <LoggedInNavbarSection />
+      <NavbarSection />
       <EditProjectNavbarSection />
     </div>
   );
@@ -40,12 +39,12 @@ const LoggedOutNavbarSection = () => {
   );
 };
 
-const LoggedInNavbarSection = () => {
+const NavbarSection = () => {
   return (
     <div className={styles.section}>
-      LoggedInNavbar
+      NavbarSection
       <MemoryRouter>
-        <LoggedInNavbar />
+        <NavigationBar />
       </MemoryRouter>
     </div>
   );

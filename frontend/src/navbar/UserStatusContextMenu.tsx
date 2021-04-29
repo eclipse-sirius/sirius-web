@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,8 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import HelpIcon from '@material-ui/icons/Help';
 import { ContextMenu, Entry, Separator, TOP_END } from 'core/contextmenu/ContextMenu';
-import { Help, Logout } from 'icons';
+import { Logout } from 'icons';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styles from './UserStatusContextMenu.module.css';
@@ -31,7 +32,7 @@ export const UserStatusContextMenu = ({ x, y, userName, onLoggedOut, onClose }) 
       </div>
       <Separator />
       <a href="https://ocpmodeler.com/doc/welcome_help_center.html" rel="noopener noreferrer" target="_blank">
-        <Entry icon={<Help title="Help" />} label="Help" data-testid="help" />
+        <Entry icon={<HelpIcon />} label="Help" data-testid="help" />
       </a>
       <Entry icon={<Logout title="" />} label="Log out" onClick={onLoggedOut} data-testid="logout"></Entry>
     </ContextMenu>
