@@ -17,6 +17,7 @@ export interface RadioPropertySectionProps {
   formId: string;
   widget: Radio;
   subscribers: Subscriber[];
+  readOnly: boolean;
 }
 
 export interface GQLEditRadioMutationData {

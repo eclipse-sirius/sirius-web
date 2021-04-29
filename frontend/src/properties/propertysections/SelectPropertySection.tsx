@@ -17,7 +17,6 @@ import Select from '@material-ui/core/Select';
 import Snackbar from '@material-ui/core/Snackbar';
 import CloseIcon from '@material-ui/icons/Close';
 import gql from 'graphql-tag';
-import { Permission } from 'project/Permission';
 import { PropertySectionLabel } from 'properties/propertysections/PropertySectionLabel';
 import {
   GQLEditSelectMutationData,
@@ -59,6 +58,7 @@ export const SelectPropertySection = ({
   formId,
   widget,
   subscribers,
+  readOnly,
 }: SelectPropertySectionProps) => {
   const [message, setMessage] = useState(null);
   const [isFocused, setFocus] = useState(false);
@@ -138,25 +138,24 @@ export const SelectPropertySection = ({
   return (
     <div>
       <PropertySectionLabel label={widget.label} subscribers={subscribers} />
-      <Permission requiredAccessLevel="EDIT">
-        <Select
-          value={widget.value}
-          onChange={onChange}
-          displayEmpty
-          onFocus={onFocus}
-          onBlur={onBlur}
-          fullWidth
-          data-testid={widget.label}>
-          <MenuItem value="">
-            <em>None</em>
+      <Select
+        value={widget.value}
+        onChange={onChange}
+        displayEmpty
+        onFocus={onFocus}
+        onBlur={onBlur}
+        fullWidth
+        data-testid={widget.label}
+        disabled={readOnly}>
+        <MenuItem value="">
+          <em>None</em>
+        </MenuItem>
+        {widget.options.map((option) => (
+          <MenuItem value={option.id} key={option.id}>
+            {option.label}
           </MenuItem>
-          {widget.options.map((option) => (
-            <MenuItem value={option.id} key={option.id}>
-              {option.label}
-            </MenuItem>
-          ))}
-        </Select>
-      </Permission>
+        ))}
+      </Select>
       <Snackbar
         anchorOrigin={{
           vertical: 'bottom',

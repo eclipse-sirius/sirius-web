@@ -55,7 +55,7 @@ const usePropertiesStyles = makeStyles((theme) => ({
   },
 }));
 
-export const Properties = ({ editingContextId, form, subscribers, widgetSubscriptions }: FormProps) => {
+export const Properties = ({ editingContextId, form, subscribers, widgetSubscriptions, readOnly }: FormProps) => {
   const classes = usePropertiesStyles();
   const { id, label, pages } = form;
 
@@ -69,12 +69,19 @@ export const Properties = ({ editingContextId, form, subscribers, widgetSubscrip
           formId={id}
           page={pages[0]}
           widgetSubscriptions={widgetSubscriptions}
+          readOnly={readOnly}
         />
       </div>
     );
   } else if (pages.length === 1) {
     content = (
-      <Page editingContextId={editingContextId} formId={id} page={pages[0]} widgetSubscriptions={widgetSubscriptions} />
+      <Page
+        editingContextId={editingContextId}
+        formId={id}
+        page={pages[0]}
+        widgetSubscriptions={widgetSubscriptions}
+        readOnly={readOnly}
+      />
     );
   }
   return (

@@ -16,7 +16,6 @@ import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
 import CloseIcon from '@material-ui/icons/Close';
 import gql from 'graphql-tag';
-import { Permission } from 'project/Permission';
 import {
   CheckboxPropertySectionProps,
   GQLEditCheckboxMutationData,
@@ -58,6 +57,7 @@ export const CheckboxPropertySection = ({
   formId,
   widget,
   subscribers,
+  readOnly,
 }: CheckboxPropertySectionProps) => {
   const [message, setMessage] = useState(null);
 
@@ -128,17 +128,16 @@ export const CheckboxPropertySection = ({
   return (
     <div>
       <PropertySectionLabel label={widget.label} subscribers={subscribers} />
-      <Permission requiredAccessLevel="EDIT">
-        <Checkbox
-          name={widget.label}
-          color="primary"
-          checked={widget.booleanValue}
-          onChange={onChange}
-          onFocus={onFocus}
-          onBlur={onBlur}
-          data-testid={widget.label}
-        />
-      </Permission>
+      <Checkbox
+        name={widget.label}
+        color="primary"
+        checked={widget.booleanValue}
+        onChange={onChange}
+        onFocus={onFocus}
+        onBlur={onBlur}
+        data-testid={widget.label}
+        disabled={readOnly}
+      />
       <Snackbar
         anchorOrigin={{
           vertical: 'bottom',

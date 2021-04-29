@@ -17,4 +17,5 @@ export interface PageProps {
   formId: string;
   page: Page;
   widgetSubscriptions: WidgetSubscription[];
+  readOnly: boolean;
 }

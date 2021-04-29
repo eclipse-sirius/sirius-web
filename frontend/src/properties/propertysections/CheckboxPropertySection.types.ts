@@ -17,6 +17,7 @@ export interface CheckboxPropertySectionProps {
   formId: string;
   widget: Checkbox;
   subscribers: Subscriber[];
+  readOnly: boolean;
 }
 
 export interface GQLEditCheckboxMutationData {

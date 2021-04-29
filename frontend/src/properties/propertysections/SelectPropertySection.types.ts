@@ -17,6 +17,7 @@ export interface SelectPropertySectionProps {
   formId: string;
   widget: Select;
   subscribers: Subscriber[];
+  readOnly: boolean;
 }
 
 export interface GQLEditSelectMutationData {
