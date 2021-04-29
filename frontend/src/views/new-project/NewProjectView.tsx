@@ -20,7 +20,7 @@ import TextField from '@material-ui/core/TextField';
 import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
 import { useBranding } from '@eclipse-sirius/sirius-components';
-import { Form, FormContainer, LoggedInNavbar } from '@eclipse-sirius/sirius-components';
+import { Form, FormContainer, NavigationBar } from '@eclipse-sirius/sirius-components';
 import gql from 'graphql-tag';
 import React, { useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
@@ -137,7 +137,7 @@ export const NewProjectView = () => {
   return (
     <>
       <div className={classes.newProjectView}>
-        <LoggedInNavbar />
+        <NavigationBar />
         <main className={classes.main}>
           <Container maxWidth="sm">
             <FormContainer title="Create a new project" subtitle="Get started by creating a new project">

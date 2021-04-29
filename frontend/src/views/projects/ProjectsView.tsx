@@ -42,7 +42,7 @@ import {
   httpOrigin,
   DeleteProjectModal,
   RenameProjectModal,
-  LoggedInNavbar
+  NavigationBar
 } from '@eclipse-sirius/sirius-components';
 import gql from 'graphql-tag';
 import React, { useEffect } from 'react';
@@ -193,7 +193,7 @@ export const ProjectsView = () => {
   return (
     <>
       <div className={classes.projectsView}>
-        <LoggedInNavbar />
+        <NavigationBar />
         <main className={classes.main}>
           <Container maxWidth="xl">
             <Grid container justify="center">
