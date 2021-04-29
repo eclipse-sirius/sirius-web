@@ -22,12 +22,12 @@
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="creationMode" eType="#//Mode"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="labelExpression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="style" eType="#//Style"
-        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NodeDescription" eSuperTypes="#//DiagramElementDescription">
     <eStructuralFeatures xsi:type="ecore:EReference" name="childrenDescriptions" upperBound="-1"
         eType="#//NodeDescription" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="style" eType="#//NodeStyle"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EdgeDescription" eSuperTypes="#//DiagramElementDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="isDomainBasedEdge" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
@@ -39,6 +39,8 @@
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="targetNodesExpression"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="style" eType="#//Style"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="Mode">
     <eLiterals name="AUTO"/>
@@ -46,5 +48,8 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Style">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NodeStyle" eSuperTypes="#//Style">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="shape" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
 </ecore:EPackage>
