@@ -29,6 +29,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.web.components.Element;
 import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.diagrams.NodeType;
+import org.eclipse.sirius.web.diagrams.Size;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.web.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.web.diagrams.description.LabelDescription;
@@ -46,6 +47,8 @@ import org.eclipse.sirius.web.interpreter.AQLInterpreter;
 import org.eclipse.sirius.web.interpreter.Result;
 import org.eclipse.sirius.web.representations.IRepresentationDescription;
 import org.eclipse.sirius.web.representations.VariableManager;
+import org.eclipse.sirius.web.services.api.images.CustomImage;
+import org.eclipse.sirius.web.services.api.images.ICustomImagesService;
 import org.eclipse.sirius.web.services.api.objects.IEditService;
 import org.eclipse.sirius.web.view.DiagramElementDescription;
 import org.eclipse.sirius.web.view.Mode;
@@ -57,6 +60,8 @@ import org.eclipse.sirius.web.view.View;
  * @author pcdavid
  */
 public class ViewConverter {
+
+    private static final String DEFAULT_SHAPE_FILE = "shape_square.svg"; //$NON-NLS-1$
 
     private static final String DEFAULT_DIAGRAM_LABEL = "Diagram"; //$NON-NLS-1$
 
@@ -87,13 +92,16 @@ public class ViewConverter {
         return UUID.nameUUIDFromBytes(EcoreUtil.getURI(diagramElementDescription).toString().getBytes());
     };
 
+    private final ICustomImagesService customImagesService;
+
     private Map<org.eclipse.sirius.web.view.NodeDescription, NodeDescription> convertedNodes;
 
     private Map<org.eclipse.sirius.web.view.EdgeDescription, EdgeDescription> convertedEdges;
 
-    public ViewConverter(AQLInterpreter interpreter, IObjectService objectService, IEditService editService) {
+    public ViewConverter(AQLInterpreter interpreter, IObjectService objectService, IEditService editService, ICustomImagesService customImagesService) {
         this.interpreter = Objects.requireNonNull(interpreter);
         this.objectService = Objects.requireNonNull(objectService);
+        this.customImagesService = Objects.requireNonNull(customImagesService);
         this.semanticTargetIdProvider = variableManager -> this.self(variableManager).map(this.objectService::getId).orElse(null);
         this.semanticTargetKindProvider = variableManager -> this.self(variableManager).map(this.objectService::getKind).orElse(null);
         this.semanticTargetLabelProvider = variableManager -> this.self(variableManager).map(this.objectService::getLabel).orElse(null);
@@ -160,6 +168,12 @@ public class ViewConverter {
         if (viewNodeDescription.getCreationMode() == Mode.AUTO) {
             synchronizationPolicy = SynchronizationPolicy.SYNCHRONIZED;
         }
+        final String nodeType;
+        if (viewNodeDescription.getStyle().getShape() == null) {
+            nodeType = NodeType.NODE_RECTANGLE;
+        } else {
+            nodeType = NodeType.NODE_IMAGE;
+        }
         // @formatter:off
         NodeDescription result = NodeDescription.newNodeDescription(this.idProvider.apply(viewNodeDescription))
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
@@ -167,11 +181,16 @@ public class ViewConverter {
                 .targetObjectLabelProvider(this.semanticTargetLabelProvider)
                 .semanticElementsProvider(this.getSemanticElementsProvider(viewNodeDescription))
                 .synchronizationPolicy(synchronizationPolicy)
-                .typeProvider(variableManager -> NodeType.NODE_RECTANGLE)
+                .typeProvider(variableManager -> nodeType)
                 .labelDescription(this.getLabelDescription(viewNodeDescription))
-                .styleProvider(variableManager -> this.stylesFactory.createNodeStyle(viewNodeDescription.getStyle().getColor()))
+                .styleProvider(variableManager -> {
+                    String shapeId = viewNodeDescription.getStyle().getShape();
+                    String shapeFileName = this.customImagesService.findById(UUID.fromString(shapeId)).map(CustomImage::getFileName).orElse(DEFAULT_SHAPE_FILE);
+                    return this.stylesFactory.createNodeStyle(viewNodeDescription.getStyle().getColor(), shapeFileName);
+                })
                 .childNodeDescriptions(childNodeDescriptions)
                 .borderNodeDescriptions(List.of())
+                .sizeProvider(variableManager -> Size.UNDEFINED)
                 .labelEditHandler(this.canonicalBehaviors::editLabel)
                 .deleteHandler(this.canonicalBehaviors::deleteElement)
                 .build();
