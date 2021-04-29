@@ -70,6 +70,14 @@ public interface ViewFactory extends EFactory {
     Style createStyle();
 
     /**
+     * Returns a new object of class '<em>Node Style</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Node Style</em>'.
+     * @generated
+     */
+    NodeStyle createNodeStyle();
+
+    /**
      * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the package supported by this factory.

@@ -20,6 +20,7 @@ import org.eclipse.sirius.web.view.DiagramDescription;
 import org.eclipse.sirius.web.view.DiagramElementDescription;
 import org.eclipse.sirius.web.view.EdgeDescription;
 import org.eclipse.sirius.web.view.NodeDescription;
+import org.eclipse.sirius.web.view.NodeStyle;
 import org.eclipse.sirius.web.view.RepresentationDescription;
 import org.eclipse.sirius.web.view.Style;
 import org.eclipse.sirius.web.view.View;
@@ -109,6 +110,11 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseStyle(Style object) {
             return ViewAdapterFactory.this.createStyleAdapter();
+        }
+
+        @Override
+        public Adapter caseNodeStyle(NodeStyle object) {
+            return ViewAdapterFactory.this.createNodeStyleAdapter();
         }
 
         @Override
@@ -220,6 +226,19 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createStyleAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.web.view.NodeStyle <em>Node Style</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.web.view.NodeStyle
+     * @generated
+     */
+    public Adapter createNodeStyleAdapter() {
         return null;
     }
 

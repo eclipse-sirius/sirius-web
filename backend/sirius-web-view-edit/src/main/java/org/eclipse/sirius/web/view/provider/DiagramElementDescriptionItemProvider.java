@@ -18,7 +18,6 @@ import java.util.List;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.ResourceLocator;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
@@ -30,7 +29,6 @@ import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 import org.eclipse.sirius.web.view.DiagramElementDescription;
-import org.eclipse.sirius.web.view.ViewFactory;
 import org.eclipse.sirius.web.view.ViewPackage;
 
 /**
@@ -118,36 +116,6 @@ public class DiagramElementDescriptionItemProvider extends ItemProviderAdapter
     }
 
     /**
-     * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
-     * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
-     * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
-        if (this.childrenFeatures == null) {
-            super.getChildrenFeatures(object);
-            this.childrenFeatures.add(ViewPackage.Literals.DIAGRAM_ELEMENT_DESCRIPTION__STYLE);
-        }
-        return this.childrenFeatures;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    protected EStructuralFeature getChildFeature(Object object, Object child) {
-        // Check the type of the specified child object and return the proper feature to use for
-        // adding (see {@link AddCommand}) it as a child.
-
-        return super.getChildFeature(object, child);
-    }
-
-    /**
      * This returns DiagramElementDescription.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -197,9 +165,6 @@ public class DiagramElementDescriptionItemProvider extends ItemProviderAdapter
         case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION:
             this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
             return;
-        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__STYLE:
-            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
-            return;
         }
         super.notifyChanged(notification);
     }
@@ -213,8 +178,6 @@ public class DiagramElementDescriptionItemProvider extends ItemProviderAdapter
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
-
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.DIAGRAM_ELEMENT_DESCRIPTION__STYLE, ViewFactory.eINSTANCE.createStyle()));
     }
 
     /**

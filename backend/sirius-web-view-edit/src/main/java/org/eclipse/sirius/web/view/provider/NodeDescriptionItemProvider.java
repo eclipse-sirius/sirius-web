@@ -67,6 +67,7 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
         if (this.childrenFeatures == null) {
             super.getChildrenFeatures(object);
             this.childrenFeatures.add(ViewPackage.Literals.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS);
+            this.childrenFeatures.add(ViewPackage.Literals.NODE_DESCRIPTION__STYLE);
         }
         return this.childrenFeatures;
     }
@@ -129,6 +130,7 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
 
         switch (notification.getFeatureID(NodeDescription.class)) {
         case ViewPackage.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS:
+        case ViewPackage.NODE_DESCRIPTION__STYLE:
             this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
             return;
         }
@@ -146,6 +148,8 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
         super.collectNewChildDescriptors(newChildDescriptors, object);
 
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS, ViewFactory.eINSTANCE.createNodeDescription()));
+
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.NODE_DESCRIPTION__STYLE, ViewFactory.eINSTANCE.createNodeStyle()));
     }
 
 }

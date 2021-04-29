@@ -22,6 +22,7 @@ import org.eclipse.sirius.web.view.DiagramDescription;
 import org.eclipse.sirius.web.view.EdgeDescription;
 import org.eclipse.sirius.web.view.Mode;
 import org.eclipse.sirius.web.view.NodeDescription;
+import org.eclipse.sirius.web.view.NodeStyle;
 import org.eclipse.sirius.web.view.Style;
 import org.eclipse.sirius.web.view.View;
 import org.eclipse.sirius.web.view.ViewFactory;
@@ -77,6 +78,8 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
             return this.createEdgeDescription();
         case ViewPackage.STYLE:
             return this.createStyle();
+        case ViewPackage.NODE_STYLE:
+            return this.createNodeStyle();
         default:
             throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
         }
@@ -165,6 +168,17 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
     public Style createStyle() {
         StyleImpl style = new StyleImpl();
         return style;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public NodeStyle createNodeStyle() {
+        NodeStyleImpl nodeStyle = new NodeStyleImpl();
+        return nodeStyle;
     }
 
     /**
