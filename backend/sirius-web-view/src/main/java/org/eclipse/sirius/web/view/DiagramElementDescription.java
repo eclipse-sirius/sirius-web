@@ -27,7 +27,6 @@ import org.eclipse.emf.ecore.EObject;
  * Candidates Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.web.view.DiagramElementDescription#getCreationMode <em>Creation Mode</em>}</li>
  * <li>{@link org.eclipse.sirius.web.view.DiagramElementDescription#getLabelExpression <em>Label Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.web.view.DiagramElementDescription#getStyle <em>Style</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.web.view.ViewPackage#getDiagramElementDescription()
@@ -128,28 +127,5 @@ public interface DiagramElementDescription extends EObject {
      * @generated
      */
     void setLabelExpression(String value);
-
-    /**
-     * Returns the value of the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
-     *
-     * @return the value of the '<em>Style</em>' containment reference.
-     * @see #setStyle(Style)
-     * @see org.eclipse.sirius.web.view.ViewPackage#getDiagramElementDescription_Style()
-     * @model containment="true"
-     * @generated
-     */
-    Style getStyle();
-
-    /**
-     * Sets the value of the '{@link org.eclipse.sirius.web.view.DiagramElementDescription#getStyle <em>Style</em>}'
-     * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Style</em>' containment reference.
-     * @see #getStyle()
-     * @generated
-     */
-    void setStyle(Style value);
 
 } // DiagramElementDescription

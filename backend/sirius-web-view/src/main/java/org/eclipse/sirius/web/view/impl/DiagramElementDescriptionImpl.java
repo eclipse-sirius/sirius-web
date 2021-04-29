@@ -13,14 +13,11 @@
 package org.eclipse.sirius.web.view.impl;
 
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.sirius.web.view.DiagramElementDescription;
 import org.eclipse.sirius.web.view.Mode;
-import org.eclipse.sirius.web.view.Style;
 import org.eclipse.sirius.web.view.ViewPackage;
 
 /**
@@ -37,7 +34,6 @@ import org.eclipse.sirius.web.view.ViewPackage;
  * Mode</em>}</li>
  * <li>{@link org.eclipse.sirius.web.view.impl.DiagramElementDescriptionImpl#getLabelExpression <em>Label
  * Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.web.view.impl.DiagramElementDescriptionImpl#getStyle <em>Style</em>}</li>
  * </ul>
  *
  * @generated
@@ -122,16 +118,6 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
      * @ordered
      */
     protected String labelExpression = LABEL_EXPRESSION_EDEFAULT;
-
-    /**
-     * The cached value of the '{@link #getStyle() <em>Style</em>}' containment reference. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @see #getStyle()
-     * @generated
-     * @ordered
-     */
-    protected Style style;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -251,68 +237,6 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
      * @generated
      */
     @Override
-    public Style getStyle() {
-        return this.style;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    public NotificationChain basicSetStyle(Style newStyle, NotificationChain msgs) {
-        Style oldStyle = this.style;
-        this.style = newStyle;
-        if (this.eNotificationRequired()) {
-            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__STYLE, oldStyle, newStyle);
-            if (msgs == null)
-                msgs = notification;
-            else
-                msgs.add(notification);
-        }
-        return msgs;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public void setStyle(Style newStyle) {
-        if (newStyle != this.style) {
-            NotificationChain msgs = null;
-            if (this.style != null)
-                msgs = ((InternalEObject) this.style).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__STYLE, null, msgs);
-            if (newStyle != null)
-                msgs = ((InternalEObject) newStyle).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__STYLE, null, msgs);
-            msgs = this.basicSetStyle(newStyle, msgs);
-            if (msgs != null)
-                msgs.dispatch();
-        } else if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__STYLE, newStyle, newStyle));
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__STYLE:
-            return this.basicSetStyle(null, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
         case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE:
@@ -323,8 +247,6 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
             return this.getCreationMode();
         case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION:
             return this.getLabelExpression();
-        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__STYLE:
-            return this.getStyle();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -348,9 +270,6 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
             return;
         case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION:
             this.setLabelExpression((String) newValue);
-            return;
-        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__STYLE:
-            this.setStyle((Style) newValue);
             return;
         }
         super.eSet(featureID, newValue);
@@ -376,9 +295,6 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
         case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION:
             this.setLabelExpression(LABEL_EXPRESSION_EDEFAULT);
             return;
-        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__STYLE:
-            this.setStyle((Style) null);
-            return;
         }
         super.eUnset(featureID);
     }
@@ -399,8 +315,6 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
             return this.creationMode != CREATION_MODE_EDEFAULT;
         case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION:
             return LABEL_EXPRESSION_EDEFAULT == null ? this.labelExpression != null : !LABEL_EXPRESSION_EDEFAULT.equals(this.labelExpression);
-        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__STYLE:
-            return this.style != null;
         }
         return super.eIsSet(featureID);
     }

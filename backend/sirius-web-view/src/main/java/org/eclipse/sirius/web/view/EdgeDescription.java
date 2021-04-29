@@ -151,4 +151,27 @@ public interface EdgeDescription extends DiagramElementDescription {
      */
     void setTargetNodesExpression(String value);
 
+    /**
+     * Returns the value of the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @return the value of the '<em>Style</em>' containment reference.
+     * @see #setStyle(Style)
+     * @see org.eclipse.sirius.web.view.ViewPackage#getEdgeDescription_Style()
+     * @model containment="true"
+     * @generated
+     */
+    Style getStyle();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.web.view.EdgeDescription#getStyle <em>Style</em>}' containment
+     * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Style</em>' containment reference.
+     * @see #getStyle()
+     * @generated
+     */
+    void setStyle(Style value);
+
 } // EdgeDescription

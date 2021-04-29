@@ -193,6 +193,29 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     }
 
     /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.web.view.NodeStyle} instances. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected NodeStyleItemProvider nodeStyleItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.web.view.NodeStyle}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createNodeStyleAdapter() {
+        if (this.nodeStyleItemProvider == null) {
+            this.nodeStyleItemProvider = new NodeStyleItemProvider(this);
+        }
+
+        return this.nodeStyleItemProvider;
+    }
+
+    /**
      * This returns the root adapter factory that contains this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -302,6 +325,8 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
             this.edgeDescriptionItemProvider.dispose();
         if (this.styleItemProvider != null)
             this.styleItemProvider.dispose();
+        if (this.nodeStyleItemProvider != null)
+            this.nodeStyleItemProvider.dispose();
     }
 
 }

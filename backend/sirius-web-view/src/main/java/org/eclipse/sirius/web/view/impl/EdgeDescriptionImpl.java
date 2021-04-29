@@ -13,11 +13,13 @@
 package org.eclipse.sirius.web.view.impl;
 
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.sirius.web.view.EdgeDescription;
 import org.eclipse.sirius.web.view.NodeDescription;
+import org.eclipse.sirius.web.view.Style;
 import org.eclipse.sirius.web.view.ViewPackage;
 
 /**
@@ -121,6 +123,16 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @ordered
      */
     protected String targetNodesExpression = TARGET_NODES_EXPRESSION_EDEFAULT;
+
+    /**
+     * The cached value of the '{@link #getStyle() <em>Style</em>}' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getStyle()
+     * @generated
+     * @ordered
+     */
+    protected Style style;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -296,6 +308,68 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @generated
      */
     @Override
+    public Style getStyle() {
+        return this.style;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public NotificationChain basicSetStyle(Style newStyle, NotificationChain msgs) {
+        Style oldStyle = this.style;
+        this.style = newStyle;
+        if (this.eNotificationRequired()) {
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ViewPackage.EDGE_DESCRIPTION__STYLE, oldStyle, newStyle);
+            if (msgs == null)
+                msgs = notification;
+            else
+                msgs.add(notification);
+        }
+        return msgs;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setStyle(Style newStyle) {
+        if (newStyle != this.style) {
+            NotificationChain msgs = null;
+            if (this.style != null)
+                msgs = ((InternalEObject) this.style).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ViewPackage.EDGE_DESCRIPTION__STYLE, null, msgs);
+            if (newStyle != null)
+                msgs = ((InternalEObject) newStyle).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ViewPackage.EDGE_DESCRIPTION__STYLE, null, msgs);
+            msgs = this.basicSetStyle(newStyle, msgs);
+            if (msgs != null)
+                msgs.dispatch();
+        } else if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.EDGE_DESCRIPTION__STYLE, newStyle, newStyle));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+        switch (featureID) {
+        case ViewPackage.EDGE_DESCRIPTION__STYLE:
+            return this.basicSetStyle(null, msgs);
+        }
+        return super.eInverseRemove(otherEnd, featureID, msgs);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
         case ViewPackage.EDGE_DESCRIPTION__IS_DOMAIN_BASED_EDGE:
@@ -312,6 +386,8 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
             return this.getSourceNodesExpression();
         case ViewPackage.EDGE_DESCRIPTION__TARGET_NODES_EXPRESSION:
             return this.getTargetNodesExpression();
+        case ViewPackage.EDGE_DESCRIPTION__STYLE:
+            return this.getStyle();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -340,6 +416,9 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
         case ViewPackage.EDGE_DESCRIPTION__TARGET_NODES_EXPRESSION:
             this.setTargetNodesExpression((String) newValue);
             return;
+        case ViewPackage.EDGE_DESCRIPTION__STYLE:
+            this.setStyle((Style) newValue);
+            return;
         }
         super.eSet(featureID, newValue);
     }
@@ -367,6 +446,9 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
         case ViewPackage.EDGE_DESCRIPTION__TARGET_NODES_EXPRESSION:
             this.setTargetNodesExpression(TARGET_NODES_EXPRESSION_EDEFAULT);
             return;
+        case ViewPackage.EDGE_DESCRIPTION__STYLE:
+            this.setStyle((Style) null);
+            return;
         }
         super.eUnset(featureID);
     }
@@ -389,6 +471,8 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
             return SOURCE_NODES_EXPRESSION_EDEFAULT == null ? this.sourceNodesExpression != null : !SOURCE_NODES_EXPRESSION_EDEFAULT.equals(this.sourceNodesExpression);
         case ViewPackage.EDGE_DESCRIPTION__TARGET_NODES_EXPRESSION:
             return TARGET_NODES_EXPRESSION_EDEFAULT == null ? this.targetNodesExpression != null : !TARGET_NODES_EXPRESSION_EDEFAULT.equals(this.targetNodesExpression);
+        case ViewPackage.EDGE_DESCRIPTION__STYLE:
+            return this.style != null;
         }
         return super.eIsSet(featureID);
     }

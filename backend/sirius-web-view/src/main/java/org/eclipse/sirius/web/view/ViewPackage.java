@@ -266,22 +266,13 @@ public interface ViewPackage extends EPackage {
     int DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION = 3;
 
     /**
-     * The feature id for the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
-     *
-     * @generated
-     * @ordered
-     */
-    int DIAGRAM_ELEMENT_DESCRIPTION__STYLE = 4;
-
-    /**
      * The number of structural features of the '<em>Diagram Element Description</em>' class. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT = 5;
+    int DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT = 4;
 
     /**
      * The number of operations of the '<em>Diagram Element Description</em>' class. <!-- begin-user-doc --> <!--
@@ -337,15 +328,6 @@ public interface ViewPackage extends EPackage {
     int NODE_DESCRIPTION__LABEL_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION;
 
     /**
-     * The feature id for the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
-     *
-     * @generated
-     * @ordered
-     */
-    int NODE_DESCRIPTION__STYLE = DIAGRAM_ELEMENT_DESCRIPTION__STYLE;
-
-    /**
      * The feature id for the '<em><b>Children Descriptions</b></em>' containment reference list. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
@@ -355,13 +337,22 @@ public interface ViewPackage extends EPackage {
     int NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 0;
 
     /**
+     * The feature id for the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_DESCRIPTION__STYLE = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 1;
+
+    /**
      * The number of structural features of the '<em>Node Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION_FEATURE_COUNT = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 1;
+    int NODE_DESCRIPTION_FEATURE_COUNT = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 2;
 
     /**
      * The number of operations of the '<em>Node Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -416,15 +407,6 @@ public interface ViewPackage extends EPackage {
     int EDGE_DESCRIPTION__LABEL_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION;
 
     /**
-     * The feature id for the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
-     *
-     * @generated
-     * @ordered
-     */
-    int EDGE_DESCRIPTION__STYLE = DIAGRAM_ELEMENT_DESCRIPTION__STYLE;
-
-    /**
      * The feature id for the '<em><b>Is Domain Based Edge</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
@@ -470,13 +452,22 @@ public interface ViewPackage extends EPackage {
     int EDGE_DESCRIPTION__TARGET_NODES_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 4;
 
     /**
+     * The feature id for the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_DESCRIPTION__STYLE = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 5;
+
+    /**
      * The number of structural features of the '<em>Edge Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int EDGE_DESCRIPTION_FEATURE_COUNT = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 5;
+    int EDGE_DESCRIPTION_FEATURE_COUNT = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 6;
 
     /**
      * The number of operations of the '<em>Edge Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -521,6 +512,49 @@ public interface ViewPackage extends EPackage {
     int STYLE_OPERATION_COUNT = 0;
 
     /**
+     * The meta object id for the '{@link org.eclipse.sirius.web.view.impl.NodeStyleImpl <em>Node Style</em>}' class.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.web.view.impl.NodeStyleImpl
+     * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getNodeStyle()
+     * @generated
+     */
+    int NODE_STYLE = 7;
+
+    /**
+     * The feature id for the '<em><b>Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_STYLE__COLOR = STYLE__COLOR;
+
+    /**
+     * The feature id for the '<em><b>Shape</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_STYLE__SHAPE = STYLE_FEATURE_COUNT + 0;
+
+    /**
+     * The number of structural features of the '<em>Node Style</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_STYLE_FEATURE_COUNT = STYLE_FEATURE_COUNT + 1;
+
+    /**
+     * The number of operations of the '<em>Node Style</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_STYLE_OPERATION_COUNT = STYLE_OPERATION_COUNT + 0;
+
+    /**
      * The meta object id for the '{@link org.eclipse.sirius.web.view.Mode <em>Mode</em>}' enum. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -528,7 +562,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getMode()
      * @generated
      */
-    int MODE = 7;
+    int MODE = 8;
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.web.view.View <em>View</em>}'. <!-- begin-user-doc
@@ -690,18 +724,6 @@ public interface ViewPackage extends EPackage {
     EAttribute getDiagramElementDescription_LabelExpression();
 
     /**
-     * Returns the meta object for the containment reference
-     * '{@link org.eclipse.sirius.web.view.DiagramElementDescription#getStyle <em>Style</em>}'. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @return the meta object for the containment reference '<em>Style</em>'.
-     * @see org.eclipse.sirius.web.view.DiagramElementDescription#getStyle()
-     * @see #getDiagramElementDescription()
-     * @generated
-     */
-    EReference getDiagramElementDescription_Style();
-
-    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.web.view.NodeDescription <em>Node
      * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -722,6 +744,18 @@ public interface ViewPackage extends EPackage {
      * @generated
      */
     EReference getNodeDescription_ChildrenDescriptions();
+
+    /**
+     * Returns the meta object for the containment reference
+     * '{@link org.eclipse.sirius.web.view.NodeDescription#getStyle <em>Style</em>}'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>Style</em>'.
+     * @see org.eclipse.sirius.web.view.NodeDescription#getStyle()
+     * @see #getNodeDescription()
+     * @generated
+     */
+    EReference getNodeDescription_Style();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.web.view.EdgeDescription <em>Edge
@@ -793,6 +827,18 @@ public interface ViewPackage extends EPackage {
     EAttribute getEdgeDescription_TargetNodesExpression();
 
     /**
+     * Returns the meta object for the containment reference
+     * '{@link org.eclipse.sirius.web.view.EdgeDescription#getStyle <em>Style</em>}'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>Style</em>'.
+     * @see org.eclipse.sirius.web.view.EdgeDescription#getStyle()
+     * @see #getEdgeDescription()
+     * @generated
+     */
+    EReference getEdgeDescription_Style();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.web.view.Style <em>Style</em>}'. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
@@ -812,6 +858,27 @@ public interface ViewPackage extends EPackage {
      * @generated
      */
     EAttribute getStyle_Color();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.web.view.NodeStyle <em>Node Style</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Node Style</em>'.
+     * @see org.eclipse.sirius.web.view.NodeStyle
+     * @generated
+     */
+    EClass getNodeStyle();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.web.view.NodeStyle#getShape
+     * <em>Shape</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Shape</em>'.
+     * @see org.eclipse.sirius.web.view.NodeStyle#getShape()
+     * @see #getNodeStyle()
+     * @generated
+     */
+    EAttribute getNodeStyle_Shape();
 
     /**
      * Returns the meta object for enum '{@link org.eclipse.sirius.web.view.Mode <em>Mode</em>}'. <!-- begin-user-doc
@@ -966,14 +1033,6 @@ public interface ViewPackage extends EPackage {
         EAttribute DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION = eINSTANCE.getDiagramElementDescription_LabelExpression();
 
         /**
-         * The meta object literal for the '<em><b>Style</b></em>' containment reference feature. <!-- begin-user-doc
-         * --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EReference DIAGRAM_ELEMENT_DESCRIPTION__STYLE = eINSTANCE.getDiagramElementDescription_Style();
-
-        /**
          * The meta object literal for the '{@link org.eclipse.sirius.web.view.impl.NodeDescriptionImpl <em>Node
          * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
@@ -990,6 +1049,14 @@ public interface ViewPackage extends EPackage {
          * @generated
          */
         EReference NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS = eINSTANCE.getNodeDescription_ChildrenDescriptions();
+
+        /**
+         * The meta object literal for the '<em><b>Style</b></em>' containment reference feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference NODE_DESCRIPTION__STYLE = eINSTANCE.getNodeDescription_Style();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.web.view.impl.EdgeDescriptionImpl <em>Edge
@@ -1042,6 +1109,14 @@ public interface ViewPackage extends EPackage {
         EAttribute EDGE_DESCRIPTION__TARGET_NODES_EXPRESSION = eINSTANCE.getEdgeDescription_TargetNodesExpression();
 
         /**
+         * The meta object literal for the '<em><b>Style</b></em>' containment reference feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference EDGE_DESCRIPTION__STYLE = eINSTANCE.getEdgeDescription_Style();
+
+        /**
          * The meta object literal for the '{@link org.eclipse.sirius.web.view.impl.StyleImpl <em>Style</em>}' class.
          * <!-- begin-user-doc --> <!-- end-user-doc -->
          *
@@ -1058,6 +1133,24 @@ public interface ViewPackage extends EPackage {
          * @generated
          */
         EAttribute STYLE__COLOR = eINSTANCE.getStyle_Color();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.web.view.impl.NodeStyleImpl <em>Node Style</em>}'
+         * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.web.view.impl.NodeStyleImpl
+         * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getNodeStyle()
+         * @generated
+         */
+        EClass NODE_STYLE = eINSTANCE.getNodeStyle();
+
+        /**
+         * The meta object literal for the '<em><b>Shape</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute NODE_STYLE__SHAPE = eINSTANCE.getNodeStyle_Shape();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.web.view.Mode <em>Mode</em>}' enum. <!--
