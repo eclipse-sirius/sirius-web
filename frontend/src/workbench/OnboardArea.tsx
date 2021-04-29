@@ -15,7 +15,6 @@ import gql from 'graphql-tag';
 import { NewDocumentArea } from 'onboarding/NewDocumentArea';
 import { NewRepresentationArea } from 'onboarding/NewRepresentationArea';
 import { RepresentationsArea } from 'onboarding/RepresentationsArea';
-import { Permission } from 'project/Permission';
 import React, { useEffect, useState } from 'react';
 import styles from './OnboardArea.module.css';
 import { OnboardAreaProps } from './OnboardArea.types';
@@ -56,7 +55,7 @@ const INITIAL_STATE = {
   representations: [],
 };
 
-export const OnboardArea = ({ projectId, selection, setSelection }: OnboardAreaProps) => {
+export const OnboardArea = ({ projectId, selection, setSelection, readOnly }: OnboardAreaProps) => {
   const [state, setState] = useState(INITIAL_STATE);
   const { stereotypeDescriptions, representationDescriptions, representations } = state;
 
@@ -81,23 +80,21 @@ export const OnboardArea = ({ projectId, selection, setSelection }: OnboardAreaP
   return (
     <div className={styles.onboardArea}>
       <div className={styles.onboardContent}>
-        <Permission requiredAccessLevel="EDIT">
-          <NewDocumentArea
-            stereotypeDescriptions={stereotypeDescriptions}
-            projectId={projectId}
-            setSelection={setSelection}
-            maxDisplay={MAX_DISPLAY}
-          />
-        </Permission>
-        <Permission requiredAccessLevel="EDIT">
-          <NewRepresentationArea
-            representationDescriptions={representationDescriptions}
-            projectId={projectId}
-            selection={selection}
-            setSelection={setSelection}
-            maxDisplay={MAX_DISPLAY}
-          />
-        </Permission>
+        <NewDocumentArea
+          stereotypeDescriptions={stereotypeDescriptions}
+          projectId={projectId}
+          setSelection={setSelection}
+          maxDisplay={MAX_DISPLAY}
+          disabled={readOnly}
+        />
+        <NewRepresentationArea
+          representationDescriptions={representationDescriptions}
+          projectId={projectId}
+          selection={selection}
+          setSelection={setSelection}
+          maxDisplay={MAX_DISPLAY}
+          disabled={readOnly}
+        />
         <RepresentationsArea representations={representations} setSelection={setSelection} maxDisplay={MAX_DISPLAY} />
       </div>
     </div>

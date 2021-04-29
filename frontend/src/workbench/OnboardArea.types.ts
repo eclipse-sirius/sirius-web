@@ -16,4 +16,5 @@ export interface OnboardAreaProps {
   projectId: string;
   selection?: Selection;
   setSelection: (selection: Selection) => void;
+  readOnly: boolean;
 }
