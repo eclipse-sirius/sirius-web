@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.emf.view;
 import org.eclipse.sirius.web.diagrams.ArrowStyle;
 import org.eclipse.sirius.web.diagrams.EdgeStyle;
 import org.eclipse.sirius.web.diagrams.INodeStyle;
+import org.eclipse.sirius.web.diagrams.ImageNodeStyle;
 import org.eclipse.sirius.web.diagrams.LineStyle;
 import org.eclipse.sirius.web.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.web.diagrams.description.LabelStyleDescription;
@@ -51,14 +52,23 @@ public final class StylesFactory {
         // @formatter:on
     }
 
-    public INodeStyle createNodeStyle(String color) {
-        // @formatter:off
-        return RectangularNodeStyle.newRectangularNodeStyle()
-                                   .color(color)
-                                   .borderColor("rgb(0, 0, 0)") //$NON-NLS-1$
-                                   .borderSize(1)
-                                   .borderStyle(LineStyle.Solid)
-                                   .build();
-        // @formatter:on
+    public INodeStyle createNodeStyle(String color, String fileName) {
+        if (fileName == null) {
+            // @formatter:off
+            return RectangularNodeStyle.newRectangularNodeStyle()
+                                       .color(color)
+                                       .borderColor("rgb(0, 0, 0)") //$NON-NLS-1$
+                                       .borderSize(1)
+                                       .borderStyle(LineStyle.Solid)
+                                       .build();
+            // @formatter:on
+        } else {
+            // @formatter:off
+            return ImageNodeStyle.newImageNodeStyle()
+                                 .scalingFactor(1)
+                                 .imageURL("/custom/" + fileName) //$NON-NLS-1$
+                                 .build();
+            // @formatter:on
+        }
     }
 }
