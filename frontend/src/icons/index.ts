@@ -22,7 +22,6 @@ export * from './Drag';
 export * from './Edit';
 export * from './Exit';
 export * from './Folder';
-export * from './Help';
 export * from './Hide';
 export * from './Less';
 export * from './LinkIcon';
