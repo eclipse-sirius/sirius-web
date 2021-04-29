@@ -70,7 +70,11 @@ const useFormWebSocketContainerStyles = makeStyles((theme) => ({
 /**
  * Connect the Form component to the GraphQL API over Web Socket.
  */
-export const FormWebSocketContainer = ({ editingContextId, representationId }: RepresentationComponentProps) => {
+export const FormWebSocketContainer = ({
+  editingContextId,
+  representationId,
+  readOnly,
+}: RepresentationComponentProps) => {
   const classes = useFormWebSocketContainerStyles();
   const [{ value, context }, dispatch] = useMachine<FormWebSocketContainerContext, FormWebSocketContainerEvent>(
     formWebSocketContainerMachine,
@@ -131,6 +135,7 @@ export const FormWebSocketContainer = ({ editingContextId, representationId }: R
         form={form}
         subscribers={subscribers}
         widgetSubscriptions={widgetSubscriptions}
+        readOnly={readOnly}
       />
     );
   } else if (formWebSocketContainer === 'complete') {
