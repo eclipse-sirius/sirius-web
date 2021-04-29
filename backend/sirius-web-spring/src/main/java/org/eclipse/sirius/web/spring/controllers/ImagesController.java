@@ -15,12 +15,15 @@ package org.eclipse.sirius.web.spring.controllers;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.eclipse.sirius.web.api.services.IImagePathService;
+import org.eclipse.sirius.web.services.api.images.ICustomImagesService;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -75,16 +78,21 @@ public class ImagesController {
 
     private static final String IMAGE_SVG_EXTENSION = "svg"; //$NON-NLS-1$
 
+    private static final String CUSTOM_IMAGE_PREFIX = "/custom/"; //$NON-NLS-1$
+
     private static final MediaType IMAGE_SVG = MediaType.valueOf("image/svg+xml"); //$NON-NLS-1$
 
     private static final String TIMER = "siriusweb_images"; //$NON-NLS-1$
 
     private final List<IImagePathService> pathResourcesServices;
 
+    private final ICustomImagesService customImagesService;
+
     private final Timer timer;
 
-    public ImagesController(List<IImagePathService> pathResourcesServices, MeterRegistry meterRegistry) {
+    public ImagesController(List<IImagePathService> pathResourcesServices, ICustomImagesService customImagesService, MeterRegistry meterRegistry) {
         this.pathResourcesServices = Objects.requireNonNull(pathResourcesServices);
+        this.customImagesService = Objects.requireNonNull(customImagesService);
 
         this.timer = Timer.builder(TIMER).register(meterRegistry);
     }
@@ -100,12 +108,22 @@ public class ImagesController {
         String imagePath = requestURI.substring(URLConstants.IMAGE_BASE_PATH.length());
 
         MediaType mediatype = this.getContentType(imagePath);
-        if (mediatype != null && this.isImagePathAccessible(imagePath)) {
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(mediatype);
-            Resource resource = new ClassPathResource(imagePath);
-            if (resource.exists()) {
-                response = new ResponseEntity<>(resource, headers, HttpStatus.OK);
+        if (mediatype != null) {
+            if (this.isImagePathAccessible(imagePath)) {
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(mediatype);
+                Resource resource = new ClassPathResource(imagePath);
+                if (resource.exists()) {
+                    response = new ResponseEntity<>(resource, headers, HttpStatus.OK);
+                }
+            } else if (imagePath.startsWith(CUSTOM_IMAGE_PREFIX)) {
+                Optional<byte[]> contents = this.customImagesService.getImageContentsByFileName(imagePath.substring(CUSTOM_IMAGE_PREFIX.length()));
+                if (contents.isPresent()) {
+                    HttpHeaders headers = new HttpHeaders();
+                    headers.setContentType(mediatype);
+                    Resource resource = new ByteArrayResource(contents.get());
+                    response = new ResponseEntity<>(resource, headers, HttpStatus.OK);
+                }
             }
         }
 
