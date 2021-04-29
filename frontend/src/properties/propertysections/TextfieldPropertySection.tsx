@@ -18,7 +18,6 @@ import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
 import { Textarea, Widget } from 'form/Form.types';
 import gql from 'graphql-tag';
-import { Permission } from 'project/Permission';
 import { PropertySectionLabel } from 'properties/propertysections/PropertySectionLabel';
 import {
   GQLEditTextfieldMutationData,
@@ -75,6 +74,7 @@ export const TextfieldPropertySection = ({
   formId,
   widget,
   subscribers,
+  readOnly,
 }: TextfieldPropertySectionProps) => {
   const [{ value: schemaValue, context }, dispatch] = useMachine<
     TextfieldPropertySectionContext,
@@ -195,22 +195,21 @@ export const TextfieldPropertySection = ({
   return (
     <div>
       <PropertySectionLabel label={widget.label} subscribers={subscribers} />
-      <Permission requiredAccessLevel="EDIT">
-        <TextField
-          name={widget.label}
-          placeholder={widget.label}
-          value={value}
-          margin="dense"
-          multiline={isTextarea(widget)}
-          rowsMax={isTextarea(widget) ? 4 : 1}
-          fullWidth
-          onChange={onChange}
-          onBlur={onBlur}
-          onFocus={onFocus}
-          onKeyPress={onKeyPress}
-          data-testid={widget.label}
-        />
-      </Permission>
+      <TextField
+        name={widget.label}
+        placeholder={widget.label}
+        value={value}
+        margin="dense"
+        multiline={isTextarea(widget)}
+        rowsMax={isTextarea(widget) ? 4 : 1}
+        fullWidth
+        onChange={onChange}
+        onBlur={onBlur}
+        onFocus={onFocus}
+        onKeyPress={onKeyPress}
+        data-testid={widget.label}
+        disabled={readOnly}
+      />
       <Snackbar
         anchorOrigin={{
           vertical: 'bottom',

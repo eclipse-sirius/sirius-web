@@ -16,7 +16,6 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import { httpOrigin } from 'common/URL';
-import { Permission } from 'project/Permission';
 import { ListPropertySectionProps } from 'properties/propertysections/ListPropertySection.types';
 import { PropertySectionLabel } from 'properties/propertysections/PropertySectionLabel';
 import React from 'react';
@@ -54,28 +53,26 @@ export const ListPropertySection = ({ widget, subscribers }: ListPropertySection
   return (
     <div>
       <PropertySectionLabel label={widget.label} subscribers={subscribers} />
-      <Permission requiredAccessLevel="EDIT">
-        <Table className={classes.table}>
-          <TableBody>
-            {widget.items.map((item) => (
-              <TableRow key={item.id}>
-                <TableCell className={classes.cell}>
-                  {item.imageURL ? (
-                    <img
-                      className={classes.icon}
-                      width="16"
-                      height="16"
-                      alt={item.label}
-                      src={httpOrigin + item.imageURL}
-                    />
-                  ) : null}
-                  {item.label}
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </Permission>
+      <Table className={classes.table}>
+        <TableBody>
+          {widget.items.map((item) => (
+            <TableRow key={item.id}>
+              <TableCell className={classes.cell}>
+                {item.imageURL ? (
+                  <img
+                    className={classes.icon}
+                    width="16"
+                    height="16"
+                    alt={item.label}
+                    src={httpOrigin + item.imageURL}
+                  />
+                ) : null}
+                {item.label}
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
     </div>
   );
 };

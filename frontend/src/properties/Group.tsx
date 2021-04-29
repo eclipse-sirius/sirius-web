@@ -40,11 +40,11 @@ const useGroupStyles = makeStyles((theme) => ({
   },
 }));
 
-export const Group = ({ editingContextId, formId, group, widgetSubscriptions }: GroupProps) => {
+export const Group = ({ editingContextId, formId, group, widgetSubscriptions, readOnly }: GroupProps) => {
   const classes = useGroupStyles();
 
   let propertySections = group.widgets.map((widget) =>
-    widgetToPropertySection(editingContextId, formId, widget, widgetSubscriptions)
+    widgetToPropertySection(editingContextId, formId, widget, widgetSubscriptions, readOnly)
   );
 
   return (
@@ -68,7 +68,8 @@ const widgetToPropertySection = (
   editingContextId: string,
   formId: string,
   widget: Widget,
-  widgetSubscriptions: WidgetSubscription[]
+  widgetSubscriptions: WidgetSubscription[],
+  readOnly: boolean
 ) => {
   let subscribers = [];
   widgetSubscriptions
@@ -84,6 +85,7 @@ const widgetToPropertySection = (
         widget={widget}
         subscribers={subscribers}
         key={widget.id}
+        readOnly={readOnly}
       />
     );
   } else if (isCheckbox(widget)) {
@@ -94,6 +96,7 @@ const widgetToPropertySection = (
         widget={widget}
         subscribers={subscribers}
         key={widget.id}
+        readOnly={readOnly}
       />
     );
   } else if (isSelect(widget)) {
@@ -104,6 +107,7 @@ const widgetToPropertySection = (
         widget={widget}
         subscribers={subscribers}
         key={widget.id}
+        readOnly={readOnly}
       />
     );
   } else if (isRadio(widget)) {
@@ -114,10 +118,13 @@ const widgetToPropertySection = (
         widget={widget}
         subscribers={subscribers}
         key={widget.id}
+        readOnly={readOnly}
       />
     );
   } else if (isList(widget)) {
-    propertySection = <ListPropertySection widget={widget} key={widget.id} subscribers={subscribers} />;
+    propertySection = (
+      <ListPropertySection widget={widget} key={widget.id} subscribers={subscribers} readonly={readOnly} />
+    );
   } else {
     console.error(`Unsupported widget type ${widget.__typename}`);
   }

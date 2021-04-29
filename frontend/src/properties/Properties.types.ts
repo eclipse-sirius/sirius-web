@@ -17,4 +17,5 @@ export interface FormProps {
   form: Form;
   subscribers: Subscriber[];
   widgetSubscriptions: WidgetSubscription[];
+  readOnly: boolean;
 }

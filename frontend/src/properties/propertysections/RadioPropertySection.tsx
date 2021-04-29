@@ -19,7 +19,6 @@ import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
 import gql from 'graphql-tag';
-import { Permission } from 'project/Permission';
 import { PropertySectionLabel } from 'properties/propertysections/PropertySectionLabel';
 import {
   GQLEditRadioMutationData,
@@ -63,7 +62,13 @@ const useRadioPropertySectionStyles = makeStyles((theme) => ({
 const isErrorPayload = (payload: GQLEditRadioPayload | GQLUpdateWidgetFocusPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
 
-export const RadioPropertySection = ({ editingContextId, formId, widget, subscribers }: RadioPropertySectionProps) => {
+export const RadioPropertySection = ({
+  editingContextId,
+  formId,
+  widget,
+  subscribers,
+  readOnly,
+}: RadioPropertySectionProps) => {
   const classes = useRadioPropertySectionStyles();
   const [message, setMessage] = useState(null);
 
@@ -136,23 +141,22 @@ export const RadioPropertySection = ({ editingContextId, formId, widget, subscri
   return (
     <div>
       <PropertySectionLabel label={widget.label} subscribers={subscribers} />
-      <Permission requiredAccessLevel="EDIT">
-        <RadioGroup
-          classes={{ root: classes.radioGroupRoot }}
-          aria-label={widget.label}
-          name={widget.label}
-          value={selectedOption ? selectedOption.id : null}
-          onChange={onChange}>
-          {widget.options.map((option) => (
-            <FormControlLabel
-              value={option.id}
-              control={<Radio color="primary" onFocus={onFocus} onBlur={onBlur} data-testid={option.label} />}
-              label={option.label}
-              key={option.id}
-            />
-          ))}
-        </RadioGroup>
-      </Permission>
+      <RadioGroup
+        classes={{ root: classes.radioGroupRoot }}
+        aria-label={widget.label}
+        name={widget.label}
+        value={selectedOption ? selectedOption.id : null}
+        onChange={onChange}>
+        {widget.options.map((option) => (
+          <FormControlLabel
+            value={option.id}
+            control={<Radio color="primary" onFocus={onFocus} onBlur={onBlur} data-testid={option.label} />}
+            label={option.label}
+            key={option.id}
+            disabled={readOnly}
+          />
+        ))}
+      </RadioGroup>
       <Snackbar
         anchorOrigin={{
           vertical: 'bottom',

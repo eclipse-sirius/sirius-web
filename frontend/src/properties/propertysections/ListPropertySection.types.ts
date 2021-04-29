@@ -15,4 +15,5 @@ import { List, Subscriber } from 'form/Form.types';
 export interface ListPropertySectionProps {
   widget: List;
   subscribers: Subscriber[];
+  readonly: boolean;
 }

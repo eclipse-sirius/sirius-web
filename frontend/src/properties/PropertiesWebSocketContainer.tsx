@@ -68,7 +68,11 @@ const usePropertiesWebSocketContainerStyles = makeStyles((theme) => ({
 /**
  * Connect the Properties component to the GraphQL API over Web Socket.
  */
-export const PropertiesWebSocketContainer = ({ editingContextId, selection }: PropertiesWebSocketContainerProps) => {
+export const PropertiesWebSocketContainer = ({
+  editingContextId,
+  selection,
+  readOnly,
+}: PropertiesWebSocketContainerProps) => {
   const classes = usePropertiesWebSocketContainerStyles();
   const [{ value, context }, dispatch] = useMachine<
     PropertiesWebSocketContainerContext,
@@ -134,6 +138,7 @@ export const PropertiesWebSocketContainer = ({ editingContextId, selection }: Pr
         form={form}
         subscribers={subscribers}
         widgetSubscriptions={widgetSubscriptions}
+        readOnly={readOnly}
       />
     );
   }

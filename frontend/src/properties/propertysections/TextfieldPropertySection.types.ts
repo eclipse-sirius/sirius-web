@@ -17,6 +17,7 @@ export interface TextfieldPropertySectionProps {
   formId: string;
   widget: Textfield | Textarea;
   subscribers: Subscriber[];
+  readOnly: boolean;
 }
 
 export interface GQLEditTextfieldMutationData {

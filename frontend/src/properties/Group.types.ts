@@ -17,4 +17,5 @@ export interface GroupProps {
   formId: string;
   group: Group;
   widgetSubscriptions: WidgetSubscription[];
+  readOnly: boolean;
 }

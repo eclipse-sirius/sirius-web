@@ -15,4 +15,6 @@ import { Selection } from 'workbench/Workbench.types';
 export interface PropertiesWebSocketContainerProps {
   editingContextId: string;
   selection: Selection;
+
+  readOnly: boolean;
 }
