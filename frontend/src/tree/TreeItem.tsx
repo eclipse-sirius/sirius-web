@@ -21,13 +21,13 @@ import { DeleteDocumentModal } from 'modals/delete-document/DeleteDocumentModal'
 import { NewObjectModal } from 'modals/new-object/NewObjectModal';
 import { NewRepresentationModal } from 'modals/new-representation/NewRepresentationModal';
 import { NewRootObjectModal } from 'modals/new-root-object/NewRootObjectModal';
-import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
 import { TreeItemDiagramContextMenu } from 'tree/TreeItemDiagramContextMenu';
 import { TreeItemDocumentContextMenu } from 'tree/TreeItemDocumentContextMenu';
 import { TreeItemObjectContextMenu } from 'tree/TreeItemObjectContextMenu';
 import { v4 as uuid } from 'uuid';
 import styles from './TreeItem.module.css';
+import { TreeItemProps } from './TreeItem.types';
 
 const deleteObjectMutation = gql`
   mutation deleteObject($input: DeleteObjectInput!) {
@@ -119,16 +119,15 @@ const menuPositionDelta = {
   dy: -6,
 };
 
-const propTypes = {
-  editingContextId: PropTypes.string.isRequired,
-  item: PropTypes.object.isRequired,
-  depth: PropTypes.number.isRequired,
-  onExpand: PropTypes.func.isRequired,
-  selection: PropTypes.object,
-  setSelection: PropTypes.func.isRequired,
-};
-
-export const TreeItem = ({ editingContextId, item, depth, onExpand, selection, setSelection }) => {
+export const TreeItem = ({
+  editingContextId,
+  item,
+  depth,
+  onExpand,
+  selection,
+  setSelection,
+  readOnly,
+}: TreeItemProps) => {
   const initialState = {
     modalDisplayed: null,
     x: 0,
@@ -299,6 +298,7 @@ export const TreeItem = ({ editingContextId, item, depth, onExpand, selection, s
           onDownload={onDownload}
           onDeleteDocument={onDeleteDocument}
           onClose={onCloseContextMenu}
+          readOnly={readOnly}
         />
       );
     } else if (item.kind === 'Diagram' || item.kind === 'Form') {
@@ -331,6 +331,7 @@ export const TreeItem = ({ editingContextId, item, depth, onExpand, selection, s
           x={x}
           y={y}
           onClose={onCloseContextMenu}
+          readOnly={readOnly}
         />
       );
     } else {
@@ -391,6 +392,7 @@ export const TreeItem = ({ editingContextId, item, depth, onExpand, selection, s
           onRenameObject={onRenameObject}
           onDeleteObject={onDeleteObject}
           onClose={onCloseContextMenu}
+          readOnly={readOnly}
         />
       );
     }
@@ -595,6 +597,7 @@ export const TreeItem = ({ editingContextId, item, depth, onExpand, selection, s
                 onExpand={onExpand}
                 selection={selection}
                 setSelection={setSelection}
+                readOnly={readOnly}
               />
             </li>
           );
@@ -655,7 +658,7 @@ export const TreeItem = ({ editingContextId, item, depth, onExpand, selection, s
   };
 
   const onBeginEditing = (event) => {
-    if (!item.editable || editingMode) {
+    if (!item.editable || editingMode || readOnly) {
       return;
     }
     const { key } = event;
@@ -707,4 +710,3 @@ export const TreeItem = ({ editingContextId, item, depth, onExpand, selection, s
     </>
   );
 };
-TreeItem.propTypes = propTypes;

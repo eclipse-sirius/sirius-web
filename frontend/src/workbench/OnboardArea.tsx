@@ -16,9 +16,9 @@ import { NewDocumentArea } from 'onboarding/NewDocumentArea';
 import { NewRepresentationArea } from 'onboarding/NewRepresentationArea';
 import { RepresentationsArea } from 'onboarding/RepresentationsArea';
 import { Permission } from 'project/Permission';
-import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import styles from './OnboardArea.module.css';
+import { OnboardAreaProps } from './OnboardArea.types';
 
 const getOnboardDataQuery = gql`
   query getOnboardData($projectId: ID!, $classId: ID!) {
@@ -48,11 +48,6 @@ const getOnboardDataQuery = gql`
   }
 `;
 
-const propTypes = {
-  selection: PropTypes.object,
-  setSelection: PropTypes.func.isRequired,
-};
-
 const MAX_DISPLAY = 5;
 
 const INITIAL_STATE = {
@@ -61,7 +56,7 @@ const INITIAL_STATE = {
   representations: [],
 };
 
-export const OnboardArea = ({ projectId, selection, setSelection }) => {
+export const OnboardArea = ({ projectId, selection, setSelection }: OnboardAreaProps) => {
   const [state, setState] = useState(INITIAL_STATE);
   const { stereotypeDescriptions, representationDescriptions, representations } = state;
 
@@ -108,5 +103,3 @@ export const OnboardArea = ({ projectId, selection, setSelection }) => {
     </div>
   );
 };
-
-OnboardArea.propTypes = propTypes;

@@ -22,20 +22,19 @@ import {
   HANDLE_EXPANDED__ACTION,
   LOADING__STATE,
 } from 'explorer/machine';
-import PropTypes from 'prop-types';
 import React, { useReducer } from 'react';
 import { Explorer } from './Explorer';
 import styles from './ExplorerWebSocketContainer.module.css';
+import { ExplorerWebSocketContainerProps } from './ExplorerWebSocketContainer.types';
 import { getTreeEventSubscription } from './getTreeEventSubscription';
 import { initialState, reducer } from './reducer';
 
-const propTypes = {
-  editingContextId: PropTypes.string.isRequired,
-  selection: PropTypes.object,
-  setSelection: PropTypes.func.isRequired,
-};
-
-export const ExplorerWebSocketContainer = ({ editingContextId, selection, setSelection }) => {
+export const ExplorerWebSocketContainer = ({
+  editingContextId,
+  selection,
+  setSelection,
+  readOnly,
+}: ExplorerWebSocketContainerProps) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { viewState, id, tree, expanded, maxDepth, message } = state;
 
@@ -58,7 +57,7 @@ export const ExplorerWebSocketContainer = ({ editingContextId, selection, setSel
     dispatch({ type: HANDLE_ERROR__ACTION, message: error });
   }
 
-  const onExpand = (id, depth) => {
+  const onExpand = (id: string, depth: number) => {
     dispatch({ type: HANDLE_EXPANDED__ACTION, id, depth });
   };
 
@@ -80,7 +79,7 @@ export const ExplorerWebSocketContainer = ({ editingContextId, selection, setSel
       onExpand={onExpand}
       selection={selection}
       setSelection={setSelection}
+      readOnly={readOnly}
     />
   );
 };
-ExplorerWebSocketContainer.propTypes = propTypes;

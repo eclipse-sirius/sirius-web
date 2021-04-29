@@ -12,20 +12,9 @@
  *******************************************************************************/
 import { ContextMenu, Entry, LEFT_START, Separator } from 'core/contextmenu/ContextMenu';
 import { Delete, Edit } from 'icons';
-import { Permission } from 'project/Permission';
-import PropTypes from 'prop-types';
 import React from 'react';
+import { TreeItemObjectContextMenuProps } from './TreeItemObjectContextMenu.types';
 
-const propTypes = {
-  x: PropTypes.number.isRequired,
-  y: PropTypes.number.isRequired,
-  onCreateNewObject: PropTypes.func.isRequired,
-  onCreateRepresentation: PropTypes.func.isRequired,
-  editable: PropTypes.bool,
-  onRenameObject: PropTypes.func,
-  onDeleteObject: PropTypes.func.isRequired,
-  onClose: PropTypes.func.isRequired,
-};
 export const TreeItemObjectContextMenu = ({
   x,
   y,
@@ -35,32 +24,40 @@ export const TreeItemObjectContextMenu = ({
   editable,
   onDeleteObject,
   onClose,
-}) => {
+  readOnly,
+}: TreeItemObjectContextMenuProps) => {
   let renameEntry = null;
   if (editable) {
     renameEntry = (
       <>
-        <Permission requiredAccessLevel="EDIT">
-          <Entry icon={<Edit title="" />} label="Rename" onClick={onRenameObject} data-testid="rename-object"></Entry>
-        </Permission>
+        <Entry
+          icon={<Edit title="" />}
+          label="Rename"
+          onClick={onRenameObject}
+          data-testid="rename-object"
+          disabled={readOnly}></Entry>
         <Separator />
       </>
     );
   }
   return (
     <ContextMenu x={x} y={y} caretPosition={LEFT_START} onClose={onClose} data-testid="treeitemobject-contextmenu">
-      <Permission requiredAccessLevel="EDIT">
-        <Entry label="New object" onClick={onCreateNewObject} data-testid="new-object" />
-      </Permission>
-      <Permission requiredAccessLevel="EDIT">
-        <Entry label="New representation" onClick={onCreateRepresentation} data-testid="new-representation" />
-      </Permission>
+      <Entry label="New object" onClick={onCreateNewObject} data-testid="new-object" disabled={readOnly} />
+      <Entry
+        label="New representation"
+        onClick={onCreateRepresentation}
+        data-testid="new-representation"
+        disabled={readOnly}
+      />
       <Separator />
       {renameEntry}
-      <Permission requiredAccessLevel="EDIT">
-        <Entry icon={<Delete title="" />} label="Delete" onClick={onDeleteObject} data-testid="delete-object" />
-      </Permission>
+      <Entry
+        icon={<Delete title="" />}
+        label="Delete"
+        onClick={onDeleteObject}
+        data-testid="delete-object"
+        disabled={readOnly}
+      />
     </ContextMenu>
   );
 };
-TreeItemObjectContextMenu.propTypes = propTypes;

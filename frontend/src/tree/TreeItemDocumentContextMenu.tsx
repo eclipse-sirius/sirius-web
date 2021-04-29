@@ -13,21 +13,8 @@
 import { httpOrigin } from 'common/URL';
 import { ContextMenu, Entry, LEFT_START, Separator } from 'core/contextmenu/ContextMenu';
 import { Delete, Edit } from 'icons';
-import { Permission } from 'project/Permission';
-import PropTypes from 'prop-types';
 import React from 'react';
-
-const propTypes = {
-  projectId: PropTypes.string.isRequired,
-  documentId: PropTypes.string.isRequired,
-  x: PropTypes.number.isRequired,
-  y: PropTypes.number.isRequired,
-  onNewObject: PropTypes.func.isRequired,
-  onRenameDocument: PropTypes.func.isRequired,
-  onDownload: PropTypes.func.isRequired,
-  onDeleteDocument: PropTypes.func.isRequired,
-  onClose: PropTypes.func.isRequired,
-};
+import { TreeItemDocumentContextMenuProps } from './TreeItemDocumentContextMenu.types';
 
 export const TreeItemDocumentContextMenu = ({
   projectId,
@@ -39,15 +26,18 @@ export const TreeItemDocumentContextMenu = ({
   onDownload,
   onDeleteDocument,
   onClose,
-}) => {
+  readOnly,
+}: TreeItemDocumentContextMenuProps) => {
   return (
     <ContextMenu x={x} y={y} caretPosition={LEFT_START} onClose={onClose} data-testid="treeitemdocument-contextmenu">
-      <Permission requiredAccessLevel="EDIT">
-        <Entry label="New object" onClick={onNewObject} data-testid="new-object" />
-      </Permission>
-      <Permission requiredAccessLevel="EDIT">
-        <Entry icon={<Edit title="" />} label="Rename" onClick={onRenameDocument} data-testid="rename" />
-      </Permission>
+      <Entry label="New object" onClick={onNewObject} data-testid="new-object" disabled={readOnly} />
+      <Entry
+        icon={<Edit title="" />}
+        label="Rename"
+        onClick={onRenameDocument}
+        data-testid="rename"
+        disabled={readOnly}
+      />
       <a
         href={`${httpOrigin}/api/projects/${projectId}/documents/${documentId}`}
         type="application/octet-stream"
@@ -55,10 +45,13 @@ export const TreeItemDocumentContextMenu = ({
         <Entry label="Download" onClick={onDownload} data-testid="download" />
       </a>
       <Separator />
-      <Permission requiredAccessLevel="EDIT">
-        <Entry icon={<Delete title="" />} label="Delete" onClick={onDeleteDocument} data-testid="delete" />
-      </Permission>
+      <Entry
+        icon={<Delete title="" />}
+        label="Delete"
+        onClick={onDeleteDocument}
+        data-testid="delete"
+        disabled={readOnly}
+      />
     </ContextMenu>
   );
 };
-TreeItemDocumentContextMenu.propTypes = propTypes;
