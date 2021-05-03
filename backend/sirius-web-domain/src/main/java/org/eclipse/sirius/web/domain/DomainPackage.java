@@ -185,12 +185,20 @@ public interface DomainPackage extends EPackage {
     int ENTITY__RELATIONS = NAMED_ELEMENT_FEATURE_COUNT + 1;
 
     /**
+     * The feature id for the '<em><b>Super Type</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ENTITY__SUPER_TYPE = NAMED_ELEMENT_FEATURE_COUNT + 2;
+
+    /**
      * The number of structural features of the '<em>Entity</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int ENTITY_FEATURE_COUNT = NAMED_ELEMENT_FEATURE_COUNT + 2;
+    int ENTITY_FEATURE_COUNT = NAMED_ELEMENT_FEATURE_COUNT + 3;
 
     /**
      * The number of operations of the '<em>Entity</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -473,6 +481,17 @@ public interface DomainPackage extends EPackage {
     EReference getEntity_Relations();
 
     /**
+     * Returns the meta object for the reference '{@link org.eclipse.sirius.web.domain.Entity#getSuperType <em>Super
+     * Type</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the reference '<em>Super Type</em>'.
+     * @see org.eclipse.sirius.web.domain.Entity#getSuperType()
+     * @see #getEntity()
+     * @generated
+     */
+    EReference getEntity_SuperType();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.web.domain.Feature <em>Feature</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
@@ -658,6 +677,14 @@ public interface DomainPackage extends EPackage {
          * @generated
          */
         EReference ENTITY__RELATIONS = eINSTANCE.getEntity_Relations();
+
+        /**
+         * The meta object literal for the '<em><b>Super Type</b></em>' reference feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EReference ENTITY__SUPER_TYPE = eINSTANCE.getEntity_SuperType();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.web.domain.impl.FeatureImpl <em>Feature</em>}'

@@ -230,6 +230,16 @@ public class DomainPackageImpl extends EPackageImpl implements DomainPackage {
      * @generated
      */
     @Override
+    public EReference getEntity_SuperType() {
+        return (EReference) this.entityEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getFeature() {
         return this.featureEClass;
     }
@@ -353,6 +363,7 @@ public class DomainPackageImpl extends EPackageImpl implements DomainPackage {
         this.entityEClass = this.createEClass(ENTITY);
         this.createEReference(this.entityEClass, ENTITY__ATTRIBUTES);
         this.createEReference(this.entityEClass, ENTITY__RELATIONS);
+        this.createEReference(this.entityEClass, ENTITY__SUPER_TYPE);
 
         this.featureEClass = this.createEClass(FEATURE);
         this.createEAttribute(this.featureEClass, FEATURE__OPTIONAL);
@@ -418,6 +429,8 @@ public class DomainPackageImpl extends EPackageImpl implements DomainPackage {
         this.initEReference(this.getEntity_Attributes(), this.getAttribute(), null, "attributes", null, 0, -1, Entity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, //$NON-NLS-1$
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getEntity_Relations(), this.getRelation(), null, "relations", null, 0, -1, Entity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, //$NON-NLS-1$
+                !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getEntity_SuperType(), this.getEntity(), null, "superType", null, 0, 1, Entity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, //$NON-NLS-1$
                 !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.featureEClass, Feature.class, "Feature", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
