@@ -109,7 +109,7 @@ export const EditProjectView = () => {
       const pathname = generatePath(routeMatch.path, { projectId, representationId: representation.id });
       history.push({ pathname });
     } else if (editProjectView === 'loaded' && representation === null && representationId) {
-      const pathname = generatePath(routeMatch.path, { projectId, representationId: '' });
+      const pathname = generatePath(routeMatch.path, { projectId, representationId: null });
       history.push({ pathname });
     }
   }, [editProjectView, projectId, routeMatch, history, representation, representationId]);
