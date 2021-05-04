@@ -177,4 +177,8 @@ public class NodePositionProvider {
     private boolean isUndefined(Position position) {
         return position.getX() == -1 || position.getY() == -1;
     }
+
+    public void reset() {
+        this.last = null;
+    }
 }

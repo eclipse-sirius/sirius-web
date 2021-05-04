@@ -63,6 +63,8 @@ public class IncrementalLayoutEngine {
     }
 
     public void layout(Optional<IDiagramElementEvent> optionalDiagramElementEvent, DiagramLayoutData diagram) {
+        this.nodePositionProvider.reset();
+
         // first we layout all the nodes
         for (NodeLayoutData node : diagram.getChildrenNodes()) {
             this.layoutNode(optionalDiagramElementEvent, node);
