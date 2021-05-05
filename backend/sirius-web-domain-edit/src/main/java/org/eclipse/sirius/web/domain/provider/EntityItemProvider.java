@@ -20,6 +20,7 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
+import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 import org.eclipse.sirius.web.domain.DomainFactory;
 import org.eclipse.sirius.web.domain.DomainPackage;
@@ -52,6 +53,7 @@ public class EntityItemProvider extends NamedElementItemProvider {
             super.getPropertyDescriptors(object);
 
             this.addSuperTypePropertyDescriptor(object);
+            this.addAbstractPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -66,6 +68,18 @@ public class EntityItemProvider extends NamedElementItemProvider {
                 this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(), this.getString("_UI_Entity_superType_feature"), //$NON-NLS-1$
                         this.getString("_UI_PropertyDescriptor_description", "_UI_Entity_superType_feature", "_UI_Entity_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                         DomainPackage.Literals.ENTITY__SUPER_TYPE, true, false, true, null, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Abstract feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addAbstractPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(
+                this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(), this.getString("_UI_Entity_abstract_feature"), //$NON-NLS-1$
+                        this.getString("_UI_PropertyDescriptor_description", "_UI_Entity_abstract_feature", "_UI_Entity_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                        DomainPackage.Literals.ENTITY__ABSTRACT, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -143,6 +157,9 @@ public class EntityItemProvider extends NamedElementItemProvider {
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(Entity.class)) {
+        case DomainPackage.ENTITY__ABSTRACT:
+            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+            return;
         case DomainPackage.ENTITY__ATTRIBUTES:
         case DomainPackage.ENTITY__RELATIONS:
             this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));

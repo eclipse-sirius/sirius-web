@@ -36,6 +36,7 @@ import org.eclipse.sirius.web.domain.Relation;
  * <li>{@link org.eclipse.sirius.web.domain.impl.EntityImpl#getAttributes <em>Attributes</em>}</li>
  * <li>{@link org.eclipse.sirius.web.domain.impl.EntityImpl#getRelations <em>Relations</em>}</li>
  * <li>{@link org.eclipse.sirius.web.domain.impl.EntityImpl#getSuperType <em>Super Type</em>}</li>
+ * <li>{@link org.eclipse.sirius.web.domain.impl.EntityImpl#isAbstract <em>Abstract</em>}</li>
  * </ul>
  *
  * @generated
@@ -70,6 +71,26 @@ public class EntityImpl extends NamedElementImpl implements Entity {
      * @ordered
      */
     protected Entity superType;
+
+    /**
+     * The default value of the '{@link #isAbstract() <em>Abstract</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #isAbstract()
+     * @generated
+     * @ordered
+     */
+    protected static final boolean ABSTRACT_EDEFAULT = false;
+
+    /**
+     * The cached value of the '{@link #isAbstract() <em>Abstract</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #isAbstract()
+     * @generated
+     * @ordered
+     */
+    protected boolean abstract_ = ABSTRACT_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -162,6 +183,29 @@ public class EntityImpl extends NamedElementImpl implements Entity {
      * @generated
      */
     @Override
+    public boolean isAbstract() {
+        return this.abstract_;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setAbstract(boolean newAbstract) {
+        boolean oldAbstract = this.abstract_;
+        this.abstract_ = newAbstract;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DomainPackage.ENTITY__ABSTRACT, oldAbstract, this.abstract_));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
         case DomainPackage.ENTITY__ATTRIBUTES:
@@ -188,6 +232,8 @@ public class EntityImpl extends NamedElementImpl implements Entity {
             if (resolve)
                 return this.getSuperType();
             return this.basicGetSuperType();
+        case DomainPackage.ENTITY__ABSTRACT:
+            return this.isAbstract();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -212,6 +258,9 @@ public class EntityImpl extends NamedElementImpl implements Entity {
         case DomainPackage.ENTITY__SUPER_TYPE:
             this.setSuperType((Entity) newValue);
             return;
+        case DomainPackage.ENTITY__ABSTRACT:
+            this.setAbstract((Boolean) newValue);
+            return;
         }
         super.eSet(featureID, newValue);
     }
@@ -233,6 +282,9 @@ public class EntityImpl extends NamedElementImpl implements Entity {
         case DomainPackage.ENTITY__SUPER_TYPE:
             this.setSuperType((Entity) null);
             return;
+        case DomainPackage.ENTITY__ABSTRACT:
+            this.setAbstract(ABSTRACT_EDEFAULT);
+            return;
         }
         super.eUnset(featureID);
     }
@@ -251,8 +303,27 @@ public class EntityImpl extends NamedElementImpl implements Entity {
             return this.relations != null && !this.relations.isEmpty();
         case DomainPackage.ENTITY__SUPER_TYPE:
             return this.superType != null;
+        case DomainPackage.ENTITY__ABSTRACT:
+            return this.abstract_ != ABSTRACT_EDEFAULT;
         }
         return super.eIsSet(featureID);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String toString() {
+        if (this.eIsProxy())
+            return super.toString();
+
+        StringBuilder result = new StringBuilder(super.toString());
+        result.append(" (abstract: "); //$NON-NLS-1$
+        result.append(this.abstract_);
+        result.append(')');
+        return result.toString();
     }
 
 } // EntityImpl

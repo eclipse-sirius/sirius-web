@@ -24,6 +24,7 @@ import org.eclipse.emf.common.util.EList;
  * <li>{@link org.eclipse.sirius.web.domain.Entity#getAttributes <em>Attributes</em>}</li>
  * <li>{@link org.eclipse.sirius.web.domain.Entity#getRelations <em>Relations</em>}</li>
  * <li>{@link org.eclipse.sirius.web.domain.Entity#getSuperType <em>Super Type</em>}</li>
+ * <li>{@link org.eclipse.sirius.web.domain.Entity#isAbstract <em>Abstract</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.web.domain.DomainPackage#getEntity()
@@ -74,5 +75,27 @@ public interface Entity extends NamedElement {
      * @generated
      */
     void setSuperType(Entity value);
+
+    /**
+     * Returns the value of the '<em><b>Abstract</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Abstract</em>' attribute.
+     * @see #setAbstract(boolean)
+     * @see org.eclipse.sirius.web.domain.DomainPackage#getEntity_Abstract()
+     * @model required="true"
+     * @generated
+     */
+    boolean isAbstract();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.web.domain.Entity#isAbstract <em>Abstract</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Abstract</em>' attribute.
+     * @see #isAbstract()
+     * @generated
+     */
+    void setAbstract(boolean value);
 
 } // Entity

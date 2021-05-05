@@ -94,6 +94,7 @@ public class DomainConverter {
     private EClass convert(Entity entity, Map<Entity, EClass> convertedTypes) {
         EClass eClass = EcoreFactory.eINSTANCE.createEClass();
         eClass.setName(entity.getName());
+        eClass.setAbstract(entity.isAbstract());
         entity.getAttributes().forEach(attribute -> eClass.getEStructuralFeatures().add(this.convert(attribute)));
         if (entity.getSuperType() != null && convertedTypes.containsKey(entity.getSuperType())) {
             eClass.getESuperTypes().add(convertedTypes.get(entity.getSuperType()));
