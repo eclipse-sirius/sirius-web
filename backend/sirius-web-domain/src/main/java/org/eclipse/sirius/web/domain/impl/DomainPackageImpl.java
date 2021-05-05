@@ -240,6 +240,16 @@ public class DomainPackageImpl extends EPackageImpl implements DomainPackage {
      * @generated
      */
     @Override
+    public EAttribute getEntity_Abstract() {
+        return (EAttribute) this.entityEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getFeature() {
         return this.featureEClass;
     }
@@ -364,6 +374,7 @@ public class DomainPackageImpl extends EPackageImpl implements DomainPackage {
         this.createEReference(this.entityEClass, ENTITY__ATTRIBUTES);
         this.createEReference(this.entityEClass, ENTITY__RELATIONS);
         this.createEReference(this.entityEClass, ENTITY__SUPER_TYPE);
+        this.createEAttribute(this.entityEClass, ENTITY__ABSTRACT);
 
         this.featureEClass = this.createEClass(FEATURE);
         this.createEAttribute(this.featureEClass, FEATURE__OPTIONAL);
@@ -432,6 +443,8 @@ public class DomainPackageImpl extends EPackageImpl implements DomainPackage {
                 !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getEntity_SuperType(), this.getEntity(), null, "superType", null, 0, 1, Entity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, //$NON-NLS-1$
                 !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getEntity_Abstract(), this.ecorePackage.getEBoolean(), "abstract", null, 1, 1, Entity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, //$NON-NLS-1$
+                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.featureEClass, Feature.class, "Feature", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
         this.initEAttribute(this.getFeature_Optional(), this.ecorePackage.getEBoolean(), "optional", "false", 1, 1, Feature.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, //$NON-NLS-1$//$NON-NLS-2$
