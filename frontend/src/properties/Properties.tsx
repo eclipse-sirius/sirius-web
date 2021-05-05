@@ -46,7 +46,6 @@ const usePropertiesStyles = makeStyles((theme) => ({
     fontSize: '1rem',
     width: theme.spacing(3),
     height: theme.spacing(3),
-    backgroundColor: theme.palette.primary.main,
   },
   container: {
     display: 'grid',
