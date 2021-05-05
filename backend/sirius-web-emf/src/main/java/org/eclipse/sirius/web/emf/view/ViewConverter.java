@@ -53,7 +53,6 @@ import org.eclipse.sirius.web.services.api.images.CustomImage;
 import org.eclipse.sirius.web.services.api.images.ICustomImagesService;
 import org.eclipse.sirius.web.services.api.objects.IEditService;
 import org.eclipse.sirius.web.view.DiagramElementDescription;
-import org.eclipse.sirius.web.view.Mode;
 import org.eclipse.sirius.web.view.View;
 
 /**
@@ -175,10 +174,7 @@ public class ViewConverter {
                                                        .map(this::convert)
                                                        .collect(Collectors.toList());
         // @formatter:on
-        SynchronizationPolicy synchronizationPolicy = SynchronizationPolicy.UNSYNCHRONIZED;
-        if (viewNodeDescription.getCreationMode() == Mode.AUTO) {
-            synchronizationPolicy = SynchronizationPolicy.SYNCHRONIZED;
-        }
+        SynchronizationPolicy synchronizationPolicy = SynchronizationPolicy.SYNCHRONIZED;
         final String nodeType;
         if (viewNodeDescription.getStyle().getShape() == null || viewNodeDescription.getStyle().getShape().isBlank()) {
             nodeType = NodeType.NODE_RECTANGLE;

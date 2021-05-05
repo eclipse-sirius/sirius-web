@@ -14,7 +14,6 @@ package org.eclipse.sirius.web.view;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
@@ -249,21 +248,13 @@ public interface ViewPackage extends EPackage {
     int DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION = 1;
 
     /**
-     * The feature id for the '<em><b>Creation Mode</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int DIAGRAM_ELEMENT_DESCRIPTION__CREATION_MODE = 2;
-
-    /**
      * The feature id for the '<em><b>Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
      * @generated
      * @ordered
      */
-    int DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION = 3;
+    int DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION = 2;
 
     /**
      * The number of structural features of the '<em>Diagram Element Description</em>' class. <!-- begin-user-doc -->
@@ -272,7 +263,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT = 4;
+    int DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT = 3;
 
     /**
      * The number of operations of the '<em>Diagram Element Description</em>' class. <!-- begin-user-doc --> <!--
@@ -309,14 +300,6 @@ public interface ViewPackage extends EPackage {
      * @ordered
      */
     int NODE_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION;
-
-    /**
-     * The feature id for the '<em><b>Creation Mode</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int NODE_DESCRIPTION__CREATION_MODE = DIAGRAM_ELEMENT_DESCRIPTION__CREATION_MODE;
 
     /**
      * The feature id for the '<em><b>Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -388,14 +371,6 @@ public interface ViewPackage extends EPackage {
      * @ordered
      */
     int EDGE_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION;
-
-    /**
-     * The feature id for the '<em><b>Creation Mode</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int EDGE_DESCRIPTION__CREATION_MODE = DIAGRAM_ELEMENT_DESCRIPTION__CREATION_MODE;
 
     /**
      * The feature id for the '<em><b>Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -555,16 +530,6 @@ public interface ViewPackage extends EPackage {
     int NODE_STYLE_OPERATION_COUNT = STYLE_OPERATION_COUNT + 0;
 
     /**
-     * The meta object id for the '{@link org.eclipse.sirius.web.view.Mode <em>Mode</em>}' enum. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @see org.eclipse.sirius.web.view.Mode
-     * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getMode()
-     * @generated
-     */
-    int MODE = 8;
-
-    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.web.view.View <em>View</em>}'. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
@@ -698,18 +663,6 @@ public interface ViewPackage extends EPackage {
      * @generated
      */
     EAttribute getDiagramElementDescription_SemanticCandidatesExpression();
-
-    /**
-     * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.web.view.DiagramElementDescription#getCreationMode <em>Creation Mode</em>}'. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the attribute '<em>Creation Mode</em>'.
-     * @see org.eclipse.sirius.web.view.DiagramElementDescription#getCreationMode()
-     * @see #getDiagramElementDescription()
-     * @generated
-     */
-    EAttribute getDiagramElementDescription_CreationMode();
 
     /**
      * Returns the meta object for the attribute
@@ -881,16 +834,6 @@ public interface ViewPackage extends EPackage {
     EAttribute getNodeStyle_Shape();
 
     /**
-     * Returns the meta object for enum '{@link org.eclipse.sirius.web.view.Mode <em>Mode</em>}'. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
-     *
-     * @return the meta object for enum '<em>Mode</em>'.
-     * @see org.eclipse.sirius.web.view.Mode
-     * @generated
-     */
-    EEnum getMode();
-
-    /**
      * Returns the factory that creates the instances of the model. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the factory that creates the instances of the model.
@@ -1015,14 +958,6 @@ public interface ViewPackage extends EPackage {
          * @generated
          */
         EAttribute DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION = eINSTANCE.getDiagramElementDescription_SemanticCandidatesExpression();
-
-        /**
-         * The meta object literal for the '<em><b>Creation Mode</b></em>' attribute feature. <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EAttribute DIAGRAM_ELEMENT_DESCRIPTION__CREATION_MODE = eINSTANCE.getDiagramElementDescription_CreationMode();
 
         /**
          * The meta object literal for the '<em><b>Label Expression</b></em>' attribute feature. <!-- begin-user-doc -->
@@ -1151,16 +1086,6 @@ public interface ViewPackage extends EPackage {
          * @generated
          */
         EAttribute NODE_STYLE__SHAPE = eINSTANCE.getNodeStyle_Shape();
-
-        /**
-         * The meta object literal for the '{@link org.eclipse.sirius.web.view.Mode <em>Mode</em>}' enum. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @see org.eclipse.sirius.web.view.Mode
-         * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getMode()
-         * @generated
-         */
-        EEnum MODE = eINSTANCE.getMode();
 
     }
 
