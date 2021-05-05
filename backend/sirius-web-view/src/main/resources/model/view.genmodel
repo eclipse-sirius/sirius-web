@@ -13,10 +13,6 @@
   <testsDirectory xsi:nil="true"/>
   <genPackages prefix="View" basePackage="org.eclipse.sirius.web" disposableProviderFactory="true"
       ecorePackage="view.ecore#/">
-    <genEnums typeSafeEnumCompatible="false" ecoreEnum="view.ecore#//Mode">
-      <genEnumLiterals ecoreEnumLiteral="view.ecore#//Mode/AUTO"/>
-      <genEnumLiterals ecoreEnumLiteral="view.ecore#//Mode/EXPLICIT"/>
-    </genEnums>
     <genClasses ecoreClass="view.ecore#//View">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//View/descriptions"/>
     </genClasses>
@@ -32,7 +28,6 @@
     <genClasses ecoreClass="view.ecore#//DiagramElementDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//DiagramElementDescription/domainType"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//DiagramElementDescription/semanticCandidatesExpression"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//DiagramElementDescription/creationMode"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//DiagramElementDescription/labelExpression"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//NodeDescription">
