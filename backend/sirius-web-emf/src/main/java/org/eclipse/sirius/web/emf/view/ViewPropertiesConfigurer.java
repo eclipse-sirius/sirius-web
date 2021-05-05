@@ -162,6 +162,9 @@ public class ViewPropertiesConfigurer implements IPropertiesDescriptionRegistryC
         return (variableManager, newValue) -> {
             var optionalNodeStyle = variableManager.get(VariableManager.SELF, NodeStyle.class);
             if (optionalNodeStyle.isPresent()) {
+                if (newValue != null && newValue.isBlank()) {
+                    newValue = null;
+                }
                 optionalNodeStyle.get().setShape(newValue);
                 return Status.OK;
             }
