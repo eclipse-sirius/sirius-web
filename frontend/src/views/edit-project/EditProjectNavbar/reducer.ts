@@ -27,8 +27,7 @@ export const initialState = {
   viewState: EMPTY__STATE,
   to: null,
   modalDisplayed: null,
-  x: 0,
-  y: 0
+  projectMenuAnchor: null
 };
 
 export const reducer = (prevState, action) => {
@@ -65,12 +64,12 @@ export const reducer = (prevState, action) => {
 };
 
 const handleShowContextMenuAction = (prevState, action) => {
-  const { x, y } = action;
-  return { ...prevState, viewState: CONTEXTUAL_MENU_DISPLAYED__STATE, x, y };
+  const { projectMenuAnchor } = action;
+  return { ...prevState, viewState: CONTEXTUAL_MENU_DISPLAYED__STATE, projectMenuAnchor };
 };
 
 const handleCloseContextMenuAction = prevState => {
-  return { ...prevState, viewState: EMPTY__STATE, x: 0, y: 0 };
+  return { ...prevState, viewState: EMPTY__STATE, projectMenuAnchor: null };
 };
 
 const handleShowModalAction = (prevState, action) => {
@@ -78,8 +77,7 @@ const handleShowModalAction = (prevState, action) => {
   return {
     ...prevState,
     viewState: MODAL_DISPLAYED__STATE,
-    x: 0,
-    y: 0,
+    projectMenuAnchor: null,
     modalDisplayed
   };
 };
@@ -94,6 +92,6 @@ const handleCloseModalAction = prevState => {
 
 const handleRedirectingAction = (prevState, action) => {
   const { to } = action;
-  const state = { ...prevState, modalDisplayed: null, viewState: REDIRECT__STATE, to };
+  const state = { ...prevState, modalDisplayed: null, viewState: REDIRECT__STATE, to, projectMenuAnchor: null };
   return state;
 };

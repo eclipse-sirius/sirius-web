@@ -145,7 +145,7 @@ export const EditProjectView = () => {
   return (
     <>
       <div className={classes.editProjectView}>
-        <EditProjectNavbar projectId={projectId} name={project?.name ?? ''} />
+        <EditProjectNavbar project={project} />
         {main}
       </div>
       <Snackbar

@@ -11,7 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { Project } from 'views/edit-project/EditProjectView.types';
+
 export interface EditProjectNavbarProps {
-  projectId: string;
-  name: string;
+  project: Project;
 }
