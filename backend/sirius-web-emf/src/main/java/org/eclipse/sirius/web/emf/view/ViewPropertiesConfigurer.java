@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.emf.view;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -149,7 +150,7 @@ public class ViewPropertiesConfigurer implements IPropertiesDescriptionRegistryC
                                 .idProvider(variableManager -> "nodestyle.shapeSelector") //$NON-NLS-1$
                                 .labelProvider(variableManager -> "Shape") //$NON-NLS-1$
                                 .valueProvider(variableManager -> variableManager.get(VariableManager.SELF, NodeStyle.class).map(NodeStyle::getShape).orElse(EMPTY))
-                                .optionsProvider(variableManager -> this.customImagesService.getAvailableImages().stream().collect(Collectors.toList()))
+                                .optionsProvider(variableManager -> this.customImagesService.getAvailableImages().stream().sorted(Comparator.comparing(CustomImage::getLabel)).collect(Collectors.toList()))
                                 .optionIdProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, CustomImage.class).map(CustomImage::getId).map(UUID::toString).orElse(EMPTY))
                                 .optionLabelProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, CustomImage.class).map(CustomImage::getLabel).orElse(EMPTY))
                                 .newValueHandler(this.getNewShapeValueHandler())
