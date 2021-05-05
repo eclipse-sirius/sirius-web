@@ -11,7 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import {
-  useBranding,
   IconButton,
   More,
   DeleteProjectModal,
@@ -37,6 +36,7 @@ import {
   REDIRECT__STATE
 } from './machine';
 import { initialState, reducer } from './reducer';
+import { Help } from 'help/help';
 
 /**
  * Determines where the context menu should open relative to the actual mouse position.
@@ -48,7 +48,6 @@ const menuPositionDelta = {
 
 export const EditProjectNavbar = ({ projectId, name }: EditProjectNavbarProps) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { userStatus } = useBranding();
   const onMore = (event: React.SyntheticEvent<HTMLButtonElement>) => {
     if (state.viewState === EMPTY__STATE) {
       const { x, y } = event.currentTarget.getBoundingClientRect();
@@ -134,7 +133,9 @@ export const EditProjectNavbar = ({ projectId, name }: EditProjectNavbarProps) =
               </div>
             </div>
           </div>
-          <div className={styles.rightArea}>{userStatus}</div>
+          <div className={styles.rightArea}>
+            <Help />
+          </div>
         </div>
       </div>
       {contextMenu}

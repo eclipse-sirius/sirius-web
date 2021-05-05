@@ -17,7 +17,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
-import { Form, FormContainer, FileUpload, NavigationBar, sendFile } from '@eclipse-sirius/sirius-components';
+import { Form, FormContainer, FileUpload, sendFile } from '@eclipse-sirius/sirius-components';
 import gql from 'graphql-tag';
 import React from 'react';
 import { Redirect } from 'react-router-dom';
@@ -28,6 +28,7 @@ import {
   uploadProjectMachine,
   UploadProjectViewContext
 } from './UploadProjectViewMachine';
+import { NavigationBar } from 'navigationBar/NavigationBar';
 
 const uploadProjectMutation = gql`
   mutation uploadProject($input: UploadProjectInput!) {

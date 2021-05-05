@@ -17,10 +17,10 @@ import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+import { NavigationBar } from 'navigationBar/NavigationBar';
 import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
-import { useBranding } from '@eclipse-sirius/sirius-components';
-import { Form, FormContainer, NavigationBar } from '@eclipse-sirius/sirius-components';
+import { Form, FormContainer } from '@eclipse-sirius/sirius-components';
 import gql from 'graphql-tag';
 import React, { useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
@@ -41,6 +41,7 @@ import {
   SchemaValue,
   ShowToastEvent
 } from 'views/new-project/NewProjectViewMachine';
+import { Footer } from 'footer/Footer';
 
 const createProjectMutation = gql`
   mutation createProject($input: CreateProjectInput!) {
@@ -81,7 +82,6 @@ const isErrorPayload = (payload: GQLCreateProjectPayload): payload is GQLErrorPa
 
 export const NewProjectView = () => {
   const classes = useNewProjectViewStyles();
-  const { footer } = useBranding();
   const [{ value, context }, dispatch] = useMachine<NewProjectViewContext, NewProjectEvent>(newProjectViewMachine);
   const { newProjectView, toast } = value as SchemaValue;
   const { name, nameMessage, nameIsInvalid, message, newProjectId } = context;
@@ -167,7 +167,7 @@ export const NewProjectView = () => {
             </FormContainer>
           </Container>
         </main>
-        {footer}
+        <Footer />
       </div>
       <Snackbar
         anchorOrigin={{

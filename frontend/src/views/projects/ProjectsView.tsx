@@ -37,13 +37,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import { useMachine } from '@xstate/react';
-import {
-  useBranding,
-  httpOrigin,
-  DeleteProjectModal,
-  RenameProjectModal,
-  NavigationBar
-} from '@eclipse-sirius/sirius-components';
+import { httpOrigin, DeleteProjectModal, RenameProjectModal } from '@eclipse-sirius/sirius-components';
 import gql from 'graphql-tag';
 import React, { useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
@@ -67,6 +61,8 @@ import {
   SchemaValue,
   ShowToastEvent
 } from 'views/projects/ProjectsViewMachine';
+import { NavigationBar } from 'navigationBar/NavigationBar';
+import { Footer } from 'footer/Footer';
 
 const getProjectsQuery = gql`
   query getProjects {
@@ -112,7 +108,6 @@ const useProjectsViewStyles = makeStyles(theme => ({
 
 export const ProjectsView = () => {
   const classes = useProjectsViewStyles();
-  const { footer } = useBranding();
   const [{ value, context }, dispatch] = useMachine<ProjectsViewContext, ProjectsViewEvent>(projectsViewMachine);
   const { toast, projectsView } = value as SchemaValue;
   const { projects, selectedProject, menuAnchor, modalToDisplay, message } = context;
@@ -226,7 +221,7 @@ export const ProjectsView = () => {
             </Grid>
           </Container>
         </main>
-        {footer}
+        <Footer />
       </div>
       <Snackbar
         anchorOrigin={{
