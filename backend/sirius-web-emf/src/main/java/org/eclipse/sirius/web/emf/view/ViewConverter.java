@@ -161,7 +161,7 @@ public class ViewConverter {
         // @formatter:off
         // Convert our children first, we need their converted values to build our NodeDescription
         var childNodeDescriptions = viewNodeDescription.getChildrenDescriptions().stream()
-                                                       .map(subNodeDescription -> this.convert(viewNodeDescription))
+                                                       .map(this::convert)
                                                        .collect(Collectors.toList());
         // @formatter:on
         SynchronizationPolicy synchronizationPolicy = SynchronizationPolicy.UNSYNCHRONIZED;
