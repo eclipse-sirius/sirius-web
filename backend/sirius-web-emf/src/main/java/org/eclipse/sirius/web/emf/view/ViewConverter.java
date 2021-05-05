@@ -176,7 +176,7 @@ public class ViewConverter {
             synchronizationPolicy = SynchronizationPolicy.SYNCHRONIZED;
         }
         final String nodeType;
-        if (viewNodeDescription.getStyle().getShape() == null) {
+        if (viewNodeDescription.getStyle().getShape() == null || viewNodeDescription.getStyle().getShape().isBlank()) {
             nodeType = NodeType.NODE_RECTANGLE;
         } else {
             nodeType = NodeType.NODE_IMAGE;
