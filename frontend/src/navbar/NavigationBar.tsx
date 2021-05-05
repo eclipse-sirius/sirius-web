@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { Link } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
 import { makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -50,15 +51,15 @@ export const NavigationBar = () => {
       <Toolbar className={classes.toolbar}>
         <div className={classes.left}>
           <Tooltip title="Back to the homepage">
-            <RouterLink to="/" className={classes.link}>
-              <SiriusIcon fontSize="large" style={{ color: '#FFFFFF' }} />
-            </RouterLink>
+            <Link component={RouterLink} to="/" className={classes.link} color="inherit">
+              <SiriusIcon fontSize="large" />
+            </Link>
           </Tooltip>
         </div>
         <div className={classes.right}>
-          <a href="https://www.eclipse.org/sirius" rel="noopener noreferrer" target="_blank">
+          <Link href="https://www.eclipse.org/sirius" rel="noopener noreferrer" target="_blank" color="inherit">
             <HelpIcon />
-          </a>
+          </Link>
         </div>
       </Toolbar>
     </AppBar>

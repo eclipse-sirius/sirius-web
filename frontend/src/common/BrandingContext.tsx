@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { Link } from '@material-ui/core';
 import HelpIcon from '@material-ui/icons/Help';
 import { SiriusIcon } from 'icons';
 import React, { useContext } from 'react';
@@ -22,9 +23,9 @@ const defaultValue = {
   icon: defaultIcon,
   productName: 'Sirius Web',
   userStatus: (
-    <a href="https://www.eclipse.org/sirius" rel="noopener noreferrer" target="_blank">
+    <Link href="https://www.eclipse.org/sirius" rel="noopener noreferrer" target="_blank" color="inherit">
       <HelpIcon />
-    </a>
+    </Link>
   ),
   footer: <Footer />,
 };
