@@ -266,7 +266,7 @@ public class ViewConverter {
             return candidates.stream()
                     .filter(EObject.class::isInstance)
                     .map(EObject.class::cast)
-                    .filter(candidate -> candidate != null && candidate.eClass().getName().equals(elementDescription.getDomainType()))
+                    .filter(candidate -> new DomainClassPredicate(elementDescription.getDomainType()).test(candidate))
                     .collect(Collectors.toList());
             // @formatter:on
         };
