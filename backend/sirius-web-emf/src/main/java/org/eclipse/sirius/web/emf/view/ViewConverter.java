@@ -214,7 +214,7 @@ public class ViewConverter {
                     .label("New node " + nodeDescription.getDomainType()) //$NON-NLS-1$
                     .imageURL(NODE_CREATION_TOOL_ICON)
                     .handler(variableManager -> this.canonicalBehaviors.createNewNode(nodeDescription, variableManager))
-                    .targetDescriptions(List.of(this.convertedNodes.get(nodeDescription)))
+                    .targetDescriptions(Optional.ofNullable(nodeDescription.eContainer()).map(this.convertedNodes::get).stream().collect(Collectors.toList()))
                     .appliesToDiagramRoot(nodeDescription.eContainer() instanceof org.eclipse.sirius.web.view.DiagramDescription)
                     .build();
             // @formatter:on
