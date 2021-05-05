@@ -12,7 +12,6 @@
  *******************************************************************************/
 // Required because Sprotty uses Inversify and both frameworks are written in TypeScript with experimental features.
 import 'reflect-metadata';
-export * from 'theme';
 export * from './auth/useAuth';
 export * from './capabilities/CapabilitiesProvider';
 export * from './capabilities/useCapabilities';
@@ -100,6 +99,7 @@ export * from './properties/propertysections/ListPropertySection';
 export * from './properties/propertysections/RadioPropertySection';
 export * from './properties/propertysections/SelectPropertySection';
 export * from './properties/propertysections/TextfieldPropertySection';
+export * from './theme';
 export * from './tree/Tree';
 export * from './tree/Tree.types';
 export * from './tree/TreeItem';

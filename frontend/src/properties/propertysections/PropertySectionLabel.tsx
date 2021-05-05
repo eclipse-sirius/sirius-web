@@ -37,7 +37,6 @@ const usePropertySectionLabelStyles = makeStyles((theme) => ({
     fontSize: '0.875rem',
     width: theme.spacing(2),
     height: theme.spacing(2),
-    backgroundColor: theme.palette.primary.main,
   },
 }));
 
