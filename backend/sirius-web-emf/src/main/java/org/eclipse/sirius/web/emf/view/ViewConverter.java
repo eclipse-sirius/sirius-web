@@ -28,7 +28,9 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.web.components.Element;
 import org.eclipse.sirius.web.core.api.IObjectService;
+import org.eclipse.sirius.web.diagrams.LineStyle;
 import org.eclipse.sirius.web.diagrams.NodeType;
+import org.eclipse.sirius.web.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.web.diagrams.Size;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.web.diagrams.description.EdgeDescription;
@@ -64,6 +66,8 @@ public class ViewConverter {
     private static final String DEFAULT_SHAPE_FILE = "shape_square.svg"; //$NON-NLS-1$
 
     private static final String DEFAULT_DIAGRAM_LABEL = "Diagram"; //$NON-NLS-1$
+
+    private static final String DEFAULT_COLOR = "black"; //$NON-NLS-1$
 
     private static final String NODE_CREATION_TOOL_SECTION = "Node Creation"; //$NON-NLS-1$
 
@@ -191,9 +195,18 @@ public class ViewConverter {
                 .typeProvider(variableManager -> nodeType)
                 .labelDescription(this.getLabelDescription(viewNodeDescription))
                 .styleProvider(variableManager -> {
-                    String shapeId = viewNodeDescription.getStyle().getShape();
-                    String shapeFileName = this.customImagesService.findById(UUID.fromString(shapeId)).map(CustomImage::getFileName).orElse(DEFAULT_SHAPE_FILE);
-                    return this.stylesFactory.createNodeStyle(viewNodeDescription.getStyle().getColor(), shapeFileName);
+                    if (NodeType.NODE_IMAGE.equals(nodeType)) {
+                        String shapeId = viewNodeDescription.getStyle().getShape();
+                        String shapeFileName = this.customImagesService.findById(UUID.fromString(shapeId)).map(CustomImage::getFileName).orElse(DEFAULT_SHAPE_FILE);
+                        return this.stylesFactory.createNodeStyle(viewNodeDescription.getStyle().getColor(), shapeFileName);
+                    } else {
+                        return RectangularNodeStyle.newRectangularNodeStyle()
+                                .color(Optional.ofNullable(viewNodeDescription.getStyle().getColor()).orElse(DEFAULT_COLOR))
+                                .borderColor(DEFAULT_COLOR)
+                                .borderSize(1)
+                                .borderStyle(LineStyle.Solid)
+                                .build();
+                    }
                 })
                 .childNodeDescriptions(childNodeDescriptions)
                 .borderNodeDescriptions(List.of())
