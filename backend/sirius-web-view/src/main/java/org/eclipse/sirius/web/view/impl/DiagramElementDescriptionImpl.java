@@ -17,7 +17,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.sirius.web.view.DiagramElementDescription;
-import org.eclipse.sirius.web.view.Mode;
 import org.eclipse.sirius.web.view.ViewPackage;
 
 /**
@@ -30,8 +29,6 @@ import org.eclipse.sirius.web.view.ViewPackage;
  * <li>{@link org.eclipse.sirius.web.view.impl.DiagramElementDescriptionImpl#getDomainType <em>Domain Type</em>}</li>
  * <li>{@link org.eclipse.sirius.web.view.impl.DiagramElementDescriptionImpl#getSemanticCandidatesExpression
  * <em>Semantic Candidates Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.web.view.impl.DiagramElementDescriptionImpl#getCreationMode <em>Creation
- * Mode</em>}</li>
  * <li>{@link org.eclipse.sirius.web.view.impl.DiagramElementDescriptionImpl#getLabelExpression <em>Label
  * Expression</em>}</li>
  * </ul>
@@ -78,26 +75,6 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
      * @ordered
      */
     protected String semanticCandidatesExpression = SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT;
-
-    /**
-     * The default value of the '{@link #getCreationMode() <em>Creation Mode</em>}' attribute. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @see #getCreationMode()
-     * @generated
-     * @ordered
-     */
-    protected static final Mode CREATION_MODE_EDEFAULT = Mode.AUTO;
-
-    /**
-     * The cached value of the '{@link #getCreationMode() <em>Creation Mode</em>}' attribute. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @see #getCreationMode()
-     * @generated
-     * @ordered
-     */
-    protected Mode creationMode = CREATION_MODE_EDEFAULT;
 
     /**
      * The default value of the '{@link #getLabelExpression() <em>Label Expression</em>}' attribute. <!-- begin-user-doc
@@ -191,29 +168,6 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
      * @generated
      */
     @Override
-    public Mode getCreationMode() {
-        return this.creationMode;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public void setCreationMode(Mode newCreationMode) {
-        Mode oldCreationMode = this.creationMode;
-        this.creationMode = newCreationMode == null ? CREATION_MODE_EDEFAULT : newCreationMode;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__CREATION_MODE, oldCreationMode, this.creationMode));
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
     public String getLabelExpression() {
         return this.labelExpression;
     }
@@ -243,8 +197,6 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
             return this.getDomainType();
         case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
             return this.getSemanticCandidatesExpression();
-        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__CREATION_MODE:
-            return this.getCreationMode();
         case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION:
             return this.getLabelExpression();
         }
@@ -264,9 +216,6 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
             return;
         case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
             this.setSemanticCandidatesExpression((String) newValue);
-            return;
-        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__CREATION_MODE:
-            this.setCreationMode((Mode) newValue);
             return;
         case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION:
             this.setLabelExpression((String) newValue);
@@ -289,9 +238,6 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
         case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
             this.setSemanticCandidatesExpression(SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT);
             return;
-        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__CREATION_MODE:
-            this.setCreationMode(CREATION_MODE_EDEFAULT);
-            return;
         case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION:
             this.setLabelExpression(LABEL_EXPRESSION_EDEFAULT);
             return;
@@ -311,8 +257,6 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
             return DOMAIN_TYPE_EDEFAULT == null ? this.domainType != null : !DOMAIN_TYPE_EDEFAULT.equals(this.domainType);
         case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
             return SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT == null ? this.semanticCandidatesExpression != null : !SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT.equals(this.semanticCandidatesExpression);
-        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__CREATION_MODE:
-            return this.creationMode != CREATION_MODE_EDEFAULT;
         case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION:
             return LABEL_EXPRESSION_EDEFAULT == null ? this.labelExpression != null : !LABEL_EXPRESSION_EDEFAULT.equals(this.labelExpression);
         }
@@ -334,8 +278,6 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
         result.append(this.domainType);
         result.append(", semanticCandidatesExpression: "); //$NON-NLS-1$
         result.append(this.semanticCandidatesExpression);
-        result.append(", creationMode: "); //$NON-NLS-1$
-        result.append(this.creationMode);
         result.append(", labelExpression: "); //$NON-NLS-1$
         result.append(this.labelExpression);
         result.append(')');

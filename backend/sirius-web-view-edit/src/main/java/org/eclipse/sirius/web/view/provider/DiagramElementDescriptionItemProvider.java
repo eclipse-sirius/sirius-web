@@ -60,7 +60,6 @@ public class DiagramElementDescriptionItemProvider extends ItemProviderAdapter
 
             this.addDomainTypePropertyDescriptor(object);
             this.addSemanticCandidatesExpressionPropertyDescriptor(object);
-            this.addCreationModePropertyDescriptor(object);
             this.addLabelExpressionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
@@ -89,18 +88,6 @@ public class DiagramElementDescriptionItemProvider extends ItemProviderAdapter
                 this.getString("_UI_DiagramElementDescription_semanticCandidatesExpression_feature"), //$NON-NLS-1$
                 this.getString("_UI_PropertyDescriptor_description", "_UI_DiagramElementDescription_semanticCandidatesExpression_feature", "_UI_DiagramElementDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                 ViewPackage.Literals.DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
-
-    /**
-     * This adds a property descriptor for the Creation Mode feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected void addCreationModePropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_DiagramElementDescription_creationMode_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_DiagramElementDescription_creationMode_feature", "_UI_DiagramElementDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                ViewPackage.Literals.DIAGRAM_ELEMENT_DESCRIPTION__CREATION_MODE, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -161,7 +148,6 @@ public class DiagramElementDescriptionItemProvider extends ItemProviderAdapter
         switch (notification.getFeatureID(DiagramElementDescription.class)) {
         case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE:
         case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
-        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__CREATION_MODE:
         case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION:
             this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
             return;

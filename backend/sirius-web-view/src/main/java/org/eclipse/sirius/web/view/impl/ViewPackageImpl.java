@@ -14,14 +14,12 @@ package org.eclipse.sirius.web.view.impl;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.eclipse.sirius.web.view.DiagramDescription;
 import org.eclipse.sirius.web.view.DiagramElementDescription;
 import org.eclipse.sirius.web.view.EdgeDescription;
-import org.eclipse.sirius.web.view.Mode;
 import org.eclipse.sirius.web.view.NodeDescription;
 import org.eclipse.sirius.web.view.NodeStyle;
 import org.eclipse.sirius.web.view.RepresentationDescription;
@@ -91,13 +89,6 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     private EClass nodeStyleEClass = null;
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    private EEnum modeEEnum = null;
 
     /**
      * Creates an instance of the model <b>Package</b>, registered with {@link org.eclipse.emf.ecore.EPackage.Registry
@@ -286,18 +277,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
-    public EAttribute getDiagramElementDescription_CreationMode() {
-        return (EAttribute) this.diagramElementDescriptionEClass.getEStructuralFeatures().get(2);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
     public EAttribute getDiagramElementDescription_LabelExpression() {
-        return (EAttribute) this.diagramElementDescriptionEClass.getEStructuralFeatures().get(3);
+        return (EAttribute) this.diagramElementDescriptionEClass.getEStructuralFeatures().get(2);
     }
 
     /**
@@ -446,16 +427,6 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
-    public EEnum getMode() {
-        return this.modeEEnum;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
     public ViewFactory getViewFactory() {
         return (ViewFactory) this.getEFactoryInstance();
     }
@@ -494,7 +465,6 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.diagramElementDescriptionEClass = this.createEClass(DIAGRAM_ELEMENT_DESCRIPTION);
         this.createEAttribute(this.diagramElementDescriptionEClass, DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE);
         this.createEAttribute(this.diagramElementDescriptionEClass, DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION);
-        this.createEAttribute(this.diagramElementDescriptionEClass, DIAGRAM_ELEMENT_DESCRIPTION__CREATION_MODE);
         this.createEAttribute(this.diagramElementDescriptionEClass, DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION);
 
         this.nodeDescriptionEClass = this.createEClass(NODE_DESCRIPTION);
@@ -514,9 +484,6 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
 
         this.nodeStyleEClass = this.createEClass(NODE_STYLE);
         this.createEAttribute(this.nodeStyleEClass, NODE_STYLE__SHAPE);
-
-        // Create enums
-        this.modeEEnum = this.createEEnum(MODE);
     }
 
     /**
@@ -576,8 +543,6 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
                 IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getDiagramElementDescription_SemanticCandidatesExpression(), this.ecorePackage.getEString(), "semanticCandidatesExpression", null, 0, 1, //$NON-NLS-1$
                 DiagramElementDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getDiagramElementDescription_CreationMode(), this.getMode(), "creationMode", null, 0, 1, DiagramElementDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, //$NON-NLS-1$
-                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getDiagramElementDescription_LabelExpression(), this.ecorePackage.getEString(), "labelExpression", null, 0, 1, DiagramElementDescription.class, !IS_TRANSIENT, //$NON-NLS-1$
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -608,11 +573,6 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.initEClass(this.nodeStyleEClass, NodeStyle.class, "NodeStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
         this.initEAttribute(this.getNodeStyle_Shape(), this.ecorePackage.getEString(), "shape", null, 1, 1, NodeStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, //$NON-NLS-1$
                 IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-        // Initialize enums and add enum literals
-        this.initEEnum(this.modeEEnum, Mode.class, "Mode"); //$NON-NLS-1$
-        this.addEEnumLiteral(this.modeEEnum, Mode.AUTO);
-        this.addEEnumLiteral(this.modeEEnum, Mode.EXPLICIT);
 
         // Create resource
         this.createResource(eNS_URI);

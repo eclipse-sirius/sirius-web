@@ -25,7 +25,6 @@ import org.eclipse.emf.ecore.EObject;
  * <li>{@link org.eclipse.sirius.web.view.DiagramElementDescription#getDomainType <em>Domain Type</em>}</li>
  * <li>{@link org.eclipse.sirius.web.view.DiagramElementDescription#getSemanticCandidatesExpression <em>Semantic
  * Candidates Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.web.view.DiagramElementDescription#getCreationMode <em>Creation Mode</em>}</li>
  * <li>{@link org.eclipse.sirius.web.view.DiagramElementDescription#getLabelExpression <em>Label Expression</em>}</li>
  * </ul>
  *
@@ -79,31 +78,6 @@ public interface DiagramElementDescription extends EObject {
      * @generated
      */
     void setSemanticCandidatesExpression(String value);
-
-    /**
-     * Returns the value of the '<em><b>Creation Mode</b></em>' attribute. The literals are from the enumeration
-     * {@link org.eclipse.sirius.web.view.Mode}. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Creation Mode</em>' attribute.
-     * @see org.eclipse.sirius.web.view.Mode
-     * @see #setCreationMode(Mode)
-     * @see org.eclipse.sirius.web.view.ViewPackage#getDiagramElementDescription_CreationMode()
-     * @model
-     * @generated
-     */
-    Mode getCreationMode();
-
-    /**
-     * Sets the value of the '{@link org.eclipse.sirius.web.view.DiagramElementDescription#getCreationMode <em>Creation
-     * Mode</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Creation Mode</em>' attribute.
-     * @see org.eclipse.sirius.web.view.Mode
-     * @see #getCreationMode()
-     * @generated
-     */
-    void setCreationMode(Mode value);
 
     /**
      * Returns the value of the '<em><b>Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
