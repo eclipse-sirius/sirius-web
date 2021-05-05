@@ -139,7 +139,14 @@ public class ViewConverter {
             // @formatter:off
             return DiagramDescription.newDiagramDescription(UUID.nameUUIDFromBytes(viewDiagramDescription.getName().getBytes()))
                     .label(Optional.ofNullable(viewDiagramDescription.getName()).orElse(DEFAULT_DIAGRAM_LABEL))
-                    .labelProvider(variableManager -> this.evaluateString(variableManager, viewDiagramDescription.getTitleExpression()))
+                    .labelProvider(variableManager -> {
+                        String title = this.evaluateString(variableManager, viewDiagramDescription.getTitleExpression());
+                        if (title == null || title.isBlank()) {
+                            return DEFAULT_DIAGRAM_LABEL;
+                        } else {
+                            return title;
+                        }
+                    })
                     .canCreatePredicate(variableManager -> this.canCreateDiagram(variableManager, viewDiagramDescription.getDomainType()))
                     .targetObjectIdProvider(this.semanticTargetIdProvider)
                     .nodeDescriptions(nodeDescriptions)
