@@ -84,7 +84,7 @@ public class DiagramCreationService implements IDiagramCreationService {
     @Override
     public Diagram create(String label, Object targetObject, DiagramDescription diagramDescription, IEditingContext editingContext) {
         Diagram newDiagram = this.doRender(label, targetObject, editingContext, diagramDescription, Optional.empty());
-        return this.layoutService.layout(newDiagram);
+        return newDiagram;
     }
 
     @Override
