@@ -35,6 +35,7 @@ import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.core.api.IPayload;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
@@ -47,11 +48,6 @@ import reactor.core.Disposable;
  */
 @Service
 public class EditingContextEventProcessorRegistry implements IEditingContextEventProcessorRegistry {
-
-    /**
-     * The delay to wait before considering if we should dispose an EditingContextEventProcessor.
-     */
-    private static final Duration DISPOSE_DELAY = Duration.ofSeconds(30);
 
     private final Logger logger = LoggerFactory.getLogger(EditingContextEventProcessorRegistry.class);
 
@@ -69,15 +65,19 @@ public class EditingContextEventProcessorRegistry implements IEditingContextEven
 
     private final Map<UUID, EditingContextEventProcessorEntry> editingContextEventProcessors = new ConcurrentHashMap<>();
 
+    private final Duration disposeDelay;
+
     public EditingContextEventProcessorRegistry(IEditingContextSearchService editingContextSearchService, IEditingContextPersistenceService editingContextPersistenceService,
             IObjectService objectService, ApplicationEventPublisher applicationEventPublisher, List<IEditingContextEventHandler> editingContextEventHandlers,
-            IRepresentationEventProcessorComposedFactory representationEventProcessorComposedFactory) {
+            IRepresentationEventProcessorComposedFactory representationEventProcessorComposedFactory,
+            @Value("${org.eclipse.sirius.web.editingContextEventProcessorRegistry.disposeDelay:30s}") Duration disposeDelay) {
         this.editingContextSearchService = Objects.requireNonNull(editingContextSearchService);
         this.editingContextPersistenceService = Objects.requireNonNull(editingContextPersistenceService);
         this.applicationEventPublisher = Objects.requireNonNull(applicationEventPublisher);
         this.objectService = Objects.requireNonNull(objectService);
         this.editingContextEventHandlers = Objects.requireNonNull(editingContextEventHandlers);
         this.representationEventProcessorComposedFactory = Objects.requireNonNull(representationEventProcessorComposedFactory);
+        this.disposeDelay = disposeDelay;
     }
 
     @Override
@@ -107,7 +107,7 @@ public class EditingContextEventProcessorRegistry implements IEditingContextEven
 
                     var editingContextEventProcessor = new EditingContextEventProcessor(editingContext, this.editingContextPersistenceService, this.applicationEventPublisher, this.objectService,
                             this.editingContextEventHandlers, this.representationEventProcessorComposedFactory);
-                    Disposable subscription = editingContextEventProcessor.canBeDisposed().delayElements(DISPOSE_DELAY).subscribe(canBeDisposed -> {
+                    Disposable subscription = editingContextEventProcessor.canBeDisposed().delayElements(this.disposeDelay).subscribe(canBeDisposed -> {
                         // We will wait for the delay before trying to dispose the editing context event processor
                         // We will check if the editing context event processor is still empty
                         if (canBeDisposed.booleanValue() && editingContextEventProcessor.getRepresentationEventProcessors().isEmpty()) {
