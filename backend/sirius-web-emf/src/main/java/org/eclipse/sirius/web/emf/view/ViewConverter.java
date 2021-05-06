@@ -142,14 +142,7 @@ public class ViewConverter {
             // @formatter:off
             return DiagramDescription.newDiagramDescription(UUID.nameUUIDFromBytes(viewDiagramDescription.getName().getBytes()))
                     .label(Optional.ofNullable(viewDiagramDescription.getName()).orElse(DEFAULT_DIAGRAM_LABEL))
-                    .labelProvider(variableManager -> {
-                        String title = this.evaluateString(variableManager, viewDiagramDescription.getTitleExpression());
-                        if (title == null || title.isBlank()) {
-                            return DEFAULT_DIAGRAM_LABEL;
-                        } else {
-                            return title;
-                        }
-                    })
+                    .labelProvider(variableManager -> this.computeDiagramLabel(viewDiagramDescription, variableManager))
                     .canCreatePredicate(variableManager -> this.canCreateDiagram(variableManager, viewDiagramDescription.getDomainType()))
                     .targetObjectIdProvider(this.semanticTargetIdProvider)
                     .nodeDescriptions(nodeDescriptions)
@@ -160,6 +153,17 @@ public class ViewConverter {
         } finally {
             this.convertedNodes.clear();
             this.convertedEdges.clear();
+        }
+    }
+
+    private String computeDiagramLabel(org.eclipse.sirius.web.view.DiagramDescription viewDiagramDescription, VariableManager variableManager) {
+        String title = variableManager.get(DiagramDescription.LABEL, String.class).orElseGet(() -> {
+            return this.evaluateString(variableManager, viewDiagramDescription.getTitleExpression());
+        });
+        if (title == null || title.isBlank()) {
+            return DEFAULT_DIAGRAM_LABEL;
+        } else {
+            return title;
         }
     }
 
