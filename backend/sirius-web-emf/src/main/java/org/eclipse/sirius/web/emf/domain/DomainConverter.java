@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
@@ -23,6 +24,7 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.emf.ecore.util.Diagnostician;
 import org.eclipse.sirius.web.domain.Attribute;
 import org.eclipse.sirius.web.domain.Domain;
 import org.eclipse.sirius.web.domain.Entity;
@@ -36,7 +38,7 @@ import org.eclipse.sirius.web.domain.Relation;
  */
 public class DomainConverter {
 
-    public EPackage convert(Domain domain) {
+    public Optional<EPackage> convert(Domain domain) {
         EPackage ePackage = EcoreFactory.eINSTANCE.createEPackage();
         ePackage.setName(domain.getName());
         ePackage.setNsPrefix(Optional.ofNullable(domain.getName()).orElse("").toLowerCase()); //$NON-NLS-1$
@@ -55,7 +57,12 @@ public class DomainConverter {
                 eClass.getEStructuralFeatures().add(eReference);
             }
         }
-        return ePackage;
+        Diagnostic diagnostic = Diagnostician.INSTANCE.validate(ePackage);
+        if (diagnostic.getSeverity() >= Diagnostic.ERROR) {
+            return Optional.empty();
+        } else {
+            return Optional.of(ePackage);
+        }
     }
 
     private EClass convert(Entity entity) {

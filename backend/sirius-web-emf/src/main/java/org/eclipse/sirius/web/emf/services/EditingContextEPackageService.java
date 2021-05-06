@@ -86,7 +86,7 @@ public class EditingContextEPackageService implements IEditingContextEPackageSer
                             .filter(Domain.class::isInstance)
                             .map(Domain.class::cast)
                             .findFirst()
-                            .map(new DomainConverter()::convert)
+                            .flatMap(new DomainConverter()::convert)
                             .stream();
                 })
                 .collect(Collectors.toList());
