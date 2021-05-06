@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius.web</groupId>
 	<artifactId>sirius-web-test-diagrams-only-application</artifactId>
-	<version>0.2.21</version>
+	<version>0.2.22</version>
 	<name>sirius-web-test-diagrams-only-application</name>
 	<description>Sirius Web Test Diagrams Only Application</description>
 
@@ -93,17 +93,17 @@
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-spring-starter</artifactId>
-			<version>0.2.21</version>
+			<version>0.2.22</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-graphiql</artifactId>
-			<version>0.2.21</version>
+			<version>0.2.22</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-graphql-voyager</artifactId>
-			<version>0.2.21</version>
+			<version>0.2.22</version>
 		</dependency>
 		<dependency>
 			<groupId>fr.obeo.dsl.designer.sample.flow</groupId>
