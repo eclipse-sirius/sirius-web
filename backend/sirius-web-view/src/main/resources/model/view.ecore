@@ -27,6 +27,8 @@
         eType="#//NodeDescription" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="style" eType="#//NodeStyle"
         containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="conditionalStyles" upperBound="-1"
+        eType="#//ConditionalNodeStyle" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EdgeDescription" eSuperTypes="#//DiagramElementDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="isDomainBasedEdge" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
@@ -38,13 +40,53 @@
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="targetNodesExpression"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="style" eType="#//Style"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="style" eType="#//EdgeStyle"
         containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="conditionalStyles" upperBound="-1"
+        eType="#//ConditionalEdgeStyle" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Style">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Style" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="rgb(0, 0, 0)"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="borderColor" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="rgb(0, 0, 0)"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="fontSize" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="14"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NodeStyle" eSuperTypes="#//Style">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="shape" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="EdgeStyle" eSuperTypes="#//Style">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="lineStyle" lowerBound="1"
+        eType="#//LineStyle" defaultValueLiteral="Solid"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="sourceArrowStyle" lowerBound="1"
+        eType="#//ArrowStyle" defaultValueLiteral="None"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="targetArrowStyle" lowerBound="1"
+        eType="#//ArrowStyle" defaultValueLiteral="None"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="ArrowStyle">
+    <eLiterals name="None"/>
+    <eLiterals name="OutputArrow" value="1"/>
+    <eLiterals name="InputArrow" value="2"/>
+    <eLiterals name="OutputClosedArrow" value="3"/>
+    <eLiterals name="InputClosedArrow" value="4"/>
+    <eLiterals name="OutputFillClosedArrow" value="5"/>
+    <eLiterals name="InputFillClosedArrow" value="6"/>
+    <eLiterals name="Diamond" value="7"/>
+    <eLiterals name="FillDiamond" value="8"/>
+    <eLiterals name="InputArrowWithDiamond" value="9"/>
+    <eLiterals name="InputArrowWithFillDiamond" value="10"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="LineStyle">
+    <eLiterals name="Solid"/>
+    <eLiterals name="Dash" value="1"/>
+    <eLiterals name="Dot" value="2"/>
+    <eLiterals name="Dash_Dot"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Conditional">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="condition" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="aql:true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ConditionalNodeStyle" eSuperTypes="#//Conditional #//NodeStyle"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ConditionalEdgeStyle" eSuperTypes="#//Conditional #//EdgeStyle"/>
 </ecore:EPackage>
