@@ -12,14 +12,20 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.view.impl;
 
+import java.util.Collection;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.sirius.web.view.ConditionalEdgeStyle;
 import org.eclipse.sirius.web.view.EdgeDescription;
+import org.eclipse.sirius.web.view.EdgeStyle;
 import org.eclipse.sirius.web.view.NodeDescription;
-import org.eclipse.sirius.web.view.Style;
 import org.eclipse.sirius.web.view.ViewPackage;
 
 /**
@@ -132,7 +138,17 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @generated
      * @ordered
      */
-    protected Style style;
+    protected EdgeStyle style;
+
+    /**
+     * The cached value of the '{@link #getConditionalStyles() <em>Conditional Styles</em>}' reference list. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getConditionalStyles()
+     * @generated
+     * @ordered
+     */
+    protected EList<ConditionalEdgeStyle> conditionalStyles;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -308,7 +324,7 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @generated
      */
     @Override
-    public Style getStyle() {
+    public EdgeStyle getStyle() {
         return this.style;
     }
 
@@ -317,8 +333,8 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
      *
      * @generated
      */
-    public NotificationChain basicSetStyle(Style newStyle, NotificationChain msgs) {
-        Style oldStyle = this.style;
+    public NotificationChain basicSetStyle(EdgeStyle newStyle, NotificationChain msgs) {
+        EdgeStyle oldStyle = this.style;
         this.style = newStyle;
         if (this.eNotificationRequired()) {
             ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ViewPackage.EDGE_DESCRIPTION__STYLE, oldStyle, newStyle);
@@ -336,7 +352,7 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @generated
      */
     @Override
-    public void setStyle(Style newStyle) {
+    public void setStyle(EdgeStyle newStyle) {
         if (newStyle != this.style) {
             NotificationChain msgs = null;
             if (this.style != null)
@@ -356,10 +372,25 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @generated
      */
     @Override
+    public EList<ConditionalEdgeStyle> getConditionalStyles() {
+        if (this.conditionalStyles == null) {
+            this.conditionalStyles = new EObjectContainmentEList<>(ConditionalEdgeStyle.class, this, ViewPackage.EDGE_DESCRIPTION__CONDITIONAL_STYLES);
+        }
+        return this.conditionalStyles;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
         case ViewPackage.EDGE_DESCRIPTION__STYLE:
             return this.basicSetStyle(null, msgs);
+        case ViewPackage.EDGE_DESCRIPTION__CONDITIONAL_STYLES:
+            return ((InternalEList<?>) this.getConditionalStyles()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -388,6 +419,8 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
             return this.getTargetNodesExpression();
         case ViewPackage.EDGE_DESCRIPTION__STYLE:
             return this.getStyle();
+        case ViewPackage.EDGE_DESCRIPTION__CONDITIONAL_STYLES:
+            return this.getConditionalStyles();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -417,7 +450,11 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
             this.setTargetNodesExpression((String) newValue);
             return;
         case ViewPackage.EDGE_DESCRIPTION__STYLE:
-            this.setStyle((Style) newValue);
+            this.setStyle((EdgeStyle) newValue);
+            return;
+        case ViewPackage.EDGE_DESCRIPTION__CONDITIONAL_STYLES:
+            this.getConditionalStyles().clear();
+            this.getConditionalStyles().addAll((Collection<? extends ConditionalEdgeStyle>) newValue);
             return;
         }
         super.eSet(featureID, newValue);
@@ -447,7 +484,10 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
             this.setTargetNodesExpression(TARGET_NODES_EXPRESSION_EDEFAULT);
             return;
         case ViewPackage.EDGE_DESCRIPTION__STYLE:
-            this.setStyle((Style) null);
+            this.setStyle((EdgeStyle) null);
+            return;
+        case ViewPackage.EDGE_DESCRIPTION__CONDITIONAL_STYLES:
+            this.getConditionalStyles().clear();
             return;
         }
         super.eUnset(featureID);
@@ -473,6 +513,8 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
             return TARGET_NODES_EXPRESSION_EDEFAULT == null ? this.targetNodesExpression != null : !TARGET_NODES_EXPRESSION_EDEFAULT.equals(this.targetNodesExpression);
         case ViewPackage.EDGE_DESCRIPTION__STYLE:
             return this.style != null;
+        case ViewPackage.EDGE_DESCRIPTION__CONDITIONAL_STYLES:
+            return this.conditionalStyles != null && !this.conditionalStyles.isEmpty();
         }
         return super.eIsSet(featureID);
     }

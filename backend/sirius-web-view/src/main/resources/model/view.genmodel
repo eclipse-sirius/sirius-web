@@ -13,6 +13,25 @@
   <testsDirectory xsi:nil="true"/>
   <genPackages prefix="View" basePackage="org.eclipse.sirius.web" disposableProviderFactory="true"
       ecorePackage="view.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="view.ecore#//ArrowStyle">
+      <genEnumLiterals ecoreEnumLiteral="view.ecore#//ArrowStyle/None"/>
+      <genEnumLiterals ecoreEnumLiteral="view.ecore#//ArrowStyle/OutputArrow"/>
+      <genEnumLiterals ecoreEnumLiteral="view.ecore#//ArrowStyle/InputArrow"/>
+      <genEnumLiterals ecoreEnumLiteral="view.ecore#//ArrowStyle/OutputClosedArrow"/>
+      <genEnumLiterals ecoreEnumLiteral="view.ecore#//ArrowStyle/InputClosedArrow"/>
+      <genEnumLiterals ecoreEnumLiteral="view.ecore#//ArrowStyle/OutputFillClosedArrow"/>
+      <genEnumLiterals ecoreEnumLiteral="view.ecore#//ArrowStyle/InputFillClosedArrow"/>
+      <genEnumLiterals ecoreEnumLiteral="view.ecore#//ArrowStyle/Diamond"/>
+      <genEnumLiterals ecoreEnumLiteral="view.ecore#//ArrowStyle/FillDiamond"/>
+      <genEnumLiterals ecoreEnumLiteral="view.ecore#//ArrowStyle/InputArrowWithDiamond"/>
+      <genEnumLiterals ecoreEnumLiteral="view.ecore#//ArrowStyle/InputArrowWithFillDiamond"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="view.ecore#//LineStyle">
+      <genEnumLiterals ecoreEnumLiteral="view.ecore#//LineStyle/Solid"/>
+      <genEnumLiterals ecoreEnumLiteral="view.ecore#//LineStyle/Dash"/>
+      <genEnumLiterals ecoreEnumLiteral="view.ecore#//LineStyle/Dot"/>
+      <genEnumLiterals ecoreEnumLiteral="view.ecore#//LineStyle/Dash_Dot"/>
+    </genEnums>
     <genClasses ecoreClass="view.ecore#//View">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//View/descriptions"/>
     </genClasses>
@@ -33,6 +52,7 @@
     <genClasses ecoreClass="view.ecore#//NodeDescription">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//NodeDescription/childrenDescriptions"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//NodeDescription/style"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference view.ecore#//NodeDescription/conditionalStyles"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//EdgeDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//EdgeDescription/isDomainBasedEdge"/>
@@ -41,12 +61,25 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//EdgeDescription/sourceNodesExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//EdgeDescription/targetNodesExpression"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//EdgeDescription/style"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference view.ecore#//EdgeDescription/conditionalStyles"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//Style">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//Style/color"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//Style/borderColor"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//Style/fontSize"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//NodeStyle">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//NodeStyle/shape"/>
     </genClasses>
+    <genClasses ecoreClass="view.ecore#//EdgeStyle">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//EdgeStyle/lineStyle"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//EdgeStyle/sourceArrowStyle"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//EdgeStyle/targetArrowStyle"/>
+    </genClasses>
+    <genClasses ecoreClass="view.ecore#//Conditional">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//Conditional/condition"/>
+    </genClasses>
+    <genClasses ecoreClass="view.ecore#//ConditionalNodeStyle"/>
+    <genClasses ecoreClass="view.ecore#//ConditionalEdgeStyle"/>
   </genPackages>
 </genmodel:GenModel>

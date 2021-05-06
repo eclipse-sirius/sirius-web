@@ -15,9 +15,13 @@ package org.eclipse.sirius.web.view.util;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.Switch;
+import org.eclipse.sirius.web.view.Conditional;
+import org.eclipse.sirius.web.view.ConditionalEdgeStyle;
+import org.eclipse.sirius.web.view.ConditionalNodeStyle;
 import org.eclipse.sirius.web.view.DiagramDescription;
 import org.eclipse.sirius.web.view.DiagramElementDescription;
 import org.eclipse.sirius.web.view.EdgeDescription;
+import org.eclipse.sirius.web.view.EdgeStyle;
 import org.eclipse.sirius.web.view.NodeDescription;
 import org.eclipse.sirius.web.view.NodeStyle;
 import org.eclipse.sirius.web.view.RepresentationDescription;
@@ -136,6 +140,48 @@ public class ViewSwitch<T> extends Switch<T> {
             T result = this.caseNodeStyle(nodeStyle);
             if (result == null)
                 result = this.caseStyle(nodeStyle);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.EDGE_STYLE: {
+            EdgeStyle edgeStyle = (EdgeStyle) theEObject;
+            T result = this.caseEdgeStyle(edgeStyle);
+            if (result == null)
+                result = this.caseStyle(edgeStyle);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.CONDITIONAL: {
+            Conditional conditional = (Conditional) theEObject;
+            T result = this.caseConditional(conditional);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.CONDITIONAL_NODE_STYLE: {
+            ConditionalNodeStyle conditionalNodeStyle = (ConditionalNodeStyle) theEObject;
+            T result = this.caseConditionalNodeStyle(conditionalNodeStyle);
+            if (result == null)
+                result = this.caseConditional(conditionalNodeStyle);
+            if (result == null)
+                result = this.caseNodeStyle(conditionalNodeStyle);
+            if (result == null)
+                result = this.caseStyle(conditionalNodeStyle);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.CONDITIONAL_EDGE_STYLE: {
+            ConditionalEdgeStyle conditionalEdgeStyle = (ConditionalEdgeStyle) theEObject;
+            T result = this.caseConditionalEdgeStyle(conditionalEdgeStyle);
+            if (result == null)
+                result = this.caseConditional(conditionalEdgeStyle);
+            if (result == null)
+                result = this.caseEdgeStyle(conditionalEdgeStyle);
+            if (result == null)
+                result = this.caseStyle(conditionalEdgeStyle);
             if (result == null)
                 result = this.defaultCase(theEObject);
             return result;
@@ -259,6 +305,64 @@ public class ViewSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseNodeStyle(NodeStyle object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Edge Style</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Edge Style</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseEdgeStyle(EdgeStyle object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Conditional</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Conditional</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseConditional(Conditional object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Conditional Node Style</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Conditional Node Style</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseConditionalNodeStyle(ConditionalNodeStyle object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Conditional Edge Style</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Conditional Edge Style</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseConditionalEdgeStyle(ConditionalEdgeStyle object) {
         return null;
     }
 

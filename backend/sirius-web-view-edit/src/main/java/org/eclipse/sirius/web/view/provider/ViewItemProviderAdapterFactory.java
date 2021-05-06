@@ -170,29 +170,6 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.web.view.Style} instances. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected StyleItemProvider styleItemProvider;
-
-    /**
-     * This creates an adapter for a {@link org.eclipse.sirius.web.view.Style}. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public Adapter createStyleAdapter() {
-        if (this.styleItemProvider == null) {
-            this.styleItemProvider = new StyleItemProvider(this);
-        }
-
-        return this.styleItemProvider;
-    }
-
-    /**
      * This keeps track of the one adapter used for all {@link org.eclipse.sirius.web.view.NodeStyle} instances. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
@@ -213,6 +190,98 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
         }
 
         return this.nodeStyleItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.web.view.EdgeStyle} instances. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected EdgeStyleItemProvider edgeStyleItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.web.view.EdgeStyle}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createEdgeStyleAdapter() {
+        if (this.edgeStyleItemProvider == null) {
+            this.edgeStyleItemProvider = new EdgeStyleItemProvider(this);
+        }
+
+        return this.edgeStyleItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.web.view.Conditional} instances. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected ConditionalItemProvider conditionalItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.web.view.Conditional}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createConditionalAdapter() {
+        if (this.conditionalItemProvider == null) {
+            this.conditionalItemProvider = new ConditionalItemProvider(this);
+        }
+
+        return this.conditionalItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.web.view.ConditionalNodeStyle}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected ConditionalNodeStyleItemProvider conditionalNodeStyleItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.web.view.ConditionalNodeStyle}. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createConditionalNodeStyleAdapter() {
+        if (this.conditionalNodeStyleItemProvider == null) {
+            this.conditionalNodeStyleItemProvider = new ConditionalNodeStyleItemProvider(this);
+        }
+
+        return this.conditionalNodeStyleItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.web.view.ConditionalEdgeStyle}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected ConditionalEdgeStyleItemProvider conditionalEdgeStyleItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.web.view.ConditionalEdgeStyle}. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createConditionalEdgeStyleAdapter() {
+        if (this.conditionalEdgeStyleItemProvider == null) {
+            this.conditionalEdgeStyleItemProvider = new ConditionalEdgeStyleItemProvider(this);
+        }
+
+        return this.conditionalEdgeStyleItemProvider;
     }
 
     /**
@@ -323,10 +392,16 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
             this.nodeDescriptionItemProvider.dispose();
         if (this.edgeDescriptionItemProvider != null)
             this.edgeDescriptionItemProvider.dispose();
-        if (this.styleItemProvider != null)
-            this.styleItemProvider.dispose();
         if (this.nodeStyleItemProvider != null)
             this.nodeStyleItemProvider.dispose();
+        if (this.edgeStyleItemProvider != null)
+            this.edgeStyleItemProvider.dispose();
+        if (this.conditionalItemProvider != null)
+            this.conditionalItemProvider.dispose();
+        if (this.conditionalNodeStyleItemProvider != null)
+            this.conditionalNodeStyleItemProvider.dispose();
+        if (this.conditionalEdgeStyleItemProvider != null)
+            this.conditionalEdgeStyleItemProvider.dispose();
     }
 
 }

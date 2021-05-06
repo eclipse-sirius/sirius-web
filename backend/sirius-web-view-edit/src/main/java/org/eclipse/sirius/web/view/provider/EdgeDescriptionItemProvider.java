@@ -57,6 +57,7 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
             this.addTargetNodeDescriptionPropertyDescriptor(object);
             this.addSourceNodesExpressionPropertyDescriptor(object);
             this.addTargetNodesExpressionPropertyDescriptor(object);
+            this.addConditionalStylesPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -124,6 +125,18 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
                 this.getString("_UI_EdgeDescription_targetNodesExpression_feature"), //$NON-NLS-1$
                 this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeDescription_targetNodesExpression_feature", "_UI_EdgeDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                 ViewPackage.Literals.EDGE_DESCRIPTION__TARGET_NODES_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Conditional Styles feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addConditionalStylesPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_EdgeDescription_conditionalStyles_feature"), //$NON-NLS-1$
+                this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeDescription_conditionalStyles_feature", "_UI_EdgeDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                ViewPackage.Literals.EDGE_DESCRIPTION__CONDITIONAL_STYLES, true, false, true, null, null, null));
     }
 
     /**
@@ -222,9 +235,9 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
 
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.EDGE_DESCRIPTION__STYLE, ViewFactory.eINSTANCE.createStyle()));
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.EDGE_DESCRIPTION__STYLE, ViewFactory.eINSTANCE.createEdgeStyle()));
 
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.EDGE_DESCRIPTION__STYLE, ViewFactory.eINSTANCE.createNodeStyle()));
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.EDGE_DESCRIPTION__STYLE, ViewFactory.eINSTANCE.createConditionalEdgeStyle()));
     }
 
 }
