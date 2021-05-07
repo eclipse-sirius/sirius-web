@@ -98,7 +98,6 @@ export * from './tree/TreeItemDocumentContextMenu';
 export * from './tree/TreeItemDocumentContextMenu.types';
 export * from './tree/TreeItemObjectContextMenu';
 export * from './tree/TreeItemObjectContextMenu.types';
-export * from './views/Footer';
 export * from './views/FormContainer';
 export * from './workbench/OnboardArea';
 export * from './workbench/OnboardArea.types';
