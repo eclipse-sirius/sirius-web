@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.sirius.web.graphql.utils.schema.ITypeProvider;
-import org.eclipse.sirius.web.services.api.accounts.Capabilities;
 import org.springframework.stereotype.Service;
 
 import graphql.Scalars;
@@ -51,7 +50,6 @@ import graphql.schema.GraphQLTypeReference;
  *   editingContext(editingContextId: ID!): EditingContext
  *   representationDescriptions(classId: ID): ViewerRepresentationDescriptionConnection!
  *   namespaces: [Namespace!]!
- *   capabilities: Capabilities!
  * }
  *
  * type User implements Viewer {
@@ -61,7 +59,6 @@ import graphql.schema.GraphQLTypeReference;
  *   project(projectId: ID!): Project
  *   representationDescriptions(classId: ID): ViewerRepresentationDescriptionConnection!
  *   namespaces: [Namespace!]!
- *   capabilities: Capabilities!
  * }
  *
  * type ViewerRepresentationDescriptionConnection {
@@ -96,8 +93,6 @@ public class ViewerTypeProvider implements ITypeProvider {
 
     public static final String EDITING_CONTEXT_ID_ARGUMENT = "editingContextId"; //$NON-NLS-1$
 
-    public static final String CAPABILITIES_FIELD = "capabilities"; //$NON-NLS-1$
-
     @Override
     public Set<GraphQLType> getTypes() {
         GraphQLInterfaceType viewerInterface = this.getViewerInterface();
@@ -131,7 +126,6 @@ public class ViewerTypeProvider implements ITypeProvider {
         viewerFieldsDefinition.add(this.getProjectsField());
         viewerFieldsDefinition.add(this.getProjectField());
         viewerFieldsDefinition.add(this.getEditingContextField());
-        viewerFieldsDefinition.add(this.getCapabilitiesField());
         return viewerFieldsDefinition;
     }
 
@@ -180,15 +174,6 @@ public class ViewerTypeProvider implements ITypeProvider {
                 .argument(newArgument()
                             .name(EDITING_CONTEXT_ID_ARGUMENT)
                             .type(nonNull(Scalars.GraphQLID)))
-                .build();
-        // @formatter:on
-    }
-    
-    private GraphQLFieldDefinition getCapabilitiesField() {
-        // @formatter:off
-        return newFieldDefinition()
-                .name(CAPABILITIES_FIELD)
-                .type(nonNull(typeRef(Capabilities.class.getSimpleName())))
                 .build();
         // @formatter:on
     }
