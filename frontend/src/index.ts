@@ -25,7 +25,6 @@ export * from './core/checkbox/Checkbox';
 export * from './core/contextmenu/ContextMenu';
 export * from './core/file-upload/FileUpload';
 export * from './core/form/Form';
-export * from './core/go/Go';
 export * from './core/label/Label';
 export * from './core/link/Link';
 export * from './core/linkbutton/LinkButton';
