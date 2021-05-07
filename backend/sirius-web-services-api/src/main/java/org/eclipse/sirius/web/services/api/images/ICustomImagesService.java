@@ -27,26 +27,4 @@ public interface ICustomImagesService {
     Optional<byte[]> getImageContentsByFileName(String fileName);
 
     List<CustomImage> getAvailableImages();
-
-    /**
-     * Null implementation.
-     *
-     * @author pcdavid
-     */
-    class NoOp implements ICustomImagesService {
-        @Override
-        public Optional<byte[]> getImageContentsByFileName(String fileName) {
-            return Optional.empty();
-        }
-
-        @Override
-        public List<CustomImage> getAvailableImages() {
-            return List.of();
-        }
-
-        @Override
-        public Optional<CustomImage> findById(UUID id) {
-            return Optional.empty();
-        }
-    }
 }
