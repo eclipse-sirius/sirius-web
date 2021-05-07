@@ -15,19 +15,11 @@ package org.eclipse.sirius.web.services.api.images;
 import java.util.Objects;
 import java.util.UUID;
 
-import org.eclipse.sirius.web.annotations.Immutable;
-import org.eclipse.sirius.web.annotations.graphql.GraphQLField;
-import org.eclipse.sirius.web.annotations.graphql.GraphQLID;
-import org.eclipse.sirius.web.annotations.graphql.GraphQLNonNull;
-import org.eclipse.sirius.web.annotations.graphql.GraphQLObjectType;
-
 /**
  * Lightweight DTO representing a custom image (without the content).
  *
  * @author pcdavid
  */
-@Immutable
-@GraphQLObjectType
 public class CustomImage {
     private UUID id;
 
@@ -41,21 +33,14 @@ public class CustomImage {
         this.fileName = Objects.requireNonNull(fileName);
     }
 
-    @GraphQLID
-    @GraphQLField
-    @GraphQLNonNull
     public UUID getId() {
         return this.id;
     }
 
-    @GraphQLField
-    @GraphQLNonNull
     public String getLabel() {
         return this.label;
     }
 
-    @GraphQLField
-    @GraphQLNonNull
     public String getFileName() {
         return this.fileName;
     }
