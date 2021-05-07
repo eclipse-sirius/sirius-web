@@ -13,7 +13,6 @@
 // Required because Sprotty uses Inversify and both frameworks are written in TypeScript with experimental features.
 import 'reflect-metadata';
 export * from './auth/useAuth';
-export * from './common/BrandingContext';
 export * from './common/sendFile';
 export * from './common/ServerContext';
 export * from './common/URL';
@@ -73,10 +72,6 @@ export * from './modals/new-root-object/NewRootObjectModal';
 export * from './modals/rename-project/RenameProjectModal';
 export * from './modals/share-diagram/ShareDiagramModal';
 export * from './modals/upload-document/UploadDocumentModal';
-export * from './navbar/LoggedOutNavbar';
-export * from './navbar/Logo';
-export * from './navbar/NavigationBar';
-export * from './navbar/Title';
 export * from './navbar/UserStatus';
 export * from './navbar/UserStatusContextMenu';
 export * from './onboarding/AreaContainer';
