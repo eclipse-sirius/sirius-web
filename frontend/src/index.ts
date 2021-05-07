@@ -72,8 +72,6 @@ export * from './modals/new-root-object/NewRootObjectModal';
 export * from './modals/rename-project/RenameProjectModal';
 export * from './modals/share-diagram/ShareDiagramModal';
 export * from './modals/upload-document/UploadDocumentModal';
-export * from './navbar/UserStatus';
-export * from './navbar/UserStatusContextMenu';
 export * from './onboarding/AreaContainer';
 export * from './onboarding/NewDocumentArea';
 export * from './onboarding/NewRepresentationArea';
