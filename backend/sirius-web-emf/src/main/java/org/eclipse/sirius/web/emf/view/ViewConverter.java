@@ -28,9 +28,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.web.components.Element;
 import org.eclipse.sirius.web.core.api.IObjectService;
-import org.eclipse.sirius.web.diagrams.LineStyle;
-import org.eclipse.sirius.web.diagrams.NodeType;
-import org.eclipse.sirius.web.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.web.diagrams.Size;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.web.diagrams.description.EdgeDescription;
@@ -49,7 +46,6 @@ import org.eclipse.sirius.web.interpreter.AQLInterpreter;
 import org.eclipse.sirius.web.interpreter.Result;
 import org.eclipse.sirius.web.representations.IRepresentationDescription;
 import org.eclipse.sirius.web.representations.VariableManager;
-import org.eclipse.sirius.web.services.api.images.CustomImage;
 import org.eclipse.sirius.web.services.api.images.ICustomImagesService;
 import org.eclipse.sirius.web.services.api.objects.IEditService;
 import org.eclipse.sirius.web.view.DiagramElementDescription;
@@ -61,8 +57,6 @@ import org.eclipse.sirius.web.view.View;
  * @author pcdavid
  */
 public class ViewConverter {
-
-    private static final String DEFAULT_SHAPE_FILE = "shape_square.svg"; //$NON-NLS-1$
 
     private static final String DEFAULT_DIAGRAM_LABEL = "Diagram"; //$NON-NLS-1$
 
@@ -179,12 +173,7 @@ public class ViewConverter {
                                                        .collect(Collectors.toList());
         // @formatter:on
         SynchronizationPolicy synchronizationPolicy = SynchronizationPolicy.SYNCHRONIZED;
-        final String nodeType;
-        if (viewNodeDescription.getStyle().getShape() == null || viewNodeDescription.getStyle().getShape().isBlank()) {
-            nodeType = NodeType.NODE_RECTANGLE;
-        } else {
-            nodeType = NodeType.NODE_IMAGE;
-        }
+        String nodeType = this.stylesFactory.getNodeType(viewNodeDescription.getStyle());
         // @formatter:off
         NodeDescription result = NodeDescription.newNodeDescription(this.idProvider.apply(viewNodeDescription))
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
@@ -195,18 +184,7 @@ public class ViewConverter {
                 .typeProvider(variableManager -> nodeType)
                 .labelDescription(this.getLabelDescription(viewNodeDescription))
                 .styleProvider(variableManager -> {
-                    if (NodeType.NODE_IMAGE.equals(nodeType)) {
-                        String shapeId = viewNodeDescription.getStyle().getShape();
-                        String shapeFileName = this.customImagesService.findById(UUID.fromString(shapeId)).map(CustomImage::getFileName).orElse(DEFAULT_SHAPE_FILE);
-                        return this.stylesFactory.createNodeStyle(viewNodeDescription.getStyle().getColor(), shapeFileName);
-                    } else {
-                        return RectangularNodeStyle.newRectangularNodeStyle()
-                                .color(Optional.ofNullable(viewNodeDescription.getStyle().getColor()).orElse(DEFAULT_COLOR))
-                                .borderColor(DEFAULT_COLOR)
-                                .borderSize(1)
-                                .borderStyle(LineStyle.Solid)
-                                .build();
-                    }
+                    return this.stylesFactory.createNodeStyle(viewNodeDescription.getStyle(), this.customImagesService);
                 })
                 .childNodeDescriptions(childNodeDescriptions)
                 .borderNodeDescriptions(List.of())
@@ -266,7 +244,7 @@ public class ViewConverter {
         return LabelDescription.newLabelDescription(EcoreUtil.getURI(viewNodeDescription).toString() + LabelDescription.LABEL_SUFFIX)
                 .idProvider(labelIdProvider)
                 .textProvider(variableManager -> this.evaluateString(variableManager, viewNodeDescription.getLabelExpression()))
-                .styleDescriptionProvider(variableManager -> this.stylesFactory.createLabelStyleDescription("black")) //$NON-NLS-1$
+                .styleDescriptionProvider(variableManager -> this.stylesFactory.createLabelStyleDescription(viewNodeDescription.getStyle()))
                 .build();
         // @formatter:on
     }
@@ -349,7 +327,7 @@ public class ViewConverter {
                                      .semanticElementsProvider(semanticElementsProvider)
                                      .sourceNodesProvider(sourceNodesProvider)
                                      .targetNodesProvider(targetNodesProvider)
-                                     .styleProvider(variableManager -> this.stylesFactory.createEdgeStyle(viewEdgeDescription.getStyle().getColor()))
+                                     .styleProvider(variableManager -> this.stylesFactory.createEdgeStyle(viewEdgeDescription.getStyle()))
                                      .deleteHandler(this.canonicalBehaviors::deleteElement)
                                      .build();
         this.convertedEdges.put(viewEdgeDescription, result);
