@@ -98,7 +98,8 @@ CREATE TABLE CustomImage (
 	id UUID DEFAULT gen_random_uuid() NOT NULL,
 	label TEXT NOT NULL,
 	filename TEXT NOT NULL,
-	content BYTEA NOT NULL
+	content BYTEA NOT NULL,
+	CONSTRAINT pk_customimage_id PRIMARY KEY (id)
 );
  
 -- password is "012345678910" encrypted using Spring's BCryptPasswordEncoder
