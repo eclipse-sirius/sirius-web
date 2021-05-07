@@ -78,6 +78,18 @@ public class ViewPropertiesConfigurer implements IPropertiesDescriptionRegistryC
                 this.createTextField("nodestyle.color", "Color", //$NON-NLS-1$ //$NON-NLS-2$
                                      style -> ((NodeStyle) style).getColor(),
                                      (style, newColor) -> ((NodeStyle) style).setColor(newColor)),
+                this.createTextField("nodestyle.borderColor", "Border Color", //$NON-NLS-1$ //$NON-NLS-2$
+                        style -> ((NodeStyle) style).getBorderColor(),
+                        (style, newColor) -> ((NodeStyle) style).setBorderColor(newColor)),
+                this.createTextField("nodestyle.fontSize", "Font Size", //$NON-NLS-1$ //$NON-NLS-2$
+                        style -> String.valueOf(((NodeStyle) style).getFontSize()),
+                        (style, newColor) -> {
+                            try {
+                                ((NodeStyle) style).setFontSize(Integer.parseInt(newColor));
+                            } catch (NumberFormatException nfe) {
+                                // Ignore.
+                            }
+                        }),
                 this.createShapeSelectionField());
 
         return FormDescription.newFormDescription(formDescriptionId)
