@@ -59,4 +59,8 @@ public class NoOpRepresentationService implements IRepresentationService {
     @Override
     public void delete(UUID representationId) {
     }
+
+    @Override
+    public void deleteDanglingRepresentations(UUID editingContextId) {
+    }
 }

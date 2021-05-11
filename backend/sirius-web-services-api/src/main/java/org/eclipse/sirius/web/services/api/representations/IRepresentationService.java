@@ -37,4 +37,6 @@ public interface IRepresentationService {
 
     void delete(UUID representationId);
 
+    void deleteDanglingRepresentations(UUID editingContextId);
+
 }

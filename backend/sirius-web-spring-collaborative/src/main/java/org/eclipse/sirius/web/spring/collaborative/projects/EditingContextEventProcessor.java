@@ -47,6 +47,7 @@ import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.core.api.IRepresentationInput;
 import org.eclipse.sirius.web.representations.IRepresentation;
 import org.eclipse.sirius.web.representations.ISemanticRepresentation;
+import org.eclipse.sirius.web.services.api.representations.IRepresentationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
@@ -90,8 +91,12 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
 
     private final ExecutorService executor;
 
+    private final IRepresentationService representationService;
+
     public EditingContextEventProcessor(IEditingContext editingContext, IEditingContextPersistenceService editingContextPersistenceService, ApplicationEventPublisher applicationEventPublisher,
-            IObjectService objectService, List<IEditingContextEventHandler> editingContextEventHandlers, IRepresentationEventProcessorComposedFactory representationEventProcessorComposedFactory) {
+            IObjectService objectService, List<IEditingContextEventHandler> editingContextEventHandlers, IRepresentationEventProcessorComposedFactory representationEventProcessorComposedFactory,
+            IRepresentationService representationService) {
+        this.representationService = representationService;
         this.editingContext = Objects.requireNonNull(editingContext);
         this.editingContextPersistenceService = Objects.requireNonNull(editingContextPersistenceService);
         this.applicationEventPublisher = Objects.requireNonNull(applicationEventPublisher);
@@ -193,6 +198,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
             if (this.shouldPersistTheEditingContext(response.getChangeDescription())) {
                 this.editingContextPersistenceService.persist(this.editingContext);
             }
+            this.representationService.deleteDanglingRepresentations(this.editingContext.getId());
         }
 
         return optionalResponse;

@@ -113,4 +113,9 @@ public class RepresentationService implements IRepresentationService {
     public void delete(UUID representationId) {
         this.representationRepository.deleteById(representationId);
     }
+
+    @Override
+    public void deleteDanglingRepresentations(UUID editingContextId) {
+        this.representationRepository.deleteDanglingRepresentations(editingContextId);
+    }
 }
