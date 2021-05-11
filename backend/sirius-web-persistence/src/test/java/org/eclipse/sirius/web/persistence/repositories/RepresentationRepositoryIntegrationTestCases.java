@@ -16,11 +16,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.eclipse.sirius.web.persistence.entities.AccountEntity;
+import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
 import org.eclipse.sirius.web.persistence.entities.ProjectEntity;
 import org.eclipse.sirius.web.persistence.entities.RepresentationEntity;
 import org.junit.Test;
@@ -38,8 +40,10 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@ContextConfiguration(classes = PersistenceTestConfiguration.class)
+@ContextConfiguration(classes = JPAConfiguration.class)
 public class RepresentationRepositoryIntegrationTestCases {
+
+    private static final String DOCUMENT_NAME = "Obsydians"; //$NON-NLS-1$
 
     private static final String OWNER_NAME = "Jyn Erso"; //$NON-NLS-1$
 
@@ -61,6 +65,18 @@ public class RepresentationRepositoryIntegrationTestCases {
 
     private static final String SECOND_TARGET_OBJECT_ID = "secondTargetObjectId"; //$NON-NLS-1$
 
+    private static final String DOCUMENT_CONTENT_PATTERN = "{ \"id\": \"%1$s\" }"; //$NON-NLS-1$
+
+    // @formatter:off
+    private static final String DOCUMENT_CONTENT = "{" + System.lineSeparator() //$NON-NLS-1$
+    + "    \"json\": {" + System.lineSeparator() //$NON-NLS-1$
+    + "      \"version\": \"1.0\"," + System.lineSeparator() //$NON-NLS-1$
+    + "    \"encoding\": \"utf-8\"" + System.lineSeparator() //$NON-NLS-1$
+    + "  }," + System.lineSeparator() //$NON-NLS-1$
+    + "  \"content\": [%1$s]" + System.lineSeparator() //$NON-NLS-1$
+    + "}" + System.lineSeparator(); //$NON-NLS-1$
+    // @formatter:on
+
     @Autowired
     private IAccountRepository accountRepository;
 
@@ -69,6 +85,9 @@ public class RepresentationRepositoryIntegrationTestCases {
 
     @Autowired
     private IRepresentationRepository representationRepository;
+
+    @Autowired
+    private IDocumentRepository documentRepository;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -221,6 +240,26 @@ public class RepresentationRepositoryIntegrationTestCases {
         return savedProject;
     }
 
+    private DocumentEntity createAndSaveDocumentEntity(ProjectEntity projectEntity, String documentContent) {
+
+        DocumentEntity documentEntity = new DocumentEntity();
+        documentEntity.setName(DOCUMENT_NAME);
+        documentEntity.setProject(projectEntity);
+        documentEntity.setContent(documentContent);
+
+        return this.documentRepository.save(documentEntity);
+    }
+
+    private String createDocumentContent(String... targetObjectIds) {
+        //@formatter:off
+        String documentContentContent = List.of(targetObjectIds).stream()
+                .map(targetObjectId -> String.format(DOCUMENT_CONTENT_PATTERN, targetObjectId))
+                .collect(Collectors.joining(",")); //$NON-NLS-1$
+        //@formatter:on
+
+        return String.format(DOCUMENT_CONTENT, documentContentContent);
+    }
+
     private RepresentationEntity createRepresentationEntity(ProjectEntity projectEntity, String label, String targetObjectId) {
         RepresentationEntity representationEntity = new RepresentationEntity();
         representationEntity.setId(UUID.randomUUID());
@@ -242,6 +281,45 @@ public class RepresentationRepositoryIntegrationTestCases {
         this.projectRepository.delete(project);
         assertThat(this.representationRepository.count()).isEqualTo(0);
 
+    }
+
+    @Test
+    @Transactional
+    public void testDeleteDanglingRepresentations() {
+        ProjectEntity projectEntity = this.createAndSaveProjectEntity();
+        UUID projectId = projectEntity.getId();
+        String documentContent = this.createDocumentContent(FIRST_TARGET_OBJECT_ID, SECOND_TARGET_OBJECT_ID);
+        DocumentEntity documentEntity = this.createAndSaveDocumentEntity(projectEntity, documentContent);
+
+        RepresentationEntity firstRepresentationEntity = this.createRepresentationEntity(projectEntity, FIRST_DIAGRAM_LABEL, FIRST_TARGET_OBJECT_ID);
+        RepresentationEntity secondRepresentationEntity = this.createRepresentationEntity(projectEntity, SECOND_DIAGRAM_LABEL, SECOND_TARGET_OBJECT_ID);
+        RepresentationEntity thirdRepresentationEntity = this.createRepresentationEntity(projectEntity, THIRD_DIAGRAM_LABEL, SECOND_TARGET_OBJECT_ID);
+        this.representationRepository.save(firstRepresentationEntity);
+        this.representationRepository.save(secondRepresentationEntity);
+        this.representationRepository.save(thirdRepresentationEntity);
+
+        assertThat(this.findRepresentationUUIDsByProject(projectId)).contains(firstRepresentationEntity.getId(), secondRepresentationEntity.getId(), thirdRepresentationEntity.getId());
+
+        this.representationRepository.deleteDanglingRepresentations(projectId);
+        assertThat(this.findRepresentationUUIDsByProject(projectId)).contains(firstRepresentationEntity.getId(), secondRepresentationEntity.getId(), thirdRepresentationEntity.getId());
+
+        documentEntity.setContent(this.createDocumentContent(FIRST_TARGET_OBJECT_ID));
+        this.documentRepository.save(documentEntity);
+        this.representationRepository.deleteDanglingRepresentations(projectEntity.getId());
+
+        List<UUID> representationUUIDs = this.findRepresentationUUIDsByProject(projectId);
+        assertThat(representationUUIDs).hasSizeLessThanOrEqualTo(1);
+        assertThat(representationUUIDs).contains(firstRepresentationEntity.getId());
+        assertThat(representationUUIDs).doesNotContain(secondRepresentationEntity.getId(), thirdRepresentationEntity.getId());
+
+    }
+
+    private List<UUID> findRepresentationUUIDsByProject(UUID projectId) {
+        // @formatter:off
+        return this.representationRepository.findAllByProjectId(projectId).stream()
+                .map(RepresentationEntity::getId)
+                .collect(Collectors.toList());
+        // @formatter:on
     }
 
 }

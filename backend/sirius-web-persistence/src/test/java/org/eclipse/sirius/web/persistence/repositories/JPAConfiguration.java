@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.persistence.repositories;
 
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -22,6 +23,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
  * @author sbegaudeau
  */
 @Configuration
+@EnableAutoConfiguration
 @EntityScan(basePackages = { "org.eclipse.sirius.web.persistence.entities" })
 @EnableJpaRepositories(basePackages = { "org.eclipse.sirius.web.persistence.repositories" }, namedQueriesLocation = "classpath:db/sirius-web-named-queries.properties")
 public class JPAConfiguration {

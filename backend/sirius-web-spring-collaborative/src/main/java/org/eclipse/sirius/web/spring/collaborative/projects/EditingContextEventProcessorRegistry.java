@@ -23,20 +23,16 @@ import java.util.stream.Collectors;
 
 import javax.annotation.PreDestroy;
 
-import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventHandler;
 import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventProcessor;
+import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventProcessorFactory;
 import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventProcessorRegistry;
-import org.eclipse.sirius.web.collaborative.api.services.IRepresentationEventProcessorComposedFactory;
 import org.eclipse.sirius.web.core.api.IEditingContext;
-import org.eclipse.sirius.web.core.api.IEditingContextPersistenceService;
 import org.eclipse.sirius.web.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.web.core.api.IInput;
-import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.core.api.IPayload;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import reactor.core.Disposable;
@@ -53,30 +49,17 @@ public class EditingContextEventProcessorRegistry implements IEditingContextEven
 
     private final IEditingContextSearchService editingContextSearchService;
 
-    private final IEditingContextPersistenceService editingContextPersistenceService;
-
-    private final ApplicationEventPublisher applicationEventPublisher;
-
-    private final IObjectService objectService;
-
-    private final List<IEditingContextEventHandler> editingContextEventHandlers;
-
-    private final IRepresentationEventProcessorComposedFactory representationEventProcessorComposedFactory;
-
     private final Map<UUID, EditingContextEventProcessorEntry> editingContextEventProcessors = new ConcurrentHashMap<>();
 
     private final Duration disposeDelay;
 
-    public EditingContextEventProcessorRegistry(IEditingContextSearchService editingContextSearchService, IEditingContextPersistenceService editingContextPersistenceService,
-            IObjectService objectService, ApplicationEventPublisher applicationEventPublisher, List<IEditingContextEventHandler> editingContextEventHandlers,
-            IRepresentationEventProcessorComposedFactory representationEventProcessorComposedFactory,
+    private IEditingContextEventProcessorFactory editingContextEventProcessorFactory;
+
+    public EditingContextEventProcessorRegistry(IEditingContextEventProcessorFactory editingContextEventProcessorFactory, IEditingContextSearchService editingContextSearchService,
+
             @Value("${org.eclipse.sirius.web.editingContextEventProcessorRegistry.disposeDelay:30s}") Duration disposeDelay) {
+        this.editingContextEventProcessorFactory = editingContextEventProcessorFactory;
         this.editingContextSearchService = Objects.requireNonNull(editingContextSearchService);
-        this.editingContextPersistenceService = Objects.requireNonNull(editingContextPersistenceService);
-        this.applicationEventPublisher = Objects.requireNonNull(applicationEventPublisher);
-        this.objectService = Objects.requireNonNull(objectService);
-        this.editingContextEventHandlers = Objects.requireNonNull(editingContextEventHandlers);
-        this.representationEventProcessorComposedFactory = Objects.requireNonNull(representationEventProcessorComposedFactory);
         this.disposeDelay = disposeDelay;
     }
 
@@ -105,8 +88,7 @@ public class EditingContextEventProcessorRegistry implements IEditingContextEven
                 if (optionalEditingContext.isPresent()) {
                     IEditingContext editingContext = optionalEditingContext.get();
 
-                    var editingContextEventProcessor = new EditingContextEventProcessor(editingContext, this.editingContextPersistenceService, this.applicationEventPublisher, this.objectService,
-                            this.editingContextEventHandlers, this.representationEventProcessorComposedFactory);
+                    var editingContextEventProcessor = this.editingContextEventProcessorFactory.createEditingContextEventProcessor(editingContext);
                     Disposable subscription = editingContextEventProcessor.canBeDisposed().delayElements(this.disposeDelay).subscribe(canBeDisposed -> {
                         // We will wait for the delay before trying to dispose the editing context event processor
                         // We will check if the editing context event processor is still empty

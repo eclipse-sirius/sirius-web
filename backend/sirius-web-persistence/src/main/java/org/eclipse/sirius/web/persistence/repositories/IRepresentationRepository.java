@@ -18,9 +18,11 @@ import java.util.UUID;
 
 import org.eclipse.sirius.web.annotations.Audited;
 import org.eclipse.sirius.web.persistence.entities.RepresentationEntity;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Persistence layer used to manipulate representations.
@@ -49,6 +51,12 @@ public interface IRepresentationRepository extends PagingAndSortingRepository<Re
     @Audited
     @Override
     <S extends RepresentationEntity> S save(S representationEntity);
+
+    @Audited
+    @Transactional
+    @Modifying
+    @Query(name = "Representation.deleteDanglingRepresentations", nativeQuery = true)
+    int deleteDanglingRepresentations(UUID projectId);
 
     @Audited
     @Override
