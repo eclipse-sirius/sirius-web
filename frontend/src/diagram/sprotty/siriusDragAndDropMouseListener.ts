@@ -20,7 +20,7 @@ import {
   SModelElement,
   SNode,
 } from 'sprotty';
-import { ElementResize, ResizeAction } from './siriusResize';
+import { ElementResize, ResizeAction } from './resize/siriusResize';
 
 /**
  * A common listener for drag and drop actions. This class allows to enter in resize or move mode.

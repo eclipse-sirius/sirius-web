@@ -15,14 +15,18 @@ import {
   connectableFeature,
   createFeatureSet,
   deletableFeature,
+  editLabelFeature,
   fadeFeature,
   hoverFeedbackFeature,
   layoutContainerFeature,
+  moveFeature,
   popupFeature,
   selectFeature,
+  SLabel,
   viewportFeature,
-  moveFeature,
+  withEditLabelFeature,
 } from 'sprotty';
+import { resizeFeature } from './resize/model';
 
 /**
  * Convert the given diagram object to a Sprotty diagram.
@@ -32,12 +36,13 @@ import {
  *
  * @param diagram the diagram object to convert
  * @param httpOrigin the URL of the server hosting the images
+ * @param readOnly Whether the diagram is readonly
  * @return a Sprotty diagram object
  */
-export const convertDiagram = (diagram, httpOrigin: string) => {
+export const convertDiagram = (diagram, httpOrigin: string, readOnly: boolean) => {
   const { id, descriptionId, kind, targetObjectId, label, position, size } = diagram;
-  const nodes = diagram.nodes.map((node) => convertNode(node, httpOrigin));
-  const edges = diagram.edges.map((edge) => convertEdge(edge, httpOrigin));
+  const nodes = diagram.nodes.map((node) => convertNode(node, httpOrigin, readOnly));
+  const edges = diagram.edges.map((edge) => convertEdge(edge, httpOrigin, readOnly));
 
   return {
     id,
@@ -53,7 +58,7 @@ export const convertDiagram = (diagram, httpOrigin: string) => {
   };
 };
 
-const convertNode = (node, httpOrigin: string) => {
+const convertNode = (node, httpOrigin: string, readOnly: boolean) => {
   const {
     id,
     type,
@@ -69,15 +74,19 @@ const convertNode = (node, httpOrigin: string) => {
 
   let borderNodes = [];
   if (node.borderNodes) {
-    borderNodes = node.borderNodes.map((borderNode) => convertNode(borderNode, httpOrigin));
+    borderNodes = node.borderNodes.map((borderNode) => convertNode(borderNode, httpOrigin, readOnly));
   }
   let childNodes = [];
   if (node.childNodes) {
-    childNodes = node.childNodes.map((childNode) => convertNode(childNode, httpOrigin));
+    childNodes = node.childNodes.map((childNode) => convertNode(childNode, httpOrigin, readOnly));
   }
 
-  const convertedLabel = convertLabel(label, httpOrigin);
+  const convertedLabel = convertLabel(label, httpOrigin, readOnly);
   const convertedStyle = convertNodeStyle(style, httpOrigin);
+
+  const features = handleNodeFeatures(readOnly);
+
+  const editableLabel = handleNodeLabel(convertedLabel, readOnly);
 
   return {
     id,
@@ -89,28 +98,64 @@ const convertNode = (node, httpOrigin: string) => {
     style: convertedStyle,
     size,
     position,
-    features: createFeatureSet([
+    features,
+    editableLabel,
+    children: [convertedLabel, ...borderNodes, ...childNodes],
+  };
+};
+
+const handleNodeLabel = (label, readOnly: boolean) => {
+  let editableLabel = undefined;
+  if (!readOnly) {
+    editableLabel = label;
+  }
+
+  return editableLabel;
+};
+
+const handleNodeFeatures = (readOnly: boolean) => {
+  if (readOnly) {
+    return createFeatureSet([
       connectableFeature,
-      deletableFeature,
       selectFeature,
       boundsFeature,
       layoutContainerFeature,
       fadeFeature,
       hoverFeedbackFeature,
       popupFeature,
-      moveFeature,
-    ]),
-    editableLabel: convertedLabel,
-    children: [convertedLabel, ...borderNodes, ...childNodes],
-  };
+    ]);
+  }
+
+  return createFeatureSet([
+    connectableFeature,
+    deletableFeature,
+    selectFeature,
+    boundsFeature,
+    layoutContainerFeature,
+    fadeFeature,
+    hoverFeedbackFeature,
+    popupFeature,
+    moveFeature,
+    resizeFeature,
+    withEditLabelFeature,
+  ]);
 };
 
-const convertLabel = (label, httpOrigin: string) => {
-  if (label?.style?.iconURL !== undefined && label?.style?.iconURL !== '') {
-    const { style } = label;
-    return { ...label, style: { ...style, iconURL: httpOrigin + style.iconURL } };
+const convertLabel = (label, httpOrigin: string, readOnly: boolean) => {
+  let convertedLabel = { ...label };
+
+  if (!readOnly) {
+    convertedLabel = {
+      ...convertedLabel,
+      features: createFeatureSet([...SLabel.DEFAULT_FEATURES, editLabelFeature]),
+    };
   }
-  return label;
+
+  if (convertedLabel?.style?.iconURL !== undefined && convertedLabel?.style?.iconURL !== '') {
+    const { style } = convertedLabel;
+    return { ...convertedLabel, style: { ...style, iconURL: httpOrigin + style.iconURL } };
+  }
+  return convertedLabel;
 };
 
 const convertNodeStyle = (style, httpOrigin: string) => {
@@ -120,7 +165,7 @@ const convertNodeStyle = (style, httpOrigin: string) => {
   return style;
 };
 
-const convertEdge = (edge, httpOrigin: string) => {
+const convertEdge = (edge, httpOrigin: string, readOnly: boolean) => {
   const {
     id,
     type,
@@ -139,17 +184,19 @@ const convertEdge = (edge, httpOrigin: string) => {
 
   let children = [];
   if (beginLabel) {
-    const convertedBeginLabel = convertLabel(beginLabel, httpOrigin);
+    const convertedBeginLabel = convertLabel(beginLabel, httpOrigin, readOnly);
     children.push(convertedBeginLabel);
   }
   if (centerLabel) {
-    const convertedCenterLabel = convertLabel(centerLabel, httpOrigin);
+    const convertedCenterLabel = convertLabel(centerLabel, httpOrigin, readOnly);
     children.push(convertedCenterLabel);
   }
   if (endLabel) {
-    const convertedEndLabel = convertLabel(endLabel, httpOrigin);
+    const convertedEndLabel = convertLabel(endLabel, httpOrigin, readOnly);
     children.push(convertedEndLabel);
   }
+
+  const features = handleEdgeFeatures(readOnly);
 
   return {
     id,
@@ -162,7 +209,15 @@ const convertEdge = (edge, httpOrigin: string) => {
     targetId,
     style,
     routingPoints,
-    features: createFeatureSet([deletableFeature, selectFeature, fadeFeature, hoverFeedbackFeature]),
+    features,
     children: children,
   };
+};
+
+const handleEdgeFeatures = (readonly) => {
+  if (readonly) {
+    return createFeatureSet([selectFeature, fadeFeature, hoverFeedbackFeature]);
+  }
+
+  return createFeatureSet([deletableFeature, selectFeature, fadeFeature, hoverFeedbackFeature]);
 };

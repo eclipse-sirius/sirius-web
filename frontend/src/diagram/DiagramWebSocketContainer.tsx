@@ -316,9 +316,9 @@ export const DiagramWebSocketContainer = ({
    */
   useEffect(() => {
     if (diagramServer) {
-      diagramServer.actionDispatcher.dispatch({ kind: SIRIUS_UPDATE_MODEL_ACTION, diagram });
+      diagramServer.actionDispatcher.dispatch({ kind: SIRIUS_UPDATE_MODEL_ACTION, diagram, readOnly });
     }
-  }, [diagram, diagramServer]);
+  }, [diagram, diagramServer, readOnly]);
 
   /**
    * Dispatch the activeTool to the diagramServer if our state indicate that activeTool has changed.
