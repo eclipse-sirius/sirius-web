@@ -36,7 +36,6 @@ import {
   edgeEditModule,
   edgeLayoutModule,
   EditLabelAction,
-  editLabelFeature,
   exportModule,
   fadeModule,
   graphModule,
@@ -64,7 +63,6 @@ import {
   UpdateModelAction,
   updateModule,
   viewportModule,
-  withEditLabelFeature,
   ZoomMouseListener,
   zorderModule,
 } from 'sprotty';
@@ -84,46 +82,23 @@ const siriusWebContainerModule = new ContainerModule((bind, unbind, isBound, reb
   // @ts-ignore
   configureView({ bind, isBound }, 'graph', DiagramView);
   // @ts-ignore
-  configureModelElement(context, 'node:rectangle', SNode, RectangleView, {
-    enable: [withEditLabelFeature],
-  });
+  configureModelElement(context, 'node:rectangle', SNode, RectangleView);
   // @ts-ignore
-  configureModelElement(context, 'node:image', SNode, ImageView, {
-    enable: [withEditLabelFeature],
-  });
+  configureModelElement(context, 'node:image', SNode, ImageView);
   // @ts-ignore
   configureView({ bind, isBound }, 'port:square', RectangleView);
   configureView({ bind, isBound }, 'edge:straight', EdgeView);
   // @ts-ignore
-  configureView({ bind, isBound }, 'label:inside-left', LabelView);
+  configureModelElement(context, 'label:inside-center', SLabel, LabelView);
   // @ts-ignore
-  configureModelElement(context, 'label:inside-center', SLabel, LabelView, {
-    enable: [editLabelFeature],
-  });
+  configureModelElement(context, 'label:edge-begin', SLabel, LabelView);
   // @ts-ignore
-  configureModelElement(context, 'label:edge-begin', SLabel, LabelView, {
-    enable: [editLabelFeature],
-  });
+  configureModelElement(context, 'label:edge-center', SLabel, LabelView);
   // @ts-ignore
-  configureModelElement(context, 'label:edge-center', SLabel, LabelView, {
-    enable: [editLabelFeature],
-  });
+  configureModelElement(context, 'label:edge-end', SLabel, LabelView);
   // @ts-ignore
-  configureModelElement(context, 'label:edge-end', SLabel, LabelView, {
-    enable: [editLabelFeature],
-  });
-  // @ts-ignore
-  configureView({ bind, isBound }, 'label:inside-right', LabelView);
-  // @ts-ignore
-  configureView({ bind, isBound }, 'label:outside-left', LabelView);
-  // @ts-ignore
-  configureView({ bind, isBound }, 'label:outside-center', LabelView);
-  // @ts-ignore
-  configureView({ bind, isBound }, 'label:outside-right', LabelView);
-  // @ts-ignore
-  configureModelElement(context, 'label:text', SLabel, LabelView, {
-    enable: [editLabelFeature],
-  });
+  configureModelElement(context, 'label:text', SLabel, LabelView);
+
   configureView({ bind, isBound }, 'comp:main', SCompartmentView);
   configureView({ bind, isBound }, 'html', HtmlRootView);
   // @ts-ignore

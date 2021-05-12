@@ -13,6 +13,7 @@
 /** @jsx svg */
 import { svg } from 'snabbdom-jsx';
 import { RectangularNodeView } from 'sprotty';
+import { createResizeHandles } from './ViewUtils';
 
 /**
  * The view used to display nodes with an image style.
@@ -33,115 +34,12 @@ export class ImageView extends RectangularNodeView {
     if (node.hoverFeedback) {
       styleObject['outline'] = 'var(--blue-lagoon) solid 2px';
     }
-    let selectedHandles = null;
     const size = {
-      width: Math.max(0, node.bounds.width),
-      height: Math.max(0, node.bounds.height),
+      width: Math.max(0, bounds.width),
+      height: Math.max(0, bounds.height),
     };
-    if (node.selected) {
-      const selectorSize = 6;
-      const delta = selectorSize / 2;
-      const north = {
-        x: size.width / 2 - delta,
-        y: -delta,
-      };
-      const south = {
-        x: size.width / 2 - delta,
-        y: size.height - delta,
-      };
-      const west = {
-        x: -delta,
-        y: size.height / 2 - delta,
-      };
-      const east = {
-        x: size.width - delta,
-        y: size.height / 2 - delta,
-      };
-      const nw = {
-        x: -delta,
-        y: -delta,
-      };
-      const ne = {
-        x: size.width - delta,
-        y: -delta,
-      };
-      const se = {
-        x: size.width - delta,
-        y: size.height - delta,
-      };
-      const sw = {
-        x: -delta,
-        y: size.height - delta,
-      };
-      selectedHandles = (
-        <g>
-          <rect
-            id="selectorGrip_resize_n"
-            width={selectorSize}
-            height={selectorSize}
-            style={{ cursor: 'n-resize', fill: 'var(--blue-lagoon) ' }}
-            pointer-events="all"
-            x={north.x}
-            y={north.y}></rect>
-          <rect
-            id="selectorGrip_resize_s"
-            width={selectorSize}
-            height={selectorSize}
-            style={{ cursor: 's-resize', fill: 'var(--blue-lagoon) ' }}
-            pointer-events="all"
-            x={south.x}
-            y={south.y}></rect>
-          <rect
-            id="selectorGrip_resize_w"
-            width={selectorSize}
-            height={selectorSize}
-            style={{ cursor: 'w-resize', fill: 'var(--blue-lagoon) ' }}
-            pointer-events="all"
-            x={west.x}
-            y={west.y}></rect>
-          <rect
-            id="selectorGrip_resize_e"
-            width={selectorSize}
-            height={selectorSize}
-            style={{ cursor: 'e-resize', fill: 'var(--blue-lagoon) ' }}
-            pointer-events="all"
-            x={east.x}
-            y={east.y}></rect>
-          <rect
-            id="selectorGrip_resize_nw"
-            width={selectorSize}
-            height={selectorSize}
-            style={{ cursor: 'nw-resize', fill: 'var(--blue-lagoon) ' }}
-            pointer-events="all"
-            x={nw.x}
-            y={nw.y}></rect>
-          <rect
-            id="selectorGrip_resize_ne"
-            width={selectorSize}
-            height={selectorSize}
-            style={{ cursor: 'ne-resize', fill: 'var(--blue-lagoon) ' }}
-            pointer-events="all"
-            x={ne.x}
-            y={ne.y}></rect>
-          <rect
-            id="selectorGrip_resize_sw"
-            width={selectorSize}
-            height={selectorSize}
-            style={{ cursor: 'sw-resize', fill: 'var(--blue-lagoon) ' }}
-            pointer-events="all"
-            x={sw.x}
-            y={sw.y}></rect>
-          <rect
-            id="selectorGrip_resize_se"
-            width={selectorSize}
-            height={selectorSize}
-            style={{ cursor: 'se-resize', fill: 'var(--blue-lagoon) ' }}
-            pointer-events="all"
-            x={se.x}
-            y={se.y}></rect>
-        </g>
-      );
-    }
+
+    const selectedHandles = createResizeHandles(node);
 
     return (
       <g
@@ -153,8 +51,8 @@ export class ImageView extends RectangularNodeView {
           class-mouseover={hoverFeedback}
           x={0}
           y={0}
-          width={Math.max(0, bounds.width)}
-          height={Math.max(0, bounds.height)}
+          width={size.width}
+          height={size.height}
           href={style.imageURL}
           style={styleObject}
         />

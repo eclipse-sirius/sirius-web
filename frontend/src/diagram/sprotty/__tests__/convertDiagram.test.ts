@@ -23,13 +23,15 @@ import {
   moveFeature,
   popupFeature,
   selectFeature,
+  withEditLabelFeature,
 } from 'sprotty';
 import { convertDiagram } from '../convertDiagram';
+import { resizeFeature } from '../resize/model';
 import siriusWebDiagram from './siriusWebDiagram.json';
 
 describe('ModelConverter', () => {
   it('converts a diagram', () => {
-    const sprottyDiagram = convertDiagram(siriusWebDiagram, httpOrigin);
+    const sprottyDiagram = convertDiagram(siriusWebDiagram, httpOrigin, false);
 
     expect(sprottyDiagram).not.toBeNull();
     expect(sprottyDiagram).not.toBeUndefined();
@@ -102,6 +104,8 @@ describe('ModelConverter', () => {
             hoverFeedbackFeature,
             popupFeature,
             moveFeature,
+            resizeFeature,
+            withEditLabelFeature,
           ])
         );
 

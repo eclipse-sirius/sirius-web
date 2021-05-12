@@ -29,7 +29,7 @@ import {
   SNode,
   UpdateModelAction,
 } from 'sprotty';
-import { ResizeAction, SiriusResizeCommand } from './siriusResize';
+import { ResizeAction, SiriusResizeCommand } from './resize/siriusResize';
 /** Action to delete a sprotty element */
 export const SPROTTY_DELETE_ACTION = 'sprottyDeleteElement';
 /** Action to select a sprotty element */
@@ -252,9 +252,9 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
   }
 
   handleSiriusUpdateModelAction(action) {
-    const { diagram } = action;
+    const { diagram, readOnly } = action;
     if (diagram) {
-      const convertedDiagram = convertDiagram(diagram, this.httpOrigin);
+      const convertedDiagram = convertDiagram(diagram, this.httpOrigin, readOnly);
       const sprottyModel = this.modelFactory.createRoot(convertedDiagram);
       this.actionDispatcher.request(GetSelectionAction.create()).then((selectionResult) => {
         sprottyModel.index
