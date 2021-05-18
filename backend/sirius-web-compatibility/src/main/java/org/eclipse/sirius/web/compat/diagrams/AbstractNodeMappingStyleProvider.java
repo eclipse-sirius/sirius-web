@@ -16,12 +16,10 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 
-import org.eclipse.sirius.diagram.ContainerLayout;
+import org.eclipse.sirius.diagram.business.api.query.ContainerMappingQuery;
 import org.eclipse.sirius.diagram.description.AbstractNodeMapping;
 import org.eclipse.sirius.diagram.description.ContainerMapping;
-import org.eclipse.sirius.diagram.description.style.EllipseNodeDescription;
 import org.eclipse.sirius.diagram.description.style.FlatContainerStyleDescription;
-import org.eclipse.sirius.diagram.description.style.LozengeNodeDescription;
 import org.eclipse.sirius.diagram.description.style.SquareDescription;
 import org.eclipse.sirius.diagram.description.style.WorkspaceImageDescription;
 import org.eclipse.sirius.viewpoint.description.style.LabelStyleDescription;
@@ -66,7 +64,7 @@ public class AbstractNodeMappingStyleProvider implements Function<VariableManage
             style = this.createRectangularNodeStyle(variableManager, squareDescription);
         } else if (nodeStyleDescription instanceof FlatContainerStyleDescription) {
             FlatContainerStyleDescription flatContainerStyleDescription = (FlatContainerStyleDescription) nodeStyleDescription;
-            if (this.abstractNodeMapping instanceof ContainerMapping && ContainerLayout.LIST.equals(((ContainerMapping) this.abstractNodeMapping).getChildrenPresentation())) {
+            if (this.abstractNodeMapping instanceof ContainerMapping && new ContainerMappingQuery((ContainerMapping) this.abstractNodeMapping).isListContainer()) {
                 style = this.createListNodeStyle(variableManager, flatContainerStyleDescription);
             } else {
                 style = this.createRectangularNodeStyle(variableManager, flatContainerStyleDescription);
@@ -102,11 +100,9 @@ public class AbstractNodeMappingStyleProvider implements Function<VariableManage
      * @return <code>true</code> if the <em>nodeStyleDescription</em> should be considered as a list item node style
      */
     private boolean shouldBeConsideredAsListItemNodeStyle(VariableManager variableManager, LabelStyleDescription nodeStyleDescription) {
-        if ((nodeStyleDescription instanceof SquareDescription || nodeStyleDescription instanceof EllipseNodeDescription || nodeStyleDescription instanceof LozengeNodeDescription)
-                && this.abstractNodeMapping.eContainer() instanceof ContainerMapping) {
+        if (this.abstractNodeMapping.eContainer() instanceof ContainerMapping) {
             ContainerMapping parentMapping = (ContainerMapping) this.abstractNodeMapping.eContainer();
-            LabelStyleDescription labelStyleDescription = new LabelStyleDescriptionProvider(this.interpreter, parentMapping).apply(variableManager);
-            return labelStyleDescription instanceof FlatContainerStyleDescription && ContainerLayout.LIST.equals(parentMapping.getChildrenPresentation());
+            return new ContainerMappingQuery(parentMapping).isListContainer();
         }
         return false;
     }
@@ -120,11 +116,10 @@ public class AbstractNodeMappingStyleProvider implements Function<VariableManage
     }
 
     private INodeStyle createListNodeStyle(VariableManager variableManager, FlatContainerStyleDescription flatContainerStyleDescription) {
-        ColorDescriptionConverter backgroundColorProvider = new ColorDescriptionConverter(this.interpreter, variableManager.getVariables());
-        ColorDescriptionConverter borderColorProvider = new ColorDescriptionConverter(this.interpreter, variableManager.getVariables());
+        ColorDescriptionConverter colorDescriptionConverter = new ColorDescriptionConverter(this.interpreter, variableManager.getVariables());
 
-        String color = backgroundColorProvider.convert(flatContainerStyleDescription.getBackgroundColor());
-        String borderColor = borderColorProvider.convert(flatContainerStyleDescription.getBorderColor());
+        String color = colorDescriptionConverter.convert(flatContainerStyleDescription.getBackgroundColor());
+        String borderColor = colorDescriptionConverter.convert(flatContainerStyleDescription.getBorderColor());
 
         LineStyle borderStyle = new LineStyleConverter().getStyle(flatContainerStyleDescription.getBorderLineStyle());
 

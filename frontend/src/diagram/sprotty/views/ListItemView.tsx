@@ -15,7 +15,7 @@ import { svg } from 'snabbdom-jsx';
 import { SLabelView } from 'sprotty';
 
 /**
- * The view used to display nodes with a rectangle style.
+ * The view used to display nodes with a list item style.
  *
  * @gcoutable
  */

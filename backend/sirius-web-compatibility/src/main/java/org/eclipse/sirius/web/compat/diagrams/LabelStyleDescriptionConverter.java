@@ -16,8 +16,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 
-import org.eclipse.emf.common.util.Enumerator;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.viewpoint.FontFormat;
 import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.diagrams.description.LabelStyleDescription;
@@ -39,19 +37,6 @@ public class LabelStyleDescriptionConverter {
         this.interpreter = Objects.requireNonNull(interpreter);
     }
 
-    private String getImagePath(Object object) {
-        if (object instanceof EObject) {
-            EObject eObject = (EObject) object;
-            if (eObject.eClass().getName().equals("Attribute")) { //$NON-NLS-1$
-                Enumerator value = (Enumerator) eObject.eGet(eObject.eClass().getEStructuralFeature("type")); //$NON-NLS-1$
-                if (value.getName().equals("STRING")) { //$NON-NLS-1$
-                    return "/icons/full/obj16/Attribute.gif"; //$NON-NLS-1$
-                }
-            }
-        }
-        return this.objectService.getImagePath(object);
-    }
-
     public LabelStyleDescription convert(org.eclipse.sirius.viewpoint.description.style.BasicLabelStyleDescription labelStyleDescription) {
         List<FontFormat> fontFormats = labelStyleDescription.getLabelFormat();
 
@@ -67,7 +52,7 @@ public class LabelStyleDescriptionConverter {
                     }
                 } else {
                     iconURL = variableManager.get(VariableManager.SELF, Object.class)
-                            .map(this::getImagePath)
+                            .map(this.objectService::getImagePath)
                             .orElse(""); //$NON-NLS-1$
                 }
                 // @formatter:on

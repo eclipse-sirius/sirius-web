@@ -149,18 +149,17 @@ public class ELKDiagramConverter {
     }
 
     private double getLargestNodeListItemWidth(List<Node> nodeListItems) {
-        double largestNodeListItemWidth = -1;
+        // @formatter:off
+        return nodeListItems.stream()
+                .map(Node::getLabel)
+                .map(this.textBoundsService::getBounds)
+                .map(TextBounds::getSize)
+                .mapToDouble(Size::getWidth)
+                .map(width -> width + LayoutOptionValues.NODE_LIST_ELK_NODE_LABELS_PADDING_RIGHT + LayoutOptionValues.NODE_LIST_ELK_NODE_LABELS_PADDING_LEFT)
+                .max()
+                .orElse(-1);
+        // @formatter:on
 
-        for (Node nodeListItem : nodeListItems) {
-            TextBounds nodeListItemTextBounds = this.textBoundsService.getBounds(nodeListItem.getLabel());
-            double nodeListItemWidth = nodeListItemTextBounds.getSize().getWidth() + LayoutOptionValues.NODE_LIST_ELK_NODE_LABELS_PADDING_RIGHT
-                    + LayoutOptionValues.NODE_LIST_ELK_NODE_LABELS_PADDING_LEFT;
-            if (largestNodeListItemWidth < nodeListItemWidth) {
-                largestNodeListItemWidth = nodeListItemWidth;
-            }
-        }
-
-        return largestNodeListItemWidth;
     }
 
     /**
@@ -178,12 +177,13 @@ public class ELKDiagramConverter {
         // @formatter:off
          return Arrays.asList(
                 largestNodeListItemWidth,
-                nodeListLabelTextBounds.getSize().getWidth(),
+                nodeListLabelTextBounds.getSize().getWidth() + LayoutOptionValues.DEFAULT_ELK_NODE_LABELS_PADDING * 2,
                 LayoutOptionValues.MIN_WIDTH_CONSTRAINT)
               .stream()
               .mapToDouble(Number::doubleValue)
               .max()
               .orElse(LayoutOptionValues.MIN_WIDTH_CONSTRAINT);
+         // @formatter:on
     }
 
     /**
@@ -204,7 +204,7 @@ public class ELKDiagramConverter {
         List<Node> childNodes = nodeList.getChildNodes();
 
         double nodeListWidth = this.getNodeListWidth(nodeList);
-        List<Node> nodeListItems = this.initializeNodeListItems(childNodes, nodeListWidth);
+        List<Node> nodeListItems = this.initializeNodeListItems(childNodes, nodeListWidth, nodeList.getLabel().getSize().getHeight());
         double nodeListHeight = this.getNodeListHeight(nodeListItems);
 
         Size nodelistSize = Size.of(nodeListWidth, nodeListHeight);
@@ -243,16 +243,16 @@ public class ELKDiagramConverter {
         return nodeListHeight;
     }
 
-    private List<Node> initializeNodeListItems(List<Node> childNodes, double nodeListWidth) {
+    private List<Node> initializeNodeListItems(List<Node> childNodes, double nodeListWidth, double nodeListLabelHeight) {
         List<Node> nodeListItems = new ArrayList<>();
         for (int i = 0; i < childNodes.size(); ++i) {
             Node nodeListItem = childNodes.get(i);
 
             double nodeListItemHeight = this.getNodeListItemHeight(nodeListItem);
-            Size nodelistItemSize = Size.of(nodeListWidth, nodeListItemHeight);
+            Size nodelistItemSize = Size.of(nodeListWidth - LayoutOptionValues.NODE_LIST_ELK_NODE_LABELS_PADDING_LEFT, nodeListItemHeight);
 
-            double nodeListItemPosY = this.getCurrentListItemYPosition(nodeListItems);
-            Position nodeListItemPosition = Position.at(0, nodeListItemPosY);
+            double nodeListItemPosY = this.getCurrentListItemYPosition(nodeListItems, nodeListLabelHeight);
+            Position nodeListItemPosition = Position.at(LayoutOptionValues.NODE_LIST_ELK_NODE_LABELS_PADDING_LEFT, nodeListItemPosY);
 
             // @formatter:off
             Node newNodeListItem = Node.newNode(nodeListItem)
@@ -278,12 +278,13 @@ public class ELKDiagramConverter {
      *
      * @param handledListItems
      *            The list of the eldest siblings
+     * @param nodeListLabelHeight
      * @return the current list item Y position
      */
-    private double getCurrentListItemYPosition(List<Node> handledListItems) {
+    private double getCurrentListItemYPosition(List<Node> handledListItems, double nodeListLabelHeight) {
         double nodeListItemYPosition = 0;
         if (handledListItems.isEmpty()) {
-            nodeListItemYPosition = LayoutOptionValues.NODE_LIST_ELK_PADDING_TOP + LayoutOptionValues.DEFAULT_ELK_NODE_LABELS_PADDING;
+            nodeListItemYPosition = nodeListLabelHeight + LayoutOptionValues.NODE_LIST_ELK_PADDING_TOP + LayoutOptionValues.DEFAULT_ELK_NODE_LABELS_PADDING;
         } else {
             Node previousNodeListItemSibling = handledListItems.get(handledListItems.size() - 1);
             nodeListItemYPosition = previousNodeListItemSibling.getPosition().getY() + previousNodeListItemSibling.getSize().getHeight() + LayoutOptionValues.NODE_LIST_ELK_NODE_NODE_GAP;
