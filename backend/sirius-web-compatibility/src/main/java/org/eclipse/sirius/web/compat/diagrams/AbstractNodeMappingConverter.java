@@ -21,7 +21,8 @@ import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import org.eclipse.sirius.diagram.ContainerLayout;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.sirius.diagram.business.api.query.ContainerMappingQuery;
 import org.eclipse.sirius.diagram.description.AbstractNodeMapping;
 import org.eclipse.sirius.diagram.description.ContainerMapping;
 import org.eclipse.sirius.diagram.description.style.FlatContainerStyleDescription;
@@ -115,15 +116,10 @@ public class AbstractNodeMappingConverter {
             String nodeType = NodeType.NODE_RECTANGLE;
             if (style instanceof WorkspaceImageDescription) {
                 nodeType = NodeType.NODE_IMAGE;
-            } else if (style instanceof FlatContainerStyleDescription && abstractNodeMapping instanceof ContainerMapping
-                    && ContainerLayout.LIST.equals(((ContainerMapping) abstractNodeMapping).getChildrenPresentation())) {
+            } else if (style instanceof FlatContainerStyleDescription && this.isListContainer(abstractNodeMapping)) {
                 nodeType = NodeType.NODE_LIST;
-            } else if (style.eContainer() != null && style.eContainer().eContainer() instanceof ContainerMapping) {
-                ContainerMapping parentMapping = (ContainerMapping) style.eContainer().eContainer();
-                org.eclipse.sirius.viewpoint.description.style.LabelStyleDescription labelStyleDescription = new LabelStyleDescriptionProvider(interpreter, parentMapping).apply(variableManager);
-                if (labelStyleDescription instanceof FlatContainerStyleDescription && ContainerLayout.LIST.equals(parentMapping.getChildrenPresentation())) {
-                    nodeType = NodeType.NODE_LIST_ITEM;
-                }
+            } else if (this.isListContainer(abstractNodeMapping.eContainer())) {
+                nodeType = NodeType.NODE_LIST_ITEM;
             }
             return nodeType;
         };
@@ -200,6 +196,10 @@ public class AbstractNodeMappingConverter {
         labelStyle.setShowIcon(true);
         labelStyle.setLabelSize(16);
         return labelStyle;
+    }
+
+    private boolean isListContainer(EObject nodeMapping) {
+        return nodeMapping instanceof ContainerMapping && new ContainerMappingQuery((ContainerMapping) nodeMapping).isListContainer();
     }
 
 }

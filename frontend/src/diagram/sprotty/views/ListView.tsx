@@ -15,7 +15,7 @@ import { svg } from 'snabbdom-jsx';
 import { RectangularNodeView } from 'sprotty';
 
 /**
- * The view used to display nodes with a rectangle style.
+ * The view used to display nodes with a list style.
  *
  * @gcoutable
  */
@@ -66,12 +66,16 @@ export class ListView extends RectangularNodeView {
       stroke: nodeStyle.borderColor,
       'stroke-width': nodeStyle.borderSize,
     };
+
+    // The label y position indicates the padding top, we suppose the same padding is applied to the bottom.
+    const headerLabelPadding = nodeLabel?.bounds?.y;
+
     const headerSeparator = (
       <line
         x1={0}
-        y1={nodeLabel.bounds.height}
+        y1={nodeLabel.bounds.height + 2 * headerLabelPadding}
         x2={node.bounds.width}
-        y2={nodeLabel.bounds.height}
+        y2={nodeLabel.bounds.height + 2 * headerLabelPadding}
         style={headerSeparatorStyle}
       />
     );

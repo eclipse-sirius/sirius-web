@@ -34,7 +34,7 @@ public final class LayoutOptionValues {
     /**
      * The minimum height constraint value defined for a node in our elk configuration.
      */
-    public static final int MIN_HEIGHT_CONSTRAINT = 25;
+    public static final int MIN_HEIGHT_CONSTRAINT = 35;
 
     /**
      * The minimum width constraint value defined for a node in our elk configuration.
@@ -45,7 +45,7 @@ public final class LayoutOptionValues {
      * The value defined for NodeList in the elk configuration to set the padding top between a NodeList and its
      * NodeListItems.
      */
-    public static final double NODE_LIST_ELK_PADDING_TOP = 6d;
+    public static final double NODE_LIST_ELK_PADDING_TOP = 13d;
 
     /**
      * The value defined for NodeList in the elk configuration to set the padding left between a NodeList and its
