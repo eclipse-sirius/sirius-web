@@ -139,7 +139,7 @@ export const SelectPropertySection = ({
     <div>
       <PropertySectionLabel label={widget.label} subscribers={subscribers} />
       <Select
-        value={widget.value}
+        value={widget.value || ''}
         onChange={onChange}
         displayEmpty
         onFocus={onFocus}
