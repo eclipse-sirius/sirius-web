@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.view;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
@@ -471,12 +472,28 @@ public interface ViewPackage extends EPackage {
     int STYLE__COLOR = 0;
 
     /**
+     * The feature id for the '<em><b>Border Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int STYLE__BORDER_COLOR = 1;
+
+    /**
+     * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int STYLE__FONT_SIZE = 2;
+
+    /**
      * The number of structural features of the '<em>Style</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int STYLE_FEATURE_COUNT = 1;
+    int STYLE_FEATURE_COUNT = 3;
 
     /**
      * The number of operations of the '<em>Style</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -505,6 +522,22 @@ public interface ViewPackage extends EPackage {
     int NODE_STYLE__COLOR = STYLE__COLOR;
 
     /**
+     * The feature id for the '<em><b>Border Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_STYLE__BORDER_COLOR = STYLE__BORDER_COLOR;
+
+    /**
+     * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_STYLE__FONT_SIZE = STYLE__FONT_SIZE;
+
+    /**
      * The feature id for the '<em><b>Shape</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -528,6 +561,103 @@ public interface ViewPackage extends EPackage {
      * @ordered
      */
     int NODE_STYLE_OPERATION_COUNT = STYLE_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.web.view.impl.EdgeStyleImpl <em>Edge Style</em>}' class.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.web.view.impl.EdgeStyleImpl
+     * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getEdgeStyle()
+     * @generated
+     */
+    int EDGE_STYLE = 8;
+
+    /**
+     * The feature id for the '<em><b>Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_STYLE__COLOR = STYLE__COLOR;
+
+    /**
+     * The feature id for the '<em><b>Border Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_STYLE__BORDER_COLOR = STYLE__BORDER_COLOR;
+
+    /**
+     * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_STYLE__FONT_SIZE = STYLE__FONT_SIZE;
+
+    /**
+     * The feature id for the '<em><b>Line Style</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_STYLE__LINE_STYLE = STYLE_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Source Arrow Style</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_STYLE__SOURCE_ARROW_STYLE = STYLE_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Target Arrow Style</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_STYLE__TARGET_ARROW_STYLE = STYLE_FEATURE_COUNT + 2;
+
+    /**
+     * The number of structural features of the '<em>Edge Style</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_STYLE_FEATURE_COUNT = STYLE_FEATURE_COUNT + 3;
+
+    /**
+     * The number of operations of the '<em>Edge Style</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_STYLE_OPERATION_COUNT = STYLE_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.web.view.ArrowStyle <em>Arrow Style</em>}' enum. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.web.view.ArrowStyle
+     * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getArrowStyle()
+     * @generated
+     */
+    int ARROW_STYLE = 9;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.web.view.LineStyle <em>Line Style</em>}' enum. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.web.view.LineStyle
+     * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getLineStyle()
+     * @generated
+     */
+    int LINE_STYLE = 10;
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.web.view.View <em>View</em>}'. <!-- begin-user-doc
@@ -813,6 +943,28 @@ public interface ViewPackage extends EPackage {
     EAttribute getStyle_Color();
 
     /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.web.view.Style#getBorderColor <em>Border
+     * Color</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Border Color</em>'.
+     * @see org.eclipse.sirius.web.view.Style#getBorderColor()
+     * @see #getStyle()
+     * @generated
+     */
+    EAttribute getStyle_BorderColor();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.web.view.Style#getFontSize <em>Font
+     * Size</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Font Size</em>'.
+     * @see org.eclipse.sirius.web.view.Style#getFontSize()
+     * @see #getStyle()
+     * @generated
+     */
+    EAttribute getStyle_FontSize();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.web.view.NodeStyle <em>Node Style</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
@@ -832,6 +984,69 @@ public interface ViewPackage extends EPackage {
      * @generated
      */
     EAttribute getNodeStyle_Shape();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.web.view.EdgeStyle <em>Edge Style</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Edge Style</em>'.
+     * @see org.eclipse.sirius.web.view.EdgeStyle
+     * @generated
+     */
+    EClass getEdgeStyle();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.web.view.EdgeStyle#getLineStyle <em>Line
+     * Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Line Style</em>'.
+     * @see org.eclipse.sirius.web.view.EdgeStyle#getLineStyle()
+     * @see #getEdgeStyle()
+     * @generated
+     */
+    EAttribute getEdgeStyle_LineStyle();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.web.view.EdgeStyle#getSourceArrowStyle
+     * <em>Source Arrow Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Source Arrow Style</em>'.
+     * @see org.eclipse.sirius.web.view.EdgeStyle#getSourceArrowStyle()
+     * @see #getEdgeStyle()
+     * @generated
+     */
+    EAttribute getEdgeStyle_SourceArrowStyle();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.web.view.EdgeStyle#getTargetArrowStyle
+     * <em>Target Arrow Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Target Arrow Style</em>'.
+     * @see org.eclipse.sirius.web.view.EdgeStyle#getTargetArrowStyle()
+     * @see #getEdgeStyle()
+     * @generated
+     */
+    EAttribute getEdgeStyle_TargetArrowStyle();
+
+    /**
+     * Returns the meta object for enum '{@link org.eclipse.sirius.web.view.ArrowStyle <em>Arrow Style</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for enum '<em>Arrow Style</em>'.
+     * @see org.eclipse.sirius.web.view.ArrowStyle
+     * @generated
+     */
+    EEnum getArrowStyle();
+
+    /**
+     * Returns the meta object for enum '{@link org.eclipse.sirius.web.view.LineStyle <em>Line Style</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for enum '<em>Line Style</em>'.
+     * @see org.eclipse.sirius.web.view.LineStyle
+     * @generated
+     */
+    EEnum getLineStyle();
 
     /**
      * Returns the factory that creates the instances of the model. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1070,6 +1285,22 @@ public interface ViewPackage extends EPackage {
         EAttribute STYLE__COLOR = eINSTANCE.getStyle_Color();
 
         /**
+         * The meta object literal for the '<em><b>Border Color</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute STYLE__BORDER_COLOR = eINSTANCE.getStyle_BorderColor();
+
+        /**
+         * The meta object literal for the '<em><b>Font Size</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute STYLE__FONT_SIZE = eINSTANCE.getStyle_FontSize();
+
+        /**
          * The meta object literal for the '{@link org.eclipse.sirius.web.view.impl.NodeStyleImpl <em>Node Style</em>}'
          * class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
@@ -1086,6 +1317,60 @@ public interface ViewPackage extends EPackage {
          * @generated
          */
         EAttribute NODE_STYLE__SHAPE = eINSTANCE.getNodeStyle_Shape();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.web.view.impl.EdgeStyleImpl <em>Edge Style</em>}'
+         * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.web.view.impl.EdgeStyleImpl
+         * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getEdgeStyle()
+         * @generated
+         */
+        EClass EDGE_STYLE = eINSTANCE.getEdgeStyle();
+
+        /**
+         * The meta object literal for the '<em><b>Line Style</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute EDGE_STYLE__LINE_STYLE = eINSTANCE.getEdgeStyle_LineStyle();
+
+        /**
+         * The meta object literal for the '<em><b>Source Arrow Style</b></em>' attribute feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute EDGE_STYLE__SOURCE_ARROW_STYLE = eINSTANCE.getEdgeStyle_SourceArrowStyle();
+
+        /**
+         * The meta object literal for the '<em><b>Target Arrow Style</b></em>' attribute feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute EDGE_STYLE__TARGET_ARROW_STYLE = eINSTANCE.getEdgeStyle_TargetArrowStyle();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.web.view.ArrowStyle <em>Arrow Style</em>}' enum.
+         * <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.web.view.ArrowStyle
+         * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getArrowStyle()
+         * @generated
+         */
+        EEnum ARROW_STYLE = eINSTANCE.getArrowStyle();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.web.view.LineStyle <em>Line Style</em>}' enum.
+         * <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.web.view.LineStyle
+         * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getLineStyle()
+         * @generated
+         */
+        EEnum LINE_STYLE = eINSTANCE.getLineStyle();
 
     }
 

@@ -222,9 +222,7 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
 
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.EDGE_DESCRIPTION__STYLE, ViewFactory.eINSTANCE.createStyle()));
-
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.EDGE_DESCRIPTION__STYLE, ViewFactory.eINSTANCE.createNodeStyle()));
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.EDGE_DESCRIPTION__STYLE, ViewFactory.eINSTANCE.createEdgeStyle()));
     }
 
 }

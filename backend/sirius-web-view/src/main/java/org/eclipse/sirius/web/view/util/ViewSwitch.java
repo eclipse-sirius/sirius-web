@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.util.Switch;
 import org.eclipse.sirius.web.view.DiagramDescription;
 import org.eclipse.sirius.web.view.DiagramElementDescription;
 import org.eclipse.sirius.web.view.EdgeDescription;
+import org.eclipse.sirius.web.view.EdgeStyle;
 import org.eclipse.sirius.web.view.NodeDescription;
 import org.eclipse.sirius.web.view.NodeStyle;
 import org.eclipse.sirius.web.view.RepresentationDescription;
@@ -136,6 +137,15 @@ public class ViewSwitch<T> extends Switch<T> {
             T result = this.caseNodeStyle(nodeStyle);
             if (result == null)
                 result = this.caseStyle(nodeStyle);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.EDGE_STYLE: {
+            EdgeStyle edgeStyle = (EdgeStyle) theEObject;
+            T result = this.caseEdgeStyle(edgeStyle);
+            if (result == null)
+                result = this.caseStyle(edgeStyle);
             if (result == null)
                 result = this.defaultCase(theEObject);
             return result;
@@ -259,6 +269,20 @@ public class ViewSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseNodeStyle(NodeStyle object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Edge Style</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Edge Style</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseEdgeStyle(EdgeStyle object) {
         return null;
     }
 

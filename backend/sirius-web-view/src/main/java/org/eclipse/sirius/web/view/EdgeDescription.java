@@ -161,7 +161,7 @@ public interface EdgeDescription extends DiagramElementDescription {
      * @model containment="true"
      * @generated
      */
-    Style getStyle();
+    EdgeStyle getStyle();
 
     /**
      * Sets the value of the '{@link org.eclipse.sirius.web.view.EdgeDescription#getStyle <em>Style</em>}' containment
@@ -172,6 +172,6 @@ public interface EdgeDescription extends DiagramElementDescription {
      * @see #getStyle()
      * @generated
      */
-    void setStyle(Style value);
+    void setStyle(EdgeStyle value);
 
 } // EdgeDescription
