@@ -39,7 +39,6 @@ import org.eclipse.sirius.web.services.api.representations.IRepresentationServic
 import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.MeterRegistry;
@@ -61,19 +60,16 @@ public class DiagramCreationService implements IDiagramCreationService {
 
     private final ILayoutService layoutService;
 
-    private boolean activateAutoLayout;
-
     private final Timer timer;
 
     private final Logger logger = LoggerFactory.getLogger(DiagramCreationService.class);
 
     public DiagramCreationService(IRepresentationDescriptionService representationDescriptionService, IRepresentationService representationService, IObjectService objectService,
-            ILayoutService layoutService, @Value("${sirius.web.diagrams.autolayout.activate:false}") boolean activateAutoLayout, MeterRegistry meterRegistry) {
+            ILayoutService layoutService, MeterRegistry meterRegistry) {
         this.representationDescriptionService = Objects.requireNonNull(representationDescriptionService);
         this.representationService = Objects.requireNonNull(representationService);
         this.objectService = Objects.requireNonNull(objectService);
         this.layoutService = Objects.requireNonNull(layoutService);
-        this.activateAutoLayout = activateAutoLayout;
         // @formatter:off
         this.timer = Timer.builder(Monitoring.REPRESENTATION_EVENT_PROCESSOR_REFRESH)
                 .tag(Monitoring.NAME, "diagram") //$NON-NLS-1$
@@ -132,7 +128,7 @@ public class DiagramCreationService implements IDiagramCreationService {
         Diagram newDiagram = new DiagramRenderer(this.logger).render(element);
 
         // The auto layout is used for the first rendering and after that if it is activated
-        if (optionalDiagramContext.isEmpty() || this.activateAutoLayout) {
+        if (optionalDiagramContext.isEmpty() || diagramDescription.isAutoLayout()) {
             newDiagram = this.layoutService.layout(newDiagram);
         } else if (optionalDiagramContext.isPresent()) {
             newDiagram = this.layoutService.incrementalLayout(newDiagram, optionalDiagramElementEvent);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -50,6 +50,8 @@ public final class DiagramDescription implements IRepresentationDescription {
 
     private String label;
 
+    private boolean autoLayout;
+
     private Function<VariableManager, String> targetObjectIdProvider;
 
     private Predicate<VariableManager> canCreatePredicate;
@@ -79,6 +81,12 @@ public final class DiagramDescription implements IRepresentationDescription {
     @GraphQLNonNull
     public String getLabel() {
         return this.label;
+    }
+
+    @GraphQLField
+    @GraphQLNonNull
+    public boolean isAutoLayout() {
+        return this.autoLayout;
     }
 
     public Function<VariableManager, String> getTargetObjectIdProvider() {
@@ -127,6 +135,8 @@ public final class DiagramDescription implements IRepresentationDescription {
 
         private String label;
 
+        private boolean autoLayout;
+
         private Function<VariableManager, String> targetObjectIdProvider;
 
         private Predicate<VariableManager> canCreatePredicate;
@@ -145,6 +155,11 @@ public final class DiagramDescription implements IRepresentationDescription {
 
         public Builder label(String label) {
             this.label = Objects.requireNonNull(label);
+            return this;
+        }
+
+        public Builder autoLayout(boolean autoLayout) {
+            this.autoLayout = autoLayout;
             return this;
         }
 
@@ -182,6 +197,7 @@ public final class DiagramDescription implements IRepresentationDescription {
             DiagramDescription diagramDescription = new DiagramDescription();
             diagramDescription.id = Objects.requireNonNull(this.id);
             diagramDescription.label = Objects.requireNonNull(this.label);
+            diagramDescription.autoLayout = this.autoLayout;
             diagramDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
             diagramDescription.canCreatePredicate = Objects.requireNonNull(this.canCreatePredicate);
             diagramDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
