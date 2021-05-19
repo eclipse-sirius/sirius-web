@@ -18,6 +18,8 @@ import java.util.UUID;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.sirius.viewpoint.description.DocumentedElement;
 import org.eclipse.sirius.web.compat.api.IAQLInterpreterFactory;
 import org.eclipse.sirius.web.compat.api.ICanCreateDiagramPredicateFactory;
 import org.eclipse.sirius.web.compat.api.IIdentifierProvider;
@@ -36,6 +38,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class DiagramDescriptionConverter implements IDiagramDescriptionConverter {
+
+    private static final String FORCE_AUTO_LAYOUT = "FORCE_AUTO_LAYOUT"; //$NON-NLS-1$
 
     private final List<IDiagramDescriptionPopulator> diagramDescriptionPopulators;
 
@@ -62,7 +66,8 @@ public class DiagramDescriptionConverter implements IDiagramDescriptionConverter
         // @formatter:off
         Builder builder = DiagramDescription.newDiagramDescription(UUID.fromString(this.identifierProvider.getIdentifier(siriusDiagramDescription)))
                 .canCreatePredicate(canCreatePredicate)
-                .labelProvider(labelProvider);
+                .labelProvider(labelProvider)
+                .autoLayout(this.isAutoLayoutMode(siriusDiagramDescription));
         // @formatter:on
 
         for (IDiagramDescriptionPopulator diagramDescriptionPopulator : this.diagramDescriptionPopulators) {
@@ -70,5 +75,18 @@ public class DiagramDescriptionConverter implements IDiagramDescriptionConverter
         }
 
         return builder.build();
+    }
+
+    private boolean isAutoLayoutMode(org.eclipse.sirius.diagram.description.DiagramDescription diagramDescription) {
+        boolean isAutoLayout = false;
+        EObject current = diagramDescription;
+        while (!isAutoLayout && current != null) {
+            if (current instanceof DocumentedElement) {
+                String doc = ((DocumentedElement) current).getDocumentation();
+                isAutoLayout = doc != null && doc.contains(FORCE_AUTO_LAYOUT);
+            }
+            current = current.eContainer();
+        }
+        return isAutoLayout;
     }
 }
