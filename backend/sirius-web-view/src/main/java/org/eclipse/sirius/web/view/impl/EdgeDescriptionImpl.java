@@ -18,8 +18,8 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.sirius.web.view.EdgeDescription;
+import org.eclipse.sirius.web.view.EdgeStyle;
 import org.eclipse.sirius.web.view.NodeDescription;
-import org.eclipse.sirius.web.view.Style;
 import org.eclipse.sirius.web.view.ViewPackage;
 
 /**
@@ -132,7 +132,7 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @generated
      * @ordered
      */
-    protected Style style;
+    protected EdgeStyle style;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -308,7 +308,7 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @generated
      */
     @Override
-    public Style getStyle() {
+    public EdgeStyle getStyle() {
         return this.style;
     }
 
@@ -317,8 +317,8 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
      *
      * @generated
      */
-    public NotificationChain basicSetStyle(Style newStyle, NotificationChain msgs) {
-        Style oldStyle = this.style;
+    public NotificationChain basicSetStyle(EdgeStyle newStyle, NotificationChain msgs) {
+        EdgeStyle oldStyle = this.style;
         this.style = newStyle;
         if (this.eNotificationRequired()) {
             ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ViewPackage.EDGE_DESCRIPTION__STYLE, oldStyle, newStyle);
@@ -336,7 +336,7 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @generated
      */
     @Override
-    public void setStyle(Style newStyle) {
+    public void setStyle(EdgeStyle newStyle) {
         if (newStyle != this.style) {
             NotificationChain msgs = null;
             if (this.style != null)
@@ -417,7 +417,7 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
             this.setTargetNodesExpression((String) newValue);
             return;
         case ViewPackage.EDGE_DESCRIPTION__STYLE:
-            this.setStyle((Style) newValue);
+            this.setStyle((EdgeStyle) newValue);
             return;
         }
         super.eSet(featureID, newValue);
@@ -447,7 +447,7 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
             this.setTargetNodesExpression(TARGET_NODES_EXPRESSION_EDEFAULT);
             return;
         case ViewPackage.EDGE_DESCRIPTION__STYLE:
-            this.setStyle((Style) null);
+            this.setStyle((EdgeStyle) null);
             return;
         }
         super.eUnset(featureID);

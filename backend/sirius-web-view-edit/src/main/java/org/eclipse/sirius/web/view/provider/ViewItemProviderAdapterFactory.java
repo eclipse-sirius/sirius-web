@@ -170,29 +170,6 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.web.view.Style} instances. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected StyleItemProvider styleItemProvider;
-
-    /**
-     * This creates an adapter for a {@link org.eclipse.sirius.web.view.Style}. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public Adapter createStyleAdapter() {
-        if (this.styleItemProvider == null) {
-            this.styleItemProvider = new StyleItemProvider(this);
-        }
-
-        return this.styleItemProvider;
-    }
-
-    /**
      * This keeps track of the one adapter used for all {@link org.eclipse.sirius.web.view.NodeStyle} instances. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
@@ -213,6 +190,29 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
         }
 
         return this.nodeStyleItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.web.view.EdgeStyle} instances. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected EdgeStyleItemProvider edgeStyleItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.web.view.EdgeStyle}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createEdgeStyleAdapter() {
+        if (this.edgeStyleItemProvider == null) {
+            this.edgeStyleItemProvider = new EdgeStyleItemProvider(this);
+        }
+
+        return this.edgeStyleItemProvider;
     }
 
     /**
@@ -323,10 +323,10 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
             this.nodeDescriptionItemProvider.dispose();
         if (this.edgeDescriptionItemProvider != null)
             this.edgeDescriptionItemProvider.dispose();
-        if (this.styleItemProvider != null)
-            this.styleItemProvider.dispose();
         if (this.nodeStyleItemProvider != null)
             this.nodeStyleItemProvider.dispose();
+        if (this.edgeStyleItemProvider != null)
+            this.edgeStyleItemProvider.dispose();
     }
 
 }

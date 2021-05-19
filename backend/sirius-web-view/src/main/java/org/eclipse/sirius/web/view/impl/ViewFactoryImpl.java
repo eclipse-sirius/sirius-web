@@ -13,15 +13,18 @@
 package org.eclipse.sirius.web.view.impl;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
+import org.eclipse.sirius.web.view.ArrowStyle;
 import org.eclipse.sirius.web.view.DiagramDescription;
 import org.eclipse.sirius.web.view.EdgeDescription;
+import org.eclipse.sirius.web.view.EdgeStyle;
+import org.eclipse.sirius.web.view.LineStyle;
 import org.eclipse.sirius.web.view.NodeDescription;
 import org.eclipse.sirius.web.view.NodeStyle;
-import org.eclipse.sirius.web.view.Style;
 import org.eclipse.sirius.web.view.View;
 import org.eclipse.sirius.web.view.ViewFactory;
 import org.eclipse.sirius.web.view.ViewPackage;
@@ -74,12 +77,46 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
             return this.createNodeDescription();
         case ViewPackage.EDGE_DESCRIPTION:
             return this.createEdgeDescription();
-        case ViewPackage.STYLE:
-            return this.createStyle();
         case ViewPackage.NODE_STYLE:
             return this.createNodeStyle();
+        case ViewPackage.EDGE_STYLE:
+            return this.createEdgeStyle();
         default:
             throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Object createFromString(EDataType eDataType, String initialValue) {
+        switch (eDataType.getClassifierID()) {
+        case ViewPackage.ARROW_STYLE:
+            return this.createArrowStyleFromString(eDataType, initialValue);
+        case ViewPackage.LINE_STYLE:
+            return this.createLineStyleFromString(eDataType, initialValue);
+        default:
+            throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String convertToString(EDataType eDataType, Object instanceValue) {
+        switch (eDataType.getClassifierID()) {
+        case ViewPackage.ARROW_STYLE:
+            return this.convertArrowStyleToString(eDataType, instanceValue);
+        case ViewPackage.LINE_STYLE:
+            return this.convertLineStyleToString(eDataType, instanceValue);
+        default:
+            throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
         }
     }
 
@@ -133,9 +170,9 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
      * @generated
      */
     @Override
-    public Style createStyle() {
-        StyleImpl style = new StyleImpl();
-        return style;
+    public NodeStyle createNodeStyle() {
+        NodeStyleImpl nodeStyle = new NodeStyleImpl();
+        return nodeStyle;
     }
 
     /**
@@ -144,9 +181,51 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
      * @generated
      */
     @Override
-    public NodeStyle createNodeStyle() {
-        NodeStyleImpl nodeStyle = new NodeStyleImpl();
-        return nodeStyle;
+    public EdgeStyle createEdgeStyle() {
+        EdgeStyleImpl edgeStyle = new EdgeStyleImpl();
+        return edgeStyle;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public ArrowStyle createArrowStyleFromString(EDataType eDataType, String initialValue) {
+        ArrowStyle result = ArrowStyle.get(initialValue);
+        if (result == null)
+            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        return result;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public String convertArrowStyleToString(EDataType eDataType, Object instanceValue) {
+        return instanceValue == null ? null : instanceValue.toString();
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public LineStyle createLineStyleFromString(EDataType eDataType, String initialValue) {
+        LineStyle result = LineStyle.get(initialValue);
+        if (result == null)
+            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        return result;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public String convertLineStyleToString(EDataType eDataType, Object instanceValue) {
+        return instanceValue == null ? null : instanceValue.toString();
     }
 
     /**
