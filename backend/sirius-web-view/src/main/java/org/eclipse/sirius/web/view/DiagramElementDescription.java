@@ -26,6 +26,8 @@ import org.eclipse.emf.ecore.EObject;
  * <li>{@link org.eclipse.sirius.web.view.DiagramElementDescription#getSemanticCandidatesExpression <em>Semantic
  * Candidates Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.web.view.DiagramElementDescription#getLabelExpression <em>Label Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.web.view.DiagramElementDescription#getDeleteTool <em>Delete Tool</em>}</li>
+ * <li>{@link org.eclipse.sirius.web.view.DiagramElementDescription#getLabelEditTool <em>Label Edit Tool</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.web.view.ViewPackage#getDiagramElementDescription()
@@ -101,5 +103,51 @@ public interface DiagramElementDescription extends EObject {
      * @generated
      */
     void setLabelExpression(String value);
+
+    /**
+     * Returns the value of the '<em><b>Delete Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Delete Tool</em>' containment reference.
+     * @see #setDeleteTool(DeleteTool)
+     * @see org.eclipse.sirius.web.view.ViewPackage#getDiagramElementDescription_DeleteTool()
+     * @model containment="true"
+     * @generated
+     */
+    DeleteTool getDeleteTool();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.web.view.DiagramElementDescription#getDeleteTool <em>Delete
+     * Tool</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Delete Tool</em>' containment reference.
+     * @see #getDeleteTool()
+     * @generated
+     */
+    void setDeleteTool(DeleteTool value);
+
+    /**
+     * Returns the value of the '<em><b>Label Edit Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Label Edit Tool</em>' containment reference.
+     * @see #setLabelEditTool(LabelEditTool)
+     * @see org.eclipse.sirius.web.view.ViewPackage#getDiagramElementDescription_LabelEditTool()
+     * @model containment="true"
+     * @generated
+     */
+    LabelEditTool getLabelEditTool();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.web.view.DiagramElementDescription#getLabelEditTool <em>Label
+     * Edit Tool</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Label Edit Tool</em>' containment reference.
+     * @see #getLabelEditTool()
+     * @generated
+     */
+    void setLabelEditTool(LabelEditTool value);
 
 } // DiagramElementDescription

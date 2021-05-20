@@ -16,14 +16,25 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.sirius.web.view.ChangeContext;
+import org.eclipse.sirius.web.view.CreateInstance;
+import org.eclipse.sirius.web.view.DeleteElement;
+import org.eclipse.sirius.web.view.DeleteTool;
 import org.eclipse.sirius.web.view.DiagramDescription;
 import org.eclipse.sirius.web.view.DiagramElementDescription;
 import org.eclipse.sirius.web.view.EdgeDescription;
 import org.eclipse.sirius.web.view.EdgeStyle;
+import org.eclipse.sirius.web.view.EdgeTool;
+import org.eclipse.sirius.web.view.LabelEditTool;
 import org.eclipse.sirius.web.view.NodeDescription;
 import org.eclipse.sirius.web.view.NodeStyle;
+import org.eclipse.sirius.web.view.NodeTool;
+import org.eclipse.sirius.web.view.Operation;
 import org.eclipse.sirius.web.view.RepresentationDescription;
+import org.eclipse.sirius.web.view.SetValue;
 import org.eclipse.sirius.web.view.Style;
+import org.eclipse.sirius.web.view.Tool;
+import org.eclipse.sirius.web.view.UnsetValue;
 import org.eclipse.sirius.web.view.View;
 import org.eclipse.sirius.web.view.ViewPackage;
 
@@ -121,6 +132,61 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseEdgeStyle(EdgeStyle object) {
             return ViewAdapterFactory.this.createEdgeStyleAdapter();
+        }
+
+        @Override
+        public Adapter caseTool(Tool object) {
+            return ViewAdapterFactory.this.createToolAdapter();
+        }
+
+        @Override
+        public Adapter caseLabelEditTool(LabelEditTool object) {
+            return ViewAdapterFactory.this.createLabelEditToolAdapter();
+        }
+
+        @Override
+        public Adapter caseDeleteTool(DeleteTool object) {
+            return ViewAdapterFactory.this.createDeleteToolAdapter();
+        }
+
+        @Override
+        public Adapter caseNodeTool(NodeTool object) {
+            return ViewAdapterFactory.this.createNodeToolAdapter();
+        }
+
+        @Override
+        public Adapter caseEdgeTool(EdgeTool object) {
+            return ViewAdapterFactory.this.createEdgeToolAdapter();
+        }
+
+        @Override
+        public Adapter caseOperation(Operation object) {
+            return ViewAdapterFactory.this.createOperationAdapter();
+        }
+
+        @Override
+        public Adapter caseChangeContext(ChangeContext object) {
+            return ViewAdapterFactory.this.createChangeContextAdapter();
+        }
+
+        @Override
+        public Adapter caseCreateInstance(CreateInstance object) {
+            return ViewAdapterFactory.this.createCreateInstanceAdapter();
+        }
+
+        @Override
+        public Adapter caseSetValue(SetValue object) {
+            return ViewAdapterFactory.this.createSetValueAdapter();
+        }
+
+        @Override
+        public Adapter caseUnsetValue(UnsetValue object) {
+            return ViewAdapterFactory.this.createUnsetValueAdapter();
+        }
+
+        @Override
+        public Adapter caseDeleteElement(DeleteElement object) {
+            return ViewAdapterFactory.this.createDeleteElementAdapter();
         }
 
         @Override
@@ -258,6 +324,149 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createEdgeStyleAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.web.view.Tool <em>Tool</em>}'. <!--
+     * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful to
+     * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.web.view.Tool
+     * @generated
+     */
+    public Adapter createToolAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.web.view.LabelEditTool <em>Label Edit
+     * Tool</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.web.view.LabelEditTool
+     * @generated
+     */
+    public Adapter createLabelEditToolAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.web.view.DeleteTool <em>Delete
+     * Tool</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.web.view.DeleteTool
+     * @generated
+     */
+    public Adapter createDeleteToolAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.web.view.NodeTool <em>Node Tool</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.web.view.NodeTool
+     * @generated
+     */
+    public Adapter createNodeToolAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.web.view.EdgeTool <em>Edge Tool</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.web.view.EdgeTool
+     * @generated
+     */
+    public Adapter createEdgeToolAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.web.view.Operation <em>Operation</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.web.view.Operation
+     * @generated
+     */
+    public Adapter createOperationAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.web.view.ChangeContext <em>Change
+     * Context</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.web.view.ChangeContext
+     * @generated
+     */
+    public Adapter createChangeContextAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.web.view.CreateInstance <em>Create
+     * Instance</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.web.view.CreateInstance
+     * @generated
+     */
+    public Adapter createCreateInstanceAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.web.view.SetValue <em>Set Value</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.web.view.SetValue
+     * @generated
+     */
+    public Adapter createSetValueAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.web.view.UnsetValue <em>Unset
+     * Value</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.web.view.UnsetValue
+     * @generated
+     */
+    public Adapter createUnsetValueAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.web.view.DeleteElement <em>Delete
+     * Element</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.web.view.DeleteElement
+     * @generated
+     */
+    public Adapter createDeleteElementAdapter() {
         return null;
     }
 

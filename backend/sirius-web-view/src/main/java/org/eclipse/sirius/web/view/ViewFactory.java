@@ -78,6 +78,78 @@ public interface ViewFactory extends EFactory {
     EdgeStyle createEdgeStyle();
 
     /**
+     * Returns a new object of class '<em>Label Edit Tool</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Label Edit Tool</em>'.
+     * @generated
+     */
+    LabelEditTool createLabelEditTool();
+
+    /**
+     * Returns a new object of class '<em>Delete Tool</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Delete Tool</em>'.
+     * @generated
+     */
+    DeleteTool createDeleteTool();
+
+    /**
+     * Returns a new object of class '<em>Node Tool</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Node Tool</em>'.
+     * @generated
+     */
+    NodeTool createNodeTool();
+
+    /**
+     * Returns a new object of class '<em>Edge Tool</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Edge Tool</em>'.
+     * @generated
+     */
+    EdgeTool createEdgeTool();
+
+    /**
+     * Returns a new object of class '<em>Change Context</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Change Context</em>'.
+     * @generated
+     */
+    ChangeContext createChangeContext();
+
+    /**
+     * Returns a new object of class '<em>Create Instance</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Create Instance</em>'.
+     * @generated
+     */
+    CreateInstance createCreateInstance();
+
+    /**
+     * Returns a new object of class '<em>Set Value</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Set Value</em>'.
+     * @generated
+     */
+    SetValue createSetValue();
+
+    /**
+     * Returns a new object of class '<em>Unset Value</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Unset Value</em>'.
+     * @generated
+     */
+    UnsetValue createUnsetValue();
+
+    /**
+     * Returns a new object of class '<em>Delete Element</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Delete Element</em>'.
+     * @generated
+     */
+    DeleteElement createDeleteElement();
+
+    /**
      * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the package supported by this factory.

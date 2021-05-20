@@ -19,12 +19,21 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.eclipse.sirius.web.view.ArrowStyle;
+import org.eclipse.sirius.web.view.ChangeContext;
+import org.eclipse.sirius.web.view.CreateInstance;
+import org.eclipse.sirius.web.view.DeleteElement;
+import org.eclipse.sirius.web.view.DeleteTool;
 import org.eclipse.sirius.web.view.DiagramDescription;
 import org.eclipse.sirius.web.view.EdgeDescription;
 import org.eclipse.sirius.web.view.EdgeStyle;
+import org.eclipse.sirius.web.view.EdgeTool;
+import org.eclipse.sirius.web.view.LabelEditTool;
 import org.eclipse.sirius.web.view.LineStyle;
 import org.eclipse.sirius.web.view.NodeDescription;
 import org.eclipse.sirius.web.view.NodeStyle;
+import org.eclipse.sirius.web.view.NodeTool;
+import org.eclipse.sirius.web.view.SetValue;
+import org.eclipse.sirius.web.view.UnsetValue;
 import org.eclipse.sirius.web.view.View;
 import org.eclipse.sirius.web.view.ViewFactory;
 import org.eclipse.sirius.web.view.ViewPackage;
@@ -81,6 +90,24 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
             return this.createNodeStyle();
         case ViewPackage.EDGE_STYLE:
             return this.createEdgeStyle();
+        case ViewPackage.LABEL_EDIT_TOOL:
+            return this.createLabelEditTool();
+        case ViewPackage.DELETE_TOOL:
+            return this.createDeleteTool();
+        case ViewPackage.NODE_TOOL:
+            return this.createNodeTool();
+        case ViewPackage.EDGE_TOOL:
+            return this.createEdgeTool();
+        case ViewPackage.CHANGE_CONTEXT:
+            return this.createChangeContext();
+        case ViewPackage.CREATE_INSTANCE:
+            return this.createCreateInstance();
+        case ViewPackage.SET_VALUE:
+            return this.createSetValue();
+        case ViewPackage.UNSET_VALUE:
+            return this.createUnsetValue();
+        case ViewPackage.DELETE_ELEMENT:
+            return this.createDeleteElement();
         default:
             throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
         }
@@ -184,6 +211,105 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
     public EdgeStyle createEdgeStyle() {
         EdgeStyleImpl edgeStyle = new EdgeStyleImpl();
         return edgeStyle;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public LabelEditTool createLabelEditTool() {
+        LabelEditToolImpl labelEditTool = new LabelEditToolImpl();
+        return labelEditTool;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public DeleteTool createDeleteTool() {
+        DeleteToolImpl deleteTool = new DeleteToolImpl();
+        return deleteTool;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public NodeTool createNodeTool() {
+        NodeToolImpl nodeTool = new NodeToolImpl();
+        return nodeTool;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EdgeTool createEdgeTool() {
+        EdgeToolImpl edgeTool = new EdgeToolImpl();
+        return edgeTool;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public ChangeContext createChangeContext() {
+        ChangeContextImpl changeContext = new ChangeContextImpl();
+        return changeContext;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public CreateInstance createCreateInstance() {
+        CreateInstanceImpl createInstance = new CreateInstanceImpl();
+        return createInstance;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public SetValue createSetValue() {
+        SetValueImpl setValue = new SetValueImpl();
+        return setValue;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public UnsetValue createUnsetValue() {
+        UnsetValueImpl unsetValue = new UnsetValueImpl();
+        return unsetValue;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public DeleteElement createDeleteElement() {
+        DeleteElementImpl deleteElement = new DeleteElementImpl();
+        return deleteElement;
     }
 
     /**

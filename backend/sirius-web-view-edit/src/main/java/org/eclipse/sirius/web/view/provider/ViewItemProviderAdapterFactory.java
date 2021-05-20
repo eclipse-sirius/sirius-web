@@ -216,6 +216,213 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     }
 
     /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.web.view.LabelEditTool} instances.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected LabelEditToolItemProvider labelEditToolItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.web.view.LabelEditTool}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createLabelEditToolAdapter() {
+        if (this.labelEditToolItemProvider == null) {
+            this.labelEditToolItemProvider = new LabelEditToolItemProvider(this);
+        }
+
+        return this.labelEditToolItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.web.view.DeleteTool} instances. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected DeleteToolItemProvider deleteToolItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.web.view.DeleteTool}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createDeleteToolAdapter() {
+        if (this.deleteToolItemProvider == null) {
+            this.deleteToolItemProvider = new DeleteToolItemProvider(this);
+        }
+
+        return this.deleteToolItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.web.view.NodeTool} instances. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected NodeToolItemProvider nodeToolItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.web.view.NodeTool}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createNodeToolAdapter() {
+        if (this.nodeToolItemProvider == null) {
+            this.nodeToolItemProvider = new NodeToolItemProvider(this);
+        }
+
+        return this.nodeToolItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.web.view.EdgeTool} instances. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected EdgeToolItemProvider edgeToolItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.web.view.EdgeTool}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createEdgeToolAdapter() {
+        if (this.edgeToolItemProvider == null) {
+            this.edgeToolItemProvider = new EdgeToolItemProvider(this);
+        }
+
+        return this.edgeToolItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.web.view.ChangeContext} instances.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected ChangeContextItemProvider changeContextItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.web.view.ChangeContext}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createChangeContextAdapter() {
+        if (this.changeContextItemProvider == null) {
+            this.changeContextItemProvider = new ChangeContextItemProvider(this);
+        }
+
+        return this.changeContextItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.web.view.CreateInstance} instances.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected CreateInstanceItemProvider createInstanceItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.web.view.CreateInstance}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createCreateInstanceAdapter() {
+        if (this.createInstanceItemProvider == null) {
+            this.createInstanceItemProvider = new CreateInstanceItemProvider(this);
+        }
+
+        return this.createInstanceItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.web.view.SetValue} instances. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected SetValueItemProvider setValueItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.web.view.SetValue}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createSetValueAdapter() {
+        if (this.setValueItemProvider == null) {
+            this.setValueItemProvider = new SetValueItemProvider(this);
+        }
+
+        return this.setValueItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.web.view.UnsetValue} instances. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected UnsetValueItemProvider unsetValueItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.web.view.UnsetValue}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createUnsetValueAdapter() {
+        if (this.unsetValueItemProvider == null) {
+            this.unsetValueItemProvider = new UnsetValueItemProvider(this);
+        }
+
+        return this.unsetValueItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.web.view.DeleteElement} instances.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected DeleteElementItemProvider deleteElementItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.web.view.DeleteElement}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createDeleteElementAdapter() {
+        if (this.deleteElementItemProvider == null) {
+            this.deleteElementItemProvider = new DeleteElementItemProvider(this);
+        }
+
+        return this.deleteElementItemProvider;
+    }
+
+    /**
      * This returns the root adapter factory that contains this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -327,6 +534,24 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
             this.nodeStyleItemProvider.dispose();
         if (this.edgeStyleItemProvider != null)
             this.edgeStyleItemProvider.dispose();
+        if (this.labelEditToolItemProvider != null)
+            this.labelEditToolItemProvider.dispose();
+        if (this.deleteToolItemProvider != null)
+            this.deleteToolItemProvider.dispose();
+        if (this.nodeToolItemProvider != null)
+            this.nodeToolItemProvider.dispose();
+        if (this.edgeToolItemProvider != null)
+            this.edgeToolItemProvider.dispose();
+        if (this.changeContextItemProvider != null)
+            this.changeContextItemProvider.dispose();
+        if (this.createInstanceItemProvider != null)
+            this.createInstanceItemProvider.dispose();
+        if (this.setValueItemProvider != null)
+            this.setValueItemProvider.dispose();
+        if (this.unsetValueItemProvider != null)
+            this.unsetValueItemProvider.dispose();
+        if (this.deleteElementItemProvider != null)
+            this.deleteElementItemProvider.dispose();
     }
 
 }
