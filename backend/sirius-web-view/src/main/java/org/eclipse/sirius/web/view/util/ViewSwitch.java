@@ -15,14 +15,25 @@ package org.eclipse.sirius.web.view.util;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.Switch;
+import org.eclipse.sirius.web.view.ChangeContext;
+import org.eclipse.sirius.web.view.CreateInstance;
+import org.eclipse.sirius.web.view.DeleteElement;
+import org.eclipse.sirius.web.view.DeleteTool;
 import org.eclipse.sirius.web.view.DiagramDescription;
 import org.eclipse.sirius.web.view.DiagramElementDescription;
 import org.eclipse.sirius.web.view.EdgeDescription;
 import org.eclipse.sirius.web.view.EdgeStyle;
+import org.eclipse.sirius.web.view.EdgeTool;
+import org.eclipse.sirius.web.view.LabelEditTool;
 import org.eclipse.sirius.web.view.NodeDescription;
 import org.eclipse.sirius.web.view.NodeStyle;
+import org.eclipse.sirius.web.view.NodeTool;
+import org.eclipse.sirius.web.view.Operation;
 import org.eclipse.sirius.web.view.RepresentationDescription;
+import org.eclipse.sirius.web.view.SetValue;
 import org.eclipse.sirius.web.view.Style;
+import org.eclipse.sirius.web.view.Tool;
+import org.eclipse.sirius.web.view.UnsetValue;
 import org.eclipse.sirius.web.view.View;
 import org.eclipse.sirius.web.view.ViewPackage;
 
@@ -146,6 +157,101 @@ public class ViewSwitch<T> extends Switch<T> {
             T result = this.caseEdgeStyle(edgeStyle);
             if (result == null)
                 result = this.caseStyle(edgeStyle);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.TOOL: {
+            Tool tool = (Tool) theEObject;
+            T result = this.caseTool(tool);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.LABEL_EDIT_TOOL: {
+            LabelEditTool labelEditTool = (LabelEditTool) theEObject;
+            T result = this.caseLabelEditTool(labelEditTool);
+            if (result == null)
+                result = this.caseTool(labelEditTool);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.DELETE_TOOL: {
+            DeleteTool deleteTool = (DeleteTool) theEObject;
+            T result = this.caseDeleteTool(deleteTool);
+            if (result == null)
+                result = this.caseTool(deleteTool);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.NODE_TOOL: {
+            NodeTool nodeTool = (NodeTool) theEObject;
+            T result = this.caseNodeTool(nodeTool);
+            if (result == null)
+                result = this.caseTool(nodeTool);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.EDGE_TOOL: {
+            EdgeTool edgeTool = (EdgeTool) theEObject;
+            T result = this.caseEdgeTool(edgeTool);
+            if (result == null)
+                result = this.caseTool(edgeTool);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.OPERATION: {
+            Operation operation = (Operation) theEObject;
+            T result = this.caseOperation(operation);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.CHANGE_CONTEXT: {
+            ChangeContext changeContext = (ChangeContext) theEObject;
+            T result = this.caseChangeContext(changeContext);
+            if (result == null)
+                result = this.caseOperation(changeContext);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.CREATE_INSTANCE: {
+            CreateInstance createInstance = (CreateInstance) theEObject;
+            T result = this.caseCreateInstance(createInstance);
+            if (result == null)
+                result = this.caseOperation(createInstance);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.SET_VALUE: {
+            SetValue setValue = (SetValue) theEObject;
+            T result = this.caseSetValue(setValue);
+            if (result == null)
+                result = this.caseOperation(setValue);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.UNSET_VALUE: {
+            UnsetValue unsetValue = (UnsetValue) theEObject;
+            T result = this.caseUnsetValue(unsetValue);
+            if (result == null)
+                result = this.caseOperation(unsetValue);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.DELETE_ELEMENT: {
+            DeleteElement deleteElement = (DeleteElement) theEObject;
+            T result = this.caseDeleteElement(deleteElement);
+            if (result == null)
+                result = this.caseOperation(deleteElement);
             if (result == null)
                 result = this.defaultCase(theEObject);
             return result;
@@ -283,6 +389,164 @@ public class ViewSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseEdgeStyle(EdgeStyle object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Tool</em>'. <!-- begin-user-doc --> This
+     * implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Tool</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseTool(Tool object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Label Edit Tool</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Label Edit Tool</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseLabelEditTool(LabelEditTool object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Delete Tool</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Delete Tool</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseDeleteTool(DeleteTool object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Node Tool</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Node Tool</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseNodeTool(NodeTool object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Edge Tool</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Edge Tool</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseEdgeTool(EdgeTool object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Operation</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Operation</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseOperation(Operation object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Change Context</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Change Context</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseChangeContext(ChangeContext object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Create Instance</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Create Instance</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseCreateInstance(CreateInstance object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Set Value</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Set Value</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseSetValue(SetValue object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Unset Value</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Unset Value</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseUnsetValue(UnsetValue object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Delete Element</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Delete Element</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseDeleteElement(DeleteElement object) {
         return null;
     }
 

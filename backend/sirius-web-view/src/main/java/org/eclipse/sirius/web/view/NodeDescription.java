@@ -64,4 +64,15 @@ public interface NodeDescription extends DiagramElementDescription {
      */
     void setStyle(NodeStyle value);
 
+    /**
+     * Returns the value of the '<em><b>Node Tools</b></em>' containment reference list. The list contents are of type
+     * {@link org.eclipse.sirius.web.view.NodeTool}. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Node Tools</em>' containment reference list.
+     * @see org.eclipse.sirius.web.view.ViewPackage#getNodeDescription_NodeTools()
+     * @model containment="true"
+     * @generated
+     */
+    EList<NodeTool> getNodeTools();
+
 } // NodeDescription

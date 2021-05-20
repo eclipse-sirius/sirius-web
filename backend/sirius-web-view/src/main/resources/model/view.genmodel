@@ -48,10 +48,13 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//DiagramElementDescription/domainType"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//DiagramElementDescription/semanticCandidatesExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//DiagramElementDescription/labelExpression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//DiagramElementDescription/deleteTool"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//DiagramElementDescription/labelEditTool"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//NodeDescription">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//NodeDescription/childrenDescriptions"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//NodeDescription/style"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//NodeDescription/nodeTools"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//EdgeDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//EdgeDescription/isDomainBasedEdge"/>
@@ -60,6 +63,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//EdgeDescription/sourceNodesExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//EdgeDescription/targetNodesExpression"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//EdgeDescription/style"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//EdgeDescription/edgeTools"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//Style">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//Style/color"/>
@@ -74,5 +78,33 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//EdgeStyle/sourceArrowStyle"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//EdgeStyle/targetArrowStyle"/>
     </genClasses>
+    <genClasses image="false" ecoreClass="view.ecore#//Tool">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//Tool/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//Tool/body"/>
+    </genClasses>
+    <genClasses ecoreClass="view.ecore#//LabelEditTool"/>
+    <genClasses ecoreClass="view.ecore#//DeleteTool"/>
+    <genClasses ecoreClass="view.ecore#//NodeTool"/>
+    <genClasses ecoreClass="view.ecore#//EdgeTool"/>
+    <genClasses image="false" ecoreClass="view.ecore#//Operation">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//Operation/children"/>
+    </genClasses>
+    <genClasses ecoreClass="view.ecore#//ChangeContext">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//ChangeContext/expression"/>
+    </genClasses>
+    <genClasses ecoreClass="view.ecore#//CreateInstance">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//CreateInstance/typeName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//CreateInstance/referenceName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//CreateInstance/variableName"/>
+    </genClasses>
+    <genClasses ecoreClass="view.ecore#//SetValue">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//SetValue/featureName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//SetValue/valueExpression"/>
+    </genClasses>
+    <genClasses ecoreClass="view.ecore#//UnsetValue">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//UnsetValue/featureName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//UnsetValue/elementExpression"/>
+    </genClasses>
+    <genClasses ecoreClass="view.ecore#//DeleteElement"/>
   </genPackages>
 </genmodel:GenModel>

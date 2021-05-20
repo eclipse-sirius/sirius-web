@@ -258,13 +258,31 @@ public interface ViewPackage extends EPackage {
     int DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION = 2;
 
     /**
+     * The feature id for the '<em><b>Delete Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DIAGRAM_ELEMENT_DESCRIPTION__DELETE_TOOL = 3;
+
+    /**
+     * The feature id for the '<em><b>Label Edit Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EDIT_TOOL = 4;
+
+    /**
      * The number of structural features of the '<em>Diagram Element Description</em>' class. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT = 3;
+    int DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT = 5;
 
     /**
      * The number of operations of the '<em>Diagram Element Description</em>' class. <!-- begin-user-doc --> <!--
@@ -312,6 +330,24 @@ public interface ViewPackage extends EPackage {
     int NODE_DESCRIPTION__LABEL_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION;
 
     /**
+     * The feature id for the '<em><b>Delete Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_DESCRIPTION__DELETE_TOOL = DIAGRAM_ELEMENT_DESCRIPTION__DELETE_TOOL;
+
+    /**
+     * The feature id for the '<em><b>Label Edit Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_DESCRIPTION__LABEL_EDIT_TOOL = DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EDIT_TOOL;
+
+    /**
      * The feature id for the '<em><b>Children Descriptions</b></em>' containment reference list. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
@@ -330,13 +366,22 @@ public interface ViewPackage extends EPackage {
     int NODE_DESCRIPTION__STYLE = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 1;
 
     /**
+     * The feature id for the '<em><b>Node Tools</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_DESCRIPTION__NODE_TOOLS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 2;
+
+    /**
      * The number of structural features of the '<em>Node Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION_FEATURE_COUNT = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 2;
+    int NODE_DESCRIPTION_FEATURE_COUNT = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 3;
 
     /**
      * The number of operations of the '<em>Node Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -381,6 +426,24 @@ public interface ViewPackage extends EPackage {
      * @ordered
      */
     int EDGE_DESCRIPTION__LABEL_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION;
+
+    /**
+     * The feature id for the '<em><b>Delete Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_DESCRIPTION__DELETE_TOOL = DIAGRAM_ELEMENT_DESCRIPTION__DELETE_TOOL;
+
+    /**
+     * The feature id for the '<em><b>Label Edit Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_DESCRIPTION__LABEL_EDIT_TOOL = DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EDIT_TOOL;
 
     /**
      * The feature id for the '<em><b>Is Domain Based Edge</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -437,13 +500,22 @@ public interface ViewPackage extends EPackage {
     int EDGE_DESCRIPTION__STYLE = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 5;
 
     /**
+     * The feature id for the '<em><b>Edge Tools</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_DESCRIPTION__EDGE_TOOLS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 6;
+
+    /**
      * The number of structural features of the '<em>Edge Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int EDGE_DESCRIPTION_FEATURE_COUNT = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 6;
+    int EDGE_DESCRIPTION_FEATURE_COUNT = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 7;
 
     /**
      * The number of operations of the '<em>Edge Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -640,6 +712,507 @@ public interface ViewPackage extends EPackage {
     int EDGE_STYLE_OPERATION_COUNT = STYLE_OPERATION_COUNT + 0;
 
     /**
+     * The meta object id for the '{@link org.eclipse.sirius.web.view.impl.ToolImpl <em>Tool</em>}' class. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.web.view.impl.ToolImpl
+     * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getTool()
+     * @generated
+     */
+    int TOOL = 9;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TOOL__NAME = 0;
+
+    /**
+     * The feature id for the '<em><b>Body</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TOOL__BODY = 1;
+
+    /**
+     * The number of structural features of the '<em>Tool</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TOOL_FEATURE_COUNT = 2;
+
+    /**
+     * The number of operations of the '<em>Tool</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TOOL_OPERATION_COUNT = 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.web.view.impl.LabelEditToolImpl <em>Label Edit Tool</em>}'
+     * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.web.view.impl.LabelEditToolImpl
+     * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getLabelEditTool()
+     * @generated
+     */
+    int LABEL_EDIT_TOOL = 10;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LABEL_EDIT_TOOL__NAME = TOOL__NAME;
+
+    /**
+     * The feature id for the '<em><b>Body</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LABEL_EDIT_TOOL__BODY = TOOL__BODY;
+
+    /**
+     * The number of structural features of the '<em>Label Edit Tool</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LABEL_EDIT_TOOL_FEATURE_COUNT = TOOL_FEATURE_COUNT + 0;
+
+    /**
+     * The number of operations of the '<em>Label Edit Tool</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LABEL_EDIT_TOOL_OPERATION_COUNT = TOOL_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.web.view.impl.DeleteToolImpl <em>Delete Tool</em>}' class.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.web.view.impl.DeleteToolImpl
+     * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getDeleteTool()
+     * @generated
+     */
+    int DELETE_TOOL = 11;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DELETE_TOOL__NAME = TOOL__NAME;
+
+    /**
+     * The feature id for the '<em><b>Body</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DELETE_TOOL__BODY = TOOL__BODY;
+
+    /**
+     * The number of structural features of the '<em>Delete Tool</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DELETE_TOOL_FEATURE_COUNT = TOOL_FEATURE_COUNT + 0;
+
+    /**
+     * The number of operations of the '<em>Delete Tool</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DELETE_TOOL_OPERATION_COUNT = TOOL_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.web.view.impl.NodeToolImpl <em>Node Tool</em>}' class. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.web.view.impl.NodeToolImpl
+     * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getNodeTool()
+     * @generated
+     */
+    int NODE_TOOL = 12;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_TOOL__NAME = TOOL__NAME;
+
+    /**
+     * The feature id for the '<em><b>Body</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_TOOL__BODY = TOOL__BODY;
+
+    /**
+     * The number of structural features of the '<em>Node Tool</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_TOOL_FEATURE_COUNT = TOOL_FEATURE_COUNT + 0;
+
+    /**
+     * The number of operations of the '<em>Node Tool</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_TOOL_OPERATION_COUNT = TOOL_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.web.view.impl.EdgeToolImpl <em>Edge Tool</em>}' class. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.web.view.impl.EdgeToolImpl
+     * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getEdgeTool()
+     * @generated
+     */
+    int EDGE_TOOL = 13;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_TOOL__NAME = TOOL__NAME;
+
+    /**
+     * The feature id for the '<em><b>Body</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_TOOL__BODY = TOOL__BODY;
+
+    /**
+     * The number of structural features of the '<em>Edge Tool</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_TOOL_FEATURE_COUNT = TOOL_FEATURE_COUNT + 0;
+
+    /**
+     * The number of operations of the '<em>Edge Tool</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_TOOL_OPERATION_COUNT = TOOL_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.web.view.impl.OperationImpl <em>Operation</em>}' class.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.web.view.impl.OperationImpl
+     * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getOperation()
+     * @generated
+     */
+    int OPERATION = 14;
+
+    /**
+     * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int OPERATION__CHILDREN = 0;
+
+    /**
+     * The number of structural features of the '<em>Operation</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int OPERATION_FEATURE_COUNT = 1;
+
+    /**
+     * The number of operations of the '<em>Operation</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int OPERATION_OPERATION_COUNT = 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.web.view.impl.ChangeContextImpl <em>Change Context</em>}'
+     * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.web.view.impl.ChangeContextImpl
+     * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getChangeContext()
+     * @generated
+     */
+    int CHANGE_CONTEXT = 15;
+
+    /**
+     * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CHANGE_CONTEXT__CHILDREN = OPERATION__CHILDREN;
+
+    /**
+     * The feature id for the '<em><b>Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CHANGE_CONTEXT__EXPRESSION = OPERATION_FEATURE_COUNT + 0;
+
+    /**
+     * The number of structural features of the '<em>Change Context</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CHANGE_CONTEXT_FEATURE_COUNT = OPERATION_FEATURE_COUNT + 1;
+
+    /**
+     * The number of operations of the '<em>Change Context</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CHANGE_CONTEXT_OPERATION_COUNT = OPERATION_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.web.view.impl.CreateInstanceImpl <em>Create Instance</em>}'
+     * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.web.view.impl.CreateInstanceImpl
+     * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getCreateInstance()
+     * @generated
+     */
+    int CREATE_INSTANCE = 16;
+
+    /**
+     * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CREATE_INSTANCE__CHILDREN = OPERATION__CHILDREN;
+
+    /**
+     * The feature id for the '<em><b>Type Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CREATE_INSTANCE__TYPE_NAME = OPERATION_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Reference Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CREATE_INSTANCE__REFERENCE_NAME = OPERATION_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Variable Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CREATE_INSTANCE__VARIABLE_NAME = OPERATION_FEATURE_COUNT + 2;
+
+    /**
+     * The number of structural features of the '<em>Create Instance</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CREATE_INSTANCE_FEATURE_COUNT = OPERATION_FEATURE_COUNT + 3;
+
+    /**
+     * The number of operations of the '<em>Create Instance</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CREATE_INSTANCE_OPERATION_COUNT = OPERATION_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.web.view.impl.SetValueImpl <em>Set Value</em>}' class. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.web.view.impl.SetValueImpl
+     * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getSetValue()
+     * @generated
+     */
+    int SET_VALUE = 17;
+
+    /**
+     * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SET_VALUE__CHILDREN = OPERATION__CHILDREN;
+
+    /**
+     * The feature id for the '<em><b>Feature Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SET_VALUE__FEATURE_NAME = OPERATION_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Value Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SET_VALUE__VALUE_EXPRESSION = OPERATION_FEATURE_COUNT + 1;
+
+    /**
+     * The number of structural features of the '<em>Set Value</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SET_VALUE_FEATURE_COUNT = OPERATION_FEATURE_COUNT + 2;
+
+    /**
+     * The number of operations of the '<em>Set Value</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SET_VALUE_OPERATION_COUNT = OPERATION_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.web.view.impl.UnsetValueImpl <em>Unset Value</em>}' class.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.web.view.impl.UnsetValueImpl
+     * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getUnsetValue()
+     * @generated
+     */
+    int UNSET_VALUE = 18;
+
+    /**
+     * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int UNSET_VALUE__CHILDREN = OPERATION__CHILDREN;
+
+    /**
+     * The feature id for the '<em><b>Feature Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int UNSET_VALUE__FEATURE_NAME = OPERATION_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Element Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int UNSET_VALUE__ELEMENT_EXPRESSION = OPERATION_FEATURE_COUNT + 1;
+
+    /**
+     * The number of structural features of the '<em>Unset Value</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int UNSET_VALUE_FEATURE_COUNT = OPERATION_FEATURE_COUNT + 2;
+
+    /**
+     * The number of operations of the '<em>Unset Value</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int UNSET_VALUE_OPERATION_COUNT = OPERATION_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.web.view.impl.DeleteElementImpl <em>Delete Element</em>}'
+     * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.web.view.impl.DeleteElementImpl
+     * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getDeleteElement()
+     * @generated
+     */
+    int DELETE_ELEMENT = 19;
+
+    /**
+     * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DELETE_ELEMENT__CHILDREN = OPERATION__CHILDREN;
+
+    /**
+     * The number of structural features of the '<em>Delete Element</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DELETE_ELEMENT_FEATURE_COUNT = OPERATION_FEATURE_COUNT + 0;
+
+    /**
+     * The number of operations of the '<em>Delete Element</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DELETE_ELEMENT_OPERATION_COUNT = OPERATION_OPERATION_COUNT + 0;
+
+    /**
      * The meta object id for the '{@link org.eclipse.sirius.web.view.ArrowStyle <em>Arrow Style</em>}' enum. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
@@ -647,7 +1220,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getArrowStyle()
      * @generated
      */
-    int ARROW_STYLE = 9;
+    int ARROW_STYLE = 20;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.web.view.LineStyle <em>Line Style</em>}' enum. <!--
@@ -657,7 +1230,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getLineStyle()
      * @generated
      */
-    int LINE_STYLE = 10;
+    int LINE_STYLE = 21;
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.web.view.View <em>View</em>}'. <!-- begin-user-doc
@@ -807,6 +1380,30 @@ public interface ViewPackage extends EPackage {
     EAttribute getDiagramElementDescription_LabelExpression();
 
     /**
+     * Returns the meta object for the containment reference
+     * '{@link org.eclipse.sirius.web.view.DiagramElementDescription#getDeleteTool <em>Delete Tool</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>Delete Tool</em>'.
+     * @see org.eclipse.sirius.web.view.DiagramElementDescription#getDeleteTool()
+     * @see #getDiagramElementDescription()
+     * @generated
+     */
+    EReference getDiagramElementDescription_DeleteTool();
+
+    /**
+     * Returns the meta object for the containment reference
+     * '{@link org.eclipse.sirius.web.view.DiagramElementDescription#getLabelEditTool <em>Label Edit Tool</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>Label Edit Tool</em>'.
+     * @see org.eclipse.sirius.web.view.DiagramElementDescription#getLabelEditTool()
+     * @see #getDiagramElementDescription()
+     * @generated
+     */
+    EReference getDiagramElementDescription_LabelEditTool();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.web.view.NodeDescription <em>Node
      * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -839,6 +1436,18 @@ public interface ViewPackage extends EPackage {
      * @generated
      */
     EReference getNodeDescription_Style();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.web.view.NodeDescription#getNodeTools <em>Node Tools</em>}'. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Node Tools</em>'.
+     * @see org.eclipse.sirius.web.view.NodeDescription#getNodeTools()
+     * @see #getNodeDescription()
+     * @generated
+     */
+    EReference getNodeDescription_NodeTools();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.web.view.EdgeDescription <em>Edge
@@ -920,6 +1529,18 @@ public interface ViewPackage extends EPackage {
      * @generated
      */
     EReference getEdgeDescription_Style();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.web.view.EdgeDescription#getEdgeTools <em>Edge Tools</em>}'. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Edge Tools</em>'.
+     * @see org.eclipse.sirius.web.view.EdgeDescription#getEdgeTools()
+     * @see #getEdgeDescription()
+     * @generated
+     */
+    EReference getEdgeDescription_EdgeTools();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.web.view.Style <em>Style</em>}'. <!-- begin-user-doc
@@ -1027,6 +1648,238 @@ public interface ViewPackage extends EPackage {
      * @generated
      */
     EAttribute getEdgeStyle_TargetArrowStyle();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.web.view.Tool <em>Tool</em>}'. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Tool</em>'.
+     * @see org.eclipse.sirius.web.view.Tool
+     * @generated
+     */
+    EClass getTool();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.web.view.Tool#getName <em>Name</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Name</em>'.
+     * @see org.eclipse.sirius.web.view.Tool#getName()
+     * @see #getTool()
+     * @generated
+     */
+    EAttribute getTool_Name();
+
+    /**
+     * Returns the meta object for the containment reference list '{@link org.eclipse.sirius.web.view.Tool#getBody
+     * <em>Body</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Body</em>'.
+     * @see org.eclipse.sirius.web.view.Tool#getBody()
+     * @see #getTool()
+     * @generated
+     */
+    EReference getTool_Body();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.web.view.LabelEditTool <em>Label Edit Tool</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Label Edit Tool</em>'.
+     * @see org.eclipse.sirius.web.view.LabelEditTool
+     * @generated
+     */
+    EClass getLabelEditTool();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.web.view.DeleteTool <em>Delete Tool</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Delete Tool</em>'.
+     * @see org.eclipse.sirius.web.view.DeleteTool
+     * @generated
+     */
+    EClass getDeleteTool();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.web.view.NodeTool <em>Node Tool</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Node Tool</em>'.
+     * @see org.eclipse.sirius.web.view.NodeTool
+     * @generated
+     */
+    EClass getNodeTool();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.web.view.EdgeTool <em>Edge Tool</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Edge Tool</em>'.
+     * @see org.eclipse.sirius.web.view.EdgeTool
+     * @generated
+     */
+    EClass getEdgeTool();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.web.view.Operation <em>Operation</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Operation</em>'.
+     * @see org.eclipse.sirius.web.view.Operation
+     * @generated
+     */
+    EClass getOperation();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.web.view.Operation#getChildren <em>Children</em>}'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Children</em>'.
+     * @see org.eclipse.sirius.web.view.Operation#getChildren()
+     * @see #getOperation()
+     * @generated
+     */
+    EReference getOperation_Children();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.web.view.ChangeContext <em>Change Context</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Change Context</em>'.
+     * @see org.eclipse.sirius.web.view.ChangeContext
+     * @generated
+     */
+    EClass getChangeContext();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.web.view.ChangeContext#getExpression
+     * <em>Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Expression</em>'.
+     * @see org.eclipse.sirius.web.view.ChangeContext#getExpression()
+     * @see #getChangeContext()
+     * @generated
+     */
+    EAttribute getChangeContext_Expression();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.web.view.CreateInstance <em>Create Instance</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Create Instance</em>'.
+     * @see org.eclipse.sirius.web.view.CreateInstance
+     * @generated
+     */
+    EClass getCreateInstance();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.web.view.CreateInstance#getTypeName <em>Type
+     * Name</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Type Name</em>'.
+     * @see org.eclipse.sirius.web.view.CreateInstance#getTypeName()
+     * @see #getCreateInstance()
+     * @generated
+     */
+    EAttribute getCreateInstance_TypeName();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.web.view.CreateInstance#getReferenceName
+     * <em>Reference Name</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Reference Name</em>'.
+     * @see org.eclipse.sirius.web.view.CreateInstance#getReferenceName()
+     * @see #getCreateInstance()
+     * @generated
+     */
+    EAttribute getCreateInstance_ReferenceName();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.web.view.CreateInstance#getVariableName
+     * <em>Variable Name</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Variable Name</em>'.
+     * @see org.eclipse.sirius.web.view.CreateInstance#getVariableName()
+     * @see #getCreateInstance()
+     * @generated
+     */
+    EAttribute getCreateInstance_VariableName();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.web.view.SetValue <em>Set Value</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Set Value</em>'.
+     * @see org.eclipse.sirius.web.view.SetValue
+     * @generated
+     */
+    EClass getSetValue();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.web.view.SetValue#getFeatureName <em>Feature
+     * Name</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Feature Name</em>'.
+     * @see org.eclipse.sirius.web.view.SetValue#getFeatureName()
+     * @see #getSetValue()
+     * @generated
+     */
+    EAttribute getSetValue_FeatureName();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.web.view.SetValue#getValueExpression
+     * <em>Value Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Value Expression</em>'.
+     * @see org.eclipse.sirius.web.view.SetValue#getValueExpression()
+     * @see #getSetValue()
+     * @generated
+     */
+    EAttribute getSetValue_ValueExpression();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.web.view.UnsetValue <em>Unset Value</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Unset Value</em>'.
+     * @see org.eclipse.sirius.web.view.UnsetValue
+     * @generated
+     */
+    EClass getUnsetValue();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.web.view.UnsetValue#getFeatureName
+     * <em>Feature Name</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Feature Name</em>'.
+     * @see org.eclipse.sirius.web.view.UnsetValue#getFeatureName()
+     * @see #getUnsetValue()
+     * @generated
+     */
+    EAttribute getUnsetValue_FeatureName();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.web.view.UnsetValue#getElementExpression
+     * <em>Element Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Element Expression</em>'.
+     * @see org.eclipse.sirius.web.view.UnsetValue#getElementExpression()
+     * @see #getUnsetValue()
+     * @generated
+     */
+    EAttribute getUnsetValue_ElementExpression();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.web.view.DeleteElement <em>Delete Element</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Delete Element</em>'.
+     * @see org.eclipse.sirius.web.view.DeleteElement
+     * @generated
+     */
+    EClass getDeleteElement();
 
     /**
      * Returns the meta object for enum '{@link org.eclipse.sirius.web.view.ArrowStyle <em>Arrow Style</em>}'. <!--
@@ -1183,6 +2036,22 @@ public interface ViewPackage extends EPackage {
         EAttribute DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION = eINSTANCE.getDiagramElementDescription_LabelExpression();
 
         /**
+         * The meta object literal for the '<em><b>Delete Tool</b></em>' containment reference feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference DIAGRAM_ELEMENT_DESCRIPTION__DELETE_TOOL = eINSTANCE.getDiagramElementDescription_DeleteTool();
+
+        /**
+         * The meta object literal for the '<em><b>Label Edit Tool</b></em>' containment reference feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EDIT_TOOL = eINSTANCE.getDiagramElementDescription_LabelEditTool();
+
+        /**
          * The meta object literal for the '{@link org.eclipse.sirius.web.view.impl.NodeDescriptionImpl <em>Node
          * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
@@ -1207,6 +2076,14 @@ public interface ViewPackage extends EPackage {
          * @generated
          */
         EReference NODE_DESCRIPTION__STYLE = eINSTANCE.getNodeDescription_Style();
+
+        /**
+         * The meta object literal for the '<em><b>Node Tools</b></em>' containment reference feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference NODE_DESCRIPTION__NODE_TOOLS = eINSTANCE.getNodeDescription_NodeTools();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.web.view.impl.EdgeDescriptionImpl <em>Edge
@@ -1265,6 +2142,14 @@ public interface ViewPackage extends EPackage {
          * @generated
          */
         EReference EDGE_DESCRIPTION__STYLE = eINSTANCE.getEdgeDescription_Style();
+
+        /**
+         * The meta object literal for the '<em><b>Edge Tools</b></em>' containment reference feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference EDGE_DESCRIPTION__EDGE_TOOLS = eINSTANCE.getEdgeDescription_EdgeTools();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.web.view.impl.StyleImpl <em>Style</em>}' class.
@@ -1351,6 +2236,204 @@ public interface ViewPackage extends EPackage {
          * @generated
          */
         EAttribute EDGE_STYLE__TARGET_ARROW_STYLE = eINSTANCE.getEdgeStyle_TargetArrowStyle();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.web.view.impl.ToolImpl <em>Tool</em>}' class. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.web.view.impl.ToolImpl
+         * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getTool()
+         * @generated
+         */
+        EClass TOOL = eINSTANCE.getTool();
+
+        /**
+         * The meta object literal for the '<em><b>Name</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute TOOL__NAME = eINSTANCE.getTool_Name();
+
+        /**
+         * The meta object literal for the '<em><b>Body</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference TOOL__BODY = eINSTANCE.getTool_Body();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.web.view.impl.LabelEditToolImpl <em>Label Edit
+         * Tool</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.web.view.impl.LabelEditToolImpl
+         * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getLabelEditTool()
+         * @generated
+         */
+        EClass LABEL_EDIT_TOOL = eINSTANCE.getLabelEditTool();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.web.view.impl.DeleteToolImpl <em>Delete
+         * Tool</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.web.view.impl.DeleteToolImpl
+         * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getDeleteTool()
+         * @generated
+         */
+        EClass DELETE_TOOL = eINSTANCE.getDeleteTool();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.web.view.impl.NodeToolImpl <em>Node Tool</em>}'
+         * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.web.view.impl.NodeToolImpl
+         * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getNodeTool()
+         * @generated
+         */
+        EClass NODE_TOOL = eINSTANCE.getNodeTool();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.web.view.impl.EdgeToolImpl <em>Edge Tool</em>}'
+         * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.web.view.impl.EdgeToolImpl
+         * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getEdgeTool()
+         * @generated
+         */
+        EClass EDGE_TOOL = eINSTANCE.getEdgeTool();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.web.view.impl.OperationImpl <em>Operation</em>}'
+         * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.web.view.impl.OperationImpl
+         * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getOperation()
+         * @generated
+         */
+        EClass OPERATION = eINSTANCE.getOperation();
+
+        /**
+         * The meta object literal for the '<em><b>Children</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference OPERATION__CHILDREN = eINSTANCE.getOperation_Children();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.web.view.impl.ChangeContextImpl <em>Change
+         * Context</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.web.view.impl.ChangeContextImpl
+         * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getChangeContext()
+         * @generated
+         */
+        EClass CHANGE_CONTEXT = eINSTANCE.getChangeContext();
+
+        /**
+         * The meta object literal for the '<em><b>Expression</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute CHANGE_CONTEXT__EXPRESSION = eINSTANCE.getChangeContext_Expression();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.web.view.impl.CreateInstanceImpl <em>Create
+         * Instance</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.web.view.impl.CreateInstanceImpl
+         * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getCreateInstance()
+         * @generated
+         */
+        EClass CREATE_INSTANCE = eINSTANCE.getCreateInstance();
+
+        /**
+         * The meta object literal for the '<em><b>Type Name</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute CREATE_INSTANCE__TYPE_NAME = eINSTANCE.getCreateInstance_TypeName();
+
+        /**
+         * The meta object literal for the '<em><b>Reference Name</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute CREATE_INSTANCE__REFERENCE_NAME = eINSTANCE.getCreateInstance_ReferenceName();
+
+        /**
+         * The meta object literal for the '<em><b>Variable Name</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute CREATE_INSTANCE__VARIABLE_NAME = eINSTANCE.getCreateInstance_VariableName();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.web.view.impl.SetValueImpl <em>Set Value</em>}'
+         * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.web.view.impl.SetValueImpl
+         * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getSetValue()
+         * @generated
+         */
+        EClass SET_VALUE = eINSTANCE.getSetValue();
+
+        /**
+         * The meta object literal for the '<em><b>Feature Name</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute SET_VALUE__FEATURE_NAME = eINSTANCE.getSetValue_FeatureName();
+
+        /**
+         * The meta object literal for the '<em><b>Value Expression</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute SET_VALUE__VALUE_EXPRESSION = eINSTANCE.getSetValue_ValueExpression();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.web.view.impl.UnsetValueImpl <em>Unset
+         * Value</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.web.view.impl.UnsetValueImpl
+         * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getUnsetValue()
+         * @generated
+         */
+        EClass UNSET_VALUE = eINSTANCE.getUnsetValue();
+
+        /**
+         * The meta object literal for the '<em><b>Feature Name</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute UNSET_VALUE__FEATURE_NAME = eINSTANCE.getUnsetValue_FeatureName();
+
+        /**
+         * The meta object literal for the '<em><b>Element Expression</b></em>' attribute feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute UNSET_VALUE__ELEMENT_EXPRESSION = eINSTANCE.getUnsetValue_ElementExpression();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.web.view.impl.DeleteElementImpl <em>Delete
+         * Element</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.web.view.impl.DeleteElementImpl
+         * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getDeleteElement()
+         * @generated
+         */
+        EClass DELETE_ELEMENT = eINSTANCE.getDeleteElement();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.web.view.ArrowStyle <em>Arrow Style</em>}' enum.

@@ -139,6 +139,7 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
         if (this.childrenFeatures == null) {
             super.getChildrenFeatures(object);
             this.childrenFeatures.add(ViewPackage.Literals.EDGE_DESCRIPTION__STYLE);
+            this.childrenFeatures.add(ViewPackage.Literals.EDGE_DESCRIPTION__EDGE_TOOLS);
         }
         return this.childrenFeatures;
     }
@@ -206,6 +207,7 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
             this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
             return;
         case ViewPackage.EDGE_DESCRIPTION__STYLE:
+        case ViewPackage.EDGE_DESCRIPTION__EDGE_TOOLS:
             this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
             return;
         }
@@ -223,6 +225,8 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
         super.collectNewChildDescriptors(newChildDescriptors, object);
 
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.EDGE_DESCRIPTION__STYLE, ViewFactory.eINSTANCE.createEdgeStyle()));
+
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.EDGE_DESCRIPTION__EDGE_TOOLS, ViewFactory.eINSTANCE.createEdgeTool()));
     }
 
 }

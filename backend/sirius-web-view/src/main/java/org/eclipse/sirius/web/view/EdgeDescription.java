@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.view;
 
+import org.eclipse.emf.common.util.EList;
+
 /**
  * <!-- begin-user-doc --> A representation of the model object '<em><b>Edge Description</b></em>'. <!-- end-user-doc
  * -->
@@ -173,5 +175,16 @@ public interface EdgeDescription extends DiagramElementDescription {
      * @generated
      */
     void setStyle(EdgeStyle value);
+
+    /**
+     * Returns the value of the '<em><b>Edge Tools</b></em>' containment reference list. The list contents are of type
+     * {@link org.eclipse.sirius.web.view.EdgeTool}. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Edge Tools</em>' containment reference list.
+     * @see org.eclipse.sirius.web.view.ViewPackage#getEdgeDescription_EdgeTools()
+     * @model containment="true"
+     * @generated
+     */
+    EList<EdgeTool> getEdgeTools();
 
 } // EdgeDescription

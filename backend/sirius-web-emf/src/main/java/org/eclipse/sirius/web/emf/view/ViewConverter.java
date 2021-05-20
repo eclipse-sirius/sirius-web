@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -45,10 +46,15 @@ import org.eclipse.sirius.web.emf.compatibility.DomainClassPredicate;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
 import org.eclipse.sirius.web.interpreter.Result;
 import org.eclipse.sirius.web.representations.IRepresentationDescription;
+import org.eclipse.sirius.web.representations.Status;
 import org.eclipse.sirius.web.representations.VariableManager;
 import org.eclipse.sirius.web.services.api.images.ICustomImagesService;
 import org.eclipse.sirius.web.services.api.objects.IEditService;
+import org.eclipse.sirius.web.view.DeleteTool;
 import org.eclipse.sirius.web.view.DiagramElementDescription;
+import org.eclipse.sirius.web.view.EdgeTool;
+import org.eclipse.sirius.web.view.LabelEditTool;
+import org.eclipse.sirius.web.view.NodeTool;
 import org.eclipse.sirius.web.view.View;
 
 /**
@@ -59,8 +65,6 @@ import org.eclipse.sirius.web.view.View;
 public class ViewConverter {
 
     private static final String DEFAULT_DIAGRAM_LABEL = "Diagram"; //$NON-NLS-1$
-
-    private static final String DEFAULT_COLOR = "black"; //$NON-NLS-1$
 
     private static final String NODE_CREATION_TOOL_SECTION = "Node Creation"; //$NON-NLS-1$
 
@@ -73,6 +77,8 @@ public class ViewConverter {
     private final AQLInterpreter interpreter;
 
     private final IObjectService objectService;
+
+    private final IEditService editService;
 
     private final CanonicalBehaviors canonicalBehaviors;
 
@@ -98,6 +104,7 @@ public class ViewConverter {
     public ViewConverter(AQLInterpreter interpreter, IObjectService objectService, IEditService editService, ICustomImagesService customImagesService) {
         this.interpreter = Objects.requireNonNull(interpreter);
         this.objectService = Objects.requireNonNull(objectService);
+        this.editService = Objects.requireNonNull(editService);
         this.customImagesService = Objects.requireNonNull(customImagesService);
         this.semanticTargetIdProvider = variableManager -> this.self(variableManager).map(this.objectService::getId).orElse(null);
         this.semanticTargetKindProvider = variableManager -> this.self(variableManager).map(this.objectService::getKind).orElse(null);
@@ -189,8 +196,8 @@ public class ViewConverter {
                 .childNodeDescriptions(childNodeDescriptions)
                 .borderNodeDescriptions(List.of())
                 .sizeProvider(variableManager -> Size.UNDEFINED)
-                .labelEditHandler(this.canonicalBehaviors::editLabel)
-                .deleteHandler(this.canonicalBehaviors::deleteElement)
+                .labelEditHandler(this.createLabelEditHandler(viewNodeDescription))
+                .deleteHandler(this.createDeleteHandler(viewNodeDescription))
                 .build();
         // @formatter:on
         this.convertedNodes.put(viewNodeDescription, result);
@@ -200,28 +207,62 @@ public class ViewConverter {
     private List<ToolSection> createToolSections() {
         List<ITool> nodeCreationTools = new ArrayList<>();
         for (var nodeDescription : this.convertedNodes.keySet()) {
-            // @formatter:off
-            CreateNodeTool tool = CreateNodeTool.newCreateNodeTool(this.idProvider.apply(nodeDescription) + "_creationTool") //$NON-NLS-1$
-                    .label("New node " + nodeDescription.getDomainType()) //$NON-NLS-1$
-                    .imageURL(NODE_CREATION_TOOL_ICON)
-                    .handler(variableManager -> this.canonicalBehaviors.createNewNode(nodeDescription, variableManager))
-                    .targetDescriptions(Optional.ofNullable(nodeDescription.eContainer()).map(this.convertedNodes::get).stream().collect(Collectors.toList()))
-                    .appliesToDiagramRoot(nodeDescription.eContainer() instanceof org.eclipse.sirius.web.view.DiagramDescription)
-                    .build();
-            // @formatter:on
-            nodeCreationTools.add(tool);
+            // Add custom tools
+            int i = 0;
+            for (NodeTool nodeTool : nodeDescription.getNodeTools()) {
+                // @formatter:off
+                CreateNodeTool customTool = CreateNodeTool.newCreateNodeTool(this.idProvider.apply(nodeDescription) + "_tool" + i++) //$NON-NLS-1$
+                        .label(nodeTool.getName())
+                        .imageURL(NODE_CREATION_TOOL_ICON)
+                        .handler(variableManager -> new ToolInterpreter(this.interpreter, this.editService).executeTool(nodeTool, variableManager))
+                        .targetDescriptions(Optional.ofNullable(nodeDescription.eContainer()).map(this.convertedNodes::get).stream().collect(Collectors.toList()))
+                        .appliesToDiagramRoot(nodeDescription.eContainer() instanceof org.eclipse.sirius.web.view.DiagramDescription)
+                        .build();
+                // @formatter:on
+                nodeCreationTools.add(customTool);
+            }
+            // If there are no custom tools defined, add a canonical creation tool
+            if (i == 0) {
+                // @formatter:off
+                CreateNodeTool tool = CreateNodeTool.newCreateNodeTool(this.idProvider.apply(nodeDescription) + "_creationTool") //$NON-NLS-1$
+                        .label("New node " + nodeDescription.getDomainType()) //$NON-NLS-1$
+                        .imageURL(NODE_CREATION_TOOL_ICON)
+                        .handler(variableManager -> this.canonicalBehaviors.createNewNode(nodeDescription, variableManager))
+                        .targetDescriptions(Optional.ofNullable(nodeDescription.eContainer()).map(this.convertedNodes::get).stream().collect(Collectors.toList()))
+                        .appliesToDiagramRoot(nodeDescription.eContainer() instanceof org.eclipse.sirius.web.view.DiagramDescription)
+                        .build();
+                // @formatter:on
+                nodeCreationTools.add(tool);
+            }
         }
 
         List<ITool> edgeCreationTools = new ArrayList<>();
         for (var edgeDescription : this.convertedEdges.keySet()) {
+            // Add custom tools
+            int i = 0;
+            for (EdgeTool edgeTool : edgeDescription.getEdgeTools()) {
+                // @formatter:off
+                CreateEdgeTool customTool = CreateEdgeTool.newCreateEdgeTool(this.idProvider.apply(edgeDescription) + "_tool" + i++) //$NON-NLS-1$
+                        .label(edgeTool.getName())
+                        .imageURL(EDGE_CREATION_TOOL_ICON)
+                        .edgeCandidates(List.of(EdgeCandidate.newEdgeCandidate()
+                                .sources(List.of(this.convert(edgeDescription.getSourceNodeDescription())))
+                                .targets(List.of(this.convert(edgeDescription.getTargetNodeDescription())))
+                                .build()))
+                        .handler(variableManager -> new ToolInterpreter(this.interpreter, this.editService).executeTool(edgeTool, variableManager))
+                        .build();
+                // @formatter:on
+                nodeCreationTools.add(customTool);
+            }
+            // If there are no custom tools defined, add a canonical creation tool
             // @formatter:off
             CreateEdgeTool tool = CreateEdgeTool.newCreateEdgeTool(this.idProvider.apply(edgeDescription) + "_creationTool") //$NON-NLS-1$
                     .label("New edge" + edgeDescription.getDomainType()) //$NON-NLS-1$
                     .imageURL(EDGE_CREATION_TOOL_ICON)
                     .edgeCandidates(List.of(EdgeCandidate.newEdgeCandidate()
-                                                         .sources(List.of(this.convert(edgeDescription.getSourceNodeDescription())))
-                                                         .targets(List.of(this.convert(edgeDescription.getTargetNodeDescription())))
-                                                         .build()))
+                            .sources(List.of(this.convert(edgeDescription.getSourceNodeDescription())))
+                            .targets(List.of(this.convert(edgeDescription.getTargetNodeDescription())))
+                            .build()))
                     .handler(variableManager -> this.canonicalBehaviors.createNewEdge(variableManager, edgeDescription))
                     .build();
             // @formatter:on
@@ -328,11 +369,33 @@ public class ViewConverter {
                                      .sourceNodesProvider(sourceNodesProvider)
                                      .targetNodesProvider(targetNodesProvider)
                                      .styleProvider(variableManager -> this.stylesFactory.createEdgeStyle(viewEdgeDescription.getStyle()))
-                                     .deleteHandler(this.canonicalBehaviors::deleteElement)
+                                     .deleteHandler(this.createDeleteHandler(viewEdgeDescription))
                                      .build();
         this.convertedEdges.put(viewEdgeDescription, result);
         return result;
         // @formatter:on
+    }
+
+    private Function<VariableManager, Status> createDeleteHandler(DiagramElementDescription diagramElementDescription) {
+        DeleteTool tool = diagramElementDescription.getDeleteTool();
+        if (tool != null) {
+            return variableManager -> {
+                return new ToolInterpreter(this.interpreter, this.editService).executeTool(tool, variableManager);
+            };
+        } else {
+            return this.canonicalBehaviors::deleteElement;
+        }
+    }
+
+    private BiFunction<VariableManager, String, Status> createLabelEditHandler(DiagramElementDescription diagramElementDescription) {
+        LabelEditTool tool = diagramElementDescription.getLabelEditTool();
+        if (tool != null) {
+            return (variableManager, newLabel) -> {
+                return new ToolInterpreter(this.interpreter, this.editService).executeTool(tool, variableManager.with("arg0", newLabel)); //$NON-NLS-1$
+            };
+        } else {
+            return this.canonicalBehaviors::editLabel;
+        }
     }
 
     private Predicate<Element> isFromCompatibleSourceMapping(org.eclipse.sirius.web.view.EdgeDescription edgeDescription) {

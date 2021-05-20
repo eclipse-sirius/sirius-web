@@ -13,10 +13,14 @@
 package org.eclipse.sirius.web.view.impl;
 
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+import org.eclipse.sirius.web.view.DeleteTool;
 import org.eclipse.sirius.web.view.DiagramElementDescription;
+import org.eclipse.sirius.web.view.LabelEditTool;
 import org.eclipse.sirius.web.view.ViewPackage;
 
 /**
@@ -31,6 +35,9 @@ import org.eclipse.sirius.web.view.ViewPackage;
  * <em>Semantic Candidates Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.web.view.impl.DiagramElementDescriptionImpl#getLabelExpression <em>Label
  * Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.web.view.impl.DiagramElementDescriptionImpl#getDeleteTool <em>Delete Tool</em>}</li>
+ * <li>{@link org.eclipse.sirius.web.view.impl.DiagramElementDescriptionImpl#getLabelEditTool <em>Label Edit
+ * Tool</em>}</li>
  * </ul>
  *
  * @generated
@@ -95,6 +102,26 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
      * @ordered
      */
     protected String labelExpression = LABEL_EXPRESSION_EDEFAULT;
+
+    /**
+     * The cached value of the '{@link #getDeleteTool() <em>Delete Tool</em>}' containment reference. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getDeleteTool()
+     * @generated
+     * @ordered
+     */
+    protected DeleteTool deleteTool;
+
+    /**
+     * The cached value of the '{@link #getLabelEditTool() <em>Label Edit Tool</em>}' containment reference. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getLabelEditTool()
+     * @generated
+     * @ordered
+     */
+    protected LabelEditTool labelEditTool;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -191,6 +218,118 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
      * @generated
      */
     @Override
+    public DeleteTool getDeleteTool() {
+        return this.deleteTool;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public NotificationChain basicSetDeleteTool(DeleteTool newDeleteTool, NotificationChain msgs) {
+        DeleteTool oldDeleteTool = this.deleteTool;
+        this.deleteTool = newDeleteTool;
+        if (this.eNotificationRequired()) {
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__DELETE_TOOL, oldDeleteTool, newDeleteTool);
+            if (msgs == null)
+                msgs = notification;
+            else
+                msgs.add(notification);
+        }
+        return msgs;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setDeleteTool(DeleteTool newDeleteTool) {
+        if (newDeleteTool != this.deleteTool) {
+            NotificationChain msgs = null;
+            if (this.deleteTool != null)
+                msgs = ((InternalEObject) this.deleteTool).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__DELETE_TOOL, null, msgs);
+            if (newDeleteTool != null)
+                msgs = ((InternalEObject) newDeleteTool).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__DELETE_TOOL, null, msgs);
+            msgs = this.basicSetDeleteTool(newDeleteTool, msgs);
+            if (msgs != null)
+                msgs.dispatch();
+        } else if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__DELETE_TOOL, newDeleteTool, newDeleteTool));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public LabelEditTool getLabelEditTool() {
+        return this.labelEditTool;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public NotificationChain basicSetLabelEditTool(LabelEditTool newLabelEditTool, NotificationChain msgs) {
+        LabelEditTool oldLabelEditTool = this.labelEditTool;
+        this.labelEditTool = newLabelEditTool;
+        if (this.eNotificationRequired()) {
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EDIT_TOOL, oldLabelEditTool, newLabelEditTool);
+            if (msgs == null)
+                msgs = notification;
+            else
+                msgs.add(notification);
+        }
+        return msgs;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setLabelEditTool(LabelEditTool newLabelEditTool) {
+        if (newLabelEditTool != this.labelEditTool) {
+            NotificationChain msgs = null;
+            if (this.labelEditTool != null)
+                msgs = ((InternalEObject) this.labelEditTool).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EDIT_TOOL, null, msgs);
+            if (newLabelEditTool != null)
+                msgs = ((InternalEObject) newLabelEditTool).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EDIT_TOOL, null, msgs);
+            msgs = this.basicSetLabelEditTool(newLabelEditTool, msgs);
+            if (msgs != null)
+                msgs.dispatch();
+        } else if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EDIT_TOOL, newLabelEditTool, newLabelEditTool));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+        switch (featureID) {
+        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__DELETE_TOOL:
+            return this.basicSetDeleteTool(null, msgs);
+        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EDIT_TOOL:
+            return this.basicSetLabelEditTool(null, msgs);
+        }
+        return super.eInverseRemove(otherEnd, featureID, msgs);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
         case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE:
@@ -199,6 +338,10 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
             return this.getSemanticCandidatesExpression();
         case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION:
             return this.getLabelExpression();
+        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__DELETE_TOOL:
+            return this.getDeleteTool();
+        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EDIT_TOOL:
+            return this.getLabelEditTool();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -219,6 +362,12 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
             return;
         case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION:
             this.setLabelExpression((String) newValue);
+            return;
+        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__DELETE_TOOL:
+            this.setDeleteTool((DeleteTool) newValue);
+            return;
+        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EDIT_TOOL:
+            this.setLabelEditTool((LabelEditTool) newValue);
             return;
         }
         super.eSet(featureID, newValue);
@@ -241,6 +390,12 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
         case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION:
             this.setLabelExpression(LABEL_EXPRESSION_EDEFAULT);
             return;
+        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__DELETE_TOOL:
+            this.setDeleteTool((DeleteTool) null);
+            return;
+        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EDIT_TOOL:
+            this.setLabelEditTool((LabelEditTool) null);
+            return;
         }
         super.eUnset(featureID);
     }
@@ -259,6 +414,10 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
             return SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT == null ? this.semanticCandidatesExpression != null : !SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT.equals(this.semanticCandidatesExpression);
         case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION:
             return LABEL_EXPRESSION_EDEFAULT == null ? this.labelExpression != null : !LABEL_EXPRESSION_EDEFAULT.equals(this.labelExpression);
+        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__DELETE_TOOL:
+            return this.deleteTool != null;
+        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EDIT_TOOL:
+            return this.labelEditTool != null;
         }
         return super.eIsSet(featureID);
     }

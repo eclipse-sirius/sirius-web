@@ -24,6 +24,7 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.sirius.web.view.NodeDescription;
 import org.eclipse.sirius.web.view.NodeStyle;
+import org.eclipse.sirius.web.view.NodeTool;
 import org.eclipse.sirius.web.view.ViewPackage;
 
 /**
@@ -59,6 +60,16 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @ordered
      */
     protected NodeStyle style;
+
+    /**
+     * The cached value of the '{@link #getNodeTools() <em>Node Tools</em>}' containment reference list. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getNodeTools()
+     * @generated
+     * @ordered
+     */
+    protected EList<NodeTool> nodeTools;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -146,12 +157,27 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @generated
      */
     @Override
+    public EList<NodeTool> getNodeTools() {
+        if (this.nodeTools == null) {
+            this.nodeTools = new EObjectContainmentEList<>(NodeTool.class, this, ViewPackage.NODE_DESCRIPTION__NODE_TOOLS);
+        }
+        return this.nodeTools;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
         case ViewPackage.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS:
             return ((InternalEList<?>) this.getChildrenDescriptions()).basicRemove(otherEnd, msgs);
         case ViewPackage.NODE_DESCRIPTION__STYLE:
             return this.basicSetStyle(null, msgs);
+        case ViewPackage.NODE_DESCRIPTION__NODE_TOOLS:
+            return ((InternalEList<?>) this.getNodeTools()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -168,6 +194,8 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
             return this.getChildrenDescriptions();
         case ViewPackage.NODE_DESCRIPTION__STYLE:
             return this.getStyle();
+        case ViewPackage.NODE_DESCRIPTION__NODE_TOOLS:
+            return this.getNodeTools();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -188,6 +216,10 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
         case ViewPackage.NODE_DESCRIPTION__STYLE:
             this.setStyle((NodeStyle) newValue);
             return;
+        case ViewPackage.NODE_DESCRIPTION__NODE_TOOLS:
+            this.getNodeTools().clear();
+            this.getNodeTools().addAll((Collection<? extends NodeTool>) newValue);
+            return;
         }
         super.eSet(featureID, newValue);
     }
@@ -206,6 +238,9 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
         case ViewPackage.NODE_DESCRIPTION__STYLE:
             this.setStyle((NodeStyle) null);
             return;
+        case ViewPackage.NODE_DESCRIPTION__NODE_TOOLS:
+            this.getNodeTools().clear();
+            return;
         }
         super.eUnset(featureID);
     }
@@ -222,6 +257,8 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
             return this.childrenDescriptions != null && !this.childrenDescriptions.isEmpty();
         case ViewPackage.NODE_DESCRIPTION__STYLE:
             return this.style != null;
+        case ViewPackage.NODE_DESCRIPTION__NODE_TOOLS:
+            return this.nodeTools != null && !this.nodeTools.isEmpty();
         }
         return super.eIsSet(featureID);
     }

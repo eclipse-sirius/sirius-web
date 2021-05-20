@@ -1,4 +1,4 @@
-/*******************************************************************************
+/**
  * Copyright (c) 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -8,8 +8,8 @@
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+ *      Obeo - initial API and implementation
+ */
 package org.eclipse.sirius.web.view.provider;
 
 import java.util.Collection;
@@ -17,26 +17,34 @@ import java.util.List;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.util.ResourceLocator;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
+import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
+import org.eclipse.emf.edit.provider.IItemPropertySource;
+import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
+import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
+import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
-import org.eclipse.sirius.web.view.NodeDescription;
+import org.eclipse.sirius.web.view.Operation;
 import org.eclipse.sirius.web.view.ViewFactory;
 import org.eclipse.sirius.web.view.ViewPackage;
 
 /**
- * This is the item provider adapter for a {@link org.eclipse.sirius.web.view.NodeDescription} object. <!--
- * begin-user-doc --> <!-- end-user-doc -->
+ * This is the item provider adapter for a {@link org.eclipse.sirius.web.view.Operation} object. <!-- begin-user-doc -->
+ * <!-- end-user-doc -->
  *
  * @generated
  */
-public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemProvider {
+public class OperationItemProvider extends ItemProviderAdapter
+        implements IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource {
     /**
      * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
-    public NodeDescriptionItemProvider(AdapterFactory adapterFactory) {
+    public OperationItemProvider(AdapterFactory adapterFactory) {
         super(adapterFactory);
     }
 
@@ -66,9 +74,7 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
     public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
         if (this.childrenFeatures == null) {
             super.getChildrenFeatures(object);
-            this.childrenFeatures.add(ViewPackage.Literals.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS);
-            this.childrenFeatures.add(ViewPackage.Literals.NODE_DESCRIPTION__STYLE);
-            this.childrenFeatures.add(ViewPackage.Literals.NODE_DESCRIPTION__NODE_TOOLS);
+            this.childrenFeatures.add(ViewPackage.Literals.OPERATION__CHILDREN);
         }
         return this.childrenFeatures;
     }
@@ -84,16 +90,6 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
         // adding (see {@link AddCommand}) it as a child.
 
         return super.getChildFeature(object, child);
-    }
-
-    /**
-     * This returns NodeDescription.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/NodeDescription")); //$NON-NLS-1$
     }
 
     /**
@@ -113,9 +109,7 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
      */
     @Override
     public String getText(Object object) {
-        String label = ((NodeDescription) object).getDomainType();
-        return label == null || label.length() == 0 ? this.getString("_UI_NodeDescription_type") : //$NON-NLS-1$
-                this.getString("_UI_NodeDescription_type") + " " + label; //$NON-NLS-1$ //$NON-NLS-2$
+        return this.getString("_UI_Operation_type"); //$NON-NLS-1$
     }
 
     /**
@@ -129,10 +123,8 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
     public void notifyChanged(Notification notification) {
         this.updateChildren(notification);
 
-        switch (notification.getFeatureID(NodeDescription.class)) {
-        case ViewPackage.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS:
-        case ViewPackage.NODE_DESCRIPTION__STYLE:
-        case ViewPackage.NODE_DESCRIPTION__NODE_TOOLS:
+        switch (notification.getFeatureID(Operation.class)) {
+        case ViewPackage.OPERATION__CHILDREN:
             this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
             return;
         }
@@ -149,11 +141,25 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
 
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS, ViewFactory.eINSTANCE.createNodeDescription()));
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.OPERATION__CHILDREN, ViewFactory.eINSTANCE.createChangeContext()));
 
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.NODE_DESCRIPTION__STYLE, ViewFactory.eINSTANCE.createNodeStyle()));
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.OPERATION__CHILDREN, ViewFactory.eINSTANCE.createCreateInstance()));
 
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.NODE_DESCRIPTION__NODE_TOOLS, ViewFactory.eINSTANCE.createNodeTool()));
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.OPERATION__CHILDREN, ViewFactory.eINSTANCE.createSetValue()));
+
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.OPERATION__CHILDREN, ViewFactory.eINSTANCE.createUnsetValue()));
+
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.OPERATION__CHILDREN, ViewFactory.eINSTANCE.createDeleteElement()));
+    }
+
+    /**
+     * Return the resource locator for this item provider's resources. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public ResourceLocator getResourceLocator() {
+        return ViewEditPlugin.INSTANCE;
     }
 
 }

@@ -12,13 +12,19 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.view.impl;
 
+import java.util.Collection;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.sirius.web.view.EdgeDescription;
 import org.eclipse.sirius.web.view.EdgeStyle;
+import org.eclipse.sirius.web.view.EdgeTool;
 import org.eclipse.sirius.web.view.NodeDescription;
 import org.eclipse.sirius.web.view.ViewPackage;
 
@@ -133,6 +139,16 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @ordered
      */
     protected EdgeStyle style;
+
+    /**
+     * The cached value of the '{@link #getEdgeTools() <em>Edge Tools</em>}' containment reference list. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getEdgeTools()
+     * @generated
+     * @ordered
+     */
+    protected EList<EdgeTool> edgeTools;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -356,10 +372,25 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @generated
      */
     @Override
+    public EList<EdgeTool> getEdgeTools() {
+        if (this.edgeTools == null) {
+            this.edgeTools = new EObjectContainmentEList<>(EdgeTool.class, this, ViewPackage.EDGE_DESCRIPTION__EDGE_TOOLS);
+        }
+        return this.edgeTools;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
         case ViewPackage.EDGE_DESCRIPTION__STYLE:
             return this.basicSetStyle(null, msgs);
+        case ViewPackage.EDGE_DESCRIPTION__EDGE_TOOLS:
+            return ((InternalEList<?>) this.getEdgeTools()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -388,6 +419,8 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
             return this.getTargetNodesExpression();
         case ViewPackage.EDGE_DESCRIPTION__STYLE:
             return this.getStyle();
+        case ViewPackage.EDGE_DESCRIPTION__EDGE_TOOLS:
+            return this.getEdgeTools();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -419,6 +452,10 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
         case ViewPackage.EDGE_DESCRIPTION__STYLE:
             this.setStyle((EdgeStyle) newValue);
             return;
+        case ViewPackage.EDGE_DESCRIPTION__EDGE_TOOLS:
+            this.getEdgeTools().clear();
+            this.getEdgeTools().addAll((Collection<? extends EdgeTool>) newValue);
+            return;
         }
         super.eSet(featureID, newValue);
     }
@@ -449,6 +486,9 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
         case ViewPackage.EDGE_DESCRIPTION__STYLE:
             this.setStyle((EdgeStyle) null);
             return;
+        case ViewPackage.EDGE_DESCRIPTION__EDGE_TOOLS:
+            this.getEdgeTools().clear();
+            return;
         }
         super.eUnset(featureID);
     }
@@ -473,6 +513,8 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
             return TARGET_NODES_EXPRESSION_EDEFAULT == null ? this.targetNodesExpression != null : !TARGET_NODES_EXPRESSION_EDEFAULT.equals(this.targetNodesExpression);
         case ViewPackage.EDGE_DESCRIPTION__STYLE:
             return this.style != null;
+        case ViewPackage.EDGE_DESCRIPTION__EDGE_TOOLS:
+            return this.edgeTools != null && !this.edgeTools.isEmpty();
         }
         return super.eIsSet(featureID);
     }
