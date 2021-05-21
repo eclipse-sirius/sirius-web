@@ -28,7 +28,7 @@
 
 	<properties>
 		<java.version>11</java.version>
-		<sirius.components.version>0.2.23</sirius.components.version>
+		<sirius.components.version>0.2.25</sirius.components.version>
 	</properties>
 
 	<repositories>
