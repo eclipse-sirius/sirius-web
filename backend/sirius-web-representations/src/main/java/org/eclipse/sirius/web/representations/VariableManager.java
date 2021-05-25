@@ -57,12 +57,6 @@ public class VariableManager {
         return previous;
     }
 
-    public VariableManager with(String name, Object value) {
-        VariableManager result = this.createChild();
-        result.put(name, value);
-        return result;
-    }
-
     public Map<String, Object> getVariables() {
         if (this.parent != null) {
             Map<String, Object> parentVariables = this.parent.getVariables();

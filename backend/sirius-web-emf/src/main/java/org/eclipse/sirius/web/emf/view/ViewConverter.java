@@ -74,7 +74,7 @@ public class ViewConverter {
 
     private static final String EDGE_CREATION_TOOL_ICON = "/img/Relation.png"; //$NON-NLS-1$
 
-    private final AQLInterpreter interpreter;
+    private final List<IJavaServiceProvider> javaServiceProviders;
 
     private final IObjectService objectService;
 
@@ -101,8 +101,8 @@ public class ViewConverter {
 
     private Map<org.eclipse.sirius.web.view.EdgeDescription, EdgeDescription> convertedEdges;
 
-    public ViewConverter(AQLInterpreter interpreter, IObjectService objectService, IEditService editService, ICustomImagesService customImagesService) {
-        this.interpreter = Objects.requireNonNull(interpreter);
+    public ViewConverter(List<IJavaServiceProvider> javaServiceProviders, IObjectService objectService, IEditService editService, ICustomImagesService customImagesService) {
+        this.javaServiceProviders = Objects.requireNonNull(javaServiceProviders);
         this.objectService = Objects.requireNonNull(objectService);
         this.editService = Objects.requireNonNull(editService);
         this.customImagesService = Objects.requireNonNull(customImagesService);
@@ -118,12 +118,18 @@ public class ViewConverter {
      * {@link DiagramDescription}s are supported. <b>Warning:</b> this code is not re-entrant.
      */
     public List<IRepresentationDescription> convert(View view) {
+        // @formatter:off
+        List<Class<?>> serviceClasses = this.javaServiceProviders.stream()
+                                            .flatMap(provider -> provider.getServiceClasses(view).stream())
+                                            .collect(Collectors.toList());
+        // @formatter:on
+        AQLInterpreter interpreter = new AQLInterpreter(serviceClasses, List.of());
         try {
             // @formatter:off
             return view.getDescriptions().stream()
                        .filter(org.eclipse.sirius.web.view.DiagramDescription.class::isInstance)
                        .map(org.eclipse.sirius.web.view.DiagramDescription.class::cast)
-                       .map(this::convert)
+                       .map(viewDiagramDescription -> this.convert(viewDiagramDescription, interpreter))
                        .collect(Collectors.toList());
             // @formatter:on
         } catch (NullPointerException e) {
@@ -133,22 +139,22 @@ public class ViewConverter {
         }
     }
 
-    private DiagramDescription convert(org.eclipse.sirius.web.view.DiagramDescription viewDiagramDescription) {
+    private DiagramDescription convert(org.eclipse.sirius.web.view.DiagramDescription viewDiagramDescription, AQLInterpreter interpreter) {
         this.convertedNodes = new HashMap<>();
         this.convertedEdges = new HashMap<>();
         try {
             // Nodes must be fully converted first.
-            List<NodeDescription> nodeDescriptions = viewDiagramDescription.getNodeDescriptions().stream().map(this::convert).collect(Collectors.toList());
-            List<EdgeDescription> edgeDescriptions = viewDiagramDescription.getEdgeDescriptions().stream().map(this::convert).collect(Collectors.toList());
+            List<NodeDescription> nodeDescriptions = viewDiagramDescription.getNodeDescriptions().stream().map(node -> this.convert(node, interpreter)).collect(Collectors.toList());
+            List<EdgeDescription> edgeDescriptions = viewDiagramDescription.getEdgeDescriptions().stream().map(edge -> this.convert(edge, interpreter)).collect(Collectors.toList());
             // @formatter:off
             return DiagramDescription.newDiagramDescription(UUID.nameUUIDFromBytes(viewDiagramDescription.getName().getBytes()))
                     .label(Optional.ofNullable(viewDiagramDescription.getName()).orElse(DEFAULT_DIAGRAM_LABEL))
-                    .labelProvider(variableManager -> this.computeDiagramLabel(viewDiagramDescription, variableManager))
+                    .labelProvider(variableManager -> this.computeDiagramLabel(viewDiagramDescription, variableManager, interpreter))
                     .canCreatePredicate(variableManager -> this.canCreateDiagram(variableManager, viewDiagramDescription.getDomainType()))
                     .targetObjectIdProvider(this.semanticTargetIdProvider)
                     .nodeDescriptions(nodeDescriptions)
                     .edgeDescriptions(edgeDescriptions)
-                    .toolSections(this.createToolSections())
+                    .toolSections(this.createToolSections(interpreter))
                     .build();
             // @formatter:on
         } finally {
@@ -157,9 +163,9 @@ public class ViewConverter {
         }
     }
 
-    private String computeDiagramLabel(org.eclipse.sirius.web.view.DiagramDescription viewDiagramDescription, VariableManager variableManager) {
+    private String computeDiagramLabel(org.eclipse.sirius.web.view.DiagramDescription viewDiagramDescription, VariableManager variableManager, AQLInterpreter interpreter) {
         String title = variableManager.get(DiagramDescription.LABEL, String.class).orElseGet(() -> {
-            return this.evaluateString(variableManager, viewDiagramDescription.getTitleExpression());
+            return this.evaluateString(interpreter, variableManager, viewDiagramDescription.getTitleExpression());
         });
         if (title == null || title.isBlank()) {
             return DEFAULT_DIAGRAM_LABEL;
@@ -172,11 +178,11 @@ public class ViewConverter {
         return variableManager.get(IRepresentationDescription.CLASS, EClass.class).map(EcoreUtil::create).filter(new DomainClassPredicate(domainType)).isPresent();
     }
 
-    private NodeDescription convert(org.eclipse.sirius.web.view.NodeDescription viewNodeDescription) {
+    private NodeDescription convert(org.eclipse.sirius.web.view.NodeDescription viewNodeDescription, AQLInterpreter interpreter) {
         // @formatter:off
         // Convert our children first, we need their converted values to build our NodeDescription
         var childNodeDescriptions = viewNodeDescription.getChildrenDescriptions().stream()
-                                                       .map(this::convert)
+                                                       .map(childNodeDescription -> this.convert(childNodeDescription, interpreter))
                                                        .collect(Collectors.toList());
         // @formatter:on
         SynchronizationPolicy synchronizationPolicy = SynchronizationPolicy.SYNCHRONIZED;
@@ -186,25 +192,25 @@ public class ViewConverter {
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .targetObjectKindProvider(this.semanticTargetKindProvider)
                 .targetObjectLabelProvider(this.semanticTargetLabelProvider)
-                .semanticElementsProvider(this.getSemanticElementsProvider(viewNodeDescription))
+                .semanticElementsProvider(this.getSemanticElementsProvider(viewNodeDescription, interpreter))
                 .synchronizationPolicy(synchronizationPolicy)
                 .typeProvider(variableManager -> nodeType)
-                .labelDescription(this.getLabelDescription(viewNodeDescription))
+                .labelDescription(this.getLabelDescription(viewNodeDescription, interpreter))
                 .styleProvider(variableManager -> {
                     return this.stylesFactory.createNodeStyle(viewNodeDescription.getStyle(), this.customImagesService);
                 })
                 .childNodeDescriptions(childNodeDescriptions)
                 .borderNodeDescriptions(List.of())
                 .sizeProvider(variableManager -> Size.UNDEFINED)
-                .labelEditHandler(this.createLabelEditHandler(viewNodeDescription))
-                .deleteHandler(this.createDeleteHandler(viewNodeDescription))
+                .labelEditHandler(this.createLabelEditHandler(viewNodeDescription, interpreter))
+                .deleteHandler(this.createDeleteHandler(viewNodeDescription, interpreter))
                 .build();
         // @formatter:on
         this.convertedNodes.put(viewNodeDescription, result);
         return result;
     }
 
-    private List<ToolSection> createToolSections() {
+    private List<ToolSection> createToolSections(AQLInterpreter interpreter) {
         List<ITool> nodeCreationTools = new ArrayList<>();
         for (var nodeDescription : this.convertedNodes.keySet()) {
             // Add custom tools
@@ -214,7 +220,7 @@ public class ViewConverter {
                 CreateNodeTool customTool = CreateNodeTool.newCreateNodeTool(this.idProvider.apply(nodeDescription) + "_tool" + i++) //$NON-NLS-1$
                         .label(nodeTool.getName())
                         .imageURL(NODE_CREATION_TOOL_ICON)
-                        .handler(variableManager -> new ToolInterpreter(this.interpreter, this.editService).executeTool(nodeTool, variableManager))
+                        .handler(variableManager -> new ToolInterpreter(interpreter, this.editService).executeTool(nodeTool, variableManager))
                         .targetDescriptions(Optional.ofNullable(nodeDescription.eContainer()).map(this.convertedNodes::get).stream().collect(Collectors.toList()))
                         .appliesToDiagramRoot(nodeDescription.eContainer() instanceof org.eclipse.sirius.web.view.DiagramDescription)
                         .build();
@@ -246,10 +252,10 @@ public class ViewConverter {
                         .label(edgeTool.getName())
                         .imageURL(EDGE_CREATION_TOOL_ICON)
                         .edgeCandidates(List.of(EdgeCandidate.newEdgeCandidate()
-                                .sources(List.of(this.convert(edgeDescription.getSourceNodeDescription())))
-                                .targets(List.of(this.convert(edgeDescription.getTargetNodeDescription())))
+                                .sources(List.of(this.convert(edgeDescription.getSourceNodeDescription(), interpreter)))
+                                .targets(List.of(this.convert(edgeDescription.getTargetNodeDescription(), interpreter)))
                                 .build()))
-                        .handler(variableManager -> new ToolInterpreter(this.interpreter, this.editService).executeTool(edgeTool, variableManager))
+                        .handler(variableManager -> new ToolInterpreter(interpreter, this.editService).executeTool(edgeTool, variableManager))
                         .build();
                 // @formatter:on
                 nodeCreationTools.add(customTool);
@@ -260,8 +266,8 @@ public class ViewConverter {
                     .label("New edge" + edgeDescription.getDomainType()) //$NON-NLS-1$
                     .imageURL(EDGE_CREATION_TOOL_ICON)
                     .edgeCandidates(List.of(EdgeCandidate.newEdgeCandidate()
-                            .sources(List.of(this.convert(edgeDescription.getSourceNodeDescription())))
-                            .targets(List.of(this.convert(edgeDescription.getTargetNodeDescription())))
+                            .sources(List.of(this.convert(edgeDescription.getSourceNodeDescription(), interpreter)))
+                            .targets(List.of(this.convert(edgeDescription.getTargetNodeDescription(), interpreter)))
                             .build()))
                     .handler(variableManager -> this.canonicalBehaviors.createNewEdge(variableManager, edgeDescription))
                     .build();
@@ -275,7 +281,7 @@ public class ViewConverter {
         // @formatter:on
     }
 
-    private LabelDescription getLabelDescription(org.eclipse.sirius.web.view.NodeDescription viewNodeDescription) {
+    private LabelDescription getLabelDescription(org.eclipse.sirius.web.view.NodeDescription viewNodeDescription, AQLInterpreter interpreter) {
         Function<VariableManager, String> labelIdProvider = variableManager -> {
             Object parentId = variableManager.get(LabelDescription.OWNER_ID, Object.class).orElse(null);
             return String.valueOf(parentId) + LabelDescription.LABEL_SUFFIX;
@@ -284,15 +290,15 @@ public class ViewConverter {
         // @formatter:off
         return LabelDescription.newLabelDescription(EcoreUtil.getURI(viewNodeDescription).toString() + LabelDescription.LABEL_SUFFIX)
                 .idProvider(labelIdProvider)
-                .textProvider(variableManager -> this.evaluateString(variableManager, viewNodeDescription.getLabelExpression()))
+                .textProvider(variableManager -> this.evaluateString(interpreter, variableManager, viewNodeDescription.getLabelExpression()))
                 .styleDescriptionProvider(variableManager -> this.stylesFactory.createLabelStyleDescription(viewNodeDescription.getStyle()))
                 .build();
         // @formatter:on
     }
 
-    private Function<VariableManager, List<Object>> getSemanticElementsProvider(org.eclipse.sirius.web.view.DiagramElementDescription elementDescription) {
+    private Function<VariableManager, List<Object>> getSemanticElementsProvider(org.eclipse.sirius.web.view.DiagramElementDescription elementDescription, AQLInterpreter interpreter) {
         return variableManager -> {
-            Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), elementDescription.getSemanticCandidatesExpression());
+            Result result = interpreter.evaluateExpression(variableManager.getVariables(), elementDescription.getSemanticCandidatesExpression());
             List<Object> candidates = result.asObjects().orElse(List.of());
             // @formatter:off
             return candidates.stream()
@@ -304,14 +310,14 @@ public class ViewConverter {
         };
     }
 
-    private EdgeDescription convert(org.eclipse.sirius.web.view.EdgeDescription viewEdgeDescription) {
+    private EdgeDescription convert(org.eclipse.sirius.web.view.EdgeDescription viewEdgeDescription, AQLInterpreter interpreter) {
         Function<VariableManager, List<Object>> semanticElementsProvider;
         if (viewEdgeDescription.isIsDomainBasedEdge()) {
             // Same logic as for nodes.
-            semanticElementsProvider = this.getSemanticElementsProvider(viewEdgeDescription);
+            semanticElementsProvider = this.getSemanticElementsProvider(viewEdgeDescription, interpreter);
         } else {
             //
-            var sourceNodeDescription = this.convert(viewEdgeDescription.getSourceNodeDescription());
+            var sourceNodeDescription = this.convert(viewEdgeDescription.getSourceNodeDescription(), interpreter);
             semanticElementsProvider = new RelationBasedSemanticElementsProvider(List.of(sourceNodeDescription.getId()));
         }
 
@@ -325,7 +331,7 @@ public class ViewConverter {
                 DiagramRenderingCache cache = optionalCache.get();
                 String sourceFinderExpression = viewEdgeDescription.getSourceNodesExpression();
 
-                Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), sourceFinderExpression);
+                Result result = interpreter.evaluateExpression(variableManager.getVariables(), sourceFinderExpression);
                 List<Object> semanticCandidates = result.asObjects().orElse(List.of());
                 var nodeCandidates = semanticCandidates.stream().flatMap(semanticObject -> cache.getElementsRepresenting(semanticObject).stream());
 
@@ -356,7 +362,7 @@ public class ViewConverter {
             };
         }
 
-        Function<VariableManager, List<Element>> targetNodesProvider = new TargetNodesProvider(this.idProvider, viewEdgeDescription, this.interpreter);
+        Function<VariableManager, List<Element>> targetNodesProvider = new TargetNodesProvider(this.idProvider, viewEdgeDescription, interpreter);
 
         // @formatter:off
         EdgeDescription result = EdgeDescription.newEdgeDescription(this.idProvider.apply(viewEdgeDescription))
@@ -369,29 +375,31 @@ public class ViewConverter {
                                      .sourceNodesProvider(sourceNodesProvider)
                                      .targetNodesProvider(targetNodesProvider)
                                      .styleProvider(variableManager -> this.stylesFactory.createEdgeStyle(viewEdgeDescription.getStyle()))
-                                     .deleteHandler(this.createDeleteHandler(viewEdgeDescription))
+                                     .deleteHandler(this.createDeleteHandler(viewEdgeDescription, interpreter))
                                      .build();
         this.convertedEdges.put(viewEdgeDescription, result);
         return result;
         // @formatter:on
     }
 
-    private Function<VariableManager, Status> createDeleteHandler(DiagramElementDescription diagramElementDescription) {
+    private Function<VariableManager, Status> createDeleteHandler(DiagramElementDescription diagramElementDescription, AQLInterpreter interpreter) {
         DeleteTool tool = diagramElementDescription.getDeleteTool();
         if (tool != null) {
             return variableManager -> {
-                return new ToolInterpreter(this.interpreter, this.editService).executeTool(tool, variableManager);
+                return new ToolInterpreter(interpreter, this.editService).executeTool(tool, variableManager);
             };
         } else {
             return this.canonicalBehaviors::deleteElement;
         }
     }
 
-    private BiFunction<VariableManager, String, Status> createLabelEditHandler(DiagramElementDescription diagramElementDescription) {
+    private BiFunction<VariableManager, String, Status> createLabelEditHandler(DiagramElementDescription diagramElementDescription, AQLInterpreter interpreter) {
         LabelEditTool tool = diagramElementDescription.getLabelEditTool();
         if (tool != null) {
             return (variableManager, newLabel) -> {
-                return new ToolInterpreter(this.interpreter, this.editService).executeTool(tool, variableManager.with("arg0", newLabel)); //$NON-NLS-1$
+                VariableManager childVariableManager = variableManager.createChild();
+                childVariableManager.put("arg0", newLabel); //$NON-NLS-1$
+                return new ToolInterpreter(interpreter, this.editService).executeTool(tool, childVariableManager);
             };
         } else {
             return this.canonicalBehaviors::editLabel;
@@ -414,8 +422,8 @@ public class ViewConverter {
         return variableManager.get(VariableManager.SELF, Object.class);
     }
 
-    private String evaluateString(VariableManager variableManager, String expression) {
-        return this.interpreter.evaluateExpression(variableManager.getVariables(), expression).asString().orElse(""); //$NON-NLS-1$
+    private String evaluateString(AQLInterpreter interpreter, VariableManager variableManager, String expression) {
+        return interpreter.evaluateExpression(variableManager.getVariables(), expression).asString().orElse(""); //$NON-NLS-1$
     }
 
 }
