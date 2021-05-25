@@ -105,7 +105,7 @@ public class ToolInterpreter {
             @Override
             public Optional<VariableManager> caseDeleteElement(DeleteElement op) {
                 return ToolInterpreter.this.executeDeleteElement(variableManager, op);
-            };
+            }
         };
         return dispatcher.doSwitch(operation);
     }
@@ -113,7 +113,9 @@ public class ToolInterpreter {
     private Optional<VariableManager> executeChangeContext(VariableManager variableManager, ChangeContext changeContextOperation) {
         Optional<Object> newContext = this.interpreter.evaluateExpression(variableManager.getVariables(), changeContextOperation.getExpression()).asObject();
         if (newContext.isPresent()) {
-            return this.executeOperations(changeContextOperation.getChildren(), variableManager.with(VariableManager.SELF, newContext.get()));
+            VariableManager childVariableManager = variableManager.createChild();
+            childVariableManager.put(VariableManager.SELF, newContext.get());
+            return this.executeOperations(changeContextOperation.getChildren(), childVariableManager);
         } else {
             return Optional.empty();
         }
@@ -183,7 +185,9 @@ public class ToolInterpreter {
             if (newInstance != null) {
                 Object container = this.ecore.eAdd(optionalSelf.get(), creatInstanceOperation.getReferenceName(), newInstance);
                 if (container != null) {
-                    return this.executeOperations(creatInstanceOperation.getChildren(), variableManager.with(variableManager.SELF, newInstance));
+                    VariableManager childVariableManager = variableManager.createChild();
+                    childVariableManager.put(VariableManager.SELF, newInstance);
+                    return this.executeOperations(creatInstanceOperation.getChildren(), childVariableManager);
                 }
             }
         }

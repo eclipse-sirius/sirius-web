@@ -28,7 +28,6 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.emf.services.SiriusWebJSONResourceFactoryImpl;
-import org.eclipse.sirius.web.interpreter.AQLInterpreter;
 import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
 import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
 import org.eclipse.sirius.web.representations.IRepresentationDescription;
@@ -57,11 +56,10 @@ public class DynamicRepresentationDescriptionService implements IDynamicRepresen
     private final ViewConverter viewConverter;
 
     public DynamicRepresentationDescriptionService(IDocumentRepository documentRepository, EPackage.Registry ePackageRegistry, IObjectService objectService, IEditService editService,
-            ICustomImagesService customImagesService) {
+            ICustomImagesService customImagesService, List<IJavaServiceProvider> javaServiceProviders) {
         this.documentRepository = Objects.requireNonNull(documentRepository);
         this.ePackageRegistry = Objects.requireNonNull(ePackageRegistry);
-        AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of());
-        this.viewConverter = new ViewConverter(Objects.requireNonNull(interpreter), Objects.requireNonNull(objectService), Objects.requireNonNull(editService),
+        this.viewConverter = new ViewConverter(Objects.requireNonNull(javaServiceProviders), Objects.requireNonNull(objectService), Objects.requireNonNull(editService),
                 Objects.requireNonNull(customImagesService));
     }
 
