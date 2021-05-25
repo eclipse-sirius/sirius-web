@@ -62,7 +62,7 @@
               <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="aql:self">
                 <subModelOperations xsi:type="tool_1:CreateInstance" typeName="domain::Attribute" referenceName="attributes">
                   <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="newAttribute"/>
-                  <subModelOperations xsi:type="tool_1:SetValue" featureName="type" valueExpression="aql:domain::Type::STRING"/>
+                  <subModelOperations xsi:type="tool_1:SetValue" featureName="type" valueExpression="aql:domain::DataType::STRING"/>
                 </subModelOperations>
               </firstModelOperations>
             </initialOperation>
@@ -74,7 +74,7 @@
               <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="aql:self">
                 <subModelOperations xsi:type="tool_1:CreateInstance" typeName="domain::Attribute" referenceName="attributes">
                   <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="newAttribute"/>
-                  <subModelOperations xsi:type="tool_1:SetValue" featureName="type" valueExpression="aql:domain::Type::BOOLEAN"/>
+                  <subModelOperations xsi:type="tool_1:SetValue" featureName="type" valueExpression="aql:domain::DataType::BOOLEAN"/>
                 </subModelOperations>
               </firstModelOperations>
             </initialOperation>
@@ -86,7 +86,7 @@
               <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="aql:self">
                 <subModelOperations xsi:type="tool_1:CreateInstance" typeName="domain::Attribute" referenceName="attributes">
                   <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="newAttribute"/>
-                  <subModelOperations xsi:type="tool_1:SetValue" featureName="type" valueExpression="aql:domain::Type::NUMBER"/>
+                  <subModelOperations xsi:type="tool_1:SetValue" featureName="type" valueExpression="aql:domain::DataType::NUMBER"/>
                 </subModelOperations>
               </firstModelOperations>
             </initialOperation>
