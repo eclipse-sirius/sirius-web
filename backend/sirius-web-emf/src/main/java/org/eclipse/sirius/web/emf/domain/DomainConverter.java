@@ -75,7 +75,7 @@ public class DomainConverter {
                 leftToConvert.addLast(candidate);
             }
         }
-        if (leftToConvert.isEmpty()) {
+        if (leftToConvert.size() == 1) {
             for (Entity entity : domain.getTypes()) {
                 EClass eClass = convertedTypes.get(entity);
                 for (Relation relation : entity.getRelations()) {
