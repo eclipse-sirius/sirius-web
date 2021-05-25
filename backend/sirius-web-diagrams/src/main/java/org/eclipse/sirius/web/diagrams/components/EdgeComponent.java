@@ -89,7 +89,7 @@ public class EdgeComponent implements IComponent {
 
                     for (Element sourceNode : sourceNodes) {
                         for (Element targetNode : targetNodes) {
-                            UUID id = this.computeEdgeId(sourceNode, targetNode, count);
+                            UUID id = this.computeEdgeId(edgeDescription, sourceNode, targetNode, count);
                             var optionalPreviousEdge = edgesRequestor.getById(id);
                             var edgeInstanceVariableManager = edgeVariableManager.createChild();
                             edgeInstanceVariableManager.put(EdgeDescription.SEMANTIC_EDGE_SOURCE, cache.getNodeToObject().get(sourceNode));
@@ -167,7 +167,8 @@ public class EdgeComponent implements IComponent {
         return edgeChildren;
     }
 
-    private UUID computeEdgeId(Element sourceNode, Element targetNode, int count) {
+    private UUID computeEdgeId(EdgeDescription edgeDescription, Element sourceNode, Element targetNode, int count) {
+        var descriptionId = edgeDescription.getId().toString();
         // @formatter:off
         var sourceId = Optional.of(sourceNode.getProps())
                 .filter(NodeElementProps.class::isInstance)
@@ -183,7 +184,7 @@ public class EdgeComponent implements IComponent {
                 .map(UUID::toString)
                 .orElse(INVALID_NODE_ID);
         // @formatter:on
-        String rawIdentifier = sourceId + " --> " + targetId + " - " + count; //$NON-NLS-1$ //$NON-NLS-2$
+        String rawIdentifier = descriptionId + ": " + sourceId + " --> " + targetId + " - " + count; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         return UUID.nameUUIDFromBytes(rawIdentifier.getBytes());
     }
 

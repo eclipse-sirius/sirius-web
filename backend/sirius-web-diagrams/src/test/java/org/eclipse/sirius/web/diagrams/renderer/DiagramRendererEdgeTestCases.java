@@ -54,6 +54,7 @@ import org.slf4j.LoggerFactory;
  * @author sbegaudeau
  */
 public class DiagramRendererEdgeTestCases {
+
     private static final UUID EDGE_DESCRIPTION_ID = UUID.randomUUID();
 
     private static final UUID DIAGRAM_DESCRIPTION_ID = UUID.randomUUID();
@@ -74,31 +75,9 @@ public class DiagramRendererEdgeTestCases {
     @Test
     public void testSimpleEdgeRendering() {
         NodeDescription nodeDescription = this.getNodeDescription(NODE_DESCRIPTION_ID1);
-        EdgeDescription edgeDescription = this.getEdgeDescription(nodeDescription);
+        EdgeDescription edgeDescription = this.getEdgeDescription(nodeDescription, EDGE_DESCRIPTION_ID);
 
-        // @formatter:off
-        DiagramDescription diagramDescription = DiagramDescription.newDiagramDescription(DIAGRAM_DESCRIPTION_ID)
-                .label("") //$NON-NLS-1$
-                .canCreatePredicate(variableManager -> true)
-                .targetObjectIdProvider(variableManager -> "diagramTargetObjectId") //$NON-NLS-1$
-                .labelProvider(variableManager -> "Diagram") //$NON-NLS-1$
-                .nodeDescriptions(List.of(nodeDescription))
-                .edgeDescriptions(List.of(edgeDescription))
-                .toolSections(List.of())
-                .build();
-        // @formatter:on
-
-        VariableManager variableManager = new VariableManager();
-        // @formatter:off
-        DiagramComponentProps props = DiagramComponentProps.newDiagramComponentProps()
-                .variableManager(variableManager)
-                .diagramDescription(diagramDescription)
-                .viewCreationRequests(List.of())
-                .previousDiagram(Optional.empty())
-                .build();
-        // @formatter:on
-        Element element = new Element(DiagramComponent.class, props);
-        Diagram diagram = new DiagramRenderer(this.logger).render(element);
+        Diagram diagram = this.renderDiagram(List.of(nodeDescription), List.of(edgeDescription));
 
         assertThat(diagram).isNotNull();
         assertThat(diagram.getId()).asString().isNotBlank();
@@ -128,16 +107,45 @@ public class DiagramRendererEdgeTestCases {
     public void testEdgeRendering() {
         NodeDescription nodeDescription1 = this.getNodeDescription(NODE_DESCRIPTION_ID1);
         NodeDescription nodeDescription2 = this.getNodeDescription(NODE_DESCRIPTION_ID2);
-        EdgeDescription edgeDescription = this.getEdgeDescription(nodeDescription1);
+        EdgeDescription edgeDescription = this.getEdgeDescription(nodeDescription1, EDGE_DESCRIPTION_ID);
 
+        Diagram diagram = this.renderDiagram(List.of(nodeDescription1, nodeDescription2), List.of(edgeDescription));
+        assertThat(diagram.getNodes()).hasSize(4);
+
+        Node node1 = diagram.getNodes().get(0);
+        Node node2 = diagram.getNodes().get(1);
+        assertThat(diagram.getEdges()).hasSize(1);
+
+        Edge edge = diagram.getEdges().get(0);
+        assertThat(edge).extracting(Edge::getSourceId).isEqualTo(node1.getId());
+        assertThat(edge).extracting(Edge::getTargetId).isEqualTo(node2.getId());
+    }
+
+    /**
+     * Check that two edges with the same source and target nodes but from different edge description have distinct ids.
+     */
+    @Test
+    public void testNoDuplicateEdgeId() {
+        NodeDescription nodeDescription1 = this.getNodeDescription(NODE_DESCRIPTION_ID1);
+        NodeDescription nodeDescription2 = this.getNodeDescription(NODE_DESCRIPTION_ID2);
+        EdgeDescription edgeDescription1 = this.getEdgeDescription(nodeDescription1, UUID.randomUUID());
+        EdgeDescription edgeDescription2 = this.getEdgeDescription(nodeDescription1, UUID.randomUUID());
+
+        Diagram diagram = this.renderDiagram(List.of(nodeDescription1, nodeDescription2), List.of(edgeDescription1, edgeDescription2));
+
+        assertThat(diagram.getEdges()).hasSize(2);
+        assertThat(diagram.getEdges().get(0).getId()).isNotEqualTo(diagram.getEdges().get(1).getId());
+    }
+
+    private Diagram renderDiagram(List<NodeDescription> nodeDescriptions, List<EdgeDescription> edgeDescriptions) {
         // @formatter:off
         DiagramDescription diagramDescription = DiagramDescription.newDiagramDescription(DIAGRAM_DESCRIPTION_ID)
                 .label("") //$NON-NLS-1$
                 .canCreatePredicate(variableManager -> true)
                 .targetObjectIdProvider(variableManager -> "diagramTargetObjectId") //$NON-NLS-1$
                 .labelProvider(variableManager -> "Diagram") //$NON-NLS-1$
-                .nodeDescriptions(List.of(nodeDescription1, nodeDescription2))
-                .edgeDescriptions(List.of(edgeDescription))
+                .nodeDescriptions(nodeDescriptions)
+                .edgeDescriptions(edgeDescriptions)
                 .toolSections(List.of())
                 .build();
         // @formatter:on
@@ -153,17 +161,7 @@ public class DiagramRendererEdgeTestCases {
         // @formatter:on
         Element element = new Element(DiagramComponent.class, props);
         Diagram diagram = new DiagramRenderer(this.logger).render(element);
-
-        assertThat(diagram.getNodes()).hasSize(4);
-
-        Node node1 = diagram.getNodes().get(0);
-        Node node2 = diagram.getNodes().get(1);
-
-        assertThat(diagram.getEdges()).hasSize(1);
-
-        Edge edge = diagram.getEdges().get(0);
-        assertThat(edge).extracting(Edge::getSourceId).isEqualTo(node1.getId());
-        assertThat(edge).extracting(Edge::getTargetId).isEqualTo(node2.getId());
+        return diagram;
     }
 
     private NodeDescription getNodeDescription(UUID nodeDescriptionId) {
@@ -218,7 +216,7 @@ public class DiagramRendererEdgeTestCases {
         // @formatter:on
     }
 
-    private EdgeDescription getEdgeDescription(NodeDescription nodeDescription) {
+    private EdgeDescription getEdgeDescription(NodeDescription nodeDescription, UUID id) {
         // @formatter:off
         Function<VariableManager, List<Element>> sourceNodesProvider = variableManager -> {
             var optionalCache = variableManager.get(DiagramDescription.CACHE, DiagramRenderingCache.class);
@@ -258,8 +256,7 @@ public class DiagramRendererEdgeTestCases {
             return variableManager.get(VariableManager.SELF, String.class).orElse(null);
         };
 
-
-        return EdgeDescription.newEdgeDescription(EDGE_DESCRIPTION_ID)
+        return EdgeDescription.newEdgeDescription(id)
                 .semanticElementsProvider(variableManager -> List.of(FIRST_OBJECT_ID))
                 .sourceNodesProvider(sourceNodesProvider)
                 .targetNodesProvider(targetNodesProvider)
