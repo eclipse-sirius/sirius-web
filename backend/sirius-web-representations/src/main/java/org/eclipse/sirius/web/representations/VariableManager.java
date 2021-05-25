@@ -12,9 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.representations;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -36,11 +34,6 @@ public class VariableManager {
      * The variables.
      */
     private Map<String, Object> variables = new HashMap<>();
-
-    /**
-     * The child variable manager.
-     */
-    private List<VariableManager> children = new ArrayList<>();
 
     /**
      * The constructor.
@@ -90,9 +83,7 @@ public class VariableManager {
     }
 
     public VariableManager createChild() {
-        VariableManager variableManager = new VariableManager(this);
-        this.children.add(variableManager);
-        return variableManager;
+        return new VariableManager(this);
     }
 
     @Override
