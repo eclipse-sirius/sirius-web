@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.sirius.web.view.ConditionalNodeStyle;
 import org.eclipse.sirius.web.view.NodeDescription;
 import org.eclipse.sirius.web.view.NodeStyle;
 import org.eclipse.sirius.web.view.NodeTool;
@@ -70,6 +71,16 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @ordered
      */
     protected EList<NodeTool> nodeTools;
+
+    /**
+     * The cached value of the '{@link #getConditionalStyles() <em>Conditional Styles</em>}' containment reference list.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getConditionalStyles()
+     * @generated
+     * @ordered
+     */
+    protected EList<ConditionalNodeStyle> conditionalStyles;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -170,6 +181,19 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @generated
      */
     @Override
+    public EList<ConditionalNodeStyle> getConditionalStyles() {
+        if (this.conditionalStyles == null) {
+            this.conditionalStyles = new EObjectContainmentEList<>(ConditionalNodeStyle.class, this, ViewPackage.NODE_DESCRIPTION__CONDITIONAL_STYLES);
+        }
+        return this.conditionalStyles;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
         case ViewPackage.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS:
@@ -178,6 +202,8 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
             return this.basicSetStyle(null, msgs);
         case ViewPackage.NODE_DESCRIPTION__NODE_TOOLS:
             return ((InternalEList<?>) this.getNodeTools()).basicRemove(otherEnd, msgs);
+        case ViewPackage.NODE_DESCRIPTION__CONDITIONAL_STYLES:
+            return ((InternalEList<?>) this.getConditionalStyles()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -196,6 +222,8 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
             return this.getStyle();
         case ViewPackage.NODE_DESCRIPTION__NODE_TOOLS:
             return this.getNodeTools();
+        case ViewPackage.NODE_DESCRIPTION__CONDITIONAL_STYLES:
+            return this.getConditionalStyles();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -220,6 +248,10 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
             this.getNodeTools().clear();
             this.getNodeTools().addAll((Collection<? extends NodeTool>) newValue);
             return;
+        case ViewPackage.NODE_DESCRIPTION__CONDITIONAL_STYLES:
+            this.getConditionalStyles().clear();
+            this.getConditionalStyles().addAll((Collection<? extends ConditionalNodeStyle>) newValue);
+            return;
         }
         super.eSet(featureID, newValue);
     }
@@ -241,6 +273,9 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
         case ViewPackage.NODE_DESCRIPTION__NODE_TOOLS:
             this.getNodeTools().clear();
             return;
+        case ViewPackage.NODE_DESCRIPTION__CONDITIONAL_STYLES:
+            this.getConditionalStyles().clear();
+            return;
         }
         super.eUnset(featureID);
     }
@@ -259,6 +294,8 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
             return this.style != null;
         case ViewPackage.NODE_DESCRIPTION__NODE_TOOLS:
             return this.nodeTools != null && !this.nodeTools.isEmpty();
+        case ViewPackage.NODE_DESCRIPTION__CONDITIONAL_STYLES:
+            return this.conditionalStyles != null && !this.conditionalStyles.isEmpty();
         }
         return super.eIsSet(featureID);
     }

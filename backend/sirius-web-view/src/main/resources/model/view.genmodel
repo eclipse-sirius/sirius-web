@@ -55,6 +55,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//NodeDescription/childrenDescriptions"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//NodeDescription/style"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//NodeDescription/nodeTools"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//NodeDescription/conditionalStyles"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//EdgeDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//EdgeDescription/isDomainBasedEdge"/>
@@ -64,6 +65,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//EdgeDescription/targetNodesExpression"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//EdgeDescription/style"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//EdgeDescription/edgeTools"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//EdgeDescription/conditionalStyles"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//Style">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//Style/color"/>
@@ -106,5 +108,10 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//UnsetValue/elementExpression"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//DeleteElement"/>
+    <genClasses ecoreClass="view.ecore#//Conditional">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//Conditional/condition"/>
+    </genClasses>
+    <genClasses ecoreClass="view.ecore#//ConditionalNodeStyle"/>
+    <genClasses ecoreClass="view.ecore#//ConditionalEdgeStyle"/>
   </genPackages>
 </genmodel:GenModel>

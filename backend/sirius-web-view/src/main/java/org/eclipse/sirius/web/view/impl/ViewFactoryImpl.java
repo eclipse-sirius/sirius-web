@@ -20,6 +20,8 @@ import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.eclipse.sirius.web.view.ArrowStyle;
 import org.eclipse.sirius.web.view.ChangeContext;
+import org.eclipse.sirius.web.view.ConditionalEdgeStyle;
+import org.eclipse.sirius.web.view.ConditionalNodeStyle;
 import org.eclipse.sirius.web.view.CreateInstance;
 import org.eclipse.sirius.web.view.DeleteElement;
 import org.eclipse.sirius.web.view.DeleteTool;
@@ -108,6 +110,10 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
             return this.createUnsetValue();
         case ViewPackage.DELETE_ELEMENT:
             return this.createDeleteElement();
+        case ViewPackage.CONDITIONAL_NODE_STYLE:
+            return this.createConditionalNodeStyle();
+        case ViewPackage.CONDITIONAL_EDGE_STYLE:
+            return this.createConditionalEdgeStyle();
         default:
             throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
         }
@@ -310,6 +316,28 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
     public DeleteElement createDeleteElement() {
         DeleteElementImpl deleteElement = new DeleteElementImpl();
         return deleteElement;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public ConditionalNodeStyle createConditionalNodeStyle() {
+        ConditionalNodeStyleImpl conditionalNodeStyle = new ConditionalNodeStyleImpl();
+        return conditionalNodeStyle;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public ConditionalEdgeStyle createConditionalEdgeStyle() {
+        ConditionalEdgeStyleImpl conditionalEdgeStyle = new ConditionalEdgeStyleImpl();
+        return conditionalEdgeStyle;
     }
 
     /**

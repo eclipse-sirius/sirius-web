@@ -187,4 +187,15 @@ public interface EdgeDescription extends DiagramElementDescription {
      */
     EList<EdgeTool> getEdgeTools();
 
+    /**
+     * Returns the value of the '<em><b>Conditional Styles</b></em>' containment reference list. The list contents are
+     * of type {@link org.eclipse.sirius.web.view.ConditionalEdgeStyle}. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Conditional Styles</em>' containment reference list.
+     * @see org.eclipse.sirius.web.view.ViewPackage#getEdgeDescription_ConditionalStyles()
+     * @model containment="true"
+     * @generated
+     */
+    EList<ConditionalEdgeStyle> getConditionalStyles();
+
 } // EdgeDescription

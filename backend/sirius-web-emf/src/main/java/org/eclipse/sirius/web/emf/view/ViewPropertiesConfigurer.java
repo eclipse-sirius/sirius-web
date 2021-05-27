@@ -38,6 +38,7 @@ import org.eclipse.sirius.web.representations.Status;
 import org.eclipse.sirius.web.representations.VariableManager;
 import org.eclipse.sirius.web.services.api.images.CustomImage;
 import org.eclipse.sirius.web.services.api.images.ICustomImagesService;
+import org.eclipse.sirius.web.view.ConditionalNodeStyle;
 import org.eclipse.sirius.web.view.NodeStyle;
 import org.springframework.stereotype.Component;
 
@@ -63,7 +64,49 @@ public class ViewPropertiesConfigurer implements IPropertiesDescriptionRegistryC
 
     @Override
     public void addPropertiesDescriptions(IPropertiesDescriptionRegistry registry) {
+        registry.add(this.getConditionalNodeStyleProperties());
         registry.add(this.getNodeStyleProperties());
+    }
+
+    private FormDescription getConditionalNodeStyleProperties() {
+        UUID formDescriptionId = UUID.nameUUIDFromBytes("conditionalnodestyle".getBytes()); //$NON-NLS-1$
+
+        // @formatter:off
+        Function<VariableManager, String> targetObjectIdProvider = variableManager -> variableManager.get(VariableManager.SELF, NodeStyle.class)
+                                                                                                     .map(obj -> EcoreUtil.getURI(obj).toString())
+                                                                                                     .orElse(null);
+
+        List<AbstractControlDescription> controls = List.of(
+                this.createTextField("conditionalnodestyle.condition", "Condition", //$NON-NLS-1$ //$NON-NLS-2$
+                        style -> ((ConditionalNodeStyle) style).getCondition(),
+                        (style, newCondition) -> ((ConditionalNodeStyle) style).setCondition(newCondition)),
+                this.createTextField("conditionalnodestyle.color", "Color", //$NON-NLS-1$ //$NON-NLS-2$
+                        style -> ((NodeStyle) style).getColor(),
+                        (style, newColor) -> ((NodeStyle) style).setColor(newColor)),
+                this.createTextField("conditionalnodestyle.borderColor", "Border Color", //$NON-NLS-1$ //$NON-NLS-2$
+                        style -> ((NodeStyle) style).getBorderColor(),
+                        (style, newColor) -> ((NodeStyle) style).setBorderColor(newColor)),
+                this.createTextField("conditionalnodestyle.fontSize", "Font Size", //$NON-NLS-1$ //$NON-NLS-2$
+                        style -> String.valueOf(((NodeStyle) style).getFontSize()),
+                        (style, newColor) -> {
+                            try {
+                                ((NodeStyle) style).setFontSize(Integer.parseInt(newColor));
+                            } catch (NumberFormatException nfe) {
+                                // Ignore.
+                            }
+                        }),
+                this.createShapeSelectionField());
+
+        return FormDescription.newFormDescription(formDescriptionId)
+                .label("Conditional Node Style") //$NON-NLS-1$
+                .labelProvider(variableManager -> variableManager.get(VariableManager.SELF, NodeStyle.class).map(style -> style.getColor()).orElse(UNNAMED))
+                .canCreatePredicate(this.getVariableEqualsPredicate(IRepresentationDescription.CLASS, ConditionalNodeStyle.class))
+                .idProvider(new GetOrCreateRandomIdProvider())
+                .targetObjectIdProvider(targetObjectIdProvider)
+                .pageDescriptions(List.of(this.createSimplePageDescription(this.createSimpleGroupDescription(controls), this.getVariableEqualsPredicate(VariableManager.SELF, ConditionalNodeStyle.class))))
+                .groupDescriptions(List.of(this.createSimpleGroupDescription(controls)))
+                .build();
+        // @formatter:on
     }
 
     private FormDescription getNodeStyleProperties() {
@@ -98,7 +141,7 @@ public class ViewPropertiesConfigurer implements IPropertiesDescriptionRegistryC
                 .canCreatePredicate(this.getVariableEqualsPredicate(IRepresentationDescription.CLASS, NodeStyle.class))
                 .idProvider(new GetOrCreateRandomIdProvider())
                 .targetObjectIdProvider(targetObjectIdProvider)
-                .pageDescriptions(List.of(this.createSimplePageDescription(this.createSimpleGroupDescription(controls), this.getVariableTypePredicate(VariableManager.SELF, NodeStyle.class))))
+                .pageDescriptions(List.of(this.createSimplePageDescription(this.createSimpleGroupDescription(controls), this.getVariableEqualsPredicate(VariableManager.SELF, NodeStyle.class))))
                 .groupDescriptions(List.of(this.createSimpleGroupDescription(controls)))
                 .build();
         // @formatter:on
@@ -106,10 +149,6 @@ public class ViewPropertiesConfigurer implements IPropertiesDescriptionRegistryC
 
     private Predicate<VariableManager> getVariableEqualsPredicate(String variableName, Object value) {
         return variableManager -> variableManager.get(variableName, Object.class).filter(value::equals).isPresent();
-    }
-
-    private Predicate<VariableManager> getVariableTypePredicate(String variableName, Class<?> klass) {
-        return variableManager -> variableManager.get(variableName, klass).isPresent();
     }
 
     private PageDescription createSimplePageDescription(GroupDescription groupDescription, Predicate<VariableManager> canCreatePredicate) {

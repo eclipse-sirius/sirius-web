@@ -17,6 +17,9 @@ import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.web.view.ChangeContext;
+import org.eclipse.sirius.web.view.Conditional;
+import org.eclipse.sirius.web.view.ConditionalEdgeStyle;
+import org.eclipse.sirius.web.view.ConditionalNodeStyle;
 import org.eclipse.sirius.web.view.CreateInstance;
 import org.eclipse.sirius.web.view.DeleteElement;
 import org.eclipse.sirius.web.view.DeleteTool;
@@ -187,6 +190,21 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseDeleteElement(DeleteElement object) {
             return ViewAdapterFactory.this.createDeleteElementAdapter();
+        }
+
+        @Override
+        public Adapter caseConditional(Conditional object) {
+            return ViewAdapterFactory.this.createConditionalAdapter();
+        }
+
+        @Override
+        public Adapter caseConditionalNodeStyle(ConditionalNodeStyle object) {
+            return ViewAdapterFactory.this.createConditionalNodeStyleAdapter();
+        }
+
+        @Override
+        public Adapter caseConditionalEdgeStyle(ConditionalEdgeStyle object) {
+            return ViewAdapterFactory.this.createConditionalEdgeStyleAdapter();
         }
 
         @Override
@@ -467,6 +485,48 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createDeleteElementAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.web.view.Conditional
+     * <em>Conditional</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.web.view.Conditional
+     * @generated
+     */
+    public Adapter createConditionalAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.web.view.ConditionalNodeStyle
+     * <em>Conditional Node Style</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we
+     * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.web.view.ConditionalNodeStyle
+     * @generated
+     */
+    public Adapter createConditionalNodeStyleAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.web.view.ConditionalEdgeStyle
+     * <em>Conditional Edge Style</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we
+     * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.web.view.ConditionalEdgeStyle
+     * @generated
+     */
+    public Adapter createConditionalEdgeStyleAdapter() {
         return null;
     }
 

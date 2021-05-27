@@ -69,6 +69,7 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
             this.childrenFeatures.add(ViewPackage.Literals.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS);
             this.childrenFeatures.add(ViewPackage.Literals.NODE_DESCRIPTION__STYLE);
             this.childrenFeatures.add(ViewPackage.Literals.NODE_DESCRIPTION__NODE_TOOLS);
+            this.childrenFeatures.add(ViewPackage.Literals.NODE_DESCRIPTION__CONDITIONAL_STYLES);
         }
         return this.childrenFeatures;
     }
@@ -133,6 +134,7 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
         case ViewPackage.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS:
         case ViewPackage.NODE_DESCRIPTION__STYLE:
         case ViewPackage.NODE_DESCRIPTION__NODE_TOOLS:
+        case ViewPackage.NODE_DESCRIPTION__CONDITIONAL_STYLES:
             this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
             return;
         }
@@ -143,7 +145,7 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
      * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created
      * under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
@@ -154,6 +156,28 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.NODE_DESCRIPTION__STYLE, ViewFactory.eINSTANCE.createNodeStyle()));
 
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.NODE_DESCRIPTION__NODE_TOOLS, ViewFactory.eINSTANCE.createNodeTool()));
+
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.NODE_DESCRIPTION__CONDITIONAL_STYLES, ViewFactory.eINSTANCE.createConditionalNodeStyle()));
+    }
+
+    /**
+     * This returns the label text for {@link org.eclipse.emf.edit.command.CreateChildCommand}. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String getCreateChildText(Object owner, Object feature, Object child, Collection<?> selection) {
+        Object childFeature = feature;
+        Object childObject = child;
+
+        boolean qualify = childFeature == ViewPackage.Literals.NODE_DESCRIPTION__STYLE || childFeature == ViewPackage.Literals.NODE_DESCRIPTION__CONDITIONAL_STYLES;
+
+        if (qualify) {
+            return this.getString("_UI_CreateChild_text2", //$NON-NLS-1$
+                    new Object[] { this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner) });
+        }
+        return super.getCreateChildText(owner, feature, child, selection);
     }
 
 }

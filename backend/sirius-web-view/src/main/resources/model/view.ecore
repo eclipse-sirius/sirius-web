@@ -33,6 +33,8 @@
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="nodeTools" upperBound="-1"
         eType="#//NodeTool" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="conditionalStyles" upperBound="-1"
+        eType="#//ConditionalNodeStyle" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EdgeDescription" eSuperTypes="#//DiagramElementDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="isDomainBasedEdge" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
@@ -48,6 +50,8 @@
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="edgeTools" upperBound="-1"
         eType="#//EdgeTool" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="conditionalStyles" upperBound="-1"
+        eType="#//ConditionalEdgeStyle" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Style" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
@@ -125,4 +129,10 @@
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DeleteElement" eSuperTypes="#//Operation"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Conditional" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="condition" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ConditionalNodeStyle" eSuperTypes="#//Conditional #//NodeStyle"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ConditionalEdgeStyle" eSuperTypes="#//Conditional #//EdgeStyle"/>
 </ecore:EPackage>

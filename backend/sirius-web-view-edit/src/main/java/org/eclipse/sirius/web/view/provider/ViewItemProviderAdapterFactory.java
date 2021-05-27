@@ -423,6 +423,52 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     }
 
     /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.web.view.ConditionalNodeStyle}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected ConditionalNodeStyleItemProvider conditionalNodeStyleItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.web.view.ConditionalNodeStyle}. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createConditionalNodeStyleAdapter() {
+        if (this.conditionalNodeStyleItemProvider == null) {
+            this.conditionalNodeStyleItemProvider = new ConditionalNodeStyleItemProvider(this);
+        }
+
+        return this.conditionalNodeStyleItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.web.view.ConditionalEdgeStyle}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected ConditionalEdgeStyleItemProvider conditionalEdgeStyleItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.web.view.ConditionalEdgeStyle}. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createConditionalEdgeStyleAdapter() {
+        if (this.conditionalEdgeStyleItemProvider == null) {
+            this.conditionalEdgeStyleItemProvider = new ConditionalEdgeStyleItemProvider(this);
+        }
+
+        return this.conditionalEdgeStyleItemProvider;
+    }
+
+    /**
      * This returns the root adapter factory that contains this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -552,6 +598,10 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
             this.unsetValueItemProvider.dispose();
         if (this.deleteElementItemProvider != null)
             this.deleteElementItemProvider.dispose();
+        if (this.conditionalNodeStyleItemProvider != null)
+            this.conditionalNodeStyleItemProvider.dispose();
+        if (this.conditionalEdgeStyleItemProvider != null)
+            this.conditionalEdgeStyleItemProvider.dispose();
     }
 
 }

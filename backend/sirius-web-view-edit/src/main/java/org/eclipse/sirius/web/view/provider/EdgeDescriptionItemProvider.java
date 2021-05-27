@@ -140,6 +140,7 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
             super.getChildrenFeatures(object);
             this.childrenFeatures.add(ViewPackage.Literals.EDGE_DESCRIPTION__STYLE);
             this.childrenFeatures.add(ViewPackage.Literals.EDGE_DESCRIPTION__EDGE_TOOLS);
+            this.childrenFeatures.add(ViewPackage.Literals.EDGE_DESCRIPTION__CONDITIONAL_STYLES);
         }
         return this.childrenFeatures;
     }
@@ -208,6 +209,7 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
             return;
         case ViewPackage.EDGE_DESCRIPTION__STYLE:
         case ViewPackage.EDGE_DESCRIPTION__EDGE_TOOLS:
+        case ViewPackage.EDGE_DESCRIPTION__CONDITIONAL_STYLES:
             this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
             return;
         }
@@ -218,7 +220,7 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
      * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created
      * under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
@@ -227,6 +229,28 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.EDGE_DESCRIPTION__STYLE, ViewFactory.eINSTANCE.createEdgeStyle()));
 
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.EDGE_DESCRIPTION__EDGE_TOOLS, ViewFactory.eINSTANCE.createEdgeTool()));
+
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.EDGE_DESCRIPTION__CONDITIONAL_STYLES, ViewFactory.eINSTANCE.createConditionalEdgeStyle()));
+    }
+
+    /**
+     * This returns the label text for {@link org.eclipse.emf.edit.command.CreateChildCommand}. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String getCreateChildText(Object owner, Object feature, Object child, Collection<?> selection) {
+        Object childFeature = feature;
+        Object childObject = child;
+
+        boolean qualify = childFeature == ViewPackage.Literals.EDGE_DESCRIPTION__STYLE || childFeature == ViewPackage.Literals.EDGE_DESCRIPTION__CONDITIONAL_STYLES;
+
+        if (qualify) {
+            return this.getString("_UI_CreateChild_text2", //$NON-NLS-1$
+                    new Object[] { this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner) });
+        }
+        return super.getCreateChildText(owner, feature, child, selection);
     }
 
 }

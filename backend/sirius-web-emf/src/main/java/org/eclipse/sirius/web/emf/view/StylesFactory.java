@@ -41,7 +41,7 @@ public final class StylesFactory {
     public LabelStyleDescription createLabelStyleDescription(NodeStyle nodeStyle) {
         // @formatter:off
         return LabelStyleDescription.newLabelStyleDescription()
-                                    .colorProvider(variableManager -> nodeStyle.getColor())
+                                    .colorProvider(variableManager -> nodeStyle.getBorderColor())
                                     .fontSizeProvider(variableManager -> nodeStyle.getFontSize())
                                     .boldProvider(variableManager -> false)
                                     .italicProvider(variableManager -> false)
