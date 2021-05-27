@@ -20,6 +20,9 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.eclipse.sirius.web.view.ArrowStyle;
 import org.eclipse.sirius.web.view.ChangeContext;
+import org.eclipse.sirius.web.view.Conditional;
+import org.eclipse.sirius.web.view.ConditionalEdgeStyle;
+import org.eclipse.sirius.web.view.ConditionalNodeStyle;
 import org.eclipse.sirius.web.view.CreateInstance;
 import org.eclipse.sirius.web.view.DeleteElement;
 import org.eclipse.sirius.web.view.DeleteTool;
@@ -188,6 +191,27 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     private EClass deleteElementEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass conditionalEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass conditionalNodeStyleEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass conditionalEdgeStyleEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -460,6 +484,16 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
+    public EReference getNodeDescription_ConditionalStyles() {
+        return (EReference) this.nodeDescriptionEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getEdgeDescription() {
         return this.edgeDescriptionEClass;
     }
@@ -532,6 +566,16 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
     @Override
     public EReference getEdgeDescription_EdgeTools() {
         return (EReference) this.edgeDescriptionEClass.getEStructuralFeatures().get(6);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getEdgeDescription_ConditionalStyles() {
+        return (EReference) this.edgeDescriptionEClass.getEStructuralFeatures().get(7);
     }
 
     /**
@@ -860,6 +904,46 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
+    public EClass getConditional() {
+        return this.conditionalEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getConditional_Condition() {
+        return (EAttribute) this.conditionalEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getConditionalNodeStyle() {
+        return this.conditionalNodeStyleEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getConditionalEdgeStyle() {
+        return this.conditionalEdgeStyleEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EEnum getArrowStyle() {
         return this.arrowStyleEEnum;
     }
@@ -926,6 +1010,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.createEReference(this.nodeDescriptionEClass, NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS);
         this.createEReference(this.nodeDescriptionEClass, NODE_DESCRIPTION__STYLE);
         this.createEReference(this.nodeDescriptionEClass, NODE_DESCRIPTION__NODE_TOOLS);
+        this.createEReference(this.nodeDescriptionEClass, NODE_DESCRIPTION__CONDITIONAL_STYLES);
 
         this.edgeDescriptionEClass = this.createEClass(EDGE_DESCRIPTION);
         this.createEAttribute(this.edgeDescriptionEClass, EDGE_DESCRIPTION__IS_DOMAIN_BASED_EDGE);
@@ -935,6 +1020,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.createEAttribute(this.edgeDescriptionEClass, EDGE_DESCRIPTION__TARGET_NODES_EXPRESSION);
         this.createEReference(this.edgeDescriptionEClass, EDGE_DESCRIPTION__STYLE);
         this.createEReference(this.edgeDescriptionEClass, EDGE_DESCRIPTION__EDGE_TOOLS);
+        this.createEReference(this.edgeDescriptionEClass, EDGE_DESCRIPTION__CONDITIONAL_STYLES);
 
         this.styleEClass = this.createEClass(STYLE);
         this.createEAttribute(this.styleEClass, STYLE__COLOR);
@@ -981,6 +1067,13 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.createEAttribute(this.unsetValueEClass, UNSET_VALUE__ELEMENT_EXPRESSION);
 
         this.deleteElementEClass = this.createEClass(DELETE_ELEMENT);
+
+        this.conditionalEClass = this.createEClass(CONDITIONAL);
+        this.createEAttribute(this.conditionalEClass, CONDITIONAL__CONDITION);
+
+        this.conditionalNodeStyleEClass = this.createEClass(CONDITIONAL_NODE_STYLE);
+
+        this.conditionalEdgeStyleEClass = this.createEClass(CONDITIONAL_EDGE_STYLE);
 
         // Create enums
         this.arrowStyleEEnum = this.createEEnum(ARROW_STYLE);
@@ -1029,6 +1122,10 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.setValueEClass.getESuperTypes().add(this.getOperation());
         this.unsetValueEClass.getESuperTypes().add(this.getOperation());
         this.deleteElementEClass.getESuperTypes().add(this.getOperation());
+        this.conditionalNodeStyleEClass.getESuperTypes().add(this.getConditional());
+        this.conditionalNodeStyleEClass.getESuperTypes().add(this.getNodeStyle());
+        this.conditionalEdgeStyleEClass.getESuperTypes().add(this.getConditional());
+        this.conditionalEdgeStyleEClass.getESuperTypes().add(this.getEdgeStyle());
 
         // Initialize classes, features, and operations; add parameters
         this.initEClass(this.viewEClass, View.class, "View", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
@@ -1068,6 +1165,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getNodeDescription_NodeTools(), this.getNodeTool(), null, "nodeTools", null, 0, -1, NodeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, //$NON-NLS-1$
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getNodeDescription_ConditionalStyles(), this.getConditionalNodeStyle(), null, "conditionalStyles", null, 0, -1, NodeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, //$NON-NLS-1$
+                IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.edgeDescriptionEClass, EdgeDescription.class, "EdgeDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
         this.initEAttribute(this.getEdgeDescription_IsDomainBasedEdge(), this.ecorePackage.getEBoolean(), "isDomainBasedEdge", null, 0, 1, EdgeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, //$NON-NLS-1$
@@ -1084,6 +1183,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getEdgeDescription_EdgeTools(), this.getEdgeTool(), null, "edgeTools", null, 0, -1, EdgeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, //$NON-NLS-1$
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getEdgeDescription_ConditionalStyles(), this.getConditionalEdgeStyle(), null, "conditionalStyles", null, 0, -1, EdgeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, //$NON-NLS-1$
+                IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.styleEClass, Style.class, "Style", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
         this.initEAttribute(this.getStyle_Color(), this.ecorePackage.getEString(), "color", "rgb(0, 0, 0)", 0, 1, Style.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, //$NON-NLS-1$ //$NON-NLS-2$
@@ -1148,6 +1249,14 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
                 !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.deleteElementEClass, DeleteElement.class, "DeleteElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+
+        this.initEClass(this.conditionalEClass, Conditional.class, "Conditional", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+        this.initEAttribute(this.getConditional_Condition(), this.ecorePackage.getEString(), "condition", null, 1, 1, Conditional.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, //$NON-NLS-1$
+                !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.conditionalNodeStyleEClass, ConditionalNodeStyle.class, "ConditionalNodeStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+
+        this.initEClass(this.conditionalEdgeStyleEClass, ConditionalEdgeStyle.class, "ConditionalEdgeStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
         // Initialize enums and add enum literals
         this.initEEnum(this.arrowStyleEEnum, ArrowStyle.class, "ArrowStyle"); //$NON-NLS-1$

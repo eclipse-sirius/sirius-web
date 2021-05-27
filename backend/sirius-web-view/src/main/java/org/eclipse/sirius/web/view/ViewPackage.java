@@ -375,13 +375,22 @@ public interface ViewPackage extends EPackage {
     int NODE_DESCRIPTION__NODE_TOOLS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 2;
 
     /**
+     * The feature id for the '<em><b>Conditional Styles</b></em>' containment reference list. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_DESCRIPTION__CONDITIONAL_STYLES = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 3;
+
+    /**
      * The number of structural features of the '<em>Node Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION_FEATURE_COUNT = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 3;
+    int NODE_DESCRIPTION_FEATURE_COUNT = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 4;
 
     /**
      * The number of operations of the '<em>Node Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -509,13 +518,22 @@ public interface ViewPackage extends EPackage {
     int EDGE_DESCRIPTION__EDGE_TOOLS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 6;
 
     /**
+     * The feature id for the '<em><b>Conditional Styles</b></em>' containment reference list. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_DESCRIPTION__CONDITIONAL_STYLES = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 7;
+
+    /**
      * The number of structural features of the '<em>Edge Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int EDGE_DESCRIPTION_FEATURE_COUNT = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 7;
+    int EDGE_DESCRIPTION_FEATURE_COUNT = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 8;
 
     /**
      * The number of operations of the '<em>Edge Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1213,6 +1231,195 @@ public interface ViewPackage extends EPackage {
     int DELETE_ELEMENT_OPERATION_COUNT = OPERATION_OPERATION_COUNT + 0;
 
     /**
+     * The meta object id for the '{@link org.eclipse.sirius.web.view.impl.ConditionalImpl <em>Conditional</em>}' class.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.web.view.impl.ConditionalImpl
+     * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getConditional()
+     * @generated
+     */
+    int CONDITIONAL = 20;
+
+    /**
+     * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL__CONDITION = 0;
+
+    /**
+     * The number of structural features of the '<em>Conditional</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_FEATURE_COUNT = 1;
+
+    /**
+     * The number of operations of the '<em>Conditional</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_OPERATION_COUNT = 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.web.view.impl.ConditionalNodeStyleImpl <em>Conditional Node
+     * Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.web.view.impl.ConditionalNodeStyleImpl
+     * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getConditionalNodeStyle()
+     * @generated
+     */
+    int CONDITIONAL_NODE_STYLE = 21;
+
+    /**
+     * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_NODE_STYLE__CONDITION = CONDITIONAL__CONDITION;
+
+    /**
+     * The feature id for the '<em><b>Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_NODE_STYLE__COLOR = CONDITIONAL_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Border Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_NODE_STYLE__BORDER_COLOR = CONDITIONAL_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_NODE_STYLE__FONT_SIZE = CONDITIONAL_FEATURE_COUNT + 2;
+
+    /**
+     * The feature id for the '<em><b>Shape</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_NODE_STYLE__SHAPE = CONDITIONAL_FEATURE_COUNT + 3;
+
+    /**
+     * The number of structural features of the '<em>Conditional Node Style</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_NODE_STYLE_FEATURE_COUNT = CONDITIONAL_FEATURE_COUNT + 4;
+
+    /**
+     * The number of operations of the '<em>Conditional Node Style</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_NODE_STYLE_OPERATION_COUNT = CONDITIONAL_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.web.view.impl.ConditionalEdgeStyleImpl <em>Conditional Edge
+     * Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.web.view.impl.ConditionalEdgeStyleImpl
+     * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getConditionalEdgeStyle()
+     * @generated
+     */
+    int CONDITIONAL_EDGE_STYLE = 22;
+
+    /**
+     * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_EDGE_STYLE__CONDITION = CONDITIONAL__CONDITION;
+
+    /**
+     * The feature id for the '<em><b>Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_EDGE_STYLE__COLOR = CONDITIONAL_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Border Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_EDGE_STYLE__BORDER_COLOR = CONDITIONAL_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_EDGE_STYLE__FONT_SIZE = CONDITIONAL_FEATURE_COUNT + 2;
+
+    /**
+     * The feature id for the '<em><b>Line Style</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_EDGE_STYLE__LINE_STYLE = CONDITIONAL_FEATURE_COUNT + 3;
+
+    /**
+     * The feature id for the '<em><b>Source Arrow Style</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_EDGE_STYLE__SOURCE_ARROW_STYLE = CONDITIONAL_FEATURE_COUNT + 4;
+
+    /**
+     * The feature id for the '<em><b>Target Arrow Style</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_EDGE_STYLE__TARGET_ARROW_STYLE = CONDITIONAL_FEATURE_COUNT + 5;
+
+    /**
+     * The number of structural features of the '<em>Conditional Edge Style</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_EDGE_STYLE_FEATURE_COUNT = CONDITIONAL_FEATURE_COUNT + 6;
+
+    /**
+     * The number of operations of the '<em>Conditional Edge Style</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_EDGE_STYLE_OPERATION_COUNT = CONDITIONAL_OPERATION_COUNT + 0;
+
+    /**
      * The meta object id for the '{@link org.eclipse.sirius.web.view.ArrowStyle <em>Arrow Style</em>}' enum. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1220,7 +1427,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getArrowStyle()
      * @generated
      */
-    int ARROW_STYLE = 20;
+    int ARROW_STYLE = 23;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.web.view.LineStyle <em>Line Style</em>}' enum. <!--
@@ -1230,7 +1437,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getLineStyle()
      * @generated
      */
-    int LINE_STYLE = 21;
+    int LINE_STYLE = 24;
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.web.view.View <em>View</em>}'. <!-- begin-user-doc
@@ -1450,6 +1657,18 @@ public interface ViewPackage extends EPackage {
     EReference getNodeDescription_NodeTools();
 
     /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.web.view.NodeDescription#getConditionalStyles <em>Conditional Styles</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Conditional Styles</em>'.
+     * @see org.eclipse.sirius.web.view.NodeDescription#getConditionalStyles()
+     * @see #getNodeDescription()
+     * @generated
+     */
+    EReference getNodeDescription_ConditionalStyles();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.web.view.EdgeDescription <em>Edge
      * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1541,6 +1760,18 @@ public interface ViewPackage extends EPackage {
      * @generated
      */
     EReference getEdgeDescription_EdgeTools();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.web.view.EdgeDescription#getConditionalStyles <em>Conditional Styles</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Conditional Styles</em>'.
+     * @see org.eclipse.sirius.web.view.EdgeDescription#getConditionalStyles()
+     * @see #getEdgeDescription()
+     * @generated
+     */
+    EReference getEdgeDescription_ConditionalStyles();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.web.view.Style <em>Style</em>}'. <!-- begin-user-doc
@@ -1882,6 +2113,47 @@ public interface ViewPackage extends EPackage {
     EClass getDeleteElement();
 
     /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.web.view.Conditional <em>Conditional</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Conditional</em>'.
+     * @see org.eclipse.sirius.web.view.Conditional
+     * @generated
+     */
+    EClass getConditional();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.web.view.Conditional#getCondition
+     * <em>Condition</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Condition</em>'.
+     * @see org.eclipse.sirius.web.view.Conditional#getCondition()
+     * @see #getConditional()
+     * @generated
+     */
+    EAttribute getConditional_Condition();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.web.view.ConditionalNodeStyle <em>Conditional Node
+     * Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Conditional Node Style</em>'.
+     * @see org.eclipse.sirius.web.view.ConditionalNodeStyle
+     * @generated
+     */
+    EClass getConditionalNodeStyle();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.web.view.ConditionalEdgeStyle <em>Conditional Edge
+     * Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Conditional Edge Style</em>'.
+     * @see org.eclipse.sirius.web.view.ConditionalEdgeStyle
+     * @generated
+     */
+    EClass getConditionalEdgeStyle();
+
+    /**
      * Returns the meta object for enum '{@link org.eclipse.sirius.web.view.ArrowStyle <em>Arrow Style</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
@@ -2086,6 +2358,14 @@ public interface ViewPackage extends EPackage {
         EReference NODE_DESCRIPTION__NODE_TOOLS = eINSTANCE.getNodeDescription_NodeTools();
 
         /**
+         * The meta object literal for the '<em><b>Conditional Styles</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference NODE_DESCRIPTION__CONDITIONAL_STYLES = eINSTANCE.getNodeDescription_ConditionalStyles();
+
+        /**
          * The meta object literal for the '{@link org.eclipse.sirius.web.view.impl.EdgeDescriptionImpl <em>Edge
          * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
@@ -2150,6 +2430,14 @@ public interface ViewPackage extends EPackage {
          * @generated
          */
         EReference EDGE_DESCRIPTION__EDGE_TOOLS = eINSTANCE.getEdgeDescription_EdgeTools();
+
+        /**
+         * The meta object literal for the '<em><b>Conditional Styles</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference EDGE_DESCRIPTION__CONDITIONAL_STYLES = eINSTANCE.getEdgeDescription_ConditionalStyles();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.web.view.impl.StyleImpl <em>Style</em>}' class.
@@ -2434,6 +2722,44 @@ public interface ViewPackage extends EPackage {
          * @generated
          */
         EClass DELETE_ELEMENT = eINSTANCE.getDeleteElement();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.web.view.impl.ConditionalImpl
+         * <em>Conditional</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.web.view.impl.ConditionalImpl
+         * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getConditional()
+         * @generated
+         */
+        EClass CONDITIONAL = eINSTANCE.getConditional();
+
+        /**
+         * The meta object literal for the '<em><b>Condition</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute CONDITIONAL__CONDITION = eINSTANCE.getConditional_Condition();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.web.view.impl.ConditionalNodeStyleImpl
+         * <em>Conditional Node Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.web.view.impl.ConditionalNodeStyleImpl
+         * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getConditionalNodeStyle()
+         * @generated
+         */
+        EClass CONDITIONAL_NODE_STYLE = eINSTANCE.getConditionalNodeStyle();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.web.view.impl.ConditionalEdgeStyleImpl
+         * <em>Conditional Edge Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.web.view.impl.ConditionalEdgeStyleImpl
+         * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getConditionalEdgeStyle()
+         * @generated
+         */
+        EClass CONDITIONAL_EDGE_STYLE = eINSTANCE.getConditionalEdgeStyle();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.web.view.ArrowStyle <em>Arrow Style</em>}' enum.

@@ -150,6 +150,22 @@ public interface ViewFactory extends EFactory {
     DeleteElement createDeleteElement();
 
     /**
+     * Returns a new object of class '<em>Conditional Node Style</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Conditional Node Style</em>'.
+     * @generated
+     */
+    ConditionalNodeStyle createConditionalNodeStyle();
+
+    /**
+     * Returns a new object of class '<em>Conditional Edge Style</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Conditional Edge Style</em>'.
+     * @generated
+     */
+    ConditionalEdgeStyle createConditionalEdgeStyle();
+
+    /**
      * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the package supported by this factory.

@@ -29,10 +29,13 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.web.components.Element;
 import org.eclipse.sirius.web.core.api.IObjectService;
+import org.eclipse.sirius.web.diagrams.EdgeStyle;
+import org.eclipse.sirius.web.diagrams.INodeStyle;
 import org.eclipse.sirius.web.diagrams.Size;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.web.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.web.diagrams.description.LabelDescription;
+import org.eclipse.sirius.web.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.web.diagrams.description.NodeDescription;
 import org.eclipse.sirius.web.diagrams.description.SynchronizationPolicy;
 import org.eclipse.sirius.web.diagrams.elements.NodeElementProps;
@@ -54,6 +57,7 @@ import org.eclipse.sirius.web.view.DeleteTool;
 import org.eclipse.sirius.web.view.DiagramElementDescription;
 import org.eclipse.sirius.web.view.EdgeTool;
 import org.eclipse.sirius.web.view.LabelEditTool;
+import org.eclipse.sirius.web.view.NodeStyle;
 import org.eclipse.sirius.web.view.NodeTool;
 import org.eclipse.sirius.web.view.View;
 
@@ -187,6 +191,18 @@ public class ViewConverter {
         // @formatter:on
         SynchronizationPolicy synchronizationPolicy = SynchronizationPolicy.SYNCHRONIZED;
         String nodeType = this.stylesFactory.getNodeType(viewNodeDescription.getStyle());
+
+        Function<VariableManager, INodeStyle> styleProvider = variableManager -> {
+            // @formatter:off
+            var effectiveStyle = viewNodeDescription.getConditionalStyles().stream()
+                    .filter(style -> this.matches(interpreter, style.getCondition(), variableManager))
+                    .map(NodeStyle.class::cast)
+                    .findFirst()
+                    .orElseGet(() -> viewNodeDescription.getStyle());
+            // @formatter:on
+            return this.stylesFactory.createNodeStyle(effectiveStyle, this.customImagesService);
+        };
+
         // @formatter:off
         NodeDescription result = NodeDescription.newNodeDescription(this.idProvider.apply(viewNodeDescription))
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
@@ -196,9 +212,7 @@ public class ViewConverter {
                 .synchronizationPolicy(synchronizationPolicy)
                 .typeProvider(variableManager -> nodeType)
                 .labelDescription(this.getLabelDescription(viewNodeDescription, interpreter))
-                .styleProvider(variableManager -> {
-                    return this.stylesFactory.createNodeStyle(viewNodeDescription.getStyle(), this.customImagesService);
-                })
+                .styleProvider(styleProvider)
                 .childNodeDescriptions(childNodeDescriptions)
                 .borderNodeDescriptions(List.of())
                 .sizeProvider(variableManager -> Size.UNDEFINED)
@@ -208,6 +222,10 @@ public class ViewConverter {
         // @formatter:on
         this.convertedNodes.put(viewNodeDescription, result);
         return result;
+    }
+
+    private boolean matches(AQLInterpreter interpreter, String condition, VariableManager variableManager) {
+        return interpreter.evaluateExpression(variableManager.getVariables(), condition).asBoolean().orElse(Boolean.FALSE);
     }
 
     private List<ToolSection> createToolSections(AQLInterpreter interpreter) {
@@ -287,11 +305,23 @@ public class ViewConverter {
             return String.valueOf(parentId) + LabelDescription.LABEL_SUFFIX;
         };
 
+        Function<VariableManager, LabelStyleDescription> styleDescriptionProvider = variableManager -> {
+            // @formatter:off
+            var effectiveStyle = viewNodeDescription.getConditionalStyles().stream()
+                    .filter(style -> this.matches(interpreter, style.getCondition(), variableManager))
+                    .map(NodeStyle.class::cast)
+                    .findFirst()
+                    .orElseGet(() -> viewNodeDescription.getStyle());
+            // @formatter:on
+
+            return this.stylesFactory.createLabelStyleDescription(effectiveStyle);
+        };
+
         // @formatter:off
         return LabelDescription.newLabelDescription(EcoreUtil.getURI(viewNodeDescription).toString() + LabelDescription.LABEL_SUFFIX)
                 .idProvider(labelIdProvider)
                 .textProvider(variableManager -> this.evaluateString(interpreter, variableManager, viewNodeDescription.getLabelExpression()))
-                .styleDescriptionProvider(variableManager -> this.stylesFactory.createLabelStyleDescription(viewNodeDescription.getStyle()))
+                .styleDescriptionProvider(styleDescriptionProvider)
                 .build();
         // @formatter:on
     }
@@ -364,6 +394,17 @@ public class ViewConverter {
 
         Function<VariableManager, List<Element>> targetNodesProvider = new TargetNodesProvider(this.idProvider, viewEdgeDescription, interpreter);
 
+        Function<VariableManager, EdgeStyle> styleProvider = variableManager -> {
+            // @formatter:off
+            var effectiveStyle = viewEdgeDescription.getConditionalStyles().stream()
+                    .filter(style -> this.matches(interpreter, style.getCondition(), variableManager))
+                    .map(org.eclipse.sirius.web.view.EdgeStyle.class::cast)
+                    .findFirst()
+                    .orElseGet(() -> viewEdgeDescription.getStyle());
+            // @formatter:on
+            return this.stylesFactory.createEdgeStyle(effectiveStyle);
+        };
+
         // @formatter:off
         EdgeDescription result = EdgeDescription.newEdgeDescription(this.idProvider.apply(viewEdgeDescription))
                                      .targetObjectIdProvider(this.semanticTargetIdProvider)
@@ -374,7 +415,7 @@ public class ViewConverter {
                                      .semanticElementsProvider(semanticElementsProvider)
                                      .sourceNodesProvider(sourceNodesProvider)
                                      .targetNodesProvider(targetNodesProvider)
-                                     .styleProvider(variableManager -> this.stylesFactory.createEdgeStyle(viewEdgeDescription.getStyle()))
+                                     .styleProvider(styleProvider)
                                      .deleteHandler(this.createDeleteHandler(viewEdgeDescription, interpreter))
                                      .build();
         this.convertedEdges.put(viewEdgeDescription, result);
