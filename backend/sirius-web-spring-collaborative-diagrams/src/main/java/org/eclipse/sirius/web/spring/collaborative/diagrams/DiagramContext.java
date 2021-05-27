@@ -18,8 +18,8 @@ import java.util.Objects;
 
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.web.diagrams.Diagram;
-import org.eclipse.sirius.web.diagrams.IDiagramElementEvent;
 import org.eclipse.sirius.web.diagrams.ViewCreationRequest;
+import org.eclipse.sirius.web.diagrams.events.IDiagramEvent;
 
 /**
  * The implementation of {@link IDiagramContext}.
@@ -32,7 +32,7 @@ public class DiagramContext implements IDiagramContext {
 
     private final List<ViewCreationRequest> viewCreationRequests;
 
-    private IDiagramElementEvent diagramElementEvent;
+    private IDiagramEvent diagramEvent;
 
     public DiagramContext(Diagram initialDiagram) {
         this.diagram = Objects.requireNonNull(initialDiagram);
@@ -55,17 +55,17 @@ public class DiagramContext implements IDiagramContext {
     }
 
     @Override
-    public IDiagramElementEvent getDiagramElementEvent() {
-        return this.diagramElementEvent;
+    public IDiagramEvent getDiagramEvent() {
+        return this.diagramEvent;
     }
 
     @Override
-    public void setDiagramElementEvent(IDiagramElementEvent diagramElementEvent) {
-        this.diagramElementEvent = diagramElementEvent;
+    public void setDiagramEvent(IDiagramEvent diagramEvent) {
+        this.diagramEvent = diagramEvent;
     }
 
     @Override
     public void reset() {
-        this.diagramElementEvent = null;
+        this.diagramEvent = null;
     }
 }

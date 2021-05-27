@@ -29,10 +29,10 @@ import org.eclipse.sirius.web.collaborative.diagrams.api.dto.InvokeNodeToolOnDia
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IObjectService;
-import org.eclipse.sirius.web.diagrams.CreationEvent;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.Node;
 import org.eclipse.sirius.web.diagrams.Position;
+import org.eclipse.sirius.web.diagrams.events.CreationEvent;
 import org.eclipse.sirius.web.diagrams.services.api.IDiagramService;
 import org.eclipse.sirius.web.diagrams.tools.CreateNodeTool;
 import org.eclipse.sirius.web.representations.Status;
@@ -125,7 +125,7 @@ public class InvokeNodeToolOnDiagramEventHandler implements IDiagramEventHandler
 
             Position newPosition = Position.at(startingPositionX, startingPositionY);
 
-            diagramContext.setDiagramElementEvent(new CreationEvent(newPosition));
+            diagramContext.setDiagramEvent(new CreationEvent(newPosition));
         }
         return result;
     }

@@ -19,13 +19,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.sirius.web.diagrams.CreationEvent;
-import org.eclipse.sirius.web.diagrams.IDiagramElementEvent;
-import org.eclipse.sirius.web.diagrams.MoveEvent;
 import org.eclipse.sirius.web.diagrams.NodeType;
 import org.eclipse.sirius.web.diagrams.Position;
-import org.eclipse.sirius.web.diagrams.ResizeEvent;
 import org.eclipse.sirius.web.diagrams.Size;
+import org.eclipse.sirius.web.diagrams.events.CreationEvent;
+import org.eclipse.sirius.web.diagrams.events.IDiagramEvent;
+import org.eclipse.sirius.web.diagrams.events.MoveEvent;
+import org.eclipse.sirius.web.diagrams.events.ResizeEvent;
 import org.eclipse.sirius.web.diagrams.layout.incremental.data.DiagramLayoutData;
 import org.eclipse.sirius.web.diagrams.layout.incremental.data.IContainerLayoutData;
 import org.eclipse.sirius.web.diagrams.layout.incremental.data.NodeLayoutData;
@@ -57,7 +57,7 @@ public class NodePositionProviderTestCases {
         diagramLayoutData.setChildrenNodes(nodes);
         nodes.add(nodeLayoutData);
 
-        Optional<IDiagramElementEvent> optionalDiagramElementEvent = Optional.of(new CreationEvent(ZERO_POSITION));
+        Optional<IDiagramEvent> optionalDiagramElementEvent = Optional.of(new CreationEvent(ZERO_POSITION));
         Position nextPosition = nodePositionProvider.getPosition(optionalDiagramElementEvent, nodeLayoutData);
         nodeLayoutData.setPosition(nextPosition);
 
@@ -102,7 +102,7 @@ public class NodePositionProviderTestCases {
         nodeLayoutData = this.createNodeLayoutData(Position.UNDEFINED, DEFAULT_NODE_SIZE, diagramLayoutData, NodeType.NODE_RECTANGLE);
         nodes.add(nodeLayoutData);
 
-        Optional<IDiagramElementEvent> optionalEvent = Optional.of(new CreationEvent(startingPosition));
+        Optional<IDiagramEvent> optionalEvent = Optional.of(new CreationEvent(startingPosition));
         nextPosition = nodePositionProvider.getPosition(optionalEvent, nodeLayoutData);
         assertThat(nextPosition).extracting(Position::getX).isEqualTo(STARTX);
         assertThat(nextPosition).extracting(Position::getY).isEqualTo(STARTY);
@@ -117,7 +117,7 @@ public class NodePositionProviderTestCases {
         List<NodeLayoutData> nodes = new ArrayList<>();
         parentNodeLayoutData.setChildrenNodes(nodes);
 
-        Optional<IDiagramElementEvent> optionalEvent = Optional.of(new CreationEvent(ZERO_POSITION));
+        Optional<IDiagramEvent> optionalEvent = Optional.of(new CreationEvent(ZERO_POSITION));
 
         NodeLayoutData nodeLayoutData = this.createNodeLayoutData(Position.UNDEFINED, DEFAULT_NODE_SIZE, parentNodeLayoutData, NodeType.NODE_RECTANGLE);
         nodes.add(nodeLayoutData);
@@ -142,7 +142,7 @@ public class NodePositionProviderTestCases {
         List<NodeLayoutData> nodes = new ArrayList<>();
         parentNodeLayoutData.setChildrenNodes(nodes);
 
-        Optional<IDiagramElementEvent> optionalEvent = Optional.of(new CreationEvent(ZERO_POSITION));
+        Optional<IDiagramEvent> optionalEvent = Optional.of(new CreationEvent(ZERO_POSITION));
 
         NodeLayoutData nodeLayoutData = this.createNodeLayoutData(Position.UNDEFINED, DEFAULT_NODE_SIZE, parentNodeLayoutData, NodeType.NODE_RECTANGLE);
         nodes.add(nodeLayoutData);
@@ -184,7 +184,7 @@ public class NodePositionProviderTestCases {
         Position newNodePosition = Position.at(300, 300);
         NodePositionProvider nodePositionProvider = new NodePositionProvider();
 
-        Optional<IDiagramElementEvent> optionalEvent = Optional.of(new MoveEvent(nodeLayoutData.getId(), newNodePosition));
+        Optional<IDiagramEvent> optionalEvent = Optional.of(new MoveEvent(nodeLayoutData.getId(), newNodePosition));
         Position newPosition = nodePositionProvider.getPosition(optionalEvent, nodeLayoutData);
         Position newPosition2 = nodePositionProvider.getPosition(optionalEvent, nodeLayoutData2);
         assertThat(newPosition).isEqualTo(newNodePosition);
@@ -221,7 +221,7 @@ public class NodePositionProviderTestCases {
         Position expectedSubNodePosition = Position.at(50, 60);
         NodePositionProvider nodePositionProvider = new NodePositionProvider();
 
-        Optional<IDiagramElementEvent> optionalEvent = Optional.of(new ResizeEvent(nodeLayoutData2.getId(), positionDelta, newNode2Size));
+        Optional<IDiagramEvent> optionalEvent = Optional.of(new ResizeEvent(nodeLayoutData2.getId(), positionDelta, newNode2Size));
         Position newPosition1 = nodePositionProvider.getPosition(optionalEvent, nodeLayoutData);
         Position newPosition2 = nodePositionProvider.getPosition(optionalEvent, nodeLayoutData2);
         Position newPosition21 = nodePositionProvider.getPosition(optionalEvent, nodeLayoutData21);
@@ -255,7 +255,7 @@ public class NodePositionProviderTestCases {
         // Since the resize is performed from the SE, the position should not change.
         NodePositionProvider nodePositionProvider = new NodePositionProvider();
 
-        Optional<IDiagramElementEvent> optionalEvent = Optional.of(new ResizeEvent(nodeLayoutData2.getId(), Position.at(0, 0), newNode2Size));
+        Optional<IDiagramEvent> optionalEvent = Optional.of(new ResizeEvent(nodeLayoutData2.getId(), Position.at(0, 0), newNode2Size));
         Position newPosition1 = nodePositionProvider.getPosition(optionalEvent, nodeLayoutData);
         Position newPosition2 = nodePositionProvider.getPosition(optionalEvent, nodeLayoutData2);
         Position newPosition21 = nodePositionProvider.getPosition(optionalEvent, nodeLayoutData21);

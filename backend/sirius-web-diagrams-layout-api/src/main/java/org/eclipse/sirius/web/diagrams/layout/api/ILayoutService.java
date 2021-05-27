@@ -15,7 +15,7 @@ package org.eclipse.sirius.web.diagrams.layout.api;
 import java.util.Optional;
 
 import org.eclipse.sirius.web.diagrams.Diagram;
-import org.eclipse.sirius.web.diagrams.IDiagramElementEvent;
+import org.eclipse.sirius.web.diagrams.events.IDiagramEvent;
 
 /**
  * Implementation of this interface will layout the given diagram.
@@ -31,9 +31,9 @@ public interface ILayoutService {
      * @param diagram
      *            The new diagram to layout.
      * @param optionalDiagramElementEvent
-     *            the {@link IDiagramElementEvent} that has trigger the new layout. Can be null if no event occurs. for
+     *            the {@link IDiagramEvent} that has trigger the new layout. Can be null if no event occurs. for
      *            instance.
      * @return the new layouted diagram.
      */
-    Diagram incrementalLayout(Diagram diagram, Optional<IDiagramElementEvent> optionalDiagramElementEvent);
+    Diagram incrementalLayout(Diagram diagram, Optional<IDiagramEvent> optionalDiagramElementEvent);
 }

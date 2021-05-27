@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ export interface ToolbarProps {
   onZoomIn: () => void;
   onZoomOut: () => void;
   onFitToScreen: () => void;
+  onArrangeAll: () => void;
   setZoomLevel: (zoomLevel: string) => void;
   zoomLevel: string;
   subscribers: Subscriber[];

@@ -15,8 +15,8 @@ package org.eclipse.sirius.web.collaborative.diagrams.api;
 import java.util.List;
 
 import org.eclipse.sirius.web.diagrams.Diagram;
-import org.eclipse.sirius.web.diagrams.IDiagramElementEvent;
 import org.eclipse.sirius.web.diagrams.ViewCreationRequest;
+import org.eclipse.sirius.web.diagrams.events.IDiagramEvent;
 
 /**
  * Information used to perform some operations on the diagram.
@@ -38,8 +38,8 @@ public interface IDiagramContext {
 
     List<ViewCreationRequest> getViewCreationRequests();
 
-    IDiagramElementEvent getDiagramElementEvent();
+    IDiagramEvent getDiagramEvent();
 
-    void setDiagramElementEvent(IDiagramElementEvent diagramElementEvent);
+    void setDiagramEvent(IDiagramEvent diagramElementEvent);
 
 }

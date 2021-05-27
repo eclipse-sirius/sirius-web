@@ -28,8 +28,8 @@ import org.eclipse.elk.graph.ElkGraphElement;
 import org.eclipse.elk.graph.ElkNode;
 import org.eclipse.elk.graph.json.ElkGraphJson;
 import org.eclipse.sirius.web.diagrams.Diagram;
-import org.eclipse.sirius.web.diagrams.IDiagramElementEvent;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
+import org.eclipse.sirius.web.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.web.diagrams.layout.api.ILayoutService;
 import org.eclipse.sirius.web.diagrams.layout.incremental.IncrementalLayoutConvertedDiagram;
 import org.eclipse.sirius.web.diagrams.layout.incremental.IncrementalLayoutDiagramConverter;
@@ -117,7 +117,7 @@ public class LayoutService implements ILayoutService {
     }
 
     @Override
-    public Diagram incrementalLayout(Diagram newDiagram, Optional<IDiagramElementEvent> optionalDiagramElementEvent) {
+    public Diagram incrementalLayout(Diagram newDiagram, Optional<IDiagramEvent> optionalDiagramElementEvent) {
         IncrementalLayoutConvertedDiagram convertedDiagram = this.incrementalLayoutDiagramConverter.convert(newDiagram);
         DiagramLayoutData diagramLayoutData = convertedDiagram.getDiagramLayoutData();
 

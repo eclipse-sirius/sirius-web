@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2021 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -325,6 +325,17 @@ export const getToolSectionsQuery = gql`
             }
           }
         }
+      }
+    }
+  }
+`;
+
+export const arrangeAllOp = gql`
+  mutation arrangeAll($input: ArrangeAllInput!) {
+    arrangeAll(input: $input) {
+      __typename
+      ... on ErrorPayload {
+        message
       }
     }
   }

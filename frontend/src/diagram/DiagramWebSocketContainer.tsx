@@ -39,14 +39,15 @@ import {
   SwithRepresentationEvent,
 } from 'diagram/DiagramWebSocketContainerMachine';
 import {
+  arrangeAllOp,
   deleteFromDiagramMutation,
   diagramEventSubscription,
   editLabelMutation as editLabelMutationOp,
   getToolSectionsQuery,
   invokeEdgeToolOnDiagramMutation,
   invokeNodeToolOnDiagramMutation,
-  updateNodePositionOp,
   updateNodeBoundsOp,
+  updateNodePositionOp,
 } from 'diagram/operations';
 import { ContextualPalette } from 'diagram/palette/ContextualPalette';
 import { edgeCreationFeedback } from 'diagram/sprotty/edgeCreationFeedback';
@@ -299,6 +300,10 @@ export const DiagramWebSocketContainer = ({
     updateNodeBoundsMutation,
     { loading: updateNodeBoundsLoading, data: updateNodeBoundsData, error: updateNodeBoundsError },
   ] = useMutation(updateNodeBoundsOp);
+  const [
+    arrangeAllMutation,
+    { loading: arrangeAllLoading, data: arrangeAllData, error: arrangeAllError },
+  ] = useMutation(arrangeAllOp);
   const [getToolSectionData, { loading: toolSectionLoading, data: toolSectionData }] = useLazyQuery(
     getToolSectionsQuery
   );
@@ -630,6 +635,15 @@ export const DiagramWebSocketContainer = ({
     }
   };
 
+  const onArrangeAll = () => {
+    const input = {
+      id: uuid(),
+      editingContextId,
+      representationId,
+    };
+    arrangeAllMutation({ variables: { input } });
+  };
+
   const setZoomLevel = (level) => {
     if (diagramServer) {
       diagramServer.actionDispatcher.dispatch({ kind: ZOOM_TO_ACTION, level: level });
@@ -677,18 +691,18 @@ export const DiagramWebSocketContainer = ({
   useEffect(() => {
     handleError(editLabelLoading, editLabelData, editLabelError);
   }, [editLabelLoading, editLabelData, editLabelError, handleError]);
-
   useEffect(() => {
     handleError(deleteFromDiagramLoading, deleteFromDiagramData, deleteFromDiagramError);
   }, [deleteFromDiagramLoading, deleteFromDiagramData, deleteFromDiagramError, handleError]);
-
   useEffect(() => {
     handleError(invokeNodeToolLoading, invokeNodeToolData, invokeNodeToolError);
   }, [invokeNodeToolLoading, invokeNodeToolData, invokeNodeToolError, handleError]);
-
   useEffect(() => {
     handleError(invokeEdgeToolLoading, invokeEdgeToolData, invokeEdgeToolError);
   }, [invokeEdgeToolLoading, invokeEdgeToolData, invokeEdgeToolError, handleError]);
+  useEffect(() => {
+    handleError(arrangeAllLoading, arrangeAllData, arrangeAllError);
+  }, [arrangeAllLoading, arrangeAllData, arrangeAllError, handleError]);
 
   /**
    * Gather up, it's time for a story.
@@ -801,6 +815,7 @@ export const DiagramWebSocketContainer = ({
         onZoomIn={onZoomIn}
         onZoomOut={onZoomOut}
         onFitToScreen={onFitToScreen}
+        onArrangeAll={onArrangeAll}
         setZoomLevel={setZoomLevel}
         zoomLevel={zoomLevel}
         subscribers={subscribers}

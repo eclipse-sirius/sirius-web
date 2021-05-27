@@ -16,8 +16,8 @@ import java.util.List;
 
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.web.diagrams.Diagram;
-import org.eclipse.sirius.web.diagrams.IDiagramElementEvent;
 import org.eclipse.sirius.web.diagrams.ViewCreationRequest;
+import org.eclipse.sirius.web.diagrams.events.IDiagramEvent;
 
 /**
  * Implementation of the diagram context which does nothing.
@@ -45,12 +45,12 @@ public class NoOpDiagramContext implements IDiagramContext {
     }
 
     @Override
-    public IDiagramElementEvent getDiagramElementEvent() {
+    public IDiagramEvent getDiagramEvent() {
         return null;
     }
 
     @Override
-    public void setDiagramElementEvent(IDiagramElementEvent diagramElementEvent) {
+    public void setDiagramEvent(IDiagramEvent diagramElementEvent) {
     }
 
 }

@@ -15,12 +15,12 @@ package org.eclipse.sirius.web.diagrams.layout.incremental.provider;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.eclipse.sirius.web.diagrams.IDiagramElementEvent;
 import org.eclipse.sirius.web.diagrams.INodeStyle;
 import org.eclipse.sirius.web.diagrams.ImageNodeStyle;
 import org.eclipse.sirius.web.diagrams.NodeType;
-import org.eclipse.sirius.web.diagrams.ResizeEvent;
 import org.eclipse.sirius.web.diagrams.Size;
+import org.eclipse.sirius.web.diagrams.events.IDiagramEvent;
+import org.eclipse.sirius.web.diagrams.events.ResizeEvent;
 import org.eclipse.sirius.web.diagrams.layout.LayoutOptionValues;
 import org.eclipse.sirius.web.diagrams.layout.incremental.data.NodeLayoutData;
 import org.springframework.stereotype.Service;
@@ -61,7 +61,7 @@ public class NodeSizeProvider {
      *            the {@link NodeLayoutData} for which we want to retrieve the new size.
      * @return the new {@link Size} if updated or the current one.
      */
-    public Size getSize(Optional<IDiagramElementEvent> optionalDiagramElementEvent, NodeLayoutData node) {
+    public Size getSize(Optional<IDiagramEvent> optionalDiagramElementEvent, NodeLayoutData node) {
         Size size;
         if (this.isRelevantResizeEvent(optionalDiagramElementEvent, node)) {
             node.setResizedByUser(true);
@@ -80,7 +80,7 @@ public class NodeSizeProvider {
         return size;
     }
 
-    private boolean isRelevantResizeEvent(Optional<IDiagramElementEvent> optionalDiagramElementEvent, NodeLayoutData node) {
+    private boolean isRelevantResizeEvent(Optional<IDiagramEvent> optionalDiagramElementEvent, NodeLayoutData node) {
         // @formatter:off
         return optionalDiagramElementEvent.filter(ResizeEvent.class::isInstance)
                 .map(ResizeEvent.class::cast)

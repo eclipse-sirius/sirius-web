@@ -28,8 +28,8 @@ import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.diagrams.Node;
 import org.eclipse.sirius.web.diagrams.Position;
-import org.eclipse.sirius.web.diagrams.ResizeEvent;
 import org.eclipse.sirius.web.diagrams.Size;
+import org.eclipse.sirius.web.diagrams.events.ResizeEvent;
 import org.eclipse.sirius.web.diagrams.services.api.IDiagramService;
 import org.eclipse.sirius.web.spring.collaborative.diagrams.DiagramChangeKind;
 import org.eclipse.sirius.web.spring.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
@@ -106,7 +106,7 @@ public class UpdateNodeBoundsEventHandler implements IDiagramEventHandler {
                     .y(oldPosition.getY() - newPosition.getY())
                     .build();
             //@formatter:on
-            diagramContext.setDiagramElementEvent(new ResizeEvent(diagramInput.getDiagramElementId(), delta, newSize));
+            diagramContext.setDiagramEvent(new ResizeEvent(diagramInput.getDiagramElementId(), delta, newSize));
             result = new EventHandlerResponse(new ChangeDescription(DiagramChangeKind.DIAGRAM_LAYOUT_CHANGE, diagramInput.getRepresentationId()),
                     new UpdateNodeBoundsSuccessPayload(diagramInput.getId(), diagramContext.getDiagram()));
         } else {

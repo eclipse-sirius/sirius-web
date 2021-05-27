@@ -15,9 +15,9 @@ package org.eclipse.sirius.web.diagrams.layout.incremental;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.eclipse.sirius.web.diagrams.IDiagramElementEvent;
 import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.Size;
+import org.eclipse.sirius.web.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.web.diagrams.layout.incremental.data.DiagramLayoutData;
 import org.eclipse.sirius.web.diagrams.layout.incremental.data.EdgeLayoutData;
 import org.eclipse.sirius.web.diagrams.layout.incremental.data.IContainerLayoutData;
@@ -62,7 +62,7 @@ public class IncrementalLayoutEngine {
         this.nodeSizeProvider = Objects.requireNonNull(nodeSizeProvider);
     }
 
-    public void layout(Optional<IDiagramElementEvent> optionalDiagramElementEvent, DiagramLayoutData diagram) {
+    public void layout(Optional<IDiagramEvent> optionalDiagramElementEvent, DiagramLayoutData diagram) {
         this.nodePositionProvider.reset();
 
         // first we layout all the nodes
@@ -84,7 +84,7 @@ public class IncrementalLayoutEngine {
         }
     }
 
-    private void layoutNode(Optional<IDiagramElementEvent> optionalDiagramElementEvent, NodeLayoutData node) {
+    private void layoutNode(Optional<IDiagramEvent> optionalDiagramElementEvent, NodeLayoutData node) {
         // first layout border & child nodes
         for (NodeLayoutData borderNode : node.getBorderNodes()) {
             this.layoutNode(optionalDiagramElementEvent, borderNode);

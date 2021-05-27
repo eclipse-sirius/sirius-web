@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import { makeStyles } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
+import AccountTreeIcon from '@material-ui/icons/AccountTree';
 import AspectRatioIcon from '@material-ui/icons/AspectRatio';
 import ShareIcon from '@material-ui/icons/Share';
 import ZoomInIcon from '@material-ui/icons/ZoomIn';
@@ -66,7 +67,15 @@ const useToolbarStyles = makeStyles((theme) => ({
   },
 }));
 
-export const Toolbar = ({ onZoomIn, onZoomOut, onFitToScreen, setZoomLevel, zoomLevel, subscribers }: ToolbarProps) => {
+export const Toolbar = ({
+  onZoomIn,
+  onZoomOut,
+  onFitToScreen,
+  onArrangeAll,
+  setZoomLevel,
+  zoomLevel,
+  subscribers,
+}: ToolbarProps) => {
   const classes = useToolbarStyles();
   const [state, setState] = useState<ToolbarState>({ modal: null, currentZoomLevel: zoomLevel });
   const onShare = () => setState({ modal: 'ShareDiagramModal', currentZoomLevel: state.currentZoomLevel });
@@ -124,6 +133,14 @@ export const Toolbar = ({ onZoomIn, onZoomOut, onFitToScreen, setZoomLevel, zoom
           onClick={onFitToScreen}
           data-testid="fit-to-screen">
           <AspectRatioIcon fontSize="small" />
+        </IconButton>
+        <IconButton
+          size="small"
+          color="inherit"
+          aria-label="arrange-all"
+          onClick={onArrangeAll}
+          data-testid="arrange-all">
+          <AccountTreeIcon fontSize="small" />
         </IconButton>
         <IconButton size="small" color="inherit" aria-label="share" onClick={onShare} data-testid="share">
           <ShareIcon fontSize="small" />
