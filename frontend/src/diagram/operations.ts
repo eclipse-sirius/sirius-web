@@ -113,12 +113,14 @@ export const diagramEventSubscription = gql`
         borderColor
         borderStyle
         borderSize
+        borderRadius
       }
       ... on ListNodeStyle {
         color
         borderColor
         borderStyle
         borderSize
+        borderRadius
       }
       ... on ImageNodeStyle {
         imageURL

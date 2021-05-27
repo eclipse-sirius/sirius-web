@@ -35,6 +35,8 @@ public final class ListNodeStyle implements INodeStyle {
 
     private int borderSize;
 
+    private int borderRadius;
+
     private LineStyle borderStyle;
 
     private ListNodeStyle() {
@@ -61,6 +63,12 @@ public final class ListNodeStyle implements INodeStyle {
 
     @GraphQLNonNull
     @GraphQLField
+    public int getBorderRadius() {
+        return this.borderRadius;
+    }
+
+    @GraphQLNonNull
+    @GraphQLField
     public LineStyle getBorderStyle() {
         return this.borderStyle;
     }
@@ -71,8 +79,8 @@ public final class ListNodeStyle implements INodeStyle {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'color: {1}, borderColor: {2}, borderSize: {3}, borderStyle: {4}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.color, this.borderColor, this.borderSize, this.borderStyle);
+        String pattern = "{0} '{'color: {1}, borderColor: {2}, borderSize: {3}, borderRadius: {4}, borderStyle: {5}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.color, this.borderColor, this.borderSize, this.borderRadius, this.borderStyle);
     }
 
     /**
@@ -88,6 +96,8 @@ public final class ListNodeStyle implements INodeStyle {
         private String borderColor;
 
         private int borderSize;
+
+        private int borderRadius;
 
         private LineStyle borderStyle;
 
@@ -106,7 +116,12 @@ public final class ListNodeStyle implements INodeStyle {
         }
 
         public Builder borderSize(int borderSize) {
-            this.borderSize = Objects.requireNonNull(borderSize);
+            this.borderSize = borderSize;
+            return this;
+        }
+
+        public Builder borderRadius(int borderRadius) {
+            this.borderRadius = borderRadius;
             return this;
         }
 
@@ -119,7 +134,8 @@ public final class ListNodeStyle implements INodeStyle {
             ListNodeStyle nodeStyleDescription = new ListNodeStyle();
             nodeStyleDescription.color = Objects.requireNonNull(this.color);
             nodeStyleDescription.borderColor = Objects.requireNonNull(this.borderColor);
-            nodeStyleDescription.borderSize = Objects.requireNonNull(this.borderSize);
+            nodeStyleDescription.borderSize = this.borderSize;
+            nodeStyleDescription.borderRadius = this.borderRadius;
             nodeStyleDescription.borderStyle = Objects.requireNonNull(this.borderStyle);
             return nodeStyleDescription;
         }
