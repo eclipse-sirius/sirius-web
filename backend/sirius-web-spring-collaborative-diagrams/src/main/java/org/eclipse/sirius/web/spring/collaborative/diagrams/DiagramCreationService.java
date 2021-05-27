@@ -25,12 +25,13 @@ import org.eclipse.sirius.web.components.Element;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.diagrams.Diagram;
-import org.eclipse.sirius.web.diagrams.IDiagramElementEvent;
 import org.eclipse.sirius.web.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.web.diagrams.components.DiagramComponent;
 import org.eclipse.sirius.web.diagrams.components.DiagramComponentProps;
 import org.eclipse.sirius.web.diagrams.components.DiagramComponentProps.Builder;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
+import org.eclipse.sirius.web.diagrams.events.ArrangeAllEvent;
+import org.eclipse.sirius.web.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.web.diagrams.layout.api.ILayoutService;
 import org.eclipse.sirius.web.diagrams.renderer.DiagramRenderer;
 import org.eclipse.sirius.web.representations.VariableManager;
@@ -110,7 +111,7 @@ public class DiagramCreationService implements IDiagramCreationService {
         variableManager.put(VariableManager.SELF, targetObject);
         variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
 
-        Optional<IDiagramElementEvent> optionalDiagramElementEvent = optionalDiagramContext.map(IDiagramContext::getDiagramElementEvent);
+        Optional<IDiagramEvent> optionalDiagramElementEvent = optionalDiagramContext.map(IDiagramContext::getDiagramEvent);
         Optional<Diagram> optionalPreviousDiagram = optionalDiagramContext.map(IDiagramContext::getDiagram);
         List<ViewCreationRequest> viewCreationRequests = optionalDiagramContext.map(IDiagramContext::getViewCreationRequests).orElse(List.of());
 
@@ -128,7 +129,7 @@ public class DiagramCreationService implements IDiagramCreationService {
         Diagram newDiagram = new DiagramRenderer(this.logger).render(element);
 
         // The auto layout is used for the first rendering and after that if it is activated
-        if (optionalDiagramContext.isEmpty() || diagramDescription.isAutoLayout()) {
+        if (this.shouldPerformFullLayout(optionalDiagramContext, diagramDescription)) {
             newDiagram = this.layoutService.layout(newDiagram);
         } else if (optionalDiagramContext.isPresent()) {
             newDiagram = this.layoutService.incrementalLayout(newDiagram, optionalDiagramElementEvent);
@@ -138,6 +139,33 @@ public class DiagramCreationService implements IDiagramCreationService {
         long end = System.currentTimeMillis();
         this.timer.record(end - start, TimeUnit.MILLISECONDS);
         return newDiagram;
+    }
+
+    /**
+     * Indicates when the full layout should be performed.
+     *
+     * This method will return true in the following situations:
+     *
+     * <ul>
+     * <li>The first rendering of the diagram</li>
+     * <li>The description of the diagram indicates that layout should be automatic</li>
+     * <li>The arrange all event is currently being processed</li>
+     * </ul>
+     *
+     * @param optionalDiagramContext
+     *            The diagram context if one is available
+     * @param diagramDescription
+     *            The description of the diagram
+     * @return <code>true</code> if the full layout of the diagram should be performed, <code>false</code> otherwise
+     */
+    private boolean shouldPerformFullLayout(Optional<IDiagramContext> optionalDiagramContext, DiagramDescription diagramDescription) {
+        // @formatter:off
+        return optionalDiagramContext.isEmpty()
+                || diagramDescription.isAutoLayout()
+                || optionalDiagramContext.map(IDiagramContext::getDiagramEvent)
+                        .filter(ArrangeAllEvent.class::isInstance)
+                        .isPresent();
+        // @formatter:on
     }
 
     private RepresentationDescriptor getRepresentationDescriptor(UUID projectId, Diagram diagram) {

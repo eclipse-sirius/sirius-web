@@ -26,9 +26,9 @@ import org.eclipse.sirius.web.collaborative.diagrams.api.dto.UpdateNodePositionI
 import org.eclipse.sirius.web.collaborative.diagrams.api.dto.UpdateNodePositionSuccessPayload;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
-import org.eclipse.sirius.web.diagrams.MoveEvent;
 import org.eclipse.sirius.web.diagrams.Node;
 import org.eclipse.sirius.web.diagrams.Position;
+import org.eclipse.sirius.web.diagrams.events.MoveEvent;
 import org.eclipse.sirius.web.diagrams.services.api.IDiagramService;
 import org.eclipse.sirius.web.spring.collaborative.diagrams.DiagramChangeKind;
 import org.eclipse.sirius.web.spring.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
@@ -88,7 +88,7 @@ public class UpdateNodePositionEventHandler implements IDiagramEventHandler {
 
         EventHandlerResponse result;
         if (optionalNode.isPresent()) {
-            diagramContext.setDiagramElementEvent(new MoveEvent(diagramInput.getDiagramElementId(), newPosition));
+            diagramContext.setDiagramEvent(new MoveEvent(diagramInput.getDiagramElementId(), newPosition));
             result = new EventHandlerResponse(new ChangeDescription(DiagramChangeKind.DIAGRAM_LAYOUT_CHANGE, diagramInput.getRepresentationId()),
                     new UpdateNodePositionSuccessPayload(diagramInput.getId(), diagramContext.getDiagram()));
         } else {

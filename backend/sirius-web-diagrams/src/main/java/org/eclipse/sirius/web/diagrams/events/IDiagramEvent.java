@@ -10,24 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.diagrams;
-
-import java.util.Objects;
+package org.eclipse.sirius.web.diagrams.events;
 
 /**
- * Represent an immutable creation event.
+ * Represent an event for the diagram.
  *
  * @author fbarbin
  */
-public class CreationEvent implements IDiagramElementEvent {
+public interface IDiagramEvent {
 
-    private final Position startingPosition;
-
-    public CreationEvent(Position startingPosition) {
-        this.startingPosition = Objects.requireNonNull(startingPosition);
-    }
-
-    public Position getStartingPosition() {
-        return this.startingPosition;
-    }
 }

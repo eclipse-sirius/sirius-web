@@ -10,33 +10,26 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.diagrams;
+package org.eclipse.sirius.web.diagrams.events;
 
 import java.util.Objects;
-import java.util.UUID;
+
+import org.eclipse.sirius.web.diagrams.Position;
 
 /**
- * Represent an immutable move event.
+ * Represent an immutable creation event.
  *
- * @author wpiers
+ * @author fbarbin
  */
-public class MoveEvent implements IDiagramElementEvent {
+public class CreationEvent implements IDiagramEvent {
 
-    private final UUID nodeId;
+    private final Position startingPosition;
 
-    private final Position newPosition;
-
-    public MoveEvent(UUID nodeId, Position newPosition) {
-        this.nodeId = Objects.requireNonNull(nodeId);
-        this.newPosition = Objects.requireNonNull(newPosition);
+    public CreationEvent(Position startingPosition) {
+        this.startingPosition = Objects.requireNonNull(startingPosition);
     }
 
-    public UUID getNodeId() {
-        return this.nodeId;
+    public Position getStartingPosition() {
+        return this.startingPosition;
     }
-
-    public Position getNewPosition() {
-        return this.newPosition;
-    }
-
 }

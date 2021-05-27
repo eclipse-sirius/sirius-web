@@ -17,10 +17,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.sirius.web.diagrams.IDiagramElementEvent;
 import org.eclipse.sirius.web.diagrams.Position;
-import org.eclipse.sirius.web.diagrams.ResizeEvent;
 import org.eclipse.sirius.web.diagrams.Size;
+import org.eclipse.sirius.web.diagrams.events.IDiagramEvent;
+import org.eclipse.sirius.web.diagrams.events.ResizeEvent;
 import org.eclipse.sirius.web.diagrams.layout.incremental.data.NodeLayoutData;
 import org.eclipse.sirius.web.diagrams.layout.incremental.provider.ImageSizeProvider;
 import org.eclipse.sirius.web.diagrams.layout.incremental.provider.NodeSizeProvider;
@@ -83,7 +83,7 @@ public class NodeSizeProviderTestCases {
 
         ImageSizeProvider imageSizeProvider = new ImageSizeProvider();
         NodeSizeProvider nodeSizeProvider = new NodeSizeProvider(imageSizeProvider);
-        Optional<IDiagramElementEvent> optionalEvent = Optional.of(new ResizeEvent(nodeLayoutData.getId(), Position.UNDEFINED, newSize));
+        Optional<IDiagramEvent> optionalEvent = Optional.of(new ResizeEvent(nodeLayoutData.getId(), Position.UNDEFINED, newSize));
 
         Size newSizeFromProvider = nodeSizeProvider.getSize(optionalEvent, nodeLayoutData);
         Size newSizeFromProvider2 = nodeSizeProvider.getSize(optionalEvent, nodeLayoutData2);

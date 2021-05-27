@@ -14,13 +14,13 @@ package org.eclipse.sirius.web.diagrams.layout.incremental.provider;
 
 import java.util.Optional;
 
-import org.eclipse.sirius.web.diagrams.CreationEvent;
-import org.eclipse.sirius.web.diagrams.IDiagramElementEvent;
-import org.eclipse.sirius.web.diagrams.MoveEvent;
 import org.eclipse.sirius.web.diagrams.NodeType;
 import org.eclipse.sirius.web.diagrams.Position;
-import org.eclipse.sirius.web.diagrams.ResizeEvent;
 import org.eclipse.sirius.web.diagrams.Size;
+import org.eclipse.sirius.web.diagrams.events.CreationEvent;
+import org.eclipse.sirius.web.diagrams.events.IDiagramEvent;
+import org.eclipse.sirius.web.diagrams.events.MoveEvent;
+import org.eclipse.sirius.web.diagrams.events.ResizeEvent;
 import org.eclipse.sirius.web.diagrams.layout.LayoutOptionValues;
 import org.eclipse.sirius.web.diagrams.layout.incremental.IncrementalLayoutEngine;
 import org.eclipse.sirius.web.diagrams.layout.incremental.data.IContainerLayoutData;
@@ -49,7 +49,7 @@ public class NodePositionProvider {
      *            the node for which we want to retrieve the new position.
      * @return the new {@link Position} if updated or the current one.
      */
-    public Position getPosition(Optional<IDiagramElementEvent> optionalDiagramElementEvent, NodeLayoutData node) {
+    public Position getPosition(Optional<IDiagramEvent> optionalDiagramElementEvent, NodeLayoutData node) {
         Position position = node.getPosition();
 
         Optional<Position> optionalPosition = this.getSpecificNodePositionFromEvent(optionalDiagramElementEvent, node);
@@ -72,10 +72,10 @@ public class NodePositionProvider {
         return position;
     }
 
-    private Optional<Position> getOptionalStartingPositionFromEvent(Optional<IDiagramElementEvent> optionalDiagramElementEvent) {
+    private Optional<Position> getOptionalStartingPositionFromEvent(Optional<IDiagramEvent> optionalDiagramElementEvent) {
         Position position = null;
         if (optionalDiagramElementEvent.isPresent()) {
-            IDiagramElementEvent diagramElementEvent = optionalDiagramElementEvent.get();
+            IDiagramEvent diagramElementEvent = optionalDiagramElementEvent.get();
             if (diagramElementEvent instanceof CreationEvent) {
                 position = ((CreationEvent) diagramElementEvent).getStartingPosition();
             }
@@ -110,10 +110,10 @@ public class NodePositionProvider {
         return newPosition;
     }
 
-    private Optional<Position> getSpecificNodePositionFromEvent(Optional<IDiagramElementEvent> optionalDiagramElementEvent, NodeLayoutData node) {
+    private Optional<Position> getSpecificNodePositionFromEvent(Optional<IDiagramEvent> optionalDiagramElementEvent, NodeLayoutData node) {
         Position position = null;
         if (optionalDiagramElementEvent.isPresent()) {
-            IDiagramElementEvent diagramElementEvent = optionalDiagramElementEvent.get();
+            IDiagramEvent diagramElementEvent = optionalDiagramElementEvent.get();
             if (diagramElementEvent instanceof MoveEvent) {
                 position = this.getPossiblePositionFromMoveEvent(node, (MoveEvent) diagramElementEvent);
             } else if (diagramElementEvent instanceof ResizeEvent) {

@@ -10,13 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.diagrams;
+package org.eclipse.sirius.web.diagrams.events;
 
 /**
- * Represent an event for a particular diagram element.
+ * Represent an arrange all event.
  *
- * @author fbarbin
+ * @author sbegaudeau
  */
-public interface IDiagramElementEvent {
+public class ArrangeAllEvent implements IDiagramEvent {
 
 }

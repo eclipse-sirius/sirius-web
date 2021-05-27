@@ -10,40 +10,35 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.diagrams;
+package org.eclipse.sirius.web.diagrams.events;
 
 import java.util.Objects;
 import java.util.UUID;
 
+import org.eclipse.sirius.web.diagrams.Position;
+
 /**
- * Represent an immutable resize event.
+ * Represent an immutable move event.
  *
- * @author fbarbin
+ * @author wpiers
  */
-public class ResizeEvent implements IDiagramElementEvent {
+public class MoveEvent implements IDiagramEvent {
 
     private final UUID nodeId;
 
-    private final Position positionDelta;
+    private final Position newPosition;
 
-    private final Size newSize;
-
-    public ResizeEvent(UUID nodeId, Position positionDelta, Size newSize) {
+    public MoveEvent(UUID nodeId, Position newPosition) {
         this.nodeId = Objects.requireNonNull(nodeId);
-        this.positionDelta = Objects.requireNonNull(positionDelta);
-        this.newSize = Objects.requireNonNull(newSize);
+        this.newPosition = Objects.requireNonNull(newPosition);
     }
 
     public UUID getNodeId() {
         return this.nodeId;
     }
 
-    public Position getPositionDelta() {
-        return this.positionDelta;
-    }
-
-    public Size getNewSize() {
-        return this.newSize;
+    public Position getNewPosition() {
+        return this.newPosition;
     }
 
 }
