@@ -40,7 +40,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@ContextConfiguration(classes = JPAConfiguration.class)
+@ContextConfiguration(classes = PersistenceTestConfiguration.class)
 public class RepresentationRepositoryIntegrationTestCases {
 
     private static final String DOCUMENT_NAME = "Obsydians"; //$NON-NLS-1$
