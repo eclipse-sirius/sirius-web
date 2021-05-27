@@ -55,6 +55,7 @@ export class ListView extends RectangularNodeView {
       default:
         break;
     }
+    const radius = nodeStyle.borderRadius;
 
     // renders the label and other children separately in order to add the horizontal separator.
     let children = [...node.children];
@@ -93,6 +94,7 @@ export class ListView extends RectangularNodeView {
           class-mouseover={node.hoverFeedback}
           x={0}
           y={0}
+          rx={radius}
           width={Math.max(0, node.bounds.width)}
           height={Math.max(0, node.bounds.height)}
           style={styleObject}

@@ -61,6 +61,8 @@ export class RectangleView extends RectangularNodeView {
       height: Math.max(0, node.bounds.height),
     };
 
+    const radius = nodeStyle.borderRadius;
+
     const selectedHandles = createResizeHandles(node);
 
     return (
@@ -74,6 +76,7 @@ export class RectangleView extends RectangularNodeView {
           class-mouseover={node.hoverFeedback}
           x={0}
           y={0}
+          rx={radius}
           width={size.width}
           height={size.height}
           style={styleObject}

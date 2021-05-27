@@ -21,6 +21,7 @@ import org.eclipse.sirius.diagram.description.AbstractNodeMapping;
 import org.eclipse.sirius.diagram.description.ContainerMapping;
 import org.eclipse.sirius.diagram.description.style.FlatContainerStyleDescription;
 import org.eclipse.sirius.diagram.description.style.SquareDescription;
+import org.eclipse.sirius.diagram.description.style.StylePackage;
 import org.eclipse.sirius.diagram.description.style.WorkspaceImageDescription;
 import org.eclipse.sirius.viewpoint.description.style.LabelStyleDescription;
 import org.eclipse.sirius.web.diagrams.INodeStyle;
@@ -123,6 +124,8 @@ public class AbstractNodeMappingStyleProvider implements Function<VariableManage
 
         LineStyle borderStyle = new LineStyleConverter().getStyle(flatContainerStyleDescription.getBorderLineStyle());
 
+        int borderRadius = this.getBorderRadius(flatContainerStyleDescription);
+
         Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), flatContainerStyleDescription.getBorderSizeComputationExpression());
         int borderSize = result.asInt().getAsInt();
 
@@ -131,9 +134,23 @@ public class AbstractNodeMappingStyleProvider implements Function<VariableManage
                 .color(color)
                 .borderColor(borderColor)
                 .borderSize(borderSize)
+                .borderRadius(borderRadius)
                 .borderStyle(borderStyle)
                 .build();
         // @formatter:on
+    }
+
+    private int getBorderRadius(FlatContainerStyleDescription flatContainerStyleDescription) {
+        int borderRadius = 0;
+        if (flatContainerStyleDescription.isRoundedCorner()) {
+            if (flatContainerStyleDescription.eIsSet(StylePackage.Literals.ROUNDED_CORNER_STYLE_DESCRIPTION__ARC_HEIGHT)) {
+                borderRadius = Math.max(borderRadius, flatContainerStyleDescription.getArcHeight());
+            }
+            if (flatContainerStyleDescription.eIsSet(StylePackage.Literals.ROUNDED_CORNER_STYLE_DESCRIPTION__ARC_WIDTH)) {
+                borderRadius = Math.max(borderRadius, flatContainerStyleDescription.getArcWidth());
+            }
+        }
+        return borderRadius;
     }
 
     private RectangularNodeStyle createRectangularNodeStyle(VariableManager variableManager, SquareDescription squareDescription) {
@@ -165,7 +182,7 @@ public class AbstractNodeMappingStyleProvider implements Function<VariableManage
         String borderColor = colorProvider.convert(flatContainerStyleDescription.getBorderColor());
 
         LineStyle borderStyle = new LineStyleConverter().getStyle(flatContainerStyleDescription.getBorderLineStyle());
-
+        int borderRadius = this.getBorderRadius(flatContainerStyleDescription);
         Result result = this.interpreter.evaluateExpression(variables, flatContainerStyleDescription.getBorderSizeComputationExpression());
         int borderSize = result.asInt().getAsInt();
 
@@ -174,6 +191,7 @@ public class AbstractNodeMappingStyleProvider implements Function<VariableManage
                 .color(color)
                 .borderColor(borderColor)
                 .borderSize(borderSize)
+                .borderRadius(borderRadius)
                 .borderStyle(borderStyle)
                 .build();
         // @formatter:on
