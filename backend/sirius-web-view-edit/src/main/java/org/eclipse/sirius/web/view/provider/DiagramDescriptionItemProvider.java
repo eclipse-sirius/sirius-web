@@ -18,7 +18,9 @@ import java.util.List;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
+import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 import org.eclipse.sirius.web.view.DiagramDescription;
 import org.eclipse.sirius.web.view.ViewFactory;
@@ -50,8 +52,21 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
         if (this.itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
+            this.addAutoLayoutPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
+    }
+
+    /**
+     * This adds a property descriptor for the Auto Layout feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addAutoLayoutPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_DiagramDescription_autoLayout_feature"), //$NON-NLS-1$
+                this.getString("_UI_PropertyDescriptor_description", "_UI_DiagramDescription_autoLayout_feature", "_UI_DiagramDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                ViewPackage.Literals.DIAGRAM_DESCRIPTION__AUTO_LAYOUT, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -129,6 +144,9 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(DiagramDescription.class)) {
+        case ViewPackage.DIAGRAM_DESCRIPTION__AUTO_LAYOUT:
+            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+            return;
         case ViewPackage.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS:
         case ViewPackage.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS:
             this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));

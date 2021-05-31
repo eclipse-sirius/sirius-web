@@ -41,6 +41,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//RepresentationDescription/titleExpression"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//DiagramDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//DiagramDescription/autoLayout"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//DiagramDescription/nodeDescriptions"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//DiagramDescription/edgeDescriptions"/>
     </genClasses>

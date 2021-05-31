@@ -364,8 +364,18 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
+    public EAttribute getDiagramDescription_AutoLayout() {
+        return (EAttribute) this.diagramDescriptionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EReference getDiagramDescription_NodeDescriptions() {
-        return (EReference) this.diagramDescriptionEClass.getEStructuralFeatures().get(0);
+        return (EReference) this.diagramDescriptionEClass.getEStructuralFeatures().get(1);
     }
 
     /**
@@ -375,7 +385,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      */
     @Override
     public EReference getDiagramDescription_EdgeDescriptions() {
-        return (EReference) this.diagramDescriptionEClass.getEStructuralFeatures().get(1);
+        return (EReference) this.diagramDescriptionEClass.getEStructuralFeatures().get(2);
     }
 
     /**
@@ -996,6 +1006,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.createEAttribute(this.representationDescriptionEClass, REPRESENTATION_DESCRIPTION__TITLE_EXPRESSION);
 
         this.diagramDescriptionEClass = this.createEClass(DIAGRAM_DESCRIPTION);
+        this.createEAttribute(this.diagramDescriptionEClass, DIAGRAM_DESCRIPTION__AUTO_LAYOUT);
         this.createEReference(this.diagramDescriptionEClass, DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS);
         this.createEReference(this.diagramDescriptionEClass, DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS);
 
@@ -1141,6 +1152,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.diagramDescriptionEClass, DiagramDescription.class, "DiagramDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+        this.initEAttribute(this.getDiagramDescription_AutoLayout(), this.ecorePackage.getEBoolean(), "autoLayout", null, 1, 1, DiagramDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, //$NON-NLS-1$
+                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getDiagramDescription_NodeDescriptions(), this.getNodeDescription(), null, "nodeDescriptions", null, 0, -1, DiagramDescription.class, !IS_TRANSIENT, !IS_VOLATILE, //$NON-NLS-1$
                 IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getDiagramDescription_EdgeDescriptions(), this.getEdgeDescription(), null, "edgeDescriptions", null, 0, -1, DiagramDescription.class, !IS_TRANSIENT, !IS_VOLATILE, //$NON-NLS-1$
