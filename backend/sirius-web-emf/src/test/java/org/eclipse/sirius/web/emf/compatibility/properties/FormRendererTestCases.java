@@ -26,6 +26,7 @@ import org.eclipse.sirius.properties.ViewExtensionDescription;
 import org.eclipse.sirius.web.compat.api.IIdentifierProvider;
 import org.eclipse.sirius.web.compat.api.IModelOperationHandlerSwitchProvider;
 import org.eclipse.sirius.web.compat.api.ISemanticCandidatesProviderFactory;
+import org.eclipse.sirius.web.compat.forms.ViewExtensionDescriptionConverter;
 import org.eclipse.sirius.web.compat.services.representations.IdentifiedElementLabelProvider;
 import org.eclipse.sirius.web.components.Element;
 import org.eclipse.sirius.web.emf.compatibility.AQLInterpreterFactory;
