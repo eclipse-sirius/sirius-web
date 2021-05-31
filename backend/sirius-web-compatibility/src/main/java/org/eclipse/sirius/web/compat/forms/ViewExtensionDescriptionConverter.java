@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.emf.compatibility.properties;
+package org.eclipse.sirius.web.compat.forms;
 
 import java.util.HashMap;
 import java.util.List;
@@ -22,15 +22,13 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.eclipse.sirius.properties.ViewExtensionDescription;
+import org.eclipse.sirius.web.compat.api.IAQLInterpreterFactory;
 import org.eclipse.sirius.web.compat.api.IIdentifierProvider;
 import org.eclipse.sirius.web.compat.api.IModelOperationHandlerSwitchProvider;
 import org.eclipse.sirius.web.compat.api.ISemanticCandidatesProviderFactory;
-import org.eclipse.sirius.web.compat.forms.GroupDescriptionConverter;
-import org.eclipse.sirius.web.compat.forms.PageDescriptionConverter;
 import org.eclipse.sirius.web.compat.services.forms.api.IViewExtensionDescriptionConverter;
 import org.eclipse.sirius.web.compat.services.representations.IdentifiedElementLabelProvider;
 import org.eclipse.sirius.web.core.api.IObjectService;
-import org.eclipse.sirius.web.emf.compatibility.AQLInterpreterFactory;
 import org.eclipse.sirius.web.forms.description.FormDescription;
 import org.eclipse.sirius.web.forms.description.GroupDescription;
 import org.eclipse.sirius.web.forms.description.PageDescription;
@@ -49,7 +47,7 @@ public class ViewExtensionDescriptionConverter implements IViewExtensionDescript
 
     private final IObjectService objectService;
 
-    private final AQLInterpreterFactory interpreterFactory;
+    private final IAQLInterpreterFactory interpreterFactory;
 
     private final IIdentifierProvider identifierProvider;
 
@@ -59,7 +57,7 @@ public class ViewExtensionDescriptionConverter implements IViewExtensionDescript
 
     private final IdentifiedElementLabelProvider identifiedElementLabelProvider;
 
-    public ViewExtensionDescriptionConverter(IObjectService objectService, AQLInterpreterFactory interpreterFactory, IIdentifierProvider identifierProvider,
+    public ViewExtensionDescriptionConverter(IObjectService objectService, IAQLInterpreterFactory interpreterFactory, IIdentifierProvider identifierProvider,
             ISemanticCandidatesProviderFactory semanticCandidatesProviderFactory, IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider,
             IdentifiedElementLabelProvider identifiedElementLabelProvider) {
         this.objectService = Objects.requireNonNull(objectService);
