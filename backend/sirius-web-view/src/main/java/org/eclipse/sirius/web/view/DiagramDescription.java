@@ -32,6 +32,28 @@ import org.eclipse.emf.common.util.EList;
  */
 public interface DiagramDescription extends RepresentationDescription {
     /**
+     * Returns the value of the '<em><b>Auto Layout</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Auto Layout</em>' attribute.
+     * @see #setAutoLayout(boolean)
+     * @see org.eclipse.sirius.web.view.ViewPackage#getDiagramDescription_AutoLayout()
+     * @model required="true"
+     * @generated
+     */
+    boolean isAutoLayout();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.web.view.DiagramDescription#isAutoLayout <em>Auto Layout</em>}'
+     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Auto Layout</em>' attribute.
+     * @see #isAutoLayout()
+     * @generated
+     */
+    void setAutoLayout(boolean value);
+
+    /**
      * Returns the value of the '<em><b>Node Descriptions</b></em>' containment reference list. The list contents are of
      * type {@link org.eclipse.sirius.web.view.NodeDescription}. <!-- begin-user-doc --> <!-- end-user-doc -->
      *

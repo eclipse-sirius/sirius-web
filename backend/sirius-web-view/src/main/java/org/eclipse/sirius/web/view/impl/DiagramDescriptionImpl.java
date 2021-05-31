@@ -14,10 +14,12 @@ package org.eclipse.sirius.web.view.impl;
 
 import java.util.Collection;
 
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.sirius.web.view.DiagramDescription;
@@ -32,6 +34,7 @@ import org.eclipse.sirius.web.view.ViewPackage;
  * The following features are implemented:
  * </p>
  * <ul>
+ * <li>{@link org.eclipse.sirius.web.view.impl.DiagramDescriptionImpl#isAutoLayout <em>Auto Layout</em>}</li>
  * <li>{@link org.eclipse.sirius.web.view.impl.DiagramDescriptionImpl#getNodeDescriptions <em>Node
  * Descriptions</em>}</li>
  * <li>{@link org.eclipse.sirius.web.view.impl.DiagramDescriptionImpl#getEdgeDescriptions <em>Edge
@@ -41,6 +44,26 @@ import org.eclipse.sirius.web.view.ViewPackage;
  * @generated
  */
 public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implements DiagramDescription {
+    /**
+     * The default value of the '{@link #isAutoLayout() <em>Auto Layout</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #isAutoLayout()
+     * @generated
+     * @ordered
+     */
+    protected static final boolean AUTO_LAYOUT_EDEFAULT = false;
+
+    /**
+     * The cached value of the '{@link #isAutoLayout() <em>Auto Layout</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #isAutoLayout()
+     * @generated
+     * @ordered
+     */
+    protected boolean autoLayout = AUTO_LAYOUT_EDEFAULT;
+
     /**
      * The cached value of the '{@link #getNodeDescriptions() <em>Node Descriptions</em>}' containment reference list.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -78,6 +101,29 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
     @Override
     protected EClass eStaticClass() {
         return ViewPackage.Literals.DIAGRAM_DESCRIPTION;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public boolean isAutoLayout() {
+        return this.autoLayout;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setAutoLayout(boolean newAutoLayout) {
+        boolean oldAutoLayout = this.autoLayout;
+        this.autoLayout = newAutoLayout;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.DIAGRAM_DESCRIPTION__AUTO_LAYOUT, oldAutoLayout, this.autoLayout));
     }
 
     /**
@@ -130,6 +176,8 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
+        case ViewPackage.DIAGRAM_DESCRIPTION__AUTO_LAYOUT:
+            return this.isAutoLayout();
         case ViewPackage.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS:
             return this.getNodeDescriptions();
         case ViewPackage.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS:
@@ -147,6 +195,9 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
+        case ViewPackage.DIAGRAM_DESCRIPTION__AUTO_LAYOUT:
+            this.setAutoLayout((Boolean) newValue);
+            return;
         case ViewPackage.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS:
             this.getNodeDescriptions().clear();
             this.getNodeDescriptions().addAll((Collection<? extends NodeDescription>) newValue);
@@ -167,6 +218,9 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
+        case ViewPackage.DIAGRAM_DESCRIPTION__AUTO_LAYOUT:
+            this.setAutoLayout(AUTO_LAYOUT_EDEFAULT);
+            return;
         case ViewPackage.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS:
             this.getNodeDescriptions().clear();
             return;
@@ -185,12 +239,31 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
+        case ViewPackage.DIAGRAM_DESCRIPTION__AUTO_LAYOUT:
+            return this.autoLayout != AUTO_LAYOUT_EDEFAULT;
         case ViewPackage.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS:
             return this.nodeDescriptions != null && !this.nodeDescriptions.isEmpty();
         case ViewPackage.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS:
             return this.edgeDescriptions != null && !this.edgeDescriptions.isEmpty();
         }
         return super.eIsSet(featureID);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String toString() {
+        if (this.eIsProxy())
+            return super.toString();
+
+        StringBuilder result = new StringBuilder(super.toString());
+        result.append(" (autoLayout: "); //$NON-NLS-1$
+        result.append(this.autoLayout);
+        result.append(')');
+        return result.toString();
     }
 
 } // DiagramDescriptionImpl

@@ -155,6 +155,7 @@ public class ViewConverter {
                     .label(Optional.ofNullable(viewDiagramDescription.getName()).orElse(DEFAULT_DIAGRAM_LABEL))
                     .labelProvider(variableManager -> this.computeDiagramLabel(viewDiagramDescription, variableManager, interpreter))
                     .canCreatePredicate(variableManager -> this.canCreateDiagram(variableManager, viewDiagramDescription.getDomainType()))
+                    .autoLayout(viewDiagramDescription.isAutoLayout())
                     .targetObjectIdProvider(this.semanticTargetIdProvider)
                     .nodeDescriptions(nodeDescriptions)
                     .edgeDescriptions(edgeDescriptions)
