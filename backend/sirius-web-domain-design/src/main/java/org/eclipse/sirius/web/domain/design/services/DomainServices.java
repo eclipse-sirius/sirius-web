@@ -23,7 +23,7 @@ import org.eclipse.sirius.web.domain.Relation;
 public class DomainServices {
 
     public String renderAttribute(Attribute attr) {
-        return attr.getName() + " : " + attr.getType().toString().toLowerCase(); //$NON-NLS-1$
+        return attr.getName();
     }
 
     public Attribute editAttribute(Attribute attr, String newLabel) {
