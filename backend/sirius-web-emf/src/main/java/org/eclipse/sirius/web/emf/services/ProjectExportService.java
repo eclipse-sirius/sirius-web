@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,20 +17,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.EPackage.Registry;
+import org.eclipse.emf.ecore.impl.EPackageRegistryImpl;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -89,16 +89,16 @@ public class ProjectExportService implements IProjectExportService {
 
     private final IRepresentationService representationService;
 
-    private final Registry ePackageRegistry;
-
     private final IIdMappingRepository idMappingRepository;
 
-    public ProjectExportService(IProjectService projectService, IDocumentService documentService, IRepresentationService representationService, EPackage.Registry ePackageRegistry,
-            IIdMappingRepository idMappingRepository, ObjectMapper objectMapper, BuildProperties buildProperties) {
+    private IEditingContextEPackageService editingContextEPackageService;
+
+    public ProjectExportService(IProjectService projectService, IDocumentService documentService, IRepresentationService representationService,
+            IEditingContextEPackageService editingContextEPackageService, IIdMappingRepository idMappingRepository, ObjectMapper objectMapper, BuildProperties buildProperties) {
         this.projectService = Objects.requireNonNull(projectService);
         this.documentService = Objects.requireNonNull(documentService);
         this.representationService = Objects.requireNonNull(representationService);
-        this.ePackageRegistry = Objects.requireNonNull(ePackageRegistry);
+        this.editingContextEPackageService = Objects.requireNonNull(editingContextEPackageService);
         this.idMappingRepository = Objects.requireNonNull(idMappingRepository);
         this.objectMapper = Objects.requireNonNull(objectMapper);
         this.buildProperties = Objects.requireNonNull(buildProperties);
@@ -121,7 +121,7 @@ public class ProjectExportService implements IProjectExportService {
 
             Map<String, RepresentationManifest> representationsManifests = this.addRepresentation(projectId, projectName, zippedOut);
 
-            this.addManifest(projectName, id2DocumentName, representationsManifests, zippedOut);
+            this.addManifest(projectId, projectName, id2DocumentName, representationsManifests, zippedOut);
         } catch (IOException e) {
             this.logger.error(e.getMessage(), e);
             outputStream.reset();
@@ -274,10 +274,15 @@ public class ProjectExportService implements IProjectExportService {
      */
     private ResourceSet loadAllDocuments(UUID projectId) {
         List<Document> documents = this.documentService.getDocuments(projectId);
+        EPackageRegistryImpl ePackageRegistry = new EPackageRegistryImpl();
+        this.editingContextEPackageService.getEPackages(projectId).forEach(ePackage -> ePackageRegistry.put(ePackage.getNsURI(), ePackage));
         ResourceSet resourceSet = new ResourceSetImpl();
         for (Document document : documents) {
+            ResourceSet loadingResourceSet = new ResourceSetImpl();
+            loadingResourceSet.setPackageRegistry(ePackageRegistry);
             URI uri = URI.createURI(document.getId().toString());
             JsonResource resource = new SiriusWebJSONResourceFactoryImpl().createResource(uri);
+            loadingResourceSet.getResources().add(resource);
             Optional<byte[]> optionalBytes = this.documentService.getBytes(document, IDocumentService.RESOURCE_KIND_JSON);
             if (optionalBytes.isPresent()) {
                 try (var inputStream = new ByteArrayInputStream(optionalBytes.get())) {
@@ -298,6 +303,8 @@ public class ProjectExportService implements IProjectExportService {
      * The name of the {@link ZipEntry} is [projectName]/manifest.json, where '/' are used as path separator in the zip.
      * </p>
      *
+     * @param projectId
+     *            The id of the project we want to export
      * @param projectName
      *            The name of the project we want to export
      * @param id2DocumentName
@@ -310,10 +317,15 @@ public class ProjectExportService implements IProjectExportService {
      * @throws IOException
      *             if an I/O error occurred
      */
-    private void addManifest(String projectName, Map<String, String> id2DocumentName, Map<String, RepresentationManifest> representationsManifests, ZipOutputStream zippedout) throws IOException {
+    private void addManifest(UUID projectId, String projectName, Map<String, String> id2DocumentName, Map<String, RepresentationManifest> representationsManifests, ZipOutputStream zippedout)
+            throws IOException {
         // @formatter:off
+        List<String> metamodels = this.editingContextEPackageService.getEPackages(projectId).stream()
+                .map(EPackage::getNsURI)
+                .collect(Collectors.toList());
+
         ProjectManifest projectManifest = ProjectManifest.newProjectManifest(CURRENT_MANIFEST_VERSION, this.buildProperties.getVersion())
-                .metamodels(new ArrayList<>(this.ePackageRegistry.keySet()))
+                .metamodels(metamodels)
                 .documentIdsToName(id2DocumentName)
                 .representations(representationsManifests)
                 .build();
