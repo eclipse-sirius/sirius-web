@@ -70,11 +70,34 @@ public class AttributeItemProvider extends FeatureItemProvider {
     /**
      * This returns Attribute.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/Attribute")); //$NON-NLS-1$
+        if (object instanceof Attribute) {
+            String imageName = null;
+            Attribute attr = (Attribute) object;
+            switch (attr.getType()) {
+            case BOOLEAN:
+                imageName = "Boolean"; //$NON-NLS-1$
+                break;
+            case STRING:
+                imageName = "String"; //$NON-NLS-1$
+                break;
+            case NUMBER:
+                imageName = "Number"; //$NON-NLS-1$
+                break;
+            default:
+                imageName = "Invalid"; //$NON-NLS-1$
+                break;
+            }
+            if (attr.isMany()) {
+                imageName = "Many" + imageName; //$NON-NLS-1$
+            }
+            return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/" + imageName + "Attribute.svg")); //$NON-NLS-1$//$NON-NLS-2$
+        } else {
+            return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/Attribute")); //$NON-NLS-1$
+        }
     }
 
     /**

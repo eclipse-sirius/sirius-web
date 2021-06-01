@@ -102,11 +102,11 @@ public class DomainItemProvider extends NamedElementItemProvider {
     /**
      * This returns Domain.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/Domain")); //$NON-NLS-1$
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/Domain.svg")); //$NON-NLS-1$
     }
 
     /**

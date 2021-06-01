@@ -83,11 +83,11 @@ public class RelationItemProvider extends FeatureItemProvider {
     /**
      * This returns Relation.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/Relation")); //$NON-NLS-1$
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/Relation.svg")); //$NON-NLS-1$
     }
 
     /**
