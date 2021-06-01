@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,8 +27,10 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
@@ -111,19 +113,23 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
 
         String name = file.getName().trim();
         if (optionalEditingDomain.isPresent()) {
+            AdapterFactoryEditingDomain adapterFactoryEditingDomain = optionalEditingDomain.get();
 
-            String content = this.getContent(file);
+            String content = this.getContent(adapterFactoryEditingDomain.getResourceSet().getPackageRegistry(), file);
             var optionalDocument = this.documentService.createDocument(projectId, name, content);
 
             if (optionalDocument.isPresent()) {
                 Document document = optionalDocument.get();
-                AdapterFactoryEditingDomain adapterFactoryEditingDomain = optionalEditingDomain.get();
                 ResourceSet resourceSet = adapterFactoryEditingDomain.getResourceSet();
                 URI uri = URI.createURI(document.getId().toString());
 
                 if (resourceSet.getResource(uri, false) == null) {
 
+                    ResourceSet loadingResourceSet = new ResourceSetImpl();
+                    loadingResourceSet.setPackageRegistry(resourceSet.getPackageRegistry());
+
                     JsonResource resource = new SiriusWebJSONResourceFactoryImpl().createResource(uri);
+                    loadingResourceSet.getResources().add(resource);
                     try (var inputStream = new ByteArrayInputStream(document.getContent().getBytes())) {
                         resource.load(inputStream, null);
                     } catch (IOException exception) {
@@ -141,15 +147,18 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
         return response;
     }
 
-    private String getContent(UploadFile file) {
+    private String getContent(EPackage.Registry registry, UploadFile file) {
         String uri = file.getName();
         String content = ""; //$NON-NLS-1$
+        ResourceSet resourceSet = new ResourceSetImpl();
+        resourceSet.setPackageRegistry(registry);
         try (var inputStream = file.getInputStream()) {
             URI resourceURI = URI.createURI(uri);
-            Optional<Resource> optionalInputResource = this.getResource(inputStream, resourceURI);
+            Optional<Resource> optionalInputResource = this.getResource(inputStream, resourceURI, resourceSet);
             if (optionalInputResource.isPresent()) {
                 Resource inputResource = optionalInputResource.get();
                 JsonResource ouputResource = new SiriusWebJSONResourceFactoryImpl().createResource(URI.createURI(uri));
+                resourceSet.getResources().add(ouputResource);
                 ouputResource.getContents().addAll(inputResource.getContents());
 
                 try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
@@ -182,9 +191,11 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
      *            The {@link InputStream} used to determine which {@link Resource} to create
      * @param resourceURI
      *            The {@link URI} to use to create the {@link Resource}
+     * @param resourceSet
+     *            The {@link ResourceSet} used to store the loaded resource
      * @return a {@link JsonResourceImpl}, a {@link XMIResourceImpl} or {@link Optional#empty()}
      */
-    private Optional<Resource> getResource(InputStream inputStream, URI resourceURI) {
+    private Optional<Resource> getResource(InputStream inputStream, URI resourceURI, ResourceSet resourceSet) {
         Resource resource = null;
         BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
         bufferedInputStream.mark(Integer.MAX_VALUE);
@@ -201,6 +212,7 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
             }
             bufferedInputStream.reset();
             if (resource != null) {
+                resourceSet.getResources().add(resource);
                 resource.load(bufferedInputStream, options);
             }
         } catch (IOException exception) {

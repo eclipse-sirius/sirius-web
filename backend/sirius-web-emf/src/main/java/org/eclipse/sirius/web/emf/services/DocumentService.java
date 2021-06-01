@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,7 +24,11 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.impl.EPackageRegistryImpl;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.XMIResource;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
@@ -49,9 +53,12 @@ public class DocumentService implements IDocumentService {
 
     private final IProjectRepository projectRepository;
 
+    private final IEditingContextEPackageService editingContextEPackageService;
+
     private final Logger logger = LoggerFactory.getLogger(DocumentService.class);
 
-    public DocumentService(IProjectRepository projectRepository, IDocumentRepository documentRepository) {
+    public DocumentService(IProjectRepository projectRepository, IDocumentRepository documentRepository, IEditingContextEPackageService editingContextEPackageService) {
+        this.editingContextEPackageService = Objects.requireNonNull(editingContextEPackageService);
         this.projectRepository = Objects.requireNonNull(projectRepository);
         this.documentRepository = Objects.requireNonNull(documentRepository);
     }
@@ -127,8 +134,16 @@ public class DocumentService implements IDocumentService {
             return optionalBytes;
         }
 
+        EPackageRegistryImpl ePackageRegistryImpl = new EPackageRegistryImpl();
+        List<EPackage> ePackages = this.editingContextEPackageService.getEPackages(document.getProject().getId());
+        ePackages.forEach(ePackage -> ePackageRegistryImpl.put(ePackage.getNsURI(), ePackage));
+        ResourceSet resourceSet = new ResourceSetImpl();
+        resourceSet.setPackageRegistry(ePackageRegistryImpl);
+
         URI uri = URI.createURI(document.getName());
         JsonResource resource = new SiriusWebJSONResourceFactoryImpl().createResource(uri);
+        resourceSet.getResources().add(resource);
+        resourceSet.getResources().add(outputResource);
 
         try (var inputStream = new ByteArrayInputStream(document.getContent().getBytes())) {
             resource.load(inputStream, new HashMap<>());
