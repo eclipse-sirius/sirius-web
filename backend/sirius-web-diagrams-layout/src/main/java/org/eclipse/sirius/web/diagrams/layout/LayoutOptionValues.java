@@ -68,7 +68,7 @@ public final class LayoutOptionValues {
      * The value defined for NodeList in the elk configuration to set the padding left of the containing NodeListItem
      * labels.
      */
-    public static final double NODE_LIST_ELK_NODE_LABELS_PADDING_LEFT = 2d;
+    public static final double NODE_LIST_ELK_NODE_LABELS_PADDING_LEFT = 6d;
 
     /**
      * The value defined for NodeList in the elk configuration to set the padding right of the containing NodeListItem
