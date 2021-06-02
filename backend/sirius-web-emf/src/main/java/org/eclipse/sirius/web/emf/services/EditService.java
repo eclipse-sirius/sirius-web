@@ -202,7 +202,10 @@ public class EditService implements IEditService {
         editingDomain.getCommandStack().execute(createChildCommand);
         Collection<?> result = createChildCommand.getResult();
         if (result.size() == 1) {
-            objectOptional = Optional.of(result.iterator().next());
+            Object child = result.iterator().next();
+            if (child instanceof EObject && EcoreUtil.isAncestor(eObject, (EObject) child)) {
+                objectOptional = Optional.of(child);
+            }
         }
         return objectOptional;
     }

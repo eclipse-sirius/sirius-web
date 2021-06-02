@@ -27,6 +27,8 @@ import { useMachine } from '@xstate/react';
 import gql from 'graphql-tag';
 import {
   GQLCreateChildMutationData,
+  GQLCreateChildPayload,
+  GQLErrorPayload,
   GQLGetChildCreationDescriptionsQueryData,
   GQLGetChildCreationDescriptionsQueryVariables,
   NewObjectModalProps,
@@ -86,6 +88,9 @@ const useNewObjectModalStyles = makeStyles((theme) => ({
     },
   },
 }));
+
+const isErrorPayload = (payload: GQLCreateChildPayload): payload is GQLErrorPayload =>
+  payload.__typename === 'ErrorPayload';
 
 export const NewObjectModal = ({
   editingContextId,
@@ -150,6 +155,13 @@ export const NewObjectModal = ({
       if (createChildData) {
         const handleResponseEvent: HandleResponseEvent = { type: 'HANDLE_RESPONSE', data: createChildData };
         dispatch(handleResponseEvent);
+
+        const { createChild } = createChildData;
+        if (isErrorPayload(createChild)) {
+          const { message } = createChild;
+          const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
+          dispatch(showToastEvent);
+        }
       }
     }
   }, [createChildLoading, createChildData, createChildError, dispatch]);
