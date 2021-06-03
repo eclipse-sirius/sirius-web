@@ -193,17 +193,22 @@ public class ContainmentUpdater {
     }
 
     private double getNodeLabelPaddingHeight(IContainerLayoutData container) {
-        return 0;
+        return DEFAULT_NODE_LABELS_PADDING;
     }
 
     private double getNodeLabelPaddingWidth(IContainerLayoutData container) {
-        double nodeLabelPaddingWidth = 0;
+        double nodeLabelPaddingWidth = DEFAULT_NODE_LABELS_PADDING;
         if (container instanceof NodeLayoutData) {
             NodeLayoutData nodeLayoutData = (NodeLayoutData) container;
-            if (NodeType.NODE_LIST.equals(nodeLayoutData.getNodeType())) {
-                nodeLabelPaddingWidth = DEFAULT_NODE_LABELS_PADDING;
-            } else if (NodeType.NODE_LIST_ITEM.equals(nodeLayoutData.getNodeType())) {
+            switch (nodeLayoutData.getNodeType()) {
+            case NodeType.NODE_LIST_ITEM:
                 nodeLabelPaddingWidth = NODE_LIST_NODE_LABELS_PADDING_WIDTH;
+                break;
+            case NodeType.NODE_LIST:
+            case NodeType.NODE_RECTANGLE:
+            default:
+                nodeLabelPaddingWidth = DEFAULT_NODE_LABELS_PADDING;
+                break;
             }
         }
         return nodeLabelPaddingWidth;
