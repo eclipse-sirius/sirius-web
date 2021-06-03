@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.diagrams.layout;
 
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
 
@@ -24,6 +25,7 @@ import org.eclipse.elk.core.options.FixedLayouterOptions;
 import org.eclipse.elk.core.options.HierarchyHandling;
 import org.eclipse.elk.core.options.NodeLabelPlacement;
 import org.eclipse.elk.core.options.SizeConstraint;
+import org.eclipse.elk.core.options.SizeOptions;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.NodeType;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
@@ -72,6 +74,7 @@ public class LayoutConfiguratorRegistry {
 
         configurator.configureByType(NodeType.NODE_RECTANGLE)
                 .setProperty(CoreOptions.NODE_SIZE_CONSTRAINTS, SizeConstraint.free())
+                .setProperty(CoreOptions.NODE_SIZE_OPTIONS, EnumSet.of(SizeOptions.ASYMMETRICAL))
                 .setProperty(CoreOptions.NODE_SIZE_MINIMUM, new KVector(LayoutOptionValues.MIN_WIDTH_CONSTRAINT, LayoutOptionValues.MIN_HEIGHT_CONSTRAINT))
                 .setProperty(CoreOptions.NODE_LABELS_PLACEMENT, NodeLabelPlacement.insideTopCenter());
 
