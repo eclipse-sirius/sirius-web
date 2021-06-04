@@ -14,4 +14,5 @@ import { Representation, RepresentationComponent } from 'workbench/Workbench.typ
 
 export type RepresentationComponentRegistry = {
   getComponent: (representation: Representation) => RepresentationComponent | null;
+  isRepresentation: (kind: string) => boolean;
 };

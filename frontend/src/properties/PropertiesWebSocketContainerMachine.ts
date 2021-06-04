@@ -58,7 +58,7 @@ export interface PropertiesWebSocketContainerContext {
 
 export type ShowToastEvent = { type: 'SHOW_TOAST'; message: string };
 export type HideToastEvent = { type: 'HIDE_TOAST' };
-export type SwitchSelectionEvent = { type: 'SWITCH_SELECTION'; selection: Selection };
+export type SwitchSelectionEvent = { type: 'SWITCH_SELECTION'; selection: Selection; isRepresentation: boolean };
 export type HandleSubscriptionResultEvent = {
   type: 'HANDLE_SUBSCRIPTION_RESULT';
   result: SubscriptionResult<GQLPropertiesEventSubscription>;
@@ -211,14 +211,8 @@ export const propertiesWebSocketContainerMachine = Machine<
         return isFormRefreshedEventPayload(data.propertiesEvent);
       },
       isSelectionUnsupported: (_, event) => {
-        const { selection } = event as SwitchSelectionEvent;
-        return (
-          !selection ||
-          selection.kind === 'Unknown' ||
-          selection.kind === 'Diagram' ||
-          selection.kind === 'Form' ||
-          selection.kind === 'Document'
-        );
+        const { selection, isRepresentation } = event as SwitchSelectionEvent;
+        return !selection || isRepresentation || selection.kind === 'Unknown' || selection.kind === 'Document';
       },
     },
     actions: {
