@@ -21,11 +21,12 @@ import { DeleteDocumentModal } from 'modals/delete-document/DeleteDocumentModal'
 import { NewObjectModal } from 'modals/new-object/NewObjectModal';
 import { NewRepresentationModal } from 'modals/new-representation/NewRepresentationModal';
 import { NewRootObjectModal } from 'modals/new-root-object/NewRootObjectModal';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { TreeItemDiagramContextMenu } from 'tree/TreeItemDiagramContextMenu';
 import { TreeItemDocumentContextMenu } from 'tree/TreeItemDocumentContextMenu';
 import { TreeItemObjectContextMenu } from 'tree/TreeItemObjectContextMenu';
 import { v4 as uuid } from 'uuid';
+import { RepresentationContext } from 'workbench/RepresentationContext';
 import styles from './TreeItem.module.css';
 import { TreeItemProps } from './TreeItem.types';
 
@@ -141,6 +142,7 @@ export const TreeItem = ({
   const [deleteObject] = useMutation(deleteObjectMutation);
   const [deleteRepresentation] = useMutation(deleteRepresentationMutation);
   const refDom = useRef() as any;
+  const { registry } = useContext(RepresentationContext);
 
   const [
     renameDocument,
@@ -301,7 +303,7 @@ export const TreeItem = ({
           readOnly={readOnly}
         />
       );
-    } else if (item.kind === 'Diagram' || item.kind === 'Form') {
+    } else if (registry.isRepresentation(item.kind)) {
       const onDeleteRepresentation = () => {
         const variables = {
           input: {
@@ -411,7 +413,7 @@ export const TreeItem = ({
     });
 
   let itemLabel = null;
-  if (item.kind === 'Document' || item.kind === 'Diagram' || item.kind === 'Form') {
+  if (item.kind === 'Document' || registry.isRepresentation(item.kind)) {
     itemLabel = item.label;
   } else {
     itemLabel = item.kind.split('::').pop();

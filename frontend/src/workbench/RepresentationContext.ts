@@ -25,6 +25,9 @@ const registry: RepresentationComponentRegistry = {
     }
     return (props: RepresentationComponentProps) => null;
   },
+  isRepresentation: (kind: string): boolean => {
+    return kind === 'Diagram' || kind === 'Form';
+  },
 };
 
 const value = {

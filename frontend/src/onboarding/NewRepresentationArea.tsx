@@ -29,6 +29,7 @@ const createRepresentationMutation = gql`
         representation {
           id
           label
+          kind
           __typename
         }
       }
@@ -68,8 +69,8 @@ export const NewRepresentationArea = ({
     if (!loading && !error && data?.createRepresentation) {
       const { createRepresentation } = data;
       if (createRepresentation.representation) {
-        const { id, label, __typename } = createRepresentation.representation;
-        setSelection({ id, label, kind: __typename });
+        const { id, label, kind } = createRepresentation.representation;
+        setSelection({ id, label, kind });
       } else if (createRepresentation.__typename === 'ErrorPayload') {
         setState((prevState) => {
           const newState = { ...prevState };

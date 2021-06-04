@@ -27,7 +27,7 @@ export interface WorkbenchContext {
 
 export type ShowRepresentationEvent = { type: 'SHOW_REPRESENTATION'; representation: Representation };
 export type HideRepresentationEvent = { type: 'HIDE_REPRESENTATION'; representation: Representation };
-export type UpdateSelectionEvent = { type: 'UPDATE_SELECTION'; selection: Selection };
+export type UpdateSelectionEvent = { type: 'UPDATE_SELECTION'; selection: Selection; isRepresentation: boolean };
 export type WorkbenchEvent = UpdateSelectionEvent | ShowRepresentationEvent | HideRepresentationEvent;
 
 export const workbenchMachine = Machine<WorkbenchContext, WorkbenchStateSchema, WorkbenchEvent>(
@@ -60,9 +60,9 @@ export const workbenchMachine = Machine<WorkbenchContext, WorkbenchStateSchema, 
   {
     actions: {
       updateSelection: assign((context, event) => {
-        const { selection } = event as UpdateSelectionEvent;
+        const { selection, isRepresentation } = event as UpdateSelectionEvent;
 
-        if (selection.kind === 'Diagram' || selection.kind === 'Form') {
+        if (isRepresentation) {
           const { id, label, kind } = selection;
           const representation: Representation = { id, label, kind };
 
