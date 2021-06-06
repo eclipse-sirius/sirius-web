@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.emf.view;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
@@ -97,14 +98,21 @@ public class ViewPropertiesConfigurer implements IPropertiesDescriptionRegistryC
                         }),
                 this.createShapeSelectionField());
 
+        GroupDescription groupDescription = this.createSimpleGroupDescription(controls);
         return FormDescription.newFormDescription(formDescriptionId)
                 .label("Conditional Node Style") //$NON-NLS-1$
-                .labelProvider(variableManager -> variableManager.get(VariableManager.SELF, NodeStyle.class).map(style -> style.getColor()).orElse(UNNAMED))
-                .canCreatePredicate(this.getVariableEqualsPredicate(IRepresentationDescription.CLASS, ConditionalNodeStyle.class))
+                .labelProvider(variableManager -> variableManager.get(VariableManager.SELF, ConditionalNodeStyle.class).map(ConditionalNodeStyle::getCondition).orElse(UNNAMED))
+                .canCreatePredicate(variableManager -> {
+                    var optionalClass = variableManager.get(IRepresentationDescription.CLASS, Object.class);
+                    return optionalClass.isPresent() && optionalClass.get().equals(ConditionalNodeStyle.class);
+                })
                 .idProvider(new GetOrCreateRandomIdProvider())
                 .targetObjectIdProvider(targetObjectIdProvider)
-                .pageDescriptions(List.of(this.createSimplePageDescription(this.createSimpleGroupDescription(controls), this.getVariableEqualsPredicate(VariableManager.SELF, ConditionalNodeStyle.class))))
-                .groupDescriptions(List.of(this.createSimpleGroupDescription(controls)))
+                .pageDescriptions(List.of(this.createSimplePageDescription(groupDescription,  variableManager -> {
+                    Optional<?> optionalValue = variableManager.get(VariableManager.SELF, ConditionalNodeStyle.class);
+                    return optionalValue.isPresent();
+                })))
+                .groupDescriptions(List.of(groupDescription))
                 .build();
         // @formatter:on
     }
@@ -135,20 +143,30 @@ public class ViewPropertiesConfigurer implements IPropertiesDescriptionRegistryC
                         }),
                 this.createShapeSelectionField());
 
+        GroupDescription groupDescription = this.createSimpleGroupDescription(controls);
         return FormDescription.newFormDescription(formDescriptionId)
                 .label("Node Style") //$NON-NLS-1$
                 .labelProvider(variableManager -> variableManager.get(VariableManager.SELF, NodeStyle.class).map(style -> style.getColor()).orElse(UNNAMED))
-                .canCreatePredicate(this.getVariableEqualsPredicate(IRepresentationDescription.CLASS, NodeStyle.class))
+                .canCreatePredicate(variableManager -> {
+                    var optionalClass = variableManager.get(IRepresentationDescription.CLASS, Object.class);
+                    return optionalClass.isPresent() && optionalClass.get().equals(NodeStyle.class);
+                })
                 .idProvider(new GetOrCreateRandomIdProvider())
                 .targetObjectIdProvider(targetObjectIdProvider)
-                .pageDescriptions(List.of(this.createSimplePageDescription(this.createSimpleGroupDescription(controls), this.getVariableEqualsPredicate(VariableManager.SELF, NodeStyle.class))))
-                .groupDescriptions(List.of(this.createSimpleGroupDescription(controls)))
+                .pageDescriptions(List.of(this.createSimplePageDescription(groupDescription, variableManager -> {
+                    Optional<?> optionalValue = variableManager.get(VariableManager.SELF, NodeStyle.class);
+                    return optionalValue.isPresent() && !(optionalValue.get() instanceof ConditionalNodeStyle);
+                })))
+                .groupDescriptions(List.of(groupDescription))
                 .build();
         // @formatter:on
     }
 
-    private Predicate<VariableManager> getVariableEqualsPredicate(String variableName, Object value) {
-        return variableManager -> variableManager.get(variableName, Object.class).filter(value::equals).isPresent();
+    private Predicate<VariableManager> getVariableTypePredicate(String variableName, Class<?> expectedKlass) {
+        return variableManager -> {
+            Optional<?> optionalValue = variableManager.get(variableName, expectedKlass);
+            return optionalValue.filter(value -> expectedKlass.equals(value.getClass())).isPresent();
+        };
     }
 
     private PageDescription createSimplePageDescription(GroupDescription groupDescription, Predicate<VariableManager> canCreatePredicate) {
