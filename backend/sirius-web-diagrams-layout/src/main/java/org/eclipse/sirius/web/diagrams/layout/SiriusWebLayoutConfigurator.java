@@ -83,7 +83,7 @@ public class SiriusWebLayoutConfigurator extends LayoutConfigurator {
             }
             thisHolder.copyProperties(entry.getValue());
         }
-        for (Map.Entry<String, MapPropertyHolder> entry : layoutConfigurator.idIndex.entrySet()) {
+        for (Map.Entry<String, MapPropertyHolder> entry : layoutConfigurator.typeIndex.entrySet()) {
             MapPropertyHolder thisHolder = this.typeIndex.get(entry.getKey());
             if (thisHolder == null) {
                 thisHolder = new MapPropertyHolder();
