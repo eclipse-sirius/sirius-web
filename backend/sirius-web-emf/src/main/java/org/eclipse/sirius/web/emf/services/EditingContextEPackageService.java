@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.emf.services;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -80,7 +81,14 @@ public class EditingContextEPackageService implements IEditingContextEPackageSer
         }
 
         // @formatter:off
-        return resourceSet.getResources().stream()
+        List<EPackage> allEPackages = new ArrayList<>();
+        // The global/static EPackages
+        this.globalEPackageRegistry.values().stream()
+                                   .filter(EPackage.class::isInstance)
+                                   .map(EPackage.class::cast)
+                                   .forEach(allEPackages::add);
+        // The dynamically defined EPackage obtained from the accessible Domain definitions
+        resourceSet.getResources().stream()
                 .flatMap(resource -> {
                     return resource.getContents().stream()
                             .filter(Domain.class::isInstance)
@@ -89,7 +97,8 @@ public class EditingContextEPackageService implements IEditingContextEPackageSer
                             .flatMap(new DomainConverter()::convert)
                             .stream();
                 })
-                .collect(Collectors.toList());
+                .forEach(allEPackages::add);
         // @formatter:on
+        return allEPackages;
     }
 }
