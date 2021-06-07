@@ -74,6 +74,8 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//Style/fontSize"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//NodeStyle">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//NodeStyle/listMode"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//NodeStyle/borderRadius"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//NodeStyle/shape"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//EdgeStyle">

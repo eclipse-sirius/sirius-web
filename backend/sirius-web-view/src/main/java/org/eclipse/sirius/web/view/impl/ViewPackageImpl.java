@@ -644,8 +644,28 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
-    public EAttribute getNodeStyle_Shape() {
+    public EAttribute getNodeStyle_ListMode() {
         return (EAttribute) this.nodeStyleEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getNodeStyle_BorderRadius() {
+        return (EAttribute) this.nodeStyleEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getNodeStyle_Shape() {
+        return (EAttribute) this.nodeStyleEClass.getEStructuralFeatures().get(2);
     }
 
     /**
@@ -1039,6 +1059,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.createEAttribute(this.styleEClass, STYLE__FONT_SIZE);
 
         this.nodeStyleEClass = this.createEClass(NODE_STYLE);
+        this.createEAttribute(this.nodeStyleEClass, NODE_STYLE__LIST_MODE);
+        this.createEAttribute(this.nodeStyleEClass, NODE_STYLE__BORDER_RADIUS);
         this.createEAttribute(this.nodeStyleEClass, NODE_STYLE__SHAPE);
 
         this.edgeStyleEClass = this.createEClass(EDGE_STYLE);
@@ -1208,6 +1230,10 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
                 !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.nodeStyleEClass, NodeStyle.class, "NodeStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+        this.initEAttribute(this.getNodeStyle_ListMode(), this.ecorePackage.getEBoolean(), "listMode", null, 1, 1, NodeStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, //$NON-NLS-1$
+                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getNodeStyle_BorderRadius(), this.ecorePackage.getEInt(), "borderRadius", "0", 1, 1, NodeStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, //$NON-NLS-1$ //$NON-NLS-2$
+                !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getNodeStyle_Shape(), this.ecorePackage.getEString(), "shape", null, 1, 1, NodeStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, //$NON-NLS-1$
                 IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 

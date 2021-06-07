@@ -28,6 +28,7 @@ import org.eclipse.sirius.web.api.configuration.IPropertiesDescriptionRegistry;
 import org.eclipse.sirius.web.api.configuration.IPropertiesDescriptionRegistryConfigurer;
 import org.eclipse.sirius.web.forms.components.SelectComponent;
 import org.eclipse.sirius.web.forms.description.AbstractControlDescription;
+import org.eclipse.sirius.web.forms.description.CheckboxDescription;
 import org.eclipse.sirius.web.forms.description.FormDescription;
 import org.eclipse.sirius.web.forms.description.GroupDescription;
 import org.eclipse.sirius.web.forms.description.PageDescription;
@@ -87,6 +88,18 @@ public class ViewPropertiesConfigurer implements IPropertiesDescriptionRegistryC
                 this.createTextField("conditionalnodestyle.borderColor", "Border Color", //$NON-NLS-1$ //$NON-NLS-2$
                         style -> ((NodeStyle) style).getBorderColor(),
                         (style, newColor) -> ((NodeStyle) style).setBorderColor(newColor)),
+                this.createTextField("conditionalnodestyle.borderRadius", "Border Radius", //$NON-NLS-1$ //$NON-NLS-2$
+                        style -> String.valueOf(((NodeStyle) style).getBorderRadius()),
+                        (style, newBorderRadius) -> {
+                            try {
+                                ((NodeStyle) style).setBorderRadius(Integer.parseInt(newBorderRadius));
+                            } catch (NumberFormatException nfe) {
+                                // Ignore.
+                            }
+                        }),
+                this.createCheckbox("conditionalnodestyle.listMost", "List Mode", //$NON-NLS-1$ //$NON-NLS-2$
+                        style -> ((NodeStyle) style).isListMode(),
+                        (style, newListMode) -> ((NodeStyle) style).setListMode(newListMode)),
                 this.createTextField("conditionalnodestyle.fontSize", "Font Size", //$NON-NLS-1$ //$NON-NLS-2$
                         style -> String.valueOf(((NodeStyle) style).getFontSize()),
                         (style, newColor) -> {
@@ -132,6 +145,18 @@ public class ViewPropertiesConfigurer implements IPropertiesDescriptionRegistryC
                 this.createTextField("nodestyle.borderColor", "Border Color", //$NON-NLS-1$ //$NON-NLS-2$
                         style -> ((NodeStyle) style).getBorderColor(),
                         (style, newColor) -> ((NodeStyle) style).setBorderColor(newColor)),
+                this.createTextField("nodestyle.borderRadius", "Border Radius", //$NON-NLS-1$ //$NON-NLS-2$
+                        style -> String.valueOf(((NodeStyle) style).getBorderRadius()),
+                        (style, newBorderRadius) -> {
+                            try {
+                                ((NodeStyle) style).setBorderRadius(Integer.parseInt(newBorderRadius));
+                            } catch (NumberFormatException nfe) {
+                                // Ignore.
+                            }
+                        }),
+                this.createCheckbox("nodestyle.listMost", "List Mode", //$NON-NLS-1$ //$NON-NLS-2$
+                        style -> ((NodeStyle) style).isListMode(),
+                        (style, newListMode) -> ((NodeStyle) style).setListMode(newListMode)),
                 this.createTextField("nodestyle.fontSize", "Font Size", //$NON-NLS-1$ //$NON-NLS-2$
                         style -> String.valueOf(((NodeStyle) style).getFontSize()),
                         (style, newColor) -> {
@@ -160,13 +185,6 @@ public class ViewPropertiesConfigurer implements IPropertiesDescriptionRegistryC
                 .groupDescriptions(List.of(groupDescription))
                 .build();
         // @formatter:on
-    }
-
-    private Predicate<VariableManager> getVariableTypePredicate(String variableName, Class<?> expectedKlass) {
-        return variableManager -> {
-            Optional<?> optionalValue = variableManager.get(variableName, expectedKlass);
-            return optionalValue.filter(value -> expectedKlass.equals(value.getClass())).isPresent();
-        };
     }
 
     private PageDescription createSimplePageDescription(GroupDescription groupDescription, Predicate<VariableManager> canCreatePredicate) {
@@ -205,6 +223,27 @@ public class ViewPropertiesConfigurer implements IPropertiesDescriptionRegistryC
         };
         // @formatter:off
         return TextfieldDescription.newTextfieldDescription(id)
+                                   .idProvider(variableManager -> id)
+                                   .labelProvider(variableManager -> title)
+                                   .valueProvider(valueProvider)
+                                   .newValueHandler(newValueHandler)
+                                   .build();
+        // @formatter:on
+    }
+
+    private CheckboxDescription createCheckbox(String id, String title, Function<Object, Boolean> reader, BiConsumer<Object, Boolean> writer) {
+        Function<VariableManager, Boolean> valueProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(reader).orElse(Boolean.FALSE);
+        BiFunction<VariableManager, Boolean, Status> newValueHandler = (variableManager, newValue) -> {
+            var optionalDiagramMapping = variableManager.get(VariableManager.SELF, Object.class);
+            if (optionalDiagramMapping.isPresent()) {
+                writer.accept(optionalDiagramMapping.get(), newValue);
+                return Status.OK;
+            } else {
+                return Status.ERROR;
+            }
+        };
+        // @formatter:off
+        return CheckboxDescription.newCheckboxDescription(id)
                                    .idProvider(variableManager -> id)
                                    .labelProvider(variableManager -> title)
                                    .valueProvider(valueProvider)
