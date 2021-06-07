@@ -636,12 +636,28 @@ public interface ViewPackage extends EPackage {
     int NODE_STYLE__FONT_SIZE = STYLE__FONT_SIZE;
 
     /**
+     * The feature id for the '<em><b>List Mode</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_STYLE__LIST_MODE = STYLE_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Border Radius</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_STYLE__BORDER_RADIUS = STYLE_FEATURE_COUNT + 1;
+
+    /**
      * The feature id for the '<em><b>Shape</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int NODE_STYLE__SHAPE = STYLE_FEATURE_COUNT + 0;
+    int NODE_STYLE__SHAPE = STYLE_FEATURE_COUNT + 2;
 
     /**
      * The number of structural features of the '<em>Node Style</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
@@ -650,7 +666,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_STYLE_FEATURE_COUNT = STYLE_FEATURE_COUNT + 1;
+    int NODE_STYLE_FEATURE_COUNT = STYLE_FEATURE_COUNT + 3;
 
     /**
      * The number of operations of the '<em>Node Style</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1330,12 +1346,28 @@ public interface ViewPackage extends EPackage {
     int CONDITIONAL_NODE_STYLE__FONT_SIZE = CONDITIONAL_FEATURE_COUNT + 2;
 
     /**
+     * The feature id for the '<em><b>List Mode</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_NODE_STYLE__LIST_MODE = CONDITIONAL_FEATURE_COUNT + 3;
+
+    /**
+     * The feature id for the '<em><b>Border Radius</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_NODE_STYLE__BORDER_RADIUS = CONDITIONAL_FEATURE_COUNT + 4;
+
+    /**
      * The feature id for the '<em><b>Shape</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int CONDITIONAL_NODE_STYLE__SHAPE = CONDITIONAL_FEATURE_COUNT + 3;
+    int CONDITIONAL_NODE_STYLE__SHAPE = CONDITIONAL_FEATURE_COUNT + 5;
 
     /**
      * The number of structural features of the '<em>Conditional Node Style</em>' class. <!-- begin-user-doc --> <!--
@@ -1344,7 +1376,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CONDITIONAL_NODE_STYLE_FEATURE_COUNT = CONDITIONAL_FEATURE_COUNT + 4;
+    int CONDITIONAL_NODE_STYLE_FEATURE_COUNT = CONDITIONAL_FEATURE_COUNT + 6;
 
     /**
      * The number of operations of the '<em>Conditional Node Style</em>' class. <!-- begin-user-doc --> <!--
@@ -1847,6 +1879,28 @@ public interface ViewPackage extends EPackage {
      * @generated
      */
     EClass getNodeStyle();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.web.view.NodeStyle#isListMode <em>List
+     * Mode</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>List Mode</em>'.
+     * @see org.eclipse.sirius.web.view.NodeStyle#isListMode()
+     * @see #getNodeStyle()
+     * @generated
+     */
+    EAttribute getNodeStyle_ListMode();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.web.view.NodeStyle#getBorderRadius
+     * <em>Border Radius</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Border Radius</em>'.
+     * @see org.eclipse.sirius.web.view.NodeStyle#getBorderRadius()
+     * @see #getNodeStyle()
+     * @generated
+     */
+    EAttribute getNodeStyle_BorderRadius();
 
     /**
      * Returns the meta object for the attribute '{@link org.eclipse.sirius.web.view.NodeStyle#getShape
@@ -2512,6 +2566,22 @@ public interface ViewPackage extends EPackage {
          * @generated
          */
         EClass NODE_STYLE = eINSTANCE.getNodeStyle();
+
+        /**
+         * The meta object literal for the '<em><b>List Mode</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute NODE_STYLE__LIST_MODE = eINSTANCE.getNodeStyle_ListMode();
+
+        /**
+         * The meta object literal for the '<em><b>Border Radius</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute NODE_STYLE__BORDER_RADIUS = eINSTANCE.getNodeStyle_BorderRadius();
 
         /**
          * The meta object literal for the '<em><b>Shape</b></em>' attribute feature. <!-- begin-user-doc --> <!--

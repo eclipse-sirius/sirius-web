@@ -50,9 +50,35 @@ public class NodeStyleItemProvider extends StyleItemProvider {
         if (this.itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
+            this.addListModePropertyDescriptor(object);
+            this.addBorderRadiusPropertyDescriptor(object);
             this.addShapePropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
+    }
+
+    /**
+     * This adds a property descriptor for the List Mode feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addListModePropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_NodeStyle_listMode_feature"), //$NON-NLS-1$
+                this.getString("_UI_PropertyDescriptor_description", "_UI_NodeStyle_listMode_feature", "_UI_NodeStyle_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                ViewPackage.Literals.NODE_STYLE__LIST_MODE, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Border Radius feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addBorderRadiusPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_NodeStyle_borderRadius_feature"), //$NON-NLS-1$
+                this.getString("_UI_PropertyDescriptor_description", "_UI_NodeStyle_borderRadius_feature", "_UI_NodeStyle_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                ViewPackage.Literals.NODE_STYLE__BORDER_RADIUS, true, false, false, ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -111,6 +137,8 @@ public class NodeStyleItemProvider extends StyleItemProvider {
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(NodeStyle.class)) {
+        case ViewPackage.NODE_STYLE__LIST_MODE:
+        case ViewPackage.NODE_STYLE__BORDER_RADIUS:
         case ViewPackage.NODE_STYLE__SHAPE:
             this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
             return;

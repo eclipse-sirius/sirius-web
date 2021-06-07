@@ -20,6 +20,8 @@ import org.eclipse.sirius.web.diagrams.EdgeStyle;
 import org.eclipse.sirius.web.diagrams.INodeStyle;
 import org.eclipse.sirius.web.diagrams.ImageNodeStyle;
 import org.eclipse.sirius.web.diagrams.LineStyle;
+import org.eclipse.sirius.web.diagrams.ListItemNodeStyle;
+import org.eclipse.sirius.web.diagrams.ListNodeStyle;
 import org.eclipse.sirius.web.diagrams.NodeType;
 import org.eclipse.sirius.web.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.web.diagrams.description.LabelStyleDescription;
@@ -65,32 +67,59 @@ public final class StylesFactory {
     }
 
     public String getNodeType(NodeStyle nodeStyle) {
-        if (nodeStyle.getShape() == null || nodeStyle.getShape().isBlank()) {
-            return NodeType.NODE_RECTANGLE;
-        } else {
-            return NodeType.NODE_IMAGE;
+        String type = NodeType.NODE_RECTANGLE;
+        if (nodeStyle.isListMode()) {
+            type = NodeType.NODE_LIST;
+        } else if (nodeStyle.eContainer().eContainer() instanceof org.eclipse.sirius.web.view.NodeDescription
+                && ((org.eclipse.sirius.web.view.NodeDescription) nodeStyle.eContainer().eContainer()).getStyle().isListMode()) {
+            type = NodeType.NODE_LIST_ITEM;
+        } else if (nodeStyle.getShape() != null && !nodeStyle.getShape().isBlank()) {
+            type = NodeType.NODE_IMAGE;
         }
+        return type;
     }
 
     public INodeStyle createNodeStyle(NodeStyle nodeStyle, ICustomImagesService customImagesService) {
-        if (NodeType.NODE_IMAGE.equals(this.getNodeType(nodeStyle))) {
+        INodeStyle result = null;
+        switch (this.getNodeType(nodeStyle)) {
+        case NodeType.NODE_IMAGE:
             String shapeId = nodeStyle.getShape();
             String shapeFileName = customImagesService.findById(UUID.fromString(shapeId)).map(CustomImage::getFileName).orElse(DEFAULT_SHAPE_FILE);
             // @formatter:off
-            return ImageNodeStyle.newImageNodeStyle()
-                                 .scalingFactor(1)
-                                 .imageURL("/custom/" + shapeFileName) //$NON-NLS-1$
-                                 .build();
+            result = ImageNodeStyle.newImageNodeStyle()
+                                   .scalingFactor(1)
+                                   .imageURL("/custom/" + shapeFileName) //$NON-NLS-1$
+                                   .build();
             // @formatter:on
-        } else {
+            break;
+        case NodeType.NODE_LIST:
             // @formatter:off
-            return RectangularNodeStyle.newRectangularNodeStyle()
-                    .color(Optional.ofNullable(nodeStyle.getColor()).orElse(DEFAULT_COLOR))
-                    .borderColor(Optional.ofNullable(nodeStyle.getBorderColor()).orElse(DEFAULT_COLOR))
-                    .borderSize(1)
-                    .borderStyle(LineStyle.Solid)
-                    .build();
+            result = ListNodeStyle.newListNodeStyle()
+                                  .color(Optional.ofNullable(nodeStyle.getColor()).orElse(DEFAULT_COLOR))
+                                  .borderColor(Optional.ofNullable(nodeStyle.getBorderColor()).orElse(DEFAULT_COLOR))
+                                  .borderSize(1)
+                                  .borderStyle(LineStyle.Solid)
+                                  .borderRadius(nodeStyle.getBorderRadius())
+                                  .build();
             // @formatter:on
+            break;
+        case NodeType.NODE_LIST_ITEM:
+            result = ListItemNodeStyle.newListItemNodeStyle().backgroundColor("transparent").build(); //$NON-NLS-1$
+            break;
+        case NodeType.NODE_RECTANGLE:
+        default:
+            // @formatter:off
+            result = RectangularNodeStyle.newRectangularNodeStyle()
+                                         .color(Optional.ofNullable(nodeStyle.getColor()).orElse(DEFAULT_COLOR))
+                                         .borderColor(Optional.ofNullable(nodeStyle.getBorderColor()).orElse(DEFAULT_COLOR))
+                                         .borderSize(1)
+                                         .borderStyle(LineStyle.Solid)
+                                         .borderRadius(nodeStyle.getBorderRadius())
+                                         .build();
+            // @formatter:on
+            break;
         }
+        return result;
     }
+    // CHECKSTYLE:ON
 }
