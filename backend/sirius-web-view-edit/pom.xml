@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius.web</groupId>
 	<artifactId>sirius-web-view-edit</artifactId>
-	<version>0.2.26</version>
+	<version>0.2.27</version>
 	<name>sirius-web-view-edit</name>
 	<description>Sirius Web View Definition DSL - Edit Support</description>
 
@@ -68,7 +68,7 @@
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-view</artifactId>
-			<version>0.2.26</version>
+			<version>0.2.27</version>
 		</dependency>
 	</dependencies>
 </project>
