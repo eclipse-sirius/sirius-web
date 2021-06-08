@@ -35,7 +35,7 @@ export const RepresentationsArea = ({ representations, maxDisplay, setSelection 
               label={representation.label}
               data-testid={representation.id}
               onClick={() =>
-                setSelection({ id: representation.id, label: representation.label, kind: representation.__typename })
+                setSelection({ id: representation.id, label: representation.label, kind: representation.kind })
               }>
               <Representation title={representation.label} className={styles.icon} />
             </LinkButton>
@@ -51,7 +51,7 @@ export const RepresentationsArea = ({ representations, maxDisplay, setSelection 
       <Select
         onChange={(event) => {
           const representation = representations.find((candidate) => candidate.id === event.target.value);
-          setSelection({ id: representation.id, label: representation.label, kind: representation.__typename });
+          setSelection({ id: representation.id, label: representation.label, kind: representation.kind });
         }}
         name={moreName}
         options={[{ id: moreLabel, label: moreLabel }, representations.slice(maxDisplay)].flat()}

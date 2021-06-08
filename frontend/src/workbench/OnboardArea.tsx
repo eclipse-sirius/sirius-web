@@ -41,6 +41,7 @@ const getOnboardDataQuery = gql`
           __typename
           id
           label
+          kind
         }
       }
     }
