@@ -92,6 +92,12 @@
 			<groupId>org.eclipse.elk</groupId>
 			<artifactId> org.eclipse.elk.graph.json</artifactId>
 			<version>${elk.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.google.guava</groupId>
+					<artifactId>guava</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.elk</groupId>
