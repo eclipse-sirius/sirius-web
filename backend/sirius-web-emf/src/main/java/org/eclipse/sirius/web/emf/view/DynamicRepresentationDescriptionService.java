@@ -38,6 +38,7 @@ import org.eclipse.sirius.web.view.View;
 import org.eclipse.sirius.web.view.ViewPackage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 /**
@@ -56,11 +57,11 @@ public class DynamicRepresentationDescriptionService implements IDynamicRepresen
     private final ViewConverter viewConverter;
 
     public DynamicRepresentationDescriptionService(IDocumentRepository documentRepository, EPackage.Registry ePackageRegistry, IObjectService objectService, IEditService editService,
-            ICustomImagesService customImagesService, List<IJavaServiceProvider> javaServiceProviders) {
+            ICustomImagesService customImagesService, List<IJavaServiceProvider> javaServiceProviders, Environment environment) {
         this.documentRepository = Objects.requireNonNull(documentRepository);
         this.ePackageRegistry = Objects.requireNonNull(ePackageRegistry);
         this.viewConverter = new ViewConverter(Objects.requireNonNull(javaServiceProviders), Objects.requireNonNull(objectService), Objects.requireNonNull(editService),
-                Objects.requireNonNull(customImagesService));
+                Objects.requireNonNull(customImagesService), Objects.requireNonNull(environment));
     }
 
     @Override
