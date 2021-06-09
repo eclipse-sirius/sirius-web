@@ -22,7 +22,7 @@ public final class ImageConstants {
 
     public static final String RESOURCE_SVG = IMAGES_ROOT_FOLDER + "/Resource.svg"; //$NON-NLS-1$
 
-    public static final String DEFAULT_SVG = IMAGES_ROOT_FOLDER + "/Default.gif"; //$NON-NLS-1$
+    public static final String DEFAULT_SVG = IMAGES_ROOT_FOLDER + "/Default.svg"; //$NON-NLS-1$
 
     private ImageConstants() {
         // Prevent instantiation
