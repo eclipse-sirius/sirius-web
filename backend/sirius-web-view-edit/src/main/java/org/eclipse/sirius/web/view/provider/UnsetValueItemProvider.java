@@ -83,11 +83,11 @@ public class UnsetValueItemProvider extends OperationItemProvider {
     /**
      * This returns UnsetValue.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/UnsetValue")); //$NON-NLS-1$
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/UnsetValue.svg")); //$NON-NLS-1$
     }
 
     /**

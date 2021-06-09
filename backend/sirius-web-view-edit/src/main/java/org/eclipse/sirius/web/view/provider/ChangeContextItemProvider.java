@@ -70,11 +70,11 @@ public class ChangeContextItemProvider extends OperationItemProvider {
     /**
      * This returns ChangeContext.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/ChangeContext")); //$NON-NLS-1$
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/ChangeContext.svg")); //$NON-NLS-1$
     }
 
     /**

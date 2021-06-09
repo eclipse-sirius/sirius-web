@@ -96,11 +96,11 @@ public class EdgeStyleItemProvider extends StyleItemProvider {
     /**
      * This returns EdgeStyle.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/EdgeStyle")); //$NON-NLS-1$
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/Style.svg")); //$NON-NLS-1$
     }
 
     /**

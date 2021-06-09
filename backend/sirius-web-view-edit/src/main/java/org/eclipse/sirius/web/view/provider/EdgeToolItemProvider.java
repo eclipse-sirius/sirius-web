@@ -53,11 +53,11 @@ public class EdgeToolItemProvider extends ToolItemProvider {
     /**
      * This returns EdgeTool.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/EdgeTool")); //$NON-NLS-1$
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/Tool.svg")); //$NON-NLS-1$
     }
 
     /**
