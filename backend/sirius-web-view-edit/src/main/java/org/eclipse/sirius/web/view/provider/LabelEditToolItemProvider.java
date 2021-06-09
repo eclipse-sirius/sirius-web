@@ -53,11 +53,11 @@ public class LabelEditToolItemProvider extends ToolItemProvider {
     /**
      * This returns LabelEditTool.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/LabelEditTool")); //$NON-NLS-1$
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/LabelEditTool.svg")); //$NON-NLS-1$
     }
 
     /**

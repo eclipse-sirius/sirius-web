@@ -94,11 +94,11 @@ public class ViewItemProvider extends ItemProviderAdapter implements IEditingDom
     /**
      * This returns View.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/View")); //$NON-NLS-1$
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/View.svg")); //$NON-NLS-1$
     }
 
     /**

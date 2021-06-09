@@ -135,11 +135,11 @@ public class ConditionalNodeStyleItemProvider extends ConditionalItemProvider {
     /**
      * This returns ConditionalNodeStyle.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/ConditionalNodeStyle")); //$NON-NLS-1$
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/ConditionalStyle.svg")); //$NON-NLS-1$
     }
 
     /**
