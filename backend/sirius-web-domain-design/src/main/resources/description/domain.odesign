@@ -99,7 +99,7 @@
               </firstModelOperations>
             </initialOperation>
           </ownedTools>
-          <ownedTools xsi:type="tool:EdgeCreationDescription" name="Supertype_Set" label="Supertype" edgeMappings="//@ownedViewpoints[name='Domain']/@ownedRepresentations[name='Domain']/@defaultLayer/@edgeMappings[name='Inheritance']">
+          <ownedTools xsi:type="tool:EdgeCreationDescription" name="Supertype_Set" label="Supertype" edgeMappings="//@ownedViewpoints[name='Domain']/@ownedRepresentations[name='Domain']/@defaultLayer/@edgeMappings[name='Inheritance']" iconPath="/sirius-web-domain-design/img/Supertype.svg">
             <sourceVariable name="source"/>
             <targetVariable name="target"/>
             <sourceViewVariable name="sourceView"/>
@@ -130,7 +130,7 @@
           </ownedTools>
         </toolSections>
         <toolSections name="Entity">
-          <ownedTools xsi:type="tool:NodeCreationDescription" name="String_Create" label="Text" nodeMappings="//@ownedViewpoints[name='Domain']/@ownedRepresentations[name='Domain']/@defaultLayer/@containerMappings[name='Entity']/@subNodeMappings[name='Attribute']" iconPath="/sirius-web-domain-design/img/String.png">
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="String_Create" label="Text" nodeMappings="//@ownedViewpoints[name='Domain']/@ownedRepresentations[name='Domain']/@defaultLayer/@containerMappings[name='Entity']/@subNodeMappings[name='Attribute']" iconPath="/sirius-web-domain-design/img/String.svg">
             <variable name="container"/>
             <viewVariable name="containerView"/>
             <initialOperation>
@@ -142,7 +142,7 @@
               </firstModelOperations>
             </initialOperation>
           </ownedTools>
-          <ownedTools xsi:type="tool:NodeCreationDescription" name="Boolean_Create" label="Boolean" nodeMappings="//@ownedViewpoints[name='Domain']/@ownedRepresentations[name='Domain']/@defaultLayer/@containerMappings[name='Entity']/@subNodeMappings[name='Attribute']" iconPath="/sirius-web-domain-design/img/Boolean.png">
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="Boolean_Create" label="Boolean" nodeMappings="//@ownedViewpoints[name='Domain']/@ownedRepresentations[name='Domain']/@defaultLayer/@containerMappings[name='Entity']/@subNodeMappings[name='Attribute']" iconPath="/sirius-web-domain-design/img/Boolean.svg">
             <variable name="container"/>
             <viewVariable name="containerView"/>
             <initialOperation>
@@ -154,7 +154,7 @@
               </firstModelOperations>
             </initialOperation>
           </ownedTools>
-          <ownedTools xsi:type="tool:NodeCreationDescription" name="Number_Create" label="Number" nodeMappings="//@ownedViewpoints[name='Domain']/@ownedRepresentations[name='Domain']/@defaultLayer/@containerMappings[name='Entity']/@subNodeMappings[name='Attribute']" iconPath="/sirius-web-domain-design/img/Number.png">
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="Number_Create" label="Number" nodeMappings="//@ownedViewpoints[name='Domain']/@ownedRepresentations[name='Domain']/@defaultLayer/@containerMappings[name='Entity']/@subNodeMappings[name='Attribute']" iconPath="/sirius-web-domain-design/img/Number.svg">
             <variable name="container"/>
             <viewVariable name="containerView"/>
             <initialOperation>
