@@ -16,6 +16,7 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.emf.common.util.Diagnostic;
@@ -33,6 +34,7 @@ import org.eclipse.sirius.web.domain.DomainFactory;
 import org.eclipse.sirius.web.domain.Entity;
 import org.eclipse.sirius.web.domain.Feature;
 import org.eclipse.sirius.web.domain.Relation;
+import org.springframework.core.env.Environment;
 
 /**
  * Converts a Domain into an equivalent Ecore EPackage.
@@ -41,54 +43,68 @@ import org.eclipse.sirius.web.domain.Relation;
  */
 public class DomainConverter {
 
-    public Optional<EPackage> convert(Domain domain) {
-        EPackage ePackage = EcoreFactory.eINSTANCE.createEPackage();
-        ePackage.setName(domain.getName());
-        ePackage.setNsPrefix(Optional.ofNullable(domain.getName()).orElse("").toLowerCase()); //$NON-NLS-1$
-        ePackage.setNsURI(domain.getUri());
+    private final Environment environment;
 
-        Map<Entity, EClass> convertedTypes = new HashMap<>();
-        // We need to make multiple passes to handle inheritance, as an Entity can only be converted
-        // once all its super types have been. We could use a topological sort to iterate in the correct
-        // order but it seems simpler to simply make multiple passes until all types are converted.
-        Deque<Entity> leftToConvert = new ArrayDeque<>(domain.getTypes());
-        Entity sentinel = DomainFactory.eINSTANCE.createEntity();
-        leftToConvert.addLast(sentinel);
-        // The worst case happens when we can only find and convert a single type on each pass.
-        // If we need more passes than that, it means at least one pass did not find any type that
-        // has all its parents already converted, and thus there is an inheritance loop.
-        int maxPasses = domain.getTypes().size();
-        int nbPasses = 0;
-        while (leftToConvert.size() > 1 && nbPasses <= maxPasses) {
-            Entity candidate = leftToConvert.pop();
-            if (candidate == sentinel) {
-                // We've hit the end of the queue, i.e. finished a single pass
-                nbPasses++;
-                leftToConvert.addLast(sentinel);
-            } else if (Optional.ofNullable(candidate.getSuperType()).stream().allMatch(convertedTypes::containsKey)) {
-                // candidate can be converted if all its super types have already been
-                EClass eClass = this.convert(candidate, convertedTypes);
-                convertedTypes.put(candidate, eClass);
-                ePackage.getEClassifiers().add(eClass);
-            } else {
-                // Try again in the next pass if we have converted all its super-types
-                leftToConvert.addLast(candidate);
-            }
-        }
-        if (leftToConvert.size() == 1) {
-            for (Entity entity : domain.getTypes()) {
-                EClass eClass = convertedTypes.get(entity);
-                for (Relation relation : entity.getRelations()) {
-                    EReference eReference = this.convert(relation, convertedTypes);
-                    eClass.getEStructuralFeatures().add(eReference);
+    public DomainConverter(Environment environment) {
+        this.environment = Objects.requireNonNull(environment);
+    }
+
+    public Optional<EPackage> convert(Domain domain) {
+        Optional<EPackage> result = Optional.empty();
+
+        if (this.isStudioDefinitionEnabled()) {
+            EPackage ePackage = EcoreFactory.eINSTANCE.createEPackage();
+            ePackage.setName(domain.getName());
+            ePackage.setNsPrefix(Optional.ofNullable(domain.getName()).orElse("").toLowerCase()); //$NON-NLS-1$
+            ePackage.setNsURI(domain.getUri());
+
+            Map<Entity, EClass> convertedTypes = new HashMap<>();
+            // We need to make multiple passes to handle inheritance, as an Entity can only be converted
+            // once all its super types have been. We could use a topological sort to iterate in the correct
+            // order but it seems simpler to simply make multiple passes until all types are converted.
+            Deque<Entity> leftToConvert = new ArrayDeque<>(domain.getTypes());
+            Entity sentinel = DomainFactory.eINSTANCE.createEntity();
+            leftToConvert.addLast(sentinel);
+            // The worst case happens when we can only find and convert a single type on each pass.
+            // If we need more passes than that, it means at least one pass did not find any type that
+            // has all its parents already converted, and thus there is an inheritance loop.
+            int maxPasses = domain.getTypes().size();
+            int nbPasses = 0;
+            while (leftToConvert.size() > 1 && nbPasses <= maxPasses) {
+                Entity candidate = leftToConvert.pop();
+                if (candidate == sentinel) {
+                    // We've hit the end of the queue, i.e. finished a single pass
+                    nbPasses++;
+                    leftToConvert.addLast(sentinel);
+                } else if (Optional.ofNullable(candidate.getSuperType()).stream().allMatch(convertedTypes::containsKey)) {
+                    // candidate can be converted if all its super types have already been
+                    EClass eClass = this.convert(candidate, convertedTypes);
+                    convertedTypes.put(candidate, eClass);
+                    ePackage.getEClassifiers().add(eClass);
+                } else {
+                    // Try again in the next pass if we have converted all its super-types
+                    leftToConvert.addLast(candidate);
                 }
             }
-            Diagnostic diagnostic = Diagnostician.INSTANCE.validate(ePackage);
-            if (diagnostic.getSeverity() < Diagnostic.ERROR) {
-                return Optional.of(ePackage);
+            if (leftToConvert.size() == 1) {
+                for (Entity entity : domain.getTypes()) {
+                    EClass eClass = convertedTypes.get(entity);
+                    for (Relation relation : entity.getRelations()) {
+                        EReference eReference = this.convert(relation, convertedTypes);
+                        eClass.getEStructuralFeatures().add(eReference);
+                    }
+                }
+                Diagnostic diagnostic = Diagnostician.INSTANCE.validate(ePackage);
+                if (diagnostic.getSeverity() < Diagnostic.ERROR) {
+                    result = Optional.of(ePackage);
+                }
             }
         }
-        return Optional.empty();
+        return result;
+    }
+
+    private boolean isStudioDefinitionEnabled() {
+        return "true".equals(this.environment.getProperty("org.eclipse.sirius.web.features.studioDefinition", "false")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
 
     private EClass convert(Entity entity, Map<Entity, EClass> convertedTypes) {

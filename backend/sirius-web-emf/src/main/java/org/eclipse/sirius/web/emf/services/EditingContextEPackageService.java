@@ -34,6 +34,7 @@ import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
 import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 /**
@@ -50,9 +51,12 @@ public class EditingContextEPackageService implements IEditingContextEPackageSer
 
     private final IDocumentRepository documentRepository;
 
-    public EditingContextEPackageService(EPackage.Registry globalEPackageRegistry, IDocumentRepository documentRepository) {
+    private final DomainConverter domainConverter;
+
+    public EditingContextEPackageService(EPackage.Registry globalEPackageRegistry, IDocumentRepository documentRepository, Environment environment) {
         this.globalEPackageRegistry = Objects.requireNonNull(globalEPackageRegistry);
         this.documentRepository = Objects.requireNonNull(documentRepository);
+        this.domainConverter = new DomainConverter(Objects.requireNonNull(environment));
     }
 
     @Override
@@ -94,7 +98,7 @@ public class EditingContextEPackageService implements IEditingContextEPackageSer
                             .filter(Domain.class::isInstance)
                             .map(Domain.class::cast)
                             .findFirst()
-                            .flatMap(new DomainConverter()::convert)
+                            .flatMap(this.domainConverter::convert)
                             .stream();
                 })
                 .forEach(allEPackages::add);
