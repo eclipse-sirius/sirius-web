@@ -22,7 +22,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius.web</groupId>
 	<artifactId>sirius-web-diagrams-layout</artifactId>
-	<version>0.2.27</version>
+	<version>0.2.28</version>
 	<name>sirius-web-diagrams-layout</name>
 	<description>Sirius Web Diagrams layout</description>
 
@@ -65,12 +65,12 @@
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-annotations</artifactId>
-			<version>0.2.27</version>
+			<version>0.2.28</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-diagrams-layout-api</artifactId>
-			<version>0.2.27</version>
+			<version>0.2.28</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.elk</groupId>
@@ -107,12 +107,12 @@
  		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-services-api</artifactId>
-			<version>0.2.27</version>
+			<version>0.2.28</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-tests</artifactId>
-			<version>0.2.27</version>
+			<version>0.2.28</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -132,12 +132,12 @@
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-diagrams</artifactId>
-			<version>0.2.27</version>
+			<version>0.2.28</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-diagrams-tests</artifactId>
-			<version>0.2.27</version>
+			<version>0.2.28</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
