@@ -22,7 +22,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius.web</groupId>
 	<artifactId>sirius-web-diagrams-services-api</artifactId>
-	<version>0.2.29</version>
+	<version>0.2.30</version>
 	<name>sirius-web-diagrams-services-api</name>
 	<description>Sirius Web Diagrams Servuces API</description>
 
@@ -42,12 +42,12 @@
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-core-api</artifactId>
-			<version>0.2.29</version>
+			<version>0.2.30</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-diagrams</artifactId>
-			<version>0.2.29</version>
+			<version>0.2.30</version>
 		</dependency>
 	</dependencies>
 
