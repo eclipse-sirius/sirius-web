@@ -140,11 +140,12 @@ public class DomainFactoryImpl extends EFactoryImpl implements DomainFactory {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Entity createEntity() {
         EntityImpl entity = new EntityImpl();
+        entity.setName("NewEntity"); //$NON-NLS-1$
         return entity;
     }
 
@@ -162,22 +163,25 @@ public class DomainFactoryImpl extends EFactoryImpl implements DomainFactory {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Attribute createAttribute() {
         AttributeImpl attribute = new AttributeImpl();
+        attribute.setName("newAttribute"); //$NON-NLS-1$
         return attribute;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Relation createRelation() {
         RelationImpl relation = new RelationImpl();
+        relation.setOptional(true);
+        relation.setName("newRelation"); //$NON-NLS-1$
         return relation;
     }
 
