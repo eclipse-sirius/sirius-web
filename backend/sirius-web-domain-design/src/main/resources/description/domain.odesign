@@ -10,7 +10,7 @@
             <centerLabelStyleDescription labelSize="12" showIcon="false" labelExpression="aql:self.renderRelation()" labelColor="//@userColorsPalettes[name='Sirius%20Web']/@entries[name='grey%2Fgrey-800']"/>
           </style>
           <conditionnalStyles predicateExpression="aql:self.optional and self.containment">
-            <style sourceArrow="FillDiamond" sizeComputationExpression="2">
+            <style sourceArrow="FillDiamond">
               <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <centerLabelStyleDescription labelSize="12" showIcon="false" labelExpression="aql:self.renderRelation()">
                 <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
@@ -35,7 +35,7 @@
             </style>
           </conditionnalStyles>
           <conditionnalStyles predicateExpression="aql:not self.optional and not self.containment">
-            <style sizeComputationExpression="3">
+            <style sizeComputationExpression="2">
               <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <centerLabelStyleDescription labelSize="12" labelExpression="aql:self.renderRelation()">
                 <labelFormat>bold</labelFormat>
