@@ -73,11 +73,11 @@ public class ViewConverter {
 
     private static final String NODE_CREATION_TOOL_SECTION = "Node Creation"; //$NON-NLS-1$
 
-    private static final String NODE_CREATION_TOOL_ICON = "/img/Entity.png"; //$NON-NLS-1$
+    private static final String NODE_CREATION_TOOL_ICON = "/img/Entity.svg"; //$NON-NLS-1$
 
     private static final String EDGE_CREATION_TOOL_SECTION = "Edge Creation"; //$NON-NLS-1$
 
-    private static final String EDGE_CREATION_TOOL_ICON = "/img/Relation.png"; //$NON-NLS-1$
+    private static final String EDGE_CREATION_TOOL_ICON = "/img/Relation.svg"; //$NON-NLS-1$
 
     private final List<IJavaServiceProvider> javaServiceProviders;
 
