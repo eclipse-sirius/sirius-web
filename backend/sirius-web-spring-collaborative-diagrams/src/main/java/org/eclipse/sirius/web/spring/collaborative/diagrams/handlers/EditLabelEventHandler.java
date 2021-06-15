@@ -24,6 +24,7 @@ import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramDescriptionService;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramInput;
+import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramQueryService;
 import org.eclipse.sirius.web.collaborative.diagrams.api.dto.EditLabelInput;
 import org.eclipse.sirius.web.collaborative.diagrams.api.dto.EditLabelSuccessPayload;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
@@ -33,7 +34,6 @@ import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.Node;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.web.diagrams.description.NodeDescription;
-import org.eclipse.sirius.web.diagrams.services.api.IDiagramService;
 import org.eclipse.sirius.web.representations.VariableManager;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationDescriptionService;
 import org.eclipse.sirius.web.spring.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
@@ -54,7 +54,7 @@ public class EditLabelEventHandler implements IDiagramEventHandler {
 
     private final IObjectService objectService;
 
-    private final IDiagramService diagramService;
+    private final IDiagramQueryService diagramQueryService;
 
     private final IDiagramDescriptionService diagramDescriptionService;
 
@@ -66,10 +66,10 @@ public class EditLabelEventHandler implements IDiagramEventHandler {
 
     private final Counter counter;
 
-    public EditLabelEventHandler(IObjectService objectService, IDiagramService diagramService, IDiagramDescriptionService diagramDescriptionService,
+    public EditLabelEventHandler(IObjectService objectService, IDiagramQueryService diagramQueryService, IDiagramDescriptionService diagramDescriptionService,
             IRepresentationDescriptionService representationDescriptionService, ICollaborativeDiagramMessageService messageService, MeterRegistry meterRegistry) {
         this.objectService = Objects.requireNonNull(objectService);
-        this.diagramService = Objects.requireNonNull(diagramService);
+        this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
         this.diagramDescriptionService = Objects.requireNonNull(diagramDescriptionService);
         this.representationDescriptionService = Objects.requireNonNull(representationDescriptionService);
         this.messageService = Objects.requireNonNull(messageService);
@@ -93,7 +93,7 @@ public class EditLabelEventHandler implements IDiagramEventHandler {
         if (diagramInput instanceof EditLabelInput) {
             EditLabelInput input = (EditLabelInput) diagramInput;
             Diagram diagram = diagramContext.getDiagram();
-            var node = this.diagramService.findNodeByLabelId(diagram, UUID.fromString(input.getLabelId()));
+            var node = this.diagramQueryService.findNodeByLabelId(diagram, UUID.fromString(input.getLabelId()));
             if (node.isPresent()) {
                 this.invokeDirectEditTool(node.get(), editingContext, diagram, input.getNewText());
                 return new EventHandlerResponse(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, diagramInput.getRepresentationId()), new EditLabelSuccessPayload(diagramInput.getId(), diagram));

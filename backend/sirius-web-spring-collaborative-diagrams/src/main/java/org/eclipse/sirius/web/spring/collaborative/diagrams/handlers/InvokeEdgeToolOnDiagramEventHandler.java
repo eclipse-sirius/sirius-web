@@ -23,6 +23,7 @@ import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramInput;
+import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramQueryService;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IToolService;
 import org.eclipse.sirius.web.collaborative.diagrams.api.dto.InvokeEdgeToolOnDiagramInput;
 import org.eclipse.sirius.web.collaborative.diagrams.api.dto.InvokeEdgeToolOnDiagramSuccessPayload;
@@ -32,7 +33,6 @@ import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.Node;
 import org.eclipse.sirius.web.diagrams.description.EdgeDescription;
-import org.eclipse.sirius.web.diagrams.services.api.IDiagramService;
 import org.eclipse.sirius.web.diagrams.tools.CreateEdgeTool;
 import org.eclipse.sirius.web.representations.Status;
 import org.eclipse.sirius.web.representations.VariableManager;
@@ -53,7 +53,7 @@ public class InvokeEdgeToolOnDiagramEventHandler implements IDiagramEventHandler
 
     private final IObjectService objectService;
 
-    private final IDiagramService diagramService;
+    private final IDiagramQueryService diagramQueryService;
 
     private final IToolService toolService;
 
@@ -61,10 +61,10 @@ public class InvokeEdgeToolOnDiagramEventHandler implements IDiagramEventHandler
 
     private final Counter counter;
 
-    public InvokeEdgeToolOnDiagramEventHandler(IObjectService objectService, IDiagramService diagramService, IToolService toolService, ICollaborativeDiagramMessageService messageService,
+    public InvokeEdgeToolOnDiagramEventHandler(IObjectService objectService, IDiagramQueryService diagramQueryService, IToolService toolService, ICollaborativeDiagramMessageService messageService,
             MeterRegistry meterRegistry) {
         this.objectService = Objects.requireNonNull(objectService);
-        this.diagramService = Objects.requireNonNull(diagramService);
+        this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
         this.toolService = Objects.requireNonNull(toolService);
         this.messageService = Objects.requireNonNull(messageService);
 
@@ -107,8 +107,8 @@ public class InvokeEdgeToolOnDiagramEventHandler implements IDiagramEventHandler
     private Status executeTool(IEditingContext editingContext, IDiagramContext diagramContext, UUID sourceNodeId, UUID targetNodeId, CreateEdgeTool tool) {
         Status result = Status.ERROR;
         Diagram diagram = diagramContext.getDiagram();
-        Optional<Node> sourceNode = this.diagramService.findNodeById(diagram, sourceNodeId);
-        Optional<Node> targetNode = this.diagramService.findNodeById(diagram, targetNodeId);
+        Optional<Node> sourceNode = this.diagramQueryService.findNodeById(diagram, sourceNodeId);
+        Optional<Node> targetNode = this.diagramQueryService.findNodeById(diagram, targetNodeId);
         Optional<Object> source = Optional.empty();
         Optional<Object> target = Optional.empty();
         if (sourceNode.isPresent() && targetNode.isPresent()) {

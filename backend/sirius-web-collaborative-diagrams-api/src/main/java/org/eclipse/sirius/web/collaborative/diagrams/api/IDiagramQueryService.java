@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo and others.
+ * Copyright (c) 2021 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,20 +10,26 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.diagrams.services.api;
+package org.eclipse.sirius.web.collaborative.diagrams.api;
 
 import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.diagrams.Diagram;
+import org.eclipse.sirius.web.diagrams.Edge;
+import org.eclipse.sirius.web.diagrams.Node;
 
 /**
- * Interface used to manipulate diagrams.
+ * Interface used to query diagrams.
  *
  * @author sbegaudeau
  */
-public interface IDiagramService {
+public interface IDiagramQueryService {
 
-    Optional<Diagram> findById(UUID diagramId);
+    Optional<Node> findNodeById(Diagram diagram, UUID nodeId);
+
+    Optional<Node> findNodeByLabelId(Diagram diagram, UUID labelId);
+
+    Optional<Edge> findEdgeById(Diagram diagram, UUID edgeId);
 
 }

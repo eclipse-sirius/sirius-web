@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,6 +26,7 @@ import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramDescriptionService;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramInput;
+import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramQueryService;
 import org.eclipse.sirius.web.collaborative.diagrams.api.dto.DeleteFromDiagramInput;
 import org.eclipse.sirius.web.collaborative.diagrams.api.dto.DeleteFromDiagramSuccessPayload;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
@@ -37,7 +38,6 @@ import org.eclipse.sirius.web.diagrams.Node;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.web.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.web.diagrams.description.NodeDescription;
-import org.eclipse.sirius.web.diagrams.services.api.IDiagramService;
 import org.eclipse.sirius.web.representations.Status;
 import org.eclipse.sirius.web.representations.VariableManager;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationDescriptionService;
@@ -59,7 +59,7 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
 
     private final IObjectService objectService;
 
-    private final IDiagramService diagramService;
+    private final IDiagramQueryService diagramQueryService;
 
     private final IDiagramDescriptionService diagramDescriptionService;
 
@@ -71,10 +71,10 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
 
     private final Counter counter;
 
-    public DeleteFromDiagramEventHandler(IObjectService objectService, IDiagramService diagramService, IDiagramDescriptionService diagramDescriptionService,
+    public DeleteFromDiagramEventHandler(IObjectService objectService, IDiagramQueryService diagramQueryService, IDiagramDescriptionService diagramDescriptionService,
             IRepresentationDescriptionService representationDescriptionService, ICollaborativeDiagramMessageService messageService, MeterRegistry meterRegistry) {
         this.objectService = Objects.requireNonNull(objectService);
-        this.diagramService = Objects.requireNonNull(diagramService);
+        this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
         this.diagramDescriptionService = Objects.requireNonNull(diagramDescriptionService);
         this.representationDescriptionService = Objects.requireNonNull(representationDescriptionService);
         this.messageService = Objects.requireNonNull(messageService);
@@ -110,7 +110,7 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
         boolean atLeastOneOk = false;
         Diagram diagram = diagramContext.getDiagram();
         for (UUID edgeId : diagramInput.getEdgeIds()) {
-            var optionalElement = this.diagramService.findEdgeById(diagram, edgeId);
+            var optionalElement = this.diagramQueryService.findEdgeById(diagram, edgeId);
             if (optionalElement.isPresent()) {
                 Status status = this.invokeDeleteEdgeTool(optionalElement.get(), editingContext, diagramContext);
                 if (Status.OK == status) {
@@ -122,7 +122,7 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
             }
         }
         for (UUID nodeId : diagramInput.getNodeIds()) {
-            var optionalElement = this.diagramService.findNodeById(diagram, nodeId);
+            var optionalElement = this.diagramQueryService.findNodeById(diagram, nodeId);
             if (optionalElement.isPresent()) {
                 Status status = this.invokeDeleteNodeTool(optionalElement.get(), editingContext, diagramContext);
                 if (Status.OK == status) {
@@ -191,12 +191,12 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
                 variableManager.put(VariableManager.SELF, optionalSelf.get());
                 variableManager.put(IDiagramContext.DIAGRAM_CONTEXT, diagramContext);
                 // @formatter:off
-                this.diagramService.findNodeById(diagramContext.getDiagram(), edge.getSourceId())
-                                   .flatMap(node -> this.objectService.getObject(editingContext, node.getTargetObjectId()))
-                                   .ifPresent(semanticElement -> variableManager.put(EdgeDescription.SEMANTIC_EDGE_SOURCE, semanticElement));
-                this.diagramService.findNodeById(diagramContext.getDiagram(), edge.getTargetId())
-                                   .flatMap(node -> this.objectService.getObject(editingContext, node.getTargetObjectId()))
-                                   .ifPresent(semanticElement -> variableManager.put(EdgeDescription.SEMANTIC_EDGE_TARGET, semanticElement));
+                this.diagramQueryService.findNodeById(diagramContext.getDiagram(), edge.getSourceId())
+                        .flatMap(node -> this.objectService.getObject(editingContext, node.getTargetObjectId()))
+                        .ifPresent(semanticElement -> variableManager.put(EdgeDescription.SEMANTIC_EDGE_SOURCE, semanticElement));
+                this.diagramQueryService.findNodeById(diagramContext.getDiagram(), edge.getTargetId())
+                        .flatMap(node -> this.objectService.getObject(editingContext, node.getTargetObjectId()))
+                        .ifPresent(semanticElement -> variableManager.put(EdgeDescription.SEMANTIC_EDGE_TARGET, semanticElement));
                 // @formatter:on
                 EdgeDescription edgeDescription = optionalEdgeDescription.get();
                 this.logger.debug("Deleted diagram edge {}", edge.getId()); //$NON-NLS-1$

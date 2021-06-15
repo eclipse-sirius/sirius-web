@@ -23,6 +23,7 @@ import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramInput;
+import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramQueryService;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IToolService;
 import org.eclipse.sirius.web.collaborative.diagrams.api.dto.InvokeNodeToolOnDiagramInput;
 import org.eclipse.sirius.web.collaborative.diagrams.api.dto.InvokeNodeToolOnDiagramSuccessPayload;
@@ -33,7 +34,6 @@ import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.Node;
 import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.events.CreationEvent;
-import org.eclipse.sirius.web.diagrams.services.api.IDiagramService;
 import org.eclipse.sirius.web.diagrams.tools.CreateNodeTool;
 import org.eclipse.sirius.web.representations.Status;
 import org.eclipse.sirius.web.representations.VariableManager;
@@ -53,7 +53,7 @@ public class InvokeNodeToolOnDiagramEventHandler implements IDiagramEventHandler
 
     private final IObjectService objectService;
 
-    private final IDiagramService diagramService;
+    private final IDiagramQueryService diagramQueryService;
 
     private final IToolService toolService;
 
@@ -61,10 +61,10 @@ public class InvokeNodeToolOnDiagramEventHandler implements IDiagramEventHandler
 
     private final Counter counter;
 
-    public InvokeNodeToolOnDiagramEventHandler(IObjectService objectService, IDiagramService diagramService, IToolService toolService, ICollaborativeDiagramMessageService messageService,
+    public InvokeNodeToolOnDiagramEventHandler(IObjectService objectService, IDiagramQueryService diagramQueryService, IToolService toolService, ICollaborativeDiagramMessageService messageService,
             MeterRegistry meterRegistry) {
         this.objectService = Objects.requireNonNull(objectService);
-        this.diagramService = Objects.requireNonNull(diagramService);
+        this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
         this.toolService = Objects.requireNonNull(toolService);
         this.messageService = Objects.requireNonNull(messageService);
 
@@ -107,7 +107,7 @@ public class InvokeNodeToolOnDiagramEventHandler implements IDiagramEventHandler
     private Status executeTool(IEditingContext editingContext, IDiagramContext diagramContext, UUID diagramElementId, CreateNodeTool tool, double startingPositionX, double startingPositionY) {
         Status result = Status.ERROR;
         Diagram diagram = diagramContext.getDiagram();
-        Optional<Node> node = this.diagramService.findNodeById(diagram, diagramElementId);
+        Optional<Node> node = this.diagramQueryService.findNodeById(diagram, diagramElementId);
         Optional<Object> self = Optional.empty();
         if (node.isPresent()) {
             self = this.objectService.getObject(editingContext, node.get().getTargetObjectId());
