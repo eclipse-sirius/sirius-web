@@ -20,7 +20,7 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 
-import org.eclipse.sirius.web.collaborative.forms.api.IFormService;
+import org.eclipse.sirius.web.collaborative.forms.api.IFormQueryService;
 import org.eclipse.sirius.web.collaborative.forms.api.dto.EditRadioInput;
 import org.eclipse.sirius.web.forms.AbstractWidget;
 import org.eclipse.sirius.web.forms.Form;
@@ -83,13 +83,13 @@ public class EditRadioEventHandlerTestCases {
                 .build();
         // @formatter:on
 
-        IFormService formService = new NoOpFormService() {
+        IFormQueryService formQueryService = new NoOpFormQueryService() {
             @Override
             public Optional<AbstractWidget> findWidget(Form form, String widgetId) {
                 return Optional.of(radio);
             }
         };
-        EditRadioEventHandler handler = new EditRadioEventHandler(formService, new NoOpCollaborativeFormMessageService(), new SimpleMeterRegistry());
+        EditRadioEventHandler handler = new EditRadioEventHandler(formQueryService, new NoOpCollaborativeFormMessageService(), new SimpleMeterRegistry());
 
         assertThat(handler.canHandle(input)).isTrue();
 

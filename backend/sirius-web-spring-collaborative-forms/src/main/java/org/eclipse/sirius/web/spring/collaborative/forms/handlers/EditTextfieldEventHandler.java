@@ -20,7 +20,7 @@ import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.collaborative.forms.api.IFormEventHandler;
 import org.eclipse.sirius.web.collaborative.forms.api.IFormInput;
-import org.eclipse.sirius.web.collaborative.forms.api.IFormService;
+import org.eclipse.sirius.web.collaborative.forms.api.IFormQueryService;
 import org.eclipse.sirius.web.collaborative.forms.api.dto.EditTextfieldInput;
 import org.eclipse.sirius.web.collaborative.forms.api.dto.EditTextfieldSuccessPayload;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
@@ -41,14 +41,14 @@ import io.micrometer.core.instrument.MeterRegistry;
 @Service
 public class EditTextfieldEventHandler implements IFormEventHandler {
 
-    private final IFormService formService;
+    private final IFormQueryService formQueryService;
 
     private final ICollaborativeFormMessageService messageService;
 
     private final Counter counter;
 
-    public EditTextfieldEventHandler(IFormService formService, ICollaborativeFormMessageService messageService, MeterRegistry meterRegistry) {
-        this.formService = Objects.requireNonNull(formService);
+    public EditTextfieldEventHandler(IFormQueryService formQueryService, ICollaborativeFormMessageService messageService, MeterRegistry meterRegistry) {
+        this.formQueryService = Objects.requireNonNull(formQueryService);
         this.messageService = Objects.requireNonNull(messageService);
 
         // @formatter:off
@@ -71,7 +71,7 @@ public class EditTextfieldEventHandler implements IFormEventHandler {
             EditTextfieldInput input = (EditTextfieldInput) formInput;
 
             // @formatter:off
-            var optionalTextfield = this.formService.findWidget(form, input.getTextfieldId())
+            var optionalTextfield = this.formQueryService.findWidget(form, input.getTextfieldId())
                     .filter(Textfield.class::isInstance)
                     .map(Textfield.class::cast);
 

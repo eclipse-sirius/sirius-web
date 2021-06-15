@@ -20,7 +20,7 @@ import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.collaborative.forms.api.IFormEventHandler;
 import org.eclipse.sirius.web.collaborative.forms.api.IFormInput;
-import org.eclipse.sirius.web.collaborative.forms.api.IFormService;
+import org.eclipse.sirius.web.collaborative.forms.api.IFormQueryService;
 import org.eclipse.sirius.web.collaborative.forms.api.dto.EditRadioInput;
 import org.eclipse.sirius.web.collaborative.forms.api.dto.EditRadioSuccessPayload;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
@@ -41,14 +41,14 @@ import io.micrometer.core.instrument.MeterRegistry;
 @Service
 public class EditRadioEventHandler implements IFormEventHandler {
 
-    private final IFormService formService;
+    private final IFormQueryService formQueryService;
 
     private final ICollaborativeFormMessageService messageService;
 
     private final Counter counter;
 
-    public EditRadioEventHandler(IFormService formService, ICollaborativeFormMessageService messageService, MeterRegistry meterRegistry) {
-        this.formService = Objects.requireNonNull(formService);
+    public EditRadioEventHandler(IFormQueryService formQueryService, ICollaborativeFormMessageService messageService, MeterRegistry meterRegistry) {
+        this.formQueryService = Objects.requireNonNull(formQueryService);
         this.messageService = Objects.requireNonNull(messageService);
 
         // @formatter:off
@@ -71,7 +71,7 @@ public class EditRadioEventHandler implements IFormEventHandler {
             EditRadioInput input = (EditRadioInput) formInput;
 
             // @formatter:off
-            var optionalRadio = this.formService.findWidget(form, input.getRadioId())
+            var optionalRadio = this.formQueryService.findWidget(form, input.getRadioId())
                     .filter(Radio.class::isInstance)
                     .map(Radio.class::cast);
 
