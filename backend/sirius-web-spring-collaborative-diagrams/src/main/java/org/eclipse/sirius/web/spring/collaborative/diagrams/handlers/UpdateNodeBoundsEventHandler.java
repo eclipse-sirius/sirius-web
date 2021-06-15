@@ -22,6 +22,7 @@ import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramInput;
+import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramQueryService;
 import org.eclipse.sirius.web.collaborative.diagrams.api.dto.UpdateNodeBoundsInput;
 import org.eclipse.sirius.web.collaborative.diagrams.api.dto.UpdateNodeBoundsSuccessPayload;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
@@ -30,7 +31,6 @@ import org.eclipse.sirius.web.diagrams.Node;
 import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.Size;
 import org.eclipse.sirius.web.diagrams.events.ResizeEvent;
-import org.eclipse.sirius.web.diagrams.services.api.IDiagramService;
 import org.eclipse.sirius.web.spring.collaborative.diagrams.DiagramChangeKind;
 import org.eclipse.sirius.web.spring.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
 import org.springframework.stereotype.Service;
@@ -48,12 +48,12 @@ public class UpdateNodeBoundsEventHandler implements IDiagramEventHandler {
 
     private final ICollaborativeDiagramMessageService messageService;
 
-    private final IDiagramService diagramService;
+    private final IDiagramQueryService diagramQueryService;
 
     private final Counter counter;
 
-    public UpdateNodeBoundsEventHandler(ICollaborativeDiagramMessageService messageService, IDiagramService diagramService, MeterRegistry meterRegistry) {
-        this.diagramService = Objects.requireNonNull(diagramService);
+    public UpdateNodeBoundsEventHandler(ICollaborativeDiagramMessageService messageService, IDiagramQueryService diagramQueryService, MeterRegistry meterRegistry) {
+        this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
         this.messageService = Objects.requireNonNull(messageService);
 
         // @formatter:off
@@ -95,7 +95,7 @@ public class UpdateNodeBoundsEventHandler implements IDiagramEventHandler {
                 .build();
         // @formatter:on
 
-        Optional<Node> optionalNode = this.diagramService.findNodeById(diagramContext.getDiagram(), diagramInput.getDiagramElementId());
+        Optional<Node> optionalNode = this.diagramQueryService.findNodeById(diagramContext.getDiagram(), diagramInput.getDiagramElementId());
 
         EventHandlerResponse result;
         if (optionalNode.isPresent()) {

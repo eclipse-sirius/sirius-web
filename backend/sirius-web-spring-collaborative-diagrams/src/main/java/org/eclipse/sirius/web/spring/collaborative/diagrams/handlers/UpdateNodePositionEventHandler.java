@@ -22,6 +22,7 @@ import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramInput;
+import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramQueryService;
 import org.eclipse.sirius.web.collaborative.diagrams.api.dto.UpdateNodePositionInput;
 import org.eclipse.sirius.web.collaborative.diagrams.api.dto.UpdateNodePositionSuccessPayload;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
@@ -29,7 +30,6 @@ import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.diagrams.Node;
 import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.events.MoveEvent;
-import org.eclipse.sirius.web.diagrams.services.api.IDiagramService;
 import org.eclipse.sirius.web.spring.collaborative.diagrams.DiagramChangeKind;
 import org.eclipse.sirius.web.spring.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
 import org.springframework.stereotype.Service;
@@ -47,12 +47,12 @@ public class UpdateNodePositionEventHandler implements IDiagramEventHandler {
 
     private final ICollaborativeDiagramMessageService messageService;
 
-    private final IDiagramService diagramService;
+    private final IDiagramQueryService diagramQueryService;
 
     private final Counter counter;
 
-    public UpdateNodePositionEventHandler(ICollaborativeDiagramMessageService messageService, IDiagramService diagramService, MeterRegistry meterRegistry) {
-        this.diagramService = Objects.requireNonNull(diagramService);
+    public UpdateNodePositionEventHandler(ICollaborativeDiagramMessageService messageService, IDiagramQueryService diagramQueryService, MeterRegistry meterRegistry) {
+        this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
         this.messageService = Objects.requireNonNull(messageService);
 
         // @formatter:off
@@ -84,7 +84,7 @@ public class UpdateNodePositionEventHandler implements IDiagramEventHandler {
     private EventHandlerResponse handleUpdateNodePosition(IDiagramContext diagramContext, UpdateNodePositionInput diagramInput) {
         Position newPosition = Position.at(diagramInput.getNewPositionX(), diagramInput.getNewPositionY());
 
-        Optional<Node> optionalNode = this.diagramService.findNodeById(diagramContext.getDiagram(), diagramInput.getDiagramElementId());
+        Optional<Node> optionalNode = this.diagramQueryService.findNodeById(diagramContext.getDiagram(), diagramInput.getDiagramElementId());
 
         EventHandlerResponse result;
         if (optionalNode.isPresent()) {
