@@ -43,6 +43,10 @@ import org.eclipse.sirius.web.graphql.utils.providers.GraphQLObjectTypeProvider;
 import org.eclipse.sirius.web.graphql.utils.schema.ITypeProvider;
 import org.springframework.stereotype.Service;
 
+import graphql.schema.GraphQLFieldDefinition;
+import graphql.schema.GraphQLList;
+import graphql.schema.GraphQLNonNull;
+import graphql.schema.GraphQLObjectType;
 import graphql.schema.GraphQLType;
 import graphql.schema.GraphQLTypeReference;
 import graphql.schema.GraphQLUnionType;
@@ -51,7 +55,6 @@ import graphql.schema.GraphQLUnionType;
  * This class regroup all diagram (Input & output) types.
  *
  * @author hmarchadour
- *
  */
 @Service
 public class DiagramTypesProvider implements ITypeProvider {
@@ -64,6 +67,8 @@ public class DiagramTypesProvider implements ITypeProvider {
 
     public static final String TOOL_SECTION_TYPE = "ToolSection"; //$NON-NLS-1$
 
+    public static final String TOOL_SECTIONS_FIELD = "toolSections"; //$NON-NLS-1$
+
     private final GraphQLObjectTypeProvider graphQLObjectTypeProvider = new GraphQLObjectTypeProvider();
 
     private final GraphQLEnumTypeProvider graphQLEnumTypeProvider = new GraphQLEnumTypeProvider();
@@ -71,8 +76,12 @@ public class DiagramTypesProvider implements ITypeProvider {
     @Override
     public Set<GraphQLType> getTypes() {
         // @formatter:off
+        GraphQLObjectType diagramObjectType = this.graphQLObjectTypeProvider.getType(Diagram.class);
+        GraphQLObjectType customDiagramObjectType = GraphQLObjectType.newObject(diagramObjectType)
+            .field(this.getToolSectionsField())
+            .build();
+
         List<Class<?>> objectClasses = List.of(
-            Diagram.class,
             Node.class,
             Label.class,
             Position.class,
@@ -105,6 +114,7 @@ public class DiagramTypesProvider implements ITypeProvider {
         // @formatter:on
 
         Set<GraphQLType> types = new LinkedHashSet<>();
+        types.add(customDiagramObjectType);
         types.addAll(graphQLObjectTypes);
         types.addAll(graphQLEnumTypes);
         types.add(this.getNodeStyleUnionType());
@@ -119,6 +129,15 @@ public class DiagramTypesProvider implements ITypeProvider {
                 .possibleType(new GraphQLTypeReference(ImageNodeStyle.class.getSimpleName()))
                 .possibleType(new GraphQLTypeReference(ListNodeStyle.class.getSimpleName()))
                 .possibleType(new GraphQLTypeReference(ListItemNodeStyle.class.getSimpleName()))
+                .build();
+        // @formatter:on
+    }
+
+    private GraphQLFieldDefinition getToolSectionsField() {
+        // @formatter:off
+        return GraphQLFieldDefinition.newFieldDefinition()
+                .name(TOOL_SECTIONS_FIELD)
+                .type(new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(new GraphQLTypeReference(ToolSection.class.getSimpleName())))))
                 .build();
         // @formatter:on
     }
