@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,20 +10,18 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.collaborative.forms.api;
+package org.eclipse.sirius.web.collaborative.api.services;
 
 import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.sirius.web.forms.Form;
+import org.eclipse.sirius.web.representations.IRepresentation;
 
 /**
- * Interface used to manipulate forms.
+ * Used to find representations.
  *
  * @author sbegaudeau
- * @author hmarchadour
  */
-public interface IFormService {
-
-    Optional<Form> findById(UUID formId);
+public interface IRepresentationSearchService {
+    <T extends IRepresentation> Optional<T> findById(UUID representationId, Class<T> representationClass);
 }

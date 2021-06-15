@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.spring.collaborative.forms;
+package org.eclipse.sirius.web.services.representations;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -18,40 +18,36 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.sirius.web.collaborative.forms.api.IFormService;
-import org.eclipse.sirius.web.forms.Form;
+import org.eclipse.sirius.web.collaborative.api.services.IRepresentationSearchService;
 import org.eclipse.sirius.web.persistence.repositories.IRepresentationRepository;
+import org.eclipse.sirius.web.representations.IRepresentation;
 import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;
-import org.eclipse.sirius.web.services.representations.RepresentationMapper;
 import org.springframework.stereotype.Service;
 
 /**
- * Class used to manipulate forms.
+ * Used to retrieve representations.
  *
  * @author sbegaudeau
- * @author hmarchadour
  */
 @Service
-public class FormService implements IFormService {
-
+public class RepresentationSearchService implements IRepresentationSearchService {
     private final IRepresentationRepository representationRepository;
 
     private final ObjectMapper objectMapper;
 
-    public FormService(IRepresentationRepository representationRepository, ObjectMapper objectMapper) {
+    public RepresentationSearchService(IRepresentationRepository representationRepository, ObjectMapper objectMapper) {
         this.representationRepository = Objects.requireNonNull(representationRepository);
         this.objectMapper = Objects.requireNonNull(objectMapper);
     }
 
     @Override
-    public Optional<Form> findById(UUID formId) {
+    public <T extends IRepresentation> Optional<T> findById(UUID representationId, Class<T> representationClass) {
         // @formatter:off
-        return this.representationRepository.findById(formId)
+        return this.representationRepository.findById(representationId)
                 .map(new RepresentationMapper(this.objectMapper)::toDTO)
                 .map(RepresentationDescriptor::getRepresentation)
-                .filter(Form.class::isInstance)
-                .map(Form.class::cast);
+                .filter(representationClass::isInstance)
+                .map(representationClass::cast);
         // @formatter:on
     }
-
 }

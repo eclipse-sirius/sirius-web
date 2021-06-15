@@ -59,11 +59,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
-			<artifactId>sirius-web-diagrams-services-api</artifactId>
-			<version>0.2.30</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-diagrams-layout</artifactId>
 			<version>0.2.30</version>
 		</dependency>

@@ -53,8 +53,6 @@
 		<module>sirius-web-graphql</module>
 		<module>sirius-web-representations</module>
 		<module>sirius-web-services</module>
-		<module>sirius-web-diagrams-services-api</module>
-		<module>sirius-web-diagrams-services</module>
 		<module>sirius-web-spring-collaborative-diagrams</module>
 		<module>sirius-web-spring-collaborative-forms</module>
 		<module>sirius-web-spring-collaborative-trees</module>

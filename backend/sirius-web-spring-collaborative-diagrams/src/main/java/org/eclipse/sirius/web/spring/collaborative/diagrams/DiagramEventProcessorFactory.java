@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import java.util.Optional;
 import org.eclipse.sirius.web.collaborative.api.services.IRepresentationConfiguration;
 import org.eclipse.sirius.web.collaborative.api.services.IRepresentationEventProcessor;
 import org.eclipse.sirius.web.collaborative.api.services.IRepresentationEventProcessorFactory;
+import org.eclipse.sirius.web.collaborative.api.services.IRepresentationSearchService;
 import org.eclipse.sirius.web.collaborative.api.services.ISubscriptionManagerFactory;
 import org.eclipse.sirius.web.collaborative.diagrams.api.DiagramConfiguration;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramCreationService;
@@ -26,7 +27,6 @@ import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramEventProcessor;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.diagrams.Diagram;
-import org.eclipse.sirius.web.diagrams.services.api.IDiagramService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -37,7 +37,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class DiagramEventProcessorFactory implements IRepresentationEventProcessorFactory {
 
-    private final IDiagramService diagramService;
+    private final IRepresentationSearchService representationSearchService;
 
     private final IDiagramCreationService diagramCreationService;
 
@@ -45,9 +45,9 @@ public class DiagramEventProcessorFactory implements IRepresentationEventProcess
 
     private final ISubscriptionManagerFactory subscriptionManagerFactory;
 
-    public DiagramEventProcessorFactory(IDiagramService diagramService, IDiagramCreationService diagramCreationService, List<IDiagramEventHandler> diagramEventHandlers,
+    public DiagramEventProcessorFactory(IRepresentationSearchService representationSearchService, IDiagramCreationService diagramCreationService, List<IDiagramEventHandler> diagramEventHandlers,
             ISubscriptionManagerFactory subscriptionManagerFactory) {
-        this.diagramService = Objects.requireNonNull(diagramService);
+        this.representationSearchService = Objects.requireNonNull(representationSearchService);
         this.diagramCreationService = Objects.requireNonNull(diagramCreationService);
         this.diagramEventHandlers = Objects.requireNonNull(diagramEventHandlers);
         this.subscriptionManagerFactory = Objects.requireNonNull(subscriptionManagerFactory);
@@ -63,7 +63,7 @@ public class DiagramEventProcessorFactory implements IRepresentationEventProcess
             IEditingContext editingContext) {
         if (IDiagramEventProcessor.class.isAssignableFrom(representationEventProcessorClass) && configuration instanceof DiagramConfiguration) {
             DiagramConfiguration diagramConfiguration = (DiagramConfiguration) configuration;
-            var optionalDiagram = this.diagramService.findById(diagramConfiguration.getId());
+            var optionalDiagram = this.representationSearchService.findById(diagramConfiguration.getId(), Diagram.class);
             if (optionalDiagram.isPresent()) {
                 Diagram diagram = optionalDiagram.get();
 
