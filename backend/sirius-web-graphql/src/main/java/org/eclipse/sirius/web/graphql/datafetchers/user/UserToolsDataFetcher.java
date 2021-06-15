@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.spring.collaborative.diagrams.graphql;
+package org.eclipse.sirius.web.graphql.datafetchers.user;
 
 import java.util.List;
 import java.util.Objects;
@@ -41,7 +41,7 @@ import graphql.schema.DataFetchingEnvironment;
  *
  * @author hmarchadour
  */
-@QueryDataFetcher(type = ViewerTypeProvider.USER_TYPE, field = QueryTypeCustomizer.TOOL_SECTIONS_FIELD)
+@QueryDataFetcher(type = ViewerTypeProvider.USER_TYPE, field = ViewerTypeProvider.TOOL_SECTIONS_FIELD)
 public class UserToolsDataFetcher implements IDataFetcherWithFieldCoordinates<List<ToolSection>> {
 
     private final IToolService toolService;
@@ -59,7 +59,7 @@ public class UserToolsDataFetcher implements IDataFetcherWithFieldCoordinates<Li
     public List<ToolSection> get(DataFetchingEnvironment environment) throws Exception {
         List<ToolSection> result = List.of();
         try {
-            UUID diagramId = UUID.fromString(environment.getArgument(QueryTypeCustomizer.DIAGRAM_ID_ARGUMENT));
+            UUID diagramId = UUID.fromString(environment.getArgument(ViewerTypeProvider.DIAGRAM_ID_ARGUMENT));
             // @formatter:off
             result = this.diagramService.findById(diagramId)
                     .map(this.toolService::getToolSections)

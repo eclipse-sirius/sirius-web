@@ -10,33 +10,37 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.spring.collaborative.diagrams.graphql;
+package org.eclipse.sirius.web.graphql.datafetchers.diagram;
 
 import org.eclipse.sirius.web.annotations.spring.graphql.QueryDataFetcher;
-import org.eclipse.sirius.web.diagrams.LabelStyle;
+import org.eclipse.sirius.web.diagrams.tools.ITool;
+import org.eclipse.sirius.web.graphql.schema.DiagramTypesProvider;
+import org.eclipse.sirius.web.graphql.schema.ImageURLFieldProvider;
 import org.eclipse.sirius.web.spring.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.web.spring.graphql.api.URLConstants;
 
 import graphql.schema.DataFetchingEnvironment;
 
 /**
- * Data fetcher for LabelStyle.iconURL, to rewrite the relative path of the image into an absolute path on the server.
+ * The data fetcher used to concatenate the server image URL to the create edge tool image path.
  * <p>
- * If the <code>LabelStyle.iconURL</code> is of the form <code>path/to/image.svg</code>, the rewritten value which will
- * be seen by the frontend will be <code>/api/images/path/to/image.svg</code>.
+ * It will be used to fetch the data for the following GraphQL field:
+ * </p>
  *
- * @author pcdavid
+ * <pre>
+ * type CreateEdgeTool {
+ *   imageURL: String!
+ * }
+ * </pre>
+ *
+ * @author hmarchadour
  */
-@QueryDataFetcher(type = "LabelStyle", field = "iconURL")
-public class LabelStyleIconURLDataFetcher implements IDataFetcherWithFieldCoordinates<String> {
+@QueryDataFetcher(type = DiagramTypesProvider.CREATE_EDGE_TOOL_TYPE, field = ImageURLFieldProvider.IMAGE_URL_FIELD)
+public class CreateEdgeToolImageURLDataFetcher implements IDataFetcherWithFieldCoordinates<String> {
 
     @Override
     public String get(DataFetchingEnvironment environment) throws Exception {
-        LabelStyle style = environment.getSource();
-        String result = style.getIconURL();
-        if (result != null && !result.isBlank()) {
-            result = URLConstants.IMAGE_BASE_PATH + result;
-        }
-        return result;
+        ITool tool = environment.getSource();
+        return URLConstants.IMAGE_BASE_PATH + tool.getImageURL();
     }
 }

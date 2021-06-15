@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.spring.collaborative.diagrams.graphql;
+package org.eclipse.sirius.web.graphql.datafetchers.subscriptions;
 
 import java.util.Objects;
 
