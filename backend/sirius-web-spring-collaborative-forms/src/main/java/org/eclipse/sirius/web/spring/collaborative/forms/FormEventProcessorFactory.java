@@ -19,11 +19,11 @@ import java.util.Optional;
 import org.eclipse.sirius.web.collaborative.api.services.IRepresentationConfiguration;
 import org.eclipse.sirius.web.collaborative.api.services.IRepresentationEventProcessor;
 import org.eclipse.sirius.web.collaborative.api.services.IRepresentationEventProcessorFactory;
+import org.eclipse.sirius.web.collaborative.api.services.IRepresentationSearchService;
 import org.eclipse.sirius.web.collaborative.api.services.ISubscriptionManagerFactory;
 import org.eclipse.sirius.web.collaborative.forms.api.FormConfiguration;
 import org.eclipse.sirius.web.collaborative.forms.api.IFormEventHandler;
 import org.eclipse.sirius.web.collaborative.forms.api.IFormEventProcessor;
-import org.eclipse.sirius.web.collaborative.forms.api.IFormService;
 import org.eclipse.sirius.web.collaborative.forms.api.IWidgetSubscriptionManagerFactory;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IObjectService;
@@ -45,7 +45,7 @@ public class FormEventProcessorFactory implements IRepresentationEventProcessorF
 
     private final IObjectService objectService;
 
-    private final IFormService formService;
+    private final IRepresentationSearchService representationSearchService;
 
     private final List<IFormEventHandler> formEventHandlers;
 
@@ -53,11 +53,11 @@ public class FormEventProcessorFactory implements IRepresentationEventProcessorF
 
     private final IWidgetSubscriptionManagerFactory widgetSubscriptionManagerFactory;
 
-    public FormEventProcessorFactory(IRepresentationDescriptionService representationDescriptionService, IObjectService objectService, IFormService formService,
+    public FormEventProcessorFactory(IRepresentationDescriptionService representationDescriptionService, IObjectService objectService, IRepresentationSearchService representationSearchService,
             List<IFormEventHandler> formEventHandlers, ISubscriptionManagerFactory subscriptionManagerFactory, IWidgetSubscriptionManagerFactory widgetSubscriptionManagerFactory) {
         this.representationDescriptionService = Objects.requireNonNull(representationDescriptionService);
         this.objectService = Objects.requireNonNull(objectService);
-        this.formService = Objects.requireNonNull(formService);
+        this.representationSearchService = Objects.requireNonNull(representationSearchService);
         this.formEventHandlers = Objects.requireNonNull(formEventHandlers);
         this.subscriptionManagerFactory = Objects.requireNonNull(subscriptionManagerFactory);
         this.widgetSubscriptionManagerFactory = Objects.requireNonNull(widgetSubscriptionManagerFactory);
@@ -74,7 +74,7 @@ public class FormEventProcessorFactory implements IRepresentationEventProcessorF
         if (IFormEventProcessor.class.isAssignableFrom(representationEventProcessorClass) && configuration instanceof FormConfiguration) {
             FormConfiguration formConfiguration = (FormConfiguration) configuration;
 
-            Optional<Form> optionalForm = this.formService.findById(formConfiguration.getId());
+            Optional<Form> optionalForm = this.representationSearchService.findById(formConfiguration.getId(), Form.class);
             if (optionalForm.isPresent()) {
                 Form form = optionalForm.get();
                 // @formatter:off

@@ -17,8 +17,9 @@ import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.annotations.spring.graphql.QueryDataFetcher;
+import org.eclipse.sirius.web.collaborative.api.services.IRepresentationSearchService;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IToolService;
-import org.eclipse.sirius.web.diagrams.services.api.IDiagramService;
+import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.tools.ToolSection;
 import org.eclipse.sirius.web.graphql.schema.ViewerTypeProvider;
 import org.eclipse.sirius.web.spring.graphql.api.IDataFetcherWithFieldCoordinates;
@@ -46,13 +47,13 @@ public class UserToolsDataFetcher implements IDataFetcherWithFieldCoordinates<Li
 
     private final IToolService toolService;
 
-    private final IDiagramService diagramService;
+    private final IRepresentationSearchService representationSearchService;
 
     private final Logger logger = LoggerFactory.getLogger(UserToolsDataFetcher.class);
 
-    public UserToolsDataFetcher(IToolService toolService, IDiagramService diagramService) {
+    public UserToolsDataFetcher(IToolService toolService, IRepresentationSearchService representationSearchService) {
         this.toolService = Objects.requireNonNull(toolService);
-        this.diagramService = Objects.requireNonNull(diagramService);
+        this.representationSearchService = Objects.requireNonNull(representationSearchService);
     }
 
     @Override
@@ -61,7 +62,7 @@ public class UserToolsDataFetcher implements IDataFetcherWithFieldCoordinates<Li
         try {
             UUID diagramId = UUID.fromString(environment.getArgument(ViewerTypeProvider.DIAGRAM_ID_ARGUMENT));
             // @formatter:off
-            result = this.diagramService.findById(diagramId)
+            result = this.representationSearchService.findById(diagramId, Diagram.class)
                     .map(this.toolService::getToolSections)
                     .orElse(List.of());
             // @formatter:on

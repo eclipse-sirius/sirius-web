@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -42,7 +42,6 @@ import org.springframework.context.annotation.Configuration;
         "org.eclipse.sirius.web.spring.collaborative.trees",
         "org.eclipse.sirius.web.spring",
         "org.eclipse.sirius.web.services",
-        "org.eclipse.sirius.web.diagrams.services",
     }
 )
 // @formatter:on
