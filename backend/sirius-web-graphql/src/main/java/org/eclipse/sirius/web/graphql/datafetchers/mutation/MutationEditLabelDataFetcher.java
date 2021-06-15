@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 THALES GLOBAL SERVICES.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,15 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.spring.collaborative.diagrams.graphql;
+package org.eclipse.sirius.web.graphql.datafetchers.mutation;
 
 import java.util.Objects;
 
 import org.eclipse.sirius.web.annotations.graphql.GraphQLMutationTypes;
 import org.eclipse.sirius.web.annotations.spring.graphql.MutationDataFetcher;
 import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventProcessorRegistry;
-import org.eclipse.sirius.web.collaborative.diagrams.api.dto.ArrangeAllInput;
-import org.eclipse.sirius.web.collaborative.diagrams.api.dto.ArrangeAllSuccessPayload;
+import org.eclipse.sirius.web.collaborative.diagrams.api.dto.EditLabelInput;
+import org.eclipse.sirius.web.collaborative.diagrams.api.dto.EditLabelSuccessPayload;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.graphql.datafetchers.IDataFetchingEnvironmentService;
@@ -29,31 +29,31 @@ import org.eclipse.sirius.web.spring.graphql.api.IDataFetcherWithFieldCoordinate
 import graphql.schema.DataFetchingEnvironment;
 
 /**
- * The data fetcher used to layout a diagram
+ * The data fetcher used to delete an object.
  * <p>
  * It will be used to handle the following GraphQL field:
  * </p>
  *
  * <pre>
  * type Mutation {
- *   arrangeAll(input: ArrangeAllInput!): ArrangeAllPayload!
+ *   editLabel(input: EditLabelInput!): EditLabelPayload!
  * }
  * </pre>
  *
- * @author wpiers
- *
+ * @author pcdavid
  */
 // @formatter:off
 @GraphQLMutationTypes(
-    input = ArrangeAllInput.class,
+    input = EditLabelInput.class,
     payloads = {
-        ArrangeAllSuccessPayload.class
+        EditLabelSuccessPayload.class
     }
 )
-@MutationDataFetcher(type = MutationTypeProvider.TYPE, field = MutationArrangeAllDataFetcher.ARRANGE_ALL_FIELD)
+@MutationDataFetcher(type = MutationTypeProvider.TYPE, field = MutationEditLabelDataFetcher.EDIT_LABEL_FIELD)
 // @formatter:on
-public class MutationArrangeAllDataFetcher implements IDataFetcherWithFieldCoordinates<IPayload> {
-    public static final String ARRANGE_ALL_FIELD = "arrangeAll"; //$NON-NLS-1$
+public class MutationEditLabelDataFetcher implements IDataFetcherWithFieldCoordinates<IPayload> {
+
+    public static final String EDIT_LABEL_FIELD = "editLabel"; //$NON-NLS-1$
 
     private final IDataFetchingEnvironmentService dataFetchingEnvironmentService;
 
@@ -61,7 +61,7 @@ public class MutationArrangeAllDataFetcher implements IDataFetcherWithFieldCoord
 
     private final IGraphQLMessageService messageService;
 
-    public MutationArrangeAllDataFetcher(IDataFetchingEnvironmentService dataFetchingEnvironmentService, IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry,
+    public MutationEditLabelDataFetcher(IDataFetchingEnvironmentService dataFetchingEnvironmentService, IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry,
             IGraphQLMessageService messageService) {
         this.dataFetchingEnvironmentService = Objects.requireNonNull(dataFetchingEnvironmentService);
         this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
@@ -70,13 +70,13 @@ public class MutationArrangeAllDataFetcher implements IDataFetcherWithFieldCoord
 
     @Override
     public IPayload get(DataFetchingEnvironment environment) throws Exception {
-        var input = this.dataFetchingEnvironmentService.getInput(environment, ArrangeAllInput.class);
+        var input = this.dataFetchingEnvironmentService.getInput(environment, EditLabelInput.class);
 
         IPayload payload = new ErrorPayload(input.getId(), this.messageService.unauthorized());
-        boolean canEdit = this.dataFetchingEnvironmentService.canEdit(environment, input.getEditingContextId());
+        boolean canEdit = this.dataFetchingEnvironmentService.canEdit(environment, input.getProjectId());
         if (canEdit) {
             // @formatter:off
-            payload = this.editingContextEventProcessorRegistry.dispatchEvent(input.getEditingContextId(), input)
+            payload = this.editingContextEventProcessorRegistry.dispatchEvent(input.getProjectId(), input)
                     .orElse(new ErrorPayload(input.getId(), this.messageService.unexpectedError()));
             // @formatter:on
         }

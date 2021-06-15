@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.spring.collaborative.diagrams.graphql;
+package org.eclipse.sirius.web.graphql.schema;
 
 import java.util.LinkedHashSet;
 import java.util.List;

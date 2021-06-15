@@ -76,12 +76,23 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
+			<artifactId>sirius-web-collaborative-diagrams-api</artifactId>
+			<version>0.2.30</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-collaborative-forms-api</artifactId>
 			<version>0.2.30</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-collaborative-trees-api</artifactId>
+			<version>0.2.30</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.eclipse.sirius.web</groupId>
+			<artifactId>sirius-web-diagrams-services-api</artifactId>
 			<version>0.2.30</version>
 		</dependency>
 		<dependency>

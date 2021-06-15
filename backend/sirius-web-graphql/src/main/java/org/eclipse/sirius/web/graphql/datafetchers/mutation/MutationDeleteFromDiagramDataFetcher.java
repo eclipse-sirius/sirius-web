@@ -10,15 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.spring.collaborative.diagrams.graphql;
+package org.eclipse.sirius.web.graphql.datafetchers.mutation;
 
 import java.util.Objects;
 
 import org.eclipse.sirius.web.annotations.graphql.GraphQLMutationTypes;
 import org.eclipse.sirius.web.annotations.spring.graphql.MutationDataFetcher;
 import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventProcessorRegistry;
-import org.eclipse.sirius.web.collaborative.diagrams.api.dto.EditLabelInput;
-import org.eclipse.sirius.web.collaborative.diagrams.api.dto.EditLabelSuccessPayload;
+import org.eclipse.sirius.web.collaborative.diagrams.api.dto.DeleteFromDiagramInput;
+import org.eclipse.sirius.web.collaborative.diagrams.api.dto.DeleteFromDiagramSuccessPayload;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.graphql.datafetchers.IDataFetchingEnvironmentService;
@@ -29,31 +29,33 @@ import org.eclipse.sirius.web.spring.graphql.api.IDataFetcherWithFieldCoordinate
 import graphql.schema.DataFetchingEnvironment;
 
 /**
- * The data fetcher used to delete an object.
+ * The data fetcher used to delete edges and nodes from a diagram.
  * <p>
  * It will be used to handle the following GraphQL field:
  * </p>
  *
  * <pre>
  * type Mutation {
- *   editLabel(input: EditLabelInput!): EditLabelPayload!
+ *   deleteFromDiagram(input: DeleteFromDiagramInput!): DeleteFromDiagramPayload!
  * }
  * </pre>
  *
  * @author pcdavid
+ * @author sdrapeau
+ * @author hmarchadour
  */
 // @formatter:off
 @GraphQLMutationTypes(
-    input = EditLabelInput.class,
+    input = DeleteFromDiagramInput.class,
     payloads = {
-        EditLabelSuccessPayload.class
+        DeleteFromDiagramSuccessPayload.class
     }
 )
-@MutationDataFetcher(type = MutationTypeProvider.TYPE, field = MutationEditLabelDataFetcher.EDIT_LABEL_FIELD)
+@MutationDataFetcher(type = MutationTypeProvider.TYPE, field = MutationDeleteFromDiagramDataFetcher.DELETE_FROM_DIAGRAM_FIELD)
 // @formatter:on
-public class MutationEditLabelDataFetcher implements IDataFetcherWithFieldCoordinates<IPayload> {
+public class MutationDeleteFromDiagramDataFetcher implements IDataFetcherWithFieldCoordinates<IPayload> {
 
-    public static final String EDIT_LABEL_FIELD = "editLabel"; //$NON-NLS-1$
+    public static final String DELETE_FROM_DIAGRAM_FIELD = "deleteFromDiagram"; //$NON-NLS-1$
 
     private final IDataFetchingEnvironmentService dataFetchingEnvironmentService;
 
@@ -61,7 +63,7 @@ public class MutationEditLabelDataFetcher implements IDataFetcherWithFieldCoordi
 
     private final IGraphQLMessageService messageService;
 
-    public MutationEditLabelDataFetcher(IDataFetchingEnvironmentService dataFetchingEnvironmentService, IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry,
+    public MutationDeleteFromDiagramDataFetcher(IDataFetchingEnvironmentService dataFetchingEnvironmentService, IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry,
             IGraphQLMessageService messageService) {
         this.dataFetchingEnvironmentService = Objects.requireNonNull(dataFetchingEnvironmentService);
         this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
@@ -70,7 +72,7 @@ public class MutationEditLabelDataFetcher implements IDataFetcherWithFieldCoordi
 
     @Override
     public IPayload get(DataFetchingEnvironment environment) throws Exception {
-        var input = this.dataFetchingEnvironmentService.getInput(environment, EditLabelInput.class);
+        var input = this.dataFetchingEnvironmentService.getInput(environment, DeleteFromDiagramInput.class);
 
         IPayload payload = new ErrorPayload(input.getId(), this.messageService.unauthorized());
         boolean canEdit = this.dataFetchingEnvironmentService.canEdit(environment, input.getProjectId());
@@ -80,7 +82,7 @@ public class MutationEditLabelDataFetcher implements IDataFetcherWithFieldCoordi
                     .orElse(new ErrorPayload(input.getId(), this.messageService.unexpectedError()));
             // @formatter:on
         }
-
         return payload;
     }
+
 }

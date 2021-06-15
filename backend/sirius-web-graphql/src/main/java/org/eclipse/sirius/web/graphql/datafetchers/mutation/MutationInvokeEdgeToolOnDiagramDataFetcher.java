@@ -10,15 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.spring.collaborative.diagrams.graphql;
+package org.eclipse.sirius.web.graphql.datafetchers.mutation;
 
 import java.util.Objects;
 
 import org.eclipse.sirius.web.annotations.graphql.GraphQLMutationTypes;
 import org.eclipse.sirius.web.annotations.spring.graphql.MutationDataFetcher;
 import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventProcessorRegistry;
-import org.eclipse.sirius.web.collaborative.diagrams.api.dto.InvokeNodeToolOnDiagramInput;
-import org.eclipse.sirius.web.collaborative.diagrams.api.dto.InvokeNodeToolOnDiagramSuccessPayload;
+import org.eclipse.sirius.web.collaborative.diagrams.api.dto.InvokeEdgeToolOnDiagramInput;
+import org.eclipse.sirius.web.collaborative.diagrams.api.dto.InvokeEdgeToolOnDiagramSuccessPayload;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.graphql.datafetchers.IDataFetchingEnvironmentService;
@@ -29,31 +29,32 @@ import org.eclipse.sirius.web.spring.graphql.api.IDataFetcherWithFieldCoordinate
 import graphql.schema.DataFetchingEnvironment;
 
 /**
- * The data fetcher used to invoke a node tool on a diagram.
+ * The data fetcher used to invoke an edge tool on a diagram.
  * <p>
  * It will be used to handle the following GraphQL field:
  * </p>
  *
  * <pre>
  * type Mutation {
- *   invokeNodeToolOnDiagram(input: InvokeNodeToolOnDiagramInput!): InvokeNodeDiagamToolPayload!
+ *   invokeEdgeToolOnDiagram(input: InvokeEdgeToolOnDiagramInput!): InvokeEdgeDiagamToolPayload!
  * }
  * </pre>
  *
  * @author pcdavid
+ * @author hmarchadour
  */
 // @formatter:off
 @GraphQLMutationTypes(
-    input = InvokeNodeToolOnDiagramInput.class,
+    input = InvokeEdgeToolOnDiagramInput.class,
     payloads = {
-        InvokeNodeToolOnDiagramSuccessPayload.class
+        InvokeEdgeToolOnDiagramSuccessPayload.class
     }
 )
-@MutationDataFetcher(type = MutationTypeProvider.TYPE, field = MutationInvokeNodeToolOnDiagramDataFetcher.INVOKE_NODE_TOOL_ON_DIAGRAM_FIELD)
+@MutationDataFetcher(type = MutationTypeProvider.TYPE, field = MutationInvokeEdgeToolOnDiagramDataFetcher.INVOKE_EDGE_TOOL_ON_DIAGRAM_FIELD)
 // @formatter:on
-public class MutationInvokeNodeToolOnDiagramDataFetcher implements IDataFetcherWithFieldCoordinates<IPayload> {
+public class MutationInvokeEdgeToolOnDiagramDataFetcher implements IDataFetcherWithFieldCoordinates<IPayload> {
 
-    public static final String INVOKE_NODE_TOOL_ON_DIAGRAM_FIELD = "invokeNodeToolOnDiagram"; //$NON-NLS-1$
+    public static final String INVOKE_EDGE_TOOL_ON_DIAGRAM_FIELD = "invokeEdgeToolOnDiagram"; //$NON-NLS-1$
 
     private final IDataFetchingEnvironmentService dataFetchingEnvironmentService;
 
@@ -61,7 +62,7 @@ public class MutationInvokeNodeToolOnDiagramDataFetcher implements IDataFetcherW
 
     private final IGraphQLMessageService messageService;
 
-    public MutationInvokeNodeToolOnDiagramDataFetcher(IDataFetchingEnvironmentService dataFetchingEnvironmentService, IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry,
+    public MutationInvokeEdgeToolOnDiagramDataFetcher(IDataFetchingEnvironmentService dataFetchingEnvironmentService, IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry,
             IGraphQLMessageService messageService) {
         this.dataFetchingEnvironmentService = Objects.requireNonNull(dataFetchingEnvironmentService);
         this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
@@ -70,7 +71,7 @@ public class MutationInvokeNodeToolOnDiagramDataFetcher implements IDataFetcherW
 
     @Override
     public IPayload get(DataFetchingEnvironment environment) throws Exception {
-        var input = this.dataFetchingEnvironmentService.getInput(environment, InvokeNodeToolOnDiagramInput.class);
+        var input = this.dataFetchingEnvironmentService.getInput(environment, InvokeEdgeToolOnDiagramInput.class);
 
         IPayload payload = new ErrorPayload(input.getId(), this.messageService.unauthorized());
         boolean canEdit = this.dataFetchingEnvironmentService.canEdit(environment, input.getProjectId());
