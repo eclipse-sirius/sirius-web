@@ -304,26 +304,32 @@ export const getToolSectionsQuery = gql`
     }
   }
 
-  query getToolSections($diagramId: ID!) {
+  query getToolSections($projectId: ID!, $diagramId: ID!) {
     viewer {
-      toolSections(diagramId: $diagramId) {
-        id
-        label
-        imageURL
-        tools {
-          __typename
-          id
-          label
-          imageURL
-          ... on CreateNodeTool {
-            targetDescriptions {
+      project(projectId: $projectId) {
+        representation(representationId: $diagramId) {
+          ... on Diagram {
+            toolSections {
               id
-            }
-            appliesToDiagramRoot
-          }
-          ... on CreateEdgeTool {
-            edgeCandidates {
-              ...edgeCandidateField
+              label
+              imageURL
+              tools {
+                __typename
+                id
+                label
+                imageURL
+                ... on CreateNodeTool {
+                  targetDescriptions {
+                    id
+                  }
+                  appliesToDiagramRoot
+                }
+                ... on CreateEdgeTool {
+                  edgeCandidates {
+                    ...edgeCandidateField
+                  }
+                }
+              }
             }
           }
         }

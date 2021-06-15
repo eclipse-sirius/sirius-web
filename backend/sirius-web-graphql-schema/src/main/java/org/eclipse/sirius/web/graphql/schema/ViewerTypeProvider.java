@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.eclipse.sirius.web.diagrams.tools.ToolSection;
 import org.eclipse.sirius.web.graphql.utils.schema.ITypeProvider;
 import org.springframework.stereotype.Service;
 
@@ -32,8 +31,6 @@ import graphql.Scalars;
 import graphql.schema.GraphQLArgument;
 import graphql.schema.GraphQLFieldDefinition;
 import graphql.schema.GraphQLInterfaceType;
-import graphql.schema.GraphQLList;
-import graphql.schema.GraphQLNonNull;
 import graphql.schema.GraphQLObjectType;
 import graphql.schema.GraphQLType;
 import graphql.schema.GraphQLTypeReference;
@@ -53,7 +50,6 @@ import graphql.schema.GraphQLTypeReference;
  *   editingContext(editingContextId: ID!): EditingContext
  *   representationDescriptions(classId: ID): ViewerRepresentationDescriptionConnection!
  *   namespaces: [Namespace!]!
- *   toolSections: [ToolSection!]!
  * }
  *
  * type User implements Viewer {
@@ -63,7 +59,6 @@ import graphql.schema.GraphQLTypeReference;
  *   project(projectId: ID!): Project
  *   representationDescriptions(classId: ID): ViewerRepresentationDescriptionConnection!
  *   namespaces: [Namespace!]!
- *   toolSections: [ToolSection!]!
  * }
  *
  * type ViewerRepresentationDescriptionConnection {
@@ -98,10 +93,6 @@ public class ViewerTypeProvider implements ITypeProvider {
 
     public static final String EDITING_CONTEXT_ID_ARGUMENT = "editingContextId"; //$NON-NLS-1$
 
-    public static final String TOOL_SECTIONS_FIELD = "toolSections"; //$NON-NLS-1$
-
-    public static final String DIAGRAM_ID_ARGUMENT = "diagramId"; //$NON-NLS-1$
-
     @Override
     public Set<GraphQLType> getTypes() {
         GraphQLInterfaceType viewerInterface = this.getViewerInterface();
@@ -135,7 +126,6 @@ public class ViewerTypeProvider implements ITypeProvider {
         viewerFieldsDefinition.add(this.getProjectsField());
         viewerFieldsDefinition.add(this.getProjectField());
         viewerFieldsDefinition.add(this.getEditingContextField());
-        viewerFieldsDefinition.add(this.getToolSectionsField());
         return viewerFieldsDefinition;
     }
 
@@ -184,25 +174,6 @@ public class ViewerTypeProvider implements ITypeProvider {
                 .argument(newArgument()
                             .name(EDITING_CONTEXT_ID_ARGUMENT)
                             .type(nonNull(Scalars.GraphQLID)))
-                .build();
-        // @formatter:on
-    }
-
-    private GraphQLArgument getDiagramIdArgument() {
-        // @formatter:off
-        return GraphQLArgument.newArgument()
-                .name(DIAGRAM_ID_ARGUMENT)
-                .type(new GraphQLNonNull(Scalars.GraphQLID))
-                .build();
-        // @formatter:on
-    }
-
-    private GraphQLFieldDefinition getToolSectionsField() {
-        // @formatter:off
-        return GraphQLFieldDefinition.newFieldDefinition()
-                .name(TOOL_SECTIONS_FIELD)
-                .type(new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(new GraphQLTypeReference(ToolSection.class.getSimpleName())))))
-                .argument(this.getDiagramIdArgument())
                 .build();
         // @formatter:on
     }
