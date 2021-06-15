@@ -20,7 +20,7 @@ import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.collaborative.forms.api.IFormEventHandler;
 import org.eclipse.sirius.web.collaborative.forms.api.IFormInput;
-import org.eclipse.sirius.web.collaborative.forms.api.IFormService;
+import org.eclipse.sirius.web.collaborative.forms.api.IFormQueryService;
 import org.eclipse.sirius.web.collaborative.forms.api.dto.EditCheckboxInput;
 import org.eclipse.sirius.web.collaborative.forms.api.dto.EditCheckboxSuccessPayload;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
@@ -41,14 +41,14 @@ import io.micrometer.core.instrument.MeterRegistry;
 @Service
 public class EditCheckboxEventHandler implements IFormEventHandler {
 
-    private final IFormService formService;
+    private final IFormQueryService formQueryService;
 
     private final ICollaborativeFormMessageService messageService;
 
     private final Counter counter;
 
-    public EditCheckboxEventHandler(IFormService formService, ICollaborativeFormMessageService messageService, MeterRegistry meterRegistry) {
-        this.formService = Objects.requireNonNull(formService);
+    public EditCheckboxEventHandler(IFormQueryService formQueryService, ICollaborativeFormMessageService messageService, MeterRegistry meterRegistry) {
+        this.formQueryService = Objects.requireNonNull(formQueryService);
         this.messageService = Objects.requireNonNull(messageService);
 
         // @formatter:off
@@ -71,7 +71,7 @@ public class EditCheckboxEventHandler implements IFormEventHandler {
             EditCheckboxInput input = (EditCheckboxInput) formInput;
 
             // @formatter:off
-            var optionalCheckbox = this.formService.findWidget(form, input.getCheckboxId())
+            var optionalCheckbox = this.formQueryService.findWidget(form, input.getCheckboxId())
                     .filter(Checkbox.class::isInstance)
                     .map(Checkbox.class::cast);
 

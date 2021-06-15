@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,27 +13,21 @@
 package org.eclipse.sirius.web.spring.collaborative.forms.handlers;
 
 import java.util.Optional;
-import java.util.UUID;
 
-import org.eclipse.sirius.web.collaborative.forms.api.IFormService;
+import org.eclipse.sirius.web.collaborative.forms.api.IFormQueryService;
 import org.eclipse.sirius.web.forms.AbstractWidget;
 import org.eclipse.sirius.web.forms.Form;
 
 /**
- * Implementation of the form service which does nothing.
+ * Implementation of the form query service which does nothing.
  *
  * @author sbegaudeau
  * @author hmarchadour
  */
-public class NoOpFormService implements IFormService {
+public class NoOpFormQueryService implements IFormQueryService {
 
     @Override
     public Optional<AbstractWidget> findWidget(Form form, String widgetId) {
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<Form> findById(UUID formId) {
         return Optional.empty();
     }
 

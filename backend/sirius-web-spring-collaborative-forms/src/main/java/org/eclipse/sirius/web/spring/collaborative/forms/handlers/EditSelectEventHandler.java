@@ -21,7 +21,7 @@ import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.collaborative.forms.api.IFormEventHandler;
 import org.eclipse.sirius.web.collaborative.forms.api.IFormInput;
-import org.eclipse.sirius.web.collaborative.forms.api.IFormService;
+import org.eclipse.sirius.web.collaborative.forms.api.IFormQueryService;
 import org.eclipse.sirius.web.collaborative.forms.api.dto.EditSelectInput;
 import org.eclipse.sirius.web.collaborative.forms.api.dto.EditSelectSuccessPayload;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
@@ -42,14 +42,14 @@ import io.micrometer.core.instrument.MeterRegistry;
 @Service
 public class EditSelectEventHandler implements IFormEventHandler {
 
-    private final IFormService formService;
+    private final IFormQueryService formQueryService;
 
     private final ICollaborativeFormMessageService messageService;
 
     private final Counter counter;
 
-    public EditSelectEventHandler(IFormService formService, ICollaborativeFormMessageService messageService, MeterRegistry meterRegistry) {
-        this.formService = Objects.requireNonNull(formService);
+    public EditSelectEventHandler(IFormQueryService formQueryService, ICollaborativeFormMessageService messageService, MeterRegistry meterRegistry) {
+        this.formQueryService = Objects.requireNonNull(formQueryService);
         this.messageService = Objects.requireNonNull(messageService);
 
         // @formatter:off
@@ -72,7 +72,7 @@ public class EditSelectEventHandler implements IFormEventHandler {
             EditSelectInput input = (EditSelectInput) formInput;
 
             // @formatter:off
-            Optional<Select> optionalSelect = this.formService.findWidget(form, input.getSelectId())
+            Optional<Select> optionalSelect = this.formQueryService.findWidget(form, input.getSelectId())
                     .filter(Select.class::isInstance)
                     .map(Select.class::cast);
 

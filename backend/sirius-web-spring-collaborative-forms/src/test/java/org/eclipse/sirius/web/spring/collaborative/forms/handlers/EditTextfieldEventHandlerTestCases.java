@@ -20,7 +20,7 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 
-import org.eclipse.sirius.web.collaborative.forms.api.IFormService;
+import org.eclipse.sirius.web.collaborative.forms.api.IFormQueryService;
 import org.eclipse.sirius.web.collaborative.forms.api.dto.EditTextfieldInput;
 import org.eclipse.sirius.web.forms.AbstractWidget;
 import org.eclipse.sirius.web.forms.Form;
@@ -77,13 +77,13 @@ public class EditTextfieldEventHandlerTestCases {
                 .build();
         // @formatter:on
 
-        IFormService formService = new NoOpFormService() {
+        IFormQueryService formQueryService = new NoOpFormQueryService() {
             @Override
             public Optional<AbstractWidget> findWidget(Form form, String widgetId) {
                 return Optional.of(textfield);
             }
         };
-        EditTextfieldEventHandler handler = new EditTextfieldEventHandler(formService, new NoOpCollaborativeFormMessageService(), new SimpleMeterRegistry());
+        EditTextfieldEventHandler handler = new EditTextfieldEventHandler(formQueryService, new NoOpCollaborativeFormMessageService(), new SimpleMeterRegistry());
         assertThat(handler.canHandle(input)).isTrue();
 
         handler.handle(form, input);

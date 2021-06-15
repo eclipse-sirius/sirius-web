@@ -19,13 +19,10 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.collaborative.forms.api.IFormService;
-import org.eclipse.sirius.web.forms.AbstractWidget;
 import org.eclipse.sirius.web.forms.Form;
 import org.eclipse.sirius.web.persistence.repositories.IRepresentationRepository;
 import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;
 import org.eclipse.sirius.web.services.representations.RepresentationMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 /**
@@ -37,8 +34,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class FormService implements IFormService {
 
-    private final Logger logger = LoggerFactory.getLogger(FormService.class);
-
     private final IRepresentationRepository representationRepository;
 
     private final ObjectMapper objectMapper;
@@ -46,23 +41,6 @@ public class FormService implements IFormService {
     public FormService(IRepresentationRepository representationRepository, ObjectMapper objectMapper) {
         this.representationRepository = Objects.requireNonNull(representationRepository);
         this.objectMapper = Objects.requireNonNull(objectMapper);
-    }
-
-    @Override
-    public Optional<AbstractWidget> findWidget(Form form, String widgetId) {
-        // @formatter:off
-        Optional<AbstractWidget> optionalWidget = form.getPages().stream()
-                .flatMap(page -> page.getGroups().stream())
-                .flatMap(group -> group.getWidgets().stream())
-                .filter(widget -> Objects.equals(widgetId, widget.getId()))
-                .findFirst();
-        // @formatter:on
-
-        if (optionalWidget.isEmpty()) {
-            this.logger.warn("The widget with the id {} has not been found", widgetId); //$NON-NLS-1$
-        }
-
-        return optionalWidget;
     }
 
     @Override
