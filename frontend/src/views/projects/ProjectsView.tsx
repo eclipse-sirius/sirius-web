@@ -270,8 +270,7 @@ const ProjectsTable = ({ projects, onMore }: ProjectsTableProps) => {
         <Table>
           <colgroup>
             <col width="60%" />
-            <col width="30%" />
-            <col width="10%" />
+            <col width="40%" />
           </colgroup>
           <TableHead>
             <TableRow>
