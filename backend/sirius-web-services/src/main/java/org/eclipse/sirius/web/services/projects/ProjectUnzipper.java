@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.emf.services.upload;
+package org.eclipse.sirius.web.services.projects;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 

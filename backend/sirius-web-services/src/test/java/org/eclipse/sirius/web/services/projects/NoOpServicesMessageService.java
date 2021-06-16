@@ -46,4 +46,9 @@ public class NoOpServicesMessageService implements IServicesMessageService {
         return ""; //$NON-NLS-1$
     }
 
+    @Override
+    public String unexpectedError() {
+        return ""; //$NON-NLS-1$
+    }
+
 }

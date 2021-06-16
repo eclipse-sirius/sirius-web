@@ -29,4 +29,6 @@ public interface IServicesMessageService {
 
     String modelerNotFound();
 
+    String unexpectedError();
+
 }
