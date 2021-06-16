@@ -21,12 +21,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.eclipse.sirius.web.collaborative.api.dto.DeleteRepresentationInput;
 import org.eclipse.sirius.web.collaborative.api.dto.DeleteRepresentationSuccessPayload;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
+import org.eclipse.sirius.web.collaborative.api.services.IRepresentationDeletionService;
+import org.eclipse.sirius.web.collaborative.api.services.IRepresentationSearchService;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.representations.IRepresentation;
-import org.eclipse.sirius.web.services.api.representations.IRepresentationService;
-import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;
 import org.junit.Test;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
@@ -41,35 +41,23 @@ public class DeleteRepresentationEventHandlerTestCases {
     public void testDeleteRepresentation() {
         AtomicBoolean hasBeenCalled = new AtomicBoolean();
 
-        IRepresentationService representationService = new NoOpRepresentationService() {
+        IRepresentationSearchService representationSearchService = new IRepresentationSearchService() {
+
             @Override
-            public Optional<RepresentationDescriptor> getRepresentation(UUID representationId) {
-                IRepresentation representation = new IRepresentation() {
+            public <T extends IRepresentation> Optional<T> findById(UUID representationId, Class<T> representationClass) {
+                return Optional.empty();
+            }
 
-                    @Override
-                    public String getLabel() {
-                        return null;
-                    }
+            @Override
+            public boolean existsById(UUID representationId) {
+                return true;
+            }
+        };
 
-                    @Override
-                    public String getKind() {
-                        return null;
-                    }
+        IRepresentationDeletionService representationDeletionService = new IRepresentationDeletionService() {
 
-                    @Override
-                    public UUID getId() {
-                        return null;
-                    }
-
-                    @Override
-                    public UUID getDescriptionId() {
-                        return null;
-                    }
-                };
-                RepresentationDescriptor representationDescriptor = RepresentationDescriptor.newRepresentationDescriptor(UUID.randomUUID()).projectId(UUID.randomUUID())
-                        .descriptionId(UUID.randomUUID()).targetObjectId(UUID.randomUUID().toString()).label("") //$NON-NLS-1$
-                        .representation(representation).build();
-                return Optional.of(representationDescriptor);
+            @Override
+            public void deleteDanglingRepresentations(UUID editingContextId) {
             }
 
             @Override
@@ -78,7 +66,7 @@ public class DeleteRepresentationEventHandlerTestCases {
             }
         };
 
-        EventHandlerResponse response = this.handleEvent(representationService);
+        EventHandlerResponse response = this.handleEvent(representationSearchService, representationDeletionService);
 
         assertThat(hasBeenCalled.get()).isTrue();
         assertThat(response.getPayload()).isInstanceOf(DeleteRepresentationSuccessPayload.class);
@@ -88,10 +76,23 @@ public class DeleteRepresentationEventHandlerTestCases {
     public void testDeleteRepresentationFailureCases() {
         AtomicBoolean hasBeenCalled = new AtomicBoolean();
 
-        IRepresentationService representationService = new NoOpRepresentationService() {
+        IRepresentationSearchService representationSearchService = new IRepresentationSearchService() {
+
             @Override
-            public Optional<RepresentationDescriptor> getRepresentation(UUID representationId) {
+            public <T extends IRepresentation> Optional<T> findById(UUID representationId, Class<T> representationClass) {
                 return Optional.empty();
+            }
+
+            @Override
+            public boolean existsById(UUID representationId) {
+                return false;
+            }
+        };
+
+        IRepresentationDeletionService representationDeletionService = new IRepresentationDeletionService() {
+
+            @Override
+            public void deleteDanglingRepresentations(UUID editingContextId) {
             }
 
             @Override
@@ -100,15 +101,16 @@ public class DeleteRepresentationEventHandlerTestCases {
             }
         };
 
-        EventHandlerResponse response = this.handleEvent(representationService);
+        EventHandlerResponse response = this.handleEvent(representationSearchService, representationDeletionService);
 
         assertThat(hasBeenCalled.get()).isFalse();
         assertThat(response.getPayload()).isInstanceOf(ErrorPayload.class);
     }
 
-    private EventHandlerResponse handleEvent(IRepresentationService representationService) {
+    private EventHandlerResponse handleEvent(IRepresentationSearchService representationSearchService, IRepresentationDeletionService representationDeletionService) {
         IInput input = new DeleteRepresentationInput(UUID.randomUUID(), UUID.randomUUID());
-        DeleteRepresentationEventHandler handler = new DeleteRepresentationEventHandler(representationService, new NoOpCollaborativeMessageService(), new SimpleMeterRegistry());
+        DeleteRepresentationEventHandler handler = new DeleteRepresentationEventHandler(representationSearchService, representationDeletionService, new NoOpCollaborativeMessageService(),
+                new SimpleMeterRegistry());
         assertThat(handler.canHandle(input)).isTrue();
 
         IEditingContext editingContext = new NoOpEditingContext();

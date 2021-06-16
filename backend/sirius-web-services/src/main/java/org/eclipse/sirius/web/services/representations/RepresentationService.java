@@ -21,10 +21,13 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+import org.eclipse.sirius.web.collaborative.api.services.IRepresentationDeletionService;
+import org.eclipse.sirius.web.collaborative.api.services.IRepresentationPersistenceService;
 import org.eclipse.sirius.web.persistence.entities.ProjectEntity;
 import org.eclipse.sirius.web.persistence.entities.RepresentationEntity;
 import org.eclipse.sirius.web.persistence.repositories.IProjectRepository;
 import org.eclipse.sirius.web.persistence.repositories.IRepresentationRepository;
+import org.eclipse.sirius.web.representations.ISemanticRepresentation;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationService;
 import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;
 import org.springframework.stereotype.Service;
@@ -38,7 +41,7 @@ import io.micrometer.core.instrument.Timer;
  * @author gcoutable
  */
 @Service
-public class RepresentationService implements IRepresentationService {
+public class RepresentationService implements IRepresentationService, IRepresentationPersistenceService, IRepresentationDeletionService {
 
     private static final String TIMER_NAME = "siriusweb_representation_save"; //$NON-NLS-1$
 
@@ -87,8 +90,9 @@ public class RepresentationService implements IRepresentationService {
     }
 
     @Override
-    public void save(RepresentationDescriptor representationDescriptor) {
+    public void save(UUID editingContextId, ISemanticRepresentation representation) {
         long start = System.currentTimeMillis();
+        RepresentationDescriptor representationDescriptor = this.getRepresentationDescriptor(editingContextId, representation);
 
         var optionalProjectEntity = this.projectRepository.findById(representationDescriptor.getProjectId());
         if (optionalProjectEntity.isPresent()) {
@@ -99,6 +103,18 @@ public class RepresentationService implements IRepresentationService {
 
         long end = System.currentTimeMillis();
         this.timer.record(end - start, TimeUnit.MILLISECONDS);
+    }
+
+    private RepresentationDescriptor getRepresentationDescriptor(UUID editingContextId, ISemanticRepresentation representation) {
+        // @formatter:off
+        return RepresentationDescriptor.newRepresentationDescriptor(representation.getId())
+                .projectId(editingContextId)
+                .descriptionId(representation.getDescriptionId())
+                .targetObjectId(representation.getTargetObjectId())
+                .label(representation.getLabel())
+                .representation(representation)
+                .build();
+        // @formatter:on
     }
 
     @Override

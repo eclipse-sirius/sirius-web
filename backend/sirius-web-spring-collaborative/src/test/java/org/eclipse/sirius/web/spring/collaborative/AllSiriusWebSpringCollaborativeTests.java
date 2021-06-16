@@ -19,7 +19,6 @@ import org.eclipse.sirius.web.spring.collaborative.handlers.CreateRootObjectEven
 import org.eclipse.sirius.web.spring.collaborative.handlers.DeleteObjectEventHandlerTestCases;
 import org.eclipse.sirius.web.spring.collaborative.handlers.DeleteRepresentationEventHandlerTestCases;
 import org.eclipse.sirius.web.spring.collaborative.handlers.RenameObjectEventHandlerTestCases;
-import org.eclipse.sirius.web.spring.collaborative.handlers.RenameProjectEventHandlerTestCases;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
@@ -39,7 +38,6 @@ import org.junit.runners.Suite.SuiteClasses;
     DeleteObjectEventHandlerTestCases.class,
     DeleteRepresentationEventHandlerTestCases.class,
     RenameObjectEventHandlerTestCases.class,
-    RenameProjectEventHandlerTestCases.class
 })
 //@formatter:on
 public final class AllSiriusWebSpringCollaborativeTests {

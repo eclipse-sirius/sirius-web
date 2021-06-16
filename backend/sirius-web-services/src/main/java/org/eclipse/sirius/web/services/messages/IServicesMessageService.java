@@ -19,6 +19,8 @@ package org.eclipse.sirius.web.services.messages;
  */
 public interface IServicesMessageService {
 
+    String invalidInput(String expectedInputTypeName, String receivedInputTypeName);
+
     String invalidProjectName();
 
     String invalidModelerName();

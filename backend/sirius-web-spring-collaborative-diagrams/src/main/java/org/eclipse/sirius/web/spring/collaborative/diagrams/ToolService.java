@@ -18,11 +18,11 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.sirius.web.collaborative.diagrams.api.IToolService;
+import org.eclipse.sirius.web.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.web.diagrams.tools.ITool;
 import org.eclipse.sirius.web.diagrams.tools.ToolSection;
-import org.eclipse.sirius.web.services.api.representations.IRepresentationDescriptionService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -33,16 +33,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class ToolService implements IToolService {
 
-    private final IRepresentationDescriptionService representationDescriptionService;
+    private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
-    public ToolService(IRepresentationDescriptionService representationDescriptionService) {
-        this.representationDescriptionService = Objects.requireNonNull(representationDescriptionService);
+    public ToolService(IRepresentationDescriptionSearchService representationDescriptionSearchService) {
+        this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
     }
 
     @Override
     public List<ToolSection> getToolSections(Diagram diagram) {
         // @formatter:off
-        return this.representationDescriptionService.findRepresentationDescriptionById(diagram.getDescriptionId())
+        return this.representationDescriptionSearchService.findById(diagram.getDescriptionId())
             .filter(DiagramDescription.class::isInstance)
             .map(DiagramDescription.class::cast)
             .map(DiagramDescription::getToolSections)

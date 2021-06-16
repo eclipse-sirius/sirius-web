@@ -31,12 +31,6 @@ public interface IRepresentationService {
 
     List<RepresentationDescriptor> getRepresentationDescriptorsForObjectId(String objectId);
 
-    void save(RepresentationDescriptor representationDescriptor);
-
     Optional<RepresentationDescriptor> getRepresentation(UUID representationId);
-
-    void delete(UUID representationId);
-
-    void deleteDanglingRepresentations(UUID editingContextId);
 
 }

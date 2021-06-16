@@ -20,10 +20,10 @@ import java.util.UUID;
 import org.assertj.core.api.Condition;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.web.api.configuration.StereotypeDescription;
+import org.eclipse.sirius.web.collaborative.api.dto.CreateDocumentInput;
+import org.eclipse.sirius.web.collaborative.api.dto.CreateDocumentSuccessPayload;
 import org.eclipse.sirius.web.emf.services.messages.IEMFMessageService;
 import org.eclipse.sirius.web.services.api.accounts.Profile;
-import org.eclipse.sirius.web.services.api.document.CreateDocumentInput;
-import org.eclipse.sirius.web.services.api.document.CreateDocumentSuccessPayload;
 import org.eclipse.sirius.web.services.api.document.Document;
 import org.eclipse.sirius.web.services.api.document.IDocumentService;
 import org.eclipse.sirius.web.services.api.projects.Project;
@@ -131,18 +131,10 @@ public class CreateDocumentEventHandlerTestCases {
         assertThat(handler.canHandle(firstCreateInput)).isTrue();
         Object firstPayload = handler.handle(editingContext, firstCreateInput).getPayload();
         assertThat(firstPayload).isInstanceOf(CreateDocumentSuccessPayload.class);
-        Document firstDocument = ((CreateDocumentSuccessPayload) firstPayload).getDocument();
-        assertThat(firstDocument.getName()).isEqualTo(DOCUMENT_NAME);
 
         var secondCreatedInput = new CreateDocumentInput(UUID.randomUUID(), editingContext.getId(), DOCUMENT_NAME, STEREOTYPE_DESCRIPTION_ID);
         assertThat(handler.canHandle(secondCreatedInput)).isTrue();
         Object secondPayload = handler.handle(editingContext, secondCreatedInput).getPayload();
         assertThat(secondPayload).isInstanceOf(CreateDocumentSuccessPayload.class);
-        Document secondDocument = ((CreateDocumentSuccessPayload) secondPayload).getDocument();
-        assertThat(secondDocument.getName()).isEqualTo(DOCUMENT_NAME);
-
-        UUID firstDocumentId = firstDocument.getId();
-        UUID secondDocumentId = secondDocument.getId();
-        assertThat(firstDocumentId).isNotEqualTo(secondDocumentId);
     }
 }

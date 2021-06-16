@@ -25,11 +25,6 @@ const deleteDocumentMutation = gql`
   mutation deleteDocument($input: DeleteDocumentInput!) {
     deleteDocument(input: $input) {
       __typename
-      ... on DeleteDocumentSuccessPayload {
-        project {
-          id
-        }
-      }
       ... on ErrorPayload {
         message
       }

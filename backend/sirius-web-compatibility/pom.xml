@@ -92,7 +92,12 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
-			<artifactId>sirius-web-services-api</artifactId>
+			<artifactId>sirius-web-api</artifactId>
+			<version>0.2.30</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius.web</groupId>
+			<artifactId>sirius-web-core-api</artifactId>
 			<version>0.2.30</version>
 		</dependency>
 		<dependency>

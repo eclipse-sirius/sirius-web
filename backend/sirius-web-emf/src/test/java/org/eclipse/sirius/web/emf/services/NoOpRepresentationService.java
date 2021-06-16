@@ -48,19 +48,8 @@ public class NoOpRepresentationService implements IRepresentationService {
     }
 
     @Override
-    public void save(RepresentationDescriptor representationDescriptor) {
-    }
-
-    @Override
     public Optional<RepresentationDescriptor> getRepresentation(UUID representationId) {
         return null;
     }
 
-    @Override
-    public void delete(UUID representationId) {
-    }
-
-    @Override
-    public void deleteDanglingRepresentations(UUID editingContextId) {
-    }
 }

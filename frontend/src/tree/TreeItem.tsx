@@ -34,11 +34,6 @@ const deleteObjectMutation = gql`
   mutation deleteObject($input: DeleteObjectInput!) {
     deleteObject(input: $input) {
       __typename
-      ... on DeleteObjectSuccessPayload {
-        document {
-          id
-        }
-      }
       ... on ErrorPayload {
         message
       }
@@ -64,11 +59,6 @@ const renameDocumentMutation = gql`
   mutation renameDocument($input: RenameDocumentInput!) {
     renameDocument(input: $input) {
       __typename
-      ... on RenameDocumentSuccessPayload {
-        document {
-          name
-        }
-      }
       ... on ErrorPayload {
         message
       }
@@ -80,10 +70,6 @@ const renameObjectMutation = gql`
   mutation renameObject($input: RenameObjectInput!) {
     renameObject(input: $input) {
       __typename
-      ... on RenameObjectSuccessPayload {
-        objectId
-        newName
-      }
       ... on ErrorPayload {
         message
       }
@@ -153,7 +139,7 @@ export const TreeItem = ({
       const { renameDocument } = renameDocumentData;
       if (renameDocument.__typename === 'RenameDocumentSuccessPayload') {
         setState((prevState) => {
-          return { ...prevState, editingMode: false, label: renameDocument.name };
+          return { ...prevState, editingMode: false };
         });
       }
     }
@@ -183,7 +169,7 @@ export const TreeItem = ({
       const { renameObject } = renameObjectData;
       if (renameObject.__typename === 'RenameObjectSuccessPayload') {
         setState((prevState) => {
-          return { ...prevState, editingMode: false, label: renameObject.newName };
+          return { ...prevState, editingMode: false };
         });
       }
     }

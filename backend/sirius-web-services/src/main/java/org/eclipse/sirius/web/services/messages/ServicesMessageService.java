@@ -33,6 +33,11 @@ public class ServicesMessageService implements IServicesMessageService {
     }
 
     @Override
+    public String invalidInput(String expectedInputTypeName, String receivedInputTypeName) {
+        return this.messageSourceAccessor.getMessage("INVALID_INPUT", new Object[] { expectedInputTypeName, receivedInputTypeName }); //$NON-NLS-1$
+    }
+
+    @Override
     public String invalidProjectName() {
         return this.messageSourceAccessor.getMessage("INVALID_PROJECT_NAME"); //$NON-NLS-1$
     }

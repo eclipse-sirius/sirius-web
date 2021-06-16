@@ -21,6 +21,8 @@ import java.util.UUID;
 
 import org.eclipse.sirius.web.collaborative.api.dto.RenameRepresentationSuccessPayload;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
+import org.eclipse.sirius.web.collaborative.api.services.IRepresentationPersistenceService;
+import org.eclipse.sirius.web.collaborative.api.services.IRepresentationSearchService;
 import org.eclipse.sirius.web.collaborative.diagrams.api.dto.RenameDiagramInput;
 import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.diagrams.Diagram;
@@ -28,7 +30,8 @@ import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.Size;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.web.diagrams.tests.TestDiagramDescriptionBuilder;
-import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;
+import org.eclipse.sirius.web.representations.IRepresentation;
+import org.eclipse.sirius.web.representations.ISemanticRepresentation;
 import org.junit.Test;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
@@ -61,23 +64,29 @@ public class RenameDiagramEventHandlerTestCases {
                 .nodes(Collections.emptyList())
                 .edges(Collections.emptyList())
                 .build();
-
-        RepresentationDescriptor representationDescriptor = RepresentationDescriptor.newRepresentationDescriptor(representationId)
-                .label(OLD_LABEL)
-                .projectId(projectId)
-                .descriptionId(diagram.getDescriptionId())
-                .representation(diagram)
-                .targetObjectId(targetObjectId.toString())
-                .build();
         // @formatter:on
-        NoOpRepresentationService noOpRepresentationService = new NoOpRepresentationService() {
+        IRepresentationSearchService representationSearchService = new IRepresentationSearchService() {
+
             @Override
-            public Optional<RepresentationDescriptor> getRepresentation(UUID representationId) {
-                return Optional.of(representationDescriptor);
+            public <T extends IRepresentation> Optional<T> findById(UUID representationId, Class<T> representationClass) {
+                return Optional.of(diagram).map(representationClass::cast);
+            }
+
+            @Override
+            public boolean existsById(UUID representationId) {
+                return false;
             }
         };
 
-        RenameDiagramEventHandler handler = new RenameDiagramEventHandler(noOpRepresentationService, new NoOpCollaborativeDiagramMessageService(), new SimpleMeterRegistry());
+        IRepresentationPersistenceService representationPersistenceService = new IRepresentationPersistenceService() {
+
+            @Override
+            public void save(UUID editingContextId, ISemanticRepresentation representation) {
+            }
+        };
+
+        RenameDiagramEventHandler handler = new RenameDiagramEventHandler(representationSearchService, representationPersistenceService, new NoOpCollaborativeDiagramMessageService(),
+                new SimpleMeterRegistry());
 
         var input = new RenameDiagramInput(UUID.randomUUID(), projectId, representationId, NEW_LABEL);
 

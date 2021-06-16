@@ -23,17 +23,16 @@ import org.eclipse.sirius.web.collaborative.api.services.ChangeDescription;
 import org.eclipse.sirius.web.collaborative.api.services.ChangeKind;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventHandler;
+import org.eclipse.sirius.web.collaborative.api.services.IRepresentationPersistenceService;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.core.api.IObjectService;
+import org.eclipse.sirius.web.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.web.forms.Form;
 import org.eclipse.sirius.web.forms.description.FormDescription;
 import org.eclipse.sirius.web.representations.IRepresentationDescription;
-import org.eclipse.sirius.web.services.api.representations.IRepresentationDescriptionService;
-import org.eclipse.sirius.web.services.api.representations.IRepresentationService;
-import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;
 import org.eclipse.sirius.web.spring.collaborative.forms.messages.ICollaborativeFormMessageService;
 import org.springframework.stereotype.Service;
 
@@ -48,9 +47,9 @@ import io.micrometer.core.instrument.MeterRegistry;
 @Service
 public class CreateFormEventHandler implements IEditingContextEventHandler {
 
-    private final IRepresentationDescriptionService representationDescriptionService;
+    private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
-    private final IRepresentationService representationService;
+    private final IRepresentationPersistenceService representationPersistenceService;
 
     private final IObjectService objectService;
 
@@ -58,10 +57,10 @@ public class CreateFormEventHandler implements IEditingContextEventHandler {
 
     private final Counter counter;
 
-    public CreateFormEventHandler(IRepresentationDescriptionService representationDescriptionService, IRepresentationService representationService, IObjectService objectService,
-            ICollaborativeFormMessageService messageService, MeterRegistry meterRegistry) {
-        this.representationDescriptionService = Objects.requireNonNull(representationDescriptionService);
-        this.representationService = Objects.requireNonNull(representationService);
+    public CreateFormEventHandler(IRepresentationDescriptionSearchService representationDescriptionSearchService, IRepresentationPersistenceService representationPersistenceService,
+            IObjectService objectService, ICollaborativeFormMessageService messageService, MeterRegistry meterRegistry) {
+        this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
+        this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
         this.objectService = Objects.requireNonNull(objectService);
         this.messageService = Objects.requireNonNull(messageService);
 
@@ -77,7 +76,7 @@ public class CreateFormEventHandler implements IEditingContextEventHandler {
         if (input instanceof CreateRepresentationInput) {
             CreateRepresentationInput createRepresentationInput = (CreateRepresentationInput) input;
             // @formatter:off
-            return this.representationDescriptionService.findRepresentationDescriptionById(createRepresentationInput.getRepresentationDescriptionId())
+            return this.representationDescriptionSearchService.findById(createRepresentationInput.getRepresentationDescriptionId())
                     .filter(FormDescription.class::isInstance)
                     .isPresent();
             // @formatter:on
@@ -92,8 +91,7 @@ public class CreateFormEventHandler implements IEditingContextEventHandler {
         if (input instanceof CreateRepresentationInput) {
             CreateRepresentationInput createRepresentationInput = (CreateRepresentationInput) input;
 
-            Optional<IRepresentationDescription> optionalRepresentationDescription = this.representationDescriptionService
-                    .findRepresentationDescriptionById(createRepresentationInput.getRepresentationDescriptionId());
+            Optional<IRepresentationDescription> optionalRepresentationDescription = this.representationDescriptionSearchService.findById(createRepresentationInput.getRepresentationDescriptionId());
             Optional<Object> optionalObject = this.objectService.getObject(editingContext, createRepresentationInput.getObjectId());
 
             if (optionalRepresentationDescription.isPresent() && optionalObject.isPresent()) {
@@ -101,24 +99,15 @@ public class CreateFormEventHandler implements IEditingContextEventHandler {
                 String targetObjectId = this.objectService.getId(optionalObject.get());
                 if (representationDescription instanceof FormDescription) {
                     // @formatter:off
-
                     Form form = Form.newForm(UUID.randomUUID())
                             .label(createRepresentationInput.getRepresentationName())
                             .targetObjectId(targetObjectId)
                             .descriptionId(representationDescription.getId())
                             .pages(List.of()) // We don't store form pages, it will be re-render by the FormProcessor.
                             .build();
-
-                    RepresentationDescriptor representationDescriptor = RepresentationDescriptor.newRepresentationDescriptor(form.getId())
-                            .projectId(editingContext.getId())
-                            .descriptionId(form.getDescriptionId())
-                            .targetObjectId(form.getTargetObjectId())
-                            .label(form.getLabel())
-                            .representation(form)
-                            .build();
                     // @formatter:on
 
-                    this.representationService.save(representationDescriptor);
+                    this.representationPersistenceService.save(editingContext.getId(), form);
 
                     return new EventHandlerResponse(new ChangeDescription(ChangeKind.REPRESENTATION_CREATION, editingContext.getId()), new CreateRepresentationSuccessPayload(input.getId(), form));
                 }

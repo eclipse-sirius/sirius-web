@@ -21,6 +21,8 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
+import org.eclipse.sirius.web.collaborative.api.dto.DeleteDocumentInput;
+import org.eclipse.sirius.web.collaborative.api.dto.DeleteDocumentSuccessPayload;
 import org.eclipse.sirius.web.collaborative.api.services.ChangeDescription;
 import org.eclipse.sirius.web.collaborative.api.services.ChangeKind;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
@@ -30,8 +32,6 @@ import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.emf.services.messages.IEMFMessageService;
-import org.eclipse.sirius.web.services.api.document.DeleteDocumentInput;
-import org.eclipse.sirius.web.services.api.document.DeleteDocumentSuccessPayload;
 import org.eclipse.sirius.web.services.api.document.Document;
 import org.eclipse.sirius.web.services.api.document.IDocumentService;
 import org.springframework.stereotype.Service;
@@ -100,7 +100,7 @@ public class DeleteDocumentEventHandler implements IEditingContextEventHandler {
 
                 this.documentService.delete(document.getId());
 
-                return new EventHandlerResponse(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId()), new DeleteDocumentSuccessPayload(input.getId(), document.getProject()));
+                return new EventHandlerResponse(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId()), new DeleteDocumentSuccessPayload(input.getId()));
             }
         }
 

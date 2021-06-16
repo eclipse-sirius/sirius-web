@@ -25,11 +25,6 @@ const createDocumentMutation = gql`
   mutation createDocument($input: CreateDocumentInput!) {
     createDocument(input: $input) {
       __typename
-      ... on CreateDocumentSuccessPayload {
-        document {
-          id
-        }
-      }
       ... on ErrorPayload {
         message
       }

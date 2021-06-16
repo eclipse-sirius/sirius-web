@@ -18,11 +18,11 @@ import java.util.Objects;
 import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventHandler;
 import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventProcessor;
 import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventProcessorFactory;
+import org.eclipse.sirius.web.collaborative.api.services.IRepresentationDeletionService;
 import org.eclipse.sirius.web.collaborative.api.services.IRepresentationEventProcessorComposedFactory;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IEditingContextPersistenceService;
 import org.eclipse.sirius.web.core.api.IObjectService;
-import org.eclipse.sirius.web.services.api.representations.IRepresentationService;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
@@ -44,23 +44,23 @@ public class EditingContextEventProcessorFactory implements IEditingContextEvent
 
     private final IRepresentationEventProcessorComposedFactory representationEventProcessorComposedFactory;
 
-    private final IRepresentationService representationService;
+    private final IRepresentationDeletionService representationDeletionService;
 
     public EditingContextEventProcessorFactory(IEditingContextPersistenceService editingContextPersistenceService, ApplicationEventPublisher applicationEventPublisher, IObjectService objectService,
             List<IEditingContextEventHandler> editingContextEventHandlers, IRepresentationEventProcessorComposedFactory representationEventProcessorComposedFactory,
-            IRepresentationService representationService) {
+            IRepresentationDeletionService representationDeletionService) {
         this.editingContextPersistenceService = Objects.requireNonNull(editingContextPersistenceService);
         this.applicationEventPublisher = Objects.requireNonNull(applicationEventPublisher);
         this.objectService = Objects.requireNonNull(objectService);
         this.editingContextEventHandlers = Objects.requireNonNull(editingContextEventHandlers);
         this.representationEventProcessorComposedFactory = Objects.requireNonNull(representationEventProcessorComposedFactory);
-        this.representationService = Objects.requireNonNull(representationService);
+        this.representationDeletionService = Objects.requireNonNull(representationDeletionService);
     }
 
     @Override
     public IEditingContextEventProcessor createEditingContextEventProcessor(IEditingContext editingContext) {
         return new EditingContextEventProcessor(editingContext, this.editingContextPersistenceService, this.applicationEventPublisher, this.objectService, this.editingContextEventHandlers,
-                this.representationEventProcessorComposedFactory, this.representationService);
+                this.representationEventProcessorComposedFactory, this.representationDeletionService);
     }
 
 }
