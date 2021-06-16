@@ -17,13 +17,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.eclipse.sirius.web.collaborative.api.dto.CreateChildInput;
+import org.eclipse.sirius.web.collaborative.api.dto.CreateChildSuccessPayload;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
+import org.eclipse.sirius.web.core.api.IEditService;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IObjectService;
-import org.eclipse.sirius.web.services.api.objects.CreateChildInput;
-import org.eclipse.sirius.web.services.api.objects.CreateChildSuccessPayload;
-import org.eclipse.sirius.web.services.api.objects.IEditService;
 import org.junit.Test;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;

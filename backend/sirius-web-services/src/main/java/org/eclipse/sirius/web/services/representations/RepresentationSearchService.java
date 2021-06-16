@@ -50,4 +50,9 @@ public class RepresentationSearchService implements IRepresentationSearchService
                 .map(representationClass::cast);
         // @formatter:on
     }
+
+    @Override
+    public boolean existsById(UUID representationId) {
+        return this.representationRepository.existsById(representationId);
+    }
 }

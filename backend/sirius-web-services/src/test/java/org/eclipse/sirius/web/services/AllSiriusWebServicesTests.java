@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.services;
 import org.eclipse.sirius.web.services.architecture.CodingRulesTestCases;
 import org.eclipse.sirius.web.services.architecture.ImmutableTestCases;
 import org.eclipse.sirius.web.services.projects.ProjectServiceTestCases;
+import org.eclipse.sirius.web.services.projects.RenameProjectEventHandlerTestCases;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
@@ -25,7 +26,7 @@ import org.junit.runners.Suite.SuiteClasses;
  * @author sbegaudeau
  */
 @RunWith(Suite.class)
-@SuiteClasses({ CodingRulesTestCases.class, ImmutableTestCases.class, ProjectServiceTestCases.class })
+@SuiteClasses({ CodingRulesTestCases.class, ImmutableTestCases.class, ProjectServiceTestCases.class, RenameProjectEventHandlerTestCases.class })
 public final class AllSiriusWebServicesTests {
     private AllSiriusWebServicesTests() {
         // Prevent instantiation

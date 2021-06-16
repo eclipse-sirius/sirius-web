@@ -46,6 +46,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
+			<artifactId>sirius-web-representations</artifactId>
+			<version>0.2.30</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-tests</artifactId>
 			<version>0.2.30</version>
 			<scope>test</scope>

@@ -21,14 +21,16 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.sirius.web.collaborative.api.dto.CreateRepresentationInput;
+import org.eclipse.sirius.web.collaborative.api.services.IRepresentationPersistenceService;
 import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramCreationService;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IObjectService;
+import org.eclipse.sirius.web.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.web.diagrams.tests.TestDiagramBuilder;
 import org.eclipse.sirius.web.representations.IRepresentationDescription;
-import org.eclipse.sirius.web.services.api.representations.IRepresentationDescriptionService;
+import org.eclipse.sirius.web.representations.ISemanticRepresentation;
 import org.junit.Test;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
@@ -41,9 +43,9 @@ import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 public class CreateDiagramEventHandlerTestCases {
     @Test
     public void testDiagramCreation() {
-        IRepresentationDescriptionService representationDescriptionService = new NoOpRepresentationDescriptionService() {
+        IRepresentationDescriptionSearchService representationDescriptionSearchService = new IRepresentationDescriptionSearchService() {
             @Override
-            public Optional<IRepresentationDescription> findRepresentationDescriptionById(UUID id) {
+            public Optional<IRepresentationDescription> findById(UUID id) {
                 // @formatter:off
                 DiagramDescription diagramDescription = DiagramDescription.newDiagramDescription(UUID.randomUUID())
                         .label("label") //$NON-NLS-1$
@@ -77,7 +79,13 @@ public class CreateDiagramEventHandlerTestCases {
             }
         };
 
-        CreateDiagramEventHandler handler = new CreateDiagramEventHandler(representationDescriptionService, new NoOpRepresentationService(), diagramCreationService, objectService,
+        IRepresentationPersistenceService representationPersistenceService = new IRepresentationPersistenceService() {
+            @Override
+            public void save(UUID editingContextId, ISemanticRepresentation representation) {
+            }
+        };
+
+        CreateDiagramEventHandler handler = new CreateDiagramEventHandler(representationDescriptionSearchService, representationPersistenceService, diagramCreationService, objectService,
                 new NoOpCollaborativeDiagramMessageService(), new SimpleMeterRegistry());
 
         var input = new CreateRepresentationInput(UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID(), "objectId", "representationName"); //$NON-NLS-1$//$NON-NLS-2$

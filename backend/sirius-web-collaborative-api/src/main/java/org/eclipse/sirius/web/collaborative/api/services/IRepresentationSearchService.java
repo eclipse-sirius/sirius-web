@@ -24,4 +24,6 @@ import org.eclipse.sirius.web.representations.IRepresentation;
  */
 public interface IRepresentationSearchService {
     <T extends IRepresentation> Optional<T> findById(UUID representationId, Class<T> representationClass);
+
+    boolean existsById(UUID representationId);
 }

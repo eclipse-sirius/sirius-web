@@ -18,6 +18,8 @@ import java.util.UUID;
 
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
+import org.eclipse.sirius.web.collaborative.api.dto.RenameDocumentInput;
+import org.eclipse.sirius.web.collaborative.api.dto.RenameDocumentSuccessPayload;
 import org.eclipse.sirius.web.collaborative.api.services.ChangeDescription;
 import org.eclipse.sirius.web.collaborative.api.services.ChangeKind;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
@@ -29,8 +31,6 @@ import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.emf.services.messages.IEMFMessageService;
 import org.eclipse.sirius.web.services.api.document.Document;
 import org.eclipse.sirius.web.services.api.document.IDocumentService;
-import org.eclipse.sirius.web.services.api.document.RenameDocumentInput;
-import org.eclipse.sirius.web.services.api.document.RenameDocumentSuccessPayload;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
@@ -101,7 +101,7 @@ public class RenameDocumentEventHandler implements IEditingContextEventHandler {
                         });
                 // @formatter:on
 
-                return new EventHandlerResponse(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId()), new RenameDocumentSuccessPayload(input.getId(), document));
+                return new EventHandlerResponse(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId()), new RenameDocumentSuccessPayload(input.getId()));
             }
         }
         String message = this.messageService.invalidInput(input.getClass().getSimpleName(), RenameDocumentInput.class.getSimpleName());
