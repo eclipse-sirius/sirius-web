@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.emf.services.upload;
+package org.eclipse.sirius.web.services.projects;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -24,7 +24,6 @@ import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventPro
 import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IPayload;
-import org.eclipse.sirius.web.emf.services.messages.IEMFMessageService;
 import org.eclipse.sirius.web.persistence.repositories.IIdMappingRepository;
 import org.eclipse.sirius.web.services.api.projects.CreateProjectInput;
 import org.eclipse.sirius.web.services.api.projects.CreateProjectSuccessPayload;
@@ -36,6 +35,7 @@ import org.eclipse.sirius.web.services.api.projects.UnzippedProject;
 import org.eclipse.sirius.web.services.api.projects.UploadProjectSuccessPayload;
 import org.eclipse.sirius.web.services.api.projects.Visibility;
 import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;
+import org.eclipse.sirius.web.services.messages.IServicesMessageService;
 import org.eclipse.sirius.web.spring.graphql.api.UploadFile;
 import org.springframework.stereotype.Service;
 
@@ -53,12 +53,12 @@ public class ProjectImportService implements IProjectImportService {
 
     private final ObjectMapper objectMapper;
 
-    private final IEMFMessageService messageService;
+    private final IServicesMessageService messageService;
 
     private final IIdMappingRepository idMappingRepository;
 
     public ProjectImportService(IProjectService projectService, IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry, ObjectMapper objectMapper,
-            IEMFMessageService messageService, IIdMappingRepository repository) {
+            IServicesMessageService messageService, IIdMappingRepository repository) {
         this.idMappingRepository = Objects.requireNonNull(repository);
         this.projectService = Objects.requireNonNull(projectService);
         this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);

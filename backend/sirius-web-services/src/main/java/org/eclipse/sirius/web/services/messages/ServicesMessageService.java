@@ -56,4 +56,9 @@ public class ServicesMessageService implements IServicesMessageService {
     public String modelerNotFound() {
         return this.messageSourceAccessor.getMessage("MODELER_NOT_FOUND"); //$NON-NLS-1$
     }
+
+    @Override
+    public String unexpectedError() {
+        return this.messageSourceAccessor.getMessage("UNEXPECTED_ERROR"); //$NON-NLS-1$
+    }
 }
