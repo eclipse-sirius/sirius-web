@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,28 +10,22 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-.container {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr min-content min-content;
-  row-gap: 24px;
+
+export interface DeleteDocumentModalProps {
+  documentName: string;
+  documentId: string;
+  onDocumentDeleted: () => void;
+  onClose: () => void;
 }
 
-.content {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr min-content;
-  row-gap: 12px;
+export interface GQLDeleteDocumentMutationData {
+  deleteDocument: GQLDeleteDocumentPayload;
 }
 
-.subtitle {
-  font-size: var(--font-size-5);
-  color: var(--daintree-lighten-30);
+export interface GQLDeleteDocumentPayload {
+  __typename: string;
 }
 
-.bannerArea {
-  display: grid;
-  grid-template-rows: 1fr;
-  grid-template-columns: 1fr;
-  align-items: center;
+export interface GQLErrorPayload extends GQLDeleteDocumentPayload {
+  message: string;
 }
