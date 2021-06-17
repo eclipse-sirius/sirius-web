@@ -11,15 +11,35 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
-import { Banner } from 'core/banner/Banner';
-import { Buttons, DangerButton } from 'core/button/Button';
-import { Text } from 'core/text/Text';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import IconButton from '@material-ui/core/IconButton';
+import Snackbar from '@material-ui/core/Snackbar';
+import CloseIcon from '@material-ui/icons/Close';
+import { useMachine } from '@xstate/react';
 import gql from 'graphql-tag';
-import { Modal } from 'modals/Modal';
-import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { v4 as uuid } from 'uuid';
-import styles from './DeleteDocumentModal.module.css';
+import {
+  DeleteDocumentModalProps,
+  GQLDeleteDocumentMutationData,
+  GQLDeleteDocumentPayload,
+  GQLErrorPayload,
+} from './DeleteDocumentModal.types';
+import {
+  DeleteDocumentModalContext,
+  DeleteDocumentModalEvent,
+  deleteDocumentModalMachine,
+  HandleResponseEvent,
+  HideToastEvent,
+  RequestDocumentDeletingEvent,
+  SchemaValue,
+  ShowToastEvent,
+} from './DeleteDocumentModalMachine';
 
 const deleteDocumentMutation = gql`
   mutation deleteDocument($input: DeleteDocumentInput!) {
@@ -32,17 +52,50 @@ const deleteDocumentMutation = gql`
   }
 `;
 
-const propTypes = {
-  documentName: PropTypes.string.isRequired,
-  documentId: PropTypes.string.isRequired,
-  onDocumentDeleted: PropTypes.func.isRequired,
-  onClose: PropTypes.func.isRequired,
-};
+const isErrorPayload = (payload: GQLDeleteDocumentPayload): payload is GQLErrorPayload =>
+  payload.__typename === 'ErrorPayload';
 
-export const DeleteDocumentModal = ({ documentName, documentId, onDocumentDeleted, onClose }) => {
-  const [errorMessage, setErrorMessage] = useState('');
-  const [performDocumentDeletion, { loading, data, error }] = useMutation(deleteDocumentMutation);
-  const onDeleteDocument = async (event) => {
+export const DeleteDocumentModal = ({
+  documentName,
+  documentId,
+  onDocumentDeleted,
+  onClose,
+}: DeleteDocumentModalProps) => {
+  const [{ value, context }, dispatch] = useMachine<DeleteDocumentModalContext, DeleteDocumentModalEvent>(
+    deleteDocumentModalMachine
+  );
+  const { toast, deleteDocumentModal } = value as SchemaValue;
+  const { message } = context;
+
+  const [performDocumentDeletion, { loading, data, error }] =
+    useMutation<GQLDeleteDocumentMutationData>(deleteDocumentMutation);
+  useEffect(() => {
+    if (!loading) {
+      if (error) {
+        const showToastEvent: ShowToastEvent = {
+          type: 'SHOW_TOAST',
+          message: error.message,
+        };
+        dispatch(showToastEvent);
+      }
+      if (data) {
+        const event: HandleResponseEvent = { type: 'HANDLE_RESPONSE', data };
+        dispatch(event);
+
+        const { deleteDocument } = data;
+        if (isErrorPayload(deleteDocument)) {
+          const { message } = deleteDocument;
+          const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
+          dispatch(showToastEvent);
+        }
+      }
+    }
+  }, [loading, data, error, dispatch]);
+
+  const onDeleteDocument = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    const requestDocumentDeletingEvent: RequestDocumentDeletingEvent = { type: 'REQUEST_DOCUMENT_DELETING' };
+    dispatch(requestDocumentDeletingEvent);
+
     event.preventDefault();
     const variables = {
       input: {
@@ -54,36 +107,51 @@ export const DeleteDocumentModal = ({ documentName, documentId, onDocumentDelete
   };
 
   useEffect(() => {
-    if (!loading) {
-      if (error) {
-        setErrorMessage(error.message);
-      } else if (data?.deleteDocument) {
-        const { deleteDocument } = data;
-        if (deleteDocument.__typename === 'DeleteDocumentSuccessPayload') {
-          onDocumentDeleted();
-        } else if (deleteDocument.__typename === 'ErrorPayload') {
-          setErrorMessage(deleteDocument.message);
-        }
-      }
+    if (deleteDocumentModal === 'success') {
+      onDocumentDeleted();
     }
-  }, [loading, data, error, onDocumentDeleted]);
+  }, [deleteDocumentModal, onDocumentDeleted]);
 
-  let bannerContent = errorMessage ? <Banner data-testid="banner" content={errorMessage} /> : null;
   return (
-    <Modal title={`Permanently delete "${documentName}"`} onClose={onClose}>
-      <div className={styles.container}>
-        <div className={styles.content}>
-          <Text className={styles.subtitle}>
+    <>
+      <Dialog open={true} onClose={onClose} aria-labelledby="dialog-title" fullWidth>
+        <DialogTitle id="dialog-title">{`Permanently delete "${documentName}"`}</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
             This action will permanently delete the document and all its associated content. These items will no longer
             be accessible to you or anyone else. This action is irreversible.
-          </Text>
-          <div className={styles.bannerArea}>{bannerContent}</div>
-        </div>
-        <Buttons>
-          <DangerButton type="button" onClick={onDeleteDocument} label="Delete" data-testid="delete-document" />
-        </Buttons>
-      </div>
-    </Modal>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            variant="contained"
+            onClick={onDeleteDocument}
+            color="primary"
+            data-testid="delete-document"
+            disabled={deleteDocumentModal !== 'pristine'}>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right',
+        }}
+        open={toast === 'visible'}
+        autoHideDuration={3000}
+        onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
+        message={message}
+        action={
+          <IconButton
+            size="small"
+            aria-label="close"
+            color="inherit"
+            onClick={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}>
+            <CloseIcon fontSize="small" />
+          </IconButton>
+        }
+      />
+    </>
   );
 };
-DeleteDocumentModal.propTypes = propTypes;
