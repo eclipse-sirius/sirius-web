@@ -10,39 +10,36 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import React, { useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
-import { Modal } from 'modals/Modal';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import React from 'react';
+import { ShareDiagramModalProps } from './ShareDiagramModal.types';
 
-import styles from './ShareDiagramModal.module.css';
-
-const propTypes = {
-  url: PropTypes.string.isRequired,
-  onClose: PropTypes.func.isRequired,
-};
-
-export const ShareDiagramModal = ({ url, onClose }) => {
+export const ShareDiagramModal = ({ url, onClose }: ShareDiagramModalProps) => {
   let message = 'Shareable link';
   if (navigator.clipboard && document.hasFocus()) {
     navigator.clipboard.writeText(url);
     message += ' (copied into the clipboard)';
   }
 
-  const textRef = useRef();
-  useEffect(() => {
-    var range = document.createRange();
-    range.selectNodeContents(textRef.current);
-    var selection = window.getSelection();
-    selection.removeAllRanges();
-    selection.addRange(range);
-  }, [textRef]);
+  const refCallback = (node: HTMLElement) => {
+    if (node !== null) {
+      var range = document.createRange();
+      range.selectNodeContents(node);
+      var selection = window.getSelection();
+      selection.removeAllRanges();
+      selection.addRange(range);
+    }
+  };
 
   return (
-    <Modal title={message} onClose={onClose}>
-      <div className={styles.text} ref={textRef}>
-        {url}
-      </div>
-    </Modal>
+    <Dialog open={true} onClose={onClose} aria-labelledby="dialog-title" fullWidth>
+      <DialogTitle id="dialog-title">{message}</DialogTitle>
+      <DialogContent ref={refCallback}>
+        <DialogContentText>{url}</DialogContentText>
+      </DialogContent>
+    </Dialog>
   );
 };
-ShareDiagramModal.propTypes = propTypes;
