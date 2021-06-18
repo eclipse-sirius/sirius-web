@@ -17,7 +17,7 @@
 
 	<groupId>org.eclipse.sirius.web</groupId>
 	<artifactId>sirius-web</artifactId>
-	<version>0.2.10</version>
+	<version>0.3.0</version>
 
 	<name>Sirius Web</name>
 	<description>Sirius Web</description>

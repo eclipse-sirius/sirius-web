@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius.web</groupId>
 	<artifactId>sirius-web-sample-application</artifactId>
-	<version>0.2.10</version>
+	<version>0.3.0</version>
 	<name>sirius-web-sample-application</name>
 	<description>Sirius Web Sample Application</description>
 
@@ -89,7 +89,7 @@
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-frontend</artifactId>
-			<version>0.2.10</version>
+			<version>0.3.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
