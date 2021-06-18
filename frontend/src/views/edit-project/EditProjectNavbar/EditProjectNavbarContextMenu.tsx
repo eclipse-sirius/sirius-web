@@ -11,9 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { httpOrigin, ContextMenu, Entry, Separator, TOP_START, Delete, Edit } from '@eclipse-sirius/sirius-components';
-import React from 'react';
 import { Link } from 'react-router-dom';
-
 import { EditProjectNavbarContextMenuProps } from 'views/edit-project/EditProjectNavbar/EditProjectNavbarContextMenu.types';
 
 export const EditProjectNavbarContextMenu = ({

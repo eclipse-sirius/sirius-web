@@ -11,7 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Link, makeStyles, Typography } from '@material-ui/core';
-import React from 'react';
 
 const useFooterStyles = makeStyles(theme => ({
   footer: {

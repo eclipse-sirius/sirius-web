@@ -22,7 +22,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
 import { Form, FormContainer } from '@eclipse-sirius/sirius-components';
 import gql from 'graphql-tag';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
 import {

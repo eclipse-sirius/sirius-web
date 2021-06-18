@@ -16,9 +16,8 @@ import { makeStyles, emphasize } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Tooltip from '@material-ui/core/Tooltip';
 import { SiriusIcon } from '@eclipse-sirius/sirius-components';
-import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { Help } from 'help/help';
+import { Help } from './Help';
 import { NavigationBarProps } from './NavigationBar.types';
 
 const useNavigationbarStyles = makeStyles(theme => ({

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the erms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { withErrorBoundary } from '@eclipse-sirius/sirius-components';
-import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
 import { NewProjectView } from 'views/new-project/NewProjectView';

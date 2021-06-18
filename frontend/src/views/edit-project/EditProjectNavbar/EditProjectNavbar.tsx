@@ -100,7 +100,9 @@ export const EditProjectNavbar = ({ project }: EditProjectNavbarProps) => {
         />
       );
     } else if (modalDisplayed === 'UploadDocument') {
-      modal = <UploadDocumentModal projectId={project.id} onDocumentUploaded={onCloseModal} onClose={onCloseModal} />;
+      modal = (
+        <UploadDocumentModal editingContextId={project.id} onDocumentUploaded={onCloseModal} onClose={onCloseModal} />
+      );
     } else if (modalDisplayed === 'RenameProject') {
       modal = (
         <RenameProjectModal

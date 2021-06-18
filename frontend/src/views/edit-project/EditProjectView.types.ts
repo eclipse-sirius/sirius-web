@@ -22,20 +22,20 @@ export type Project = {
 };
 
 export type GQLRepresentation = {
-  __typename: string;
   id: string;
   label: string;
+  kind: string;
 };
 
 export type GQLEditingContext = {
   id: string;
+  representation: GQLRepresentation | undefined;
 };
 
 export type GQLProject = {
   id: string;
   name: string;
   currentEditingContext: GQLEditingContext;
-  representation: GQLRepresentation | undefined;
 };
 
 export type GQLViewer = {

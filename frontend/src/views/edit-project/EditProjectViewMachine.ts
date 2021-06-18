@@ -131,11 +131,11 @@ export const editProjectViewMachine = Machine<EditProjectViewContext, EditProjec
         const project = { id, name, currentEditingContext: { id: currentEditingContext.id } };
 
         let representation: Representation | null = null;
-        if (gQLProject.representation) {
+        if (gQLProject.currentEditingContext.representation) {
           representation = {
-            id: gQLProject.representation.id,
-            label: gQLProject.representation.label,
-            kind: gQLProject.representation.__typename
+            id: gQLProject.currentEditingContext.representation.id,
+            label: gQLProject.currentEditingContext.representation.label,
+            kind: gQLProject.currentEditingContext.representation.kind
           };
         }
 

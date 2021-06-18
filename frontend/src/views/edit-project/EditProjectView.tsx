@@ -19,7 +19,7 @@ import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
 import gql from 'graphql-tag';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { generatePath, useHistory, useParams, useRouteMatch } from 'react-router-dom';
 import { EditProjectNavbar } from 'views/edit-project/EditProjectNavbar/EditProjectNavbar';
 import {
@@ -47,11 +47,11 @@ const getProjectQuery = gql`
         name
         currentEditingContext {
           id
-        }
-        representation(representationId: $representationId) @include(if: $includeRepresentation) {
-          __typename
-          id
-          label
+          representation(representationId: $representationId) @include(if: $includeRepresentation) {
+            id
+            label
+            kind
+          }
         }
       }
     }

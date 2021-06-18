@@ -13,7 +13,6 @@
 import { Link, IconButton } from '@material-ui/core';
 import { makeStyles, emphasize } from '@material-ui/core/styles';
 import HelpIcon from '@material-ui/icons/Help';
-import React from 'react';
 
 const useHelpStyle = makeStyles(theme => ({
   onDarkBackground: {

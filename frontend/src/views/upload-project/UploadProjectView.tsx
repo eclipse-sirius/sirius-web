@@ -19,7 +19,6 @@ import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
 import { Form, FormContainer, FileUpload, sendFile } from '@eclipse-sirius/sirius-components';
 import gql from 'graphql-tag';
-import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
 import {

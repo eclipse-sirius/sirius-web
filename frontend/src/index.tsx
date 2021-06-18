@@ -15,7 +15,6 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { ApolloGraphQLClient } from 'ApolloGraphQLClient';
 import { Main } from 'main/Main';
-import React from 'react';
 import ReactDOM from 'react-dom';
 import { theme } from '@eclipse-sirius/sirius-components';
 import { BrowserRouter } from 'react-router-dom';
