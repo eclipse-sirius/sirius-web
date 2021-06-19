@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.emf.services;
 
-import java.util.UUID;
-
 import org.eclipse.sirius.web.emf.services.messages.IEMFMessageService;
 
 /**
@@ -22,16 +20,6 @@ import org.eclipse.sirius.web.emf.services.messages.IEMFMessageService;
  * @author sbegaudeau
  */
 public class NoOpEMFMessageService implements IEMFMessageService {
-
-    @Override
-    public String invalidDocumentName(String name) {
-        return ""; //$NON-NLS-1$
-    }
-
-    @Override
-    public String stereotypeDescriptionNotFound(UUID stereotypeDescriptionId) {
-        return ""; //$NON-NLS-1$
-    }
 
     @Override
     public String unexpectedError() {

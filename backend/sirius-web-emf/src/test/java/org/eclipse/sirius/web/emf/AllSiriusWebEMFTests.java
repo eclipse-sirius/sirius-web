@@ -31,16 +31,10 @@ import org.eclipse.sirius.web.emf.compatibility.operations.SetValueOperationHand
 import org.eclipse.sirius.web.emf.compatibility.operations.SwitchOperationHandlerTestCases;
 import org.eclipse.sirius.web.emf.compatibility.operations.UnsetOperationHandlerTestCases;
 import org.eclipse.sirius.web.emf.compatibility.properties.EStringIfDescriptionProviderTestCases;
-import org.eclipse.sirius.web.emf.services.CreateDocumentEventHandlerTestCases;
-import org.eclipse.sirius.web.emf.services.DeleteDocumentEventHandlerTestCases;
-import org.eclipse.sirius.web.emf.services.EditingContextPersistenceServiceTestCases;
-import org.eclipse.sirius.web.emf.services.EditingContextSearchServiceTestCases;
 import org.eclipse.sirius.web.emf.services.IDManagerTestCases;
 import org.eclipse.sirius.web.emf.services.LabelFeatureProviderRegistryTestCases;
 import org.eclipse.sirius.web.emf.services.LabelFeatureProviderTestCases;
 import org.eclipse.sirius.web.emf.services.ObjectServiceTestCases;
-import org.eclipse.sirius.web.emf.services.RenameDocumentEventHandlerTestCases;
-import org.eclipse.sirius.web.emf.services.UploadDocumentEventHandlerTestCases;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
@@ -56,14 +50,10 @@ import org.junit.runners.Suite.SuiteClasses;
     ChangeContextOperationHandlerTestCases.class,
     CodingRulesTestCases.class,
     ConfigurationTestCases.class,
-    CreateDocumentEventHandlerTestCases.class,
     CreateInstanceOperationHandlerTestCases.class,
-    DeleteDocumentEventHandlerTestCases.class,
     DomainClassPredicateTestCases.class,
     EStringIfDescriptionProviderTestCases.class,
     EdgeMappingConverterTestCases.class,
-    EditingContextPersistenceServiceTestCases.class,
-    EditingContextSearchServiceTestCases.class,
     ForOperationHandlerTestCases.class,
     IDManagerTestCases.class,
     IfOperationHandlerTestCases.class,
@@ -73,7 +63,6 @@ import org.junit.runners.Suite.SuiteClasses;
     MoveElementOperationHandlerTestCases.class,
     ObjectServiceTestCases.class,
     RemoveElementOperationHandlerTestCases.class,
-    RenameDocumentEventHandlerTestCases.class,
     SemanticCandidatesProviderTestCases.class,
     ServiceTestCases.class,
     SetValueOperationHandlerTestCases.class,
@@ -81,7 +70,6 @@ import org.junit.runners.Suite.SuiteClasses;
     SwitchOperationHandlerTestCases.class,
     ToolImageProviderTestCases.class,
     UnsetOperationHandlerTestCases.class,
-    UploadDocumentEventHandlerTestCases.class,
  })
 // @formatter:on
 public final class AllSiriusWebEMFTests {

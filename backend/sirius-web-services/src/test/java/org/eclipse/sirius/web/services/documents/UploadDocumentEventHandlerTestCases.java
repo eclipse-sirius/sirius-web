@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.emf.services;
+package org.eclipse.sirius.web.services.documents;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
@@ -40,13 +40,17 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.emfjson.resource.JsonResourceImpl;
 import org.eclipse.sirius.web.core.api.IEditingContext;
-import org.eclipse.sirius.web.emf.services.messages.IEMFMessageService;
+import org.eclipse.sirius.web.emf.services.EObjectIDManager;
+import org.eclipse.sirius.web.emf.services.EditingContext;
+import org.eclipse.sirius.web.emf.services.SiriusWebJSONResourceFactoryImpl;
 import org.eclipse.sirius.web.services.api.accounts.Profile;
 import org.eclipse.sirius.web.services.api.document.Document;
 import org.eclipse.sirius.web.services.api.document.IDocumentService;
 import org.eclipse.sirius.web.services.api.document.UploadDocumentInput;
 import org.eclipse.sirius.web.services.api.projects.Project;
 import org.eclipse.sirius.web.services.api.projects.Visibility;
+import org.eclipse.sirius.web.services.messages.IServicesMessageService;
+import org.eclipse.sirius.web.services.projects.NoOpServicesMessageService;
 import org.eclipse.sirius.web.spring.graphql.api.UploadFile;
 import org.junit.Test;
 
@@ -157,7 +161,7 @@ public class UploadDocumentEventHandlerTestCases {
                 return Optional.of(new Document(UUID.randomUUID(), new Project(projectId, "", new Profile(UUID.randomUUID(), "username"), Visibility.PUBLIC), name, content)); //$NON-NLS-1$ //$NON-NLS-2$
             }
         };
-        IEMFMessageService messageService = new NoOpEMFMessageService();
+        IServicesMessageService messageService = new NoOpServicesMessageService();
 
         UploadDocumentEventHandler handler = new UploadDocumentEventHandler(documentService, messageService, new SimpleMeterRegistry());
 
@@ -228,7 +232,7 @@ public class UploadDocumentEventHandlerTestCases {
                 return Optional.of(new Document(documentId, new Project(projectId, "", new Profile(UUID.randomUUID(), "username"), Visibility.PUBLIC), name, content)); //$NON-NLS-1$ //$NON-NLS-2$
             }
         };
-        IEMFMessageService messageService = new NoOpEMFMessageService();
+        IServicesMessageService messageService = new NoOpServicesMessageService();
         UploadDocumentEventHandler handler = new UploadDocumentEventHandler(documentService, messageService, new SimpleMeterRegistry());
         UploadFile file = new UploadFile(FILE_NAME, new ByteArrayInputStream(resourceBytes));
 

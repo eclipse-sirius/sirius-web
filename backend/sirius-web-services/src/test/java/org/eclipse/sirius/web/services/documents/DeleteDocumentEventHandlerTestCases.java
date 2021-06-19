@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.emf.services;
+package org.eclipse.sirius.web.services.documents;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -21,11 +21,14 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.web.collaborative.api.dto.DeleteDocumentInput;
+import org.eclipse.sirius.web.emf.services.EditingContext;
+import org.eclipse.sirius.web.emf.services.SiriusWebJSONResourceFactoryImpl;
 import org.eclipse.sirius.web.services.api.accounts.Profile;
 import org.eclipse.sirius.web.services.api.document.Document;
 import org.eclipse.sirius.web.services.api.document.IDocumentService;
 import org.eclipse.sirius.web.services.api.projects.Project;
 import org.eclipse.sirius.web.services.api.projects.Visibility;
+import org.eclipse.sirius.web.services.projects.NoOpServicesMessageService;
 import org.junit.Test;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
@@ -47,7 +50,7 @@ public class DeleteDocumentEventHandlerTestCases {
                 return Optional.of(document);
             }
         };
-        DeleteDocumentEventHandler handler = new DeleteDocumentEventHandler(documentService, new NoOpEMFMessageService(), new SimpleMeterRegistry());
+        DeleteDocumentEventHandler handler = new DeleteDocumentEventHandler(documentService, new NoOpServicesMessageService(), new SimpleMeterRegistry());
 
         var input = new DeleteDocumentInput(UUID.randomUUID(), document.getId());
 

@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.emf.compatibility.explorer;
+package org.eclipse.sirius.web.services.explorer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,13 +27,13 @@ import org.eclipse.sirius.web.collaborative.trees.api.IExplorerDescriptionProvid
 import org.eclipse.sirius.web.compat.services.ImageConstants;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IObjectService;
-import org.eclipse.sirius.web.emf.services.DocumentMetadataAdapter;
 import org.eclipse.sirius.web.emf.services.EditingContext;
 import org.eclipse.sirius.web.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.web.representations.VariableManager;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationDescriptionService;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationService;
 import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;
+import org.eclipse.sirius.web.services.documents.DocumentMetadataAdapter;
 import org.eclipse.sirius.web.trees.description.TreeDescription;
 import org.eclipse.sirius.web.trees.renderer.TreeRenderer;
 import org.springframework.stereotype.Service;

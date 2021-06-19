@@ -14,6 +14,12 @@ package org.eclipse.sirius.web.services;
 
 import org.eclipse.sirius.web.services.architecture.CodingRulesTestCases;
 import org.eclipse.sirius.web.services.architecture.ImmutableTestCases;
+import org.eclipse.sirius.web.services.documents.CreateDocumentEventHandlerTestCases;
+import org.eclipse.sirius.web.services.documents.DeleteDocumentEventHandlerTestCases;
+import org.eclipse.sirius.web.services.documents.RenameDocumentEventHandlerTestCases;
+import org.eclipse.sirius.web.services.documents.UploadDocumentEventHandlerTestCases;
+import org.eclipse.sirius.web.services.editingcontext.EditingContextPersistenceServiceTestCases;
+import org.eclipse.sirius.web.services.editingcontext.EditingContextSearchServiceTestCases;
 import org.eclipse.sirius.web.services.projects.ProjectServiceTestCases;
 import org.eclipse.sirius.web.services.projects.RenameProjectEventHandlerTestCases;
 import org.junit.runner.RunWith;
@@ -25,8 +31,21 @@ import org.junit.runners.Suite.SuiteClasses;
  *
  * @author sbegaudeau
  */
+//@formatter:off
 @RunWith(Suite.class)
-@SuiteClasses({ CodingRulesTestCases.class, ImmutableTestCases.class, ProjectServiceTestCases.class, RenameProjectEventHandlerTestCases.class })
+@SuiteClasses({
+    CodingRulesTestCases.class,
+    ImmutableTestCases.class,
+    ProjectServiceTestCases.class,
+    RenameProjectEventHandlerTestCases.class,
+    CreateDocumentEventHandlerTestCases.class,
+    DeleteDocumentEventHandlerTestCases.class,
+    EditingContextPersistenceServiceTestCases.class,
+    EditingContextSearchServiceTestCases.class,
+    RenameDocumentEventHandlerTestCases.class,
+    UploadDocumentEventHandlerTestCases.class,
+})
+//@formatter:on
 public final class AllSiriusWebServicesTests {
     private AllSiriusWebServicesTests() {
         // Prevent instantiation
