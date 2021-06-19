@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.emf.view;
+package org.eclipse.sirius.web.services.representations;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -29,6 +29,8 @@ import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.core.api.IEditService;
 import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.emf.services.SiriusWebJSONResourceFactoryImpl;
+import org.eclipse.sirius.web.emf.view.IJavaServiceProvider;
+import org.eclipse.sirius.web.emf.view.ViewConverter;
 import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
 import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
 import org.eclipse.sirius.web.representations.IRepresentationDescription;

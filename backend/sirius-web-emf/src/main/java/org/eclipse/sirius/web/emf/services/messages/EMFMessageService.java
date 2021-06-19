@@ -13,7 +13,6 @@
 package org.eclipse.sirius.web.emf.services.messages;
 
 import java.util.Objects;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.support.MessageSourceAccessor;
@@ -36,16 +35,6 @@ public class EMFMessageService implements IEMFMessageService {
     @Override
     public String unexpectedError() {
         return this.messageSourceAccessor.getMessage("UNEXPECTED_ERROR"); //$NON-NLS-1$
-    }
-
-    @Override
-    public String invalidDocumentName(String name) {
-        return this.messageSourceAccessor.getMessage("INVALID_DOCUMENT_NAME", new Object[] { name }); //$NON-NLS-1$
-    }
-
-    @Override
-    public String stereotypeDescriptionNotFound(UUID stereotypeDescriptionId) {
-        return this.messageSourceAccessor.getMessage("STEREOTYPE_DESCRIPTION_NOT_FOUND", new Object[] { stereotypeDescriptionId }); //$NON-NLS-1$
     }
 
     @Override

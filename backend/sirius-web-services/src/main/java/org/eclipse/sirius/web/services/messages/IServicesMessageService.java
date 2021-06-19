@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.services.messages;
 
+import java.util.UUID;
+
 /**
  * Interface of the services messages.
  *
@@ -30,5 +32,9 @@ public interface IServicesMessageService {
     String modelerNotFound();
 
     String unexpectedError();
+
+    String invalidDocumentName(String name);
+
+    String stereotypeDescriptionNotFound(UUID stereotypeDescriptionId);
 
 }

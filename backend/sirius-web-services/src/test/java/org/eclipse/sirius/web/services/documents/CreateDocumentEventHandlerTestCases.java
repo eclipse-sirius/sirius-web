@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.emf.services;
+package org.eclipse.sirius.web.services.documents;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -22,13 +22,15 @@ import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.web.api.configuration.StereotypeDescription;
 import org.eclipse.sirius.web.collaborative.api.dto.CreateDocumentInput;
 import org.eclipse.sirius.web.collaborative.api.dto.CreateDocumentSuccessPayload;
-import org.eclipse.sirius.web.emf.services.messages.IEMFMessageService;
+import org.eclipse.sirius.web.emf.services.EditingContext;
 import org.eclipse.sirius.web.services.api.accounts.Profile;
 import org.eclipse.sirius.web.services.api.document.Document;
 import org.eclipse.sirius.web.services.api.document.IDocumentService;
 import org.eclipse.sirius.web.services.api.projects.Project;
 import org.eclipse.sirius.web.services.api.projects.Visibility;
 import org.eclipse.sirius.web.services.api.stereotypes.IStereotypeDescriptionService;
+import org.eclipse.sirius.web.services.messages.IServicesMessageService;
+import org.eclipse.sirius.web.services.projects.NoOpServicesMessageService;
 import org.junit.Test;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
@@ -89,7 +91,7 @@ public class CreateDocumentEventHandlerTestCases {
                 return Optional.of(stereotypeDescription);
             }
         };
-        IEMFMessageService messageService = new NoOpEMFMessageService();
+        IServicesMessageService messageService = new NoOpServicesMessageService();
 
         CreateDocumentEventHandler handler = new CreateDocumentEventHandler(documentService, stereotypeDescriptionService, messageService, new SimpleMeterRegistry());
         var input = new CreateDocumentInput(UUID.randomUUID(), UUID.randomUUID(), DOCUMENT_NAME, STEREOTYPE_DESCRIPTION_ID);
@@ -121,7 +123,7 @@ public class CreateDocumentEventHandlerTestCases {
                 return Optional.of(stereotypeDescription);
             }
         };
-        IEMFMessageService messageService = new NoOpEMFMessageService();
+        IServicesMessageService messageService = new NoOpServicesMessageService();
         AdapterFactoryEditingDomain editingDomain = new EditingDomainFactory().create();
         EditingContext editingContext = new EditingContext(UUID.randomUUID(), editingDomain);
 

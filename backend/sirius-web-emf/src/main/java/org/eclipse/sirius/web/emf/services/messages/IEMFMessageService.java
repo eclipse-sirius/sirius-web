@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.emf.services.messages;
 
-import java.util.UUID;
-
 /**
  * Interface of the EMF message service.
  *
@@ -22,10 +20,6 @@ import java.util.UUID;
 public interface IEMFMessageService {
 
     String unexpectedError();
-
-    String invalidDocumentName(String name);
-
-    String stereotypeDescriptionNotFound(UUID stereotypeDescriptionId);
 
     String invalidInput(String expectedInputTypeName, String receivedInputTypeName);
 

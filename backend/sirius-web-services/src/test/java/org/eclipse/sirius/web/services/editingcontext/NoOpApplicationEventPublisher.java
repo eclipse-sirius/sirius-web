@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.emf.services;
+package org.eclipse.sirius.web.services.editingcontext;
 
 import org.springframework.context.ApplicationEventPublisher;
 

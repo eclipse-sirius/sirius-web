@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.services.projects;
 
+import java.util.UUID;
+
 import org.eclipse.sirius.web.services.messages.IServicesMessageService;
 
 /**
@@ -48,6 +50,16 @@ public class NoOpServicesMessageService implements IServicesMessageService {
 
     @Override
     public String unexpectedError() {
+        return ""; //$NON-NLS-1$
+    }
+
+    @Override
+    public String invalidDocumentName(String name) {
+        return ""; //$NON-NLS-1$
+    }
+
+    @Override
+    public String stereotypeDescriptionNotFound(UUID stereotypeDescriptionId) {
         return ""; //$NON-NLS-1$
     }
 

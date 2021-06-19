@@ -10,49 +10,49 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.emf.services;
+package org.eclipse.sirius.web.services.editingcontext;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.sirius.web.persistence.entities.AccessLevelEntity;
-import org.eclipse.sirius.web.persistence.entities.ProjectEntity;
-import org.eclipse.sirius.web.persistence.repositories.IProjectRepository;
+import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
+import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 /**
- * Implementation of the project repository which does nothing.
+ * Implementation of the document repository which does nothing.
  *
  * @author sbegaudeau
  */
-public class NoOpProjectRepository implements IProjectRepository {
+public class NoOpDocumentRepository implements IDocumentRepository {
 
     @Override
-    public Iterable<ProjectEntity> findAll(Sort sort) {
+    public Iterable<DocumentEntity> findAll(Sort sort) {
         return new ArrayList<>();
     }
 
     @Override
-    public Page<ProjectEntity> findAll(Pageable pageable) {
+    public Page<DocumentEntity> findAll(Pageable pageable) {
         return Page.empty();
     }
 
     @Override
-    public <S extends ProjectEntity> S save(S entity) {
+    public <S extends DocumentEntity> S save(S entity) {
         return entity;
     }
 
     @Override
-    public <S extends ProjectEntity> Iterable<S> saveAll(Iterable<S> entities) {
+    public <S extends DocumentEntity> Iterable<S> saveAll(Iterable<S> entities) {
         return entities;
     }
 
     @Override
-    public Optional<ProjectEntity> findById(UUID id) {
+    public Optional<DocumentEntity> findById(UUID id) {
         return Optional.empty();
     }
 
@@ -62,8 +62,13 @@ public class NoOpProjectRepository implements IProjectRepository {
     }
 
     @Override
-    public Iterable<ProjectEntity> findAllById(Iterable<UUID> ids) {
+    public Iterable<DocumentEntity> findAll() {
         return new ArrayList<>();
+    }
+
+    @Override
+    public Iterable<DocumentEntity> findAllById(Iterable<UUID> ids) {
+        return Collections.emptyList();
     }
 
     @Override
@@ -76,11 +81,11 @@ public class NoOpProjectRepository implements IProjectRepository {
     }
 
     @Override
-    public void delete(ProjectEntity entity) {
+    public void delete(DocumentEntity entity) {
     }
 
     @Override
-    public void deleteAll(Iterable<? extends ProjectEntity> entities) {
+    public void deleteAll(Iterable<? extends DocumentEntity> entities) {
     }
 
     @Override
@@ -92,32 +97,18 @@ public class NoOpProjectRepository implements IProjectRepository {
     }
 
     @Override
-    public List<ProjectEntity> findAll() {
+    public List<DocumentEntity> findAllByProjectId(UUID projectId) {
         return new ArrayList<>();
     }
 
     @Override
-    public boolean existsByIdAndIsVisibleBy(UUID id, String userName) {
-        return false;
-    }
-
-    @Override
-    public List<ProjectEntity> findAllVisibleBy(String userName) {
-        return new ArrayList<>();
-    }
-
-    @Override
-    public Optional<ProjectEntity> findByIdIfVisibleBy(UUID projectId, String currentUserName) {
+    public Optional<DocumentEntity> findByProjectIdAndId(UUID projectId, UUID documentId) {
         return Optional.empty();
     }
 
     @Override
-    public boolean isOwner(String username, UUID projectId) {
-        return false;
+    public Iterable<DocumentEntity> findAllByType(String name, String uri) {
+        return List.of();
     }
 
-    @Override
-    public AccessLevelEntity getUserAccessLevel(UUID projectId, String userName) {
-        return AccessLevelEntity.READ;
-    }
 }
