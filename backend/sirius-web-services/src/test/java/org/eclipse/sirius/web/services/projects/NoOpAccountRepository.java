@@ -92,6 +92,10 @@ public class NoOpAccountRepository implements IAccountRepository {
     }
 
     @Override
+    public void deleteAllById(Iterable<? extends UUID> ids) {
+    }
+
+    @Override
     public Optional<AccountEntity> findByUsername(String userName) {
         return Optional.empty();
     }

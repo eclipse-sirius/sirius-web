@@ -88,6 +88,10 @@ public class NoOpProjectRepository implements IProjectRepository {
     }
 
     @Override
+    public void deleteAllById(Iterable<? extends UUID> ids) {
+    }
+
+    @Override
     public List<ProjectEntity> findAll() {
         return new ArrayList<>();
     }
