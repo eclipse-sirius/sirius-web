@@ -94,10 +94,8 @@ export const TextfieldPropertySection = ({
     dispatch(changeValueEvent);
   };
 
-  const [
-    editTextfield,
-    { loading: updateTextfieldLoading, data: updateTextfieldData, error: updateTextfieldError },
-  ] = useMutation<GQLEditTextfieldMutationData>(editTextfieldMutation);
+  const [editTextfield, { loading: updateTextfieldLoading, data: updateTextfieldData, error: updateTextfieldError }] =
+    useMutation<GQLEditTextfieldMutationData>(editTextfieldMutation);
   const sendEditedValue = () => {
     if (textfieldPropertySection === 'edited') {
       const variables = {

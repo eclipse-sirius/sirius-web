@@ -289,9 +289,8 @@ export const DiagramWebSocketContainer = ({
     invokeEdgeToolMutation,
     { loading: invokeEdgeToolLoading, data: invokeEdgeToolData, error: invokeEdgeToolError },
   ] = useMutation(invokeEdgeToolOnDiagramMutation);
-  const [editLabelMutation, { loading: editLabelLoading, data: editLabelData, error: editLabelError }] = useMutation(
-    editLabelMutationOp
-  );
+  const [editLabelMutation, { loading: editLabelLoading, data: editLabelData, error: editLabelError }] =
+    useMutation(editLabelMutationOp);
   const [
     updateNodePositionMutation,
     { loading: updateNodePositionLoading, data: updateNodePositionData, error: updateNodePositionError },
@@ -300,13 +299,10 @@ export const DiagramWebSocketContainer = ({
     updateNodeBoundsMutation,
     { loading: updateNodeBoundsLoading, data: updateNodeBoundsData, error: updateNodeBoundsError },
   ] = useMutation(updateNodeBoundsOp);
-  const [
-    arrangeAllMutation,
-    { loading: arrangeAllLoading, data: arrangeAllData, error: arrangeAllError },
-  ] = useMutation(arrangeAllOp);
-  const [getToolSectionData, { loading: toolSectionLoading, data: toolSectionData }] = useLazyQuery(
-    getToolSectionsQuery
-  );
+  const [arrangeAllMutation, { loading: arrangeAllLoading, data: arrangeAllData, error: arrangeAllError }] =
+    useMutation(arrangeAllOp);
+  const [getToolSectionData, { loading: toolSectionLoading, data: toolSectionData }] =
+    useLazyQuery(getToolSectionsQuery);
   /**
    * We have choose to make only one query by diagram to get tools to avoid network flooding.
    * In consequence, a tool must contains all necessary properties to be filtered on a specific context (In the contextual palette for example).

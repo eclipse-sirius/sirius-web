@@ -60,18 +60,8 @@ export const convertDiagram = (diagram, httpOrigin: string, readOnly: boolean) =
 };
 
 const convertNode = (node, httpOrigin: string, readOnly: boolean) => {
-  const {
-    id,
-    type,
-    targetObjectId,
-    targetObjectKind,
-    targetObjectLabel,
-    descriptionId,
-    label,
-    style,
-    size,
-    position,
-  } = node;
+  const { id, type, targetObjectId, targetObjectKind, targetObjectLabel, descriptionId, label, style, size, position } =
+    node;
 
   let borderNodes = [];
   if (node.borderNodes) {

@@ -130,10 +130,8 @@ export const TreeItem = ({
   const refDom = useRef() as any;
   const { registry } = useContext(RepresentationContext);
 
-  const [
-    renameDocument,
-    { loading: renameDocumentLoading, data: renameDocumentData, error: renameDocumentError },
-  ] = useMutation(renameDocumentMutation);
+  const [renameDocument, { loading: renameDocumentLoading, data: renameDocumentData, error: renameDocumentError }] =
+    useMutation(renameDocumentMutation);
   useEffect(() => {
     if (!renameDocumentLoading && !renameDocumentError && renameDocumentData?.renameDocument) {
       const { renameDocument } = renameDocumentData;
@@ -160,10 +158,8 @@ export const TreeItem = ({
     }
   }, [renameRepresentationData, renameRepresentationError, renameRepresentationLoading]);
 
-  const [
-    renameObject,
-    { loading: renameObjectLoading, data: renameObjectData, error: renameObjectError },
-  ] = useMutation(renameObjectMutation);
+  const [renameObject, { loading: renameObjectLoading, data: renameObjectData, error: renameObjectError }] =
+    useMutation(renameObjectMutation);
   useEffect(() => {
     if (!renameObjectLoading && !renameObjectError && renameObjectData?.renameObject) {
       const { renameObject } = renameObjectData;

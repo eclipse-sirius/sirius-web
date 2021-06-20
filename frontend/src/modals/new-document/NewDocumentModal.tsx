@@ -93,14 +93,8 @@ export const NewDocumentModal = ({ editingContextId, onDocumentCreated, onClose 
     newDocumentModalMachine
   );
   const { newDocumentModal, toast } = value as SchemaValue;
-  const {
-    name,
-    nameMessage,
-    nameIsInvalid,
-    selectedStereotypeDescriptionId,
-    stereotypeDescriptions,
-    message,
-  } = context;
+  const { name, nameMessage, nameIsInvalid, selectedStereotypeDescriptionId, stereotypeDescriptions, message } =
+    context;
 
   const {
     loading: stereotypeDescriptionsLoading,
@@ -144,10 +138,8 @@ export const NewDocumentModal = ({ editingContextId, onDocumentCreated, onClose 
     dispatch(changeStereotypeDescriptionEvent);
   };
 
-  const [
-    createDocument,
-    { loading: createDocumentLoading, data: createDocumentData, error: createDocumentError },
-  ] = useMutation<GQLCreateDocumentMutationData>(createDocumentMutation);
+  const [createDocument, { loading: createDocumentLoading, data: createDocumentData, error: createDocumentError }] =
+    useMutation<GQLCreateDocumentMutationData>(createDocumentMutation);
   useEffect(() => {
     if (!createDocumentLoading) {
       if (createDocumentError) {
