@@ -129,10 +129,13 @@ export const NewRootObjectModal = ({
   } = context;
 
   // Fetch the available namespaces only once, they are supposed static (at least for the lifetime of the modal)
-  const { loading: namespacesLoading, data: namespacesData, error: namespacesError } = useQuery<
-    GQLGetNamespacesQueryData,
-    GQLGetNamespacesQueryVariables
-  >(getNamespacesQuery, { variables: { editingContextId } });
+  const {
+    loading: namespacesLoading,
+    data: namespacesData,
+    error: namespacesError,
+  } = useQuery<GQLGetNamespacesQueryData, GQLGetNamespacesQueryVariables>(getNamespacesQuery, {
+    variables: { editingContextId },
+  });
   useEffect(() => {
     if (!namespacesLoading) {
       if (namespacesError) {

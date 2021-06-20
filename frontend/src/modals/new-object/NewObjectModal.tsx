@@ -140,9 +140,8 @@ export const NewObjectModal = ({
     dispatch(changeChildCreationDescriptionEvent);
   };
 
-  const [createChild, { loading: createChildLoading, data: createChildData, error: createChildError }] = useMutation<
-    GQLCreateChildMutationData
-  >(createChildMutation);
+  const [createChild, { loading: createChildLoading, data: createChildData, error: createChildError }] =
+    useMutation<GQLCreateChildMutationData>(createChildMutation);
   useEffect(() => {
     if (!createChildLoading) {
       if (createChildError) {
