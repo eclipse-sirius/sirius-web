@@ -74,6 +74,10 @@ public class NoOpDocumentRepository implements IDocumentRepository {
     }
 
     @Override
+    public void deleteAllById(Iterable<? extends UUID> ids) {
+    }
+
+    @Override
     public Optional<DocumentEntity> findById(UUID id) {
         return Optional.empty();
     }

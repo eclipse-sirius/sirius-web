@@ -79,6 +79,10 @@ public class NoOpRepresentationRepository implements IRepresentationRepository {
     }
 
     @Override
+    public void deleteAllById(Iterable<? extends UUID> ids) {
+    }
+
+    @Override
     public Optional<RepresentationEntity> findById(UUID id) {
         return Optional.empty();
     }

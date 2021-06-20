@@ -93,6 +93,10 @@ public class NoOpDocumentRepository implements IDocumentRepository {
     }
 
     @Override
+    public void deleteAllById(Iterable<? extends UUID> ids) {
+    }
+
+    @Override
     public List<DocumentEntity> findAllByProjectId(UUID projectId) {
         return new ArrayList<>();
     }

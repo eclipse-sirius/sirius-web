@@ -98,6 +98,10 @@ public class NoOpIdMappingRepository implements IIdMappingRepository {
     }
 
     @Override
+    public void deleteAllById(Iterable<? extends UUID> ids) {
+    }
+
+    @Override
     public Optional<IdMappingEntity> findByExternalId(String externalId) {
         Optional<IdMappingEntity> optional = Optional.empty();
         if (externalId.equals("flow.odesign#//@ownedViewpoints[name='Exchanges']/@ownedRepresentations[name='Topography']")) { //$NON-NLS-1$
