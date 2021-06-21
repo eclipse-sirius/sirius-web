@@ -28,7 +28,7 @@
 
 	<properties>
 		<java.version>11</java.version>
-		<sirius.version>6.4.2-SNAPSHOT</sirius.version>
+		<sirius.version>6.5.1-SNAPSHOT</sirius.version>
 		<eef.version>2.1.5-SNAPSHOT</eef.version>
 	</properties>
 	
