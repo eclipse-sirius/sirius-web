@@ -28,7 +28,7 @@
 
 	<properties>
 		<java.version>11</java.version>
-		<graphql-java.version>16.1</graphql-java.version>
+		<graphql-java.version>16.2</graphql-java.version>
 	</properties>
 	
 	<distributionManagement>
