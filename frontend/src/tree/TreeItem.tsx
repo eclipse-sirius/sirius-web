@@ -394,14 +394,21 @@ export const TreeItem = ({
       };
     });
 
+  let itemTitle = null;
   let itemLabel = null;
-  if (item.kind === 'Document' || registry.isRepresentation(item.kind)) {
+  if (item.kind === 'Document') {
     itemLabel = item.label;
+    itemTitle = 'Model';
+  } else if (registry.isRepresentation(item.kind)) {
+    itemLabel = item.label;
+    itemTitle = item.kind;
   } else {
-    itemLabel = item.kind.split('::').pop();
     if (item.label) {
-      itemLabel += ' ' + item.label;
+      itemLabel = item.label;
+    } else {
+      itemLabel = item.kind.split('::').pop();
     }
+    itemTitle = item.kind;
   }
 
   let text;
@@ -679,6 +686,7 @@ export const TreeItem = ({
             className={styles.imageAndLabel}
             onClick={onClick}
             onDoubleClick={() => item.hasChildren && onExpand(item.id, depth)}
+            title={itemTitle}
             data-testid={itemLabel}>
             {image}
             {text}
