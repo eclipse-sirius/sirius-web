@@ -1,0 +1,57 @@
+= ADR-020 - Add support for validation in the workbench
+
+== Context
+
+We need to add show validation results to the end users to help them create their models.
+
+== Decision
+
+We will add a validation view to the workbench in the same site as the properties view.
+For that, we will create a RightSite component which will contain both the PropertiesWebSocketContainer and ValidationWebSocketContainer.
+The validation will be a representation which comes with its own subscription etc.
+We will only perform the validation of the semantic data.
+For the validation data will displayed using a Material-UI accordion.
+
+This is the data structure of the validation representation:
+
+```
+type Validation {
+  id: UUID
+  diagnostics: [Diagnostic!]!
+}
+
+type Diagnostic {
+  id: string
+  kind: string
+  message: string
+}
+```
+
+The frontend will transform this data structure since the "perfect" data structure cannot be easily done with GraphQL in an extensible manner.
+So we either give up extensibility or the simplicity of the data structure.
+
+Two new projects, `sirius-web-collaborative-validation-api` and `sirius-web-spring-collaborative-validation`, will be created for the subscription.
+One project, `sirius-web-validation`, will be created for the representation and its description.
+The ValidationEventProcessor will look like the FormEventProcessor, it will only be refreshed after semantic changes.
+This is what the description of the representation should look like:
+
+```
+class ValidationDescription {
+  private Function<VariableManager, List<Object>> diagnosticsProviders;
+  private Function<Object, String> kindProvider;
+  private Function<Object, String> messageProvider;
+}
+```
+
+The variable manager will contain the editing context but no specific value of `self` since this representation is not created on a specific semantic element.
+Two components at least will be needed ValidationComponent and DiagnosticComponent.
+The identifier of the validation will be UUID.nameUUIDFromBytes("validation") in order to stay stable over time.
+The identifier of the diagnostics will be UUID.randomUUID(), they will not stay stable over time but we do not care for now.
+
+== Status
+
+WIP
+
+== Consequences
+
+None for now
