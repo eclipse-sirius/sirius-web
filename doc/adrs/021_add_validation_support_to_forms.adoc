@@ -1,0 +1,44 @@
+= ADR-021 - Add validation support to forms
+
+== Context
+
+We need to provide validation feedback to the end users.
+
+== Decision
+
+The widgets of the form representation will have some diagnostics data.
+For that, the `AbstractWidgetDescription` will be updated in this manner:
+
+```
+public class AbstractWidgetDescription {
+  Function<VariableManager, List<Object>> diagnosticsProvider;
+  Function<Object, String> kindProvider;
+  Function<Object, String> messageProvider;
+}
+```
+
+The representation will thus contain the following data:
+
+```
+public class AbstractWidget {
+  private List<Diagnostic> diagnostics;
+}
+
+public class Diagnostic {
+  private UUID id;
+  private String kind;
+  private String message;
+}
+```
+
+The frontend will display only the first validation message for now.
+The frontend will not leverage the kind of the diagnostic for now either, it will only display a regular MaterialUI error.
+We will add a diagnostic on DiagramDescription to check if the domain class is missing.
+
+== Status
+
+WIP
+
+== Consequences
+
+We could add a link and a dialog to display additional messages sometime in the future.
