@@ -1,0 +1,68 @@
+= ADR-023 - Move business code from Sirius Components to Sirius Web
+
+== Context
+
+The Git repository of Sirius Components contains code with various responsabilities.
+Among those responsabilities, we have:
+
+- the ability to manipulate representations in a collaborative environment
+- the core parts of the meta-modeling support
+- business specific concerns such as project management, access control, etc
+
+Those business concerns are mostly located in the following projects:
+
+- `sirius-web-services`
+- `sirius-web-services-api`
+- `sirius-web-graphql`
+- `sirius-web-graphql-schema`
+- `sirius-web-persistence`
+- `sirius-web-spring`
+
+Those business concerns have tried to provide generic concepts that could be used as the core components of any project based on Sirius Components.
+It appears that we have users with very different requirements and it will be too complex to make those components support all possible use cases.
+As a result, we will move those business concerns out of Sirius Components to the Sirius Web Git repository where they will only fullfill the requirements of Sirius Web, nothing more.
+
+This operation will make reusing the code from Sirius Components way easier since users will not have to deal with our way of doing project management, access control etc.
+As an example, Sirius Components will require the use of a GraphQL API but it will not tell you the specific framework to use to build your GraphQL API.
+It will be possible to organize your API much more easily with various frameworks.
+We will thus remove some complexity which was used to create abstractions in order to isolate some parts of the code.
+Those parts will now be more cleanly separated since we will properly seperate core parts used to support representations and meta-modeling from those business concerns which will move to Sirius Web.
+
+== Decision
+
+Sirius Components will try to make as little hypothesis as possible on the application in which it is integrated.
+It will not have any opinion for example on the organization of the persistence layer (kind of datastore, structure of the schema, etc).
+It will also have as little opinion as possible on the GraphQL in which it is integrated.
+The code which deals with those concerns will thus move to Sirius Web.
+For example, concepts such as `Project`, `Document`, `Account` will not exist in Sirius Components anymore, only in Sirius Web.
+
+As a result, the following projects will move out of Sirius Components:
+
+- `sirius-web-services`
+- `sirius-web-services-api`
+- `sirius-web-graphql`
+- `sirius-web-graphql-schema`
+- `sirius-web-persistence`
+- `sirius-web-spring`
+
+The projects `sirius-web-diagrams-services` and `sirius-web-diagrams-services-api` will be removed and their code moved to `sirius-web-collaborative-diagrams` for the diagram specific parts and `sirius-web-services` for the part tightly connected to our business concerns.
+More projects may move to Sirius Web in the near future.
+
+In a similar fashion, the following projects may be regrouped inside one single project soon:
+
+- `sirius-web-api`
+- `sirius-web-core-api`
+- `sirius-web-collaborative-api`
+
+Most of the projects that are currently located in the Git repository of Sirius Components will stay there but they will not depend on the projects which will move out of Sirius Components anymore.
+We will thus remove references to those business concerns from projects such as `sirius-web-spring-collaborative`, `sirius-web-emf` or even `sirius-web-spring-collaborative-diagrams`.
+Those projects add in one way or another a dependency to the lifecycle and the way the persistence layer is organised in Sirius Web.
+
+Since we will simplify our code, some abstractions will disappear as they will not be necessary anymore.
+
+== Status
+
+WIP
+
+== Consequences
+
