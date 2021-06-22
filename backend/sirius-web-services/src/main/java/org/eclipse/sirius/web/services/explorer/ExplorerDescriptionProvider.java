@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -29,8 +30,8 @@ import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.emf.services.EditingContext;
 import org.eclipse.sirius.web.representations.GetOrCreateRandomIdProvider;
+import org.eclipse.sirius.web.representations.IRepresentation;
 import org.eclipse.sirius.web.representations.VariableManager;
-import org.eclipse.sirius.web.services.api.representations.IRepresentationDescriptionService;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationService;
 import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;
 import org.eclipse.sirius.web.services.documents.DocumentMetadataAdapter;
@@ -45,6 +46,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ExplorerDescriptionProvider implements IExplorerDescriptionProvider {
+
+    private static final String DOCUMENT_KIND = "Document"; //$NON-NLS-1$
 
     private final IObjectService objectService;
 
@@ -65,7 +68,7 @@ public class ExplorerDescriptionProvider implements IExplorerDescriptionProvider
         Predicate<VariableManager> canCreatePredicate = variableManager -> false;
 
         // @formatter:off
-        return TreeDescription.newTreeDescription(IRepresentationDescriptionService.EXPLORER_TREE_DESCRIPTION)
+        return TreeDescription.newTreeDescription(UUID.nameUUIDFromBytes("explorer_tree_description".getBytes())) //$NON-NLS-1$
                 .label("Explorer") //$NON-NLS-1$
                 .idProvider(new GetOrCreateRandomIdProvider())
                 .treeItemIdProvider(this::getTreeItemId)
@@ -97,8 +100,17 @@ public class ExplorerDescriptionProvider implements IExplorerDescriptionProvider
     }
 
     private String getKind(VariableManager variableManager) {
+        String kind = ""; //$NON-NLS-1$
         Object self = variableManager.getVariables().get(VariableManager.SELF);
-        return this.objectService.getKind(self);
+        if (self instanceof RepresentationDescriptor) {
+            IRepresentation representation = ((RepresentationDescriptor) self).getRepresentation();
+            kind = representation.getKind();
+        } else if (self instanceof Resource) {
+            kind = DOCUMENT_KIND;
+        } else {
+            kind = this.objectService.getKind(self);
+        }
+        return kind;
     }
 
     private String getLabel(VariableManager variableManager) {

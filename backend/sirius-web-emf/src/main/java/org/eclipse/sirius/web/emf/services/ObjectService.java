@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,8 +34,6 @@ import org.eclipse.emf.edit.provider.ComposedImage;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IObjectService;
-import org.eclipse.sirius.web.representations.IRepresentation;
-import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;
 import org.springframework.stereotype.Service;
 
 /**
@@ -48,10 +46,6 @@ import org.springframework.stereotype.Service;
 public class ObjectService implements IObjectService {
 
     private static final String DEFAULT_LABEL_FEATURE = "name"; //$NON-NLS-1$
-
-    private static final String DOCUMENT_KIND = "Document"; //$NON-NLS-1$
-
-    private static final String UNKNOW_KIND = "Unknown"; //$NON-NLS-1$
 
     private static final String ID_SEPARATOR = "#"; //$NON-NLS-1$
 
@@ -84,17 +78,11 @@ public class ObjectService implements IObjectService {
 
     @Override
     public String getKind(Object object) {
-        String kind = UNKNOW_KIND;
-        if (object instanceof RepresentationDescriptor) {
-            IRepresentation representation = ((RepresentationDescriptor) object).getRepresentation();
-            kind = representation.getKind();
-        } else if (object instanceof Resource) {
-            kind = DOCUMENT_KIND;
-        } else if (object instanceof EObject) {
+        if (object instanceof EObject) {
             EObject eObject = (EObject) object;
             return new ClassIdService().getClassId(eObject.eClass());
         }
-        return kind;
+        return ""; //$NON-NLS-1$
     }
 
     private String getIdFromIDAdapter(EObject eObject) {
