@@ -1,0 +1,130 @@
+= ADR-022 - Add support for selection dialog
+
+== Context
+
+We want to support Sirius RCP's `Select Model Element Variable` for the tools of the diagram.
+
+== Decision
+
+We will only support one and only one `Select Model Element Variable` per tool and we will start with the Node Creation Tool for the moment.
+The `Select Model Element Variable` will only support single selection and list display (no tree display) for the moment.
+
+=== Frontend Integration
+
+We will start by making sure that we can open a selection dialog when a Node Creation Tool is invoked and if said tool requires it.
+To get started, we will only open the selection dialog if the tool has the label `Composite Processor`.
+
+For that, we will first change the `invokeToolFromContextualPalette` function to switch to a new state before sending the tool to execute to the server.
+In `DiagramWebSocketContainerMachine`, we will need to track if the selection dialog should be opened or not.
+
+We will add a new parallel state machine named `selectionDialog`.
+We need a new parallel state machine since the dialog may be open while we receive new diagram updates and even error messages.
+This state machine will look like this:
+
+```
+selectionDialog: {
+  initial: 'hidden',
+  states: {
+    hidden: {},
+    visible: {}
+  }
+}
+```
+
+For the appearance of the selection dialog, we will rely on both the Dialog and List components from MaterialUI.
+The selection dialog will be managed in a separate file named `SelectionDialogWebSocketContainer` inspired by `PropertiesWebSocketContainer`.
+
+```
+import { useSubscription } from '@apollo/client';
+import { useMachine } from '@xstate/react';
+
+export const SelectionDialogWebSocketContainer = ({ open }: SelectionWebSocketContainerProps) => {
+  // useMachine()
+  // useSubscription()
+  return (
+    <Dialog open={open}>
+    </Dialog>
+  )
+}
+```
+
+=== Tool integration
+
+We will need to indicate that a tool requires a selection dialog instead of relying on the `Composite Processor` label.
+For that, we will add the field `selectionId` to CreateNodeTool:
+
+```
+type CreateNodeTool {
+  id: ID!
+  label: String!
+  imageURL: String!
+  appliesToDiagramRoot: Boolean!
+  targetDescriptions: [NodeDescription!]!
+  selectionId: String
+}
+```
+
+If the id is null, there is nothing to do, otherwise, we will open a selection dialog to display the selection representation with the given id.
+
+
+=== Backend integration
+
+One project, `sirius-web-selection`, will be created for the representation and its description.
+Its content will look like the projects `sirius-web-trees` or `sirius-web-forms`.
+It will contain the data structure of the representation, its description, its renderer, components etc.
+
+The data structure of the selection representation will look like this:
+
+```
+type Selection {
+  id: UUID
+  message: String!
+  objects: [SelectionObject!]!
+}
+
+type SelectionObject {
+  id: String!
+  label: String!
+}
+```
+
+The description of the representation will look like this:
+
+```
+public class SelectionDescription {
+  id: UUID
+  label: String
+  canCreatePredicate: variableManager -> false // To prevent it from being created in the explorer
+  messageProvider: Function<VariableManager, String>
+  objectsProvider: Function<VariableManager, List<Object>>
+  idProvider: Function<VariableManager, String> // Calls IObjectService#getId in our own instance of the description
+  labelProvider: Function<VariableManager, String> // Calls IObjectService#getLabel in our own instance of the description
+}
+```
+
+When we will provide an implementation of this description, in our sample application project, the `idProvider` and `labelProvider` will probably call `IObjectService#getId` and `IObjectService#getLabel` respectively.
+
+Two new projects, `sirius-web-collaborative-selection-api` and `sirius-web-spring-collaborative-selection`, will be created for the subscription.
+They will look like the projects `sirius-web-collaborative-trees-api` and `sirius-web-spring-collaborative-trees` with their configuration, input, payload, event processor factory and event processor.
+
+In a similar fashion as for the diagrams, a type provider will have to be created (like `DiagramTypesProvider`) in order to register our new representation in the GraphQL schema.
+We will need to be careful with the GraphQL annotation on our POJOs (Selection, SelectionObject, SelectionDescription, etc).
+A DataFetcher will also have to be created for the representation, the `SubscriptionSelectionEventDataFetcher` in a similar fashion as the `SubscriptionTreeEventDataFetcher`.
+In order to create the GraphQL subscription, an event processor and its factory will be needed just like the Tree representation for example.
+
+
+=== Execution
+
+When a tool will be executed, the frontend will give back to the backend the id of the element selected in the selection dialog.
+For that, the `InvokeNodeToolOnDiagramInput` will have a new field named `selectedObjectId: String` with the identifier of the object selected by the end user.
+The `InvokeNodeToolOnDiagramEventHandler` will then be able to find the object with this identifier to add it to the variable manager.
+A new variable named `selectedObject` will be available in the variable manager if the tool requires a selection dialog.
+If the variable is not available, an error payload will be returned instead.
+
+== Status
+
+WIP
+
+== Consequences
+
+We will have to update our Sirius RCP compatibility layer after that to leverage the information from the odesign.
