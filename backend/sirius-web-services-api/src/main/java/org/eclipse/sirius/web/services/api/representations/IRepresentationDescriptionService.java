@@ -13,7 +13,6 @@
 package org.eclipse.sirius.web.services.api.representations;
 
 import java.util.List;
-import java.util.UUID;
 
 import org.eclipse.sirius.web.representations.IRepresentationDescription;
 
@@ -23,10 +22,6 @@ import org.eclipse.sirius.web.representations.IRepresentationDescription;
  * @author sbegaudeau
  */
 public interface IRepresentationDescriptionService {
-
-    UUID EXPLORER_TREE_DESCRIPTION = UUID.randomUUID();
-
-    UUID DEFAULT_FORM_DESCRIPTION = UUID.randomUUID();
 
     List<IRepresentationDescription> getRepresentationDescriptions(Object clazz);
 

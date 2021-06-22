@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.services.api.images;
+package org.eclipse.sirius.web.emf.view;
 
 import java.util.List;
 import java.util.Optional;

@@ -25,8 +25,6 @@ import org.eclipse.sirius.web.diagrams.ListNodeStyle;
 import org.eclipse.sirius.web.diagrams.NodeType;
 import org.eclipse.sirius.web.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.web.diagrams.description.LabelStyleDescription;
-import org.eclipse.sirius.web.services.api.images.CustomImage;
-import org.eclipse.sirius.web.services.api.images.ICustomImagesService;
 import org.eclipse.sirius.web.view.NodeStyle;
 
 /**

@@ -38,8 +38,6 @@ import org.eclipse.sirius.web.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.web.representations.IRepresentationDescription;
 import org.eclipse.sirius.web.representations.Status;
 import org.eclipse.sirius.web.representations.VariableManager;
-import org.eclipse.sirius.web.services.api.images.CustomImage;
-import org.eclipse.sirius.web.services.api.images.ICustomImagesService;
 import org.eclipse.sirius.web.view.ConditionalNodeStyle;
 import org.eclipse.sirius.web.view.NodeStyle;
 import org.springframework.stereotype.Component;

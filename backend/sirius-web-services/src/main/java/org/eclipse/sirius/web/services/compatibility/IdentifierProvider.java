@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.emf.compatibility;
+package org.eclipse.sirius.web.services.compatibility;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;

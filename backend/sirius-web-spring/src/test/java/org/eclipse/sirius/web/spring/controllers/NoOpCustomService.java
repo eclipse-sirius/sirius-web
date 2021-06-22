@@ -16,8 +16,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.sirius.web.services.api.images.CustomImage;
-import org.eclipse.sirius.web.services.api.images.ICustomImagesService;
+import org.eclipse.sirius.web.emf.view.CustomImage;
+import org.eclipse.sirius.web.emf.view.ICustomImagesService;
 
 /**
  * Null implementation of {@link ICustomImagesService}.

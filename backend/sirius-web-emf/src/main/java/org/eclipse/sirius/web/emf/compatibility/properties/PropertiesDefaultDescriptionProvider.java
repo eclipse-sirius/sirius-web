@@ -17,6 +17,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.function.Function;
 
 import org.eclipse.emf.ecore.EObject;
@@ -35,7 +36,6 @@ import org.eclipse.sirius.web.forms.description.IfDescription;
 import org.eclipse.sirius.web.forms.description.PageDescription;
 import org.eclipse.sirius.web.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.web.representations.VariableManager;
-import org.eclipse.sirius.web.services.api.representations.IRepresentationDescriptionService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -79,7 +79,7 @@ public class PropertiesDefaultDescriptionProvider implements IPropertiesDefaultD
                 .map(this.objectService::getId)
                 .orElse(null);
 
-        return FormDescription.newFormDescription(IRepresentationDescriptionService.DEFAULT_FORM_DESCRIPTION)
+        return FormDescription.newFormDescription(UUID.nameUUIDFromBytes("default_form_description".getBytes())) //$NON-NLS-1$
                 .label("Default form description") //$NON-NLS-1$
                 .idProvider(new GetOrCreateRandomIdProvider())
                 .labelProvider(labelProvider)

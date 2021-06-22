@@ -66,3 +66,7 @@ WIP
 
 == Consequences
 
+This refactoring highlights multiple issues with the current integration between Sirius Components and Sirius Web.
+None of those issues is a surprise but splitting the code make some of those issues more obvious.
+For example, the CustomImage support is oddly integrated since it requires a deep knownledge of the lifecycle of the whole application.
+Separating the code between Sirius Web and Sirius Components highlight this issue quite clearly.
