@@ -273,7 +273,7 @@ export const TreeItem = ({
         });
       contextMenu = (
         <TreeItemDocumentContextMenu
-          projectId={editingContextId}
+          editingContextId={editingContextId}
           documentId={item.id}
           x={x}
           y={y}
@@ -359,7 +359,7 @@ export const TreeItem = ({
         const variables = {
           input: {
             id: uuid(),
-            projectId: editingContextId,
+            editingContextId,
             objectId: item.id,
           },
         };
@@ -428,12 +428,12 @@ export const TreeItem = ({
         } else if (item?.kind === 'Diagram') {
           renameRepresentation({
             variables: {
-              input: { id: uuid(), projectId: editingContextId, representationId: item.id, newLabel: label },
+              input: { id: uuid(), editingContextId, representationId: item.id, newLabel: label },
             },
           });
         } else {
           renameObject({
-            variables: { input: { id: uuid(), projectId: editingContextId, objectId: item.id, newName: label } },
+            variables: { input: { id: uuid(), editingContextId, objectId: item.id, newName: label } },
           });
         }
       } else {

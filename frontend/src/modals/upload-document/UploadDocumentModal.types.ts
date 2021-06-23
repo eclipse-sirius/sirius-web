@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 export interface UploadDocumentModalProps {
-  projectId: string;
+  editingContextId: string;
   onDocumentUploaded: () => void;
   onClose: () => void;
 }

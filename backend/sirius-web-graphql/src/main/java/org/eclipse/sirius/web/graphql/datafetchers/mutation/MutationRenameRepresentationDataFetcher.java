@@ -81,27 +81,25 @@ public class MutationRenameRepresentationDataFetcher implements IDataFetcherWith
 
         IPayload payload = new ErrorPayload(input.getId(), this.messageService.unexpectedError());
 
-        UUID projectId = input.getProjectId();
-        if (projectId != null) {
-            boolean canEditProject = this.dataFetchingEnvironmentService.canEdit(environment, projectId);
-            if (!canEditProject) {
-                payload = new ErrorPayload(input.getId(), this.messageService.unauthorized());
-            } else {
-                Optional<RepresentationDescriptor> optionalRepresentationDescriptor = this.representationService.getRepresentation(input.getRepresentationId());
-                if (optionalRepresentationDescriptor.isPresent()) {
-                    RepresentationDescriptor representationDescriptor = optionalRepresentationDescriptor.get();
+        UUID editingContextId = input.getEditingContextId();
+        boolean canEditProject = this.dataFetchingEnvironmentService.canEdit(environment, editingContextId);
+        if (!canEditProject) {
+            payload = new ErrorPayload(input.getId(), this.messageService.unauthorized());
+        } else {
+            Optional<RepresentationDescriptor> optionalRepresentationDescriptor = this.representationService.getRepresentation(input.getRepresentationId());
+            if (optionalRepresentationDescriptor.isPresent()) {
+                RepresentationDescriptor representationDescriptor = optionalRepresentationDescriptor.get();
 
-                    boolean canEdit = this.dataFetchingEnvironmentService.canEdit(environment, representationDescriptor.getProjectId());
-                    if (canEdit) {
-                        // @formatter:off
+                boolean canEdit = this.dataFetchingEnvironmentService.canEdit(environment, representationDescriptor.getProjectId());
+                if (canEdit) {
+                    // @formatter:off
                         payload = this.editingContextEventProcessorRegistry.dispatchEvent(representationDescriptor.getProjectId(), input)
                                 .orElse(new ErrorPayload(input.getId(), this.messageService.unexpectedError()));
                         // @formatter:on
-                    } else {
-                        payload = new ErrorPayload(input.getId(), this.messageService.unauthorized());
-                    }
-
+                } else {
+                    payload = new ErrorPayload(input.getId(), this.messageService.unauthorized());
                 }
+
             }
         }
         return payload;

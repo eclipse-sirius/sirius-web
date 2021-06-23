@@ -204,7 +204,7 @@ export const NewRepresentationModal = ({
     dispatch({ type: 'CREATE_REPRESENTATION' } as CreateRepresentationEvent);
     const input = {
       id: uuid(),
-      projectId: editingContextId,
+      editingContextId,
       objectId,
       representationDescriptionId: selectedRepresentationDescriptionId,
       representationName: name,

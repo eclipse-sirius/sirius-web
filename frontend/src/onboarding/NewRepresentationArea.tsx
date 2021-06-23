@@ -75,7 +75,7 @@ export const NewRepresentationArea = ({
     const objectId = selection.id;
     const input = {
       id: uuid(),
-      projectId: editingContextId,
+      editingContextId,
       objectId,
       representationDescriptionId,
       representationName: selected.label,

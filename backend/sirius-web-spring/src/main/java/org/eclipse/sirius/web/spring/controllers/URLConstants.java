@@ -28,7 +28,7 @@ public final class URLConstants {
 
     public static final String IMAGE_BASE_PATH = API_BASE_PATH + "/images"; //$NON-NLS-1$
 
-    public static final String DOCUMENT_BASE_PATH = API_BASE_PATH + "/projects/{projectId}/documents"; //$NON-NLS-1$
+    public static final String DOCUMENT_BASE_PATH = API_BASE_PATH + "/editingcontexts/{editingContextId}/documents"; //$NON-NLS-1$
 
     public static final String PROJECT_BASE_PATH = API_BASE_PATH + "/projects"; //$NON-NLS-1$
 

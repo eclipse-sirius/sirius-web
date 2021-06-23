@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 export interface TreeItemDocumentContextMenuProps {
-  projectId: string;
+  editingContextId: string;
   documentId: string;
   x: number;
   y: number;

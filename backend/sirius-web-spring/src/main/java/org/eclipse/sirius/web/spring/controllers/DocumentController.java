@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -42,7 +42,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * </p>
  *
  * <pre>
- * PROTOCOL://DOMAIN.TLD(:PORT)/API_BASE_PATH/projects/PROJECT_ID/documents/DOCUMENT_ID
+ * PROTOCOL://DOMAIN.TLD(:PORT)/API_BASE_PATH/editingcontexts/EDITING_CONTEXT_ID/documents/DOCUMENT_ID
  * </pre>
  *
  * <p>
@@ -50,7 +50,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * </p>
  *
  * <pre>
- * http://localhost:8080/api/projects/PROJECT_ID/documents/DOCUMENT_ID
+ * http://localhost:8080/api/editingcontexts/EDITING_CONTEXT_ID/documents/DOCUMENT_ID
  * </pre>
  *
  * <p>
@@ -73,10 +73,10 @@ public class DocumentController {
 
     @GetMapping(path = "/{documentId}")
     @ResponseBody
-    public ResponseEntity<Resource> getDocument(@PathVariable String projectId, @PathVariable String documentId) {
-        var optionalProjectId = this.convertToUUID(projectId);
+    public ResponseEntity<Resource> getDocument(@PathVariable String editingContextId, @PathVariable String documentId) {
+        var optionalEditingContextId = this.convertToUUID(editingContextId);
         var optionalDocumentId = this.convertToUUID(documentId);
-        Optional<Document> optionalDocument = optionalProjectId.flatMap(pId -> {
+        Optional<Document> optionalDocument = optionalEditingContextId.flatMap(pId -> {
             return optionalDocumentId.flatMap(dId -> this.documentService.getDocument(pId, dId));
         });
 

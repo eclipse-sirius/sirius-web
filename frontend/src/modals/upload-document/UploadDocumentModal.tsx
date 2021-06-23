@@ -54,7 +54,7 @@ const uploadDocumentMutationFile = gql`
 
 const isErrorPayload = (payload: GQLUploadDocumentPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
-export const UploadDocumentModal = ({ projectId, onDocumentUploaded, onClose }: UploadDocumentModalProps) => {
+export const UploadDocumentModal = ({ editingContextId, onDocumentUploaded, onClose }: UploadDocumentModalProps) => {
   const [{ value, context }, dispatch] = useMachine<UploadDocumentModalContext, UploadDocumentModalEvent>(
     uploadDocumentModalMachine
   );
@@ -71,7 +71,7 @@ export const UploadDocumentModal = ({ projectId, onDocumentUploaded, onClose }: 
     const variables = {
       input: {
         id: uuid(),
-        projectId,
+        editingContextId,
         file: null, // the file will be send as a part of the multipart POST query.
       },
     };

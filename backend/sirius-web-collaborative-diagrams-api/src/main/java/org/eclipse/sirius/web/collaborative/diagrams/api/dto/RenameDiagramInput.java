@@ -32,7 +32,7 @@ public final class RenameDiagramInput implements IDiagramInput {
 
     private UUID id;
 
-    private UUID projectId;
+    private UUID editingContextId;
 
     private UUID diagramId;
 
@@ -42,9 +42,9 @@ public final class RenameDiagramInput implements IDiagramInput {
         // Used by Jackson
     }
 
-    public RenameDiagramInput(UUID id, UUID projectId, UUID diagramId, String newLabel) {
+    public RenameDiagramInput(UUID id, UUID editingContextId, UUID diagramId, String newLabel) {
         this.id = Objects.requireNonNull(id);
-        this.projectId = Objects.requireNonNull(projectId);
+        this.editingContextId = Objects.requireNonNull(editingContextId);
         this.diagramId = Objects.requireNonNull(diagramId);
         this.newLabel = Objects.requireNonNull(newLabel);
     }
@@ -60,8 +60,8 @@ public final class RenameDiagramInput implements IDiagramInput {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getProjectId() {
-        return this.projectId;
+    public UUID getEditingContextId() {
+        return this.editingContextId;
     }
 
     @Override
@@ -80,7 +80,7 @@ public final class RenameDiagramInput implements IDiagramInput {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, diagramId: {2}, newLabel: {3}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.diagramId, this.newLabel);
+        String pattern = "{0} '{'id: {1}, editingContextId: {2}, diagramId: {3}, newLabel: {4}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.editingContextId, this.diagramId, this.newLabel);
     }
 }

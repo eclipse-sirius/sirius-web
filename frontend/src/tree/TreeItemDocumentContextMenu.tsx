@@ -17,7 +17,7 @@ import React from 'react';
 import { TreeItemDocumentContextMenuProps } from './TreeItemDocumentContextMenu.types';
 
 export const TreeItemDocumentContextMenu = ({
-  projectId,
+  editingContextId,
   documentId,
   x,
   y,
@@ -39,7 +39,7 @@ export const TreeItemDocumentContextMenu = ({
         disabled={readOnly}
       />
       <a
-        href={`${httpOrigin}/api/projects/${projectId}/documents/${documentId}`}
+        href={`${httpOrigin}/api/editingcontexts/${editingContextId}/documents/${documentId}`}
         type="application/octet-stream"
         data-testid="download-link">
         <Entry label="Download" onClick={onDownload} data-testid="download" />
