@@ -101,7 +101,7 @@ export const FormWebSocketContainer = ({
     variables: {
       input: {
         id,
-        projectId: editingContextId,
+        editingContextId,
         formId: representationId,
       },
     },

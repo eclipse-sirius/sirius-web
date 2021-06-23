@@ -31,7 +31,7 @@ import org.eclipse.sirius.web.core.api.IInput;
 public final class DiagramEventInput implements IInput {
     private UUID id;
 
-    private UUID projectId;
+    private UUID editingContextId;
 
     private UUID diagramId;
 
@@ -39,9 +39,9 @@ public final class DiagramEventInput implements IInput {
         // Used by Jackson
     }
 
-    public DiagramEventInput(UUID id, UUID projectId, UUID diagramId) {
+    public DiagramEventInput(UUID id, UUID editingContextId, UUID diagramId) {
         this.id = Objects.requireNonNull(id);
-        this.projectId = Objects.requireNonNull(projectId);
+        this.editingContextId = Objects.requireNonNull(editingContextId);
         this.diagramId = Objects.requireNonNull(diagramId);
     }
 
@@ -56,8 +56,8 @@ public final class DiagramEventInput implements IInput {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getProjectId() {
-        return this.projectId;
+    public UUID getEditingContextId() {
+        return this.editingContextId;
     }
 
     @GraphQLID
@@ -69,7 +69,7 @@ public final class DiagramEventInput implements IInput {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, projectId: {2}, diagramId: {3}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.projectId, this.diagramId);
+        String pattern = "{0} '{'id: {1}, editingContextId: {2}, diagramId: {3}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.editingContextId, this.diagramId);
     }
 }

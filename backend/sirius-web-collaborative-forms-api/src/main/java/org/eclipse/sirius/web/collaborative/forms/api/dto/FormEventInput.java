@@ -33,7 +33,7 @@ public final class FormEventInput implements IInput {
 
     private UUID id;
 
-    private UUID projectId;
+    private UUID editingContextId;
 
     private UUID formId;
 
@@ -41,9 +41,9 @@ public final class FormEventInput implements IInput {
         // Used by Jackson
     }
 
-    public FormEventInput(UUID id, UUID projectId, UUID formId) {
+    public FormEventInput(UUID id, UUID editingContextId, UUID formId) {
         this.id = Objects.requireNonNull(id);
-        this.projectId = Objects.requireNonNull(projectId);
+        this.editingContextId = Objects.requireNonNull(editingContextId);
         this.formId = Objects.requireNonNull(formId);
     }
 
@@ -58,8 +58,8 @@ public final class FormEventInput implements IInput {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getProjectId() {
-        return this.projectId;
+    public UUID getEditingContextId() {
+        return this.editingContextId;
     }
 
     @GraphQLID
@@ -71,7 +71,7 @@ public final class FormEventInput implements IInput {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, projectId: {2}, formId: {3}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.projectId, this.formId);
+        String pattern = "{0} '{'id: {1}, editingContextId: {2}, formId: {3}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.editingContextId, this.formId);
     }
 }

@@ -77,7 +77,7 @@ public class SubscriptionFormEventDataFetcher implements IDataFetcherWithFieldCo
         var formConfiguration = new FormConfiguration(input.getFormId());
 
         // @formatter:off
-        return this.editingContextEventProcessorRegistry.getOrCreateEditingContextEventProcessor(input.getProjectId())
+        return this.editingContextEventProcessorRegistry.getOrCreateEditingContextEventProcessor(input.getEditingContextId())
                 .flatMap(processor -> processor.acquireRepresentationEventProcessor(IFormEventProcessor.class, formConfiguration, input))
                 .map(representationEventProcessor -> representationEventProcessor.getOutputEvents(input))
                 .orElse(Flux.empty());
