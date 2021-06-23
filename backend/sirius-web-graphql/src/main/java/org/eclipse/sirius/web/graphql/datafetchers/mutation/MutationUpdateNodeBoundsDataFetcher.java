@@ -41,13 +41,12 @@ import graphql.schema.DataFetchingEnvironment;
  * </pre>
  *
  * @author fbarbin
- *
  */
 // @formatter:off
 @GraphQLMutationTypes(
     input = UpdateNodeBoundsInput.class,
     payloads = {
-            UpdateNodeBoundsSuccessPayload.class
+        UpdateNodeBoundsSuccessPayload.class
     }
 )
 @MutationDataFetcher(type = MutationTypeProvider.TYPE, field = MutationUpdateNodeBoundsDataFetcher.UPDATE_NODE_BOUNDS_FIELD)
@@ -74,10 +73,10 @@ public class MutationUpdateNodeBoundsDataFetcher implements IDataFetcherWithFiel
         var input = this.dataFetchingEnvironmentService.getInput(environment, UpdateNodeBoundsInput.class);
 
         IPayload payload = new ErrorPayload(input.getId(), this.messageService.unauthorized());
-        boolean canEdit = this.dataFetchingEnvironmentService.canEdit(environment, input.getProjectId());
+        boolean canEdit = this.dataFetchingEnvironmentService.canEdit(environment, input.getEditingContextId());
         if (canEdit) {
             // @formatter:off
-            payload = this.editingContextEventProcessorRegistry.dispatchEvent(input.getProjectId(), input)
+            payload = this.editingContextEventProcessorRegistry.dispatchEvent(input.getEditingContextId(), input)
                     .orElse(new ErrorPayload(input.getId(), this.messageService.unexpectedError()));
             // @formatter:on
         }

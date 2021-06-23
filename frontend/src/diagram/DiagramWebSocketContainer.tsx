@@ -370,7 +370,7 @@ export const DiagramWebSocketContainer = ({
 
       const input = {
         id: uuid(),
-        projectId: editingContextId,
+        editingContextId,
         representationId,
         nodeIds,
         edgeIds,
@@ -394,7 +394,7 @@ export const DiagramWebSocketContainer = ({
 
           const input = {
             id: uuid(),
-            projectId: editingContextId,
+            editingContextId,
             representationId,
             diagramSourceElementId,
             diagramTargetElementId,
@@ -408,7 +408,7 @@ export const DiagramWebSocketContainer = ({
           let startingPositionY = startingPosition ? startingPosition.y : 0;
           const input = {
             id: uuid(),
-            projectId: editingContextId,
+            editingContextId,
             representationId,
             diagramElementId,
             toolId,
@@ -428,7 +428,7 @@ export const DiagramWebSocketContainer = ({
     (diagramElementId, newPositionX, newPositionY) => {
       const input = {
         id: uuid(),
-        projectId: editingContextId,
+        editingContextId,
         representationId,
         diagramElementId,
         newPositionX,
@@ -443,7 +443,7 @@ export const DiagramWebSocketContainer = ({
     (diagramElementId, newPositionX, newPositionY, newWidth, newHeight) => {
       const input = {
         id: uuid(),
-        projectId: editingContextId,
+        editingContextId,
         representationId,
         diagramElementId,
         newPositionX,
@@ -504,7 +504,7 @@ export const DiagramWebSocketContainer = ({
     const editLabel = (labelId, newText) => {
       const input = {
         id: uuid(),
-        projectId: editingContextId,
+        editingContextId,
         representationId,
         labelId,
         newText,
