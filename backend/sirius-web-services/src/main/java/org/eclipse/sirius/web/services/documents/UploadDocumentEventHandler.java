@@ -103,7 +103,7 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
         }
 
         UploadDocumentInput uploadDocumentInput = (UploadDocumentInput) input;
-        UUID projectId = uploadDocumentInput.getProjectId();
+        UUID projectId = uploadDocumentInput.getEditingContextId();
         UploadFile file = uploadDocumentInput.getFile();
 
         // @formatter:off

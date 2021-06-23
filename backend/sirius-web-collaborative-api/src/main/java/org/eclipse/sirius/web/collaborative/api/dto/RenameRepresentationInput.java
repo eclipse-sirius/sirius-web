@@ -32,7 +32,7 @@ public final class RenameRepresentationInput implements IRepresentationInput {
 
     private UUID id;
 
-    private UUID projectId;
+    private UUID editingContextId;
 
     private UUID representationId;
 
@@ -42,9 +42,9 @@ public final class RenameRepresentationInput implements IRepresentationInput {
         // Used by Jackson
     }
 
-    public RenameRepresentationInput(UUID id, UUID projectId, UUID representationId, String newLabel) {
+    public RenameRepresentationInput(UUID id, UUID editingContextId, UUID representationId, String newLabel) {
         this.id = Objects.requireNonNull(id);
-        this.projectId = Objects.requireNonNull(projectId);
+        this.editingContextId = Objects.requireNonNull(editingContextId);
         this.representationId = Objects.requireNonNull(representationId);
         this.newLabel = Objects.requireNonNull(newLabel);
     }
@@ -60,8 +60,8 @@ public final class RenameRepresentationInput implements IRepresentationInput {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getProjectId() {
-        return this.projectId;
+    public UUID getEditingContextId() {
+        return this.editingContextId;
     }
 
     @Override
@@ -80,7 +80,7 @@ public final class RenameRepresentationInput implements IRepresentationInput {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, representationId: {2}, newLabel: {3}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.representationId, this.newLabel);
+        String pattern = "{0} '{'id: {1}, editingContextId: {2}, representationId: {3}, newLabel: {4}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.editingContextId, this.representationId, this.newLabel);
     }
 }

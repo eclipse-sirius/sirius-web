@@ -32,7 +32,7 @@ public final class CreateRepresentationInput implements IInput {
 
     private UUID id;
 
-    private UUID projectId;
+    private UUID editingContextId;
 
     private UUID representationDescriptionId;
 
@@ -44,9 +44,9 @@ public final class CreateRepresentationInput implements IInput {
         // Used by Jackson
     }
 
-    public CreateRepresentationInput(UUID id, UUID projectId, UUID representationDescriptionId, String objectId, String representationName) {
+    public CreateRepresentationInput(UUID id, UUID editingContextId, UUID representationDescriptionId, String objectId, String representationName) {
         this.id = Objects.requireNonNull(id);
-        this.projectId = Objects.requireNonNull(projectId);
+        this.editingContextId = Objects.requireNonNull(editingContextId);
         this.representationDescriptionId = Objects.requireNonNull(representationDescriptionId);
         this.objectId = Objects.requireNonNull(objectId);
         this.representationName = Objects.requireNonNull(representationName);
@@ -63,8 +63,8 @@ public final class CreateRepresentationInput implements IInput {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getProjectId() {
-        return this.projectId;
+    public UUID getEditingContextId() {
+        return this.editingContextId;
     }
 
     @GraphQLID
@@ -89,7 +89,7 @@ public final class CreateRepresentationInput implements IInput {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, projectId: {2}, representationDescriptionId: {3}, objectId: {4}, representationName: {5}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.projectId, this.representationDescriptionId, this.objectId, this.representationName);
+        String pattern = "{0} '{'id: {1}, editingContextId: {2}, representationDescriptionId: {3}, objectId: {4}, representationName: {5}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.editingContextId, this.representationDescriptionId, this.objectId, this.representationName);
     }
 }

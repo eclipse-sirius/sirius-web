@@ -102,7 +102,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
         IRepresentationInput effectiveInput = representationInput;
         if (representationInput instanceof RenameRepresentationInput) {
             RenameRepresentationInput renameRepresentationInput = (RenameRepresentationInput) representationInput;
-            effectiveInput = new RenameDiagramInput(renameRepresentationInput.getId(), renameRepresentationInput.getProjectId(), renameRepresentationInput.getRepresentationId(),
+            effectiveInput = new RenameDiagramInput(renameRepresentationInput.getId(), renameRepresentationInput.getEditingContextId(), renameRepresentationInput.getRepresentationId(),
                     renameRepresentationInput.getNewLabel());
         }
         if (effectiveInput instanceof IDiagramInput) {

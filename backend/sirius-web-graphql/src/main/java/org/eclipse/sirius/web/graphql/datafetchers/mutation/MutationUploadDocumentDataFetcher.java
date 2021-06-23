@@ -59,7 +59,7 @@ public class MutationUploadDocumentDataFetcher implements IDataFetcherWithFieldC
 
     public static final String UPLOAD_DOCUMENT_FIELD = "uploadDocument"; //$NON-NLS-1$
 
-    private static final String PROJECT_ID = "projectId"; //$NON-NLS-1$
+    private static final String EDITING_CONTEXT_ID = "editingContextId"; //$NON-NLS-1$
 
     private static final String FILE = "file"; //$NON-NLS-1$
 
@@ -91,7 +91,7 @@ public class MutationUploadDocumentDataFetcher implements IDataFetcherWithFieldC
                 .map(UUID::fromString)
                 .orElse(null);
 
-        UUID projectId = Optional.of(inputArgument.get(PROJECT_ID))
+        UUID editingContextId = Optional.of(inputArgument.get(EDITING_CONTEXT_ID))
                 .filter(String.class::isInstance)
                 .map(String.class::cast)
                 .map(UUID::fromString)
@@ -103,13 +103,13 @@ public class MutationUploadDocumentDataFetcher implements IDataFetcherWithFieldC
                 .orElse(null);
         // @formatter:on
 
-        UploadDocumentInput input = new UploadDocumentInput(id, projectId, file);
+        UploadDocumentInput input = new UploadDocumentInput(id, editingContextId, file);
         IPayload payload = new ErrorPayload(input.getId(), this.messageService.unauthorized());
 
-        boolean canEdit = this.dataFetchingEnvironmentService.canEdit(environment, projectId);
+        boolean canEdit = this.dataFetchingEnvironmentService.canEdit(environment, editingContextId);
         if (canEdit) {
             // @formatter:off
-            payload = this.editingContextEventProcessorRegistry.dispatchEvent(projectId, input)
+            payload = this.editingContextEventProcessorRegistry.dispatchEvent(editingContextId, input)
                     .orElse(new ErrorPayload(input.getId(), this.messageService.unexpectedError()));
             // @formatter:on
         }

@@ -31,7 +31,7 @@ import org.eclipse.sirius.web.core.api.IInput;
 public final class DeleteObjectInput implements IInput {
     private UUID id;
 
-    private UUID projectId;
+    private UUID editingContextId;
 
     private String objectId;
 
@@ -39,9 +39,9 @@ public final class DeleteObjectInput implements IInput {
         // Used by Jackson
     }
 
-    public DeleteObjectInput(UUID id, UUID projectId, String objectId) {
+    public DeleteObjectInput(UUID id, UUID editingContextId, String objectId) {
         this.id = Objects.requireNonNull(id);
-        this.projectId = Objects.requireNonNull(projectId);
+        this.editingContextId = Objects.requireNonNull(editingContextId);
         this.objectId = Objects.requireNonNull(objectId);
     }
 
@@ -56,8 +56,8 @@ public final class DeleteObjectInput implements IInput {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getProjectId() {
-        return this.projectId;
+    public UUID getEditingContextId() {
+        return this.editingContextId;
     }
 
     @GraphQLID
@@ -69,7 +69,7 @@ public final class DeleteObjectInput implements IInput {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, projectId: {2}, objectId: {3}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.projectId, this.objectId);
+        String pattern = "{0} '{'id: {1}, editingContextId: {2}, objectId: {3}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.editingContextId, this.objectId);
     }
 }

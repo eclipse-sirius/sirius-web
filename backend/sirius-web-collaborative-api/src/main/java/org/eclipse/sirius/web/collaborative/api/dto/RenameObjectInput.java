@@ -32,7 +32,7 @@ public final class RenameObjectInput implements IInput {
 
     private UUID id;
 
-    private UUID projectId;
+    private UUID editingContextId;
 
     private String objectId;
 
@@ -42,9 +42,9 @@ public final class RenameObjectInput implements IInput {
         // Used by Jackson
     }
 
-    public RenameObjectInput(UUID id, UUID projectId, String objectId, String newName) {
+    public RenameObjectInput(UUID id, UUID editingContextId, String objectId, String newName) {
         this.id = Objects.requireNonNull(id);
-        this.projectId = Objects.requireNonNull(projectId);
+        this.editingContextId = Objects.requireNonNull(editingContextId);
         this.objectId = Objects.requireNonNull(objectId);
         this.newName = Objects.requireNonNull(newName);
     }
@@ -60,8 +60,8 @@ public final class RenameObjectInput implements IInput {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getProjectId() {
-        return this.projectId;
+    public UUID getEditingContextId() {
+        return this.editingContextId;
     }
 
     @GraphQLID
@@ -79,7 +79,7 @@ public final class RenameObjectInput implements IInput {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, objectId: {2}, newName: {3}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.objectId, this.newName);
+        String pattern = "{0} '{'id: {1}, editingContextId: {2}, objectId: {3}, newName: {4}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.editingContextId, this.objectId, this.newName);
     }
 }
