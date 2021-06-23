@@ -31,7 +31,7 @@ import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramInput;
 public final class InvokeEdgeToolOnDiagramInput implements IDiagramInput {
     private UUID id;
 
-    private UUID projectId;
+    private UUID editingContextId;
 
     private UUID representationId;
 
@@ -52,8 +52,8 @@ public final class InvokeEdgeToolOnDiagramInput implements IDiagramInput {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getProjectId() {
-        return this.projectId;
+    public UUID getEditingContextId() {
+        return this.editingContextId;
     }
 
     @Override
@@ -87,7 +87,8 @@ public final class InvokeEdgeToolOnDiagramInput implements IDiagramInput {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, projectId: {2}, representationId: {3}, diagramSourceElementId: {4}, diagramTargetElementId: {5}, toolId: {6}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.projectId, this.representationId, this.diagramSourceElementId, this.diagramTargetElementId, this.toolId);
+        String pattern = "{0} '{'id: {1}, editingContextId: {2}, representationId: {3}, diagramSourceElementId: {4}, diagramTargetElementId: {5}, toolId: {6}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.editingContextId, this.representationId, this.diagramSourceElementId, this.diagramTargetElementId,
+                this.toolId);
     }
 }

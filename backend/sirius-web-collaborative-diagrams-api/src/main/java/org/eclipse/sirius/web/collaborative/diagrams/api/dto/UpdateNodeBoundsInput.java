@@ -31,7 +31,7 @@ public final class UpdateNodeBoundsInput implements IDiagramInput {
 
     private UUID id;
 
-    private UUID projectId;
+    private UUID editingContextId;
 
     private UUID representationId;
 
@@ -56,8 +56,8 @@ public final class UpdateNodeBoundsInput implements IDiagramInput {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getProjectId() {
-        return this.projectId;
+    public UUID getEditingContextId() {
+        return this.editingContextId;
     }
 
     @Override
@@ -101,8 +101,8 @@ public final class UpdateNodeBoundsInput implements IDiagramInput {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'Id: {1}, projectId: {2}, representationId: {3}, diagramElementId: {4}, newPositionX: {5}, newPositionY: {6}, newWidth: {7}, newHeight: {8}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.projectId, this.representationId, this.diagramElementId, this.newPositionX, this.newPositionY,
+        String pattern = "{0} '{'id: {1}, editingContextId: {2}, representationId: {3}, diagramElementId: {4}, newPositionX: {5}, newPositionY: {6}, newWidth: {7}, newHeight: {8}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.editingContextId, this.representationId, this.diagramElementId, this.newPositionX, this.newPositionY,
                 this.newWidth, this.newHeight);
     }
 }
