@@ -30,7 +30,7 @@ import org.eclipse.sirius.web.core.api.IInput;
 public final class PropertiesEventInput implements IInput {
     private UUID id;
 
-    private UUID projectId;
+    private UUID editingContextId;
 
     private String objectId;
 
@@ -45,8 +45,8 @@ public final class PropertiesEventInput implements IInput {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getProjectId() {
-        return this.projectId;
+    public UUID getEditingContextId() {
+        return this.editingContextId;
     }
 
     @GraphQLID
@@ -58,7 +58,7 @@ public final class PropertiesEventInput implements IInput {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, projectId: {2}, objectId: {3}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.projectId, this.objectId);
+        String pattern = "{0} '{'id: {1}, editingContextId: {2}, objectId: {3}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.editingContextId, this.objectId);
     }
 }

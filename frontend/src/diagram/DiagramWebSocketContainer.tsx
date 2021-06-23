@@ -572,7 +572,7 @@ export const DiagramWebSocketContainer = ({
     variables: {
       input: {
         id,
-        projectId: editingContextId,
+        editingContextId,
         diagramId: representationId,
       },
     },

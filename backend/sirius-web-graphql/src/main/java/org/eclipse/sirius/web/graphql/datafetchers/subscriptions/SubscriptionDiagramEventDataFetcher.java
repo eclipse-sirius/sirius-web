@@ -75,7 +75,7 @@ public class SubscriptionDiagramEventDataFetcher implements IDataFetcherWithFiel
         var diagramConfiguration = new DiagramConfiguration(input.getDiagramId());
 
         // @formatter:off
-        return this.editingContextEventProcessorRegistry.getOrCreateEditingContextEventProcessor(input.getProjectId())
+        return this.editingContextEventProcessorRegistry.getOrCreateEditingContextEventProcessor(input.getEditingContextId())
                 .flatMap(processor -> processor.acquireRepresentationEventProcessor(IDiagramEventProcessor.class, diagramConfiguration, input))
                 .map(representationEventProcessor -> representationEventProcessor.getOutputEvents(input))
                 .orElse(Flux.empty());

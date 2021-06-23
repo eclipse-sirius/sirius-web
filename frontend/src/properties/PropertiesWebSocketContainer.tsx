@@ -102,7 +102,7 @@ export const PropertiesWebSocketContainer = ({
     variables: {
       input: {
         id,
-        projectId: editingContextId,
+        editingContextId,
         objectId: currentSelection?.id,
       },
     },
