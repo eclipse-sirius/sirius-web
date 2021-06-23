@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,22 +13,16 @@
 import { LinkButton } from 'core/linkbutton/LinkButton';
 import { Select } from 'core/select/Select';
 import { Representation } from 'icons/Representation';
-import PropTypes from 'prop-types';
+import { RepresentationAreaProps } from 'onboarding/RepresentationsArea.types';
 import React from 'react';
 import { AreaContainer } from './AreaContainer';
 import styles from './RepresentationsArea.module.css';
 
-const propTypes = {
-  maxDisplay: PropTypes.number.isRequired,
-  representations: PropTypes.array.isRequired,
-  setSelection: PropTypes.func.isRequired,
-};
-
-export const RepresentationsArea = ({ representations, maxDisplay, setSelection }) => {
+export const RepresentationsArea = ({ representations, setSelection }: RepresentationAreaProps) => {
   // Representations list
   let representationsButtons =
     representations.length > 0
-      ? representations.slice(0, maxDisplay).map((representation) => {
+      ? representations.slice(0, 5).map((representation) => {
           return (
             <LinkButton
               key={representation.id}
@@ -47,14 +41,14 @@ export const RepresentationsArea = ({ representations, maxDisplay, setSelection 
   const moreName = 'moreRepresentations';
   const moreLabel = 'More Representations...';
   let moreSelect =
-    representations.length > maxDisplay ? (
+    representations.length > 5 ? (
       <Select
         onChange={(event) => {
           const representation = representations.find((candidate) => candidate.id === event.target.value);
           setSelection({ id: representation.id, label: representation.label, kind: representation.kind });
         }}
         name={moreName}
-        options={[{ id: moreLabel, label: moreLabel }, representations.slice(maxDisplay)].flat()}
+        options={[{ id: moreLabel, label: moreLabel }, representations.slice(5)].flat()}
         data-testid={moreName}
       />
     ) : null;
@@ -66,5 +60,3 @@ export const RepresentationsArea = ({ representations, maxDisplay, setSelection 
     </AreaContainer>
   );
 };
-
-RepresentationsArea.propTypes = propTypes;

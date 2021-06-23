@@ -14,9 +14,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useMachine } from '@xstate/react';
 import { HORIZONTAL, Panels, SECOND_PANEL } from 'core/panels/Panels';
 import { ExplorerWebSocketContainer } from 'explorer/ExplorerWebSocketContainer';
+import { OnboardArea } from 'onboarding/OnboardArea';
 import { PropertiesWebSocketContainer } from 'properties/PropertiesWebSocketContainer';
 import React, { useContext, useEffect } from 'react';
-import { OnboardArea } from 'workbench/OnboardArea';
 import { RepresentationContext } from 'workbench/RepresentationContext';
 import { RepresentationNavigation } from 'workbench/RepresentationNavigation';
 import { Representation, RepresentationComponentProps, Selection, WorkbenchProps } from 'workbench/Workbench.types';
@@ -95,7 +95,12 @@ export const Workbench = ({
     <PropertiesWebSocketContainer editingContextId={editingContextId} selection={selection} readOnly={readOnly} />
   );
   let main = (
-    <OnboardArea projectId={editingContextId} selection={selection} setSelection={setSelection} readOnly={readOnly} />
+    <OnboardArea
+      editingContextId={editingContextId}
+      selection={selection}
+      setSelection={setSelection}
+      readOnly={readOnly}
+    />
   );
   if (displayedRepresentation) {
     const RepresentationComponent = registry.getComponent(displayedRepresentation);
