@@ -1,8 +1,10 @@
 version: 1
-update_configs:
-  - package_manager: "javascript"
+updates:
+  - package-ecosystem: "npm"
     directory: "/frontend"
-    update_schedule: "weekly"
-  - package_manager: "java:maven"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "maven"
     directory: "/backend"
-    update_schedule: "weekly"
+    schedule:
+      interval: "weekly"
