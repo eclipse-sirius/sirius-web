@@ -10,36 +10,38 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.graphql.datafetchers.project;
+package org.eclipse.sirius.web.graphql.datafetchers.editingcontext;
+
+import java.util.UUID;
 
 import org.eclipse.sirius.web.annotations.spring.graphql.QueryDataFetcher;
-import org.eclipse.sirius.web.graphql.schema.ProjectTypeProvider;
-import org.eclipse.sirius.web.services.api.projects.Project;
+import org.eclipse.sirius.web.graphql.schema.EditingContextTypeProvider;
+import org.eclipse.sirius.web.graphql.schema.IdFieldProvider;
 import org.eclipse.sirius.web.spring.graphql.api.IDataFetcherWithFieldCoordinates;
 
 import graphql.schema.DataFetchingEnvironment;
 
 /**
- * The data fetcher used to retrieve the current editing context of a project.
+ * The data fetcher used to retrieve the id of an editing context.
  * <p>
  * It will be used to fetch the data for the following GraphQL field:
  * </p>
  *
  * <pre>
- * type Project {
- *   currentEditingContext: EditingContext!
+ * type EditingContext {
+ *   id: ID!
  * }
  * </pre>
  *
  * @author sbegaudeau
  */
-@QueryDataFetcher(type = ProjectTypeProvider.TYPE, field = ProjectTypeProvider.CURRENT_EDITING_CONTEXT_FIELD)
-public class ProjectCurrentEditingContextDataFetcher implements IDataFetcherWithFieldCoordinates<Object> {
+@QueryDataFetcher(type = EditingContextTypeProvider.TYPE, field = IdFieldProvider.ID_FIELD)
+public class EditingContextIdDataFetcher implements IDataFetcherWithFieldCoordinates<UUID> {
 
     @Override
-    public Object get(DataFetchingEnvironment environment) throws Exception {
-        Project project = environment.getSource();
-        return project.getId();
+    public UUID get(DataFetchingEnvironment environment) throws Exception {
+        UUID editingContextId = environment.getSource();
+        return editingContextId;
     }
 
 }

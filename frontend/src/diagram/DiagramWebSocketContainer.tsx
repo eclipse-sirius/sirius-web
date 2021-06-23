@@ -310,7 +310,7 @@ export const DiagramWebSocketContainer = ({
    * For each update of the representationId value, we will redo a query and update tools.
    */
   useEffect(() => {
-    getToolSectionData({ variables: { projectId: editingContextId, diagramId: representationId } });
+    getToolSectionData({ variables: { editingContextId, diagramId: representationId } });
   }, [editingContextId, representationId, getToolSectionData]);
   /**
    * Dispatch the diagram to the diagramServer if our state indicate that diagram has changed.
@@ -560,7 +560,7 @@ export const DiagramWebSocketContainer = ({
 
   useEffect(() => {
     if (!toolSectionLoading && diagramWebSocketContainer === 'ready') {
-      const toolSections = toolSectionData?.viewer?.project?.representation?.toolSections;
+      const toolSections = toolSectionData?.viewer?.editingContext?.representation?.toolSections;
       if (toolSections) {
         const setToolSectionsEvent: SetToolSectionsEvent = { type: 'SET_TOOL_SECTIONS', toolSections: toolSections };
         dispatch(setToolSectionsEvent);

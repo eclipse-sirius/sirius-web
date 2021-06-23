@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,15 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.graphql.datafetchers.project;
+package org.eclipse.sirius.web.graphql.datafetchers.editingcontext;
 
 import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.annotations.spring.graphql.QueryDataFetcher;
-import org.eclipse.sirius.web.graphql.schema.ProjectTypeProvider;
+import org.eclipse.sirius.web.graphql.schema.EditingContextTypeProvider;
 import org.eclipse.sirius.web.representations.IRepresentation;
-import org.eclipse.sirius.web.services.api.projects.Project;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationService;
 import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;
 import org.eclipse.sirius.web.spring.graphql.api.IDataFetcherWithFieldCoordinates;
@@ -28,39 +27,39 @@ import org.slf4j.LoggerFactory;
 import graphql.schema.DataFetchingEnvironment;
 
 /**
- * The data fetcher used to retrieve a representation of a project.
+ * The data fetcher used to retrieve a representation of an editing context.
  * <p>
  * It will be used to fetch the data for the following GraphQL field:
  * </p>
  *
  * <pre>
- * type Project {
+ * type EditingContext {
  *   representation(representationId: ID!): Representation
  * }
  * </pre>
  *
  * @author sbegaudeau
  */
-@QueryDataFetcher(type = ProjectTypeProvider.TYPE, field = ProjectTypeProvider.REPRESENTATION_FIELD)
-public class ProjectRepresentationDataFetcher implements IDataFetcherWithFieldCoordinates<IRepresentation> {
+@QueryDataFetcher(type = EditingContextTypeProvider.TYPE, field = EditingContextTypeProvider.REPRESENTATION_FIELD)
+public class EditingContextRepresentationDataFetcher implements IDataFetcherWithFieldCoordinates<IRepresentation> {
 
     private final IRepresentationService representationService;
 
-    private final Logger logger = LoggerFactory.getLogger(ProjectRepresentationDataFetcher.class);
+    private final Logger logger = LoggerFactory.getLogger(EditingContextRepresentationDataFetcher.class);
 
-    public ProjectRepresentationDataFetcher(IRepresentationService representationService) {
+    public EditingContextRepresentationDataFetcher(IRepresentationService representationService) {
         this.representationService = Objects.requireNonNull(representationService);
     }
 
     @Override
     public IRepresentation get(DataFetchingEnvironment environment) throws Exception {
-        String representationIdArgument = environment.getArgument(ProjectTypeProvider.REPRESENTATION_ID_ARGUMENT);
+        UUID editingContextId = environment.getSource();
+        String representationIdArgument = environment.getArgument(EditingContextTypeProvider.REPRESENTATION_ID_ARGUMENT);
         try {
             UUID representationId = UUID.fromString(representationIdArgument);
 
-            Project project = environment.getSource();
             // @formatter:off
-            return this.representationService.getRepresentationDescriptorForProjectId(project.getId(), representationId)
+            return this.representationService.getRepresentationDescriptorForProjectId(editingContextId, representationId)
                     .map(RepresentationDescriptor::getRepresentation)
                     .orElse(null);
             // @formatter:on

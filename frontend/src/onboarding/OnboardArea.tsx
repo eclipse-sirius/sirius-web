@@ -35,8 +35,6 @@ const getOnboardDataQuery = gql`
             }
           }
         }
-      }
-      project(projectId: $editingContextId) {
         representations {
           id
           label
@@ -68,7 +66,7 @@ export const OnboardArea = ({ editingContextId, selection, setSelection, readOnl
       const { viewer } = data;
       let representationDescriptions = viewer.editingContext.representationDescriptions.edges.map((edge) => edge.node);
       setState({
-        representations: viewer.project.representations,
+        representations: viewer.editingContext.representations,
         stereotypeDescriptions: viewer.editingContext.stereotypeDescriptions,
         representationDescriptions,
       });
