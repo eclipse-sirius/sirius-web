@@ -12,9 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.graphql.schema;
 
-import static graphql.schema.GraphQLArgument.newArgument;
-import static graphql.schema.GraphQLNonNull.nonNull;
-
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -45,8 +42,6 @@ import graphql.schema.GraphQLTypeReference;
  *   name: String!
  *   owner: Account!
  *   visibility: Visibility!
- *   representation(representationId: ID!): Representation
- *   representations: [Representation!]!
  *   accessLevel: AccessLevel!
  *   modelers: [Modeler!]!
  *   currentEditingContext: EditingContext!
@@ -59,17 +54,9 @@ import graphql.schema.GraphQLTypeReference;
 public class ProjectTypeProvider implements ITypeProvider {
     public static final String TYPE = "Project"; //$NON-NLS-1$
 
-    public static final String REPRESENTATION_TYPE = "Representation"; //$NON-NLS-1$
-
     public static final String MODELER_TYPE = "Modeler"; //$NON-NLS-1$
 
     public static final String NAME_FIELD = "name"; //$NON-NLS-1$
-
-    public static final String REPRESENTATIONS_FIELD = "representations"; //$NON-NLS-1$
-
-    public static final String REPRESENTATION_FIELD = "representation"; //$NON-NLS-1$
-
-    public static final String REPRESENTATION_ID_ARGUMENT = "representationId"; //$NON-NLS-1$
 
     public static final String OWNER_FIELD = "owner"; //$NON-NLS-1$
 
@@ -92,8 +79,6 @@ public class ProjectTypeProvider implements ITypeProvider {
                 .field(this.getNameField())
                 .field(this.getOwnerField())
                 .field(this.getVisibilityField())
-                .field(this.getRepresentationField())
-                .field(this.getRepresentationsField())
                 .field(this.getAccessLevelField())
                 .field(this.getModelersField())
                 .field(this.getCurrentEditingContextField())
@@ -116,28 +101,6 @@ public class ProjectTypeProvider implements ITypeProvider {
         return GraphQLFieldDefinition.newFieldDefinition()
                 .name(NAME_FIELD)
                 .type(new GraphQLNonNull(Scalars.GraphQLString))
-                .build();
-        // @formatter:on
-    }
-
-    private GraphQLFieldDefinition getRepresentationsField() {
-        // @formatter:off
-        return GraphQLFieldDefinition.newFieldDefinition()
-                .name(REPRESENTATIONS_FIELD)
-                .type(new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(new GraphQLTypeReference(REPRESENTATION_TYPE)))))
-                .build();
-        // @formatter:on
-    }
-
-    private GraphQLFieldDefinition getRepresentationField() {
-        // @formatter:off
-        return GraphQLFieldDefinition.newFieldDefinition()
-                .name(REPRESENTATION_FIELD)
-                .argument(
-                        newArgument()
-                            .name(REPRESENTATION_ID_ARGUMENT)
-                            .type(nonNull(Scalars.GraphQLID)))
-                .type(new GraphQLTypeReference(REPRESENTATION_TYPE))
                 .build();
         // @formatter:on
     }

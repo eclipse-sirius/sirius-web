@@ -29,8 +29,11 @@ import org.springframework.stereotype.Service;
 import graphql.Scalars;
 import graphql.schema.GraphQLArgument;
 import graphql.schema.GraphQLFieldDefinition;
+import graphql.schema.GraphQLList;
+import graphql.schema.GraphQLNonNull;
 import graphql.schema.GraphQLObjectType;
 import graphql.schema.GraphQLType;
+import graphql.schema.GraphQLTypeReference;
 
 /**
  * This class is used to create the definition of the EditingContext type and its related types.
@@ -46,6 +49,8 @@ import graphql.schema.GraphQLType;
  *   rootObjectCreationDescriptions(namespaceId: ID!, suggested: Boolean!): [ChildCreationDescription!]!
  *   namespaces: [Namespace!]!
  *   representationDescriptions(classId: ID): EditingContextRepresentationDescriptionConnection!
+ *   representation(representationId: ID!): Representation
+ *   representations: [Representation!]!
  * }
  * </pre>
  *
@@ -76,6 +81,12 @@ public class EditingContextTypeProvider implements ITypeProvider {
 
     public static final String EDITING_CONTEXT_REPRESENTATION_DESCRIPTIONS_EDGE = TYPE + RepresentationDescriptionTypeProvider.TYPE + GraphQLConstants.EDGE;
 
+    public static final String REPRESENTATIONS_FIELD = "representations"; //$NON-NLS-1$
+
+    public static final String REPRESENTATION_FIELD = "representation"; //$NON-NLS-1$
+
+    public static final String REPRESENTATION_ID_ARGUMENT = "representationId"; //$NON-NLS-1$
+
     @Override
     public Set<GraphQLType> getTypes() {
         // @formatter:off
@@ -87,6 +98,8 @@ public class EditingContextTypeProvider implements ITypeProvider {
                 .field(this.getRootObjectCreationDescriptionsField())
                 .field(this.getNamespaceField())
                 .field(this.getRepresentationDescriptionField())
+                .field(this.getRepresentationField())
+                .field(this.getRepresentationsField())
                 .build();
         // @formatter:on
 
@@ -173,6 +186,28 @@ public class EditingContextTypeProvider implements ITypeProvider {
                 .name(REPRESENTATION_DESCRIPTIONS_FIELD)
                 .argument(this.getClassIdArgument())
                 .type(nonNull(typeRef(EDITING_CONTEXT_REPRESENTATION_DESCRIPTIONS_CONNECTION)))
+                .build();
+        // @formatter:on
+    }
+
+    private GraphQLFieldDefinition getRepresentationsField() {
+        // @formatter:off
+        return GraphQLFieldDefinition.newFieldDefinition()
+                .name(REPRESENTATIONS_FIELD)
+                .type(new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(new GraphQLTypeReference(RepresentationTypeProvider.TYPE)))))
+                .build();
+        // @formatter:on
+    }
+
+    private GraphQLFieldDefinition getRepresentationField() {
+        // @formatter:off
+        return GraphQLFieldDefinition.newFieldDefinition()
+                .name(REPRESENTATION_FIELD)
+                .argument(
+                        newArgument()
+                            .name(REPRESENTATION_ID_ARGUMENT)
+                            .type(nonNull(Scalars.GraphQLID)))
+                .type(new GraphQLTypeReference(RepresentationTypeProvider.TYPE))
                 .build();
         // @formatter:on
     }

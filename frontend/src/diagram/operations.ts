@@ -304,9 +304,9 @@ export const getToolSectionsQuery = gql`
     }
   }
 
-  query getToolSections($projectId: ID!, $diagramId: ID!) {
+  query getToolSections($editingContextId: ID!, $diagramId: ID!) {
     viewer {
-      project(projectId: $projectId) {
+      editingContext(editingContextId: $editingContextId) {
         representation(representationId: $diagramId) {
           ... on Diagram {
             toolSections {
