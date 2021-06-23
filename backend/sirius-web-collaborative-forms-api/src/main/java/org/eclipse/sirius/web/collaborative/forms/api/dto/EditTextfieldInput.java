@@ -32,7 +32,7 @@ public final class EditTextfieldInput implements IFormInput {
 
     private UUID id;
 
-    private UUID projectId;
+    private UUID editingContextId;
 
     private UUID representationId;
 
@@ -44,9 +44,9 @@ public final class EditTextfieldInput implements IFormInput {
         // Used by Jackson
     }
 
-    public EditTextfieldInput(UUID id, UUID projectId, UUID representationId, String textfieldId, String newValue) {
+    public EditTextfieldInput(UUID id, UUID editingContextId, UUID representationId, String textfieldId, String newValue) {
         this.id = Objects.requireNonNull(id);
-        this.projectId = Objects.requireNonNull(projectId);
+        this.editingContextId = Objects.requireNonNull(editingContextId);
         this.representationId = Objects.requireNonNull(representationId);
         this.textfieldId = Objects.requireNonNull(textfieldId);
         this.newValue = Objects.requireNonNull(newValue);
@@ -63,8 +63,8 @@ public final class EditTextfieldInput implements IFormInput {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getProjectId() {
-        return this.projectId;
+    public UUID getEditingContextId() {
+        return this.editingContextId;
     }
 
     @Override
@@ -90,8 +90,8 @@ public final class EditTextfieldInput implements IFormInput {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, projectId: {2}, representationId: {3}, textfieldId: {4}, newValue: {5}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.projectId, this.representationId, this.textfieldId, this.newValue);
+        String pattern = "{0} '{'id: {1}, editingContextId: {2}, representationId: {3}, textfieldId: {4}, newValue: {5}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.editingContextId, this.representationId, this.textfieldId, this.newValue);
     }
 
 }

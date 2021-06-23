@@ -101,7 +101,7 @@ export const TextfieldPropertySection = ({
       const variables = {
         input: {
           id: uuid(),
-          projectId: editingContextId,
+          editingContextId,
           representationId: formId,
           textfieldId: widget.id,
           newValue: value,
@@ -149,7 +149,7 @@ export const TextfieldPropertySection = ({
     const variables = {
       input: {
         id: uuid(),
-        projectId: editingContextId,
+        editingContextId,
         representationId: formId,
         widgetId: widget.id,
         selected,

@@ -31,7 +31,7 @@ import org.eclipse.sirius.web.collaborative.forms.api.IFormInput;
 public final class EditRadioInput implements IFormInput {
     private UUID id;
 
-    private UUID projectId;
+    private UUID editingContextId;
 
     private UUID representationId;
 
@@ -43,9 +43,9 @@ public final class EditRadioInput implements IFormInput {
         // Used by Jackson
     }
 
-    public EditRadioInput(UUID id, UUID projectId, UUID representationId, String radioId, String newValue) {
+    public EditRadioInput(UUID id, UUID editingContextId, UUID representationId, String radioId, String newValue) {
         this.id = Objects.requireNonNull(id);
-        this.projectId = Objects.requireNonNull(projectId);
+        this.editingContextId = Objects.requireNonNull(editingContextId);
         this.representationId = Objects.requireNonNull(representationId);
         this.radioId = Objects.requireNonNull(radioId);
         this.newValue = Objects.requireNonNull(newValue);
@@ -62,8 +62,8 @@ public final class EditRadioInput implements IFormInput {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getProjectId() {
-        return this.projectId;
+    public UUID getEditingContextId() {
+        return this.editingContextId;
     }
 
     @Override
@@ -90,7 +90,7 @@ public final class EditRadioInput implements IFormInput {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, projectId: {2}, representationId: {3}, radioId: {4}, newValue: {5}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.projectId, this.representationId, this.radioId, this.newValue);
+        String pattern = "{0} '{'id: {1}, editingContextId: {2}, representationId: {3}, radioId: {4}, newValue: {5}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.editingContextId, this.representationId, this.radioId, this.newValue);
     }
 }
