@@ -31,7 +31,7 @@ import org.eclipse.sirius.web.collaborative.forms.api.IFormInput;
 public final class EditCheckboxInput implements IFormInput {
     private UUID id;
 
-    private UUID projectId;
+    private UUID editingContextId;
 
     private UUID representationId;
 
@@ -43,9 +43,9 @@ public final class EditCheckboxInput implements IFormInput {
         // Used by Jackson
     }
 
-    public EditCheckboxInput(UUID id, UUID projectId, UUID representationId, String checkboxId, boolean newValue) {
+    public EditCheckboxInput(UUID id, UUID editingContextId, UUID representationId, String checkboxId, boolean newValue) {
         this.id = Objects.requireNonNull(id);
-        this.projectId = Objects.requireNonNull(projectId);
+        this.editingContextId = Objects.requireNonNull(editingContextId);
         this.representationId = Objects.requireNonNull(representationId);
         this.checkboxId = Objects.requireNonNull(checkboxId);
         this.newValue = newValue;
@@ -62,8 +62,8 @@ public final class EditCheckboxInput implements IFormInput {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getProjectId() {
-        return this.projectId;
+    public UUID getEditingContextId() {
+        return this.editingContextId;
     }
 
     @Override
@@ -89,7 +89,7 @@ public final class EditCheckboxInput implements IFormInput {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, projectId: {2}, representationId: {3}, checkboxId: {4}, newValue: {5}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.projectId, this.representationId, this.checkboxId, this.newValue);
+        String pattern = "{0} '{'id: {1}, editingContextId: {2}, representationId: {3}, checkboxId: {4}, newValue: {5}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.editingContextId, this.representationId, this.checkboxId, this.newValue);
     }
 }

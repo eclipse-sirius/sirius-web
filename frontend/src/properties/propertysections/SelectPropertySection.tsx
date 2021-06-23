@@ -69,7 +69,7 @@ export const SelectPropertySection = ({
     const variables = {
       input: {
         id: uuid(),
-        projectId: editingContextId,
+        editingContextId,
         representationId: formId,
         selectId: widget.id,
         newValue,
@@ -100,7 +100,7 @@ export const SelectPropertySection = ({
     const variables = {
       input: {
         id: uuid(),
-        projectId: editingContextId,
+        editingContextId,
         representationId: formId,
         widgetId: widget.id,
         selected,

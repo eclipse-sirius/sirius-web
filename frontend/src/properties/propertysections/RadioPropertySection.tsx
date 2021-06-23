@@ -79,7 +79,7 @@ export const RadioPropertySection = ({
     const variables = {
       input: {
         id: uuid(),
-        projectId: editingContextId,
+        editingContextId,
         representationId: formId,
         radioId: widget.id,
         newValue,
@@ -110,7 +110,7 @@ export const RadioPropertySection = ({
     const variables = {
       input: {
         id: uuid(),
-        projectId: editingContextId,
+        editingContextId,
         representationId: formId,
         widgetId: widget.id,
         selected,

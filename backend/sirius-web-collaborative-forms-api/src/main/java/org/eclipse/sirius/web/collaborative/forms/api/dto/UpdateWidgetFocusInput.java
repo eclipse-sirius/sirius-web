@@ -31,7 +31,7 @@ public final class UpdateWidgetFocusInput implements IFormInput {
 
     private UUID id;
 
-    private UUID projectId;
+    private UUID editingContextId;
 
     private UUID representationId;
 
@@ -50,8 +50,8 @@ public final class UpdateWidgetFocusInput implements IFormInput {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getProjectId() {
-        return this.projectId;
+    public UUID getEditingContextId() {
+        return this.editingContextId;
     }
 
     @Override
@@ -77,8 +77,8 @@ public final class UpdateWidgetFocusInput implements IFormInput {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, projectId: {2}, representationId: {3}, widgetId: {4}, selected: {5}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.projectId, this.representationId, this.widgetId, this.selected);
+        String pattern = "{0} '{'id: {1}, editingContextId: {2}, representationId: {3}, widgetId: {4}, selected: {5}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.editingContextId, this.representationId, this.widgetId, this.selected);
     }
 
 }

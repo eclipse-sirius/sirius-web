@@ -67,7 +67,7 @@ export const CheckboxPropertySection = ({
     const variables = {
       input: {
         id: uuid(),
-        projectId: editingContextId,
+        editingContextId,
         representationId: formId,
         checkboxId: widget.id,
         newValue,
@@ -98,7 +98,7 @@ export const CheckboxPropertySection = ({
     const variables = {
       input: {
         id: uuid(),
-        projectId: editingContextId,
+        editingContextId,
         representationId: formId,
         widgetId: widget.id,
         selected,
