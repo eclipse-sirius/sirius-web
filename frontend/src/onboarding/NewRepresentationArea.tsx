@@ -15,7 +15,7 @@ import { LinkButton } from 'core/linkbutton/LinkButton';
 import { Select } from 'core/select/Select';
 import gql from 'graphql-tag';
 import { NewRepresentation } from 'icons';
-import PropTypes from 'prop-types';
+import { NewRepresentationAreaProps } from 'onboarding/NewRepresentationArea.types';
 import React, { useEffect, useState } from 'react';
 import { v4 as uuid } from 'uuid';
 import { AreaContainer } from './AreaContainer';
@@ -40,23 +40,13 @@ const createRepresentationMutation = gql`
   }
 `;
 
-const propTypes = {
-  maxDisplay: PropTypes.number.isRequired,
-  projectId: PropTypes.string.isRequired,
-  representationDescriptions: PropTypes.array.isRequired,
-  selection: PropTypes.object,
-  setSelection: PropTypes.func.isRequired,
-  disabled: PropTypes.bool,
-};
-
 export const NewRepresentationArea = ({
-  projectId,
+  editingContextId,
   representationDescriptions,
   selection,
-  maxDisplay,
   setSelection,
-  disabled,
-}) => {
+  readOnly,
+}: NewRepresentationAreaProps) => {
   const initialState = {
     message: undefined,
   };
@@ -85,7 +75,7 @@ export const NewRepresentationArea = ({
     const objectId = selection.id;
     const input = {
       id: uuid(),
-      projectId,
+      projectId: editingContextId,
       objectId,
       representationDescriptionId,
       representationName: selected.label,
@@ -96,7 +86,7 @@ export const NewRepresentationArea = ({
   // Representation Descriptions list
   let newRepresentationButtons =
     representationDescriptions.length > 0
-      ? representationDescriptions.slice(0, maxDisplay).map((representationDescription) => {
+      ? representationDescriptions.slice(0, 5).map((representationDescription) => {
           return (
             <LinkButton
               key={representationDescription.id}
@@ -115,19 +105,19 @@ export const NewRepresentationArea = ({
   const moreName = 'moreRepresentationDescriptions';
   const moreLabel = 'More representations types...';
   let moreSelect =
-    representationDescriptions.length > maxDisplay ? (
+    representationDescriptions.length > 5 ? (
       <Select
         onChange={(event) => {
           onCreateRepresentation(event.target.value);
         }}
         name={moreName}
-        options={[{ id: moreLabel, label: moreLabel }, representationDescriptions.slice(maxDisplay)].flat()}
+        options={[{ id: moreLabel, label: moreLabel }, representationDescriptions.slice(5)].flat()}
         data-testid={moreName}
       />
     ) : null;
 
   let title = 'Create a new Representation';
-  if (disabled) {
+  if (readOnly) {
     return <AreaContainer title={title} subtitle="You need edit access to create representations" />;
   } else {
     let subtitle =
@@ -142,5 +132,3 @@ export const NewRepresentationArea = ({
     );
   }
 };
-
-NewRepresentationArea.propTypes = propTypes;

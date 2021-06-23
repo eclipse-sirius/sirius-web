@@ -20,9 +20,9 @@ import styles from './OnboardArea.module.css';
 import { OnboardAreaProps } from './OnboardArea.types';
 
 const getOnboardDataQuery = gql`
-  query getOnboardData($projectId: ID!, $classId: ID!) {
+  query getOnboardData($editingContextId: ID!, $classId: ID!) {
     viewer {
-      editingContext(editingContextId: $projectId) {
+      editingContext(editingContextId: $editingContextId) {
         stereotypeDescriptions {
           id
           label
@@ -36,9 +36,8 @@ const getOnboardDataQuery = gql`
           }
         }
       }
-      project(projectId: $projectId) {
+      project(projectId: $editingContextId) {
         representations {
-          __typename
           id
           label
           kind
@@ -48,15 +47,13 @@ const getOnboardDataQuery = gql`
   }
 `;
 
-const MAX_DISPLAY = 5;
-
 const INITIAL_STATE = {
   stereotypeDescriptions: [],
   representationDescriptions: [],
   representations: [],
 };
 
-export const OnboardArea = ({ projectId, selection, setSelection, readOnly }: OnboardAreaProps) => {
+export const OnboardArea = ({ editingContextId, selection, setSelection, readOnly }: OnboardAreaProps) => {
   const [state, setState] = useState(INITIAL_STATE);
   const { stereotypeDescriptions, representationDescriptions, representations } = state;
 
@@ -64,8 +61,8 @@ export const OnboardArea = ({ projectId, selection, setSelection, readOnly }: On
 
   const [getOnboardData, { loading, data, error }] = useLazyQuery(getOnboardDataQuery);
   useEffect(() => {
-    getOnboardData({ variables: { projectId, classId } });
-  }, [projectId, classId, getOnboardData]);
+    getOnboardData({ variables: { editingContextId, classId } });
+  }, [editingContextId, classId, getOnboardData]);
   useEffect(() => {
     if (!loading && !error && data?.viewer) {
       const { viewer } = data;
@@ -76,27 +73,25 @@ export const OnboardArea = ({ projectId, selection, setSelection, readOnly }: On
         representationDescriptions,
       });
     }
-  }, [projectId, classId, loading, data, error]);
+  }, [editingContextId, classId, loading, data, error]);
 
   return (
     <div className={styles.onboardArea}>
       <div className={styles.onboardContent}>
         <NewDocumentArea
+          editingContextId={editingContextId}
           stereotypeDescriptions={stereotypeDescriptions}
-          projectId={projectId}
           setSelection={setSelection}
-          maxDisplay={MAX_DISPLAY}
-          disabled={readOnly}
+          readOnly={readOnly}
         />
         <NewRepresentationArea
+          editingContextId={editingContextId}
           representationDescriptions={representationDescriptions}
-          projectId={projectId}
           selection={selection}
           setSelection={setSelection}
-          maxDisplay={MAX_DISPLAY}
-          disabled={readOnly}
+          readOnly={readOnly}
         />
-        <RepresentationsArea representations={representations} setSelection={setSelection} maxDisplay={MAX_DISPLAY} />
+        <RepresentationsArea representations={representations} setSelection={setSelection} />
       </div>
     </div>
   );

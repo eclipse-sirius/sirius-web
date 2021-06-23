@@ -15,7 +15,7 @@ import { LinkButton } from 'core/linkbutton/LinkButton';
 import { Select } from 'core/select/Select';
 import gql from 'graphql-tag';
 import { NewDocument } from 'icons';
-import PropTypes from 'prop-types';
+import { NewDocumentAreaProps } from 'onboarding/NewDocumentArea.types';
 import React, { useEffect, useState } from 'react';
 import { v4 as uuid } from 'uuid';
 import { AreaContainer } from './AreaContainer';
@@ -32,15 +32,12 @@ const createDocumentMutation = gql`
   }
 `;
 
-const propTypes = {
-  maxDisplay: PropTypes.number.isRequired,
-  stereotypeDescriptions: PropTypes.array.isRequired,
-  projectId: PropTypes.string.isRequired,
-  setSelection: PropTypes.func.isRequired,
-  disabled: PropTypes.bool,
-};
-
-export const NewDocumentArea = ({ stereotypeDescriptions, projectId, maxDisplay, setSelection, disabled }) => {
+export const NewDocumentArea = ({
+  editingContextId,
+  stereotypeDescriptions,
+  setSelection,
+  readOnly,
+}: NewDocumentAreaProps) => {
   const initialState = {
     message: undefined,
   };
@@ -54,8 +51,8 @@ export const NewDocumentArea = ({ stereotypeDescriptions, projectId, maxDisplay,
     const variables = {
       input: {
         id: uuid(),
-        editingContextId: projectId,
-        name: 'Untitled ' + selected.label,
+        editingContextId,
+        name: selected.label,
         stereotypeDescriptionId: stereotypeDescriptionId,
       },
     };
@@ -77,7 +74,7 @@ export const NewDocumentArea = ({ stereotypeDescriptions, projectId, maxDisplay,
   // Document stereotypes list
   let newDocumentButtons =
     stereotypeDescriptions.length > 0
-      ? stereotypeDescriptions.slice(0, maxDisplay).map((stereotypeDescription) => {
+      ? stereotypeDescriptions.slice(0, 5).map((stereotypeDescription) => {
           return (
             <LinkButton
               key={stereotypeDescription.id}
@@ -96,18 +93,18 @@ export const NewDocumentArea = ({ stereotypeDescriptions, projectId, maxDisplay,
   const moreName = 'moreStereotypes';
   const moreLabel = 'More model types...';
   let moreSelect =
-    stereotypeDescriptions.length > maxDisplay ? (
+    stereotypeDescriptions.length > 5 ? (
       <Select
         onChange={(event) => {
           onCreateDocument(event.target.value);
         }}
         name={moreName}
-        options={[{ id: moreLabel, label: moreLabel }, stereotypeDescriptions.slice(maxDisplay)].flat()}
+        options={[{ id: moreLabel, label: moreLabel }, stereotypeDescriptions.slice(5)].flat()}
         data-testid={moreName}
       />
     ) : null;
   let title = 'Create a new Model';
-  if (disabled) {
+  if (readOnly) {
     return <AreaContainer title={title} subtitle="You need edit access to create models" />;
   } else {
     return (
@@ -118,4 +115,3 @@ export const NewDocumentArea = ({ stereotypeDescriptions, projectId, maxDisplay,
     );
   }
 };
-NewDocumentArea.propTypes = propTypes;
