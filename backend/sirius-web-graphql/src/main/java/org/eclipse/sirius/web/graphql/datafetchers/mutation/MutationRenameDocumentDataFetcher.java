@@ -78,21 +78,16 @@ public class MutationRenameDocumentDataFetcher implements IDataFetcherWithFieldC
     public IPayload get(DataFetchingEnvironment environment) throws Exception {
         var input = this.dataFetchingEnvironmentService.getInput(environment, RenameDocumentInput.class);
 
-        IPayload payload = new ErrorPayload(input.getId(), this.messageService.unauthorized());
+        IPayload payload = new ErrorPayload(input.getId(), this.messageService.unexpectedError());
 
         Optional<Document> optionalDocument = this.documentService.getDocument(input.getDocumentId());
         if (optionalDocument.isPresent()) {
             Document document = optionalDocument.get();
 
-            boolean canEdit = this.dataFetchingEnvironmentService.canEdit(environment, document.getProject().getId());
-            if (canEdit) {
-                // @formatter:off
-                payload = this.editingContextEventProcessorRegistry.dispatchEvent(document.getProject().getId(), input)
-                        .orElse(new ErrorPayload(input.getId(), this.messageService.unexpectedError()));
-                // @formatter:on
-            } else {
-                payload = new ErrorPayload(input.getId(), this.messageService.unexpectedError());
-            }
+            // @formatter:off
+            payload = this.editingContextEventProcessorRegistry.dispatchEvent(document.getProject().getId(), input)
+                    .orElse(new ErrorPayload(input.getId(), this.messageService.unexpectedError()));
+            // @formatter:on
 
         }
         return payload;

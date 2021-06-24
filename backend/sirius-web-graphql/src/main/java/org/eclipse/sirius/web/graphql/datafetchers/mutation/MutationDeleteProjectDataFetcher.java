@@ -84,14 +84,9 @@ public class MutationDeleteProjectDataFetcher implements IDataFetcherWithFieldCo
         IPayload payload = new ErrorPayload(input.getId(), this.messageService.unexpectedError());
         if (optionalViewer.isPresent()) {
             IViewer viewer = optionalViewer.get();
-            boolean canAdmin = this.dataFetchingEnvironmentService.canAdmin(environment, input.getProjectId());
-            if (canAdmin) {
-                this.editingContextEventProcessorRegistry.disposeEditingContextEventProcessor(input.getProjectId());
-                this.projectService.delete(input.getProjectId());
-                payload = new DeleteProjectSuccessPayload(input.getId(), viewer);
-            } else {
-                payload = new ErrorPayload(input.getId(), this.messageService.unauthorized());
-            }
+            this.editingContextEventProcessorRegistry.disposeEditingContextEventProcessor(input.getProjectId());
+            this.projectService.delete(input.getProjectId());
+            payload = new DeleteProjectSuccessPayload(input.getId(), viewer);
         }
 
         return payload;

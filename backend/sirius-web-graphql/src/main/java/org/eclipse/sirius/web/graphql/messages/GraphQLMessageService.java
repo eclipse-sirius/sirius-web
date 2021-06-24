@@ -33,11 +33,6 @@ public class GraphQLMessageService implements IGraphQLMessageService {
     }
 
     @Override
-    public String unauthorized() {
-        return this.messageSourceAccessor.getMessage("UNAUTHORIZED"); //$NON-NLS-1$
-    }
-
-    @Override
     public String unexpectedError() {
         return this.messageSourceAccessor.getMessage("UNEXPECTED_ERROR"); //$NON-NLS-1$
     }

@@ -17,10 +17,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.security.Principal;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.eclipse.sirius.web.graphql.schema.MutationTypeProvider;
-import org.eclipse.sirius.web.services.api.projects.IProjectAccessPolicy;
 import org.eclipse.sirius.web.spring.graphql.api.GraphQLConstants;
 import org.springframework.stereotype.Service;
 
@@ -37,11 +35,8 @@ public class DataFetchingEnvironmentService implements IDataFetchingEnvironmentS
 
     private final ObjectMapper objectMapper;
 
-    private final IProjectAccessPolicy projectAccessPolicy;
-
-    public DataFetchingEnvironmentService(ObjectMapper objectMapper, IProjectAccessPolicy projectAccessPolicy) {
+    public DataFetchingEnvironmentService(ObjectMapper objectMapper) {
         this.objectMapper = Objects.requireNonNull(objectMapper);
-        this.projectAccessPolicy = Objects.requireNonNull(projectAccessPolicy);
     }
 
     @Override
@@ -57,28 +52,6 @@ public class DataFetchingEnvironmentService implements IDataFetchingEnvironmentS
         return graphQLContext.getOrEmpty(GraphQLConstants.PRINCIPAL)
                 .filter(Principal.class::isInstance)
                 .map(Principal.class::cast);
-        // @formatter:on
-    }
-
-    @Override
-    public boolean canEdit(DataFetchingEnvironment environment, UUID projectId) {
-        // @formatter:off
-        return this.getPrincipal(environment)
-                .map(Principal::getName)
-                .map(username -> this.projectAccessPolicy.canEdit(username, projectId))
-                .orElse(Boolean.FALSE)
-                .booleanValue();
-        // @formatter:on
-    }
-
-    @Override
-    public boolean canAdmin(DataFetchingEnvironment environment, UUID projectId) {
-        // @formatter:off
-        return this.getPrincipal(environment)
-                .map(Principal::getName)
-                .map(username -> this.projectAccessPolicy.canAdmin(username, projectId))
-                .orElse(Boolean.FALSE)
-                .booleanValue();
         // @formatter:on
     }
 

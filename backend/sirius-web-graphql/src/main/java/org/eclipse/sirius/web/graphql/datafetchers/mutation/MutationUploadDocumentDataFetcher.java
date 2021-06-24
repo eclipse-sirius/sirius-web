@@ -22,7 +22,6 @@ import org.eclipse.sirius.web.annotations.spring.graphql.MutationDataFetcher;
 import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IPayload;
-import org.eclipse.sirius.web.graphql.datafetchers.IDataFetchingEnvironmentService;
 import org.eclipse.sirius.web.graphql.messages.IGraphQLMessageService;
 import org.eclipse.sirius.web.graphql.schema.MutationTypeProvider;
 import org.eclipse.sirius.web.services.api.document.UploadDocumentInput;
@@ -65,15 +64,11 @@ public class MutationUploadDocumentDataFetcher implements IDataFetcherWithFieldC
 
     private static final String ID = "id"; //$NON-NLS-1$
 
-    private final IDataFetchingEnvironmentService dataFetchingEnvironmentService;
-
     private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
 
     private final IGraphQLMessageService messageService;
 
-    public MutationUploadDocumentDataFetcher(IDataFetchingEnvironmentService dataFetchingEnvironmentService, IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry,
-            IGraphQLMessageService messageService) {
-        this.dataFetchingEnvironmentService = Objects.requireNonNull(dataFetchingEnvironmentService);
+    public MutationUploadDocumentDataFetcher(IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry, IGraphQLMessageService messageService) {
         this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
         this.messageService = Objects.requireNonNull(messageService);
     }
@@ -104,17 +99,11 @@ public class MutationUploadDocumentDataFetcher implements IDataFetcherWithFieldC
         // @formatter:on
 
         UploadDocumentInput input = new UploadDocumentInput(id, editingContextId, file);
-        IPayload payload = new ErrorPayload(input.getId(), this.messageService.unauthorized());
 
-        boolean canEdit = this.dataFetchingEnvironmentService.canEdit(environment, editingContextId);
-        if (canEdit) {
-            // @formatter:off
-            payload = this.editingContextEventProcessorRegistry.dispatchEvent(editingContextId, input)
-                    .orElse(new ErrorPayload(input.getId(), this.messageService.unexpectedError()));
-            // @formatter:on
-        }
-
-        return payload;
+        // @formatter:off
+        return this.editingContextEventProcessorRegistry.dispatchEvent(editingContextId, input)
+                .orElse(new ErrorPayload(input.getId(), this.messageService.unexpectedError()));
+        // @formatter:on
     }
 
 }

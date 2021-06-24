@@ -13,7 +13,6 @@
 package org.eclipse.sirius.web.graphql.datafetchers.mutation;
 
 import java.util.Objects;
-import java.util.UUID;
 
 import org.eclipse.sirius.web.annotations.graphql.GraphQLMutationTypes;
 import org.eclipse.sirius.web.annotations.spring.graphql.MutationDataFetcher;
@@ -73,18 +72,10 @@ public class MutationRenameObjectDataFetcher implements IDataFetcherWithFieldCoo
     public IPayload get(DataFetchingEnvironment environment) throws Exception {
         var input = this.dataFetchingEnvironmentService.getInput(environment, RenameObjectInput.class);
 
-        IPayload payload = new ErrorPayload(input.getId(), this.messageService.unauthorized());
-
-        UUID editingContextId = input.getEditingContextId();
-        boolean canEdit = this.dataFetchingEnvironmentService.canEdit(environment, editingContextId);
-        if (canEdit) {
-            // @formatter:off
-            payload = this.editingContextEventProcessorRegistry.dispatchEvent(editingContextId, input)
-                    .orElse(new ErrorPayload(input.getId(), this.messageService.unexpectedError()));
-            // @formatter:on
-        }
-
-        return payload;
+        // @formatter:off
+        return this.editingContextEventProcessorRegistry.dispatchEvent(input.getEditingContextId(), input)
+                .orElse(new ErrorPayload(input.getId(), this.messageService.unexpectedError()));
+        // @formatter:on
     }
 
 }
