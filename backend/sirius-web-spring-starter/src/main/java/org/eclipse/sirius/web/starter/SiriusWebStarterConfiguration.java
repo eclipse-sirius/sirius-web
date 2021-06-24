@@ -33,8 +33,6 @@ import org.springframework.context.annotation.Configuration;
 // @formatter:off
 @ComponentScan(basePackages = {
         "org.eclipse.sirius.web.diagrams.layout",
-        "org.eclipse.sirius.web.graphql",
-        "org.eclipse.sirius.web.graphql.schema",
         "org.eclipse.sirius.web.spring.graphql",
         "org.eclipse.sirius.web.spring.collaborative",
         "org.eclipse.sirius.web.spring.collaborative.diagrams",
