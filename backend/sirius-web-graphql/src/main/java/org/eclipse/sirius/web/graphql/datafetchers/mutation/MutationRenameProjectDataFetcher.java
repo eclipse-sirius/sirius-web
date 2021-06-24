@@ -59,7 +59,7 @@ public class MutationRenameProjectDataFetcher implements IDataFetcherWithFieldCo
 
     private final IGraphQLMessageService messageService;
 
-    private IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
+    private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
 
     public MutationRenameProjectDataFetcher(IDataFetchingEnvironmentService dataFetchingEnvironmentService, IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry,
             IGraphQLMessageService messageService) {
@@ -71,17 +71,9 @@ public class MutationRenameProjectDataFetcher implements IDataFetcherWithFieldCo
     @Override
     public IPayload get(DataFetchingEnvironment environment) throws Exception {
         var input = this.dataFetchingEnvironmentService.getInput(environment, RenameProjectInput.class);
-
-        IPayload payload = new ErrorPayload(input.getId(), this.messageService.unexpectedError());
-        boolean canAdmin = this.dataFetchingEnvironmentService.canAdmin(environment, input.getProjectId());
-        if (canAdmin) {
-         // @formatter:off
-            payload = this.editingContextEventProcessorRegistry.dispatchEvent(input.getProjectId(), input)
-                    .orElse(new ErrorPayload(input.getId(), this.messageService.unexpectedError()));
-            // @formatter:on
-        } else {
-            payload = new ErrorPayload(input.getId(), this.messageService.unauthorized());
-        }
-        return payload;
+        // @formatter:off
+        return this.editingContextEventProcessorRegistry.dispatchEvent(input.getProjectId(), input)
+                .orElse(new ErrorPayload(input.getId(), this.messageService.unexpectedError()));
+        // @formatter:on
     }
 }

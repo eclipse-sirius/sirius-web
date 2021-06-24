@@ -13,8 +13,6 @@
 package org.eclipse.sirius.web.graphql.datafetchers.mutation;
 
 import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
 
 import org.eclipse.sirius.web.annotations.graphql.GraphQLMutationTypes;
 import org.eclipse.sirius.web.annotations.spring.graphql.MutationDataFetcher;
@@ -26,8 +24,6 @@ import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.graphql.datafetchers.IDataFetchingEnvironmentService;
 import org.eclipse.sirius.web.graphql.messages.IGraphQLMessageService;
 import org.eclipse.sirius.web.graphql.schema.MutationTypeProvider;
-import org.eclipse.sirius.web.services.api.representations.IRepresentationService;
-import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;
 import org.eclipse.sirius.web.spring.graphql.api.IDataFetcherWithFieldCoordinates;
 
 import graphql.schema.DataFetchingEnvironment;
@@ -61,17 +57,14 @@ public class MutationRenameRepresentationDataFetcher implements IDataFetcherWith
 
     private final IDataFetchingEnvironmentService dataFetchingEnvironmentService;
 
-    private final IRepresentationService representationService;
-
     private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
 
     private final IGraphQLMessageService messageService;
 
     public MutationRenameRepresentationDataFetcher(IDataFetchingEnvironmentService dataFetchingEnvironmentService, IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry,
-            IRepresentationService representationService, IGraphQLMessageService messageService) {
+            IGraphQLMessageService messageService) {
         this.dataFetchingEnvironmentService = Objects.requireNonNull(dataFetchingEnvironmentService);
         this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
-        this.representationService = Objects.requireNonNull(representationService);
         this.messageService = Objects.requireNonNull(messageService);
     }
 
@@ -79,30 +72,10 @@ public class MutationRenameRepresentationDataFetcher implements IDataFetcherWith
     public IPayload get(DataFetchingEnvironment environment) throws Exception {
         var input = this.dataFetchingEnvironmentService.getInput(environment, RenameRepresentationInput.class);
 
-        IPayload payload = new ErrorPayload(input.getId(), this.messageService.unexpectedError());
-
-        UUID editingContextId = input.getEditingContextId();
-        boolean canEditProject = this.dataFetchingEnvironmentService.canEdit(environment, editingContextId);
-        if (!canEditProject) {
-            payload = new ErrorPayload(input.getId(), this.messageService.unauthorized());
-        } else {
-            Optional<RepresentationDescriptor> optionalRepresentationDescriptor = this.representationService.getRepresentation(input.getRepresentationId());
-            if (optionalRepresentationDescriptor.isPresent()) {
-                RepresentationDescriptor representationDescriptor = optionalRepresentationDescriptor.get();
-
-                boolean canEdit = this.dataFetchingEnvironmentService.canEdit(environment, representationDescriptor.getProjectId());
-                if (canEdit) {
-                    // @formatter:off
-                        payload = this.editingContextEventProcessorRegistry.dispatchEvent(representationDescriptor.getProjectId(), input)
-                                .orElse(new ErrorPayload(input.getId(), this.messageService.unexpectedError()));
-                        // @formatter:on
-                } else {
-                    payload = new ErrorPayload(input.getId(), this.messageService.unauthorized());
-                }
-
-            }
-        }
-        return payload;
+        // @formatter:off
+        return this.editingContextEventProcessorRegistry.dispatchEvent(input.getEditingContextId(), input)
+                .orElse(new ErrorPayload(input.getId(), this.messageService.unexpectedError()));
+        // @formatter:on
     }
 
 }

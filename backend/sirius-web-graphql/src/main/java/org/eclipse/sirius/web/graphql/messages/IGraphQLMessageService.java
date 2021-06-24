@@ -19,8 +19,6 @@ package org.eclipse.sirius.web.graphql.messages;
  */
 public interface IGraphQLMessageService {
 
-    String unauthorized();
-
     String unexpectedError();
 
 }

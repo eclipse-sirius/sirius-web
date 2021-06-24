@@ -14,7 +14,6 @@ package org.eclipse.sirius.web.graphql.datafetchers;
 
 import java.security.Principal;
 import java.util.Optional;
-import java.util.UUID;
 
 import graphql.schema.DataFetchingEnvironment;
 
@@ -27,8 +26,4 @@ public interface IDataFetchingEnvironmentService {
     <T> T getInput(DataFetchingEnvironment environment, Class<T> inputType);
 
     Optional<Principal> getPrincipal(DataFetchingEnvironment environment);
-
-    boolean canEdit(DataFetchingEnvironment environment, UUID projectId);
-
-    boolean canAdmin(DataFetchingEnvironment environment, UUID projectId);
 }

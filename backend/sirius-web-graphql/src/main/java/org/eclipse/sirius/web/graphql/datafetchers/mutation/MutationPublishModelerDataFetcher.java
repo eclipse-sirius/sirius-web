@@ -73,19 +73,11 @@ public class MutationPublishModelerDataFetcher implements IDataFetcherWithFieldC
     public IPayload get(DataFetchingEnvironment environment) throws Exception {
         var input = this.dataFetchingEnvironmentService.getInput(environment, PublishModelerInput.class);
 
-        IPayload payload = new ErrorPayload(input.getId(), this.messageService.unauthorized());
+        IPayload payload = new ErrorPayload(input.getId(), this.messageService.unexpectedError());
 
         Optional<Modeler> optionalModeler = this.modelerService.getModeler(input.getModelerId());
         if (optionalModeler.isPresent()) {
-            Modeler modeler = optionalModeler.get();
-
-            boolean canEdit = this.dataFetchingEnvironmentService.canEdit(environment, modeler.getProject().getId());
-            if (canEdit) {
-                payload = this.modelerService.publishModeler(input);
-            } else {
-                payload = new ErrorPayload(input.getId(), this.messageService.unexpectedError());
-            }
-
+            payload = this.modelerService.publishModeler(input);
         }
         return payload;
     }
