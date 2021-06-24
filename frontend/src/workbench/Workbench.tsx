@@ -13,12 +13,12 @@
 import { makeStyles } from '@material-ui/core/styles';
 import { useMachine } from '@xstate/react';
 import { HORIZONTAL, Panels, SECOND_PANEL } from 'core/panels/Panels';
-import { ExplorerWebSocketContainer } from 'explorer/ExplorerWebSocketContainer';
 import { OnboardArea } from 'onboarding/OnboardArea';
-import { PropertiesWebSocketContainer } from 'properties/PropertiesWebSocketContainer';
 import React, { useContext, useEffect } from 'react';
+import { LeftSite } from 'workbench/LeftSite';
 import { RepresentationContext } from 'workbench/RepresentationContext';
 import { RepresentationNavigation } from 'workbench/RepresentationNavigation';
+import { RightSite } from 'workbench/RightSite';
 import { Representation, RepresentationComponentProps, Selection, WorkbenchProps } from 'workbench/Workbench.types';
 import {
   HideRepresentationEvent,
@@ -82,8 +82,8 @@ export const Workbench = ({
     }
   }, [onRepresentationSelected, initialRepresentationSelected, displayedRepresentation]);
 
-  const explorer = (
-    <ExplorerWebSocketContainer
+  const leftSite = (
+    <LeftSite
       editingContextId={editingContextId}
       selection={selection}
       setSelection={setSelection}
@@ -91,9 +91,8 @@ export const Workbench = ({
     />
   );
 
-  const properties = (
-    <PropertiesWebSocketContainer editingContextId={editingContextId} selection={selection} readOnly={readOnly} />
-  );
+  const rightSite = <RightSite editingContextId={editingContextId} selection={selection} readOnly={readOnly} />;
+
   let main = (
     <OnboardArea
       editingContextId={editingContextId}
@@ -127,14 +126,14 @@ export const Workbench = ({
   return (
     <Panels
       orientation={HORIZONTAL}
-      firstPanel={explorer}
+      firstPanel={leftSite}
       secondPanel={
         <div className={classes.main} data-testid="representationAndProperties">
           <Panels
             orientation={HORIZONTAL}
             resizablePanel={SECOND_PANEL}
             firstPanel={main}
-            secondPanel={properties}
+            secondPanel={rightSite}
             initialResizablePanelSize={300}
           />
         </div>

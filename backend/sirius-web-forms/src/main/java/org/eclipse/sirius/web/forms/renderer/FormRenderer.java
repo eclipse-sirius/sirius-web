@@ -44,7 +44,7 @@ public class FormRenderer {
                 .filter(Form.class::isInstance)
                 .map(Form.class::cast)
                 .orElse(null);
-        // @fomatter:on
+        // @formatter:on
     }
 
 }
