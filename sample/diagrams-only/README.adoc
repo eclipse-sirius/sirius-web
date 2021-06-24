@@ -1,3 +1,0 @@
-= Description
-
-This diagrams-only application is used to show how we could use only the diagrams part of Sirius Components
