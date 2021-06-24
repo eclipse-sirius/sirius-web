@@ -16,14 +16,21 @@ import java.util.List;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EValidator;
+import org.eclipse.emf.ecore.EValidator.Registry;
 import org.eclipse.emf.ecore.impl.EPackageRegistryImpl;
+import org.eclipse.emf.ecore.impl.EValidatorRegistryImpl;
 import org.eclipse.emf.ecore.util.EcoreAdapterFactory;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
 import org.eclipse.sirius.common.tools.internal.ecore.EPackageHelper;
+import org.eclipse.sirius.web.domain.DomainPackage;
+import org.eclipse.sirius.web.emf.domain.DomainValidator;
 import org.eclipse.sirius.web.emf.services.ILabelFeatureProvider;
 import org.eclipse.sirius.web.emf.services.ISuggestedRootObjectTypesProvider;
 import org.eclipse.sirius.web.emf.services.LabelFeatureProviderRegistry;
+import org.eclipse.sirius.web.emf.view.ViewValidator;
+import org.eclipse.sirius.web.view.ViewPackage;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -59,5 +66,13 @@ public class EMFConfiguration {
     @Bean
     public ISuggestedRootObjectTypesProvider suggestedRootObjectTypesProvider() {
         return EPackageHelper::getEClassRootElements;
+    }
+
+    @Bean
+    public EValidator.Registry getEValidatorRegistry() {
+        Registry eValidatorRegistry = new EValidatorRegistryImpl(EValidator.Registry.INSTANCE);
+        eValidatorRegistry.put(DomainPackage.eINSTANCE, new DomainValidator());
+        eValidatorRegistry.put(ViewPackage.eINSTANCE, new ViewValidator());
+        return eValidatorRegistry;
     }
 }

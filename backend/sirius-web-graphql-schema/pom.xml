@@ -75,6 +75,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
+			<artifactId>sirius-web-collaborative-validation-api</artifactId>
+			<version>0.3.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-collaborative-trees-api</artifactId>
 			<version>0.3.4</version>
 		</dependency>
