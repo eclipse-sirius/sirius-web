@@ -42,7 +42,6 @@ import graphql.schema.GraphQLTypeReference;
  *   name: String!
  *   owner: Account!
  *   visibility: Visibility!
- *   accessLevel: AccessLevel!
  *   modelers: [Modeler!]!
  *   currentEditingContext: EditingContext!
  * }
@@ -62,8 +61,6 @@ public class ProjectTypeProvider implements ITypeProvider {
 
     public static final String VISIBILITY_FIELD = "visibility"; //$NON-NLS-1$
 
-    public static final String ACCESS_LEVEL_FIELD = "accessLevel"; //$NON-NLS-1$
-
     public static final String MODELERS_FIELD = "modelers"; //$NON-NLS-1$
 
     public static final String CURRENT_EDITING_CONTEXT_FIELD = "currentEditingContext"; //$NON-NLS-1$
@@ -79,7 +76,6 @@ public class ProjectTypeProvider implements ITypeProvider {
                 .field(this.getNameField())
                 .field(this.getOwnerField())
                 .field(this.getVisibilityField())
-                .field(this.getAccessLevelField())
                 .field(this.getModelersField())
                 .field(this.getCurrentEditingContextField())
                 .build();
@@ -119,15 +115,6 @@ public class ProjectTypeProvider implements ITypeProvider {
         return GraphQLFieldDefinition.newFieldDefinition()
                 .name(VISIBILITY_FIELD)
                 .type(new GraphQLNonNull(new GraphQLTypeReference(Visibility.class.getSimpleName())))
-                .build();
-        // @formatter:on
-    }
-
-    private GraphQLFieldDefinition getAccessLevelField() {
-        // @formatter:off
-        return GraphQLFieldDefinition.newFieldDefinition()
-                .name(ACCESS_LEVEL_FIELD)
-                .type(new GraphQLNonNull(new GraphQLTypeReference(AccessLevel.class.getSimpleName())))
                 .build();
         // @formatter:on
     }
