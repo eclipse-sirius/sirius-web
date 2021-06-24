@@ -14,15 +14,11 @@ package org.eclipse.sirius.web.graphql.datafetchers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.security.Principal;
 import java.util.Objects;
-import java.util.Optional;
 
 import org.eclipse.sirius.web.graphql.schema.MutationTypeProvider;
-import org.eclipse.sirius.web.spring.graphql.api.GraphQLConstants;
 import org.springframework.stereotype.Service;
 
-import graphql.GraphQLContext;
 import graphql.schema.DataFetchingEnvironment;
 
 /**
@@ -43,16 +39,6 @@ public class DataFetchingEnvironmentService implements IDataFetchingEnvironmentS
     public <T> T getInput(DataFetchingEnvironment environment, Class<T> inputType) {
         Object argument = environment.getArgument(MutationTypeProvider.INPUT_ARGUMENT);
         return this.objectMapper.convertValue(argument, inputType);
-    }
-
-    @Override
-    public Optional<Principal> getPrincipal(DataFetchingEnvironment environment) {
-        GraphQLContext graphQLContext = environment.getContext();
-        // @formatter:off
-        return graphQLContext.getOrEmpty(GraphQLConstants.PRINCIPAL)
-                .filter(Principal.class::isInstance)
-                .map(Principal.class::cast);
-        // @formatter:on
     }
 
 }
