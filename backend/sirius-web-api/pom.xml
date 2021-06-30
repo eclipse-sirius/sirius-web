@@ -22,7 +22,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius.web</groupId>
 	<artifactId>sirius-web-api</artifactId>
-	<version>0.3.2</version>
+	<version>0.3.3</version>
 	<name>sirius-web-api</name>
 	<description>Sirius Web API</description>
 
@@ -42,17 +42,17 @@
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-annotations</artifactId>
-			<version>0.3.2</version>
+			<version>0.3.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-representations</artifactId>
-			<version>0.3.2</version>
+			<version>0.3.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-forms</artifactId>
-			<version>0.3.2</version>
+			<version>0.3.3</version>
 		</dependency>
 		<dependency>
 			<groupId>io.projectreactor</groupId>
@@ -61,7 +61,7 @@
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-tests</artifactId>
-			<version>0.3.2</version>
+			<version>0.3.3</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
