@@ -15,7 +15,7 @@
 
 	<groupId>org.eclipse.sirius.web</groupId>
 	<artifactId>sirius-components</artifactId>
-	<version>0.3.2</version>
+	<version>0.3.3</version>
 
 	<name>sirius-components</name>
 	<description>Sirius Components</description>
