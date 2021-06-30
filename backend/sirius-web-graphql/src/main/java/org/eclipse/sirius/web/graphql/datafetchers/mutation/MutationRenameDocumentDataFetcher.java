@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.graphql.datafetchers.mutation;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.Objects;
 import java.util.Optional;
 
@@ -22,7 +24,6 @@ import org.eclipse.sirius.web.collaborative.api.dto.RenameDocumentSuccessPayload
 import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IPayload;
-import org.eclipse.sirius.web.graphql.datafetchers.IDataFetchingEnvironmentService;
 import org.eclipse.sirius.web.graphql.messages.IGraphQLMessageService;
 import org.eclipse.sirius.web.graphql.schema.MutationTypeProvider;
 import org.eclipse.sirius.web.services.api.document.Document;
@@ -58,7 +59,7 @@ public class MutationRenameDocumentDataFetcher implements IDataFetcherWithFieldC
 
     public static final String RENAME_DOCUMENT_FIELD = "renameDocument"; //$NON-NLS-1$
 
-    private final IDataFetchingEnvironmentService dataFetchingEnvironmentService;
+    private final ObjectMapper objectMapper;
 
     private final IDocumentService documentService;
 
@@ -66,9 +67,9 @@ public class MutationRenameDocumentDataFetcher implements IDataFetcherWithFieldC
 
     private final IGraphQLMessageService messageService;
 
-    public MutationRenameDocumentDataFetcher(IDataFetchingEnvironmentService dataFetchingEnvironmentService, IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry,
-            IDocumentService documentService, IGraphQLMessageService messageService) {
-        this.dataFetchingEnvironmentService = Objects.requireNonNull(dataFetchingEnvironmentService);
+    public MutationRenameDocumentDataFetcher(ObjectMapper objectMapper, IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry, IDocumentService documentService,
+            IGraphQLMessageService messageService) {
+        this.objectMapper = Objects.requireNonNull(objectMapper);
         this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
         this.documentService = Objects.requireNonNull(documentService);
         this.messageService = Objects.requireNonNull(messageService);
@@ -76,7 +77,8 @@ public class MutationRenameDocumentDataFetcher implements IDataFetcherWithFieldC
 
     @Override
     public IPayload get(DataFetchingEnvironment environment) throws Exception {
-        var input = this.dataFetchingEnvironmentService.getInput(environment, RenameDocumentInput.class);
+        Object argument = environment.getArgument(MutationTypeProvider.INPUT_ARGUMENT);
+        var input = this.objectMapper.convertValue(argument, RenameDocumentInput.class);
 
         IPayload payload = new ErrorPayload(input.getId(), this.messageService.unexpectedError());
 

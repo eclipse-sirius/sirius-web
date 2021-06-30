@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.graphql.datafetchers.subscriptions;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.Objects;
 
 import org.eclipse.sirius.web.annotations.graphql.GraphQLSubscriptionTypes;
@@ -24,7 +26,6 @@ import org.eclipse.sirius.web.collaborative.forms.api.dto.FormRefreshedEventPayl
 import org.eclipse.sirius.web.collaborative.forms.api.dto.PropertiesEventInput;
 import org.eclipse.sirius.web.collaborative.forms.api.dto.WidgetSubscriptionsUpdatedEventPayload;
 import org.eclipse.sirius.web.core.api.IPayload;
-import org.eclipse.sirius.web.graphql.datafetchers.IDataFetchingEnvironmentService;
 import org.eclipse.sirius.web.graphql.schema.SubscriptionTypeProvider;
 import org.eclipse.sirius.web.spring.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.reactivestreams.Publisher;
@@ -61,18 +62,19 @@ public class SubscriptionPropertiesEventDataFetcher implements IDataFetcherWithF
 
     public static final String PROPERTIES_EVENT_FIELD = "propertiesEvent"; //$NON-NLS-1$
 
-    private final IDataFetchingEnvironmentService dataFetchingEnvironmentService;
+    private final ObjectMapper objectMapper;
 
     private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
 
-    public SubscriptionPropertiesEventDataFetcher(IDataFetchingEnvironmentService dataFetchingEnvironmentService, IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry) {
-        this.dataFetchingEnvironmentService = Objects.requireNonNull(dataFetchingEnvironmentService);
+    public SubscriptionPropertiesEventDataFetcher(ObjectMapper objectMapper, IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry) {
+        this.objectMapper = Objects.requireNonNull(objectMapper);
         this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
     }
 
     @Override
     public Publisher<IPayload> get(DataFetchingEnvironment environment) throws Exception {
-        var input = this.dataFetchingEnvironmentService.getInput(environment, PropertiesEventInput.class);
+        Object argument = environment.getArgument(SubscriptionTypeProvider.INPUT_ARGUMENT);
+        var input = this.objectMapper.convertValue(argument, PropertiesEventInput.class);
         var propertiesConfiguration = new PropertiesConfiguration(input.getObjectId());
 
         // @formatter:off

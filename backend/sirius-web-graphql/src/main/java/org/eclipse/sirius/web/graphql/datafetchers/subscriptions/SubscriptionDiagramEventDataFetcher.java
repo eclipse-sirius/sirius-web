@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.graphql.datafetchers.subscriptions;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.Objects;
 
 import org.eclipse.sirius.web.annotations.graphql.GraphQLSubscriptionTypes;
@@ -23,7 +25,6 @@ import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramEventProcessor;
 import org.eclipse.sirius.web.collaborative.diagrams.api.dto.DiagramEventInput;
 import org.eclipse.sirius.web.collaborative.diagrams.api.dto.DiagramRefreshedEventPayload;
 import org.eclipse.sirius.web.core.api.IPayload;
-import org.eclipse.sirius.web.graphql.datafetchers.IDataFetchingEnvironmentService;
 import org.eclipse.sirius.web.graphql.schema.SubscriptionTypeProvider;
 import org.eclipse.sirius.web.spring.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.reactivestreams.Publisher;
@@ -60,18 +61,19 @@ public class SubscriptionDiagramEventDataFetcher implements IDataFetcherWithFiel
 
     public static final String DIAGRAM_EVENT_FIELD = "diagramEvent"; //$NON-NLS-1$
 
-    private final IDataFetchingEnvironmentService dataFetchingEnvironmentService;
+    private final ObjectMapper objectMapper;
 
     private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
 
-    public SubscriptionDiagramEventDataFetcher(IDataFetchingEnvironmentService dataFetchingEnvironmentService, IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry) {
-        this.dataFetchingEnvironmentService = Objects.requireNonNull(dataFetchingEnvironmentService);
+    public SubscriptionDiagramEventDataFetcher(ObjectMapper objectMapper, IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry) {
+        this.objectMapper = Objects.requireNonNull(objectMapper);
         this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
     }
 
     @Override
     public Publisher<IPayload> get(DataFetchingEnvironment environment) throws Exception {
-        var input = this.dataFetchingEnvironmentService.getInput(environment, DiagramEventInput.class);
+        Object argument = environment.getArgument(SubscriptionTypeProvider.INPUT_ARGUMENT);
+        var input = this.objectMapper.convertValue(argument, DiagramEventInput.class);
         var diagramConfiguration = new DiagramConfiguration(input.getDiagramId());
 
         // @formatter:off

@@ -12,12 +12,13 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.graphql.datafetchers.mutation;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.Objects;
 
 import org.eclipse.sirius.web.annotations.graphql.GraphQLMutationTypes;
 import org.eclipse.sirius.web.annotations.spring.graphql.MutationDataFetcher;
 import org.eclipse.sirius.web.core.api.IPayload;
-import org.eclipse.sirius.web.graphql.datafetchers.IDataFetchingEnvironmentService;
 import org.eclipse.sirius.web.graphql.schema.MutationTypeProvider;
 import org.eclipse.sirius.web.services.api.projects.CreateProjectInput;
 import org.eclipse.sirius.web.services.api.projects.CreateProjectSuccessPayload;
@@ -53,18 +54,19 @@ public class MutationCreateProjectDataFetcher implements IDataFetcherWithFieldCo
 
     public static final String CREATE_PROJECT_FIELD = "createProject"; //$NON-NLS-1$
 
-    private final IDataFetchingEnvironmentService dataFetchingEnvironmentService;
+    private final ObjectMapper objectMapper;
 
     private final IProjectService projectService;
 
-    public MutationCreateProjectDataFetcher(IDataFetchingEnvironmentService dataFetchingEnvironmentService, IProjectService projectService) {
-        this.dataFetchingEnvironmentService = Objects.requireNonNull(dataFetchingEnvironmentService);
+    public MutationCreateProjectDataFetcher(ObjectMapper objectMapper, IProjectService projectService) {
+        this.objectMapper = Objects.requireNonNull(objectMapper);
         this.projectService = Objects.requireNonNull(projectService);
     }
 
     @Override
     public IPayload get(DataFetchingEnvironment environment) throws Exception {
-        var input = this.dataFetchingEnvironmentService.getInput(environment, CreateProjectInput.class);
+        Object argument = environment.getArgument(MutationTypeProvider.INPUT_ARGUMENT);
+        var input = this.objectMapper.convertValue(argument, CreateProjectInput.class);
         return this.projectService.createProject(input);
     }
 

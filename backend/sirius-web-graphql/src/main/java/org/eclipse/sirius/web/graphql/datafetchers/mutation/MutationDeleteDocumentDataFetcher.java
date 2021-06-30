@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.graphql.datafetchers.mutation;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.Objects;
 
 import org.eclipse.sirius.web.annotations.graphql.GraphQLMutationTypes;
@@ -21,7 +23,6 @@ import org.eclipse.sirius.web.collaborative.api.dto.DeleteDocumentSuccessPayload
 import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IPayload;
-import org.eclipse.sirius.web.graphql.datafetchers.IDataFetchingEnvironmentService;
 import org.eclipse.sirius.web.graphql.messages.IGraphQLMessageService;
 import org.eclipse.sirius.web.graphql.schema.MutationTypeProvider;
 import org.eclipse.sirius.web.services.api.document.Document;
@@ -57,7 +58,7 @@ public class MutationDeleteDocumentDataFetcher implements IDataFetcherWithFieldC
 
     public static final String DELETE_DOCUMENT_FIELD = "deleteDocument"; //$NON-NLS-1$
 
-    private final IDataFetchingEnvironmentService dataFetchingEnvironmentService;
+    private final ObjectMapper objectMapper;
 
     private final IDocumentService documentService;
 
@@ -65,9 +66,9 @@ public class MutationDeleteDocumentDataFetcher implements IDataFetcherWithFieldC
 
     private final IGraphQLMessageService messageService;
 
-    public MutationDeleteDocumentDataFetcher(IDataFetchingEnvironmentService dataFetchingEnvironmentService, IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry,
-            IDocumentService documentService, IGraphQLMessageService messageService) {
-        this.dataFetchingEnvironmentService = Objects.requireNonNull(dataFetchingEnvironmentService);
+    public MutationDeleteDocumentDataFetcher(ObjectMapper objectMapper, IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry, IDocumentService documentService,
+            IGraphQLMessageService messageService) {
+        this.objectMapper = Objects.requireNonNull(objectMapper);
         this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
         this.documentService = Objects.requireNonNull(documentService);
         this.messageService = Objects.requireNonNull(messageService);
@@ -75,7 +76,8 @@ public class MutationDeleteDocumentDataFetcher implements IDataFetcherWithFieldC
 
     @Override
     public IPayload get(DataFetchingEnvironment environment) throws Exception {
-        var input = this.dataFetchingEnvironmentService.getInput(environment, DeleteDocumentInput.class);
+        Object argument = environment.getArgument(MutationTypeProvider.INPUT_ARGUMENT);
+        var input = this.objectMapper.convertValue(argument, DeleteDocumentInput.class);
 
         IPayload payload = new ErrorPayload(input.getId(), this.messageService.unexpectedError());
 

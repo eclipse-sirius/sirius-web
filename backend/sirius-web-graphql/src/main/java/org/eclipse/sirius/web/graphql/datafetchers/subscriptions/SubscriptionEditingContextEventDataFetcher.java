@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.graphql.datafetchers.subscriptions;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.Objects;
 
 import org.eclipse.sirius.web.annotations.graphql.GraphQLSubscriptionTypes;
@@ -21,7 +23,6 @@ import org.eclipse.sirius.web.collaborative.api.dto.RepresentationRenamedEventPa
 import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventProcessor;
 import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.web.core.api.IPayload;
-import org.eclipse.sirius.web.graphql.datafetchers.IDataFetchingEnvironmentService;
 import org.eclipse.sirius.web.graphql.schema.SubscriptionTypeProvider;
 import org.eclipse.sirius.web.spring.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.reactivestreams.Publisher;
@@ -56,18 +57,19 @@ public class SubscriptionEditingContextEventDataFetcher implements IDataFetcherW
 
     public static final String EDITING_CONTEXT_EVENT_FIELD = "editingContextEvent"; //$NON-NLS-1$
 
-    private final IDataFetchingEnvironmentService dataFetchingEnvironmentService;
+    private final ObjectMapper objectMapper;
 
     private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
 
-    public SubscriptionEditingContextEventDataFetcher(IDataFetchingEnvironmentService dataFetchingEnvironmentService, IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry) {
-        this.dataFetchingEnvironmentService = Objects.requireNonNull(dataFetchingEnvironmentService);
+    public SubscriptionEditingContextEventDataFetcher(ObjectMapper objectMapper, IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry) {
+        this.objectMapper = Objects.requireNonNull(objectMapper);
         this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
     }
 
     @Override
     public Publisher<IPayload> get(DataFetchingEnvironment environment) throws Exception {
-        var input = this.dataFetchingEnvironmentService.getInput(environment, EditingContextEventInput.class);
+        Object argument = environment.getArgument(SubscriptionTypeProvider.INPUT_ARGUMENT);
+        var input = this.objectMapper.convertValue(argument, EditingContextEventInput.class);
 
         // @formatter:off
         return this.editingContextEventProcessorRegistry.getOrCreateEditingContextEventProcessor(input.getEditingContextId())
