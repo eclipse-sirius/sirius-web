@@ -29,7 +29,7 @@
 
 	<properties>
 		<java.version>11</java.version>
-		<sirius.components.version>0.3.2</sirius.components.version>
+		<sirius.components.version>0.3.3</sirius.components.version>
 		<flow.version>1.0.6-SNAPSHOT</flow.version>
 		<bpmn.version>4.0.3-SNAPSHOT</bpmn.version>
 	</properties>
@@ -84,6 +84,11 @@
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-spring-starter</artifactId>
+			<version>${sirius.components.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius.web</groupId>
+			<artifactId>sirius-web-graphql</artifactId>
 			<version>${sirius.components.version}</version>
 		</dependency>
 		<dependency>

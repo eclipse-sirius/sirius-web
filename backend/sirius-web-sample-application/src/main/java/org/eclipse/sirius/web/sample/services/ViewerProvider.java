@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,12 +12,9 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.sample.services;
 
-import java.security.Principal;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.sirius.web.graphql.datafetchers.IDataFetchingEnvironmentService;
 import org.eclipse.sirius.web.graphql.datafetchers.IViewerProvider;
 import org.eclipse.sirius.web.services.api.viewer.IViewer;
 import org.eclipse.sirius.web.services.api.viewer.User;
@@ -32,20 +29,9 @@ import graphql.schema.DataFetchingEnvironment;
  */
 @Service
 public class ViewerProvider implements IViewerProvider {
-
-    private final IDataFetchingEnvironmentService dataFetchingEnvironmentService;
-
-    public ViewerProvider(IDataFetchingEnvironmentService dataFetchingEnvironmentService) {
-        this.dataFetchingEnvironmentService = Objects.requireNonNull(dataFetchingEnvironmentService);
-    }
-
     @Override
     public Optional<IViewer> getViewer(DataFetchingEnvironment environment) {
-        // @formatter:off
-        return this.dataFetchingEnvironmentService.getPrincipal(environment)
-                .map(Principal::getName)
-                .map(username -> new User(UUID.randomUUID(), username));
-        // @formatter:on
+        return Optional.of(new User(UUID.randomUUID(), "system")); //$NON-NLS-1$
     }
 
 }
