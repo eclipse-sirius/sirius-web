@@ -12,12 +12,13 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.graphql.datafetchers.mutation;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.Objects;
 
 import org.eclipse.sirius.web.annotations.graphql.GraphQLMutationTypes;
 import org.eclipse.sirius.web.annotations.spring.graphql.MutationDataFetcher;
 import org.eclipse.sirius.web.core.api.IPayload;
-import org.eclipse.sirius.web.graphql.datafetchers.IDataFetchingEnvironmentService;
 import org.eclipse.sirius.web.graphql.schema.MutationTypeProvider;
 import org.eclipse.sirius.web.services.api.modelers.CreateModelerInput;
 import org.eclipse.sirius.web.services.api.modelers.CreateModelerSuccessPayload;
@@ -46,18 +47,19 @@ public class MutationCreateModelerDataFetcher implements IDataFetcherWithFieldCo
 
     public static final String CREATE_MODELER_FIELD = "createModeler"; //$NON-NLS-1$
 
-    private final IDataFetchingEnvironmentService dataFetchingEnvironmentService;
+    private final ObjectMapper objectMapper;
 
     private final IModelerService modelerService;
 
-    public MutationCreateModelerDataFetcher(IDataFetchingEnvironmentService dataFetchingEnvironmentService, IModelerService modelerService) {
-        this.dataFetchingEnvironmentService = Objects.requireNonNull(dataFetchingEnvironmentService);
+    public MutationCreateModelerDataFetcher(ObjectMapper objectMapper, IModelerService modelerService) {
+        this.objectMapper = Objects.requireNonNull(objectMapper);
         this.modelerService = Objects.requireNonNull(modelerService);
     }
 
     @Override
     public IPayload get(DataFetchingEnvironment environment) throws Exception {
-        var input = this.dataFetchingEnvironmentService.getInput(environment, CreateModelerInput.class);
+        Object argument = environment.getArgument(MutationTypeProvider.INPUT_ARGUMENT);
+        var input = this.objectMapper.convertValue(argument, CreateModelerInput.class);
         return this.modelerService.createModeler(input);
     }
 

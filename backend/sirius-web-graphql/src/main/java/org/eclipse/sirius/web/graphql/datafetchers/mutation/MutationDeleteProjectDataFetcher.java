@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.graphql.datafetchers.mutation;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.Objects;
 
 import org.eclipse.sirius.web.annotations.graphql.GraphQLMutationTypes;
@@ -19,7 +21,6 @@ import org.eclipse.sirius.web.annotations.spring.graphql.MutationDataFetcher;
 import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IPayload;
-import org.eclipse.sirius.web.graphql.datafetchers.IDataFetchingEnvironmentService;
 import org.eclipse.sirius.web.graphql.datafetchers.IViewerProvider;
 import org.eclipse.sirius.web.graphql.messages.IGraphQLMessageService;
 import org.eclipse.sirius.web.graphql.schema.MutationTypeProvider;
@@ -58,7 +59,7 @@ public class MutationDeleteProjectDataFetcher implements IDataFetcherWithFieldCo
 
     public static final String DELETE_PROJECT_FIELD = "deleteProject"; //$NON-NLS-1$
 
-    private final IDataFetchingEnvironmentService dataFetchingEnvironmentService;
+    private final ObjectMapper objectMapper;
 
     private final IViewerProvider viewerProvider;
 
@@ -68,9 +69,9 @@ public class MutationDeleteProjectDataFetcher implements IDataFetcherWithFieldCo
 
     private final IGraphQLMessageService messageService;
 
-    public MutationDeleteProjectDataFetcher(IDataFetchingEnvironmentService dataFetchingEnvironmentService, IViewerProvider viewerProvider, IProjectService projectService,
+    public MutationDeleteProjectDataFetcher(ObjectMapper objectMapper, IViewerProvider viewerProvider, IProjectService projectService,
             IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry, IGraphQLMessageService messageService) {
-        this.dataFetchingEnvironmentService = Objects.requireNonNull(dataFetchingEnvironmentService);
+        this.objectMapper = Objects.requireNonNull(objectMapper);
         this.viewerProvider = Objects.requireNonNull(viewerProvider);
         this.projectService = Objects.requireNonNull(projectService);
         this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
@@ -79,7 +80,9 @@ public class MutationDeleteProjectDataFetcher implements IDataFetcherWithFieldCo
 
     @Override
     public IPayload get(DataFetchingEnvironment environment) throws Exception {
-        var input = this.dataFetchingEnvironmentService.getInput(environment, DeleteProjectInput.class);
+        Object argument = environment.getArgument(MutationTypeProvider.INPUT_ARGUMENT);
+        var input = this.objectMapper.convertValue(argument, DeleteProjectInput.class);
+
         var optionalViewer = this.viewerProvider.getViewer(environment);
         IPayload payload = new ErrorPayload(input.getId(), this.messageService.unexpectedError());
         if (optionalViewer.isPresent()) {

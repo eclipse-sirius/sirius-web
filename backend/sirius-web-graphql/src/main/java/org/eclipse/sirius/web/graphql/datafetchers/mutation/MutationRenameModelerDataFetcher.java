@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.graphql.datafetchers.mutation;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.Objects;
 import java.util.Optional;
 
@@ -19,7 +21,6 @@ import org.eclipse.sirius.web.annotations.graphql.GraphQLMutationTypes;
 import org.eclipse.sirius.web.annotations.spring.graphql.MutationDataFetcher;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IPayload;
-import org.eclipse.sirius.web.graphql.datafetchers.IDataFetchingEnvironmentService;
 import org.eclipse.sirius.web.graphql.messages.IGraphQLMessageService;
 import org.eclipse.sirius.web.graphql.schema.MutationTypeProvider;
 import org.eclipse.sirius.web.services.api.modelers.IModelerService;
@@ -57,21 +58,22 @@ public class MutationRenameModelerDataFetcher implements IDataFetcherWithFieldCo
 
     public static final String RENAME_MODELER_FIELD = "renameModeler"; //$NON-NLS-1$
 
-    private final IDataFetchingEnvironmentService dataFetchingEnvironmentService;
+    private final ObjectMapper objectMapper;
 
     private final IModelerService modelerService;
 
     private final IGraphQLMessageService messageService;
 
-    public MutationRenameModelerDataFetcher(IDataFetchingEnvironmentService dataFetchingEnvironmentService, IModelerService modelerService, IGraphQLMessageService messageService) {
-        this.dataFetchingEnvironmentService = Objects.requireNonNull(dataFetchingEnvironmentService);
+    public MutationRenameModelerDataFetcher(ObjectMapper objectMapper, IModelerService modelerService, IGraphQLMessageService messageService) {
+        this.objectMapper = Objects.requireNonNull(objectMapper);
         this.modelerService = Objects.requireNonNull(modelerService);
         this.messageService = Objects.requireNonNull(messageService);
     }
 
     @Override
     public IPayload get(DataFetchingEnvironment environment) throws Exception {
-        var input = this.dataFetchingEnvironmentService.getInput(environment, RenameModelerInput.class);
+        Object argument = environment.getArgument(MutationTypeProvider.INPUT_ARGUMENT);
+        var input = this.objectMapper.convertValue(argument, RenameModelerInput.class);
 
         IPayload payload = new ErrorPayload(input.getId(), this.messageService.unexpectedError());
 
