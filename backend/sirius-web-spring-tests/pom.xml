@@ -49,8 +49,12 @@
 			<artifactId>spring-context</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>com.tngtech.archunit</groupId>
-			<artifactId>archunit-junit4</artifactId>
+			<artifactId>archunit-junit5</artifactId>
 			<version>0.19.0</version>
 		</dependency>
 	</dependencies>
