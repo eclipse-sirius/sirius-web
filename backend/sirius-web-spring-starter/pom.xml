@@ -68,22 +68,12 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
-			<artifactId>sirius-web-services</artifactId>
-			<version>0.3.3</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-emf</artifactId>
 			<version>0.3.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-compatibility</artifactId>
-			<version>0.3.3</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius.web</groupId>
-			<artifactId>sirius-web-spring</artifactId>
 			<version>0.3.3</version>
 		</dependency>
 	</dependencies>
