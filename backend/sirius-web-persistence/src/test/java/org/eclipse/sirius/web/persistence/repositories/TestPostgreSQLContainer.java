@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,8 +15,6 @@ package org.eclipse.sirius.web.persistence.repositories;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.containers.wait.strategy.LogMessageWaitStrategy;
 
@@ -28,14 +26,6 @@ import org.testcontainers.containers.wait.strategy.LogMessageWaitStrategy;
 public final class TestPostgreSQLContainer extends PostgreSQLContainer<TestPostgreSQLContainer> {
     private static final String VERSION = "postgres:latest"; //$NON-NLS-1$
 
-    private static final String ENV_DB_URL = "SIRIUS_WEB_TEST_DB_URL"; //$NON-NLS-1$
-
-    private static final String ENV_DB_USERNAME = "SIRIUS_WEB_TEST_DB_USERNAME"; //$NON-NLS-1$
-
-    private static final String ENV_DB_PASSWORD = "SIRIUS_WEB_TEST_DB_PASSWORD"; //$NON-NLS-1$
-
-    private final Logger logger = LoggerFactory.getLogger(TestPostgreSQLContainer.class);
-
     public TestPostgreSQLContainer() {
         super(VERSION);
 
@@ -45,24 +35,6 @@ public final class TestPostgreSQLContainer extends PostgreSQLContainer<TestPostg
                 .withTimes(1)
                 .withStartupTimeout(Duration.of(240, ChronoUnit.SECONDS));
         // @formatter:on
-    }
-
-    @Override
-    public void start() {
-        super.start();
-
-        this.logger.info("Starting PostgreSQL Docker container"); //$NON-NLS-1$
-
-        System.setProperty(ENV_DB_URL, this.getJdbcUrl());
-        System.setProperty(ENV_DB_USERNAME, this.getUsername());
-        System.setProperty(ENV_DB_PASSWORD, this.getPassword());
-    }
-
-    @Override
-    public void stop() {
-        this.logger.info("Stopping PostgreSQL Docker container"); //$NON-NLS-1$
-
-        super.stop();
     }
 
 }

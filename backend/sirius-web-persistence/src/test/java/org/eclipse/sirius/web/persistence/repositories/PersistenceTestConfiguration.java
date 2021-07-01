@@ -10,12 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-
 package org.eclipse.sirius.web.persistence.repositories;
 
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 /**
  * Configuration used during the integration tests of the repositories.
@@ -25,6 +26,8 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootConfiguration
 @EnableAutoConfiguration
 @ComponentScan(basePackages = { "org.eclipse.sirius.web.persistence" })
+@EntityScan(basePackages = { "org.eclipse.sirius.web.persistence.entities" })
+@EnableJpaRepositories(basePackages = { "org.eclipse.sirius.web.persistence.repositories" }, namedQueriesLocation = "classpath:db/sirius-web-named-queries.properties")
 public class PersistenceTestConfiguration {
 
 }
