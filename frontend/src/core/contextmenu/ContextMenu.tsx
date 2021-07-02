@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import { Text } from 'core/text/Text';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useRef } from 'react';
@@ -62,22 +63,6 @@ const contextMenuPropTypes = {
 export const ContextMenu = ({ x, y, caretPosition, children, onClose, 'data-testid': dataTestId }) => {
   const domNode = useRef(null);
 
-  const onClickOutsideElement = useCallback(
-    (event) => {
-      if (domNode.current && !domNode.current.contains(event.target)) {
-        onClose();
-      }
-    },
-    [onClose]
-  );
-
-  useEffect(() => {
-    document.addEventListener('click', onClickOutsideElement, false);
-    return () => {
-      document.removeEventListener('click', onClickOutsideElement, false);
-    };
-  }, [onClickOutsideElement]);
-
   const onKeyDown = useCallback(
     (event) => {
       if (event.keyCode === 27) {
@@ -119,13 +104,15 @@ export const ContextMenu = ({ x, y, caretPosition, children, onClose, 'data-test
     );
   }
   return (
-    <div className={styles.contextmenu} style={style}>
-      {caret}
-      <ul className={styles.menucontents} ref={domNode} data-testid={dataTestId}>
-        {children}
-      </ul>
-      <div />
-    </div>
+    <ClickAwayListener onClickAway={onClose}>
+      <div className={styles.contextmenu} style={style}>
+        {caret}
+        <ul className={styles.menucontents} ref={domNode} data-testid={dataTestId}>
+          {children}
+        </ul>
+        <div />
+      </div>
+    </ClickAwayListener>
   );
 };
 ContextMenu.propTypes = contextMenuPropTypes;
