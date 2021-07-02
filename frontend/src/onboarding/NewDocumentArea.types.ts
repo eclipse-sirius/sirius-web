@@ -10,17 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
- import { Selection } from 'workbench/Workbench.types';
+import { Selection } from 'workbench/Workbench.types';
 
 export interface StereotypeDescription {
-  id: string
-  label: string
+  id: string;
+  label: string;
 }
 
- export interface NewDocumentAreaProps {
-   editingContextId: string;
-   stereotypeDescriptions: StereotypeDescription[]
-   setSelection: (selection: Selection) => void;
-   readOnly: boolean;
- }
- 
+export interface NewDocumentAreaProps {
+  editingContextId: string;
+  stereotypeDescriptions: StereotypeDescription[];
+  setSelection: (selection: Selection) => void;
+  readOnly: boolean;
+}

@@ -21,8 +21,8 @@
     "build:dev": "rollup -c rollup-dev.config.js",
     "build:watch": "rollup -c rollup-dev.config.js -w",
     "test": "jest",
-    "format": "prettier --write \"src/**/*.{js,tsx,css}\"",
-    "format-lint": "prettier --list-different \"src/**/*.{js,tsx,css}\""
+    "format": "prettier --write \"src/**/*.{js,ts,tsx,css}\"",
+    "format-lint": "prettier --list-different \"src/**/*.{js,ts,tsx,css}\""
   },
   "devDependencies": {
     "@apollo/client": "3.3.20",

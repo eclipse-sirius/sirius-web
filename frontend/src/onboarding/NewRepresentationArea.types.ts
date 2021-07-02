@@ -10,18 +10,17 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
- import { Selection } from 'workbench/Workbench.types';
+import { Selection } from 'workbench/Workbench.types';
 
 export interface RepresentationDescription {
-  id: string
-  label: string
+  id: string;
+  label: string;
 }
 
- export interface NewRepresentationAreaProps {
-   editingContextId: string;
-   representationDescriptions: RepresentationDescription[]
-   selection?: Selection;
-   setSelection: (selection: Selection) => void;
-   readOnly: boolean;
- }
- 
+export interface NewRepresentationAreaProps {
+  editingContextId: string;
+  representationDescriptions: RepresentationDescription[];
+  selection?: Selection;
+  setSelection: (selection: Selection) => void;
+  readOnly: boolean;
+}
