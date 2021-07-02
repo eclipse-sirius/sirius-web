@@ -24,6 +24,7 @@ import org.eclipse.sirius.web.diagrams.Label;
 import org.eclipse.sirius.web.diagrams.LabelStyle;
 import org.eclipse.sirius.web.diagrams.LineStyle;
 import org.eclipse.sirius.web.diagrams.Node;
+import org.eclipse.sirius.web.diagrams.NodeType;
 import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.web.diagrams.Size;
@@ -94,7 +95,7 @@ public class TestDiagramBuilder {
                 .build();
 
         return Node.newNode(id)
-                .type("nodeType") //$NON-NLS-1$
+                .type(NodeType.NODE_RECTANGLE)
                 .targetObjectId("nodeTargetObjectId") //$NON-NLS-1$
                 .targetObjectKind("") //$NON-NLS-1$
                 .targetObjectLabel("") //$NON-NLS-1$
