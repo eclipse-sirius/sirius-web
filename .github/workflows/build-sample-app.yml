@@ -49,7 +49,7 @@ jobs:
         run: |
           mvn -U -B clean verify -f backend/pom.xml --settings settings.xml
           mkdir staging
-          cp backend/sirius-web-sample-application/target/sirius-web-sample-application-*.jar staging/sirius-web-sample-application.jar
+          find backend/sirius-web-sample-application/target -maxdepth 1 -name "*.jar" -not -name "*-sources.jar" -exec cp {} staging/sirius-web-sample-application.jar \;
 
       - name: Publish sample application
         uses: actions/upload-artifact@v2
