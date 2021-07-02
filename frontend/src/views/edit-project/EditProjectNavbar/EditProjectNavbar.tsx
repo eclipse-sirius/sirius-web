@@ -15,7 +15,7 @@ import {
   NewDocumentModal,
   RenameProjectModal,
   UploadDocumentModal,
-  ServerContext
+  ServerContext,
 } from '@eclipse-sirius/sirius-components';
 import React, { useContext, useReducer } from 'react';
 import { emphasize } from '@material-ui/core';
@@ -29,7 +29,7 @@ import {
   HANDLE_REDIRECTING__ACTION,
   HANDLE_SHOW_CONTEXT_MENU__ACTION,
   HANDLE_SHOW_MODAL__ACTION,
-  REDIRECT__STATE
+  REDIRECT__STATE,
 } from './machine';
 import { initialState, reducer } from './reducer';
 import { makeStyles, Typography, IconButton, Menu, MenuItem, ListItemIcon, ListItemText } from '@material-ui/core';
@@ -41,20 +41,20 @@ import GetAppIcon from '@material-ui/icons/GetApp';
 import PublishIcon from '@material-ui/icons/Publish';
 import { NavigationBar } from 'navigationBar/NavigationBar';
 
-const useEditProjectViewNavbarStyles = makeStyles(theme => ({
+const useEditProjectViewNavbarStyles = makeStyles((theme) => ({
   center: {
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   title: {
-    marginRight: theme.spacing(2)
+    marginRight: theme.spacing(2),
   },
   onDarkBackground: {
     '&:hover': {
-      backgroundColor: emphasize(theme.palette.secondary.main, 0.08)
-    }
-  }
+      backgroundColor: emphasize(theme.palette.secondary.main, 0.08),
+    },
+  },
 }));
 
 export const EditProjectNavbar = ({ project }: EditProjectNavbarProps) => {
@@ -66,7 +66,7 @@ export const EditProjectNavbar = ({ project }: EditProjectNavbarProps) => {
     if (state.viewState === EMPTY__STATE) {
       const action = {
         type: HANDLE_SHOW_CONTEXT_MENU__ACTION,
-        projectMenuAnchor: event.currentTarget
+        projectMenuAnchor: event.currentTarget,
       };
       dispatch(action);
     }
@@ -81,7 +81,7 @@ export const EditProjectNavbar = ({ project }: EditProjectNavbarProps) => {
       type: HANDLE_REDIRECTING__ACTION,
       to: '/projects',
       modalDisplayed: null,
-      proprojectMenuAnchor: null
+      proprojectMenuAnchor: null,
     });
   };
 

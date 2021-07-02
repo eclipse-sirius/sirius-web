@@ -25,7 +25,7 @@ import {
   SchemaValue,
   UploadProjectEvent,
   uploadProjectMachine,
-  UploadProjectViewContext
+  UploadProjectViewContext,
 } from './UploadProjectViewMachine';
 import { NavigationBar } from 'navigationBar/NavigationBar';
 
@@ -45,22 +45,22 @@ const uploadProjectMutation = gql`
   }
 `.loc.source.body;
 
-const useUploadProjectViewStyles = makeStyles(theme => ({
+const useUploadProjectViewStyles = makeStyles((theme) => ({
   uploadProjectView: {
     display: 'grid',
     gridTemplateColumns: '1fr',
     gridTemplateRows: 'min-content 1fr min-content',
-    minHeight: '100vh'
+    minHeight: '100vh',
   },
   main: {
     paddingTop: theme.spacing(3),
-    paddingBottom: theme.spacing(3)
+    paddingBottom: theme.spacing(3),
   },
   buttons: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'start'
-  }
+    justifyContent: 'start',
+  },
 }));
 
 export const UploadProjectView = () => {
@@ -69,13 +69,13 @@ export const UploadProjectView = () => {
   const { uploadProjectView, toast } = value as SchemaValue;
   const { file, newProjectId, message } = context;
 
-  const onUploadProject = async event => {
+  const onUploadProject = async (event) => {
     event.preventDefault();
     const variables = {
       input: {
         id: uuid(),
-        file: null
-      }
+        file: null,
+      },
     };
 
     try {
@@ -130,7 +130,7 @@ export const UploadProjectView = () => {
       <Snackbar
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'right'
+          horizontal: 'right',
         }}
         open={toast === 'visible'}
         autoHideDuration={3000}

@@ -46,7 +46,7 @@ import {
   GQLGetProjectsQueryVariables,
   Project,
   ProjectContextMenuProps,
-  ProjectsTableProps
+  ProjectsTableProps,
 } from 'views/projects/ProjectsView.types';
 import {
   CloseMenuEvent,
@@ -59,7 +59,7 @@ import {
   ProjectsViewEvent,
   projectsViewMachine,
   SchemaValue,
-  ShowToastEvent
+  ShowToastEvent,
 } from 'views/projects/ProjectsViewMachine';
 import { NavigationBar } from 'navigationBar/NavigationBar';
 import { Footer } from 'footer/Footer';
@@ -75,35 +75,35 @@ const getProjectsQuery = gql`
   }
 `;
 
-const useProjectsViewStyles = makeStyles(theme => ({
+const useProjectsViewStyles = makeStyles((theme) => ({
   projectsView: {
     display: 'grid',
     gridTemplateColumns: '1fr',
     gridTemplateRows: 'min-content 1fr min-content',
-    minHeight: '100vh'
+    minHeight: '100vh',
   },
   main: {
     paddingTop: theme.spacing(3),
-    paddingBottom: theme.spacing(3)
+    paddingBottom: theme.spacing(3),
   },
   projectsViewContainer: {
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
   },
   header: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: theme.spacing(5)
+    marginBottom: theme.spacing(5),
   },
   actions: {
     display: 'flex',
     flexDirection: 'row',
     '& > *': {
-      marginLeft: theme.spacing(2)
-    }
-  }
+      marginLeft: theme.spacing(2),
+    },
+  },
 }));
 
 export const ProjectsView = () => {
@@ -121,7 +121,7 @@ export const ProjectsView = () => {
       if (error) {
         const showToastEvent: ShowToastEvent = {
           type: 'SHOW_TOAST',
-          message: 'An unexpected error has occurred, please refresh the page'
+          message: 'An unexpected error has occurred, please refresh the page',
         };
         dispatch(showToastEvent);
       }
@@ -226,7 +226,7 @@ export const ProjectsView = () => {
       <Snackbar
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'right'
+          horizontal: 'right',
         }}
         open={toast === 'visible'}
         autoHideDuration={3000}
@@ -279,7 +279,7 @@ const ProjectsTable = ({ projects, onMore }: ProjectsTableProps) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {projects.map(project => (
+            {projects.map((project) => (
               <TableRow key={project.id}>
                 <TableCell>
                   <Link component={RouterLink} to={`/projects/${project.id}/edit`} color="inherit">
@@ -290,7 +290,7 @@ const ProjectsTable = ({ projects, onMore }: ProjectsTableProps) => {
                   <Tooltip title="More">
                     <IconButton
                       aria-label="more"
-                      onClick={event => onMore(event, project)}
+                      onClick={(event) => onMore(event, project)}
                       size="small"
                       data-testid="more">
                       <MoreHorizIcon fontSize="small" />

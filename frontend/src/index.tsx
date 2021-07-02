@@ -30,37 +30,37 @@ const baseTheme = createMuiTheme({
     primary: {
       main: '#BE1A78',
       dark: '#851254',
-      light: '#CB4793'
+      light: '#CB4793',
     },
     secondary: {
       main: '#261E58',
       dark: '#1A153D',
-      light: '#514B79'
+      light: '#514B79',
     },
     text: {
       primary: '#261E58',
       disabled: '#B3BFC5',
-      hint: '#B3BFC5'
+      hint: '#B3BFC5',
     },
     error: {
       main: '#DE1000',
       dark: '#9B0B00',
-      light: '#E43F33'
+      light: '#E43F33',
     },
-    divider: '#B3BFC5'
+    divider: '#B3BFC5',
   },
   props: {
     MuiAppBar: {
-      color: 'secondary'
-    }
+      color: 'secondary',
+    },
   },
   overrides: {
     MuiSnackbarContent: {
       root: {
-        backgroundColor: '#7269A4'
-      }
-    }
-  }
+        backgroundColor: '#7269A4',
+      },
+    },
+  },
 });
 
 const siriusWebTheme = createMuiTheme(
@@ -68,10 +68,10 @@ const siriusWebTheme = createMuiTheme(
     overrides: {
       MuiAvatar: {
         colorDefault: {
-          backgroundColor: baseTheme.palette.primary.main
-        }
-      }
-    }
+          backgroundColor: baseTheme.palette.primary.main,
+        },
+      },
+    },
   },
   baseTheme
 );
@@ -80,7 +80,7 @@ const style = {
   display: 'grid',
   gridTemplateColumns: '1fr',
   gridTemplateRows: '1fr',
-  minHeight: '100vh'
+  minHeight: '100vh',
 };
 
 ReactDOM.render(

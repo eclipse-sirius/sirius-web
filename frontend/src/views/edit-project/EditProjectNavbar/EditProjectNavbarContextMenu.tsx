@@ -22,7 +22,7 @@ export const EditProjectNavbarContextMenu = ({
   onUploadDocument,
   onRename,
   onDelete,
-  onClose
+  onClose,
 }: EditProjectNavbarContextMenuProps) => {
   return (
     <ContextMenu caretPosition={TOP_START} x={x} y={y} onClose={onClose} data-testid="navbar-contextmenu">

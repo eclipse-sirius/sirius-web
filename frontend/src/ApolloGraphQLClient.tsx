@@ -16,15 +16,15 @@ import { getMainDefinition } from '@apollo/client/utilities';
 import { httpOrigin, wsOrigin } from '@eclipse-sirius/sirius-components';
 
 const httpLink = new HttpLink({
-  uri: `${httpOrigin}/api/graphql`
+  uri: `${httpOrigin}/api/graphql`,
 });
 
 const wsLink = new WebSocketLink({
   uri: `${wsOrigin}/subscriptions`,
   options: {
     reconnect: true,
-    lazy: true
-  }
+    lazy: true,
+  },
 });
 
 const splitLink = split(
@@ -38,19 +38,19 @@ const splitLink = split(
 
 const defaultOptions: DefaultOptions = {
   watchQuery: {
-    fetchPolicy: 'no-cache'
+    fetchPolicy: 'no-cache',
   },
   query: {
-    fetchPolicy: 'no-cache'
+    fetchPolicy: 'no-cache',
   },
   mutate: {
-    fetchPolicy: 'no-cache'
-  }
+    fetchPolicy: 'no-cache',
+  },
 };
 
 export const ApolloGraphQLClient = new ApolloClient({
   link: splitLink,
   cache: new InMemoryCache(),
   connectToDevTools: true,
-  defaultOptions
+  defaultOptions,
 });

@@ -14,12 +14,12 @@ import { Link, IconButton } from '@material-ui/core';
 import { makeStyles, emphasize } from '@material-ui/core/styles';
 import HelpIcon from '@material-ui/icons/Help';
 
-const useHelpStyle = makeStyles(theme => ({
+const useHelpStyle = makeStyles((theme) => ({
   onDarkBackground: {
     '&:hover': {
-      backgroundColor: emphasize(theme.palette.secondary.main, 0.08)
-    }
-  }
+      backgroundColor: emphasize(theme.palette.secondary.main, 0.08),
+    },
+  },
 }));
 
 export const Help = () => {

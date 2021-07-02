@@ -60,7 +60,7 @@ export const uploadProjectMachine = Machine<UploadProjectViewContext, UploadProj
     context: {
       file: null,
       message: null,
-      newProjectId: null
+      newProjectId: null,
     },
     states: {
       toast: {
@@ -70,19 +70,19 @@ export const uploadProjectMachine = Machine<UploadProjectViewContext, UploadProj
             on: {
               SHOW_TOAST: {
                 target: 'visible',
-                actions: 'setMessage'
-              }
-            }
+                actions: 'setMessage',
+              },
+            },
           },
           visible: {
             on: {
               HIDE_TOAST: {
                 target: 'hidden',
-                actions: 'clearMessage'
-              }
-            }
-          }
-        }
+                actions: 'clearMessage',
+              },
+            },
+          },
+        },
       },
       uploadProjectView: {
         initial: 'pristine',
@@ -91,35 +91,35 @@ export const uploadProjectMachine = Machine<UploadProjectViewContext, UploadProj
             on: {
               HANDLE_SELECTED_FILE: {
                 target: 'fileSelected',
-                actions: 'setFile'
-              }
-            }
+                actions: 'setFile',
+              },
+            },
           },
           fileSelected: {
             on: {
               HANDLE_UPLOAD: {
-                target: 'uploading'
+                target: 'uploading',
               },
               HANDLE_SELECTED_FILE: {
                 target: 'fileSelected',
-                actions: 'setFile'
-              }
-            }
+                actions: 'setFile',
+              },
+            },
           },
           uploading: {
             on: {
               HANDLE_RESPONSE: {
                 target: 'success',
-                actions: 'setNewProjectId'
-              }
-            }
+                actions: 'setNewProjectId',
+              },
+            },
           },
           success: {
-            type: 'final'
-          }
-        }
-      }
-    }
+            type: 'final',
+          },
+        },
+      },
+    },
   },
   {
     actions: {
@@ -135,9 +135,9 @@ export const uploadProjectMachine = Machine<UploadProjectViewContext, UploadProj
         const { message } = event as ShowToastEvent;
         return { message };
       }),
-      clearMessage: assign(_ => {
+      clearMessage: assign((_) => {
         return { message: null };
-      })
-    }
+      }),
+    },
   }
 );

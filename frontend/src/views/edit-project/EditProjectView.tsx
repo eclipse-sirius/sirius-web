@@ -25,7 +25,7 @@ import { EditProjectNavbar } from 'views/edit-project/EditProjectNavbar/EditProj
 import {
   GQLGetProjectQueryData,
   GQLGetProjectQueryVariables,
-  EditProjectViewParams
+  EditProjectViewParams,
 } from 'views/edit-project/EditProjectView.types';
 import {
   EditProjectViewContext,
@@ -35,7 +35,7 @@ import {
   HideToastEvent,
   SchemaValue,
   SelectRepresentationEvent,
-  ShowToastEvent
+  ShowToastEvent,
 } from 'views/edit-project/EditProjectViewMachine';
 import { Representation, Workbench } from '@eclipse-sirius/sirius-components';
 
@@ -58,16 +58,16 @@ const getProjectQuery = gql`
   }
 `;
 
-const useEditProjectViewStyles = makeStyles(theme => ({
+const useEditProjectViewStyles = makeStyles((theme) => ({
   editProjectView: {
     display: 'flex',
     flexDirection: 'column',
     height: '100vh',
     width: '100vw',
     '& > *:nth-child(2)': {
-      flexGrow: 1
-    }
-  }
+      flexGrow: 1,
+    },
+  },
 }));
 
 export const EditProjectView = () => {
@@ -85,15 +85,15 @@ export const EditProjectView = () => {
     variables: {
       projectId,
       representationId: representationId ?? '',
-      includeRepresentation: !!representationId
-    }
+      includeRepresentation: !!representationId,
+    },
   });
   useEffect(() => {
     if (!loading) {
       if (error) {
         const showToastEvent: ShowToastEvent = {
           type: 'SHOW_TOAST',
-          message: 'An unexpected error has occurred, please refresh the page'
+          message: 'An unexpected error has occurred, please refresh the page',
         };
         dispatch(showToastEvent);
       }
@@ -119,7 +119,7 @@ export const EditProjectView = () => {
     const onRepresentationSelected = (representationSelected: Representation) => {
       const selectRepresentationEvent: SelectRepresentationEvent = {
         type: 'SELECT_REPRESENTATION',
-        representation: representationSelected
+        representation: representationSelected,
       };
       dispatch(selectRepresentationEvent);
     };
@@ -151,7 +151,7 @@ export const EditProjectView = () => {
       <Snackbar
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'right'
+          horizontal: 'right',
         }}
         open={toast === 'visible'}
         autoHideDuration={3000}

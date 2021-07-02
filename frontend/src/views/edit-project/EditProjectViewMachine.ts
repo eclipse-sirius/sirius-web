@@ -59,7 +59,7 @@ export const editProjectViewMachine = Machine<EditProjectViewContext, EditProjec
     context: {
       project: null,
       representation: null,
-      message: null
+      message: null,
     },
     states: {
       toast: {
@@ -69,19 +69,19 @@ export const editProjectViewMachine = Machine<EditProjectViewContext, EditProjec
             on: {
               SHOW_TOAST: {
                 target: 'visible',
-                actions: 'setMessage'
-              }
-            }
+                actions: 'setMessage',
+              },
+            },
           },
           visible: {
             on: {
               HIDE_TOAST: {
                 target: 'hidden',
-                actions: 'clearMessage'
-              }
-            }
-          }
-        }
+                actions: 'clearMessage',
+              },
+            },
+          },
+        },
       },
       editProjectView: {
         initial: 'loading',
@@ -91,37 +91,37 @@ export const editProjectViewMachine = Machine<EditProjectViewContext, EditProjec
               HANDLE_FETCHED_PROJECT: [
                 {
                   cond: 'isMissing',
-                  target: 'missing'
+                  target: 'missing',
                 },
                 {
                   target: 'loaded',
-                  actions: 'updateProject'
-                }
-              ]
-            }
+                  actions: 'updateProject',
+                },
+              ],
+            },
           },
           loaded: {
             type: 'final',
             on: {
               SELECT_REPRESENTATION: {
                 target: 'loaded',
-                actions: 'selectRepresentation'
-              }
-            }
+                actions: 'selectRepresentation',
+              },
+            },
           },
           missing: {
-            type: 'final'
-          }
-        }
-      }
-    }
+            type: 'final',
+          },
+        },
+      },
+    },
   },
   {
     guards: {
       isMissing: (_, event) => {
         const { data } = event as HandleFetchedProjectEvent;
         return !data.viewer.project;
-      }
+      },
     },
     actions: {
       updateProject: assign((_, event) => {
@@ -135,7 +135,7 @@ export const editProjectViewMachine = Machine<EditProjectViewContext, EditProjec
           representation = {
             id: gQLProject.currentEditingContext.representation.id,
             label: gQLProject.currentEditingContext.representation.label,
-            kind: gQLProject.currentEditingContext.representation.kind
+            kind: gQLProject.currentEditingContext.representation.kind,
           };
         }
 
@@ -149,9 +149,9 @@ export const editProjectViewMachine = Machine<EditProjectViewContext, EditProjec
         const { message } = event as ShowToastEvent;
         return { message };
       }),
-      clearMessage: assign(_ => {
+      clearMessage: assign((_) => {
         return { message: null };
-      })
-    }
+      }),
+    },
   }
 );

@@ -20,14 +20,14 @@ import {
   HANDLE_CLOSE_CONTEXT_MENU__ACTION,
   HANDLE_SHOW_MODAL__ACTION,
   HANDLE_CLOSE_MODAL__ACTION,
-  HANDLE_REDIRECTING__ACTION
+  HANDLE_REDIRECTING__ACTION,
 } from './machine';
 
 export const initialState = {
   viewState: EMPTY__STATE,
   to: null,
   modalDisplayed: null,
-  projectMenuAnchor: null
+  projectMenuAnchor: null,
 };
 
 export const reducer = (prevState, action) => {
@@ -68,7 +68,7 @@ const handleShowContextMenuAction = (prevState, action) => {
   return { ...prevState, viewState: CONTEXTUAL_MENU_DISPLAYED__STATE, projectMenuAnchor };
 };
 
-const handleCloseContextMenuAction = prevState => {
+const handleCloseContextMenuAction = (prevState) => {
   return { ...prevState, viewState: EMPTY__STATE, projectMenuAnchor: null };
 };
 
@@ -78,15 +78,15 @@ const handleShowModalAction = (prevState, action) => {
     ...prevState,
     viewState: MODAL_DISPLAYED__STATE,
     projectMenuAnchor: null,
-    modalDisplayed
+    modalDisplayed,
   };
 };
 
-const handleCloseModalAction = prevState => {
+const handleCloseModalAction = (prevState) => {
   return {
     ...prevState,
     viewState: EMPTY__STATE,
-    modalDisplayed: null
+    modalDisplayed: null,
   };
 };
 

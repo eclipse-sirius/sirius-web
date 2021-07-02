@@ -20,41 +20,41 @@ import { Link as RouterLink } from 'react-router-dom';
 import { Help } from './Help';
 import { NavigationBarProps } from './NavigationBar.types';
 
-const useNavigationbarStyles = makeStyles(theme => ({
+const useNavigationbarStyles = makeStyles((theme) => ({
   navbar: {
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
   },
   appBarHeader: {
     height: '4px',
-    backgroundColor: theme.palette.primary.main
+    backgroundColor: theme.palette.primary.main,
   },
   toolbar: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   left: {
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   link: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   right: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
   },
   onDarkBackground: {
     '&:hover': {
-      backgroundColor: emphasize(theme.palette.secondary.main, 0.08)
-    }
-  }
+      backgroundColor: emphasize(theme.palette.secondary.main, 0.08),
+    },
+  },
 }));
 
 export const NavigationBar = ({ children }: NavigationBarProps) => {

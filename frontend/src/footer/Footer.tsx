@@ -12,16 +12,16 @@
  *******************************************************************************/
 import { Link, makeStyles, Typography } from '@material-ui/core';
 
-const useFooterStyles = makeStyles(theme => ({
+const useFooterStyles = makeStyles((theme) => ({
   footer: {
     display: 'flex',
     justifyContent: 'center',
     margin: theme.spacing(2),
     '& > *': {
       marginLeft: theme.spacing(0.5),
-      marginRight: theme.spacing(0.5)
-    }
-  }
+      marginRight: theme.spacing(0.5),
+    },
+  },
 }));
 
 export const Footer = () => {

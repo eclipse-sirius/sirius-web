@@ -28,7 +28,7 @@ import { v4 as uuid } from 'uuid';
 import {
   GQLCreateProjectMutationData,
   GQLCreateProjectPayload,
-  GQLErrorPayload
+  GQLErrorPayload,
 } from 'views/new-project/NewProjectView.types';
 import {
   ChangeNameEvent,
@@ -39,7 +39,7 @@ import {
   newProjectViewMachine,
   RequestProjectCreationEvent,
   SchemaValue,
-  ShowToastEvent
+  ShowToastEvent,
 } from 'views/new-project/NewProjectViewMachine';
 import { Footer } from 'footer/Footer';
 
@@ -59,22 +59,22 @@ const createProjectMutation = gql`
   }
 `;
 
-const useNewProjectViewStyles = makeStyles(theme => ({
+const useNewProjectViewStyles = makeStyles((theme) => ({
   newProjectView: {
     display: 'grid',
     gridTemplateColumns: '1fr',
     gridTemplateRows: 'min-content 1fr min-content',
-    minHeight: '100vh'
+    minHeight: '100vh',
   },
   main: {
     paddingTop: theme.spacing(3),
-    paddingBottom: theme.spacing(3)
+    paddingBottom: theme.spacing(3),
   },
   buttons: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'start'
-  }
+    justifyContent: 'start',
+  },
 }));
 
 const isErrorPayload = (payload: GQLCreateProjectPayload): payload is GQLErrorPayload =>
@@ -87,20 +87,20 @@ export const NewProjectView = () => {
   const { name, nameMessage, nameIsInvalid, message, newProjectId } = context;
   const [createProject, { loading, data, error }] = useMutation<GQLCreateProjectMutationData>(createProjectMutation);
 
-  const onNameChange = event => {
+  const onNameChange = (event) => {
     const value = event.target.value;
     const changeNameEvent: ChangeNameEvent = { type: 'CHANGE_NAME', name: value };
     dispatch(changeNameEvent);
   };
 
-  const onCreateNewProject = event => {
+  const onCreateNewProject = (event) => {
     event.preventDefault();
     const variables = {
       input: {
         id: uuid(),
         name: name.trim(),
-        visibility: 'PUBLIC'
-      }
+        visibility: 'PUBLIC',
+      },
     };
     const submitEvent: RequestProjectCreationEvent = { type: 'REQUEST_PROJECT_CREATION' };
     dispatch(submitEvent);
@@ -112,7 +112,7 @@ export const NewProjectView = () => {
       if (error) {
         const showToastEvent: ShowToastEvent = {
           type: 'SHOW_TOAST',
-          message: 'An unexpected error has occurred, please refresh the page'
+          message: 'An unexpected error has occurred, please refresh the page',
         };
         dispatch(showToastEvent);
       }
@@ -172,7 +172,7 @@ export const NewProjectView = () => {
       <Snackbar
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'right'
+          horizontal: 'right',
         }}
         open={toast === 'visible'}
         autoHideDuration={3000}
