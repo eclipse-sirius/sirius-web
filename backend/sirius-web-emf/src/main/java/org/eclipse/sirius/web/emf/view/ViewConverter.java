@@ -59,7 +59,6 @@ import org.eclipse.sirius.web.view.LabelEditTool;
 import org.eclipse.sirius.web.view.NodeStyle;
 import org.eclipse.sirius.web.view.NodeTool;
 import org.eclipse.sirius.web.view.View;
-import org.springframework.core.env.Environment;
 
 /**
  * Converts a View into an equivalent list of {@link DiagramDescription}.
@@ -101,13 +100,14 @@ public class ViewConverter {
 
     private final ICustomImagesService customImagesService;
 
-    private final Environment environment;
+    private final boolean isStudioDefinitionEnabled;
 
     private Map<org.eclipse.sirius.web.view.NodeDescription, NodeDescription> convertedNodes;
 
     private Map<org.eclipse.sirius.web.view.EdgeDescription, EdgeDescription> convertedEdges;
 
-    public ViewConverter(List<IJavaServiceProvider> javaServiceProviders, IObjectService objectService, IEditService editService, ICustomImagesService customImagesService, Environment environment) {
+    public ViewConverter(List<IJavaServiceProvider> javaServiceProviders, IObjectService objectService, IEditService editService, ICustomImagesService customImagesService,
+            boolean isStudioDefinitionEnabled) {
         this.javaServiceProviders = Objects.requireNonNull(javaServiceProviders);
         this.objectService = Objects.requireNonNull(objectService);
         this.editService = Objects.requireNonNull(editService);
@@ -115,7 +115,7 @@ public class ViewConverter {
         this.semanticTargetIdProvider = variableManager -> this.self(variableManager).map(this.objectService::getId).orElse(null);
         this.semanticTargetKindProvider = variableManager -> this.self(variableManager).map(this.objectService::getKind).orElse(null);
         this.semanticTargetLabelProvider = variableManager -> this.self(variableManager).map(this.objectService::getLabel).orElse(null);
-        this.environment = Objects.requireNonNull(environment);
+        this.isStudioDefinitionEnabled = isStudioDefinitionEnabled;
         this.canonicalBehaviors = new CanonicalBehaviors(objectService, editService);
         this.stylesFactory = new StylesFactory();
     }
@@ -126,7 +126,7 @@ public class ViewConverter {
      */
     public List<IRepresentationDescription> convert(View view) {
         List<IRepresentationDescription> result = List.of();
-        if (this.isStudioDefinitionEnabled()) {
+        if (this.isStudioDefinitionEnabled) {
             // @formatter:off
             List<Class<?>> serviceClasses = this.javaServiceProviders.stream()
                                                 .flatMap(provider -> provider.getServiceClasses(view).stream())
@@ -147,10 +147,6 @@ public class ViewConverter {
             }
         }
         return result;
-    }
-
-    private boolean isStudioDefinitionEnabled() {
-        return "true".equals(this.environment.getProperty("org.eclipse.sirius.web.features.studioDefinition", "false")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
 
     private DiagramDescription convert(org.eclipse.sirius.web.view.DiagramDescription viewDiagramDescription, AQLInterpreter interpreter) {
