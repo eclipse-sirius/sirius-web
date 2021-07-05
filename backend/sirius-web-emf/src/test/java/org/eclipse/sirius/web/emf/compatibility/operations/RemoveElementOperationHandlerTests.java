@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2021 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,8 @@ package org.eclipse.sirius.web.emf.compatibility.operations;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.List;
 
 import org.eclipse.sirius.viewpoint.description.tool.RemoveElement;
 import org.eclipse.sirius.viewpoint.description.tool.ToolFactory;
@@ -44,8 +46,9 @@ public class RemoveElementOperationHandlerTests {
         this.operationTestContext.getVariables().put(VariableManager.SELF, this.operationTestContext.getClass1());
 
         this.removeElementOperation = ToolFactory.eINSTANCE.createRemoveElement();
+
         this.removeElementOperationHandler = new RemoveElementOperationHandler(this.operationTestContext.getObjectService(), this.operationTestContext.getIdentifierProvider(),
-                this.operationTestContext.getInterpreter(), new ChildModelOperationHandler(), this.removeElementOperation);
+                this.operationTestContext.getInterpreter(), new ChildModelOperationHandler(List.of()), this.removeElementOperation);
     }
 
     @Test

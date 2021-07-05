@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2021 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.emf.compatibility.modeloperations;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
@@ -21,6 +22,7 @@ import org.eclipse.sirius.diagram.description.tool.Navigation;
 import org.eclipse.sirius.viewpoint.description.tool.ChangeContext;
 import org.eclipse.sirius.viewpoint.description.tool.CreateInstance;
 import org.eclipse.sirius.viewpoint.description.tool.DeleteView;
+import org.eclipse.sirius.viewpoint.description.tool.ExternalJavaAction;
 import org.eclipse.sirius.viewpoint.description.tool.For;
 import org.eclipse.sirius.viewpoint.description.tool.If;
 import org.eclipse.sirius.viewpoint.description.tool.Let;
@@ -35,6 +37,7 @@ import org.eclipse.sirius.web.compat.api.IIdentifierProvider;
 import org.eclipse.sirius.web.compat.api.IModelOperationHandler;
 import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.emf.compatibility.EPackageService;
+import org.eclipse.sirius.web.emf.compatibility.api.IExternalJavaActionProvider;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,15 +55,19 @@ public class ModelOperationHandlerSwitch implements Function<ModelOperation, Opt
 
     private final IIdentifierProvider identifierProvider;
 
+    private final List<IExternalJavaActionProvider> externalJavaActionProviders;
+
     private final AQLInterpreter interpreter;
 
     private final ChildModelOperationHandler childModelOperationHandler;
 
-    public ModelOperationHandlerSwitch(IObjectService objectService, IIdentifierProvider identifierProvider, AQLInterpreter interpreter) {
+    public ModelOperationHandlerSwitch(IObjectService objectService, IIdentifierProvider identifierProvider, List<IExternalJavaActionProvider> externalJavaActionProviders,
+            AQLInterpreter interpreter) {
         this.objectService = Objects.requireNonNull(objectService);
         this.identifierProvider = Objects.requireNonNull(identifierProvider);
+        this.externalJavaActionProviders = Objects.requireNonNull(externalJavaActionProviders);
         this.interpreter = Objects.requireNonNull(interpreter);
-        this.childModelOperationHandler = new ChildModelOperationHandler();
+        this.childModelOperationHandler = new ChildModelOperationHandler(this.externalJavaActionProviders);
     }
 
     @Override
@@ -94,6 +101,8 @@ public class ModelOperationHandlerSwitch implements Function<ModelOperation, Opt
             optionalModelOperationHandler = this.caseUnset((Unset) modelOperation);
         } else if (modelOperation instanceof Switch) {
             optionalModelOperationHandler = this.caseSwitch((Switch) modelOperation);
+        } else if (modelOperation instanceof ExternalJavaAction) {
+            optionalModelOperationHandler = this.caseExternalJavaAction((ExternalJavaAction) modelOperation);
         }
 
         if (optionalModelOperationHandler.isEmpty()) {
@@ -159,6 +168,11 @@ public class ModelOperationHandlerSwitch implements Function<ModelOperation, Opt
 
     private Optional<IModelOperationHandler> caseSwitch(Switch switchOperation) {
         return Optional.of(new SwitchOperationHandler(this.objectService, this.identifierProvider, this.interpreter, this.childModelOperationHandler, switchOperation));
+    }
+
+    private Optional<IModelOperationHandler> caseExternalJavaAction(ExternalJavaAction externalJavaAction) {
+        return Optional.of(new ExternalJavaActionOperationHandler(this.objectService, this.identifierProvider, this.interpreter, this.childModelOperationHandler, this.externalJavaActionProviders,
+                externalJavaAction));
     }
 
 }

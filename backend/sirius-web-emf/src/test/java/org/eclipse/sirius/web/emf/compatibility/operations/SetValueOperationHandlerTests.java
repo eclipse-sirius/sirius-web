@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2021 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.text.MessageFormat;
+import java.util.List;
 import java.util.UUID;
 
 import org.eclipse.emf.ecore.ENamedElement;
@@ -48,8 +49,9 @@ public class SetValueOperationHandlerTests {
         this.operationTestContext = new OperationTestContext();
 
         this.setValue = ToolFactory.eINSTANCE.createSetValue();
+
         this.setValueOperationHandler = new SetValueOperationHandler(this.operationTestContext.getObjectService(), this.operationTestContext.getIdentifierProvider(),
-                this.operationTestContext.getInterpreter(), new ChildModelOperationHandler(), this.setValue);
+                this.operationTestContext.getInterpreter(), new ChildModelOperationHandler(List.of()), this.setValue);
     }
 
     @Test

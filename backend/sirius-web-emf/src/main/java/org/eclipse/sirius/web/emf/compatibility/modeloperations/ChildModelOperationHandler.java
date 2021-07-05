@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2021 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,12 +14,14 @@ package org.eclipse.sirius.web.emf.compatibility.modeloperations;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.sirius.viewpoint.description.tool.ModelOperation;
 import org.eclipse.sirius.web.compat.api.IIdentifierProvider;
 import org.eclipse.sirius.web.compat.api.IModelOperationHandler;
 import org.eclipse.sirius.web.core.api.IObjectService;
+import org.eclipse.sirius.web.emf.compatibility.api.IExternalJavaActionProvider;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
 import org.eclipse.sirius.web.representations.Failure;
 import org.eclipse.sirius.web.representations.IStatus;
@@ -31,10 +33,17 @@ import org.eclipse.sirius.web.representations.Success;
  * @author sbegaudeau
  */
 public class ChildModelOperationHandler {
+
+    private final List<IExternalJavaActionProvider> externalJavaActionProviders;
+
+    public ChildModelOperationHandler(List<IExternalJavaActionProvider> externalJavaActionProviders) {
+        this.externalJavaActionProviders = Objects.requireNonNull(externalJavaActionProviders);
+    }
+
     public IStatus handle(IObjectService objectService, IIdentifierProvider identifierProvider, AQLInterpreter interpreter, Map<String, Object> variables, List<ModelOperation> modelOperations) {
         boolean hasBeenSuccessfullyExecuted = true;
 
-        ModelOperationHandlerSwitch modelOperationHandlerSwitch = new ModelOperationHandlerSwitch(objectService, identifierProvider, interpreter);
+        ModelOperationHandlerSwitch modelOperationHandlerSwitch = new ModelOperationHandlerSwitch(objectService, identifierProvider, this.externalJavaActionProviders, interpreter);
         for (ModelOperation modelOperation : modelOperations) {
             Optional<IModelOperationHandler> optionalModelOperationHandler = modelOperationHandlerSwitch.apply(modelOperation);
 
