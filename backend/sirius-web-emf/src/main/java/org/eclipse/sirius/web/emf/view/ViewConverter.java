@@ -186,7 +186,12 @@ public class ViewConverter {
     }
 
     private boolean canCreateDiagram(VariableManager variableManager, String domainType) {
-        return variableManager.get(IRepresentationDescription.CLASS, EClass.class).map(EcoreUtil::create).filter(new DomainClassPredicate(domainType)).isPresent();
+        // @formatter:off
+        return variableManager.get(IRepresentationDescription.CLASS, EClass.class)
+                              .map(EcoreUtil::create)
+                              .filter(new DomainClassPredicate(Optional.ofNullable(domainType).orElse(""))) //$NON-NLS-1$
+                              .isPresent();
+        // @formatter:on
     }
 
     private NodeDescription convert(org.eclipse.sirius.web.view.NodeDescription viewNodeDescription, AQLInterpreter interpreter) {
@@ -341,7 +346,7 @@ public class ViewConverter {
             return candidates.stream()
                     .filter(EObject.class::isInstance)
                     .map(EObject.class::cast)
-                    .filter(candidate -> new DomainClassPredicate(elementDescription.getDomainType()).test(candidate))
+                    .filter(candidate -> new DomainClassPredicate(Optional.ofNullable(elementDescription.getDomainType()).orElse("")).test(candidate)) //$NON-NLS-1$
                     .collect(Collectors.toList());
             // @formatter:on
         };
