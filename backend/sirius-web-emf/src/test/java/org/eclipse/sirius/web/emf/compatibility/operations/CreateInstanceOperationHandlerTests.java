@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2021 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.text.MessageFormat;
+import java.util.List;
 import java.util.UUID;
 
 import org.eclipse.emf.common.command.BasicCommandStack;
@@ -79,8 +80,9 @@ public class CreateInstanceOperationHandlerTests {
         this.operationTestContext.getVariables().put(IEditingContext.EDITING_CONTEXT, editingContext);
 
         this.createInstanceOperation = ToolFactory.eINSTANCE.createCreateInstance();
+
         this.createInstanceOperationHandler = new CreateInstanceOperationHandler(this.operationTestContext.getObjectService(), this.operationTestContext.getIdentifierProvider(),
-                this.operationTestContext.getInterpreter(), new EPackageService(), new ChildModelOperationHandler(), this.createInstanceOperation);
+                this.operationTestContext.getInterpreter(), new EPackageService(), new ChildModelOperationHandler(List.of()), this.createInstanceOperation);
     }
 
     @Test

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2021 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.text.MessageFormat;
+import java.util.List;
 
 import org.eclipse.sirius.viewpoint.description.tool.Case;
 import org.eclipse.sirius.viewpoint.description.tool.ChangeContext;
@@ -73,7 +74,7 @@ public class SwitchOperationHandlerTests {
         this.switchOperation.setDefault(this.defaultCase);
 
         this.switchOperationHandler = new SwitchOperationHandler(this.operationTestContext.getObjectService(), this.operationTestContext.getIdentifierProvider(),
-                this.operationTestContext.getInterpreter(), new ChildModelOperationHandler(), this.switchOperation);
+                this.operationTestContext.getInterpreter(), new ChildModelOperationHandler(List.of()), this.switchOperation);
     }
 
     @Test

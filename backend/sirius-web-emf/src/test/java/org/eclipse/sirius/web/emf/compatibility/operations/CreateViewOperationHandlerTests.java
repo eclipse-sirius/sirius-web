@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -129,7 +129,7 @@ public class CreateViewOperationHandlerTests {
         this.operationTestContext.getVariables().put(CONTAINER_VIEW, diagram);
         this.createViewOperation = org.eclipse.sirius.diagram.description.tool.ToolFactory.eINSTANCE.createCreateView();
         this.createViewOperationHandler = new CreateViewOperationHandler(this.operationTestContext.getObjectService(), this.operationTestContext.getIdentifierProvider(),
-                this.operationTestContext.getInterpreter(), new ChildModelOperationHandler(), this.createViewOperation);
+                this.operationTestContext.getInterpreter(), new ChildModelOperationHandler(List.of()), this.createViewOperation);
     }
 
     @Test

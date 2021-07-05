@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2021 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -75,7 +75,8 @@ public class FormRendererTests {
         IIdentifierProvider identifierProvider = element -> UUID.randomUUID().toString();
         IdentifiedElementLabelProvider identifiedElementLabelProvider = new IdentifiedElementLabelProvider();
         ISemanticCandidatesProviderFactory semanticCandidatesProviderFactory = SemanticCandidatesProvider::new;
-        IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider = interpeter -> new ModelOperationHandlerSwitch(objectService, identifierProvider, interpeter);
+
+        IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider = interpeter -> new ModelOperationHandlerSwitch(objectService, identifierProvider, List.of(), interpeter);
         ViewExtensionDescriptionConverter converter = new ViewExtensionDescriptionConverter(objectService, interpreterFactory, identifierProvider, semanticCandidatesProviderFactory,
                 modelOperationHandlerSwitchProvider, identifiedElementLabelProvider);
         FormDescription description = converter.convert(viewExtensionDescription);
