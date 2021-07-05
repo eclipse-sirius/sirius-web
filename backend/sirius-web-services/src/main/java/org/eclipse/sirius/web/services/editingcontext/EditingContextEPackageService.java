@@ -37,7 +37,7 @@ import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
 import org.eclipse.sirius.web.services.documents.DocumentMetadataAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.env.Environment;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 /**
@@ -56,17 +56,26 @@ public class EditingContextEPackageService implements IEditingContextEPackageSer
 
     private final DomainConverter domainConverter;
 
-    public EditingContextEPackageService(EPackage.Registry globalEPackageRegistry, IDocumentRepository documentRepository, Environment environment) {
+    private final boolean isStudioDefinitionEnabled;
+
+    public EditingContextEPackageService(EPackage.Registry globalEPackageRegistry, IDocumentRepository documentRepository,
+            @Value("${org.eclipse.sirius.web.features.studioDefinition:false}") boolean isStudioDefinitionEnabled) {
         this.globalEPackageRegistry = Objects.requireNonNull(globalEPackageRegistry);
         this.documentRepository = Objects.requireNonNull(documentRepository);
-        this.domainConverter = new DomainConverter(Objects.requireNonNull(environment));
+        this.isStudioDefinitionEnabled = isStudioDefinitionEnabled;
+        this.domainConverter = new DomainConverter(isStudioDefinitionEnabled);
     }
 
     @Override
     public List<EPackage> getEPackages(UUID editingContextId) {
         // @formatter:off
-        List<DocumentEntity> entities = StreamSupport.stream(this.documentRepository.findAllByType(DomainPackage.eNAME, DomainPackage.eNS_URI).spliterator(), false)
-            .collect(Collectors.toList());
+        List<DocumentEntity> entities;
+        if (this.isStudioDefinitionEnabled) {
+            entities = StreamSupport.stream(this.documentRepository.findAllByType(DomainPackage.eNAME, DomainPackage.eNS_URI).spliterator(), false)
+                                    .collect(Collectors.toList());
+        } else {
+            entities = List.of();
+        }
         // @formatter:on
 
         EPackageRegistryImpl ePackageRegistry = new EPackageRegistryImpl();

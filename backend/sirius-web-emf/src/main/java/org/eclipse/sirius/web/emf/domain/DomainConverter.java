@@ -16,7 +16,6 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.emf.common.util.Diagnostic;
@@ -34,7 +33,6 @@ import org.eclipse.sirius.web.domain.DomainFactory;
 import org.eclipse.sirius.web.domain.Entity;
 import org.eclipse.sirius.web.domain.Feature;
 import org.eclipse.sirius.web.domain.Relation;
-import org.springframework.core.env.Environment;
 
 /**
  * Converts a Domain into an equivalent Ecore EPackage.
@@ -43,16 +41,16 @@ import org.springframework.core.env.Environment;
  */
 public class DomainConverter {
 
-    private final Environment environment;
+    private final boolean isStudioDefinitionEnabled;
 
-    public DomainConverter(Environment environment) {
-        this.environment = Objects.requireNonNull(environment);
+    public DomainConverter(boolean isStudioDefinitionEnabled) {
+        this.isStudioDefinitionEnabled = isStudioDefinitionEnabled;
     }
 
     public Optional<EPackage> convert(Domain domain) {
         Optional<EPackage> result = Optional.empty();
 
-        if (this.isStudioDefinitionEnabled()) {
+        if (this.isStudioDefinitionEnabled) {
             EPackage ePackage = EcoreFactory.eINSTANCE.createEPackage();
             ePackage.setName(domain.getName());
             ePackage.setNsPrefix(Optional.ofNullable(domain.getName()).orElse("").toLowerCase()); //$NON-NLS-1$
@@ -101,10 +99,6 @@ public class DomainConverter {
             }
         }
         return result;
-    }
-
-    private boolean isStudioDefinitionEnabled() {
-        return "true".equals(this.environment.getProperty("org.eclipse.sirius.web.features.studioDefinition", "false")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
 
     private EClass convert(Entity entity, Map<Entity, EClass> convertedTypes) {
