@@ -117,6 +117,21 @@
 			<version>${sirius.components.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>org.eclipse.sirius.web</groupId>
+			<artifactId>sirius-web-domain-edit</artifactId>
+			<version>${sirius.components.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius.web</groupId>
+			<artifactId>sirius-web-domain-design</artifactId>
+			<version>${sirius.components.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius.web</groupId>
+			<artifactId>sirius-web-view-edit</artifactId>
+			<version>${sirius.components.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>fr.obeo.dsl.designer.sample.flow</groupId>
 			<artifactId>fr.obeo.dsl.designer.sample.flow</artifactId>
 			<version>${flow.version}</version>
