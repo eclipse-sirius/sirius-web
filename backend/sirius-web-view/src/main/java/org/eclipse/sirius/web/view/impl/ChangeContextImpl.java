@@ -38,7 +38,7 @@ public class ChangeContextImpl extends OperationImpl implements ChangeContext {
      * @generated
      * @ordered
      */
-    protected static final String EXPRESSION_EDEFAULT = null;
+    protected static final String EXPRESSION_EDEFAULT = "aql:self"; //$NON-NLS-1$
 
     /**
      * The cached value of the '{@link #getExpression() <em>Expression</em>}' attribute. <!-- begin-user-doc --> <!--

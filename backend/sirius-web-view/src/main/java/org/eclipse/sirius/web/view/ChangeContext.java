@@ -28,12 +28,13 @@ package org.eclipse.sirius.web.view;
  */
 public interface ChangeContext extends Operation {
     /**
-     * Returns the value of the '<em><b>Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the value of the '<em><b>Expression</b></em>' attribute. The default value is <code>"aql:self"</code>.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Expression</em>' attribute.
      * @see #setExpression(String)
      * @see org.eclipse.sirius.web.view.ViewPackage#getChangeContext_Expression()
-     * @model required="true"
+     * @model default="aql:self" required="true"
      * @generated
      */
     String getExpression();

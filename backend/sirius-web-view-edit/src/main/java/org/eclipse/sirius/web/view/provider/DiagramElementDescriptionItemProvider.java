@@ -29,7 +29,9 @@ import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
+import org.eclipse.sirius.web.view.DeleteTool;
 import org.eclipse.sirius.web.view.DiagramElementDescription;
+import org.eclipse.sirius.web.view.LabelEditTool;
 import org.eclipse.sirius.web.view.ViewFactory;
 import org.eclipse.sirius.web.view.ViewPackage;
 
@@ -196,15 +198,21 @@ public class DiagramElementDescriptionItemProvider extends ItemProviderAdapter
      * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created
      * under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
 
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.DIAGRAM_ELEMENT_DESCRIPTION__DELETE_TOOL, ViewFactory.eINSTANCE.createDeleteTool()));
+        LabelEditTool newLabelEditTool = ViewFactory.eINSTANCE.createLabelEditTool();
+        newLabelEditTool.setName("Edit Label"); //$NON-NLS-1$
+        newLabelEditTool.getBody().add(ViewFactory.eINSTANCE.createChangeContext());
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EDIT_TOOL, newLabelEditTool));
 
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EDIT_TOOL, ViewFactory.eINSTANCE.createLabelEditTool()));
+        DeleteTool newDeleteTool = ViewFactory.eINSTANCE.createDeleteTool();
+        newDeleteTool.setName("Delete"); //$NON-NLS-1$
+        newDeleteTool.getBody().add(ViewFactory.eINSTANCE.createChangeContext());
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.DIAGRAM_ELEMENT_DESCRIPTION__DELETE_TOOL, newDeleteTool));
     }
 
     /**

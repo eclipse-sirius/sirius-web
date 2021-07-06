@@ -23,6 +23,9 @@ import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 import org.eclipse.sirius.web.view.DiagramDescription;
+import org.eclipse.sirius.web.view.EdgeDescription;
+import org.eclipse.sirius.web.view.EdgeStyle;
+import org.eclipse.sirius.web.view.NodeDescription;
 import org.eclipse.sirius.web.view.ViewFactory;
 import org.eclipse.sirius.web.view.ViewPackage;
 
@@ -159,15 +162,21 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
      * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created
      * under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
 
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS, ViewFactory.eINSTANCE.createNodeDescription()));
+        NodeDescription nodeChild = ViewFactory.eINSTANCE.createNodeDescription();
+        nodeChild.setStyle(ViewFactory.eINSTANCE.createNodeStyle());
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS, nodeChild));
 
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS, ViewFactory.eINSTANCE.createEdgeDescription()));
+        EdgeDescription edgeChild = ViewFactory.eINSTANCE.createEdgeDescription();
+        EdgeStyle newEdgeStyle = ViewFactory.eINSTANCE.createEdgeStyle();
+        newEdgeStyle.setColor("#002639"); //$NON-NLS-1$
+        edgeChild.setStyle(newEdgeStyle);
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS, edgeChild));
     }
 
 }

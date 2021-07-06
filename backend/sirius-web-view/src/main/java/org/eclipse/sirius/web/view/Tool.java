@@ -32,12 +32,13 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface Tool extends EObject {
     /**
-     * Returns the value of the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the value of the '<em><b>Name</b></em>' attribute. The default value is <code>"\"Tool\""</code>. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Name</em>' attribute.
      * @see #setName(String)
      * @see org.eclipse.sirius.web.view.ViewPackage#getTool_Name()
-     * @model required="true"
+     * @model default="\"Tool\"" required="true"
      * @generated
      */
     String getName();

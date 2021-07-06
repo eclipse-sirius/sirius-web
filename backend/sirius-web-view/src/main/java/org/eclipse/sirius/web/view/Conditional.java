@@ -30,12 +30,13 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface Conditional extends EObject {
     /**
-     * Returns the value of the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the value of the '<em><b>Condition</b></em>' attribute. The default value is <code>"aql:false"</code>.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Condition</em>' attribute.
      * @see #setCondition(String)
      * @see org.eclipse.sirius.web.view.ViewPackage#getConditional_Condition()
-     * @model required="true"
+     * @model default="aql:false" required="true"
      * @generated
      */
     String getCondition();
