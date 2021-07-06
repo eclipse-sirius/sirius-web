@@ -31,12 +31,13 @@ import org.eclipse.emf.common.util.EList;
  */
 public interface Domain extends NamedElement {
     /**
-     * Returns the value of the '<em><b>Uri</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the value of the '<em><b>Uri</b></em>' attribute. The default value is <code>"domain://sample"</code>.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Uri</em>' attribute.
      * @see #setUri(String)
      * @see org.eclipse.sirius.web.domain.DomainPackage#getDomain_Uri()
-     * @model
+     * @model default="domain://sample"
      * @generated
      */
     String getUri();

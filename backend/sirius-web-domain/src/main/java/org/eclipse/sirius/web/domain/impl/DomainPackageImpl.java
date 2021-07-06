@@ -431,8 +431,8 @@ public class DomainPackageImpl extends EPackageImpl implements DomainPackage {
                 IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.domainEClass, Domain.class, "Domain", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
-        this.initEAttribute(this.getDomain_Uri(), this.ecorePackage.getEString(), "uri", null, 0, 1, Domain.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, //$NON-NLS-1$
-                !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getDomain_Uri(), this.ecorePackage.getEString(), "uri", "domain://sample", 0, 1, Domain.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, //$NON-NLS-1$//$NON-NLS-2$
+                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getDomain_Types(), this.getEntity(), null, "types", null, 0, -1, Domain.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, //$NON-NLS-1$
                 !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
