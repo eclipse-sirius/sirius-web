@@ -131,13 +131,13 @@ public interface EdgeDescription extends DiagramElementDescription {
     void setSourceNodesExpression(String value);
 
     /**
-     * Returns the value of the '<em><b>Target Nodes Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * Returns the value of the '<em><b>Target Nodes Expression</b></em>' attribute. The default value is
+     * <code>"aql:self.eCrossReferences()"</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Target Nodes Expression</em>' attribute.
      * @see #setTargetNodesExpression(String)
      * @see org.eclipse.sirius.web.view.ViewPackage#getEdgeDescription_TargetNodesExpression()
-     * @model
+     * @model default="aql:self.eCrossReferences()"
      * @generated
      */
     String getTargetNodesExpression();

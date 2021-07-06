@@ -39,7 +39,7 @@ public abstract class ConditionalImpl extends MinimalEObjectImpl.Container imple
      * @generated
      * @ordered
      */
-    protected static final String CONDITION_EDEFAULT = null;
+    protected static final String CONDITION_EDEFAULT = "aql:false"; //$NON-NLS-1$
 
     /**
      * The cached value of the '{@link #getCondition() <em>Condition</em>}' attribute. <!-- begin-user-doc --> <!--

@@ -75,12 +75,13 @@ public interface CreateInstance extends Operation {
     void setReferenceName(String value);
 
     /**
-     * Returns the value of the '<em><b>Variable Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the value of the '<em><b>Variable Name</b></em>' attribute. The default value is
+     * <code>"newInstance"</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Variable Name</em>' attribute.
      * @see #setVariableName(String)
      * @see org.eclipse.sirius.web.view.ViewPackage#getCreateInstance_VariableName()
-     * @model required="true"
+     * @model default="newInstance" required="true"
      * @generated
      */
     String getVariableName();

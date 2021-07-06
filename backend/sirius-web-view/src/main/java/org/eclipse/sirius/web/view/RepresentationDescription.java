@@ -33,12 +33,13 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface RepresentationDescription extends EObject {
     /**
-     * Returns the value of the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the value of the '<em><b>Name</b></em>' attribute. The default value is
+     * <code>"NewRepresentationDescription"</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Name</em>' attribute.
      * @see #setName(String)
      * @see org.eclipse.sirius.web.view.ViewPackage#getRepresentationDescription_Name()
-     * @model
+     * @model default="NewRepresentationDescription"
      * @generated
      */
     String getName();
@@ -55,12 +56,13 @@ public interface RepresentationDescription extends EObject {
     void setName(String value);
 
     /**
-     * Returns the value of the '<em><b>Domain Type</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the value of the '<em><b>Domain Type</b></em>' attribute. The default value is <code>""</code>. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Domain Type</em>' attribute.
      * @see #setDomainType(String)
      * @see org.eclipse.sirius.web.view.ViewPackage#getRepresentationDescription_DomainType()
-     * @model
+     * @model default=""
      * @generated
      */
     String getDomainType();

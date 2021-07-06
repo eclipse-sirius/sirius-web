@@ -99,7 +99,7 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @generated
      * @ordered
      */
-    protected static final String SOURCE_NODES_EXPRESSION_EDEFAULT = null;
+    protected static final String SOURCE_NODES_EXPRESSION_EDEFAULT = null; // $NON-NLS-1$
 
     /**
      * The cached value of the '{@link #getSourceNodesExpression() <em>Source Nodes Expression</em>}' attribute. <!--
@@ -119,7 +119,7 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @generated
      * @ordered
      */
-    protected static final String TARGET_NODES_EXPRESSION_EDEFAULT = null;
+    protected static final String TARGET_NODES_EXPRESSION_EDEFAULT = "aql:self.eCrossReferences()"; //$NON-NLS-1$
 
     /**
      * The cached value of the '{@link #getTargetNodesExpression() <em>Target Nodes Expression</em>}' attribute. <!--

@@ -46,7 +46,7 @@ public class ConditionalNodeStyleImpl extends ConditionalImpl implements Conditi
      * @generated
      * @ordered
      */
-    protected static final String COLOR_EDEFAULT = "rgb(0, 0, 0)"; //$NON-NLS-1$
+    protected static final String COLOR_EDEFAULT = "#E5F5F8"; //$NON-NLS-1$
 
     /**
      * The cached value of the '{@link #getColor() <em>Color</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -66,7 +66,7 @@ public class ConditionalNodeStyleImpl extends ConditionalImpl implements Conditi
      * @generated
      * @ordered
      */
-    protected static final String BORDER_COLOR_EDEFAULT = "rgb(0, 0, 0)"; //$NON-NLS-1$
+    protected static final String BORDER_COLOR_EDEFAULT = "#33B0C3"; //$NON-NLS-1$
 
     /**
      * The cached value of the '{@link #getBorderColor() <em>Border Color</em>}' attribute. <!-- begin-user-doc --> <!--
@@ -126,7 +126,7 @@ public class ConditionalNodeStyleImpl extends ConditionalImpl implements Conditi
      * @generated
      * @ordered
      */
-    protected static final int BORDER_RADIUS_EDEFAULT = 0;
+    protected static final int BORDER_RADIUS_EDEFAULT = 3;
 
     /**
      * The cached value of the '{@link #getBorderRadius() <em>Border Radius</em>}' attribute. <!-- begin-user-doc -->

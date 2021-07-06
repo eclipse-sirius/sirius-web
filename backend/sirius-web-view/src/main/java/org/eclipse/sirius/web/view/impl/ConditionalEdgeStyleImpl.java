@@ -50,7 +50,7 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
      * @generated
      * @ordered
      */
-    protected static final String COLOR_EDEFAULT = "rgb(0, 0, 0)"; //$NON-NLS-1$
+    protected static final String COLOR_EDEFAULT = "#E5F5F8"; //$NON-NLS-1$
 
     /**
      * The cached value of the '{@link #getColor() <em>Color</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -70,7 +70,7 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
      * @generated
      * @ordered
      */
-    protected static final String BORDER_COLOR_EDEFAULT = "rgb(0, 0, 0)"; //$NON-NLS-1$
+    protected static final String BORDER_COLOR_EDEFAULT = "#33B0C3"; //$NON-NLS-1$
 
     /**
      * The cached value of the '{@link #getBorderColor() <em>Border Color</em>}' attribute. <!-- begin-user-doc --> <!--
@@ -150,7 +150,7 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
      * @generated
      * @ordered
      */
-    protected static final ArrowStyle TARGET_ARROW_STYLE_EDEFAULT = ArrowStyle.NONE;
+    protected static final ArrowStyle TARGET_ARROW_STYLE_EDEFAULT = ArrowStyle.OUTPUT_ARROW;
 
     /**
      * The cached value of the '{@link #getTargetArrowStyle() <em>Target Arrow Style</em>}' attribute. <!--

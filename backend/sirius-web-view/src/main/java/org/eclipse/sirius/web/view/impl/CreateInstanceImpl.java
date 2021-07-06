@@ -81,7 +81,7 @@ public class CreateInstanceImpl extends OperationImpl implements CreateInstance 
      * @generated
      * @ordered
      */
-    protected static final String VARIABLE_NAME_EDEFAULT = null;
+    protected static final String VARIABLE_NAME_EDEFAULT = "newInstance"; //$NON-NLS-1$
 
     /**
      * The cached value of the '{@link #getVariableName() <em>Variable Name</em>}' attribute. <!-- begin-user-doc -->

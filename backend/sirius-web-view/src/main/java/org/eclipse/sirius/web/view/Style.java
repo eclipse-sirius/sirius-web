@@ -32,13 +32,13 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface Style extends EObject {
     /**
-     * Returns the value of the '<em><b>Color</b></em>' attribute. The default value is <code>"rgb(0, 0, 0)"</code>.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the value of the '<em><b>Color</b></em>' attribute. The default value is <code>"#a590df"</code>. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Color</em>' attribute.
      * @see #setColor(String)
      * @see org.eclipse.sirius.web.view.ViewPackage#getStyle_Color()
-     * @model default="rgb(0, 0, 0)"
+     * @model default="#a590df"
      * @generated
      */
     String getColor();
@@ -55,13 +55,13 @@ public interface Style extends EObject {
     void setColor(String value);
 
     /**
-     * Returns the value of the '<em><b>Border Color</b></em>' attribute. The default value is
-     * <code>"rgb(0, 0, 0)"</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the value of the '<em><b>Border Color</b></em>' attribute. The default value is <code>"#33B0C3"</code>.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Border Color</em>' attribute.
      * @see #setBorderColor(String)
      * @see org.eclipse.sirius.web.view.ViewPackage#getStyle_BorderColor()
-     * @model default="rgb(0, 0, 0)" required="true"
+     * @model default="#33B0C3" required="true"
      * @generated
      */
     String getBorderColor();

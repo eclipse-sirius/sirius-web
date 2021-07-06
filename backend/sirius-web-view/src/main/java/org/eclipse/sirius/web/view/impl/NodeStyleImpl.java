@@ -60,7 +60,7 @@ public class NodeStyleImpl extends StyleImpl implements NodeStyle {
      * @generated
      * @ordered
      */
-    protected static final int BORDER_RADIUS_EDEFAULT = 0;
+    protected static final int BORDER_RADIUS_EDEFAULT = 3;
 
     /**
      * The cached value of the '{@link #getBorderRadius() <em>Border Radius</em>}' attribute. <!-- begin-user-doc -->

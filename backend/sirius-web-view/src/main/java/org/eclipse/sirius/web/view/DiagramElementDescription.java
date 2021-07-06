@@ -58,13 +58,13 @@ public interface DiagramElementDescription extends EObject {
     void setDomainType(String value);
 
     /**
-     * Returns the value of the '<em><b>Semantic Candidates Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * Returns the value of the '<em><b>Semantic Candidates Expression</b></em>' attribute. The default value is
+     * <code>"aql:self.eContents()"</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Semantic Candidates Expression</em>' attribute.
      * @see #setSemanticCandidatesExpression(String)
      * @see org.eclipse.sirius.web.view.ViewPackage#getDiagramElementDescription_SemanticCandidatesExpression()
-     * @model
+     * @model default="aql:self.eContents()"
      * @generated
      */
     String getSemanticCandidatesExpression();

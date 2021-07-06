@@ -71,7 +71,7 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
      * @generated
      * @ordered
      */
-    protected static final String SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT = null;
+    protected static final String SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT = "aql:self.eContents()"; //$NON-NLS-1$
 
     /**
      * The cached value of the '{@link #getSemanticCandidatesExpression() <em>Semantic Candidates Expression</em>}'
@@ -91,7 +91,7 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
      * @generated
      * @ordered
      */
-    protected static final String LABEL_EXPRESSION_EDEFAULT = null;
+    protected static final String LABEL_EXPRESSION_EDEFAULT = "aql:self.name"; //$NON-NLS-1$
 
     /**
      * The cached value of the '{@link #getLabelExpression() <em>Label Expression</em>}' attribute. <!-- begin-user-doc

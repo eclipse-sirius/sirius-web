@@ -81,7 +81,7 @@ public interface NodeStyle extends Style {
      * @return the value of the '<em>Shape</em>' attribute.
      * @see #setShape(String)
      * @see org.eclipse.sirius.web.view.ViewPackage#getNodeStyle_Shape()
-     * @model required="true"
+     * @model
      * @generated
      */
     String getShape();
