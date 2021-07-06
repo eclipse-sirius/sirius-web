@@ -25,6 +25,7 @@ import org.eclipse.emf.edit.provider.ViewerNotification;
 import org.eclipse.sirius.web.domain.Domain;
 import org.eclipse.sirius.web.domain.DomainFactory;
 import org.eclipse.sirius.web.domain.DomainPackage;
+import org.eclipse.sirius.web.domain.Entity;
 
 /**
  * This is the item provider adapter for a {@link org.eclipse.sirius.web.domain.Domain} object. <!-- begin-user-doc -->
@@ -157,13 +158,15 @@ public class DomainItemProvider extends NamedElementItemProvider {
      * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created
      * under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
 
-        newChildDescriptors.add(this.createChildParameter(DomainPackage.Literals.DOMAIN__TYPES, DomainFactory.eINSTANCE.createEntity()));
+        Entity newEntity = DomainFactory.eINSTANCE.createEntity();
+        newEntity.setName("NewEntity"); //$NON-NLS-1$
+        newChildDescriptors.add(this.createChildParameter(DomainPackage.Literals.DOMAIN__TYPES, newEntity));
     }
 
 }

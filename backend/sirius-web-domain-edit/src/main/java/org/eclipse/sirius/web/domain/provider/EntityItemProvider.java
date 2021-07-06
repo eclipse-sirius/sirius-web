@@ -22,9 +22,12 @@ import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
+import org.eclipse.sirius.web.domain.Attribute;
+import org.eclipse.sirius.web.domain.DataType;
 import org.eclipse.sirius.web.domain.DomainFactory;
 import org.eclipse.sirius.web.domain.DomainPackage;
 import org.eclipse.sirius.web.domain.Entity;
+import org.eclipse.sirius.web.domain.Relation;
 
 /**
  * This is the item provider adapter for a {@link org.eclipse.sirius.web.domain.Entity} object. <!-- begin-user-doc -->
@@ -172,15 +175,25 @@ public class EntityItemProvider extends NamedElementItemProvider {
      * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created
      * under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
 
-        newChildDescriptors.add(this.createChildParameter(DomainPackage.Literals.ENTITY__ATTRIBUTES, DomainFactory.eINSTANCE.createAttribute()));
+        Attribute newAttribute = DomainFactory.eINSTANCE.createAttribute();
+        newAttribute.setName("newString"); //$NON-NLS-1$
+        newAttribute.setType(DataType.STRING);
+        newChildDescriptors.add(this.createChildParameter(DomainPackage.Literals.ENTITY__ATTRIBUTES, newAttribute));
 
-        newChildDescriptors.add(this.createChildParameter(DomainPackage.Literals.ENTITY__RELATIONS, DomainFactory.eINSTANCE.createRelation()));
+        Relation newRelation = DomainFactory.eINSTANCE.createRelation();
+        newRelation.setName("relation"); //$NON-NLS-1$
+        newRelation.setMany(true);
+        if (object instanceof Entity) {
+            Entity owner = (Entity) object;
+            newRelation.setTargetType(owner);
+        }
+        newChildDescriptors.add(this.createChildParameter(DomainPackage.Literals.ENTITY__RELATIONS, newRelation));
     }
 
 }

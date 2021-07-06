@@ -47,7 +47,7 @@ public class DomainImpl extends NamedElementImpl implements Domain {
      * @generated
      * @ordered
      */
-    protected static final String URI_EDEFAULT = null;
+    protected static final String URI_EDEFAULT = "domain://sample"; //$NON-NLS-1$
 
     /**
      * The cached value of the '{@link #getUri() <em>Uri</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
