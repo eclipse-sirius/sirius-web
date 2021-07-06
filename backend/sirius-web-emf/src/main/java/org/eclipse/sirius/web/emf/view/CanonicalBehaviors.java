@@ -45,8 +45,7 @@ public class CanonicalBehaviors {
     public Status createNewNode(org.eclipse.sirius.web.view.NodeDescription nodeDescription, VariableManager variableManager) {
         EObject self = variableManager.get(VariableManager.SELF, EObject.class).orElse(null);
         String domainType = nodeDescription.getDomainType();
-        EObject instance = this.createSemanticInstance(self, domainType);
-        this.addInParent(self, instance);
+        this.createSemanticInstance(self, domainType).ifPresent(instance -> this.addInParent(self, instance));
         return Status.OK;
     }
 
@@ -54,10 +53,11 @@ public class CanonicalBehaviors {
         EObject semanticSource = variableManager.get(org.eclipse.sirius.web.diagrams.description.EdgeDescription.SEMANTIC_EDGE_SOURCE, EObject.class).get();
         EObject semanticTarget = variableManager.get(org.eclipse.sirius.web.diagrams.description.EdgeDescription.SEMANTIC_EDGE_TARGET, EObject.class).get();
         if (edgeDescription.isIsDomainBasedEdge()) {
-            EObject instance = this.createSemanticInstance(semanticSource, edgeDescription.getDomainType());
-            this.addInParent(semanticSource, instance);
-            this.addReferenceTo(instance, semanticSource);
-            this.addReferenceTo(instance, semanticTarget);
+            this.createSemanticInstance(semanticSource, edgeDescription.getDomainType()).ifPresent(instance -> {
+                this.addInParent(semanticSource, instance);
+                this.addReferenceTo(instance, semanticSource);
+                this.addReferenceTo(instance, semanticTarget);
+            });
         } else {
             this.addReferenceTo(semanticSource, semanticTarget);
         }
@@ -83,24 +83,28 @@ public class CanonicalBehaviors {
         return variableManager.get(VariableManager.SELF, Object.class);
     }
 
-    private EObject createSemanticInstance(EObject self, String domainType) {
+    private Optional<EObject> createSemanticInstance(EObject self, String domainType) {
         EPackage ePackage = self.eClass().getEPackage();
         // @formatter:off
-        EClass klass = ePackage
-                      .getEClassifiers().stream()
-                      .filter(classifier -> classifier instanceof EClass && Objects.equals(domainType, classifier.getName()))
-                      .map(EClass.class::cast)
-                      .findFirst()
-                      .get();
+        var optionalKlass = ePackage
+                          .getEClassifiers().stream()
+                          .filter(classifier -> classifier instanceof EClass && Objects.equals(domainType, classifier.getName()))
+                          .map(EClass.class::cast)
+                          .findFirst();
         // @formatter:on
-        EObject instance = ePackage.getEFactoryInstance().create(klass);
-        // @formatter:off
-        // Assume the first stringly-typed attribute represents the object's name/label
-        klass.getEAllAttributes().stream().filter(attr -> Objects.equals(String.class, attr.getEType().getInstanceClass())).findFirst().ifPresent(labelAttribute -> {
-            instance.eSet(labelAttribute, "New " + klass.getName()); //$NON-NLS-1$
-        });
-        // @formatter:on
-        return instance;
+        if (optionalKlass.isPresent()) {
+            EClass klass = optionalKlass.get();
+            EObject instance = ePackage.getEFactoryInstance().create(klass);
+            // @formatter:off
+            // Assume the first stringly-typed attribute represents the object's name/label
+            klass.getEAllAttributes().stream().filter(attr -> Objects.equals(String.class, attr.getEType().getInstanceClass())).findFirst().ifPresent(labelAttribute -> {
+                instance.eSet(labelAttribute, "New " + klass.getName()); //$NON-NLS-1$
+            });
+            // @formatter:on
+            return Optional.of(instance);
+        } else {
+            return Optional.empty();
+        }
     }
 
     private void addInParent(EObject parent, EObject instance) {
