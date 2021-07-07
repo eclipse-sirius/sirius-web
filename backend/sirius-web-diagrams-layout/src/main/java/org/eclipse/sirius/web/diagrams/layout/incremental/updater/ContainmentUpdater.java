@@ -158,24 +158,10 @@ public class ContainmentUpdater {
     }
 
     private void updateBottomRight(IContainerLayoutData container) {
-        double width = container.getSize().getWidth();
-        double height = container.getSize().getHeight();
-        double maxWidth = LayoutOptionValues.MIN_WIDTH_CONSTRAINT;
-        double maxHeight = LayoutOptionValues.MIN_HEIGHT_CONSTRAINT;
+        Size contentSize = this.computeContentSize(container);
 
-        if (this.isLabelContained(container)) {
-            LabelLayoutData label = ((NodeLayoutData) container).getLabel();
-            maxWidth = Math.max(maxWidth, label.getTextBounds().getSize().getWidth() + this.getNodeLabelPaddingWidth(container));
-            maxHeight = Math.max(maxHeight, label.getTextBounds().getSize().getHeight() + this.getNodeLabelPaddingHeight(container));
-        }
-
-        for (NodeLayoutData child : container.getChildrenNodes()) {
-            maxWidth = Math.max(maxWidth, child.getPosition().getX() + child.getSize().getWidth() + this.getPaddingWidth(container));
-            maxHeight = Math.max(maxHeight, child.getPosition().getY() + child.getSize().getHeight() + this.getPaddingHeight(container));
-        }
-
-        if (maxWidth != width || maxHeight != height) {
-            container.setSize(Size.of(maxWidth, maxHeight));
+        if (!container.getSize().equals(contentSize)) {
+            container.setSize(contentSize);
             if (container instanceof IConnectable) {
                 ((IConnectable) container).setChanged(true);
             }
@@ -189,7 +175,29 @@ public class ContainmentUpdater {
                 }
             }
         }
+    }
 
+    /**
+     * Determines the "natural" size needed for the container to hold all its content (label and children), with
+     * appropriate padding.
+     */
+    private Size computeContentSize(IContainerLayoutData container) {
+        double contentWidth = LayoutOptionValues.MIN_WIDTH_CONSTRAINT;
+        double contentHeight = LayoutOptionValues.MIN_HEIGHT_CONSTRAINT;
+
+        if (this.isLabelContained(container)) {
+            LabelLayoutData label = ((NodeLayoutData) container).getLabel();
+            Size labelSize = label.getTextBounds().getSize();
+            contentWidth = Math.max(contentWidth, labelSize.getWidth() + this.getNodeLabelPaddingWidth(container));
+            contentHeight = Math.max(contentHeight, labelSize.getHeight() + this.getNodeLabelPaddingHeight(container));
+        }
+
+        for (NodeLayoutData child : container.getChildrenNodes()) {
+            contentWidth = Math.max(contentWidth, child.getPosition().getX() + child.getSize().getWidth() + this.getPaddingWidth(container));
+            contentHeight = Math.max(contentHeight, child.getPosition().getY() + child.getSize().getHeight() + this.getPaddingHeight(container));
+        }
+
+        return Size.of(contentWidth, contentHeight);
     }
 
     private double getNodeLabelPaddingHeight(IContainerLayoutData container) {
