@@ -215,7 +215,7 @@ public class ContainmentUpdater {
     }
 
     private double getPaddingHeight(IContainerLayoutData container) {
-        double nodeLabelPaddingHeight = 0;
+        double nodeLabelPaddingHeight = LayoutOptionValues.DEFAULT_ELK_PADDING;
         if (container instanceof NodeLayoutData) {
             NodeLayoutData nodeLayoutData = (NodeLayoutData) container;
             if (NodeType.NODE_LIST.equals(nodeLayoutData.getNodeType())) {
@@ -234,7 +234,7 @@ public class ContainmentUpdater {
                 return NODE_LIST_PADDING_WIDTH;
             }
         }
-        return 0;
+        return LayoutOptionValues.DEFAULT_ELK_PADDING;
     }
 
     private void shift(IContainerLayoutData container, double shiftX, double shiftY) {
