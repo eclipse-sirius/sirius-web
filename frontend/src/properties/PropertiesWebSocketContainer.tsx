@@ -78,11 +78,7 @@ export const PropertiesWebSocketContainer = ({
   const [{ value, context }, dispatch] = useMachine<
     PropertiesWebSocketContainerContext,
     PropertiesWebSocketContainerEvent
-  >(propertiesWebSocketContainerMachine, {
-    context: {
-      currentSelection: selection,
-    },
-  });
+  >(propertiesWebSocketContainerMachine);
   const { toast, propertiesWebSocketContainer } = value as SchemaValue;
   const { id, currentSelection, form, subscribers, widgetSubscriptions, message } = context;
   const { registry } = useContext(RepresentationContext);
