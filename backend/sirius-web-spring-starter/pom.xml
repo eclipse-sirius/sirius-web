@@ -15,7 +15,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius.web</groupId>
 	<artifactId>sirius-web-spring-starter</artifactId>
-	<version>0.3.4</version>
+	<version>0.3.5</version>
 	<name>sirius-web-spring-starter</name>
 	<description>Sirius Web Spring Starter</description>
 
@@ -39,47 +39,47 @@
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-spring-graphql</artifactId>
-			<version>0.3.4</version>
+			<version>0.3.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-diagrams-layout</artifactId>
-			<version>0.3.4</version>
+			<version>0.3.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-spring-collaborative</artifactId>
-			<version>0.3.4</version>
+			<version>0.3.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-spring-collaborative-diagrams</artifactId>
-			<version>0.3.4</version>
+			<version>0.3.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-spring-collaborative-forms</artifactId>
-			<version>0.3.4</version>
+			<version>0.3.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-spring-collaborative-trees</artifactId>
-			<version>0.3.4</version>
+			<version>0.3.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-spring-collaborative-validation</artifactId>
-			<version>0.3.4</version>
+			<version>0.3.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-emf</artifactId>
-			<version>0.3.4</version>
+			<version>0.3.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-compatibility</artifactId>
-			<version>0.3.4</version>
+			<version>0.3.5</version>
 		</dependency>
 	</dependencies>
 
