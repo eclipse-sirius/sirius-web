@@ -160,7 +160,8 @@ public class ContainmentUpdater {
     private void updateBottomRight(IContainerLayoutData container) {
         Size contentSize = this.computeContentSize(container);
 
-        if (!container.getSize().equals(contentSize)) {
+        // Only update the conttainer's size if it is too small for its content.
+        if (container.getSize().getWidth() < contentSize.getWidth() || container.getSize().getHeight() < contentSize.getHeight()) {
             container.setSize(contentSize);
             if (container instanceof IConnectable) {
                 ((IConnectable) container).setChanged(true);
