@@ -26,6 +26,7 @@ import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.web.compat.forms.WidgetIdProvider;
@@ -83,11 +84,23 @@ public class EEnumIfDescriptionProvider {
                 .labelProvider(this.getLabelProvider())
                 .valueProvider(this.getValueProvider())
                 .optionsProvider(this.getOptionsProvider())
+                .valueRequiredProvider(this.getValueRequiredProvider())
                 .optionIdProvider(this.getOptionIdProvider())
                 .optionLabelProvider(this.getOptionLabelProvider())
                 .newValueHandler(this.getNewValueHandler())
                 .build();
         // @formatter:on
+    }
+
+    private Function<VariableManager, Boolean> getValueRequiredProvider() {
+        return variableManager -> {
+            Object feature = variableManager.getVariables().get(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE);
+            if (feature instanceof EStructuralFeature) {
+                return ((EStructuralFeature) feature).isRequired();
+            } else {
+                return false;
+            }
+        };
     }
 
     private Function<VariableManager, String> getLabelProvider() {
