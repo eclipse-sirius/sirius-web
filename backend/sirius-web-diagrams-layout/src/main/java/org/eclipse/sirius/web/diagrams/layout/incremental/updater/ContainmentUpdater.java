@@ -160,15 +160,18 @@ public class ContainmentUpdater {
     private void updateBottomRight(IContainerLayoutData container) {
         Size contentSize = this.computeContentSize(container);
 
-        // Only update the conttainer's size if it is too small for its content.
-        if (container.getSize().getWidth() < contentSize.getWidth() || container.getSize().getHeight() < contentSize.getHeight()) {
+        // For "normal" containers, we only resize if they are too small to hold their contents.
+        // Lists however are always resized to match exactly their content, even it is means making them smaller.
+        boolean isNodeListContainer = container instanceof NodeLayoutData && NodeType.NODE_LIST.equals(((NodeLayoutData) container).getNodeType());
+        boolean isTooSmallForContent = container.getSize().getWidth() < contentSize.getWidth() || container.getSize().getHeight() < contentSize.getHeight();
+        boolean shouldResize = isTooSmallForContent || (isNodeListContainer && !container.getSize().equals(contentSize));
+        if (shouldResize) {
             container.setSize(contentSize);
             if (container instanceof IConnectable) {
                 ((IConnectable) container).setChanged(true);
             }
         }
-
-        if (container instanceof NodeLayoutData && NodeType.NODE_LIST.equals(((NodeLayoutData) container).getNodeType())) {
+        if (isNodeListContainer) {
             for (NodeLayoutData child : container.getChildrenNodes()) {
                 child.setSize(Size.of(container.getSize().getWidth(), child.getSize().getHeight()));
                 if (child instanceof IConnectable) {
