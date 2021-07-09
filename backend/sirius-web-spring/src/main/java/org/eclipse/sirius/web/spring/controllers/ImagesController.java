@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,13 +16,14 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.eclipse.sirius.web.api.services.IImagePathService;
-import org.eclipse.sirius.web.emf.view.ICustomImagesService;
+import org.eclipse.sirius.web.services.api.images.ICustomImageContentService;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -86,13 +87,13 @@ public class ImagesController {
 
     private final List<IImagePathService> pathResourcesServices;
 
-    private final ICustomImagesService customImagesService;
+    private final ICustomImageContentService customImageContentService;
 
     private final Timer timer;
 
-    public ImagesController(List<IImagePathService> pathResourcesServices, ICustomImagesService customImagesService, MeterRegistry meterRegistry) {
+    public ImagesController(List<IImagePathService> pathResourcesServices, ICustomImageContentService customImageContentService, MeterRegistry meterRegistry) {
         this.pathResourcesServices = Objects.requireNonNull(pathResourcesServices);
-        this.customImagesService = Objects.requireNonNull(customImagesService);
+        this.customImageContentService = Objects.requireNonNull(customImageContentService);
 
         this.timer = Timer.builder(TIMER).register(meterRegistry);
     }
@@ -116,11 +117,17 @@ public class ImagesController {
                 if (resource.exists()) {
                     response = new ResponseEntity<>(resource, headers, HttpStatus.OK);
                 }
-            } else if (imagePath.startsWith(CUSTOM_IMAGE_PREFIX)) {
-                Optional<byte[]> contents = this.customImagesService.getImageContentsByFileName(imagePath.substring(CUSTOM_IMAGE_PREFIX.length()));
-                if (contents.isPresent()) {
+            }
+        } else if (imagePath.startsWith(CUSTOM_IMAGE_PREFIX)) {
+            String[] imageDescriptor = imagePath.substring(CUSTOM_IMAGE_PREFIX.length()).split("/"); //$NON-NLS-1$
+            if (imageDescriptor.length == 2) {
+                UUID editingContextId = UUID.fromString(imageDescriptor[0]);
+                UUID imageId = UUID.fromString(imageDescriptor[1]);
+                Optional<String> mediaType = this.customImageContentService.getImageContentTypeById(editingContextId, imageId);
+                Optional<byte[]> contents = this.customImageContentService.getImageContentById(editingContextId, imageId);
+                if (mediaType.isPresent() && contents.isPresent()) {
                     HttpHeaders headers = new HttpHeaders();
-                    headers.setContentType(mediatype);
+                    headers.setContentType(MediaType.valueOf(mediaType.get()));
                     Resource resource = new ByteArrayResource(contents.get());
                     response = new ResponseEntity<>(resource, headers, HttpStatus.OK);
                 }
@@ -159,9 +166,6 @@ public class ImagesController {
                 .collect(Collectors.toList());
         // @formatter:on
 
-        // @formatter:off
-        return accessibleImagePaths.stream()
-                .anyMatch(accessibleImagePath -> imagePath.startsWith(accessibleImagePath));
-        // @formatter:on
+        return accessibleImagePaths.stream().anyMatch(imagePath::startsWith);
     }
 }

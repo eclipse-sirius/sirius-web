@@ -82,9 +82,9 @@ ALTER TABLE ONLY representation
 
 
 CREATE TABLE CustomImage (
-	id UUID DEFAULT gen_random_uuid() NOT NULL,
+	id UUID NOT NULL,
 	label TEXT NOT NULL,
-	filename TEXT NOT NULL,
+	content_type TEXT NOT NULL,
 	content BYTEA NOT NULL,
 	CONSTRAINT pk_customimage_id PRIMARY KEY (id)
 );
