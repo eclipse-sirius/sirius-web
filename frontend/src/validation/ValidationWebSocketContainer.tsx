@@ -119,11 +119,7 @@ export const ValidationWebSocketContainer = ({ editingContextId }: ValidationWeb
     }
   }, [error, dispatch]);
 
-  let content = (
-    <div className={classes.idle}>
-      <Typography variant="subtitle2">No diagnostics received</Typography>
-    </div>
-  );
+  let content = null;
 
   if (validationWebSocketContainer === 'ready') {
     const accordions = validation.categories.map((category) => {
