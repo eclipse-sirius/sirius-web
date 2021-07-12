@@ -125,11 +125,14 @@ export const PropertiesWebSocketContainer = ({
     }
   }, [error, dispatch]);
 
-  let content = (
-    <div className={classes.idle}>
-      <Typography variant="subtitle2">No object selected</Typography>
-    </div>
-  );
+  let content = null;
+  if (!selection) {
+    content = (
+      <div className={classes.idle}>
+        <Typography variant="subtitle2">No object selected</Typography>
+      </div>
+    );
+  }
   if ((propertiesWebSocketContainer === 'idle' && form) || propertiesWebSocketContainer === 'ready') {
     content = (
       <Properties
