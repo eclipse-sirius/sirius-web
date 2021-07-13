@@ -748,7 +748,7 @@ export const DiagramWebSocketContainer = ({
       invokeLabelEditFromContextualPalette = () =>
         diagramServer.actionDispatcher.dispatchAll([
           { kind: HIDE_CONTEXTUAL_TOOLBAR_ACTION },
-          new EditLabelAction(element.id + '_label'),
+          new EditLabelAction(element.editableLabel.id),
         ]);
     }
     let invokeDeleteFromContextualPalette;
