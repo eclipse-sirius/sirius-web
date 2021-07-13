@@ -73,6 +73,14 @@ export const formRefreshedEventPayloadFragment = gql`
                 label
               }
             }
+            ... on MultiSelect {
+              label
+              values
+              options {
+                id
+                label
+              }
+            }
             ... on Radio {
               label
               options {

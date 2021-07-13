@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,26 +13,27 @@
 import { useMutation } from '@apollo/client';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControl from '@material-ui/core/FormControl';
-import FormGroup from '@material-ui/core/FormGroup';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import IconButton from '@material-ui/core/IconButton';
+import ListItemText from '@material-ui/core/ListItemText';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
 import Snackbar from '@material-ui/core/Snackbar';
 import CloseIcon from '@material-ui/icons/Close';
 import gql from 'graphql-tag';
 import {
-  CheckboxPropertySectionProps,
-  GQLEditCheckboxMutationData,
-  GQLEditCheckboxPayload,
+  GQLEditMultiSelectMutationData,
+  GQLEditMultiSelectPayload,
   GQLErrorPayload,
   GQLUpdateWidgetFocusMutationData,
-} from 'properties/propertysections/CheckboxPropertySection.types';
+  MultiSelectPropertySectionProps,
+} from 'properties/propertysections/MultiSelectPropertySection.types';
 import { PropertySectionLabel } from 'properties/propertysections/PropertySectionLabel';
 import React, { useEffect, useState } from 'react';
 import { v4 as uuid } from 'uuid';
-
-const editCheckboxMutation = gql`
-  mutation editCheckbox($input: EditCheckboxInput!) {
-    editCheckbox(input: $input) {
+export const editMultiSelectMutation = gql`
+  mutation editMultiSelect($input: EditMultiSelectInput!) {
+    editMultiSelect(input: $input) {
       __typename
       ... on ErrorPayload {
         message
@@ -52,31 +53,33 @@ const updateWidgetFocusMutation = gql`
   }
 `;
 
-const isErrorPayload = (payload: GQLEditCheckboxPayload): payload is GQLErrorPayload =>
+const isErrorPayload = (payload: GQLEditMultiSelectPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
 
-export const CheckboxPropertySection = ({
+export const MultiSelectPropertySection = ({
   editingContextId,
   formId,
   widget,
   subscribers,
   readOnly,
-}: CheckboxPropertySectionProps) => {
+}: MultiSelectPropertySectionProps) => {
   const [message, setMessage] = useState(null);
+  const [isFocused, setFocus] = useState(false);
 
-  const [editCheckbox, { loading, error, data }] = useMutation<GQLEditCheckboxMutationData>(editCheckboxMutation);
+  const [editMultiSelect, { loading, error, data }] =
+    useMutation<GQLEditMultiSelectMutationData>(editMultiSelectMutation);
   const onChange = (event) => {
-    const newValue = event.target.checked;
+    const newValues = event.target.value as string[];
     const variables = {
       input: {
         id: uuid(),
         editingContextId,
         representationId: formId,
-        checkboxId: widget.id,
-        newValue,
+        selectId: widget.id,
+        newValues,
       },
     };
-    editCheckbox({ variables });
+    editMultiSelect({ variables });
   };
 
   useEffect(() => {
@@ -85,9 +88,9 @@ export const CheckboxPropertySection = ({
         setMessage('An unexpected error has occurred, please refresh the page');
       }
       if (data) {
-        const { editCheckbox } = data;
-        if (isErrorPayload(editCheckbox)) {
-          setMessage(editCheckbox.message);
+        const { editMultiSelect } = data;
+        if (isErrorPayload(editMultiSelect)) {
+          setMessage(editMultiSelect.message);
         }
       }
     }
@@ -97,6 +100,7 @@ export const CheckboxPropertySection = ({
     updateWidgetFocus,
     { loading: updateWidgetFocusLoading, data: updateWidgetFocusData, error: updateWidgetFocusError },
   ] = useMutation<GQLUpdateWidgetFocusMutationData>(updateWidgetFocusMutation);
+
   const sendUpdateWidgetFocus = (selected: boolean) => {
     const variables = {
       input: {
@@ -125,24 +129,44 @@ export const CheckboxPropertySection = ({
     }
   }, [updateWidgetFocusLoading, updateWidgetFocusData, updateWidgetFocusError]);
 
-  const onFocus = () => sendUpdateWidgetFocus(true);
-  const onBlur = () => sendUpdateWidgetFocus(false);
+  const onFocus = () => {
+    if (!isFocused) {
+      setFocus(true);
+      sendUpdateWidgetFocus(true);
+    }
+  };
+
+  const onBlur = () => {
+    setFocus(false);
+    sendUpdateWidgetFocus(false);
+  };
 
   return (
     <FormControl error={widget.diagnostics.length > 0}>
       <PropertySectionLabel label={widget.label} subscribers={subscribers} />
-      <FormGroup row>
-        <Checkbox
-          name={widget.label}
-          color="primary"
-          checked={widget.booleanValue}
-          onChange={onChange}
-          onFocus={onFocus}
-          onBlur={onBlur}
-          data-testid={widget.label}
-          disabled={readOnly}
-        />
-      </FormGroup>
+      <Select
+        value={widget.values}
+        onChange={onChange}
+        displayEmpty
+        onFocus={onFocus}
+        onBlur={onBlur}
+        fullWidth
+        data-testid={widget.label}
+        disabled={readOnly}
+        renderValue={(selected) =>
+          widget.options
+            .filter((option) => (selected as string[]).includes(option.id))
+            .map((option) => option.label)
+            .join(', ')
+        }
+        multiple>
+        {widget.options.map((option) => (
+          <MenuItem key={option.id} value={option.id}>
+            <Checkbox checked={widget.values.indexOf(option.id) > -1} />
+            <ListItemText primary={option.label} />
+          </MenuItem>
+        ))}
+      </Select>
       <FormHelperText>{widget.diagnostics[0]?.message}</FormHelperText>
       <Snackbar
         anchorOrigin={{

@@ -115,6 +115,7 @@ public class StartMessageHandler implements IWebSocketMessageHandler {
     private void subscribe(String id, Publisher<ExecutionResult> publisher) {
         Consumer<ExecutionResult> consumer = result -> this.send(this.objectMapper, this.session, new DataMessage(id, result.toSpecification()), this.logger);
         Consumer<Throwable> onErrorConsumer = error -> {
+            this.logger.warn(error.getMessage(), error);
             this.send(this.objectMapper, this.session, new ErrorMessage(id, null), this.logger);
         };
         Runnable onCompleteConsumer = () -> this.send(this.objectMapper, this.session, new CompleteMessage(id), this.logger);

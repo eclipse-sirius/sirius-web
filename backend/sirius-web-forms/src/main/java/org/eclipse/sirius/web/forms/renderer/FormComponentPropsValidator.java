@@ -26,6 +26,8 @@ import org.eclipse.sirius.web.forms.components.IfComponent;
 import org.eclipse.sirius.web.forms.components.IfComponentProps;
 import org.eclipse.sirius.web.forms.components.ListComponent;
 import org.eclipse.sirius.web.forms.components.ListComponentProps;
+import org.eclipse.sirius.web.forms.components.MultiSelectComponent;
+import org.eclipse.sirius.web.forms.components.MultiSelectComponentProps;
 import org.eclipse.sirius.web.forms.components.PageComponent;
 import org.eclipse.sirius.web.forms.components.PageComponentProps;
 import org.eclipse.sirius.web.forms.components.RadioComponent;
@@ -72,6 +74,8 @@ public class FormComponentPropsValidator implements IComponentPropsValidator {
             checkValidProps = props instanceof RadioComponentProps;
         } else if (SelectComponent.class.equals(componentType)) {
             checkValidProps = props instanceof SelectComponentProps;
+        } else if (MultiSelectComponent.class.equals(componentType)) {
+            checkValidProps = props instanceof MultiSelectComponentProps;
         } else if (TextareaComponent.class.equals(componentType)) {
             checkValidProps = props instanceof TextareaComponentProps;
         } else if (TextfieldComponent.class.equals(componentType)) {

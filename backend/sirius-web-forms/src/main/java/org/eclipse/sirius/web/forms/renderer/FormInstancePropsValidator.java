@@ -18,6 +18,7 @@ import org.eclipse.sirius.web.forms.elements.CheckboxElementProps;
 import org.eclipse.sirius.web.forms.elements.FormElementProps;
 import org.eclipse.sirius.web.forms.elements.GroupElementProps;
 import org.eclipse.sirius.web.forms.elements.ListElementProps;
+import org.eclipse.sirius.web.forms.elements.MultiSelectElementProps;
 import org.eclipse.sirius.web.forms.elements.PageElementProps;
 import org.eclipse.sirius.web.forms.elements.RadioElementProps;
 import org.eclipse.sirius.web.forms.elements.SelectElementProps;
@@ -50,6 +51,8 @@ public class FormInstancePropsValidator implements IInstancePropsValidator {
             checkValidProps = props instanceof RadioElementProps;
         } else if (SelectElementProps.TYPE.equals(type)) {
             checkValidProps = props instanceof SelectElementProps;
+        } else if (MultiSelectElementProps.TYPE.equals(type)) {
+            checkValidProps = props instanceof MultiSelectElementProps;
         } else if (TextareaElementProps.TYPE.equals(type)) {
             checkValidProps = props instanceof TextareaElementProps;
         } else if (TextfieldElementProps.TYPE.equals(type)) {

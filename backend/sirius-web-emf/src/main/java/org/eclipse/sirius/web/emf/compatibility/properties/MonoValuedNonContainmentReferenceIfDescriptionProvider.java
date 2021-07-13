@@ -114,8 +114,8 @@ public class MonoValuedNonContainmentReferenceIfDescriptionProvider {
                         try {
                             eObject.eSet(eReference, newValueToSet);
                             return Status.OK;
-                        } catch (IllegalArgumentException | ClassCastException | ArrayStoreException e) {
-                            this.logger.error(e.getMessage(), e);
+                        } catch (IllegalArgumentException | ClassCastException | ArrayStoreException exception) {
+                            this.logger.warn(exception.getMessage(), exception);
                         }
                     }
                 }
