@@ -68,6 +68,12 @@ export interface Select extends Widget {
   options: SelectOption[];
 }
 
+export interface MultiSelect extends Widget {
+  label: string;
+  values: string[];
+  options: SelectOption[];
+}
+
 export interface SelectOption {
   id: string;
   label: string;

@@ -99,6 +99,11 @@ export interface GQLSelect extends GQLWidget {
   options: GQLSelectOption[];
 }
 
+export interface GQLMultiSelect extends GQLWidget {
+  label: string;
+  values: string[];
+  options: GQLSelectOption[];
+}
 export interface GQLSelectOption {
   id: string;
   label: string;
