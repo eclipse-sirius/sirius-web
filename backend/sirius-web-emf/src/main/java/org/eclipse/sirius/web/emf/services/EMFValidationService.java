@@ -16,16 +16,20 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.Diagnostic;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EValidator;
 import org.eclipse.emf.ecore.EValidator.Registry;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.Diagnostician;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
+import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
+import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.sirius.web.collaborative.validation.api.IValidationService;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.springframework.stereotype.Service;
@@ -40,8 +44,11 @@ public class EMFValidationService implements IValidationService {
 
     private final Registry eValidatorRegistry;
 
-    public EMFValidationService(EValidator.Registry eValidatorRegistry) {
-        this.eValidatorRegistry = eValidatorRegistry;
+    private final ComposedAdapterFactory composedAdapterFactory;
+
+    public EMFValidationService(EValidator.Registry eValidatorRegistry, ComposedAdapterFactory composedAdapterFactory) {
+        this.eValidatorRegistry = Objects.requireNonNull(eValidatorRegistry);
+        this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
     }
 
     @Override
@@ -64,7 +71,19 @@ public class EMFValidationService implements IValidationService {
 
         Map<Object, Object> options = new HashMap<>();
         options.put(Diagnostician.VALIDATE_RECURSIVELY, true);
-        Diagnostician diagnostician = new Diagnostician(this.eValidatorRegistry);
+        Diagnostician diagnostician = new Diagnostician(this.eValidatorRegistry) {
+            @Override
+            public String getObjectLabel(EObject eObject) {
+                if (EMFValidationService.this.composedAdapterFactory instanceof IItemLabelProvider) {
+                    IItemLabelProvider itemLabelProvider = (IItemLabelProvider) EMFValidationService.this.composedAdapterFactory.adapt(eObject, IItemLabelProvider.class);
+                    if (itemLabelProvider != null) {
+                        return itemLabelProvider.getText(eObject);
+                    }
+                }
+
+                return super.getObjectLabel(eObject);
+            }
+        };
 
         // @formatter:off
         return domain.getResourceSet().getResources().stream()
