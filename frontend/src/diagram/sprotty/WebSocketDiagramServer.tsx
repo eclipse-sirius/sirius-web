@@ -35,8 +35,6 @@ export const SPROTTY_DELETE_ACTION = 'sprottyDeleteElement';
 /** Action to select a sprotty element */
 export const SPROTTY_SELECT_ACTION = 'sprottySelectElement';
 /** Action to select an Sirius element */
-export const SIRIUS_LABEL_EDIT_ACTION = 'siriusLabelEditElement';
-/** Action to select an Sirius element */
 export const SIRIUS_SELECT_ACTION = 'siriusSelectElement';
 /** Action to select an Sirius element */
 export const SIRIUS_UPDATE_MODEL_ACTION = 'siriusUpdateModel';
@@ -108,7 +106,6 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
     registry.register(UpdateModelAction.KIND, this);
     registry.register(MoveCommand.KIND, this);
     registry.register(SiriusResizeCommand.KIND, this);
-    registry.register(SIRIUS_LABEL_EDIT_ACTION, this);
     registry.register(SIRIUS_UPDATE_MODEL_ACTION, this);
     registry.register(SIRIUS_SELECT_ACTION, this);
     registry.register(SPROTTY_SELECT_ACTION, this);
@@ -144,9 +141,6 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
         break;
       case SiriusResizeCommand.KIND:
         this.handleResizeAction(action);
-        break;
-      case SIRIUS_LABEL_EDIT_ACTION:
-        this.handleSiriusLabelEditAction(action);
         break;
       case SIRIUS_UPDATE_MODEL_ACTION:
         this.handleSiriusUpdateModelAction(action);
@@ -226,13 +220,6 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
       const { elementId, newPosition, newSize } = resize;
       this.resizeElement(elementId, newPosition?.x, newPosition?.y, newSize.width, newSize.height);
     }
-  }
-  handleSiriusLabelEditAction(action) {
-    const { elementId } = action;
-    this.actionDispatcher.dispatchAll([
-      { kind: HIDE_CONTEXTUAL_TOOLBAR_ACTION },
-      new EditLabelAction(elementId + '_label'),
-    ]);
   }
 
   handleSprottySelectAction(action) {
