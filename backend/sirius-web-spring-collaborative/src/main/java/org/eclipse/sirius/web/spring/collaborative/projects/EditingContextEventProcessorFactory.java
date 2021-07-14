@@ -18,7 +18,7 @@ import java.util.Objects;
 import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventHandler;
 import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventProcessor;
 import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventProcessorFactory;
-import org.eclipse.sirius.web.collaborative.api.services.IRepresentationDeletionService;
+import org.eclipse.sirius.web.collaborative.api.services.IDanglingRepresentationDeletionService;
 import org.eclipse.sirius.web.collaborative.api.services.IRepresentationEventProcessorComposedFactory;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IEditingContextPersistenceService;
@@ -44,11 +44,11 @@ public class EditingContextEventProcessorFactory implements IEditingContextEvent
 
     private final IRepresentationEventProcessorComposedFactory representationEventProcessorComposedFactory;
 
-    private final IRepresentationDeletionService representationDeletionService;
+    private final IDanglingRepresentationDeletionService representationDeletionService;
 
     public EditingContextEventProcessorFactory(IEditingContextPersistenceService editingContextPersistenceService, ApplicationEventPublisher applicationEventPublisher, IObjectService objectService,
             List<IEditingContextEventHandler> editingContextEventHandlers, IRepresentationEventProcessorComposedFactory representationEventProcessorComposedFactory,
-            IRepresentationDeletionService representationDeletionService) {
+            IDanglingRepresentationDeletionService representationDeletionService) {
         this.editingContextPersistenceService = Objects.requireNonNull(editingContextPersistenceService);
         this.applicationEventPublisher = Objects.requireNonNull(applicationEventPublisher);
         this.objectService = Objects.requireNonNull(objectService);

@@ -21,7 +21,7 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import org.eclipse.sirius.web.collaborative.api.services.IRepresentationDeletionService;
+import org.eclipse.sirius.web.collaborative.api.services.IDanglingRepresentationDeletionService;
 import org.eclipse.sirius.web.collaborative.api.services.IRepresentationPersistenceService;
 import org.eclipse.sirius.web.persistence.entities.ProjectEntity;
 import org.eclipse.sirius.web.persistence.entities.RepresentationEntity;
@@ -41,7 +41,7 @@ import io.micrometer.core.instrument.Timer;
  * @author gcoutable
  */
 @Service
-public class RepresentationService implements IRepresentationService, IRepresentationPersistenceService, IRepresentationDeletionService {
+public class RepresentationService implements IRepresentationService, IRepresentationPersistenceService, IDanglingRepresentationDeletionService {
 
     private static final String TIMER_NAME = "siriusweb_representation_save"; //$NON-NLS-1$
 
@@ -123,6 +123,11 @@ public class RepresentationService implements IRepresentationService, IRepresent
         return this.representationRepository.findById(representationId)
                 .map(new RepresentationMapper(this.objectMapper)::toDTO);
         // @formatter:off
+    }
+
+    @Override
+    public boolean existsById(UUID representationId) {
+        return this.representationRepository.existsById(representationId);
     }
 
     @Override

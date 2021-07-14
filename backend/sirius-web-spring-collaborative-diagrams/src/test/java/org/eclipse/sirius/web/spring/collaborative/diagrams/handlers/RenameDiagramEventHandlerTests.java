@@ -71,11 +71,6 @@ public class RenameDiagramEventHandlerTests {
             public <T extends IRepresentation> Optional<T> findById(UUID representationId, Class<T> representationClass) {
                 return Optional.of(diagram).map(representationClass::cast);
             }
-
-            @Override
-            public boolean existsById(UUID representationId) {
-                return false;
-            }
         };
 
         IRepresentationPersistenceService representationPersistenceService = new IRepresentationPersistenceService() {

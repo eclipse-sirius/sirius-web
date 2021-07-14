@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.spring.collaborative.handlers;
+package org.eclipse.sirius.web.services.representations;
 
 import java.util.Objects;
 
@@ -20,13 +20,12 @@ import org.eclipse.sirius.web.collaborative.api.services.ChangeDescription;
 import org.eclipse.sirius.web.collaborative.api.services.ChangeKind;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventHandler;
-import org.eclipse.sirius.web.collaborative.api.services.IRepresentationDeletionService;
-import org.eclipse.sirius.web.collaborative.api.services.IRepresentationSearchService;
 import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IInput;
-import org.eclipse.sirius.web.spring.collaborative.messages.ICollaborativeMessageService;
+import org.eclipse.sirius.web.services.api.representations.IRepresentationService;
+import org.eclipse.sirius.web.services.messages.IServicesMessageService;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
@@ -40,18 +39,14 @@ import io.micrometer.core.instrument.MeterRegistry;
 @Service
 public class DeleteRepresentationEventHandler implements IEditingContextEventHandler {
 
-    private final IRepresentationSearchService representationSearchService;
+    private final IRepresentationService representationService;
 
-    private final IRepresentationDeletionService representationDeletionService;
-
-    private final ICollaborativeMessageService messageService;
+    private final IServicesMessageService messageService;
 
     private final Counter counter;
 
-    public DeleteRepresentationEventHandler(IRepresentationSearchService representationSearchService, IRepresentationDeletionService representationDeletionService,
-            ICollaborativeMessageService messageService, MeterRegistry meterRegistry) {
-        this.representationSearchService = Objects.requireNonNull(representationSearchService);
-        this.representationDeletionService = Objects.requireNonNull(representationDeletionService);
+    public DeleteRepresentationEventHandler(IRepresentationService representationService, IServicesMessageService messageService, MeterRegistry meterRegistry) {
+        this.representationService = Objects.requireNonNull(representationService);
         this.messageService = Objects.requireNonNull(messageService);
 
         // @formatter:off
@@ -75,8 +70,8 @@ public class DeleteRepresentationEventHandler implements IEditingContextEventHan
         if (input instanceof DeleteRepresentationInput) {
             DeleteRepresentationInput deleteRepresentationInput = (DeleteRepresentationInput) input;
 
-            if (this.representationSearchService.existsById(deleteRepresentationInput.getRepresentationId())) {
-                this.representationDeletionService.delete(deleteRepresentationInput.getRepresentationId());
+            if (this.representationService.existsById(deleteRepresentationInput.getRepresentationId())) {
+                this.representationService.delete(deleteRepresentationInput.getRepresentationId());
 
                 eventHandlerResponse = new EventHandlerResponse(new ChangeDescription(ChangeKind.REPRESENTATION_DELETION, editingContext.getId()),
                         new DeleteRepresentationSuccessPayload(input.getId(), deleteRepresentationInput.getRepresentationId()));

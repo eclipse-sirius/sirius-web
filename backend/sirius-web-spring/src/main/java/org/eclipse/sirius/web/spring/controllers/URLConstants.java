@@ -34,12 +34,6 @@ public final class URLConstants {
 
     public static final String ANY_PATTERN = "/**"; //$NON-NLS-1$
 
-    public static final String LOGIN_PAGE = "/login"; //$NON-NLS-1$
-
-    public static final String AUTHENTICATION_ENDPOINT = API_BASE_PATH + "/authenticate"; //$NON-NLS-1$
-
-    public static final String SIGNOFF_ENDPOINT = API_BASE_PATH + "/signoff"; //$NON-NLS-1$
-
     private URLConstants() {
         // Prevent instantiation
     }
