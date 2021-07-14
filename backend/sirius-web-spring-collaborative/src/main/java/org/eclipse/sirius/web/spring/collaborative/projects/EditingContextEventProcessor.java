@@ -34,10 +34,10 @@ import org.eclipse.sirius.web.collaborative.api.dto.RepresentationRenamedEventPa
 import org.eclipse.sirius.web.collaborative.api.services.ChangeDescription;
 import org.eclipse.sirius.web.collaborative.api.services.ChangeKind;
 import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
+import org.eclipse.sirius.web.collaborative.api.services.IDanglingRepresentationDeletionService;
 import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventHandler;
 import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventProcessor;
 import org.eclipse.sirius.web.collaborative.api.services.IRepresentationConfiguration;
-import org.eclipse.sirius.web.collaborative.api.services.IRepresentationDeletionService;
 import org.eclipse.sirius.web.collaborative.api.services.IRepresentationEventProcessor;
 import org.eclipse.sirius.web.collaborative.api.services.IRepresentationEventProcessorComposedFactory;
 import org.eclipse.sirius.web.core.api.IEditingContext;
@@ -91,18 +91,18 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
 
     private final ExecutorService executor;
 
-    private final IRepresentationDeletionService representationDeletionService;
+    private final IDanglingRepresentationDeletionService danglingRepresentationDeletionService;
 
     public EditingContextEventProcessor(IEditingContext editingContext, IEditingContextPersistenceService editingContextPersistenceService, ApplicationEventPublisher applicationEventPublisher,
             IObjectService objectService, List<IEditingContextEventHandler> editingContextEventHandlers, IRepresentationEventProcessorComposedFactory representationEventProcessorComposedFactory,
-            IRepresentationDeletionService representationDeletionService) {
+            IDanglingRepresentationDeletionService danglingRepresentationDeletionService) {
         this.editingContext = Objects.requireNonNull(editingContext);
         this.editingContextPersistenceService = Objects.requireNonNull(editingContextPersistenceService);
         this.applicationEventPublisher = Objects.requireNonNull(applicationEventPublisher);
         this.objectService = Objects.requireNonNull(objectService);
         this.editingContextEventHandlers = Objects.requireNonNull(editingContextEventHandlers);
         this.representationEventProcessorComposedFactory = Objects.requireNonNull(representationEventProcessorComposedFactory);
-        this.representationDeletionService = Objects.requireNonNull(representationDeletionService);
+        this.danglingRepresentationDeletionService = Objects.requireNonNull(danglingRepresentationDeletionService);
 
         this.executor = Executors.newSingleThreadExecutor((Runnable runnable) -> {
             Thread thread = Executors.defaultThreadFactory().newThread(runnable);
@@ -198,7 +198,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
             if (this.shouldPersistTheEditingContext(response.getChangeDescription())) {
                 this.editingContextPersistenceService.persist(this.editingContext);
             }
-            this.representationDeletionService.deleteDanglingRepresentations(this.editingContext.getId());
+            this.danglingRepresentationDeletionService.deleteDanglingRepresentations(this.editingContext.getId());
         }
 
         return optionalResponse;

@@ -40,11 +40,6 @@ const uploadDocumentMutationFile = gql`
   mutation uploadDocument($input: UploadDocumentInput!) {
     uploadDocument(input: $input) {
       __typename
-      ... on UploadDocumentSuccessPayload {
-        document {
-          id
-        }
-      }
       ... on ErrorPayload {
         message
       }

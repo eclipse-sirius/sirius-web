@@ -33,4 +33,8 @@ public interface IRepresentationService {
 
     Optional<RepresentationDescriptor> getRepresentation(UUID representationId);
 
+    boolean existsById(UUID representationId);
+
+    void delete(UUID representationId);
+
 }

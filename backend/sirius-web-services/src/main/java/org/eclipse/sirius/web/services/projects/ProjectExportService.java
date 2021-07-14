@@ -93,7 +93,7 @@ public class ProjectExportService implements IProjectExportService {
 
     private final IIdMappingRepository idMappingRepository;
 
-    private IEditingContextEPackageService editingContextEPackageService;
+    private final IEditingContextEPackageService editingContextEPackageService;
 
     public ProjectExportService(IProjectService projectService, IDocumentService documentService, IRepresentationService representationService,
             IEditingContextEPackageService editingContextEPackageService, IIdMappingRepository idMappingRepository, ObjectMapper objectMapper, BuildProperties buildProperties) {
