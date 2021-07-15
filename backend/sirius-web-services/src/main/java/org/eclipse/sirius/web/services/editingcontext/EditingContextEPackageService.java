@@ -20,12 +20,12 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
+import java.util.stream.Stream;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EPackageRegistryImpl;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
@@ -36,7 +36,6 @@ import org.eclipse.sirius.web.emf.services.IEditingContextEPackageService;
 import org.eclipse.sirius.web.emf.services.SiriusWebJSONResourceFactoryImpl;
 import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
 import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
-import org.eclipse.sirius.web.services.documents.DocumentMetadataAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -56,8 +55,6 @@ public class EditingContextEPackageService implements IEditingContextEPackageSer
 
     private final IDocumentRepository documentRepository;
 
-    private final Function<Domain, Optional<EPackage>> domainConverter;
-
     private final boolean isStudioDefinitionEnabled;
 
     public EditingContextEPackageService(EPackage.Registry globalEPackageRegistry, IDocumentRepository documentRepository,
@@ -65,62 +62,62 @@ public class EditingContextEPackageService implements IEditingContextEPackageSer
         this.globalEPackageRegistry = Objects.requireNonNull(globalEPackageRegistry);
         this.documentRepository = Objects.requireNonNull(documentRepository);
         this.isStudioDefinitionEnabled = isStudioDefinitionEnabled;
-        if (isStudioDefinitionEnabled) {
-            this.domainConverter = new DomainConverter()::convert;
-        } else {
-            this.domainConverter = domain -> Optional.empty();
-        }
     }
 
     @Override
     public List<EPackage> getEPackages(UUID editingContextId) {
-        // @formatter:off
-        List<DocumentEntity> entities;
+        List<EPackage> allEPackages = new ArrayList<>();
+        this.findGlobalEPackages().forEach(allEPackages::add);
         if (this.isStudioDefinitionEnabled) {
-            entities = StreamSupport.stream(this.documentRepository.findAllByType(DomainPackage.eNAME, DomainPackage.eNS_URI).spliterator(), false)
-                                    .collect(Collectors.toList());
-        } else {
-            entities = List.of();
+            this.findDynamicEPackages(new DomainConverter()::convert).forEach(allEPackages::add);
         }
-        // @formatter:on
+        return allEPackages;
+    }
+
+    /**
+     * Returns all the statically defined/contributed EPackages.
+     */
+    private Stream<EPackage> findGlobalEPackages() {
+        return this.globalEPackageRegistry.values().stream().filter(EPackage.class::isInstance).map(EPackage.class::cast);
+    }
+
+    /**
+     * Returns all the EPackages defined by a Domain definition.
+     */
+    private Stream<EPackage> findDynamicEPackages(Function<Domain, Optional<EPackage>> domainConverter) {
+        ResourceSet resourceSet = new ResourceSetImpl();
 
         EPackageRegistryImpl ePackageRegistry = new EPackageRegistryImpl();
         this.globalEPackageRegistry.forEach(ePackageRegistry::put);
-        ResourceSet resourceSet = new ResourceSetImpl();
         resourceSet.setPackageRegistry(ePackageRegistry);
 
-        for (DocumentEntity documentEntity : entities) {
-            URI uri = URI.createURI(documentEntity.getId().toString());
-            JsonResource resource = new SiriusWebJSONResourceFactoryImpl().createResource(uri);
-            try (var inputStream = new ByteArrayInputStream(documentEntity.getContent().getBytes())) {
-                resourceSet.getResources().add(resource);
-                resource.load(inputStream, null);
-
-                resource.eAdapters().add(new DocumentMetadataAdapter(documentEntity.getName()));
-            } catch (IOException | IllegalArgumentException exception) {
-                this.logger.warn(exception.getMessage(), exception);
-            }
+        var domainDocumentEntities = this.documentRepository.findAllByType(DomainPackage.eNAME, DomainPackage.eNS_URI);
+        for (DocumentEntity domainDocumentEntity : domainDocumentEntities) {
+            this.loadDomainDefinitions(resourceSet, domainDocumentEntity);
         }
 
-        // @formatter:off
-        List<EPackage> allEPackages = new ArrayList<>();
-        // The global/static EPackages
-        this.globalEPackageRegistry.values().stream()
-                                   .filter(EPackage.class::isInstance)
-                                   .map(EPackage.class::cast)
-                                   .forEach(allEPackages::add);
-        // The dynamically defined EPackage obtained from the accessible Domain definitions
-        resourceSet.getResources().stream()
-                .flatMap(resource -> {
-                    return resource.getContents().stream()
-                            .filter(Domain.class::isInstance)
-                            .map(Domain.class::cast)
-                            .findFirst()
-                            .flatMap(this.domainConverter)
-                            .stream();
-                })
-                .forEach(allEPackages::add);
-        // @formatter:on
-        return allEPackages;
+        return resourceSet.getResources().stream().flatMap(res -> this.convertDomains(res, domainConverter));
     }
+
+    private void loadDomainDefinitions(ResourceSet resourceSet, DocumentEntity domainDocument) {
+        URI uri = URI.createURI(domainDocument.getId().toString());
+        JsonResource resource = new SiriusWebJSONResourceFactoryImpl().createResource(uri);
+        try (var inputStream = new ByteArrayInputStream(domainDocument.getContent().getBytes())) {
+            resourceSet.getResources().add(resource);
+            resource.load(inputStream, null);
+        } catch (IOException | IllegalArgumentException exception) {
+            this.logger.warn(exception.getMessage(), exception);
+        }
+    }
+
+    private Stream<EPackage> convertDomains(Resource resource, Function<Domain, Optional<EPackage>> domainConverter) {
+        // @formatter:off
+        return resource.getContents().stream()
+                       .filter(Domain.class::isInstance)
+                       .map(Domain.class::cast)
+                       .map(domainConverter)
+                       .flatMap(Optional::stream);
+        // @formatter:on
+    }
+
 }
