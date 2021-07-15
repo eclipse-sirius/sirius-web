@@ -44,7 +44,10 @@ public class CustomImagesLoader implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         if (this.customImageRepository.count() == 0) {
-            this.loadImages(Paths.get(System.getProperty("org.eclipse.sirius.web.customImages.path"))); //$NON-NLS-1$
+            String customImagesPath = System.getProperty("org.eclipse.sirius.web.customImages.path"); //$NON-NLS-1$
+            if (customImagesPath != null) {
+                this.loadImages(Paths.get(customImagesPath));
+            }
         }
     }
 
