@@ -18,6 +18,7 @@ export interface ToolbarProps {
   onFitToScreen: () => void;
   onArrangeAll: () => void;
   setZoomLevel: (zoomLevel: string) => void;
+  autoLayout: boolean;
   zoomLevel: string;
   subscribers: Subscriber[];
 }

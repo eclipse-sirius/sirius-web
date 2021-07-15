@@ -879,6 +879,7 @@ export const DiagramWebSocketContainer = ({
         onFitToScreen={onFitToScreen}
         onArrangeAll={onArrangeAll}
         setZoomLevel={setZoomLevel}
+        autoLayout={diagram?.autoLayout}
         zoomLevel={zoomLevel}
         subscribers={subscribers}
       />
