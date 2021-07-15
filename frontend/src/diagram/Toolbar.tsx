@@ -24,17 +24,7 @@ import ZoomInIcon from '@material-ui/icons/ZoomIn';
 import ZoomOutIcon from '@material-ui/icons/ZoomOut';
 import { ToolbarProps, ToolbarState } from 'diagram/Toolbar.types';
 import { ShareDiagramModal } from 'modals/share-diagram/ShareDiagramModal';
-import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
-
-const propTypes = {
-  onZoomIn: PropTypes.func.isRequired,
-  onZoomOut: PropTypes.func.isRequired,
-  onFitToScreen: PropTypes.func.isRequired,
-  setZoomLevel: PropTypes.func.isRequired,
-  zoomLevel: PropTypes.string,
-  subscribers: PropTypes.array.isRequired,
-};
 
 const useToolbarStyles = makeStyles((theme) => ({
   toolbar: {
@@ -73,6 +63,7 @@ export const Toolbar = ({
   onFitToScreen,
   onArrangeAll,
   setZoomLevel,
+  autoLayout,
   zoomLevel,
   subscribers,
 }: ToolbarProps) => {
@@ -138,6 +129,7 @@ export const Toolbar = ({
           size="small"
           color="inherit"
           aria-label="arrange-all"
+          disabled={autoLayout}
           onClick={onArrangeAll}
           data-testid="arrange-all">
           <AccountTreeIcon fontSize="small" />
@@ -158,4 +150,3 @@ export const Toolbar = ({
     </>
   );
 };
-Toolbar.propTypes = propTypes;
