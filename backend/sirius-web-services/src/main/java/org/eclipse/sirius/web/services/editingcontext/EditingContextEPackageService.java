@@ -14,7 +14,7 @@ package org.eclipse.sirius.web.services.editingcontext;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -66,12 +66,24 @@ public class EditingContextEPackageService implements IEditingContextEPackageSer
 
     @Override
     public List<EPackage> getEPackages(UUID editingContextId) {
-        List<EPackage> allEPackages = new ArrayList<>();
-        this.findGlobalEPackages().forEach(allEPackages::add);
+        LinkedHashMap<String, EPackage> allEPackages = new LinkedHashMap<>();
+        this.findGlobalEPackages().forEach(ePackage -> {
+            EPackage previous = allEPackages.put(ePackage.getNsURI(), ePackage);
+            if (previous != null) {
+                // This should never happen for EPackages coming from the global registry, but
+                // it does not cost much to check it.
+                this.logger.warn("Duplicate EPackages with nsURI {} found.", ePackage.getNsURI()); //$NON-NLS-1$
+            }
+        });
         if (this.isStudioDefinitionEnabled) {
-            this.findDynamicEPackages(new DomainConverter()::convert).forEach(allEPackages::add);
+            this.findDynamicEPackages(new DomainConverter()::convert).forEach(ePackage -> {
+                EPackage previous = allEPackages.put(ePackage.getNsURI(), ePackage);
+                if (previous != null) {
+                    this.logger.warn("Duplicate EPackages with nsURI {} found.", ePackage.getNsURI()); //$NON-NLS-1$
+                }
+            });
         }
-        return allEPackages;
+        return List.copyOf(allEPackages.values());
     }
 
     /**
