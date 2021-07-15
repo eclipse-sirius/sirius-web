@@ -110,12 +110,13 @@ public class EditingContextSearchService implements IEditingContextSearchService
 
                 resource.eAdapters().add(new DocumentMetadataAdapter(documentEntity.getName()));
             } catch (IOException | IllegalArgumentException exception) {
-                this.logger.warn(exception.getMessage(), exception);
+                this.logger.warn("An error occured while loading document {}: {}.", documentEntity.getId(), exception.getMessage()); //$NON-NLS-1$
+                resourceSet.getResources().remove(resource);
             }
         }
 
         AdapterFactoryEditingDomain editingDomain = new AdapterFactoryEditingDomain(this.composedAdapterFactory, new BasicCommandStack(), resourceSet);
-        this.logger.debug("{} documents loaded for the editing context {}", documentEntities.size(), editingContextId); //$NON-NLS-1$
+        this.logger.debug("{} documents loaded for the editing context {}", resourceSet.getResources().size(), editingContextId); //$NON-NLS-1$
 
         long end = System.currentTimeMillis();
         this.timer.record(end - start, TimeUnit.MILLISECONDS);
