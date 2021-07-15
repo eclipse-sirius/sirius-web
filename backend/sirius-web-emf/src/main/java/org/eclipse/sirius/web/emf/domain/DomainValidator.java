@@ -30,14 +30,13 @@ import org.eclipse.sirius.web.domain.Domain;
  * @author gcoutable
  */
 public class DomainValidator implements EValidator {
+    public static final String DOMAIN_URI_SCHEME = "domain://"; //$NON-NLS-1$
 
     private static final String SIRIUS_WEB_EMF_PACKAGE = "org.eclipse.sirius.web.emf"; //$NON-NLS-1$
 
     private static final String DOMAIN_NAME_ERROR_MESSAGE = "The domain name should not be empty."; //$NON-NLS-1$
 
     private static final String DOMAIN_URI_SCHEME_ERROR_MESSAGE = "The domain %1$s uri's does not start with \"domain://\"."; //$NON-NLS-1$
-
-    private static final String DOMAIN_URI_SCHEME = "domain://"; //$NON-NLS-1$
 
     @Override
     public boolean validate(EDataType eDataType, Object value, DiagnosticChain diagnostics, Map<Object, Object> context) {

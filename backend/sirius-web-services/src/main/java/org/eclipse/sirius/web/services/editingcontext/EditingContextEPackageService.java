@@ -17,7 +17,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -54,7 +56,7 @@ public class EditingContextEPackageService implements IEditingContextEPackageSer
 
     private final IDocumentRepository documentRepository;
 
-    private final DomainConverter domainConverter;
+    private final Function<Domain, Optional<EPackage>> domainConverter;
 
     private final boolean isStudioDefinitionEnabled;
 
@@ -63,7 +65,11 @@ public class EditingContextEPackageService implements IEditingContextEPackageSer
         this.globalEPackageRegistry = Objects.requireNonNull(globalEPackageRegistry);
         this.documentRepository = Objects.requireNonNull(documentRepository);
         this.isStudioDefinitionEnabled = isStudioDefinitionEnabled;
-        this.domainConverter = new DomainConverter(isStudioDefinitionEnabled);
+        if (isStudioDefinitionEnabled) {
+            this.domainConverter = new DomainConverter()::convert;
+        } else {
+            this.domainConverter = domain -> Optional.empty();
+        }
     }
 
     @Override
@@ -110,7 +116,7 @@ public class EditingContextEPackageService implements IEditingContextEPackageSer
                             .filter(Domain.class::isInstance)
                             .map(Domain.class::cast)
                             .findFirst()
-                            .flatMap(this.domainConverter::convert)
+                            .flatMap(this.domainConverter)
                             .stream();
                 })
                 .forEach(allEPackages::add);
