@@ -52,7 +52,7 @@ public class DiagramElementFactory implements IElementFactory {
         } else if (EdgeElementProps.TYPE.equals(type) && props instanceof EdgeElementProps) {
             object = this.instantiateEdge((EdgeElementProps) props, children);
         } else if (LabelElementProps.TYPE.equals(type) && props instanceof LabelElementProps) {
-            object = this.instantiateLabel((LabelElementProps) props, children);
+            object = this.instantiateLabel((LabelElementProps) props);
         }
         return object;
     }
@@ -157,7 +157,7 @@ public class DiagramElementFactory implements IElementFactory {
 
     }
 
-    private Label instantiateLabel(LabelElementProps props, List<Object> children) {
+    private Label instantiateLabel(LabelElementProps props) {
         // @formatter:off
         return Label.newLabel(props.getId())
                 .type(props.getType())

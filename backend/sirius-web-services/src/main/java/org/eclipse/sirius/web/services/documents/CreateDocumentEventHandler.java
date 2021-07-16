@@ -105,7 +105,7 @@ public class CreateDocumentEventHandler implements IEditingContextEventHandler {
             } else if (optionalStereotypeDescription.isEmpty()) {
                 IPayload payload = new ErrorPayload(input.getId(), this.messageService.stereotypeDescriptionNotFound(stereotypeDescriptionId));
                 response = new EventHandlerResponse(new ChangeDescription(ChangeKind.NOTHING, editingContext.getId()), payload);
-            } else if (optionalStereotypeDescription.isPresent()) {
+            } else {
                 StereotypeDescription stereotypeDescription = optionalStereotypeDescription.get();
                 response = this.createDocument(createDocumentInput.getId(), editingContext, editingContextId, name, stereotypeDescription);
             }

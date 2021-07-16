@@ -36,12 +36,7 @@ public class SiriusWebLayoutConfigurator extends LayoutConfigurator {
      * Configure layout options for all model elements with the given type.
      */
     public IPropertyHolder configureByType(String type) {
-        MapPropertyHolder result = this.typeIndex.get(type);
-        if (result == null) {
-            result = new MapPropertyHolder();
-            this.typeIndex.put(type, result);
-        }
-        return result;
+        return this.typeIndex.computeIfAbsent(type, key -> new MapPropertyHolder());
     }
 
     @Override

@@ -71,7 +71,7 @@ public class ToolImageProvider implements Supplier<String> {
         var optionalIconPathEAttribute = Optional.ofNullable(this.abstractToolDescription.eClass().getEStructuralFeature(ICON_PATH));
 
         // @formatter:off
-        return optionalIconPathEAttribute.map(iconPathEAttribute -> this.abstractToolDescription.eGet(iconPathEAttribute))
+        return optionalIconPathEAttribute.map(this.abstractToolDescription::eGet)
                 .filter(String.class::isInstance)
                 .map(String.class::cast)
                 .filter(iconPath -> !iconPath.isBlank())

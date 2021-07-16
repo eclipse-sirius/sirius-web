@@ -161,9 +161,7 @@ public class ImagesController {
 
         // @formatter:off
         return accessibleImagePaths.stream()
-                .filter(accessibleImagePath -> imagePath.startsWith(accessibleImagePath))
-                .findFirst()
-                .isPresent();
+                .anyMatch(accessibleImagePath -> imagePath.startsWith(accessibleImagePath));
         // @formatter:on
     }
 }

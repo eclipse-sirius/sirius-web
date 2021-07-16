@@ -159,7 +159,7 @@ public class WidgetDescriptionConverter {
             Optional<Object> optionalResult = this.interpreter.evaluateExpression(variableManager.getVariables(), radioDescription.getValueExpression()).asObject();
             Object candidate = variableManager.getVariables().get(RadioComponent.CANDIDATE_VARIABLE);
 
-            return optionalResult.map(result -> candidate.equals(result)).orElse(Boolean.FALSE);
+            return optionalResult.map(candidate::equals).orElse(Boolean.FALSE);
         };
 
         Function<VariableManager, List<Object>> optionsProvider = variableManager -> {

@@ -80,7 +80,7 @@ public class SubscriptionTypeProvider implements ISubscriptionTypeProvider {
     public GraphQLObjectType getType() {
         // @formatter:off
         var fields = this.subscriptionDataFetcherClasses.stream()
-                .map(dataFetcherClass -> this.graphQLNameProvider.getSubscriptionFieldName(dataFetcherClass))
+                .map(this.graphQLNameProvider::getSubscriptionFieldName)
                 .map(this::getSubscriptionField)
                 .collect(Collectors.toUnmodifiableList());
 

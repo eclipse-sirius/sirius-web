@@ -87,7 +87,7 @@ public class Result {
      *         meaningfully.
      */
     public Optional<String> asString() {
-        return this.rawValue.map(value -> String.valueOf(value));
+        return this.rawValue.map(String::valueOf);
     }
 
     /**

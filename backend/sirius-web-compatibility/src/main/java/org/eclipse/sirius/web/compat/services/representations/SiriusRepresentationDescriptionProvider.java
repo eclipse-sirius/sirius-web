@@ -74,7 +74,7 @@ public class SiriusRepresentationDescriptionProvider {
                 .collect(Collectors.toList());
 
         return viewExtensionDescriptions.stream()
-                .map(viewExtensionDescription -> this.viewExtensionDescriptionConverter.convert(viewExtensionDescription))
+                .map(this.viewExtensionDescriptionConverter::convert)
                 .collect(Collectors.toUnmodifiableList());
         // @formatter:on
     }

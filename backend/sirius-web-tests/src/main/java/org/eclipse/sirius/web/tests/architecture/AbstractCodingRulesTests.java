@@ -277,8 +277,6 @@ public abstract class AbstractCodingRulesTests {
                         name = name.substring(IS.length());
                     } else if (name.startsWith(GET)) {
                         name = name.substring(GET.length());
-                    } else {
-                        isConditionSatisfied = false;
                     }
 
                     if (!name.isBlank()) {
