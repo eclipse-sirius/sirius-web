@@ -26,6 +26,8 @@ import org.eclipse.sirius.web.domain.Domain;
 import org.eclipse.sirius.web.domain.DomainFactory;
 import org.eclipse.sirius.web.domain.DomainPackage;
 import org.eclipse.sirius.web.domain.provider.DomainItemProviderAdapterFactory;
+import org.eclipse.sirius.web.view.DiagramDescription;
+import org.eclipse.sirius.web.view.View;
 import org.eclipse.sirius.web.view.ViewFactory;
 import org.eclipse.sirius.web.view.ViewPackage;
 import org.eclipse.sirius.web.view.provider.ViewItemProviderAdapterFactory;
@@ -110,6 +112,10 @@ public class StudioConfiguration {
     }
 
     private String getEmptyViewContent() {
-        return this.stereotypeBuilder.getStereotypeBody(ViewFactory.eINSTANCE.createView());
+        View newView = ViewFactory.eINSTANCE.createView();
+        DiagramDescription diagramDescription = ViewFactory.eINSTANCE.createDiagramDescription();
+        diagramDescription.setName("New Diagram Description"); //$NON-NLS-1$
+        newView.getDescriptions().add(diagramDescription);
+        return this.stereotypeBuilder.getStereotypeBody(newView);
     }
 }
