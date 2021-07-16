@@ -209,7 +209,7 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
                     resource = new SiriusWebJSONResourceFactoryImpl().createResource(resourceURI);
                 } else if (line.contains("<")) { //$NON-NLS-1$
                     resource = new XMIResourceImpl(resourceURI);
-                    options = new EMFResourceUtils().getFastXMILoadOptions();
+                    options = new EMFResourceUtils().getXMILoadOptions();
                 }
             }
             bufferedInputStream.reset();
