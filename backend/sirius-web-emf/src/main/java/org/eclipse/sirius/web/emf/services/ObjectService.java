@@ -118,7 +118,7 @@ public class ObjectService implements IObjectService {
         // @formatter:off
         return Optional.of(object).filter(EObject.class::isInstance)
                 .map(EObject.class::cast)
-                .flatMap(eObject -> this.getLabelEAttribute(eObject).map(eAttribute -> eObject.eGet(eAttribute)))
+                .flatMap(eObject -> this.getLabelEAttribute(eObject).map(eObject::eGet))
                 .map(Object::toString)
                 .orElse(""); //$NON-NLS-1$
         // @formatter:on

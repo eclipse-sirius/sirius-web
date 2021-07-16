@@ -84,7 +84,9 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
         diagramContext.update(diagram);
         this.diagramEventFlux = new DiagramEventFlux(diagram);
 
-        this.logger.trace("Diagram refreshed: {})", diagram.getId()); //$NON-NLS-1$
+        if (diagram != null) {
+            this.logger.trace("Diagram refreshed: {})", diagram.getId()); //$NON-NLS-1$
+        }
     }
 
     @Override
@@ -128,8 +130,9 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
     public void refresh(IInput input, ChangeDescription changeDescription) {
         if (this.shouldRefresh(changeDescription)) {
             Diagram refreshedDiagram = this.diagramCreationService.refresh(this.editingContext, this.diagramContext).orElse(null);
-
-            this.logger.trace("Diagram refreshed: {}", refreshedDiagram.getId()); //$NON-NLS-1$
+            if (refreshedDiagram != null) {
+                this.logger.trace("Diagram refreshed: {}", refreshedDiagram.getId()); //$NON-NLS-1$
+            }
 
             this.diagramContext.reset();
             this.diagramContext.update(refreshedDiagram);

@@ -76,7 +76,7 @@ public class MutationTypeProvider implements IMutationTypeProvider {
     public GraphQLObjectType getType() {
         // @formatter:off
         var fields = this.mutationDataFetcherClass.stream()
-                .map(dataFetcherClass -> this.graphQLNameProvider.getMutationFieldName(dataFetcherClass))
+                .map(this.graphQLNameProvider::getMutationFieldName)
                 .map(this::getMutationField)
                 .collect(Collectors.toUnmodifiableList());
 

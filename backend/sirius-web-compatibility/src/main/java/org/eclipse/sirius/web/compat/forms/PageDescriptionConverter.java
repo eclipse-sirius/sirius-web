@@ -65,7 +65,7 @@ public class PageDescriptionConverter {
 
         // @formatter:off
         List<GroupDescription> groupDescriptions = siriusPageDescription.getGroups().stream()
-                .map(groupDescription -> siriusGroup2SiriusWebGroup.get(groupDescription))
+                .map(siriusGroup2SiriusWebGroup::get)
                 .collect(Collectors.toUnmodifiableList());
 
         return PageDescription.newPageDescription(this.identifierProvider.getIdentifier(siriusPageDescription))

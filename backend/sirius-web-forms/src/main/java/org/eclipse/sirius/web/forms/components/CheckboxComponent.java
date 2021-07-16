@@ -45,9 +45,7 @@ public class CheckboxComponent implements IComponent {
         String label = checkboxDescription.getLabelProvider().apply(variableManager);
         Boolean value = checkboxDescription.getValueProvider().apply(variableManager);
         BiFunction<VariableManager, Boolean, Status> genericHandler = checkboxDescription.getNewValueHandler();
-        Function<Boolean, Status> specializedHandler = newValue -> {
-            return genericHandler.apply(variableManager, newValue);
-        };
+        Function<Boolean, Status> specializedHandler = newValue -> genericHandler.apply(variableManager, newValue);
 
         // @formatter:off
         CheckboxElementProps checkboxElementProps = CheckboxElementProps.newCheckboxElementProps(id)
