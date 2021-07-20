@@ -22,7 +22,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius.web</groupId>
 	<artifactId>sirius-web-graphql-schema</artifactId>
-	<version>0.3.5</version>
+	<version>0.3.6</version>
 	<name>sirius-web-graphql-schema</name>
 	<description>Sirius Web GraphQL Schema</description>
 
@@ -46,42 +46,42 @@
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-graphql-utils</artifactId>
-			<version>0.3.5</version>
+			<version>0.3.6</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-spring-graphql-api</artifactId>
-			<version>0.3.5</version>
+			<version>0.3.6</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-services-api</artifactId>
-			<version>0.3.5</version>
+			<version>0.3.6</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-collaborative-api</artifactId>
-			<version>0.3.5</version>
+			<version>0.3.6</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-collaborative-diagrams-api</artifactId>
-			<version>0.3.5</version>
+			<version>0.3.6</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-collaborative-forms-api</artifactId>
-			<version>0.3.5</version>
+			<version>0.3.6</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-collaborative-validation-api</artifactId>
-			<version>0.3.5</version>
+			<version>0.3.6</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-collaborative-trees-api</artifactId>
-			<version>0.3.5</version>
+			<version>0.3.6</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -91,13 +91,13 @@
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-tests</artifactId>
-			<version>0.3.5</version>
+			<version>0.3.6</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-spring-tests</artifactId>
-			<version>0.3.5</version>
+			<version>0.3.6</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
