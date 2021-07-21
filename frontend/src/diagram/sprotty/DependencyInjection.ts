@@ -30,6 +30,7 @@ import {
 import { Container, ContainerModule, decorate, inject } from 'inversify';
 import {
   boundsModule,
+  configureActionHandler,
   configureModelElement,
   configureView,
   configureViewerOptions,
@@ -38,6 +39,8 @@ import {
   edgeEditModule,
   edgeLayoutModule,
   EditLabelAction,
+  EditLabelActionHandler,
+  EditLabelUI,
   exportModule,
   fadeModule,
   graphModule,
@@ -45,7 +48,6 @@ import {
   HtmlRootView,
   KeyListener,
   labelEditModule,
-  labelEditUiModule,
   LogLevel,
   modelSourceModule,
   MouseListener,
@@ -68,6 +70,36 @@ import {
   ZoomMouseListener,
   zorderModule,
 } from 'sprotty';
+
+/**
+ * Extends Sprotty's SLabel to add support for having the initial text when entering
+ * in direct edit mode different from the text's label itself, and makes the
+ * pre-selection of the edited text optional.
+ */
+export class SEditableLabel extends SLabel {
+  initialText: string;
+  preSelect: boolean = true;
+}
+
+class EditLabelUIWithInitialContent extends EditLabelUI {
+  protected applyTextContents() {
+    if (this.label instanceof SEditableLabel) {
+      this.inputElement.value = this.label.initialText || this.label.text;
+      if (this.label.preSelect) {
+        this.inputElement.setSelectionRange(0, this.inputElement.value.length);
+      }
+    } else {
+      super.applyTextContents();
+    }
+  }
+}
+
+const labelEditUiModule = new ContainerModule((bind, _unbind, isBound) => {
+  const context = { bind, isBound };
+  configureActionHandler(context, EditLabelAction.KIND, EditLabelActionHandler);
+  bind(EditLabelUIWithInitialContent).toSelf().inSingletonScope();
+  bind(TYPES.IUIExtension).toService(EditLabelUIWithInitialContent);
+});
 
 const siriusWebContainerModule = new ContainerModule((bind, unbind, isBound, rebind) => {
   rebind(TYPES.ILogger).to(ConsoleLogger).inSingletonScope();
@@ -95,15 +127,15 @@ const siriusWebContainerModule = new ContainerModule((bind, unbind, isBound, reb
   configureView({ bind, isBound }, 'port:square', RectangleView);
   configureView({ bind, isBound }, 'edge:straight', EdgeView);
   // @ts-ignore
-  configureModelElement(context, 'label:inside-center', SLabel, LabelView);
+  configureModelElement(context, 'label:inside-center', SEditableLabel, LabelView);
   // @ts-ignore
-  configureModelElement(context, 'label:outside-center', SLabel, LabelView);
+  configureModelElement(context, 'label:outside-center', SEditableLabel, LabelView);
   // @ts-ignore
-  configureModelElement(context, 'label:edge-begin', SLabel, LabelView);
+  configureModelElement(context, 'label:edge-begin', SEditableLabel, LabelView);
   // @ts-ignore
-  configureModelElement(context, 'label:edge-center', SLabel, LabelView);
+  configureModelElement(context, 'label:edge-center', SEditableLabel, LabelView);
   // @ts-ignore
-  configureModelElement(context, 'label:edge-end', SLabel, LabelView);
+  configureModelElement(context, 'label:edge-end', SEditableLabel, LabelView);
   // @ts-ignore
   configureView({ bind, isBound }, 'comp:main', SCompartmentView);
   configureView({ bind, isBound }, 'html', HtmlRootView);
@@ -258,7 +290,7 @@ export const createDependencyInjectionContainer = (containerId, onSelectElement,
         event.key.length === 1 &&
         directEditActivationValidCharacters.test(event.key);
       if (validFirstInputChar) {
-        return [{ kind: EditLabelAction.KIND, element }];
+        return [{ kind: EditLabelAction.KIND, element, initialText: event.key, preSelect: false }];
       }
     }
     return [];
