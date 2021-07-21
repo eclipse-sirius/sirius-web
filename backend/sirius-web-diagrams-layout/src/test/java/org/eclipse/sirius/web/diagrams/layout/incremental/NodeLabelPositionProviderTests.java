@@ -14,19 +14,24 @@ package org.eclipse.sirius.web.diagrams.layout.incremental;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.List;
 import java.util.UUID;
 
+import org.eclipse.elk.alg.layered.options.LayeredMetaDataProvider;
+import org.eclipse.elk.core.data.LayoutMetaDataService;
 import org.eclipse.sirius.web.diagrams.LabelStyle;
 import org.eclipse.sirius.web.diagrams.NodeType;
 import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.Size;
 import org.eclipse.sirius.web.diagrams.TextBounds;
 import org.eclipse.sirius.web.diagrams.TextBoundsProvider;
+import org.eclipse.sirius.web.diagrams.layout.LayoutConfiguratorRegistry;
 import org.eclipse.sirius.web.diagrams.layout.incremental.data.DiagramLayoutData;
 import org.eclipse.sirius.web.diagrams.layout.incremental.data.IContainerLayoutData;
 import org.eclipse.sirius.web.diagrams.layout.incremental.data.LabelLayoutData;
 import org.eclipse.sirius.web.diagrams.layout.incremental.data.NodeLayoutData;
 import org.eclipse.sirius.web.diagrams.layout.incremental.provider.NodeLabelPositionProvider;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -44,11 +49,16 @@ public class NodeLabelPositionProviderTests {
 
     private static final Size DEFAULT_NODE_SIZE = Size.of(150, 70);
 
+    @BeforeAll
+    public static void beforeAll() {
+        LayoutMetaDataService.getInstance().registerLayoutMetaDataProviders(new LayeredMetaDataProvider());
+    }
+
     @Test
     public void testNodeImageLabelBoundsPosition() {
         DiagramLayoutData createDiagramLayoutData = this.createDiagramLayoutData();
         NodeLayoutData nodeLayoutData = this.createNodeLayoutData(Position.at(0, 0), DEFAULT_NODE_SIZE, createDiagramLayoutData, NodeType.NODE_IMAGE);
-        NodeLabelPositionProvider labelBoundsProvider = new NodeLabelPositionProvider();
+        NodeLabelPositionProvider labelBoundsProvider = new NodeLabelPositionProvider(new LayoutConfiguratorRegistry(List.of()).getDefaultLayoutConfigurator());
         LabelLayoutData labelLayoutData = this.createLabelLayoutData();
 
         Position position = labelBoundsProvider.getPosition(nodeLayoutData, labelLayoutData);
@@ -60,7 +70,7 @@ public class NodeLabelPositionProviderTests {
     public void testNodeRectangleLabelBoundsPosition() {
         DiagramLayoutData createDiagramLayoutData = this.createDiagramLayoutData();
         NodeLayoutData nodeLayoutData = this.createNodeLayoutData(Position.at(0, 0), DEFAULT_NODE_SIZE, createDiagramLayoutData, NodeType.NODE_RECTANGLE);
-        NodeLabelPositionProvider labelBoundsProvider = new NodeLabelPositionProvider();
+        NodeLabelPositionProvider labelBoundsProvider = new NodeLabelPositionProvider(new LayoutConfiguratorRegistry(List.of()).getDefaultLayoutConfigurator());
         LabelLayoutData labelLayoutData = this.createLabelLayoutData();
         Position position = labelBoundsProvider.getPosition(nodeLayoutData, labelLayoutData);
         assertThat(position).extracting(Position::getX).isEqualTo(Double.valueOf(42.5390625));

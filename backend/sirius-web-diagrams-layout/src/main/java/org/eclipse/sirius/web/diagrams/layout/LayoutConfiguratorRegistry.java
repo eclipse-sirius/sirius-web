@@ -18,7 +18,7 @@ import java.util.Objects;
 
 import org.eclipse.elk.alg.layered.options.LayeredOptions;
 import org.eclipse.elk.alg.layered.options.LayeringStrategy;
-import org.eclipse.elk.core.LayoutConfigurator;
+import org.eclipse.elk.core.math.ElkPadding;
 import org.eclipse.elk.core.math.KVector;
 import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.core.options.FixedLayouterOptions;
@@ -26,6 +26,7 @@ import org.eclipse.elk.core.options.HierarchyHandling;
 import org.eclipse.elk.core.options.NodeLabelPlacement;
 import org.eclipse.elk.core.options.SizeConstraint;
 import org.eclipse.elk.core.options.SizeOptions;
+import org.eclipse.elk.graph.ElkEdge;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.NodeType;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
@@ -60,7 +61,7 @@ public class LayoutConfiguratorRegistry {
         this.customLayoutProviders = List.copyOf(Objects.requireNonNull(customLayoutProviders));
     }
 
-    public LayoutConfigurator getDefaultLayoutConfigurator() {
+    public ISiriusWebLayoutConfigurator getDefaultLayoutConfigurator() {
         // @formatter:off
         SiriusWebLayoutConfigurator configurator = new SiriusWebLayoutConfigurator();
         configurator.configureByType(ELKDiagramConverter.DEFAULT_DIAGRAM_TYPE)
@@ -79,11 +80,13 @@ public class LayoutConfiguratorRegistry {
                 .setProperty(CoreOptions.NODE_LABELS_PLACEMENT, NodeLabelPlacement.insideTopCenter());
 
         configurator.configureByType(NodeType.NODE_LIST)
-                    .setProperty(CoreOptions.ALGORITHM, FixedLayouterOptions.ALGORITHM_ID)
-                    .setProperty(CoreOptions.NODE_LABELS_PLACEMENT, NodeLabelPlacement.insideTopCenter())
-                    .setProperty(CoreOptions.NODE_SIZE_FIXED_GRAPH_SIZE, true);
+                .setProperty(CoreOptions.ALGORITHM, FixedLayouterOptions.ALGORITHM_ID)
+                .setProperty(CoreOptions.NODE_LABELS_PLACEMENT, NodeLabelPlacement.insideTopCenter())
+                .setProperty(CoreOptions.NODE_SIZE_FIXED_GRAPH_SIZE, true);
 
-        configurator.configureByType(NodeType.NODE_LIST_ITEM).setProperty(CoreOptions.NO_LAYOUT, true);
+        configurator.configureByType(NodeType.NODE_LIST_ITEM)
+                .setProperty(CoreOptions.NO_LAYOUT, true)
+                .setProperty(CoreOptions.NODE_LABELS_PADDING, new ElkPadding(0d, 12d, 0d, 6d));
 
         configurator.configureByType(NodeType.NODE_IMAGE)
                 .setProperty(CoreOptions.NODE_SIZE_CONSTRAINTS, SizeConstraint.free())
@@ -92,12 +95,14 @@ public class LayoutConfiguratorRegistry {
         // This image type does not match any diagram item. We add it to define the image size as constraint for the node image parent.
         configurator.configureByType(ELKDiagramConverter.DEFAULT_IMAGE_TYPE)
                 .setProperty(CoreOptions.NODE_SIZE_CONSTRAINTS, SizeConstraint.fixed());
+
+        configurator.configure(ElkEdge.class).setProperty(CoreOptions.SPACING_EDGE_LABEL, 3d);
         // @formatter:on
 
         return configurator;
     }
 
-    public LayoutConfigurator getLayoutConfigurator(Diagram diagram, DiagramDescription diagramDescription) {
+    public ISiriusWebLayoutConfigurator getLayoutConfigurator(Diagram diagram, DiagramDescription diagramDescription) {
         for (var customLayoutProvider : this.customLayoutProviders) {
             var customLayout = customLayoutProvider.getLayoutConfigurator(diagram, diagramDescription);
             if (customLayout.isPresent()) {

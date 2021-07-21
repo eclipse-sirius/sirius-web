@@ -18,6 +18,7 @@ import java.util.Optional;
 import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.Size;
 import org.eclipse.sirius.web.diagrams.events.IDiagramEvent;
+import org.eclipse.sirius.web.diagrams.layout.ISiriusWebLayoutConfigurator;
 import org.eclipse.sirius.web.diagrams.layout.incremental.data.DiagramLayoutData;
 import org.eclipse.sirius.web.diagrams.layout.incremental.data.EdgeLayoutData;
 import org.eclipse.sirius.web.diagrams.layout.incremental.data.IContainerLayoutData;
@@ -48,11 +49,11 @@ public class IncrementalLayoutEngine {
      */
     public static final double NODES_GAP = 30;
 
-    private final NodeLabelPositionProvider nodeLabelPositionProvider = new NodeLabelPositionProvider();
+    private NodeLabelPositionProvider nodeLabelPositionProvider;
 
     private final EdgeRoutingPointsProvider edgeRoutingPointsProvider = new EdgeRoutingPointsProvider();
 
-    private final EdgeLabelPositionProvider edgeLabelPositionProvider = new EdgeLabelPositionProvider();
+    private EdgeLabelPositionProvider edgeLabelPositionProvider;
 
     private final NodePositionProvider nodePositionProvider = new NodePositionProvider();
 
@@ -62,8 +63,10 @@ public class IncrementalLayoutEngine {
         this.nodeSizeProvider = Objects.requireNonNull(nodeSizeProvider);
     }
 
-    public void layout(Optional<IDiagramEvent> optionalDiagramElementEvent, DiagramLayoutData diagram) {
+    public void layout(Optional<IDiagramEvent> optionalDiagramElementEvent, DiagramLayoutData diagram, ISiriusWebLayoutConfigurator layoutConfigurator) {
         this.nodePositionProvider.reset();
+        this.nodeLabelPositionProvider = new NodeLabelPositionProvider(layoutConfigurator);
+        this.edgeLabelPositionProvider = new EdgeLabelPositionProvider(layoutConfigurator);
 
         // first we layout all the nodes
         for (NodeLayoutData node : diagram.getChildrenNodes()) {
@@ -149,5 +152,4 @@ public class IncrementalLayoutEngine {
         }
         return result;
     }
-
 }

@@ -19,17 +19,21 @@ import java.util.List;
 import java.util.UUID;
 
 import org.assertj.core.data.Offset;
+import org.eclipse.elk.alg.layered.options.LayeredMetaDataProvider;
+import org.eclipse.elk.core.data.LayoutMetaDataService;
 import org.eclipse.sirius.web.diagrams.LabelStyle;
 import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.Size;
 import org.eclipse.sirius.web.diagrams.TextBounds;
 import org.eclipse.sirius.web.diagrams.TextBoundsProvider;
+import org.eclipse.sirius.web.diagrams.layout.LayoutConfiguratorRegistry;
 import org.eclipse.sirius.web.diagrams.layout.incremental.data.DiagramLayoutData;
 import org.eclipse.sirius.web.diagrams.layout.incremental.data.EdgeLayoutData;
 import org.eclipse.sirius.web.diagrams.layout.incremental.data.IContainerLayoutData;
 import org.eclipse.sirius.web.diagrams.layout.incremental.data.LabelLayoutData;
 import org.eclipse.sirius.web.diagrams.layout.incremental.data.NodeLayoutData;
 import org.eclipse.sirius.web.diagrams.layout.incremental.provider.EdgeLabelPositionProvider;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -45,13 +49,18 @@ public class EdgeLabelPositionProviderTests {
 
     private static final String ICON_URL = ""; //$NON-NLS-1$
 
+    @BeforeAll
+    public static void beforeAll() {
+        LayoutMetaDataService.getInstance().registerLayoutMetaDataProviders(new LayeredMetaDataProvider());
+    }
+
     @Test
     public void testEdgeLabelBoundsPosition() {
         EdgeLayoutData edgeLayoutData = this.createEdgeLayoutData(this.createDiagramLayoutData());
-        EdgeLabelPositionProvider labelBoundsProvider = new EdgeLabelPositionProvider();
+        EdgeLabelPositionProvider labelBoundsProvider = new EdgeLabelPositionProvider(new LayoutConfiguratorRegistry(List.of()).getDefaultLayoutConfigurator());
         Position centerPosition = labelBoundsProvider.getCenterPosition(edgeLayoutData, edgeLayoutData.getCenterLabel());
         assertThat(centerPosition.getX()).isCloseTo(267.539, Offset.offset(0.0001));
-        assertThat(centerPosition.getY()).isCloseTo(100, Offset.offset(0.0001));
+        assertThat(centerPosition.getY()).isCloseTo(103, Offset.offset(0.0001));
     }
 
     private DiagramLayoutData createDiagramLayoutData() {

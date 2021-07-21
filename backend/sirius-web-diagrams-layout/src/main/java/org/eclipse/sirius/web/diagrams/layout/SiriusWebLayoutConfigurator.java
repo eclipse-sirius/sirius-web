@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,17 +26,20 @@ import org.eclipse.elk.graph.properties.MapPropertyHolder;
  *
  * @author hmarchadour
  */
-public class SiriusWebLayoutConfigurator extends LayoutConfigurator {
+public class SiriusWebLayoutConfigurator extends LayoutConfigurator implements ISiriusWebLayoutConfigurator {
 
     private final Map<String, MapPropertyHolder> idIndex = new HashMap<>();
 
     private final Map<String, MapPropertyHolder> typeIndex = new HashMap<>();
 
-    /**
-     * Configure layout options for all model elements with the given type.
-     */
+    @Override
     public IPropertyHolder configureByType(String type) {
         return this.typeIndex.computeIfAbsent(type, key -> new MapPropertyHolder());
+    }
+
+    @Override
+    public IPropertyHolder configureByElementClass(Class<? extends ElkGraphElement> elementClass) {
+        return this.configure(elementClass);
     }
 
     @Override

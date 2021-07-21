@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,6 @@ package org.eclipse.sirius.web.diagrams.layout;
 
 import java.util.Optional;
 
-import org.eclipse.elk.core.LayoutConfigurator;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
 
@@ -24,5 +23,5 @@ import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
  * @author pcdavid
  */
 public interface IDiagramLayoutConfiguratorProvider {
-    Optional<LayoutConfigurator> getLayoutConfigurator(Diagram diagram, DiagramDescription diagramDescription);
+    Optional<ISiriusWebLayoutConfigurator> getLayoutConfigurator(Diagram diagram, DiagramDescription diagramDescription);
 }
