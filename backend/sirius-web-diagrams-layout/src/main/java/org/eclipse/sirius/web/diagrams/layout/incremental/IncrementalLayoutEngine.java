@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.diagrams.layout.incremental;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -98,7 +100,7 @@ public class IncrementalLayoutEngine {
 
         // compute the node size according to what has been done in the previous steps
         Size size = this.nodeSizeProvider.getSize(optionalDiagramElementEvent, node);
-        if (!size.equals(node.getSize())) {
+        if (!this.getRoundedSize(size).equals(this.getRoundedSize(node.getSize()))) {
             node.setSize(size);
             node.setChanged(true);
         }
@@ -151,5 +153,19 @@ public class IncrementalLayoutEngine {
             }
         }
         return result;
+    }
+
+    /**
+     * Round size to 1/1000 of a pixel. It is needed when an image has a width or height with a very big decimal part
+     * (e.g: 140.0004672837)
+     *
+     * @param size
+     *            the {@link Size} to round.
+     * @return the rounded size.
+     */
+    private Size getRoundedSize(Size size) {
+        BigDecimal roundedWidth = new BigDecimal(size.getWidth()).setScale(4, RoundingMode.HALF_UP);
+        BigDecimal roundedHeight = new BigDecimal(size.getHeight()).setScale(4, RoundingMode.HALF_UP);
+        return Size.of(roundedWidth.doubleValue(), roundedHeight.doubleValue());
     }
 }
