@@ -60,13 +60,11 @@ const getProjectQuery = gql`
 
 const useEditProjectViewStyles = makeStyles((theme) => ({
   editProjectView: {
-    display: 'flex',
-    flexDirection: 'column',
+    display: 'grid',
+    gridTemplateRows: 'min-content minmax(0, 1fr)',
+    gridTemplateColumns: '1fr',
     height: '100vh',
     width: '100vw',
-    '& > *:nth-child(2)': {
-      flexGrow: 1,
-    },
   },
 }));
 
