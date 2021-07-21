@@ -19,7 +19,6 @@ import java.util.UUID;
 
 import org.eclipse.elk.alg.layered.options.LayeredOptions;
 import org.eclipse.elk.core.IGraphLayoutEngine;
-import org.eclipse.elk.core.LayoutConfigurator;
 import org.eclipse.elk.core.RecursiveGraphLayoutEngine;
 import org.eclipse.elk.core.data.LayoutMetaDataService;
 import org.eclipse.elk.core.util.BasicProgressMonitor;
@@ -76,6 +75,7 @@ public class LayoutService implements ILayoutService {
         this.incrementalLayoutedDiagramProvider = Objects.requireNonNull(incrementalLayoutedDiagramProvider);
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.incrementalLayoutEngine = Objects.requireNonNull(incrementalLayoutEngine);
+        LayoutMetaDataService.getInstance().registerLayoutMetaDataProviders(new LayeredOptions());
     }
 
     @Override
@@ -84,14 +84,12 @@ public class LayoutService implements ILayoutService {
 
         ElkNode elkDiagram = convertedDiagram.getElkDiagram();
         var representationDescription = this.representationDescriptionSearchService.findById(diagram.getDescriptionId());
-        LayoutConfigurator layoutConfigurator;
+        ISiriusWebLayoutConfigurator layoutConfigurator;
         if (representationDescription.isPresent() && representationDescription.get() instanceof DiagramDescription) {
             layoutConfigurator = this.layoutConfiguratorRegistry.getLayoutConfigurator(diagram, (DiagramDescription) representationDescription.get());
         } else {
             layoutConfigurator = this.layoutConfiguratorRegistry.getDefaultLayoutConfigurator();
         }
-
-        LayoutMetaDataService.getInstance().registerLayoutMetaDataProviders(new LayeredOptions());
 
         ElkUtil.applyVisitors(elkDiagram, layoutConfigurator);
         IGraphLayoutEngine engine = new RecursiveGraphLayoutEngine();
@@ -121,7 +119,14 @@ public class LayoutService implements ILayoutService {
         IncrementalLayoutConvertedDiagram convertedDiagram = this.incrementalLayoutDiagramConverter.convert(newDiagram);
         DiagramLayoutData diagramLayoutData = convertedDiagram.getDiagramLayoutData();
 
-        this.incrementalLayoutEngine.layout(optionalDiagramElementEvent, diagramLayoutData);
+        var representationDescription = this.representationDescriptionSearchService.findById(newDiagram.getDescriptionId());
+        ISiriusWebLayoutConfigurator layoutConfigurator;
+        if (representationDescription.isPresent() && representationDescription.get() instanceof DiagramDescription) {
+            layoutConfigurator = this.layoutConfiguratorRegistry.getLayoutConfigurator(newDiagram, (DiagramDescription) representationDescription.get());
+        } else {
+            layoutConfigurator = this.layoutConfiguratorRegistry.getDefaultLayoutConfigurator();
+        }
+        this.incrementalLayoutEngine.layout(optionalDiagramElementEvent, diagramLayoutData, layoutConfigurator);
 
         Map<UUID, ILayoutData> id2LayoutData = convertedDiagram.getId2LayoutData();
         return this.incrementalLayoutedDiagramProvider.getLayoutedDiagram(newDiagram, diagramLayoutData, id2LayoutData);
