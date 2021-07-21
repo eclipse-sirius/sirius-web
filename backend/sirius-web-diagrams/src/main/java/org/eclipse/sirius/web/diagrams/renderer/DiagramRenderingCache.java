@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.diagrams.renderer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -30,9 +31,9 @@ public class DiagramRenderingCache {
 
     private final Map<UUID, List<Element>> nodeDescriptionIdToNodes = new HashMap<>();
 
-    private final Map<Element, Object> nodeToObject = new HashMap<>();
+    private final Map<Element, Object> nodeToObject = new LinkedHashMap<>();
 
-    private final Map<Object, List<Element>> objectToNodes = new HashMap<>();
+    private final Map<Object, List<Element>> objectToNodes = new LinkedHashMap<>();
 
     public void put(UUID nodeDescriptionId, Element nodeElement) {
         this.nodeDescriptionIdToNodes.computeIfAbsent(nodeDescriptionId, id -> new ArrayList<>()).add(nodeElement);
