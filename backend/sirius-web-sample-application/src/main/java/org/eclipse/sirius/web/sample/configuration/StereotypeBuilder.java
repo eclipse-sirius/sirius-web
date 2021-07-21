@@ -93,7 +93,7 @@ public class StereotypeBuilder {
 
     private Resource loadFromXMI(URI uri, InputStream inputStream) throws IOException {
         Resource inputResource = new XMIResourceImpl(uri);
-        Map<String, Object> xmiLoadOptions = new EMFResourceUtils().getFastXMILoadOptions(parserPool);
+        Map<String, Object> xmiLoadOptions = new EMFResourceUtils().getXMILoadOptions(parserPool);
         inputResource.load(inputStream, xmiLoadOptions);
         return inputResource;
     }
