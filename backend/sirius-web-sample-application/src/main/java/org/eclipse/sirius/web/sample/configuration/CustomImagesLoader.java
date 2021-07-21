@@ -17,6 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
+import java.util.UUID;
 
 import org.eclipse.sirius.web.persistence.entities.CustomImageEntity;
 import org.eclipse.sirius.web.persistence.repositories.ICustomImageRepository;
@@ -26,7 +27,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 /**
- * Loads custom images into the database on startup.
+ * Import custom images into the database on startup.
  *
  * @author pcdavid
  */
@@ -43,36 +44,52 @@ public class CustomImagesLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        if (this.customImageRepository.count() == 0) {
-            String customImagesPath = System.getProperty("org.eclipse.sirius.web.customImages.path"); //$NON-NLS-1$
-            if (customImagesPath != null) {
-                this.loadImages(Paths.get(customImagesPath));
-            }
+        String rootPath = System.getProperty("org.eclipse.sirius.web.customImages.path"); //$NON-NLS-1$
+        if (rootPath != null) {
+            this.importAllImages(Paths.get(rootPath));
         }
     }
 
-    private void loadImages(Path path) throws IOException {
-        if (Files.isDirectory(path)) {
-            Files.list(path).forEach(imgPath -> {
+    public void importAllImages(Path rootPath) throws IOException {
+        try (var images = Files.walk(rootPath).filter(this::isImageFile)) {
+            int prefixLength = rootPath.toString().length() + 1;
+            images.forEach(imgPath -> {
                 try {
-                    CustomImageEntity customImageEntity = new CustomImageEntity();
-                    customImageEntity.setLabel(this.getImageLabel(imgPath));
-                    customImageEntity.setFileName(imgPath.getFileName().toString());
-                    customImageEntity.setContent(Files.readAllBytes(imgPath));
+                    CustomImageEntity customImageEntity = this.loadImageFile(imgPath);
+                    String fullLabel = imgPath.toString().substring(prefixLength).replace("/", " / "); //$NON-NLS-1$ //$NON-NLS-2$
+                    customImageEntity.setLabel(this.trimFileExtension(fullLabel));
                     customImageEntity = this.customImageRepository.save(customImageEntity);
-                } catch (IOException exception) {
-                    this.logger.warn(exception.getMessage(), exception);
+                } catch (IOException e) {
+                    this.logger.warn("Error loading image {}: {}", imgPath, e.getMessage()); //$NON-NLS-1$
                 }
             });
         }
     }
 
-    private String getImageLabel(Path imgPath) {
-        String label = imgPath.getFileName().toString();
-        label = label.replace("shape_", ""); //$NON-NLS-1$ //$NON-NLS-2$
-        label = label.replace(".svg", ""); //$NON-NLS-1$ //$NON-NLS-2$
-        label = Character.toUpperCase(label.charAt(0)) + label.substring(1);
-        return label;
+    private boolean isImageFile(Path path) {
+        try {
+            String probedType = Files.probeContentType(path);
+            return probedType != null && probedType.startsWith("image/"); //$NON-NLS-1$
+        } catch (IOException ioe) {
+            return false;
+        }
     }
 
+    private CustomImageEntity loadImageFile(Path imgPath) throws IOException {
+        CustomImageEntity customImageEntity = new CustomImageEntity();
+        customImageEntity.setLabel(this.trimFileExtension(imgPath.getFileName().toString()));
+        customImageEntity.setContentType(Files.probeContentType(imgPath));
+        customImageEntity.setContent(Files.readAllBytes(imgPath));
+        customImageEntity.setId(UUID.nameUUIDFromBytes(customImageEntity.getContent()));
+        return customImageEntity;
+    }
+
+    private String trimFileExtension(String fileName) {
+        int extensionStart = fileName.lastIndexOf('.');
+        if (extensionStart != -1) {
+            return fileName.substring(0, extensionStart);
+        } else {
+            return fileName;
+        }
+    }
 }
