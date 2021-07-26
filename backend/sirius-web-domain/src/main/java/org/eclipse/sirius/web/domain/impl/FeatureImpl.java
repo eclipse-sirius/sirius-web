@@ -39,7 +39,7 @@ public class FeatureImpl extends NamedElementImpl implements Feature {
      * @generated
      * @ordered
      */
-    protected static final boolean OPTIONAL_EDEFAULT = false;
+    protected static final boolean OPTIONAL_EDEFAULT = true;
 
     /**
      * The cached value of the '{@link #isOptional() <em>Optional</em>}' attribute. <!-- begin-user-doc --> <!--

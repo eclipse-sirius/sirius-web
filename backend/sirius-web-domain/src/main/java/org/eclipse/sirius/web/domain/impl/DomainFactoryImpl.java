@@ -180,7 +180,6 @@ public class DomainFactoryImpl extends EFactoryImpl implements DomainFactory {
     @Override
     public Relation createRelation() {
         RelationImpl relation = new RelationImpl();
-        relation.setOptional(true);
         relation.setName("newRelation"); //$NON-NLS-1$
         return relation;
     }
