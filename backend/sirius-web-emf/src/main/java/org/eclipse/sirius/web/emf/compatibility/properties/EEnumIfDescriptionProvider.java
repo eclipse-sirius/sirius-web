@@ -19,6 +19,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.Enumerator;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClassifier;
@@ -29,6 +30,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
+import org.eclipse.sirius.web.collaborative.validation.api.IValidationService;
 import org.eclipse.sirius.web.compat.forms.WidgetIdProvider;
 import org.eclipse.sirius.web.forms.components.SelectComponent;
 import org.eclipse.sirius.web.forms.description.IfDescription;
@@ -51,10 +53,13 @@ public class EEnumIfDescriptionProvider {
 
     private final Logger logger = LoggerFactory.getLogger(EEnumIfDescriptionProvider.class);
 
+    private final IValidationService validationService;
+
     private final ComposedAdapterFactory composedAdapterFactory;
 
-    public EEnumIfDescriptionProvider(ComposedAdapterFactory composedAdapterFactory) {
+    public EEnumIfDescriptionProvider(ComposedAdapterFactory composedAdapterFactory, IValidationService validationService) {
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
+        this.validationService = Objects.requireNonNull(validationService);
     }
 
     public IfDescription getIfDescription() {
@@ -87,9 +92,9 @@ public class EEnumIfDescriptionProvider {
                 .optionIdProvider(this.getOptionIdProvider())
                 .optionLabelProvider(this.getOptionLabelProvider())
                 .newValueHandler(this.getNewValueHandler())
-                .diagnosticsProvider((variableManager) -> List.of())
-                .kindProvider((object) -> "") //$NON-NLS-1$
-                .messageProvider((object) -> "") //$NON-NLS-1$
+                .diagnosticsProvider(this.getDiagnosticsProvider())
+                .kindProvider(this::kindProvider)
+                .messageProvider(this::messageProvider)
                 .build();
         // @formatter:on
     }
@@ -185,6 +190,48 @@ public class EEnumIfDescriptionProvider {
             }
             return Status.OK;
         };
+    }
+
+    private Function<VariableManager, List<Object>> getDiagnosticsProvider() {
+        return variableManager -> {
+            var optionalEObject = variableManager.get(VariableManager.SELF, EObject.class);
+            var optionalEAttribute = variableManager.get(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE, EAttribute.class);
+            if (optionalEObject.isPresent() && optionalEAttribute.isPresent()) {
+                return this.validationService.validate(optionalEObject.get(), optionalEAttribute.get());
+            }
+
+            return List.of();
+        };
+    }
+
+    private String kindProvider(Object object) {
+        String kind = "Unknown"; //$NON-NLS-1$
+        if (object instanceof Diagnostic) {
+            Diagnostic diagnostic = (Diagnostic) object;
+            switch (diagnostic.getSeverity()) {
+            case org.eclipse.emf.common.util.Diagnostic.ERROR:
+                kind = "Error"; //$NON-NLS-1$
+                break;
+            case org.eclipse.emf.common.util.Diagnostic.WARNING:
+                kind = "Warning"; //$NON-NLS-1$
+                break;
+            case org.eclipse.emf.common.util.Diagnostic.INFO:
+                kind = "Info"; //$NON-NLS-1$
+                break;
+            default:
+                kind = "Unknown"; //$NON-NLS-1$
+                break;
+            }
+        }
+        return kind;
+    }
+
+    private String messageProvider(Object object) {
+        if (object instanceof Diagnostic) {
+            Diagnostic diagnostic = (Diagnostic) object;
+            return diagnostic.getMessage();
+        }
+        return ""; //$NON-NLS-1$
     }
 
 }

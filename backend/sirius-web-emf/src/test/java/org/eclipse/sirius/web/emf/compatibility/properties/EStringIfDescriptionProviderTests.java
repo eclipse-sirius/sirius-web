@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.provider.EcoreItemProviderAdapterFactory;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
 import org.eclipse.sirius.viewpoint.description.DescriptionPackage;
+import org.eclipse.sirius.web.collaborative.validation.api.IValidationService;
 import org.eclipse.sirius.web.forms.description.IfDescription;
 import org.eclipse.sirius.web.representations.VariableManager;
 import org.junit.jupiter.api.Test;
@@ -68,7 +69,7 @@ public class EStringIfDescriptionProviderTests {
 
     private Boolean checkPredicate(AdapterFactory adapterFactory, EAttribute attribute) {
         ComposedAdapterFactory composedAdapterFactory = new ComposedAdapterFactory(adapterFactory);
-        EStringIfDescriptionProvider descriptionProvider = new EStringIfDescriptionProvider(composedAdapterFactory);
+        EStringIfDescriptionProvider descriptionProvider = new EStringIfDescriptionProvider(composedAdapterFactory, new IValidationService.NoOp());
         IfDescription ifDescription = descriptionProvider.getIfDescription();
 
         VariableManager variableManager = new VariableManager();
