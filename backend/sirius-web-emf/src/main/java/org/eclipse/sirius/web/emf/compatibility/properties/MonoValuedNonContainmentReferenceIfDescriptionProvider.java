@@ -17,9 +17,11 @@ import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
+import org.eclipse.sirius.web.collaborative.validation.api.IValidationService;
 import org.eclipse.sirius.web.compat.forms.WidgetIdProvider;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IObjectService;
@@ -46,11 +48,14 @@ public class MonoValuedNonContainmentReferenceIfDescriptionProvider {
 
     private final IObjectService objectService;
 
+    private final IValidationService validationService;
+
     private final Logger logger = LoggerFactory.getLogger(MonoValuedNonContainmentReferenceIfDescriptionProvider.class);
 
-    public MonoValuedNonContainmentReferenceIfDescriptionProvider(ComposedAdapterFactory composedAdapterFactory, IObjectService objectService) {
+    public MonoValuedNonContainmentReferenceIfDescriptionProvider(ComposedAdapterFactory composedAdapterFactory, IObjectService objectService, IValidationService validationService) {
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.objectService = Objects.requireNonNull(objectService);
+        this.validationService = Objects.requireNonNull(validationService);
     }
 
     public IfDescription getIfDescription() {
@@ -84,9 +89,9 @@ public class MonoValuedNonContainmentReferenceIfDescriptionProvider {
                 .optionIdProvider(this.getOptionIdProvider())
                 .optionLabelProvider(this.getOptionLabelProvider())
                 .newValueHandler(this.getNewValueHandler())
-                .diagnosticsProvider((variableManager) -> List.of())
-                .kindProvider((object) -> "") //$NON-NLS-1$
-                .messageProvider((object) -> "") //$NON-NLS-1$
+                .diagnosticsProvider(this.getDiagnosticsProvider())
+                .kindProvider(this::kindProvider)
+                .messageProvider(this::messageProvider)
                 .build();
         // @formatter:on
     }
@@ -164,6 +169,50 @@ public class MonoValuedNonContainmentReferenceIfDescriptionProvider {
             String objectLabel = this.objectService.getFullLabel(object);
             return objectLabel;
         };
+    }
+
+    private Function<VariableManager, List<Object>> getDiagnosticsProvider() {
+        return variableManager -> {
+            Object object = variableManager.getVariables().get(VariableManager.SELF);
+            Object eStructuralFeature = variableManager.getVariables().get(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE);
+            if (object instanceof EObject && eStructuralFeature instanceof EReference) {
+                EObject eObject = (EObject) object;
+                EReference eReference = (EReference) eStructuralFeature;
+                return this.validationService.validate(eObject, eReference);
+            }
+
+            return List.of();
+        };
+    }
+
+    private String kindProvider(Object object) {
+        String kind = "Unknown"; //$NON-NLS-1$
+        if (object instanceof Diagnostic) {
+            Diagnostic diagnostic = (Diagnostic) object;
+            switch (diagnostic.getSeverity()) {
+            case org.eclipse.emf.common.util.Diagnostic.ERROR:
+                kind = "Error"; //$NON-NLS-1$
+                break;
+            case org.eclipse.emf.common.util.Diagnostic.WARNING:
+                kind = "Warning"; //$NON-NLS-1$
+                break;
+            case org.eclipse.emf.common.util.Diagnostic.INFO:
+                kind = "Info"; //$NON-NLS-1$
+                break;
+            default:
+                kind = "Unknown"; //$NON-NLS-1$
+                break;
+            }
+        }
+        return kind;
+    }
+
+    private String messageProvider(Object object) {
+        if (object instanceof Diagnostic) {
+            Diagnostic diagnostic = (Diagnostic) object;
+            return diagnostic.getMessage();
+        }
+        return ""; //$NON-NLS-1$
     }
 
 }

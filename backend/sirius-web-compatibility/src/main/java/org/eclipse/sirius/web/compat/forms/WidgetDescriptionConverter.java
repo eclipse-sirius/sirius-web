@@ -105,12 +105,18 @@ public class WidgetDescriptionConverter {
                 .labelProvider(labelProvider)
                 .valueProvider(valueProvider)
                 .newValueHandler(newValueHandler)
-                .diagnosticsProvider((variableManager) -> List.of())
+                .diagnosticsProvider(this.getDiagnosticsProvider())
                 .kindProvider((object) -> "") //$NON-NLS-1$
                 .messageProvider((object) -> "") //$NON-NLS-1$
                 .build();
         // @formatter:on
 
+    }
+
+    private Function<VariableManager, List<Object>> getDiagnosticsProvider() {
+        return variableManager -> {
+            return List.of();
+        };
     }
 
     private TextareaDescription convertTextarea(org.eclipse.sirius.properties.TextAreaDescription textAreaDescription) {

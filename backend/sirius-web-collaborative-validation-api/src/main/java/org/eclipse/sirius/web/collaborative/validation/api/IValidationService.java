@@ -27,4 +27,22 @@ public interface IValidationService {
 
     List<Object> validate(Object object, Object feature);
 
+    /**
+     * Implementation which does nothing, used for mocks in unit tests.
+     *
+     * @author gcoutable
+     */
+    class NoOp implements IValidationService {
+
+        @Override
+        public List<Object> validate(IEditingContext editingContext) {
+            return List.of();
+        }
+
+        @Override
+        public List<Object> validate(Object object, Object feature) {
+            return List.of();
+        }
+
+    }
 }

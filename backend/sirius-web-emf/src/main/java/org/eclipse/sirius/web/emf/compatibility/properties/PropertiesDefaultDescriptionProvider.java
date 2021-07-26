@@ -27,6 +27,7 @@ import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.sirius.web.collaborative.forms.api.IPropertiesDefaultDescriptionProvider;
+import org.eclipse.sirius.web.collaborative.validation.api.IValidationService;
 import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.forms.description.AbstractControlDescription;
 import org.eclipse.sirius.web.forms.description.ForDescription;
@@ -52,9 +53,12 @@ public class PropertiesDefaultDescriptionProvider implements IPropertiesDefaultD
 
     private final ComposedAdapterFactory composedAdapterFactory;
 
-    public PropertiesDefaultDescriptionProvider(IObjectService objectService, ComposedAdapterFactory composedAdapterFactory) {
+    private IValidationService validationService;
+
+    public PropertiesDefaultDescriptionProvider(IObjectService objectService, ComposedAdapterFactory composedAdapterFactory, IValidationService validationService) {
         this.objectService = Objects.requireNonNull(objectService);
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
+        this.validationService = Objects.requireNonNull(validationService);
     }
 
     @Override
@@ -131,23 +135,23 @@ public class PropertiesDefaultDescriptionProvider implements IPropertiesDefaultD
         };
 
         List<IfDescription> ifDescriptions = new ArrayList<>();
-        ifDescriptions.add(new EStringIfDescriptionProvider(this.composedAdapterFactory).getIfDescription());
-        ifDescriptions.add(new EBooleanIfDescriptionProvider(this.composedAdapterFactory).getIfDescription());
-        ifDescriptions.add(new EEnumIfDescriptionProvider(this.composedAdapterFactory).getIfDescription());
+        ifDescriptions.add(new EStringIfDescriptionProvider(this.composedAdapterFactory, this.validationService).getIfDescription());
+        ifDescriptions.add(new EBooleanIfDescriptionProvider(this.composedAdapterFactory, this.validationService).getIfDescription());
+        ifDescriptions.add(new EEnumIfDescriptionProvider(this.composedAdapterFactory, this.validationService).getIfDescription());
 
-        ifDescriptions.add(new MonoValuedNonContainmentReferenceIfDescriptionProvider(this.composedAdapterFactory, this.objectService).getIfDescription());
-        ifDescriptions.add(new MultiValuedNonContainmentReferenceIfDescriptionProvider(this.composedAdapterFactory, this.objectService).getIfDescription());
+        ifDescriptions.add(new MonoValuedNonContainmentReferenceIfDescriptionProvider(this.composedAdapterFactory, this.objectService, this.validationService).getIfDescription());
+        ifDescriptions.add(new MultiValuedNonContainmentReferenceIfDescriptionProvider(this.composedAdapterFactory, this.objectService, this.validationService).getIfDescription());
 
-        ifDescriptions.add(new NumberIfDescriptionProvider(EcorePackage.Literals.EINT, this.composedAdapterFactory).getIfDescription());
-        ifDescriptions.add(new NumberIfDescriptionProvider(EcorePackage.Literals.EINTEGER_OBJECT, this.composedAdapterFactory).getIfDescription());
-        ifDescriptions.add(new NumberIfDescriptionProvider(EcorePackage.Literals.EDOUBLE, this.composedAdapterFactory).getIfDescription());
-        ifDescriptions.add(new NumberIfDescriptionProvider(EcorePackage.Literals.EDOUBLE_OBJECT, this.composedAdapterFactory).getIfDescription());
-        ifDescriptions.add(new NumberIfDescriptionProvider(EcorePackage.Literals.EFLOAT, this.composedAdapterFactory).getIfDescription());
-        ifDescriptions.add(new NumberIfDescriptionProvider(EcorePackage.Literals.EFLOAT_OBJECT, this.composedAdapterFactory).getIfDescription());
-        ifDescriptions.add(new NumberIfDescriptionProvider(EcorePackage.Literals.ELONG, this.composedAdapterFactory).getIfDescription());
-        ifDescriptions.add(new NumberIfDescriptionProvider(EcorePackage.Literals.ELONG_OBJECT, this.composedAdapterFactory).getIfDescription());
-        ifDescriptions.add(new NumberIfDescriptionProvider(EcorePackage.Literals.ESHORT, this.composedAdapterFactory).getIfDescription());
-        ifDescriptions.add(new NumberIfDescriptionProvider(EcorePackage.Literals.ESHORT_OBJECT, this.composedAdapterFactory).getIfDescription());
+        ifDescriptions.add(new NumberIfDescriptionProvider(EcorePackage.Literals.EINT, this.composedAdapterFactory, this.validationService).getIfDescription());
+        ifDescriptions.add(new NumberIfDescriptionProvider(EcorePackage.Literals.EINTEGER_OBJECT, this.composedAdapterFactory, this.validationService).getIfDescription());
+        ifDescriptions.add(new NumberIfDescriptionProvider(EcorePackage.Literals.EDOUBLE, this.composedAdapterFactory, this.validationService).getIfDescription());
+        ifDescriptions.add(new NumberIfDescriptionProvider(EcorePackage.Literals.EDOUBLE_OBJECT, this.composedAdapterFactory, this.validationService).getIfDescription());
+        ifDescriptions.add(new NumberIfDescriptionProvider(EcorePackage.Literals.EFLOAT, this.composedAdapterFactory, this.validationService).getIfDescription());
+        ifDescriptions.add(new NumberIfDescriptionProvider(EcorePackage.Literals.EFLOAT_OBJECT, this.composedAdapterFactory, this.validationService).getIfDescription());
+        ifDescriptions.add(new NumberIfDescriptionProvider(EcorePackage.Literals.ELONG, this.composedAdapterFactory, this.validationService).getIfDescription());
+        ifDescriptions.add(new NumberIfDescriptionProvider(EcorePackage.Literals.ELONG_OBJECT, this.composedAdapterFactory, this.validationService).getIfDescription());
+        ifDescriptions.add(new NumberIfDescriptionProvider(EcorePackage.Literals.ESHORT, this.composedAdapterFactory, this.validationService).getIfDescription());
+        ifDescriptions.add(new NumberIfDescriptionProvider(EcorePackage.Literals.ESHORT_OBJECT, this.composedAdapterFactory, this.validationService).getIfDescription());
 
         // @formatter:off
         ForDescription forDescription = ForDescription.newForDescription("forId") //$NON-NLS-1$
