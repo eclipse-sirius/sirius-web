@@ -128,7 +128,7 @@ export const propertiesWebSocketContainerMachine = Machine<
                 {
                   cond: 'isSelectionUnsupported',
                   target: 'unsupportedSelection',
-                  actions: 'switchSelection',
+                  actions: ['switchSelection', 'clearForm'],
                 },
                 {
                   target: 'idle',
@@ -143,7 +143,7 @@ export const propertiesWebSocketContainerMachine = Machine<
                 {
                   cond: 'isSelectionUnsupported',
                   target: 'unsupportedSelection',
-                  actions: 'switchSelection',
+                  actions: ['switchSelection', 'clearForm'],
                 },
                 {
                   target: 'idle',
@@ -158,7 +158,7 @@ export const propertiesWebSocketContainerMachine = Machine<
                 {
                   cond: 'isSelectionUnsupported',
                   target: 'unsupportedSelection',
-                  actions: 'switchSelection',
+                  actions: ['switchSelection', 'clearForm'],
                 },
                 {
                   target: 'idle',
@@ -184,7 +184,7 @@ export const propertiesWebSocketContainerMachine = Machine<
                 {
                   cond: 'isSelectionUnsupported',
                   target: 'unsupportedSelection',
-                  actions: 'switchSelection',
+                  actions: ['switchSelection', 'clearForm'],
                 },
                 {
                   target: 'idle',
@@ -206,7 +206,7 @@ export const propertiesWebSocketContainerMachine = Machine<
                 {
                   cond: 'isSelectionUnsupported',
                   target: 'unsupportedSelection',
-                  actions: 'switchSelection',
+                  actions: ['switchSelection', 'clearForm'],
                 },
                 {
                   target: 'idle',
@@ -235,6 +235,9 @@ export const propertiesWebSocketContainerMachine = Machine<
       switchSelection: assign((_, event) => {
         const { selection } = event as SwitchSelectionEvent;
         return { id: uuid(), currentSelection: selection };
+      }),
+      clearForm: assign((_, event) => {
+        return { form: null };
       }),
       handleSubscriptionResult: assign((_, event) => {
         const { result } = event as HandleSubscriptionResultEvent;

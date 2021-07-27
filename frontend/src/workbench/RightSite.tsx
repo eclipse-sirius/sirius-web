@@ -80,7 +80,7 @@ export const RightSite = ({ editingContextId, selection, readOnly }: RightSitePr
     <div className={classes.site}>
       <Accordion square expanded={true} TransitionComponent={CustomCollapse as any}>
         <AccordionSummary>Details</AccordionSummary>
-        <AccordionDetails className={classes.accordionDetailsRoot}>
+        <AccordionDetails className={classes.accordionDetailsRoot} data-testid={'Details AccordionDetails'}>
           <PropertiesWebSocketContainer editingContextId={editingContextId} selection={selection} readOnly={readOnly} />
         </AccordionDetails>
       </Accordion>
