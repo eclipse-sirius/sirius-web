@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.collaborative.api.services;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.representations.IRepresentation;
 
 /**
@@ -23,5 +24,5 @@ import org.eclipse.sirius.web.representations.IRepresentation;
  * @author sbegaudeau
  */
 public interface IRepresentationSearchService {
-    <T extends IRepresentation> Optional<T> findById(UUID representationId, Class<T> representationClass);
+    <T extends IRepresentation> Optional<T> findById(IEditingContext editingContext, UUID representationId, Class<T> representationClass);
 }

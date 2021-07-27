@@ -24,6 +24,7 @@ import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.collaborative.api.services.IRepresentationPersistenceService;
 import org.eclipse.sirius.web.collaborative.api.services.IRepresentationSearchService;
 import org.eclipse.sirius.web.collaborative.diagrams.api.dto.RenameDiagramInput;
+import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.Position;
@@ -68,7 +69,7 @@ public class RenameDiagramEventHandlerTests {
         IRepresentationSearchService representationSearchService = new IRepresentationSearchService() {
 
             @Override
-            public <T extends IRepresentation> Optional<T> findById(UUID representationId, Class<T> representationClass) {
+            public <T extends IRepresentation> Optional<T> findById(IEditingContext editingContext, UUID representationId, Class<T> representationClass) {
                 return Optional.of(diagram).map(representationClass::cast);
             }
         };

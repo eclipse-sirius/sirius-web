@@ -78,7 +78,7 @@ public class RenameDiagramEventHandler implements IDiagramEventHandler {
             RenameDiagramInput renameRepresentationInput = (RenameDiagramInput) diagramInput;
             UUID representationId = renameRepresentationInput.getRepresentationId();
             String newLabel = renameRepresentationInput.getNewLabel();
-            Optional<Diagram> optionalDiagram = this.representationSearchService.findById(representationId, Diagram.class);
+            Optional<Diagram> optionalDiagram = this.representationSearchService.findById(editingContext, representationId, Diagram.class);
             if (optionalDiagram.isPresent()) {
                 Diagram diagram = optionalDiagram.get();
 

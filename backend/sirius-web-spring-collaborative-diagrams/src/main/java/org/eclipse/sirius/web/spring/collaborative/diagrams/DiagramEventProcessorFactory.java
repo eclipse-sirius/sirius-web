@@ -63,7 +63,7 @@ public class DiagramEventProcessorFactory implements IRepresentationEventProcess
             IEditingContext editingContext) {
         if (IDiagramEventProcessor.class.isAssignableFrom(representationEventProcessorClass) && configuration instanceof DiagramConfiguration) {
             DiagramConfiguration diagramConfiguration = (DiagramConfiguration) configuration;
-            var optionalDiagram = this.representationSearchService.findById(diagramConfiguration.getId(), Diagram.class);
+            var optionalDiagram = this.representationSearchService.findById(editingContext, diagramConfiguration.getId(), Diagram.class);
             if (optionalDiagram.isPresent()) {
                 Diagram diagram = optionalDiagram.get();
 
