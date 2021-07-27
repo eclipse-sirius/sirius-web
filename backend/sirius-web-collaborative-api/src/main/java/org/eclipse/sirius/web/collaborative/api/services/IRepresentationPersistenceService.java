@@ -12,8 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.collaborative.api.services;
 
-import java.util.UUID;
-
+import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.representations.ISemanticRepresentation;
 
 /**
@@ -23,6 +22,6 @@ import org.eclipse.sirius.web.representations.ISemanticRepresentation;
  */
 public interface IRepresentationPersistenceService {
 
-    void save(UUID editingContextId, ISemanticRepresentation representation);
+    void save(IEditingContext editingContext, ISemanticRepresentation representation);
 
 }

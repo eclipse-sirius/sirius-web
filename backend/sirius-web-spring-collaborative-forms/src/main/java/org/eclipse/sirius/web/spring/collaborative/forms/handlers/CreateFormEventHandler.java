@@ -107,7 +107,7 @@ public class CreateFormEventHandler implements IEditingContextEventHandler {
                             .build();
                     // @formatter:on
 
-                    this.representationPersistenceService.save(editingContext.getId(), form);
+                    this.representationPersistenceService.save(editingContext, form);
 
                     return new EventHandlerResponse(new ChangeDescription(ChangeKind.REPRESENTATION_CREATION, editingContext.getId()), new CreateRepresentationSuccessPayload(input.getId(), form));
                 }
