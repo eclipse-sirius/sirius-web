@@ -19,6 +19,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.collaborative.api.services.IRepresentationSearchService;
+import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.persistence.repositories.IRepresentationRepository;
 import org.eclipse.sirius.web.representations.IRepresentation;
 import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;
@@ -41,7 +42,7 @@ public class RepresentationSearchService implements IRepresentationSearchService
     }
 
     @Override
-    public <T extends IRepresentation> Optional<T> findById(UUID representationId, Class<T> representationClass) {
+    public <T extends IRepresentation> Optional<T> findById(IEditingContext editingContext, UUID representationId, Class<T> representationClass) {
         // @formatter:off
         return this.representationRepository.findById(representationId)
                 .map(new RepresentationMapper(this.objectMapper)::toDTO)

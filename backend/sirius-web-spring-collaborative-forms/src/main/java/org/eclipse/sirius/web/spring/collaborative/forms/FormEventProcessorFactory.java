@@ -75,7 +75,7 @@ public class FormEventProcessorFactory implements IRepresentationEventProcessorF
         if (IFormEventProcessor.class.isAssignableFrom(representationEventProcessorClass) && configuration instanceof FormConfiguration) {
             FormConfiguration formConfiguration = (FormConfiguration) configuration;
 
-            Optional<Form> optionalForm = this.representationSearchService.findById(formConfiguration.getId(), Form.class);
+            Optional<Form> optionalForm = this.representationSearchService.findById(editingContext, formConfiguration.getId(), Form.class);
             if (optionalForm.isPresent()) {
                 Form form = optionalForm.get();
                 // @formatter:off
