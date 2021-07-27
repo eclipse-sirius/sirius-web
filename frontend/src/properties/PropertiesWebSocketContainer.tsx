@@ -103,7 +103,7 @@ export const PropertiesWebSocketContainer = ({
       },
     },
     fetchPolicy: 'no-cache',
-    skip: propertiesWebSocketContainer === 'empty',
+    skip: propertiesWebSocketContainer === 'empty' || propertiesWebSocketContainer === 'unsupportedSelection',
     onSubscriptionData: ({ subscriptionData }) => {
       const handleDataEvent: HandleSubscriptionResultEvent = {
         type: 'HANDLE_SUBSCRIPTION_RESULT',
@@ -126,7 +126,7 @@ export const PropertiesWebSocketContainer = ({
   }, [error, dispatch]);
 
   let content = null;
-  if (!selection) {
+  if (!selection || propertiesWebSocketContainer === 'unsupportedSelection') {
     content = (
       <div className={classes.idle}>
         <Typography variant="subtitle2">No object selected</Typography>

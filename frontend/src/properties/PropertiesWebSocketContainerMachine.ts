@@ -34,6 +34,7 @@ export interface PropertiesWebSocketContainerStateSchema {
     propertiesWebSocketContainer: {
       states: {
         empty: {};
+        unsupportedSelection: {};
         idle: {};
         ready: {};
         complete: {};
@@ -44,7 +45,7 @@ export interface PropertiesWebSocketContainerStateSchema {
 
 export type SchemaValue = {
   toast: 'visible' | 'hidden';
-  propertiesWebSocketContainer: 'empty' | 'idle' | 'ready' | 'complete';
+  propertiesWebSocketContainer: 'empty' | 'unsupportedSelection' | 'idle' | 'ready' | 'complete';
 };
 
 export interface PropertiesWebSocketContainerContext {
@@ -126,7 +127,22 @@ export const propertiesWebSocketContainerMachine = Machine<
               SWITCH_SELECTION: [
                 {
                   cond: 'isSelectionUnsupported',
-                  target: 'empty',
+                  target: 'unsupportedSelection',
+                  actions: 'switchSelection',
+                },
+                {
+                  target: 'idle',
+                  actions: 'switchSelection',
+                },
+              ],
+            },
+          },
+          unsupportedSelection: {
+            on: {
+              SWITCH_SELECTION: [
+                {
+                  cond: 'isSelectionUnsupported',
+                  target: 'unsupportedSelection',
                   actions: 'switchSelection',
                 },
                 {
@@ -141,7 +157,7 @@ export const propertiesWebSocketContainerMachine = Machine<
               SWITCH_SELECTION: [
                 {
                   cond: 'isSelectionUnsupported',
-                  target: 'empty',
+                  target: 'unsupportedSelection',
                   actions: 'switchSelection',
                 },
                 {
@@ -167,7 +183,7 @@ export const propertiesWebSocketContainerMachine = Machine<
               SWITCH_SELECTION: [
                 {
                   cond: 'isSelectionUnsupported',
-                  target: 'empty',
+                  target: 'unsupportedSelection',
                   actions: 'switchSelection',
                 },
                 {
@@ -189,7 +205,7 @@ export const propertiesWebSocketContainerMachine = Machine<
               SWITCH_SELECTION: [
                 {
                   cond: 'isSelectionUnsupported',
-                  target: 'empty',
+                  target: 'unsupportedSelection',
                   actions: 'switchSelection',
                 },
                 {
