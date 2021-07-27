@@ -83,7 +83,7 @@ public class RenameDiagramEventHandler implements IDiagramEventHandler {
                 Diagram diagram = optionalDiagram.get();
 
                 Diagram renamedDiagram = Diagram.newDiagram(diagram).label(newLabel).build();
-                this.representationPersistenceService.save(editingContext.getId(), renamedDiagram);
+                this.representationPersistenceService.save(editingContext, renamedDiagram);
                 diagramContext.update(renamedDiagram);
 
                 return new EventHandlerResponse(new ChangeDescription(ChangeKind.REPRESENTATION_RENAMING, renameRepresentationInput.getRepresentationId()),

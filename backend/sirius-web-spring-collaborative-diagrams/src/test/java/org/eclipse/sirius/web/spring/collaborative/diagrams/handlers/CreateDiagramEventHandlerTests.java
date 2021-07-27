@@ -81,7 +81,7 @@ public class CreateDiagramEventHandlerTests {
 
         IRepresentationPersistenceService representationPersistenceService = new IRepresentationPersistenceService() {
             @Override
-            public void save(UUID editingContextId, ISemanticRepresentation representation) {
+            public void save(IEditingContext editingContext, ISemanticRepresentation representation) {
             }
         };
 

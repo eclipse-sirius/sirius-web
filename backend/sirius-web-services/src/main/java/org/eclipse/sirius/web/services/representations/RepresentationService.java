@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 
 import org.eclipse.sirius.web.collaborative.api.services.IDanglingRepresentationDeletionService;
 import org.eclipse.sirius.web.collaborative.api.services.IRepresentationPersistenceService;
+import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.persistence.entities.ProjectEntity;
 import org.eclipse.sirius.web.persistence.entities.RepresentationEntity;
 import org.eclipse.sirius.web.persistence.repositories.IProjectRepository;
@@ -90,9 +91,9 @@ public class RepresentationService implements IRepresentationService, IRepresent
     }
 
     @Override
-    public void save(UUID editingContextId, ISemanticRepresentation representation) {
+    public void save(IEditingContext editingContext, ISemanticRepresentation representation) {
         long start = System.currentTimeMillis();
-        RepresentationDescriptor representationDescriptor = this.getRepresentationDescriptor(editingContextId, representation);
+        RepresentationDescriptor representationDescriptor = this.getRepresentationDescriptor(editingContext.getId(), representation);
 
         var optionalProjectEntity = this.projectRepository.findById(representationDescriptor.getProjectId());
         if (optionalProjectEntity.isPresent()) {

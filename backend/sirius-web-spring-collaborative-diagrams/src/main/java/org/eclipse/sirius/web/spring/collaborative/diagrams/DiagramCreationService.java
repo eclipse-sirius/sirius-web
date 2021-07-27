@@ -133,7 +133,7 @@ public class DiagramCreationService implements IDiagramCreationService {
             newDiagram = this.layoutService.incrementalLayout(newDiagram, optionalDiagramElementEvent);
         }
 
-        this.representationPersistenceService.save(editingContext.getId(), newDiagram);
+        this.representationPersistenceService.save(editingContext, newDiagram);
 
         long end = System.currentTimeMillis();
         this.timer.record(end - start, TimeUnit.MILLISECONDS);
