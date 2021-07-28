@@ -14,17 +14,24 @@ package org.eclipse.sirius.web.diagrams.layout.incremental;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.eclipse.elk.alg.layered.options.LayeredMetaDataProvider;
+import org.eclipse.elk.core.data.LayoutMetaDataService;
+import org.eclipse.sirius.web.diagrams.NodeType;
 import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.Size;
 import org.eclipse.sirius.web.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.web.diagrams.events.ResizeEvent;
+import org.eclipse.sirius.web.diagrams.layout.ISiriusWebLayoutConfigurator;
+import org.eclipse.sirius.web.diagrams.layout.LayoutConfiguratorRegistry;
 import org.eclipse.sirius.web.diagrams.layout.incremental.data.NodeLayoutData;
 import org.eclipse.sirius.web.diagrams.layout.incremental.provider.ImageSizeProvider;
 import org.eclipse.sirius.web.diagrams.layout.incremental.provider.NodeSizeProvider;
 import org.eclipse.sirius.web.diagrams.tests.TestDiagramBuilder;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -42,11 +49,17 @@ public class NodeSizeProviderTests {
 
     private static final int WIDTH_80 = 80;
 
+    @BeforeAll
+    public static void beforeAll() {
+        LayoutMetaDataService.getInstance().registerLayoutMetaDataProviders(new LayeredMetaDataProvider());
+    }
+
     @Test
     public void testNodeSize() {
         ImageSizeProvider imageSizeProvider = new ImageSizeProvider();
         NodeSizeProvider nodeSizeProvider = new NodeSizeProvider(imageSizeProvider);
-        Size size = nodeSizeProvider.getSize(Optional.empty(), this.createNodeLayoutData(Size.UNDEFINED));
+        ISiriusWebLayoutConfigurator layoutConfigurator = new LayoutConfiguratorRegistry(List.of()).getDefaultLayoutConfigurator();
+        Size size = nodeSizeProvider.getSize(Optional.empty(), this.createNodeLayoutData(Size.UNDEFINED), layoutConfigurator);
         assertThat(size).extracting(Size::getHeight).isEqualTo(Double.valueOf(HEIGHT_70));
         assertThat(size).extracting(Size::getWidth).isEqualTo(Double.valueOf(WIDTH_150));
 
@@ -57,7 +70,8 @@ public class NodeSizeProviderTests {
     public void testNodeSizeWithExistingSize() {
         ImageSizeProvider imageSizeProvider = new ImageSizeProvider();
         NodeSizeProvider nodeSizeProvider = new NodeSizeProvider(imageSizeProvider);
-        Size size = nodeSizeProvider.getSize(Optional.empty(), this.createNodeLayoutData(Size.of(WIDTH_80, HEIGHT_50)));
+        ISiriusWebLayoutConfigurator layoutConfigurator = new LayoutConfiguratorRegistry(List.of()).getDefaultLayoutConfigurator();
+        Size size = nodeSizeProvider.getSize(Optional.empty(), this.createNodeLayoutData(Size.of(WIDTH_80, HEIGHT_50)), layoutConfigurator);
         assertThat(size).extracting(Size::getHeight).isEqualTo(Double.valueOf(HEIGHT_50));
         assertThat(size).extracting(Size::getWidth).isEqualTo(Double.valueOf(WIDTH_80));
 
@@ -70,6 +84,7 @@ public class NodeSizeProviderTests {
         NodeLayoutData nodeLayoutData = new NodeLayoutData();
         nodeLayoutData.setId(UUID.randomUUID());
         nodeLayoutData.setSize(size);
+        nodeLayoutData.setNodeType(NodeType.NODE_RECTANGLE);
         nodeLayoutData.setStyle(testDiagramBuilder.getRectangularNodeStyle());
         return nodeLayoutData;
     }
@@ -84,9 +99,10 @@ public class NodeSizeProviderTests {
         ImageSizeProvider imageSizeProvider = new ImageSizeProvider();
         NodeSizeProvider nodeSizeProvider = new NodeSizeProvider(imageSizeProvider);
         Optional<IDiagramEvent> optionalEvent = Optional.of(new ResizeEvent(nodeLayoutData.getId(), Position.UNDEFINED, newSize));
+        ISiriusWebLayoutConfigurator layoutConfigurator = new LayoutConfiguratorRegistry(List.of()).getDefaultLayoutConfigurator();
 
-        Size newSizeFromProvider = nodeSizeProvider.getSize(optionalEvent, nodeLayoutData);
-        Size newSizeFromProvider2 = nodeSizeProvider.getSize(optionalEvent, nodeLayoutData2);
+        Size newSizeFromProvider = nodeSizeProvider.getSize(optionalEvent, nodeLayoutData, layoutConfigurator);
+        Size newSizeFromProvider2 = nodeSizeProvider.getSize(optionalEvent, nodeLayoutData2, layoutConfigurator);
         assertThat(newSizeFromProvider).isEqualTo(newSize);
         assertThat(newSizeFromProvider2).isEqualTo(initialNodeSize);
     }
