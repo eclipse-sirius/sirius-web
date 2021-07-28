@@ -15,12 +15,15 @@ package org.eclipse.sirius.web.diagrams.layout.incremental.provider;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.eclipse.elk.core.math.KVector;
+import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.sirius.web.diagrams.INodeStyle;
 import org.eclipse.sirius.web.diagrams.ImageNodeStyle;
 import org.eclipse.sirius.web.diagrams.NodeType;
 import org.eclipse.sirius.web.diagrams.Size;
 import org.eclipse.sirius.web.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.web.diagrams.events.ResizeEvent;
+import org.eclipse.sirius.web.diagrams.layout.ISiriusWebLayoutConfigurator;
 import org.eclipse.sirius.web.diagrams.layout.LayoutOptionValues;
 import org.eclipse.sirius.web.diagrams.layout.incremental.data.NodeLayoutData;
 import org.springframework.stereotype.Service;
@@ -61,7 +64,7 @@ public class NodeSizeProvider {
      *            the {@link NodeLayoutData} for which we want to retrieve the new size.
      * @return the new {@link Size} if updated or the current one.
      */
-    public Size getSize(Optional<IDiagramEvent> optionalDiagramElementEvent, NodeLayoutData node) {
+    public Size getSize(Optional<IDiagramEvent> optionalDiagramElementEvent, NodeLayoutData node, ISiriusWebLayoutConfigurator layoutConfigurator) {
         Size size;
         if (this.isRelevantResizeEvent(optionalDiagramElementEvent, node)) {
             node.setResizedByUser(true);
@@ -75,7 +78,7 @@ public class NodeSizeProvider {
         } else if (this.isAlreadySized(node)) {
             size = node.getSize();
         } else {
-            size = this.getInitialSize(node);
+            size = this.getInitialSize(node, layoutConfigurator);
         }
         return size;
     }
@@ -89,9 +92,14 @@ public class NodeSizeProvider {
         // @formatter:on
     }
 
-    private Size getInitialSize(NodeLayoutData node) {
+    private Size getInitialSize(NodeLayoutData node, ISiriusWebLayoutConfigurator layoutConfigurator) {
         double width = DEFAULT_WIDTH;
         double height = DEFAULT_HEIGHT;
+        KVector nodeSizeMinimum = layoutConfigurator.configureByType(node.getNodeType()).getProperty(CoreOptions.NODE_SIZE_MINIMUM);
+        if (nodeSizeMinimum != null) {
+            width = nodeSizeMinimum.x;
+            height = nodeSizeMinimum.y;
+        }
         INodeStyle style = node.getStyle();
         if (style instanceof ImageNodeStyle) {
             Size imageSize = new ImageNodeStyleSizeProvider(this.imageSizeProvider).getSize((ImageNodeStyle) style);
@@ -112,5 +120,4 @@ public class NodeSizeProvider {
         // If the node is an Image node Style, we recompute the size since the image scale factor may have changed.
         return node.isResizedByUser() || (!isSizeUndefined && !(style instanceof ImageNodeStyle));
     }
-
 }

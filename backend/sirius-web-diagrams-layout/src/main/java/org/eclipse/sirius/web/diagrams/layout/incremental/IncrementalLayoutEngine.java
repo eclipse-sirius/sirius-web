@@ -72,7 +72,7 @@ public class IncrementalLayoutEngine {
 
         // first we layout all the nodes
         for (NodeLayoutData node : diagram.getChildrenNodes()) {
-            this.layoutNode(optionalDiagramElementEvent, node);
+            this.layoutNode(optionalDiagramElementEvent, node, layoutConfigurator);
         }
 
         // resolve overlaps due to previous changes
@@ -89,17 +89,17 @@ public class IncrementalLayoutEngine {
         }
     }
 
-    private void layoutNode(Optional<IDiagramEvent> optionalDiagramElementEvent, NodeLayoutData node) {
+    private void layoutNode(Optional<IDiagramEvent> optionalDiagramElementEvent, NodeLayoutData node, ISiriusWebLayoutConfigurator layoutConfigurator) {
         // first layout border & child nodes
         for (NodeLayoutData borderNode : node.getBorderNodes()) {
-            this.layoutNode(optionalDiagramElementEvent, borderNode);
+            this.layoutNode(optionalDiagramElementEvent, borderNode, layoutConfigurator);
         }
         for (NodeLayoutData childNode : node.getChildrenNodes()) {
-            this.layoutNode(optionalDiagramElementEvent, childNode);
+            this.layoutNode(optionalDiagramElementEvent, childNode, layoutConfigurator);
         }
 
         // compute the node size according to what has been done in the previous steps
-        Size size = this.nodeSizeProvider.getSize(optionalDiagramElementEvent, node);
+        Size size = this.nodeSizeProvider.getSize(optionalDiagramElementEvent, node, layoutConfigurator);
         if (!this.getRoundedSize(size).equals(this.getRoundedSize(node.getSize()))) {
             node.setSize(size);
             node.setChanged(true);

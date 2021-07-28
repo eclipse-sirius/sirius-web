@@ -55,6 +55,16 @@ public class LayoutConfiguratorRegistry {
      */
     private static final Double SPACING_NODE_EDGE = Double.valueOf(30.0);
 
+    /**
+     * The minimum height constraint value.
+     */
+    private static final int MIN_HEIGHT_CONSTRAINT = 70;
+
+    /**
+     * The minimum width constraint value.
+     */
+    private static final int MIN_WIDTH_CONSTRAINT = 150;
+
     private final List<IDiagramLayoutConfiguratorProvider> customLayoutProviders;
 
     public LayoutConfiguratorRegistry(List<IDiagramLayoutConfiguratorProvider> customLayoutProviders) {
@@ -77,7 +87,8 @@ public class LayoutConfiguratorRegistry {
                 .setProperty(CoreOptions.NODE_SIZE_CONSTRAINTS, SizeConstraint.free())
                 .setProperty(CoreOptions.NODE_SIZE_OPTIONS, EnumSet.of(SizeOptions.ASYMMETRICAL))
                 .setProperty(CoreOptions.NODE_SIZE_MINIMUM, new KVector(LayoutOptionValues.MIN_WIDTH_CONSTRAINT, LayoutOptionValues.MIN_HEIGHT_CONSTRAINT))
-                .setProperty(CoreOptions.NODE_LABELS_PLACEMENT, NodeLabelPlacement.insideTopCenter());
+                .setProperty(CoreOptions.NODE_LABELS_PLACEMENT, NodeLabelPlacement.insideTopCenter())
+                .setProperty(CoreOptions.NODE_SIZE_MINIMUM, new KVector(MIN_WIDTH_CONSTRAINT, MIN_HEIGHT_CONSTRAINT));
 
         configurator.configureByType(NodeType.NODE_LIST)
                 .setProperty(CoreOptions.ALGORITHM, FixedLayouterOptions.ALGORITHM_ID)
