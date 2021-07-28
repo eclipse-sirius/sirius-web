@@ -31,7 +31,7 @@ If you use WSL and encounter error messages like _"Maximum call stack size excee
 === GitHub Access Token
 
 The backend part of _Sirius Components_ depends on https://github.com/eclipse-sirius/sirius-emf-json[`sirius-emf-json`], which is published as Maven artifacts in _GitHub Packages_.
-To build `sirius-components` locally, you need a _GitHub Access Token_ so that Maven can download the `sirius-emf-json` artifacts.
+To build `sirius-components` locally, you need a _GitHub Access Token_ so that Maven can download the `sirius-emf-json` and `Flow-Designer` artifacts.
 
 . Create a personal token with a scope of `read:package` by following https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token[the GitHub documentation] if you do not have one already.
 +
@@ -50,12 +50,18 @@ WARNING: Once generated, a token cannot be displayed anymore, so make sure to co
       <username>$GITHUB_USERNAME</username>
       <password>$GITHUB_ACCESS_TOKEN</password>
     </server>
+    <server>
+      <id>github-flow</id>
+      <username>$GITHUB_USERNAME</username>
+      <password>$GITHUB_ACCESS_TOKEN</password>
+    </server>
+  </servers>
 </settings>
 ----
 +
 Be sure to replace `$GITHUB_USERNAME` with your GitHub user id, and `$GITHUB_ACCESS_TOKEN` with the value of your acess token.
 +
-IMPORTANT: The `id` used in your `settings.xml` *must* be `github-sirius-emfjson` to match what is used in the POMs.
+IMPORTANT: The `id` used in your `settings.xml` *must* be `github-sirius-emfjson` and `github-flow` to match what is used in the POMs.
 
 === Build steps
 
