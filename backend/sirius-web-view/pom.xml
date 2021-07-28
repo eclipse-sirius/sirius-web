@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius.web</groupId>
 	<artifactId>sirius-web-view</artifactId>
-	<version>0.3.8</version>
+	<version>0.3.9</version>
 	<name>sirius-web-view</name>
 	<description>Sirius Web View Definition DSL</description>
 
