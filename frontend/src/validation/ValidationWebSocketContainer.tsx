@@ -149,7 +149,7 @@ export const ValidationWebSocketContainer = ({ editingContextId }: ValidationWeb
     } else {
       content = (
         <div className={classes.idle}>
-          <Typography variant="subtitle2">The are no diagnostics for now</Typography>
+          <Typography variant="subtitle2">No diagnostic available</Typography>
         </div>
       );
     }
