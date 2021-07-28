@@ -24,7 +24,6 @@ import org.springframework.stereotype.Service;
 import graphql.Scalars;
 import graphql.schema.GraphQLEnumType;
 import graphql.schema.GraphQLFieldDefinition;
-import graphql.schema.GraphQLList;
 import graphql.schema.GraphQLNonNull;
 import graphql.schema.GraphQLObjectType;
 import graphql.schema.GraphQLType;
@@ -42,7 +41,6 @@ import graphql.schema.GraphQLTypeReference;
  *   name: String!
  *   owner: Account!
  *   visibility: Visibility!
- *   modelers: [Modeler!]!
  *   currentEditingContext: EditingContext!
  * }
  * </pre>
@@ -53,15 +51,11 @@ import graphql.schema.GraphQLTypeReference;
 public class ProjectTypeProvider implements ITypeProvider {
     public static final String TYPE = "Project"; //$NON-NLS-1$
 
-    public static final String MODELER_TYPE = "Modeler"; //$NON-NLS-1$
-
     public static final String NAME_FIELD = "name"; //$NON-NLS-1$
 
     public static final String OWNER_FIELD = "owner"; //$NON-NLS-1$
 
     public static final String VISIBILITY_FIELD = "visibility"; //$NON-NLS-1$
-
-    public static final String MODELERS_FIELD = "modelers"; //$NON-NLS-1$
 
     public static final String CURRENT_EDITING_CONTEXT_FIELD = "currentEditingContext"; //$NON-NLS-1$
 
@@ -76,7 +70,6 @@ public class ProjectTypeProvider implements ITypeProvider {
                 .field(this.getNameField())
                 .field(this.getOwnerField())
                 .field(this.getVisibilityField())
-                .field(this.getModelersField())
                 .field(this.getCurrentEditingContextField())
                 .build();
         // @formatter:on
@@ -115,15 +108,6 @@ public class ProjectTypeProvider implements ITypeProvider {
         return GraphQLFieldDefinition.newFieldDefinition()
                 .name(VISIBILITY_FIELD)
                 .type(new GraphQLNonNull(new GraphQLTypeReference(Visibility.class.getSimpleName())))
-                .build();
-        // @formatter:on
-    }
-
-    private GraphQLFieldDefinition getModelersField() {
-        // @formatter:off
-        return GraphQLFieldDefinition.newFieldDefinition()
-                .name(MODELERS_FIELD)
-                .type(new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(new GraphQLTypeReference(MODELER_TYPE)))))
                 .build();
         // @formatter:on
     }
