@@ -12,20 +12,18 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.emf.compatibility.properties;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
-import org.eclipse.sirius.web.collaborative.validation.api.IValidationService;
 import org.eclipse.sirius.web.compat.forms.WidgetIdProvider;
+import org.eclipse.sirius.web.emf.compatibility.properties.api.IPropertiesValidationProvider;
 import org.eclipse.sirius.web.forms.description.IfDescription;
 import org.eclipse.sirius.web.forms.description.TextfieldDescription;
 import org.eclipse.sirius.web.representations.Status;
@@ -43,11 +41,11 @@ public class EStringIfDescriptionProvider {
 
     private final ComposedAdapterFactory composedAdapterFactory;
 
-    private final IValidationService validationService;
+    private final IPropertiesValidationProvider propertiesValidationProvider;
 
-    public EStringIfDescriptionProvider(ComposedAdapterFactory composedAdapterFactory, IValidationService validationService) {
+    public EStringIfDescriptionProvider(ComposedAdapterFactory composedAdapterFactory, IPropertiesValidationProvider propertiesValidationProvider) {
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
-        this.validationService = Objects.requireNonNull(validationService);
+        this.propertiesValidationProvider = Objects.requireNonNull(propertiesValidationProvider);
     }
 
     public IfDescription getIfDescription() {
@@ -76,9 +74,9 @@ public class EStringIfDescriptionProvider {
                 .labelProvider(this.getLabelProvider())
                 .valueProvider(this.getValueProvider())
                 .newValueHandler(this.getNewValueHandler())
-                .diagnosticsProvider(this.getDiagnosticsProvider())
-                .kindProvider(this::kindProvider)
-                .messageProvider(this::messageProvider)
+                .diagnosticsProvider(this.propertiesValidationProvider.getDiagnosticsProvider())
+                .kindProvider(this.propertiesValidationProvider.getKindProvider())
+                .messageProvider(this.propertiesValidationProvider.getMessageProvider())
                 .build();
         // @formatter:on
     }
@@ -121,47 +119,5 @@ public class EStringIfDescriptionProvider {
             }
             return Status.ERROR;
         };
-    }
-
-    private Function<VariableManager, List<Object>> getDiagnosticsProvider() {
-        return variableManager -> {
-            var optionalEObject = variableManager.get(VariableManager.SELF, EObject.class);
-            var optionalEAttribute = variableManager.get(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE, EAttribute.class);
-            if (optionalEObject.isPresent() && optionalEAttribute.isPresent()) {
-                return this.validationService.validate(optionalEObject.get(), optionalEAttribute.get());
-            }
-
-            return List.of();
-        };
-    }
-
-    private String kindProvider(Object object) {
-        String kind = "Unknown"; //$NON-NLS-1$
-        if (object instanceof Diagnostic) {
-            Diagnostic diagnostic = (Diagnostic) object;
-            switch (diagnostic.getSeverity()) {
-            case org.eclipse.emf.common.util.Diagnostic.ERROR:
-                kind = "Error"; //$NON-NLS-1$
-                break;
-            case org.eclipse.emf.common.util.Diagnostic.WARNING:
-                kind = "Warning"; //$NON-NLS-1$
-                break;
-            case org.eclipse.emf.common.util.Diagnostic.INFO:
-                kind = "Info"; //$NON-NLS-1$
-                break;
-            default:
-                kind = "Unknown"; //$NON-NLS-1$
-                break;
-            }
-        }
-        return kind;
-    }
-
-    private String messageProvider(Object object) {
-        if (object instanceof Diagnostic) {
-            Diagnostic diagnostic = (Diagnostic) object;
-            return diagnostic.getMessage();
-        }
-        return ""; //$NON-NLS-1$
     }
 }
