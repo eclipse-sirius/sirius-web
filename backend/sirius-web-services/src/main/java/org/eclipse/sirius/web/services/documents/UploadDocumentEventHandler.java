@@ -135,7 +135,7 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
                     try (var inputStream = new ByteArrayInputStream(document.getContent().getBytes())) {
                         resource.load(inputStream, null);
                     } catch (IOException exception) {
-                        this.logger.error(exception.getMessage(), exception);
+                        this.logger.warn(exception.getMessage(), exception);
                     }
 
                     resource.eAdapters().add(new DocumentMetadataAdapter(name));
@@ -175,7 +175,7 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
                 }
             }
         } catch (IOException exception) {
-            this.logger.error(exception.getMessage(), exception);
+            this.logger.warn(exception.getMessage(), exception);
         }
         return content;
     }
@@ -218,7 +218,7 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
                 resource.load(bufferedInputStream, options);
             }
         } catch (IOException exception) {
-            this.logger.error(exception.getMessage(), exception);
+            this.logger.warn(exception.getMessage(), exception);
         }
         return Optional.ofNullable(resource);
     }

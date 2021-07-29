@@ -125,7 +125,7 @@ public class ProjectImporter {
             // @formatter:on
 
             if (!representationCreated) {
-                this.logger.error("The representation {} has not been created", representationDescriptor.getLabel()); //$NON-NLS-1$
+                this.logger.warn("The representation {} has not been created", representationDescriptor.getLabel()); //$NON-NLS-1$
             }
 
             allRepresentationCreated = allRepresentationCreated && representationCreated;
@@ -157,7 +157,7 @@ public class ProjectImporter {
                     .orElse(null);
             // @formatter:on
             if (document == null) {
-                this.logger.error("The document {} has not been created", this.projectManifest.getDocumentIdsToName().get(oldDocumentId)); //$NON-NLS-1$
+                this.logger.warn("The document {} has not been created", this.projectManifest.getDocumentIdsToName().get(oldDocumentId)); //$NON-NLS-1$
             }
             this.oldDocumentIdToNewDocument.put(oldDocumentId, document);
         }

@@ -32,7 +32,7 @@ public class GraphQLDataFetcherExceptionHandler implements DataFetcherExceptionH
 
     @Override
     public DataFetcherExceptionHandlerResult onException(DataFetcherExceptionHandlerParameters handlerParameters) {
-        this.logger.error(handlerParameters.getException().getMessage(), handlerParameters.getException());
+        this.logger.warn(handlerParameters.getException().getMessage(), handlerParameters.getException());
 
         GraphQLError error = this.getGraphQLError(handlerParameters);
 

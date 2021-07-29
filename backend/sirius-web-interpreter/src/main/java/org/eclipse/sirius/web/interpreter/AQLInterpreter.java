@@ -131,7 +131,7 @@ public class AQLInterpreter {
 
             return new Result(Optional.ofNullable(evalResult.getResult()), Status.getStatus(diagnostic.getSeverity()));
         } catch (ExecutionException exception) {
-            this.logger.error(exception.getMessage(), exception);
+            this.logger.warn(exception.getMessage(), exception);
         }
         return new Result(Optional.empty(), Status.ERROR);
     }
@@ -143,7 +143,7 @@ public class AQLInterpreter {
             } else if (Diagnostic.WARNING == diagnostic.getSeverity()) {
                 this.logger.warn("A warning has occurred with the expression '{}': {}", expression, diagnostic.getMessage()); //$NON-NLS-1$
             } else if (Diagnostic.ERROR == diagnostic.getSeverity() || Diagnostic.CANCEL == diagnostic.getSeverity()) {
-                this.logger.error("An error has occurred with the expression '{}': {}", expression, diagnostic.getMessage()); //$NON-NLS-1$
+                this.logger.warn("An error has occurred with the expression '{}': {}", expression, diagnostic.getMessage()); //$NON-NLS-1$
             }
         }
 

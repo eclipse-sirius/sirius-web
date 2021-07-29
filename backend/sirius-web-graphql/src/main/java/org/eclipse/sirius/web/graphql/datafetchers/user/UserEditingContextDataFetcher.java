@@ -48,7 +48,7 @@ public class UserEditingContextDataFetcher implements IDataFetcherWithFieldCoord
             UUID editingContextId = UUID.fromString(editingContextIdArgument);
             return editingContextId;
         } catch (IllegalArgumentException exception) {
-            this.logger.error(exception.getMessage(), exception);
+            this.logger.warn(exception.getMessage(), exception);
         }
         return null;
     }

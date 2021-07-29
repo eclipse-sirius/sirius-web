@@ -184,7 +184,7 @@ public class EEnumIfDescriptionProvider {
                     }
                 }
             } catch (NumberFormatException exception) {
-                this.logger.error(exception.getMessage(), exception);
+                this.logger.warn(exception.getMessage(), exception);
                 return Status.ERROR;
             }
             return Status.OK;

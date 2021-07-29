@@ -113,7 +113,7 @@ public class ImageSizeProvider {
         try {
             optionalSize = this.cache.get(imagePath);
         } catch (ExecutionException exception) {
-            this.logger.error(exception.getMessage(), exception);
+            this.logger.warn(exception.getMessage(), exception);
         }
 
         return optionalSize;
@@ -138,8 +138,8 @@ public class ImageSizeProvider {
         if (resource.exists()) {
             try {
                 return Optional.ofNullable(resource.getURL());
-            } catch (IOException e) {
-                this.logger.error(e.getMessage(), e);
+            } catch (IOException exception) {
+                this.logger.warn(exception.getMessage(), exception);
             }
         }
         return Optional.empty();
@@ -184,7 +184,7 @@ public class ImageSizeProvider {
             }
         } catch (IOException | BridgeException exception) {
             String pattern = "An error has occured while computing the dimensions of {0}: {1}"; //$NON-NLS-1$
-            this.logger.error(MessageFormat.format(pattern, url.toString(), exception.getMessage()), exception);
+            this.logger.warn(MessageFormat.format(pattern, url.toString(), exception.getMessage()), exception);
         } finally {
             if (tmpSvg != null && tmpSvg.exists()) {
                 tmpSvg.delete();
@@ -208,7 +208,7 @@ public class ImageSizeProvider {
 
             optionalSize = Optional.of(Size.of(bufferedImage.getWidth(), bufferedImage.getHeight()));
         } catch (IOException exception) {
-            this.logger.error(exception.getMessage(), exception);
+            this.logger.warn(exception.getMessage(), exception);
         }
 
         return optionalSize;

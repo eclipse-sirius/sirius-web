@@ -64,7 +64,7 @@ public class EditingContextRepresentationDataFetcher implements IDataFetcherWith
                     .orElse(null);
             // @formatter:on
         } catch (IllegalArgumentException exception) {
-            this.logger.error(exception.getMessage(), exception);
+            this.logger.warn(exception.getMessage(), exception);
         }
         return null;
     }

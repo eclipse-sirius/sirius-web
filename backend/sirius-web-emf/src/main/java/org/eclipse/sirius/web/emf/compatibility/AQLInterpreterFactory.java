@@ -89,7 +89,7 @@ public class AQLInterpreterFactory implements IAQLInterpreterFactory {
                 Class<?> aClass = Class.forName(qualifiedName);
                 classes.add(aClass);
             } catch (ClassNotFoundException exception) {
-                this.logger.error(exception.getMessage(), exception);
+                this.logger.warn(exception.getMessage(), exception);
             }
         }
 

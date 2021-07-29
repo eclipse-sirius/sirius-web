@@ -69,7 +69,7 @@ public class RepresentationMapper {
             String content = this.objectMapper.writeValueAsString(representationDescriptor.getRepresentation());
             representationEntity.setContent(content);
         } catch (JsonProcessingException exception) {
-            this.logger.error(exception.getMessage(), exception);
+            this.logger.warn(exception.getMessage(), exception);
         }
 
         return representationEntity;

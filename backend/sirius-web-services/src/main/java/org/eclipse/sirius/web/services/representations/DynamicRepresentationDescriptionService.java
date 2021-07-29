@@ -99,7 +99,7 @@ public class DynamicRepresentationDescriptionService implements IDynamicRepresen
         try (var inputStream = new ByteArrayInputStream(documentEntity.getContent().getBytes())) {
             resource.load(inputStream, null);
         } catch (IOException | IllegalArgumentException exception) {
-            this.logger.error(exception.getMessage(), exception);
+            this.logger.warn(exception.getMessage(), exception);
         }
         return resource;
     }

@@ -202,7 +202,7 @@ public class BaseRenderer {
                     instance = this.renderElement(renderedElement);
                 }
             } catch (ReflectiveOperationException | SecurityException | IllegalArgumentException exception) {
-                this.logger.error(exception.getMessage(), exception);
+                this.logger.warn(exception.getMessage(), exception);
             }
         }
         return instance;
