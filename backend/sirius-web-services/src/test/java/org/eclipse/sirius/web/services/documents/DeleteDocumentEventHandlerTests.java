@@ -44,7 +44,7 @@ public class DeleteDocumentEventHandlerTests {
         UUID projectId = UUID.randomUUID();
         Document document = new Document(UUID.randomUUID(), new Project(projectId, "", new Profile(UUID.randomUUID(), "username"), Visibility.PUBLIC), "name", "content"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
-        IDocumentService documentService = new NoOpDocumentService() {
+        IDocumentService documentService = new IDocumentService.NoOp() {
             @Override
             public Optional<Document> getDocument(UUID documentId) {
                 return Optional.of(document);

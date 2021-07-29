@@ -28,6 +28,7 @@ import org.eclipse.sirius.web.forms.Form;
 import org.eclipse.sirius.web.forms.Group;
 import org.eclipse.sirius.web.forms.Page;
 import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.spring.collaborative.forms.messages.ICollaborativeFormMessageService;
 import org.junit.jupiter.api.Test;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
@@ -77,13 +78,13 @@ public class EditCheckboxEventHandlerTests {
                 .build();
         // @formatter:on
 
-        IFormQueryService formQueryService = new NoOpFormQueryService() {
+        IFormQueryService formQueryService = new IFormQueryService.NoOp() {
             @Override
             public Optional<AbstractWidget> findWidget(Form form, String widgetId) {
                 return Optional.of(checkbox);
             }
         };
-        EditCheckboxEventHandler handler = new EditCheckboxEventHandler(formQueryService, new NoOpCollaborativeFormMessageService(), new SimpleMeterRegistry());
+        EditCheckboxEventHandler handler = new EditCheckboxEventHandler(formQueryService, new ICollaborativeFormMessageService.NoOp(), new SimpleMeterRegistry());
         assertThat(handler.canHandle(input)).isTrue();
 
         handler.handle(form, input);

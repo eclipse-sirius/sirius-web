@@ -38,4 +38,58 @@ public interface IObjectService {
     Optional<String> getLabelField(Object object);
 
     boolean isLabelEditable(Object object);
+
+    /**
+     * Implementation which does nothing, used for mocks in unit tests.
+     *
+     * @author sbegaudeau
+     */
+    class NoOp implements IObjectService {
+
+        @Override
+        public String getId(Object object) {
+            return ""; //$NON-NLS-1$
+        }
+
+        @Override
+        public String getLabel(Object object) {
+            return ""; //$NON-NLS-1$
+        }
+
+        @Override
+        public String getKind(Object object) {
+            return ""; //$NON-NLS-1$
+        }
+
+        @Override
+        public String getFullLabel(Object object) {
+            return ""; //$NON-NLS-1$
+        }
+
+        @Override
+        public String getImagePath(Object object) {
+            return ""; //$NON-NLS-1$
+        }
+
+        @Override
+        public Optional<Object> getObject(IEditingContext editingContext, String objectId) {
+            return Optional.empty();
+        }
+
+        @Override
+        public List<Object> getContents(IEditingContext editingContext, String objectId) {
+            return List.of();
+        }
+
+        @Override
+        public Optional<String> getLabelField(Object object) {
+            return Optional.empty();
+        }
+
+        @Override
+        public boolean isLabelEditable(Object object) {
+            return false;
+        }
+
+    }
 }

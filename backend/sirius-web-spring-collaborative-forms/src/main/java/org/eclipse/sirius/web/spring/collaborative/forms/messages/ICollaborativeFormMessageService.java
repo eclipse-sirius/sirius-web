@@ -19,4 +19,18 @@ package org.eclipse.sirius.web.spring.collaborative.forms.messages;
  */
 public interface ICollaborativeFormMessageService {
     String invalidInput(String expectedInputTypeName, String receivedInputTypeName);
+
+    /**
+     * Implementation which does nothing, used for mocks in unit tests.
+     *
+     * @author sbegaudeau
+     */
+    class NoOp implements ICollaborativeFormMessageService {
+
+        @Override
+        public String invalidInput(String expectedInputTypeName, String receivedInputTypeName) {
+            return ""; //$NON-NLS-1$
+        }
+
+    }
 }

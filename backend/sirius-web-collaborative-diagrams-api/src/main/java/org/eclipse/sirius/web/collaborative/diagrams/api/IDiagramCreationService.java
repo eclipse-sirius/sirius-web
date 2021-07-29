@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -56,5 +56,24 @@ public interface IDiagramCreationService {
      * @return An updated diagram if we have been able to refresh it.
      */
     Optional<Diagram> refresh(IEditingContext editingContext, IDiagramContext diagramContext);
+
+    /**
+     * Implementation which does nothing, used for mocks in unit tests.
+     *
+     * @author sbegaudeau
+     */
+    class NoOp implements IDiagramCreationService {
+
+        @Override
+        public Diagram create(String label, Object targetObject, DiagramDescription diagramDescription, IEditingContext editingContext) {
+            return null;
+        }
+
+        @Override
+        public Optional<Diagram> refresh(IEditingContext editingContext, IDiagramContext diagramContext) {
+            return Optional.empty();
+        }
+
+    }
 
 }

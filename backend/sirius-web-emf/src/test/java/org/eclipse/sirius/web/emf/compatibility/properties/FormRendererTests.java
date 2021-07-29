@@ -29,6 +29,7 @@ import org.eclipse.sirius.web.compat.api.ISemanticCandidatesProviderFactory;
 import org.eclipse.sirius.web.compat.forms.ViewExtensionDescriptionConverter;
 import org.eclipse.sirius.web.compat.services.representations.IdentifiedElementLabelProvider;
 import org.eclipse.sirius.web.components.Element;
+import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.emf.compatibility.AQLInterpreterFactory;
 import org.eclipse.sirius.web.emf.compatibility.SemanticCandidatesProvider;
 import org.eclipse.sirius.web.emf.compatibility.modeloperations.ModelOperationHandlerSwitch;
@@ -75,7 +76,7 @@ public class FormRendererTests {
         IdentifiedElementLabelProvider identifiedElementLabelProvider = new IdentifiedElementLabelProvider();
         ISemanticCandidatesProviderFactory semanticCandidatesProviderFactory = SemanticCandidatesProvider::new;
         IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider = ModelOperationHandlerSwitch::new;
-        ViewExtensionDescriptionConverter converter = new ViewExtensionDescriptionConverter(new NoOpObjectService(), interpreterFactory, identifierProvider, semanticCandidatesProviderFactory,
+        ViewExtensionDescriptionConverter converter = new ViewExtensionDescriptionConverter(new IObjectService.NoOp(), interpreterFactory, identifierProvider, semanticCandidatesProviderFactory,
                 modelOperationHandlerSwitchProvider, identifiedElementLabelProvider);
         FormDescription description = converter.convert(viewExtensionDescription);
 

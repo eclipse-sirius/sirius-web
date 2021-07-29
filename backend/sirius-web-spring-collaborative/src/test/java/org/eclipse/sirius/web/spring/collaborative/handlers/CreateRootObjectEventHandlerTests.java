@@ -35,7 +35,7 @@ public class CreateRootObjectEventHandlerTests {
     @Test
     public void testCreateChild() {
         Object object = new Object();
-        IEditService editService = new NoOpEditService() {
+        IEditService editService = new IEditService.NoOp() {
             @Override
             public Optional<Object> createRootObject(IEditingContext editingContext, UUID documentId, String namespaceId, String rootObjectCreationDescriptionId) {
                 return Optional.of(object);

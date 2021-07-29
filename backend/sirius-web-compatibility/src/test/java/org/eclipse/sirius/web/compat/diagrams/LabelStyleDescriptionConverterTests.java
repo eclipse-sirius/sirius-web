@@ -20,6 +20,7 @@ import java.util.function.Function;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.sirius.diagram.description.style.ShapeContainerStyleDescription;
 import org.eclipse.sirius.diagram.description.style.StyleFactory;
+import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
 import org.eclipse.sirius.web.representations.VariableManager;
@@ -44,7 +45,7 @@ public class LabelStyleDescriptionConverterTests {
         AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(EcorePackage.eINSTANCE));
         VariableManager variableManager = new VariableManager();
 
-        LabelStyleDescriptionConverter labelStyleDescriptionConverter = new LabelStyleDescriptionConverter(interpreter, new NoOpObjectService());
+        LabelStyleDescriptionConverter labelStyleDescriptionConverter = new LabelStyleDescriptionConverter(interpreter, new IObjectService.NoOp());
         LabelStyleDescription labelStyleDescriptionConverted = labelStyleDescriptionConverter.convert(styleDescription);
 
         assertThat(labelStyleDescriptionConverted).isNotNull();

@@ -34,7 +34,7 @@ import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 public class DeleteObjectEventHandlerTests {
     @Test
     public void testDeleteObject() {
-        IObjectService objectService = new NoOpObjectService() {
+        IObjectService objectService = new IObjectService.NoOp() {
             @Override
             public Optional<Object> getObject(IEditingContext editingContext, String objectId) {
                 return Optional.of(new Object());
@@ -42,7 +42,7 @@ public class DeleteObjectEventHandlerTests {
         };
 
         AtomicBoolean hasBeenCalled = new AtomicBoolean();
-        IEditService editService = new NoOpEditService() {
+        IEditService editService = new IEditService.NoOp() {
             @Override
             public void delete(Object object) {
                 hasBeenCalled.set(true);

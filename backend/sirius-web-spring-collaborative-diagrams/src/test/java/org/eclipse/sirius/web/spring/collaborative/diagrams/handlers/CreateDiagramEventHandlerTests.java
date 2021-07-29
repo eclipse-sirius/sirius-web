@@ -63,7 +63,7 @@ public class CreateDiagramEventHandlerTests {
         };
 
         AtomicBoolean hasBeenCalled = new AtomicBoolean();
-        IDiagramCreationService diagramCreationService = new NoOpDiagramCreationService() {
+        IDiagramCreationService diagramCreationService = new IDiagramCreationService.NoOp() {
             @Override
             public Diagram create(String label, Object targetObject, DiagramDescription diagramDescription, IEditingContext editingContext) {
                 hasBeenCalled.set(true);
@@ -72,7 +72,7 @@ public class CreateDiagramEventHandlerTests {
 
         };
 
-        IObjectService objectService = new NoOpObjectService() {
+        IObjectService objectService = new IObjectService.NoOp() {
             @Override
             public Optional<Object> getObject(IEditingContext editingContext, String objectId) {
                 return Optional.of(new Object());
@@ -91,7 +91,8 @@ public class CreateDiagramEventHandlerTests {
         var input = new CreateRepresentationInput(UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID(), "objectId", "representationName"); //$NON-NLS-1$//$NON-NLS-2$
         assertThat(handler.canHandle(input)).isTrue();
 
-        handler.handle(new NoOpEditingContext(), input);
+        IEditingContext editingContext = () -> UUID.randomUUID();
+        handler.handle(editingContext, input);
         assertThat(hasBeenCalled.get()).isTrue();
     }
 }

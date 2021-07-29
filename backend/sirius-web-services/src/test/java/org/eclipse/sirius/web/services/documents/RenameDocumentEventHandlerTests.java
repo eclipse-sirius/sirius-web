@@ -27,6 +27,7 @@ import org.eclipse.sirius.web.emf.services.EditingContext;
 import org.eclipse.sirius.web.emf.services.SiriusWebJSONResourceFactoryImpl;
 import org.eclipse.sirius.web.services.api.accounts.Profile;
 import org.eclipse.sirius.web.services.api.document.Document;
+import org.eclipse.sirius.web.services.api.document.IDocumentService;
 import org.eclipse.sirius.web.services.api.projects.Project;
 import org.eclipse.sirius.web.services.api.projects.Visibility;
 import org.eclipse.sirius.web.services.projects.NoOpServicesMessageService;
@@ -46,7 +47,7 @@ public class RenameDocumentEventHandlerTests {
 
     @Test
     public void testRenameDocument() {
-        NoOpDocumentService noOpDocumentService = new NoOpDocumentService() {
+        IDocumentService noOpDocumentService = new IDocumentService.NoOp() {
             @Override
             public Optional<Document> rename(UUID documentId, String newName) {
                 return Optional.of(new Document(documentId, new Project(UUID.randomUUID(), "", new Profile(UUID.randomUUID(), "username"), Visibility.PUBLIC), newName, "noContent")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$

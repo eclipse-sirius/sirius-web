@@ -32,6 +32,8 @@ import org.eclipse.sirius.viewpoint.description.FixedColor;
 import org.eclipse.sirius.web.compat.api.IIdentifierProvider;
 import org.eclipse.sirius.web.compat.api.IModelOperationHandlerSwitchProvider;
 import org.eclipse.sirius.web.compat.api.ISemanticCandidatesProviderFactory;
+import org.eclipse.sirius.web.core.api.IEditService;
+import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.diagrams.description.LabelDescription;
 import org.eclipse.sirius.web.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.web.diagrams.description.NodeDescription;
@@ -102,7 +104,8 @@ public class MappingConverterTests {
 
         VariableManager variableManager = new VariableManager();
         AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(EcorePackage.eINSTANCE));
-        var converter = new AbstractNodeMappingConverter(new NoOpObjectService(), new NoOpEditService(), identifierProvider, semanticCandidatesProviderFactory, modelOperationHandlerSwitchProvider);
+        var converter = new AbstractNodeMappingConverter(new IObjectService.NoOp(), new IEditService.NoOp(), identifierProvider, semanticCandidatesProviderFactory,
+                modelOperationHandlerSwitchProvider);
 
         NodeDescription convertedNodeDescription = converter.convert(containerMapping, interpreter, new HashMap<UUID, NodeDescription>());
         LabelDescription labelDescription = convertedNodeDescription.getLabelDescription();
@@ -175,7 +178,8 @@ public class MappingConverterTests {
 
         VariableManager variableManager = new VariableManager();
         AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(EcorePackage.eINSTANCE));
-        var converter = new AbstractNodeMappingConverter(new NoOpObjectService(), new NoOpEditService(), identifierProvider, semanticCandidatesProviderFactory, modelOperationHandlerSwitchProvider);
+        var converter = new AbstractNodeMappingConverter(new IObjectService.NoOp(), new IEditService.NoOp(), identifierProvider, semanticCandidatesProviderFactory,
+                modelOperationHandlerSwitchProvider);
 
         NodeDescription convertedNodeDescription = converter.convert(nodeMapping, interpreter, new HashMap<UUID, NodeDescription>());
         LabelDescription labelDescription = convertedNodeDescription.getLabelDescription();

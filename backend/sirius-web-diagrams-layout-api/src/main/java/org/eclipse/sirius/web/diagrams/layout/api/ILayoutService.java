@@ -36,4 +36,23 @@ public interface ILayoutService {
      * @return the new layouted diagram.
      */
     Diagram incrementalLayout(Diagram diagram, Optional<IDiagramEvent> optionalDiagramElementEvent);
+
+    /**
+     * Implementation which does nothing, used for mocks in unit tests.
+     *
+     * @author sbegaudeau
+     */
+    class NoOp implements ILayoutService {
+
+        @Override
+        public Diagram layout(Diagram diagram) {
+            return diagram;
+        }
+
+        @Override
+        public Diagram incrementalLayout(Diagram diagram, Optional<IDiagramEvent> optionalDiagramElementEvent) {
+            return diagram;
+        }
+
+    }
 }

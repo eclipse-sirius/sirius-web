@@ -27,4 +27,18 @@ public interface IEditingContext {
     String EDITING_CONTEXT = "editingContext"; //$NON-NLS-1$
 
     UUID getId();
+
+    /**
+     * Implementation which does nothing, used for mocks in unit tests.
+     *
+     * @author sbegaudeau
+     */
+    class NoOp implements IEditingContext {
+
+        @Override
+        public UUID getId() {
+            return null;
+        }
+
+    }
 }

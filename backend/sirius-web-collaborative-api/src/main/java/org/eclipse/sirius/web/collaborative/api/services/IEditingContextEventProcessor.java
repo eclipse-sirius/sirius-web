@@ -37,4 +37,48 @@ public interface IEditingContextEventProcessor extends IDisposablePublisher {
 
     Flux<IPayload> getOutputEvents();
 
+    /**
+     * Implementation which does nothing, used for mocks in unit tests.
+     *
+     * @author sbegaudeau
+     */
+    class NoOp implements IEditingContextEventProcessor {
+
+        @Override
+        public Flux<Boolean> canBeDisposed() {
+            return Flux.empty();
+        }
+
+        @Override
+        public void dispose() {
+        }
+
+        @Override
+        public UUID getEditingContextId() {
+            return null;
+        }
+
+        @Override
+        public <T extends IRepresentationEventProcessor> Optional<T> acquireRepresentationEventProcessor(Class<T> representationEventProcessorClass, IRepresentationConfiguration configuration,
+                IInput input) {
+            return Optional.empty();
+        }
+
+        @Override
+        public List<IRepresentationEventProcessor> getRepresentationEventProcessors() {
+            return List.of();
+        }
+
+        @Override
+        public Optional<IPayload> handle(IInput input) {
+            return Optional.empty();
+        }
+
+        @Override
+        public Flux<IPayload> getOutputEvents() {
+            return Flux.empty();
+        }
+
+    }
+
 }

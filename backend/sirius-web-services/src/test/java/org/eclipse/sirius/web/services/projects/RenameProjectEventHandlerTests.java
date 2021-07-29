@@ -33,7 +33,7 @@ public class RenameProjectEventHandlerTests {
     @Test
     public void testRenameObject() {
         AtomicBoolean hasBeenCalled = new AtomicBoolean();
-        IProjectService projectService = new NoOpProjectService() {
+        IProjectService projectService = new IProjectService.NoOp() {
             @Override
             public Optional<Project> renameProject(UUID projectId, String newName) {
                 hasBeenCalled.set(true);

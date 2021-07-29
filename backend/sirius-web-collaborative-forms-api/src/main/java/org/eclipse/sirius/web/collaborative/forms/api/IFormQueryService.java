@@ -24,4 +24,18 @@ import org.eclipse.sirius.web.forms.Form;
  */
 public interface IFormQueryService {
     Optional<AbstractWidget> findWidget(Form form, String widgetId);
+
+    /**
+     * Implementation which does nothing, used for mocks in unit tests.
+     *
+     * @author sbegaudeau
+     */
+    class NoOp implements IFormQueryService {
+
+        @Override
+        public Optional<AbstractWidget> findWidget(Form form, String widgetId) {
+            return Optional.empty();
+        }
+
+    }
 }

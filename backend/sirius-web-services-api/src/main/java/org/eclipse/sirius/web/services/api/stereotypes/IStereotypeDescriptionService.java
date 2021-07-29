@@ -27,4 +27,23 @@ public interface IStereotypeDescriptionService {
     List<StereotypeDescription> getStereotypeDescriptions(UUID editingContextId);
 
     Optional<StereotypeDescription> getStereotypeDescriptionById(UUID editingContextId, UUID stereotypeId);
+
+    /**
+     * Implementation which does nothing, used for mocks in unit tests.
+     *
+     * @author sbegaudeau
+     */
+    class NoOp implements IStereotypeDescriptionService {
+
+        @Override
+        public List<StereotypeDescription> getStereotypeDescriptions(UUID editingContextId) {
+            return List.of();
+        }
+
+        @Override
+        public Optional<StereotypeDescription> getStereotypeDescriptionById(UUID editingContextId, UUID stereotypeId) {
+            return Optional.empty();
+        }
+
+    }
 }

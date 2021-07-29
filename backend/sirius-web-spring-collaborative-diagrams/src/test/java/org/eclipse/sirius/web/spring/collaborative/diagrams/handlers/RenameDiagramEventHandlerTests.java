@@ -88,7 +88,7 @@ public class RenameDiagramEventHandlerTests {
 
         assertThat(handler.canHandle(input)).isTrue();
 
-        EventHandlerResponse handlerResponse = handler.handle(new NoOpEditingContext(), new NoOpDiagramContext(), input);
+        EventHandlerResponse handlerResponse = handler.handle(new IEditingContext.NoOp(), new NoOpDiagramContext(), input);
         IPayload payload = handlerResponse.getPayload();
         assertThat(payload).isInstanceOf(RenameRepresentationSuccessPayload.class);
     }
