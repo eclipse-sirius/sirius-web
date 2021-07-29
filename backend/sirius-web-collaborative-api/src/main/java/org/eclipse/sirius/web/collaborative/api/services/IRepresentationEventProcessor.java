@@ -37,4 +37,46 @@ public interface IRepresentationEventProcessor extends IDisposablePublisher {
 
     Flux<IPayload> getOutputEvents(IInput input);
 
+    /**
+     * Implementation which does nothing, used for mocks in unit tests.
+     *
+     * @author sbegaudeau
+     */
+    class NoOp implements IRepresentationEventProcessor {
+
+        @Override
+        public Flux<Boolean> canBeDisposed() {
+            return Flux.empty();
+        }
+
+        @Override
+        public void dispose() {
+        }
+
+        @Override
+        public IRepresentation getRepresentation() {
+            return null;
+        }
+
+        @Override
+        public Optional<EventHandlerResponse> handle(IRepresentationInput representationInput) {
+            return Optional.empty();
+        }
+
+        @Override
+        public void refresh(IInput input, ChangeDescription changeDescription) {
+        }
+
+        @Override
+        public ISubscriptionManager getSubscriptionManager() {
+            return null;
+        }
+
+        @Override
+        public Flux<IPayload> getOutputEvents(IInput input) {
+            return Flux.empty();
+        }
+
+    }
+
 }

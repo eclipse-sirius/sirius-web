@@ -29,6 +29,7 @@ import org.eclipse.sirius.web.forms.Page;
 import org.eclipse.sirius.web.forms.Radio;
 import org.eclipse.sirius.web.forms.RadioOption;
 import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.spring.collaborative.forms.messages.ICollaborativeFormMessageService;
 import org.junit.jupiter.api.Test;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
@@ -84,13 +85,13 @@ public class EditRadioEventHandlerTests {
                 .build();
         // @formatter:on
 
-        IFormQueryService formQueryService = new NoOpFormQueryService() {
+        IFormQueryService formQueryService = new IFormQueryService.NoOp() {
             @Override
             public Optional<AbstractWidget> findWidget(Form form, String widgetId) {
                 return Optional.of(radio);
             }
         };
-        EditRadioEventHandler handler = new EditRadioEventHandler(formQueryService, new NoOpCollaborativeFormMessageService(), new SimpleMeterRegistry());
+        EditRadioEventHandler handler = new EditRadioEventHandler(formQueryService, new ICollaborativeFormMessageService.NoOp(), new SimpleMeterRegistry());
 
         assertThat(handler.canHandle(input)).isTrue();
 

@@ -20,5 +20,12 @@ import org.eclipse.sirius.web.collaborative.api.services.IRepresentationEventPro
  * @author arichard
  */
 public interface ISelectionEventProcessor extends IRepresentationEventProcessor {
+    /**
+     * Implementation which does nothing, used for mocks in unit tests.
+     *
+     * @author sbegaudeau
+     */
+    class NoOp extends IRepresentationEventProcessor.NoOp implements ISelectionEventProcessor {
 
+    }
 }

@@ -78,13 +78,13 @@ public class CreateDocumentEventHandlerTests {
 
     @Test
     public void testCreateDocument() {
-        IDocumentService documentService = new NoOpDocumentService() {
+        IDocumentService documentService = new IDocumentService.NoOp() {
             @Override
             public Optional<Document> createDocument(UUID projectId, String name, String content) {
                 return Optional.of(new Document(UUID.randomUUID(), new Project(projectId, "", new Profile(UUID.randomUUID(), "username"), Visibility.PUBLIC), name, content)); //$NON-NLS-1$ //$NON-NLS-2$
             }
         };
-        IStereotypeDescriptionService stereotypeDescriptionService = new NoOpStereotypeDescriptionService() {
+        IStereotypeDescriptionService stereotypeDescriptionService = new IStereotypeDescriptionService.NoOp() {
             @Override
             public Optional<StereotypeDescription> getStereotypeDescriptionById(UUID editingContextId, UUID stereotypeId) {
                 StereotypeDescription stereotypeDescription = new StereotypeDescription(stereotypeId, "label", () -> CONTENT); //$NON-NLS-1$
@@ -110,13 +110,13 @@ public class CreateDocumentEventHandlerTests {
 
     @Test
     public void testCreateTwoDocumentWithSameName() {
-        IDocumentService documentService = new NoOpDocumentService() {
+        IDocumentService documentService = new IDocumentService.NoOp() {
             @Override
             public Optional<Document> createDocument(UUID projectId, String name, String content) {
                 return Optional.of(new Document(UUID.randomUUID(), new Project(projectId, "", new Profile(UUID.randomUUID(), "username"), Visibility.PUBLIC), name, content)); //$NON-NLS-1$ //$NON-NLS-2$
             }
         };
-        IStereotypeDescriptionService stereotypeDescriptionService = new NoOpStereotypeDescriptionService() {
+        IStereotypeDescriptionService stereotypeDescriptionService = new IStereotypeDescriptionService.NoOp() {
             @Override
             public Optional<StereotypeDescription> getStereotypeDescriptionById(UUID editingContextId, UUID stereotypeId) {
                 StereotypeDescription stereotypeDescription = new StereotypeDescription(stereotypeId, "label", () -> CONTENT); //$NON-NLS-1$

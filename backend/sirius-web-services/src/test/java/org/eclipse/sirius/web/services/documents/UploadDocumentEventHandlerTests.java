@@ -155,7 +155,7 @@ public class UploadDocumentEventHandlerTests {
     }
 
     private EditingDomain uploadDocument(InputStream inputstream) {
-        IDocumentService documentService = new NoOpDocumentService() {
+        IDocumentService documentService = new IDocumentService.NoOp() {
             @Override
             public Optional<Document> createDocument(UUID projectId, String name, String content) {
                 return Optional.of(new Document(UUID.randomUUID(), new Project(projectId, "", new Profile(UUID.randomUUID(), "username"), Visibility.PUBLIC), name, content)); //$NON-NLS-1$ //$NON-NLS-2$
@@ -225,7 +225,7 @@ public class UploadDocumentEventHandlerTests {
      *            The content of the document to upload
      */
     private void simulatesDocumentUpload(AdapterFactoryEditingDomain editingDomain, UUID documentId, byte[] resourceBytes) {
-        IDocumentService documentService = new NoOpDocumentService() {
+        IDocumentService documentService = new IDocumentService.NoOp() {
 
             @Override
             public Optional<Document> createDocument(UUID projectId, String name, String content) {

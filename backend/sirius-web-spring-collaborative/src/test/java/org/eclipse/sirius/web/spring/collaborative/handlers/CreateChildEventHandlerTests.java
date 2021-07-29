@@ -37,7 +37,7 @@ public class CreateChildEventHandlerTests {
     @Test
     public void testCreateChild() {
         Object createdObject = new Object();
-        IEditService editService = new NoOpEditService() {
+        IEditService editService = new IEditService.NoOp() {
             @Override
             public Optional<Object> createChild(IEditingContext editingContext, Object object, String childCreationDescriptionId) {
                 return Optional.of(createdObject);
@@ -51,7 +51,7 @@ public class CreateChildEventHandlerTests {
 
     @Test
     public void testCreateChildFailed() {
-        IEditService editService = new NoOpEditService() {
+        IEditService editService = new IEditService.NoOp() {
             @Override
             public Optional<Object> createChild(IEditingContext editingContext, Object object, String childCreationDescriptionId) {
                 return Optional.empty();
@@ -63,7 +63,7 @@ public class CreateChildEventHandlerTests {
     }
 
     EventHandlerResponse handle(IEditService editService) {
-        IObjectService objectService = new NoOpObjectService() {
+        IObjectService objectService = new IObjectService.NoOp() {
             @Override
             public Optional<Object> getObject(IEditingContext editingContext, String objectId) {
                 return Optional.of(new Object());

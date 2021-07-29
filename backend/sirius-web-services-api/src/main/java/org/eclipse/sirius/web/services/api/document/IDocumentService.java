@@ -41,4 +41,46 @@ public interface IDocumentService {
 
     Optional<Document> rename(UUID documentId, String newName);
 
+    /**
+     * Implementation which does nothing, used for mocks in unit tests.
+     *
+     * @author sbegaudeau
+     */
+    class NoOp implements IDocumentService {
+
+        @Override
+        public Optional<Document> createDocument(UUID projectId, String name, String content) {
+            return Optional.empty();
+        }
+
+        @Override
+        public Optional<Document> getDocument(UUID documentId) {
+            return Optional.empty();
+        }
+
+        @Override
+        public Optional<Document> getDocument(UUID projectId, UUID documentId) {
+            return Optional.empty();
+        }
+
+        @Override
+        public List<Document> getDocuments(UUID projectId) {
+            return List.of();
+        }
+
+        @Override
+        public void delete(UUID documentId) {
+        }
+
+        @Override
+        public Optional<byte[]> getBytes(Document document, String resourceKind) {
+            return Optional.empty();
+        }
+
+        @Override
+        public Optional<Document> rename(UUID documentId, String newName) {
+            return Optional.empty();
+        }
+
+    }
 }

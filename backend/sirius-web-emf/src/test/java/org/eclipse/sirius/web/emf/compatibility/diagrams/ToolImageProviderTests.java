@@ -34,7 +34,7 @@ public class ToolImageProviderTests {
         ToolDescription toolDescription = ToolFactory.eINSTANCE.createToolDescription();
         toolDescription.setIconPath(ICON_PATH);
 
-        IObjectService objectService = new NoOpObjectService();
+        IObjectService objectService = new IObjectService.NoOp();
         EPackage.Registry ePackageRegistry = EPackage.Registry.INSTANCE;
         ToolImageProvider toolImageProvider = new ToolImageProvider(objectService, ePackageRegistry, toolDescription);
 

@@ -27,4 +27,28 @@ public interface ICustomImagesService {
     Optional<byte[]> getImageContentsByFileName(String fileName);
 
     List<CustomImage> getAvailableImages();
+
+    /**
+     * Implementation which does nothing, used for mocks in unit tests.
+     *
+     * @author sbegaudeau
+     */
+    class NoOp implements ICustomImagesService {
+
+        @Override
+        public Optional<CustomImage> findById(UUID id) {
+            return Optional.empty();
+        }
+
+        @Override
+        public Optional<byte[]> getImageContentsByFileName(String fileName) {
+            return Optional.empty();
+        }
+
+        @Override
+        public List<CustomImage> getAvailableImages() {
+            return List.of();
+        }
+
+    }
 }

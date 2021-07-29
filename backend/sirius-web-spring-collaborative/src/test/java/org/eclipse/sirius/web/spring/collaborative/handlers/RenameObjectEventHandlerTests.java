@@ -34,7 +34,7 @@ import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 public class RenameObjectEventHandlerTests {
     @Test
     public void testRenameObject() {
-        IObjectService objectService = new NoOpObjectService() {
+        IObjectService objectService = new IObjectService.NoOp() {
             @Override
             public Optional<Object> getObject(IEditingContext editingContext, String objectId) {
                 return Optional.of(new Object());
@@ -47,7 +47,7 @@ public class RenameObjectEventHandlerTests {
         };
 
         AtomicBoolean hasBeenCalled = new AtomicBoolean();
-        IEditService editService = new NoOpEditService() {
+        IEditService editService = new IEditService.NoOp() {
             @Override
             public void editLabel(Object object, String labelField, String newValue) {
                 hasBeenCalled.set(true);

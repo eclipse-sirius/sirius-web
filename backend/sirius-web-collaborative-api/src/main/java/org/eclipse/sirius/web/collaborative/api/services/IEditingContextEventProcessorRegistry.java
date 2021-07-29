@@ -32,4 +32,32 @@ public interface IEditingContextEventProcessorRegistry {
     Optional<IEditingContextEventProcessor> getOrCreateEditingContextEventProcessor(UUID editingContextId);
 
     void disposeEditingContextEventProcessor(UUID editingContextId);
+
+    /**
+     * Implementation which does nothing, used for mocks in unit tests.
+     *
+     * @author sbegaudeau
+     */
+    class NoOp implements IEditingContextEventProcessorRegistry {
+
+        @Override
+        public List<IEditingContextEventProcessor> getEditingContextEventProcessors() {
+            return List.of();
+        }
+
+        @Override
+        public Optional<IPayload> dispatchEvent(UUID editingContextId, IInput input) {
+            return Optional.empty();
+        }
+
+        @Override
+        public Optional<IEditingContextEventProcessor> getOrCreateEditingContextEventProcessor(UUID editingContextId) {
+            return Optional.empty();
+        }
+
+        @Override
+        public void disposeEditingContextEventProcessor(UUID editingContextId) {
+        }
+
+    }
 }

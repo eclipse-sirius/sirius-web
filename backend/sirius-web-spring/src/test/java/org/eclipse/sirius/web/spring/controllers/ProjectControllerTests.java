@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.services.api.accounts.Profile;
+import org.eclipse.sirius.web.services.api.projects.IProjectExportService;
+import org.eclipse.sirius.web.services.api.projects.IProjectService;
 import org.eclipse.sirius.web.services.api.projects.Project;
 import org.eclipse.sirius.web.services.api.projects.Visibility;
 import org.junit.jupiter.api.Test;
@@ -36,8 +38,8 @@ public class ProjectControllerTests {
 
     @Test
     public void testProjectDoesNotExist() {
-        NoOpProjectService projectService = new NoOpProjectService();
-        NoOpProjectExportService projectExportService = new NoOpProjectExportService();
+        IProjectService projectService = new IProjectService.NoOp();
+        IProjectExportService projectExportService = new IProjectExportService.NoOp();
 
         ProjectController projectController = new ProjectController(projectService, projectExportService);
         String projectId = "631fcb2d-3463-4084-b5da-fd8022ebae53"; //$NON-NLS-1$
@@ -49,13 +51,13 @@ public class ProjectControllerTests {
     public void testProjectExists() {
         String projectFoundId = "631fcb2d-3463-4084-b5da-fd8022ebae53"; //$NON-NLS-1$
 
-        NoOpProjectService projectService = new NoOpProjectService() {
+        IProjectService projectService = new IProjectService.NoOp() {
             @Override
             public Optional<Project> getProject(UUID projectId) {
                 return Optional.of(new Project(UUID.fromString(projectFoundId), projectFoundId, new Profile(UUID.randomUUID(), "username"), Visibility.PUBLIC)); //$NON-NLS-1$
             }
         };
-        NoOpProjectExportService projectExportService = new NoOpProjectExportService();
+        IProjectExportService projectExportService = new IProjectExportService.NoOp();
 
         ProjectController projectController = new ProjectController(projectService, projectExportService);
         ResponseEntity<Resource> responseEntity = projectController.getProject(UUID.fromString(projectFoundId));

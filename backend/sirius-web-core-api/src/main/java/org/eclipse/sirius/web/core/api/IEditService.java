@@ -38,4 +38,51 @@ public interface IEditService {
     void delete(Object object);
 
     void editLabel(Object object, String labelField, String newValue);
+
+    /**
+     * Implementation which does nothing, used for mocks in unit tests.
+     *
+     * @author sbegaudeau
+     */
+    class NoOp implements IEditService {
+
+        @Override
+        public Optional<Object> findClass(UUID editingContextId, String classId) {
+            return Optional.empty();
+        }
+
+        @Override
+        public List<Namespace> getNamespaces(UUID editingContextId) {
+            return List.of();
+        }
+
+        @Override
+        public List<ChildCreationDescription> getRootCreationDescriptions(UUID editingContextId, String namespaceId, boolean suggested) {
+            return List.of();
+        }
+
+        @Override
+        public List<ChildCreationDescription> getChildCreationDescriptions(UUID editingContextId, String classId) {
+            return List.of();
+        }
+
+        @Override
+        public Optional<Object> createChild(IEditingContext editingContext, Object object, String childCreationDescriptionId) {
+            return Optional.empty();
+        }
+
+        @Override
+        public Optional<Object> createRootObject(IEditingContext editingContext, UUID documentId, String namespaceId, String rootObjectCreationDescriptionId) {
+            return Optional.empty();
+        }
+
+        @Override
+        public void delete(Object object) {
+        }
+
+        @Override
+        public void editLabel(Object object, String labelField, String newValue) {
+        }
+
+    }
 }
