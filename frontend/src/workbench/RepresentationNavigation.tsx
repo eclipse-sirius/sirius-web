@@ -91,6 +91,7 @@ export const RepresentationNavigation = ({
             key={representation.id}
             data-testid={`representation-tab-${representation.label}`}
             data-testselected={representation.id === displayedRepresentation.id}
+            data-representationid={representation.id}
           />
         );
       })}

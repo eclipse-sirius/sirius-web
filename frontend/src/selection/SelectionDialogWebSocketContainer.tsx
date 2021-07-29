@@ -139,17 +139,24 @@ export const SelectionDialogWebSocketContainer = ({
 
   return (
     <>
-      <Dialog open onClose={onClose} aria-labelledby="dialog-title" maxWidth="xs" fullWidth>
+      <Dialog
+        open
+        onClose={onClose}
+        aria-labelledby="dialog-title"
+        maxWidth="xs"
+        fullWidth
+        data-testid="selection-dialog">
         <DialogTitle id="selection-dialog-title">Selection Dialog</DialogTitle>
         <DialogContent>
-          <DialogContentText>{selection?.message}</DialogContentText>
+          <DialogContentText data-testid="selection-dialog-message">{selection?.message}</DialogContentText>
           <List className={classes.root}>
             {selection?.objects.map((selectionObject) => (
               <ListItem
                 button
                 key={`item-${selectionObject.id}`}
                 selected={selectedObjectId === selectionObject.id}
-                onClick={() => handleListItemClick(selectionObject.id)}>
+                onClick={() => handleListItemClick(selectionObject.id)}
+                data-testid={selectionObject.label}>
                 <ListItemIcon>
                   {selectionObject.iconURL ? (
                     <img
