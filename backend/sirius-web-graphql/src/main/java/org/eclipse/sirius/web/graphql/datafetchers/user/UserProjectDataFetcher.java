@@ -57,7 +57,7 @@ public class UserProjectDataFetcher implements IDataFetcherWithFieldCoordinates<
             UUID projectId = UUID.fromString(projectIdArgument);
             return this.projectService.getProject(projectId).orElse(null);
         } catch (IllegalArgumentException exception) {
-            this.logger.error(exception.getMessage(), exception);
+            this.logger.warn(exception.getMessage(), exception);
         }
         return null;
     }

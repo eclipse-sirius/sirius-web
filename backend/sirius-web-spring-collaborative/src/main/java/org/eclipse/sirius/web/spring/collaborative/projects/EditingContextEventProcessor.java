@@ -142,7 +142,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
 
             optionalPayload = optionalResponse.map(EventHandlerResponse::getPayload);
         } catch (InterruptedException | ExecutionException exception) {
-            this.logger.error(exception.getMessage(), exception);
+            this.logger.warn(exception.getMessage(), exception);
         }
 
         this.publishEvent(input, optionalPayload);

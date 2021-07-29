@@ -39,7 +39,7 @@ public interface IWebSocketMessageHandler {
                 }
             }
         } catch (IOException exception) {
-            logger.error(exception.getMessage(), exception);
+            logger.warn(exception.getMessage(), exception);
         }
     }
 }

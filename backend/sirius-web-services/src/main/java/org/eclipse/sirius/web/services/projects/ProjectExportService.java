@@ -124,8 +124,8 @@ public class ProjectExportService implements IProjectExportService {
             Map<String, RepresentationManifest> representationsManifests = this.addRepresentation(projectId, projectName, zippedOut);
 
             this.addManifest(projectId, projectName, id2DocumentName, representationsManifests, zippedOut);
-        } catch (IOException e) {
-            this.logger.error(e.getMessage(), e);
+        } catch (IOException exception) {
+            this.logger.warn(exception.getMessage(), exception);
             outputStream.reset();
         }
 
@@ -173,7 +173,7 @@ public class ProjectExportService implements IProjectExportService {
                 zippedOut.write(bytes);
                 zippedOut.closeEntry();
             } else {
-                this.logger.error("The serialization of the document {} has failed.", document.getName()); //$NON-NLS-1$
+                this.logger.warn("The serialization of the document {} has failed.", document.getName()); //$NON-NLS-1$
             }
         }
         return id2DocumentName;
@@ -256,7 +256,7 @@ public class ProjectExportService implements IProjectExportService {
             }
         }
         if (uriFragment.isEmpty()) {
-            this.logger.error("The serialization of the representationManifest won't be complete."); //$NON-NLS-1$
+            this.logger.warn("The serialization of the representationManifest won't be complete."); //$NON-NLS-1$
         }
         // @formatter:off
         return RepresentationManifest.newRepresentationManifest()
@@ -291,7 +291,7 @@ public class ProjectExportService implements IProjectExportService {
                     resource.load(inputStream, null);
                     resourceSet.getResources().add(resource);
                 } catch (IOException exception) {
-                    this.logger.error(exception.getMessage(), exception);
+                    this.logger.warn(exception.getMessage(), exception);
                 }
             }
         }

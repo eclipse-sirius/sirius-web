@@ -156,7 +156,7 @@ public class DocumentService implements IDocumentService {
                 optionalBytes = Optional.of(outputStream.toByteArray());
             }
         } catch (IOException exception) {
-            this.logger.error(exception.getMessage(), exception);
+            this.logger.warn(exception.getMessage(), exception);
         }
 
         return optionalBytes;

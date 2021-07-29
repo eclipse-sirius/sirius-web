@@ -58,7 +58,7 @@ public class ControlDescriptionConverter {
         } else if (controlDescription instanceof DynamicMappingForDescription) {
             optionalControlDescription = this.convertFor((DynamicMappingForDescription) controlDescription);
         } else {
-            this.logger.error("The provided type {} is not yet handled", controlDescription.getClass().getName()); //$NON-NLS-1$
+            this.logger.warn("The provided type {} is not yet handled", controlDescription.getClass().getName()); //$NON-NLS-1$
         }
         return optionalControlDescription;
     }

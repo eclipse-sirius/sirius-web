@@ -110,8 +110,8 @@ public class ProjectUnzipper {
                     // @formatter:on
 
                     optionalUnzippedProject = Optional.of(unzippedProject);
-                } catch (IOException e) {
-                    this.logger.error(e.getMessage(), e);
+                } catch (IOException exception) {
+                    this.logger.warn(exception.getMessage(), exception);
                 }
             }
         }
@@ -215,8 +215,8 @@ public class ProjectUnzipper {
                 }
                 zipEntry = zipperProjectInputStream.getNextEntry();
             }
-        } catch (IOException e) {
-            this.logger.error(e.getMessage(), e);
+        } catch (IOException exception) {
+            this.logger.warn(exception.getMessage(), exception);
         }
 
         return entryToHandle;
@@ -316,8 +316,8 @@ public class ProjectUnzipper {
         try {
             ProjectManifest projectManifest = this.objectMapper.readValue(manifestBytes, ProjectManifest.class);
             optionalProjectManifest = Optional.of(projectManifest);
-        } catch (IOException e) {
-            this.logger.error(e.getMessage(), e);
+        } catch (IOException exception) {
+            this.logger.warn(exception.getMessage(), exception);
         }
 
         return optionalProjectManifest;

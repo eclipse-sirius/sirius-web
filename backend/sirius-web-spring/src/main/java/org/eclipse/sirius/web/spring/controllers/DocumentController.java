@@ -108,7 +108,7 @@ public class DocumentController {
         try {
             optionalId = Optional.of(UUID.fromString(id));
         } catch (IllegalArgumentException exception) {
-            this.logger.error(exception.getMessage(), exception);
+            this.logger.warn(exception.getMessage(), exception);
         }
         return optionalId;
     }

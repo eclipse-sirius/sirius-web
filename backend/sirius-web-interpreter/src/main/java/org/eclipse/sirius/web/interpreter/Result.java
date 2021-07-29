@@ -106,7 +106,7 @@ public class Result {
                 try {
                     result = OptionalInt.of(Integer.parseInt(String.valueOf(object)));
                 } catch (NumberFormatException exception) {
-                    this.logger.error(exception.getMessage(), exception);
+                    this.logger.warn(exception.getMessage(), exception);
                 }
             }
         }

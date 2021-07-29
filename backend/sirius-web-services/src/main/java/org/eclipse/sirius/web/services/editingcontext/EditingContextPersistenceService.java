@@ -104,7 +104,7 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
                 this.logger.warn(warning.getMessage());
             }
             for (Resource.Diagnostic error : resource.getErrors()) {
-                this.logger.error(error.getMessage());
+                this.logger.warn(error.getMessage());
             }
 
             byte[] bytes = outputStream.toByteArray();
@@ -116,7 +116,7 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
                 return this.documentRepository.save(entity);
             });
         } catch (IllegalArgumentException | IOException exception) {
-            this.logger.error(exception.getMessage(), exception);
+            this.logger.warn(exception.getMessage(), exception);
         }
         return result;
     }

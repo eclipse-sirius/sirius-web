@@ -56,7 +56,7 @@ public class ODesignReader {
         try (InputStream inputStream = classPathResource.getInputStream()) {
             optionalGroup = this.read(classPathResource.getFilename(), inputStream);
         } catch (IOException exception) {
-            this.logger.error(exception.getMessage(), exception);
+            this.logger.warn(exception.getMessage(), exception);
         }
         return optionalGroup;
     }
@@ -86,7 +86,7 @@ public class ODesignReader {
             environmentResource.load(environmentInputStream, this.getLoadOptions());
             resourceSet.getResources().add(environmentResource);
         } catch (IOException exception) {
-            this.logger.error(exception.getMessage(), exception);
+            this.logger.warn(exception.getMessage(), exception);
         }
 
         URI uri = URI.createURI(fileName);
@@ -95,7 +95,7 @@ public class ODesignReader {
         try {
             resource.load(inputStream, this.getLoadOptions());
         } catch (IOException exception) {
-            this.logger.error(exception.getMessage(), exception);
+            this.logger.warn(exception.getMessage(), exception);
         }
 
         // @formatter:off

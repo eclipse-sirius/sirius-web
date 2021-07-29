@@ -179,7 +179,7 @@ public class GraphQLController {
                 String stringSpecification = this.objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(executionResult.toSpecification());
                 this.logger.warn(stringSpecification);
             } catch (JsonProcessingException exception) {
-                this.logger.error(exception.getMessage(), exception);
+                this.logger.warn(exception.getMessage(), exception);
             }
         }
     }
@@ -246,7 +246,7 @@ public class GraphQLController {
             try {
                 optionalGraphQLPayload = Optional.of(this.objectMapper.readValue(operations, GraphQLPayload.class));
             } catch (IOException exception) {
-                this.logger.error(exception.getMessage(), exception);
+                this.logger.warn(exception.getMessage(), exception);
             }
         } else {
             this.logger.warn("Missing operations parameter"); //$NON-NLS-1$
@@ -260,7 +260,7 @@ public class GraphQLController {
             try {
                 optionalJsonNode = Optional.of(this.objectMapper.readTree(map));
             } catch (IOException exception) {
-                this.logger.error(exception.getMessage(), exception);
+                this.logger.warn(exception.getMessage(), exception);
             }
         } else {
             this.logger.warn("Missing map parameter"); //$NON-NLS-1$
@@ -302,7 +302,7 @@ public class GraphQLController {
 
                     optionalVariables = Optional.of(variables);
                 } catch (IOException exception) {
-                    this.logger.error(exception.getMessage(), exception);
+                    this.logger.warn(exception.getMessage(), exception);
                 }
             } else {
                 this.logger.warn("Missing multipart file"); //$NON-NLS-1$

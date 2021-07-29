@@ -285,7 +285,7 @@ public class GraphQLWebSocketHandler extends TextWebSocketHandler implements Sub
 
             session.sendMessage(textMessage);
         } catch (IOException exception) {
-            this.logger.error(exception.getMessage(), exception);
+            this.logger.warn(exception.getMessage(), exception);
         }
     }
 
@@ -297,7 +297,7 @@ public class GraphQLWebSocketHandler extends TextWebSocketHandler implements Sub
             Optional<String> optionalType = this.getType(jsonNode);
             optionalOperationMessage = optionalType.flatMap(type -> this.getOperationMessage(jsonNode, type));
         } catch (IOException exception) {
-            this.logger.error(exception.getMessage(), exception);
+            this.logger.warn(exception.getMessage(), exception);
         }
 
         return optionalOperationMessage;
@@ -331,7 +331,7 @@ public class GraphQLWebSocketHandler extends TextWebSocketHandler implements Sub
                 break;
             }
         } catch (JsonProcessingException exception) {
-            this.logger.error(exception.getMessage(), exception);
+            this.logger.warn(exception.getMessage(), exception);
         }
 
         return optionalOperationMessage;

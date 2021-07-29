@@ -105,11 +105,11 @@ public class CreateInstanceOperationHandler implements IModelOperationHandler {
 
                 EObject createdInstance = ecoreIntrinsicExtender.createInstance(className);
                 if (createdInstance == null) {
-                    this.logger.error("The creation of an instance of Type {} failed.", typeName); //$NON-NLS-1$
+                    this.logger.warn("The creation of an instance of Type {} failed.", typeName); //$NON-NLS-1$
                 } else {
                     Object addedObject = ecoreIntrinsicExtender.eAdd(ownerEObject, referenceName, createdInstance);
                     if (addedObject == null) {
-                        this.logger.error("The feature {} does not exist on {}.", referenceName, typeName); //$NON-NLS-1$
+                        this.logger.warn("The feature {} does not exist on {}.", referenceName, typeName); //$NON-NLS-1$
                     } else if (variableName != null && !variableName.isBlank()) {
                         childVariables.put(variableName, createdInstance);
                     }
