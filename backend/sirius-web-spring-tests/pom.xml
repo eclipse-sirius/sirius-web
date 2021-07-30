@@ -22,7 +22,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius.web</groupId>
 	<artifactId>sirius-web-spring-tests</artifactId>
-	<version>0.3.9</version>
+	<version>0.4.0</version>
 	<name>sirius-web-spring-tests</name>
 	<description>Sirius Web Spring Tests</description>
 
@@ -46,7 +46,7 @@
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-annotations</artifactId>
-			<version>0.3.9</version>
+			<version>0.4.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
