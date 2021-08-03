@@ -51,8 +51,7 @@ import org.eclipse.sirius.web.representations.ISemanticRepresentation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.concurrent.DelegatingSecurityContextExecutorService;
 
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
@@ -104,11 +103,12 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
         this.representationEventProcessorComposedFactory = Objects.requireNonNull(representationEventProcessorComposedFactory);
         this.danglingRepresentationDeletionService = Objects.requireNonNull(danglingRepresentationDeletionService);
 
-        this.executor = Executors.newSingleThreadExecutor((Runnable runnable) -> {
+        var delegateExecutorService = Executors.newSingleThreadExecutor((Runnable runnable) -> {
             Thread thread = Executors.defaultThreadFactory().newThread(runnable);
-            thread.setName("FIFO Event Handler for editing context " + this.editingContext.getId()); //$NON-NLS-1$
+            thread.setName("Editing context " + this.editingContext.getId()); //$NON-NLS-1$
             return thread;
         });
+        this.executor = new DelegatingSecurityContextExecutorService(delegateExecutorService);
     }
 
     @Override
@@ -123,19 +123,8 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
             return Optional.empty();
         }
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
         Optional<IPayload> optionalPayload = Optional.empty();
-        Future<Optional<EventHandlerResponse>> future = this.executor.submit(() -> {
-            Optional<EventHandlerResponse> optionalResponse = Optional.empty();
-            try {
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-                optionalResponse = this.doHandle(input);
-            } finally {
-                SecurityContextHolder.getContext().setAuthentication(null);
-            }
-            return optionalResponse;
-        });
+        Future<Optional<EventHandlerResponse>> future = this.executor.submit(() -> this.doHandle(input));
         try {
             // Block until the event has been processed
             Optional<EventHandlerResponse> optionalResponse = future.get();
