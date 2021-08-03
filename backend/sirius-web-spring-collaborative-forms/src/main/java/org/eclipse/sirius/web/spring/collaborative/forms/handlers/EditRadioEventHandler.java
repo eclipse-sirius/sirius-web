@@ -80,7 +80,9 @@ public class EditRadioEventHandler implements IFormEventHandler {
                     .orElse(Status.ERROR);
             // @formatter:on
 
-            return new EventHandlerResponse(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formInput.getRepresentationId()), new EditRadioSuccessPayload(formInput.getId(), status.toString()));
+            if (Status.OK.equals(status)) {
+                return new EventHandlerResponse(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formInput.getRepresentationId()), new EditRadioSuccessPayload(formInput.getId()));
+            }
         }
 
         String message = this.messageService.invalidInput(formInput.getClass().getSimpleName(), EditRadioInput.class.getSimpleName());

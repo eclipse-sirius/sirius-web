@@ -47,16 +47,15 @@ public class EditingContextEventProcessorRegistry implements IEditingContextEven
 
     private final Logger logger = LoggerFactory.getLogger(EditingContextEventProcessorRegistry.class);
 
-    private final IEditingContextSearchService editingContextSearchService;
+    private final IEditingContextEventProcessorFactory editingContextEventProcessorFactory;
 
-    private final Map<UUID, EditingContextEventProcessorEntry> editingContextEventProcessors = new ConcurrentHashMap<>();
+    private final IEditingContextSearchService editingContextSearchService;
 
     private final Duration disposeDelay;
 
-    private IEditingContextEventProcessorFactory editingContextEventProcessorFactory;
+    private final Map<UUID, EditingContextEventProcessorEntry> editingContextEventProcessors = new ConcurrentHashMap<>();
 
     public EditingContextEventProcessorRegistry(IEditingContextEventProcessorFactory editingContextEventProcessorFactory, IEditingContextSearchService editingContextSearchService,
-
             @Value("${org.eclipse.sirius.web.editingContextEventProcessorRegistry.disposeDelay:30s}") Duration disposeDelay) {
         this.editingContextEventProcessorFactory = editingContextEventProcessorFactory;
         this.editingContextSearchService = Objects.requireNonNull(editingContextSearchService);

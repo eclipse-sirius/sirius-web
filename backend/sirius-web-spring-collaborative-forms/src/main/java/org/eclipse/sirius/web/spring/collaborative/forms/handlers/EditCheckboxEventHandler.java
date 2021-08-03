@@ -80,7 +80,9 @@ public class EditCheckboxEventHandler implements IFormEventHandler {
                     .orElse(Status.ERROR);
             // @formatter:on
 
-            return new EventHandlerResponse(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formInput.getRepresentationId()), new EditCheckboxSuccessPayload(formInput.getId(), status.toString()));
+            if (Status.OK.equals(status)) {
+                return new EventHandlerResponse(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formInput.getRepresentationId()), new EditCheckboxSuccessPayload(formInput.getId()));
+            }
         }
 
         String message = this.messageService.invalidInput(formInput.getClass().getSimpleName(), EditCheckboxInput.class.getSimpleName());

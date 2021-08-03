@@ -80,8 +80,10 @@ public class EditMultiSelectEventHandler implements IFormEventHandler {
                     .map(handler -> handler.apply(input.getNewValues()))
                     .orElse(Status.ERROR);
             // @formatter:on
-            return new EventHandlerResponse(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formInput.getRepresentationId()),
-                    new EditMultiSelectSuccessPayload(formInput.getId(), status.toString()));
+
+            if (Status.OK.equals(status)) {
+                return new EventHandlerResponse(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formInput.getRepresentationId()), new EditMultiSelectSuccessPayload(formInput.getId()));
+            }
         }
         String message = this.messageService.invalidInput(formInput.getClass().getSimpleName(), EditMultiSelectInput.class.getSimpleName());
         return new EventHandlerResponse(new ChangeDescription(ChangeKind.NOTHING, formInput.getRepresentationId()), new ErrorPayload(formInput.getId(), message));
