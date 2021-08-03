@@ -14,10 +14,13 @@
     "noUnusedLocals": true,
     "types": ["node", "reflect-metadata", "jest"],
     "resolveJsonModule": true,
-    "noImplicitThis": true,
     "alwaysStrict": true,
+    "strictNullChecks": false,
     "strictBindCallApply": true,
-    "strictFunctionTypes": true
+    "strictFunctionTypes": true,
+    "strictPropertyInitialization": false,
+    "noImplicitAny": false,
+    "noImplicitThis": true
   },
   "include": ["src/**/*"],
   "exclude": [
