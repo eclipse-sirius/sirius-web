@@ -41,8 +41,6 @@ import org.eclipse.sirius.web.diagrams.description.NodeDescription;
 import org.eclipse.sirius.web.representations.Status;
 import org.eclipse.sirius.web.representations.VariableManager;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Test cases for the rendering of the nodes in diagrams.
@@ -66,8 +64,6 @@ public class DiagramRendererNodeTests {
     private static final String NODE_IMAGE = "node:image"; //$NON-NLS-1$
 
     private static final String DIAGRAM_LABEL = "Diagram"; //$NON-NLS-1$
-
-    private final Logger logger = LoggerFactory.getLogger(DiagramRendererNodeTests.class);
 
     /**
      * Creates a diagram with a single node.
@@ -292,6 +288,6 @@ public class DiagramRendererNodeTests {
                 .build();
         // @formatter:on
         Element element = new Element(DiagramComponent.class, props);
-        return new DiagramRenderer(this.logger).render(element);
+        return new DiagramRenderer().render(element);
     }
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,7 +17,6 @@ import java.util.Optional;
 import org.eclipse.sirius.web.components.BaseRenderer;
 import org.eclipse.sirius.web.components.Element;
 import org.eclipse.sirius.web.forms.Form;
-import org.slf4j.Logger;
 
 /**
  * Renderer used to create the form from its description and some variables.
@@ -34,8 +33,8 @@ public class FormRenderer {
 
     private final BaseRenderer baseRenderer;
 
-    public FormRenderer(Logger logger) {
-        this.baseRenderer = new BaseRenderer(new FormInstancePropsValidator(), new FormComponentPropsValidator(), new FormElementFactory(), logger);
+    public FormRenderer() {
+        this.baseRenderer = new BaseRenderer(new FormInstancePropsValidator(), new FormComponentPropsValidator(), new FormElementFactory());
     }
 
     public Form render(Element element) {

@@ -36,8 +36,6 @@ import org.eclipse.sirius.web.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.web.diagrams.layout.api.ILayoutService;
 import org.eclipse.sirius.web.diagrams.renderer.DiagramRenderer;
 import org.eclipse.sirius.web.representations.VariableManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.MeterRegistry;
@@ -60,8 +58,6 @@ public class DiagramCreationService implements IDiagramCreationService {
     private final ILayoutService layoutService;
 
     private final Timer timer;
-
-    private final Logger logger = LoggerFactory.getLogger(DiagramCreationService.class);
 
     public DiagramCreationService(IRepresentationDescriptionSearchService representationDescriptionSearchService, IRepresentationPersistenceService representationPersistenceService,
             IObjectService objectService, ILayoutService layoutService, MeterRegistry meterRegistry) {
@@ -124,7 +120,7 @@ public class DiagramCreationService implements IDiagramCreationService {
         DiagramComponentProps props = builder.build();
         Element element = new Element(DiagramComponent.class, props);
 
-        Diagram newDiagram = new DiagramRenderer(this.logger).render(element);
+        Diagram newDiagram = new DiagramRenderer().render(element);
 
         // The auto layout is used for the first rendering and after that if it is activated
         if (this.shouldPerformFullLayout(optionalDiagramContext, diagramDescription)) {

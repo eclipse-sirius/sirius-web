@@ -17,7 +17,6 @@ import java.util.Optional;
 import org.eclipse.sirius.web.components.BaseRenderer;
 import org.eclipse.sirius.web.components.Element;
 import org.eclipse.sirius.web.diagrams.Diagram;
-import org.slf4j.Logger;
 
 /**
  * Renderer used to create the diagram from its description and some variables.
@@ -34,8 +33,8 @@ public class DiagramRenderer {
 
     private final BaseRenderer baseRenderer;
 
-    public DiagramRenderer(Logger logger) {
-        this.baseRenderer = new BaseRenderer(new DiagramInstancePropsValidator(), new DiagramComponentPropsValidator(), new DiagramElementFactory(logger), logger);
+    public DiagramRenderer() {
+        this.baseRenderer = new BaseRenderer(new DiagramInstancePropsValidator(), new DiagramComponentPropsValidator(), new DiagramElementFactory());
     }
 
     public Diagram render(Element element) {
