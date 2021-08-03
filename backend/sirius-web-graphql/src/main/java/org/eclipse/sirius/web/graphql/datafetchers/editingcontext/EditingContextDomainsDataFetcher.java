@@ -17,38 +17,38 @@ import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.annotations.spring.graphql.QueryDataFetcher;
+import org.eclipse.sirius.web.core.api.Domain;
 import org.eclipse.sirius.web.core.api.IEditService;
-import org.eclipse.sirius.web.core.api.Namespace;
 import org.eclipse.sirius.web.graphql.schema.EditingContextTypeProvider;
 import org.eclipse.sirius.web.spring.graphql.api.IDataFetcherWithFieldCoordinates;
 
 import graphql.schema.DataFetchingEnvironment;
 
 /**
- * The data fetcher used to retrieve the namespaces accessible in an editing context.
+ * The data fetcher used to retrieve the domains accessible in an editing context.
  * <p>
  * It will be used to fetch the data for the following GraphQL field:
  * </p>
  *
  * <pre>
  * type EditingContext {
- *   namespaces: [Namespace!]!
+ *   domains: [Domains!]!
  * }
  * </pre>
  *
  * @author lfasani
  */
-@QueryDataFetcher(type = EditingContextTypeProvider.TYPE, field = EditingContextTypeProvider.NAMESPACES_FIELD)
-public class EditingContextNamespacesDataFetcher implements IDataFetcherWithFieldCoordinates<List<Namespace>> {
+@QueryDataFetcher(type = EditingContextTypeProvider.TYPE, field = EditingContextTypeProvider.DOMAINS_FIELD)
+public class EditingContextDomainsDataFetcher implements IDataFetcherWithFieldCoordinates<List<Domain>> {
     private final IEditService editService;
 
-    public EditingContextNamespacesDataFetcher(IEditService editService) {
+    public EditingContextDomainsDataFetcher(IEditService editService) {
         this.editService = Objects.requireNonNull(editService);
     }
 
     @Override
-    public List<Namespace> get(DataFetchingEnvironment environment) throws Exception {
+    public List<Domain> get(DataFetchingEnvironment environment) throws Exception {
         UUID editingContextId = environment.getSource();
-        return this.editService.getNamespaces(editingContextId);
+        return this.editService.getDomains(editingContextId);
     }
 }

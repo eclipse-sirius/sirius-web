@@ -25,15 +25,15 @@ public interface IEditService {
 
     Optional<Object> findClass(UUID editingContextId, String classId);
 
-    List<Namespace> getNamespaces(UUID editingContextId);
+    List<Domain> getDomains(UUID editingContextId);
 
-    List<ChildCreationDescription> getRootCreationDescriptions(UUID editingContextId, String namespaceId, boolean suggested);
+    List<ChildCreationDescription> getRootCreationDescriptions(UUID editingContextId, String domainId, boolean suggested);
 
     List<ChildCreationDescription> getChildCreationDescriptions(UUID editingContextId, String classId);
 
     Optional<Object> createChild(IEditingContext editingContext, Object object, String childCreationDescriptionId);
 
-    Optional<Object> createRootObject(IEditingContext editingContext, UUID documentId, String namespaceId, String rootObjectCreationDescriptionId);
+    Optional<Object> createRootObject(IEditingContext editingContext, UUID documentId, String domainId, String rootObjectCreationDescriptionId);
 
     void delete(Object object);
 
@@ -52,12 +52,12 @@ public interface IEditService {
         }
 
         @Override
-        public List<Namespace> getNamespaces(UUID editingContextId) {
+        public List<Domain> getDomains(UUID editingContextId) {
             return List.of();
         }
 
         @Override
-        public List<ChildCreationDescription> getRootCreationDescriptions(UUID editingContextId, String namespaceId, boolean suggested) {
+        public List<ChildCreationDescription> getRootCreationDescriptions(UUID editingContextId, String domainId, boolean suggested) {
             return List.of();
         }
 
@@ -72,7 +72,7 @@ public interface IEditService {
         }
 
         @Override
-        public Optional<Object> createRootObject(IEditingContext editingContext, UUID documentId, String namespaceId, String rootObjectCreationDescriptionId) {
+        public Optional<Object> createRootObject(IEditingContext editingContext, UUID documentId, String domainId, String rootObjectCreationDescriptionId) {
             return Optional.empty();
         }
 

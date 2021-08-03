@@ -37,13 +37,13 @@ public class CreateRootObjectEventHandlerTests {
         Object object = new Object();
         IEditService editService = new IEditService.NoOp() {
             @Override
-            public Optional<Object> createRootObject(IEditingContext editingContext, UUID documentId, String namespaceId, String rootObjectCreationDescriptionId) {
+            public Optional<Object> createRootObject(IEditingContext editingContext, UUID documentId, String domainId, String rootObjectCreationDescriptionId) {
                 return Optional.of(object);
             }
         };
 
         CreateRootObjectEventHandler handler = new CreateRootObjectEventHandler(editService, new NoOpCollaborativeMessageService(), new SimpleMeterRegistry());
-        var input = new CreateRootObjectInput(UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID(), "namespaceId", "rootObjectCreationDescriptionId"); //$NON-NLS-1$//$NON-NLS-2$
+        var input = new CreateRootObjectInput(UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID(), "domainId", "rootObjectCreationDescriptionId"); //$NON-NLS-1$//$NON-NLS-2$
         assertThat(handler.canHandle(input)).isTrue();
 
         IEditingContext editingContext = () -> UUID.randomUUID();

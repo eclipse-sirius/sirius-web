@@ -15,7 +15,7 @@ package org.eclipse.sirius.web.graphql.schema;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.eclipse.sirius.web.core.api.Namespace;
+import org.eclipse.sirius.web.core.api.Domain;
 import org.eclipse.sirius.web.graphql.utils.providers.GraphQLObjectTypeProvider;
 import org.eclipse.sirius.web.graphql.utils.schema.ITypeProvider;
 import org.springframework.stereotype.Service;
@@ -23,13 +23,13 @@ import org.springframework.stereotype.Service;
 import graphql.schema.GraphQLType;
 
 /**
- * This class is used to create the definition of the Namespace type.
+ * This class is used to create the definition of the Domain type.
  * <p>
  * The types created will match the following GraphQL textual definition:
  * </p>
  *
  * <pre>
- * type Namespace {
+ * type Domain {
  *   id: ID!
  *   label: String!
  * }
@@ -38,14 +38,14 @@ import graphql.schema.GraphQLType;
  * @author lfasani
  */
 @Service
-public class NamespaceTypeProvider implements ITypeProvider {
+public class DomainTypeProvider implements ITypeProvider {
 
     private final GraphQLObjectTypeProvider graphQLObjectTypeProvider = new GraphQLObjectTypeProvider();
 
     @Override
     public Set<GraphQLType> getTypes() {
         LinkedHashSet<GraphQLType> types = new LinkedHashSet<>();
-        types.add(this.graphQLObjectTypeProvider.getType(Namespace.class));
+        types.add(this.graphQLObjectTypeProvider.getType(Domain.class));
         return types;
     }
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,17 +21,17 @@ import org.eclipse.sirius.web.annotations.graphql.GraphQLNonNull;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLObjectType;
 
 /**
- * The description of a namespace. It corresponds to a group of semantic object types.
+ * Used to represent a domain in the GraphQL API.
  *
  * @author lfasani
  */
 @GraphQLObjectType
-public class Namespace {
+public class Domain {
     private final String id;
 
     private final String label;
 
-    public Namespace(String id, String label) {
+    public Domain(String id, String label) {
         this.id = Objects.requireNonNull(id);
         this.label = Objects.requireNonNull(label);
     }
