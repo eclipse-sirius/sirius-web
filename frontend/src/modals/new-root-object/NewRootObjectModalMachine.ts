@@ -12,12 +12,12 @@
  *******************************************************************************/
 import {
   ChildCreationDescription,
+  Domain,
   GQLCreateRootObjectMutationData,
   GQLCreateRootObjectPayload,
   GQLCreateRootObjectSuccessPayload,
-  GQLGetNamespacesQueryData,
+  GQLGetDomainsQueryData,
   GQLGetRootObjectCreationDescriptionsQueryData,
-  Namespace,
 } from 'modals/new-root-object/NewRootObjectModal.types';
 import { Selection } from 'workbench/Workbench.types';
 import { assign, Machine } from 'xstate';
@@ -32,7 +32,7 @@ export interface NewRootObjectModalStateSchema {
     };
     newRootObjectModal: {
       states: {
-        loadingNamespaces: {};
+        loadingDomains: {};
         loadingRootObjectCreationDescriptions: {};
         valid: {};
         creatingRootObject: {};
@@ -44,7 +44,7 @@ export interface NewRootObjectModalStateSchema {
 
 export type SchemaValue = {
   newRootObjectModal:
-    | 'loadingNamespaces'
+    | 'loadingDomains'
     | 'loadingRootObjectCreationDescriptions'
     | 'valid'
     | 'creatingRootObject'
@@ -53,8 +53,8 @@ export type SchemaValue = {
 };
 
 export interface NewRootObjectModalContext {
-  namespaces: Namespace[];
-  selectedNamespaceId: string;
+  domains: Domain[];
+  selectedDomainId: string;
   rootObjectCreationDescriptions: ChildCreationDescription[];
   selectedRootObjectCreationDescriptionId: string;
   suggestedRootObject: boolean;
@@ -64,14 +64,14 @@ export interface NewRootObjectModalContext {
 
 export type ShowToastEvent = { type: 'SHOW_TOAST'; message: string };
 export type HideToastEvent = { type: 'HIDE_TOAST' };
-export type FetchedNamespacesEvent = { type: 'HANDLE_FETCHED_NAMESPACES'; data: GQLGetNamespacesQueryData };
+export type FetchedDomainsEvent = { type: 'HANDLE_FETCHED_DOMAINS'; data: GQLGetDomainsQueryData };
 export type FetchedRootObjectCreationDescriptionsEvent = {
   type: 'HANDLE_FETCHED_ROOT_OBJECT_CREATION_DESCRIPTIONS';
   data: GQLGetRootObjectCreationDescriptionsQueryData;
 };
-export type ChangeNamespaceEvent = {
-  type: 'CHANGE_NAMESPACE';
-  namespaceId: string;
+export type ChangeDomainEvent = {
+  type: 'CHANGE_DOMAIN';
+  domainId: string;
 };
 export type ChangeRootObjectCreationDescriptionEvent = {
   type: 'CHANGE_ROOT_OBJECT_CREATION_DESCRIPTION';
@@ -84,9 +84,9 @@ export type ChangeSuggestedEvent = {
 export type CreateRootObjectEvent = { type: 'CREATE_ROOT_OBJECT' };
 export type HandleResponseEvent = { type: 'HANDLE_RESPONSE'; data: GQLCreateRootObjectMutationData };
 export type NewRootObjectModalEvent =
-  | FetchedNamespacesEvent
+  | FetchedDomainsEvent
   | FetchedRootObjectCreationDescriptionsEvent
-  | ChangeNamespaceEvent
+  | ChangeDomainEvent
   | ChangeRootObjectCreationDescriptionEvent
   | ChangeSuggestedEvent
   | CreateRootObjectEvent
@@ -108,8 +108,8 @@ export const newRootObjectModalMachine = Machine<
     id: 'NewRootObjectModal',
     type: 'parallel',
     context: {
-      namespaces: [],
-      selectedNamespaceId: '',
+      domains: [],
+      selectedDomainId: '',
       rootObjectCreationDescriptions: [],
       selectedRootObjectCreationDescriptionId: '',
       suggestedRootObject: true,
@@ -139,13 +139,13 @@ export const newRootObjectModalMachine = Machine<
         },
       },
       newRootObjectModal: {
-        initial: 'loadingNamespaces',
+        initial: 'loadingDomains',
         states: {
-          loadingNamespaces: {
+          loadingDomains: {
             on: {
-              HANDLE_FETCHED_NAMESPACES: [
+              HANDLE_FETCHED_DOMAINS: [
                 {
-                  actions: 'updateNamespaces',
+                  actions: 'updateDomains',
                   target: 'loadingRootObjectCreationDescriptions',
                 },
               ],
@@ -163,9 +163,9 @@ export const newRootObjectModalMachine = Machine<
           },
           valid: {
             on: {
-              CHANGE_NAMESPACE: [
+              CHANGE_DOMAIN: [
                 {
-                  actions: 'updateNamespace',
+                  actions: 'updateDomain',
                   target: 'loadingRootObjectCreationDescriptions',
                 },
               ],
@@ -216,11 +216,11 @@ export const newRootObjectModalMachine = Machine<
       },
     },
     actions: {
-      updateNamespaces: assign((_, event) => {
-        const { data } = event as FetchedNamespacesEvent;
-        const { namespaces } = data.viewer.editingContext;
-        const selectedNamespaceId = namespaces.length > 0 ? namespaces[0].id : '';
-        return { namespaces, selectedNamespaceId };
+      updateDomains: assign((_, event) => {
+        const { data } = event as FetchedDomainsEvent;
+        const { domains } = data.viewer.editingContext;
+        const selectedDomainId = domains.length > 0 ? domains[0].id : '';
+        return { domains, selectedDomainId };
       }),
       updateRootObjectCreationDescriptions: assign((_, event) => {
         const { data } = event as FetchedRootObjectCreationDescriptionsEvent;
@@ -229,9 +229,9 @@ export const newRootObjectModalMachine = Machine<
           rootObjectCreationDescriptions.length > 0 ? rootObjectCreationDescriptions[0].id : '';
         return { rootObjectCreationDescriptions, selectedRootObjectCreationDescriptionId };
       }),
-      updateNamespace: assign((_, event) => {
-        const { namespaceId } = event as ChangeNamespaceEvent;
-        return { selectedNamespaceId: namespaceId };
+      updateDomain: assign((_, event) => {
+        const { domainId } = event as ChangeDomainEvent;
+        return { selectedDomainId: domainId };
       }),
       updateRootObjectCreationDescription: assign((_, event) => {
         const { rootObjectCreationDescriptionId } = event as ChangeRootObjectCreationDescriptionEvent;

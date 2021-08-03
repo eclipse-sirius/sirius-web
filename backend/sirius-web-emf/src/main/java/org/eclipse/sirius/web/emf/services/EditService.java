@@ -46,9 +46,9 @@ import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 import org.eclipse.sirius.emfjson.resource.JsonResourceImpl;
 import org.eclipse.sirius.web.core.api.ChildCreationDescription;
+import org.eclipse.sirius.web.core.api.Domain;
 import org.eclipse.sirius.web.core.api.IEditService;
 import org.eclipse.sirius.web.core.api.IEditingContext;
-import org.eclipse.sirius.web.core.api.Namespace;
 import org.springframework.stereotype.Service;
 
 /**
@@ -222,7 +222,7 @@ public class EditService implements IEditService {
     }
 
     @Override
-    public List<Namespace> getNamespaces(UUID editingContextId) {
+    public List<Domain> getDomains(UUID editingContextId) {
         Map<String, EPackage> nsURI2EPackages = new LinkedHashMap<>();
 
         this.globalEPackageRegistry.keySet().forEach(nsURI -> nsURI2EPackages.put(nsURI, this.globalEPackageRegistry.getEPackage(nsURI)));
@@ -232,18 +232,18 @@ public class EditService implements IEditService {
             .forEach(ePackage -> nsURI2EPackages.put(ePackage.getNsURI(), ePackage));
 
         return nsURI2EPackages.values().stream()
-                .map(ePackage -> new Namespace(ePackage.getNsURI(), ePackage.getNsURI()))
+                .map(ePackage -> new Domain(ePackage.getNsURI(), ePackage.getNsURI()))
                 .collect(Collectors.toList());
         // @formatter:on
     }
 
     @Override
-    public List<ChildCreationDescription> getRootCreationDescriptions(UUID editingContextId, String namespaceId, boolean suggested) {
+    public List<ChildCreationDescription> getRootCreationDescriptions(UUID editingContextId, String domainId, boolean suggested) {
         List<ChildCreationDescription> rootObjectCreationDescription = new ArrayList<>();
 
         EPackage.Registry ePackageRegistry = this.getPackageRegistry(editingContextId);
 
-        EPackage ePackage = ePackageRegistry.getEPackage(namespaceId);
+        EPackage ePackage = ePackageRegistry.getEPackage(domainId);
         if (ePackage != null) {
             List<EClass> classes = new ArrayList<>();
             if (suggested) {
@@ -272,10 +272,10 @@ public class EditService implements IEditService {
     }
 
     @Override
-    public Optional<Object> createRootObject(IEditingContext editingContext, UUID documentId, String namespaceId, String rootObjectCreationDescriptionId) {
+    public Optional<Object> createRootObject(IEditingContext editingContext, UUID documentId, String domainId, String rootObjectCreationDescriptionId) {
         Optional<Object> createdObjectOptional = Optional.empty();
 
-        var optionalEClass = this.getMatchingEClass(editingContext.getId(), namespaceId, rootObjectCreationDescriptionId);
+        var optionalEClass = this.getMatchingEClass(editingContext.getId(), domainId, rootObjectCreationDescriptionId);
 
         // @formatter:off
         var optionalEditingDomain = Optional.of(editingContext)
@@ -307,11 +307,11 @@ public class EditService implements IEditService {
         return createdObjectOptional;
     }
 
-    private Optional<EClass> getMatchingEClass(UUID editingContextId, String namespaceId, String rootObjectCreationDescriptionId) {
+    private Optional<EClass> getMatchingEClass(UUID editingContextId, String domainId, String rootObjectCreationDescriptionId) {
         EPackage.Registry ePackageRegistry = this.getPackageRegistry(editingContextId);
 
         // @formatter:off
-        return Optional.ofNullable(ePackageRegistry.getEPackage(namespaceId))
+        return Optional.ofNullable(ePackageRegistry.getEPackage(domainId))
                 .map(ePackage -> ePackage.getEClassifier(rootObjectCreationDescriptionId))
                 .filter(EClass.class::isInstance)
                 .map(EClass.class::cast)

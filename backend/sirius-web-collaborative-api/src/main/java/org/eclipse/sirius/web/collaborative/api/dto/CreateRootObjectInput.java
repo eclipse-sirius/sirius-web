@@ -35,7 +35,7 @@ public final class CreateRootObjectInput implements IInput {
 
     private UUID documentId;
 
-    private String namespaceId;
+    private String domainId;
 
     private String rootObjectCreationDescriptionId;
 
@@ -43,11 +43,11 @@ public final class CreateRootObjectInput implements IInput {
         // Used by Jackson
     }
 
-    public CreateRootObjectInput(UUID id, UUID editingContextId, UUID documentId, String namespaceId, String rootObjectCreationDescriptionId) {
+    public CreateRootObjectInput(UUID id, UUID editingContextId, UUID documentId, String domainId, String rootObjectCreationDescriptionId) {
         this.id = Objects.requireNonNull(id);
         this.editingContextId = Objects.requireNonNull(editingContextId);
         this.documentId = Objects.requireNonNull(documentId);
-        this.namespaceId = Objects.requireNonNull(namespaceId);
+        this.domainId = Objects.requireNonNull(domainId);
         this.rootObjectCreationDescriptionId = Objects.requireNonNull(rootObjectCreationDescriptionId);
     }
 
@@ -76,8 +76,8 @@ public final class CreateRootObjectInput implements IInput {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public String getNamespaceId() {
-        return this.namespaceId;
+    public String getDomainId() {
+        return this.domainId;
     }
 
     @GraphQLID
@@ -89,7 +89,7 @@ public final class CreateRootObjectInput implements IInput {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, editingContextId: {2}, documentId: {3}, namespaceId: {4}, rootObjectCreationDescriptionId: {5}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.editingContextId, this.documentId, this.namespaceId, this.rootObjectCreationDescriptionId);
+        String pattern = "{0} '{'id: {1}, editingContextId: {2}, documentId: {3}, domainId: {4}, rootObjectCreationDescriptionId: {5}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.editingContextId, this.documentId, this.domainId, this.rootObjectCreationDescriptionId);
     }
 }

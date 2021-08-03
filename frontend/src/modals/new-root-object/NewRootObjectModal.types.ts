@@ -19,7 +19,7 @@ export interface NewRootObjectModalProps {
   onClose: () => void;
 }
 
-export interface Namespace {
+export interface Domain {
   id: string;
   label: string;
 }
@@ -29,17 +29,17 @@ export interface ChildCreationDescription {
   label: string;
 }
 
-export interface GQLGetNamespacesQueryVariables {
+export interface GQLGetDomainsQueryVariables {
   editingContextId: string;
 }
 
-export interface GQLGetNamespacesQueryData {
+export interface GQLGetDomainsQueryData {
   viewer: GQLViewer;
 }
 
 export interface GQLGetRootObjectCreationDescriptionsQueryVariables {
   editingContextId: string;
-  namespaceId: string;
+  domainId: string;
   suggested: boolean;
 }
 
@@ -53,7 +53,7 @@ export interface GQLViewer {
 
 export interface GQLEditingContext {
   rootObjectCreationDescriptions: GQLChildCreationDescription[];
-  namespaces: GQLNamespace[];
+  domains: GQLDomain[];
 }
 
 export interface GQLChildCreationDescription {
@@ -61,7 +61,7 @@ export interface GQLChildCreationDescription {
   label: string;
 }
 
-export interface GQLNamespace {
+export interface GQLDomain {
   id: string;
   label: string;
 }

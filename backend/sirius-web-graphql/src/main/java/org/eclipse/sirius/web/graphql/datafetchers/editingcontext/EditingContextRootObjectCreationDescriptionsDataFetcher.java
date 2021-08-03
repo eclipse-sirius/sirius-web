@@ -32,7 +32,7 @@ import graphql.schema.DataFetchingEnvironment;
  *
  * <pre>
  * type EditingContext {
- *   rootObjectCreationDescriptions(namespaceId: ID!, suggested: Boolean!): [ChildCreationDescription!]!
+ *   rootObjectCreationDescriptions(domainId: ID!, suggested: Boolean!): [ChildCreationDescription!]!
  * }
  * </pre>
  *
@@ -49,9 +49,9 @@ public class EditingContextRootObjectCreationDescriptionsDataFetcher implements 
     @Override
     public List<ChildCreationDescription> get(DataFetchingEnvironment environment) throws Exception {
         UUID editingContextId = environment.getSource();
-        String namespaceId = environment.getArgument(EditingContextTypeProvider.NAMESPACE_ID_ARGUMENT);
+        String domainId = environment.getArgument(EditingContextTypeProvider.DOMAIN_ID_ARGUMENT);
         Boolean suggested = environment.getArgument(EditingContextTypeProvider.SUGGESTED_ARGUMENT);
 
-        return this.editService.getRootCreationDescriptions(editingContextId, namespaceId, suggested);
+        return this.editService.getRootCreationDescriptions(editingContextId, domainId, suggested);
     }
 }

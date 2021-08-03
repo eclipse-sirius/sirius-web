@@ -70,9 +70,9 @@ public class CreateRootObjectEventHandler implements IEditingContextEventHandler
             CreateRootObjectInput createRootObjectInput = (CreateRootObjectInput) input;
             UUID documentId = createRootObjectInput.getDocumentId();
             String rootObjectCreationDescriptionId = createRootObjectInput.getRootObjectCreationDescriptionId();
-            String namespaceId = createRootObjectInput.getNamespaceId();
+            String domainId = createRootObjectInput.getDomainId();
 
-            var optionalObject = this.editService.createRootObject(editingContext, documentId, namespaceId, rootObjectCreationDescriptionId);
+            var optionalObject = this.editService.createRootObject(editingContext, documentId, domainId, rootObjectCreationDescriptionId);
 
             if (optionalObject.isPresent()) {
                 return new EventHandlerResponse(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId()), new CreateRootObjectSuccessPayload(input.getId(), optionalObject.get()));

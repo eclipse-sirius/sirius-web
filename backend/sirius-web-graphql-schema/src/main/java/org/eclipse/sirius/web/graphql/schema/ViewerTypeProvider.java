@@ -49,7 +49,6 @@ import graphql.schema.GraphQLTypeReference;
  *   project(projectId: ID!): Project
  *   editingContext(editingContextId: ID!): EditingContext
  *   representationDescriptions(classId: ID): ViewerRepresentationDescriptionConnection!
- *   namespaces: [Namespace!]!
  * }
  *
  * type User implements Viewer {
@@ -58,7 +57,6 @@ import graphql.schema.GraphQLTypeReference;
  *   projects: [Project!]!
  *   project(projectId: ID!): Project
  *   representationDescriptions(classId: ID): ViewerRepresentationDescriptionConnection!
- *   namespaces: [Namespace!]!
  * }
  *
  * type ViewerRepresentationDescriptionConnection {

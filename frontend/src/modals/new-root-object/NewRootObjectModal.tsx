@@ -29,18 +29,18 @@ import { useMachine } from '@xstate/react';
 import gql from 'graphql-tag';
 import {
   GQLCreateRootObjectMutationData,
-  GQLGetNamespacesQueryData,
-  GQLGetNamespacesQueryVariables,
+  GQLGetDomainsQueryData,
+  GQLGetDomainsQueryVariables,
   GQLGetRootObjectCreationDescriptionsQueryData,
   GQLGetRootObjectCreationDescriptionsQueryVariables,
   NewRootObjectModalProps,
 } from 'modals/new-root-object/NewRootObjectModal.types';
 import {
-  ChangeNamespaceEvent,
+  ChangeDomainEvent,
   ChangeRootObjectCreationDescriptionEvent,
   ChangeSuggestedEvent,
   CreateRootObjectEvent,
-  FetchedNamespacesEvent,
+  FetchedDomainsEvent,
   FetchedRootObjectCreationDescriptionsEvent,
   HandleResponseEvent,
   HideToastEvent,
@@ -71,11 +71,11 @@ const createRootObjectMutation = gql`
   }
 `;
 
-const getNamespacesQuery = gql`
-  query getNamespaces($editingContextId: ID!) {
+const getDomainsQuery = gql`
+  query getDomains($editingContextId: ID!) {
     viewer {
       editingContext(editingContextId: $editingContextId) {
-        namespaces {
+        domains {
           id
           label
         }
@@ -85,10 +85,10 @@ const getNamespacesQuery = gql`
 `;
 
 const getRootObjectCreationDescriptionsQuery = gql`
-  query getRootObjectCreationDescriptions($editingContextId: ID!, $namespaceId: ID!, $suggested: Boolean!) {
+  query getRootObjectCreationDescriptions($editingContextId: ID!, $domainId: ID!, $suggested: Boolean!) {
     viewer {
       editingContext(editingContextId: $editingContextId) {
-        rootObjectCreationDescriptions(namespaceId: $namespaceId, suggested: $suggested) {
+        rootObjectCreationDescriptions(domainId: $domainId, suggested: $suggested) {
           id
           label
         }
@@ -119,8 +119,8 @@ export const NewRootObjectModal = ({
   );
   const { newRootObjectModal, toast } = value as SchemaValue;
   const {
-    namespaces,
-    selectedNamespaceId,
+    domains,
+    selectedDomainId,
     rootObjectCreationDescriptions,
     selectedRootObjectCreationDescriptionId,
     suggestedRootObject,
@@ -128,34 +128,34 @@ export const NewRootObjectModal = ({
     message,
   } = context;
 
-  // Fetch the available namespaces only once, they are supposed static (at least for the lifetime of the modal)
+  // Fetch the available domains only once, they are supposed static (at least for the lifetime of the modal)
   const {
-    loading: namespacesLoading,
-    data: namespacesData,
-    error: namespacesError,
-  } = useQuery<GQLGetNamespacesQueryData, GQLGetNamespacesQueryVariables>(getNamespacesQuery, {
+    loading: domainsLoading,
+    data: domainsData,
+    error: domainsError,
+  } = useQuery<GQLGetDomainsQueryData, GQLGetDomainsQueryVariables>(getDomainsQuery, {
     variables: { editingContextId },
   });
   useEffect(() => {
-    if (!namespacesLoading) {
-      if (namespacesError) {
+    if (!domainsLoading) {
+      if (domainsError) {
         const showToastEvent: ShowToastEvent = {
           type: 'SHOW_TOAST',
           message: 'An unexpected error has occurred, please refresh the page',
         };
         dispatch(showToastEvent);
       }
-      if (namespacesData) {
-        const fetchNamespacesEvent: FetchedNamespacesEvent = {
-          type: 'HANDLE_FETCHED_NAMESPACES',
-          data: namespacesData,
+      if (domainsData) {
+        const fetchDomainsEvent: FetchedDomainsEvent = {
+          type: 'HANDLE_FETCHED_DOMAINS',
+          data: domainsData,
         };
-        dispatch(fetchNamespacesEvent);
+        dispatch(fetchDomainsEvent);
       }
     }
-  }, [namespacesLoading, namespacesData, namespacesError, dispatch]);
+  }, [domainsLoading, domainsData, domainsError, dispatch]);
 
-  // Fetch the corresponding object creation description whenever the user selects a new namespace or toggles the checkbox
+  // Fetch the corresponding object creation description whenever the user selects a new domain or toggles the checkbox
   const [
     getRootObjectCreationDescriptions,
     { loading: descriptionsLoading, data: descriptionsData, error: descriptionError },
@@ -182,18 +182,12 @@ export const NewRootObjectModal = ({
   }, [descriptionsLoading, descriptionsData, descriptionError, dispatch]);
 
   useEffect(() => {
-    if (newRootObjectModal === 'loadingRootObjectCreationDescriptions' && selectedNamespaceId) {
+    if (newRootObjectModal === 'loadingRootObjectCreationDescriptions' && selectedDomainId) {
       getRootObjectCreationDescriptions({
-        variables: { editingContextId, namespaceId: selectedNamespaceId, suggested: suggestedRootObject },
+        variables: { editingContextId, domainId: selectedDomainId, suggested: suggestedRootObject },
       });
     }
-  }, [
-    newRootObjectModal,
-    getRootObjectCreationDescriptions,
-    editingContextId,
-    selectedNamespaceId,
-    suggestedRootObject,
-  ]);
+  }, [newRootObjectModal, getRootObjectCreationDescriptions, editingContextId, selectedDomainId, suggestedRootObject]);
 
   // Create the new child
   const [
@@ -222,16 +216,16 @@ export const NewRootObjectModal = ({
       id: uuid(),
       editingContextId,
       documentId,
-      namespaceId: selectedNamespaceId,
+      domainId: selectedDomainId,
       rootObjectCreationDescriptionId: selectedRootObjectCreationDescriptionId,
     };
     createRootObject({ variables: { input } });
   };
 
-  const onNamespaceChange = (event) => {
+  const onDomainChange = (event) => {
     const { value } = event.target;
-    const changeNamespaceEvent: ChangeNamespaceEvent = { type: 'CHANGE_NAMESPACE', namespaceId: value };
-    dispatch(changeNamespaceEvent);
+    const changeDomainEvent: ChangeDomainEvent = { type: 'CHANGE_DOMAIN', domainId: value };
+    dispatch(changeDomainEvent);
   };
 
   const onRootObjectCreationDescriptionChange = (event) => {
@@ -261,17 +255,17 @@ export const NewRootObjectModal = ({
         <DialogTitle id="dialog-title">Create a new root object</DialogTitle>
         <DialogContent>
           <div className={classes.form}>
-            <InputLabel id="namespacesLabel">Namespace</InputLabel>
+            <InputLabel id="domainsLabel">Domain</InputLabel>
             <Select
-              value={selectedNamespaceId}
-              onChange={onNamespaceChange}
+              value={selectedDomainId}
+              onChange={onDomainChange}
               disabled={newRootObjectModal !== 'valid'}
-              labelId="namespacesLabel"
+              labelId="domainsLabel"
               fullWidth
-              data-testid="namespace">
-              {namespaces.map((namespace) => (
-                <MenuItem value={namespace.id} key={namespace.id}>
-                  {namespace.label}
+              data-testid="domain">
+              {domains.map((domain) => (
+                <MenuItem value={domain.id} key={domain.id}>
+                  {domain.label}
                 </MenuItem>
               ))}
             </Select>

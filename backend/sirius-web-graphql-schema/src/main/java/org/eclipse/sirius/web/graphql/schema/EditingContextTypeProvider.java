@@ -22,7 +22,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.eclipse.sirius.web.core.api.ChildCreationDescription;
-import org.eclipse.sirius.web.core.api.Namespace;
+import org.eclipse.sirius.web.core.api.Domain;
 import org.eclipse.sirius.web.graphql.utils.schema.ITypeProvider;
 import org.springframework.stereotype.Service;
 
@@ -46,8 +46,8 @@ import graphql.schema.GraphQLTypeReference;
  *   id: ID!
  *   stereotypeDescriptions: [StereotypeDescription!]!
  *   childCreationDescriptions(classId: ID!): [ChildCreationDescription!]!
- *   rootObjectCreationDescriptions(namespaceId: ID!, suggested: Boolean!): [ChildCreationDescription!]!
- *   namespaces: [Namespace!]!
+ *   rootObjectCreationDescriptions(domainId: ID!, suggested: Boolean!): [ChildCreationDescription!]!
+ *   domains: [Domain!]!
  *   representationDescriptions(classId: ID): EditingContextRepresentationDescriptionConnection!
  *   representation(representationId: ID!): Representation
  *   representations: [Representation!]!
@@ -69,11 +69,11 @@ public class EditingContextTypeProvider implements ITypeProvider {
 
     public static final String ROOT_OBJECT_CREATION_DESCRIPTIONS_FIELD = "rootObjectCreationDescriptions"; //$NON-NLS-1$
 
-    public static final String NAMESPACE_ID_ARGUMENT = "namespaceId"; //$NON-NLS-1$
+    public static final String DOMAIN_ID_ARGUMENT = "domainId"; //$NON-NLS-1$
 
     public static final String SUGGESTED_ARGUMENT = "suggested"; //$NON-NLS-1$
 
-    public static final String NAMESPACES_FIELD = "namespaces"; //$NON-NLS-1$
+    public static final String DOMAINS_FIELD = "domains"; //$NON-NLS-1$
 
     public static final String REPRESENTATION_DESCRIPTIONS_FIELD = "representationDescriptions"; //$NON-NLS-1$
 
@@ -96,7 +96,7 @@ public class EditingContextTypeProvider implements ITypeProvider {
                 .field(this.getStereotypeDescriptionsField())
                 .field(this.getChildCreationDescriptionsField())
                 .field(this.getRootObjectCreationDescriptionsField())
-                .field(this.getNamespaceField())
+                .field(this.getDomainsField())
                 .field(this.getRepresentationDescriptionField())
                 .field(this.getRepresentationField())
                 .field(this.getRepresentationsField())
@@ -147,16 +147,16 @@ public class EditingContextTypeProvider implements ITypeProvider {
         return newFieldDefinition()
                 .name(ROOT_OBJECT_CREATION_DESCRIPTIONS_FIELD)
                 .type(nonNull(list(nonNull(typeRef(ChildCreationDescription.class.getSimpleName())))))
-                .argument(this.getNamespaceIdArgument())
+                .argument(this.getDomainIdArgument())
                 .argument(this.getSuggestedArgument())
                 .build();
         // @formatter:on
     }
 
-    private GraphQLArgument getNamespaceIdArgument() {
+    private GraphQLArgument getDomainIdArgument() {
         // @formatter:off
         return newArgument()
-                .name(NAMESPACE_ID_ARGUMENT)
+                .name(DOMAIN_ID_ARGUMENT)
                 .type(nonNull(Scalars.GraphQLID))
                 .build();
         // @formatter:on
@@ -171,11 +171,11 @@ public class EditingContextTypeProvider implements ITypeProvider {
         // @formatter:on
     }
 
-    private GraphQLFieldDefinition getNamespaceField() {
+    private GraphQLFieldDefinition getDomainsField() {
         // @formatter:off
         return newFieldDefinition()
-                .name(NAMESPACES_FIELD)
-                .type(nonNull(list(nonNull(typeRef(Namespace.class.getSimpleName())))))
+                .name(DOMAINS_FIELD)
+                .type(nonNull(list(nonNull(typeRef(Domain.class.getSimpleName())))))
                 .build();
         // @formatter:on
     }
