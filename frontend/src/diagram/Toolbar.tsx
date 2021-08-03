@@ -93,7 +93,7 @@ export const Toolbar = ({
     setZoomLevel(newZoomLevel.toString());
   };
 
-  let modalElement = null;
+  let modalElement: React.ReactElement | null = null;
   if (modal === 'ShareDiagramModal') {
     modalElement = <ShareDiagramModal url={window.location.href} onClose={closeModal} />;
   }

@@ -10,16 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Tool } from 'diagram/palette/tool/Tool';
+import { ContextualPaletteProps } from 'diagram/palette/ContextualPalette.types';
 import { ToolSection } from 'diagram/palette/tool-section/ToolSection';
 import { ToolSeparator } from 'diagram/palette/tool-separator/ToolSeparator';
+import { Tool } from 'diagram/palette/tool/Tool';
 import { isContextualTool } from 'diagram/toolServices';
+import React from 'react';
 import styles from './ContextualPalette.module.css';
-import editImagePath from './icons/edit.svg';
-import deleteImagePath from './icons/delete.svg';
 import closeImagePath from './icons/close.svg';
+import deleteImagePath from './icons/delete.svg';
+import editImagePath from './icons/edit.svg';
 
 const editTool = {
   id: 'edit',
@@ -40,26 +40,6 @@ const closeTool = {
   label: 'Close',
 };
 
-const toolType = PropTypes.shape({
-  id: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
-  imageURL: PropTypes.string,
-});
-const propTypes = {
-  toolSections: PropTypes.arrayOf(
-    PropTypes.shape({
-      label: PropTypes.string.isRequired,
-      tools: PropTypes.arrayOf(toolType).isRequired,
-      defaultTool: toolType.isRequired,
-    })
-  ).isRequired,
-  targetElement: PropTypes.object.isRequired,
-  invokeTool: PropTypes.func.isRequired,
-  invokeLabelEdit: PropTypes.func,
-  invokeDelete: PropTypes.func,
-  invokeClose: PropTypes.func.isRequired,
-};
-
 /**
  * The component used to display a Contextual Palette.
  *
@@ -72,7 +52,7 @@ export const ContextualPalette = ({
   invokeLabelEdit,
   invokeDelete,
   invokeClose,
-}) => {
+}: ContextualPaletteProps) => {
   let toolSectionsContent;
 
   const contextualToolSections = [];
@@ -143,4 +123,3 @@ export const ContextualPalette = ({
   }
   return result;
 };
-ContextualPalette.propTypes = propTypes;

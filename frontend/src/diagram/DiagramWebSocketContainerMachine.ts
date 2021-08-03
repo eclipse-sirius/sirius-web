@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Palette, Subscriber, Tool, ToolSection } from 'diagram/DiagramWebSocketContainer.types';
+import { GQLToolSection, Palette, Subscriber, Tool, ToolSection } from 'diagram/DiagramWebSocketContainer.types';
 import { createDependencyInjectionContainer } from 'diagram/sprotty/DependencyInjection';
 import { SiriusWebWebSocketDiagramServer } from 'diagram/sprotty/WebSocketDiagramServer';
 import { MutableRefObject } from 'react';
@@ -76,7 +76,7 @@ export type HandleSelectedObjectInSelectionDialogEvent = {
 };
 export type ResetSelectedObjectInSelectionDialogEvent = { type: 'RESET_SELECTED_OBJECT_IN_SELECTION_DIALOG' };
 export type SwithRepresentationEvent = { type: 'SWITCH_REPRESENTATION'; representationId: string };
-export type SetToolSectionsEvent = { type: 'SET_TOOL_SECTIONS'; toolSections: ToolSection[] };
+export type SetToolSectionsEvent = { type: 'SET_TOOL_SECTIONS'; toolSections: GQLToolSection[] };
 export type SetDefaultToolEvent = { type: 'SET_DEFAULT_TOOL'; defaultTool: Tool };
 export type DiagramRefreshedEvent = { type: 'HANDLE_DIAGRAM_REFRESHED'; diagram: any };
 export type SubscribersUpdatedEvent = { type: 'HANDLE_SUBSCRIBERS_UPDATED'; subscribers: Subscriber[] };
@@ -379,13 +379,13 @@ export const diagramWebSocketContainerMachine = Machine<
       setToolSections: assign((_, event) => {
         const { toolSections } = event as SetToolSectionsEvent;
 
-        let toolSectionsWithDefaults = toolSections;
+        let toolSectionsWithDefaults = [];
         if (toolSections) {
           toolSectionsWithDefaults = toolSections.map((toolSection) => {
             if (toolSection.tools && toolSection.tools.length > 0) {
               return { ...toolSection, defaultTool: toolSection.tools[0] };
             } else {
-              return toolSection;
+              return { ...toolSection, defaultTool: null };
             }
           });
         }

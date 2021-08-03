@@ -40,6 +40,7 @@ export interface ToolSection {
   label: string;
   imageURL: string;
   tools: Tool[];
+  defaultTool: Tool | null;
 }
 
 export interface Tool {
@@ -64,4 +65,38 @@ export interface EdgeCandidate {
 
 export interface NodeDescription {
   id: string;
+}
+
+export interface GQLGetToolSectionsVariables {}
+
+export interface GQLGetToolSectionsData {
+  viewer: GQLViewer;
+}
+
+export interface GQLViewer {
+  editingContext: GQLEditingContext;
+}
+
+export interface GQLEditingContext {
+  representation: GQLRepresentation;
+}
+
+export interface GQLRepresentation {
+  __typename: string;
+}
+export interface GQLDiagram extends GQLRepresentation {
+  toolSections: GQLToolSection[];
+}
+
+export interface GQLToolSection {
+  id: string;
+  label: string;
+  imageURL: string;
+  tools: GQLTool[];
+}
+
+export interface GQLTool {
+  id: string;
+  label: string;
+  imageURL: string;
 }

@@ -18,7 +18,14 @@ import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
 import { ServerContext } from 'common/ServerContext';
-import { CreateNodeTool, Palette, Tool } from 'diagram/DiagramWebSocketContainer.types';
+import {
+  CreateNodeTool,
+  GQLDiagram,
+  GQLGetToolSectionsData,
+  GQLGetToolSectionsVariables,
+  Palette,
+  Tool,
+} from 'diagram/DiagramWebSocketContainer.types';
 import {
   CloseSelectionDialogEvent,
   DiagramRefreshedEvent,
@@ -105,6 +112,8 @@ const useDiagramWebSocketContainerStyle = makeStyles((theme) => ({
     },
   },
 }));
+
+const isDiagram = (representation): representation is GQLDiagram => representation.__typename === 'Diagram';
 
 /**
  * Here be dragons!
@@ -307,8 +316,10 @@ export const DiagramWebSocketContainer = ({
   ] = useMutation(updateNodeBoundsOp);
   const [arrangeAllMutation, { loading: arrangeAllLoading, data: arrangeAllData, error: arrangeAllError }] =
     useMutation(arrangeAllOp);
-  const [getToolSectionData, { loading: toolSectionLoading, data: toolSectionData }] =
-    useLazyQuery(getToolSectionsQuery);
+  const [getToolSectionData, { loading: toolSectionLoading, data: toolSectionData }] = useLazyQuery<
+    GQLGetToolSectionsData,
+    GQLGetToolSectionsVariables
+  >(getToolSectionsQuery);
   /**
    * We have choose to make only one query by diagram to get tools to avoid network flooding.
    * In consequence, a tool must contains all necessary properties to be filtered on a specific context (In the contextual palette for example).
@@ -566,9 +577,11 @@ export const DiagramWebSocketContainer = ({
   ]);
 
   useEffect(() => {
-    if (!toolSectionLoading && diagramWebSocketContainer === 'ready') {
-      const toolSections = toolSectionData?.viewer?.editingContext?.representation?.toolSections;
-      if (toolSections) {
+    if (!toolSectionLoading && diagramWebSocketContainer === 'ready' && toolSectionData) {
+      const representation = toolSectionData.viewer.editingContext.representation;
+      if (isDiagram(representation)) {
+        const { toolSections } = representation;
+
         const setToolSectionsEvent: SetToolSectionsEvent = { type: 'SET_TOOL_SECTIONS', toolSections: toolSections };
         dispatch(setToolSectionsEvent);
       }
@@ -845,7 +858,7 @@ export const DiagramWebSocketContainer = ({
       <SelectionDialogWebSocketContainer
         editingContextId={editingContextId}
         selectionRepresentationId={(activeTool as CreateNodeTool).selectionDescriptionId}
-        targetObjectId={contextualPalette.element.targetObjectId}
+        targetObjectId={contextualPalette?.element.targetObjectId}
         onClose={() => {
           dispatch({ type: 'CLOSE_SELECTION_DIALOG' } as CloseSelectionDialogEvent);
         }}
