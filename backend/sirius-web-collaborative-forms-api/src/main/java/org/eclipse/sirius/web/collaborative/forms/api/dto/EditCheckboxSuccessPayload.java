@@ -31,11 +31,8 @@ import org.eclipse.sirius.web.core.api.IPayload;
 public final class EditCheckboxSuccessPayload implements IPayload {
     private final UUID id;
 
-    private final String status;
-
-    public EditCheckboxSuccessPayload(UUID id, String status) {
+    public EditCheckboxSuccessPayload(UUID id) {
         this.id = Objects.requireNonNull(id);
-        this.status = Objects.requireNonNull(status);
     }
 
     @Override
@@ -46,15 +43,9 @@ public final class EditCheckboxSuccessPayload implements IPayload {
         return this.id;
     }
 
-    @GraphQLField
-    @GraphQLNonNull
-    public String getStatus() {
-        return this.status;
-    }
-
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, status: {2}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.status);
+        String pattern = "{0} '{'id: {1}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id);
     }
 }

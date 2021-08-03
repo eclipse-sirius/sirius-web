@@ -151,9 +151,7 @@ public class WidgetDescriptionConverter {
 
             var modelOperationHandlerSwitch = this.modelOperationHandlerSwitchProvider.getModelOperationHandlerSwitch(this.interpreter);
             Optional<IModelOperationHandler> optionalModelOperationHandler = modelOperationHandlerSwitch.apply(modelOperation);
-            return optionalModelOperationHandler.map(handler -> {
-                return handler.handle(childVariableManager.getVariables());
-            }).orElse(Status.ERROR);
+            return optionalModelOperationHandler.map(handler -> handler.handle(childVariableManager.getVariables())).orElse(Status.ERROR);
         };
         return newValueHandler;
     }
