@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.graphql.datafetchers.editingcontext;
 
+import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -24,6 +25,14 @@ import org.eclipse.sirius.web.services.api.representations.IRepresentationServic
 import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;
 import org.eclipse.sirius.web.spring.graphql.api.IDataFetcherWithFieldCoordinates;
 
+import graphql.relay.Connection;
+import graphql.relay.ConnectionCursor;
+import graphql.relay.DefaultConnection;
+import graphql.relay.DefaultConnectionCursor;
+import graphql.relay.DefaultEdge;
+import graphql.relay.DefaultPageInfo;
+import graphql.relay.Edge;
+import graphql.relay.PageInfo;
 import graphql.schema.DataFetchingEnvironment;
 
 /**
@@ -34,14 +43,14 @@ import graphql.schema.DataFetchingEnvironment;
  *
  * <pre>
  * type EditingContext {
- *   representations: [Representation!]!
+ *   representations: EditingContextRepresentationConnection!
  * }
  * </pre>
  *
  * @author wpiers
  */
 @QueryDataFetcher(type = EditingContextTypeProvider.TYPE, field = EditingContextTypeProvider.REPRESENTATIONS_FIELD)
-public class EditingContextRepresentationsDataFetcher implements IDataFetcherWithFieldCoordinates<List<IRepresentation>> {
+public class EditingContextRepresentationsDataFetcher implements IDataFetcherWithFieldCoordinates<Connection<IRepresentation>> {
 
     private final IRepresentationService representationService;
 
@@ -50,12 +59,30 @@ public class EditingContextRepresentationsDataFetcher implements IDataFetcherWit
     }
 
     @Override
-    public List<IRepresentation> get(DataFetchingEnvironment environment) throws Exception {
+    public Connection<IRepresentation> get(DataFetchingEnvironment environment) throws Exception {
         UUID editingContextId = environment.getSource();
         // @formatter:off
-        return this.representationService.getRepresentationDescriptorsForProjectId(editingContextId).stream()
+        List<IRepresentation> representations = this.representationService.getRepresentationDescriptorsForProjectId(editingContextId).stream()
                 .map(RepresentationDescriptor::getRepresentation).collect(Collectors.toList());
         // @formatter:on
+
+        // @formatter:off
+        List<Edge<IRepresentation>> representationEdges = representations.stream()
+                .map(representation -> {
+                    String value = Base64.getEncoder().encodeToString(representation.getId().toString().getBytes());
+                    ConnectionCursor cursor = new DefaultConnectionCursor(value);
+                    return new DefaultEdge<>(representation, cursor);
+                })
+                .collect(Collectors.toList());
+        // @formatter:on
+
+        ConnectionCursor startCursor = representationEdges.stream().findFirst().map(Edge::getCursor).orElse(null);
+        ConnectionCursor endCursor = null;
+        if (!representationEdges.isEmpty()) {
+            endCursor = representationEdges.get(representationEdges.size() - 1).getCursor();
+        }
+        PageInfo pageInfo = new DefaultPageInfo(startCursor, endCursor, false, false);
+        return new DefaultConnection<>(representationEdges, pageInfo);
     }
 
 }

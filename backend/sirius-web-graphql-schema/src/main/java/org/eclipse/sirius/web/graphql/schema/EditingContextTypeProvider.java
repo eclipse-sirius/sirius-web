@@ -29,8 +29,6 @@ import org.springframework.stereotype.Service;
 import graphql.Scalars;
 import graphql.schema.GraphQLArgument;
 import graphql.schema.GraphQLFieldDefinition;
-import graphql.schema.GraphQLList;
-import graphql.schema.GraphQLNonNull;
 import graphql.schema.GraphQLObjectType;
 import graphql.schema.GraphQLType;
 import graphql.schema.GraphQLTypeReference;
@@ -44,13 +42,13 @@ import graphql.schema.GraphQLTypeReference;
  * <pre>
  * type EditingContext {
  *   id: ID!
- *   stereotypeDescriptions: [StereotypeDescription!]!
+ *   stereotypeDescriptions: EditingContextStereotypeDescriptionConnection!
  *   childCreationDescriptions(classId: ID!): [ChildCreationDescription!]!
  *   rootObjectCreationDescriptions(domainId: ID!, suggested: Boolean!): [ChildCreationDescription!]!
  *   domains: [Domain!]!
  *   representationDescriptions(classId: ID): EditingContextRepresentationDescriptionConnection!
  *   representation(representationId: ID!): Representation
- *   representations: [Representation!]!
+ *   representations: EditingContextRepresentationConnection!
  * }
  * </pre>
  *
@@ -77,9 +75,17 @@ public class EditingContextTypeProvider implements ITypeProvider {
 
     public static final String REPRESENTATION_DESCRIPTIONS_FIELD = "representationDescriptions"; //$NON-NLS-1$
 
-    public static final String EDITING_CONTEXT_REPRESENTATION_DESCRIPTIONS_CONNECTION = TYPE + RepresentationDescriptionTypeProvider.TYPE + GraphQLConstants.CONNECTION;
+    public static final String EDITING_CONTEXT_REPRESENTATION_DESCRIPTIONS_CONNECTION = "EditingContextRepresentationDescriptionConnection"; //$NON-NLS-1$
 
-    public static final String EDITING_CONTEXT_REPRESENTATION_DESCRIPTIONS_EDGE = TYPE + RepresentationDescriptionTypeProvider.TYPE + GraphQLConstants.EDGE;
+    public static final String EDITING_CONTEXT_REPRESENTATION_DESCRIPTIONS_EDGE = "EditingContextRepresentationDescriptionEdge"; //$NON-NLS-1$
+
+    public static final String EDITING_CONTEXT_STEREOTYPE_DESCRIPTIONS_CONNECTION = "EditingContextStereotypeDescriptionConnection"; //$NON-NLS-1$
+
+    public static final String EDITING_CONTEXT_STEREOTYPE_DESCRIPTIONS_EDGE = "EditingContextStereotypeDescriptionEdge"; //$NON-NLS-1$
+
+    public static final String EDITING_CONTEXT_REPRESENTATION_CONNECTION = "EditingContextRepresentationConnection"; //$NON-NLS-1$
+
+    public static final String EDITING_CONTEXT_REPRESENTATION_EDGE = "EditingContextRepresentationEdge"; //$NON-NLS-1$
 
     public static final String REPRESENTATIONS_FIELD = "representations"; //$NON-NLS-1$
 
@@ -103,14 +109,24 @@ public class EditingContextTypeProvider implements ITypeProvider {
                 .build();
         // @formatter:on
 
-        GraphQLObjectType viewerRepresentationDescriptionEdge = new PaginationEdgeTypeProvider(EDITING_CONTEXT_REPRESENTATION_DESCRIPTIONS_EDGE, RepresentationDescriptionTypeProvider.TYPE).getType();
-        GraphQLObjectType viewerRepresentationDescriptionConnection = new PaginationConnectionTypeProvider(EDITING_CONTEXT_REPRESENTATION_DESCRIPTIONS_CONNECTION,
+        GraphQLObjectType editingContextRepresentationDescriptionEdge = new PaginationEdgeTypeProvider(EDITING_CONTEXT_REPRESENTATION_DESCRIPTIONS_EDGE, RepresentationDescriptionTypeProvider.TYPE)
+                .getType();
+        GraphQLObjectType editingContextRepresentationDescriptionConnection = new PaginationConnectionTypeProvider(EDITING_CONTEXT_REPRESENTATION_DESCRIPTIONS_CONNECTION,
                 EDITING_CONTEXT_REPRESENTATION_DESCRIPTIONS_EDGE).getType();
+        GraphQLObjectType editingContextSterotypeDescriptionEdge = new PaginationEdgeTypeProvider(EDITING_CONTEXT_STEREOTYPE_DESCRIPTIONS_EDGE, StereotypeDescriptionTypeProvider.TYPE).getType();
+        GraphQLObjectType editingContextStereotypeDescriptionConnection = new PaginationConnectionTypeProvider(EDITING_CONTEXT_STEREOTYPE_DESCRIPTIONS_CONNECTION,
+                EDITING_CONTEXT_STEREOTYPE_DESCRIPTIONS_EDGE).getType();
+        GraphQLObjectType editingContextRepresentationEdge = new PaginationEdgeTypeProvider(EDITING_CONTEXT_REPRESENTATION_EDGE, RepresentationTypeProvider.TYPE).getType();
+        GraphQLObjectType editingContextRepresentationConnection = new PaginationConnectionTypeProvider(EDITING_CONTEXT_REPRESENTATION_CONNECTION, EDITING_CONTEXT_REPRESENTATION_EDGE).getType();
 
         Set<GraphQLType> types = new LinkedHashSet<>();
         types.add(editingContextType);
-        types.add(viewerRepresentationDescriptionEdge);
-        types.add(viewerRepresentationDescriptionConnection);
+        types.add(editingContextRepresentationDescriptionEdge);
+        types.add(editingContextRepresentationDescriptionConnection);
+        types.add(editingContextSterotypeDescriptionEdge);
+        types.add(editingContextStereotypeDescriptionConnection);
+        types.add(editingContextRepresentationEdge);
+        types.add(editingContextRepresentationConnection);
         return types;
     }
 
@@ -118,7 +134,7 @@ public class EditingContextTypeProvider implements ITypeProvider {
         // @formatter:off
         return GraphQLFieldDefinition.newFieldDefinition()
                 .name(STEREOTYPE_DESCRIPTIONS_FIELD)
-                .type(nonNull(list(nonNull(typeRef(StereotypeDescriptionTypeProvider.TYPE)))))
+                .type(nonNull(typeRef(EDITING_CONTEXT_STEREOTYPE_DESCRIPTIONS_CONNECTION)))
                 .build();
         // @formatter:on
     }
@@ -194,7 +210,7 @@ public class EditingContextTypeProvider implements ITypeProvider {
         // @formatter:off
         return GraphQLFieldDefinition.newFieldDefinition()
                 .name(REPRESENTATIONS_FIELD)
-                .type(new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(new GraphQLTypeReference(RepresentationTypeProvider.TYPE)))))
+                .type(nonNull(typeRef(EDITING_CONTEXT_REPRESENTATION_CONNECTION)))
                 .build();
         // @formatter:on
     }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,8 +24,12 @@ const getOnboardDataQuery = gql`
     viewer {
       editingContext(editingContextId: $editingContextId) {
         stereotypeDescriptions {
-          id
-          label
+          edges {
+            node {
+              id
+              label
+            }
+          }
         }
         representationDescriptions(classId: $classId) {
           edges {
@@ -36,9 +40,13 @@ const getOnboardDataQuery = gql`
           }
         }
         representations {
-          id
-          label
-          kind
+          edges {
+            node {
+              id
+              label
+              kind
+            }
+          }
         }
       }
     }
@@ -64,10 +72,15 @@ export const OnboardArea = ({ editingContextId, selection, setSelection, readOnl
   useEffect(() => {
     if (!loading && !error && data?.viewer) {
       const { viewer } = data;
-      let representationDescriptions = viewer.editingContext.representationDescriptions.edges.map((edge) => edge.node);
+      const representations = viewer.editingContext.representations.edges.map((edge) => edge.node);
+      const stereotypeDescriptions = viewer.editingContext.stereotypeDescriptions.edges.map((edge) => edge.node);
+      const representationDescriptions = viewer.editingContext.representationDescriptions.edges.map(
+        (edge) => edge.node
+      );
+
       setState({
-        representations: viewer.editingContext.representations,
-        stereotypeDescriptions: viewer.editingContext.stereotypeDescriptions,
+        representations,
+        stereotypeDescriptions,
         representationDescriptions,
       });
     }
