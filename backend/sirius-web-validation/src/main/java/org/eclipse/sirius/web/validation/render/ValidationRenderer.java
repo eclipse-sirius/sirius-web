@@ -17,7 +17,6 @@ import java.util.Optional;
 import org.eclipse.sirius.web.components.BaseRenderer;
 import org.eclipse.sirius.web.components.Element;
 import org.eclipse.sirius.web.validation.Validation;
-import org.slf4j.Logger;
 
 /**
  * Renderer used to create the validation from its description and some variables.
@@ -28,8 +27,8 @@ public class ValidationRenderer {
 
     private final BaseRenderer baseRenderer;
 
-    public ValidationRenderer(Logger logger) {
-        this.baseRenderer = new BaseRenderer(new ValidationInstancePropsValidator(), new ValidationComponentPropsValidator(), new ValidationElementFactory(), logger);
+    public ValidationRenderer() {
+        this.baseRenderer = new BaseRenderer(new ValidationInstancePropsValidator(), new ValidationComponentPropsValidator(), new ValidationElementFactory());
     }
 
     public Validation render(Element element) {

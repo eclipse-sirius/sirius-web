@@ -155,7 +155,7 @@ public class ValidationEventProcessor implements IValidationEventProcessor {
 
         ValidationComponentProps validationComponentProps = new ValidationComponentProps(variableManager, this.validationDescription, Optional.ofNullable(this.validationContext.getValidation()));
         Element element = new Element(ValidationComponent.class, validationComponentProps);
-        Validation validation = new ValidationRenderer(this.logger).render(element);
+        Validation validation = new ValidationRenderer().render(element);
         this.logger.trace("Validation refreshed: {}", this.editingContext.getId()); //$NON-NLS-1$
         return validation;
     }

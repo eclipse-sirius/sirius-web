@@ -45,8 +45,6 @@ import org.eclipse.sirius.web.diagrams.elements.NodeElementProps;
 import org.eclipse.sirius.web.representations.Status;
 import org.eclipse.sirius.web.representations.VariableManager;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Test cases for the rendering of the nodes in diagrams.
@@ -66,8 +64,6 @@ public class DiagramRendererEdgeTests {
     private static final String FIRST_OBJECT_ID = "First"; //$NON-NLS-1$
 
     private static final String SECOND_OBJECT_ID = "Second"; //$NON-NLS-1$
-
-    private final Logger logger = LoggerFactory.getLogger(DiagramRendererEdgeTests.class);
 
     /**
      * Creates a diagram with two nodes "First" and "Second" and with an edge between the two nodes.
@@ -160,7 +156,7 @@ public class DiagramRendererEdgeTests {
                 .build();
         // @formatter:on
         Element element = new Element(DiagramComponent.class, props);
-        Diagram diagram = new DiagramRenderer(this.logger).render(element);
+        Diagram diagram = new DiagramRenderer().render(element);
         return diagram;
     }
 

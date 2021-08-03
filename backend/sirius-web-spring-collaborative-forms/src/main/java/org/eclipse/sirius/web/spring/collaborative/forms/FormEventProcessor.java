@@ -161,7 +161,7 @@ public class FormEventProcessor implements IFormEventProcessor {
 
         FormComponentProps formComponentProps = new FormComponentProps(variableManager, this.formDescription);
         Element element = new Element(FormComponent.class, formComponentProps);
-        Form form = new FormRenderer(this.logger).render(element);
+        Form form = new FormRenderer().render(element);
 
         this.logger.trace("Form refreshed: {}", form.getId()); //$NON-NLS-1$
 

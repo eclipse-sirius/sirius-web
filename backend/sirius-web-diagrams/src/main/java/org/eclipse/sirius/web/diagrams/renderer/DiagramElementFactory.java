@@ -14,7 +14,6 @@ package org.eclipse.sirius.web.diagrams.renderer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import org.eclipse.sirius.web.components.IElementFactory;
 import org.eclipse.sirius.web.components.IProps;
@@ -28,6 +27,7 @@ import org.eclipse.sirius.web.diagrams.elements.EdgeElementProps;
 import org.eclipse.sirius.web.diagrams.elements.LabelElementProps;
 import org.eclipse.sirius.web.diagrams.elements.NodeElementProps;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Used to instantiate the elements of the diagram.
@@ -36,11 +36,7 @@ import org.slf4j.Logger;
  */
 public class DiagramElementFactory implements IElementFactory {
 
-    private final Logger logger;
-
-    public DiagramElementFactory(Logger logger) {
-        this.logger = Objects.requireNonNull(logger);
-    }
+    private final Logger logger = LoggerFactory.getLogger(DiagramElementFactory.class);
 
     @Override
     public Object instantiateElement(String type, IProps props, List<Object> children) {

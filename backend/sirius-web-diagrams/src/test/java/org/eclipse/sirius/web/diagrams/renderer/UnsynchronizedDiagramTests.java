@@ -38,8 +38,6 @@ import org.eclipse.sirius.web.diagrams.description.SynchronizationPolicy;
 import org.eclipse.sirius.web.representations.Status;
 import org.eclipse.sirius.web.representations.VariableManager;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Test cases for the rendering of unsynchronized diagrams.
@@ -51,8 +49,6 @@ public class UnsynchronizedDiagramTests {
     private static final String NODE_TYPE = "node:rectangular"; //$NON-NLS-1$
 
     private static final String TARGET_OBJECT_ID = "targetObjectId"; //$NON-NLS-1$
-
-    private final Logger logger = LoggerFactory.getLogger(UnsynchronizedDiagramTests.class);
 
     /**
      * This very simple test will validate that we can render synchronized and unsynchronized diagram elements. We will
@@ -142,7 +138,7 @@ public class UnsynchronizedDiagramTests {
                 .build();
         // @formatter:on
         Element element = new Element(DiagramComponent.class, props);
-        Diagram diagram = new DiagramRenderer(this.logger).render(element);
+        Diagram diagram = new DiagramRenderer().render(element);
         return diagram;
     }
 

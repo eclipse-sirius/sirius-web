@@ -48,7 +48,6 @@ import org.eclipse.sirius.web.forms.renderer.FormRenderer;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
 import org.eclipse.sirius.web.representations.VariableManager;
 import org.junit.jupiter.api.Test;
-import org.slf4j.LoggerFactory;
 
 /**
  * Tests conversion of viewExtensionDescription to Sirius Web FormDescription.
@@ -223,7 +222,7 @@ public class FormRendererTests {
         VariableManager variableManager = new VariableManager();
         variableManager.put(VariableManager.SELF, EcorePackage.eINSTANCE);
 
-        FormRenderer formRenderer = new FormRenderer(LoggerFactory.getLogger(FormRendererTests.class));
+        FormRenderer formRenderer = new FormRenderer();
         FormComponentProps props = new FormComponentProps(variableManager, description);
         Element element = new Element(FormComponent.class, props);
         Form form = formRenderer.render(element);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Rendering service used to navigate recursively of on the elements to render.
@@ -32,13 +33,12 @@ public class BaseRenderer {
 
     private final IElementFactory elementFactory;
 
-    private final Logger logger;
+    private final Logger logger = LoggerFactory.getLogger(BaseRenderer.class);
 
-    public BaseRenderer(IInstancePropsValidator instancePropsValidator, IComponentPropsValidator componentPropsValidator, IElementFactory elementFactory, Logger logger) {
+    public BaseRenderer(IInstancePropsValidator instancePropsValidator, IComponentPropsValidator componentPropsValidator, IElementFactory elementFactory) {
         this.instancePropsValidator = Objects.requireNonNull(instancePropsValidator);
         this.componentPropsValidator = Objects.requireNonNull(componentPropsValidator);
         this.elementFactory = Objects.requireNonNull(elementFactory);
-        this.logger = Objects.requireNonNull(logger);
     }
 
     /**
