@@ -12,9 +12,11 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.graphql.datafetchers.editingcontext;
 
+import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.eclipse.sirius.web.annotations.spring.graphql.QueryDataFetcher;
 import org.eclipse.sirius.web.api.configuration.StereotypeDescription;
@@ -22,6 +24,14 @@ import org.eclipse.sirius.web.graphql.schema.EditingContextTypeProvider;
 import org.eclipse.sirius.web.services.api.stereotypes.IStereotypeDescriptionService;
 import org.eclipse.sirius.web.spring.graphql.api.IDataFetcherWithFieldCoordinates;
 
+import graphql.relay.Connection;
+import graphql.relay.ConnectionCursor;
+import graphql.relay.DefaultConnection;
+import graphql.relay.DefaultConnectionCursor;
+import graphql.relay.DefaultEdge;
+import graphql.relay.DefaultPageInfo;
+import graphql.relay.Edge;
+import graphql.relay.PageInfo;
 import graphql.schema.DataFetchingEnvironment;
 
 /**
@@ -32,14 +42,14 @@ import graphql.schema.DataFetchingEnvironment;
  *
  * <pre>
  * type EditingContext {
- *   stereotypeDescriptions: [StereotypeDescription!]!
+ *   stereotypeDescriptions: EditingContextStereotypeDescriptionConnection!
  * }
  * </pre>
  *
  * @author hmarchadour
  */
 @QueryDataFetcher(type = EditingContextTypeProvider.TYPE, field = EditingContextTypeProvider.STEREOTYPE_DESCRIPTIONS_FIELD)
-public class EditingContextStereotypeDescriptionsDataFetcher implements IDataFetcherWithFieldCoordinates<List<StereotypeDescription>> {
+public class EditingContextStereotypeDescriptionsDataFetcher implements IDataFetcherWithFieldCoordinates<Connection<StereotypeDescription>> {
 
     private final IStereotypeDescriptionService stereotypeDescriptionService;
 
@@ -48,8 +58,26 @@ public class EditingContextStereotypeDescriptionsDataFetcher implements IDataFet
     }
 
     @Override
-    public List<StereotypeDescription> get(DataFetchingEnvironment environment) throws Exception {
+    public Connection<StereotypeDescription> get(DataFetchingEnvironment environment) throws Exception {
         UUID editingContextId = environment.getSource();
-        return this.stereotypeDescriptionService.getStereotypeDescriptions(editingContextId);
+        var stereotypeDescriptions = this.stereotypeDescriptionService.getStereotypeDescriptions(editingContextId);
+
+        // @formatter:off
+        List<Edge<StereotypeDescription>> stereotypeDescriptionEdges = stereotypeDescriptions.stream()
+                .map(stereotypeDescription -> {
+                    String value = Base64.getEncoder().encodeToString(stereotypeDescription.getId().toString().getBytes());
+                    ConnectionCursor cursor = new DefaultConnectionCursor(value);
+                    return new DefaultEdge<>(stereotypeDescription, cursor);
+                })
+                .collect(Collectors.toList());
+        // @formatter:on
+
+        ConnectionCursor startCursor = stereotypeDescriptionEdges.stream().findFirst().map(Edge::getCursor).orElse(null);
+        ConnectionCursor endCursor = null;
+        if (!stereotypeDescriptionEdges.isEmpty()) {
+            endCursor = stereotypeDescriptionEdges.get(stereotypeDescriptionEdges.size() - 1).getCursor();
+        }
+        PageInfo pageInfo = new DefaultPageInfo(startCursor, endCursor, false, false);
+        return new DefaultConnection<>(stereotypeDescriptionEdges, pageInfo);
     }
 }
