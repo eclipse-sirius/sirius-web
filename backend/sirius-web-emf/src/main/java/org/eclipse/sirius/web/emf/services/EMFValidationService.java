@@ -69,6 +69,7 @@ public class EMFValidationService implements IValidationService {
             if (Diagnostic.OK != diagnostic.getSeverity()) {
                 // @formatter:off
                 return diagnostic.getChildren().stream()
+                        .filter(diag -> this.filterDiagnosticByObject(diag, object))
                         .filter(diag -> this.filterDiagnosticByFeature(diag, feature))
                         .collect(Collectors.toList());
                 // @formatter:on
@@ -76,6 +77,16 @@ public class EMFValidationService implements IValidationService {
         }
 
         return List.of();
+    }
+
+    private boolean filterDiagnosticByObject(Diagnostic diagnostic, Object object) {
+        if (diagnostic.getData() != null && !diagnostic.getData().isEmpty() && object != null) {
+            // @formatter:off
+            return diagnostic.getData().stream()
+                    .anyMatch(object::equals);
+            // @formatter:on
+        }
+        return false;
     }
 
     private boolean filterDiagnosticByFeature(Diagnostic diagnostic, Object feature) {
