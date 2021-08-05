@@ -24,6 +24,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EValidator;
 import org.eclipse.sirius.web.domain.Domain;
 import org.eclipse.sirius.web.domain.DomainPackage;
+import org.eclipse.sirius.web.domain.Entity;
 
 /**
  * The validator for Domain.
@@ -31,7 +32,10 @@ import org.eclipse.sirius.web.domain.DomainPackage;
  * @author gcoutable
  */
 public class DomainValidator implements EValidator {
+
     public static final String DOMAIN_URI_SCHEME = "domain://"; //$NON-NLS-1$
+
+    private static final String DOMAIN_DISTINC_NAME_ERROR_MESSAGE = "Two entities cannot have the same name in the same domain"; //$NON-NLS-1$
 
     private static final String SIRIUS_WEB_EMF_PACKAGE = "org.eclipse.sirius.web.emf"; //$NON-NLS-1$
 
@@ -51,6 +55,10 @@ public class DomainValidator implements EValidator {
             Domain domain = (Domain) eObject;
             isValid = this.uriStartWithValidate(domain, diagnostics) && isValid;
             isValid = this.nameIsNotBlankValidate(domain, diagnostics) && isValid;
+        }
+        if (eObject instanceof Entity) {
+            Entity entity = (Entity) eObject;
+            isValid = this.nameIsNotUsedByOtherEntity(entity, diagnostics) && isValid;
         }
         return isValid;
     }
@@ -86,6 +94,37 @@ public class DomainValidator implements EValidator {
                     DOMAIN_NAME_ERROR_MESSAGE,
                     new Object [] {
                             domain,
+                            DomainPackage.Literals.NAMED_ELEMENT__NAME,
+                    });
+            // @formatter:on
+
+            diagnostics.add(basicDiagnostic);
+        }
+
+        return isValid;
+    }
+
+    private boolean nameIsNotUsedByOtherEntity(Entity entity, DiagnosticChain diagnostics) {
+        boolean isValid = true;
+        EObject eContainer = entity.eContainer();
+        if (eContainer instanceof Domain) {
+            Domain domain = (Domain) eContainer;
+            // @formatter:off
+            isValid = domain.getTypes().stream()
+                .filter(domainEntity -> !domainEntity.equals(entity))
+                .map(Entity::getName)
+                .noneMatch(entity.getName()::equalsIgnoreCase);
+            // @formatter:on
+        }
+
+        if (!isValid && diagnostics != null) {
+            // @formatter:off
+            BasicDiagnostic basicDiagnostic = new BasicDiagnostic(Diagnostic.ERROR,
+                    SIRIUS_WEB_EMF_PACKAGE,
+                    0,
+                    DOMAIN_DISTINC_NAME_ERROR_MESSAGE,
+                    new Object [] {
+                            entity,
                             DomainPackage.Literals.NAMED_ELEMENT__NAME,
                     });
             // @formatter:on
