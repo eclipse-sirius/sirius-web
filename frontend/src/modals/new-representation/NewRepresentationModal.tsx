@@ -242,7 +242,7 @@ export const NewRepresentationModal = ({
               name="name"
               value={name}
               placeholder="Enter the name of the representation"
-              data-testid="name"
+              inputProps={{ 'data-testid': 'name' }}
               autoFocus={true}
               onChange={onNameChange}
               disabled={newRepresentationModal === 'loading' || newRepresentationModal === 'creatingRepresentation'}
