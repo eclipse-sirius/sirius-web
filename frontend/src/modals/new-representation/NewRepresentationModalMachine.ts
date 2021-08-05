@@ -47,6 +47,7 @@ export interface NewRepresentationModalContext {
   name: string;
   nameMessage: string;
   nameIsInvalid: boolean;
+  nameHasBeenModified: boolean;
   selectedRepresentationDescriptionId: string;
   representationDescriptions: GQLRepresentationDescriptionNode[];
   message: string | null;
@@ -90,6 +91,7 @@ export const newRepresentationModalMachine = Machine<
       name: '',
       nameMessage: 'The name cannot be empty',
       nameIsInvalid: false,
+      nameHasBeenModified: false,
       selectedRepresentationDescriptionId: '',
       representationDescriptions: [],
       message: null,
@@ -126,7 +128,7 @@ export const newRepresentationModalMachine = Machine<
             on: {
               HANDLE_FETCHED_REPRESENTATION_DESCRIPTIONS: [
                 {
-                  target: 'invalid',
+                  target: 'valid',
                   actions: 'updateRepresentationDescriptions',
                 },
               ],
@@ -218,14 +220,27 @@ export const newRepresentationModalMachine = Machine<
         );
         const selectedRepresentationDescriptionId =
           representationDescriptions.length > 0 ? representationDescriptions[0].id : '';
-        return { representationDescriptions, selectedRepresentationDescriptionId };
+        const name = representationDescriptions.length > 0 ? representationDescriptions[0].label : '';
+        return {
+          representationDescriptions,
+          selectedRepresentationDescriptionId,
+          name,
+          nameIsInvalid: name.trim().length === 0,
+        };
       }),
       updateName: assign((_, event) => {
         const { name } = event as ChangeNameEvent;
-        return { name, nameIsInvalid: name.trim().length === 0 };
+        return { name, nameIsInvalid: name.trim().length === 0, nameHasBeenModified: true };
       }),
-      updateRepresentationDescription: assign((_, event) => {
+      updateRepresentationDescription: assign((context, event) => {
         const { representationDescriptionId } = event as ChangeRepresentationDescriptionEvent;
+        if (!context.nameHasBeenModified) {
+          const name = context.representationDescriptions.filter(
+            (representationDescription) => representationDescription.id === representationDescriptionId
+          )[0].label;
+
+          return { selectedRepresentationDescriptionId: representationDescriptionId, name };
+        }
         return { selectedRepresentationDescriptionId: representationDescriptionId };
       }),
       updateCreatedRepresentation: assign((_, event) => {
