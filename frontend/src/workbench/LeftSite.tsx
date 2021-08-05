@@ -87,7 +87,7 @@ export const LeftSite = ({ editingContextId, setSelection, selection, readOnly }
   const classes = useSiteStyles();
 
   const [explorerExpanded, setExplorerExpanded] = React.useState<boolean>(true);
-  const [validationExpanded, setValidationExpanded] = React.useState<boolean>(false);
+  const [validationExpanded, setValidationExpanded] = React.useState<boolean>(true);
 
   let classSite = classes.site;
   if (explorerExpanded && validationExpanded) {
