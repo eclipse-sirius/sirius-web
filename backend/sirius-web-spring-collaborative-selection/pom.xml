@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius.web</groupId>
 	<artifactId>sirius-web-spring-collaborative-selection</artifactId>
-	<version>0.4.0</version>
+	<version>0.4.1</version>
 	<name>sirius-web-spring-collaborative-selection</name>
 	<description>Sirius Web Spring Collaborative Selection</description>
 
@@ -51,28 +51,28 @@
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-api</artifactId>
-			<version>0.4.0</version>
+			<version>0.4.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-collaborative-selection-api</artifactId>
-			<version>0.4.0</version>
+			<version>0.4.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-spring-collaborative</artifactId>
-			<version>0.4.0</version>
+			<version>0.4.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-tests</artifactId>
-			<version>0.4.0</version>
+			<version>0.4.1</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-spring-tests</artifactId>
-			<version>0.4.0</version>
+			<version>0.4.1</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
