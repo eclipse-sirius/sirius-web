@@ -1,0 +1,132 @@
+= ADR-029 - Introduce some object services
+
+== Context
+
+We need to perform some operations on model objects and retrieve the results.
+For example, we may want to retrieve the name of all the objects with a specific type or with an attribute with a specific value, etc.
+
+We already performed an evaluation of this feature in the past in Sirius Web and part of this code is still available there.
+See the following classes to have a look at those capabilities:
+
+- ObjectExpressionBasedBooleanDataFetcher
+- ObjectExpressionBasedIntDataFetcher
+- ObjectExpressionBasedObjectDataFetcher
+- ObjectExpressionBasedObjectsDataFetcher
+- ObjectExpressionBasedStringDataFetcher
+
+We will now need to move from a proof of concept to a properly maintained feature of the Sirius Components workbench. 
+
+== Decision
+
+We will define additions to the GraphQL Core API in order to add some object-specific services.
+Those services will start with the ability to:
+
+- query objects
+
+Additional capabilities will be added soon with the ability to:
+
+- create new objects
+- manipulate relationships between objects
+- delete objects
+
+=== GraphQL Object Query service
+
+With GraphQL, every field needs to have a proper type, for that reason if we want to perform a query, we must be able to know the expected return type first.
+We will support the following return type for our queries:
+
+- String
+- Boolean
+- Int
+- Object
+- Object[]
+
+We will support any query language in the GraphQL API but we may provide only support for AQL in the implementation of this API.
+We will add the ability to perform queries on the editing context starting with or without a specific object (i.e. self in Sirius expressions).
+
+As such, we will add the following fields to the GraphQL API of the `EditingContext` and `Object`:
+
+- `queryBasedString`
+- `queryBasedBoolean`
+- `queryBasedIn`
+- `queryBasedObject`
+- `queryBasedObjects`
+
+As a result, it will be possible to perform the following GraphQL queries on a editing context:
+
+```
+query {
+  viewer {
+    editingContext(editingContextId: "...") {
+      bob: queryBasedObject(query: "aql:editingContext.findObjectMatching('name', 'bob')") {
+        fullName: queryBasedString(query: "aql:self.firstName + ' ' + self.familyName")
+        friends: queryBasedObjects(query: "aql.self.friends") {
+          firstName: queryBasedString(query: "aql:self.firstName")
+        }
+      }
+    }
+  }
+}
+```
+
+which would return the following JSON content:
+
+```
+{
+  "viewer": {
+    "editingContext" {
+      "bob": {
+        "fullName": "Bob Anderson",
+        "friends": [
+          { "firstName": "Alice" },
+          { "firstName": "Lea" },
+          { "firstName": "Max" }
+        ]
+      }
+    }
+  }
+}
+```
+
+We could even leverage reflective capabilities to build queries such as this one:
+
+```
+query {
+  viewer {
+    editingContext(editingContextId: "...") {
+      bob: queryBasedObject(query: "aql:editingContext.findObjectMatching('name', 'bob')") {
+        features: queryBasedObjects(query: "aql.self.eClass.eAllStructuralFeatures()", variableName: "feature") {
+          name: queryBasedString(query: "aql:feature.name")
+          value: queryBasedString(query: "aql:self.eGet(feature).toString()")
+        }
+      }
+    }
+  }
+}
+```
+
+The result of such a query could be:
+
+```
+{
+  "viewer": {
+    "editingContext" {
+      "bob": {
+        "features": [
+          { "name": "firstName", "value": "Bob"},
+          { "name": "familyName", "value": "Anderson"},
+          { "name": "age", "value": "42"}
+        ]
+      }
+    }
+  }
+}
+```
+
+== Status
+
+WIP
+
+== Consequences
+
+Applications integrating Sirius Components will need to provide the relevant data fetchers in order to query the EditingContext and its objects.
+The code performing the query will be provided inside Sirius Components but it will not have any dependency to GraphQL directly.

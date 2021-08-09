@@ -1,0 +1,67 @@
+= ADR-025 - Switch to a schema first approach for our GraphQL schema
+
+== Context
+
+From the beginning of our project, we have embraced a code first approach in order to build our GraphQL schema.
+This approach has multiple advantages such as the confidence that our schema is always synchronized with our code or the ability to move very fast by changing things quickly in the code without a second thought.
+As all things in life, this approach is not perfect and it comes with some drawbacks.
+
+At multiple occasions in the past, our schema has become a representation of our specific technical solution instead of the generic API that it needs to be.
+The absence of the schema as a real technical artifact makes it quite difficult to communicate and reason about changes to the schema.
+On top of that, complex evolutions in the schema have required us to improve our custom GraphQL / Spring integration.
+
+Since we will have to perform important changes in our schema in the upcoming weeks while also having new interested parties concerned with the evolutions of the schema, we need to be able to communicate efficiently on changes to our schema.
+For that, our GraphQL schema will exist as a technical artifact and we will move to a schema first approach.
+As a result, it will slow down our ability to make massive changes in the GraphQL schema, on purpose, and make evolutions more visible.
+
+It will also dramatically reduce the relevance of our custom GraphQL / Spring integration and give us the ability to leverage other GraphQL tools and frameworks more easily.
+
+== Decision
+
+=== Core Schema
+
+We will create a file named `core.graphqls` containing all the core concepts of the GraphQL schema used to manipulate Sirius Components.
+This file will contain all the concepts related to our representations (Diagram, Form, Tree, Properties, Selection, Validation and more), the editing context and the viewer at least.
+This file will be made using the GraphQL Federation specification in order to be easily integrated in other GraphQL servers.
+
+=== Removal of schema-specific parts of our GraphQL / Spring integration
+
+The following concepts will be removed from our GraphQL / Spring integration:
+
+- IQueryTypeProvider
+- IMutationTypeProvider
+- ISubscriptionTypeProvider
+- ITypeCustomizer
+- ITypeProvider
+
+On top of that, since we will not create our schema from our code anymore, the following annotations will be removed:
+
+- GraphQLEnumType
+- GraphQLField
+- GraphQLID
+- GraphQLInputObjectType
+- GraphQLInterfaceType
+- GraphQLNonNull
+- GraphQLObjectType
+- GraphQLUpload
+- GraphQLMutationTypes
+- GraphQLSubscriptionTypes
+
+
+== Status
+
+WIP
+
+== Consequences
+
+Sirius Web and other projects reusing Sirius Components will need to define their schema on their own.
+In Sirius Web, this will be done in a schema first approach too thanks to GraphQL Federation.
+As a result, in Sirius Web a large number of constants will be removed and inlined in their data fetchers.
+We will keep the annotation driven contributions of the datafetchers with `@QueryDataFetcher`, `@MutationDataFetcher` and `@SubscriptionDataFetcher`.
+
+Evolutions of the schema will come with an ADR explaining why such changes are required.
+
+== See
+
+- https://www.apollographql.com/docs/federation/federation-spec/
+- https://github.com/apollographql/federation-jvm

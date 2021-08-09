@@ -1,0 +1,28 @@
+= ADR-026 - Improve the performance of unsynchronized nodes
+
+== Context
+
+Currently synchronized nodes and unsynchronized ones are computed using the same algorithm.
+We first ask for all the semantic candidate elements which may be used to create the nodes, then we determine if they match the description of the node and if they do, we start creating the node.
+For unsynchronized diagrams in which a diagram may display a specific subset of a massive amount of data, this creates an issue.
+
+Consider the following scenario for a diagram with unsynchronized nodes:
+When we start creating a diagram from scratch, it will be empty on purpose so the semantic candidate elements can be an empty list.
+When we will ask for the addition of an element in the diagram, we only want to consider the specific semantic element requested not the massive amount of data which exist.
+When we will refresh the diagram sometime later, we only want to consider semantic elements which have already been added to the diagram and elements which are currently being created.
+
+Today, our only choice is to provide the massive amount of semantic elements even if we know that 99.9% of them are useless for a specific refresh and they should not be considered.
+
+== Decision
+
+When a node is unsynchronized, we will change the variable available for its `semanticElementsProvider` to compute the semantic elements to consider.
+In this use cases, we will give the `semanticElementsProvider`, the list of the identifier of the semantic elements which exists in the diagram and the one which are currently being added to the diagram thanks to `ViewCreationRequests`.
+For that, a new variable named `SEMANTIC_ELEMENT_IDS` will be added in the variable manager used specifically for the `semanticElementsProvider` with the list of identifiers of the relevant semantic elements.
+
+== Status
+
+WIP
+
+== Consequences
+
+Specifier who create unsynchronized node descriptions will have a refresh with a performance which match the number of elements displayed in the diagram instead of the number of elements in their editing context.

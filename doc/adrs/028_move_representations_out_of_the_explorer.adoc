@@ -1,0 +1,26 @@
+= ADR-028 - Move representations out of the explorer
+
+== Context
+
+The explorer is currently displaying a mix of both semantic elements and representations.
+It makes it difficult to find the representations available and to distinguish them from semantic elements.
+
+== Decision
+
+In order to solve this issue, we will extract them from the explorer into a new view named `Representations` which will display the available representations.
+This representation will be linked to the current selection to display the representations created on the selected element quickly.
+It will display those representations in a simple list and allow users to click on a representation to open it.
+
+For the first version, our goal is to deliver a simple version of this feature.
+
+== Status
+
+WIP
+
+== Consequences
+
+We will need to be able to delete and rename representations from this view since they will not appear in the explorer anymore.
+In order to be coherent, we should probably add the ability to create new representations from this view too.
+It could be a good opportunity to start introducing view-level actions with a button to create a new representation next to the title of the view.
+
+It could let us move back the creation of root elements of the explorer in the workbench instead of having everyone who integrates our workbench recreate this feature from scratch.
