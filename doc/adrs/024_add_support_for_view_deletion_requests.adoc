@@ -1,0 +1,50 @@
+= ADR-024 - Add support for view deletion requests
+
+== Context
+
+We have added support for the creation of unsynchronized nodes but we did not add the ability to delete those nodes without deleting the semantic element used to create them.
+For that, we will need to add a new concept, the `ViewDeletionRequest`.
+
+== Decision
+
+A new concept, named `ViewDeletionRequest` will be introduced in order to indicate that a specific node should be deleted from the next rendering without any impact on the semantic elements.
+It will have the following API:
+
+```
+@Immutable
+public final class ViewDeletionRequest {
+
+    private UUID elementId;
+
+    private ViewDeletionRequest() {
+        // Prevent instantiation
+    }
+
+    public UUID getElementId() {
+        return this.elementId;
+    }
+
+    public static Builder newViewDeletionRequest() {
+        return new Builder();
+    }
+
+    // Additional code...
+}
+```
+
+The identifier of the element will be used in order to match it in the `NodeComponent` to make sure that the node will not be rendered during the next rendering.
+The method `org.eclipse.sirius.web.diagrams.components.NodeComponent.shouldRender(String, Optional<Node>)` should be updated in order to take care of a potential view deletion request.
+In this method we will have to compare all the given `elementId` with the identifier of the previously rendered node to find out if we still need to render it.
+
+The props of the `NodeComponent` and the `DiagramComponent` will thus be updated to included the `viewDeletionRequests` to perform.
+The `IDiagramContext` will also need to be updated to include said `ViewDeletionRequest`.
+
+We may need to clean existing `ViewCreationRequest` and `ViewDeletionRequest` from the `DiagramContext` when the latter is reseted.
+
+== Status
+
+WIP
+
+== Consequences
+
+In order to validate that this support is working as expecting, the Flow Designer will be modified to include a simple unsynchronized version of the Topography diagram.

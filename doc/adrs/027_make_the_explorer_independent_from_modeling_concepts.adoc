@@ -1,0 +1,76 @@
+= ADR-027 - Make the explorer independent from modeling concepts
+
+== Context
+
+The explorer is hardcoded with some of our own modeling concepts and it can only really be used with our own dedicated concepts.
+As an example, the following concepts are hardcoded in the `TreeItem`:
+
+- create, rename, delete representation
+- create, rename, delete object
+- create, rename, delete, download document
+- TreeItemDiagramContextMenu (used for all representations including the Form one...)
+
+This prevent the explorer from being reused for other use cases.
+
+== Decision
+
+We will make the explorer more generic and it will act a bit more like other representations with generic tools which can be mapped to concrete concepts known only by the backend.
+We will start by providing generic actions with handlers that will need to be provided just like for other representations.
+
+=== Support of generic actions like renaming and deletion
+
+In order to support the deletion and renaming of tree item, new properties `TreeItem#deletable` and `TreeItem#renamable` will be added.
+When available, the frontend will provide support for the deletion and renaming of said tree item.
+It will also call some generic mutation such as `Mutation#deleteTreeItem` and `Mutation#renameTreeItem` to perform the action.
+Sirius Components does not define what should appear in the explorer and the project integrating Sirius Components will have to handle the deletion and renaming of the concept behind the tree item.
+
+As such, Sirius Web will have to include both a `DeleteTreeItemEventHandler to handle the deletion of the requested tree item and and `RenameTreeItemEventHandler` for the renaming.
+It should then delegate to the renaming or deletion of a document, representation or even an object to the relevant service but that's an internal concern of Sirius Web.
+
+=== Support of specific actions such as child creation and download
+
+The creation of a new child may require specific information, for example:
+
+- The URI of the domain and the name of the entity to create a new child object
+- The name of the representation along with its type
+- The stereotype of its document and its name
+
+Those various use cases may require interaction with a server and some custom user interface.
+The same concerns are relevant to support downloading documents today (custom user interface + custom endpoint).
+
+In order to support those use cases, we will need to have the ability to contribute custom entries in the context menus of the TreeItem.
+In a similar fashion as the ability to contribute additional representations, the Sirius Components frontend API will provide the ability to add entries in the context menu.
+Several examples will be provided by Sirius Web:
+
+- A direct download link to download a document
+- An entry to create new objects thanks to the `NewObjectModal`
+- An entry to create new representations thanks to the `NewRepresentationModal`
+
+
+Only one `TreeItemContextMenu` component will exist, the others will be removed such as:
+- `TreeItemDiagramContextMenu`
+- `TreeItemDocumentContextMenu`
+- `TreeItemObjectContextMenu`
+
+The following mutations will be scheduled for removal:
+
+- Mutation#renameDocument
+- Mutation#renameObject
+- Mutation#renameRepresentation
+- Mutation#deleteObject
+- Mutation#deleteRepresentation
+- Mutation#deleteDocument
+
+We may keep `Mutation#deleteRepresentation` for the representation view but that's not sure.
+
+
+== Status
+
+WIP
+
+== Consequences
+
+Other product which are integrating the Sirius Components workbench will have the liberty to define the logical structure of their explorer.
+They will also have the responsability of defining the actions that should be available on its tree items.
+
+It will be possible for others to contribute actions on specific tree items to trigger behavior such as refactoring actions, specific export behavior, etc.
