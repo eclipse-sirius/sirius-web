@@ -2,10 +2,13 @@
 
 == Context
 
-We need to have a batter integration with remote systems.
+We need to have a better integration with remote systems.
 For that, we want to be able to display links related to the currently selected element.
 We will thus introduce a new representation named link to display those links.
 This representation will be integrated in the right side of the workbench since it is a representation parameterized by the current selection.
+
+The representation may be named "Hyperlinks" or "External Links" or something else in the user interface (the name is not set in stone yet).
+Technically the feature itself will be called link on the frontend and backend side since we want to keep the ability to have links triggering a behavior, just like a button, or the ability to create internal links, for example to change the selection etc.
 
 == Decision
 
@@ -18,8 +21,13 @@ We will start by adding support for `Link` to forms.
 Links will be another kind of widget just like checkbox or textfield.
 They will only contain a label and an URL to create the link.
 
+Links will not be editable, the only user interaction supported will be to click on a link.
+Since links will be created thanks to a projection based on the semantic elements, the links may change when a refresh is performed just like other widgets.
+
 A `LinkDescription` will also be added to the form description.
 Since it will only require a label and an URL, it will only require a `labelProvider` and an `urlProvider`.
+
+Links will be computed thanks to a `LinkComponent` and its props in the `sirius-web-forms` project.
 
 This first support for links can be tested by adding a default link to the default details view by modifying `PropertiesDefaultDescriptionProvider`.
 
@@ -34,8 +42,10 @@ This class and its configuration will be responsible for the lifecycle of the re
 In our case, one instance should be available for the given selection just like the properties representation.
 
 A representation should be provided thanks to a, `ILinkDescriptionProvider` which should ask for a `FormDescription` just like the `IPropertiesDefaultDescriptionProvider`.
-An implementation of this interface will be provided by the application which will integrated Sirius Components like Sirius Web for example.
+An implementation of this interface will be provided by the application which will integrate Sirius Components like Sirius Web for example.
 The description provided by this interface should in theory only contain links.
+In order to layout those links and provide some additional information, those links may be organized in various groups.
+Such decision will be up to the server integrating Sirius Components and providing the description.
 
 On the frontend side, the workbench should be modified to include a `LinkWebSocketContainer` in a similar fashion as the `PropertiesWebSocketContainer`.
 With its state machine, it should connect the lifecycle of the user interface with the lifecycle of the representation on the backend thanks to Apollo client and the GraphQL subscription.
@@ -46,7 +56,8 @@ WIP
 
 == Consequences
 
-None for now
+- Servers integrating Sirius Components will have to provide a form description for the link representation
+- We will require additional information on our links, for that, we may need to add tooltips and decorators to form widgets to provide documentation
 
 == See
 
