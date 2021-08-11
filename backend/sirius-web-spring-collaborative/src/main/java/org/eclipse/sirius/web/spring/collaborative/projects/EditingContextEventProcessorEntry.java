@@ -14,7 +14,7 @@ package org.eclipse.sirius.web.spring.collaborative.projects;
 
 import java.util.Objects;
 
-import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventProcessor;
+import org.eclipse.sirius.web.spring.collaborative.api.IEditingContextEventProcessor;
 
 import reactor.core.Disposable;
 

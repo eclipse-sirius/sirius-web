@@ -74,22 +74,22 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
-			<artifactId>sirius-web-collaborative-api</artifactId>
+			<artifactId>sirius-web-spring-collaborative</artifactId>
 			<version>0.4.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
-			<artifactId>sirius-web-collaborative-forms-api</artifactId>
+			<artifactId>sirius-web-spring-collaborative-forms</artifactId>
 			<version>0.4.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
-			<artifactId>sirius-web-collaborative-trees-api</artifactId>
+			<artifactId>sirius-web-spring-collaborative-trees</artifactId>
 			<version>0.4.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
-			<artifactId>sirius-web-collaborative-validation-api</artifactId>
+			<artifactId>sirius-web-spring-collaborative-validation</artifactId>
 			<version>0.4.1</version>
 		</dependency>
 		<dependency>

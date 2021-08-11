@@ -20,10 +20,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
-import org.eclipse.sirius.web.collaborative.api.dto.Subscriber;
-import org.eclipse.sirius.web.collaborative.api.services.ISubscriptionManager;
 import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.core.api.IPayload;
+import org.eclipse.sirius.web.spring.collaborative.api.ISubscriptionManager;
+import org.eclipse.sirius.web.spring.collaborative.dto.Subscriber;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

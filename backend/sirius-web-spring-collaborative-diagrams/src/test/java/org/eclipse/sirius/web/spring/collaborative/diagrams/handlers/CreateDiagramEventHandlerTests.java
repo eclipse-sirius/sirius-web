@@ -20,9 +20,6 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.eclipse.sirius.web.collaborative.api.dto.CreateRepresentationInput;
-import org.eclipse.sirius.web.collaborative.api.services.IRepresentationPersistenceService;
-import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramCreationService;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.core.api.IRepresentationDescriptionSearchService;
@@ -31,6 +28,9 @@ import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.web.diagrams.tests.TestDiagramBuilder;
 import org.eclipse.sirius.web.representations.IRepresentationDescription;
 import org.eclipse.sirius.web.representations.ISemanticRepresentation;
+import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationPersistenceService;
+import org.eclipse.sirius.web.spring.collaborative.diagrams.api.IDiagramCreationService;
+import org.eclipse.sirius.web.spring.collaborative.dto.CreateRepresentationInput;
 import org.junit.jupiter.api.Test;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;

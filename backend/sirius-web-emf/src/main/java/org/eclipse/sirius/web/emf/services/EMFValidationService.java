@@ -29,8 +29,8 @@ import org.eclipse.emf.ecore.util.Diagnostician;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
-import org.eclipse.sirius.web.collaborative.validation.api.IValidationService;
 import org.eclipse.sirius.web.core.api.IEditingContext;
+import org.eclipse.sirius.web.spring.collaborative.validation.api.IValidationService;
 import org.springframework.stereotype.Service;
 
 /**

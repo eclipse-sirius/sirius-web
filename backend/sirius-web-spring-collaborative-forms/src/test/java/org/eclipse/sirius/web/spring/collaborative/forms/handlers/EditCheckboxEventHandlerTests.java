@@ -20,14 +20,14 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 
-import org.eclipse.sirius.web.collaborative.forms.api.IFormQueryService;
-import org.eclipse.sirius.web.collaborative.forms.api.dto.EditCheckboxInput;
 import org.eclipse.sirius.web.forms.AbstractWidget;
 import org.eclipse.sirius.web.forms.Checkbox;
 import org.eclipse.sirius.web.forms.Form;
 import org.eclipse.sirius.web.forms.Group;
 import org.eclipse.sirius.web.forms.Page;
 import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.spring.collaborative.forms.api.IFormQueryService;
+import org.eclipse.sirius.web.spring.collaborative.forms.dto.EditCheckboxInput;
 import org.eclipse.sirius.web.spring.collaborative.forms.messages.ICollaborativeFormMessageService;
 import org.junit.jupiter.api.Test;
 

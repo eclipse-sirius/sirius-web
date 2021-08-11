@@ -16,17 +16,17 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.eclipse.sirius.web.collaborative.api.services.IRepresentationConfiguration;
-import org.eclipse.sirius.web.collaborative.api.services.IRepresentationEventProcessor;
-import org.eclipse.sirius.web.collaborative.api.services.IRepresentationEventProcessorFactory;
-import org.eclipse.sirius.web.collaborative.api.services.ISubscriptionManagerFactory;
-import org.eclipse.sirius.web.collaborative.trees.api.IExplorerDescriptionProvider;
-import org.eclipse.sirius.web.collaborative.trees.api.ITreeEventHandler;
-import org.eclipse.sirius.web.collaborative.trees.api.ITreeEventProcessor;
-import org.eclipse.sirius.web.collaborative.trees.api.ITreeService;
-import org.eclipse.sirius.web.collaborative.trees.api.TreeConfiguration;
-import org.eclipse.sirius.web.collaborative.trees.api.TreeCreationParameters;
 import org.eclipse.sirius.web.core.api.IEditingContext;
+import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationConfiguration;
+import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationEventProcessor;
+import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationEventProcessorFactory;
+import org.eclipse.sirius.web.spring.collaborative.api.ISubscriptionManagerFactory;
+import org.eclipse.sirius.web.spring.collaborative.trees.api.IExplorerDescriptionProvider;
+import org.eclipse.sirius.web.spring.collaborative.trees.api.ITreeEventHandler;
+import org.eclipse.sirius.web.spring.collaborative.trees.api.ITreeEventProcessor;
+import org.eclipse.sirius.web.spring.collaborative.trees.api.ITreeService;
+import org.eclipse.sirius.web.spring.collaborative.trees.api.TreeConfiguration;
+import org.eclipse.sirius.web.spring.collaborative.trees.api.TreeCreationParameters;
 import org.eclipse.sirius.web.trees.description.TreeDescription;
 import org.springframework.stereotype.Service;
 

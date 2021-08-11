@@ -15,19 +15,19 @@ package org.eclipse.sirius.web.spring.collaborative.forms.handlers;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.eclipse.sirius.web.collaborative.api.services.ChangeDescription;
-import org.eclipse.sirius.web.collaborative.api.services.ChangeKind;
-import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
-import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
-import org.eclipse.sirius.web.collaborative.forms.api.IFormEventHandler;
-import org.eclipse.sirius.web.collaborative.forms.api.IFormInput;
-import org.eclipse.sirius.web.collaborative.forms.api.IFormQueryService;
-import org.eclipse.sirius.web.collaborative.forms.api.dto.EditSelectInput;
-import org.eclipse.sirius.web.collaborative.forms.api.dto.EditSelectSuccessPayload;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.forms.Form;
 import org.eclipse.sirius.web.forms.Select;
 import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.spring.collaborative.api.ChangeDescription;
+import org.eclipse.sirius.web.spring.collaborative.api.ChangeKind;
+import org.eclipse.sirius.web.spring.collaborative.api.EventHandlerResponse;
+import org.eclipse.sirius.web.spring.collaborative.api.Monitoring;
+import org.eclipse.sirius.web.spring.collaborative.forms.api.IFormEventHandler;
+import org.eclipse.sirius.web.spring.collaborative.forms.api.IFormInput;
+import org.eclipse.sirius.web.spring.collaborative.forms.api.IFormQueryService;
+import org.eclipse.sirius.web.spring.collaborative.forms.dto.EditSelectInput;
+import org.eclipse.sirius.web.spring.collaborative.forms.dto.EditSelectSuccessPayload;
 import org.eclipse.sirius.web.spring.collaborative.forms.messages.ICollaborativeFormMessageService;
 import org.springframework.stereotype.Service;
 

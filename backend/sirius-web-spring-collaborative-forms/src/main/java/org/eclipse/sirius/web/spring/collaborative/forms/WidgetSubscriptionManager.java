@@ -12,10 +12,10 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.spring.collaborative.forms;
 
-import org.eclipse.sirius.web.collaborative.forms.api.IWidgetSubscriptionManager;
-import org.eclipse.sirius.web.collaborative.forms.api.dto.UpdateWidgetFocusInput;
 import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.core.api.IPayload;
+import org.eclipse.sirius.web.spring.collaborative.forms.api.IWidgetSubscriptionManager;
+import org.eclipse.sirius.web.spring.collaborative.forms.dto.UpdateWidgetFocusInput;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

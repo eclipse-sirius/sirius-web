@@ -14,10 +14,10 @@ package org.eclipse.sirius.web.spring.collaborative.diagrams;
 
 import java.util.Objects;
 
-import org.eclipse.sirius.web.collaborative.diagrams.api.dto.DiagramRefreshedEventPayload;
 import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.diagrams.Diagram;
+import org.eclipse.sirius.web.spring.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

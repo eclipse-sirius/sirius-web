@@ -19,11 +19,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.sirius.web.collaborative.api.dto.RenameRepresentationSuccessPayload;
-import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
-import org.eclipse.sirius.web.collaborative.api.services.IRepresentationPersistenceService;
-import org.eclipse.sirius.web.collaborative.api.services.IRepresentationSearchService;
-import org.eclipse.sirius.web.collaborative.diagrams.api.dto.RenameDiagramInput;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.diagrams.Diagram;
@@ -33,6 +28,11 @@ import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.web.diagrams.tests.TestDiagramDescriptionBuilder;
 import org.eclipse.sirius.web.representations.IRepresentation;
 import org.eclipse.sirius.web.representations.ISemanticRepresentation;
+import org.eclipse.sirius.web.spring.collaborative.api.EventHandlerResponse;
+import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationPersistenceService;
+import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationSearchService;
+import org.eclipse.sirius.web.spring.collaborative.diagrams.dto.RenameDiagramInput;
+import org.eclipse.sirius.web.spring.collaborative.dto.RenameRepresentationSuccessPayload;
 import org.junit.jupiter.api.Test;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;

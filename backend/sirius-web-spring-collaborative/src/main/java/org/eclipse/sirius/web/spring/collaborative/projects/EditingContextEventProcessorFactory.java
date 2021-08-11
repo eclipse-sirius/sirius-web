@@ -15,14 +15,14 @@ package org.eclipse.sirius.web.spring.collaborative.projects;
 import java.util.List;
 import java.util.Objects;
 
-import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventHandler;
-import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventProcessor;
-import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventProcessorFactory;
-import org.eclipse.sirius.web.collaborative.api.services.IDanglingRepresentationDeletionService;
-import org.eclipse.sirius.web.collaborative.api.services.IRepresentationEventProcessorComposedFactory;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IEditingContextPersistenceService;
 import org.eclipse.sirius.web.core.api.IObjectService;
+import org.eclipse.sirius.web.spring.collaborative.api.IDanglingRepresentationDeletionService;
+import org.eclipse.sirius.web.spring.collaborative.api.IEditingContextEventHandler;
+import org.eclipse.sirius.web.spring.collaborative.api.IEditingContextEventProcessor;
+import org.eclipse.sirius.web.spring.collaborative.api.IEditingContextEventProcessorFactory;
+import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationEventProcessorComposedFactory;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 

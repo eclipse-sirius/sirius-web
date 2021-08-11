@@ -20,8 +20,6 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 
-import org.eclipse.sirius.web.collaborative.forms.api.IFormQueryService;
-import org.eclipse.sirius.web.collaborative.forms.api.dto.EditRadioInput;
 import org.eclipse.sirius.web.forms.AbstractWidget;
 import org.eclipse.sirius.web.forms.Form;
 import org.eclipse.sirius.web.forms.Group;
@@ -29,6 +27,8 @@ import org.eclipse.sirius.web.forms.Page;
 import org.eclipse.sirius.web.forms.Radio;
 import org.eclipse.sirius.web.forms.RadioOption;
 import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.spring.collaborative.forms.api.IFormQueryService;
+import org.eclipse.sirius.web.spring.collaborative.forms.dto.EditRadioInput;
 import org.eclipse.sirius.web.spring.collaborative.forms.messages.ICollaborativeFormMessageService;
 import org.junit.jupiter.api.Test;
 

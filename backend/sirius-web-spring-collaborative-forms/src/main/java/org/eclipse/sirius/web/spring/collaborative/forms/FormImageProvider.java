@@ -14,9 +14,9 @@ package org.eclipse.sirius.web.spring.collaborative.forms;
 
 import java.util.Optional;
 
-import org.eclipse.sirius.web.collaborative.api.services.IRepresentationImageProvider;
 import org.eclipse.sirius.web.forms.Form;
 import org.eclipse.sirius.web.representations.IRepresentation;
+import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationImageProvider;
 import org.springframework.stereotype.Service;
 
 /**

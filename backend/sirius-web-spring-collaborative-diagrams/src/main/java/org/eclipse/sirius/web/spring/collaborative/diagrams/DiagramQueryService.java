@@ -18,10 +18,10 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Predicate;
 
-import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramQueryService;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.Edge;
 import org.eclipse.sirius.web.diagrams.Node;
+import org.eclipse.sirius.web.spring.collaborative.diagrams.api.IDiagramQueryService;
 import org.springframework.stereotype.Service;
 
 /**

@@ -17,9 +17,9 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import java.util.List;
 import java.util.Objects;
 
-import org.eclipse.sirius.web.collaborative.api.services.IRepresentationDeserializer;
-import org.eclipse.sirius.web.collaborative.api.services.IStdDeserializerProvider;
 import org.eclipse.sirius.web.representations.IRepresentation;
+import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationDeserializer;
+import org.eclipse.sirius.web.spring.collaborative.api.IStdDeserializerProvider;
 import org.springframework.stereotype.Service;
 
 /**

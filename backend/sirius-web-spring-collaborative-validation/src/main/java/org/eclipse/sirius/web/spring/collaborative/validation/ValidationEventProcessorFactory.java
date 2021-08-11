@@ -16,15 +16,15 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.eclipse.sirius.web.collaborative.api.services.IRepresentationConfiguration;
-import org.eclipse.sirius.web.collaborative.api.services.IRepresentationEventProcessor;
-import org.eclipse.sirius.web.collaborative.api.services.IRepresentationEventProcessorFactory;
-import org.eclipse.sirius.web.collaborative.api.services.ISubscriptionManagerFactory;
-import org.eclipse.sirius.web.collaborative.validation.api.IValidationDescriptionProvider;
-import org.eclipse.sirius.web.collaborative.validation.api.IValidationEventHandler;
-import org.eclipse.sirius.web.collaborative.validation.api.IValidationEventProcessor;
-import org.eclipse.sirius.web.collaborative.validation.api.ValidationConfiguration;
 import org.eclipse.sirius.web.core.api.IEditingContext;
+import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationConfiguration;
+import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationEventProcessor;
+import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationEventProcessorFactory;
+import org.eclipse.sirius.web.spring.collaborative.api.ISubscriptionManagerFactory;
+import org.eclipse.sirius.web.spring.collaborative.validation.api.IValidationDescriptionProvider;
+import org.eclipse.sirius.web.spring.collaborative.validation.api.IValidationEventHandler;
+import org.eclipse.sirius.web.spring.collaborative.validation.api.IValidationEventProcessor;
+import org.eclipse.sirius.web.spring.collaborative.validation.api.ValidationConfiguration;
 import org.eclipse.sirius.web.validation.description.ValidationDescription;
 import org.springframework.stereotype.Service;
 
