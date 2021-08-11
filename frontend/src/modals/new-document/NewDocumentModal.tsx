@@ -66,8 +66,12 @@ const getStereotypeDescriptionsQuery = gql`
     viewer {
       editingContext(editingContextId: $editingContextId) {
         stereotypeDescriptions {
-          id
-          label
+          edges {
+            node {
+              id
+              label
+            }
+          }
         }
       }
     }

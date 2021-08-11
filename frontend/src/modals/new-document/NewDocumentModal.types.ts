@@ -34,7 +34,15 @@ export interface GQLViewer {
 }
 
 export interface GQLEditingContext {
-  stereotypeDescriptions: GQLStereotypeDescription[];
+  stereotypeDescriptions: GQLStereotypeDescriptionConnection;
+}
+
+export interface GQLStereotypeDescriptionConnection {
+  edges: GQLStereotypeDescriptionEdge[];
+}
+
+export interface GQLStereotypeDescriptionEdge {
+  node: GQLStereotypeDescription;
 }
 
 export interface GQLStereotypeDescription {
