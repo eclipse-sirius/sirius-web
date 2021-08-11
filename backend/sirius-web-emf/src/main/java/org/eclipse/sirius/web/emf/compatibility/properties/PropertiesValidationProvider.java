@@ -19,9 +19,9 @@ import java.util.function.Function;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.sirius.web.collaborative.validation.api.IValidationService;
 import org.eclipse.sirius.web.emf.compatibility.properties.api.IPropertiesValidationProvider;
 import org.eclipse.sirius.web.representations.VariableManager;
+import org.eclipse.sirius.web.spring.collaborative.validation.api.IValidationService;
 import org.springframework.stereotype.Service;
 
 /**

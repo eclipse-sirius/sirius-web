@@ -23,13 +23,13 @@ import java.util.stream.Collectors;
 
 import javax.annotation.PreDestroy;
 
-import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventProcessor;
-import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventProcessorFactory;
-import org.eclipse.sirius.web.collaborative.api.services.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.core.api.IPayload;
+import org.eclipse.sirius.web.spring.collaborative.api.IEditingContextEventProcessor;
+import org.eclipse.sirius.web.spring.collaborative.api.IEditingContextEventProcessorFactory;
+import org.eclipse.sirius.web.spring.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;

@@ -16,20 +16,20 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.eclipse.sirius.web.collaborative.api.services.IRepresentationConfiguration;
-import org.eclipse.sirius.web.collaborative.api.services.IRepresentationEventProcessor;
-import org.eclipse.sirius.web.collaborative.api.services.IRepresentationEventProcessorFactory;
-import org.eclipse.sirius.web.collaborative.api.services.IRepresentationSearchService;
-import org.eclipse.sirius.web.collaborative.api.services.ISubscriptionManagerFactory;
-import org.eclipse.sirius.web.collaborative.forms.api.FormConfiguration;
-import org.eclipse.sirius.web.collaborative.forms.api.IFormEventHandler;
-import org.eclipse.sirius.web.collaborative.forms.api.IFormEventProcessor;
-import org.eclipse.sirius.web.collaborative.forms.api.IWidgetSubscriptionManagerFactory;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.web.forms.Form;
 import org.eclipse.sirius.web.forms.description.FormDescription;
+import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationConfiguration;
+import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationEventProcessor;
+import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationEventProcessorFactory;
+import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationSearchService;
+import org.eclipse.sirius.web.spring.collaborative.api.ISubscriptionManagerFactory;
+import org.eclipse.sirius.web.spring.collaborative.forms.api.FormConfiguration;
+import org.eclipse.sirius.web.spring.collaborative.forms.api.IFormEventHandler;
+import org.eclipse.sirius.web.spring.collaborative.forms.api.IFormEventProcessor;
+import org.eclipse.sirius.web.spring.collaborative.forms.api.IWidgetSubscriptionManagerFactory;
 import org.springframework.stereotype.Service;
 
 /**

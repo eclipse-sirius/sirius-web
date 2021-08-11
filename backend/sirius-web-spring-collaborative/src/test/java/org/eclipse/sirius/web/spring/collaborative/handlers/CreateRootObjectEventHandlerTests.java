@@ -17,11 +17,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.sirius.web.collaborative.api.dto.CreateRootObjectInput;
-import org.eclipse.sirius.web.collaborative.api.dto.CreateRootObjectSuccessPayload;
-import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
 import org.eclipse.sirius.web.core.api.IEditService;
 import org.eclipse.sirius.web.core.api.IEditingContext;
+import org.eclipse.sirius.web.spring.collaborative.api.EventHandlerResponse;
+import org.eclipse.sirius.web.spring.collaborative.dto.CreateRootObjectInput;
+import org.eclipse.sirius.web.spring.collaborative.dto.CreateRootObjectSuccessPayload;
 import org.junit.jupiter.api.Test;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;

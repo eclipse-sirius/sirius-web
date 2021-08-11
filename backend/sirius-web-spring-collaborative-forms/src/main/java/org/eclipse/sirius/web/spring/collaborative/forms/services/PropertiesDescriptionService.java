@@ -15,8 +15,8 @@ package org.eclipse.sirius.web.spring.collaborative.forms.services;
 import java.util.List;
 import java.util.Objects;
 
-import org.eclipse.sirius.web.collaborative.forms.api.IPropertiesDescriptionService;
 import org.eclipse.sirius.web.forms.description.FormDescription;
+import org.eclipse.sirius.web.spring.collaborative.forms.api.IPropertiesDescriptionService;
 
 /**
  * Service used to query the properties descriptions available.

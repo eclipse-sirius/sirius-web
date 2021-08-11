@@ -14,20 +14,20 @@ package org.eclipse.sirius.web.spring.collaborative.diagrams.handlers;
 
 import java.util.Objects;
 
-import org.eclipse.sirius.web.collaborative.api.services.ChangeDescription;
-import org.eclipse.sirius.web.collaborative.api.services.ChangeKind;
-import org.eclipse.sirius.web.collaborative.api.services.EventHandlerResponse;
-import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
-import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramContext;
-import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramEventHandler;
-import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramInput;
-import org.eclipse.sirius.web.collaborative.diagrams.api.dto.ArrangeAllInput;
-import org.eclipse.sirius.web.collaborative.diagrams.api.dto.ArrangeAllSuccessPayload;
-import org.eclipse.sirius.web.collaborative.diagrams.api.dto.InvokeNodeToolOnDiagramInput;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.diagrams.events.ArrangeAllEvent;
+import org.eclipse.sirius.web.spring.collaborative.api.ChangeDescription;
+import org.eclipse.sirius.web.spring.collaborative.api.ChangeKind;
+import org.eclipse.sirius.web.spring.collaborative.api.EventHandlerResponse;
+import org.eclipse.sirius.web.spring.collaborative.api.Monitoring;
 import org.eclipse.sirius.web.spring.collaborative.diagrams.DiagramChangeKind;
+import org.eclipse.sirius.web.spring.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.web.spring.collaborative.diagrams.api.IDiagramEventHandler;
+import org.eclipse.sirius.web.spring.collaborative.diagrams.api.IDiagramInput;
+import org.eclipse.sirius.web.spring.collaborative.diagrams.dto.ArrangeAllInput;
+import org.eclipse.sirius.web.spring.collaborative.diagrams.dto.ArrangeAllSuccessPayload;
+import org.eclipse.sirius.web.spring.collaborative.diagrams.dto.InvokeNodeToolOnDiagramInput;
 import org.eclipse.sirius.web.spring.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
 import org.springframework.stereotype.Service;
 

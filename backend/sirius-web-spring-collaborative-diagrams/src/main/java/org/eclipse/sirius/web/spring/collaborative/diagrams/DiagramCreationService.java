@@ -17,10 +17,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
-import org.eclipse.sirius.web.collaborative.api.services.IRepresentationPersistenceService;
-import org.eclipse.sirius.web.collaborative.api.services.Monitoring;
-import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramContext;
-import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramCreationService;
 import org.eclipse.sirius.web.components.Element;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IObjectService;
@@ -36,6 +32,10 @@ import org.eclipse.sirius.web.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.web.diagrams.layout.api.ILayoutService;
 import org.eclipse.sirius.web.diagrams.renderer.DiagramRenderer;
 import org.eclipse.sirius.web.representations.VariableManager;
+import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationPersistenceService;
+import org.eclipse.sirius.web.spring.collaborative.api.Monitoring;
+import org.eclipse.sirius.web.spring.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.web.spring.collaborative.diagrams.api.IDiagramCreationService;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.MeterRegistry;

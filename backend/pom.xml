@@ -34,12 +34,6 @@
 		<module>sirius-web-annotations</module>
 		<module>sirius-web-api</module>
 		<module>sirius-web-core-api</module>
-		<module>sirius-web-collaborative-api</module>
-		<module>sirius-web-collaborative-diagrams-api</module>
-		<module>sirius-web-collaborative-forms-api</module>
-		<module>sirius-web-collaborative-selection-api</module>
-		<module>sirius-web-collaborative-trees-api</module>
-		<module>sirius-web-collaborative-validation-api</module>
 		<module>sirius-web-components</module>
 		<module>sirius-web-diagrams-layout-api</module>
 		<module>sirius-web-diagrams-layout</module>

@@ -16,17 +16,17 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.eclipse.sirius.web.collaborative.api.services.IRepresentationConfiguration;
-import org.eclipse.sirius.web.collaborative.api.services.IRepresentationEventProcessor;
-import org.eclipse.sirius.web.collaborative.api.services.IRepresentationEventProcessorFactory;
-import org.eclipse.sirius.web.collaborative.api.services.IRepresentationSearchService;
-import org.eclipse.sirius.web.collaborative.api.services.ISubscriptionManagerFactory;
-import org.eclipse.sirius.web.collaborative.diagrams.api.DiagramConfiguration;
-import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramCreationService;
-import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramEventHandler;
-import org.eclipse.sirius.web.collaborative.diagrams.api.IDiagramEventProcessor;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.diagrams.Diagram;
+import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationConfiguration;
+import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationEventProcessor;
+import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationEventProcessorFactory;
+import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationSearchService;
+import org.eclipse.sirius.web.spring.collaborative.api.ISubscriptionManagerFactory;
+import org.eclipse.sirius.web.spring.collaborative.diagrams.api.DiagramConfiguration;
+import org.eclipse.sirius.web.spring.collaborative.diagrams.api.IDiagramCreationService;
+import org.eclipse.sirius.web.spring.collaborative.diagrams.api.IDiagramEventHandler;
+import org.eclipse.sirius.web.spring.collaborative.diagrams.api.IDiagramEventProcessor;
 import org.springframework.stereotype.Service;
 
 /**

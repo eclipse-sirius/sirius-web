@@ -15,16 +15,16 @@ package org.eclipse.sirius.web.spring.collaborative.selection;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.eclipse.sirius.web.collaborative.api.services.IRepresentationConfiguration;
-import org.eclipse.sirius.web.collaborative.api.services.IRepresentationEventProcessor;
-import org.eclipse.sirius.web.collaborative.api.services.IRepresentationEventProcessorFactory;
-import org.eclipse.sirius.web.collaborative.api.services.ISubscriptionManagerFactory;
-import org.eclipse.sirius.web.collaborative.selection.api.ISelectionEventProcessor;
-import org.eclipse.sirius.web.collaborative.selection.api.SelectionConfiguration;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.web.selection.description.SelectionDescription;
+import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationConfiguration;
+import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationEventProcessor;
+import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationEventProcessorFactory;
+import org.eclipse.sirius.web.spring.collaborative.api.ISubscriptionManagerFactory;
+import org.eclipse.sirius.web.spring.collaborative.selection.api.ISelectionEventProcessor;
+import org.eclipse.sirius.web.spring.collaborative.selection.api.SelectionConfiguration;
 import org.springframework.stereotype.Service;
 
 /**

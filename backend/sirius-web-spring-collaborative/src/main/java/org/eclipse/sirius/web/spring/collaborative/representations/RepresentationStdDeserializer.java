@@ -23,8 +23,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
-import org.eclipse.sirius.web.collaborative.api.services.IRepresentationDeserializer;
 import org.eclipse.sirius.web.representations.IRepresentation;
+import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationDeserializer;
 
 /**
  * Custom deserializer to customize the ObjectMapper.

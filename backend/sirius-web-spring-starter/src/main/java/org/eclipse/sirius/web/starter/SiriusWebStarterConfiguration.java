@@ -12,9 +12,9 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.starter;
 
-import org.eclipse.sirius.web.collaborative.api.services.ISubscriptionManagerFactory;
-import org.eclipse.sirius.web.collaborative.forms.api.IWidgetSubscriptionManagerFactory;
+import org.eclipse.sirius.web.spring.collaborative.api.ISubscriptionManagerFactory;
 import org.eclipse.sirius.web.spring.collaborative.forms.WidgetSubscriptionManager;
+import org.eclipse.sirius.web.spring.collaborative.forms.api.IWidgetSubscriptionManagerFactory;
 import org.eclipse.sirius.web.spring.collaborative.representations.SubscriptionManager;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;

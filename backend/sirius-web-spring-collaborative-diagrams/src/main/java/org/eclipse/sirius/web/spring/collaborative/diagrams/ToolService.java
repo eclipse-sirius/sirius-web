@@ -17,12 +17,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.eclipse.sirius.web.collaborative.diagrams.api.IToolService;
 import org.eclipse.sirius.web.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.web.diagrams.tools.ITool;
 import org.eclipse.sirius.web.diagrams.tools.ToolSection;
+import org.eclipse.sirius.web.spring.collaborative.diagrams.api.IToolService;
 import org.springframework.stereotype.Service;
 
 /**
