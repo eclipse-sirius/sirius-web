@@ -46,7 +46,7 @@ export interface NewDocumentModalContext {
   name: string;
   nameMessage: string;
   nameIsInvalid: boolean;
-  selectedStereotypeDescriptionId: string | null;
+  selectedStereotypeDescriptionId: string;
   stereotypeDescriptions: StereotypeDescription[];
   message: string | null;
 }
@@ -85,7 +85,7 @@ export const newDocumentModalMachine = Machine<
       name: '',
       nameMessage: 'The name cannot be empty',
       nameIsInvalid: false,
-      selectedStereotypeDescriptionId: null,
+      selectedStereotypeDescriptionId: '',
       stereotypeDescriptions: [],
       message: null,
     },
@@ -203,8 +203,12 @@ export const newDocumentModalMachine = Machine<
     actions: {
       updateStereotypeDescriptions: assign((_, event) => {
         const { data } = event as FetchedStereotypeDescriptionsEvent;
-        const { stereotypeDescriptions } = data.viewer.editingContext;
-        const selectedStereotypeDescriptionId = stereotypeDescriptions.length > 0 ? stereotypeDescriptions[0].id : null;
+        const { stereotypeDescriptions: stereotypeDescriptionsConnections } = data.viewer.editingContext;
+        const selectedStereotypeDescriptionId =
+          stereotypeDescriptionsConnections.edges.length > 0
+            ? stereotypeDescriptionsConnections.edges[0].node.id
+            : null;
+        const stereotypeDescriptions = stereotypeDescriptionsConnections.edges.map((edge) => edge.node);
         return { stereotypeDescriptions, selectedStereotypeDescriptionId };
       }),
       updateName: assign((_, event) => {
