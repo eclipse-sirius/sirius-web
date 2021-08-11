@@ -40,7 +40,6 @@
 		<module>sirius-web-collaborative-selection-api</module>
 		<module>sirius-web-collaborative-trees-api</module>
 		<module>sirius-web-collaborative-validation-api</module>
-		<module>sirius-web-services-api</module>
 		<module>sirius-web-components</module>
 		<module>sirius-web-diagrams-layout-api</module>
 		<module>sirius-web-diagrams-layout</module>
@@ -49,13 +48,10 @@
 		<module>sirius-web-forms-tests</module>
 		<module>sirius-web-forms</module>
 		<module>sirius-web-graphiql</module>
-		<module>sirius-web-graphql-schema</module>
 		<module>sirius-web-graphql-utils</module>
 		<module>sirius-web-graphql-voyager</module>
-		<module>sirius-web-graphql</module>
 		<module>sirius-web-representations</module>
 		<module>sirius-web-selection</module>
-		<module>sirius-web-services</module>
 		<module>sirius-web-spring-collaborative-diagrams</module>
 		<module>sirius-web-spring-collaborative-forms</module>
 		<module>sirius-web-spring-collaborative-selection</module>
@@ -66,13 +62,11 @@
 		<module>sirius-web-spring-graphql</module>
 		<module>sirius-web-spring-starter</module>
 		<module>sirius-web-spring-tests</module>
-		<module>sirius-web-spring</module>
 		<module>sirius-web-tests</module>
 		<module>sirius-web-trees</module>
 		<module>sirius-web-compatibility</module>
 		<module>sirius-web-emf</module>
 		<module>sirius-web-interpreter</module>
-		<module>sirius-web-persistence</module>
 		<module>sirius-web-domain</module>
 		<module>sirius-web-domain-edit</module>
 		<module>sirius-web-domain-design</module>
