@@ -30,6 +30,7 @@ import org.eclipse.sirius.web.forms.Textfield;
 import org.eclipse.sirius.web.forms.elements.CheckboxElementProps;
 import org.eclipse.sirius.web.forms.elements.FormElementProps;
 import org.eclipse.sirius.web.forms.elements.GroupElementProps;
+import org.eclipse.sirius.web.forms.elements.LinkElementProps;
 import org.eclipse.sirius.web.forms.elements.ListElementProps;
 import org.eclipse.sirius.web.forms.elements.MultiSelectElementProps;
 import org.eclipse.sirius.web.forms.elements.PageElementProps;
@@ -58,6 +59,8 @@ public class FormElementFactory implements IElementFactory {
             object = this.instantiateGroup((GroupElementProps) props, children);
         } else if (CheckboxElementProps.TYPE.equals(type) && props instanceof CheckboxElementProps) {
             object = this.instantiateCheckbox((CheckboxElementProps) props, children);
+        } else if (LinkElementProps.TYPE.equals(type) && props instanceof LinkElementProps) {
+            object = this.instantiateLink((LinkElementProps) props, children);
         } else if (ListElementProps.TYPE.equals(type) && props instanceof ListElementProps) {
             object = this.instantiateList((ListElementProps) props, children);
         } else if (RadioElementProps.TYPE.equals(type) && props instanceof RadioElementProps) {
@@ -128,6 +131,18 @@ public class FormElementFactory implements IElementFactory {
                 .label(props.getLabel())
                 .value(props.isValue())
                 .newValueHandler(props.getNewValueHandler())
+                .diagnostics(diagnostics)
+                .build();
+        // @formatter:on
+    }
+
+    private org.eclipse.sirius.web.forms.Link instantiateLink(LinkElementProps props, List<Object> children) {
+        List<Diagnostic> diagnostics = this.getDiagnosticsFromChildren(children);
+
+        // @formatter:off
+        return org.eclipse.sirius.web.forms.Link.newLink(props.getId())
+                .label(props.getLabel())
+                .url(props.getUrl())
                 .diagnostics(diagnostics)
                 .build();
         // @formatter:on

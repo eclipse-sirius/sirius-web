@@ -18,6 +18,7 @@ import org.eclipse.sirius.web.components.Element;
 import org.eclipse.sirius.web.components.IComponent;
 import org.eclipse.sirius.web.forms.description.AbstractWidgetDescription;
 import org.eclipse.sirius.web.forms.description.CheckboxDescription;
+import org.eclipse.sirius.web.forms.description.LinkDescription;
 import org.eclipse.sirius.web.forms.description.ListDescription;
 import org.eclipse.sirius.web.forms.description.MultiSelectDescription;
 import org.eclipse.sirius.web.forms.description.RadioDescription;
@@ -70,6 +71,9 @@ public class WidgetComponent implements IComponent {
         } else if (widgetDescription instanceof ListDescription) {
             ListComponentProps listProps = new ListComponentProps(variableManager, (ListDescription) widgetDescription);
             element = new Element(ListComponent.class, listProps);
+        } else if (widgetDescription instanceof LinkDescription) {
+            LinkComponentProps linkProps = new LinkComponentProps(variableManager, (LinkDescription) widgetDescription);
+            element = new Element(LinkComponent.class, linkProps);
         } else {
             String pattern = "Unsupported widget description: {}"; //$NON-NLS-1$
             this.logger.warn(pattern, widgetDescription.getClass().getSimpleName());
