@@ -97,6 +97,10 @@ export const formRefreshedEventPayloadFragment = gql`
                 imageURL
               }
             }
+            ... on Link {
+              label
+              url
+            }
           }
         }
       }

@@ -130,3 +130,9 @@ export interface GQLListItem {
   label: string;
   imageURL: string;
 }
+
+export interface GQLLink {
+  id: string;
+  label: string;
+  url: string;
+}

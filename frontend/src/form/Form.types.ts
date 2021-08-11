@@ -100,3 +100,8 @@ export interface ListItem {
   label: string;
   imageURL: string;
 }
+
+export interface Link extends Widget {
+  label: string;
+  url: string;
+}
