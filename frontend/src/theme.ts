@@ -10,9 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { createMuiTheme, responsiveFontSizes } from '@material-ui/core/styles';
+import { createTheme, responsiveFontSizes } from '@material-ui/core/styles';
 
-const fallbackTheme = createMuiTheme({
+const fallbackTheme = createTheme({
   typography: {
     h1: {
       fontSize: '4rem',
