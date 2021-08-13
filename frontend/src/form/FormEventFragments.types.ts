@@ -26,6 +26,14 @@ export interface GQLPropertiesEventPayload {
   __typename: string;
 }
 
+export interface GQLLinksEventSubscription {
+  linksEvent: GQLLinksEventPayload;
+}
+
+export interface GQLLinksEventPayload {
+  __typename: string;
+}
+
 export interface GQLSubscribersUpdatedEventPayload extends GQLFormEventPayload, GQLPropertiesEventPayload {
   id: string;
   subscribers: GQLSubscriber[];

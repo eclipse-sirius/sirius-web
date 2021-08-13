@@ -16,6 +16,8 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 import MuiAccordionSummary from '@material-ui/core/AccordionSummary';
 import MuiCollapse from '@material-ui/core/Collapse';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import { LinksWebSocketContainer } from 'properties/LinksWebSocketContainer';
 import { PropertiesWebSocketContainer } from 'properties/PropertiesWebSocketContainer';
 import React from 'react';
 import { RightSiteProps } from './RightSite.types';
@@ -76,12 +78,29 @@ const CustomCollapse = withStyles({
 export const RightSite = ({ editingContextId, selection, readOnly }: RightSiteProps) => {
   const classes = useSiteStyles();
 
+  const [propertiesExpanded, setPropertiesExpanded] = React.useState<boolean>(true);
+  const [externalLinksExpanded, setExternalLinksExpanded] = React.useState<boolean>(true);
+
   return (
     <div className={classes.site}>
-      <Accordion square expanded={true} TransitionComponent={CustomCollapse as any}>
-        <AccordionSummary>Details</AccordionSummary>
+      <Accordion
+        square
+        expanded={propertiesExpanded}
+        onChange={(event, isExpanded) => setPropertiesExpanded(isExpanded)}
+        TransitionComponent={CustomCollapse as any}>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>Details</AccordionSummary>
         <AccordionDetails className={classes.accordionDetailsRoot} data-testid={'Details AccordionDetails'}>
           <PropertiesWebSocketContainer editingContextId={editingContextId} selection={selection} readOnly={readOnly} />
+        </AccordionDetails>
+      </Accordion>
+      <Accordion
+        square
+        expanded={externalLinksExpanded}
+        onChange={(event, isExpanded) => setExternalLinksExpanded(isExpanded)}
+        TransitionComponent={CustomCollapse as any}>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>External Links</AccordionSummary>
+        <AccordionDetails className={classes.accordionDetailsRoot} data-testid={'External Links AccordionDetails'}>
+          <LinksWebSocketContainer editingContextId={editingContextId} selection={selection} />
         </AccordionDetails>
       </Accordion>
     </div>
