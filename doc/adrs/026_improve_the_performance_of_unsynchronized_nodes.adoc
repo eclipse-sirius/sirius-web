@@ -16,7 +16,7 @@ Today, our only choice is to provide the massive amount of semantic elements eve
 == Decision
 
 When a node is unsynchronized, we will change the variable available for its `semanticElementsProvider` to compute the semantic elements to consider.
-In this use cases, we will give the `semanticElementsProvider`, the list of the identifier of the semantic elements which exists in the diagram and the one which are currently being added to the diagram thanks to `ViewCreationRequests`.
+In this use cases, we will give the `semanticElementsProvider`, the list of the identifiers of the semantic elements which exists in the diagram and the one which are currently being added to the diagram thanks to `ViewCreationRequests`.
 For that, a new variable named `SEMANTIC_ELEMENT_IDS` will be added in the variable manager used specifically for the `semanticElementsProvider` with the list of identifiers of the relevant semantic elements.
 
 == Status

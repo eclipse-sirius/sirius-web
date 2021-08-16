@@ -10,7 +10,7 @@ For that, we will need to add a new concept, the `ViewDeletionRequest`.
 A new concept, named `ViewDeletionRequest` will be introduced in order to indicate that a specific node should be deleted from the next rendering without any impact on the semantic elements.
 It will have the following API:
 
-```
+```java
 @Immutable
 public final class ViewDeletionRequest {
 
@@ -39,7 +39,7 @@ In this method we will have to compare all the given `elementId` with the identi
 The props of the `NodeComponent` and the `DiagramComponent` will thus be updated to included the `viewDeletionRequests` to perform.
 The `IDiagramContext` will also need to be updated to include said `ViewDeletionRequest`.
 
-We may need to clean existing `ViewCreationRequest` and `ViewDeletionRequest` from the `DiagramContext` when the latter is reseted.
+We may need to clean existing `ViewCreationRequest` and `ViewDeletionRequest` from the `DiagramContext` when the latter is reset.
 
 == Status
 

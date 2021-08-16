@@ -41,7 +41,7 @@ An instance of `IRepresentationEventProcessorFactory` named `LinkEventProcessorF
 This class and its configuration will be responsible for the lifecycle of the representation.
 In our case, one instance should be available for the given selection just like the properties representation.
 
-A representation should be provided thanks to a, `ILinkDescriptionProvider` which should ask for a `FormDescription` just like the `IPropertiesDefaultDescriptionProvider`.
+A representation should be provided thanks to a `ILinkDescriptionProvider` which should ask for a `FormDescription` just like the `IPropertiesDefaultDescriptionProvider`.
 An implementation of this interface will be provided by the application which will integrate Sirius Components like Sirius Web for example.
 The description provided by this interface should in theory only contain links.
 In order to layout those links and provide some additional information, those links may be organized in various groups.
