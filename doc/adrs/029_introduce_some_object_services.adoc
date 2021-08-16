@@ -43,11 +43,11 @@ We will support the following return type for our queries:
 We will support any query language in the GraphQL API but we may provide only support for AQL in the implementation of this API.
 We will add the ability to perform queries on the editing context starting with or without a specific object (i.e. self in Sirius expressions).
 
-As such, we will add the following fields to the GraphQL API of the `EditingContext` and `Object`:
+As such, we will add the following fields to the GraphQL API of the `EditingContext` and `Object` types:
 
 - `queryBasedString`
 - `queryBasedBoolean`
-- `queryBasedIn`
+- `queryBasedInt`
 - `queryBasedObject`
 - `queryBasedObjects`
 

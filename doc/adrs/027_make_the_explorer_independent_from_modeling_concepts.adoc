@@ -24,7 +24,7 @@ When available, the frontend will provide support for the deletion and renaming 
 It will also call some generic mutation such as `Mutation#deleteTreeItem` and `Mutation#renameTreeItem` to perform the action.
 Sirius Components does not define what should appear in the explorer and the project integrating Sirius Components will have to handle the deletion and renaming of the concept behind the tree item.
 
-As such, Sirius Web will have to include both a `DeleteTreeItemEventHandler to handle the deletion of the requested tree item and and `RenameTreeItemEventHandler` for the renaming.
+As such, Sirius Web will have to include both a `DeleteTreeItemEventHandler` to handle the deletion of the requested tree item and a `RenameTreeItemEventHandler` for the renaming.
 It should then delegate to the renaming or deletion of a document, representation or even an object to the relevant service but that's an internal concern of Sirius Web.
 
 === Support of specific actions such as child creation and download
@@ -38,7 +38,7 @@ The creation of a new child may require specific information, for example:
 Those various use cases may require interaction with a server and some custom user interface.
 The same concerns are relevant to support downloading documents today (custom user interface + custom endpoint).
 
-In order to support those use cases, we will need to have the ability to contribute custom entries in the context menus of the TreeItem.
+In order to support those use cases, we will need to have the ability to contribute custom entries in the context menus of the `TreeItem`.
 In a similar fashion as the ability to contribute additional representations, the Sirius Components frontend API will provide the ability to add entries in the context menu.
 Several examples will be provided by Sirius Web:
 
@@ -71,6 +71,6 @@ WIP
 == Consequences
 
 Other product which are integrating the Sirius Components workbench will have the liberty to define the logical structure of their explorer.
-They will also have the responsability of defining the actions that should be available on its tree items.
+They will also have the responsibility of defining the actions that should be available on its tree items.
 
-It will be possible for others to contribute actions on specific tree items to trigger behavior such as refactoring actions, specific export behavior, etc.
+It will be possible for others to contribute actions on specific tree items to trigger behaviors such as refactoring actions, specific export behavior, etc.
