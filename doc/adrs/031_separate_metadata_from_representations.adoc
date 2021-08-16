@@ -1,0 +1,148 @@
+= ADR-031 - Separate metadata representations
+
+== Context
+
+Our representations contain two types of information, some of them are related to the content of the representation and other to its identity.
+When we are manipulating representations, for example to display them in the explorer, we need to manipulate properties related to their identity.
+When we are refreshing a representation, we are mostly updating properties related to its content.
+
+We will split those two set of properties into different objects.
+
+
+== Decision
+
+=== GraphQL API change
+
+The representation metadata will also appear in the GraphQL schema used by Sirius Components in order to be able to request only identity properties for a representation.
+For that, we will introduce a new type named `RepresentationMetadata` with the following content in the schema:
+
+```
+type RepresentationMetadata {
+  id: ID!
+  description: RepresentationDescription!
+  label: String!
+  kind: String!
+}
+```
+
+The field kind will be used to identify the type of the representation (Diagram, Tree, Form, etc).
+We won't have a representation specific metadata object so we will use this field to distinguish each representation.
+
+Everytime a GraphQL API field is used to retrieve a representation (except in the subscription with the various refresh event payload), we will provide the metadata instead.
+As a result, the following fields will be modified:
+
+- EditingContext#representation
+- EditingContext#representations
+
+It will also impact fields such as:
+
+- CreateRepresentationSuccessPayload#representation
+- DeleteFromDiagramSuccessPayload#diagram
+- EditLabelSuccessPayload#diagram
+- InvokeNodeToolOnDiagramSuccessPayload#diagram
+- InvokeEdgeToolOnDiagramSuccessPayload#diagram
+
+Most of those fields are not very useful and they may be removed altogether from the GraphQL API.
+This change does not require any change in our Java data structure, it will just make it impossible with GraphQL to retrieve the content of a representation outside of its subscription.
+
+
+=== Moving static information to the representation description
+
+Representations will have three source of information:
+
+- Their description with `RepresentationDescription`
+- Their metadata with `RepresentationMetadata`
+- Their content with `Representation`
+
+Today, we only have `RepresentationDescription` and `Representation` and in order to retrieve the tools of a diagram, you have to load and parse the whole diagram from your database. Computing the tools of the diagram does not involve in any way the content of the diagram today so by moving this field from Diagram to DiagramMetadata we could stop having to load a diagram three times while opening the EditProjectView:
+
+- One time to find the type of the representation
+- One time to load the tools
+- One time to load the diagram for the subscription
+
+The first loading will be removed by returning a `RepresentationMetadata` from `EditingContext#representation` and the second one could be removed too using the same improvement.
+
+By keeping `toolSections` on `Diagram`, we would need to either return the tool sections with each update of the diagram which would introduce a change in the lifecycle of the tools on the frontend and the backend and it will increase needlessly the bandwidth required to support tools.
+Since tools are fixed (as of today), they can be computed once for the diagram.
+
+In fact, if we went a step further, the existence of `toolSections` is the only reason motivating the fact that `RepresentationMetadata` should be an interface (and thus the lack of kind field) since it needs to be extended in order to add such fields.
+Since tools are static, we could even move `toolSections` on `DiagramDescription` and have something like this instead on the frontend:
+
+```
+getRepresentation {
+  viewer {
+    project(projectId: "") {
+      currentEditingContext {
+        representation(representationId: "") {
+          id
+          label
+          description {
+            __typename
+            ... on DiagramDescription {
+              toolSections {
+                tools {
+                  id
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+This way we could retrieve the metadata of the currently selected representation and, if it's a diagram, its tool sections too.
+
+
+=== Limiting the ability to retrieve the content of a representation to the subscription
+
+Currently, the only way we are really using the representation content is thanks to the subscription.
+So right now, I would gladly add a field `Representation#metadata: RepresentationMetadata` but since we do not need the representation anywhere else, I would be opposed to adding a field like `RepresentationMetadata#content: Representation` since it would open a powerful API that I would like to contain for now.
+
+Technically resolving `RepresentationMetadata#content: Representation` should require us to load the representation but should we retrieve it from the datastore or from the `RepresentationEventProcessor`?
+Should we load the whole `EditingContext` if the representation is not opened right now?
+There are solutions to those questions but they come with serious tradeoffs so we would need to make a real choice which is not needed right now.
+
+
+=== Representation change
+
+We will introduce a new concept named `IRepresentationMetadata` which will contain identity-related properties while the `IRepresentation` will keep the content.
+We will remove those properties from the various representations to move them to `IRepresentationMetada`:
+
+- id
+- descriptionId
+- label
+- kind
+
+We will also introduce the concept of `ISemanticRepresentationMetadata` in a similar fashion as the `ISemanticRepresentation` with the following properties:
+
+- targetObjectId
+
+The representations and their descriptions will be updated to remove those fields, which will include changes to:
+
+- Diagram
+- Tree
+- Selection
+- Form
+- Validation
+
+The various renderer will not have to handle those properties anymore.
+We will also be able to delete the `GetOrCreateRandomIdProvider` since we won't need those kind of behavior to keep a stable identifier.
+We will have the ability to remove `DiagramDescription.LABEL` too.
+
+To retrieve said representation metadata if we need it which is not sure in Sirius Components, we will probably add an `IRepresentationMetadataSearchService`.
+Implementation of the IRepresentationMetadata will be left to the description of the server using Sirius Component.
+The kind will be used to define the type of the representation metadata in the GraphQL API.
+This field will not appear in the GraphQL API.
+There won't be any DiagramMetadata or FormMetadata Java class in Sirius Components.
+
+== Status
+
+WIP
+
+== Consequences
+
+In Sirius Web, the RepresentationDescriptor will be able to implements `IRepresentationMetadata`.
+It will provide an improvement to the current situation by allowing us to store only once the identity-related properties.
