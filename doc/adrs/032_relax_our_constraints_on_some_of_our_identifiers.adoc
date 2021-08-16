@@ -1,0 +1,34 @@
+= ADR-032 - Relax our constraints on some of our identifiers
+
+== Context
+
+Some parts of our identification policy is a bit too strict to easily integrate Sirius Components in other projects.
+By using UUID, we are forcing every project integrating Sirius Components to use an opaque identifier.
+While this is not an issue by itself, it prevents the ability to derive contextual information from the identifier itself.
+
+Some projects would thus need us to provide additional information at multiple locations in order to provide an alternate strategy to handle the lifecycle of our concepts.
+As a concrete example, for some projects, it is not possible to manipulate representation with only their identifier and thus without the identifier of the editing context.
+
+In order to solve this issue, we will relax our constraints on some of our identifiers to let other projects create complex identifiers which can embed additional information just like primary keys made of multiple columns in a PostgreSQL database.
+
+== Decision
+
+The following identifier will change their type from an `UUID` to a `String` and we will not make any hypothesis regarding the content of those identifiers in Sirius Components:
+
+- `org.eclipse.sirius.web.representations.IRepresentation.getId()`
+- `org.eclipse.sirius.web.representations.IRepresentationDescription.getId()`
+- `org.eclipse.sirius.web.core.api.IEditingContext.getId()`
+
+This change should be propagated to all the other places where those identifiers are manipulated such as `DiagramConfiguration.getId()`, `FormEventProcessor.formId` or even `InvokeNodeToolOnDiagramInput.representationId`.
+Those changes should not impact in any way the frontend of Sirius Components.
+
+== Status
+
+WIP
+
+== Consequences
+
+Projects consuming Sirius Components such as Sirius Web will need to be updated in order to explicitely decide what they will use as identifiers.
+Entities in Sirius Web will still use UUID and the transformation from UUID to Strings will be made by Sirius Web code.
+For the moment, we recommend keeping UUID saved as Strings just like in Sirius Web since it is our nominal use case.
+Only advanced projects with complex needs should try to setup their own complex identifiers.
