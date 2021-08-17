@@ -139,7 +139,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
     }
 
     private void publishEvent(IInput input, Optional<IPayload> optionalPayload) {
-        if (optionalPayload.isPresent()) {
+        if (optionalPayload.isPresent() && this.sink.currentSubscriberCount() > 0) {
             IPayload payload = optionalPayload.get();
             if (input instanceof RenameRepresentationInput && payload instanceof RenameRepresentationSuccessPayload) {
                 UUID representationId = ((RenameRepresentationInput) input).getRepresentationId();
