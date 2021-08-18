@@ -47,7 +47,9 @@ public class GeneralPurposeTests {
 
     private static final String FRONTEND_SRC_FOLDER_PATH = "frontend/src"; //$NON-NLS-1$
 
-    private static final String JAVASCRIPT_FILE_EXTENSION = "js"; //$NON-NLS-1$
+    private static final String TYPESCRIPT_FILE_EXTENSION = "ts"; //$NON-NLS-1$
+
+    private static final String TYPESCRIPT_JSX_FILE_EXTENSION = "tsx"; //$NON-NLS-1$
 
     private static final String CSS_FILE_EXTENSION = "css"; //$NON-NLS-1$
 
@@ -166,10 +168,18 @@ public class GeneralPurposeTests {
     }
 
     private void testCopyrightHeader(Path filePath, List<String> lines) {
-        assertTrue(lines.size() >= COPYRIGHT_HEADER.size());
-        for (int i = 0; i < COPYRIGHT_HEADER.size(); i++) {
-            assertThat("Invalid copyright header in " + filePath, lines.get(i), matchesPattern(COPYRIGHT_HEADER.get(i))); //$NON-NLS-1$
+        if (!this.isWhiteListed(filePath)) {
+            assertTrue(lines.size() >= COPYRIGHT_HEADER.size());
+            for (int i = 0; i < COPYRIGHT_HEADER.size(); i++) {
+                assertThat("Invalid copyright header in " + filePath, lines.get(i), matchesPattern(COPYRIGHT_HEADER.get(i))); //$NON-NLS-1$
+            }
         }
+    }
+
+    private boolean isWhiteListed(Path filePath) {
+        // @formatter:off
+        return filePath.toString().contains("src/icons"); //$NON-NLS-1$
+        // @formatter:on
     }
 
     private void testNoSuppressWarnings(int index, String line, Path javaFilePath, List<String> lines) {
@@ -201,16 +211,12 @@ public class GeneralPurposeTests {
     public void checkJavaScriptCode() {
         File rootFolder = this.getRootFolder();
         Path frontendFolderPath = Paths.get(rootFolder.getAbsolutePath(), FRONTEND_SRC_FOLDER_PATH);
-        List<Path> javascriptFilePaths = this.findFilePaths(frontendFolderPath, JAVASCRIPT_FILE_EXTENSION);
-
-        // Path integrationTestsFolderPath = Paths.get(rootFolder.getAbsolutePath(),
-        // INTEGRATION_TESTS_CYPRESS_FOLDER_PATH);
-        // List<Path> javascriptIntegrationTestFilePaths = this.findFilePaths(integrationTestsFolderPath,
-        // JAVASCRIPT_FILE_EXTENSION);
+        List<Path> typescriptFilePaths = this.findFilePaths(frontendFolderPath, TYPESCRIPT_FILE_EXTENSION);
+        List<Path> typescriptJsxFilePaths = this.findFilePaths(frontendFolderPath, TYPESCRIPT_JSX_FILE_EXTENSION);
 
         List<Path> filePaths = new ArrayList<>();
-        filePaths.addAll(javascriptFilePaths);
-        // filePaths.addAll(javascriptIntegrationTestFilePaths);
+        filePaths.addAll(typescriptFilePaths);
+        filePaths.addAll(typescriptJsxFilePaths);
 
         for (Path javascriptFilePath : filePaths) {
             try {
