@@ -108,9 +108,8 @@ const isErrorPayload = (payload: GQLCreateRepresentationPayload): payload is GQL
 
 export const NewRepresentationModal = ({
   editingContextId,
-  classId,
-  objectId,
-  onRepresentationCreated,
+  item,
+  setSelection,
   onClose,
 }: NewRepresentationModalProps) => {
   const classes = useNewRepresentationModalStyles();
@@ -136,7 +135,7 @@ export const NewRepresentationModal = ({
     error: representationDescriptionsError,
   } = useQuery<GQLGetRepresentationDescriptionsQueryData, GQLGetRepresentationDescriptionsQueryVariables>(
     getRepresentationDescriptionsQuery,
-    { variables: { editingContextId, classId } }
+    { variables: { editingContextId, classId: item.kind } }
   );
 
   useEffect(() => {
@@ -205,7 +204,7 @@ export const NewRepresentationModal = ({
     const input = {
       id: uuid(),
       editingContextId,
-      objectId,
+      objectId: item.id,
       representationDescriptionId: selectedRepresentationDescriptionId,
       representationName: name,
     };
@@ -215,7 +214,7 @@ export const NewRepresentationModal = ({
 
   useEffect(() => {
     if (newRepresentationModal === 'success') {
-      onRepresentationCreated({
+      setSelection({
         id: createdRepresentationId,
         label: createdRepresentationLabel,
         kind: createdRepresentationKind,
@@ -226,7 +225,7 @@ export const NewRepresentationModal = ({
     createdRepresentationKind,
     createdRepresentationLabel,
     newRepresentationModal,
-    onRepresentationCreated,
+    setSelection,
   ]);
 
   return (

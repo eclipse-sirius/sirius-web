@@ -28,6 +28,7 @@ export interface TreeItemType {
   kind: string;
   imageURL: string;
   editable: boolean;
+  deletable: boolean;
   expanded: boolean;
   hasChildren: boolean;
   children: TreeItemType[];

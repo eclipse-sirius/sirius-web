@@ -39,6 +39,7 @@ fragment treeItemFields on TreeItem {
   expanded
   label
   editable
+  deletable
   kind
   imageURL
 }

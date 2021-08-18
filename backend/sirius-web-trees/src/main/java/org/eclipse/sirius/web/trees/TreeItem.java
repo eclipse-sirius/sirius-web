@@ -36,9 +36,11 @@ public final class TreeItem {
 
     private String label;
 
+    private String imageURL;
+
     private boolean editable;
 
-    private String imageURL;
+    private boolean deletable;
 
     private boolean hasChildren;
 
@@ -77,6 +79,12 @@ public final class TreeItem {
 
     @GraphQLField
     @GraphQLNonNull
+    public boolean isDeletable() {
+        return this.deletable;
+    }
+
+    @GraphQLField
+    @GraphQLNonNull
     public String getImageURL() {
         return this.imageURL;
     }
@@ -105,8 +113,9 @@ public final class TreeItem {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, kind: {2}, label: {3}, editable: {4}, imageURL: {5}, hasChildren: {6}, expanded: {7}, childCount: {8}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.kind, this.label, this.editable, this.imageURL, this.hasChildren, this.expanded, this.children.size());
+        String pattern = "{0} '{'id: {1}, kind: {2}, label: {3}, editable: {4}, deletable: {5}, imageURL: {6}, hasChildren: {7}, expanded: {8}, childCount: {9}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.kind, this.label, this.editable, this.deletable, this.imageURL, this.hasChildren, this.expanded,
+                this.children.size());
     }
 
     /**
@@ -122,9 +131,11 @@ public final class TreeItem {
 
         private String label;
 
+        private String imageURL;
+
         private boolean editable;
 
-        private String imageURL;
+        private boolean deletable;
 
         private boolean hasChildren;
 
@@ -146,13 +157,18 @@ public final class TreeItem {
             return this;
         }
 
+        public Builder imageURL(String imageURL) {
+            this.imageURL = Objects.requireNonNull(imageURL);
+            return this;
+        }
+
         public Builder editable(boolean editable) {
             this.editable = Objects.requireNonNull(editable);
             return this;
         }
 
-        public Builder imageURL(String imageURL) {
-            this.imageURL = Objects.requireNonNull(imageURL);
+        public Builder deletable(boolean deletable) {
+            this.deletable = Objects.requireNonNull(deletable);
             return this;
         }
 
@@ -176,8 +192,9 @@ public final class TreeItem {
             treeItem.id = Objects.requireNonNull(this.id);
             treeItem.kind = Objects.requireNonNull(this.kind);
             treeItem.label = Objects.requireNonNull(this.label);
-            treeItem.editable = Objects.requireNonNull(this.editable);
             treeItem.imageURL = Objects.requireNonNull(this.imageURL);
+            treeItem.editable = Objects.requireNonNull(this.editable);
+            treeItem.deletable = Objects.requireNonNull(this.deletable);
             treeItem.expanded = Objects.requireNonNull(this.expanded);
             treeItem.hasChildren = Objects.requireNonNull(this.hasChildren);
             treeItem.children = Objects.requireNonNull(this.children);

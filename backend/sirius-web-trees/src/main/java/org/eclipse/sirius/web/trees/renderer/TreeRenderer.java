@@ -68,6 +68,7 @@ public class TreeRenderer {
         String kind = this.treeDescription.getKindProvider().apply(treeItemVariableManager);
         String label = this.treeDescription.getLabelProvider().apply(treeItemVariableManager);
         boolean editable = this.treeDescription.getEditableProvider().apply(treeItemVariableManager);
+        boolean deletable = this.treeDescription.getDeletableProvider().apply(treeItemVariableManager);
         String imageURL = this.treeDescription.getImageURLProvider().apply(treeItemVariableManager);
         Boolean hasChildren = this.treeDescription.getHasChildrenProvider().apply(treeItemVariableManager);
 
@@ -84,6 +85,7 @@ public class TreeRenderer {
                 .kind(kind)
                 .label(label)
                 .editable(editable)
+                .deletable(deletable)
                 .imageURL(imageURL)
                 .children(childrenTreeItems)
                 .hasChildren(hasChildren)
