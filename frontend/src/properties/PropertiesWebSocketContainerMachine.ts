@@ -228,7 +228,7 @@ export const propertiesWebSocketContainerMachine = Machine<
       },
       isSelectionUnsupported: (_, event) => {
         const { selection, isRepresentation } = event as SwitchSelectionEvent;
-        return !selection || isRepresentation || selection.kind === 'Unknown' || selection.kind === 'Document';
+        return !selection || isRepresentation || selection.kind === 'Unknown' || selection.kind === 'Model';
       },
     },
     actions: {

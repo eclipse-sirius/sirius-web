@@ -92,13 +92,7 @@ const useNewObjectModalStyles = makeStyles((theme) => ({
 const isErrorPayload = (payload: GQLCreateChildPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
 
-export const NewObjectModal = ({
-  editingContextId,
-  classId,
-  objectId,
-  onObjectCreated,
-  onClose,
-}: NewObjectModalProps) => {
+export const NewObjectModal = ({ editingContextId, item, setSelection, onClose }: NewObjectModalProps) => {
   const classes = useNewObjectModalStyles();
   const [{ value, context }, dispatch] = useMachine<NewObjectModalContext, NewObjectModalEvent>(newObjectModalMachine);
   const { newObjectModal, toast } = value as SchemaValue;
@@ -110,7 +104,7 @@ export const NewObjectModal = ({
     error: childCreationDescriptionsError,
   } = useQuery<GQLGetChildCreationDescriptionsQueryData, GQLGetChildCreationDescriptionsQueryVariables>(
     getChildCreationDescriptionsQuery,
-    { variables: { editingContextId, classId } }
+    { variables: { editingContextId, classId: item.kind } }
   );
   useEffect(() => {
     if (!childCreationDescriptionsLoading) {
@@ -170,7 +164,7 @@ export const NewObjectModal = ({
     const input = {
       id: uuid(),
       editingContextId,
-      objectId,
+      objectId: item.id,
       childCreationDescriptionId: selectedChildCreationDescriptionId,
     };
     createChild({ variables: { input } });
@@ -178,9 +172,9 @@ export const NewObjectModal = ({
 
   useEffect(() => {
     if (newObjectModal === 'success') {
-      onObjectCreated(objectToSelect);
+      setSelection(objectToSelect);
     }
-  }, [newObjectModal, onObjectCreated, objectToSelect]);
+  }, [newObjectModal, setSelection, objectToSelect]);
 
   return (
     <>

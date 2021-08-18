@@ -12,9 +12,8 @@
  *******************************************************************************/
 export interface NewRepresentationModalProps {
   editingContextId: string;
-  classId: string;
-  objectId: string;
-  onRepresentationCreated: (representation: { id: string; label: string; kind: string }) => void;
+  item: any;
+  setSelection: (representation: { id: string; label: string; kind: string }) => void;
   onClose: () => void;
 }
 

@@ -29,6 +29,7 @@ type TreeItem {
   kind: String!
   imageURL: String!
   editable: Boolean!
+  deletable: Boolean!
   expanded: Boolean!
   hasChildren: Boolean!
   children: [TreeItem]!
@@ -38,3 +39,35 @@ type TreeDescription implements RepresentationDescription {
   id: ID!
   label: String!
 }
+
+extend type Mutation {
+  deleteTreeItem(input: DeleteTreeItemInput!): DeleteTreeItemPayload 
+  renameTreeItem(input: RenameTreeItemInput!): RenameTreeItemPayload
+}
+
+input DeleteTreeItemInput {
+  id: ID!
+  editingContextId: ID!
+  treeItemId: ID!
+  kind: String!
+}
+
+type DeleteTreeItemSuccessPayload {
+  id: ID!
+}
+
+union DeleteTreeItemPayload = DeleteTreeItemSuccessPayload | ErrorPayload 
+
+input RenameTreeItemInput {
+    id: ID!
+    editingContextId: ID!
+    treeItemId: ID!
+    kind: String!
+    newName: String!
+}
+ 
+type RenameTreeItemSuccessPayload {
+  id: ID!
+}
+
+union RenameTreeItemPayload = RenameTreeItemSuccessPayload | ErrorPayload

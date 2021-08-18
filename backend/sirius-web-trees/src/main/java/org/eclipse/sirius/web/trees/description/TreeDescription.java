@@ -47,9 +47,11 @@ public final class TreeDescription implements IRepresentationDescription {
 
     private Function<VariableManager, String> labelProvider;
 
+    private Function<VariableManager, String> imageURLProvider;
+
     private Function<VariableManager, Boolean> editableProvider;
 
-    private Function<VariableManager, String> imageURLProvider;
+    private Function<VariableManager, Boolean> deletableProvider;
 
     private Function<VariableManager, List<Object>> elementsProvider;
 
@@ -94,12 +96,16 @@ public final class TreeDescription implements IRepresentationDescription {
         return this.labelProvider;
     }
 
+    public Function<VariableManager, String> getImageURLProvider() {
+        return this.imageURLProvider;
+    }
+
     public Function<VariableManager, Boolean> getEditableProvider() {
         return this.editableProvider;
     }
 
-    public Function<VariableManager, String> getImageURLProvider() {
-        return this.imageURLProvider;
+    public Function<VariableManager, Boolean> getDeletableProvider() {
+        return this.deletableProvider;
     }
 
     public Function<VariableManager, List<Object>> getElementsProvider() {
@@ -148,9 +154,11 @@ public final class TreeDescription implements IRepresentationDescription {
 
         private Function<VariableManager, String> labelProvider;
 
+        private Function<VariableManager, String> imageURLProvider;
+
         private Function<VariableManager, Boolean> editableProvider;
 
-        private Function<VariableManager, String> imageURLProvider;
+        private Function<VariableManager, Boolean> deletableProvider;
 
         private Function<VariableManager, List<Object>> elementsProvider;
 
@@ -189,13 +197,18 @@ public final class TreeDescription implements IRepresentationDescription {
             return this;
         }
 
+        public Builder imageURLProvider(Function<VariableManager, String> imageURLProvider) {
+            this.imageURLProvider = Objects.requireNonNull(imageURLProvider);
+            return this;
+        }
+
         public Builder editableProvider(Function<VariableManager, Boolean> editableProvider) {
             this.editableProvider = Objects.requireNonNull(editableProvider);
             return this;
         }
 
-        public Builder imageURLProvider(Function<VariableManager, String> imageURLProvider) {
-            this.imageURLProvider = Objects.requireNonNull(imageURLProvider);
+        public Builder deletableProvider(Function<VariableManager, Boolean> deletableProvider) {
+            this.deletableProvider = Objects.requireNonNull(deletableProvider);
             return this;
         }
 
@@ -227,8 +240,9 @@ public final class TreeDescription implements IRepresentationDescription {
             treeDescription.treeItemIdProvider = Objects.requireNonNull(this.treeItemIdProvider);
             treeDescription.kindProvider = Objects.requireNonNull(this.kindProvider);
             treeDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
-            treeDescription.editableProvider = Objects.requireNonNull(this.editableProvider);
             treeDescription.imageURLProvider = Objects.requireNonNull(this.imageURLProvider);
+            treeDescription.editableProvider = Objects.requireNonNull(this.editableProvider);
+            treeDescription.deletableProvider = Objects.requireNonNull(this.deletableProvider);
             treeDescription.elementsProvider = Objects.requireNonNull(this.elementsProvider);
             treeDescription.childrenProvider = Objects.requireNonNull(this.childrenProvider);
             treeDescription.hasChildrenProvider = Objects.requireNonNull(this.hasChildrenProvider);

@@ -1,0 +1,62 @@
+= ADR-XXX - Adopt more structured tree item kinds
+
+== Context
+
+Our model explorer, and more generally our tree-based representations are made of _tree items_.
+These items can represent elements of different natures, which need to be handled in specific ways: semantic elements, documents, representations, or others.
+This "nature" is encoded in the `TreeItem.kind` field, which is a string.
+Currently every part of the code which has to deal with these items must be aware of what kind of items can occur and the corresponding format of the `TreeItem.kind` field:
+* `Document` represents a top-level element (mapped into an EMF `Resource`);
+* `Diagram` or `Form` indicate a representation (which will be removed from the explorer soon anyway);
+* anything else is assumed to represent a semantic element and to be in the format `domain::Type`.
+
+As part of https://github.com/eclipse-sirius/sirius-components/issues/692[issue #692] we want to make the explorer implementation more generic, so it can no longer have hard-coded knowledge of the ad-hoc values and format we currently use for `TreeItem.kind`.
+We need a well-defined format for this field which will scale as more kinds of tree items are added, including by Sirius Components extensions/applications which do not know about each others (without creating conflicts).
+
+== Decision
+
+We will standardise on a more structured and extensible format for item kinds, which will be _extensible_ with their own types by Sirius Component-based applications and be more structured/parseable.
+The syntax is inspired by URIs (which makes them parseable with standard APIs):
+
+[]
+----
+source://type?attribute1=value1&attribute2=value2
+----
+
+Where:
+* `source` is a unique identifier of the application which defines this particular kind of items. The source value `sirius` is reserved for item kinds defined in Sirius Web (or Sirius Components) itself.
+* `type` indicates what type of element is represented by the item. For example, `document`.
+* additional key/value pairs can be added as needed to provide more details depending on the type of element.
+
+With this syntax, the existing tree item kinds would become:
+
+[Attributes]
+|===
+|Previous syntax | New syntax
+
+|`Document`
+|`sirius://document`
+
+|`Diagram`
+|`sirius://representation?type=diagram`
+
+|`Form`
+|`sirius://representation?type=form`
+
+|`flow::System`
+|`sirius://semantic?domain=flow&type=System`
+
+|===
+
+A Sirius-based application which provides its own kind of items unknown to Sirius itself will use its own prefix.
+For example: `myapp://user?accessLevel=admin`, `otherapp://requirement?priority=1`.
+
+Sirius-based applications which contribute new kind of representations *MUST* use the `sirius://representation` kind, with their of custom value for `type`.
+
+== Status
+
+Draft.
+
+== Consequences
+
+We need to update all the existing code (both on the frontend and backend) which uses the previous syntax to match the new one.

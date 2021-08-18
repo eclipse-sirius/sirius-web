@@ -42,6 +42,7 @@ const getDocumentSubscription = gql`
     expanded
     label
     editable
+    deletable
     kind
     imageURL
   }
