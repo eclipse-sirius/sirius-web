@@ -13,7 +13,6 @@
 package org.eclipse.sirius.web.core.api;
 
 import java.text.MessageFormat;
-import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -33,18 +32,9 @@ public final class ErrorPayload implements IPayload {
 
     private final String message;
 
-    private final List<String> additionalMessages;
-
     public ErrorPayload(UUID id, String message) {
         this.id = Objects.requireNonNull(id);
         this.message = Objects.requireNonNull(message);
-        this.additionalMessages = List.of();
-    }
-
-    public ErrorPayload(UUID id, String message, List<String> additionalMessages) {
-        this.id = Objects.requireNonNull(id);
-        this.message = Objects.requireNonNull(message);
-        this.additionalMessages = List.copyOf(Objects.requireNonNull(additionalMessages));
     }
 
     @Override
@@ -59,12 +49,6 @@ public final class ErrorPayload implements IPayload {
     @GraphQLNonNull
     public String getMessage() {
         return this.message;
-    }
-
-    @GraphQLField
-    @GraphQLNonNull
-    public List<@GraphQLNonNull String> getAdditionalMessages() {
-        return this.additionalMessages;
     }
 
     @Override
