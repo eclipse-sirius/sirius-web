@@ -120,7 +120,7 @@ export const textfieldPropertySectionMachine = Machine<
           // Similar issue as in EEFLifecycleManager, some update is coming from the server
           // while we have started to enter some content locally. We are choosing here to drop
           // the content entered locally but we will still log it.
-          console.log(`The following content has been lost "${previousValue}"`);
+          console.trace(`The following content has been lost "${previousValue}"`);
         }
 
         return { value };

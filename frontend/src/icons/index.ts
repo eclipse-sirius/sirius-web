@@ -22,5 +22,3 @@ export * from './NewDocument';
 export * from './NewRepresentation';
 export * from './NoIcon';
 export * from './SiriusIcon';
-export * from './Success';
-export * from './Warning';
