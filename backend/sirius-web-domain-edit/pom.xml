@@ -40,10 +40,6 @@
 			<id>github-sirius-emfjson</id>
 			<url>https://maven.pkg.github.com/eclipse-sirius/sirius-emf-json</url>
 		</repository>
-		<repository>
-			<id>github-flow</id>
-			<url>https://maven.pkg.github.com/ObeoNetwork/Flow-Designer</url>
-		</repository>
 	</repositories>
 
 	<distributionManagement>
