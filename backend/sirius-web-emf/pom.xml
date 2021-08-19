@@ -40,10 +40,6 @@
 			<id>github-sirius-emfjson</id>
 			<url>https://maven.pkg.github.com/eclipse-sirius/sirius-emf-json</url>
 		</repository>
-		<repository>
-			<id>github-flow</id>
-			<url>https://maven.pkg.github.com/ObeoNetwork/Flow-Designer</url>
-		</repository>
 	</repositories>
 
 	<distributionManagement>
@@ -166,18 +162,6 @@
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-spring-tests</artifactId>
 			<version>0.4.3</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius.web</groupId>
-			<artifactId>sirius-web-spring-collaborative</artifactId>
-			<version>0.4.3</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>fr.obeo.dsl.designer.sample.flow</groupId>
-			<artifactId>fr.obeo.dsl.designer.sample.flow</artifactId>
-			<version>1.0.7-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

@@ -178,7 +178,7 @@ public class GeneralPurposeTests {
 
     private boolean isWhiteListed(Path filePath) {
         // @formatter:off
-        return filePath.toString().contains("src/icons"); //$NON-NLS-1$
+        return filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("src/icons"); //$NON-NLS-1$
         // @formatter:on
     }
 
