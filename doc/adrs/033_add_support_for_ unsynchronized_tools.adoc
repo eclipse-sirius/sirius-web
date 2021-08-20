@@ -1,0 +1,24 @@
+= ADR-033 - Add support for unsynchronized tools
+
+== Context
+
+We want to provide the graphical selection to the tools of the diagram.
+Indeed, an unsynchronized tool will use the graphical selection to implement its behavior.
+
+== Decision
+
+We will only support node selection and single selection for the moment.
+
+=== Execution
+
+The `InvokeNodeToolOnDiagramEventHandler`, `DeleteFromDiagramEventHandler` and a future `DropOnDiagramEventHandler` will add the current node selection to the variable manager.
+A new variable named `selectedNode` will be available in the variable manager for this purpose.
+If the variable is not available, the tool should consider that the selection is the diagram itself.
+
+== Status
+
+Accepted
+
+== Consequences
+
+We will have to update our Sirius RCP compatibility layer after that to leverage the information from the odesign.

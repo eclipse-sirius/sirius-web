@@ -134,6 +134,9 @@ public class InvokeNodeToolOnDiagramEventHandler implements IDiagramEventHandler
                 if (selectionDescriptionOpt.isPresent() && selectedObjectOpt.isPresent()) {
                     variableManager.put(CreateNodeTool.SELECTED_OBJECT, selectedObjectOpt.get());
                 }
+                if (node.isPresent()) {
+                    variableManager.put(Node.SELECTED_NODE, node.get());
+                }
             }
 
             if (selectionDescriptionId == null || selectedObjectId != null) {
