@@ -33,6 +33,9 @@ import org.eclipse.sirius.web.annotations.graphql.GraphQLObjectType;
 @Immutable
 @GraphQLObjectType
 public final class Node {
+
+    public static final String SELECTED_NODE = "selectedNode"; //$NON-NLS-1$
+
     private UUID id;
 
     private String type;
