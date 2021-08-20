@@ -94,7 +94,9 @@ export const formRefreshedEventPayloadFragment = gql`
               items {
                 id
                 label
+                kind
                 imageURL
+                deletable
               }
             }
           }

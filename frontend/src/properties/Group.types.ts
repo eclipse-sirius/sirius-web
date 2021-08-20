@@ -11,11 +11,13 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Group, WidgetSubscription } from 'form/Form.types';
+import { Selection } from 'workbench/Workbench.types';
 
 export interface GroupProps {
   editingContextId: string;
   formId: string;
   group: Group;
   widgetSubscriptions: WidgetSubscription[];
+  setSelection: (selection: Selection) => void;
   readOnly: boolean;
 }

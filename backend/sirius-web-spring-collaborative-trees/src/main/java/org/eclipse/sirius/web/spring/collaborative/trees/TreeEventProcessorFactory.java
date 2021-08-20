@@ -20,6 +20,7 @@ import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationConfiguration;
 import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationEventProcessor;
 import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationEventProcessorFactory;
+import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationRefreshPolicyRegistry;
 import org.eclipse.sirius.web.spring.collaborative.api.ISubscriptionManagerFactory;
 import org.eclipse.sirius.web.spring.collaborative.trees.api.IExplorerDescriptionProvider;
 import org.eclipse.sirius.web.spring.collaborative.trees.api.ITreeEventHandler;
@@ -48,12 +49,15 @@ public class TreeEventProcessorFactory implements IRepresentationEventProcessorF
 
     private final ISubscriptionManagerFactory subscriptionManagerFactory;
 
+    private final IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry;
+
     public TreeEventProcessorFactory(IExplorerDescriptionProvider explorerDescriptionProvider, ITreeService treeService, List<ITreeEventHandler> treeEventHandlers,
-            ISubscriptionManagerFactory subscriptionManagerFactory) {
+            ISubscriptionManagerFactory subscriptionManagerFactory, IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry) {
         this.explorerDescriptionProvider = Objects.requireNonNull(explorerDescriptionProvider);
         this.treeService = Objects.requireNonNull(treeService);
         this.treeEventHandlers = Objects.requireNonNull(treeEventHandlers);
         this.subscriptionManagerFactory = Objects.requireNonNull(subscriptionManagerFactory);
+        this.representationRefreshPolicyRegistry = Objects.requireNonNull(representationRefreshPolicyRegistry);
     }
 
     @Override
@@ -78,7 +82,7 @@ public class TreeEventProcessorFactory implements IRepresentationEventProcessorF
                 // @formatter:on
 
             IRepresentationEventProcessor treeEventProcessor = new TreeEventProcessor(this.treeService, treeCreationParameters, this.treeEventHandlers, this.subscriptionManagerFactory.create(),
-                    new SimpleMeterRegistry());
+                    new SimpleMeterRegistry(), this.representationRefreshPolicyRegistry);
             // @formatter:off
                 return Optional.of(treeEventProcessor)
                         .filter(representationEventProcessorClass::isInstance)

@@ -18,6 +18,7 @@ import java.util.Objects;
 import java.util.function.Function;
 
 import org.eclipse.sirius.web.annotations.Immutable;
+import org.eclipse.sirius.web.representations.IStatus;
 import org.eclipse.sirius.web.representations.VariableManager;
 
 /**
@@ -38,7 +39,13 @@ public final class ListDescription extends AbstractWidgetDescription {
 
     private Function<VariableManager, String> itemLabelProvider;
 
+    private Function<VariableManager, String> itemKindProvider;
+
     private Function<VariableManager, String> itemImageURLProvider;
+
+    private Function<VariableManager, Boolean> itemDeletableProvider;
+
+    private Function<VariableManager, IStatus> itemDeleteHandlerProvider;
 
     private ListDescription() {
         // Prevent instantiation
@@ -64,8 +71,20 @@ public final class ListDescription extends AbstractWidgetDescription {
         return this.itemLabelProvider;
     }
 
+    public Function<VariableManager, String> getItemKindProvider() {
+        return this.itemKindProvider;
+    }
+
     public Function<VariableManager, String> getItemImageURLProvider() {
         return this.itemImageURLProvider;
+    }
+
+    public Function<VariableManager, Boolean> getItemDeletableProvider() {
+        return this.itemDeletableProvider;
+    }
+
+    public Function<VariableManager, IStatus> getItemDeleteHandlerProvider() {
+        return this.itemDeleteHandlerProvider;
     }
 
     public static Builder newListDescription(String id) {
@@ -97,7 +116,13 @@ public final class ListDescription extends AbstractWidgetDescription {
 
         private Function<VariableManager, String> itemLabelProvider;
 
+        private Function<VariableManager, String> itemKindProvider;
+
         private Function<VariableManager, String> itemImageURLProvider;
+
+        private Function<VariableManager, Boolean> itemDeletableProvider;
+
+        private Function<VariableManager, IStatus> itemDeleteHandlerProvider;
 
         private Function<VariableManager, List<Object>> diagnosticsProvider;
 
@@ -134,8 +159,23 @@ public final class ListDescription extends AbstractWidgetDescription {
             return this;
         }
 
+        public Builder itemKindProvider(Function<VariableManager, String> itemKindProvider) {
+            this.itemKindProvider = Objects.requireNonNull(itemKindProvider);
+            return this;
+        }
+
         public Builder itemImageURLProvider(Function<VariableManager, String> itemImageURLProvider) {
             this.itemImageURLProvider = Objects.requireNonNull(itemImageURLProvider);
+            return this;
+        }
+
+        public Builder itemDeletableProvider(Function<VariableManager, Boolean> itemDeletableProvider) {
+            this.itemDeletableProvider = Objects.requireNonNull(itemDeletableProvider);
+            return this;
+        }
+
+        public Builder itemDeleteHandlerProvider(Function<VariableManager, IStatus> itemDeleteHandlerProvider) {
+            this.itemDeleteHandlerProvider = Objects.requireNonNull(itemDeleteHandlerProvider);
             return this;
         }
 
@@ -162,7 +202,10 @@ public final class ListDescription extends AbstractWidgetDescription {
             listDescription.itemsProvider = Objects.requireNonNull(this.itemsProvider);
             listDescription.itemIdProvider = Objects.requireNonNull(this.itemIdProvider);
             listDescription.itemLabelProvider = Objects.requireNonNull(this.itemLabelProvider);
+            listDescription.itemKindProvider = Objects.requireNonNull(this.itemKindProvider);
             listDescription.itemImageURLProvider = Objects.requireNonNull(this.itemImageURLProvider);
+            listDescription.itemDeletableProvider = Objects.requireNonNull(this.itemDeletableProvider);
+            listDescription.itemDeleteHandlerProvider = Objects.requireNonNull(this.itemDeleteHandlerProvider);
             listDescription.diagnosticsProvider = Objects.requireNonNull(this.diagnosticsProvider);
             listDescription.kindProvider = Objects.requireNonNull(this.kindProvider);
             listDescription.messageProvider = Objects.requireNonNull(this.messageProvider);

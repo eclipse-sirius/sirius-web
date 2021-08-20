@@ -27,6 +27,8 @@ import org.eclipse.sirius.web.representations.IRepresentation;
 import org.eclipse.sirius.web.representations.VariableManager;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeKind;
+import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationRefreshPolicy;
+import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationRefreshPolicyRegistry;
 import org.eclipse.sirius.web.spring.collaborative.api.ISubscriptionManager;
 import org.eclipse.sirius.web.spring.collaborative.api.Monitoring;
 import org.eclipse.sirius.web.spring.collaborative.validation.api.IValidationEventHandler;
@@ -71,6 +73,8 @@ public class ValidationEventProcessor implements IValidationEventProcessor {
 
     private final ISubscriptionManager subscriptionManager;
 
+    private final IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry;
+
     private final Many<IPayload> sink = Sinks.many().multicast().directBestEffort();
 
     private final Many<Boolean> canBeDisposedSink = Sinks.many().unicast().onBackpressureBuffer();
@@ -78,12 +82,14 @@ public class ValidationEventProcessor implements IValidationEventProcessor {
     private final Timer timer;
 
     public ValidationEventProcessor(IEditingContext editingContext, ValidationDescription validationDescription, ValidationContext validationContext,
-            List<IValidationEventHandler> validationEventHandlers, ISubscriptionManager subscriptionManager, MeterRegistry meterRegistry) {
+            List<IValidationEventHandler> validationEventHandlers, ISubscriptionManager subscriptionManager, MeterRegistry meterRegistry,
+            IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry) {
         this.editingContext = Objects.requireNonNull(editingContext);
         this.validationDescription = Objects.requireNonNull(validationDescription);
         this.validationContext = Objects.requireNonNull(validationContext);
         this.validationEventHandlers = Objects.requireNonNull(validationEventHandlers);
         this.subscriptionManager = Objects.requireNonNull(subscriptionManager);
+        this.representationRefreshPolicyRegistry = Objects.requireNonNull(representationRefreshPolicyRegistry);
 
         // @formatter:off
         this.timer = Timer.builder(Monitoring.REPRESENTATION_EVENT_PROCESSOR_REFRESH)
@@ -121,7 +127,7 @@ public class ValidationEventProcessor implements IValidationEventProcessor {
 
     @Override
     public void refresh(ChangeDescription changeDescription) {
-        if (this.shouldRefresh(changeDescription.getKind())) {
+        if (this.shouldRefresh(changeDescription)) {
             long start = System.currentTimeMillis();
 
             Validation validation = this.refreshValidation();
@@ -138,8 +144,16 @@ public class ValidationEventProcessor implements IValidationEventProcessor {
         }
     }
 
-    private boolean shouldRefresh(String changeKind) {
-        return ChangeKind.SEMANTIC_CHANGE.equals(changeKind);
+    private boolean shouldRefresh(ChangeDescription changeDescription) {
+        // @formatter:off
+        return this.representationRefreshPolicyRegistry.getRepresentationRefreshPolicy(this.validationDescription)
+                .orElseGet(this::getDefaultRefreshPolicy)
+                .shouldRefresh(changeDescription);
+        // @formatter:on
+    }
+
+    private IRepresentationRefreshPolicy getDefaultRefreshPolicy() {
+        return (changeDescription) -> ChangeKind.SEMANTIC_CHANGE.equals(changeDescription.getKind());
     }
 
     @Override

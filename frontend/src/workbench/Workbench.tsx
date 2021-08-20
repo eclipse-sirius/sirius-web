@@ -91,7 +91,14 @@ export const Workbench = ({
     />
   );
 
-  const rightSite = <RightSite editingContextId={editingContextId} selection={selection} readOnly={readOnly} />;
+  const rightSite = (
+    <RightSite
+      editingContextId={editingContextId}
+      selection={selection}
+      setSelection={setSelection}
+      readOnly={readOnly}
+    />
+  );
 
   let main = (
     <OnboardArea

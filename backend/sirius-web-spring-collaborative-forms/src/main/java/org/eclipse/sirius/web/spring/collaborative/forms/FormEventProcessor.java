@@ -26,14 +26,16 @@ import org.eclipse.sirius.web.core.api.IRepresentationInput;
 import org.eclipse.sirius.web.forms.Form;
 import org.eclipse.sirius.web.forms.components.FormComponent;
 import org.eclipse.sirius.web.forms.components.FormComponentProps;
-import org.eclipse.sirius.web.forms.description.FormDescription;
 import org.eclipse.sirius.web.forms.renderer.FormRenderer;
 import org.eclipse.sirius.web.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.web.representations.IRepresentation;
 import org.eclipse.sirius.web.representations.VariableManager;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeKind;
+import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationRefreshPolicy;
+import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationRefreshPolicyRegistry;
 import org.eclipse.sirius.web.spring.collaborative.api.ISubscriptionManager;
+import org.eclipse.sirius.web.spring.collaborative.forms.api.FormCreationParameters;
 import org.eclipse.sirius.web.spring.collaborative.forms.api.IFormEventHandler;
 import org.eclipse.sirius.web.spring.collaborative.forms.api.IFormEventProcessor;
 import org.eclipse.sirius.web.spring.collaborative.forms.api.IFormInput;
@@ -62,13 +64,7 @@ public class FormEventProcessor implements IFormEventProcessor {
 
     private final Logger logger = LoggerFactory.getLogger(FormEventProcessor.class);
 
-    private final IEditingContext editingContext;
-
-    private final FormDescription formDescription;
-
-    private final UUID formId;
-
-    private final Object object;
+    private final FormCreationParameters formCreationParameters;
 
     private final List<IFormEventHandler> formEventHandlers;
 
@@ -76,23 +72,23 @@ public class FormEventProcessor implements IFormEventProcessor {
 
     private final IWidgetSubscriptionManager widgetSubscriptionManager;
 
+    private final IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry;
+
     private final Many<IPayload> sink = Sinks.many().multicast().directBestEffort();
 
     private final Many<Boolean> canBeDisposedSink = Sinks.many().unicast().onBackpressureBuffer();
 
     private final AtomicReference<Form> currentForm = new AtomicReference<>();
 
-    public FormEventProcessor(IEditingContext editingContext, FormDescription formDescription, UUID formId, Object object, List<IFormEventHandler> formEventHandlers,
-            ISubscriptionManager subscriptionManager, IWidgetSubscriptionManager widgetSubscriptionManager) {
-        this.logger.trace("Creating the form event processor {}", formId); //$NON-NLS-1$
+    public FormEventProcessor(FormCreationParameters formCreationParameters, List<IFormEventHandler> formEventHandlers, ISubscriptionManager subscriptionManager,
+            IWidgetSubscriptionManager widgetSubscriptionManager, IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry) {
+        this.logger.trace("Creating the form event processor {}", formCreationParameters.getId()); //$NON-NLS-1$
 
-        this.formDescription = Objects.requireNonNull(formDescription);
-        this.editingContext = Objects.requireNonNull(editingContext);
-        this.formId = Objects.requireNonNull(formId);
-        this.object = Objects.requireNonNull(object);
+        this.formCreationParameters = Objects.requireNonNull(formCreationParameters);
         this.formEventHandlers = Objects.requireNonNull(formEventHandlers);
         this.subscriptionManager = Objects.requireNonNull(subscriptionManager);
         this.widgetSubscriptionManager = Objects.requireNonNull(widgetSubscriptionManager);
+        this.representationRefreshPolicyRegistry = Objects.requireNonNull(representationRefreshPolicyRegistry);
 
         Form form = this.refreshForm();
         this.currentForm.set(form);
@@ -135,7 +131,7 @@ public class FormEventProcessor implements IFormEventProcessor {
 
     @Override
     public void refresh(ChangeDescription changeDescription) {
-        if (ChangeKind.SEMANTIC_CHANGE.equals(changeDescription.getKind())) {
+        if (this.shouldRefresh(changeDescription)) {
             Form form = this.refreshForm();
 
             this.currentForm.set(form);
@@ -147,13 +143,26 @@ public class FormEventProcessor implements IFormEventProcessor {
         }
     }
 
+    private boolean shouldRefresh(ChangeDescription changeDescription) {
+        // @formatter:off
+        return this.representationRefreshPolicyRegistry.getRepresentationRefreshPolicy(this.formCreationParameters.getFormDescription())
+                .orElseGet(this::getDefaultRefreshPolicy)
+                .shouldRefresh(changeDescription);
+        // @formatter:on
+
+    }
+
+    private IRepresentationRefreshPolicy getDefaultRefreshPolicy() {
+        return (changeDescription) -> ChangeKind.SEMANTIC_CHANGE.equals(changeDescription.getKind());
+    }
+
     private Form refreshForm() {
         VariableManager variableManager = new VariableManager();
-        variableManager.put(VariableManager.SELF, this.object);
-        variableManager.put(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, this.formId);
-        variableManager.put(IEditingContext.EDITING_CONTEXT, this.editingContext);
+        variableManager.put(VariableManager.SELF, this.formCreationParameters.getObject());
+        variableManager.put(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, this.formCreationParameters.getId());
+        variableManager.put(IEditingContext.EDITING_CONTEXT, this.formCreationParameters.getEditingContext());
 
-        FormComponentProps formComponentProps = new FormComponentProps(variableManager, this.formDescription);
+        FormComponentProps formComponentProps = new FormComponentProps(variableManager, this.formCreationParameters.getFormDescription());
         Element element = new Element(FormComponent.class, formComponentProps);
         Form form = new FormRenderer().render(element);
 
@@ -176,12 +185,12 @@ public class FormEventProcessor implements IFormEventProcessor {
         .doOnSubscribe(subscription -> {
             String username = SecurityContextHolder.getContext().getAuthentication().getName();
             this.subscriptionManager.add(input, username);
-            this.logger.trace("{} has subscribed to the form {} {}", username, this.formId, this.subscriptionManager); //$NON-NLS-1$
+            this.logger.trace("{} has subscribed to the form {} {}", username, this.formCreationParameters.getId(), this.subscriptionManager); //$NON-NLS-1$
         })
         .doOnCancel(() -> {
             String username = SecurityContextHolder.getContext().getAuthentication().getName();
             this.subscriptionManager.remove(UUID.randomUUID(), username);
-            this.logger.trace("{} has unsubscribed from the form {} {}", username, this.formId, this.subscriptionManager); //$NON-NLS-1$
+            this.logger.trace("{} has unsubscribed from the form {} {}", username, this.formCreationParameters.getId(), this.subscriptionManager); //$NON-NLS-1$
 
             if (this.subscriptionManager.isEmpty()) {
                 EmitResult emitResult = this.canBeDisposedSink.tryEmitNext(Boolean.TRUE);
@@ -201,7 +210,7 @@ public class FormEventProcessor implements IFormEventProcessor {
 
     @Override
     public void dispose() {
-        this.logger.trace("Disposing the form event processor {}", this.formId); //$NON-NLS-1$
+        this.logger.trace("Disposing the form event processor {}", this.formCreationParameters.getId()); //$NON-NLS-1$
 
         this.subscriptionManager.dispose();
         this.widgetSubscriptionManager.dispose();

@@ -109,7 +109,6 @@ public class InvokeNodeToolOnDiagramEventHandler implements IDiagramEventHandler
                 IStatus status = this.executeTool(editingContext, diagramContext, input.getDiagramElementId(), optionalTool.get(), input.getStartingPositionX(), input.getStartingPositionY(),
                         input.getSelectedObjectId());
                 if (status instanceof Success) {
-
                     payload = new InvokeNodeToolOnDiagramSuccessPayload(diagramInput.getId(), diagram);
                     changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, diagramInput.getRepresentationId(), diagramInput);
                 }

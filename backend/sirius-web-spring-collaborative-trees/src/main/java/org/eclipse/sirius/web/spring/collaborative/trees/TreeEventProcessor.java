@@ -25,6 +25,8 @@ import org.eclipse.sirius.web.core.api.IRepresentationInput;
 import org.eclipse.sirius.web.representations.IRepresentation;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeKind;
+import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationRefreshPolicy;
+import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationRefreshPolicyRegistry;
 import org.eclipse.sirius.web.spring.collaborative.api.ISubscriptionManager;
 import org.eclipse.sirius.web.spring.collaborative.api.Monitoring;
 import org.eclipse.sirius.web.spring.collaborative.trees.api.ITreeEventHandler;
@@ -65,6 +67,8 @@ public class TreeEventProcessor implements ITreeEventProcessor {
 
     private final ISubscriptionManager subscriptionManager;
 
+    private final IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry;
+
     private final Many<IPayload> sink = Sinks.many().multicast().directBestEffort();
 
     private final Many<Boolean> canBeDisposedSink = Sinks.many().unicast().onBackpressureBuffer();
@@ -74,13 +78,14 @@ public class TreeEventProcessor implements ITreeEventProcessor {
     private final Timer timer;
 
     public TreeEventProcessor(ITreeService treeService, TreeCreationParameters treeCreationParameters, List<ITreeEventHandler> treeEventHandlers, ISubscriptionManager subscriptionManager,
-            MeterRegistry meterRegistry) {
+            MeterRegistry meterRegistry, IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry) {
         this.logger.trace("Creating the tree event processor {}", treeCreationParameters.getEditingContext().getId()); //$NON-NLS-1$
 
         this.treeService = Objects.requireNonNull(treeService);
         this.treeCreationParameters = Objects.requireNonNull(treeCreationParameters);
         this.treeEventHandlers = Objects.requireNonNull(treeEventHandlers);
         this.subscriptionManager = Objects.requireNonNull(subscriptionManager);
+        this.representationRefreshPolicyRegistry = Objects.requireNonNull(representationRefreshPolicyRegistry);
 
         // @formatter:off
         this.timer = Timer.builder(Monitoring.REPRESENTATION_EVENT_PROCESSOR_REFRESH)
@@ -119,7 +124,7 @@ public class TreeEventProcessor implements ITreeEventProcessor {
 
     @Override
     public void refresh(ChangeDescription changeDescription) {
-        if (this.shouldRefresh(changeDescription.getKind())) {
+        if (this.shouldRefresh(changeDescription)) {
             long start = System.currentTimeMillis();
 
             Tree tree = this.refreshTree();
@@ -136,27 +141,37 @@ public class TreeEventProcessor implements ITreeEventProcessor {
         }
     }
 
-    private boolean shouldRefresh(String changeKind) {
-        boolean shouldRefresh = false;
+    private boolean shouldRefresh(ChangeDescription changeDescription) {
+        // @formatter:off
+        return this.representationRefreshPolicyRegistry.getRepresentationRefreshPolicy(this.treeCreationParameters.getTreeDescription())
+                .orElseGet(this::getDefaultRefreshPolicy)
+                .shouldRefresh(changeDescription);
+        // @formatter:on
+    }
 
-        switch (changeKind) {
-        case ChangeKind.SEMANTIC_CHANGE:
-            shouldRefresh = true;
-            break;
-        case ChangeKind.REPRESENTATION_CREATION:
-            shouldRefresh = true;
-            break;
-        case ChangeKind.REPRESENTATION_DELETION:
-            shouldRefresh = true;
-            break;
-        case ChangeKind.REPRESENTATION_RENAMING:
-            shouldRefresh = true;
-            break;
-        default:
-            shouldRefresh = false;
-        }
+    private IRepresentationRefreshPolicy getDefaultRefreshPolicy() {
+        return changeDescription -> {
+            boolean shouldRefresh = false;
 
-        return shouldRefresh;
+            switch (changeDescription.getKind()) {
+            case ChangeKind.SEMANTIC_CHANGE:
+                shouldRefresh = true;
+                break;
+            case ChangeKind.REPRESENTATION_CREATION:
+                shouldRefresh = true;
+                break;
+            case ChangeKind.REPRESENTATION_DELETION:
+                shouldRefresh = true;
+                break;
+            case ChangeKind.REPRESENTATION_RENAMING:
+                shouldRefresh = true;
+                break;
+            default:
+                shouldRefresh = false;
+            }
+
+            return shouldRefresh;
+        };
     }
 
     private Tree refreshTree() {

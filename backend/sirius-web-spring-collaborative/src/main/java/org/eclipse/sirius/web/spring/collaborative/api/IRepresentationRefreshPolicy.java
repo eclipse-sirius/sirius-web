@@ -10,14 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Form, Subscriber, WidgetSubscription } from 'form/Form.types';
-import { Selection } from 'workbench/Workbench.types';
+package org.eclipse.sirius.web.spring.collaborative.api;
 
-export interface FormProps {
-  editingContextId: string;
-  form: Form;
-  subscribers: Subscriber[];
-  widgetSubscriptions: WidgetSubscription[];
-  readOnly: boolean;
-  setSelection: (selection: Selection) => void;
+/**
+ * The interface used to describe the refresh policy of a representation regarding the given change description.
+ *
+ * @author gcoutable
+ */
+public interface IRepresentationRefreshPolicy {
+    boolean shouldRefresh(ChangeDescription changeDescription);
 }

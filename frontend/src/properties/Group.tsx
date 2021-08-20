@@ -31,6 +31,7 @@ import { RadioPropertySection } from 'properties/propertysections/RadioPropertyS
 import { SelectPropertySection } from 'properties/propertysections/SelectPropertySection';
 import { TextfieldPropertySection } from 'properties/propertysections/TextfieldPropertySection';
 import React from 'react';
+import { Selection } from 'workbench/Workbench.types';
 
 const useGroupStyles = makeStyles((theme) => ({
   group: {
@@ -51,11 +52,11 @@ const useGroupStyles = makeStyles((theme) => ({
   },
 }));
 
-export const Group = ({ editingContextId, formId, group, widgetSubscriptions, readOnly }: GroupProps) => {
+export const Group = ({ editingContextId, formId, group, widgetSubscriptions, setSelection, readOnly }: GroupProps) => {
   const classes = useGroupStyles();
 
   let propertySections = group.widgets.map((widget) =>
-    widgetToPropertySection(editingContextId, formId, widget, widgetSubscriptions, readOnly)
+    widgetToPropertySection(editingContextId, formId, widget, widgetSubscriptions, setSelection, readOnly)
   );
 
   return (
@@ -81,6 +82,7 @@ const widgetToPropertySection = (
   formId: string,
   widget: Widget,
   widgetSubscriptions: WidgetSubscription[],
+  setSelection: (selection: Selection) => void,
   readOnly: boolean
 ) => {
   let subscribers = [];
@@ -146,7 +148,15 @@ const widgetToPropertySection = (
     );
   } else if (isList(widget)) {
     propertySection = (
-      <ListPropertySection widget={widget} key={widget.id} subscribers={subscribers} readonly={readOnly} />
+      <ListPropertySection
+        editingContextId={editingContextId}
+        formId={formId}
+        widget={widget}
+        key={widget.id}
+        subscribers={subscribers}
+        setSelection={setSelection}
+        readOnly={readOnly}
+      />
     );
   } else {
     console.error(`Unsupported widget type ${widget.__typename}`);

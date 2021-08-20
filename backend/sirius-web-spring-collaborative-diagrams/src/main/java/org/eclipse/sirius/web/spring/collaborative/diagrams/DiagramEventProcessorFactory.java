@@ -17,10 +17,12 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.sirius.web.core.api.IEditingContext;
+import org.eclipse.sirius.web.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationConfiguration;
 import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationEventProcessor;
 import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationEventProcessorFactory;
+import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationRefreshPolicyRegistry;
 import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.web.spring.collaborative.api.ISubscriptionManagerFactory;
 import org.eclipse.sirius.web.spring.collaborative.diagrams.api.DiagramConfiguration;
@@ -45,12 +47,19 @@ public class DiagramEventProcessorFactory implements IRepresentationEventProcess
 
     private final ISubscriptionManagerFactory subscriptionManagerFactory;
 
+    private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
+
+    private final IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry;
+
     public DiagramEventProcessorFactory(IRepresentationSearchService representationSearchService, IDiagramCreationService diagramCreationService, List<IDiagramEventHandler> diagramEventHandlers,
-            ISubscriptionManagerFactory subscriptionManagerFactory) {
+            ISubscriptionManagerFactory subscriptionManagerFactory, IRepresentationDescriptionSearchService representationDescriptionSearchService,
+            IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry) {
         this.representationSearchService = Objects.requireNonNull(representationSearchService);
         this.diagramCreationService = Objects.requireNonNull(diagramCreationService);
         this.diagramEventHandlers = Objects.requireNonNull(diagramEventHandlers);
         this.subscriptionManagerFactory = Objects.requireNonNull(subscriptionManagerFactory);
+        this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
+        this.representationRefreshPolicyRegistry = Objects.requireNonNull(representationRefreshPolicyRegistry);
     }
 
     @Override
@@ -70,7 +79,7 @@ public class DiagramEventProcessorFactory implements IRepresentationEventProcess
                 // @formatter:off
                 DiagramContext diagramContext = new DiagramContext(diagram);
                 IRepresentationEventProcessor diagramEventProcessor = new DiagramEventProcessor(editingContext, diagramContext,
-                        this.diagramEventHandlers, this.subscriptionManagerFactory.create(), this.diagramCreationService);
+                        this.diagramEventHandlers, this.subscriptionManagerFactory.create(), this.representationDescriptionSearchService, this.representationRefreshPolicyRegistry, this.diagramCreationService);
 
                 return Optional.of(diagramEventProcessor)
                         .filter(representationEventProcessorClass::isInstance)

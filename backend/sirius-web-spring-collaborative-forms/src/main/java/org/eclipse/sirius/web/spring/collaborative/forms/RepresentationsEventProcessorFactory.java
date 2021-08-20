@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,23 +27,20 @@ import org.eclipse.sirius.web.spring.collaborative.api.ISubscriptionManagerFacto
 import org.eclipse.sirius.web.spring.collaborative.forms.api.FormCreationParameters;
 import org.eclipse.sirius.web.spring.collaborative.forms.api.IFormEventHandler;
 import org.eclipse.sirius.web.spring.collaborative.forms.api.IFormEventProcessor;
-import org.eclipse.sirius.web.spring.collaborative.forms.api.IPropertiesDefaultDescriptionProvider;
-import org.eclipse.sirius.web.spring.collaborative.forms.api.IPropertiesDescriptionService;
+import org.eclipse.sirius.web.spring.collaborative.forms.api.IRepresentationsDescriptionProvider;
 import org.eclipse.sirius.web.spring.collaborative.forms.api.IWidgetSubscriptionManagerFactory;
-import org.eclipse.sirius.web.spring.collaborative.forms.api.PropertiesConfiguration;
+import org.eclipse.sirius.web.spring.collaborative.forms.api.RepresentationsConfiguration;
 import org.springframework.stereotype.Service;
 
 /**
- * Used to create the properties event processors.
+ * Used to create the representations event processors.
  *
- * @author hmarchadour
+ * @author gcoutable
  */
 @Service
-public class PropertiesEventProcessorFactory implements IRepresentationEventProcessorFactory {
+public class RepresentationsEventProcessorFactory implements IRepresentationEventProcessorFactory {
 
-    private final IPropertiesDescriptionService propertiesDescriptionService;
-
-    private final IPropertiesDefaultDescriptionProvider propertiesDefaultDescriptionProvider;
+    private final IRepresentationsDescriptionProvider representationsDescriptionProvider;
 
     private final IObjectService objectService;
 
@@ -55,11 +52,10 @@ public class PropertiesEventProcessorFactory implements IRepresentationEventProc
 
     private final IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry;
 
-    public PropertiesEventProcessorFactory(IPropertiesDescriptionService propertiesDescriptionService, IPropertiesDefaultDescriptionProvider propertiesDefaultDescriptionProvider,
-            IObjectService objectService, List<IFormEventHandler> formEventHandlers, ISubscriptionManagerFactory subscriptionManagerFactory,
-            IWidgetSubscriptionManagerFactory widgetSubscriptionManagerFactory, IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry) {
-        this.propertiesDescriptionService = Objects.requireNonNull(propertiesDescriptionService);
-        this.propertiesDefaultDescriptionProvider = Objects.requireNonNull(propertiesDefaultDescriptionProvider);
+    public RepresentationsEventProcessorFactory(IRepresentationsDescriptionProvider representationsDescriptionProvider, IObjectService objectService, List<IFormEventHandler> formEventHandlers,
+            ISubscriptionManagerFactory subscriptionManagerFactory, IWidgetSubscriptionManagerFactory widgetSubscriptionManagerFactory,
+            IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry) {
+        this.representationsDescriptionProvider = Objects.requireNonNull(representationsDescriptionProvider);
         this.objectService = Objects.requireNonNull(objectService);
         this.formEventHandlers = Objects.requireNonNull(formEventHandlers);
         this.subscriptionManagerFactory = Objects.requireNonNull(subscriptionManagerFactory);
@@ -69,34 +65,28 @@ public class PropertiesEventProcessorFactory implements IRepresentationEventProc
 
     @Override
     public <T extends IRepresentationEventProcessor> boolean canHandle(Class<T> representationEventProcessorClass, IRepresentationConfiguration configuration) {
-        return IFormEventProcessor.class.isAssignableFrom(representationEventProcessorClass) && configuration instanceof PropertiesConfiguration;
+        return IFormEventProcessor.class.isAssignableFrom(representationEventProcessorClass) && configuration instanceof RepresentationsConfiguration;
     }
 
     @Override
     public <T extends IRepresentationEventProcessor> Optional<T> createRepresentationEventProcessor(Class<T> representationEventProcessorClass, IRepresentationConfiguration configuration,
             IEditingContext editingContext) {
-        if (IFormEventProcessor.class.isAssignableFrom(representationEventProcessorClass) && configuration instanceof PropertiesConfiguration) {
-            PropertiesConfiguration propertiesConfiguration = (PropertiesConfiguration) configuration;
+        if (IFormEventProcessor.class.isAssignableFrom(representationEventProcessorClass) && configuration instanceof RepresentationsConfiguration) {
+            RepresentationsConfiguration representationsConfiguration = (RepresentationsConfiguration) configuration;
 
-            List<FormDescription> formDescriptions = this.propertiesDescriptionService.getPropertiesDescriptions();
-            Optional<Object> optionalObject = this.objectService.getObject(editingContext, propertiesConfiguration.getObjectId());
+            FormDescription formDescription = this.representationsDescriptionProvider.getRepresentationsDescription();
+            Optional<Object> optionalObject = this.objectService.getObject(editingContext, representationsConfiguration.getObjectId());
             if (optionalObject.isPresent()) {
                 Object object = optionalObject.get();
-                Optional<FormDescription> optionalFormDescription = Optional.empty();
-                if (!formDescriptions.isEmpty()) {
-                    optionalFormDescription = new FormDescriptionAggregator().aggregate(formDescriptions, object, this.objectService);
-                }
-                FormDescription formDescription = optionalFormDescription.orElse(this.propertiesDefaultDescriptionProvider.getFormDescription());
-
                 // @formatter:off
-                FormCreationParameters formCreationParameters = FormCreationParameters.newFormCreationParameters(propertiesConfiguration.getId())
+                FormCreationParameters formCreationParameters = FormCreationParameters.newFormCreationParameters(representationsConfiguration.getId())
                         .editingContext(editingContext)
                         .formDescription(formDescription)
                         .object(object)
                         .build();
                 // @formatter:on
 
-                IRepresentationEventProcessor formEventProcessor = new FormEventProcessor(formCreationParameters, this.formEventHandlers, this.subscriptionManagerFactory.create(),
+                FormEventProcessor formEventProcessor = new FormEventProcessor(formCreationParameters, this.formEventHandlers, this.subscriptionManagerFactory.create(),
                         this.widgetSubscriptionManagerFactory.create(), this.representationRefreshPolicyRegistry);
 
                 // @formatter:off
@@ -106,6 +96,7 @@ public class PropertiesEventProcessorFactory implements IRepresentationEventProc
                 // @formatter:on
             }
         }
+
         return Optional.empty();
     }
 

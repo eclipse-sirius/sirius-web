@@ -11,9 +11,25 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { List, Subscriber } from 'form/Form.types';
+import { Selection } from 'workbench/Workbench.types';
 
 export interface ListPropertySectionProps {
+  editingContextId: string;
+  formId: string;
   widget: List;
   subscribers: Subscriber[];
-  readonly: boolean;
+  readOnly: boolean;
+  setSelection: (selection: Selection) => void;
+}
+
+export interface GQLDeleteListItemMutationData {
+  deleteListItem: GQLDeleteListItemPayload;
+}
+
+export interface GQLDeleteListItemPayload {
+  __typename: string;
+}
+
+export interface GQLErrorPayload extends GQLDeleteListItemPayload {
+  message: string;
 }
