@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2021 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+
 import { useSubscription } from '@apollo/client';
 import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
@@ -22,27 +23,26 @@ import {
   subscribersUpdatedEventPayloadFragment,
   widgetSubscriptionsUpdatedEventPayloadFragment,
 } from 'form/FormEventFragments';
-import { GQLPropertiesEventSubscription } from 'form/FormEventFragments.types';
 import gql from 'graphql-tag';
-import { Properties } from 'properties/Properties';
-import { PropertiesWebSocketContainerProps } from 'properties/PropertiesWebSocketContainer.types';
+import { ListPropertySection } from 'properties/propertysections/ListPropertySection';
+import React, { useContext, useEffect } from 'react';
+import { RepresentationContext } from 'workbench/RepresentationContext';
+import { RepresentationsWebSocketContainerProps } from './RepresentationsWebSocketContainer.types';
 import {
   HandleCompleteEvent,
   HandleSubscriptionResultEvent,
   HideToastEvent,
-  PropertiesWebSocketContainerContext,
-  PropertiesWebSocketContainerEvent,
-  propertiesWebSocketContainerMachine,
+  RepresentationsWebSocketContainerContext,
+  RepresentationsWebSocketContainerEvent,
+  representationsWebSocketContainerMachine,
   SchemaValue,
   ShowToastEvent,
   SwitchSelectionEvent,
-} from 'properties/PropertiesWebSocketContainerMachine';
-import React, { useContext, useEffect } from 'react';
-import { RepresentationContext } from 'workbench/RepresentationContext';
+} from './RepresentationsWebSocketContainerMachine';
 
-const propertiesEventSubscription = gql`
-  subscription propertiesEvent($input: PropertiesEventInput!) {
-    propertiesEvent(input: $input) {
+const representationsEventSubscription = gql`
+  subscription representationsEvent($input: RepresentationsEventInput!) {
+    representationsEvent(input: $input) {
       __typename
       ... on SubscribersUpdatedEventPayload {
         ...subscribersUpdatedEventPayloadFragment
@@ -60,33 +60,29 @@ const propertiesEventSubscription = gql`
   ${formRefreshedEventPayloadFragment}
 `;
 
-const usePropertiesWebSocketContainerStyles = makeStyles((theme) => ({
+const useRepresentationsWebSocketContainerStyles = makeStyles((theme) => ({
   idle: {
     padding: theme.spacing(1),
   },
 }));
 
-/**
- * Connect the Properties component to the GraphQL API over Web Socket.
- */
-export const PropertiesWebSocketContainer = ({
+export const RepresentationsWebSocketContainer = ({
   editingContextId,
   selection,
   setSelection,
   readOnly,
-}: PropertiesWebSocketContainerProps) => {
-  const classes = usePropertiesWebSocketContainerStyles();
+}: RepresentationsWebSocketContainerProps) => {
+  const classes = useRepresentationsWebSocketContainerStyles();
+
   const [{ value, context }, dispatch] = useMachine<
-    PropertiesWebSocketContainerContext,
-    PropertiesWebSocketContainerEvent
-  >(propertiesWebSocketContainerMachine);
-  const { toast, propertiesWebSocketContainer } = value as SchemaValue;
-  const { id, currentSelection, form, subscribers, widgetSubscriptions, message } = context;
+    RepresentationsWebSocketContainerContext,
+    RepresentationsWebSocketContainerEvent
+  >(representationsWebSocketContainerMachine);
+
+  const { toast, representationsWebSocketContainer } = value as SchemaValue;
+  const { id, currentSelection, formId, widget, subscribers, message } = context;
   const { registry } = useContext(RepresentationContext);
 
-  /**
-   * Displays an other form if the selection indicates that we should display another properties view.
-   */
   useEffect(() => {
     if (currentSelection?.id !== selection?.id) {
       const isRepresentation = registry.isRepresentation(selection.kind);
@@ -95,7 +91,7 @@ export const PropertiesWebSocketContainer = ({
     }
   }, [currentSelection, registry, selection, dispatch]);
 
-  const { error } = useSubscription<GQLPropertiesEventSubscription>(propertiesEventSubscription, {
+  const { error } = useSubscription(representationsEventSubscription, {
     variables: {
       input: {
         id,
@@ -104,7 +100,7 @@ export const PropertiesWebSocketContainer = ({
       },
     },
     fetchPolicy: 'no-cache',
-    skip: propertiesWebSocketContainer === 'empty' || propertiesWebSocketContainer === 'unsupportedSelection',
+    skip: representationsWebSocketContainer === 'empty' || representationsWebSocketContainer === 'unsupportedSelection',
     onSubscriptionData: ({ subscriptionData }) => {
       const handleDataEvent: HandleSubscriptionResultEvent = {
         type: 'HANDLE_SUBSCRIPTION_RESULT',
@@ -127,25 +123,26 @@ export const PropertiesWebSocketContainer = ({
   }, [error, dispatch]);
 
   let content = null;
-  if (!selection || propertiesWebSocketContainer === 'unsupportedSelection') {
+  if (!selection || representationsWebSocketContainer === 'unsupportedSelection') {
     content = (
       <div className={classes.idle}>
         <Typography variant="subtitle2">No object selected</Typography>
       </div>
     );
   }
-  if ((propertiesWebSocketContainer === 'idle' && form) || propertiesWebSocketContainer === 'ready') {
+  if ((representationsWebSocketContainer === 'idle' && widget) || representationsWebSocketContainer === 'ready') {
     content = (
-      <Properties
+      <ListPropertySection
         editingContextId={editingContextId}
-        form={form}
-        subscribers={subscribers}
-        widgetSubscriptions={widgetSubscriptions}
-        setSelection={setSelection}
+        formId={formId}
         readOnly={readOnly}
+        widget={widget}
+        subscribers={subscribers}
+        setSelection={setSelection}
       />
     );
   }
+
   return (
     <>
       {content}

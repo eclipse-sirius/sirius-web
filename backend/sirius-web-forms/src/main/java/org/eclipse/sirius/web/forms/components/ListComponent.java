@@ -15,6 +15,8 @@ package org.eclipse.sirius.web.forms.components;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 import org.eclipse.sirius.web.components.Element;
 import org.eclipse.sirius.web.components.IComponent;
@@ -23,6 +25,7 @@ import org.eclipse.sirius.web.forms.description.ListDescription;
 import org.eclipse.sirius.web.forms.elements.ListElementProps;
 import org.eclipse.sirius.web.forms.validation.DiagnosticComponent;
 import org.eclipse.sirius.web.forms.validation.DiagnosticComponentProps;
+import org.eclipse.sirius.web.representations.IStatus;
 import org.eclipse.sirius.web.representations.VariableManager;
 
 /**
@@ -58,12 +61,21 @@ public class ListComponent implements IComponent {
 
             String itemId = listDescription.getItemIdProvider().apply(itemVariableManager);
             String itemLabel = listDescription.getItemLabelProvider().apply(itemVariableManager);
+            String itemKind = listDescription.getItemKindProvider().apply(itemVariableManager);
             String itemImageURL = listDescription.getItemImageURLProvider().apply(itemVariableManager);
+            boolean isItemDeletable = listDescription.getItemDeletableProvider().apply(itemVariableManager);
+            Function<VariableManager, IStatus> genericHandler = listDescription.getItemDeleteHandlerProvider();
+            Supplier<IStatus> specializedHandler = () -> {
+                return genericHandler.apply(itemVariableManager);
+            };
 
             // @formatter:off
             ListItem item = ListItem.newListItem(itemId)
                     .label(itemLabel)
+                    .kind(itemKind)
                     .imageURL(itemImageURL)
+                    .deletable(isItemDeletable)
+                    .deleteHandler(specializedHandler)
                     .build();
             // @formatter:on
 

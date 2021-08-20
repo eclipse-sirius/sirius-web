@@ -22,6 +22,7 @@ import org.eclipse.sirius.web.selection.description.SelectionDescription;
 import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationConfiguration;
 import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationEventProcessor;
 import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationEventProcessorFactory;
+import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationRefreshPolicyRegistry;
 import org.eclipse.sirius.web.spring.collaborative.api.ISubscriptionManagerFactory;
 import org.eclipse.sirius.web.spring.collaborative.selection.api.ISelectionEventProcessor;
 import org.eclipse.sirius.web.spring.collaborative.selection.api.SelectionConfiguration;
@@ -41,11 +42,14 @@ public class SelectionEventProcessorFactory implements IRepresentationEventProce
 
     private final ISubscriptionManagerFactory subscriptionManagerFactory;
 
+    private final IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry;
+
     public SelectionEventProcessorFactory(IRepresentationDescriptionSearchService representationDescriptionSearchService, IObjectService objectService,
-            ISubscriptionManagerFactory subscriptionManagerFactory) {
+            ISubscriptionManagerFactory subscriptionManagerFactory, IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.objectService = Objects.requireNonNull(objectService);
         this.subscriptionManagerFactory = Objects.requireNonNull(subscriptionManagerFactory);
+        this.representationRefreshPolicyRegistry = Objects.requireNonNull(representationRefreshPolicyRegistry);
     }
 
     @Override
@@ -72,7 +76,7 @@ public class SelectionEventProcessorFactory implements IRepresentationEventProce
                 Object object = optionalObject.get();
 
                 IRepresentationEventProcessor selectionEventProcessor = new SelectionEventProcessor(editingContext, selectionDescription, selectionConfiguration.getId(), object,
-                        this.subscriptionManagerFactory.create());
+                        this.subscriptionManagerFactory.create(), this.representationRefreshPolicyRegistry);
 
                 // @formatter:off
                 return Optional.of(selectionEventProcessor)

@@ -24,9 +24,11 @@ import org.eclipse.sirius.web.forms.description.FormDescription;
 import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationConfiguration;
 import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationEventProcessor;
 import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationEventProcessorFactory;
+import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationRefreshPolicyRegistry;
 import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.web.spring.collaborative.api.ISubscriptionManagerFactory;
 import org.eclipse.sirius.web.spring.collaborative.forms.api.FormConfiguration;
+import org.eclipse.sirius.web.spring.collaborative.forms.api.FormCreationParameters;
 import org.eclipse.sirius.web.spring.collaborative.forms.api.IFormEventHandler;
 import org.eclipse.sirius.web.spring.collaborative.forms.api.IFormEventProcessor;
 import org.eclipse.sirius.web.spring.collaborative.forms.api.IWidgetSubscriptionManagerFactory;
@@ -53,15 +55,18 @@ public class FormEventProcessorFactory implements IRepresentationEventProcessorF
 
     private final IWidgetSubscriptionManagerFactory widgetSubscriptionManagerFactory;
 
+    private final IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry;
+
     public FormEventProcessorFactory(IRepresentationDescriptionSearchService representationDescriptionSearchService, IObjectService objectService,
             IRepresentationSearchService representationSearchService, List<IFormEventHandler> formEventHandlers, ISubscriptionManagerFactory subscriptionManagerFactory,
-            IWidgetSubscriptionManagerFactory widgetSubscriptionManagerFactory) {
+            IWidgetSubscriptionManagerFactory widgetSubscriptionManagerFactory, IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.objectService = Objects.requireNonNull(objectService);
         this.representationSearchService = Objects.requireNonNull(representationSearchService);
         this.formEventHandlers = Objects.requireNonNull(formEventHandlers);
         this.subscriptionManagerFactory = Objects.requireNonNull(subscriptionManagerFactory);
         this.widgetSubscriptionManagerFactory = Objects.requireNonNull(widgetSubscriptionManagerFactory);
+        this.representationRefreshPolicyRegistry = Objects.requireNonNull(representationRefreshPolicyRegistry);
     }
 
     @Override
@@ -88,8 +93,16 @@ public class FormEventProcessorFactory implements IRepresentationEventProcessorF
                     FormDescription formDescription = optionalFormDescription.get();
                     Object object = optionalObject.get();
 
-                    IRepresentationEventProcessor formEventProcessor = new FormEventProcessor(editingContext, formDescription, formConfiguration.getId(), object, this.formEventHandlers,
-                            this.subscriptionManagerFactory.create(), this.widgetSubscriptionManagerFactory.create());
+                    // @formatter:off
+                    FormCreationParameters formCreationParameters = FormCreationParameters.newFormCreationParameters(formConfiguration.getId())
+                            .editingContext(editingContext)
+                            .formDescription(formDescription)
+                            .object(object)
+                            .build();
+                    // @formatter:on
+
+                    IRepresentationEventProcessor formEventProcessor = new FormEventProcessor(formCreationParameters, this.formEventHandlers, this.subscriptionManagerFactory.create(),
+                            this.widgetSubscriptionManagerFactory.create(), this.representationRefreshPolicyRegistry);
 
                     // @formatter:off
                     return Optional.of(formEventProcessor)

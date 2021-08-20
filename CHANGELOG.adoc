@@ -12,6 +12,10 @@
 
 - https://github.com/eclipse-sirius/sirius-components/issues/818[#818] [workbench] The concept of `Selection` will be restructured, as described in the ADR-036. Every part of the code involved in the manipulation of the selection of the workbench will be impacted. This includes concepts as remote as the representation descriptions which are used to computed fields like `kind`. For example, the behavior of the `TreeDescription#getKindProvider` and `NodeDescription#getTargetObjectKindProvider` will have to be updated for all the providers. Failure to update to the new behavior will make the selection fail in the workbench
 
+=== Deprecation warning
+
+[core] The Success parameterless contructor will be removed soon.
+
 === Breaking Changes
 
 - https://github.com/eclipse-sirius/sirius-components/issues/804[#804] [core] Update the name of our configuration properties. The configuration property `sirius.web.graphql.websocket.allowed.origins` will now be `sirius.components.cors.allowedOriginPatterns` and it will support complex patterns on top of regular origins. The default value will be restored to nothing since it has temporarily been set to `*`. In a development environment, the recommended value would be both patterns `https://localhost:[*]` and `http://localhost:[*]` in order to accept requests from any application hosted on the same machine. The configuration property `org.eclipse.sirius.web.editingContextEventProcessorRegistry.disposeDelay` will now be `sirius.components.editingContext.disposeDelay`. Its default value will be 1s since it is the only realistic option with domain and view support.
@@ -19,12 +23,14 @@
 === New features
 
 - https://github.com/eclipse-sirius/sirius-components/issues/773[#773] [compatibility] Add support for both `createView` and `deleteView` model operations which can be used to support unsynchronized diagrams from Sirius Desktop.
+- https://github.com/eclipse-sirius/sirius-components/issues/694[#694] [core] Add `IRepresentationRefreshPolicyRegistry` to contribute `IRepresentationRefreshPolicyProvider`s in order to customize on which kind of change description, representations will be refreshed.
 
 === Improvements
 
 - https://github.com/eclipse-sirius/sirius-components/issues/799[#799] [diagram] The buttons in the diagram's toolbar now have proper tooltips
 - [core] Add a task to display TypeScript errors in the VS Code problems view
 - https://github.com/eclipse-sirius/sirius-components/issues/773[#773] [compatibility] The synchronization policy of the node descriptions is now properly computed from the `AbstractNodeMapping`
+- https://github.com/eclipse-sirius/sirius-components/issues/694[#694] [core] Data can be provided to Success in order to notify changment made by operation made on the editing context.
 
 
 == v0.5.0

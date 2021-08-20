@@ -12,11 +12,36 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.representations;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+
 /**
  * The status to return when the representation description handler success.
  *
  * @author gcoutable
  */
 public class Success implements IStatus {
+
+    private final Map<String, Object> parameters;
+
+    private final String changeKind;
+
+    public Success() {
+        this("", new HashMap<>()); //$NON-NLS-1$
+    }
+
+    public Success(String changeKind, Map<String, Object> parameters) {
+        this.changeKind = Objects.requireNonNull(changeKind);
+        this.parameters = Objects.requireNonNull(parameters);
+    }
+
+    public String getChangeKind() {
+        return this.changeKind;
+    }
+
+    public Map<String, Object> getParameters() {
+        return this.parameters;
+    }
 
 }

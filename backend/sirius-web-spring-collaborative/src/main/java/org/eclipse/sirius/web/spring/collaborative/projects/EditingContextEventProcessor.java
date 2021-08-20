@@ -70,6 +70,8 @@ import reactor.core.publisher.Sinks.One;
  */
 public class EditingContextEventProcessor implements IEditingContextEventProcessor {
 
+    public static final String REPRESENTATION_ID = "representationId"; //$NON-NLS-1$
+
     private final Logger logger = LoggerFactory.getLogger(EditingContextEventProcessor.class);
 
     private final ICollaborativeMessageService messageService;
@@ -120,6 +122,15 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
 
     private Disposable setupChangeDescriptionSinkConsumer() {
         Consumer<ChangeDescription> consumer = changeDescription -> {
+
+            if (ChangeKind.REPRESENTATION_TO_DELETE.equals(changeDescription.getKind())) {
+                Object representationId = changeDescription.getParameters().get(REPRESENTATION_ID);
+                if (representationId instanceof UUID) {
+                    DeleteRepresentationInput deleteRepresentationInput = new DeleteRepresentationInput(UUID.randomUUID(), (UUID) representationId);
+                    this.doHandle(Sinks.one(), deleteRepresentationInput);
+                }
+            }
+
             this.publishEvent(changeDescription);
             this.disposeRepresentationIfNeeded();
 

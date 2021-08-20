@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -33,8 +33,6 @@ public final class FormCreationParameters {
 
     private UUID id;
 
-    private String label;
-
     private Object object;
 
     private FormDescription formDescription;
@@ -47,10 +45,6 @@ public final class FormCreationParameters {
 
     public UUID getId() {
         return this.id;
-    }
-
-    public String getLabel() {
-        return this.label;
     }
 
     public Object getObject() {
@@ -74,15 +68,14 @@ public final class FormCreationParameters {
         return new Builder(formCreationParameters.getId())
                 .formDescription(formCreationParameters.getFormDescription())
                 .editingContext(formCreationParameters.getEditingContext())
-                .label(formCreationParameters.getLabel())
                 .object(formCreationParameters.getObject());
         // @formatter:on
     }
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, label: {2}, formDescriptionId: {3}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.label, this.formDescription.getId());
+        String pattern = "{0} '{'id: {1}, formDescriptionId: {2}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.formDescription.getId());
     }
 
     /**
@@ -94,8 +87,6 @@ public final class FormCreationParameters {
     public static final class Builder {
         private UUID id;
 
-        private String label;
-
         private Object object;
 
         private FormDescription formDescription;
@@ -104,11 +95,6 @@ public final class FormCreationParameters {
 
         private Builder(UUID id) {
             this.id = id;
-        }
-
-        public Builder label(String label) {
-            this.label = Objects.requireNonNull(label);
-            return this;
         }
 
         public Builder object(Object object) {
@@ -129,7 +115,6 @@ public final class FormCreationParameters {
         public FormCreationParameters build() {
             FormCreationParameters formCreationParameters = new FormCreationParameters();
             formCreationParameters.id = this.id;
-            formCreationParameters.label = Objects.requireNonNull(this.label);
             formCreationParameters.object = Objects.requireNonNull(this.object);
             formCreationParameters.formDescription = Objects.requireNonNull(this.formDescription);
             formCreationParameters.editingContext = Objects.requireNonNull(this.editingContext);

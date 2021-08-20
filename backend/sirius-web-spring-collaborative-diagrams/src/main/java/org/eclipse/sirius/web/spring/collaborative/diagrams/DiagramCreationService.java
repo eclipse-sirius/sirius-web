@@ -82,6 +82,7 @@ public class DiagramCreationService implements IDiagramCreationService {
     @Override
     public Optional<Diagram> refresh(IEditingContext editingContext, IDiagramContext diagramContext) {
         Diagram previousDiagram = diagramContext.getDiagram();
+
         var optionalObject = this.objectService.getObject(editingContext, previousDiagram.getTargetObjectId());
         // @formatter:off
         var optionalDiagramDescription = this.representationDescriptionSearchService.findById(editingContext, previousDiagram.getDescriptionId())

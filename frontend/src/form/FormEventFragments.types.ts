@@ -26,12 +26,26 @@ export interface GQLPropertiesEventPayload {
   __typename: string;
 }
 
-export interface GQLSubscribersUpdatedEventPayload extends GQLFormEventPayload, GQLPropertiesEventPayload {
+export interface GQLRepresentationsEventSubscription {
+  representationsEvent: GQLRepresentationsEventPayload;
+}
+
+export interface GQLRepresentationsEventPayload {
+  __typename: string;
+}
+
+export interface GQLSubscribersUpdatedEventPayload
+  extends GQLFormEventPayload,
+    GQLPropertiesEventPayload,
+    GQLRepresentationsEventPayload {
   id: string;
   subscribers: GQLSubscriber[];
 }
 
-export interface GQLWidgetSubscriptionsUpdatedEventPayload extends GQLFormEventPayload, GQLPropertiesEventPayload {
+export interface GQLWidgetSubscriptionsUpdatedEventPayload
+  extends GQLFormEventPayload,
+    GQLPropertiesEventPayload,
+    GQLRepresentationsEventPayload {
   id: string;
   widgetSubscriptions: GQLWidgetSubscription[];
 }
@@ -45,7 +59,10 @@ export interface GQLSubscriber {
   username: string;
 }
 
-export interface GQLFormRefreshedEventPayload extends GQLFormEventPayload, GQLPropertiesEventPayload {
+export interface GQLFormRefreshedEventPayload
+  extends GQLFormEventPayload,
+    GQLPropertiesEventPayload,
+    GQLRepresentationsEventPayload {
   id: string;
   form: GQLForm;
 }
@@ -129,4 +146,5 @@ export interface GQLListItem {
   id: string;
   label: string;
   imageURL: string;
+  deletable: Boolean;
 }

@@ -98,5 +98,7 @@ export interface List extends Widget {
 export interface ListItem {
   id: string;
   label: string;
+  kind: string;
   imageURL: string;
+  deletable: boolean;
 }

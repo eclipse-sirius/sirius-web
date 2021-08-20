@@ -13,6 +13,8 @@
 package org.eclipse.sirius.web.spring.collaborative.api;
 
 import java.text.MessageFormat;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -33,10 +35,17 @@ public class ChangeDescription {
 
     private final IInput input;
 
+    private final Map<String, Object> parameters;
+
     public ChangeDescription(String kind, UUID sourceId, IInput input) {
+        this(kind, sourceId, input, new HashMap<>());
+    }
+
+    public ChangeDescription(String kind, UUID sourceId, IInput input, Map<String, Object> parameters) {
         this.kind = Objects.requireNonNull(kind);
         this.sourceId = Objects.requireNonNull(sourceId);
         this.input = Objects.requireNonNull(input);
+        this.parameters = Objects.requireNonNull(parameters);
     }
 
     public String getKind() {
@@ -49,6 +58,10 @@ public class ChangeDescription {
 
     public IInput getInput() {
         return this.input;
+    }
+
+    public Map<String, Object> getParameters() {
+        return this.parameters;
     }
 
     @Override

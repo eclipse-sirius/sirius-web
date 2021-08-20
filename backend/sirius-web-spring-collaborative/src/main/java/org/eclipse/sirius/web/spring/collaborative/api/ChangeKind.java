@@ -33,6 +33,8 @@ public final class ChangeKind {
 
     public static final String FOCUS_CHANGE = "FOCUS_CHANGE"; //$NON-NLS-1$
 
+    public static final String REPRESENTATION_TO_DELETE = "REPRESENTATION_TO_DELETE"; //$NON-NLS-1$
+
     private ChangeKind() {
         // Prevent instantiation
     }

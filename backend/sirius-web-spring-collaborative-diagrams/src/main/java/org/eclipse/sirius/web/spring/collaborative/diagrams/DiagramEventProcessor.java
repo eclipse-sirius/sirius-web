@@ -20,11 +20,15 @@ import java.util.UUID;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.core.api.IPayload;
+import org.eclipse.sirius.web.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.web.core.api.IRepresentationInput;
 import org.eclipse.sirius.web.diagrams.Diagram;
+import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.web.representations.IRepresentation;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeKind;
+import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationRefreshPolicy;
+import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationRefreshPolicyRegistry;
 import org.eclipse.sirius.web.spring.collaborative.api.ISubscriptionManager;
 import org.eclipse.sirius.web.spring.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.web.spring.collaborative.diagrams.api.IDiagramCreationService;
@@ -64,11 +68,16 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
 
     private final IDiagramCreationService diagramCreationService;
 
+    private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
+
+    private final IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry;
+
     private final Many<Boolean> canBeDisposedSink = Sinks.many().unicast().onBackpressureBuffer();
 
     private final DiagramEventFlux diagramEventFlux;
 
     public DiagramEventProcessor(IEditingContext editingContext, IDiagramContext diagramContext, List<IDiagramEventHandler> diagramEventHandlers, ISubscriptionManager subscriptionManager,
+            IRepresentationDescriptionSearchService representationDescriptionSearchService, IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry,
             IDiagramCreationService diagramCreationService) {
         this.logger.trace("Creating the diagram event processor {}", diagramContext.getDiagram().getId()); //$NON-NLS-1$
 
@@ -76,6 +85,8 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
         this.diagramContext = Objects.requireNonNull(diagramContext);
         this.diagramEventHandlers = Objects.requireNonNull(diagramEventHandlers);
         this.subscriptionManager = Objects.requireNonNull(subscriptionManager);
+        this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
+        this.representationRefreshPolicyRegistry = Objects.requireNonNull(representationRefreshPolicyRegistry);
         this.diagramCreationService = Objects.requireNonNull(diagramCreationService);
 
         // We automatically refresh the representation before using it since things may have changed since the moment it
@@ -137,15 +148,32 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
 
     /**
      * A diagram is refresh if there is a semantic change or if there is a diagram layout change coming from this very
-     * diagram (not other diagrams)
+     * diagram (not other diagrams).
      *
      * @param changeDescription
      *            The change description
      * @return <code>true</code> if the diagram should be refreshed, <code>false</code> otherwise
      */
-    private boolean shouldRefresh(ChangeDescription changeDescription) {
-        return ChangeKind.SEMANTIC_CHANGE.equals(changeDescription.getKind())
-                || (DiagramChangeKind.DIAGRAM_LAYOUT_CHANGE.equals(changeDescription.getKind()) && changeDescription.getSourceId().equals(this.diagramContext.getDiagram().getId()));
+    public boolean shouldRefresh(ChangeDescription changeDescription) {
+        Diagram diagram = this.diagramContext.getDiagram();
+        // @formatter:off
+        var optionalDiagramDescription = this.representationDescriptionSearchService.findById(this.editingContext, diagram.getDescriptionId())
+                .filter(DiagramDescription.class::isInstance)
+                .map(DiagramDescription.class::cast);
+        // @formatter:on
+
+        // @formatter:off
+        return optionalDiagramDescription.flatMap(this.representationRefreshPolicyRegistry::getRepresentationRefreshPolicy)
+                .orElseGet(this::getDefaultRefreshPolicy)
+                .shouldRefresh(changeDescription);
+        // @formatter:on
+    }
+
+    private IRepresentationRefreshPolicy getDefaultRefreshPolicy() {
+        return changeDescription -> {
+            return ChangeKind.SEMANTIC_CHANGE.equals(changeDescription.getKind())
+                    || (DiagramChangeKind.DIAGRAM_LAYOUT_CHANGE.equals(changeDescription.getKind()) && changeDescription.getSourceId().equals(this.diagramContext.getDiagram().getId()));
+        };
     }
 
     @Override

@@ -20,6 +20,7 @@ import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationConfiguration;
 import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationEventProcessor;
 import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationEventProcessorFactory;
+import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationRefreshPolicyRegistry;
 import org.eclipse.sirius.web.spring.collaborative.api.ISubscriptionManagerFactory;
 import org.eclipse.sirius.web.spring.collaborative.validation.api.IValidationDescriptionProvider;
 import org.eclipse.sirius.web.spring.collaborative.validation.api.IValidationEventHandler;
@@ -40,15 +41,18 @@ public class ValidationEventProcessorFactory implements IRepresentationEventProc
 
     private final IValidationDescriptionProvider validationDescriptionProvider;
 
-    private List<IValidationEventHandler> validationEventHandlers;
+    private final List<IValidationEventHandler> validationEventHandlers;
 
-    private ISubscriptionManagerFactory subscriptionManagerFactory;
+    private final ISubscriptionManagerFactory subscriptionManagerFactory;
+
+    private final IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry;
 
     public ValidationEventProcessorFactory(IValidationDescriptionProvider validationDescriptionProvider, List<IValidationEventHandler> validationEventHandlers,
-            ISubscriptionManagerFactory subscriptionManagerFactory) {
+            ISubscriptionManagerFactory subscriptionManagerFactory, IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry) {
         this.validationDescriptionProvider = Objects.requireNonNull(validationDescriptionProvider);
         this.validationEventHandlers = Objects.requireNonNull(validationEventHandlers);
         this.subscriptionManagerFactory = Objects.requireNonNull(subscriptionManagerFactory);
+        this.representationRefreshPolicyRegistry = Objects.requireNonNull(representationRefreshPolicyRegistry);
     }
 
     @Override
@@ -64,7 +68,7 @@ public class ValidationEventProcessorFactory implements IRepresentationEventProc
 
             ValidationContext validationContext = new ValidationContext(null);
             IRepresentationEventProcessor validationEventProcessor = new ValidationEventProcessor(editingContext, validationDescription, validationContext, this.validationEventHandlers,
-                    this.subscriptionManagerFactory.create(), new SimpleMeterRegistry());
+                    this.subscriptionManagerFactory.create(), new SimpleMeterRegistry(), this.representationRefreshPolicyRegistry);
 
             // @formatter:off
             return Optional.of(validationEventProcessor)

@@ -73,7 +73,6 @@ public interface IDiagramCreationService {
         public Optional<Diagram> refresh(IEditingContext editingContext, IDiagramContext diagramContext) {
             return Optional.empty();
         }
-
     }
 
 }

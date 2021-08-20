@@ -10,14 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Form, Subscriber, WidgetSubscription } from 'form/Form.types';
-import { Selection } from 'workbench/Workbench.types';
+package org.eclipse.sirius.web.spring.collaborative.forms.api;
 
-export interface FormProps {
-  editingContextId: string;
-  form: Form;
-  subscribers: Subscriber[];
-  widgetSubscriptions: WidgetSubscription[];
-  readOnly: boolean;
-  setSelection: (selection: Selection) => void;
+import org.eclipse.sirius.web.forms.description.FormDescription;
+
+/**
+ * Interface used to contribute the form description that contains all OCP representations.
+ *
+ * @author gcoutable
+ */
+public interface IRepresentationsDescriptionProvider {
+    FormDescription getRepresentationsDescription();
 }

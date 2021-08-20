@@ -1,6 +1,7 @@
 extend type Subscription {
   formEvent(input: FormEventInput!): FormEventPayload!
   propertiesEvent(input: PropertiesEventInput!): PropertiesEventPayload!
+  representationsEvent(input: RepresentationsEventInput!): RepresentationsEventPayload!
 }
 
 input FormEventInput {
@@ -15,9 +16,17 @@ input PropertiesEventInput {
   objectId: ID!
 }
 
+input RepresentationsEventInput {
+  id: ID!
+  editingContextId: ID!
+  objectId: ID!
+}
+
 union FormEventPayload = ErrorPayload | FormRefreshedEventPayload | SubscribersUpdatedEventPayload | WidgetSubscriptionsUpdatedEventPayload
 
 union PropertiesEventPayload = ErrorPayload | FormRefreshedEventPayload | SubscribersUpdatedEventPayload | WidgetSubscriptionsUpdatedEventPayload
+
+union RepresentationsEventPayload = ErrorPayload | FormRefreshedEventPayload | SubscribersUpdatedEventPayload | WidgetSubscriptionsUpdatedEventPayload
 
 type WidgetSubscriptionsUpdatedEventPayload {
   id: ID!
@@ -77,7 +86,9 @@ type List implements Widget {
 type ListItem {
   id: ID!
   label: String!
+  kind: String!
   imageURL: String!
+  deletable: Boolean!
 }
 
 type MultiSelect implements Widget {
@@ -141,6 +152,7 @@ extend type Mutation {
   editSelect(input: EditSelectInput!): EditSelectPayload!
   editTextfield(input: EditTextfieldInput!): EditTextfieldPayload!
   updateWidgetFocus(input: UpdateWidgetFocusInput!): UpdateWidgetFocusPayload!
+  deleteListItem(input: DeleteListItemInput!): DeleteListItemPayload!
 }
 
 input EditCheckboxInput {
@@ -151,7 +163,7 @@ input EditCheckboxInput {
   newValue: Boolean!
 }
 
-union EditCheckboxPayload = ErrorPayload|EditCheckboxSuccessPayload
+union EditCheckboxPayload = ErrorPayload | EditCheckboxSuccessPayload
 
 type EditCheckboxSuccessPayload {
   id: ID!
@@ -227,3 +239,17 @@ type UpdateWidgetFocusSuccessPayload {
   id: ID!
   updateFocusWidgetId: String!
 }
+
+input DeleteListItemInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  listId: ID!
+  listItemId: ID!
+}
+
+type DeleteListItemSuccessPayload {
+  id: ID!
+}
+
+union DeleteListItemPayload = ErrorPayload | DeleteListItemSuccessPayload

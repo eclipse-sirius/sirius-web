@@ -28,6 +28,8 @@ import org.eclipse.sirius.web.selection.description.SelectionDescription;
 import org.eclipse.sirius.web.selection.renderer.SelectionRenderer;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeKind;
+import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationRefreshPolicy;
+import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationRefreshPolicyRegistry;
 import org.eclipse.sirius.web.spring.collaborative.api.ISubscriptionManager;
 import org.eclipse.sirius.web.spring.collaborative.selection.api.ISelectionEventProcessor;
 import org.eclipse.sirius.web.spring.collaborative.selection.dto.SelectionRefreshedEventPayload;
@@ -60,6 +62,8 @@ public class SelectionEventProcessor implements ISelectionEventProcessor {
 
     private final Object object;
 
+    private final IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry;
+
     private final ISubscriptionManager subscriptionManager;
 
     private final Many<IPayload> sink = Sinks.many().multicast().directBestEffort();
@@ -68,7 +72,8 @@ public class SelectionEventProcessor implements ISelectionEventProcessor {
 
     private final AtomicReference<Selection> currentSelection = new AtomicReference<>();
 
-    public SelectionEventProcessor(IEditingContext editingContext, SelectionDescription selectionDescription, UUID id, Object object, ISubscriptionManager subscriptionManager) {
+    public SelectionEventProcessor(IEditingContext editingContext, SelectionDescription selectionDescription, UUID id, Object object, ISubscriptionManager subscriptionManager,
+            IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry) {
         this.logger.trace("Creating the selection event processor {}", id); //$NON-NLS-1$
 
         this.selectionDescription = Objects.requireNonNull(selectionDescription);
@@ -76,6 +81,7 @@ public class SelectionEventProcessor implements ISelectionEventProcessor {
         this.id = Objects.requireNonNull(id);
         this.object = Objects.requireNonNull(object);
         this.subscriptionManager = Objects.requireNonNull(subscriptionManager);
+        this.representationRefreshPolicyRegistry = Objects.requireNonNull(representationRefreshPolicyRegistry);
 
         Selection selection = this.refreshSelection();
         this.currentSelection.set(selection);
@@ -99,7 +105,7 @@ public class SelectionEventProcessor implements ISelectionEventProcessor {
 
     @Override
     public void refresh(ChangeDescription changeDescription) {
-        if (ChangeKind.SEMANTIC_CHANGE.equals(changeDescription.getKind())) {
+        if (this.shouldRefresh(changeDescription)) {
             Selection selection = this.refreshSelection();
 
             this.currentSelection.set(selection);
@@ -109,6 +115,18 @@ public class SelectionEventProcessor implements ISelectionEventProcessor {
                 this.logger.warn(pattern, emitResult);
             }
         }
+    }
+
+    private boolean shouldRefresh(ChangeDescription changeDescription) {
+        // @formatter:off
+        return this.representationRefreshPolicyRegistry.getRepresentationRefreshPolicy(this.selectionDescription)
+                .orElseGet(this::getDefaultRefreshPolicy)
+                .shouldRefresh(changeDescription);
+        // @formatter:on
+    }
+
+    private IRepresentationRefreshPolicy getDefaultRefreshPolicy() {
+        return (changeDescription) -> ChangeKind.SEMANTIC_CHANGE.equals(changeDescription.getKind());
     }
 
     private Selection refreshSelection() {
