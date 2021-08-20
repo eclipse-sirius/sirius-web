@@ -256,7 +256,10 @@ export const NewRepresentationModal = ({
               fullWidth
               data-testid="representationDescription">
               {representationDescriptions.map((representationDescription) => (
-                <MenuItem value={representationDescription.id} key={representationDescription.id}>
+                <MenuItem
+                  value={representationDescription.id}
+                  key={representationDescription.id}
+                  data-testid={representationDescription.label}>
                   {representationDescription.label}
                 </MenuItem>
               ))}
