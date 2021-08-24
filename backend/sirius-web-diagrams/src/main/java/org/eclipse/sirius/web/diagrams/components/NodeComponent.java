@@ -89,7 +89,12 @@ public class NodeComponent implements IComponent {
         if (synchronizationPolicy == SynchronizationPolicy.SYNCHRONIZED) {
             shouldRender = true;
         } else if (synchronizationPolicy == SynchronizationPolicy.UNSYNCHRONIZED) {
-            shouldRender = optionalPreviousNode.isPresent() || this.existsViewCreationRequested(targetObjectId);
+            if (optionalPreviousNode.isPresent()) {
+                Node previousNode = optionalPreviousNode.get();
+                shouldRender = !this.existsViewDeletionRequested(previousNode.getId());
+            } else {
+                shouldRender = this.existsViewCreationRequested(targetObjectId);
+            }
         }
         return shouldRender;
     }
@@ -102,6 +107,13 @@ public class NodeComponent implements IComponent {
                 .filter(viewCreationRequest -> Objects.equals(viewCreationRequest.getDescriptionId(), nodeDescriptionId))
                 .filter(viewCreationRequest -> Objects.equals(viewCreationRequest.getTargetObjectId(), targetObjectId))
                 .anyMatch(viewCreationRequest -> Objects.equals(viewCreationRequest.getParentElementId(), parentElementId));
+        // @formatter:on
+    }
+
+    private boolean existsViewDeletionRequested(UUID elementId) {
+        // @formatter:off
+        return this.props.getViewDeletionRequests().stream()
+                .anyMatch(viewDeletionRequest -> Objects.equals(viewDeletionRequest.getElementId(), elementId));
         // @formatter:on
     }
 
@@ -216,6 +228,7 @@ public class NodeComponent implements IComponent {
                     .containmentKind(NodeContainmentKind.BORDER_NODE)
                     .cache(cache)
                     .viewCreationRequests(this.props.getViewCreationRequests())
+                    .viewDeletionRequests(this.props.getViewDeletionRequests())
                     .parentElementId(nodeId)
                     .build();
             //@formatter:on
@@ -238,6 +251,7 @@ public class NodeComponent implements IComponent {
                     .containmentKind(NodeContainmentKind.CHILD_NODE)
                     .cache(cache)
                     .viewCreationRequests(this.props.getViewCreationRequests())
+                    .viewDeletionRequests(this.props.getViewDeletionRequests())
                     .parentElementId(nodeId)
                     .build();
 

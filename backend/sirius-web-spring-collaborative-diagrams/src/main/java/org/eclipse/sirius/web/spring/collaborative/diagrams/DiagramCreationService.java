@@ -23,6 +23,7 @@ import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.ViewCreationRequest;
+import org.eclipse.sirius.web.diagrams.ViewDeletionRequest;
 import org.eclipse.sirius.web.diagrams.components.DiagramComponent;
 import org.eclipse.sirius.web.diagrams.components.DiagramComponentProps;
 import org.eclipse.sirius.web.diagrams.components.DiagramComponentProps.Builder;
@@ -108,12 +109,14 @@ public class DiagramCreationService implements IDiagramCreationService {
         Optional<IDiagramEvent> optionalDiagramElementEvent = optionalDiagramContext.map(IDiagramContext::getDiagramEvent);
         Optional<Diagram> optionalPreviousDiagram = optionalDiagramContext.map(IDiagramContext::getDiagram);
         List<ViewCreationRequest> viewCreationRequests = optionalDiagramContext.map(IDiagramContext::getViewCreationRequests).orElse(List.of());
+        List<ViewDeletionRequest> viewDeletionRequests = optionalDiagramContext.map(IDiagramContext::getViewDeletionRequests).orElse(List.of());
 
         //@formatter:off
         Builder builder = DiagramComponentProps.newDiagramComponentProps()
                 .variableManager(variableManager)
                 .diagramDescription(diagramDescription)
                 .viewCreationRequests(viewCreationRequests)
+                .viewDeletionRequests(viewDeletionRequests)
                 .previousDiagram(optionalPreviousDiagram);
         //@formatter:on
 

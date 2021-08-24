@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.ViewCreationRequest;
+import org.eclipse.sirius.web.diagrams.ViewDeletionRequest;
 import org.eclipse.sirius.web.diagrams.events.IDiagramEvent;
 
 /**
@@ -38,8 +39,50 @@ public interface IDiagramContext {
 
     List<ViewCreationRequest> getViewCreationRequests();
 
+    List<ViewDeletionRequest> getViewDeletionRequests();
+
     IDiagramEvent getDiagramEvent();
 
     void setDiagramEvent(IDiagramEvent diagramElementEvent);
 
+    /**
+     * Implementation which does nothing, used for mocks in unit tests.
+     *
+     * @author sbegaudeau
+     */
+    class NoOp implements IDiagramContext {
+
+        @Override
+        public Diagram getDiagram() {
+            return null;
+        }
+
+        @Override
+        public void update(Diagram updatedDiagram) {
+        }
+
+        @Override
+        public void reset() {
+        }
+
+        @Override
+        public List<ViewCreationRequest> getViewCreationRequests() {
+            return List.of();
+        }
+
+        @Override
+        public List<ViewDeletionRequest> getViewDeletionRequests() {
+            return List.of();
+        }
+
+        @Override
+        public IDiagramEvent getDiagramEvent() {
+            return null;
+        }
+
+        @Override
+        public void setDiagramEvent(IDiagramEvent diagramElementEvent) {
+        }
+
+    }
 }

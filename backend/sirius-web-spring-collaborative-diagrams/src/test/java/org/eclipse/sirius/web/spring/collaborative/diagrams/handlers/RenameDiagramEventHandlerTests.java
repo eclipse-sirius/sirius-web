@@ -31,6 +31,7 @@ import org.eclipse.sirius.web.representations.ISemanticRepresentation;
 import org.eclipse.sirius.web.spring.collaborative.api.EventHandlerResponse;
 import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationSearchService;
+import org.eclipse.sirius.web.spring.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.web.spring.collaborative.diagrams.dto.RenameDiagramInput;
 import org.eclipse.sirius.web.spring.collaborative.dto.RenameRepresentationSuccessPayload;
 import org.junit.jupiter.api.Test;
@@ -88,7 +89,7 @@ public class RenameDiagramEventHandlerTests {
 
         assertThat(handler.canHandle(input)).isTrue();
 
-        EventHandlerResponse handlerResponse = handler.handle(new IEditingContext.NoOp(), new NoOpDiagramContext(), input);
+        EventHandlerResponse handlerResponse = handler.handle(new IEditingContext.NoOp(), new IDiagramContext.NoOp(), input);
         IPayload payload = handlerResponse.getPayload();
         assertThat(payload).isInstanceOf(RenameRepresentationSuccessPayload.class);
     }
