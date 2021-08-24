@@ -52,6 +52,7 @@ import org.eclipse.sirius.web.emf.compatibility.DomainClassPredicate;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
 import org.eclipse.sirius.web.interpreter.Result;
 import org.eclipse.sirius.web.interpreter.Status;
+import org.eclipse.sirius.web.representations.Failure;
 import org.eclipse.sirius.web.representations.IRepresentationDescription;
 import org.eclipse.sirius.web.representations.IStatus;
 import org.eclipse.sirius.web.representations.VariableManager;
@@ -167,6 +168,7 @@ public class ViewConverter {
                     .nodeDescriptions(nodeDescriptions)
                     .edgeDescriptions(edgeDescriptions)
                     .toolSections(this.createToolSections(interpreter))
+                    .dropHandler(variableManager -> new Failure("")) //$NON-NLS-1$
                     .build();
             // @formatter:on
         } finally {
