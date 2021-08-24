@@ -153,6 +153,7 @@ public class DiagramRendererEdgeTests {
                 .variableManager(variableManager)
                 .diagramDescription(diagramDescription)
                 .viewCreationRequests(List.of())
+                .viewDeletionRequests(List.of())
                 .previousDiagram(Optional.empty())
                 .build();
         // @formatter:on

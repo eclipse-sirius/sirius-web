@@ -20,6 +20,7 @@ import org.eclipse.sirius.web.annotations.Immutable;
 import org.eclipse.sirius.web.components.IProps;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.ViewCreationRequest;
+import org.eclipse.sirius.web.diagrams.ViewDeletionRequest;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.web.representations.VariableManager;
 
@@ -37,6 +38,8 @@ public final class DiagramComponentProps implements IProps {
     private Optional<Diagram> previousDiagram;
 
     private List<ViewCreationRequest> viewCreationRequests;
+
+    private List<ViewDeletionRequest> viewDeletionRequests;
 
     private DiagramComponentProps() {
         // Prevent instantiation
@@ -58,6 +61,10 @@ public final class DiagramComponentProps implements IProps {
         return this.viewCreationRequests;
     }
 
+    public List<ViewDeletionRequest> getViewDeletionRequests() {
+        return this.viewDeletionRequests;
+    }
+
     public static Builder newDiagramComponentProps() {
         return new Builder();
     }
@@ -76,6 +83,8 @@ public final class DiagramComponentProps implements IProps {
         private Optional<Diagram> previousDiagram;
 
         private List<ViewCreationRequest> viewCreationRequests;
+
+        private List<ViewDeletionRequest> viewDeletionRequests;
 
         public Builder variableManager(VariableManager variableManager) {
             this.variableManager = Objects.requireNonNull(variableManager);
@@ -97,12 +106,18 @@ public final class DiagramComponentProps implements IProps {
             return this;
         }
 
+        public Builder viewDeletionRequests(List<ViewDeletionRequest> viewDeletionRequests) {
+            this.viewDeletionRequests = Objects.requireNonNull(viewDeletionRequests);
+            return this;
+        }
+
         public DiagramComponentProps build() {
             DiagramComponentProps diagramComponentProps = new DiagramComponentProps();
             diagramComponentProps.variableManager = Objects.requireNonNull(this.variableManager);
             diagramComponentProps.diagramDescription = Objects.requireNonNull(this.diagramDescription);
             diagramComponentProps.previousDiagram = Objects.requireNonNull(this.previousDiagram);
             diagramComponentProps.viewCreationRequests = List.copyOf(Objects.requireNonNull(this.viewCreationRequests));
+            diagramComponentProps.viewDeletionRequests = List.copyOf(Objects.requireNonNull(this.viewDeletionRequests));
             return diagramComponentProps;
         }
     }

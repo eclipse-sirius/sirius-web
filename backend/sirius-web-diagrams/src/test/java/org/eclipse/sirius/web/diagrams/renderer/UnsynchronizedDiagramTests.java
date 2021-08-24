@@ -28,6 +28,7 @@ import org.eclipse.sirius.web.diagrams.Node;
 import org.eclipse.sirius.web.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.web.diagrams.Size;
 import org.eclipse.sirius.web.diagrams.ViewCreationRequest;
+import org.eclipse.sirius.web.diagrams.ViewDeletionRequest;
 import org.eclipse.sirius.web.diagrams.components.DiagramComponent;
 import org.eclipse.sirius.web.diagrams.components.DiagramComponentProps;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
@@ -51,13 +52,33 @@ public class UnsynchronizedDiagramTests {
     private static final String TARGET_OBJECT_ID = "targetObjectId"; //$NON-NLS-1$
 
     /**
+     * This very simple test will validate that we can render synchronized diagram elements. We will use a diagram
+     * description containing one synchronized node description and one unsynchronized node description. We will test
+     * the following sequence of events:
+     *
+     * <ul>
+     * <li>render the diagram from scratch: only the synchronized element should appear</li>
+     * <li>refresh the diagram: nothing should change</li>
+     * </ul>
+     */
+    @Test
+    public void testRenderingOnRoot() {
+        DiagramDescription diagramDescription = this.getDiagramDescription();
+
+        Diagram initialDiagram = this.render(diagramDescription, List.of(), List.of(), Optional.empty());
+        assertThat(initialDiagram.getNodes()).hasSize(1);
+
+        Diagram refreshedDiagram = this.render(diagramDescription, List.of(), List.of(), Optional.of(initialDiagram));
+        assertThat(refreshedDiagram.getNodes()).hasSize(1);
+    }
+
+    /**
      * This very simple test will validate that we can render synchronized and unsynchronized diagram elements. We will
      * use a diagram description containing one synchronized node description and one unsynchronized node description.
      * We will test the following sequence of events:
      *
      * <ul>
      * <li>render the diagram from scratch: only the synchronized element should appear</li>
-     * <li>refresh the diagram: nothing should change</li>
      * <li>create a ViewCreationRequest on a node and refresh this new diagram: two nodes should be visible, the
      * synchronized one and the unsynchronized one</li>
      * </ul>
@@ -66,21 +87,57 @@ public class UnsynchronizedDiagramTests {
     public void testUnsynchronizedRenderingOnRoot() {
         DiagramDescription diagramDescription = this.getDiagramDescription();
 
-        Diagram initialDiagram = this.render(diagramDescription, List.of(), Optional.empty());
-        assertThat(initialDiagram.getNodes()).hasSize(1);
-
-        Diagram refreshedDiagram = this.render(diagramDescription, List.of(), Optional.of(initialDiagram));
-        assertThat(refreshedDiagram.getNodes()).hasSize(1);
+        Diagram initialDiagram = this.render(diagramDescription, List.of(), List.of(), Optional.empty());
 
         // @formatter:off
         ViewCreationRequest viewCreationRequest = ViewCreationRequest.newViewCreationRequest()
             .descriptionId(diagramDescription.getNodeDescriptions().get(0).getId())
-            .parentElementId(refreshedDiagram.getId())
+            .parentElementId(initialDiagram.getId())
             .targetObjectId(TARGET_OBJECT_ID)
             .build();
         // @formatter:on
-        Diagram refreshedDiagramAfterNodeCreation = this.render(diagramDescription, List.of(viewCreationRequest), Optional.of(refreshedDiagram));
+        Diagram refreshedDiagramAfterNodeCreation = this.render(diagramDescription, List.of(viewCreationRequest), List.of(), Optional.of(initialDiagram));
         assertThat(refreshedDiagramAfterNodeCreation.getNodes()).hasSize(2);
+    }
+
+    /**
+     * This very simple test will validate that we can render synchronized and unsynchronized diagram elements. We will
+     * use a diagram description containing one synchronized node description and one unsynchronized node description.
+     * We will test the following sequence of events:
+     *
+     * <ul>
+     * <li>render the diagram from scratch: only the synchronized element should appear</li>
+     * <li>create a ViewCreationRequest on a node and refresh this new diagram: two nodes should be visible, the
+     * synchronized one and the unsynchronized one</li>
+     * <li>create a ViewDeletionRequest on a node and refresh this new diagram: one node should be visible, the
+     * synchronized one</li>
+     * </ul>
+     */
+    @Test
+    public void testUnsynchronizedRenderingOnRootAfterDeletion() {
+        DiagramDescription diagramDescription = this.getDiagramDescription();
+
+        Diagram initialDiagram = this.render(diagramDescription, List.of(), List.of(), Optional.empty());
+
+        // @formatter:off
+        ViewCreationRequest viewCreationRequest = ViewCreationRequest.newViewCreationRequest()
+            .descriptionId(diagramDescription.getNodeDescriptions().get(0).getId())
+            .parentElementId(initialDiagram.getId())
+            .targetObjectId(TARGET_OBJECT_ID)
+            .build();
+        // @formatter:on
+        Diagram refreshedDiagramAfterNodeCreation = this.render(diagramDescription, List.of(viewCreationRequest), List.of(), Optional.of(initialDiagram));
+
+        UUID nodeIdToDelete = refreshedDiagramAfterNodeCreation.getNodes().get(0).getId();
+
+        // @formatter:off
+        ViewDeletionRequest viewDeletionRequest = ViewDeletionRequest.newViewDeletionRequest()
+            .elementId(nodeIdToDelete)
+            .build();
+        // @formatter:on
+        Diagram refreshedDiagramAfterNodeDeletion = this.render(diagramDescription, List.of(), List.of(viewDeletionRequest), Optional.of(refreshedDiagramAfterNodeCreation));
+        assertThat(refreshedDiagramAfterNodeDeletion.getNodes()).hasSize(1);
+
     }
 
     /**
@@ -97,7 +154,7 @@ public class UnsynchronizedDiagramTests {
     public void testUnsynchronizedRenderingOnNodeContainer() {
         DiagramDescription diagramDescription = this.getDiagramDescription();
 
-        Diagram initialDiagram = this.render(diagramDescription, List.of(), Optional.empty());
+        Diagram initialDiagram = this.render(diagramDescription, List.of(), List.of(), Optional.empty());
         // @formatter:off
         ViewCreationRequest viewCreationRequest = ViewCreationRequest.newViewCreationRequest()
             .descriptionId(diagramDescription.getNodeDescriptions().get(0).getId())
@@ -105,7 +162,7 @@ public class UnsynchronizedDiagramTests {
             .targetObjectId(TARGET_OBJECT_ID)
             .build();
         // @formatter:on
-        Diagram diagramAfterFirstNodeCreation = this.render(diagramDescription, List.of(viewCreationRequest), Optional.of(initialDiagram));
+        Diagram diagramAfterFirstNodeCreation = this.render(diagramDescription, List.of(viewCreationRequest), List.of(), Optional.of(initialDiagram));
         UUID descriptionId = diagramDescription.getNodeDescriptions().get(0).getChildNodeDescriptions().get(0).getId();
         UUID parentNodeId = diagramAfterFirstNodeCreation.getNodes().get(0).getId();
         // @formatter:off
@@ -115,7 +172,7 @@ public class UnsynchronizedDiagramTests {
             .targetObjectId(TARGET_OBJECT_ID)
             .build();
         // @formatter:on
-        Diagram diagramAfterSecondNodeCreation = this.render(diagramDescription, List.of(childViewCreationRequest), Optional.of(diagramAfterFirstNodeCreation));
+        Diagram diagramAfterSecondNodeCreation = this.render(diagramDescription, List.of(childViewCreationRequest), List.of(), Optional.of(diagramAfterFirstNodeCreation));
 
         assertThat(diagramAfterSecondNodeCreation.getNodes()).hasSize(2);
         Node firstRootNode = diagramAfterSecondNodeCreation.getNodes().get(0);
@@ -127,13 +184,67 @@ public class UnsynchronizedDiagramTests {
         assertThat(secondRootNode.getChildNodes()).isEmpty();
     }
 
-    private Diagram render(DiagramDescription diagramDescription, List<ViewCreationRequest> viewCreationRequests, Optional<Diagram> optionalPreviousDiagram) {
+    /**
+     * This very simple test will validate that we can add and remove an unsynchronized node thanks to a
+     * ViewCreationRequest/ViewDeletionRequest on a node container. We will test the following sequence of events:
+     *
+     * <ul>
+     * <li>render the diagram with two nodes (the first is unsynchronized, the second is synchronized)</li>
+     * <li>create a new node thanks to a ViewCreationRequest during a refresh diagram</li>
+     * <li>delete the node thanks to a ViewDeletionRequest during a refresh diagram: no child nodes should be visible on
+     * the first unsynchronized node children</li>
+     * </ul>
+     */
+    @Test
+    public void testUnsynchronizedRenderingOnNodeContainerAfterDeletion() {
+        DiagramDescription diagramDescription = this.getDiagramDescription();
+
+        Diagram initialDiagram = this.render(diagramDescription, List.of(), List.of(), Optional.empty());
+        // @formatter:off
+        ViewCreationRequest viewCreationRequest = ViewCreationRequest.newViewCreationRequest()
+            .descriptionId(diagramDescription.getNodeDescriptions().get(0).getId())
+            .parentElementId(initialDiagram.getId())
+            .targetObjectId(TARGET_OBJECT_ID)
+            .build();
+        // @formatter:on
+        Diagram diagramAfterFirstNodeCreation = this.render(diagramDescription, List.of(viewCreationRequest), List.of(), Optional.of(initialDiagram));
+        UUID descriptionId = diagramDescription.getNodeDescriptions().get(0).getChildNodeDescriptions().get(0).getId();
+        UUID parentNodeId = diagramAfterFirstNodeCreation.getNodes().get(0).getId();
+        // @formatter:off
+        ViewCreationRequest childViewCreationRequest = ViewCreationRequest.newViewCreationRequest()
+            .descriptionId(descriptionId)
+            .parentElementId(parentNodeId)
+            .targetObjectId(TARGET_OBJECT_ID)
+            .build();
+        // @formatter:on
+        Diagram diagramAfterSecondNodeCreation = this.render(diagramDescription, List.of(childViewCreationRequest), List.of(), Optional.of(diagramAfterFirstNodeCreation));
+        UUID nodeIdToDelete = diagramAfterSecondNodeCreation.getNodes().get(0).getChildNodes().get(0).getId();
+        // @formatter:off
+        ViewDeletionRequest viewDeletionRequest = ViewDeletionRequest.newViewDeletionRequest()
+            .elementId(nodeIdToDelete)
+            .build();
+        // @formatter:on
+        Diagram diagramAfterSecondNodeDeletion = this.render(diagramDescription, List.of(), List.of(viewDeletionRequest), Optional.of(diagramAfterFirstNodeCreation));
+
+        assertThat(diagramAfterSecondNodeDeletion.getNodes()).hasSize(2);
+        Node firstRootNode = diagramAfterSecondNodeDeletion.getNodes().get(0);
+        assertThat(firstRootNode.getBorderNodes()).isEmpty();
+        assertThat(firstRootNode.getChildNodes()).isEmpty();
+
+        Node secondRootNode = diagramAfterSecondNodeCreation.getNodes().get(1);
+        assertThat(secondRootNode.getBorderNodes()).isEmpty();
+        assertThat(secondRootNode.getChildNodes()).isEmpty();
+    }
+
+    private Diagram render(DiagramDescription diagramDescription, List<ViewCreationRequest> viewCreationRequests, List<ViewDeletionRequest> viewDeletionRequests,
+            Optional<Diagram> optionalPreviousDiagram) {
         VariableManager variableManager = new VariableManager();
         // @formatter:off
         DiagramComponentProps props = DiagramComponentProps.newDiagramComponentProps()
                 .variableManager(variableManager)
                 .diagramDescription(diagramDescription)
                 .viewCreationRequests(viewCreationRequests)
+                .viewDeletionRequests(viewDeletionRequests)
                 .previousDiagram(optionalPreviousDiagram)
                 .build();
         // @formatter:on

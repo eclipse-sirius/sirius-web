@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.ViewCreationRequest;
+import org.eclipse.sirius.web.diagrams.ViewDeletionRequest;
 import org.eclipse.sirius.web.diagrams.events.IDiagramEvent;
 
 /**
@@ -37,6 +38,8 @@ public interface IDiagramContext {
     void reset();
 
     List<ViewCreationRequest> getViewCreationRequests();
+
+    List<ViewDeletionRequest> getViewDeletionRequests();
 
     IDiagramEvent getDiagramEvent();
 

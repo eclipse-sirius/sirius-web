@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.ViewCreationRequest;
+import org.eclipse.sirius.web.diagrams.ViewDeletionRequest;
 import org.eclipse.sirius.web.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.web.spring.collaborative.diagrams.api.IDiagramContext;
 
@@ -37,6 +38,11 @@ public class NoOpDiagramContext implements IDiagramContext {
 
     @Override
     public List<ViewCreationRequest> getViewCreationRequests() {
+        return List.of();
+    }
+
+    @Override
+    public List<ViewDeletionRequest> getViewDeletionRequests() {
         return List.of();
     }
 

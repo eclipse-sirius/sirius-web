@@ -285,6 +285,7 @@ public class DiagramRendererNodeTests {
                 .variableManager(variableManager)
                 .diagramDescription(diagramDescription)
                 .viewCreationRequests(List.of())
+                .viewDeletionRequests(List.of())
                 .previousDiagram(previousDiagram)
                 .build();
         // @formatter:on

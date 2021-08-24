@@ -19,6 +19,7 @@ import java.util.UUID;
 import org.eclipse.sirius.web.annotations.Immutable;
 import org.eclipse.sirius.web.components.IProps;
 import org.eclipse.sirius.web.diagrams.ViewCreationRequest;
+import org.eclipse.sirius.web.diagrams.ViewDeletionRequest;
 import org.eclipse.sirius.web.diagrams.description.NodeDescription;
 import org.eclipse.sirius.web.diagrams.renderer.DiagramRenderingCache;
 import org.eclipse.sirius.web.representations.VariableManager;
@@ -42,6 +43,8 @@ public final class NodeComponentProps implements IProps {
     private DiagramRenderingCache cache;
 
     private List<ViewCreationRequest> viewCreationRequests;
+
+    private List<ViewDeletionRequest> viewDeletionRequests;
 
     private UUID parentElementId;
 
@@ -73,6 +76,10 @@ public final class NodeComponentProps implements IProps {
         return this.viewCreationRequests;
     }
 
+    public List<ViewDeletionRequest> getViewDeletionRequests() {
+        return this.viewDeletionRequests;
+    }
+
     public UUID getParentElementId() {
         return this.parentElementId;
     }
@@ -99,6 +106,8 @@ public final class NodeComponentProps implements IProps {
         private DiagramRenderingCache cache;
 
         private List<ViewCreationRequest> viewCreationRequests;
+
+        private List<ViewDeletionRequest> viewDeletionRequests;
 
         private UUID parentElementId;
 
@@ -132,6 +141,11 @@ public final class NodeComponentProps implements IProps {
             return this;
         }
 
+        public Builder viewDeletionRequests(List<ViewDeletionRequest> viewDeletionRequests) {
+            this.viewDeletionRequests = Objects.requireNonNull(viewDeletionRequests);
+            return this;
+        }
+
         public Builder parentElementId(UUID parentElementId) {
             this.parentElementId = Objects.requireNonNull(parentElementId);
             return this;
@@ -145,6 +159,7 @@ public final class NodeComponentProps implements IProps {
             nodeComponentProps.containmentKind = Objects.requireNonNull(this.containmentKind);
             nodeComponentProps.cache = Objects.requireNonNull(this.cache);
             nodeComponentProps.viewCreationRequests = Objects.requireNonNull(this.viewCreationRequests);
+            nodeComponentProps.viewDeletionRequests = Objects.requireNonNull(this.viewDeletionRequests);
             nodeComponentProps.parentElementId = Objects.requireNonNull(this.parentElementId);
             return nodeComponentProps;
         }
