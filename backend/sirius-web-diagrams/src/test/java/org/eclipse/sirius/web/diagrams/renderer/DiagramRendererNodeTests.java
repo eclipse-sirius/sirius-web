@@ -38,6 +38,7 @@ import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.web.diagrams.description.LabelDescription;
 import org.eclipse.sirius.web.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.web.diagrams.description.NodeDescription;
+import org.eclipse.sirius.web.representations.Failure;
 import org.eclipse.sirius.web.representations.Success;
 import org.eclipse.sirius.web.representations.VariableManager;
 import org.junit.jupiter.api.Test;
@@ -275,6 +276,7 @@ public class DiagramRendererNodeTests {
                 .nodeDescriptions(List.of(nodeDescription))
                 .edgeDescriptions(new ArrayList<>())
                 .toolSections(List.of())
+                .dropHandler(variableManager -> new Failure("")) //$NON-NLS-1$
                 .build();
         // @formatter:on
 

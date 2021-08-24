@@ -19,8 +19,10 @@ import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+import org.eclipse.sirius.diagram.description.tool.ContainerDropDescription;
 import org.eclipse.sirius.diagram.description.tool.DeleteElementDescription;
 import org.eclipse.sirius.diagram.description.tool.DirectEditLabel;
+import org.eclipse.sirius.viewpoint.description.tool.InitialContainerDropOperation;
 import org.eclipse.sirius.viewpoint.description.tool.InitialOperation;
 import org.eclipse.sirius.web.compat.api.IModelOperationHandlerSwitchProvider;
 import org.eclipse.sirius.web.core.api.IEditService;
@@ -104,6 +106,21 @@ public class ToolConverter {
                 return new Success();
             };
         }
+    }
+
+    public Function<VariableManager, IStatus> createDropToolHandler(ContainerDropDescription dropDescription) {
+        var optionalInitialOperation = Optional.ofNullable(dropDescription).map(ContainerDropDescription::getInitialOperation);
+        if (optionalInitialOperation.isPresent()) {
+            InitialContainerDropOperation initialOperation = optionalInitialOperation.get();
+            return variableManager -> {
+                var modelOperationHandlerSwitch = this.modelOperationHandlerSwitchProvider.getModelOperationHandlerSwitch(this.interpreter);
+                return modelOperationHandlerSwitch.apply(initialOperation.getFirstModelOperations()).map(handler -> {
+                    return handler.handle(variableManager.getVariables());
+                }).orElse(new Failure("")); //$NON-NLS-1$
+            };
+        }
+
+        return variableManager -> new Failure(""); //$NON-NLS-1$
     }
 
     private Object getParentNode(Node node, Diagram diagram) {

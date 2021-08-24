@@ -66,4 +66,9 @@ public class NoOpCollaborativeDiagramMessageService implements ICollaborativeDia
         return ""; //$NON-NLS-1$
     }
 
+    @Override
+    public String invalidDrop() {
+        return null;
+    }
+
 }

@@ -26,6 +26,7 @@ import org.eclipse.sirius.web.annotations.graphql.GraphQLNonNull;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLObjectType;
 import org.eclipse.sirius.web.diagrams.tools.ToolSection;
 import org.eclipse.sirius.web.representations.IRepresentationDescription;
+import org.eclipse.sirius.web.representations.IStatus;
 import org.eclipse.sirius.web.representations.VariableManager;
 
 /**
@@ -63,6 +64,8 @@ public final class DiagramDescription implements IRepresentationDescription {
     private List<NodeDescription> nodeDescriptions;
 
     private List<EdgeDescription> edgeDescriptions;
+
+    private Function<VariableManager, IStatus> dropHandler;
 
     private DiagramDescription() {
         // Prevent instantiation
@@ -114,6 +117,10 @@ public final class DiagramDescription implements IRepresentationDescription {
         return this.edgeDescriptions;
     }
 
+    public Function<VariableManager, IStatus> getDropHandler() {
+        return this.dropHandler;
+    }
+
     public static Builder newDiagramDescription(UUID id) {
         return new Builder(id);
     }
@@ -148,6 +155,8 @@ public final class DiagramDescription implements IRepresentationDescription {
         private List<NodeDescription> nodeDescriptions;
 
         private List<EdgeDescription> edgeDescriptions;
+
+        private Function<VariableManager, IStatus> dropHandler;
 
         private Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
@@ -193,6 +202,11 @@ public final class DiagramDescription implements IRepresentationDescription {
             return this;
         }
 
+        public Builder dropHandler(Function<VariableManager, IStatus> dropHandler) {
+            this.dropHandler = Objects.requireNonNull(dropHandler);
+            return this;
+        }
+
         public DiagramDescription build() {
             DiagramDescription diagramDescription = new DiagramDescription();
             diagramDescription.id = Objects.requireNonNull(this.id);
@@ -204,6 +218,7 @@ public final class DiagramDescription implements IRepresentationDescription {
             diagramDescription.toolSections = Objects.requireNonNull(this.toolSections);
             diagramDescription.nodeDescriptions = Objects.requireNonNull(this.nodeDescriptions);
             diagramDescription.edgeDescriptions = Objects.requireNonNull(this.edgeDescriptions);
+            diagramDescription.dropHandler = Objects.requireNonNull(this.dropHandler);
             return diagramDescription;
         }
     }

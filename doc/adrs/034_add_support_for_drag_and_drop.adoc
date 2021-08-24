@@ -1,0 +1,35 @@
+= ADR-034 - Add support for drag and drop
+
+== Context
+
+We have introduce the unsynchronized diagram since the ADR-003.
+To populate an unsynchronized diagram, we can use a standard `CreateNodeTool`.
+But we can expect to drag an existing element from the model explorer.
+
+== Decision
+
+Based on the delete implementation, we will provide a `dropHandler` in the diagram description.
+
+== Status
+
+WIP
+
+== Consequences
+
+A `dropHandler` will be added to the available `DiagramDescription`:
+
+```
+public final class DiagramDescription implements IRepresentationDescription {
+
+   //...
+
+    private Function<VariableManager, Status> dropHandler;
+
+    //...
+
+}
+```
+
+== References
+
+- https://www.eclipse.org/sirius/doc/specifier/diagrams/Diagrams.html#container_tools

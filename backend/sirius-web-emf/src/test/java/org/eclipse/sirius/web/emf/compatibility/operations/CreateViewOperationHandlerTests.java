@@ -53,6 +53,7 @@ import org.eclipse.sirius.web.diagrams.description.SynchronizationPolicy;
 import org.eclipse.sirius.web.emf.compatibility.modeloperations.ChildModelOperationHandler;
 import org.eclipse.sirius.web.emf.compatibility.modeloperations.CreateViewOperationHandler;
 import org.eclipse.sirius.web.emf.services.EditingContext;
+import org.eclipse.sirius.web.representations.Failure;
 import org.eclipse.sirius.web.representations.IStatus;
 import org.eclipse.sirius.web.representations.Success;
 import org.eclipse.sirius.web.representations.VariableManager;
@@ -102,6 +103,7 @@ public class CreateViewOperationHandlerTests {
                 .toolSections(List.of())
                 .nodeDescriptions(List.of(this.getNodeDescription(UUID.randomUUID())))
                 .edgeDescriptions(List.of())
+                .dropHandler(variableManager -> new Failure("")) //$NON-NLS-1$
                 .build();
 
         Diagram diagram = Diagram.newDiagram(UUID.randomUUID().toString())
