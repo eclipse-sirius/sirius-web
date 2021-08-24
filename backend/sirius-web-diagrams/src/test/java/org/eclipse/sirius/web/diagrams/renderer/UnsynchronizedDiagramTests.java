@@ -224,6 +224,7 @@ public class UnsynchronizedDiagramTests {
                 .nodeDescriptions(List.of(unsynchronizedNodeDescription, synchronizedNodeDescription))
                 .edgeDescriptions(List.of())
                 .toolSections(List.of())
+                .dropHandler(variableManager -> Status.ERROR)
                 .build();
         // @formatter:on
 

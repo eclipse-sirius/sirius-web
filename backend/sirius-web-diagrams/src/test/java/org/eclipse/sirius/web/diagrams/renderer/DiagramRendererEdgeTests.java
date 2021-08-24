@@ -143,6 +143,7 @@ public class DiagramRendererEdgeTests {
                 .nodeDescriptions(nodeDescriptions)
                 .edgeDescriptions(edgeDescriptions)
                 .toolSections(List.of())
+                .dropHandler(variableManager -> Status.ERROR)
                 .build();
         // @formatter:on
 

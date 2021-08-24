@@ -356,6 +356,19 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
     const contextualPalette = null;
     this.setContextualPalette(contextualPalette);
   }
+
+  /**
+   * Convert a given browser clientX/clientY couple in the current sprotty diagram coordinate system.
+   */
+  async convertInSprottyCoordinate(clientX, clientY) {
+    const { viewport, canvasBounds } = await this.actionDispatcher.request(GetViewportAction.create());
+    const { scroll, zoom } = viewport;
+    return {
+      x: (clientX - canvasBounds.x) / zoom + scroll.x,
+      y: (clientY - canvasBounds.y) / zoom + scroll.y,
+    };
+  }
+
   handleZoomInAction(action) {
     this.doZoom(ZOOM_IN_FACTOR);
   }

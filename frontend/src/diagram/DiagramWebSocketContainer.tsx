@@ -49,6 +49,7 @@ import {
   SubscribersUpdatedEvent,
   SwithRepresentationEvent,
 } from 'diagram/DiagramWebSocketContainerMachine';
+import { DropArea } from 'diagram/DropArea';
 import {
   arrangeAllOp,
   deleteFromDiagramMutation,
@@ -77,7 +78,7 @@ import { Toolbar } from 'diagram/Toolbar';
 import { canInvokeTool } from 'diagram/toolServices';
 import React, { useCallback, useContext, useEffect, useRef } from 'react';
 import { SelectionDialogWebSocketContainer } from 'selection/SelectionDialogWebSocketContainer';
-import { EditLabelAction, FitToScreenAction, SEdge, SNode } from 'sprotty';
+import { EditLabelAction, FitToScreenAction, HoverFeedbackAction, SEdge, SNode } from 'sprotty';
 import { v4 as uuid } from 'uuid';
 import { RepresentationComponentProps } from 'workbench/Workbench.types';
 
@@ -474,6 +475,11 @@ export const DiagramWebSocketContainer = ({
     [editingContextId, representationId, updateNodeBoundsMutation]
   );
 
+  const invokeHover = (id: string, mouseIsOver: boolean) => {
+    if (diagramServer) {
+      diagramServer.actionDispatcher.dispatch(new HoverFeedbackAction(id, mouseIsOver));
+    }
+  };
   /**
    * Initialize the diagram server used by Sprotty in order to perform the diagram edition. This
    * initialization will be done each time we are in the loading state.
@@ -679,6 +685,17 @@ export const DiagramWebSocketContainer = ({
     }
   };
 
+  const convertInSprottyCoordinate = async (clientX, clientY) => {
+    if (diagramServer) {
+      return await diagramServer.convertInSprottyCoordinate(clientX, clientY);
+    } else {
+      return {
+        x: 0,
+        y: 0,
+      };
+    }
+  };
+
   const handleError = useCallback(
     (loading, data, error) => {
       if (!loading) {
@@ -835,10 +852,16 @@ export const DiagramWebSocketContainer = ({
 
   let content = (
     <div id="diagram-container" className={classes.diagramContainer}>
-      <div id="diagram-wrapper" className={classes.diagramWrapper}>
-        <div ref={diagramDomElement} id="diagram" className={classes.diagram} />
-        {contextualPaletteContent}
-      </div>
+      <DropArea
+        editingContextId={editingContextId}
+        representationId={representationId}
+        invokeHover={invokeHover}
+        convertInSprottyCoordinate={convertInSprottyCoordinate}>
+        <div id="diagram-wrapper" className={classes.diagramWrapper}>
+          <div ref={diagramDomElement} id="diagram" className={classes.diagram} />
+          {contextualPaletteContent}
+        </div>
+      </DropArea>
     </div>
   );
 

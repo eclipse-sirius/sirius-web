@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.eclipse.sirius.diagram.business.internal.metamodel.helper.LayerHelper;
@@ -30,6 +31,8 @@ import org.eclipse.sirius.web.diagrams.description.DiagramDescription.Builder;
 import org.eclipse.sirius.web.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.web.diagrams.description.NodeDescription;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
+import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.representations.VariableManager;
 import org.springframework.stereotype.Service;
 
 /**
@@ -82,7 +85,8 @@ public class DiagramDescriptionNodeAndEdgeDescriptionsPopulator implements IDiag
                 .map(edgeMapping -> this.edgeMappingConverter.convert(edgeMapping, interpreter, id2NodeDescriptions))
                 .collect(Collectors.toList());
         // @formatter:on
-        return builder.nodeDescriptions(nodeDescriptions).edgeDescriptions(edgeDescriptions)
+        Function<VariableManager, Status> dropHandler = variableManager -> Status.ERROR;
+        return builder.nodeDescriptions(nodeDescriptions).edgeDescriptions(edgeDescriptions).dropHandler(dropHandler)
                 .toolSections(this.toolProvider.getToolSections(id2NodeDescriptions, edgeDescriptions, siriusDiagramDescription, layers));
     }
 

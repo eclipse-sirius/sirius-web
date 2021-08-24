@@ -215,6 +215,22 @@ export const deleteFromDiagramMutation = gql`
   }
 `;
 
+export const dropOnDiagramMutation = gql`
+  mutation dropOnDiagram($input: DropOnDiagramInput!) {
+    dropOnDiagram(input: $input) {
+      __typename
+      ... on DropOnDiagramSuccessPayload {
+        diagram {
+          id
+        }
+      }
+      ... on ErrorPayload {
+        message
+      }
+    }
+  }
+`;
+
 export const editLabelMutation = gql`
   mutation editLabel($input: EditLabelInput!) {
     editLabel(input: $input) {

@@ -28,6 +28,7 @@ import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.web.diagrams.tests.TestDiagramBuilder;
 import org.eclipse.sirius.web.representations.IRepresentationDescription;
 import org.eclipse.sirius.web.representations.ISemanticRepresentation;
+import org.eclipse.sirius.web.representations.Status;
 import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.web.spring.collaborative.diagrams.api.IDiagramCreationService;
 import org.eclipse.sirius.web.spring.collaborative.dto.CreateRepresentationInput;
@@ -55,6 +56,7 @@ public class CreateDiagramEventHandlerTests {
                         .toolSections(List.of())
                         .nodeDescriptions(new ArrayList<>())
                         .targetObjectIdProvider(variableManager -> "targetObjectId") //$NON-NLS-1$
+                        .dropHandler(variableManager -> Status.ERROR)
                         .build();
                 // @formatter:on
 

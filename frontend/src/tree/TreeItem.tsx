@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
+import { DRAG_SOURCES_TYPE } from 'common/dataTransferTypes';
 import { httpOrigin } from 'common/URL';
 import { IconButton } from 'core/button/Button';
 import { Text } from 'core/text/Text';
@@ -666,6 +667,17 @@ export const TreeItem = ({
     }
   };
 
+  const { kind } = item;
+  const draggable = kind !== 'Document' && kind !== 'Diagram';
+  const dragStart = (e) => {
+    if (selection?.kind !== 'Document' && selection?.kind !== 'Diagram') {
+      e.dataTransfer.setData(DRAG_SOURCES_TYPE, JSON.stringify([selection]));
+    }
+  };
+  const dragOver = (e) => {
+    e.stopPropagation();
+  };
+
   /* ref, tabindex and onFocus are used to set the React component focusabled and to set the focus to the corresponding DOM part */
   return (
     <>
@@ -675,6 +687,9 @@ export const TreeItem = ({
         tabIndex={0}
         onFocus={onFocus}
         onKeyDown={onBeginEditing}
+        draggable={draggable}
+        onDragStart={dragStart}
+        onDragOver={dragOver}
         data-treeitemid={item.id}
         data-haschildren={item.hasChildren.toString()}
         data-depth={depth}

@@ -163,6 +163,7 @@ public class ViewConverter {
                     .nodeDescriptions(nodeDescriptions)
                     .edgeDescriptions(edgeDescriptions)
                     .toolSections(this.createToolSections(interpreter))
+                    .dropHandler(variableManager -> Status.ERROR)
                     .build();
             // @formatter:on
         } finally {

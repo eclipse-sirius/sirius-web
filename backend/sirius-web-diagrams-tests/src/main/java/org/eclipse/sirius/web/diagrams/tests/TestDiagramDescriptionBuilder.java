@@ -50,6 +50,7 @@ public class TestDiagramDescriptionBuilder {
             .nodeDescriptions(nodeDescriptions)
             .edgeDescriptions(edgeDescriptions)
             .toolSections(toolSections)
+            .dropHandler(variableManager -> Status.ERROR)
             .build();
         // @formatter:on
     }

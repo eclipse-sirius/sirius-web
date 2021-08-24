@@ -275,6 +275,7 @@ public class DiagramRendererNodeTests {
                 .nodeDescriptions(List.of(nodeDescription))
                 .edgeDescriptions(new ArrayList<>())
                 .toolSections(List.of())
+                .dropHandler(variableManager -> Status.ERROR)
                 .build();
         // @formatter:on
 

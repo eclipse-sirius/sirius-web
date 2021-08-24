@@ -12,12 +12,14 @@
  *******************************************************************************/
 // Required because Sprotty uses Inversify and both frameworks are written in TypeScript with experimental features.
 import 'reflect-metadata';
+export * from './common/dataTransferTypes';
 export * from './common/sendFile';
 export * from './common/ServerContext';
 export * from './common/URL';
 export * from './core/contextmenu/ContextMenu';
 export * from './core/file-upload/FileUpload';
 export * from './core/form/Form';
+export * from './core/panels/Panels';
 export * from './diagram/DiagramWebSocketContainer';
 export * from './diagram/DiagramWebSocketContainer.types';
 export * from './errors/ErrorBoundary';
