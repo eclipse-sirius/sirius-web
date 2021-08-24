@@ -18,6 +18,7 @@ import java.util.Objects;
 
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.ViewCreationRequest;
+import org.eclipse.sirius.web.diagrams.ViewDeletionRequest;
 import org.eclipse.sirius.web.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.web.spring.collaborative.diagrams.api.IDiagramContext;
 
@@ -32,11 +33,14 @@ public class DiagramContext implements IDiagramContext {
 
     private final List<ViewCreationRequest> viewCreationRequests;
 
+    private final List<ViewDeletionRequest> viewDeletionRequests;
+
     private IDiagramEvent diagramEvent;
 
     public DiagramContext(Diagram initialDiagram) {
         this.diagram = Objects.requireNonNull(initialDiagram);
         this.viewCreationRequests = new ArrayList<>();
+        this.viewDeletionRequests = new ArrayList<>();
     }
 
     @Override
@@ -55,6 +59,11 @@ public class DiagramContext implements IDiagramContext {
     }
 
     @Override
+    public List<ViewDeletionRequest> getViewDeletionRequests() {
+        return this.viewDeletionRequests;
+    }
+
+    @Override
     public IDiagramEvent getDiagramEvent() {
         return this.diagramEvent;
     }
@@ -67,5 +76,7 @@ public class DiagramContext implements IDiagramContext {
     @Override
     public void reset() {
         this.diagramEvent = null;
+        this.viewCreationRequests.clear();
+        this.viewDeletionRequests.clear();
     }
 }

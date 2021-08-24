@@ -67,6 +67,7 @@ public class DiagramComponent implements IComponent {
                             .containmentKind(NodeContainmentKind.CHILD_NODE)
                             .cache(cache)
                             .viewCreationRequests(this.props.getViewCreationRequests())
+                            .viewDeletionRequests(this.props.getViewDeletionRequests())
                             .parentElementId(diagramId)
                             .build();
                     return new Element(NodeComponent.class, nodeComponentProps);
