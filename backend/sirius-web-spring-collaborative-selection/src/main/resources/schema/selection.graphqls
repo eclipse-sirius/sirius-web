@@ -1,0 +1,38 @@
+extend type Subscription {
+  selectionEvent(input: SelectionEventInput!): SelectionEventPayload!
+}
+
+input SelectionEventInput {
+  id: ID!
+  editingContextId: ID!
+  selectionId: ID!
+  targetObjectId: ID!
+}
+
+union SelectionEventPayload = ErrorPayload | SubscribersUpdatedEventPayload | SelectionRefreshedEventPayload
+
+type SelectionRefreshedEventPayload {
+  id: ID!
+  selection: Selection!
+}
+
+type Selection implements Representation {
+  id: ID!
+  label: String!
+  kind: String!
+  descriptionId: ID!
+  targetObjectId: String!
+  message: String
+  objects: [SelectionObject!]!
+}
+
+type SelectionObject {
+  id: ID!
+  label: String!
+  iconURL: String!
+}
+
+type SelectionDescription implements RepresentationDescription {
+  id: ID!
+  label: String!
+}
