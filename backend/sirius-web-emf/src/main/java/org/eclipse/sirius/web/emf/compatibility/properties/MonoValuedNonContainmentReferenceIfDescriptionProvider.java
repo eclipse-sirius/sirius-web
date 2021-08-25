@@ -102,12 +102,18 @@ public class MonoValuedNonContainmentReferenceIfDescriptionProvider {
             var optionalEReference = variableManager.get(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE, EReference.class);
             var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
 
+            Status result = Status.ERROR;
             if (optionalEObject.isPresent() && optionalEReference.isPresent()) {
                 EObject eObject = optionalEObject.get();
                 EReference eReference = optionalEReference.get();
 
                 if (newValue == null || newValue.isBlank()) {
-                    eObject.eUnset(eReference);
+                    try {
+                        eObject.eUnset(eReference);
+                        result = Status.OK;
+                    } catch (IllegalArgumentException | ClassCastException | ArrayStoreException exception) {
+                        this.logger.warn(exception.getMessage(), exception);
+                    }
                 } else {
                     // @formatter:off
                     var optionalNewValueToSet = optionalEditingContext.flatMap(context -> this.objectService.getObject(context, newValue))
@@ -118,14 +124,14 @@ public class MonoValuedNonContainmentReferenceIfDescriptionProvider {
                         EObject newValueToSet = optionalNewValueToSet.get();
                         try {
                             eObject.eSet(eReference, newValueToSet);
-                            return Status.OK;
+                            result = Status.OK;
                         } catch (IllegalArgumentException | ClassCastException | ArrayStoreException exception) {
                             this.logger.warn(exception.getMessage(), exception);
                         }
                     }
                 }
             }
-            return Status.ERROR;
+            return result;
         };
     }
 
