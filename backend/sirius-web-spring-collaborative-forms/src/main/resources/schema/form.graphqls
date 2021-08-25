@@ -1,0 +1,229 @@
+extend type Subscription {
+  formEvent(input: FormEventInput!): FormEventPayload!
+  propertiesEvent(input: PropertiesEventInput!): PropertiesEventPayload!
+}
+
+input FormEventInput {
+  id: ID!
+  editingContextId: ID!
+  formId: ID!
+}
+
+input PropertiesEventInput {
+  id: ID!
+  editingContextId: ID!
+  objectId: ID!
+}
+
+union FormEventPayload = ErrorPayload | FormRefreshedEventPayload | SubscribersUpdatedEventPayload | WidgetSubscriptionsUpdatedEventPayload
+
+union PropertiesEventPayload = ErrorPayload | FormRefreshedEventPayload | SubscribersUpdatedEventPayload | WidgetSubscriptionsUpdatedEventPayload
+
+type WidgetSubscriptionsUpdatedEventPayload {
+  id: ID!
+  widgetSubscriptions: [WidgetSubscription]!
+}
+
+type WidgetSubscription {
+  widgetId: ID!
+  subscribers: [Subscriber]!
+}
+
+type FormRefreshedEventPayload {
+  id: ID!
+  form: Form!
+}
+
+type Form implements Representation {
+  id: ID!
+  kind: String!
+  label: String!
+  descriptionId: ID!
+  targetObjectId: ID!
+  pages: [Page!]!
+}
+
+type Page {
+  id: ID!
+  label: String!
+  groups: [Group!]!
+}
+
+type Group {
+  id: ID!
+  label: String!
+  widgets: [Widget!]!
+}
+
+interface Widget {
+  id: ID!
+  diagnostics: [Diagnostic!]!
+}
+
+type Checkbox implements Widget {
+  id: ID!
+  diagnostics: [Diagnostic!]!
+  label: String!
+  value: Boolean!
+}
+
+type List implements Widget {
+  id: ID!
+  diagnostics: [Diagnostic!]!
+  label: String!
+  items: [ListItem!]!
+}
+
+type ListItem {
+  id: ID!
+  label: String!
+  imageURL: String!
+}
+
+type MultiSelect implements Widget {
+  id: ID!
+  diagnostics: [Diagnostic!]!
+  label: String!
+  options: [SelectOption!]!
+  values: [String]
+}
+
+type Radio implements Widget {
+  id: ID!
+  diagnostics: [Diagnostic!]!
+  label: String!
+  options: [RadioOption!]!
+}
+
+type RadioOption {
+  id: ID!
+  label: String!
+  selected: Boolean!
+}
+
+
+type Select implements Widget {
+  id: ID!
+  diagnostics: [Diagnostic!]!
+  label: String!
+  options: [SelectOption!]!
+  value: String
+}
+
+type SelectOption {
+  id: ID!
+  label: String!
+}
+
+type Textarea implements Widget {
+  id: ID!
+  diagnostics: [Diagnostic!]!
+  label: String!
+  value: String!
+}
+
+type Textfield implements Widget {
+  id: ID!
+  diagnostics: [Diagnostic!]!
+  label: String!
+  value: String!
+}
+
+type FormDescription implements RepresentationDescription {
+  id: ID!
+  label: String!
+}
+
+extend type Mutation {
+  editCheckbox(input: EditCheckboxInput!): EditCheckboxPayload!
+  editMultiSelect(input: EditMultiSelectInput!): EditMultiSelectPayload!
+  editRadio(input: EditRadioInput!): EditRadioPayload!
+  editSelect(input: EditSelectInput!): EditSelectPayload!
+  editTextfield(input: EditTextfieldInput!): EditTextfieldPayload!
+  updateWidgetFocus(input: UpdateWidgetFocusInput!): UpdateWidgetFocusPayload!
+}
+
+input EditCheckboxInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  checkboxId: ID!
+  newValue: Boolean!
+}
+
+union EditCheckboxPayload = ErrorPayload|EditCheckboxSuccessPayload
+
+type EditCheckboxSuccessPayload {
+  id: ID!
+}
+
+input EditMultiSelectInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  selectId: ID!
+  newValues: [String]!
+}
+
+union EditMultiSelectPayload = ErrorPayload | EditMultiSelectSuccessPayload
+
+type EditMultiSelectSuccessPayload {
+  id: ID!
+}
+
+input EditRadioInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  radioId: ID!
+  newValue: ID!
+}
+
+union EditRadioPayload = ErrorPayload|EditRadioSuccessPayload
+
+type EditRadioSuccessPayload {
+  id: ID!
+}
+
+input EditSelectInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  selectId: ID!
+  newValue: ID!
+}
+
+union EditSelectPayload = ErrorPayload | EditSelectSuccessPayload
+
+type EditSelectSuccessPayload {
+  id: ID!
+}
+
+input EditTextfieldInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  textfieldId: ID!
+  newValue: String!
+}
+
+union EditTextfieldPayload = ErrorPayload | EditTextfieldSuccessPayload
+
+type EditTextfieldSuccessPayload {
+  id: ID!
+}
+
+input UpdateWidgetFocusInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  widgetId: ID!
+  selected: Boolean!
+}
+
+union UpdateWidgetFocusPayload = ErrorPayload | UpdateWidgetFocusSuccessPayload
+
+type UpdateWidgetFocusSuccessPayload {
+  id: ID!
+  updateFocusWidgetId: String!
+}

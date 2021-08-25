@@ -1,0 +1,310 @@
+extend type Subscription {
+  diagramEvent(input: DiagramEventInput!): DiagramEventPayload!
+}
+
+input DiagramEventInput {
+  id: ID!
+  editingContextId: ID!
+  diagramId: ID!
+}
+
+union DiagramEventPayload = ErrorPayload | SubscribersUpdatedEventPayload | DiagramRefreshedEventPayload
+
+type DiagramRefreshedEventPayload {
+  id: ID!
+  diagram: Diagram!
+}
+
+type Diagram implements Representation {
+  id: ID!
+  label: String!
+  kind: String!
+  descriptionId: ID!
+  targetObjectId: ID!
+  autoLayout: Boolean!
+  size: Size!
+  position: Position!
+  nodes: [Node!]!
+  edges: [Edge!]!
+  toolSections: [ToolSection!]!
+}
+
+type Node {
+  id: ID!
+  label: Label!
+  descriptionId: ID!
+  type: String!
+  targetObjectId: String!
+  targetObjectKind: String!
+  targetObjectLabel: String!
+  size: Size!
+  position: Position!
+  style: INodeStyle!
+  borderNodes: [Node!]!
+  childNodes: [Node!]!
+}
+
+type Label {
+  id: ID!
+  text: String!
+  type: String!
+  style: LabelStyle!
+  alignment: Position!
+  position: Position!
+  size: Size!
+}
+
+type LabelStyle {
+  bold: Boolean!
+  color: String!
+  fontSize: Int!
+  iconURL: String!
+  italic: Boolean!
+  strikeThrough: Boolean!
+  underline: Boolean!
+}
+
+union INodeStyle = ImageNodeStyle | ListItemNodeStyle | ListNodeStyle | RectangularNodeStyle
+
+type ImageNodeStyle {
+  imageURL: String!
+}
+
+type ListNodeStyle {
+  borderColor: String!
+  borderRadius: Int!
+  borderSize: Int!
+  borderStyle: LineStyle!
+  color: String!
+}
+
+type ListItemNodeStyle {
+  backgroundColor: String!
+}
+
+type RectangularNodeStyle {
+  borderColor: String!
+  borderRadius: Int!
+  borderSize: Int!
+  borderStyle: LineStyle!
+  color: String!
+}
+
+enum LineStyle {
+  Dash
+  Dash_Dot
+  Dot
+  Solid
+}
+
+type Edge {
+  id: ID!
+  descriptionId: ID!
+  type: String!
+  beginLabel: Label
+  centerLabel: Label
+  endLabel: Label
+  sourceId: ID!
+  targetId: ID!
+  targetObjectId: String!
+  targetObjectKind: String!
+  targetObjectLabel: String!
+  style: EdgeStyle!
+  routingPoints: [Position]!
+}
+
+type EdgeStyle {
+  color: String!
+  lineStyle: LineStyle!
+  size: Int!
+  sourceArrow: ArrowStyle!
+  targetArrow: ArrowStyle!
+}
+
+enum ArrowStyle {
+  Diamond
+  FillDiamond
+  InputArrow
+  InputArrowWithDiamond
+  InputArrowWithFillDiamond
+  InputClosedArrow
+  InputFillClosedArrow
+  None
+  OutputArrow
+  OutputClosedArrow
+  OutputFillClosedArrow
+}
+
+type Position {
+  x: Float!
+  y: Float!
+}
+
+type Size {
+  height: Float!
+  width: Float!
+}
+
+type ToolSection {
+  id: ID!
+  label: String!
+  imageURL: String!
+  tools: [Tool]!
+}
+
+interface Tool {
+  id: ID!
+  label: String!
+  imageURL: String!
+}
+
+type CreateNodeTool implements Tool {
+  id: ID!
+  label: String!
+  imageURL: String!
+  appliesToDiagramRoot: Boolean!
+  selectionDescriptionId: String
+  targetDescriptions: [NodeDescription!]!
+}
+
+type CreateEdgeTool implements Tool {
+  id: ID!
+  label: String!
+  imageURL: String!
+  edgeCandidates: [EdgeCandidate]!
+}
+
+type EdgeCandidate {
+  sources: [NodeDescription!]!
+  targets: [NodeDescription!]!
+}
+
+type DiagramDescription implements RepresentationDescription {
+  id: ID!
+  label: String!
+  autoLayout: Boolean!
+}
+
+type NodeDescription {
+  id: ID!
+}
+
+extend type Mutation {
+  arrangeAll(input: ArrangeAllInput!): ArrangeAllPayload!
+  deleteFromDiagram(input: DeleteFromDiagramInput!): DeleteFromDiagramPayload!
+  editLabel(input: EditLabelInput!): EditLabelPayload!
+  invokeEdgeToolOnDiagram(input: InvokeEdgeToolOnDiagramInput!): InvokeEdgeToolOnDiagramPayload!
+  invokeNodeToolOnDiagram(input: InvokeNodeToolOnDiagramInput!): InvokeNodeToolOnDiagramPayload!
+  updateNodeBounds(input: UpdateNodeBoundsInput!): UpdateNodeBoundsPayload!
+  updateNodePosition(input: UpdateNodePositionInput!): UpdateNodePositionPayload!
+}
+
+input ArrangeAllInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+}
+
+union ArrangeAllPayload = ArrangeAllSuccessPayload | ErrorPayload
+
+type ArrangeAllSuccessPayload {
+  id: ID!
+}
+
+input DeleteFromDiagramInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  nodeIds: [ID!]!
+  edgeIds: [ID!]!
+}
+
+union DeleteFromDiagramPayload = ErrorPayload | DeleteFromDiagramSuccessPayload
+
+type DeleteFromDiagramSuccessPayload {
+  id: ID!
+  diagram: Diagram!
+}
+
+input EditLabelInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  labelId: ID!
+  newText: String!
+}
+
+union EditLabelPayload = ErrorPayload|EditLabelSuccessPayload
+
+type EditLabelSuccessPayload {
+  id: ID!
+  diagram: Diagram!
+}
+
+input InvokeEdgeToolOnDiagramInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  toolId: ID!
+  diagramSourceElementId: ID!
+  diagramTargetElementId: ID!
+}
+
+union InvokeEdgeToolOnDiagramPayload = ErrorPayload | InvokeEdgeToolOnDiagramSuccessPayload
+
+type InvokeEdgeToolOnDiagramSuccessPayload {
+  id: ID!
+  diagram: Diagram!
+}
+
+input InvokeNodeToolOnDiagramInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  selectedObjectId: String
+  diagramElementId: ID!
+  startingPositionX: Float!
+  startingPositionY: Float!
+  toolId: ID!
+}
+
+union InvokeNodeToolOnDiagramPayload = ErrorPayload | InvokeNodeToolOnDiagramSuccessPayload
+
+type InvokeNodeToolOnDiagramSuccessPayload {
+  id: ID!
+  diagram: Diagram!
+}
+
+input UpdateNodeBoundsInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  diagramElementId: ID!
+  newHeight: Float!
+  newPositionX: Float!
+  newPositionY: Float!
+  newWidth: Float!
+}
+
+union UpdateNodeBoundsPayload = ErrorPayload | UpdateNodeBoundsSuccessPayload
+
+type UpdateNodeBoundsSuccessPayload {
+  id: ID!
+  diagram: Diagram!
+}
+
+input UpdateNodePositionInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  diagramElementId: ID!
+  newPositionX: Float!
+  newPositionY: Float!
+}
+
+union UpdateNodePositionPayload = ErrorPayload | UpdateNodePositionSuccessPayload
+
+type UpdateNodePositionSuccessPayload {
+  id: ID!
+  diagram: Diagram!
+}

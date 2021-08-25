@@ -1,0 +1,40 @@
+extend type Subscription {
+  treeEvent(input: TreeEventInput!): TreeEventPayload!
+}
+
+input TreeEventInput {
+  id: ID!
+  editingContextId: ID!
+  expanded: [String!]!
+}
+
+union TreeEventPayload = ErrorPayload | SubscribersUpdatedEventPayload | TreeRefreshedEventPayload
+
+type TreeRefreshedEventPayload {
+  id: ID!
+  tree: Tree!
+}
+
+type Tree implements Representation {
+  id: ID!
+  label: String!
+  kind: String!
+  descriptionId: ID!
+  children: [TreeItem!]!
+}
+
+type TreeItem {
+  id: ID!
+  label: String!
+  kind: String!
+  imageURL: String!
+  editable: Boolean!
+  expanded: Boolean!
+  hasChildren: Boolean!
+  children: [TreeItem]!
+}
+
+type TreeDescription implements RepresentationDescription {
+  id: ID!
+  label: String!
+}

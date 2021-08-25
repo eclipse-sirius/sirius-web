@@ -1,0 +1,299 @@
+"Upload type used for the file upload"
+scalar Upload
+
+type Query {
+  viewer: Viewer!
+}
+
+interface Viewer {
+  id: ID!
+  username: String!
+  editingContext(editingContextId: ID!): EditingContext
+}
+
+type EditingContext {
+  id: ID!
+  domains: [Domain!]!
+  representation(representationId: ID!): Representation
+  representations: EditingContextRepresentationConnection!
+  representationDescriptions(classId: ID!): EditingContextRepresentationDescriptionConnection!
+  stereotypeDescriptions: EditingContextStereotypeDescriptionConnection!
+  rootObjectCreationDescriptions(domainId: ID!, suggested: Boolean!): [ChildCreationDescription!]!
+  childCreationDescriptions(classId: ID!): [ChildCreationDescription!]!
+}
+
+type Domain {
+  id: ID!
+  label: String!
+}
+
+interface Representation {
+  id: ID!
+  kind: String!
+  label: String!
+}
+
+interface RepresentationDescription {
+  id: ID!
+  label: String!
+}
+
+type StereotypeDescription {
+  id: ID!
+  label: String!
+}
+
+type ChildCreationDescription {
+  id: ID!
+  label: String!
+}
+
+type EditingContextRepresentationConnection {
+  edges: [EditingContextRepresentationEdge!]!
+  pageInfo: PageInfo!
+}
+
+type EditingContextRepresentationEdge {
+  node: Representation!
+}
+
+type EditingContextRepresentationDescriptionConnection {
+  edges: [EditingContextRepresentationDescriptionEdge!]!
+  pageInfo: PageInfo!
+}
+
+type EditingContextRepresentationDescriptionEdge {
+  node: RepresentationDescription!
+}
+
+type EditingContextStereotypeDescriptionConnection {
+  edges: [EditingContextStereotypeDescriptionEdge!]!
+  pageInfo: PageInfo!
+}
+
+type EditingContextStereotypeDescriptionEdge {
+  node: StereotypeDescription!
+}
+
+type SubscribersUpdatedEventPayload {
+  id: ID!
+  subscribers: [Subscriber]!
+}
+
+type Subscriber {
+  username: String!
+}
+
+type Diagnostic {
+  id: ID!
+  kind: String!
+  message: String!
+}
+
+
+type ErrorPayload {
+  id: ID!
+  message: String!
+}
+
+"Information about pagination in a connection."
+type PageInfo {
+  count: Int!
+  "When paginating forwards, the cursor to continue."
+  endCursor: String
+  "When paginating forwards, are there more items?"
+  hasNextPage: Boolean!
+  "When paginating backwards, are there more items?"
+  hasPreviousPage: Boolean!
+  "When paginating backwards, the cursor to continue."
+  startCursor: String
+}
+
+type Subscription {
+  editingContextEvent(input: EditingContextEventInput!): EditingContextEventPayload!
+}
+
+input EditingContextEventInput {
+  id: ID!
+  editingContextId: ID!
+}
+
+union EditingContextEventPayload = ErrorPayload | RepresentationRenamedEventPayload
+
+type RepresentationRenamedEventPayload {
+  id: ID!
+  representationId: ID!
+  newLabel: String!
+}
+
+type Mutation {
+  createChild(input: CreateChildInput!): CreateChildPayload!
+  createDocument(input: CreateDocumentInput!): CreateDocumentPayload!
+  createRepresentation(input: CreateRepresentationInput!): CreateRepresentationPayload!
+  createRootObject(input: CreateRootObjectInput!): CreateRootObjectPayload!
+  deleteDocument(input: DeleteDocumentInput!): DeleteDocumentPayload!
+  deleteObject(input: DeleteObjectInput!): DeleteObjectPayload!
+  deleteRepresentation(input: DeleteRepresentationInput!): DeleteRepresentationPayload!
+  renameDocument(input: RenameDocumentInput!): RenameDocumentPayload!
+  renameObject(input: RenameObjectInput!): RenameObjectPayload!
+  renameRepresentation(input: RenameRepresentationInput!): RenameRepresentationPayload!
+  uploadDocument(input: UploadDocumentInput!): UploadDocumentPayload!
+}
+
+type Document {
+  id: ID!
+  name: String!
+}
+
+type Object {
+  id: ID!
+  kind: String!
+  label: String!
+}
+
+input CreateChildInput {
+  id: ID!
+  editingContextId: ID!
+  objectId: ID!
+  childCreationDescriptionId: ID!
+}
+
+union CreateChildPayload = ErrorPayload|CreateChildSuccessPayload
+
+type CreateChildSuccessPayload {
+  id: ID!
+  object: Object
+}
+
+input CreateDocumentInput {
+  editingContextId: ID!
+  id: ID!
+  name: String!
+  stereotypeDescriptionId: ID!
+}
+
+union CreateDocumentPayload = ErrorPayload | CreateDocumentSuccessPayload
+
+type CreateDocumentSuccessPayload {
+  id: ID!
+}
+
+input CreateRepresentationInput {
+  id: ID!
+  editingContextId: ID!
+  objectId: ID!
+  representationDescriptionId: ID!
+  representationName: String!
+}
+
+union CreateRepresentationPayload = ErrorPayload | CreateRepresentationSuccessPayload
+
+type CreateRepresentationSuccessPayload {
+  id: ID!
+  representation: Representation!
+}
+
+input CreateRootObjectInput {
+  id: ID!
+  editingContextId: ID!
+  documentId: ID!
+  domainId: ID!
+  rootObjectCreationDescriptionId: ID!
+}
+
+union CreateRootObjectPayload = CreateRootObjectSuccessPayload | ErrorPayload
+
+type CreateRootObjectSuccessPayload {
+  id: ID!
+  object: Object!
+}
+
+input DeleteDocumentInput {
+  documentId: ID!
+  id: ID!
+}
+
+union DeleteDocumentPayload = ErrorPayload | DeleteDocumentSuccessPayload
+
+type DeleteDocumentSuccessPayload {
+  id: ID!
+}
+
+input DeleteObjectInput {
+  id: ID!
+  editingContextId: ID!
+  objectId: ID!
+}
+
+union DeleteObjectPayload = ErrorPayload | DeleteObjectSuccessPayload
+
+type DeleteObjectSuccessPayload {
+  id: ID!
+}
+
+input DeleteRepresentationInput {
+  id: ID!
+  representationId: ID!
+}
+
+union DeleteRepresentationPayload = ErrorPayload | DeleteRepresentationSuccessPayload
+
+type DeleteRepresentationSuccessPayload {
+  id: ID!
+  representationId: ID!
+}
+
+input RenameDocumentInput {
+  id: ID!
+  documentId: ID!
+  newName: String!
+}
+
+union RenameDocumentPayload = ErrorPayload | RenameDocumentSuccessPayload
+
+type RenameDocumentSuccessPayload {
+  id: ID!
+}
+
+input RenameObjectInput {
+  id: ID!
+  editingContextId: ID!
+  objectId: ID!
+  newName: String!
+}
+
+union RenameObjectPayload = ErrorPayload | RenameObjectSuccessPayload
+
+type RenameObjectSuccessPayload {
+  id: ID!
+  newName: String!
+  objectId: String!
+}
+
+input RenameRepresentationInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  newLabel: String!
+}
+
+union RenameRepresentationPayload = ErrorPayload | RenameRepresentationSuccessPayload
+
+type RenameRepresentationSuccessPayload {
+  id: ID!
+  representation: Representation!
+}
+
+input UploadDocumentInput {
+  editingContextId: ID!
+  file: Upload!
+  id: ID!
+}
+
+union UploadDocumentPayload = ErrorPayload | UploadDocumentSuccessPayload
+
+type UploadDocumentSuccessPayload {
+  id: ID!
+}
+
+
