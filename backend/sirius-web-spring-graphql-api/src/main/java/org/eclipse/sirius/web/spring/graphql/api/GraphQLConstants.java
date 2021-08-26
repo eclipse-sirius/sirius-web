@@ -21,8 +21,6 @@ public final class GraphQLConstants {
 
     public static final String GRAPHQL_BASE_PATH = "/api/graphql"; //$NON-NLS-1$
 
-    public static final String PRINCIPAL = "principal"; //$NON-NLS-1$
-
     public static final String SUBSCRIPTION_ID = "userId"; //$NON-NLS-1$
 
     private GraphQLConstants() {
