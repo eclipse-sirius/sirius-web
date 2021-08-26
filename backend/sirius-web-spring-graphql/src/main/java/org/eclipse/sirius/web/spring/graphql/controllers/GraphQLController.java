@@ -18,7 +18,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -43,7 +42,6 @@ import org.springframework.web.multipart.MultipartFile;
 import graphql.ExecutionInput;
 import graphql.ExecutionResult;
 import graphql.GraphQL;
-import graphql.GraphQLContext;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Timer;
 
@@ -140,25 +138,16 @@ public class GraphQLController {
     }
 
     @PostMapping
-    public ResponseEntity<Map<String, Object>> performRequest(@RequestBody GraphQLPayload graphQLPayload, HttpServletRequest request, Principal principal) {
-        if (principal == null) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
-
+    public ResponseEntity<Map<String, Object>> performRequest(@RequestBody GraphQLPayload graphQLPayload, HttpServletRequest request) {
         String query = graphQLPayload.getQuery();
         Map<String, Object> variables = Optional.ofNullable(graphQLPayload.getVariables()).orElse(Map.of());
         String operationName = graphQLPayload.getOperationName();
 
         // @formatter:off
-        GraphQLContext graphQLContext = GraphQLContext.newContext()
-                .of(GraphQLConstants.PRINCIPAL, principal)
-                .build();
-
         ExecutionInput executionInput = ExecutionInput.newExecutionInput()
                 .query(query)
                 .variables(variables)
                 .operationName(operationName)
-                .context(graphQLContext)
                 .build();
         // @formatter:on
 
@@ -197,15 +186,12 @@ public class GraphQLController {
      * @see https://github.com/jaydenseric/graphql-multipart-request-spec
      */
     @PostMapping(path = "/upload")
-    public ResponseEntity<Map<String, Object>> uploadDocument(@RequestParam(OPERATIONS) String operations, @RequestParam(MAP) String map, @RequestParam(FIRST_UPLOADED_FILE) MultipartFile file,
-            Principal principal) {
+    public ResponseEntity<Map<String, Object>> uploadDocument(@RequestParam(OPERATIONS) String operations, @RequestParam(MAP) String map, @RequestParam(FIRST_UPLOADED_FILE) MultipartFile file) {
         Optional<GraphQLPayload> optionalGraphQLPayload = this.getGraphQLPayload(operations);
         Optional<JsonNode> optionalJsonNode = this.getJsonNode(map);
 
         ResponseEntity<Map<String, Object>> responseEntity = new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        if (principal == null) {
-            responseEntity = new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        } else if (optionalGraphQLPayload.isPresent() && optionalJsonNode.isPresent()) {
+        if (optionalGraphQLPayload.isPresent() && optionalJsonNode.isPresent()) {
             GraphQLPayload graphQLPayload = optionalGraphQLPayload.get();
             JsonNode jsonNode = optionalJsonNode.get();
 
@@ -215,14 +201,9 @@ public class GraphQLController {
                 Map<String, Object> variables = optionalVariables.get();
 
                 // @formatter:off
-                GraphQLContext graphQLContext = GraphQLContext.newContext()
-                        .of(GraphQLConstants.PRINCIPAL, principal)
-                        .build();
-
                 ExecutionInput executionInput = ExecutionInput.newExecutionInput()
                         .query(graphQLPayload.getQuery())
                         .variables(variables)
-                        .context(graphQLContext)
                         .build();
                 // @formatter:on
 

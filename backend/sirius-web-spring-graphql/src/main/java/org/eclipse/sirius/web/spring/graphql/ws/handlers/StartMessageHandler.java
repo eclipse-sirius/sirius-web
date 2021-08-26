@@ -22,7 +22,6 @@ import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
-import org.eclipse.sirius.web.spring.graphql.api.GraphQLConstants;
 import org.eclipse.sirius.web.spring.graphql.controllers.GraphQLPayload;
 import org.eclipse.sirius.web.spring.graphql.ws.SubscriptionEntry;
 import org.eclipse.sirius.web.spring.graphql.ws.dto.input.StartMessage;
@@ -37,7 +36,6 @@ import org.springframework.web.socket.WebSocketSession;
 import graphql.ExecutionInput;
 import graphql.ExecutionResult;
 import graphql.GraphQL;
-import graphql.GraphQLContext;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Timer;
 import reactor.core.Disposable;
@@ -85,15 +83,10 @@ public class StartMessageHandler implements IWebSocketMessageHandler {
         String operationName = graphQLPayload.getOperationName();
 
         // @formatter:off
-        GraphQLContext graphQLContext = GraphQLContext.newContext()
-                .of(GraphQLConstants.PRINCIPAL, this.session.getPrincipal())
-                .build();
-
         ExecutionInput executionInput = ExecutionInput.newExecutionInput()
                 .query(query)
                 .variables(variables)
                 .operationName(operationName)
-                .context(graphQLContext)
                 .build();
         // @formatter:on
 
