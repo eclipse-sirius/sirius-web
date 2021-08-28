@@ -85,11 +85,18 @@ public class AQLInterpreterFactory implements IAQLInterpreterFactory {
         // @formatter:on
 
         for (String qualifiedName : qualifiedNames) {
+            if (qualifiedName.contains("::")) { //$NON-NLS-1$
+                this.logger.warn("Sirius Web does not support Acceleo-style :: references"); //$NON-NLS-1$
+                continue;
+            }
             try {
                 Class<?> aClass = Class.forName(qualifiedName);
                 classes.add(aClass);
             } catch (ClassNotFoundException exception) {
-                this.logger.warn(exception.getMessage(), exception);
+                this.logger.warn("Could not load class '{}'", qualifiedName); //$NON-NLS-1$
+            } catch (NoClassDefFoundError exception) {
+                this.logger.error("Could not load class '{}'; not all dependencies could be " //$NON-NLS-1$
+                        + "instantiated by the JVM: {}", qualifiedName, exception.getMessage()); //$NON-NLS-1$
             }
         }
 
