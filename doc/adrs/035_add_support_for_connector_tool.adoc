@@ -1,0 +1,65 @@
+:imagesdir: images/035
+= ADR-035 - Add support for connector tool
+
+== Context
+A tool section with a lot of edge tools is not productive.
+Indeed, we cannot filter effectively without source/target context.
+
+In the following sample, we want to create a valid edge between A and B. C,D and E can be apply on A.
+Without a good knowledge of the diagram description, we cannot presume if B is a valid target for these edge tools.
+
+image:035_before.png[alt]
+
+We select the C edge tool.
+If we cannot create C, we must restart the process and try D or E without any guaranty to succeed.
+
+image:035_before_1.png[alt]
+
+We are lucky, C can be created :
+
+image:035_before_2.png[alt]
+
+We have all required data on the front-end side to filter valid edge tools on a given source/target context. We will provide a workflow to enhance the productivity named "magic edge tool".
+
+== Decision
+
+A *connector tool* re-use all available *create edge tools* and can be disabled by the specifier.
+
+It allows to select the *source* and the *target* before to choose the concrete *create edge tool* to apply.
+
+It is available when a source element is selected and if at least one *create edge tool* can be created on this source.
+
+When it is engaged, we use a delegation pattern to detect a valid target. At least one underlying *create edge tool* should be valid to apply the *connector tool*.
+
+image:035_before_1.png[alt]
+
+If there are more than one remaining *create edge tool*, we display the filtered list (the selection apply the tool).
+Otherwise, the remaining *create edge tool* is automatically apply.
+
+image:035_after_2.png[alt]
+
+image:035_after_3.png[alt]
+
+== Status
+
+WIP
+
+== Consequences
+
+We must choose between several options to integrate the *connector tool* in the diagram UX.
+
+Option1: A static location on the contextual palette:
+
+image:035_after_option1.png[alt]
+
+Option2: Option1 + hide existing create edge tools (light palette):
+
+image:035_after_option2.png[alt]
+
+Option3: A new form on the selection sides:
+
+image:035_after_option3.png[alt]
+
+Option4: Option3 + hide existing create edge tools (light palette):
+
+image:035_after_option4.png[alt]
