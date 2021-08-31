@@ -20,7 +20,11 @@ type EditingContext {
   stereotypeDescriptions: EditingContextStereotypeDescriptionConnection!
   rootObjectCreationDescriptions(domainId: ID!, suggested: Boolean!): [ChildCreationDescription!]!
   childCreationDescriptions(classId: ID!): [ChildCreationDescription!]!
+  queryBasedString(query: String!): String
   queryBasedInt(query: String!): Int
+  queryBasedBoolean(query: String!): Boolean
+  queryBasedObject(query: String!, variableName: String): Object
+  queryBasedObjects(query: String!, variableName: String): [Object]
 }
 
 type Domain {
@@ -150,6 +154,11 @@ type Object {
   id: ID!
   kind: String!
   label: String!
+  queryBasedString(query: String!): String
+  queryBasedInt(query: String!): Int
+  queryBasedBoolean(query: String!): Boolean
+  queryBasedObject(query: String!, variableName: String): Object
+  queryBasedObjects(query: String!, variableName: String): [Object]
 }
 
 input CreateChildInput {

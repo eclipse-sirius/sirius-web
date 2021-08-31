@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -35,24 +36,55 @@ import org.eclipse.sirius.web.emf.services.EditingContext;
  */
 public final class EditingContextServices {
 
-    public Collection<EObject> eAllContents(IEditingContext editingContext) {
+    public Collection<EObject> allContents(IEditingContext editingContext) {
         //@formatter:off
-        Optional<ResourceSet> optionalResourceSet = Optional.of(editingContext)
-                .filter(EditingContext.class::isInstance)
-                .map(EditingContext.class::cast)
-                .map(EditingContext::getDomain)
-                .map(EditingDomain::getResourceSet);
-
-        return optionalResourceSet.stream()
-         .map(ResourceSet::getResources)
-         .flatMap(EList::stream)
-         .flatMap(this::collectAllContent)
-         .collect(Collectors.toList());
+       return this.getResourceset(editingContext)
+               .stream()
+               .flatMap(this::collectAllContent)
+               .collect(Collectors.toList());
         //@formatter:on
     }
 
-    private Stream<EObject> collectAllContent(Resource resource) {
-        Spliterator<EObject> spliterator = Spliterators.spliteratorUnknownSize(resource.getAllContents(), Spliterator.ORDERED);
-        return StreamSupport.stream(spliterator, false);
+    public Collection<EObject> contents(IEditingContext editingContext) {
+        //@formatter:off
+        return this.getResourceset(editingContext)
+                .stream()
+                .map(ResourceSet::getResources)
+                .flatMap(EList::stream)
+                .map(Resource::getContents)
+                .flatMap(EList::stream)
+                .collect(Collectors.toList());
+        //@formatter:on
+    }
+
+    public EObject getObjectById(IEditingContext editingContext, String id) {
+        //@formatter:off
+       return this.getResourceset(editingContext)
+                .stream()
+                .map(ResourceSet::getResources)
+                .flatMap(EList::stream)
+                .map(resource -> resource.getEObject(id))
+                .findFirst()
+                .orElse(null);
+        //@formatter:on
+    }
+
+    private Optional<ResourceSet> getResourceset(IEditingContext editingContext) {
+        //@formatter:off
+       return  Optional.of(editingContext)
+               .filter(EditingContext.class::isInstance)
+               .map(EditingContext.class::cast)
+               .map(EditingContext::getDomain)
+               .map(EditingDomain::getResourceSet);
+       //@formatter:on
+    }
+
+    private Stream<EObject> collectAllContent(ResourceSet resourceSet) {
+        Spliterator<Notifier> spliterator = Spliterators.spliteratorUnknownSize(resourceSet.getAllContents(), Spliterator.ORDERED);
+        //@formatter:off
+        return StreamSupport.stream(spliterator, false)
+                .filter(EObject.class::isInstance)
+                .map(EObject.class::cast);
+        //@formatter:on
     }
 }

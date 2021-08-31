@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.spring.collaborative.handlers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -23,40 +24,41 @@ import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.spring.collaborative.api.EventHandlerResponse;
 import org.eclipse.sirius.web.spring.collaborative.api.IQueryService;
-import org.eclipse.sirius.web.spring.collaborative.dto.QueryBasedIntInput;
-import org.eclipse.sirius.web.spring.collaborative.dto.QueryBasedIntSuccessPayload;
+import org.eclipse.sirius.web.spring.collaborative.dto.QueryBasedObjectsInput;
+import org.eclipse.sirius.web.spring.collaborative.dto.QueryBasedObjectsSuccessPayload;
 import org.junit.jupiter.api.Test;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 
 /**
- * Tests of the query based int event handler.
+ * Tests of the query based Objects event handler.
  *
  * @author fbarbin
  */
-public class QueryBasedIntEventHandlerTests {
-    private static final int EXPECTED_RESULT_10 = 10;
+public class QueryBasedObjectsEventHandlerTests {
+    private static final List<Object> EXPECTED_RESULT = List.of(new Object());
 
     @Test
-    public void testQueryBasedInt() {
+    public void testQueryBasedObjects() {
+        // The EMFQueryService implementation is already tested by another class.
         IQueryService queryService = new IQueryService.NoOp() {
 
             @Override
-            public IPayload execute(IEditingContext editingContext, QueryBasedIntInput input) {
-                return new QueryBasedIntSuccessPayload(UUID.randomUUID(), EXPECTED_RESULT_10);
+            public IPayload execute(IEditingContext editingContext, QueryBasedObjectsInput input) {
+                return new QueryBasedObjectsSuccessPayload(UUID.randomUUID(), EXPECTED_RESULT);
             }
         };
 
         EventHandlerResponse response = this.handle(queryService);
-        assertThat(response.getPayload()).isInstanceOf(QueryBasedIntSuccessPayload.class);
-        assertThat(((QueryBasedIntSuccessPayload) response.getPayload()).getResult()).isEqualTo(EXPECTED_RESULT_10);
+        assertThat(response.getPayload()).isInstanceOf(QueryBasedObjectsSuccessPayload.class);
+        assertThat(((QueryBasedObjectsSuccessPayload) response.getPayload()).getResult()).isEqualTo(EXPECTED_RESULT);
     }
 
     @Test
-    public void testQueryBasedIntFailed() {
+    public void testQueryBasedObjectsFailed() {
         IQueryService queryService = new IQueryService.NoOp() {
             @Override
-            public IPayload execute(IEditingContext editingContext, QueryBasedIntInput input) {
+            public IPayload execute(IEditingContext editingContext, QueryBasedObjectsInput input) {
                 return new ErrorPayload(UUID.randomUUID(), "An error occured"); //$NON-NLS-1$
             }
         };
@@ -65,12 +67,12 @@ public class QueryBasedIntEventHandlerTests {
     }
 
     private EventHandlerResponse handle(IQueryService queryService) {
-        QueryBasedIntEventHandler queryBasedIntEventHandler = new QueryBasedIntEventHandler(new NoOpCollaborativeMessageService(), new SimpleMeterRegistry(), queryService);
-        IInput input = new QueryBasedIntInput(UUID.randomUUID(), "", Map.of()); //$NON-NLS-1$
-        assertThat(queryBasedIntEventHandler.canHandle(input)).isTrue();
+        QueryBasedObjectsEventHandler queryBasedObjectsEventHandler = new QueryBasedObjectsEventHandler(new NoOpCollaborativeMessageService(), new SimpleMeterRegistry(), queryService);
+        IInput input = new QueryBasedObjectsInput(UUID.randomUUID(), "", Map.of()); //$NON-NLS-1$
+        assertThat(queryBasedObjectsEventHandler.canHandle(input)).isTrue();
 
         IEditingContext editingContext = () -> UUID.randomUUID();
-        EventHandlerResponse response = queryBasedIntEventHandler.handle(editingContext, input);
+        EventHandlerResponse response = queryBasedObjectsEventHandler.handle(editingContext, input);
         return response;
     }
 }

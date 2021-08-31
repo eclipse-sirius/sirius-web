@@ -24,7 +24,7 @@ import org.eclipse.sirius.web.spring.collaborative.api.EventHandlerResponse;
 import org.eclipse.sirius.web.spring.collaborative.api.IEditingContextEventHandler;
 import org.eclipse.sirius.web.spring.collaborative.api.IQueryService;
 import org.eclipse.sirius.web.spring.collaborative.api.Monitoring;
-import org.eclipse.sirius.web.spring.collaborative.dto.QueryBasedIntInput;
+import org.eclipse.sirius.web.spring.collaborative.dto.QueryBasedStringInput;
 import org.eclipse.sirius.web.spring.collaborative.messages.ICollaborativeMessageService;
 import org.springframework.stereotype.Service;
 
@@ -32,12 +32,12 @@ import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
 
 /**
- * Handler used to execute query based int.
+ * Handler used to execute query based String.
  *
  * @author fbarbin
  */
 @Service
-public class QueryBasedIntEventHandler implements IEditingContextEventHandler {
+public class QueryBasedStringEventHandler implements IEditingContextEventHandler {
 
     private final IQueryService queryService;
 
@@ -45,7 +45,7 @@ public class QueryBasedIntEventHandler implements IEditingContextEventHandler {
 
     private final Counter counter;
 
-    public QueryBasedIntEventHandler(ICollaborativeMessageService messageService, MeterRegistry meterRegistry, IQueryService queryService) {
+    public QueryBasedStringEventHandler(ICollaborativeMessageService messageService, MeterRegistry meterRegistry, IQueryService queryService) {
         this.messageService = Objects.requireNonNull(messageService);
         this.queryService = Objects.requireNonNull(queryService);
 
@@ -58,19 +58,19 @@ public class QueryBasedIntEventHandler implements IEditingContextEventHandler {
 
     @Override
     public boolean canHandle(IInput input) {
-        return input instanceof QueryBasedIntInput;
+        return input instanceof QueryBasedStringInput;
     }
 
     @Override
     public EventHandlerResponse handle(IEditingContext editingContext, IInput input) {
         this.counter.increment();
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId());
-        if (input instanceof QueryBasedIntInput) {
-            QueryBasedIntInput queryBasedIntInput = (QueryBasedIntInput) input;
-            IPayload payload = this.queryService.execute(editingContext, queryBasedIntInput);
+        if (input instanceof QueryBasedStringInput) {
+            QueryBasedStringInput queryBasedStringInput = (QueryBasedStringInput) input;
+            IPayload payload = this.queryService.execute(editingContext, queryBasedStringInput);
             return new EventHandlerResponse(changeDescription, payload);
         }
-        String message = this.messageService.invalidInput(input.getClass().getSimpleName(), QueryBasedIntInput.class.getSimpleName());
+        String message = this.messageService.invalidInput(input.getClass().getSimpleName(), QueryBasedStringInput.class.getSimpleName());
         ErrorPayload errorPayload = new ErrorPayload(input.getId(), message);
         return new EventHandlerResponse(changeDescription, errorPayload);
     }

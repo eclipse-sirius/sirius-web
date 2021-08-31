@@ -21,19 +21,19 @@ import java.util.UUID;
 import org.eclipse.sirius.web.core.api.IInput;
 
 /**
- * The input object of the queryBasedIntEventHandler.
+ * The input object of the queryBasedBooleanEventHandler.
  *
  * @author fbarbin
  */
-public final class QueryBasedIntInput implements IInput {
+public final class QueryBasedBooleanInput implements IInput {
 
     private UUID id;
 
     private String query;
 
-    private Map<String, Object> variables;
+    private final Map<String, Object> variables;
 
-    public QueryBasedIntInput(UUID id, String query, Map<String, Object> variables) {
+    public QueryBasedBooleanInput(UUID id, String query, Map<String, Object> variables) {
         this.id = Objects.requireNonNull(id);
         this.query = Objects.requireNonNull(query);
         this.variables = new HashMap<>(Objects.requireNonNull(variables));

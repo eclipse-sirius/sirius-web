@@ -16,7 +16,6 @@ import java.text.MessageFormat;
 import java.util.Objects;
 import java.util.UUID;
 
-import org.eclipse.sirius.web.annotations.graphql.GraphQLObjectType;
 import org.eclipse.sirius.web.core.api.IPayload;
 
 /**
@@ -24,14 +23,13 @@ import org.eclipse.sirius.web.core.api.IPayload;
  *
  * @author fbarbin
  */
-@GraphQLObjectType
 public final class QueryBasedIntSuccessPayload implements IPayload {
 
     private final UUID id;
 
-    private final Integer result;
+    private final int result;
 
-    public QueryBasedIntSuccessPayload(UUID id, Integer result) {
+    public QueryBasedIntSuccessPayload(UUID id, int result) {
         this.id = Objects.requireNonNull(id);
         this.result = Objects.requireNonNull(result);
     }
@@ -41,7 +39,7 @@ public final class QueryBasedIntSuccessPayload implements IPayload {
         return this.id;
     }
 
-    public Integer getResult() {
+    public int getResult() {
         return this.result;
     }
 

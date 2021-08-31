@@ -23,40 +23,41 @@ import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.spring.collaborative.api.EventHandlerResponse;
 import org.eclipse.sirius.web.spring.collaborative.api.IQueryService;
-import org.eclipse.sirius.web.spring.collaborative.dto.QueryBasedIntInput;
-import org.eclipse.sirius.web.spring.collaborative.dto.QueryBasedIntSuccessPayload;
+import org.eclipse.sirius.web.spring.collaborative.dto.QueryBasedBooleanInput;
+import org.eclipse.sirius.web.spring.collaborative.dto.QueryBasedBooleanSuccessPayload;
 import org.junit.jupiter.api.Test;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 
 /**
- * Tests of the query based int event handler.
+ * Tests of the query based boolean event handler.
  *
  * @author fbarbin
  */
-public class QueryBasedIntEventHandlerTests {
-    private static final int EXPECTED_RESULT_10 = 10;
+public class QueryBasedBooleanEventHandlerTests {
+    private static final boolean EXPECTED_RESULT_FALSE = false;
 
     @Test
-    public void testQueryBasedInt() {
+    public void testQueryBasedBoolean() {
+        // The EMFQueryService implementation is already tested by another class.
         IQueryService queryService = new IQueryService.NoOp() {
 
             @Override
-            public IPayload execute(IEditingContext editingContext, QueryBasedIntInput input) {
-                return new QueryBasedIntSuccessPayload(UUID.randomUUID(), EXPECTED_RESULT_10);
+            public IPayload execute(IEditingContext editingContext, QueryBasedBooleanInput input) {
+                return new QueryBasedBooleanSuccessPayload(UUID.randomUUID(), EXPECTED_RESULT_FALSE);
             }
         };
 
         EventHandlerResponse response = this.handle(queryService);
-        assertThat(response.getPayload()).isInstanceOf(QueryBasedIntSuccessPayload.class);
-        assertThat(((QueryBasedIntSuccessPayload) response.getPayload()).getResult()).isEqualTo(EXPECTED_RESULT_10);
+        assertThat(response.getPayload()).isInstanceOf(QueryBasedBooleanSuccessPayload.class);
+        assertThat(((QueryBasedBooleanSuccessPayload) response.getPayload()).getResult()).isEqualTo(EXPECTED_RESULT_FALSE);
     }
 
     @Test
-    public void testQueryBasedIntFailed() {
+    public void testQueryBasedBooleanFailed() {
         IQueryService queryService = new IQueryService.NoOp() {
             @Override
-            public IPayload execute(IEditingContext editingContext, QueryBasedIntInput input) {
+            public IPayload execute(IEditingContext editingContext, QueryBasedBooleanInput input) {
                 return new ErrorPayload(UUID.randomUUID(), "An error occured"); //$NON-NLS-1$
             }
         };
@@ -65,12 +66,12 @@ public class QueryBasedIntEventHandlerTests {
     }
 
     private EventHandlerResponse handle(IQueryService queryService) {
-        QueryBasedIntEventHandler queryBasedIntEventHandler = new QueryBasedIntEventHandler(new NoOpCollaborativeMessageService(), new SimpleMeterRegistry(), queryService);
-        IInput input = new QueryBasedIntInput(UUID.randomUUID(), "", Map.of()); //$NON-NLS-1$
-        assertThat(queryBasedIntEventHandler.canHandle(input)).isTrue();
+        QueryBasedBooleanEventHandler queryBasedBooleanEventHandler = new QueryBasedBooleanEventHandler(new NoOpCollaborativeMessageService(), new SimpleMeterRegistry(), queryService);
+        IInput input = new QueryBasedBooleanInput(UUID.randomUUID(), "", Map.of()); //$NON-NLS-1$
+        assertThat(queryBasedBooleanEventHandler.canHandle(input)).isTrue();
 
         IEditingContext editingContext = () -> UUID.randomUUID();
-        EventHandlerResponse response = queryBasedIntEventHandler.handle(editingContext, input);
+        EventHandlerResponse response = queryBasedBooleanEventHandler.handle(editingContext, input);
         return response;
     }
 }

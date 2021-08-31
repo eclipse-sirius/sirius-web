@@ -18,7 +18,6 @@ import com.tngtech.archunit.lang.ArchRule;
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition;
 
 import org.eclipse.sirius.web.annotations.graphql.GraphQLInputObjectType;
-import org.eclipse.sirius.web.annotations.graphql.GraphQLObjectType;
 import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.tests.architecture.AbstractCodingRulesTests;
@@ -78,21 +77,6 @@ public class CodingRulesTests extends AbstractCodingRulesTests {
                 .areNotInterfaces()
                 .should()
                 .haveModifier(JavaModifier.FINAL);
-        // @formatter:on
-
-        rule.check(this.getClasses());
-    }
-
-    @Test
-    public void classesImplentingPayloadShouldBeAnnotatedAsPayload() {
-        // @formatter:off
-        ArchRule rule = ArchRuleDefinition.classes()
-                .that()
-                .areAssignableTo(IPayload.class)
-                .and()
-                .areNotInterfaces()
-                .should()
-                .beAnnotatedWith(GraphQLObjectType.class);
         // @formatter:on
 
         rule.check(this.getClasses());
