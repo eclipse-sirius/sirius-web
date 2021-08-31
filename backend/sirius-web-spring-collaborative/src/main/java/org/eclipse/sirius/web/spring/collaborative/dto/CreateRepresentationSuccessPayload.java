@@ -21,7 +21,7 @@ import org.eclipse.sirius.web.annotations.graphql.GraphQLID;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLNonNull;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLObjectType;
 import org.eclipse.sirius.web.core.api.IPayload;
-import org.eclipse.sirius.web.representations.IRepresentation;
+import org.eclipse.sirius.web.representations.IRepresentationMetadata;
 
 /**
  * The payload of the create representation mutation.
@@ -33,11 +33,11 @@ public final class CreateRepresentationSuccessPayload implements IPayload {
 
     private final UUID id;
 
-    private final IRepresentation representation;
+    private final IRepresentationMetadata representationMetadata;
 
-    public CreateRepresentationSuccessPayload(UUID id, IRepresentation representation) {
+    public CreateRepresentationSuccessPayload(UUID id, IRepresentationMetadata representationMetadata) {
         this.id = Objects.requireNonNull(id);
-        this.representation = Objects.requireNonNull(representation);
+        this.representationMetadata = Objects.requireNonNull(representationMetadata);
     }
 
     @Override
@@ -50,13 +50,13 @@ public final class CreateRepresentationSuccessPayload implements IPayload {
 
     @GraphQLField
     @GraphQLNonNull
-    public IRepresentation getRepresentation() {
-        return this.representation;
+    public IRepresentationMetadata getRepresentation() {
+        return this.representationMetadata;
     }
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, representation: '{'id: {2}, type: {3}'}''}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.representation.getId(), this.representation.getClass().getSimpleName());
+        String pattern = "{0} '{'id: {1}, representation: '{'id: {2}, kind: {3}'}''}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.representationMetadata.getId(), this.representationMetadata.getKind());
     }
 }

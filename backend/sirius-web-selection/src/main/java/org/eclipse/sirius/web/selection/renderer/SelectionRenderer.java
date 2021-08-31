@@ -40,7 +40,6 @@ public class SelectionRenderer {
 
     public Selection render() {
         String id = this.selectionDescription.getIdProvider().apply(this.variableManager);
-        String label = this.selectionDescription.getLabelProvider().apply(this.variableManager);
         String message = this.selectionDescription.getMessageProvider().apply(this.variableManager);
         String targetObjectId = this.selectionDescription.getTargetObjectIdProvider().apply(this.variableManager);
 
@@ -54,8 +53,6 @@ public class SelectionRenderer {
 
         // @formatter:off
         return Selection.newSelection(id)
-                .descriptionId(this.selectionDescription.getId())
-                .label(label)
                 .targetObjectId(targetObjectId)
                 .message(message)
                 .objects(objects)

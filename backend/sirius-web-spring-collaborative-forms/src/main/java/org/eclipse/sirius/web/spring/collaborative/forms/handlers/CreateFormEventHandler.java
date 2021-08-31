@@ -26,6 +26,8 @@ import org.eclipse.sirius.web.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.web.forms.Form;
 import org.eclipse.sirius.web.forms.description.FormDescription;
 import org.eclipse.sirius.web.representations.IRepresentationDescription;
+import org.eclipse.sirius.web.representations.ISemanticRepresentationMetadata;
+import org.eclipse.sirius.web.representations.SemanticRepresentationMetadata;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeKind;
 import org.eclipse.sirius.web.spring.collaborative.api.IEditingContextEventHandler;
@@ -78,7 +80,7 @@ public class CreateFormEventHandler implements IEditingContextEventHandler {
         if (input instanceof CreateRepresentationInput) {
             CreateRepresentationInput createRepresentationInput = (CreateRepresentationInput) input;
             // @formatter:off
-            return this.representationDescriptionSearchService.findById(editingContext, createRepresentationInput.getRepresentationDescriptionId())
+            return this.representationDescriptionSearchService.findById(editingContext, createRepresentationInput.getRepresentationDescriptionId().toString())
                     .filter(FormDescription.class::isInstance)
                     .isPresent();
             // @formatter:on
@@ -98,7 +100,7 @@ public class CreateFormEventHandler implements IEditingContextEventHandler {
             CreateRepresentationInput createRepresentationInput = (CreateRepresentationInput) input;
 
             Optional<IRepresentationDescription> optionalRepresentationDescription = this.representationDescriptionSearchService.findById(editingContext,
-                    createRepresentationInput.getRepresentationDescriptionId());
+                    createRepresentationInput.getRepresentationDescriptionId().toString());
             Optional<Object> optionalObject = this.objectService.getObject(editingContext, createRepresentationInput.getObjectId());
 
             if (optionalRepresentationDescription.isPresent() && optionalObject.isPresent()) {
@@ -106,17 +108,22 @@ public class CreateFormEventHandler implements IEditingContextEventHandler {
                 String targetObjectId = this.objectService.getId(optionalObject.get());
                 if (representationDescription instanceof FormDescription) {
                     // @formatter:off
-                    Form form = Form.newForm(UUID.randomUUID().toString())
+                    String formId = UUID.randomUUID().toString();
+                    Form form = Form.newForm(formId)
                             .label(createRepresentationInput.getRepresentationName())
                             .targetObjectId(targetObjectId)
-                            .descriptionId(representationDescription.getId())
                             .pages(List.of()) // We don't store form pages, it will be re-render by the FormProcessor.
                             .build();
+                    ISemanticRepresentationMetadata formMetadata = SemanticRepresentationMetadata.newRepresentationMetadata(formId)
+                            .descriptionId(representationDescription.getId())
+                            .label(form.getLabel())
+                            .kind(Form.KIND)
+                            .targetObjectId(form.getTargetObjectId())
+                            .build();
                     // @formatter:on
+                    this.representationPersistenceService.save(editingContext, formMetadata, form);
 
-                    this.representationPersistenceService.save(editingContext, form);
-
-                    payload = new CreateRepresentationSuccessPayload(input.getId(), form);
+                    payload = new CreateRepresentationSuccessPayload(input.getId(), formMetadata);
                     changeDescription = new ChangeDescription(ChangeKind.REPRESENTATION_CREATION, editingContext.getId(), input);
                 }
             }

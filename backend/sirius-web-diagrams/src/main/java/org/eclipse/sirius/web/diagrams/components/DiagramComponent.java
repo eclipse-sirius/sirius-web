@@ -46,9 +46,7 @@ public class DiagramComponent implements IComponent {
         DiagramDescription diagramDescription = this.props.getDiagramDescription();
         var optionalPreviousDiagram = this.props.getPreviousDiagram();
 
-        String label = diagramDescription.getLabelProvider().apply(variableManager);
-
-        String diagramId = optionalPreviousDiagram.map(Diagram::getId).orElseGet(() -> UUID.randomUUID().toString());
+        String diagramId = optionalPreviousDiagram.map(Diagram::getId).orElseGet(() -> variableManager.get("DIAGRAM_ID", String.class).orElseGet(() -> UUID.randomUUID().toString())); //$NON-NLS-1$
         String targetObjectId = diagramDescription.getTargetObjectIdProvider().apply(variableManager);
 
         DiagramRenderingCache cache = new DiagramRenderingCache();
@@ -91,8 +89,6 @@ public class DiagramComponent implements IComponent {
         // @formatter:off
         DiagramElementProps diagramElementProps = DiagramElementProps.newDiagramElementProps(diagramId)
                 .targetObjectId(targetObjectId)
-                .descriptionId(diagramDescription.getId())
-                .label(label)
                 .position(Position.UNDEFINED)
                 .size(Size.UNDEFINED)
                 .children(children)

@@ -14,6 +14,8 @@ package org.eclipse.sirius.web.spring.collaborative.api;
 
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 
+import java.util.Optional;
+
 /**
  * Interface used to register deserializer.
  *
@@ -27,4 +29,5 @@ public interface IStdDeserializerProvider<T> {
 
     Class<T> getType();
 
+    Optional<Class<? extends T>> getImplementationClass(String kind);
 }

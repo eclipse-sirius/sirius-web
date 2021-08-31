@@ -25,8 +25,6 @@ import org.eclipse.elk.core.util.ElkUtil;
 import org.eclipse.elk.graph.ElkGraphElement;
 import org.eclipse.elk.graph.ElkNode;
 import org.eclipse.elk.graph.json.ElkGraphJson;
-import org.eclipse.sirius.web.core.api.IEditingContext;
-import org.eclipse.sirius.web.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.web.diagrams.events.IDiagramEvent;
@@ -57,8 +55,6 @@ public class LayoutService implements ILayoutService {
 
     private final IncrementalLayoutedDiagramProvider incrementalLayoutedDiagramProvider;
 
-    private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
-
     private final IncrementalLayoutDiagramConverter incrementalLayoutDiagramConverter;
 
     private final IncrementalLayoutEngine incrementalLayoutEngine;
@@ -66,30 +62,22 @@ public class LayoutService implements ILayoutService {
     private final Logger logger = LoggerFactory.getLogger(LayoutService.class);
 
     public LayoutService(ELKDiagramConverter elkDiagramConverter, IncrementalLayoutDiagramConverter incrementalLayoutDiagramConverter, LayoutConfiguratorRegistry layoutConfiguratorRegistry,
-            ELKLayoutedDiagramProvider layoutedDiagramProvider, IncrementalLayoutedDiagramProvider incrementalLayoutedDiagramProvider,
-            IRepresentationDescriptionSearchService representationDescriptionSearchService, IncrementalLayoutEngine incrementalLayoutEngine) {
+            ELKLayoutedDiagramProvider layoutedDiagramProvider, IncrementalLayoutedDiagramProvider incrementalLayoutedDiagramProvider, IncrementalLayoutEngine incrementalLayoutEngine) {
         this.elkDiagramConverter = Objects.requireNonNull(elkDiagramConverter);
         this.incrementalLayoutDiagramConverter = Objects.requireNonNull(incrementalLayoutDiagramConverter);
         this.layoutConfiguratorRegistry = Objects.requireNonNull(layoutConfiguratorRegistry);
         this.elkLayoutedDiagramProvider = Objects.requireNonNull(layoutedDiagramProvider);
         this.incrementalLayoutedDiagramProvider = Objects.requireNonNull(incrementalLayoutedDiagramProvider);
-        this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.incrementalLayoutEngine = Objects.requireNonNull(incrementalLayoutEngine);
         LayoutMetaDataService.getInstance().registerLayoutMetaDataProviders(new LayeredOptions());
     }
 
     @Override
-    public Diagram layout(IEditingContext editingContext, Diagram diagram) {
+    public Diagram layout(Diagram diagram, DiagramDescription diagramDescription) {
         ELKConvertedDiagram convertedDiagram = this.elkDiagramConverter.convert(diagram);
 
         ElkNode elkDiagram = convertedDiagram.getElkDiagram();
-        var representationDescription = this.representationDescriptionSearchService.findById(editingContext, diagram.getDescriptionId());
-        ISiriusWebLayoutConfigurator layoutConfigurator;
-        if (representationDescription.isPresent() && representationDescription.get() instanceof DiagramDescription) {
-            layoutConfigurator = this.layoutConfiguratorRegistry.getLayoutConfigurator(diagram, (DiagramDescription) representationDescription.get());
-        } else {
-            layoutConfigurator = this.layoutConfiguratorRegistry.getDefaultLayoutConfigurator();
-        }
+        ISiriusWebLayoutConfigurator layoutConfigurator = this.getLayoutConfigurator(diagram, diagramDescription);
 
         ElkUtil.applyVisitors(elkDiagram, layoutConfigurator);
         IGraphLayoutEngine engine = new RecursiveGraphLayoutEngine();
@@ -115,21 +103,23 @@ public class LayoutService implements ILayoutService {
     }
 
     @Override
-    public Diagram incrementalLayout(IEditingContext editingContext, Diagram newDiagram, Optional<IDiagramEvent> optionalDiagramElementEvent) {
+    public Diagram incrementalLayout(Diagram newDiagram, DiagramDescription diagramDescription, Optional<IDiagramEvent> optionalDiagramElementEvent) {
         IncrementalLayoutConvertedDiagram convertedDiagram = this.incrementalLayoutDiagramConverter.convert(newDiagram);
         DiagramLayoutData diagramLayoutData = convertedDiagram.getDiagramLayoutData();
 
-        var representationDescription = this.representationDescriptionSearchService.findById(editingContext, newDiagram.getDescriptionId());
-        ISiriusWebLayoutConfigurator layoutConfigurator;
-        if (representationDescription.isPresent() && representationDescription.get() instanceof DiagramDescription) {
-            layoutConfigurator = this.layoutConfiguratorRegistry.getLayoutConfigurator(newDiagram, (DiagramDescription) representationDescription.get());
-        } else {
-            layoutConfigurator = this.layoutConfiguratorRegistry.getDefaultLayoutConfigurator();
-        }
+        ISiriusWebLayoutConfigurator layoutConfigurator = this.getLayoutConfigurator(newDiagram, diagramDescription);
         this.incrementalLayoutEngine.layout(optionalDiagramElementEvent, diagramLayoutData, layoutConfigurator);
 
         Map<String, ILayoutData> id2LayoutData = convertedDiagram.getId2LayoutData();
         return this.incrementalLayoutedDiagramProvider.getLayoutedDiagram(newDiagram, diagramLayoutData, id2LayoutData);
+    }
+
+    private ISiriusWebLayoutConfigurator getLayoutConfigurator(Diagram diagram, DiagramDescription diagramDescription) {
+        if (diagramDescription != null) {
+            return this.layoutConfiguratorRegistry.getLayoutConfigurator(diagram, diagramDescription);
+        } else {
+            return this.layoutConfiguratorRegistry.getDefaultLayoutConfigurator();
+        }
     }
 
 }

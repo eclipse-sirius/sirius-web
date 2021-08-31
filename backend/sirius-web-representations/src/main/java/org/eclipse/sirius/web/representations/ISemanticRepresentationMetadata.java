@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,10 +13,10 @@
 package org.eclipse.sirius.web.representations;
 
 /**
- * Interface for representations based on a target object.
+ * Interface for the metadata of representations which target a specific semantic object.
  *
- * @author gcoutable
+ * @author pcdavid
  */
-public interface ISemanticRepresentation extends IRepresentation {
+public interface ISemanticRepresentationMetadata extends IRepresentationMetadata {
     String getTargetObjectId();
 }

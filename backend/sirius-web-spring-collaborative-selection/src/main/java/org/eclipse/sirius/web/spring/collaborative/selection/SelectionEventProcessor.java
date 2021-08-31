@@ -21,6 +21,8 @@ import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.core.api.IRepresentationInput;
 import org.eclipse.sirius.web.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.web.representations.IRepresentation;
+import org.eclipse.sirius.web.representations.IRepresentationMetadata;
+import org.eclipse.sirius.web.representations.SemanticRepresentationMetadata;
 import org.eclipse.sirius.web.representations.VariableManager;
 import org.eclipse.sirius.web.selection.Selection;
 import org.eclipse.sirius.web.selection.description.SelectionDescription;
@@ -68,7 +70,9 @@ public class SelectionEventProcessor implements ISelectionEventProcessor {
 
     private final AtomicReference<Selection> currentSelection = new AtomicReference<>();
 
-    public SelectionEventProcessor(IEditingContext editingContext, SelectionDescription selectionDescription, String id, Object object, ISubscriptionManager subscriptionManager,
+    private final IRepresentationMetadata selectionMetadata;
+
+    public SelectionEventProcessor(IEditingContext editingContext, SelectionDescription selectionDescription, String id, Object object, String label, ISubscriptionManager subscriptionManager,
             IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry) {
         this.logger.trace("Creating the selection event processor {}", id); //$NON-NLS-1$
 
@@ -81,12 +85,24 @@ public class SelectionEventProcessor implements ISelectionEventProcessor {
 
         Selection selection = this.refreshSelection();
         this.currentSelection.set(selection);
-
+        // @formatter:off
+        this.selectionMetadata = SemanticRepresentationMetadata.newRepresentationMetadata(id)
+                                                               .descriptionId(selectionDescription.getId())
+                                                               .label(label)
+                                                               .kind(Selection.KIND)
+                                                               .targetObjectId(selection.getTargetObjectId())
+                                                               .build();
+        // @formatter:on
     }
 
     @Override
     public IRepresentation getRepresentation() {
         return this.currentSelection.get();
+    }
+
+    @Override
+    public IRepresentationMetadata getRepresentationMetadata() {
+        return this.selectionMetadata;
     }
 
     @Override

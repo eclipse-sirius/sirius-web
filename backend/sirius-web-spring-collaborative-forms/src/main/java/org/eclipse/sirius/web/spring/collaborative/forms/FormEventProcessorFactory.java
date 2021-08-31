@@ -19,13 +19,14 @@ import java.util.Optional;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.core.api.IRepresentationDescriptionSearchService;
-import org.eclipse.sirius.web.forms.Form;
 import org.eclipse.sirius.web.forms.description.FormDescription;
+import org.eclipse.sirius.web.representations.IRepresentationMetadata;
+import org.eclipse.sirius.web.representations.ISemanticRepresentationMetadata;
 import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationConfiguration;
 import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationEventProcessor;
 import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationEventProcessorFactory;
+import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationMetadataSearchService;
 import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationRefreshPolicyRegistry;
-import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.web.spring.collaborative.api.ISubscriptionManagerFactory;
 import org.eclipse.sirius.web.spring.collaborative.forms.api.FormConfiguration;
 import org.eclipse.sirius.web.spring.collaborative.forms.api.FormCreationParameters;
@@ -47,7 +48,7 @@ public class FormEventProcessorFactory implements IRepresentationEventProcessorF
 
     private final IObjectService objectService;
 
-    private final IRepresentationSearchService representationSearchService;
+    private final IRepresentationMetadataSearchService representationMetadataSearchService;
 
     private final List<IFormEventHandler> formEventHandlers;
 
@@ -58,11 +59,11 @@ public class FormEventProcessorFactory implements IRepresentationEventProcessorF
     private final IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry;
 
     public FormEventProcessorFactory(IRepresentationDescriptionSearchService representationDescriptionSearchService, IObjectService objectService,
-            IRepresentationSearchService representationSearchService, List<IFormEventHandler> formEventHandlers, ISubscriptionManagerFactory subscriptionManagerFactory,
+            IRepresentationMetadataSearchService representationMetadataSearchService, List<IFormEventHandler> formEventHandlers, ISubscriptionManagerFactory subscriptionManagerFactory,
             IWidgetSubscriptionManagerFactory widgetSubscriptionManagerFactory, IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
+        this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
         this.objectService = Objects.requireNonNull(objectService);
-        this.representationSearchService = Objects.requireNonNull(representationSearchService);
         this.formEventHandlers = Objects.requireNonNull(formEventHandlers);
         this.subscriptionManagerFactory = Objects.requireNonNull(subscriptionManagerFactory);
         this.widgetSubscriptionManagerFactory = Objects.requireNonNull(widgetSubscriptionManagerFactory);
@@ -80,15 +81,15 @@ public class FormEventProcessorFactory implements IRepresentationEventProcessorF
         if (IFormEventProcessor.class.isAssignableFrom(representationEventProcessorClass) && configuration instanceof FormConfiguration) {
             FormConfiguration formConfiguration = (FormConfiguration) configuration;
 
-            Optional<Form> optionalForm = this.representationSearchService.findById(editingContext, formConfiguration.getId(), Form.class);
-            if (optionalForm.isPresent()) {
-                Form form = optionalForm.get();
+            Optional<IRepresentationMetadata> optionalFormMetadata = this.representationMetadataSearchService.findById(editingContext, formConfiguration.getId());
+            if (optionalFormMetadata.isPresent() && optionalFormMetadata.get() instanceof ISemanticRepresentationMetadata) {
+                ISemanticRepresentationMetadata formMetadata = (ISemanticRepresentationMetadata) optionalFormMetadata.get();
                 // @formatter:off
-                Optional<FormDescription> optionalFormDescription = this.representationDescriptionSearchService.findById(editingContext, form.getDescriptionId())
+                Optional<FormDescription> optionalFormDescription = this.representationDescriptionSearchService.findById(editingContext, formMetadata.getDescriptionId().toString())
                         .filter(FormDescription.class::isInstance)
                         .map(FormDescription.class::cast);
                 // @formatter:on
-                Optional<Object> optionalObject = this.objectService.getObject(editingContext, form.getTargetObjectId());
+                Optional<Object> optionalObject = this.objectService.getObject(editingContext, formMetadata.getTargetObjectId());
                 if (optionalFormDescription.isPresent() && optionalObject.isPresent()) {
                     FormDescription formDescription = optionalFormDescription.get();
                     Object object = optionalObject.get();
@@ -101,7 +102,7 @@ public class FormEventProcessorFactory implements IRepresentationEventProcessorF
                             .build();
                     // @formatter:on
 
-                    IRepresentationEventProcessor formEventProcessor = new FormEventProcessor(formCreationParameters, this.formEventHandlers, this.subscriptionManagerFactory.create(),
+                    IRepresentationEventProcessor formEventProcessor = new FormEventProcessor(formCreationParameters, formMetadata, this.formEventHandlers, this.subscriptionManagerFactory.create(),
                             this.widgetSubscriptionManagerFactory.create(), this.representationRefreshPolicyRegistry);
 
                     // @formatter:off

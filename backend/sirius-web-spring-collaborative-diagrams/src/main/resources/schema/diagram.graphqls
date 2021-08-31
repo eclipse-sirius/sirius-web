@@ -17,16 +17,12 @@ type DiagramRefreshedEventPayload {
 
 type Diagram implements Representation {
   id: ID!
-  label: String!
   kind: String!
-  descriptionId: ID!
   targetObjectId: ID!
-  autoLayout: Boolean!
   size: Size!
   position: Position!
   nodes: [Node!]!
   edges: [Edge!]!
-  toolSections: [ToolSection!]!
 }
 
 type Node {
@@ -190,6 +186,7 @@ type DiagramDescription implements RepresentationDescription {
   id: ID!
   label: String!
   autoLayout: Boolean!
+  toolSections: [ToolSection!]!
 }
 
 type NodeDescription {
@@ -231,7 +228,7 @@ union DeleteFromDiagramPayload = ErrorPayload | DeleteFromDiagramSuccessPayload
 
 type DeleteFromDiagramSuccessPayload {
   id: ID!
-  diagram: Diagram!
+  diagram: RepresentationMetadata!
 }
 
 input EditLabelInput {
@@ -246,7 +243,7 @@ union EditLabelPayload = ErrorPayload|EditLabelSuccessPayload
 
 type EditLabelSuccessPayload {
   id: ID!
-  diagram: Diagram!
+  diagram: RepresentationMetadata!
 }
 
 input InvokeEdgeToolOnDiagramInput {
@@ -262,7 +259,7 @@ union InvokeEdgeToolOnDiagramPayload = ErrorPayload | InvokeEdgeToolOnDiagramSuc
 
 type InvokeEdgeToolOnDiagramSuccessPayload {
   id: ID!
-  diagram: Diagram!
+  diagram: RepresentationMetadata!
 }
 
 input InvokeNodeToolOnDiagramInput {
@@ -280,7 +277,7 @@ union InvokeNodeToolOnDiagramPayload = ErrorPayload | InvokeNodeToolOnDiagramSuc
 
 type InvokeNodeToolOnDiagramSuccessPayload {
   id: ID!
-  diagram: Diagram!
+  diagram: RepresentationMetadata!
 }
 
 input InvokeDeleteToolOnDiagramInput {
@@ -313,7 +310,7 @@ union UpdateNodeBoundsPayload = ErrorPayload | UpdateNodeBoundsSuccessPayload
 
 type UpdateNodeBoundsSuccessPayload {
   id: ID!
-  diagram: Diagram!
+  diagram: RepresentationMetadata!
 }
 
 input UpdateNodePositionInput {
@@ -329,5 +326,5 @@ union UpdateNodePositionPayload = ErrorPayload | UpdateNodePositionSuccessPayloa
 
 type UpdateNodePositionSuccessPayload {
   id: ID!
-  diagram: Diagram!
+  diagram: RepresentationMetadata!
 }

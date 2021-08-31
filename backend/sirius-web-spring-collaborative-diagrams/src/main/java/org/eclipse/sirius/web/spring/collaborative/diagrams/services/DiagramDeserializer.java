@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.sirius.web.diagrams.Diagram;
@@ -35,6 +36,15 @@ import org.springframework.stereotype.Service;
 public class DiagramDeserializer implements IRepresentationDeserializer {
 
     private final Logger logger = LoggerFactory.getLogger(DiagramDeserializer.class);
+
+    @Override
+    public Optional<Class<? extends IRepresentation>> getImplementationClass(String kind) {
+        if (Objects.equals(Diagram.KIND, kind)) {
+            return Optional.of(Diagram.class);
+        } else {
+            return Optional.empty();
+        }
+    }
 
     @Override
     public boolean canHandle(ObjectNode root) {

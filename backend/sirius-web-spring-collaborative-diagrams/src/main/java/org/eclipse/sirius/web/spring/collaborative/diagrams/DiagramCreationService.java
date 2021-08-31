@@ -32,6 +32,7 @@ import org.eclipse.sirius.web.diagrams.events.ArrangeAllEvent;
 import org.eclipse.sirius.web.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.web.diagrams.layout.api.ILayoutService;
 import org.eclipse.sirius.web.diagrams.renderer.DiagramRenderer;
+import org.eclipse.sirius.web.representations.ISemanticRepresentationMetadata;
 import org.eclipse.sirius.web.representations.VariableManager;
 import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.web.spring.collaborative.api.Monitoring;
@@ -74,38 +75,36 @@ public class DiagramCreationService implements IDiagramCreationService {
     }
 
     @Override
-    public Diagram create(String label, Object targetObject, DiagramDescription diagramDescription, IEditingContext editingContext) {
-        Diagram newDiagram = this.doRender(label, targetObject, editingContext, diagramDescription, Optional.empty());
-        return newDiagram;
+    public Optional<Diagram> create(IEditingContext editingContext, ISemanticRepresentationMetadata metadata) {
+        if (Objects.equals(Diagram.KIND, metadata.getKind())) {
+            return this.refresh(editingContext, metadata, null);
+        } else {
+            return Optional.empty();
+        }
     }
 
     @Override
-    public Optional<Diagram> refresh(IEditingContext editingContext, IDiagramContext diagramContext) {
-        Diagram previousDiagram = diagramContext.getDiagram();
-
-        var optionalObject = this.objectService.getObject(editingContext, previousDiagram.getTargetObjectId());
-        // @formatter:off
-        var optionalDiagramDescription = this.representationDescriptionSearchService.findById(editingContext, previousDiagram.getDescriptionId())
-                .filter(DiagramDescription.class::isInstance)
+    public Optional<Diagram> refresh(IEditingContext editingContext, ISemanticRepresentationMetadata metadata, IDiagramContext diagramContext) {
+        var optionalObject = this.objectService.getObject(editingContext, metadata.getTargetObjectId());
+        var optionalDiagramDescription = this.representationDescriptionSearchService.findById(editingContext, metadata.getDescriptionId().toString()).filter(DiagramDescription.class::isInstance)
                 .map(DiagramDescription.class::cast);
-        // @formatter:on
-
         if (optionalObject.isPresent() && optionalDiagramDescription.isPresent()) {
-            Object object = optionalObject.get();
-            DiagramDescription diagramDescription = optionalDiagramDescription.get();
-            Diagram diagram = this.doRender(previousDiagram.getLabel(), object, editingContext, diagramDescription, Optional.of(diagramContext));
+            Diagram diagram = this.doRender(optionalObject.get(), editingContext, optionalDiagramDescription.get(), metadata, Optional.ofNullable(diagramContext));
+            this.representationPersistenceService.save(editingContext, metadata, diagram);
             return Optional.of(diagram);
         }
         return Optional.empty();
     }
 
-    private Diagram doRender(String label, Object targetObject, IEditingContext editingContext, DiagramDescription diagramDescription, Optional<IDiagramContext> optionalDiagramContext) {
+    private Diagram doRender(Object targetObject, IEditingContext editingContext, DiagramDescription diagramDescription, ISemanticRepresentationMetadata metadata,
+            Optional<IDiagramContext> optionalDiagramContext) {
         long start = System.currentTimeMillis();
 
         VariableManager variableManager = new VariableManager();
-        variableManager.put(DiagramDescription.LABEL, label);
+        variableManager.put(DiagramDescription.LABEL, metadata.getLabel());
         variableManager.put(VariableManager.SELF, targetObject);
         variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
+        variableManager.put("DIAGRAM_ID", metadata.getId()); //$NON-NLS-1$
 
         Optional<IDiagramEvent> optionalDiagramElementEvent = optionalDiagramContext.map(IDiagramContext::getDiagramEvent);
         Optional<Diagram> optionalPreviousDiagram = optionalDiagramContext.map(IDiagramContext::getDiagram);
@@ -128,13 +127,12 @@ public class DiagramCreationService implements IDiagramCreationService {
 
         // The auto layout is used for the first rendering and after that if it is activated
         if (this.shouldPerformFullLayout(optionalDiagramContext, diagramDescription)) {
-            newDiagram = this.layoutService.layout(editingContext, newDiagram);
+            newDiagram = this.layoutService.layout(newDiagram, diagramDescription);
         } else if (optionalDiagramContext.isPresent()) {
-            newDiagram = this.layoutService.incrementalLayout(editingContext, newDiagram, optionalDiagramElementEvent);
+            newDiagram = this.layoutService.incrementalLayout(newDiagram, diagramDescription, optionalDiagramElementEvent);
         }
 
-        this.representationPersistenceService.save(editingContext, newDiagram);
-
+        this.representationPersistenceService.save(editingContext, metadata, newDiagram);
         long end = System.currentTimeMillis();
         this.timer.record(end - start, TimeUnit.MILLISECONDS);
         return newDiagram;

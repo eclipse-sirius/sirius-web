@@ -23,6 +23,7 @@ import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.core.api.IRepresentationInput;
 import org.eclipse.sirius.web.representations.IRepresentation;
+import org.eclipse.sirius.web.representations.IRepresentationMetadata;
 import org.eclipse.sirius.web.representations.VariableManager;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeKind;
@@ -77,6 +78,8 @@ public class ValidationEventProcessor implements IValidationEventProcessor {
 
     private final Timer timer;
 
+    private IRepresentationMetadata validationMetadata;
+
     public ValidationEventProcessor(IEditingContext editingContext, ValidationDescription validationDescription, ValidationContext validationContext,
             List<IValidationEventHandler> validationEventHandlers, ISubscriptionManager subscriptionManager, MeterRegistry meterRegistry,
             IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry) {
@@ -95,11 +98,41 @@ public class ValidationEventProcessor implements IValidationEventProcessor {
 
         Validation validation = this.refreshValidation();
         this.validationContext.update(validation);
+
+        // "There can be only one"
+        UUID sharedValidationId = UUID.nameUUIDFromBytes("validation".getBytes()); //$NON-NLS-1$
+        this.validationMetadata = new IRepresentationMetadata() {
+
+            @Override
+            public String getLabel() {
+                return "Validation"; //$NON-NLS-1$
+            }
+
+            @Override
+            public String getKind() {
+                return Validation.KIND;
+            }
+
+            @Override
+            public String getId() {
+                return sharedValidationId.toString();
+            }
+
+            @Override
+            public UUID getDescriptionId() {
+                return validationDescription.getId();
+            }
+        };
     }
 
     @Override
     public IRepresentation getRepresentation() {
         return this.validationContext.getValidation();
+    }
+
+    @Override
+    public IRepresentationMetadata getRepresentationMetadata() {
+        return this.validationMetadata;
     }
 
     @Override

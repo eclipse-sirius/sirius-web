@@ -14,7 +14,7 @@ package org.eclipse.sirius.web.spring.collaborative.api;
 
 import java.util.Optional;
 
-import org.eclipse.sirius.web.representations.IRepresentation;
+import org.eclipse.sirius.web.representations.IRepresentationMetadata;
 
 /**
  * Interface used to provide an image for a representation when it is displayed in the user interface of the frontend.
@@ -26,9 +26,9 @@ public interface IRepresentationImageProvider {
     /**
      * Returns the path of an image inside the classpath.
      *
-     * @param representation
-     *            The representation
+     * @param representationMetadata
+     *            The representation metadata
      * @return An optional containing a path for the given representation or an empty optional if not supported.
      */
-    Optional<String> getImageURL(IRepresentation representation);
+    Optional<String> getImageURL(IRepresentationMetadata representationMetadata);
 }

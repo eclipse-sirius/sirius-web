@@ -70,8 +70,6 @@ public class DiagramElementFactory implements IElementFactory {
 
         return Diagram.newDiagram(props.getId())
                 .targetObjectId(props.getTargetObjectId())
-                .descriptionId(props.getDescriptionId())
-                .label(props.getLabel())
                 .position(props.getPosition())
                 .size(props.getSize())
                 .nodes(nodes)

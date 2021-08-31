@@ -293,9 +293,9 @@ export class DiagramServer extends ModelSource {
   }
 
   handleSiriusUpdateModelAction(action) {
-    const { diagram, readOnly } = action;
+    const { diagram, autoLayout, readOnly } = action;
     if (diagram) {
-      const convertedDiagram = convertDiagram(diagram, this.httpOrigin, readOnly);
+      const convertedDiagram = convertDiagram(diagram, this.httpOrigin, autoLayout, readOnly);
       const sprottyModel = this.modelFactory.createRoot(convertedDiagram);
       this.actionDispatcher.request(GetSelectionAction.create()).then((selectionResult) => {
         sprottyModel.index

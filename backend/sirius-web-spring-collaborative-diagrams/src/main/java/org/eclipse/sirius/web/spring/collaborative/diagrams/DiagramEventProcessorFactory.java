@@ -19,9 +19,11 @@ import java.util.Optional;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.web.diagrams.Diagram;
+import org.eclipse.sirius.web.representations.ISemanticRepresentationMetadata;
 import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationConfiguration;
 import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationEventProcessor;
 import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationEventProcessorFactory;
+import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationMetadataSearchService;
 import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationRefreshPolicyRegistry;
 import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.web.spring.collaborative.api.ISubscriptionManagerFactory;
@@ -41,6 +43,8 @@ public class DiagramEventProcessorFactory implements IRepresentationEventProcess
 
     private final IRepresentationSearchService representationSearchService;
 
+    private final IRepresentationMetadataSearchService representationMetadataSearchService;
+
     private final IDiagramCreationService diagramCreationService;
 
     private final List<IDiagramEventHandler> diagramEventHandlers;
@@ -51,10 +55,11 @@ public class DiagramEventProcessorFactory implements IRepresentationEventProcess
 
     private final IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry;
 
-    public DiagramEventProcessorFactory(IRepresentationSearchService representationSearchService, IDiagramCreationService diagramCreationService, List<IDiagramEventHandler> diagramEventHandlers,
-            ISubscriptionManagerFactory subscriptionManagerFactory, IRepresentationDescriptionSearchService representationDescriptionSearchService,
-            IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry) {
+    public DiagramEventProcessorFactory(IRepresentationSearchService representationSearchService, IRepresentationMetadataSearchService representationMetadataSearchService,
+            IDiagramCreationService diagramCreationService, List<IDiagramEventHandler> diagramEventHandlers, ISubscriptionManagerFactory subscriptionManagerFactory,
+            IRepresentationDescriptionSearchService representationDescriptionSearchService, IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry) {
         this.representationSearchService = Objects.requireNonNull(representationSearchService);
+        this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
         this.diagramCreationService = Objects.requireNonNull(diagramCreationService);
         this.diagramEventHandlers = Objects.requireNonNull(diagramEventHandlers);
         this.subscriptionManagerFactory = Objects.requireNonNull(subscriptionManagerFactory);
@@ -73,13 +78,29 @@ public class DiagramEventProcessorFactory implements IRepresentationEventProcess
         if (IDiagramEventProcessor.class.isAssignableFrom(representationEventProcessorClass) && configuration instanceof DiagramConfiguration) {
             DiagramConfiguration diagramConfiguration = (DiagramConfiguration) configuration;
             var optionalDiagram = this.representationSearchService.findById(editingContext, diagramConfiguration.getId(), Diagram.class);
-            if (optionalDiagram.isPresent()) {
+            // @formatter:off
+            var optionalMetadata = this.representationMetadataSearchService.findById(editingContext, diagramConfiguration.getId()).stream()
+                                       .filter(ISemanticRepresentationMetadata.class::isInstance)
+                                       .map(ISemanticRepresentationMetadata.class::cast)
+                                       .findFirst();
+            // @formatter:on
+            if (optionalDiagram.isPresent() && optionalMetadata.isPresent()) {
                 Diagram diagram = optionalDiagram.get();
+                ISemanticRepresentationMetadata metadata = optionalMetadata.get();
 
                 // @formatter:off
                 DiagramContext diagramContext = new DiagramContext(diagram);
-                IRepresentationEventProcessor diagramEventProcessor = new DiagramEventProcessor(editingContext, diagramContext,
-                        this.diagramEventHandlers, this.subscriptionManagerFactory.create(), this.representationDescriptionSearchService, this.representationRefreshPolicyRegistry, this.diagramCreationService);
+                DiagramEventProcessorParameters diagramEventProcessorParameters = DiagramEventProcessorParameters.newDiagramEventProcessorParameters()
+                        .editingContext(editingContext)
+                        .diagramContext(diagramContext)
+                        .diagramMetadata(metadata)
+                        .diagramCreationService(this.diagramCreationService)
+                        .diagramEventHandlers(this.diagramEventHandlers)
+                        .subscriptionManager(this.subscriptionManagerFactory.create())
+                        .representationDescriptionSearchService(this.representationDescriptionSearchService)
+                        .representationRefreshPolicyRegistry(this.representationRefreshPolicyRegistry)
+                        .build();
+                IRepresentationEventProcessor diagramEventProcessor = new DiagramEventProcessor(diagramEventProcessorParameters);
 
                 return Optional.of(diagramEventProcessor)
                         .filter(representationEventProcessorClass::isInstance)

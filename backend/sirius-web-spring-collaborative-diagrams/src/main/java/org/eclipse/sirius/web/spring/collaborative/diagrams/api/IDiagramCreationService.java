@@ -16,7 +16,7 @@ import java.util.Optional;
 
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.diagrams.Diagram;
-import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
+import org.eclipse.sirius.web.representations.ISemanticRepresentationMetadata;
 
 /**
  * Service used to create diagrams from scratch or from an existing diagram.
@@ -28,17 +28,14 @@ public interface IDiagramCreationService {
     /**
      * Creates a new diagram using the given parameters.
      *
-     * @param label
-     *            The label of the diagram
-     * @param targetObject
-     *            The object used as the target
-     * @param diagramDescription
-     *            The description of the diagram
      * @param editingContext
      *            The editing context
-     * @return A new diagram properly layouted and saved in the data store
+     * @param metadata
+     *            The new diagram metadata, which fully describe how to create it
+     * @return A new diagram properly layouted and saved in the data store, or empty if the diagram could not be
+     *         created.
      */
-    Diagram create(String label, Object targetObject, DiagramDescription diagramDescription, IEditingContext editingContext);
+    Optional<Diagram> create(IEditingContext editingContext, ISemanticRepresentationMetadata metadata);
 
     /**
      * Refresh an existing diagram.
@@ -51,11 +48,13 @@ public interface IDiagramCreationService {
      *
      * @param editingContext
      *            The editing context
+     * @param metadata
+     *            The diagram metadata
      * @param diagramContext
      *            The diagram context
      * @return An updated diagram if we have been able to refresh it.
      */
-    Optional<Diagram> refresh(IEditingContext editingContext, IDiagramContext diagramContext);
+    Optional<Diagram> refresh(IEditingContext editingContext, ISemanticRepresentationMetadata metadata, IDiagramContext diagramContext);
 
     /**
      * Implementation which does nothing, used for mocks in unit tests.
@@ -65,12 +64,12 @@ public interface IDiagramCreationService {
     class NoOp implements IDiagramCreationService {
 
         @Override
-        public Diagram create(String label, Object targetObject, DiagramDescription diagramDescription, IEditingContext editingContext) {
-            return null;
+        public Optional<Diagram> create(IEditingContext editingContext, ISemanticRepresentationMetadata metadata) {
+            return Optional.empty();
         }
 
         @Override
-        public Optional<Diagram> refresh(IEditingContext editingContext, IDiagramContext diagramContext) {
+        public Optional<Diagram> refresh(IEditingContext editingContext, ISemanticRepresentationMetadata metadata, IDiagramContext diagramContext) {
             return Optional.empty();
         }
     }

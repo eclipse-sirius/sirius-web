@@ -17,6 +17,7 @@ import { Selection } from 'workbench/Workbench.types';
 export interface SiriusUpdateModelAction extends Action {
   kind: 'siriusUpdateModel';
   diagram: GQLDiagram;
+  autoLayout: boolean;
   readOnly: boolean;
 }
 

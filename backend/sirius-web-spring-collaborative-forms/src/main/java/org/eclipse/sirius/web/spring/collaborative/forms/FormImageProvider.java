@@ -15,7 +15,7 @@ package org.eclipse.sirius.web.spring.collaborative.forms;
 import java.util.Optional;
 
 import org.eclipse.sirius.web.forms.Form;
-import org.eclipse.sirius.web.representations.IRepresentation;
+import org.eclipse.sirius.web.representations.IRepresentationMetadata;
 import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationImageProvider;
 import org.springframework.stereotype.Service;
 
@@ -28,12 +28,12 @@ import org.springframework.stereotype.Service;
 public class FormImageProvider implements IRepresentationImageProvider {
 
     @Override
-    public Optional<String> getImageURL(IRepresentation representation) {
+    public Optional<String> getImageURL(IRepresentationMetadata representationMetadata) {
         // @formatter:off
-        return Optional.of(representation)
-                .filter(Form.class::isInstance)
-                .map(Form.class::cast)
-                .map(form -> "/form-images/form.svg"); //$NON-NLS-1$
+        return Optional.of(representationMetadata)
+                       .map(IRepresentationMetadata::getKind)
+                       .filter(Form.KIND::equals)
+                       .map(form -> "/form-images/form.svg"); //$NON-NLS-1$
         // @formatter:on
     }
 

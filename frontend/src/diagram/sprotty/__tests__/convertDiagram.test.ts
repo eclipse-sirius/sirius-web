@@ -35,18 +35,16 @@ const isImageNodeStyle = (nodeStyle: GQLINodeStyle): nodeStyle is GQLImageNodeSt
 
 describe('ModelConverter', () => {
   it('converts a diagram', () => {
-    const sprottyDiagram = convertDiagram(siriusWebDiagram, httpOrigin, false);
+    const sprottyDiagram = convertDiagram(siriusWebDiagram, httpOrigin, false, false);
 
     expect(sprottyDiagram).not.toBeNull();
     expect(sprottyDiagram).not.toBeUndefined();
 
     expect(Object.keys(sprottyDiagram)).toStrictEqual([
       'id',
-      'descriptionId',
       'kind',
       'type',
       'targetObjectId',
-      'label',
       'position',
       'features',
       'size',
@@ -58,7 +56,6 @@ describe('ModelConverter', () => {
     expect(sprottyDiagram.kind).toBe(siriusWebDiagram.kind);
     expect(sprottyDiagram.type).toBe('graph');
     expect(sprottyDiagram.targetObjectId).toBe(siriusWebDiagram.targetObjectId);
-    expect(sprottyDiagram.label).toBe(siriusWebDiagram.label);
     expect(sprottyDiagram.position).toBe(siriusWebDiagram.position);
     expect(sprottyDiagram.size).toBe(siriusWebDiagram.size);
 

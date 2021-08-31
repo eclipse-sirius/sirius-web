@@ -59,10 +59,11 @@ export const Properties = ({
   subscribers,
   widgetSubscriptions,
   setSelection,
+  label,
   readOnly,
 }: FormProps) => {
   const classes = usePropertiesStyles();
-  const { id, label, pages } = form;
+  const { id, pages } = form;
 
   let content;
   if (pages.length > 1) {

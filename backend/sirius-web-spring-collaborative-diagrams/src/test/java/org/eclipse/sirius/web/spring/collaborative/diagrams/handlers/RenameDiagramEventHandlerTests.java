@@ -15,7 +15,6 @@ package org.eclipse.sirius.web.spring.collaborative.diagrams.handlers;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -24,10 +23,9 @@ import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.Size;
-import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
-import org.eclipse.sirius.web.diagrams.tests.TestDiagramDescriptionBuilder;
 import org.eclipse.sirius.web.representations.IRepresentation;
-import org.eclipse.sirius.web.representations.ISemanticRepresentation;
+import org.eclipse.sirius.web.representations.ISemanticRepresentationMetadata;
+import org.eclipse.sirius.web.representations.SemanticRepresentationMetadata;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeKind;
 import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationPersistenceService;
@@ -55,15 +53,11 @@ public class RenameDiagramEventHandlerTests {
     @Test
     public void testRenameRepresentation() {
         String projectId = UUID.randomUUID().toString();
-        String representationId = UUID.randomUUID().toString();
+        UUID representationId = UUID.randomUUID();
         UUID targetObjectId = UUID.randomUUID();
 
-        DiagramDescription diagramDescription = new TestDiagramDescriptionBuilder().getDiagramDescription(UUID.randomUUID(), List.of(), List.of(), List.of());
-
         // @formatter:off
-        Diagram diagram = Diagram.newDiagram(representationId)
-                .label(OLD_LABEL)
-                .descriptionId(diagramDescription.getId())
+        Diagram diagram = Diagram.newDiagram(representationId.toString())
                 .targetObjectId(targetObjectId.toString())
                 .size(Size.of(10, 10))
                 .position(Position.at(0, 0))
@@ -79,28 +73,33 @@ public class RenameDiagramEventHandlerTests {
             }
         };
 
-        IRepresentationPersistenceService representationPersistenceService = new IRepresentationPersistenceService() {
-
-            @Override
-            public void save(IEditingContext editingContext, ISemanticRepresentation representation) {
-            }
-        };
+        IRepresentationPersistenceService representationPersistenceService = new IRepresentationPersistenceService.NoOp();
 
         RenameDiagramEventHandler handler = new RenameDiagramEventHandler(representationSearchService, representationPersistenceService, new NoOpCollaborativeDiagramMessageService(),
                 new SimpleMeterRegistry());
 
-        var input = new RenameDiagramInput(UUID.randomUUID(), projectId, representationId, NEW_LABEL);
+        var input = new RenameDiagramInput(UUID.randomUUID(), projectId, representationId.toString(), NEW_LABEL);
         assertThat(handler.canHandle(input)).isTrue();
 
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
         One<IPayload> payloadSink = Sinks.one();
 
-        handler.handle(payloadSink, changeDescriptionSink, new IEditingContext.NoOp(), new IDiagramContext.NoOp(), input);
+        // @formatter:off
+        ISemanticRepresentationMetadata diagramMetadata = SemanticRepresentationMetadata.newRepresentationMetadata(representationId.toString())
+                .label(OLD_LABEL)
+                .kind(Diagram.KIND)
+                .descriptionId(UUID.randomUUID())
+                .targetObjectId(targetObjectId.toString())
+                .build();
+        // @formatter:on
+
+        handler.handle(payloadSink, changeDescriptionSink, new IEditingContext.NoOp(), new IDiagramContext.NoOp(), diagramMetadata, input);
 
         ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();
         assertThat(changeDescription.getKind()).isEqualTo(ChangeKind.REPRESENTATION_RENAMING);
 
         IPayload payload = payloadSink.asMono().block();
+
         assertThat(payload).isInstanceOf(RenameRepresentationSuccessPayload.class);
         assertThat(((RenameRepresentationSuccessPayload) payload).getRepresentation().getLabel()).isEqualTo(NEW_LABEL);
     }

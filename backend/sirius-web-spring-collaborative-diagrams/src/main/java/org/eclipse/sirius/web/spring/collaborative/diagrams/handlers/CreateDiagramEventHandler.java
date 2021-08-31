@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.spring.collaborative.diagrams.handlers;
 
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
@@ -23,6 +24,8 @@ import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
+import org.eclipse.sirius.web.representations.ISemanticRepresentationMetadata;
+import org.eclipse.sirius.web.representations.SemanticRepresentationMetadata;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeKind;
 import org.eclipse.sirius.web.spring.collaborative.api.IEditingContextEventHandler;
@@ -52,20 +55,20 @@ public class CreateDiagramEventHandler implements IEditingContextEventHandler {
 
     private final IRepresentationPersistenceService representationPersistenceService;
 
-    private final IDiagramCreationService diagramCreationService;
-
     private final IObjectService objectService;
+
+    private final IDiagramCreationService diagramCreationService;
 
     private final ICollaborativeDiagramMessageService messageService;
 
     private final Counter counter;
 
     public CreateDiagramEventHandler(IRepresentationDescriptionSearchService representationDescriptionSearchService, IRepresentationPersistenceService representationPersistenceService,
-            IDiagramCreationService diagramCreationService, IObjectService objectService, ICollaborativeDiagramMessageService messageService, MeterRegistry meterRegistry) {
+            IObjectService objectService, IDiagramCreationService diagramCreationService, ICollaborativeDiagramMessageService messageService, MeterRegistry meterRegistry) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
-        this.diagramCreationService = Objects.requireNonNull(diagramCreationService);
         this.objectService = Objects.requireNonNull(objectService);
+        this.diagramCreationService = Objects.requireNonNull(diagramCreationService);
         this.messageService = Objects.requireNonNull(messageService);
 
         // @formatter:off
@@ -80,7 +83,7 @@ public class CreateDiagramEventHandler implements IEditingContextEventHandler {
         if (input instanceof CreateRepresentationInput) {
             CreateRepresentationInput createRepresentationInput = (CreateRepresentationInput) input;
             // @formatter:off
-            return this.representationDescriptionSearchService.findById(editingContext, createRepresentationInput.getRepresentationDescriptionId())
+            return this.representationDescriptionSearchService.findById(editingContext, createRepresentationInput.getRepresentationDescriptionId().toString())
                     .filter(DiagramDescription.class::isInstance)
                     .isPresent();
             // @formatter:on
@@ -100,22 +103,30 @@ public class CreateDiagramEventHandler implements IEditingContextEventHandler {
             CreateRepresentationInput createRepresentationInput = (CreateRepresentationInput) input;
 
             // @formatter:off
-            Optional<DiagramDescription> optionalDiagramDescription = this.representationDescriptionSearchService.findById(editingContext, createRepresentationInput.getRepresentationDescriptionId())
+            Optional<DiagramDescription> optionalDiagramDescription = this.representationDescriptionSearchService.findById(editingContext, createRepresentationInput.getRepresentationDescriptionId().toString())
                     .filter(DiagramDescription.class::isInstance)
                     .map(DiagramDescription.class::cast);
             // @formatter:on
             Optional<Object> optionalObject = this.objectService.getObject(editingContext, createRepresentationInput.getObjectId());
 
             if (optionalDiagramDescription.isPresent() && optionalObject.isPresent()) {
-                DiagramDescription diagramDescription = optionalDiagramDescription.get();
-                Object object = optionalObject.get();
 
-                Diagram diagram = this.diagramCreationService.create(createRepresentationInput.getRepresentationName(), object, diagramDescription, editingContext);
+                String diagramId = UUID.randomUUID().toString();
+                // @formatter:off
+                ISemanticRepresentationMetadata diagramMetadata = SemanticRepresentationMetadata.newRepresentationMetadata(diagramId)
+                        .label(createRepresentationInput.getRepresentationName())
+                        .kind(Diagram.KIND)
+                        .descriptionId(createRepresentationInput.getRepresentationDescriptionId())
+                        .targetObjectId(this.objectService.getId(optionalObject.get()))
+                        .build();
+                // @formatter:on
 
-                this.representationPersistenceService.save(editingContext, diagram);
-
-                payload = new CreateRepresentationSuccessPayload(input.getId(), diagram);
-                changeDescription = new ChangeDescription(ChangeKind.REPRESENTATION_CREATION, editingContext.getId(), input);
+                Optional<Diagram> optionalDiagram = this.diagramCreationService.create(editingContext, diagramMetadata);
+                if (optionalDiagram.isPresent()) {
+                    this.representationPersistenceService.save(editingContext, diagramMetadata, optionalDiagram.get());
+                    payload = new CreateRepresentationSuccessPayload(input.getId(), diagramMetadata);
+                    changeDescription = new ChangeDescription(ChangeKind.REPRESENTATION_CREATION, editingContext.getId(), input);
+                }
             }
         }
 

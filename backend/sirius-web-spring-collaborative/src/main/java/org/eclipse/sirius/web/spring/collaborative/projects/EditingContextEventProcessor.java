@@ -34,6 +34,7 @@ import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.core.api.IRepresentationInput;
 import org.eclipse.sirius.web.representations.IRepresentation;
+import org.eclipse.sirius.web.representations.IRepresentationMetadata;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeKind;
 import org.eclipse.sirius.web.spring.collaborative.api.IDanglingRepresentationDeletionService;
@@ -273,15 +274,15 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
     private void disposeRepresentationIfNeeded() {
         List<RepresentationEventProcessorEntry> entriesToDispose = new ArrayList<>();
         for (var entry : this.representationEventProcessors.values()) {
-            if (this.danglingRepresentationDeletionService.isDangling(this.editingContext, entry.getRepresentationEventProcessor().getRepresentation())) {
+            if (this.danglingRepresentationDeletionService.isDangling(this.editingContext, entry.getRepresentationEventProcessor().getRepresentationMetadata())) {
                 entriesToDispose.add(entry);
             }
         }
         // @formatter:off
         entriesToDispose.stream()
             .map(RepresentationEventProcessorEntry::getRepresentationEventProcessor)
-            .map(IRepresentationEventProcessor::getRepresentation)
-            .map(IRepresentation::getId)
+            .map(IRepresentationEventProcessor::getRepresentationMetadata)
+            .map(IRepresentationMetadata::getId)
             .forEach(this::disposeRepresentation);
         // @formatter:on
     }

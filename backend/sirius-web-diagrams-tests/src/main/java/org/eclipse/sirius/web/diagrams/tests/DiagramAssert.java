@@ -100,8 +100,6 @@ public class DiagramAssert extends AbstractAssert<DiagramAssert, Diagram> {
             }
 
             assertThat(this.actual.getTargetObjectId()).isEqualTo(diagram.getTargetObjectId());
-            assertThat(this.actual.getDescriptionId()).isEqualTo(diagram.getDescriptionId());
-            assertThat(this.actual.getLabel()).isEqualTo(diagram.getLabel());
 
             if (layoutPolicy == LayoutPolicy.WITH_LAYOUT) {
                 this.hasBounds(diagram.getPosition().getX(), diagram.getPosition().getY(), diagram.getSize().getWidth(), diagram.getSize().getHeight());
