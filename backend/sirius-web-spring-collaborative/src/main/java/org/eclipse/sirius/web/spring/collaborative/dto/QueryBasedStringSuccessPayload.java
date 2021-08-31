@@ -13,30 +13,25 @@
 package org.eclipse.sirius.web.spring.collaborative.dto;
 
 import java.text.MessageFormat;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
-import org.eclipse.sirius.web.core.api.IInput;
+import org.eclipse.sirius.web.core.api.IPayload;
 
 /**
- * The input object of the queryBasedIntEventHandler.
+ * The payload of the queryBasedString query.
  *
  * @author fbarbin
  */
-public final class QueryBasedIntInput implements IInput {
+public final class QueryBasedStringSuccessPayload implements IPayload {
 
-    private UUID id;
+    private final UUID id;
 
-    private String query;
+    private final String result;
 
-    private Map<String, Object> variables;
-
-    public QueryBasedIntInput(UUID id, String query, Map<String, Object> variables) {
+    public QueryBasedStringSuccessPayload(UUID id, String result) {
         this.id = Objects.requireNonNull(id);
-        this.query = Objects.requireNonNull(query);
-        this.variables = new HashMap<>(Objects.requireNonNull(variables));
+        this.result = Objects.requireNonNull(result);
     }
 
     @Override
@@ -44,18 +39,13 @@ public final class QueryBasedIntInput implements IInput {
         return this.id;
     }
 
-    public String getQuery() {
-        return this.query;
-    }
-
-    public Map<String, Object> getVariables() {
-        return this.variables;
+    public String getResult() {
+        return this.result;
     }
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, query: {2}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.query);
+        String pattern = "{0} '{'id: {1}, result: {2}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.result);
     }
-
 }
