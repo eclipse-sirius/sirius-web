@@ -76,6 +76,18 @@ public class ToolProvider implements IToolProvider {
      */
     public static final String EDGE_TARGET = "target"; //$NON-NLS-1$
 
+    /**
+     * The name of the compatibility variable used to store and retrieve the semantic element on which a node or
+     * container creation tool has been invoked.
+     */
+    public static final String CONTAINER = "container"; //$NON-NLS-1$
+
+    /**
+     * The name of the compatibility variable used to store and retrieve the semantic element on which a generic tool
+     * has been invoked.
+     */
+    public static final String ELEMENT = "element"; //$NON-NLS-1$
+
     private final IAQLInterpreterFactory interpreterFactory;
 
     private final IIdentifierProvider identifierProvider;
@@ -321,7 +333,7 @@ public class ToolProvider implements IToolProvider {
         return CreateEdgeTool.newCreateEdgeTool(id)
                 .label(label)
                 .imageURL(imagePath)
-                .handler(this.createEdgeCreationDescription(interpreter, edgeCreationDescription))
+                .handler(this.createEdgeCreationHandler(interpreter, edgeCreationDescription))
                 .edgeCandidates(edgeCandidates)
                 .build();
         // @formatter:on
@@ -332,6 +344,8 @@ public class ToolProvider implements IToolProvider {
             InitialNodeCreationOperation initialOperation = toolDescription.getInitialOperation();
             return variableManager -> {
                 Map<String, Object> variables = variableManager.getVariables();
+                // Provide compatibility aliases for this variable
+                variables.put(CONTAINER, variables.get(VariableManager.SELF));
                 var selectModelelementVariableOpt = new SelectModelElementVariableProvider().getSelectModelElementVariable(toolDescription.getVariable());
                 if (selectModelelementVariableOpt.isPresent()) {
                     variables.put(selectModelelementVariableOpt.get().getName(), variables.get(CreateNodeTool.SELECTED_OBJECT));
@@ -351,6 +365,8 @@ public class ToolProvider implements IToolProvider {
             InitialNodeCreationOperation initialOperation = toolDescription.getInitialOperation();
             return variableManager -> {
                 Map<String, Object> variables = variableManager.getVariables();
+                // Provide compatibility aliases for this variable
+                variables.put(CONTAINER, variables.get(VariableManager.SELF));
                 var selectModelelementVariableOpt = new SelectModelElementVariableProvider().getSelectModelElementVariable(toolDescription.getVariable());
                 if (selectModelelementVariableOpt.isPresent()) {
                     variables.put(selectModelelementVariableOpt.get().getName(), variables.get(CreateNodeTool.SELECTED_OBJECT));
@@ -370,6 +386,8 @@ public class ToolProvider implements IToolProvider {
             InitialOperation initialOperation = toolDescription.getInitialOperation();
             return variableManager -> {
                 Map<String, Object> variables = variableManager.getVariables();
+                // Provide compatibility aliases for this variable
+                variables.put(ELEMENT, variables.get(VariableManager.SELF));
                 var modelOperationHandlerSwitch = this.modelOperationHandlerSwitchProvider.getModelOperationHandlerSwitch(interpreter);
                 return modelOperationHandlerSwitch.apply(initialOperation.getFirstModelOperations()).map(handler -> {
                     return handler.handle(variables);
@@ -380,7 +398,7 @@ public class ToolProvider implements IToolProvider {
         }
     }
 
-    private Function<VariableManager, Status> createEdgeCreationDescription(AQLInterpreter interpreter, EdgeCreationDescription edgeCreationDescription) {
+    private Function<VariableManager, Status> createEdgeCreationHandler(AQLInterpreter interpreter, EdgeCreationDescription edgeCreationDescription) {
         if (edgeCreationDescription != null) {
             InitEdgeCreationOperation initialOperation = edgeCreationDescription.getInitialOperation();
             return variableManager -> {
