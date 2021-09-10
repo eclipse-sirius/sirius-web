@@ -88,7 +88,7 @@ public class ViewExtensionDescriptionConverter implements IViewExtensionDescript
                 .collect(Collectors.toList());
 
         Function<VariableManager, String> labelProvider = variableManager -> Optional.ofNullable(variableManager.getVariables().get(VariableManager.SELF))
-                .map(this.objectService::getLabel)
+                .map(this.objectService::getFullLabel)
                 .orElse("Properties"); //$NON-NLS-1$
 
         Function<VariableManager, String> targetObjectIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
