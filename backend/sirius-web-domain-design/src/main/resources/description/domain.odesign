@@ -85,7 +85,7 @@
               </firstModelOperations>
             </initialOperation>
           </ownedTools>
-          <ownedTools xsi:type="tool:EdgeCreationDescription" name="Relation_Create" label="Relation" edgeMappings="//@ownedViewpoints[name='Domain']/@ownedRepresentations[name='Domain']/@defaultLayer/@edgeMappings[name='Relation']">
+          <ownedTools xsi:type="tool:EdgeCreationDescription" name="Relation_Create" label="Relation" edgeMappings="//@ownedViewpoints[name='Domain']/@ownedRepresentations[name='Domain']/@defaultLayer/@edgeMappings[name='Relation']" iconPath="/sirius-web-domain-design/img/Relation.svg">
             <sourceVariable name="source"/>
             <targetVariable name="target"/>
             <sourceViewVariable name="sourceView"/>
