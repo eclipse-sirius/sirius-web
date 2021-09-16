@@ -35,7 +35,6 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.EPackageRegistryImpl;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.command.AddCommand;
 import org.eclipse.emf.edit.command.CommandParameter;
@@ -109,9 +108,9 @@ public class EditService implements IEditService {
 
         EPackage.Registry ePackageRegistry = this.getPackageRegistry(editingContextId);
 
-        ResourceSet resourceSet = new ResourceSetImpl();
+        AdapterFactoryEditingDomain editingDomain = new AdapterFactoryEditingDomain(this.composedAdapterFactory, new BasicCommandStack());
+        ResourceSet resourceSet = editingDomain.getResourceSet();
         resourceSet.setPackageRegistry(ePackageRegistry);
-        AdapterFactoryEditingDomain editingDomain = new AdapterFactoryEditingDomain(this.composedAdapterFactory, new BasicCommandStack(), resourceSet);
         Resource resource = new JsonResourceImpl(URI.createURI("inmemory"), Map.of()); //$NON-NLS-1$
         resourceSet.getResources().add(resource);
 
