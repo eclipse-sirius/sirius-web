@@ -84,7 +84,7 @@ public class DiagramCreationService implements IDiagramCreationService {
         Diagram previousDiagram = diagramContext.getDiagram();
         var optionalObject = this.objectService.getObject(editingContext, previousDiagram.getTargetObjectId());
         // @formatter:off
-        var optionalDiagramDescription = this.representationDescriptionSearchService.findById(previousDiagram.getDescriptionId())
+        var optionalDiagramDescription = this.representationDescriptionSearchService.findById(editingContext, previousDiagram.getDescriptionId())
                 .filter(DiagramDescription.class::isInstance)
                 .map(DiagramDescription.class::cast);
         // @formatter:on
@@ -127,9 +127,9 @@ public class DiagramCreationService implements IDiagramCreationService {
 
         // The auto layout is used for the first rendering and after that if it is activated
         if (this.shouldPerformFullLayout(optionalDiagramContext, diagramDescription)) {
-            newDiagram = this.layoutService.layout(newDiagram);
+            newDiagram = this.layoutService.layout(editingContext, newDiagram);
         } else if (optionalDiagramContext.isPresent()) {
-            newDiagram = this.layoutService.incrementalLayout(newDiagram, optionalDiagramElementEvent);
+            newDiagram = this.layoutService.incrementalLayout(editingContext, newDiagram, optionalDiagramElementEvent);
         }
 
         this.representationPersistenceService.save(editingContext, newDiagram);

@@ -49,13 +49,12 @@ public class CreateRootObjectEventHandlerTests {
 
         CreateRootObjectEventHandler handler = new CreateRootObjectEventHandler(editService, new NoOpCollaborativeMessageService(), new SimpleMeterRegistry());
         var input = new CreateRootObjectInput(UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID(), "domainId", "rootObjectCreationDescriptionId"); //$NON-NLS-1$//$NON-NLS-2$
-        assertThat(handler.canHandle(input)).isTrue();
-
         IEditingContext editingContext = () -> UUID.randomUUID();
 
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
         One<IPayload> payloadSink = Sinks.one();
 
+        assertThat(handler.canHandle(editingContext, input)).isTrue();
         handler.handle(payloadSink, changeDescriptionSink, editingContext, input);
 
         ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();

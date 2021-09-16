@@ -79,7 +79,7 @@ public class FormEventProcessorFactory implements IRepresentationEventProcessorF
             if (optionalForm.isPresent()) {
                 Form form = optionalForm.get();
                 // @formatter:off
-                Optional<FormDescription> optionalFormDescription = this.representationDescriptionSearchService.findById(form.getDescriptionId())
+                Optional<FormDescription> optionalFormDescription = this.representationDescriptionSearchService.findById(editingContext, form.getDescriptionId())
                         .filter(FormDescription.class::isInstance)
                         .map(FormDescription.class::cast);
                 // @formatter:on

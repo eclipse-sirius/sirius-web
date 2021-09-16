@@ -89,7 +89,7 @@ public class QueryBasedIntEventHandlerTests {
     private void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IQueryService queryService) {
         QueryBasedIntEventHandler queryBasedIntEventHandler = new QueryBasedIntEventHandler(new NoOpCollaborativeMessageService(), new SimpleMeterRegistry(), queryService);
         IInput input = new QueryBasedIntInput(UUID.randomUUID(), "", Map.of()); //$NON-NLS-1$
-        assertThat(queryBasedIntEventHandler.canHandle(input)).isTrue();
+        assertThat(queryBasedIntEventHandler.canHandle(new IEditingContext.NoOp(), input)).isTrue();
 
         IEditingContext editingContext = () -> UUID.randomUUID();
         queryBasedIntEventHandler.handle(payloadSink, changeDescriptionSink, editingContext, input);

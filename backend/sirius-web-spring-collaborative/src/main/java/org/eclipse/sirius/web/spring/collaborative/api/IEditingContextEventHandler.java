@@ -25,7 +25,7 @@ import reactor.core.publisher.Sinks.One;
  * @author sbegaudeau
  */
 public interface IEditingContextEventHandler {
-    boolean canHandle(IInput input);
+    boolean canHandle(IEditingContext editingContext, IInput input);
 
     void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IInput input);
 }

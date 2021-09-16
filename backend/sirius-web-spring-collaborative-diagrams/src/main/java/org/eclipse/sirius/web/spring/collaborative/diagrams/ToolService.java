@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
@@ -40,9 +41,9 @@ public class ToolService implements IToolService {
     }
 
     @Override
-    public List<ToolSection> getToolSections(Diagram diagram) {
+    public List<ToolSection> getToolSections(IEditingContext editingContext, Diagram diagram) {
         // @formatter:off
-        return this.representationDescriptionSearchService.findById(diagram.getDescriptionId())
+        return this.representationDescriptionSearchService.findById(editingContext, diagram.getDescriptionId())
             .filter(DiagramDescription.class::isInstance)
             .map(DiagramDescription.class::cast)
             .map(DiagramDescription::getToolSections)
@@ -51,9 +52,9 @@ public class ToolService implements IToolService {
     }
 
     @Override
-    public Optional<ITool> findToolById(Diagram diagram, String toolId) {
+    public Optional<ITool> findToolById(IEditingContext editingContext, Diagram diagram, String toolId) {
         // @formatter:off
-        return this.getToolSections(diagram)
+        return this.getToolSections(editingContext, diagram)
                 .stream()
                 .map(ToolSection::getTools)
                 .flatMap(Collection::stream)

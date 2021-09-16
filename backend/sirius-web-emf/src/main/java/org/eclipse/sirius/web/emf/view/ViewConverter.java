@@ -26,6 +26,7 @@ import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.web.components.Element;
 import org.eclipse.sirius.web.core.api.IEditService;
@@ -121,7 +122,7 @@ public class ViewConverter {
      * Extract and convert the {@link IRepresentationDescription} from a {@link View} model. Currently only
      * {@link DiagramDescription}s are supported. <b>Warning:</b> this code is not re-entrant.
      */
-    public List<IRepresentationDescription> convert(View view) {
+    public List<IRepresentationDescription> convert(View view, List<EPackage> visibleEPackages) {
         List<IRepresentationDescription> result = List.of();
         if (this.isStudioDefinitionEnabled) {
             // @formatter:off
@@ -129,7 +130,7 @@ public class ViewConverter {
                                                 .flatMap(provider -> provider.getServiceClasses(view).stream())
                                                 .collect(Collectors.toList());
             // @formatter:on
-            AQLInterpreter interpreter = new AQLInterpreter(serviceClasses, List.of());
+            AQLInterpreter interpreter = new AQLInterpreter(serviceClasses, visibleEPackages);
             try {
                 // @formatter:off
                 result = view.getDescriptions().stream()

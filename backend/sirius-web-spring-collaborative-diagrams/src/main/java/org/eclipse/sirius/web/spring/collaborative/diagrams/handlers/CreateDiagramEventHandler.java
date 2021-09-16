@@ -76,11 +76,11 @@ public class CreateDiagramEventHandler implements IEditingContextEventHandler {
     }
 
     @Override
-    public boolean canHandle(IInput input) {
+    public boolean canHandle(IEditingContext editingContext, IInput input) {
         if (input instanceof CreateRepresentationInput) {
             CreateRepresentationInput createRepresentationInput = (CreateRepresentationInput) input;
             // @formatter:off
-            return this.representationDescriptionSearchService.findById(createRepresentationInput.getRepresentationDescriptionId())
+            return this.representationDescriptionSearchService.findById(editingContext, createRepresentationInput.getRepresentationDescriptionId())
                     .filter(DiagramDescription.class::isInstance)
                     .isPresent();
             // @formatter:on
@@ -100,7 +100,7 @@ public class CreateDiagramEventHandler implements IEditingContextEventHandler {
             CreateRepresentationInput createRepresentationInput = (CreateRepresentationInput) input;
 
             // @formatter:off
-            Optional<DiagramDescription> optionalDiagramDescription = this.representationDescriptionSearchService.findById(createRepresentationInput.getRepresentationDescriptionId())
+            Optional<DiagramDescription> optionalDiagramDescription = this.representationDescriptionSearchService.findById(editingContext, createRepresentationInput.getRepresentationDescriptionId())
                     .filter(DiagramDescription.class::isInstance)
                     .map(DiagramDescription.class::cast);
             // @formatter:on
