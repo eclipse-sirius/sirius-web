@@ -23,5 +23,5 @@ import org.eclipse.sirius.web.representations.IRepresentationDescription;
  * @author sbegaudeau
  */
 public interface IRepresentationDescriptionSearchService {
-    Optional<IRepresentationDescription> findById(UUID id);
+    Optional<IRepresentationDescription> findById(IEditingContext editingContext, UUID representationDescriptionId);
 }

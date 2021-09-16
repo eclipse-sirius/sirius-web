@@ -26,6 +26,7 @@ import org.eclipse.elk.core.util.ElkUtil;
 import org.eclipse.elk.graph.ElkGraphElement;
 import org.eclipse.elk.graph.ElkNode;
 import org.eclipse.elk.graph.json.ElkGraphJson;
+import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
@@ -79,11 +80,11 @@ public class LayoutService implements ILayoutService {
     }
 
     @Override
-    public Diagram layout(Diagram diagram) {
+    public Diagram layout(IEditingContext editingContext, Diagram diagram) {
         ELKConvertedDiagram convertedDiagram = this.elkDiagramConverter.convert(diagram);
 
         ElkNode elkDiagram = convertedDiagram.getElkDiagram();
-        var representationDescription = this.representationDescriptionSearchService.findById(diagram.getDescriptionId());
+        var representationDescription = this.representationDescriptionSearchService.findById(editingContext, diagram.getDescriptionId());
         ISiriusWebLayoutConfigurator layoutConfigurator;
         if (representationDescription.isPresent() && representationDescription.get() instanceof DiagramDescription) {
             layoutConfigurator = this.layoutConfiguratorRegistry.getLayoutConfigurator(diagram, (DiagramDescription) representationDescription.get());
@@ -115,11 +116,11 @@ public class LayoutService implements ILayoutService {
     }
 
     @Override
-    public Diagram incrementalLayout(Diagram newDiagram, Optional<IDiagramEvent> optionalDiagramElementEvent) {
+    public Diagram incrementalLayout(IEditingContext editingContext, Diagram newDiagram, Optional<IDiagramEvent> optionalDiagramElementEvent) {
         IncrementalLayoutConvertedDiagram convertedDiagram = this.incrementalLayoutDiagramConverter.convert(newDiagram);
         DiagramLayoutData diagramLayoutData = convertedDiagram.getDiagramLayoutData();
 
-        var representationDescription = this.representationDescriptionSearchService.findById(newDiagram.getDescriptionId());
+        var representationDescription = this.representationDescriptionSearchService.findById(editingContext, newDiagram.getDescriptionId());
         ISiriusWebLayoutConfigurator layoutConfigurator;
         if (representationDescription.isPresent() && representationDescription.get() instanceof DiagramDescription) {
             layoutConfigurator = this.layoutConfiguratorRegistry.getLayoutConfigurator(newDiagram, (DiagramDescription) representationDescription.get());

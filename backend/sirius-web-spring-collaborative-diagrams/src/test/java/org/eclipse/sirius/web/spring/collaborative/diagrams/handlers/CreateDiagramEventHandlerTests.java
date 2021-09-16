@@ -52,7 +52,7 @@ public class CreateDiagramEventHandlerTests {
     public void testDiagramCreation() {
         IRepresentationDescriptionSearchService representationDescriptionSearchService = new IRepresentationDescriptionSearchService() {
             @Override
-            public Optional<IRepresentationDescription> findById(UUID id) {
+            public Optional<IRepresentationDescription> findById(IEditingContext editingContext, UUID id) {
                 // @formatter:off
                 DiagramDescription diagramDescription = DiagramDescription.newDiagramDescription(UUID.randomUUID())
                         .label("label") //$NON-NLS-1$
@@ -96,7 +96,7 @@ public class CreateDiagramEventHandlerTests {
                 new NoOpCollaborativeDiagramMessageService(), new SimpleMeterRegistry());
 
         var input = new CreateRepresentationInput(UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID(), "objectId", "representationName"); //$NON-NLS-1$//$NON-NLS-2$
-        assertThat(handler.canHandle(input)).isTrue();
+        assertThat(handler.canHandle(null, input)).isTrue();
 
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
         One<IPayload> payloadSink = Sinks.one();

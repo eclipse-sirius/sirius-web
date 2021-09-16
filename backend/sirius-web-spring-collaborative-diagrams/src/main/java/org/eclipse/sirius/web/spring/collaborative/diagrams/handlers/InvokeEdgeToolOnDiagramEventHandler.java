@@ -94,7 +94,7 @@ public class InvokeEdgeToolOnDiagramEventHandler implements IDiagramEventHandler
             InvokeEdgeToolOnDiagramInput input = (InvokeEdgeToolOnDiagramInput) diagramInput;
             Diagram diagram = diagramContext.getDiagram();
             // @formatter:off
-            var optionalTool = this.toolService.findToolById(diagram, input.getToolId())
+            var optionalTool = this.toolService.findToolById(editingContext, diagram, input.getToolId())
                     .filter(CreateEdgeTool.class::isInstance)
                     .map(CreateEdgeTool.class::cast);
             // @formatter:on

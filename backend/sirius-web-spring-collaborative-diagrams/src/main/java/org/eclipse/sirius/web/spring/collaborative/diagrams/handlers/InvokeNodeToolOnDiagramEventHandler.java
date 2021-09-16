@@ -99,7 +99,7 @@ public class InvokeNodeToolOnDiagramEventHandler implements IDiagramEventHandler
             InvokeNodeToolOnDiagramInput input = (InvokeNodeToolOnDiagramInput) diagramInput;
             Diagram diagram = diagramContext.getDiagram();
             // @formatter:off
-            var optionalTool = this.toolService.findToolById(diagram, input.getToolId())
+            var optionalTool = this.toolService.findToolById(editingContext, diagram, input.getToolId())
                     .filter(CreateNodeTool.class::isInstance)
                     .map(CreateNodeTool.class::cast);
             // @formatter:on
@@ -137,7 +137,7 @@ public class InvokeNodeToolOnDiagramEventHandler implements IDiagramEventHandler
             variableManager.put(VariableManager.SELF, self.get());
             String selectionDescriptionId = tool.getSelectionDescriptionId();
             if (selectionDescriptionId != null && selectedObjectId != null) {
-                var selectionDescriptionOpt = this.representationDescriptionSearchService.findById(UUID.fromString(selectionDescriptionId));
+                var selectionDescriptionOpt = this.representationDescriptionSearchService.findById(editingContext, UUID.fromString(selectionDescriptionId));
                 var selectedObjectOpt = this.objectService.getObject(editingContext, selectedObjectId);
                 if (selectionDescriptionOpt.isPresent() && selectedObjectOpt.isPresent()) {
                     variableManager.put(CreateNodeTool.SELECTED_OBJECT, selectedObjectOpt.get());

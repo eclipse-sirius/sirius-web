@@ -88,7 +88,7 @@ public class QueryBasedBooleanEventHandlerTests {
     private void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IQueryService queryService) {
         QueryBasedBooleanEventHandler queryBasedBooleanEventHandler = new QueryBasedBooleanEventHandler(new NoOpCollaborativeMessageService(), new SimpleMeterRegistry(), queryService);
         IInput input = new QueryBasedBooleanInput(UUID.randomUUID(), "", Map.of()); //$NON-NLS-1$
-        assertThat(queryBasedBooleanEventHandler.canHandle(input)).isTrue();
+        assertThat(queryBasedBooleanEventHandler.canHandle(new IEditingContext.NoOp(), input)).isTrue();
 
         IEditingContext editingContext = () -> UUID.randomUUID();
         queryBasedBooleanEventHandler.handle(payloadSink, changeDescriptionSink, editingContext, input);

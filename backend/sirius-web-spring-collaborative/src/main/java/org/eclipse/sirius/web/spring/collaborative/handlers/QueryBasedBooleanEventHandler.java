@@ -59,7 +59,7 @@ public class QueryBasedBooleanEventHandler implements IEditingContextEventHandle
     }
 
     @Override
-    public boolean canHandle(IInput input) {
+    public boolean canHandle(IEditingContext editingContext, IInput input) {
         return input instanceof QueryBasedBooleanInput;
     }
 

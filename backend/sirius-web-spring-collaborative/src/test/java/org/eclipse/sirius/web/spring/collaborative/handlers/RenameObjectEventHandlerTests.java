@@ -65,7 +65,7 @@ public class RenameObjectEventHandlerTests {
         var input = new RenameObjectInput(UUID.randomUUID(), UUID.randomUUID(), "objectId", "newName"); //$NON-NLS-1$ //$NON-NLS-2$
         IEditingContext editingContext = () -> UUID.randomUUID();
 
-        assertThat(handler.canHandle(input)).isTrue();
+        assertThat(handler.canHandle(editingContext, input)).isTrue();
 
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
         One<IPayload> payloadSink = Sinks.one();

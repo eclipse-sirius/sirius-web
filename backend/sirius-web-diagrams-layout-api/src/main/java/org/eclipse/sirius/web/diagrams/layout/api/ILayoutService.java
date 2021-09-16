@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.diagrams.layout.api;
 
 import java.util.Optional;
 
+import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.events.IDiagramEvent;
 
@@ -23,19 +24,21 @@ import org.eclipse.sirius.web.diagrams.events.IDiagramEvent;
  * @author sbegaudeau
  */
 public interface ILayoutService {
-    Diagram layout(Diagram diagram);
+    Diagram layout(IEditingContext editingContext, Diagram diagram);
 
     /**
      * A partial layout that layouts only impacted elements.
      *
+     * @param editingContext
+     *            the editing context which contains the diagram.
      * @param diagram
-     *            The new diagram to layout.
+     *            The diagram to layout.
      * @param optionalDiagramElementEvent
      *            the {@link IDiagramEvent} that has trigger the new layout. Can be null if no event occurs. for
      *            instance.
      * @return the new layouted diagram.
      */
-    Diagram incrementalLayout(Diagram diagram, Optional<IDiagramEvent> optionalDiagramElementEvent);
+    Diagram incrementalLayout(IEditingContext editingContext, Diagram diagram, Optional<IDiagramEvent> optionalDiagramElementEvent);
 
     /**
      * Implementation which does nothing, used for mocks in unit tests.
@@ -45,12 +48,12 @@ public interface ILayoutService {
     class NoOp implements ILayoutService {
 
         @Override
-        public Diagram layout(Diagram diagram) {
+        public Diagram layout(IEditingContext editingContext, Diagram diagram) {
             return diagram;
         }
 
         @Override
-        public Diagram incrementalLayout(Diagram diagram, Optional<IDiagramEvent> optionalDiagramElementEvent) {
+        public Diagram incrementalLayout(IEditingContext editingContext, Diagram diagram, Optional<IDiagramEvent> optionalDiagramElementEvent) {
             return diagram;
         }
 

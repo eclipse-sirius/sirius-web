@@ -98,14 +98,7 @@ public class AQLInterpreter {
     private void initExpressionsCache() {
         IQueryBuilderEngine builder = QueryParsing.newBuilder(this.queryEnvironment);
         int maxCacheSize = 500;
-
-        this.parsedExpressions = CacheBuilder.newBuilder().maximumSize(maxCacheSize).build(new CacheLoader<String, AstResult>() {
-            @Override
-            public AstResult load(String key) throws Exception {
-                return builder.build(key);
-            }
-
-        });
+        this.parsedExpressions = CacheBuilder.newBuilder().maximumSize(maxCacheSize).build(CacheLoader.from(builder::build));
     }
 
     public Result evaluateExpression(Map<String, Object> variables, String expressionBody) {

@@ -59,7 +59,7 @@ public class QueryBasedObjectEventHandler implements IEditingContextEventHandler
     }
 
     @Override
-    public boolean canHandle(IInput input) {
+    public boolean canHandle(IEditingContext editingContext, IInput input) {
         return input instanceof QueryBasedObjectInput;
     }
 

@@ -95,9 +95,8 @@ public class CreateChildEventHandlerTests {
         CreateChildEventHandler handler = new CreateChildEventHandler(objectService, editService, new NoOpCollaborativeMessageService(), new SimpleMeterRegistry());
         var input = new CreateChildInput(UUID.randomUUID(), UUID.randomUUID(), "parentObjectId", "childCreationDescriptionId"); //$NON-NLS-1$//$NON-NLS-2$
 
-        assertThat(handler.canHandle(input)).isTrue();
-
         IEditingContext editingContext = () -> UUID.randomUUID();
+        assertThat(handler.canHandle(editingContext, input)).isTrue();
         handler.handle(payloadSink, changeDescriptionSink, editingContext, input);
     }
 }

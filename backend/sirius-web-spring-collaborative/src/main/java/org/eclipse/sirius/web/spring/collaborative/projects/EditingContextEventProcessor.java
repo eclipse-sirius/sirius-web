@@ -271,7 +271,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
 
         // @formatter:off
         Optional<IEditingContextEventHandler> optionalEditingContextEventHandler = this.editingContextEventHandlers.stream()
-                .filter(handler -> handler.canHandle(input))
+                .filter(handler -> handler.canHandle(this.editingContext, input))
                 .findFirst();
         // @formatter:on
 
@@ -363,18 +363,17 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
     public void dispose() {
         this.logger.trace("Disposing the editing context event processor {}", this.editingContext.getId()); //$NON-NLS-1$
 
+        EmitResult changeDescriptionEmitResult = this.changeDescriptionSink.tryEmitComplete();
+        if (changeDescriptionEmitResult.isFailure()) {
+            String pattern = "An error has occurred while marking the publisher as complete: {}"; //$NON-NLS-1$
+            this.logger.warn(pattern, changeDescriptionEmitResult);
+        }
         this.changeDescriptionDisposable.dispose();
 
         this.executor.shutdown();
 
         this.representationEventProcessors.values().forEach(RepresentationEventProcessorEntry::dispose);
         this.representationEventProcessors.clear();
-
-        EmitResult changeDescriptionEmitResult = this.changeDescriptionSink.tryEmitComplete();
-        if (changeDescriptionEmitResult.isFailure()) {
-            String pattern = "An error has occurred while marking the publisher as complete: {}"; //$NON-NLS-1$
-            this.logger.warn(pattern, changeDescriptionEmitResult);
-        }
 
         EmitResult emitResult = this.sink.tryEmitComplete();
         if (emitResult.isFailure()) {

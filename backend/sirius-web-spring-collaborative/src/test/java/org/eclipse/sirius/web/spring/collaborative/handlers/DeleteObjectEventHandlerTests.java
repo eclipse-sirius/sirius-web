@@ -58,14 +58,12 @@ public class DeleteObjectEventHandlerTests {
 
         DeleteObjectEventHandler handler = new DeleteObjectEventHandler(objectService, editService, new NoOpCollaborativeMessageService(), new SimpleMeterRegistry());
         var input = new DeleteObjectInput(UUID.randomUUID(), UUID.randomUUID(), "objectId"); //$NON-NLS-1$
-
-        assertThat(handler.canHandle(input)).isTrue();
-
         IEditingContext editingContext = () -> UUID.randomUUID();
 
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
         One<IPayload> payloadSink = Sinks.one();
 
+        assertThat(handler.canHandle(editingContext, input)).isTrue();
         handler.handle(payloadSink, changeDescriptionSink, editingContext, input);
 
         ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();
@@ -73,7 +71,6 @@ public class DeleteObjectEventHandlerTests {
 
         IPayload payload = payloadSink.asMono().block();
         assertThat(payload).isInstanceOf(DeleteObjectSuccessPayload.class);
-
         assertThat(hasBeenCalled.get()).isTrue();
     }
 }

@@ -74,11 +74,11 @@ public class CreateFormEventHandler implements IEditingContextEventHandler {
     }
 
     @Override
-    public boolean canHandle(IInput input) {
+    public boolean canHandle(IEditingContext editingContext, IInput input) {
         if (input instanceof CreateRepresentationInput) {
             CreateRepresentationInput createRepresentationInput = (CreateRepresentationInput) input;
             // @formatter:off
-            return this.representationDescriptionSearchService.findById(createRepresentationInput.getRepresentationDescriptionId())
+            return this.representationDescriptionSearchService.findById(editingContext, createRepresentationInput.getRepresentationDescriptionId())
                     .filter(FormDescription.class::isInstance)
                     .isPresent();
             // @formatter:on
@@ -97,7 +97,8 @@ public class CreateFormEventHandler implements IEditingContextEventHandler {
         if (input instanceof CreateRepresentationInput) {
             CreateRepresentationInput createRepresentationInput = (CreateRepresentationInput) input;
 
-            Optional<IRepresentationDescription> optionalRepresentationDescription = this.representationDescriptionSearchService.findById(createRepresentationInput.getRepresentationDescriptionId());
+            Optional<IRepresentationDescription> optionalRepresentationDescription = this.representationDescriptionSearchService.findById(editingContext,
+                    createRepresentationInput.getRepresentationDescriptionId());
             Optional<Object> optionalObject = this.objectService.getObject(editingContext, createRepresentationInput.getObjectId());
 
             if (optionalRepresentationDescription.isPresent() && optionalObject.isPresent()) {

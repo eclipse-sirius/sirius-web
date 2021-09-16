@@ -165,7 +165,7 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
 
     private Status invokeDeleteNodeTool(Node node, IEditingContext editingContext, IDiagramContext diagramContext) {
         Status result = Status.ERROR;
-        var optionalNodeDescription = this.findNodeDescription(node, diagramContext.getDiagram());
+        var optionalNodeDescription = this.findNodeDescription(node, diagramContext.getDiagram(), editingContext);
         if (optionalNodeDescription.isPresent()) {
             var optionalSelf = this.objectService.getObject(editingContext, node.getTargetObjectId());
             if (optionalSelf.isPresent()) {
@@ -189,7 +189,7 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
 
     private Status invokeDeleteEdgeTool(Edge edge, IEditingContext editingContext, IDiagramContext diagramContext) {
         Status result = Status.ERROR;
-        var optionalEdgeDescription = this.findEdgeDescription(edge, diagramContext.getDiagram());
+        var optionalEdgeDescription = this.findEdgeDescription(edge, diagramContext.getDiagram(), editingContext);
         if (optionalEdgeDescription.isPresent()) {
             var optionalSelf = this.objectService.getObject(editingContext, edge.getTargetObjectId());
             if (optionalSelf.isPresent()) {
@@ -218,20 +218,20 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
         return result;
     }
 
-    private Optional<NodeDescription> findNodeDescription(Node node, Diagram diagram) {
+    private Optional<NodeDescription> findNodeDescription(Node node, Diagram diagram, IEditingContext editingContext) {
         // @formatter:off
         return this.representationDescriptionSearchService
-                .findById(diagram.getDescriptionId())
+                .findById(editingContext, diagram.getDescriptionId())
                 .filter(DiagramDescription.class::isInstance)
                 .map(DiagramDescription.class::cast)
                 .flatMap(diagramDescription -> this.diagramDescriptionService.findNodeDescriptionById(diagramDescription, node.getDescriptionId()));
         // @formatter:on
     }
 
-    private Optional<EdgeDescription> findEdgeDescription(Edge edge, Diagram diagram) {
+    private Optional<EdgeDescription> findEdgeDescription(Edge edge, Diagram diagram, IEditingContext editingContext) {
         // @formatter:off
         return this.representationDescriptionSearchService
-                .findById(diagram.getDescriptionId())
+                .findById(editingContext, diagram.getDescriptionId())
                 .filter(DiagramDescription.class::isInstance)
                 .map(DiagramDescription.class::cast)
                 .flatMap(diagramDescription -> this.diagramDescriptionService.findEdgeDescriptionById(diagramDescription, edge.getDescriptionId()));

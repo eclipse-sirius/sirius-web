@@ -113,7 +113,7 @@ public class EditLabelEventHandler implements IDiagramEventHandler {
     }
 
     private void invokeDirectEditTool(Node node, IEditingContext editingContext, Diagram diagram, String newText) {
-        var optionalNodeDescription = this.findNodeDescription(node, diagram);
+        var optionalNodeDescription = this.findNodeDescription(node, diagram, editingContext);
         if (optionalNodeDescription.isPresent()) {
             NodeDescription nodeDescription = optionalNodeDescription.get();
 
@@ -129,10 +129,10 @@ public class EditLabelEventHandler implements IDiagramEventHandler {
         }
     }
 
-    private Optional<NodeDescription> findNodeDescription(Node node, Diagram diagram) {
+    private Optional<NodeDescription> findNodeDescription(Node node, Diagram diagram, IEditingContext editingContext) {
         // @formatter:off
         return this.representationDescriptionSearchService
-                .findById(diagram.getDescriptionId())
+                .findById(editingContext, diagram.getDescriptionId())
                 .filter(DiagramDescription.class::isInstance)
                 .map(DiagramDescription.class::cast)
                 .flatMap(diagramDescription -> this.diagramDescriptionService.findNodeDescriptionById(diagramDescription, node.getDescriptionId()));
