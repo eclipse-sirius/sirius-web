@@ -106,7 +106,7 @@
             <targetViewVariable name="targetView"/>
             <initialOperation>
               <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="aql:self">
-                <subModelOperations xsi:type="tool_1:SetValue" featureName="superType" valueExpression="var:target"/>
+                <subModelOperations xsi:type="tool_1:SetValue" featureName="superTypes" valueExpression="var:target"/>
               </firstModelOperations>
             </initialOperation>
           </ownedTools>
