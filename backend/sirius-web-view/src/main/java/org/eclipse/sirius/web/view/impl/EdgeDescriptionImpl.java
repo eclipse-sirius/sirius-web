@@ -21,6 +21,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.sirius.web.view.ConditionalEdgeStyle;
 import org.eclipse.sirius.web.view.EdgeDescription;
@@ -72,24 +73,24 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
     protected boolean isDomainBasedEdge = IS_DOMAIN_BASED_EDGE_EDEFAULT;
 
     /**
-     * The cached value of the '{@link #getSourceNodeDescription() <em>Source Node Description</em>}' reference. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * The cached value of the '{@link #getSourceNodeDescriptions() <em>Source Node Descriptions</em>}' reference list.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see #getSourceNodeDescription()
+     * @see #getSourceNodeDescriptions()
      * @generated
      * @ordered
      */
-    protected NodeDescription sourceNodeDescription;
+    protected EList<NodeDescription> sourceNodeDescriptions;
 
     /**
-     * The cached value of the '{@link #getTargetNodeDescription() <em>Target Node Description</em>}' reference. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * The cached value of the '{@link #getTargetNodeDescriptions() <em>Target Node Descriptions</em>}' reference list.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see #getTargetNodeDescription()
+     * @see #getTargetNodeDescriptions()
      * @generated
      * @ordered
      */
-    protected NodeDescription targetNodeDescription;
+    protected EList<NodeDescription> targetNodeDescriptions;
 
     /**
      * The default value of the '{@link #getSourceNodesExpression() <em>Source Nodes Expression</em>}' attribute. <!--
@@ -209,25 +210,11 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @generated
      */
     @Override
-    public NodeDescription getSourceNodeDescription() {
-        if (this.sourceNodeDescription != null && this.sourceNodeDescription.eIsProxy()) {
-            InternalEObject oldSourceNodeDescription = (InternalEObject) this.sourceNodeDescription;
-            this.sourceNodeDescription = (NodeDescription) this.eResolveProxy(oldSourceNodeDescription);
-            if (this.sourceNodeDescription != oldSourceNodeDescription) {
-                if (this.eNotificationRequired())
-                    this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, ViewPackage.EDGE_DESCRIPTION__SOURCE_NODE_DESCRIPTION, oldSourceNodeDescription, this.sourceNodeDescription));
-            }
+    public EList<NodeDescription> getSourceNodeDescriptions() {
+        if (this.sourceNodeDescriptions == null) {
+            this.sourceNodeDescriptions = new EObjectResolvingEList<>(NodeDescription.class, this, ViewPackage.EDGE_DESCRIPTION__SOURCE_NODE_DESCRIPTIONS);
         }
-        return this.sourceNodeDescription;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    public NodeDescription basicGetSourceNodeDescription() {
-        return this.sourceNodeDescription;
+        return this.sourceNodeDescriptions;
     }
 
     /**
@@ -236,51 +223,11 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @generated
      */
     @Override
-    public void setSourceNodeDescription(NodeDescription newSourceNodeDescription) {
-        NodeDescription oldSourceNodeDescription = this.sourceNodeDescription;
-        this.sourceNodeDescription = newSourceNodeDescription;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.EDGE_DESCRIPTION__SOURCE_NODE_DESCRIPTION, oldSourceNodeDescription, this.sourceNodeDescription));
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public NodeDescription getTargetNodeDescription() {
-        if (this.targetNodeDescription != null && this.targetNodeDescription.eIsProxy()) {
-            InternalEObject oldTargetNodeDescription = (InternalEObject) this.targetNodeDescription;
-            this.targetNodeDescription = (NodeDescription) this.eResolveProxy(oldTargetNodeDescription);
-            if (this.targetNodeDescription != oldTargetNodeDescription) {
-                if (this.eNotificationRequired())
-                    this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, ViewPackage.EDGE_DESCRIPTION__TARGET_NODE_DESCRIPTION, oldTargetNodeDescription, this.targetNodeDescription));
-            }
+    public EList<NodeDescription> getTargetNodeDescriptions() {
+        if (this.targetNodeDescriptions == null) {
+            this.targetNodeDescriptions = new EObjectResolvingEList<>(NodeDescription.class, this, ViewPackage.EDGE_DESCRIPTION__TARGET_NODE_DESCRIPTIONS);
         }
-        return this.targetNodeDescription;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    public NodeDescription basicGetTargetNodeDescription() {
-        return this.targetNodeDescription;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public void setTargetNodeDescription(NodeDescription newTargetNodeDescription) {
-        NodeDescription oldTargetNodeDescription = this.targetNodeDescription;
-        this.targetNodeDescription = newTargetNodeDescription;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.EDGE_DESCRIPTION__TARGET_NODE_DESCRIPTION, oldTargetNodeDescription, this.targetNodeDescription));
+        return this.targetNodeDescriptions;
     }
 
     /**
@@ -431,14 +378,10 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
         switch (featureID) {
         case ViewPackage.EDGE_DESCRIPTION__IS_DOMAIN_BASED_EDGE:
             return this.isIsDomainBasedEdge();
-        case ViewPackage.EDGE_DESCRIPTION__SOURCE_NODE_DESCRIPTION:
-            if (resolve)
-                return this.getSourceNodeDescription();
-            return this.basicGetSourceNodeDescription();
-        case ViewPackage.EDGE_DESCRIPTION__TARGET_NODE_DESCRIPTION:
-            if (resolve)
-                return this.getTargetNodeDescription();
-            return this.basicGetTargetNodeDescription();
+        case ViewPackage.EDGE_DESCRIPTION__SOURCE_NODE_DESCRIPTIONS:
+            return this.getSourceNodeDescriptions();
+        case ViewPackage.EDGE_DESCRIPTION__TARGET_NODE_DESCRIPTIONS:
+            return this.getTargetNodeDescriptions();
         case ViewPackage.EDGE_DESCRIPTION__SOURCE_NODES_EXPRESSION:
             return this.getSourceNodesExpression();
         case ViewPackage.EDGE_DESCRIPTION__TARGET_NODES_EXPRESSION:
@@ -465,11 +408,13 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
         case ViewPackage.EDGE_DESCRIPTION__IS_DOMAIN_BASED_EDGE:
             this.setIsDomainBasedEdge((Boolean) newValue);
             return;
-        case ViewPackage.EDGE_DESCRIPTION__SOURCE_NODE_DESCRIPTION:
-            this.setSourceNodeDescription((NodeDescription) newValue);
+        case ViewPackage.EDGE_DESCRIPTION__SOURCE_NODE_DESCRIPTIONS:
+            this.getSourceNodeDescriptions().clear();
+            this.getSourceNodeDescriptions().addAll((Collection<? extends NodeDescription>) newValue);
             return;
-        case ViewPackage.EDGE_DESCRIPTION__TARGET_NODE_DESCRIPTION:
-            this.setTargetNodeDescription((NodeDescription) newValue);
+        case ViewPackage.EDGE_DESCRIPTION__TARGET_NODE_DESCRIPTIONS:
+            this.getTargetNodeDescriptions().clear();
+            this.getTargetNodeDescriptions().addAll((Collection<? extends NodeDescription>) newValue);
             return;
         case ViewPackage.EDGE_DESCRIPTION__SOURCE_NODES_EXPRESSION:
             this.setSourceNodesExpression((String) newValue);
@@ -503,11 +448,11 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
         case ViewPackage.EDGE_DESCRIPTION__IS_DOMAIN_BASED_EDGE:
             this.setIsDomainBasedEdge(IS_DOMAIN_BASED_EDGE_EDEFAULT);
             return;
-        case ViewPackage.EDGE_DESCRIPTION__SOURCE_NODE_DESCRIPTION:
-            this.setSourceNodeDescription((NodeDescription) null);
+        case ViewPackage.EDGE_DESCRIPTION__SOURCE_NODE_DESCRIPTIONS:
+            this.getSourceNodeDescriptions().clear();
             return;
-        case ViewPackage.EDGE_DESCRIPTION__TARGET_NODE_DESCRIPTION:
-            this.setTargetNodeDescription((NodeDescription) null);
+        case ViewPackage.EDGE_DESCRIPTION__TARGET_NODE_DESCRIPTIONS:
+            this.getTargetNodeDescriptions().clear();
             return;
         case ViewPackage.EDGE_DESCRIPTION__SOURCE_NODES_EXPRESSION:
             this.setSourceNodesExpression(SOURCE_NODES_EXPRESSION_EDEFAULT);
@@ -538,10 +483,10 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
         switch (featureID) {
         case ViewPackage.EDGE_DESCRIPTION__IS_DOMAIN_BASED_EDGE:
             return this.isDomainBasedEdge != IS_DOMAIN_BASED_EDGE_EDEFAULT;
-        case ViewPackage.EDGE_DESCRIPTION__SOURCE_NODE_DESCRIPTION:
-            return this.sourceNodeDescription != null;
-        case ViewPackage.EDGE_DESCRIPTION__TARGET_NODE_DESCRIPTION:
-            return this.targetNodeDescription != null;
+        case ViewPackage.EDGE_DESCRIPTION__SOURCE_NODE_DESCRIPTIONS:
+            return this.sourceNodeDescriptions != null && !this.sourceNodeDescriptions.isEmpty();
+        case ViewPackage.EDGE_DESCRIPTION__TARGET_NODE_DESCRIPTIONS:
+            return this.targetNodeDescriptions != null && !this.targetNodeDescriptions.isEmpty();
         case ViewPackage.EDGE_DESCRIPTION__SOURCE_NODES_EXPRESSION:
             return SOURCE_NODES_EXPRESSION_EDEFAULT == null ? this.sourceNodesExpression != null : !SOURCE_NODES_EXPRESSION_EDEFAULT.equals(this.sourceNodesExpression);
         case ViewPackage.EDGE_DESCRIPTION__TARGET_NODES_EXPRESSION:

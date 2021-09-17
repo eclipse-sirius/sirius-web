@@ -282,8 +282,8 @@ public class ViewConverter {
                         .label(edgeTool.getName())
                         .imageURL(EDGE_CREATION_TOOL_ICON)
                         .edgeCandidates(List.of(EdgeCandidate.newEdgeCandidate()
-                                .sources(List.of(this.convert(edgeDescription.getSourceNodeDescription(), interpreter)))
-                                .targets(List.of(this.convert(edgeDescription.getTargetNodeDescription(), interpreter)))
+                                .sources(edgeDescription.getSourceNodeDescriptions().stream().map(this.convertedNodes::get).collect(Collectors.toList()))
+                                .targets(edgeDescription.getTargetNodeDescriptions().stream().map(this.convertedNodes::get).collect(Collectors.toList()))
                                 .build()))
                         .handler(variableManager -> new ToolInterpreter(interpreter, this.editService).executeTool(edgeTool, variableManager))
                         .build();
@@ -297,8 +297,8 @@ public class ViewConverter {
                         .label("New edge" + edgeDescription.getDomainType()) //$NON-NLS-1$
                         .imageURL(EDGE_CREATION_TOOL_ICON)
                         .edgeCandidates(List.of(EdgeCandidate.newEdgeCandidate()
-                                .sources(List.of(this.convert(edgeDescription.getSourceNodeDescription(), interpreter)))
-                                .targets(List.of(this.convert(edgeDescription.getTargetNodeDescription(), interpreter)))
+                                .sources(edgeDescription.getSourceNodeDescriptions().stream().map(this.convertedNodes::get).collect(Collectors.toList()))
+                                .targets(edgeDescription.getTargetNodeDescriptions().stream().map(this.convertedNodes::get).collect(Collectors.toList()))
                                 .build()))
                         .handler(variableManager -> this.canonicalBehaviors.createNewEdge(variableManager, edgeDescription))
                         .build();
@@ -361,8 +361,8 @@ public class ViewConverter {
             semanticElementsProvider = this.getSemanticElementsProvider(viewEdgeDescription, interpreter);
         } else {
             //
-            var sourceNodeDescription = this.convert(viewEdgeDescription.getSourceNodeDescription(), interpreter);
-            semanticElementsProvider = new RelationBasedSemanticElementsProvider(List.of(sourceNodeDescription.getId()));
+            var sourceNodeDescriptions = viewEdgeDescription.getSourceNodeDescriptions().stream().map(this.convertedNodes::get);
+            semanticElementsProvider = new RelationBasedSemanticElementsProvider(sourceNodeDescriptions.map(NodeDescription::getId).collect(Collectors.toList()));
         }
 
         Function<VariableManager, List<Element>> sourceNodesProvider = null;
@@ -381,7 +381,7 @@ public class ViewConverter {
 
                 // @formatter:off
                 return nodeCandidates
-                        .filter(nodeElement -> this.isFromDescription(nodeElement, viewEdgeDescription.getSourceNodeDescription()))
+                        .filter(nodeElement -> viewEdgeDescription.getSourceNodeDescriptions().stream().anyMatch(nodeDescription -> this.isFromDescription(nodeElement, nodeDescription)))
                         .filter(Objects::nonNull)
                         .collect(Collectors.toList());
                 // @formatter:on
@@ -424,8 +424,8 @@ public class ViewConverter {
                                      .targetObjectIdProvider(this.semanticTargetIdProvider)
                                      .targetObjectKindProvider(this.semanticTargetKindProvider)
                                      .targetObjectLabelProvider(this.semanticTargetLabelProvider)
-                                     .sourceNodeDescriptions(List.of(this.convertedNodes.get(viewEdgeDescription.getSourceNodeDescription())))
-                                     .targetNodeDescriptions(List.of(this.convertedNodes.get(viewEdgeDescription.getTargetNodeDescription())))
+                                     .sourceNodeDescriptions(viewEdgeDescription.getSourceNodeDescriptions().stream().map(this.convertedNodes::get).collect(Collectors.toList()))
+                                     .targetNodeDescriptions(viewEdgeDescription.getTargetNodeDescriptions().stream().map(this.convertedNodes::get).collect(Collectors.toList()))
                                      .semanticElementsProvider(semanticElementsProvider)
                                      .sourceNodesProvider(sourceNodesProvider)
                                      .targetNodesProvider(targetNodesProvider)
@@ -462,7 +462,7 @@ public class ViewConverter {
     }
 
     private Predicate<Element> isFromCompatibleSourceMapping(org.eclipse.sirius.web.view.EdgeDescription edgeDescription) {
-        return nodeElement -> this.isFromDescription(nodeElement, edgeDescription.getSourceNodeDescription());
+        return nodeElement -> edgeDescription.getSourceNodeDescriptions().stream().anyMatch(nodeDescription -> this.isFromDescription(nodeElement, nodeDescription));
     }
 
     private boolean isFromDescription(Element nodeElement, DiagramElementDescription diagramElementDescription) {

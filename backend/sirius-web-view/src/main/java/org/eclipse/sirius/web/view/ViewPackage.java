@@ -472,22 +472,22 @@ public interface ViewPackage extends EPackage {
     int EDGE_DESCRIPTION__IS_DOMAIN_BASED_EDGE = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 0;
 
     /**
-     * The feature id for the '<em><b>Source Node Description</b></em>' reference. <!-- begin-user-doc --> <!--
+     * The feature id for the '<em><b>Source Node Descriptions</b></em>' reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int EDGE_DESCRIPTION__SOURCE_NODE_DESCRIPTION = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 1;
+    int EDGE_DESCRIPTION__SOURCE_NODE_DESCRIPTIONS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 1;
 
     /**
-     * The feature id for the '<em><b>Target Node Description</b></em>' reference. <!-- begin-user-doc --> <!--
+     * The feature id for the '<em><b>Target Node Descriptions</b></em>' reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int EDGE_DESCRIPTION__TARGET_NODE_DESCRIPTION = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 2;
+    int EDGE_DESCRIPTION__TARGET_NODE_DESCRIPTIONS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 2;
 
     /**
      * The feature id for the '<em><b>Source Nodes Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -1856,28 +1856,28 @@ public interface ViewPackage extends EPackage {
     EAttribute getEdgeDescription_IsDomainBasedEdge();
 
     /**
-     * Returns the meta object for the reference
-     * '{@link org.eclipse.sirius.web.view.EdgeDescription#getSourceNodeDescription <em>Source Node Description</em>}'.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for the reference list
+     * '{@link org.eclipse.sirius.web.view.EdgeDescription#getSourceNodeDescriptions <em>Source Node
+     * Descriptions</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return the meta object for the reference '<em>Source Node Description</em>'.
-     * @see org.eclipse.sirius.web.view.EdgeDescription#getSourceNodeDescription()
+     * @return the meta object for the reference list '<em>Source Node Descriptions</em>'.
+     * @see org.eclipse.sirius.web.view.EdgeDescription#getSourceNodeDescriptions()
      * @see #getEdgeDescription()
      * @generated
      */
-    EReference getEdgeDescription_SourceNodeDescription();
+    EReference getEdgeDescription_SourceNodeDescriptions();
 
     /**
-     * Returns the meta object for the reference
-     * '{@link org.eclipse.sirius.web.view.EdgeDescription#getTargetNodeDescription <em>Target Node Description</em>}'.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for the reference list
+     * '{@link org.eclipse.sirius.web.view.EdgeDescription#getTargetNodeDescriptions <em>Target Node
+     * Descriptions</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return the meta object for the reference '<em>Target Node Description</em>'.
-     * @see org.eclipse.sirius.web.view.EdgeDescription#getTargetNodeDescription()
+     * @return the meta object for the reference list '<em>Target Node Descriptions</em>'.
+     * @see org.eclipse.sirius.web.view.EdgeDescription#getTargetNodeDescriptions()
      * @see #getEdgeDescription()
      * @generated
      */
-    EReference getEdgeDescription_TargetNodeDescription();
+    EReference getEdgeDescription_TargetNodeDescriptions();
 
     /**
      * Returns the meta object for the attribute
@@ -2657,20 +2657,20 @@ public interface ViewPackage extends EPackage {
         EAttribute EDGE_DESCRIPTION__IS_DOMAIN_BASED_EDGE = eINSTANCE.getEdgeDescription_IsDomainBasedEdge();
 
         /**
-         * The meta object literal for the '<em><b>Source Node Description</b></em>' reference feature. <!--
+         * The meta object literal for the '<em><b>Source Node Descriptions</b></em>' reference list feature. <!--
          * begin-user-doc --> <!-- end-user-doc -->
          *
          * @generated
          */
-        EReference EDGE_DESCRIPTION__SOURCE_NODE_DESCRIPTION = eINSTANCE.getEdgeDescription_SourceNodeDescription();
+        EReference EDGE_DESCRIPTION__SOURCE_NODE_DESCRIPTIONS = eINSTANCE.getEdgeDescription_SourceNodeDescriptions();
 
         /**
-         * The meta object literal for the '<em><b>Target Node Description</b></em>' reference feature. <!--
+         * The meta object literal for the '<em><b>Target Node Descriptions</b></em>' reference list feature. <!--
          * begin-user-doc --> <!-- end-user-doc -->
          *
          * @generated
          */
-        EReference EDGE_DESCRIPTION__TARGET_NODE_DESCRIPTION = eINSTANCE.getEdgeDescription_TargetNodeDescription();
+        EReference EDGE_DESCRIPTION__TARGET_NODE_DESCRIPTIONS = eINSTANCE.getEdgeDescription_TargetNodeDescriptions();
 
         /**
          * The meta object literal for the '<em><b>Source Nodes Expression</b></em>' attribute feature. <!--

@@ -56,8 +56,8 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
             super.getPropertyDescriptors(object);
 
             this.addIsDomainBasedEdgePropertyDescriptor(object);
-            this.addSourceNodeDescriptionPropertyDescriptor(object);
-            this.addTargetNodeDescriptionPropertyDescriptor(object);
+            this.addSourceNodeDescriptionsPropertyDescriptor(object);
+            this.addTargetNodeDescriptionsPropertyDescriptor(object);
             this.addSourceNodesExpressionPropertyDescriptor(object);
             this.addTargetNodesExpressionPropertyDescriptor(object);
         }
@@ -78,29 +78,29 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
     }
 
     /**
-     * This adds a property descriptor for the Source Node Description feature. <!-- begin-user-doc --> <!--
+     * This adds a property descriptor for the Source Node Descriptions feature. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      */
-    protected void addSourceNodeDescriptionPropertyDescriptor(Object object) {
+    protected void addSourceNodeDescriptionsPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_EdgeDescription_sourceNodeDescription_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeDescription_sourceNodeDescription_feature", "_UI_EdgeDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                ViewPackage.Literals.EDGE_DESCRIPTION__SOURCE_NODE_DESCRIPTION, true, false, true, null, null, null));
+                this.getString("_UI_EdgeDescription_sourceNodeDescriptions_feature"), //$NON-NLS-1$
+                this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeDescription_sourceNodeDescriptions_feature", "_UI_EdgeDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                ViewPackage.Literals.EDGE_DESCRIPTION__SOURCE_NODE_DESCRIPTIONS, true, false, true, null, null, null));
     }
 
     /**
-     * This adds a property descriptor for the Target Node Description feature. <!-- begin-user-doc --> <!--
+     * This adds a property descriptor for the Target Node Descriptions feature. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      */
-    protected void addTargetNodeDescriptionPropertyDescriptor(Object object) {
+    protected void addTargetNodeDescriptionsPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_EdgeDescription_targetNodeDescription_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeDescription_targetNodeDescription_feature", "_UI_EdgeDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                ViewPackage.Literals.EDGE_DESCRIPTION__TARGET_NODE_DESCRIPTION, true, false, true, null, null, null));
+                this.getString("_UI_EdgeDescription_targetNodeDescriptions_feature"), //$NON-NLS-1$
+                this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeDescription_targetNodeDescriptions_feature", "_UI_EdgeDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                ViewPackage.Literals.EDGE_DESCRIPTION__TARGET_NODE_DESCRIPTIONS, true, false, true, null, null, null));
     }
 
     /**
