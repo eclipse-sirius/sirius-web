@@ -62,50 +62,26 @@ public interface EdgeDescription extends DiagramElementDescription {
     void setIsDomainBasedEdge(boolean value);
 
     /**
-     * Returns the value of the '<em><b>Source Node Description</b></em>' reference. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * Returns the value of the '<em><b>Source Node Descriptions</b></em>' reference list. The list contents are of type
+     * {@link org.eclipse.sirius.web.view.NodeDescription}. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return the value of the '<em>Source Node Description</em>' reference.
-     * @see #setSourceNodeDescription(NodeDescription)
-     * @see org.eclipse.sirius.web.view.ViewPackage#getEdgeDescription_SourceNodeDescription()
+     * @return the value of the '<em>Source Node Descriptions</em>' reference list.
+     * @see org.eclipse.sirius.web.view.ViewPackage#getEdgeDescription_SourceNodeDescriptions()
      * @model required="true"
      * @generated
      */
-    NodeDescription getSourceNodeDescription();
+    EList<NodeDescription> getSourceNodeDescriptions();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.web.view.EdgeDescription#getSourceNodeDescription <em>Source
-     * Node Description</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the value of the '<em><b>Target Node Descriptions</b></em>' reference list. The list contents are of type
+     * {@link org.eclipse.sirius.web.view.NodeDescription}. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @param value
-     *            the new value of the '<em>Source Node Description</em>' reference.
-     * @see #getSourceNodeDescription()
-     * @generated
-     */
-    void setSourceNodeDescription(NodeDescription value);
-
-    /**
-     * Returns the value of the '<em><b>Target Node Description</b></em>' reference. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @return the value of the '<em>Target Node Description</em>' reference.
-     * @see #setTargetNodeDescription(NodeDescription)
-     * @see org.eclipse.sirius.web.view.ViewPackage#getEdgeDescription_TargetNodeDescription()
+     * @return the value of the '<em>Target Node Descriptions</em>' reference list.
+     * @see org.eclipse.sirius.web.view.ViewPackage#getEdgeDescription_TargetNodeDescriptions()
      * @model required="true"
      * @generated
      */
-    NodeDescription getTargetNodeDescription();
-
-    /**
-     * Sets the value of the '{@link org.eclipse.sirius.web.view.EdgeDescription#getTargetNodeDescription <em>Target
-     * Node Description</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Target Node Description</em>' reference.
-     * @see #getTargetNodeDescription()
-     * @generated
-     */
-    void setTargetNodeDescription(NodeDescription value);
+    EList<NodeDescription> getTargetNodeDescriptions();
 
     /**
      * Returns the value of the '<em><b>Source Nodes Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
