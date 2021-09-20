@@ -36,6 +36,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import reactor.core.Disposable;
+import reactor.core.publisher.Mono;
 
 /**
  * Registry of the editing context event processors.
@@ -72,8 +73,8 @@ public class EditingContextEventProcessorRegistry implements IEditingContextEven
     }
 
     @Override
-    public Optional<IPayload> dispatchEvent(UUID editingContextId, IInput input) {
-        return this.getOrCreateEditingContextEventProcessor(editingContextId).flatMap(processor -> processor.handle(input));
+    public Mono<IPayload> dispatchEvent(UUID editingContextId, IInput input) {
+        return this.getOrCreateEditingContextEventProcessor(editingContextId).map(processor -> processor.handle(input)).orElse(Mono.empty());
     }
 
     @Override

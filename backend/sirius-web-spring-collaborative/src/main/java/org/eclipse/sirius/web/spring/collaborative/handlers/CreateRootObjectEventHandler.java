@@ -19,9 +19,9 @@ import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditService;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IInput;
+import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeKind;
-import org.eclipse.sirius.web.spring.collaborative.api.EventHandlerResponse;
 import org.eclipse.sirius.web.spring.collaborative.api.IEditingContextEventHandler;
 import org.eclipse.sirius.web.spring.collaborative.api.Monitoring;
 import org.eclipse.sirius.web.spring.collaborative.dto.CreateRootObjectInput;
@@ -31,6 +31,8 @@ import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
+import reactor.core.publisher.Sinks.Many;
+import reactor.core.publisher.Sinks.One;
 
 /**
  * Handler used to create a new root object.
@@ -63,8 +65,12 @@ public class CreateRootObjectEventHandler implements IEditingContextEventHandler
     }
 
     @Override
-    public EventHandlerResponse handle(IEditingContext editingContext, IInput input) {
+    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IInput input) {
         this.counter.increment();
+
+        String message = this.messageService.invalidInput(input.getClass().getSimpleName(), CreateRootObjectInput.class.getSimpleName());
+        IPayload payload = new ErrorPayload(input.getId(), message);
+        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input);
 
         if (input instanceof CreateRootObjectInput) {
             CreateRootObjectInput createRootObjectInput = (CreateRootObjectInput) input;
@@ -75,12 +81,13 @@ public class CreateRootObjectEventHandler implements IEditingContextEventHandler
             var optionalObject = this.editService.createRootObject(editingContext, documentId, domainId, rootObjectCreationDescriptionId);
 
             if (optionalObject.isPresent()) {
-                return new EventHandlerResponse(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId()), new CreateRootObjectSuccessPayload(input.getId(), optionalObject.get()));
+                payload = new CreateRootObjectSuccessPayload(input.getId(), optionalObject.get());
+                changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input);
             }
         }
 
-        String message = this.messageService.invalidInput(input.getClass().getSimpleName(), CreateRootObjectInput.class.getSimpleName());
-        return new EventHandlerResponse(new ChangeDescription(ChangeKind.NOTHING, editingContext.getId()), new ErrorPayload(input.getId(), message));
+        payloadSink.tryEmitValue(payload);
+        changeDescriptionSink.tryEmitNext(changeDescription);
     }
 
 }

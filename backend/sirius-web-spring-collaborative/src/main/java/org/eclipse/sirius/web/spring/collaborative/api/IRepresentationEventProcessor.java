@@ -12,14 +12,14 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.spring.collaborative.api;
 
-import java.util.Optional;
-
 import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.core.api.IRepresentationInput;
 import org.eclipse.sirius.web.representations.IRepresentation;
 
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Sinks.Many;
+import reactor.core.publisher.Sinks.One;
 
 /**
  * Interface implemented by all the representation event processors.
@@ -29,9 +29,9 @@ import reactor.core.publisher.Flux;
 public interface IRepresentationEventProcessor extends IDisposablePublisher {
     IRepresentation getRepresentation();
 
-    Optional<EventHandlerResponse> handle(IRepresentationInput representationInput);
+    void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IRepresentationInput representationInput);
 
-    void refresh(IInput input, ChangeDescription changeDescription);
+    void refresh(ChangeDescription changeDescription);
 
     ISubscriptionManager getSubscriptionManager();
 
@@ -59,12 +59,11 @@ public interface IRepresentationEventProcessor extends IDisposablePublisher {
         }
 
         @Override
-        public Optional<EventHandlerResponse> handle(IRepresentationInput representationInput) {
-            return Optional.empty();
+        public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IRepresentationInput representationInput) {
         }
 
         @Override
-        public void refresh(IInput input, ChangeDescription changeDescription) {
+        public void refresh(ChangeDescription changeDescription) {
         }
 
         @Override

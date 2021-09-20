@@ -21,6 +21,7 @@ import java.util.UUID;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IObjectService;
+import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.Edge;
@@ -32,7 +33,6 @@ import org.eclipse.sirius.web.representations.Status;
 import org.eclipse.sirius.web.representations.VariableManager;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeKind;
-import org.eclipse.sirius.web.spring.collaborative.api.EventHandlerResponse;
 import org.eclipse.sirius.web.spring.collaborative.api.Monitoring;
 import org.eclipse.sirius.web.spring.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.web.spring.collaborative.diagrams.api.IDiagramDescriptionService;
@@ -48,6 +48,8 @@ import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
+import reactor.core.publisher.Sinks.Many;
+import reactor.core.publisher.Sinks.One;
 
 /**
  * Handle "Delete from Diagram" events.
@@ -92,20 +94,20 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
     }
 
     @Override
-    public EventHandlerResponse handle(IEditingContext editingContext, IDiagramContext diagramContext, IDiagramInput diagramInput) {
+    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IDiagramContext diagramContext, IDiagramInput diagramInput) {
         this.counter.increment();
 
-        EventHandlerResponse result;
         if (diagramInput instanceof DeleteFromDiagramInput) {
-            result = this.handleDelete(editingContext, diagramContext, (DeleteFromDiagramInput) diagramInput);
+            this.handleDelete(payloadSink, changeDescriptionSink, editingContext, diagramContext, (DeleteFromDiagramInput) diagramInput);
         } else {
             String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), DeleteFromDiagramInput.class.getSimpleName());
-            result = new EventHandlerResponse(new ChangeDescription(ChangeKind.NOTHING, diagramInput.getRepresentationId()), new ErrorPayload(diagramInput.getId(), message));
+            payloadSink.tryEmitValue(new ErrorPayload(diagramInput.getId(), message));
+            changeDescriptionSink.tryEmitNext(new ChangeDescription(ChangeKind.NOTHING, diagramInput.getRepresentationId(), diagramInput));
         }
-        return result;
     }
 
-    private EventHandlerResponse handleDelete(IEditingContext editingContext, IDiagramContext diagramContext, DeleteFromDiagramInput diagramInput) {
+    private void handleDelete(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IDiagramContext diagramContext,
+            DeleteFromDiagramInput diagramInput) {
         List<String> errors = new ArrayList<>();
         boolean atLeastOneOk = false;
         Diagram diagram = diagramContext.getDiagram();
@@ -134,28 +136,31 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
             }
         }
 
-        return this.computeResponse(errors, atLeastOneOk, diagramContext, diagramInput);
+        this.sendResponse(payloadSink, changeDescriptionSink, errors, atLeastOneOk, diagramContext, diagramInput);
     }
 
-    private EventHandlerResponse computeResponse(List<String> errors, boolean atLeastOneSuccess, IDiagramContext diagramContext, DeleteFromDiagramInput diagramInput) {
-        EventHandlerResponse result;
-        if (errors.isEmpty()) {
-            result = new EventHandlerResponse(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, diagramInput.getRepresentationId()),
-                    new DeleteFromDiagramSuccessPayload(diagramInput.getId(), diagramContext.getDiagram()));
-        } else {
+    private void sendResponse(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, List<String> errors, boolean atLeastOneSuccess, IDiagramContext diagramContext,
+            DeleteFromDiagramInput diagramInput) {
+
+        var changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, diagramInput.getRepresentationId(), diagramInput);
+        IPayload payload = new DeleteFromDiagramSuccessPayload(diagramInput.getId(), diagramContext.getDiagram());
+        if (!errors.isEmpty()) {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append(this.messageService.deleteFailed());
             for (String error : errors) {
                 stringBuilder.append(error);
             }
 
-            var changeDescription = new ChangeDescription(ChangeKind.NOTHING, diagramInput.getRepresentationId());
+            changeDescription = new ChangeDescription(ChangeKind.NOTHING, diagramInput.getRepresentationId(), diagramInput);
             if (atLeastOneSuccess) {
-                changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, diagramInput.getRepresentationId());
+                changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, diagramInput.getRepresentationId(), diagramInput);
             }
-            result = new EventHandlerResponse(changeDescription, new ErrorPayload(diagramInput.getId(), stringBuilder.toString()));
+
+            payload = new ErrorPayload(diagramInput.getId(), stringBuilder.toString());
         }
-        return result;
+
+        payloadSink.tryEmitValue(payload);
+        changeDescriptionSink.tryEmitNext(changeDescription);
     }
 
     private Status invokeDeleteNodeTool(Node node, IEditingContext editingContext, IDiagramContext diagramContext) {

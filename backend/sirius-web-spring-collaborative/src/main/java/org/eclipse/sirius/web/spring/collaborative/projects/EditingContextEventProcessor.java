@@ -36,7 +36,6 @@ import org.eclipse.sirius.web.representations.IRepresentation;
 import org.eclipse.sirius.web.representations.ISemanticRepresentation;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeKind;
-import org.eclipse.sirius.web.spring.collaborative.api.EventHandlerResponse;
 import org.eclipse.sirius.web.spring.collaborative.api.IDanglingRepresentationDeletionService;
 import org.eclipse.sirius.web.spring.collaborative.api.IEditingContextEventHandler;
 import org.eclipse.sirius.web.spring.collaborative.api.IEditingContextEventProcessor;
@@ -45,7 +44,6 @@ import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationEventProce
 import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationEventProcessorComposedFactory;
 import org.eclipse.sirius.web.spring.collaborative.dto.DeleteRepresentationInput;
 import org.eclipse.sirius.web.spring.collaborative.dto.RenameRepresentationInput;
-import org.eclipse.sirius.web.spring.collaborative.dto.RenameRepresentationSuccessPayload;
 import org.eclipse.sirius.web.spring.collaborative.dto.RepresentationRefreshedEvent;
 import org.eclipse.sirius.web.spring.collaborative.dto.RepresentationRenamedEventPayload;
 import org.slf4j.Logger;
@@ -55,9 +53,11 @@ import org.springframework.security.concurrent.DelegatingSecurityContextExecutor
 
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
 import reactor.core.publisher.Sinks.EmitResult;
 import reactor.core.publisher.Sinks.Many;
+import reactor.core.publisher.Sinks.One;
 
 /**
  * Handles all the inputs which concern a particular editing context one at a time, in order of arrival, and in a
@@ -88,9 +88,13 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
 
     private final Many<Boolean> canBeDisposedSink = Sinks.many().unicast().onBackpressureBuffer();
 
+    private final Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
+
     private final ExecutorService executor;
 
     private final IDanglingRepresentationDeletionService danglingRepresentationDeletionService;
+
+    private final Disposable changeDescriptionDisposable;
 
     public EditingContextEventProcessor(IEditingContext editingContext, IEditingContextPersistenceService editingContextPersistenceService, ApplicationEventPublisher applicationEventPublisher,
             IObjectService objectService, List<IEditingContextEventHandler> editingContextEventHandlers, IRepresentationEventProcessorComposedFactory representationEventProcessorComposedFactory,
@@ -109,39 +113,34 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
             return thread;
         });
         this.executor = new DelegatingSecurityContextExecutorService(delegateExecutorService);
+        this.changeDescriptionDisposable = this.setupChangeDescriptionSinkConsumer();
     }
 
-    @Override
-    public UUID getEditingContextId() {
-        return this.editingContext.getId();
+    private Disposable setupChangeDescriptionSinkConsumer() {
+        return this.changeDescriptionSink.asFlux().subscribe(changeDescription -> {
+            this.publishEvent(changeDescription);
+            this.disposeRepresentationIfNeeded();
+
+            RepresentationEventProcessorEntry representationEventProcessorEntry = this.representationEventProcessors.get(changeDescription.getSourceId());
+            if (representationEventProcessorEntry != null) {
+                IRepresentationEventProcessor representationEventProcessor = representationEventProcessorEntry.getRepresentationEventProcessor();
+                representationEventProcessor.refresh(changeDescription);
+                IRepresentation representation = representationEventProcessor.getRepresentation();
+                this.applicationEventPublisher.publishEvent(new RepresentationRefreshedEvent(this.editingContext.getId(), representation));
+            }
+            this.refreshOtherRepresentations(changeDescription);
+
+            if (this.shouldPersistTheEditingContext(changeDescription)) {
+                this.editingContextPersistenceService.persist(this.editingContext);
+            }
+            this.danglingRepresentationDeletionService.deleteDanglingRepresentations(this.editingContext.getId());
+        });
     }
 
-    @Override
-    public Optional<IPayload> handle(IInput input) {
-        if (this.executor.isShutdown()) {
-            this.logger.warn("Handler for editing context {} is shutdown", this.editingContext.getId()); //$NON-NLS-1$
-            return Optional.empty();
-        }
-
-        Optional<IPayload> optionalPayload = Optional.empty();
-        Future<Optional<EventHandlerResponse>> future = this.executor.submit(() -> this.doHandle(input));
-        try {
-            // Block until the event has been processed
-            Optional<EventHandlerResponse> optionalResponse = future.get();
-
-            optionalPayload = optionalResponse.map(EventHandlerResponse::getPayload);
-        } catch (InterruptedException | ExecutionException exception) {
-            this.logger.warn(exception.getMessage(), exception);
-        }
-
-        this.publishEvent(input, optionalPayload);
-        return optionalPayload;
-    }
-
-    private void publishEvent(IInput input, Optional<IPayload> optionalPayload) {
-        if (optionalPayload.isPresent() && this.sink.currentSubscriberCount() > 0) {
-            IPayload payload = optionalPayload.get();
-            if (input instanceof RenameRepresentationInput && payload instanceof RenameRepresentationSuccessPayload) {
+    private void publishEvent(ChangeDescription changeDescription) {
+        if (this.sink.currentSubscriberCount() > 0) {
+            IInput input = changeDescription.getInput();
+            if (input instanceof RenameRepresentationInput && ChangeKind.REPRESENTATION_RENAMING.equals(changeDescription.getKind())) {
                 UUID representationId = ((RenameRepresentationInput) input).getRepresentationId();
                 String newLabel = ((RenameRepresentationInput) input).getNewLabel();
                 EmitResult emitResult = this.sink.tryEmitNext(new RepresentationRenamedEventPayload(input.getId(), representationId, newLabel));
@@ -153,44 +152,49 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
         }
     }
 
+    @Override
+    public UUID getEditingContextId() {
+        return this.editingContext.getId();
+    }
+
+    @Override
+    public Mono<IPayload> handle(IInput input) {
+        if (this.executor.isShutdown()) {
+            this.logger.warn("Handler for editing context {} is shutdown", this.editingContext.getId()); //$NON-NLS-1$
+            return Mono.empty();
+        }
+
+        One<IPayload> payloadSink = Sinks.one();
+        Future<?> future = this.executor.submit(() -> this.doHandle(payloadSink, input));
+        try {
+            // Block until the event has been processed
+            future.get();
+        } catch (InterruptedException | ExecutionException exception) {
+            this.logger.warn(exception.getMessage(), exception);
+        }
+
+        return payloadSink.asMono();
+    }
+
     /**
      * Finds the proper event handler to perform the task matching the given input event.
      *
+     * @param payloadSink
+     *            The sink to publish payload
      * @param inputEvent
      *            The input event
      * @return The response computed by the event handler
      */
-    private Optional<EventHandlerResponse> doHandle(IInput input) {
+    private void doHandle(One<IPayload> payloadSink, IInput input) {
         this.logger.trace("Input received: {}", input); //$NON-NLS-1$
 
-        Optional<EventHandlerResponse> optionalResponse = Optional.empty();
-
-        UUID representationId = null;
         if (input instanceof IRepresentationInput) {
             IRepresentationInput representationInput = (IRepresentationInput) input;
-            representationId = representationInput.getRepresentationId();
-
-            optionalResponse = this.handleRepresentationInput(representationInput);
-            if (input instanceof RenameRepresentationInput) {
-                this.publishEvent(input, optionalResponse.map(EventHandlerResponse::getPayload));
-            }
+            this.handleRepresentationInput(payloadSink, representationInput);
         } else {
-            optionalResponse = this.handleInput(input);
+            this.handleInput(payloadSink, input);
         }
 
-        if (optionalResponse.isPresent()) {
-            EventHandlerResponse response = optionalResponse.get();
-
-            this.disposeRepresentationIfNeeded();
-            this.refreshOtherRepresentations(input, representationId, response.getChangeDescription());
-
-            if (this.shouldPersistTheEditingContext(response.getChangeDescription())) {
-                this.editingContextPersistenceService.persist(this.editingContext);
-            }
-            this.danglingRepresentationDeletionService.deleteDanglingRepresentations(this.editingContext.getId());
-        }
-
-        return optionalResponse;
     }
 
     /**
@@ -204,14 +208,14 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
      * @param changeDescription
      *            The description of change to consider in order to determine if the representation should be refreshed
      */
-    private void refreshOtherRepresentations(IInput input, UUID representationId, ChangeDescription changeDescription) {
+    private void refreshOtherRepresentations(ChangeDescription changeDescription) {
         // @formatter:off
         this.representationEventProcessors.entrySet().stream()
-            .filter(entry -> !Objects.equals(entry.getKey(), representationId))
+            .filter(entry -> !Objects.equals(entry.getKey(), changeDescription.getSourceId()))
             .map(Entry::getValue)
             .map(RepresentationEventProcessorEntry::getRepresentationEventProcessor)
             .forEach(representationEventProcessor -> {
-                representationEventProcessor.refresh(input, changeDescription);
+                representationEventProcessor.refresh(changeDescription);
                 IRepresentation representation = representationEventProcessor.getRepresentation();
                 this.applicationEventPublisher.publishEvent(new RepresentationRefreshedEvent(this.editingContext.getId(), representation));
              });
@@ -259,7 +263,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
         // @formatter:on
     }
 
-    private Optional<EventHandlerResponse> handleInput(IInput input) {
+    private void handleInput(One<IPayload> payloadSink, IInput input) {
         if (input instanceof DeleteRepresentationInput) {
             DeleteRepresentationInput deleteRepresentationInput = (DeleteRepresentationInput) input;
             this.disposeRepresentation(deleteRepresentationInput.getRepresentationId());
@@ -271,29 +275,24 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
                 .findFirst();
         // @formatter:on
 
-        Optional<EventHandlerResponse> optionalResponse = Optional.empty();
         if (optionalEditingContextEventHandler.isPresent()) {
             IEditingContextEventHandler editingContextEventHandler = optionalEditingContextEventHandler.get();
-            EventHandlerResponse response = editingContextEventHandler.handle(this.editingContext, input);
-            optionalResponse = Optional.of(response);
+            editingContextEventHandler.handle(payloadSink, this.changeDescriptionSink, this.editingContext, input);
         } else {
             this.logger.warn("No handler found for event: {}", input); //$NON-NLS-1$
         }
-        return optionalResponse;
     }
 
-    private Optional<EventHandlerResponse> handleRepresentationInput(IRepresentationInput representationInput) {
+    private void handleRepresentationInput(One<IPayload> payloadSink, IRepresentationInput representationInput) {
         Optional<IRepresentationEventProcessor> optionalRepresentationEventProcessor = Optional.ofNullable(this.representationEventProcessors.get(representationInput.getRepresentationId()))
                 .map(RepresentationEventProcessorEntry::getRepresentationEventProcessor);
 
-        Optional<EventHandlerResponse> optionalResponse = Optional.empty();
         if (optionalRepresentationEventProcessor.isPresent()) {
             IRepresentationEventProcessor representationEventProcessor = optionalRepresentationEventProcessor.get();
-            optionalResponse = representationEventProcessor.handle(representationInput);
+            representationEventProcessor.handle(payloadSink, this.changeDescriptionSink, representationInput);
         } else {
             this.logger.warn("No representation event processor found for event: {}", representationInput); //$NON-NLS-1$
         }
-        return optionalResponse;
     }
 
     @Override
@@ -364,10 +363,18 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
     public void dispose() {
         this.logger.trace("Disposing the editing context event processor {}", this.editingContext.getId()); //$NON-NLS-1$
 
+        this.changeDescriptionDisposable.dispose();
+
         this.executor.shutdown();
 
         this.representationEventProcessors.values().forEach(RepresentationEventProcessorEntry::dispose);
         this.representationEventProcessors.clear();
+
+        EmitResult changeDescriptionEmitResult = this.changeDescriptionSink.tryEmitComplete();
+        if (changeDescriptionEmitResult.isFailure()) {
+            String pattern = "An error has occurred while marking the publisher as complete: {}"; //$NON-NLS-1$
+            this.logger.warn(pattern, changeDescriptionEmitResult);
+        }
 
         EmitResult emitResult = this.sink.tryEmitComplete();
         if (emitResult.isFailure()) {

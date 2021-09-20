@@ -12,8 +12,12 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.spring.collaborative.trees.api;
 
-import org.eclipse.sirius.web.spring.collaborative.api.EventHandlerResponse;
+import org.eclipse.sirius.web.core.api.IPayload;
+import org.eclipse.sirius.web.spring.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.web.trees.Tree;
+
+import reactor.core.publisher.Sinks.Many;
+import reactor.core.publisher.Sinks.One;
 
 /**
  * Interface of all the tree event handlers.
@@ -23,5 +27,5 @@ import org.eclipse.sirius.web.trees.Tree;
 public interface ITreeEventHandler {
     boolean canHandle(ITreeInput treeInput);
 
-    EventHandlerResponse handle(Tree tree, ITreeInput treeInput);
+    void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, Tree tree, ITreeInput treeInput);
 }

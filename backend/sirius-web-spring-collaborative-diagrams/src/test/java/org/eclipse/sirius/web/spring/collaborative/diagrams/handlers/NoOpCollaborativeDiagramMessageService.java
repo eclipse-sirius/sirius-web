@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,47 +23,47 @@ public class NoOpCollaborativeDiagramMessageService implements ICollaborativeDia
 
     @Override
     public String invalidInput(String expectedInputTypeName, String receivedInputTypeName) {
-        return null;
+        return ""; //$NON-NLS-1$
     }
 
     @Override
     public String edgeNotFound(String id) {
-        return null;
+        return ""; //$NON-NLS-1$
     }
 
     @Override
     public String nodeNotFound(String id) {
-        return null;
+        return ""; //$NON-NLS-1$
     }
 
     @Override
     public String deleteEdgeFailed(String id) {
-        return null;
+        return ""; //$NON-NLS-1$
     }
 
     @Override
     public String deleteNodeFailed(String id) {
-        return null;
+        return ""; //$NON-NLS-1$
     }
 
     @Override
     public String deleteFailed() {
-        return null;
+        return ""; //$NON-NLS-1$
     }
 
     @Override
     public String semanticObjectNotFound(String id) {
-        return null;
+        return ""; //$NON-NLS-1$
     }
 
     @Override
     public String nodeDescriptionNotFound(String id) {
-        return null;
+        return ""; //$NON-NLS-1$
     }
 
     @Override
     public String edgeDescriptionNotFound(String id) {
-        return null;
+        return ""; //$NON-NLS-1$
     }
 
 }

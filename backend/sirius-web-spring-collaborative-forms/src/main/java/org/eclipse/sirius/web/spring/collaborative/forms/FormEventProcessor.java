@@ -33,7 +33,6 @@ import org.eclipse.sirius.web.representations.IRepresentation;
 import org.eclipse.sirius.web.representations.VariableManager;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeKind;
-import org.eclipse.sirius.web.spring.collaborative.api.EventHandlerResponse;
 import org.eclipse.sirius.web.spring.collaborative.api.ISubscriptionManager;
 import org.eclipse.sirius.web.spring.collaborative.forms.api.IFormEventHandler;
 import org.eclipse.sirius.web.spring.collaborative.forms.api.IFormEventProcessor;
@@ -51,6 +50,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
 import reactor.core.publisher.Sinks.EmitResult;
 import reactor.core.publisher.Sinks.Many;
+import reactor.core.publisher.Sinks.One;
 
 /**
  * Reacts to the input that target the property sheet of a specific object and publishes updated versions of the
@@ -110,42 +110,36 @@ public class FormEventProcessor implements IFormEventProcessor {
     }
 
     @Override
-    public Optional<EventHandlerResponse> handle(IRepresentationInput representationInput) {
-        Optional<EventHandlerResponse> result = Optional.empty();
+    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IRepresentationInput representationInput) {
         if (representationInput instanceof IFormInput) {
             IFormInput formInput = (IFormInput) representationInput;
 
             if (formInput instanceof UpdateWidgetFocusInput) {
                 UpdateWidgetFocusInput input = (UpdateWidgetFocusInput) formInput;
                 this.widgetSubscriptionManager.handle(input);
-                result = Optional.of(new EventHandlerResponse(new ChangeDescription(ChangeKind.FOCUS_CHANGE, representationInput.getRepresentationId()),
-                        new UpdateWidgetFocusSuccessPayload(representationInput.getId(), input.getWidgetId())));
+
+                payloadSink.tryEmitValue(new UpdateWidgetFocusSuccessPayload(representationInput.getId(), input.getWidgetId()));
+                changeDescriptionSink.tryEmitNext(new ChangeDescription(ChangeKind.FOCUS_CHANGE, representationInput.getRepresentationId(), input));
             } else {
                 Optional<IFormEventHandler> optionalFormEventHandler = this.formEventHandlers.stream().filter(handler -> handler.canHandle(formInput)).findFirst();
 
                 if (optionalFormEventHandler.isPresent()) {
                     IFormEventHandler formEventHandler = optionalFormEventHandler.get();
-                    EventHandlerResponse eventHandlerResponse = formEventHandler.handle(this.currentForm.get(), formInput);
-
-                    this.refresh(representationInput, eventHandlerResponse.getChangeDescription());
-
-                    result = Optional.of(eventHandlerResponse);
+                    formEventHandler.handle(payloadSink, changeDescriptionSink, this.currentForm.get(), formInput);
                 } else {
                     this.logger.warn("No handler found for event: {}", formInput); //$NON-NLS-1$
                 }
             }
         }
-
-        return result;
     }
 
     @Override
-    public void refresh(IInput input, ChangeDescription changeDescription) {
+    public void refresh(ChangeDescription changeDescription) {
         if (ChangeKind.SEMANTIC_CHANGE.equals(changeDescription.getKind())) {
             Form form = this.refreshForm();
 
             this.currentForm.set(form);
-            EmitResult emitResult = this.sink.tryEmitNext(new FormRefreshedEventPayload(input.getId(), form));
+            EmitResult emitResult = this.sink.tryEmitNext(new FormRefreshedEventPayload(changeDescription.getInput().getId(), form));
             if (emitResult.isFailure()) {
                 String pattern = "An error has occurred while emitting a FormRefreshedEventPayload: {}"; //$NON-NLS-1$
                 this.logger.warn(pattern, emitResult);

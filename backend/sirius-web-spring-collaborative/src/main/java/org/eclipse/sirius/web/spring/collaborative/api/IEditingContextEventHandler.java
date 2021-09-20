@@ -14,6 +14,10 @@ package org.eclipse.sirius.web.spring.collaborative.api;
 
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IInput;
+import org.eclipse.sirius.web.core.api.IPayload;
+
+import reactor.core.publisher.Sinks.Many;
+import reactor.core.publisher.Sinks.One;
 
 /**
  * Process the given input event.
@@ -23,5 +27,5 @@ import org.eclipse.sirius.web.core.api.IInput;
 public interface IEditingContextEventHandler {
     boolean canHandle(IInput input);
 
-    EventHandlerResponse handle(IEditingContext editingContext, IInput input);
+    void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IInput input);
 }

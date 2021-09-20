@@ -21,13 +21,17 @@ import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.core.api.IPayload;
-import org.eclipse.sirius.web.spring.collaborative.api.EventHandlerResponse;
+import org.eclipse.sirius.web.spring.collaborative.api.ChangeDescription;
+import org.eclipse.sirius.web.spring.collaborative.api.ChangeKind;
 import org.eclipse.sirius.web.spring.collaborative.api.IQueryService;
 import org.eclipse.sirius.web.spring.collaborative.dto.QueryBasedBooleanInput;
 import org.eclipse.sirius.web.spring.collaborative.dto.QueryBasedBooleanSuccessPayload;
 import org.junit.jupiter.api.Test;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
+import reactor.core.publisher.Sinks;
+import reactor.core.publisher.Sinks.Many;
+import reactor.core.publisher.Sinks.One;
 
 /**
  * Tests of the query based boolean event handler.
@@ -48,9 +52,17 @@ public class QueryBasedBooleanEventHandlerTests {
             }
         };
 
-        EventHandlerResponse response = this.handle(queryService);
-        assertThat(response.getPayload()).isInstanceOf(QueryBasedBooleanSuccessPayload.class);
-        assertThat(((QueryBasedBooleanSuccessPayload) response.getPayload()).getResult()).isEqualTo(EXPECTED_RESULT_FALSE);
+        Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
+        One<IPayload> payloadSink = Sinks.one();
+
+        this.handle(payloadSink, changeDescriptionSink, queryService);
+
+        ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();
+        assertThat(changeDescription.getKind()).isEqualTo(ChangeKind.NOTHING);
+
+        IPayload payload = payloadSink.asMono().block();
+        assertThat(payload).isInstanceOf(QueryBasedBooleanSuccessPayload.class);
+        assertThat(((QueryBasedBooleanSuccessPayload) payload).getResult()).isEqualTo(EXPECTED_RESULT_FALSE);
     }
 
     @Test
@@ -61,17 +73,24 @@ public class QueryBasedBooleanEventHandlerTests {
                 return new ErrorPayload(UUID.randomUUID(), "An error occured"); //$NON-NLS-1$
             }
         };
-        EventHandlerResponse response = this.handle(queryService);
-        assertThat(response.getPayload()).isInstanceOf(ErrorPayload.class);
+        Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
+        One<IPayload> payloadSink = Sinks.one();
+
+        this.handle(payloadSink, changeDescriptionSink, queryService);
+
+        ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();
+        assertThat(changeDescription.getKind()).isEqualTo(ChangeKind.NOTHING);
+
+        IPayload payload = payloadSink.asMono().block();
+        assertThat(payload).isInstanceOf(ErrorPayload.class);
     }
 
-    private EventHandlerResponse handle(IQueryService queryService) {
+    private void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IQueryService queryService) {
         QueryBasedBooleanEventHandler queryBasedBooleanEventHandler = new QueryBasedBooleanEventHandler(new NoOpCollaborativeMessageService(), new SimpleMeterRegistry(), queryService);
         IInput input = new QueryBasedBooleanInput(UUID.randomUUID(), "", Map.of()); //$NON-NLS-1$
         assertThat(queryBasedBooleanEventHandler.canHandle(input)).isTrue();
 
         IEditingContext editingContext = () -> UUID.randomUUID();
-        EventHandlerResponse response = queryBasedBooleanEventHandler.handle(editingContext, input);
-        return response;
+        queryBasedBooleanEventHandler.handle(payloadSink, changeDescriptionSink, editingContext, input);
     }
 }

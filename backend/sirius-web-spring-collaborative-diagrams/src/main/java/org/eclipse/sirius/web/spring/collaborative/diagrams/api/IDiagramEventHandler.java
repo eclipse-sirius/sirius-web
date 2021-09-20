@@ -13,7 +13,11 @@
 package org.eclipse.sirius.web.spring.collaborative.diagrams.api;
 
 import org.eclipse.sirius.web.core.api.IEditingContext;
-import org.eclipse.sirius.web.spring.collaborative.api.EventHandlerResponse;
+import org.eclipse.sirius.web.core.api.IPayload;
+import org.eclipse.sirius.web.spring.collaborative.api.ChangeDescription;
+
+import reactor.core.publisher.Sinks.Many;
+import reactor.core.publisher.Sinks.One;
 
 /**
  * Interface of all the diagram event handlers.
@@ -24,6 +28,6 @@ public interface IDiagramEventHandler {
 
     boolean canHandle(IDiagramInput diagramInput);
 
-    EventHandlerResponse handle(IEditingContext editingContext, IDiagramContext diagramContext, IDiagramInput diagramInput);
+    void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IDiagramContext diagramContext, IDiagramInput diagramInput);
 
 }

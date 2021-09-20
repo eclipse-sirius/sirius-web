@@ -17,12 +17,12 @@ import java.util.Optional;
 
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
+import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.diagrams.Node;
 import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.events.MoveEvent;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeKind;
-import org.eclipse.sirius.web.spring.collaborative.api.EventHandlerResponse;
 import org.eclipse.sirius.web.spring.collaborative.api.Monitoring;
 import org.eclipse.sirius.web.spring.collaborative.diagrams.DiagramChangeKind;
 import org.eclipse.sirius.web.spring.collaborative.diagrams.api.IDiagramContext;
@@ -36,6 +36,8 @@ import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
+import reactor.core.publisher.Sinks.Many;
+import reactor.core.publisher.Sinks.One;
 
 /**
  * Handle "Update Node Position" events.
@@ -68,34 +70,32 @@ public class UpdateNodePositionEventHandler implements IDiagramEventHandler {
     }
 
     @Override
-    public EventHandlerResponse handle(IEditingContext editingContext, IDiagramContext diagramContext, IDiagramInput diagramInput) {
+    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IDiagramContext diagramContext, IDiagramInput diagramInput) {
         this.counter.increment();
 
-        EventHandlerResponse result;
         if (diagramInput instanceof UpdateNodePositionInput) {
-            result = this.handleUpdateNodePosition(diagramContext, (UpdateNodePositionInput) diagramInput);
+            this.handleUpdateNodePosition(payloadSink, changeDescriptionSink, diagramContext, (UpdateNodePositionInput) diagramInput);
         } else {
             String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), UpdateNodePositionEventHandler.class.getSimpleName());
-            result = new EventHandlerResponse(new ChangeDescription(ChangeKind.NOTHING, diagramInput.getRepresentationId()), new ErrorPayload(diagramInput.getId(), message));
+            payloadSink.tryEmitValue(new ErrorPayload(diagramInput.getId(), message));
+            changeDescriptionSink.tryEmitNext(new ChangeDescription(ChangeKind.NOTHING, diagramInput.getRepresentationId(), diagramInput));
         }
-        return result;
     }
 
-    private EventHandlerResponse handleUpdateNodePosition(IDiagramContext diagramContext, UpdateNodePositionInput diagramInput) {
+    private void handleUpdateNodePosition(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IDiagramContext diagramContext, UpdateNodePositionInput diagramInput) {
         Position newPosition = Position.at(diagramInput.getNewPositionX(), diagramInput.getNewPositionY());
 
         Optional<Node> optionalNode = this.diagramQueryService.findNodeById(diagramContext.getDiagram(), diagramInput.getDiagramElementId());
 
-        EventHandlerResponse result;
         if (optionalNode.isPresent()) {
             diagramContext.setDiagramEvent(new MoveEvent(diagramInput.getDiagramElementId(), newPosition));
-            result = new EventHandlerResponse(new ChangeDescription(DiagramChangeKind.DIAGRAM_LAYOUT_CHANGE, diagramInput.getRepresentationId()),
-                    new UpdateNodePositionSuccessPayload(diagramInput.getId(), diagramContext.getDiagram()));
+            payloadSink.tryEmitValue(new UpdateNodePositionSuccessPayload(diagramInput.getId(), diagramContext.getDiagram()));
+            changeDescriptionSink.tryEmitNext(new ChangeDescription(DiagramChangeKind.DIAGRAM_LAYOUT_CHANGE, diagramInput.getRepresentationId(), diagramInput));
         } else {
             String message = this.messageService.nodeNotFound(String.valueOf(diagramInput.getDiagramElementId()));
-            result = new EventHandlerResponse(new ChangeDescription(ChangeKind.NOTHING, diagramInput.getRepresentationId()), new ErrorPayload(diagramInput.getId(), message));
+            payloadSink.tryEmitValue(new ErrorPayload(diagramInput.getId(), message));
+            changeDescriptionSink.tryEmitNext(new ChangeDescription(ChangeKind.NOTHING, diagramInput.getRepresentationId(), diagramInput));
         }
-        return result;
     }
 
 }
