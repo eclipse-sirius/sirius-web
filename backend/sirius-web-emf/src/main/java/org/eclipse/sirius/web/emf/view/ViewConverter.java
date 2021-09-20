@@ -340,6 +340,33 @@ public class ViewConverter {
         // @formatter:on
     }
 
+    private LabelDescription getLabelDescription(org.eclipse.sirius.web.view.EdgeDescription viewEdgeDescription, AQLInterpreter interpreter) {
+        Function<VariableManager, String> labelIdProvider = variableManager -> {
+            Object parentId = variableManager.get(LabelDescription.OWNER_ID, Object.class).orElse(null);
+            return String.valueOf(parentId) + "_centerlabel"; //$NON-NLS-1$
+        };
+
+        Function<VariableManager, LabelStyleDescription> styleDescriptionProvider = variableManager -> {
+            // @formatter:off
+            var effectiveStyle = viewEdgeDescription.getConditionalStyles().stream()
+                    .filter(style -> this.matches(interpreter, style.getCondition(), variableManager))
+                    .map(org.eclipse.sirius.web.view.EdgeStyle.class::cast)
+                    .findFirst()
+                    .orElseGet(viewEdgeDescription::getStyle);
+            // @formatter:on
+
+            return this.stylesFactory.createEdgeLabelStyleDescription(effectiveStyle);
+        };
+
+        // @formatter:off
+        return LabelDescription.newLabelDescription(EcoreUtil.getURI(viewEdgeDescription).toString() + "_centerlabel") //$NON-NLS-1$
+                .idProvider(labelIdProvider)
+                .textProvider(variableManager -> this.evaluateString(interpreter, variableManager, viewEdgeDescription.getLabelExpression()))
+                .styleDescriptionProvider(styleDescriptionProvider)
+                .build();
+        // @formatter:on
+    }
+
     private Function<VariableManager, List<Object>> getSemanticElementsProvider(org.eclipse.sirius.web.view.DiagramElementDescription elementDescription, AQLInterpreter interpreter) {
         return variableManager -> {
             Result result = interpreter.evaluateExpression(variableManager.getVariables(), elementDescription.getSemanticCandidatesExpression());
@@ -424,6 +451,7 @@ public class ViewConverter {
                                      .targetObjectIdProvider(this.semanticTargetIdProvider)
                                      .targetObjectKindProvider(this.semanticTargetKindProvider)
                                      .targetObjectLabelProvider(this.semanticTargetLabelProvider)
+                                     .centerLabelDescription(this.getLabelDescription(viewEdgeDescription, interpreter))
                                      .sourceNodeDescriptions(viewEdgeDescription.getSourceNodeDescriptions().stream().map(this.convertedNodes::get).collect(Collectors.toList()))
                                      .targetNodeDescriptions(viewEdgeDescription.getTargetNodeDescriptions().stream().map(this.convertedNodes::get).collect(Collectors.toList()))
                                      .semanticElementsProvider(semanticElementsProvider)
