@@ -290,18 +290,20 @@ public class ViewConverter {
                 nodeCreationTools.add(customTool);
             }
             // If there are no custom tools defined, add a canonical creation tool
-            // @formatter:off
-            CreateEdgeTool tool = CreateEdgeTool.newCreateEdgeTool(this.idProvider.apply(edgeDescription) + "_creationTool") //$NON-NLS-1$
-                    .label("New edge" + edgeDescription.getDomainType()) //$NON-NLS-1$
-                    .imageURL(EDGE_CREATION_TOOL_ICON)
-                    .edgeCandidates(List.of(EdgeCandidate.newEdgeCandidate()
-                            .sources(List.of(this.convert(edgeDescription.getSourceNodeDescription(), interpreter)))
-                            .targets(List.of(this.convert(edgeDescription.getTargetNodeDescription(), interpreter)))
-                            .build()))
-                    .handler(variableManager -> this.canonicalBehaviors.createNewEdge(variableManager, edgeDescription))
-                    .build();
-            // @formatter:on
-            edgeCreationTools.add(tool);
+            if (i == 0) {
+                // @formatter:off
+                CreateEdgeTool tool = CreateEdgeTool.newCreateEdgeTool(this.idProvider.apply(edgeDescription) + "_creationTool") //$NON-NLS-1$
+                        .label("New edge" + edgeDescription.getDomainType()) //$NON-NLS-1$
+                        .imageURL(EDGE_CREATION_TOOL_ICON)
+                        .edgeCandidates(List.of(EdgeCandidate.newEdgeCandidate()
+                                .sources(List.of(this.convert(edgeDescription.getSourceNodeDescription(), interpreter)))
+                                .targets(List.of(this.convert(edgeDescription.getTargetNodeDescription(), interpreter)))
+                                .build()))
+                        .handler(variableManager -> this.canonicalBehaviors.createNewEdge(variableManager, edgeDescription))
+                        .build();
+                // @formatter:on
+                edgeCreationTools.add(tool);
+            }
         }
 
         // @formatter:off
