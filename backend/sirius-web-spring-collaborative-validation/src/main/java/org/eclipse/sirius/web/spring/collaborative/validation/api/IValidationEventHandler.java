@@ -12,8 +12,12 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.spring.collaborative.validation.api;
 
-import org.eclipse.sirius.web.spring.collaborative.api.EventHandlerResponse;
+import org.eclipse.sirius.web.core.api.IPayload;
+import org.eclipse.sirius.web.spring.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.web.validation.Validation;
+
+import reactor.core.publisher.Sinks.Many;
+import reactor.core.publisher.Sinks.One;
 
 /**
  * Interface of all the validation event handlers.
@@ -23,5 +27,5 @@ import org.eclipse.sirius.web.validation.Validation;
 public interface IValidationEventHandler {
     boolean canHandle(IValidationInput validationInput);
 
-    EventHandlerResponse handle(Validation validation, IValidationInput validationInput);
+    void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, Validation validation, IValidationInput validationInput);
 }

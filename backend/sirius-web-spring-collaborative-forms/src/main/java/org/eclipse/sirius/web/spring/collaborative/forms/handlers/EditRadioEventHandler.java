@@ -15,12 +15,12 @@ package org.eclipse.sirius.web.spring.collaborative.forms.handlers;
 import java.util.Objects;
 
 import org.eclipse.sirius.web.core.api.ErrorPayload;
+import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.forms.Form;
 import org.eclipse.sirius.web.forms.Radio;
 import org.eclipse.sirius.web.representations.Status;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeKind;
-import org.eclipse.sirius.web.spring.collaborative.api.EventHandlerResponse;
 import org.eclipse.sirius.web.spring.collaborative.api.Monitoring;
 import org.eclipse.sirius.web.spring.collaborative.forms.api.IFormEventHandler;
 import org.eclipse.sirius.web.spring.collaborative.forms.api.IFormInput;
@@ -32,6 +32,8 @@ import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
+import reactor.core.publisher.Sinks.Many;
+import reactor.core.publisher.Sinks.One;
 
 /**
  * The handler of the edit radio event.
@@ -64,9 +66,10 @@ public class EditRadioEventHandler implements IFormEventHandler {
     }
 
     @Override
-    public EventHandlerResponse handle(Form form, IFormInput formInput) {
+    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, Form form, IFormInput formInput) {
         this.counter.increment();
 
+        Status status = Status.ERROR;
         if (formInput instanceof EditRadioInput) {
             EditRadioInput input = (EditRadioInput) formInput;
 
@@ -75,17 +78,19 @@ public class EditRadioEventHandler implements IFormEventHandler {
                     .filter(Radio.class::isInstance)
                     .map(Radio.class::cast);
 
-            var status = optionalRadio.map(Radio::getNewValueHandler)
+            status = optionalRadio.map(Radio::getNewValueHandler)
                     .map(handler -> handler.apply(input.getNewValue()))
                     .orElse(Status.ERROR);
             // @formatter:on
 
-            if (Status.OK.equals(status)) {
-                return new EventHandlerResponse(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formInput.getRepresentationId()), new EditRadioSuccessPayload(formInput.getId()));
-            }
         }
-
-        String message = this.messageService.invalidInput(formInput.getClass().getSimpleName(), EditRadioInput.class.getSimpleName());
-        return new EventHandlerResponse(new ChangeDescription(ChangeKind.NOTHING, formInput.getRepresentationId()), new ErrorPayload(formInput.getId(), message));
+        if (Status.OK.equals(status)) {
+            payloadSink.tryEmitValue(new EditRadioSuccessPayload(formInput.getId()));
+            changeDescriptionSink.tryEmitNext(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formInput.getRepresentationId(), formInput));
+        } else {
+            String message = this.messageService.invalidInput(formInput.getClass().getSimpleName(), EditRadioInput.class.getSimpleName());
+            payloadSink.tryEmitValue(new ErrorPayload(formInput.getId(), message));
+            changeDescriptionSink.tryEmitNext(new ChangeDescription(ChangeKind.NOTHING, formInput.getRepresentationId(), formInput));
+        }
     }
 }

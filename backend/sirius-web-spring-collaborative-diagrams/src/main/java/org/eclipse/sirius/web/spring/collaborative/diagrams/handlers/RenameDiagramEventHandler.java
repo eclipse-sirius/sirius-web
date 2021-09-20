@@ -18,10 +18,10 @@ import java.util.UUID;
 
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
+import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeKind;
-import org.eclipse.sirius.web.spring.collaborative.api.EventHandlerResponse;
 import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.web.spring.collaborative.api.Monitoring;
@@ -35,6 +35,8 @@ import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
+import reactor.core.publisher.Sinks.Many;
+import reactor.core.publisher.Sinks.One;
 
 /**
  * Handler used to rename a diagram.
@@ -71,8 +73,12 @@ public class RenameDiagramEventHandler implements IDiagramEventHandler {
     }
 
     @Override
-    public EventHandlerResponse handle(IEditingContext editingContext, IDiagramContext diagramContext, IDiagramInput diagramInput) {
+    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IDiagramContext diagramContext, IDiagramInput diagramInput) {
         this.counter.increment();
+
+        String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), RenameDiagramInput.class.getSimpleName());
+        IPayload payload = new ErrorPayload(diagramInput.getId(), message);
+        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, diagramInput.getRepresentationId(), diagramInput);
 
         if (diagramInput instanceof RenameDiagramInput) {
             RenameDiagramInput renameRepresentationInput = (RenameDiagramInput) diagramInput;
@@ -86,11 +92,12 @@ public class RenameDiagramEventHandler implements IDiagramEventHandler {
                 this.representationPersistenceService.save(editingContext, renamedDiagram);
                 diagramContext.update(renamedDiagram);
 
-                return new EventHandlerResponse(new ChangeDescription(ChangeKind.REPRESENTATION_RENAMING, renameRepresentationInput.getRepresentationId()),
-                        new RenameRepresentationSuccessPayload(diagramInput.getId(), renamedDiagram));
+                payload = new RenameRepresentationSuccessPayload(diagramInput.getId(), renamedDiagram);
+                changeDescription = new ChangeDescription(ChangeKind.REPRESENTATION_RENAMING, renameRepresentationInput.getRepresentationId(), diagramInput);
             }
         }
-        String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), RenameDiagramInput.class.getSimpleName());
-        return new EventHandlerResponse(new ChangeDescription(ChangeKind.NOTHING, editingContext.getId()), new ErrorPayload(diagramInput.getId(), message));
+
+        payloadSink.tryEmitValue(payload);
+        changeDescriptionSink.tryEmitNext(changeDescription);
     }
 }

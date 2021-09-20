@@ -19,12 +19,17 @@ import java.util.UUID;
 
 import org.eclipse.sirius.web.core.api.IEditService;
 import org.eclipse.sirius.web.core.api.IEditingContext;
-import org.eclipse.sirius.web.spring.collaborative.api.EventHandlerResponse;
+import org.eclipse.sirius.web.core.api.IPayload;
+import org.eclipse.sirius.web.spring.collaborative.api.ChangeDescription;
+import org.eclipse.sirius.web.spring.collaborative.api.ChangeKind;
 import org.eclipse.sirius.web.spring.collaborative.dto.CreateRootObjectInput;
 import org.eclipse.sirius.web.spring.collaborative.dto.CreateRootObjectSuccessPayload;
 import org.junit.jupiter.api.Test;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
+import reactor.core.publisher.Sinks;
+import reactor.core.publisher.Sinks.Many;
+import reactor.core.publisher.Sinks.One;
 
 /**
  * Tests of the create root object event handler.
@@ -47,8 +52,17 @@ public class CreateRootObjectEventHandlerTests {
         assertThat(handler.canHandle(input)).isTrue();
 
         IEditingContext editingContext = () -> UUID.randomUUID();
-        EventHandlerResponse handle = handler.handle(editingContext, input);
-        assertThat(handle.getPayload()).isInstanceOf(CreateRootObjectSuccessPayload.class);
-        assertThat(((CreateRootObjectSuccessPayload) handle.getPayload()).getObject()).isEqualTo(object);
+
+        Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
+        One<IPayload> payloadSink = Sinks.one();
+
+        handler.handle(payloadSink, changeDescriptionSink, editingContext, input);
+
+        ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();
+        assertThat(changeDescription.getKind()).isEqualTo(ChangeKind.SEMANTIC_CHANGE);
+
+        IPayload payload = payloadSink.asMono().block();
+        assertThat(payload).isInstanceOf(CreateRootObjectSuccessPayload.class);
+        assertThat(((CreateRootObjectSuccessPayload) payload).getObject()).isEqualTo(object);
     }
 }

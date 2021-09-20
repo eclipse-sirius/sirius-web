@@ -25,7 +25,6 @@ import org.eclipse.sirius.web.core.api.IRepresentationInput;
 import org.eclipse.sirius.web.representations.IRepresentation;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeKind;
-import org.eclipse.sirius.web.spring.collaborative.api.EventHandlerResponse;
 import org.eclipse.sirius.web.spring.collaborative.api.ISubscriptionManager;
 import org.eclipse.sirius.web.spring.collaborative.api.Monitoring;
 import org.eclipse.sirius.web.spring.collaborative.trees.api.ITreeEventHandler;
@@ -46,6 +45,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
 import reactor.core.publisher.Sinks.EmitResult;
 import reactor.core.publisher.Sinks.Many;
+import reactor.core.publisher.Sinks.One;
 
 /**
  * Reacts to the input that target a tree representation and publishes updated versions of the {@link Tree} to
@@ -103,35 +103,29 @@ public class TreeEventProcessor implements ITreeEventProcessor {
     }
 
     @Override
-    public Optional<EventHandlerResponse> handle(IRepresentationInput representationInput) {
+    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IRepresentationInput representationInput) {
         if (representationInput instanceof ITreeInput) {
             ITreeInput treeInput = (ITreeInput) representationInput;
             Optional<ITreeEventHandler> optionalTreeEventHandler = this.treeEventHandlers.stream().filter(handler -> handler.canHandle(treeInput)).findFirst();
 
             if (optionalTreeEventHandler.isPresent()) {
                 ITreeEventHandler treeEventHandler = optionalTreeEventHandler.get();
-                EventHandlerResponse eventHandlerResponse = treeEventHandler.handle(this.currentTree.get(), treeInput);
-
-                this.refresh(representationInput, eventHandlerResponse.getChangeDescription());
-
-                return Optional.of(eventHandlerResponse);
+                treeEventHandler.handle(payloadSink, changeDescriptionSink, this.currentTree.get(), treeInput);
             } else {
                 this.logger.warn("No handler found for event: {}", treeInput); //$NON-NLS-1$
             }
         }
-
-        return Optional.empty();
     }
 
     @Override
-    public void refresh(IInput input, ChangeDescription changeDescription) {
+    public void refresh(ChangeDescription changeDescription) {
         if (this.shouldRefresh(changeDescription.getKind())) {
             long start = System.currentTimeMillis();
 
             Tree tree = this.refreshTree();
 
             this.currentTree.set(tree);
-            EmitResult emitResult = this.sink.tryEmitNext(new TreeRefreshedEventPayload(input.getId(), tree));
+            EmitResult emitResult = this.sink.tryEmitNext(new TreeRefreshedEventPayload(changeDescription.getInput().getId(), tree));
             if (emitResult.isFailure()) {
                 String pattern = "An error has occurred while emitting a TreeRefreshedEventPayload: {}"; //$NON-NLS-1$
                 this.logger.warn(pattern, emitResult);

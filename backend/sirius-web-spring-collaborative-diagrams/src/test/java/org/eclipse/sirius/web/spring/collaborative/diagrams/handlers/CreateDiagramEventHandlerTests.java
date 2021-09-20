@@ -22,18 +22,25 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IObjectService;
+import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.web.diagrams.tests.TestDiagramBuilder;
 import org.eclipse.sirius.web.representations.IRepresentationDescription;
 import org.eclipse.sirius.web.representations.ISemanticRepresentation;
+import org.eclipse.sirius.web.spring.collaborative.api.ChangeDescription;
+import org.eclipse.sirius.web.spring.collaborative.api.ChangeKind;
 import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.web.spring.collaborative.diagrams.api.IDiagramCreationService;
 import org.eclipse.sirius.web.spring.collaborative.dto.CreateRepresentationInput;
+import org.eclipse.sirius.web.spring.collaborative.dto.CreateRepresentationSuccessPayload;
 import org.junit.jupiter.api.Test;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
+import reactor.core.publisher.Sinks;
+import reactor.core.publisher.Sinks.Many;
+import reactor.core.publisher.Sinks.One;
 
 /**
  * Tests of the create representation event handler.
@@ -91,8 +98,17 @@ public class CreateDiagramEventHandlerTests {
         var input = new CreateRepresentationInput(UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID(), "objectId", "representationName"); //$NON-NLS-1$//$NON-NLS-2$
         assertThat(handler.canHandle(input)).isTrue();
 
+        Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
+        One<IPayload> payloadSink = Sinks.one();
+
         IEditingContext editingContext = () -> UUID.randomUUID();
-        handler.handle(editingContext, input);
+        handler.handle(payloadSink, changeDescriptionSink, editingContext, input);
         assertThat(hasBeenCalled.get()).isTrue();
+
+        ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();
+        assertThat(changeDescription.getKind()).isEqualTo(ChangeKind.REPRESENTATION_CREATION);
+
+        IPayload payload = payloadSink.asMono().block();
+        assertThat(payload).isInstanceOf(CreateRepresentationSuccessPayload.class);
     }
 }

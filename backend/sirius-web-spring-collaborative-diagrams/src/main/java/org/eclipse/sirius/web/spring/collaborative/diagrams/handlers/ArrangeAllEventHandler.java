@@ -16,10 +16,10 @@ import java.util.Objects;
 
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
+import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.diagrams.events.ArrangeAllEvent;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeKind;
-import org.eclipse.sirius.web.spring.collaborative.api.EventHandlerResponse;
 import org.eclipse.sirius.web.spring.collaborative.api.Monitoring;
 import org.eclipse.sirius.web.spring.collaborative.diagrams.DiagramChangeKind;
 import org.eclipse.sirius.web.spring.collaborative.diagrams.api.IDiagramContext;
@@ -33,6 +33,8 @@ import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
+import reactor.core.publisher.Sinks.Many;
+import reactor.core.publisher.Sinks.One;
 
 /**
  * Handle the arrange all events.
@@ -62,13 +64,20 @@ public class ArrangeAllEventHandler implements IDiagramEventHandler {
     }
 
     @Override
-    public EventHandlerResponse handle(IEditingContext editingContext, IDiagramContext diagramContext, IDiagramInput diagramInput) {
+    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IDiagramContext diagramContext, IDiagramInput diagramInput) {
         this.counter.increment();
+
+        String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), InvokeNodeToolOnDiagramInput.class.getSimpleName());
+        IPayload payload = new ErrorPayload(diagramInput.getId(), message);
+        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, diagramInput.getRepresentationId(), diagramInput);
+
         if (diagramInput instanceof ArrangeAllInput) {
             diagramContext.setDiagramEvent(new ArrangeAllEvent());
-            return new EventHandlerResponse(new ChangeDescription(DiagramChangeKind.DIAGRAM_LAYOUT_CHANGE, diagramInput.getRepresentationId()), new ArrangeAllSuccessPayload(diagramInput.getId()));
+            payload = new ArrangeAllSuccessPayload(diagramInput.getId());
+            changeDescription = new ChangeDescription(DiagramChangeKind.DIAGRAM_LAYOUT_CHANGE, diagramInput.getRepresentationId(), diagramInput);
         }
-        String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), InvokeNodeToolOnDiagramInput.class.getSimpleName());
-        return new EventHandlerResponse(new ChangeDescription(ChangeKind.NOTHING, diagramInput.getRepresentationId()), new ErrorPayload(diagramInput.getId(), message));
+
+        payloadSink.tryEmitValue(payload);
+        changeDescriptionSink.tryEmitNext(changeDescription);
     }
 }

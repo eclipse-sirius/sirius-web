@@ -21,10 +21,17 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.eclipse.sirius.web.core.api.IEditService;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IObjectService;
+import org.eclipse.sirius.web.core.api.IPayload;
+import org.eclipse.sirius.web.spring.collaborative.api.ChangeDescription;
+import org.eclipse.sirius.web.spring.collaborative.api.ChangeKind;
 import org.eclipse.sirius.web.spring.collaborative.dto.DeleteObjectInput;
+import org.eclipse.sirius.web.spring.collaborative.dto.DeleteObjectSuccessPayload;
 import org.junit.jupiter.api.Test;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
+import reactor.core.publisher.Sinks;
+import reactor.core.publisher.Sinks.Many;
+import reactor.core.publisher.Sinks.One;
 
 /**
  * Unit tests of the delete object event handler.
@@ -55,7 +62,18 @@ public class DeleteObjectEventHandlerTests {
         assertThat(handler.canHandle(input)).isTrue();
 
         IEditingContext editingContext = () -> UUID.randomUUID();
-        handler.handle(editingContext, input);
+
+        Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
+        One<IPayload> payloadSink = Sinks.one();
+
+        handler.handle(payloadSink, changeDescriptionSink, editingContext, input);
+
+        ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();
+        assertThat(changeDescription.getKind()).isEqualTo(ChangeKind.SEMANTIC_CHANGE);
+
+        IPayload payload = payloadSink.asMono().block();
+        assertThat(payload).isInstanceOf(DeleteObjectSuccessPayload.class);
+
         assertThat(hasBeenCalled.get()).isTrue();
     }
 }

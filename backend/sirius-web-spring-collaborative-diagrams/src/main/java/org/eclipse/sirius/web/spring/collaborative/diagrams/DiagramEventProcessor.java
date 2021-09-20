@@ -25,7 +25,6 @@ import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.representations.IRepresentation;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeKind;
-import org.eclipse.sirius.web.spring.collaborative.api.EventHandlerResponse;
 import org.eclipse.sirius.web.spring.collaborative.api.ISubscriptionManager;
 import org.eclipse.sirius.web.spring.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.web.spring.collaborative.diagrams.api.IDiagramCreationService;
@@ -42,6 +41,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
 import reactor.core.publisher.Sinks.EmitResult;
 import reactor.core.publisher.Sinks.Many;
+import reactor.core.publisher.Sinks.One;
 
 /**
  * Reacts to input that target a specific diagram, and {@link #getDiagramUpdates() publishes} updated versions of the
@@ -100,7 +100,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
     }
 
     @Override
-    public Optional<EventHandlerResponse> handle(IRepresentationInput representationInput) {
+    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IRepresentationInput representationInput) {
         IRepresentationInput effectiveInput = representationInput;
         if (representationInput instanceof RenameRepresentationInput) {
             RenameRepresentationInput renameRepresentationInput = (RenameRepresentationInput) representationInput;
@@ -114,20 +114,15 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
 
             if (optionalDiagramEventHandler.isPresent()) {
                 IDiagramEventHandler diagramEventHandler = optionalDiagramEventHandler.get();
-                EventHandlerResponse eventHandlerResponse = diagramEventHandler.handle(this.editingContext, this.diagramContext, diagramInput);
-
-                this.refresh(representationInput, eventHandlerResponse.getChangeDescription());
-
-                return Optional.of(eventHandlerResponse);
+                diagramEventHandler.handle(payloadSink, changeDescriptionSink, this.editingContext, this.diagramContext, diagramInput);
             } else {
                 this.logger.warn("No handler found for event: {}", diagramInput); //$NON-NLS-1$
             }
         }
-        return Optional.empty();
     }
 
     @Override
-    public void refresh(IInput input, ChangeDescription changeDescription) {
+    public void refresh(ChangeDescription changeDescription) {
         if (this.shouldRefresh(changeDescription)) {
             Diagram refreshedDiagram = this.diagramCreationService.refresh(this.editingContext, this.diagramContext).orElse(null);
             if (refreshedDiagram != null) {
@@ -136,7 +131,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
 
             this.diagramContext.reset();
             this.diagramContext.update(refreshedDiagram);
-            this.diagramEventFlux.diagramRefreshed(input, refreshedDiagram);
+            this.diagramEventFlux.diagramRefreshed(changeDescription.getInput(), refreshedDiagram);
         }
     }
 

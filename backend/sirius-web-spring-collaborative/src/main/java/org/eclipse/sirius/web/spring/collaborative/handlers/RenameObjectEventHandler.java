@@ -19,9 +19,9 @@ import org.eclipse.sirius.web.core.api.IEditService;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.core.api.IObjectService;
+import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeKind;
-import org.eclipse.sirius.web.spring.collaborative.api.EventHandlerResponse;
 import org.eclipse.sirius.web.spring.collaborative.api.IEditingContextEventHandler;
 import org.eclipse.sirius.web.spring.collaborative.api.Monitoring;
 import org.eclipse.sirius.web.spring.collaborative.dto.RenameObjectInput;
@@ -31,6 +31,8 @@ import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
+import reactor.core.publisher.Sinks.Many;
+import reactor.core.publisher.Sinks.One;
 
 /**
  * Handler used to rename an object.
@@ -66,8 +68,12 @@ public class RenameObjectEventHandler implements IEditingContextEventHandler {
     }
 
     @Override
-    public EventHandlerResponse handle(IEditingContext editingContext, IInput input) {
+    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IInput input) {
         this.counter.increment();
+
+        String message = this.messageService.invalidInput(input.getClass().getSimpleName(), RenameObjectInput.class.getSimpleName());
+        IPayload payload = new ErrorPayload(input.getId(), message);
+        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input);
 
         if (input instanceof RenameObjectInput) {
             RenameObjectInput renameObjectInput = (RenameObjectInput) input;
@@ -80,12 +86,14 @@ public class RenameObjectEventHandler implements IEditingContextEventHandler {
                 if (optionalLabelField.isPresent()) {
                     String labelField = optionalLabelField.get();
                     this.editService.editLabel(object, labelField, newName);
-                    return new EventHandlerResponse(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId()), new RenameObjectSuccessPayload(input.getId(), objectId, newName));
+                    payload = new RenameObjectSuccessPayload(input.getId(), objectId, newName);
+                    changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input);
                 }
             }
         }
-        String message = this.messageService.invalidInput(input.getClass().getSimpleName(), RenameObjectInput.class.getSimpleName());
-        return new EventHandlerResponse(new ChangeDescription(ChangeKind.NOTHING, editingContext.getId()), new ErrorPayload(input.getId(), message));
+
+        payloadSink.tryEmitValue(payload);
+        changeDescriptionSink.tryEmitNext(changeDescription);
     }
 
 }

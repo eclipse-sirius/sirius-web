@@ -20,9 +20,9 @@ import org.eclipse.sirius.web.core.api.IEditService;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.core.api.IObjectService;
+import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeKind;
-import org.eclipse.sirius.web.spring.collaborative.api.EventHandlerResponse;
 import org.eclipse.sirius.web.spring.collaborative.api.IEditingContextEventHandler;
 import org.eclipse.sirius.web.spring.collaborative.api.Monitoring;
 import org.eclipse.sirius.web.spring.collaborative.dto.CreateChildInput;
@@ -32,6 +32,8 @@ import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
+import reactor.core.publisher.Sinks.Many;
+import reactor.core.publisher.Sinks.One;
 
 /**
  * Handler used to create a new child.
@@ -67,10 +69,13 @@ public class CreateChildEventHandler implements IEditingContextEventHandler {
     }
 
     @Override
-    public EventHandlerResponse handle(IEditingContext editingContext, IInput input) {
+    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IInput input) {
         this.counter.increment();
 
         String message = this.messageService.invalidInput(input.getClass().getSimpleName(), CreateChildInput.class.getSimpleName());
+        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input);
+        IPayload payload = null;
+
         if (input instanceof CreateChildInput) {
             CreateChildInput createChildInput = (CreateChildInput) input;
             String parentObjectId = createChildInput.getObjectId();
@@ -81,13 +86,18 @@ public class CreateChildEventHandler implements IEditingContextEventHandler {
             });
 
             if (createdChildOptional.isPresent()) {
-                var payload = new CreateChildSuccessPayload(input.getId(), createdChildOptional.get());
-                return new EventHandlerResponse(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId()), payload);
+                payload = new CreateChildSuccessPayload(input.getId(), createdChildOptional.get());
+                changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input);
             } else {
                 message = this.messageService.objectCreationFailed();
             }
         }
 
-        return new EventHandlerResponse(new ChangeDescription(ChangeKind.NOTHING, editingContext.getId()), new ErrorPayload(input.getId(), message));
+        if (payload == null) {
+            payload = new ErrorPayload(input.getId(), message);
+        }
+
+        payloadSink.tryEmitValue(payload);
+        changeDescriptionSink.tryEmitNext(changeDescription);
     }
 }

@@ -21,13 +21,17 @@ import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.core.api.IPayload;
-import org.eclipse.sirius.web.spring.collaborative.api.EventHandlerResponse;
+import org.eclipse.sirius.web.spring.collaborative.api.ChangeDescription;
+import org.eclipse.sirius.web.spring.collaborative.api.ChangeKind;
 import org.eclipse.sirius.web.spring.collaborative.api.IQueryService;
 import org.eclipse.sirius.web.spring.collaborative.dto.QueryBasedObjectInput;
 import org.eclipse.sirius.web.spring.collaborative.dto.QueryBasedObjectSuccessPayload;
 import org.junit.jupiter.api.Test;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
+import reactor.core.publisher.Sinks;
+import reactor.core.publisher.Sinks.Many;
+import reactor.core.publisher.Sinks.One;
 
 /**
  * Tests of the query based Object event handler.
@@ -39,7 +43,6 @@ public class QueryBasedObjectEventHandlerTests {
 
     @Test
     public void testQueryBasedObject() {
-        // The EMFQueryService implementation is already tested by another class.
         IQueryService queryService = new IQueryService.NoOp() {
 
             @Override
@@ -48,9 +51,17 @@ public class QueryBasedObjectEventHandlerTests {
             }
         };
 
-        EventHandlerResponse response = this.handle(queryService);
-        assertThat(response.getPayload()).isInstanceOf(QueryBasedObjectSuccessPayload.class);
-        assertThat(((QueryBasedObjectSuccessPayload) response.getPayload()).getResult()).isEqualTo(EXPECTED_RESULT);
+        Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
+        One<IPayload> payloadSink = Sinks.one();
+
+        this.handle(payloadSink, changeDescriptionSink, queryService);
+
+        ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();
+        assertThat(changeDescription.getKind()).isEqualTo(ChangeKind.NOTHING);
+
+        IPayload payload = payloadSink.asMono().block();
+        assertThat(payload).isInstanceOf(QueryBasedObjectSuccessPayload.class);
+        assertThat(((QueryBasedObjectSuccessPayload) payload).getResult()).isEqualTo(EXPECTED_RESULT);
     }
 
     @Test
@@ -61,17 +72,24 @@ public class QueryBasedObjectEventHandlerTests {
                 return new ErrorPayload(UUID.randomUUID(), "An error occured"); //$NON-NLS-1$
             }
         };
-        EventHandlerResponse response = this.handle(queryService);
-        assertThat(response.getPayload()).isInstanceOf(ErrorPayload.class);
+        Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
+        One<IPayload> payloadSink = Sinks.one();
+
+        this.handle(payloadSink, changeDescriptionSink, queryService);
+
+        ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();
+        assertThat(changeDescription.getKind()).isEqualTo(ChangeKind.NOTHING);
+
+        IPayload payload = payloadSink.asMono().block();
+        assertThat(payload).isInstanceOf(ErrorPayload.class);
     }
 
-    private EventHandlerResponse handle(IQueryService queryService) {
+    private void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IQueryService queryService) {
         QueryBasedObjectEventHandler queryBasedObjectEventHandler = new QueryBasedObjectEventHandler(new NoOpCollaborativeMessageService(), new SimpleMeterRegistry(), queryService);
         IInput input = new QueryBasedObjectInput(UUID.randomUUID(), "", Map.of()); //$NON-NLS-1$
         assertThat(queryBasedObjectEventHandler.canHandle(input)).isTrue();
 
         IEditingContext editingContext = () -> UUID.randomUUID();
-        EventHandlerResponse response = queryBasedObjectEventHandler.handle(editingContext, input);
-        return response;
+        queryBasedObjectEventHandler.handle(payloadSink, changeDescriptionSink, editingContext, input);
     }
 }

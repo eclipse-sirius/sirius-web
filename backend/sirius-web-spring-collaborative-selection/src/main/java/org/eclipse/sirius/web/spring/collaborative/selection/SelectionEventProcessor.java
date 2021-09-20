@@ -13,7 +13,6 @@
 package org.eclipse.sirius.web.spring.collaborative.selection;
 
 import java.util.Objects;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -29,7 +28,6 @@ import org.eclipse.sirius.web.selection.description.SelectionDescription;
 import org.eclipse.sirius.web.selection.renderer.SelectionRenderer;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeKind;
-import org.eclipse.sirius.web.spring.collaborative.api.EventHandlerResponse;
 import org.eclipse.sirius.web.spring.collaborative.api.ISubscriptionManager;
 import org.eclipse.sirius.web.spring.collaborative.selection.api.ISelectionEventProcessor;
 import org.eclipse.sirius.web.spring.collaborative.selection.dto.SelectionRefreshedEventPayload;
@@ -42,6 +40,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
 import reactor.core.publisher.Sinks.EmitResult;
 import reactor.core.publisher.Sinks.Many;
+import reactor.core.publisher.Sinks.One;
 
 /**
  * Reacts to the input that target the selection and publishes updated versions of the {@link Selection} to interested
@@ -94,17 +93,17 @@ public class SelectionEventProcessor implements ISelectionEventProcessor {
     }
 
     @Override
-    public Optional<EventHandlerResponse> handle(IRepresentationInput representationInput) {
-        return Optional.empty();
+    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IRepresentationInput representationInput) {
+        // Do nothing
     }
 
     @Override
-    public void refresh(IInput input, ChangeDescription changeDescription) {
+    public void refresh(ChangeDescription changeDescription) {
         if (ChangeKind.SEMANTIC_CHANGE.equals(changeDescription.getKind())) {
             Selection selection = this.refreshSelection();
 
             this.currentSelection.set(selection);
-            EmitResult emitResult = this.sink.tryEmitNext(new SelectionRefreshedEventPayload(input.getId(), selection));
+            EmitResult emitResult = this.sink.tryEmitNext(new SelectionRefreshedEventPayload(changeDescription.getInput().getId(), selection));
             if (emitResult.isFailure()) {
                 String pattern = "An error has occurred while emitting a SelectionRefreshedEventPayload: {}"; //$NON-NLS-1$
                 this.logger.warn(pattern, emitResult);

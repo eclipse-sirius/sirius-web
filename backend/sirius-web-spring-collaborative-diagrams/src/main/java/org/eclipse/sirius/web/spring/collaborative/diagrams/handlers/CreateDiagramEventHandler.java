@@ -19,12 +19,12 @@ import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.core.api.IObjectService;
+import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeKind;
-import org.eclipse.sirius.web.spring.collaborative.api.EventHandlerResponse;
 import org.eclipse.sirius.web.spring.collaborative.api.IEditingContextEventHandler;
 import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.web.spring.collaborative.api.Monitoring;
@@ -36,6 +36,8 @@ import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
+import reactor.core.publisher.Sinks.Many;
+import reactor.core.publisher.Sinks.One;
 
 /**
  * Handler used to create a new diagram representation.
@@ -87,8 +89,12 @@ public class CreateDiagramEventHandler implements IEditingContextEventHandler {
     }
 
     @Override
-    public EventHandlerResponse handle(IEditingContext editingContext, IInput input) {
+    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IInput input) {
         this.counter.increment();
+
+        String message = this.messageService.invalidInput(input.getClass().getSimpleName(), CreateRepresentationInput.class.getSimpleName());
+        IPayload payload = new ErrorPayload(input.getId(), message);
+        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input);
 
         if (input instanceof CreateRepresentationInput) {
             CreateRepresentationInput createRepresentationInput = (CreateRepresentationInput) input;
@@ -108,12 +114,13 @@ public class CreateDiagramEventHandler implements IEditingContextEventHandler {
 
                 this.representationPersistenceService.save(editingContext, diagram);
 
-                return new EventHandlerResponse(new ChangeDescription(ChangeKind.REPRESENTATION_CREATION, editingContext.getId()), new CreateRepresentationSuccessPayload(input.getId(), diagram));
+                payload = new CreateRepresentationSuccessPayload(input.getId(), diagram);
+                changeDescription = new ChangeDescription(ChangeKind.REPRESENTATION_CREATION, editingContext.getId(), input);
             }
         }
 
-        String message = this.messageService.invalidInput(input.getClass().getSimpleName(), CreateRepresentationInput.class.getSimpleName());
-        return new EventHandlerResponse(new ChangeDescription(ChangeKind.NOTHING, editingContext.getId()), new ErrorPayload(input.getId(), message));
+        payloadSink.tryEmitValue(payload);
+        changeDescriptionSink.tryEmitNext(changeDescription);
     }
 
 }

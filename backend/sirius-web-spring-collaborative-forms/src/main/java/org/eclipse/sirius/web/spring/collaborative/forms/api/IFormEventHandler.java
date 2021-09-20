@@ -12,8 +12,12 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.spring.collaborative.forms.api;
 
+import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.forms.Form;
-import org.eclipse.sirius.web.spring.collaborative.api.EventHandlerResponse;
+import org.eclipse.sirius.web.spring.collaborative.api.ChangeDescription;
+
+import reactor.core.publisher.Sinks.Many;
+import reactor.core.publisher.Sinks.One;
 
 /**
  * Interface of all the form event handlers.
@@ -23,5 +27,5 @@ import org.eclipse.sirius.web.spring.collaborative.api.EventHandlerResponse;
 public interface IFormEventHandler {
     boolean canHandle(IFormInput formInput);
 
-    EventHandlerResponse handle(Form form, IFormInput formInput);
+    void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, Form form, IFormInput formInput);
 }

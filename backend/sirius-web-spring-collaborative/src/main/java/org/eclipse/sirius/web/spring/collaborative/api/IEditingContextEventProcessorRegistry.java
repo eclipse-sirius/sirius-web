@@ -19,6 +19,8 @@ import java.util.UUID;
 import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.core.api.IPayload;
 
+import reactor.core.publisher.Mono;
+
 /**
  * Registry of all the editing context event handlers.
  *
@@ -27,7 +29,7 @@ import org.eclipse.sirius.web.core.api.IPayload;
 public interface IEditingContextEventProcessorRegistry {
     List<IEditingContextEventProcessor> getEditingContextEventProcessors();
 
-    Optional<IPayload> dispatchEvent(UUID editingContextId, IInput input);
+    Mono<IPayload> dispatchEvent(UUID editingContextId, IInput input);
 
     Optional<IEditingContextEventProcessor> getOrCreateEditingContextEventProcessor(UUID editingContextId);
 
@@ -46,8 +48,8 @@ public interface IEditingContextEventProcessorRegistry {
         }
 
         @Override
-        public Optional<IPayload> dispatchEvent(UUID editingContextId, IInput input) {
-            return Optional.empty();
+        public Mono<IPayload> dispatchEvent(UUID editingContextId, IInput input) {
+            return Mono.empty();
         }
 
         @Override

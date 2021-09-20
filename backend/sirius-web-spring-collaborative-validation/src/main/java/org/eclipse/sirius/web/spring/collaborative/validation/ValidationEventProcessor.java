@@ -27,7 +27,6 @@ import org.eclipse.sirius.web.representations.IRepresentation;
 import org.eclipse.sirius.web.representations.VariableManager;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeKind;
-import org.eclipse.sirius.web.spring.collaborative.api.EventHandlerResponse;
 import org.eclipse.sirius.web.spring.collaborative.api.ISubscriptionManager;
 import org.eclipse.sirius.web.spring.collaborative.api.Monitoring;
 import org.eclipse.sirius.web.spring.collaborative.validation.api.IValidationEventHandler;
@@ -50,6 +49,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
 import reactor.core.publisher.Sinks.EmitResult;
 import reactor.core.publisher.Sinks.Many;
+import reactor.core.publisher.Sinks.One;
 
 /**
  * reacts to the input that target the validation of the project and publishes updated versions of the
@@ -101,35 +101,33 @@ public class ValidationEventProcessor implements IValidationEventProcessor {
     }
 
     @Override
-    public Optional<EventHandlerResponse> handle(IRepresentationInput representationInput) {
+    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IRepresentationInput representationInput) {
         if (representationInput instanceof IValidationInput) {
             IValidationInput validationInput = (IValidationInput) representationInput;
-            Optional<IValidationEventHandler> optionalValidationEventHandler = this.validationEventHandlers.stream().filter(handler -> handler.canHandle(validationInput)).findFirst();
+            // @formatter:off
+            Optional<IValidationEventHandler> optionalValidationEventHandler = this.validationEventHandlers.stream()
+                    .filter(handler -> handler.canHandle(validationInput))
+                    .findFirst();
+            // @formatter:on
 
             if (optionalValidationEventHandler.isPresent()) {
                 IValidationEventHandler validationEventHandler = optionalValidationEventHandler.get();
-                EventHandlerResponse eventHandlerResponse = validationEventHandler.handle(this.validationContext.getValidation(), validationInput);
-
-                this.refresh(validationInput, eventHandlerResponse.getChangeDescription());
-
-                return Optional.of(eventHandlerResponse);
+                validationEventHandler.handle(payloadSink, changeDescriptionSink, this.validationContext.getValidation(), validationInput);
             } else {
                 this.logger.warn("No handler found for event: {}", validationInput); //$NON-NLS-1$
             }
         }
-
-        return Optional.empty();
     }
 
     @Override
-    public void refresh(IInput input, ChangeDescription changeDescription) {
+    public void refresh(ChangeDescription changeDescription) {
         if (this.shouldRefresh(changeDescription.getKind())) {
             long start = System.currentTimeMillis();
 
             Validation validation = this.refreshValidation();
 
             this.validationContext.update(validation);
-            EmitResult emitResult = this.sink.tryEmitNext(new ValidationRefreshedEventPayload(input.getId(), validation));
+            EmitResult emitResult = this.sink.tryEmitNext(new ValidationRefreshedEventPayload(changeDescription.getInput().getId(), validation));
             if (emitResult.isFailure()) {
                 String pattern = "An error has occurred while emitting a ValidationRefreshedEventPayload: {}"; //$NON-NLS-1$
                 this.logger.warn(pattern, emitResult);

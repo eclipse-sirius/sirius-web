@@ -20,7 +20,6 @@ import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeKind;
-import org.eclipse.sirius.web.spring.collaborative.api.EventHandlerResponse;
 import org.eclipse.sirius.web.spring.collaborative.api.IEditingContextEventHandler;
 import org.eclipse.sirius.web.spring.collaborative.api.IQueryService;
 import org.eclipse.sirius.web.spring.collaborative.api.Monitoring;
@@ -30,6 +29,8 @@ import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
+import reactor.core.publisher.Sinks.Many;
+import reactor.core.publisher.Sinks.One;
 
 /**
  * Handler used to execute query based int.
@@ -62,16 +63,19 @@ public class QueryBasedIntEventHandler implements IEditingContextEventHandler {
     }
 
     @Override
-    public EventHandlerResponse handle(IEditingContext editingContext, IInput input) {
+    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IInput input) {
         this.counter.increment();
-        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId());
+
+        String message = this.messageService.invalidInput(input.getClass().getSimpleName(), QueryBasedIntInput.class.getSimpleName());
+        IPayload payload = new ErrorPayload(input.getId(), message);
         if (input instanceof QueryBasedIntInput) {
             QueryBasedIntInput queryBasedIntInput = (QueryBasedIntInput) input;
-            IPayload payload = this.queryService.execute(editingContext, queryBasedIntInput);
-            return new EventHandlerResponse(changeDescription, payload);
+            payload = this.queryService.execute(editingContext, queryBasedIntInput);
         }
-        String message = this.messageService.invalidInput(input.getClass().getSimpleName(), QueryBasedIntInput.class.getSimpleName());
-        ErrorPayload errorPayload = new ErrorPayload(input.getId(), message);
-        return new EventHandlerResponse(changeDescription, errorPayload);
+
+        payloadSink.tryEmitValue(payload);
+
+        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input);
+        changeDescriptionSink.tryEmitNext(changeDescription);
     }
 }

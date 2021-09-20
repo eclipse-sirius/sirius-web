@@ -21,12 +21,17 @@ import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditService;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IObjectService;
-import org.eclipse.sirius.web.spring.collaborative.api.EventHandlerResponse;
+import org.eclipse.sirius.web.core.api.IPayload;
+import org.eclipse.sirius.web.spring.collaborative.api.ChangeDescription;
+import org.eclipse.sirius.web.spring.collaborative.api.ChangeKind;
 import org.eclipse.sirius.web.spring.collaborative.dto.CreateChildInput;
 import org.eclipse.sirius.web.spring.collaborative.dto.CreateChildSuccessPayload;
 import org.junit.jupiter.api.Test;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
+import reactor.core.publisher.Sinks;
+import reactor.core.publisher.Sinks.Many;
+import reactor.core.publisher.Sinks.One;
 
 /**
  * Tests of the create child event handler.
@@ -34,6 +39,7 @@ import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
  * @author sbegaudeau
  */
 public class CreateChildEventHandlerTests {
+
     @Test
     public void testCreateChild() {
         Object createdObject = new Object();
@@ -44,9 +50,17 @@ public class CreateChildEventHandlerTests {
             }
         };
 
-        EventHandlerResponse response = this.handle(editService);
-        assertThat(response.getPayload()).isInstanceOf(CreateChildSuccessPayload.class);
-        assertThat(((CreateChildSuccessPayload) response.getPayload()).getObject()).isEqualTo(createdObject);
+        Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
+        One<IPayload> payloadSink = Sinks.one();
+
+        this.handle(payloadSink, changeDescriptionSink, editService);
+
+        ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();
+        assertThat(changeDescription.getKind()).isEqualTo(ChangeKind.SEMANTIC_CHANGE);
+
+        IPayload payload = payloadSink.asMono().block();
+        assertThat(payload).isInstanceOf(CreateChildSuccessPayload.class);
+        assertThat(((CreateChildSuccessPayload) payload).getObject()).isEqualTo(createdObject);
     }
 
     @Test
@@ -58,11 +72,19 @@ public class CreateChildEventHandlerTests {
             }
         };
 
-        EventHandlerResponse response = this.handle(editService);
-        assertThat(response.getPayload()).isInstanceOf(ErrorPayload.class);
+        Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
+        One<IPayload> payloadSink = Sinks.one();
+
+        this.handle(payloadSink, changeDescriptionSink, editService);
+
+        ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();
+        assertThat(changeDescription.getKind()).isEqualTo(ChangeKind.NOTHING);
+
+        IPayload payload = payloadSink.asMono().block();
+        assertThat(payload).isInstanceOf(ErrorPayload.class);
     }
 
-    EventHandlerResponse handle(IEditService editService) {
+    void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditService editService) {
         IObjectService objectService = new IObjectService.NoOp() {
             @Override
             public Optional<Object> getObject(IEditingContext editingContext, String objectId) {
@@ -76,7 +98,6 @@ public class CreateChildEventHandlerTests {
         assertThat(handler.canHandle(input)).isTrue();
 
         IEditingContext editingContext = () -> UUID.randomUUID();
-        EventHandlerResponse response = handler.handle(editingContext, input);
-        return response;
+        handler.handle(payloadSink, changeDescriptionSink, editingContext, input);
     }
 }

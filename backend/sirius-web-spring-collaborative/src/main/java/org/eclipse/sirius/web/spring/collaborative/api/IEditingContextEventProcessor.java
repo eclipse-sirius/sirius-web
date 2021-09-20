@@ -20,6 +20,7 @@ import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.core.api.IPayload;
 
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /**
  * Handles all of the input events and emit output events of a specific project.
@@ -33,7 +34,7 @@ public interface IEditingContextEventProcessor extends IDisposablePublisher {
 
     List<IRepresentationEventProcessor> getRepresentationEventProcessors();
 
-    Optional<IPayload> handle(IInput input);
+    Mono<IPayload> handle(IInput input);
 
     Flux<IPayload> getOutputEvents();
 
@@ -70,8 +71,8 @@ public interface IEditingContextEventProcessor extends IDisposablePublisher {
         }
 
         @Override
-        public Optional<IPayload> handle(IInput input) {
-            return Optional.empty();
+        public Mono<IPayload> handle(IInput input) {
+            return Mono.empty();
         }
 
         @Override

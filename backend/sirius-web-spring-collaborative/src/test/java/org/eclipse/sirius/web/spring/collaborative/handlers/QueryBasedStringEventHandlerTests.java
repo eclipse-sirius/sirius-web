@@ -21,13 +21,17 @@ import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.core.api.IPayload;
-import org.eclipse.sirius.web.spring.collaborative.api.EventHandlerResponse;
+import org.eclipse.sirius.web.spring.collaborative.api.ChangeDescription;
+import org.eclipse.sirius.web.spring.collaborative.api.ChangeKind;
 import org.eclipse.sirius.web.spring.collaborative.api.IQueryService;
 import org.eclipse.sirius.web.spring.collaborative.dto.QueryBasedStringInput;
 import org.eclipse.sirius.web.spring.collaborative.dto.QueryBasedStringSuccessPayload;
 import org.junit.jupiter.api.Test;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
+import reactor.core.publisher.Sinks;
+import reactor.core.publisher.Sinks.Many;
+import reactor.core.publisher.Sinks.One;
 
 /**
  * Tests of the query based String event handler.
@@ -39,18 +43,24 @@ public class QueryBasedStringEventHandlerTests {
 
     @Test
     public void testQueryBasedString() {
-        // The EMFQueryService implementation is already tested by another class.
         IQueryService queryService = new IQueryService.NoOp() {
-
             @Override
             public IPayload execute(IEditingContext editingContext, QueryBasedStringInput input) {
                 return new QueryBasedStringSuccessPayload(UUID.randomUUID(), EXPECTED_RESULT);
             }
         };
 
-        EventHandlerResponse response = this.handle(queryService);
-        assertThat(response.getPayload()).isInstanceOf(QueryBasedStringSuccessPayload.class);
-        assertThat(((QueryBasedStringSuccessPayload) response.getPayload()).getResult()).isEqualTo(EXPECTED_RESULT);
+        Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
+        One<IPayload> payloadSink = Sinks.one();
+
+        this.handle(payloadSink, changeDescriptionSink, queryService);
+
+        ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();
+        assertThat(changeDescription.getKind()).isEqualTo(ChangeKind.NOTHING);
+
+        IPayload payload = payloadSink.asMono().block();
+        assertThat(payload).isInstanceOf(QueryBasedStringSuccessPayload.class);
+        assertThat(((QueryBasedStringSuccessPayload) payload).getResult()).isEqualTo(EXPECTED_RESULT);
     }
 
     @Test
@@ -61,17 +71,24 @@ public class QueryBasedStringEventHandlerTests {
                 return new ErrorPayload(UUID.randomUUID(), "An error occured"); //$NON-NLS-1$
             }
         };
-        EventHandlerResponse response = this.handle(queryService);
-        assertThat(response.getPayload()).isInstanceOf(ErrorPayload.class);
+        Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
+        One<IPayload> payloadSink = Sinks.one();
+
+        this.handle(payloadSink, changeDescriptionSink, queryService);
+
+        ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();
+        assertThat(changeDescription.getKind()).isEqualTo(ChangeKind.NOTHING);
+
+        IPayload payload = payloadSink.asMono().block();
+        assertThat(payload).isInstanceOf(ErrorPayload.class);
     }
 
-    private EventHandlerResponse handle(IQueryService queryService) {
+    private void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IQueryService queryService) {
         QueryBasedStringEventHandler queryBasedStringEventHandler = new QueryBasedStringEventHandler(new NoOpCollaborativeMessageService(), new SimpleMeterRegistry(), queryService);
         IInput input = new QueryBasedStringInput(UUID.randomUUID(), "", Map.of()); //$NON-NLS-1$
         assertThat(queryBasedStringEventHandler.canHandle(input)).isTrue();
 
         IEditingContext editingContext = () -> UUID.randomUUID();
-        EventHandlerResponse response = queryBasedStringEventHandler.handle(editingContext, input);
-        return response;
+        queryBasedStringEventHandler.handle(payloadSink, changeDescriptionSink, editingContext, input);
     }
 }

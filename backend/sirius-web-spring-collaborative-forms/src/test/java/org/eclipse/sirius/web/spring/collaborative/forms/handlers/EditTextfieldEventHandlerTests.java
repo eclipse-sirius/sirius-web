@@ -20,18 +20,25 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 
+import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.forms.AbstractWidget;
 import org.eclipse.sirius.web.forms.Form;
 import org.eclipse.sirius.web.forms.Group;
 import org.eclipse.sirius.web.forms.Page;
 import org.eclipse.sirius.web.forms.Textfield;
 import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.spring.collaborative.api.ChangeDescription;
+import org.eclipse.sirius.web.spring.collaborative.api.ChangeKind;
 import org.eclipse.sirius.web.spring.collaborative.forms.api.IFormQueryService;
 import org.eclipse.sirius.web.spring.collaborative.forms.dto.EditTextfieldInput;
+import org.eclipse.sirius.web.spring.collaborative.forms.dto.EditTextfieldSuccessPayload;
 import org.eclipse.sirius.web.spring.collaborative.forms.messages.ICollaborativeFormMessageService;
 import org.junit.jupiter.api.Test;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
+import reactor.core.publisher.Sinks;
+import reactor.core.publisher.Sinks.Many;
+import reactor.core.publisher.Sinks.One;
 
 /**
  * Unit tests of the edit textfield event handler.
@@ -88,7 +95,17 @@ public class EditTextfieldEventHandlerTests {
         EditTextfieldEventHandler handler = new EditTextfieldEventHandler(formQueryService, new ICollaborativeFormMessageService.NoOp(), new SimpleMeterRegistry());
         assertThat(handler.canHandle(input)).isTrue();
 
-        handler.handle(form, input);
+        Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
+        One<IPayload> payloadSink = Sinks.one();
+
+        handler.handle(payloadSink, changeDescriptionSink, form, input);
+
+        ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();
+        assertThat(changeDescription.getKind()).isEqualTo(ChangeKind.SEMANTIC_CHANGE);
+
+        IPayload payload = payloadSink.asMono().block();
+        assertThat(payload).isInstanceOf(EditTextfieldSuccessPayload.class);
+
         assertThat(hasBeenExecuted.get()).isTrue();
     }
 }
