@@ -50,6 +50,20 @@ public final class StylesFactory {
         // @formatter:on
     }
 
+    public LabelStyleDescription createEdgeLabelStyleDescription(org.eclipse.sirius.web.view.EdgeStyle edgeStyle) {
+        // @formatter:off
+        return LabelStyleDescription.newLabelStyleDescription()
+                                    .colorProvider(variableManager -> edgeStyle.getColor())
+                                    .fontSizeProvider(variableManager -> 14)
+                                    .boldProvider(variableManager -> false)
+                                    .italicProvider(variableManager -> false)
+                                    .underlineProvider(variableManager -> false)
+                                    .strikeThroughProvider(variableManager -> false)
+                                    .iconURLProvider(variableManager -> "") //$NON-NLS-1$
+                                    .build();
+        // @formatter:on
+    }
+
     public EdgeStyle createEdgeStyle(org.eclipse.sirius.web.view.EdgeStyle edgeStyle) {
         // @formatter:off
         return EdgeStyle.newEdgeStyle()
