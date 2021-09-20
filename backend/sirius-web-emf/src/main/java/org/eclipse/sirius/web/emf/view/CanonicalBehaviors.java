@@ -85,10 +85,17 @@ public class CanonicalBehaviors {
 
     private Optional<EObject> createSemanticInstance(EObject self, String domainType) {
         EPackage ePackage = self.eClass().getEPackage();
+        final String shortTypeName;
+        String[] segments = domainType.split("::"); //$NON-NLS-1$
+        if (segments.length == 2) {
+            shortTypeName = segments[1];
+        } else {
+            shortTypeName = domainType;
+        }
         // @formatter:off
         var optionalKlass = ePackage
                           .getEClassifiers().stream()
-                          .filter(classifier -> classifier instanceof EClass && Objects.equals(domainType, classifier.getName()))
+                          .filter(classifier -> classifier instanceof EClass && Objects.equals(shortTypeName, classifier.getName()))
                           .map(EClass.class::cast)
                           .findFirst();
         // @formatter:on
