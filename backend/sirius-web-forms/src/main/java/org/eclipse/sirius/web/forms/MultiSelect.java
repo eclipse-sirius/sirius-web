@@ -22,7 +22,7 @@ import org.eclipse.sirius.web.annotations.graphql.GraphQLField;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLNonNull;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLObjectType;
 import org.eclipse.sirius.web.forms.validation.Diagnostic;
-import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.representations.IStatus;
 
 /**
  * The select widget.
@@ -39,7 +39,7 @@ public final class MultiSelect extends AbstractWidget {
 
     private List<String> values;
 
-    private Function<List<String>, Status> newValuesHandler;
+    private Function<List<String>, IStatus> newValuesHandler;
 
     private MultiSelect() {
         // Prevent instantiation
@@ -62,7 +62,7 @@ public final class MultiSelect extends AbstractWidget {
         return this.values;
     }
 
-    public Function<List<String>, Status> getNewValuesHandler() {
+    public Function<List<String>, IStatus> getNewValuesHandler() {
         return this.newValuesHandler;
     }
 
@@ -91,7 +91,7 @@ public final class MultiSelect extends AbstractWidget {
 
         private List<String> values;
 
-        private Function<List<String>, Status> newValuesHandler;
+        private Function<List<String>, IStatus> newValuesHandler;
 
         private List<Diagnostic> diagnostics;
 
@@ -114,7 +114,7 @@ public final class MultiSelect extends AbstractWidget {
             return this;
         }
 
-        public Builder newValuesHandler(Function<List<String>, Status> newValuesHandler) {
+        public Builder newValuesHandler(Function<List<String>, IStatus> newValuesHandler) {
             this.newValuesHandler = Objects.requireNonNull(newValuesHandler);
             return this;
         }

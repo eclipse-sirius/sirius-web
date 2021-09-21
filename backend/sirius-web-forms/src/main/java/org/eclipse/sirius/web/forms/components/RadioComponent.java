@@ -25,7 +25,7 @@ import org.eclipse.sirius.web.forms.description.RadioDescription;
 import org.eclipse.sirius.web.forms.elements.RadioElementProps;
 import org.eclipse.sirius.web.forms.validation.DiagnosticComponent;
 import org.eclipse.sirius.web.forms.validation.DiagnosticComponentProps;
-import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.representations.IStatus;
 import org.eclipse.sirius.web.representations.VariableManager;
 
 /**
@@ -73,8 +73,8 @@ public class RadioComponent implements IComponent {
             options.add(option);
         }
 
-        BiFunction<VariableManager, String, Status> genericHandler = radioDescription.getNewValueHandler();
-        Function<String, Status> specializedHandler = newValue -> {
+        BiFunction<VariableManager, String, IStatus> genericHandler = radioDescription.getNewValueHandler();
+        Function<String, IStatus> specializedHandler = newValue -> {
             return genericHandler.apply(variableManager, newValue);
         };
 

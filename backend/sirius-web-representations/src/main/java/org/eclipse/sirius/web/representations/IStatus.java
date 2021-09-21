@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,10 +13,10 @@
 package org.eclipse.sirius.web.representations;
 
 /**
- * Status of the operation executed.
+ * The Status that should be return by representation description handlers.
  *
- * @author sbegaudeau
+ * @author gcoutable
  */
-public enum Status {
-    OK, ERROR
+public interface IStatus {
+
 }

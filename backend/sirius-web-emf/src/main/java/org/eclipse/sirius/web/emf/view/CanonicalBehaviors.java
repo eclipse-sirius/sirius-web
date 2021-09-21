@@ -21,7 +21,8 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.sirius.web.core.api.IEditService;
 import org.eclipse.sirius.web.core.api.IObjectService;
-import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.representations.IStatus;
+import org.eclipse.sirius.web.representations.Success;
 import org.eclipse.sirius.web.representations.VariableManager;
 import org.eclipse.sirius.web.view.EdgeDescription;
 
@@ -42,14 +43,14 @@ public class CanonicalBehaviors {
         this.editService = Objects.requireNonNull(editService);
     }
 
-    public Status createNewNode(org.eclipse.sirius.web.view.NodeDescription nodeDescription, VariableManager variableManager) {
+    public IStatus createNewNode(org.eclipse.sirius.web.view.NodeDescription nodeDescription, VariableManager variableManager) {
         EObject self = variableManager.get(VariableManager.SELF, EObject.class).orElse(null);
         String domainType = nodeDescription.getDomainType();
         this.createSemanticInstance(self, domainType).ifPresent(instance -> this.addInParent(self, instance));
-        return Status.OK;
+        return new Success();
     }
 
-    public Status createNewEdge(VariableManager variableManager, EdgeDescription edgeDescription) {
+    public IStatus createNewEdge(VariableManager variableManager, EdgeDescription edgeDescription) {
         EObject semanticSource = variableManager.get(org.eclipse.sirius.web.diagrams.description.EdgeDescription.SEMANTIC_EDGE_SOURCE, EObject.class).get();
         EObject semanticTarget = variableManager.get(org.eclipse.sirius.web.diagrams.description.EdgeDescription.SEMANTIC_EDGE_TARGET, EObject.class).get();
         if (edgeDescription.isIsDomainBasedEdge()) {
@@ -61,22 +62,22 @@ public class CanonicalBehaviors {
         } else {
             this.addReferenceTo(semanticSource, semanticTarget);
         }
-        return Status.OK;
+        return new Success();
     }
 
-    public Status editLabel(VariableManager variableManager, String newLabel) {
+    public IStatus editLabel(VariableManager variableManager, String newLabel) {
         this.self(variableManager).ifPresent(self -> {
             Optional<String> optionalLabelField = this.objectService.getLabelField(self);
             if (optionalLabelField.isPresent()) {
                 this.editService.editLabel(self, optionalLabelField.get(), newLabel);
             }
         });
-        return Status.OK;
+        return new Success();
     }
 
-    public Status deleteElement(VariableManager variableManager) {
+    public IStatus deleteElement(VariableManager variableManager) {
         this.self(variableManager).ifPresent(this.editService::delete);
-        return Status.OK;
+        return new Success();
     }
 
     private Optional<Object> self(VariableManager variableManager) {

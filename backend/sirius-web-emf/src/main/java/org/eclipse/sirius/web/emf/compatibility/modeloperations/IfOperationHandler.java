@@ -21,7 +21,8 @@ import org.eclipse.sirius.viewpoint.description.tool.If;
 import org.eclipse.sirius.viewpoint.description.tool.ModelOperation;
 import org.eclipse.sirius.web.compat.api.IModelOperationHandler;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
-import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.representations.IStatus;
+import org.eclipse.sirius.web.representations.Success;
 
 /**
  * Handle the {@link If} model operation.
@@ -43,7 +44,7 @@ public class IfOperationHandler implements IModelOperationHandler {
     }
 
     @Override
-    public Status handle(Map<String, Object> variables) {
+    public IStatus handle(Map<String, Object> variables) {
         String conditionExpression = this.ifOperation.getConditionExpression();
         if (conditionExpression != null && !conditionExpression.isBlank()) {
             Optional<Boolean> optionalValueObject = this.interpreter.evaluateExpression(variables, conditionExpression).asBoolean();
@@ -54,7 +55,7 @@ public class IfOperationHandler implements IModelOperationHandler {
             }
         }
 
-        return Status.OK;
+        return new Success();
     }
 
 }

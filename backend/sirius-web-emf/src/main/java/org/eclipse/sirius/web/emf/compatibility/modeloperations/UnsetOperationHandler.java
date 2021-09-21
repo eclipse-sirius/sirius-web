@@ -27,7 +27,7 @@ import org.eclipse.sirius.viewpoint.description.tool.ModelOperation;
 import org.eclipse.sirius.viewpoint.description.tool.Unset;
 import org.eclipse.sirius.web.compat.api.IModelOperationHandler;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
-import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.representations.IStatus;
 import org.eclipse.sirius.web.representations.VariableManager;
 
 /**
@@ -50,7 +50,7 @@ public class UnsetOperationHandler implements IModelOperationHandler {
     }
 
     @Override
-    public Status handle(Map<String, Object> variables) {
+    public IStatus handle(Map<String, Object> variables) {
         var optionalContext = this.getContext(variables);
         var optionalFeature = optionalContext.flatMap(context -> this.computeFeature(context, variables));
         if (optionalContext.isPresent() && optionalFeature.isPresent()) {
@@ -109,7 +109,7 @@ public class UnsetOperationHandler implements IModelOperationHandler {
         }
     }
 
-    private Status executeChildrenOperations(Map<String, Object> variables) {
+    private IStatus executeChildrenOperations(Map<String, Object> variables) {
         Map<String, Object> childVariables = new HashMap<>(variables);
         List<ModelOperation> subModelOperations = this.unsetOperation.getSubModelOperations();
         return this.childModelOperationHandler.handle(this.interpreter, childVariables, subModelOperations);

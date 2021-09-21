@@ -33,7 +33,7 @@ import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.emf.compatibility.EPackageService;
 import org.eclipse.sirius.web.emf.services.EditingContext;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
-import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.representations.IStatus;
 import org.eclipse.sirius.web.representations.VariableManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,7 +68,7 @@ public class CreateInstanceOperationHandler implements IModelOperationHandler {
     }
 
     @Override
-    public Status handle(Map<String, Object> variables) {
+    public IStatus handle(Map<String, Object> variables) {
         String typeName = this.createInstance.getTypeName();
         String referenceName = this.createInstance.getReferenceName();
         String variableName = this.createInstance.getVariableName();

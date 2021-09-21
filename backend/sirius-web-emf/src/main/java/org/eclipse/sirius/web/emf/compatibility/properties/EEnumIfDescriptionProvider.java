@@ -34,7 +34,9 @@ import org.eclipse.sirius.web.emf.compatibility.properties.api.IPropertiesValida
 import org.eclipse.sirius.web.forms.components.SelectComponent;
 import org.eclipse.sirius.web.forms.description.IfDescription;
 import org.eclipse.sirius.web.forms.description.RadioDescription;
-import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.representations.Failure;
+import org.eclipse.sirius.web.representations.IStatus;
+import org.eclipse.sirius.web.representations.Success;
 import org.eclipse.sirius.web.representations.VariableManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -163,7 +165,7 @@ public class EEnumIfDescriptionProvider {
         };
     }
 
-    private BiFunction<VariableManager, String, Status> getNewValueHandler() {
+    private BiFunction<VariableManager, String, IStatus> getNewValueHandler() {
         return (variableManager, newValue) -> {
             var optionalEObject = variableManager.get(VariableManager.SELF, EObject.class);
             var optionalEAttribute = variableManager.get(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE, EAttribute.class);
@@ -185,9 +187,9 @@ public class EEnumIfDescriptionProvider {
                 }
             } catch (NumberFormatException exception) {
                 this.logger.warn(exception.getMessage(), exception);
-                return Status.ERROR;
+                return new Failure(""); //$NON-NLS-1$
             }
-            return Status.OK;
+            return new Success();
         };
     }
 

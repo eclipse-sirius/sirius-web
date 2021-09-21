@@ -52,7 +52,7 @@ import org.eclipse.sirius.web.emf.compatibility.DomainClassPredicate;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
 import org.eclipse.sirius.web.interpreter.Result;
 import org.eclipse.sirius.web.representations.IRepresentationDescription;
-import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.representations.IStatus;
 import org.eclipse.sirius.web.representations.VariableManager;
 import org.eclipse.sirius.web.view.DeleteTool;
 import org.eclipse.sirius.web.view.DiagramElementDescription;
@@ -465,7 +465,7 @@ public class ViewConverter {
         // @formatter:on
     }
 
-    private Function<VariableManager, Status> createDeleteHandler(DiagramElementDescription diagramElementDescription, AQLInterpreter interpreter) {
+    private Function<VariableManager, IStatus> createDeleteHandler(DiagramElementDescription diagramElementDescription, AQLInterpreter interpreter) {
         DeleteTool tool = diagramElementDescription.getDeleteTool();
         if (tool != null) {
             return variableManager -> {
@@ -476,7 +476,7 @@ public class ViewConverter {
         }
     }
 
-    private BiFunction<VariableManager, String, Status> createLabelEditHandler(DiagramElementDescription diagramElementDescription, AQLInterpreter interpreter) {
+    private BiFunction<VariableManager, String, IStatus> createLabelEditHandler(DiagramElementDescription diagramElementDescription, AQLInterpreter interpreter) {
         LabelEditTool tool = diagramElementDescription.getLabelEditTool();
         if (tool != null) {
             return (variableManager, newLabel) -> {

@@ -19,7 +19,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import org.eclipse.sirius.web.annotations.Immutable;
-import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.representations.IStatus;
 import org.eclipse.sirius.web.representations.VariableManager;
 
 /**
@@ -43,7 +43,7 @@ public final class MultiSelectDescription extends AbstractWidgetDescription {
 
     private Function<VariableManager, List<String>> valuesProvider;
 
-    private BiFunction<VariableManager, List<String>, Status> newValuesHandler;
+    private BiFunction<VariableManager, List<String>, IStatus> newValuesHandler;
 
     private MultiSelectDescription() {
         // Prevent instantiation
@@ -73,7 +73,7 @@ public final class MultiSelectDescription extends AbstractWidgetDescription {
         return this.valuesProvider;
     }
 
-    public BiFunction<VariableManager, List<String>, Status> getNewValuesHandler() {
+    public BiFunction<VariableManager, List<String>, IStatus> getNewValuesHandler() {
         return this.newValuesHandler;
     }
 
@@ -109,7 +109,7 @@ public final class MultiSelectDescription extends AbstractWidgetDescription {
 
         private Function<VariableManager, List<String>> valuesProvider;
 
-        private BiFunction<VariableManager, List<String>, Status> newValuesHandler;
+        private BiFunction<VariableManager, List<String>, IStatus> newValuesHandler;
 
         private Function<VariableManager, List<Object>> diagnosticsProvider;
 
@@ -151,7 +151,7 @@ public final class MultiSelectDescription extends AbstractWidgetDescription {
             return this;
         }
 
-        public Builder newValuesHandler(BiFunction<VariableManager, List<String>, Status> newValuesHandler) {
+        public Builder newValuesHandler(BiFunction<VariableManager, List<String>, IStatus> newValuesHandler) {
             this.newValuesHandler = Objects.requireNonNull(newValuesHandler);
             return this;
         }

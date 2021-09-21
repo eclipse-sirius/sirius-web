@@ -38,7 +38,7 @@ import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.web.diagrams.description.LabelDescription;
 import org.eclipse.sirius.web.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.web.diagrams.description.NodeDescription;
-import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.representations.Success;
 import org.eclipse.sirius.web.representations.VariableManager;
 import org.junit.jupiter.api.Test;
 
@@ -263,8 +263,8 @@ public class DiagramRendererNodeTests {
                 .sizeProvider(sizeProvider)
                 .borderNodeDescriptions(new ArrayList<>())
                 .childNodeDescriptions(new ArrayList<>())
-                .labelEditHandler((variableManager, newLabel) -> Status.OK)
-                .deleteHandler(variableManager -> Status.OK)
+                .labelEditHandler((variableManager, newLabel) -> new Success())
+                .deleteHandler(variableManager -> new Success())
                 .build();
 
         DiagramDescription diagramDescription = DiagramDescription.newDiagramDescription(UUID.randomUUID())

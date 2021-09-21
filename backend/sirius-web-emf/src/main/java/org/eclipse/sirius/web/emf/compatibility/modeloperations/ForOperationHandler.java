@@ -22,7 +22,8 @@ import org.eclipse.sirius.viewpoint.description.tool.For;
 import org.eclipse.sirius.viewpoint.description.tool.ModelOperation;
 import org.eclipse.sirius.web.compat.api.IModelOperationHandler;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
-import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.representations.IStatus;
+import org.eclipse.sirius.web.representations.Success;
 
 /**
  * Handle the {@link For} model operation.
@@ -44,7 +45,7 @@ public class ForOperationHandler implements IModelOperationHandler {
     }
 
     @Override
-    public Status handle(Map<String, Object> variables) {
+    public IStatus handle(Map<String, Object> variables) {
         String expression = this.forOperation.getExpression();
         String iteratedVariableName = this.forOperation.getIteratorName();
 
@@ -64,7 +65,7 @@ public class ForOperationHandler implements IModelOperationHandler {
             }
         }
 
-        return Status.OK;
+        return new Success();
     }
 
 }

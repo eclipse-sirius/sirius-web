@@ -29,7 +29,9 @@ import org.eclipse.sirius.web.diagrams.Node;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.web.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.web.diagrams.description.NodeDescription;
-import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.representations.Failure;
+import org.eclipse.sirius.web.representations.IStatus;
+import org.eclipse.sirius.web.representations.Success;
 import org.eclipse.sirius.web.representations.VariableManager;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeKind;
@@ -114,8 +116,8 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
         for (UUID edgeId : diagramInput.getEdgeIds()) {
             var optionalElement = this.diagramQueryService.findEdgeById(diagram, edgeId);
             if (optionalElement.isPresent()) {
-                Status status = this.invokeDeleteEdgeTool(optionalElement.get(), editingContext, diagramContext);
-                if (Status.OK == status) {
+                IStatus status = this.invokeDeleteEdgeTool(optionalElement.get(), editingContext, diagramContext);
+                if (status instanceof Success) {
                     atLeastOneOk = true;
                 }
             } else {
@@ -126,8 +128,8 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
         for (UUID nodeId : diagramInput.getNodeIds()) {
             var optionalElement = this.diagramQueryService.findNodeById(diagram, nodeId);
             if (optionalElement.isPresent()) {
-                Status status = this.invokeDeleteNodeTool(optionalElement.get(), editingContext, diagramContext);
-                if (Status.OK == status) {
+                IStatus status = this.invokeDeleteNodeTool(optionalElement.get(), editingContext, diagramContext);
+                if (status instanceof Success) {
                     atLeastOneOk = true;
                 }
             } else {
@@ -163,9 +165,10 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
         changeDescriptionSink.tryEmitNext(changeDescription);
     }
 
-    private Status invokeDeleteNodeTool(Node node, IEditingContext editingContext, IDiagramContext diagramContext) {
-        Status result = Status.ERROR;
+    private IStatus invokeDeleteNodeTool(Node node, IEditingContext editingContext, IDiagramContext diagramContext) {
+        IStatus result = new Failure(""); //$NON-NLS-1$
         var optionalNodeDescription = this.findNodeDescription(node, diagramContext.getDiagram(), editingContext);
+
         if (optionalNodeDescription.isPresent()) {
             var optionalSelf = this.objectService.getObject(editingContext, node.getTargetObjectId());
             if (optionalSelf.isPresent()) {
@@ -187,8 +190,8 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
         return result;
     }
 
-    private Status invokeDeleteEdgeTool(Edge edge, IEditingContext editingContext, IDiagramContext diagramContext) {
-        Status result = Status.ERROR;
+    private IStatus invokeDeleteEdgeTool(Edge edge, IEditingContext editingContext, IDiagramContext diagramContext) {
+        IStatus result = new Failure(""); //$NON-NLS-1$
         var optionalEdgeDescription = this.findEdgeDescription(edge, diagramContext.getDiagram(), editingContext);
         if (optionalEdgeDescription.isPresent()) {
             var optionalSelf = this.objectService.getObject(editingContext, edge.getTargetObjectId());

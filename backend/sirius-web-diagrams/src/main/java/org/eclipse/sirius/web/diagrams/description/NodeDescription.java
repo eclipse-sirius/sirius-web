@@ -27,7 +27,7 @@ import org.eclipse.sirius.web.annotations.graphql.GraphQLNonNull;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLObjectType;
 import org.eclipse.sirius.web.diagrams.INodeStyle;
 import org.eclipse.sirius.web.diagrams.Size;
-import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.representations.IStatus;
 import org.eclipse.sirius.web.representations.VariableManager;
 
 /**
@@ -62,9 +62,9 @@ public final class NodeDescription {
 
     private List<NodeDescription> childNodeDescriptions = new ArrayList<>();
 
-    private BiFunction<VariableManager, String, Status> labelEditHandler;
+    private BiFunction<VariableManager, String, IStatus> labelEditHandler;
 
-    private Function<VariableManager, Status> deleteHandler;
+    private Function<VariableManager, IStatus> deleteHandler;
 
     private NodeDescription() {
         // Prevent instantiation
@@ -121,11 +121,11 @@ public final class NodeDescription {
         return this.childNodeDescriptions;
     }
 
-    public Function<VariableManager, Status> getDeleteHandler() {
+    public Function<VariableManager, IStatus> getDeleteHandler() {
         return this.deleteHandler;
     }
 
-    public BiFunction<VariableManager, String, Status> getLabelEditHandler() {
+    public BiFunction<VariableManager, String, IStatus> getLabelEditHandler() {
         return this.labelEditHandler;
     }
 
@@ -170,9 +170,9 @@ public final class NodeDescription {
 
         private List<NodeDescription> childNodeDescriptions;
 
-        private BiFunction<VariableManager, String, Status> labelEditHandler;
+        private BiFunction<VariableManager, String, IStatus> labelEditHandler;
 
-        private Function<VariableManager, Status> deleteHandler;
+        private Function<VariableManager, IStatus> deleteHandler;
 
         public Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
@@ -233,12 +233,12 @@ public final class NodeDescription {
             return this;
         }
 
-        public Builder deleteHandler(Function<VariableManager, Status> deleteHandler) {
+        public Builder deleteHandler(Function<VariableManager, IStatus> deleteHandler) {
             this.deleteHandler = Objects.requireNonNull(deleteHandler);
             return this;
         }
 
-        public Builder labelEditHandler(BiFunction<VariableManager, String, Status> labelEditHandler) {
+        public Builder labelEditHandler(BiFunction<VariableManager, String, IStatus> labelEditHandler) {
             this.labelEditHandler = Objects.requireNonNull(labelEditHandler);
             return this;
         }

@@ -27,7 +27,8 @@ import org.eclipse.sirius.web.forms.Group;
 import org.eclipse.sirius.web.forms.Page;
 import org.eclipse.sirius.web.forms.Radio;
 import org.eclipse.sirius.web.forms.RadioOption;
-import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.representations.IStatus;
+import org.eclipse.sirius.web.representations.Success;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeKind;
 import org.eclipse.sirius.web.spring.collaborative.forms.api.IFormQueryService;
@@ -56,9 +57,9 @@ public class EditRadioEventHandlerTests {
         var input = new EditRadioInput(UUID.randomUUID(), UUID.randomUUID(), FORM_ID, id, "optionId"); //$NON-NLS-1$
 
         AtomicBoolean hasBeenExecuted = new AtomicBoolean();
-        Function<String, Status> newValueHandler = newValue -> {
+        Function<String, IStatus> newValueHandler = newValue -> {
             hasBeenExecuted.set(true);
-            return Status.OK;
+            return new Success();
         };
 
         // @formatter:off

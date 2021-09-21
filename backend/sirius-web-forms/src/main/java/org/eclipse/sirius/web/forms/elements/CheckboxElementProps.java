@@ -20,7 +20,7 @@ import java.util.function.Function;
 import org.eclipse.sirius.web.annotations.Immutable;
 import org.eclipse.sirius.web.components.Element;
 import org.eclipse.sirius.web.components.IProps;
-import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.representations.IStatus;
 
 /**
  * The properties of the checkbox element.
@@ -37,7 +37,7 @@ public final class CheckboxElementProps implements IProps {
 
     private boolean value;
 
-    private Function<Boolean, Status> newValueHandler;
+    private Function<Boolean, IStatus> newValueHandler;
 
     private List<Element> children;
 
@@ -57,7 +57,7 @@ public final class CheckboxElementProps implements IProps {
         return this.value;
     }
 
-    public Function<Boolean, Status> getNewValueHandler() {
+    public Function<Boolean, IStatus> getNewValueHandler() {
         return this.newValueHandler;
     }
 
@@ -89,7 +89,7 @@ public final class CheckboxElementProps implements IProps {
 
         private boolean value;
 
-        private Function<Boolean, Status> newValueHandler;
+        private Function<Boolean, IStatus> newValueHandler;
 
         private List<Element> children;
 
@@ -107,7 +107,7 @@ public final class CheckboxElementProps implements IProps {
             return this;
         }
 
-        public Builder newValueHandler(Function<Boolean, Status> newValueHandler) {
+        public Builder newValueHandler(Function<Boolean, IStatus> newValueHandler) {
             this.newValueHandler = Objects.requireNonNull(newValueHandler);
             return this;
         }

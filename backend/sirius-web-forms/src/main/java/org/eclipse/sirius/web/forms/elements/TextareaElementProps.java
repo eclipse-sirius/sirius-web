@@ -20,7 +20,7 @@ import java.util.function.Function;
 import org.eclipse.sirius.web.annotations.Immutable;
 import org.eclipse.sirius.web.components.Element;
 import org.eclipse.sirius.web.components.IProps;
-import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.representations.IStatus;
 
 /**
  * The properties of the textarea element.
@@ -37,7 +37,7 @@ public final class TextareaElementProps implements IProps {
 
     private String value;
 
-    private Function<String, Status> newValueHandler;
+    private Function<String, IStatus> newValueHandler;
 
     private List<Element> children;
 
@@ -57,7 +57,7 @@ public final class TextareaElementProps implements IProps {
         return this.value;
     }
 
-    public Function<String, Status> getNewValueHandler() {
+    public Function<String, IStatus> getNewValueHandler() {
         return this.newValueHandler;
     }
 
@@ -89,7 +89,7 @@ public final class TextareaElementProps implements IProps {
 
         private String value;
 
-        private Function<String, Status> newValueHandler;
+        private Function<String, IStatus> newValueHandler;
 
         private List<Element> children;
 
@@ -107,7 +107,7 @@ public final class TextareaElementProps implements IProps {
             return this;
         }
 
-        public Builder newValueHandler(Function<String, Status> handler) {
+        public Builder newValueHandler(Function<String, IStatus> handler) {
             this.newValueHandler = Objects.requireNonNull(handler);
             return this;
         }

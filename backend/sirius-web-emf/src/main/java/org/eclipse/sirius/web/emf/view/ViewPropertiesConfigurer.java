@@ -37,9 +37,11 @@ import org.eclipse.sirius.web.forms.description.GroupDescription;
 import org.eclipse.sirius.web.forms.description.PageDescription;
 import org.eclipse.sirius.web.forms.description.SelectDescription;
 import org.eclipse.sirius.web.forms.description.TextfieldDescription;
+import org.eclipse.sirius.web.representations.Failure;
 import org.eclipse.sirius.web.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.web.representations.IRepresentationDescription;
-import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.representations.IStatus;
+import org.eclipse.sirius.web.representations.Success;
 import org.eclipse.sirius.web.representations.VariableManager;
 import org.eclipse.sirius.web.spring.collaborative.validation.api.IValidationService;
 import org.eclipse.sirius.web.view.ConditionalNodeStyle;
@@ -289,13 +291,13 @@ public class ViewPropertiesConfigurer implements IPropertiesDescriptionRegistryC
 
     private TextfieldDescription createTextField(String id, String title, Function<Object, String> reader, BiConsumer<Object, String> writer, Object feature) {
         Function<VariableManager, String> valueProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(reader).orElse(EMPTY);
-        BiFunction<VariableManager, String, Status> newValueHandler = (variableManager, newValue) -> {
+        BiFunction<VariableManager, String, IStatus> newValueHandler = (variableManager, newValue) -> {
             var optionalDiagramMapping = variableManager.get(VariableManager.SELF, Object.class);
             if (optionalDiagramMapping.isPresent()) {
                 writer.accept(optionalDiagramMapping.get(), newValue);
-                return Status.OK;
+                return new Success();
             } else {
-                return Status.ERROR;
+                return new Failure(""); //$NON-NLS-1$
             }
         };
 
@@ -314,13 +316,13 @@ public class ViewPropertiesConfigurer implements IPropertiesDescriptionRegistryC
 
     private CheckboxDescription createCheckbox(String id, String title, Function<Object, Boolean> reader, BiConsumer<Object, Boolean> writer, Object feature) {
         Function<VariableManager, Boolean> valueProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(reader).orElse(Boolean.FALSE);
-        BiFunction<VariableManager, Boolean, Status> newValueHandler = (variableManager, newValue) -> {
+        BiFunction<VariableManager, Boolean, IStatus> newValueHandler = (variableManager, newValue) -> {
             var optionalDiagramMapping = variableManager.get(VariableManager.SELF, Object.class);
             if (optionalDiagramMapping.isPresent()) {
                 writer.accept(optionalDiagramMapping.get(), newValue);
-                return Status.OK;
+                return new Success();
             } else {
-                return Status.ERROR;
+                return new Failure(""); //$NON-NLS-1$
             }
         };
         // @formatter:off
@@ -360,7 +362,7 @@ public class ViewPropertiesConfigurer implements IPropertiesDescriptionRegistryC
         // @formatter:on
     }
 
-    private BiFunction<VariableManager, String, Status> getNewShapeValueHandler() {
+    private BiFunction<VariableManager, String, IStatus> getNewShapeValueHandler() {
         return (variableManager, newValue) -> {
             var optionalNodeStyle = variableManager.get(VariableManager.SELF, NodeStyle.class);
             if (optionalNodeStyle.isPresent()) {
@@ -368,9 +370,9 @@ public class ViewPropertiesConfigurer implements IPropertiesDescriptionRegistryC
                     newValue = null;
                 }
                 optionalNodeStyle.get().setShape(newValue);
-                return Status.OK;
+                return new Success();
             }
-            return Status.ERROR;
+            return new Failure(""); //$NON-NLS-1$
         };
     }
 

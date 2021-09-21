@@ -24,7 +24,7 @@ import org.eclipse.sirius.web.forms.description.MultiSelectDescription;
 import org.eclipse.sirius.web.forms.elements.MultiSelectElementProps;
 import org.eclipse.sirius.web.forms.validation.DiagnosticComponent;
 import org.eclipse.sirius.web.forms.validation.DiagnosticComponentProps;
-import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.representations.IStatus;
 import org.eclipse.sirius.web.representations.VariableManager;
 
 /**
@@ -71,7 +71,7 @@ public class MultiSelectComponent implements IComponent {
 
             options.add(option);
         }
-        Function<List<String>, Status> newValuesHandler = newValues -> {
+        Function<List<String>, IStatus> newValuesHandler = newValues -> {
             return multiSelectDescription.getNewValuesHandler().apply(variableManager, newValues);
         };
 

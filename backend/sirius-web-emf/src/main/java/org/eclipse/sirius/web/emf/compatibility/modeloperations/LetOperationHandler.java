@@ -22,7 +22,7 @@ import org.eclipse.sirius.viewpoint.description.tool.Let;
 import org.eclipse.sirius.viewpoint.description.tool.ModelOperation;
 import org.eclipse.sirius.web.compat.api.IModelOperationHandler;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
-import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.representations.IStatus;
 
 /**
  * Handle the {@link Let} model operation.
@@ -44,7 +44,7 @@ public class LetOperationHandler implements IModelOperationHandler {
     }
 
     @Override
-    public Status handle(Map<String, Object> variables) {
+    public IStatus handle(Map<String, Object> variables) {
         String valueExpression = this.letOperation.getValueExpression();
         String variableName = this.letOperation.getVariableName();
         Map<String, Object> childVariables = new HashMap<>(variables);

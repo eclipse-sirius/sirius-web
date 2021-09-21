@@ -22,7 +22,7 @@ import org.eclipse.sirius.web.forms.description.TextareaDescription;
 import org.eclipse.sirius.web.forms.elements.TextareaElementProps;
 import org.eclipse.sirius.web.forms.validation.DiagnosticComponent;
 import org.eclipse.sirius.web.forms.validation.DiagnosticComponentProps;
-import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.representations.IStatus;
 import org.eclipse.sirius.web.representations.VariableManager;
 
 /**
@@ -46,7 +46,7 @@ public class TextareaComponent implements IComponent {
         String id = textareaDescription.getIdProvider().apply(variableManager);
         String label = textareaDescription.getLabelProvider().apply(variableManager);
         String value = textareaDescription.getValueProvider().apply(variableManager);
-        Function<String, Status> specializedHandler = newValue -> {
+        Function<String, IStatus> specializedHandler = newValue -> {
             return textareaDescription.getNewValueHandler().apply(variableManager, newValue);
         };
 

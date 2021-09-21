@@ -22,7 +22,7 @@ import org.eclipse.sirius.web.annotations.graphql.GraphQLField;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLNonNull;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLObjectType;
 import org.eclipse.sirius.web.forms.validation.Diagnostic;
-import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.representations.IStatus;
 
 /**
  * The select widget.
@@ -38,7 +38,7 @@ public final class Select extends AbstractWidget {
 
     private String value;
 
-    private Function<String, Status> newValueHandler;
+    private Function<String, IStatus> newValueHandler;
 
     private Select() {
         // Prevent instantiation
@@ -61,7 +61,7 @@ public final class Select extends AbstractWidget {
         return this.value;
     }
 
-    public Function<String, Status> getNewValueHandler() {
+    public Function<String, IStatus> getNewValueHandler() {
         return this.newValueHandler;
     }
 
@@ -90,7 +90,7 @@ public final class Select extends AbstractWidget {
 
         private String value;
 
-        private Function<String, Status> newValueHandler;
+        private Function<String, IStatus> newValueHandler;
 
         private List<Diagnostic> diagnostics;
 
@@ -113,7 +113,7 @@ public final class Select extends AbstractWidget {
             return this;
         }
 
-        public Builder newValueHandler(Function<String, Status> newValueHandler) {
+        public Builder newValueHandler(Function<String, IStatus> newValueHandler) {
             this.newValueHandler = Objects.requireNonNull(newValueHandler);
             return this;
         }

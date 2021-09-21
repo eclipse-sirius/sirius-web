@@ -36,7 +36,7 @@ import org.eclipse.sirius.web.diagrams.description.LabelDescription;
 import org.eclipse.sirius.web.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.web.diagrams.description.NodeDescription;
 import org.eclipse.sirius.web.diagrams.description.SynchronizationPolicy;
-import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.representations.Success;
 import org.eclipse.sirius.web.representations.VariableManager;
 import org.junit.jupiter.api.Test;
 
@@ -293,8 +293,8 @@ public class UnsynchronizedDiagramTests {
                 .sizeProvider(variableManager -> Size.UNDEFINED)
                 .borderNodeDescriptions(new ArrayList<>())
                 .childNodeDescriptions(new ArrayList<>())
-                .labelEditHandler((variableManager, newLabel) -> Status.OK)
-                .deleteHandler(variableManager -> Status.OK)
+                .labelEditHandler((variableManager, newLabel) -> new Success())
+                .deleteHandler(variableManager -> new Success())
                 .build();
         NodeDescription unsynchronizedNodeDescription = NodeDescription.newNodeDescription(UUID.nameUUIDFromBytes("unsynchronized".getBytes())) //$NON-NLS-1$
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
@@ -308,8 +308,8 @@ public class UnsynchronizedDiagramTests {
                 .sizeProvider(variableManager -> Size.UNDEFINED)
                 .borderNodeDescriptions(new ArrayList<>())
                 .childNodeDescriptions(List.of(subUnsynchronizedNodeDescription))
-                .labelEditHandler((variableManager, newLabel) -> Status.OK)
-                .deleteHandler(variableManager -> Status.OK)
+                .labelEditHandler((variableManager, newLabel) -> new Success())
+                .deleteHandler(variableManager -> new Success())
                 .build();
 
         NodeDescription synchronizedNodeDescription = NodeDescription.newNodeDescription(UUID.nameUUIDFromBytes("synchronized".getBytes())) //$NON-NLS-1$
@@ -324,8 +324,8 @@ public class UnsynchronizedDiagramTests {
                 .sizeProvider(variableManager -> Size.UNDEFINED)
                 .borderNodeDescriptions(new ArrayList<>())
                 .childNodeDescriptions(new ArrayList<>())
-                .labelEditHandler((variableManager, newLabel) -> Status.OK)
-                .deleteHandler(variableManager -> Status.OK)
+                .labelEditHandler((variableManager, newLabel) -> new Success())
+                .deleteHandler(variableManager -> new Success())
                 .build();
 
         DiagramDescription diagramDescription = DiagramDescription.newDiagramDescription(UUID.nameUUIDFromBytes("diagram".getBytes())) //$NON-NLS-1$

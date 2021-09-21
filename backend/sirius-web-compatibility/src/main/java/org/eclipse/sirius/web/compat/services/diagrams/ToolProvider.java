@@ -54,7 +54,9 @@ import org.eclipse.sirius.web.diagrams.tools.EdgeCandidate;
 import org.eclipse.sirius.web.diagrams.tools.ITool;
 import org.eclipse.sirius.web.diagrams.tools.ToolSection;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
-import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.representations.Failure;
+import org.eclipse.sirius.web.representations.IStatus;
+import org.eclipse.sirius.web.representations.Success;
 import org.eclipse.sirius.web.representations.VariableManager;
 import org.springframework.stereotype.Service;
 
@@ -339,7 +341,7 @@ public class ToolProvider implements IToolProvider {
         // @formatter:on
     }
 
-    private Function<VariableManager, Status> createContainerCreationHandler(AQLInterpreter interpreter, ContainerCreationDescription toolDescription) {
+    private Function<VariableManager, IStatus> createContainerCreationHandler(AQLInterpreter interpreter, ContainerCreationDescription toolDescription) {
         if (toolDescription != null) {
             InitialNodeCreationOperation initialOperation = toolDescription.getInitialOperation();
             return variableManager -> {
@@ -353,14 +355,14 @@ public class ToolProvider implements IToolProvider {
                 var modelOperationHandlerSwitch = this.modelOperationHandlerSwitchProvider.getModelOperationHandlerSwitch(interpreter);
                 return modelOperationHandlerSwitch.apply(initialOperation.getFirstModelOperations()).map(handler -> {
                     return handler.handle(variables);
-                }).orElse(Status.ERROR);
+                }).orElse(new Failure("")); //$NON-NLS-1$
             };
         } else {
-            return variableManager -> Status.OK;
+            return variableManager -> new Success();
         }
     }
 
-    private Function<VariableManager, Status> createNodeCreationHandler(AQLInterpreter interpreter, NodeCreationDescription toolDescription) {
+    private Function<VariableManager, IStatus> createNodeCreationHandler(AQLInterpreter interpreter, NodeCreationDescription toolDescription) {
         if (toolDescription != null) {
             InitialNodeCreationOperation initialOperation = toolDescription.getInitialOperation();
             return variableManager -> {
@@ -374,14 +376,14 @@ public class ToolProvider implements IToolProvider {
                 var modelOperationHandlerSwitch = this.modelOperationHandlerSwitchProvider.getModelOperationHandlerSwitch(interpreter);
                 return modelOperationHandlerSwitch.apply(initialOperation.getFirstModelOperations()).map(handler -> {
                     return handler.handle(variables);
-                }).orElse(Status.ERROR);
+                }).orElse(new Failure("")); //$NON-NLS-1$
             };
         } else {
-            return variableManager -> Status.OK;
+            return variableManager -> new Success();
         }
     }
 
-    private Function<VariableManager, Status> createGenericToolHandler(AQLInterpreter interpreter, org.eclipse.sirius.viewpoint.description.tool.ToolDescription toolDescription) {
+    private Function<VariableManager, IStatus> createGenericToolHandler(AQLInterpreter interpreter, org.eclipse.sirius.viewpoint.description.tool.ToolDescription toolDescription) {
         if (toolDescription != null) {
             InitialOperation initialOperation = toolDescription.getInitialOperation();
             return variableManager -> {
@@ -391,14 +393,14 @@ public class ToolProvider implements IToolProvider {
                 var modelOperationHandlerSwitch = this.modelOperationHandlerSwitchProvider.getModelOperationHandlerSwitch(interpreter);
                 return modelOperationHandlerSwitch.apply(initialOperation.getFirstModelOperations()).map(handler -> {
                     return handler.handle(variables);
-                }).orElse(Status.ERROR);
+                }).orElse(new Failure("")); //$NON-NLS-1$
             };
         } else {
-            return variableManager -> Status.OK;
+            return variableManager -> new Success();
         }
     }
 
-    private Function<VariableManager, Status> createEdgeCreationHandler(AQLInterpreter interpreter, EdgeCreationDescription edgeCreationDescription) {
+    private Function<VariableManager, IStatus> createEdgeCreationHandler(AQLInterpreter interpreter, EdgeCreationDescription edgeCreationDescription) {
         if (edgeCreationDescription != null) {
             InitEdgeCreationOperation initialOperation = edgeCreationDescription.getInitialOperation();
             return variableManager -> {
@@ -410,10 +412,10 @@ public class ToolProvider implements IToolProvider {
                 var modelOperationHandlerSwitch = this.modelOperationHandlerSwitchProvider.getModelOperationHandlerSwitch(interpreter);
                 return modelOperationHandlerSwitch.apply(initialOperation.getFirstModelOperations()).map(handler -> {
                     return handler.handle(variables);
-                }).orElse(Status.ERROR);
+                }).orElse(new Failure("")); //$NON-NLS-1$
             };
         } else {
-            return variableManager -> Status.OK;
+            return variableManager -> new Success();
         }
     }
 
