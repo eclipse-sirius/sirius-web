@@ -29,7 +29,7 @@ import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.web.diagrams.Size;
 import org.eclipse.sirius.web.diagrams.tools.CreateNodeTool;
-import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.representations.Success;
 
 /**
  * Utility class used to help build diagrams for unit tests.
@@ -139,7 +139,7 @@ public class TestDiagramBuilder {
         return CreateNodeTool.newCreateNodeTool(id)
                 .label(TOOL_LABEL)
                 .imageURL(TOOL_IMAGE_URL)
-                .handler(variableManager -> Status.OK)
+                .handler(variableManager -> new Success())
                 .targetDescriptions(List.of())
                 .build();
         // @formatter:on

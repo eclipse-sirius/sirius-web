@@ -26,7 +26,9 @@ import org.eclipse.sirius.web.diagrams.Node;
 import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.events.CreationEvent;
 import org.eclipse.sirius.web.diagrams.tools.CreateNodeTool;
-import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.representations.Failure;
+import org.eclipse.sirius.web.representations.IStatus;
+import org.eclipse.sirius.web.representations.Success;
 import org.eclipse.sirius.web.representations.VariableManager;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeKind;
@@ -104,9 +106,9 @@ public class InvokeNodeToolOnDiagramEventHandler implements IDiagramEventHandler
                     .map(CreateNodeTool.class::cast);
             // @formatter:on
             if (optionalTool.isPresent()) {
-                Status status = this.executeTool(editingContext, diagramContext, input.getDiagramElementId(), optionalTool.get(), input.getStartingPositionX(), input.getStartingPositionY(),
+                IStatus status = this.executeTool(editingContext, diagramContext, input.getDiagramElementId(), optionalTool.get(), input.getStartingPositionX(), input.getStartingPositionY(),
                         input.getSelectedObjectId());
-                if (Objects.equals(status, Status.OK)) {
+                if (status instanceof Success) {
 
                     payload = new InvokeNodeToolOnDiagramSuccessPayload(diagramInput.getId(), diagram);
                     changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, diagramInput.getRepresentationId(), diagramInput);
@@ -118,9 +120,9 @@ public class InvokeNodeToolOnDiagramEventHandler implements IDiagramEventHandler
         changeDescriptionSink.tryEmitNext(changeDescription);
     }
 
-    private Status executeTool(IEditingContext editingContext, IDiagramContext diagramContext, UUID diagramElementId, CreateNodeTool tool, double startingPositionX, double startingPositionY,
+    private IStatus executeTool(IEditingContext editingContext, IDiagramContext diagramContext, UUID diagramElementId, CreateNodeTool tool, double startingPositionX, double startingPositionY,
             String selectedObjectId) {
-        Status result = Status.ERROR;
+        IStatus result = new Failure(""); //$NON-NLS-1$
         Diagram diagram = diagramContext.getDiagram();
         Optional<Node> node = this.diagramQueryService.findNodeById(diagram, diagramElementId);
         Optional<Object> self = Optional.empty();

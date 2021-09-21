@@ -13,12 +13,14 @@
 package org.eclipse.sirius.web.emf.compatibility.operations;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.eclipse.sirius.viewpoint.description.tool.RemoveElement;
 import org.eclipse.sirius.viewpoint.description.tool.ToolFactory;
 import org.eclipse.sirius.web.emf.compatibility.modeloperations.ChildModelOperationHandler;
 import org.eclipse.sirius.web.emf.compatibility.modeloperations.RemoveElementOperationHandler;
-import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.representations.IStatus;
+import org.eclipse.sirius.web.representations.Success;
 import org.eclipse.sirius.web.representations.VariableManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -48,9 +50,9 @@ public class RemoveElementOperationHandlerTests {
     @Test
     public void removeElementOperationHandlerNominalCaseTest() {
         // check the nominal case
-        Status handleResult = this.removeElementOperationHandler.handle(this.operationTestContext.getVariables());
+        IStatus handleResult = this.removeElementOperationHandler.handle(this.operationTestContext.getVariables());
 
-        assertEquals(Status.OK, handleResult);
+        assertTrue(handleResult instanceof Success);
         // the class1 under root package has been removed
         assertEquals(0, this.operationTestContext.getRootPackage().getEClassifiers().size());
 

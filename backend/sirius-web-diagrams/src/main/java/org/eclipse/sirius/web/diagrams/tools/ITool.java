@@ -18,7 +18,7 @@ import org.eclipse.sirius.web.annotations.graphql.GraphQLField;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLID;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLInterfaceType;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLNonNull;
-import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.representations.IStatus;
 import org.eclipse.sirius.web.representations.VariableManager;
 
 /**
@@ -38,7 +38,7 @@ public interface ITool {
     @GraphQLNonNull
     String getLabel();
 
-    Function<VariableManager, Status> getHandler();
+    Function<VariableManager, IStatus> getHandler();
 
     @GraphQLField
     @GraphQLNonNull

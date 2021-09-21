@@ -21,7 +21,7 @@ import org.eclipse.sirius.web.annotations.Immutable;
 import org.eclipse.sirius.web.components.Element;
 import org.eclipse.sirius.web.components.IProps;
 import org.eclipse.sirius.web.forms.RadioOption;
-import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.representations.IStatus;
 
 /**
  * The properties of the radio element.
@@ -38,7 +38,7 @@ public final class RadioElementProps implements IProps {
 
     private List<RadioOption> options;
 
-    private Function<String, Status> newValueHandler;
+    private Function<String, IStatus> newValueHandler;
 
     private List<Element> children;
 
@@ -58,7 +58,7 @@ public final class RadioElementProps implements IProps {
         return this.options;
     }
 
-    public Function<String, Status> getNewValueHandler() {
+    public Function<String, IStatus> getNewValueHandler() {
         return this.newValueHandler;
     }
 
@@ -90,7 +90,7 @@ public final class RadioElementProps implements IProps {
 
         private List<RadioOption> options;
 
-        private Function<String, Status> newValueHandler;
+        private Function<String, IStatus> newValueHandler;
 
         private List<Element> children;
 
@@ -108,7 +108,7 @@ public final class RadioElementProps implements IProps {
             return this;
         }
 
-        public Builder newValueHandler(Function<String, Status> newValueHandler) {
+        public Builder newValueHandler(Function<String, IStatus> newValueHandler) {
             this.newValueHandler = Objects.requireNonNull(newValueHandler);
             return this;
         }

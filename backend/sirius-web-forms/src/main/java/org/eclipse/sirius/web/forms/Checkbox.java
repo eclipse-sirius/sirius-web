@@ -22,7 +22,7 @@ import org.eclipse.sirius.web.annotations.graphql.GraphQLField;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLNonNull;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLObjectType;
 import org.eclipse.sirius.web.forms.validation.Diagnostic;
-import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.representations.IStatus;
 
 /**
  * The checkbox widget.
@@ -36,7 +36,7 @@ public final class Checkbox extends AbstractWidget {
 
     private boolean value;
 
-    private Function<Boolean, Status> newValueHandler;
+    private Function<Boolean, IStatus> newValueHandler;
 
     private Checkbox() {
         // Prevent instantiation
@@ -54,7 +54,7 @@ public final class Checkbox extends AbstractWidget {
         return this.value;
     }
 
-    public Function<Boolean, Status> getNewValueHandler() {
+    public Function<Boolean, IStatus> getNewValueHandler() {
         return this.newValueHandler;
     }
 
@@ -81,7 +81,7 @@ public final class Checkbox extends AbstractWidget {
 
         private boolean value;
 
-        private Function<Boolean, Status> newValueHandler;
+        private Function<Boolean, IStatus> newValueHandler;
 
         private List<Diagnostic> diagnostics;
 
@@ -99,7 +99,7 @@ public final class Checkbox extends AbstractWidget {
             return this;
         }
 
-        public Builder newValueHandler(Function<Boolean, Status> handler) {
+        public Builder newValueHandler(Function<Boolean, IStatus> handler) {
             this.newValueHandler = Objects.requireNonNull(handler);
             return this;
         }

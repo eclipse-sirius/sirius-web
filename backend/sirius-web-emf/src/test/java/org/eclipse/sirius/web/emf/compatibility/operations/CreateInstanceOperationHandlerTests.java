@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.emf.compatibility.operations;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.text.MessageFormat;
 import java.util.UUID;
@@ -36,7 +37,8 @@ import org.eclipse.sirius.web.emf.compatibility.EPackageService;
 import org.eclipse.sirius.web.emf.compatibility.modeloperations.ChildModelOperationHandler;
 import org.eclipse.sirius.web.emf.compatibility.modeloperations.CreateInstanceOperationHandler;
 import org.eclipse.sirius.web.emf.services.EditingContext;
-import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.representations.IStatus;
+import org.eclipse.sirius.web.representations.Success;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -94,9 +96,9 @@ public class CreateInstanceOperationHandlerTests {
         this.createInstanceOperation.setTypeName(TYPE_NAME);
         this.createInstanceOperation.setVariableName(VARIABLE_NAME);
 
-        Status handleResult = this.createInstanceOperationHandler.handle(this.operationTestContext.getVariables());
+        IStatus handleResult = this.createInstanceOperationHandler.handle(this.operationTestContext.getVariables());
 
-        assertEquals(Status.OK, handleResult);
+        assertTrue(handleResult instanceof Success);
         assertEquals(2, this.operationTestContext.getRootPackage().getEClassifiers().size());
         assertEquals(className, this.operationTestContext.getRootPackage().getEClassifiers().get(1).getName());
 
@@ -105,7 +107,7 @@ public class CreateInstanceOperationHandlerTests {
 
         handleResult = this.createInstanceOperationHandler.handle(this.operationTestContext.getVariables());
 
-        assertEquals(Status.OK, handleResult);
+        assertTrue(handleResult instanceof Success);
         assertEquals(3, this.operationTestContext.getRootPackage().getEClassifiers().size());
         assertEquals(null, this.operationTestContext.getRootPackage().getEClassifiers().get(2).getName());
     }
@@ -123,9 +125,9 @@ public class CreateInstanceOperationHandlerTests {
         this.createInstanceOperation.setTypeName(TYPE_NAME);
         this.createInstanceOperation.setVariableName(VARIABLE_NAME);
 
-        Status handleResult = this.createInstanceOperationHandler.handle(this.operationTestContext.getVariables());
+        IStatus handleResult = this.createInstanceOperationHandler.handle(this.operationTestContext.getVariables());
 
-        assertEquals(Status.OK, handleResult);
+        assertTrue(handleResult instanceof Success);
         assertEquals(2, this.operationTestContext.getRootPackage().getEClassifiers().size());
         assertEquals(className, this.operationTestContext.getRootPackage().getEClassifiers().get(1).getName());
 
@@ -134,7 +136,7 @@ public class CreateInstanceOperationHandlerTests {
 
         handleResult = this.createInstanceOperationHandler.handle(this.operationTestContext.getVariables());
 
-        assertEquals(Status.OK, handleResult);
+        assertTrue(handleResult instanceof Success);
         assertEquals(3, this.operationTestContext.getRootPackage().getEClassifiers().size());
         assertEquals(className, this.operationTestContext.getRootPackage().getEClassifiers().get(2).getName());
     }
@@ -170,10 +172,10 @@ public class CreateInstanceOperationHandlerTests {
         this.createInstanceOperation.setTypeName(typeName);
         this.createInstanceOperation.setVariableName(variableName);
 
-        Status handleResult = this.createInstanceOperationHandler.handle(this.operationTestContext.getVariables());
+        IStatus handleResult = this.createInstanceOperationHandler.handle(this.operationTestContext.getVariables());
 
         // check
-        assertEquals(Status.OK, handleResult);
+        assertTrue(handleResult instanceof Success);
         assertEquals(newName, renamedElement.getName());
     }
 

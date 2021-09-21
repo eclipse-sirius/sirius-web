@@ -30,7 +30,9 @@ import org.eclipse.sirius.web.emf.compatibility.properties.api.IPropertiesValida
 import org.eclipse.sirius.web.forms.components.SelectComponent;
 import org.eclipse.sirius.web.forms.description.IfDescription;
 import org.eclipse.sirius.web.forms.description.MultiSelectDescription;
-import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.representations.Failure;
+import org.eclipse.sirius.web.representations.IStatus;
+import org.eclipse.sirius.web.representations.Success;
 import org.eclipse.sirius.web.representations.VariableManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -99,9 +101,9 @@ public class MultiValuedNonContainmentReferenceIfDescriptionProvider {
         // @formatter:on
     }
 
-    private BiFunction<VariableManager, List<String>, Status> getNewValuesHandler() {
+    private BiFunction<VariableManager, List<String>, IStatus> getNewValuesHandler() {
         return (variableManager, newValues) -> {
-            var status = Status.ERROR;
+            IStatus status = new Failure(""); //$NON-NLS-1$
             var optionalEObject = variableManager.get(VariableManager.SELF, EObject.class);
             var optionalEReference = variableManager.get(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE, EReference.class);
             var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
@@ -135,7 +137,7 @@ public class MultiValuedNonContainmentReferenceIfDescriptionProvider {
 
                 refElements.removeIf(refElt -> !newValuesToSet.contains(refElt));
 
-                status = Status.OK;
+                status = new Success();
             }
             return status;
         };

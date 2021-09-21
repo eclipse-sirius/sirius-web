@@ -36,7 +36,7 @@ import org.eclipse.sirius.web.diagrams.description.NodeDescription;
 import org.eclipse.sirius.web.emf.compatibility.SemanticCandidatesProvider;
 import org.eclipse.sirius.web.emf.compatibility.modeloperations.ModelOperationHandlerSwitch;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
-import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.representations.Success;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -109,8 +109,8 @@ public class EdgeMappingConverterTests {
                 .sizeProvider(variableManager -> Size.UNDEFINED)
                 .borderNodeDescriptions(List.of())
                 .childNodeDescriptions(List.of())
-                .labelEditHandler((variableManager, newLabel) -> Status.OK)
-                .deleteHandler(variableManager -> Status.OK)
+                .labelEditHandler((variableManager, newLabel) -> new Success())
+                .deleteHandler(variableManager -> new Success())
                 .build();
         // @formatter:on
     }

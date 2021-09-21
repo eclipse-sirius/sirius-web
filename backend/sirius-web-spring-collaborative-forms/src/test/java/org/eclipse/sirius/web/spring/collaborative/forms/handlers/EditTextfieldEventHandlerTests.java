@@ -26,7 +26,8 @@ import org.eclipse.sirius.web.forms.Form;
 import org.eclipse.sirius.web.forms.Group;
 import org.eclipse.sirius.web.forms.Page;
 import org.eclipse.sirius.web.forms.Textfield;
-import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.representations.IStatus;
+import org.eclipse.sirius.web.representations.Success;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeKind;
 import org.eclipse.sirius.web.spring.collaborative.forms.api.IFormQueryService;
@@ -55,9 +56,9 @@ public class EditTextfieldEventHandlerTests {
         var input = new EditTextfieldInput(UUID.randomUUID(), UUID.randomUUID(), FORM_ID, id, "New value"); //$NON-NLS-1$
 
         AtomicBoolean hasBeenExecuted = new AtomicBoolean();
-        Function<String, Status> newValueHandler = newValue -> {
+        Function<String, IStatus> newValueHandler = newValue -> {
             hasBeenExecuted.set(true);
-            return Status.OK;
+            return new Success();
         };
 
         // @formatter:off

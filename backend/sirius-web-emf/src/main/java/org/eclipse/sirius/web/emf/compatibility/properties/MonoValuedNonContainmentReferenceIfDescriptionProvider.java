@@ -27,7 +27,9 @@ import org.eclipse.sirius.web.emf.compatibility.properties.api.IPropertiesValida
 import org.eclipse.sirius.web.forms.components.SelectComponent;
 import org.eclipse.sirius.web.forms.description.IfDescription;
 import org.eclipse.sirius.web.forms.description.SelectDescription;
-import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.representations.Failure;
+import org.eclipse.sirius.web.representations.IStatus;
+import org.eclipse.sirius.web.representations.Success;
 import org.eclipse.sirius.web.representations.VariableManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -96,13 +98,13 @@ public class MonoValuedNonContainmentReferenceIfDescriptionProvider {
         // @formatter:on
     }
 
-    private BiFunction<VariableManager, String, Status> getNewValueHandler() {
+    private BiFunction<VariableManager, String, IStatus> getNewValueHandler() {
         return (variableManager, newValue) -> {
             var optionalEObject = variableManager.get(VariableManager.SELF, EObject.class);
             var optionalEReference = variableManager.get(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE, EReference.class);
             var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
 
-            Status result = Status.ERROR;
+            IStatus result = new Failure(""); //$NON-NLS-1$
             if (optionalEObject.isPresent() && optionalEReference.isPresent()) {
                 EObject eObject = optionalEObject.get();
                 EReference eReference = optionalEReference.get();
@@ -110,7 +112,7 @@ public class MonoValuedNonContainmentReferenceIfDescriptionProvider {
                 if (newValue == null || newValue.isBlank()) {
                     try {
                         eObject.eUnset(eReference);
-                        result = Status.OK;
+                        result = new Success();
                     } catch (IllegalArgumentException | ClassCastException | ArrayStoreException exception) {
                         this.logger.warn(exception.getMessage(), exception);
                     }
@@ -124,7 +126,7 @@ public class MonoValuedNonContainmentReferenceIfDescriptionProvider {
                         EObject newValueToSet = optionalNewValueToSet.get();
                         try {
                             eObject.eSet(eReference, newValueToSet);
-                            result = Status.OK;
+                            result = new Success();
                         } catch (IllegalArgumentException | ClassCastException | ArrayStoreException exception) {
                             this.logger.warn(exception.getMessage(), exception);
                         }

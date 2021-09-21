@@ -26,7 +26,9 @@ import org.eclipse.sirius.web.compat.forms.WidgetIdProvider;
 import org.eclipse.sirius.web.emf.compatibility.properties.api.IPropertiesValidationProvider;
 import org.eclipse.sirius.web.forms.description.IfDescription;
 import org.eclipse.sirius.web.forms.description.TextfieldDescription;
-import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.representations.Failure;
+import org.eclipse.sirius.web.representations.IStatus;
+import org.eclipse.sirius.web.representations.Success;
 import org.eclipse.sirius.web.representations.VariableManager;
 
 /**
@@ -104,7 +106,7 @@ public class EStringIfDescriptionProvider {
         };
     }
 
-    private BiFunction<VariableManager, String, Status> getNewValueHandler() {
+    private BiFunction<VariableManager, String, IStatus> getNewValueHandler() {
         return (variableManager, newValue) -> {
             var optionalEObject = variableManager.get(VariableManager.SELF, EObject.class);
             var optionalEAttribute = variableManager.get(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE, EAttribute.class);
@@ -115,9 +117,9 @@ public class EStringIfDescriptionProvider {
                 String value = EcoreUtil.createFromString(EcorePackage.Literals.ESTRING, newValue).toString();
                 eObject.eSet(eAttribute, value);
 
-                return Status.OK;
+                return new Success();
             }
-            return Status.ERROR;
+            return new Failure(""); //$NON-NLS-1$
         };
     }
 }

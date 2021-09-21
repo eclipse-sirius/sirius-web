@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.emf.compatibility.operations;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.text.MessageFormat;
 import java.util.UUID;
@@ -25,7 +26,8 @@ import org.eclipse.sirius.viewpoint.description.tool.MoveElement;
 import org.eclipse.sirius.viewpoint.description.tool.ToolFactory;
 import org.eclipse.sirius.web.emf.compatibility.modeloperations.ChildModelOperationHandler;
 import org.eclipse.sirius.web.emf.compatibility.modeloperations.MoveElementOperationHandler;
-import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.representations.IStatus;
+import org.eclipse.sirius.web.representations.Success;
 import org.eclipse.sirius.web.representations.VariableManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -71,9 +73,9 @@ public class MoveElementOperationHandlerTests {
         this.moveElementOperation.setFeatureName(NAME_FEATURE);
         this.moveElementOperation.setNewContainerExpression(AQL_NEWCONTAINER_EXPRESSION);
 
-        Status handleResult = this.moveElementOperationHandler.handle(this.operationTestContext.getVariables());
+        IStatus handleResult = this.moveElementOperationHandler.handle(this.operationTestContext.getVariables());
 
-        assertEquals(Status.OK, handleResult);
+        assertTrue(handleResult instanceof Success);
         assertEquals(0, this.operationTestContext.getRootPackage().getEClassifiers().size());
         assertEquals(this.operationTestContext.getClass1(), this.subPackage1.getEClassifiers().get(0));
     }
@@ -112,10 +114,10 @@ public class MoveElementOperationHandlerTests {
         this.moveElementOperation.setFeatureName(featureName);
         this.moveElementOperation.setNewContainerExpression(newContainerExpression);
 
-        Status handleResult = this.moveElementOperationHandler.handle(this.operationTestContext.getVariables());
+        IStatus handleResult = this.moveElementOperationHandler.handle(this.operationTestContext.getVariables());
 
         // check
-        assertEquals(Status.OK, handleResult);
+        assertTrue(handleResult instanceof Success);
         assertEquals(newName, renamedElement.getName());
     }
 

@@ -24,7 +24,7 @@ import org.eclipse.sirius.web.forms.description.SelectDescription;
 import org.eclipse.sirius.web.forms.elements.SelectElementProps;
 import org.eclipse.sirius.web.forms.validation.DiagnosticComponent;
 import org.eclipse.sirius.web.forms.validation.DiagnosticComponentProps;
-import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.representations.IStatus;
 import org.eclipse.sirius.web.representations.VariableManager;
 
 /**
@@ -70,7 +70,7 @@ public class SelectComponent implements IComponent {
 
             options.add(option);
         }
-        Function<String, Status> specializedHandler = newValue -> {
+        Function<String, IStatus> specializedHandler = newValue -> {
             return selectDescription.getNewValueHandler().apply(variableManager, newValue);
         };
 

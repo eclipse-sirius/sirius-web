@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,17 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.compat.api;
-
-import java.util.Map;
-
-import org.eclipse.sirius.web.representations.IStatus;
+package org.eclipse.sirius.web.representations;
 
 /**
- * Used to handle a Sirius model operation.
+ * The status to return when the representation description handler success.
  *
- * @author sbegaudeau
+ * @author gcoutable
  */
-public interface IModelOperationHandler {
-    IStatus handle(Map<String, Object> variables);
+public class Success implements IStatus {
+
 }

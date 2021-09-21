@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.emf.compatibility.operations;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.text.MessageFormat;
 import java.util.UUID;
@@ -23,7 +24,8 @@ import org.eclipse.sirius.viewpoint.description.tool.SetValue;
 import org.eclipse.sirius.viewpoint.description.tool.ToolFactory;
 import org.eclipse.sirius.web.emf.compatibility.modeloperations.ChildModelOperationHandler;
 import org.eclipse.sirius.web.emf.compatibility.modeloperations.SetValueOperationHandler;
-import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.representations.IStatus;
+import org.eclipse.sirius.web.representations.Success;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -56,9 +58,9 @@ public class SetValueOperationHandlerTests {
         this.setValue.setFeatureName(NAME_FEATURE);
         this.setValue.setValueExpression("aql:'" + newName + "'"); //$NON-NLS-1$//$NON-NLS-2$
 
-        Status handleResult = this.setValueOperationHandler.handle(this.operationTestContext.getVariables());
+        IStatus handleResult = this.setValueOperationHandler.handle(this.operationTestContext.getVariables());
 
-        assertEquals(Status.OK, handleResult);
+        assertTrue(handleResult instanceof Success);
         assertEquals(newName, this.operationTestContext.getRootPackage().getName());
     }
 
@@ -97,10 +99,10 @@ public class SetValueOperationHandlerTests {
         this.setValue.setFeatureName(featureName);
         this.setValue.setValueExpression(setValueExpression);
 
-        Status handleResult = this.setValueOperationHandler.handle(this.operationTestContext.getVariables());
+        IStatus handleResult = this.setValueOperationHandler.handle(this.operationTestContext.getVariables());
 
         // check
-        assertEquals(Status.OK, handleResult);
+        assertTrue(handleResult instanceof Success);
         assertEquals(newName, renamedElement.getName());
     }
 }

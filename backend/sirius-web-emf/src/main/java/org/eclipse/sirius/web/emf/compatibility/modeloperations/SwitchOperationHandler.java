@@ -25,7 +25,8 @@ import org.eclipse.sirius.viewpoint.description.tool.ModelOperation;
 import org.eclipse.sirius.viewpoint.description.tool.Switch;
 import org.eclipse.sirius.web.compat.api.IModelOperationHandler;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
-import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.representations.IStatus;
+import org.eclipse.sirius.web.representations.Success;
 
 /**
  * Handle the {@link Switch} model operation.
@@ -47,11 +48,11 @@ public class SwitchOperationHandler implements IModelOperationHandler {
     }
 
     @Override
-    public Status handle(Map<String, Object> variables) {
+    public IStatus handle(Map<String, Object> variables) {
         EList<Case> switchCases = this.switchOperation.getCases();
         Map<String, Object> childVariables = new HashMap<>(variables);
 
-        Status status = Status.OK;
+        IStatus status = new Success();
         boolean oneCaseHasBeenExecuted = false;
         for (Case switchCase : switchCases) {
             String conditionExpression = switchCase.getConditionExpression();

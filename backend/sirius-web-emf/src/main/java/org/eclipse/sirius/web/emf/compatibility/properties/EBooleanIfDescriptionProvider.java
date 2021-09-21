@@ -24,7 +24,9 @@ import org.eclipse.sirius.web.compat.forms.WidgetIdProvider;
 import org.eclipse.sirius.web.emf.compatibility.properties.api.IPropertiesValidationProvider;
 import org.eclipse.sirius.web.forms.description.CheckboxDescription;
 import org.eclipse.sirius.web.forms.description.IfDescription;
-import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.representations.Failure;
+import org.eclipse.sirius.web.representations.IStatus;
+import org.eclipse.sirius.web.representations.Success;
 import org.eclipse.sirius.web.representations.VariableManager;
 
 /**
@@ -96,7 +98,7 @@ public class EBooleanIfDescriptionProvider {
         };
     }
 
-    private BiFunction<VariableManager, Boolean, Status> getNewValueHandler() {
+    private BiFunction<VariableManager, Boolean, IStatus> getNewValueHandler() {
         return (variableManager, newValue) -> {
             var optionalEObject = variableManager.get(VariableManager.SELF, EObject.class);
             var optionalEAttribute = variableManager.get(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE, EAttribute.class);
@@ -105,9 +107,9 @@ public class EBooleanIfDescriptionProvider {
                 EAttribute eAttribute = optionalEAttribute.get();
 
                 eObject.eSet(eAttribute, newValue);
-                return Status.OK;
+                return new Success();
             }
-            return Status.ERROR;
+            return new Failure(""); //$NON-NLS-1$
         };
     }
 

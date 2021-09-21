@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.emf.compatibility.operations;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.text.MessageFormat;
 import java.util.UUID;
@@ -23,7 +24,8 @@ import org.eclipse.sirius.viewpoint.description.tool.Let;
 import org.eclipse.sirius.viewpoint.description.tool.ToolFactory;
 import org.eclipse.sirius.web.emf.compatibility.modeloperations.ChildModelOperationHandler;
 import org.eclipse.sirius.web.emf.compatibility.modeloperations.LetOperationHandler;
-import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.representations.IStatus;
+import org.eclipse.sirius.web.representations.Success;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -61,9 +63,9 @@ public class LetOperationHandlerTests {
         this.letOperation.setVariableName(VARIABLE_NAME);
         this.letOperation.setValueExpression("aql:self"); //$NON-NLS-1$
 
-        Status handleResult = this.letOperationHandler.handle(this.operationTestContext.getVariables());
+        IStatus handleResult = this.letOperationHandler.handle(this.operationTestContext.getVariables());
 
-        assertEquals(Status.OK, handleResult);
+        assertTrue(handleResult instanceof Success);
         assertEquals(newName, this.operationTestContext.getRootPackage().getName());
 
     }
@@ -100,10 +102,10 @@ public class LetOperationHandlerTests {
         this.letOperation.setVariableName(variableName);
         this.letOperation.setValueExpression(setValueExpression);
 
-        Status handleResult = this.letOperationHandler.handle(this.operationTestContext.getVariables());
+        IStatus handleResult = this.letOperationHandler.handle(this.operationTestContext.getVariables());
 
         // check
-        assertEquals(Status.OK, handleResult);
+        assertTrue(handleResult instanceof Success);
         assertEquals(newName, renamedElement.getName());
     }
 }

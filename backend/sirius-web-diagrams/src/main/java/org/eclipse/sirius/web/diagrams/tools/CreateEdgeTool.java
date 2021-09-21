@@ -22,7 +22,7 @@ import org.eclipse.sirius.web.annotations.graphql.GraphQLField;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLID;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLNonNull;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLObjectType;
-import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.representations.IStatus;
 import org.eclipse.sirius.web.representations.VariableManager;
 
 /**
@@ -41,7 +41,7 @@ public final class CreateEdgeTool implements ITool {
 
     private String label;
 
-    private Function<VariableManager, Status> handler;
+    private Function<VariableManager, IStatus> handler;
 
     private List<EdgeCandidate> edgeCandidates;
 
@@ -78,7 +78,7 @@ public final class CreateEdgeTool implements ITool {
     }
 
     @Override
-    public Function<VariableManager, Status> getHandler() {
+    public Function<VariableManager, IStatus> getHandler() {
         return this.handler;
     }
 
@@ -105,7 +105,7 @@ public final class CreateEdgeTool implements ITool {
 
         private String label;
 
-        private Function<VariableManager, Status> handler;
+        private Function<VariableManager, IStatus> handler;
 
         private List<EdgeCandidate> edgeCandidates;
 
@@ -128,7 +128,7 @@ public final class CreateEdgeTool implements ITool {
             return this;
         }
 
-        public Builder handler(Function<VariableManager, Status> handler) {
+        public Builder handler(Function<VariableManager, IStatus> handler) {
             this.handler = Objects.requireNonNull(handler);
             return this;
         }

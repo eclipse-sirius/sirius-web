@@ -19,7 +19,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import org.eclipse.sirius.web.annotations.Immutable;
-import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.representations.IStatus;
 import org.eclipse.sirius.web.representations.VariableManager;
 
 /**
@@ -36,7 +36,7 @@ public final class CheckboxDescription extends AbstractWidgetDescription {
 
     private Function<VariableManager, Boolean> valueProvider;
 
-    private BiFunction<VariableManager, Boolean, Status> newValueHandler;
+    private BiFunction<VariableManager, Boolean, IStatus> newValueHandler;
 
     private CheckboxDescription() {
         // Prevent instantiation
@@ -54,7 +54,7 @@ public final class CheckboxDescription extends AbstractWidgetDescription {
         return this.valueProvider;
     }
 
-    public BiFunction<VariableManager, Boolean, Status> getNewValueHandler() {
+    public BiFunction<VariableManager, Boolean, IStatus> getNewValueHandler() {
         return this.newValueHandler;
     }
 
@@ -83,7 +83,7 @@ public final class CheckboxDescription extends AbstractWidgetDescription {
 
         private Function<VariableManager, Boolean> valueProvider;
 
-        private BiFunction<VariableManager, Boolean, Status> newValueHandler;
+        private BiFunction<VariableManager, Boolean, IStatus> newValueHandler;
 
         private Function<VariableManager, List<Object>> diagnosticsProvider;
 
@@ -110,7 +110,7 @@ public final class CheckboxDescription extends AbstractWidgetDescription {
             return this;
         }
 
-        public Builder newValueHandler(BiFunction<VariableManager, Boolean, Status> newValueHandler) {
+        public Builder newValueHandler(BiFunction<VariableManager, Boolean, IStatus> newValueHandler) {
             this.newValueHandler = Objects.requireNonNull(newValueHandler);
             return this;
         }

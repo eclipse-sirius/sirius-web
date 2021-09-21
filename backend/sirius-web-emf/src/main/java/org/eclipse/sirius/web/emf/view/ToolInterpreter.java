@@ -28,7 +28,9 @@ import org.eclipse.sirius.ecore.extender.business.internal.accessor.ecore.EcoreI
 import org.eclipse.sirius.web.core.api.IEditService;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
 import org.eclipse.sirius.web.interpreter.Result;
-import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.representations.Failure;
+import org.eclipse.sirius.web.representations.IStatus;
+import org.eclipse.sirius.web.representations.Success;
 import org.eclipse.sirius.web.representations.VariableManager;
 import org.eclipse.sirius.web.view.ChangeContext;
 import org.eclipse.sirius.web.view.CreateInstance;
@@ -58,12 +60,12 @@ public class ToolInterpreter {
         this.ecore = new EcoreIntrinsicExtender();
     }
 
-    public Status executeTool(Tool tool, VariableManager variableManager) {
+    public IStatus executeTool(Tool tool, VariableManager variableManager) {
         Optional<VariableManager> result = this.executeOperations(tool.getBody(), variableManager);
         if (result.isPresent()) {
-            return Status.OK;
+            return new Success();
         } else {
-            return Status.ERROR;
+            return new Failure(""); //$NON-NLS-1$
         }
     }
 

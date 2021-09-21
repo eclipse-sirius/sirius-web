@@ -23,7 +23,7 @@ import org.eclipse.sirius.web.forms.description.TextfieldDescription;
 import org.eclipse.sirius.web.forms.elements.TextfieldElementProps;
 import org.eclipse.sirius.web.forms.validation.DiagnosticComponent;
 import org.eclipse.sirius.web.forms.validation.DiagnosticComponentProps;
-import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.representations.IStatus;
 import org.eclipse.sirius.web.representations.VariableManager;
 
 /**
@@ -47,8 +47,8 @@ public class TextfieldComponent implements IComponent {
         String id = textfieldDescription.getIdProvider().apply(variableManager);
         String label = textfieldDescription.getLabelProvider().apply(variableManager);
         String value = textfieldDescription.getValueProvider().apply(variableManager);
-        BiFunction<VariableManager, String, Status> genericHandler = textfieldDescription.getNewValueHandler();
-        Function<String, Status> specializedHandler = newValue -> {
+        BiFunction<VariableManager, String, IStatus> genericHandler = textfieldDescription.getNewValueHandler();
+        Function<String, IStatus> specializedHandler = newValue -> {
             return genericHandler.apply(variableManager, newValue);
         };
         List<Element> children = List.of(new Element(DiagnosticComponent.class, new DiagnosticComponentProps(textfieldDescription, variableManager)));

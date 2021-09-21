@@ -21,7 +21,7 @@ import java.util.function.Function;
 import org.eclipse.sirius.web.annotations.Immutable;
 import org.eclipse.sirius.web.components.Element;
 import org.eclipse.sirius.web.diagrams.EdgeStyle;
-import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.representations.IStatus;
 import org.eclipse.sirius.web.representations.VariableManager;
 
 /**
@@ -69,7 +69,7 @@ public final class EdgeDescription {
 
     private Function<VariableManager, EdgeStyle> styleProvider;
 
-    private Function<VariableManager, Status> deleteHandler;
+    private Function<VariableManager, IStatus> deleteHandler;
 
     private EdgeDescription() {
         // Prevent instantiation
@@ -131,7 +131,7 @@ public final class EdgeDescription {
         return this.styleProvider;
     }
 
-    public Function<VariableManager, Status> getDeleteHandler() {
+    public Function<VariableManager, IStatus> getDeleteHandler() {
         return this.deleteHandler;
     }
 
@@ -180,7 +180,7 @@ public final class EdgeDescription {
 
         private Function<VariableManager, EdgeStyle> styleProvider;
 
-        private Function<VariableManager, Status> deleteHandler;
+        private Function<VariableManager, IStatus> deleteHandler;
 
         private Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
@@ -252,7 +252,7 @@ public final class EdgeDescription {
             return this;
         }
 
-        public Builder deleteHandler(Function<VariableManager, Status> deleteHandler) {
+        public Builder deleteHandler(Function<VariableManager, IStatus> deleteHandler) {
             this.deleteHandler = Objects.requireNonNull(deleteHandler);
             return this;
         }

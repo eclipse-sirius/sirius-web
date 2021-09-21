@@ -19,7 +19,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import org.eclipse.sirius.web.annotations.Immutable;
-import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.representations.IStatus;
 import org.eclipse.sirius.web.representations.VariableManager;
 
 /**
@@ -35,7 +35,7 @@ public final class TextareaDescription extends AbstractWidgetDescription {
 
     private Function<VariableManager, String> valueProvider;
 
-    private BiFunction<VariableManager, String, Status> newValueHandler;
+    private BiFunction<VariableManager, String, IStatus> newValueHandler;
 
     private TextareaDescription() {
         // Prevent instantiation
@@ -53,7 +53,7 @@ public final class TextareaDescription extends AbstractWidgetDescription {
         return this.valueProvider;
     }
 
-    public BiFunction<VariableManager, String, Status> getNewValueHandler() {
+    public BiFunction<VariableManager, String, IStatus> getNewValueHandler() {
         return this.newValueHandler;
     }
 
@@ -83,7 +83,7 @@ public final class TextareaDescription extends AbstractWidgetDescription {
 
         private Function<VariableManager, String> valueProvider;
 
-        private BiFunction<VariableManager, String, Status> newValueHandler;
+        private BiFunction<VariableManager, String, IStatus> newValueHandler;
 
         private Function<VariableManager, List<Object>> diagnosticsProvider;
 
@@ -110,7 +110,7 @@ public final class TextareaDescription extends AbstractWidgetDescription {
             return this;
         }
 
-        public Builder newValueHandler(BiFunction<VariableManager, String, Status> newValueHandler) {
+        public Builder newValueHandler(BiFunction<VariableManager, String, IStatus> newValueHandler) {
             this.newValueHandler = Objects.requireNonNull(newValueHandler);
             return this;
         }

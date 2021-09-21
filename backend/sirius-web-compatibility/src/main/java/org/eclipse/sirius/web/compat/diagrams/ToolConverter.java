@@ -24,7 +24,9 @@ import org.eclipse.sirius.viewpoint.description.tool.InitialOperation;
 import org.eclipse.sirius.web.compat.api.IModelOperationHandlerSwitchProvider;
 import org.eclipse.sirius.web.core.api.IEditService;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
-import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.representations.Failure;
+import org.eclipse.sirius.web.representations.IStatus;
+import org.eclipse.sirius.web.representations.Success;
 import org.eclipse.sirius.web.representations.VariableManager;
 
 /**
@@ -46,7 +48,7 @@ public class ToolConverter {
         this.modelOperationHandlerSwitchProvider = Objects.requireNonNull(modelOperationHandlerSwitchProvider);
     }
 
-    public BiFunction<VariableManager, String, Status> createDirectEditToolHandler(DirectEditLabel labelEditDescription) {
+    public BiFunction<VariableManager, String, IStatus> createDirectEditToolHandler(DirectEditLabel labelEditDescription) {
         var optionalInitialOperation = Optional.ofNullable(labelEditDescription).map(DirectEditLabel::getInitialOperation);
         if (optionalInitialOperation.isPresent()) {
             InitialOperation initialOperation = optionalInitialOperation.get();
@@ -56,15 +58,15 @@ public class ToolConverter {
                 var modelOperationHandlerSwitch = this.modelOperationHandlerSwitchProvider.getModelOperationHandlerSwitch(this.interpreter);
                 return modelOperationHandlerSwitch.apply(initialOperation.getFirstModelOperations()).map(handler -> {
                     return handler.handle(variables);
-                }).orElse(Status.ERROR);
+                }).orElse(new Failure("")); //$NON-NLS-1$
             };
         } else {
             // If no direct edit tool is defined, nothing to do but consider this OK.
-            return (variableManager, newText) -> Status.OK;
+            return (variableManager, newText) -> new Success();
         }
     }
 
-    public Function<VariableManager, Status> createDeleteToolHandler(DeleteElementDescription deleteDescription) {
+    public Function<VariableManager, IStatus> createDeleteToolHandler(DeleteElementDescription deleteDescription) {
         var optionalInitialOperation = Optional.ofNullable(deleteDescription).map(DeleteElementDescription::getInitialOperation);
         if (optionalInitialOperation.isPresent()) {
             InitialOperation initialOperation = optionalInitialOperation.get();
@@ -76,13 +78,13 @@ public class ToolConverter {
                 var modelOperationHandlerSwitch = this.modelOperationHandlerSwitchProvider.getModelOperationHandlerSwitch(this.interpreter);
                 return modelOperationHandlerSwitch.apply(initialOperation.getFirstModelOperations()).map(handler -> {
                     return handler.handle(variables);
-                }).orElse(Status.ERROR);
+                }).orElse(new Failure("")); //$NON-NLS-1$
             };
         } else {
             // If no delete tool is defined, execute the default behavior: delete the underlying semantic element.
             return variableManager -> {
                 Optional.of(variableManager.getVariables().get(VariableManager.SELF)).ifPresent(this.editService::delete);
-                return Status.OK;
+                return new Success();
             };
         }
     }

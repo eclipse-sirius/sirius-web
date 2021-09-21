@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.emf.compatibility.operations;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.text.MessageFormat;
 
@@ -23,7 +24,8 @@ import org.eclipse.sirius.viewpoint.description.tool.Switch;
 import org.eclipse.sirius.viewpoint.description.tool.ToolFactory;
 import org.eclipse.sirius.web.emf.compatibility.modeloperations.ChildModelOperationHandler;
 import org.eclipse.sirius.web.emf.compatibility.modeloperations.SwitchOperationHandler;
-import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.representations.IStatus;
+import org.eclipse.sirius.web.representations.Success;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -89,8 +91,8 @@ public class SwitchOperationHandlerTests {
         this.case1.setConditionExpression(expressionCase1);
         this.case2.setConditionExpression(expressionCase2);
 
-        Status handleResult = this.switchOperationHandler.handle(this.operationTestContext.getVariables());
-        assertEquals(Status.OK, handleResult);
+        IStatus handleResult = this.switchOperationHandler.handle(this.operationTestContext.getVariables());
+        assertTrue(handleResult instanceof Success);
         assertEquals(expectedRootName, this.operationTestContext.getRootPackage().getName());
     }
 

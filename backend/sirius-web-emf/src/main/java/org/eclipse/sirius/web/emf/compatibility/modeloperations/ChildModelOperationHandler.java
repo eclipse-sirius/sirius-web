@@ -19,7 +19,9 @@ import java.util.Optional;
 import org.eclipse.sirius.viewpoint.description.tool.ModelOperation;
 import org.eclipse.sirius.web.compat.api.IModelOperationHandler;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
-import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.representations.Failure;
+import org.eclipse.sirius.web.representations.IStatus;
+import org.eclipse.sirius.web.representations.Success;
 
 /**
  * Used to execute some child model operations.
@@ -27,23 +29,23 @@ import org.eclipse.sirius.web.representations.Status;
  * @author sbegaudeau
  */
 public class ChildModelOperationHandler {
-    public Status handle(AQLInterpreter interpreter, Map<String, Object> variables, List<ModelOperation> modelOperations) {
+    public IStatus handle(AQLInterpreter interpreter, Map<String, Object> variables, List<ModelOperation> modelOperations) {
         boolean hasBeenSuccessfullyExecuted = true;
 
         ModelOperationHandlerSwitch modelOperationHandlerSwitch = new ModelOperationHandlerSwitch(interpreter);
         for (ModelOperation modelOperation : modelOperations) {
             Optional<IModelOperationHandler> optionalModelOperationHandler = modelOperationHandlerSwitch.apply(modelOperation);
 
-            Status status = optionalModelOperationHandler.map(handler -> {
+            IStatus status = optionalModelOperationHandler.map(handler -> {
                 return handler.handle(variables);
-            }).orElse(Status.ERROR);
+            }).orElse(new Failure("")); //$NON-NLS-1$
 
-            hasBeenSuccessfullyExecuted = hasBeenSuccessfullyExecuted && Status.OK.equals(status);
+            hasBeenSuccessfullyExecuted = hasBeenSuccessfullyExecuted && status instanceof Success;
         }
 
         if (hasBeenSuccessfullyExecuted) {
-            return Status.OK;
+            return new Success();
         }
-        return Status.ERROR;
+        return new Failure(""); //$NON-NLS-1$
     }
 }

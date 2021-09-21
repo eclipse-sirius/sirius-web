@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.emf.compatibility.operations;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.text.MessageFormat;
 import java.util.UUID;
@@ -23,7 +24,8 @@ import org.eclipse.sirius.viewpoint.description.tool.If;
 import org.eclipse.sirius.viewpoint.description.tool.ToolFactory;
 import org.eclipse.sirius.web.emf.compatibility.modeloperations.ChildModelOperationHandler;
 import org.eclipse.sirius.web.emf.compatibility.modeloperations.IfOperationHandler;
-import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.representations.IStatus;
+import org.eclipse.sirius.web.representations.Success;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -60,9 +62,9 @@ public class IfOperationHandlerTests {
         // check the nominal case
         this.ifOperation.setConditionExpression(AQL_TRUE);
 
-        Status handleResult = this.ifOperationHandler.handle(this.operationTestContext.getVariables());
+        IStatus handleResult = this.ifOperationHandler.handle(this.operationTestContext.getVariables());
 
-        assertEquals(Status.OK, handleResult);
+        assertTrue(handleResult instanceof Success);
         assertEquals(newName, this.operationTestContext.getRootPackage().getName());
 
     }
@@ -98,10 +100,10 @@ public class IfOperationHandlerTests {
         // execute
         this.ifOperation.setConditionExpression(conditionExpression);
 
-        Status handleResult = this.ifOperationHandler.handle(this.operationTestContext.getVariables());
+        IStatus handleResult = this.ifOperationHandler.handle(this.operationTestContext.getVariables());
 
         // check
-        assertEquals(Status.OK, handleResult);
+        assertTrue(handleResult instanceof Success);
         assertEquals(OperationTestContext.ROOT_PACKAGE_NAME, renamedElement.getName());
     }
 

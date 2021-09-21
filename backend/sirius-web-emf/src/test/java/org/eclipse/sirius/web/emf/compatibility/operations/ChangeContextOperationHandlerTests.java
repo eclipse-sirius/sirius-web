@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.emf.compatibility.operations;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.text.MessageFormat;
 import java.util.UUID;
@@ -22,7 +23,8 @@ import org.eclipse.sirius.viewpoint.description.tool.ChangeContext;
 import org.eclipse.sirius.viewpoint.description.tool.ToolFactory;
 import org.eclipse.sirius.web.emf.compatibility.modeloperations.ChangeContextOperationHandler;
 import org.eclipse.sirius.web.emf.compatibility.modeloperations.ChildModelOperationHandler;
-import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.representations.IStatus;
+import org.eclipse.sirius.web.representations.Success;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -53,9 +55,9 @@ public class ChangeContextOperationHandlerTests {
         String newName = "newName"; //$NON-NLS-1$
         this.changeContext.setBrowseExpression("aql:self.renameENamedElementService('" + newName + "')"); //$NON-NLS-1$//$NON-NLS-2$
 
-        Status handleResult = this.changeContextOperationHandler.handle(this.operationTestContext.getVariables());
+        IStatus handleResult = this.changeContextOperationHandler.handle(this.operationTestContext.getVariables());
 
-        assertEquals(Status.OK, handleResult);
+        assertTrue(handleResult instanceof Success);
         assertEquals(newName, this.operationTestContext.getRootPackage().getName());
 
         // check the ChangeContextOperation correctly change the context
@@ -99,10 +101,10 @@ public class ChangeContextOperationHandlerTests {
 
         // execute
         this.changeContext.setBrowseExpression(browseExpression);
-        Status handleResult = this.changeContextOperationHandler.handle(this.operationTestContext.getVariables());
+        IStatus handleResult = this.changeContextOperationHandler.handle(this.operationTestContext.getVariables());
 
         // check
-        assertEquals(Status.OK, handleResult);
+        assertTrue(handleResult instanceof Success);
         assertEquals(newName, renamedElement.getName());
     }
 }

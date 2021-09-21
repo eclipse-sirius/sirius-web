@@ -21,7 +21,7 @@ import org.eclipse.sirius.web.annotations.Immutable;
 import org.eclipse.sirius.web.components.Element;
 import org.eclipse.sirius.web.components.IProps;
 import org.eclipse.sirius.web.forms.SelectOption;
-import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.representations.IStatus;
 
 /**
  * The properties of the multi-select element.
@@ -41,7 +41,7 @@ public final class MultiSelectElementProps implements IProps {
 
     private List<String> values;
 
-    private Function<List<String>, Status> newValuesHandler;
+    private Function<List<String>, IStatus> newValuesHandler;
 
     private List<Element> children;
 
@@ -65,7 +65,7 @@ public final class MultiSelectElementProps implements IProps {
         return this.values;
     }
 
-    public Function<List<String>, Status> getNewValuesHandler() {
+    public Function<List<String>, IStatus> getNewValuesHandler() {
         return this.newValuesHandler;
     }
 
@@ -100,7 +100,7 @@ public final class MultiSelectElementProps implements IProps {
 
         private List<String> values;
 
-        private Function<List<String>, Status> newValuesHandler;
+        private Function<List<String>, IStatus> newValuesHandler;
 
         private List<Element> children;
 
@@ -123,7 +123,7 @@ public final class MultiSelectElementProps implements IProps {
             return this;
         }
 
-        public Builder newValuesHandler(Function<List<String>, Status> newValuesHandler) {
+        public Builder newValuesHandler(Function<List<String>, IStatus> newValuesHandler) {
             this.newValuesHandler = Objects.requireNonNull(newValuesHandler);
             return this;
         }

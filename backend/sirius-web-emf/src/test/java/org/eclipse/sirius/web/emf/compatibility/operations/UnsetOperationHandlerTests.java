@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.emf.compatibility.operations;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.text.MessageFormat;
@@ -26,7 +27,8 @@ import org.eclipse.sirius.viewpoint.description.tool.ToolFactory;
 import org.eclipse.sirius.viewpoint.description.tool.Unset;
 import org.eclipse.sirius.web.emf.compatibility.modeloperations.ChildModelOperationHandler;
 import org.eclipse.sirius.web.emf.compatibility.modeloperations.UnsetOperationHandler;
-import org.eclipse.sirius.web.representations.Status;
+import org.eclipse.sirius.web.representations.IStatus;
+import org.eclipse.sirius.web.representations.Success;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -70,9 +72,9 @@ public class UnsetOperationHandlerTests {
         this.unset.setFeatureName(NAME_FEATURE);
         this.unset.setElementExpression(null);
 
-        Status handleResult = this.unsetOperationHandler.handle(this.operationTestContext.getVariables());
+        IStatus handleResult = this.unsetOperationHandler.handle(this.operationTestContext.getVariables());
 
-        assertEquals(Status.OK, handleResult);
+        assertThat(handleResult).isInstanceOf(Success.class);
         assertEquals(null, this.operationTestContext.getRootPackage().getName());
 
         // check unset on mono value EStrucuralFeature
@@ -81,7 +83,7 @@ public class UnsetOperationHandlerTests {
 
         handleResult = this.unsetOperationHandler.handle(this.operationTestContext.getVariables());
 
-        assertEquals(Status.OK, handleResult);
+        assertThat(handleResult).isInstanceOf(Success.class);
         assertEquals(null, this.operationTestContext.getRootPackage().getEFactoryInstance());
     }
 
@@ -91,9 +93,9 @@ public class UnsetOperationHandlerTests {
         this.unset.setFeatureName(ECLASSIFIERS_FEATURE);
         this.unset.setElementExpression("aql:self.eClassifiers->first()"); //$NON-NLS-1$
         EClassifier secondClass = this.operationTestContext.getRootPackage().getEClassifiers().get(1);
-        Status handleResult = this.unsetOperationHandler.handle(this.operationTestContext.getVariables());
+        IStatus handleResult = this.unsetOperationHandler.handle(this.operationTestContext.getVariables());
 
-        assertEquals(Status.OK, handleResult);
+        assertThat(handleResult).isInstanceOf(Success.class);
         assertEquals(1, this.operationTestContext.getRootPackage().getEClassifiers().size());
         assertEquals(secondClass, this.operationTestContext.getRootPackage().getEClassifiers().get(0));
 
@@ -103,7 +105,7 @@ public class UnsetOperationHandlerTests {
 
         handleResult = this.unsetOperationHandler.handle(this.operationTestContext.getVariables());
 
-        assertEquals(Status.OK, handleResult);
+        assertThat(handleResult).isInstanceOf(Success.class);
         // This result is functionally unexpected but is the one in Sirius
         // The expected size is 0
         assertEquals(0, this.operationTestContext.getRootPackage().getEClassifiers().size());
@@ -137,9 +139,9 @@ public class UnsetOperationHandlerTests {
         this.unset.setFeatureName("aql:'na' + 'me'"); //$NON-NLS-1$
         this.unset.setElementExpression(null);
 
-        Status handleResult = this.unsetOperationHandler.handle(this.operationTestContext.getVariables());
+        IStatus handleResult = this.unsetOperationHandler.handle(this.operationTestContext.getVariables());
 
-        assertEquals(Status.OK, handleResult);
+        assertThat(handleResult).isInstanceOf(Success.class);
         assertEquals(null, this.operationTestContext.getRootPackage().getName());
     }
 
@@ -155,10 +157,10 @@ public class UnsetOperationHandlerTests {
         this.unset.setFeatureName(featureName);
         this.unset.setElementExpression(elementExpression);
 
-        Status handleResult = this.unsetOperationHandler.handle(this.operationTestContext.getVariables());
+        IStatus handleResult = this.unsetOperationHandler.handle(this.operationTestContext.getVariables());
 
         // check
-        assertEquals(Status.OK, handleResult);
+        assertThat(handleResult).isInstanceOf(Success.class);
         assertEquals(newName, renamedElement.getName());
     }
 
