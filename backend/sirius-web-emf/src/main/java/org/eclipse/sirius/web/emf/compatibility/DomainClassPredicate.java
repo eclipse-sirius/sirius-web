@@ -21,14 +21,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
 
 /**
- * Evaluate if a given EObject matches a domain class.
+ * Evaluate if a given EClass matches a domain class descriptor (as a string).
  *
  * @author sbegaudeau
  */
-public class DomainClassPredicate implements Predicate<EObject> {
+public class DomainClassPredicate implements Predicate<EClass> {
 
     /**
      * The pattern used to match the separator used by both Sirius and AQL.
@@ -42,7 +41,7 @@ public class DomainClassPredicate implements Predicate<EObject> {
     }
 
     @Override
-    public boolean test(EObject eObject) {
+    public boolean test(EClass actualType) {
         String packageName = null;
         String className = null;
 
@@ -59,8 +58,8 @@ public class DomainClassPredicate implements Predicate<EObject> {
                 boolean result = false;
 
                 List<EClass> eAllTypes = new ArrayList<>();
-                eAllTypes.add(eObject.eClass());
-                eAllTypes.addAll(eObject.eClass().getEAllSuperTypes());
+                eAllTypes.add(actualType);
+                eAllTypes.addAll(actualType.getEAllSuperTypes());
 
                 Iterator<EClass> iterator = eAllTypes.iterator();
                 while (iterator.hasNext() && !result) {

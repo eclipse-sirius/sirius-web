@@ -182,10 +182,66 @@ public class ViewValidatorTests {
     }
 
     @Test
+    public void testNodeStyleDescriptionValidQualifiedDomainInResourceSet() {
+        Map<Object, Object> defaultContext = Diagnostician.INSTANCE.createDefaultContext();
+        NodeDescription nodeDescription = ViewFactory.eINSTANCE.createNodeDescription();
+        nodeDescription.setDomainType(SAMPLE_DOMAIN_NAME + "::" + SAMPLE_ENTITY_NAME); //$NON-NLS-1$
+
+        ResourceSetImpl resourceSet = new ResourceSetImpl();
+        XMIResourceImpl viewResource = new XMIResourceImpl();
+        viewResource.getContents().add(nodeDescription);
+        XMIResourceImpl domainResource = new XMIResourceImpl();
+        Domain domain = DomainFactory.eINSTANCE.createDomain();
+        domain.setName(SAMPLE_DOMAIN_NAME);
+        domainResource.getContents().add(domain);
+        Entity entity = DomainFactory.eINSTANCE.createEntity();
+        entity.setName(SAMPLE_ENTITY_NAME);
+        domain.getTypes().add(entity);
+
+        resourceSet.getResources().add(viewResource);
+        resourceSet.getResources().add(domainResource);
+
+        BasicDiagnostic diagnosticChain = new BasicDiagnostic(Diagnostic.OK, null, 0, null, null);
+        boolean validationResult = new ViewValidator().validate(nodeDescription.eClass(), nodeDescription, diagnosticChain, defaultContext);
+        assertThat(validationResult).isTrue();
+        assertThat(diagnosticChain).isEqualTo(new BasicDiagnostic(Diagnostic.OK, null, 0, null, null));
+    }
+
+    @Test
     public void testNodeStyleDescriptionValidDomainInPackageRegistry() {
         Map<Object, Object> defaultContext = Diagnostician.INSTANCE.createDefaultContext();
         NodeDescription nodeDescription = ViewFactory.eINSTANCE.createNodeDescription();
         nodeDescription.setDomainType(SAMPLE_ENTITY_NAME);
+
+        ResourceSetImpl resourceSet = new ResourceSetImpl();
+        XMIResourceImpl viewResource = new XMIResourceImpl();
+        viewResource.getContents().add(nodeDescription);
+        resourceSet.getResources().add(viewResource);
+
+        EPackageRegistryImpl packageRegistryImpl = new EPackageRegistryImpl();
+        EPackage ePackage = EcoreFactory.eINSTANCE.createEPackage();
+        ePackage.setName(SAMPLE_DOMAIN_NAME);
+        ePackage.setNsPrefix(SAMPLE_DOMAIN_NAME);
+        ePackage.setNsURI("domain://sample"); //$NON-NLS-1$
+
+        EClass sampleClass = EcoreFactory.eINSTANCE.createEClass();
+        sampleClass.setName(SAMPLE_ENTITY_NAME);
+        ePackage.getEClassifiers().add(sampleClass);
+        packageRegistryImpl.put(ePackage.getNsURI(), ePackage);
+        resourceSet.setPackageRegistry(packageRegistryImpl);
+
+        BasicDiagnostic diagnosticChain = new BasicDiagnostic(Diagnostic.OK, null, 0, null, null);
+        boolean validationResult = new ViewValidator().validate(nodeDescription.eClass(), nodeDescription, diagnosticChain, defaultContext);
+        assertThat(validationResult).isTrue();
+
+        assertThat(diagnosticChain).isEqualTo(new BasicDiagnostic(Diagnostic.OK, null, 0, null, null));
+    }
+
+    @Test
+    public void testNodeStyleDescriptionValidQualifiedDomainInPackageRegistry() {
+        Map<Object, Object> defaultContext = Diagnostician.INSTANCE.createDefaultContext();
+        NodeDescription nodeDescription = ViewFactory.eINSTANCE.createNodeDescription();
+        nodeDescription.setDomainType(SAMPLE_DOMAIN_NAME + "::" + SAMPLE_ENTITY_NAME); //$NON-NLS-1$
 
         ResourceSetImpl resourceSet = new ResourceSetImpl();
         XMIResourceImpl viewResource = new XMIResourceImpl();

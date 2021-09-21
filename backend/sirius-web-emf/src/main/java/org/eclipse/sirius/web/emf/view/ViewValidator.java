@@ -17,6 +17,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.BasicDiagnostic;
@@ -33,6 +34,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.sirius.web.domain.Domain;
 import org.eclipse.sirius.web.domain.DomainPackage;
 import org.eclipse.sirius.web.domain.Entity;
+import org.eclipse.sirius.web.emf.compatibility.DomainClassPredicate;
 import org.eclipse.sirius.web.view.Conditional;
 import org.eclipse.sirius.web.view.NodeDescription;
 import org.eclipse.sirius.web.view.NodeStyle;
@@ -127,18 +129,17 @@ public class ViewValidator implements EValidator {
         List<Entity> entities = this.getDomainEntitiesFromResourceSet(resourceSet);
         List<EPackage> ePackages = this.getDomainEPackagesFromRegistry(resourceSet.getPackageRegistry());
 
-        // @formatter:off
-        isValid = entities.stream()
-                .map(Entity::getName)
-                .anyMatch(name -> name.equals(nodeDescription.getDomainType()));
-        // @formatter:on
+        String domainType = nodeDescription.getDomainType();
+        isValid = entities.stream().anyMatch(entity -> this.describesEntity(domainType, entity));
 
         if (!isValid) {
             // @formatter:off
             isValid = ePackages.stream()
                     .map(EPackage::getEClassifiers)
                     .flatMap(Collection::stream)
-                    .anyMatch(classifier -> classifier.getName().equals(nodeDescription.getDomainType()));
+                    .filter(EClass.class::isInstance)
+                    .map(EClass.class::cast)
+                    .anyMatch(classifier -> new DomainClassPredicate(domainType).test(classifier));
             // @formatter:off
         }
 
@@ -147,7 +148,7 @@ public class ViewValidator implements EValidator {
             BasicDiagnostic basicDiagnostic = new BasicDiagnostic(Diagnostic.ERROR,
                     SIRIUS_WEB_EMF_PACKAGE,
                     0,
-                    String.format(NODE_DESCRIPTION_INVALID_DOMAIN_TYPE_ERROR_MESSAGE, nodeDescription.getDomainType()),
+                    String.format(NODE_DESCRIPTION_INVALID_DOMAIN_TYPE_ERROR_MESSAGE, domainType),
                     new Object [] {
                             nodeDescription,
                             ViewPackage.Literals.DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE,
@@ -158,6 +159,17 @@ public class ViewValidator implements EValidator {
         }
 
         return isValid;
+    }
+
+    private boolean describesEntity(String domainType, Entity entity) {
+        boolean result = false;
+        if (Objects.equals(domainType, entity.getName())) {
+            result = true;
+        } else if (entity.eContainer() instanceof Domain) {
+            String domainName = ((Domain) entity.eContainer()).getName();
+            result = Objects.equals(domainType, domainName + "::" + entity.getName()); //$NON-NLS-1$
+        }
+        return result;
     }
 
     private List<Entity> getDomainEntitiesFromResourceSet(ResourceSet resourceSet) {

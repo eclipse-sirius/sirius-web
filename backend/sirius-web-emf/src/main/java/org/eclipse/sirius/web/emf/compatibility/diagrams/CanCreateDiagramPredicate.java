@@ -17,8 +17,6 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.diagram.description.DiagramDescription;
 import org.eclipse.sirius.web.emf.compatibility.DomainClassPredicate;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
@@ -49,8 +47,7 @@ public class CanCreateDiagramPredicate implements Predicate<VariableManager> {
         String domainClass = this.diagramDescription.getDomainClass();
 
         // @formatter:off
-        Optional<EObject> optionalEObject = variableManager.get(IRepresentationDescription.CLASS, EClass.class)
-                .map(EcoreUtil::create)
+        Optional<EClass> optionalEObject = variableManager.get(IRepresentationDescription.CLASS, EClass.class)
                 .filter(new DomainClassPredicate(domainClass));
         // @formatter:on
 
