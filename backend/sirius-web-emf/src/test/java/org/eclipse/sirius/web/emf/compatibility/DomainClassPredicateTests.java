@@ -14,8 +14,7 @@ package org.eclipse.sirius.web.emf.compatibility;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EcoreFactory;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -27,40 +26,30 @@ public class DomainClassPredicateTests {
     @Test
     public void testValidDomainClass() {
         DomainClassPredicate domainClassPredicate = new DomainClassPredicate("ecore::EClass"); //$NON-NLS-1$
-
-        EClass eClass = EcoreFactory.eINSTANCE.createEClass();
-        assertThat(domainClassPredicate.test(eClass)).isTrue();
+        assertThat(domainClassPredicate.test(EcorePackage.Literals.ECLASS)).isTrue();
     }
 
     @Test
     public void testInvalidDomainClass() {
         DomainClassPredicate domainClassPredicate = new DomainClassPredicate("foo::Bar"); //$NON-NLS-1$
-
-        EClass eClass = EcoreFactory.eINSTANCE.createEClass();
-        assertThat(domainClassPredicate.test(eClass)).isFalse();
+        assertThat(domainClassPredicate.test(EcorePackage.Literals.ECLASS)).isFalse();
     }
 
     @Test
     public void testSuperClass() {
         DomainClassPredicate domainClassPredicate = new DomainClassPredicate("ecore::EClassifier"); //$NON-NLS-1$
-
-        EClass eClass = EcoreFactory.eINSTANCE.createEClass();
-        assertThat(domainClassPredicate.test(eClass)).isTrue();
+        assertThat(domainClassPredicate.test(EcorePackage.Literals.ECLASS)).isTrue();
     }
 
     @Test
     public void testSuperSuperClass() {
         DomainClassPredicate domainClassPredicate = new DomainClassPredicate("ecore::ENamedElement"); //$NON-NLS-1$
-
-        EClass eClass = EcoreFactory.eINSTANCE.createEClass();
-        assertThat(domainClassPredicate.test(eClass)).isTrue();
+        assertThat(domainClassPredicate.test(EcorePackage.Literals.ECLASS)).isTrue();
     }
 
     @Test
     public void testBlankDomainClass() {
         DomainClassPredicate domainClassPredicate = new DomainClassPredicate(""); //$NON-NLS-1$
-
-        EClass eClass = EcoreFactory.eINSTANCE.createEClass();
-        assertThat(domainClassPredicate.test(eClass)).isTrue();
+        assertThat(domainClassPredicate.test(EcorePackage.Literals.ECLASS)).isTrue();
     }
 }

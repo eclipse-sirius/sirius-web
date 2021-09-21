@@ -73,7 +73,7 @@ public class SemanticCandidatesProvider implements Function<VariableManager, Lis
         List<EObject> eObjects = result.asObjects().orElse(List.of()).stream()
                 .filter(EObject.class::isInstance)
                 .map(EObject.class::cast)
-                .filter(domainClassPredicate::test)
+                .filter(candidate -> domainClassPredicate.test(candidate.eClass()))
                 .collect(Collectors.toList());
         // @formatter:on
 
