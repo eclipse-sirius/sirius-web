@@ -100,7 +100,7 @@ public class LayoutConfiguratorRegistry {
                 .setProperty(CoreOptions.NODE_LABELS_PADDING, new ElkPadding(0d, 12d, 0d, 6d));
 
         configurator.configureByType(NodeType.NODE_IMAGE)
-                .setProperty(CoreOptions.NODE_SIZE_CONSTRAINTS, SizeConstraint.free())
+                .setProperty(CoreOptions.NODE_SIZE_CONSTRAINTS, EnumSet.of(SizeConstraint.MINIMUM_SIZE, SizeConstraint.PORT_LABELS, SizeConstraint.PORTS))
                 .setProperty(CoreOptions.NODE_LABELS_PLACEMENT, NodeLabelPlacement.outsideTopCenter());
 
         // This image type does not match any diagram item. We add it to define the image size as constraint for the node image parent.
