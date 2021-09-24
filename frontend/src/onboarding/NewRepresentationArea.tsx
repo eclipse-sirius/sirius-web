@@ -121,7 +121,7 @@ export const NewRepresentationArea = ({
     return <AreaContainer title={title} subtitle="You need edit access to create representations" />;
   } else {
     let subtitle =
-      representationDescriptions.length > 0
+      selection && representationDescriptions.length > 0
         ? 'Select the representation to create on ' + selection.label
         : 'There are no representations available for the current selection';
     return (
