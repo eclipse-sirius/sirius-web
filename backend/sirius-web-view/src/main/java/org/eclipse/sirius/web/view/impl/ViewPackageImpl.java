@@ -404,7 +404,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
-    public EAttribute getDiagramElementDescription_DomainType() {
+    public EAttribute getDiagramElementDescription_Name() {
         return (EAttribute) this.diagramElementDescriptionEClass.getEStructuralFeatures().get(0);
     }
 
@@ -414,7 +414,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
-    public EAttribute getDiagramElementDescription_SemanticCandidatesExpression() {
+    public EAttribute getDiagramElementDescription_DomainType() {
         return (EAttribute) this.diagramElementDescriptionEClass.getEStructuralFeatures().get(1);
     }
 
@@ -424,7 +424,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
-    public EAttribute getDiagramElementDescription_LabelExpression() {
+    public EAttribute getDiagramElementDescription_SemanticCandidatesExpression() {
         return (EAttribute) this.diagramElementDescriptionEClass.getEStructuralFeatures().get(2);
     }
 
@@ -434,8 +434,18 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
+    public EAttribute getDiagramElementDescription_LabelExpression() {
+        return (EAttribute) this.diagramElementDescriptionEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EReference getDiagramElementDescription_DeleteTool() {
-        return (EReference) this.diagramElementDescriptionEClass.getEStructuralFeatures().get(3);
+        return (EReference) this.diagramElementDescriptionEClass.getEStructuralFeatures().get(4);
     }
 
     /**
@@ -445,7 +455,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      */
     @Override
     public EReference getDiagramElementDescription_LabelEditTool() {
-        return (EReference) this.diagramElementDescriptionEClass.getEStructuralFeatures().get(4);
+        return (EReference) this.diagramElementDescriptionEClass.getEStructuralFeatures().get(5);
     }
 
     /**
@@ -1101,6 +1111,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.createEReference(this.diagramDescriptionEClass, DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS);
 
         this.diagramElementDescriptionEClass = this.createEClass(DIAGRAM_ELEMENT_DESCRIPTION);
+        this.createEAttribute(this.diagramElementDescriptionEClass, DIAGRAM_ELEMENT_DESCRIPTION__NAME);
         this.createEAttribute(this.diagramElementDescriptionEClass, DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE);
         this.createEAttribute(this.diagramElementDescriptionEClass, DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION);
         this.createEAttribute(this.diagramElementDescriptionEClass, DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION);
@@ -1259,6 +1270,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
                 IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.diagramElementDescriptionEClass, DiagramElementDescription.class, "DiagramElementDescription", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+        this.initEAttribute(this.getDiagramElementDescription_Name(), this.ecorePackage.getEString(), "name", "NewRepresentationDescription", 0, 1, DiagramElementDescription.class, !IS_TRANSIENT, //$NON-NLS-1$ //$NON-NLS-2$
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getDiagramElementDescription_DomainType(), this.ecorePackage.getEString(), "domainType", null, 0, 1, DiagramElementDescription.class, !IS_TRANSIENT, !IS_VOLATILE, //$NON-NLS-1$
                 IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getDiagramElementDescription_SemanticCandidatesExpression(), this.ecorePackage.getEString(), "semanticCandidatesExpression", "aql:self.eContents()", 0, 1, //$NON-NLS-1$ //$NON-NLS-2$

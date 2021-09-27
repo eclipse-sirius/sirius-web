@@ -169,10 +169,12 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
         super.collectNewChildDescriptors(newChildDescriptors, object);
 
         NodeDescription nodeChild = ViewFactory.eINSTANCE.createNodeDescription();
+        nodeChild.setName("Node"); //$NON-NLS-1$
         nodeChild.setStyle(ViewFactory.eINSTANCE.createNodeStyle());
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS, nodeChild));
 
         EdgeDescription edgeChild = ViewFactory.eINSTANCE.createEdgeDescription();
+        edgeChild.setName("Edge"); //$NON-NLS-1$
         EdgeStyle newEdgeStyle = ViewFactory.eINSTANCE.createEdgeStyle();
         newEdgeStyle.setColor("#002639"); //$NON-NLS-1$
         edgeChild.setStyle(newEdgeStyle);

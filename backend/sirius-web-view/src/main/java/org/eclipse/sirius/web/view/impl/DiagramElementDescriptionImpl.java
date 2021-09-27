@@ -30,6 +30,7 @@ import org.eclipse.sirius.web.view.ViewPackage;
  * The following features are implemented:
  * </p>
  * <ul>
+ * <li>{@link org.eclipse.sirius.web.view.impl.DiagramElementDescriptionImpl#getName <em>Name</em>}</li>
  * <li>{@link org.eclipse.sirius.web.view.impl.DiagramElementDescriptionImpl#getDomainType <em>Domain Type</em>}</li>
  * <li>{@link org.eclipse.sirius.web.view.impl.DiagramElementDescriptionImpl#getSemanticCandidatesExpression
  * <em>Semantic Candidates Expression</em>}</li>
@@ -43,6 +44,26 @@ import org.eclipse.sirius.web.view.ViewPackage;
  * @generated
  */
 public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.Container implements DiagramElementDescription {
+    /**
+     * The default value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @see #getName()
+     * @generated
+     * @ordered
+     */
+    protected static final String NAME_EDEFAULT = "NewRepresentationDescription"; //$NON-NLS-1$
+
+    /**
+     * The cached value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @see #getName()
+     * @generated
+     * @ordered
+     */
+    protected String name = NAME_EDEFAULT;
+
     /**
      * The default value of the '{@link #getDomainType() <em>Domain Type</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -140,6 +161,29 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
     @Override
     protected EClass eStaticClass() {
         return ViewPackage.Literals.DIAGRAM_ELEMENT_DESCRIPTION;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setName(String newName) {
+        String oldName = this.name;
+        this.name = newName;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__NAME, oldName, this.name));
     }
 
     /**
@@ -332,6 +376,8 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
+        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__NAME:
+            return this.getName();
         case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE:
             return this.getDomainType();
         case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
@@ -354,6 +400,9 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
+        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__NAME:
+            this.setName((String) newValue);
+            return;
         case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE:
             this.setDomainType((String) newValue);
             return;
@@ -381,6 +430,9 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
+        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__NAME:
+            this.setName(NAME_EDEFAULT);
+            return;
         case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE:
             this.setDomainType(DOMAIN_TYPE_EDEFAULT);
             return;
@@ -408,6 +460,8 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
+        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__NAME:
+            return NAME_EDEFAULT == null ? this.name != null : !NAME_EDEFAULT.equals(this.name);
         case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE:
             return DOMAIN_TYPE_EDEFAULT == null ? this.domainType != null : !DOMAIN_TYPE_EDEFAULT.equals(this.domainType);
         case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
@@ -433,7 +487,9 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
             return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (domainType: "); //$NON-NLS-1$
+        result.append(" (name: "); //$NON-NLS-1$
+        result.append(this.name);
+        result.append(", domainType: "); //$NON-NLS-1$
         result.append(this.domainType);
         result.append(", semanticCandidatesExpression: "); //$NON-NLS-1$
         result.append(this.semanticCandidatesExpression);

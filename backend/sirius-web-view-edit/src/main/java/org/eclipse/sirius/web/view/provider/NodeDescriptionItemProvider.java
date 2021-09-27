@@ -115,7 +115,7 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
      */
     @Override
     public String getText(Object object) {
-        String label = ((NodeDescription) object).getDomainType();
+        String label = ((NodeDescription) object).getName();
         return label == null || label.length() == 0 ? this.getString("_UI_NodeDescription_type") : //$NON-NLS-1$
                 this.getString("_UI_NodeDescription_type") + " " + label; //$NON-NLS-1$ //$NON-NLS-2$
     }
@@ -153,6 +153,7 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
         super.collectNewChildDescriptors(newChildDescriptors, object);
 
         NodeDescription nodeChild = ViewFactory.eINSTANCE.createNodeDescription();
+        nodeChild.setName("Sub-node"); //$NON-NLS-1$
         nodeChild.setStyle(ViewFactory.eINSTANCE.createNodeStyle());
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS, nodeChild));
 

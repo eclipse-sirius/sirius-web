@@ -240,12 +240,20 @@ public interface ViewPackage extends EPackage {
     int DIAGRAM_ELEMENT_DESCRIPTION = 3;
 
     /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DIAGRAM_ELEMENT_DESCRIPTION__NAME = 0;
+
+    /**
      * The feature id for the '<em><b>Domain Type</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE = 0;
+    int DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE = 1;
 
     /**
      * The feature id for the '<em><b>Semantic Candidates Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -254,7 +262,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION = 1;
+    int DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION = 2;
 
     /**
      * The feature id for the '<em><b>Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -263,7 +271,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION = 2;
+    int DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION = 3;
 
     /**
      * The feature id for the '<em><b>Delete Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -272,7 +280,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DIAGRAM_ELEMENT_DESCRIPTION__DELETE_TOOL = 3;
+    int DIAGRAM_ELEMENT_DESCRIPTION__DELETE_TOOL = 4;
 
     /**
      * The feature id for the '<em><b>Label Edit Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -281,7 +289,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EDIT_TOOL = 4;
+    int DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EDIT_TOOL = 5;
 
     /**
      * The number of structural features of the '<em>Diagram Element Description</em>' class. <!-- begin-user-doc -->
@@ -290,7 +298,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT = 5;
+    int DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT = 6;
 
     /**
      * The number of operations of the '<em>Diagram Element Description</em>' class. <!-- begin-user-doc --> <!--
@@ -310,6 +318,14 @@ public interface ViewPackage extends EPackage {
      * @generated
      */
     int NODE_DESCRIPTION = 4;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_DESCRIPTION__NAME = DIAGRAM_ELEMENT_DESCRIPTION__NAME;
 
     /**
      * The feature id for the '<em><b>Domain Type</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -417,6 +433,14 @@ public interface ViewPackage extends EPackage {
      * @generated
      */
     int EDGE_DESCRIPTION = 5;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_DESCRIPTION__NAME = DIAGRAM_ELEMENT_DESCRIPTION__NAME;
 
     /**
      * The feature id for the '<em><b>Domain Type</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1717,6 +1741,17 @@ public interface ViewPackage extends EPackage {
     EClass getDiagramElementDescription();
 
     /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.web.view.DiagramElementDescription#getName
+     * <em>Name</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Name</em>'.
+     * @see org.eclipse.sirius.web.view.DiagramElementDescription#getName()
+     * @see #getDiagramElementDescription()
+     * @generated
+     */
+    EAttribute getDiagramElementDescription_Name();
+
+    /**
      * Returns the meta object for the attribute
      * '{@link org.eclipse.sirius.web.view.DiagramElementDescription#getDomainType <em>Domain Type</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -2555,6 +2590,14 @@ public interface ViewPackage extends EPackage {
          * @generated
          */
         EClass DIAGRAM_ELEMENT_DESCRIPTION = eINSTANCE.getDiagramElementDescription();
+
+        /**
+         * The meta object literal for the '<em><b>Name</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute DIAGRAM_ELEMENT_DESCRIPTION__NAME = eINSTANCE.getDiagramElementDescription_Name();
 
         /**
          * The meta object literal for the '<em><b>Domain Type</b></em>' attribute feature. <!-- begin-user-doc --> <!--
