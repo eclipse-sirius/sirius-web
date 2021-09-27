@@ -46,6 +46,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//DiagramDescription/edgeDescriptions"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//DiagramElementDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//DiagramElementDescription/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//DiagramElementDescription/domainType"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//DiagramElementDescription/semanticCandidatesExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//DiagramElementDescription/labelExpression"/>

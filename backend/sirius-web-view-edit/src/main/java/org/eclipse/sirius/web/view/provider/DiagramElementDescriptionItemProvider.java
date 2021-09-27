@@ -62,11 +62,24 @@ public class DiagramElementDescriptionItemProvider extends ItemProviderAdapter
         if (this.itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
+            this.addNamePropertyDescriptor(object);
             this.addDomainTypePropertyDescriptor(object);
             this.addSemanticCandidatesExpressionPropertyDescriptor(object);
             this.addLabelExpressionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
+    }
+
+    /**
+     * This adds a property descriptor for the Name feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addNamePropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_DiagramElementDescription_name_feature"), //$NON-NLS-1$
+                this.getString("_UI_PropertyDescriptor_description", "_UI_DiagramElementDescription_name_feature", "_UI_DiagramElementDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                ViewPackage.Literals.DIAGRAM_ELEMENT_DESCRIPTION__NAME, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -164,7 +177,7 @@ public class DiagramElementDescriptionItemProvider extends ItemProviderAdapter
      */
     @Override
     public String getText(Object object) {
-        String label = ((DiagramElementDescription) object).getDomainType();
+        String label = ((DiagramElementDescription) object).getName();
         return label == null || label.length() == 0 ? this.getString("_UI_DiagramElementDescription_type") : //$NON-NLS-1$
                 this.getString("_UI_DiagramElementDescription_type") + " " + label; //$NON-NLS-1$ //$NON-NLS-2$
     }
@@ -181,6 +194,7 @@ public class DiagramElementDescriptionItemProvider extends ItemProviderAdapter
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(DiagramElementDescription.class)) {
+        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__NAME:
         case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE:
         case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
         case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION:

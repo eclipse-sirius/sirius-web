@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
+ * <li>{@link org.eclipse.sirius.web.view.DiagramElementDescription#getName <em>Name</em>}</li>
  * <li>{@link org.eclipse.sirius.web.view.DiagramElementDescription#getDomainType <em>Domain Type</em>}</li>
  * <li>{@link org.eclipse.sirius.web.view.DiagramElementDescription#getSemanticCandidatesExpression <em>Semantic
  * Candidates Expression</em>}</li>
@@ -35,6 +36,29 @@ import org.eclipse.emf.ecore.EObject;
  * @generated
  */
 public interface DiagramElementDescription extends EObject {
+    /**
+     * Returns the value of the '<em><b>Name</b></em>' attribute. The default value is
+     * <code>"NewRepresentationDescription"</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Name</em>' attribute.
+     * @see #setName(String)
+     * @see org.eclipse.sirius.web.view.ViewPackage#getDiagramElementDescription_Name()
+     * @model default="NewRepresentationDescription"
+     * @generated
+     */
+    String getName();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.web.view.DiagramElementDescription#getName <em>Name</em>}'
+     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Name</em>' attribute.
+     * @see #getName()
+     * @generated
+     */
+    void setName(String value);
+
     /**
      * Returns the value of the '<em><b>Domain Type</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *

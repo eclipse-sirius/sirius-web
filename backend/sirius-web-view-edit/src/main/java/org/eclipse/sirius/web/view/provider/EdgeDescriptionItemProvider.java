@@ -188,7 +188,7 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
      */
     @Override
     public String getText(Object object) {
-        String label = ((EdgeDescription) object).getDomainType();
+        String label = ((EdgeDescription) object).getName();
         return label == null || label.length() == 0 ? this.getString("_UI_EdgeDescription_type") : //$NON-NLS-1$
                 this.getString("_UI_EdgeDescription_type") + " " + label; //$NON-NLS-1$ //$NON-NLS-2$
     }
