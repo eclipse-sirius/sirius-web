@@ -78,7 +78,7 @@ public class EditingContextEventProcessorRegistry implements IEditingContextEven
     }
 
     @Override
-    public Optional<IEditingContextEventProcessor> getOrCreateEditingContextEventProcessor(UUID editingContextId) {
+    public synchronized Optional<IEditingContextEventProcessor> getOrCreateEditingContextEventProcessor(UUID editingContextId) {
         Optional<IEditingContextEventProcessor> optionalEditingContextEventProcessor = Optional.empty();
         if (this.editingContextSearchService.existsById(editingContextId)) {
             optionalEditingContextEventProcessor = Optional.ofNullable(this.editingContextEventProcessors.get(editingContextId))
