@@ -20,6 +20,8 @@ import org.eclipse.emf.ecore.EValidator;
 import org.eclipse.emf.ecore.EValidator.Registry;
 import org.eclipse.emf.ecore.impl.EPackageRegistryImpl;
 import org.eclipse.emf.ecore.impl.EValidatorRegistryImpl;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.impl.ResourceFactoryRegistryImpl;
 import org.eclipse.emf.ecore.util.EcoreAdapterFactory;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
@@ -54,6 +56,11 @@ public class EMFConfiguration {
         EPackage.Registry ePackageRegistry = new EPackageRegistryImpl();
         ePackages.forEach(ePackage -> ePackageRegistry.put(ePackage.getNsURI(), ePackage));
         return ePackageRegistry;
+    }
+
+    @Bean
+    public Resource.Factory.Registry resourceFactoryRegistry() {
+        return new ResourceFactoryRegistryImpl();
     }
 
     @Bean
