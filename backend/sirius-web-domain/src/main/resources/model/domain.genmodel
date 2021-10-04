@@ -22,7 +22,6 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute domain.ecore#//NamedElement/name"/>
     </genClasses>
     <genClasses ecoreClass="domain.ecore#//Domain">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute domain.ecore#//Domain/uri"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference domain.ecore#//Domain/types"/>
     </genClasses>
     <genClasses ecoreClass="domain.ecore#//Entity">

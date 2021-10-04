@@ -33,15 +33,11 @@ import org.eclipse.sirius.web.domain.Entity;
  */
 public class DomainValidator implements EValidator {
 
-    public static final String DOMAIN_URI_SCHEME = "domain://"; //$NON-NLS-1$
-
     private static final String DOMAIN_DISTINC_NAME_ERROR_MESSAGE = "Two entities cannot have the same name in the same domain"; //$NON-NLS-1$
 
     private static final String SIRIUS_WEB_EMF_PACKAGE = "org.eclipse.sirius.web.emf"; //$NON-NLS-1$
 
     private static final String DOMAIN_NAME_ERROR_MESSAGE = "The domain name should not be empty."; //$NON-NLS-1$
-
-    private static final String DOMAIN_URI_SCHEME_ERROR_MESSAGE = "The domain %1$s uri's does not start with \"domain://\"."; //$NON-NLS-1$
 
     @Override
     public boolean validate(EDataType eDataType, Object value, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -53,32 +49,11 @@ public class DomainValidator implements EValidator {
         boolean isValid = true;
         if (eObject instanceof Domain) {
             Domain domain = (Domain) eObject;
-            isValid = this.uriStartWithValidate(domain, diagnostics) && isValid;
             isValid = this.nameIsNotBlankValidate(domain, diagnostics) && isValid;
         }
         if (eObject instanceof Entity) {
             Entity entity = (Entity) eObject;
             isValid = this.nameIsNotUsedByOtherEntity(entity, diagnostics) && isValid;
-        }
-        return isValid;
-    }
-
-    private boolean uriStartWithValidate(Domain domain, DiagnosticChain diagnostics) {
-        boolean isValid = Optional.ofNullable(domain.getUri()).orElse("").startsWith(DOMAIN_URI_SCHEME); //$NON-NLS-1$
-
-        if (!isValid && diagnostics != null) {
-            // @formatter:off
-            BasicDiagnostic basicDiagnostic = new BasicDiagnostic(Diagnostic.ERROR,
-                    SIRIUS_WEB_EMF_PACKAGE,
-                    0,
-                    String.format(DOMAIN_URI_SCHEME_ERROR_MESSAGE, domain.getName()),
-                    new Object [] {
-                            domain,
-                            DomainPackage.Literals.DOMAIN__URI,
-                    });
-            // @formatter:on
-
-            diagnostics.add(basicDiagnostic);
         }
         return isValid;
     }

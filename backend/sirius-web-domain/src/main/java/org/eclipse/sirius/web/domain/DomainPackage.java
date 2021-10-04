@@ -116,21 +116,13 @@ public interface DomainPackage extends EPackage {
     int DOMAIN__NAME = NAMED_ELEMENT__NAME;
 
     /**
-     * The feature id for the '<em><b>Uri</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int DOMAIN__URI = NAMED_ELEMENT_FEATURE_COUNT + 0;
-
-    /**
      * The feature id for the '<em><b>Types</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int DOMAIN__TYPES = NAMED_ELEMENT_FEATURE_COUNT + 1;
+    int DOMAIN__TYPES = NAMED_ELEMENT_FEATURE_COUNT + 0;
 
     /**
      * The number of structural features of the '<em>Domain</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -138,7 +130,7 @@ public interface DomainPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DOMAIN_FEATURE_COUNT = NAMED_ELEMENT_FEATURE_COUNT + 2;
+    int DOMAIN_FEATURE_COUNT = NAMED_ELEMENT_FEATURE_COUNT + 1;
 
     /**
      * The number of operations of the '<em>Domain</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -434,17 +426,6 @@ public interface DomainPackage extends EPackage {
     EClass getDomain();
 
     /**
-     * Returns the meta object for the attribute '{@link org.eclipse.sirius.web.domain.Domain#getUri <em>Uri</em>}'.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the attribute '<em>Uri</em>'.
-     * @see org.eclipse.sirius.web.domain.Domain#getUri()
-     * @see #getDomain()
-     * @generated
-     */
-    EAttribute getDomain_Uri();
-
-    /**
      * Returns the meta object for the containment reference list '{@link org.eclipse.sirius.web.domain.Domain#getTypes
      * <em>Types</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -655,14 +636,6 @@ public interface DomainPackage extends EPackage {
          * @generated
          */
         EClass DOMAIN = eINSTANCE.getDomain();
-
-        /**
-         * The meta object literal for the '<em><b>Uri</b></em>' attribute feature. <!-- begin-user-doc --> <!--
-         * end-user-doc -->
-         *
-         * @generated
-         */
-        EAttribute DOMAIN__URI = eINSTANCE.getDomain_Uri();
 
         /**
          * The meta object literal for the '<em><b>Types</b></em>' containment reference list feature. <!--
