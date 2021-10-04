@@ -21,7 +21,6 @@ import org.eclipse.emf.common.util.EList;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.web.domain.Domain#getUri <em>Uri</em>}</li>
  * <li>{@link org.eclipse.sirius.web.domain.Domain#getTypes <em>Types</em>}</li>
  * </ul>
  *
@@ -30,29 +29,6 @@ import org.eclipse.emf.common.util.EList;
  * @generated
  */
 public interface Domain extends NamedElement {
-    /**
-     * Returns the value of the '<em><b>Uri</b></em>' attribute. The default value is <code>"domain://sample"</code>.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Uri</em>' attribute.
-     * @see #setUri(String)
-     * @see org.eclipse.sirius.web.domain.DomainPackage#getDomain_Uri()
-     * @model default="domain://sample"
-     * @generated
-     */
-    String getUri();
-
-    /**
-     * Sets the value of the '{@link org.eclipse.sirius.web.domain.Domain#getUri <em>Uri</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Uri</em>' attribute.
-     * @see #getUri()
-     * @generated
-     */
-    void setUri(String value);
-
     /**
      * Returns the value of the '<em><b>Types</b></em>' containment reference list. The list contents are of type
      * {@link org.eclipse.sirius.web.domain.Entity}. <!-- begin-user-doc --> <!-- end-user-doc -->

@@ -180,18 +180,8 @@ public class DomainPackageImpl extends EPackageImpl implements DomainPackage {
      * @generated
      */
     @Override
-    public EAttribute getDomain_Uri() {
-        return (EAttribute) this.domainEClass.getEStructuralFeatures().get(0);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
     public EReference getDomain_Types() {
-        return (EReference) this.domainEClass.getEStructuralFeatures().get(1);
+        return (EReference) this.domainEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -367,7 +357,6 @@ public class DomainPackageImpl extends EPackageImpl implements DomainPackage {
         this.createEAttribute(this.namedElementEClass, NAMED_ELEMENT__NAME);
 
         this.domainEClass = this.createEClass(DOMAIN);
-        this.createEAttribute(this.domainEClass, DOMAIN__URI);
         this.createEReference(this.domainEClass, DOMAIN__TYPES);
 
         this.entityEClass = this.createEClass(ENTITY);
@@ -431,8 +420,6 @@ public class DomainPackageImpl extends EPackageImpl implements DomainPackage {
                 IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.domainEClass, Domain.class, "Domain", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
-        this.initEAttribute(this.getDomain_Uri(), this.ecorePackage.getEString(), "uri", "domain://sample", 0, 1, Domain.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, //$NON-NLS-1$//$NON-NLS-2$
-                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getDomain_Types(), this.getEntity(), null, "types", null, 0, -1, Domain.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, //$NON-NLS-1$
                 !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 

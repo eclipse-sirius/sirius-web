@@ -40,13 +40,15 @@ import org.eclipse.sirius.web.domain.Relation;
  */
 public class DomainConverter {
 
+    public static final String DOMAIN_SCHEME = "domain"; //$NON-NLS-1$
+
     public Optional<EPackage> convert(Domain domain) {
         Optional<EPackage> result = Optional.empty();
 
         EPackage ePackage = EcoreFactory.eINSTANCE.createEPackage();
         ePackage.setName(domain.getName());
         ePackage.setNsPrefix(Optional.ofNullable(domain.getName()).orElse("").toLowerCase()); //$NON-NLS-1$
-        ePackage.setNsURI(domain.getUri());
+        ePackage.setNsURI(DOMAIN_SCHEME + "://" + domain.getName()); //$NON-NLS-1$
 
         Map<Entity, EClass> convertedTypes = new HashMap<>();
         // First pass to create the EClasses and EAttributes
@@ -70,9 +72,6 @@ public class DomainConverter {
         }
 
         // Only return valid and safe EPackages
-        if (!ePackage.getNsURI().startsWith(DomainValidator.DOMAIN_URI_SCHEME)) {
-            result = Optional.empty();
-        }
         Diagnostic diagnostic = Diagnostician.INSTANCE.validate(ePackage);
         if (diagnostic.getSeverity() < Diagnostic.ERROR) {
             result = Optional.of(ePackage);

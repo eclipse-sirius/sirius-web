@@ -38,7 +38,6 @@ public class DomainValidatorTests {
         Map<Object, Object> defaultContext = Diagnostician.INSTANCE.createDefaultContext();
         Domain domain = DomainFactory.eINSTANCE.createDomain();
         domain.setName("Family"); //$NON-NLS-1$
-        domain.setUri("domain://Family"); //$NON-NLS-1$
 
         BasicDiagnostic diagnosticChain = new BasicDiagnostic(Diagnostic.OK, null, 0, null, null);
 
@@ -49,39 +48,10 @@ public class DomainValidatorTests {
     }
 
     @Test
-    public void testDomainInvalidURI() {
-        Map<Object, Object> defaultContext = Diagnostician.INSTANCE.createDefaultContext();
-        Domain domain = DomainFactory.eINSTANCE.createDomain();
-        domain.setName("Family"); //$NON-NLS-1$
-        domain.setUri(""); //$NON-NLS-1$
-
-        BasicDiagnostic diagnosticChain = new BasicDiagnostic(Diagnostic.OK, null, 0, null, null);
-
-        boolean validationResult = new DomainValidator().validate(domain.eClass(), domain, diagnosticChain, defaultContext);
-        assertThat(validationResult).isFalse();
-
-        BasicDiagnostic expected = new BasicDiagnostic(Diagnostic.ERROR, null, 0, null, null);
-        // @formatter:off
-        expected.add(new BasicDiagnostic(Diagnostic.ERROR,
-                "org.eclipse.sirius.web.emf", //$NON-NLS-1$
-                0,
-                String.format("The domain %1$s uri's does not start with \"domain://\".", domain.getName()), //$NON-NLS-1$
-                new Object [] {
-                        domain,
-                        DomainPackage.Literals.DOMAIN__URI,
-
-        }));
-        // @formatter:on
-
-        assertThat(diagnosticChain).isEqualTo(expected);
-    }
-
-    @Test
     public void testDomainInvalidName() {
         Map<Object, Object> defaultContext = Diagnostician.INSTANCE.createDefaultContext();
         Domain domain = DomainFactory.eINSTANCE.createDomain();
         domain.setName(""); //$NON-NLS-1$
-        domain.setUri("domain://Family"); //$NON-NLS-1$
 
         BasicDiagnostic diagnosticChain = new BasicDiagnostic(Diagnostic.OK, null, 0, null, null);
 
