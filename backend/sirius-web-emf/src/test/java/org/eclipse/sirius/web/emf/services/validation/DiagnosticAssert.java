@@ -57,4 +57,14 @@ public class DiagnosticAssert extends AbstractAssert<DiagnosticAssert, Diagnosti
         }
         return this;
     }
+
+    public DiagnosticAssert contains(Object expected) {
+        if (expected instanceof Diagnostic) {
+            Diagnostic expectedDiagnostic = (Diagnostic) expected;
+            assertThat(this.actual.getChildren()).anySatisfy(child -> {
+                assertThat(child).isEqualTo(expectedDiagnostic);
+            });
+        }
+        return this;
+    }
 }
