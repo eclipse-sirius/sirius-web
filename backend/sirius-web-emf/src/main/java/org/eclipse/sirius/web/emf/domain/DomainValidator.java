@@ -12,8 +12,10 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.emf.domain;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
-import java.util.Optional;
+import java.util.Objects;
 
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
@@ -22,9 +24,12 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EValidator;
+import org.eclipse.emf.ecore.util.EcoreValidator;
 import org.eclipse.sirius.web.domain.Domain;
 import org.eclipse.sirius.web.domain.DomainPackage;
 import org.eclipse.sirius.web.domain.Entity;
+import org.eclipse.sirius.web.domain.Feature;
+import org.eclipse.sirius.web.domain.NamedElement;
 
 /**
  * The validator for Domain.
@@ -33,11 +38,13 @@ import org.eclipse.sirius.web.domain.Entity;
  */
 public class DomainValidator implements EValidator {
 
-    private static final String DOMAIN_DISTINC_NAME_ERROR_MESSAGE = "Two entities cannot have the same name in the same domain"; //$NON-NLS-1$
+    public static final String INVALID_NAME_ERROR_MESSAGE = "The name %1$s is not well-formed."; //$NON-NLS-1$
 
-    private static final String SIRIUS_WEB_EMF_PACKAGE = "org.eclipse.sirius.web.emf"; //$NON-NLS-1$
+    public static final String ENTITY_DISTINCT_NAME_ERROR_MESSAGE = "Two entities cannot have the same name in the same domain"; //$NON-NLS-1$
 
-    private static final String DOMAIN_NAME_ERROR_MESSAGE = "The domain name should not be empty."; //$NON-NLS-1$
+    public static final String FEATURE_DISTINCT_NAME_ERROR_MESSAGE = "Two features cannot have the same name in the same entity"; //$NON-NLS-1$
+
+    public static final String SIRIUS_WEB_EMF_PACKAGE = "org.eclipse.sirius.web.emf"; //$NON-NLS-1$
 
     @Override
     public boolean validate(EDataType eDataType, Object value, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -47,28 +54,31 @@ public class DomainValidator implements EValidator {
     @Override
     public boolean validate(EClass eClass, EObject eObject, DiagnosticChain diagnostics, Map<Object, Object> context) {
         boolean isValid = true;
-        if (eObject instanceof Domain) {
-            Domain domain = (Domain) eObject;
-            isValid = this.nameIsNotBlankValidate(domain, diagnostics) && isValid;
+        if (eObject instanceof NamedElement) {
+            isValid = this.nameIsWellFormedValidate((NamedElement) eObject, diagnostics) && isValid;
         }
         if (eObject instanceof Entity) {
             Entity entity = (Entity) eObject;
             isValid = this.nameIsNotUsedByOtherEntity(entity, diagnostics) && isValid;
         }
+        if (eObject instanceof Feature) {
+            Feature feature = (Feature) eObject;
+            isValid = this.nameIsUniqueAmongOtherFeatures(feature, diagnostics) && isValid;
+        }
         return isValid;
     }
 
-    private boolean nameIsNotBlankValidate(Domain domain, DiagnosticChain diagnostics) {
-        boolean isValid = !Optional.ofNullable(domain.getName()).orElse("").isBlank(); //$NON-NLS-1$
+    private boolean nameIsWellFormedValidate(NamedElement namedElement, DiagnosticChain diagnostics) {
+        boolean isValid = EcoreValidator.isWellFormedJavaIdentifier(namedElement.getName());
 
         if (!isValid && diagnostics != null) {
          // @formatter:off
             BasicDiagnostic basicDiagnostic = new BasicDiagnostic(Diagnostic.WARNING,
                     SIRIUS_WEB_EMF_PACKAGE,
                     0,
-                    DOMAIN_NAME_ERROR_MESSAGE,
+                    String.format(INVALID_NAME_ERROR_MESSAGE, namedElement.getName()),
                     new Object [] {
-                            domain,
+                            namedElement,
                             DomainPackage.Literals.NAMED_ELEMENT__NAME,
                     });
             // @formatter:on
@@ -97,7 +107,7 @@ public class DomainValidator implements EValidator {
             BasicDiagnostic basicDiagnostic = new BasicDiagnostic(Diagnostic.ERROR,
                     SIRIUS_WEB_EMF_PACKAGE,
                     0,
-                    DOMAIN_DISTINC_NAME_ERROR_MESSAGE,
+                    ENTITY_DISTINCT_NAME_ERROR_MESSAGE,
                     new Object [] {
                             entity,
                             DomainPackage.Literals.NAMED_ELEMENT__NAME,
@@ -107,6 +117,33 @@ public class DomainValidator implements EValidator {
             diagnostics.add(basicDiagnostic);
         }
 
+        return isValid;
+    }
+
+    private boolean nameIsUniqueAmongOtherFeatures(Feature feature, DiagnosticChain diagnostics) {
+        boolean isValid = true;
+        EObject eContainer = feature.eContainer();
+        if (eContainer instanceof Entity) {
+            Entity entity = (Entity) eContainer;
+            List<Feature> features = new ArrayList<>();
+            features.addAll(entity.getAttributes());
+            features.addAll(entity.getRelations());
+            isValid = features.stream().filter(f -> Objects.equals(f.getName(), feature.getName())).count() == 1;
+        }
+        if (!isValid && diagnostics != null) {
+            // @formatter:off
+            BasicDiagnostic basicDiagnostic = new BasicDiagnostic(Diagnostic.ERROR,
+                    SIRIUS_WEB_EMF_PACKAGE,
+                    0,
+                    FEATURE_DISTINCT_NAME_ERROR_MESSAGE,
+                    new Object [] {
+                            feature,
+                            DomainPackage.Literals.NAMED_ELEMENT__NAME,
+                    });
+            // @formatter:on
+
+            diagnostics.add(basicDiagnostic);
+        }
         return isValid;
     }
 
