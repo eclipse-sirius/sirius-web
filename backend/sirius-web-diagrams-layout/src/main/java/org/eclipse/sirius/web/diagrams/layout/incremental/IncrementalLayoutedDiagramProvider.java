@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.eclipse.sirius.web.diagrams.CustomizableProperties;
@@ -41,7 +40,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class IncrementalLayoutedDiagramProvider {
 
-    public Diagram getLayoutedDiagram(Diagram diagram, DiagramLayoutData diagramLayoutData, Map<UUID, ILayoutData> id2LayoutData) {
+    public Diagram getLayoutedDiagram(Diagram diagram, DiagramLayoutData diagramLayoutData, Map<String, ILayoutData> id2LayoutData) {
         List<Node> nodes = this.getLayoutedNodes(diagram.getNodes(), id2LayoutData);
         List<Edge> edges = this.getLayoutedEdges(diagram.getEdges(), id2LayoutData);
 
@@ -55,7 +54,7 @@ public class IncrementalLayoutedDiagramProvider {
         // @formatter:on
     }
 
-    private List<Node> getLayoutedNodes(List<Node> nodes, Map<UUID, ILayoutData> id2LayoutData) {
+    private List<Node> getLayoutedNodes(List<Node> nodes, Map<String, ILayoutData> id2LayoutData) {
         // @formatter:off
         return nodes.stream().flatMap(node -> {
             return Optional.ofNullable(id2LayoutData.get(node.getId()))
@@ -67,7 +66,7 @@ public class IncrementalLayoutedDiagramProvider {
         // @formatter:on
     }
 
-    private Node getLayoutedNode(Node node, NodeLayoutData nodeLayoutData, Map<UUID, ILayoutData> id2LayoutData) {
+    private Node getLayoutedNode(Node node, NodeLayoutData nodeLayoutData, Map<String, ILayoutData> id2LayoutData) {
         Label label = this.getLayoutedLabel(node.getLabel(), id2LayoutData);
 
         List<Node> childNodes = this.getLayoutedNodes(node.getChildNodes(), id2LayoutData);
@@ -89,7 +88,7 @@ public class IncrementalLayoutedDiagramProvider {
         // @formatter:on
     }
 
-    private List<Edge> getLayoutedEdges(List<Edge> edges, Map<UUID, ILayoutData> id2LayoutData) {
+    private List<Edge> getLayoutedEdges(List<Edge> edges, Map<String, ILayoutData> id2LayoutData) {
         // @formatter:off
         return edges.stream().flatMap(edge -> {
             return Optional.ofNullable(id2LayoutData.get(edge.getId()))
@@ -101,7 +100,7 @@ public class IncrementalLayoutedDiagramProvider {
         // @formatter:on
     }
 
-    private Edge getLayoutedEdge(Edge edge, EdgeLayoutData edgeLayoutData, Map<UUID, ILayoutData> id2LayoutData) {
+    private Edge getLayoutedEdge(Edge edge, EdgeLayoutData edgeLayoutData, Map<String, ILayoutData> id2LayoutData) {
         Label beginLabel = edge.getBeginLabel();
         if (beginLabel != null) {
             beginLabel = this.getLayoutedLabel(beginLabel, id2LayoutData);
@@ -125,7 +124,7 @@ public class IncrementalLayoutedDiagramProvider {
         // @formatter:on
     }
 
-    private Label getLayoutedLabel(Label label, Map<UUID, ILayoutData> id2LayoutData) {
+    private Label getLayoutedLabel(Label label, Map<String, ILayoutData> id2LayoutData) {
         Label layoutedLabel = label;
         var optionalLabelLayoutData = Optional.of(id2LayoutData.get(label.getId())).filter(LabelLayoutData.class::isInstance).map(LabelLayoutData.class::cast);
         if (optionalLabelLayoutData.isPresent()) {

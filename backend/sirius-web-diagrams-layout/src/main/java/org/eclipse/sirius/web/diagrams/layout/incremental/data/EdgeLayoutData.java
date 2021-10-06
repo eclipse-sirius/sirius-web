@@ -13,7 +13,6 @@
 package org.eclipse.sirius.web.diagrams.layout.incremental.data;
 
 import java.util.List;
-import java.util.UUID;
 
 import org.eclipse.sirius.web.diagrams.Position;
 
@@ -36,14 +35,14 @@ public class EdgeLayoutData implements ILayoutData {
 
     private LabelLayoutData endLabel;
 
-    private UUID id;
+    private String id;
 
     @Override
-    public UUID getId() {
+    public String getId() {
         return this.id;
     }
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
     }
 

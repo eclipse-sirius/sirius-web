@@ -106,7 +106,7 @@ public class CreateFormEventHandler implements IEditingContextEventHandler {
                 String targetObjectId = this.objectService.getId(optionalObject.get());
                 if (representationDescription instanceof FormDescription) {
                     // @formatter:off
-                    Form form = Form.newForm(UUID.randomUUID())
+                    Form form = Form.newForm(UUID.randomUUID().toString())
                             .label(createRepresentationInput.getRepresentationName())
                             .targetObjectId(targetObjectId)
                             .descriptionId(representationDescription.getId())

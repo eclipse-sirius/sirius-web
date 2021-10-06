@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.eclipse.sirius.viewpoint.description.tool.DeleteView;
 import org.eclipse.sirius.viewpoint.description.tool.ModelOperation;
@@ -62,7 +61,7 @@ public class DeleteViewOperationHandler implements IModelOperationHandler {
     public IStatus handle(Map<String, Object> variables) {
         Object self = variables.get(VariableManager.SELF);
         if (self instanceof Node) {
-            UUID elementId = ((Node) self).getId();
+            String elementId = ((Node) self).getId();
             // @formatter:off
             ViewDeletionRequest viewDeletionRequest = ViewDeletionRequest.newViewDeletionRequest()
                     .elementId(elementId)

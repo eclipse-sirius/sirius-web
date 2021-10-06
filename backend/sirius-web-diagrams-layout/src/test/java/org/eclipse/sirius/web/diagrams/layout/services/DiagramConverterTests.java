@@ -53,15 +53,15 @@ public class DiagramConverterTests {
 
     private static final double IMAGE_HEIGHT = 100;
 
-    private static final UUID DIAGRAM_ID = UUID.randomUUID();
+    private static final String DIAGRAM_ID = UUID.randomUUID().toString();
 
-    private static final UUID FIRST_NODE_ID = UUID.randomUUID();
+    private static final String FIRST_NODE_ID = UUID.randomUUID().toString();
 
-    private static final UUID SECOND_NODE_ID = UUID.randomUUID();
+    private static final String SECOND_NODE_ID = UUID.randomUUID().toString();
 
-    private static final UUID THIRD_NODE_ID = UUID.randomUUID();
+    private static final String THIRD_NODE_ID = UUID.randomUUID().toString();
 
-    private static final UUID FIRST_EDGE_ID = UUID.randomUUID();
+    private static final String FIRST_EDGE_ID = UUID.randomUUID().toString();
 
     private TextBoundsService textBoundsService = new TextBoundsService() {
         @Override

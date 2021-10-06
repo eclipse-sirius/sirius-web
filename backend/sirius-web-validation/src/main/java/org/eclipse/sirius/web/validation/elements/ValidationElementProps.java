@@ -30,7 +30,7 @@ import org.eclipse.sirius.web.components.IProps;
 public final class ValidationElementProps implements IProps {
     public static final String TYPE = "Validation"; //$NON-NLS-1$
 
-    private UUID id;
+    private String id;
 
     private String label;
 
@@ -42,7 +42,7 @@ public final class ValidationElementProps implements IProps {
         // Prevent instantiation
     }
 
-    public UUID getId() {
+    public String getId() {
         return this.id;
     }
 
@@ -59,7 +59,7 @@ public final class ValidationElementProps implements IProps {
         return this.children;
     }
 
-    public static Builder newValidationElementProps(UUID id) {
+    public static Builder newValidationElementProps(String id) {
         return new Builder(id);
     }
 
@@ -77,7 +77,7 @@ public final class ValidationElementProps implements IProps {
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
 
-        private UUID id;
+        private String id;
 
         private String label;
 
@@ -85,7 +85,7 @@ public final class ValidationElementProps implements IProps {
 
         private List<Element> children;
 
-        private Builder(UUID id) {
+        private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
 

@@ -14,7 +14,6 @@ package org.eclipse.sirius.web.diagrams;
 
 import java.text.MessageFormat;
 import java.util.Objects;
-import java.util.UUID;
 
 import org.eclipse.sirius.web.annotations.Immutable;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLField;
@@ -31,7 +30,7 @@ import org.eclipse.sirius.web.annotations.graphql.GraphQLObjectType;
 @Immutable
 @GraphQLObjectType
 public final class Label {
-    private UUID id;
+    private String id;
 
     private String type;
 
@@ -52,7 +51,7 @@ public final class Label {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getId() {
+    public String getId() {
         return this.id;
     }
 
@@ -92,7 +91,7 @@ public final class Label {
         return this.style;
     }
 
-    public static Builder newLabel(UUID id) {
+    public static Builder newLabel(String id) {
         return new Builder(id);
     }
 
@@ -113,7 +112,7 @@ public final class Label {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private UUID id;
+        private String id;
 
         private String type;
 
@@ -127,7 +126,7 @@ public final class Label {
 
         private LabelStyle style;
 
-        private Builder(UUID id) {
+        private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
 

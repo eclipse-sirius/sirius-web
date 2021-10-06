@@ -69,7 +69,7 @@ public class CreateViewOperationHandler implements IModelOperationHandler {
         String containerViewExpression = this.createView.getContainerViewExpression();
 
         var optionalParentElementId = this.interpreter.evaluateExpression(variables, containerViewExpression).asObject().flatMap(parentElement -> {
-            Optional<UUID> optionalElementId = Optional.empty();
+            Optional<String> optionalElementId = Optional.empty();
             if (parentElement instanceof Diagram) {
                 Diagram diagram = (Diagram) parentElement;
                 optionalElementId = Optional.of(diagram.getId());

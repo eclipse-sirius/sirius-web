@@ -16,7 +16,6 @@ import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.UUID;
 
 import org.eclipse.sirius.web.core.api.IInput;
 
@@ -31,17 +30,17 @@ public class ChangeDescription {
 
     private final String kind;
 
-    private final UUID sourceId;
+    private final String sourceId;
 
     private final IInput input;
 
     private final Map<String, Object> parameters;
 
-    public ChangeDescription(String kind, UUID sourceId, IInput input) {
+    public ChangeDescription(String kind, String sourceId, IInput input) {
         this(kind, sourceId, input, new HashMap<>());
     }
 
-    public ChangeDescription(String kind, UUID sourceId, IInput input, Map<String, Object> parameters) {
+    public ChangeDescription(String kind, String sourceId, IInput input, Map<String, Object> parameters) {
         this.kind = Objects.requireNonNull(kind);
         this.sourceId = Objects.requireNonNull(sourceId);
         this.input = Objects.requireNonNull(input);
@@ -52,7 +51,7 @@ public class ChangeDescription {
         return this.kind;
     }
 
-    public UUID getSourceId() {
+    public String getSourceId() {
         return this.sourceId;
     }
 

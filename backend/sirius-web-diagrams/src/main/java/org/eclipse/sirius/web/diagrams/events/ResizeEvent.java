@@ -13,7 +13,6 @@
 package org.eclipse.sirius.web.diagrams.events;
 
 import java.util.Objects;
-import java.util.UUID;
 
 import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.Size;
@@ -25,19 +24,19 @@ import org.eclipse.sirius.web.diagrams.Size;
  */
 public class ResizeEvent implements IDiagramEvent {
 
-    private final UUID nodeId;
+    private final String nodeId;
 
     private final Position positionDelta;
 
     private final Size newSize;
 
-    public ResizeEvent(UUID nodeId, Position positionDelta, Size newSize) {
+    public ResizeEvent(String nodeId, Position positionDelta, Size newSize) {
         this.nodeId = Objects.requireNonNull(nodeId);
         this.positionDelta = Objects.requireNonNull(positionDelta);
         this.newSize = Objects.requireNonNull(newSize);
     }
 
-    public UUID getNodeId() {
+    public String getNodeId() {
         return this.nodeId;
     }
 

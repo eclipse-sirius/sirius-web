@@ -105,13 +105,13 @@ public class DeleteViewOperationHandlerTests {
                 .edgeDescriptions(List.of())
                 .build();
 
-        Node node = Node.newNode(UUID.randomUUID())
+        Node node = Node.newNode(UUID.randomUUID().toString())
                 .descriptionId(UUID.randomUUID())
                 .type("Node") //$NON-NLS-1$
                 .targetObjectId(UUID.randomUUID().toString())
                 .targetObjectKind("ecore::EPackage") //$NON-NLS-1$
                 .targetObjectLabel(OperationTestContext.ROOT_PACKAGE_NAME)
-                .label(Label.newLabel(UUID.randomUUID())
+                .label(Label.newLabel(UUID.randomUUID().toString())
                         .type("Label") //$NON-NLS-1$
                         .text(OperationTestContext.ROOT_PACKAGE_NAME)
                         .position(Position.at(0, 0))
@@ -126,7 +126,7 @@ public class DeleteViewOperationHandlerTests {
                 .childNodes(List.of())
                 .build();
 
-        Diagram diagram = Diagram.newDiagram(UUID.randomUUID())
+        Diagram diagram = Diagram.newDiagram(UUID.randomUUID().toString())
                 .descriptionId(diagramDescription.getId())
                 .targetObjectId(UUID.randomUUID().toString())
                 .label("DiagramTest") //$NON-NLS-1$
@@ -146,7 +146,7 @@ public class DeleteViewOperationHandlerTests {
         // @formatter:on
 
         AdapterFactoryEditingDomain editingDomain = new AdapterFactoryEditingDomain(composedAdapterFactory, new BasicCommandStack(), resourceSet);
-        EditingContext editingContext = new EditingContext(UUID.randomUUID(), editingDomain);
+        EditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain);
         this.operationTestContext.getVariables().put(IEditingContext.EDITING_CONTEXT, editingContext);
         this.operationTestContext.getVariables().put(CONTAINER_VIEW, diagram);
         this.operationTestContext.getVariables().put(VariableManager.SELF, diagram.getNodes().get(0));

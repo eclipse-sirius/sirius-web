@@ -31,13 +31,13 @@ import org.eclipse.sirius.web.spring.collaborative.diagrams.api.IDiagramInput;
 public final class InvokeEdgeToolOnDiagramInput implements IDiagramInput {
     private UUID id;
 
-    private UUID editingContextId;
+    private String editingContextId;
 
-    private UUID representationId;
+    private String representationId;
 
-    private UUID diagramSourceElementId;
+    private String diagramSourceElementId;
 
-    private UUID diagramTargetElementId;
+    private String diagramTargetElementId;
 
     private String toolId;
 
@@ -52,7 +52,7 @@ public final class InvokeEdgeToolOnDiagramInput implements IDiagramInput {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getEditingContextId() {
+    public String getEditingContextId() {
         return this.editingContextId;
     }
 
@@ -60,21 +60,21 @@ public final class InvokeEdgeToolOnDiagramInput implements IDiagramInput {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getRepresentationId() {
+    public String getRepresentationId() {
         return this.representationId;
     }
 
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getDiagramSourceElementId() {
+    public String getDiagramSourceElementId() {
         return this.diagramSourceElementId;
     }
 
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getDiagramTargetElementId() {
+    public String getDiagramTargetElementId() {
         return this.diagramTargetElementId;
     }
 

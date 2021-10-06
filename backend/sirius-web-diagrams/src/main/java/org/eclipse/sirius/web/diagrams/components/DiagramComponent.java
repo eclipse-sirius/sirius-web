@@ -48,7 +48,7 @@ public class DiagramComponent implements IComponent {
 
         String label = diagramDescription.getLabelProvider().apply(variableManager);
 
-        UUID diagramId = optionalPreviousDiagram.map(Diagram::getId).orElseGet(UUID::randomUUID);
+        String diagramId = optionalPreviousDiagram.map(Diagram::getId).orElseGet(() -> UUID.randomUUID().toString());
         String targetObjectId = diagramDescription.getTargetObjectIdProvider().apply(variableManager);
 
         DiagramRenderingCache cache = new DiagramRenderingCache();

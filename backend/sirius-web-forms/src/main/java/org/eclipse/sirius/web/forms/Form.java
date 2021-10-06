@@ -37,7 +37,7 @@ public final class Form implements IRepresentation, ISemanticRepresentation {
 
     public static final String KIND = "Form"; //$NON-NLS-1$
 
-    private UUID id;
+    private String id;
 
     private String kind;
 
@@ -57,7 +57,7 @@ public final class Form implements IRepresentation, ISemanticRepresentation {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getId() {
+    public String getId() {
         return this.id;
     }
 
@@ -97,7 +97,7 @@ public final class Form implements IRepresentation, ISemanticRepresentation {
         return this.pages;
     }
 
-    public static Builder newForm(UUID id) {
+    public static Builder newForm(String id) {
         return new Builder(id);
     }
 
@@ -114,7 +114,7 @@ public final class Form implements IRepresentation, ISemanticRepresentation {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private UUID id;
+        private String id;
 
         private String kind = KIND;
 
@@ -126,7 +126,7 @@ public final class Form implements IRepresentation, ISemanticRepresentation {
 
         private List<Page> pages;
 
-        private Builder(UUID id) {
+        private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
 

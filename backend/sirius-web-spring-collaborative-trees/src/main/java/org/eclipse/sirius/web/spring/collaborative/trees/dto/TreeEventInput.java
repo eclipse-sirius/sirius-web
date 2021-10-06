@@ -32,7 +32,7 @@ import org.eclipse.sirius.web.core.api.IInput;
 public final class TreeEventInput implements IInput {
     private UUID id;
 
-    private UUID editingContextId;
+    private String editingContextId;
 
     private List<String> expanded;
 
@@ -40,7 +40,7 @@ public final class TreeEventInput implements IInput {
         // Used by Jackson
     }
 
-    public TreeEventInput(UUID id, UUID editingContextId, List<String> expanded) {
+    public TreeEventInput(UUID id, String editingContextId, List<String> expanded) {
         this.id = Objects.requireNonNull(id);
         this.editingContextId = Objects.requireNonNull(editingContextId);
         this.expanded = Objects.requireNonNull(expanded);
@@ -57,7 +57,7 @@ public final class TreeEventInput implements IInput {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getEditingContextId() {
+    public String getEditingContextId() {
         return this.editingContextId;
     }
 

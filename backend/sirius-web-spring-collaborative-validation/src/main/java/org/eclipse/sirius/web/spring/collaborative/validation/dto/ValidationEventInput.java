@@ -31,7 +31,7 @@ public final class ValidationEventInput implements IInput {
 
     private UUID id;
 
-    private UUID editingContextId;
+    private String editingContextId;
 
     public ValidationEventInput() {
         // Used by Jackson
@@ -48,7 +48,7 @@ public final class ValidationEventInput implements IInput {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getEditingContextId() {
+    public String getEditingContextId() {
         return this.editingContextId;
     }
 

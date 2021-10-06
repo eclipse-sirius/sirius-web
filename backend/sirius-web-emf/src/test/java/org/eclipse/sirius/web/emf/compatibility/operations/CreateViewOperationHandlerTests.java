@@ -104,7 +104,7 @@ public class CreateViewOperationHandlerTests {
                 .edgeDescriptions(List.of())
                 .build();
 
-        Diagram diagram = Diagram.newDiagram(UUID.randomUUID())
+        Diagram diagram = Diagram.newDiagram(UUID.randomUUID().toString())
                 .descriptionId(diagramDescription.getId())
                 .targetObjectId(UUID.randomUUID().toString())
                 .label("DiagramTest") //$NON-NLS-1$
@@ -124,7 +124,7 @@ public class CreateViewOperationHandlerTests {
         // @formatter:on
 
         AdapterFactoryEditingDomain editingDomain = new AdapterFactoryEditingDomain(composedAdapterFactory, new BasicCommandStack(), resourceSet);
-        EditingContext editingContext = new EditingContext(UUID.randomUUID(), editingDomain);
+        EditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain);
         this.operationTestContext.getVariables().put(IEditingContext.EDITING_CONTEXT, editingContext);
         this.operationTestContext.getVariables().put(CONTAINER_VIEW, diagram);
         this.createViewOperation = org.eclipse.sirius.diagram.description.tool.ToolFactory.eINSTANCE.createCreateView();

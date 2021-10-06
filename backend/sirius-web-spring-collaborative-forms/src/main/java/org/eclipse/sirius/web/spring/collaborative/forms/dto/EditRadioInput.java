@@ -31,9 +31,9 @@ import org.eclipse.sirius.web.spring.collaborative.forms.api.IFormInput;
 public final class EditRadioInput implements IFormInput {
     private UUID id;
 
-    private UUID editingContextId;
+    private String editingContextId;
 
-    private UUID representationId;
+    private String representationId;
 
     private String radioId;
 
@@ -43,7 +43,7 @@ public final class EditRadioInput implements IFormInput {
         // Used by Jackson
     }
 
-    public EditRadioInput(UUID id, UUID editingContextId, UUID representationId, String radioId, String newValue) {
+    public EditRadioInput(UUID id, String editingContextId, String representationId, String radioId, String newValue) {
         this.id = Objects.requireNonNull(id);
         this.editingContextId = Objects.requireNonNull(editingContextId);
         this.representationId = Objects.requireNonNull(representationId);
@@ -62,7 +62,7 @@ public final class EditRadioInput implements IFormInput {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getEditingContextId() {
+    public String getEditingContextId() {
         return this.editingContextId;
     }
 
@@ -70,7 +70,7 @@ public final class EditRadioInput implements IFormInput {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getRepresentationId() {
+    public String getRepresentationId() {
         return this.representationId;
     }
 

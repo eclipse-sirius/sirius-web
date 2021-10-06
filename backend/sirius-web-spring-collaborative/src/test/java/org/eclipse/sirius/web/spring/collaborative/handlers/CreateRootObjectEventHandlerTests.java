@@ -49,8 +49,8 @@ public class CreateRootObjectEventHandlerTests {
         };
 
         CreateRootObjectEventHandler handler = new CreateRootObjectEventHandler(editService, new ICollaborativeMessageService.NoOp(), new SimpleMeterRegistry());
-        var input = new CreateRootObjectInput(UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID(), "domainId", "rootObjectCreationDescriptionId"); //$NON-NLS-1$//$NON-NLS-2$
-        IEditingContext editingContext = () -> UUID.randomUUID();
+        var input = new CreateRootObjectInput(UUID.randomUUID(), UUID.randomUUID().toString(), UUID.randomUUID(), "domainId", "rootObjectCreationDescriptionId"); //$NON-NLS-1$//$NON-NLS-2$
+        IEditingContext editingContext = () -> UUID.randomUUID().toString();
 
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
         One<IPayload> payloadSink = Sinks.one();

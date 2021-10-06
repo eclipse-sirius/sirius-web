@@ -74,7 +74,7 @@ public class DomainBasedSourceNodesProviderTests {
                 .scalingFactor(42)
                 .build();
 
-        NodeElementProps nodeElementProps = NodeElementProps.newNodeElementProps(UUID.randomUUID())
+        NodeElementProps nodeElementProps = NodeElementProps.newNodeElementProps(UUID.randomUUID().toString())
                 .type("type") //$NON-NLS-1$
                 .targetObjectId("targetObjectId") //$NON-NLS-1$
                 .targetObjectKind("targetObjectKind") //$NON-NLS-1$

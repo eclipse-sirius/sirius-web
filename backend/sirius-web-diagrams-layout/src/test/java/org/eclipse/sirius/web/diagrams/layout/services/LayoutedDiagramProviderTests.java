@@ -64,11 +64,11 @@ public class LayoutedDiagramProviderTests {
 
     private static final double EDGE_BENDPOINT_Y = 600;
 
-    private static final UUID DIAGRAM_ID = UUID.randomUUID();
+    private static final String DIAGRAM_ID = UUID.randomUUID().toString();
 
-    private static final UUID FIRST_NODE_ID = UUID.randomUUID();
+    private static final String FIRST_NODE_ID = UUID.randomUUID().toString();
 
-    private static final UUID FIRST_EDGE_ID = UUID.randomUUID();
+    private static final String FIRST_EDGE_ID = UUID.randomUUID().toString();
 
     @Test
     public void testLayoutedDiagramProvider() {
@@ -120,7 +120,7 @@ public class LayoutedDiagramProviderTests {
 
         id2ElkGraphElements.put(elkNode.getIdentifier(), elkNode);
 
-        UUID edgeId = originalDiagram.getEdges().get(0).getId();
+        String edgeId = originalDiagram.getEdges().get(0).getId();
 
         ElkEdge elkEdge = ElkGraphFactory.eINSTANCE.createElkEdge();
         elkEdge.setIdentifier(edgeId.toString());

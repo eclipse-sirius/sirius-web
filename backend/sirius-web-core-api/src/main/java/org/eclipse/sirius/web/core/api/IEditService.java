@@ -23,13 +23,13 @@ import java.util.UUID;
  */
 public interface IEditService {
 
-    Optional<Object> findClass(UUID editingContextId, String classId);
+    Optional<Object> findClass(String editingContextId, String classId);
 
-    List<Domain> getDomains(UUID editingContextId);
+    List<Domain> getDomains(String editingContextId);
 
-    List<ChildCreationDescription> getRootCreationDescriptions(UUID editingContextId, String domainId, boolean suggested);
+    List<ChildCreationDescription> getRootCreationDescriptions(String editingContextId, String domainId, boolean suggested);
 
-    List<ChildCreationDescription> getChildCreationDescriptions(UUID editingContextId, String classId);
+    List<ChildCreationDescription> getChildCreationDescriptions(String editingContextId, String classId);
 
     Optional<Object> createChild(IEditingContext editingContext, Object object, String childCreationDescriptionId);
 
@@ -47,22 +47,22 @@ public interface IEditService {
     class NoOp implements IEditService {
 
         @Override
-        public Optional<Object> findClass(UUID editingContextId, String classId) {
+        public Optional<Object> findClass(String editingContextId, String classId) {
             return Optional.empty();
         }
 
         @Override
-        public List<Domain> getDomains(UUID editingContextId) {
+        public List<Domain> getDomains(String editingContextId) {
             return List.of();
         }
 
         @Override
-        public List<ChildCreationDescription> getRootCreationDescriptions(UUID editingContextId, String domainId, boolean suggested) {
+        public List<ChildCreationDescription> getRootCreationDescriptions(String editingContextId, String domainId, boolean suggested) {
             return List.of();
         }
 
         @Override
-        public List<ChildCreationDescription> getChildCreationDescriptions(UUID editingContextId, String classId) {
+        public List<ChildCreationDescription> getChildCreationDescriptions(String editingContextId, String classId) {
             return List.of();
         }
 

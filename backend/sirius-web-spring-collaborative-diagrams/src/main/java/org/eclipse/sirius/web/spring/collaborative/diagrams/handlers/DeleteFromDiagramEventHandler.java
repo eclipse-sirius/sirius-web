@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
@@ -113,7 +112,7 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
         List<String> errors = new ArrayList<>();
         boolean atLeastOneOk = false;
         Diagram diagram = diagramContext.getDiagram();
-        for (UUID edgeId : diagramInput.getEdgeIds()) {
+        for (String edgeId : diagramInput.getEdgeIds()) {
             var optionalElement = this.diagramQueryService.findEdgeById(diagram, edgeId);
             if (optionalElement.isPresent()) {
                 IStatus status = this.invokeDeleteEdgeTool(optionalElement.get(), editingContext, diagramContext);
@@ -125,7 +124,7 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
                 errors.add(message);
             }
         }
-        for (UUID nodeId : diagramInput.getNodeIds()) {
+        for (String nodeId : diagramInput.getNodeIds()) {
             var optionalElement = this.diagramQueryService.findNodeById(diagram, nodeId);
             if (optionalElement.isPresent()) {
                 IStatus status = this.invokeDeleteNodeTool(optionalElement.get(), editingContext, diagramContext);

@@ -13,7 +13,6 @@
 package org.eclipse.sirius.web.forms.components;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.eclipse.sirius.web.components.Element;
@@ -41,7 +40,7 @@ public class FormComponent implements IComponent {
         VariableManager variableManager = this.props.getVariableManager();
         FormDescription formDescription = this.props.getFormDescription();
 
-        UUID id = formDescription.getIdProvider().apply(variableManager);
+        String id = formDescription.getIdProvider().apply(variableManager);
         String label = formDescription.getLabelProvider().apply(variableManager);
         String targetObjectId = formDescription.getTargetObjectIdProvider().apply(variableManager);
         List<PageDescription> pageDescriptions = formDescription.getPageDescriptions();

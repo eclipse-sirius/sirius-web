@@ -31,7 +31,7 @@ import org.eclipse.sirius.web.core.api.IInput;
 public final class CreateDocumentInput implements IInput {
     private UUID id;
 
-    private UUID editingContextId;
+    private String editingContextId;
 
     private String name;
 
@@ -41,7 +41,7 @@ public final class CreateDocumentInput implements IInput {
         // Used by Jackson
     }
 
-    public CreateDocumentInput(UUID id, UUID editingContextId, String name, UUID stereotypeDescriptionId) {
+    public CreateDocumentInput(UUID id, String editingContextId, String name, UUID stereotypeDescriptionId) {
         this.id = Objects.requireNonNull(id);
         this.editingContextId = Objects.requireNonNull(editingContextId);
         this.name = Objects.requireNonNull(name);
@@ -59,7 +59,7 @@ public final class CreateDocumentInput implements IInput {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getEditingContextId() {
+    public String getEditingContextId() {
         return this.editingContextId;
     }
 

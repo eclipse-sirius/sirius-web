@@ -48,13 +48,13 @@ import reactor.core.publisher.Sinks.One;
  * @author sbegaudeau
  */
 public class EditRadioEventHandlerTests {
-    private static final UUID FORM_ID = UUID.randomUUID();
+    private static final String FORM_ID = UUID.randomUUID().toString();
 
     @Test
     public void testRadioEdition() {
         String id = "Radio id"; //$NON-NLS-1$
 
-        var input = new EditRadioInput(UUID.randomUUID(), UUID.randomUUID(), FORM_ID, id, "optionId"); //$NON-NLS-1$
+        var input = new EditRadioInput(UUID.randomUUID(), UUID.randomUUID().toString(), FORM_ID, id, "optionId"); //$NON-NLS-1$
 
         AtomicBoolean hasBeenExecuted = new AtomicBoolean();
         Function<String, IStatus> newValueHandler = newValue -> {

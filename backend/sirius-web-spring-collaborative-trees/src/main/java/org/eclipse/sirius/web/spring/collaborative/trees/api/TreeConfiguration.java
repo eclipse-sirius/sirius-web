@@ -25,18 +25,18 @@ import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationConfigurat
  */
 public class TreeConfiguration implements IRepresentationConfiguration {
 
-    private final UUID treeId;
+    private final String treeId;
 
     private final List<String> expanded;
 
-    public TreeConfiguration(UUID editingContextId, List<String> expanded) {
-        String uniqueId = editingContextId.toString() + expanded.toString();
-        this.treeId = UUID.nameUUIDFromBytes(uniqueId.getBytes());
+    public TreeConfiguration(String editingContextId, List<String> expanded) {
+        String uniqueId = editingContextId + expanded.toString();
+        this.treeId = UUID.nameUUIDFromBytes(uniqueId.getBytes()).toString();
         this.expanded = Objects.requireNonNull(expanded);
     }
 
     @Override
-    public UUID getId() {
+    public String getId() {
         return this.treeId;
     }
 

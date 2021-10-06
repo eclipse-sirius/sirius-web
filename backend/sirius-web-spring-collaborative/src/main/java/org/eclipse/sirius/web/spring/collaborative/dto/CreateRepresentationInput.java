@@ -32,7 +32,7 @@ public final class CreateRepresentationInput implements IInput {
 
     private UUID id;
 
-    private UUID editingContextId;
+    private String editingContextId;
 
     private UUID representationDescriptionId;
 
@@ -44,7 +44,7 @@ public final class CreateRepresentationInput implements IInput {
         // Used by Jackson
     }
 
-    public CreateRepresentationInput(UUID id, UUID editingContextId, UUID representationDescriptionId, String objectId, String representationName) {
+    public CreateRepresentationInput(UUID id, String editingContextId, UUID representationDescriptionId, String objectId, String representationName) {
         this.id = Objects.requireNonNull(id);
         this.editingContextId = Objects.requireNonNull(editingContextId);
         this.representationDescriptionId = Objects.requireNonNull(representationDescriptionId);
@@ -63,7 +63,7 @@ public final class CreateRepresentationInput implements IInput {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getEditingContextId() {
+    public String getEditingContextId() {
         return this.editingContextId;
     }
 

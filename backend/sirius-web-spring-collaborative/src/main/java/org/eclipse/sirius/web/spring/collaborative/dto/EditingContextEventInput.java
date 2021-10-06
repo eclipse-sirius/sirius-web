@@ -31,7 +31,7 @@ public final class EditingContextEventInput implements IInput {
 
     private UUID id;
 
-    private UUID editingContextId;
+    private String editingContextId;
 
     @Override
     @GraphQLID
@@ -44,7 +44,7 @@ public final class EditingContextEventInput implements IInput {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getEditingContextId() {
+    public String getEditingContextId() {
         return this.editingContextId;
     }
 

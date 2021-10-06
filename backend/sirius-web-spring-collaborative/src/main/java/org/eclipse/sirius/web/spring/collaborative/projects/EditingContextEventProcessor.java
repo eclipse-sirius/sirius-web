@@ -90,7 +90,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
 
     private final IDanglingRepresentationDeletionService danglingRepresentationDeletionService;
 
-    private final Map<UUID, RepresentationEventProcessorEntry> representationEventProcessors = new ConcurrentHashMap<>();
+    private final Map<String, RepresentationEventProcessorEntry> representationEventProcessors = new ConcurrentHashMap<>();
 
     private final Many<IPayload> sink = Sinks.many().multicast().directBestEffort();
 
@@ -127,15 +127,15 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
 
             if (ChangeKind.REPRESENTATION_TO_DELETE.equals(changeDescription.getKind())) {
                 Object representationId = changeDescription.getParameters().get(REPRESENTATION_ID);
-                if (representationId instanceof UUID) {
-                    DeleteRepresentationInput deleteRepresentationInput = new DeleteRepresentationInput(UUID.randomUUID(), (UUID) representationId);
+                if (representationId instanceof String) {
+                    DeleteRepresentationInput deleteRepresentationInput = new DeleteRepresentationInput(UUID.randomUUID(), (String) representationId);
                     this.doHandle(Sinks.one(), deleteRepresentationInput);
                 }
             } else if (ChangeKind.REPRESENTATION_TO_RENAME.equals(changeDescription.getKind())) {
                 Object representationId = changeDescription.getParameters().get(REPRESENTATION_ID);
                 Object representationLabel = changeDescription.getParameters().get(REPRESENTATION_LABEL);
-                if (representationId instanceof UUID && representationLabel instanceof String) {
-                    RenameRepresentationInput renameRepresentationInput = new RenameRepresentationInput(UUID.randomUUID(), this.getEditingContextId(), (UUID) representationId,
+                if (representationId instanceof String && representationLabel instanceof String) {
+                    RenameRepresentationInput renameRepresentationInput = new RenameRepresentationInput(UUID.randomUUID(), this.getEditingContextId(), (String) representationId,
                             (String) representationLabel);
                     this.doHandle(Sinks.one(), renameRepresentationInput);
                 }
@@ -168,7 +168,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
         if (this.sink.currentSubscriberCount() > 0) {
             IInput input = changeDescription.getInput();
             if (input instanceof RenameRepresentationInput && ChangeKind.REPRESENTATION_RENAMING.equals(changeDescription.getKind())) {
-                UUID representationId = ((RenameRepresentationInput) input).getRepresentationId();
+                String representationId = ((RenameRepresentationInput) input).getRepresentationId();
                 String newLabel = ((RenameRepresentationInput) input).getNewLabel();
                 EmitResult emitResult = this.sink.tryEmitNext(new RepresentationRenamedEventPayload(input.getId(), representationId, newLabel));
                 if (emitResult.isFailure()) {
@@ -180,7 +180,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
     }
 
     @Override
-    public UUID getEditingContextId() {
+    public String getEditingContextId() {
         return this.editingContext.getId();
     }
 
@@ -352,7 +352,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
         // @formatter:on
     }
 
-    private void disposeRepresentation(UUID representationId) {
+    private void disposeRepresentation(String representationId) {
         Optional.ofNullable(this.representationEventProcessors.remove(representationId)).ifPresent(RepresentationEventProcessorEntry::dispose);
 
         if (this.representationEventProcessors.isEmpty()) {

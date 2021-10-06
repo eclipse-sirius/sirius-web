@@ -15,7 +15,6 @@ package org.eclipse.sirius.web.spring.collaborative.trees.api;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 import org.eclipse.sirius.web.annotations.Immutable;
 import org.eclipse.sirius.web.core.api.IEditingContext;
@@ -28,7 +27,7 @@ import org.eclipse.sirius.web.trees.description.TreeDescription;
  */
 @Immutable
 public final class TreeCreationParameters {
-    private UUID id;
+    private String id;
 
     private TreeDescription treeDescription;
 
@@ -40,7 +39,7 @@ public final class TreeCreationParameters {
         // Prevent instantiation
     }
 
-    public UUID getId() {
+    public String getId() {
         return this.id;
     }
 
@@ -56,7 +55,7 @@ public final class TreeCreationParameters {
         return this.editingContext;
     }
 
-    public static Builder newTreeCreationParameters(UUID id) {
+    public static Builder newTreeCreationParameters(String id) {
         return new Builder(id);
     }
 
@@ -73,7 +72,7 @@ public final class TreeCreationParameters {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private UUID id;
+        private String id;
 
         private TreeDescription treeDescription;
 
@@ -81,7 +80,7 @@ public final class TreeCreationParameters {
 
         private IEditingContext editingContext;
 
-        private Builder(UUID id) {
+        private Builder(String id) {
             this.id = id;
         }
 

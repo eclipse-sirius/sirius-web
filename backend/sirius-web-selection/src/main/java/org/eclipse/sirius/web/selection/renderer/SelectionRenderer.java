@@ -39,7 +39,7 @@ public class SelectionRenderer {
     }
 
     public Selection render() {
-        UUID id = this.selectionDescription.getIdProvider().apply(this.variableManager);
+        String id = this.selectionDescription.getIdProvider().apply(this.variableManager);
         String label = this.selectionDescription.getLabelProvider().apply(this.variableManager);
         String message = this.selectionDescription.getMessageProvider().apply(this.variableManager);
         String targetObjectId = this.selectionDescription.getTargetObjectIdProvider().apply(this.variableManager);

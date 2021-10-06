@@ -31,9 +31,9 @@ public final class UpdateWidgetFocusInput implements IFormInput {
 
     private UUID id;
 
-    private UUID editingContextId;
+    private String editingContextId;
 
-    private UUID representationId;
+    private String representationId;
 
     private String widgetId;
 
@@ -50,7 +50,7 @@ public final class UpdateWidgetFocusInput implements IFormInput {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getEditingContextId() {
+    public String getEditingContextId() {
         return this.editingContextId;
     }
 
@@ -58,7 +58,7 @@ public final class UpdateWidgetFocusInput implements IFormInput {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getRepresentationId() {
+    public String getRepresentationId() {
         return this.representationId;
     }
 

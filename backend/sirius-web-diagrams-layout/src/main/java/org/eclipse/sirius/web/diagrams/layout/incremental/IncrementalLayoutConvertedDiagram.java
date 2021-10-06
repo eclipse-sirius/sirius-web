@@ -14,7 +14,6 @@ package org.eclipse.sirius.web.diagrams.layout.incremental;
 
 import java.util.Map;
 import java.util.Objects;
-import java.util.UUID;
 
 import org.eclipse.sirius.web.diagrams.layout.incremental.data.DiagramLayoutData;
 import org.eclipse.sirius.web.diagrams.layout.incremental.data.ILayoutData;
@@ -29,9 +28,9 @@ public class IncrementalLayoutConvertedDiagram {
 
     private final DiagramLayoutData diagramLayoutData;
 
-    private final Map<UUID, ILayoutData> id2LayoutData;
+    private final Map<String, ILayoutData> id2LayoutData;
 
-    public IncrementalLayoutConvertedDiagram(DiagramLayoutData diagramLayoutData, Map<UUID, ILayoutData> id2LayoutData) {
+    public IncrementalLayoutConvertedDiagram(DiagramLayoutData diagramLayoutData, Map<String, ILayoutData> id2LayoutData) {
         this.diagramLayoutData = Objects.requireNonNull(diagramLayoutData);
         this.id2LayoutData = Objects.requireNonNull(id2LayoutData);
     }
@@ -40,7 +39,7 @@ public class IncrementalLayoutConvertedDiagram {
         return this.diagramLayoutData;
     }
 
-    public Map<UUID, ILayoutData> getId2LayoutData() {
+    public Map<String, ILayoutData> getId2LayoutData() {
         return this.id2LayoutData;
     }
 }

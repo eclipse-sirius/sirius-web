@@ -90,7 +90,7 @@ public class QueryBasedObjectEventHandlerTests {
         IInput input = new QueryBasedObjectInput(UUID.randomUUID(), "", Map.of()); //$NON-NLS-1$
         assertThat(queryBasedObjectEventHandler.canHandle(new IEditingContext.NoOp(), input)).isTrue();
 
-        IEditingContext editingContext = () -> UUID.randomUUID();
+        IEditingContext editingContext = () -> UUID.randomUUID().toString();
         queryBasedObjectEventHandler.handle(payloadSink, changeDescriptionSink, editingContext, input);
     }
 }

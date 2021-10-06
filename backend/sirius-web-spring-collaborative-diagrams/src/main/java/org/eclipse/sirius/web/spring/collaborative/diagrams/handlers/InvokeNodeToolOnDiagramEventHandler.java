@@ -41,6 +41,8 @@ import org.eclipse.sirius.web.spring.collaborative.diagrams.api.IToolService;
 import org.eclipse.sirius.web.spring.collaborative.diagrams.dto.InvokeNodeToolOnDiagramInput;
 import org.eclipse.sirius.web.spring.collaborative.diagrams.dto.InvokeNodeToolOnDiagramSuccessPayload;
 import org.eclipse.sirius.web.spring.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
@@ -55,6 +57,8 @@ import reactor.core.publisher.Sinks.One;
  */
 @Service
 public class InvokeNodeToolOnDiagramEventHandler implements IDiagramEventHandler {
+
+    private final Logger logger = LoggerFactory.getLogger(InvokeNodeToolOnDiagramEventHandler.class);
 
     private final IObjectService objectService;
 
@@ -119,7 +123,7 @@ public class InvokeNodeToolOnDiagramEventHandler implements IDiagramEventHandler
         changeDescriptionSink.tryEmitNext(changeDescription);
     }
 
-    private IStatus executeTool(IEditingContext editingContext, IDiagramContext diagramContext, UUID diagramElementId, CreateNodeTool tool, double startingPositionX, double startingPositionY,
+    private IStatus executeTool(IEditingContext editingContext, IDiagramContext diagramContext, String diagramElementId, CreateNodeTool tool, double startingPositionX, double startingPositionY,
             String selectedObjectId) {
         IStatus result = new Failure(""); //$NON-NLS-1$
         Diagram diagram = diagramContext.getDiagram();
@@ -129,7 +133,11 @@ public class InvokeNodeToolOnDiagramEventHandler implements IDiagramEventHandler
             self = this.objectService.getObject(editingContext, node.get().getTargetObjectId());
         } else if (Objects.equals(diagram.getId(), diagramElementId)) {
             self = this.objectService.getObject(editingContext, diagram.getTargetObjectId());
+        } else {
+            this.logger.warn("The node creation tool {0} cannot be applied on the current diagram {1} and editing context {2}", tool.getId(), diagram.getId(), editingContext.getId()); //$NON-NLS-1$
         }
+
+        // Else, cannot find the node with the given optionalDiagramElementId
 
         if (self.isPresent()) {
             VariableManager variableManager = new VariableManager();

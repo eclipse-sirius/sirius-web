@@ -32,9 +32,9 @@ public final class RenameDiagramInput implements IDiagramInput {
 
     private UUID id;
 
-    private UUID editingContextId;
+    private String editingContextId;
 
-    private UUID diagramId;
+    private String diagramId;
 
     private String newLabel;
 
@@ -42,7 +42,7 @@ public final class RenameDiagramInput implements IDiagramInput {
         // Used by Jackson
     }
 
-    public RenameDiagramInput(UUID id, UUID editingContextId, UUID diagramId, String newLabel) {
+    public RenameDiagramInput(UUID id, String editingContextId, String diagramId, String newLabel) {
         this.id = Objects.requireNonNull(id);
         this.editingContextId = Objects.requireNonNull(editingContextId);
         this.diagramId = Objects.requireNonNull(diagramId);
@@ -60,7 +60,7 @@ public final class RenameDiagramInput implements IDiagramInput {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getEditingContextId() {
+    public String getEditingContextId() {
         return this.editingContextId;
     }
 
@@ -68,7 +68,7 @@ public final class RenameDiagramInput implements IDiagramInput {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getRepresentationId() {
+    public String getRepresentationId() {
         return this.diagramId;
     }
 

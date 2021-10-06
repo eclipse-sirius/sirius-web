@@ -65,7 +65,7 @@ public class EdgeLabelPositionProviderTests {
 
     private DiagramLayoutData createDiagramLayoutData() {
         DiagramLayoutData diagramLayoutData = new DiagramLayoutData();
-        diagramLayoutData.setId(UUID.randomUUID());
+        diagramLayoutData.setId(UUID.randomUUID().toString());
         diagramLayoutData.setPosition(Position.at(0, 0));
         diagramLayoutData.setSize(Size.of(1000, 1000));
 
@@ -74,7 +74,7 @@ public class EdgeLabelPositionProviderTests {
 
     private LabelLayoutData createLabelLayoutData() {
         LabelLayoutData labelLayoutData = new LabelLayoutData();
-        labelLayoutData.setId(UUID.randomUUID());
+        labelLayoutData.setId(UUID.randomUUID().toString());
         labelLayoutData.setPosition(Position.UNDEFINED);
         //@formatter:off
         LabelStyle labelStyle = LabelStyle.newLabelStyle()
@@ -91,7 +91,7 @@ public class EdgeLabelPositionProviderTests {
     private EdgeLayoutData createEdgeLayoutData(DiagramLayoutData diagramLayoutData) {
         EdgeLayoutData edgeLayoutData = new EdgeLayoutData();
         edgeLayoutData.setCenterLabel(this.createLabelLayoutData());
-        edgeLayoutData.setId(UUID.randomUUID());
+        edgeLayoutData.setId(UUID.randomUUID().toString());
         edgeLayoutData.setSource(this.createNodeLayoutData(Position.at(0, 0), Size.of(200, 200), diagramLayoutData));
         edgeLayoutData.setTarget(this.createNodeLayoutData(Position.at(400, 0), Size.of(200, 200), diagramLayoutData));
         List<Position> routingPoints = Arrays.asList(Position.at(200, 100), Position.at(400, 100));
@@ -101,7 +101,7 @@ public class EdgeLabelPositionProviderTests {
 
     private NodeLayoutData createNodeLayoutData(Position position, Size size, IContainerLayoutData parent) {
         NodeLayoutData nodeLayoutData = new NodeLayoutData();
-        nodeLayoutData.setId(UUID.randomUUID());
+        nodeLayoutData.setId(UUID.randomUUID().toString());
         nodeLayoutData.setParent(parent);
         nodeLayoutData.setPosition(position);
         nodeLayoutData.setSize(size);

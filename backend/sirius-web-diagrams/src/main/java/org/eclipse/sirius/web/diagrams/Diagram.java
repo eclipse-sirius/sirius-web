@@ -36,7 +36,7 @@ public final class Diagram implements IRepresentation, ISemanticRepresentation {
 
     public static final String KIND = "Diagram"; //$NON-NLS-1$
 
-    private UUID id;
+    private String id;
 
     private String kind;
 
@@ -62,7 +62,7 @@ public final class Diagram implements IRepresentation, ISemanticRepresentation {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getId() {
+    public String getId() {
         return this.id;
     }
 
@@ -120,7 +120,7 @@ public final class Diagram implements IRepresentation, ISemanticRepresentation {
         return this.edges;
     }
 
-    public static Builder newDiagram(UUID id) {
+    public static Builder newDiagram(String id) {
         return new Builder(id);
     }
 
@@ -141,7 +141,7 @@ public final class Diagram implements IRepresentation, ISemanticRepresentation {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private UUID id;
+        private String id;
 
         private String kind = KIND;
 
@@ -159,7 +159,7 @@ public final class Diagram implements IRepresentation, ISemanticRepresentation {
 
         private List<Edge> edges;
 
-        private Builder(UUID id) {
+        private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
 

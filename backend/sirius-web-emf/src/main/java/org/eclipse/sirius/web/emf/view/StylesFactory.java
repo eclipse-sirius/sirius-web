@@ -13,7 +13,6 @@
 package org.eclipse.sirius.web.emf.view;
 
 import java.util.Optional;
-import java.util.UUID;
 
 import org.eclipse.sirius.web.diagrams.ArrowStyle;
 import org.eclipse.sirius.web.diagrams.EdgeStyle;
@@ -89,7 +88,7 @@ public final class StylesFactory {
         return type;
     }
 
-    public INodeStyle createNodeStyle(NodeStyle nodeStyle, Optional<UUID> optionalEditingContextId) {
+    public INodeStyle createNodeStyle(NodeStyle nodeStyle, Optional<String> optionalEditingContextId) {
         INodeStyle result = null;
         switch (this.getNodeType(nodeStyle)) {
         case NodeType.NODE_IMAGE:

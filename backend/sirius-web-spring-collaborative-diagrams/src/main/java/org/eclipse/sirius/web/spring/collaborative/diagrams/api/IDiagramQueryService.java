@@ -26,11 +26,11 @@ import org.eclipse.sirius.web.diagrams.Node;
  */
 public interface IDiagramQueryService {
 
-    Optional<Node> findNodeById(Diagram diagram, UUID nodeId);
+    Optional<Node> findNodeById(Diagram diagram, String nodeId);
 
     Optional<Node> findNodeByLabelId(Diagram diagram, UUID labelId);
 
-    Optional<Edge> findEdgeById(Diagram diagram, UUID edgeId);
+    Optional<Edge> findEdgeById(Diagram diagram, String edgeId);
 
     Optional<Edge> findEdgeByLabelId(Diagram diagram, UUID labelId);
 

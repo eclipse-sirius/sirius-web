@@ -91,7 +91,7 @@ public class QueryBasedBooleanEventHandlerTests {
         IInput input = new QueryBasedBooleanInput(UUID.randomUUID(), "", Map.of()); //$NON-NLS-1$
         assertThat(queryBasedBooleanEventHandler.canHandle(new IEditingContext.NoOp(), input)).isTrue();
 
-        IEditingContext editingContext = () -> UUID.randomUUID();
+        IEditingContext editingContext = () -> UUID.randomUUID().toString();
         queryBasedBooleanEventHandler.handle(payloadSink, changeDescriptionSink, editingContext, input);
     }
 }

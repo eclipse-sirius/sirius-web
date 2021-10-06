@@ -32,9 +32,9 @@ public final class RenameRepresentationInput implements IRepresentationInput {
 
     private UUID id;
 
-    private UUID editingContextId;
+    private String editingContextId;
 
-    private UUID representationId;
+    private String representationId;
 
     private String newLabel;
 
@@ -42,7 +42,7 @@ public final class RenameRepresentationInput implements IRepresentationInput {
         // Used by Jackson
     }
 
-    public RenameRepresentationInput(UUID id, UUID editingContextId, UUID representationId, String newLabel) {
+    public RenameRepresentationInput(UUID id, String editingContextId, String representationId, String newLabel) {
         this.id = Objects.requireNonNull(id);
         this.editingContextId = Objects.requireNonNull(editingContextId);
         this.representationId = Objects.requireNonNull(representationId);
@@ -60,7 +60,7 @@ public final class RenameRepresentationInput implements IRepresentationInput {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getEditingContextId() {
+    public String getEditingContextId() {
         return this.editingContextId;
     }
 
@@ -68,7 +68,7 @@ public final class RenameRepresentationInput implements IRepresentationInput {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getRepresentationId() {
+    public String getRepresentationId() {
         return this.representationId;
     }
 

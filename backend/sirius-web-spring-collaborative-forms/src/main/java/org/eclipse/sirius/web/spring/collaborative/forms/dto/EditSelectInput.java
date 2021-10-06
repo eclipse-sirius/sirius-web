@@ -30,9 +30,9 @@ import org.eclipse.sirius.web.spring.collaborative.forms.api.IFormInput;
 public final class EditSelectInput implements IFormInput {
     private UUID id;
 
-    private UUID editingContextId;
+    private String editingContextId;
 
-    private UUID representationId;
+    private String representationId;
 
     private String selectId;
 
@@ -49,7 +49,7 @@ public final class EditSelectInput implements IFormInput {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getEditingContextId() {
+    public String getEditingContextId() {
         return this.editingContextId;
     }
 
@@ -57,7 +57,7 @@ public final class EditSelectInput implements IFormInput {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getRepresentationId() {
+    public String getRepresentationId() {
         return this.representationId;
     }
 

@@ -13,7 +13,6 @@
 package org.eclipse.sirius.web.emf.services;
 
 import java.util.List;
-import java.util.UUID;
 
 import org.eclipse.emf.ecore.EPackage;
 
@@ -23,5 +22,5 @@ import org.eclipse.emf.ecore.EPackage;
  * @author sbegaudeau
  */
 public interface IEditingContextEPackageService {
-    List<EPackage> getEPackages(UUID editingContextId);
+    List<EPackage> getEPackages(String editingContextId);
 }

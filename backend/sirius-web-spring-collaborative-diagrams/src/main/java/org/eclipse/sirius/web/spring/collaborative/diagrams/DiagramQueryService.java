@@ -33,7 +33,7 @@ import org.springframework.stereotype.Service;
 public class DiagramQueryService implements IDiagramQueryService {
 
     @Override
-    public Optional<Node> findNodeById(Diagram diagram, UUID nodeId) {
+    public Optional<Node> findNodeById(Diagram diagram, String nodeId) {
         return this.findNode(node -> Objects.equals(node.getId(), nodeId), diagram.getNodes());
     }
 
@@ -58,7 +58,7 @@ public class DiagramQueryService implements IDiagramQueryService {
     }
 
     @Override
-    public Optional<Edge> findEdgeById(Diagram diagram, UUID edgeId) {
+    public Optional<Edge> findEdgeById(Diagram diagram, String edgeId) {
         return diagram.getEdges().stream().filter(edge -> Objects.equals(edgeId, edge.getId())).findFirst();
     }
 

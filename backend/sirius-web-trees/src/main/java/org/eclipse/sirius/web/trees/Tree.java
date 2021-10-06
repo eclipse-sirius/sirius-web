@@ -35,7 +35,7 @@ public final class Tree implements IRepresentation {
 
     public static final String KIND = "Tree"; //$NON-NLS-1$
 
-    private UUID id;
+    private String id;
 
     private String kind;
 
@@ -53,7 +53,7 @@ public final class Tree implements IRepresentation {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getId() {
+    public String getId() {
         return this.id;
     }
 
@@ -85,7 +85,7 @@ public final class Tree implements IRepresentation {
         return this.children;
     }
 
-    public static Builder newTree(UUID id) {
+    public static Builder newTree(String id) {
         return new Builder(id);
     }
 
@@ -102,7 +102,7 @@ public final class Tree implements IRepresentation {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private UUID id;
+        private String id;
 
         private String kind = KIND;
 
@@ -112,7 +112,7 @@ public final class Tree implements IRepresentation {
 
         private List<TreeItem> children;
 
-        private Builder(UUID id) {
+        private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
 

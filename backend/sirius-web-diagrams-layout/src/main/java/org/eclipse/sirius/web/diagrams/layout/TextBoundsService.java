@@ -61,7 +61,7 @@ public class TextBoundsService {
                     .color("#000000") //$NON-NLS-1$
                     .iconURL("") //$NON-NLS-1$
                     .build();
-            Label label = Label.newLabel(UUID.randomUUID())
+            Label label = Label.newLabel(UUID.randomUUID().toString())
                     .type("labelType") //$NON-NLS-1$
                     .position(Position.UNDEFINED)
                     .size(Size.UNDEFINED)

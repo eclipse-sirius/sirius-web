@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.spring.collaborative.api;
 
-import java.util.UUID;
-
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.representations.IRepresentation;
 
@@ -37,7 +35,7 @@ public interface IDanglingRepresentationDeletionService {
      */
     boolean isDangling(IEditingContext editingContext, IRepresentation representation);
 
-    void deleteDanglingRepresentations(UUID editingContextId);
+    void deleteDanglingRepresentations(String editingContextId);
 
     /**
      * Implementation which does nothing, used for mocks in unit tests.
@@ -52,7 +50,7 @@ public interface IDanglingRepresentationDeletionService {
         }
 
         @Override
-        public void deleteDanglingRepresentations(UUID editingContextId) {
+        public void deleteDanglingRepresentations(String editingContextId) {
         }
 
     }

@@ -13,7 +13,6 @@
 package org.eclipse.sirius.web.diagrams.components;
 
 import java.util.Optional;
-import java.util.UUID;
 
 import org.eclipse.sirius.web.diagrams.Edge;
 
@@ -23,5 +22,5 @@ import org.eclipse.sirius.web.diagrams.Edge;
  * @author sbegaudeau
  */
 public interface IEdgesRequestor {
-    Optional<Edge> getById(UUID edgeId);
+    Optional<Edge> getById(String edgeId);
 }

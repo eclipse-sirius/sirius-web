@@ -24,20 +24,20 @@ import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationConfigurat
  */
 public class SelectionConfiguration implements IRepresentationConfiguration {
 
-    private final UUID id;
+    private final String id;
 
     private final UUID selectionId;
 
     private final String targetObjectId;
 
-    public SelectionConfiguration(UUID id, UUID selectionId, String targetObjectId) {
+    public SelectionConfiguration(String id, UUID selectionId, String targetObjectId) {
         this.id = Objects.requireNonNull(id);
         this.selectionId = Objects.requireNonNull(selectionId);
         this.targetObjectId = Objects.requireNonNull(targetObjectId);
     }
 
     @Override
-    public UUID getId() {
+    public String getId() {
         return this.id;
     }
 

@@ -14,7 +14,6 @@ package org.eclipse.sirius.web.spring.collaborative.api;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.core.api.IPayload;
@@ -28,7 +27,7 @@ import reactor.core.publisher.Mono;
  * @author sbegaudeau
  */
 public interface IEditingContextEventProcessor extends IDisposablePublisher {
-    UUID getEditingContextId();
+    String getEditingContextId();
 
     <T extends IRepresentationEventProcessor> Optional<T> acquireRepresentationEventProcessor(Class<T> representationEventProcessorClass, IRepresentationConfiguration configuration, IInput input);
 
@@ -55,7 +54,7 @@ public interface IEditingContextEventProcessor extends IDisposablePublisher {
         }
 
         @Override
-        public UUID getEditingContextId() {
+        public String getEditingContextId() {
             return null;
         }
 

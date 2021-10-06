@@ -32,7 +32,7 @@ public final class RenameObjectInput implements IInput {
 
     private UUID id;
 
-    private UUID editingContextId;
+    private String editingContextId;
 
     private String objectId;
 
@@ -42,7 +42,7 @@ public final class RenameObjectInput implements IInput {
         // Used by Jackson
     }
 
-    public RenameObjectInput(UUID id, UUID editingContextId, String objectId, String newName) {
+    public RenameObjectInput(UUID id, String editingContextId, String objectId, String newName) {
         this.id = Objects.requireNonNull(id);
         this.editingContextId = Objects.requireNonNull(editingContextId);
         this.objectId = Objects.requireNonNull(objectId);
@@ -60,7 +60,7 @@ public final class RenameObjectInput implements IInput {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getEditingContextId() {
+    public String getEditingContextId() {
         return this.editingContextId;
     }
 

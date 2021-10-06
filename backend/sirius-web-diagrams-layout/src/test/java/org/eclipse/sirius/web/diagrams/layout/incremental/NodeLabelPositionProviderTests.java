@@ -79,7 +79,7 @@ public class NodeLabelPositionProviderTests {
 
     private DiagramLayoutData createDiagramLayoutData() {
         DiagramLayoutData diagramLayoutData = new DiagramLayoutData();
-        diagramLayoutData.setId(UUID.randomUUID());
+        diagramLayoutData.setId(UUID.randomUUID().toString());
         diagramLayoutData.setPosition(Position.at(0, 0));
         diagramLayoutData.setSize(Size.of(1000, 1000));
 
@@ -88,7 +88,7 @@ public class NodeLabelPositionProviderTests {
 
     private LabelLayoutData createLabelLayoutData() {
         LabelLayoutData labelLayoutData = new LabelLayoutData();
-        labelLayoutData.setId(UUID.randomUUID());
+        labelLayoutData.setId(UUID.randomUUID().toString());
         labelLayoutData.setPosition(Position.UNDEFINED);
         //@formatter:off
         LabelStyle labelStyle = LabelStyle.newLabelStyle()
@@ -104,7 +104,7 @@ public class NodeLabelPositionProviderTests {
 
     private NodeLayoutData createNodeLayoutData(Position position, Size size, IContainerLayoutData parent, String nodeType) {
         NodeLayoutData nodeLayoutData = new NodeLayoutData();
-        nodeLayoutData.setId(UUID.randomUUID());
+        nodeLayoutData.setId(UUID.randomUUID().toString());
         nodeLayoutData.setParent(parent);
         nodeLayoutData.setPosition(position);
         nodeLayoutData.setSize(size);

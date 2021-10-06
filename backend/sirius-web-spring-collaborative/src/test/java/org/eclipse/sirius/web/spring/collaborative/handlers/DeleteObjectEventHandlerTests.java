@@ -58,8 +58,8 @@ public class DeleteObjectEventHandlerTests {
         };
 
         DeleteObjectEventHandler handler = new DeleteObjectEventHandler(objectService, editService, new ICollaborativeMessageService.NoOp(), new SimpleMeterRegistry());
-        var input = new DeleteObjectInput(UUID.randomUUID(), UUID.randomUUID(), "objectId"); //$NON-NLS-1$
-        IEditingContext editingContext = () -> UUID.randomUUID();
+        var input = new DeleteObjectInput(UUID.randomUUID(), UUID.randomUUID().toString(), "objectId"); //$NON-NLS-1$
+        IEditingContext editingContext = () -> UUID.randomUUID().toString();
 
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
         One<IPayload> payloadSink = Sinks.one();

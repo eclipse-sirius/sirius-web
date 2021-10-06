@@ -219,7 +219,7 @@ public class ViewConverter {
                     .map(NodeStyle.class::cast)
                     .findFirst()
                     .orElseGet(viewNodeDescription::getStyle);
-            Optional<UUID> optionalEditingContextId = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class)
+            Optional<String> optionalEditingContextId = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class)
                                                                      .map(IEditingContext::getId);
             // @formatter:on
             return this.stylesFactory.createNodeStyle(effectiveStyle, optionalEditingContextId);

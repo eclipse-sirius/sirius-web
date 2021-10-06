@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.diagrams.layout.incremental.data;
 
-import java.util.UUID;
-
 /**
  * The definition of a layout data structure.
  *
@@ -21,6 +19,6 @@ import java.util.UUID;
  */
 public interface ILayoutData {
 
-    UUID getId();
+    String getId();
 
 }

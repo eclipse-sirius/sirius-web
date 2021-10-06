@@ -15,7 +15,6 @@ package org.eclipse.sirius.web.validation.components;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.eclipse.sirius.web.components.Element;
 import org.eclipse.sirius.web.components.IComponent;
@@ -43,7 +42,7 @@ public class ValidationComponent implements IComponent {
         ValidationDescription validationDescription = this.props.getValidationDescription();
         Optional<Validation> optionalPreviousValidation = this.props.getPreviousValidation();
 
-        UUID id = optionalPreviousValidation.map(Validation::getId).orElseGet(() -> UUID.nameUUIDFromBytes("validation".getBytes())); //$NON-NLS-1$
+        String id = optionalPreviousValidation.map(Validation::getId).orElseGet(() -> "validation"); //$NON-NLS-1$
         String label = validationDescription.getLabel();
 
         List<Element> children = new ArrayList<>();

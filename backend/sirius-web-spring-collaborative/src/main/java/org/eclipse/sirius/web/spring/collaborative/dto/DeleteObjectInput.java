@@ -31,7 +31,7 @@ import org.eclipse.sirius.web.core.api.IInput;
 public final class DeleteObjectInput implements IInput {
     private UUID id;
 
-    private UUID editingContextId;
+    private String editingContextId;
 
     private String objectId;
 
@@ -39,7 +39,7 @@ public final class DeleteObjectInput implements IInput {
         // Used by Jackson
     }
 
-    public DeleteObjectInput(UUID id, UUID editingContextId, String objectId) {
+    public DeleteObjectInput(UUID id, String editingContextId, String objectId) {
         this.id = Objects.requireNonNull(id);
         this.editingContextId = Objects.requireNonNull(editingContextId);
         this.objectId = Objects.requireNonNull(objectId);
@@ -56,7 +56,7 @@ public final class DeleteObjectInput implements IInput {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getEditingContextId() {
+    public String getEditingContextId() {
         return this.editingContextId;
     }
 

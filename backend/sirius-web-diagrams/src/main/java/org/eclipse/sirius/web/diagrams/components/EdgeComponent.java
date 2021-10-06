@@ -89,7 +89,7 @@ public class EdgeComponent implements IComponent {
 
                     for (Element sourceNode : sourceNodes) {
                         for (Element targetNode : targetNodes) {
-                            UUID id = this.computeEdgeId(edgeDescription, sourceNode, targetNode, count);
+                            String id = this.computeEdgeId(edgeDescription, sourceNode, targetNode, count);
                             var optionalPreviousEdge = edgesRequestor.getById(id);
                             var edgeInstanceVariableManager = edgeVariableManager.createChild();
                             edgeInstanceVariableManager.put(EdgeDescription.SEMANTIC_EDGE_SOURCE, cache.getNodeToObject().get(sourceNode));
@@ -102,8 +102,8 @@ public class EdgeComponent implements IComponent {
                             if (shouldRender) {
                                 EdgeStyle style = edgeDescription.getStyleProvider().apply(edgeInstanceVariableManager);
 
-                                UUID sourceId = this.getId(sourceNode);
-                                UUID targetId = this.getId(targetNode);
+                                String sourceId = this.getId(sourceNode);
+                                String targetId = this.getId(targetNode);
 
                                 // @formatter:off
                                 String edgeType = optionalPreviousEdge
@@ -140,7 +140,7 @@ public class EdgeComponent implements IComponent {
         return new Fragment(fragmentProps);
     }
 
-    private List<Element> getLabelsChildren(EdgeDescription edgeDescription, VariableManager edgeVariableManager, Optional<Edge> optionalPreviousEdge, UUID edgeId, List<Position> routingPoints) {
+    private List<Element> getLabelsChildren(EdgeDescription edgeDescription, VariableManager edgeVariableManager, Optional<Edge> optionalPreviousEdge, String edgeId, List<Position> routingPoints) {
         List<Element> edgeChildren = new ArrayList<>();
 
         VariableManager labelVariableManager = edgeVariableManager.createChild();
@@ -167,25 +167,23 @@ public class EdgeComponent implements IComponent {
         return edgeChildren;
     }
 
-    private UUID computeEdgeId(EdgeDescription edgeDescription, Element sourceNode, Element targetNode, int count) {
+    private String computeEdgeId(EdgeDescription edgeDescription, Element sourceNode, Element targetNode, int count) {
         var descriptionId = edgeDescription.getId().toString();
         // @formatter:off
         var sourceId = Optional.of(sourceNode.getProps())
                 .filter(NodeElementProps.class::isInstance)
                 .map(NodeElementProps.class::cast)
                 .map(NodeElementProps::getId)
-                .map(UUID::toString)
                 .orElse(INVALID_NODE_ID);
 
         var targetId = Optional.of(targetNode.getProps())
                 .filter(NodeElementProps.class::isInstance)
                 .map(NodeElementProps.class::cast)
                 .map(NodeElementProps::getId)
-                .map(UUID::toString)
                 .orElse(INVALID_NODE_ID);
         // @formatter:on
         String rawIdentifier = descriptionId + ": " + sourceId + " --> " + targetId + " - " + count; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        return UUID.nameUUIDFromBytes(rawIdentifier.getBytes());
+        return UUID.nameUUIDFromBytes(rawIdentifier.getBytes()).toString();
     }
 
     private boolean hasNodeCandidates(List<NodeDescription> nodeDescriptions, DiagramRenderingCache cache) {
@@ -200,13 +198,13 @@ public class EdgeComponent implements IComponent {
         // @formatter:on
     }
 
-    private UUID getId(Element nodeElement) {
+    private String getId(Element nodeElement) {
         // @formatter:off
         return Optional.of(nodeElement.getProps())
                 .filter(NodeElementProps.class::isInstance)
                 .map(NodeElementProps.class::cast)
                 .map(NodeElementProps::getId)
-                .orElse(UUID.randomUUID());
+                .orElse(UUID.randomUUID().toString());
         // @formatter:on
     }
 
