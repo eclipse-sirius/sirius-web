@@ -431,8 +431,7 @@ export const DiagramWebSocketContainer = ({
       if (tool) {
         const { id: toolId } = tool;
         if (tool.__typename === 'CreateEdgeTool') {
-          const [diagramSourceElementId, diagramTargetElementId] = params;
-
+          const [{ id: diagramSourceElementId }, { id: diagramTargetElementId }] = params;
           const input = {
             id: uuid(),
             editingContextId,
@@ -443,7 +442,11 @@ export const DiagramWebSocketContainer = ({
           };
           invokeEdgeToolMutation({ variables: { input } });
         } else {
-          const [diagramElementId, startingPosition] = params;
+          let diagramElementId = null;
+          const [{ id, kind }, startingPosition] = params;
+          if (kind !== 'Diagram') {
+            diagramElementId = id;
+          }
           let startingPositionX = startingPosition ? startingPosition.x : 0;
           let startingPositionY = startingPosition ? startingPosition.y : 0;
           const input = {
@@ -465,12 +468,12 @@ export const DiagramWebSocketContainer = ({
   );
 
   const moveElement = useCallback(
-    (diagramElementId, newPositionX, newPositionY) => {
+    (nodeId, newPositionX, newPositionY) => {
       const input = {
         id: uuid(),
         editingContextId,
         representationId,
-        diagramElementId,
+        nodeId,
         newPositionX,
         newPositionY,
       };
@@ -480,12 +483,12 @@ export const DiagramWebSocketContainer = ({
   );
 
   const resizeElement = useCallback(
-    (diagramElementId, newPositionX, newPositionY, newWidth, newHeight) => {
+    (nodeId, newPositionX, newPositionY, newWidth, newHeight) => {
       const input = {
         id: uuid(),
         editingContextId,
         representationId,
-        diagramElementId,
+        nodeId,
         newPositionX,
         newPositionY,
         newWidth,
@@ -640,7 +643,7 @@ export const DiagramWebSocketContainer = ({
 
   useEffect(() => {
     if (selectedObjectId && activeTool && contextualPalette) {
-      invokeTool(activeTool, contextualPalette.element.id, contextualPalette.startingPosition);
+      invokeTool(activeTool, contextualPalette.element, contextualPalette.startingPosition);
       diagramServer.actionDispatcher.dispatch({ kind: SOURCE_ELEMENT_ACTION });
       const resetSelectedObjectInSelectionDialogEvent: ResetSelectedObjectInSelectionDialogEvent = {
         type: 'RESET_SELECTED_OBJECT_IN_SELECTION_DIALOG',
@@ -861,7 +864,7 @@ export const DiagramWebSocketContainer = ({
           };
           dispatch(showSelectionDialogEvent);
         } else {
-          invokeTool(tool, element.id, startingPosition);
+          invokeTool(tool, element, startingPosition);
           diagramServer.actionDispatcher.dispatch({ kind: SOURCE_ELEMENT_ACTION });
         }
       }
@@ -913,7 +916,7 @@ export const DiagramWebSocketContainer = ({
     };
     if (edgeTools && edgeTools.length > 1) {
       const invokeToolFromContextualMenu = (tool) => {
-        invokeTool(tool, sourceElement.id, targetElement.id);
+        invokeTool(tool, sourceElement, targetElement);
       };
       contextualMenuContent = (
         <div className={classes.contextualMenu} style={style}>

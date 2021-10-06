@@ -44,7 +44,7 @@ public class TestDiagramBuilder {
 
     public static final String TOOL_LABEL = "toolLabel"; //$NON-NLS-1$
 
-    public Diagram getDiagram(UUID id) {
+    public Diagram getDiagram(String id) {
         // @formatter:off
         return Diagram.newDiagram(id)
                 .label("diagramLabel") //$NON-NLS-1$

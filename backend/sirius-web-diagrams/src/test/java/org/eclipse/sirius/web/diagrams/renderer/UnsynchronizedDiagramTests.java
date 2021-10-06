@@ -92,7 +92,6 @@ public class UnsynchronizedDiagramTests {
         // @formatter:off
         ViewCreationRequest viewCreationRequest = ViewCreationRequest.newViewCreationRequest()
             .descriptionId(diagramDescription.getNodeDescriptions().get(0).getId())
-            .parentElementId(initialDiagram.getId())
             .targetObjectId(TARGET_OBJECT_ID)
             .build();
         // @formatter:on
@@ -122,7 +121,6 @@ public class UnsynchronizedDiagramTests {
         // @formatter:off
         ViewCreationRequest viewCreationRequest = ViewCreationRequest.newViewCreationRequest()
             .descriptionId(diagramDescription.getNodeDescriptions().get(0).getId())
-            .parentElementId(initialDiagram.getId())
             .targetObjectId(TARGET_OBJECT_ID)
             .build();
         // @formatter:on
@@ -158,7 +156,6 @@ public class UnsynchronizedDiagramTests {
         // @formatter:off
         ViewCreationRequest viewCreationRequest = ViewCreationRequest.newViewCreationRequest()
             .descriptionId(diagramDescription.getNodeDescriptions().get(0).getId())
-            .parentElementId(initialDiagram.getId())
             .targetObjectId(TARGET_OBJECT_ID)
             .build();
         // @formatter:on
@@ -203,7 +200,6 @@ public class UnsynchronizedDiagramTests {
         // @formatter:off
         ViewCreationRequest viewCreationRequest = ViewCreationRequest.newViewCreationRequest()
             .descriptionId(diagramDescription.getNodeDescriptions().get(0).getId())
-            .parentElementId(initialDiagram.getId())
             .targetObjectId(TARGET_OBJECT_ID)
             .build();
         // @formatter:on

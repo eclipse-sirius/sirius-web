@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.core.api;
 
-import java.util.UUID;
-
 /**
  * Used to contain the semantic data.
  *
@@ -26,7 +24,7 @@ public interface IEditingContext {
      */
     String EDITING_CONTEXT = "editingContext"; //$NON-NLS-1$
 
-    UUID getId();
+    String getId();
 
     /**
      * Implementation which does nothing, used for mocks in unit tests.
@@ -36,7 +34,7 @@ public interface IEditingContext {
     class NoOp implements IEditingContext {
 
         @Override
-        public UUID getId() {
+        public String getId() {
             return null;
         }
 

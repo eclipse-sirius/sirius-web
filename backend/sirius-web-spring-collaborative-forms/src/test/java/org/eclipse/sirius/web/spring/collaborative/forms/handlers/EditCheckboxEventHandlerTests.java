@@ -39,13 +39,13 @@ import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
  * @author sbegaudeau
  */
 public class EditCheckboxEventHandlerTests {
-    private static final UUID FORM_ID = UUID.randomUUID();
+    private static final String FORM_ID = UUID.randomUUID().toString();
 
     @Test
     public void testCheckboxEdition() {
         String id = "Checkbox id"; //$NON-NLS-1$
 
-        var input = new EditCheckboxInput(UUID.randomUUID(), UUID.randomUUID(), FORM_ID, id, true);
+        var input = new EditCheckboxInput(UUID.randomUUID(), UUID.randomUUID().toString(), FORM_ID, id, true);
 
         AtomicBoolean hasBeenExecuted = new AtomicBoolean();
         Function<Boolean, Status> newValueHandler = newValue -> {

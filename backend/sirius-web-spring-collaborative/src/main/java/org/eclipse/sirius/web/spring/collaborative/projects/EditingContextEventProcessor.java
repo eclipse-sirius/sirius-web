@@ -18,7 +18,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -82,7 +81,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
 
     private final IRepresentationEventProcessorComposedFactory representationEventProcessorComposedFactory;
 
-    private final Map<UUID, RepresentationEventProcessorEntry> representationEventProcessors = new ConcurrentHashMap<>();
+    private final Map<String, RepresentationEventProcessorEntry> representationEventProcessors = new ConcurrentHashMap<>();
 
     private final Many<IPayload> sink = Sinks.many().multicast().directBestEffort();
 
@@ -112,7 +111,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
     }
 
     @Override
-    public UUID getEditingContextId() {
+    public String getEditingContextId() {
         return this.editingContext.getId();
     }
 
@@ -142,7 +141,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
         if (optionalPayload.isPresent() && this.sink.currentSubscriberCount() > 0) {
             IPayload payload = optionalPayload.get();
             if (input instanceof RenameRepresentationInput && payload instanceof RenameRepresentationSuccessPayload) {
-                UUID representationId = ((RenameRepresentationInput) input).getRepresentationId();
+                String representationId = ((RenameRepresentationInput) input).getRepresentationId();
                 String newLabel = ((RenameRepresentationInput) input).getNewLabel();
                 EmitResult emitResult = this.sink.tryEmitNext(new RepresentationRenamedEventPayload(input.getId(), representationId, newLabel));
                 if (emitResult.isFailure()) {
@@ -165,7 +164,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
 
         Optional<EventHandlerResponse> optionalResponse = Optional.empty();
 
-        UUID representationId = null;
+        String representationId = null;
         if (input instanceof IRepresentationInput) {
             IRepresentationInput representationInput = (IRepresentationInput) input;
             representationId = representationInput.getRepresentationId();
@@ -204,7 +203,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
      * @param changeDescription
      *            The description of change to consider in order to determine if the representation should be refreshed
      */
-    private void refreshOtherRepresentations(IInput input, UUID representationId, ChangeDescription changeDescription) {
+    private void refreshOtherRepresentations(IInput input, String representationId, ChangeDescription changeDescription) {
         // @formatter:off
         this.representationEventProcessors.entrySet().stream()
             .filter(entry -> !Objects.equals(entry.getKey(), representationId))
@@ -338,7 +337,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
         // @formatter:on
     }
 
-    private void disposeRepresentation(UUID representationId) {
+    private void disposeRepresentation(String representationId) {
         Optional.ofNullable(this.representationEventProcessors.remove(representationId)).ifPresent(RepresentationEventProcessorEntry::dispose);
 
         if (this.representationEventProcessors.isEmpty()) {

@@ -14,7 +14,6 @@ package org.eclipse.sirius.web.spring.collaborative.api;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.core.api.IPayload;
@@ -27,11 +26,11 @@ import org.eclipse.sirius.web.core.api.IPayload;
 public interface IEditingContextEventProcessorRegistry {
     List<IEditingContextEventProcessor> getEditingContextEventProcessors();
 
-    Optional<IPayload> dispatchEvent(UUID editingContextId, IInput input);
+    Optional<IPayload> dispatchEvent(String editingContextId, IInput input);
 
-    Optional<IEditingContextEventProcessor> getOrCreateEditingContextEventProcessor(UUID editingContextId);
+    Optional<IEditingContextEventProcessor> getOrCreateEditingContextEventProcessor(String editingContextId);
 
-    void disposeEditingContextEventProcessor(UUID editingContextId);
+    void disposeEditingContextEventProcessor(String editingContextId);
 
     /**
      * Implementation which does nothing, used for mocks in unit tests.
@@ -46,17 +45,17 @@ public interface IEditingContextEventProcessorRegistry {
         }
 
         @Override
-        public Optional<IPayload> dispatchEvent(UUID editingContextId, IInput input) {
+        public Optional<IPayload> dispatchEvent(String editingContextId, IInput input) {
             return Optional.empty();
         }
 
         @Override
-        public Optional<IEditingContextEventProcessor> getOrCreateEditingContextEventProcessor(UUID editingContextId) {
+        public Optional<IEditingContextEventProcessor> getOrCreateEditingContextEventProcessor(String editingContextId) {
             return Optional.empty();
         }
 
         @Override
-        public void disposeEditingContextEventProcessor(UUID editingContextId) {
+        public void disposeEditingContextEventProcessor(String editingContextId) {
         }
 
     }

@@ -12,13 +12,11 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.core.api;
 
-import java.util.UUID;
-
 /**
  * Common interface of all the input used to interact with a representation.
  *
  * @author sbegaudeau
  */
 public interface IRepresentationInput extends IInput {
-    UUID getRepresentationId();
+    String getRepresentationId();
 }

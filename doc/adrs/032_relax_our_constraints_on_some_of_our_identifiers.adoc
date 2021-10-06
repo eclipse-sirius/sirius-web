@@ -16,7 +16,6 @@ In order to solve this issue, we will relax our constraints on some of our ident
 The following identifier will change their type from an `UUID` to a `String` and we will not make any hypothesis regarding the content of those identifiers in Sirius Components:
 
 - `org.eclipse.sirius.web.representations.IRepresentation.getId()`
-- `org.eclipse.sirius.web.representations.IRepresentationDescription.getId()`
 - `org.eclipse.sirius.web.core.api.IEditingContext.getId()`
 
 This change should be propagated to all the other places where those identifiers are manipulated such as `DiagramConfiguration.getId()`, `FormEventProcessor.formId` or even `InvokeNodeToolOnDiagramInput.representationId`.
@@ -28,7 +27,22 @@ WIP
 
 == Consequences
 
-Projects consuming Sirius Components such as Sirius Web will need to be updated in order to explicitely decide what they will use as identifiers.
+Projects consuming Sirius Components such as Sirius Web will need to be updated in order to explicitly decide what they will use as identifiers.
 Entities in Sirius Web will still use UUID and the transformation from UUID to Strings will be made by Sirius Web code.
 For the moment, we recommend keeping UUID saved as Strings just like in Sirius Web since it is our nominal use case.
 Only advanced projects with complex needs should try to setup their own complex identifiers.
+
+When the `Diagram.getId()` become a `String`, this involves a type mismatch with `Node.getId()` and `Edge.getId()` that are still `UUID`.
+A `diagramElementId` can no longer refers to a diagramId. A `diagramElement` is now exclusively a part of a diagram (node, edge, label...).
+
+List of side effects:
+
+- The frontend of Sirius Components must be adapted to this restriction on `diagramElementId` (all mutations that involve the diagram background area)
+
+- In the same logic, we clarify `getDiagramElementId` in `getNodeId` for these DTOs:
+    * `org.eclipse.sirius.web.spring.collaborative.diagrams.dto.UpdateNodePositionInput.getDiagramElementId()` become `getNodeId()`
+    * `org.eclipse.sirius.web.spring.collaborative.diagrams.dto.UpdateNodeBoundsInput.getDiagramElementId()` become `getNodeId()`
+- `org.eclipse.sirius.web.diagrams.ViewCreationRequest.getParentElementId()` can be null (A null parent means it's a root node)
+- `org.eclipse.sirius.web.diagrams.components.NodeComponentProps.getParentElementId()` can be null (A null parent means it's a root node)
+- `org.eclipse.sirius.web.spring.collaborative.diagrams.dto.InvokeNodeToolOnDiagramInput.getDiagramElementId()` can be null (A null parent means create a root node)
+- `org.eclipse.sirius.web.spring.collaborative.diagrams.dto.DropOnDiagramInput.getDiagramElementId()` can be null (A null parent means drop on the diagram background)

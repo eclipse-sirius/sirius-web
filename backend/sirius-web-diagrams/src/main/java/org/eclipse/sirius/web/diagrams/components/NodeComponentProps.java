@@ -160,7 +160,7 @@ public final class NodeComponentProps implements IProps {
             nodeComponentProps.cache = Objects.requireNonNull(this.cache);
             nodeComponentProps.viewCreationRequests = Objects.requireNonNull(this.viewCreationRequests);
             nodeComponentProps.viewDeletionRequests = Objects.requireNonNull(this.viewDeletionRequests);
-            nodeComponentProps.parentElementId = Objects.requireNonNull(this.parentElementId);
+            nodeComponentProps.parentElementId = this.parentElementId;
             return nodeComponentProps;
         }
     }

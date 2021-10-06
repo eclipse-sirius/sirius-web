@@ -23,15 +23,15 @@ import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationConfigurat
  */
 public class ValidationConfiguration implements IRepresentationConfiguration {
 
-    private final UUID validationId;
+    private final String validationId;
 
-    public ValidationConfiguration(UUID editingContextId) {
-        String uniqueId = editingContextId.toString() + "validation"; //$NON-NLS-1$
-        this.validationId = UUID.nameUUIDFromBytes(uniqueId.getBytes());
+    public ValidationConfiguration(String editingContextId) {
+        String uniqueId = editingContextId + "validation"; //$NON-NLS-1$
+        this.validationId = UUID.nameUUIDFromBytes(uniqueId.getBytes()).toString();
     }
 
     @Override
-    public UUID getId() {
+    public String getId() {
         return this.validationId;
     }
 

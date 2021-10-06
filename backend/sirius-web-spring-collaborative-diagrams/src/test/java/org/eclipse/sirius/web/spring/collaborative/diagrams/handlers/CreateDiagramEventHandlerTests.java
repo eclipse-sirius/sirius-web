@@ -69,7 +69,7 @@ public class CreateDiagramEventHandlerTests {
             @Override
             public Diagram create(String label, Object targetObject, DiagramDescription diagramDescription, IEditingContext editingContext) {
                 hasBeenCalled.set(true);
-                return new TestDiagramBuilder().getDiagram(UUID.randomUUID());
+                return new TestDiagramBuilder().getDiagram(UUID.randomUUID().toString());
             }
 
         };
@@ -90,10 +90,10 @@ public class CreateDiagramEventHandlerTests {
         CreateDiagramEventHandler handler = new CreateDiagramEventHandler(representationDescriptionSearchService, representationPersistenceService, diagramCreationService, objectService,
                 new NoOpCollaborativeDiagramMessageService(), new SimpleMeterRegistry());
 
-        var input = new CreateRepresentationInput(UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID(), "objectId", "representationName"); //$NON-NLS-1$//$NON-NLS-2$
+        var input = new CreateRepresentationInput(UUID.randomUUID(), UUID.randomUUID().toString(), UUID.randomUUID(), "objectId", "representationName"); //$NON-NLS-1$//$NON-NLS-2$
         assertThat(handler.canHandle(input)).isTrue();
 
-        IEditingContext editingContext = () -> UUID.randomUUID();
+        IEditingContext editingContext = () -> UUID.randomUUID().toString();
         handler.handle(editingContext, input);
         assertThat(hasBeenCalled.get()).isTrue();
     }

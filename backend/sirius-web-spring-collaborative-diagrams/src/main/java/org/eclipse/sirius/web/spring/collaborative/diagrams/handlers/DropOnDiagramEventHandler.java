@@ -81,7 +81,8 @@ public class DropOnDiagramEventHandler implements IDiagramEventHandler {
             List<Object> objects = input.getObjectIds().stream().map(objectId -> this.objectService.getObject(editingContext, objectId)).flatMap(Optional::stream).collect(Collectors.toList());
             Diagram diagram = diagramContext.getDiagram();
             if (!objects.isEmpty()) {
-                Status status = this.executeTool(editingContext, diagramContext, objects, input.getDiagramTargetElementId(), input.getStartingPositionX(), input.getStartingPositionY());
+                Optional<UUID> optionalDiagramTargetElementId = Optional.ofNullable(input.getDiagramTargetElementId());
+                Status status = this.executeTool(editingContext, diagramContext, objects, optionalDiagramTargetElementId, input.getStartingPositionX(), input.getStartingPositionY());
                 if (Objects.equals(Status.OK, status)) {
                     return new EventHandlerResponse(new ChangeDescription(DiagramChangeKind.DIAGRAM_LAYOUT_CHANGE, diagramInput.getRepresentationId()),
                             new DropOnDiagramSuccessPayload(diagramInput.getId(), diagram));
@@ -91,10 +92,11 @@ public class DropOnDiagramEventHandler implements IDiagramEventHandler {
         return result;
     }
 
-    private Status executeTool(IEditingContext editingContext, IDiagramContext diagramContext, List<Object> objects, UUID diagramElementId, double startingPositionX, double startingPositionY) {
+    private Status executeTool(IEditingContext editingContext, IDiagramContext diagramContext, List<Object> objects, Optional<UUID> optionalDiagramTargetElementId, double startingPositionX,
+            double startingPositionY) {
         Status result = Status.ERROR;
         Diagram diagram = diagramContext.getDiagram();
-        Optional<Node> node = this.diagramQueryService.findNodeById(diagram, diagramElementId);
+        Optional<Node> node = optionalDiagramTargetElementId.flatMap(diagramTargetElementId -> this.diagramQueryService.findNodeById(diagram, diagramTargetElementId));
         // @formatter:off
         var optionalDropHandler = this.representationDescriptionSearchService.findById(diagram.getDescriptionId())
             .filter(DiagramDescription.class::isInstance)

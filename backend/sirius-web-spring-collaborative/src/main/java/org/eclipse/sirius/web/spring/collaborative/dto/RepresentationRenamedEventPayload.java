@@ -31,11 +31,11 @@ import org.eclipse.sirius.web.core.api.IPayload;
 public final class RepresentationRenamedEventPayload implements IPayload {
     private final UUID id;
 
-    private final UUID representationId;
+    private final String representationId;
 
     private final String newLabel;
 
-    public RepresentationRenamedEventPayload(UUID id, UUID representationId, String newLabel) {
+    public RepresentationRenamedEventPayload(UUID id, String representationId, String newLabel) {
         this.id = Objects.requireNonNull(id);
         this.representationId = Objects.requireNonNull(representationId);
         this.newLabel = Objects.requireNonNull(newLabel);
@@ -52,7 +52,7 @@ public final class RepresentationRenamedEventPayload implements IPayload {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getRepresentationId() {
+    public String getRepresentationId() {
         return this.representationId;
     }
 

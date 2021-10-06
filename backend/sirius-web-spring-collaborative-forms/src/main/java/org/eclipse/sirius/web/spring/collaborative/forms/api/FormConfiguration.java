@@ -13,7 +13,6 @@
 package org.eclipse.sirius.web.spring.collaborative.forms.api;
 
 import java.util.Objects;
-import java.util.UUID;
 
 import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationConfiguration;
 
@@ -25,14 +24,14 @@ import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationConfigurat
  */
 public class FormConfiguration implements IRepresentationConfiguration {
 
-    private final UUID formId;
+    private final String formId;
 
-    public FormConfiguration(UUID formId) {
+    public FormConfiguration(String formId) {
         this.formId = Objects.requireNonNull(formId);
     }
 
     @Override
-    public UUID getId() {
+    public String getId() {
         return this.formId;
     }
 

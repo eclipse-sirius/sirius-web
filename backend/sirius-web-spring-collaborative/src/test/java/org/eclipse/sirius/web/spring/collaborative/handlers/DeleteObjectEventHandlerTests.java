@@ -50,11 +50,11 @@ public class DeleteObjectEventHandlerTests {
         };
 
         DeleteObjectEventHandler handler = new DeleteObjectEventHandler(objectService, editService, new NoOpCollaborativeMessageService(), new SimpleMeterRegistry());
-        var input = new DeleteObjectInput(UUID.randomUUID(), UUID.randomUUID(), "objectId"); //$NON-NLS-1$
+        var input = new DeleteObjectInput(UUID.randomUUID(), UUID.randomUUID().toString(), "objectId"); //$NON-NLS-1$
 
         assertThat(handler.canHandle(input)).isTrue();
 
-        IEditingContext editingContext = () -> UUID.randomUUID();
+        IEditingContext editingContext = () -> UUID.randomUUID().toString();
         handler.handle(editingContext, input);
         assertThat(hasBeenCalled.get()).isTrue();
     }

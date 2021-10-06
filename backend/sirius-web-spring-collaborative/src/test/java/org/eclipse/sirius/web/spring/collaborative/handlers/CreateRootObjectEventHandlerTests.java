@@ -43,10 +43,10 @@ public class CreateRootObjectEventHandlerTests {
         };
 
         CreateRootObjectEventHandler handler = new CreateRootObjectEventHandler(editService, new NoOpCollaborativeMessageService(), new SimpleMeterRegistry());
-        var input = new CreateRootObjectInput(UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID(), "domainId", "rootObjectCreationDescriptionId"); //$NON-NLS-1$//$NON-NLS-2$
+        var input = new CreateRootObjectInput(UUID.randomUUID(), UUID.randomUUID().toString(), UUID.randomUUID(), "domainId", "rootObjectCreationDescriptionId"); //$NON-NLS-1$//$NON-NLS-2$
         assertThat(handler.canHandle(input)).isTrue();
 
-        IEditingContext editingContext = () -> UUID.randomUUID();
+        IEditingContext editingContext = () -> UUID.randomUUID().toString();
         EventHandlerResponse handle = handler.handle(editingContext, input);
         assertThat(handle.getPayload()).isInstanceOf(CreateRootObjectSuccessPayload.class);
         assertThat(((CreateRootObjectSuccessPayload) handle.getPayload()).getObject()).isEqualTo(object);

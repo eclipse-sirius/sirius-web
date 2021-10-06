@@ -13,7 +13,6 @@
 package org.eclipse.sirius.web.spring.collaborative.dto;
 
 import java.util.Objects;
-import java.util.UUID;
 
 import org.eclipse.sirius.web.representations.IRepresentation;
 
@@ -23,16 +22,16 @@ import org.eclipse.sirius.web.representations.IRepresentation;
  * @author sbegaudeau
  */
 public class RepresentationRefreshedEvent {
-    private final UUID projectId;
+    private final String projectId;
 
     private final IRepresentation representation;
 
-    public RepresentationRefreshedEvent(UUID projectId, IRepresentation representation) {
+    public RepresentationRefreshedEvent(String projectId, IRepresentation representation) {
         this.projectId = Objects.requireNonNull(projectId);
         this.representation = Objects.requireNonNull(representation);
     }
 
-    public UUID getProjectId() {
+    public String getProjectId() {
         return this.projectId;
     }
 

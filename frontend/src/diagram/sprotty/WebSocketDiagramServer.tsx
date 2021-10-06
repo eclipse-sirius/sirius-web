@@ -264,7 +264,7 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
           kind: SHOW_CONTEXTUAL_MENU_ACTION,
         } as any);
       } else if (filteredTools.length === 1) {
-        this.invokeTool(filteredTools[0], this.diagramSourceElement.id, element.id);
+        this.invokeTool(filteredTools[0], this.diagramSourceElement, element);
       } else {
         this.actionDispatcher.dispatch({
           kind: SHOW_CONTEXTUAL_MENU_ACTION,
@@ -274,9 +274,9 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
       }
     } else if (this.activeTool) {
       if (this.activeTool.__typename === 'CreateNodeTool') {
-        this.invokeTool(this.activeTool, element.id);
+        this.invokeTool(this.activeTool, element);
       } else if (this.activeTool.__typename === 'CreateEdgeTool') {
-        this.invokeTool(this.activeTool, this.diagramSourceElement.id, element.id);
+        this.invokeTool(this.activeTool, this.diagramSourceElement, element);
       }
     } else {
       this.actionDispatcher.dispatch({

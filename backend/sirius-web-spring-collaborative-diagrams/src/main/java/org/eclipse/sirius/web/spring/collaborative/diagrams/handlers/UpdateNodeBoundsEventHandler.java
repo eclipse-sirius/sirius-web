@@ -95,7 +95,7 @@ public class UpdateNodeBoundsEventHandler implements IDiagramEventHandler {
                 .build();
         // @formatter:on
 
-        Optional<Node> optionalNode = this.diagramQueryService.findNodeById(diagramContext.getDiagram(), diagramInput.getDiagramElementId());
+        Optional<Node> optionalNode = this.diagramQueryService.findNodeById(diagramContext.getDiagram(), diagramInput.getNodeId());
 
         EventHandlerResponse result;
         if (optionalNode.isPresent()) {
@@ -106,11 +106,11 @@ public class UpdateNodeBoundsEventHandler implements IDiagramEventHandler {
                     .y(oldPosition.getY() - newPosition.getY())
                     .build();
             //@formatter:on
-            diagramContext.setDiagramEvent(new ResizeEvent(diagramInput.getDiagramElementId(), delta, newSize));
+            diagramContext.setDiagramEvent(new ResizeEvent(diagramInput.getNodeId(), delta, newSize));
             result = new EventHandlerResponse(new ChangeDescription(DiagramChangeKind.DIAGRAM_LAYOUT_CHANGE, diagramInput.getRepresentationId()),
                     new UpdateNodeBoundsSuccessPayload(diagramInput.getId(), diagramContext.getDiagram()));
         } else {
-            String message = this.messageService.nodeNotFound(String.valueOf(diagramInput.getDiagramElementId()));
+            String message = this.messageService.nodeNotFound(String.valueOf(diagramInput.getNodeId()));
             result = new EventHandlerResponse(new ChangeDescription(ChangeKind.NOTHING, diagramInput.getRepresentationId()), new ErrorPayload(diagramInput.getId(), message));
         }
         return result;

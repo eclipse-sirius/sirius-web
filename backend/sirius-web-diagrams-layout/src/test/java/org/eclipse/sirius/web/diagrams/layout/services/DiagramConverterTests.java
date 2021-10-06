@@ -53,7 +53,7 @@ public class DiagramConverterTests {
 
     private static final double IMAGE_HEIGHT = 100;
 
-    private static final UUID DIAGRAM_ID = UUID.randomUUID();
+    private static final String DIAGRAM_ID = UUID.randomUUID().toString();
 
     private static final UUID FIRST_NODE_ID = UUID.randomUUID();
 

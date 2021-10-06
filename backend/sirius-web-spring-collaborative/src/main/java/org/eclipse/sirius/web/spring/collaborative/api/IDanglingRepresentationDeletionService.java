@@ -12,13 +12,11 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.spring.collaborative.api;
 
-import java.util.UUID;
-
 /**
  * Used to delete dangling representations.
  *
  * @author sbegaudeau
  */
 public interface IDanglingRepresentationDeletionService {
-    void deleteDanglingRepresentations(UUID editingContextId);
+    void deleteDanglingRepresentations(String editingContextId);
 }

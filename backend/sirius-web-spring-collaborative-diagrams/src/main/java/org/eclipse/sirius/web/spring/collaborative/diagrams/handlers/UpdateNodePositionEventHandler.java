@@ -84,15 +84,15 @@ public class UpdateNodePositionEventHandler implements IDiagramEventHandler {
     private EventHandlerResponse handleUpdateNodePosition(IDiagramContext diagramContext, UpdateNodePositionInput diagramInput) {
         Position newPosition = Position.at(diagramInput.getNewPositionX(), diagramInput.getNewPositionY());
 
-        Optional<Node> optionalNode = this.diagramQueryService.findNodeById(diagramContext.getDiagram(), diagramInput.getDiagramElementId());
+        Optional<Node> optionalNode = this.diagramQueryService.findNodeById(diagramContext.getDiagram(), diagramInput.getNodeId());
 
         EventHandlerResponse result;
         if (optionalNode.isPresent()) {
-            diagramContext.setDiagramEvent(new MoveEvent(diagramInput.getDiagramElementId(), newPosition));
+            diagramContext.setDiagramEvent(new MoveEvent(diagramInput.getNodeId(), newPosition));
             result = new EventHandlerResponse(new ChangeDescription(DiagramChangeKind.DIAGRAM_LAYOUT_CHANGE, diagramInput.getRepresentationId()),
                     new UpdateNodePositionSuccessPayload(diagramInput.getId(), diagramContext.getDiagram()));
         } else {
-            String message = this.messageService.nodeNotFound(String.valueOf(diagramInput.getDiagramElementId()));
+            String message = this.messageService.nodeNotFound(String.valueOf(diagramInput.getNodeId()));
             result = new EventHandlerResponse(new ChangeDescription(ChangeKind.NOTHING, diagramInput.getRepresentationId()), new ErrorPayload(diagramInput.getId(), message));
         }
         return result;

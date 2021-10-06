@@ -14,7 +14,6 @@ package org.eclipse.sirius.web.spring.collaborative.api;
 
 import java.text.MessageFormat;
 import java.util.Objects;
-import java.util.UUID;
 
 /**
  * The change description is used to express the changes that have been performed in response to an input in the
@@ -27,9 +26,9 @@ public class ChangeDescription {
 
     private final String kind;
 
-    private final UUID sourceId;
+    private final String sourceId;
 
-    public ChangeDescription(String kind, UUID sourceId) {
+    public ChangeDescription(String kind, String sourceId) {
         this.kind = Objects.requireNonNull(kind);
         this.sourceId = Objects.requireNonNull(sourceId);
     }
@@ -38,7 +37,7 @@ public class ChangeDescription {
         return this.kind;
     }
 
-    public UUID getSourceId() {
+    public String getSourceId() {
         return this.sourceId;
     }
 

@@ -31,9 +31,9 @@ public final class ArrangeAllInput implements IDiagramInput {
 
     private UUID id;
 
-    private UUID editingContextId;
+    private String editingContextId;
 
-    private UUID representationId;
+    private String representationId;
 
     @Override
     @GraphQLID
@@ -47,14 +47,14 @@ public final class ArrangeAllInput implements IDiagramInput {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getRepresentationId() {
+    public String getRepresentationId() {
         return this.representationId;
     }
 
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getEditingContextId() {
+    public String getEditingContextId() {
         return this.editingContextId;
     }
 

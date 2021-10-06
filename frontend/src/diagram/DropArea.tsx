@@ -85,7 +85,7 @@ export const DropArea = ({ editingContextId, representationId, invokeHover, conv
       startingPositionX,
       startingPositionY,
     };
-    if (diagramElementId) {
+    if (diagramElementId && representationId !== diagramElementId) {
       input['diagramTargetElementId'] = diagramElementId;
     }
 

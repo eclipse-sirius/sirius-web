@@ -32,9 +32,9 @@ import org.eclipse.sirius.web.spring.collaborative.diagrams.api.IDiagramInput;
 public final class DeleteFromDiagramInput implements IDiagramInput {
     private UUID id;
 
-    private UUID editingContextId;
+    private String editingContextId;
 
-    private UUID representationId;
+    private String representationId;
 
     private List<UUID> nodeIds;
 
@@ -51,7 +51,7 @@ public final class DeleteFromDiagramInput implements IDiagramInput {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getEditingContextId() {
+    public String getEditingContextId() {
         return this.editingContextId;
     }
 
@@ -59,7 +59,7 @@ public final class DeleteFromDiagramInput implements IDiagramInput {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getRepresentationId() {
+    public String getRepresentationId() {
         return this.representationId;
     }
 

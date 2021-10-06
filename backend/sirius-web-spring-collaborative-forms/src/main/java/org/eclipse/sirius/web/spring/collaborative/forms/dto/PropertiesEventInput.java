@@ -30,7 +30,7 @@ import org.eclipse.sirius.web.core.api.IInput;
 public final class PropertiesEventInput implements IInput {
     private UUID id;
 
-    private UUID editingContextId;
+    private String editingContextId;
 
     private String objectId;
 
@@ -45,7 +45,7 @@ public final class PropertiesEventInput implements IInput {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getEditingContextId() {
+    public String getEditingContextId() {
         return this.editingContextId;
     }
 

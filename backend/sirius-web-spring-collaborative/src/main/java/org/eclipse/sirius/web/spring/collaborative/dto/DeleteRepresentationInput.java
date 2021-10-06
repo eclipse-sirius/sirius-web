@@ -31,13 +31,13 @@ import org.eclipse.sirius.web.core.api.IInput;
 public final class DeleteRepresentationInput implements IInput {
     private UUID id;
 
-    private UUID representationId;
+    private String representationId;
 
     public DeleteRepresentationInput() {
         // Used by Jackson
     }
 
-    public DeleteRepresentationInput(UUID id, UUID representationId) {
+    public DeleteRepresentationInput(UUID id, String representationId) {
         this.id = Objects.requireNonNull(id);
         this.representationId = Objects.requireNonNull(representationId);
     }
@@ -53,7 +53,7 @@ public final class DeleteRepresentationInput implements IInput {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getRepresentationId() {
+    public String getRepresentationId() {
         return this.representationId;
     }
 

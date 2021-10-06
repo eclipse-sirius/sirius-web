@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.representations;
 
-import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
 
@@ -22,17 +21,15 @@ import java.util.function.Function;
  *
  * @author sbegaudeau
  */
-public class GetOrCreateRandomIdProvider implements Function<VariableManager, UUID> {
+public class GetOrCreateRandomIdProvider implements Function<VariableManager, String> {
 
     public static final String PREVIOUS_REPRESENTATION_ID = "previousRepresentationId"; //$NON-NLS-1$
 
     @Override
-    public UUID apply(VariableManager variableManager) {
+    public String apply(VariableManager variableManager) {
         // @formatter:off
-        return Optional.ofNullable(variableManager.getVariables().get(PREVIOUS_REPRESENTATION_ID))
-                .filter(UUID.class::isInstance)
-                .map(UUID.class::cast)
-                .orElseGet(UUID::randomUUID);
+        return variableManager.get(PREVIOUS_REPRESENTATION_ID, String.class)
+        .orElseGet(() -> UUID.randomUUID().toString());
         // @formatter:on
     }
 

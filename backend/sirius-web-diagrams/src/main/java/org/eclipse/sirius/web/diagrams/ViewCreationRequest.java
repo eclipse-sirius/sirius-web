@@ -37,9 +37,9 @@ public final class ViewCreationRequest {
     }
 
     /**
-     * Specify the identifier of the parent view.
+     * Specify the identifier of the parent view. (null when the parent is the diagram itself)
      *
-     * @return the diagram element identifier
+     * @return the diagram element identifier or null
      */
     public UUID getParentElementId() {
         return this.parentElementId;
@@ -107,7 +107,7 @@ public final class ViewCreationRequest {
 
         public ViewCreationRequest build() {
             ViewCreationRequest viewCreationRequest = new ViewCreationRequest();
-            viewCreationRequest.parentElementId = Objects.requireNonNull(this.parentElementId);
+            viewCreationRequest.parentElementId = this.parentElementId;
             viewCreationRequest.descriptionId = Objects.requireNonNull(this.descriptionId);
             viewCreationRequest.targetObjectId = Objects.requireNonNull(this.targetObjectId);
             return viewCreationRequest;

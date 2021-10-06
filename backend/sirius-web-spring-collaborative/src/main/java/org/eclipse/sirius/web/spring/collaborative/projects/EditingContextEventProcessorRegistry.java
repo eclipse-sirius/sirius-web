@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -53,7 +52,7 @@ public class EditingContextEventProcessorRegistry implements IEditingContextEven
 
     private final Duration disposeDelay;
 
-    private final Map<UUID, EditingContextEventProcessorEntry> editingContextEventProcessors = new ConcurrentHashMap<>();
+    private final Map<String, EditingContextEventProcessorEntry> editingContextEventProcessors = new ConcurrentHashMap<>();
 
     public EditingContextEventProcessorRegistry(IEditingContextEventProcessorFactory editingContextEventProcessorFactory, IEditingContextSearchService editingContextSearchService,
             @Value("${org.eclipse.sirius.web.editingContextEventProcessorRegistry.disposeDelay:30s}") Duration disposeDelay) {
@@ -72,12 +71,12 @@ public class EditingContextEventProcessorRegistry implements IEditingContextEven
     }
 
     @Override
-    public Optional<IPayload> dispatchEvent(UUID editingContextId, IInput input) {
+    public Optional<IPayload> dispatchEvent(String editingContextId, IInput input) {
         return this.getOrCreateEditingContextEventProcessor(editingContextId).flatMap(processor -> processor.handle(input));
     }
 
     @Override
-    public Optional<IEditingContextEventProcessor> getOrCreateEditingContextEventProcessor(UUID editingContextId) {
+    public Optional<IEditingContextEventProcessor> getOrCreateEditingContextEventProcessor(String editingContextId) {
         Optional<IEditingContextEventProcessor> optionalEditingContextEventProcessor = Optional.empty();
         if (this.editingContextSearchService.existsById(editingContextId)) {
             optionalEditingContextEventProcessor = Optional.ofNullable(this.editingContextEventProcessors.get(editingContextId))
@@ -110,7 +109,7 @@ public class EditingContextEventProcessorRegistry implements IEditingContextEven
     }
 
     @Override
-    public void disposeEditingContextEventProcessor(UUID editingContextId) {
+    public void disposeEditingContextEventProcessor(String editingContextId) {
         Optional.ofNullable(this.editingContextEventProcessors.remove(editingContextId)).ifPresent(EditingContextEventProcessorEntry::dispose);
 
         this.logger.trace("Editing context event processors count: {}", this.editingContextEventProcessors.size()); //$NON-NLS-1$

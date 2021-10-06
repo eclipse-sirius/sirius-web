@@ -14,7 +14,6 @@ package org.eclipse.sirius.web.spring.collaborative.diagrams.handlers;
 
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
@@ -76,7 +75,7 @@ public class RenameDiagramEventHandler implements IDiagramEventHandler {
 
         if (diagramInput instanceof RenameDiagramInput) {
             RenameDiagramInput renameRepresentationInput = (RenameDiagramInput) diagramInput;
-            UUID representationId = renameRepresentationInput.getRepresentationId();
+            String representationId = renameRepresentationInput.getRepresentationId();
             String newLabel = renameRepresentationInput.getNewLabel();
             Optional<Diagram> optionalDiagram = this.representationSearchService.findById(editingContext, representationId, Diagram.class);
             if (optionalDiagram.isPresent()) {

@@ -31,11 +31,11 @@ public final class UpdateNodeBoundsInput implements IDiagramInput {
 
     private UUID id;
 
-    private UUID editingContextId;
+    private String editingContextId;
 
-    private UUID representationId;
+    private String representationId;
 
-    private UUID diagramElementId;
+    private UUID nodeId;
 
     private double newPositionX;
 
@@ -56,7 +56,7 @@ public final class UpdateNodeBoundsInput implements IDiagramInput {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getEditingContextId() {
+    public String getEditingContextId() {
         return this.editingContextId;
     }
 
@@ -64,15 +64,15 @@ public final class UpdateNodeBoundsInput implements IDiagramInput {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getRepresentationId() {
+    public String getRepresentationId() {
         return this.representationId;
     }
 
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getDiagramElementId() {
-        return this.diagramElementId;
+    public UUID getNodeId() {
+        return this.nodeId;
     }
 
     @GraphQLField
@@ -101,8 +101,8 @@ public final class UpdateNodeBoundsInput implements IDiagramInput {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, editingContextId: {2}, representationId: {3}, diagramElementId: {4}, newPositionX: {5}, newPositionY: {6}, newWidth: {7}, newHeight: {8}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.editingContextId, this.representationId, this.diagramElementId, this.newPositionX, this.newPositionY,
-                this.newWidth, this.newHeight);
+        String pattern = "{0} '{'id: {1}, editingContextId: {2}, representationId: {3}, nodeId: {4}, newPositionX: {5}, newPositionY: {6}, newWidth: {7}, newHeight: {8}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.editingContextId, this.representationId, this.nodeId, this.newPositionX, this.newPositionY, this.newWidth,
+                this.newHeight);
     }
 }

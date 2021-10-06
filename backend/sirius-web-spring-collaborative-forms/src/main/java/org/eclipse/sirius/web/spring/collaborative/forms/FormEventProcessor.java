@@ -66,7 +66,7 @@ public class FormEventProcessor implements IFormEventProcessor {
 
     private final FormDescription formDescription;
 
-    private final UUID formId;
+    private final String formId;
 
     private final Object object;
 
@@ -82,7 +82,7 @@ public class FormEventProcessor implements IFormEventProcessor {
 
     private final AtomicReference<Form> currentForm = new AtomicReference<>();
 
-    public FormEventProcessor(IEditingContext editingContext, FormDescription formDescription, UUID formId, Object object, List<IFormEventHandler> formEventHandlers,
+    public FormEventProcessor(IEditingContext editingContext, FormDescription formDescription, String formId, Object object, List<IFormEventHandler> formEventHandlers,
             ISubscriptionManager subscriptionManager, IWidgetSubscriptionManager widgetSubscriptionManager) {
         this.logger.trace("Creating the form event processor {}", formId); //$NON-NLS-1$
 

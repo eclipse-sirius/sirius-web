@@ -98,7 +98,8 @@ public class InvokeNodeToolOnDiagramEventHandler implements IDiagramEventHandler
                     .map(CreateNodeTool.class::cast);
             // @formatter:on
             if (optionalTool.isPresent()) {
-                Status status = this.executeTool(editingContext, diagramContext, input.getDiagramElementId(), optionalTool.get(), input.getStartingPositionX(), input.getStartingPositionY(),
+                Optional<UUID> optionalDiagramElementId = Optional.ofNullable(input.getDiagramElementId());
+                Status status = this.executeTool(editingContext, diagramContext, optionalDiagramElementId, optionalTool.get(), input.getStartingPositionX(), input.getStartingPositionY(),
                         input.getSelectedObjectId());
                 if (Objects.equals(status, Status.OK)) {
                     return new EventHandlerResponse(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, diagramInput.getRepresentationId()),
@@ -110,17 +111,17 @@ public class InvokeNodeToolOnDiagramEventHandler implements IDiagramEventHandler
         return new EventHandlerResponse(new ChangeDescription(ChangeKind.NOTHING, diagramInput.getRepresentationId()), new ErrorPayload(diagramInput.getId(), message));
     }
 
-    private Status executeTool(IEditingContext editingContext, IDiagramContext diagramContext, UUID diagramElementId, CreateNodeTool tool, double startingPositionX, double startingPositionY,
-            String selectedObjectId) {
+    private Status executeTool(IEditingContext editingContext, IDiagramContext diagramContext, Optional<UUID> optionalDiagramElementId, CreateNodeTool tool, double startingPositionX,
+            double startingPositionY, String selectedObjectId) {
         Status result = Status.ERROR;
         Diagram diagram = diagramContext.getDiagram();
-        Optional<Node> node = this.diagramQueryService.findNodeById(diagram, diagramElementId);
+        Optional<Node> node = optionalDiagramElementId.flatMap(diagramElementId -> this.diagramQueryService.findNodeById(diagram, diagramElementId));
         Optional<Object> self = Optional.empty();
         if (node.isPresent()) {
             self = this.objectService.getObject(editingContext, node.get().getTargetObjectId());
-        } else if (Objects.equals(diagram.getId(), diagramElementId)) {
+        } else if (optionalDiagramElementId.isEmpty()) {
             self = this.objectService.getObject(editingContext, diagram.getTargetObjectId());
-        }
+        } // Else, cannot find the node with the given optionalDiagramElementId
 
         if (self.isPresent()) {
             VariableManager variableManager = new VariableManager();

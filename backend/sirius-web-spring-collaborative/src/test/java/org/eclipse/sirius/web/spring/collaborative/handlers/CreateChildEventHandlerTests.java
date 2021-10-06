@@ -71,11 +71,11 @@ public class CreateChildEventHandlerTests {
         };
 
         CreateChildEventHandler handler = new CreateChildEventHandler(objectService, editService, new NoOpCollaborativeMessageService(), new SimpleMeterRegistry());
-        var input = new CreateChildInput(UUID.randomUUID(), UUID.randomUUID(), "parentObjectId", "childCreationDescriptionId"); //$NON-NLS-1$//$NON-NLS-2$
+        var input = new CreateChildInput(UUID.randomUUID(), UUID.randomUUID().toString(), "parentObjectId", "childCreationDescriptionId"); //$NON-NLS-1$//$NON-NLS-2$
 
         assertThat(handler.canHandle(input)).isTrue();
 
-        IEditingContext editingContext = () -> UUID.randomUUID();
+        IEditingContext editingContext = () -> UUID.randomUUID().toString();
         EventHandlerResponse response = handler.handle(editingContext, input);
         return response;
     }

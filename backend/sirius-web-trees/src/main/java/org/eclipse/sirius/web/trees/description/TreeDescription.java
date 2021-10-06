@@ -39,7 +39,7 @@ public final class TreeDescription implements IRepresentationDescription {
 
     private String label;
 
-    private Function<VariableManager, UUID> idProvider;
+    private Function<VariableManager, String> idProvider;
 
     private Function<VariableManager, String> treeItemIdProvider;
 
@@ -78,7 +78,7 @@ public final class TreeDescription implements IRepresentationDescription {
         return this.label;
     }
 
-    public Function<VariableManager, UUID> getIdProvider() {
+    public Function<VariableManager, String> getIdProvider() {
         return this.idProvider;
     }
 
@@ -140,7 +140,7 @@ public final class TreeDescription implements IRepresentationDescription {
 
         private String label;
 
-        private Function<VariableManager, UUID> idProvider;
+        private Function<VariableManager, String> idProvider;
 
         private Function<VariableManager, String> treeItemIdProvider;
 
@@ -169,7 +169,7 @@ public final class TreeDescription implements IRepresentationDescription {
             return this;
         }
 
-        public Builder idProvider(Function<VariableManager, UUID> idProvider) {
+        public Builder idProvider(Function<VariableManager, String> idProvider) {
             this.idProvider = Objects.requireNonNull(idProvider);
             return this;
         }

@@ -32,7 +32,7 @@ public final class SelectionEventInput implements IInput {
 
     private UUID id;
 
-    private UUID editingContextId;
+    private String editingContextId;
 
     private UUID selectionId;
 
@@ -42,7 +42,7 @@ public final class SelectionEventInput implements IInput {
         // Used by Jackson
     }
 
-    public SelectionEventInput(UUID id, UUID editingContextId, UUID selectionId, String targetObjectId) {
+    public SelectionEventInput(UUID id, String editingContextId, UUID selectionId, String targetObjectId) {
         this.id = Objects.requireNonNull(id);
         this.editingContextId = Objects.requireNonNull(editingContextId);
         this.selectionId = Objects.requireNonNull(selectionId);
@@ -60,7 +60,7 @@ public final class SelectionEventInput implements IInput {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getEditingContextId() {
+    public String getEditingContextId() {
         return this.editingContextId;
     }
 

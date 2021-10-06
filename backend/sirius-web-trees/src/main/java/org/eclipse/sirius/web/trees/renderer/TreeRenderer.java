@@ -15,7 +15,6 @@ package org.eclipse.sirius.web.trees.renderer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 import org.eclipse.sirius.web.representations.VariableManager;
 import org.eclipse.sirius.web.trees.Tree;
@@ -41,7 +40,7 @@ public class TreeRenderer {
     }
 
     public Tree render() {
-        UUID treeId = this.treeDescription.getIdProvider().apply(this.variableManager);
+        String treeId = this.treeDescription.getIdProvider().apply(this.variableManager);
         String label = this.treeDescription.getLabelProvider().apply(this.variableManager);
 
         List<TreeItem> childrenItems = new ArrayList<>();

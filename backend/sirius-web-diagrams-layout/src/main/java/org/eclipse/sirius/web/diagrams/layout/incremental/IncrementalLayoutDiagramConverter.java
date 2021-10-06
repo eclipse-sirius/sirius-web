@@ -45,9 +45,10 @@ public class IncrementalLayoutDiagramConverter {
         Map<UUID, ILayoutData> id2LayoutData = new HashMap<>();
 
         DiagramLayoutData layoutData = new DiagramLayoutData();
-        UUID id = diagram.getId();
-        layoutData.setId(id);
-        id2LayoutData.put(id, layoutData);
+        String id = diagram.getId();
+        UUID uuid = UUID.nameUUIDFromBytes(id.getBytes());
+        layoutData.setId(uuid);
+        id2LayoutData.put(uuid, layoutData);
 
         layoutData.setPosition(diagram.getPosition());
         layoutData.setSize(diagram.getSize());
