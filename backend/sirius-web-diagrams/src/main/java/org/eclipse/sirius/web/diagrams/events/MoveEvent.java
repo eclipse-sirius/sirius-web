@@ -13,7 +13,6 @@
 package org.eclipse.sirius.web.diagrams.events;
 
 import java.util.Objects;
-import java.util.UUID;
 
 import org.eclipse.sirius.web.diagrams.Position;
 
@@ -24,16 +23,16 @@ import org.eclipse.sirius.web.diagrams.Position;
  */
 public class MoveEvent implements IDiagramEvent {
 
-    private final UUID nodeId;
+    private final String nodeId;
 
     private final Position newPosition;
 
-    public MoveEvent(UUID nodeId, Position newPosition) {
+    public MoveEvent(String nodeId, Position newPosition) {
         this.nodeId = Objects.requireNonNull(nodeId);
         this.newPosition = Objects.requireNonNull(newPosition);
     }
 
-    public UUID getNodeId() {
+    public String getNodeId() {
         return this.nodeId;
     }
 

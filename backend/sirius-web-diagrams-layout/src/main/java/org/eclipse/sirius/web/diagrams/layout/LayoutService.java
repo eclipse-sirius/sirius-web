@@ -15,7 +15,6 @@ package org.eclipse.sirius.web.diagrams.layout;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.eclipse.elk.alg.layered.options.LayeredOptions;
 import org.eclipse.elk.core.IGraphLayoutEngine;
@@ -129,7 +128,7 @@ public class LayoutService implements ILayoutService {
         }
         this.incrementalLayoutEngine.layout(optionalDiagramElementEvent, diagramLayoutData, layoutConfigurator);
 
-        Map<UUID, ILayoutData> id2LayoutData = convertedDiagram.getId2LayoutData();
+        Map<String, ILayoutData> id2LayoutData = convertedDiagram.getId2LayoutData();
         return this.incrementalLayoutedDiagramProvider.getLayoutedDiagram(newDiagram, diagramLayoutData, id2LayoutData);
     }
 

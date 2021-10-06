@@ -14,7 +14,6 @@ package org.eclipse.sirius.web.diagrams.components;
 
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.eclipse.sirius.web.components.Element;
 import org.eclipse.sirius.web.components.IComponent;
@@ -46,8 +45,7 @@ public class LabelComponent implements IComponent {
         LabelDescription labelDescription = this.props.getLabelDescription();
         Optional<Label> optionalPreviousLabel = this.props.getPreviousLabel();
         String type = this.props.getType();
-        String idFromProvider = labelDescription.getIdProvider().apply(variableManager);
-        UUID id = UUID.nameUUIDFromBytes(idFromProvider.getBytes());
+        String id = labelDescription.getIdProvider().apply(variableManager);
         String text = labelDescription.getTextProvider().apply(variableManager);
 
         LabelStyleDescription labelStyleDescription = labelDescription.getStyleDescriptionProvider().apply(variableManager);

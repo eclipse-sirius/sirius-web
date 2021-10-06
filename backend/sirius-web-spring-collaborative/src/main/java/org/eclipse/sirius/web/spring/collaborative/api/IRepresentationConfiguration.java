@@ -12,13 +12,11 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.spring.collaborative.api;
 
-import java.util.UUID;
-
 /**
  * Interface implemented by all the representation configuration.
  *
  * @author sbegaudeau
  */
 public interface IRepresentationConfiguration {
-    UUID getId();
+    String getId();
 }

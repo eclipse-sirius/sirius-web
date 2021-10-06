@@ -31,7 +31,7 @@ public class RepresentationsEventInput implements IInput {
 
     private UUID id;
 
-    private UUID editingContextId;
+    private String editingContextId;
 
     private String objectId;
 
@@ -46,7 +46,7 @@ public class RepresentationsEventInput implements IInput {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getEditingContextId() {
+    public String getEditingContextId() {
         return this.editingContextId;
     }
 

@@ -76,7 +76,7 @@ public class EditService implements IEditService {
     }
 
     @Override
-    public Optional<Object> findClass(UUID editingContextId, String classId) {
+    public Optional<Object> findClass(String editingContextId, String classId) {
         EPackage.Registry ePackageRegistry = this.getPackageRegistry(editingContextId);
         return this.getEClass(ePackageRegistry, classId).map(Object.class::cast);
     }
@@ -94,7 +94,7 @@ public class EditService implements IEditService {
         // @formatter:on
     }
 
-    private EPackage.Registry getPackageRegistry(UUID editingContextId) {
+    private EPackage.Registry getPackageRegistry(String editingContextId) {
         EPackageRegistryImpl ePackageRegistry = new EPackageRegistryImpl();
         this.globalEPackageRegistry.forEach(ePackageRegistry::put);
         List<EPackage> additionalEPackages = this.editingContextEPackageService.getEPackages(editingContextId);
@@ -103,7 +103,7 @@ public class EditService implements IEditService {
     }
 
     @Override
-    public List<ChildCreationDescription> getChildCreationDescriptions(UUID editingContextId, String classId) {
+    public List<ChildCreationDescription> getChildCreationDescriptions(String editingContextId, String classId) {
         List<ChildCreationDescription> childCreationDescriptions = new ArrayList<>();
 
         EPackage.Registry ePackageRegistry = this.getPackageRegistry(editingContextId);
@@ -221,7 +221,7 @@ public class EditService implements IEditService {
     }
 
     @Override
-    public List<Domain> getDomains(UUID editingContextId) {
+    public List<Domain> getDomains(String editingContextId) {
         Map<String, EPackage> nsURI2EPackages = new LinkedHashMap<>();
 
         this.globalEPackageRegistry.keySet().forEach(nsURI -> nsURI2EPackages.put(nsURI, this.globalEPackageRegistry.getEPackage(nsURI)));
@@ -238,7 +238,7 @@ public class EditService implements IEditService {
     }
 
     @Override
-    public List<ChildCreationDescription> getRootCreationDescriptions(UUID editingContextId, String domainId, boolean suggested) {
+    public List<ChildCreationDescription> getRootCreationDescriptions(String editingContextId, String domainId, boolean suggested) {
         List<ChildCreationDescription> rootObjectCreationDescription = new ArrayList<>();
 
         EPackage.Registry ePackageRegistry = this.getPackageRegistry(editingContextId);
@@ -307,7 +307,7 @@ public class EditService implements IEditService {
         return createdObjectOptional;
     }
 
-    private Optional<EClass> getMatchingEClass(UUID editingContextId, String domainId, String rootObjectCreationDescriptionId) {
+    private Optional<EClass> getMatchingEClass(String editingContextId, String domainId, String rootObjectCreationDescriptionId) {
         EPackage.Registry ePackageRegistry = this.getPackageRegistry(editingContextId);
 
         // @formatter:off

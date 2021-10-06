@@ -31,15 +31,15 @@ import org.eclipse.sirius.web.core.api.IInput;
 public final class DiagramEventInput implements IInput {
     private UUID id;
 
-    private UUID editingContextId;
+    private String editingContextId;
 
-    private UUID diagramId;
+    private String diagramId;
 
     public DiagramEventInput() {
         // Used by Jackson
     }
 
-    public DiagramEventInput(UUID id, UUID editingContextId, UUID diagramId) {
+    public DiagramEventInput(UUID id, String editingContextId, String diagramId) {
         this.id = Objects.requireNonNull(id);
         this.editingContextId = Objects.requireNonNull(editingContextId);
         this.diagramId = Objects.requireNonNull(diagramId);
@@ -56,14 +56,14 @@ public final class DiagramEventInput implements IInput {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getEditingContextId() {
+    public String getEditingContextId() {
         return this.editingContextId;
     }
 
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getDiagramId() {
+    public String getDiagramId() {
         return this.diagramId;
     }
 

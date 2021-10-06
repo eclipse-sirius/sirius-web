@@ -14,7 +14,6 @@ package org.eclipse.sirius.web.spring.collaborative.diagrams.handlers;
 
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
@@ -64,8 +63,8 @@ public class InvokeDeleteToolOnDiagramEventHandler implements IDiagramEventHandl
 
     private final Counter counter;
 
-    public InvokeDeleteToolOnDiagramEventHandler(IObjectService objectService, IDiagramQueryService diagramQueryService, IToolService toolService,
-            ICollaborativeDiagramMessageService messageService, MeterRegistry meterRegistry) {
+    public InvokeDeleteToolOnDiagramEventHandler(IObjectService objectService, IDiagramQueryService diagramQueryService, IToolService toolService, ICollaborativeDiagramMessageService messageService,
+            MeterRegistry meterRegistry) {
         this.objectService = Objects.requireNonNull(objectService);
         this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
         this.toolService = Objects.requireNonNull(toolService);
@@ -113,7 +112,7 @@ public class InvokeDeleteToolOnDiagramEventHandler implements IDiagramEventHandl
         changeDescriptionSink.tryEmitNext(changeDescription);
     }
 
-    private IStatus executeTool(IEditingContext editingContext, IDiagramContext diagramContext, UUID diagramElementId, DeleteTool tool) {
+    private IStatus executeTool(IEditingContext editingContext, IDiagramContext diagramContext, String diagramElementId, DeleteTool tool) {
         IStatus result = new Failure(""); //$NON-NLS-1$
         Diagram diagram = diagramContext.getDiagram();
         Optional<Node> node = this.diagramQueryService.findNodeById(diagram, diagramElementId);

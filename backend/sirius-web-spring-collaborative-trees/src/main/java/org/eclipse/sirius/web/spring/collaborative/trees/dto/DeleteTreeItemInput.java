@@ -31,9 +31,9 @@ import org.eclipse.sirius.web.spring.collaborative.trees.api.ITreeInput;
 public final class DeleteTreeItemInput implements ITreeInput {
     private UUID id;
 
-    private UUID editingContextId;
+    private String editingContextId;
 
-    private UUID representationId;
+    private String representationId;
 
     private UUID treeItemId;
 
@@ -41,7 +41,7 @@ public final class DeleteTreeItemInput implements ITreeInput {
         // Used by Jackson
     }
 
-    public DeleteTreeItemInput(UUID id, UUID editingContextId, UUID representationId, UUID treeItemId) {
+    public DeleteTreeItemInput(UUID id, String editingContextId, String representationId, UUID treeItemId) {
         this.id = Objects.requireNonNull(id);
         this.editingContextId = Objects.requireNonNull(editingContextId);
         this.representationId = Objects.requireNonNull(representationId);
@@ -59,14 +59,14 @@ public final class DeleteTreeItemInput implements ITreeInput {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getEditingContextId() {
+    public String getEditingContextId() {
         return this.editingContextId;
     }
 
     @GraphQLID
     @GraphQLField
     @Override
-    public UUID getRepresentationId() {
+    public String getRepresentationId() {
         return this.representationId;
     }
 

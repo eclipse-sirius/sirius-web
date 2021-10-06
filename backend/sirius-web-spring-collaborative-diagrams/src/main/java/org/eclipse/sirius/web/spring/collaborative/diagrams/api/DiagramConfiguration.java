@@ -13,7 +13,6 @@
 package org.eclipse.sirius.web.spring.collaborative.diagrams.api;
 
 import java.util.Objects;
-import java.util.UUID;
 
 import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationConfiguration;
 
@@ -24,14 +23,14 @@ import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationConfigurat
  */
 public class DiagramConfiguration implements IRepresentationConfiguration {
 
-    private final UUID diagramId;
+    private final String diagramId;
 
-    public DiagramConfiguration(UUID diagramId) {
+    public DiagramConfiguration(String diagramId) {
         this.diagramId = Objects.requireNonNull(diagramId);
     }
 
     @Override
-    public UUID getId() {
+    public String getId() {
         return this.diagramId;
     }
 

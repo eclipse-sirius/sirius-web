@@ -31,9 +31,9 @@ import org.eclipse.sirius.web.spring.collaborative.forms.api.IFormInput;
 public final class DeleteListItemInput implements IFormInput {
     private UUID id;
 
-    private UUID representationId;
+    private String representationId;
 
-    private UUID editingContextId;
+    private String editingContextId;
 
     private String listId;
 
@@ -43,7 +43,7 @@ public final class DeleteListItemInput implements IFormInput {
         // Used by Jackson
     }
 
-    public DeleteListItemInput(UUID id, UUID representationId, UUID editingContextId, String listId, String listItemId) {
+    public DeleteListItemInput(UUID id, String representationId, String editingContextId, String listId, String listItemId) {
         this.id = Objects.requireNonNull(id);
         this.representationId = Objects.requireNonNull(representationId);
         this.editingContextId = Objects.requireNonNull(editingContextId);
@@ -63,14 +63,14 @@ public final class DeleteListItemInput implements IFormInput {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getRepresentationId() {
+    public String getRepresentationId() {
         return this.representationId;
     }
 
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getEditingContextId() {
+    public String getEditingContextId() {
         return this.editingContextId;
     }
 

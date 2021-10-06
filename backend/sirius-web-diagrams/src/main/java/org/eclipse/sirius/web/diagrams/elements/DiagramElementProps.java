@@ -32,7 +32,7 @@ import org.eclipse.sirius.web.diagrams.Size;
 public final class DiagramElementProps implements IProps {
     public static final String TYPE = "Diagram"; //$NON-NLS-1$
 
-    private UUID id;
+    private String id;
 
     private String targetObjectId;
 
@@ -50,7 +50,7 @@ public final class DiagramElementProps implements IProps {
         // Prevent instantiation
     }
 
-    public UUID getId() {
+    public String getId() {
         return this.id;
     }
 
@@ -79,7 +79,7 @@ public final class DiagramElementProps implements IProps {
         return this.children;
     }
 
-    public static Builder newDiagramElementProps(UUID id) {
+    public static Builder newDiagramElementProps(String id) {
         return new Builder(id);
     }
 
@@ -96,7 +96,7 @@ public final class DiagramElementProps implements IProps {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private UUID id;
+        private String id;
 
         private String targetObjectId;
 
@@ -110,7 +110,7 @@ public final class DiagramElementProps implements IProps {
 
         private List<Element> children;
 
-        private Builder(UUID id) {
+        private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
 

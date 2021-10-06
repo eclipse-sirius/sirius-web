@@ -28,15 +28,15 @@ public class RepresentationsConfiguration implements IRepresentationConfiguratio
 
     private final String objectId;
 
-    private UUID formId;
+    private String formId;
 
     public RepresentationsConfiguration(String objectId) {
         this.objectId = Objects.requireNonNull(objectId);
-        this.formId = UUID.nameUUIDFromBytes((REPRESENTATIONS_PREFIX + objectId).getBytes());
+        this.formId = UUID.nameUUIDFromBytes((REPRESENTATIONS_PREFIX + objectId).getBytes()).toString();
     }
 
     @Override
-    public UUID getId() {
+    public String getId() {
         return this.formId;
     }
 

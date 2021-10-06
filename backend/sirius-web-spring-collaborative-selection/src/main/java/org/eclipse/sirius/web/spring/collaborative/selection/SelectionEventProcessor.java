@@ -58,7 +58,7 @@ public class SelectionEventProcessor implements ISelectionEventProcessor {
 
     private final SelectionDescription selectionDescription;
 
-    private final UUID id;
+    private final String id;
 
     private final Object object;
 
@@ -72,7 +72,7 @@ public class SelectionEventProcessor implements ISelectionEventProcessor {
 
     private final AtomicReference<Selection> currentSelection = new AtomicReference<>();
 
-    public SelectionEventProcessor(IEditingContext editingContext, SelectionDescription selectionDescription, UUID id, Object object, ISubscriptionManager subscriptionManager,
+    public SelectionEventProcessor(IEditingContext editingContext, SelectionDescription selectionDescription, String id, Object object, ISubscriptionManager subscriptionManager,
             IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry) {
         this.logger.trace("Creating the selection event processor {}", id); //$NON-NLS-1$
 

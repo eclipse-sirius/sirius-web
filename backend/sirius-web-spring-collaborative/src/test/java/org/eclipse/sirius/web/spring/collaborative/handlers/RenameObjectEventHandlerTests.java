@@ -63,8 +63,8 @@ public class RenameObjectEventHandlerTests {
         };
 
         RenameObjectEventHandler handler = new RenameObjectEventHandler(new ICollaborativeMessageService.NoOp(), objectService, editService, new SimpleMeterRegistry());
-        var input = new RenameObjectInput(UUID.randomUUID(), UUID.randomUUID(), "objectId", "newName"); //$NON-NLS-1$ //$NON-NLS-2$
-        IEditingContext editingContext = () -> UUID.randomUUID();
+        var input = new RenameObjectInput(UUID.randomUUID(), UUID.randomUUID().toString(), "objectId", "newName"); //$NON-NLS-1$ //$NON-NLS-2$
+        IEditingContext editingContext = () -> UUID.randomUUID().toString();
 
         assertThat(handler.canHandle(editingContext, input)).isTrue();
 

@@ -13,7 +13,6 @@
 package org.eclipse.sirius.web.core.api;
 
 import java.util.Optional;
-import java.util.UUID;
 
 /**
  * Interface used to determine if an editing context exist and to retrieve it.
@@ -22,8 +21,8 @@ import java.util.UUID;
  */
 public interface IEditingContextSearchService {
 
-    boolean existsById(UUID editingContextId);
+    boolean existsById(String editingContextId);
 
-    Optional<IEditingContext> findById(UUID editingContextId);
+    Optional<IEditingContext> findById(String editingContextId);
 
 }

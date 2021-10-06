@@ -26,17 +26,17 @@ public class PropertiesConfiguration implements IRepresentationConfiguration {
 
     private static final String PROPERTIES_PREFIX = "properties:"; //$NON-NLS-1$
 
-    private final UUID formId;
+    private final String formId;
 
     private final String objectId;
 
     public PropertiesConfiguration(String objectId) {
         this.objectId = Objects.requireNonNull(objectId);
-        this.formId = UUID.nameUUIDFromBytes((PROPERTIES_PREFIX + objectId).getBytes());
+        this.formId = UUID.nameUUIDFromBytes((PROPERTIES_PREFIX + objectId).getBytes()).toString();
     }
 
     @Override
-    public UUID getId() {
+    public String getId() {
         return this.formId;
     }
 

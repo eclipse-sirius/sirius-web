@@ -76,7 +76,7 @@ public class CreateInstanceOperationHandlerTests {
         resourceSet.setPackageRegistry(ePackageRegistry);
 
         AdapterFactoryEditingDomain editingDomain = new AdapterFactoryEditingDomain(composedAdapterFactory, new BasicCommandStack(), resourceSet);
-        EditingContext editingContext = new EditingContext(UUID.randomUUID(), editingDomain);
+        EditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain);
         this.operationTestContext.getVariables().put(IEditingContext.EDITING_CONTEXT, editingContext);
 
         this.createInstanceOperation = ToolFactory.eINSTANCE.createCreateInstance();

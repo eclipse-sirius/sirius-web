@@ -36,7 +36,7 @@ public final class Node {
 
     public static final String SELECTED_NODE = "selectedNode"; //$NON-NLS-1$
 
-    private UUID id;
+    private String id;
 
     private String type;
 
@@ -71,7 +71,7 @@ public final class Node {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getId() {
+    public String getId() {
         return this.id;
     }
 
@@ -150,7 +150,7 @@ public final class Node {
         return this.customizedProperties;
     }
 
-    public static Builder newNode(UUID id) {
+    public static Builder newNode(String id) {
         return new Builder(id);
     }
 
@@ -172,7 +172,7 @@ public final class Node {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private UUID id;
+        private String id;
 
         private String type;
 
@@ -200,7 +200,7 @@ public final class Node {
 
         private Set<CustomizableProperties> customizedProperties = Set.of();
 
-        private Builder(UUID id) {
+        private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
 

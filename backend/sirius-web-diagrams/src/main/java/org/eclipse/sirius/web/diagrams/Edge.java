@@ -32,7 +32,7 @@ import org.eclipse.sirius.web.annotations.graphql.GraphQLObjectType;
 @Immutable
 @GraphQLObjectType
 public final class Edge {
-    private UUID id;
+    private String id;
 
     private String type;
 
@@ -50,9 +50,9 @@ public final class Edge {
 
     private Label endLabel;
 
-    private UUID sourceId;
+    private String sourceId;
 
-    private UUID targetId;
+    private String targetId;
 
     private EdgeStyle style;
 
@@ -65,7 +65,7 @@ public final class Edge {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getId() {
+    public String getId() {
         return this.id;
     }
 
@@ -118,14 +118,14 @@ public final class Edge {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getSourceId() {
+    public String getSourceId() {
         return this.sourceId;
     }
 
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getTargetId() {
+    public String getTargetId() {
         return this.targetId;
     }
 
@@ -141,7 +141,7 @@ public final class Edge {
         return this.routingPoints;
     }
 
-    public static Builder newEdge(UUID id) {
+    public static Builder newEdge(String id) {
         return new Builder(id);
     }
 
@@ -163,7 +163,7 @@ public final class Edge {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private UUID id;
+        private String id;
 
         private String type;
 
@@ -181,15 +181,15 @@ public final class Edge {
 
         private Label endLabel;
 
-        private UUID sourceId;
+        private String sourceId;
 
-        private UUID targetId;
+        private String targetId;
 
         private EdgeStyle style;
 
         private List<Position> routingPoints;
 
-        private Builder(UUID id) {
+        private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
 
@@ -249,12 +249,12 @@ public final class Edge {
             return this;
         }
 
-        public Builder sourceId(UUID sourceId) {
+        public Builder sourceId(String sourceId) {
             this.sourceId = Objects.requireNonNull(sourceId);
             return this;
         }
 
-        public Builder targetId(UUID targetId) {
+        public Builder targetId(String targetId) {
             this.targetId = Objects.requireNonNull(targetId);
             return this;
         }

@@ -30,7 +30,7 @@ import org.eclipse.sirius.web.components.IProps;
 public final class FormElementProps implements IProps {
     public static final String TYPE = "Form"; //$NON-NLS-1$
 
-    private UUID id;
+    private String id;
 
     private String label;
 
@@ -44,7 +44,7 @@ public final class FormElementProps implements IProps {
         // Prevent instantiation
     }
 
-    public UUID getId() {
+    public String getId() {
         return this.id;
     }
 
@@ -65,7 +65,7 @@ public final class FormElementProps implements IProps {
         return this.children;
     }
 
-    public static Builder newFormElementProps(UUID id) {
+    public static Builder newFormElementProps(String id) {
         return new Builder(id);
     }
 
@@ -82,7 +82,7 @@ public final class FormElementProps implements IProps {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private UUID id;
+        private String id;
 
         private String label;
 
@@ -92,7 +92,7 @@ public final class FormElementProps implements IProps {
 
         private List<Element> children;
 
-        private Builder(UUID id) {
+        private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
 

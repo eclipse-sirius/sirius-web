@@ -267,7 +267,7 @@ public class NodePositionProviderTests {
 
     private DiagramLayoutData createDiagramLayoutData() {
         DiagramLayoutData diagramLayoutData = new DiagramLayoutData();
-        diagramLayoutData.setId(UUID.randomUUID());
+        diagramLayoutData.setId(UUID.randomUUID().toString());
         diagramLayoutData.setPosition(Position.at(0, 0));
         diagramLayoutData.setSize(Size.of(1000, 1000));
 
@@ -276,7 +276,7 @@ public class NodePositionProviderTests {
 
     private NodeLayoutData createNodeLayoutData(Position position, Size size, IContainerLayoutData parent, String nodeType) {
         NodeLayoutData nodeLayoutData = new NodeLayoutData();
-        nodeLayoutData.setId(UUID.randomUUID());
+        nodeLayoutData.setId(UUID.randomUUID().toString());
         nodeLayoutData.setParent(parent);
         nodeLayoutData.setPosition(position);
         nodeLayoutData.setSize(size);

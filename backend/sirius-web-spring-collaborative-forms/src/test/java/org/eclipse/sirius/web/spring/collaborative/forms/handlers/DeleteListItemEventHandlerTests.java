@@ -60,7 +60,7 @@ public class DeleteListItemEventHandlerTests {
 
         Map<String, Object> parameters = new HashMap<>();
         parameters.put(changeDescriptionParameterKey, listItemId);
-        var input = new DeleteListItemInput(UUID.randomUUID(), FORM_ID, UUID.randomUUID(), listId, listItemId);
+        var input = new DeleteListItemInput(UUID.randomUUID(), FORM_ID.toString(), UUID.randomUUID().toString(), listId, listItemId);
 
         AtomicBoolean hasBeenExecuted = new AtomicBoolean();
         Supplier<IStatus> deleteHandler = () -> {
@@ -93,7 +93,7 @@ public class DeleteListItemEventHandlerTests {
                 .groups(Collections.singletonList(group))
                 .build();
 
-        Form form = Form.newForm(FORM_ID)
+        Form form = Form.newForm(FORM_ID.toString())
                 .targetObjectId("targetObjectId") //$NON-NLS-1$
                 .descriptionId(UUID.randomUUID())
                 .label("form label") //$NON-NLS-1$

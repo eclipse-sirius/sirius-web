@@ -15,7 +15,6 @@ package org.eclipse.sirius.web.diagrams.components;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -28,7 +27,7 @@ import org.eclipse.sirius.web.diagrams.Edge;
  */
 public class EdgesRequestor implements IEdgesRequestor {
 
-    private final Map<UUID, Edge> edgeId2Edges;
+    private final Map<String, Edge> edgeId2Edges;
 
     public EdgesRequestor(List<Edge> previousEdges) {
         // @formatter:off
@@ -38,7 +37,7 @@ public class EdgesRequestor implements IEdgesRequestor {
     }
 
     @Override
-    public Optional<Edge> getById(UUID edgeId) {
+    public Optional<Edge> getById(String edgeId) {
         return Optional.ofNullable(this.edgeId2Edges.get(edgeId));
     }
 

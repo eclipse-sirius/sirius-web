@@ -16,7 +16,6 @@ In order to solve this issue, we will relax our constraints on some of our ident
 The following identifier will change their type from an `UUID` to a `String` and we will not make any hypothesis regarding the content of those identifiers in Sirius Components:
 
 - `org.eclipse.sirius.web.representations.IRepresentation.getId()`
-- `org.eclipse.sirius.web.representations.IRepresentationDescription.getId()`
 - `org.eclipse.sirius.web.core.api.IEditingContext.getId()`
 
 This change should be propagated to all the other places where those identifiers are manipulated such as `DiagramConfiguration.getId()`, `FormEventProcessor.formId` or even `InvokeNodeToolOnDiagramInput.representationId`.
@@ -28,7 +27,10 @@ WIP
 
 == Consequences
 
-Projects consuming Sirius Components such as Sirius Web will need to be updated in order to explicitely decide what they will use as identifiers.
+Projects consuming Sirius Components such as Sirius Web will need to be updated in order to explicitly decide what they will use as identifiers.
 Entities in Sirius Web will still use UUID and the transformation from UUID to Strings will be made by Sirius Web code.
 For the moment, we recommend keeping UUID saved as Strings just like in Sirius Web since it is our nominal use case.
 Only advanced projects with complex needs should try to setup their own complex identifiers.
+
+`Node.getId()` and `Edge.getId()` and all of their uses will become a `String`, including services, handlers. That also forces `LayoutData.getId()`, and thus, the `Label.getId()` to also return a `String`.
+In one hand it increases the number of backend changes but, one the other hand the frontend remains unchanged.

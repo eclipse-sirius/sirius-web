@@ -31,7 +31,7 @@ import org.eclipse.sirius.web.core.api.IInput;
 public final class CreateRootObjectInput implements IInput {
     private UUID id;
 
-    private UUID editingContextId;
+    private String editingContextId;
 
     private UUID documentId;
 
@@ -43,7 +43,7 @@ public final class CreateRootObjectInput implements IInput {
         // Used by Jackson
     }
 
-    public CreateRootObjectInput(UUID id, UUID editingContextId, UUID documentId, String domainId, String rootObjectCreationDescriptionId) {
+    public CreateRootObjectInput(UUID id, String editingContextId, UUID documentId, String domainId, String rootObjectCreationDescriptionId) {
         this.id = Objects.requireNonNull(id);
         this.editingContextId = Objects.requireNonNull(editingContextId);
         this.documentId = Objects.requireNonNull(documentId);
@@ -62,7 +62,7 @@ public final class CreateRootObjectInput implements IInput {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getEditingContextId() {
+    public String getEditingContextId() {
         return this.editingContextId;
     }
 

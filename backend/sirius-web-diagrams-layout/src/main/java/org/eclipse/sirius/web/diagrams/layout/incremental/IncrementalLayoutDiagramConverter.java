@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import org.eclipse.sirius.web.diagrams.CustomizableProperties;
 import org.eclipse.sirius.web.diagrams.Diagram;
@@ -42,10 +41,10 @@ import org.springframework.stereotype.Service;
 public class IncrementalLayoutDiagramConverter {
 
     public IncrementalLayoutConvertedDiagram convert(Diagram diagram) {
-        Map<UUID, ILayoutData> id2LayoutData = new HashMap<>();
+        Map<String, ILayoutData> id2LayoutData = new HashMap<>();
 
         DiagramLayoutData layoutData = new DiagramLayoutData();
-        UUID id = diagram.getId();
+        String id = diagram.getId();
         layoutData.setId(id);
         id2LayoutData.put(id, layoutData);
 
@@ -67,9 +66,9 @@ public class IncrementalLayoutDiagramConverter {
         return new IncrementalLayoutConvertedDiagram(layoutData, id2LayoutData);
     }
 
-    private NodeLayoutData convertNode(Node node, IContainerLayoutData parent, Map<UUID, ILayoutData> id2LayoutData) {
+    private NodeLayoutData convertNode(Node node, IContainerLayoutData parent, Map<String, ILayoutData> id2LayoutData) {
         NodeLayoutData layoutData = new NodeLayoutData();
-        UUID id = node.getId();
+        String id = node.getId();
         layoutData.setId(id);
         id2LayoutData.put(id, layoutData);
 
@@ -100,9 +99,9 @@ public class IncrementalLayoutDiagramConverter {
         return layoutData;
     }
 
-    private EdgeLayoutData convertEdge(Edge edge, Map<UUID, ILayoutData> id2LayoutData) {
+    private EdgeLayoutData convertEdge(Edge edge, Map<String, ILayoutData> id2LayoutData) {
         EdgeLayoutData layoutData = new EdgeLayoutData();
-        UUID id = edge.getId();
+        String id = edge.getId();
         layoutData.setId(id);
         id2LayoutData.put(id, layoutData);
 
@@ -123,9 +122,9 @@ public class IncrementalLayoutDiagramConverter {
         return layoutData;
     }
 
-    private LabelLayoutData convertLabel(Label label, Map<UUID, ILayoutData> id2LayoutData) {
+    private LabelLayoutData convertLabel(Label label, Map<String, ILayoutData> id2LayoutData) {
         LabelLayoutData layoutData = new LabelLayoutData();
-        UUID id = label.getId();
+        String id = label.getId();
         layoutData.setId(id);
         id2LayoutData.put(id, layoutData);
 

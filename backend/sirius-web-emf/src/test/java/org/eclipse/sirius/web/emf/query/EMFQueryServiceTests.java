@@ -57,7 +57,7 @@ public class EMFQueryServiceTests {
 
         IEditingContextEPackageService editingContextEPackageService = new IEditingContextEPackageService() {
             @Override
-            public List<EPackage> getEPackages(UUID editingContextId) {
+            public List<EPackage> getEPackages(String editingContextId) {
                 return List.of(EcorePackage.eINSTANCE);
             }
         };
@@ -76,7 +76,7 @@ public class EMFQueryServiceTests {
         IEditingContextEPackageService editingContextEPackageService = new IEditingContextEPackageService() {
 
             @Override
-            public List<EPackage> getEPackages(UUID editingContextId) {
+            public List<EPackage> getEPackages(String editingContextId) {
                 return List.of(EcorePackage.eINSTANCE);
             }
         };
@@ -94,7 +94,7 @@ public class EMFQueryServiceTests {
 
         IEditingContextEPackageService editingContextEPackageService = new IEditingContextEPackageService() {
             @Override
-            public List<EPackage> getEPackages(UUID editingContextId) {
+            public List<EPackage> getEPackages(String editingContextId) {
                 return List.of(EcorePackage.eINSTANCE);
             }
         };
@@ -129,7 +129,7 @@ public class EMFQueryServiceTests {
         Resource resource = this.createResourceWith4Elements();
         Resource resource2 = this.createResourceWith4Elements();
         AdapterFactoryEditingDomain editingDomain = new EditingDomainFactory().create(resource, resource2);
-        return new EditingContext(UUID.randomUUID(), editingDomain);
+        return new EditingContext(UUID.randomUUID().toString(), editingDomain);
     }
 
     private Resource createResourceWith4Elements() {

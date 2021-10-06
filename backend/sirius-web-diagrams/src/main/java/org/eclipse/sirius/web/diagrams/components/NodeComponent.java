@@ -100,7 +100,7 @@ public class NodeComponent implements IComponent {
     }
 
     private boolean existsViewCreationRequested(String targetObjectId) {
-        UUID parentElementId = this.props.getParentElementId();
+        String parentElementId = this.props.getParentElementId();
         UUID nodeDescriptionId = this.props.getNodeDescription().getId();
         // @formatter:off
         return this.props.getViewCreationRequests().stream()
@@ -110,7 +110,7 @@ public class NodeComponent implements IComponent {
         // @formatter:on
     }
 
-    private boolean existsViewDeletionRequested(UUID elementId) {
+    private boolean existsViewDeletionRequested(String elementId) {
         // @formatter:off
         return this.props.getViewDeletionRequests().stream()
                 .anyMatch(viewDeletionRequest -> Objects.equals(viewDeletionRequest.getElementId(), elementId));
@@ -121,7 +121,7 @@ public class NodeComponent implements IComponent {
         NodeDescription nodeDescription = this.props.getNodeDescription();
         NodeContainmentKind containmentKind = this.props.getContainmentKind();
 
-        UUID nodeId = optionalPreviousNode.map(Node::getId).orElseGet(() -> this.computeNodeId(targetObjectId));
+        String nodeId = optionalPreviousNode.map(Node::getId).orElseGet(() -> this.computeNodeId(targetObjectId));
         Optional<Label> optionalPreviousLabel = optionalPreviousNode.map(Node::getLabel);
         String type = nodeDescription.getTypeProvider().apply(nodeVariableManager);
         String targetObjectKind = nodeDescription.getTargetObjectKindProvider().apply(nodeVariableManager);
@@ -213,7 +213,7 @@ public class NodeComponent implements IComponent {
         return size;
     }
 
-    private List<Element> getBorderNodes(Optional<Node> optionalPreviousNode, VariableManager nodeVariableManager, UUID nodeId) {
+    private List<Element> getBorderNodes(Optional<Node> optionalPreviousNode, VariableManager nodeVariableManager, String nodeId) {
         NodeDescription nodeDescription = this.props.getNodeDescription();
         DiagramRenderingCache cache = this.props.getCache();
 
@@ -236,7 +236,7 @@ public class NodeComponent implements IComponent {
         }).collect(Collectors.toList());
     }
 
-    private List<Element> getChildNodes(Optional<Node> optionalPreviousNode, VariableManager nodeVariableManager, UUID nodeId) {
+    private List<Element> getChildNodes(Optional<Node> optionalPreviousNode, VariableManager nodeVariableManager, String nodeId) {
         NodeDescription nodeDescription = this.props.getNodeDescription();
         DiagramRenderingCache cache = this.props.getCache();
 
@@ -260,13 +260,12 @@ public class NodeComponent implements IComponent {
         }).collect(Collectors.toList());
     }
 
-    private UUID computeNodeId(String targetObjectId) {
-        UUID parentElementId = this.props.getParentElementId();
+    private String computeNodeId(String targetObjectId) {
+        String parentElementId = this.props.getParentElementId();
         NodeDescription nodeDescription = this.props.getNodeDescription();
         NodeContainmentKind containmentKind = this.props.getContainmentKind();
-
         String rawIdentifier = parentElementId.toString() + containmentKind.toString() + nodeDescription.getId().toString() + targetObjectId;
-        return UUID.nameUUIDFromBytes(rawIdentifier.getBytes());
+        return UUID.nameUUIDFromBytes(rawIdentifier.getBytes()).toString();
     }
 
 }

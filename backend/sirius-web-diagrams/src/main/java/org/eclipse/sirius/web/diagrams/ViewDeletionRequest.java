@@ -14,7 +14,6 @@ package org.eclipse.sirius.web.diagrams;
 
 import java.text.MessageFormat;
 import java.util.Objects;
-import java.util.UUID;
 
 import org.eclipse.sirius.web.annotations.Immutable;
 
@@ -26,13 +25,13 @@ import org.eclipse.sirius.web.annotations.Immutable;
 @Immutable
 public final class ViewDeletionRequest {
 
-    private UUID elementId;
+    private String elementId;
 
     private ViewDeletionRequest() {
         // Prevent instantiation
     }
 
-    public UUID getElementId() {
+    public String getElementId() {
         return this.elementId;
     }
 
@@ -54,13 +53,13 @@ public final class ViewDeletionRequest {
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
 
-        private UUID elementId;
+        private String elementId;
 
         private Builder() {
             // Prevent instantiation
         }
 
-        public Builder elementId(UUID elementId) {
+        public Builder elementId(String elementId) {
             this.elementId = Objects.requireNonNull(elementId);
             return this;
         }

@@ -44,7 +44,7 @@ public class TestDiagramBuilder {
 
     public static final String TOOL_LABEL = "toolLabel"; //$NON-NLS-1$
 
-    public Diagram getDiagram(UUID id) {
+    public Diagram getDiagram(String id) {
         // @formatter:off
         return Diagram.newDiagram(id)
                 .label("diagramLabel") //$NON-NLS-1$
@@ -78,14 +78,14 @@ public class TestDiagramBuilder {
         // @formatter:on
     }
 
-    public Node getNode(UUID id) {
+    public Node getNode(String id) {
         // @formatter:off
         LabelStyle labelStyle = LabelStyle.newLabelStyle()
                 .color("#000000") //$NON-NLS-1$
                 .fontSize(16)
                 .iconURL("") //$NON-NLS-1$
                 .build();
-        Label label = Label.newLabel(UUID.randomUUID())
+        Label label = Label.newLabel(UUID.randomUUID().toString())
                 .type("labelType") //$NON-NLS-1$
                 .text("text") //$NON-NLS-1$
                 .position(Position.UNDEFINED)
@@ -110,7 +110,7 @@ public class TestDiagramBuilder {
         // @formatter:on
     }
 
-    public Edge getEdge(UUID id, UUID sourceId, UUID targetId) {
+    public Edge getEdge(String id, String sourceId, String targetId) {
         // @formatter:off
         EdgeStyle style = EdgeStyle.newEdgeStyle()
                 .size(1)

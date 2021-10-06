@@ -30,11 +30,11 @@ import org.eclipse.sirius.web.spring.collaborative.diagrams.api.IDiagramInput;
 public final class UpdateNodePositionInput implements IDiagramInput {
     private UUID id;
 
-    private UUID editingContextId;
+    private String editingContextId;
 
-    private UUID representationId;
+    private String representationId;
 
-    private UUID diagramElementId;
+    private String diagramElementId;
 
     private double newPositionX;
 
@@ -51,7 +51,7 @@ public final class UpdateNodePositionInput implements IDiagramInput {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getEditingContextId() {
+    public String getEditingContextId() {
         return this.editingContextId;
     }
 
@@ -59,14 +59,14 @@ public final class UpdateNodePositionInput implements IDiagramInput {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getRepresentationId() {
+    public String getRepresentationId() {
         return this.representationId;
     }
 
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getDiagramElementId() {
+    public String getDiagramElementId() {
         return this.diagramElementId;
     }
 

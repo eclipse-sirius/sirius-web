@@ -34,7 +34,7 @@ public final class EdgeElementProps implements IProps {
 
     public static final String TYPE = "Edge"; //$NON-NLS-1$
 
-    private UUID id;
+    private String id;
 
     private String type;
 
@@ -46,9 +46,9 @@ public final class EdgeElementProps implements IProps {
 
     private UUID descriptionId;
 
-    private UUID sourceId;
+    private String sourceId;
 
-    private UUID targetId;
+    private String targetId;
 
     private EdgeStyle style;
 
@@ -60,7 +60,7 @@ public final class EdgeElementProps implements IProps {
         // Prevent instantiation
     }
 
-    public UUID getId() {
+    public String getId() {
         return this.id;
     }
 
@@ -84,11 +84,11 @@ public final class EdgeElementProps implements IProps {
         return this.descriptionId;
     }
 
-    public UUID getSourceId() {
+    public String getSourceId() {
         return this.sourceId;
     }
 
-    public UUID getTargetId() {
+    public String getTargetId() {
         return this.targetId;
     }
 
@@ -105,7 +105,7 @@ public final class EdgeElementProps implements IProps {
         return this.children;
     }
 
-    public static Builder newEdgeElementProps(UUID id) {
+    public static Builder newEdgeElementProps(String id) {
         return new Builder(id);
     }
 
@@ -122,7 +122,7 @@ public final class EdgeElementProps implements IProps {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private UUID id;
+        private String id;
 
         private String type;
 
@@ -134,9 +134,9 @@ public final class EdgeElementProps implements IProps {
 
         private UUID descriptionId;
 
-        private UUID sourceId;
+        private String sourceId;
 
-        private UUID targetId;
+        private String targetId;
 
         private EdgeStyle style;
 
@@ -144,7 +144,7 @@ public final class EdgeElementProps implements IProps {
 
         private List<Element> children = new ArrayList<>();
 
-        private Builder(UUID id) {
+        private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
 
@@ -173,12 +173,12 @@ public final class EdgeElementProps implements IProps {
             return this;
         }
 
-        public Builder sourceId(UUID sourceId) {
+        public Builder sourceId(String sourceId) {
             this.sourceId = Objects.requireNonNull(sourceId);
             return this;
         }
 
-        public Builder targetId(UUID targetId) {
+        public Builder targetId(String targetId) {
             this.targetId = Objects.requireNonNull(targetId);
             return this;
         }

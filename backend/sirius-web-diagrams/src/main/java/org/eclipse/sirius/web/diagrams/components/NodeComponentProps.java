@@ -14,7 +14,6 @@ package org.eclipse.sirius.web.diagrams.components;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 import org.eclipse.sirius.web.annotations.Immutable;
 import org.eclipse.sirius.web.components.IProps;
@@ -46,7 +45,7 @@ public final class NodeComponentProps implements IProps {
 
     private List<ViewDeletionRequest> viewDeletionRequests;
 
-    private UUID parentElementId;
+    private String parentElementId;
 
     private NodeComponentProps() {
         // Prevent instantiation
@@ -80,7 +79,7 @@ public final class NodeComponentProps implements IProps {
         return this.viewDeletionRequests;
     }
 
-    public UUID getParentElementId() {
+    public String getParentElementId() {
         return this.parentElementId;
     }
 
@@ -109,7 +108,7 @@ public final class NodeComponentProps implements IProps {
 
         private List<ViewDeletionRequest> viewDeletionRequests;
 
-        private UUID parentElementId;
+        private String parentElementId;
 
         public Builder variableManager(VariableManager variableManager) {
             this.variableManager = Objects.requireNonNull(variableManager);
@@ -146,7 +145,7 @@ public final class NodeComponentProps implements IProps {
             return this;
         }
 
-        public Builder parentElementId(UUID parentElementId) {
+        public Builder parentElementId(String parentElementId) {
             this.parentElementId = Objects.requireNonNull(parentElementId);
             return this;
         }

@@ -129,7 +129,7 @@ public class UnsynchronizedDiagramTests {
         Diagram refreshedDiagramAfterNodeCreation = this.render(diagramDescription, List.of(viewCreationRequest), List.of(), Optional.of(initialDiagram));
         assertThat(refreshedDiagramAfterNodeCreation.getNodes()).hasSize(2);
 
-        UUID nodeIdToDelete = refreshedDiagramAfterNodeCreation.getNodes().get(0).getId();
+        String nodeIdToDelete = refreshedDiagramAfterNodeCreation.getNodes().get(0).getId();
 
         // @formatter:off
         ViewDeletionRequest viewDeletionRequest = ViewDeletionRequest.newViewDeletionRequest()
@@ -165,7 +165,7 @@ public class UnsynchronizedDiagramTests {
         // @formatter:on
         Diagram diagramAfterFirstNodeCreation = this.render(diagramDescription, List.of(viewCreationRequest), List.of(), Optional.of(initialDiagram));
         UUID descriptionId = diagramDescription.getNodeDescriptions().get(0).getChildNodeDescriptions().get(0).getId();
-        UUID parentNodeId = diagramAfterFirstNodeCreation.getNodes().get(0).getId();
+        String parentNodeId = diagramAfterFirstNodeCreation.getNodes().get(0).getId();
         // @formatter:off
         ViewCreationRequest childViewCreationRequest = ViewCreationRequest.newViewCreationRequest()
             .descriptionId(descriptionId)
@@ -210,7 +210,7 @@ public class UnsynchronizedDiagramTests {
         // @formatter:on
         Diagram diagramAfterFirstNodeCreation = this.render(diagramDescription, List.of(viewCreationRequest), List.of(), Optional.of(initialDiagram));
         UUID descriptionId = diagramDescription.getNodeDescriptions().get(0).getChildNodeDescriptions().get(0).getId();
-        UUID parentNodeId = diagramAfterFirstNodeCreation.getNodes().get(0).getId();
+        String parentNodeId = diagramAfterFirstNodeCreation.getNodes().get(0).getId();
         // @formatter:off
         ViewCreationRequest childViewCreationRequest = ViewCreationRequest.newViewCreationRequest()
             .descriptionId(descriptionId)
@@ -219,7 +219,7 @@ public class UnsynchronizedDiagramTests {
             .build();
         // @formatter:on
         Diagram diagramAfterSecondNodeCreation = this.render(diagramDescription, List.of(childViewCreationRequest), List.of(), Optional.of(diagramAfterFirstNodeCreation));
-        UUID nodeIdToDelete = diagramAfterSecondNodeCreation.getNodes().get(0).getChildNodes().get(0).getId();
+        String nodeIdToDelete = diagramAfterSecondNodeCreation.getNodes().get(0).getChildNodes().get(0).getId();
         // @formatter:off
         ViewDeletionRequest viewDeletionRequest = ViewDeletionRequest.newViewDeletionRequest()
             .elementId(nodeIdToDelete)

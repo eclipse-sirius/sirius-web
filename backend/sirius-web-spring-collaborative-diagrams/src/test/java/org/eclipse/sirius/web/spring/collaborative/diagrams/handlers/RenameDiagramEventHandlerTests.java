@@ -54,8 +54,8 @@ public class RenameDiagramEventHandlerTests {
 
     @Test
     public void testRenameRepresentation() {
-        UUID projectId = UUID.randomUUID();
-        UUID representationId = UUID.randomUUID();
+        String projectId = UUID.randomUUID().toString();
+        String representationId = UUID.randomUUID().toString();
         UUID targetObjectId = UUID.randomUUID();
 
         DiagramDescription diagramDescription = new TestDiagramDescriptionBuilder().getDiagramDescription(UUID.randomUUID(), List.of(), List.of(), List.of());
@@ -74,7 +74,7 @@ public class RenameDiagramEventHandlerTests {
         IRepresentationSearchService representationSearchService = new IRepresentationSearchService() {
 
             @Override
-            public <T extends IRepresentation> Optional<T> findById(IEditingContext editingContext, UUID representationId, Class<T> representationClass) {
+            public <T extends IRepresentation> Optional<T> findById(IEditingContext editingContext, String representationId, Class<T> representationClass) {
                 return Optional.of(diagram).map(representationClass::cast);
             }
         };

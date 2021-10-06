@@ -32,9 +32,9 @@ public final class DeleteRepresentationSuccessPayload implements IPayload {
 
     private final UUID id;
 
-    private final UUID representationId;
+    private final String representationId;
 
-    public DeleteRepresentationSuccessPayload(UUID id, UUID representationId) {
+    public DeleteRepresentationSuccessPayload(UUID id, String representationId) {
         this.id = Objects.requireNonNull(id);
         this.representationId = Objects.requireNonNull(representationId);
     }
@@ -50,7 +50,7 @@ public final class DeleteRepresentationSuccessPayload implements IPayload {
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
-    public UUID getRepresentationId() {
+    public String getRepresentationId() {
         return this.representationId;
     }
 

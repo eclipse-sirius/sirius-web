@@ -82,7 +82,7 @@ public class NodeSizeProviderTests {
         TestDiagramBuilder testDiagramBuilder = new TestDiagramBuilder();
 
         NodeLayoutData nodeLayoutData = new NodeLayoutData();
-        nodeLayoutData.setId(UUID.randomUUID());
+        nodeLayoutData.setId(UUID.randomUUID().toString());
         nodeLayoutData.setSize(size);
         nodeLayoutData.setNodeType(NodeType.NODE_RECTANGLE);
         nodeLayoutData.setStyle(testDiagramBuilder.getRectangularNodeStyle());

@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.diagrams.layout.incremental.data;
 
-import java.util.UUID;
-
 import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.TextBounds;
 
@@ -30,14 +28,14 @@ public class LabelLayoutData implements ILayoutData {
 
     private String labelType;
 
-    private UUID id;
+    private String id;
 
     @Override
-    public UUID getId() {
+    public String getId() {
         return this.id;
     }
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
     }
 
