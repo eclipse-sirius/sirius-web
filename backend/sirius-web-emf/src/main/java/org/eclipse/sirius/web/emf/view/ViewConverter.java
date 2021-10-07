@@ -199,7 +199,17 @@ public class ViewConverter {
                                                        .collect(Collectors.toList());
         // @formatter:on
         SynchronizationPolicy synchronizationPolicy = SynchronizationPolicy.SYNCHRONIZED;
-        String nodeType = this.stylesFactory.getNodeType(viewNodeDescription.getStyle());
+
+        Function<VariableManager, String> typeProvider = variableManager -> {
+            // @formatter:off
+            var effectiveStyle = viewNodeDescription.getConditionalStyles().stream()
+                    .filter(style -> this.matches(interpreter, style.getCondition(), variableManager))
+                    .map(NodeStyle.class::cast)
+                    .findFirst()
+                    .orElseGet(viewNodeDescription::getStyle);
+            // @formatter:on
+            return this.stylesFactory.getNodeType(effectiveStyle);
+        };
 
         Function<VariableManager, INodeStyle> styleProvider = variableManager -> {
             // @formatter:off
@@ -221,7 +231,7 @@ public class ViewConverter {
                 .targetObjectLabelProvider(this.semanticTargetLabelProvider)
                 .semanticElementsProvider(this.getSemanticElementsProvider(viewNodeDescription, interpreter))
                 .synchronizationPolicy(synchronizationPolicy)
-                .typeProvider(variableManager -> nodeType)
+                .typeProvider(typeProvider)
                 .labelDescription(this.getLabelDescription(viewNodeDescription, interpreter))
                 .styleProvider(styleProvider)
                 .childNodeDescriptions(childNodeDescriptions)
