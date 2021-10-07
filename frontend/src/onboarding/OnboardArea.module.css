@@ -12,6 +12,7 @@
  *******************************************************************************/
 .onboardArea {
   padding-top: 48px;
+  overflow-y: auto;
 }
 
 .onboardContent {
