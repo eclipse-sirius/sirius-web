@@ -270,7 +270,7 @@ public class ViewConverter {
             if (i == 0) {
                 // @formatter:off
                 CreateNodeTool tool = CreateNodeTool.newCreateNodeTool(this.idProvider.apply(nodeDescription) + "_creationTool") //$NON-NLS-1$
-                        .label("New node " + nodeDescription.getDomainType()) //$NON-NLS-1$
+                        .label("New " + nodeDescription.getDomainType()) //$NON-NLS-1$
                         .imageURL(NODE_CREATION_TOOL_ICON)
                         .handler(variableManager -> this.canonicalBehaviors.createNewNode(nodeDescription, variableManager))
                         .targetDescriptions(Optional.ofNullable(nodeDescription.eContainer()).map(this.convertedNodes::get).stream().collect(Collectors.toList()))
@@ -303,7 +303,7 @@ public class ViewConverter {
             if (i == 0) {
                 // @formatter:off
                 CreateEdgeTool tool = CreateEdgeTool.newCreateEdgeTool(this.idProvider.apply(edgeDescription) + "_creationTool") //$NON-NLS-1$
-                        .label("New edge" + edgeDescription.getDomainType()) //$NON-NLS-1$
+                        .label("New " + edgeDescription.getDomainType()) //$NON-NLS-1$
                         .imageURL(EDGE_CREATION_TOOL_ICON)
                         .edgeCandidates(List.of(EdgeCandidate.newEdgeCandidate()
                                 .sources(edgeDescription.getSourceNodeDescriptions().stream().map(this.convertedNodes::get).collect(Collectors.toList()))
