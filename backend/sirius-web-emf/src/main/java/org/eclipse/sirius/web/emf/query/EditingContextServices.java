@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.emf.query;
 
 import java.util.Collection;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Spliterator;
 import java.util.Spliterators;
@@ -64,6 +65,7 @@ public final class EditingContextServices {
                 .map(ResourceSet::getResources)
                 .flatMap(EList::stream)
                 .map(resource -> resource.getEObject(id))
+                .filter(Objects::nonNull)
                 .findFirst()
                 .orElse(null);
         //@formatter:on
