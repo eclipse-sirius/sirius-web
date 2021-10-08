@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,11 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { httpOrigin } from 'common/URL';
+import { ServerContext } from 'common/ServerContext';
 import { Text } from 'core/text/Text';
 import { GenericTool } from 'icons/GenericTool';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useContext } from 'react';
 import styles from './Tool.module.css';
 
 const propTypes = {
@@ -31,7 +31,7 @@ const propTypes = {
 
 export const Tool = ({ tool, selected, onClick, disabled, thumbnail }) => {
   const { id, label, imageURL } = tool;
-
+  const { httpOrigin } = useContext(ServerContext);
   let className = styles.tool;
   if (disabled) {
     className = `${className} ${styles.disabled}`;
