@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius.web</groupId>
 	<artifactId>sirius-web-emf</artifactId>
-	<version>0.4.9</version>
+	<version>0.4.10</version>
 	<name>sirius-web-emf</name>
 	<description>Sirius Web EMF</description>
 
@@ -66,47 +66,47 @@
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-spring-graphql-api</artifactId>
-			<version>0.4.9</version>
+			<version>0.4.10</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-spring-collaborative</artifactId>
-			<version>0.4.9</version>
+			<version>0.4.10</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-spring-collaborative-forms</artifactId>
-			<version>0.4.9</version>
+			<version>0.4.10</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-spring-collaborative-trees</artifactId>
-			<version>0.4.9</version>
+			<version>0.4.10</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-spring-collaborative-validation</artifactId>
-			<version>0.4.9</version>
+			<version>0.4.10</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-compatibility</artifactId>
-			<version>0.4.9</version>
+			<version>0.4.10</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-interpreter</artifactId>
-			<version>0.4.9</version>
+			<version>0.4.10</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-domain</artifactId>
-			<version>0.4.9</version>
+			<version>0.4.10</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-view</artifactId>
-			<version>0.4.9</version>
+			<version>0.4.10</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.emf</groupId>
@@ -155,13 +155,13 @@
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-tests</artifactId>
-			<version>0.4.9</version>
+			<version>0.4.10</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-spring-tests</artifactId>
-			<version>0.4.9</version>
+			<version>0.4.10</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
