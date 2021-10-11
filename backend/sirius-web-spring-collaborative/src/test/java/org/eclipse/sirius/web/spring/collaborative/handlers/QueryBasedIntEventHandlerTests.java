@@ -26,6 +26,7 @@ import org.eclipse.sirius.web.spring.collaborative.api.ChangeKind;
 import org.eclipse.sirius.web.spring.collaborative.api.IQueryService;
 import org.eclipse.sirius.web.spring.collaborative.dto.QueryBasedIntInput;
 import org.eclipse.sirius.web.spring.collaborative.dto.QueryBasedIntSuccessPayload;
+import org.eclipse.sirius.web.spring.collaborative.messages.ICollaborativeMessageService;
 import org.junit.jupiter.api.Test;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
@@ -87,7 +88,7 @@ public class QueryBasedIntEventHandlerTests {
     }
 
     private void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IQueryService queryService) {
-        QueryBasedIntEventHandler queryBasedIntEventHandler = new QueryBasedIntEventHandler(new NoOpCollaborativeMessageService(), new SimpleMeterRegistry(), queryService);
+        QueryBasedIntEventHandler queryBasedIntEventHandler = new QueryBasedIntEventHandler(new ICollaborativeMessageService.NoOp(), new SimpleMeterRegistry(), queryService);
         IInput input = new QueryBasedIntInput(UUID.randomUUID(), "", Map.of()); //$NON-NLS-1$
         assertThat(queryBasedIntEventHandler.canHandle(new IEditingContext.NoOp(), input)).isTrue();
 

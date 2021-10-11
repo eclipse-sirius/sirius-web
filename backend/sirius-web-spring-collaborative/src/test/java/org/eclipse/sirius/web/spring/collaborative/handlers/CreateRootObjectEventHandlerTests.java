@@ -24,6 +24,7 @@ import org.eclipse.sirius.web.spring.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeKind;
 import org.eclipse.sirius.web.spring.collaborative.dto.CreateRootObjectInput;
 import org.eclipse.sirius.web.spring.collaborative.dto.CreateRootObjectSuccessPayload;
+import org.eclipse.sirius.web.spring.collaborative.messages.ICollaborativeMessageService;
 import org.junit.jupiter.api.Test;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
@@ -47,7 +48,7 @@ public class CreateRootObjectEventHandlerTests {
             }
         };
 
-        CreateRootObjectEventHandler handler = new CreateRootObjectEventHandler(editService, new NoOpCollaborativeMessageService(), new SimpleMeterRegistry());
+        CreateRootObjectEventHandler handler = new CreateRootObjectEventHandler(editService, new ICollaborativeMessageService.NoOp(), new SimpleMeterRegistry());
         var input = new CreateRootObjectInput(UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID(), "domainId", "rootObjectCreationDescriptionId"); //$NON-NLS-1$//$NON-NLS-2$
         IEditingContext editingContext = () -> UUID.randomUUID();
 
