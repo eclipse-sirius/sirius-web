@@ -17,12 +17,12 @@ import java.util.Objects;
 
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IEditingContextPersistenceService;
-import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.spring.collaborative.api.IDanglingRepresentationDeletionService;
 import org.eclipse.sirius.web.spring.collaborative.api.IEditingContextEventHandler;
 import org.eclipse.sirius.web.spring.collaborative.api.IEditingContextEventProcessor;
 import org.eclipse.sirius.web.spring.collaborative.api.IEditingContextEventProcessorFactory;
 import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationEventProcessorComposedFactory;
+import org.eclipse.sirius.web.spring.collaborative.messages.ICollaborativeMessageService;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
@@ -34,11 +34,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class EditingContextEventProcessorFactory implements IEditingContextEventProcessorFactory {
 
+    private final ICollaborativeMessageService messageService;
+
     private final IEditingContextPersistenceService editingContextPersistenceService;
 
     private final ApplicationEventPublisher applicationEventPublisher;
-
-    private final IObjectService objectService;
 
     private final List<IEditingContextEventHandler> editingContextEventHandlers;
 
@@ -46,12 +46,12 @@ public class EditingContextEventProcessorFactory implements IEditingContextEvent
 
     private final IDanglingRepresentationDeletionService representationDeletionService;
 
-    public EditingContextEventProcessorFactory(IEditingContextPersistenceService editingContextPersistenceService, ApplicationEventPublisher applicationEventPublisher, IObjectService objectService,
-            List<IEditingContextEventHandler> editingContextEventHandlers, IRepresentationEventProcessorComposedFactory representationEventProcessorComposedFactory,
-            IDanglingRepresentationDeletionService representationDeletionService) {
+    public EditingContextEventProcessorFactory(ICollaborativeMessageService messageService, IEditingContextPersistenceService editingContextPersistenceService,
+            ApplicationEventPublisher applicationEventPublisher, List<IEditingContextEventHandler> editingContextEventHandlers,
+            IRepresentationEventProcessorComposedFactory representationEventProcessorComposedFactory, IDanglingRepresentationDeletionService representationDeletionService) {
+        this.messageService = Objects.requireNonNull(messageService);
         this.editingContextPersistenceService = Objects.requireNonNull(editingContextPersistenceService);
         this.applicationEventPublisher = Objects.requireNonNull(applicationEventPublisher);
-        this.objectService = Objects.requireNonNull(objectService);
         this.editingContextEventHandlers = Objects.requireNonNull(editingContextEventHandlers);
         this.representationEventProcessorComposedFactory = Objects.requireNonNull(representationEventProcessorComposedFactory);
         this.representationDeletionService = Objects.requireNonNull(representationDeletionService);
@@ -59,7 +59,7 @@ public class EditingContextEventProcessorFactory implements IEditingContextEvent
 
     @Override
     public IEditingContextEventProcessor createEditingContextEventProcessor(IEditingContext editingContext) {
-        return new EditingContextEventProcessor(editingContext, this.editingContextPersistenceService, this.applicationEventPublisher, this.objectService, this.editingContextEventHandlers,
+        return new EditingContextEventProcessor(this.messageService, editingContext, this.editingContextPersistenceService, this.applicationEventPublisher, this.editingContextEventHandlers,
                 this.representationEventProcessorComposedFactory, this.representationDeletionService);
     }
 

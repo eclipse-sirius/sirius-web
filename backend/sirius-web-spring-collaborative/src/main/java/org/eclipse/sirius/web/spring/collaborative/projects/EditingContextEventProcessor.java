@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.spring.collaborative.projects;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -24,16 +25,16 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IEditingContextPersistenceService;
 import org.eclipse.sirius.web.core.api.IInput;
-import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.core.api.IRepresentationInput;
 import org.eclipse.sirius.web.representations.IRepresentation;
-import org.eclipse.sirius.web.representations.ISemanticRepresentation;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeKind;
 import org.eclipse.sirius.web.spring.collaborative.api.IDanglingRepresentationDeletionService;
@@ -46,6 +47,7 @@ import org.eclipse.sirius.web.spring.collaborative.dto.DeleteRepresentationInput
 import org.eclipse.sirius.web.spring.collaborative.dto.RenameRepresentationInput;
 import org.eclipse.sirius.web.spring.collaborative.dto.RepresentationRefreshedEvent;
 import org.eclipse.sirius.web.spring.collaborative.dto.RepresentationRenamedEventPayload;
+import org.eclipse.sirius.web.spring.collaborative.messages.ICollaborativeMessageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
@@ -70,6 +72,8 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
 
     private final Logger logger = LoggerFactory.getLogger(EditingContextEventProcessor.class);
 
+    private final ICollaborativeMessageService messageService;
+
     private final IEditingContext editingContext;
 
     private final IEditingContextPersistenceService editingContextPersistenceService;
@@ -78,9 +82,9 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
 
     private final List<IEditingContextEventHandler> editingContextEventHandlers;
 
-    private final IObjectService objectService;
-
     private final IRepresentationEventProcessorComposedFactory representationEventProcessorComposedFactory;
+
+    private final IDanglingRepresentationDeletionService danglingRepresentationDeletionService;
 
     private final Map<UUID, RepresentationEventProcessorEntry> representationEventProcessors = new ConcurrentHashMap<>();
 
@@ -92,17 +96,15 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
 
     private final ExecutorService executor;
 
-    private final IDanglingRepresentationDeletionService danglingRepresentationDeletionService;
-
     private final Disposable changeDescriptionDisposable;
 
-    public EditingContextEventProcessor(IEditingContext editingContext, IEditingContextPersistenceService editingContextPersistenceService, ApplicationEventPublisher applicationEventPublisher,
-            IObjectService objectService, List<IEditingContextEventHandler> editingContextEventHandlers, IRepresentationEventProcessorComposedFactory representationEventProcessorComposedFactory,
-            IDanglingRepresentationDeletionService danglingRepresentationDeletionService) {
+    public EditingContextEventProcessor(ICollaborativeMessageService messageService, IEditingContext editingContext, IEditingContextPersistenceService editingContextPersistenceService,
+            ApplicationEventPublisher applicationEventPublisher, List<IEditingContextEventHandler> editingContextEventHandlers,
+            IRepresentationEventProcessorComposedFactory representationEventProcessorComposedFactory, IDanglingRepresentationDeletionService danglingRepresentationDeletionService) {
+        this.messageService = Objects.requireNonNull(messageService);
         this.editingContext = Objects.requireNonNull(editingContext);
         this.editingContextPersistenceService = Objects.requireNonNull(editingContextPersistenceService);
         this.applicationEventPublisher = Objects.requireNonNull(applicationEventPublisher);
-        this.objectService = Objects.requireNonNull(objectService);
         this.editingContextEventHandlers = Objects.requireNonNull(editingContextEventHandlers);
         this.representationEventProcessorComposedFactory = Objects.requireNonNull(representationEventProcessorComposedFactory);
         this.danglingRepresentationDeletionService = Objects.requireNonNull(danglingRepresentationDeletionService);
@@ -117,7 +119,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
     }
 
     private Disposable setupChangeDescriptionSinkConsumer() {
-        return this.changeDescriptionSink.asFlux().subscribe(changeDescription -> {
+        Consumer<ChangeDescription> consumer = changeDescription -> {
             this.publishEvent(changeDescription);
             this.disposeRepresentationIfNeeded();
 
@@ -134,7 +136,11 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
                 this.editingContextPersistenceService.persist(this.editingContext);
             }
             this.danglingRepresentationDeletionService.deleteDanglingRepresentations(this.editingContext.getId());
-        });
+        };
+
+        Consumer<Throwable> errorConsumer = throwable -> this.logger.warn(throwable.getMessage(), throwable);
+
+        return this.changeDescriptionSink.asFlux().subscribe(consumer, errorConsumer);
     }
 
     private void publishEvent(ChangeDescription changeDescription) {
@@ -173,7 +179,13 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
             this.logger.warn(exception.getMessage(), exception);
         }
 
-        return payloadSink.asMono();
+        // @formatter:off
+        var timeoutFallback = Mono.just(new ErrorPayload(input.getId(), this.messageService.timeout()))
+                .doOnSuccess(payload -> this.logger.warn("Timeout fallback for the input {}", input)); //$NON-NLS-1$
+        return payloadSink.asMono()
+                .timeout(Duration.ofSeconds(5), timeoutFallback)
+                .doOnError(throwable -> this.logger.warn(throwable.getMessage(), throwable));
+        // @formatter:on
     }
 
     /**
@@ -227,30 +239,12 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
     }
 
     /**
-     * Return <code>true</code> whether the given representation is not attached to a semantic element,
-     * <code>false</code> otherwise.
-     *
-     * @param representation
-     *            The representation that may be dangling
-     * @return <code>true</code> whether the representation is dangling, <code>false</code> otherwise
-     */
-    private boolean isDangling(IRepresentation representation) {
-        if (representation instanceof ISemanticRepresentation) {
-            ISemanticRepresentation semanticRepresentation = (ISemanticRepresentation) representation;
-            String targetObjectId = semanticRepresentation.getTargetObjectId();
-            Optional<Object> optionalObject = this.objectService.getObject(this.editingContext, targetObjectId);
-            return optionalObject.isEmpty();
-        }
-        return false;
-    }
-
-    /**
      * Disposes the representation when its target object has been removed.
      */
     private void disposeRepresentationIfNeeded() {
         List<RepresentationEventProcessorEntry> entriesToDispose = new ArrayList<>();
         for (var entry : this.representationEventProcessors.values()) {
-            if (this.isDangling(entry.getRepresentationEventProcessor().getRepresentation())) {
+            if (this.danglingRepresentationDeletionService.isDangling(this.editingContext, entry.getRepresentationEventProcessor().getRepresentation())) {
                 entriesToDispose.add(entry);
             }
         }

@@ -42,4 +42,9 @@ public class CollaborativeMessageService implements ICollaborativeMessageService
         return this.messageSourceAccessor.getMessage("OBJECT_CREATION_FAILED"); //$NON-NLS-1$
     }
 
+    @Override
+    public String timeout() {
+        return this.messageSourceAccessor.getMessage("TIMEOUT"); //$NON-NLS-1$
+    }
+
 }

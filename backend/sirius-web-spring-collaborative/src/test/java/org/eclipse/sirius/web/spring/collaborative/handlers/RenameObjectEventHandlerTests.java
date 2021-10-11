@@ -26,6 +26,7 @@ import org.eclipse.sirius.web.spring.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeKind;
 import org.eclipse.sirius.web.spring.collaborative.dto.RenameObjectInput;
 import org.eclipse.sirius.web.spring.collaborative.dto.RenameObjectSuccessPayload;
+import org.eclipse.sirius.web.spring.collaborative.messages.ICollaborativeMessageService;
 import org.junit.jupiter.api.Test;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
@@ -61,7 +62,7 @@ public class RenameObjectEventHandlerTests {
             }
         };
 
-        RenameObjectEventHandler handler = new RenameObjectEventHandler(new NoOpCollaborativeMessageService(), objectService, editService, new SimpleMeterRegistry());
+        RenameObjectEventHandler handler = new RenameObjectEventHandler(new ICollaborativeMessageService.NoOp(), objectService, editService, new SimpleMeterRegistry());
         var input = new RenameObjectInput(UUID.randomUUID(), UUID.randomUUID(), "objectId", "newName"); //$NON-NLS-1$ //$NON-NLS-2$
         IEditingContext editingContext = () -> UUID.randomUUID();
 

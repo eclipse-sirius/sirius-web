@@ -26,6 +26,7 @@ import org.eclipse.sirius.web.spring.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeKind;
 import org.eclipse.sirius.web.spring.collaborative.dto.DeleteObjectInput;
 import org.eclipse.sirius.web.spring.collaborative.dto.DeleteObjectSuccessPayload;
+import org.eclipse.sirius.web.spring.collaborative.messages.ICollaborativeMessageService;
 import org.junit.jupiter.api.Test;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
@@ -56,7 +57,7 @@ public class DeleteObjectEventHandlerTests {
             }
         };
 
-        DeleteObjectEventHandler handler = new DeleteObjectEventHandler(objectService, editService, new NoOpCollaborativeMessageService(), new SimpleMeterRegistry());
+        DeleteObjectEventHandler handler = new DeleteObjectEventHandler(objectService, editService, new ICollaborativeMessageService.NoOp(), new SimpleMeterRegistry());
         var input = new DeleteObjectInput(UUID.randomUUID(), UUID.randomUUID(), "objectId"); //$NON-NLS-1$
         IEditingContext editingContext = () -> UUID.randomUUID();
 
