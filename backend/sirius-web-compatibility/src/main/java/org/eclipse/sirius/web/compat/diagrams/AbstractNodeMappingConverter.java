@@ -25,8 +25,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.diagram.business.api.query.ContainerMappingQuery;
 import org.eclipse.sirius.diagram.description.AbstractNodeMapping;
 import org.eclipse.sirius.diagram.description.ContainerMapping;
-import org.eclipse.sirius.diagram.description.style.FlatContainerStyleDescription;
-import org.eclipse.sirius.diagram.description.style.WorkspaceImageDescription;
 import org.eclipse.sirius.viewpoint.description.style.BasicLabelStyleDescription;
 import org.eclipse.sirius.viewpoint.description.style.StyleFactory;
 import org.eclipse.sirius.web.compat.api.IIdentifierProvider;
@@ -36,6 +34,9 @@ import org.eclipse.sirius.web.compat.utils.StringValueProvider;
 import org.eclipse.sirius.web.core.api.IEditService;
 import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.diagrams.INodeStyle;
+import org.eclipse.sirius.web.diagrams.ImageNodeStyle;
+import org.eclipse.sirius.web.diagrams.ListItemNodeStyle;
+import org.eclipse.sirius.web.diagrams.ListNodeStyle;
 import org.eclipse.sirius.web.diagrams.NodeType;
 import org.eclipse.sirius.web.diagrams.description.LabelDescription;
 import org.eclipse.sirius.web.diagrams.description.LabelStyleDescription;
@@ -111,20 +112,21 @@ public class AbstractNodeMappingConverter {
         Function<VariableManager, String> semanticTargetLabelProvider = variableManager -> {
             return variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getLabel).orElse(null);
         };
-        Function<VariableManager, String> typeProvider = variableManager -> {
-            org.eclipse.sirius.viewpoint.description.style.LabelStyleDescription style = abstractNodeMappingDescriptionProvider.apply(variableManager);
-            String nodeType = NodeType.NODE_RECTANGLE;
-            if (style instanceof WorkspaceImageDescription) {
-                nodeType = NodeType.NODE_IMAGE;
-            } else if (style instanceof FlatContainerStyleDescription && this.isListContainer(abstractNodeMapping)) {
-                nodeType = NodeType.NODE_LIST;
-            } else if (this.isListContainer(abstractNodeMapping.eContainer())) {
-                nodeType = NodeType.NODE_LIST_ITEM;
-            }
-            return nodeType;
-        };
 
         Function<VariableManager, INodeStyle> styleProvider = new AbstractNodeMappingStyleProvider(interpreter, abstractNodeMapping);
+
+        Function<VariableManager, String> typeProvider = variableManager -> {
+            var result = NodeType.NODE_RECTANGLE;
+            INodeStyle style = styleProvider.apply(variableManager);
+            if (style instanceof ImageNodeStyle) {
+                result = NodeType.NODE_IMAGE;
+            } else if (style instanceof ListItemNodeStyle) {
+                result = NodeType.NODE_LIST_ITEM;
+            } else if (style instanceof ListNodeStyle) {
+                result = NodeType.NODE_LIST;
+            }
+            return result;
+        };
         AbstractNodeMappingSizeProvider sizeProvider = new AbstractNodeMappingSizeProvider(interpreter, abstractNodeMapping);
 
         String domainClass = abstractNodeMapping.getDomainClass();

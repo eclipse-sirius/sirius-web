@@ -20,6 +20,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.sirius.diagram.ContainerLayout;
 import org.eclipse.sirius.diagram.description.ConditionalContainerStyleDescription;
 import org.eclipse.sirius.diagram.description.ConditionalNodeStyleDescription;
 import org.eclipse.sirius.diagram.description.ContainerMapping;
@@ -28,12 +29,16 @@ import org.eclipse.sirius.diagram.description.NodeMapping;
 import org.eclipse.sirius.diagram.description.style.ContainerStyleDescription;
 import org.eclipse.sirius.diagram.description.style.NodeStyleDescription;
 import org.eclipse.sirius.diagram.description.style.StyleFactory;
+import org.eclipse.sirius.diagram.description.style.WorkspaceImageDescription;
 import org.eclipse.sirius.viewpoint.description.FixedColor;
 import org.eclipse.sirius.web.compat.api.IIdentifierProvider;
 import org.eclipse.sirius.web.compat.api.IModelOperationHandlerSwitchProvider;
 import org.eclipse.sirius.web.compat.api.ISemanticCandidatesProviderFactory;
 import org.eclipse.sirius.web.core.api.IEditService;
 import org.eclipse.sirius.web.core.api.IObjectService;
+import org.eclipse.sirius.web.diagrams.ListItemNodeStyle;
+import org.eclipse.sirius.web.diagrams.ListNodeStyle;
+import org.eclipse.sirius.web.diagrams.NodeType;
 import org.eclipse.sirius.web.diagrams.description.LabelDescription;
 import org.eclipse.sirius.web.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.web.diagrams.description.NodeDescription;
@@ -128,6 +133,52 @@ public class MappingConverterTests {
         assertThat(isStrikeThrough).isTrue();
         assertThat(color).isEqualTo("#020202"); //$NON-NLS-1$
         assertThat(iconURL).isEqualTo(ICON_PATH);
+    }
+
+    /**
+     * Test that nodes inside a list are always typed as list items with a matching style, regardless of their "native"
+     * style.
+     */
+    @Test
+    public void testContainerWithImageSubNode() {
+        ContainerMapping containerMapping = DescriptionFactory.eINSTANCE.createContainerMapping();
+        containerMapping.setName("EClass"); //$NON-NLS-1$
+        containerMapping.setDomainClass("ecore::EClass"); //$NON-NLS-1$
+        containerMapping.setSemanticCandidatesExpression("aql:self.eClassifiers"); //$NON-NLS-1$
+        containerMapping.setChildrenPresentation(ContainerLayout.LIST);
+        ContainerStyleDescription containerStyle = StyleFactory.eINSTANCE.createFlatContainerStyleDescription();
+        containerStyle.setLabelExpression("aql:self.name"); //$NON-NLS-1$
+        containerMapping.setStyle(containerStyle);
+
+        NodeMapping itemMapping = DescriptionFactory.eINSTANCE.createNodeMapping();
+        itemMapping.setDomainClass("ecore::EAttribute"); //$NON-NLS-1$
+        itemMapping.setSemanticCandidatesExpression("aql:self.eStructuralFeatures"); //$NON-NLS-1$
+        WorkspaceImageDescription imageStyle = StyleFactory.eINSTANCE.createWorkspaceImageDescription();
+        imageStyle.setLabelExpression("aql:self.name"); //$NON-NLS-1$
+        imageStyle.setWorkspacePath("path/to/image.svg"); //$NON-NLS-1$
+        itemMapping.setStyle(imageStyle);
+        containerMapping.getSubNodeMappings().add(itemMapping);
+
+        IIdentifierProvider identifierProvider = element -> UUID.randomUUID().toString();
+        ISemanticCandidatesProviderFactory semanticCandidatesProviderFactory = (interpreter, domainClass, semanticCandidatesExpression, preconditionExpression) -> variableManager -> List.of();
+        IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider = interpreter -> modelOperation -> Optional.empty();
+
+        AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(EcorePackage.eINSTANCE));
+        var converter = new AbstractNodeMappingConverter(new IObjectService.NoOp(), new IEditService.NoOp(), identifierProvider, semanticCandidatesProviderFactory,
+                modelOperationHandlerSwitchProvider);
+        NodeDescription convertedNodeDescription = converter.convert(containerMapping, interpreter, new HashMap<UUID, NodeDescription>());
+
+        VariableManager variableManager = new VariableManager();
+
+        variableManager.put(VariableManager.SELF, EcorePackage.Literals.ECLASS);
+        assertThat(convertedNodeDescription.getTypeProvider().apply(variableManager)).isEqualTo(NodeType.NODE_LIST);
+        assertThat(convertedNodeDescription.getStyleProvider().apply(variableManager)).isInstanceOf(ListNodeStyle.class);
+
+        assertThat(convertedNodeDescription.getChildNodeDescriptions()).hasSize(1);
+        NodeDescription subNodeDescription = convertedNodeDescription.getChildNodeDescriptions().get(0);
+        variableManager.put(VariableManager.SELF, EcorePackage.Literals.ECLASS__ABSTRACT);
+        assertThat(subNodeDescription.getTypeProvider().apply(variableManager)).isEqualTo(NodeType.NODE_LIST_ITEM);
+        assertThat(subNodeDescription.getStyleProvider().apply(variableManager)).isInstanceOf(ListItemNodeStyle.class);
     }
 
     @Test
