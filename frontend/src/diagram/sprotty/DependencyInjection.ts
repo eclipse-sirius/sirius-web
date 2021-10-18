@@ -12,6 +12,7 @@
  *******************************************************************************/
 import { Tool } from 'diagram/DiagramWebSocketContainer.types';
 import {
+  ACTIVE_CONNECTOR_TOOLS_ACTION,
   ACTIVE_TOOL_ACTION,
   DiagramServer,
   HIDE_CONTEXTUAL_TOOLBAR_ACTION,
@@ -219,7 +220,10 @@ export const createDependencyInjectionContainer = (
       } else if (event.button === 2) {
         edgeCreationFeedback.reset();
         setActiveTool(null);
-        return [{ kind: ACTIVE_TOOL_ACTION, tool: undefined }];
+        return [
+          { kind: ACTIVE_TOOL_ACTION, tool: undefined },
+          { kind: ACTIVE_CONNECTOR_TOOLS_ACTION, tools: [] },
+        ];
       }
       return [];
     }

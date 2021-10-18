@@ -18,9 +18,16 @@ import { isContextualTool } from 'diagram/toolServices';
 import React from 'react';
 import styles from './ContextualPalette.module.css';
 import closeImagePath from './icons/close.svg';
+import connectorImagePath from './icons/connector.svg';
 import deleteImagePath from './icons/delete.svg';
 import editImagePath from './icons/edit.svg';
 
+const connectorTool = {
+  id: 'connector',
+  type: 'connector',
+  imageURL: connectorImagePath,
+  label: 'Connector',
+};
 const editTool = {
   id: 'edit',
   type: 'edit',
@@ -49,10 +56,13 @@ export const ContextualPalette = ({
   toolSections,
   targetElement,
   invokeTool,
+  invokeConnectorTool,
   invokeLabelEdit,
   invokeDelete,
   invokeClose,
 }: ContextualPaletteProps) => {
+  let connectorToolContent;
+  let connectorToolSeparator;
   let toolSectionsContent;
 
   const contextualToolSections = [];
@@ -71,6 +81,23 @@ export const ContextualPalette = ({
   });
 
   if (contextualToolSections.length > 0) {
+    const atLeastOneEdgeTool = contextualToolSections.some((toolSection) =>
+      toolSection.tools.some((tool) => tool.__typename === 'CreateEdgeTool')
+    );
+    if (atLeastOneEdgeTool) {
+      connectorToolContent = (
+        <div className={styles.toolEntry}>
+          <Tool
+            tool={connectorTool}
+            thumbnail={true}
+            onClick={() => {
+              invokeConnectorTool();
+            }}
+          />
+        </div>
+      );
+      connectorToolSeparator = <ToolSeparator />;
+    }
     toolSectionsContent = contextualToolSections.map((toolSection) => {
       return (
         <div className={styles.toolSectionEntry} key={targetElement.id + toolSection.id}>
@@ -110,6 +137,8 @@ export const ContextualPalette = ({
       <>
         <div className={styles.toolbar} data-testid={`PopupToolbar`}>
           <div className={styles.toolEntries}>
+            {connectorToolContent}
+            {connectorToolSeparator}
             {toolSectionsContent}
             {separator}
             {renameEntry}

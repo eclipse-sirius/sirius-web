@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo and others.
+ * Copyright (c) 2019, 2020 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,14 +10,24 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Tool, ToolSection } from 'diagram/DiagramWebSocketContainer.types';
+.menu {
+  background: #fafafa;
+  border: 1px solid #d1dadb;
+  box-shadow: 0px 2px 5px #002b3c40;
+  border-radius: 2px;
+  display: grid;
+  grid-template-rows: 8px 1fr 8px;
+  grid-template-columns: 8px 1fr 8px;
+  color: #002d37;
+  position: fixed;
+  z-index: 2;
+}
 
-export interface ContextualPaletteProps {
-  toolSections: ToolSection[];
-  targetElement: any;
-  invokeTool: (tool: Tool) => void;
-  invokeConnectorTool: () => void;
-  invokeLabelEdit: () => void | null;
-  invokeDelete: () => void | null;
-  invokeClose: () => void;
+.menuEntries {
+  grid-column-start: 1;
+  grid-column-start: 2;
+  grid-row-start: 1;
+  grid-row-start: 2;
+  display: flex;
+  flex-direction: column;
 }
