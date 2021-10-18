@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLDiagram, Tool } from 'diagram/DiagramWebSocketContainer.types';
+import { CreateEdgeTool, GQLDiagram, Tool } from 'diagram/DiagramWebSocketContainer.types';
 import { Action } from 'sprotty';
 import { Selection } from 'workbench/Workbench.types';
 
@@ -38,4 +38,9 @@ export interface ZoomToAction extends Action {
 export interface SourceElementaction extends Action {
   kind: 'sourceElement';
   element: any;
+}
+
+export interface SetActiveConnectorToolsAction extends Action {
+  kind: 'activeConnectorTools';
+  tools: CreateEdgeTool[];
 }

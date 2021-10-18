@@ -32,9 +32,21 @@ export function canInvokeTool(tool, sourceElement, targetElement) {
       (tool.appliesToDiagramRoot && targetElement.kind === 'Diagram') ||
       tool.targetDescriptions.some((targetDescription) => targetDescription.id === targetElement.descriptionId);
   } else if (tool.__typename === 'CreateEdgeTool') {
-    result = tool.edgeCandidates
-      .filter((edgeCandidate) => edgeCandidate.sources.some((source) => source.id === sourceElement.descriptionId))
-      .some((edgeCandidate) => edgeCandidate.targets.some((target) => target.id === targetElement.descriptionId));
+    result = tool.edgeCandidates.some(
+      (edgeCandidate) =>
+        edgeCandidate.sources.some((source) => source.id === sourceElement.descriptionId) &&
+        edgeCandidate.targets.some((target) => target.id === targetElement.descriptionId)
+    );
   }
   return result;
+}
+
+export function atLeastOneCanInvokeEdgeTool(tools, sourceElement, targetElement) {
+  return tools.some((tool) =>
+    tool.edgeCandidates.some(
+      (edgeCandidate) =>
+        edgeCandidate.sources.some((source) => source.id === sourceElement.descriptionId) &&
+        edgeCandidate.targets.some((target) => target.id === targetElement.descriptionId)
+    )
+  );
 }
