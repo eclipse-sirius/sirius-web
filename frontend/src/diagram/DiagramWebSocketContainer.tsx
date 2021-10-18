@@ -19,10 +19,12 @@ import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
 import { ServerContext } from 'common/ServerContext';
 import {
+  CreateEdgeTool,
   CreateNodeTool,
   GQLDiagram,
   GQLGetToolSectionsData,
   GQLGetToolSectionsVariables,
+  Menu,
   Palette,
   Tool,
 } from 'diagram/DiagramWebSocketContainer.types';
@@ -36,11 +38,14 @@ import {
   HideToastEvent,
   InitializeRepresentationEvent,
   ResetSelectedObjectInSelectionDialogEvent,
+  ResetToolsEvent,
   SchemaValue,
   SelectedElementEvent,
   SelectionEvent,
   SelectZoomLevelEvent,
+  SetActiveConnectorToolsEvent,
   SetActiveToolEvent,
+  SetContextualMenuEvent,
   SetContextualPaletteEvent,
   SetDefaultToolEvent,
   SetToolSectionsEvent,
@@ -61,9 +66,11 @@ import {
   updateNodeBoundsOp,
   updateNodePositionOp,
 } from 'diagram/operations';
+import { ContextualMenu } from 'diagram/palette/ContextualMenu';
 import { ContextualPalette } from 'diagram/palette/ContextualPalette';
 import { edgeCreationFeedback } from 'diagram/sprotty/edgeCreationFeedback';
 import {
+  ACTIVE_CONNECTOR_TOOLS_ACTION,
   ACTIVE_TOOL_ACTION,
   HIDE_CONTEXTUAL_TOOLBAR_ACTION,
   SIRIUS_SELECT_ACTION,
@@ -75,7 +82,7 @@ import {
   ZOOM_TO_ACTION,
 } from 'diagram/sprotty/WebSocketDiagramServer';
 import { Toolbar } from 'diagram/Toolbar';
-import { canInvokeTool } from 'diagram/toolServices';
+import { atLeastOneCanInvokeEdgeTool, canInvokeTool } from 'diagram/toolServices';
 import React, { useCallback, useContext, useEffect, useRef } from 'react';
 import { SelectionDialogWebSocketContainer } from 'selection/SelectionDialogWebSocketContainer';
 import { EditLabelAction, FitToScreenAction, HoverFeedbackAction, SEdge, SNode } from 'sprotty';
@@ -89,6 +96,9 @@ const useDiagramWebSocketContainerStyle = makeStyles((theme) => ({
     gridTemplateColumns: '1fr',
   },
   contextualPalette: {
+    position: 'absolute',
+  },
+  contextualMenu: {
     position: 'absolute',
   },
   diagramContainer: {
@@ -285,7 +295,9 @@ export const DiagramWebSocketContainer = ({
     diagram,
     toolSections,
     contextualPalette,
+    contextualMenu,
     activeTool,
+    activeConnectorTools,
     newSelection,
     zoomLevel,
     subscribers,
@@ -349,6 +361,15 @@ export const DiagramWebSocketContainer = ({
   }, [activeTool, diagramServer, dispatch]);
 
   /**
+   * Dispatch the activeConnectorTool to the diagramServer if our state indicate that activeConnectorTool has changed.
+   */
+  useEffect(() => {
+    if (diagramServer) {
+      diagramServer.actionDispatcher.dispatch({ kind: ACTIVE_CONNECTOR_TOOLS_ACTION, tools: activeConnectorTools });
+    }
+  }, [activeConnectorTools, diagramServer, dispatch]);
+
+  /**
    * Dispatch the selection if our props indicate that selection has changed.
    */
   useEffect(() => {
@@ -381,6 +402,12 @@ export const DiagramWebSocketContainer = ({
     }
   }, [displayedRepresentationId, representationId, dispatch]);
 
+  const resetTools = useCallback(() => {
+    edgeCreationFeedback.reset();
+    const resetToolsAction: ResetToolsEvent = { type: 'RESET_TOOLS' };
+    dispatch(resetToolsAction);
+  }, [dispatch]);
+
   const deleteElements = useCallback(
     (diagramElements) => {
       const edgeIds = diagramElements.filter((diagramElement) => diagramElement instanceof SEdge).map((elt) => elt.id);
@@ -394,13 +421,9 @@ export const DiagramWebSocketContainer = ({
         edgeIds,
       };
       deleteElementsMutation({ variables: { input } });
-      const setContextualPaletteEvent: SetContextualPaletteEvent = {
-        type: 'SET_CONTEXTUAL_PALETTE',
-        contextualPalette: null,
-      };
-      dispatch(setContextualPaletteEvent);
+      resetTools();
     },
-    [editingContextId, representationId, deleteElementsMutation, dispatch]
+    [editingContextId, representationId, deleteElementsMutation, resetTools]
   );
 
   const invokeTool = useCallback(
@@ -419,7 +442,6 @@ export const DiagramWebSocketContainer = ({
             toolId,
           };
           invokeEdgeToolMutation({ variables: { input } });
-          edgeCreationFeedback.reset();
         } else {
           const [diagramElementId, startingPosition] = params;
           let startingPositionX = startingPosition ? startingPosition.x : 0;
@@ -436,11 +458,10 @@ export const DiagramWebSocketContainer = ({
           };
           invokeNodeToolMutation({ variables: { input } });
         }
-        const setActiveToolEvent: SetActiveToolEvent = { type: 'SET_ACTIVE_TOOL', activeTool: null };
-        dispatch(setActiveToolEvent);
+        resetTools();
       }
     },
-    [editingContextId, representationId, selectedObjectId, invokeNodeToolMutation, invokeEdgeToolMutation, dispatch]
+    [editingContextId, representationId, selectedObjectId, resetTools, invokeNodeToolMutation, invokeEdgeToolMutation]
   );
 
   const moveElement = useCallback(
@@ -511,12 +532,25 @@ export const DiagramWebSocketContainer = ({
     };
     const getCursorOn = (element, diagServer) => {
       let cursor = 'pointer';
-      if (diagServer.activeTool && diagServer.diagramSourceElement) {
-        const cursorAllowed = canInvokeTool(diagServer.activeTool, diagServer.diagramSourceElement, element);
-        if (cursorAllowed) {
-          cursor = 'copy';
-        } else {
-          cursor = 'not-allowed';
+      if (diagServer.diagramSourceElement) {
+        if (diagServer.activeConnectorTools.length > 0) {
+          const cursorAllowed = atLeastOneCanInvokeEdgeTool(
+            diagServer.activeConnectorTools,
+            diagServer.diagramSourceElement,
+            element
+          );
+          if (cursorAllowed) {
+            cursor = 'copy';
+          } else {
+            cursor = 'not-allowed';
+          }
+        } else if (diagServer.activeTool) {
+          const cursorAllowed = canInvokeTool(diagServer.activeTool, diagServer.diagramSourceElement, element);
+          if (cursorAllowed) {
+            cursor = 'copy';
+          } else {
+            cursor = 'not-allowed';
+          }
         }
       }
       return cursor;
@@ -544,6 +578,15 @@ export const DiagramWebSocketContainer = ({
         dispatch(setContextualPaletteEvent);
       }
     };
+    const setContextualMenu = (contextualMenu: Menu) => {
+      if (!readOnly) {
+        const setContextualMenuEvent: SetContextualMenuEvent = {
+          type: 'SET_CONTEXTUAL_MENU',
+          contextualMenu,
+        };
+        dispatch(setContextualMenuEvent);
+      }
+    };
 
     if (diagramWebSocketContainer === 'loading' && diagramDomElement.current) {
       const initializeRepresentationEvent: InitializeRepresentationEvent = {
@@ -559,6 +602,7 @@ export const DiagramWebSocketContainer = ({
         setActiveTool,
         toolSections,
         setContextualPalette,
+        setContextualMenu,
         httpOrigin,
       };
       dispatch(initializeRepresentationEvent);
@@ -741,20 +785,15 @@ export const DiagramWebSocketContainer = ({
   useEffect(() => {
     handleError(invokeNodeToolLoading, invokeNodeToolData, invokeNodeToolError);
     if (!invokeNodeToolLoading) {
-      const setContextualPaletteEvent: SetContextualPaletteEvent = {
-        type: 'SET_CONTEXTUAL_PALETTE',
-        contextualPalette: null,
-      };
-      dispatch(setContextualPaletteEvent);
+      resetTools();
     }
-  }, [invokeNodeToolLoading, invokeNodeToolData, invokeNodeToolError, handleError, dispatch]);
+  }, [invokeNodeToolLoading, invokeNodeToolData, invokeNodeToolError, handleError, resetTools]);
   useEffect(() => {
     handleError(invokeEdgeToolLoading, invokeEdgeToolData, invokeEdgeToolError);
   }, [invokeEdgeToolLoading, invokeEdgeToolData, invokeEdgeToolError, handleError]);
   useEffect(() => {
     handleError(arrangeAllLoading, arrangeAllData, arrangeAllError);
   }, [arrangeAllLoading, arrangeAllData, arrangeAllError, handleError]);
-
   /**
    * Gather up, it's time for a story.
    *
@@ -787,13 +826,6 @@ export const DiagramWebSocketContainer = ({
   if (!readOnly && contextualPalette) {
     const { element, startingPosition, canvasBounds, origin, renameable, deletable } = contextualPalette;
     const { x, y } = origin;
-    const invokeCloseFromContextualPalette = () => {
-      const setContextualPaletteEvent: SetContextualPaletteEvent = {
-        type: 'SET_CONTEXTUAL_PALETTE',
-        contextualPalette: null,
-      };
-      dispatch(setContextualPaletteEvent);
-    };
     const style = {
       left: canvasBounds.x + 'px',
       top: canvasBounds.y + 'px',
@@ -836,18 +868,62 @@ export const DiagramWebSocketContainer = ({
       const setDefaultToolEvent: SetDefaultToolEvent = { type: 'SET_DEFAULT_TOOL', defaultTool: tool };
       dispatch(setDefaultToolEvent);
     };
+    const invokeConnectorToolFromContextualPalette = () => {
+      resetTools();
+      const edgeTools = [];
+      toolSections.forEach((toolSection) => {
+        const filteredTools = toolSection.tools
+          .filter((tool) => tool.__typename === 'CreateEdgeTool')
+          .map((tool) => tool as CreateEdgeTool)
+          .filter((edgeTool) =>
+            edgeTool.edgeCandidates.some((edgeCandidate) =>
+              edgeCandidate.sources.some((source) => source.id === element.descriptionId)
+            )
+          );
+        edgeTools.push(...filteredTools);
+      });
+      const setActiveConnectorToolsEvent: SetActiveConnectorToolsEvent = {
+        type: 'SET_ACTIVE_CONNECTOR_TOOLS',
+        tools: edgeTools,
+      };
+      dispatch(setActiveConnectorToolsEvent);
+      edgeCreationFeedback.init(x, y);
+      diagramServer.actionDispatcher.dispatch({ kind: SOURCE_ELEMENT_ACTION, sourceElement: element });
+    };
     contextualPaletteContent = (
       <div className={classes.contextualPalette} style={style}>
         <ContextualPalette
           toolSections={toolSections}
           targetElement={element}
           invokeTool={invokeToolFromContextualPalette}
+          invokeConnectorTool={invokeConnectorToolFromContextualPalette}
           invokeLabelEdit={invokeLabelEditFromContextualPalette}
           invokeDelete={invokeDeleteFromContextualPalette}
-          invokeClose={invokeCloseFromContextualPalette}
+          invokeClose={resetTools}
         />
       </div>
     );
+  }
+  let contextualMenuContent;
+  if (!readOnly && contextualMenu) {
+    const { sourceElement, targetElement, canvasBounds, tools: edgeTools } = contextualMenu;
+    const style = {
+      left: canvasBounds.x + 'px',
+      top: canvasBounds.y + 'px',
+    };
+    if (edgeTools && edgeTools.length > 1) {
+      const invokeToolFromContextualMenu = (tool) => {
+        invokeTool(tool, sourceElement.id, targetElement.id);
+      };
+      contextualMenuContent = (
+        <div className={classes.contextualMenu} style={style}>
+          <ContextualMenu
+            tools={edgeTools}
+            invokeTool={invokeToolFromContextualMenu}
+            invokeClose={resetTools}></ContextualMenu>
+        </div>
+      );
+    }
   }
 
   let content = (
@@ -860,6 +936,7 @@ export const DiagramWebSocketContainer = ({
         <div id="diagram-wrapper" className={classes.diagramWrapper}>
           <div ref={diagramDomElement} id="diagram" className={classes.diagram} />
           {contextualPaletteContent}
+          {contextualMenuContent}
         </div>
       </DropArea>
     </div>

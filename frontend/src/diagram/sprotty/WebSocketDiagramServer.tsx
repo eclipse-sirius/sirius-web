@@ -41,12 +41,18 @@ export const SIRIUS_SELECT_ACTION = 'siriusSelectElement';
 export const SIRIUS_UPDATE_MODEL_ACTION = 'siriusUpdateModel';
 /** Action to set a tool active */
 export const ACTIVE_TOOL_ACTION = 'activeTool';
+/** Action to set active connector tools */
+export const ACTIVE_CONNECTOR_TOOLS_ACTION = 'activeConnectorTools';
 /** Action to set the source element */
 export const SOURCE_ELEMENT_ACTION = 'sourceElement';
 /** Action to show a contextual toolbar */
 export const SHOW_CONTEXTUAL_TOOLBAR_ACTION = 'showContextualToolbar';
 /** Action to hide a contextual toolbar */
 export const HIDE_CONTEXTUAL_TOOLBAR_ACTION = 'hideContextualToolbar';
+/** Action to show a contextual menu */
+export const SHOW_CONTEXTUAL_MENU_ACTION = 'showContextualMenu';
+/** Action to hide a contextual menu */
+export const HIDE_CONTEXTUAL_MENU_ACTION = 'hideContextualMenu';
 /** Action to zoom in */
 export const ZOOM_IN_ACTION = 'zoomIn';
 /** Action to zoom OUT */
@@ -86,6 +92,7 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
   mousePositionTracker;
   modelFactory;
   activeTool;
+  activeConnectorTools;
   editLabel;
   moveElement;
   resizeElement;
@@ -93,6 +100,7 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
 
   invokeTool;
   setContextualPalette;
+  setContextualMenu;
 
   // Used to store the edge source element.
   diagramSourceElement;
@@ -112,9 +120,12 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
     registry.register(SPROTTY_SELECT_ACTION, this);
     registry.register(SPROTTY_DELETE_ACTION, this);
     registry.register(ACTIVE_TOOL_ACTION, this);
+    registry.register(ACTIVE_CONNECTOR_TOOLS_ACTION, this);
     registry.register(SOURCE_ELEMENT_ACTION, this);
     registry.register(SHOW_CONTEXTUAL_TOOLBAR_ACTION, this);
     registry.register(HIDE_CONTEXTUAL_TOOLBAR_ACTION, this);
+    registry.register(SHOW_CONTEXTUAL_MENU_ACTION, this);
+    registry.register(HIDE_CONTEXTUAL_MENU_ACTION, this);
     registry.register(ZOOM_IN_ACTION, this);
     registry.register(ZOOM_OUT_ACTION, this);
     registry.register(ZOOM_TO_ACTION, this);
@@ -158,6 +169,9 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
       case ACTIVE_TOOL_ACTION:
         this.handleActiveToolAction(action);
         break;
+      case ACTIVE_CONNECTOR_TOOLS_ACTION:
+        this.handleActiveConnectorToolsAction(action);
+        break;
       case SOURCE_ELEMENT_ACTION:
         this.handleSourceElementAction(action);
         break;
@@ -166,6 +180,12 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
         break;
       case HIDE_CONTEXTUAL_TOOLBAR_ACTION:
         this.handleHideContextualToolbarAction(action);
+        break;
+      case SHOW_CONTEXTUAL_MENU_ACTION:
+        this.handleShowContextualMenuAction(action);
+        break;
+      case HIDE_CONTEXTUAL_MENU_ACTION:
+        this.handleHideContextualMenuAction(action);
         break;
       case ZOOM_IN_ACTION:
         this.handleZoomInAction(action);
@@ -231,7 +251,28 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
 
   handleSprottySelectAction(action) {
     const { element } = action;
-    if (this.activeTool) {
+    if (this.activeConnectorTools?.length > 0) {
+      const filteredTools = this.activeConnectorTools.filter((edgeTool) =>
+        edgeTool.edgeCandidates.some(
+          (edgeCandidate) =>
+            edgeCandidate.sources.some((source) => source.id === this.diagramSourceElement.descriptionId) &&
+            edgeCandidate.targets.some((target) => target.id === element.descriptionId)
+        )
+      );
+      if (filteredTools.length < 1) {
+        this.actionDispatcher.dispatch({
+          kind: SHOW_CONTEXTUAL_MENU_ACTION,
+        } as any);
+      } else if (filteredTools.length === 1) {
+        this.invokeTool(filteredTools[0], this.diagramSourceElement.id, element.id);
+      } else {
+        this.actionDispatcher.dispatch({
+          kind: SHOW_CONTEXTUAL_MENU_ACTION,
+          element,
+          tools: filteredTools,
+        } as any);
+      }
+    } else if (this.activeTool) {
       if (this.activeTool.__typename === 'CreateNodeTool') {
         this.invokeTool(this.activeTool, element.id);
       } else if (this.activeTool.__typename === 'CreateEdgeTool') {
@@ -307,6 +348,11 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
     this.activeTool = tool;
   }
 
+  handleActiveConnectorToolsAction(action) {
+    const { tools } = action;
+    this.activeConnectorTools = tools;
+  }
+
   handleSourceElementAction(action) {
     const { sourceElement } = action;
     this.diagramSourceElement = sourceElement;
@@ -367,6 +413,40 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
       x: (clientX - canvasBounds.x) / zoom + scroll.x,
       y: (clientY - canvasBounds.y) / zoom + scroll.y,
     };
+  }
+
+  handleShowContextualMenuAction(action) {
+    const { element, tools } = action;
+    if (element && (element.kind === 'Diagram' || element.parent)) {
+      this.actionDispatcher.request(GetViewportAction.create()).then((viewportResult) => {
+        const { viewport, canvasBounds } = viewportResult;
+        const { scroll, zoom } = viewport;
+        const lastPositionOnDiagram = this.mousePositionTracker.lastPositionOnDiagram;
+        if (lastPositionOnDiagram) {
+          const bounds = {
+            x: (lastPositionOnDiagram.x - scroll.x) * zoom + canvasBounds.x + popupOffset.x,
+            y: (lastPositionOnDiagram.y - scroll.y) * zoom + canvasBounds.y + popupOffset.y,
+            width: -1,
+            height: -1,
+          };
+          const contextualMenu = {
+            canvasBounds: bounds,
+            sourceElement: this.diagramSourceElement,
+            targetElement: element,
+            tools,
+          };
+          this.setContextualMenu(contextualMenu);
+        }
+      });
+    } else {
+      const contextualMenu = null;
+      this.setContextualMenu(contextualMenu);
+    }
+  }
+
+  handleHideContextualMenuAction(action) {
+    const contextualMenu = null;
+    this.setContextualMenu(contextualMenu);
   }
 
   handleZoomInAction(action) {
@@ -460,6 +540,10 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
 
   setContextualPaletteListener(setContextualPalette) {
     this.setContextualPalette = setContextualPalette;
+  }
+
+  setContextualMenuListener(setContextualMenu) {
+    this.setContextualMenu = setContextualMenu;
   }
 
   setHttpOrigin(httpOrigin) {

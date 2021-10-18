@@ -22,6 +22,7 @@ import { ListItemView } from 'diagram/sprotty/views/ListItemView';
 import { ListView } from 'diagram/sprotty/views/ListView';
 import { RectangleView } from 'diagram/sprotty/views/RectangleView';
 import {
+  ACTIVE_CONNECTOR_TOOLS_ACTION,
   ACTIVE_TOOL_ACTION,
   HIDE_CONTEXTUAL_TOOLBAR_ACTION,
   SiriusWebWebSocketDiagramServer,
@@ -214,7 +215,10 @@ export const createDependencyInjectionContainer = (containerId, onSelectElement,
       } else if (event.button === 2) {
         edgeCreationFeedback.reset();
         setActiveTool();
-        return [{ kind: ACTIVE_TOOL_ACTION, tool: undefined }];
+        return [
+          { kind: ACTIVE_TOOL_ACTION, tool: undefined },
+          { kind: ACTIVE_CONNECTOR_TOOLS_ACTION, tools: [] },
+        ];
       }
       return [];
     }

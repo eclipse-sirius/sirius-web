@@ -20,6 +20,10 @@
   position: absolute;
 }
 
+.contextualMenu {
+  position: absolute;
+}
+
 .diagramContainer {
   display: grid;
   grid-template-columns: 1fr;

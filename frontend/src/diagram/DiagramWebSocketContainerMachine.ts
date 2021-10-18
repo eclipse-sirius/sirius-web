@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLToolSection, Palette, Subscriber, Tool, ToolSection } from 'diagram/DiagramWebSocketContainer.types';
+import { GQLToolSection, Menu, Palette, Subscriber, Tool, ToolSection } from 'diagram/DiagramWebSocketContainer.types';
 import { createDependencyInjectionContainer } from 'diagram/sprotty/DependencyInjection';
 import { SiriusWebWebSocketDiagramServer } from 'diagram/sprotty/WebSocketDiagramServer';
 import { MutableRefObject } from 'react';
@@ -57,7 +57,9 @@ export interface DiagramWebSocketContainerContext {
   diagram: any;
   toolSections: ToolSection[];
   activeTool: Tool | null;
+  activeConnectorTools: Tool[];
   contextualPalette: Palette | null;
+  contextualMenu: Menu | null;
   latestSelection: Selection | null;
   newSelection: Selection | null;
   zoomLevel: string;
@@ -80,8 +82,11 @@ export type SetToolSectionsEvent = { type: 'SET_TOOL_SECTIONS'; toolSections: GQ
 export type SetDefaultToolEvent = { type: 'SET_DEFAULT_TOOL'; defaultTool: Tool };
 export type DiagramRefreshedEvent = { type: 'HANDLE_DIAGRAM_REFRESHED'; diagram: any };
 export type SubscribersUpdatedEvent = { type: 'HANDLE_SUBSCRIBERS_UPDATED'; subscribers: Subscriber[] };
+export type ResetToolsEvent = { type: 'RESET_TOOLS' };
 export type SetActiveToolEvent = { type: 'SET_ACTIVE_TOOL'; activeTool: Tool | null };
+export type SetActiveConnectorToolsEvent = { type: 'SET_ACTIVE_CONNECTOR_TOOLS'; tools: Tool[] };
 export type SetContextualPaletteEvent = { type: 'SET_CONTEXTUAL_PALETTE'; contextualPalette: Palette | null };
+export type SetContextualMenuEvent = { type: 'SET_CONTEXTUAL_MENU'; contextualMenu: Menu | null };
 export type SelectionEvent = { type: 'SELECTION'; selection: Selection };
 export type SelectedElementEvent = { type: 'SELECTED_ELEMENT'; selection: Selection };
 export type SelectZoomLevelEvent = { type: 'SELECT_ZOOM_LEVEL'; level: string };
@@ -100,6 +105,7 @@ export type InitializeRepresentationEvent = {
   setActiveTool: (tool: Tool) => void;
   toolSections: ToolSection[];
   setContextualPalette: (contextualPalette: Palette) => void;
+  setContextualMenu: (contextualMenu: Menu) => void;
   httpOrigin: string;
 };
 
@@ -116,8 +122,11 @@ export type DiagramWebSocketContainerEvent =
   | SetDefaultToolEvent
   | DiagramRefreshedEvent
   | SubscribersUpdatedEvent
+  | ResetToolsEvent
   | SetActiveToolEvent
+  | SetActiveConnectorToolsEvent
   | SetContextualPaletteEvent
+  | SetContextualMenuEvent
   | SelectionEvent
   | SelectedElementEvent
   | SelectZoomLevelEvent
@@ -125,6 +134,8 @@ export type DiagramWebSocketContainerEvent =
 
 const isSetActiveToolEvent = (event: DiagramWebSocketContainerEvent): event is SetActiveToolEvent =>
   event.type === 'SET_ACTIVE_TOOL';
+const isSetActiveConnectorToolsEvent = (event: DiagramWebSocketContainerEvent): event is SetActiveConnectorToolsEvent =>
+  event.type === 'SET_ACTIVE_CONNECTOR_TOOLS';
 const isShowSelectionDialogEvent = (event: DiagramWebSocketContainerEvent): event is ShowSelectionDialogEvent =>
   event.type === 'SHOW_SELECTION_DIALOG';
 
@@ -142,7 +153,9 @@ export const diagramWebSocketContainerMachine = Machine<
       diagram: null,
       toolSections: [],
       activeTool: null,
+      activeConnectorTools: [],
       contextualPalette: null,
+      contextualMenu: null,
       latestSelection: null,
       newSelection: null,
       zoomLevel: '1',
@@ -229,14 +242,29 @@ export const diagramWebSocketContainerMachine = Machine<
                   actions: 'handleSubscribersUpdated',
                 },
               ],
+              RESET_TOOLS: [
+                {
+                  actions: 'resetTools',
+                },
+              ],
               SET_ACTIVE_TOOL: [
                 {
                   actions: 'setActiveTool',
                 },
               ],
+              SET_ACTIVE_CONNECTOR_TOOLS: [
+                {
+                  actions: 'setActiveConnectorTools',
+                },
+              ],
               SET_CONTEXTUAL_PALETTE: [
                 {
                   actions: 'setContextualPalette',
+                },
+              ],
+              SET_CONTEXTUAL_MENU: [
+                {
+                  actions: 'setContextualMenu',
                 },
               ],
               SELECTION: [
@@ -336,6 +364,7 @@ export const diagramWebSocketContainerMachine = Machine<
           setActiveTool,
           toolSections,
           setContextualPalette,
+          setContextualMenu,
           httpOrigin,
         } = event as InitializeRepresentationEvent;
 
@@ -360,14 +389,17 @@ export const diagramWebSocketContainerMachine = Machine<
         diagramServer.setDeleteElementsListener(deleteElements);
         diagramServer.setInvokeToolListener(invokeTool);
         diagramServer.setContextualPaletteListener(setContextualPalette);
+        diagramServer.setContextualMenuListener(setContextualMenu);
         diagramServer.setHttpOrigin(httpOrigin);
 
         return {
           diagramServer,
           toolSections,
           contextualPalette: undefined,
+          contextualMenu: undefined,
           diagram: undefined,
           activeTool: undefined,
+          activeConnectorTools: [],
           latestSelection: undefined,
           newSelection: undefined,
           zoomLevel: '1',
@@ -403,6 +435,15 @@ export const diagramWebSocketContainerMachine = Machine<
         return { subscribers };
       }),
 
+      resetTools: assign((_, event) => {
+        return {
+          contextualPalette: undefined,
+          contextualMenu: undefined,
+          activeTool: undefined,
+          activeConnectorTools: [],
+        };
+      }),
+
       setActiveTool: assign((_, event) => {
         if (isSetActiveToolEvent(event) || isShowSelectionDialogEvent(event)) {
           const { activeTool } = event;
@@ -410,9 +451,21 @@ export const diagramWebSocketContainerMachine = Machine<
         }
         return {};
       }),
+
+      setActiveConnectorTools: assign((_, event) => {
+        if (isSetActiveConnectorToolsEvent(event)) {
+          const { tools } = event;
+          return { activeConnectorTools: tools };
+        }
+        return {};
+      }),
       setContextualPalette: assign((_, event) => {
         const { contextualPalette } = event as SetContextualPaletteEvent;
         return { contextualPalette };
+      }),
+      setContextualMenu: assign((_, event) => {
+        const { contextualMenu } = event as SetContextualMenuEvent;
+        return { contextualMenu };
       }),
 
       setSelection: assign((context, event) => {
@@ -453,7 +506,9 @@ export const diagramWebSocketContainerMachine = Machine<
           diagram: undefined,
           toolSections: [],
           contextualPalette: undefined,
+          contextualMenu: undefined,
           activeTool: undefined,
+          activeConnectorTools: [],
           latestSelection: undefined,
           newSelection: undefined,
           zoomLevel: undefined,
