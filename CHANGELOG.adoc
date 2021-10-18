@@ -1,0 +1,325 @@
+= Changelog
+
+== v0.5.0 (Unreleased)
+
+=== Architectural decision records
+
+- [ADR-024] Add support for view deletion requests
+- [ADR-025] Switch to a schema first approach for our GraphQL schema
+- [ADR-026] Improve the performance of unsynchronized nodes
+- [ADR-027] Make the explorer independent from modeling concepts
+- [ADR-028] Move representations out of the explorer
+- [ADR-029] Introduce some object services
+- [ADR-030] Add a link representation
+- [ADR-031] Separate metadata representations
+- [ADR-032] Relax our constraints on some of our identifiers
+- [ADR-033] Add support for unsynchronized tools
+
+=== Deprecation warning
+
+- [core] The field `ChangeKind#NOTHING` will be removed soon since we have the option to just not send anything at all
+- [explorer] Representations will be removed from the explorer soon
+- [core] The metadata of the representations will be removed from the content of the representation soon. As a result, fields like `IRepresentation#id`, `IRepresentation#descriptionId` or event `IRepresentation#label` will be removed. It will allow us to massively improve the performance of some use cases and simplify the manipulation of the representations in other use cases
+- [workbench] The workbench will become independent of internal concepts from Sirius Components. As a result, the explorer will not have any hardcoded actions such as "create a new document" or "create a new representation". The concept of document will be removed from the frontend entirely
+- [graphql] The interface `ITypeProvider` will soon be removed
+- [graphql] All the GraphQL annotations used to build the schema programatically will be removed soon such as `@GraphQLObjectType`, `@GraphQLField`, `@GraphQLNonNull`, `@GraphQLID`. Annotations used to execute GraphQL queries like `@QueryDataFetcher` or `@MutationDataFetcher` will still be supported
+
+=== Breaking changes
+
+- https://github.com/eclipse-sirius/sirius-components/issues/673[#673] [graphql] Rename namespace to domain in the GraphQL API
+- [core] Remove the need to give a looger to the `BaseRender`
+- [properties] Remove useless fields from the properties payloads
+- [graphql] Use pagination for the fields used by the onboarding such as `EditingContext#stereotypeDescriptions` or `EditingContext#representations`
+- https://github.com/eclipse-sirius/sirius-components/issues/563[#563] [core] Update the support for custom images by referencing images by their identifiers instead of their file name
+- https://github.com/eclipse-sirius/sirius-components/issues/683[#683] [core] Move projects such as `sirius-web-services-api`, `sirius-web-services`, `sirius-web-graphql-schema` and `sirius-web-graphql` out of Sirius Components
+- [core] Remove all the `sirius-web-collaborative-XXX-api` projects. Those projects became a random collection of all the interfaces (external APIs and internal ones) used by the collaborative projects. Those interfaces now exist within the various collaborative projects
+- [graphql] Remove the field `ErrorPayload#additionalMessages` since it was useless
+- [graphql] Remove the principal from the GraphQL `Context` since Spring Security allows us to access it much more easily
+- https://github.com/eclipse-sirius/sirius-components/issues/744[#744] [core] Use Reactor to communicate event handler results. As a result of this change, the concept of `EventHandlerResponse` has been removed and replaced with two different sinks. The `payloadSink` should be used to communicate a response to the process which has sent the input to handler. The `changeDescriptionSink` can be used in order to indicate to the other event processors a change that has occur. Such change may trigger a refresh or other behavior in the other event processors
+- https://github.com/eclipse-sirius/sirius-components/issues/727[#727] [core] Make `IRepresentationDescriptionSearchService` editing context aware
+- https://github.com/eclipse-sirius/sirius-components/issues/750[#750] [core] Add the ability to provide a status error message. The enumeration `Status` has been replaced by an interface named `IStatus` with two classes implementing it, `Failure` and `Success`. Thanks to `Failure`, it is now possible to provide a custom error message for an event handler but as of today this error message is not used in the `ErrorPayload` created from the `Failure`. This will change in the future
+- https://github.com/eclipse-sirius/sirius-components/issues/740[#740] [domain] Remove the explicit `nsURI` from domain definitions. Now only a name will be required and other properties will be computed from said name (`nsURI` and `nsPrefix`).
+
+=== New features
+
+- https://github.com/eclipse-sirius/sirius-components/issues/190[#190] [emf] Add support for inverse references navigation thanks to an `ECrossReferenceAdapter` installed directly on the `EditingContext`
+- https://github.com/eclipse-sirius/sirius-components/issues/588[#588] [domain] Add support for multiple inheritance
+- https://github.com/eclipse-sirius/sirius-components/issues/598[#598] [view] Add support for node border size, edge width, label font format and node label color in the view language
+- https://github.com/eclipse-sirius/sirius-components/issues/514[#514] [diagram] Disable move, resize and arrange all on auto-layout diagram
+- https://github.com/eclipse-sirius/sirius-components/issues/688[#688] [core] Add support for cross site request forgery token while uploading files. Projects integrating Sirius Components will have to decide whether or not they want to add such support and if they want to activate it. It will not be supported for now in Sirius Web
+- https://github.com/eclipse-sirius/sirius-components/issues/671[#671] [graphql] Add the GraphQL schemas of Sirius Components. Starting with this commit, projects integrating Sirius Components will be able to easily embrace a schema first approach to build their GraphQL schema. It will also be way easier to track changes to our GraphQL schema over time
+- https://github.com/eclipse-sirius/sirius-components/issues/697[#697] [graphql] Add the ability to perform AQL based queries on the content of an editing context using the `queryBasedXxx` fields
+- https://github.com/eclipse-sirius/sirius-components/issues/672[#672] [diagram] Add support for the `ViewDeletionRequest` in a similar fashion as the previously added `ViewCreationRequest` in order to support unsynchronized diagram description created programmatically
+
+=== Improvements
+
+- [domain] Add multiple validation rules to help create proper domains
+- [view] Add validation rules to help create proper views
+- https://github.com/eclipse-sirius/sirius-components/issues/646[#646] [view] Improve the default color used for new edges in the view language
+- [core] Replace most `NoOpXxx` classes by internal `NoOp` classes on each interface
+- https://github.com/eclipse-sirius/sirius-components/issues/674[#674] [core] Use the Spring Security executor service to propagate the current principal in the thread of the `EditingContextEventProcessor` instead of relying on our custom solution
+- https://github.com/eclipse-sirius/sirius-components/issues/680[#680] [validation] Ensure that the validation view is open by default
+- https://github.com/eclipse-sirius/sirius-components/issues/690[#690] [diagram] Add the `selectedNode` variable to the delete from diagram and invoke node tool handlers
+- https://github.com/eclipse-sirius/sirius-components/issues/638[#638] [diagram] Leverage the automatic layout configuration while computing the incremental layout in order to fix differences in behavior between the incremental layout and the automatic layout
+- https://github.com/eclipse-sirius/sirius-components/issues/719[#719] [compatibility] Add support for the `container` and `element` variables for the node/container creation tools
+- https://github.com/eclipse-sirius/sirius-components/issues/729[#729] [emf] Make sure that the resource set of our `EditingContext` is an `IEditingDomainProvider`
+- https://github.com/eclipse-sirius/sirius-components/issues/731[#731] [view] Allow an `EdgeDescription` to have multiple sources and targets
+- https://github.com/eclipse-sirius/sirius-components/issues/743[#743] [view] Add support for edge labels in views
+- https://github.com/eclipse-sirius/sirius-components/issues/739[#739] [view] Add a name to node and edge descriptions
+- https://github.com/eclipse-sirius/sirius-components/issues/761[#761] [domain] Validate the names of domains, entities and their features
+- https://github.com/eclipse-sirius/sirius-components/issues/767[#767] [core] Use `ServerContext` to retrieve the `httpOrigin` in `Tool.tsx`. Thanks to this improvement, it is possible to embed diagrams with the proper tool image in a complex architecture
+- [workbench] Improve the overflow management of the onboarding area
+
+=== Bug fixes
+
+- https://github.com/eclipse-sirius/sirius-components/issues/654[#654] [domain] Set `Feature#optional` default value to `true` since `false` created serialization issues. We cannot provide `false` as a default value since EMF cannot handle such use case
+- [diagram] Make the `DiagramRenderingCache` maps predictable in order to improve performances
+- https://github.com/eclipse-sirius/sirius-components/issues/735[#735] [view] Ensure that the generic edge tool is not used when a custom one is provided
+- https://github.com/eclipse-sirius/sirius-components/issues/747[#747] [diagram] Fix bounding box computation for images with wide labels
+- https://github.com/eclipse-sirius/sirius-components/issues/738[#738] [view] Fix the validation rules of the views when using qualified domain type names
+- [view] Consider conditional styles when computing a node type. This bug could lead to the creation of diagrams where node declared a specific type that did not match the type of their style. As a result, we could create diagrams that we could not deserialize with our Jackson parser
+- [core] Add a fallback strategy to the payload sink. With the use of reactor to the event handler, it has become possible to handle an input without ever providing a payload as a response. Now after 5s without a response, an `ErrorPayload` will be send back. This will not stop the current processing of the input nor will it rollback any change made, it will only send a response to ensure that the frontend is not waiting forever for an answer
+- https://github.com/eclipse-sirius/sirius-components/issues/776[#776] [view] Avoid id collision between diagram descriptions with the same name by leveraging the URI of the diagram description to create a more unique identifier
+
+
+== v0.4.0 (2021-07-30)
+
+This new release improves support for meta modeling.
+It also prepares the removal of a lot of code from this repository.
+Sirius Components will soon be independent from any persistence layer, from the GraphQL layer and even from a specific business layer.
+
+=== Architectural decision records
+
+- [ADR-020] Add support for validation in the workbench
+- [ADR-021] Add validation support to forms
+- [ADR-022] Add support for selection dialog
+- [ADR-023] Move business code from Sirius Components to Sirius Web
+
+=== Deprecation warning
+
+- [core] All the GraphQL and business related projects will be move to the Sirius Web project. As a result, projects such as `sirius-web-services-api`, `sirius-web-services`, `sirius-web-graphql-schema` and `sirius-web-graphql` will no longer exist in this repository
+
+=== Breaking changes
+
+- https://github.com/eclipse-sirius/sirius-components/issues/569[#569] [emf] Move document-related code out of `sirius-web-emf`
+- https://github.com/eclipse-sirius/sirius-components/issues/569[#569] [core] Remove the last dependency to `sirius-web-services` from `sirius-web-emf`. As a result, the `ObjectService` does not need to know about representations anymore
+- https://github.com/eclipse-sirius/sirius-components/issues/562[#562] [graphql] Remove references to `projectId` from the subscriptions and use `editingContextId` instead
+- https://github.com/eclipse-sirius/sirius-components/issues/562[#562] [graphql] Move the `representation` and `representations` fields from `Project` to `EditingContext`
+- https://github.com/eclipse-sirius/sirius-components/issues/562[#562] [core] Remove multiple references to `projectId` from the collaborative parts. This will impact various concepts such as the input used to edit forms
+- https://github.com/eclipse-sirius/sirius-components/issues/584[#584] [graphql] Remove all the GraphQL projects from `sirius-web-spring-starter`. As such, projects consumming Sirius Components will now have to explicitely depend to those projects. They will soon be removed entirely from Sirius Components to go Sirius Web
+- https://github.com/eclipse-sirius/sirius-components/issues/584[#584] [core] Remove the need to perform some access control and remove the `IDataFetcherEnvironmentService` in favor of `ObjectMapper`
+- https://github.com/eclipse-sirius/sirius-components/issues/589[#589] [core] Remove `sirius-web-services` from `sirius-web-spring-starter`. Our business layer will soon be moved out of Sirius Components to Sirius Web
+- [core] Remove the unused `ProjectCreatedEvent`
+- [core] Remove the support for modelers since it has never been used
+- [core] Refactor the collaborative layer in order to make it easier to reuse in other applications. This change includes a large set of small API breaks to concepts such as `IRepresentationService` or `IRepresentationSearchService`
+- [core] Provide the editing context while searching and saving representations instead of its identifier. As a result, interfaces such as `IRepresentationPersistenceService` and `IRepresentationSearchService` have been modified
+
+=== New features
+
+- https://github.com/eclipse-sirius/sirius-components/issues/554[#554] [core] Add support for the validation view
+- https://github.com/eclipse-sirius/sirius-components/issues/428[#428] [properties] Add support for the edition of multi-valued references in the properties view
+- https://github.com/eclipse-sirius/sirius-components/issues/559[#559] [diagram] Add support for selection dialogs. This also include the support for `SelectModelElementVariable` in the Sirius RCP compatibility layer along with an example of such tool in the Flow-Designer
+- https://github.com/eclipse-sirius/sirius-components/issues/655[#655] [properties] Add support for the validation in the properties view
+
+=== Improvements
+
+- [core] Improve the `ShareDiagramModel`, `DeleteDocumentModal` and `UploadModelModal` by migrating them to MaterialUI and XState
+- https://github.com/eclipse-sirius/sirius-components/issues/550[#550] [diagram] Improve the incremental layout support by taking into account the padding defined in the ELK configuration. On top of that some improvements have been made to the algorithm of the incremental layout in order to maintain it more easily
+- https://github.com/eclipse-sirius/sirius-components/issues/640[#640] [core] Use accordions to layout the left and right sites of the workbench
+
+=== Bug fixes
+
+- https://github.com/eclipse-sirius/sirius-components/issues/604[#604] [core] Use the MaterialUI `ClickAwayListener` to close the context menu. This help fix an issue where the context menu of the explorer could be closed automatically after being opened
+- https://github.com/eclipse-sirius/sirius-components/issues/557[#557] [domain] Fix multiple issues with the first release of domains such as `NullPointerException` during the transformation and better default values
+- https://github.com/eclipse-sirius/sirius-components/issues/557[#557] [view] Fix multiple issues with the first release of views
+- https://github.com/eclipse-sirius/sirius-components/issues/451[#451] [diagram] Fix the issue which caused one character to be swallowed during the direct edit of a label in a diagram
+
+== v0.3.0 (2021-05-18)
+
+In this third major release, we have introduced support for the meta modeling in the web browser with the new domain and view languages.
+
+In order to make Sirius Components even more reusable, we have removed all of the views of the frontend.
+Sirius Components will no longer have an opinion on the architecture of the whole frontend application which will include the workbench.
+It will only provide as frontend components, representations, the workbench and some utility components but not the core structure of a full web application.
+
+On the backend side, things are moving in the same direction with some massive refactoring for the future removal of the persistence layer and the business layer from Sirius Components.
+All the related projects will soon move to Sirius Web in order to integrate more easily Sirius Components in applications which do not share the same architectural constraints as Sirius Web.
+
+Some improvements have also been made to the incremental layout in order to support a basic workflow.
+
+
+=== Architectural decision records
+
+- [ADR-011] Decouple the event handlers from the refresh
+- [ADR-012] Incremental layout: Make it possible to move or create a diagram element at a specific position
+- [ADR-013] Refactor incremental layout
+- [ADR-014] Add a correlation identifier to inputs and payloads
+- [ADR-015] Add support for resizing diagram elements
+- [ADR-016] Remove SubscriptionDescription
+- [ADR-017] Improve the source and target edge anchors
+- [ADR-018] Adopt a subset of Ecore to define data schemas for modelers
+- [ADR-019] Support Simple Diagram Definitions by Reusing Sirius Desktop VSMs
+
+=== Deprecation warning
+
+- [core] All the business code will be removed from Sirius Components in the months to come (project, document, persistence-related code, etc). This will include projects such as `sirius-web-persistence`, `sirius-web-services-api` and more
+- [core] The support for custom images has been integrated as a prototype. Massive changes to its API will occur in the future in order to cleanup its lifecycle
+- [core] The concept `IDataFetchingEnvironmentService` which can be used to setup an access control policy will soon be removed since it will be up to each application to define its own policy
+
+=== Breaking changes
+
+- https://github.com/eclipse-sirius/sirius-components/issues/152[#152] [releng] Remove usage of `airbnb-props-types` and `universal-cookies` since we don't need them
+- [core] Make views handle the lifecycle of their navbar instead of relying on a common navbar design and lifecycle. This will lower the complexity of the lifecycle of the views and give way more flexibility to the views
+- https://github.com/eclipse-sirius/sirius-components/issues/342[#342] [core] Introduce the `ChangeKind` concept to decouple event handlers from representation. Prior to this change, an event handler had to know the behavior of all the representations in order to find out which representations were impacted by its change. Now, it can describe the change made and each representation can find out if this change is relevant to them or not
+- https://github.com/eclipse-sirius/sirius-components/issues/348[#348] [core] Add a correlation identifier on `IInput` and `IPayload`. From now on all payloads created must have, as an identifier, the identifier of the input which has trigger their creation. This will give us the ability to provide advanced features in the future and improve our debugging capabilities now
+- https://github.com/eclipse-sirius/sirius-components/issues/351[#351] [core] Transform `ChangeKind` into `ChangeDescription` in order to encapsulate the source of the change too. This will allow a representation to distinguish between a `SEMANTIC_CHANGE` coming from another representation and one coming from itself
+- https://github.com/eclipse-sirius/sirius-components/issues/347[#347] [diagram] Replace `Size` and `Position` builders by `Size#of` and `Position#at`
+- https://github.com/eclipse-sirius/sirius-components/issues/378[#378] [core] Make the stereotype description editing contex aware. As a result, the `IStereotypeDescriptionService` and some related classes are now manipulating an extra parameter in some methods, the `editingContextId`
+- https://github.com/eclipse-sirius/sirius-components/issues/368[#368] [core] Remove the now useless `PreDestroyPayload`
+- [properties] Remove the `PropertiesEventProcessor` which has never been used. Both the properties and the form representation are using the `FormEventProcessor`
+- https://github.com/eclipse-sirius/sirius-components/issues/357[#357] [core] Remove the `SubscriptionDescription` and use instead the Spring `SecurityContextHolder` to retrieve the user subscribing to a reactive flux. As a result, this change will give us the ability to use much more easily other GraphQL integration in Spring such as Netflix DGS
+- https://github.com/eclipse-sirius/sirius-components/issues/268[#268] [core] Dispose instances of `IEditingContextEventProcessor` when they are not used anymore. This change introduce some minor evolutions to the API of `IDisposablePublisher` and `IEditingContextEventProcessorRegistry` which can impact any custom `IRepresentationEventProcessor`
+- https://github.com/eclipse-sirius/sirius-components/issues/377[#377] [graphql] Rename the `projectEvent` subscription to `editingContextEvent`
+- https://github.com/eclipse-sirius/sirius-components/issues/382[#382] [diagram] Switch the type of the label identifier from `String` to `UUID`
+- https://github.com/eclipse-sirius/sirius-components/issues/384[#384] [explorer] Make the child creation descriptions editing context aware in order to leverage the domain to compute the childs
+- [core] Remove the now useless `Subscriber` component
+- [compatibility] Remove the now useless `CanCreateMappingTester` and `ToolDescriptionQuery`
+- https://github.com/eclipse-sirius/sirius-components/issues/386[#386] [graphql] Make the representation creation editing context aware. This will move the field `representationDescriptions` on the editing context in the GraphQL schema
+- https://github.com/eclipse-sirius/sirius-components/issues/333[#333] [core] Make `IEditService#findClass` editing context aware
+- https://github.com/eclipse-sirius/sirius-components/issues/402[#402] [core] Remove all views from Sirius Components. Sirius Components will stop trying to provide a complete product but it will instead be used as a framework which can be used to build collaborative graphical applications. As a result, the views have been removed and most of them been transferred to Sirius Web.
+- https://github.com/eclipse-sirius/sirius-components/issues/473[#473] [explorer] Improve the support for the read only workbench. This change introduce some API changes in several key workbench components such as `PropertiesWebSocketContainer`
+- https://github.com/eclipse-sirius/sirius-components/issues/449[#449] [core] Move the navigation bar to MaterialUI. This change also removes the `LoggedInNavbar` and introduces the `NavigationBar`
+- [core] Remove the now useless components such as `Navbar`, `ErrorView`, `View`, `Go`, `UserStatus` and `Footer`
+- [core] Remove the now useless hooks such as `useCapabilities`, `useBranding`, `useAuth`
+- [core] Remove `VariableManager#children` since it was not used
+- https://github.com/eclipse-sirius/sirius-components/issues/325[#325] [compatibility] Move `ViewExtensionDescriptionConverter` to `sirius-web-compatibility`
+- https://github.com/eclipse-sirius/sirius-components/issues/402[#402] [graphql] Remove the dependency to GraphQL from the collaborative diagram, form and tree related projects
+- https://github.com/eclipse-sirius/sirius-components/issues/402[#402] [core] Remove the dependency to the persistence layer from the collaborative diagram and form projects
+- https://github.com/eclipse-sirius/sirius-components/issues/402[#402] [core] Remove the projects `sirius-web-diagrams-services-api` and `sirius-web-diagrams-services`
+- https://github.com/eclipse-sirius/sirius-components/issues/185[#185] [graphql] Move the `toolSections` field from `Viewer` to `Diagram`
+- https://github.com/eclipse-sirius/sirius-components/issues/402[#402] [core] Remove most dependencies to `sirius-web-services` and `sirius-web-services-api` in preparation of their removal from this repository
+- [core] Remove the unused concept `IFrontendContribution`
+- https://github.com/eclipse-sirius/sirius-components/issues/402[#402] [core] Move the import / export support out of `sirius-web-emf`
+
+=== New features
+
+- https://github.com/eclipse-sirius/sirius-components/issues/276[#276] [emf] Add support for String-based EDataTypes in the properties view
+- https://github.com/eclipse-sirius/sirius-components/issues/314[#314] [compatibility] Add support for the icon specified in odesign files
+- https://github.com/eclipse-sirius/sirius-components/issues/238[#238] [diagram] Add the ability for end users to move elements in diagram
+- https://github.com/eclipse-sirius/sirius-components/issues/221[#221] [domain] Add the first version of the domain language
+- https://github.com/eclipse-sirius/sirius-components/issues/221[#221] [view] Add the first version of the view language
+- https://github.com/eclipse-sirius/sirius-components/issues/385[#385] [domain] Load the domain documents as EPackages in the editing context
+- https://github.com/eclipse-sirius/sirius-components/issues/407[#407] [compatibility] Add support for edges' `sizeComputationExpression`
+- https://github.com/eclipse-sirius/sirius-components/issues/289[#289] [diagram] Add support for resizing elements
+- https://github.com/eclipse-sirius/sirius-components/issues/418[#418] [diagram] Add support for NodeList and NodeListItem
+- https://github.com/eclipse-sirius/sirius-components/issues/503[#503] [diagram] Add the ability to indicate the layout policy (auto layout or not) or a diagram on its description
+- https://github.com/eclipse-sirius/sirius-components/issues/239[#239] [diagram] Add support for the arrange all action
+- https://github.com/eclipse-sirius/sirius-components/issues/510[#510] [diagram] Add support for rounded corners
+
+=== Improvements
+
+- https://github.com/eclipse-sirius/sirius-components/issues/173[#173] [business] Migrate the projects view to MaterialUI and XState
+- [core] Remove usage of the deprecated Reactor `DirectProcessor` in favor of the new API based on `Sinks`
+- https://github.com/eclipse-sirius/sirius-components/issues/341[#341] [diagram] Add the variables `semanticEdgeSource` and `semnticEdgeTarget` to most edge related expressions
+- https://github.com/eclipse-sirius/sirius-components/issues/341[#341] [compatibility] Provide the variables `source` and `target` for edge related operations by leveraging the newly introduced variables `semanticEdgeSource` and `semnticEdgeTarget`
+- https://github.com/eclipse-sirius/sirius-components/issues/367[#367] [core] Improve the logging of the reactive flux manipulation
+- https://github.com/eclipse-sirius/sirius-components/issues/287[#287] [diagram] Refactor the incremental layout
+- https://github.com/eclipse-sirius/sirius-components/issues/286[#286] [diagram] Use figure bounds intersection as edge anchor
+- https://github.com/eclipse-sirius/sirius-components/issues/387[#387] [core] Push the history state instead of replacing it where necessary. This will improve the user experience by making the navigation between views more understandable
+- https://github.com/eclipse-sirius/sirius-components/issues/390[#390] [core] Improve the reusability of the workbench by exporting its types
+- https://github.com/eclipse-sirius/sirius-components/issues/333[#333] [emf] Put EMF resources in the resource set before loading them
+- https://github.com/eclipse-sirius/sirius-components/issues/392[#392] [domain] Add containment references to the domain language
+- https://github.com/eclipse-sirius/sirius-components/issues/408[#408] [diagram] Add missing `element` variable for delete tools
+- https://github.com/eclipse-sirius/sirius-components/issues/426[#426] [diagram] Hide the contextual palette when zooming or scrolling/panning
+- https://github.com/eclipse-sirius/sirius-components/issues/411[#411] [view] Add canonical behaviors to dynamic view definitions
+- https://github.com/eclipse-sirius/sirius-components/issues/437[#437] [compatibility] Add `self` variable to VSM-based edge creation tools
+- https://github.com/eclipse-sirius/sirius-components/issues/285[#285] [compatibility] Compute the initial size of an element by using the VSM information
+- https://github.com/eclipse-sirius/sirius-components/issues/429[#429] [domain] Add support for cardinalities in the domain language
+- [diagram] Improve the performance of diagrams by removing an useless layout request
+- [core] Make the editing context dispose delay configurable in order to prevent errors with the current lack of lifecycle management of the domains
+- https://github.com/eclipse-sirius/sirius-components/issues/493[#493] [diagram] Prevent move, resize, delete and direct edit operations on a read-only diagram
+- https://github.com/eclipse-sirius/sirius-components/issues/441[#441] [diagram] Add first support for custom images in diagrams. This support will not cover any management of the lifecycle of the images
+- https://github.com/eclipse-sirius/sirius-components/issues/480[#480] [domain] Add support for single inheritance and abstract entities
+- https://github.com/eclipse-sirius/sirius-components/issues/452[#452] [core] Delete dangling representations automatically
+- [core] Ensure that we only use Gava 30
+- https://github.com/eclipse-sirius/sirius-components/issues/532[#532] [explorer] Make the `CreateChildEventHandler` return an `ErrorPayload` when the child that has been created has no owner and handle `ErrorPayload` in the `NewObjectModal`
+- [core] Add the ability to indicate that a selection is a representation thanks to the `isRepresentation` function on the `RepresentationContext` registry
+
+
+=== Bug fixes
+
+- https://github.com/eclipse-sirius/sirius-components/issues/315[#315] [compatibility] Use the label of the conditional style used instead of the fallback style
+- https://github.com/eclipse-sirius/sirius-components/issues/342[#342] [explorer] Fix a regression caused by a refactoring which caused the explorer to not be refreshed when a representation had been deleted
+- [core] Prevent multiple `NullPointerException` with `ObjectService`, `NodeMapping#getStyle`, `Edge#toString`
+- https://github.com/eclipse-sirius/sirius-components/issues/335[#335] [form] Restore icons in list property sections and use the icons of the list item element's types instead of the selected element's type
+- https://github.com/eclipse-sirius/sirius-components/issues/360[#360] [diagram] Restore the use of auto layout on diagram creation
+- https://github.com/eclipse-sirius/sirius-components/issues/346[#346] [compatibility] Make the behavior of the `Unset` model operation match the one in Sirius RCP. The previous implementation did not actually match the behavior of Sirius Desktop on several points. The `featureName` was taken as a fixed string, but Sirius Desktop evaluates it as a dynamic expression and  the previous implementation could never actually remove individual elements from a multi-valued feature, only reset/clear it
+- https://github.com/eclipse-sirius/sirius-components/issues/378[#378] [business] Fix a regression which prevented the creation of new document from the onboarding area
+- https://github.com/eclipse-sirius/sirius-components/issues/420[#420] [diagram] Fix a regression on the direct edit in diagrams
+- [diagram] Leverage the identifier of the edge description while computing the identifier of the edge in order to ensure that we do not have duplicate edge identifiers in a diagram
+
+
+== v0.2.0 (2021-02-12)
+
+Second major release of Sirius Components after the move to an open source project.
+
+Sirius Components was the core part of the proprietary product Obeo Cloud Platform up until a couple months ago.
+We have transfered in the Eclipse Foundation most of the code of Obeo Cloud Platform to become both Sirius Web and its core part Sirius Components which should be reusable in multiple applications.
+
+In this release, we have made some major refactoring in order to separate some remaining business concern which are specific to Sirius Web from the core goals of Sirius Web.
+These improvements are not complete and some of them will need to be improved down the road but the structure of the project is starting to be more visible.
+
+=== Architectural decision records
+
+- [ADR-007] Adopt stable identifiers for diagrams
+- [ADR-008] Add support for incremental layout
+- [ADR-009] Adopt a proper versioning strategy
+- [ADR-010] Reduce the coupling of our collaborative support
+
+=== Deprecation warning
+
+- [core] The hook `useProject` will soon be removed. It's original goal was to provide the ability to subscribe to a project related subscription but this subscription has never really been used. It was way too much used to simply fetch a project while this could be done with way less dependencies
+- [core] Any usage of `projectId` in the collaborative parts or in the representation related code will be removed in the upcoming months
+- [core] All frontend code using our custom React widgets such as `Button`, `Text`, `Spacing`, `Checkbox` etc will be modified to use MaterialUI instead
+- [core] All frontend code using custom made state machines instead of XState based ones will be migrated to XState
+
+=== Breaking changes
+
+- https://github.com/eclipse-sirius/sirius-components/issues/241[#241] [core] Introduce the `sirius-web-core-api` project and move some core concepts from the services API into the new core API project such as `IEditingContext`, `IPayload` and `IInput`
+- https://github.com/eclipse-sirius/sirius-components/issues/241[#241] [core] Introduce the `sirius-web-services` project and move some business related concepts like `Document`, `Project` and `ProjectService` out of the collaborative projects
+- https://github.com/eclipse-sirius/sirius-components/issues/241[#241] [core] Remove the dependency to the persistence from the collaborative API
+- https://github.com/eclipse-sirius/sirius-components/issues/241[#241] [core] Remove the `Context` concept which was used to propagate the authenticated principal to the business code. It was given to more than 70 classes while used by only a couple of them. On top of that, Spring's `SecurityContextHolder` can perform the same job with a much lower coupling. This will help reduce the coupling between the collaborative parts and the services API
+- https://github.com/eclipse-sirius/sirius-components/issues/241[#241] [core] Remove the useless `IProjectInput` and replace its usage with `IInput`
+- https://github.com/eclipse-sirius/sirius-components/issues/241[#241] [core] Remove all dependencies to `sirius-web-services-api` from `sirius-web-collaborative-api`
+- https://github.com/eclipse-sirius/sirius-components/issues/241[#241] [core] Remove the `ProjectRenamedEventPayload` to allow us to prepare the future deletion of the `useProject` hook and the complete removal of business concerns from the collaborative layer
+- https://github.com/eclipse-sirius/sirius-components/issues/241[#241] [core] Rename the `ProjectEventProcessor` to `EditingContextEventProcessor`. This concept and its registry have been made independent of `Project`. Those concepts will stop relying on a `projectId` but an `editingContextId` instead even if in practice this variable will still contain the value of `projectId` for now.
+- https://github.com/eclipse-sirius/sirius-components/issues/241[#241] [core] Remove the method `IEditingContext#getDomain`. This method will now only be available on the EMF specific version of the `IEditingContect`. This contraint was not usefull for alternate implementations
+- https://github.com/eclipse-sirius/sirius-components/issues/241[#241] [core] Move the `RenameRepresentationInput` to the `sirius-web-collaborative-api and `IObjectService` to the `sirius-web-core-api`
+- https://github.com/eclipse-sirius/sirius-components/issues/241[#241] [explorer] Use `editingContextId` instead of `projectId` in the explorer
+- https://github.com/eclipse-sirius/sirius-components/issues/241[#241] [properties] Move properties related services to form related projects
+- https://github.com/eclipse-sirius/sirius-components/issues/241[#241] [diagram] Remove the dependency to `sirius-web-services-api` in `sirius-web-spring-collaborative-diagrams` thanks to the introduction of two new projects `sirius-web-diagrams-services-api` and `sirius-web-diagrams-services`. These two new projects are used to allow someone else to use a different persistence strategy for the diagrams. It will need to be refined but this solution allows us to isolate our dependency to the IRepresentationRepository
+- https://github.com/eclipse-sirius/sirius-components/issues/292[#292] [workbench] Restructure the components used by the workbench to make it reusable by consumers of Sirius Components. Components such as `DiagramWebSocketContainer` and `PropertiesWebSocketContainer` have thus been modified. In order to make it easier to reuse a Sirius Components workbench a component named `Workbench` has been created and new types such as `Selection`, `Representation` and `WorkbenchProps` have been introduced
+- https://github.com/eclipse-sirius/sirius-components/issues/303[#303] [business] Remove the link to modelers from the project context menu. Since we will not have time to fix the modelers before the release, we will not show this feature to end users and instead remove links to the modeler related pages
+
+=== New features
+
+- https://github.com/eclipse-sirius/sirius-components/issues/256[#256] [emf] Add support for composed images for `IObjectService#getImage`
+- https://github.com/eclipse-sirius/sirius-components/issues/220[#220] [core] Add a basic support for the creation and edition of modelers
+- https://github.com/eclipse-sirius/sirius-components/issues/131[#131] [diagram] Add feedback to diagrams to indicate that tools cannot be applied
+- https://github.com/eclipse-sirius/sirius-components/issues/232[#232] [diagram] Add first support for incremental layout
+- https://github.com/eclipse-sirius/sirius-components/issues/153[#153] [workbench] Add the ability to close representations by adding a MaterialUI tabbar to display representations
+- https://github.com/eclipse-sirius/sirius-components/issues/293[#293] [workbench] Lower the coupling between the workbench and representations by introducing the `RepresentationContext` and the type `RepresentationComponentProps` for all representation components which replaces types such as `DiagramWebSocketContainerProps`. The `RepresentationContext` can be used to contribute additional representations to the Sirius Components workbench.
+- https://github.com/eclipse-sirius/sirius-components/issues/296[#296] [core] Introduce the `ServerContext` in order to customize the URL of the server used by the frontend components. This will allow consumers of Sirius Components to specify a different `httpOrigin` to organize their frontend and backend in a very different manner
+
+=== Improvements
+
+- https://github.com/eclipse-sirius/sirius-components/issues/252[#252] [diagram] Improve the TypeScript typing of the `DiagramWebSocketContainer` with the introduction of `Selection` and a dedicated `DiagramWebSocketContainerProps`
+- [releng] Trigger the build on any pull requests regardless of their origin
+- https://github.com/eclipse-sirius/sirius-components/issues/283[#283] [graphql] Add the `EditingContext` to the GraphQL API
+- https://github.com/eclipse-sirius/sirius-components/issues/261[#261] [emf] Improve the perform of the `DocumentService` by removing some useless loading and serializing steps of EMF resources
+- https://github.com/eclipse-sirius/sirius-components/issues/238[#238] [diagram] Migrate the `DiagramWebSocketContainer` to XState and MaterialUI
+
+=== Bug fixes
+
+- https://github.com/eclipse-sirius/sirius-components/issues/278[#278] [diagram] Ensure that we are always sending the latest diagram state and not the initial state when new users subscribe to an already opened diagram
+- https://github.com/eclipse-sirius/sirius-components/issues/295[#295] [diagram] Fix a bug which could lead to the creation of a diagram containing labels with the same identifier
