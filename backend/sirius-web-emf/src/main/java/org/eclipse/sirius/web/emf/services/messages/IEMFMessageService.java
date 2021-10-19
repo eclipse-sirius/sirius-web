@@ -23,4 +23,27 @@ public interface IEMFMessageService {
 
     String invalidInput(String expectedInputTypeName, String receivedInputTypeName);
 
+    String invalidNumber(String newValue);
+
+    /**
+     * Implementation which does nothing, used for mocks in unit tests.
+     *
+     * @author pcdavid
+     */
+    class NoOp implements IEMFMessageService {
+        @Override
+        public String unexpectedError() {
+            return ""; //$NON-NLS-1$
+        }
+
+        @Override
+        public String invalidInput(String expectedInputTypeName, String receivedInputTypeName) {
+            return ""; //$NON-NLS-1$
+        }
+
+        @Override
+        public String invalidNumber(String newValue) {
+            return ""; //$NON-NLS-1$
+        }
+    }
 }

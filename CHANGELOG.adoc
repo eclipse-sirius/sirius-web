@@ -27,6 +27,7 @@
 === Bug fixes
 
 - Fix a potential NPE in logging code of the `WidgetDescriptionConverter`
+- Handle invalid format more gracefully when editing numeric properties
 
 
 == v2021.12.0

@@ -42,4 +42,9 @@ public class EMFMessageService implements IEMFMessageService {
         return this.messageSourceAccessor.getMessage("INVALID_INPUT", new Object[] { expectedInputTypeName, receivedInputTypeName }); //$NON-NLS-1$
     }
 
+    @Override
+    public String invalidNumber(String newValue) {
+        return this.messageSourceAccessor.getMessage("INVALID_NUMBER", new Object[] { newValue }); //$NON-NLS-1$
+    }
+
 }
