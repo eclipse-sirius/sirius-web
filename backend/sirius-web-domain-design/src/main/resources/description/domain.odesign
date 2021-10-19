@@ -99,6 +99,23 @@
               </firstModelOperations>
             </initialOperation>
           </ownedTools>
+          <ownedTools xsi:type="tool:EdgeCreationDescription" name="Containment_Relation_Create" label="Containment" edgeMappings="//@ownedViewpoints[name='Domain']/@ownedRepresentations[name='Domain']/@defaultLayer/@edgeMappings[name='Relation']" iconPath="/sirius-web-domain-design/img/Relation.svg">
+            <sourceVariable name="source"/>
+            <targetVariable name="target"/>
+            <sourceViewVariable name="sourceView"/>
+            <targetViewVariable name="targetView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="aql:self">
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="domain::Relation" referenceName="relations">
+                  <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="aql:target.name.toLowerFirst() + 's'"/>
+                  <subModelOperations xsi:type="tool_1:SetValue" featureName="targetType" valueExpression="aql:target"/>
+                  <subModelOperations xsi:type="tool_1:SetValue" featureName="optional" valueExpression="aql:true"/>
+                  <subModelOperations xsi:type="tool_1:SetValue" featureName="many" valueExpression="aql:true"/>
+                  <subModelOperations xsi:type="tool_1:SetValue" featureName="containment" valueExpression="aql:true"/>
+                </subModelOperations>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
           <ownedTools xsi:type="tool:EdgeCreationDescription" name="Supertype_Set" label="Supertype" edgeMappings="//@ownedViewpoints[name='Domain']/@ownedRepresentations[name='Domain']/@defaultLayer/@edgeMappings[name='Inheritance']" iconPath="/sirius-web-domain-design/img/Supertype.svg">
             <sourceVariable name="source"/>
             <targetVariable name="target"/>
