@@ -11,10 +11,7 @@
 === Deprecation warning
 
 - https://github.com/eclipse-sirius/sirius-components/issues/818[#818] [workbench] The concept of `Selection` will be restructured, as described in the ADR-036. Every part of the code involved in the manipulation of the selection of the workbench will be impacted. This includes concepts as remote as the representation descriptions which are used to computed fields like `kind`. For example, the behavior of the `TreeDescription#getKindProvider` and `NodeDescription#getTargetObjectKindProvider` will have to be updated for all the providers. Failure to update to the new behavior will make the selection fail in the workbench
-
-=== Deprecation warning
-
-[core] The Success parameterless contructor will be removed soon.
+- [core] The Success parameterless contructor will be removed soon.
 
 === Breaking Changes
 
@@ -31,6 +28,10 @@
 - [core] Add a task to display TypeScript errors in the VS Code problems view
 - https://github.com/eclipse-sirius/sirius-components/issues/773[#773] [compatibility] The synchronization policy of the node descriptions is now properly computed from the `AbstractNodeMapping`
 - https://github.com/eclipse-sirius/sirius-components/issues/694[#694] [core] Data can be provided to Success in order to notify changment made by operation made on the editing context.
+
+=== Bug fixes
+
+- [diagram] The variable `selectedNode` was only available in the variable manager used when executing node tools if a selection dialog was also available. Now the `selectedNode` variable will always be available unless the tool has been invoked on the background of the diagram
 
 
 == v0.5.0
