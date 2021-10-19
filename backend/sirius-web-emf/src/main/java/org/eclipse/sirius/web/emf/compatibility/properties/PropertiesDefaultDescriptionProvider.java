@@ -28,6 +28,7 @@ import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.emf.compatibility.properties.api.IPropertiesValidationProvider;
+import org.eclipse.sirius.web.emf.services.messages.IEMFMessageService;
 import org.eclipse.sirius.web.forms.description.AbstractControlDescription;
 import org.eclipse.sirius.web.forms.description.ForDescription;
 import org.eclipse.sirius.web.forms.description.FormDescription;
@@ -55,10 +56,14 @@ public class PropertiesDefaultDescriptionProvider implements IPropertiesDefaultD
 
     private final IPropertiesValidationProvider propertiesValidationProvider;
 
-    public PropertiesDefaultDescriptionProvider(IObjectService objectService, ComposedAdapterFactory composedAdapterFactory, IPropertiesValidationProvider propertiesValidationProvider) {
+    private final IEMFMessageService emfMessageService;
+
+    public PropertiesDefaultDescriptionProvider(IObjectService objectService, ComposedAdapterFactory composedAdapterFactory, IPropertiesValidationProvider propertiesValidationProvider,
+            IEMFMessageService emfMessageService) {
         this.objectService = Objects.requireNonNull(objectService);
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.propertiesValidationProvider = Objects.requireNonNull(propertiesValidationProvider);
+        this.emfMessageService = Objects.requireNonNull(emfMessageService);
     }
 
     @Override
@@ -142,16 +147,23 @@ public class PropertiesDefaultDescriptionProvider implements IPropertiesDefaultD
         ifDescriptions.add(new MonoValuedNonContainmentReferenceIfDescriptionProvider(this.composedAdapterFactory, this.objectService, this.propertiesValidationProvider).getIfDescription());
         ifDescriptions.add(new MultiValuedNonContainmentReferenceIfDescriptionProvider(this.composedAdapterFactory, this.objectService, this.propertiesValidationProvider).getIfDescription());
 
-        ifDescriptions.add(new NumberIfDescriptionProvider(EcorePackage.Literals.EINT, this.composedAdapterFactory, this.propertiesValidationProvider).getIfDescription());
-        ifDescriptions.add(new NumberIfDescriptionProvider(EcorePackage.Literals.EINTEGER_OBJECT, this.composedAdapterFactory, this.propertiesValidationProvider).getIfDescription());
-        ifDescriptions.add(new NumberIfDescriptionProvider(EcorePackage.Literals.EDOUBLE, this.composedAdapterFactory, this.propertiesValidationProvider).getIfDescription());
-        ifDescriptions.add(new NumberIfDescriptionProvider(EcorePackage.Literals.EDOUBLE_OBJECT, this.composedAdapterFactory, this.propertiesValidationProvider).getIfDescription());
-        ifDescriptions.add(new NumberIfDescriptionProvider(EcorePackage.Literals.EFLOAT, this.composedAdapterFactory, this.propertiesValidationProvider).getIfDescription());
-        ifDescriptions.add(new NumberIfDescriptionProvider(EcorePackage.Literals.EFLOAT_OBJECT, this.composedAdapterFactory, this.propertiesValidationProvider).getIfDescription());
-        ifDescriptions.add(new NumberIfDescriptionProvider(EcorePackage.Literals.ELONG, this.composedAdapterFactory, this.propertiesValidationProvider).getIfDescription());
-        ifDescriptions.add(new NumberIfDescriptionProvider(EcorePackage.Literals.ELONG_OBJECT, this.composedAdapterFactory, this.propertiesValidationProvider).getIfDescription());
-        ifDescriptions.add(new NumberIfDescriptionProvider(EcorePackage.Literals.ESHORT, this.composedAdapterFactory, this.propertiesValidationProvider).getIfDescription());
-        ifDescriptions.add(new NumberIfDescriptionProvider(EcorePackage.Literals.ESHORT_OBJECT, this.composedAdapterFactory, this.propertiesValidationProvider).getIfDescription());
+        // @formatter:off
+        var numericDataTypes = List.of(
+                EcorePackage.Literals.EINT,
+                EcorePackage.Literals.EINTEGER_OBJECT,
+                EcorePackage.Literals.EDOUBLE,
+                EcorePackage.Literals.EDOUBLE_OBJECT,
+                EcorePackage.Literals.EFLOAT,
+                EcorePackage.Literals.EFLOAT_OBJECT,
+                EcorePackage.Literals.ELONG,
+                EcorePackage.Literals.ELONG_OBJECT,
+                EcorePackage.Literals.ESHORT,
+                EcorePackage.Literals.ESHORT_OBJECT
+                );
+        // @formatter:on
+        for (var dataType : numericDataTypes) {
+            ifDescriptions.add(new NumberIfDescriptionProvider(dataType, this.composedAdapterFactory, this.propertiesValidationProvider, this.emfMessageService).getIfDescription());
+        }
 
         // @formatter:off
         ForDescription forDescription = ForDescription.newForDescription("forId") //$NON-NLS-1$

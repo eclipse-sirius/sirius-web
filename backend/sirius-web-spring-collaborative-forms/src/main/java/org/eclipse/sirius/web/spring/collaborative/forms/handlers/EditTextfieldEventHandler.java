@@ -91,6 +91,9 @@ public class EditTextfieldEventHandler implements IFormEventHandler {
             changeDescriptionSink.tryEmitNext(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formInput.getRepresentationId(), formInput));
         } else {
             String message = this.messageService.invalidInput(formInput.getClass().getSimpleName(), EditTextfieldInput.class.getSimpleName());
+            if (status instanceof Failure && !((Failure) status).getMessage().isBlank()) {
+                message = ((Failure) status).getMessage();
+            }
             payloadSink.tryEmitValue(new ErrorPayload(formInput.getId(), message));
             changeDescriptionSink.tryEmitNext(new ChangeDescription(ChangeKind.NOTHING, formInput.getRepresentationId(), formInput));
         }
