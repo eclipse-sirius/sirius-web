@@ -21,10 +21,14 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
+import org.eclipse.acceleo.query.runtime.Query;
+import org.eclipse.acceleo.query.runtime.QueryParsing;
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.DiagnosticChain;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
@@ -36,11 +40,16 @@ import org.eclipse.sirius.web.domain.Domain;
 import org.eclipse.sirius.web.domain.DomainPackage;
 import org.eclipse.sirius.web.domain.Entity;
 import org.eclipse.sirius.web.emf.compatibility.DomainClassPredicate;
+import org.eclipse.sirius.web.interpreter.SimpleCrossReferenceProvider;
+import org.eclipse.sirius.web.view.ChangeContext;
 import org.eclipse.sirius.web.view.Conditional;
 import org.eclipse.sirius.web.view.CreateInstance;
 import org.eclipse.sirius.web.view.DiagramDescription;
 import org.eclipse.sirius.web.view.DiagramElementDescription;
+import org.eclipse.sirius.web.view.EdgeDescription;
 import org.eclipse.sirius.web.view.NodeStyle;
+import org.eclipse.sirius.web.view.SetValue;
+import org.eclipse.sirius.web.view.UnsetValue;
 import org.eclipse.sirius.web.view.ViewPackage;
 
 /**
@@ -60,6 +69,8 @@ public class ViewValidator implements EValidator {
 
     private static final String DOMAIN_URI_SCHEME = "domain://"; //$NON-NLS-1$
 
+    private final IQueryBuilderEngine builder = QueryParsing.newBuilder(Query.newEnvironmentWithDefaultServices(new SimpleCrossReferenceProvider()));
+
     @Override
     public boolean validate(EObject eObject, DiagnosticChain diagnostics, Map<Object, Object> context) {
         return true;
@@ -71,10 +82,18 @@ public class ViewValidator implements EValidator {
         if (eObject instanceof DiagramDescription) {
             DiagramDescription diagramDescription = (DiagramDescription) eObject;
             isValid = this.hasProperDomainType(diagramDescription, diagnostics) && isValid;
+            isValid = this.hasValidIntepretedExpression(diagramDescription, ViewPackage.Literals.REPRESENTATION_DESCRIPTION__TITLE_EXPRESSION, diagnostics) && isValid;
         }
         if (eObject instanceof DiagramElementDescription) {
             DiagramElementDescription diagramElementDescription = (DiagramElementDescription) eObject;
             isValid = this.hasProperDomainType(diagramElementDescription, diagnostics) && isValid;
+            isValid = this.hasValidIntepretedExpression(diagramElementDescription, ViewPackage.Literals.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION, diagnostics) && isValid;
+            isValid = this.hasValidIntepretedExpression(diagramElementDescription, ViewPackage.Literals.DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION, diagnostics) && isValid;
+        }
+        if (eObject instanceof EdgeDescription) {
+            EdgeDescription edgeDescription = (EdgeDescription) eObject;
+            isValid = this.hasValidIntepretedExpression(edgeDescription, ViewPackage.Literals.EDGE_DESCRIPTION__SOURCE_NODES_EXPRESSION, diagnostics) && isValid;
+            isValid = this.hasValidIntepretedExpression(edgeDescription, ViewPackage.Literals.EDGE_DESCRIPTION__TARGET_NODES_EXPRESSION, diagnostics) && isValid;
         }
         if (eObject instanceof NodeStyle) {
             NodeStyle nodeStyle = (NodeStyle) eObject;
@@ -83,6 +102,24 @@ public class ViewValidator implements EValidator {
         if (eObject instanceof Conditional) {
             Conditional conditional = (Conditional) eObject;
             isValid = this.conditionIsPresent(conditional, diagnostics) && isValid;
+            isValid = this.hasValidIntepretedExpression(conditional, ViewPackage.Literals.CONDITIONAL__CONDITION, diagnostics) && isValid;
+        }
+        if (eObject instanceof ChangeContext) {
+            ChangeContext changeContext = (ChangeContext) eObject;
+            isValid = this.hasValidIntepretedExpression(changeContext, ViewPackage.Literals.CHANGE_CONTEXT__EXPRESSION, diagnostics) && isValid;
+        }
+        if (eObject instanceof CreateInstance) {
+            CreateInstance createInstance = (CreateInstance) eObject;
+            isValid = this.hasValidIntepretedExpression(createInstance, ViewPackage.Literals.CREATE_INSTANCE__VARIABLE_NAME, diagnostics) && isValid;
+            isValid = this.hasProperDomainType(createInstance, diagnostics) && isValid;
+        }
+        if (eObject instanceof SetValue) {
+            SetValue setValue = (SetValue) eObject;
+            isValid = this.hasValidIntepretedExpression(setValue, ViewPackage.Literals.SET_VALUE__VALUE_EXPRESSION, diagnostics) && isValid;
+        }
+        if (eObject instanceof UnsetValue) {
+            UnsetValue unsetValue = (UnsetValue) eObject;
+            isValid = this.hasValidIntepretedExpression(unsetValue, ViewPackage.Literals.UNSET_VALUE__ELEMENT_EXPRESSION, diagnostics) && isValid;
         }
         if (eObject instanceof CreateInstance) {
             CreateInstance createInstance = (CreateInstance) eObject;
@@ -115,6 +152,38 @@ public class ViewValidator implements EValidator {
         }
 
         return isValid;
+    }
+
+    private boolean hasValidIntepretedExpression(EObject eObject, EAttribute expressionAttribute, DiagnosticChain diagnostics) {
+        boolean isValid = this.validateAQLExpressionSyntax(eObject, expressionAttribute);
+        if (!isValid && diagnostics != null) {
+            // @formatter:off
+            BasicDiagnostic basicDiagnostic = new BasicDiagnostic(Diagnostic.WARNING,
+                    SIRIUS_WEB_EMF_PACKAGE,
+                    0,
+                    "The condition should not be empty", //$NON-NLS-1$
+                    new Object [] {
+                            eObject,
+                            expressionAttribute,
+                    });
+            // @formatter:on
+
+            diagnostics.add(basicDiagnostic);
+        }
+
+        return isValid;
+    }
+
+    private boolean validateAQLExpressionSyntax(EObject eObject, EAttribute expressionAttribute) {
+        String prefix = "aql:"; //$NON-NLS-1$
+        String expression = (String) eObject.eGet(expressionAttribute);
+        if (expression.startsWith(prefix)) {
+            var result = this.builder.build(expression.substring(prefix.length()));
+            if (!result.getErrors().isEmpty() || result.getDiagnostic().getSeverity() >= Diagnostic.WARNING) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private boolean hasProperColor(NodeStyle nodeStyle, DiagnosticChain diagnostics) {
