@@ -136,6 +136,8 @@ public class InvokeNodeToolOnDiagramEventHandler implements IDiagramEventHandler
             variableManager.put(IDiagramContext.DIAGRAM_CONTEXT, diagramContext);
             variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
             variableManager.put(VariableManager.SELF, self.get());
+            node.ifPresent(selectedNode -> variableManager.put(Node.SELECTED_NODE, selectedNode));
+
             String selectionDescriptionId = tool.getSelectionDescriptionId();
             if (selectionDescriptionId != null && selectedObjectId != null) {
                 var selectionDescriptionOpt = this.representationDescriptionSearchService.findById(editingContext, UUID.fromString(selectionDescriptionId));
@@ -143,11 +145,7 @@ public class InvokeNodeToolOnDiagramEventHandler implements IDiagramEventHandler
                 if (selectionDescriptionOpt.isPresent() && selectedObjectOpt.isPresent()) {
                     variableManager.put(CreateNodeTool.SELECTED_OBJECT, selectedObjectOpt.get());
                 }
-                if (node.isPresent()) {
-                    variableManager.put(Node.SELECTED_NODE, node.get());
-                }
             }
-
             if (selectionDescriptionId == null || selectedObjectId != null) {
                 result = tool.getHandler().apply(variableManager);
                 Position newPosition = Position.at(startingPositionX, startingPositionY);
