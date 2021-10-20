@@ -22,7 +22,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius.web</groupId>
 	<artifactId>sirius-web-spring-graphql-api</artifactId>
-	<version>0.4.11</version>
+	<version>0.4.12</version>
 	<name>sirius-web-spring-graphql-api</name>
 	<description>Sirius Web Spring GraphQL API</description>
 
@@ -48,7 +48,7 @@
     	<dependency>
         	<groupId>org.eclipse.sirius.web</groupId>
         	<artifactId>sirius-web-annotations-spring</artifactId>
-        	<version>0.4.11</version>
+        	<version>0.4.12</version>
     	</dependency>
 	</dependencies>
 
