@@ -16,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.sirius.web.emf.services.validation.DiagnosticAssertions.assertThat;
 
 import java.util.Map;
+import java.util.Optional;
 
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
@@ -140,7 +141,7 @@ public class ViewValidatorTests {
         expected.add(new BasicDiagnostic(Diagnostic.ERROR,
                 SIRIUS_WEB_EMF_PACKAGE,
                 0,
-                String.format("The node description \"%1$s\" does not have a valid domain class", nodeDescription.getDomainType()), //$NON-NLS-1$
+                String.format(ViewValidator.DIAGRAM_ELEMENT_DESCRIPTION_INVALID_DOMAIN_TYPE_ERROR_MESSAGE, Optional.ofNullable(nodeDescription.getDomainType()).orElse("")), //$NON-NLS-1$
                 new Object [] {
                         nodeDescription,
                         ViewPackage.Literals.DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE,

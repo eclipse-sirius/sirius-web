@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.BasicDiagnostic;
@@ -36,7 +37,9 @@ import org.eclipse.sirius.web.domain.DomainPackage;
 import org.eclipse.sirius.web.domain.Entity;
 import org.eclipse.sirius.web.emf.compatibility.DomainClassPredicate;
 import org.eclipse.sirius.web.view.Conditional;
-import org.eclipse.sirius.web.view.NodeDescription;
+import org.eclipse.sirius.web.view.CreateInstance;
+import org.eclipse.sirius.web.view.DiagramDescription;
+import org.eclipse.sirius.web.view.DiagramElementDescription;
 import org.eclipse.sirius.web.view.NodeStyle;
 import org.eclipse.sirius.web.view.ViewPackage;
 
@@ -47,9 +50,13 @@ import org.eclipse.sirius.web.view.ViewPackage;
  */
 public class ViewValidator implements EValidator {
 
-    private static final String NODE_DESCRIPTION_INVALID_DOMAIN_TYPE_ERROR_MESSAGE = "The node description \"%1$s\" does not have a valid domain class"; //$NON-NLS-1$
+    public static final String DIAGRAM_DESCRIPTION_INVALID_DOMAIN_TYPE_ERROR_MESSAGE = "The diagram description \"%1$s\" does not have a valid domain class"; //$NON-NLS-1$
 
-    private static final String SIRIUS_WEB_EMF_PACKAGE = "org.eclipse.sirius.web.emf"; //$NON-NLS-1$
+    public static final String DIAGRAM_ELEMENT_DESCRIPTION_INVALID_DOMAIN_TYPE_ERROR_MESSAGE = "The element description \"%1$s\" does not have a valid domain class"; //$NON-NLS-1$
+
+    public static final String CREATE_INSTANCE_INVALID_DOMAIN_TYPE_ERROR_MESSAGE = "The create instance operation \"%1$s\" does not have a valid domain class"; //$NON-NLS-1$
+
+    public static final String SIRIUS_WEB_EMF_PACKAGE = "org.eclipse.sirius.web.emf"; //$NON-NLS-1$
 
     private static final String DOMAIN_URI_SCHEME = "domain://"; //$NON-NLS-1$
 
@@ -61,9 +68,13 @@ public class ViewValidator implements EValidator {
     @Override
     public boolean validate(EClass eClass, EObject eObject, DiagnosticChain diagnostics, Map<Object, Object> context) {
         boolean isValid = true;
-        if (eObject instanceof NodeDescription) {
-            NodeDescription nodeDescription = (NodeDescription) eObject;
-            isValid = this.hasProperDomainType(nodeDescription, diagnostics) && isValid;
+        if (eObject instanceof DiagramDescription) {
+            DiagramDescription diagramDescription = (DiagramDescription) eObject;
+            isValid = this.hasProperDomainType(diagramDescription, diagnostics) && isValid;
+        }
+        if (eObject instanceof DiagramElementDescription) {
+            DiagramElementDescription diagramElementDescription = (DiagramElementDescription) eObject;
+            isValid = this.hasProperDomainType(diagramElementDescription, diagnostics) && isValid;
         }
         if (eObject instanceof NodeStyle) {
             NodeStyle nodeStyle = (NodeStyle) eObject;
@@ -72,6 +83,10 @@ public class ViewValidator implements EValidator {
         if (eObject instanceof Conditional) {
             Conditional conditional = (Conditional) eObject;
             isValid = this.conditionIsPresent(conditional, diagnostics) && isValid;
+        }
+        if (eObject instanceof CreateInstance) {
+            CreateInstance createInstance = (CreateInstance) eObject;
+            isValid = this.hasProperDomainType(createInstance, diagnostics) && isValid;
         }
         return isValid;
     }
@@ -123,16 +138,16 @@ public class ViewValidator implements EValidator {
         return isValid;
     }
 
-    private boolean hasProperDomainType(NodeDescription nodeDescription, DiagnosticChain diagnostics) {
+    private boolean hasProperDomainType(DiagramDescription diagramDescription, DiagnosticChain diagnostics) {
         boolean isValid = false;
-        ResourceSet resourceSet = nodeDescription.eResource().getResourceSet();
+        ResourceSet resourceSet = diagramDescription.eResource().getResourceSet();
         List<Entity> entities = this.getDomainEntitiesFromResourceSet(resourceSet);
         List<EPackage> ePackages = this.getDomainEPackagesFromRegistry(resourceSet.getPackageRegistry());
 
-        String domainType = nodeDescription.getDomainType();
+        String domainType = Optional.ofNullable(diagramDescription.getDomainType()).orElse(""); //$NON-NLS-1$
         isValid = entities.stream().anyMatch(entity -> this.describesEntity(domainType, entity));
 
-        if (!isValid) {
+        if (!isValid && !domainType.isBlank()) {
             // @formatter:off
             isValid = ePackages.stream()
                     .map(EPackage::getEClassifiers)
@@ -148,10 +163,86 @@ public class ViewValidator implements EValidator {
             BasicDiagnostic basicDiagnostic = new BasicDiagnostic(Diagnostic.ERROR,
                     SIRIUS_WEB_EMF_PACKAGE,
                     0,
-                    String.format(NODE_DESCRIPTION_INVALID_DOMAIN_TYPE_ERROR_MESSAGE, domainType),
+                    String.format(DIAGRAM_DESCRIPTION_INVALID_DOMAIN_TYPE_ERROR_MESSAGE, domainType),
                     new Object [] {
-                            nodeDescription,
+                            diagramDescription,
+                            ViewPackage.Literals.REPRESENTATION_DESCRIPTION__DOMAIN_TYPE,
+                    });
+            // @formatter:on
+
+            diagnostics.add(basicDiagnostic);
+        }
+
+        return isValid;
+    }
+
+    private boolean hasProperDomainType(DiagramElementDescription diagramElementDescription, DiagnosticChain diagnostics) {
+        boolean isValid = false;
+        ResourceSet resourceSet = diagramElementDescription.eResource().getResourceSet();
+        List<Entity> entities = this.getDomainEntitiesFromResourceSet(resourceSet);
+        List<EPackage> ePackages = this.getDomainEPackagesFromRegistry(resourceSet.getPackageRegistry());
+
+        String domainType = Optional.ofNullable(diagramElementDescription.getDomainType()).orElse(""); //$NON-NLS-1$
+        isValid = entities.stream().anyMatch(entity -> this.describesEntity(domainType, entity));
+
+        if (!isValid && !domainType.isBlank()) {
+            // @formatter:off
+            isValid = ePackages.stream()
+                    .map(EPackage::getEClassifiers)
+                    .flatMap(Collection::stream)
+                    .filter(EClass.class::isInstance)
+                    .map(EClass.class::cast)
+                    .anyMatch(classifier -> new DomainClassPredicate(domainType).test(classifier));
+            // @formatter:off
+        }
+
+        if (!isValid && diagnostics != null) {
+            // @formatter:off
+            BasicDiagnostic basicDiagnostic = new BasicDiagnostic(Diagnostic.ERROR,
+                    SIRIUS_WEB_EMF_PACKAGE,
+                    0,
+                    String.format(DIAGRAM_ELEMENT_DESCRIPTION_INVALID_DOMAIN_TYPE_ERROR_MESSAGE, domainType),
+                    new Object [] {
+                            diagramElementDescription,
                             ViewPackage.Literals.DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE,
+                    });
+            // @formatter:on
+
+            diagnostics.add(basicDiagnostic);
+        }
+
+        return isValid;
+    }
+
+    private boolean hasProperDomainType(CreateInstance createInstance, DiagnosticChain diagnostics) {
+        boolean isValid = false;
+        ResourceSet resourceSet = createInstance.eResource().getResourceSet();
+        List<Entity> entities = this.getDomainEntitiesFromResourceSet(resourceSet);
+        List<EPackage> ePackages = this.getDomainEPackagesFromRegistry(resourceSet.getPackageRegistry());
+
+        String domainType = Optional.ofNullable(createInstance.getTypeName()).orElse(""); //$NON-NLS-1$
+        isValid = entities.stream().anyMatch(entity -> this.describesEntity(domainType, entity));
+
+        if (!isValid && !domainType.isBlank()) {
+            // @formatter:off
+            isValid = ePackages.stream()
+                    .map(EPackage::getEClassifiers)
+                    .flatMap(Collection::stream)
+                    .filter(EClass.class::isInstance)
+                    .map(EClass.class::cast)
+                    .anyMatch(classifier -> new DomainClassPredicate(domainType).test(classifier));
+            // @formatter:off
+        }
+
+        if (!isValid && diagnostics != null) {
+            // @formatter:off
+            BasicDiagnostic basicDiagnostic = new BasicDiagnostic(Diagnostic.ERROR,
+                    SIRIUS_WEB_EMF_PACKAGE,
+                    0,
+                    String.format(CREATE_INSTANCE_INVALID_DOMAIN_TYPE_ERROR_MESSAGE, domainType),
+                    new Object [] {
+                            createInstance,
+                            ViewPackage.Literals.CREATE_INSTANCE__TYPE_NAME,
                     });
             // @formatter:on
 
