@@ -54,7 +54,7 @@ export const NewDocumentArea = ({
       input: {
         id: uuid(),
         editingContextId,
-        name: selected.label,
+        name: selected.documentName,
         stereotypeDescriptionId: stereotypeDescriptionId,
       },
     };

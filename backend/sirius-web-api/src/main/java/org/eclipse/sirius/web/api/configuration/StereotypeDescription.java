@@ -31,11 +31,18 @@ public class StereotypeDescription {
 
     private final String label;
 
+    private final String documentName;
+
     private final Supplier<String> contentProvider;
 
     public StereotypeDescription(UUID id, String label, Supplier<String> contentProvider) {
+        this(id, label, label, contentProvider);
+    }
+
+    public StereotypeDescription(UUID id, String label, String documentName, Supplier<String> contentProvider) {
         this.id = Objects.requireNonNull(id);
         this.label = Objects.requireNonNull(label);
+        this.documentName = Objects.requireNonNull(documentName);
         this.contentProvider = Objects.requireNonNull(contentProvider);
     }
 
@@ -47,13 +54,17 @@ public class StereotypeDescription {
         return this.label;
     }
 
+    public String getDocumentName() {
+        return this.documentName;
+    }
+
     public String getContent() {
         return this.contentProvider.get();
     }
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, label: {2}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.label);
+        String pattern = "{0} '{'id: {1}, label: {2}, documentName: {3}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.label, this.documentName);
     }
 }

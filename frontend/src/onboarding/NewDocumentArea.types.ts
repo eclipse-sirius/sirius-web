@@ -15,6 +15,7 @@ import { Selection } from 'workbench/Workbench.types';
 export interface StereotypeDescription {
   id: string;
   label: string;
+  documentName: string;
 }
 
 export interface NewDocumentAreaProps {
