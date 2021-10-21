@@ -22,7 +22,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius.web</groupId>
 	<artifactId>sirius-web-trees</artifactId>
-	<version>0.4.12</version>
+	<version>0.4.13</version>
 	<name>sirius-web-trees</name>
 	<description>Sirius Web Trees</description>
 
@@ -42,17 +42,17 @@
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-annotations</artifactId>
-			<version>0.4.12</version>
+			<version>0.4.13</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-representations</artifactId>
-			<version>0.4.12</version>
+			<version>0.4.13</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-tests</artifactId>
-			<version>0.4.12</version>
+			<version>0.4.13</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
