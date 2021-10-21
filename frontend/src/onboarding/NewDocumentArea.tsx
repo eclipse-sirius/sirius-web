@@ -32,6 +32,8 @@ const createDocumentMutation = gql`
   }
 `;
 
+const NB_STEREOTYPES_SHOWN = 10;
+
 export const NewDocumentArea = ({
   editingContextId,
   stereotypeDescriptions,
@@ -74,7 +76,7 @@ export const NewDocumentArea = ({
   // Document stereotypes list
   let newDocumentButtons =
     stereotypeDescriptions.length > 0
-      ? stereotypeDescriptions.slice(0, 5).map((stereotypeDescription) => {
+      ? stereotypeDescriptions.slice(0, NB_STEREOTYPES_SHOWN).map((stereotypeDescription) => {
           return (
             <LinkButton
               key={stereotypeDescription.id}
@@ -93,13 +95,13 @@ export const NewDocumentArea = ({
   const moreName = 'moreStereotypes';
   const moreLabel = 'More model types...';
   let moreSelect =
-    stereotypeDescriptions.length > 5 ? (
+    stereotypeDescriptions.length > NB_STEREOTYPES_SHOWN ? (
       <Select
         onChange={(event) => {
           onCreateDocument(event.target.value);
         }}
         name={moreName}
-        options={[{ id: moreLabel, label: moreLabel }, stereotypeDescriptions.slice(5)].flat()}
+        options={[{ id: moreLabel, label: moreLabel }, stereotypeDescriptions.slice(NB_STEREOTYPES_SHOWN)].flat()}
         data-testid={moreName}
       />
     ) : null;
