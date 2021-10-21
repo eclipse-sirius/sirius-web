@@ -46,6 +46,7 @@ interface RepresentationDescription {
 type StereotypeDescription {
   id: ID!
   label: String!
+  documentName: String!
 }
 
 type ChildCreationDescription {

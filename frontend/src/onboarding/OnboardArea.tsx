@@ -28,6 +28,7 @@ const getOnboardDataQuery = gql`
             node {
               id
               label
+              documentName
             }
           }
         }
