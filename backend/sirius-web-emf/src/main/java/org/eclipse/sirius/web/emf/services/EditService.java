@@ -232,6 +232,7 @@ public class EditService implements IEditService {
 
         return nsURI2EPackages.values().stream()
                 .map(ePackage -> new Domain(ePackage.getNsURI(), ePackage.getNsURI()))
+                .sorted()
                 .collect(Collectors.toList());
         // @formatter:on
     }

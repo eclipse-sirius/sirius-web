@@ -69,6 +69,7 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/761[#761] [domain] Validate the names of domains, entities and their features
 - https://github.com/eclipse-sirius/sirius-components/issues/767[#767] [core] Use `ServerContext` to retrieve the `httpOrigin` in `Tool.tsx`. Thanks to this improvement, it is possible to embed diagrams with the proper tool image in a complex architecture
 - [workbench] Improve the overflow management of the onboarding area
+- https://github.com/eclipse-sirius/sirius-components/issues/795[#795] [domain] Custom-defined domains now appear first in the new root object modal
 
 === Bug fixes
 
