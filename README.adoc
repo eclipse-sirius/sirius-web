@@ -1,6 +1,6 @@
 = Sirius Components (for Sirius Web)
 
-https://www.eclipse.org/sirius-web.html[Eclipse Sirius Web] is a framework to easily create and deploy studios to the web.
+https://www.eclipse.org/sirius/sirius-web.html[Eclipse Sirius Web] is a framework to easily create and deploy studios to the web.
 We keep the principles which made the success of https://www.eclipse.org/sirius[Eclipse Sirius Desktop] and make them available on a modern cloud-based stack.
 
 This repository, `sirius-components`, contains the building blocks from which Sirius Web applications are built:
