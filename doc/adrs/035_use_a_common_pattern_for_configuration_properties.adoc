@@ -1,0 +1,30 @@
+= ADR-035 - Use a common pattern for configuration properties
+
+== Context
+
+We have a significant number of configuration properties including but not limited to:
+
+- org.eclipse.sirius.web.editingContextEventProcessorRegistry.disposeDelay
+- sirius.web.graphql.websocket.allowed.origins
+
+This list of properties is growing and now is the time to start documenting them and re-organizing them
+
+== Decision
+
+The configuration properties will adopt the following pattern, inspired by Spring:
+
+- `sirius.components.xxx.yyy.zzz.somethingToConfigure` for Sirius Components
+- `sirius.web.xxx.yyy.zzz.somethingToConfigure` for Sirius Web
+
+The configuration properties will be described using a `@ConfigurationProperties` in order to offer some tooling for those who depend on our code.
+On top of that, we will introduce a file named `doc/configuration.adoc` in which we will maintain the list of all those configuration properties and their default values.
+
+Other projects reusing Sirius Components and/or Sirius Web are invited to not contribute to the `sirius.components` or the `sirius.web` namespace but instead to rely on their own namespace such as `productname`.
+
+== Status
+
+Accepted.
+
+== Consequences
+
+Existing configurable properties will be modified, keep an eye on the changelog to see the various changes.
