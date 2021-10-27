@@ -1,0 +1,34 @@
+= ADR-034 - Switch from semver to calver
+
+== Context
+
+We have used semantic versioning since the creation of the Sirius Components project.
+We have kept a version v0.x.y since we needed to make a massive amount of changes in the first couple of months.
+Now that those changes have been integrated in Sirius Components, the project is starting to get embedded inside a lot of products.
+As a result, we will change our versioning strategy in order to reflect the maturity of the project.
+
+== Decision
+
+We will not continue with semantic versioning.
+We still need to tweak some APIs releases after releases and we would thus only perform major releases months after months for the upcoming year.
+While identifying the kind of change of the release is important, it is more important for us to identify when the release has been made.
+As a result, we will move to a calendar versioning strategy.
+
+We will keep our development cycle with six weeks of work and two weeks for various minor improvements for each releases.
+Starting with the next release, which will be made in december 2021, we will use a versioning strategy with `YEAR.MONTH.NUMBER`.
+As such, in december, we will have the release `2021.12.0`.
+
+Once that release is done, we will start working on the release `2022.02.0` which will be released in February 2022.
+During the preparation of this new release, we will improve the `2021.12.0` branch to prepare for that `2022.02.0` release.
+As a result, we will probably have multiple intermediate releases with a `2021.12.1`, `2021.12.2`, `2021.12.3`, etc.
+Those releases will be made during the months of january and february 2022 but they won't be named `2022.01.13` or `2022.01.25` for example.
+
+The kind of changes made will be instead tracked in the `CHANGELOG` file in order to have a fine grain list of all the API breaks, new features, bug fixes and various improvements.
+
+== Status
+
+Accepted.
+
+== Consequences
+
+The next release of Sirius Components will thus be `2021.12.0`.
