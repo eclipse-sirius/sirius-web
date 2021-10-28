@@ -78,11 +78,6 @@
 			<version>0.5.0</version>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse.sirius.web</groupId>
-			<artifactId>sirius-web-core-api</artifactId>
-			<version>0.5.0</version>
-		</dependency>
-		<dependency>
     		<groupId>org.eclipse.sirius.web</groupId>
     		<artifactId>sirius-web-tests</artifactId>
     		<version>0.5.0</version>
