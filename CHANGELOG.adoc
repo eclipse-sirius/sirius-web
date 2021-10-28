@@ -1,5 +1,16 @@
 = Changelog
 
+== v2021.12.0 (Unreleased)
+
+=== Architectural decision records
+
+- [ADR-034] Switch from semver to calver
+- [ADR-035] Use a common pattern for configuration properties
+
+=== Breaking Changes
+
+- https://github.com/eclipse-sirius/sirius-components/issues/804[#804] [core] Update the name of our configuration properties. The configuration property `sirius.web.graphql.websocket.allowed.origins` will now be `sirius.components.cors.allowedOriginPatterns` and it will support complex patterns on top of regular origins. The default value will be restored to nothing since it has temporarily been set to `*`. In a development environment, the recommended value would be both patterns `https://localhost:[*]` and `http://localhost:[*]` in order to accept requests from any application hosted on the same machine. The configuration property `org.eclipse.sirius.web.editingContextEventProcessorRegistry.disposeDelay` will now be `sirius.components.editingContext.disposeDelay`. Its default value will be 1s since it is the only realistic option with domain and view support.
+
 == v0.5.0
 
 === Architectural decision records

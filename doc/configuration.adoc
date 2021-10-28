@@ -1,0 +1,6 @@
+= Configuration
+
+In this document, you will find the list of all the configuration properties available in Sirius Components
+
+- `sirius.components.cors.allowedOriginPatterns`: Used to provide patterns to match the URLs of the web applications which can communicate using the WebSocket API.
+- `sirius.components.editingContext.disposeDelay`: Used to configure how much time an `EditingContextEventProcessor` will be kept in memory before disposal while there are no more users subscribed to its content.

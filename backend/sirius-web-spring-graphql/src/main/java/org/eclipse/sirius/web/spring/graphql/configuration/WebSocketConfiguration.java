@@ -42,7 +42,7 @@ import io.micrometer.core.instrument.MeterRegistry;
 @EnableWebSocket
 public class WebSocketConfiguration implements WebSocketConfigurer {
 
-    private final String[] allowedOrigins;
+    private final String[] allowedOriginPatterns;
 
     private final GraphQL graphQL;
 
@@ -50,8 +50,8 @@ public class WebSocketConfiguration implements WebSocketConfigurer {
 
     private final MeterRegistry meterRegistry;
 
-    public WebSocketConfiguration(@Value("${sirius.web.graphql.websocket.allowed.origins:*}") String[] allowedOrigins, GraphQL graphQL, ObjectMapper objectMapper, MeterRegistry meterRegistry) {
-        this.allowedOrigins = Objects.requireNonNull(allowedOrigins);
+    public WebSocketConfiguration(@Value("${sirius.components.cors.allowedOriginPatterns:}") String[] allowedOriginPatterns, GraphQL graphQL, ObjectMapper objectMapper, MeterRegistry meterRegistry) {
+        this.allowedOriginPatterns = Objects.requireNonNull(allowedOriginPatterns);
         this.graphQL = Objects.requireNonNull(graphQL);
         this.objectMapper = Objects.requireNonNull(objectMapper);
         this.meterRegistry = Objects.requireNonNull(meterRegistry);
@@ -61,7 +61,7 @@ public class WebSocketConfiguration implements WebSocketConfigurer {
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         GraphQLWebSocketHandler graphQLWebSocketHandler = new GraphQLWebSocketHandler(this.objectMapper, this.graphQL, this.meterRegistry);
         WebSocketHandlerRegistration graphQLWebSocketRegistration = registry.addHandler(graphQLWebSocketHandler, URLConstants.GRAPHQL_SUBSCRIPTION_PATH);
-        graphQLWebSocketRegistration.setAllowedOrigins(this.allowedOrigins);
+        graphQLWebSocketRegistration.setAllowedOriginPatterns(this.allowedOriginPatterns);
     }
 
     @Bean

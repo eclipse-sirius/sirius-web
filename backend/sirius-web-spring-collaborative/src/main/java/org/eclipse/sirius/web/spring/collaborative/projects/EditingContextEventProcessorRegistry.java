@@ -57,7 +57,7 @@ public class EditingContextEventProcessorRegistry implements IEditingContextEven
     private final Map<UUID, EditingContextEventProcessorEntry> editingContextEventProcessors = new ConcurrentHashMap<>();
 
     public EditingContextEventProcessorRegistry(IEditingContextEventProcessorFactory editingContextEventProcessorFactory, IEditingContextSearchService editingContextSearchService,
-            @Value("${org.eclipse.sirius.web.editingContextEventProcessorRegistry.disposeDelay:30s}") Duration disposeDelay) {
+            @Value("${sirius.components.editingContext.disposeDelay:1s}") Duration disposeDelay) {
         this.editingContextEventProcessorFactory = editingContextEventProcessorFactory;
         this.editingContextSearchService = Objects.requireNonNull(editingContextSearchService);
         this.disposeDelay = disposeDelay;
