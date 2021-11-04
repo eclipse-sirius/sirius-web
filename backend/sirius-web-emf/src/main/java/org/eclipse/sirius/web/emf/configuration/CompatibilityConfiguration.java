@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.emf.configuration;
 
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.sirius.web.compat.api.ICanCreateDiagramPredicateFactory;
+import org.eclipse.sirius.web.compat.api.IIdentifierProvider;
 import org.eclipse.sirius.web.compat.api.IModelOperationHandlerSwitchProvider;
 import org.eclipse.sirius.web.compat.api.ISemanticCandidatesProviderFactory;
 import org.eclipse.sirius.web.compat.api.IToolImageProviderFactory;
@@ -32,6 +33,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class CompatibilityConfiguration {
+
     @Bean
     public ISemanticCandidatesProviderFactory semanticCandidatesProviderFactory() {
         return SemanticCandidatesProvider::new;
@@ -43,8 +45,8 @@ public class CompatibilityConfiguration {
     }
 
     @Bean
-    public IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider() {
-        return ModelOperationHandlerSwitch::new;
+    public IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider(IObjectService objectService, IIdentifierProvider identifierProvider) {
+        return (interpreter) -> new ModelOperationHandlerSwitch(objectService, identifierProvider, interpreter);
     }
 
     @Bean

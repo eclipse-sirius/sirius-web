@@ -23,7 +23,9 @@ import org.eclipse.sirius.viewpoint.description.tool.Case;
 import org.eclipse.sirius.viewpoint.description.tool.Default;
 import org.eclipse.sirius.viewpoint.description.tool.ModelOperation;
 import org.eclipse.sirius.viewpoint.description.tool.Switch;
+import org.eclipse.sirius.web.compat.api.IIdentifierProvider;
 import org.eclipse.sirius.web.compat.api.IModelOperationHandler;
+import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
 import org.eclipse.sirius.web.representations.IStatus;
 import org.eclipse.sirius.web.representations.Success;
@@ -35,13 +37,20 @@ import org.eclipse.sirius.web.representations.Success;
  */
 public class SwitchOperationHandler implements IModelOperationHandler {
 
+    private final IObjectService objectService;
+
+    private final IIdentifierProvider identifierProvider;
+
     private final AQLInterpreter interpreter;
 
     private final ChildModelOperationHandler childModelOperationHandler;
 
     private final Switch switchOperation;
 
-    public SwitchOperationHandler(AQLInterpreter interpreter, ChildModelOperationHandler childModelOperationHandler, Switch switchOperation) {
+    public SwitchOperationHandler(IObjectService objectService, IIdentifierProvider identifierProvider, AQLInterpreter interpreter, ChildModelOperationHandler childModelOperationHandler,
+            Switch switchOperation) {
+        this.objectService = Objects.requireNonNull(objectService);
+        this.identifierProvider = Objects.requireNonNull(identifierProvider);
         this.interpreter = Objects.requireNonNull(interpreter);
         this.childModelOperationHandler = Objects.requireNonNull(childModelOperationHandler);
         this.switchOperation = Objects.requireNonNull(switchOperation);
@@ -61,7 +70,7 @@ public class SwitchOperationHandler implements IModelOperationHandler {
 
                 if (optionalValueObject.isPresent() && optionalValueObject.get()) {
                     List<ModelOperation> subModelOperations = switchCase.getSubModelOperations();
-                    status = this.childModelOperationHandler.handle(this.interpreter, childVariables, subModelOperations);
+                    status = this.childModelOperationHandler.handle(this.objectService, this.identifierProvider, this.interpreter, childVariables, subModelOperations);
 
                     oneCaseHasBeenExecuted = true;
                     break;
@@ -73,7 +82,7 @@ public class SwitchOperationHandler implements IModelOperationHandler {
             Default defaultCase = this.switchOperation.getDefault();
             if (defaultCase != null) {
                 List<ModelOperation> subModelOperations = defaultCase.getSubModelOperations();
-                status = this.childModelOperationHandler.handle(this.interpreter, childVariables, subModelOperations);
+                status = this.childModelOperationHandler.handle(this.objectService, this.identifierProvider, this.interpreter, childVariables, subModelOperations);
             }
         }
 

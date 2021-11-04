@@ -17,7 +17,9 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.eclipse.sirius.viewpoint.description.tool.ModelOperation;
+import org.eclipse.sirius.web.compat.api.IIdentifierProvider;
 import org.eclipse.sirius.web.compat.api.IModelOperationHandler;
+import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
 import org.eclipse.sirius.web.representations.Failure;
 import org.eclipse.sirius.web.representations.IStatus;
@@ -29,10 +31,10 @@ import org.eclipse.sirius.web.representations.Success;
  * @author sbegaudeau
  */
 public class ChildModelOperationHandler {
-    public IStatus handle(AQLInterpreter interpreter, Map<String, Object> variables, List<ModelOperation> modelOperations) {
+    public IStatus handle(IObjectService objectService, IIdentifierProvider identifierProvider, AQLInterpreter interpreter, Map<String, Object> variables, List<ModelOperation> modelOperations) {
         boolean hasBeenSuccessfullyExecuted = true;
 
-        ModelOperationHandlerSwitch modelOperationHandlerSwitch = new ModelOperationHandlerSwitch(interpreter);
+        ModelOperationHandlerSwitch modelOperationHandlerSwitch = new ModelOperationHandlerSwitch(objectService, identifierProvider, interpreter);
         for (ModelOperation modelOperation : modelOperations) {
             Optional<IModelOperationHandler> optionalModelOperationHandler = modelOperationHandlerSwitch.apply(modelOperation);
 

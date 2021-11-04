@@ -79,8 +79,8 @@ public class CreateInstanceOperationHandlerTests {
         this.operationTestContext.getVariables().put(IEditingContext.EDITING_CONTEXT, editingContext);
 
         this.createInstanceOperation = ToolFactory.eINSTANCE.createCreateInstance();
-        this.createInstanceOperationHandler = new CreateInstanceOperationHandler(this.operationTestContext.getInterpreter(), new EPackageService(), new ChildModelOperationHandler(),
-                this.createInstanceOperation);
+        this.createInstanceOperationHandler = new CreateInstanceOperationHandler(this.operationTestContext.getObjectService(), this.operationTestContext.getIdentifierProvider(),
+                this.operationTestContext.getInterpreter(), new EPackageService(), new ChildModelOperationHandler(), this.createInstanceOperation);
     }
 
     @Test

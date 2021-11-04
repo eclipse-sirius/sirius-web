@@ -48,7 +48,8 @@ public class LetOperationHandlerTests {
         this.operationTestContext = new OperationTestContext();
 
         this.letOperation = ToolFactory.eINSTANCE.createLet();
-        this.letOperationHandler = new LetOperationHandler(this.operationTestContext.getInterpreter(), new ChildModelOperationHandler(), this.letOperation);
+        this.letOperationHandler = new LetOperationHandler(this.operationTestContext.getObjectService(), this.operationTestContext.getIdentifierProvider(), this.operationTestContext.getInterpreter(),
+                new ChildModelOperationHandler(), this.letOperation);
     }
 
     @Test

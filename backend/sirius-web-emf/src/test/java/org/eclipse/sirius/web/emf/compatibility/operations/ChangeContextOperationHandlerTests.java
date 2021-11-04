@@ -46,7 +46,8 @@ public class ChangeContextOperationHandlerTests {
         this.operationTestContext = new OperationTestContext();
 
         this.changeContext = ToolFactory.eINSTANCE.createChangeContext();
-        this.changeContextOperationHandler = new ChangeContextOperationHandler(this.operationTestContext.getInterpreter(), new ChildModelOperationHandler(), this.changeContext);
+        this.changeContextOperationHandler = new ChangeContextOperationHandler(this.operationTestContext.getObjectService(), this.operationTestContext.getIdentifierProvider(),
+                this.operationTestContext.getInterpreter(), new ChildModelOperationHandler(), this.changeContext);
     }
 
     @Test

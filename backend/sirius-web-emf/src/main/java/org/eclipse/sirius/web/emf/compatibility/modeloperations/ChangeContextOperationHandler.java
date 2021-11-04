@@ -20,7 +20,9 @@ import java.util.Optional;
 
 import org.eclipse.sirius.viewpoint.description.tool.ChangeContext;
 import org.eclipse.sirius.viewpoint.description.tool.ModelOperation;
+import org.eclipse.sirius.web.compat.api.IIdentifierProvider;
 import org.eclipse.sirius.web.compat.api.IModelOperationHandler;
+import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
 import org.eclipse.sirius.web.representations.IStatus;
 import org.eclipse.sirius.web.representations.VariableManager;
@@ -32,13 +34,20 @@ import org.eclipse.sirius.web.representations.VariableManager;
  */
 public class ChangeContextOperationHandler implements IModelOperationHandler {
 
+    private final IObjectService objectService;
+
+    private final IIdentifierProvider identifierProvider;
+
     private final AQLInterpreter interpreter;
 
     private final ChildModelOperationHandler childModelOperationHandler;
 
     private final ChangeContext changeContext;
 
-    public ChangeContextOperationHandler(AQLInterpreter interpreter, ChildModelOperationHandler childModelOperationHandler, ChangeContext changeContext) {
+    public ChangeContextOperationHandler(IObjectService objectService, IIdentifierProvider identifierProvider, AQLInterpreter interpreter, ChildModelOperationHandler childModelOperationHandler,
+            ChangeContext changeContext) {
+        this.objectService = Objects.requireNonNull(objectService);
+        this.identifierProvider = Objects.requireNonNull(identifierProvider);
         this.interpreter = Objects.requireNonNull(interpreter);
         this.childModelOperationHandler = Objects.requireNonNull(childModelOperationHandler);
         this.changeContext = Objects.requireNonNull(changeContext);
@@ -54,7 +63,7 @@ public class ChangeContextOperationHandler implements IModelOperationHandler {
         }
 
         List<ModelOperation> subModelOperations = this.changeContext.getSubModelOperations();
-        return this.childModelOperationHandler.handle(this.interpreter, childVariables, subModelOperations);
+        return this.childModelOperationHandler.handle(this.objectService, this.identifierProvider, this.interpreter, childVariables, subModelOperations);
     }
 
 }
