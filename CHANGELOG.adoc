@@ -20,6 +20,7 @@
 
 - https://github.com/eclipse-sirius/sirius-components/issues/799[#799] [diagram] The buttons in the diagram's toolbar now have proper tooltips
 - [core] Add a task to display TypeScript errors in the VS Code problems view
+- https://github.com/eclipse-sirius/sirius-components/issues/773[#773] [compatibility] The synchronization policy of the node descriptions is now properly computed from the `AbstractNodeMapping`
 
 
 == v0.5.0
