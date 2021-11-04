@@ -97,7 +97,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
-			<artifactId>sirius-web-diagrams</artifactId>
+			<artifactId>sirius-web-spring-collaborative-diagrams</artifactId>
 			<version>0.5.1</version>
 		</dependency>
 		<dependency>

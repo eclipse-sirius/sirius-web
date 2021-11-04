@@ -46,6 +46,7 @@ import org.eclipse.sirius.web.compat.api.IIdentifierProvider;
 import org.eclipse.sirius.web.compat.api.IModelOperationHandlerSwitchProvider;
 import org.eclipse.sirius.web.compat.api.IToolImageProviderFactory;
 import org.eclipse.sirius.web.compat.services.SelectModelElementVariableProvider;
+import org.eclipse.sirius.web.diagrams.Node;
 import org.eclipse.sirius.web.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.web.diagrams.description.NodeDescription;
 import org.eclipse.sirius.web.diagrams.tools.CreateEdgeTool;
@@ -58,6 +59,7 @@ import org.eclipse.sirius.web.representations.Failure;
 import org.eclipse.sirius.web.representations.IStatus;
 import org.eclipse.sirius.web.representations.Success;
 import org.eclipse.sirius.web.representations.VariableManager;
+import org.eclipse.sirius.web.spring.collaborative.diagrams.api.IDiagramContext;
 import org.springframework.stereotype.Service;
 
 /**
@@ -83,6 +85,12 @@ public class ToolProvider implements IToolProvider {
      * container creation tool has been invoked.
      */
     public static final String CONTAINER = "container"; //$NON-NLS-1$
+
+    /**
+     * The name of the compatibility variable used to store and retrieve the graphical element on which a node or
+     * container creation tool has been invoked.
+     */
+    public static final String CONTAINER_VIEW = "containerView"; //$NON-NLS-1$
 
     /**
      * The name of the compatibility variable used to store and retrieve the semantic element on which a generic tool
@@ -369,6 +377,19 @@ public class ToolProvider implements IToolProvider {
                 Map<String, Object> variables = variableManager.getVariables();
                 // Provide compatibility aliases for this variable
                 variables.put(CONTAINER, variables.get(VariableManager.SELF));
+                if (variables.get(Node.SELECTED_NODE) != null) {
+                    variables.put(CONTAINER_VIEW, variables.get(Node.SELECTED_NODE));
+                } else {
+                    // @formatter:off
+                    Optional.ofNullable(variables.get(IDiagramContext.DIAGRAM_CONTEXT))
+                            .filter(IDiagramContext.class::isInstance)
+                            .map(IDiagramContext.class::cast)
+                            .ifPresent(diagramContext -> {
+                                variables.put(CONTAINER_VIEW, diagramContext.getDiagram());
+                            });
+                    // @formatter:on
+                }
+
                 var selectModelelementVariableOpt = new SelectModelElementVariableProvider().getSelectModelElementVariable(toolDescription.getVariable());
                 if (selectModelelementVariableOpt.isPresent()) {
                     variables.put(selectModelelementVariableOpt.get().getName(), variables.get(CreateNodeTool.SELECTED_OBJECT));
