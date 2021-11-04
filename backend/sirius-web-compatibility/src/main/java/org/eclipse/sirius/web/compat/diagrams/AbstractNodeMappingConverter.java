@@ -21,8 +21,6 @@ import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.sirius.diagram.business.api.query.ContainerMappingQuery;
 import org.eclipse.sirius.diagram.description.AbstractNodeMapping;
 import org.eclipse.sirius.diagram.description.ContainerMapping;
 import org.eclipse.sirius.viewpoint.description.style.BasicLabelStyleDescription;
@@ -41,6 +39,7 @@ import org.eclipse.sirius.web.diagrams.NodeType;
 import org.eclipse.sirius.web.diagrams.description.LabelDescription;
 import org.eclipse.sirius.web.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.web.diagrams.description.NodeDescription;
+import org.eclipse.sirius.web.diagrams.description.SynchronizationPolicy;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
 import org.eclipse.sirius.web.representations.VariableManager;
 import org.springframework.stereotype.Service;
@@ -78,22 +77,9 @@ public class AbstractNodeMappingConverter {
         Function<VariableManager, org.eclipse.sirius.viewpoint.description.style.LabelStyleDescription> abstractNodeMappingDescriptionProvider = new LabelStyleDescriptionProvider(interpreter,
                 abstractNodeMapping);
 
-        Function<VariableManager, LabelStyleDescription> labelStyleDescriptionProvider = variableManager -> {
-            org.eclipse.sirius.viewpoint.description.style.LabelStyleDescription styleDescription = abstractNodeMappingDescriptionProvider.apply(variableManager);
-            BasicLabelStyleDescription basicLabelStyleDescription = Optional.ofNullable(styleDescription).map(BasicLabelStyleDescription.class::cast).orElse(this.getDefaultLabelStyle());
-            return labelStyleDescriptionConverter.convert(basicLabelStyleDescription);
-        };
-
-        Function<VariableManager, String> labelExpressionProvider = variableManager -> {
-            org.eclipse.sirius.viewpoint.description.style.LabelStyleDescription styleDescription = abstractNodeMappingDescriptionProvider.apply(variableManager);
-            String labelExpression = Optional.ofNullable(styleDescription).map(BasicLabelStyleDescription::getLabelExpression).orElse(""); //$NON-NLS-1$
-            return new StringValueProvider(interpreter, labelExpression).apply(variableManager);
-        };
-
-        Function<VariableManager, String> labelIdProvider = variableManager -> {
-            Object parentId = variableManager.getVariables().get(LabelDescription.OWNER_ID);
-            return String.valueOf(parentId) + LabelDescription.LABEL_SUFFIX;
-        };
+        Function<VariableManager, String> labelIdProvider = this.getLabelIdProvider();
+        Function<VariableManager, String> labelExpressionProvider = this.getLabelExpressionProvider(interpreter, abstractNodeMappingDescriptionProvider);
+        Function<VariableManager, LabelStyleDescription> labelStyleDescriptionProvider = this.getLabelStyleDescriptionProvider(labelStyleDescriptionConverter, abstractNodeMappingDescriptionProvider);
 
         // @formatter:off
         LabelDescription labelDescription = LabelDescription.newLabelDescription(this.identifierProvider.getIdentifier(abstractNodeMapping) + LabelDescription.LABEL_SUFFIX)
@@ -147,6 +133,11 @@ public class AbstractNodeMappingConverter {
         var deleteHandler = toolConverter.createDeleteToolHandler(abstractNodeMapping.getDeletionDescription());
         var labelEditHandler = toolConverter.createDirectEditToolHandler(abstractNodeMapping.getLabelDirectEdit());
 
+        SynchronizationPolicy synchronizationPolicy = SynchronizationPolicy.SYNCHRONIZED;
+        if (!abstractNodeMapping.isCreateElements()) {
+            synchronizationPolicy = SynchronizationPolicy.UNSYNCHRONIZED;
+        }
+
         // @formatter:off
         NodeDescription description = NodeDescription.newNodeDescription(UUID.fromString(this.identifierProvider.getIdentifier(abstractNodeMapping)))
                 .typeProvider(typeProvider)
@@ -154,6 +145,7 @@ public class AbstractNodeMappingConverter {
                 .targetObjectKindProvider(semanticTargetKindProvider)
                 .targetObjectLabelProvider(semanticTargetLabelProvider)
                 .semanticElementsProvider(semanticElementsProvider)
+                .synchronizationPolicy(synchronizationPolicy)
                 .labelDescription(labelDescription)
                 .styleProvider(styleProvider)
                 .sizeProvider(sizeProvider)
@@ -167,6 +159,31 @@ public class AbstractNodeMappingConverter {
         id2NodeDescriptions.put(description.getId(), description);
 
         return description;
+    }
+
+    private Function<VariableManager, LabelStyleDescription> getLabelStyleDescriptionProvider(LabelStyleDescriptionConverter labelStyleDescriptionConverter,
+            Function<VariableManager, org.eclipse.sirius.viewpoint.description.style.LabelStyleDescription> abstractNodeMappingDescriptionProvider) {
+        return variableManager -> {
+            org.eclipse.sirius.viewpoint.description.style.LabelStyleDescription styleDescription = abstractNodeMappingDescriptionProvider.apply(variableManager);
+            BasicLabelStyleDescription basicLabelStyleDescription = Optional.ofNullable(styleDescription).map(BasicLabelStyleDescription.class::cast).orElse(this.getDefaultLabelStyle());
+            return labelStyleDescriptionConverter.convert(basicLabelStyleDescription);
+        };
+    }
+
+    private Function<VariableManager, String> getLabelExpressionProvider(AQLInterpreter interpreter,
+            Function<VariableManager, org.eclipse.sirius.viewpoint.description.style.LabelStyleDescription> abstractNodeMappingDescriptionProvider) {
+        return variableManager -> {
+            org.eclipse.sirius.viewpoint.description.style.LabelStyleDescription styleDescription = abstractNodeMappingDescriptionProvider.apply(variableManager);
+            String labelExpression = Optional.ofNullable(styleDescription).map(BasicLabelStyleDescription::getLabelExpression).orElse(""); //$NON-NLS-1$
+            return new StringValueProvider(interpreter, labelExpression).apply(variableManager);
+        };
+    }
+
+    private Function<VariableManager, String> getLabelIdProvider() {
+        return variableManager -> {
+            Object parentId = variableManager.getVariables().get(LabelDescription.OWNER_ID);
+            return String.valueOf(parentId) + LabelDescription.LABEL_SUFFIX;
+        };
     }
 
     private List<NodeDescription> getChildNodeDescriptions(AbstractNodeMapping abstractNodeMapping, AQLInterpreter interpreter, Map<UUID, NodeDescription> id2NodeDescriptions) {
@@ -198,10 +215,6 @@ public class AbstractNodeMappingConverter {
         labelStyle.setShowIcon(true);
         labelStyle.setLabelSize(16);
         return labelStyle;
-    }
-
-    private boolean isListContainer(EObject nodeMapping) {
-        return nodeMapping instanceof ContainerMapping && new ContainerMappingQuery((ContainerMapping) nodeMapping).isListContainer();
     }
 
 }
