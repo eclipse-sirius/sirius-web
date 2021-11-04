@@ -44,7 +44,8 @@ public class RemoveElementOperationHandlerTests {
         this.operationTestContext.getVariables().put(VariableManager.SELF, this.operationTestContext.getClass1());
 
         this.removeElementOperation = ToolFactory.eINSTANCE.createRemoveElement();
-        this.removeElementOperationHandler = new RemoveElementOperationHandler(this.operationTestContext.getInterpreter(), new ChildModelOperationHandler(), this.removeElementOperation);
+        this.removeElementOperationHandler = new RemoveElementOperationHandler(this.operationTestContext.getObjectService(), this.operationTestContext.getIdentifierProvider(),
+                this.operationTestContext.getInterpreter(), new ChildModelOperationHandler(), this.removeElementOperation);
     }
 
     @Test

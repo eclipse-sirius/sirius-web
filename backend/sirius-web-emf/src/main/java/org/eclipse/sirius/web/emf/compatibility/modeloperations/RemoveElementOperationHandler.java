@@ -22,7 +22,9 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.ecore.extender.business.internal.accessor.ecore.EcoreIntrinsicExtender;
 import org.eclipse.sirius.viewpoint.description.tool.ModelOperation;
 import org.eclipse.sirius.viewpoint.description.tool.RemoveElement;
+import org.eclipse.sirius.web.compat.api.IIdentifierProvider;
 import org.eclipse.sirius.web.compat.api.IModelOperationHandler;
+import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
 import org.eclipse.sirius.web.representations.IStatus;
 import org.eclipse.sirius.web.representations.VariableManager;
@@ -36,6 +38,10 @@ import org.slf4j.LoggerFactory;
  */
 public class RemoveElementOperationHandler implements IModelOperationHandler {
 
+    private final IObjectService objectService;
+
+    private final IIdentifierProvider identifierProvider;
+
     private final AQLInterpreter interpreter;
 
     private final ChildModelOperationHandler childModelOperationHandler;
@@ -44,7 +50,10 @@ public class RemoveElementOperationHandler implements IModelOperationHandler {
 
     private final Logger logger = LoggerFactory.getLogger(RemoveElementOperationHandler.class);
 
-    public RemoveElementOperationHandler(AQLInterpreter interpreter, ChildModelOperationHandler childModelOperationHandler, RemoveElement removeElementOperation) {
+    public RemoveElementOperationHandler(IObjectService objectService, IIdentifierProvider identifierProvider, AQLInterpreter interpreter, ChildModelOperationHandler childModelOperationHandler,
+            RemoveElement removeElementOperation) {
+        this.objectService = Objects.requireNonNull(objectService);
+        this.identifierProvider = Objects.requireNonNull(identifierProvider);
         this.interpreter = Objects.requireNonNull(interpreter);
         this.childModelOperationHandler = Objects.requireNonNull(childModelOperationHandler);
         this.removeElementOperation = Objects.requireNonNull(removeElementOperation);
@@ -72,7 +81,7 @@ public class RemoveElementOperationHandler implements IModelOperationHandler {
 
         Map<String, Object> childVariables = new HashMap<>(variables);
         List<ModelOperation> subModelOperations = this.removeElementOperation.getSubModelOperations();
-        return this.childModelOperationHandler.handle(this.interpreter, childVariables, subModelOperations);
+        return this.childModelOperationHandler.handle(this.objectService, this.identifierProvider, this.interpreter, childVariables, subModelOperations);
     }
 
 }

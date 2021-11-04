@@ -71,11 +71,12 @@ public class FormRendererTests {
             }
         };
 
+        IObjectService objectService = new IObjectService.NoOp();
         IIdentifierProvider identifierProvider = element -> UUID.randomUUID().toString();
         IdentifiedElementLabelProvider identifiedElementLabelProvider = new IdentifiedElementLabelProvider();
         ISemanticCandidatesProviderFactory semanticCandidatesProviderFactory = SemanticCandidatesProvider::new;
-        IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider = ModelOperationHandlerSwitch::new;
-        ViewExtensionDescriptionConverter converter = new ViewExtensionDescriptionConverter(new IObjectService.NoOp(), interpreterFactory, identifierProvider, semanticCandidatesProviderFactory,
+        IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider = interpeter -> new ModelOperationHandlerSwitch(objectService, identifierProvider, interpeter);
+        ViewExtensionDescriptionConverter converter = new ViewExtensionDescriptionConverter(objectService, interpreterFactory, identifierProvider, semanticCandidatesProviderFactory,
                 modelOperationHandlerSwitchProvider, identifiedElementLabelProvider);
         FormDescription description = converter.convert(viewExtensionDescription);
 

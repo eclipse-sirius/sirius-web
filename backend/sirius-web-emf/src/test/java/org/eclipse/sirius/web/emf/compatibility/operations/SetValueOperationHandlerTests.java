@@ -48,7 +48,8 @@ public class SetValueOperationHandlerTests {
         this.operationTestContext = new OperationTestContext();
 
         this.setValue = ToolFactory.eINSTANCE.createSetValue();
-        this.setValueOperationHandler = new SetValueOperationHandler(this.operationTestContext.getInterpreter(), new ChildModelOperationHandler(), this.setValue);
+        this.setValueOperationHandler = new SetValueOperationHandler(this.operationTestContext.getObjectService(), this.operationTestContext.getIdentifierProvider(),
+                this.operationTestContext.getInterpreter(), new ChildModelOperationHandler(), this.setValue);
     }
 
     @Test

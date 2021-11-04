@@ -72,7 +72,8 @@ public class SwitchOperationHandlerTests {
         this.defaultCase.getSubModelOperations().add(subChangeContextDefault);
         this.switchOperation.setDefault(this.defaultCase);
 
-        this.switchOperationHandler = new SwitchOperationHandler(this.operationTestContext.getInterpreter(), new ChildModelOperationHandler(), this.switchOperation);
+        this.switchOperationHandler = new SwitchOperationHandler(this.operationTestContext.getObjectService(), this.operationTestContext.getIdentifierProvider(),
+                this.operationTestContext.getInterpreter(), new ChildModelOperationHandler(), this.switchOperation);
     }
 
     @Test

@@ -20,7 +20,9 @@ import java.util.Optional;
 
 import org.eclipse.sirius.viewpoint.description.tool.Let;
 import org.eclipse.sirius.viewpoint.description.tool.ModelOperation;
+import org.eclipse.sirius.web.compat.api.IIdentifierProvider;
 import org.eclipse.sirius.web.compat.api.IModelOperationHandler;
+import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
 import org.eclipse.sirius.web.representations.IStatus;
 
@@ -31,13 +33,20 @@ import org.eclipse.sirius.web.representations.IStatus;
  */
 public class LetOperationHandler implements IModelOperationHandler {
 
+    private final IObjectService objectService;
+
+    private final IIdentifierProvider identifierProvider;
+
     private final AQLInterpreter interpreter;
 
     private final ChildModelOperationHandler childModelOperationHandler;
 
     private final Let letOperation;
 
-    public LetOperationHandler(AQLInterpreter interpreter, ChildModelOperationHandler childModelOperationHandler, Let letOperation) {
+    public LetOperationHandler(IObjectService objectService, IIdentifierProvider identifierProvider, AQLInterpreter interpreter, ChildModelOperationHandler childModelOperationHandler,
+            Let letOperation) {
+        this.objectService = Objects.requireNonNull(objectService);
+        this.identifierProvider = Objects.requireNonNull(identifierProvider);
         this.interpreter = Objects.requireNonNull(interpreter);
         this.childModelOperationHandler = Objects.requireNonNull(childModelOperationHandler);
         this.letOperation = Objects.requireNonNull(letOperation);
@@ -60,7 +69,7 @@ public class LetOperationHandler implements IModelOperationHandler {
         }
 
         List<ModelOperation> subModelOperations = this.letOperation.getSubModelOperations();
-        return this.childModelOperationHandler.handle(this.interpreter, childVariables, subModelOperations);
+        return this.childModelOperationHandler.handle(this.objectService, this.identifierProvider, this.interpreter, childVariables, subModelOperations);
     }
 
 }

@@ -64,7 +64,8 @@ public class MoveElementOperationHandlerTests {
         this.operationTestContext.getVariables().put(VariableManager.SELF, this.operationTestContext.getClass1());
 
         this.moveElementOperation = ToolFactory.eINSTANCE.createMoveElement();
-        this.moveElementOperationHandler = new MoveElementOperationHandler(this.operationTestContext.getInterpreter(), new ChildModelOperationHandler(), this.moveElementOperation);
+        this.moveElementOperationHandler = new MoveElementOperationHandler(this.operationTestContext.getObjectService(), this.operationTestContext.getIdentifierProvider(),
+                this.operationTestContext.getInterpreter(), new ChildModelOperationHandler(), this.moveElementOperation);
     }
 
     @Test

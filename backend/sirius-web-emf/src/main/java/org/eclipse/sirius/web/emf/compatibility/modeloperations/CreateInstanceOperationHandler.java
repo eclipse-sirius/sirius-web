@@ -28,8 +28,10 @@ import org.eclipse.sirius.ecore.extender.business.api.accessor.EcoreMetamodelDes
 import org.eclipse.sirius.ecore.extender.business.internal.accessor.ecore.EcoreIntrinsicExtender;
 import org.eclipse.sirius.viewpoint.description.tool.CreateInstance;
 import org.eclipse.sirius.viewpoint.description.tool.ModelOperation;
+import org.eclipse.sirius.web.compat.api.IIdentifierProvider;
 import org.eclipse.sirius.web.compat.api.IModelOperationHandler;
 import org.eclipse.sirius.web.core.api.IEditingContext;
+import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.emf.compatibility.EPackageService;
 import org.eclipse.sirius.web.emf.services.EditingContext;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
@@ -52,6 +54,10 @@ public class CreateInstanceOperationHandler implements IModelOperationHandler {
 
     private final Logger logger = LoggerFactory.getLogger(CreateInstanceOperationHandler.class);
 
+    private final IObjectService objectService;
+
+    private final IIdentifierProvider identifierProvider;
+
     private final AQLInterpreter interpreter;
 
     private final EPackageService ePackageService;
@@ -60,7 +66,10 @@ public class CreateInstanceOperationHandler implements IModelOperationHandler {
 
     private final CreateInstance createInstance;
 
-    public CreateInstanceOperationHandler(AQLInterpreter interpreter, EPackageService ePackageService, ChildModelOperationHandler childModelOperationHandler, CreateInstance createInstance) {
+    public CreateInstanceOperationHandler(IObjectService objectService, IIdentifierProvider identifierProvider, AQLInterpreter interpreter, EPackageService ePackageService,
+            ChildModelOperationHandler childModelOperationHandler, CreateInstance createInstance) {
+        this.objectService = Objects.requireNonNull(objectService);
+        this.identifierProvider = Objects.requireNonNull(identifierProvider);
         this.interpreter = Objects.requireNonNull(interpreter);
         this.ePackageService = Objects.requireNonNull(ePackageService);
         this.childModelOperationHandler = Objects.requireNonNull(childModelOperationHandler);
@@ -120,6 +129,6 @@ public class CreateInstanceOperationHandler implements IModelOperationHandler {
         }
 
         List<ModelOperation> subModelOperations = this.createInstance.getSubModelOperations();
-        return this.childModelOperationHandler.handle(this.interpreter, childVariables, subModelOperations);
+        return this.childModelOperationHandler.handle(this.objectService, this.identifierProvider, this.interpreter, childVariables, subModelOperations);
     }
 }

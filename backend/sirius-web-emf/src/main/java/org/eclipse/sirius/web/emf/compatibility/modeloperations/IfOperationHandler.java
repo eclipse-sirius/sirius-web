@@ -19,7 +19,9 @@ import java.util.Optional;
 
 import org.eclipse.sirius.viewpoint.description.tool.If;
 import org.eclipse.sirius.viewpoint.description.tool.ModelOperation;
+import org.eclipse.sirius.web.compat.api.IIdentifierProvider;
 import org.eclipse.sirius.web.compat.api.IModelOperationHandler;
+import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
 import org.eclipse.sirius.web.representations.IStatus;
 import org.eclipse.sirius.web.representations.Success;
@@ -31,13 +33,19 @@ import org.eclipse.sirius.web.representations.Success;
  */
 public class IfOperationHandler implements IModelOperationHandler {
 
+    private final IObjectService objectService;
+
+    private final IIdentifierProvider identifierProvider;
+
     private final AQLInterpreter interpreter;
 
     private final ChildModelOperationHandler childModelOperationHandler;
 
     private final If ifOperation;
 
-    public IfOperationHandler(AQLInterpreter interpreter, ChildModelOperationHandler childModelOperationHandler, If ifOperation) {
+    public IfOperationHandler(IObjectService objectService, IIdentifierProvider identifierProvider, AQLInterpreter interpreter, ChildModelOperationHandler childModelOperationHandler, If ifOperation) {
+        this.objectService = Objects.requireNonNull(objectService);
+        this.identifierProvider = Objects.requireNonNull(identifierProvider);
         this.interpreter = Objects.requireNonNull(interpreter);
         this.childModelOperationHandler = Objects.requireNonNull(childModelOperationHandler);
         this.ifOperation = Objects.requireNonNull(ifOperation);
@@ -51,7 +59,7 @@ public class IfOperationHandler implements IModelOperationHandler {
 
             if (optionalValueObject.isPresent() && optionalValueObject.get()) {
                 List<ModelOperation> subModelOperations = this.ifOperation.getSubModelOperations();
-                return this.childModelOperationHandler.handle(this.interpreter, variables, subModelOperations);
+                return this.childModelOperationHandler.handle(this.objectService, this.identifierProvider, this.interpreter, variables, subModelOperations);
             }
         }
 
