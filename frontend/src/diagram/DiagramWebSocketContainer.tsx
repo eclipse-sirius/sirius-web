@@ -21,8 +21,12 @@ import { ServerContext } from 'common/ServerContext';
 import {
   CreateNodeTool,
   GQLDiagram,
+  GQLDiagramEventSubscription,
+  GQLDiagramRefreshedEventPayload,
+  GQLErrorPayload,
   GQLGetToolSectionsData,
   GQLGetToolSectionsVariables,
+  GQLSubscribersUpdatedEventPayload,
   Palette,
   Tool,
 } from 'diagram/DiagramWebSocketContainer.types';
@@ -76,6 +80,7 @@ import {
 } from 'diagram/sprotty/WebSocketDiagramServer';
 import { Toolbar } from 'diagram/Toolbar';
 import { canInvokeTool } from 'diagram/toolServices';
+import { GQLDiagramEventPayload } from 'index';
 import React, { useCallback, useContext, useEffect, useRef } from 'react';
 import { SelectionDialogWebSocketContainer } from 'selection/SelectionDialogWebSocketContainer';
 import { EditLabelAction, FitToScreenAction, SEdge, SNode } from 'sprotty';
@@ -115,6 +120,13 @@ const useDiagramWebSocketContainerStyle = makeStyles((theme) => ({
 }));
 
 const isDiagram = (representation): representation is GQLDiagram => representation.__typename === 'Diagram';
+const isDiagramRefreshedEventPayload = (payload: GQLDiagramEventPayload): payload is GQLDiagramRefreshedEventPayload =>
+  payload.__typename === 'DiagramRefreshedEventPayload';
+const isSubscribersUpdatedEventPayload = (
+  payload: GQLDiagramEventPayload
+): payload is GQLSubscribersUpdatedEventPayload => payload.__typename === 'SubscribersUpdatedEventPayload';
+const isErrorPayload = (payload: GQLDiagramEventPayload): payload is GQLErrorPayload =>
+  payload.__typename === 'ErrorPayload';
 
 /**
  * Here be dragons!
@@ -622,7 +634,7 @@ export const DiagramWebSocketContainer = ({
     }
   }, [activeTool, diagramServer, invokeTool, dispatch, selectedObjectId, contextualPalette]);
 
-  const { error } = useSubscription(diagramEventSubscription, {
+  const { error } = useSubscription<GQLDiagramEventSubscription>(diagramEventSubscription, {
     variables: {
       input: {
         id,
@@ -635,19 +647,19 @@ export const DiagramWebSocketContainer = ({
     onSubscriptionData: ({ subscriptionData }) => {
       if (subscriptionData?.data) {
         const { diagramEvent } = subscriptionData.data;
-        if (diagramEvent.__typename === 'DiagramRefreshedEventPayload') {
+        if (isDiagramRefreshedEventPayload(diagramEvent)) {
           const diagramRefreshedEvent: DiagramRefreshedEvent = {
             type: 'HANDLE_DIAGRAM_REFRESHED',
             diagram: diagramEvent.diagram,
           };
           dispatch(diagramRefreshedEvent);
-        } else if (diagramEvent.__typename === 'SubscribersUpdatedEventPayload') {
+        } else if (isSubscribersUpdatedEventPayload(diagramEvent)) {
           const subscribersUpdatedEvent: SubscribersUpdatedEvent = {
             type: 'HANDLE_SUBSCRIBERS_UPDATED',
             subscribers: diagramEvent.subscribers,
           };
           dispatch(subscribersUpdatedEvent);
-        } else if (diagramEvent.__typename === 'ErrorPayload') {
+        } else if (isErrorPayload(diagramEvent)) {
           const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message: diagramEvent.message };
           dispatch(showToastEvent);
         }

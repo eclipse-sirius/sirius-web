@@ -10,6 +10,32 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+export interface GQLDiagramEventSubscription {
+  diagramEvent: GQLDiagramEventPayload;
+}
+
+export interface GQLDiagramEventPayload {
+  __typename: string;
+}
+
+export interface GQLErrorPayload extends GQLDiagramEventPayload {
+  message: string;
+}
+
+export interface GQLSubscribersUpdatedEventPayload extends GQLDiagramEventPayload {
+  id: string;
+  subscribers: GQLSubscriber[];
+}
+
+export interface GQLSubscriber {
+  username: string;
+}
+
+export interface GQLDiagramRefreshedEventPayload extends GQLDiagramEventPayload {
+  id: string;
+  diagram: GQLDiagram;
+}
+
 export interface Subscriber {
   username: string;
 }
@@ -87,7 +113,133 @@ export interface GQLRepresentation {
   __typename: string;
 }
 export interface GQLDiagram extends GQLRepresentation {
+  id: string;
+  label: string;
+  kind: string;
+  descriptionId: string;
+  targetObjectId: string;
+  autoLayout: boolean;
+  size: GQLSize;
+  position: GQLPosition;
+  nodes: GQLNode[];
+  edges: GQLEdge[];
   toolSections: GQLToolSection[];
+}
+
+export interface GQLSize {
+  height: number;
+  width: number;
+}
+
+export interface GQLPosition {
+  x: number;
+  y: number;
+}
+
+export interface GQLNode {
+  id: string;
+  label: GQLLabel;
+  descriptionId: string;
+  type: string;
+  targetObjectId: string;
+  targetObjectKind: string;
+  targetObjectLabel: string;
+  size: GQLSize;
+  position: GQLPosition;
+  style: GQLINodeStyle;
+  borderNodes: GQLNode[];
+  childNodes: GQLNode[];
+}
+
+export interface GQLLabel {
+  id: string;
+  text: string;
+  type: string;
+  style: GQLLabelStyle;
+  alignment: GQLPosition;
+  position: GQLPosition;
+  size: GQLSize;
+}
+
+export interface GQLLabelStyle {
+  bold: boolean;
+  color: string;
+  fontSize: number;
+  iconURL: string;
+  italic: boolean;
+  strikeThrough: boolean;
+  underline: boolean;
+}
+
+export type GQLINodeStyle = GQLImageNodeStyle | GQLListItemNodeStyle | GQLListNodeStyle | GQLRectangularNodeStyle;
+
+export interface GQLImageNodeStyle {
+  imageURL: string;
+}
+
+export interface GQLListNodeStyle {
+  borderColor: string;
+  borderRadius: number;
+  borderSize: number;
+  borderStyle: GQLLineStyle;
+  color: string;
+}
+
+export interface GQLListItemNodeStyle {
+  backgroundColor: string;
+}
+
+export interface GQLRectangularNodeStyle {
+  borderColor: string;
+  borderRadius: number;
+  borderSize: number;
+  borderStyle: GQLLineStyle;
+  color: string;
+}
+
+export enum GQLLineStyle {
+  Dash,
+  Dash_Dot,
+  Dot,
+  Solid,
+}
+
+export interface GQLEdge {
+  id: string;
+  descriptionId: string;
+  type: string;
+  beginLabel: GQLLabel;
+  centerLabel: GQLLabel;
+  endLabel: GQLLabel;
+  sourceId: string;
+  targetId: string;
+  targetObjectId: string;
+  targetObjectKind: string;
+  targetObjectLabel: string;
+  style: GQLEdgeStyle;
+  routingPoints: GQLPosition[];
+}
+
+export interface GQLEdgeStyle {
+  color: string;
+  lineStyle: GQLLineStyle;
+  size: number;
+  sourceArrow: GQLArrowStyle;
+  targetArrow: GQLArrowStyle;
+}
+
+enum GQLArrowStyle {
+  Diamond,
+  FillDiamond,
+  InputArrow,
+  InputArrowWithDiamond,
+  InputArrowWithFillDiamond,
+  InputClosedArrow,
+  InputFillClosedArrow,
+  None,
+  OutputArrow,
+  OutputClosedArrow,
+  OutputFillClosedArrow,
 }
 
 export interface GQLToolSection {

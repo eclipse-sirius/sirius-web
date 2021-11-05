@@ -13,6 +13,7 @@
 import { GQLToolSection, Palette, Subscriber, Tool, ToolSection } from 'diagram/DiagramWebSocketContainer.types';
 import { createDependencyInjectionContainer } from 'diagram/sprotty/DependencyInjection';
 import { SiriusWebWebSocketDiagramServer } from 'diagram/sprotty/WebSocketDiagramServer';
+import { GQLDiagram } from 'index';
 import { MutableRefObject } from 'react';
 import { MousePositionTracker, TYPES } from 'sprotty';
 import { v4 as uuid } from 'uuid';
@@ -54,7 +55,7 @@ export interface DiagramWebSocketContainerContext {
   id: string;
   displayedRepresentationId: string | null;
   diagramServer: any;
-  diagram: any;
+  diagram: GQLDiagram;
   toolSections: ToolSection[];
   activeTool: Tool | null;
   contextualPalette: Palette | null;
@@ -78,7 +79,7 @@ export type ResetSelectedObjectInSelectionDialogEvent = { type: 'RESET_SELECTED_
 export type SwithRepresentationEvent = { type: 'SWITCH_REPRESENTATION'; representationId: string };
 export type SetToolSectionsEvent = { type: 'SET_TOOL_SECTIONS'; toolSections: GQLToolSection[] };
 export type SetDefaultToolEvent = { type: 'SET_DEFAULT_TOOL'; defaultTool: Tool };
-export type DiagramRefreshedEvent = { type: 'HANDLE_DIAGRAM_REFRESHED'; diagram: any };
+export type DiagramRefreshedEvent = { type: 'HANDLE_DIAGRAM_REFRESHED'; diagram: GQLDiagram };
 export type SubscribersUpdatedEvent = { type: 'HANDLE_SUBSCRIBERS_UPDATED'; subscribers: Subscriber[] };
 export type SetActiveToolEvent = { type: 'SET_ACTIVE_TOOL'; activeTool: Tool | null };
 export type SetContextualPaletteEvent = { type: 'SET_CONTEXTUAL_PALETTE'; contextualPalette: Palette | null };
