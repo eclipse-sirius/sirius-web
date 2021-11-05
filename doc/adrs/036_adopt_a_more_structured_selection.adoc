@@ -1,0 +1,118 @@
+= ADR-036 - Adopt a more structured selection
+
+== Context
+
+The selection is one of the core element of our workbench.
+The selection can handle elements with different natures, which need to be handled in specific ways: semantic elements, graphical elements, representations, or others concepts unknown to Sirius Components.
+
+This "nature" is encoded in the `Selection.kind` field, which is a string.
+Currently every part of the code which has to deal with the selection must be aware of what kind of selection can occur and the corresponding format of the `Selection.kind` field:
+
+* `Document` represents a top-level element of the `EditingContext`
+* `Diagram` or `Form` indicate a representation
+* `domain::Type` is assumed to represent a semantic element
+
+The selection can only handle one element at a time.
+This format for the `kind` field does not carry enough information for our need.
+On top of that, the concept of `Document`, which is in the process of being removed from Sirius Components is hardcoded in our workbench.
+Very soon, the selection will also have to deal with graphical elements too.
+
+Some of our upcoming features especially like our effort to https://github.com/eclipse-sirius/sirius-components/issues/692[make the workbench independent from our internal concepts] will require a more generic implementation of the `Selection`.
+As a result, we will have to remove this limited set of hardcoded value and make the `kind` more powerful.
+On top of that, we will have to support multiple selections.
+This includes selecting multiple elements but also selecting the semantic and graphical sides of an element.
+
+We need a well-defined format for the field `kind` which will scale as more kinds of selections are added, including by Sirius Components extensions/applications which do not know about each others (without creating conflicts).
+
+== Decision
+
+=== URI for selection kind
+
+We will standardise on a more structured and extensible format for selection kinds, which will be _extensible_ with their own types by Sirius Component-based applications and be more structured/parseable.
+The syntax is inspired by URIs which makes them parseable with standard APIs such as `URLSearchParams`:
+
+[]
+----
+source://type?attribute1=value1&attribute2=value2
+----
+
+Where:
+
+* `source` is a unique identifier of the application which defines this particular kind of selection. The source value `siriusComponents` is reserved for standard selection kinds defined in Sirius Components and `siriusWeb` will be used for Sirius Web concepts
+* `type` indicates what type of element is represented by the selection, for example, `representation`
+* additional key/value pairs can be added as needed to provide more details depending on the type of element
+
+With this syntax, the standard selection item kinds would become:
+
+[Attributes]
+|===
+|Previous syntax | New syntax
+
+|`Document`
+|`siriusWeb://document`
+
+|`Diagram`
+|`siriusComponents://representation?type=diagram`
+
+|`Form`
+|`siriusComponents://representation?type=form`
+
+|`flow::System`
+|`siriusComponents://semantic?domain=flow&entity=System`
+
+|===
+
+It will also be possible to define new kinds of selection, for example to support the graphical selection :
+`siriusComponents://graphical?representationType=diagram&representationId=[id]&nodeId=[id]`
+
+A Sirius Components-based application which provides its own kind of items unknown to Sirius itself will use its own prefix.
+For example: `myapp://user?accessLevel=admin`, `otherapp://requirement?priority=1`.
+
+Sirius Components-based applications which contribute new kind of representations *MUST* use the `siriusComponents://representation?type=XXX` kind, with their of custom value for `type`.
+
+=== Add the support for multi-selection
+
+The structure of the selection will evolve to support multiple selection entries.
+As a result, the concept of selection will change from this:
+
+[]
+----
+export type Selection {
+  id: string;
+  label: string;
+  kind: string;
+}
+----
+
+to this new data structure:
+
+[]
+----
+export type Selection = {
+  entries: SelectionEntry[];
+}
+
+export type SelectionEntry = {
+  id: string;
+  label: string;
+  kind: string;
+}
+----
+
+With this structure, it will be possible to select many semantic elements, graphical elements, representations or even, a mix of those elements.
+
+All the components of the workbench are independent and they will have to handle by themselves how they deal with the multiple selection entries.
+For example, the detail view will display properties of the first selected semantic element regardless of the number of elements selected or the type of the other elements.
+
+In a near future, once the selection of graphical elements will be supported, we could consider that selecting and element in a diagram will select both its graphical element and its associated semantic element.
+
+== Consequences
+
+We need to update all the existing code (both on the frontend and backend) which uses the previous syntax to match the new one.
+
+Some of the most important change are:
+
+- when an element is selected after it has been created by the `CreateObjectModal`
+- when a subscription is base on the selection like in the `PropertiesWebsocketContainer`
+- or when the user want to select an element in a `TreeItem`
+

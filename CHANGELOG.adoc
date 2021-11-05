@@ -6,6 +6,11 @@
 
 - [ADR-034] Switch from semver to calver
 - [ADR-035] Use a common pattern for configuration properties
+- [ADR-036] Adopt a more structured selection
+
+=== Deprecation warning
+
+- https://github.com/eclipse-sirius/sirius-components/issues/818[#818] [workbench] The concept of `Selection` will be restructured, as described in the ADR-036. Every part of the code involved in the manipulation of the selection of the workbench will be impacted. This includes concepts as remote as the representation descriptions which are used to computed fields like `kind`. For example, the behavior of the `TreeDescription#getKindProvider` and `NodeDescription#getTargetObjectKindProvider` will have to be updated for all the providers. Failure to update to the new behavior will make the selection fail in the workbench
 
 === Breaking Changes
 
