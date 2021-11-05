@@ -236,6 +236,8 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
         this.invokeTool(this.activeTool, element.id);
       } else if (this.activeTool.__typename === 'CreateEdgeTool') {
         this.invokeTool(this.activeTool, this.diagramSourceElement.id, element.id);
+      } else if (this.activeTool.__typename === 'DeleteTool') {
+        this.invokeTool(this.activeTool, element.id);
       }
     } else {
       this.actionDispatcher.dispatch({

@@ -295,6 +295,22 @@ export const invokeEdgeToolOnDiagramMutation = gql`
   }
 `;
 
+export const invokeDeleteToolOnDiagramMutation = gql`
+  mutation invokeDeleteToolOnDiagram($input: InvokeDeleteToolOnDiagramInput!) {
+    invokeDeleteToolOnDiagram(input: $input) {
+      __typename
+      ... on InvokeDeleteToolOnDiagramSuccessPayload {
+        diagram {
+          id
+        }
+      }
+      ... on ErrorPayload {
+        message
+      }
+    }
+  }
+`;
+
 export const getToolSectionsQuery = gql`
   fragment edgeCandidateField on EdgeCandidate {
     sources {
@@ -329,6 +345,11 @@ export const getToolSectionsQuery = gql`
                 ... on CreateEdgeTool {
                   edgeCandidates {
                     ...edgeCandidateField
+                  }
+                }
+                ... on DeleteTool {
+                  targetDescriptions {
+                    id
                   }
                 }
               }

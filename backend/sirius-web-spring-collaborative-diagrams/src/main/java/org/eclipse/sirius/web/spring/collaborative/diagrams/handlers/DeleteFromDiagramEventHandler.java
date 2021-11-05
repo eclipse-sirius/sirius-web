@@ -240,5 +240,4 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
                 .flatMap(diagramDescription -> this.diagramDescriptionService.findEdgeDescriptionById(diagramDescription, edge.getDescriptionId()));
         // @formatter:on
     }
-
 }

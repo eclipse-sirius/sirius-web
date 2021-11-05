@@ -118,7 +118,7 @@ public class ModelOperationHandlerSwitch implements Function<ModelOperation, Opt
     }
 
     private Optional<IModelOperationHandler> caseDeleteView(DeleteView deleteViewOperation) {
-        return Optional.empty();
+        return Optional.of(new DeleteViewOperationHandler(this.objectService, this.identifierProvider, this.interpreter, this.childModelOperationHandler, deleteViewOperation));
     }
 
     private Optional<IModelOperationHandler> caseFor(For forOperation) {

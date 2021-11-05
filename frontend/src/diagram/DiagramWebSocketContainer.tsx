@@ -55,6 +55,7 @@ import {
   diagramEventSubscription,
   editLabelMutation as editLabelMutationOp,
   getToolSectionsQuery,
+  invokeDeleteToolOnDiagramMutation,
   invokeEdgeToolOnDiagramMutation,
   invokeNodeToolOnDiagramMutation,
   updateNodeBoundsOp,
@@ -304,6 +305,10 @@ export const DiagramWebSocketContainer = ({
     invokeEdgeToolMutation,
     { loading: invokeEdgeToolLoading, data: invokeEdgeToolData, error: invokeEdgeToolError },
   ] = useMutation(invokeEdgeToolOnDiagramMutation);
+  const [
+    invokeDeleteToolMutation,
+    { loading: invokeDeleteToolLoading, data: invokeDeleteToolData, error: invokeDeleteToolError },
+  ] = useMutation(invokeDeleteToolOnDiagramMutation);
   const [editLabelMutation, { loading: editLabelLoading, data: editLabelData, error: editLabelError }] =
     useMutation(editLabelMutationOp);
   const [
@@ -419,6 +424,16 @@ export const DiagramWebSocketContainer = ({
           };
           invokeEdgeToolMutation({ variables: { input } });
           edgeCreationFeedback.reset();
+        } else if (tool.__typename === 'DeleteTool') {
+          const [diagramElementId] = params;
+          const input = {
+            id: uuid(),
+            editingContextId,
+            representationId,
+            diagramElementId,
+            toolId,
+          };
+          invokeDeleteToolMutation({ variables: { input } });
         } else {
           const [diagramElementId, startingPosition] = params;
           let startingPositionX = startingPosition ? startingPosition.x : 0;
@@ -439,7 +454,15 @@ export const DiagramWebSocketContainer = ({
         dispatch(setActiveToolEvent);
       }
     },
-    [editingContextId, representationId, selectedObjectId, invokeNodeToolMutation, invokeEdgeToolMutation, dispatch]
+    [
+      editingContextId,
+      representationId,
+      selectedObjectId,
+      invokeNodeToolMutation,
+      invokeEdgeToolMutation,
+      invokeDeleteToolMutation,
+      dispatch,
+    ]
   );
 
   const moveElement = useCallback(
@@ -735,6 +758,9 @@ export const DiagramWebSocketContainer = ({
     handleError(invokeEdgeToolLoading, invokeEdgeToolData, invokeEdgeToolError);
   }, [invokeEdgeToolLoading, invokeEdgeToolData, invokeEdgeToolError, handleError]);
   useEffect(() => {
+    handleError(invokeDeleteToolLoading, invokeDeleteToolData, invokeDeleteToolError);
+  }, [invokeDeleteToolLoading, invokeDeleteToolData, invokeDeleteToolError, handleError]);
+  useEffect(() => {
     handleError(arrangeAllLoading, arrangeAllData, arrangeAllError);
   }, [arrangeAllLoading, arrangeAllData, arrangeAllError, handleError]);
 
@@ -815,6 +841,16 @@ export const DiagramWebSocketContainer = ({
           invokeTool(tool, element.id, startingPosition);
           diagramServer.actionDispatcher.dispatch({ kind: SOURCE_ELEMENT_ACTION });
         }
+      } else if (tool.__typename === 'DeleteTool') {
+        const setActiveToolEvent: SetActiveToolEvent = { type: 'SET_ACTIVE_TOOL', activeTool: tool };
+        dispatch(setActiveToolEvent);
+        const setContextualPaletteEvent: SetContextualPaletteEvent = {
+          type: 'SET_CONTEXTUAL_PALETTE',
+          contextualPalette: null,
+        };
+        dispatch(setContextualPaletteEvent);
+        invokeTool(tool, element.id, startingPosition);
+        diagramServer.actionDispatcher.dispatch({ kind: SOURCE_ELEMENT_ACTION });
       }
       const setDefaultToolEvent: SetDefaultToolEvent = { type: 'SET_DEFAULT_TOOL', defaultTool: tool };
       dispatch(setDefaultToolEvent);

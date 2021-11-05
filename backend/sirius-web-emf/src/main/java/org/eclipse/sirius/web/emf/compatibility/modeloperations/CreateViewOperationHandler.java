@@ -98,9 +98,9 @@ public class CreateViewOperationHandler implements IModelOperationHandler {
                     .build();
 
             Optional.ofNullable(variables.get(IDiagramContext.DIAGRAM_CONTEXT))
-            .filter(IDiagramContext.class::isInstance)
-            .map(IDiagramContext.class::cast)
-            .ifPresent(diagramContext -> diagramContext.getViewCreationRequests().add(viewCreationRequest));
+                    .filter(IDiagramContext.class::isInstance)
+                    .map(IDiagramContext.class::cast)
+                    .ifPresent(diagramContext -> diagramContext.getViewCreationRequests().add(viewCreationRequest));
         } catch (IllegalArgumentException exception) {
             this.logger.warn(exception.getMessage(), exception);
         }
