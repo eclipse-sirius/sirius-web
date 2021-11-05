@@ -58,6 +58,8 @@ export interface CreateEdgeTool extends Tool {
   edgeCandidates: EdgeCandidate[];
 }
 
+export interface DeleteTool extends Tool {}
+
 export interface EdgeCandidate {
   sources: NodeDescription[];
   targets: NodeDescription[];

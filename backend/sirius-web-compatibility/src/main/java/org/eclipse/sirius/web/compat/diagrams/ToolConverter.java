@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.compat.diagrams;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -23,11 +24,14 @@ import org.eclipse.sirius.diagram.description.tool.DirectEditLabel;
 import org.eclipse.sirius.viewpoint.description.tool.InitialOperation;
 import org.eclipse.sirius.web.compat.api.IModelOperationHandlerSwitchProvider;
 import org.eclipse.sirius.web.core.api.IEditService;
+import org.eclipse.sirius.web.diagrams.Diagram;
+import org.eclipse.sirius.web.diagrams.Node;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
 import org.eclipse.sirius.web.representations.Failure;
 import org.eclipse.sirius.web.representations.IStatus;
 import org.eclipse.sirius.web.representations.Success;
 import org.eclipse.sirius.web.representations.VariableManager;
+import org.eclipse.sirius.web.spring.collaborative.diagrams.api.IDiagramContext;
 
 /**
  * Converts Sirius Diagrams tools definitions into plain Java functions that can be easily invoked without depending on
@@ -36,6 +40,11 @@ import org.eclipse.sirius.web.representations.VariableManager;
  * @author pcdavid
  */
 public class ToolConverter {
+
+    public static final String ELEMENT_VIEW = "elementView"; //$NON-NLS-1$
+
+    public static final String CONTAINER_VIEW = "containerView"; //$NON-NLS-1$
+
     private final AQLInterpreter interpreter;
 
     private final IEditService editService;
@@ -75,6 +84,14 @@ public class ToolConverter {
                 // Sirius Desktop Delete Tools expect an "element" variable to be available with the value
                 // of the initial invocation context (self).
                 variables.put("element", variables.get(VariableManager.SELF)); //$NON-NLS-1$
+                var selectedNode = variableManager.get(Node.SELECTED_NODE, Node.class);
+                if (selectedNode.isPresent()) {
+                    variables.put(ELEMENT_VIEW, selectedNode.get());
+                    var diagramContext = variableManager.get(IDiagramContext.DIAGRAM_CONTEXT, IDiagramContext.class);
+                    if (diagramContext.isPresent()) {
+                        variableManager.put(CONTAINER_VIEW, this.getParentNode(selectedNode.get(), diagramContext.get().getDiagram()));
+                    }
+                }
                 var modelOperationHandlerSwitch = this.modelOperationHandlerSwitchProvider.getModelOperationHandlerSwitch(this.interpreter);
                 return modelOperationHandlerSwitch.apply(initialOperation.getFirstModelOperations()).map(handler -> {
                     return handler.handle(variables);
@@ -87,5 +104,36 @@ public class ToolConverter {
                 return new Success();
             };
         }
+    }
+
+    private Object getParentNode(Node node, Diagram diagram) {
+        Object parentNode = null;
+        List<Node> nodes = diagram.getNodes();
+        if (nodes.contains(node)) {
+            parentNode = diagram;
+        } else {
+            // @formatter:off
+            parentNode = nodes.stream()
+                    .map(subNode -> this.getParentNode(node, subNode))
+                    .filter(Objects::nonNull)
+                    .findFirst()
+                    .orElse(null);
+            // @formatter:on
+        }
+        return parentNode;
+    }
+
+    private Node getParentNode(Node node, Node nodeContainer) {
+        List<Node> nodes = nodeContainer.getChildNodes();
+        if (nodes.contains(node)) {
+            return nodeContainer;
+        }
+        // @formatter:off
+        return nodes.stream()
+                .map(subNode -> this.getParentNode(node, subNode))
+                .filter(Objects::nonNull)
+                .findFirst()
+                .orElse(null);
+        // @formatter:on
     }
 }

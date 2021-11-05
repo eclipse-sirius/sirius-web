@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,8 @@ export function isContextualTool(tool, element) {
     result = tool.edgeCandidates.some((edgeCandidate) =>
       edgeCandidate.sources.some((source) => source.id === element.descriptionId)
     );
+  } else if (tool.__typename === 'DeleteTool') {
+    result = tool.targetDescriptions.some((targetDescription) => targetDescription.id === element.descriptionId);
   }
   return result;
 }

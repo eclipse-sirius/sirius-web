@@ -21,7 +21,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
-import org.eclipse.sirius.diagram.description.NodeMapping;
 import org.eclipse.sirius.web.compat.api.IIdentifierProvider;
 import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
@@ -59,12 +58,7 @@ public class OperationTestContext {
         this.rootPackage.getEClassifiers().add(0, this.class1);
 
         this.objectService = new IObjectService.NoOp();
-        this.identifierProvider = element -> {
-            if (element instanceof NodeMapping) {
-                return ((NodeMapping) element).getName();
-            }
-            return UUID.randomUUID().toString();
-        };
+        this.identifierProvider = element -> UUID.randomUUID().toString();
         this.interpreter = new AQLInterpreter(List.of(ModelOperationServices.class), List.of(EcorePackage.eINSTANCE));
 
         this.variables = new HashMap<>();

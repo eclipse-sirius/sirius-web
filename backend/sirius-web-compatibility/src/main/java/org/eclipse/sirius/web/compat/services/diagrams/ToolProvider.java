@@ -33,6 +33,7 @@ import org.eclipse.sirius.diagram.description.DiagramElementMapping;
 import org.eclipse.sirius.diagram.description.EdgeMapping;
 import org.eclipse.sirius.diagram.description.Layer;
 import org.eclipse.sirius.diagram.description.tool.ContainerCreationDescription;
+import org.eclipse.sirius.diagram.description.tool.DeleteElementDescription;
 import org.eclipse.sirius.diagram.description.tool.EdgeCreationDescription;
 import org.eclipse.sirius.diagram.description.tool.NodeCreationDescription;
 import org.eclipse.sirius.diagram.description.tool.ToolGroup;
@@ -46,11 +47,13 @@ import org.eclipse.sirius.web.compat.api.IIdentifierProvider;
 import org.eclipse.sirius.web.compat.api.IModelOperationHandlerSwitchProvider;
 import org.eclipse.sirius.web.compat.api.IToolImageProviderFactory;
 import org.eclipse.sirius.web.compat.services.SelectModelElementVariableProvider;
+import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.Node;
 import org.eclipse.sirius.web.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.web.diagrams.description.NodeDescription;
 import org.eclipse.sirius.web.diagrams.tools.CreateEdgeTool;
 import org.eclipse.sirius.web.diagrams.tools.CreateNodeTool;
+import org.eclipse.sirius.web.diagrams.tools.DeleteTool;
 import org.eclipse.sirius.web.diagrams.tools.EdgeCandidate;
 import org.eclipse.sirius.web.diagrams.tools.ITool;
 import org.eclipse.sirius.web.diagrams.tools.ToolSection;
@@ -91,6 +94,12 @@ public class ToolProvider implements IToolProvider {
      * container creation tool has been invoked.
      */
     public static final String CONTAINER_VIEW = "containerView"; //$NON-NLS-1$
+
+    /**
+     * The name of the compatibility variable used to store and retrieve the graphical element on which a delete element
+     * tool has been invoked.
+     */
+    public static final String ELEMENT_VIEW = "elementView"; //$NON-NLS-1$
 
     /**
      * The name of the compatibility variable used to store and retrieve the semantic element on which a generic tool
@@ -148,6 +157,7 @@ public class ToolProvider implements IToolProvider {
         isSupported = isSupported || toolDescription instanceof ContainerCreationDescription;
         isSupported = isSupported || toolDescription instanceof EdgeCreationDescription;
         isSupported = isSupported || toolDescription instanceof ToolDescription;
+        isSupported = isSupported || toolDescription instanceof DeleteElementDescription;
         return isSupported;
     }
 
@@ -217,6 +227,9 @@ public class ToolProvider implements IToolProvider {
         } else if (siriusTool instanceof EdgeCreationDescription) {
             EdgeCreationDescription edgeCreationDescription = (EdgeCreationDescription) siriusTool;
             result = Optional.of(this.convertEdgeCreationDescription(id2NodeDescriptions, interpreter, edgeCreationDescription));
+        } else if (siriusTool instanceof DeleteElementDescription) {
+            DeleteElementDescription deleteElementDescription = (DeleteElementDescription) siriusTool;
+            result = Optional.of(this.convertDeleteElementDescription(id2NodeDescriptions, interpreter, deleteElementDescription));
         }
 
         return result;
@@ -274,7 +287,7 @@ public class ToolProvider implements IToolProvider {
 
         List<DiagramElementMapping> mappings = this.getAllDiagramElementMappings(siriusDiagramDescription);
 
-       // @formatter:off
+        // @formatter:off
         List<String> targetDescriptionIds = mappings.stream()
                 .map(this.identifierProvider::getIdentifier)
                 .collect(Collectors.toList());
@@ -345,6 +358,30 @@ public class ToolProvider implements IToolProvider {
                 .imageURL(imagePath)
                 .handler(this.createEdgeCreationHandler(interpreter, edgeCreationDescription))
                 .edgeCandidates(edgeCandidates)
+                .build();
+        // @formatter:on
+    }
+
+    private DeleteTool convertDeleteElementDescription(Map<UUID, NodeDescription> id2NodeDescriptions, AQLInterpreter interpreter, DeleteElementDescription deleteElementDescription) {
+        String id = this.identifierProvider.getIdentifier(deleteElementDescription);
+        String label = new IdentifiedElementQuery(deleteElementDescription).getLabel();
+        String imagePath = this.toolImageProviderFactory.getToolImageProvider(deleteElementDescription).get();
+
+        List<DiagramElementMapping> mappings = deleteElementDescription.getMappings();
+
+        // @formatter:off
+        List<String> targetDescriptionIds = mappings.stream()
+                .map(this.identifierProvider::getIdentifier)
+                .collect(Collectors.toList());
+        List<NodeDescription> targetDescriptions = targetDescriptionIds.stream()
+                .map(UUID::fromString)
+                .map(id2NodeDescriptions::get)
+                .collect(Collectors.toList());
+        return DeleteTool.newDeleteTool(id)
+                .label(label)
+                .imageURL(imagePath)
+                .handler(this.createDeleteToolHandler(interpreter, deleteElementDescription))
+                .targetDescriptions(targetDescriptions)
                 .build();
         // @formatter:on
     }
@@ -450,6 +487,68 @@ public class ToolProvider implements IToolProvider {
         } else {
             return variableManager -> new Success();
         }
+    }
+
+    private Function<VariableManager, IStatus> createDeleteToolHandler(AQLInterpreter interpreter, DeleteElementDescription deleteElementDescription) {
+        if (deleteElementDescription != null) {
+            InitialOperation initialOperation = deleteElementDescription.getInitialOperation();
+            return variableManager -> {
+                Map<String, Object> variables = variableManager.getVariables();
+                // Provide compatibility aliases for this variable
+                variables.put(ELEMENT, variables.get(VariableManager.SELF));
+                Object selectedNode = variables.get(Node.SELECTED_NODE);
+                if (selectedNode instanceof Node) {
+                    variables.put(ELEMENT_VIEW, selectedNode);
+                    // @formatter:off
+                    Optional.ofNullable(variables.get(IDiagramContext.DIAGRAM_CONTEXT))
+                            .filter(IDiagramContext.class::isInstance)
+                            .map(IDiagramContext.class::cast)
+                            .ifPresent(diagramContext -> {
+                                variables.put(CONTAINER_VIEW, this.getParentNode((Node) selectedNode, diagramContext.getDiagram()));
+                            });
+                    // @formatter:on
+                }
+                var modelOperationHandlerSwitch = this.modelOperationHandlerSwitchProvider.getModelOperationHandlerSwitch(interpreter);
+                return modelOperationHandlerSwitch.apply(initialOperation.getFirstModelOperations()).map(handler -> {
+                    return handler.handle(variables);
+                }).orElse(new Failure("")); //$NON-NLS-1$
+            };
+        } else {
+            return variableManager -> new Success();
+        }
+    }
+
+    private Object getParentNode(Node node, Diagram diagram) {
+        Object parentNode = null;
+        if (node != null && diagram != null) {
+            List<Node> nodes = diagram.getNodes();
+            if (nodes.contains(node)) {
+                parentNode = diagram;
+            } else {
+                // @formatter:off
+                parentNode = nodes.stream()
+                        .map(subNode -> this.getParentNode(node, subNode))
+                        .filter(Objects::nonNull)
+                        .findFirst()
+                        .orElse(null);
+                // @formatter:on
+            }
+        }
+        return parentNode;
+    }
+
+    private Node getParentNode(Node node, Node nodeContainer) {
+        List<Node> nodes = nodeContainer.getChildNodes();
+        if (nodes.contains(node)) {
+            return nodeContainer;
+        }
+        // @formatter:off
+        return nodes.stream()
+                .map(subNode -> this.getParentNode(node, subNode))
+                .filter(Objects::nonNull)
+                .findFirst()
+                .orElse(null);
+        // @formatter:on
     }
 
     private Optional<String> getImagePathFromIconPath(org.eclipse.sirius.diagram.description.tool.ToolSection toolSection) {
