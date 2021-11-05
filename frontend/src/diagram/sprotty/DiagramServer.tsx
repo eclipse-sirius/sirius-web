@@ -75,12 +75,7 @@ interface Root {
   index?: any;
 }
 
-/**
- * The WebSocket diagram server used to communicate with the remote server.
- *
- * @gcoutable
- */
-export class SiriusWebWebSocketDiagramServer extends ModelSource {
+export class DiagramServer extends ModelSource {
   logger;
   mousePositionTracker;
   modelFactory;
@@ -309,8 +304,8 @@ export class SiriusWebWebSocketDiagramServer extends ModelSource {
   }
 
   handleSourceElementAction(action) {
-    const { sourceElement } = action;
-    this.diagramSourceElement = sourceElement;
+    const { element } = action;
+    this.diagramSourceElement = element;
   }
 
   handleShowContextualToolbarAction(action) {

@@ -12,7 +12,7 @@
  *******************************************************************************/
 import { GQLToolSection, Palette, Subscriber, Tool, ToolSection } from 'diagram/DiagramWebSocketContainer.types';
 import { createDependencyInjectionContainer } from 'diagram/sprotty/DependencyInjection';
-import { SiriusWebWebSocketDiagramServer } from 'diagram/sprotty/WebSocketDiagramServer';
+import { DiagramServer } from 'diagram/sprotty/DiagramServer';
 import { GQLDiagram } from 'index';
 import { MutableRefObject } from 'react';
 import { MousePositionTracker, TYPES } from 'sprotty';
@@ -54,7 +54,7 @@ export type SchemaValue = {
 export interface DiagramWebSocketContainerContext {
   id: string;
   displayedRepresentationId: string | null;
-  diagramServer: any;
+  diagramServer: DiagramServer;
   diagram: GQLDiagram;
   toolSections: ToolSection[];
   activeTool: Tool | null;
@@ -346,7 +346,7 @@ export const diagramWebSocketContainerMachine = Machine<
           getCursorOn,
           setActiveTool
         );
-        const diagramServer = <SiriusWebWebSocketDiagramServer>container.get(TYPES.ModelSource);
+        const diagramServer = <DiagramServer>container.get(TYPES.ModelSource);
         /**
          * workaround to inject objects in diagramServer from the injector.
          * We cannot use inversify annotation for now. (and perhaps never)
