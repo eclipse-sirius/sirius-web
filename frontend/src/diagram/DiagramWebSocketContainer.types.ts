@@ -171,13 +171,15 @@ export interface GQLLabelStyle {
   underline: boolean;
 }
 
-export type GQLINodeStyle = GQLImageNodeStyle | GQLListItemNodeStyle | GQLListNodeStyle | GQLRectangularNodeStyle;
+export interface GQLINodeStyle {
+  __typename;
+}
 
-export interface GQLImageNodeStyle {
+export interface GQLImageNodeStyle extends GQLINodeStyle {
   imageURL: string;
 }
 
-export interface GQLListNodeStyle {
+export interface GQLListNodeStyle extends GQLINodeStyle {
   borderColor: string;
   borderRadius: number;
   borderSize: number;
@@ -185,11 +187,11 @@ export interface GQLListNodeStyle {
   color: string;
 }
 
-export interface GQLListItemNodeStyle {
+export interface GQLListItemNodeStyle extends GQLINodeStyle {
   backgroundColor: string;
 }
 
-export interface GQLRectangularNodeStyle {
+export interface GQLRectangularNodeStyle extends GQLINodeStyle {
   borderColor: string;
   borderRadius: number;
   borderSize: number;
@@ -198,10 +200,10 @@ export interface GQLRectangularNodeStyle {
 }
 
 export enum GQLLineStyle {
-  Dash,
-  Dash_Dot,
-  Dot,
-  Solid,
+  Dash = 'Dash',
+  Dash_Dot = 'Dash_Dot',
+  Dot = 'Dot',
+  Solid = 'Solid',
 }
 
 export interface GQLEdge {
@@ -228,18 +230,18 @@ export interface GQLEdgeStyle {
   targetArrow: GQLArrowStyle;
 }
 
-enum GQLArrowStyle {
-  Diamond,
-  FillDiamond,
-  InputArrow,
-  InputArrowWithDiamond,
-  InputArrowWithFillDiamond,
-  InputClosedArrow,
-  InputFillClosedArrow,
-  None,
-  OutputArrow,
-  OutputClosedArrow,
-  OutputFillClosedArrow,
+export enum GQLArrowStyle {
+  Diamond = 'Diamond',
+  FillDiamond = 'FillDiamond',
+  InputArrow = 'InputArrow',
+  InputArrowWithDiamond = 'InputArrowWithDiamond',
+  InputArrowWithFillDiamond = 'InputArrowWithFillDiamond',
+  InputClosedArrow = 'InputClosedArrow',
+  InputFillClosedArrow = 'InputFillClosedArrow',
+  None = 'None',
+  OutputArrow = 'OutputArrow',
+  OutputClosedArrow = 'OutputClosedArrow',
+  OutputFillClosedArrow = 'OutputFillClosedArrow',
 }
 
 export interface GQLToolSection {

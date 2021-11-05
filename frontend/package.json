@@ -20,7 +20,7 @@
     "build": "rollup -c rollup.config.js",
     "build:dev": "rollup -c rollup-dev.config.js",
     "build:watch": "rollup -c rollup-dev.config.js -w",
-    "test": "jest",
+    "test": "jest .*.test.ts",
     "format": "prettier --write \"src/**/*.{js,ts,tsx,css}\"",
     "format-lint": "prettier --list-different \"src/**/*.{js,ts,tsx,css}\""
   },

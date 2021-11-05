@@ -11,6 +11,15 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import {
+  GQLDiagram,
+  GQLEdge,
+  GQLImageNodeStyle,
+  GQLINodeStyle,
+  GQLLabel,
+  GQLNode,
+} from 'diagram/DiagramWebSocketContainer.types';
+import { resizeFeature } from 'diagram/sprotty/resize/model';
+import {
   boundsFeature,
   connectableFeature,
   createFeatureSet,
@@ -27,7 +36,6 @@ import {
   viewportFeature,
   withEditLabelFeature,
 } from 'sprotty';
-import { resizeFeature } from './resize/model';
 
 /**
  * Convert the given diagram object to a Sprotty diagram.
@@ -40,7 +48,7 @@ import { resizeFeature } from './resize/model';
  * @param readOnly Whether the diagram is readonly
  * @return a Sprotty diagram object
  */
-export const convertDiagram = (diagram, httpOrigin: string, readOnly: boolean) => {
+export const convertDiagram = (diagram: GQLDiagram, httpOrigin: string, readOnly: boolean) => {
   const { id, descriptionId, kind, targetObjectId, label, position, size, autoLayout } = diagram;
   const nodes = diagram.nodes.map((node) => convertNode(node, httpOrigin, readOnly, autoLayout));
   const edges = diagram.edges.map((edge) => convertEdge(edge, httpOrigin, readOnly));
@@ -60,7 +68,7 @@ export const convertDiagram = (diagram, httpOrigin: string, readOnly: boolean) =
   };
 };
 
-const convertNode = (node, httpOrigin: string, readOnly: boolean, autoLayout: boolean) => {
+const convertNode = (node: GQLNode, httpOrigin: string, readOnly: boolean, autoLayout: boolean) => {
   const { id, type, targetObjectId, targetObjectKind, targetObjectLabel, descriptionId, label, style, size, position } =
     node;
 
@@ -96,7 +104,7 @@ const convertNode = (node, httpOrigin: string, readOnly: boolean, autoLayout: bo
   };
 };
 
-const handleEditableLabel = (label, readOnly: boolean) => {
+const handleEditableLabel = (label: GQLLabel, readOnly: boolean) => {
   let editableLabel = undefined;
   if (!readOnly) {
     editableLabel = label;
@@ -105,7 +113,7 @@ const handleEditableLabel = (label, readOnly: boolean) => {
   return editableLabel;
 };
 
-const handleNodeFeatures = (node, readOnly: boolean, autoLayout: boolean): FeatureSet => {
+const handleNodeFeatures = (node: GQLNode, readOnly: boolean, autoLayout: boolean): FeatureSet => {
   const features = new Set<symbol>([
     connectableFeature,
     deletableFeature,
@@ -152,21 +160,23 @@ const convertLabel = (label, httpOrigin: string, readOnly: boolean) => {
     };
   }
 
-  if (convertedLabel?.style?.iconURL !== undefined && convertedLabel?.style?.iconURL !== '') {
+  if (convertedLabel.style?.iconURL !== undefined && convertedLabel?.style?.iconURL !== '') {
     const { style } = convertedLabel;
     return { ...convertedLabel, style: { ...style, iconURL: httpOrigin + style.iconURL } };
   }
   return convertedLabel;
 };
 
-const convertNodeStyle = (style, httpOrigin: string) => {
-  if (style?.imageURL !== undefined && style?.imageURL !== '') {
+const isImageNodeStyle = (style: GQLINodeStyle): style is GQLImageNodeStyle => style.__typename === 'ImageNodeStyle';
+
+const convertNodeStyle = (style: GQLINodeStyle, httpOrigin: string) => {
+  if (isImageNodeStyle(style)) {
     return { ...style, imageURL: httpOrigin + style.imageURL };
   }
   return style;
 };
 
-const convertEdge = (edge, httpOrigin: string, readOnly: boolean) => {
+const convertEdge = (edge: GQLEdge, httpOrigin: string, readOnly: boolean) => {
   const {
     id,
     type,
@@ -218,8 +228,8 @@ const convertEdge = (edge, httpOrigin: string, readOnly: boolean) => {
   };
 };
 
-const handleEdgeFeatures = (readonly) => {
-  if (readonly) {
+const handleEdgeFeatures = (readOnly: boolean): FeatureSet => {
+  if (readOnly) {
     return createFeatureSet([selectFeature, fadeFeature, hoverFeedbackFeature]);
   }
 
