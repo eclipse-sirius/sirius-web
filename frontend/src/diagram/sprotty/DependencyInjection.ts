@@ -10,10 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { Tool } from 'diagram/DiagramWebSocketContainer.types';
+import {
+  ACTIVE_TOOL_ACTION,
+  DiagramServer,
+  HIDE_CONTEXTUAL_TOOLBAR_ACTION,
+  SPROTTY_DELETE_ACTION,
+} from 'diagram/sprotty/DiagramServer';
 import { edgeCreationFeedback } from 'diagram/sprotty/edgeCreationFeedback';
 import { GraphFactory } from 'diagram/sprotty/GraphFactory';
 import siriusDragAndDropModule from 'diagram/sprotty/siriusDragAndDropModule';
-// import siriusResizeModule from 'diagram/sprotty/siriusResizeModule';
 import { DiagramView } from 'diagram/sprotty/views/DiagramView';
 import { EdgeView } from 'diagram/sprotty/views/EdgeView';
 import { ImageView } from 'diagram/sprotty/views/ImageView';
@@ -21,12 +27,6 @@ import { LabelView } from 'diagram/sprotty/views/LabelView';
 import { ListItemView } from 'diagram/sprotty/views/ListItemView';
 import { ListView } from 'diagram/sprotty/views/ListView';
 import { RectangleView } from 'diagram/sprotty/views/RectangleView';
-import {
-  ACTIVE_TOOL_ACTION,
-  HIDE_CONTEXTUAL_TOOLBAR_ACTION,
-  SiriusWebWebSocketDiagramServer,
-  SPROTTY_DELETE_ACTION,
-} from 'diagram/sprotty/WebSocketDiagramServer';
 import { Container, ContainerModule, decorate, inject } from 'inversify';
 import {
   boundsModule,
@@ -105,7 +105,7 @@ const siriusWebContainerModule = new ContainerModule((bind, unbind, isBound, reb
   rebind(TYPES.ILogger).to(ConsoleLogger).inSingletonScope();
   rebind(TYPES.LogLevel).toConstantValue(LogLevel.warn);
   rebind(TYPES.IModelFactory).to(GraphFactory).inSingletonScope();
-  bind(TYPES.ModelSource).to(SiriusWebWebSocketDiagramServer).inSingletonScope();
+  bind(TYPES.ModelSource).to(DiagramServer).inSingletonScope();
 
   const context = { bind, unbind, isBound, rebind };
   configureViewerOptions(context, {
@@ -150,7 +150,12 @@ const siriusWebContainerModule = new ContainerModule((bind, unbind, isBound, reb
  * @param containerId The identifier of the container
  * @param onSelectElement The selection call back
  */
-export const createDependencyInjectionContainer = (containerId, onSelectElement, getCursorOn, setActiveTool) => {
+export const createDependencyInjectionContainer = (
+  containerId: string,
+  onSelectElement,
+  getCursorOn,
+  setActiveTool: (tool: Tool | null) => void
+) => {
   const container = new Container();
   container.load(
     defaultModule,
@@ -213,7 +218,7 @@ export const createDependencyInjectionContainer = (containerId, onSelectElement,
         }
       } else if (event.button === 2) {
         edgeCreationFeedback.reset();
-        setActiveTool();
+        setActiveTool(null);
         return [{ kind: ACTIVE_TOOL_ACTION, tool: undefined }];
       }
       return [];

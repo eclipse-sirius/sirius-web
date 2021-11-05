@@ -66,18 +66,14 @@ import {
   updateNodePositionOp,
 } from 'diagram/operations';
 import { ContextualPalette } from 'diagram/palette/ContextualPalette';
-import { edgeCreationFeedback } from 'diagram/sprotty/edgeCreationFeedback';
 import {
-  ACTIVE_TOOL_ACTION,
   HIDE_CONTEXTUAL_TOOLBAR_ACTION,
-  SIRIUS_SELECT_ACTION,
-  SIRIUS_UPDATE_MODEL_ACTION,
   SOURCE_ELEMENT_ACTION,
   SPROTTY_SELECT_ACTION,
   ZOOM_IN_ACTION,
   ZOOM_OUT_ACTION,
-  ZOOM_TO_ACTION,
-} from 'diagram/sprotty/WebSocketDiagramServer';
+} from 'diagram/sprotty/DiagramServer';
+import { edgeCreationFeedback } from 'diagram/sprotty/edgeCreationFeedback';
 import { Toolbar } from 'diagram/Toolbar';
 import { canInvokeTool } from 'diagram/toolServices';
 import { GQLDiagramEventPayload } from 'index';
@@ -86,6 +82,13 @@ import { SelectionDialogWebSocketContainer } from 'selection/SelectionDialogWebS
 import { EditLabelAction, FitToScreenAction, SEdge, SNode } from 'sprotty';
 import { v4 as uuid } from 'uuid';
 import { RepresentationComponentProps } from 'workbench/Workbench.types';
+import {
+  SetActiveToolAction,
+  SiriusSelectAction,
+  SiriusUpdateModelAction,
+  SourceElementaction,
+  ZoomToAction,
+} from './sprotty/DiagramServer.types';
 
 const useDiagramWebSocketContainerStyle = makeStyles((theme) => ({
   container: {
@@ -351,7 +354,8 @@ export const DiagramWebSocketContainer = ({
    */
   useEffect(() => {
     if (diagramServer) {
-      diagramServer.actionDispatcher.dispatch({ kind: SIRIUS_UPDATE_MODEL_ACTION, diagram, readOnly });
+      const action: SiriusUpdateModelAction = { kind: 'siriusUpdateModel', diagram, readOnly };
+      diagramServer.actionDispatcher.dispatch(action);
     }
   }, [diagram, diagramServer, readOnly]);
 
@@ -360,7 +364,8 @@ export const DiagramWebSocketContainer = ({
    */
   useEffect(() => {
     if (diagramServer) {
-      diagramServer.actionDispatcher.dispatch({ kind: ACTIVE_TOOL_ACTION, tool: activeTool });
+      const action: SetActiveToolAction = { kind: 'activeTool', tool: activeTool };
+      diagramServer.actionDispatcher.dispatch(action);
     }
   }, [activeTool, diagramServer, dispatch]);
 
@@ -379,7 +384,8 @@ export const DiagramWebSocketContainer = ({
    */
   useEffect(() => {
     if (diagramServer && newSelection) {
-      diagramServer.actionDispatcher.dispatch({ kind: SIRIUS_SELECT_ACTION, selection: newSelection });
+      const action: SiriusSelectAction = { kind: 'siriusSelectElement', selection: newSelection };
+      diagramServer.actionDispatcher.dispatch(action);
     }
   }, [newSelection, diagramServer, dispatch]);
 
@@ -514,7 +520,7 @@ export const DiagramWebSocketContainer = ({
    * initialization will be done each time we are in the loading state.
    */
   useEffect(() => {
-    const onSelectElement = (newSelectedElement, diagServer) => {
+    const onSelectElement = (newSelectedElement, diagramServer) => {
       let newSelection;
       if (newSelectedElement.root.id === newSelectedElement.id) {
         const { id, label, kind } = newSelectedElement;
@@ -532,16 +538,16 @@ export const DiagramWebSocketContainer = ({
       dispatch(selectedElementEvent);
       /**
        * Dispatch the selected element to the diagramServer if our state indicate that selected element has changed.
-       * We can't use useEffet hook here, because SPROTTY_SELECT_ACTION must be send to SiriusWebWebSocketDiagramServer even
+       * We can't use useEffet hook here, because SPROTTY_SELECT_ACTION must be send to the diagramServer even
        * if the same element is selected several times (useEffect hook only reacts if the selected element is not the same).
        * We can also not use diagramServer from the reducer state here, because it is undefined when onSelectElement() is called.
        */
-      diagServer.actionDispatcher.dispatch({ kind: SPROTTY_SELECT_ACTION, element: newSelectedElement });
+      diagramServer.actionDispatcher.dispatch({ kind: SPROTTY_SELECT_ACTION, element: newSelectedElement });
     };
-    const getCursorOn = (element, diagServer) => {
+    const getCursorOn = (element, diagramServer) => {
       let cursor = 'pointer';
-      if (diagServer.activeTool && diagServer.diagramSourceElement) {
-        const cursorAllowed = canInvokeTool(diagServer.activeTool, diagServer.diagramSourceElement, element);
+      if (diagramServer.activeTool && diagramServer.diagramSourceElement) {
+        const cursorAllowed = canInvokeTool(diagramServer.activeTool, diagramServer.diagramSourceElement, element);
         if (cursorAllowed) {
           cursor = 'copy';
         } else {
@@ -550,7 +556,7 @@ export const DiagramWebSocketContainer = ({
       }
       return cursor;
     };
-    const setActiveTool = (tool: Tool) => {
+    const setActiveTool = (tool: Tool | null) => {
       const setActiveToolEvent: SetActiveToolEvent = { type: 'SET_ACTIVE_TOOL', activeTool: tool };
       dispatch(setActiveToolEvent);
     };
@@ -708,7 +714,8 @@ export const DiagramWebSocketContainer = ({
 
   const setZoomLevel = (level) => {
     if (diagramServer) {
-      diagramServer.actionDispatcher.dispatch({ kind: ZOOM_TO_ACTION, level: level });
+      const action: ZoomToAction = { kind: 'zoomTo', level };
+      diagramServer.actionDispatcher.dispatch(action);
       const selectZoomLevelEvent: SelectZoomLevelEvent = { type: 'SELECT_ZOOM_LEVEL', level };
       dispatch(selectZoomLevelEvent);
     }
@@ -841,7 +848,9 @@ export const DiagramWebSocketContainer = ({
         };
         dispatch(setContextualPaletteEvent);
         edgeCreationFeedback.init(x, y);
-        diagramServer.actionDispatcher.dispatch({ kind: SOURCE_ELEMENT_ACTION, sourceElement: element });
+
+        const action: SourceElementaction = { kind: 'sourceElement', element };
+        diagramServer.actionDispatcher.dispatch(action);
       } else if (tool.__typename === 'CreateNodeTool') {
         if (tool.selectionDescriptionId) {
           const showSelectionDialogEvent: ShowSelectionDialogEvent = {
