@@ -12,7 +12,12 @@
  *******************************************************************************/
 import { Palette } from 'diagram/DiagramWebSocketContainer.types';
 import { convertDiagram } from 'diagram/sprotty/convertDiagram';
+import { SEditableLabel } from 'diagram/sprotty/DependencyInjection';
+import { SiriusSelectAction, SiriusUpdateModelAction } from 'diagram/sprotty/DiagramServer.types';
+import { ResizeAction, SiriusResizeCommand } from 'diagram/sprotty/resize/siriusResize';
 import {
+  Action,
+  ActionHandlerRegistry,
   ApplyLabelEditAction,
   CenterAction,
   EditLabelAction,
@@ -20,7 +25,11 @@ import {
   GetSelectionAction,
   GetViewportAction,
   getWindowScroll,
+  ILogger,
+  IModelFactory,
   ModelSource,
+  MousePositionTracker,
+  MoveAction,
   MoveCommand,
   SelectAction,
   SetViewportAction,
@@ -28,8 +37,6 @@ import {
   SNode,
   UpdateModelAction,
 } from 'sprotty';
-import { SEditableLabel } from './DependencyInjection';
-import { ResizeAction, SiriusResizeCommand } from './resize/siriusResize';
 /** Action to delete a sprotty element */
 export const SPROTTY_DELETE_ACTION = 'sprottyDeleteElement';
 /** Action to select a sprotty element */
@@ -76,9 +83,9 @@ interface Root {
 }
 
 export class DiagramServer extends ModelSource {
-  logger;
-  mousePositionTracker;
-  modelFactory;
+  logger: ILogger;
+  mousePositionTracker: MousePositionTracker;
+  modelFactory: IModelFactory;
   activeTool;
   editLabel;
   moveElement;
@@ -94,7 +101,7 @@ export class DiagramServer extends ModelSource {
 
   httpOrigin;
 
-  initialize(registry) {
+  initialize(registry: ActionHandlerRegistry) {
     super.initialize(registry);
     registry.register(ApplyLabelEditAction.KIND, this);
     registry.register(EditLabelAction.KIND, this);
@@ -120,28 +127,28 @@ export class DiagramServer extends ModelSource {
     return previousRoot;
   }
 
-  handle(action) {
+  handle(action: Action) {
     switch (action.kind) {
       case UpdateModelAction.KIND:
-        this.handleModelAction(action);
+        this.handleUpdateModelAction(action as UpdateModelAction);
         break;
       case ApplyLabelEditAction.KIND:
-        this.handleApplyLabelEditAction(action);
+        this.handleApplyLabelEditAction(action as ApplyLabelEditAction);
         break;
       case EditLabelAction.KIND:
-        this.handleEditLabelAction(action);
+        this.handleEditLabelAction(action as EditLabelAction);
         break;
       case MoveCommand.KIND:
-        this.handleMoveAction(action);
+        this.handleMoveAction(action as MoveAction);
         break;
       case SiriusResizeCommand.KIND:
-        this.handleResizeAction(action);
+        this.handleResizeAction(action as ResizeAction);
         break;
       case SIRIUS_UPDATE_MODEL_ACTION:
-        this.handleSiriusUpdateModelAction(action);
+        this.handleSiriusUpdateModelAction(action as SiriusUpdateModelAction);
         break;
       case SIRIUS_SELECT_ACTION:
-        this.handleSiriusSelectAction(action);
+        this.handleSiriusSelectAction(action as SiriusSelectAction);
         break;
       case SPROTTY_SELECT_ACTION:
         this.handleSprottySelectAction(action);
@@ -176,7 +183,7 @@ export class DiagramServer extends ModelSource {
     }
   }
 
-  handleModelAction(action) {
+  handleUpdateModelAction(action: UpdateModelAction) {
     const { newRoot } = action;
     if (newRoot) {
       this.currentRoot = newRoot;
@@ -245,14 +252,7 @@ export class DiagramServer extends ModelSource {
     const { diagram, readOnly } = action;
     if (diagram) {
       const convertedDiagram = convertDiagram(diagram, this.httpOrigin, readOnly);
-      const sprottyModel = this.modelFactory.createRoot(convertedDiagram);
-      this.actionDispatcher.request(GetSelectionAction.create()).then((selectionResult) => {
-        sprottyModel.index
-          .all()
-          .filter((element) => selectionResult.selectedElementsIDs.indexOf(element.id) >= 0)
-          .forEach((element) => (element.selected = true));
-        this.actionDispatcher.dispatch(new UpdateModelAction(sprottyModel));
-      });
+      this.actionDispatcher.dispatch(new UpdateModelAction(convertedDiagram));
     } else {
       this.actionDispatcher.dispatch(new UpdateModelAction(INITIAL_ROOT));
     }
@@ -412,13 +412,13 @@ export class DiagramServer extends ModelSource {
     return element;
   }
 
-  setLogger(logger) {
+  setLogger(logger: ILogger) {
     this.logger = logger;
   }
-  setMousePositionTracker(mousePositionTracker) {
+  setMousePositionTracker(mousePositionTracker: MousePositionTracker) {
     this.mousePositionTracker = mousePositionTracker;
   }
-  setModelFactory(modelFactory) {
+  setModelFactory(modelFactory: IModelFactory) {
     this.modelFactory = modelFactory;
   }
 

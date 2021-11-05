@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { httpOrigin } from 'common/URL';
+import { GQLImageNodeStyle, GQLINodeStyle } from 'diagram/DiagramWebSocketContainer.types';
 import 'reflect-metadata';
 import {
   boundsFeature,
@@ -27,7 +28,10 @@ import {
 } from 'sprotty';
 import { convertDiagram } from '../convertDiagram';
 import { resizeFeature } from '../resize/model';
-import siriusWebDiagram from './siriusWebDiagram.json';
+import { siriusWebDiagram } from './siriusWebDiagram';
+
+const isImageNodeStyle = (nodeStyle: GQLINodeStyle): nodeStyle is GQLImageNodeStyle =>
+  nodeStyle.__typename === 'ImageNodeStyle';
 
 describe('ModelConverter', () => {
   it('converts a diagram', () => {
@@ -86,14 +90,14 @@ describe('ModelConverter', () => {
         expect(sprottyNode.targetObjectId).toBe(targetObjectId);
         expect(sprottyNode.descriptionId).toBe(descriptionId);
         let convertedStyle;
-        if (style?.imageURL !== undefined) {
+        if (isImageNodeStyle(style)) {
           convertedStyle = { ...style, imageURL: httpOrigin + style.imageURL };
         } else {
           convertedStyle = style;
         }
         expect(sprottyNode.style).toStrictEqual(convertedStyle);
-        expect(sprottyNode.size).toBe(size);
-        expect(sprottyNode.position).toBe(position);
+        expect((sprottyNode as any).size).toBe(size);
+        expect((sprottyNode as any).position).toBe(position);
         expect(sprottyNode.features).toStrictEqual(
           createFeatureSet([
             connectableFeature,
@@ -140,10 +144,10 @@ describe('ModelConverter', () => {
         expect(sprottyEdge.type).toBe(odWebEdge.type);
         expect(sprottyEdge.targetObjectId).toBe(odWebEdge.targetObjectId);
         expect(sprottyEdge.descriptionId).toBe(odWebEdge.descriptionId);
-        expect(sprottyEdge.sourceId).toBe(odWebEdge.sourceId);
-        expect(sprottyEdge.targetId).toBe(odWebEdge.targetId);
+        expect((sprottyEdge as any).sourceId).toBe(odWebEdge.sourceId);
+        expect((sprottyEdge as any).targetId).toBe(odWebEdge.targetId);
         expect(sprottyEdge.style).toBe(odWebEdge.style);
-        expect(sprottyEdge.routingPoints).toBe(odWebEdge.routingPoints);
+        expect((sprottyEdge as any).routingPoints).toBe(odWebEdge.routingPoints);
         expect(sprottyEdge.features).toStrictEqual(
           createFeatureSet([deletableFeature, selectFeature, fadeFeature, hoverFeedbackFeature])
         );
