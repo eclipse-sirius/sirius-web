@@ -48,8 +48,8 @@ extend type Mutation {
 input DeleteTreeItemInput {
   id: ID!
   editingContextId: ID!
+  representationId: ID!
   treeItemId: ID!
-  kind: String!
 }
 
 type DeleteTreeItemSuccessPayload {
@@ -61,9 +61,9 @@ union DeleteTreeItemPayload = DeleteTreeItemSuccessPayload | ErrorPayload
 input RenameTreeItemInput {
     id: ID!
     editingContextId: ID!
+    representationId: ID!
     treeItemId: ID!
-    kind: String!
-    newName: String!
+    newLabel: String!
 }
  
 type RenameTreeItemSuccessPayload {

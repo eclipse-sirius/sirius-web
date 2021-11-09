@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.spring.collaborative.trees.api;
 
+import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.web.trees.Tree;
@@ -27,5 +28,5 @@ import reactor.core.publisher.Sinks.One;
 public interface ITreeEventHandler {
     boolean canHandle(ITreeInput treeInput);
 
-    void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, Tree tree, ITreeInput treeInput);
+    void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, Tree tree, ITreeInput treeInput);
 }

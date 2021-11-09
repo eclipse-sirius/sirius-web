@@ -15,6 +15,8 @@ import { useMachine } from '@xstate/react';
 import { HORIZONTAL, Panels, SECOND_PANEL } from 'core/panels/Panels';
 import { OnboardArea } from 'onboarding/OnboardArea';
 import React, { useContext, useEffect } from 'react';
+import { TreeItemContextMenuContext } from 'tree/TreeItemContextMenu';
+import { TreeItemContextMenuContribution } from 'tree/TreeItemContextMenuContribution';
 import { LeftSite } from 'workbench/LeftSite';
 import { RepresentationContext } from 'workbench/RepresentationContext';
 import { RepresentationNavigation } from 'workbench/RepresentationNavigation';
@@ -47,6 +49,7 @@ export const Workbench = ({
   initialRepresentationSelected,
   onRepresentationSelected,
   readOnly,
+  children,
 }: WorkbenchProps) => {
   const classes = useWorkbenchStyles();
   const { registry } = useContext(RepresentationContext);
@@ -82,13 +85,22 @@ export const Workbench = ({
     }
   }, [onRepresentationSelected, initialRepresentationSelected, displayedRepresentation]);
 
+  const treeItemContextMenuContributions = [];
+  React.Children.forEach(children, (child) => {
+    if (React.isValidElement(child) && child.type === TreeItemContextMenuContribution) {
+      treeItemContextMenuContributions.push(child);
+    }
+  });
+
   const leftSite = (
-    <LeftSite
-      editingContextId={editingContextId}
-      selection={selection}
-      setSelection={setSelection}
-      readOnly={readOnly}
-    />
+    <TreeItemContextMenuContext.Provider value={treeItemContextMenuContributions}>
+      <LeftSite
+        editingContextId={editingContextId}
+        selection={selection}
+        setSelection={setSelection}
+        readOnly={readOnly}
+      />
+    </TreeItemContextMenuContext.Provider>
   );
 
   const rightSite = (

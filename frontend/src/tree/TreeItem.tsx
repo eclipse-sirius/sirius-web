@@ -17,13 +17,11 @@ import { Text } from 'core/text/Text';
 import { Textfield } from 'core/textfield/Textfield';
 import gql from 'graphql-tag';
 import { ArrowCollapsed, ArrowExpanded, More, NoIcon } from 'icons';
-import { TreeItemModalComponentProps } from 'index';
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { v4 as uuid } from 'uuid';
 import styles from './TreeItem.module.css';
 import { TreeItemProps } from './TreeItem.types';
 import { TreeItemContextMenu } from './TreeItemContextMenu';
-import { TreeItemHandlersContext } from './TreeItemHandlersContext';
 
 const deleteTreeItemMutation = gql`
   mutation deleteTreeItem($input: DeleteTreeItemInput!) {
@@ -82,6 +80,7 @@ const ItemCollapseToggle = ({ item, depth, onExpand }) => {
 
 export const TreeItem = ({
   editingContextId,
+  treeId,
   item,
   depth,
   onExpand,
@@ -90,7 +89,6 @@ export const TreeItem = ({
   readOnly,
 }: TreeItemProps) => {
   const initialState = {
-    modalDisplayed: null,
     showContextMenu: false,
     menuAnchor: null,
     editingMode: false,
@@ -98,7 +96,7 @@ export const TreeItem = ({
     prevSelectionId: null,
   };
   const [state, setState] = useState(initialState);
-  const { showContextMenu, menuAnchor, modalDisplayed, editingMode, label } = state;
+  const { showContextMenu, menuAnchor, editingMode, label } = state;
 
   const refDom = useRef() as any;
 
@@ -115,9 +113,6 @@ export const TreeItem = ({
       }
     }
   }, [renameTreeItemData, renameTreeItemError, renameTreeItemLoading]);
-
-  const treeItemHandlersRegistry = useContext(TreeItemHandlersContext);
-  const itemHandler = treeItemHandlersRegistry.getTreeItemHandler(item);
 
   // custom hook for getting previous value
   const usePrevious = (value) => {
@@ -140,7 +135,6 @@ export const TreeItem = ({
     if (!showContextMenu) {
       setState((prevState) => {
         return {
-          modalDisplayed: prevState.modalDisplayed,
           showContextMenu: true,
           menuAnchor: event.currentTarget,
           editingMode: false,
@@ -177,25 +171,13 @@ export const TreeItem = ({
         };
       });
     };
-    const openModal = (modalName) => {
-      setState((prevState) => {
-        return {
-          modalDisplayed: modalName,
-          showContextMenu: false,
-          menuAnchor: null,
-          editingMode: false,
-          label: item.label,
-          prevSelectionId: prevState.prevSelectionId,
-        };
-      });
-    };
     const deleteItem = () => {
       const variables = {
         input: {
           id: uuid(),
           editingContextId,
+          representationId: treeId,
           treeItemId: item.id,
-          kind: item.kind,
         },
       };
       deleteTreeItem({ variables });
@@ -205,53 +187,18 @@ export const TreeItem = ({
     contextMenu = (
       <TreeItemContextMenu
         menuAnchor={menuAnchor}
-        item={item}
         editingContextId={editingContextId}
+        item={item}
         readOnly={readOnly}
+        depth={depth}
+        onExpand={onExpand}
+        selection={selection}
+        setSelection={setSelection}
         enterEditingMode={enterEditingMode}
-        openModal={openModal}
         deleteItem={deleteItem}
-        closeContextMenu={closeContextMenu}
-        treeItemHandler={itemHandler}
+        onClose={closeContextMenu}
       />
     );
-  }
-
-  // Modals handling
-  const closeModal = () =>
-    setState((prevState) => {
-      return {
-        modalDisplayed: null,
-        showContextMenu: false,
-        menuAnchor: null,
-        editingMode: false,
-        label: item.label,
-        prevSelectionId: prevState.prevSelectionId,
-      };
-    });
-  const selectAndRevealItem = (object) => {
-    if (!item.expanded && item.hasChildren) {
-      onExpand(item.id, depth);
-    }
-    const { id, label, kind } = object;
-    setSelection({ id, label, kind });
-    closeModal();
-  };
-
-  let modal = null;
-  if (modalDisplayed !== null) {
-    const ModalComponent = itemHandler.getModal(modalDisplayed);
-    const props: TreeItemModalComponentProps = {
-      editingContextId,
-      item,
-      depth,
-      selection,
-      setSelection: selectAndRevealItem,
-      onExpand,
-      onClose: closeModal,
-      readOnly,
-    };
-    modal = <ModalComponent {...props} />;
   }
 
   let children = null;
@@ -263,6 +210,7 @@ export const TreeItem = ({
             <li key={childItem.id}>
               <TreeItem
                 editingContextId={editingContextId}
+                treeId={treeId}
                 item={childItem}
                 depth={depth + 1}
                 onExpand={onExpand}
@@ -303,7 +251,7 @@ export const TreeItem = ({
       if (isNameValid && item) {
         renameTreeItem({
           variables: {
-            input: { id: uuid(), editingContextId, treeItemId: item.id, kind: item.kind, newName: label },
+            input: { id: uuid(), editingContextId, representationId: treeId, treeItemId: item.id, newLabel: label },
           },
         });
       } else {
@@ -406,7 +354,6 @@ export const TreeItem = ({
       </div>
       {children}
       {contextMenu}
-      {modal}
     </>
   );
 };

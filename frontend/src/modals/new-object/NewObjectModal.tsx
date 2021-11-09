@@ -92,7 +92,7 @@ const useNewObjectModalStyles = makeStyles((theme) => ({
 const isErrorPayload = (payload: GQLCreateChildPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
 
-export const NewObjectModal = ({ editingContextId, item, setSelection, onClose }: NewObjectModalProps) => {
+export const NewObjectModal = ({ editingContextId, item, onObjectCreated, onClose }: NewObjectModalProps) => {
   const classes = useNewObjectModalStyles();
   const [{ value, context }, dispatch] = useMachine<NewObjectModalContext, NewObjectModalEvent>(newObjectModalMachine);
   const { newObjectModal, toast } = value as SchemaValue;
@@ -172,9 +172,9 @@ export const NewObjectModal = ({ editingContextId, item, setSelection, onClose }
 
   useEffect(() => {
     if (newObjectModal === 'success') {
-      setSelection(objectToSelect);
+      onObjectCreated(objectToSelect);
     }
-  }, [newObjectModal, setSelection, objectToSelect]);
+  }, [newObjectModal, onObjectCreated, objectToSelect]);
 
   return (
     <>

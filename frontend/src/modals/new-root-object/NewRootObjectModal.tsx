@@ -107,7 +107,7 @@ const useNewRootObjectModalStyles = makeStyles((theme) => ({
   },
 }));
 
-export const NewRootObjectModal = ({ editingContextId, item, setSelection, onClose }: NewRootObjectModalProps) => {
+export const NewRootObjectModal = ({ editingContextId, item, onObjectCreated, onClose }: NewRootObjectModalProps) => {
   const classes = useNewRootObjectModalStyles();
   const [{ value, context }, dispatch] = useMachine<NewRootObjectModalContext, NewRootObjectModalEvent>(
     newRootObjectModalMachine
@@ -240,9 +240,9 @@ export const NewRootObjectModal = ({ editingContextId, item, setSelection, onClo
 
   useEffect(() => {
     if (newRootObjectModal === 'success') {
-      setSelection(objectToSelect);
+      onObjectCreated(objectToSelect);
     }
-  }, [newRootObjectModal, setSelection, objectToSelect]);
+  }, [newRootObjectModal, onObjectCreated, objectToSelect]);
 
   return (
     <>

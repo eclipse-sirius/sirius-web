@@ -10,10 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { Selection } from 'workbench/Workbench.types';
 export interface NewRepresentationModalProps {
   editingContextId: string;
   item: any;
-  setSelection: (representation: { id: string; label: string; kind: string }) => void;
+  onRepresentationCreated: (representation: Selection) => void;
   onClose: () => void;
 }
 

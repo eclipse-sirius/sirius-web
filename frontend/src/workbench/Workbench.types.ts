@@ -10,6 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { ReactNode } from 'react';
+
 export type Selection = {
   id: string;
   label: string;
@@ -27,6 +29,7 @@ export type WorkbenchProps = {
   initialRepresentationSelected: Representation;
   onRepresentationSelected: (representation: Representation) => void;
   readOnly: boolean;
+  children: ReactNode;
 };
 
 export type RepresentationComponentProps = {

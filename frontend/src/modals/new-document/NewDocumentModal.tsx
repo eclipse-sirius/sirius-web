@@ -91,7 +91,7 @@ const useNewDocumentModalStyles = makeStyles((theme) => ({
 const isErrorPayload = (payload: GQLCreateDocumentPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
 
-export const NewDocumentModal = ({ editingContextId, onDocumentCreated, onClose }: NewDocumentModalProps) => {
+export const NewDocumentModal = ({ editingContextId, onClose }: NewDocumentModalProps) => {
   const classes = useNewDocumentModalStyles();
   const [{ value, context }, dispatch] = useMachine<NewDocumentModalContext, NewDocumentModalEvent>(
     newDocumentModalMachine
@@ -180,9 +180,9 @@ export const NewDocumentModal = ({ editingContextId, onDocumentCreated, onClose 
 
   useEffect(() => {
     if (newDocumentModal === 'success') {
-      onDocumentCreated();
+      onClose();
     }
-  }, [newDocumentModal, onDocumentCreated]);
+  }, [newDocumentModal, onClose]);
 
   return (
     <>

@@ -16,6 +16,7 @@ import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -25,6 +26,7 @@ import org.eclipse.sirius.web.annotations.graphql.GraphQLID;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLNonNull;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLObjectType;
 import org.eclipse.sirius.web.representations.IRepresentationDescription;
+import org.eclipse.sirius.web.representations.IStatus;
 import org.eclipse.sirius.web.representations.VariableManager;
 
 /**
@@ -60,6 +62,10 @@ public final class TreeDescription implements IRepresentationDescription {
     private Function<VariableManager, Boolean> hasChildrenProvider;
 
     private Predicate<VariableManager> canCreatePredicate;
+
+    private Function<VariableManager, IStatus> deleteHandler;
+
+    private BiFunction<VariableManager, String, IStatus> renameHandler;
 
     private TreeDescription() {
         // Prevent instantiation
@@ -125,6 +131,14 @@ public final class TreeDescription implements IRepresentationDescription {
         return this.canCreatePredicate;
     }
 
+    public Function<VariableManager, IStatus> getDeleteHandler() {
+        return this.deleteHandler;
+    }
+
+    public BiFunction<VariableManager, String, IStatus> getRenameHandler() {
+        return this.renameHandler;
+    }
+
     public static Builder newTreeDescription(UUID id) {
         return new Builder(id);
     }
@@ -167,6 +181,10 @@ public final class TreeDescription implements IRepresentationDescription {
         private Function<VariableManager, Boolean> hasChildrenProvider;
 
         private Predicate<VariableManager> canCreatePredicate;
+
+        private Function<VariableManager, IStatus> deleteHandler;
+
+        private BiFunction<VariableManager, String, IStatus> renameHandler;
 
         private Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
@@ -232,6 +250,16 @@ public final class TreeDescription implements IRepresentationDescription {
             return this;
         }
 
+        public Builder deleteHandler(Function<VariableManager, IStatus> deleteHandler) {
+            this.deleteHandler = Objects.requireNonNull(deleteHandler);
+            return this;
+        }
+
+        public Builder renameHandler(BiFunction<VariableManager, String, IStatus> renameHandler) {
+            this.renameHandler = Objects.requireNonNull(renameHandler);
+            return this;
+        }
+
         public TreeDescription build() {
             TreeDescription treeDescription = new TreeDescription();
             treeDescription.id = Objects.requireNonNull(this.id);
@@ -247,6 +275,8 @@ public final class TreeDescription implements IRepresentationDescription {
             treeDescription.childrenProvider = Objects.requireNonNull(this.childrenProvider);
             treeDescription.hasChildrenProvider = Objects.requireNonNull(this.hasChildrenProvider);
             treeDescription.canCreatePredicate = Objects.requireNonNull(this.canCreatePredicate);
+            treeDescription.deleteHandler = Objects.requireNonNull(this.deleteHandler);
+            treeDescription.renameHandler = Objects.requireNonNull(this.renameHandler);
             return treeDescription;
         }
     }

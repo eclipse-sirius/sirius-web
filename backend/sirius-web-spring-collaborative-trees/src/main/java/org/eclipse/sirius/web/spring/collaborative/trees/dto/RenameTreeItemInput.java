@@ -20,7 +20,7 @@ import org.eclipse.sirius.web.annotations.graphql.GraphQLField;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLID;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLInputObjectType;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLNonNull;
-import org.eclipse.sirius.web.core.api.IInput;
+import org.eclipse.sirius.web.spring.collaborative.trees.api.ITreeInput;
 
 /**
  * The input for the renaming of a tree item.
@@ -28,27 +28,27 @@ import org.eclipse.sirius.web.core.api.IInput;
  * @author pcdavid
  */
 @GraphQLInputObjectType
-public final class RenameTreeItemInput implements IInput {
+public final class RenameTreeItemInput implements ITreeInput {
     private UUID id;
 
     private UUID editingContextId;
 
+    private UUID representationId;
+
     private UUID treeItemId;
 
-    private String kind;
-
-    private String newName;
+    private String newLabel;
 
     public RenameTreeItemInput() {
         // Used by Jackson
     }
 
-    public RenameTreeItemInput(UUID id, UUID editingContextId, UUID treeItemId, String kind, String newName) {
+    public RenameTreeItemInput(UUID id, UUID editingContextId, UUID representationId, UUID treeItemId, String newLabel) {
         this.id = Objects.requireNonNull(id);
         this.editingContextId = Objects.requireNonNull(editingContextId);
+        this.representationId = Objects.requireNonNull(representationId);
         this.treeItemId = Objects.requireNonNull(treeItemId);
-        this.kind = Objects.requireNonNull(kind);
-        this.newName = Objects.requireNonNull(newName);
+        this.newLabel = Objects.requireNonNull(newLabel);
     }
 
     @Override
@@ -68,6 +68,13 @@ public final class RenameTreeItemInput implements IInput {
 
     @GraphQLID
     @GraphQLField
+    @Override
+    public UUID getRepresentationId() {
+        return this.representationId;
+    }
+
+    @GraphQLID
+    @GraphQLField
     @GraphQLNonNull
     public UUID getTreeItemId() {
         return this.treeItemId;
@@ -75,19 +82,13 @@ public final class RenameTreeItemInput implements IInput {
 
     @GraphQLField
     @GraphQLNonNull
-    public String getKind() {
-        return this.kind;
-    }
-
-    @GraphQLField
-    @GraphQLNonNull
-    public String getNewName() {
-        return this.newName;
+    public String getNewLabel() {
+        return this.newLabel;
     }
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, editingContextId: {2}, treeItemId: {3}, kind: {4}, newName: {5}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.editingContextId, this.treeItemId, this.kind, this.newName);
+        String pattern = "{0} '{'id: {1}, editingContextId: {2}, representationId: {3}, treeItemId: {4}, newLabel: {5}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.editingContextId, this.treeItemId, this.newLabel);
     }
 }
