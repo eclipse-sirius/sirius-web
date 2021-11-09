@@ -19,6 +19,7 @@
 === Improvements
 
 - https://github.com/eclipse-sirius/sirius-components/issues/799[#799] [diagram] The buttons in the diagram's toolbar now have proper tooltips
+- [core] Add a task to display TypeScript errors in the VS Code problems view
 
 
 == v0.5.0
