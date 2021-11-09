@@ -30,6 +30,8 @@ import org.eclipse.sirius.web.annotations.graphql.GraphQLObjectType;
 @Immutable
 @GraphQLObjectType
 public final class TreeItem {
+    public static final String SELECTED_TREE_ITEM = "selectedTreeItem"; //$NON-NLS-1$
+
     private String id;
 
     private String kind;

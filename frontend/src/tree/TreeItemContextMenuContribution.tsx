@@ -10,19 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { TreeItemType } from 'tree/TreeItem.types';
-import { Selection } from 'workbench/Workbench.types';
+import { TreeItemContextMenuContributionProps } from 'tree/TreeItemContextMenuContribution.types';
 
-export interface TreeProps {
-  editingContextId: string;
-  tree: TreeType;
-  onExpand: (id: string, depth: number) => void;
-  selection?: Selection;
-  setSelection: (selection: Selection) => void;
-  readOnly: boolean;
-}
-
-export interface TreeType {
-  id: string;
-  children: TreeItemType[];
-}
+export const TreeItemContextMenuContribution = ({ canHandle, component }: TreeItemContextMenuContributionProps) => {
+  return null; // Do nothing on purpose for now
+};

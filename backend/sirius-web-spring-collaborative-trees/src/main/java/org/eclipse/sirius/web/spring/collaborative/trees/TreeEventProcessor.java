@@ -19,6 +19,7 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.core.api.IRepresentationInput;
@@ -59,6 +60,8 @@ public class TreeEventProcessor implements ITreeEventProcessor {
 
     private final Logger logger = LoggerFactory.getLogger(TreeEventProcessor.class);
 
+    private final IEditingContext editingContext;
+
     private final ITreeService treeService;
 
     private final TreeCreationParameters treeCreationParameters;
@@ -77,10 +80,11 @@ public class TreeEventProcessor implements ITreeEventProcessor {
 
     private final Timer timer;
 
-    public TreeEventProcessor(ITreeService treeService, TreeCreationParameters treeCreationParameters, List<ITreeEventHandler> treeEventHandlers, ISubscriptionManager subscriptionManager,
-            MeterRegistry meterRegistry, IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry) {
+    public TreeEventProcessor(IEditingContext editingContext, ITreeService treeService, TreeCreationParameters treeCreationParameters, List<ITreeEventHandler> treeEventHandlers,
+            ISubscriptionManager subscriptionManager, MeterRegistry meterRegistry, IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry) {
         this.logger.trace("Creating the tree event processor {}", treeCreationParameters.getEditingContext().getId()); //$NON-NLS-1$
 
+        this.editingContext = Objects.requireNonNull(editingContext);
         this.treeService = Objects.requireNonNull(treeService);
         this.treeCreationParameters = Objects.requireNonNull(treeCreationParameters);
         this.treeEventHandlers = Objects.requireNonNull(treeEventHandlers);
@@ -115,7 +119,7 @@ public class TreeEventProcessor implements ITreeEventProcessor {
 
             if (optionalTreeEventHandler.isPresent()) {
                 ITreeEventHandler treeEventHandler = optionalTreeEventHandler.get();
-                treeEventHandler.handle(payloadSink, changeDescriptionSink, this.currentTree.get(), treeInput);
+                treeEventHandler.handle(payloadSink, changeDescriptionSink, this.editingContext, this.currentTree.get(), treeInput);
             } else {
                 this.logger.warn("No handler found for event: {}", treeInput); //$NON-NLS-1$
             }

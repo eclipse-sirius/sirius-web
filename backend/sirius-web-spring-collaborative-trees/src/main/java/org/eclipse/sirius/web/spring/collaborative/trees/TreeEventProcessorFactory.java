@@ -81,8 +81,8 @@ public class TreeEventProcessorFactory implements IRepresentationEventProcessorF
                         .build();
                 // @formatter:on
 
-            IRepresentationEventProcessor treeEventProcessor = new TreeEventProcessor(this.treeService, treeCreationParameters, this.treeEventHandlers, this.subscriptionManagerFactory.create(),
-                    new SimpleMeterRegistry(), this.representationRefreshPolicyRegistry);
+            IRepresentationEventProcessor treeEventProcessor = new TreeEventProcessor(editingContext, this.treeService, treeCreationParameters, this.treeEventHandlers,
+                    this.subscriptionManagerFactory.create(), new SimpleMeterRegistry(), this.representationRefreshPolicyRegistry);
             // @formatter:off
                 return Optional.of(treeEventProcessor)
                         .filter(representationEventProcessorClass::isInstance)

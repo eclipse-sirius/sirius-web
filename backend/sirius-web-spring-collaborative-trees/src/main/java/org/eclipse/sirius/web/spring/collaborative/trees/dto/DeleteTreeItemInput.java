@@ -20,7 +20,7 @@ import org.eclipse.sirius.web.annotations.graphql.GraphQLField;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLID;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLInputObjectType;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLNonNull;
-import org.eclipse.sirius.web.core.api.IInput;
+import org.eclipse.sirius.web.spring.collaborative.trees.api.ITreeInput;
 
 /**
  * The input for the deleting of a tree item.
@@ -28,24 +28,24 @@ import org.eclipse.sirius.web.core.api.IInput;
  * @author pcdavid
  */
 @GraphQLInputObjectType
-public final class DeleteTreeItemInput implements IInput {
+public final class DeleteTreeItemInput implements ITreeInput {
     private UUID id;
 
     private UUID editingContextId;
 
-    private UUID treeItemId;
+    private UUID representationId;
 
-    private String kind;
+    private UUID treeItemId;
 
     public DeleteTreeItemInput() {
         // Used by Jackson
     }
 
-    public DeleteTreeItemInput(UUID id, UUID editingContextId, UUID treeItemId, String kind) {
+    public DeleteTreeItemInput(UUID id, UUID editingContextId, UUID representationId, UUID treeItemId) {
         this.id = Objects.requireNonNull(id);
         this.editingContextId = Objects.requireNonNull(editingContextId);
+        this.representationId = Objects.requireNonNull(representationId);
         this.treeItemId = Objects.requireNonNull(treeItemId);
-        this.kind = Objects.requireNonNull(kind);
     }
 
     @Override
@@ -65,20 +65,21 @@ public final class DeleteTreeItemInput implements IInput {
 
     @GraphQLID
     @GraphQLField
+    @Override
+    public UUID getRepresentationId() {
+        return this.representationId;
+    }
+
+    @GraphQLID
+    @GraphQLField
     @GraphQLNonNull
     public UUID getTreeItemId() {
         return this.treeItemId;
     }
 
-    @GraphQLField
-    @GraphQLNonNull
-    public String getKind() {
-        return this.kind;
-    }
-
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, editingContextId: {2}, treeItemId: {3}, kind: {4}, newName: {5}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.editingContextId, this.treeItemId, this.kind);
+        String pattern = "{0} '{'id: {1}, editingContextId: {2}, representationId: {3}, treeItemId: {4}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.editingContextId, this.treeItemId);
     }
 }

@@ -14,6 +14,7 @@ import { Selection } from 'workbench/Workbench.types';
 
 export interface TreeItemProps {
   editingContextId: string;
+  treeId: string;
   item: TreeItemType;
   depth: number;
   onExpand: (id: string, depth: number) => void;

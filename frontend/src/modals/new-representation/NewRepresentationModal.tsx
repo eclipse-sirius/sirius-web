@@ -109,7 +109,7 @@ const isErrorPayload = (payload: GQLCreateRepresentationPayload): payload is GQL
 export const NewRepresentationModal = ({
   editingContextId,
   item,
-  setSelection,
+  onRepresentationCreated,
   onClose,
 }: NewRepresentationModalProps) => {
   const classes = useNewRepresentationModalStyles();
@@ -214,7 +214,7 @@ export const NewRepresentationModal = ({
 
   useEffect(() => {
     if (newRepresentationModal === 'success') {
-      setSelection({
+      onRepresentationCreated({
         id: createdRepresentationId,
         label: createdRepresentationLabel,
         kind: createdRepresentationKind,
@@ -225,7 +225,7 @@ export const NewRepresentationModal = ({
     createdRepresentationKind,
     createdRepresentationLabel,
     newRepresentationModal,
-    setSelection,
+    onRepresentationCreated,
   ]);
 
   return (

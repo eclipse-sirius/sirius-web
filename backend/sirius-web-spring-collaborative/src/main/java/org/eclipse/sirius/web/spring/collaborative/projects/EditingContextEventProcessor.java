@@ -72,6 +72,8 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
 
     public static final String REPRESENTATION_ID = "representationId"; //$NON-NLS-1$
 
+    public static final String REPRESENTATION_LABEL = "representationLabel"; //$NON-NLS-1$
+
     private final Logger logger = LoggerFactory.getLogger(EditingContextEventProcessor.class);
 
     private final ICollaborativeMessageService messageService;
@@ -128,6 +130,14 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
                 if (representationId instanceof UUID) {
                     DeleteRepresentationInput deleteRepresentationInput = new DeleteRepresentationInput(UUID.randomUUID(), (UUID) representationId);
                     this.doHandle(Sinks.one(), deleteRepresentationInput);
+                }
+            } else if (ChangeKind.REPRESENTATION_TO_RENAME.equals(changeDescription.getKind())) {
+                Object representationId = changeDescription.getParameters().get(REPRESENTATION_ID);
+                Object representationLabel = changeDescription.getParameters().get(REPRESENTATION_LABEL);
+                if (representationId instanceof UUID && representationLabel instanceof String) {
+                    RenameRepresentationInput renameRepresentationInput = new RenameRepresentationInput(UUID.randomUUID(), this.getEditingContextId(), (UUID) representationId,
+                            (String) representationLabel);
+                    this.doHandle(Sinks.one(), renameRepresentationInput);
                 }
             }
 

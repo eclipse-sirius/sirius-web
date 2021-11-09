@@ -82,6 +82,7 @@ export const Tree = ({ editingContextId, tree, onExpand, selection, setSelection
           <li key={item.id}>
             <TreeItem
               editingContextId={editingContextId}
+              treeId={tree.id}
               item={item}
               depth={1}
               onExpand={onExpand}

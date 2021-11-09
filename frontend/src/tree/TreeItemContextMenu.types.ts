@@ -10,44 +10,19 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { ClassNameMap } from '@material-ui/core/styles/withStyles';
 import { Selection } from 'workbench/Workbench.types';
 import { TreeItemType } from './TreeItem.types';
-
-export interface TreeItemHandler {
-  handles: (treeItem: TreeItemType) => boolean;
-  getModal: (name: string) => TreeItemModalComponent;
-  getMenuEntries: (
-    item: TreeItemType,
-    editingContextId: string,
-    readOnly: boolean,
-    openModal: (modalName: string) => void,
-    closeContextMenu: () => void,
-    classes: ClassNameMap<'item'>
-  ) => Array<React.ReactElement>;
-}
-
-export interface TreeItemModalComponentProps {
-  editingContextId: string;
-  item: TreeItemType;
-  depth: number;
-  selection: Selection;
-  setSelection: (selection: Selection) => void;
-  onExpand: (id: string, depth: number) => void;
-  onClose: () => void;
-  readOnly: boolean;
-}
-
-export type TreeItemModalComponent = (props: TreeItemModalComponentProps) => JSX.Element;
 
 export interface TreeItemContextMenuProps {
   menuAnchor: Element;
   item: TreeItemType;
   editingContextId: string;
   readOnly: boolean;
+  depth: number;
+  onExpand: (id: string, depth: number) => void;
+  selection: Selection;
+  setSelection: (selection: Selection) => void;
   enterEditingMode: () => void;
-  openModal: (modalName: string) => void;
   deleteItem: () => void;
-  closeContextMenu: () => void;
-  treeItemHandler: TreeItemHandler;
+  onClose: () => void;
 }

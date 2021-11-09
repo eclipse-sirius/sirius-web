@@ -32,6 +32,7 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/773[#773] [compatibility] The synchronization policy of the node descriptions is now properly computed from the `AbstractNodeMapping`
 - https://github.com/eclipse-sirius/sirius-components/issues/694[#694] [core] Data can be provided to Success in order to notify changment made by operation made on the editing context.
 - [explorer] The context menus on explorer items has been migrated to Material UI
+- https://github.com/eclipse-sirius/sirius-components/issues/692[#692] [tree] The tree representation will now act as a proper representation. Its event handlers will now be implementations of  `ITreeEventHandler` and its input will be implementations of `ITreeInput`
 
 === Bug fixes
 
