@@ -103,6 +103,7 @@ public class DeleteViewOperationHandlerTests {
                 .toolSections(List.of())
                 .nodeDescriptions(List.of(this.getNodeDescription(UUID.randomUUID())))
                 .edgeDescriptions(List.of())
+                .unsynchronizedDiagramElementsDescriptionIds(List.of())
                 .build();
 
         Node node = Node.newNode(UUID.randomUUID())
@@ -217,7 +218,7 @@ public class DeleteViewOperationHandlerTests {
                 .borderNodeDescriptions(new ArrayList<>())
                 .childNodeDescriptions(new ArrayList<>())
                 .labelEditHandler((variableManager, newLabel) -> new Success())
-                .deleteHandler(variableManager -> new Success())
+                .deleteFromModelHandler(variableManager -> new Success())
                 .build();
         // @formatter:on
     }

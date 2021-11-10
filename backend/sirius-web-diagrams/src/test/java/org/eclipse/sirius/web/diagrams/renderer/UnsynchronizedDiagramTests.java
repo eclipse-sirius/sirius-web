@@ -294,7 +294,7 @@ public class UnsynchronizedDiagramTests {
                 .borderNodeDescriptions(new ArrayList<>())
                 .childNodeDescriptions(new ArrayList<>())
                 .labelEditHandler((variableManager, newLabel) -> new Success())
-                .deleteHandler(variableManager -> new Success())
+                .deleteFromModelHandler(variableManager -> new Success())
                 .build();
         NodeDescription unsynchronizedNodeDescription = NodeDescription.newNodeDescription(UUID.nameUUIDFromBytes("unsynchronized".getBytes())) //$NON-NLS-1$
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
@@ -309,7 +309,7 @@ public class UnsynchronizedDiagramTests {
                 .borderNodeDescriptions(new ArrayList<>())
                 .childNodeDescriptions(List.of(subUnsynchronizedNodeDescription))
                 .labelEditHandler((variableManager, newLabel) -> new Success())
-                .deleteHandler(variableManager -> new Success())
+                .deleteFromModelHandler(variableManager -> new Success())
                 .build();
 
         NodeDescription synchronizedNodeDescription = NodeDescription.newNodeDescription(UUID.nameUUIDFromBytes("synchronized".getBytes())) //$NON-NLS-1$
@@ -325,7 +325,7 @@ public class UnsynchronizedDiagramTests {
                 .borderNodeDescriptions(new ArrayList<>())
                 .childNodeDescriptions(new ArrayList<>())
                 .labelEditHandler((variableManager, newLabel) -> new Success())
-                .deleteHandler(variableManager -> new Success())
+                .deleteFromModelHandler(variableManager -> new Success())
                 .build();
 
         DiagramDescription diagramDescription = DiagramDescription.newDiagramDescription(UUID.nameUUIDFromBytes("diagram".getBytes())) //$NON-NLS-1$
@@ -336,6 +336,7 @@ public class UnsynchronizedDiagramTests {
                 .nodeDescriptions(List.of(unsynchronizedNodeDescription, synchronizedNodeDescription))
                 .edgeDescriptions(List.of())
                 .toolSections(List.of())
+                .unsynchronizedDiagramElementsDescriptionIds(List.of())
                 .build();
         // @formatter:on
 

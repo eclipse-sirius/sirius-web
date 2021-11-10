@@ -42,6 +42,7 @@ export const diagramEventSubscription = gql`
             height
           }
           autoLayout
+          unsynchronizedDiagramElementsDescriptionIds
           nodes {
             ...nodeFields
             borderNodes {
@@ -199,15 +200,21 @@ export const diagramEventSubscription = gql`
   }
 `;
 
+export const deleteFromModelMutation = gql`
+  mutation deleteFromModelMutation($input: DeleteFromModelInput!) {
+    deleteFromModel(input: $input) {
+      __typename
+      ... on ErrorPayload {
+        message
+      }
+    }
+  }
+`;
+
 export const deleteFromDiagramMutation = gql`
   mutation deleteFromDiagram($input: DeleteFromDiagramInput!) {
     deleteFromDiagram(input: $input) {
       __typename
-      ... on DeleteFromDiagramSuccessPayload {
-        diagram {
-          id
-        }
-      }
       ... on ErrorPayload {
         message
       }

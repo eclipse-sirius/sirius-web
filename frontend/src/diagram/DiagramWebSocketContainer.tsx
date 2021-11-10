@@ -52,6 +52,7 @@ import {
 import {
   arrangeAllOp,
   deleteFromDiagramMutation,
+  deleteFromModelMutation,
   diagramEventSubscription,
   editLabelMutation as editLabelMutationOp,
   getToolSectionsQuery,
@@ -294,7 +295,11 @@ export const DiagramWebSocketContainer = ({
   } = context;
 
   const [
-    deleteElementsMutation,
+    deleteFromModelElementsMutation,
+    { loading: deleteFromModelLoading, data: deleteFromModelData, error: deleteFromModelError },
+  ] = useMutation(deleteFromModelMutation);
+  const [
+    deleteFromDiagramElementsMutation,
     { loading: deleteFromDiagramLoading, data: deleteFromDiagramData, error: deleteFromDiagramError },
   ] = useMutation(deleteFromDiagramMutation);
   const [
@@ -385,7 +390,7 @@ export const DiagramWebSocketContainer = ({
     }
   }, [displayedRepresentationId, representationId, dispatch]);
 
-  const deleteElements = useCallback(
+  const deleteFromModelElements = useCallback(
     (diagramElements) => {
       const edgeIds = diagramElements.filter((diagramElement) => diagramElement instanceof SEdge).map((elt) => elt.id);
       const nodeIds = diagramElements.filter((diagramElement) => diagramElement instanceof SNode).map((elt) => elt.id);
@@ -397,14 +402,36 @@ export const DiagramWebSocketContainer = ({
         nodeIds,
         edgeIds,
       };
-      deleteElementsMutation({ variables: { input } });
+      deleteFromModelElementsMutation({ variables: { input } });
       const setContextualPaletteEvent: SetContextualPaletteEvent = {
         type: 'SET_CONTEXTUAL_PALETTE',
         contextualPalette: null,
       };
       dispatch(setContextualPaletteEvent);
     },
-    [editingContextId, representationId, deleteElementsMutation, dispatch]
+    [editingContextId, representationId, deleteFromModelElementsMutation, dispatch]
+  );
+
+  const deleteFromDiagramElements = useCallback(
+    (diagramElements) => {
+      const edgeIds = diagramElements.filter((diagramElement) => diagramElement instanceof SEdge).map((elt) => elt.id);
+      const nodeIds = diagramElements.filter((diagramElement) => diagramElement instanceof SNode).map((elt) => elt.id);
+
+      const input = {
+        id: uuid(),
+        editingContextId,
+        representationId,
+        nodeIds,
+        edgeIds,
+      };
+      deleteFromDiagramElementsMutation({ variables: { input } });
+      const setContextualPaletteEvent: SetContextualPaletteEvent = {
+        type: 'SET_CONTEXTUAL_PALETTE',
+        contextualPalette: null,
+      };
+      dispatch(setContextualPaletteEvent);
+    },
+    [editingContextId, representationId, deleteFromDiagramElementsMutation, dispatch]
   );
 
   const invokeTool = useCallback(
@@ -508,11 +535,12 @@ export const DiagramWebSocketContainer = ({
         const { id, label, kind } = newSelectedElement;
         newSelection = { id, label, kind };
       } else {
-        const { targetObjectId, targetObjectKind, targetObjectLabel } = newSelectedElement;
+        const { targetObjectId, targetObjectKind, targetObjectLabel, descriptionId } = newSelectedElement;
         newSelection = {
           id: targetObjectId,
           label: targetObjectLabel,
           kind: targetObjectKind,
+          descriptionId,
         };
       }
       setSelection(newSelection);
@@ -566,7 +594,7 @@ export const DiagramWebSocketContainer = ({
       const initializeRepresentationEvent: InitializeRepresentationEvent = {
         type: 'INITIALIZE',
         diagramDomElement,
-        deleteElements,
+        deleteFromModelElements,
         invokeTool,
         moveElement,
         resizeElement,
@@ -585,7 +613,8 @@ export const DiagramWebSocketContainer = ({
     displayedRepresentationId,
     diagramServer,
     setSelection,
-    deleteElements,
+    deleteFromModelElements,
+    deleteFromDiagramElements,
     invokeTool,
     moveElement,
     resizeElement,
@@ -742,6 +771,9 @@ export const DiagramWebSocketContainer = ({
     handleError(editLabelLoading, editLabelData, editLabelError);
   }, [editLabelLoading, editLabelData, editLabelError, handleError]);
   useEffect(() => {
+    handleError(deleteFromModelLoading, deleteFromModelData, deleteFromModelError);
+  }, [deleteFromModelLoading, deleteFromModelData, deleteFromModelError, handleError]);
+  useEffect(() => {
     handleError(deleteFromDiagramLoading, deleteFromDiagramData, deleteFromDiagramError);
   }, [deleteFromDiagramLoading, deleteFromDiagramData, deleteFromDiagramError, handleError]);
   useEffect(() => {
@@ -815,9 +847,22 @@ export const DiagramWebSocketContainer = ({
           new EditLabelAction(element.editableLabel.id),
         ]);
     }
-    let invokeDeleteFromContextualPalette;
+    let invokeCustomDeleteToolFromContextualPalette;
+    let invokeDeleteFromModelFromContextualPalette;
+    let invokeDeleteFromDiagramFromContextualPalette;
     if (deletable) {
-      invokeDeleteFromContextualPalette = () => deleteElements([element]);
+      invokeCustomDeleteToolFromContextualPalette = (tool) => {
+        invokeTool(tool, element.id, startingPosition);
+        const setContextualPaletteEvent: SetContextualPaletteEvent = {
+          type: 'SET_CONTEXTUAL_PALETTE',
+          contextualPalette: null,
+        };
+        dispatch(setContextualPaletteEvent);
+      };
+      invokeDeleteFromModelFromContextualPalette = () => deleteFromModelElements([element]);
+      if (diagram?.unsynchronizedDiagramElementsDescriptionIds.includes(selection.descriptionId)) {
+        invokeDeleteFromDiagramFromContextualPalette = () => deleteFromDiagramElements([element]);
+      }
     }
     const invokeToolFromContextualPalette = (tool) => {
       if (tool.__typename === 'CreateEdgeTool') {
@@ -841,16 +886,6 @@ export const DiagramWebSocketContainer = ({
           invokeTool(tool, element.id, startingPosition);
           diagramServer.actionDispatcher.dispatch({ kind: SOURCE_ELEMENT_ACTION });
         }
-      } else if (tool.__typename === 'DeleteTool') {
-        const setActiveToolEvent: SetActiveToolEvent = { type: 'SET_ACTIVE_TOOL', activeTool: tool };
-        dispatch(setActiveToolEvent);
-        const setContextualPaletteEvent: SetContextualPaletteEvent = {
-          type: 'SET_CONTEXTUAL_PALETTE',
-          contextualPalette: null,
-        };
-        dispatch(setContextualPaletteEvent);
-        invokeTool(tool, element.id, startingPosition);
-        diagramServer.actionDispatcher.dispatch({ kind: SOURCE_ELEMENT_ACTION });
       }
       const setDefaultToolEvent: SetDefaultToolEvent = { type: 'SET_DEFAULT_TOOL', defaultTool: tool };
       dispatch(setDefaultToolEvent);
@@ -862,7 +897,9 @@ export const DiagramWebSocketContainer = ({
           targetElement={element}
           invokeTool={invokeToolFromContextualPalette}
           invokeLabelEdit={invokeLabelEditFromContextualPalette}
-          invokeDelete={invokeDeleteFromContextualPalette}
+          invokeCustomDeleteTool={invokeCustomDeleteToolFromContextualPalette}
+          invokeDeleteFromModel={invokeDeleteFromModelFromContextualPalette}
+          invokeDeleteFromDiagram={invokeDeleteFromDiagramFromContextualPalette}
           invokeClose={invokeCloseFromContextualPalette}
         />
       </div>

@@ -27,6 +27,7 @@ type Diagram implements Representation {
   nodes: [Node!]!
   edges: [Edge!]!
   toolSections: [ToolSection!]!
+  unsynchronizedDiagramElementsDescriptionIds: [ID!]!
 }
 
 type Node {
@@ -190,6 +191,7 @@ type DiagramDescription implements RepresentationDescription {
   id: ID!
   label: String!
   autoLayout: Boolean!
+  unsynchronizedDiagramElementsDescriptionIds: [ID!]!
 }
 
 type NodeDescription {
@@ -198,6 +200,7 @@ type NodeDescription {
 
 extend type Mutation {
   arrangeAll(input: ArrangeAllInput!): ArrangeAllPayload!
+  deleteFromModel(input: DeleteFromModelInput!): DeleteFromModelPayload!
   deleteFromDiagram(input: DeleteFromDiagramInput!): DeleteFromDiagramPayload!
   editLabel(input: EditLabelInput!): EditLabelPayload!
   invokeEdgeToolOnDiagram(input: InvokeEdgeToolOnDiagramInput!): InvokeEdgeToolOnDiagramPayload!
@@ -216,6 +219,20 @@ input ArrangeAllInput {
 union ArrangeAllPayload = ArrangeAllSuccessPayload | ErrorPayload
 
 type ArrangeAllSuccessPayload {
+  id: ID!
+}
+
+input DeleteFromModelInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  nodeIds: [ID!]!
+  edgeIds: [ID!]!
+}
+
+union DeleteFromModelPayload = ErrorPayload | DeleteFromModelSuccessPayload
+
+type DeleteFromModelSuccessPayload {
   id: ID!
 }
 

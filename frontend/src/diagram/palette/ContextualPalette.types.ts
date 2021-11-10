@@ -17,6 +17,8 @@ export interface ContextualPaletteProps {
   targetElement: any;
   invokeTool: (tool: Tool) => void;
   invokeLabelEdit: () => void | null;
-  invokeDelete: () => void | null;
+  invokeCustomDeleteTool: () => void | null;
+  invokeDeleteFromModel: () => void | null;
+  invokeDeleteFromDiagram: () => void | null;
   invokeClose: () => void;
 }

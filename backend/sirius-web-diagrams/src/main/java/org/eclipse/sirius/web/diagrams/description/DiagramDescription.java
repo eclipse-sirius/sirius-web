@@ -64,6 +64,8 @@ public final class DiagramDescription implements IRepresentationDescription {
 
     private List<EdgeDescription> edgeDescriptions;
 
+    private List<UUID> unsynchronizedDiagramElementsDescriptionIds;
+
     private DiagramDescription() {
         // Prevent instantiation
     }
@@ -87,6 +89,12 @@ public final class DiagramDescription implements IRepresentationDescription {
     @GraphQLNonNull
     public boolean isAutoLayout() {
         return this.autoLayout;
+    }
+
+    @GraphQLField
+    @GraphQLNonNull
+    public List<UUID> getUnsynchronizedDiagramElementsDescriptionIds() {
+        return this.unsynchronizedDiagramElementsDescriptionIds;
     }
 
     public Function<VariableManager, String> getTargetObjectIdProvider() {
@@ -149,6 +157,8 @@ public final class DiagramDescription implements IRepresentationDescription {
 
         private List<EdgeDescription> edgeDescriptions;
 
+        private List<UUID> unsynchronizedDiagramElementsDescriptionIds;
+
         private Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -193,6 +203,11 @@ public final class DiagramDescription implements IRepresentationDescription {
             return this;
         }
 
+        public Builder unsynchronizedDiagramElementsDescriptionIds(List<UUID> unsynchronizedDiagramElementsDescriptionIds) {
+            this.unsynchronizedDiagramElementsDescriptionIds = Objects.requireNonNull(unsynchronizedDiagramElementsDescriptionIds);
+            return this;
+        }
+
         public DiagramDescription build() {
             DiagramDescription diagramDescription = new DiagramDescription();
             diagramDescription.id = Objects.requireNonNull(this.id);
@@ -204,6 +219,7 @@ public final class DiagramDescription implements IRepresentationDescription {
             diagramDescription.toolSections = Objects.requireNonNull(this.toolSections);
             diagramDescription.nodeDescriptions = Objects.requireNonNull(this.nodeDescriptions);
             diagramDescription.edgeDescriptions = Objects.requireNonNull(this.edgeDescriptions);
+            diagramDescription.unsynchronizedDiagramElementsDescriptionIds = Objects.requireNonNull(this.unsynchronizedDiagramElementsDescriptionIds);
             return diagramDescription;
         }
     }

@@ -144,6 +144,7 @@ public class DiagramRendererEdgeTests {
                 .nodeDescriptions(nodeDescriptions)
                 .edgeDescriptions(edgeDescriptions)
                 .toolSections(List.of())
+                .unsynchronizedDiagramElementsDescriptionIds(List.of())
                 .build();
         // @formatter:on
 
@@ -209,7 +210,7 @@ public class DiagramRendererEdgeTests {
                 .borderNodeDescriptions(new ArrayList<>())
                 .childNodeDescriptions(new ArrayList<>())
                 .labelEditHandler((variableManager, newLabel) -> new Success())
-                .deleteHandler(variableManager -> new Success())
+                .deleteFromModelHandler(variableManager -> new Success())
                 .build();
         // @formatter:on
     }
@@ -264,8 +265,8 @@ public class DiagramRendererEdgeTests {
                 .targetObjectKindProvider(variableManager -> "") //$NON-NLS-1$
                 .targetObjectLabelProvider(variableManager -> "")//$NON-NLS-1$
                 .styleProvider(edgeStyleProvider)
-                .deleteHandler(variableManager -> new Failure("")) //$NON-NLS-1$
                 .labelEditHandler((variableManager, newLabel) -> new Failure("")) //$NON-NLS-1$
+                .deleteFromModelHandler(variableManager -> new Failure("")) //$NON-NLS-1$
                 .build();
         // @formatter:on
     }

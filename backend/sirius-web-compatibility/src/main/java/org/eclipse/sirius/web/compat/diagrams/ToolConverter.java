@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.compat.diagrams;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -24,8 +23,9 @@ import org.eclipse.sirius.diagram.description.tool.DirectEditLabel;
 import org.eclipse.sirius.viewpoint.description.tool.InitialOperation;
 import org.eclipse.sirius.web.compat.api.IModelOperationHandlerSwitchProvider;
 import org.eclipse.sirius.web.core.api.IEditService;
-import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.Node;
+import org.eclipse.sirius.web.diagrams.ViewDeletionRequest;
+import org.eclipse.sirius.web.diagrams.description.SynchronizationPolicy;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
 import org.eclipse.sirius.web.representations.Failure;
 import org.eclipse.sirius.web.representations.IStatus;
@@ -75,28 +75,11 @@ public class ToolConverter {
         }
     }
 
-    public Function<VariableManager, IStatus> createDeleteToolHandler(DeleteElementDescription deleteDescription) {
+    public Function<VariableManager, IStatus> createDeleteFromModelHandler(DeleteElementDescription deleteDescription) {
         var optionalInitialOperation = Optional.ofNullable(deleteDescription).map(DeleteElementDescription::getInitialOperation);
         if (optionalInitialOperation.isPresent()) {
-            InitialOperation initialOperation = optionalInitialOperation.get();
-            return variableManager -> {
-                Map<String, Object> variables = variableManager.getVariables();
-                // Sirius Desktop Delete Tools expect an "element" variable to be available with the value
-                // of the initial invocation context (self).
-                variables.put("element", variables.get(VariableManager.SELF)); //$NON-NLS-1$
-                var selectedNode = variableManager.get(Node.SELECTED_NODE, Node.class);
-                if (selectedNode.isPresent()) {
-                    variables.put(ELEMENT_VIEW, selectedNode.get());
-                    var diagramContext = variableManager.get(IDiagramContext.DIAGRAM_CONTEXT, IDiagramContext.class);
-                    if (diagramContext.isPresent()) {
-                        variableManager.put(CONTAINER_VIEW, this.getParentNode(selectedNode.get(), diagramContext.get().getDiagram()));
-                    }
-                }
-                var modelOperationHandlerSwitch = this.modelOperationHandlerSwitchProvider.getModelOperationHandlerSwitch(this.interpreter);
-                return modelOperationHandlerSwitch.apply(initialOperation.getFirstModelOperations()).map(handler -> {
-                    return handler.handle(variables);
-                }).orElse(new Failure("")); //$NON-NLS-1$
-            };
+            // A delete tool is defined, so no generic delete from model tool should be provided
+            return null;
         } else {
             // If no delete tool is defined, execute the default behavior: delete the underlying semantic element.
             return variableManager -> {
@@ -106,34 +89,31 @@ public class ToolConverter {
         }
     }
 
-    private Object getParentNode(Node node, Diagram diagram) {
-        Object parentNode = null;
-        List<Node> nodes = diagram.getNodes();
-        if (nodes.contains(node)) {
-            parentNode = diagram;
+    public Function<VariableManager, IStatus> createDeleteFromDiagramHandler(DeleteElementDescription deleteDescription, SynchronizationPolicy synchronizationPolicy) {
+        var optionalInitialOperation = Optional.ofNullable(deleteDescription).map(DeleteElementDescription::getInitialOperation);
+        if (optionalInitialOperation.isPresent() || synchronizationPolicy == SynchronizationPolicy.SYNCHRONIZED) {
+            // A delete tool is defined or the node is synchronized, so no generic delete from diagram tool should be
+            // provided
+            return null;
         } else {
-            // @formatter:off
-            parentNode = nodes.stream()
-                    .map(subNode -> this.getParentNode(node, subNode))
-                    .filter(Objects::nonNull)
-                    .findFirst()
-                    .orElse(null);
-            // @formatter:on
-        }
-        return parentNode;
-    }
+            // If no delete tool is defined, execute the default behavior: delete the graphical element.
+            return variableManager -> {
+                var selectedNode = variableManager.get(Node.SELECTED_NODE, Node.class);
+                if (selectedNode.isPresent()) {
 
-    private Node getParentNode(Node node, Node nodeContainer) {
-        List<Node> nodes = nodeContainer.getChildNodes();
-        if (nodes.contains(node)) {
-            return nodeContainer;
+                    // @formatter:off
+                    ViewDeletionRequest viewDeletionRequest = ViewDeletionRequest.newViewDeletionRequest()
+                            .elementId(selectedNode.get().getId())
+                            .build();
+
+                    Optional.ofNullable(variableManager.getVariables().get(IDiagramContext.DIAGRAM_CONTEXT))
+                            .filter(IDiagramContext.class::isInstance)
+                            .map(IDiagramContext.class::cast)
+                            .ifPresent(diagramContext -> diagramContext.getViewDeletionRequests().add(viewDeletionRequest));
+                    // @formatter:on
+                }
+                return new Success();
+            };
         }
-        // @formatter:off
-        return nodes.stream()
-                .map(subNode -> this.getParentNode(node, subNode))
-                .filter(Objects::nonNull)
-                .findFirst()
-                .orElse(null);
-        // @formatter:on
     }
 }

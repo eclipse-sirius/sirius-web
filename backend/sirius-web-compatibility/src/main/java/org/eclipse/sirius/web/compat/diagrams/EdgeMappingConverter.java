@@ -38,6 +38,7 @@ import org.eclipse.sirius.web.diagrams.description.EdgeDescription.Builder;
 import org.eclipse.sirius.web.diagrams.description.LabelDescription;
 import org.eclipse.sirius.web.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.web.diagrams.description.NodeDescription;
+import org.eclipse.sirius.web.diagrams.description.SynchronizationPolicy;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
 import org.eclipse.sirius.web.representations.VariableManager;
 import org.springframework.stereotype.Service;
@@ -112,9 +113,15 @@ public class EdgeMappingConverter {
                 .map(EdgeStyleDescription::getEndLabelStyleDescription)
                 .map(labelDescription -> this.createLabelDescription(interpreter, labelStyleDescriptionConverter, labelDescription,  "_endlabel", edgeMapping)); //$NON-NLS-1$
 
+        SynchronizationPolicy synchronizationPolicy = SynchronizationPolicy.SYNCHRONIZED;
+        if (!edgeMapping.isCreateElements()) {
+            synchronizationPolicy = SynchronizationPolicy.UNSYNCHRONIZED;
+        }
+
         ToolConverter toolConverter = new ToolConverter(interpreter, this.editService, this.modelOperationHandlerSwitchProvider);
-        var deleteHandler = toolConverter.createDeleteToolHandler(edgeMapping.getDeletionDescription());
         var labelEditHandler = toolConverter.createDirectEditToolHandler(edgeMapping.getLabelDirectEdit());
+        var deleteFromModelHandler = toolConverter.createDeleteFromModelHandler(edgeMapping.getDeletionDescription());
+        var deleteFromDiagramHandler = toolConverter.createDeleteFromDiagramHandler(edgeMapping.getDeletionDescription(), synchronizationPolicy);
 
         Builder builder = EdgeDescription.newEdgeDescription(UUID.fromString(this.identifierProvider.getIdentifier(edgeMapping)))
                 .targetObjectIdProvider(targetIdProvider)
@@ -127,7 +134,8 @@ public class EdgeMappingConverter {
                 .targetNodesProvider(targetNodesProvider)
                 .styleProvider(styleProvider)
                 .labelEditHandler(labelEditHandler)
-                .deleteHandler(deleteHandler);
+                .deleteFromModelHandler(deleteFromModelHandler)
+                .deleteFromDiagramHandler(deleteFromDiagramHandler);
         optionalBeginLabelDescription.ifPresent(builder::beginLabelDescription);
         optionalCenterLabelDescription.ifPresent(builder::centerLabelDescription);
         optionalEndLabelDescription.ifPresent(builder::endLabelDescription);

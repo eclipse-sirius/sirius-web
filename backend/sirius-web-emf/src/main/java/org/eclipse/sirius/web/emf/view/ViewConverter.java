@@ -165,6 +165,7 @@ public class ViewConverter {
                     .nodeDescriptions(nodeDescriptions)
                     .edgeDescriptions(edgeDescriptions)
                     .toolSections(this.createToolSections(interpreter))
+                    .unsynchronizedDiagramElementsDescriptionIds(List.of())
                     .build();
             // @formatter:on
         } finally {
@@ -239,7 +240,7 @@ public class ViewConverter {
                 .borderNodeDescriptions(List.of())
                 .sizeProvider(variableManager -> Size.UNDEFINED)
                 .labelEditHandler(this.createLabelEditHandler(viewNodeDescription, interpreter))
-                .deleteHandler(this.createDeleteHandler(viewNodeDescription, interpreter))
+                .deleteFromModelHandler(this.createDeleteHandler(viewNodeDescription, interpreter))
                 .build();
         // @formatter:on
         this.convertedNodes.put(viewNodeDescription, result);
@@ -468,7 +469,7 @@ public class ViewConverter {
                                      .sourceNodesProvider(sourceNodesProvider)
                                      .targetNodesProvider(targetNodesProvider)
                                      .styleProvider(styleProvider)
-                                     .deleteHandler(this.createDeleteHandler(viewEdgeDescription, interpreter))
+                                     .deleteFromModelHandler(this.createDeleteHandler(viewEdgeDescription, interpreter))
                                      .build();
         this.convertedEdges.put(viewEdgeDescription, result);
         return result;

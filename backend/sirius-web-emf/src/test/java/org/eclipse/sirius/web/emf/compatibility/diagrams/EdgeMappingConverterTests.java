@@ -111,7 +111,7 @@ public class EdgeMappingConverterTests {
                 .borderNodeDescriptions(List.of())
                 .childNodeDescriptions(List.of())
                 .labelEditHandler((variableManager, newLabel) -> new Success())
-                .deleteHandler(variableManager -> new Success())
+                .deleteFromModelHandler(variableManager -> new Success())
                 .build();
         // @formatter:on
     }

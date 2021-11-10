@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -64,7 +64,9 @@ public final class NodeDescription {
 
     private BiFunction<VariableManager, String, IStatus> labelEditHandler;
 
-    private Function<VariableManager, IStatus> deleteHandler;
+    private Function<VariableManager, IStatus> deleteFromModelHandler;
+
+    private Function<VariableManager, IStatus> deleteFromDiagramHandler;
 
     private NodeDescription() {
         // Prevent instantiation
@@ -121,8 +123,12 @@ public final class NodeDescription {
         return this.childNodeDescriptions;
     }
 
-    public Function<VariableManager, IStatus> getDeleteHandler() {
-        return this.deleteHandler;
+    public Function<VariableManager, IStatus> getDeleteFromModelHandler() {
+        return this.deleteFromModelHandler;
+    }
+
+    public Function<VariableManager, IStatus> getDeleteFromDiagramHandler() {
+        return this.deleteFromDiagramHandler;
     }
 
     public BiFunction<VariableManager, String, IStatus> getLabelEditHandler() {
@@ -172,7 +178,9 @@ public final class NodeDescription {
 
         private BiFunction<VariableManager, String, IStatus> labelEditHandler;
 
-        private Function<VariableManager, IStatus> deleteHandler;
+        private Function<VariableManager, IStatus> deleteFromModelHandler;
+
+        private Function<VariableManager, IStatus> deleteFromDiagramHandler;
 
         public Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
@@ -233,8 +241,13 @@ public final class NodeDescription {
             return this;
         }
 
-        public Builder deleteHandler(Function<VariableManager, IStatus> deleteHandler) {
-            this.deleteHandler = Objects.requireNonNull(deleteHandler);
+        public Builder deleteFromModelHandler(Function<VariableManager, IStatus> deleteFromModelHandler) {
+            this.deleteFromModelHandler = deleteFromModelHandler;
+            return this;
+        }
+
+        public Builder deleteFromDiagramHandler(Function<VariableManager, IStatus> deleteFromDiagramHandler) {
+            this.deleteFromDiagramHandler = deleteFromDiagramHandler;
             return this;
         }
 
@@ -258,7 +271,8 @@ public final class NodeDescription {
             nodeDescription.borderNodeDescriptions = Objects.requireNonNull(this.borderNodeDescriptions);
             nodeDescription.childNodeDescriptions = Objects.requireNonNull(this.childNodeDescriptions);
             nodeDescription.labelEditHandler = Objects.requireNonNull(this.labelEditHandler);
-            nodeDescription.deleteHandler = Objects.requireNonNull(this.deleteHandler);
+            nodeDescription.deleteFromModelHandler = this.deleteFromModelHandler;
+            nodeDescription.deleteFromDiagramHandler = this.deleteFromDiagramHandler;
             return nodeDescription;
         }
     }

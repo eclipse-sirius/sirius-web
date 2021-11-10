@@ -264,7 +264,7 @@ public class DiagramRendererNodeTests {
                 .borderNodeDescriptions(new ArrayList<>())
                 .childNodeDescriptions(new ArrayList<>())
                 .labelEditHandler((variableManager, newLabel) -> new Success())
-                .deleteHandler(variableManager -> new Success())
+                .deleteFromModelHandler(variableManager -> new Success())
                 .build();
 
         DiagramDescription diagramDescription = DiagramDescription.newDiagramDescription(UUID.randomUUID())
@@ -275,6 +275,7 @@ public class DiagramRendererNodeTests {
                 .nodeDescriptions(List.of(nodeDescription))
                 .edgeDescriptions(new ArrayList<>())
                 .toolSections(List.of())
+                .unsynchronizedDiagramElementsDescriptionIds(List.of())
                 .build();
         // @formatter:on
 

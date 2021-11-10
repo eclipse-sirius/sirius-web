@@ -62,6 +62,7 @@ public class CreateDiagramEventHandlerTests {
                         .toolSections(List.of())
                         .nodeDescriptions(new ArrayList<>())
                         .targetObjectIdProvider(variableManager -> "targetObjectId") //$NON-NLS-1$
+                        .unsynchronizedDiagramElementsDescriptionIds(List.of())
                         .build();
                 // @formatter:on
 

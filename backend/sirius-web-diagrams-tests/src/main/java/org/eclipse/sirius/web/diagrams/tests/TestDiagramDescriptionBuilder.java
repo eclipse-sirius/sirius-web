@@ -50,6 +50,7 @@ public class TestDiagramDescriptionBuilder {
             .nodeDescriptions(nodeDescriptions)
             .edgeDescriptions(edgeDescriptions)
             .toolSections(toolSections)
+            .unsynchronizedDiagramElementsDescriptionIds(List.of())
             .build();
         // @formatter:on
     }
@@ -83,6 +84,7 @@ public class TestDiagramDescriptionBuilder {
                 .targetObjectKindProvider(variableManager -> "") //$NON-NLS-1$
                 .targetObjectLabelProvider(variableManager -> "")//$NON-NLS-1$
                 .styleProvider(edgeStyleProvider)
+                .deleteFromModelHandler(variableManager -> new Success())
                 .build();
         // @formatter:on
     }
@@ -134,7 +136,7 @@ public class TestDiagramDescriptionBuilder {
                 .borderNodeDescriptions(new ArrayList<>())
                 .childNodeDescriptions(new ArrayList<>())
                 .labelEditHandler((variableManager, newLabel) -> new Success())
-                .deleteHandler(variableManager -> new Success())
+                .deleteFromModelHandler(variableManager -> new Success())
                 .build();
         // @formatter:on
     }

@@ -64,8 +64,8 @@ public class InvokeDeleteToolOnDiagramEventHandler implements IDiagramEventHandl
 
     private final Counter counter;
 
-    public InvokeDeleteToolOnDiagramEventHandler(IObjectService objectService, IDiagramQueryService diagramQueryService, IToolService toolService,
-            ICollaborativeDiagramMessageService messageService, MeterRegistry meterRegistry) {
+    public InvokeDeleteToolOnDiagramEventHandler(IObjectService objectService, IDiagramQueryService diagramQueryService, IToolService toolService, ICollaborativeDiagramMessageService messageService,
+            MeterRegistry meterRegistry) {
         this.objectService = Objects.requireNonNull(objectService);
         this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
         this.toolService = Objects.requireNonNull(toolService);
@@ -102,7 +102,6 @@ public class InvokeDeleteToolOnDiagramEventHandler implements IDiagramEventHandl
             if (optionalTool.isPresent()) {
                 IStatus status = this.executeTool(editingContext, diagramContext, input.getDiagramElementId(), optionalTool.get());
                 if (status instanceof Success) {
-
                     payload = new InvokeDeleteToolOnDiagramSuccessPayload(diagramInput.getId(), diagram);
                     changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, diagramInput.getRepresentationId(), diagramInput);
                 }

@@ -90,7 +90,7 @@ export type CompleteEvent = { type: 'HANDLE_COMPLETE' };
 export type InitializeRepresentationEvent = {
   type: 'INITIALIZE';
   diagramDomElement: MutableRefObject<any>;
-  deleteElements: any;
+  deleteFromModelElements: any;
   invokeTool: any;
   moveElement: any;
   resizeElement: any;
@@ -326,7 +326,7 @@ export const diagramWebSocketContainerMachine = Machine<
       initialize: assign((_, event) => {
         const {
           diagramDomElement,
-          deleteElements,
+          deleteFromModelElements,
           invokeTool,
           moveElement,
           resizeElement,
@@ -357,7 +357,7 @@ export const diagramWebSocketContainerMachine = Machine<
         diagramServer.setEditLabelListener(editLabel);
         diagramServer.setMoveElementListener(moveElement);
         diagramServer.setResizeElementListener(resizeElement);
-        diagramServer.setDeleteElementsListener(deleteElements);
+        diagramServer.setDeleteFromModelElementsListener(deleteFromModelElements);
         diagramServer.setInvokeToolListener(invokeTool);
         diagramServer.setContextualPaletteListener(setContextualPalette);
         diagramServer.setHttpOrigin(httpOrigin);

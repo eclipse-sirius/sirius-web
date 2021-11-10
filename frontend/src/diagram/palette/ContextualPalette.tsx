@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,11 +14,12 @@ import { ContextualPaletteProps } from 'diagram/palette/ContextualPalette.types'
 import { ToolSection } from 'diagram/palette/tool-section/ToolSection';
 import { ToolSeparator } from 'diagram/palette/tool-separator/ToolSeparator';
 import { Tool } from 'diagram/palette/tool/Tool';
-import { isContextualTool } from 'diagram/toolServices';
+import { isContextualTool, isDeleteTool } from 'diagram/toolServices';
 import React from 'react';
 import styles from './ContextualPalette.module.css';
 import closeImagePath from './icons/close.svg';
-import deleteImagePath from './icons/delete.svg';
+import deleteFromModelImagePath from './icons/delete.svg';
+import deleteFromDiagramImagePath from './icons/deleteFromDiagram.svg';
 import editImagePath from './icons/edit.svg';
 
 const editTool = {
@@ -27,11 +28,17 @@ const editTool = {
   imageURL: editImagePath,
   label: 'Edit',
 };
-const deleteTool = {
+const deleteFromModelTool = {
   id: 'delete',
   type: 'delete',
-  imageURL: deleteImagePath,
+  imageURL: deleteFromModelImagePath,
   label: 'Delete',
+};
+const deleteFromDiagramTool = {
+  id: 'deleteFromDiagram',
+  type: 'delete',
+  imageURL: deleteFromDiagramImagePath,
+  label: 'Delete From Diagram',
 };
 const closeTool = {
   id: 'close',
@@ -50,7 +57,9 @@ export const ContextualPalette = ({
   targetElement,
   invokeTool,
   invokeLabelEdit,
-  invokeDelete,
+  invokeCustomDeleteTool,
+  invokeDeleteFromModel,
+  invokeDeleteFromDiagram,
   invokeClose,
 }: ContextualPaletteProps) => {
   let toolSectionsContent;
@@ -87,16 +96,50 @@ export const ContextualPalette = ({
       </div>
     );
   }
-  let deleteEntry;
-  if (invokeDelete) {
-    deleteEntry = (
+  let customDeleteTool;
+  toolSections.forEach((toolSection) => {
+    const deleteTools = toolSection.tools.filter((tool) => isDeleteTool(tool, targetElement));
+    if (deleteTools.length > 0) {
+      customDeleteTool = deleteTools[0];
+    }
+  });
+  let deleteSection;
+  if (customDeleteTool) {
+    deleteSection = (
       <div className={styles.toolEntry}>
-        <Tool tool={deleteTool} thumbnail={true} onClick={() => invokeDelete()} />
+        <Tool tool={customDeleteTool} thumbnail={true} onClick={invokeCustomDeleteTool} />
+      </div>
+    );
+  } else if (invokeDeleteFromModel && invokeDeleteFromDiagram) {
+    const deleteToolsSection = {
+      label: 'Deletion Tools',
+      defaultTool: deleteFromModelTool,
+      tools: [deleteFromModelTool, deleteFromDiagramTool],
+    };
+    const invokeDeleteTool = (tool) => {
+      if (tool.id === 'deleteFromDiagram') {
+        invokeDeleteFromDiagram();
+      } else {
+        invokeDeleteFromModel();
+      }
+    };
+    deleteSection = (
+      <div className={styles.toolSectionEntry} key={targetElement.id + '-delete-section'}>
+        <ToolSection toolSection={deleteToolsSection} onToolClick={(tool) => invokeDeleteTool(tool)} />
+      </div>
+    );
+  } else if (invokeDeleteFromModel) {
+    deleteSection = (
+      <div className={styles.toolEntry}>
+        <Tool tool={deleteFromModelTool} thumbnail={true} onClick={() => invokeDeleteFromModel()} />
       </div>
     );
   }
   let separator;
-  if (toolSectionsContent && (invokeLabelEdit || invokeDelete)) {
+  if (
+    toolSectionsContent &&
+    (invokeLabelEdit || customDeleteTool || invokeDeleteFromModel || invokeDeleteFromDiagram)
+  ) {
     separator = <ToolSeparator />;
   }
   const closeEntry = (
@@ -105,7 +148,7 @@ export const ContextualPalette = ({
     </div>
   );
   let result = <></>;
-  if (toolSectionsContent || invokeLabelEdit || invokeDelete) {
+  if (toolSectionsContent || invokeLabelEdit || invokeDeleteFromModel) {
     result = (
       <>
         <div className={styles.toolbar} data-testid={`PopupToolbar`}>
@@ -113,7 +156,7 @@ export const ContextualPalette = ({
             {toolSectionsContent}
             {separator}
             {renameEntry}
-            {deleteEntry}
+            {deleteSection}
             <ToolSeparator />
             {closeEntry}
           </div>

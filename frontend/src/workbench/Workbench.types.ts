@@ -16,6 +16,7 @@ export type Selection = {
   id: string;
   label: string;
   kind: string;
+  descriptionId?: string;
 };
 
 export type Representation = {

@@ -129,14 +129,15 @@ public class AbstractNodeMappingConverter {
                 .collect(Collectors.toList());
         // @formatter:on
 
-        ToolConverter toolConverter = new ToolConverter(interpreter, this.editService, this.modelOperationHandlerSwitchProvider);
-        var deleteHandler = toolConverter.createDeleteToolHandler(abstractNodeMapping.getDeletionDescription());
-        var labelEditHandler = toolConverter.createDirectEditToolHandler(abstractNodeMapping.getLabelDirectEdit());
-
         SynchronizationPolicy synchronizationPolicy = SynchronizationPolicy.SYNCHRONIZED;
         if (!abstractNodeMapping.isCreateElements()) {
             synchronizationPolicy = SynchronizationPolicy.UNSYNCHRONIZED;
         }
+
+        ToolConverter toolConverter = new ToolConverter(interpreter, this.editService, this.modelOperationHandlerSwitchProvider);
+        var deleteFromModelHandler = toolConverter.createDeleteFromModelHandler(abstractNodeMapping.getDeletionDescription());
+        var deleteFromDiagramHandler = toolConverter.createDeleteFromDiagramHandler(abstractNodeMapping.getDeletionDescription(), synchronizationPolicy);
+        var labelEditHandler = toolConverter.createDirectEditToolHandler(abstractNodeMapping.getLabelDirectEdit());
 
         // @formatter:off
         NodeDescription description = NodeDescription.newNodeDescription(UUID.fromString(this.identifierProvider.getIdentifier(abstractNodeMapping)))
@@ -152,7 +153,8 @@ public class AbstractNodeMappingConverter {
                 .borderNodeDescriptions(borderNodeDescriptions)
                 .childNodeDescriptions(childNodeDescriptions)
                 .labelEditHandler(labelEditHandler)
-                .deleteHandler(deleteHandler)
+                .deleteFromModelHandler(deleteFromModelHandler)
+                .deleteFromDiagramHandler(deleteFromDiagramHandler)
                 .build();
         // @formatter:on
 

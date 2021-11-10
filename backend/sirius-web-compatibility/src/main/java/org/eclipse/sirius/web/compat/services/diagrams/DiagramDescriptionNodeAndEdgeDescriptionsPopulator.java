@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.compat.services.diagrams;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +30,7 @@ import org.eclipse.sirius.web.compat.diagrams.EdgeMappingConverter;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription.Builder;
 import org.eclipse.sirius.web.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.web.diagrams.description.NodeDescription;
+import org.eclipse.sirius.web.diagrams.description.SynchronizationPolicy;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
 import org.springframework.stereotype.Service;
 
@@ -81,9 +83,12 @@ public class DiagramDescriptionNodeAndEdgeDescriptionsPopulator implements IDiag
                 .flatMap(layer -> layer.getEdgeMappings().stream())
                 .map(edgeMapping -> this.edgeMappingConverter.convert(edgeMapping, interpreter, id2NodeDescriptions))
                 .collect(Collectors.toList());
+
+        return builder.nodeDescriptions(nodeDescriptions)
+                .edgeDescriptions(edgeDescriptions)
+                .toolSections(this.toolProvider.getToolSections(id2NodeDescriptions, edgeDescriptions, siriusDiagramDescription, layers))
+                .unsynchronizedDiagramElementsDescriptionIds(this.getUnsynchronizedDiagramElementsDescriptionIds(nodeDescriptions, edgeDescriptions));
         // @formatter:on
-        return builder.nodeDescriptions(nodeDescriptions).edgeDescriptions(edgeDescriptions)
-                .toolSections(this.toolProvider.getToolSections(id2NodeDescriptions, edgeDescriptions, siriusDiagramDescription, layers));
     }
 
     private boolean isEnabledByDefault(Layer layer) {
@@ -92,6 +97,26 @@ public class DiagramDescriptionNodeAndEdgeDescriptionsPopulator implements IDiag
             return !additionalLayer.isOptional() || additionalLayer.isActiveByDefault();
         }
         return true;
+    }
+
+    private List<UUID> getUnsynchronizedDiagramElementsDescriptionIds(List<NodeDescription> nodeDescriptions, List<EdgeDescription> edgeDescriptions) {
+        List<UUID> unsynchronizedDiagramElementsDescriptionIds = new ArrayList<>();
+
+        // @formatter:off
+        List<UUID> unsynchronizedNodeDescriptionsIds = nodeDescriptions.stream()
+                .filter(nodeDesc -> SynchronizationPolicy.UNSYNCHRONIZED.equals(nodeDesc.getSynchronizationPolicy()))
+                .map(NodeDescription::getId)
+                .collect(Collectors.toList());
+        List<UUID> unsynchronizedEdgeDescriptionsIds = edgeDescriptions.stream()
+                .filter(edgeDesc -> SynchronizationPolicy.UNSYNCHRONIZED.equals(edgeDesc.getSynchronizationPolicy()))
+                .map(EdgeDescription::getId)
+                .collect(Collectors.toList());
+        // @formatter:on
+
+        unsynchronizedDiagramElementsDescriptionIds.addAll(unsynchronizedNodeDescriptionsIds);
+        unsynchronizedDiagramElementsDescriptionIds.addAll(unsynchronizedEdgeDescriptionsIds);
+
+        return unsynchronizedDiagramElementsDescriptionIds;
     }
 
 }
