@@ -95,6 +95,7 @@ public class IncrementalLayoutDiagramConverter {
         layoutData.setLabel(labelLayoutData);
 
         layoutData.setResizedByUser(node.getCustomizedProperties().contains(CustomizableProperties.Size));
+        layoutData.setBorderNode(node.isBorderNode());
 
         return layoutData;
     }

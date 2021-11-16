@@ -43,6 +43,8 @@ public class NodeLayoutData implements IContainerLayoutData, IConnectable {
 
     private INodeStyle style;
 
+    private boolean borderNode;
+
     private boolean changed;
 
     private boolean pinned;
@@ -126,6 +128,14 @@ public class NodeLayoutData implements IContainerLayoutData, IConnectable {
 
     public void setNodeType(String nodeType) {
         this.nodeType = nodeType;
+    }
+
+    public boolean isBorderNode() {
+        return borderNode;
+    }
+
+    public void setBorderNode(boolean borderNode) {
+        this.borderNode = borderNode;
     }
 
     @Override
