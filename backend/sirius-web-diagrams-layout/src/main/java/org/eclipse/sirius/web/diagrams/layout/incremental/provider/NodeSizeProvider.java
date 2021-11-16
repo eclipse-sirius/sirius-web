@@ -103,8 +103,12 @@ public class NodeSizeProvider {
         INodeStyle style = node.getStyle();
         if (style instanceof ImageNodeStyle) {
             Size imageSize = new ImageNodeStyleSizeProvider(this.imageSizeProvider).getSize((ImageNodeStyle) style);
-            width = imageSize.getWidth() + ELK_SIZE_DIFF;
-            height = imageSize.getHeight() + ELK_SIZE_DIFF;
+            width = imageSize.getWidth();
+            height = imageSize.getHeight();
+            if (!node.isBorderNode()) {
+                width += ELK_SIZE_DIFF;
+                height += ELK_SIZE_DIFF;
+            }
         } else if (NodeType.NODE_LIST_ITEM.equals(node.getNodeType())) {
             Size nodeItemLabelSize = node.getLabel().getTextBounds().getSize();
             width = nodeItemLabelSize.getWidth() + LayoutOptionValues.NODE_LIST_ELK_NODE_LABELS_PADDING_RIGHT + LayoutOptionValues.NODE_LIST_ELK_NODE_LABELS_PADDING_LEFT;
