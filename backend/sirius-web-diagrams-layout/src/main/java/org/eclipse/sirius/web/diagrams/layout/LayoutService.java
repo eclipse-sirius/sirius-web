@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.diagrams.layout;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -29,6 +30,8 @@ import org.eclipse.elk.graph.json.ElkGraphJson;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.web.diagrams.Diagram;
+import org.eclipse.sirius.web.diagrams.Node;
+import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.web.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.web.diagrams.layout.api.ILayoutService;
@@ -82,7 +85,47 @@ public class LayoutService implements ILayoutService {
     @Override
     public Diagram layout(IEditingContext editingContext, Diagram diagram) {
         ELKConvertedDiagram convertedDiagram = this.elkDiagramConverter.convert(diagram);
+        return layoutInternal(editingContext, diagram, convertedDiagram);
+    }
 
+    @Override
+    public Node layoutNode(IEditingContext editingContext, Diagram diagram, Node node) {
+        ELKConvertedDiagram convertedDiagram = this.elkDiagramConverter.convert(diagram, node);
+        Diagram layoutedDiagram = layoutInternal(editingContext, diagram, convertedDiagram);
+
+        return layoutedDiagram.getNodes()
+                .stream()
+                .filter(layoutedDiagramNode -> layoutedDiagramNode.getId().equals(node.getId()))
+                .findFirst().orElse(null);
+    }
+
+    @Override
+    public Diagram incrementalLayout(IEditingContext editingContext, Diagram newDiagram, Optional<IDiagramEvent> optionalDiagramElementEvent) {
+        List<Node> nodes = newDiagram.getNodes();
+        for (int i = 0, nodesSize = nodes.size(); i < nodesSize; i++) {
+            Node node = nodes.get(i);
+            if (node.getPosition() == Position.UNDEFINED) {
+                Node element = layoutNode(editingContext, newDiagram, node);
+                nodes.set(i, Node.newNode(element).position(Position.UNDEFINED).build());
+            }
+        }
+        IncrementalLayoutConvertedDiagram convertedDiagram = this.incrementalLayoutDiagramConverter.convert(newDiagram);
+        DiagramLayoutData diagramLayoutData = convertedDiagram.getDiagramLayoutData();
+
+        var representationDescription = this.representationDescriptionSearchService.findById(editingContext, newDiagram.getDescriptionId());
+        ISiriusWebLayoutConfigurator layoutConfigurator;
+        if (representationDescription.isPresent() && representationDescription.get() instanceof DiagramDescription) {
+            layoutConfigurator = this.layoutConfiguratorRegistry.getLayoutConfigurator(newDiagram, (DiagramDescription) representationDescription.get());
+        } else {
+            layoutConfigurator = this.layoutConfiguratorRegistry.getDefaultLayoutConfigurator();
+        }
+        this.incrementalLayoutEngine.layout(optionalDiagramElementEvent, diagramLayoutData, layoutConfigurator);
+
+        Map<UUID, ILayoutData> id2LayoutData = convertedDiagram.getId2LayoutData();
+        return this.incrementalLayoutedDiagramProvider.getLayoutedDiagram(newDiagram, diagramLayoutData, id2LayoutData);
+    }
+
+    private Diagram layoutInternal(IEditingContext editingContext, Diagram diagram, ELKConvertedDiagram convertedDiagram) {
         ElkNode elkDiagram = convertedDiagram.getElkDiagram();
         var representationDescription = this.representationDescriptionSearchService.findById(editingContext, diagram.getDescriptionId());
         ISiriusWebLayoutConfigurator layoutConfigurator;
@@ -113,24 +156,6 @@ public class LayoutService implements ILayoutService {
         }
 
         return layoutedDiagram;
-    }
-
-    @Override
-    public Diagram incrementalLayout(IEditingContext editingContext, Diagram newDiagram, Optional<IDiagramEvent> optionalDiagramElementEvent) {
-        IncrementalLayoutConvertedDiagram convertedDiagram = this.incrementalLayoutDiagramConverter.convert(newDiagram);
-        DiagramLayoutData diagramLayoutData = convertedDiagram.getDiagramLayoutData();
-
-        var representationDescription = this.representationDescriptionSearchService.findById(editingContext, newDiagram.getDescriptionId());
-        ISiriusWebLayoutConfigurator layoutConfigurator;
-        if (representationDescription.isPresent() && representationDescription.get() instanceof DiagramDescription) {
-            layoutConfigurator = this.layoutConfiguratorRegistry.getLayoutConfigurator(newDiagram, (DiagramDescription) representationDescription.get());
-        } else {
-            layoutConfigurator = this.layoutConfiguratorRegistry.getDefaultLayoutConfigurator();
-        }
-        this.incrementalLayoutEngine.layout(optionalDiagramElementEvent, diagramLayoutData, layoutConfigurator);
-
-        Map<UUID, ILayoutData> id2LayoutData = convertedDiagram.getId2LayoutData();
-        return this.incrementalLayoutedDiagramProvider.getLayoutedDiagram(newDiagram, diagramLayoutData, id2LayoutData);
     }
 
 }

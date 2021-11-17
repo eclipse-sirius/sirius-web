@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -78,6 +78,22 @@ public class ELKDiagramConverter {
         this.imageNodeStyleSizeProvider = new ImageNodeStyleSizeProvider(this.imageSizeProvider);
     }
 
+    public ELKConvertedDiagram convert(Diagram diagram, Node parentNode) {
+        List<Node> childNodes = this.initializeNodes(List.of(parentNode));
+
+        Diagram initializedDiagram = Diagram.newDiagram(diagram)
+                .nodes(childNodes)
+                .build();
+
+        ElkNode elkDiagram = this.convertDiagram(initializedDiagram);
+
+        Map<String, ElkGraphElement> id2ElkGraphElements = new HashMap<>();
+        Map<String, ElkConnectableShape> connectableShapeIndex = new LinkedHashMap<>();
+        initializedDiagram.getNodes().forEach(node -> this.convertNode(node, elkDiagram, connectableShapeIndex, id2ElkGraphElements));
+
+        return new ELKConvertedDiagram(elkDiagram, id2ElkGraphElements);
+    }
+
     public ELKConvertedDiagram convert(Diagram diagram) {
         Diagram initializedDiagram = this.initializeDiagram(diagram);
 
@@ -85,8 +101,8 @@ public class ELKDiagramConverter {
 
         Map<String, ElkGraphElement> id2ElkGraphElements = new HashMap<>();
         Map<String, ElkConnectableShape> connectableShapeIndex = new LinkedHashMap<>();
-        initializedDiagram.getNodes().stream().forEach(node -> this.convertNode(node, elkDiagram, connectableShapeIndex, id2ElkGraphElements));
-        initializedDiagram.getEdges().stream().forEach(edge -> this.convertEdge(edge, elkDiagram, connectableShapeIndex, id2ElkGraphElements));
+        initializedDiagram.getNodes().forEach(node -> this.convertNode(node, elkDiagram, connectableShapeIndex, id2ElkGraphElements));
+        initializedDiagram.getEdges().forEach(edge -> this.convertEdge(edge, elkDiagram, connectableShapeIndex, id2ElkGraphElements));
 
         return new ELKConvertedDiagram(elkDiagram, id2ElkGraphElements);
     }

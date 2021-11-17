@@ -16,6 +16,7 @@ import java.util.Optional;
 
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.diagrams.Diagram;
+import org.eclipse.sirius.web.diagrams.Node;
 import org.eclipse.sirius.web.diagrams.events.IDiagramEvent;
 
 /**
@@ -25,6 +26,11 @@ import org.eclipse.sirius.web.diagrams.events.IDiagramEvent;
  */
 public interface ILayoutService {
     Diagram layout(IEditingContext editingContext, Diagram diagram);
+
+    /**
+     * Layout the specified node in the diagram.
+     */
+    Node layoutNode(IEditingContext editingContext, Diagram diagram, Node node);
 
     /**
      * A partial layout that layouts only impacted elements.
@@ -50,6 +56,11 @@ public interface ILayoutService {
         @Override
         public Diagram layout(IEditingContext editingContext, Diagram diagram) {
             return diagram;
+        }
+
+        @Override
+        public Node layoutNode(IEditingContext editingContext, Diagram diagram, Node node) {
+            return null;
         }
 
         @Override
