@@ -469,6 +469,7 @@ public class ViewConverter {
                                      .targetNodesProvider(targetNodesProvider)
                                      .styleProvider(styleProvider)
                                      .deleteHandler(this.createDeleteHandler(viewEdgeDescription, interpreter))
+                                     .labelEditHandler(this.createLabelEditHandler(viewEdgeDescription, interpreter))
                                      .build();
         this.convertedEdges.put(viewEdgeDescription, result);
         return result;
