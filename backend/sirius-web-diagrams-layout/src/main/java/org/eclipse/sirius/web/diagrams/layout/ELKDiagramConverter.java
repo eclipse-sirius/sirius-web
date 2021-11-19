@@ -23,6 +23,8 @@ import java.util.Optional;
 
 import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.core.options.EdgeLabelPlacement;
+import org.eclipse.elk.core.options.PortConstraints;
+import org.eclipse.elk.core.options.PortSide;
 import org.eclipse.elk.graph.ElkConnectableShape;
 import org.eclipse.elk.graph.ElkEdge;
 import org.eclipse.elk.graph.ElkGraphElement;
@@ -336,6 +338,7 @@ public class ELKDiagramConverter {
 
             Size imageSize = this.imageNodeStyleSizeProvider.getSize(imageNodeStyle);
             elkImage.setDimensions(imageSize.getWidth(), imageSize.getHeight());
+            elkNode.setProperty(CoreOptions.PORT_CONSTRAINTS, PortConstraints.FIXED_ORDER);
 
             elkImage.setParent(elkNode);
         }
@@ -365,6 +368,7 @@ public class ELKDiagramConverter {
         if (borderNode.getStyle() instanceof ImageNodeStyle) {
             Size imageSize = this.imageNodeStyleSizeProvider.getSize((ImageNodeStyle) borderNode.getStyle());
             elkPort.setDimensions(imageSize.getWidth(), imageSize.getHeight());
+            ((ImageNodeStyle)borderNode.getStyle()).getImageNodeSides().forEach(imageNodeSide -> elkPort.setProperty(CoreOptions.PORT_SIDE, PortSide.valueOf(imageNodeSide.name())));
         }
 
         this.convertLabel(borderNode.getLabel(), textBounds, elkPort, id2ElkGraphElements, null);

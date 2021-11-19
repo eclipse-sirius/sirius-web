@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.diagrams;
 
 import java.text.MessageFormat;
+import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.web.annotations.Immutable;
@@ -33,6 +34,8 @@ public final class ImageNodeStyle implements INodeStyle {
 
     private int scalingFactor;
 
+    private List<ImageNodeSide> imageNodeSides;
+
     private ImageNodeStyle() {
         // Prevent instantiation
     }
@@ -49,6 +52,10 @@ public final class ImageNodeStyle implements INodeStyle {
 
     public static Builder newImageNodeStyle() {
         return new Builder();
+    }
+
+    public List<ImageNodeSide> getImageNodeSides() {
+        return imageNodeSides;
     }
 
     @Override
@@ -68,6 +75,8 @@ public final class ImageNodeStyle implements INodeStyle {
 
         private int scalingFactor;
 
+        private List<ImageNodeSide> imageNodeSides;
+
         private Builder() {
             // Prevent instantiation
         }
@@ -82,10 +91,16 @@ public final class ImageNodeStyle implements INodeStyle {
             return this;
         }
 
+        public Builder nodeSides(List<ImageNodeSide> nodeSides) {
+            this.imageNodeSides = Objects.requireNonNull(nodeSides);
+            return this;
+        }
+
         public ImageNodeStyle build() {
             ImageNodeStyle style = new ImageNodeStyle();
             style.imageURL = Objects.requireNonNull(this.imageURL);
             style.scalingFactor = Objects.requireNonNull(this.scalingFactor);
+            style.imageNodeSides = Objects.requireNonNull(this.imageNodeSides);
             return style;
         }
     }
