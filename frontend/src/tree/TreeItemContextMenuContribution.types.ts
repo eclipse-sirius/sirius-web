@@ -11,15 +11,16 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Selection } from 'workbench/Workbench.types';
+import { TreeItemType } from './TreeItem.types';
 
 export interface TreeItemContextMenuContributionProps {
-  canHandle: (item: any) => boolean;
+  canHandle: (item: TreeItemType) => boolean;
   component: (props: TreeItemContextMenuComponentProps) => JSX.Element;
 }
 
 export interface TreeItemContextMenuComponentProps {
   editingContextId: string;
-  item: any;
+  item: TreeItemType;
   readOnly: boolean;
   selection: Selection;
   setSelection: (selection: Selection) => void;
