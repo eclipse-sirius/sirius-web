@@ -36,6 +36,7 @@ export * from './modals/upload-document/UploadDocumentModal';
 export * from './properties/PropertiesWebSocketContainer';
 export * from './properties/PropertiesWebSocketContainer.types';
 export * from './theme';
+export * from './tree/TreeItem.types';
 export * from './tree/TreeItemContextMenuContribution';
 export * from './tree/TreeItemContextMenuContribution.types';
 export * from './views/FormContainer';
