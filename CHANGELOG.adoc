@@ -21,6 +21,8 @@
 
 === Bug fixes
 
+- Fix a potential NPE in logging code of the `WidgetDescriptionConverter`
+
 
 == v2021.12.0
 
