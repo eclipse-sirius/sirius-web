@@ -85,7 +85,7 @@ public class WidgetDescriptionConverter {
             optionalWidgetDescription = Optional.of(this.convertRadio((org.eclipse.sirius.properties.RadioDescription) controlDescription));
         } else if (controlDescription instanceof org.eclipse.sirius.properties.SelectDescription) {
             optionalWidgetDescription = Optional.of(this.convertSelect((org.eclipse.sirius.properties.SelectDescription) controlDescription));
-        } else {
+        } else if (controlDescription != null) {
             this.logger.warn("The provided type {} is not yet handled", controlDescription.getClass().getName()); //$NON-NLS-1$
         }
         return optionalWidgetDescription;
