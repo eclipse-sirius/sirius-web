@@ -79,7 +79,6 @@ const INITIAL_ROOT = {
 interface Root {
   type: string;
   id: string;
-  index?: any;
 }
 
 export class DiagramServer extends ModelSource {
@@ -266,35 +265,30 @@ export class DiagramServer extends ModelSource {
   }
 
   handleSiriusSelectAction(action: SiriusSelectAction) {
-    if (this.currentRoot.index) {
-      const { selection } = action;
+    const { selection } = action;
+    this.actionDispatcher.request(GetSelectionAction.create()).then((selectionResult) => {
       const selectedElementsIDs = [];
-      this.actionDispatcher.request(GetSelectionAction.create()).then((selectionResult) => {
-        const prevSelectedObjectIds = this.currentRoot.index
-          .all()
-          .filter((element) => selectionResult.selectedElementsIDs.indexOf(element.id) >= 0)
-          .map((element) => element.id);
-        const deselectedElementsIDs = [...prevSelectedObjectIds];
-        selection.entries
-          .filter((entry) => entry.id !== this.currentRoot.id)
-          .forEach((entry) => {
-            const selectionElement = this.findElement(entry.id);
-            if (selectionElement && deselectedElementsIDs.indexOf(selectionElement.id) < 0) {
-              // The React selection and the Sprotty selection does not match. We must update the Sprotty selection
-              selectedElementsIDs.push(selectionElement.id);
-            }
-          });
-        const actions = [];
-        if (selectedElementsIDs.length > 0 || deselectedElementsIDs.length > 0) {
-          actions.push(new SelectAction(selectedElementsIDs, deselectedElementsIDs));
-        }
-        if (selectedElementsIDs.length > 0) {
-          actions.push(new CenterAction(selectedElementsIDs));
-          actions.push({ kind: HIDE_CONTEXTUAL_TOOLBAR_ACTION });
-        }
-        this.actionDispatcher.dispatchAll(actions);
-      });
-    }
+      const deselectedElementsIDs = [...selectionResult.selectedElementsIDs];
+      selection.entries
+        .filter((entry) => entry.id !== this.currentRoot.id)
+        .forEach((entry) => {
+          const selectionElement = this.findElement(this.currentRoot, entry.id);
+          if (selectionElement && deselectedElementsIDs.indexOf(selectionElement.id) < 0) {
+            // The React selection and the Sprotty selection does not match. We must update the Sprotty selection
+            selectedElementsIDs.push(selectionElement.id);
+          }
+        });
+
+      const actions: Action[] = [];
+      if (selectedElementsIDs.length > 0 || deselectedElementsIDs.length > 0) {
+        actions.push(new SelectAction(selectedElementsIDs, deselectedElementsIDs));
+      }
+      if (selectedElementsIDs.length > 0) {
+        actions.push(new CenterAction(selectedElementsIDs));
+        actions.push({ kind: HIDE_CONTEXTUAL_TOOLBAR_ACTION });
+      }
+      this.actionDispatcher.dispatchAll(actions);
+    });
   }
 
   handleSiriusDeleteAction(action) {
@@ -414,11 +408,18 @@ export class DiagramServer extends ModelSource {
     return this.currentRoot;
   }
 
-  findElement(id) {
-    const [element] = this.currentRoot.index
-      .all()
-      .filter((element) => id === element.targetObjectId || id === element.id);
-    return element;
+  findElement(element, id: string) {
+    if (element.id === id || element.targetObjectId === id) {
+      return element;
+    } else if (element.children) {
+      for (const child of element.children) {
+        const foundElement = this.findElement(child, id);
+        if (foundElement) {
+          return foundElement;
+        }
+      }
+    }
+    return null;
   }
 
   setLogger(logger: ILogger) {
