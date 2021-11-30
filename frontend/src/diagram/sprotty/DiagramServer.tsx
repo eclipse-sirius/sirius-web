@@ -252,7 +252,14 @@ export class DiagramServer extends ModelSource {
     const { diagram, readOnly } = action;
     if (diagram) {
       const convertedDiagram = convertDiagram(diagram, this.httpOrigin, readOnly);
-      this.actionDispatcher.dispatch(new UpdateModelAction(convertedDiagram));
+      const sprottyModel = this.modelFactory.createRoot(convertedDiagram);
+      this.actionDispatcher.request(GetSelectionAction.create()).then((selectionResult) => {
+        sprottyModel.index
+          .all()
+          .filter((element) => selectionResult.selectedElementsIDs.indexOf(element.id) >= 0)
+          .forEach((element) => ((element as any).selected = true));
+        this.actionDispatcher.dispatch(new UpdateModelAction(sprottyModel as any));
+      });
     } else {
       this.actionDispatcher.dispatch(new UpdateModelAction(INITIAL_ROOT));
     }
