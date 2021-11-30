@@ -77,7 +77,8 @@ public class ViewExtensionDescriptionConverter implements IViewExtensionDescript
         // @formatter:off
         Map<org.eclipse.sirius.properties.GroupDescription, GroupDescription> siriusGroup2SiriusWebGroup = new HashMap<>();
         List<GroupDescription> groupDescriptions = viewExtensionDescription.getCategories().stream()
-                .flatMap(category -> category.getGroups().stream())
+                .flatMap(category -> category.getPages().stream())
+                .flatMap(page -> page.getGroups().stream())
                 .map(groupDescription -> groupDescriptionConverter.convert(groupDescription, siriusGroup2SiriusWebGroup))
                 .collect(Collectors.toList());
 
