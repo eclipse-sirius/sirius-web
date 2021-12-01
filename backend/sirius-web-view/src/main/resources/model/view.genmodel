@@ -84,6 +84,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//NodeStyle/bold"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//NodeStyle/underline"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//NodeStyle/strikeThrough"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//NodeStyle/sizeComputationExpression"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//EdgeStyle">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//EdgeStyle/lineStyle"/>

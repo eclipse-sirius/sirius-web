@@ -59,6 +59,7 @@ public class NodeStyleItemProvider extends StyleItemProvider {
             this.addBoldPropertyDescriptor(object);
             this.addUnderlinePropertyDescriptor(object);
             this.addStrikeThroughPropertyDescriptor(object);
+            this.addSizeComputationExpressionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -172,6 +173,19 @@ public class NodeStyleItemProvider extends StyleItemProvider {
     }
 
     /**
+     * This adds a property descriptor for the Size Computation Expression feature. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addSizeComputationExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_NodeStyle_sizeComputationExpression_feature"), //$NON-NLS-1$
+                this.getString("_UI_PropertyDescriptor_description", "_UI_NodeStyle_sizeComputationExpression_feature", "_UI_NodeStyle_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                ViewPackage.Literals.NODE_STYLE__SIZE_COMPUTATION_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
      * This returns NodeStyle.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated NOT
@@ -224,6 +238,7 @@ public class NodeStyleItemProvider extends StyleItemProvider {
         case ViewPackage.NODE_STYLE__BOLD:
         case ViewPackage.NODE_STYLE__UNDERLINE:
         case ViewPackage.NODE_STYLE__STRIKE_THROUGH:
+        case ViewPackage.NODE_STYLE__SIZE_COMPUTATION_EXPRESSION:
             this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
             return;
         }

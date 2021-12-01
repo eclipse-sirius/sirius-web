@@ -20,6 +20,10 @@
 
 === New features
 
+- https://github.com/eclipse-sirius/sirius-components/issues/726[#726] [view] Nodes can now have a dynamically computed size (using `sizeComputationExpression`) which depends on the current state of the semantic model.
+If the expression is present and produces a positive integer, it will be used as both the width and height of the node, in pixels.
+Currently it is not possible to compute different values for width and height.
+
 === Improvements
 
 - https://github.com/eclipse-sirius/sirius-components/issues/871[#871] [core] An `IEditingContextEventProcessorExecutorServiceProvider` can be given to the `EditingContextEventProcessor` in order to customize the `ExecutorService` which will be used to handle the processing of the `IInput` received. This will allow consumers to change the thread management policy of Sirius Components

@@ -51,6 +51,7 @@ import org.eclipse.sirius.web.diagrams.tools.ToolSection;
 import org.eclipse.sirius.web.emf.compatibility.DomainClassPredicate;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
 import org.eclipse.sirius.web.interpreter.Result;
+import org.eclipse.sirius.web.interpreter.Status;
 import org.eclipse.sirius.web.representations.IRepresentationDescription;
 import org.eclipse.sirius.web.representations.IStatus;
 import org.eclipse.sirius.web.representations.VariableManager;
@@ -61,6 +62,7 @@ import org.eclipse.sirius.web.view.LabelEditTool;
 import org.eclipse.sirius.web.view.NodeStyle;
 import org.eclipse.sirius.web.view.NodeTool;
 import org.eclipse.sirius.web.view.View;
+import org.eclipse.sirius.web.view.ViewPackage;
 
 /**
  * Converts a View into an equivalent list of {@link DiagramDescription}.
@@ -220,9 +222,28 @@ public class ViewConverter {
                     .findFirst()
                     .orElseGet(viewNodeDescription::getStyle);
             Optional<String> optionalEditingContextId = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class)
-                                                                     .map(IEditingContext::getId);
+                                                                       .map(IEditingContext::getId);
             // @formatter:on
             return this.stylesFactory.createNodeStyle(effectiveStyle, optionalEditingContextId);
+        };
+
+        Function<VariableManager, Size> sizeProvider = variableManager -> {
+            // @formatter:off
+            var effectiveStyle = viewNodeDescription.getConditionalStyles().stream()
+                    .filter(style -> this.matches(interpreter, style.getCondition(), variableManager))
+                    .map(NodeStyle.class::cast)
+                    .findFirst()
+                    .orElseGet(viewNodeDescription::getStyle);
+            // @formatter:on
+            Size size = Size.UNDEFINED;
+            if (effectiveStyle.eIsSet(ViewPackage.Literals.NODE_STYLE__SIZE_COMPUTATION_EXPRESSION) && !effectiveStyle.getSizeComputationExpression().isBlank()) {
+                Result result = interpreter.evaluateExpression(variableManager.getVariables(), effectiveStyle.getSizeComputationExpression());
+                if (result.getStatus().compareTo(Status.WARNING) <= 0 && result.asInt().isPresent()) {
+                    int computedSize = result.asInt().getAsInt();
+                    size = Size.of(computedSize, computedSize);
+                }
+            }
+            return size;
         };
 
         // @formatter:off
@@ -237,7 +258,7 @@ public class ViewConverter {
                 .styleProvider(styleProvider)
                 .childNodeDescriptions(childNodeDescriptions)
                 .borderNodeDescriptions(List.of())
-                .sizeProvider(variableManager -> Size.UNDEFINED)
+                .sizeProvider(sizeProvider)
                 .labelEditHandler(this.createLabelEditHandler(viewNodeDescription, interpreter))
                 .deleteHandler(this.createDeleteHandler(viewNodeDescription, interpreter))
                 .build();

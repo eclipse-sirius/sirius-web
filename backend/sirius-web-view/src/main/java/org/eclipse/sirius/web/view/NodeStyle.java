@@ -28,6 +28,8 @@ package org.eclipse.sirius.web.view;
  * <li>{@link org.eclipse.sirius.web.view.NodeStyle#isBold <em>Bold</em>}</li>
  * <li>{@link org.eclipse.sirius.web.view.NodeStyle#isUnderline <em>Underline</em>}</li>
  * <li>{@link org.eclipse.sirius.web.view.NodeStyle#isStrikeThrough <em>Strike Through</em>}</li>
+ * <li>{@link org.eclipse.sirius.web.view.NodeStyle#getSizeComputationExpression <em>Size Computation
+ * Expression</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.web.view.ViewPackage#getNodeStyle()
@@ -240,4 +242,27 @@ public interface NodeStyle extends Style {
      * @generated
      */
     void setStrikeThrough(boolean value);
+
+    /**
+     * Returns the value of the '<em><b>Size Computation Expression</b></em>' attribute. The default value is
+     * <code>"1"</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Size Computation Expression</em>' attribute.
+     * @see #setSizeComputationExpression(String)
+     * @see org.eclipse.sirius.web.view.ViewPackage#getNodeStyle_SizeComputationExpression()
+     * @model default="1"
+     * @generated
+     */
+    String getSizeComputationExpression();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.web.view.NodeStyle#getSizeComputationExpression <em>Size
+     * Computation Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Size Computation Expression</em>' attribute.
+     * @see #getSizeComputationExpression()
+     * @generated
+     */
+    void setSizeComputationExpression(String value);
 } // NodeStyle

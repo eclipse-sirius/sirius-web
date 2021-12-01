@@ -87,6 +87,10 @@ public class ViewPropertiesConfigurer implements IPropertiesDescriptionRegistryC
                                                                                                      .orElse(null);
 
         List<AbstractControlDescription> controls = List.of(
+                this.createTextField("nodestyle.sizeExpression", "Size Expression", //$NON-NLS-1$ //$NON-NLS-2$
+                        style -> ((NodeStyle) style).getSizeComputationExpression(),
+                        (style, newSizeExpression) -> ((NodeStyle) style).setSizeComputationExpression(newSizeExpression),
+                        ViewPackage.Literals.NODE_STYLE__SIZE_COMPUTATION_EXPRESSION),
                 this.createTextField("conditionalnodestyle.condition", "Condition", //$NON-NLS-1$ //$NON-NLS-2$
                         style -> ((ConditionalNodeStyle) style).getCondition(),
                         (style, newCondition) -> ((ConditionalNodeStyle) style).setCondition(newCondition),
@@ -183,6 +187,10 @@ public class ViewPropertiesConfigurer implements IPropertiesDescriptionRegistryC
                                                                                                      .orElse(null);
 
         List<AbstractControlDescription> controls = List.of(
+                this.createTextField("nodestyle.sizeExpression", "Size Expression", //$NON-NLS-1$ //$NON-NLS-2$
+                        style -> ((NodeStyle) style).getSizeComputationExpression(),
+                        (style, newSizeExpression) -> ((NodeStyle) style).setSizeComputationExpression(newSizeExpression),
+                        ViewPackage.Literals.NODE_STYLE__SIZE_COMPUTATION_EXPRESSION),
                 this.createTextField("nodestyle.labelColor", "Label Color", //$NON-NLS-1$ //$NON-NLS-2$
                         style -> ((NodeStyle) style).getLabelColor(),
                         (style, newLabelColor) -> ((NodeStyle) style).setLabelColor(newLabelColor),
