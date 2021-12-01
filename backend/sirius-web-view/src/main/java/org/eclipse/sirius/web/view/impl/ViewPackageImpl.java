@@ -744,6 +744,16 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
+    public EAttribute getNodeStyle_SizeComputationExpression() {
+        return (EAttribute) this.nodeStyleEClass.getEStructuralFeatures().get(9);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getEdgeStyle() {
         return this.edgeStyleEClass;
     }
@@ -1149,6 +1159,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.createEAttribute(this.nodeStyleEClass, NODE_STYLE__BOLD);
         this.createEAttribute(this.nodeStyleEClass, NODE_STYLE__UNDERLINE);
         this.createEAttribute(this.nodeStyleEClass, NODE_STYLE__STRIKE_THROUGH);
+        this.createEAttribute(this.nodeStyleEClass, NODE_STYLE__SIZE_COMPUTATION_EXPRESSION);
 
         this.edgeStyleEClass = this.createEClass(EDGE_STYLE);
         this.createEAttribute(this.edgeStyleEClass, EDGE_STYLE__LINE_STYLE);
@@ -1338,6 +1349,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
                 !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getNodeStyle_StrikeThrough(), this.ecorePackage.getEBoolean(), "strikeThrough", "false", 1, 1, NodeStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, //$NON-NLS-1$ //$NON-NLS-2$
                 !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getNodeStyle_SizeComputationExpression(), this.ecorePackage.getEString(), "sizeComputationExpression", "1", 0, 1, NodeStyle.class, !IS_TRANSIENT, !IS_VOLATILE, //$NON-NLS-1$ //$NON-NLS-2$
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.edgeStyleEClass, EdgeStyle.class, "EdgeStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
         this.initEAttribute(this.getEdgeStyle_LineStyle(), this.getLineStyle(), "lineStyle", "Solid", 1, 1, EdgeStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, //$NON-NLS-1$ //$NON-NLS-2$

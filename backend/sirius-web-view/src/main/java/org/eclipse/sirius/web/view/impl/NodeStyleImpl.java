@@ -33,6 +33,8 @@ import org.eclipse.sirius.web.view.ViewPackage;
  * <li>{@link org.eclipse.sirius.web.view.impl.NodeStyleImpl#isBold <em>Bold</em>}</li>
  * <li>{@link org.eclipse.sirius.web.view.impl.NodeStyleImpl#isUnderline <em>Underline</em>}</li>
  * <li>{@link org.eclipse.sirius.web.view.impl.NodeStyleImpl#isStrikeThrough <em>Strike Through</em>}</li>
+ * <li>{@link org.eclipse.sirius.web.view.impl.NodeStyleImpl#getSizeComputationExpression <em>Size Computation
+ * Expression</em>}</li>
  * </ul>
  *
  * @generated
@@ -217,6 +219,26 @@ public class NodeStyleImpl extends StyleImpl implements NodeStyle {
      * @ordered
      */
     protected boolean strikeThrough = STRIKE_THROUGH_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getSizeComputationExpression() <em>Size Computation Expression</em>}'
+     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getSizeComputationExpression()
+     * @generated
+     * @ordered
+     */
+    protected static final String SIZE_COMPUTATION_EXPRESSION_EDEFAULT = "1"; //$NON-NLS-1$
+
+    /**
+     * The cached value of the '{@link #getSizeComputationExpression() <em>Size Computation Expression</em>}' attribute.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getSizeComputationExpression()
+     * @generated
+     * @ordered
+     */
+    protected String sizeComputationExpression = SIZE_COMPUTATION_EXPRESSION_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -450,6 +472,29 @@ public class NodeStyleImpl extends StyleImpl implements NodeStyle {
      * @generated
      */
     @Override
+    public String getSizeComputationExpression() {
+        return this.sizeComputationExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setSizeComputationExpression(String newSizeComputationExpression) {
+        String oldSizeComputationExpression = this.sizeComputationExpression;
+        this.sizeComputationExpression = newSizeComputationExpression;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.NODE_STYLE__SIZE_COMPUTATION_EXPRESSION, oldSizeComputationExpression, this.sizeComputationExpression));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
         case ViewPackage.NODE_STYLE__LIST_MODE:
@@ -470,6 +515,8 @@ public class NodeStyleImpl extends StyleImpl implements NodeStyle {
             return this.isUnderline();
         case ViewPackage.NODE_STYLE__STRIKE_THROUGH:
             return this.isStrikeThrough();
+        case ViewPackage.NODE_STYLE__SIZE_COMPUTATION_EXPRESSION:
+            return this.getSizeComputationExpression();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -508,6 +555,9 @@ public class NodeStyleImpl extends StyleImpl implements NodeStyle {
             return;
         case ViewPackage.NODE_STYLE__STRIKE_THROUGH:
             this.setStrikeThrough((Boolean) newValue);
+            return;
+        case ViewPackage.NODE_STYLE__SIZE_COMPUTATION_EXPRESSION:
+            this.setSizeComputationExpression((String) newValue);
             return;
         }
         super.eSet(featureID, newValue);
@@ -548,6 +598,9 @@ public class NodeStyleImpl extends StyleImpl implements NodeStyle {
         case ViewPackage.NODE_STYLE__STRIKE_THROUGH:
             this.setStrikeThrough(STRIKE_THROUGH_EDEFAULT);
             return;
+        case ViewPackage.NODE_STYLE__SIZE_COMPUTATION_EXPRESSION:
+            this.setSizeComputationExpression(SIZE_COMPUTATION_EXPRESSION_EDEFAULT);
+            return;
         }
         super.eUnset(featureID);
     }
@@ -578,6 +631,8 @@ public class NodeStyleImpl extends StyleImpl implements NodeStyle {
             return this.underline != UNDERLINE_EDEFAULT;
         case ViewPackage.NODE_STYLE__STRIKE_THROUGH:
             return this.strikeThrough != STRIKE_THROUGH_EDEFAULT;
+        case ViewPackage.NODE_STYLE__SIZE_COMPUTATION_EXPRESSION:
+            return SIZE_COMPUTATION_EXPRESSION_EDEFAULT == null ? this.sizeComputationExpression != null : !SIZE_COMPUTATION_EXPRESSION_EDEFAULT.equals(this.sizeComputationExpression);
         }
         return super.eIsSet(featureID);
     }
@@ -611,6 +666,8 @@ public class NodeStyleImpl extends StyleImpl implements NodeStyle {
         result.append(this.underline);
         result.append(", strikeThrough: "); //$NON-NLS-1$
         result.append(this.strikeThrough);
+        result.append(", sizeComputationExpression: "); //$NON-NLS-1$
+        result.append(this.sizeComputationExpression);
         result.append(')');
         return result.toString();
     }

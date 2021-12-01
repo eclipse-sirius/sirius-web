@@ -732,13 +732,22 @@ public interface ViewPackage extends EPackage {
     int NODE_STYLE__STRIKE_THROUGH = STYLE_FEATURE_COUNT + 8;
 
     /**
+     * The feature id for the '<em><b>Size Computation Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_STYLE__SIZE_COMPUTATION_EXPRESSION = STYLE_FEATURE_COUNT + 9;
+
+    /**
      * The number of structural features of the '<em>Node Style</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
      * @generated
      * @ordered
      */
-    int NODE_STYLE_FEATURE_COUNT = STYLE_FEATURE_COUNT + 9;
+    int NODE_STYLE_FEATURE_COUNT = STYLE_FEATURE_COUNT + 10;
 
     /**
      * The number of operations of the '<em>Node Style</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1498,13 +1507,22 @@ public interface ViewPackage extends EPackage {
     int CONDITIONAL_NODE_STYLE__STRIKE_THROUGH = CONDITIONAL_FEATURE_COUNT + 11;
 
     /**
+     * The feature id for the '<em><b>Size Computation Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_NODE_STYLE__SIZE_COMPUTATION_EXPRESSION = CONDITIONAL_FEATURE_COUNT + 12;
+
+    /**
      * The number of structural features of the '<em>Conditional Node Style</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int CONDITIONAL_NODE_STYLE_FEATURE_COUNT = CONDITIONAL_FEATURE_COUNT + 12;
+    int CONDITIONAL_NODE_STYLE_FEATURE_COUNT = CONDITIONAL_FEATURE_COUNT + 13;
 
     /**
      * The number of operations of the '<em>Conditional Node Style</em>' class. <!-- begin-user-doc --> <!--
@@ -2125,6 +2143,18 @@ public interface ViewPackage extends EPackage {
      * @generated
      */
     EAttribute getNodeStyle_StrikeThrough();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.web.view.NodeStyle#getSizeComputationExpression <em>Size Computation
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Size Computation Expression</em>'.
+     * @see org.eclipse.sirius.web.view.NodeStyle#getSizeComputationExpression()
+     * @see #getNodeStyle()
+     * @generated
+     */
+    EAttribute getNodeStyle_SizeComputationExpression();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.web.view.EdgeStyle <em>Edge Style</em>}'. <!--
@@ -2870,6 +2900,14 @@ public interface ViewPackage extends EPackage {
          * @generated
          */
         EAttribute NODE_STYLE__STRIKE_THROUGH = eINSTANCE.getNodeStyle_StrikeThrough();
+
+        /**
+         * The meta object literal for the '<em><b>Size Computation Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute NODE_STYLE__SIZE_COMPUTATION_EXPRESSION = eINSTANCE.getNodeStyle_SizeComputationExpression();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.web.view.impl.EdgeStyleImpl <em>Edge Style</em>}'
