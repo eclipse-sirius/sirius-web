@@ -172,7 +172,7 @@ export const NewObjectModal = ({ editingContextId, item, onObjectCreated, onClos
 
   useEffect(() => {
     if (newObjectModal === 'success') {
-      onObjectCreated(objectToSelect);
+      onObjectCreated({ entries: [objectToSelect] });
     }
   }, [newObjectModal, onObjectCreated, objectToSelect]);
 

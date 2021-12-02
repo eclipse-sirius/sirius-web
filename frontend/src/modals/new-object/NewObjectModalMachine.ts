@@ -17,7 +17,7 @@ import {
   GQLCreateChildSuccessPayload,
   GQLGetChildCreationDescriptionsQueryData,
 } from 'modals/new-object/NewObjectModal.types';
-import { Selection } from 'workbench/Workbench.types';
+import { SelectionEntry } from 'workbench/Workbench.types';
 import { assign, Machine } from 'xstate';
 
 export interface NewObjectModalStateSchema {
@@ -47,7 +47,7 @@ export type SchemaValue = {
 export interface NewObjectModalContext {
   selectedChildCreationDescriptionId: string;
   childCreationDescriptions: ChildCreationDescription[];
-  objectToSelect: Selection | null;
+  objectToSelect: SelectionEntry | null;
   message: string | null;
 }
 

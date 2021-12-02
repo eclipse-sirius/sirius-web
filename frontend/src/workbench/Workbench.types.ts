@@ -12,11 +12,15 @@
  *******************************************************************************/
 import { ReactNode } from 'react';
 
-export type Selection = {
+export interface Selection {
+  entries: SelectionEntry[];
+}
+
+export interface SelectionEntry {
   id: string;
   label: string;
   kind: string;
-};
+}
 
 export type Representation = {
   id: string;

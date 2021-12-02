@@ -14,7 +14,7 @@ import { Selection } from 'workbench/Workbench.types';
 
 export interface LeftSiteProps {
   editingContextId: string;
-  selection?: Selection;
+  selection: Selection;
   setSelection: (selection: Selection) => void;
   readOnly: boolean;
 }

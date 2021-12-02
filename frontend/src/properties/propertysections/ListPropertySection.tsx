@@ -124,7 +124,7 @@ export const ListPropertySection = ({
 
   const onRowClick = (item: ListItem) => {
     const { id, label, kind } = item;
-    setSelection({ id, label, kind });
+    setSelection({ entries: [{ id, label, kind }] });
   };
 
   const getTableCellContent = (item: ListItem): JSX.Element => {

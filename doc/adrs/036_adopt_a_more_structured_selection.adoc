@@ -106,6 +106,10 @@ For example, the detail view will display properties of the first selected seman
 
 In a near future, once the selection of graphical elements will be supported, we could consider that selecting and element in a diagram will select both its graphical element and its associated semantic element.
 
+== Status
+
+Accepted.
+
 == Consequences
 
 We need to update all the existing code (both on the frontend and backend) which uses the previous syntax to match the new one.

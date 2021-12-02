@@ -20,21 +20,25 @@ export interface WorkbenchStateSchema {
 export type SchemaValue = 'initial';
 
 export interface WorkbenchContext {
-  selection: Selection | null;
+  selection: Selection;
   representations: Representation[];
   displayedRepresentation: Representation | null;
 }
 
 export type ShowRepresentationEvent = { type: 'SHOW_REPRESENTATION'; representation: Representation };
 export type HideRepresentationEvent = { type: 'HIDE_REPRESENTATION'; representation: Representation };
-export type UpdateSelectionEvent = { type: 'UPDATE_SELECTION'; selection: Selection; isRepresentation: boolean };
+export type UpdateSelectionEvent = {
+  type: 'UPDATE_SELECTION';
+  selection: Selection;
+  representations: Representation[];
+};
 export type WorkbenchEvent = UpdateSelectionEvent | ShowRepresentationEvent | HideRepresentationEvent;
 
 export const workbenchMachine = Machine<WorkbenchContext, WorkbenchStateSchema, WorkbenchEvent>(
   {
     initial: 'initial',
     context: {
-      selection: null,
+      selection: { entries: [] },
       representations: [],
       displayedRepresentation: null,
     },
@@ -60,23 +64,20 @@ export const workbenchMachine = Machine<WorkbenchContext, WorkbenchStateSchema, 
   {
     actions: {
       updateSelection: assign((context, event) => {
-        const { selection, isRepresentation } = event as UpdateSelectionEvent;
+        const { selection, representations: selectedRepresentations } = event as UpdateSelectionEvent;
+        if (selectedRepresentations.length > 0) {
+          const displayedRepresentation = selectedRepresentations[0];
 
-        if (isRepresentation) {
-          const { id, label, kind } = selection;
-          const representation: Representation = { id, label, kind };
-
-          let newRepresentations = [...context.representations];
-          const selectedRepresentation = newRepresentations.find(
-            (representation) => selection.id === representation.id
+          const representations = [...context.representations];
+          const newRepresentations = selectedRepresentations.filter(
+            (selectedRepresentation) =>
+              !representations.find((representation) => selectedRepresentation.id === representation.id)
           );
-          if (!selectedRepresentation) {
-            newRepresentations = [...newRepresentations, representation];
-          }
 
-          return { selection, displayedRepresentation: representation, representations: newRepresentations };
+          const newSelectedRepresentations = [...representations, ...newRepresentations];
+
+          return { selection, displayedRepresentation, representations: newSelectedRepresentations };
         }
-
         return { selection };
       }),
       showRepresentation: assign((_, event) => {
