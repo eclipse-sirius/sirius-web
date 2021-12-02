@@ -13,7 +13,6 @@
 package org.eclipse.sirius.web.spring.collaborative.diagrams.api;
 
 import java.util.Optional;
-import java.util.UUID;
 
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.Edge;
@@ -28,10 +27,10 @@ public interface IDiagramQueryService {
 
     Optional<Node> findNodeById(Diagram diagram, String nodeId);
 
-    Optional<Node> findNodeByLabelId(Diagram diagram, UUID labelId);
+    Optional<Node> findNodeByLabelId(Diagram diagram, String labelId);
 
     Optional<Edge> findEdgeById(Diagram diagram, String edgeId);
 
-    Optional<Edge> findEdgeByLabelId(Diagram diagram, UUID labelId);
+    Optional<Edge> findEdgeByLabelId(Diagram diagram, String labelId);
 
 }

@@ -95,7 +95,7 @@ public class DiagramRendererNodeTests {
         assertThat(diagram.getNodes()).extracting(Node::getBorderNodes).allMatch(List::isEmpty);
         assertThat(diagram.getNodes()).extracting(Node::getStyle).allMatch(s -> s instanceof RectangularNodeStyle);
         assertThat(diagram.getNodes()).extracting(Node::getSize).allMatch(s -> s.getHeight() == -1 && s.getWidth() == -1);
-        assertThat(diagram.getNodes()).extracting(Node::getLabel).extracting(Label::getId).allMatch(LABEL_ID::equals);
+        assertThat(diagram.getNodes()).extracting(Node::getLabel).extracting(Label::getId).allMatch(id -> UUID.nameUUIDFromBytes(LABEL_ID.getBytes()).toString().equals(id));
         assertThat(diagram.getNodes()).extracting(Node::getLabel).extracting(Label::getText).allMatch(text -> LABEL_TEXT.equals(text));
         assertThat(diagram.getNodes()).extracting(Node::getLabel).extracting(Label::getStyle).extracting(LabelStyle::getColor).allMatch(color -> LABEL_COLOR.equals(color));
         assertThat(diagram.getNodes()).extracting(Node::getLabel).extracting(Label::getStyle).extracting(LabelStyle::getFontSize).allMatch(size -> LABEL_FONT_SIZE == size);
@@ -132,7 +132,7 @@ public class DiagramRendererNodeTests {
         assertThat(diagram.getNodes()).extracting(Node::getBorderNodes).allMatch(List::isEmpty);
         assertThat(diagram.getNodes()).extracting(Node::getStyle).allMatch(s -> s instanceof RectangularNodeStyle);
         assertThat(diagram.getNodes()).extracting(Node::getSize).allMatch(s -> s.getHeight() == 200 && s.getWidth() == 10);
-        assertThat(diagram.getNodes()).extracting(Node::getLabel).extracting(Label::getId).allMatch(LABEL_ID::equals);
+        assertThat(diagram.getNodes()).extracting(Node::getLabel).extracting(Label::getId).allMatch(id -> UUID.nameUUIDFromBytes(LABEL_ID.getBytes()).toString().equals(id));
         assertThat(diagram.getNodes()).extracting(Node::getLabel).extracting(Label::getText).allMatch(text -> LABEL_TEXT.equals(text));
         assertThat(diagram.getNodes()).extracting(Node::getLabel).extracting(Label::getStyle).extracting(LabelStyle::getColor).allMatch(color -> LABEL_COLOR.equals(color));
         assertThat(diagram.getNodes()).extracting(Node::getLabel).extracting(Label::getStyle).extracting(LabelStyle::getFontSize).allMatch(size -> LABEL_FONT_SIZE == size);
