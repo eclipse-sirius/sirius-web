@@ -15,7 +15,6 @@ package org.eclipse.sirius.web.spring.collaborative.diagrams;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.function.Predicate;
 
 import org.eclipse.sirius.web.diagrams.Diagram;
@@ -38,7 +37,7 @@ public class DiagramQueryService implements IDiagramQueryService {
     }
 
     @Override
-    public Optional<Node> findNodeByLabelId(Diagram diagram, UUID labelId) {
+    public Optional<Node> findNodeByLabelId(Diagram diagram, String labelId) {
         return this.findNode(node -> Objects.equals(node.getLabel().getId(), labelId), diagram.getNodes());
     }
 
@@ -63,7 +62,7 @@ public class DiagramQueryService implements IDiagramQueryService {
     }
 
     @Override
-    public Optional<Edge> findEdgeByLabelId(Diagram diagram, UUID labelId) {
+    public Optional<Edge> findEdgeByLabelId(Diagram diagram, String labelId) {
         return diagram.getEdges().stream().filter(edge -> Objects.equals(edge.getCenterLabel().getId(), labelId)).findFirst();
     }
 
