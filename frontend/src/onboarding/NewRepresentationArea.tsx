@@ -123,7 +123,7 @@ export const NewRepresentationArea = ({
   } else {
     let subtitle =
       selectedItem && representationDescriptions.length > 0
-        ? 'Select the representation to create on ' + selection.entries[0].label
+        ? 'Select the representation to create on ' + selectedItem.label
         : 'There are no representations available for the current selection';
     return (
       <AreaContainer title={title} subtitle={subtitle} banner={message}>

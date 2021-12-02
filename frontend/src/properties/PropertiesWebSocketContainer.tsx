@@ -88,7 +88,7 @@ export const PropertiesWebSocketContainer = ({
    * Displays an other form if the selection indicates that we should display another properties view.
    */
   useEffect(() => {
-    if (selection?.entries.length > 0 && selection.entries[0].id !== currentSelection?.id) {
+    if (selection.entries.length > 0 && selection.entries[0].id !== currentSelection?.id) {
       const isRepresentation = registry.isRepresentation(selection.entries[0].kind);
       const switchSelectionEvent: SwitchSelectionEvent = {
         type: 'SWITCH_SELECTION',

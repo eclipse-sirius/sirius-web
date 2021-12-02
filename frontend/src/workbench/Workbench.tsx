@@ -62,7 +62,7 @@ export const Workbench = ({
   const { selection, representations, displayedRepresentation } = context;
 
   const setSelection = (selection: Selection) => {
-    const representations: Representation[] = selection?.entries.filter((entry) =>
+    const representations: Representation[] = selection.entries.filter((entry) =>
       registry.isRepresentation(entry.kind)
     );
     const updateSelectionEvent: UpdateSelectionEvent = {

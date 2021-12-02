@@ -228,7 +228,7 @@ export const TreeItem = ({
   let className = styles.treeItem;
   let dataTestid = undefined;
 
-  const selected = selection?.entries.find((entry) => entry.id === item.id);
+  const selected = selection.entries.find((entry) => entry.id === item.id);
   if (selected) {
     className = `${className} ${styles.selected}`;
     dataTestid = 'selected';
