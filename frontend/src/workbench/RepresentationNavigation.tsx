@@ -16,7 +16,7 @@ import Tabs from '@material-ui/core/Tabs';
 import CloseIcon from '@material-ui/icons/Close';
 import React from 'react';
 import { RepresentationNavigationProps } from 'workbench/RepresentationNavigation.types';
-import { Representation, Selection } from 'workbench/Workbench.types';
+import { Representation } from 'workbench/Workbench.types';
 
 const useRepresentationNavigationStyles = makeStyles((theme) => ({
   tabsRoot: {
@@ -56,12 +56,12 @@ export const RepresentationNavigation = ({
 
   const onChange = (_, value) => {
     const representationSelected = representations.find((representation) => representation.id === value);
-    const selection: Selection = {
+    const representation: Representation = {
       id: representationSelected.id,
       label: representationSelected.label,
       kind: representationSelected.kind,
     };
-    onRepresentationClick(selection);
+    onRepresentationClick(representation);
   };
   const onRepresentationClose = (event, representation: Representation) => {
     event.stopPropagation();

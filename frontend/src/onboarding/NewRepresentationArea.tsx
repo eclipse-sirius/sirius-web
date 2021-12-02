@@ -52,6 +52,7 @@ export const NewRepresentationArea = ({
   };
   const [state, setState] = useState(initialState);
   const { message } = state;
+  const selectedItem = selection.entries.length > 0 ? selection.entries[0] : null;
 
   // Representation creation
   const [createRepresentation, { loading, data, error }] = useMutation(createRepresentationMutation);
@@ -60,7 +61,7 @@ export const NewRepresentationArea = ({
       const { createRepresentation } = data;
       if (createRepresentation.representation) {
         const { id, label, kind } = createRepresentation.representation;
-        setSelection({ id, label, kind });
+        setSelection({ entries: [{ id, label, kind }] });
       } else if (createRepresentation.__typename === 'ErrorPayload') {
         setState((prevState) => {
           const newState = { ...prevState };
@@ -72,7 +73,7 @@ export const NewRepresentationArea = ({
   }, [loading, data, error, setSelection]);
   const onCreateRepresentation = (representationDescriptionId) => {
     const selected = representationDescriptions.find((candidate) => candidate.id === representationDescriptionId);
-    const objectId = selection.id;
+    const objectId = selectedItem.id;
     const input = {
       id: uuid(),
       editingContextId,
@@ -121,8 +122,8 @@ export const NewRepresentationArea = ({
     return <AreaContainer title={title} subtitle="You need edit access to create representations" />;
   } else {
     let subtitle =
-      selection && representationDescriptions.length > 0
-        ? 'Select the representation to create on ' + selection.label
+      selectedItem && representationDescriptions.length > 0
+        ? 'Select the representation to create on ' + selection.entries[0].label
         : 'There are no representations available for the current selection';
     return (
       <AreaContainer title={title} subtitle={subtitle} banner={message}>

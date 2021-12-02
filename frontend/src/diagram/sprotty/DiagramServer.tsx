@@ -265,20 +265,21 @@ export class DiagramServer extends ModelSource {
     }
   }
 
-  handleSiriusSelectAction(action) {
+  handleSiriusSelectAction(action: SiriusSelectAction) {
     const { selection } = action;
     this.actionDispatcher.request(GetSelectionAction.create()).then((selectionResult: SelectionResult) => {
       const selectedElementsIDs = [];
       const deselectedElementsIDs = [...selectionResult.selectedElementsIDs];
-      if (selection?.id !== this.currentRoot.id) {
-        const selectionElement = this.findElement(this.currentRoot, selection.id);
-        if (selectionElement && deselectedElementsIDs.indexOf(selectionElement.id) < 0) {
-          // The React selection and the Sprotty selection does not match. We must update the Sprotty selection
-          selectedElementsIDs.push(selectionElement.id);
-        }
-      }
-
-      const actions: Action[] = [];
+      selection.entries
+        .filter((entry) => entry.id !== this.currentRoot.id)
+        .forEach((entry) => {
+          const selectionElement = this.findElement(this.currentRoot, entry.id);
+          if (selectionElement && deselectedElementsIDs.indexOf(selectionElement.id) < 0) {
+            // The React selection and the Sprotty selection does not match. We must update the Sprotty selection
+            selectedElementsIDs.push(selectionElement.id);
+          }
+        });
+      const actions = [];
       if (selectedElementsIDs.length > 0 || deselectedElementsIDs.length > 0) {
         actions.push(new SelectAction(selectedElementsIDs, deselectedElementsIDs));
       }

@@ -19,7 +19,7 @@ import {
   GQLGetDomainsQueryData,
   GQLGetRootObjectCreationDescriptionsQueryData,
 } from 'modals/new-root-object/NewRootObjectModal.types';
-import { Selection } from 'workbench/Workbench.types';
+import { SelectionEntry } from 'workbench/Workbench.types';
 import { assign, Machine } from 'xstate';
 
 export interface NewRootObjectModalStateSchema {
@@ -58,7 +58,7 @@ export interface NewRootObjectModalContext {
   rootObjectCreationDescriptions: ChildCreationDescription[];
   selectedRootObjectCreationDescriptionId: string;
   suggestedRootObject: boolean;
-  objectToSelect: Selection | null;
+  objectToSelect: SelectionEntry | null;
   message: string | null;
 }
 

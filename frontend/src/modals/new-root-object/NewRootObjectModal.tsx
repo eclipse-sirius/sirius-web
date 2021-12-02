@@ -240,7 +240,7 @@ export const NewRootObjectModal = ({ editingContextId, item, onObjectCreated, on
 
   useEffect(() => {
     if (newRootObjectModal === 'success') {
-      onObjectCreated(objectToSelect);
+      onObjectCreated({ entries: [objectToSelect] });
     }
   }, [newRootObjectModal, onObjectCreated, objectToSelect]);
 

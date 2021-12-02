@@ -20,7 +20,7 @@ import {
   GQLWidgetSubscriptionsUpdatedEventPayload,
 } from 'form/FormEventFragments.types';
 import { v4 as uuid } from 'uuid';
-import { Selection } from 'workbench/Workbench.types';
+import { SelectionEntry } from 'workbench/Workbench.types';
 import { assign, Machine } from 'xstate';
 
 export interface PropertiesWebSocketContainerStateSchema {
@@ -50,7 +50,7 @@ export type SchemaValue = {
 
 export interface PropertiesWebSocketContainerContext {
   id: string;
-  currentSelection: Selection | null;
+  currentSelection: SelectionEntry | null;
   form: Form | null;
   subscribers: Subscriber[];
   widgetSubscriptions: WidgetSubscription[];
@@ -59,7 +59,7 @@ export interface PropertiesWebSocketContainerContext {
 
 export type ShowToastEvent = { type: 'SHOW_TOAST'; message: string };
 export type HideToastEvent = { type: 'HIDE_TOAST' };
-export type SwitchSelectionEvent = { type: 'SWITCH_SELECTION'; selection: Selection; isRepresentation: boolean };
+export type SwitchSelectionEvent = { type: 'SWITCH_SELECTION'; selection: SelectionEntry; isRepresentation: boolean };
 export type HandleSubscriptionResultEvent = {
   type: 'HANDLE_SUBSCRIPTION_RESULT';
   result: SubscriptionResult<GQLPropertiesEventSubscription>;

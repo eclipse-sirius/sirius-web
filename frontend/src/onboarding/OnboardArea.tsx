@@ -64,7 +64,7 @@ export const OnboardArea = ({ editingContextId, selection, setSelection, readOnl
   const [state, setState] = useState(INITIAL_STATE);
   const { stereotypeDescriptions, representationDescriptions, representations } = state;
 
-  const classId = selection ? selection.kind : '';
+  const classId = selection?.entries.length > 0 ? selection.entries[0].kind : '';
 
   const [getOnboardData, { loading, data, error }] = useLazyQuery(getOnboardDataQuery);
   useEffect(() => {
