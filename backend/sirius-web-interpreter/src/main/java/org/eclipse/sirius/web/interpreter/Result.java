@@ -21,17 +21,12 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.OptionalInt;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * The evaluation result.
  *
  * @author sbegaudeau
  */
 public class Result {
-
-    private Logger logger = LoggerFactory.getLogger(Result.class);
 
     private final Optional<Object> rawValue;
 
@@ -106,7 +101,8 @@ public class Result {
                 try {
                     result = OptionalInt.of(Integer.parseInt(String.valueOf(object)));
                 } catch (NumberFormatException exception) {
-                    this.logger.warn(exception.getMessage(), exception);
+                    // We'll return an OptionalInt.empty() which clearly indicates
+                    // the result can not be interpreted as an int.
                 }
             }
         }
