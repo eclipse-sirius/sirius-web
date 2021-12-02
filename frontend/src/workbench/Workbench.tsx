@@ -62,8 +62,14 @@ export const Workbench = ({
   const { selection, representations, displayedRepresentation } = context;
 
   const setSelection = (selection: Selection) => {
-    const isRepresentation = registry.isRepresentation(selection.kind);
-    const updateSelectionEvent: UpdateSelectionEvent = { type: 'UPDATE_SELECTION', selection, isRepresentation };
+    const representations: Representation[] = selection.entries.filter((entry) =>
+      registry.isRepresentation(entry.kind)
+    );
+    const updateSelectionEvent: UpdateSelectionEvent = {
+      type: 'UPDATE_SELECTION',
+      selection,
+      representations,
+    };
     dispatch(updateSelectionEvent);
   };
 

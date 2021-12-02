@@ -59,8 +59,8 @@ export interface DiagramWebSocketContainerContext {
   toolSections: ToolSection[];
   activeTool: Tool | null;
   contextualPalette: Palette | null;
-  latestSelection: Selection | null;
-  newSelection: Selection | null;
+  latestSelection: Selection;
+  newSelection: Selection;
   zoomLevel: string;
   subscribers: Subscriber[];
   message: string | null;
@@ -144,8 +144,8 @@ export const diagramWebSocketContainerMachine = Machine<
       toolSections: [],
       activeTool: null,
       contextualPalette: null,
-      latestSelection: null,
-      newSelection: null,
+      latestSelection: { entries: [] },
+      newSelection: { entries: [] },
       zoomLevel: '1',
       subscribers: [],
       message: null,
@@ -369,8 +369,8 @@ export const diagramWebSocketContainerMachine = Machine<
           contextualPalette: undefined,
           diagram: undefined,
           activeTool: undefined,
-          latestSelection: undefined,
-          newSelection: undefined,
+          latestSelection: { entries: [] },
+          newSelection: { entries: [] },
           zoomLevel: '1',
           message: undefined,
           selectedObjectId: undefined,
@@ -418,8 +418,11 @@ export const diagramWebSocketContainerMachine = Machine<
 
       setSelection: assign((context, event) => {
         const { selection } = event as SelectionEvent;
-        let newSelectionValue;
-        if ((!context.latestSelection && !selection) || context.latestSelection?.id === selection?.id) {
+        let newSelectionValue: Selection;
+        if (
+          (context.latestSelection.entries.length <= 0 && selection.entries.length <= 0) ||
+          context.latestSelection.entries[0]?.id === selection.entries[0]?.id
+        ) {
           newSelectionValue = context.newSelection;
         } else {
           newSelectionValue = selection;
@@ -455,8 +458,8 @@ export const diagramWebSocketContainerMachine = Machine<
           toolSections: [],
           contextualPalette: undefined,
           activeTool: undefined,
-          latestSelection: undefined,
-          newSelection: undefined,
+          latestSelection: { entries: [] },
+          newSelection: { entries: [] },
           zoomLevel: undefined,
           selectedObjectId: undefined,
         };

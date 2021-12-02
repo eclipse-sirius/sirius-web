@@ -20,7 +20,7 @@ export interface RepresentationDescription {
 export interface NewRepresentationAreaProps {
   editingContextId: string;
   representationDescriptions: RepresentationDescription[];
-  selection?: Selection;
+  selection: Selection;
   setSelection: (selection: Selection) => void;
   readOnly: boolean;
 }

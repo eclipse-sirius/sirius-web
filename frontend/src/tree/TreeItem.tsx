@@ -228,7 +228,8 @@ export const TreeItem = ({
   let className = styles.treeItem;
   let dataTestid = undefined;
 
-  if (selection?.id === item.id) {
+  const selected = selection.entries.find((entry) => entry.id === item.id);
+  if (selected) {
     className = `${className} ${styles.selected}`;
     dataTestid = 'selected';
   }
@@ -295,7 +296,7 @@ export const TreeItem = ({
   }
   const onFocus = () => {
     const { id, label, kind } = item;
-    setSelection({ id, label, kind });
+    setSelection({ entries: [{ id, label, kind }] });
   };
 
   const onClick = () => {

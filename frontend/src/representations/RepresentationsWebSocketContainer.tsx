@@ -84,9 +84,13 @@ export const RepresentationsWebSocketContainer = ({
   const { registry } = useContext(RepresentationContext);
 
   useEffect(() => {
-    if (currentSelection?.id !== selection?.id) {
-      const isRepresentation = registry.isRepresentation(selection.kind);
-      const switchSelectionEvent: SwitchSelectionEvent = { type: 'SWITCH_SELECTION', selection, isRepresentation };
+    if (selection.entries.length > 0 && selection.entries[0].id !== currentSelection?.id) {
+      const isRepresentation = registry.isRepresentation(selection.entries[0].kind);
+      const switchSelectionEvent: SwitchSelectionEvent = {
+        type: 'SWITCH_SELECTION',
+        selection: selection.entries[0],
+        isRepresentation,
+      };
       dispatch(switchSelectionEvent);
     }
   }, [currentSelection, registry, selection, dispatch]);

@@ -18,7 +18,7 @@ export interface TreeItemProps {
   item: TreeItemType;
   depth: number;
   onExpand: (id: string, depth: number) => void;
-  selection?: Selection;
+  selection: Selection;
   setSelection: (selection: Selection) => void;
   readOnly: boolean;
 }

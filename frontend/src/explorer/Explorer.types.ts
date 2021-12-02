@@ -17,7 +17,7 @@ export interface ExplorerProps {
   editingContextId: string;
   tree: TreeType;
   onExpand: (id: string, depth: number) => void;
-  selection?: Selection;
+  selection: Selection;
   setSelection: (selection: Selection) => void;
   readOnly: boolean;
 }

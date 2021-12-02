@@ -215,9 +215,13 @@ export const NewRepresentationModal = ({
   useEffect(() => {
     if (newRepresentationModal === 'success') {
       onRepresentationCreated({
-        id: createdRepresentationId,
-        label: createdRepresentationLabel,
-        kind: createdRepresentationKind,
+        entries: [
+          {
+            id: createdRepresentationId,
+            label: createdRepresentationLabel,
+            kind: createdRepresentationKind,
+          },
+        ],
       });
     }
   }, [

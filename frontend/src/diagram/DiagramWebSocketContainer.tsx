@@ -81,7 +81,7 @@ import React, { useCallback, useContext, useEffect, useRef } from 'react';
 import { SelectionDialogWebSocketContainer } from 'selection/SelectionDialogWebSocketContainer';
 import { EditLabelAction, FitToScreenAction, SEdge, SNode } from 'sprotty';
 import { v4 as uuid } from 'uuid';
-import { RepresentationComponentProps } from 'workbench/Workbench.types';
+import { RepresentationComponentProps, Selection } from 'workbench/Workbench.types';
 import {
   SetActiveToolAction,
   SiriusSelectAction,
@@ -521,17 +521,19 @@ export const DiagramWebSocketContainer = ({
    */
   useEffect(() => {
     const onSelectElement = (newSelectedElement, diagramServer) => {
-      let newSelection;
+      const newSelection: Selection = { entries: [] };
       if (newSelectedElement.root.id === newSelectedElement.id) {
+        // newSelectedElement => SGraph
         const { id, label, kind } = newSelectedElement;
-        newSelection = { id, label, kind };
+        newSelection.entries.push({ id, label, kind });
       } else {
+        // newSelectedElement => SNode || SEdge
         const { targetObjectId, targetObjectKind, targetObjectLabel } = newSelectedElement;
-        newSelection = {
+        newSelection.entries.push({
           id: targetObjectId,
           label: targetObjectLabel,
           kind: targetObjectKind,
-        };
+        });
       }
       setSelection(newSelection);
       const selectedElementEvent: SelectedElementEvent = { type: 'SELECTED_ELEMENT', selection: newSelection };
