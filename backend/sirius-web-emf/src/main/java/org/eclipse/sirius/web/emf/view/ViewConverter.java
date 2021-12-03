@@ -200,6 +200,9 @@ public class ViewConverter {
         var childNodeDescriptions = viewNodeDescription.getChildrenDescriptions().stream()
                                                        .map(childNodeDescription -> this.convert(childNodeDescription, interpreter))
                                                        .collect(Collectors.toList());
+        var borderNodeDescriptions = viewNodeDescription.getBorderNodesDescriptions().stream()
+                                                        .map(borderNodeDescription -> this.convert(borderNodeDescription, interpreter))
+                                                        .collect(Collectors.toList());
         // @formatter:on
         SynchronizationPolicy synchronizationPolicy = SynchronizationPolicy.SYNCHRONIZED;
 
@@ -257,7 +260,7 @@ public class ViewConverter {
                 .labelDescription(this.getLabelDescription(viewNodeDescription, interpreter))
                 .styleProvider(styleProvider)
                 .childNodeDescriptions(childNodeDescriptions)
-                .borderNodeDescriptions(List.of())
+                .borderNodeDescriptions(borderNodeDescriptions)
                 .sizeProvider(sizeProvider)
                 .labelEditHandler(this.createLabelEditHandler(viewNodeDescription, interpreter))
                 .deleteHandler(this.createDeleteHandler(viewNodeDescription, interpreter))

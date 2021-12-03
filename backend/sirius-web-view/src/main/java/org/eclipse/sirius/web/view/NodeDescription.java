@@ -42,6 +42,18 @@ public interface NodeDescription extends DiagramElementDescription {
     EList<NodeDescription> getChildrenDescriptions();
 
     /**
+     * Returns the value of the '<em><b>Border Nodes Descriptions</b></em>' containment reference list. The list
+     * contents are of type {@link org.eclipse.sirius.web.view.NodeDescription}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Border Nodes Descriptions</em>' containment reference list.
+     * @see org.eclipse.sirius.web.view.ViewPackage#getNodeDescription_BorderNodesDescriptions()
+     * @model containment="true"
+     * @generated
+     */
+    EList<NodeDescription> getBorderNodesDescriptions();
+
+    /**
      * Returns the value of the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *

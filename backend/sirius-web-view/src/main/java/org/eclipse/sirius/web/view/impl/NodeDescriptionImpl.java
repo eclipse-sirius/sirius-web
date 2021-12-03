@@ -53,6 +53,16 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
     protected EList<NodeDescription> childrenDescriptions;
 
     /**
+     * The cached value of the '{@link #getBorderNodesDescriptions() <em>Border Nodes Descriptions</em>}' containment
+     * reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getBorderNodesDescriptions()
+     * @generated
+     * @ordered
+     */
+    protected EList<NodeDescription> borderNodesDescriptions;
+
+    /**
      * The cached value of the '{@link #getStyle() <em>Style</em>}' containment reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
@@ -112,6 +122,19 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
             this.childrenDescriptions = new EObjectContainmentEList<>(NodeDescription.class, this, ViewPackage.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS);
         }
         return this.childrenDescriptions;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EList<NodeDescription> getBorderNodesDescriptions() {
+        if (this.borderNodesDescriptions == null) {
+            this.borderNodesDescriptions = new EObjectContainmentEList<>(NodeDescription.class, this, ViewPackage.NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS);
+        }
+        return this.borderNodesDescriptions;
     }
 
     /**
@@ -198,6 +221,8 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
         switch (featureID) {
         case ViewPackage.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS:
             return ((InternalEList<?>) this.getChildrenDescriptions()).basicRemove(otherEnd, msgs);
+        case ViewPackage.NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS:
+            return ((InternalEList<?>) this.getBorderNodesDescriptions()).basicRemove(otherEnd, msgs);
         case ViewPackage.NODE_DESCRIPTION__STYLE:
             return this.basicSetStyle(null, msgs);
         case ViewPackage.NODE_DESCRIPTION__NODE_TOOLS:
@@ -218,6 +243,8 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
         switch (featureID) {
         case ViewPackage.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS:
             return this.getChildrenDescriptions();
+        case ViewPackage.NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS:
+            return this.getBorderNodesDescriptions();
         case ViewPackage.NODE_DESCRIPTION__STYLE:
             return this.getStyle();
         case ViewPackage.NODE_DESCRIPTION__NODE_TOOLS:
@@ -240,6 +267,10 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
         case ViewPackage.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS:
             this.getChildrenDescriptions().clear();
             this.getChildrenDescriptions().addAll((Collection<? extends NodeDescription>) newValue);
+            return;
+        case ViewPackage.NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS:
+            this.getBorderNodesDescriptions().clear();
+            this.getBorderNodesDescriptions().addAll((Collection<? extends NodeDescription>) newValue);
             return;
         case ViewPackage.NODE_DESCRIPTION__STYLE:
             this.setStyle((NodeStyle) newValue);
@@ -267,6 +298,9 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
         case ViewPackage.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS:
             this.getChildrenDescriptions().clear();
             return;
+        case ViewPackage.NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS:
+            this.getBorderNodesDescriptions().clear();
+            return;
         case ViewPackage.NODE_DESCRIPTION__STYLE:
             this.setStyle((NodeStyle) null);
             return;
@@ -290,6 +324,8 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
         switch (featureID) {
         case ViewPackage.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS:
             return this.childrenDescriptions != null && !this.childrenDescriptions.isEmpty();
+        case ViewPackage.NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS:
+            return this.borderNodesDescriptions != null && !this.borderNodesDescriptions.isEmpty();
         case ViewPackage.NODE_DESCRIPTION__STYLE:
             return this.style != null;
         case ViewPackage.NODE_DESCRIPTION__NODE_TOOLS:
