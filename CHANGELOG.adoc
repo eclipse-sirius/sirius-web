@@ -20,6 +20,10 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/692[#692] [explorer] The explorer view is now more generic and extensible. It can represent arbitrary kinds of tree items, but the tree items supported must be configured for each application.
 - https://github.com/eclipse-sirius/sirius-components/issues/700[#700] [core] editingContextId and representationId are no longer UUID but String. Products that rely on sirius-components will be able to have their own ID policy for the editingContextId and representationId.
 
+=== Dependency Update
+
+- [core] Switch to Spring Boot 2.5.6
+
 === New features
 
 - https://github.com/eclipse-sirius/sirius-components/issues/773[#773] [compatibility] Add support for both `createView` and `deleteView` model operations which can be used to support unsynchronized diagrams from Sirius Desktop.
@@ -35,10 +39,21 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/694[#694] [core] Data can be provided to Success in order to notify changment made by operation made on the editing context.
 - [explorer] The context menus on explorer items has been migrated to Material UI
 - https://github.com/eclipse-sirius/sirius-components/issues/692[#692] [tree] The tree representation will now act as a proper representation. Its event handlers will now be implementations of  `ITreeEventHandler` and its input will be implementations of `ITreeInput`
+- [diagram] The variable `selectedNode` is now available even if there are no `selectedObject` from a selection representation
+- https://github.com/eclipse-sirius/sirius-components/issues/817[#817] [core] Improve the TypeScript typing of the frontend
+- [form] Add support for property groups defined in a different category
 
 === Bug fixes
 
 - [diagram] The variable `selectedNode` was only available in the variable manager used when executing node tools if a selection dialog was also available. Now the `selectedNode` variable will always be available unless the tool has been invoked on the background of the diagram
+
+=== Thanks
+
+In addition to members of the Sirius core team, this release includes contributions from the following authors. Many thanks to them!
+
+* https://github.com/AresEkb[@AresEkb]
+* https://github.com/AxelRICHARD[@AxelRICHARD]
+* https://github.com/Camork[@Camork]
 
 
 == v0.5.0
