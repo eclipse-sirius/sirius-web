@@ -68,6 +68,7 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
         if (this.childrenFeatures == null) {
             super.getChildrenFeatures(object);
             this.childrenFeatures.add(ViewPackage.Literals.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS);
+            this.childrenFeatures.add(ViewPackage.Literals.NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS);
             this.childrenFeatures.add(ViewPackage.Literals.NODE_DESCRIPTION__STYLE);
             this.childrenFeatures.add(ViewPackage.Literals.NODE_DESCRIPTION__NODE_TOOLS);
             this.childrenFeatures.add(ViewPackage.Literals.NODE_DESCRIPTION__CONDITIONAL_STYLES);
@@ -133,6 +134,7 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
 
         switch (notification.getFeatureID(NodeDescription.class)) {
         case ViewPackage.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS:
+        case ViewPackage.NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS:
         case ViewPackage.NODE_DESCRIPTION__STYLE:
         case ViewPackage.NODE_DESCRIPTION__NODE_TOOLS:
         case ViewPackage.NODE_DESCRIPTION__CONDITIONAL_STYLES:
@@ -157,13 +159,15 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
         nodeChild.setStyle(ViewFactory.eINSTANCE.createNodeStyle());
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS, nodeChild));
 
+        NodeDescription borderNodeChild = ViewFactory.eINSTANCE.createNodeDescription();
+        borderNodeChild.setName("Border node"); //$NON-NLS-1$
+        borderNodeChild.setStyle(ViewFactory.eINSTANCE.createNodeStyle());
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS, borderNodeChild));
+
         NodeTool newNodeTool = ViewFactory.eINSTANCE.createNodeTool();
         newNodeTool.setName("Create Node"); //$NON-NLS-1$
         newNodeTool.getBody().add(ViewFactory.eINSTANCE.createChangeContext());
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.NODE_DESCRIPTION__NODE_TOOLS, newNodeTool));
-
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.NODE_DESCRIPTION__STYLE, ViewFactory.eINSTANCE.createNodeStyle()));
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.NODE_DESCRIPTION__CONDITIONAL_STYLES, ViewFactory.eINSTANCE.createConditionalNodeStyle()));
     }
 
     /**
@@ -177,7 +181,8 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
         Object childFeature = feature;
         Object childObject = child;
 
-        boolean qualify = childFeature == ViewPackage.Literals.NODE_DESCRIPTION__STYLE || childFeature == ViewPackage.Literals.NODE_DESCRIPTION__CONDITIONAL_STYLES;
+        boolean qualify = childFeature == ViewPackage.Literals.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS || childFeature == ViewPackage.Literals.NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS
+                || childFeature == ViewPackage.Literals.NODE_DESCRIPTION__STYLE || childFeature == ViewPackage.Literals.NODE_DESCRIPTION__CONDITIONAL_STYLES;
 
         if (qualify) {
             return this.getString("_UI_CreateChild_text2", //$NON-NLS-1$
