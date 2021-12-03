@@ -94,9 +94,11 @@ export const Properties = ({
   return (
     <div data-testid="properties" className={classes.properties}>
       <Toolbar variant="dense" disableGutters>
-        <Typography variant="h6" noWrap>
-          {label}
-        </Typography>
+        <Tooltip title={label}>
+          <Typography variant="h6" noWrap>
+            {label}
+          </Typography>
+        </Tooltip>
         <div className={classes.subscribers}>
           {subscribers.map((subscriber) => (
             <Tooltip title={subscriber.username} arrow key={subscriber.username}>
