@@ -35,6 +35,11 @@ public interface IRepresentationEventProcessor extends IDisposablePublisher {
 
     ISubscriptionManager getSubscriptionManager();
 
+    @Override
+    default Flux<Boolean> canBeDisposed() {
+        return this.getSubscriptionManager().canBeDisposed();
+    }
+
     Flux<IPayload> getOutputEvents(IInput input);
 
     /**

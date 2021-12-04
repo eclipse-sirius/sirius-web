@@ -15,7 +15,6 @@ package org.eclipse.sirius.web.spring.collaborative.trees;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -39,7 +38,6 @@ import org.eclipse.sirius.web.spring.collaborative.trees.dto.TreeRefreshedEventP
 import org.eclipse.sirius.web.trees.Tree;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Timer;
@@ -73,8 +71,6 @@ public class TreeEventProcessor implements ITreeEventProcessor {
     private final IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry;
 
     private final Many<IPayload> sink = Sinks.many().multicast().directBestEffort();
-
-    private final Many<Boolean> canBeDisposedSink = Sinks.many().unicast().onBackpressureBuffer();
 
     private final AtomicReference<Tree> currentTree = new AtomicReference<>();
 
@@ -193,31 +189,8 @@ public class TreeEventProcessor implements ITreeEventProcessor {
         return Flux.merge(
             refreshEventFlux,
             this.subscriptionManager.getFlux(input)
-        )
-        .doOnSubscribe(subscription -> {
-            String username = SecurityContextHolder.getContext().getAuthentication().getName();
-            this.subscriptionManager.add(input, username);
-            this.logger.trace("{} has subscribed to the tree {} {}", username, this.treeCreationParameters.getEditingContext().getId(), this.subscriptionManager); //$NON-NLS-1$
-        })
-        .doOnCancel(() -> {
-            String username = SecurityContextHolder.getContext().getAuthentication().getName();
-            this.subscriptionManager.remove(UUID.randomUUID(), username);
-            this.logger.trace("{} has unsubscribed from the tree {} {}", username, this.treeCreationParameters.getEditingContext().getId(), this.subscriptionManager); //$NON-NLS-1$
-
-            if (this.subscriptionManager.isEmpty()) {
-                EmitResult emitResult = this.canBeDisposedSink.tryEmitNext(Boolean.TRUE);
-                if (emitResult.isFailure()) {
-                    String pattern = "An error has occurred while emitting that the processor can be disposed: {}"; //$NON-NLS-1$
-                    this.logger.warn(pattern, emitResult);
-                }
-            }
-        });
+        );
         // @formatter:on
-    }
-
-    @Override
-    public Flux<Boolean> canBeDisposed() {
-        return this.canBeDisposedSink.asFlux();
     }
 
     @Override

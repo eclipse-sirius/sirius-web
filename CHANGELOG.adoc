@@ -5,10 +5,12 @@
 === Architectural decision records
 
 === Deprecation warning
+- https://github.com/eclipse-sirius/sirius-components/issues/858[#858] Our dependency to Spring Security will be reduced or eliminated soon. Sirius Components will now longer have any opinion on matters of authentication, authorization, principal management, etc. All those concerns will be out of the scope of the project. It will also be way easier to integrate Sirius Components in a Spring based application since it won't come with this additional requirement
 
 === Breaking changes
+- https://github.com/eclipse-sirius/sirius-components/issues/858[#858] Remove most of the methods of `ISubscriptionManager` since they were not really useful
 
-=== Dependency Update
+=== Dependency update
 
 - [core] Switch to Spring Boot 2.6.1
 - [core] Switch to GraphQL Java 17.3
@@ -19,7 +21,8 @@
 
 === Bug fixes
 
-== v2021.12.0 (Unreleased)
+
+== v2021.12.0
 
 === Architectural decision records
 
@@ -33,13 +36,13 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/818[#818] [workbench] The concept of `Selection` will be restructured, as described in the ADR-036. Every part of the code involved in the manipulation of the selection of the workbench will be impacted. This includes concepts as remote as the representation descriptions which are used to computed fields like `kind`. For example, the behavior of the `TreeDescription#getKindProvider` and `NodeDescription#getTargetObjectKindProvider` will have to be updated for all the providers. Failure to update to the new behavior will make the selection fail in the workbench
 - [core] The Success parameterless contructor will be removed soon.
 
-=== Breaking Changes
+=== Breaking changes
 
 - https://github.com/eclipse-sirius/sirius-components/issues/804[#804] [core] Update the name of our configuration properties. The configuration property `sirius.web.graphql.websocket.allowed.origins` will now be `sirius.components.cors.allowedOriginPatterns` and it will support complex patterns on top of regular origins. The default value will be restored to nothing since it has temporarily been set to `*`. In a development environment, the recommended value would be both patterns `https://localhost:[*]` and `http://localhost:[*]` in order to accept requests from any application hosted on the same machine. The configuration property `org.eclipse.sirius.web.editingContextEventProcessorRegistry.disposeDelay` will now be `sirius.components.editingContext.disposeDelay`. Its default value will be 1s since it is the only realistic option with domain and view support.
 - https://github.com/eclipse-sirius/sirius-components/issues/692[#692] [explorer] The explorer view is now more generic and extensible. It can represent arbitrary kinds of tree items, but the tree items supported must be configured for each application.
 - https://github.com/eclipse-sirius/sirius-components/issues/700[#700] [core] editingContextId and representationId are no longer UUID but String. Products that rely on sirius-components will be able to have their own ID policy for the editingContextId and representationId.
 
-=== Dependency Update
+=== Dependency update
 
 - [core] Switch to Spring Boot 2.5.6
 
