@@ -15,7 +15,6 @@ package org.eclipse.sirius.web.spring.collaborative.diagrams;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IInput;
@@ -39,11 +38,8 @@ import org.eclipse.sirius.web.spring.collaborative.diagrams.dto.RenameDiagramInp
 import org.eclipse.sirius.web.spring.collaborative.dto.RenameRepresentationInput;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Sinks;
-import reactor.core.publisher.Sinks.EmitResult;
 import reactor.core.publisher.Sinks.Many;
 import reactor.core.publisher.Sinks.One;
 
@@ -71,8 +67,6 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
     private final IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry;
-
-    private final Many<Boolean> canBeDisposedSink = Sinks.many().unicast().onBackpressureBuffer();
 
     private final DiagramEventFlux diagramEventFlux;
 
@@ -182,31 +176,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
         return Flux.merge(
             this.diagramEventFlux.getFlux(input),
             this.subscriptionManager.getFlux(input)
-        )
-        .doOnSubscribe(subscription -> {
-            String username = SecurityContextHolder.getContext().getAuthentication().getName();
-            this.subscriptionManager.add(input, username);
-            this.logger.trace("{} has subscribed to the diagram {} {}", username, this.diagramContext.getDiagram().getId(), this.subscriptionManager); //$NON-NLS-1$
-        })
-        .doOnCancel(() -> {
-            String username = SecurityContextHolder.getContext().getAuthentication().getName();
-            this.subscriptionManager.remove(UUID.randomUUID(), username);
-            this.logger.trace("{} has unsubscribed from the diagram {} {}", username, this.diagramContext.getDiagram().getId(), this.subscriptionManager); //$NON-NLS-1$
-
-            if (this.subscriptionManager.isEmpty()) {
-                EmitResult emitResult = this.canBeDisposedSink.tryEmitNext(Boolean.TRUE);
-                if (emitResult.isFailure()) {
-                    String pattern = "An error has occurred while emitting that the processor can be disposed: {}"; //$NON-NLS-1$
-                    this.logger.warn(pattern, emitResult);
-                }
-            }
-        });
-        // @formatter:on
-    }
-
-    @Override
-    public Flux<Boolean> canBeDisposed() {
-        return this.canBeDisposedSink.asFlux();
+        );
     }
 
     @Override

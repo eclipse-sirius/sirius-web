@@ -12,18 +12,11 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.spring.collaborative.representations;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.spring.collaborative.api.ISubscriptionManager;
-import org.eclipse.sirius.web.spring.collaborative.dto.Subscriber;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,39 +36,32 @@ public class SubscriptionManager implements ISubscriptionManager {
 
     private final Many<IPayload> sink = Sinks.many().multicast().directBestEffort();
 
-    private final Map<String, AtomicInteger> username2subscriptionCount = new ConcurrentHashMap<>();
+    private final AtomicInteger subscriptionCount = new AtomicInteger();
 
-    @Override
-    public void add(IInput input, String username) {
-        var subscriptionCount = this.username2subscriptionCount.computeIfAbsent(username, name -> new AtomicInteger());
-        subscriptionCount.getAndIncrement();
-    }
-
-    @Override
-    public void remove(UUID correlationId, String username) {
-        var subscriptionCount = this.username2subscriptionCount.computeIfAbsent(username, name -> new AtomicInteger());
-        subscriptionCount.updateAndGet(current -> Math.max(0, current - 1));
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return this.getSubscribers().isEmpty();
-    }
-
-    @Override
-    public List<Subscriber> getSubscribers() {
-        // @formatter:off
-        return this.username2subscriptionCount.entrySet().stream()
-                .filter(entry -> entry.getValue().intValue() > 0)
-                .map(Entry::getKey)
-                .map(Subscriber::new)
-                .collect(Collectors.toUnmodifiableList());
-        // @formatter:on
-    }
+    private final Many<Boolean> canBeDisposedSink = Sinks.many().unicast().onBackpressureBuffer();
 
     @Override
     public Flux<IPayload> getFlux(IInput input) {
-        return this.sink.asFlux();
+        return this.sink.asFlux().doOnSubscribe(subscription -> {
+            this.subscriptionCount.getAndIncrement();
+            this.logger.trace("A new subscription to the representation has occurred {}", this.subscriptionCount.intValue()); //$NON-NLS-1$
+        }).doOnCancel(() -> {
+            this.subscriptionCount.updateAndGet(current -> Math.max(0, current - 1));
+            this.logger.trace("A new cancellation from the representation has occurred {}", this.subscriptionCount.intValue()); //$NON-NLS-1$
+
+            if (this.subscriptionCount.get() == 0) {
+                EmitResult emitResult = this.canBeDisposedSink.tryEmitNext(Boolean.TRUE);
+                if (emitResult.isFailure()) {
+                    String pattern = "An error has occurred while emitting that the processor can be disposed: {}"; //$NON-NLS-1$
+                    this.logger.warn(pattern, emitResult);
+                }
+            }
+        });
+    }
+
+    @Override
+    public Flux<Boolean> canBeDisposed() {
+        return this.canBeDisposedSink.asFlux();
     }
 
     @Override
@@ -87,8 +73,4 @@ public class SubscriptionManager implements ISubscriptionManager {
         }
     }
 
-    @Override
-    public String toString() {
-        return this.username2subscriptionCount.toString();
-    }
 }

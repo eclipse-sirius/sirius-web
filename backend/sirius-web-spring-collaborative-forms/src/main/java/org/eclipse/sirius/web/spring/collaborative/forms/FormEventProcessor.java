@@ -15,7 +15,6 @@ package org.eclipse.sirius.web.spring.collaborative.forms;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.sirius.web.components.Element;
@@ -45,7 +44,6 @@ import org.eclipse.sirius.web.spring.collaborative.forms.dto.UpdateWidgetFocusIn
 import org.eclipse.sirius.web.spring.collaborative.forms.dto.UpdateWidgetFocusSuccessPayload;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -75,8 +73,6 @@ public class FormEventProcessor implements IFormEventProcessor {
     private final IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry;
 
     private final Many<IPayload> sink = Sinks.many().multicast().directBestEffort();
-
-    private final Many<Boolean> canBeDisposedSink = Sinks.many().unicast().onBackpressureBuffer();
 
     private final AtomicReference<Form> currentForm = new AtomicReference<>();
 
@@ -181,31 +177,8 @@ public class FormEventProcessor implements IFormEventProcessor {
             refreshEventFlux,
             this.widgetSubscriptionManager.getFlux(input),
             this.subscriptionManager.getFlux(input)
-        )
-        .doOnSubscribe(subscription -> {
-            String username = SecurityContextHolder.getContext().getAuthentication().getName();
-            this.subscriptionManager.add(input, username);
-            this.logger.trace("{} has subscribed to the form {} {}", username, this.formCreationParameters.getId(), this.subscriptionManager); //$NON-NLS-1$
-        })
-        .doOnCancel(() -> {
-            String username = SecurityContextHolder.getContext().getAuthentication().getName();
-            this.subscriptionManager.remove(UUID.randomUUID(), username);
-            this.logger.trace("{} has unsubscribed from the form {} {}", username, this.formCreationParameters.getId(), this.subscriptionManager); //$NON-NLS-1$
-
-            if (this.subscriptionManager.isEmpty()) {
-                EmitResult emitResult = this.canBeDisposedSink.tryEmitNext(Boolean.TRUE);
-                if (emitResult.isFailure()) {
-                    String pattern = "An error has occurred while emitting that the processor can be disposed: {}"; //$NON-NLS-1$
-                    this.logger.warn(pattern, emitResult);
-                }
-            }
-        });
+        );
         // @formatter:on
-    }
-
-    @Override
-    public Flux<Boolean> canBeDisposed() {
-        return this.canBeDisposedSink.asFlux();
     }
 
     @Override
