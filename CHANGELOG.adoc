@@ -11,6 +11,7 @@
 === Dependency Update
 
 - [core] Switch to Spring Boot 2.6.1
+- [core] Switch to GraphQL Java 17.3
 
 === New features
 
