@@ -15,6 +15,8 @@ package org.eclipse.sirius.web.starter;
 import org.eclipse.sirius.web.spring.collaborative.api.ISubscriptionManagerFactory;
 import org.eclipse.sirius.web.spring.collaborative.forms.WidgetSubscriptionManager;
 import org.eclipse.sirius.web.spring.collaborative.forms.api.IWidgetSubscriptionManagerFactory;
+import org.eclipse.sirius.web.spring.collaborative.projects.EditingContextEventProcessorExecutorServiceProvider;
+import org.eclipse.sirius.web.spring.collaborative.projects.api.IEditingContextEventProcessorExecutorServiceProvider;
 import org.eclipse.sirius.web.spring.collaborative.representations.SubscriptionManager;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
@@ -54,5 +56,12 @@ public class SiriusWebStarterConfiguration {
     @ConditionalOnMissingBean(IWidgetSubscriptionManagerFactory.class)
     public IWidgetSubscriptionManagerFactory widgetSubscriptionManagerFactory() {
         return WidgetSubscriptionManager::new;
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(IEditingContextEventProcessorExecutorServiceProvider.class)
+    public IEditingContextEventProcessorExecutorServiceProvider editingContextEventProcessorExecutorServiceProvider() {
+        return new EditingContextEventProcessorExecutorServiceProvider();
+
     }
 }

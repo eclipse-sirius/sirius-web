@@ -9,6 +9,7 @@
 
 === Breaking changes
 - https://github.com/eclipse-sirius/sirius-components/issues/858[#858] Remove most of the methods of `ISubscriptionManager` since they were not really useful
+- https://github.com/eclipse-sirius/sirius-components/issues/871[#871] Change the constructor of the `EditingContextEventProcessor` in order to let consumers provide an `IEditingContextEventProcessorExecutorServiceProvider`
 
 === Dependency update
 
@@ -18,6 +19,8 @@
 === New features
 
 === Improvements
+
+- https://github.com/eclipse-sirius/sirius-components/issues/871[#871] An `IEditingContextEventProcessorExecutorServiceProvider` can be given to the `EditingContextEventProcessor` in order to customize the `ExecutorService` which will be used to handle the processing of the `IInput` received. This will allow consumers to change the thread management policy of Sirius Components
 
 === Bug fixes
 
