@@ -23,7 +23,6 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -51,7 +50,6 @@ import org.eclipse.sirius.web.spring.collaborative.messages.ICollaborativeMessag
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.security.concurrent.DelegatingSecurityContextExecutorService;
 
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
@@ -102,23 +100,15 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
 
     private final Disposable changeDescriptionDisposable;
 
-    public EditingContextEventProcessor(ICollaborativeMessageService messageService, IEditingContext editingContext, IEditingContextPersistenceService editingContextPersistenceService,
-            ApplicationEventPublisher applicationEventPublisher, List<IEditingContextEventHandler> editingContextEventHandlers,
-            IRepresentationEventProcessorComposedFactory representationEventProcessorComposedFactory, IDanglingRepresentationDeletionService danglingRepresentationDeletionService) {
-        this.messageService = Objects.requireNonNull(messageService);
-        this.editingContext = Objects.requireNonNull(editingContext);
-        this.editingContextPersistenceService = Objects.requireNonNull(editingContextPersistenceService);
-        this.applicationEventPublisher = Objects.requireNonNull(applicationEventPublisher);
-        this.editingContextEventHandlers = Objects.requireNonNull(editingContextEventHandlers);
-        this.representationEventProcessorComposedFactory = Objects.requireNonNull(representationEventProcessorComposedFactory);
-        this.danglingRepresentationDeletionService = Objects.requireNonNull(danglingRepresentationDeletionService);
-
-        var delegateExecutorService = Executors.newSingleThreadExecutor((Runnable runnable) -> {
-            Thread thread = Executors.defaultThreadFactory().newThread(runnable);
-            thread.setName("Editing context " + this.editingContext.getId()); //$NON-NLS-1$
-            return thread;
-        });
-        this.executor = new DelegatingSecurityContextExecutorService(delegateExecutorService);
+    public EditingContextEventProcessor(EditingContextEventProcessorParameters parameters) {
+        this.messageService = parameters.getMessageService();
+        this.editingContext = parameters.getEditingContext();
+        this.editingContextPersistenceService = parameters.getEditingContextPersistenceService();
+        this.applicationEventPublisher = parameters.getApplicationEventPublisher();
+        this.editingContextEventHandlers = parameters.getEditingContextEventHandlers();
+        this.representationEventProcessorComposedFactory = parameters.getRepresentationEventProcessorComposedFactory();
+        this.danglingRepresentationDeletionService = parameters.getDanglingRepresentationDeletionService();
+        this.executor = parameters.getExecutorServiceProvider().getExecutorService(this.editingContext);
         this.changeDescriptionDisposable = this.setupChangeDescriptionSinkConsumer();
     }
 
