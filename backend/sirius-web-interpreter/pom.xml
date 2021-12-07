@@ -22,7 +22,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius.web</groupId>
 	<artifactId>sirius-web-interpreter</artifactId>
-	<version>2021.12.0</version>
+	<version>2021.12.1</version>
 	<name>sirius-web-interpreter</name>
 	<description>Sirius Web Intepreter</description>
 
