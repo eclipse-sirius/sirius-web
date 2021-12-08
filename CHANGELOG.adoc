@@ -5,12 +5,12 @@
 === Architectural decision records
 
 === Deprecation warning
-- https://github.com/eclipse-sirius/sirius-components/issues/858[#858] Our dependency to Spring Security will be reduced or eliminated soon. Sirius Components will now longer have any opinion on matters of authentication, authorization, principal management, etc. All those concerns will be out of the scope of the project. It will also be way easier to integrate Sirius Components in a Spring based application since it won't come with this additional requirement
+- https://github.com/eclipse-sirius/sirius-components/issues/858[#858] [core] Our dependency to Spring Security will be reduced or eliminated soon. Sirius Components will now longer have any opinion on matters of authentication, authorization, principal management, etc. All those concerns will be out of the scope of the project. It will also be way easier to integrate Sirius Components in a Spring based application since it won't come with this additional requirement
 
 === Breaking changes
-- https://github.com/eclipse-sirius/sirius-components/issues/858[#858] Remove most of the methods of `ISubscriptionManager` since they were not really useful
-- https://github.com/eclipse-sirius/sirius-components/issues/871[#871] Change the constructor of the `EditingContextEventProcessor` in order to let consumers provide an `IEditingContextEventProcessorExecutorServiceProvider`
-- https://github.com/eclipse-sirius/sirius-components/issues/134[#134] Switch from a single-selection API to a multi-selection API with some changes to the `Selection` object of the workbench
+- https://github.com/eclipse-sirius/sirius-components/issues/858[#858] [core] Remove most of the methods of `ISubscriptionManager` since they were not really useful
+- https://github.com/eclipse-sirius/sirius-components/issues/871[#871] [core] Change the constructor of the `EditingContextEventProcessor` in order to let consumers provide an `IEditingContextEventProcessorExecutorServiceProvider`
+- https://github.com/eclipse-sirius/sirius-components/issues/134[#134] [workbench] Switch from a single-selection API to a multi-selection API with some changes to the `Selection` object of the workbench
 
 === Dependency update
 
@@ -21,13 +21,13 @@
 
 === Improvements
 
-- https://github.com/eclipse-sirius/sirius-components/issues/871[#871] An `IEditingContextEventProcessorExecutorServiceProvider` can be given to the `EditingContextEventProcessor` in order to customize the `ExecutorService` which will be used to handle the processing of the `IInput` received. This will allow consumers to change the thread management policy of Sirius Components
-- https://github.com/eclipse-sirius/sirius-components/issues/134[#134] The internal API of the workbench is now ready to accept features leveraging a multi-selection
+- https://github.com/eclipse-sirius/sirius-components/issues/871[#871] [core] An `IEditingContextEventProcessorExecutorServiceProvider` can be given to the `EditingContextEventProcessor` in order to customize the `ExecutorService` which will be used to handle the processing of the `IInput` received. This will allow consumers to change the thread management policy of Sirius Components
+- https://github.com/eclipse-sirius/sirius-components/issues/134[#134] [workbench] The internal API of the workbench is now ready to accept features leveraging a multi-selection
 
 === Bug fixes
 
-- Fix a potential NPE in logging code of the `WidgetDescriptionConverter`
-- Handle invalid format more gracefully when editing numeric properties
+- [compatibility] Fix a potential NPE in logging code of the `WidgetDescriptionConverter`
+- [form] Handle invalid format more gracefully when editing numeric properties
 
 
 == v2021.12.0
