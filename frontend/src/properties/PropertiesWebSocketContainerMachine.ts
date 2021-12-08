@@ -59,7 +59,11 @@ export interface PropertiesWebSocketContainerContext {
 
 export type ShowToastEvent = { type: 'SHOW_TOAST'; message: string };
 export type HideToastEvent = { type: 'HIDE_TOAST' };
-export type SwitchSelectionEvent = { type: 'SWITCH_SELECTION'; selection: SelectionEntry; isRepresentation: boolean };
+export type SwitchSelectionEvent = {
+  type: 'SWITCH_SELECTION';
+  selection: SelectionEntry | null;
+  isRepresentation: boolean;
+};
 export type HandleSubscriptionResultEvent = {
   type: 'HANDLE_SUBSCRIPTION_RESULT';
   result: SubscriptionResult<GQLPropertiesEventSubscription>;

@@ -96,6 +96,13 @@ export const PropertiesWebSocketContainer = ({
         isRepresentation,
       };
       dispatch(switchSelectionEvent);
+    } else if (selection.entries.length === 0) {
+      const switchSelectionEvent: SwitchSelectionEvent = {
+        type: 'SWITCH_SELECTION',
+        selection: null,
+        isRepresentation: false,
+      };
+      dispatch(switchSelectionEvent);
     }
   }, [currentSelection, registry, selection, dispatch]);
 
