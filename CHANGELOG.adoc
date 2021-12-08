@@ -17,6 +17,10 @@
 - [core] Switch to Spring Boot 2.6.1
 - [core] Switch to GraphQL Java 17.3
 - [compatibility] Switch to Sirius Desktop 6.6.0
+- [frontend] Switch to @xstate/react 1.6.3
+- [frontend] Switch to typescript 4.5.4
+- [frontend] Switch to @typescript-eslint/parser 5.7.0
+- [frontend] Switch to xstate 4.26.1
 
 === New features
 
