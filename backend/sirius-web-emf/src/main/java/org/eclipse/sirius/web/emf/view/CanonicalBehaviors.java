@@ -55,7 +55,7 @@ public class CanonicalBehaviors {
         EObject semanticTarget = variableManager.get(org.eclipse.sirius.web.diagrams.description.EdgeDescription.SEMANTIC_EDGE_TARGET, EObject.class).get();
         if (edgeDescription.isIsDomainBasedEdge()) {
             this.createSemanticInstance(semanticSource, edgeDescription.getDomainType()).ifPresent(instance -> {
-                this.addInParent(semanticSource, instance);
+                this.addInParent(semanticSource.eContainer(), instance);
                 this.addReferenceTo(instance, semanticSource);
                 this.addReferenceTo(instance, semanticTarget);
             });
