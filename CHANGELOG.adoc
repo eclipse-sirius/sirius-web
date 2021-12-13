@@ -1,6 +1,6 @@
 = Changelog
 
-== v2022.02.0 (Unreleased)
+== v2022.01.0 (Unreleased)
 
 === Architectural decision records
 
@@ -16,6 +16,7 @@
 
 - [core] Switch to Spring Boot 2.6.1
 - [core] Switch to GraphQL Java 17.3
+- [compatibility] Switch to Sirius Desktop 6.6.0
 
 === New features
 
@@ -23,11 +24,13 @@
 
 - https://github.com/eclipse-sirius/sirius-components/issues/871[#871] [core] An `IEditingContextEventProcessorExecutorServiceProvider` can be given to the `EditingContextEventProcessor` in order to customize the `ExecutorService` which will be used to handle the processing of the `IInput` received. This will allow consumers to change the thread management policy of Sirius Components
 - https://github.com/eclipse-sirius/sirius-components/issues/134[#134] [workbench] The internal API of the workbench is now ready to accept features leveraging a multi-selection
+- [form] Add a tooltip to always make the full label available
 
 === Bug fixes
 
 - [compatibility] Fix a potential NPE in logging code of the `WidgetDescriptionConverter`
 - [form] Handle invalid format more gracefully when editing numeric properties
+- [view] Fix the canonical domain-based edge creation tool
 
 
 == v2021.12.0
