@@ -28,6 +28,8 @@ public interface ISubscriptionManager {
 
     Flux<Boolean> canBeDisposed();
 
+    boolean isEmpty();
+
     void dispose();
 
     /**
@@ -45,6 +47,11 @@ public interface ISubscriptionManager {
         @Override
         public Flux<Boolean> canBeDisposed() {
             return Flux.empty();
+        }
+
+        @Override
+        public boolean isEmpty() {
+            return true;
         }
 
         @Override
