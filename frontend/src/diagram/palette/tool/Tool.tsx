@@ -74,7 +74,8 @@ export const Tool = ({ tool, selected, onClick, disabled, thumbnail }) => {
       onClick={onToolClick}
       onKeyPress={onKeyPress}
       tabIndex={0}
-      data-testid={`${label} - Tool`}>
+      data-testid={`${label} - Tool`}
+    >
       {image}
       {labelContent}
     </div>

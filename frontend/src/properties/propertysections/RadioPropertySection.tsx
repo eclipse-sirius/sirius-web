@@ -148,7 +148,8 @@ export const RadioPropertySection = ({
         aria-label={widget.label}
         name={widget.label}
         value={selectedOption ? selectedOption.id : null}
-        onChange={onChange}>
+        onChange={onChange}
+      >
         {widget.options.map((option) => (
           <FormControlLabel
             value={option.id}

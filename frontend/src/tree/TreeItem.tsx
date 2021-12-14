@@ -336,7 +336,8 @@ export const TreeItem = ({
         data-haschildren={item.hasChildren.toString()}
         data-depth={depth}
         data-expanded={item.expanded.toString()}
-        data-testid={dataTestid}>
+        data-testid={dataTestid}
+      >
         <ItemCollapseToggle item={item} depth={depth} onExpand={onExpand} />
         <div className={styles.content}>
           <div
@@ -344,7 +345,8 @@ export const TreeItem = ({
             onClick={onClick}
             onDoubleClick={() => item.hasChildren && onExpand(item.id, depth)}
             title={item.kind}
-            data-testid={item.label}>
+            data-testid={item.label}
+          >
             {image}
             {text}
           </div>

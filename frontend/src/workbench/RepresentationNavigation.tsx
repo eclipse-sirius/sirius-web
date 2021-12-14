@@ -75,7 +75,8 @@ export const RepresentationNavigation = ({
       variant="scrollable"
       scrollButtons="on"
       textColor="primary"
-      indicatorColor="primary">
+      indicatorColor="primary"
+    >
       {representations.map((representation) => {
         return (
           <Tab

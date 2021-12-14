@@ -95,7 +95,8 @@ export const NewRepresentationArea = ({
               data-testid={representationDescription.id}
               onClick={() => {
                 onCreateRepresentation(representationDescription.id);
-              }}>
+              }}
+            >
               <NewRepresentation title={representationDescription.label} className={styles.icon} />
             </LinkButton>
           );

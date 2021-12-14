@@ -34,7 +34,8 @@ export const Edit = ({ title, ...props }) => {
       aria-labelledby="title"
       aria-describedby="desc"
       role="img"
-      {...props}>
+      {...props}
+    >
       <title>{title}</title>
       <path d="M13.222 5.113l5.665 5.667L5.665 24H0v-5.666L13.222 5.112v.001zm1.888-1.888L17.942.391a1.335 1.335 0 011.889 0l3.778 3.778a1.336 1.336 0 010 1.889L20.775 8.89 15.11 3.225z"></path>
     </svg>

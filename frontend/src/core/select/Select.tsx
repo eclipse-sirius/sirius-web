@@ -67,7 +67,8 @@ export const Select = ({ name, value, options, onChange, disabled, autoFocus, sm
       onChange={onChange}
       disabled={disabled}
       autoFocus={autoFocus}
-      data-testid={dataTestId}>
+      data-testid={dataTestId}
+    >
       {opts}
     </select>
   );

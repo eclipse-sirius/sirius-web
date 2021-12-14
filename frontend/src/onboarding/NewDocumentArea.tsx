@@ -84,7 +84,8 @@ export const NewDocumentArea = ({
               data-testid={stereotypeDescription.id}
               onClick={() => {
                 onCreateDocument(stereotypeDescription.id);
-              }}>
+              }}
+            >
               <NewDocument title="" className={styles.icon} />
             </LinkButton>
           );

@@ -189,7 +189,8 @@ export const NewObjectModal = ({ editingContextId, item, onObjectCreated, onClos
               disabled={newObjectModal === 'loading' || newObjectModal === 'creatingChild'}
               labelId="newObjectModalChildCreationDescriptionLabel"
               fullWidth
-              data-testid="childCreationDescription">
+              data-testid="childCreationDescription"
+            >
               {childCreationDescriptions.map((childCreationDescription) => (
                 <MenuItem value={childCreationDescription.id} key={childCreationDescription.id}>
                   {childCreationDescription.label}
@@ -204,7 +205,8 @@ export const NewObjectModal = ({ editingContextId, item, onObjectCreated, onClos
             disabled={newObjectModal !== 'valid'}
             data-testid="create-object"
             color="primary"
-            onClick={onCreateObject}>
+            onClick={onCreateObject}
+          >
             Create
           </Button>
         </DialogActions>
@@ -223,7 +225,8 @@ export const NewObjectModal = ({ editingContextId, item, onObjectCreated, onClos
             size="small"
             aria-label="close"
             color="inherit"
-            onClick={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}>
+            onClick={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
+          >
             <CloseIcon fontSize="small" />
           </IconButton>
         }

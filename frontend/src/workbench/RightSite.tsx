@@ -123,7 +123,8 @@ export const RightSite = ({ editingContextId, selection, setSelection, readOnly 
         square
         expanded={expanded === DETAILS_PANEL_NAME}
         onChange={handleChange(DETAILS_PANEL_NAME)}
-        TransitionComponent={CustomCollapse}>
+        TransitionComponent={CustomCollapse}
+      >
         <AccordionSummary expandIcon={<ExpandMoreIcon />} IconButtonProps={{ size: 'small' }}>
           Details
         </AccordionSummary>
@@ -140,7 +141,8 @@ export const RightSite = ({ editingContextId, selection, setSelection, readOnly 
         square
         expanded={expanded === 'representations'}
         onChange={handleChange(REPRESENTATIONS_PANEL_NAME)}
-        TransitionComponent={CustomCollapse}>
+        TransitionComponent={CustomCollapse}
+      >
         <AccordionSummary expandIcon={<ExpandMoreIcon />} IconButtonProps={{ size: 'small' }}>
           Representations
         </AccordionSummary>
