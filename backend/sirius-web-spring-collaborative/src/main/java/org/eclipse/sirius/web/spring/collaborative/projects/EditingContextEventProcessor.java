@@ -58,6 +58,7 @@ import reactor.core.publisher.Sinks;
 import reactor.core.publisher.Sinks.EmitResult;
 import reactor.core.publisher.Sinks.Many;
 import reactor.core.publisher.Sinks.One;
+import reactor.core.scheduler.Schedulers;
 
 /**
  * Handles all the inputs which concern a particular editing context one at a time, in order of arrival, and in a
@@ -96,7 +97,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
 
     private final Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
 
-    private final ExecutorService executor;
+    private final ExecutorService executorService;
 
     private final Disposable changeDescriptionDisposable;
 
@@ -108,7 +109,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
         this.editingContextEventHandlers = parameters.getEditingContextEventHandlers();
         this.representationEventProcessorComposedFactory = parameters.getRepresentationEventProcessorComposedFactory();
         this.danglingRepresentationDeletionService = parameters.getDanglingRepresentationDeletionService();
-        this.executor = parameters.getExecutorServiceProvider().getExecutorService(this.editingContext);
+        this.executorService = parameters.getExecutorServiceProvider().getExecutorService(this.editingContext);
         this.changeDescriptionDisposable = this.setupChangeDescriptionSinkConsumer();
     }
 
@@ -194,13 +195,13 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
 
     @Override
     public Mono<IPayload> handle(IInput input) {
-        if (this.executor.isShutdown()) {
+        if (this.executorService.isShutdown()) {
             this.logger.warn("Handler for editing context {} is shutdown", this.editingContext.getId()); //$NON-NLS-1$
             return Mono.empty();
         }
 
         One<IPayload> payloadSink = Sinks.one();
-        Future<?> future = this.executor.submit(() -> this.doHandle(payloadSink, input));
+        Future<?> future = this.executorService.submit(() -> this.doHandle(payloadSink, input));
         try {
             // Block until the event has been processed
             future.get();
@@ -333,11 +334,19 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
                     this.editingContext);
             if (optionalRepresentationEventProcessor.isPresent()) {
                 var representationEventProcessor = optionalRepresentationEventProcessor.get();
-                Disposable subscription = representationEventProcessor.canBeDisposed().subscribe(canBeDisposed -> {
-                    if (canBeDisposed.booleanValue()) {
-                        this.disposeRepresentation(configuration.getId());
-                    }
-                });
+
+                // @formatter:off
+                Disposable subscription = representationEventProcessor.canBeDisposed()
+                        .delayElements(Duration.ofSeconds(5))
+                        .publishOn(Schedulers.fromExecutorService(this.executorService))
+                        .subscribe(canBeDisposed -> {
+                            if (canBeDisposed.booleanValue() && representationEventProcessor.getSubscriptionManager().isEmpty()) {
+                                this.disposeRepresentation(configuration.getId());
+                            } else {
+                                this.logger.trace("Stopping the disposal of the representation event processor {}", configuration.getId()); //$NON-NLS-1$
+                            }
+                        });
+                // @formatter:on
 
                 var representationEventProcessorEntry = new RepresentationEventProcessorEntry(representationEventProcessor, subscription);
                 this.representationEventProcessors.put(configuration.getId(), representationEventProcessorEntry);
@@ -393,7 +402,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
         }
         this.changeDescriptionDisposable.dispose();
 
-        this.executor.shutdown();
+        this.executorService.shutdown();
 
         this.representationEventProcessors.values().forEach(RepresentationEventProcessorEntry::dispose);
         this.representationEventProcessors.clear();

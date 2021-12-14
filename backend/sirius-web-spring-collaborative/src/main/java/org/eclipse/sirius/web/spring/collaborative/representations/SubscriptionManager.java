@@ -65,6 +65,11 @@ public class SubscriptionManager implements ISubscriptionManager {
     }
 
     @Override
+    public boolean isEmpty() {
+        return this.subscriptionCount.get() > 0;
+    }
+
+    @Override
     public void dispose() {
         EmitResult emitResult = this.sink.tryEmitComplete();
         if (emitResult.isFailure()) {
