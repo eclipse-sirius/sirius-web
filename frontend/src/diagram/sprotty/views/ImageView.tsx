@@ -45,7 +45,8 @@ export class ImageView extends RectangularNodeView {
       <g
         attrs-data-testid={`Image - ${node.children[0]?.text}`}
         attrs-data-nodeid={node.id}
-        attrs-data-descriptionid={node.descriptionId}>
+        attrs-data-descriptionid={node.descriptionId}
+      >
         <image
           class-selected={selected}
           class-mouseover={hoverFeedback}

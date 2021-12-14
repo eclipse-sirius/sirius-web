@@ -47,7 +47,8 @@ export class ListItemView extends SLabelView {
         attrs-data-testid={`Item - ${nodeLabel?.text}`}
         attrs-data-testselected={`${node.selected}`}
         attrs-data-nodeid={node.id}
-        attrs-data-descriptionid={node.descriptionId}>
+        attrs-data-descriptionid={node.descriptionId}
+      >
         <rect
           class-selected={node.selected}
           class-mouseover={node.hoverFeedback}

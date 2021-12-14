@@ -148,7 +148,8 @@ export const SelectPropertySection = ({
         onBlur={onBlur}
         fullWidth
         data-testid={widget.label}
-        disabled={readOnly}>
+        disabled={readOnly}
+      >
         <MenuItem value="">
           <em>None</em>
         </MenuItem>

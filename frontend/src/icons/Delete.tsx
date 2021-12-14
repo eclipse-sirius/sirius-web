@@ -34,7 +34,8 @@ export const Delete = ({ title, ...props }) => {
       aria-labelledby="title"
       aria-describedby="desc"
       role="img"
-      {...props}>
+      {...props}
+    >
       <title>{title}</title>
       <path d="M18 4.8h6v2.4h-2.4v15.6a1.2 1.2 0 01-1.2 1.2H3.6a1.2 1.2 0 01-1.2-1.2V7.2H0V4.8h6V1.2A1.2 1.2 0 017.2 0h9.6A1.2 1.2 0 0118 1.2v3.6zm-9.6 6V18h2.4v-7.2H8.4zm4.8 0V18h2.4v-7.2h-2.4zM8.4 2.4v2.4h7.2V2.4H8.4z"></path>
     </svg>

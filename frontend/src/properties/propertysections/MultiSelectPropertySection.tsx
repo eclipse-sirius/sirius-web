@@ -159,7 +159,8 @@ export const MultiSelectPropertySection = ({
             .map((option) => option.label)
             .join(', ')
         }
-        multiple>
+        multiple
+      >
         {widget.options.map((option) => (
           <MenuItem key={option.id} value={option.id}>
             <Checkbox checked={widget.values.indexOf(option.id) > -1} />

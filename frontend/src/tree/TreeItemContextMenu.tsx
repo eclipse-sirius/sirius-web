@@ -56,7 +56,8 @@ export const TreeItemContextMenu = ({
       anchorOrigin={{
         vertical: 'bottom',
         horizontal: 'right',
-      }}>
+      }}
+    >
       {treeItemContextMenuContributions
         .filter((contribution) => contribution.props.canHandle(item))
         .map((contribution, index) => {
@@ -79,7 +80,8 @@ export const TreeItemContextMenu = ({
           onClick={enterEditingMode}
           data-testid="rename-tree-item"
           disabled={readOnly}
-          aria-disabled>
+          aria-disabled
+        >
           <ListItemIcon>
             <EditIcon fontSize="small" />
           </ListItemIcon>

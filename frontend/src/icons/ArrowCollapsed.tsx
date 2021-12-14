@@ -34,7 +34,8 @@ export const ArrowCollapsed = ({ title, ...props }) => {
       aria-labelledby="title"
       aria-describedby="desc"
       role="img"
-      {...props}>
+      {...props}
+    >
       <title>{title}</title>
       <path d="M12.172 12L9.34299 9.17202L10.757 7.75702L15 12L10.757 16.243L9.34299 14.828L12.172 12Z"></path>
     </svg>

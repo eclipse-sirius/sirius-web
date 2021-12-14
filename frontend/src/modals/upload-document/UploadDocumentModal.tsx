@@ -130,7 +130,8 @@ export const UploadDocumentModal = ({ editingContextId, onDocumentUploaded, onCl
             color="primary"
             type="submit"
             form="upload-form-id"
-            data-testid="upload-document">
+            data-testid="upload-document"
+          >
             Upload
           </Button>
         </DialogActions>
@@ -149,7 +150,8 @@ export const UploadDocumentModal = ({ editingContextId, onDocumentUploaded, onCl
             size="small"
             aria-label="close"
             color="inherit"
-            onClick={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}>
+            onClick={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
+          >
             <CloseIcon fontSize="small" />
           </IconButton>
         }

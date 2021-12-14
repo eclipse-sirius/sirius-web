@@ -109,7 +109,8 @@ export const LeftSite = ({ editingContextId, setSelection, selection, readOnly }
         square
         expanded={explorerExpanded}
         onChange={(event, isExpanded) => setExplorerExpanded(isExpanded)}
-        TransitionComponent={CustomCollapse as any}>
+        TransitionComponent={CustomCollapse as any}
+      >
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>Explorer</AccordionSummary>
         <AccordionDetails>
           <ExplorerWebSocketContainer
@@ -124,7 +125,8 @@ export const LeftSite = ({ editingContextId, setSelection, selection, readOnly }
         square
         expanded={validationExpanded}
         onChange={(event, isExpanded) => setValidationExpanded(isExpanded)}
-        TransitionComponent={CustomCollapse as any}>
+        TransitionComponent={CustomCollapse as any}
+      >
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>Validation</AccordionSummary>
         <AccordionDetails>
           <ValidationWebSocketContainer editingContextId={editingContextId} />

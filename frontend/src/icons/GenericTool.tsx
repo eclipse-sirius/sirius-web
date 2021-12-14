@@ -31,7 +31,8 @@ export const GenericTool = ({ title, ...props }) => {
       aria-labelledby="title"
       aria-describedby="desc"
       role="img"
-      {...props}>
+      {...props}
+    >
       <title>{title}</title>
       <path d="M 8,15 C 4.1339,15 1,11.8661 1,8 1,4.1339 4.1339,1 8,1 c 3.8661,0 7,3.1339 7,7 0,3.8661 -3.1339,7 -7,7 z M 8,13.6 A 5.6,5.6 0 1 0 8,2.4 5.6,5.6 0 0 0 8,13.6 Z M 8,4.535 11.465,8 8,11.465 4.535,8 Z M 8,6.5153 6.5153,8 8,9.4847 9.4847,8 Z" />
     </svg>

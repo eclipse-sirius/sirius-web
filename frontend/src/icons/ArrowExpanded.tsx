@@ -34,7 +34,8 @@ export const ArrowExpanded = ({ title, ...props }) => {
       aria-labelledby="title"
       aria-describedby="desc"
       role="img"
-      {...props}>
+      {...props}
+    >
       <title>{title}</title>
       <path d="M12 15L7.75699 10.757L9.17199 9.34302L12 12.172L14.828 9.34302L16.243 10.757L12 15Z"></path>
     </svg>

@@ -209,7 +209,8 @@ export const NewDocumentModal = ({ editingContextId, onClose }: NewDocumentModal
               disabled={newDocumentModal === 'loading' || newDocumentModal === 'creatingDocument'}
               labelId="newDocumentModalStereotypeDescriptionLabel"
               fullWidth
-              data-testid="stereotype">
+              data-testid="stereotype"
+            >
               {stereotypeDescriptions.map((stereotypeDescription) => (
                 <MenuItem value={stereotypeDescription.id} key={stereotypeDescription.id}>
                   {stereotypeDescription.label}
@@ -224,7 +225,8 @@ export const NewDocumentModal = ({ editingContextId, onClose }: NewDocumentModal
             disabled={newDocumentModal !== 'valid'}
             data-testid="create-document"
             color="primary"
-            onClick={onCreateDocument}>
+            onClick={onCreateDocument}
+          >
             Create
           </Button>
         </DialogActions>
@@ -243,7 +245,8 @@ export const NewDocumentModal = ({ editingContextId, onClose }: NewDocumentModal
             size="small"
             aria-label="close"
             color="inherit"
-            onClick={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}>
+            onClick={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
+          >
             <CloseIcon fontSize="small" />
           </IconButton>
         }

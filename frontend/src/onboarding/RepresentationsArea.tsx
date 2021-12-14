@@ -32,7 +32,8 @@ export const RepresentationsArea = ({ representations, setSelection }: Represent
                 setSelection({
                   entries: [{ id: representation.id, label: representation.label, kind: representation.kind }],
                 })
-              }>
+              }
+            >
               <Representation title={representation.label} className={styles.icon} />
             </LinkButton>
           );

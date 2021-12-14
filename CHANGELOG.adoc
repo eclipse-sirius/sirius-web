@@ -21,6 +21,7 @@
 - [frontend] Switch to typescript 4.5.4
 - [frontend] Switch to @typescript-eslint/parser 5.7.0
 - [frontend] Switch to xstate 4.26.1
+- [frontend] Update various development dependencies such as Rollup, ESLint, Pretier and Jest
 
 === New features
 

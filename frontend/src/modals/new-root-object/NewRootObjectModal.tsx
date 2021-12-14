@@ -257,7 +257,8 @@ export const NewRootObjectModal = ({ editingContextId, item, onObjectCreated, on
               disabled={newRootObjectModal !== 'valid'}
               labelId="domainsLabel"
               fullWidth
-              data-testid="domain">
+              data-testid="domain"
+            >
               {domains.map((domain) => (
                 <MenuItem value={domain.id} key={domain.id}>
                   {domain.label}
@@ -271,7 +272,8 @@ export const NewRootObjectModal = ({ editingContextId, item, onObjectCreated, on
               disabled={newRootObjectModal !== 'valid'}
               labelId="rootObjectCreationDescriptionsLabel"
               fullWidth
-              data-testid="type">
+              data-testid="type"
+            >
               {rootObjectCreationDescriptions.map((rootObjectCreationDescription) => (
                 <MenuItem value={rootObjectCreationDescription.id} key={rootObjectCreationDescription.id}>
                   {rootObjectCreationDescription.label}
@@ -298,7 +300,8 @@ export const NewRootObjectModal = ({ editingContextId, item, onObjectCreated, on
             disabled={newRootObjectModal !== 'valid'}
             data-testid="create-object"
             color="primary"
-            onClick={onCreateRootObject}>
+            onClick={onCreateRootObject}
+          >
             Create
           </Button>
         </DialogActions>
@@ -317,7 +320,8 @@ export const NewRootObjectModal = ({ editingContextId, item, onObjectCreated, on
             size="small"
             aria-label="close"
             color="inherit"
-            onClick={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}>
+            onClick={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
+          >
             <CloseIcon fontSize="small" />
           </IconButton>
         }
