@@ -51,6 +51,7 @@ public class WorkspaceImageDescriptionConverter {
         // @formatter:off
         String workspacePath = this.eAttributeCustomizationProvider.getEAttributeCustomization(this.workspaceImageDescription, WORKSPACE_PATH)
                 .map(EAttributeCustomization::getValue)
+                .flatMap(expression -> this.interpreter.evaluateExpression(this.variableManager.getVariables(), expression).asString())
                 .orElse(this.workspaceImageDescription.getWorkspacePath());
         // @formatter:on
 
