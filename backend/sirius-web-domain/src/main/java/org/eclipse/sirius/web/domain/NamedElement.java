@@ -25,7 +25,7 @@ import org.eclipse.emf.ecore.EObject;
  * </ul>
  *
  * @see org.eclipse.sirius.web.domain.DomainPackage#getNamedElement()
- * @model
+ * @model abstract="true"
  * @generated
  */
 public interface NamedElement extends EObject {

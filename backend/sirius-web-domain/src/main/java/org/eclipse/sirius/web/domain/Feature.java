@@ -24,7 +24,7 @@ package org.eclipse.sirius.web.domain;
  * </ul>
  *
  * @see org.eclipse.sirius.web.domain.DomainPackage#getFeature()
- * @model
+ * @model abstract="true"
  * @generated
  */
 public interface Feature extends NamedElement {
