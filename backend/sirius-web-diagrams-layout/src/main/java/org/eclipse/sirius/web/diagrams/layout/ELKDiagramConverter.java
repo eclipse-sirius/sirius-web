@@ -357,7 +357,7 @@ public class ELKDiagramConverter {
         double width = Math.max(textBounds.getSize().getWidth(), borderNode.getSize().getWidth());
         double height = Math.max(textBounds.getSize().getHeight(), borderNode.getSize().getHeight());
 
-        elkNode.setDimensions(width, height);
+        elkPort.setDimensions(width, height);
         elkPort.setParent(elkNode);
 
         connectableShapeIndex.put(elkPort.getIdentifier(), elkPort);
