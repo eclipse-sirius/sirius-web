@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.emf.services;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.MissingResourceException;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -34,6 +35,8 @@ import org.eclipse.emf.edit.provider.ComposedImage;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IObjectService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 /**
@@ -52,6 +55,8 @@ public class ObjectService implements IObjectService {
     private final ComposedAdapterFactory composedAdapterFactory;
 
     private final LabelFeatureProviderRegistry labelFeatureProviderRegistry;
+
+    private final Logger logger = LoggerFactory.getLogger(ObjectService.class);
 
     public ObjectService(ComposedAdapterFactory composedAdapterFactory, LabelFeatureProviderRegistry labelFeatureProviderRegistry) {
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
@@ -147,14 +152,18 @@ public class ObjectService implements IObjectService {
             Adapter adapter = this.composedAdapterFactory.adapt(eObject, IItemLabelProvider.class);
             if (adapter instanceof IItemLabelProvider) {
                 IItemLabelProvider labelProvider = (IItemLabelProvider) adapter;
-                Object image = labelProvider.getImage(eObject);
-                String imagePath = this.findImagePath(image);
-                if (imagePath != null) {
-                    String[] uriSplit = imagePath.split("!"); //$NON-NLS-1$
-                    if (uriSplit.length > 1) {
-                        String insideJarPath = uriSplit[uriSplit.length - 1];
-                        return insideJarPath;
+                try {
+                    Object image = labelProvider.getImage(eObject);
+                    String imagePath = this.findImagePath(image);
+                    if (imagePath != null) {
+                        String[] uriSplit = imagePath.split("!"); //$NON-NLS-1$
+                        if (uriSplit.length > 1) {
+                            String insideJarPath = uriSplit[uriSplit.length - 1];
+                            return insideJarPath;
+                        }
                     }
+                } catch (MissingResourceException exception) {
+                    this.logger.warn("Missing icon for {}", eObject); //$NON-NLS-1$
                 }
             }
         }
