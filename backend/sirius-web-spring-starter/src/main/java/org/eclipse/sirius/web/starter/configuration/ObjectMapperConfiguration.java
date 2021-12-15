@@ -10,10 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.spring.collaborative.configuration;
+package org.eclipse.sirius.web.starter.configuration;
 
 import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleDeserializers;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
@@ -22,6 +21,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.eclipse.sirius.web.spring.collaborative.api.IStdDeserializerProvider;
+import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -33,7 +33,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ObjectMapperConfiguration {
     @Bean
-    public ObjectMapper objectMapper(List<IStdDeserializerProvider<?>> deserializerProviders) {
+    public Jackson2ObjectMapperBuilderCustomizer jsonCustomizer(List<IStdDeserializerProvider<?>> deserializerProviders) {
         // @formatter:off
         Map<Class<?>, JsonDeserializer<?>> deserializers = deserializerProviders.stream()
                 .collect(Collectors.toMap(IStdDeserializerProvider::getType, IStdDeserializerProvider::getDeserializer));
@@ -45,9 +45,8 @@ public class ObjectMapperConfiguration {
         SimpleModule module = new SimpleModule();
         module.setDeserializers(simpleDeserializers);
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(module);
-
-        return objectMapper;
+        return builder -> {
+            builder.modulesToInstall(module);
+        };
     }
 }
