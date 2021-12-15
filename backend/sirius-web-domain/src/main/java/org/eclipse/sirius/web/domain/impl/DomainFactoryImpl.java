@@ -24,8 +24,6 @@ import org.eclipse.sirius.web.domain.Domain;
 import org.eclipse.sirius.web.domain.DomainFactory;
 import org.eclipse.sirius.web.domain.DomainPackage;
 import org.eclipse.sirius.web.domain.Entity;
-import org.eclipse.sirius.web.domain.Feature;
-import org.eclipse.sirius.web.domain.NamedElement;
 import org.eclipse.sirius.web.domain.Relation;
 
 /**
@@ -68,14 +66,10 @@ public class DomainFactoryImpl extends EFactoryImpl implements DomainFactory {
     @Override
     public EObject create(EClass eClass) {
         switch (eClass.getClassifierID()) {
-        case DomainPackage.NAMED_ELEMENT:
-            return this.createNamedElement();
         case DomainPackage.DOMAIN:
             return this.createDomain();
         case DomainPackage.ENTITY:
             return this.createEntity();
-        case DomainPackage.FEATURE:
-            return this.createFeature();
         case DomainPackage.ATTRIBUTE:
             return this.createAttribute();
         case DomainPackage.RELATION:
@@ -121,17 +115,6 @@ public class DomainFactoryImpl extends EFactoryImpl implements DomainFactory {
      * @generated
      */
     @Override
-    public NamedElement createNamedElement() {
-        NamedElementImpl namedElement = new NamedElementImpl();
-        return namedElement;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
     public Domain createDomain() {
         DomainImpl domain = new DomainImpl();
         return domain;
@@ -147,17 +130,6 @@ public class DomainFactoryImpl extends EFactoryImpl implements DomainFactory {
         EntityImpl entity = new EntityImpl();
         entity.setName("NewEntity"); //$NON-NLS-1$
         return entity;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public Feature createFeature() {
-        FeatureImpl feature = new FeatureImpl();
-        return feature;
     }
 
     /**

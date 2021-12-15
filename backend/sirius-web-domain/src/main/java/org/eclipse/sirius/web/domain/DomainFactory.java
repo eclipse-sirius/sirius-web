@@ -30,14 +30,6 @@ public interface DomainFactory extends EFactory {
     DomainFactory eINSTANCE = org.eclipse.sirius.web.domain.impl.DomainFactoryImpl.init();
 
     /**
-     * Returns a new object of class '<em>Named Element</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return a new object of class '<em>Named Element</em>'.
-     * @generated
-     */
-    NamedElement createNamedElement();
-
-    /**
      * Returns a new object of class '<em>Domain</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return a new object of class '<em>Domain</em>'.
@@ -52,14 +44,6 @@ public interface DomainFactory extends EFactory {
      * @generated
      */
     Entity createEntity();
-
-    /**
-     * Returns a new object of class '<em>Feature</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return a new object of class '<em>Feature</em>'.
-     * @generated
-     */
-    Feature createFeature();
 
     /**
      * Returns a new object of class '<em>Attribute</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->

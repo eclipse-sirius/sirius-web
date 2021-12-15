@@ -30,7 +30,7 @@ import org.eclipse.sirius.web.domain.Feature;
  *
  * @generated
  */
-public class FeatureImpl extends NamedElementImpl implements Feature {
+public abstract class FeatureImpl extends NamedElementImpl implements Feature {
     /**
      * The default value of the '{@link #isOptional() <em>Optional</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
