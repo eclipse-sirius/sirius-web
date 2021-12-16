@@ -4,6 +4,8 @@
 
 === Architectural decision records
 
+- [ADR-37] Add support for connector tool
+
 === Deprecation warning
 - https://github.com/eclipse-sirius/sirius-components/issues/858[#858] [core] Our dependency to Spring Security will be reduced or eliminated soon. Sirius Components will now longer have any opinion on matters of authentication, authorization, principal management, etc. All those concerns will be out of the scope of the project. It will also be way easier to integrate Sirius Components in a Spring based application since it won't come with this additional requirement
 
@@ -28,6 +30,7 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/726[#726] [view] Nodes can now have a dynamically computed size (using `sizeComputationExpression`) which depends on the current state of the semantic model.
 If the expression is present and produces a positive integer, it will be used as both the width and height of the node, in pixels.
 Currently it is not possible to compute different values for width and height.
+- https://github.com/eclipse-sirius/sirius-components/issues/133[#133] [diagram] Add a connector tool to help create edges in diagrams
 
 === Improvements
 
