@@ -83,10 +83,17 @@ public class LayoutService implements ILayoutService {
         ELKConvertedDiagram convertedDiagram = this.elkDiagramConverter.convert(diagram);
 
         ElkNode elkDiagram = convertedDiagram.getElkDiagram();
-        var representationDescription = this.representationDescriptionSearchService.findById(editingContext, diagram.getDescriptionId());
+        // @formatter:off
+        var optionalDiagramDescription = this.representationDescriptionSearchService.findById(editingContext, diagram.getDescriptionId())
+                .filter(DiagramDescription.class::isInstance)
+                .map(DiagramDescription.class::cast);
+        // @formatter:on
+
         ISiriusWebLayoutConfigurator layoutConfigurator;
-        if (representationDescription.isPresent() && representationDescription.get() instanceof DiagramDescription) {
-            layoutConfigurator = this.layoutConfiguratorRegistry.getLayoutConfigurator(diagram, (DiagramDescription) representationDescription.get());
+        if (optionalDiagramDescription.isPresent()) {
+            var diagramDescription = optionalDiagramDescription.get();
+            elkDiagram = this.layoutConfiguratorRegistry.applyBeforeLayout(elkDiagram, editingContext, diagram, diagramDescription);
+            layoutConfigurator = this.layoutConfiguratorRegistry.getLayoutConfigurator(diagram, diagramDescription);
         } else {
             layoutConfigurator = this.layoutConfiguratorRegistry.getDefaultLayoutConfigurator();
         }
@@ -94,6 +101,11 @@ public class LayoutService implements ILayoutService {
         ElkUtil.applyVisitors(elkDiagram, layoutConfigurator);
         IGraphLayoutEngine engine = new RecursiveGraphLayoutEngine();
         engine.layout(elkDiagram, new BasicProgressMonitor());
+
+        if (optionalDiagramDescription.isPresent()) {
+            var diagramDescription = optionalDiagramDescription.get();
+            elkDiagram = this.layoutConfiguratorRegistry.applyAfterLayout(elkDiagram, editingContext, diagram, diagramDescription);
+        }
 
         Map<String, ElkGraphElement> id2ElkGraphElements = convertedDiagram.getId2ElkGraphElements();
         Diagram layoutedDiagram = this.elkLayoutedDiagramProvider.getLayoutedDiagram(diagram, elkDiagram, id2ElkGraphElements);

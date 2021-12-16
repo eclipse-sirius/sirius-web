@@ -14,7 +14,10 @@ package org.eclipse.sirius.web.diagrams.layout;
 
 import org.eclipse.elk.core.util.IGraphElementVisitor;
 import org.eclipse.elk.graph.ElkGraphElement;
+import org.eclipse.elk.graph.ElkNode;
 import org.eclipse.elk.graph.properties.IPropertyHolder;
+import org.eclipse.sirius.web.core.api.IEditingContext;
+import org.eclipse.sirius.web.diagrams.Diagram;
 
 /**
  * Interface that can configure layout options based on the {@code id} and {@code type} attributes of diagram elements.
@@ -29,5 +32,9 @@ public interface ISiriusWebLayoutConfigurator extends IGraphElementVisitor {
     IPropertyHolder configureByType(String type);
 
     IPropertyHolder configureByElementClass(Class<? extends ElkGraphElement> elementClass);
+
+    ElkNode applyBeforeLayout(ElkNode elkDiagram, IEditingContext editingContext, Diagram diagram);
+
+    ElkNode applyAfterLayout(ElkNode elkDiagram, IEditingContext editingContext, Diagram diagram);
 
 }

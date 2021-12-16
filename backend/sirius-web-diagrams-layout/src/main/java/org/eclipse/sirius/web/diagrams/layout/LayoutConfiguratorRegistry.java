@@ -27,6 +27,8 @@ import org.eclipse.elk.core.options.NodeLabelPlacement;
 import org.eclipse.elk.core.options.SizeConstraint;
 import org.eclipse.elk.core.options.SizeOptions;
 import org.eclipse.elk.graph.ElkEdge;
+import org.eclipse.elk.graph.ElkNode;
+import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.NodeType;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
@@ -122,4 +124,25 @@ public class LayoutConfiguratorRegistry {
         }
         return this.getDefaultLayoutConfigurator();
     }
+
+    public ElkNode applyBeforeLayout(ElkNode elkDiagram, IEditingContext editingContext, Diagram diagram, DiagramDescription diagramDescription) {
+        for (var customLayoutProvider : this.customLayoutProviders) {
+            var customLayout = customLayoutProvider.getLayoutConfigurator(diagram, diagramDescription);
+            if (customLayout.isPresent()) {
+                return customLayout.get().applyBeforeLayout(elkDiagram, editingContext, diagram);
+            }
+        }
+        return elkDiagram;
+    }
+
+    public ElkNode applyAfterLayout(ElkNode elkDiagram, IEditingContext editingContext, Diagram diagram, DiagramDescription diagramDescription) {
+        for (var customLayoutProvider : this.customLayoutProviders) {
+            var customLayout = customLayoutProvider.getLayoutConfigurator(diagram, diagramDescription);
+            if (customLayout.isPresent()) {
+                return customLayout.get().applyAfterLayout(elkDiagram, editingContext, diagram);
+            }
+        }
+        return elkDiagram;
+    }
+
 }
