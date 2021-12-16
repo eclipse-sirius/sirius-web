@@ -67,10 +67,10 @@ const createChildMutation = gql`
 `;
 
 const getChildCreationDescriptionsQuery = gql`
-  query getChildCreationDescriptions($editingContextId: ID!, $classId: ID!) {
+  query getChildCreationDescriptions($editingContextId: ID!, $kind: ID!) {
     viewer {
       editingContext(editingContextId: $editingContextId) {
-        childCreationDescriptions(classId: $classId) {
+        childCreationDescriptions(kind: $kind) {
           id
           label
         }
@@ -104,7 +104,7 @@ export const NewObjectModal = ({ editingContextId, item, onObjectCreated, onClos
     error: childCreationDescriptionsError,
   } = useQuery<GQLGetChildCreationDescriptionsQueryData, GQLGetChildCreationDescriptionsQueryVariables>(
     getChildCreationDescriptionsQuery,
-    { variables: { editingContextId, classId: item.kind } }
+    { variables: { editingContextId, kind: item.kind } }
   );
   useEffect(() => {
     if (!childCreationDescriptionsLoading) {

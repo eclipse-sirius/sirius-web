@@ -121,7 +121,7 @@ export const Workbench = ({
 
   const setSelection = (selection: Selection) => {
     const representations: Representation[] = selection.entries.filter((entry) =>
-      registry.isRepresentation(entry.kind)
+      entry.kind.startsWith('siriusComponents://representation')
     );
     const updateSelectionEvent: UpdateSelectionEvent = {
       type: 'UPDATE_SELECTION',

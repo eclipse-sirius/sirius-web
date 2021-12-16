@@ -12,39 +12,48 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.emf.services;
 
+import java.net.URI;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.sirius.web.core.api.IKindParser;
+import org.eclipse.sirius.web.core.api.SemanticKindConstants;
+import org.eclipse.sirius.web.emf.services.api.IEMFKindService;
+import org.springframework.stereotype.Service;
 
 /**
- * Utility class used to parse and create the identifier of a class.
+ * Utility class used to parse and create the kind of a semantic object.
  *
  * @author sbegaudeau
  */
-public class ClassIdService {
-    private static final String SEPARATOR = "::"; //$NON-NLS-1$
+@Service
+public class EMFKindService implements IEMFKindService {
 
-    public String getClassId(EClass eClass) {
-        return eClass.getEPackage().getName() + SEPARATOR + eClass.getName();
+    private final IKindParser kindParser;
+
+    public EMFKindService(IKindParser kindParser) {
+        this.kindParser = Objects.requireNonNull(kindParser);
     }
 
-    public String getEPackageName(String classId) {
-        int index = classId.indexOf(SEPARATOR);
-        if (index != -1) {
-            return classId.substring(0, index);
-        }
-        return ""; //$NON-NLS-1$
+    @Override
+    public String getKind(EClass eClass) {
+        return URI.create(SemanticKindConstants.PREFIX + "?" + SemanticKindConstants.DOMAIN_ARGUMENT + "=" + eClass.getEPackage().getName() + "&" + SemanticKindConstants.ENTITY_ARGUMENT + "=" //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                + eClass.getName()).toString();
     }
 
-    public String getEClassName(String classId) {
-        int index = classId.indexOf(SEPARATOR);
-        if (index != -1) {
-            return classId.substring(index + SEPARATOR.length());
-        }
-        return ""; //$NON-NLS-1$
+    @Override
+    public String getEPackageName(String kind) {
+        return this.kindParser.getParameterValues(kind).get(SemanticKindConstants.DOMAIN_ARGUMENT).get(0);
     }
 
+    @Override
+    public String getEClassName(String kind) {
+        return this.kindParser.getParameterValues(kind).get(SemanticKindConstants.ENTITY_ARGUMENT).get(0);
+    }
+
+    @Override
     public Optional<EPackage> findEPackage(EPackage.Registry ePackageRegistry, String ePackageName) {
         // @formatter:off
         return ePackageRegistry.values().stream()

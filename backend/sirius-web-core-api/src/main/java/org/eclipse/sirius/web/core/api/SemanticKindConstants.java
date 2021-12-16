@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,27 +10,21 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.representations;
-
-import java.util.UUID;
-
-import org.eclipse.sirius.web.annotations.graphql.GraphQLInterfaceType;
+package org.eclipse.sirius.web.core.api;
 
 /**
- * Common interface for all the representations.
+ * Constants related to the semantic kind.
  *
  * @author sbegaudeau
  */
-@GraphQLInterfaceType(name = "Representation")
-public interface IRepresentation {
+public final class SemanticKindConstants {
+    public static final String PREFIX = "siriusComponents://semantic"; //$NON-NLS-1$
 
-    String KIND_PREFIX = "siriusComponents://representation"; //$NON-NLS-1$
+    public static final String DOMAIN_ARGUMENT = "domain"; //$NON-NLS-1$
 
-    String getId();
+    public static final String ENTITY_ARGUMENT = "entity"; //$NON-NLS-1$
 
-    UUID getDescriptionId();
-
-    String getLabel();
-
-    String getKind();
+    private SemanticKindConstants() {
+        // Prevent instantiation
+    }
 }

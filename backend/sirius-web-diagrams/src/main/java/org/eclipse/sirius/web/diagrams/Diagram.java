@@ -34,7 +34,7 @@ import org.eclipse.sirius.web.representations.ISemanticRepresentation;
 @GraphQLObjectType
 public final class Diagram implements IRepresentation, ISemanticRepresentation {
 
-    public static final String KIND = "Diagram"; //$NON-NLS-1$
+    public static final String KIND = IRepresentation.KIND_PREFIX + "?type=Diagram"; //$NON-NLS-1$
 
     private String id;
 

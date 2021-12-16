@@ -363,7 +363,7 @@ export class DiagramServer extends ModelSource {
 
   handleShowContextualToolbarAction(action) {
     const { element } = action;
-    if (element && (element.kind === 'Diagram' || element.parent)) {
+    if (element && (element.kind === 'siriusComponents://representation?type=Diagram' || element.parent)) {
       this.actionDispatcher.request(GetViewportAction.create()).then((viewportResult) => {
         const { viewport, canvasBounds } = viewportResult;
         const { scroll, zoom } = viewport;
@@ -420,7 +420,7 @@ export class DiagramServer extends ModelSource {
 
   handleShowContextualMenuAction(action) {
     const { element, tools } = action;
-    if (element && (element.kind === 'Diagram' || element.parent)) {
+    if (element && (element.kind === 'siriusComponents://representation?type=Diagram' || element.parent)) {
       this.actionDispatcher.request(GetViewportAction.create()).then((viewportResult) => {
         const { viewport, canvasBounds } = viewportResult;
         const { scroll, zoom } = viewport;

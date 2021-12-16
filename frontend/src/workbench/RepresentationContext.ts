@@ -18,15 +18,16 @@ import { RepresentationComponentProps } from './Workbench.types';
 
 const registry: RepresentationComponentRegistry = {
   getComponent: (representation) => {
-    if (representation.kind === 'Diagram') {
+    const query = representation.kind.substring(representation.kind.indexOf('?') + 1, representation.kind.length);
+    const params = new URLSearchParams(query);
+    const type = params.get('type');
+
+    if (type === 'Diagram') {
       return DiagramWebSocketContainer;
-    } else if (representation.kind === 'Form') {
+    } else if (type === 'Form') {
       return FormWebSocketContainer;
     }
     return (props: RepresentationComponentProps) => null;
-  },
-  isRepresentation: (kind: string): boolean => {
-    return kind === 'Diagram' || kind === 'Form';
   },
 };
 

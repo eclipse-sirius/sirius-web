@@ -35,7 +35,7 @@ import org.eclipse.sirius.web.representations.ISemanticRepresentation;
 @GraphQLObjectType
 public final class Form implements IRepresentation, ISemanticRepresentation {
 
-    public static final String KIND = "Form"; //$NON-NLS-1$
+    public static final String KIND = IRepresentation.KIND_PREFIX + "?type=Form"; //$NON-NLS-1$
 
     private String id;
 

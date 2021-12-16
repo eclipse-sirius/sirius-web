@@ -326,9 +326,9 @@ export const TreeItem = ({
   };
 
   const { kind } = item;
-  const draggable = kind !== 'Document' && kind !== 'Diagram';
+  const draggable = kind.startsWith('siriusComponents://semantic');
   const dragStart = (event) => {
-    if (selection.entries.filter((entry) => entry.kind === 'Document' || entry.kind === 'Diagram').length === 0) {
+    if (selection.entries.filter((entry) => entry.kind.startsWith('siriusComponents://semantic')).length === 0) {
       event.dataTransfer.setData(DRAG_SOURCES_TYPE, JSON.stringify(selection.entries));
     }
   };
