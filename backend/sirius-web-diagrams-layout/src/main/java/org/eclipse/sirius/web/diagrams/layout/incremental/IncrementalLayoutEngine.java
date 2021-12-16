@@ -83,10 +83,18 @@ public class IncrementalLayoutEngine {
 
         // finally we recompute the edges that needs to
         for (EdgeLayoutData edge : diagram.getEdges()) {
-            if (this.hasChanged(edge.getSource()) || this.hasChanged(edge.getTarget())) {
+            if (this.hasChanged(edge.getSource()) || this.hasChanged(edge.getTarget()) || !this.isLabelPositioned(edge)) {
                 this.layoutEdge(edge);
             }
         }
+    }
+
+    private boolean isLabelPositioned(EdgeLayoutData edge) {
+        if (edge.getCenterLabel() != null) {
+            Position position = edge.getCenterLabel().getPosition();
+            return position.getX() != -1 || position.getY() != -1;
+        }
+        return false;
     }
 
     private void layoutNode(Optional<IDiagramEvent> optionalDiagramElementEvent, NodeLayoutData node, ISiriusWebLayoutConfigurator layoutConfigurator) {
