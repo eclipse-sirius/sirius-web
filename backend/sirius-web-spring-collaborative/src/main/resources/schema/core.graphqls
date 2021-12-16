@@ -14,7 +14,7 @@ interface Viewer {
 type EditingContext {
   id: ID!
   domains: [Domain!]!
-  representation(representationId: ID!): Representation
+  representation(representationId: ID!): RepresentationMetadata
   representations: EditingContextRepresentationConnection!
   representationDescriptions(classId: ID!): EditingContextRepresentationDescriptionConnection!
   stereotypeDescriptions: EditingContextStereotypeDescriptionConnection!
@@ -32,10 +32,15 @@ type Domain {
   label: String!
 }
 
+type RepresentationMetadata {
+  id: ID!
+  description: RepresentationDescription!
+  label: String!
+  kind: String!
+}
+
 interface Representation {
   id: ID!
-  kind: String!
-  label: String!
 }
 
 interface RepresentationDescription {
@@ -60,7 +65,7 @@ type EditingContextRepresentationConnection {
 }
 
 type EditingContextRepresentationEdge {
-  node: Representation!
+  node: RepresentationMetadata!
 }
 
 type EditingContextRepresentationDescriptionConnection {
@@ -95,7 +100,6 @@ type Diagnostic {
   kind: String!
   message: String!
 }
-
 
 type ErrorPayload {
   id: ID!
@@ -139,7 +143,6 @@ type Mutation {
   createRootObject(input: CreateRootObjectInput!): CreateRootObjectPayload!
   deleteDocument(input: DeleteDocumentInput!): DeleteDocumentPayload!
   deleteObject(input: DeleteObjectInput!): DeleteObjectPayload!
-  deleteRepresentation(input: DeleteRepresentationInput!): DeleteRepresentationPayload!
   renameDocument(input: RenameDocumentInput!): RenameDocumentPayload!
   renameObject(input: RenameObjectInput!): RenameObjectPayload!
   renameRepresentation(input: RenameRepresentationInput!): RenameRepresentationPayload!
@@ -201,7 +204,7 @@ union CreateRepresentationPayload = ErrorPayload | CreateRepresentationSuccessPa
 
 type CreateRepresentationSuccessPayload {
   id: ID!
-  representation: Representation!
+  representation: RepresentationMetadata!
 }
 
 input CreateRootObjectInput {
@@ -292,7 +295,7 @@ union RenameRepresentationPayload = ErrorPayload | RenameRepresentationSuccessPa
 
 type RenameRepresentationSuccessPayload {
   id: ID!
-  representation: Representation!
+  representation: RepresentationMetadata!
 }
 
 input UploadDocumentInput {

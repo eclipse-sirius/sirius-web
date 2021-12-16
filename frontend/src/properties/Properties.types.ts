@@ -16,6 +16,7 @@ import { Selection } from 'workbench/Workbench.types';
 export interface FormProps {
   editingContextId: string;
   form: Form;
+  label: string;
   subscribers: Subscriber[];
   widgetSubscriptions: WidgetSubscription[];
   readOnly: boolean;

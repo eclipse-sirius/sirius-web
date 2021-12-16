@@ -50,8 +50,6 @@ public class ValidationElementFactory implements IElementFactory {
                 .collect(Collectors.toList());
 
         return Validation.newValidation(props.getId())
-                .label(props.getLabel())
-                .descriptionId(props.getDescriptionId())
                 .diagnostics(diagnostics)
                 .build();
         // @formatter:on

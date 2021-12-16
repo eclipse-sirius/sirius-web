@@ -29,10 +29,7 @@ export const diagramEventSubscription = gql`
         id
         diagram {
           id
-          kind
           targetObjectId
-          label
-          descriptionId
           position {
             x
             y
@@ -41,7 +38,6 @@ export const diagramEventSubscription = gql`
             width
             height
           }
-          autoLayout
           nodes {
             ...nodeFields
             borderNodes {
@@ -311,7 +307,7 @@ export const invokeDeleteToolOnDiagramMutation = gql`
   }
 `;
 
-export const getToolSectionsQuery = gql`
+export const getDiagramDescriptionQuery = gql`
   fragment edgeCandidateField on EdgeCandidate {
     sources {
       id
@@ -321,35 +317,40 @@ export const getToolSectionsQuery = gql`
     }
   }
 
-  query getToolSections($editingContextId: ID!, $diagramId: ID!) {
+  query getDiagramDescription($editingContextId: ID!, $diagramId: ID!) {
     viewer {
       editingContext(editingContextId: $editingContextId) {
         representation(representationId: $diagramId) {
-          ... on Diagram {
-            toolSections {
-              id
-              label
-              imageURL
-              tools {
-                __typename
+          kind
+          description {
+            __typename
+            ... on DiagramDescription {
+              autoLayout
+              toolSections {
                 id
                 label
                 imageURL
-                ... on CreateNodeTool {
-                  targetDescriptions {
-                    id
+                tools {
+                  __typename
+                  id
+                  label
+                  imageURL
+                  ... on CreateNodeTool {
+                    targetDescriptions {
+                      id
+                    }
+                    appliesToDiagramRoot
+                    selectionDescriptionId
                   }
-                  appliesToDiagramRoot
-                  selectionDescriptionId
-                }
-                ... on CreateEdgeTool {
-                  edgeCandidates {
-                    ...edgeCandidateField
+                  ... on CreateEdgeTool {
+                    edgeCandidates {
+                      ...edgeCandidateField
+                    }
                   }
-                }
-                ... on DeleteTool {
-                  targetDescriptions {
-                    id
+                  ... on DeleteTool {
+                    targetDescriptions {
+                      id
+                    }
                   }
                 }
               }

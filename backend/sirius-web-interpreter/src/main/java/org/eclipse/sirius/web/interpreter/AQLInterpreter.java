@@ -50,7 +50,7 @@ public class AQLInterpreter {
     /**
      * The prefix used by AQL expressions.
      */
-    private static final String AQL_PREFIX = "aql:"; //$NON-NLS-1$
+    public static final String AQL_PREFIX = "aql:"; //$NON-NLS-1$
 
     private final Logger logger = LoggerFactory.getLogger(AQLInterpreter.class);
 

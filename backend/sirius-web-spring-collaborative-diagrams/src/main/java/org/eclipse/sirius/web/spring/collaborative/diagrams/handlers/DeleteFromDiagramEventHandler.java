@@ -29,6 +29,7 @@ import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.web.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.web.diagrams.description.NodeDescription;
 import org.eclipse.sirius.web.representations.Failure;
+import org.eclipse.sirius.web.representations.ISemanticRepresentationMetadata;
 import org.eclipse.sirius.web.representations.IStatus;
 import org.eclipse.sirius.web.representations.Success;
 import org.eclipse.sirius.web.representations.VariableManager;
@@ -95,11 +96,12 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
     }
 
     @Override
-    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IDiagramContext diagramContext, IDiagramInput diagramInput) {
+    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IDiagramContext diagramContext,
+            ISemanticRepresentationMetadata diagramMetadata, IDiagramInput diagramInput) {
         this.counter.increment();
 
         if (diagramInput instanceof DeleteFromDiagramInput) {
-            this.handleDelete(payloadSink, changeDescriptionSink, editingContext, diagramContext, (DeleteFromDiagramInput) diagramInput);
+            this.handleDelete(payloadSink, changeDescriptionSink, editingContext, diagramContext, diagramMetadata, (DeleteFromDiagramInput) diagramInput);
         } else {
             String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), DeleteFromDiagramInput.class.getSimpleName());
             payloadSink.tryEmitValue(new ErrorPayload(diagramInput.getId(), message));
@@ -108,31 +110,31 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
     }
 
     private void handleDelete(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IDiagramContext diagramContext,
-            DeleteFromDiagramInput diagramInput) {
+            ISemanticRepresentationMetadata diagramMetadata, DeleteFromDiagramInput diagramInput) {
         List<String> errors = new ArrayList<>();
         boolean atLeastOneOk = false;
         Diagram diagram = diagramContext.getDiagram();
         for (String edgeId : diagramInput.getEdgeIds()) {
             var optionalElement = this.diagramQueryService.findEdgeById(diagram, edgeId);
             if (optionalElement.isPresent()) {
-                IStatus status = this.invokeDeleteEdgeTool(optionalElement.get(), editingContext, diagramContext);
+                IStatus status = this.invokeDeleteEdgeTool(optionalElement.get(), editingContext, diagramMetadata.getDescriptionId().toString(), diagramContext);
                 if (status instanceof Success) {
                     atLeastOneOk = true;
                 }
             } else {
-                String message = this.messageService.edgeNotFound(edgeId.toString());
+                String message = this.messageService.edgeNotFound(edgeId);
                 errors.add(message);
             }
         }
         for (String nodeId : diagramInput.getNodeIds()) {
             var optionalElement = this.diagramQueryService.findNodeById(diagram, nodeId);
             if (optionalElement.isPresent()) {
-                IStatus status = this.invokeDeleteNodeTool(optionalElement.get(), editingContext, diagramContext);
+                IStatus status = this.invokeDeleteNodeTool(optionalElement.get(), editingContext, diagramMetadata.getDescriptionId().toString(), diagramContext);
                 if (status instanceof Success) {
                     atLeastOneOk = true;
                 }
             } else {
-                String message = this.messageService.nodeNotFound(nodeId.toString());
+                String message = this.messageService.nodeNotFound(nodeId);
                 errors.add(message);
             }
         }
@@ -164,9 +166,9 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
         changeDescriptionSink.tryEmitNext(changeDescription);
     }
 
-    private IStatus invokeDeleteNodeTool(Node node, IEditingContext editingContext, IDiagramContext diagramContext) {
+    private IStatus invokeDeleteNodeTool(Node node, IEditingContext editingContext, String diagramDescriptionId, IDiagramContext diagramContext) {
         IStatus result = new Failure(""); //$NON-NLS-1$
-        var optionalNodeDescription = this.findNodeDescription(node, diagramContext.getDiagram(), editingContext);
+        var optionalNodeDescription = this.findNodeDescription(node, diagramDescriptionId, editingContext);
 
         if (optionalNodeDescription.isPresent()) {
             var optionalSelf = this.objectService.getObject(editingContext, node.getTargetObjectId());
@@ -183,15 +185,15 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
                 this.logger.debug(message);
             }
         } else {
-            String message = this.messageService.nodeDescriptionNotFound(node.getId().toString());
+            String message = this.messageService.nodeDescriptionNotFound(node.getId());
             this.logger.debug(message);
         }
         return result;
     }
 
-    private IStatus invokeDeleteEdgeTool(Edge edge, IEditingContext editingContext, IDiagramContext diagramContext) {
+    private IStatus invokeDeleteEdgeTool(Edge edge, IEditingContext editingContext, String diagramDescriptionId, IDiagramContext diagramContext) {
         IStatus result = new Failure(""); //$NON-NLS-1$
-        var optionalEdgeDescription = this.findEdgeDescription(edge, diagramContext.getDiagram(), editingContext);
+        var optionalEdgeDescription = this.findEdgeDescription(edge, diagramDescriptionId, editingContext);
         if (optionalEdgeDescription.isPresent()) {
             var optionalSelf = this.objectService.getObject(editingContext, edge.getTargetObjectId());
             if (optionalSelf.isPresent()) {
@@ -214,26 +216,26 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
                 this.logger.debug(message);
             }
         } else {
-            String message = this.messageService.edgeDescriptionNotFound(edge.getId().toString());
+            String message = this.messageService.edgeDescriptionNotFound(edge.getId());
             this.logger.debug(message);
         }
         return result;
     }
 
-    private Optional<NodeDescription> findNodeDescription(Node node, Diagram diagram, IEditingContext editingContext) {
+    private Optional<NodeDescription> findNodeDescription(Node node, String diagramDescriptionId, IEditingContext editingContext) {
         // @formatter:off
         return this.representationDescriptionSearchService
-                .findById(editingContext, diagram.getDescriptionId())
+                .findById(editingContext, diagramDescriptionId)
                 .filter(DiagramDescription.class::isInstance)
                 .map(DiagramDescription.class::cast)
                 .flatMap(diagramDescription -> this.diagramDescriptionService.findNodeDescriptionById(diagramDescription, node.getDescriptionId()));
         // @formatter:on
     }
 
-    private Optional<EdgeDescription> findEdgeDescription(Edge edge, Diagram diagram, IEditingContext editingContext) {
+    private Optional<EdgeDescription> findEdgeDescription(Edge edge, String diagramDescriptionId, IEditingContext editingContext) {
         // @formatter:off
         return this.representationDescriptionSearchService
-                .findById(editingContext, diagram.getDescriptionId())
+                .findById(editingContext, diagramDescriptionId)
                 .filter(DiagramDescription.class::isInstance)
                 .map(DiagramDescription.class::cast)
                 .flatMap(diagramDescription -> this.diagramDescriptionService.findEdgeDescriptionById(diagramDescription, edge.getDescriptionId()));

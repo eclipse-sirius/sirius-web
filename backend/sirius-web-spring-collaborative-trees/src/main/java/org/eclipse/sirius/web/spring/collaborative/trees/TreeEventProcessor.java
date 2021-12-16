@@ -23,6 +23,7 @@ import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.core.api.IRepresentationInput;
 import org.eclipse.sirius.web.representations.IRepresentation;
+import org.eclipse.sirius.web.representations.IRepresentationMetadata;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeKind;
 import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationRefreshPolicy;
@@ -76,6 +77,8 @@ public class TreeEventProcessor implements ITreeEventProcessor {
 
     private final Timer timer;
 
+    private IRepresentationMetadata treeMetadata;
+
     public TreeEventProcessor(IEditingContext editingContext, ITreeService treeService, TreeCreationParameters treeCreationParameters, List<ITreeEventHandler> treeEventHandlers,
             ISubscriptionManager subscriptionManager, MeterRegistry meterRegistry, IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry) {
         this.logger.trace("Creating the tree event processor {}", treeCreationParameters.getEditingContext().getId()); //$NON-NLS-1$
@@ -95,11 +98,41 @@ public class TreeEventProcessor implements ITreeEventProcessor {
 
         Tree tree = this.refreshTree();
         this.currentTree.set(tree);
+
+        // @formatter:off
+        this.treeMetadata = new IRepresentationMetadata() {
+
+            @Override
+            public String getLabel() {
+                return "Explorer"; //$NON-NLS-1$
+            }
+
+            @Override
+            public String getKind() {
+                return Tree.KIND;
+            }
+
+            @Override
+            public String getId() {
+                return treeCreationParameters.getId();
+            }
+
+            @Override
+            public UUID getDescriptionId() {
+                return treeCreationParameters.getTreeDescription().getId();
+            }
+        };
+        // @formatter:on
     }
 
     @Override
     public IRepresentation getRepresentation() {
         return this.currentTree.get();
+    }
+
+    @Override
+    public IRepresentationMetadata getRepresentationMetadata() {
+        return this.treeMetadata;
     }
 
     @Override

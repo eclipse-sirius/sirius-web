@@ -15,7 +15,6 @@ package org.eclipse.sirius.web.validation;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 import org.eclipse.sirius.web.annotations.Immutable;
 import org.eclipse.sirius.web.annotations.graphql.GraphQLField;
@@ -37,46 +36,17 @@ public final class Validation implements IRepresentation {
 
     private String id;
 
-    private String kind;
-
-    private String label;
-
-    private UUID descriptionId;
-
     private List<Diagnostic> diagnostics;
 
     private Validation() {
         // Prevent instantiation
     }
 
-    @Override
     @GraphQLID
     @GraphQLField
     @GraphQLNonNull
     public String getId() {
         return this.id;
-    }
-
-    @Override
-    @GraphQLID
-    @GraphQLField
-    @GraphQLNonNull
-    public UUID getDescriptionId() {
-        return this.descriptionId;
-    }
-
-    @Override
-    @GraphQLNonNull
-    @GraphQLField
-    public String getLabel() {
-        return this.label;
-    }
-
-    @Override
-    @GraphQLNonNull
-    @GraphQLField
-    public String getKind() {
-        return this.kind;
     }
 
     @GraphQLNonNull
@@ -91,8 +61,8 @@ public final class Validation implements IRepresentation {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, label: {2}, descriptionId: {3} diagnosticCount: {4}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.label, this.descriptionId, this.diagnostics.size());
+        String pattern = "{0} '{'id: {1}, diagnosticCount: {2}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.diagnostics.size());
     }
 
     /**
@@ -105,26 +75,10 @@ public final class Validation implements IRepresentation {
 
         private String id;
 
-        private String kind = KIND;
-
-        private String label;
-
-        private UUID descriptionId;
-
         private List<Diagnostic> diagnostics;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
-        }
-
-        public Builder label(String label) {
-            this.label = Objects.requireNonNull(label);
-            return this;
-        }
-
-        public Builder descriptionId(UUID descriptionId) {
-            this.descriptionId = Objects.requireNonNull(descriptionId);
-            return this;
         }
 
         public Builder diagnostics(List<Diagnostic> diagnostics) {
@@ -135,9 +89,6 @@ public final class Validation implements IRepresentation {
         public Validation build() {
             Validation validation = new Validation();
             validation.id = Objects.requireNonNull(this.id);
-            validation.kind = Objects.requireNonNull(this.kind);
-            validation.label = Objects.requireNonNull(this.label);
-            validation.descriptionId = Objects.requireNonNull(this.descriptionId);
             validation.diagnostics = Objects.requireNonNull(this.diagnostics);
             return validation;
         }

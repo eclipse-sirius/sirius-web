@@ -19,7 +19,6 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.function.Function;
 
 import org.eclipse.emf.common.command.BasicCommandStack;
 import org.eclipse.emf.ecore.ENamedElement;
@@ -39,23 +38,14 @@ import org.eclipse.sirius.viewpoint.description.tool.ChangeContext;
 import org.eclipse.sirius.viewpoint.description.tool.ToolFactory;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.diagrams.Diagram;
-import org.eclipse.sirius.web.diagrams.INodeStyle;
-import org.eclipse.sirius.web.diagrams.LineStyle;
 import org.eclipse.sirius.web.diagrams.Position;
-import org.eclipse.sirius.web.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.web.diagrams.Size;
 import org.eclipse.sirius.web.diagrams.ViewCreationRequest;
-import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
-import org.eclipse.sirius.web.diagrams.description.LabelDescription;
-import org.eclipse.sirius.web.diagrams.description.LabelStyleDescription;
-import org.eclipse.sirius.web.diagrams.description.NodeDescription;
-import org.eclipse.sirius.web.diagrams.description.SynchronizationPolicy;
 import org.eclipse.sirius.web.emf.compatibility.modeloperations.ChildModelOperationHandler;
 import org.eclipse.sirius.web.emf.compatibility.modeloperations.CreateViewOperationHandler;
 import org.eclipse.sirius.web.emf.services.EditingContext;
 import org.eclipse.sirius.web.representations.IStatus;
 import org.eclipse.sirius.web.representations.Success;
-import org.eclipse.sirius.web.representations.VariableManager;
 import org.eclipse.sirius.web.spring.collaborative.diagrams.api.IDiagramContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -94,20 +84,8 @@ public class CreateViewOperationHandlerTests {
         resourceSet.setPackageRegistry(ePackageRegistry);
 
         // @formatter:off
-        DiagramDescription diagramDescription = DiagramDescription.newDiagramDescription(UUID.randomUUID())
-                .label("DiagramDescriptionTest") //$NON-NLS-1$
-                .targetObjectIdProvider(variableManager -> "diagramTargetObjectId") //$NON-NLS-1$
-                .canCreatePredicate(variableManager -> true)
-                .labelProvider(variableManager -> "Diagram") //$NON-NLS-1$
-                .toolSections(List.of())
-                .nodeDescriptions(List.of(this.getNodeDescription(UUID.randomUUID())))
-                .edgeDescriptions(List.of())
-                .build();
-
         Diagram diagram = Diagram.newDiagram(UUID.randomUUID().toString())
-                .descriptionId(diagramDescription.getId())
                 .targetObjectId(UUID.randomUUID().toString())
-                .label("DiagramTest") //$NON-NLS-1$
                 .position(Position.at(0, 0))
                 .size(Size.of(100, 100))
                 .nodes(new ArrayList<>())
@@ -197,59 +175,6 @@ public class CreateViewOperationHandlerTests {
         // check
         assertTrue(handleResult instanceof Success);
         assertEquals(newName, renamedElement.getName());
-    }
-
-    private NodeDescription getNodeDescription(UUID nodeDescriptionId) {
-        // @formatter:off
-        LabelStyleDescription labelStyleDescription = LabelStyleDescription.newLabelStyleDescription()
-                .colorProvider(variableManager -> "#000000") //$NON-NLS-1$
-                .fontSizeProvider(variableManager -> 16)
-                .boldProvider(variableManager -> false)
-                .italicProvider(variableManager -> false)
-                .underlineProvider(variableManager -> false)
-                .strikeThroughProvider(variableManager -> false)
-                .iconURLProvider(variableManager -> "") //$NON-NLS-1$
-                .build();
-
-        LabelDescription labelDescription = LabelDescription.newLabelDescription("labelDescriptionId") //$NON-NLS-1$
-                .idProvider(variableManager -> "labelId") //$NON-NLS-1$
-                .textProvider(variableManager -> "Node") //$NON-NLS-1$
-                .styleDescriptionProvider(variableManager -> labelStyleDescription)
-                .build();
-
-        Function<VariableManager, INodeStyle> nodeStyleProvider = variableManager -> {
-            return RectangularNodeStyle.newRectangularNodeStyle()
-                    .color("") //$NON-NLS-1$
-                    .borderColor("") //$NON-NLS-1$
-                    .borderSize(0)
-                    .borderStyle(LineStyle.Solid)
-                    .build();
-        };
-
-        Function<VariableManager, String> targetObjectIdProvider = variableManager -> {
-            Object object = variableManager.getVariables().get(VariableManager.SELF);
-            if (object instanceof String) {
-                return nodeDescriptionId + "__" +  object; //$NON-NLS-1$
-            }
-            return null;
-        };
-
-        return NodeDescription.newNodeDescription(nodeDescriptionId)
-                .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
-                .typeProvider(variableManager -> "") //$NON-NLS-1$
-                .semanticElementsProvider(variableManager -> List.of())
-                .targetObjectIdProvider(targetObjectIdProvider)
-                .targetObjectKindProvider(variableManager -> "") //$NON-NLS-1$
-                .targetObjectLabelProvider(variableManager -> "")//$NON-NLS-1$
-                .labelDescription(labelDescription)
-                .styleProvider(nodeStyleProvider)
-                .sizeProvider(variableManager -> Size.UNDEFINED)
-                .borderNodeDescriptions(new ArrayList<>())
-                .childNodeDescriptions(new ArrayList<>())
-                .labelEditHandler((variableManager, newLabel) -> new Success())
-                .deleteHandler(variableManager -> new Success())
-                .build();
-        // @formatter:on
     }
 
 }

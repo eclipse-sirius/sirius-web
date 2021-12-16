@@ -15,7 +15,6 @@ package org.eclipse.sirius.web.diagrams.elements;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 import org.eclipse.sirius.web.annotations.Immutable;
 import org.eclipse.sirius.web.components.Element;
@@ -36,10 +35,6 @@ public final class DiagramElementProps implements IProps {
 
     private String targetObjectId;
 
-    private UUID descriptionId;
-
-    private String label;
-
     private Position position;
 
     private Size size;
@@ -56,14 +51,6 @@ public final class DiagramElementProps implements IProps {
 
     public String getTargetObjectId() {
         return this.targetObjectId;
-    }
-
-    public UUID getDescriptionId() {
-        return this.descriptionId;
-    }
-
-    public String getLabel() {
-        return this.label;
     }
 
     public Position getPosition() {
@@ -100,10 +87,6 @@ public final class DiagramElementProps implements IProps {
 
         private String targetObjectId;
 
-        private UUID descriptionId;
-
-        private String label;
-
         private Position position;
 
         private Size size;
@@ -116,16 +99,6 @@ public final class DiagramElementProps implements IProps {
 
         public Builder targetObjectId(String targetObjectId) {
             this.targetObjectId = Objects.requireNonNull(targetObjectId);
-            return this;
-        }
-
-        public Builder descriptionId(UUID descriptionId) {
-            this.descriptionId = Objects.requireNonNull(descriptionId);
-            return this;
-        }
-
-        public Builder label(String label) {
-            this.label = Objects.requireNonNull(label);
             return this;
         }
 
@@ -148,8 +121,6 @@ public final class DiagramElementProps implements IProps {
             DiagramElementProps diagramElementProps = new DiagramElementProps();
             diagramElementProps.id = Objects.requireNonNull(this.id);
             diagramElementProps.targetObjectId = Objects.requireNonNull(this.targetObjectId);
-            diagramElementProps.descriptionId = Objects.requireNonNull(this.descriptionId);
-            diagramElementProps.label = Objects.requireNonNull(this.label);
             diagramElementProps.position = Objects.requireNonNull(this.position);
             diagramElementProps.size = Objects.requireNonNull(this.size);
             diagramElementProps.children = Objects.requireNonNull(this.children);

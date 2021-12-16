@@ -28,6 +28,7 @@ import org.eclipse.sirius.web.forms.components.FormComponentProps;
 import org.eclipse.sirius.web.forms.renderer.FormRenderer;
 import org.eclipse.sirius.web.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.web.representations.IRepresentation;
+import org.eclipse.sirius.web.representations.IRepresentationMetadata;
 import org.eclipse.sirius.web.representations.VariableManager;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeKind;
@@ -76,11 +77,14 @@ public class FormEventProcessor implements IFormEventProcessor {
 
     private final AtomicReference<Form> currentForm = new AtomicReference<>();
 
-    public FormEventProcessor(FormCreationParameters formCreationParameters, List<IFormEventHandler> formEventHandlers, ISubscriptionManager subscriptionManager,
+    private final IRepresentationMetadata formMetadata;
+
+    public FormEventProcessor(FormCreationParameters formCreationParameters, IRepresentationMetadata formMetadata, List<IFormEventHandler> formEventHandlers, ISubscriptionManager subscriptionManager,
             IWidgetSubscriptionManager widgetSubscriptionManager, IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry) {
         this.logger.trace("Creating the form event processor {}", formCreationParameters.getId()); //$NON-NLS-1$
 
         this.formCreationParameters = Objects.requireNonNull(formCreationParameters);
+        this.formMetadata = Objects.requireNonNull(formMetadata);
         this.formEventHandlers = Objects.requireNonNull(formEventHandlers);
         this.subscriptionManager = Objects.requireNonNull(subscriptionManager);
         this.widgetSubscriptionManager = Objects.requireNonNull(widgetSubscriptionManager);
@@ -88,12 +92,16 @@ public class FormEventProcessor implements IFormEventProcessor {
 
         Form form = this.refreshForm();
         this.currentForm.set(form);
-
     }
 
     @Override
     public IRepresentation getRepresentation() {
         return this.currentForm.get();
+    }
+
+    @Override
+    public IRepresentationMetadata getRepresentationMetadata() {
+        return this.formMetadata;
     }
 
     @Override

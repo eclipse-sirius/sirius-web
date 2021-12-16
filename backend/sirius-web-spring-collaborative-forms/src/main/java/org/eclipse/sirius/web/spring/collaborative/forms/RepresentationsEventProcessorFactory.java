@@ -18,7 +18,10 @@ import java.util.Optional;
 
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IObjectService;
+import org.eclipse.sirius.web.forms.Form;
 import org.eclipse.sirius.web.forms.description.FormDescription;
+import org.eclipse.sirius.web.representations.ISemanticRepresentationMetadata;
+import org.eclipse.sirius.web.representations.SemanticRepresentationMetadata;
 import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationConfiguration;
 import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationEventProcessor;
 import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationEventProcessorFactory;
@@ -79,6 +82,12 @@ public class RepresentationsEventProcessorFactory implements IRepresentationEven
             if (optionalObject.isPresent()) {
                 Object object = optionalObject.get();
                 // @formatter:off
+                ISemanticRepresentationMetadata formMetadata =  SemanticRepresentationMetadata.newRepresentationMetadata(representationsConfiguration.getId())
+                        .label(RepresentationsEventProcessorFactory.this.objectService.getFullLabel(object))
+                        .kind(Form.KIND)
+                        .descriptionId(formDescription.getId())
+                        .targetObjectId(representationsConfiguration.getObjectId())
+                        .build();
                 FormCreationParameters formCreationParameters = FormCreationParameters.newFormCreationParameters(representationsConfiguration.getId())
                         .editingContext(editingContext)
                         .formDescription(formDescription)
@@ -86,7 +95,7 @@ public class RepresentationsEventProcessorFactory implements IRepresentationEven
                         .build();
                 // @formatter:on
 
-                FormEventProcessor formEventProcessor = new FormEventProcessor(formCreationParameters, this.formEventHandlers, this.subscriptionManagerFactory.create(),
+                FormEventProcessor formEventProcessor = new FormEventProcessor(formCreationParameters, formMetadata, this.formEventHandlers, this.subscriptionManagerFactory.create(),
                         this.widgetSubscriptionManagerFactory.create(), this.representationRefreshPolicyRegistry);
 
                 // @formatter:off

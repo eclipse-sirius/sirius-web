@@ -47,7 +47,6 @@ const validationEventSubscription = gql`
         id
         validation {
           id
-          label
           diagnostics {
             id
             kind

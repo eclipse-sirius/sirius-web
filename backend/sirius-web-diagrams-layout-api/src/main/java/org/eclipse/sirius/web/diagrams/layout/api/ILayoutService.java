@@ -14,8 +14,8 @@ package org.eclipse.sirius.web.diagrams.layout.api;
 
 import java.util.Optional;
 
-import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.diagrams.Diagram;
+import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.web.diagrams.events.IDiagramEvent;
 
 /**
@@ -24,21 +24,21 @@ import org.eclipse.sirius.web.diagrams.events.IDiagramEvent;
  * @author sbegaudeau
  */
 public interface ILayoutService {
-    Diagram layout(IEditingContext editingContext, Diagram diagram);
+    Diagram layout(Diagram diagram, DiagramDescription diagramDescription);
 
     /**
      * A partial layout that layouts only impacted elements.
      *
-     * @param editingContext
-     *            the editing context which contains the diagram.
      * @param diagram
      *            The diagram to layout.
+     * @param diagramDescription
+     *            the diagram description (which may specify custom layout options).
      * @param optionalDiagramElementEvent
      *            the {@link IDiagramEvent} that has trigger the new layout. Can be null if no event occurs. for
      *            instance.
      * @return the new layouted diagram.
      */
-    Diagram incrementalLayout(IEditingContext editingContext, Diagram diagram, Optional<IDiagramEvent> optionalDiagramElementEvent);
+    Diagram incrementalLayout(Diagram diagram, DiagramDescription diagramDescription, Optional<IDiagramEvent> optionalDiagramElementEvent);
 
     /**
      * Implementation which does nothing, used for mocks in unit tests.
@@ -48,12 +48,12 @@ public interface ILayoutService {
     class NoOp implements ILayoutService {
 
         @Override
-        public Diagram layout(IEditingContext editingContext, Diagram diagram) {
+        public Diagram layout(Diagram diagram, DiagramDescription diagramDescription) {
             return diagram;
         }
 
         @Override
-        public Diagram incrementalLayout(IEditingContext editingContext, Diagram diagram, Optional<IDiagramEvent> optionalDiagramElementEvent) {
+        public Diagram incrementalLayout(Diagram diagram, DiagramDescription diagramDescription, Optional<IDiagramEvent> optionalDiagramElementEvent) {
             return diagram;
         }
 

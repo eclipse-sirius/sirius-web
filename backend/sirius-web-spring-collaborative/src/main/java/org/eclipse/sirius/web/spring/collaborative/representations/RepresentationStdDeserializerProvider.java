@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.eclipse.sirius.web.representations.IRepresentation;
 import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationDeserializer;
@@ -44,5 +45,15 @@ public class RepresentationStdDeserializerProvider implements IStdDeserializerPr
     @Override
     public Class<IRepresentation> getType() {
         return IRepresentation.class;
+    }
+    @Override
+    public Optional<Class<? extends IRepresentation>> getImplementationClass(String kind) {
+        for (var deserializer : this.representationDeserializers) {
+            Optional<Class<? extends IRepresentation>> actualClass = deserializer.getImplementationClass(kind);
+            if (actualClass.isPresent()) {
+                return actualClass;
+            }
+        }
+        return Optional.empty();
     }
 }

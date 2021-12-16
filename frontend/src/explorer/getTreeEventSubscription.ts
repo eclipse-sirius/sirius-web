@@ -20,7 +20,6 @@ subscription treeEvent($input: TreeEventInput!) {
       id
       tree {
         id
-        label
         children {
           ${treeChildren}
         }

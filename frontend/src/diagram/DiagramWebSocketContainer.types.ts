@@ -103,9 +103,9 @@ export interface NodeDescription {
   id: string;
 }
 
-export interface GQLGetToolSectionsVariables {}
+export interface GQLGetDiagramDescriptionVariables {}
 
-export interface GQLGetToolSectionsData {
+export interface GQLGetDiagramDescriptionData {
   viewer: GQLViewer;
 }
 
@@ -114,24 +114,36 @@ export interface GQLViewer {
 }
 
 export interface GQLEditingContext {
-  representation: GQLRepresentation;
+  representation: GQLRepresentationMetadata;
 }
 
 export interface GQLRepresentation {
   __typename: string;
 }
+
+export interface GQLRepresentationMetadata {
+  kind: string;
+  description: GQLRepresentationDescription;
+}
+
+export interface GQLRepresentationDescription {
+  __typename: string;
+}
+export interface GQLDiagramDescription extends GQLRepresentationDescription {
+  autoLayout: boolean;
+  toolSections: GQLToolSection[];
+}
+
 export interface GQLDiagram extends GQLRepresentation {
   id: string;
   label: string;
   kind: string;
   descriptionId: string;
   targetObjectId: string;
-  autoLayout: boolean;
   size: GQLSize;
   position: GQLPosition;
   nodes: GQLNode[];
   edges: GQLEdge[];
-  toolSections: GQLToolSection[];
 }
 
 export interface GQLSize {

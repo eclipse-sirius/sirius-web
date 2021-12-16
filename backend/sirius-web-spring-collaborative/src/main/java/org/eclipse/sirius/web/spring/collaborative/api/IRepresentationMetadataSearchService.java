@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,23 +12,16 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.spring.collaborative.api;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-
 import java.util.Optional;
 
-import org.eclipse.sirius.web.representations.IRepresentation;
+import org.eclipse.sirius.web.core.api.IEditingContext;
+import org.eclipse.sirius.web.representations.IRepresentationMetadata;
 
 /**
- * Used to deserialize a representation with Jackson.
+ * Used to search representation metadata.
  *
- * @author sbegaudeau
+ * @author pcdavid
  */
-public interface IRepresentationDeserializer {
-    Optional<Class<? extends IRepresentation>> getImplementationClass(String kind);
-
-    boolean canHandle(ObjectNode root);
-
-    Optional<IRepresentation> handle(ObjectMapper mapper, ObjectNode root);
-
+public interface IRepresentationMetadataSearchService {
+    <T extends IRepresentationMetadata> Optional<T> findById(IEditingContext editingContext, String representationId);
 }

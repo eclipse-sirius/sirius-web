@@ -53,6 +53,7 @@ export type WorkbenchProps = {
 export type RepresentationComponentProps = {
   editingContextId: string;
   representationId: string;
+  label: string;
   readOnly: boolean;
   selection: Selection;
   setSelection: (selection: Selection) => void;

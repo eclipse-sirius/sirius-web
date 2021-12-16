@@ -19,6 +19,8 @@ import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.diagrams.Diagram;
+import org.eclipse.sirius.web.representations.ISemanticRepresentationMetadata;
+import org.eclipse.sirius.web.representations.SemanticRepresentationMetadata;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeKind;
 import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationPersistenceService;
@@ -72,7 +74,8 @@ public class RenameDiagramEventHandler implements IDiagramEventHandler {
     }
 
     @Override
-    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IDiagramContext diagramContext, IDiagramInput diagramInput) {
+    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IDiagramContext diagramContext,
+            ISemanticRepresentationMetadata diagramMetadata, IDiagramInput diagramInput) {
         this.counter.increment();
 
         String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), RenameDiagramInput.class.getSimpleName());
@@ -87,11 +90,17 @@ public class RenameDiagramEventHandler implements IDiagramEventHandler {
             if (optionalDiagram.isPresent()) {
                 Diagram diagram = optionalDiagram.get();
 
-                Diagram renamedDiagram = Diagram.newDiagram(diagram).label(newLabel).build();
-                this.representationPersistenceService.save(editingContext, renamedDiagram);
-                diagramContext.update(renamedDiagram);
+                // @formatter:off
+                ISemanticRepresentationMetadata renamedMetadata = SemanticRepresentationMetadata.newRepresentationMetadata(diagramMetadata.getId())
+                        .descriptionId(diagramMetadata.getDescriptionId())
+                        .label(newLabel)
+                        .kind(diagramMetadata.getKind())
+                        .targetObjectId(diagramMetadata.getTargetObjectId())
+                        .build();
+                // @formatter:on
+                this.representationPersistenceService.save(editingContext, renamedMetadata, diagram);
 
-                payload = new RenameRepresentationSuccessPayload(diagramInput.getId(), renamedDiagram);
+                payload = new RenameRepresentationSuccessPayload(diagramInput.getId(), renamedMetadata);
                 changeDescription = new ChangeDescription(ChangeKind.REPRESENTATION_RENAMING, renameRepresentationInput.getRepresentationId(), diagramInput);
             }
         }

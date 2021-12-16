@@ -41,7 +41,6 @@ public class TreeRenderer {
 
     public Tree render() {
         String treeId = this.treeDescription.getIdProvider().apply(this.variableManager);
-        String label = this.treeDescription.getLabelProvider().apply(this.variableManager);
 
         List<TreeItem> childrenItems = new ArrayList<>();
         List<Object> rootElements = this.treeDescription.getElementsProvider().apply(this.variableManager);
@@ -53,8 +52,6 @@ public class TreeRenderer {
 
         // @formatter:off
         return Tree.newTree(treeId)
-                .descriptionId(this.treeDescription.getId())
-                .label(label)
                 .children(childrenItems)
                 .build();
         // @formatter:on

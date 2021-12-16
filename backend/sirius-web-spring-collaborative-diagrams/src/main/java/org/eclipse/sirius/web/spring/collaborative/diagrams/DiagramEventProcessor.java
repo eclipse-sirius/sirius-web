@@ -13,7 +13,6 @@
 package org.eclipse.sirius.web.spring.collaborative.diagrams;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.sirius.web.core.api.IEditingContext;
@@ -24,6 +23,8 @@ import org.eclipse.sirius.web.core.api.IRepresentationInput;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.web.representations.IRepresentation;
+import org.eclipse.sirius.web.representations.IRepresentationMetadata;
+import org.eclipse.sirius.web.representations.ISemanticRepresentationMetadata;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeKind;
 import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationRefreshPolicy;
@@ -58,6 +59,8 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
 
     private final IDiagramContext diagramContext;
 
+    private final ISemanticRepresentationMetadata diagramMetadata;
+
     private final List<IDiagramEventHandler> diagramEventHandlers;
 
     private final ISubscriptionManager subscriptionManager;
@@ -70,23 +73,21 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
 
     private final DiagramEventFlux diagramEventFlux;
 
-    public DiagramEventProcessor(IEditingContext editingContext, IDiagramContext diagramContext, List<IDiagramEventHandler> diagramEventHandlers, ISubscriptionManager subscriptionManager,
-            IRepresentationDescriptionSearchService representationDescriptionSearchService, IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry,
-            IDiagramCreationService diagramCreationService) {
-        this.logger.trace("Creating the diagram event processor {}", diagramContext.getDiagram().getId()); //$NON-NLS-1$
-
-        this.editingContext = Objects.requireNonNull(editingContext);
-        this.diagramContext = Objects.requireNonNull(diagramContext);
-        this.diagramEventHandlers = Objects.requireNonNull(diagramEventHandlers);
-        this.subscriptionManager = Objects.requireNonNull(subscriptionManager);
-        this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
-        this.representationRefreshPolicyRegistry = Objects.requireNonNull(representationRefreshPolicyRegistry);
-        this.diagramCreationService = Objects.requireNonNull(diagramCreationService);
+    public DiagramEventProcessor(DiagramEventProcessorParameters parameters) {
+        this.logger.trace("Creating the diagram event processor {}", parameters.getDiagramMetadata().getId()); //$NON-NLS-1$
+        this.editingContext = parameters.getEditingContext();
+        this.diagramContext = parameters.getDiagramContext();
+        this.diagramMetadata = parameters.getDiagramMetadata();
+        this.diagramEventHandlers = parameters.getDiagramEventHandlers();
+        this.subscriptionManager = parameters.getSubscriptionManager();
+        this.representationDescriptionSearchService = parameters.getRepresentationDescriptionSearchService();
+        this.representationRefreshPolicyRegistry = parameters.getRepresentationRefreshPolicyRegistry();
+        this.diagramCreationService = parameters.getDiagramCreationService();
 
         // We automatically refresh the representation before using it since things may have changed since the moment it
         // has been saved in the database. This is quite similar to the auto-refresh on loading in Sirius.
-        Diagram diagram = this.diagramCreationService.refresh(editingContext, diagramContext).orElse(null);
-        diagramContext.update(diagram);
+        Diagram diagram = this.diagramCreationService.refresh(this.editingContext, this.diagramMetadata, this.diagramContext).orElse(null);
+        this.diagramContext.update(diagram);
         this.diagramEventFlux = new DiagramEventFlux(diagram);
 
         if (diagram != null) {
@@ -97,6 +98,11 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
     @Override
     public IRepresentation getRepresentation() {
         return this.diagramContext.getDiagram();
+    }
+
+    @Override
+    public IRepresentationMetadata getRepresentationMetadata() {
+        return this.diagramMetadata;
     }
 
     @Override
@@ -119,7 +125,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
 
             if (optionalDiagramEventHandler.isPresent()) {
                 IDiagramEventHandler diagramEventHandler = optionalDiagramEventHandler.get();
-                diagramEventHandler.handle(payloadSink, changeDescriptionSink, this.editingContext, this.diagramContext, diagramInput);
+                diagramEventHandler.handle(payloadSink, changeDescriptionSink, this.editingContext, this.diagramContext, this.diagramMetadata, diagramInput);
             } else {
                 this.logger.warn("No handler found for event: {}", diagramInput); //$NON-NLS-1$
             }
@@ -129,7 +135,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
     @Override
     public void refresh(ChangeDescription changeDescription) {
         if (this.shouldRefresh(changeDescription)) {
-            Diagram refreshedDiagram = this.diagramCreationService.refresh(this.editingContext, this.diagramContext).orElse(null);
+            Diagram refreshedDiagram = this.diagramCreationService.refresh(this.editingContext, this.diagramMetadata, this.diagramContext).orElse(null);
             if (refreshedDiagram != null) {
                 this.logger.trace("Diagram refreshed: {}", refreshedDiagram.getId()); //$NON-NLS-1$
             }
@@ -149,9 +155,8 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
      * @return <code>true</code> if the diagram should be refreshed, <code>false</code> otherwise
      */
     public boolean shouldRefresh(ChangeDescription changeDescription) {
-        Diagram diagram = this.diagramContext.getDiagram();
         // @formatter:off
-        var optionalDiagramDescription = this.representationDescriptionSearchService.findById(this.editingContext, diagram.getDescriptionId())
+        var optionalDiagramDescription = this.representationDescriptionSearchService.findById(this.editingContext, this.diagramMetadata.getDescriptionId().toString())
                 .filter(DiagramDescription.class::isInstance)
                 .map(DiagramDescription.class::cast);
         // @formatter:on

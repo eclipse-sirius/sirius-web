@@ -15,7 +15,7 @@ package org.eclipse.sirius.web.spring.collaborative.diagrams;
 import java.util.Optional;
 
 import org.eclipse.sirius.web.diagrams.Diagram;
-import org.eclipse.sirius.web.representations.IRepresentation;
+import org.eclipse.sirius.web.representations.IRepresentationMetadata;
 import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationImageProvider;
 import org.springframework.stereotype.Service;
 
@@ -26,15 +26,13 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class DiagramImageProvider implements IRepresentationImageProvider {
-
     @Override
-    public Optional<String> getImageURL(IRepresentation representation) {
+    public Optional<String> getImageURL(IRepresentationMetadata representationMetadata) {
         // @formatter:off
-        return Optional.of(representation)
-                .filter(Diagram.class::isInstance)
-                .map(Diagram.class::cast)
-                .map(diagram -> "/diagram-images/diagram.svg"); //$NON-NLS-1$
+        return Optional.of(representationMetadata)
+                       .map(IRepresentationMetadata::getKind)
+                       .filter(Diagram.KIND::equals)
+                       .map(form -> "/diagram-images/diagram.svg"); //$NON-NLS-1$
         // @formatter:on
     }
-
 }

@@ -45,9 +45,8 @@ type FormRefreshedEventPayload {
 
 type Form implements Representation {
   id: ID!
-  kind: String!
   label: String!
-  descriptionId: ID!
+  kind: String!
   targetObjectId: ID!
   pages: [Page!]!
 }

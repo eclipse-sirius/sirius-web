@@ -78,7 +78,6 @@ public class DiagramRendererEdgeTests {
 
         assertThat(diagram).isNotNull();
         assertThat(diagram.getId()).asString().isNotBlank();
-        assertThat(diagram.getLabel()).isNotBlank();
         assertThat(diagram.getTargetObjectId()).isNotBlank();
 
         assertThat(diagram.getNodes()).hasSize(2);

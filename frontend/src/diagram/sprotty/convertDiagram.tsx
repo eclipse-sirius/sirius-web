@@ -45,21 +45,20 @@ import {
  *
  * @param diagram the diagram object to convert
  * @param httpOrigin the URL of the server hosting the images
- * @param readOnly Whether the diagram is readonly
+ * @param autoLayout whether the diagram's layout is automatic (handled server-side)
+ * @param readOnly whether the diagram is readonly
  * @return a Sprotty diagram object
  */
-export const convertDiagram = (diagram: GQLDiagram, httpOrigin: string, readOnly: boolean) => {
-  const { id, descriptionId, kind, targetObjectId, label, position, size, autoLayout } = diagram;
+export const convertDiagram = (diagram: GQLDiagram, httpOrigin: string, autoLayout: boolean, readOnly: boolean) => {
+  const { id, kind, targetObjectId, position, size } = diagram;
   const nodes = diagram.nodes.map((node) => convertNode(node, httpOrigin, readOnly, autoLayout));
   const edges = diagram.edges.map((edge) => convertEdge(edge, httpOrigin, readOnly));
 
   return {
     id,
-    descriptionId,
     kind,
     type: 'graph',
     targetObjectId,
-    label,
     position,
     features: createFeatureSet([hoverFeedbackFeature, viewportFeature]),
     size,

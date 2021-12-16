@@ -30,7 +30,6 @@ export interface GQLValidationRefreshedEventPayload extends GQLValidationEventPa
 
 export interface GQLValidation {
   id: string;
-  label: string;
   diagnostics: GQLDiagnostic[];
 }
 

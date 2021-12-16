@@ -24,8 +24,6 @@ export const siriusWebDiagram: GQLDiagram = {
   targetObjectId: 'robot#/',
   label: 'Topography',
   descriptionId: "inmemory.odesign#//@ownedViewpoints[name='Exchanges']/@ownedRepresentations[name='Topography']",
-  autoLayout: false,
-  toolSections: [],
   __typename: 'Diagram',
   position: {
     x: 0,

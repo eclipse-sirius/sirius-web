@@ -28,7 +28,7 @@ import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.web.diagrams.tests.TestDiagramBuilder;
 import org.eclipse.sirius.web.representations.IRepresentationDescription;
-import org.eclipse.sirius.web.representations.ISemanticRepresentation;
+import org.eclipse.sirius.web.representations.ISemanticRepresentationMetadata;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeKind;
 import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationPersistenceService;
@@ -52,7 +52,7 @@ public class CreateDiagramEventHandlerTests {
     public void testDiagramCreation() {
         IRepresentationDescriptionSearchService representationDescriptionSearchService = new IRepresentationDescriptionSearchService() {
             @Override
-            public Optional<IRepresentationDescription> findById(IEditingContext editingContext, UUID id) {
+            public Optional<IRepresentationDescription> findById(IEditingContext editingContext, String id) {
                 // @formatter:off
                 DiagramDescription diagramDescription = DiagramDescription.newDiagramDescription(UUID.randomUUID())
                         .label("label") //$NON-NLS-1$
@@ -71,28 +71,23 @@ public class CreateDiagramEventHandlerTests {
 
         AtomicBoolean hasBeenCalled = new AtomicBoolean();
         IDiagramCreationService diagramCreationService = new IDiagramCreationService.NoOp() {
+
             @Override
-            public Diagram create(String label, Object targetObject, DiagramDescription diagramDescription, IEditingContext editingContext) {
+            public Optional<Diagram> create(IEditingContext editingContext, ISemanticRepresentationMetadata metadata) {
                 hasBeenCalled.set(true);
-                return new TestDiagramBuilder().getDiagram(UUID.randomUUID().toString());
+                return Optional.of(new TestDiagramBuilder().getDiagram(UUID.randomUUID().toString()));
             }
 
         };
 
+        IRepresentationPersistenceService representationPersistenceService = new IRepresentationPersistenceService.NoOp();
         IObjectService objectService = new IObjectService.NoOp() {
             @Override
             public Optional<Object> getObject(IEditingContext editingContext, String objectId) {
                 return Optional.of(new Object());
             }
         };
-
-        IRepresentationPersistenceService representationPersistenceService = new IRepresentationPersistenceService() {
-            @Override
-            public void save(IEditingContext editingContext, ISemanticRepresentation representation) {
-            }
-        };
-
-        CreateDiagramEventHandler handler = new CreateDiagramEventHandler(representationDescriptionSearchService, representationPersistenceService, diagramCreationService, objectService,
+        CreateDiagramEventHandler handler = new CreateDiagramEventHandler(representationDescriptionSearchService, representationPersistenceService, objectService, diagramCreationService,
                 new NoOpCollaborativeDiagramMessageService(), new SimpleMeterRegistry());
 
         var input = new CreateRepresentationInput(UUID.randomUUID(), UUID.randomUUID().toString(), UUID.randomUUID(), "objectId", "representationName"); //$NON-NLS-1$//$NON-NLS-2$

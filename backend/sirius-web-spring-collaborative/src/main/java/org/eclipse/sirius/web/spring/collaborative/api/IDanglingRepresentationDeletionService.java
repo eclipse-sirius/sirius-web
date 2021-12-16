@@ -13,7 +13,7 @@
 package org.eclipse.sirius.web.spring.collaborative.api;
 
 import org.eclipse.sirius.web.core.api.IEditingContext;
-import org.eclipse.sirius.web.representations.IRepresentation;
+import org.eclipse.sirius.web.representations.IRepresentationMetadata;
 
 /**
  * Used to delete dangling representations.
@@ -29,11 +29,11 @@ public interface IDanglingRepresentationDeletionService {
      * @param editingContext
      *            The editing context
      *
-     * @param representation
-     *            The representation that may be dangling
+     * @param representationMetadata
+     *            The metadata of the representation that may be dangling
      * @return <code>true</code> whether the representation is dangling, <code>false</code> otherwise
      */
-    boolean isDangling(IEditingContext editingContext, IRepresentation representation);
+    boolean isDangling(IEditingContext editingContext, IRepresentationMetadata representationMetadata);
 
     void deleteDanglingRepresentations(String editingContextId);
 
@@ -45,7 +45,7 @@ public interface IDanglingRepresentationDeletionService {
     class NoOp implements IDanglingRepresentationDeletionService {
 
         @Override
-        public boolean isDangling(IEditingContext editingContext, IRepresentation representation) {
+        public boolean isDangling(IEditingContext editingContext, IRepresentationMetadata representationMetadata) {
             return false;
         }
 

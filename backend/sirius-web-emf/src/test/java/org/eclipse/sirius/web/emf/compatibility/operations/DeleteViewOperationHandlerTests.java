@@ -17,7 +17,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.function.Function;
 
 import org.eclipse.emf.common.command.BasicCommandStack;
 import org.eclipse.emf.ecore.EPackage;
@@ -34,24 +33,17 @@ import org.eclipse.sirius.viewpoint.description.tool.DeleteView;
 import org.eclipse.sirius.viewpoint.description.tool.ToolFactory;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.diagrams.Diagram;
-import org.eclipse.sirius.web.diagrams.INodeStyle;
 import org.eclipse.sirius.web.diagrams.ImageNodeStyle;
 import org.eclipse.sirius.web.diagrams.Label;
 import org.eclipse.sirius.web.diagrams.LabelStyle;
-import org.eclipse.sirius.web.diagrams.LineStyle;
 import org.eclipse.sirius.web.diagrams.Node;
 import org.eclipse.sirius.web.diagrams.Position;
-import org.eclipse.sirius.web.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.web.diagrams.Size;
 import org.eclipse.sirius.web.diagrams.ViewDeletionRequest;
-import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
-import org.eclipse.sirius.web.diagrams.description.LabelDescription;
-import org.eclipse.sirius.web.diagrams.description.LabelStyleDescription;
-import org.eclipse.sirius.web.diagrams.description.NodeDescription;
-import org.eclipse.sirius.web.diagrams.description.SynchronizationPolicy;
 import org.eclipse.sirius.web.emf.compatibility.modeloperations.ChildModelOperationHandler;
 import org.eclipse.sirius.web.emf.compatibility.modeloperations.DeleteViewOperationHandler;
 import org.eclipse.sirius.web.emf.services.EditingContext;
+import org.eclipse.sirius.web.interpreter.AQLInterpreter;
 import org.eclipse.sirius.web.representations.IStatus;
 import org.eclipse.sirius.web.representations.Success;
 import org.eclipse.sirius.web.representations.VariableManager;
@@ -65,11 +57,6 @@ import org.junit.jupiter.api.Test;
  * @author arichard
  */
 public class DeleteViewOperationHandlerTests {
-    /**
-     *
-     */
-    private static final String AQL = "aql:"; //$NON-NLS-1$
-
     private static final String VARIABLE_NAME = "myVariableName"; //$NON-NLS-1$
 
     private static final String CONTAINER_VIEW = "containerView"; //$NON-NLS-1$
@@ -95,15 +82,6 @@ public class DeleteViewOperationHandlerTests {
         resourceSet.setPackageRegistry(ePackageRegistry);
 
         // @formatter:off
-        DiagramDescription diagramDescription = DiagramDescription.newDiagramDescription(UUID.randomUUID())
-                .label("DiagramDescriptionTest") //$NON-NLS-1$
-                .targetObjectIdProvider(variableManager -> "diagramTargetObjectId") //$NON-NLS-1$
-                .canCreatePredicate(variableManager -> true)
-                .labelProvider(variableManager -> "Diagram") //$NON-NLS-1$
-                .toolSections(List.of())
-                .nodeDescriptions(List.of(this.getNodeDescription(UUID.randomUUID())))
-                .edgeDescriptions(List.of())
-                .build();
 
         Node node = Node.newNode(UUID.randomUUID().toString())
                 .descriptionId(UUID.randomUUID())
@@ -127,9 +105,7 @@ public class DeleteViewOperationHandlerTests {
                 .build();
 
         Diagram diagram = Diagram.newDiagram(UUID.randomUUID().toString())
-                .descriptionId(diagramDescription.getId())
                 .targetObjectId(UUID.randomUUID().toString())
-                .label("DiagramTest") //$NON-NLS-1$
                 .position(Position.at(0, 0))
                 .size(Size.of(100, 100))
                 .nodes(List.of(node))
@@ -160,66 +136,13 @@ public class DeleteViewOperationHandlerTests {
         // used to check that the variable name is added in variable scope
         String className = "newClass"; //$NON-NLS-1$
         ChangeContext subChangeContext = ToolFactory.eINSTANCE.createChangeContext();
-        subChangeContext.setBrowseExpression(AQL + VARIABLE_NAME + ".renameENamedElementService('" + className + "'))"); //$NON-NLS-1$ //$NON-NLS-2$
+        subChangeContext.setBrowseExpression(AQLInterpreter.AQL_PREFIX + VARIABLE_NAME + ".renameENamedElementService('" + className + "'))"); //$NON-NLS-1$ //$NON-NLS-2$
         this.deleteViewOperation.getSubModelOperations().add(subChangeContext);
 
         // check the nominal case
         IStatus handleResult = this.deleteViewOperationHandler.handle(this.operationTestContext.getVariables());
 
         assertTrue(handleResult instanceof Success);
-    }
-
-    private NodeDescription getNodeDescription(UUID nodeDescriptionId) {
-        // @formatter:off
-        LabelStyleDescription labelStyleDescription = LabelStyleDescription.newLabelStyleDescription()
-                .colorProvider(variableManager -> "#000000") //$NON-NLS-1$
-                .fontSizeProvider(variableManager -> 16)
-                .boldProvider(variableManager -> false)
-                .italicProvider(variableManager -> false)
-                .underlineProvider(variableManager -> false)
-                .strikeThroughProvider(variableManager -> false)
-                .iconURLProvider(variableManager -> "") //$NON-NLS-1$
-                .build();
-
-        LabelDescription labelDescription = LabelDescription.newLabelDescription("labelDescriptionId") //$NON-NLS-1$
-                .idProvider(variableManager -> "labelId") //$NON-NLS-1$
-                .textProvider(variableManager -> "Node") //$NON-NLS-1$
-                .styleDescriptionProvider(variableManager -> labelStyleDescription)
-                .build();
-
-        Function<VariableManager, INodeStyle> nodeStyleProvider = variableManager -> {
-            return RectangularNodeStyle.newRectangularNodeStyle()
-                    .color("") //$NON-NLS-1$
-                    .borderColor("") //$NON-NLS-1$
-                    .borderSize(0)
-                    .borderStyle(LineStyle.Solid)
-                    .build();
-        };
-
-        Function<VariableManager, String> targetObjectIdProvider = variableManager -> {
-            Object object = variableManager.getVariables().get(VariableManager.SELF);
-            if (object instanceof String) {
-                return nodeDescriptionId + "__" +  object; //$NON-NLS-1$
-            }
-            return null;
-        };
-
-        return NodeDescription.newNodeDescription(nodeDescriptionId)
-                .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
-                .typeProvider(variableManager -> "") //$NON-NLS-1$
-                .semanticElementsProvider(variableManager -> List.of())
-                .targetObjectIdProvider(targetObjectIdProvider)
-                .targetObjectKindProvider(variableManager -> "") //$NON-NLS-1$
-                .targetObjectLabelProvider(variableManager -> "")//$NON-NLS-1$
-                .labelDescription(labelDescription)
-                .styleProvider(nodeStyleProvider)
-                .sizeProvider(variableManager -> Size.UNDEFINED)
-                .borderNodeDescriptions(new ArrayList<>())
-                .childNodeDescriptions(new ArrayList<>())
-                .labelEditHandler((variableManager, newLabel) -> new Success())
-                .deleteHandler(variableManager -> new Success())
-                .build();
-        // @formatter:on
     }
 
 }

@@ -14,6 +14,8 @@ package org.eclipse.sirius.web.spring.collaborative.diagrams;
 
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 
+import java.util.Optional;
+
 import org.eclipse.sirius.web.diagrams.INodeStyle;
 import org.eclipse.sirius.web.spring.collaborative.api.IStdDeserializerProvider;
 import org.springframework.stereotype.Service;
@@ -34,6 +36,11 @@ public class NodeStyleStdDeserializerProvider implements IStdDeserializerProvide
     @Override
     public Class<INodeStyle> getType() {
         return INodeStyle.class;
+    }
+
+    @Override
+    public Optional<Class<? extends INodeStyle>> getImplementationClass(String kind) {
+        return Optional.empty();
     }
 
 }

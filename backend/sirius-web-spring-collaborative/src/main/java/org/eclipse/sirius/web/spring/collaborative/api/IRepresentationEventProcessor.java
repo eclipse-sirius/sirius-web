@@ -16,6 +16,7 @@ import org.eclipse.sirius.web.core.api.IInput;
 import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.core.api.IRepresentationInput;
 import org.eclipse.sirius.web.representations.IRepresentation;
+import org.eclipse.sirius.web.representations.IRepresentationMetadata;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks.Many;
@@ -29,7 +30,10 @@ import reactor.core.publisher.Sinks.One;
 public interface IRepresentationEventProcessor extends IDisposablePublisher {
     IRepresentation getRepresentation();
 
+    IRepresentationMetadata getRepresentationMetadata();
+    
     void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IRepresentationInput representationInput);
+
 
     void refresh(ChangeDescription changeDescription);
 
@@ -60,6 +64,11 @@ public interface IRepresentationEventProcessor extends IDisposablePublisher {
 
         @Override
         public IRepresentation getRepresentation() {
+            return null;
+        }
+
+        @Override
+        public IRepresentationMetadata getRepresentationMetadata() {
             return null;
         }
 

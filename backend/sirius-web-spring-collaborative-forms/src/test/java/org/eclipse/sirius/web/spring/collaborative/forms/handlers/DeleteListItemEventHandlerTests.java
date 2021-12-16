@@ -95,7 +95,6 @@ public class DeleteListItemEventHandlerTests {
 
         Form form = Form.newForm(FORM_ID.toString())
                 .targetObjectId("targetObjectId") //$NON-NLS-1$
-                .descriptionId(UUID.randomUUID())
                 .label("form label") //$NON-NLS-1$
                 .pages(Collections.singletonList(page))
                 .build();
