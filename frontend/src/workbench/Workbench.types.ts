@@ -22,6 +22,20 @@ export interface SelectionEntry {
   kind: string;
 }
 
+export interface GQLEditingContextEventPayload {
+  __typename: string;
+}
+
+export interface GQLRepresentationRenamedEventPayload extends GQLEditingContextEventPayload {
+  id: string;
+  representationId: string;
+  newLabel: string;
+}
+
+export type GQLEditingContextEventSubscription = {
+  editingContextEvent: GQLEditingContextEventPayload;
+};
+
 export type Representation = {
   id: string;
   label: string;
