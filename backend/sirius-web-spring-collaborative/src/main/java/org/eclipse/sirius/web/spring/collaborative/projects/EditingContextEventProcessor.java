@@ -157,15 +157,33 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
     private void publishEvent(ChangeDescription changeDescription) {
         if (this.sink.currentSubscriberCount() > 0) {
             IInput input = changeDescription.getInput();
+            UUID correlationId = input.getId();
             if (input instanceof RenameRepresentationInput && ChangeKind.REPRESENTATION_RENAMING.equals(changeDescription.getKind())) {
                 String representationId = ((RenameRepresentationInput) input).getRepresentationId();
                 String newLabel = ((RenameRepresentationInput) input).getNewLabel();
-                EmitResult emitResult = this.sink.tryEmitNext(new RepresentationRenamedEventPayload(input.getId(), representationId, newLabel));
-                if (emitResult.isFailure()) {
-                    String pattern = "An error has occurred while emitting a RepresentationRenamedEventPayload: {}"; //$NON-NLS-1$
-                    this.logger.warn(pattern, emitResult);
+                this.tryEmitRepresentationRenamedEvent(correlationId, representationId, newLabel);
+            } else if (ChangeKind.REPRESENTATION_TO_RENAME.equals(changeDescription.getKind()) && !changeDescription.getParameters().isEmpty()) {
+                Map<String, Object> parameters = changeDescription.getParameters();
+                // @formatter:off
+                var optionalRepresentationId = Optional.ofNullable(parameters.get(REPRESENTATION_ID))
+                        .filter(String.class::isInstance)
+                        .map(String.class::cast);
+                var optionalRepresentationLabel = Optional.ofNullable(parameters.get(REPRESENTATION_LABEL))
+                        .filter(String.class::isInstance)
+                        .map(String.class::cast);
+                // @formatter:on
+                if (optionalRepresentationId.isPresent() && optionalRepresentationLabel.isPresent()) {
+                    this.tryEmitRepresentationRenamedEvent(correlationId, optionalRepresentationId.get(), optionalRepresentationLabel.get());
                 }
             }
+        }
+    }
+
+    private void tryEmitRepresentationRenamedEvent(UUID correlationId, String representationId, String newLabel) {
+        EmitResult emitResult = this.sink.tryEmitNext(new RepresentationRenamedEventPayload(correlationId, representationId, newLabel));
+        if (emitResult.isFailure()) {
+            String pattern = "An error has occurred while emitting a RepresentationRenamedEventPayload: {}"; //$NON-NLS-1$
+            this.logger.warn(pattern, emitResult);
         }
     }
 
@@ -387,5 +405,4 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
         }
 
     }
-
 }

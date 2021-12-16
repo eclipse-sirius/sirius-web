@@ -10,19 +10,45 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Representation, Selection } from 'workbench/Workbench.types';
+import { SubscriptionResult } from '@apollo/client';
+import { v4 as uuid } from 'uuid';
+import {
+  GQLEditingContextEventPayload,
+  GQLEditingContextEventSubscription,
+  GQLRepresentationRenamedEventPayload,
+  Representation,
+  Selection,
+} from 'workbench/Workbench.types';
 import { assign, Machine } from 'xstate';
 
 export interface WorkbenchStateSchema {
-  states: { initial: {} };
+  states: {
+    toast: {
+      states: {
+        visible: {};
+        hidden: {};
+      };
+    };
+    workbench: {
+      states: {
+        initial: {};
+        complete: {};
+      };
+    };
+  };
 }
 
-export type SchemaValue = 'initial';
+export type SchemaValue = {
+  toast: 'visible' | 'hidden';
+  workbench: 'initial' | 'complete';
+};
 
 export interface WorkbenchContext {
+  id: string;
   selection: Selection;
   representations: Representation[];
   displayedRepresentation: Representation | null;
+  message: string | null;
 }
 
 export type ShowRepresentationEvent = { type: 'SHOW_REPRESENTATION'; representation: Representation };
@@ -32,30 +58,87 @@ export type UpdateSelectionEvent = {
   selection: Selection;
   representations: Representation[];
 };
-export type WorkbenchEvent = UpdateSelectionEvent | ShowRepresentationEvent | HideRepresentationEvent;
+
+export type ShowToastEvent = { type: 'SHOW_TOAST'; message: string };
+export type HideToastEvent = { type: 'HIDE_TOAST' };
+export type HandleSubscriptionResultEvent = {
+  type: 'HANDLE_SUBSCRIPTION_RESULT';
+  result: SubscriptionResult<GQLEditingContextEventSubscription>;
+};
+export type HandleCompleteEvent = { type: 'HANDLE_COMPLETE' };
+export type WorkbenchEvent =
+  | UpdateSelectionEvent
+  | ShowRepresentationEvent
+  | HideRepresentationEvent
+  | HandleSubscriptionResultEvent
+  | HandleCompleteEvent
+  | ShowToastEvent
+  | HideToastEvent;
+
+const isRepresentationRenamedEventPayload = (
+  payload: GQLEditingContextEventPayload
+): payload is GQLRepresentationRenamedEventPayload => payload.__typename === 'RepresentationRenamedEventPayload';
 
 export const workbenchMachine = Machine<WorkbenchContext, WorkbenchStateSchema, WorkbenchEvent>(
   {
-    initial: 'initial',
+    type: 'parallel',
     context: {
+      id: uuid(),
       selection: { entries: [] },
       representations: [],
       displayedRepresentation: null,
+      message: null,
     },
     states: {
-      initial: {
-        on: {
-          UPDATE_SELECTION: {
-            target: 'initial',
-            actions: 'updateSelection',
+      toast: {
+        initial: 'hidden',
+        states: {
+          hidden: {
+            on: {
+              SHOW_TOAST: {
+                target: 'visible',
+                actions: 'setMessage',
+              },
+            },
           },
-          SHOW_REPRESENTATION: {
-            target: 'initial',
-            actions: 'showRepresentation',
+          visible: {
+            on: {
+              HIDE_TOAST: {
+                target: 'hidden',
+                actions: 'clearMessage',
+              },
+            },
           },
-          HIDE_REPRESENTATION: {
-            target: 'initial',
-            actions: 'hideRepresentation',
+        },
+      },
+      workbench: {
+        initial: 'initial',
+        states: {
+          initial: {
+            on: {
+              UPDATE_SELECTION: {
+                target: 'initial',
+                actions: 'updateSelection',
+              },
+              SHOW_REPRESENTATION: {
+                target: 'initial',
+                actions: 'showRepresentation',
+              },
+              HIDE_REPRESENTATION: {
+                target: 'initial',
+                actions: 'hideRepresentation',
+              },
+              HANDLE_SUBSCRIPTION_RESULT: {
+                target: 'initial',
+                actions: 'handleSubscriptionResult',
+              },
+              HANDLE_COMPLETE: {
+                target: 'complete',
+              },
+            },
+          },
+          complete: {
+            type: 'final',
           },
         },
       },
@@ -114,6 +197,32 @@ export const workbenchMachine = Machine<WorkbenchContext, WorkbenchStateSchema, 
             return { displayedRepresentation, representations: newRepresentations };
           }
         }
+      }),
+      handleSubscriptionResult: assign((context, event) => {
+        const { result } = event as HandleSubscriptionResultEvent;
+        const { data } = result;
+        if (isRepresentationRenamedEventPayload(data.editingContextEvent)) {
+          const { representationId, newLabel } = data.editingContextEvent;
+          const representations = context.representations;
+
+          for (var i = 0; i < representations.length; i++) {
+            if (representations[i].id === representationId) {
+              representations[i].label = newLabel;
+            }
+          }
+
+          return {
+            representations,
+          };
+        }
+        return {};
+      }),
+      setMessage: assign((_, event) => {
+        const { message } = event as ShowToastEvent;
+        return { message };
+      }),
+      clearMessage: assign((_) => {
+        return { message: null };
       }),
     },
   }

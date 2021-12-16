@@ -10,9 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { useSubscription } from '@apollo/client';
+import IconButton from '@material-ui/core/IconButton';
+import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles } from '@material-ui/core/styles';
+import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
 import { HORIZONTAL, Panels, SECOND_PANEL } from 'core/panels/Panels';
+import gql from 'graphql-tag';
 import { OnboardArea } from 'onboarding/OnboardArea';
 import React, { useContext, useEffect } from 'react';
 import { TreeItemContextMenuContext } from 'tree/TreeItemContextMenu';
@@ -21,15 +26,38 @@ import { LeftSite } from 'workbench/LeftSite';
 import { RepresentationContext } from 'workbench/RepresentationContext';
 import { RepresentationNavigation } from 'workbench/RepresentationNavigation';
 import { RightSite } from 'workbench/RightSite';
-import { Representation, RepresentationComponentProps, Selection, WorkbenchProps } from 'workbench/Workbench.types';
 import {
+  GQLEditingContextEventSubscription,
+  Representation,
+  RepresentationComponentProps,
+  Selection,
+  WorkbenchProps,
+} from 'workbench/Workbench.types';
+import {
+  HandleCompleteEvent,
+  HandleSubscriptionResultEvent,
   HideRepresentationEvent,
+  HideToastEvent,
+  SchemaValue,
   ShowRepresentationEvent,
+  ShowToastEvent,
   UpdateSelectionEvent,
   WorkbenchContext,
   WorkbenchEvent,
   workbenchMachine,
 } from 'workbench/WorkbenchMachine';
+
+const editingContextEventSubscription = gql`
+  subscription editingContextEvent($input: EditingContextEventInput!) {
+    editingContextEvent(input: $input) {
+      __typename
+      ... on RepresentationRenamedEventPayload {
+        representationId
+        newLabel
+      }
+    }
+  }
+`;
 
 const useWorkbenchStyles = makeStyles((theme) => ({
   main: {
@@ -53,13 +81,43 @@ export const Workbench = ({
 }: WorkbenchProps) => {
   const classes = useWorkbenchStyles();
   const { registry } = useContext(RepresentationContext);
-  const [{ context }, dispatch] = useMachine<WorkbenchContext, WorkbenchEvent>(workbenchMachine, {
+  const [{ value, context }, dispatch] = useMachine<WorkbenchContext, WorkbenchEvent>(workbenchMachine, {
     context: {
       displayedRepresentation: initialRepresentationSelected,
       representations: initialRepresentationSelected ? [initialRepresentationSelected] : [],
     },
   });
-  const { selection, representations, displayedRepresentation } = context;
+  const { toast } = value as SchemaValue;
+  const { id, selection, representations, displayedRepresentation, message } = context;
+
+  const { error } = useSubscription<GQLEditingContextEventSubscription>(editingContextEventSubscription, {
+    variables: {
+      input: {
+        id,
+        editingContextId,
+      },
+    },
+    fetchPolicy: 'no-cache',
+    onSubscriptionData: ({ subscriptionData }) => {
+      const handleDataEvent: HandleSubscriptionResultEvent = {
+        type: 'HANDLE_SUBSCRIPTION_RESULT',
+        result: subscriptionData,
+      };
+      dispatch(handleDataEvent);
+    },
+    onSubscriptionComplete: () => {
+      const completeEvent: HandleCompleteEvent = { type: 'HANDLE_COMPLETE' };
+      dispatch(completeEvent);
+    },
+  });
+
+  useEffect(() => {
+    if (error) {
+      const { message } = error;
+      const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
+      dispatch(showToastEvent);
+    }
+  }, [error, dispatch]);
 
   const setSelection = (selection: Selection) => {
     const representations: Representation[] = selection.entries.filter((entry) =>
@@ -149,21 +207,44 @@ export const Workbench = ({
   }
 
   return (
-    <Panels
-      orientation={HORIZONTAL}
-      firstPanel={leftSite}
-      secondPanel={
-        <div className={classes.main} data-testid="representationAndProperties">
-          <Panels
-            orientation={HORIZONTAL}
-            resizablePanel={SECOND_PANEL}
-            firstPanel={main}
-            secondPanel={rightSite}
-            initialResizablePanelSize={300}
-          />
-        </div>
-      }
-      initialResizablePanelSize={300}
-    />
+    <>
+      <Panels
+        orientation={HORIZONTAL}
+        firstPanel={leftSite}
+        secondPanel={
+          <div className={classes.main} data-testid="representationAndProperties">
+            <Panels
+              orientation={HORIZONTAL}
+              resizablePanel={SECOND_PANEL}
+              firstPanel={main}
+              secondPanel={rightSite}
+              initialResizablePanelSize={300}
+            />
+          </div>
+        }
+        initialResizablePanelSize={300}
+      />
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right',
+        }}
+        open={toast === 'visible'}
+        autoHideDuration={3000}
+        onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
+        message={message}
+        action={
+          <IconButton
+            size="small"
+            aria-label="close"
+            color="inherit"
+            onClick={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
+          >
+            <CloseIcon fontSize="small" />
+          </IconButton>
+        }
+        data-testid="error"
+      />
+    </>
   );
 };
