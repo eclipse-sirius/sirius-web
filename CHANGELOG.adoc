@@ -46,6 +46,7 @@ Currently it is not possible to compute different values for width and height.
 - [form] Handle invalid format more gracefully when editing numeric properties
 - [view] Fix the canonical domain-based edge creation tool
 - https://github.com/eclipse-sirius/sirius-components/issues/377[#377] [workbench] Restore the real time feedback on representation renaming
+- https://github.com/eclipse-sirius/sirius-components/issues/868[#868] [diagram] Fix a layout issue with the label of the newly created edges
 
 
 == v2021.12.0
