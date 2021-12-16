@@ -33,7 +33,7 @@ import org.eclipse.sirius.web.representations.IRepresentation;
 @GraphQLObjectType
 public final class Validation implements IRepresentation {
 
-    public static final String KIND = "Validation"; //$NON-NLS-1$
+    public static final String KIND = IRepresentation.KIND_PREFIX + "?type=Validation"; //$NON-NLS-1$
 
     private String id;
 

@@ -33,7 +33,7 @@ import org.eclipse.sirius.web.representations.IRepresentation;
 @GraphQLObjectType
 public final class Tree implements IRepresentation {
 
-    public static final String KIND = "Tree"; //$NON-NLS-1$
+    public static final String KIND = IRepresentation.KIND_PREFIX + "?type=Tree"; //$NON-NLS-1$
 
     private String id;
 

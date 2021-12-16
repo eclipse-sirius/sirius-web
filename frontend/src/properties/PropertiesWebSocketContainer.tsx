@@ -37,8 +37,7 @@ import {
   ShowToastEvent,
   SwitchSelectionEvent,
 } from 'properties/PropertiesWebSocketContainerMachine';
-import React, { useContext, useEffect } from 'react';
-import { RepresentationContext } from 'workbench/RepresentationContext';
+import React, { useEffect } from 'react';
 
 const propertiesEventSubscription = gql`
   subscription propertiesEvent($input: PropertiesEventInput!) {
@@ -82,29 +81,25 @@ export const PropertiesWebSocketContainer = ({
   >(propertiesWebSocketContainerMachine);
   const { toast, propertiesWebSocketContainer } = value as SchemaValue;
   const { id, currentSelection, form, subscribers, widgetSubscriptions, message } = context;
-  const { registry } = useContext(RepresentationContext);
 
   /**
    * Displays an other form if the selection indicates that we should display another properties view.
    */
   useEffect(() => {
     if (selection.entries.length > 0 && selection.entries[0].id !== currentSelection?.id) {
-      const isRepresentation = registry.isRepresentation(selection.entries[0].kind);
       const switchSelectionEvent: SwitchSelectionEvent = {
         type: 'SWITCH_SELECTION',
         selection: selection.entries[0],
-        isRepresentation,
       };
       dispatch(switchSelectionEvent);
     } else if (selection.entries.length === 0) {
       const switchSelectionEvent: SwitchSelectionEvent = {
         type: 'SWITCH_SELECTION',
         selection: null,
-        isRepresentation: false,
       };
       dispatch(switchSelectionEvent);
     }
-  }, [currentSelection, registry, selection, dispatch]);
+  }, [currentSelection, selection, dispatch]);
 
   const { error } = useSubscription<GQLPropertiesEventSubscription>(propertiesEventSubscription, {
     variables: {

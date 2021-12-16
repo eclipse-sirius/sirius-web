@@ -62,7 +62,7 @@ export interface RepresentationsWebSocketContainerContext {
 
 export type ShowToastEvent = { type: 'SHOW_TOAST'; message: string };
 export type HideToastEvent = { type: 'HIDE_TOAST' };
-export type SwitchSelectionEvent = { type: 'SWITCH_SELECTION'; selection: SelectionEntry; isRepresentation: boolean };
+export type SwitchSelectionEvent = { type: 'SWITCH_SELECTION'; selection: SelectionEntry };
 export type HandleSubscriptionResultEvent = {
   type: 'HANDLE_SUBSCRIPTION_RESULT';
   result: SubscriptionResult<GQLRepresentationsEventSubscription>;
@@ -232,8 +232,8 @@ export const representationsWebSocketContainerMachine = Machine<
         return isFormRefreshedEventPayload(data.representationsEvent);
       },
       isSelectionUnsupported: (_, event) => {
-        const { selection, isRepresentation } = event as SwitchSelectionEvent;
-        return !selection || isRepresentation || selection.kind === 'Unknown' || selection.kind === 'Document';
+        const { selection } = event as SwitchSelectionEvent;
+        return !selection || !selection.kind.startsWith('siriusComponents://semantic');
       },
     },
     actions: {

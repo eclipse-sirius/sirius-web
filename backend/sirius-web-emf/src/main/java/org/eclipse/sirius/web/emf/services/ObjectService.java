@@ -35,6 +35,7 @@ import org.eclipse.emf.edit.provider.ComposedImage;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IObjectService;
+import org.eclipse.sirius.web.emf.services.api.IEMFKindService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -52,13 +53,16 @@ public class ObjectService implements IObjectService {
 
     private static final String ID_SEPARATOR = "#"; //$NON-NLS-1$
 
+    private final IEMFKindService emfKindService;
+
     private final ComposedAdapterFactory composedAdapterFactory;
 
     private final LabelFeatureProviderRegistry labelFeatureProviderRegistry;
 
     private final Logger logger = LoggerFactory.getLogger(ObjectService.class);
 
-    public ObjectService(ComposedAdapterFactory composedAdapterFactory, LabelFeatureProviderRegistry labelFeatureProviderRegistry) {
+    public ObjectService(IEMFKindService emfKindService, ComposedAdapterFactory composedAdapterFactory, LabelFeatureProviderRegistry labelFeatureProviderRegistry) {
+        this.emfKindService = Objects.requireNonNull(emfKindService);
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.labelFeatureProviderRegistry = Objects.requireNonNull(labelFeatureProviderRegistry);
     }
@@ -85,7 +89,7 @@ public class ObjectService implements IObjectService {
     public String getKind(Object object) {
         if (object instanceof EObject) {
             EObject eObject = (EObject) object;
-            return new ClassIdService().getClassId(eObject.eClass());
+            return this.emfKindService.getKind(eObject.eClass());
         }
         return ""; //$NON-NLS-1$
     }

@@ -29,7 +29,7 @@ public interface IEditService {
 
     List<ChildCreationDescription> getRootCreationDescriptions(String editingContextId, String domainId, boolean suggested);
 
-    List<ChildCreationDescription> getChildCreationDescriptions(String editingContextId, String classId);
+    List<ChildCreationDescription> getChildCreationDescriptions(String editingContextId, String kind);
 
     Optional<Object> createChild(IEditingContext editingContext, Object object, String childCreationDescriptionId);
 

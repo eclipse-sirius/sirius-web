@@ -27,6 +27,7 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
 import org.eclipse.sirius.web.core.api.IObjectService;
+import org.eclipse.sirius.web.emf.services.api.IEMFKindService;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -40,7 +41,7 @@ public class ObjectServiceTests {
         ComposedAdapterFactory composedAdapterFactory = new ComposedAdapterFactory(List.of(new EcoreItemProviderAdapterFactory()));
         composedAdapterFactory.addAdapterFactory(new EcoreAdapterFactory());
         composedAdapterFactory.addAdapterFactory(new ReflectiveItemProviderAdapterFactory());
-        ObjectService objectService = new ObjectService(composedAdapterFactory, new LabelFeatureProviderRegistry());
+        ObjectService objectService = new ObjectService(new IEMFKindService.NoOp(), composedAdapterFactory, new LabelFeatureProviderRegistry());
         EAttribute attr = EcoreFactory.eINSTANCE.createEAttribute();
         String imagePath = objectService.getImagePath(attr);
         // @formatter:off
@@ -55,7 +56,7 @@ public class ObjectServiceTests {
         ComposedAdapterFactory composedAdapterFactory = new ComposedAdapterFactory(List.of(new EcoreItemProviderAdapterFactory()));
         composedAdapterFactory.addAdapterFactory(new EcoreAdapterFactory());
         composedAdapterFactory.addAdapterFactory(new ReflectiveItemProviderAdapterFactory());
-        ObjectService objectService = new ObjectService(composedAdapterFactory, new LabelFeatureProviderRegistry());
+        ObjectService objectService = new ObjectService(new IEMFKindService.NoOp(), composedAdapterFactory, new LabelFeatureProviderRegistry());
         Resource resource = new XMIResourceImpl();
         resource.setURI(URI.createURI("test.xmi")); //$NON-NLS-1$
         EObject eObject = EcoreFactory.eINSTANCE.createEClass();

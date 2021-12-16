@@ -29,7 +29,7 @@ export function canInvokeTool(tool, sourceElement, targetElement) {
   let result = false;
   if (tool.__typename === 'CreateNodeTool') {
     result =
-      (tool.appliesToDiagramRoot && targetElement.kind === 'Diagram') ||
+      (tool.appliesToDiagramRoot && targetElement.kind === 'siriusComponents://representation?type=Diagram') ||
       tool.targetDescriptions.some((targetDescription) => targetDescription.id === targetElement.descriptionId);
   } else if (tool.__typename === 'CreateEdgeTool') {
     result = tool.edgeCandidates.some(

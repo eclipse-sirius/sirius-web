@@ -20,7 +20,7 @@ import styles from './OnboardArea.module.css';
 import { OnboardAreaProps } from './OnboardArea.types';
 
 const getOnboardDataQuery = gql`
-  query getOnboardData($editingContextId: ID!, $classId: ID!) {
+  query getOnboardData($editingContextId: ID!, $kind: ID!) {
     viewer {
       editingContext(editingContextId: $editingContextId) {
         stereotypeDescriptions {
@@ -32,7 +32,7 @@ const getOnboardDataQuery = gql`
             }
           }
         }
-        representationDescriptions(classId: $classId) {
+        representationDescriptions(kind: $kind) {
           edges {
             node {
               id
@@ -64,12 +64,12 @@ export const OnboardArea = ({ editingContextId, selection, setSelection, readOnl
   const [state, setState] = useState(INITIAL_STATE);
   const { stereotypeDescriptions, representationDescriptions, representations } = state;
 
-  const classId = selection.entries.length > 0 ? selection.entries[0].kind : '';
+  const kind = selection.entries.length > 0 ? selection.entries[0].kind : '';
 
   const [getOnboardData, { loading, data, error }] = useLazyQuery(getOnboardDataQuery);
   useEffect(() => {
-    getOnboardData({ variables: { editingContextId, classId } });
-  }, [editingContextId, classId, getOnboardData]);
+    getOnboardData({ variables: { editingContextId, kind } });
+  }, [editingContextId, kind, getOnboardData]);
   useEffect(() => {
     if (!loading && !error && data?.viewer) {
       const { viewer } = data;
@@ -85,7 +85,7 @@ export const OnboardArea = ({ editingContextId, selection, setSelection, readOnl
         representationDescriptions,
       });
     }
-  }, [editingContextId, classId, loading, data, error]);
+  }, [editingContextId, kind, loading, data, error]);
 
   return (
     <div className={styles.onboardArea}>

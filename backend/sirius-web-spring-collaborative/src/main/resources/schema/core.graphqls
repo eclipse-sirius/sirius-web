@@ -16,10 +16,10 @@ type EditingContext {
   domains: [Domain!]!
   representation(representationId: ID!): Representation
   representations: EditingContextRepresentationConnection!
-  representationDescriptions(classId: ID!): EditingContextRepresentationDescriptionConnection!
+  representationDescriptions(kind: ID!): EditingContextRepresentationDescriptionConnection!
   stereotypeDescriptions: EditingContextStereotypeDescriptionConnection!
   rootObjectCreationDescriptions(domainId: ID!, suggested: Boolean!): [ChildCreationDescription!]!
-  childCreationDescriptions(classId: ID!): [ChildCreationDescription!]!
+  childCreationDescriptions(kind: ID!): [ChildCreationDescription!]!
   queryBasedString(query: String!): String
   queryBasedInt(query: String!): Int
   queryBasedBoolean(query: String!): Boolean

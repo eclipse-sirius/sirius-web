@@ -48,6 +48,7 @@ import org.eclipse.sirius.web.core.api.ChildCreationDescription;
 import org.eclipse.sirius.web.core.api.Domain;
 import org.eclipse.sirius.web.core.api.IEditService;
 import org.eclipse.sirius.web.core.api.IEditingContext;
+import org.eclipse.sirius.web.emf.services.api.IEMFKindService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -61,33 +62,35 @@ public class EditService implements IEditService {
 
     private final IEditingContextEPackageService editingContextEPackageService;
 
+    private final IEMFKindService emfKindService;
+
     private final ComposedAdapterFactory composedAdapterFactory;
 
     private final EPackage.Registry globalEPackageRegistry;
 
     private final ISuggestedRootObjectTypesProvider suggestedRootObjectTypesProvider;
 
-    public EditService(IEditingContextEPackageService editingContextEPackageService, ComposedAdapterFactory composedAdapterFactory, EPackage.Registry globalEPackageRegistry,
-            ISuggestedRootObjectTypesProvider suggestedRootObjectsProvider) {
+    public EditService(IEditingContextEPackageService editingContextEPackageService, IEMFKindService emfKindService, ComposedAdapterFactory composedAdapterFactory,
+            EPackage.Registry globalEPackageRegistry, ISuggestedRootObjectTypesProvider suggestedRootObjectsProvider) {
         this.editingContextEPackageService = Objects.requireNonNull(editingContextEPackageService);
+        this.emfKindService = Objects.requireNonNull(emfKindService);
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.globalEPackageRegistry = Objects.requireNonNull(globalEPackageRegistry);
         this.suggestedRootObjectTypesProvider = Objects.requireNonNull(suggestedRootObjectsProvider);
     }
 
     @Override
-    public Optional<Object> findClass(String editingContextId, String classId) {
+    public Optional<Object> findClass(String editingContextId, String kind) {
         EPackage.Registry ePackageRegistry = this.getPackageRegistry(editingContextId);
-        return this.getEClass(ePackageRegistry, classId).map(Object.class::cast);
+        return this.getEClass(ePackageRegistry, kind).map(Object.class::cast);
     }
 
-    private Optional<EClass> getEClass(EPackage.Registry ePackageRegistry, String classId) {
-        ClassIdService classIdService = new ClassIdService();
-        String ePackageName = classIdService.getEPackageName(classId);
-        String eClassName = classIdService.getEClassName(classId);
+    private Optional<EClass> getEClass(EPackage.Registry ePackageRegistry, String kind) {
+        String ePackageName = this.emfKindService.getEPackageName(kind);
+        String eClassName = this.emfKindService.getEClassName(kind);
 
         // @formatter:off
-        return classIdService.findEPackage(ePackageRegistry, ePackageName)
+        return this.emfKindService.findEPackage(ePackageRegistry, ePackageName)
                 .map(ePackage -> ePackage.getEClassifier(eClassName))
                 .filter(EClass.class::isInstance)
                 .map(EClass.class::cast);
@@ -103,7 +106,7 @@ public class EditService implements IEditService {
     }
 
     @Override
-    public List<ChildCreationDescription> getChildCreationDescriptions(String editingContextId, String classId) {
+    public List<ChildCreationDescription> getChildCreationDescriptions(String editingContextId, String kind) {
         List<ChildCreationDescription> childCreationDescriptions = new ArrayList<>();
 
         EPackage.Registry ePackageRegistry = this.getPackageRegistry(editingContextId);
@@ -115,7 +118,7 @@ public class EditService implements IEditService {
         resourceSet.getResources().add(resource);
 
         // @formatter:off
-        var optionalEClass = this.getEClass(ePackageRegistry, classId)
+        var optionalEClass = this.getEClass(ePackageRegistry, kind)
                 .filter(eClass -> !eClass.isAbstract() && !eClass.isInterface());
         // @formatter:on
 

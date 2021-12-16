@@ -25,8 +25,7 @@ import {
 } from 'form/FormEventFragments';
 import gql from 'graphql-tag';
 import { ListPropertySection } from 'properties/propertysections/ListPropertySection';
-import React, { useContext, useEffect } from 'react';
-import { RepresentationContext } from 'workbench/RepresentationContext';
+import React, { useEffect } from 'react';
 import { RepresentationsWebSocketContainerProps } from './RepresentationsWebSocketContainer.types';
 import {
   HandleCompleteEvent,
@@ -81,19 +80,16 @@ export const RepresentationsWebSocketContainer = ({
 
   const { toast, representationsWebSocketContainer } = value as SchemaValue;
   const { id, currentSelection, formId, widget, subscribers, message } = context;
-  const { registry } = useContext(RepresentationContext);
 
   useEffect(() => {
     if (selection.entries.length > 0 && selection.entries[0].id !== currentSelection?.id) {
-      const isRepresentation = registry.isRepresentation(selection.entries[0].kind);
       const switchSelectionEvent: SwitchSelectionEvent = {
         type: 'SWITCH_SELECTION',
         selection: selection.entries[0],
-        isRepresentation,
       };
       dispatch(switchSelectionEvent);
     }
-  }, [currentSelection, registry, selection, dispatch]);
+  }, [currentSelection, selection, dispatch]);
 
   const { error } = useSubscription(representationsEventSubscription, {
     variables: {
