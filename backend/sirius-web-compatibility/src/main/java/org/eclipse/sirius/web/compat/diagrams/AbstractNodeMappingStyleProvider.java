@@ -19,6 +19,7 @@ import java.util.function.Function;
 import org.eclipse.sirius.diagram.business.api.query.ContainerMappingQuery;
 import org.eclipse.sirius.diagram.description.AbstractNodeMapping;
 import org.eclipse.sirius.diagram.description.ContainerMapping;
+import org.eclipse.sirius.diagram.description.style.DotDescription;
 import org.eclipse.sirius.diagram.description.style.FlatContainerStyleDescription;
 import org.eclipse.sirius.diagram.description.style.SquareDescription;
 import org.eclipse.sirius.diagram.description.style.StylePackage;
@@ -63,6 +64,9 @@ public class AbstractNodeMappingStyleProvider implements Function<VariableManage
         } else if (nodeStyleDescription instanceof SquareDescription) {
             SquareDescription squareDescription = (SquareDescription) nodeStyleDescription;
             style = this.createRectangularNodeStyle(variableManager, squareDescription);
+        } else if (nodeStyleDescription instanceof DotDescription) {
+            DotDescription dotDescription = (DotDescription) nodeStyleDescription;
+            style = this.createRectangularNodeStyle(variableManager, dotDescription);
         } else if (nodeStyleDescription instanceof FlatContainerStyleDescription) {
             FlatContainerStyleDescription flatContainerStyleDescription = (FlatContainerStyleDescription) nodeStyleDescription;
             if (this.abstractNodeMapping instanceof ContainerMapping && new ContainerMappingQuery((ContainerMapping) this.abstractNodeMapping).isListContainer()) {
@@ -184,6 +188,29 @@ public class AbstractNodeMappingStyleProvider implements Function<VariableManage
         LineStyle borderStyle = new LineStyleConverter().getStyle(flatContainerStyleDescription.getBorderLineStyle());
         int borderRadius = this.getBorderRadius(flatContainerStyleDescription);
         Result result = this.interpreter.evaluateExpression(variables, flatContainerStyleDescription.getBorderSizeComputationExpression());
+        int borderSize = result.asInt().getAsInt();
+
+        // @formatter:off
+        return RectangularNodeStyle.newRectangularNodeStyle()
+                .color(color)
+                .borderColor(borderColor)
+                .borderSize(borderSize)
+                .borderRadius(borderRadius)
+                .borderStyle(borderStyle)
+                .build();
+        // @formatter:on
+    }
+
+    private RectangularNodeStyle createRectangularNodeStyle(VariableManager variableManager, DotDescription dotDescription) {
+        Map<String, Object> variables = variableManager.getVariables();
+        ColorDescriptionConverter colorProvider = new ColorDescriptionConverter(this.interpreter, variables);
+
+        String color = colorProvider.convert(dotDescription.getBackgroundColor());
+        String borderColor = colorProvider.convert(dotDescription.getBorderColor());
+
+        LineStyle borderStyle = new LineStyleConverter().getStyle(dotDescription.getBorderLineStyle());
+        int borderRadius = 100;
+        Result result = this.interpreter.evaluateExpression(variables, dotDescription.getBorderSizeComputationExpression());
         int borderSize = result.asInt().getAsInt();
 
         // @formatter:off
