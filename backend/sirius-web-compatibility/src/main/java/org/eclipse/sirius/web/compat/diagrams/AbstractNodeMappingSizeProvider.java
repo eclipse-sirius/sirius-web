@@ -16,6 +16,7 @@ import java.util.Objects;
 import java.util.function.Function;
 
 import org.eclipse.sirius.diagram.description.AbstractNodeMapping;
+import org.eclipse.sirius.diagram.description.style.DotDescription;
 import org.eclipse.sirius.diagram.description.style.FlatContainerStyleDescription;
 import org.eclipse.sirius.diagram.description.style.SquareDescription;
 import org.eclipse.sirius.viewpoint.description.style.LabelStyleDescription;
@@ -82,6 +83,17 @@ public class AbstractNodeMappingSizeProvider implements Function<VariableManager
             int computedHeight = result.asInt().getAsInt();
             if (computedHeight > 0) {
                 height = computedHeight * SIZE_FACTOR;
+            }
+            size = Size.of(width, height);
+        } else if (labelStyleDescription instanceof DotDescription) {
+            int width = -1;
+            int height = -1;
+            DotDescription dotDescription = (DotDescription) labelStyleDescription;
+            Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), dotDescription.getSizeComputationExpression());
+            int computedSize = result.asInt().getAsInt();
+            if (computedSize > 0) {
+                width = computedSize * SIZE_FACTOR;
+                height = computedSize * SIZE_FACTOR;
             }
             size = Size.of(width, height);
         }

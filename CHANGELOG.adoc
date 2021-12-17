@@ -41,6 +41,7 @@ Currently it is not possible to compute different values for width and height.
 - [form] Add a tooltip to always make the full label available
 - [core] Customize the Spring `ObjectMapper` instead of creating a brand new one from scratch in our `ObjectMapperConfiguration`
 - https://github.com/eclipse-sirius/sirius-components/issues/896[#896] [diagram] Allow to make specific changes before and after the layout
+- https://github.com/eclipse-sirius/sirius-components/issues/897[#897] [compatibility] The Bordered Node Dot Style is now handled in the compatibility layer
 
 === Bug fixes
 
