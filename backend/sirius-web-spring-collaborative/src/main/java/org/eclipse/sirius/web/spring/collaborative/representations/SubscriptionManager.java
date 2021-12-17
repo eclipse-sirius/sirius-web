@@ -66,7 +66,7 @@ public class SubscriptionManager implements ISubscriptionManager {
 
     @Override
     public boolean isEmpty() {
-        return this.subscriptionCount.get() > 0;
+        return this.subscriptionCount.get() == 0;
     }
 
     @Override
