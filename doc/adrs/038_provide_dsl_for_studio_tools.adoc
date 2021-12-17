@@ -1,0 +1,52 @@
+= ADR-038 - Provide a DSL to specify tools behavior in studios
+
+== Context
+
+Studio makers should be able to define the precise behavior of the various tools associated to their representation elements.
+It should be possible to do so in most common cases without dropping into Java to create custom services, though that should be possible too for complex cases.
+We need a DSL to configure these behaviors directly inside the View definition.
+
+Sirius Desktop offers this using a set of "Model Operations" via `org.eclipse.sirius.viewpoint.description.tool.ModelOperation` and its sub-classes.
+The precise set of operations available in Sirius Desktop and their semantics has a lot of ad hoc features and non-obvious behaviors inherited from historical constraints.
+
+== Decision
+
+We will not attempt to be compatible with the model operations available in Sirius Desktop.
+
+We will provide a DSL which roughly follows the same principles, but with cleaner semantics.
+
+The language design will follow these principles:
+
+* a core language which will be kept minimal and only includes elements that can not be defined in Java services: control flow, variables management, generic instruction to evaluate an expression;
+* a rich set of standard services which will be available by default and cover all the basic operations (e.g. `createInstance`, `setValue`, `createView`, etc.);
+* the most commonly used operations/services will be exposed using their own modeled language instructions so that they can be configured in a more user-friendly way from the UI.
+
+For example to create a new instance one could evaluate an expression which invokes the standard Java service directly with the proper parameters (e.g. `std.createInstance(parent, containmentRelationName, some::Type)`), but it will also be possible to create a _New Instance_ instruction node, and configure the parameters using the details view (with proper assistance and validation).
+The two forms will be strictly equivalent, i.e. the code to interpret a modeled instruction will simply invoke the corresponding service with the appropriate parameters.
+
+The language will use lexical scoping consistently.
+This is much more predictable than the Sirius Desktop semantics, where sometimes (but not always) variables defined at some lexical level "leak" to the rest of the dynamic scope of the tool's body.
+
+To avoid potential conflicts with user-defined services, all standard/core services will only be available on a specific internal type.
+An instance of this type will be exposed as a variable to all the expressions evaluated in the context of a tool definition.
+This is the same technique that was used to support the `emfEditServices()` in Sirius Desktop with the `SiriusInputDescriptor`.
+
+Some of the standard services will need special access to runtime features which are not normally available to user services.
+For example supporting the "create view" operation requires accessing the diagram context.
+The custom type will offer the required APIs for this, and the instance injected in the evaluation context of the expressions will be configured appropriately.
+
+As more instructions are supported, they will be added first as standard Java services.
+Depending on how useful they are in practice, they might be exposed as modeled operations directly configurable in the UI, with corresponding validation rules.
+
+TODO: Specify how errors are handled.
+
+== Status
+
+Draft.
+
+== Consequences
+
+* The core constructs of the language must be improved to support minimal control flow: if/else, for loop, blocks with local custom variables.
+* The core logic of the existing operations which have been modeled (e.g. _Create Instance_, _Set Value_...) must be extracted into Java services.
+They will still be available but their implementation will simply delegate to the corresponding service.
+* The new operations planned (e.g. "create view") will be developed as Java services first, and exposed as modeled operations only afterwards if they prove common enough.
