@@ -29,6 +29,7 @@ import org.eclipse.sirius.web.diagrams.layout.incremental.utils.Geometry;
 public class EdgeRoutingPointsProvider {
 
     public List<Position> getRoutingPoints(EdgeLayoutData edge) {
+        List<Position> positions = List.of();
         Bounds sourceBounds = this.getAbsoluteBounds(edge.getSource());
         Bounds targetBounds = this.getAbsoluteBounds(edge.getTarget());
         Position sourceAbsolutePosition = this.getCenter(sourceBounds);
@@ -37,9 +38,19 @@ public class EdgeRoutingPointsProvider {
         Optional<Position> optionalSourceIntersection = geometry.getIntersection(targetAbsolutePosition, sourceAbsolutePosition, sourceBounds);
         Optional<Position> optionalTargetIntersection = geometry.getIntersection(sourceAbsolutePosition, targetAbsolutePosition, targetBounds);
         if (optionalSourceIntersection.isPresent() && optionalTargetIntersection.isPresent()) {
-            return List.of(optionalSourceIntersection.get(), optionalTargetIntersection.get());
+            positions = List.of(optionalSourceIntersection.get(), optionalTargetIntersection.get());
+        } else if (edge.getSource().equals(edge.getTarget())) {
+            positions = this.getRoutingPointsToMyself(edge.getSource().getPosition(), edge.getSource().getSize().getWidth());
         }
-        return List.of();
+        return positions;
+    }
+
+    private List<Position> getRoutingPointsToMyself(Position nodePosition, double size) {
+        Position p1 = Position.at(nodePosition.getX() + size / 3, nodePosition.getY());
+        Position p2 = Position.at(p1.getX(), p1.getY() - 10);
+        Position p3 = Position.at(p1.getX() + size / 3, p2.getY());
+        Position p4 = Position.at(p3.getX(), p1.getY());
+        return List.of(p1, p2, p3, p4);
     }
 
     private Bounds getAbsoluteBounds(NodeLayoutData nodeLayoutData) {

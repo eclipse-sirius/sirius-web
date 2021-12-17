@@ -41,16 +41,24 @@ public class EdgeLabelPositionProvider {
         if (spacingEdgeLabel == null) {
             spacingEdgeLabel = CoreOptions.SPACING_EDGE_LABEL.getDefault();
         }
-        Position position;
+        Position position = null;
         List<Position> routingPoints = edge.getRoutingPoints();
         if (routingPoints.size() < 2) {
             position = Position.UNDEFINED;
-        } else {
+        }
+
+        if (position == null && edge.getSource().equals(edge.getTarget())) {
+            double x = ((edge.getRoutingPoints().get(1).getX() + edge.getRoutingPoints().get(2).getX()) / 2) - (label.getTextBounds().getSize().getWidth() / 2);
+            double y = edge.getRoutingPoints().get(1).getY() - spacingEdgeLabel - label.getTextBounds().getSize().getHeight();
+            position = Position.at(x, y);
+        }
+
+        if (position == null) {
             Position sourceAnchor = routingPoints.get(0);
             Position targetAnchor = routingPoints.get(routingPoints.size() - 1);
             double x = ((sourceAnchor.getX() + targetAnchor.getX()) / 2) - (label.getTextBounds().getSize().getWidth() / 2);
             double y = (sourceAnchor.getY() + targetAnchor.getY()) / 2 + spacingEdgeLabel;
-            return Position.at(x, y);
+            position = Position.at(x, y);
         }
         return position;
     }
