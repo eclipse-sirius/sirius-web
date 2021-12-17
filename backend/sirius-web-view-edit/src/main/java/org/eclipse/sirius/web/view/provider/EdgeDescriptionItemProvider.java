@@ -22,6 +22,7 @@ import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
+import org.eclipse.sirius.web.view.ChangeContext;
 import org.eclipse.sirius.web.view.ConditionalEdgeStyle;
 import org.eclipse.sirius.web.view.EdgeDescription;
 import org.eclipse.sirius.web.view.EdgeStyle;
@@ -231,7 +232,9 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
 
         EdgeTool newEdgeTool = ViewFactory.eINSTANCE.createEdgeTool();
         newEdgeTool.setName("Create Edge"); //$NON-NLS-1$
-        newEdgeTool.getBody().add(ViewFactory.eINSTANCE.createChangeContext());
+        ChangeContext initialOperation = ViewFactory.eINSTANCE.createChangeContext();
+        initialOperation.setExpression("aql:semanticEdgeSource"); //$NON-NLS-1$
+        newEdgeTool.getBody().add(initialOperation);
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.EDGE_DESCRIPTION__EDGE_TOOLS, newEdgeTool));
 
         EdgeStyle newEdgeStyle = ViewFactory.eINSTANCE.createEdgeStyle();
