@@ -15,7 +15,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius.web</groupId>
 	<artifactId>sirius-web-spring-starter</artifactId>
-	<version>2021.12.5</version>
+	<version>2021.12.6</version>
 	<name>sirius-web-spring-starter</name>
 	<description>Sirius Web Spring Starter</description>
 
@@ -55,52 +55,52 @@
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-spring-graphql</artifactId>
-			<version>2021.12.5</version>
+			<version>2021.12.6</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-diagrams-layout</artifactId>
-			<version>2021.12.5</version>
+			<version>2021.12.6</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-spring-collaborative</artifactId>
-			<version>2021.12.5</version>
+			<version>2021.12.6</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-spring-collaborative-diagrams</artifactId>
-			<version>2021.12.5</version>
+			<version>2021.12.6</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-spring-collaborative-forms</artifactId>
-			<version>2021.12.5</version>
+			<version>2021.12.6</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-spring-collaborative-selection</artifactId>
-			<version>2021.12.5</version>
+			<version>2021.12.6</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-spring-collaborative-trees</artifactId>
-			<version>2021.12.5</version>
+			<version>2021.12.6</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-spring-collaborative-validation</artifactId>
-			<version>2021.12.5</version>
+			<version>2021.12.6</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-emf</artifactId>
-			<version>2021.12.5</version>
+			<version>2021.12.6</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-compatibility</artifactId>
-			<version>2021.12.5</version>
+			<version>2021.12.6</version>
 		</dependency>
 	</dependencies>
 
