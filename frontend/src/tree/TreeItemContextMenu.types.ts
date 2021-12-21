@@ -17,6 +17,7 @@ export interface TreeItemContextMenuProps {
   menuAnchor: Element;
   item: TreeItemType;
   editingContextId: string;
+  treeId: string;
   readOnly: boolean;
   depth: number;
   onExpand: (id: string, depth: number) => void;

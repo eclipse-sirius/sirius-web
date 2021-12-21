@@ -20,6 +20,7 @@ export interface TreeItemContextMenuContributionProps {
 
 export interface TreeItemContextMenuComponentProps {
   editingContextId: string;
+  treeId: string;
   item: TreeItemType;
   readOnly: boolean;
   selection: Selection;
