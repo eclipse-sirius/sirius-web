@@ -434,6 +434,25 @@ export const diagramWebSocketContainerMachine = Machine<
         return { toolSections: toolSectionsWithDefaults };
       }),
 
+      setDefaultTool: assign((context, event) => {
+        const { defaultTool } = event as SetDefaultToolEvent;
+        let newToolSections;
+        if (context.toolSections) {
+          newToolSections = [];
+          context.toolSections.forEach((toolSection) => {
+            const newToolSection = Object.assign({}, toolSection);
+            newToolSection.tools.forEach((tool) => {
+              if (tool.id === defaultTool.id) {
+                newToolSection.defaultTool = defaultTool;
+                return;
+              }
+            });
+            newToolSections.push(newToolSection);
+          });
+        }
+        return { toolSections: newToolSections };
+      }),
+
       handleDiagramRefreshed: assign((_, event) => {
         const { diagram } = event as DiagramRefreshedEvent;
         return { diagram };
