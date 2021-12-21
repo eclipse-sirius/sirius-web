@@ -189,6 +189,7 @@ export const TreeItem = ({
       <TreeItemContextMenu
         menuAnchor={menuAnchor}
         editingContextId={editingContextId}
+        treeId={treeId}
         item={item}
         readOnly={readOnly}
         depth={depth}

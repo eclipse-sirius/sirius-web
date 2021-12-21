@@ -25,6 +25,7 @@ export const TreeItemContextMenuContext = React.createContext([]);
 export const TreeItemContextMenu = ({
   menuAnchor,
   editingContextId,
+  treeId,
   item,
   readOnly,
   depth,
@@ -70,6 +71,7 @@ export const TreeItemContextMenu = ({
             setSelection,
             expandItem,
             key: index.toString(),
+            treeId: treeId,
           };
           const element = React.createElement(contribution.props.component, props);
           return element;
