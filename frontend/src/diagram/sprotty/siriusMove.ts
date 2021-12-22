@@ -42,10 +42,27 @@ export class SiriusMoveCommand extends MoveCommand {
     if (edge.routingPoints?.length === 2) {
       const label = edge.children.find((child) => this.isSLabel(child)) as SLabel;
       if (label) {
-        var source = edge.routingPoints[0];
-        var target = edge.routingPoints[1];
-        var labelX = source.x + (target.x - source.x) / 2;
-        var labelY = source.y + (target.y - source.y) / 2;
+        const source = edge.routingPoints[0];
+        const target = edge.routingPoints[1];
+        const labelX = source.x + (target.x - source.x) / 2;
+        const labelY = source.y + (target.y - source.y) / 2;
+        label.position = {
+          x: labelX,
+          y: labelY,
+        };
+      }
+    } else if (edge.routingPoints?.length === 5) {
+      /*
+       * We made this in a context where we cannot create routing point manually.
+       * So having 5 routing points here means we are handling the move of an element
+       * that contains a selfloop edge.
+       */
+      const label = edge.children.find((child) => this.isSLabel(child)) as SLabel;
+      if (label) {
+        const source = edge.routingPoints[2];
+        const target = edge.routingPoints[3];
+        const labelX = source.x + (target.x - source.x) / 2 - label.bounds.width / 2;
+        const labelY = source.y;
         label.position = {
           x: labelX,
           y: labelY,
