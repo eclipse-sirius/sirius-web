@@ -51,7 +51,7 @@ Currently it is not possible to compute different values for width and height.
 - https://github.com/eclipse-sirius/sirius-components/issues/377[#377] [workbench] Restore the real time feedback on representation renaming
 - https://github.com/eclipse-sirius/sirius-components/issues/868[#868] [diagram] Fix a layout issue with the label of the newly created edges
 - https://github.com/eclipse-sirius/sirius-components/issues/746[#746] [core] Keep representations in memory for 5 more seconds when they should be disposed in order to have the time to receive some input before their disposal
-
+- https://github.com/eclipse-sirius/sirius-components/issues/425[#425] [diagram] Fix a layout issue with self-loop edge
 
 == v2021.12.0
 
