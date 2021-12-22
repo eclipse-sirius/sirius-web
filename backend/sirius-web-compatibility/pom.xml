@@ -22,7 +22,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius.web</groupId>
 	<artifactId>sirius-web-compatibility</artifactId>
-	<version>2021.12.6</version>
+	<version>2021.12.7</version>
 	<name>sirius-web-compatibility</name>
 	<description>Sirius Web Compatibility</description>
 
@@ -72,7 +72,7 @@
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-tests</artifactId>
-			<version>2021.12.6</version>
+			<version>2021.12.7</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -82,43 +82,43 @@
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-spring-tests</artifactId>
-			<version>2021.12.6</version>
+			<version>2021.12.7</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-api</artifactId>
-			<version>2021.12.6</version>
+			<version>2021.12.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-core-api</artifactId>
-			<version>2021.12.6</version>
+			<version>2021.12.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-spring-collaborative-diagrams</artifactId>
-			<version>2021.12.6</version>
+			<version>2021.12.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-forms</artifactId>
-			<version>2021.12.6</version>
+			<version>2021.12.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-selection</artifactId>
-			<version>2021.12.6</version>
+			<version>2021.12.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-trees</artifactId>
-			<version>2021.12.6</version>
+			<version>2021.12.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-interpreter</artifactId>
-			<version>2021.12.6</version>
+			<version>2021.12.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.emf</groupId>
