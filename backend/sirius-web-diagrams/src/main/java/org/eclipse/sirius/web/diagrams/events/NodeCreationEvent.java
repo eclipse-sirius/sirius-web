@@ -17,15 +17,15 @@ import java.util.Objects;
 import org.eclipse.sirius.web.diagrams.Position;
 
 /**
- * Represent an immutable creation event.
+ * Represent an immutable node creation event.
  *
  * @author fbarbin
  */
-public class CreationEvent implements IDiagramEvent {
+public class NodeCreationEvent implements IDiagramEvent {
 
     private final Position startingPosition;
 
-    public CreationEvent(Position startingPosition) {
+    public NodeCreationEvent(Position startingPosition) {
         this.startingPosition = Objects.requireNonNull(startingPosition);
     }
 

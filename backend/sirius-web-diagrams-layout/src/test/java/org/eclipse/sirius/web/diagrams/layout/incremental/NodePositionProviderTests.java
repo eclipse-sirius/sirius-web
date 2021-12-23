@@ -22,7 +22,7 @@ import java.util.UUID;
 import org.eclipse.sirius.web.diagrams.NodeType;
 import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.Size;
-import org.eclipse.sirius.web.diagrams.events.CreationEvent;
+import org.eclipse.sirius.web.diagrams.events.NodeCreationEvent;
 import org.eclipse.sirius.web.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.web.diagrams.events.MoveEvent;
 import org.eclipse.sirius.web.diagrams.events.ResizeEvent;
@@ -57,7 +57,7 @@ public class NodePositionProviderTests {
         diagramLayoutData.setChildrenNodes(nodes);
         nodes.add(nodeLayoutData);
 
-        Optional<IDiagramEvent> optionalDiagramElementEvent = Optional.of(new CreationEvent(ZERO_POSITION));
+        Optional<IDiagramEvent> optionalDiagramElementEvent = Optional.of(new NodeCreationEvent(ZERO_POSITION));
         Position nextPosition = nodePositionProvider.getPosition(optionalDiagramElementEvent, nodeLayoutData);
         nodeLayoutData.setPosition(nextPosition);
 
@@ -102,7 +102,7 @@ public class NodePositionProviderTests {
         nodeLayoutData = this.createNodeLayoutData(Position.UNDEFINED, DEFAULT_NODE_SIZE, diagramLayoutData, NodeType.NODE_RECTANGLE);
         nodes.add(nodeLayoutData);
 
-        Optional<IDiagramEvent> optionalEvent = Optional.of(new CreationEvent(startingPosition));
+        Optional<IDiagramEvent> optionalEvent = Optional.of(new NodeCreationEvent(startingPosition));
         nextPosition = nodePositionProvider.getPosition(optionalEvent, nodeLayoutData);
         assertThat(nextPosition).extracting(Position::getX).isEqualTo(STARTX);
         assertThat(nextPosition).extracting(Position::getY).isEqualTo(STARTY);
@@ -117,7 +117,7 @@ public class NodePositionProviderTests {
         List<NodeLayoutData> nodes = new ArrayList<>();
         parentNodeLayoutData.setChildrenNodes(nodes);
 
-        Optional<IDiagramEvent> optionalEvent = Optional.of(new CreationEvent(ZERO_POSITION));
+        Optional<IDiagramEvent> optionalEvent = Optional.of(new NodeCreationEvent(ZERO_POSITION));
 
         NodeLayoutData nodeLayoutData = this.createNodeLayoutData(Position.UNDEFINED, DEFAULT_NODE_SIZE, parentNodeLayoutData, NodeType.NODE_RECTANGLE);
         nodes.add(nodeLayoutData);
@@ -142,7 +142,7 @@ public class NodePositionProviderTests {
         List<NodeLayoutData> nodes = new ArrayList<>();
         parentNodeLayoutData.setChildrenNodes(nodes);
 
-        Optional<IDiagramEvent> optionalEvent = Optional.of(new CreationEvent(ZERO_POSITION));
+        Optional<IDiagramEvent> optionalEvent = Optional.of(new NodeCreationEvent(ZERO_POSITION));
 
         NodeLayoutData nodeLayoutData = this.createNodeLayoutData(Position.UNDEFINED, DEFAULT_NODE_SIZE, parentNodeLayoutData, NodeType.NODE_RECTANGLE);
         nodes.add(nodeLayoutData);
@@ -165,7 +165,7 @@ public class NodePositionProviderTests {
         nodes.add(nodeLayoutData);
 
         nodePositionProvider = new NodePositionProvider();
-        nextPosition = nodePositionProvider.getPosition(Optional.of(new CreationEvent(startingPosition)), nodeLayoutData);
+        nextPosition = nodePositionProvider.getPosition(Optional.of(new NodeCreationEvent(startingPosition)), nodeLayoutData);
         assertThat(nextPosition).extracting(Position::getX).isEqualTo(STARTX);
         assertThat(nextPosition).extracting(Position::getY).isEqualTo(STARTY);
     }

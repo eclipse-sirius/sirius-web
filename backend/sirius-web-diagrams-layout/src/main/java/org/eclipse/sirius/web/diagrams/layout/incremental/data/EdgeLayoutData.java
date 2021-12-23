@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.diagrams.layout.incremental.data;
 import java.util.List;
 
 import org.eclipse.sirius.web.diagrams.Position;
+import org.eclipse.sirius.web.diagrams.Ratio;
 
 /**
  * A mutable structure to store/update the edges layout.
@@ -24,6 +25,10 @@ import org.eclipse.sirius.web.diagrams.Position;
 public class EdgeLayoutData implements ILayoutData {
 
     private List<Position> routingPoints;
+
+    private Ratio sourceAnchorRelativePosition;
+
+    private Ratio targetAnchorRelativePosition;
 
     private NodeLayoutData source;
 
@@ -52,6 +57,22 @@ public class EdgeLayoutData implements ILayoutData {
 
     public void setRoutingPoints(List<Position> routingPoints) {
         this.routingPoints = routingPoints;
+    }
+
+    public Ratio getSourceAnchorRelativePosition() {
+        return this.sourceAnchorRelativePosition;
+    }
+
+    public void setSourceAnchorRelativePosition(Ratio sourceAnchorRelativePosition) {
+        this.sourceAnchorRelativePosition = sourceAnchorRelativePosition;
+    }
+
+    public Ratio getTargetAnchorRelativePosition() {
+        return this.targetAnchorRelativePosition;
+    }
+
+    public void setTargetAnchorRelativePosition(Ratio targetAnchorRelativePosition) {
+        this.targetAnchorRelativePosition = targetAnchorRelativePosition;
     }
 
     public NodeLayoutData getSource() {

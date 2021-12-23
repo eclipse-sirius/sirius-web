@@ -21,7 +21,9 @@ import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.core.api.IPayload;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.Node;
+import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.description.EdgeDescription;
+import org.eclipse.sirius.web.diagrams.events.EdgeCreationEvent;
 import org.eclipse.sirius.web.diagrams.tools.CreateEdgeTool;
 import org.eclipse.sirius.web.representations.Failure;
 import org.eclipse.sirius.web.representations.IStatus;
@@ -100,7 +102,10 @@ public class InvokeEdgeToolOnDiagramEventHandler implements IDiagramEventHandler
                     .map(CreateEdgeTool.class::cast);
             // @formatter:on
             if (optionalTool.isPresent()) {
-                IStatus status = this.executeTool(editingContext, diagramContext, input.getDiagramSourceElementId(), input.getDiagramTargetElementId(), optionalTool.get());
+                Position sourcePosition = Position.at(input.getSourcePositionX(), input.getSourcePositionY());
+                Position targetPosition = Position.at(input.getTargetPositionX(), input.getTargetPositionY());
+                IStatus status = this.executeTool(editingContext, diagramContext, input.getDiagramSourceElementId(), input.getDiagramTargetElementId(), optionalTool.get(), sourcePosition,
+                        targetPosition);
                 if (status instanceof Success) {
                     payload = new InvokeEdgeToolOnDiagramSuccessPayload(diagramInput.getId(), diagram);
                     changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, diagramInput.getRepresentationId(), diagramInput);
@@ -114,7 +119,8 @@ public class InvokeEdgeToolOnDiagramEventHandler implements IDiagramEventHandler
         changeDescriptionSink.tryEmitNext(changeDescription);
     }
 
-    private IStatus executeTool(IEditingContext editingContext, IDiagramContext diagramContext, String sourceNodeId, String targetNodeId, CreateEdgeTool tool) {
+    private IStatus executeTool(IEditingContext editingContext, IDiagramContext diagramContext, String sourceNodeId, String targetNodeId, CreateEdgeTool tool, Position sourcePosition,
+            Position targetPosition) {
         IStatus result = new Failure(""); //$NON-NLS-1$
         Diagram diagram = diagramContext.getDiagram();
         Optional<Node> sourceNode = this.diagramQueryService.findNodeById(diagram, sourceNodeId);
@@ -134,6 +140,8 @@ public class InvokeEdgeToolOnDiagramEventHandler implements IDiagramEventHandler
             variableManager.put(EdgeDescription.SEMANTIC_EDGE_TARGET, target.get());
 
             result = tool.getHandler().apply(variableManager);
+
+            diagramContext.setDiagramEvent(new EdgeCreationEvent(sourcePosition, targetPosition));
         }
         return result;
     }

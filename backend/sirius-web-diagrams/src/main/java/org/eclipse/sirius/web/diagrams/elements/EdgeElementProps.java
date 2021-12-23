@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,7 @@ import org.eclipse.sirius.web.components.Element;
 import org.eclipse.sirius.web.components.IProps;
 import org.eclipse.sirius.web.diagrams.EdgeStyle;
 import org.eclipse.sirius.web.diagrams.Position;
+import org.eclipse.sirius.web.diagrams.Ratio;
 
 /**
  * The properties of the edge element.
@@ -53,6 +54,10 @@ public final class EdgeElementProps implements IProps {
     private EdgeStyle style;
 
     private List<Position> routingPoints;
+
+    private Ratio sourceAnchorRelativePosition;
+
+    private Ratio targetAnchorRelativePosition;
 
     private List<Element> children;
 
@@ -100,6 +105,14 @@ public final class EdgeElementProps implements IProps {
         return this.routingPoints;
     }
 
+    public Ratio getSourceAnchorRelativePosition() {
+        return this.sourceAnchorRelativePosition;
+    }
+
+    public Ratio getTargetAnchorRelativePosition() {
+        return this.targetAnchorRelativePosition;
+    }
+
     @Override
     public List<Element> getChildren() {
         return this.children;
@@ -141,6 +154,10 @@ public final class EdgeElementProps implements IProps {
         private EdgeStyle style;
 
         private List<Position> routingPoints;
+
+        private Ratio sourceAnchorRelativePosition;
+
+        private Ratio targetAnchorRelativePosition;
 
         private List<Element> children = new ArrayList<>();
 
@@ -193,6 +210,16 @@ public final class EdgeElementProps implements IProps {
             return this;
         }
 
+        public Builder sourceAnchorRelativePosition(Ratio sourceAnchorRelativePosition) {
+            this.sourceAnchorRelativePosition = Objects.requireNonNull(sourceAnchorRelativePosition);
+            return this;
+        }
+
+        public Builder targetAnchorRelativePosition(Ratio targetAnchorRelativePosition) {
+            this.targetAnchorRelativePosition = Objects.requireNonNull(targetAnchorRelativePosition);
+            return this;
+        }
+
         public Builder children(List<Element> children) {
             this.children = children;
             return this;
@@ -210,6 +237,8 @@ public final class EdgeElementProps implements IProps {
             edgeElementProps.targetId = Objects.requireNonNull(this.targetId);
             edgeElementProps.style = Objects.requireNonNull(this.style);
             edgeElementProps.routingPoints = Objects.requireNonNull(this.routingPoints);
+            edgeElementProps.sourceAnchorRelativePosition = Objects.requireNonNull(this.sourceAnchorRelativePosition);
+            edgeElementProps.targetAnchorRelativePosition = Objects.requireNonNull(this.targetAnchorRelativePosition);
             edgeElementProps.children = this.children;
             return edgeElementProps;
         }

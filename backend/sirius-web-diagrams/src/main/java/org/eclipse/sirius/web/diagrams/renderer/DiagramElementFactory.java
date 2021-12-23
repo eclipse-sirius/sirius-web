@@ -137,6 +137,8 @@ public class DiagramElementFactory implements IElementFactory {
                 .targetId(props.getTargetId())
                 .style(props.getStyle())
                 .routingPoints(props.getRoutingPoints())
+                .sourceAnchorRelativePosition(props.getSourceAnchorRelativePosition())
+                .targetAnchorRelativePosition(props.getTargetAnchorRelativePosition())
                 .build();
         // @formatter:on
     }

@@ -15,6 +15,7 @@ import {
   GQLToolSection,
   Menu,
   Palette,
+  Position,
   Subscriber,
   Tool,
   ToolSection,
@@ -109,7 +110,7 @@ export type InitializeRepresentationEvent = {
   moveElement: any;
   resizeElement: any;
   editLabel: any;
-  onSelectElement: any;
+  onSelectElement: (element: any, diagramServer: DiagramServer, position: Position) => void;
   getCursorOn: any;
   setActiveTool: (tool: Tool) => void;
   toolSections: ToolSection[];

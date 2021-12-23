@@ -18,10 +18,6 @@ import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.annotations.Immutable;
-import org.eclipse.sirius.web.annotations.graphql.GraphQLField;
-import org.eclipse.sirius.web.annotations.graphql.GraphQLID;
-import org.eclipse.sirius.web.annotations.graphql.GraphQLNonNull;
-import org.eclipse.sirius.web.annotations.graphql.GraphQLObjectType;
 
 /**
  * An edge.
@@ -30,7 +26,6 @@ import org.eclipse.sirius.web.annotations.graphql.GraphQLObjectType;
  * @author sbegaudeau
  */
 @Immutable
-@GraphQLObjectType
 public final class Edge {
     private String id;
 
@@ -58,87 +53,72 @@ public final class Edge {
 
     private List<Position> routingPoints;
 
+    private Ratio sourceAnchorRelativePosition;
+
+    private Ratio targetAnchorRelativePosition;
+
     private Edge() {
         // Prevent instantiation
     }
 
-    @GraphQLID
-    @GraphQLField
-    @GraphQLNonNull
     public String getId() {
         return this.id;
     }
 
-    @GraphQLField
-    @GraphQLNonNull
     public String getType() {
         return this.type;
     }
 
-    @GraphQLField
-    @GraphQLNonNull
     public String getTargetObjectId() {
         return this.targetObjectId;
     }
 
-    @GraphQLField
-    @GraphQLNonNull
     public String getTargetObjectKind() {
         return this.targetObjectKind;
     }
 
-    @GraphQLField
-    @GraphQLNonNull
     public String getTargetObjectLabel() {
         return this.targetObjectLabel;
     }
 
-    @GraphQLID
-    @GraphQLField
-    @GraphQLNonNull
     public UUID getDescriptionId() {
         return this.descriptionId;
     }
 
-    @GraphQLField
     public Label getBeginLabel() {
         return this.beginLabel;
     }
 
-    @GraphQLField
     public Label getCenterLabel() {
         return this.centerLabel;
     }
 
-    @GraphQLField
     public Label getEndLabel() {
         return this.endLabel;
     }
 
-    @GraphQLID
-    @GraphQLField
-    @GraphQLNonNull
     public String getSourceId() {
         return this.sourceId;
     }
 
-    @GraphQLID
-    @GraphQLField
-    @GraphQLNonNull
     public String getTargetId() {
         return this.targetId;
     }
 
-    @GraphQLField
-    @GraphQLNonNull
     public EdgeStyle getStyle() {
         return this.style;
     }
 
-    @GraphQLField
-    @GraphQLNonNull
     public List<Position> getRoutingPoints() {
         return this.routingPoints;
+    }
+
+    public Ratio getSourceAnchorRelativePosition() {
+        return this.sourceAnchorRelativePosition;
+    }
+
+    public Ratio getTargetAnchorRelativePosition() {
+        return this.targetAnchorRelativePosition;
     }
 
     public static Builder newEdge(String id) {
@@ -189,6 +169,10 @@ public final class Edge {
 
         private List<Position> routingPoints;
 
+        private Ratio sourceAnchorRelativePosition;
+
+        private Ratio targetAnchorRelativePosition;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -207,6 +191,8 @@ public final class Edge {
             this.targetId = edge.getTargetId();
             this.style = edge.getStyle();
             this.routingPoints = edge.getRoutingPoints();
+            this.sourceAnchorRelativePosition = edge.getSourceAnchorRelativePosition();
+            this.targetAnchorRelativePosition = edge.getTargetAnchorRelativePosition();
         }
 
         public Builder type(String type) {
@@ -269,6 +255,16 @@ public final class Edge {
             return this;
         }
 
+        public Builder sourceAnchorRelativePosition(Ratio sourcePosition) {
+            this.sourceAnchorRelativePosition = Objects.requireNonNull(sourcePosition);
+            return this;
+        }
+
+        public Builder targetAnchorRelativePosition(Ratio targetPosition) {
+            this.targetAnchorRelativePosition = Objects.requireNonNull(targetPosition);
+            return this;
+        }
+
         public Edge build() {
             Edge edge = new Edge();
             edge.id = Objects.requireNonNull(this.id);
@@ -284,6 +280,8 @@ public final class Edge {
             edge.targetId = Objects.requireNonNull(this.targetId);
             edge.style = Objects.requireNonNull(this.style);
             edge.routingPoints = Objects.requireNonNull(this.routingPoints);
+            edge.sourceAnchorRelativePosition = Objects.requireNonNull(this.sourceAnchorRelativePosition);
+            edge.targetAnchorRelativePosition = Objects.requireNonNull(this.targetAnchorRelativePosition);
             return edge;
         }
     }

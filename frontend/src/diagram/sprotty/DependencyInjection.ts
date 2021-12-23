@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Tool } from 'diagram/DiagramWebSocketContainer.types';
+import { Position, Tool } from 'diagram/DiagramWebSocketContainer.types';
 import {
   ACTIVE_CONNECTOR_TOOLS_ACTION,
   ACTIVE_TOOL_ACTION,
@@ -153,7 +153,7 @@ const siriusWebContainerModule = new ContainerModule((bind, unbind, isBound, reb
  */
 export const createDependencyInjectionContainer = (
   containerId: string,
-  onSelectElement,
+  onSelectElement: (element: any, diagramServer: DiagramServer, position: Position) => void,
   getCursorOn,
   setActiveTool: (tool: Tool | null) => void
 ) => {
@@ -197,7 +197,7 @@ export const createDependencyInjectionContainer = (
    * through DiagramWebSocketContainer.
    */
   class DiagramMouseListener extends MouseListener {
-    diagramServer: any;
+    diagramServer: DiagramServer;
     previousCoordinates: Point;
     constructor(diagramServer) {
       super();
@@ -215,7 +215,7 @@ export const createDependencyInjectionContainer = (
       if (event.button === 0) {
         if (this.previousCoordinates?.x === event.clientX && this.previousCoordinates?.y === event.clientY) {
           const elementWithTarget = findElementWithTarget(element);
-          onSelectElement(elementWithTarget, this.diagramServer);
+          onSelectElement(elementWithTarget, this.diagramServer, { x: event.offsetX, y: event.offsetY });
         }
       } else if (event.button === 2) {
         edgeCreationFeedback.reset();

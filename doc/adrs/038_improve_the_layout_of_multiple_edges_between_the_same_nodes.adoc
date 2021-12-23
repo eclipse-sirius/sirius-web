@@ -1,0 +1,45 @@
+:imagesdir: images/038
+= ADR-038 - Improve the layout of multiple edges between the same nodes
+
+== Context
+
+It has always been possible to create multiple edges between some nodes but since all of our edges were always from the center of the source node to the center of the target node, those edges would overlap each other.
+We need to be able to distinguish those different edges from one another.
+
+image:038_initial_layout.png[alt]
+
+For that, we will add support for the position of the anchors of the edges.
+
+== Decision
+
+When an edge is created the positions where the user has clicked inside of the source and target nodes will be sent to the server.
+Those positions will act as anchors of the edge.
+As a result, an edge between two nodes will be created exactly where the user has clicked and not from and to the center of the nodes involved.
+
+image:038_anchors.png[alt]
+
+The position of the anchor will not be kept as a simple `Position` using its coordinates inside a node.
+This solution would not provide a good user experience while resizing the source or the target node.
+Instead, the position of the anchor will be stored as a relative position using the ratio of its real position compared to the size of the node.
+For example, the center of the node will have the relative position [0.5x0.5] while an anchor on the top left corner would have the ratio [0x0] and an anchor on the bottom right corner would have the ratio [1x1].
+When the source or target node will be resized, we will not have to recompute the exact position of the source or target anchors, we will keep their relative positions.
+Old diagrams containing existing edges will still use the center of the source and target nodes as their anchors with the ratio [0.5x0.5].
+
+image:038_relative_positions.png[alt]
+
+The relative positions of the anchors will be stored in the `Edge` along with the position of the routing points which will still describe the edge to draw.
+
+image:038_routing_points.png[alt]
+
+When a node will be moved, the relative positions of the anchors will stay the same while its routing points will be recomputed.
+
+image:038_move.png[alt]
+
+== Status
+
+WIP
+
+== Consequences
+
+When a refresh is performed after the deletion of an edge, the newly computed edges may reuse the identifier of previous edges since we are using the index of the edge in its identifier.
+We will need to replace the `count` part of the edge identifier with the relative position of its source and target anchors in order to keep a more stable edge identifier over time.

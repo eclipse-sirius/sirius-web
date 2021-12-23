@@ -55,7 +55,7 @@ export interface Position {
 export interface Palette {
   startingPosition: Position;
   canvasBounds: Bounds;
-  origin: Position;
+  edgeStartPosition: Position;
   element: any;
   renameable: boolean;
   deletable: boolean;

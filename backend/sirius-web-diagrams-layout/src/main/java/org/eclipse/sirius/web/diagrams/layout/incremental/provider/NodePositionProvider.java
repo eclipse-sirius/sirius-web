@@ -17,7 +17,7 @@ import java.util.Optional;
 import org.eclipse.sirius.web.diagrams.NodeType;
 import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.Size;
-import org.eclipse.sirius.web.diagrams.events.CreationEvent;
+import org.eclipse.sirius.web.diagrams.events.NodeCreationEvent;
 import org.eclipse.sirius.web.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.web.diagrams.events.MoveEvent;
 import org.eclipse.sirius.web.diagrams.events.ResizeEvent;
@@ -76,8 +76,8 @@ public class NodePositionProvider {
         Position position = null;
         if (optionalDiagramElementEvent.isPresent()) {
             IDiagramEvent diagramElementEvent = optionalDiagramElementEvent.get();
-            if (diagramElementEvent instanceof CreationEvent) {
-                position = ((CreationEvent) diagramElementEvent).getStartingPosition();
+            if (diagramElementEvent instanceof NodeCreationEvent) {
+                position = ((NodeCreationEvent) diagramElementEvent).getStartingPosition();
             }
         }
         return Optional.ofNullable(position);
