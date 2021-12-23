@@ -27,6 +27,7 @@ import org.eclipse.sirius.web.diagrams.Edge;
 import org.eclipse.sirius.web.diagrams.EdgeStyle;
 import org.eclipse.sirius.web.diagrams.Label;
 import org.eclipse.sirius.web.diagrams.Position;
+import org.eclipse.sirius.web.diagrams.Ratio;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.web.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.web.diagrams.description.LabelDescription;
@@ -111,6 +112,8 @@ public class EdgeComponent implements IComponent {
                                         .orElse("edge:straight"); //$NON-NLS-1$
 
                                 List<Position> routingPoints = optionalPreviousEdge.map(Edge::getRoutingPoints).orElse(List.of());
+                                Ratio sourceAnchorRelativePosition = optionalPreviousEdge.map(Edge::getSourceAnchorRelativePosition).orElse(Ratio.UNDEFINED);
+                                Ratio targetAnchorRelativePosition = optionalPreviousEdge.map(Edge::getTargetAnchorRelativePosition).orElse(Ratio.UNDEFINED);
                                 List<Element> labelChildren = this.getLabelsChildren(edgeDescription, edgeVariableManager, optionalPreviousEdge, id, routingPoints);
                                 EdgeElementProps edgeElementProps = EdgeElementProps.newEdgeElementProps(id)
                                         .type(edgeType)
@@ -122,6 +125,8 @@ public class EdgeComponent implements IComponent {
                                         .targetId(targetId)
                                         .style(style)
                                         .routingPoints(routingPoints)
+                                        .sourceAnchorRelativePosition(sourceAnchorRelativePosition)
+                                        .targetAnchorRelativePosition(targetAnchorRelativePosition)
                                         .children(labelChildren)
                                         .build();
                                 // @formatter:on

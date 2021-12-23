@@ -24,7 +24,7 @@ import org.eclipse.sirius.web.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.Node;
 import org.eclipse.sirius.web.diagrams.Position;
-import org.eclipse.sirius.web.diagrams.events.CreationEvent;
+import org.eclipse.sirius.web.diagrams.events.NodeCreationEvent;
 import org.eclipse.sirius.web.diagrams.tools.CreateNodeTool;
 import org.eclipse.sirius.web.representations.Failure;
 import org.eclipse.sirius.web.representations.IStatus;
@@ -160,7 +160,7 @@ public class InvokeNodeToolOnDiagramEventHandler implements IDiagramEventHandler
                 result = tool.getHandler().apply(variableManager);
                 Position newPosition = Position.at(startingPositionX, startingPositionY);
 
-                diagramContext.setDiagramEvent(new CreationEvent(newPosition));
+                diagramContext.setDiagramEvent(new NodeCreationEvent(newPosition));
             }
         }
         return result;

@@ -26,6 +26,7 @@ import org.eclipse.sirius.web.diagrams.LineStyle;
 import org.eclipse.sirius.web.diagrams.Node;
 import org.eclipse.sirius.web.diagrams.NodeType;
 import org.eclipse.sirius.web.diagrams.Position;
+import org.eclipse.sirius.web.diagrams.Ratio;
 import org.eclipse.sirius.web.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.web.diagrams.Size;
 import org.eclipse.sirius.web.diagrams.tools.CreateNodeTool;
@@ -130,6 +131,8 @@ public class TestDiagramBuilder {
                 .targetId(targetId)
                 .style(style)
                 .routingPoints(List.of())
+                .sourceAnchorRelativePosition(Ratio.UNDEFINED)
+                .targetAnchorRelativePosition(Ratio.UNDEFINED)
                 .build();
         // @formatter:on
     }

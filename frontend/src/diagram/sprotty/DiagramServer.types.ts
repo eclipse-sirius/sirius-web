@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { CreateEdgeTool, GQLDiagram, Tool } from 'diagram/DiagramWebSocketContainer.types';
+import { CreateEdgeTool, GQLDiagram, Position, Tool } from 'diagram/DiagramWebSocketContainer.types';
 import { Action } from 'sprotty';
 import { Selection } from 'workbench/Workbench.types';
 
@@ -30,14 +30,25 @@ export interface SiriusSelectAction extends Action {
   selection: Selection;
 }
 
+export interface SprottySelectAction extends Action {
+  kind: 'sprottySelectElement';
+  element: any;
+  position: Position;
+}
+
 export interface ZoomToAction extends Action {
   kind: 'zoomTo';
   level: string;
 }
 
-export interface SourceElementaction extends Action {
+export interface SourceElementAction extends Action {
   kind: 'sourceElement';
+  sourceElement: SourceElement | null;
+}
+
+export interface SourceElement {
   element: any;
+  position: Position;
 }
 
 export interface SetActiveConnectorToolsAction extends Action {

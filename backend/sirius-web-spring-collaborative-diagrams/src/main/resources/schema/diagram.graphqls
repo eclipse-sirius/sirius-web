@@ -257,6 +257,10 @@ input InvokeEdgeToolOnDiagramInput {
   toolId: ID!
   diagramSourceElementId: ID!
   diagramTargetElementId: ID!
+  sourcePositionX: Float!
+  sourcePositionY: Float!
+  targetPositionX: Float!
+  targetPositionY: Float!
 }
 
 union InvokeEdgeToolOnDiagramPayload = ErrorPayload | InvokeEdgeToolOnDiagramSuccessPayload

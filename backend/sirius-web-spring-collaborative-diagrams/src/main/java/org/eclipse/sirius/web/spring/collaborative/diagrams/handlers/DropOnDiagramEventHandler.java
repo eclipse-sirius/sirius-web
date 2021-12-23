@@ -26,7 +26,7 @@ import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.Node;
 import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.description.DiagramDescription;
-import org.eclipse.sirius.web.diagrams.events.CreationEvent;
+import org.eclipse.sirius.web.diagrams.events.NodeCreationEvent;
 import org.eclipse.sirius.web.representations.Failure;
 import org.eclipse.sirius.web.representations.IStatus;
 import org.eclipse.sirius.web.representations.Success;
@@ -118,7 +118,7 @@ public class DropOnDiagramEventHandler implements IDiagramEventHandler {
             result = new Success();
             var dropHandler = optionalDropHandler.get();
             Position newPosition = Position.at(startingPositionX, startingPositionY);
-            diagramContext.setDiagramEvent(new CreationEvent(newPosition));
+            diagramContext.setDiagramEvent(new NodeCreationEvent(newPosition));
 
             for (Object self : objects) {
                 VariableManager variableManager = new VariableManager();

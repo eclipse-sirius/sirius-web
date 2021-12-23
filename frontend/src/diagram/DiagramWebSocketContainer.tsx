@@ -30,6 +30,7 @@ import {
   GQLSubscribersUpdatedEventPayload,
   Menu,
   Palette,
+  Position,
   Tool,
 } from 'diagram/DiagramWebSocketContainer.types';
 import {
@@ -74,9 +75,9 @@ import {
 import { ContextualMenu } from 'diagram/palette/ContextualMenu';
 import { ContextualPalette } from 'diagram/palette/ContextualPalette';
 import {
+  DiagramServer,
   HIDE_CONTEXTUAL_TOOLBAR_ACTION,
   SOURCE_ELEMENT_ACTION,
-  SPROTTY_SELECT_ACTION,
   ZOOM_IN_ACTION,
   ZOOM_OUT_ACTION,
 } from 'diagram/sprotty/DiagramServer';
@@ -94,7 +95,8 @@ import {
   SetActiveToolAction,
   SiriusSelectAction,
   SiriusUpdateModelAction,
-  SourceElementaction,
+  SourceElementAction,
+  SprottySelectAction,
   ZoomToAction,
 } from './sprotty/DiagramServer.types';
 
@@ -455,7 +457,11 @@ export const DiagramWebSocketContainer = ({
       if (tool) {
         const { id: toolId } = tool;
         if (tool.__typename === 'CreateEdgeTool') {
-          const [diagramSourceElementId, diagramTargetElementId] = params;
+          const [diagramSourceElementId, diagramTargetElementId, sourcePosition, targetPosition] = params;
+          const sourcePositionX = sourcePosition?.x;
+          const sourcePositionY = sourcePosition?.y;
+          const targetPositionX = targetPosition?.x;
+          const targetPositionY = targetPosition?.y;
 
           const input = {
             id: uuid(),
@@ -464,6 +470,10 @@ export const DiagramWebSocketContainer = ({
             diagramSourceElementId,
             diagramTargetElementId,
             toolId,
+            sourcePositionX,
+            sourcePositionY,
+            targetPositionX,
+            targetPositionY,
           };
           invokeEdgeToolMutation({ variables: { input } });
 
@@ -550,7 +560,7 @@ export const DiagramWebSocketContainer = ({
    * initialization will be done each time we are in the loading state.
    */
   useEffect(() => {
-    const onSelectElement = (newSelectedElement, diagramServer) => {
+    const onSelectElement = (newSelectedElement, diagramServer: DiagramServer, position: Position) => {
       const newSelection: Selection = { entries: [] };
       if (newSelectedElement.root.id === newSelectedElement.id) {
         // newSelectedElement => SGraph
@@ -574,7 +584,12 @@ export const DiagramWebSocketContainer = ({
        * if the same element is selected several times (useEffect hook only reacts if the selected element is not the same).
        * We can also not use diagramServer from the reducer state here, because it is undefined when onSelectElement() is called.
        */
-      diagramServer.actionDispatcher.dispatch({ kind: SPROTTY_SELECT_ACTION, element: newSelectedElement });
+      const selectSprottyAction: SprottySelectAction = {
+        kind: 'sprottySelectElement',
+        element: newSelectedElement,
+        position,
+      };
+      diagramServer.actionDispatcher.dispatch(selectSprottyAction);
     };
     const getCursorOn = (element, diagramServer) => {
       let cursor = 'pointer';
@@ -687,7 +702,8 @@ export const DiagramWebSocketContainer = ({
   useEffect(() => {
     if (selectedObjectId && activeTool && contextualPalette) {
       invokeTool(activeTool, contextualPalette.element.id, contextualPalette.startingPosition);
-      diagramServer.actionDispatcher.dispatch({ kind: SOURCE_ELEMENT_ACTION });
+      const sourceElementAction: SourceElementAction = { kind: SOURCE_ELEMENT_ACTION, sourceElement: null };
+      diagramServer.actionDispatcher.dispatch(sourceElementAction);
       const resetSelectedObjectInSelectionDialogEvent: ResetSelectedObjectInSelectionDialogEvent = {
         type: 'RESET_SELECTED_OBJECT_IN_SELECTION_DIALOG',
       };
@@ -874,7 +890,14 @@ export const DiagramWebSocketContainer = ({
    */
   let contextualPaletteContent;
   if (!readOnly && contextualPalette) {
-    const { element, startingPosition, canvasBounds, origin, renameable, deletable } = contextualPalette;
+    const {
+      element,
+      startingPosition,
+      canvasBounds,
+      edgeStartPosition: origin,
+      renameable,
+      deletable,
+    } = contextualPalette;
     const { x, y } = origin;
     const style = {
       left: canvasBounds.x + 'px',
@@ -903,7 +926,7 @@ export const DiagramWebSocketContainer = ({
         dispatch(setContextualPaletteEvent);
         edgeCreationFeedback.init(x, y);
 
-        const action: SourceElementaction = { kind: 'sourceElement', element };
+        const action: SourceElementAction = { kind: 'sourceElement', sourceElement: { element, position: { x, y } } };
         diagramServer.actionDispatcher.dispatch(action);
       } else if (tool.__typename === 'CreateNodeTool') {
         if (tool.selectionDescriptionId) {
@@ -914,7 +937,8 @@ export const DiagramWebSocketContainer = ({
           dispatch(showSelectionDialogEvent);
         } else {
           invokeTool(tool, element.id, startingPosition);
-          diagramServer.actionDispatcher.dispatch({ kind: SOURCE_ELEMENT_ACTION });
+          const sourceElementAction: SourceElementAction = { kind: SOURCE_ELEMENT_ACTION, sourceElement: null };
+          diagramServer.actionDispatcher.dispatch(sourceElementAction);
         }
       } else if (tool.__typename === 'DeleteTool') {
         const setActiveToolEvent: SetActiveToolEvent = { type: 'SET_ACTIVE_TOOL', activeTool: tool };
@@ -925,7 +949,8 @@ export const DiagramWebSocketContainer = ({
         };
         dispatch(setContextualPaletteEvent);
         invokeTool(tool, element.id, startingPosition);
-        diagramServer.actionDispatcher.dispatch({ kind: SOURCE_ELEMENT_ACTION });
+        const sourceElementAction: SourceElementAction = { kind: SOURCE_ELEMENT_ACTION, sourceElement: null };
+        diagramServer.actionDispatcher.dispatch(sourceElementAction);
       }
       const setDefaultToolEvent: SetDefaultToolEvent = { type: 'SET_DEFAULT_TOOL', defaultTool: tool };
       dispatch(setDefaultToolEvent);
@@ -951,7 +976,7 @@ export const DiagramWebSocketContainer = ({
       dispatch(setActiveConnectorToolsEvent);
       edgeCreationFeedback.init(x, y);
 
-      const action: SourceElementaction = { kind: 'sourceElement', element };
+      const action: SourceElementAction = { kind: 'sourceElement', sourceElement: { element, position: { x, y } } };
       diagramServer.actionDispatcher.dispatch(action);
     };
     contextualPaletteContent = (

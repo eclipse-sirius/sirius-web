@@ -118,7 +118,9 @@ public class IncrementalLayoutDiagramConverter {
 
         layoutData.setRoutingPoints(edge.getRoutingPoints());
         layoutData.setSource((NodeLayoutData) id2LayoutData.get(edge.getSourceId()));
+        layoutData.setSourceAnchorRelativePosition(edge.getSourceAnchorRelativePosition());
         layoutData.setTarget((NodeLayoutData) id2LayoutData.get(edge.getTargetId()));
+        layoutData.setTargetAnchorRelativePosition(edge.getTargetAnchorRelativePosition());
 
         return layoutData;
     }

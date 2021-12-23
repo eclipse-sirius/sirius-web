@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.eclipse.sirius.web.diagrams.Position;
+import org.eclipse.sirius.web.diagrams.Ratio;
 import org.eclipse.sirius.web.diagrams.layout.incremental.data.EdgeLayoutData;
 import org.eclipse.sirius.web.diagrams.layout.incremental.data.NodeLayoutData;
 import org.eclipse.sirius.web.diagrams.layout.incremental.utils.Bounds;
@@ -32,8 +33,11 @@ public class EdgeRoutingPointsProvider {
         List<Position> positions = List.of();
         Bounds sourceBounds = this.getAbsoluteBounds(edge.getSource());
         Bounds targetBounds = this.getAbsoluteBounds(edge.getTarget());
-        Position sourceAbsolutePosition = this.getCenter(sourceBounds);
-        Position targetAbsolutePosition = this.getCenter(targetBounds);
+
+        this.supportOldDiagramWithExistingEdge(edge);
+        Position sourceAbsolutePosition = this.toAbsolutePosition(edge.getSourceAnchorRelativePosition(), sourceBounds);
+        Position targetAbsolutePosition = this.toAbsolutePosition(edge.getTargetAnchorRelativePosition(), targetBounds);
+
         Geometry geometry = new Geometry();
         Optional<Position> optionalSourceIntersection = geometry.getIntersection(targetAbsolutePosition, sourceAbsolutePosition, sourceBounds);
         Optional<Position> optionalTargetIntersection = geometry.getIntersection(sourceAbsolutePosition, targetAbsolutePosition, targetBounds);
@@ -43,6 +47,25 @@ public class EdgeRoutingPointsProvider {
             positions = this.getRoutingPointsToMyself(edge.getSource().getPosition(), edge.getSource().getSize().getWidth());
         }
         return positions;
+    }
+
+    private Position toAbsolutePosition(Ratio anchorRelativePosition, Bounds sourceBounds) {
+        double edgeAbsoluteX = sourceBounds.getPosition().getX() + sourceBounds.getSize().getWidth() * anchorRelativePosition.getX();
+        double edgeAbsoluteY = sourceBounds.getPosition().getY() + sourceBounds.getSize().getHeight() * anchorRelativePosition.getY();
+        return Position.at(edgeAbsoluteX, edgeAbsoluteY);
+    }
+
+    /**
+     * Used to keep old diagram containing edges working. It affects the position proportion of the node center, and
+     * thus, old edges are still overlapping but at least the diagram is loading.
+     */
+    private void supportOldDiagramWithExistingEdge(EdgeLayoutData edge) {
+        if (edge.getSourceAnchorRelativePosition() == null || Ratio.UNDEFINED.equals(edge.getSourceAnchorRelativePosition())) {
+            edge.setSourceAnchorRelativePosition(Ratio.of(0.5, 0.5));
+        }
+        if (edge.getTargetAnchorRelativePosition() == null || Ratio.UNDEFINED.equals(edge.getTargetAnchorRelativePosition())) {
+            edge.setTargetAnchorRelativePosition(Ratio.of(0.5, 0.5));
+        }
     }
 
     private List<Position> getRoutingPointsToMyself(Position nodePosition, double size) {
@@ -55,21 +78,10 @@ public class EdgeRoutingPointsProvider {
 
     private Bounds getAbsoluteBounds(NodeLayoutData nodeLayoutData) {
         // @formatter:off
-            return Bounds.newBounds()
-                    .position(nodeLayoutData.getAbsolutePosition())
-                    .size(nodeLayoutData.getSize())
-                    .build();
-            // @formatter:on
-    }
-
-    private Position getCenter(Bounds bounds) {
-        // @formatter:off
-        return Position.newPosition()
-                .x(bounds.getPosition().getX() + (bounds.getSize().getWidth() / 2))
-                .y(bounds.getPosition().getY() + (bounds.getSize().getHeight() / 2))
+        return Bounds.newBounds()
+                .position(nodeLayoutData.getAbsolutePosition())
+                .size(nodeLayoutData.getSize())
                 .build();
         // @formatter:on
-
     }
-
 }

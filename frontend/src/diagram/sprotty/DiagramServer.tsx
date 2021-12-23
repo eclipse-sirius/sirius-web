@@ -17,6 +17,9 @@ import {
   SetActiveConnectorToolsAction,
   SiriusSelectAction,
   SiriusUpdateModelAction,
+  SourceElement,
+  SourceElementAction,
+  SprottySelectAction,
 } from 'diagram/sprotty/DiagramServer.types';
 import { ResizeAction, SiriusResizeCommand } from 'diagram/sprotty/resize/siriusResize';
 import {
@@ -25,7 +28,6 @@ import {
   ApplyLabelEditAction,
   CenterAction,
   EditLabelAction,
-  getAbsoluteBounds,
   GetSelectionAction,
   GetViewportAction,
   getWindowScroll,
@@ -107,7 +109,7 @@ export class DiagramServer extends ModelSource {
   setContextualMenu;
 
   // Used to store the edge source element.
-  diagramSourceElement;
+  diagramSource: SourceElement | null;
   currentRoot: Root = INITIAL_ROOT;
 
   httpOrigin;
@@ -165,7 +167,7 @@ export class DiagramServer extends ModelSource {
         this.handleSiriusSelectAction(action as SiriusSelectAction);
         break;
       case SPROTTY_SELECT_ACTION:
-        this.handleSprottySelectAction(action);
+        this.handleSprottySelectAction(action as SprottySelectAction);
         break;
       case SPROTTY_DELETE_ACTION:
         this.handleSiriusDeleteAction(action);
@@ -177,7 +179,7 @@ export class DiagramServer extends ModelSource {
         this.handleActiveConnectorToolsAction(action as SetActiveConnectorToolsAction);
         break;
       case SOURCE_ELEMENT_ACTION:
-        this.handleSourceElementAction(action);
+        this.handleSourceElementAction(action as SourceElementAction);
         break;
       case SHOW_CONTEXTUAL_TOOLBAR_ACTION:
         this.handleShowContextualToolbarAction(action);
@@ -253,13 +255,13 @@ export class DiagramServer extends ModelSource {
     }
   }
 
-  handleSprottySelectAction(action) {
-    const { element } = action;
+  handleSprottySelectAction(action: SprottySelectAction) {
+    const { element, position } = action;
     if (this.activeConnectorTools?.length > 0) {
       const filteredTools = this.activeConnectorTools.filter((edgeTool) =>
         edgeTool.edgeCandidates.some(
           (edgeCandidate) =>
-            edgeCandidate.sources.some((source) => source.id === this.diagramSourceElement.descriptionId) &&
+            edgeCandidate.sources.some((source) => source.id === this.diagramSource.element.descriptionId) &&
             edgeCandidate.targets.some((target) => target.id === element.descriptionId)
         )
       );
@@ -268,7 +270,13 @@ export class DiagramServer extends ModelSource {
           kind: SHOW_CONTEXTUAL_MENU_ACTION,
         } as any);
       } else if (filteredTools.length === 1) {
-        this.invokeTool(filteredTools[0], this.diagramSourceElement.id, element.id);
+        this.invokeTool(
+          filteredTools[0],
+          this.diagramSource.element.id,
+          element.id,
+          this.diagramSource.position,
+          position
+        );
       } else {
         this.actionDispatcher.dispatch({
           kind: SHOW_CONTEXTUAL_MENU_ACTION,
@@ -280,7 +288,13 @@ export class DiagramServer extends ModelSource {
       if (this.activeTool.__typename === 'CreateNodeTool') {
         this.invokeTool(this.activeTool, element.id);
       } else if (this.activeTool.__typename === 'CreateEdgeTool') {
-        this.invokeTool(this.activeTool, this.diagramSourceElement.id, element.id);
+        this.invokeTool(
+          this.activeTool,
+          this.diagramSource.element.id,
+          element.id,
+          this.diagramSource.position,
+          position
+        );
       } else if (this.activeTool.__typename === 'DeleteTool') {
         this.invokeTool(this.activeTool, element.id);
       }
@@ -356,9 +370,9 @@ export class DiagramServer extends ModelSource {
     this.activeConnectorTools = tools;
   }
 
-  handleSourceElementAction(action) {
-    const { element } = action;
-    this.diagramSourceElement = element;
+  handleSourceElementAction(action: SourceElementAction) {
+    const { sourceElement } = action;
+    this.diagramSource = sourceElement;
   }
 
   handleShowContextualToolbarAction(action) {
@@ -376,18 +390,17 @@ export class DiagramServer extends ModelSource {
             height: -1,
           };
 
-          const absoluteBounds = getAbsoluteBounds(element);
-          let origin = { x: 0, y: 0 };
+          let edgeStartPosition = { x: 0, y: 0 };
           if (element instanceof SNode) {
-            origin = {
-              x: absoluteBounds.x + (element.size.width / 2) * zoom,
-              y: absoluteBounds.y + (element.size.height / 2) * zoom,
+            edgeStartPosition = {
+              x: (lastPositionOnDiagram.x - scroll.x) * zoom,
+              y: (lastPositionOnDiagram.y - scroll.y) * zoom,
             };
           }
           const contextualPalette: Palette = {
             startingPosition: lastPositionOnDiagram,
             canvasBounds: bounds,
-            origin,
+            edgeStartPosition: edgeStartPosition,
             element: element,
             renameable: !(element instanceof SGraph),
             deletable: !(element instanceof SGraph),
@@ -434,7 +447,7 @@ export class DiagramServer extends ModelSource {
           };
           const contextualMenu = {
             canvasBounds: bounds,
-            sourceElement: this.diagramSourceElement,
+            sourceElement: this.diagramSource.element,
             targetElement: element,
             tools,
           };

@@ -18,7 +18,9 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.sirius.web.diagrams.Position;
+import org.eclipse.sirius.web.diagrams.Ratio;
 import org.eclipse.sirius.web.diagrams.Size;
+import org.eclipse.sirius.web.diagrams.events.EdgeCreationEvent;
 import org.eclipse.sirius.web.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.web.diagrams.layout.ISiriusWebLayoutConfigurator;
 import org.eclipse.sirius.web.diagrams.layout.incremental.data.DiagramLayoutData;
@@ -83,10 +85,19 @@ public class IncrementalLayoutEngine {
 
         // finally we recompute the edges that needs to
         for (EdgeLayoutData edge : diagram.getEdges()) {
-            if (this.hasChanged(edge.getSource()) || this.hasChanged(edge.getTarget()) || !this.isLabelPositioned(edge)) {
-                this.layoutEdge(edge);
+            if (this.hasChanged(edge.getSource()) || this.hasChanged(edge.getTarget()) || !this.isLabelPositioned(edge) || !this.isEdgePositioned(edge)) {
+                this.layoutEdge(optionalDiagramElementEvent, edge);
             }
         }
+    }
+
+    /**
+     * Used to support not positioned edges, namely edges from old diagram.
+     *
+     * This can be removed when we will consider all diagram should have been migrated
+     */
+    private boolean isEdgePositioned(EdgeLayoutData edge) {
+        return edge.getSourceAnchorRelativePosition() != null && edge.getTargetAnchorRelativePosition() != null;
     }
 
     private boolean isLabelPositioned(EdgeLayoutData edge) {
@@ -132,7 +143,29 @@ public class IncrementalLayoutEngine {
         }
     }
 
-    private void layoutEdge(EdgeLayoutData edge) {
+    private Ratio getPositionProportionOfEdgeEndAbsolutePosition(NodeLayoutData nodeLayoutData, Position absolutePosition) {
+        Position nodeAbsolutePosition = nodeLayoutData.getAbsolutePosition();
+        double edgeX = absolutePosition.getX() - nodeAbsolutePosition.getX();
+        double edgeY = absolutePosition.getY() - nodeAbsolutePosition.getY();
+
+        double edgeXProportion = edgeX / nodeLayoutData.getSize().getWidth();
+        double edgeYProportion = edgeY / nodeLayoutData.getSize().getHeight();
+
+        return Ratio.of(edgeXProportion, edgeYProportion);
+    }
+
+    private void layoutEdge(Optional<IDiagramEvent> optionalDiagramElementEvent, EdgeLayoutData edge) {
+        // @formatter:off
+        optionalDiagramElementEvent.filter(EdgeCreationEvent.class::isInstance)
+                .map(EdgeCreationEvent.class::cast)
+                .ifPresent(edgeCreationEvent -> {
+                    Ratio edgeSourceAnchorRelativePosition = this.getPositionProportionOfEdgeEndAbsolutePosition(edge.getSource(), edgeCreationEvent.getSourcePosition());
+                    Ratio edgeTargetAnchorRelativePosition = this.getPositionProportionOfEdgeEndAbsolutePosition(edge.getTarget(), edgeCreationEvent.getTargetPosition());
+                    edge.setSourceAnchorRelativePosition(edgeSourceAnchorRelativePosition);
+                    edge.setTargetAnchorRelativePosition(edgeTargetAnchorRelativePosition);
+                });
+        // @formatter:on
+
         // recompute the edge routing points
         edge.setRoutingPoints(this.edgeRoutingPointsProvider.getRoutingPoints(edge));
 

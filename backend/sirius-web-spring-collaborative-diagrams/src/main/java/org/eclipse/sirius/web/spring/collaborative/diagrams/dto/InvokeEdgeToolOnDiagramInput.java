@@ -15,10 +15,6 @@ package org.eclipse.sirius.web.spring.collaborative.diagrams.dto;
 import java.text.MessageFormat;
 import java.util.UUID;
 
-import org.eclipse.sirius.web.annotations.graphql.GraphQLField;
-import org.eclipse.sirius.web.annotations.graphql.GraphQLID;
-import org.eclipse.sirius.web.annotations.graphql.GraphQLInputObjectType;
-import org.eclipse.sirius.web.annotations.graphql.GraphQLNonNull;
 import org.eclipse.sirius.web.spring.collaborative.diagrams.api.IDiagramInput;
 
 /**
@@ -27,7 +23,6 @@ import org.eclipse.sirius.web.spring.collaborative.diagrams.api.IDiagramInput;
  * @author pcdavid
  * @author hmarchadour
  */
-@GraphQLInputObjectType
 public final class InvokeEdgeToolOnDiagramInput implements IDiagramInput {
     private UUID id;
 
@@ -39,50 +34,56 @@ public final class InvokeEdgeToolOnDiagramInput implements IDiagramInput {
 
     private String diagramTargetElementId;
 
+    private double sourcePositionX;
+
+    private double sourcePositionY;
+
+    private double targetPositionX;
+
+    private double targetPositionY;
+
     private String toolId;
 
     @Override
-    @GraphQLID
-    @GraphQLField
-    @GraphQLNonNull
     public UUID getId() {
         return this.id;
     }
 
-    @GraphQLID
-    @GraphQLField
-    @GraphQLNonNull
     public String getEditingContextId() {
         return this.editingContextId;
     }
 
     @Override
-    @GraphQLID
-    @GraphQLField
-    @GraphQLNonNull
     public String getRepresentationId() {
         return this.representationId;
     }
 
-    @GraphQLID
-    @GraphQLField
-    @GraphQLNonNull
     public String getDiagramSourceElementId() {
         return this.diagramSourceElementId;
     }
 
-    @GraphQLID
-    @GraphQLField
-    @GraphQLNonNull
     public String getDiagramTargetElementId() {
         return this.diagramTargetElementId;
     }
 
-    @GraphQLID
-    @GraphQLField
-    @GraphQLNonNull
     public String getToolId() {
         return this.toolId;
+    }
+
+    public double getSourcePositionX() {
+        return this.sourcePositionX;
+    }
+
+    public double getSourcePositionY() {
+        return this.sourcePositionY;
+    }
+
+    public double getTargetPositionX() {
+        return this.targetPositionX;
+    }
+
+    public double getTargetPositionY() {
+        return this.targetPositionY;
     }
 
     @Override

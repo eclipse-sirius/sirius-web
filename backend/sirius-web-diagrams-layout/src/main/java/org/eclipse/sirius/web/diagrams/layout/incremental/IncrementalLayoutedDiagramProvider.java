@@ -120,6 +120,8 @@ public class IncrementalLayoutedDiagramProvider {
                 .centerLabel(centerLabel)
                 .endLabel(endLabel)
                 .routingPoints(edgeLayoutData.getRoutingPoints())
+                .sourceAnchorRelativePosition(edgeLayoutData.getSourceAnchorRelativePosition())
+                .targetAnchorRelativePosition(edgeLayoutData.getTargetAnchorRelativePosition())
                 .build();
         // @formatter:on
     }
