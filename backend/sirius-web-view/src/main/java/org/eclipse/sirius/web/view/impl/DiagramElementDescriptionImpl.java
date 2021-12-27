@@ -21,6 +21,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.sirius.web.view.DeleteTool;
 import org.eclipse.sirius.web.view.DiagramElementDescription;
 import org.eclipse.sirius.web.view.LabelEditTool;
+import org.eclipse.sirius.web.view.SynchronizationPolicy;
 import org.eclipse.sirius.web.view.ViewPackage;
 
 /**
@@ -39,6 +40,8 @@ import org.eclipse.sirius.web.view.ViewPackage;
  * <li>{@link org.eclipse.sirius.web.view.impl.DiagramElementDescriptionImpl#getDeleteTool <em>Delete Tool</em>}</li>
  * <li>{@link org.eclipse.sirius.web.view.impl.DiagramElementDescriptionImpl#getLabelEditTool <em>Label Edit
  * Tool</em>}</li>
+ * <li>{@link org.eclipse.sirius.web.view.impl.DiagramElementDescriptionImpl#getSynchronizationPolicy
+ * <em>Synchronization Policy</em>}</li>
  * </ul>
  *
  * @generated
@@ -143,6 +146,26 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
      * @ordered
      */
     protected LabelEditTool labelEditTool;
+
+    /**
+     * The default value of the '{@link #getSynchronizationPolicy() <em>Synchronization Policy</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getSynchronizationPolicy()
+     * @generated
+     * @ordered
+     */
+    protected static final SynchronizationPolicy SYNCHRONIZATION_POLICY_EDEFAULT = SynchronizationPolicy.SYNCHRONIZED;
+
+    /**
+     * The cached value of the '{@link #getSynchronizationPolicy() <em>Synchronization Policy</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getSynchronizationPolicy()
+     * @generated
+     * @ordered
+     */
+    protected SynchronizationPolicy synchronizationPolicy = SYNCHRONIZATION_POLICY_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -358,6 +381,29 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
      * @generated
      */
     @Override
+    public SynchronizationPolicy getSynchronizationPolicy() {
+        return this.synchronizationPolicy;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setSynchronizationPolicy(SynchronizationPolicy newSynchronizationPolicy) {
+        SynchronizationPolicy oldSynchronizationPolicy = this.synchronizationPolicy;
+        this.synchronizationPolicy = newSynchronizationPolicy == null ? SYNCHRONIZATION_POLICY_EDEFAULT : newSynchronizationPolicy;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY, oldSynchronizationPolicy, this.synchronizationPolicy));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
         case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__DELETE_TOOL:
@@ -388,6 +434,8 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
             return this.getDeleteTool();
         case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EDIT_TOOL:
             return this.getLabelEditTool();
+        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY:
+            return this.getSynchronizationPolicy();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -417,6 +465,9 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
             return;
         case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EDIT_TOOL:
             this.setLabelEditTool((LabelEditTool) newValue);
+            return;
+        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY:
+            this.setSynchronizationPolicy((SynchronizationPolicy) newValue);
             return;
         }
         super.eSet(featureID, newValue);
@@ -448,6 +499,9 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
         case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EDIT_TOOL:
             this.setLabelEditTool((LabelEditTool) null);
             return;
+        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY:
+            this.setSynchronizationPolicy(SYNCHRONIZATION_POLICY_EDEFAULT);
+            return;
         }
         super.eUnset(featureID);
     }
@@ -472,6 +526,8 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
             return this.deleteTool != null;
         case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EDIT_TOOL:
             return this.labelEditTool != null;
+        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY:
+            return this.synchronizationPolicy != SYNCHRONIZATION_POLICY_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
@@ -495,6 +551,8 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
         result.append(this.semanticCandidatesExpression);
         result.append(", labelExpression: "); //$NON-NLS-1$
         result.append(this.labelExpression);
+        result.append(", synchronizationPolicy: "); //$NON-NLS-1$
+        result.append(this.synchronizationPolicy);
         result.append(')');
         return result.toString();
     }

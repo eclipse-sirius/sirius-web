@@ -46,7 +46,8 @@ public class CanonicalBehaviors {
     public IStatus createNewNode(org.eclipse.sirius.web.view.NodeDescription nodeDescription, VariableManager variableManager) {
         EObject self = variableManager.get(VariableManager.SELF, EObject.class).orElse(null);
         String domainType = nodeDescription.getDomainType();
-        this.createSemanticInstance(self, domainType).ifPresent(instance -> this.addInParent(self, instance));
+        var optionalSemanticElement = this.createSemanticInstance(self, domainType);
+        optionalSemanticElement.ifPresent(instance -> this.addInParent(self, instance));
         return new Success();
     }
 

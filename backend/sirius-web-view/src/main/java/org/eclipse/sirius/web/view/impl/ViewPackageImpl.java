@@ -24,10 +24,13 @@ import org.eclipse.sirius.web.view.Conditional;
 import org.eclipse.sirius.web.view.ConditionalEdgeStyle;
 import org.eclipse.sirius.web.view.ConditionalNodeStyle;
 import org.eclipse.sirius.web.view.CreateInstance;
+import org.eclipse.sirius.web.view.CreateView;
 import org.eclipse.sirius.web.view.DeleteElement;
 import org.eclipse.sirius.web.view.DeleteTool;
+import org.eclipse.sirius.web.view.DeleteView;
 import org.eclipse.sirius.web.view.DiagramDescription;
 import org.eclipse.sirius.web.view.DiagramElementDescription;
+import org.eclipse.sirius.web.view.DropTool;
 import org.eclipse.sirius.web.view.EdgeDescription;
 import org.eclipse.sirius.web.view.EdgeStyle;
 import org.eclipse.sirius.web.view.EdgeTool;
@@ -41,6 +44,7 @@ import org.eclipse.sirius.web.view.Operation;
 import org.eclipse.sirius.web.view.RepresentationDescription;
 import org.eclipse.sirius.web.view.SetValue;
 import org.eclipse.sirius.web.view.Style;
+import org.eclipse.sirius.web.view.SynchronizationPolicy;
 import org.eclipse.sirius.web.view.Tool;
 import org.eclipse.sirius.web.view.UnsetValue;
 import org.eclipse.sirius.web.view.View;
@@ -163,6 +167,13 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      *
      * @generated
      */
+    private EClass dropToolEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
     private EClass operationEClass = null;
 
     /**
@@ -205,6 +216,20 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      *
      * @generated
      */
+    private EClass createViewEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass deleteViewEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
     private EClass conditionalEClass = null;
 
     /**
@@ -234,6 +259,13 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     private EEnum lineStyleEEnum = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EEnum synchronizationPolicyEEnum = null;
 
     /**
      * Creates an instance of the model <b>Package</b>, registered with {@link org.eclipse.emf.ecore.EPackage.Registry
@@ -402,6 +434,16 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
+    public EReference getDiagramDescription_OnDrop() {
+        return (EReference) this.diagramDescriptionEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getDiagramElementDescription() {
         return this.diagramElementDescriptionEClass;
     }
@@ -464,6 +506,16 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
     @Override
     public EReference getDiagramElementDescription_LabelEditTool() {
         return (EReference) this.diagramElementDescriptionEClass.getEStructuralFeatures().get(5);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getDiagramElementDescription_SynchronizationPolicy() {
+        return (EAttribute) this.diagramElementDescriptionEClass.getEStructuralFeatures().get(6);
     }
 
     /**
@@ -902,6 +954,16 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
+    public EClass getDropTool() {
+        return this.dropToolEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getOperation() {
         return this.operationEClass;
     }
@@ -1052,6 +1114,76 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
+    public EClass getCreateView() {
+        return this.createViewEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getCreateView_ParentViewExpression() {
+        return (EAttribute) this.createViewEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getCreateView_ElementDescription() {
+        return (EReference) this.createViewEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getCreateView_SemanticElementExpression() {
+        return (EAttribute) this.createViewEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getCreateView_VariableName() {
+        return (EAttribute) this.createViewEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getDeleteView() {
+        return this.deleteViewEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getDeleteView_ViewExpression() {
+        return (EAttribute) this.deleteViewEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getConditional() {
         return this.conditionalEClass;
     }
@@ -1112,6 +1244,16 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
+    public EEnum getSynchronizationPolicy() {
+        return this.synchronizationPolicyEEnum;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public ViewFactory getViewFactory() {
         return (ViewFactory) this.getEFactoryInstance();
     }
@@ -1147,6 +1289,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.createEAttribute(this.diagramDescriptionEClass, DIAGRAM_DESCRIPTION__AUTO_LAYOUT);
         this.createEReference(this.diagramDescriptionEClass, DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS);
         this.createEReference(this.diagramDescriptionEClass, DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS);
+        this.createEReference(this.diagramDescriptionEClass, DIAGRAM_DESCRIPTION__ON_DROP);
 
         this.diagramElementDescriptionEClass = this.createEClass(DIAGRAM_ELEMENT_DESCRIPTION);
         this.createEAttribute(this.diagramElementDescriptionEClass, DIAGRAM_ELEMENT_DESCRIPTION__NAME);
@@ -1155,6 +1298,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.createEAttribute(this.diagramElementDescriptionEClass, DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION);
         this.createEReference(this.diagramElementDescriptionEClass, DIAGRAM_ELEMENT_DESCRIPTION__DELETE_TOOL);
         this.createEReference(this.diagramElementDescriptionEClass, DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EDIT_TOOL);
+        this.createEAttribute(this.diagramElementDescriptionEClass, DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY);
 
         this.nodeDescriptionEClass = this.createEClass(NODE_DESCRIPTION);
         this.createEReference(this.nodeDescriptionEClass, NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS);
@@ -1210,6 +1354,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
 
         this.edgeToolEClass = this.createEClass(EDGE_TOOL);
 
+        this.dropToolEClass = this.createEClass(DROP_TOOL);
+
         this.operationEClass = this.createEClass(OPERATION);
         this.createEReference(this.operationEClass, OPERATION__CHILDREN);
 
@@ -1231,6 +1377,15 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
 
         this.deleteElementEClass = this.createEClass(DELETE_ELEMENT);
 
+        this.createViewEClass = this.createEClass(CREATE_VIEW);
+        this.createEAttribute(this.createViewEClass, CREATE_VIEW__PARENT_VIEW_EXPRESSION);
+        this.createEReference(this.createViewEClass, CREATE_VIEW__ELEMENT_DESCRIPTION);
+        this.createEAttribute(this.createViewEClass, CREATE_VIEW__SEMANTIC_ELEMENT_EXPRESSION);
+        this.createEAttribute(this.createViewEClass, CREATE_VIEW__VARIABLE_NAME);
+
+        this.deleteViewEClass = this.createEClass(DELETE_VIEW);
+        this.createEAttribute(this.deleteViewEClass, DELETE_VIEW__VIEW_EXPRESSION);
+
         this.conditionalEClass = this.createEClass(CONDITIONAL);
         this.createEAttribute(this.conditionalEClass, CONDITIONAL__CONDITION);
 
@@ -1241,6 +1396,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         // Create enums
         this.arrowStyleEEnum = this.createEEnum(ARROW_STYLE);
         this.lineStyleEEnum = this.createEEnum(LINE_STYLE);
+        this.synchronizationPolicyEEnum = this.createEEnum(SYNCHRONIZATION_POLICY);
     }
 
     /**
@@ -1281,11 +1437,14 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.deleteToolEClass.getESuperTypes().add(this.getTool());
         this.nodeToolEClass.getESuperTypes().add(this.getTool());
         this.edgeToolEClass.getESuperTypes().add(this.getTool());
+        this.dropToolEClass.getESuperTypes().add(this.getTool());
         this.changeContextEClass.getESuperTypes().add(this.getOperation());
         this.createInstanceEClass.getESuperTypes().add(this.getOperation());
         this.setValueEClass.getESuperTypes().add(this.getOperation());
         this.unsetValueEClass.getESuperTypes().add(this.getOperation());
         this.deleteElementEClass.getESuperTypes().add(this.getOperation());
+        this.createViewEClass.getESuperTypes().add(this.getOperation());
+        this.deleteViewEClass.getESuperTypes().add(this.getOperation());
         this.conditionalNodeStyleEClass.getESuperTypes().add(this.getConditional());
         this.conditionalNodeStyleEClass.getESuperTypes().add(this.getNodeStyle());
         this.conditionalEdgeStyleEClass.getESuperTypes().add(this.getConditional());
@@ -1311,6 +1470,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
                 IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getDiagramDescription_EdgeDescriptions(), this.getEdgeDescription(), null, "edgeDescriptions", null, 0, -1, DiagramDescription.class, !IS_TRANSIENT, !IS_VOLATILE, //$NON-NLS-1$
                 IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getDiagramDescription_OnDrop(), this.getDropTool(), null, "onDrop", null, 0, 1, DiagramDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, //$NON-NLS-1$
+                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.diagramElementDescriptionEClass, DiagramElementDescription.class, "DiagramElementDescription", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
         this.initEAttribute(this.getDiagramElementDescription_Name(), this.ecorePackage.getEString(), "name", "NewRepresentationDescription", 0, 1, DiagramElementDescription.class, !IS_TRANSIENT, //$NON-NLS-1$ //$NON-NLS-2$
@@ -1325,6 +1486,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
                 IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getDiagramElementDescription_LabelEditTool(), this.getLabelEditTool(), null, "labelEditTool", null, 0, 1, DiagramElementDescription.class, !IS_TRANSIENT, !IS_VOLATILE, //$NON-NLS-1$
                 IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getDiagramElementDescription_SynchronizationPolicy(), this.getSynchronizationPolicy(), "synchronizationPolicy", null, 0, 1, DiagramElementDescription.class, //$NON-NLS-1$
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.nodeDescriptionEClass, NodeDescription.class, "NodeDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
         this.initEReference(this.getNodeDescription_ChildrenDescriptions(), this.getNodeDescription(), null, "childrenDescriptions", null, 0, -1, NodeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, //$NON-NLS-1$
@@ -1412,6 +1575,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
 
         this.initEClass(this.edgeToolEClass, EdgeTool.class, "EdgeTool", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
+        this.initEClass(this.dropToolEClass, DropTool.class, "DropTool", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+
         this.initEClass(this.operationEClass, Operation.class, "Operation", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
         this.initEReference(this.getOperation_Children(), this.getOperation(), null, "children", null, 0, -1, Operation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, //$NON-NLS-1$
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1442,6 +1607,20 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
 
         this.initEClass(this.deleteElementEClass, DeleteElement.class, "DeleteElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
+        this.initEClass(this.createViewEClass, CreateView.class, "CreateView", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+        this.initEAttribute(this.getCreateView_ParentViewExpression(), this.ecorePackage.getEString(), "parentViewExpression", "aql:selectedNode", 1, 1, CreateView.class, !IS_TRANSIENT, !IS_VOLATILE, //$NON-NLS-1$ //$NON-NLS-2$
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getCreateView_ElementDescription(), this.getDiagramElementDescription(), null, "elementDescription", null, 0, 1, CreateView.class, !IS_TRANSIENT, !IS_VOLATILE, //$NON-NLS-1$
+                IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getCreateView_SemanticElementExpression(), this.ecorePackage.getEString(), "semanticElementExpression", "aql:self", 1, 1, CreateView.class, !IS_TRANSIENT, //$NON-NLS-1$ //$NON-NLS-2$
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getCreateView_VariableName(), this.ecorePackage.getEString(), "variableName", null, 0, 1, CreateView.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, //$NON-NLS-1$
+                !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.deleteViewEClass, DeleteView.class, "DeleteView", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+        this.initEAttribute(this.getDeleteView_ViewExpression(), this.ecorePackage.getEString(), "viewExpression", "aql:selectedNode", 1, 1, DeleteView.class, !IS_TRANSIENT, !IS_VOLATILE, //$NON-NLS-1$ //$NON-NLS-2$
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
         this.initEClass(this.conditionalEClass, Conditional.class, "Conditional", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
         this.initEAttribute(this.getConditional_Condition(), this.ecorePackage.getEString(), "condition", "aql:false", 1, 1, Conditional.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, //$NON-NLS-1$ //$NON-NLS-2$
                 !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1469,6 +1648,10 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.addEEnumLiteral(this.lineStyleEEnum, LineStyle.DASH);
         this.addEEnumLiteral(this.lineStyleEEnum, LineStyle.DOT);
         this.addEEnumLiteral(this.lineStyleEEnum, LineStyle.DASH_DOT);
+
+        this.initEEnum(this.synchronizationPolicyEEnum, SynchronizationPolicy.class, "SynchronizationPolicy"); //$NON-NLS-1$
+        this.addEEnumLiteral(this.synchronizationPolicyEEnum, SynchronizationPolicy.SYNCHRONIZED);
+        this.addEEnumLiteral(this.synchronizationPolicyEEnum, SynchronizationPolicy.UNSYNCHRONIZED);
 
         // Create resource
         this.createResource(eNS_URI);

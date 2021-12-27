@@ -56,6 +56,7 @@ import org.eclipse.sirius.web.representations.Failure;
 import org.eclipse.sirius.web.representations.IRepresentationDescription;
 import org.eclipse.sirius.web.representations.IStatus;
 import org.eclipse.sirius.web.representations.VariableManager;
+import org.eclipse.sirius.web.spring.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.web.view.DeleteTool;
 import org.eclipse.sirius.web.view.DiagramElementDescription;
 import org.eclipse.sirius.web.view.EdgeTool;
@@ -168,13 +169,27 @@ public class ViewConverter {
                     .nodeDescriptions(nodeDescriptions)
                     .edgeDescriptions(edgeDescriptions)
                     .toolSections(this.createToolSections(interpreter))
-                    .dropHandler(variableManager -> new Failure("")) //$NON-NLS-1$
+                    .dropHandler(this.createDiagramDropHandler(viewDiagramDescription, interpreter))
                     .build();
             // @formatter:on
         } finally {
             this.convertedNodes.clear();
             this.convertedEdges.clear();
         }
+    }
+
+    private Function<VariableManager, IStatus> createDiagramDropHandler(org.eclipse.sirius.web.view.DiagramDescription viewDiagramDescription, AQLInterpreter interpreter) {
+        Map<org.eclipse.sirius.web.view.NodeDescription, NodeDescription> capturedNodeDescriptions = Map.copyOf(this.convertedNodes);
+        return variableManager -> {
+            if (viewDiagramDescription.getOnDrop() != null) {
+                var augmentedVariableManager = variableManager.createChild();
+                augmentedVariableManager.put("convertedNodes", capturedNodeDescriptions); //$NON-NLS-1$
+                return new ToolInterpreter(interpreter, this.objectService, this.editService, this.getDiagramContext(variableManager), capturedNodeDescriptions)
+                        .executeTool(viewDiagramDescription.getOnDrop(), augmentedVariableManager);
+            } else {
+                return new Failure("No drop handler configured"); //$NON-NLS-1$
+            }
+        };
     }
 
     private String computeDiagramLabel(org.eclipse.sirius.web.view.DiagramDescription viewDiagramDescription, VariableManager variableManager, AQLInterpreter interpreter) {
@@ -206,7 +221,7 @@ public class ViewConverter {
                                                         .map(borderNodeDescription -> this.convert(borderNodeDescription, interpreter))
                                                         .collect(Collectors.toList());
         // @formatter:on
-        SynchronizationPolicy synchronizationPolicy = SynchronizationPolicy.SYNCHRONIZED;
+        SynchronizationPolicy synchronizationPolicy = SynchronizationPolicy.valueOf(viewNodeDescription.getSynchronizationPolicy().getName());
 
         Function<VariableManager, String> typeProvider = variableManager -> {
             // @formatter:off
@@ -277,6 +292,7 @@ public class ViewConverter {
     }
 
     private List<ToolSection> createToolSections(AQLInterpreter interpreter) {
+        var capturedConvertedNodes = Map.copyOf(this.convertedNodes);
         List<ITool> nodeCreationTools = new ArrayList<>();
         for (var nodeDescription : this.convertedNodes.keySet()) {
             // Add custom tools
@@ -286,7 +302,7 @@ public class ViewConverter {
                 CreateNodeTool customTool = CreateNodeTool.newCreateNodeTool(this.idProvider.apply(nodeDescription) + "_tool" + i++) //$NON-NLS-1$
                         .label(nodeTool.getName())
                         .imageURL(NODE_CREATION_TOOL_ICON)
-                        .handler(variableManager -> new ToolInterpreter(interpreter, this.editService).executeTool(nodeTool, variableManager))
+                        .handler(variableManager -> new ToolInterpreter(interpreter, this.objectService, this.editService, this.getDiagramContext(variableManager), capturedConvertedNodes).executeTool(nodeTool, variableManager))
                         .targetDescriptions(Optional.ofNullable(nodeDescription.eContainer()).map(this.convertedNodes::get).stream().collect(Collectors.toList()))
                         .appliesToDiagramRoot(nodeDescription.eContainer() instanceof org.eclipse.sirius.web.view.DiagramDescription)
                         .build();
@@ -321,7 +337,7 @@ public class ViewConverter {
                                 .sources(edgeDescription.getSourceNodeDescriptions().stream().map(this.convertedNodes::get).collect(Collectors.toList()))
                                 .targets(edgeDescription.getTargetNodeDescriptions().stream().map(this.convertedNodes::get).collect(Collectors.toList()))
                                 .build()))
-                        .handler(variableManager -> new ToolInterpreter(interpreter, this.editService).executeTool(edgeTool, variableManager))
+                        .handler(variableManager -> new ToolInterpreter(interpreter, this.objectService, this.editService, this.getDiagramContext(variableManager), capturedConvertedNodes).executeTool(edgeTool, variableManager))
                         .build();
                 // @formatter:on
                 edgeCreationTools.add(customTool);
@@ -482,6 +498,8 @@ public class ViewConverter {
             return this.stylesFactory.createEdgeStyle(effectiveStyle);
         };
 
+        SynchronizationPolicy synchronizationPolicy = SynchronizationPolicy.valueOf(viewEdgeDescription.getSynchronizationPolicy().getName());
+
         // @formatter:off
         EdgeDescription result = EdgeDescription.newEdgeDescription(this.idProvider.apply(viewEdgeDescription))
                                      .targetObjectIdProvider(this.semanticTargetIdProvider)
@@ -491,6 +509,7 @@ public class ViewConverter {
                                      .sourceNodeDescriptions(viewEdgeDescription.getSourceNodeDescriptions().stream().map(this.convertedNodes::get).collect(Collectors.toList()))
                                      .targetNodeDescriptions(viewEdgeDescription.getTargetNodeDescriptions().stream().map(this.convertedNodes::get).collect(Collectors.toList()))
                                      .semanticElementsProvider(semanticElementsProvider)
+                                     .synchronizationPolicy(synchronizationPolicy)
                                      .sourceNodesProvider(sourceNodesProvider)
                                      .targetNodesProvider(targetNodesProvider)
                                      .styleProvider(styleProvider)
@@ -503,10 +522,11 @@ public class ViewConverter {
     }
 
     private Function<VariableManager, IStatus> createDeleteHandler(DiagramElementDescription diagramElementDescription, AQLInterpreter interpreter) {
+        var capturedConvertedNodes = Map.copyOf(this.convertedNodes);
         DeleteTool tool = diagramElementDescription.getDeleteTool();
         if (tool != null) {
             return variableManager -> {
-                return new ToolInterpreter(interpreter, this.editService).executeTool(tool, variableManager);
+                return new ToolInterpreter(interpreter, this.objectService, this.editService, this.getDiagramContext(variableManager), capturedConvertedNodes).executeTool(tool, variableManager);
             };
         } else {
             return this.canonicalBehaviors::deleteElement;
@@ -514,12 +534,13 @@ public class ViewConverter {
     }
 
     private BiFunction<VariableManager, String, IStatus> createLabelEditHandler(DiagramElementDescription diagramElementDescription, AQLInterpreter interpreter) {
+        var capturedConvertedNodes = Map.copyOf(this.convertedNodes);
         LabelEditTool tool = diagramElementDescription.getLabelEditTool();
         if (tool != null) {
             return (variableManager, newLabel) -> {
                 VariableManager childVariableManager = variableManager.createChild();
                 childVariableManager.put("arg0", newLabel); //$NON-NLS-1$
-                return new ToolInterpreter(interpreter, this.editService).executeTool(tool, childVariableManager);
+                return new ToolInterpreter(interpreter, this.objectService, this.editService, this.getDiagramContext(variableManager), capturedConvertedNodes).executeTool(tool, childVariableManager);
             };
         } else {
             return this.canonicalBehaviors::editLabel;
@@ -544,6 +565,10 @@ public class ViewConverter {
 
     private String evaluateString(AQLInterpreter interpreter, VariableManager variableManager, String expression) {
         return interpreter.evaluateExpression(variableManager.getVariables(), expression).asString().orElse(""); //$NON-NLS-1$
+    }
+
+    private IDiagramContext getDiagramContext(VariableManager variableManager) {
+        return variableManager.get(IDiagramContext.DIAGRAM_CONTEXT, IDiagramContext.class).orElse(null);
     }
 
 }

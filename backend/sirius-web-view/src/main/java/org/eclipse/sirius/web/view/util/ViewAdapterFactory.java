@@ -21,10 +21,13 @@ import org.eclipse.sirius.web.view.Conditional;
 import org.eclipse.sirius.web.view.ConditionalEdgeStyle;
 import org.eclipse.sirius.web.view.ConditionalNodeStyle;
 import org.eclipse.sirius.web.view.CreateInstance;
+import org.eclipse.sirius.web.view.CreateView;
 import org.eclipse.sirius.web.view.DeleteElement;
 import org.eclipse.sirius.web.view.DeleteTool;
+import org.eclipse.sirius.web.view.DeleteView;
 import org.eclipse.sirius.web.view.DiagramDescription;
 import org.eclipse.sirius.web.view.DiagramElementDescription;
+import org.eclipse.sirius.web.view.DropTool;
 import org.eclipse.sirius.web.view.EdgeDescription;
 import org.eclipse.sirius.web.view.EdgeStyle;
 import org.eclipse.sirius.web.view.EdgeTool;
@@ -169,6 +172,11 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
         }
 
         @Override
+        public Adapter caseDropTool(DropTool object) {
+            return ViewAdapterFactory.this.createDropToolAdapter();
+        }
+
+        @Override
         public Adapter caseOperation(Operation object) {
             return ViewAdapterFactory.this.createOperationAdapter();
         }
@@ -196,6 +204,16 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseDeleteElement(DeleteElement object) {
             return ViewAdapterFactory.this.createDeleteElementAdapter();
+        }
+
+        @Override
+        public Adapter caseCreateView(CreateView object) {
+            return ViewAdapterFactory.this.createCreateViewAdapter();
+        }
+
+        @Override
+        public Adapter caseDeleteView(DeleteView object) {
+            return ViewAdapterFactory.this.createDeleteViewAdapter();
         }
 
         @Override
@@ -430,6 +448,19 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.web.view.DropTool <em>Drop Tool</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.web.view.DropTool
+     * @generated
+     */
+    public Adapter createDropToolAdapter() {
+        return null;
+    }
+
+    /**
      * Creates a new adapter for an object of class '{@link org.eclipse.sirius.web.view.Operation <em>Operation</em>}'.
      * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
      * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
@@ -504,6 +535,32 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createDeleteElementAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.web.view.CreateView <em>Create
+     * View</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.web.view.CreateView
+     * @generated
+     */
+    public Adapter createCreateViewAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.web.view.DeleteView <em>Delete
+     * View</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.web.view.DeleteView
+     * @generated
+     */
+    public Adapter createDeleteViewAdapter() {
         return null;
     }
 

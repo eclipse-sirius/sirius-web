@@ -20,10 +20,13 @@ import org.eclipse.sirius.web.view.Conditional;
 import org.eclipse.sirius.web.view.ConditionalEdgeStyle;
 import org.eclipse.sirius.web.view.ConditionalNodeStyle;
 import org.eclipse.sirius.web.view.CreateInstance;
+import org.eclipse.sirius.web.view.CreateView;
 import org.eclipse.sirius.web.view.DeleteElement;
 import org.eclipse.sirius.web.view.DeleteTool;
+import org.eclipse.sirius.web.view.DeleteView;
 import org.eclipse.sirius.web.view.DiagramDescription;
 import org.eclipse.sirius.web.view.DiagramElementDescription;
+import org.eclipse.sirius.web.view.DropTool;
 import org.eclipse.sirius.web.view.EdgeDescription;
 import org.eclipse.sirius.web.view.EdgeStyle;
 import org.eclipse.sirius.web.view.EdgeTool;
@@ -221,6 +224,15 @@ public class ViewSwitch<T> extends Switch<T> {
                 result = this.defaultCase(theEObject);
             return result;
         }
+        case ViewPackage.DROP_TOOL: {
+            DropTool dropTool = (DropTool) theEObject;
+            T result = this.caseDropTool(dropTool);
+            if (result == null)
+                result = this.caseTool(dropTool);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
         case ViewPackage.OPERATION: {
             Operation operation = (Operation) theEObject;
             T result = this.caseOperation(operation);
@@ -269,6 +281,24 @@ public class ViewSwitch<T> extends Switch<T> {
             T result = this.caseDeleteElement(deleteElement);
             if (result == null)
                 result = this.caseOperation(deleteElement);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.CREATE_VIEW: {
+            CreateView createView = (CreateView) theEObject;
+            T result = this.caseCreateView(createView);
+            if (result == null)
+                result = this.caseOperation(createView);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.DELETE_VIEW: {
+            DeleteView deleteView = (DeleteView) theEObject;
+            T result = this.caseDeleteView(deleteView);
+            if (result == null)
+                result = this.caseOperation(deleteView);
             if (result == null)
                 result = this.defaultCase(theEObject);
             return result;
@@ -532,6 +562,20 @@ public class ViewSwitch<T> extends Switch<T> {
     }
 
     /**
+     * Returns the result of interpreting the object as an instance of '<em>Drop Tool</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Drop Tool</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseDropTool(DropTool object) {
+        return null;
+    }
+
+    /**
      * Returns the result of interpreting the object as an instance of '<em>Operation</em>'. <!-- begin-user-doc -->
      * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
      *
@@ -615,6 +659,34 @@ public class ViewSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseDeleteElement(DeleteElement object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Create View</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Create View</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseCreateView(CreateView object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Delete View</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Delete View</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseDeleteView(DeleteView object) {
         return null;
     }
 

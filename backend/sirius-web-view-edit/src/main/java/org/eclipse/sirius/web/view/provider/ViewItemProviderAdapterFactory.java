@@ -308,6 +308,29 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     }
 
     /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.web.view.DropTool} instances. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected DropToolItemProvider dropToolItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.web.view.DropTool}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createDropToolAdapter() {
+        if (this.dropToolItemProvider == null) {
+            this.dropToolItemProvider = new DropToolItemProvider(this);
+        }
+
+        return this.dropToolItemProvider;
+    }
+
+    /**
      * This keeps track of the one adapter used for all {@link org.eclipse.sirius.web.view.ChangeContext} instances.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -420,6 +443,52 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
         }
 
         return this.deleteElementItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.web.view.CreateView} instances. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected CreateViewItemProvider createViewItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.web.view.CreateView}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createCreateViewAdapter() {
+        if (this.createViewItemProvider == null) {
+            this.createViewItemProvider = new CreateViewItemProvider(this);
+        }
+
+        return this.createViewItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.web.view.DeleteView} instances. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected DeleteViewItemProvider deleteViewItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.web.view.DeleteView}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createDeleteViewAdapter() {
+        if (this.deleteViewItemProvider == null) {
+            this.deleteViewItemProvider = new DeleteViewItemProvider(this);
+        }
+
+        return this.deleteViewItemProvider;
     }
 
     /**
@@ -588,6 +657,8 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
             this.nodeToolItemProvider.dispose();
         if (this.edgeToolItemProvider != null)
             this.edgeToolItemProvider.dispose();
+        if (this.dropToolItemProvider != null)
+            this.dropToolItemProvider.dispose();
         if (this.changeContextItemProvider != null)
             this.changeContextItemProvider.dispose();
         if (this.createInstanceItemProvider != null)
@@ -598,6 +669,10 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
             this.unsetValueItemProvider.dispose();
         if (this.deleteElementItemProvider != null)
             this.deleteElementItemProvider.dispose();
+        if (this.createViewItemProvider != null)
+            this.createViewItemProvider.dispose();
+        if (this.deleteViewItemProvider != null)
+            this.deleteViewItemProvider.dispose();
         if (this.conditionalNodeStyleItemProvider != null)
             this.conditionalNodeStyleItemProvider.dispose();
         if (this.conditionalEdgeStyleItemProvider != null)

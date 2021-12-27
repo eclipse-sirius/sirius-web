@@ -23,6 +23,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.sirius.web.view.DiagramDescription;
+import org.eclipse.sirius.web.view.DropTool;
 import org.eclipse.sirius.web.view.EdgeDescription;
 import org.eclipse.sirius.web.view.NodeDescription;
 import org.eclipse.sirius.web.view.ViewPackage;
@@ -39,6 +40,7 @@ import org.eclipse.sirius.web.view.ViewPackage;
  * Descriptions</em>}</li>
  * <li>{@link org.eclipse.sirius.web.view.impl.DiagramDescriptionImpl#getEdgeDescriptions <em>Edge
  * Descriptions</em>}</li>
+ * <li>{@link org.eclipse.sirius.web.view.impl.DiagramDescriptionImpl#getOnDrop <em>On Drop</em>}</li>
  * </ul>
  *
  * @generated
@@ -83,6 +85,16 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
      * @ordered
      */
     protected EList<EdgeDescription> edgeDescriptions;
+
+    /**
+     * The cached value of the '{@link #getOnDrop() <em>On Drop</em>}' containment reference. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @see #getOnDrop()
+     * @generated
+     * @ordered
+     */
+    protected DropTool onDrop;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -158,12 +170,62 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
      * @generated
      */
     @Override
+    public DropTool getOnDrop() {
+        return this.onDrop;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public NotificationChain basicSetOnDrop(DropTool newOnDrop, NotificationChain msgs) {
+        DropTool oldOnDrop = this.onDrop;
+        this.onDrop = newOnDrop;
+        if (this.eNotificationRequired()) {
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ViewPackage.DIAGRAM_DESCRIPTION__ON_DROP, oldOnDrop, newOnDrop);
+            if (msgs == null)
+                msgs = notification;
+            else
+                msgs.add(notification);
+        }
+        return msgs;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setOnDrop(DropTool newOnDrop) {
+        if (newOnDrop != this.onDrop) {
+            NotificationChain msgs = null;
+            if (this.onDrop != null)
+                msgs = ((InternalEObject) this.onDrop).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ViewPackage.DIAGRAM_DESCRIPTION__ON_DROP, null, msgs);
+            if (newOnDrop != null)
+                msgs = ((InternalEObject) newOnDrop).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ViewPackage.DIAGRAM_DESCRIPTION__ON_DROP, null, msgs);
+            msgs = this.basicSetOnDrop(newOnDrop, msgs);
+            if (msgs != null)
+                msgs.dispatch();
+        } else if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.DIAGRAM_DESCRIPTION__ON_DROP, newOnDrop, newOnDrop));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
         case ViewPackage.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS:
             return ((InternalEList<?>) this.getNodeDescriptions()).basicRemove(otherEnd, msgs);
         case ViewPackage.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS:
             return ((InternalEList<?>) this.getEdgeDescriptions()).basicRemove(otherEnd, msgs);
+        case ViewPackage.DIAGRAM_DESCRIPTION__ON_DROP:
+            return this.basicSetOnDrop(null, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -182,6 +244,8 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
             return this.getNodeDescriptions();
         case ViewPackage.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS:
             return this.getEdgeDescriptions();
+        case ViewPackage.DIAGRAM_DESCRIPTION__ON_DROP:
+            return this.getOnDrop();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -206,6 +270,9 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
             this.getEdgeDescriptions().clear();
             this.getEdgeDescriptions().addAll((Collection<? extends EdgeDescription>) newValue);
             return;
+        case ViewPackage.DIAGRAM_DESCRIPTION__ON_DROP:
+            this.setOnDrop((DropTool) newValue);
+            return;
         }
         super.eSet(featureID, newValue);
     }
@@ -227,6 +294,9 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
         case ViewPackage.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS:
             this.getEdgeDescriptions().clear();
             return;
+        case ViewPackage.DIAGRAM_DESCRIPTION__ON_DROP:
+            this.setOnDrop((DropTool) null);
+            return;
         }
         super.eUnset(featureID);
     }
@@ -245,6 +315,8 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
             return this.nodeDescriptions != null && !this.nodeDescriptions.isEmpty();
         case ViewPackage.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS:
             return this.edgeDescriptions != null && !this.edgeDescriptions.isEmpty();
+        case ViewPackage.DIAGRAM_DESCRIPTION__ON_DROP:
+            return this.onDrop != null;
         }
         return super.eIsSet(featureID);
     }

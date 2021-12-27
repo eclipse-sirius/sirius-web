@@ -23,9 +23,12 @@ import org.eclipse.sirius.web.view.ChangeContext;
 import org.eclipse.sirius.web.view.ConditionalEdgeStyle;
 import org.eclipse.sirius.web.view.ConditionalNodeStyle;
 import org.eclipse.sirius.web.view.CreateInstance;
+import org.eclipse.sirius.web.view.CreateView;
 import org.eclipse.sirius.web.view.DeleteElement;
 import org.eclipse.sirius.web.view.DeleteTool;
+import org.eclipse.sirius.web.view.DeleteView;
 import org.eclipse.sirius.web.view.DiagramDescription;
+import org.eclipse.sirius.web.view.DropTool;
 import org.eclipse.sirius.web.view.EdgeDescription;
 import org.eclipse.sirius.web.view.EdgeStyle;
 import org.eclipse.sirius.web.view.EdgeTool;
@@ -35,6 +38,7 @@ import org.eclipse.sirius.web.view.NodeDescription;
 import org.eclipse.sirius.web.view.NodeStyle;
 import org.eclipse.sirius.web.view.NodeTool;
 import org.eclipse.sirius.web.view.SetValue;
+import org.eclipse.sirius.web.view.SynchronizationPolicy;
 import org.eclipse.sirius.web.view.UnsetValue;
 import org.eclipse.sirius.web.view.View;
 import org.eclipse.sirius.web.view.ViewFactory;
@@ -100,6 +104,8 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
             return this.createNodeTool();
         case ViewPackage.EDGE_TOOL:
             return this.createEdgeTool();
+        case ViewPackage.DROP_TOOL:
+            return this.createDropTool();
         case ViewPackage.CHANGE_CONTEXT:
             return this.createChangeContext();
         case ViewPackage.CREATE_INSTANCE:
@@ -110,6 +116,10 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
             return this.createUnsetValue();
         case ViewPackage.DELETE_ELEMENT:
             return this.createDeleteElement();
+        case ViewPackage.CREATE_VIEW:
+            return this.createCreateView();
+        case ViewPackage.DELETE_VIEW:
+            return this.createDeleteView();
         case ViewPackage.CONDITIONAL_NODE_STYLE:
             return this.createConditionalNodeStyle();
         case ViewPackage.CONDITIONAL_EDGE_STYLE:
@@ -131,6 +141,8 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
             return this.createArrowStyleFromString(eDataType, initialValue);
         case ViewPackage.LINE_STYLE:
             return this.createLineStyleFromString(eDataType, initialValue);
+        case ViewPackage.SYNCHRONIZATION_POLICY:
+            return this.createSynchronizationPolicyFromString(eDataType, initialValue);
         default:
             throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
         }
@@ -148,6 +160,8 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
             return this.convertArrowStyleToString(eDataType, instanceValue);
         case ViewPackage.LINE_STYLE:
             return this.convertLineStyleToString(eDataType, instanceValue);
+        case ViewPackage.SYNCHRONIZATION_POLICY:
+            return this.convertSynchronizationPolicyToString(eDataType, instanceValue);
         default:
             throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
         }
@@ -269,6 +283,17 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
      * @generated
      */
     @Override
+    public DropTool createDropTool() {
+        DropToolImpl dropTool = new DropToolImpl();
+        return dropTool;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public ChangeContext createChangeContext() {
         ChangeContextImpl changeContext = new ChangeContextImpl();
         return changeContext;
@@ -316,6 +341,28 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
     public DeleteElement createDeleteElement() {
         DeleteElementImpl deleteElement = new DeleteElementImpl();
         return deleteElement;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public CreateView createCreateView() {
+        CreateViewImpl createView = new CreateViewImpl();
+        return createView;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public DeleteView createDeleteView() {
+        DeleteViewImpl deleteView = new DeleteViewImpl();
+        return deleteView;
     }
 
     /**
@@ -379,6 +426,27 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
      * @generated
      */
     public String convertLineStyleToString(EDataType eDataType, Object instanceValue) {
+        return instanceValue == null ? null : instanceValue.toString();
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public SynchronizationPolicy createSynchronizationPolicyFromString(EDataType eDataType, String initialValue) {
+        SynchronizationPolicy result = SynchronizationPolicy.get(initialValue);
+        if (result == null)
+            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        return result;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public String convertSynchronizationPolicyToString(EDataType eDataType, Object instanceValue) {
         return instanceValue == null ? null : instanceValue.toString();
     }
 
