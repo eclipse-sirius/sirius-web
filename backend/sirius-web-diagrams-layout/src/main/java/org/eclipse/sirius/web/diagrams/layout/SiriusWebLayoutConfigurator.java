@@ -17,11 +17,8 @@ import java.util.Map;
 
 import org.eclipse.elk.core.LayoutConfigurator;
 import org.eclipse.elk.graph.ElkGraphElement;
-import org.eclipse.elk.graph.ElkNode;
 import org.eclipse.elk.graph.properties.IPropertyHolder;
 import org.eclipse.elk.graph.properties.MapPropertyHolder;
-import org.eclipse.sirius.web.core.api.IEditingContext;
-import org.eclipse.sirius.web.diagrams.Diagram;
 
 /**
  * Specialized {@link LayoutConfigurator} that can configure layout options based on the {@code id} and {@code type}
@@ -93,16 +90,6 @@ public class SiriusWebLayoutConfigurator extends LayoutConfigurator implements I
             thisHolder.copyProperties(entry.getValue());
         }
         return this;
-    }
-
-    @Override
-    public ElkNode applyBeforeLayout(ElkNode elkDiagram, IEditingContext editingContext, Diagram diagram) {
-        return elkDiagram;
-    }
-
-    @Override
-    public ElkNode applyAfterLayout(ElkNode elkDiagram, IEditingContext editingContext, Diagram diagram) {
-        return elkDiagram;
     }
 
 }

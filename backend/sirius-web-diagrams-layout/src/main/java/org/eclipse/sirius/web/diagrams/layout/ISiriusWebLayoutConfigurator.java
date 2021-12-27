@@ -33,8 +33,12 @@ public interface ISiriusWebLayoutConfigurator extends IGraphElementVisitor {
 
     IPropertyHolder configureByElementClass(Class<? extends ElkGraphElement> elementClass);
 
-    ElkNode applyBeforeLayout(ElkNode elkDiagram, IEditingContext editingContext, Diagram diagram);
+    default ElkNode applyBeforeLayout(ElkNode elkDiagram, IEditingContext editingContext, Diagram diagram) {
+        return elkDiagram;
+    }
 
-    ElkNode applyAfterLayout(ElkNode elkDiagram, IEditingContext editingContext, Diagram diagram);
+    default ElkNode applyAfterLayout(ElkNode elkDiagram, IEditingContext editingContext, Diagram diagram) {
+        return elkDiagram;
+    }
 
 }
