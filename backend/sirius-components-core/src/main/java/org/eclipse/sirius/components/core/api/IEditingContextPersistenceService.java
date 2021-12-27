@@ -19,4 +19,18 @@ package org.eclipse.sirius.components.core.api;
  */
 public interface IEditingContextPersistenceService {
     void persist(IEditingContext editingContext);
+
+    /**
+     * Empty implementation, used for mocks in unit tests.
+     *
+     * @author pcdavid
+     */
+    class NoOp implements IEditingContextPersistenceService {
+
+        @Override
+        public void persist(IEditingContext editingContext) {
+            // Do nothing
+        }
+
+    }
 }

@@ -24,4 +24,18 @@ public interface IRepresentationPersistenceService {
 
     void save(IEditingContext editingContext, ISemanticRepresentation representation);
 
+    /**
+     * Empty implementation, used for mocks in unit tests.
+     *
+     * @author pcdavid
+     */
+    class NoOp implements IRepresentationPersistenceService {
+
+        @Override
+        public void save(IEditingContext editingContext, ISemanticRepresentation representation) {
+            // Do nothing
+        }
+
+    }
+
 }
