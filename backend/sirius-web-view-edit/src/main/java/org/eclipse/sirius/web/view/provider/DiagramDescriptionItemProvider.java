@@ -23,6 +23,7 @@ import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 import org.eclipse.sirius.web.view.DiagramDescription;
+import org.eclipse.sirius.web.view.DropTool;
 import org.eclipse.sirius.web.view.EdgeDescription;
 import org.eclipse.sirius.web.view.EdgeStyle;
 import org.eclipse.sirius.web.view.NodeDescription;
@@ -56,6 +57,7 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
             super.getPropertyDescriptors(object);
 
             this.addAutoLayoutPropertyDescriptor(object);
+            this.addOnDropPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -70,6 +72,18 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
                 this.getString("_UI_DiagramDescription_autoLayout_feature"), //$NON-NLS-1$
                 this.getString("_UI_PropertyDescriptor_description", "_UI_DiagramDescription_autoLayout_feature", "_UI_DiagramDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                 ViewPackage.Literals.DIAGRAM_DESCRIPTION__AUTO_LAYOUT, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the On Drop feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addOnDropPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_DiagramDescription_onDrop_feature"), //$NON-NLS-1$
+                this.getString("_UI_PropertyDescriptor_description", "_UI_DiagramDescription_onDrop_feature", "_UI_DiagramDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                ViewPackage.Literals.DIAGRAM_DESCRIPTION__ON_DROP, true, false, true, null, null, null));
     }
 
     /**
@@ -179,6 +193,10 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
         newEdgeStyle.setColor("#002639"); //$NON-NLS-1$
         edgeChild.setStyle(newEdgeStyle);
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS, edgeChild));
+
+        DropTool dropTool = ViewFactory.eINSTANCE.createDropTool();
+        dropTool.setName("On Drop"); //$NON-NLS-1$
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.DIAGRAM_DESCRIPTION__ON_DROP, dropTool));
     }
 
 }

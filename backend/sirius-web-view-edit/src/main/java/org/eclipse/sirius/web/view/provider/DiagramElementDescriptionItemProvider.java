@@ -66,6 +66,7 @@ public class DiagramElementDescriptionItemProvider extends ItemProviderAdapter
             this.addDomainTypePropertyDescriptor(object);
             this.addSemanticCandidatesExpressionPropertyDescriptor(object);
             this.addLabelExpressionPropertyDescriptor(object);
+            this.addSynchronizationPolicyPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -117,6 +118,19 @@ public class DiagramElementDescriptionItemProvider extends ItemProviderAdapter
                 this.getString("_UI_DiagramElementDescription_labelExpression_feature"), //$NON-NLS-1$
                 this.getString("_UI_PropertyDescriptor_description", "_UI_DiagramElementDescription_labelExpression_feature", "_UI_DiagramElementDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                 ViewPackage.Literals.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Synchronization Policy feature. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     */
+    protected void addSynchronizationPolicyPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_DiagramElementDescription_synchronizationPolicy_feature"), //$NON-NLS-1$
+                this.getString("_UI_PropertyDescriptor_description", "_UI_DiagramElementDescription_synchronizationPolicy_feature", "_UI_DiagramElementDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                ViewPackage.Literals.DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -198,6 +212,7 @@ public class DiagramElementDescriptionItemProvider extends ItemProviderAdapter
         case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE:
         case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
         case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION:
+        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY:
             this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
             return;
         case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__DELETE_TOOL:

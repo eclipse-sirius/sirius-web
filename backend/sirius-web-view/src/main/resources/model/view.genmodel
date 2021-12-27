@@ -3,10 +3,10 @@
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel"
     copyrightText="Copyright (c) 2021 Obeo.&#xA;This program and the accompanying materials&#xA;are made available under the terms of the Eclipse Public License v2.0&#xA;which accompanies this distribution, and is available at&#xA;https://www.eclipse.org/legal/epl-2.0/&#xA;&#xA;SPDX-License-Identifier: EPL-2.0&#xA;&#xA;Contributors:&#xA;     Obeo - initial API and implementation"
     modelDirectory="/sirius-web-view/src/main/java" creationIcons="false" editDirectory="/sirius-web-view-edit/src/main/java"
-    editorDirectory="/sirius-web-view-editor/src/main/java" modelPluginID="sirius-web-view"
-    modelName="View" nonNLSMarkers="true" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
-    codeFormatting="true" commentFormatting="true" importerID="org.eclipse.emf.importer.ecore"
-    bundleManifest="false" complianceLevel="11.0" copyrightFields="false" editPluginID="sirius-web-view-edit"
+    editorDirectory="" modelPluginID="sirius-web-view" modelName="View" nonNLSMarkers="true"
+    rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" codeFormatting="true"
+    commentFormatting="true" importerID="org.eclipse.emf.importer.ecore" bundleManifest="false"
+    complianceLevel="11.0" copyrightFields="false" editPluginID="sirius-web-view-edit"
     editorPluginID="sirius-web-view-editor" operationReflection="true" importOrganizing="true"
     cleanup="true">
   <foreignModel>view.ecore</foreignModel>
@@ -32,6 +32,10 @@
       <genEnumLiterals ecoreEnumLiteral="view.ecore#//LineStyle/Dot"/>
       <genEnumLiterals ecoreEnumLiteral="view.ecore#//LineStyle/Dash_Dot"/>
     </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="view.ecore#//SynchronizationPolicy">
+      <genEnumLiterals ecoreEnumLiteral="view.ecore#//SynchronizationPolicy/SYNCHRONIZED"/>
+      <genEnumLiterals ecoreEnumLiteral="view.ecore#//SynchronizationPolicy/UNSYNCHRONIZED"/>
+    </genEnums>
     <genClasses ecoreClass="view.ecore#//View">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//View/descriptions"/>
     </genClasses>
@@ -44,6 +48,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//DiagramDescription/autoLayout"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//DiagramDescription/nodeDescriptions"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//DiagramDescription/edgeDescriptions"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference view.ecore#//DiagramDescription/onDrop"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//DiagramElementDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//DiagramElementDescription/name"/>
@@ -52,6 +57,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//DiagramElementDescription/labelExpression"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//DiagramElementDescription/deleteTool"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//DiagramElementDescription/labelEditTool"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//DiagramElementDescription/synchronizationPolicy"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//NodeDescription">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//NodeDescription/childrenDescriptions"/>
@@ -103,6 +109,7 @@
     <genClasses ecoreClass="view.ecore#//DeleteTool"/>
     <genClasses ecoreClass="view.ecore#//NodeTool"/>
     <genClasses ecoreClass="view.ecore#//EdgeTool"/>
+    <genClasses ecoreClass="view.ecore#//DropTool"/>
     <genClasses image="false" ecoreClass="view.ecore#//Operation">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//Operation/children"/>
     </genClasses>
@@ -123,6 +130,15 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//UnsetValue/elementExpression"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//DeleteElement"/>
+    <genClasses ecoreClass="view.ecore#//CreateView">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//CreateView/parentViewExpression"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference view.ecore#//CreateView/elementDescription"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//CreateView/semanticElementExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//CreateView/variableName"/>
+    </genClasses>
+    <genClasses ecoreClass="view.ecore#//DeleteView">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//DeleteView/viewExpression"/>
+    </genClasses>
     <genClasses ecoreClass="view.ecore#//Conditional">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//Conditional/condition"/>
     </genClasses>

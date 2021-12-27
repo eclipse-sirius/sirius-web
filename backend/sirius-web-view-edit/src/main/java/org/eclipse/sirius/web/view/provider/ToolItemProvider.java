@@ -169,6 +169,10 @@ public class ToolItemProvider extends ItemProviderAdapter implements IEditingDom
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.TOOL__BODY, ViewFactory.eINSTANCE.createUnsetValue()));
 
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.TOOL__BODY, ViewFactory.eINSTANCE.createDeleteElement()));
+
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.TOOL__BODY, ViewFactory.eINSTANCE.createCreateView()));
+
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.TOOL__BODY, ViewFactory.eINSTANCE.createDeleteView()));
     }
 
     /**

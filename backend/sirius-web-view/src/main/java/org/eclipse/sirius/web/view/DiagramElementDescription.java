@@ -29,6 +29,8 @@ import org.eclipse.emf.ecore.EObject;
  * <li>{@link org.eclipse.sirius.web.view.DiagramElementDescription#getLabelExpression <em>Label Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.web.view.DiagramElementDescription#getDeleteTool <em>Delete Tool</em>}</li>
  * <li>{@link org.eclipse.sirius.web.view.DiagramElementDescription#getLabelEditTool <em>Label Edit Tool</em>}</li>
+ * <li>{@link org.eclipse.sirius.web.view.DiagramElementDescription#getSynchronizationPolicy <em>Synchronization
+ * Policy</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.web.view.ViewPackage#getDiagramElementDescription()
@@ -173,5 +175,31 @@ public interface DiagramElementDescription extends EObject {
      * @generated
      */
     void setLabelEditTool(LabelEditTool value);
+
+    /**
+     * Returns the value of the '<em><b>Synchronization Policy</b></em>' attribute. The literals are from the
+     * enumeration {@link org.eclipse.sirius.web.view.SynchronizationPolicy}. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @return the value of the '<em>Synchronization Policy</em>' attribute.
+     * @see org.eclipse.sirius.web.view.SynchronizationPolicy
+     * @see #setSynchronizationPolicy(SynchronizationPolicy)
+     * @see org.eclipse.sirius.web.view.ViewPackage#getDiagramElementDescription_SynchronizationPolicy()
+     * @model
+     * @generated
+     */
+    SynchronizationPolicy getSynchronizationPolicy();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.web.view.DiagramElementDescription#getSynchronizationPolicy
+     * <em>Synchronization Policy</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Synchronization Policy</em>' attribute.
+     * @see org.eclipse.sirius.web.view.SynchronizationPolicy
+     * @see #getSynchronizationPolicy()
+     * @generated
+     */
+    void setSynchronizationPolicy(SynchronizationPolicy value);
 
 } // DiagramElementDescription

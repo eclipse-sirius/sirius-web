@@ -24,17 +24,29 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.sirius.ecore.extender.business.internal.accessor.ecore.EcoreIntrinsicExtender;
 import org.eclipse.sirius.web.core.api.IEditService;
+import org.eclipse.sirius.web.core.api.IEditingContext;
+import org.eclipse.sirius.web.core.api.IObjectService;
+import org.eclipse.sirius.web.diagrams.Edge;
+import org.eclipse.sirius.web.diagrams.Node;
+import org.eclipse.sirius.web.diagrams.ViewCreationRequest;
+import org.eclipse.sirius.web.diagrams.ViewDeletionRequest;
+import org.eclipse.sirius.web.diagrams.description.NodeDescription;
+import org.eclipse.sirius.web.emf.services.EditingContext;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
 import org.eclipse.sirius.web.interpreter.Result;
 import org.eclipse.sirius.web.representations.Failure;
 import org.eclipse.sirius.web.representations.IStatus;
 import org.eclipse.sirius.web.representations.Success;
 import org.eclipse.sirius.web.representations.VariableManager;
+import org.eclipse.sirius.web.spring.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.web.view.ChangeContext;
 import org.eclipse.sirius.web.view.CreateInstance;
+import org.eclipse.sirius.web.view.CreateView;
 import org.eclipse.sirius.web.view.DeleteElement;
+import org.eclipse.sirius.web.view.DeleteView;
 import org.eclipse.sirius.web.view.Operation;
 import org.eclipse.sirius.web.view.SetValue;
 import org.eclipse.sirius.web.view.Tool;
@@ -52,11 +64,21 @@ public class ToolInterpreter {
 
     private final EcoreIntrinsicExtender ecore;
 
+    private final IObjectService objectService;
+
     private final IEditService editService;
 
-    public ToolInterpreter(AQLInterpreter interpreter, IEditService editService) {
+    private final IDiagramContext diagramContext;
+
+    private final Map<org.eclipse.sirius.web.view.NodeDescription, NodeDescription> convertedNodes;
+
+    public ToolInterpreter(AQLInterpreter interpreter, IObjectService objectService, IEditService editService, IDiagramContext diagramContext,
+            Map<org.eclipse.sirius.web.view.NodeDescription, NodeDescription> convertedNodes) {
         this.interpreter = Objects.requireNonNull(interpreter);
+        this.objectService = Objects.requireNonNull(objectService);
         this.editService = Objects.requireNonNull(editService);
+        this.diagramContext = diagramContext;
+        this.convertedNodes = Objects.requireNonNull(convertedNodes);
         this.ecore = new EcoreIntrinsicExtender();
     }
 
@@ -107,6 +129,16 @@ public class ToolInterpreter {
             @Override
             public Optional<VariableManager> caseDeleteElement(DeleteElement op) {
                 return ToolInterpreter.this.executeDeleteElement(variableManager, op);
+            }
+
+            @Override
+            public Optional<VariableManager> caseCreateView(CreateView op) {
+                return ToolInterpreter.this.executeCreateView(variableManager, op);
+            }
+
+            @Override
+            public Optional<VariableManager> caseDeleteView(DeleteView op) {
+                return ToolInterpreter.this.executeDeleteView(variableManager, op);
             }
         };
         return dispatcher.doSwitch(operation);
@@ -182,13 +214,14 @@ public class ToolInterpreter {
 
     private Optional<VariableManager> executeCreateInstance(VariableManager variableManager, CreateInstance creatInstanceOperation) {
         var optionalSelf = variableManager.get(VariableManager.SELF, EObject.class);
-        if (optionalSelf.isPresent()) {
-            var newInstance = this.createSemanticInstance(optionalSelf.get(), creatInstanceOperation.getTypeName());
-            if (newInstance != null) {
-                Object container = this.ecore.eAdd(optionalSelf.get(), creatInstanceOperation.getReferenceName(), newInstance);
+        var editingDomain = variableManager.get(IEditingContext.EDITING_CONTEXT, EditingContext.class).map(EditingContext::getDomain);
+        if (optionalSelf.isPresent() && editingDomain.isPresent()) {
+            var optionalNewInstance = this.createSemanticInstance(editingDomain.get(), creatInstanceOperation.getTypeName());
+            if (optionalNewInstance.isPresent()) {
+                Object container = this.ecore.eAdd(optionalSelf.get(), creatInstanceOperation.getReferenceName(), optionalNewInstance.get());
                 if (container != null) {
                     VariableManager childVariableManager = variableManager.createChild();
-                    childVariableManager.put(VariableManager.SELF, newInstance);
+                    childVariableManager.put(creatInstanceOperation.getVariableName(), optionalNewInstance.get());
                     return this.executeOperations(creatInstanceOperation.getChildren(), childVariableManager);
                 }
             }
@@ -196,17 +229,31 @@ public class ToolInterpreter {
         return Optional.empty();
     }
 
-    private EObject createSemanticInstance(EObject self, String domainType) {
-        EPackage ePackage = self.eClass().getEPackage();
-        // @formatter:off
-        EClass klass = ePackage
-                      .getEClassifiers().stream()
-                      .filter(classifier -> classifier instanceof EClass && Objects.equals(domainType, classifier.getName()))
-                      .map(EClass.class::cast)
-                      .findFirst()
-                      .get();
-        // @formatter:on
-        return ePackage.getEFactoryInstance().create(klass);
+    private Optional<EObject> createSemanticInstance(EditingDomain editingDomain, String domainType) {
+        Optional<EClass> optionalEClass = this.resolveType(editingDomain, domainType);
+        if (optionalEClass.isPresent()) {
+            return Optional.of(EcoreUtil.create(optionalEClass.get()));
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    private Optional<EClass> resolveType(EditingDomain editingDomain, String domainType) {
+        String[] parts = domainType.split("(::?|\\.)"); //$NON-NLS-1$
+        if (parts.length == 2) {
+            // @formatter:off
+            return editingDomain.getResourceSet().getPackageRegistry().values().stream()
+                         .filter(EPackage.class::isInstance)
+                         .map(EPackage.class::cast)
+                         .filter(ePackage -> Objects.equals(ePackage.getName(), parts[0]))
+                         .map(ePackage -> ePackage.getEClassifier(parts[1]))
+                         .filter(EClass.class::isInstance)
+                         .map(EClass.class::cast)
+                         .findFirst();
+            // @formatter:on
+        } else {
+            return Optional.empty();
+        }
     }
 
     private Optional<VariableManager> executeDeleteElement(VariableManager variableManager, DeleteElement deleteElementOperation) {
@@ -216,6 +263,63 @@ public class ToolInterpreter {
             return this.executeOperations(deleteElementOperation.getChildren(), variableManager);
         }
         return Optional.empty();
+    }
+
+    private Optional<VariableManager> executeCreateView(VariableManager variableManager, CreateView createViewOperation) {
+        if (this.diagramContext == null) {
+            return Optional.empty();
+        }
+        Map<String, Object> variables = variableManager.getVariables();
+        // @formatter:off
+        var optionalParentNode  = this.interpreter.evaluateExpression(variables, createViewOperation.getParentViewExpression())
+                .asObject()
+                .filter(Node.class::isInstance)
+                .map(Node.class::cast);
+        var optionalSemanticElement = this.interpreter.evaluateExpression(variables, createViewOperation.getSemanticElementExpression())
+                .asObject()
+                .filter(EObject.class::isInstance)
+                .map(EObject.class::cast);
+        // @formatter:on
+
+        if (optionalSemanticElement.isPresent()) {
+            this.createView(optionalParentNode, this.convertedNodes.get(createViewOperation.getElementDescription()), optionalSemanticElement.get());
+        }
+        return this.executeOperations(createViewOperation.getChildren(), variableManager);
+    }
+
+    private Optional<VariableManager> executeDeleteView(VariableManager variableManager, DeleteView deleteViewOperation) {
+        var optionalElement = this.interpreter.evaluateExpression(variableManager.getVariables(), deleteViewOperation.getViewExpression()).asObject();
+        if (optionalElement.isPresent()) {
+            this.deleteView(optionalElement.get());
+        }
+        return this.executeOperations(deleteViewOperation.getChildren(), variableManager);
+    }
+
+    public void createView(Optional<Node> optionalParentNode, NodeDescription nodeDescription, EObject semanticElement) {
+        String parentElementId = optionalParentNode.map(Node::getId).orElse(this.diagramContext.getDiagram().getId());
+        // @formatter:off
+        ViewCreationRequest viewCreationRequest = ViewCreationRequest.newViewCreationRequest()
+                .parentElementId(parentElementId)
+                .targetObjectId(this.objectService.getId(semanticElement))
+                .descriptionId(nodeDescription.getId())
+                .build();
+        // @formatter:on
+        this.diagramContext.getViewCreationRequests().add(viewCreationRequest);
+    }
+
+    public void deleteView(Object element) {
+        if (this.diagramContext != null) {
+            String elementId = null;
+            if (element instanceof Node) {
+                elementId = ((Node) element).getId();
+            } else if (element instanceof Edge) {
+                elementId = ((Edge) element).getId();
+            }
+            if (elementId != null) {
+                ViewDeletionRequest viewDeletionRequest = ViewDeletionRequest.newViewDeletionRequest().elementId(elementId).build();
+                this.diagramContext.getViewDeletionRequests().add(viewDeletionRequest);
+            }
+        }
     }
 
 }

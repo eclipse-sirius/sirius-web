@@ -110,6 +110,14 @@ public interface ViewFactory extends EFactory {
     EdgeTool createEdgeTool();
 
     /**
+     * Returns a new object of class '<em>Drop Tool</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Drop Tool</em>'.
+     * @generated
+     */
+    DropTool createDropTool();
+
+    /**
      * Returns a new object of class '<em>Change Context</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return a new object of class '<em>Change Context</em>'.
@@ -148,6 +156,22 @@ public interface ViewFactory extends EFactory {
      * @generated
      */
     DeleteElement createDeleteElement();
+
+    /**
+     * Returns a new object of class '<em>Create View</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Create View</em>'.
+     * @generated
+     */
+    CreateView createCreateView();
+
+    /**
+     * Returns a new object of class '<em>Delete View</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Delete View</em>'.
+     * @generated
+     */
+    DeleteView createDeleteView();
 
     /**
      * Returns a new object of class '<em>Conditional Node Style</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->

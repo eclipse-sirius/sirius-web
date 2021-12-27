@@ -20,6 +20,8 @@
         eType="#//NodeDescription" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="edgeDescriptions" upperBound="-1"
         eType="#//EdgeDescription" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="onDrop" eType="#//DropTool"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DiagramElementDescription" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
@@ -33,6 +35,8 @@
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="labelEditTool" eType="#//LabelEditTool"
         containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="synchronizationPolicy"
+        eType="#//SynchronizationPolicy"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NodeDescription" eSuperTypes="#//DiagramElementDescription">
     <eStructuralFeatures xsi:type="ecore:EReference" name="childrenDescriptions" upperBound="-1"
@@ -133,6 +137,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="DeleteTool" eSuperTypes="#//Tool"/>
   <eClassifiers xsi:type="ecore:EClass" name="NodeTool" eSuperTypes="#//Tool"/>
   <eClassifiers xsi:type="ecore:EClass" name="EdgeTool" eSuperTypes="#//Tool"/>
+  <eClassifiers xsi:type="ecore:EClass" name="DropTool" eSuperTypes="#//Tool"/>
   <eClassifiers xsi:type="ecore:EClass" name="Operation" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EReference" name="children" upperBound="-1"
         eType="#//Operation" containment="true"/>
@@ -162,10 +167,27 @@
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DeleteElement" eSuperTypes="#//Operation"/>
+  <eClassifiers xsi:type="ecore:EClass" name="CreateView" eSuperTypes="#//Operation">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="parentViewExpression" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="aql:selectedNode"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="elementDescription" eType="#//DiagramElementDescription"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="semanticElementExpression"
+        lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="aql:self"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="variableName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DeleteView" eSuperTypes="#//Operation">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="viewExpression" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="aql:selectedNode"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Conditional" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="condition" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="aql:false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConditionalNodeStyle" eSuperTypes="#//Conditional #//NodeStyle"/>
   <eClassifiers xsi:type="ecore:EClass" name="ConditionalEdgeStyle" eSuperTypes="#//Conditional #//EdgeStyle"/>
+  <eClassifiers xsi:type="ecore:EEnum" name="SynchronizationPolicy">
+    <eLiterals name="SYNCHRONIZED"/>
+    <eLiterals name="UNSYNCHRONIZED" value="1"/>
+  </eClassifiers>
 </ecore:EPackage>

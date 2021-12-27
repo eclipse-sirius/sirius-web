@@ -212,13 +212,22 @@ public interface ViewPackage extends EPackage {
     int DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS = REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 2;
 
     /**
+     * The feature id for the '<em><b>On Drop</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DIAGRAM_DESCRIPTION__ON_DROP = REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 3;
+
+    /**
      * The number of structural features of the '<em>Diagram Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int DIAGRAM_DESCRIPTION_FEATURE_COUNT = REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 3;
+    int DIAGRAM_DESCRIPTION_FEATURE_COUNT = REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 4;
 
     /**
      * The number of operations of the '<em>Diagram Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
@@ -292,13 +301,22 @@ public interface ViewPackage extends EPackage {
     int DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EDIT_TOOL = 5;
 
     /**
+     * The feature id for the '<em><b>Synchronization Policy</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY = 6;
+
+    /**
      * The number of structural features of the '<em>Diagram Element Description</em>' class. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT = 6;
+    int DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT = 7;
 
     /**
      * The number of operations of the '<em>Diagram Element Description</em>' class. <!-- begin-user-doc --> <!--
@@ -370,6 +388,15 @@ public interface ViewPackage extends EPackage {
      * @ordered
      */
     int NODE_DESCRIPTION__LABEL_EDIT_TOOL = DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EDIT_TOOL;
+
+    /**
+     * The feature id for the '<em><b>Synchronization Policy</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_DESCRIPTION__SYNCHRONIZATION_POLICY = DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY;
 
     /**
      * The feature id for the '<em><b>Children Descriptions</b></em>' containment reference list. <!-- begin-user-doc
@@ -494,6 +521,15 @@ public interface ViewPackage extends EPackage {
      * @ordered
      */
     int EDGE_DESCRIPTION__LABEL_EDIT_TOOL = DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EDIT_TOOL;
+
+    /**
+     * The feature id for the '<em><b>Synchronization Policy</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_DESCRIPTION__SYNCHRONIZATION_POLICY = DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY;
 
     /**
      * The feature id for the '<em><b>Is Domain Based Edge</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -1216,6 +1252,50 @@ public interface ViewPackage extends EPackage {
     int EDGE_TOOL_OPERATION_COUNT = TOOL_OPERATION_COUNT + 0;
 
     /**
+     * The meta object id for the '{@link org.eclipse.sirius.web.view.impl.DropToolImpl <em>Drop Tool</em>}' class. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.web.view.impl.DropToolImpl
+     * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getDropTool()
+     * @generated
+     */
+    int DROP_TOOL = 15;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DROP_TOOL__NAME = TOOL__NAME;
+
+    /**
+     * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DROP_TOOL__BODY = TOOL__BODY;
+
+    /**
+     * The number of structural features of the '<em>Drop Tool</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DROP_TOOL_FEATURE_COUNT = TOOL_FEATURE_COUNT + 0;
+
+    /**
+     * The number of operations of the '<em>Drop Tool</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DROP_TOOL_OPERATION_COUNT = TOOL_OPERATION_COUNT + 0;
+
+    /**
      * The meta object id for the '{@link org.eclipse.sirius.web.view.impl.OperationImpl <em>Operation</em>}' class.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1223,7 +1303,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getOperation()
      * @generated
      */
-    int OPERATION = 15;
+    int OPERATION = 16;
 
     /**
      * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -1259,7 +1339,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getChangeContext()
      * @generated
      */
-    int CHANGE_CONTEXT = 16;
+    int CHANGE_CONTEXT = 17;
 
     /**
      * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -1303,7 +1383,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getCreateInstance()
      * @generated
      */
-    int CREATE_INSTANCE = 17;
+    int CREATE_INSTANCE = 18;
 
     /**
      * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -1363,7 +1443,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getSetValue()
      * @generated
      */
-    int SET_VALUE = 18;
+    int SET_VALUE = 19;
 
     /**
      * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -1416,7 +1496,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getUnsetValue()
      * @generated
      */
-    int UNSET_VALUE = 19;
+    int UNSET_VALUE = 20;
 
     /**
      * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -1469,7 +1549,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getDeleteElement()
      * @generated
      */
-    int DELETE_ELEMENT = 20;
+    int DELETE_ELEMENT = 21;
 
     /**
      * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -1498,6 +1578,121 @@ public interface ViewPackage extends EPackage {
     int DELETE_ELEMENT_OPERATION_COUNT = OPERATION_OPERATION_COUNT + 0;
 
     /**
+     * The meta object id for the '{@link org.eclipse.sirius.web.view.impl.CreateViewImpl <em>Create View</em>}' class.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.web.view.impl.CreateViewImpl
+     * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getCreateView()
+     * @generated
+     */
+    int CREATE_VIEW = 22;
+
+    /**
+     * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CREATE_VIEW__CHILDREN = OPERATION__CHILDREN;
+
+    /**
+     * The feature id for the '<em><b>Parent View Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CREATE_VIEW__PARENT_VIEW_EXPRESSION = OPERATION_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Element Description</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CREATE_VIEW__ELEMENT_DESCRIPTION = OPERATION_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Semantic Element Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CREATE_VIEW__SEMANTIC_ELEMENT_EXPRESSION = OPERATION_FEATURE_COUNT + 2;
+
+    /**
+     * The feature id for the '<em><b>Variable Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CREATE_VIEW__VARIABLE_NAME = OPERATION_FEATURE_COUNT + 3;
+
+    /**
+     * The number of structural features of the '<em>Create View</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CREATE_VIEW_FEATURE_COUNT = OPERATION_FEATURE_COUNT + 4;
+
+    /**
+     * The number of operations of the '<em>Create View</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CREATE_VIEW_OPERATION_COUNT = OPERATION_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.web.view.impl.DeleteViewImpl <em>Delete View</em>}' class.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.web.view.impl.DeleteViewImpl
+     * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getDeleteView()
+     * @generated
+     */
+    int DELETE_VIEW = 23;
+
+    /**
+     * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DELETE_VIEW__CHILDREN = OPERATION__CHILDREN;
+
+    /**
+     * The feature id for the '<em><b>View Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DELETE_VIEW__VIEW_EXPRESSION = OPERATION_FEATURE_COUNT + 0;
+
+    /**
+     * The number of structural features of the '<em>Delete View</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DELETE_VIEW_FEATURE_COUNT = OPERATION_FEATURE_COUNT + 1;
+
+    /**
+     * The number of operations of the '<em>Delete View</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DELETE_VIEW_OPERATION_COUNT = OPERATION_OPERATION_COUNT + 0;
+
+    /**
      * The meta object id for the '{@link org.eclipse.sirius.web.view.impl.ConditionalImpl <em>Conditional</em>}' class.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1505,7 +1700,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getConditional()
      * @generated
      */
-    int CONDITIONAL = 21;
+    int CONDITIONAL = 24;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1540,7 +1735,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getConditionalNodeStyle()
      * @generated
      */
-    int CONDITIONAL_NODE_STYLE = 22;
+    int CONDITIONAL_NODE_STYLE = 25;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1681,7 +1876,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getConditionalEdgeStyle()
      * @generated
      */
-    int CONDITIONAL_EDGE_STYLE = 23;
+    int CONDITIONAL_EDGE_STYLE = 26;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1807,7 +2002,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getArrowStyle()
      * @generated
      */
-    int ARROW_STYLE = 24;
+    int ARROW_STYLE = 27;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.web.view.LineStyle <em>Line Style</em>}' enum. <!--
@@ -1817,7 +2012,17 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getLineStyle()
      * @generated
      */
-    int LINE_STYLE = 25;
+    int LINE_STYLE = 28;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.web.view.SynchronizationPolicy <em>Synchronization
+     * Policy</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.web.view.SynchronizationPolicy
+     * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getSynchronizationPolicy()
+     * @generated
+     */
+    int SYNCHRONIZATION_POLICY = 29;
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.web.view.View <em>View</em>}'. <!-- begin-user-doc
@@ -1921,6 +2126,18 @@ public interface ViewPackage extends EPackage {
     EReference getDiagramDescription_EdgeDescriptions();
 
     /**
+     * Returns the meta object for the containment reference
+     * '{@link org.eclipse.sirius.web.view.DiagramDescription#getOnDrop <em>On Drop</em>}'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>On Drop</em>'.
+     * @see org.eclipse.sirius.web.view.DiagramDescription#getOnDrop()
+     * @see #getDiagramDescription()
+     * @generated
+     */
+    EReference getDiagramDescription_OnDrop();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.web.view.DiagramElementDescription <em>Diagram
      * Element Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -2000,6 +2217,18 @@ public interface ViewPackage extends EPackage {
      * @generated
      */
     EReference getDiagramElementDescription_LabelEditTool();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.web.view.DiagramElementDescription#getSynchronizationPolicy <em>Synchronization
+     * Policy</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Synchronization Policy</em>'.
+     * @see org.eclipse.sirius.web.view.DiagramElementDescription#getSynchronizationPolicy()
+     * @see #getDiagramElementDescription()
+     * @generated
+     */
+    EAttribute getDiagramElementDescription_SynchronizationPolicy();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.web.view.NodeDescription <em>Node
@@ -2477,6 +2706,16 @@ public interface ViewPackage extends EPackage {
     EClass getEdgeTool();
 
     /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.web.view.DropTool <em>Drop Tool</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Drop Tool</em>'.
+     * @see org.eclipse.sirius.web.view.DropTool
+     * @generated
+     */
+    EClass getDropTool();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.web.view.Operation <em>Operation</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
@@ -2637,6 +2876,82 @@ public interface ViewPackage extends EPackage {
     EClass getDeleteElement();
 
     /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.web.view.CreateView <em>Create View</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Create View</em>'.
+     * @see org.eclipse.sirius.web.view.CreateView
+     * @generated
+     */
+    EClass getCreateView();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.web.view.CreateView#getParentViewExpression
+     * <em>Parent View Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Parent View Expression</em>'.
+     * @see org.eclipse.sirius.web.view.CreateView#getParentViewExpression()
+     * @see #getCreateView()
+     * @generated
+     */
+    EAttribute getCreateView_ParentViewExpression();
+
+    /**
+     * Returns the meta object for the reference '{@link org.eclipse.sirius.web.view.CreateView#getElementDescription
+     * <em>Element Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the reference '<em>Element Description</em>'.
+     * @see org.eclipse.sirius.web.view.CreateView#getElementDescription()
+     * @see #getCreateView()
+     * @generated
+     */
+    EReference getCreateView_ElementDescription();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.web.view.CreateView#getSemanticElementExpression <em>Semantic Element
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Semantic Element Expression</em>'.
+     * @see org.eclipse.sirius.web.view.CreateView#getSemanticElementExpression()
+     * @see #getCreateView()
+     * @generated
+     */
+    EAttribute getCreateView_SemanticElementExpression();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.web.view.CreateView#getVariableName
+     * <em>Variable Name</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Variable Name</em>'.
+     * @see org.eclipse.sirius.web.view.CreateView#getVariableName()
+     * @see #getCreateView()
+     * @generated
+     */
+    EAttribute getCreateView_VariableName();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.web.view.DeleteView <em>Delete View</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Delete View</em>'.
+     * @see org.eclipse.sirius.web.view.DeleteView
+     * @generated
+     */
+    EClass getDeleteView();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.web.view.DeleteView#getViewExpression
+     * <em>View Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>View Expression</em>'.
+     * @see org.eclipse.sirius.web.view.DeleteView#getViewExpression()
+     * @see #getDeleteView()
+     * @generated
+     */
+    EAttribute getDeleteView_ViewExpression();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.web.view.Conditional <em>Conditional</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
@@ -2696,6 +3011,16 @@ public interface ViewPackage extends EPackage {
      * @generated
      */
     EEnum getLineStyle();
+
+    /**
+     * Returns the meta object for enum '{@link org.eclipse.sirius.web.view.SynchronizationPolicy <em>Synchronization
+     * Policy</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for enum '<em>Synchronization Policy</em>'.
+     * @see org.eclipse.sirius.web.view.SynchronizationPolicy
+     * @generated
+     */
+    EEnum getSynchronizationPolicy();
 
     /**
      * Returns the factory that creates the instances of the model. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2806,6 +3131,14 @@ public interface ViewPackage extends EPackage {
         EReference DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS = eINSTANCE.getDiagramDescription_EdgeDescriptions();
 
         /**
+         * The meta object literal for the '<em><b>On Drop</b></em>' containment reference feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference DIAGRAM_DESCRIPTION__ON_DROP = eINSTANCE.getDiagramDescription_OnDrop();
+
+        /**
          * The meta object literal for the '{@link org.eclipse.sirius.web.view.impl.DiagramElementDescriptionImpl
          * <em>Diagram Element Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
@@ -2862,6 +3195,14 @@ public interface ViewPackage extends EPackage {
          * @generated
          */
         EReference DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EDIT_TOOL = eINSTANCE.getDiagramElementDescription_LabelEditTool();
+
+        /**
+         * The meta object literal for the '<em><b>Synchronization Policy</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY = eINSTANCE.getDiagramElementDescription_SynchronizationPolicy();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.web.view.impl.NodeDescriptionImpl <em>Node
@@ -3230,6 +3571,16 @@ public interface ViewPackage extends EPackage {
         EClass EDGE_TOOL = eINSTANCE.getEdgeTool();
 
         /**
+         * The meta object literal for the '{@link org.eclipse.sirius.web.view.impl.DropToolImpl <em>Drop Tool</em>}'
+         * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.web.view.impl.DropToolImpl
+         * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getDropTool()
+         * @generated
+         */
+        EClass DROP_TOOL = eINSTANCE.getDropTool();
+
+        /**
          * The meta object literal for the '{@link org.eclipse.sirius.web.view.impl.OperationImpl <em>Operation</em>}'
          * class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
@@ -3362,6 +3713,66 @@ public interface ViewPackage extends EPackage {
         EClass DELETE_ELEMENT = eINSTANCE.getDeleteElement();
 
         /**
+         * The meta object literal for the '{@link org.eclipse.sirius.web.view.impl.CreateViewImpl <em>Create
+         * View</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.web.view.impl.CreateViewImpl
+         * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getCreateView()
+         * @generated
+         */
+        EClass CREATE_VIEW = eINSTANCE.getCreateView();
+
+        /**
+         * The meta object literal for the '<em><b>Parent View Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute CREATE_VIEW__PARENT_VIEW_EXPRESSION = eINSTANCE.getCreateView_ParentViewExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Element Description</b></em>' reference feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference CREATE_VIEW__ELEMENT_DESCRIPTION = eINSTANCE.getCreateView_ElementDescription();
+
+        /**
+         * The meta object literal for the '<em><b>Semantic Element Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute CREATE_VIEW__SEMANTIC_ELEMENT_EXPRESSION = eINSTANCE.getCreateView_SemanticElementExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Variable Name</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute CREATE_VIEW__VARIABLE_NAME = eINSTANCE.getCreateView_VariableName();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.web.view.impl.DeleteViewImpl <em>Delete
+         * View</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.web.view.impl.DeleteViewImpl
+         * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getDeleteView()
+         * @generated
+         */
+        EClass DELETE_VIEW = eINSTANCE.getDeleteView();
+
+        /**
+         * The meta object literal for the '<em><b>View Expression</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute DELETE_VIEW__VIEW_EXPRESSION = eINSTANCE.getDeleteView_ViewExpression();
+
+        /**
          * The meta object literal for the '{@link org.eclipse.sirius.web.view.impl.ConditionalImpl
          * <em>Conditional</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
@@ -3418,6 +3829,16 @@ public interface ViewPackage extends EPackage {
          * @generated
          */
         EEnum LINE_STYLE = eINSTANCE.getLineStyle();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.web.view.SynchronizationPolicy <em>Synchronization
+         * Policy</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.web.view.SynchronizationPolicy
+         * @see org.eclipse.sirius.web.view.impl.ViewPackageImpl#getSynchronizationPolicy()
+         * @generated
+         */
+        EEnum SYNCHRONIZATION_POLICY = eINSTANCE.getSynchronizationPolicy();
 
     }
 

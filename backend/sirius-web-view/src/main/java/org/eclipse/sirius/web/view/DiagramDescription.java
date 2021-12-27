@@ -75,4 +75,27 @@ public interface DiagramDescription extends RepresentationDescription {
      */
     EList<EdgeDescription> getEdgeDescriptions();
 
+    /**
+     * Returns the value of the '<em><b>On Drop</b></em>' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>On Drop</em>' containment reference.
+     * @see #setOnDrop(DropTool)
+     * @see org.eclipse.sirius.web.view.ViewPackage#getDiagramDescription_OnDrop()
+     * @model containment="true"
+     * @generated
+     */
+    DropTool getOnDrop();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.web.view.DiagramDescription#getOnDrop <em>On Drop</em>}'
+     * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>On Drop</em>' containment reference.
+     * @see #getOnDrop()
+     * @generated
+     */
+    void setOnDrop(DropTool value);
+
 } // DiagramDescription
