@@ -46,10 +46,12 @@ public class DiagramEventFlux {
 
     public void diagramRefreshed(IInput input, Diagram newDiagram) {
         this.currentDiagram = newDiagram;
-        EmitResult emitResult = this.sink.tryEmitNext(new DiagramRefreshedEventPayload(input.getId(), this.currentDiagram));
-        if (emitResult.isFailure()) {
-            String pattern = "An error has occurred while emitting a DiagramRefreshedEventPayload: {}"; //$NON-NLS-1$
-            this.logger.warn(pattern, emitResult);
+        if (this.sink.currentSubscriberCount() > 0) {
+            EmitResult emitResult = this.sink.tryEmitNext(new DiagramRefreshedEventPayload(input.getId(), this.currentDiagram));
+            if (emitResult.isFailure()) {
+                String pattern = "An error has occurred while emitting a DiagramRefreshedEventPayload: {}"; //$NON-NLS-1$
+                this.logger.warn(pattern, emitResult);
+            }
         }
     }
 

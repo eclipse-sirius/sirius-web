@@ -129,10 +129,12 @@ public class ValidationEventProcessor implements IValidationEventProcessor {
             Validation validation = this.refreshValidation();
 
             this.validationContext.update(validation);
-            EmitResult emitResult = this.sink.tryEmitNext(new ValidationRefreshedEventPayload(changeDescription.getInput().getId(), validation));
-            if (emitResult.isFailure()) {
-                String pattern = "An error has occurred while emitting a ValidationRefreshedEventPayload: {}"; //$NON-NLS-1$
-                this.logger.warn(pattern, emitResult);
+            if (this.sink.currentSubscriberCount() > 0) {
+                EmitResult emitResult = this.sink.tryEmitNext(new ValidationRefreshedEventPayload(changeDescription.getInput().getId(), validation));
+                if (emitResult.isFailure()) {
+                    String pattern = "An error has occurred while emitting a ValidationRefreshedEventPayload: {}"; //$NON-NLS-1$
+                    this.logger.warn(pattern, emitResult);
+                }
             }
 
             long end = System.currentTimeMillis();

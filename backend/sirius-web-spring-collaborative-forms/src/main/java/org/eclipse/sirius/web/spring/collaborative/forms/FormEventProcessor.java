@@ -131,10 +131,13 @@ public class FormEventProcessor implements IFormEventProcessor {
             Form form = this.refreshForm();
 
             this.currentForm.set(form);
-            EmitResult emitResult = this.sink.tryEmitNext(new FormRefreshedEventPayload(changeDescription.getInput().getId(), form));
-            if (emitResult.isFailure()) {
-                String pattern = "An error has occurred while emitting a FormRefreshedEventPayload: {}"; //$NON-NLS-1$
-                this.logger.warn(pattern, emitResult);
+
+            if (this.sink.currentSubscriberCount() > 0) {
+                EmitResult emitResult = this.sink.tryEmitNext(new FormRefreshedEventPayload(changeDescription.getInput().getId(), form));
+                if (emitResult.isFailure()) {
+                    String pattern = "An error has occurred while emitting a FormRefreshedEventPayload: {}"; //$NON-NLS-1$
+                    this.logger.warn(pattern, emitResult);
+                }
             }
         }
     }

@@ -105,10 +105,12 @@ public class SelectionEventProcessor implements ISelectionEventProcessor {
             Selection selection = this.refreshSelection();
 
             this.currentSelection.set(selection);
-            EmitResult emitResult = this.sink.tryEmitNext(new SelectionRefreshedEventPayload(changeDescription.getInput().getId(), selection));
-            if (emitResult.isFailure()) {
-                String pattern = "An error has occurred while emitting a SelectionRefreshedEventPayload: {}"; //$NON-NLS-1$
-                this.logger.warn(pattern, emitResult);
+            if (this.sink.currentSubscriberCount() > 0) {
+                EmitResult emitResult = this.sink.tryEmitNext(new SelectionRefreshedEventPayload(changeDescription.getInput().getId(), selection));
+                if (emitResult.isFailure()) {
+                    String pattern = "An error has occurred while emitting a SelectionRefreshedEventPayload: {}"; //$NON-NLS-1$
+                    this.logger.warn(pattern, emitResult);
+                }
             }
         }
     }
