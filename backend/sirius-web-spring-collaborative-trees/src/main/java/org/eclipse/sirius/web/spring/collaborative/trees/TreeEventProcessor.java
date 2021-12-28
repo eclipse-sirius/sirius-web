@@ -130,10 +130,12 @@ public class TreeEventProcessor implements ITreeEventProcessor {
             Tree tree = this.refreshTree();
 
             this.currentTree.set(tree);
-            EmitResult emitResult = this.sink.tryEmitNext(new TreeRefreshedEventPayload(changeDescription.getInput().getId(), tree));
-            if (emitResult.isFailure()) {
-                String pattern = "An error has occurred while emitting a TreeRefreshedEventPayload: {}"; //$NON-NLS-1$
-                this.logger.warn(pattern, emitResult);
+            if (this.sink.currentSubscriberCount() > 0) {
+                EmitResult emitResult = this.sink.tryEmitNext(new TreeRefreshedEventPayload(changeDescription.getInput().getId(), tree));
+                if (emitResult.isFailure()) {
+                    String pattern = "An error has occurred while emitting a TreeRefreshedEventPayload: {}"; //$NON-NLS-1$
+                    this.logger.warn(pattern, emitResult);
+                }
             }
 
             long end = System.currentTimeMillis();
