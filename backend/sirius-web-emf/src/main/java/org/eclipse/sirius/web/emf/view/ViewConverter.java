@@ -324,7 +324,7 @@ public class ViewConverter {
                         .handler(variableManager -> new ToolInterpreter(interpreter, this.editService).executeTool(edgeTool, variableManager))
                         .build();
                 // @formatter:on
-                nodeCreationTools.add(customTool);
+                edgeCreationTools.add(customTool);
             }
             // If there are no custom tools defined, add a canonical creation tool
             if (i == 0) {
