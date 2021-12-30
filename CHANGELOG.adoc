@@ -24,6 +24,10 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/699[#699] [core] The `IRepresentationImageProvider` will now use the `kind` of the representation instead of the instance to compute the image. It will allow users to ask for the image of a representation with either its instance or its metadata
 - https://github.com/eclipse-sirius/sirius-components/issues/699[#699] [core] Add the `targetObjectId` to the `RepresentationMetadata`
 
+=== Dependency update
+
+- [core] Switch to Spring Boot 2.6.3
+
 === Bug fixes
 
 - https://github.com/eclipse-sirius/sirius-components/issues/992[#992] [view] Let the `ViewValidator` consider statically contributed `EPackages` when validating domain types
