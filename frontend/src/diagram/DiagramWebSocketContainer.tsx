@@ -74,6 +74,7 @@ import {
 } from 'diagram/operations';
 import { ContextualMenu } from 'diagram/palette/ContextualMenu';
 import { ContextualPalette } from 'diagram/palette/ContextualPalette';
+import { Node } from 'diagram/sprotty/Diagram.types';
 import {
   DiagramServer,
   HIDE_CONTEXTUAL_TOOLBAR_ACTION,
@@ -81,15 +82,6 @@ import {
   ZOOM_IN_ACTION,
   ZOOM_OUT_ACTION,
 } from 'diagram/sprotty/DiagramServer';
-import { edgeCreationFeedback } from 'diagram/sprotty/edgeCreationFeedback';
-import { Toolbar } from 'diagram/Toolbar';
-import { atLeastOneCanInvokeEdgeTool, canInvokeTool } from 'diagram/toolServices';
-import { GQLDiagramEventPayload } from 'index';
-import React, { useCallback, useContext, useEffect, useRef } from 'react';
-import { SelectionDialogWebSocketContainer } from 'selection/SelectionDialogWebSocketContainer';
-import { EditLabelAction, FitToScreenAction, HoverFeedbackAction, SEdge, SNode } from 'sprotty';
-import { v4 as uuid } from 'uuid';
-import { RepresentationComponentProps, Selection } from 'workbench/Workbench.types';
 import {
   SetActiveConnectorToolsAction,
   SetActiveToolAction,
@@ -98,7 +90,16 @@ import {
   SourceElementAction,
   SprottySelectAction,
   ZoomToAction,
-} from './sprotty/DiagramServer.types';
+} from 'diagram/sprotty/DiagramServer.types';
+import { edgeCreationFeedback } from 'diagram/sprotty/edgeCreationFeedback';
+import { Toolbar } from 'diagram/Toolbar';
+import { atLeastOneCanInvokeEdgeTool, canInvokeTool } from 'diagram/toolServices';
+import { GQLDiagramEventPayload } from 'index';
+import React, { useCallback, useContext, useEffect, useRef } from 'react';
+import { SelectionDialogWebSocketContainer } from 'selection/SelectionDialogWebSocketContainer';
+import { EditLabelAction, FitToScreenAction, HoverFeedbackAction, SEdge, SGraph, SModelElement, SNode } from 'sprotty';
+import { v4 as uuid } from 'uuid';
+import { RepresentationComponentProps, Selection, SelectionEntry } from 'workbench/Workbench.types';
 
 const useDiagramWebSocketContainerStyle = makeStyles((theme) => ({
   container: {
@@ -560,24 +561,37 @@ export const DiagramWebSocketContainer = ({
    * initialization will be done each time we are in the loading state.
    */
   useEffect(() => {
-    const onSelectElement = (newSelectedElement, diagramServer: DiagramServer, position: Position) => {
+    const onSelectElement = (selectedElement: SModelElement, diagramServer: DiagramServer, position: Position) => {
       const newSelection: Selection = { entries: [] };
-      if (newSelectedElement.root.id === newSelectedElement.id) {
-        // newSelectedElement => SGraph
-        const { id, label, kind } = newSelectedElement;
+
+      if (selectedElement instanceof SGraph) {
+        const { id, label, kind } = selectedElement as any; // (as any) to be removed when the proper type will be available
         newSelection.entries.push({ id, label, kind });
-      } else {
-        // newSelectedElement => SNode || SEdge
-        const { targetObjectId, targetObjectKind, targetObjectLabel } = newSelectedElement;
-        newSelection.entries.push({
+      } else if (selectedElement instanceof SNode || selectedElement instanceof SEdge) {
+        const { id, targetObjectId, targetObjectKind, targetObjectLabel } = selectedElement as any; // (as any) to be removed when the proper type will be available
+
+        const semanticSelectionEntry: SelectionEntry = {
           id: targetObjectId,
           label: targetObjectLabel,
           kind: targetObjectKind,
-        });
+        };
+
+        const type = selectedElement instanceof Node ? 'Node' : 'Edge';
+        const graphicalSelectionEntry: SelectionEntry = {
+          id,
+          label: '',
+          kind: `siriusComponents://graphical?representationType=Diagram&type=${type}`,
+        };
+
+        newSelection.entries.push(semanticSelectionEntry);
+        newSelection.entries.push(graphicalSelectionEntry);
       }
+
       setSelection(newSelection);
+
       const selectedElementEvent: SelectedElementEvent = { type: 'SELECTED_ELEMENT', selection: newSelection };
       dispatch(selectedElementEvent);
+
       /**
        * Dispatch the selected element to the diagramServer if our state indicate that selected element has changed.
        * We can't use useEffet hook here, because SPROTTY_SELECT_ACTION must be send to the diagramServer even
@@ -586,11 +600,12 @@ export const DiagramWebSocketContainer = ({
        */
       const selectSprottyAction: SprottySelectAction = {
         kind: 'sprottySelectElement',
-        element: newSelectedElement,
+        element: selectedElement,
         position,
       };
       diagramServer.actionDispatcher.dispatch(selectSprottyAction);
     };
+
     const getCursorOn = (element, diagramServer) => {
       let cursor = 'pointer';
       if (diagramServer.diagramSourceElement) {

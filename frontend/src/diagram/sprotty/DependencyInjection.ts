@@ -10,14 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Position, Tool } from 'diagram/DiagramWebSocketContainer.types';
-import {
-  ACTIVE_CONNECTOR_TOOLS_ACTION,
-  ACTIVE_TOOL_ACTION,
-  DiagramServer,
-  HIDE_CONTEXTUAL_TOOLBAR_ACTION,
-  SPROTTY_DELETE_ACTION,
-} from 'diagram/sprotty/DiagramServer';
+import { Node } from 'diagram/sprotty/Diagram.types';
+import { DiagramServer, HIDE_CONTEXTUAL_TOOLBAR_ACTION, SPROTTY_DELETE_ACTION } from 'diagram/sprotty/DiagramServer';
+import { SetActiveConnectorToolsAction, SetActiveToolAction } from 'diagram/sprotty/DiagramServer.types';
 import { edgeCreationFeedback } from 'diagram/sprotty/edgeCreationFeedback';
 import { GraphFactory } from 'diagram/sprotty/GraphFactory';
 import siriusDragAndDropModule from 'diagram/sprotty/siriusDragAndDropModule';
@@ -30,6 +25,7 @@ import { ListView } from 'diagram/sprotty/views/ListView';
 import { RectangleView } from 'diagram/sprotty/views/RectangleView';
 import { Container, ContainerModule, decorate, inject } from 'inversify';
 import {
+  Action,
   boundsModule,
   configureActionHandler,
   configureModelElement,
@@ -59,10 +55,12 @@ import {
   RequestPopupModelAction,
   routingModule,
   SCompartmentView,
+  SEdge,
   selectModule,
   SetPopupModelAction,
+  SGraph,
   SLabel,
-  SNode,
+  SModelElement,
   SRoutingHandleView,
   TYPES,
   UpdateModelAction,
@@ -117,13 +115,13 @@ const siriusWebContainerModule = new ContainerModule((bind, unbind, isBound, reb
   // @ts-ignore
   configureView({ bind, isBound }, 'graph', DiagramView);
   // @ts-ignore
-  configureModelElement(context, 'node:rectangle', SNode, RectangleView);
+  configureModelElement(context, 'node:rectangle', Node, RectangleView);
   // @ts-ignore
-  configureModelElement(context, 'node:image', SNode, ImageView);
+  configureModelElement(context, 'node:image', Node, ImageView);
   // @ts-ignore
-  configureModelElement(context, 'node:list', SNode, ListView);
+  configureModelElement(context, 'node:list', Node, ListView);
   // @ts-ignore
-  configureModelElement(context, 'node:list:item', SNode, ListItemView);
+  configureModelElement(context, 'node:list:item', Node, ListItemView);
   // @ts-ignore
   configureView({ bind, isBound }, 'port:square', RectangleView);
   configureView({ bind, isBound }, 'edge:straight', EdgeView);
@@ -151,19 +149,13 @@ const siriusWebContainerModule = new ContainerModule((bind, unbind, isBound, reb
  * @param containerId The identifier of the container
  * @param onSelectElement The selection call back
  */
-export const createDependencyInjectionContainer = (
-  containerId: string,
-  onSelectElement: (element: any, diagramServer: DiagramServer, position: Position) => void,
-  getCursorOn,
-  setActiveTool: (tool: Tool | null) => void
-) => {
+export const createDependencyInjectionContainer = (containerId: string, getCursorOn) => {
   const container = new Container();
   container.load(
     defaultModule,
     boundsModule,
     selectModule,
     siriusDragAndDropModule,
-    // siriusResizeModule,
     viewportModule,
     fadeModule,
     exportModule,
@@ -190,44 +182,47 @@ export const createDependencyInjectionContainer = (
     return element.root;
   };
 
-  /**
-   * Using our own MouseListener allows to inject the ModelSource.
-   * Then, when an element is selected in the diagram, the onSelectElement()
-   * method can use the ModelSource to dispatch the SPROTTY_SELECT_ACTION
-   * through DiagramWebSocketContainer.
-   */
   class DiagramMouseListener extends MouseListener {
     diagramServer: DiagramServer;
-    previousCoordinates: Point;
+    previousCoordinates: Point | null;
+
     constructor(diagramServer) {
       super();
       this.diagramServer = diagramServer;
     }
 
-    mouseDown(element, event) {
+    mouseDown(element: SModelElement, event: MouseEvent): (Action | Promise<Action>)[] {
       this.previousCoordinates = {
         x: event.clientX,
         y: event.clientY,
       };
       return super.mouseDown(element, event);
     }
-    mouseUp(element, event) {
+
+    mouseUp(element: SModelElement, event: MouseEvent): (Action | Promise<Action>)[] {
       if (event.button === 0) {
         if (this.previousCoordinates?.x === event.clientX && this.previousCoordinates?.y === event.clientY) {
-          const elementWithTarget = findElementWithTarget(element);
-          onSelectElement(elementWithTarget, this.diagramServer, { x: event.offsetX, y: event.offsetY });
+          const elementWithTarget = findModelElementWithSemanticTarget(element);
+          this.diagramServer.onSelectElement(elementWithTarget, this.diagramServer, {
+            x: event.offsetX,
+            y: event.offsetY,
+          });
         }
       } else if (event.button === 2) {
         edgeCreationFeedback.reset();
-        setActiveTool(null);
-        return [
-          { kind: ACTIVE_TOOL_ACTION, tool: undefined },
-          { kind: ACTIVE_CONNECTOR_TOOLS_ACTION, tools: [] },
-        ];
+        this.diagramServer.setActiveTool(null);
+
+        const setActiveToolAction: SetActiveToolAction = { kind: 'activeTool', tool: null };
+        const setActiveConnectorToolsAction: SetActiveConnectorToolsAction = {
+          kind: 'activeConnectorTools',
+          tools: [],
+        };
+        return [setActiveToolAction, setActiveConnectorToolsAction];
       }
       return [];
     }
-    mouseMove(target, event) {
+
+    mouseMove(_: SModelElement, event: MouseEvent): (Action | Promise<Action>)[] {
       edgeCreationFeedback.update(event.offsetX, event.offsetY);
       if (event.buttons !== 0) {
         // Hide the palette during scrolling/panning
@@ -237,8 +232,20 @@ export const createDependencyInjectionContainer = (
       }
     }
   }
-  decorate(inject(TYPES.ModelSource) as ParameterDecorator, DiagramMouseListener, 0);
 
+  const findModelElementWithSemanticTarget = (element: SModelElement): SGraph | Node | SEdge | null => {
+    let graphicalElement: SGraph | Node | SEdge | null = null;
+    if (element instanceof SGraph || element instanceof Node || element instanceof SEdge) {
+      graphicalElement = element;
+    } else if (element instanceof SLabel) {
+      graphicalElement = findModelElementWithSemanticTarget(element.parent);
+    } else if (element.root instanceof SGraph) {
+      graphicalElement = element.root;
+    }
+    return graphicalElement;
+  };
+
+  decorate(inject(TYPES.ModelSource) as ParameterDecorator, DiagramMouseListener, 0);
   container.bind(TYPES.MouseListener).to(DiagramMouseListener).inSingletonScope();
 
   class DiagramZoomMouseListener extends ZoomMouseListener {
