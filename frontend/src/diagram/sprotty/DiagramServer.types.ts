@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { CreateEdgeTool, GQLDiagram, Position, Tool } from 'diagram/DiagramWebSocketContainer.types';
-import { Action } from 'sprotty';
+import { Action, SModelElement } from 'sprotty';
 import { Selection } from 'workbench/Workbench.types';
 
 export interface SiriusUpdateModelAction extends Action {
@@ -22,7 +22,7 @@ export interface SiriusUpdateModelAction extends Action {
 
 export interface SetActiveToolAction extends Action {
   kind: 'activeTool';
-  tool: Tool;
+  tool: Tool | null;
 }
 
 export interface SiriusSelectAction extends Action {
@@ -32,7 +32,7 @@ export interface SiriusSelectAction extends Action {
 
 export interface SprottySelectAction extends Action {
   kind: 'sprottySelectElement';
-  element: any;
+  element: SModelElement;
   position: Position;
 }
 

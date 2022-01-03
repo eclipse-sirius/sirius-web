@@ -24,7 +24,7 @@ import { createDependencyInjectionContainer } from 'diagram/sprotty/DependencyIn
 import { DiagramServer } from 'diagram/sprotty/DiagramServer';
 import { GQLDiagram } from 'index';
 import { MutableRefObject } from 'react';
-import { MousePositionTracker, TYPES } from 'sprotty';
+import { MousePositionTracker, SModelElement, TYPES } from 'sprotty';
 import { v4 as uuid } from 'uuid';
 import { Selection } from 'workbench/Workbench.types';
 import { assign, Machine } from 'xstate';
@@ -110,7 +110,7 @@ export type InitializeRepresentationEvent = {
   moveElement: any;
   resizeElement: any;
   editLabel: any;
-  onSelectElement: (element: any, diagramServer: DiagramServer, position: Position) => void;
+  onSelectElement: (selectedElement: SModelElement, diagramServer: DiagramServer, position: Position) => void;
   getCursorOn: any;
   setActiveTool: (tool: Tool) => void;
   toolSections: ToolSection[];
@@ -378,13 +378,9 @@ export const diagramWebSocketContainerMachine = Machine<
           httpOrigin,
         } = event as InitializeRepresentationEvent;
 
-        const container = createDependencyInjectionContainer(
-          diagramDomElement.current.id,
-          onSelectElement,
-          getCursorOn,
-          setActiveTool
-        );
+        const container = createDependencyInjectionContainer(diagramDomElement.current.id, getCursorOn);
         const diagramServer = <DiagramServer>container.get(TYPES.ModelSource);
+
         /**
          * workaround to inject objects in diagramServer from the injector.
          * We cannot use inversify annotation for now. (and perhaps never)
@@ -401,6 +397,8 @@ export const diagramWebSocketContainerMachine = Machine<
         diagramServer.setContextualPaletteListener(setContextualPalette);
         diagramServer.setContextualMenuListener(setContextualMenu);
         diagramServer.setHttpOrigin(httpOrigin);
+        diagramServer.setActiveToolListener(setActiveTool);
+        diagramServer.setOnSelectElementListener(onSelectElement);
 
         return {
           diagramServer,

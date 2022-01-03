@@ -11,13 +11,33 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import {
+  GQLArrowStyle,
   GQLDiagram,
   GQLEdge,
   GQLImageNodeStyle,
   GQLINodeStyle,
   GQLLabel,
+  GQLLineStyle,
+  GQLListItemNodeStyle,
+  GQLListNodeStyle,
   GQLNode,
+  GQLRectangularNodeStyle,
 } from 'diagram/DiagramWebSocketContainer.types';
+import {
+  ArrowStyle,
+  Diagram,
+  Edge,
+  EdgeStyle,
+  ImageNodeStyle,
+  INodeStyle,
+  Label,
+  LabelStyle,
+  LineStyle,
+  ListItemNodeStyle,
+  ListNodeStyle,
+  Node,
+  RectangularNodeStyle,
+} from 'diagram/sprotty/Diagram.types';
 import { resizeFeature } from 'diagram/sprotty/resize/model';
 import {
   boundsFeature,
@@ -43,77 +63,69 @@ import {
  * SiriusWeb diagram and Sprotty diagram does not match exactly the same API.
  * This converter will ensure the creation of a proper Sprotty diagram from a given Sirius Web diagram..
  *
- * @param diagram the diagram object to convert
+ * @param gqlDiagram the diagram object to convert
  * @param httpOrigin the URL of the server hosting the images
  * @param readOnly Whether the diagram is readonly
  * @return a Sprotty diagram object
  */
-export const convertDiagram = (diagram: GQLDiagram, httpOrigin: string, readOnly: boolean) => {
-  const { id, descriptionId, kind, targetObjectId, label, position, size, autoLayout } = diagram;
-  const nodes = diagram.nodes.map((node) => convertNode(node, httpOrigin, readOnly, autoLayout));
-  const edges = diagram.edges.map((edge) => convertEdge(edge, httpOrigin, readOnly));
+export const convertDiagram = (gqlDiagram: GQLDiagram, httpOrigin: string, readOnly: boolean): Diagram => {
+  const { id, descriptionId, targetObjectId, autoLayout, nodes, edges, kind, label } = gqlDiagram;
 
-  return {
-    id,
-    descriptionId,
-    kind,
-    type: 'graph',
-    targetObjectId,
-    label,
-    position,
-    features: createFeatureSet([hoverFeedbackFeature, viewportFeature]),
-    size,
-    autoLayout,
-    children: [...nodes, ...edges],
-  };
+  const diagram = new Diagram();
+  diagram.id = id;
+  diagram.type = 'graph';
+  diagram.kind = kind;
+  diagram.label = label;
+  diagram.descriptionId = descriptionId;
+  diagram.targetObjectId = targetObjectId;
+  diagram.features = createFeatureSet([hoverFeedbackFeature, viewportFeature]);
+
+  nodes.map((node) => convertNode(node, httpOrigin, readOnly, autoLayout)).map((node) => diagram.add(node));
+  edges.map((edge) => convertEdge(diagram, edge, httpOrigin, readOnly));
+
+  return diagram;
 };
 
-const convertNode = (node: GQLNode, httpOrigin: string, readOnly: boolean, autoLayout: boolean) => {
-  const { id, type, targetObjectId, targetObjectKind, targetObjectLabel, descriptionId, label, style, size, position } =
-    node;
-
-  let borderNodes = [];
-  if (node.borderNodes) {
-    borderNodes = node.borderNodes.map((borderNode) => convertNode(borderNode, httpOrigin, readOnly, autoLayout));
-  }
-  let childNodes = [];
-  if (node.childNodes) {
-    childNodes = node.childNodes.map((childNode) => convertNode(childNode, httpOrigin, readOnly, autoLayout));
-  }
-
-  const convertedLabel = convertLabel(label, httpOrigin, readOnly);
-  const convertedStyle = convertNodeStyle(style, httpOrigin);
-
-  const features = handleNodeFeatures(node, readOnly, autoLayout);
-
-  const editableLabel = handleEditableLabel(convertedLabel, readOnly);
-
-  return {
+const convertNode = (gqlNode: GQLNode, httpOrigin: string, readOnly: boolean, autoLayout: boolean): Node => {
+  const {
     id,
+    label,
+    descriptionId,
     type,
     targetObjectId,
     targetObjectKind,
     targetObjectLabel,
-    descriptionId,
-    style: convertedStyle,
     size,
     position,
-    features,
-    editableLabel,
-    children: [convertedLabel, ...borderNodes, ...childNodes],
-  };
+    style,
+    borderNodes,
+    childNodes,
+  } = gqlNode;
+
+  const convertedLabel = convertLabel(label, httpOrigin, readOnly);
+  const convertedBorderNodes = borderNodes.map((borderNode) =>
+    convertNode(borderNode, httpOrigin, readOnly, autoLayout)
+  );
+  const convertedChildNodes = childNodes.map((childNode) => convertNode(childNode, httpOrigin, readOnly, autoLayout));
+
+  const node: Node = new Node();
+  node.id = id;
+  node.type = type;
+  node.descriptionId = descriptionId;
+  node.style = convertNodeStyle(style, httpOrigin);
+  node.editableLabel = !readOnly ? convertedLabel : null;
+  node.targetObjectId = targetObjectId;
+  node.targetObjectKind = targetObjectKind;
+  node.targetObjectLabel = targetObjectLabel;
+  node.position = position;
+  node.size = size;
+  node.features = handleNodeFeatures(gqlNode, readOnly, autoLayout);
+  node.children = [convertedLabel, ...convertedBorderNodes, ...convertedChildNodes];
+
+  return node;
 };
 
-const handleEditableLabel = (label: GQLLabel, readOnly: boolean) => {
-  let editableLabel = undefined;
-  if (!readOnly) {
-    editableLabel = label;
-  }
-
-  return editableLabel;
-};
-
-const handleNodeFeatures = (node: GQLNode, readOnly: boolean, autoLayout: boolean): FeatureSet => {
+const handleNodeFeatures = (gqlNode: GQLNode, readOnly: boolean, autoLayout: boolean): FeatureSet => {
   const features = new Set<symbol>([
     connectableFeature,
     deletableFeature,
@@ -128,9 +140,9 @@ const handleNodeFeatures = (node: GQLNode, readOnly: boolean, autoLayout: boolea
     withEditLabelFeature,
   ]);
 
-  if (node.type === 'node:list') {
+  if (gqlNode.type === 'node:list') {
     features.delete(resizeFeature);
-  } else if (node.type === 'node:list:item') {
+  } else if (gqlNode.type === 'node:list:item') {
     features.delete(resizeFeature);
     features.delete(connectableFeature);
     features.delete(moveFeature);
@@ -150,82 +162,145 @@ const handleNodeFeatures = (node: GQLNode, readOnly: boolean, autoLayout: boolea
   return features;
 };
 
-const convertLabel = (label, httpOrigin: string, readOnly: boolean) => {
-  let convertedLabel = { ...label };
+const convertLabel = (gqlLabel: GQLLabel, httpOrigin: string, readOnly: boolean): Label => {
+  const { id, text, type, style, alignment, position, size } = gqlLabel;
+
+  const label: Label = new Label();
+  label.id = id;
+  label.text = text;
+  label.type = type;
+  label.alignment = alignment;
+  label.position = position;
+  label.size = size;
 
   if (!readOnly) {
-    convertedLabel = {
-      ...convertedLabel,
-      features: createFeatureSet([...SLabel.DEFAULT_FEATURES, editLabelFeature]),
-    };
+    label.features = createFeatureSet([...SLabel.DEFAULT_FEATURES, editLabelFeature]);
   }
 
-  if (convertedLabel.style?.iconURL !== undefined && convertedLabel?.style?.iconURL !== '') {
-    const { style } = convertedLabel;
-    return { ...convertedLabel, style: { ...style, iconURL: httpOrigin + style.iconURL } };
+  const { bold, color, fontSize, iconURL, italic, strikeThrough, underline } = style;
+
+  const labelStyle: LabelStyle = new LabelStyle();
+  labelStyle.bold = bold;
+  labelStyle.color = color;
+  labelStyle.fontSize = fontSize;
+  labelStyle.iconURL = iconURL;
+  labelStyle.italic = italic;
+  labelStyle.strikeThrough = strikeThrough;
+  labelStyle.underline = underline;
+
+  if (labelStyle.iconURL?.length ?? 0 > 0) {
+    labelStyle.iconURL = httpOrigin + labelStyle.iconURL;
   }
-  return convertedLabel;
+
+  label.style = labelStyle;
+
+  return label;
 };
 
 const isImageNodeStyle = (style: GQLINodeStyle): style is GQLImageNodeStyle => style.__typename === 'ImageNodeStyle';
+const isRectangularNodeStyle = (style: GQLINodeStyle): style is GQLRectangularNodeStyle =>
+  style.__typename === 'RectangularNodeStyle';
+const isListNodeStyle = (style: GQLINodeStyle): style is GQLListNodeStyle => style.__typename === 'ListNodeStyle';
+const isListItemNodeStyle = (style: GQLINodeStyle): style is GQLListItemNodeStyle =>
+  style.__typename === 'ListItemNodeStyle';
 
-const convertNodeStyle = (style: GQLINodeStyle, httpOrigin: string) => {
+const convertNodeStyle = (style: GQLINodeStyle, httpOrigin: string): INodeStyle | null => {
+  let convertedStyle: INodeStyle | null = null;
+
   if (isImageNodeStyle(style)) {
-    return { ...style, imageURL: httpOrigin + style.imageURL };
+    const { imageURL } = style;
+
+    const imageNodeStyle = new ImageNodeStyle();
+    imageNodeStyle.imageURL = httpOrigin + imageURL;
+
+    convertedStyle = imageNodeStyle;
+  } else if (isRectangularNodeStyle(style)) {
+    const { color, borderColor, borderRadius, borderSize, borderStyle } = style;
+
+    const rectangularNodeStyle = new RectangularNodeStyle();
+    rectangularNodeStyle.color = color;
+    rectangularNodeStyle.borderColor = borderColor;
+    rectangularNodeStyle.borderRadius = borderRadius;
+    rectangularNodeStyle.borderSize = borderSize;
+    rectangularNodeStyle.borderStyle = LineStyle[GQLLineStyle[borderStyle]];
+
+    convertedStyle = rectangularNodeStyle;
+  } else if (isListNodeStyle(style)) {
+    const { color, borderColor, borderRadius, borderSize, borderStyle } = style;
+
+    const listNodeStyle = new ListNodeStyle();
+    listNodeStyle.color = color;
+    listNodeStyle.borderColor = borderColor;
+    listNodeStyle.borderRadius = borderRadius;
+    listNodeStyle.borderSize = borderSize;
+    listNodeStyle.borderStyle = LineStyle[GQLLineStyle[borderStyle]];
+
+    convertedStyle = listNodeStyle;
+  } else if (isListItemNodeStyle(style)) {
+    const { backgroundColor } = style;
+
+    const listItemNodeStyle = new ListItemNodeStyle();
+    listItemNodeStyle.backgroundColor = backgroundColor;
+
+    convertedStyle = listItemNodeStyle;
   }
-  return style;
+  return convertedStyle;
 };
 
-const convertEdge = (edge: GQLEdge, httpOrigin: string, readOnly: boolean) => {
+const convertEdge = (diagram: Diagram, gqlEdge: GQLEdge, httpOrigin: string, readOnly: boolean): Edge => {
   const {
     id,
     type,
+    sourceId,
+    targetId,
+    routingPoints,
+    descriptionId,
     targetObjectId,
     targetObjectKind,
     targetObjectLabel,
-    descriptionId,
     beginLabel,
     centerLabel,
     endLabel,
-    sourceId,
-    targetId,
     style,
-    routingPoints,
-  } = edge;
+  } = gqlEdge;
 
-  let editableLabel;
-  let children = [];
-  if (beginLabel) {
-    const convertedBeginLabel = convertLabel(beginLabel, httpOrigin, readOnly);
-    children.push(convertedBeginLabel);
+  const convertedBeginLabel: Label | null = beginLabel ? convertLabel(beginLabel, httpOrigin, readOnly) : null;
+  const convertedCenterLabel: Label | null = centerLabel ? convertLabel(centerLabel, httpOrigin, readOnly) : null;
+  const convertedEndLabel: Label | null = endLabel ? convertLabel(endLabel, httpOrigin, readOnly) : null;
+
+  const edgeStyle = new EdgeStyle();
+  edgeStyle.color = style.color;
+  edgeStyle.size = style.size;
+  edgeStyle.lineStyle = LineStyle[GQLLineStyle[style.lineStyle]];
+  edgeStyle.sourceArrow = ArrowStyle[GQLArrowStyle[style.sourceArrow]];
+  edgeStyle.targetArrow = ArrowStyle[GQLArrowStyle[style.targetArrow]];
+
+  const edge = new Edge();
+  diagram.add(edge);
+  edge.id = id;
+  edge.type = type;
+  edge.sourceId = sourceId;
+  edge.targetId = targetId;
+  edge.routingPoints = routingPoints;
+  edge.editableLabel = !readOnly ? convertedCenterLabel : null;
+  edge.descriptionId = descriptionId;
+  edge.style = edgeStyle;
+  edge.targetObjectId = targetObjectId;
+  edge.targetObjectKind = targetObjectKind;
+  edge.targetObjectLabel = targetObjectLabel;
+  edge.features = handleEdgeFeatures(readOnly);
+
+  if (convertedBeginLabel) {
+    edge.add(convertedBeginLabel);
   }
-  if (centerLabel) {
-    const convertedCenterLabel = convertLabel(centerLabel, httpOrigin, readOnly);
-    editableLabel = handleEditableLabel(convertedCenterLabel, readOnly);
-    children.push(convertedCenterLabel);
+  if (convertedCenterLabel) {
+    edge.add(convertedCenterLabel);
   }
-  if (endLabel) {
-    const convertedEndLabel = convertLabel(endLabel, httpOrigin, readOnly);
-    children.push(convertedEndLabel);
+  if (convertedEndLabel) {
+    edge.add(convertedEndLabel);
   }
 
-  const features = handleEdgeFeatures(readOnly);
-
-  return {
-    id,
-    type,
-    targetObjectId,
-    targetObjectKind,
-    targetObjectLabel,
-    descriptionId,
-    sourceId,
-    targetId,
-    style,
-    routingPoints,
-    features,
-    editableLabel,
-    children: children,
-  };
+  return edge;
 };
 
 const handleEdgeFeatures = (readOnly: boolean): FeatureSet => {

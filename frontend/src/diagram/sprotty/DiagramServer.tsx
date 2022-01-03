@@ -107,6 +107,8 @@ export class DiagramServer extends ModelSource {
   invokeTool;
   setContextualPalette;
   setContextualMenu;
+  setActiveTool;
+  onSelectElement;
 
   // Used to store the edge source element.
   diagramSource: SourceElement | null;
@@ -262,7 +264,7 @@ export class DiagramServer extends ModelSource {
         edgeTool.edgeCandidates.some(
           (edgeCandidate) =>
             edgeCandidate.sources.some((source) => source.id === this.diagramSource.element.descriptionId) &&
-            edgeCandidate.targets.some((target) => target.id === element.descriptionId)
+            edgeCandidate.targets.some((target) => target.id === (element as any).descriptionId)
         )
       );
       if (filteredTools.length < 1) {
@@ -571,5 +573,13 @@ export class DiagramServer extends ModelSource {
 
   setHttpOrigin(httpOrigin) {
     this.httpOrigin = httpOrigin;
+  }
+
+  setActiveToolListener(setActiveTool) {
+    this.setActiveTool = setActiveTool;
+  }
+
+  setOnSelectElementListener(onSelectElement) {
+    this.onSelectElement = onSelectElement;
   }
 }

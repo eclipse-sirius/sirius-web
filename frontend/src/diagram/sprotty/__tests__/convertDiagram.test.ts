@@ -27,6 +27,7 @@ import {
   withEditLabelFeature,
 } from 'sprotty';
 import { convertDiagram } from '../convertDiagram';
+import { Diagram, Edge, ImageNodeStyle, Label, Node } from '../Diagram.types';
 import { resizeFeature } from '../resize/model';
 import { siriusWebDiagram } from './siriusWebDiagram';
 
@@ -40,27 +41,13 @@ describe('ModelConverter', () => {
     expect(sprottyDiagram).not.toBeNull();
     expect(sprottyDiagram).not.toBeUndefined();
 
-    expect(Object.keys(sprottyDiagram)).toStrictEqual([
-      'id',
-      'descriptionId',
-      'kind',
-      'type',
-      'targetObjectId',
-      'label',
-      'position',
-      'features',
-      'size',
-      'autoLayout',
-      'children',
-    ]);
+    expect(sprottyDiagram).toBeInstanceOf(Diagram);
 
     expect(sprottyDiagram.id).toBe(siriusWebDiagram.id);
     expect(sprottyDiagram.kind).toBe(siriusWebDiagram.kind);
     expect(sprottyDiagram.type).toBe('graph');
     expect(sprottyDiagram.targetObjectId).toBe(siriusWebDiagram.targetObjectId);
     expect(sprottyDiagram.label).toBe(siriusWebDiagram.label);
-    expect(sprottyDiagram.position).toBe(siriusWebDiagram.position);
-    expect(sprottyDiagram.size).toBe(siriusWebDiagram.size);
 
     const expectedDiagramChildrenLength = siriusWebDiagram.nodes.length + siriusWebDiagram.edges.length;
     expect(sprottyDiagram.children).toHaveLength(expectedDiagramChildrenLength);
@@ -68,37 +55,26 @@ describe('ModelConverter', () => {
     for (let index = 0; index < sprottyDiagram.children.length; index++) {
       if (index < siriusWebDiagram.nodes.length) {
         const sprottyNode = sprottyDiagram.children[index];
-        const odWebNode = siriusWebDiagram.nodes[index];
+        const gqlNode = siriusWebDiagram.nodes[index];
 
-        const { id, type, targetObjectId, descriptionId, style, size, position } = odWebNode;
-        expect(Object.keys(sprottyNode)).toStrictEqual([
-          'id',
-          'type',
-          'targetObjectId',
-          'targetObjectKind',
-          'targetObjectLabel',
-          'descriptionId',
-          'style',
-          'size',
-          'position',
-          'features',
-          'editableLabel',
-          'children',
-        ]);
-        expect(sprottyNode.id).toBe(id);
-        expect(sprottyNode.type).toBe(type);
-        expect(sprottyNode.targetObjectId).toBe(targetObjectId);
-        expect(sprottyNode.descriptionId).toBe(descriptionId);
-        let convertedStyle;
+        const { id, type, targetObjectId, descriptionId, style, size, position } = gqlNode;
+        expect(sprottyNode).toBeInstanceOf(Node);
+
+        const node: Node = sprottyNode as Node;
+        expect(node.id).toBe(id);
+        expect(node.type).toBe(type);
+        expect(node.targetObjectId).toBe(targetObjectId);
+        expect(node.descriptionId).toBe(descriptionId);
+
         if (isImageNodeStyle(style)) {
-          convertedStyle = { ...style, imageURL: httpOrigin + style.imageURL };
-        } else {
-          convertedStyle = style;
+          if (node.style instanceof ImageNodeStyle) {
+            expect(node.style.imageURL).toStrictEqual(httpOrigin + style.imageURL);
+          }
         }
-        expect(sprottyNode.style).toStrictEqual(convertedStyle);
-        expect((sprottyNode as any).size).toBe(size);
-        expect((sprottyNode as any).position).toBe(position);
-        expect(sprottyNode.features).toStrictEqual(
+
+        expect((node as any).size).toBe(size);
+        expect((node as any).position).toBe(position);
+        expect(node.features).toStrictEqual(
           createFeatureSet([
             connectableFeature,
             deletableFeature,
@@ -114,41 +90,30 @@ describe('ModelConverter', () => {
           ])
         );
 
-        const expectedNodeChildrenLength = 1 + odWebNode.borderNodes.length + odWebNode.childNodes.length;
+        const expectedNodeChildrenLength = 1 + gqlNode.borderNodes.length + gqlNode.childNodes.length;
         expect(sprottyNode.children).toHaveLength(expectedNodeChildrenLength);
 
-        expect(sprottyNode.children[0].id).toBe(odWebNode.label.id);
-        expect(sprottyNode.children[0].type).toBe(odWebNode.label.type);
-        expect(sprottyNode.children[0].text).toBe(odWebNode.label.text);
+        const label = node.children[0] as Label;
+
+        expect(label.id).toBe(gqlNode.label.id);
+        expect(label.type).toBe(gqlNode.label.type);
+        expect(label.text).toBe(gqlNode.label.text);
       } else {
         const sprottyEdge = sprottyDiagram.children[index];
         const odWebEdge = siriusWebDiagram.edges[index - siriusWebDiagram.nodes.length];
 
-        expect(Object.keys(sprottyEdge)).toStrictEqual([
-          'id',
-          'type',
-          'targetObjectId',
-          'targetObjectKind',
-          'targetObjectLabel',
-          'descriptionId',
-          'sourceId',
-          'targetId',
-          'style',
-          'routingPoints',
-          'features',
-          'editableLabel',
-          'children',
-        ]);
+        expect(sprottyEdge).toBeInstanceOf(Edge);
 
-        expect(sprottyEdge.id).toBe(odWebEdge.id);
-        expect(sprottyEdge.type).toBe(odWebEdge.type);
-        expect(sprottyEdge.targetObjectId).toBe(odWebEdge.targetObjectId);
-        expect(sprottyEdge.descriptionId).toBe(odWebEdge.descriptionId);
-        expect((sprottyEdge as any).sourceId).toBe(odWebEdge.sourceId);
-        expect((sprottyEdge as any).targetId).toBe(odWebEdge.targetId);
-        expect(sprottyEdge.style).toBe(odWebEdge.style);
-        expect((sprottyEdge as any).routingPoints).toBe(odWebEdge.routingPoints);
-        expect(sprottyEdge.features).toStrictEqual(
+        const edge: Edge = sprottyEdge as Edge;
+
+        expect(edge.id).toBe(odWebEdge.id);
+        expect(edge.type).toBe(odWebEdge.type);
+        expect(edge.targetObjectId).toBe(odWebEdge.targetObjectId);
+        expect(edge.descriptionId).toBe(odWebEdge.descriptionId);
+        expect((edge as any).sourceId).toBe(odWebEdge.sourceId);
+        expect((edge as any).targetId).toBe(odWebEdge.targetId);
+        expect((edge as any).routingPoints).toBe(odWebEdge.routingPoints);
+        expect(edge.features).toStrictEqual(
           createFeatureSet([deletableFeature, selectFeature, fadeFeature, hoverFeedbackFeature])
         );
       }
