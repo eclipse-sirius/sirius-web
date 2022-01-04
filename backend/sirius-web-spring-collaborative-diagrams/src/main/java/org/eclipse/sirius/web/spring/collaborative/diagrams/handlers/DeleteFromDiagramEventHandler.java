@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -118,6 +118,8 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
                 IStatus status = this.invokeDeleteEdgeTool(optionalElement.get(), editingContext, diagramContext);
                 if (status instanceof Success) {
                     atLeastOneOk = true;
+                } else {
+                    errors.add(((Failure) status).getMessage());
                 }
             } else {
                 String message = this.messageService.edgeNotFound(edgeId.toString());
@@ -130,6 +132,8 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
                 IStatus status = this.invokeDeleteNodeTool(optionalElement.get(), editingContext, diagramContext);
                 if (status instanceof Success) {
                     atLeastOneOk = true;
+                } else {
+                    errors.add(((Failure) status).getMessage());
                 }
             } else {
                 String message = this.messageService.nodeNotFound(nodeId.toString());
@@ -181,10 +185,12 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
             } else {
                 String message = this.messageService.semanticObjectNotFound(node.getTargetObjectId());
                 this.logger.debug(message);
+                result = new Failure(message);
             }
         } else {
             String message = this.messageService.nodeDescriptionNotFound(node.getId().toString());
             this.logger.debug(message);
+            result = new Failure(message);
         }
         return result;
     }
@@ -212,10 +218,12 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
             } else {
                 String message = this.messageService.semanticObjectNotFound(edge.getTargetObjectId());
                 this.logger.debug(message);
+                result = new Failure(message);
             }
         } else {
             String message = this.messageService.edgeDescriptionNotFound(edge.getId().toString());
             this.logger.debug(message);
+            result = new Failure(message);
         }
         return result;
     }

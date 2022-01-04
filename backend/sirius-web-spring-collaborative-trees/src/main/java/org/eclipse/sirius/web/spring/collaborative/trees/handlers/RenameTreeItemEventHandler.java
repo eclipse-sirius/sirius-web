@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import java.util.Objects;
 import org.eclipse.sirius.web.core.api.ErrorPayload;
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.core.api.IPayload;
+import org.eclipse.sirius.web.representations.Failure;
 import org.eclipse.sirius.web.representations.Success;
 import org.eclipse.sirius.web.representations.VariableManager;
 import org.eclipse.sirius.web.spring.collaborative.api.ChangeDescription;
@@ -100,6 +101,8 @@ public class RenameTreeItemEventHandler implements ITreeEventHandler {
                     Success success = (Success) status;
                     changeDescription = new ChangeDescription(success.getChangeKind(), treeInput.getRepresentationId(), treeInput, success.getParameters());
                     payload = new RenameTreeItemSuccessPayload(treeInput.getId());
+                } else if (status instanceof Failure) {
+                    payload = new ErrorPayload(treeInput.getId(), ((Failure) status).getMessage());
                 }
             }
         }
