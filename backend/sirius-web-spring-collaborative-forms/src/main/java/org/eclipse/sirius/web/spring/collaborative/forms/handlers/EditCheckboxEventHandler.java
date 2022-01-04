@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -70,8 +70,10 @@ public class EditCheckboxEventHandler implements IFormEventHandler {
     @Override
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, Form form, IFormInput formInput) {
         this.counter.increment();
+        String message = this.messageService.invalidInput(formInput.getClass().getSimpleName(), EditCheckboxInput.class.getSimpleName());
+        IPayload payload = new ErrorPayload(formInput.getId(), message);
+        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, formInput.getRepresentationId(), formInput);
 
-        IStatus status = new Failure(""); //$NON-NLS-1$
         if (formInput instanceof EditCheckboxInput) {
             EditCheckboxInput input = (EditCheckboxInput) formInput;
 
@@ -80,21 +82,20 @@ public class EditCheckboxEventHandler implements IFormEventHandler {
                     .filter(Checkbox.class::isInstance)
                     .map(Checkbox.class::cast);
 
-            status = optionalCheckbox.map(Checkbox::getNewValueHandler)
+            IStatus status = optionalCheckbox.map(Checkbox::getNewValueHandler)
                     .map(handler -> handler.apply(input.getNewValue()))
                     .orElse(new Failure("")); //$NON-NLS-1$
             // @formatter:on
 
+            if (status instanceof Success) {
+                payload = new EditCheckboxSuccessPayload(formInput.getId());
+                changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formInput.getRepresentationId(), formInput);
+            } else if (status instanceof Failure) {
+                payload = new ErrorPayload(formInput.getId(), ((Failure) status).getMessage());
+            }
         }
 
-        if (status instanceof Success) {
-            payloadSink.tryEmitValue(new EditCheckboxSuccessPayload(formInput.getId()));
-            changeDescriptionSink.tryEmitNext(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formInput.getRepresentationId(), formInput));
-        } else {
-            String message = this.messageService.invalidInput(formInput.getClass().getSimpleName(), EditCheckboxInput.class.getSimpleName());
-            payloadSink.tryEmitValue(new ErrorPayload(formInput.getId(), message));
-            changeDescriptionSink.tryEmitNext(new ChangeDescription(ChangeKind.NOTHING, formInput.getRepresentationId(), formInput));
-        }
-
+        changeDescriptionSink.tryEmitNext(changeDescription);
+        payloadSink.tryEmitValue(payload);
     }
 }

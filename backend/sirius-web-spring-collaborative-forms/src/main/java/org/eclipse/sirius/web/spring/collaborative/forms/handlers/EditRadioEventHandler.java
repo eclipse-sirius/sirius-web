@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -70,8 +70,10 @@ public class EditRadioEventHandler implements IFormEventHandler {
     @Override
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, Form form, IFormInput formInput) {
         this.counter.increment();
+        String message = this.messageService.invalidInput(formInput.getClass().getSimpleName(), EditRadioInput.class.getSimpleName());
+        IPayload payload = new ErrorPayload(formInput.getId(), message);
+        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, formInput.getRepresentationId(), formInput);
 
-        IStatus status = new Failure(""); //$NON-NLS-1$
         if (formInput instanceof EditRadioInput) {
             EditRadioInput input = (EditRadioInput) formInput;
 
@@ -80,19 +82,20 @@ public class EditRadioEventHandler implements IFormEventHandler {
                     .filter(Radio.class::isInstance)
                     .map(Radio.class::cast);
 
-            status = optionalRadio.map(Radio::getNewValueHandler)
+            IStatus status = optionalRadio.map(Radio::getNewValueHandler)
                     .map(handler -> handler.apply(input.getNewValue()))
                     .orElse(new Failure("")); //$NON-NLS-1$
             // @formatter:on
 
+            if (status instanceof Success) {
+                payload = new EditRadioSuccessPayload(formInput.getId());
+                changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formInput.getRepresentationId(), formInput);
+            } else if (status instanceof Failure) {
+                payload = new ErrorPayload(formInput.getId(), ((Failure) status).getMessage());
+            }
         }
-        if (status instanceof Success) {
-            payloadSink.tryEmitValue(new EditRadioSuccessPayload(formInput.getId()));
-            changeDescriptionSink.tryEmitNext(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formInput.getRepresentationId(), formInput));
-        } else {
-            String message = this.messageService.invalidInput(formInput.getClass().getSimpleName(), EditRadioInput.class.getSimpleName());
-            payloadSink.tryEmitValue(new ErrorPayload(formInput.getId(), message));
-            changeDescriptionSink.tryEmitNext(new ChangeDescription(ChangeKind.NOTHING, formInput.getRepresentationId(), formInput));
-        }
+
+        changeDescriptionSink.tryEmitNext(changeDescription);
+        payloadSink.tryEmitValue(payload);
     }
 }

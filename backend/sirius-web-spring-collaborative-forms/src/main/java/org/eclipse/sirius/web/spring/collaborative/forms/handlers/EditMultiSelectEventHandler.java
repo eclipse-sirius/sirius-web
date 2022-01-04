@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -71,8 +71,10 @@ public class EditMultiSelectEventHandler implements IFormEventHandler {
     @Override
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, Form form, IFormInput formInput) {
         this.counter.increment();
+        String message = this.messageService.invalidInput(formInput.getClass().getSimpleName(), EditMultiSelectInput.class.getSimpleName());
+        IPayload payload = new ErrorPayload(formInput.getId(), message);
+        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, formInput.getRepresentationId(), formInput);
 
-        IStatus status = new Failure(""); //$NON-NLS-1$
         if (formInput instanceof EditMultiSelectInput) {
             EditMultiSelectInput input = (EditMultiSelectInput) formInput;
 
@@ -81,20 +83,20 @@ public class EditMultiSelectEventHandler implements IFormEventHandler {
                     .filter(MultiSelect.class::isInstance)
                     .map(MultiSelect.class::cast);
 
-            status = optionalMultiSelect.map(MultiSelect::getNewValuesHandler)
+            IStatus status = optionalMultiSelect.map(MultiSelect::getNewValuesHandler)
                     .map(handler -> handler.apply(input.getNewValues()))
                     .orElse(new Failure("")); //$NON-NLS-1$
             // @formatter:on
 
+            if (status instanceof Success) {
+                payload = new EditMultiSelectSuccessPayload(formInput.getId());
+                changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formInput.getRepresentationId(), formInput);
+            } else if (status instanceof Failure) {
+                payload = new ErrorPayload(formInput.getId(), ((Failure) status).getMessage());
+            }
         }
 
-        if (status instanceof Success) {
-            payloadSink.tryEmitValue(new EditMultiSelectSuccessPayload(formInput.getId()));
-            changeDescriptionSink.tryEmitNext(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formInput.getRepresentationId(), formInput));
-        } else {
-            String message = this.messageService.invalidInput(formInput.getClass().getSimpleName(), EditMultiSelectInput.class.getSimpleName());
-            payloadSink.tryEmitValue(new ErrorPayload(formInput.getId(), message));
-            changeDescriptionSink.tryEmitNext(new ChangeDescription(ChangeKind.NOTHING, formInput.getRepresentationId(), formInput));
-        }
+        changeDescriptionSink.tryEmitNext(changeDescription);
+        payloadSink.tryEmitValue(payload);
     }
 }

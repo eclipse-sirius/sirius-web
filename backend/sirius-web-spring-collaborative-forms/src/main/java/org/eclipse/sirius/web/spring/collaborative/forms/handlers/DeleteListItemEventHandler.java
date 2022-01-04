@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -98,6 +98,8 @@ public class DeleteListItemEventHandler implements IFormEventHandler {
                 Success success = (Success) status;
                 changeDescription = new ChangeDescription(success.getChangeKind(), formInput.getRepresentationId(), formInput, success.getParameters());
                 payload = new DeleteListItemSuccessPayload(formInput.getId());
+            } else if (status instanceof Failure) {
+                payload = new ErrorPayload(formInput.getId(), ((Failure) status).getMessage());
             }
         }
 

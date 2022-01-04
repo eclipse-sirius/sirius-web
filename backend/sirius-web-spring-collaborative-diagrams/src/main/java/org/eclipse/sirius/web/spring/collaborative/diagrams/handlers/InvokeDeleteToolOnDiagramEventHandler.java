@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo and others.
+ * Copyright (c) 2021, 2022 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -36,7 +36,6 @@ import org.eclipse.sirius.web.spring.collaborative.diagrams.api.IDiagramQuerySer
 import org.eclipse.sirius.web.spring.collaborative.diagrams.api.IToolService;
 import org.eclipse.sirius.web.spring.collaborative.diagrams.dto.InvokeDeleteToolOnDiagramInput;
 import org.eclipse.sirius.web.spring.collaborative.diagrams.dto.InvokeDeleteToolOnDiagramSuccessPayload;
-import org.eclipse.sirius.web.spring.collaborative.diagrams.dto.InvokeNodeToolOnDiagramInput;
 import org.eclipse.sirius.web.spring.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
 import org.springframework.stereotype.Service;
 
@@ -86,7 +85,7 @@ public class InvokeDeleteToolOnDiagramEventHandler implements IDiagramEventHandl
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IDiagramContext diagramContext, IDiagramInput diagramInput) {
         this.counter.increment();
 
-        String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), InvokeNodeToolOnDiagramInput.class.getSimpleName());
+        String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), InvokeDeleteToolOnDiagramInput.class.getSimpleName());
         IPayload payload = new ErrorPayload(diagramInput.getId(), message);
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, diagramInput.getRepresentationId(), diagramInput);
 
@@ -101,9 +100,10 @@ public class InvokeDeleteToolOnDiagramEventHandler implements IDiagramEventHandl
             if (optionalTool.isPresent()) {
                 IStatus status = this.executeTool(editingContext, diagramContext, input.getDiagramElementId(), optionalTool.get());
                 if (status instanceof Success) {
-
                     payload = new InvokeDeleteToolOnDiagramSuccessPayload(diagramInput.getId(), diagram);
                     changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, diagramInput.getRepresentationId(), diagramInput);
+                } else if (status instanceof Failure) {
+                    payload = new ErrorPayload(diagramInput.getId(), ((Failure) status).getMessage());
                 }
             }
         }
