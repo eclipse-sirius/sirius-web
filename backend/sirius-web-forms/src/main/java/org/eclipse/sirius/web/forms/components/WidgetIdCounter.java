@@ -33,7 +33,7 @@ package org.eclipse.sirius.web.forms.components;
  * @author gcoutable
  */
 public final class WidgetIdCounter {
-    int counter;
+    private int counter;
 
     public int getCounter() {
         return this.counter;
