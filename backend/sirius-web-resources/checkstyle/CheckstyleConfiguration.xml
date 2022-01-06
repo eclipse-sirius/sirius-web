@@ -265,7 +265,6 @@
     </module>
     <module name="VisibilityModifier">
       <property name="severity" value="error"/>
-      <property name="packageAllowed" value="true"/>
       <property name="protectedAllowed" value="true"/>
     </module>
     <module name="BooleanExpressionComplexity">
