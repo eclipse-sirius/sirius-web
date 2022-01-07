@@ -12,13 +12,11 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.spring.collaborative.diagrams.api;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.eclipse.sirius.web.core.api.IEditingContext;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.tools.ITool;
-import org.eclipse.sirius.web.diagrams.tools.ToolSection;
 
 /**
  * Interface used to manipulate tools.
@@ -27,22 +25,6 @@ import org.eclipse.sirius.web.diagrams.tools.ToolSection;
  */
 public interface IToolService {
 
-    /**
-     * Find a specific tool according to the given diagram and tool identifiers.
-     *
-     * @param diagram
-     *            the diagram
-     * @param toolId
-     *            the tool identifier
-     */
     Optional<ITool> findToolById(IEditingContext editingContext, Diagram diagram, String toolId);
-
-    /**
-     * Get all tool sections available in a specific diagram.
-     *
-     * @param diagram
-     *            the diagram
-     */
-    List<ToolSection> getToolSections(IEditingContext editingContext, Diagram diagram);
 
 }

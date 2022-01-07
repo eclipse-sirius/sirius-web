@@ -325,31 +325,33 @@ export const getToolSectionsQuery = gql`
     viewer {
       editingContext(editingContextId: $editingContextId) {
         representation(representationId: $diagramId) {
-          ... on Diagram {
-            toolSections {
-              id
-              label
-              imageURL
-              tools {
-                __typename
+          description {
+            ... on DiagramDescription {
+              toolSections {
                 id
                 label
                 imageURL
-                ... on CreateNodeTool {
-                  targetDescriptions {
-                    id
+                tools {
+                  __typename
+                  id
+                  label
+                  imageURL
+                  ... on CreateNodeTool {
+                    targetDescriptions {
+                      id
+                    }
+                    appliesToDiagramRoot
+                    selectionDescriptionId
                   }
-                  appliesToDiagramRoot
-                  selectionDescriptionId
-                }
-                ... on CreateEdgeTool {
-                  edgeCandidates {
-                    ...edgeCandidateField
+                  ... on CreateEdgeTool {
+                    edgeCandidates {
+                      ...edgeCandidateField
+                    }
                   }
-                }
-                ... on DeleteTool {
-                  targetDescriptions {
-                    id
+                  ... on DeleteTool {
+                    targetDescriptions {
+                      id
+                    }
                   }
                 }
               }

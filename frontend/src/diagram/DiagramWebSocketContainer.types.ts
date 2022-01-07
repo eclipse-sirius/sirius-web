@@ -114,12 +114,30 @@ export interface GQLViewer {
 }
 
 export interface GQLEditingContext {
-  representation: GQLRepresentation;
+  representation: GQLRepresentationMetadata;
+}
+
+export interface GQLRepresentationMetadata {
+  id: string;
+  label: string;
+  kind: string;
+  description: GQLRepresentationDescription;
+}
+
+export interface GQLRepresentationDescription {
+  id: string;
+}
+
+export interface GQLDiagramDescription extends GQLRepresentationDescription {
+  toolSections: GQLToolSection[];
 }
 
 export interface GQLRepresentation {
-  __typename: string;
+  id: string;
+  label: string;
+  kind: string;
 }
+
 export interface GQLDiagram extends GQLRepresentation {
   id: string;
   label: string;
@@ -131,7 +149,6 @@ export interface GQLDiagram extends GQLRepresentation {
   position: GQLPosition;
   nodes: GQLNode[];
   edges: GQLEdge[];
-  toolSections: GQLToolSection[];
 }
 
 export interface GQLSize {
