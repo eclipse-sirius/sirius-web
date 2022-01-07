@@ -47,6 +47,7 @@ Currently it is not possible to compute different values for width and height.
 - https://github.com/eclipse-sirius/sirius-components/issues/897[#897] [compatibility] The Bordered Node Dot Style is now handled in the compatibility layer
 - https://github.com/eclipse-sirius/sirius-components/issues/565[#565] [diagram] Improve the layout of multiple edges between the same nodes
 - https://github.com/eclipse-sirius/sirius-components/issues/914[#914] [diagram] Add the graphical selection to the semantic ones while clicking on diagram elements
+- https://github.com/eclipse-sirius/sirius-components/issues/925[#925] [diagram] Perform a fit to screen after the first render of a diagram
 
 === Bug fixes
 
