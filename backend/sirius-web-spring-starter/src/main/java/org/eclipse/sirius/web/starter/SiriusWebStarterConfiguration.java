@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,11 +18,15 @@ import org.eclipse.sirius.web.spring.collaborative.editingcontext.api.IEditingCo
 import org.eclipse.sirius.web.spring.collaborative.forms.WidgetSubscriptionManager;
 import org.eclipse.sirius.web.spring.collaborative.forms.api.IWidgetSubscriptionManagerFactory;
 import org.eclipse.sirius.web.spring.collaborative.representations.SubscriptionManager;
+import org.eclipse.sirius.web.spring.graphql.ws.api.IGraphQLWebSocketHandlerListener;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.socket.CloseStatus;
+import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketSession;
 
 /**
  * Projects which depend on this starter project will automatically get all the components required to create a Sirius
@@ -62,6 +66,27 @@ public class SiriusWebStarterConfiguration {
     @ConditionalOnMissingBean(IEditingContextEventProcessorExecutorServiceProvider.class)
     public IEditingContextEventProcessorExecutorServiceProvider editingContextEventProcessorExecutorServiceProvider() {
         return new EditingContextEventProcessorExecutorServiceProvider();
+    }
 
+    @Bean
+    @ConditionalOnMissingBean(IGraphQLWebSocketHandlerListener.class)
+    public IGraphQLWebSocketHandlerListener graphQLWebSocketHandlerListener() {
+        return new IGraphQLWebSocketHandlerListener() {
+
+            @Override
+            public void handleTextMessage(WebSocketSession session, TextMessage message) {
+                // Do nothing
+            }
+
+            @Override
+            public void afterConnectionEstablished(WebSocketSession session) {
+                // Do nothing
+            }
+
+            @Override
+            public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
+                // Do nothing
+            }
+        };
     }
 }

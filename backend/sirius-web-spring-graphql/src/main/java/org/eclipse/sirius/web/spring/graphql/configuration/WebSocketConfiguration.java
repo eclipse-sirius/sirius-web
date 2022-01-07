@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import java.util.Objects;
 
 import org.eclipse.sirius.web.spring.graphql.api.URLConstants;
 import org.eclipse.sirius.web.spring.graphql.ws.GraphQLWebSocketHandler;
+import org.eclipse.sirius.web.spring.graphql.ws.api.IGraphQLWebSocketHandlerListener;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -50,16 +51,20 @@ public class WebSocketConfiguration implements WebSocketConfigurer {
 
     private final MeterRegistry meterRegistry;
 
-    public WebSocketConfiguration(@Value("${sirius.components.cors.allowedOriginPatterns:}") String[] allowedOriginPatterns, GraphQL graphQL, ObjectMapper objectMapper, MeterRegistry meterRegistry) {
+    private final IGraphQLWebSocketHandlerListener graphQLWebSocketHandlerListener;
+
+    public WebSocketConfiguration(@Value("${sirius.components.cors.allowedOriginPatterns:}") String[] allowedOriginPatterns, GraphQL graphQL, ObjectMapper objectMapper, MeterRegistry meterRegistry,
+            IGraphQLWebSocketHandlerListener graphQLWebSocketHandlerListener) {
         this.allowedOriginPatterns = Objects.requireNonNull(allowedOriginPatterns);
         this.graphQL = Objects.requireNonNull(graphQL);
         this.objectMapper = Objects.requireNonNull(objectMapper);
         this.meterRegistry = Objects.requireNonNull(meterRegistry);
+        this.graphQLWebSocketHandlerListener = Objects.requireNonNull(graphQLWebSocketHandlerListener);
     }
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        GraphQLWebSocketHandler graphQLWebSocketHandler = new GraphQLWebSocketHandler(this.objectMapper, this.graphQL, this.meterRegistry);
+        GraphQLWebSocketHandler graphQLWebSocketHandler = new GraphQLWebSocketHandler(this.objectMapper, this.graphQL, this.meterRegistry, this.graphQLWebSocketHandlerListener);
         WebSocketHandlerRegistration graphQLWebSocketRegistration = registry.addHandler(graphQLWebSocketHandler, URLConstants.GRAPHQL_SUBSCRIPTION_PATH);
         graphQLWebSocketRegistration.setAllowedOriginPatterns(this.allowedOriginPatterns);
     }
@@ -71,5 +76,4 @@ public class WebSocketConfiguration implements WebSocketConfigurer {
         container.setMaxBinaryMessageBufferSize(100000);
         return container;
     }
-
 }

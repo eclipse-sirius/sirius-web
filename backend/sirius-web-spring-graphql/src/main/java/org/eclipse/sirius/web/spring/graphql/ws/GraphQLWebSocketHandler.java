@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,7 +17,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
-import java.security.Principal;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
@@ -26,6 +25,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.eclipse.sirius.web.spring.graphql.ws.api.IGraphQLWebSocketHandlerListener;
 import org.eclipse.sirius.web.spring.graphql.ws.dto.IOperationMessage;
 import org.eclipse.sirius.web.spring.graphql.ws.dto.input.ConnectionInitMessage;
 import org.eclipse.sirius.web.spring.graphql.ws.dto.input.ConnectionTerminateMessage;
@@ -39,9 +39,6 @@ import org.eclipse.sirius.web.spring.graphql.ws.handlers.StartMessageHandler;
 import org.eclipse.sirius.web.spring.graphql.ws.handlers.StopMessageHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.SubProtocolCapable;
 import org.springframework.web.socket.TextMessage;
@@ -206,10 +203,13 @@ public class GraphQLWebSocketHandler extends TextWebSocketHandler implements Sub
 
     private final MeterRegistry meterRegistry;
 
-    public GraphQLWebSocketHandler(ObjectMapper objectMapper, GraphQL graphQL, MeterRegistry meterRegistry) {
+    private final IGraphQLWebSocketHandlerListener listener;
+
+    public GraphQLWebSocketHandler(ObjectMapper objectMapper, GraphQL graphQL, MeterRegistry meterRegistry, IGraphQLWebSocketHandlerListener listener) {
         this.objectMapper = Objects.requireNonNull(objectMapper);
         this.graphQL = Objects.requireNonNull(graphQL);
         this.meterRegistry = Objects.requireNonNull(meterRegistry);
+        this.listener = Objects.requireNonNull(listener);
 
         // @formatter:off
         this.startMessageCounter = Counter.builder(COUNTER_METRIC_NAME)
@@ -240,13 +240,10 @@ public class GraphQLWebSocketHandler extends TextWebSocketHandler implements Sub
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        Optional<IOperationMessage> optionalOperationMessage = this.parseRequest(message);
-        if (session.getPrincipal() != null && optionalOperationMessage.isPresent()) {
-            Principal principal = session.getPrincipal();
-            if (principal instanceof Authentication) {
-                SecurityContextHolder.setContext(new SecurityContextImpl((Authentication) principal));
-            }
+        this.listener.handleTextMessage(session, message);
 
+        Optional<IOperationMessage> optionalOperationMessage = this.parseRequest(message);
+        if (optionalOperationMessage.isPresent()) {
             IOperationMessage operationMessage = optionalOperationMessage.get();
 
             this.logger.trace("Message received: {}", operationMessage); //$NON-NLS-1$
@@ -339,6 +336,8 @@ public class GraphQLWebSocketHandler extends TextWebSocketHandler implements Sub
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+        this.listener.afterConnectionEstablished(session);
+
         // @formatter:off
         Disposable subscribe = Flux.interval(GRAPHQL_KEEP_ALIVE_INTERVAL)
                 .subscribe(data -> this.send(session, new ConnectionKeepAliveMessage()));
@@ -348,10 +347,7 @@ public class GraphQLWebSocketHandler extends TextWebSocketHandler implements Sub
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-        Principal principal = session.getPrincipal();
-        if (principal instanceof Authentication) {
-            SecurityContextHolder.setContext(new SecurityContextImpl((Authentication) principal));
-        }
+        this.listener.afterConnectionClosed(session, status);
 
         Disposable keepAliveSubscription = this.sessions2keepAliveSubscriptions.remove(session);
         keepAliveSubscription.dispose();
