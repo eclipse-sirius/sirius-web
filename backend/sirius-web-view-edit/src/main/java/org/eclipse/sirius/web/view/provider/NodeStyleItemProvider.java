@@ -55,10 +55,6 @@ public class NodeStyleItemProvider extends StyleItemProvider {
             this.addShapePropertyDescriptor(object);
             this.addBorderSizePropertyDescriptor(object);
             this.addLabelColorPropertyDescriptor(object);
-            this.addItalicPropertyDescriptor(object);
-            this.addBoldPropertyDescriptor(object);
-            this.addUnderlinePropertyDescriptor(object);
-            this.addStrikeThroughPropertyDescriptor(object);
             this.addSizeComputationExpressionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
@@ -125,54 +121,6 @@ public class NodeStyleItemProvider extends StyleItemProvider {
     }
 
     /**
-     * This adds a property descriptor for the Italic feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected void addItalicPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(
-                this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(), this.getString("_UI_NodeStyle_italic_feature"), //$NON-NLS-1$
-                        this.getString("_UI_PropertyDescriptor_description", "_UI_NodeStyle_italic_feature", "_UI_NodeStyle_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                        ViewPackage.Literals.NODE_STYLE__ITALIC, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
-    }
-
-    /**
-     * This adds a property descriptor for the Bold feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected void addBoldPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(
-                this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(), this.getString("_UI_NodeStyle_bold_feature"), //$NON-NLS-1$
-                        this.getString("_UI_PropertyDescriptor_description", "_UI_NodeStyle_bold_feature", "_UI_NodeStyle_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                        ViewPackage.Literals.NODE_STYLE__BOLD, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
-    }
-
-    /**
-     * This adds a property descriptor for the Underline feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected void addUnderlinePropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_NodeStyle_underline_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_NodeStyle_underline_feature", "_UI_NodeStyle_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                ViewPackage.Literals.NODE_STYLE__UNDERLINE, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
-    }
-
-    /**
-     * This adds a property descriptor for the Strike Through feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected void addStrikeThroughPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_NodeStyle_strikeThrough_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_NodeStyle_strikeThrough_feature", "_UI_NodeStyle_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                ViewPackage.Literals.NODE_STYLE__STRIKE_THROUGH, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
-    }
-
-    /**
      * This adds a property descriptor for the Size Computation Expression feature. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
@@ -212,9 +160,8 @@ public class NodeStyleItemProvider extends StyleItemProvider {
      */
     @Override
     public String getText(Object object) {
-        String label = ((NodeStyle) object).getColor();
-        return label == null || label.length() == 0 ? this.getString("_UI_NodeStyle_type") : //$NON-NLS-1$
-                this.getString("_UI_NodeStyle_type") + " " + label; //$NON-NLS-1$ //$NON-NLS-2$
+        NodeStyle nodeStyle = (NodeStyle) object;
+        return this.getString("_UI_NodeStyle_type") + " " + nodeStyle.getFontSize(); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /**
@@ -234,10 +181,6 @@ public class NodeStyleItemProvider extends StyleItemProvider {
         case ViewPackage.NODE_STYLE__SHAPE:
         case ViewPackage.NODE_STYLE__BORDER_SIZE:
         case ViewPackage.NODE_STYLE__LABEL_COLOR:
-        case ViewPackage.NODE_STYLE__ITALIC:
-        case ViewPackage.NODE_STYLE__BOLD:
-        case ViewPackage.NODE_STYLE__UNDERLINE:
-        case ViewPackage.NODE_STYLE__STRIKE_THROUGH:
         case ViewPackage.NODE_STYLE__SIZE_COMPUTATION_EXPRESSION:
             this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
             return;

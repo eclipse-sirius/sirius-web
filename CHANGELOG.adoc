@@ -36,6 +36,7 @@ Currently it is not possible to compute different values for width and height.
 - https://github.com/eclipse-sirius/sirius-components/issues/133[#133] [diagram] Add a connector tool to help create edges in diagrams
 - https://github.com/eclipse-sirius/sirius-components/issues/596[#596] [view] It is now possible to define border nodes in dynamic diagram definitions
 - https://github.com/eclipse-sirius/sirius-components/issues/132[#132] [diagram] Add support for drag and drop from the explorer to a diagram
+- https://github.com/eclipse-sirius/sirius-components/issues/924[#924] [view] Add support for all text styles on labels
 
 === Improvements
 

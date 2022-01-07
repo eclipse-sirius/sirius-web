@@ -29,6 +29,7 @@ import org.eclipse.sirius.web.view.EdgeDescription;
 import org.eclipse.sirius.web.view.EdgeStyle;
 import org.eclipse.sirius.web.view.EdgeTool;
 import org.eclipse.sirius.web.view.LabelEditTool;
+import org.eclipse.sirius.web.view.LabelStyle;
 import org.eclipse.sirius.web.view.NodeDescription;
 import org.eclipse.sirius.web.view.NodeStyle;
 import org.eclipse.sirius.web.view.NodeTool;
@@ -120,6 +121,11 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseEdgeDescription(EdgeDescription object) {
             return ViewAdapterFactory.this.createEdgeDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter caseLabelStyle(LabelStyle object) {
+            return ViewAdapterFactory.this.createLabelStyleAdapter();
         }
 
         @Override
@@ -303,6 +309,19 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createEdgeDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.web.view.LabelStyle <em>Label
+     * Style</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.web.view.LabelStyle
+     * @generated
+     */
+    public Adapter createLabelStyleAdapter() {
         return null;
     }
 

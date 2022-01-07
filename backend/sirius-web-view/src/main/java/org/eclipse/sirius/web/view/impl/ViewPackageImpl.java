@@ -32,6 +32,7 @@ import org.eclipse.sirius.web.view.EdgeDescription;
 import org.eclipse.sirius.web.view.EdgeStyle;
 import org.eclipse.sirius.web.view.EdgeTool;
 import org.eclipse.sirius.web.view.LabelEditTool;
+import org.eclipse.sirius.web.view.LabelStyle;
 import org.eclipse.sirius.web.view.LineStyle;
 import org.eclipse.sirius.web.view.NodeDescription;
 import org.eclipse.sirius.web.view.NodeStyle;
@@ -93,6 +94,13 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     private EClass edgeDescriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass labelStyleEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -614,6 +622,66 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
+    public EClass getLabelStyle() {
+        return this.labelStyleEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getLabelStyle_FontSize() {
+        return (EAttribute) this.labelStyleEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getLabelStyle_Italic() {
+        return (EAttribute) this.labelStyleEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getLabelStyle_Bold() {
+        return (EAttribute) this.labelStyleEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getLabelStyle_Underline() {
+        return (EAttribute) this.labelStyleEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getLabelStyle_StrikeThrough() {
+        return (EAttribute) this.labelStyleEClass.getEStructuralFeatures().get(4);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getStyle() {
         return this.styleEClass;
     }
@@ -636,16 +704,6 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
     @Override
     public EAttribute getStyle_BorderColor() {
         return (EAttribute) this.styleEClass.getEStructuralFeatures().get(1);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public EAttribute getStyle_FontSize() {
-        return (EAttribute) this.styleEClass.getEStructuralFeatures().get(2);
     }
 
     /**
@@ -714,48 +772,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
-    public EAttribute getNodeStyle_Italic() {
-        return (EAttribute) this.nodeStyleEClass.getEStructuralFeatures().get(5);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public EAttribute getNodeStyle_Bold() {
-        return (EAttribute) this.nodeStyleEClass.getEStructuralFeatures().get(6);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public EAttribute getNodeStyle_Underline() {
-        return (EAttribute) this.nodeStyleEClass.getEStructuralFeatures().get(7);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public EAttribute getNodeStyle_StrikeThrough() {
-        return (EAttribute) this.nodeStyleEClass.getEStructuralFeatures().get(8);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
     public EAttribute getNodeStyle_SizeComputationExpression() {
-        return (EAttribute) this.nodeStyleEClass.getEStructuralFeatures().get(9);
+        return (EAttribute) this.nodeStyleEClass.getEStructuralFeatures().get(5);
     }
 
     /**
@@ -1155,10 +1173,16 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.createEReference(this.edgeDescriptionEClass, EDGE_DESCRIPTION__EDGE_TOOLS);
         this.createEReference(this.edgeDescriptionEClass, EDGE_DESCRIPTION__CONDITIONAL_STYLES);
 
+        this.labelStyleEClass = this.createEClass(LABEL_STYLE);
+        this.createEAttribute(this.labelStyleEClass, LABEL_STYLE__FONT_SIZE);
+        this.createEAttribute(this.labelStyleEClass, LABEL_STYLE__ITALIC);
+        this.createEAttribute(this.labelStyleEClass, LABEL_STYLE__BOLD);
+        this.createEAttribute(this.labelStyleEClass, LABEL_STYLE__UNDERLINE);
+        this.createEAttribute(this.labelStyleEClass, LABEL_STYLE__STRIKE_THROUGH);
+
         this.styleEClass = this.createEClass(STYLE);
         this.createEAttribute(this.styleEClass, STYLE__COLOR);
         this.createEAttribute(this.styleEClass, STYLE__BORDER_COLOR);
-        this.createEAttribute(this.styleEClass, STYLE__FONT_SIZE);
 
         this.nodeStyleEClass = this.createEClass(NODE_STYLE);
         this.createEAttribute(this.nodeStyleEClass, NODE_STYLE__LIST_MODE);
@@ -1166,10 +1190,6 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.createEAttribute(this.nodeStyleEClass, NODE_STYLE__SHAPE);
         this.createEAttribute(this.nodeStyleEClass, NODE_STYLE__BORDER_SIZE);
         this.createEAttribute(this.nodeStyleEClass, NODE_STYLE__LABEL_COLOR);
-        this.createEAttribute(this.nodeStyleEClass, NODE_STYLE__ITALIC);
-        this.createEAttribute(this.nodeStyleEClass, NODE_STYLE__BOLD);
-        this.createEAttribute(this.nodeStyleEClass, NODE_STYLE__UNDERLINE);
-        this.createEAttribute(this.nodeStyleEClass, NODE_STYLE__STRIKE_THROUGH);
         this.createEAttribute(this.nodeStyleEClass, NODE_STYLE__SIZE_COMPUTATION_EXPRESSION);
 
         this.edgeStyleEClass = this.createEClass(EDGE_STYLE);
@@ -1254,6 +1274,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.diagramDescriptionEClass.getESuperTypes().add(this.getRepresentationDescription());
         this.nodeDescriptionEClass.getESuperTypes().add(this.getDiagramElementDescription());
         this.edgeDescriptionEClass.getESuperTypes().add(this.getDiagramElementDescription());
+        this.styleEClass.getESuperTypes().add(this.getLabelStyle());
         this.nodeStyleEClass.getESuperTypes().add(this.getStyle());
         this.edgeStyleEClass.getESuperTypes().add(this.getStyle());
         this.labelEditToolEClass.getESuperTypes().add(this.getTool());
@@ -1335,13 +1356,23 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.initEReference(this.getEdgeDescription_ConditionalStyles(), this.getConditionalEdgeStyle(), null, "conditionalStyles", null, 0, -1, EdgeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, //$NON-NLS-1$
                 IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+        this.initEClass(this.labelStyleEClass, LabelStyle.class, "LabelStyle", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+        this.initEAttribute(this.getLabelStyle_FontSize(), this.ecorePackage.getEInt(), "fontSize", "14", 1, 1, LabelStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, //$NON-NLS-1$ //$NON-NLS-2$
+                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getLabelStyle_Italic(), this.ecorePackage.getEBoolean(), "italic", "false", 1, 1, LabelStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, //$NON-NLS-1$ //$NON-NLS-2$
+                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getLabelStyle_Bold(), this.ecorePackage.getEBoolean(), "bold", "false", 1, 1, LabelStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, //$NON-NLS-1$ //$NON-NLS-2$
+                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getLabelStyle_Underline(), this.ecorePackage.getEBoolean(), "underline", "false", 1, 1, LabelStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, //$NON-NLS-1$ //$NON-NLS-2$
+                !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getLabelStyle_StrikeThrough(), this.ecorePackage.getEBoolean(), "strikeThrough", "false", 1, 1, LabelStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, //$NON-NLS-1$ //$NON-NLS-2$
+                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
         this.initEClass(this.styleEClass, Style.class, "Style", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
         this.initEAttribute(this.getStyle_Color(), this.ecorePackage.getEString(), "color", "#E5F5F8", 0, 1, Style.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, //$NON-NLS-1$ //$NON-NLS-2$
                 !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getStyle_BorderColor(), this.ecorePackage.getEString(), "borderColor", "#33B0C3", 1, 1, Style.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, //$NON-NLS-1$ //$NON-NLS-2$
                 !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getStyle_FontSize(), this.ecorePackage.getEInt(), "fontSize", "14", 1, 1, Style.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, //$NON-NLS-1$ //$NON-NLS-2$
-                !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.nodeStyleEClass, NodeStyle.class, "NodeStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
         this.initEAttribute(this.getNodeStyle_ListMode(), this.ecorePackage.getEBoolean(), "listMode", null, 1, 1, NodeStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, //$NON-NLS-1$
@@ -1354,14 +1385,6 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
                 IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getNodeStyle_LabelColor(), this.ecorePackage.getEString(), "labelColor", "black", 0, 1, NodeStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, //$NON-NLS-1$ //$NON-NLS-2$
                 !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getNodeStyle_Italic(), this.ecorePackage.getEBoolean(), "italic", "false", 1, 1, NodeStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, //$NON-NLS-1$ //$NON-NLS-2$
-                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getNodeStyle_Bold(), this.ecorePackage.getEBoolean(), "bold", "false", 1, 1, NodeStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, //$NON-NLS-1$ //$NON-NLS-2$
-                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getNodeStyle_Underline(), this.ecorePackage.getEBoolean(), "underline", "false", 1, 1, NodeStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, //$NON-NLS-1$ //$NON-NLS-2$
-                !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getNodeStyle_StrikeThrough(), this.ecorePackage.getEBoolean(), "strikeThrough", "false", 1, 1, NodeStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, //$NON-NLS-1$ //$NON-NLS-2$
-                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getNodeStyle_SizeComputationExpression(), this.ecorePackage.getEString(), "sizeComputationExpression", "1", 0, 1, NodeStyle.class, !IS_TRANSIENT, !IS_VOLATILE, //$NON-NLS-1$ //$NON-NLS-2$
                 IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 

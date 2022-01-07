@@ -29,10 +29,6 @@ import org.eclipse.sirius.web.view.ViewPackage;
  * <li>{@link org.eclipse.sirius.web.view.impl.NodeStyleImpl#getShape <em>Shape</em>}</li>
  * <li>{@link org.eclipse.sirius.web.view.impl.NodeStyleImpl#getBorderSize <em>Border Size</em>}</li>
  * <li>{@link org.eclipse.sirius.web.view.impl.NodeStyleImpl#getLabelColor <em>Label Color</em>}</li>
- * <li>{@link org.eclipse.sirius.web.view.impl.NodeStyleImpl#isItalic <em>Italic</em>}</li>
- * <li>{@link org.eclipse.sirius.web.view.impl.NodeStyleImpl#isBold <em>Bold</em>}</li>
- * <li>{@link org.eclipse.sirius.web.view.impl.NodeStyleImpl#isUnderline <em>Underline</em>}</li>
- * <li>{@link org.eclipse.sirius.web.view.impl.NodeStyleImpl#isStrikeThrough <em>Strike Through</em>}</li>
  * <li>{@link org.eclipse.sirius.web.view.impl.NodeStyleImpl#getSizeComputationExpression <em>Size Computation
  * Expression</em>}</li>
  * </ul>
@@ -139,86 +135,6 @@ public class NodeStyleImpl extends StyleImpl implements NodeStyle {
      * @ordered
      */
     protected String labelColor = LABEL_COLOR_EDEFAULT;
-
-    /**
-     * The default value of the '{@link #isItalic() <em>Italic</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @see #isItalic()
-     * @generated
-     * @ordered
-     */
-    protected static final boolean ITALIC_EDEFAULT = false;
-
-    /**
-     * The cached value of the '{@link #isItalic() <em>Italic</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @see #isItalic()
-     * @generated
-     * @ordered
-     */
-    protected boolean italic = ITALIC_EDEFAULT;
-
-    /**
-     * The default value of the '{@link #isBold() <em>Bold</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
-     *
-     * @see #isBold()
-     * @generated
-     * @ordered
-     */
-    protected static final boolean BOLD_EDEFAULT = false;
-
-    /**
-     * The cached value of the '{@link #isBold() <em>Bold</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
-     *
-     * @see #isBold()
-     * @generated
-     * @ordered
-     */
-    protected boolean bold = BOLD_EDEFAULT;
-
-    /**
-     * The default value of the '{@link #isUnderline() <em>Underline</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @see #isUnderline()
-     * @generated
-     * @ordered
-     */
-    protected static final boolean UNDERLINE_EDEFAULT = false;
-
-    /**
-     * The cached value of the '{@link #isUnderline() <em>Underline</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @see #isUnderline()
-     * @generated
-     * @ordered
-     */
-    protected boolean underline = UNDERLINE_EDEFAULT;
-
-    /**
-     * The default value of the '{@link #isStrikeThrough() <em>Strike Through</em>}' attribute. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @see #isStrikeThrough()
-     * @generated
-     * @ordered
-     */
-    protected static final boolean STRIKE_THROUGH_EDEFAULT = false;
-
-    /**
-     * The cached value of the '{@link #isStrikeThrough() <em>Strike Through</em>}' attribute. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @see #isStrikeThrough()
-     * @generated
-     * @ordered
-     */
-    protected boolean strikeThrough = STRIKE_THROUGH_EDEFAULT;
 
     /**
      * The default value of the '{@link #getSizeComputationExpression() <em>Size Computation Expression</em>}'
@@ -380,98 +296,6 @@ public class NodeStyleImpl extends StyleImpl implements NodeStyle {
      * @generated
      */
     @Override
-    public boolean isItalic() {
-        return this.italic;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public void setItalic(boolean newItalic) {
-        boolean oldItalic = this.italic;
-        this.italic = newItalic;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.NODE_STYLE__ITALIC, oldItalic, this.italic));
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public boolean isBold() {
-        return this.bold;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public void setBold(boolean newBold) {
-        boolean oldBold = this.bold;
-        this.bold = newBold;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.NODE_STYLE__BOLD, oldBold, this.bold));
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public boolean isUnderline() {
-        return this.underline;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public void setUnderline(boolean newUnderline) {
-        boolean oldUnderline = this.underline;
-        this.underline = newUnderline;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.NODE_STYLE__UNDERLINE, oldUnderline, this.underline));
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public boolean isStrikeThrough() {
-        return this.strikeThrough;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public void setStrikeThrough(boolean newStrikeThrough) {
-        boolean oldStrikeThrough = this.strikeThrough;
-        this.strikeThrough = newStrikeThrough;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.NODE_STYLE__STRIKE_THROUGH, oldStrikeThrough, this.strikeThrough));
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
     public String getSizeComputationExpression() {
         return this.sizeComputationExpression;
     }
@@ -507,14 +331,6 @@ public class NodeStyleImpl extends StyleImpl implements NodeStyle {
             return this.getBorderSize();
         case ViewPackage.NODE_STYLE__LABEL_COLOR:
             return this.getLabelColor();
-        case ViewPackage.NODE_STYLE__ITALIC:
-            return this.isItalic();
-        case ViewPackage.NODE_STYLE__BOLD:
-            return this.isBold();
-        case ViewPackage.NODE_STYLE__UNDERLINE:
-            return this.isUnderline();
-        case ViewPackage.NODE_STYLE__STRIKE_THROUGH:
-            return this.isStrikeThrough();
         case ViewPackage.NODE_STYLE__SIZE_COMPUTATION_EXPRESSION:
             return this.getSizeComputationExpression();
         }
@@ -543,18 +359,6 @@ public class NodeStyleImpl extends StyleImpl implements NodeStyle {
             return;
         case ViewPackage.NODE_STYLE__LABEL_COLOR:
             this.setLabelColor((String) newValue);
-            return;
-        case ViewPackage.NODE_STYLE__ITALIC:
-            this.setItalic((Boolean) newValue);
-            return;
-        case ViewPackage.NODE_STYLE__BOLD:
-            this.setBold((Boolean) newValue);
-            return;
-        case ViewPackage.NODE_STYLE__UNDERLINE:
-            this.setUnderline((Boolean) newValue);
-            return;
-        case ViewPackage.NODE_STYLE__STRIKE_THROUGH:
-            this.setStrikeThrough((Boolean) newValue);
             return;
         case ViewPackage.NODE_STYLE__SIZE_COMPUTATION_EXPRESSION:
             this.setSizeComputationExpression((String) newValue);
@@ -586,18 +390,6 @@ public class NodeStyleImpl extends StyleImpl implements NodeStyle {
         case ViewPackage.NODE_STYLE__LABEL_COLOR:
             this.setLabelColor(LABEL_COLOR_EDEFAULT);
             return;
-        case ViewPackage.NODE_STYLE__ITALIC:
-            this.setItalic(ITALIC_EDEFAULT);
-            return;
-        case ViewPackage.NODE_STYLE__BOLD:
-            this.setBold(BOLD_EDEFAULT);
-            return;
-        case ViewPackage.NODE_STYLE__UNDERLINE:
-            this.setUnderline(UNDERLINE_EDEFAULT);
-            return;
-        case ViewPackage.NODE_STYLE__STRIKE_THROUGH:
-            this.setStrikeThrough(STRIKE_THROUGH_EDEFAULT);
-            return;
         case ViewPackage.NODE_STYLE__SIZE_COMPUTATION_EXPRESSION:
             this.setSizeComputationExpression(SIZE_COMPUTATION_EXPRESSION_EDEFAULT);
             return;
@@ -623,14 +415,6 @@ public class NodeStyleImpl extends StyleImpl implements NodeStyle {
             return this.borderSize != BORDER_SIZE_EDEFAULT;
         case ViewPackage.NODE_STYLE__LABEL_COLOR:
             return LABEL_COLOR_EDEFAULT == null ? this.labelColor != null : !LABEL_COLOR_EDEFAULT.equals(this.labelColor);
-        case ViewPackage.NODE_STYLE__ITALIC:
-            return this.italic != ITALIC_EDEFAULT;
-        case ViewPackage.NODE_STYLE__BOLD:
-            return this.bold != BOLD_EDEFAULT;
-        case ViewPackage.NODE_STYLE__UNDERLINE:
-            return this.underline != UNDERLINE_EDEFAULT;
-        case ViewPackage.NODE_STYLE__STRIKE_THROUGH:
-            return this.strikeThrough != STRIKE_THROUGH_EDEFAULT;
         case ViewPackage.NODE_STYLE__SIZE_COMPUTATION_EXPRESSION:
             return SIZE_COMPUTATION_EXPRESSION_EDEFAULT == null ? this.sizeComputationExpression != null : !SIZE_COMPUTATION_EXPRESSION_EDEFAULT.equals(this.sizeComputationExpression);
         }
@@ -658,14 +442,6 @@ public class NodeStyleImpl extends StyleImpl implements NodeStyle {
         result.append(this.borderSize);
         result.append(", labelColor: "); //$NON-NLS-1$
         result.append(this.labelColor);
-        result.append(", italic: "); //$NON-NLS-1$
-        result.append(this.italic);
-        result.append(", bold: "); //$NON-NLS-1$
-        result.append(this.bold);
-        result.append(", underline: "); //$NON-NLS-1$
-        result.append(this.underline);
-        result.append(", strikeThrough: "); //$NON-NLS-1$
-        result.append(this.strikeThrough);
         result.append(", sizeComputationExpression: "); //$NON-NLS-1$
         result.append(this.sizeComputationExpression);
         result.append(')');

@@ -53,11 +53,11 @@ public final class StylesFactory {
         // @formatter:off
         return LabelStyleDescription.newLabelStyleDescription()
                                     .colorProvider(variableManager -> edgeStyle.getColor())
-                                    .fontSizeProvider(variableManager -> 14)
-                                    .boldProvider(variableManager -> false)
-                                    .italicProvider(variableManager -> false)
-                                    .underlineProvider(variableManager -> false)
-                                    .strikeThroughProvider(variableManager -> false)
+                                    .fontSizeProvider(variableManager -> edgeStyle.getFontSize())
+                                    .boldProvider(variableManager -> edgeStyle.isBold())
+                                    .italicProvider(variableManager -> edgeStyle.isItalic())
+                                    .underlineProvider(variableManager -> edgeStyle.isUnderline())
+                                    .strikeThroughProvider(variableManager -> edgeStyle.isStrikeThrough())
                                     .iconURLProvider(variableManager -> "") //$NON-NLS-1$
                                     .build();
         // @formatter:on

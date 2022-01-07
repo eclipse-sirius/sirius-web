@@ -17,26 +17,34 @@ import java.util.List;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.util.ResourceLocator;
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
+import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
+import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
+import org.eclipse.emf.edit.provider.IItemPropertySource;
+import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
+import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
+import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
-import org.eclipse.sirius.web.view.ConditionalEdgeStyle;
+import org.eclipse.sirius.web.view.LabelStyle;
 import org.eclipse.sirius.web.view.ViewPackage;
 
 /**
- * This is the item provider adapter for a {@link org.eclipse.sirius.web.view.ConditionalEdgeStyle} object. <!--
- * begin-user-doc --> <!-- end-user-doc -->
+ * This is the item provider adapter for a {@link org.eclipse.sirius.web.view.LabelStyle} object. <!-- begin-user-doc
+ * --> <!-- end-user-doc -->
  *
  * @generated
  */
-public class ConditionalEdgeStyleItemProvider extends ConditionalItemProvider {
+public class LabelStyleItemProvider extends ItemProviderAdapter
+        implements IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource {
     /**
      * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
-    public ConditionalEdgeStyleItemProvider(AdapterFactory adapterFactory) {
+    public LabelStyleItemProvider(AdapterFactory adapterFactory) {
         super(adapterFactory);
     }
 
@@ -55,38 +63,8 @@ public class ConditionalEdgeStyleItemProvider extends ConditionalItemProvider {
             this.addBoldPropertyDescriptor(object);
             this.addUnderlinePropertyDescriptor(object);
             this.addStrikeThroughPropertyDescriptor(object);
-            this.addColorPropertyDescriptor(object);
-            this.addBorderColorPropertyDescriptor(object);
-            this.addLineStylePropertyDescriptor(object);
-            this.addSourceArrowStylePropertyDescriptor(object);
-            this.addTargetArrowStylePropertyDescriptor(object);
-            this.addEdgeWidthPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
-    }
-
-    /**
-     * This adds a property descriptor for the Color feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected void addColorPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors
-                .add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(), this.getString("_UI_Style_color_feature"), //$NON-NLS-1$
-                        this.getString("_UI_PropertyDescriptor_description", "_UI_Style_color_feature", "_UI_Style_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                        ViewPackage.Literals.STYLE__COLOR, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
-
-    /**
-     * This adds a property descriptor for the Border Color feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected void addBorderColorPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(
-                this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(), this.getString("_UI_Style_borderColor_feature"), //$NON-NLS-1$
-                        this.getString("_UI_PropertyDescriptor_description", "_UI_Style_borderColor_feature", "_UI_Style_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                        ViewPackage.Literals.STYLE__BORDER_COLOR, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -150,61 +128,13 @@ public class ConditionalEdgeStyleItemProvider extends ConditionalItemProvider {
     }
 
     /**
-     * This adds a property descriptor for the Line Style feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This returns LabelStyle.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
-     */
-    protected void addLineStylePropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_EdgeStyle_lineStyle_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeStyle_lineStyle_feature", "_UI_EdgeStyle_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                ViewPackage.Literals.EDGE_STYLE__LINE_STYLE, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
-
-    /**
-     * This adds a property descriptor for the Source Arrow Style feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected void addSourceArrowStylePropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_EdgeStyle_sourceArrowStyle_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeStyle_sourceArrowStyle_feature", "_UI_EdgeStyle_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                ViewPackage.Literals.EDGE_STYLE__SOURCE_ARROW_STYLE, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
-
-    /**
-     * This adds a property descriptor for the Target Arrow Style feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected void addTargetArrowStylePropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_EdgeStyle_targetArrowStyle_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeStyle_targetArrowStyle_feature", "_UI_EdgeStyle_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                ViewPackage.Literals.EDGE_STYLE__TARGET_ARROW_STYLE, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
-
-    /**
-     * This adds a property descriptor for the Edge Width feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected void addEdgeWidthPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_EdgeStyle_edgeWidth_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeStyle_edgeWidth_feature", "_UI_EdgeStyle_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                ViewPackage.Literals.EDGE_STYLE__EDGE_WIDTH, true, false, false, ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
-    }
-
-    /**
-     * This returns ConditionalEdgeStyle.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated NOT
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/ConditionalStyle.svg")); //$NON-NLS-1$
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/LabelStyle")); //$NON-NLS-1$
     }
 
     /**
@@ -224,9 +154,8 @@ public class ConditionalEdgeStyleItemProvider extends ConditionalItemProvider {
      */
     @Override
     public String getText(Object object) {
-        String label = ((ConditionalEdgeStyle) object).getCondition();
-        return label == null || label.length() == 0 ? this.getString("_UI_ConditionalEdgeStyle_type") : //$NON-NLS-1$
-                this.getString("_UI_ConditionalEdgeStyle_type") + " " + label; //$NON-NLS-1$ //$NON-NLS-2$
+        LabelStyle labelStyle = (LabelStyle) object;
+        return this.getString("_UI_LabelStyle_type") + " " + labelStyle.getFontSize(); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /**
@@ -240,18 +169,12 @@ public class ConditionalEdgeStyleItemProvider extends ConditionalItemProvider {
     public void notifyChanged(Notification notification) {
         this.updateChildren(notification);
 
-        switch (notification.getFeatureID(ConditionalEdgeStyle.class)) {
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__FONT_SIZE:
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__ITALIC:
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__BOLD:
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__UNDERLINE:
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__STRIKE_THROUGH:
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__COLOR:
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__BORDER_COLOR:
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__LINE_STYLE:
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__SOURCE_ARROW_STYLE:
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__TARGET_ARROW_STYLE:
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__EDGE_WIDTH:
+        switch (notification.getFeatureID(LabelStyle.class)) {
+        case ViewPackage.LABEL_STYLE__FONT_SIZE:
+        case ViewPackage.LABEL_STYLE__ITALIC:
+        case ViewPackage.LABEL_STYLE__BOLD:
+        case ViewPackage.LABEL_STYLE__UNDERLINE:
+        case ViewPackage.LABEL_STYLE__STRIKE_THROUGH:
             this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
             return;
         }
@@ -267,6 +190,16 @@ public class ConditionalEdgeStyleItemProvider extends ConditionalItemProvider {
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
+    }
+
+    /**
+     * Return the resource locator for this item provider's resources. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public ResourceLocator getResourceLocator() {
+        return ViewEditPlugin.INSTANCE;
     }
 
 }

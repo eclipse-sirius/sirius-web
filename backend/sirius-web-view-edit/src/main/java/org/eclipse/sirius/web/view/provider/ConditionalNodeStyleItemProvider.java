@@ -50,18 +50,18 @@ public class ConditionalNodeStyleItemProvider extends ConditionalItemProvider {
         if (this.itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
+            this.addFontSizePropertyDescriptor(object);
+            this.addItalicPropertyDescriptor(object);
+            this.addBoldPropertyDescriptor(object);
+            this.addUnderlinePropertyDescriptor(object);
+            this.addStrikeThroughPropertyDescriptor(object);
             this.addColorPropertyDescriptor(object);
             this.addBorderColorPropertyDescriptor(object);
-            this.addFontSizePropertyDescriptor(object);
             this.addListModePropertyDescriptor(object);
             this.addBorderRadiusPropertyDescriptor(object);
             this.addShapePropertyDescriptor(object);
             this.addBorderSizePropertyDescriptor(object);
             this.addLabelColorPropertyDescriptor(object);
-            this.addItalicPropertyDescriptor(object);
-            this.addBoldPropertyDescriptor(object);
-            this.addUnderlinePropertyDescriptor(object);
-            this.addStrikeThroughPropertyDescriptor(object);
             this.addSizeComputationExpressionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
@@ -97,10 +97,10 @@ public class ConditionalNodeStyleItemProvider extends ConditionalItemProvider {
      * @generated
      */
     protected void addFontSizePropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(
-                this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(), this.getString("_UI_Style_fontSize_feature"), //$NON-NLS-1$
-                        this.getString("_UI_PropertyDescriptor_description", "_UI_Style_fontSize_feature", "_UI_Style_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                        ViewPackage.Literals.STYLE__FONT_SIZE, true, false, false, ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_LabelStyle_fontSize_feature"), //$NON-NLS-1$
+                this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_fontSize_feature", "_UI_LabelStyle_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                ViewPackage.Literals.LABEL_STYLE__FONT_SIZE, true, false, false, ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -170,9 +170,9 @@ public class ConditionalNodeStyleItemProvider extends ConditionalItemProvider {
      */
     protected void addItalicPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(
-                this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(), this.getString("_UI_NodeStyle_italic_feature"), //$NON-NLS-1$
-                        this.getString("_UI_PropertyDescriptor_description", "_UI_NodeStyle_italic_feature", "_UI_NodeStyle_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                        ViewPackage.Literals.NODE_STYLE__ITALIC, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
+                this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(), this.getString("_UI_LabelStyle_italic_feature"), //$NON-NLS-1$
+                        this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_italic_feature", "_UI_LabelStyle_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                        ViewPackage.Literals.LABEL_STYLE__ITALIC, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -182,9 +182,9 @@ public class ConditionalNodeStyleItemProvider extends ConditionalItemProvider {
      */
     protected void addBoldPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(
-                this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(), this.getString("_UI_NodeStyle_bold_feature"), //$NON-NLS-1$
-                        this.getString("_UI_PropertyDescriptor_description", "_UI_NodeStyle_bold_feature", "_UI_NodeStyle_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                        ViewPackage.Literals.NODE_STYLE__BOLD, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
+                this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(), this.getString("_UI_LabelStyle_bold_feature"), //$NON-NLS-1$
+                        this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_bold_feature", "_UI_LabelStyle_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                        ViewPackage.Literals.LABEL_STYLE__BOLD, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -194,9 +194,9 @@ public class ConditionalNodeStyleItemProvider extends ConditionalItemProvider {
      */
     protected void addUnderlinePropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_NodeStyle_underline_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_NodeStyle_underline_feature", "_UI_NodeStyle_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                ViewPackage.Literals.NODE_STYLE__UNDERLINE, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
+                this.getString("_UI_LabelStyle_underline_feature"), //$NON-NLS-1$
+                this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_underline_feature", "_UI_LabelStyle_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                ViewPackage.Literals.LABEL_STYLE__UNDERLINE, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -206,9 +206,9 @@ public class ConditionalNodeStyleItemProvider extends ConditionalItemProvider {
      */
     protected void addStrikeThroughPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_NodeStyle_strikeThrough_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_NodeStyle_strikeThrough_feature", "_UI_NodeStyle_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                ViewPackage.Literals.NODE_STYLE__STRIKE_THROUGH, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
+                this.getString("_UI_LabelStyle_strikeThrough_feature"), //$NON-NLS-1$
+                this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_strikeThrough_feature", "_UI_LabelStyle_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                ViewPackage.Literals.LABEL_STYLE__STRIKE_THROUGH, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -268,18 +268,18 @@ public class ConditionalNodeStyleItemProvider extends ConditionalItemProvider {
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(ConditionalNodeStyle.class)) {
+        case ViewPackage.CONDITIONAL_NODE_STYLE__FONT_SIZE:
+        case ViewPackage.CONDITIONAL_NODE_STYLE__ITALIC:
+        case ViewPackage.CONDITIONAL_NODE_STYLE__BOLD:
+        case ViewPackage.CONDITIONAL_NODE_STYLE__UNDERLINE:
+        case ViewPackage.CONDITIONAL_NODE_STYLE__STRIKE_THROUGH:
         case ViewPackage.CONDITIONAL_NODE_STYLE__COLOR:
         case ViewPackage.CONDITIONAL_NODE_STYLE__BORDER_COLOR:
-        case ViewPackage.CONDITIONAL_NODE_STYLE__FONT_SIZE:
         case ViewPackage.CONDITIONAL_NODE_STYLE__LIST_MODE:
         case ViewPackage.CONDITIONAL_NODE_STYLE__BORDER_RADIUS:
         case ViewPackage.CONDITIONAL_NODE_STYLE__SHAPE:
         case ViewPackage.CONDITIONAL_NODE_STYLE__BORDER_SIZE:
         case ViewPackage.CONDITIONAL_NODE_STYLE__LABEL_COLOR:
-        case ViewPackage.CONDITIONAL_NODE_STYLE__ITALIC:
-        case ViewPackage.CONDITIONAL_NODE_STYLE__BOLD:
-        case ViewPackage.CONDITIONAL_NODE_STYLE__UNDERLINE:
-        case ViewPackage.CONDITIONAL_NODE_STYLE__STRIKE_THROUGH:
         case ViewPackage.CONDITIONAL_NODE_STYLE__SIZE_COMPUTATION_EXPRESSION:
             this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
             return;
