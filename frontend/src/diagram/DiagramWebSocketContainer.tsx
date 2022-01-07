@@ -21,7 +21,8 @@ import { ServerContext } from 'common/ServerContext';
 import {
   CreateEdgeTool,
   CreateNodeTool,
-  GQLDiagram,
+  GQLDiagramDescription,
+  GQLDiagramEventPayload,
   GQLDiagramEventSubscription,
   GQLDiagramRefreshedEventPayload,
   GQLErrorPayload,
@@ -94,7 +95,6 @@ import {
 import { edgeCreationFeedback } from 'diagram/sprotty/edgeCreationFeedback';
 import { Toolbar } from 'diagram/Toolbar';
 import { atLeastOneCanInvokeEdgeTool, canInvokeTool } from 'diagram/toolServices';
-import { GQLDiagramEventPayload } from 'index';
 import React, { useCallback, useContext, useEffect, useRef } from 'react';
 import { SelectionDialogWebSocketContainer } from 'selection/SelectionDialogWebSocketContainer';
 import { EditLabelAction, FitToScreenAction, HoverFeedbackAction, SEdge, SGraph, SModelElement, SNode } from 'sprotty';
@@ -136,7 +136,8 @@ const useDiagramWebSocketContainerStyle = makeStyles((theme) => ({
   },
 }));
 
-const isDiagram = (representation): representation is GQLDiagram => representation.__typename === 'Diagram';
+const isDiagramDescription = (representationDescription): representationDescription is GQLDiagramDescription =>
+  representationDescription.__typename === 'DiagramDescription';
 const isDiagramRefreshedEventPayload = (payload: GQLDiagramEventPayload): payload is GQLDiagramRefreshedEventPayload =>
   payload.__typename === 'DiagramRefreshedEventPayload';
 const isSubscribersUpdatedEventPayload = (
@@ -704,9 +705,9 @@ export const DiagramWebSocketContainer = ({
 
   useEffect(() => {
     if (!toolSectionLoading && diagramWebSocketContainer === 'ready' && toolSectionData) {
-      const representation = toolSectionData.viewer.editingContext.representation;
-      if (isDiagram(representation)) {
-        const { toolSections } = representation;
+      const representationDescription = toolSectionData.viewer.editingContext.representation.description;
+      if (isDiagramDescription(representationDescription)) {
+        const { toolSections } = representationDescription;
 
         const setToolSectionsEvent: SetToolSectionsEvent = { type: 'SET_TOOL_SECTIONS', toolSections: toolSections };
         dispatch(setToolSectionsEvent);

@@ -40,8 +40,7 @@ public class ToolService implements IToolService {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
     }
 
-    @Override
-    public List<ToolSection> getToolSections(IEditingContext editingContext, Diagram diagram) {
+    private List<ToolSection> getToolSections(IEditingContext editingContext, Diagram diagram) {
         // @formatter:off
         return this.representationDescriptionSearchService.findById(editingContext, diagram.getDescriptionId())
             .filter(DiagramDescription.class::isInstance)
