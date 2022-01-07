@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo and others.
+ * Copyright (c) 2019, 2022 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,11 +28,13 @@ import {
   ApplyLabelEditAction,
   CenterAction,
   EditLabelAction,
+  FitToScreenAction,
   GetSelectionAction,
   GetViewportAction,
   getWindowScroll,
   ILogger,
   IModelFactory,
+  InitializeCanvasBoundsAction,
   ModelSource,
   MousePositionTracker,
   MoveAction,
@@ -123,6 +125,7 @@ export class DiagramServer extends ModelSource {
     registry.register(UpdateModelAction.KIND, this);
     registry.register(MoveCommand.KIND, this);
     registry.register(SiriusResizeCommand.KIND, this);
+    registry.register(InitializeCanvasBoundsAction.KIND, this);
     registry.register(SIRIUS_UPDATE_MODEL_ACTION, this);
     registry.register(SIRIUS_SELECT_ACTION, this);
     registry.register(SPROTTY_SELECT_ACTION, this);
@@ -161,6 +164,9 @@ export class DiagramServer extends ModelSource {
         break;
       case SiriusResizeCommand.KIND:
         this.handleResizeAction(action as ResizeAction);
+        break;
+      case InitializeCanvasBoundsAction.KIND:
+        this.handleInitializeCanvasBoundsAction(action as InitializeCanvasBoundsAction);
         break;
       case SIRIUS_UPDATE_MODEL_ACTION:
         this.handleSiriusUpdateModelAction(action as SiriusUpdateModelAction);
@@ -255,6 +261,10 @@ export class DiagramServer extends ModelSource {
       const { elementId, newPosition, newSize } = resize;
       this.resizeElement(elementId, newPosition?.x, newPosition?.y, newSize.width, newSize.height);
     }
+  }
+
+  handleInitializeCanvasBoundsAction(action: InitializeCanvasBoundsAction) {
+    this.actionDispatcher.dispatch(new FitToScreenAction([], 20));
   }
 
   handleSprottySelectAction(action: SprottySelectAction) {
