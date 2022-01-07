@@ -16,6 +16,7 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.sirius.web.view.ConditionalNodeStyle;
+import org.eclipse.sirius.web.view.LabelStyle;
 import org.eclipse.sirius.web.view.NodeStyle;
 import org.eclipse.sirius.web.view.Style;
 import org.eclipse.sirius.web.view.ViewPackage;
@@ -27,18 +28,18 @@ import org.eclipse.sirius.web.view.ViewPackage;
  * The following features are implemented:
  * </p>
  * <ul>
+ * <li>{@link org.eclipse.sirius.web.view.impl.ConditionalNodeStyleImpl#getFontSize <em>Font Size</em>}</li>
+ * <li>{@link org.eclipse.sirius.web.view.impl.ConditionalNodeStyleImpl#isItalic <em>Italic</em>}</li>
+ * <li>{@link org.eclipse.sirius.web.view.impl.ConditionalNodeStyleImpl#isBold <em>Bold</em>}</li>
+ * <li>{@link org.eclipse.sirius.web.view.impl.ConditionalNodeStyleImpl#isUnderline <em>Underline</em>}</li>
+ * <li>{@link org.eclipse.sirius.web.view.impl.ConditionalNodeStyleImpl#isStrikeThrough <em>Strike Through</em>}</li>
  * <li>{@link org.eclipse.sirius.web.view.impl.ConditionalNodeStyleImpl#getColor <em>Color</em>}</li>
  * <li>{@link org.eclipse.sirius.web.view.impl.ConditionalNodeStyleImpl#getBorderColor <em>Border Color</em>}</li>
- * <li>{@link org.eclipse.sirius.web.view.impl.ConditionalNodeStyleImpl#getFontSize <em>Font Size</em>}</li>
  * <li>{@link org.eclipse.sirius.web.view.impl.ConditionalNodeStyleImpl#isListMode <em>List Mode</em>}</li>
  * <li>{@link org.eclipse.sirius.web.view.impl.ConditionalNodeStyleImpl#getBorderRadius <em>Border Radius</em>}</li>
  * <li>{@link org.eclipse.sirius.web.view.impl.ConditionalNodeStyleImpl#getShape <em>Shape</em>}</li>
  * <li>{@link org.eclipse.sirius.web.view.impl.ConditionalNodeStyleImpl#getBorderSize <em>Border Size</em>}</li>
  * <li>{@link org.eclipse.sirius.web.view.impl.ConditionalNodeStyleImpl#getLabelColor <em>Label Color</em>}</li>
- * <li>{@link org.eclipse.sirius.web.view.impl.ConditionalNodeStyleImpl#isItalic <em>Italic</em>}</li>
- * <li>{@link org.eclipse.sirius.web.view.impl.ConditionalNodeStyleImpl#isBold <em>Bold</em>}</li>
- * <li>{@link org.eclipse.sirius.web.view.impl.ConditionalNodeStyleImpl#isUnderline <em>Underline</em>}</li>
- * <li>{@link org.eclipse.sirius.web.view.impl.ConditionalNodeStyleImpl#isStrikeThrough <em>Strike Through</em>}</li>
  * <li>{@link org.eclipse.sirius.web.view.impl.ConditionalNodeStyleImpl#getSizeComputationExpression <em>Size
  * Computation Expression</em>}</li>
  * </ul>
@@ -46,6 +47,106 @@ import org.eclipse.sirius.web.view.ViewPackage;
  * @generated
  */
 public class ConditionalNodeStyleImpl extends ConditionalImpl implements ConditionalNodeStyle {
+    /**
+     * The default value of the '{@link #getFontSize() <em>Font Size</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getFontSize()
+     * @generated
+     * @ordered
+     */
+    protected static final int FONT_SIZE_EDEFAULT = 14;
+
+    /**
+     * The cached value of the '{@link #getFontSize() <em>Font Size</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getFontSize()
+     * @generated
+     * @ordered
+     */
+    protected int fontSize = FONT_SIZE_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #isItalic() <em>Italic</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #isItalic()
+     * @generated
+     * @ordered
+     */
+    protected static final boolean ITALIC_EDEFAULT = false;
+
+    /**
+     * The cached value of the '{@link #isItalic() <em>Italic</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #isItalic()
+     * @generated
+     * @ordered
+     */
+    protected boolean italic = ITALIC_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #isBold() <em>Bold</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @see #isBold()
+     * @generated
+     * @ordered
+     */
+    protected static final boolean BOLD_EDEFAULT = false;
+
+    /**
+     * The cached value of the '{@link #isBold() <em>Bold</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @see #isBold()
+     * @generated
+     * @ordered
+     */
+    protected boolean bold = BOLD_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #isUnderline() <em>Underline</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #isUnderline()
+     * @generated
+     * @ordered
+     */
+    protected static final boolean UNDERLINE_EDEFAULT = false;
+
+    /**
+     * The cached value of the '{@link #isUnderline() <em>Underline</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #isUnderline()
+     * @generated
+     * @ordered
+     */
+    protected boolean underline = UNDERLINE_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #isStrikeThrough() <em>Strike Through</em>}' attribute. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @see #isStrikeThrough()
+     * @generated
+     * @ordered
+     */
+    protected static final boolean STRIKE_THROUGH_EDEFAULT = false;
+
+    /**
+     * The cached value of the '{@link #isStrikeThrough() <em>Strike Through</em>}' attribute. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @see #isStrikeThrough()
+     * @generated
+     * @ordered
+     */
+    protected boolean strikeThrough = STRIKE_THROUGH_EDEFAULT;
+
     /**
      * The default value of the '{@link #getColor() <em>Color</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -85,26 +186,6 @@ public class ConditionalNodeStyleImpl extends ConditionalImpl implements Conditi
      * @ordered
      */
     protected String borderColor = BORDER_COLOR_EDEFAULT;
-
-    /**
-     * The default value of the '{@link #getFontSize() <em>Font Size</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @see #getFontSize()
-     * @generated
-     * @ordered
-     */
-    protected static final int FONT_SIZE_EDEFAULT = 14;
-
-    /**
-     * The cached value of the '{@link #getFontSize() <em>Font Size</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @see #getFontSize()
-     * @generated
-     * @ordered
-     */
-    protected int fontSize = FONT_SIZE_EDEFAULT;
 
     /**
      * The default value of the '{@link #isListMode() <em>List Mode</em>}' attribute. <!-- begin-user-doc --> <!--
@@ -205,86 +286,6 @@ public class ConditionalNodeStyleImpl extends ConditionalImpl implements Conditi
      * @ordered
      */
     protected String labelColor = LABEL_COLOR_EDEFAULT;
-
-    /**
-     * The default value of the '{@link #isItalic() <em>Italic</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @see #isItalic()
-     * @generated
-     * @ordered
-     */
-    protected static final boolean ITALIC_EDEFAULT = false;
-
-    /**
-     * The cached value of the '{@link #isItalic() <em>Italic</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @see #isItalic()
-     * @generated
-     * @ordered
-     */
-    protected boolean italic = ITALIC_EDEFAULT;
-
-    /**
-     * The default value of the '{@link #isBold() <em>Bold</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
-     *
-     * @see #isBold()
-     * @generated
-     * @ordered
-     */
-    protected static final boolean BOLD_EDEFAULT = false;
-
-    /**
-     * The cached value of the '{@link #isBold() <em>Bold</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
-     *
-     * @see #isBold()
-     * @generated
-     * @ordered
-     */
-    protected boolean bold = BOLD_EDEFAULT;
-
-    /**
-     * The default value of the '{@link #isUnderline() <em>Underline</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @see #isUnderline()
-     * @generated
-     * @ordered
-     */
-    protected static final boolean UNDERLINE_EDEFAULT = false;
-
-    /**
-     * The cached value of the '{@link #isUnderline() <em>Underline</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @see #isUnderline()
-     * @generated
-     * @ordered
-     */
-    protected boolean underline = UNDERLINE_EDEFAULT;
-
-    /**
-     * The default value of the '{@link #isStrikeThrough() <em>Strike Through</em>}' attribute. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @see #isStrikeThrough()
-     * @generated
-     * @ordered
-     */
-    protected static final boolean STRIKE_THROUGH_EDEFAULT = false;
-
-    /**
-     * The cached value of the '{@link #isStrikeThrough() <em>Strike Through</em>}' attribute. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @see #isStrikeThrough()
-     * @generated
-     * @ordered
-     */
-    protected boolean strikeThrough = STRIKE_THROUGH_EDEFAULT;
 
     /**
      * The default value of the '{@link #getSizeComputationExpression() <em>Size Computation Expression</em>}'
@@ -632,12 +633,20 @@ public class ConditionalNodeStyleImpl extends ConditionalImpl implements Conditi
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
+        case ViewPackage.CONDITIONAL_NODE_STYLE__FONT_SIZE:
+            return this.getFontSize();
+        case ViewPackage.CONDITIONAL_NODE_STYLE__ITALIC:
+            return this.isItalic();
+        case ViewPackage.CONDITIONAL_NODE_STYLE__BOLD:
+            return this.isBold();
+        case ViewPackage.CONDITIONAL_NODE_STYLE__UNDERLINE:
+            return this.isUnderline();
+        case ViewPackage.CONDITIONAL_NODE_STYLE__STRIKE_THROUGH:
+            return this.isStrikeThrough();
         case ViewPackage.CONDITIONAL_NODE_STYLE__COLOR:
             return this.getColor();
         case ViewPackage.CONDITIONAL_NODE_STYLE__BORDER_COLOR:
             return this.getBorderColor();
-        case ViewPackage.CONDITIONAL_NODE_STYLE__FONT_SIZE:
-            return this.getFontSize();
         case ViewPackage.CONDITIONAL_NODE_STYLE__LIST_MODE:
             return this.isListMode();
         case ViewPackage.CONDITIONAL_NODE_STYLE__BORDER_RADIUS:
@@ -648,14 +657,6 @@ public class ConditionalNodeStyleImpl extends ConditionalImpl implements Conditi
             return this.getBorderSize();
         case ViewPackage.CONDITIONAL_NODE_STYLE__LABEL_COLOR:
             return this.getLabelColor();
-        case ViewPackage.CONDITIONAL_NODE_STYLE__ITALIC:
-            return this.isItalic();
-        case ViewPackage.CONDITIONAL_NODE_STYLE__BOLD:
-            return this.isBold();
-        case ViewPackage.CONDITIONAL_NODE_STYLE__UNDERLINE:
-            return this.isUnderline();
-        case ViewPackage.CONDITIONAL_NODE_STYLE__STRIKE_THROUGH:
-            return this.isStrikeThrough();
         case ViewPackage.CONDITIONAL_NODE_STYLE__SIZE_COMPUTATION_EXPRESSION:
             return this.getSizeComputationExpression();
         }
@@ -670,14 +671,26 @@ public class ConditionalNodeStyleImpl extends ConditionalImpl implements Conditi
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
+        case ViewPackage.CONDITIONAL_NODE_STYLE__FONT_SIZE:
+            this.setFontSize((Integer) newValue);
+            return;
+        case ViewPackage.CONDITIONAL_NODE_STYLE__ITALIC:
+            this.setItalic((Boolean) newValue);
+            return;
+        case ViewPackage.CONDITIONAL_NODE_STYLE__BOLD:
+            this.setBold((Boolean) newValue);
+            return;
+        case ViewPackage.CONDITIONAL_NODE_STYLE__UNDERLINE:
+            this.setUnderline((Boolean) newValue);
+            return;
+        case ViewPackage.CONDITIONAL_NODE_STYLE__STRIKE_THROUGH:
+            this.setStrikeThrough((Boolean) newValue);
+            return;
         case ViewPackage.CONDITIONAL_NODE_STYLE__COLOR:
             this.setColor((String) newValue);
             return;
         case ViewPackage.CONDITIONAL_NODE_STYLE__BORDER_COLOR:
             this.setBorderColor((String) newValue);
-            return;
-        case ViewPackage.CONDITIONAL_NODE_STYLE__FONT_SIZE:
-            this.setFontSize((Integer) newValue);
             return;
         case ViewPackage.CONDITIONAL_NODE_STYLE__LIST_MODE:
             this.setListMode((Boolean) newValue);
@@ -694,18 +707,6 @@ public class ConditionalNodeStyleImpl extends ConditionalImpl implements Conditi
         case ViewPackage.CONDITIONAL_NODE_STYLE__LABEL_COLOR:
             this.setLabelColor((String) newValue);
             return;
-        case ViewPackage.CONDITIONAL_NODE_STYLE__ITALIC:
-            this.setItalic((Boolean) newValue);
-            return;
-        case ViewPackage.CONDITIONAL_NODE_STYLE__BOLD:
-            this.setBold((Boolean) newValue);
-            return;
-        case ViewPackage.CONDITIONAL_NODE_STYLE__UNDERLINE:
-            this.setUnderline((Boolean) newValue);
-            return;
-        case ViewPackage.CONDITIONAL_NODE_STYLE__STRIKE_THROUGH:
-            this.setStrikeThrough((Boolean) newValue);
-            return;
         case ViewPackage.CONDITIONAL_NODE_STYLE__SIZE_COMPUTATION_EXPRESSION:
             this.setSizeComputationExpression((String) newValue);
             return;
@@ -721,14 +722,26 @@ public class ConditionalNodeStyleImpl extends ConditionalImpl implements Conditi
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
+        case ViewPackage.CONDITIONAL_NODE_STYLE__FONT_SIZE:
+            this.setFontSize(FONT_SIZE_EDEFAULT);
+            return;
+        case ViewPackage.CONDITIONAL_NODE_STYLE__ITALIC:
+            this.setItalic(ITALIC_EDEFAULT);
+            return;
+        case ViewPackage.CONDITIONAL_NODE_STYLE__BOLD:
+            this.setBold(BOLD_EDEFAULT);
+            return;
+        case ViewPackage.CONDITIONAL_NODE_STYLE__UNDERLINE:
+            this.setUnderline(UNDERLINE_EDEFAULT);
+            return;
+        case ViewPackage.CONDITIONAL_NODE_STYLE__STRIKE_THROUGH:
+            this.setStrikeThrough(STRIKE_THROUGH_EDEFAULT);
+            return;
         case ViewPackage.CONDITIONAL_NODE_STYLE__COLOR:
             this.setColor(COLOR_EDEFAULT);
             return;
         case ViewPackage.CONDITIONAL_NODE_STYLE__BORDER_COLOR:
             this.setBorderColor(BORDER_COLOR_EDEFAULT);
-            return;
-        case ViewPackage.CONDITIONAL_NODE_STYLE__FONT_SIZE:
-            this.setFontSize(FONT_SIZE_EDEFAULT);
             return;
         case ViewPackage.CONDITIONAL_NODE_STYLE__LIST_MODE:
             this.setListMode(LIST_MODE_EDEFAULT);
@@ -745,18 +758,6 @@ public class ConditionalNodeStyleImpl extends ConditionalImpl implements Conditi
         case ViewPackage.CONDITIONAL_NODE_STYLE__LABEL_COLOR:
             this.setLabelColor(LABEL_COLOR_EDEFAULT);
             return;
-        case ViewPackage.CONDITIONAL_NODE_STYLE__ITALIC:
-            this.setItalic(ITALIC_EDEFAULT);
-            return;
-        case ViewPackage.CONDITIONAL_NODE_STYLE__BOLD:
-            this.setBold(BOLD_EDEFAULT);
-            return;
-        case ViewPackage.CONDITIONAL_NODE_STYLE__UNDERLINE:
-            this.setUnderline(UNDERLINE_EDEFAULT);
-            return;
-        case ViewPackage.CONDITIONAL_NODE_STYLE__STRIKE_THROUGH:
-            this.setStrikeThrough(STRIKE_THROUGH_EDEFAULT);
-            return;
         case ViewPackage.CONDITIONAL_NODE_STYLE__SIZE_COMPUTATION_EXPRESSION:
             this.setSizeComputationExpression(SIZE_COMPUTATION_EXPRESSION_EDEFAULT);
             return;
@@ -772,12 +773,20 @@ public class ConditionalNodeStyleImpl extends ConditionalImpl implements Conditi
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
+        case ViewPackage.CONDITIONAL_NODE_STYLE__FONT_SIZE:
+            return this.fontSize != FONT_SIZE_EDEFAULT;
+        case ViewPackage.CONDITIONAL_NODE_STYLE__ITALIC:
+            return this.italic != ITALIC_EDEFAULT;
+        case ViewPackage.CONDITIONAL_NODE_STYLE__BOLD:
+            return this.bold != BOLD_EDEFAULT;
+        case ViewPackage.CONDITIONAL_NODE_STYLE__UNDERLINE:
+            return this.underline != UNDERLINE_EDEFAULT;
+        case ViewPackage.CONDITIONAL_NODE_STYLE__STRIKE_THROUGH:
+            return this.strikeThrough != STRIKE_THROUGH_EDEFAULT;
         case ViewPackage.CONDITIONAL_NODE_STYLE__COLOR:
             return COLOR_EDEFAULT == null ? this.color != null : !COLOR_EDEFAULT.equals(this.color);
         case ViewPackage.CONDITIONAL_NODE_STYLE__BORDER_COLOR:
             return BORDER_COLOR_EDEFAULT == null ? this.borderColor != null : !BORDER_COLOR_EDEFAULT.equals(this.borderColor);
-        case ViewPackage.CONDITIONAL_NODE_STYLE__FONT_SIZE:
-            return this.fontSize != FONT_SIZE_EDEFAULT;
         case ViewPackage.CONDITIONAL_NODE_STYLE__LIST_MODE:
             return this.listMode != LIST_MODE_EDEFAULT;
         case ViewPackage.CONDITIONAL_NODE_STYLE__BORDER_RADIUS:
@@ -788,14 +797,6 @@ public class ConditionalNodeStyleImpl extends ConditionalImpl implements Conditi
             return this.borderSize != BORDER_SIZE_EDEFAULT;
         case ViewPackage.CONDITIONAL_NODE_STYLE__LABEL_COLOR:
             return LABEL_COLOR_EDEFAULT == null ? this.labelColor != null : !LABEL_COLOR_EDEFAULT.equals(this.labelColor);
-        case ViewPackage.CONDITIONAL_NODE_STYLE__ITALIC:
-            return this.italic != ITALIC_EDEFAULT;
-        case ViewPackage.CONDITIONAL_NODE_STYLE__BOLD:
-            return this.bold != BOLD_EDEFAULT;
-        case ViewPackage.CONDITIONAL_NODE_STYLE__UNDERLINE:
-            return this.underline != UNDERLINE_EDEFAULT;
-        case ViewPackage.CONDITIONAL_NODE_STYLE__STRIKE_THROUGH:
-            return this.strikeThrough != STRIKE_THROUGH_EDEFAULT;
         case ViewPackage.CONDITIONAL_NODE_STYLE__SIZE_COMPUTATION_EXPRESSION:
             return SIZE_COMPUTATION_EXPRESSION_EDEFAULT == null ? this.sizeComputationExpression != null : !SIZE_COMPUTATION_EXPRESSION_EDEFAULT.equals(this.sizeComputationExpression);
         }
@@ -809,14 +810,28 @@ public class ConditionalNodeStyleImpl extends ConditionalImpl implements Conditi
      */
     @Override
     public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
+        if (baseClass == LabelStyle.class) {
+            switch (derivedFeatureID) {
+            case ViewPackage.CONDITIONAL_NODE_STYLE__FONT_SIZE:
+                return ViewPackage.LABEL_STYLE__FONT_SIZE;
+            case ViewPackage.CONDITIONAL_NODE_STYLE__ITALIC:
+                return ViewPackage.LABEL_STYLE__ITALIC;
+            case ViewPackage.CONDITIONAL_NODE_STYLE__BOLD:
+                return ViewPackage.LABEL_STYLE__BOLD;
+            case ViewPackage.CONDITIONAL_NODE_STYLE__UNDERLINE:
+                return ViewPackage.LABEL_STYLE__UNDERLINE;
+            case ViewPackage.CONDITIONAL_NODE_STYLE__STRIKE_THROUGH:
+                return ViewPackage.LABEL_STYLE__STRIKE_THROUGH;
+            default:
+                return -1;
+            }
+        }
         if (baseClass == Style.class) {
             switch (derivedFeatureID) {
             case ViewPackage.CONDITIONAL_NODE_STYLE__COLOR:
                 return ViewPackage.STYLE__COLOR;
             case ViewPackage.CONDITIONAL_NODE_STYLE__BORDER_COLOR:
                 return ViewPackage.STYLE__BORDER_COLOR;
-            case ViewPackage.CONDITIONAL_NODE_STYLE__FONT_SIZE:
-                return ViewPackage.STYLE__FONT_SIZE;
             default:
                 return -1;
             }
@@ -833,14 +848,6 @@ public class ConditionalNodeStyleImpl extends ConditionalImpl implements Conditi
                 return ViewPackage.NODE_STYLE__BORDER_SIZE;
             case ViewPackage.CONDITIONAL_NODE_STYLE__LABEL_COLOR:
                 return ViewPackage.NODE_STYLE__LABEL_COLOR;
-            case ViewPackage.CONDITIONAL_NODE_STYLE__ITALIC:
-                return ViewPackage.NODE_STYLE__ITALIC;
-            case ViewPackage.CONDITIONAL_NODE_STYLE__BOLD:
-                return ViewPackage.NODE_STYLE__BOLD;
-            case ViewPackage.CONDITIONAL_NODE_STYLE__UNDERLINE:
-                return ViewPackage.NODE_STYLE__UNDERLINE;
-            case ViewPackage.CONDITIONAL_NODE_STYLE__STRIKE_THROUGH:
-                return ViewPackage.NODE_STYLE__STRIKE_THROUGH;
             case ViewPackage.CONDITIONAL_NODE_STYLE__SIZE_COMPUTATION_EXPRESSION:
                 return ViewPackage.NODE_STYLE__SIZE_COMPUTATION_EXPRESSION;
             default:
@@ -857,14 +864,28 @@ public class ConditionalNodeStyleImpl extends ConditionalImpl implements Conditi
      */
     @Override
     public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
+        if (baseClass == LabelStyle.class) {
+            switch (baseFeatureID) {
+            case ViewPackage.LABEL_STYLE__FONT_SIZE:
+                return ViewPackage.CONDITIONAL_NODE_STYLE__FONT_SIZE;
+            case ViewPackage.LABEL_STYLE__ITALIC:
+                return ViewPackage.CONDITIONAL_NODE_STYLE__ITALIC;
+            case ViewPackage.LABEL_STYLE__BOLD:
+                return ViewPackage.CONDITIONAL_NODE_STYLE__BOLD;
+            case ViewPackage.LABEL_STYLE__UNDERLINE:
+                return ViewPackage.CONDITIONAL_NODE_STYLE__UNDERLINE;
+            case ViewPackage.LABEL_STYLE__STRIKE_THROUGH:
+                return ViewPackage.CONDITIONAL_NODE_STYLE__STRIKE_THROUGH;
+            default:
+                return -1;
+            }
+        }
         if (baseClass == Style.class) {
             switch (baseFeatureID) {
             case ViewPackage.STYLE__COLOR:
                 return ViewPackage.CONDITIONAL_NODE_STYLE__COLOR;
             case ViewPackage.STYLE__BORDER_COLOR:
                 return ViewPackage.CONDITIONAL_NODE_STYLE__BORDER_COLOR;
-            case ViewPackage.STYLE__FONT_SIZE:
-                return ViewPackage.CONDITIONAL_NODE_STYLE__FONT_SIZE;
             default:
                 return -1;
             }
@@ -881,14 +902,6 @@ public class ConditionalNodeStyleImpl extends ConditionalImpl implements Conditi
                 return ViewPackage.CONDITIONAL_NODE_STYLE__BORDER_SIZE;
             case ViewPackage.NODE_STYLE__LABEL_COLOR:
                 return ViewPackage.CONDITIONAL_NODE_STYLE__LABEL_COLOR;
-            case ViewPackage.NODE_STYLE__ITALIC:
-                return ViewPackage.CONDITIONAL_NODE_STYLE__ITALIC;
-            case ViewPackage.NODE_STYLE__BOLD:
-                return ViewPackage.CONDITIONAL_NODE_STYLE__BOLD;
-            case ViewPackage.NODE_STYLE__UNDERLINE:
-                return ViewPackage.CONDITIONAL_NODE_STYLE__UNDERLINE;
-            case ViewPackage.NODE_STYLE__STRIKE_THROUGH:
-                return ViewPackage.CONDITIONAL_NODE_STYLE__STRIKE_THROUGH;
             case ViewPackage.NODE_STYLE__SIZE_COMPUTATION_EXPRESSION:
                 return ViewPackage.CONDITIONAL_NODE_STYLE__SIZE_COMPUTATION_EXPRESSION;
             default:
@@ -909,12 +922,20 @@ public class ConditionalNodeStyleImpl extends ConditionalImpl implements Conditi
             return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (color: "); //$NON-NLS-1$
+        result.append(" (fontSize: "); //$NON-NLS-1$
+        result.append(this.fontSize);
+        result.append(", italic: "); //$NON-NLS-1$
+        result.append(this.italic);
+        result.append(", bold: "); //$NON-NLS-1$
+        result.append(this.bold);
+        result.append(", underline: "); //$NON-NLS-1$
+        result.append(this.underline);
+        result.append(", strikeThrough: "); //$NON-NLS-1$
+        result.append(this.strikeThrough);
+        result.append(", color: "); //$NON-NLS-1$
         result.append(this.color);
         result.append(", borderColor: "); //$NON-NLS-1$
         result.append(this.borderColor);
-        result.append(", fontSize: "); //$NON-NLS-1$
-        result.append(this.fontSize);
         result.append(", listMode: "); //$NON-NLS-1$
         result.append(this.listMode);
         result.append(", borderRadius: "); //$NON-NLS-1$
@@ -925,14 +946,6 @@ public class ConditionalNodeStyleImpl extends ConditionalImpl implements Conditi
         result.append(this.borderSize);
         result.append(", labelColor: "); //$NON-NLS-1$
         result.append(this.labelColor);
-        result.append(", italic: "); //$NON-NLS-1$
-        result.append(this.italic);
-        result.append(", bold: "); //$NON-NLS-1$
-        result.append(this.bold);
-        result.append(", underline: "); //$NON-NLS-1$
-        result.append(this.underline);
-        result.append(", strikeThrough: "); //$NON-NLS-1$
-        result.append(this.strikeThrough);
         result.append(", sizeComputationExpression: "); //$NON-NLS-1$
         result.append(this.sizeComputationExpression);
         result.append(')');

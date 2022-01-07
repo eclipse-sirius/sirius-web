@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.sirius.web.view.ArrowStyle;
 import org.eclipse.sirius.web.view.ConditionalEdgeStyle;
 import org.eclipse.sirius.web.view.EdgeStyle;
+import org.eclipse.sirius.web.view.LabelStyle;
 import org.eclipse.sirius.web.view.LineStyle;
 import org.eclipse.sirius.web.view.Style;
 import org.eclipse.sirius.web.view.ViewPackage;
@@ -29,9 +30,13 @@ import org.eclipse.sirius.web.view.ViewPackage;
  * The following features are implemented:
  * </p>
  * <ul>
+ * <li>{@link org.eclipse.sirius.web.view.impl.ConditionalEdgeStyleImpl#getFontSize <em>Font Size</em>}</li>
+ * <li>{@link org.eclipse.sirius.web.view.impl.ConditionalEdgeStyleImpl#isItalic <em>Italic</em>}</li>
+ * <li>{@link org.eclipse.sirius.web.view.impl.ConditionalEdgeStyleImpl#isBold <em>Bold</em>}</li>
+ * <li>{@link org.eclipse.sirius.web.view.impl.ConditionalEdgeStyleImpl#isUnderline <em>Underline</em>}</li>
+ * <li>{@link org.eclipse.sirius.web.view.impl.ConditionalEdgeStyleImpl#isStrikeThrough <em>Strike Through</em>}</li>
  * <li>{@link org.eclipse.sirius.web.view.impl.ConditionalEdgeStyleImpl#getColor <em>Color</em>}</li>
  * <li>{@link org.eclipse.sirius.web.view.impl.ConditionalEdgeStyleImpl#getBorderColor <em>Border Color</em>}</li>
- * <li>{@link org.eclipse.sirius.web.view.impl.ConditionalEdgeStyleImpl#getFontSize <em>Font Size</em>}</li>
  * <li>{@link org.eclipse.sirius.web.view.impl.ConditionalEdgeStyleImpl#getLineStyle <em>Line Style</em>}</li>
  * <li>{@link org.eclipse.sirius.web.view.impl.ConditionalEdgeStyleImpl#getSourceArrowStyle <em>Source Arrow
  * Style</em>}</li>
@@ -43,6 +48,106 @@ import org.eclipse.sirius.web.view.ViewPackage;
  * @generated
  */
 public class ConditionalEdgeStyleImpl extends ConditionalImpl implements ConditionalEdgeStyle {
+    /**
+     * The default value of the '{@link #getFontSize() <em>Font Size</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getFontSize()
+     * @generated
+     * @ordered
+     */
+    protected static final int FONT_SIZE_EDEFAULT = 14;
+
+    /**
+     * The cached value of the '{@link #getFontSize() <em>Font Size</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getFontSize()
+     * @generated
+     * @ordered
+     */
+    protected int fontSize = FONT_SIZE_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #isItalic() <em>Italic</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #isItalic()
+     * @generated
+     * @ordered
+     */
+    protected static final boolean ITALIC_EDEFAULT = false;
+
+    /**
+     * The cached value of the '{@link #isItalic() <em>Italic</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #isItalic()
+     * @generated
+     * @ordered
+     */
+    protected boolean italic = ITALIC_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #isBold() <em>Bold</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @see #isBold()
+     * @generated
+     * @ordered
+     */
+    protected static final boolean BOLD_EDEFAULT = false;
+
+    /**
+     * The cached value of the '{@link #isBold() <em>Bold</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @see #isBold()
+     * @generated
+     * @ordered
+     */
+    protected boolean bold = BOLD_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #isUnderline() <em>Underline</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #isUnderline()
+     * @generated
+     * @ordered
+     */
+    protected static final boolean UNDERLINE_EDEFAULT = false;
+
+    /**
+     * The cached value of the '{@link #isUnderline() <em>Underline</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #isUnderline()
+     * @generated
+     * @ordered
+     */
+    protected boolean underline = UNDERLINE_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #isStrikeThrough() <em>Strike Through</em>}' attribute. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @see #isStrikeThrough()
+     * @generated
+     * @ordered
+     */
+    protected static final boolean STRIKE_THROUGH_EDEFAULT = false;
+
+    /**
+     * The cached value of the '{@link #isStrikeThrough() <em>Strike Through</em>}' attribute. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @see #isStrikeThrough()
+     * @generated
+     * @ordered
+     */
+    protected boolean strikeThrough = STRIKE_THROUGH_EDEFAULT;
+
     /**
      * The default value of the '{@link #getColor() <em>Color</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -82,26 +187,6 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
      * @ordered
      */
     protected String borderColor = BORDER_COLOR_EDEFAULT;
-
-    /**
-     * The default value of the '{@link #getFontSize() <em>Font Size</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @see #getFontSize()
-     * @generated
-     * @ordered
-     */
-    protected static final int FONT_SIZE_EDEFAULT = 14;
-
-    /**
-     * The cached value of the '{@link #getFontSize() <em>Font Size</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @see #getFontSize()
-     * @generated
-     * @ordered
-     */
-    protected int fontSize = FONT_SIZE_EDEFAULT;
 
     /**
      * The default value of the '{@link #getLineStyle() <em>Line Style</em>}' attribute. <!-- begin-user-doc --> <!--
@@ -277,6 +362,98 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
      * @generated
      */
     @Override
+    public boolean isItalic() {
+        return this.italic;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setItalic(boolean newItalic) {
+        boolean oldItalic = this.italic;
+        this.italic = newItalic;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.CONDITIONAL_EDGE_STYLE__ITALIC, oldItalic, this.italic));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public boolean isBold() {
+        return this.bold;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setBold(boolean newBold) {
+        boolean oldBold = this.bold;
+        this.bold = newBold;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.CONDITIONAL_EDGE_STYLE__BOLD, oldBold, this.bold));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public boolean isUnderline() {
+        return this.underline;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setUnderline(boolean newUnderline) {
+        boolean oldUnderline = this.underline;
+        this.underline = newUnderline;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.CONDITIONAL_EDGE_STYLE__UNDERLINE, oldUnderline, this.underline));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public boolean isStrikeThrough() {
+        return this.strikeThrough;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setStrikeThrough(boolean newStrikeThrough) {
+        boolean oldStrikeThrough = this.strikeThrough;
+        this.strikeThrough = newStrikeThrough;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.CONDITIONAL_EDGE_STYLE__STRIKE_THROUGH, oldStrikeThrough, this.strikeThrough));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public LineStyle getLineStyle() {
         return this.lineStyle;
     }
@@ -371,12 +548,20 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
+        case ViewPackage.CONDITIONAL_EDGE_STYLE__FONT_SIZE:
+            return this.getFontSize();
+        case ViewPackage.CONDITIONAL_EDGE_STYLE__ITALIC:
+            return this.isItalic();
+        case ViewPackage.CONDITIONAL_EDGE_STYLE__BOLD:
+            return this.isBold();
+        case ViewPackage.CONDITIONAL_EDGE_STYLE__UNDERLINE:
+            return this.isUnderline();
+        case ViewPackage.CONDITIONAL_EDGE_STYLE__STRIKE_THROUGH:
+            return this.isStrikeThrough();
         case ViewPackage.CONDITIONAL_EDGE_STYLE__COLOR:
             return this.getColor();
         case ViewPackage.CONDITIONAL_EDGE_STYLE__BORDER_COLOR:
             return this.getBorderColor();
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__FONT_SIZE:
-            return this.getFontSize();
         case ViewPackage.CONDITIONAL_EDGE_STYLE__LINE_STYLE:
             return this.getLineStyle();
         case ViewPackage.CONDITIONAL_EDGE_STYLE__SOURCE_ARROW_STYLE:
@@ -397,14 +582,26 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
+        case ViewPackage.CONDITIONAL_EDGE_STYLE__FONT_SIZE:
+            this.setFontSize((Integer) newValue);
+            return;
+        case ViewPackage.CONDITIONAL_EDGE_STYLE__ITALIC:
+            this.setItalic((Boolean) newValue);
+            return;
+        case ViewPackage.CONDITIONAL_EDGE_STYLE__BOLD:
+            this.setBold((Boolean) newValue);
+            return;
+        case ViewPackage.CONDITIONAL_EDGE_STYLE__UNDERLINE:
+            this.setUnderline((Boolean) newValue);
+            return;
+        case ViewPackage.CONDITIONAL_EDGE_STYLE__STRIKE_THROUGH:
+            this.setStrikeThrough((Boolean) newValue);
+            return;
         case ViewPackage.CONDITIONAL_EDGE_STYLE__COLOR:
             this.setColor((String) newValue);
             return;
         case ViewPackage.CONDITIONAL_EDGE_STYLE__BORDER_COLOR:
             this.setBorderColor((String) newValue);
-            return;
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__FONT_SIZE:
-            this.setFontSize((Integer) newValue);
             return;
         case ViewPackage.CONDITIONAL_EDGE_STYLE__LINE_STYLE:
             this.setLineStyle((LineStyle) newValue);
@@ -430,14 +627,26 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
+        case ViewPackage.CONDITIONAL_EDGE_STYLE__FONT_SIZE:
+            this.setFontSize(FONT_SIZE_EDEFAULT);
+            return;
+        case ViewPackage.CONDITIONAL_EDGE_STYLE__ITALIC:
+            this.setItalic(ITALIC_EDEFAULT);
+            return;
+        case ViewPackage.CONDITIONAL_EDGE_STYLE__BOLD:
+            this.setBold(BOLD_EDEFAULT);
+            return;
+        case ViewPackage.CONDITIONAL_EDGE_STYLE__UNDERLINE:
+            this.setUnderline(UNDERLINE_EDEFAULT);
+            return;
+        case ViewPackage.CONDITIONAL_EDGE_STYLE__STRIKE_THROUGH:
+            this.setStrikeThrough(STRIKE_THROUGH_EDEFAULT);
+            return;
         case ViewPackage.CONDITIONAL_EDGE_STYLE__COLOR:
             this.setColor(COLOR_EDEFAULT);
             return;
         case ViewPackage.CONDITIONAL_EDGE_STYLE__BORDER_COLOR:
             this.setBorderColor(BORDER_COLOR_EDEFAULT);
-            return;
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__FONT_SIZE:
-            this.setFontSize(FONT_SIZE_EDEFAULT);
             return;
         case ViewPackage.CONDITIONAL_EDGE_STYLE__LINE_STYLE:
             this.setLineStyle(LINE_STYLE_EDEFAULT);
@@ -463,12 +672,20 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
+        case ViewPackage.CONDITIONAL_EDGE_STYLE__FONT_SIZE:
+            return this.fontSize != FONT_SIZE_EDEFAULT;
+        case ViewPackage.CONDITIONAL_EDGE_STYLE__ITALIC:
+            return this.italic != ITALIC_EDEFAULT;
+        case ViewPackage.CONDITIONAL_EDGE_STYLE__BOLD:
+            return this.bold != BOLD_EDEFAULT;
+        case ViewPackage.CONDITIONAL_EDGE_STYLE__UNDERLINE:
+            return this.underline != UNDERLINE_EDEFAULT;
+        case ViewPackage.CONDITIONAL_EDGE_STYLE__STRIKE_THROUGH:
+            return this.strikeThrough != STRIKE_THROUGH_EDEFAULT;
         case ViewPackage.CONDITIONAL_EDGE_STYLE__COLOR:
             return COLOR_EDEFAULT == null ? this.color != null : !COLOR_EDEFAULT.equals(this.color);
         case ViewPackage.CONDITIONAL_EDGE_STYLE__BORDER_COLOR:
             return BORDER_COLOR_EDEFAULT == null ? this.borderColor != null : !BORDER_COLOR_EDEFAULT.equals(this.borderColor);
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__FONT_SIZE:
-            return this.fontSize != FONT_SIZE_EDEFAULT;
         case ViewPackage.CONDITIONAL_EDGE_STYLE__LINE_STYLE:
             return this.lineStyle != LINE_STYLE_EDEFAULT;
         case ViewPackage.CONDITIONAL_EDGE_STYLE__SOURCE_ARROW_STYLE:
@@ -488,14 +705,28 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
      */
     @Override
     public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
+        if (baseClass == LabelStyle.class) {
+            switch (derivedFeatureID) {
+            case ViewPackage.CONDITIONAL_EDGE_STYLE__FONT_SIZE:
+                return ViewPackage.LABEL_STYLE__FONT_SIZE;
+            case ViewPackage.CONDITIONAL_EDGE_STYLE__ITALIC:
+                return ViewPackage.LABEL_STYLE__ITALIC;
+            case ViewPackage.CONDITIONAL_EDGE_STYLE__BOLD:
+                return ViewPackage.LABEL_STYLE__BOLD;
+            case ViewPackage.CONDITIONAL_EDGE_STYLE__UNDERLINE:
+                return ViewPackage.LABEL_STYLE__UNDERLINE;
+            case ViewPackage.CONDITIONAL_EDGE_STYLE__STRIKE_THROUGH:
+                return ViewPackage.LABEL_STYLE__STRIKE_THROUGH;
+            default:
+                return -1;
+            }
+        }
         if (baseClass == Style.class) {
             switch (derivedFeatureID) {
             case ViewPackage.CONDITIONAL_EDGE_STYLE__COLOR:
                 return ViewPackage.STYLE__COLOR;
             case ViewPackage.CONDITIONAL_EDGE_STYLE__BORDER_COLOR:
                 return ViewPackage.STYLE__BORDER_COLOR;
-            case ViewPackage.CONDITIONAL_EDGE_STYLE__FONT_SIZE:
-                return ViewPackage.STYLE__FONT_SIZE;
             default:
                 return -1;
             }
@@ -524,14 +755,28 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
      */
     @Override
     public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
+        if (baseClass == LabelStyle.class) {
+            switch (baseFeatureID) {
+            case ViewPackage.LABEL_STYLE__FONT_SIZE:
+                return ViewPackage.CONDITIONAL_EDGE_STYLE__FONT_SIZE;
+            case ViewPackage.LABEL_STYLE__ITALIC:
+                return ViewPackage.CONDITIONAL_EDGE_STYLE__ITALIC;
+            case ViewPackage.LABEL_STYLE__BOLD:
+                return ViewPackage.CONDITIONAL_EDGE_STYLE__BOLD;
+            case ViewPackage.LABEL_STYLE__UNDERLINE:
+                return ViewPackage.CONDITIONAL_EDGE_STYLE__UNDERLINE;
+            case ViewPackage.LABEL_STYLE__STRIKE_THROUGH:
+                return ViewPackage.CONDITIONAL_EDGE_STYLE__STRIKE_THROUGH;
+            default:
+                return -1;
+            }
+        }
         if (baseClass == Style.class) {
             switch (baseFeatureID) {
             case ViewPackage.STYLE__COLOR:
                 return ViewPackage.CONDITIONAL_EDGE_STYLE__COLOR;
             case ViewPackage.STYLE__BORDER_COLOR:
                 return ViewPackage.CONDITIONAL_EDGE_STYLE__BORDER_COLOR;
-            case ViewPackage.STYLE__FONT_SIZE:
-                return ViewPackage.CONDITIONAL_EDGE_STYLE__FONT_SIZE;
             default:
                 return -1;
             }
@@ -564,12 +809,20 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
             return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (color: "); //$NON-NLS-1$
+        result.append(" (fontSize: "); //$NON-NLS-1$
+        result.append(this.fontSize);
+        result.append(", italic: "); //$NON-NLS-1$
+        result.append(this.italic);
+        result.append(", bold: "); //$NON-NLS-1$
+        result.append(this.bold);
+        result.append(", underline: "); //$NON-NLS-1$
+        result.append(this.underline);
+        result.append(", strikeThrough: "); //$NON-NLS-1$
+        result.append(this.strikeThrough);
+        result.append(", color: "); //$NON-NLS-1$
         result.append(this.color);
         result.append(", borderColor: "); //$NON-NLS-1$
         result.append(this.borderColor);
-        result.append(", fontSize: "); //$NON-NLS-1$
-        result.append(this.fontSize);
         result.append(", lineStyle: "); //$NON-NLS-1$
         result.append(this.lineStyle);
         result.append(", sourceArrowStyle: "); //$NON-NLS-1$

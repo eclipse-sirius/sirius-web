@@ -15,7 +15,6 @@ package org.eclipse.sirius.web.view.impl;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.sirius.web.view.Style;
 import org.eclipse.sirius.web.view.ViewPackage;
 
@@ -27,12 +26,11 @@ import org.eclipse.sirius.web.view.ViewPackage;
  * <ul>
  * <li>{@link org.eclipse.sirius.web.view.impl.StyleImpl#getColor <em>Color</em>}</li>
  * <li>{@link org.eclipse.sirius.web.view.impl.StyleImpl#getBorderColor <em>Border Color</em>}</li>
- * <li>{@link org.eclipse.sirius.web.view.impl.StyleImpl#getFontSize <em>Font Size</em>}</li>
  * </ul>
  *
  * @generated
  */
-public abstract class StyleImpl extends MinimalEObjectImpl.Container implements Style {
+public abstract class StyleImpl extends LabelStyleImpl implements Style {
     /**
      * The default value of the '{@link #getColor() <em>Color</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -72,26 +70,6 @@ public abstract class StyleImpl extends MinimalEObjectImpl.Container implements 
      * @ordered
      */
     protected String borderColor = BORDER_COLOR_EDEFAULT;
-
-    /**
-     * The default value of the '{@link #getFontSize() <em>Font Size</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @see #getFontSize()
-     * @generated
-     * @ordered
-     */
-    protected static final int FONT_SIZE_EDEFAULT = 14;
-
-    /**
-     * The cached value of the '{@link #getFontSize() <em>Font Size</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @see #getFontSize()
-     * @generated
-     * @ordered
-     */
-    protected int fontSize = FONT_SIZE_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -164,37 +142,12 @@ public abstract class StyleImpl extends MinimalEObjectImpl.Container implements 
      * @generated
      */
     @Override
-    public int getFontSize() {
-        return this.fontSize;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public void setFontSize(int newFontSize) {
-        int oldFontSize = this.fontSize;
-        this.fontSize = newFontSize;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.STYLE__FONT_SIZE, oldFontSize, this.fontSize));
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
         case ViewPackage.STYLE__COLOR:
             return this.getColor();
         case ViewPackage.STYLE__BORDER_COLOR:
             return this.getBorderColor();
-        case ViewPackage.STYLE__FONT_SIZE:
-            return this.getFontSize();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -212,9 +165,6 @@ public abstract class StyleImpl extends MinimalEObjectImpl.Container implements 
             return;
         case ViewPackage.STYLE__BORDER_COLOR:
             this.setBorderColor((String) newValue);
-            return;
-        case ViewPackage.STYLE__FONT_SIZE:
-            this.setFontSize((Integer) newValue);
             return;
         }
         super.eSet(featureID, newValue);
@@ -234,9 +184,6 @@ public abstract class StyleImpl extends MinimalEObjectImpl.Container implements 
         case ViewPackage.STYLE__BORDER_COLOR:
             this.setBorderColor(BORDER_COLOR_EDEFAULT);
             return;
-        case ViewPackage.STYLE__FONT_SIZE:
-            this.setFontSize(FONT_SIZE_EDEFAULT);
-            return;
         }
         super.eUnset(featureID);
     }
@@ -253,8 +200,6 @@ public abstract class StyleImpl extends MinimalEObjectImpl.Container implements 
             return COLOR_EDEFAULT == null ? this.color != null : !COLOR_EDEFAULT.equals(this.color);
         case ViewPackage.STYLE__BORDER_COLOR:
             return BORDER_COLOR_EDEFAULT == null ? this.borderColor != null : !BORDER_COLOR_EDEFAULT.equals(this.borderColor);
-        case ViewPackage.STYLE__FONT_SIZE:
-            return this.fontSize != FONT_SIZE_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
@@ -274,8 +219,6 @@ public abstract class StyleImpl extends MinimalEObjectImpl.Container implements 
         result.append(this.color);
         result.append(", borderColor: "); //$NON-NLS-1$
         result.append(this.borderColor);
-        result.append(", fontSize: "); //$NON-NLS-1$
-        result.append(this.fontSize);
         result.append(')');
         return result.toString();
     }

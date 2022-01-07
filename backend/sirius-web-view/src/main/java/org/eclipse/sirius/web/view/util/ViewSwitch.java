@@ -28,6 +28,7 @@ import org.eclipse.sirius.web.view.EdgeDescription;
 import org.eclipse.sirius.web.view.EdgeStyle;
 import org.eclipse.sirius.web.view.EdgeTool;
 import org.eclipse.sirius.web.view.LabelEditTool;
+import org.eclipse.sirius.web.view.LabelStyle;
 import org.eclipse.sirius.web.view.NodeDescription;
 import org.eclipse.sirius.web.view.NodeStyle;
 import org.eclipse.sirius.web.view.NodeTool;
@@ -139,9 +140,18 @@ public class ViewSwitch<T> extends Switch<T> {
                 result = this.defaultCase(theEObject);
             return result;
         }
+        case ViewPackage.LABEL_STYLE: {
+            LabelStyle labelStyle = (LabelStyle) theEObject;
+            T result = this.caseLabelStyle(labelStyle);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
         case ViewPackage.STYLE: {
             Style style = (Style) theEObject;
             T result = this.caseStyle(style);
+            if (result == null)
+                result = this.caseLabelStyle(style);
             if (result == null)
                 result = this.defaultCase(theEObject);
             return result;
@@ -152,6 +162,8 @@ public class ViewSwitch<T> extends Switch<T> {
             if (result == null)
                 result = this.caseStyle(nodeStyle);
             if (result == null)
+                result = this.caseLabelStyle(nodeStyle);
+            if (result == null)
                 result = this.defaultCase(theEObject);
             return result;
         }
@@ -160,6 +172,8 @@ public class ViewSwitch<T> extends Switch<T> {
             T result = this.caseEdgeStyle(edgeStyle);
             if (result == null)
                 result = this.caseStyle(edgeStyle);
+            if (result == null)
+                result = this.caseLabelStyle(edgeStyle);
             if (result == null)
                 result = this.defaultCase(theEObject);
             return result;
@@ -276,6 +290,8 @@ public class ViewSwitch<T> extends Switch<T> {
             if (result == null)
                 result = this.caseStyle(conditionalNodeStyle);
             if (result == null)
+                result = this.caseLabelStyle(conditionalNodeStyle);
+            if (result == null)
                 result = this.defaultCase(theEObject);
             return result;
         }
@@ -288,6 +304,8 @@ public class ViewSwitch<T> extends Switch<T> {
                 result = this.caseEdgeStyle(conditionalEdgeStyle);
             if (result == null)
                 result = this.caseStyle(conditionalEdgeStyle);
+            if (result == null)
+                result = this.caseLabelStyle(conditionalEdgeStyle);
             if (result == null)
                 result = this.defaultCase(theEObject);
             return result;
@@ -383,6 +401,20 @@ public class ViewSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseEdgeDescription(EdgeDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Label Style</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Label Style</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseLabelStyle(LabelStyle object) {
         return null;
     }
 

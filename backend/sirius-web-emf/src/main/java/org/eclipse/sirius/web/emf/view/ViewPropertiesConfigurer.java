@@ -45,6 +45,7 @@ import org.eclipse.sirius.web.representations.Success;
 import org.eclipse.sirius.web.representations.VariableManager;
 import org.eclipse.sirius.web.spring.collaborative.validation.api.IValidationService;
 import org.eclipse.sirius.web.view.ConditionalNodeStyle;
+import org.eclipse.sirius.web.view.LabelStyle;
 import org.eclipse.sirius.web.view.NodeStyle;
 import org.eclipse.sirius.web.view.ViewPackage;
 import org.springframework.stereotype.Component;
@@ -132,31 +133,31 @@ public class ViewPropertiesConfigurer implements IPropertiesDescriptionRegistryC
                         (style, newListMode) -> ((NodeStyle) style).setListMode(newListMode),
                         ViewPackage.Literals.NODE_STYLE__LIST_MODE),
                 this.createTextField("conditionalnodestyle.fontSize", "Font Size", //$NON-NLS-1$ //$NON-NLS-2$
-                        style -> String.valueOf(((NodeStyle) style).getFontSize()),
+                        style -> String.valueOf(((LabelStyle) style).getFontSize()),
                         (style, newColor) -> {
                             try {
-                                ((NodeStyle) style).setFontSize(Integer.parseInt(newColor));
+                                ((LabelStyle) style).setFontSize(Integer.parseInt(newColor));
                             } catch (NumberFormatException nfe) {
                                 // Ignore.
                             }
                         },
-                        ViewPackage.Literals.STYLE__FONT_SIZE),
+                        ViewPackage.Literals.LABEL_STYLE__FONT_SIZE),
                 this.createCheckbox("conditionalnodestyle.italic", "Italic", //$NON-NLS-1$ //$NON-NLS-2$
-                        style -> ((NodeStyle) style).isItalic(),
-                        (style, newItalic) -> ((NodeStyle) style).setItalic(newItalic),
-                        ViewPackage.Literals.NODE_STYLE__ITALIC),
+                        style -> ((LabelStyle) style).isItalic(),
+                        (style, newItalic) -> ((LabelStyle) style).setItalic(newItalic),
+                        ViewPackage.Literals.LABEL_STYLE__ITALIC),
                 this.createCheckbox("conditionalnodestyle.bold", "Bold", //$NON-NLS-1$ //$NON-NLS-2$
-                        style -> ((NodeStyle) style).isBold(),
-                        (style, newBold) -> ((NodeStyle) style).setBold(newBold),
-                        ViewPackage.Literals.NODE_STYLE__BOLD),
+                        style -> ((LabelStyle) style).isBold(),
+                        (style, newBold) -> ((LabelStyle) style).setBold(newBold),
+                        ViewPackage.Literals.LABEL_STYLE__BOLD),
                 this.createCheckbox("conditionalnodestyle.underline", "Underline", //$NON-NLS-1$ //$NON-NLS-2$
-                        style -> ((NodeStyle) style).isUnderline(),
-                        (style, newUnderline) -> ((NodeStyle) style).setUnderline(newUnderline),
-                        ViewPackage.Literals.NODE_STYLE__UNDERLINE),
+                        style -> ((LabelStyle) style).isUnderline(),
+                        (style, newUnderline) -> ((LabelStyle) style).setUnderline(newUnderline),
+                        ViewPackage.Literals.LABEL_STYLE__UNDERLINE),
                 this.createCheckbox("conditionalnodestyle.strikeThrough", "Strike Through", //$NON-NLS-1$ //$NON-NLS-2$
-                        style -> ((NodeStyle) style).isStrikeThrough(),
-                        (style, newStrikeThrough) -> ((NodeStyle) style).setStrikeThrough(newStrikeThrough),
-                        ViewPackage.Literals.NODE_STYLE__STRIKE_THROUGH),
+                        style -> ((LabelStyle) style).isStrikeThrough(),
+                        (style, newStrikeThrough) -> ((LabelStyle) style).setStrikeThrough(newStrikeThrough),
+                        ViewPackage.Literals.LABEL_STYLE__STRIKE_THROUGH),
                 this.createShapeSelectionField(ViewPackage.Literals.NODE_STYLE__SHAPE));
 
         GroupDescription groupDescription = this.createSimpleGroupDescription(controls);
@@ -228,31 +229,31 @@ public class ViewPropertiesConfigurer implements IPropertiesDescriptionRegistryC
                         },
                         ViewPackage.Literals.NODE_STYLE__BORDER_SIZE),
                 this.createTextField("nodestyle.fontSize", "Font Size", //$NON-NLS-1$ //$NON-NLS-2$
-                        style -> String.valueOf(((NodeStyle) style).getFontSize()),
+                        style -> String.valueOf(((LabelStyle) style).getFontSize()),
                         (style, newColor) -> {
                             try {
-                                ((NodeStyle) style).setFontSize(Integer.parseInt(newColor));
+                                ((LabelStyle) style).setFontSize(Integer.parseInt(newColor));
                             } catch (NumberFormatException nfe) {
                                 // Ignore.
                             }
                         },
-                        ViewPackage.Literals.STYLE__FONT_SIZE),
+                        ViewPackage.Literals.LABEL_STYLE__FONT_SIZE),
                 this.createCheckbox("nodestyle.italic", "Italic", //$NON-NLS-1$ //$NON-NLS-2$
-                        style -> ((NodeStyle) style).isItalic(),
-                        (style, newItalic) -> ((NodeStyle) style).setItalic(newItalic),
-                        ViewPackage.Literals.NODE_STYLE__ITALIC),
+                        style -> ((LabelStyle) style).isItalic(),
+                        (style, newItalic) -> ((LabelStyle) style).setItalic(newItalic),
+                        ViewPackage.Literals.LABEL_STYLE__ITALIC),
                 this.createCheckbox("nodestyle.bold", "Bold", //$NON-NLS-1$ //$NON-NLS-2$
-                        style -> ((NodeStyle) style).isBold(),
-                        (style, newBold) -> ((NodeStyle) style).setBold(newBold),
-                        ViewPackage.Literals.NODE_STYLE__BOLD),
+                        style -> ((LabelStyle) style).isBold(),
+                        (style, newBold) -> ((LabelStyle) style).setBold(newBold),
+                        ViewPackage.Literals.LABEL_STYLE__BOLD),
                 this.createCheckbox("nodestyle.underline", "Underline", //$NON-NLS-1$ //$NON-NLS-2$
-                        style -> ((NodeStyle) style).isUnderline(),
-                        (style, newUnderline) -> ((NodeStyle) style).setUnderline(newUnderline),
-                        ViewPackage.Literals.NODE_STYLE__UNDERLINE),
+                        style -> ((LabelStyle) style).isUnderline(),
+                        (style, newUnderline) -> ((LabelStyle) style).setUnderline(newUnderline),
+                        ViewPackage.Literals.LABEL_STYLE__UNDERLINE),
                 this.createCheckbox("nodestyle.strikeThrough", "Strike Through", //$NON-NLS-1$ //$NON-NLS-2$
-                        style -> ((NodeStyle) style).isStrikeThrough(),
-                        (style, newStrikeThrough) -> ((NodeStyle) style).setStrikeThrough(newStrikeThrough),
-                        ViewPackage.Literals.NODE_STYLE__STRIKE_THROUGH),
+                        style -> ((LabelStyle) style).isStrikeThrough(),
+                        (style, newStrikeThrough) -> ((LabelStyle) style).setStrikeThrough(newStrikeThrough),
+                        ViewPackage.Literals.LABEL_STYLE__STRIKE_THROUGH),
                 this.createShapeSelectionField(ViewPackage.Literals.NODE_STYLE__SHAPE));
 
         GroupDescription groupDescription = this.createSimpleGroupDescription(controls);
