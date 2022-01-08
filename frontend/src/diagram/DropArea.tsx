@@ -120,22 +120,22 @@ export const DropArea = ({
     return null;
   };
 
-  const handleDragOver = (e) => {
-    e.preventDefault();
-    const targetId = searchId(e.target);
+  const handleDragOver = (event) => {
+    event.preventDefault();
+    const targetId = searchId(event.target);
     // use a standard array instead of a DataTransferItemList
-    const dataTransferItems = [...e.dataTransfer.items];
+    const dataTransferItems = [...event.dataTransfer.items];
     const sourcesItem = dataTransferItems.find((item) => item.type !== DRAG_SOURCES_TYPE);
     if (sourcesItem) {
       // Update the cursor thanks to dropEffect (a drag'n'drop cursor does not use CSS rules)
-      e.dataTransfer.dropEffect = 'link';
+      event.dataTransfer.dropEffect = 'link';
     }
     invokeHover(targetId, true);
   };
 
-  const handleDragLeave = (e) => {
-    e.preventDefault();
-    const id = searchId(e.target);
+  const handleDragLeave = (event) => {
+    event.preventDefault();
+    const id = searchId(event.target);
     invokeHover(id, false);
   };
 
@@ -161,9 +161,9 @@ export const DropArea = ({
   return (
     <div
       className={styles.dropArea}
-      onDrop={(e) => handleDrop(e)}
-      onDragOver={(e) => handleDragOver(e)}
-      onDragLeave={(e) => handleDragLeave(e)}
+      onDrop={(event) => handleDrop(event)}
+      onDragOver={(event) => handleDragOver(event)}
+      onDragLeave={(event) => handleDragLeave(event)}
     >
       <Snackbar
         anchorOrigin={{
