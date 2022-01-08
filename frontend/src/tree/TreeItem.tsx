@@ -328,12 +328,13 @@ export const TreeItem = ({
   const { kind } = item;
   const draggable = kind.startsWith('siriusComponents://semantic');
   const dragStart = (event) => {
-    if (selection.entries.filter((entry) => entry.kind.startsWith('siriusComponents://semantic')).length === 0) {
-      event.dataTransfer.setData(DRAG_SOURCES_TYPE, JSON.stringify(selection.entries));
+    const entries = selection.entries.filter((entry) => entry.kind.startsWith('siriusComponents://semantic'));
+    if (entries.length > 0) {
+      event.dataTransfer.setData(DRAG_SOURCES_TYPE, JSON.stringify(entries));
     }
   };
-  const dragOver = (e) => {
-    e.stopPropagation();
+  const dragOver = (event) => {
+    event.stopPropagation();
   };
 
   /* ref, tabindex and onFocus are used to set the React component focusabled and to set the focus to the corresponding DOM part */
