@@ -13,10 +13,10 @@
 package org.eclipse.sirius.web.starter;
 
 import org.eclipse.sirius.web.spring.collaborative.api.ISubscriptionManagerFactory;
+import org.eclipse.sirius.web.spring.collaborative.editingcontext.EditingContextEventProcessorExecutorServiceProvider;
+import org.eclipse.sirius.web.spring.collaborative.editingcontext.api.IEditingContextEventProcessorExecutorServiceProvider;
 import org.eclipse.sirius.web.spring.collaborative.forms.WidgetSubscriptionManager;
 import org.eclipse.sirius.web.spring.collaborative.forms.api.IWidgetSubscriptionManagerFactory;
-import org.eclipse.sirius.web.spring.collaborative.projects.EditingContextEventProcessorExecutorServiceProvider;
-import org.eclipse.sirius.web.spring.collaborative.projects.api.IEditingContextEventProcessorExecutorServiceProvider;
 import org.eclipse.sirius.web.spring.collaborative.representations.SubscriptionManager;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
