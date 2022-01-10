@@ -134,15 +134,11 @@ export interface GQLDiagramDescription extends GQLRepresentationDescription {
 
 export interface GQLRepresentation {
   id: string;
-  label: string;
-  kind: string;
 }
 
 export interface GQLDiagram extends GQLRepresentation {
   id: string;
-  label: string;
-  kind: string;
-  descriptionId: string;
+  metadata: GQLRepresentationMetadata;
   targetObjectId: string;
   autoLayout: boolean;
   size: GQLSize;

@@ -18,9 +18,7 @@ type SelectionRefreshedEventPayload {
 
 type Selection implements Representation {
   id: ID!
-  label: String!
-  kind: String!
-  descriptionId: ID!
+  metadata: RepresentationMetadata!
   targetObjectId: String!
   message: String
   objects: [SelectionObject!]!

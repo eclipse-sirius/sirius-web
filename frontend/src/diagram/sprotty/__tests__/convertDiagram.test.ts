@@ -44,10 +44,10 @@ describe('ModelConverter', () => {
     expect(sprottyDiagram).toBeInstanceOf(Diagram);
 
     expect(sprottyDiagram.id).toBe(siriusWebDiagram.id);
-    expect(sprottyDiagram.kind).toBe(siriusWebDiagram.kind);
+    expect(sprottyDiagram.kind).toBe(siriusWebDiagram.metadata.kind);
     expect(sprottyDiagram.type).toBe('graph');
     expect(sprottyDiagram.targetObjectId).toBe(siriusWebDiagram.targetObjectId);
-    expect(sprottyDiagram.label).toBe(siriusWebDiagram.label);
+    expect(sprottyDiagram.label).toBe(siriusWebDiagram.metadata.label);
 
     const expectedDiagramChildrenLength = siriusWebDiagram.nodes.length + siriusWebDiagram.edges.length;
     expect(sprottyDiagram.children).toHaveLength(expectedDiagramChildrenLength);
