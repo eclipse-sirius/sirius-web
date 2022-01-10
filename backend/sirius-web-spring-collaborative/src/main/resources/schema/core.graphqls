@@ -41,8 +41,7 @@ type RepresentationMetadata {
 
 interface Representation {
   id: ID!
-  kind: String!
-  label: String!
+  metadata: RepresentationMetadata!
 }
 
 interface RepresentationDescription {

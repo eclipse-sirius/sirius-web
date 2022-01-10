@@ -21,7 +21,6 @@ const getDocumentSubscription = gql`
         id
         tree {
           id
-          label
           children {
             ...treeItemFields
             children {

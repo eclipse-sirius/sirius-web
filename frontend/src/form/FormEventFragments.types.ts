@@ -67,9 +67,20 @@ export interface GQLFormRefreshedEventPayload
   form: GQLForm;
 }
 
-export interface GQLForm {
+export interface GQLRepresentationMetadata {
   id: string;
   label: string;
+  kind: string;
+  description: GQLRepresentationDescription;
+}
+
+export interface GQLRepresentationDescription {
+  id: string;
+}
+
+export interface GQLForm {
+  id: string;
+  metadata: GQLRepresentationMetadata;
   pages: GQLPage[];
 }
 

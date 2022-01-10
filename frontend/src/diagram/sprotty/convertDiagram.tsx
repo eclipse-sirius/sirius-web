@@ -69,14 +69,21 @@ import {
  * @return a Sprotty diagram object
  */
 export const convertDiagram = (gqlDiagram: GQLDiagram, httpOrigin: string, readOnly: boolean): Diagram => {
-  const { id, descriptionId, targetObjectId, autoLayout, nodes, edges, kind, label } = gqlDiagram;
+  const {
+    id,
+    metadata: { label, kind, description },
+    targetObjectId,
+    autoLayout,
+    nodes,
+    edges,
+  } = gqlDiagram;
 
   const diagram = new Diagram();
   diagram.id = id;
   diagram.type = 'graph';
   diagram.kind = kind;
   diagram.label = label;
-  diagram.descriptionId = descriptionId;
+  diagram.descriptionId = description.id;
   diagram.targetObjectId = targetObjectId;
   diagram.features = createFeatureSet([hoverFeedbackFeature, viewportFeature]);
 

@@ -10,9 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+
+export interface RepresentationMetadata {
+  label: string;
+}
+
 export interface Form {
   id: string;
-  label: string;
+  metadata: RepresentationMetadata;
   pages: Page[];
 }
 

@@ -62,7 +62,11 @@ export const Properties = ({
   readOnly,
 }: FormProps) => {
   const classes = usePropertiesStyles();
-  const { id, label, pages } = form;
+  const {
+    id,
+    metadata: { label },
+    pages,
+  } = form;
 
   let content;
   if (pages.length > 1) {
