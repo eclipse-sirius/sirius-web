@@ -51,7 +51,7 @@ import reactor.core.publisher.Sinks.One;
 public class CreateDiagramEventHandlerTests {
     @Test
     public void testDiagramCreation() {
-        IRepresentationDescriptionSearchService representationDescriptionSearchService = new IRepresentationDescriptionSearchService() {
+        IRepresentationDescriptionSearchService representationDescriptionSearchService = new IRepresentationDescriptionSearchService.NoOp() {
             @Override
             public Optional<IRepresentationDescription> findById(IEditingContext editingContext, UUID id) {
                 // @formatter:off
