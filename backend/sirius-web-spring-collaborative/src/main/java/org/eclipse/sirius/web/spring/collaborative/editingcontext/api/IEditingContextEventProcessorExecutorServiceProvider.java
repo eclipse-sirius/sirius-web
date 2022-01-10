@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.spring.collaborative.projects.api;
+package org.eclipse.sirius.web.spring.collaborative.editingcontext.api;
 
 import java.util.concurrent.ExecutorService;
 

@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.spring.collaborative.projects;
+package org.eclipse.sirius.web.spring.collaborative.editingcontext;
 
 import java.util.List;
 import java.util.Objects;
@@ -21,8 +21,8 @@ import org.eclipse.sirius.web.core.api.IEditingContextPersistenceService;
 import org.eclipse.sirius.web.spring.collaborative.api.IDanglingRepresentationDeletionService;
 import org.eclipse.sirius.web.spring.collaborative.api.IEditingContextEventHandler;
 import org.eclipse.sirius.web.spring.collaborative.api.IRepresentationEventProcessorComposedFactory;
+import org.eclipse.sirius.web.spring.collaborative.editingcontext.api.IEditingContextEventProcessorExecutorServiceProvider;
 import org.eclipse.sirius.web.spring.collaborative.messages.ICollaborativeMessageService;
-import org.eclipse.sirius.web.spring.collaborative.projects.api.IEditingContextEventProcessorExecutorServiceProvider;
 import org.springframework.context.ApplicationEventPublisher;
 
 /**
