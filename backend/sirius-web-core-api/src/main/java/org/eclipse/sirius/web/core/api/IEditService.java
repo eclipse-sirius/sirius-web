@@ -23,8 +23,6 @@ import java.util.UUID;
  */
 public interface IEditService {
 
-    Optional<Object> findClass(String editingContextId, String classId);
-
     List<Domain> getDomains(String editingContextId);
 
     List<ChildCreationDescription> getRootCreationDescriptions(String editingContextId, String domainId, boolean suggested);
@@ -45,11 +43,6 @@ public interface IEditService {
      * @author sbegaudeau
      */
     class NoOp implements IEditService {
-
-        @Override
-        public Optional<Object> findClass(String editingContextId, String classId) {
-            return Optional.empty();
-        }
 
         @Override
         public List<Domain> getDomains(String editingContextId) {

@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.core.api;
 
+import java.util.Collections;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -24,4 +26,25 @@ import org.eclipse.sirius.web.representations.IRepresentationDescription;
  */
 public interface IRepresentationDescriptionSearchService {
     Optional<IRepresentationDescription> findById(IEditingContext editingContext, UUID representationDescriptionId);
+
+    Map<UUID, IRepresentationDescription> findAll(IEditingContext editingContext);
+
+    /**
+     * Implementation which does nothing, used for mocks in unit tests.
+     *
+     * @author pcdavid
+     */
+    class NoOp implements IRepresentationDescriptionSearchService {
+
+        @Override
+        public Optional<IRepresentationDescription> findById(IEditingContext editingContext, UUID representationDescriptionId) {
+            return Optional.empty();
+        }
+
+        @Override
+        public Map<UUID, IRepresentationDescription> findAll(IEditingContext editingContext) {
+            return Collections.emptyMap();
+        }
+
+    }
 }

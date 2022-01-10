@@ -16,6 +16,8 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/134[#134] [workbench] Switch from a single-selection API to a multi-selection API with some changes to the `Selection` object of the workbench
 - https://github.com/eclipse-sirius/sirius-components/issues/878[#878] [core] As specified in the ADR-36, the kind of an object (representation, semantic elements, selection entry of the workbench) is now an URI. All previous kind values have been modified
 - https://github.com/eclipse-sirius/sirius-components/issues/878[#878] [graphql] The GraphQL argument `classId` which appeared on some fields has been replaced by `kind` since it was always the `kind` of an object. Technically, it is always the kind of a semantic element but that may not be the case forever
+- [core] `IEditService.findClass()` has been removed
+- [core] `IRepresentationDescriptionSearchService` has a new `findAll` method to return all the representation descriptions available in a given editing context.
 
 === Dependency update
 
