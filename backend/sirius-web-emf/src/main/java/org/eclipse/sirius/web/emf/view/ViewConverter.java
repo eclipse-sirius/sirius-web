@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -163,7 +163,7 @@ public class ViewConverter {
             return DiagramDescription.newDiagramDescription(UUID.nameUUIDFromBytes(diagramDescriptionURI.getBytes()))
                     .label(Optional.ofNullable(viewDiagramDescription.getName()).orElse(DEFAULT_DIAGRAM_LABEL))
                     .labelProvider(variableManager -> this.computeDiagramLabel(viewDiagramDescription, variableManager, interpreter))
-                    .canCreatePredicate(variableManager -> this.canCreateDiagram(variableManager, viewDiagramDescription.getDomainType()))
+                    .canCreatePredicate(variableManager -> this.canCreateDiagram(viewDiagramDescription, variableManager, interpreter))
                     .autoLayout(viewDiagramDescription.isAutoLayout())
                     .targetObjectIdProvider(this.semanticTargetIdProvider)
                     .nodeDescriptions(nodeDescriptions)
@@ -203,12 +203,21 @@ public class ViewConverter {
         }
     }
 
-    private boolean canCreateDiagram(VariableManager variableManager, String domainType) {
+    private boolean canCreateDiagram(org.eclipse.sirius.web.view.DiagramDescription viewDiagramDescription, VariableManager variableManager, AQLInterpreter interpreter) {
+        boolean result = false;
         // @formatter:off
-        return variableManager.get(IRepresentationDescription.CLASS, EClass.class)
-                              .filter(new DomainClassPredicate(Optional.ofNullable(domainType).orElse(""))) //$NON-NLS-1$
-                              .isPresent();
+        Optional<EClass> optionalEClass = variableManager.get(IRepresentationDescription.CLASS, EClass.class)
+                .filter(new DomainClassPredicate(viewDiagramDescription.getDomainType()));
         // @formatter:on
+        if (optionalEClass.isPresent()) {
+            String preconditionExpression = viewDiagramDescription.getPreconditionExpression();
+            if (preconditionExpression != null && !preconditionExpression.isBlank()) {
+                result = interpreter.evaluateExpression(variableManager.getVariables(), preconditionExpression).asBoolean().orElse(false);
+            } else {
+                result = true;
+            }
+        }
+        return result;
     }
 
     private NodeDescription convert(org.eclipse.sirius.web.view.NodeDescription viewNodeDescription, AQLInterpreter interpreter) {

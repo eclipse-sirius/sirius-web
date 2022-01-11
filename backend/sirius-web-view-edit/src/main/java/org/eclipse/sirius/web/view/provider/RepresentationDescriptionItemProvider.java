@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -60,6 +60,7 @@ public class RepresentationDescriptionItemProvider extends ItemProviderAdapter
 
             this.addNamePropertyDescriptor(object);
             this.addDomainTypePropertyDescriptor(object);
+            this.addPreconditionExpressionPropertyDescriptor(object);
             this.addTitleExpressionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
@@ -87,6 +88,19 @@ public class RepresentationDescriptionItemProvider extends ItemProviderAdapter
                 this.getString("_UI_RepresentationDescription_domainType_feature"), //$NON-NLS-1$
                 this.getString("_UI_PropertyDescriptor_description", "_UI_RepresentationDescription_domainType_feature", "_UI_RepresentationDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                 ViewPackage.Literals.REPRESENTATION_DESCRIPTION__DOMAIN_TYPE, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Precondition Expression feature. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addPreconditionExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_RepresentationDescription_preconditionExpression_feature"), //$NON-NLS-1$
+                this.getString("_UI_PropertyDescriptor_description", "_UI_RepresentationDescription_preconditionExpression_feature", "_UI_RepresentationDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                ViewPackage.Literals.REPRESENTATION_DESCRIPTION__PRECONDITION_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -147,6 +161,7 @@ public class RepresentationDescriptionItemProvider extends ItemProviderAdapter
         switch (notification.getFeatureID(RepresentationDescription.class)) {
         case ViewPackage.REPRESENTATION_DESCRIPTION__NAME:
         case ViewPackage.REPRESENTATION_DESCRIPTION__DOMAIN_TYPE:
+        case ViewPackage.REPRESENTATION_DESCRIPTION__PRECONDITION_EXPRESSION:
         case ViewPackage.REPRESENTATION_DESCRIPTION__TITLE_EXPRESSION:
             this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
             return;

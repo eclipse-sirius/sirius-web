@@ -384,8 +384,18 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
-    public EAttribute getRepresentationDescription_TitleExpression() {
+    public EAttribute getRepresentationDescription_PreconditionExpression() {
         return (EAttribute) this.representationDescriptionEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getRepresentationDescription_TitleExpression() {
+        return (EAttribute) this.representationDescriptionEClass.getEStructuralFeatures().get(3);
     }
 
     /**
@@ -1283,6 +1293,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.representationDescriptionEClass = this.createEClass(REPRESENTATION_DESCRIPTION);
         this.createEAttribute(this.representationDescriptionEClass, REPRESENTATION_DESCRIPTION__NAME);
         this.createEAttribute(this.representationDescriptionEClass, REPRESENTATION_DESCRIPTION__DOMAIN_TYPE);
+        this.createEAttribute(this.representationDescriptionEClass, REPRESENTATION_DESCRIPTION__PRECONDITION_EXPRESSION);
         this.createEAttribute(this.representationDescriptionEClass, REPRESENTATION_DESCRIPTION__TITLE_EXPRESSION);
 
         this.diagramDescriptionEClass = this.createEClass(DIAGRAM_DESCRIPTION);
@@ -1460,6 +1471,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getRepresentationDescription_DomainType(), this.ecorePackage.getEString(), "domainType", "", 0, 1, RepresentationDescription.class, !IS_TRANSIENT, !IS_VOLATILE, //$NON-NLS-1$ //$NON-NLS-2$
                 IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getRepresentationDescription_PreconditionExpression(), this.ecorePackage.getEString(), "preconditionExpression", "", 0, 1, RepresentationDescription.class, //$NON-NLS-1$ //$NON-NLS-2$
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getRepresentationDescription_TitleExpression(), this.ecorePackage.getEString(), "titleExpression", "aql:\'New Representation\'", 0, 1, RepresentationDescription.class, //$NON-NLS-1$ //$NON-NLS-2$
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 

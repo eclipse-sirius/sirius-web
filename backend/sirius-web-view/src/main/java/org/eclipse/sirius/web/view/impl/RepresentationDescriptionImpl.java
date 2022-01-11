@@ -28,6 +28,8 @@ import org.eclipse.sirius.web.view.ViewPackage;
  * <ul>
  * <li>{@link org.eclipse.sirius.web.view.impl.RepresentationDescriptionImpl#getName <em>Name</em>}</li>
  * <li>{@link org.eclipse.sirius.web.view.impl.RepresentationDescriptionImpl#getDomainType <em>Domain Type</em>}</li>
+ * <li>{@link org.eclipse.sirius.web.view.impl.RepresentationDescriptionImpl#getPreconditionExpression <em>Precondition
+ * Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.web.view.impl.RepresentationDescriptionImpl#getTitleExpression <em>Title
  * Expression</em>}</li>
  * </ul>
@@ -74,6 +76,26 @@ public abstract class RepresentationDescriptionImpl extends MinimalEObjectImpl.C
      * @ordered
      */
     protected String domainType = DOMAIN_TYPE_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getPreconditionExpression() <em>Precondition Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getPreconditionExpression()
+     * @generated
+     * @ordered
+     */
+    protected static final String PRECONDITION_EXPRESSION_EDEFAULT = ""; //$NON-NLS-1$
+
+    /**
+     * The cached value of the '{@link #getPreconditionExpression() <em>Precondition Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getPreconditionExpression()
+     * @generated
+     * @ordered
+     */
+    protected String preconditionExpression = PRECONDITION_EXPRESSION_EDEFAULT;
 
     /**
      * The default value of the '{@link #getTitleExpression() <em>Title Expression</em>}' attribute. <!-- begin-user-doc
@@ -166,6 +188,29 @@ public abstract class RepresentationDescriptionImpl extends MinimalEObjectImpl.C
      * @generated
      */
     @Override
+    public String getPreconditionExpression() {
+        return this.preconditionExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setPreconditionExpression(String newPreconditionExpression) {
+        String oldPreconditionExpression = this.preconditionExpression;
+        this.preconditionExpression = newPreconditionExpression;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.REPRESENTATION_DESCRIPTION__PRECONDITION_EXPRESSION, oldPreconditionExpression, this.preconditionExpression));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public String getTitleExpression() {
         return this.titleExpression;
     }
@@ -195,6 +240,8 @@ public abstract class RepresentationDescriptionImpl extends MinimalEObjectImpl.C
             return this.getName();
         case ViewPackage.REPRESENTATION_DESCRIPTION__DOMAIN_TYPE:
             return this.getDomainType();
+        case ViewPackage.REPRESENTATION_DESCRIPTION__PRECONDITION_EXPRESSION:
+            return this.getPreconditionExpression();
         case ViewPackage.REPRESENTATION_DESCRIPTION__TITLE_EXPRESSION:
             return this.getTitleExpression();
         }
@@ -214,6 +261,9 @@ public abstract class RepresentationDescriptionImpl extends MinimalEObjectImpl.C
             return;
         case ViewPackage.REPRESENTATION_DESCRIPTION__DOMAIN_TYPE:
             this.setDomainType((String) newValue);
+            return;
+        case ViewPackage.REPRESENTATION_DESCRIPTION__PRECONDITION_EXPRESSION:
+            this.setPreconditionExpression((String) newValue);
             return;
         case ViewPackage.REPRESENTATION_DESCRIPTION__TITLE_EXPRESSION:
             this.setTitleExpression((String) newValue);
@@ -236,6 +286,9 @@ public abstract class RepresentationDescriptionImpl extends MinimalEObjectImpl.C
         case ViewPackage.REPRESENTATION_DESCRIPTION__DOMAIN_TYPE:
             this.setDomainType(DOMAIN_TYPE_EDEFAULT);
             return;
+        case ViewPackage.REPRESENTATION_DESCRIPTION__PRECONDITION_EXPRESSION:
+            this.setPreconditionExpression(PRECONDITION_EXPRESSION_EDEFAULT);
+            return;
         case ViewPackage.REPRESENTATION_DESCRIPTION__TITLE_EXPRESSION:
             this.setTitleExpression(TITLE_EXPRESSION_EDEFAULT);
             return;
@@ -255,6 +308,8 @@ public abstract class RepresentationDescriptionImpl extends MinimalEObjectImpl.C
             return NAME_EDEFAULT == null ? this.name != null : !NAME_EDEFAULT.equals(this.name);
         case ViewPackage.REPRESENTATION_DESCRIPTION__DOMAIN_TYPE:
             return DOMAIN_TYPE_EDEFAULT == null ? this.domainType != null : !DOMAIN_TYPE_EDEFAULT.equals(this.domainType);
+        case ViewPackage.REPRESENTATION_DESCRIPTION__PRECONDITION_EXPRESSION:
+            return PRECONDITION_EXPRESSION_EDEFAULT == null ? this.preconditionExpression != null : !PRECONDITION_EXPRESSION_EDEFAULT.equals(this.preconditionExpression);
         case ViewPackage.REPRESENTATION_DESCRIPTION__TITLE_EXPRESSION:
             return TITLE_EXPRESSION_EDEFAULT == null ? this.titleExpression != null : !TITLE_EXPRESSION_EDEFAULT.equals(this.titleExpression);
         }
@@ -276,6 +331,8 @@ public abstract class RepresentationDescriptionImpl extends MinimalEObjectImpl.C
         result.append(this.name);
         result.append(", domainType: "); //$NON-NLS-1$
         result.append(this.domainType);
+        result.append(", preconditionExpression: "); //$NON-NLS-1$
+        result.append(this.preconditionExpression);
         result.append(", titleExpression: "); //$NON-NLS-1$
         result.append(this.titleExpression);
         result.append(')');
