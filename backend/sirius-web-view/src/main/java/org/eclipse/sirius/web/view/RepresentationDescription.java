@@ -24,6 +24,8 @@ import org.eclipse.emf.ecore.EObject;
  * <ul>
  * <li>{@link org.eclipse.sirius.web.view.RepresentationDescription#getName <em>Name</em>}</li>
  * <li>{@link org.eclipse.sirius.web.view.RepresentationDescription#getDomainType <em>Domain Type</em>}</li>
+ * <li>{@link org.eclipse.sirius.web.view.RepresentationDescription#getPreconditionExpression <em>Precondition
+ * Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.web.view.RepresentationDescription#getTitleExpression <em>Title Expression</em>}</li>
  * </ul>
  *
@@ -77,6 +79,29 @@ public interface RepresentationDescription extends EObject {
      * @generated
      */
     void setDomainType(String value);
+
+    /**
+     * Returns the value of the '<em><b>Precondition Expression</b></em>' attribute. The default value is
+     * <code>""</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Precondition Expression</em>' attribute.
+     * @see #setPreconditionExpression(String)
+     * @see org.eclipse.sirius.web.view.ViewPackage#getRepresentationDescription_PreconditionExpression()
+     * @model default=""
+     * @generated
+     */
+    String getPreconditionExpression();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.web.view.RepresentationDescription#getPreconditionExpression
+     * <em>Precondition Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Precondition Expression</em>' attribute.
+     * @see #getPreconditionExpression()
+     * @generated
+     */
+    void setPreconditionExpression(String value);
 
     /**
      * Returns the value of the '<em><b>Title Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc

@@ -59,6 +59,7 @@ Currently it is not possible to compute different values for width and height.
 - https://github.com/eclipse-sirius/sirius-components/issues/914[#914] [diagram] Add the graphical selection to the semantic ones while clicking on diagram elements
 - https://github.com/eclipse-sirius/sirius-components/issues/925[#925] [diagram] Perform a fit to screen after the first render of a diagram
 - https://github.com/eclipse-sirius/sirius-components/issues/944[#944] [core] Add the ability to dispose the editing context
+- https://github.com/eclipse-sirius/sirius-components/issues/936[#936] [view] Add support for `preconditionExpression` in dynamic representations
 
 === Bug fixes
 

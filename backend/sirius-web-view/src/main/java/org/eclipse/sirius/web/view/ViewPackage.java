@@ -124,13 +124,22 @@ public interface ViewPackage extends EPackage {
     int REPRESENTATION_DESCRIPTION__DOMAIN_TYPE = 1;
 
     /**
+     * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int REPRESENTATION_DESCRIPTION__PRECONDITION_EXPRESSION = 2;
+
+    /**
      * The feature id for the '<em><b>Title Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
      * @generated
      * @ordered
      */
-    int REPRESENTATION_DESCRIPTION__TITLE_EXPRESSION = 2;
+    int REPRESENTATION_DESCRIPTION__TITLE_EXPRESSION = 3;
 
     /**
      * The number of structural features of the '<em>Representation Description</em>' class. <!-- begin-user-doc -->
@@ -139,7 +148,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REPRESENTATION_DESCRIPTION_FEATURE_COUNT = 3;
+    int REPRESENTATION_DESCRIPTION_FEATURE_COUNT = 4;
 
     /**
      * The number of operations of the '<em>Representation Description</em>' class. <!-- begin-user-doc --> <!--
@@ -175,6 +184,15 @@ public interface ViewPackage extends EPackage {
      * @ordered
      */
     int DIAGRAM_DESCRIPTION__DOMAIN_TYPE = REPRESENTATION_DESCRIPTION__DOMAIN_TYPE;
+
+    /**
+     * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DIAGRAM_DESCRIPTION__PRECONDITION_EXPRESSION = REPRESENTATION_DESCRIPTION__PRECONDITION_EXPRESSION;
 
     /**
      * The feature id for the '<em><b>Title Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -2081,6 +2099,18 @@ public interface ViewPackage extends EPackage {
 
     /**
      * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.web.view.RepresentationDescription#getPreconditionExpression <em>Precondition
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Precondition Expression</em>'.
+     * @see org.eclipse.sirius.web.view.RepresentationDescription#getPreconditionExpression()
+     * @see #getRepresentationDescription()
+     * @generated
+     */
+    EAttribute getRepresentationDescription_PreconditionExpression();
+
+    /**
+     * Returns the meta object for the attribute
      * '{@link org.eclipse.sirius.web.view.RepresentationDescription#getTitleExpression <em>Title Expression</em>}'.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -3087,6 +3117,14 @@ public interface ViewPackage extends EPackage {
          * @generated
          */
         EAttribute REPRESENTATION_DESCRIPTION__DOMAIN_TYPE = eINSTANCE.getRepresentationDescription_DomainType();
+
+        /**
+         * The meta object literal for the '<em><b>Precondition Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute REPRESENTATION_DESCRIPTION__PRECONDITION_EXPRESSION = eINSTANCE.getRepresentationDescription_PreconditionExpression();
 
         /**
          * The meta object literal for the '<em><b>Title Expression</b></em>' attribute feature. <!-- begin-user-doc -->
