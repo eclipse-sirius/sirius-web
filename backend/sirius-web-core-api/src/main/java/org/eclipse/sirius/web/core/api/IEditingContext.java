@@ -26,6 +26,10 @@ public interface IEditingContext {
 
     String getId();
 
+    default void dispose() {
+        // Do nothing
+    }
+
     /**
      * Implementation which does nothing, used for mocks in unit tests.
      *

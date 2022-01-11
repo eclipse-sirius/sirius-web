@@ -409,6 +409,8 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
         this.representationEventProcessors.values().forEach(RepresentationEventProcessorEntry::dispose);
         this.representationEventProcessors.clear();
 
+        this.editingContext.dispose();
+
         EmitResult emitResult = this.sink.tryEmitComplete();
         if (emitResult.isFailure()) {
             String pattern = "An error has occurred while marking the publisher as complete: {}"; //$NON-NLS-1$
