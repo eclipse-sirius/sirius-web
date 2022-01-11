@@ -409,10 +409,15 @@ public class ViewConverter {
         // @formatter:on
     }
 
-    private LabelDescription getLabelDescription(org.eclipse.sirius.web.view.EdgeDescription viewEdgeDescription, AQLInterpreter interpreter) {
+    private Optional<LabelDescription> getSpecificEdgeLabelDescription(org.eclipse.sirius.web.view.EdgeDescription viewEdgeDescription, String labelExpression, String labelSuffix,
+            AQLInterpreter interpreter) {
+        if (labelExpression == null || labelExpression.isBlank()) {
+            return Optional.empty();
+        }
+
         Function<VariableManager, String> labelIdProvider = variableManager -> {
             Object parentId = variableManager.get(LabelDescription.OWNER_ID, Object.class).orElse(null);
-            return String.valueOf(parentId) + "_centerlabel"; //$NON-NLS-1$
+            return String.valueOf(parentId) + labelSuffix;
         };
 
         Function<VariableManager, LabelStyleDescription> styleDescriptionProvider = variableManager -> {
@@ -428,11 +433,11 @@ public class ViewConverter {
         };
 
         // @formatter:off
-        return LabelDescription.newLabelDescription(EcoreUtil.getURI(viewEdgeDescription).toString() + "_centerlabel") //$NON-NLS-1$
-                .idProvider(labelIdProvider)
-                .textProvider(variableManager -> this.evaluateString(interpreter, variableManager, viewEdgeDescription.getLabelExpression()))
-                .styleDescriptionProvider(styleDescriptionProvider)
-                .build();
+        return Optional.of(LabelDescription.newLabelDescription(EcoreUtil.getURI(viewEdgeDescription).toString() + labelSuffix)
+                             .idProvider(labelIdProvider)
+                             .textProvider(variableManager -> this.evaluateString(interpreter, variableManager, labelExpression))
+                             .styleDescriptionProvider(styleDescriptionProvider)
+                             .build());
         // @formatter:on
     }
 
@@ -518,11 +523,10 @@ public class ViewConverter {
         SynchronizationPolicy synchronizationPolicy = SynchronizationPolicy.valueOf(viewEdgeDescription.getSynchronizationPolicy().getName());
 
         // @formatter:off
-        EdgeDescription result = EdgeDescription.newEdgeDescription(this.idProvider.apply(viewEdgeDescription))
+        var builder = EdgeDescription.newEdgeDescription(this.idProvider.apply(viewEdgeDescription))
                                      .targetObjectIdProvider(this.semanticTargetIdProvider)
                                      .targetObjectKindProvider(this.semanticTargetKindProvider)
                                      .targetObjectLabelProvider(this.semanticTargetLabelProvider)
-                                     .centerLabelDescription(this.getLabelDescription(viewEdgeDescription, interpreter))
                                      .sourceNodeDescriptions(viewEdgeDescription.getSourceNodeDescriptions().stream().map(this.convertedNodes::get).collect(Collectors.toList()))
                                      .targetNodeDescriptions(viewEdgeDescription.getTargetNodeDescriptions().stream().map(this.convertedNodes::get).collect(Collectors.toList()))
                                      .semanticElementsProvider(semanticElementsProvider)
@@ -531,8 +535,13 @@ public class ViewConverter {
                                      .targetNodesProvider(targetNodesProvider)
                                      .styleProvider(styleProvider)
                                      .deleteHandler(this.createDeleteHandler(viewEdgeDescription, interpreter))
-                                     .labelEditHandler(this.createLabelEditHandler(viewEdgeDescription, interpreter))
-                                     .build();
+                                     .labelEditHandler(this.createLabelEditHandler(viewEdgeDescription, interpreter));
+
+        this.getSpecificEdgeLabelDescription(viewEdgeDescription, viewEdgeDescription.getBeginLabelExpression(), "_beginlabel", interpreter).ifPresent(builder::beginLabelDescription); //$NON-NLS-1$
+        this.getSpecificEdgeLabelDescription(viewEdgeDescription, viewEdgeDescription.getLabelExpression(), "_centerlabel", interpreter).ifPresent(builder::centerLabelDescription); //$NON-NLS-1$
+        this.getSpecificEdgeLabelDescription(viewEdgeDescription, viewEdgeDescription.getEndLabelExpression(), "_endlabel", interpreter).ifPresent(builder::endLabelDescription); //$NON-NLS-1$
+
+        EdgeDescription result = builder.build();
         this.convertedEdges.put(viewEdgeDescription, result);
         return result;
         // @formatter:on

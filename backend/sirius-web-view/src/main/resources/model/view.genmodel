@@ -68,6 +68,8 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//NodeDescription/conditionalStyles"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//EdgeDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//EdgeDescription/beginLabelExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//EdgeDescription/endLabelExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//EdgeDescription/isDomainBasedEdge"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference view.ecore#//EdgeDescription/sourceNodeDescriptions"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference view.ecore#//EdgeDescription/targetNodeDescriptions"/>

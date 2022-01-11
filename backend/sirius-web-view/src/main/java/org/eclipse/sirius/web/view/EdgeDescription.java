@@ -39,6 +39,52 @@ import org.eclipse.emf.common.util.EList;
  */
 public interface EdgeDescription extends DiagramElementDescription {
     /**
+     * Returns the value of the '<em><b>Begin Label Expression</b></em>' attribute. The default value is
+     * <code>""</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Begin Label Expression</em>' attribute.
+     * @see #setBeginLabelExpression(String)
+     * @see org.eclipse.sirius.web.view.ViewPackage#getEdgeDescription_BeginLabelExpression()
+     * @model default=""
+     * @generated
+     */
+    String getBeginLabelExpression();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.web.view.EdgeDescription#getBeginLabelExpression <em>Begin Label
+     * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Begin Label Expression</em>' attribute.
+     * @see #getBeginLabelExpression()
+     * @generated
+     */
+    void setBeginLabelExpression(String value);
+
+    /**
+     * Returns the value of the '<em><b>End Label Expression</b></em>' attribute. The default value is <code>""</code>.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>End Label Expression</em>' attribute.
+     * @see #setEndLabelExpression(String)
+     * @see org.eclipse.sirius.web.view.ViewPackage#getEdgeDescription_EndLabelExpression()
+     * @model default=""
+     * @generated
+     */
+    String getEndLabelExpression();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.web.view.EdgeDescription#getEndLabelExpression <em>End Label
+     * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>End Label Expression</em>' attribute.
+     * @see #getEndLabelExpression()
+     * @generated
+     */
+    void setEndLabelExpression(String value);
+
+    /**
      * Returns the value of the '<em><b>Is Domain Based Edge</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *

@@ -56,6 +56,8 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
         if (this.itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
+            this.addBeginLabelExpressionPropertyDescriptor(object);
+            this.addEndLabelExpressionPropertyDescriptor(object);
             this.addIsDomainBasedEdgePropertyDescriptor(object);
             this.addSourceNodeDescriptionsPropertyDescriptor(object);
             this.addTargetNodeDescriptionsPropertyDescriptor(object);
@@ -63,6 +65,32 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
             this.addTargetNodesExpressionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
+    }
+
+    /**
+     * This adds a property descriptor for the Begin Label Expression feature. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     */
+    protected void addBeginLabelExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_EdgeDescription_beginLabelExpression_feature"), //$NON-NLS-1$
+                this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeDescription_beginLabelExpression_feature", "_UI_EdgeDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                ViewPackage.Literals.EDGE_DESCRIPTION__BEGIN_LABEL_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the End Label Expression feature. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     */
+    protected void addEndLabelExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_EdgeDescription_endLabelExpression_feature"), //$NON-NLS-1$
+                this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeDescription_endLabelExpression_feature", "_UI_EdgeDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                ViewPackage.Literals.EDGE_DESCRIPTION__END_LABEL_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -206,6 +234,8 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(EdgeDescription.class)) {
+        case ViewPackage.EDGE_DESCRIPTION__BEGIN_LABEL_EXPRESSION:
+        case ViewPackage.EDGE_DESCRIPTION__END_LABEL_EXPRESSION:
         case ViewPackage.EDGE_DESCRIPTION__IS_DOMAIN_BASED_EDGE:
         case ViewPackage.EDGE_DESCRIPTION__SOURCE_NODES_EXPRESSION:
         case ViewPackage.EDGE_DESCRIPTION__TARGET_NODES_EXPRESSION:

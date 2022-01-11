@@ -604,7 +604,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
-    public EAttribute getEdgeDescription_IsDomainBasedEdge() {
+    public EAttribute getEdgeDescription_BeginLabelExpression() {
         return (EAttribute) this.edgeDescriptionEClass.getEStructuralFeatures().get(0);
     }
 
@@ -614,8 +614,28 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
+    public EAttribute getEdgeDescription_EndLabelExpression() {
+        return (EAttribute) this.edgeDescriptionEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getEdgeDescription_IsDomainBasedEdge() {
+        return (EAttribute) this.edgeDescriptionEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EReference getEdgeDescription_SourceNodeDescriptions() {
-        return (EReference) this.edgeDescriptionEClass.getEStructuralFeatures().get(1);
+        return (EReference) this.edgeDescriptionEClass.getEStructuralFeatures().get(3);
     }
 
     /**
@@ -625,7 +645,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      */
     @Override
     public EReference getEdgeDescription_TargetNodeDescriptions() {
-        return (EReference) this.edgeDescriptionEClass.getEStructuralFeatures().get(2);
+        return (EReference) this.edgeDescriptionEClass.getEStructuralFeatures().get(4);
     }
 
     /**
@@ -635,7 +655,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      */
     @Override
     public EAttribute getEdgeDescription_SourceNodesExpression() {
-        return (EAttribute) this.edgeDescriptionEClass.getEStructuralFeatures().get(3);
+        return (EAttribute) this.edgeDescriptionEClass.getEStructuralFeatures().get(5);
     }
 
     /**
@@ -645,7 +665,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      */
     @Override
     public EAttribute getEdgeDescription_TargetNodesExpression() {
-        return (EAttribute) this.edgeDescriptionEClass.getEStructuralFeatures().get(4);
+        return (EAttribute) this.edgeDescriptionEClass.getEStructuralFeatures().get(6);
     }
 
     /**
@@ -655,7 +675,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      */
     @Override
     public EReference getEdgeDescription_Style() {
-        return (EReference) this.edgeDescriptionEClass.getEStructuralFeatures().get(5);
+        return (EReference) this.edgeDescriptionEClass.getEStructuralFeatures().get(7);
     }
 
     /**
@@ -665,7 +685,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      */
     @Override
     public EReference getEdgeDescription_EdgeTools() {
-        return (EReference) this.edgeDescriptionEClass.getEStructuralFeatures().get(6);
+        return (EReference) this.edgeDescriptionEClass.getEStructuralFeatures().get(8);
     }
 
     /**
@@ -675,7 +695,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      */
     @Override
     public EReference getEdgeDescription_ConditionalStyles() {
-        return (EReference) this.edgeDescriptionEClass.getEStructuralFeatures().get(7);
+        return (EReference) this.edgeDescriptionEClass.getEStructuralFeatures().get(9);
     }
 
     /**
@@ -1319,6 +1339,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.createEReference(this.nodeDescriptionEClass, NODE_DESCRIPTION__CONDITIONAL_STYLES);
 
         this.edgeDescriptionEClass = this.createEClass(EDGE_DESCRIPTION);
+        this.createEAttribute(this.edgeDescriptionEClass, EDGE_DESCRIPTION__BEGIN_LABEL_EXPRESSION);
+        this.createEAttribute(this.edgeDescriptionEClass, EDGE_DESCRIPTION__END_LABEL_EXPRESSION);
         this.createEAttribute(this.edgeDescriptionEClass, EDGE_DESCRIPTION__IS_DOMAIN_BASED_EDGE);
         this.createEReference(this.edgeDescriptionEClass, EDGE_DESCRIPTION__SOURCE_NODE_DESCRIPTIONS);
         this.createEReference(this.edgeDescriptionEClass, EDGE_DESCRIPTION__TARGET_NODE_DESCRIPTIONS);
@@ -1515,6 +1537,10 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
                 IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.edgeDescriptionEClass, EdgeDescription.class, "EdgeDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+        this.initEAttribute(this.getEdgeDescription_BeginLabelExpression(), this.ecorePackage.getEString(), "beginLabelExpression", "", 0, 1, EdgeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, //$NON-NLS-1$ //$NON-NLS-2$
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getEdgeDescription_EndLabelExpression(), this.ecorePackage.getEString(), "endLabelExpression", "", 0, 1, EdgeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, //$NON-NLS-1$ //$NON-NLS-2$
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getEdgeDescription_IsDomainBasedEdge(), this.ecorePackage.getEBoolean(), "isDomainBasedEdge", null, 0, 1, EdgeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, //$NON-NLS-1$
                 IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getEdgeDescription_SourceNodeDescriptions(), this.getNodeDescription(), null, "sourceNodeDescriptions", null, 1, -1, EdgeDescription.class, !IS_TRANSIENT, //$NON-NLS-1$
