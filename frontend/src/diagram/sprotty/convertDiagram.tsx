@@ -103,10 +103,12 @@ const convertNode = (gqlNode: GQLNode, httpOrigin: string, readOnly: boolean, au
   } = gqlNode;
 
   const convertedLabel = convertLabel(label, httpOrigin, readOnly);
-  const convertedBorderNodes = borderNodes.map((borderNode) =>
+  const convertedBorderNodes = (borderNodes ?? []).map((borderNode) =>
     convertNode(borderNode, httpOrigin, readOnly, autoLayout)
   );
-  const convertedChildNodes = childNodes.map((childNode) => convertNode(childNode, httpOrigin, readOnly, autoLayout));
+  const convertedChildNodes = (childNodes ?? []).map((childNode) =>
+    convertNode(childNode, httpOrigin, readOnly, autoLayout)
+  );
 
   const node: Node = new Node();
   node.id = id;

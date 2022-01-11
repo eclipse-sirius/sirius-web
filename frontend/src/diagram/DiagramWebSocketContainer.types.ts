@@ -155,8 +155,8 @@ export interface GQLNode {
   size: GQLSize;
   position: GQLPosition;
   style: GQLINodeStyle;
-  borderNodes: GQLNode[];
-  childNodes: GQLNode[];
+  borderNodes: GQLNode[] | undefined;
+  childNodes: GQLNode[] | undefined;
 }
 
 export interface GQLLabel {
