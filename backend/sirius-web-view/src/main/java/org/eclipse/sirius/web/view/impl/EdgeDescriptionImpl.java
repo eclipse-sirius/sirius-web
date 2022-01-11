@@ -53,6 +53,46 @@ import org.eclipse.sirius.web.view.ViewPackage;
  */
 public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implements EdgeDescription {
     /**
+     * The default value of the '{@link #getBeginLabelExpression() <em>Begin Label Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getBeginLabelExpression()
+     * @generated
+     * @ordered
+     */
+    protected static final String BEGIN_LABEL_EXPRESSION_EDEFAULT = ""; //$NON-NLS-1$
+
+    /**
+     * The cached value of the '{@link #getBeginLabelExpression() <em>Begin Label Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getBeginLabelExpression()
+     * @generated
+     * @ordered
+     */
+    protected String beginLabelExpression = BEGIN_LABEL_EXPRESSION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getEndLabelExpression() <em>End Label Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getEndLabelExpression()
+     * @generated
+     * @ordered
+     */
+    protected static final String END_LABEL_EXPRESSION_EDEFAULT = ""; //$NON-NLS-1$
+
+    /**
+     * The cached value of the '{@link #getEndLabelExpression() <em>End Label Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getEndLabelExpression()
+     * @generated
+     * @ordered
+     */
+    protected String endLabelExpression = END_LABEL_EXPRESSION_EDEFAULT;
+
+    /**
      * The default value of the '{@link #isIsDomainBasedEdge() <em>Is Domain Based Edge</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
@@ -179,6 +219,52 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
     @Override
     protected EClass eStaticClass() {
         return ViewPackage.Literals.EDGE_DESCRIPTION;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String getBeginLabelExpression() {
+        return this.beginLabelExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setBeginLabelExpression(String newBeginLabelExpression) {
+        String oldBeginLabelExpression = this.beginLabelExpression;
+        this.beginLabelExpression = newBeginLabelExpression;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.EDGE_DESCRIPTION__BEGIN_LABEL_EXPRESSION, oldBeginLabelExpression, this.beginLabelExpression));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String getEndLabelExpression() {
+        return this.endLabelExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setEndLabelExpression(String newEndLabelExpression) {
+        String oldEndLabelExpression = this.endLabelExpression;
+        this.endLabelExpression = newEndLabelExpression;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.EDGE_DESCRIPTION__END_LABEL_EXPRESSION, oldEndLabelExpression, this.endLabelExpression));
     }
 
     /**
@@ -376,6 +462,10 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
+        case ViewPackage.EDGE_DESCRIPTION__BEGIN_LABEL_EXPRESSION:
+            return this.getBeginLabelExpression();
+        case ViewPackage.EDGE_DESCRIPTION__END_LABEL_EXPRESSION:
+            return this.getEndLabelExpression();
         case ViewPackage.EDGE_DESCRIPTION__IS_DOMAIN_BASED_EDGE:
             return this.isIsDomainBasedEdge();
         case ViewPackage.EDGE_DESCRIPTION__SOURCE_NODE_DESCRIPTIONS:
@@ -405,6 +495,12 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
+        case ViewPackage.EDGE_DESCRIPTION__BEGIN_LABEL_EXPRESSION:
+            this.setBeginLabelExpression((String) newValue);
+            return;
+        case ViewPackage.EDGE_DESCRIPTION__END_LABEL_EXPRESSION:
+            this.setEndLabelExpression((String) newValue);
+            return;
         case ViewPackage.EDGE_DESCRIPTION__IS_DOMAIN_BASED_EDGE:
             this.setIsDomainBasedEdge((Boolean) newValue);
             return;
@@ -445,6 +541,12 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
+        case ViewPackage.EDGE_DESCRIPTION__BEGIN_LABEL_EXPRESSION:
+            this.setBeginLabelExpression(BEGIN_LABEL_EXPRESSION_EDEFAULT);
+            return;
+        case ViewPackage.EDGE_DESCRIPTION__END_LABEL_EXPRESSION:
+            this.setEndLabelExpression(END_LABEL_EXPRESSION_EDEFAULT);
+            return;
         case ViewPackage.EDGE_DESCRIPTION__IS_DOMAIN_BASED_EDGE:
             this.setIsDomainBasedEdge(IS_DOMAIN_BASED_EDGE_EDEFAULT);
             return;
@@ -481,6 +583,10 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
+        case ViewPackage.EDGE_DESCRIPTION__BEGIN_LABEL_EXPRESSION:
+            return BEGIN_LABEL_EXPRESSION_EDEFAULT == null ? this.beginLabelExpression != null : !BEGIN_LABEL_EXPRESSION_EDEFAULT.equals(this.beginLabelExpression);
+        case ViewPackage.EDGE_DESCRIPTION__END_LABEL_EXPRESSION:
+            return END_LABEL_EXPRESSION_EDEFAULT == null ? this.endLabelExpression != null : !END_LABEL_EXPRESSION_EDEFAULT.equals(this.endLabelExpression);
         case ViewPackage.EDGE_DESCRIPTION__IS_DOMAIN_BASED_EDGE:
             return this.isDomainBasedEdge != IS_DOMAIN_BASED_EDGE_EDEFAULT;
         case ViewPackage.EDGE_DESCRIPTION__SOURCE_NODE_DESCRIPTIONS:
@@ -512,7 +618,11 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
             return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (isDomainBasedEdge: "); //$NON-NLS-1$
+        result.append(" (beginLabelExpression: "); //$NON-NLS-1$
+        result.append(this.beginLabelExpression);
+        result.append(", endLabelExpression: "); //$NON-NLS-1$
+        result.append(this.endLabelExpression);
+        result.append(", isDomainBasedEdge: "); //$NON-NLS-1$
         result.append(this.isDomainBasedEdge);
         result.append(", sourceNodesExpression: "); //$NON-NLS-1$
         result.append(this.sourceNodesExpression);
