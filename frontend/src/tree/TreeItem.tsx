@@ -337,6 +337,21 @@ export const TreeItem = ({
     event.stopPropagation();
   };
 
+  let tooltipText = '';
+  if (item.kind.startsWith('siriusComponents://semantic')) {
+    const query = item.kind.substring(item.kind.indexOf('?') + 1, item.kind.length);
+    const params = new URLSearchParams(query);
+    if (params.has('domain') && params.has('entity')) {
+      tooltipText = params.get('domain') + '::' + params.get('entity');
+    }
+  } else if (item.kind.startsWith('siriusComponents://representation')) {
+    const query = item.kind.substring(item.kind.indexOf('?') + 1, item.kind.length);
+    const params = new URLSearchParams(query);
+    if (params.has('type')) {
+      tooltipText = params.get('type');
+    }
+  }
+
   /* ref, tabindex and onFocus are used to set the React component focusabled and to set the focus to the corresponding DOM part */
   return (
     <>
@@ -361,7 +376,7 @@ export const TreeItem = ({
             className={styles.imageAndLabel}
             onClick={onClick}
             onDoubleClick={() => item.hasChildren && onExpand(item.id, depth)}
-            title={item.kind}
+            title={tooltipText}
             data-testid={item.label}
           >
             {image}
