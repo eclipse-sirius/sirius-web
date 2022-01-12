@@ -322,7 +322,7 @@ public class ViewConverter {
             if (i == 0) {
                 // @formatter:off
                 CreateNodeTool tool = CreateNodeTool.newCreateNodeTool(this.idProvider.apply(nodeDescription) + "_creationTool") //$NON-NLS-1$
-                        .label("New " + nodeDescription.getDomainType()) //$NON-NLS-1$
+                        .label("New " + this.getSimpleTypeName(nodeDescription.getDomainType())) //$NON-NLS-1$
                         .imageURL(NODE_CREATION_TOOL_ICON)
                         .handler(variableManager -> this.canonicalBehaviors.createNewNode(nodeDescription, variableManager))
                         .targetDescriptions(Optional.ofNullable(nodeDescription.eContainer()).map(this.convertedNodes::get).stream().collect(Collectors.toList()))
@@ -355,7 +355,7 @@ public class ViewConverter {
             if (i == 0) {
                 // @formatter:off
                 CreateEdgeTool tool = CreateEdgeTool.newCreateEdgeTool(this.idProvider.apply(edgeDescription) + "_creationTool") //$NON-NLS-1$
-                        .label("New " + edgeDescription.getDomainType()) //$NON-NLS-1$
+                        .label("New " + this.getSimpleTypeName(edgeDescription.getDomainType())) //$NON-NLS-1$
                         .imageURL(EDGE_CREATION_TOOL_ICON)
                         .edgeCandidates(List.of(EdgeCandidate.newEdgeCandidate()
                                 .sources(edgeDescription.getSourceNodeDescriptions().stream().map(this.convertedNodes::get).collect(Collectors.toList()))
@@ -372,6 +372,14 @@ public class ViewConverter {
         return List.of(ToolSection.newToolSection(UUID.randomUUID().toString()).label(NODE_CREATION_TOOL_SECTION).tools(nodeCreationTools).imageURL("").build(), //$NON-NLS-1$
                        ToolSection.newToolSection(UUID.randomUUID().toString()).label(EDGE_CREATION_TOOL_SECTION).tools(edgeCreationTools).imageURL("").build()); //$NON-NLS-1$
         // @formatter:on
+    }
+
+    private String getSimpleTypeName(String domainType) {
+        String result = Optional.ofNullable(domainType).orElse(""); //$NON-NLS-1$
+        if (result.contains("::")) { //$NON-NLS-1$
+            result = domainType.substring(domainType.indexOf("::") + 2); //$NON-NLS-1$
+        }
+        return result;
     }
 
     private LabelDescription getLabelDescription(org.eclipse.sirius.web.view.NodeDescription viewNodeDescription, AQLInterpreter interpreter) {
