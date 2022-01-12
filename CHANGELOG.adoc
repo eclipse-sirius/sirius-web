@@ -20,6 +20,7 @@
 - [core] `IRepresentationDescriptionSearchService` has a new `findAll` method to return all the representation descriptions available in a given editing context
 - [core] The package containing the concepts related to the editing context has been renamed to remove references to the project
 - https://github.com/eclipse-sirius/sirius-components/issues/932[#932] [graphql] Introduce the RepresentationMetadata concept in order to prepare the separation of the metadata from the representation
+- [core] Sirius Components does not depend on Spring Security anymore
 
 === Dependency update
 
