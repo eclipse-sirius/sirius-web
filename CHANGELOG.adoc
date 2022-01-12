@@ -21,6 +21,7 @@
 - [core] The package containing the concepts related to the editing context has been renamed to remove references to the project
 - https://github.com/eclipse-sirius/sirius-components/issues/932[#932] [graphql] Introduce the RepresentationMetadata concept in order to prepare the separation of the metadata from the representation
 - [core] Sirius Components does not depend on Spring Security anymore
+- [diagram] Remove the ToolSeparator components.
 
 === Dependency update
 
@@ -64,6 +65,7 @@ Currently it is not possible to compute different values for width and height.
 - https://github.com/eclipse-sirius/sirius-components/issues/936[#936] [view] Add support for `preconditionExpression` in dynamic representations
 - https://github.com/eclipse-sirius/sirius-components/issues/878[#878] [explorer] Update the tooltips of the tree items by parsing the kind of the tree item
 - [view] Use simple type names for the canonical creation tools
+- https://github.com/eclipse-sirius/sirius-components/issues/952[#952] [diagram] The contextual palette can be displayed with many lines. The contextual palette cannot have more than 15 elements per line.
 
 === Bug fixes
 
