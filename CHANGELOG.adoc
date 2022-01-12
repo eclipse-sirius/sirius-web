@@ -61,6 +61,7 @@ Currently it is not possible to compute different values for width and height.
 - https://github.com/eclipse-sirius/sirius-components/issues/944[#944] [core] Add the ability to dispose the editing context
 - https://github.com/eclipse-sirius/sirius-components/issues/936[#936] [view] Add support for `preconditionExpression` in dynamic representations
 - https://github.com/eclipse-sirius/sirius-components/issues/878[#878] [explorer] Update the tooltips of the tree items by parsing the kind of the tree item
+- [view] Use simple type names for the canonical creation tools
 
 === Bug fixes
 
