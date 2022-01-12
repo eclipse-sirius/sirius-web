@@ -23,7 +23,6 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.http.HttpHeaders;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.WebSocketExtension;
 import org.springframework.web.socket.WebSocketMessage;
@@ -60,7 +59,7 @@ public class NoOpWebSocketSession implements WebSocketSession {
 
     @Override
     public Principal getPrincipal() {
-        return new UsernamePasswordAuthenticationToken(new Object(), new Object());
+        return null;
     }
 
     @Override
