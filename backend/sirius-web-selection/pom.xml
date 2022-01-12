@@ -22,7 +22,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius.web</groupId>
 	<artifactId>sirius-web-selection</artifactId>
-	<version>2021.12.10</version>
+	<version>2021.12.11</version>
 	<name>sirius-web-selection</name>
 	<description>Sirius Web Selection</description>
 
@@ -42,17 +42,17 @@
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-annotations</artifactId>
-			<version>2021.12.10</version>
+			<version>2021.12.11</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-representations</artifactId>
-			<version>2021.12.10</version>
+			<version>2021.12.11</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-tests</artifactId>
-			<version>2021.12.10</version>
+			<version>2021.12.11</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
