@@ -22,7 +22,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius.web</groupId>
 	<artifactId>sirius-web-spring-collaborative-trees</artifactId>
-	<version>2021.12.9</version>
+	<version>2021.12.10</version>
 	<name>sirius-web-spring-collaborative-trees</name>
 	<description>Sirius Web Spring Collaborative Trees</description>
 
@@ -42,12 +42,12 @@
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-spring-collaborative</artifactId>
-			<version>2021.12.9</version>
+			<version>2021.12.10</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-trees</artifactId>
-			<version>2021.12.9</version>
+			<version>2021.12.10</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -68,13 +68,13 @@
 		<dependency>
     		<groupId>org.eclipse.sirius.web</groupId>
     		<artifactId>sirius-web-tests</artifactId>
-    		<version>2021.12.9</version>
+    		<version>2021.12.10</version>
     		<scope>test</scope>
     	</dependency>
     	<dependency>
     		<groupId>org.eclipse.sirius.web</groupId>
     		<artifactId>sirius-web-spring-tests</artifactId>
-    		<version>2021.12.9</version>
+    		<version>2021.12.10</version>
     		<scope>test</scope>
     	</dependency>
     	<dependency>
