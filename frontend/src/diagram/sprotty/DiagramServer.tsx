@@ -118,6 +118,8 @@ export class DiagramServer extends ModelSource {
 
   httpOrigin;
 
+  firstOpen: boolean = true;
+
   initialize(registry: ActionHandlerRegistry) {
     super.initialize(registry);
     registry.register(ApplyLabelEditAction.KIND, this);
@@ -264,7 +266,10 @@ export class DiagramServer extends ModelSource {
   }
 
   handleInitializeCanvasBoundsAction(action: InitializeCanvasBoundsAction) {
-    this.actionDispatcher.dispatch(new FitToScreenAction([], 20));
+    if (this.firstOpen && this.currentRoot.id !== INITIAL_ROOT.id) {
+      this.actionDispatcher.dispatch(new FitToScreenAction([], 20, 1));
+      this.firstOpen = false;
+    }
   }
 
   handleSprottySelectAction(action: SprottySelectAction) {
