@@ -359,6 +359,60 @@ export const getToolSectionsQuery = gql`
                   }
                 }
               }
+
+              nodeDescriptions {
+                id
+                synchronizationPolicy
+                borderNodeDescriptions {
+                  id
+                  synchronizationPolicy
+                }
+                childNodeDescriptions {
+                  id
+                  synchronizationPolicy
+                  borderNodeDescriptions {
+                    id
+                    synchronizationPolicy
+                  }
+                  childNodeDescriptions {
+                    id
+                    synchronizationPolicy
+                    borderNodeDescriptions {
+                      id
+                      synchronizationPolicy
+                    }
+                    childNodeDescriptions {
+                      id
+                      synchronizationPolicy
+                      borderNodeDescriptions {
+                        id
+                        synchronizationPolicy
+                      }
+                      childNodeDescriptions {
+                        id
+                        synchronizationPolicy
+                        borderNodeDescriptions {
+                          id
+                          synchronizationPolicy
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+
+              edgeDescriptions {
+                id
+                synchronizationPolicy
+                sourceNodeDescriptions {
+                  id
+                  synchronizationPolicy
+                }
+                targetNodeDescriptions {
+                  id
+                  synchronizationPolicy
+                }
+              }
             }
           }
         }

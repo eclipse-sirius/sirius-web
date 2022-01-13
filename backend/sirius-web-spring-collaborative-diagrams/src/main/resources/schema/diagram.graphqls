@@ -187,11 +187,28 @@ type DiagramDescription implements RepresentationDescription {
   id: ID!
   label: String!
   autoLayout: Boolean!
+  nodeDescriptions: [NodeDescription!]!
+  edgeDescriptions: [EdgeDescription!]!
   toolSections: [ToolSection!]!
 }
 
 type NodeDescription {
   id: ID!
+  synchronizationPolicy: SynchronizationPolicy!
+  borderNodeDescriptions: [NodeDescription!]!
+  childNodeDescriptions: [NodeDescription!]!
+}
+
+type EdgeDescription {
+  id: ID!
+  synchronizationPolicy: SynchronizationPolicy!
+  sourceNodeDescriptions: [NodeDescription!]!
+  targetNodeDescriptions: [NodeDescription!]!
+}
+
+enum SynchronizationPolicy {
+  SYNCHRONIZED
+  UNSYNCHRONIZED
 }
 
 extend type Mutation {

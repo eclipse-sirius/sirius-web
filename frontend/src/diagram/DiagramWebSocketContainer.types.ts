@@ -130,6 +130,27 @@ export interface GQLRepresentationDescription {
 
 export interface GQLDiagramDescription extends GQLRepresentationDescription {
   toolSections: GQLToolSection[];
+  nodeDescriptions: GQLNodeDescription[];
+  edgdDescriptions: GQLEdgeDescription[];
+}
+
+export interface GQLNodeDescription {
+  id: string;
+  synchronizationPolicy: GQLSynchronizationPolicy;
+  childNodeDescriptions: GQLNodeDescription[] | undefined;
+  borderNodeDescriptions: GQLNodeDescription[] | undefined;
+}
+
+export interface GQLEdgeDescription {
+  id: string;
+  synchronizationPolicy: GQLSynchronizationPolicy;
+  sourceNodeDescriptions: GQLNodeDescription[];
+  targetNodeDescriptions: GQLNodeDescription[];
+}
+
+export enum GQLSynchronizationPolicy {
+  SYNCHRONIZED = 'SYNCHRONIZED',
+  UNSYNCHRONIZED = 'UNSYNCHRONIZED',
 }
 
 export interface GQLRepresentation {
