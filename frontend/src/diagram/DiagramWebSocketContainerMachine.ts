@@ -12,7 +12,7 @@
  *******************************************************************************/
 import {
   CreateEdgeTool,
-  GQLToolSection,
+  GQLDiagramDescription,
   Menu,
   Palette,
   Position,
@@ -65,6 +65,7 @@ export interface DiagramWebSocketContainerContext {
   displayedRepresentationId: string | null;
   diagramServer: DiagramServer;
   diagram: GQLDiagram;
+  diagramDescription: GQLDiagramDescription | null;
   toolSections: ToolSection[];
   activeTool: Tool | null;
   activeConnectorTools: CreateEdgeTool[];
@@ -88,7 +89,7 @@ export type HandleSelectedObjectInSelectionDialogEvent = {
 };
 export type ResetSelectedObjectInSelectionDialogEvent = { type: 'RESET_SELECTED_OBJECT_IN_SELECTION_DIALOG' };
 export type SwithRepresentationEvent = { type: 'SWITCH_REPRESENTATION'; representationId: string };
-export type SetToolSectionsEvent = { type: 'SET_TOOL_SECTIONS'; toolSections: GQLToolSection[] };
+export type SetDiagramDescriptionEvent = { type: 'SET_DIAGRAM_DESCRIPTION'; diagramDescription: GQLDiagramDescription };
 export type SetDefaultToolEvent = { type: 'SET_DEFAULT_TOOL'; defaultTool: Tool };
 export type DiagramRefreshedEvent = { type: 'HANDLE_DIAGRAM_REFRESHED'; diagram: GQLDiagram };
 export type SubscribersUpdatedEvent = { type: 'HANDLE_SUBSCRIBERS_UPDATED'; subscribers: Subscriber[] };
@@ -128,7 +129,7 @@ export type DiagramWebSocketContainerEvent =
   | ResetSelectedObjectInSelectionDialogEvent
   | SwithRepresentationEvent
   | InitializeRepresentationEvent
-  | SetToolSectionsEvent
+  | SetDiagramDescriptionEvent
   | SetDefaultToolEvent
   | DiagramRefreshedEvent
   | SubscribersUpdatedEvent
@@ -161,6 +162,7 @@ export const diagramWebSocketContainerMachine = Machine<
       displayedRepresentationId: null,
       diagramServer: null,
       diagram: null,
+      diagramDescription: null,
       toolSections: [],
       activeTool: null,
       activeConnectorTools: [],
@@ -232,9 +234,9 @@ export const diagramWebSocketContainerMachine = Machine<
                   actions: 'switchRepresentation',
                 },
               ],
-              SET_TOOL_SECTIONS: [
+              SET_DIAGRAM_DESCRIPTION: [
                 {
-                  actions: 'setToolSections',
+                  actions: 'setDiagramDescription',
                 },
               ],
               SET_DEFAULT_TOOL: [
@@ -416,21 +418,19 @@ export const diagramWebSocketContainerMachine = Machine<
         };
       }),
 
-      setToolSections: assign((_, event) => {
-        const { toolSections } = event as SetToolSectionsEvent;
+      setDiagramDescription: assign((_, event) => {
+        const { diagramDescription } = event as SetDiagramDescriptionEvent;
 
         let toolSectionsWithDefaults = [];
-        if (toolSections) {
-          toolSectionsWithDefaults = toolSections.map((toolSection) => {
-            if (toolSection.tools && toolSection.tools.length > 0) {
-              return { ...toolSection, defaultTool: toolSection.tools[0] };
-            } else {
-              return { ...toolSection, defaultTool: null };
-            }
-          });
-        }
+        toolSectionsWithDefaults = diagramDescription.toolSections.map((toolSection) => {
+          if (toolSection.tools && toolSection.tools.length > 0) {
+            return { ...toolSection, defaultTool: toolSection.tools[0] };
+          } else {
+            return { ...toolSection, defaultTool: null };
+          }
+        });
 
-        return { toolSections: toolSectionsWithDefaults };
+        return { diagramDescription, toolSections: toolSectionsWithDefaults };
       }),
 
       setDefaultTool: assign((context, event) => {

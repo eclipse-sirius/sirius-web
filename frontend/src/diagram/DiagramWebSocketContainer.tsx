@@ -54,7 +54,7 @@ import {
   SetContextualMenuEvent,
   SetContextualPaletteEvent,
   SetDefaultToolEvent,
-  SetToolSectionsEvent,
+  SetDiagramDescriptionEvent,
   ShowSelectionDialogEvent,
   ShowToastEvent,
   SubscribersUpdatedEvent,
@@ -707,10 +707,11 @@ export const DiagramWebSocketContainer = ({
     if (!toolSectionLoading && diagramWebSocketContainer === 'ready' && toolSectionData) {
       const representationDescription = toolSectionData.viewer.editingContext.representation.description;
       if (isDiagramDescription(representationDescription)) {
-        const { toolSections } = representationDescription;
-
-        const setToolSectionsEvent: SetToolSectionsEvent = { type: 'SET_TOOL_SECTIONS', toolSections: toolSections };
-        dispatch(setToolSectionsEvent);
+        const setDiagramDescriptionEvent: SetDiagramDescriptionEvent = {
+          type: 'SET_DIAGRAM_DESCRIPTION',
+          diagramDescription: representationDescription,
+        };
+        dispatch(setDiagramDescriptionEvent);
       }
     }
   }, [toolSectionLoading, toolSectionData, diagramWebSocketContainer, dispatch]);
