@@ -28,12 +28,15 @@ import org.eclipse.sirius.web.compat.api.IModelOperationHandlerSwitchProvider;
 import org.eclipse.sirius.web.core.api.IEditService;
 import org.eclipse.sirius.web.diagrams.Diagram;
 import org.eclipse.sirius.web.diagrams.Node;
+import org.eclipse.sirius.web.diagrams.ViewDeletionRequest;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
 import org.eclipse.sirius.web.representations.Failure;
 import org.eclipse.sirius.web.representations.IStatus;
 import org.eclipse.sirius.web.representations.Success;
 import org.eclipse.sirius.web.representations.VariableManager;
 import org.eclipse.sirius.web.spring.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.web.spring.collaborative.diagrams.dto.DeletionPolicy;
+import org.eclipse.sirius.web.spring.collaborative.diagrams.handlers.DeleteFromDiagramEventHandler;
 
 /**
  * Converts Sirius Diagrams tools definitions into plain Java functions that can be easily invoked without depending on
@@ -102,8 +105,31 @@ public class ToolConverter {
         } else {
             // If no delete tool is defined, execute the default behavior: delete the underlying semantic element.
             return variableManager -> {
-                Optional.of(variableManager.getVariables().get(VariableManager.SELF)).ifPresent(this.editService::delete);
-                return new Success();
+                var optionalObject = variableManager.get(VariableManager.SELF, Object.class);
+                var optionalSelectedNode = variableManager.get(Node.SELECTED_NODE, Node.class);
+                var optionalDiagramContext = variableManager.get(IDiagramContext.DIAGRAM_CONTEXT, IDiagramContext.class);
+
+                if (optionalObject.isPresent()) {
+                    Object object = optionalObject.get();
+
+                    DeletionPolicy deletionPolicy = variableManager.get(DeleteFromDiagramEventHandler.DELETION_POLICY, DeletionPolicy.class).orElse(DeletionPolicy.SEMANTIC);
+                    if (DeletionPolicy.SEMANTIC == deletionPolicy) {
+                        this.editService.delete(object);
+                    } else if (optionalDiagramContext.isPresent() && optionalSelectedNode.isPresent()) {
+                        IDiagramContext diagramContext = optionalDiagramContext.get();
+                        Node selectedNode = optionalSelectedNode.get();
+                        // @formatter:off
+                        ViewDeletionRequest viewDeletionRequest = ViewDeletionRequest.newViewDeletionRequest()
+                                .elementId(selectedNode.getId())
+                                .build();
+                        // @formatter:on
+
+                        diagramContext.getViewDeletionRequests().add(viewDeletionRequest);
+                    }
+                    return new Success();
+                }
+
+                return new Failure(""); //$NON-NLS-1$
             };
         }
     }

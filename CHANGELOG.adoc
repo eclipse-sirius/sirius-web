@@ -43,7 +43,9 @@ Currently it is not possible to compute different values for width and height.
 - https://github.com/eclipse-sirius/sirius-components/issues/132[#132] [diagram] Add support for drag and drop from the explorer to a diagram
 - https://github.com/eclipse-sirius/sirius-components/issues/924[#924] [view] Add support for all text styles on labels
 - https://github.com/eclipse-sirius/sirius-components/issues/929[#929] [core] Add support for providing a listener on GraphQLWebSocketHandler operations
+
 - https://github.com/eclipse-sirius/sirius-components/issues/884[#884] [view] Add support for defining unsynchronized nodes and edges
+- https://github.com/eclipse-sirius/sirius-components/issues/822[#822] [diagram] Add support for graphical deletion. We can now offer a dedicated menu in the user interface to perform a graphical deletion instead of a semantic one. On the backend, the compatibility layer has been updated to perform a `DeletionViewRequest` if there is no default deletion tool and a new variable named `deletionPolicy` is available to determine if the deletion should be performed graphically or semantically
 
 === Improvements
 
