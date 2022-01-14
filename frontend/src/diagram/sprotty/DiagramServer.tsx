@@ -107,7 +107,7 @@ export class DiagramServer extends ModelSource {
   deleteElements;
 
   invokeTool;
-  setContextualPalette;
+  setContextualPalette: (contextualPalette: Palette) => void;
   setContextualMenu;
   setActiveTool;
   onSelectElement;
@@ -273,7 +273,7 @@ export class DiagramServer extends ModelSource {
   }
 
   handleSprottySelectAction(action: SprottySelectAction) {
-    const { element, position } = action;
+    const { element } = action;
     if (this.activeConnectorTools?.length > 0) {
       const filteredTools = this.activeConnectorTools.filter((edgeTool) =>
         edgeTool.edgeCandidates.some(
@@ -292,7 +292,7 @@ export class DiagramServer extends ModelSource {
           this.diagramSource.element.id,
           element.id,
           this.diagramSource.position,
-          position
+          this.mousePositionTracker.lastPositionOnDiagram
         );
       } else {
         this.actionDispatcher.dispatch({
@@ -310,7 +310,7 @@ export class DiagramServer extends ModelSource {
           this.diagramSource.element.id,
           element.id,
           this.diagramSource.position,
-          position
+          this.mousePositionTracker.lastPositionOnDiagram
         );
       } else if (this.activeTool.__typename === 'DeleteTool') {
         this.invokeTool(this.activeTool, element.id);
@@ -415,10 +415,10 @@ export class DiagramServer extends ModelSource {
             };
           }
           const contextualPalette: Palette = {
-            startingPosition: lastPositionOnDiagram,
+            palettePosition: lastPositionOnDiagram,
             canvasBounds: bounds,
-            edgeStartPosition: edgeStartPosition,
-            element: element,
+            edgeStartPosition,
+            element,
             renameable: !(element instanceof SGraph),
             deletable: !(element instanceof SGraph),
           };
@@ -578,7 +578,7 @@ export class DiagramServer extends ModelSource {
     this.invokeTool = invokeTool;
   }
 
-  setContextualPaletteListener(setContextualPalette) {
+  setContextualPaletteListener(setContextualPalette: (contextualPalette: Palette) => void) {
     this.setContextualPalette = setContextualPalette;
   }
 
