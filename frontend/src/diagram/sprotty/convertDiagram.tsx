@@ -120,6 +120,7 @@ const convertNode = (gqlNode: GQLNode, httpOrigin: string, readOnly: boolean, au
   const node: Node = new Node();
   node.id = id;
   node.type = type;
+  node.kind = `siriusComponents://graphical?representationType=Diagram&type=Node`;
   node.descriptionId = descriptionId;
   node.style = convertNodeStyle(style, httpOrigin);
   node.editableLabel = !readOnly ? convertedLabel : null;
@@ -288,6 +289,7 @@ const convertEdge = (diagram: Diagram, gqlEdge: GQLEdge, httpOrigin: string, rea
   diagram.add(edge);
   edge.id = id;
   edge.type = type;
+  edge.kind = `siriusComponents://graphical?representationType=Diagram&type=Edge`;
   edge.sourceId = sourceId;
   edge.targetId = targetId;
   edge.routingPoints = routingPoints;

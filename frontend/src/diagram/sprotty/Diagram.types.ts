@@ -23,6 +23,7 @@ export class Diagram extends SGraph {
 export class Node extends SNode implements WithEditableLabel {
   editableLabel?: EditableLabel & Label;
   descriptionId: string;
+  kind: string;
   style: INodeStyle;
   targetObjectId: string;
   targetObjectKind: string;
@@ -65,6 +66,7 @@ export class ListItemNodeStyle implements INodeStyle {
 export class Edge extends SEdge implements WithEditableLabel {
   editableLabel?: EditableLabel & Label;
   descriptionId: string;
+  kind: string;
   style: EdgeStyle;
   targetObjectId: string;
   targetObjectKind: string;

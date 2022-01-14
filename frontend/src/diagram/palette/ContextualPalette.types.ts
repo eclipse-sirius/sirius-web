@@ -10,14 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Tool, ToolSection } from 'diagram/DiagramWebSocketContainer.types';
-
+import { GQLDeletionPolicy, GQLDiagramDescription, Tool, ToolSection } from 'diagram/DiagramWebSocketContainer.types';
 export interface ContextualPaletteProps {
+  diagramDescription: GQLDiagramDescription;
   toolSections: ToolSection[];
   targetElement: any;
   invokeTool: (tool: Tool) => void;
   invokeConnectorTool: () => void;
   invokeLabelEdit: () => void | null;
-  invokeDelete: () => void | null;
+  invokeDelete: (deletionPolicy: GQLDeletionPolicy) => void | null;
   invokeClose: () => void;
 }
