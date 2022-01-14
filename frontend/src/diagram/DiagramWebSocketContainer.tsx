@@ -21,6 +21,7 @@ import { ServerContext } from 'common/ServerContext';
 import {
   CreateEdgeTool,
   CreateNodeTool,
+  GQLDeletionPolicy,
   GQLDiagramDescription,
   GQLDiagramEventPayload,
   GQLDiagramEventSubscription,
@@ -75,7 +76,6 @@ import {
 } from 'diagram/operations';
 import { ContextualMenu } from 'diagram/palette/ContextualMenu';
 import { ContextualPalette } from 'diagram/palette/ContextualPalette';
-import { Node } from 'diagram/sprotty/Diagram.types';
 import {
   DiagramServer,
   HIDE_CONTEXTUAL_TOOLBAR_ACTION,
@@ -313,6 +313,7 @@ export const DiagramWebSocketContainer = ({
     displayedRepresentationId,
     diagramServer,
     diagram,
+    diagramDescription,
     toolSections,
     contextualPalette,
     contextualMenu,
@@ -437,7 +438,7 @@ export const DiagramWebSocketContainer = ({
   }, [dispatch]);
 
   const deleteElements = useCallback(
-    (diagramElements) => {
+    (diagramElements: SModelElement[], deletionPolicy: GQLDeletionPolicy): void => {
       const edgeIds = diagramElements.filter((diagramElement) => diagramElement instanceof SEdge).map((elt) => elt.id);
       const nodeIds = diagramElements.filter((diagramElement) => diagramElement instanceof SNode).map((elt) => elt.id);
 
@@ -447,6 +448,7 @@ export const DiagramWebSocketContainer = ({
         representationId,
         nodeIds,
         edgeIds,
+        deletionPolicy,
       };
       deleteElementsMutation({ variables: { input } });
       resetTools();
@@ -569,7 +571,7 @@ export const DiagramWebSocketContainer = ({
         const { id, label, kind } = selectedElement as any; // (as any) to be removed when the proper type will be available
         newSelection.entries.push({ id, label, kind });
       } else if (selectedElement instanceof SNode || selectedElement instanceof SEdge) {
-        const { id, targetObjectId, targetObjectKind, targetObjectLabel } = selectedElement as any; // (as any) to be removed when the proper type will be available
+        const { id, kind, targetObjectId, targetObjectKind, targetObjectLabel } = selectedElement as any; // (as any) to be removed when the proper type will be available
 
         const semanticSelectionEntry: SelectionEntry = {
           id: targetObjectId,
@@ -577,11 +579,10 @@ export const DiagramWebSocketContainer = ({
           kind: targetObjectKind,
         };
 
-        const type = selectedElement instanceof Node ? 'Node' : 'Edge';
         const graphicalSelectionEntry: SelectionEntry = {
           id,
           label: '',
-          kind: `siriusComponents://graphical?representationType=Diagram&type=${type}`,
+          kind,
         };
 
         newSelection.entries.push(semanticSelectionEntry);
@@ -930,7 +931,8 @@ export const DiagramWebSocketContainer = ({
     }
     let invokeDeleteFromContextualPalette;
     if (deletable) {
-      invokeDeleteFromContextualPalette = () => deleteElements([element]);
+      invokeDeleteFromContextualPalette = (deletionPolicy: GQLDeletionPolicy) =>
+        deleteElements([element], deletionPolicy);
     }
     const invokeToolFromContextualPalette = (tool) => {
       if (tool.__typename === 'CreateEdgeTool') {
@@ -999,6 +1001,7 @@ export const DiagramWebSocketContainer = ({
     contextualPaletteContent = (
       <div className={classes.contextualPalette} style={style}>
         <ContextualPalette
+          diagramDescription={diagramDescription}
           toolSections={toolSections}
           targetElement={element}
           invokeTool={invokeToolFromContextualPalette}

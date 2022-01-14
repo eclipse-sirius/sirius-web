@@ -40,6 +40,8 @@ public final class DeleteFromDiagramInput implements IDiagramInput {
 
     private List<String> edgeIds;
 
+    private DeletionPolicy deletionPolicy;
+
     @Override
     @GraphQLID
     @GraphQLField
@@ -75,9 +77,13 @@ public final class DeleteFromDiagramInput implements IDiagramInput {
         return this.edgeIds;
     }
 
+    public DeletionPolicy getDeletionPolicy() {
+        return this.deletionPolicy;
+    }
+
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, editingContextId: {2}, representationId: {3}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.editingContextId, this.representationId);
+        String pattern = "{0} '{'id: {1}, editingContextId: {2}, representationId: {3}, deletionPolicy: {4}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.editingContextId, this.representationId, this.deletionPolicy);
     }
 }

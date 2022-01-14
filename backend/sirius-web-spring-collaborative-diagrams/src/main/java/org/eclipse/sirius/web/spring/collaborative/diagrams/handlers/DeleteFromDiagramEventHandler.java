@@ -42,6 +42,7 @@ import org.eclipse.sirius.web.spring.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.web.spring.collaborative.diagrams.api.IDiagramQueryService;
 import org.eclipse.sirius.web.spring.collaborative.diagrams.dto.DeleteFromDiagramInput;
 import org.eclipse.sirius.web.spring.collaborative.diagrams.dto.DeleteFromDiagramSuccessPayload;
+import org.eclipse.sirius.web.spring.collaborative.diagrams.dto.DeletionPolicy;
 import org.eclipse.sirius.web.spring.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,6 +60,8 @@ import reactor.core.publisher.Sinks.One;
  */
 @Service
 public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
+
+    public static final String DELETION_POLICY = "deletionPolicy"; //$NON-NLS-1$
 
     private final IObjectService objectService;
 
@@ -115,7 +118,7 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
         for (String edgeId : diagramInput.getEdgeIds()) {
             var optionalElement = this.diagramQueryService.findEdgeById(diagram, edgeId);
             if (optionalElement.isPresent()) {
-                IStatus status = this.invokeDeleteEdgeTool(optionalElement.get(), editingContext, diagramContext);
+                IStatus status = this.invokeDeleteEdgeTool(optionalElement.get(), editingContext, diagramContext, diagramInput.getDeletionPolicy());
                 if (status instanceof Success) {
                     atLeastOneOk = true;
                 } else {
@@ -129,7 +132,7 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
         for (String nodeId : diagramInput.getNodeIds()) {
             var optionalElement = this.diagramQueryService.findNodeById(diagram, nodeId);
             if (optionalElement.isPresent()) {
-                IStatus status = this.invokeDeleteNodeTool(optionalElement.get(), editingContext, diagramContext);
+                IStatus status = this.invokeDeleteNodeTool(optionalElement.get(), editingContext, diagramContext, diagramInput.getDeletionPolicy());
                 if (status instanceof Success) {
                     atLeastOneOk = true;
                 } else {
@@ -168,7 +171,7 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
         changeDescriptionSink.tryEmitNext(changeDescription);
     }
 
-    private IStatus invokeDeleteNodeTool(Node node, IEditingContext editingContext, IDiagramContext diagramContext) {
+    private IStatus invokeDeleteNodeTool(Node node, IEditingContext editingContext, IDiagramContext diagramContext, DeletionPolicy deletionPolicy) {
         IStatus result = new Failure(""); //$NON-NLS-1$
         var optionalNodeDescription = this.findNodeDescription(node, diagramContext.getDiagram(), editingContext);
 
@@ -179,6 +182,8 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
                 variableManager.put(VariableManager.SELF, optionalSelf.get());
                 variableManager.put(IDiagramContext.DIAGRAM_CONTEXT, diagramContext);
                 variableManager.put(Node.SELECTED_NODE, node);
+                variableManager.put(DELETION_POLICY, deletionPolicy);
+
                 NodeDescription nodeDescription = optionalNodeDescription.get();
                 this.logger.debug("Deleted diagram element {}", node.getId()); //$NON-NLS-1$
                 result = nodeDescription.getDeleteHandler().apply(variableManager);
@@ -195,7 +200,7 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
         return result;
     }
 
-    private IStatus invokeDeleteEdgeTool(Edge edge, IEditingContext editingContext, IDiagramContext diagramContext) {
+    private IStatus invokeDeleteEdgeTool(Edge edge, IEditingContext editingContext, IDiagramContext diagramContext, DeletionPolicy deletionPolicy) {
         IStatus result = new Failure(""); //$NON-NLS-1$
         var optionalEdgeDescription = this.findEdgeDescription(edge, diagramContext.getDiagram(), editingContext);
         if (optionalEdgeDescription.isPresent()) {
@@ -204,6 +209,8 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
                 VariableManager variableManager = new VariableManager();
                 variableManager.put(VariableManager.SELF, optionalSelf.get());
                 variableManager.put(IDiagramContext.DIAGRAM_CONTEXT, diagramContext);
+                variableManager.put(DELETION_POLICY, deletionPolicy);
+
                 // @formatter:off
                 this.diagramQueryService.findNodeById(diagramContext.getDiagram(), edge.getSourceId())
                         .flatMap(node -> this.objectService.getObject(editingContext, node.getTargetObjectId()))
@@ -212,6 +219,7 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
                         .flatMap(node -> this.objectService.getObject(editingContext, node.getTargetObjectId()))
                         .ifPresent(semanticElement -> variableManager.put(EdgeDescription.SEMANTIC_EDGE_TARGET, semanticElement));
                 // @formatter:on
+
                 EdgeDescription edgeDescription = optionalEdgeDescription.get();
                 this.logger.debug("Deleted diagram edge {}", edge.getId()); //$NON-NLS-1$
                 result = edgeDescription.getDeleteHandler().apply(variableManager);

@@ -298,3 +298,8 @@ export interface GQLTool {
   label: string;
   imageURL: string;
 }
+
+export enum GQLDeletionPolicy {
+  SEMANTIC = 'SEMANTIC',
+  GRAPHICAL = 'GRAPHICAL',
+}
