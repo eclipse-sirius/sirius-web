@@ -603,7 +603,6 @@ export const DiagramWebSocketContainer = ({
       const selectSprottyAction: SprottySelectAction = {
         kind: 'sprottySelectElement',
         element: selectedElement,
-        position,
       };
       diagramServer.actionDispatcher.dispatch(selectSprottyAction);
     };

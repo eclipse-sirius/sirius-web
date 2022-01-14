@@ -33,7 +33,6 @@ export interface SiriusSelectAction extends Action {
 export interface SprottySelectAction extends Action {
   kind: 'sprottySelectElement';
   element: SModelElement;
-  position: Position;
 }
 
 export interface ZoomToAction extends Action {
