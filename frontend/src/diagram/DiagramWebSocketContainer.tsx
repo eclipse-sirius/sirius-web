@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo and others.
+ * Copyright (c) 2019, 2022 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -719,7 +719,7 @@ export const DiagramWebSocketContainer = ({
 
   useEffect(() => {
     if (selectedObjectId && activeTool && contextualPalette) {
-      invokeTool(activeTool, contextualPalette.element.id, contextualPalette.startingPosition);
+      invokeTool(activeTool, contextualPalette.element.id, contextualPalette.palettePosition);
       const sourceElementAction: SourceElementAction = { kind: SOURCE_ELEMENT_ACTION, sourceElement: null };
       diagramServer.actionDispatcher.dispatch(sourceElementAction);
       const resetSelectedObjectInSelectionDialogEvent: ResetSelectedObjectInSelectionDialogEvent = {
@@ -910,13 +910,13 @@ export const DiagramWebSocketContainer = ({
   if (!readOnly && contextualPalette) {
     const {
       element,
-      startingPosition,
+      palettePosition,
       canvasBounds,
-      edgeStartPosition: origin,
+      edgeStartPosition: edgeStartPosition,
       renameable,
       deletable,
     } = contextualPalette;
-    const { x, y } = origin;
+    const { x, y } = edgeStartPosition;
     const style = {
       left: canvasBounds.x + 'px',
       top: canvasBounds.y + 'px',
@@ -945,7 +945,10 @@ export const DiagramWebSocketContainer = ({
         dispatch(setContextualPaletteEvent);
         edgeCreationFeedback.init(x, y);
 
-        const action: SourceElementAction = { kind: 'sourceElement', sourceElement: { element, position: { x, y } } };
+        const action: SourceElementAction = {
+          kind: 'sourceElement',
+          sourceElement: { element, position: { ...palettePosition } },
+        };
         diagramServer.actionDispatcher.dispatch(action);
       } else if (tool.__typename === 'CreateNodeTool') {
         if (tool.selectionDescriptionId) {
@@ -955,7 +958,7 @@ export const DiagramWebSocketContainer = ({
           };
           dispatch(showSelectionDialogEvent);
         } else {
-          invokeTool(tool, element.id, startingPosition);
+          invokeTool(tool, element.id, palettePosition);
           const sourceElementAction: SourceElementAction = { kind: SOURCE_ELEMENT_ACTION, sourceElement: null };
           diagramServer.actionDispatcher.dispatch(sourceElementAction);
         }
@@ -967,7 +970,7 @@ export const DiagramWebSocketContainer = ({
           contextualPalette: null,
         };
         dispatch(setContextualPaletteEvent);
-        invokeTool(tool, element.id, startingPosition);
+        invokeTool(tool, element.id, palettePosition);
         const sourceElementAction: SourceElementAction = { kind: SOURCE_ELEMENT_ACTION, sourceElement: null };
         diagramServer.actionDispatcher.dispatch(sourceElementAction);
       }
@@ -995,7 +998,10 @@ export const DiagramWebSocketContainer = ({
       dispatch(setActiveConnectorToolsEvent);
       edgeCreationFeedback.init(x, y);
 
-      const action: SourceElementAction = { kind: 'sourceElement', sourceElement: { element, position: { x, y } } };
+      const action: SourceElementAction = {
+        kind: 'sourceElement',
+        sourceElement: { element, position: { ...palettePosition } },
+      };
       diagramServer.actionDispatcher.dispatch(action);
     };
     contextualPaletteContent = (
