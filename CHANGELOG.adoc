@@ -73,6 +73,16 @@ Currently it is not possible to compute different values for width and height.
 - https://github.com/eclipse-sirius/sirius-components/issues/425[#425] [diagram] Fix a layout issue with self-loop edge
 - https://github.com/eclipse-sirius/sirius-components/issues/949[#949] [diagram] Fix the position of the begin/end labels on edges
 
+=== Thanks
+
+In addition to members of the Sirius core team, this release includes contributions from the following authors.
+Many thanks to them!
+
+* https://github.com/RaphaelPageObeo[@RaphaelPageObeo]
+* https://github.com/AxelRICHARD[@AxelRICHARD]
+* https://github.com/Camork[@Camork]
+* https://github.com/ylussaud[@ylussaud]
+
 == v2021.12.0
 
 === Architectural decision records
