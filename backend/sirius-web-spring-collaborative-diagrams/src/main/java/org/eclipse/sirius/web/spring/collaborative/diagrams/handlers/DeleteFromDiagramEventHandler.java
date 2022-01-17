@@ -209,6 +209,7 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
                 VariableManager variableManager = new VariableManager();
                 variableManager.put(VariableManager.SELF, optionalSelf.get());
                 variableManager.put(IDiagramContext.DIAGRAM_CONTEXT, diagramContext);
+                variableManager.put(Edge.SELECTED_EDGE, edge);
                 variableManager.put(DELETION_POLICY, deletionPolicy);
 
                 // @formatter:off
