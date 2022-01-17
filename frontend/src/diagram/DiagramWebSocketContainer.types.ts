@@ -131,7 +131,7 @@ export interface GQLRepresentationDescription {
 export interface GQLDiagramDescription extends GQLRepresentationDescription {
   toolSections: GQLToolSection[];
   nodeDescriptions: GQLNodeDescription[];
-  edgdDescriptions: GQLEdgeDescription[];
+  edgeDescriptions: GQLEdgeDescription[];
 }
 
 export interface GQLNodeDescription {
