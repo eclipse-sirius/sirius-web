@@ -130,7 +130,7 @@ const findEdgeDescription = (
   diagramDescription: GQLDiagramDescription,
   edgeDescriptionId: string
 ): GQLEdgeDescription | null => {
-  return diagramDescription.edgdDescriptions.filter((edgeDescription) => edgeDescription.id === edgeDescriptionId)[0];
+  return diagramDescription.edgeDescriptions.filter((edgeDescription) => edgeDescription.id === edgeDescriptionId)[0];
 };
 
 /**
