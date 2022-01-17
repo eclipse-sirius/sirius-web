@@ -27,6 +27,9 @@ import org.eclipse.sirius.web.annotations.Immutable;
  */
 @Immutable
 public final class Edge {
+
+    public static final String SELECTED_EDGE = "selectedEdge"; //$NON-NLS-1$
+
     private String id;
 
     private String type;
