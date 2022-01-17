@@ -65,6 +65,14 @@ jobs:
           PASSWORD: ${{secrets.GITHUB_TOKEN}}
         run: mvn -U -B -e clean verify -f backend/pom.xml --settings settings.xml
 
+      - name: Store code coverage results
+        uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: jacoco
+          path: backend/sirius-components-test-coverage/target/site/jacoco-aggregate
+          retention-days: 5
+
       - name: Publish the backend
         if: startsWith(github.ref, 'refs/tags/v')
         env:
