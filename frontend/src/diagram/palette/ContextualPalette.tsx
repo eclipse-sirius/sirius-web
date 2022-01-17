@@ -211,7 +211,13 @@ export const ContextualPalette = ({
   );
 
   // Find how many items should be display per line.
-  let itemsPerLine = getNumberOfColumns(contextualToolSections, !!invokeLabelEdit, !!invokeDelete, atLeastOneEdgeTool);
+  let itemsPerLine = getNumberOfColumns(
+    contextualToolSections,
+    !!invokeLabelEdit,
+    !!invokeDelete,
+    isTargetElementSynchronized,
+    atLeastOneEdgeTool
+  );
   const props = { itemsPerLine };
   const classes = useContextualPaletteStyle(props);
 
@@ -296,6 +302,9 @@ export const ContextualPalette = ({
     }
     if (!!invokeDelete) {
       firstlineToolElementToTake--;
+      if (!isTargetElementSynchronized) {
+        firstlineToolElementToTake--;
+      }
     }
     if (!!connectorToolContent) {
       firstlineToolElementToTake--;
@@ -340,6 +349,7 @@ const getNumberOfColumns = (
   toolSections: ToolSectionType[],
   hasDirectEdit: boolean,
   hasDeleteTool: boolean,
+  isTargetElementSynchronized: boolean,
   hasAtLeastOneConnector: boolean
 ): number => {
   let numberOfColumns = toolSections.length + 1;
@@ -349,6 +359,9 @@ const getNumberOfColumns = (
   }
   if (hasDeleteTool) {
     numberOfColumns++;
+    if (!isTargetElementSynchronized) {
+      numberOfColumns++;
+    }
   }
   if (hasAtLeastOneConnector) {
     numberOfColumns++;
