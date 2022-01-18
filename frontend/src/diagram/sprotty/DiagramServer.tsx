@@ -10,11 +10,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { CreateEdgeTool, Palette } from 'diagram/DiagramWebSocketContainer.types';
+import { Bounds, CreateEdgeTool, Menu, Palette } from 'diagram/DiagramWebSocketContainer.types';
 import { convertDiagram } from 'diagram/sprotty/convertDiagram';
 import { SEditableLabel } from 'diagram/sprotty/DependencyInjection';
 import {
   SetActiveConnectorToolsAction,
+  ShowContextualMenuAction,
   SiriusSelectAction,
   SiriusUpdateModelAction,
   SourceElement,
@@ -198,7 +199,7 @@ export class DiagramServer extends ModelSource {
         this.handleHideContextualToolbarAction(action);
         break;
       case SHOW_CONTEXTUAL_MENU_ACTION:
-        this.handleShowContextualMenuAction(action);
+        this.handleShowContextualMenuAction(action as ShowContextualMenuAction);
         break;
       case HIDE_CONTEXTUAL_MENU_ACTION:
         this.handleHideContextualMenuAction(action);
@@ -283,9 +284,14 @@ export class DiagramServer extends ModelSource {
         )
       );
       if (filteredTools.length < 1) {
-        this.actionDispatcher.dispatch({
-          kind: SHOW_CONTEXTUAL_MENU_ACTION,
-        } as any);
+        const showContextualMenuAction: ShowContextualMenuAction = {
+          kind: 'showContextualMenu',
+          element: null,
+          tools: [],
+          startPosition: null,
+          endPosition: null,
+        };
+        this.actionDispatcher.dispatch(showContextualMenuAction);
       } else if (filteredTools.length === 1) {
         this.invokeTool(
           filteredTools[0],
@@ -295,11 +301,14 @@ export class DiagramServer extends ModelSource {
           this.mousePositionTracker.lastPositionOnDiagram
         );
       } else {
-        this.actionDispatcher.dispatch({
-          kind: SHOW_CONTEXTUAL_MENU_ACTION,
+        const showContextualMenuAction: ShowContextualMenuAction = {
+          kind: 'showContextualMenu',
           element,
           tools: filteredTools,
-        } as any);
+          startPosition: this.diagramSource.position,
+          endPosition: this.mousePositionTracker.lastPositionOnDiagram,
+        };
+        this.actionDispatcher.dispatch(showContextualMenuAction);
       }
     } else if (this.activeTool) {
       if (this.activeTool.__typename === 'CreateNodeTool') {
@@ -400,7 +409,7 @@ export class DiagramServer extends ModelSource {
         const { scroll, zoom } = viewport;
         const lastPositionOnDiagram = this.mousePositionTracker.lastPositionOnDiagram;
         if (lastPositionOnDiagram) {
-          const bounds = {
+          const bounds: Bounds = {
             x: (lastPositionOnDiagram.x - scroll.x) * zoom + canvasBounds.x + popupOffset.x,
             y: (lastPositionOnDiagram.y - scroll.y) * zoom + canvasBounds.y + popupOffset.y,
             width: -1,
@@ -448,8 +457,13 @@ export class DiagramServer extends ModelSource {
     };
   }
 
-  handleShowContextualMenuAction(action) {
-    const { element, tools } = action;
+  /**
+   * Use to display a contextual menu when more than one edge tool can apply
+   * @param action
+   */
+  handleShowContextualMenuAction(action: ShowContextualMenuAction) {
+    const { tools, startPosition, endPosition } = action;
+    const element: any = action.element;
     if (element && (element.kind === 'siriusComponents://representation?type=Diagram' || element.parent)) {
       this.actionDispatcher.request(GetViewportAction.create()).then((viewportResult) => {
         const { viewport, canvasBounds } = viewportResult;
@@ -462,11 +476,13 @@ export class DiagramServer extends ModelSource {
             width: -1,
             height: -1,
           };
-          const contextualMenu = {
+          const contextualMenu: Menu = {
             canvasBounds: bounds,
             sourceElement: this.diagramSource.element,
             targetElement: element,
             tools,
+            startPosition,
+            endPosition,
           };
           this.setContextualMenu(contextualMenu);
         }
