@@ -66,6 +66,8 @@ export interface Menu {
   sourceElement: NodeDescription;
   targetElement: NodeDescription;
   tools: Tool[];
+  startPosition: Position | null;
+  endPosition: Position | null;
 }
 
 export interface ToolSection {

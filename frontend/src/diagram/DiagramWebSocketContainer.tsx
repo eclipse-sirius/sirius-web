@@ -1020,14 +1020,14 @@ export const DiagramWebSocketContainer = ({
   }
   let contextualMenuContent;
   if (!readOnly && contextualMenu) {
-    const { sourceElement, targetElement, canvasBounds, tools: edgeTools } = contextualMenu;
+    const { sourceElement, targetElement, canvasBounds, tools: edgeTools, startPosition, endPosition } = contextualMenu;
     const style = {
       left: canvasBounds.x + 'px',
       top: canvasBounds.y + 'px',
     };
-    if (edgeTools && edgeTools.length > 1) {
+    if (edgeTools && edgeTools.length > 1 && !!startPosition && !!endPosition) {
       const invokeToolFromContextualMenu = (tool) => {
-        invokeTool(tool, sourceElement.id, targetElement.id);
+        invokeTool(tool, sourceElement.id, targetElement.id, startPosition, endPosition);
       };
       contextualMenuContent = (
         <div className={classes.contextualMenu} style={style}>
