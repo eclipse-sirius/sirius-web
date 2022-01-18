@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 THALES GLOBAL SERVICES.
+ * Copyright (c) 2021, 2022 THALES GLOBAL SERVICES.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,20 +31,22 @@ public class EdgeRoutingPointsProvider {
 
     public List<Position> getRoutingPoints(EdgeLayoutData edge) {
         List<Position> positions = List.of();
-        Bounds sourceBounds = this.getAbsoluteBounds(edge.getSource());
-        Bounds targetBounds = this.getAbsoluteBounds(edge.getTarget());
-
-        this.supportOldDiagramWithExistingEdge(edge);
-        Position sourceAbsolutePosition = this.toAbsolutePosition(edge.getSourceAnchorRelativePosition(), sourceBounds);
-        Position targetAbsolutePosition = this.toAbsolutePosition(edge.getTargetAnchorRelativePosition(), targetBounds);
-
-        Geometry geometry = new Geometry();
-        Optional<Position> optionalSourceIntersection = geometry.getIntersection(targetAbsolutePosition, sourceAbsolutePosition, sourceBounds);
-        Optional<Position> optionalTargetIntersection = geometry.getIntersection(sourceAbsolutePosition, targetAbsolutePosition, targetBounds);
-        if (optionalSourceIntersection.isPresent() && optionalTargetIntersection.isPresent()) {
-            positions = List.of(optionalSourceIntersection.get(), optionalTargetIntersection.get());
-        } else if (edge.getSource().equals(edge.getTarget())) {
+        if (edge.getSource().equals(edge.getTarget())) {
             positions = this.getRoutingPointsToMyself(edge.getSource().getPosition(), edge.getSource().getSize().getWidth());
+        } else {
+            Bounds sourceBounds = this.getAbsoluteBounds(edge.getSource());
+            Bounds targetBounds = this.getAbsoluteBounds(edge.getTarget());
+
+            this.supportOldDiagramWithExistingEdge(edge);
+            Position sourceAbsolutePosition = this.toAbsolutePosition(edge.getSourceAnchorRelativePosition(), sourceBounds);
+            Position targetAbsolutePosition = this.toAbsolutePosition(edge.getTargetAnchorRelativePosition(), targetBounds);
+
+            Geometry geometry = new Geometry();
+            Optional<Position> optionalSourceIntersection = geometry.getIntersection(targetAbsolutePosition, sourceAbsolutePosition, sourceBounds);
+            Optional<Position> optionalTargetIntersection = geometry.getIntersection(sourceAbsolutePosition, targetAbsolutePosition, targetBounds);
+            if (optionalSourceIntersection.isPresent() && optionalTargetIntersection.isPresent()) {
+                positions = List.of(optionalSourceIntersection.get(), optionalTargetIntersection.get());
+            }
         }
         return positions;
     }
