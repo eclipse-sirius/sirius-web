@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.diagrams.description;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -188,7 +189,14 @@ public final class DiagramDescription implements IRepresentationDescription {
         }
 
         public Builder toolSections(List<ToolSection> toolSections) {
-            this.toolSections = Objects.requireNonNull(toolSections);
+            this.toolSections = new ArrayList<>();
+            this.toolSections.addAll(toolSections);
+            this.toolSections.addAll(toolSections);
+            this.toolSections.addAll(toolSections);
+            this.toolSections.addAll(toolSections);
+            this.toolSections.addAll(toolSections);
+            this.toolSections.addAll(toolSections);
+            this.toolSections.addAll(toolSections);
             return this;
         }
 

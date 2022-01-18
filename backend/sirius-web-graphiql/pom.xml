@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius.web</groupId>
 	<artifactId>sirius-web-graphiql</artifactId>
-	<version>2021.12.12</version>
+	<version>2021.12.13</version>
 	<name>sirius-web-graphiql</name>
 	<description>Sirius Web Graphiql support. This project contribute a GraphQL query tool on the /graphiql/index.html URI.</description>
 
