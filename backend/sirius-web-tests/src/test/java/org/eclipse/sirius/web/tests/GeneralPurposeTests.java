@@ -59,6 +59,8 @@ public class GeneralPurposeTests {
 
     private static final String CHECKSTYLE_HIDDEN_FIELD = "@SuppressWarnings(\"checkstyle:HiddenField\")"; //$NON-NLS-1$
 
+    private static final String CHECKSTYLE_ILLEGAL_CATCH = "@SuppressWarnings(\"checkstyle:IllegalCatch\")"; //$NON-NLS-1$
+
     private static final String BUILDER = "Builder"; //$NON-NLS-1$
 
     private static final String CHECKSTYLE_OFF = "CHECKSTYLE:OFF"; //$NON-NLS-1$
@@ -184,10 +186,14 @@ public class GeneralPurposeTests {
 
     private void testNoSuppressWarnings(int index, String line, Path javaFilePath, List<String> lines) {
         if (line.contains(SUPPRESS_WARNINGS)) {
-            boolean isValidUsage = true;
-            isValidUsage = isValidUsage && line.contains(CHECKSTYLE_HIDDEN_FIELD);
-            isValidUsage = isValidUsage && lines.size() > index;
-            isValidUsage = isValidUsage && lines.get(index + 1).contains(BUILDER);
+            boolean isValidUsage = false;
+            if (line.contains(CHECKSTYLE_HIDDEN_FIELD)) {
+                isValidUsage = true;
+                isValidUsage = isValidUsage && lines.size() > index;
+                isValidUsage = isValidUsage && lines.get(index + 1).contains(BUILDER);
+            } else if (line.contains(CHECKSTYLE_ILLEGAL_CATCH)) {
+                isValidUsage = true;
+            }
 
             if (!isValidUsage) {
                 fail(this.createErrorMessage("@SuppressWarnings", javaFilePath, index)); //$NON-NLS-1$
