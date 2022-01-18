@@ -113,9 +113,9 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
         this.changeDescriptionDisposable = this.setupChangeDescriptionSinkConsumer();
     }
 
+    @SuppressWarnings("checkstyle:IllegalCatch")
     private Disposable setupChangeDescriptionSinkConsumer() {
         Consumer<ChangeDescription> consumer = changeDescription -> {
-
             if (ChangeKind.REPRESENTATION_TO_DELETE.equals(changeDescription.getKind())) {
                 Object representationId = changeDescription.getParameters().get(REPRESENTATION_ID);
                 if (representationId instanceof String) {
@@ -137,10 +137,14 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
 
             RepresentationEventProcessorEntry representationEventProcessorEntry = this.representationEventProcessors.get(changeDescription.getSourceId());
             if (representationEventProcessorEntry != null) {
-                IRepresentationEventProcessor representationEventProcessor = representationEventProcessorEntry.getRepresentationEventProcessor();
-                representationEventProcessor.refresh(changeDescription);
-                IRepresentation representation = representationEventProcessor.getRepresentation();
-                this.applicationEventPublisher.publishEvent(new RepresentationRefreshedEvent(this.editingContext.getId(), representation));
+                try {
+                    IRepresentationEventProcessor representationEventProcessor = representationEventProcessorEntry.getRepresentationEventProcessor();
+                    representationEventProcessor.refresh(changeDescription);
+                    IRepresentation representation = representationEventProcessor.getRepresentation();
+                    this.applicationEventPublisher.publishEvent(new RepresentationRefreshedEvent(this.editingContext.getId(), representation));
+                } catch (Exception exception) {
+                    this.logger.warn(exception.getMessage(), exception);
+                }
             }
             this.refreshOtherRepresentations(changeDescription);
 
