@@ -143,12 +143,8 @@ type Mutation {
   createDocument(input: CreateDocumentInput!): CreateDocumentPayload!
   createRepresentation(input: CreateRepresentationInput!): CreateRepresentationPayload!
   createRootObject(input: CreateRootObjectInput!): CreateRootObjectPayload!
-  deleteDocument(input: DeleteDocumentInput!): DeleteDocumentPayload!
   deleteObject(input: DeleteObjectInput!): DeleteObjectPayload!
-  deleteRepresentation(input: DeleteRepresentationInput!): DeleteRepresentationPayload!
-  renameDocument(input: RenameDocumentInput!): RenameDocumentPayload!
   renameObject(input: RenameObjectInput!): RenameObjectPayload!
-  renameRepresentation(input: RenameRepresentationInput!): RenameRepresentationPayload!
   uploadDocument(input: UploadDocumentInput!): UploadDocumentPayload!
 }
 
@@ -225,17 +221,6 @@ type CreateRootObjectSuccessPayload {
   object: Object!
 }
 
-input DeleteDocumentInput {
-  documentId: ID!
-  id: ID!
-}
-
-union DeleteDocumentPayload = ErrorPayload | DeleteDocumentSuccessPayload
-
-type DeleteDocumentSuccessPayload {
-  id: ID!
-}
-
 input DeleteObjectInput {
   id: ID!
   editingContextId: ID!
@@ -245,30 +230,6 @@ input DeleteObjectInput {
 union DeleteObjectPayload = ErrorPayload | DeleteObjectSuccessPayload
 
 type DeleteObjectSuccessPayload {
-  id: ID!
-}
-
-input DeleteRepresentationInput {
-  id: ID!
-  representationId: ID!
-}
-
-union DeleteRepresentationPayload = ErrorPayload | DeleteRepresentationSuccessPayload
-
-type DeleteRepresentationSuccessPayload {
-  id: ID!
-  representationId: ID!
-}
-
-input RenameDocumentInput {
-  id: ID!
-  documentId: ID!
-  newName: String!
-}
-
-union RenameDocumentPayload = ErrorPayload | RenameDocumentSuccessPayload
-
-type RenameDocumentSuccessPayload {
   id: ID!
 }
 
@@ -285,20 +246,6 @@ type RenameObjectSuccessPayload {
   id: ID!
   newName: String!
   objectId: String!
-}
-
-input RenameRepresentationInput {
-  id: ID!
-  editingContextId: ID!
-  representationId: ID!
-  newLabel: String!
-}
-
-union RenameRepresentationPayload = ErrorPayload | RenameRepresentationSuccessPayload
-
-type RenameRepresentationSuccessPayload {
-  id: ID!
-  representation: Representation!
 }
 
 input UploadDocumentInput {

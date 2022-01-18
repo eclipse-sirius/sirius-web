@@ -7,16 +7,21 @@
 - [ADR-039] Provide a variable to detect the environment
 - [ADR-040] Add support for a post selection
 
+=== Deprecation warning
+- [core] The various DTOs related to the creation and renaming of both documents and representations will be removed from the project at some point. The only reason why we will keep them for the moment is that some of them are used to trigger some specific behavior in the `EditingContextEventProcessor`. The split of the representation metadata should help us remove those special use cases
+
 === Breaking changes
 
 - https://github.com/eclipse-sirius/sirius-components/issues/808[#808] [core] Update the namespace of the projects from `sirius-web-xxx` to `sirius-components-xxx`. The projects `sirius-web-api` and `sirius-web-core-api` have been merged into `sirius-components-core` since there was no difference in scope between both projects and neither of them was strictly limited to an api. Since we have validated that most of our projects can be reused outside of a Spring environment (i.e. an environment where Spring Frameworks is in charge of the ApplicationContext), we have also removed the `-spring-` from most of our project names. We already had Spring dependencies outside of those `-spring-` projects anyway.
 - [core] Switch to the `org.eclipse.sirius` groupId in order to prepare for a future publication of our backend on maven central
 - https://github.com/eclipse-sirius/sirius-components/issues/808[#808] [core] Update the namespace of the packages from `org.eclipse.sirius.web.xxx` to `org.eclipse.sirius.components.xxx`.
 - https://github.com/eclipse-sirius/sirius-components/issues/998[#998] [core] Remove the various annotations used to support a code-first approach to build the GraphQL schema
+- https://github.com/eclipse-sirius/sirius-components/issues/975[#975] [core] Remove useless parts of the GraphQL API which were both unused by the Sirius Components frontend and not handled by the Sirius Components backend
 
 === Bug fixes
 
 - https://github.com/eclipse-sirius/sirius-components/issues/992[#992] [view] Let the `ViewValidator` consider statically contributed `EPackages` when validating domain types
+
 
 == v2022.01.0
 
