@@ -15,7 +15,7 @@
 
 	<groupId>org.eclipse.sirius.web</groupId>
 	<artifactId>sirius-components</artifactId>
-	<version>2021.12.14</version>
+	<version>2021.12.15</version>
 
 	<name>sirius-components</name>
 	<description>Sirius Components</description>
