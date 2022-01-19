@@ -62,6 +62,7 @@ public class WorkspaceImageDescriptionConverter {
         return ImageNodeStyle.newImageNodeStyle()
                 .imageURL(workspacePath.substring(workspacePath.indexOf('/', 1)))
                 .scalingFactor(scalingFactor)
+                .nodeSides(new ImageNodeSidesConverter().getAuthorizedSides(workspaceImageDescription.getForbiddenSides()))
                 .build();
         // @formatter:on
     }
