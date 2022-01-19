@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import org.eclipse.sirius.web.diagrams.NodeType;
 import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.Size;
 import org.eclipse.sirius.web.diagrams.layout.incremental.IncrementalLayoutEngine;
@@ -74,7 +75,7 @@ public class OverlapsUpdater {
         List<NodeLayoutData[]> overlaps = new ArrayList<>();
         for (NodeLayoutData sibling : node.getParent().getChildrenNodes()) {
             // we only consider solvable overlaps
-            if (!sibling.equals(node) && !sibling.isPinned() && !this.fixedNodes.contains(sibling)) {
+            if (this.canOverlap(node, sibling)) {
                 Position siblingPosition = sibling.getPosition();
                 Size siblingSize = sibling.getSize();
                 // @formatter:off
@@ -88,6 +89,10 @@ public class OverlapsUpdater {
             }
         }
         return overlaps;
+    }
+
+    private boolean canOverlap(NodeLayoutData node, NodeLayoutData sibling) {
+        return !sibling.equals(node) && !sibling.isPinned() && !this.fixedNodes.contains(sibling) && !NodeType.NODE_LIST_ITEM.equals(node.getNodeType());
     }
 
     private Position computeNewPosition(NodeLayoutData node1, NodeLayoutData node2) {

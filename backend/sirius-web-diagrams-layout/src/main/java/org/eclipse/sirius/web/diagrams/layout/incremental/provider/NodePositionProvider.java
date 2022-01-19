@@ -17,9 +17,9 @@ import java.util.Optional;
 import org.eclipse.sirius.web.diagrams.NodeType;
 import org.eclipse.sirius.web.diagrams.Position;
 import org.eclipse.sirius.web.diagrams.Size;
-import org.eclipse.sirius.web.diagrams.events.NodeCreationEvent;
 import org.eclipse.sirius.web.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.web.diagrams.events.MoveEvent;
+import org.eclipse.sirius.web.diagrams.events.NodeCreationEvent;
 import org.eclipse.sirius.web.diagrams.events.ResizeEvent;
 import org.eclipse.sirius.web.diagrams.layout.LayoutOptionValues;
 import org.eclipse.sirius.web.diagrams.layout.incremental.IncrementalLayoutEngine;
@@ -55,7 +55,7 @@ public class NodePositionProvider {
         Optional<Position> optionalPosition = this.getSpecificNodePositionFromEvent(optionalDiagramElementEvent, node);
         if (optionalPosition.isPresent() && !NodeType.NODE_LIST_ITEM.equals(node.getNodeType())) {
             position = optionalPosition.get();
-        } else if (!this.isAlreadyPositioned(node) || NodeType.NODE_LIST_ITEM.equals(node.getNodeType())) {
+        } else if (!this.isAlreadyPositioned(node)) {
             Optional<Position> optionalStartingPosition = this.getOptionalStartingPositionFromEvent(optionalDiagramElementEvent);
             if (optionalStartingPosition.isPresent() && this.last == null && !NodeType.NODE_LIST_ITEM.equals(node.getNodeType())) {
                 // The node has been created by a tool and has a fixed position

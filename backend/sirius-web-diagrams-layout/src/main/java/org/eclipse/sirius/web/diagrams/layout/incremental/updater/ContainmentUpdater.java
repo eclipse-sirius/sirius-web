@@ -113,7 +113,8 @@ public class ContainmentUpdater {
     }
 
     private void updateContentPosition(NodeLayoutData nodeLayoutData) {
-        double nextYChildPosition = nodeLayoutData.getLabel().getTextBounds().getSize().getHeight() + LayoutOptionValues.NODE_LIST_ELK_PADDING_TOP + LayoutOptionValues.DEFAULT_ELK_NODE_LABELS_PADDING;
+        double nextYChildPosition = nodeLayoutData.getLabel().getPosition().getY() + nodeLayoutData.getLabel().getTextBounds().getSize().getHeight() + LayoutOptionValues.NODE_LIST_ELK_PADDING_TOP
+                + LayoutOptionValues.DEFAULT_ELK_NODE_LABELS_PADDING;
         for (NodeLayoutData childLayoutData : nodeLayoutData.getChildrenNodes()) {
             double currentYChildPosition = childLayoutData.getPosition().getY();
             if (currentYChildPosition != nextYChildPosition) {
