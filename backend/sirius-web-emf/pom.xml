@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius.web</groupId>
 	<artifactId>sirius-web-emf</artifactId>
-	<version>2021.12.14</version>
+	<version>2021.12.15</version>
 	<name>sirius-web-emf</name>
 	<description>Sirius Web EMF</description>
 
@@ -62,52 +62,52 @@
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-spring-graphql-api</artifactId>
-			<version>2021.12.14</version>
+			<version>2021.12.15</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-spring-collaborative</artifactId>
-			<version>2021.12.14</version>
+			<version>2021.12.15</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-spring-collaborative-diagrams</artifactId>
-			<version>2021.12.14</version>
+			<version>2021.12.15</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-spring-collaborative-forms</artifactId>
-			<version>2021.12.14</version>
+			<version>2021.12.15</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-spring-collaborative-trees</artifactId>
-			<version>2021.12.14</version>
+			<version>2021.12.15</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-spring-collaborative-validation</artifactId>
-			<version>2021.12.14</version>
+			<version>2021.12.15</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-compatibility</artifactId>
-			<version>2021.12.14</version>
+			<version>2021.12.15</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-interpreter</artifactId>
-			<version>2021.12.14</version>
+			<version>2021.12.15</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-domain</artifactId>
-			<version>2021.12.14</version>
+			<version>2021.12.15</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-view</artifactId>
-			<version>2021.12.14</version>
+			<version>2021.12.15</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.emf</groupId>
@@ -156,13 +156,13 @@
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-tests</artifactId>
-			<version>2021.12.14</version>
+			<version>2021.12.15</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius.web</groupId>
 			<artifactId>sirius-web-spring-tests</artifactId>
-			<version>2021.12.14</version>
+			<version>2021.12.15</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
