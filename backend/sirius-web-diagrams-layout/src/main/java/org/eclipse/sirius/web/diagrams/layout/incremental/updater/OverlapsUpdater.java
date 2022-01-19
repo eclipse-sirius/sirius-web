@@ -117,6 +117,9 @@ public class OverlapsUpdater {
 
     private Position translate(Position source, Position target, double distance, Position start) {
         double factor = Math.sqrt(Math.pow(source.getX() - target.getX(), 2.0) + Math.pow(source.getY() - target.getY(), 2.0));
+        if (factor == 0.0d) {
+            factor = 1.0d;
+        }
         double x = start.getX() + (target.getX() - source.getX()) / factor * distance;
         double y = start.getY() + (target.getY() - source.getY()) / factor * distance;
         return Position.newPosition().x(x).y(y).build();
