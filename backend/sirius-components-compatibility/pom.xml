@@ -29,7 +29,6 @@
 	<properties>
 		<java.version>11</java.version>
 		<sirius.version>6.6.0-SNAPSHOT</sirius.version>
-		<eef.version>2.1.5-SNAPSHOT</eef.version>
 	</properties>
 	
 	<distributionManagement>
@@ -45,14 +44,6 @@
 			<id>Eclipse Sirius</id>
 			<name>Sirius Repository - Snapshots</name>
 			<url>https://repo.eclipse.org/content/repositories/sirius-snapshots/</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-		<repository>
-			<id>Eclipse EEF</id>
-			<name>EEF Repository - Snapshots</name>
-			<url>https://repo.eclipse.org/content/repositories/eef-snapshots/</url>
 			<snapshots>
 				<enabled>true</enabled>
 			</snapshots>
@@ -199,16 +190,6 @@
 			 <groupId>org.eclipse.sirius</groupId>
 			<artifactId>org.eclipse.sirius.ext.emf.edit</artifactId>
 			<version>${sirius.version}</version>
-		</dependency>
-		<dependency>
-			 <groupId>org.eclipse.eef</groupId>
-			<artifactId>org.eclipse.eef.core</artifactId>
-			<version>${eef.version}</version>
-		</dependency>
-		<dependency>
-			 <groupId>org.eclipse.eef</groupId>
-			<artifactId>org.eclipse.eef.common</artifactId>
-			<version>${eef.version}</version>
 		</dependency>
 	</dependencies>
 	
