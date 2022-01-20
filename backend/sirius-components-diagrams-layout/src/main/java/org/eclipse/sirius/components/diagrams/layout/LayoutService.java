@@ -49,7 +49,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class LayoutService implements ILayoutService {
 
-    private final ELKDiagramConverter elkDiagramConverter;
+    private final IELKDiagramConverter elkDiagramConverter;
 
     private final LayoutConfiguratorRegistry layoutConfiguratorRegistry;
 
@@ -65,7 +65,7 @@ public class LayoutService implements ILayoutService {
 
     private final Logger logger = LoggerFactory.getLogger(LayoutService.class);
 
-    public LayoutService(ELKDiagramConverter elkDiagramConverter, IncrementalLayoutDiagramConverter incrementalLayoutDiagramConverter, LayoutConfiguratorRegistry layoutConfiguratorRegistry,
+    public LayoutService(IELKDiagramConverter elkDiagramConverter, IncrementalLayoutDiagramConverter incrementalLayoutDiagramConverter, LayoutConfiguratorRegistry layoutConfiguratorRegistry,
             ELKLayoutedDiagramProvider layoutedDiagramProvider, IncrementalLayoutedDiagramProvider incrementalLayoutedDiagramProvider,
             IRepresentationDescriptionSearchService representationDescriptionSearchService, IncrementalLayoutEngine incrementalLayoutEngine) {
         this.elkDiagramConverter = Objects.requireNonNull(elkDiagramConverter);
