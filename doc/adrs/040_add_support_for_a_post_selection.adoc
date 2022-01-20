@@ -1,0 +1,141 @@
+= ADR-040 - Add support for a post selection
+
+== Context
+
+We want to select some objects after the execution of a tool in a diagram.
+We also want to be able to provide support for the `objectsToSelect` expression from Sirius desktop.
+
+== Decision
+
+=== Backend
+
+A handler will be able to provide some elements to select after its execution using the `Success` object.
+A new variable will be added in order to specify that some objects are to be selected after the execution:
+
+```
+public class Success implements IStatus {
+
+    public static final String NEW_SELECTION = "newSelection"
+
+    private final Map<String, Object> parameters;
+
+    private final String changeKind;
+
+    public Success() {
+        this("", new HashMap<>()); //$NON-NLS-1$
+    }
+
+    public Success(String changeKind, Map<String, Object> parameters) {
+        this.changeKind = Objects.requireNonNull(changeKind);
+        this.parameters = Objects.requireNonNull(parameters);
+    }
+
+    public String getChangeKind() {
+        return this.changeKind;
+    }
+
+    public Map<String, Object> getParameters() {
+        return this.parameters;
+    }
+
+}
+```
+
+New objects will be available to provide this new selection:
+
+```
+package org.eclipse.sirius.web.core.api;
+
+public class WorkbenchSelection {
+  private final List<WorkbenchSelection> entries;
+
+  public Selection(List<WorkbenchSelection> entries) {
+    this.entries = Objects.requireNonNull(entries);
+  }
+
+  public List<SelectionEntry> getEntries() {
+    return this.entries;
+  }
+}
+
+```
+
+```
+
+package org.eclipse.sirius.web.core.api;
+
+public class WorkbenchSelectionEntry {
+  private final String id;
+  private final String label;
+  private final String kind;
+
+  //...
+}
+```
+
+Handlers will be able to return a success with some specific new selection using:
+
+```
+return new Success(
+  ChangeKind.SEMANTIC,
+  Map.of(Success.NEW_SELECTION, new WorkbenchSelection(List.of(new SelectionEntry("XXXX", "Label", "siriusComponents://semantic?domain=Flow&type=System")))
+);
+```
+
+or even a representation
+
+```
+return new Success(
+  ChangeKind.SEMANTIC,
+  Map.of(Success.NEW_SELECTION, new WorkbenchSelection(List.of(new SelectionEntry("XXXX", "Label", "siriusComponents://representation?type=Diagram")))
+);
+```
+
+For a regular tool such as a node tool, we will then create the success payload using this new selection:
+
+```
+WorkbenchSelection newSelection = (WorkbenchSelection) success.getParameters().get(Success.NEW_SELECTION);
+new InvokeNodeToolOnDiagramSuccessPayload(diagramInput.getId(), newSelection));
+```
+
+=== GraphQL API
+
+Those new types will also be available in the `core.graphqls` API:
+
+```
+type WorkbenchSelection {
+  entries: [WorkbenchSelectionEntry!]!
+}
+
+type WorkbenchSelectionEntry {
+  id: string!
+  label: string!
+  kind: string!
+}
+```
+
+in the `diagram.graphqls` API we will be able to use those new types in this fashion:
+
+```
+type InvokeNodeToolOnDiagramSuccessPayload {
+  id: ID!
+  newSelection: WorkbenchSelection!
+}
+```
+
+=== Compatibility layer
+
+We will be able to leverage the `objectsToSelect` expression from the odesign to let specifiers define the objects to select after the execution of a tool.
+
+=== Frontend
+
+After the execution of a tool, we will check if there is a new selection and if so we will select it.
+Selecting an entry with the kind starting with `siriusComponents://representation` will allow the frontend to open the representation.
+
+== Status
+
+WIP
+
+== Consequences
+
+This will also offer us the ability to support the navigation model operation in order to "select" and thus open some representations.
