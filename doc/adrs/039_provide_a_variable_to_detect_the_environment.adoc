@@ -1,0 +1,39 @@
+= ADR-039 - Provide a variable to detect the environment
+
+== Context
+
+We need to be able to distinguish the environment in which our representation descriptions are executed.
+This would help us create odesign which works both in the desktop environment and in a web environment.
+
+== Decision
+
+We will add a new variable named `environment` using the newly created type `Environment` in all the variable managers created to execute operations.
+
+```
+package org.eclipse.sirius.web.core.api;
+
+public class Environment {
+
+  public static final String ENVIRONMENT = "environment";
+
+  private final String name;
+
+  public Environment(String name) {
+    this.name = Objects.requireNonNull(name);
+  }
+
+  public String getName() {
+    return this.name;
+  }
+}
+```
+
+It will be provided like other variables: `variableManager.put(Environment.ENVIRONMENT, new Environment("siriusComponents");`
+
+== Status
+
+WIP
+
+== Consequences
+
+Each product should be able one day to configure how the environment is created in order to provide a more precise name.
