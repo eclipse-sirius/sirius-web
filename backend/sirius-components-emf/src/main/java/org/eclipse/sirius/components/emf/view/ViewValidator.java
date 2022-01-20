@@ -58,8 +58,6 @@ public class ViewValidator implements EValidator {
 
     public static final String SIRIUS_COMPONENTS_EMF_PACKAGE = "org.eclipse.sirius.components.emf"; //$NON-NLS-1$
 
-    private static final String DOMAIN_URI_SCHEME = "domain://"; //$NON-NLS-1$
-
     @Override
     public boolean validate(EObject eObject, DiagnosticChain diagnostics, Map<Object, Object> context) {
         return true;
@@ -142,7 +140,7 @@ public class ViewValidator implements EValidator {
         boolean isValid = false;
         ResourceSet resourceSet = diagramDescription.eResource().getResourceSet();
         List<Entity> entities = this.getDomainEntitiesFromResourceSet(resourceSet);
-        List<EPackage> ePackages = this.getDomainEPackagesFromRegistry(resourceSet.getPackageRegistry());
+        List<EPackage> ePackages = this.getEPackagesFromRegistry(resourceSet.getPackageRegistry());
 
         String domainType = Optional.ofNullable(diagramDescription.getDomainType()).orElse(""); //$NON-NLS-1$
         isValid = entities.stream().anyMatch(entity -> this.describesEntity(domainType, entity));
@@ -180,7 +178,7 @@ public class ViewValidator implements EValidator {
         boolean isValid = false;
         ResourceSet resourceSet = diagramElementDescription.eResource().getResourceSet();
         List<Entity> entities = this.getDomainEntitiesFromResourceSet(resourceSet);
-        List<EPackage> ePackages = this.getDomainEPackagesFromRegistry(resourceSet.getPackageRegistry());
+        List<EPackage> ePackages = this.getEPackagesFromRegistry(resourceSet.getPackageRegistry());
 
         String domainType = Optional.ofNullable(diagramElementDescription.getDomainType()).orElse(""); //$NON-NLS-1$
         isValid = entities.stream().anyMatch(entity -> this.describesEntity(domainType, entity));
@@ -218,7 +216,7 @@ public class ViewValidator implements EValidator {
         boolean isValid = false;
         ResourceSet resourceSet = createInstance.eResource().getResourceSet();
         List<Entity> entities = this.getDomainEntitiesFromResourceSet(resourceSet);
-        List<EPackage> ePackages = this.getDomainEPackagesFromRegistry(resourceSet.getPackageRegistry());
+        List<EPackage> ePackages = this.getEPackagesFromRegistry(resourceSet.getPackageRegistry());
 
         String domainType = Optional.ofNullable(createInstance.getTypeName()).orElse(""); //$NON-NLS-1$
         isValid = entities.stream().anyMatch(entity -> this.describesEntity(domainType, entity));
@@ -276,12 +274,11 @@ public class ViewValidator implements EValidator {
         // @formatter:on
     }
 
-    private List<EPackage> getDomainEPackagesFromRegistry(EPackage.Registry ePackageRegistry) {
+    private List<EPackage> getEPackagesFromRegistry(EPackage.Registry ePackageRegistry) {
         List<EPackage> allEPackage = new ArrayList<>();
 
         // @formatter:off
         List<EPackage> ePackages = ePackageRegistry.entrySet().stream()
-                .filter(entry -> entry.getKey().startsWith(DOMAIN_URI_SCHEME))
                 .map(Entry::getValue)
                 .filter(EPackage.class::isInstance)
                 .map(EPackage.class::cast)
