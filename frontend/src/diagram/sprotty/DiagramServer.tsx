@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Bounds, CreateEdgeTool, Menu, Palette } from 'diagram/DiagramWebSocketContainer.types';
+import { Bounds, CreateEdgeTool, GQLDeletionPolicy, Menu, Palette } from 'diagram/DiagramWebSocketContainer.types';
 import { convertDiagram } from 'diagram/sprotty/convertDiagram';
 import { SEditableLabel } from 'diagram/sprotty/DependencyInjection';
 import {
@@ -380,7 +380,7 @@ export class DiagramServer extends ModelSource {
     const { element } = action;
     if (element) {
       const selectedItems = element.index.all().filter((e) => e.selected);
-      this.deleteElements([...selectedItems]);
+      this.deleteElements([...selectedItems], GQLDeletionPolicy.SEMANTIC);
     } else {
       this.logger.log(this, 'Invalid delete action', action);
     }
