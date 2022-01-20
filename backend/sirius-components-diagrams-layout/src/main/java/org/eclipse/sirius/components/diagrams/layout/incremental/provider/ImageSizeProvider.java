@@ -205,8 +205,9 @@ public class ImageSizeProvider {
         Optional<Size> optionalSize = Optional.empty();
         try {
             BufferedImage bufferedImage = ImageIO.read(url);
-
-            optionalSize = Optional.of(Size.of(bufferedImage.getWidth(), bufferedImage.getHeight()));
+            if (bufferedImage != null) {
+                optionalSize = Optional.of(Size.of(bufferedImage.getWidth(), bufferedImage.getHeight()));
+            }
         } catch (IOException exception) {
             this.logger.warn(exception.getMessage(), exception);
         }

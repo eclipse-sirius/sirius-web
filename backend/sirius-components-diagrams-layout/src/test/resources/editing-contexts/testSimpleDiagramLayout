@@ -1,0 +1,26 @@
+{
+  "name": "diag:Root",
+  "children": [
+    {
+      "name": "rect:First Parent",
+      "children": [
+        {
+          "name": "rect:First child",
+          "children": []
+        },
+        {
+          "name": "rect:Second child",
+          "children": []
+        }
+      ]
+    },
+    {
+      "name": "rect:Second Parent",
+      "children": []
+    },
+    {
+      "name": "img:Third Parent",
+      "children": []
+    }
+  ]
+}

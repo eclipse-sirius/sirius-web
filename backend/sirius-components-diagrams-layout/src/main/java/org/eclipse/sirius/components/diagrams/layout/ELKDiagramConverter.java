@@ -56,7 +56,7 @@ import org.springframework.stereotype.Service;
  * @author sbegaudeau
  */
 @Service
-public class ELKDiagramConverter {
+public class ELKDiagramConverter implements IELKDiagramConverter {
 
     public static final IProperty<String> PROPERTY_TYPE = new Property<>("org.eclipse.sirius.components.layout.type"); //$NON-NLS-1$
 
@@ -78,6 +78,7 @@ public class ELKDiagramConverter {
         this.imageNodeStyleSizeProvider = new ImageNodeStyleSizeProvider(this.imageSizeProvider);
     }
 
+    @Override
     public ELKConvertedDiagram convert(Diagram diagram) {
         Diagram initializedDiagram = this.initializeDiagram(diagram);
 
