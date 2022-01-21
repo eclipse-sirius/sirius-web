@@ -19,22 +19,14 @@ import java.text.MessageFormat;
 import java.util.List;
 import java.util.UUID;
 
-import org.eclipse.emf.common.command.BasicCommandStack;
 import org.eclipse.emf.ecore.ENamedElement;
-import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.EcorePackage;
-import org.eclipse.emf.ecore.impl.EPackageRegistryImpl;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.util.EcoreAdapterFactory;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
-import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
-import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.emf.compatibility.EPackageService;
 import org.eclipse.sirius.components.emf.compatibility.modeloperations.ChildModelOperationHandler;
 import org.eclipse.sirius.components.emf.compatibility.modeloperations.CreateInstanceOperationHandler;
 import org.eclipse.sirius.components.emf.services.EditingContext;
+import org.eclipse.sirius.components.emf.services.EditingDomainFactory;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.viewpoint.description.tool.ChangeContext;
@@ -65,17 +57,7 @@ public class CreateInstanceOperationHandlerTests {
     public void initialize() {
         this.operationTestContext = new OperationTestContext();
 
-        ComposedAdapterFactory composedAdapterFactory = new ComposedAdapterFactory();
-        composedAdapterFactory.addAdapterFactory(new EcoreAdapterFactory());
-        composedAdapterFactory.addAdapterFactory(new ReflectiveItemProviderAdapterFactory());
-
-        EPackage.Registry ePackageRegistry = new EPackageRegistryImpl();
-        ePackageRegistry.put(EcorePackage.eINSTANCE.getNsURI(), EcorePackage.eINSTANCE);
-
-        ResourceSet resourceSet = new ResourceSetImpl();
-        resourceSet.setPackageRegistry(ePackageRegistry);
-
-        AdapterFactoryEditingDomain editingDomain = new AdapterFactoryEditingDomain(composedAdapterFactory, new BasicCommandStack(), resourceSet);
+        AdapterFactoryEditingDomain editingDomain = new EditingDomainFactory().create();
         EditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain);
         this.operationTestContext.getVariables().put(IEditingContext.EDITING_CONTEXT, editingContext);
 
