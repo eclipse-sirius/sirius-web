@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,10 +16,6 @@ import java.text.MessageFormat;
 import java.util.Objects;
 import java.util.UUID;
 
-import org.eclipse.sirius.components.annotations.graphql.GraphQLField;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLID;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLNonNull;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLObjectType;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.validation.Validation;
 
@@ -28,9 +24,7 @@ import org.eclipse.sirius.components.validation.Validation;
  *
  * @author gcoutable
  */
-@GraphQLObjectType
 public final class ValidationRefreshedEventPayload implements IPayload {
-
     private final UUID id;
 
     private final Validation validation;
@@ -41,15 +35,10 @@ public final class ValidationRefreshedEventPayload implements IPayload {
     }
 
     @Override
-    @GraphQLID
-    @GraphQLField
-    @GraphQLNonNull
     public UUID getId() {
         return this.id;
     }
 
-    @GraphQLField
-    @GraphQLNonNull
     public Validation getValidation() {
         return this.validation;
     }
@@ -59,5 +48,4 @@ public final class ValidationRefreshedEventPayload implements IPayload {
         String pattern = "{0} '{'id: {1}, form: '{'id: {2}'}''}'"; //$NON-NLS-1$
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.validation.getId());
     }
-
 }

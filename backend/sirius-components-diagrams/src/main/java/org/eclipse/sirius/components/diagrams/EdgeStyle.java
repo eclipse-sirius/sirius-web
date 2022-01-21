@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,9 +16,6 @@ import java.text.MessageFormat;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.Immutable;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLField;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLNonNull;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLObjectType;
 
 /**
  * The style of the edge.
@@ -26,7 +23,6 @@ import org.eclipse.sirius.components.annotations.graphql.GraphQLObjectType;
  * @author sbegaudeau
  */
 @Immutable
-@GraphQLObjectType
 public final class EdgeStyle {
     private int size;
 
@@ -42,32 +38,22 @@ public final class EdgeStyle {
         // Prevent instantiation
     }
 
-    @GraphQLField
-    @GraphQLNonNull
     public int getSize() {
         return this.size;
     }
 
-    @GraphQLField
-    @GraphQLNonNull
     public LineStyle getLineStyle() {
         return this.lineStyle;
     }
 
-    @GraphQLField
-    @GraphQLNonNull
     public ArrowStyle getSourceArrow() {
         return this.sourceArrow;
     }
 
-    @GraphQLField
-    @GraphQLNonNull
     public ArrowStyle getTargetArrow() {
         return this.targetArrow;
     }
 
-    @GraphQLField
-    @GraphQLNonNull
     public String getColor() {
         return this.color;
     }

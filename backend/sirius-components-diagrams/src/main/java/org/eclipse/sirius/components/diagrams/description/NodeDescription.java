@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,10 +21,6 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.annotations.Immutable;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLField;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLID;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLNonNull;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLObjectType;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.representations.IStatus;
@@ -36,7 +32,6 @@ import org.eclipse.sirius.components.representations.VariableManager;
  * @author sbegaudeau
  */
 @Immutable
-@GraphQLObjectType
 public final class NodeDescription {
     private UUID id;
 
@@ -70,9 +65,6 @@ public final class NodeDescription {
         // Prevent instantiation
     }
 
-    @GraphQLID
-    @GraphQLField
-    @GraphQLNonNull
     public UUID getId() {
         return this.id;
     }

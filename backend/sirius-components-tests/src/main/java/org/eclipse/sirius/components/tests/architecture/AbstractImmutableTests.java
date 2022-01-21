@@ -29,7 +29,6 @@ import com.tngtech.archunit.lang.syntax.ArchRuleDefinition;
 import java.text.MessageFormat;
 
 import org.eclipse.sirius.components.annotations.Immutable;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLInputObjectType;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -38,7 +37,6 @@ import org.junit.jupiter.api.Test;
  * @author sbegaudeau
  */
 public abstract class AbstractImmutableTests {
-
     protected abstract String getProjectRootPackage();
 
     protected abstract JavaClasses getClasses();
@@ -66,8 +64,6 @@ public abstract class AbstractImmutableTests {
                 .resideInAPackage(this.getProjectRootPackage())
                 .and()
                 .areAnnotatedWith(Immutable.class)
-                .and()
-                .areNotAnnotatedWith(GraphQLInputObjectType.class)
                 .should()
                 .haveOnlyPrivateConstructors();
         // @formatter:on

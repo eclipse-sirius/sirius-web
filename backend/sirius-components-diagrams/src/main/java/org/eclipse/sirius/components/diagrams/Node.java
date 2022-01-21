@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,10 +19,6 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.annotations.Immutable;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLField;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLID;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLNonNull;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLObjectType;
 
 /**
  * A node.
@@ -31,9 +27,7 @@ import org.eclipse.sirius.components.annotations.graphql.GraphQLObjectType;
  * @author sbegaudeau
  */
 @Immutable
-@GraphQLObjectType
 public final class Node {
-
     public static final String SELECTED_NODE = "selectedNode"; //$NON-NLS-1$
 
     private String id;
@@ -68,40 +62,26 @@ public final class Node {
         // Prevent instantiation
     }
 
-    @GraphQLID
-    @GraphQLField
-    @GraphQLNonNull
     public String getId() {
         return this.id;
     }
 
-    @GraphQLField
-    @GraphQLNonNull
     public String getType() {
         return this.type;
     }
 
-    @GraphQLField
-    @GraphQLNonNull
     public String getTargetObjectId() {
         return this.targetObjectId;
     }
 
-    @GraphQLField
-    @GraphQLNonNull
     public String getTargetObjectKind() {
         return this.targetObjectKind;
     }
 
-    @GraphQLField
-    @GraphQLNonNull
     public String getTargetObjectLabel() {
         return this.targetObjectLabel;
     }
 
-    @GraphQLID
-    @GraphQLField
-    @GraphQLNonNull
     public UUID getDescriptionId() {
         return this.descriptionId;
     }
@@ -110,39 +90,27 @@ public final class Node {
         return this.borderNode;
     }
 
-    @GraphQLField
-    @GraphQLNonNull
     public Label getLabel() {
         return this.label;
     }
 
-    @GraphQLField
-    @GraphQLNonNull
     public INodeStyle getStyle() {
         return this.style;
     }
 
-    @GraphQLField
-    @GraphQLNonNull
     public Position getPosition() {
         return this.position;
     }
 
-    @GraphQLField
-    @GraphQLNonNull
     public Size getSize() {
         return this.size;
     }
 
-    @GraphQLField
-    @GraphQLNonNull
-    public List<@GraphQLNonNull Node> getBorderNodes() {
+    public List<Node> getBorderNodes() {
         return this.borderNodes;
     }
 
-    @GraphQLField
-    @GraphQLNonNull
-    public List<@GraphQLNonNull Node> getChildNodes() {
+    public List<Node> getChildNodes() {
         return this.childNodes;
     }
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,9 +17,6 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.Immutable;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLField;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLNonNull;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLObjectType;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 
 /**
@@ -28,7 +25,6 @@ import org.eclipse.sirius.components.diagrams.description.NodeDescription;
  * @author hmarchadour
  */
 @Immutable
-@GraphQLObjectType
 public final class EdgeCandidate {
 
     private List<NodeDescription> sources;
@@ -39,15 +35,11 @@ public final class EdgeCandidate {
         // Prevent instantiation
     }
 
-    @GraphQLField
-    @GraphQLNonNull
-    public List<@GraphQLNonNull NodeDescription> getSources() {
+    public List<NodeDescription> getSources() {
         return this.sources;
     }
 
-    @GraphQLField
-    @GraphQLNonNull
-    public List<@GraphQLNonNull NodeDescription> getTargets() {
+    public List<NodeDescription> getTargets() {
         return this.targets;
     }
 
@@ -68,7 +60,6 @@ public final class EdgeCandidate {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-
         private List<NodeDescription> sources;
 
         private List<NodeDescription> targets;

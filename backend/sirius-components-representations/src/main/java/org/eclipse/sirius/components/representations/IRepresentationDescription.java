@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,10 +16,6 @@ import java.util.UUID;
 import java.util.function.Predicate;
 
 import org.eclipse.sirius.components.annotations.PublicApi;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLField;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLID;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLInterfaceType;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLNonNull;
 
 /**
  * Common interface for all the representation descriptions.
@@ -27,18 +23,12 @@ import org.eclipse.sirius.components.annotations.graphql.GraphQLNonNull;
  * @author sbegaudeau
  */
 @PublicApi
-@GraphQLInterfaceType(name = "RepresentationDescription")
 public interface IRepresentationDescription {
 
     String CLASS = "class"; //$NON-NLS-1$
 
-    @GraphQLID
-    @GraphQLField
-    @GraphQLNonNull
     UUID getId();
 
-    @GraphQLField
-    @GraphQLNonNull
     String getLabel();
 
     Predicate<VariableManager> getCanCreatePredicate();

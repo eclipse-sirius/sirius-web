@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,9 +17,6 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.Immutable;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLField;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLNonNull;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLObjectType;
 import org.eclipse.sirius.components.forms.validation.Diagnostic;
 
 /**
@@ -28,7 +25,6 @@ import org.eclipse.sirius.components.forms.validation.Diagnostic;
  * @author lfasani
  */
 @Immutable
-@GraphQLObjectType
 public final class Textarea extends AbstractWidget {
     private String label;
 
@@ -38,14 +34,10 @@ public final class Textarea extends AbstractWidget {
         // Prevent instantiation
     }
 
-    @GraphQLField
-    @GraphQLNonNull
     public String getLabel() {
         return this.label;
     }
 
-    @GraphQLField
-    @GraphQLNonNull
     public String getValue() {
         return this.value;
     }

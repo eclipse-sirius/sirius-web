@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,10 +18,6 @@ import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.annotations.Immutable;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLField;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLID;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLNonNull;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLObjectType;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.eclipse.sirius.components.representations.ISemanticRepresentation;
 
@@ -31,7 +27,6 @@ import org.eclipse.sirius.components.representations.ISemanticRepresentation;
  * @author arichard
  */
 @Immutable
-@GraphQLObjectType
 public final class Selection implements IRepresentation, ISemanticRepresentation {
 
     public static final String KIND = IRepresentation.KIND_PREFIX + "?type=Selection"; //$NON-NLS-1$
@@ -55,50 +50,35 @@ public final class Selection implements IRepresentation, ISemanticRepresentation
     }
 
     @Override
-    @GraphQLID
-    @GraphQLField
-    @GraphQLNonNull
     public String getId() {
         return this.id;
     }
 
     @Override
-    @GraphQLID
-    @GraphQLField
-    @GraphQLNonNull
     public UUID getDescriptionId() {
         return this.descriptionId;
     }
 
     @Override
-    @GraphQLField
-    @GraphQLNonNull
     public String getKind() {
         return this.kind;
     }
 
     @Override
-    @GraphQLField
-    @GraphQLNonNull
     public String getLabel() {
         return this.label;
     }
 
     @Override
-    @GraphQLField
-    @GraphQLNonNull
     public String getTargetObjectId() {
         return this.targetObjectId;
     }
 
-    @GraphQLField
     public String getMessage() {
         return this.message;
     }
 
-    @GraphQLField
-    @GraphQLNonNull
-    public List<@GraphQLNonNull SelectionObject> getObjects() {
+    public List<SelectionObject> getObjects() {
         return this.objects;
     }
 

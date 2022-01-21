@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,10 +18,6 @@ import java.util.Objects;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.annotations.Immutable;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLField;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLID;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLNonNull;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLObjectType;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -32,7 +28,6 @@ import org.eclipse.sirius.components.representations.VariableManager;
  * @author arichard
  */
 @Immutable
-@GraphQLObjectType
 public final class DeleteTool implements ITool {
 
     private String id;
@@ -49,14 +44,11 @@ public final class DeleteTool implements ITool {
         // Prevent instantiation
     }
 
-    @GraphQLID
-    @GraphQLNonNull
     @Override
     public String getId() {
         return this.id;
     }
 
-    @GraphQLNonNull
     @Override
     public String getLabel() {
         return this.label;
@@ -67,15 +59,12 @@ public final class DeleteTool implements ITool {
         return this.handler;
     }
 
-    @GraphQLNonNull
     @Override
     public String getImageURL() {
         return this.imageURL;
     }
 
-    @GraphQLField
-    @GraphQLNonNull
-    public List<@GraphQLNonNull NodeDescription> getTargetDescriptions() {
+    public List<NodeDescription> getTargetDescriptions() {
         return this.targetDescriptions;
     }
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,9 +16,6 @@ import java.text.MessageFormat;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.Immutable;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLField;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLNonNull;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLObjectType;
 
 /**
  * The list container item node style.
@@ -26,7 +23,6 @@ import org.eclipse.sirius.components.annotations.graphql.GraphQLObjectType;
  * @author gcoutable
  */
 @Immutable
-@GraphQLObjectType
 public final class ListItemNodeStyle implements INodeStyle {
 
     private String backgroundColor;
@@ -35,8 +31,6 @@ public final class ListItemNodeStyle implements INodeStyle {
         // Prevent instantiation
     }
 
-    @GraphQLNonNull
-    @GraphQLField
     public String getBackgroundColor() {
         return this.backgroundColor;
     }

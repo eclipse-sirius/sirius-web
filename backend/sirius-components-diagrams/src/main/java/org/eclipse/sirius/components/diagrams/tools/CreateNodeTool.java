@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,10 +18,6 @@ import java.util.Objects;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.annotations.Immutable;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLField;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLID;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLNonNull;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLObjectType;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -33,7 +29,6 @@ import org.eclipse.sirius.components.representations.VariableManager;
  * @author hmarchadour
  */
 @Immutable
-@GraphQLObjectType
 public final class CreateNodeTool implements ITool {
 
     public static final String SELECTED_OBJECT = "selectedObject"; //$NON-NLS-1$
@@ -56,42 +51,30 @@ public final class CreateNodeTool implements ITool {
         // Prevent instantiation
     }
 
-    @GraphQLField
-    @GraphQLNonNull
-    public List<@GraphQLNonNull NodeDescription> getTargetDescriptions() {
+    public List<NodeDescription> getTargetDescriptions() {
         return this.targetDescriptions;
     }
 
-    @GraphQLField
-    @GraphQLNonNull
     public boolean isAppliesToDiagramRoot() {
         return this.appliesToDiagramRoot;
     }
 
     @Override
-    @GraphQLID
-    @GraphQLField
-    @GraphQLNonNull
     public String getId() {
         return this.id;
     }
 
     // This field is defined in DiagramTypesProvider to add the server base URL prefix.
     @Override
-    @GraphQLField
-    @GraphQLNonNull
     public String getImageURL() {
         return this.imageURL;
     }
 
     @Override
-    @GraphQLField
-    @GraphQLNonNull
     public String getLabel() {
         return this.label;
     }
 
-    @GraphQLField
     public String getSelectionDescriptionId() {
         return this.selectionDescriptionId;
     }

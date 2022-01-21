@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,10 +20,6 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 import org.eclipse.sirius.components.annotations.Immutable;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLField;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLID;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLNonNull;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLObjectType;
 import org.eclipse.sirius.components.diagrams.tools.ToolSection;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.IStatus;
@@ -35,7 +31,6 @@ import org.eclipse.sirius.components.representations.VariableManager;
  * @author sbegaudeau
  */
 @Immutable
-@GraphQLObjectType
 public final class DiagramDescription implements IRepresentationDescription {
 
     /**
@@ -72,22 +67,15 @@ public final class DiagramDescription implements IRepresentationDescription {
     }
 
     @Override
-    @GraphQLID
-    @GraphQLField
-    @GraphQLNonNull
     public UUID getId() {
         return this.id;
     }
 
     @Override
-    @GraphQLField
-    @GraphQLNonNull
     public String getLabel() {
         return this.label;
     }
 
-    @GraphQLField
-    @GraphQLNonNull
     public boolean isAutoLayout() {
         return this.autoLayout;
     }
