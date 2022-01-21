@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,10 +17,6 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.Immutable;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLField;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLID;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLNonNull;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLObjectType;
 
 /**
  * An item of the tree.
@@ -28,7 +24,7 @@ import org.eclipse.sirius.components.annotations.graphql.GraphQLObjectType;
  * @author sbegaudeau
  */
 @Immutable
-@GraphQLObjectType
+
 public final class TreeItem {
     public static final String SELECTED_TREE_ITEM = "selectedTreeItem"; //$NON-NLS-1$
 
@@ -54,57 +50,38 @@ public final class TreeItem {
         // Prevent instantiation
     }
 
-    @GraphQLID
-    @GraphQLField
-    @GraphQLNonNull
     public String getId() {
         return this.id;
     }
 
-    @GraphQLField
-    @GraphQLNonNull
     public String getKind() {
         return this.kind;
     }
 
-    @GraphQLField
-    @GraphQLNonNull
     public String getLabel() {
         return this.label;
     }
 
-    @GraphQLField
-    @GraphQLNonNull
     public boolean isEditable() {
         return this.editable;
     }
 
-    @GraphQLField
-    @GraphQLNonNull
     public boolean isDeletable() {
         return this.deletable;
     }
 
-    @GraphQLField
-    @GraphQLNonNull
     public String getImageURL() {
         return this.imageURL;
     }
 
-    @GraphQLField
-    @GraphQLNonNull
     public boolean isHasChildren() {
         return this.hasChildren;
     }
 
-    @GraphQLField
-    @GraphQLNonNull
     public boolean isExpanded() {
         return this.expanded;
     }
 
-    @GraphQLField
-    @GraphQLNonNull
     public List<TreeItem> getChildren() {
         return this.children;
     }

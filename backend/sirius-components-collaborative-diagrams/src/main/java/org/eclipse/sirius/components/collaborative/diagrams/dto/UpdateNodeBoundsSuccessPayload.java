@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 THALES GLOBAL SERVICES.
+ * Copyright (c) 2021, 2022 THALES GLOBAL SERVICES.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,10 +16,6 @@ import java.text.MessageFormat;
 import java.util.Objects;
 import java.util.UUID;
 
-import org.eclipse.sirius.components.annotations.graphql.GraphQLField;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLID;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLNonNull;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLObjectType;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.diagrams.Diagram;
 
@@ -28,7 +24,6 @@ import org.eclipse.sirius.components.diagrams.Diagram;
  *
  * @author fbarbin
  */
-@GraphQLObjectType
 public final class UpdateNodeBoundsSuccessPayload implements IPayload {
     private final Diagram diagram;
 
@@ -40,15 +35,10 @@ public final class UpdateNodeBoundsSuccessPayload implements IPayload {
     }
 
     @Override
-    @GraphQLID
-    @GraphQLField
-    @GraphQLNonNull
     public UUID getId() {
         return this.id;
     }
 
-    @GraphQLField
-    @GraphQLNonNull
     public Diagram getDiagram() {
         return this.diagram;
     }

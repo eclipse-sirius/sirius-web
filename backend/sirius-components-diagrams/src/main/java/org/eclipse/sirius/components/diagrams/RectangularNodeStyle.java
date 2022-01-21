@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,9 +16,6 @@ import java.text.MessageFormat;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.Immutable;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLField;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLNonNull;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLObjectType;
 
 /**
  * The rectangular node style.
@@ -26,9 +23,7 @@ import org.eclipse.sirius.components.annotations.graphql.GraphQLObjectType;
  * @author hmarchadour
  */
 @Immutable
-@GraphQLObjectType
 public final class RectangularNodeStyle implements INodeStyle {
-
     private String color;
 
     private String borderColor;
@@ -43,32 +38,22 @@ public final class RectangularNodeStyle implements INodeStyle {
         // Prevent instantiation
     }
 
-    @GraphQLNonNull
-    @GraphQLField
     public String getColor() {
         return this.color;
     }
 
-    @GraphQLNonNull
-    @GraphQLField
     public String getBorderColor() {
         return this.borderColor;
     }
 
-    @GraphQLNonNull
-    @GraphQLField
     public int getBorderSize() {
         return this.borderSize;
     }
 
-    @GraphQLNonNull
-    @GraphQLField
     public int getBorderRadius() {
         return this.borderRadius;
     }
 
-    @GraphQLNonNull
-    @GraphQLField
     public LineStyle getBorderStyle() {
         return this.borderStyle;
     }
@@ -90,7 +75,6 @@ public final class RectangularNodeStyle implements INodeStyle {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-
         private String color;
 
         private String borderColor;
@@ -140,5 +124,4 @@ public final class RectangularNodeStyle implements INodeStyle {
             return nodeStyleDescription;
         }
     }
-
 }

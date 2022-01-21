@@ -17,7 +17,6 @@ import com.tngtech.archunit.core.domain.JavaModifier;
 import com.tngtech.archunit.lang.ArchRule;
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition;
 
-import org.eclipse.sirius.components.annotations.graphql.GraphQLInputObjectType;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.tests.architecture.AbstractCodingRulesTests;
@@ -50,21 +49,6 @@ public class CodingRulesTests extends AbstractCodingRulesTests {
     @Override
     public void noClassesShouldUseApacheCommons() {
         super.noClassesShouldUseApacheCommons();
-    }
-
-    @Test
-    public void classesAnnotatedAsInputShouldBeWellStructured() {
-        // @formatter:off
-        ArchRule rule = ArchRuleDefinition.classes()
-                .that()
-                .areAnnotatedWith(GraphQLInputObjectType.class)
-                .should()
-                .implement(IInput.class)
-                .andShould()
-                .haveSimpleNameEndingWith("Input"); //$NON-NLS-1$
-        // @formatter:on
-
-        rule.check(this.getClasses());
     }
 
     @Test

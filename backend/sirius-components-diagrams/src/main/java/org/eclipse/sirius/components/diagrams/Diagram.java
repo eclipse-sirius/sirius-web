@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,10 +18,6 @@ import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.annotations.Immutable;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLField;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLID;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLNonNull;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLObjectType;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.eclipse.sirius.components.representations.ISemanticRepresentation;
 
@@ -31,9 +27,7 @@ import org.eclipse.sirius.components.representations.ISemanticRepresentation;
  * @author sbegaudeau
  */
 @Immutable
-@GraphQLObjectType
 public final class Diagram implements IRepresentation, ISemanticRepresentation {
-
     public static final String KIND = IRepresentation.KIND_PREFIX + "?type=Diagram"; //$NON-NLS-1$
 
     private String id;
@@ -59,64 +53,43 @@ public final class Diagram implements IRepresentation, ISemanticRepresentation {
     }
 
     @Override
-    @GraphQLID
-    @GraphQLField
-    @GraphQLNonNull
     public String getId() {
         return this.id;
     }
 
     @Override
-    @GraphQLField
-    @GraphQLNonNull
     public String getKind() {
         return this.kind;
     }
 
     @Override
-    @GraphQLID
-    @GraphQLField
-    @GraphQLNonNull
     public String getTargetObjectId() {
         return this.targetObjectId;
     }
 
     @Override
-    @GraphQLID
-    @GraphQLField
-    @GraphQLNonNull
     public UUID getDescriptionId() {
         return this.descriptionId;
     }
 
     @Override
-    @GraphQLField
-    @GraphQLNonNull
     public String getLabel() {
         return this.label;
     }
 
-    @GraphQLField
-    @GraphQLNonNull
     public Position getPosition() {
         return this.position;
     }
 
-    @GraphQLField
-    @GraphQLNonNull
     public Size getSize() {
         return this.size;
     }
 
-    @GraphQLField
-    @GraphQLNonNull
-    public List<@GraphQLNonNull Node> getNodes() {
+    public List<Node> getNodes() {
         return this.nodes;
     }
 
-    @GraphQLField
-    @GraphQLNonNull
-    public List<@GraphQLNonNull Edge> getEdges() {
+    public List<Edge> getEdges() {
         return this.edges;
     }
 

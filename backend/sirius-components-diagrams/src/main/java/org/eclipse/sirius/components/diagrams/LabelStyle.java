@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,9 +15,6 @@ package org.eclipse.sirius.components.diagrams;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.Immutable;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLField;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLNonNull;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLObjectType;
 
 /**
  * A label style.
@@ -25,7 +22,6 @@ import org.eclipse.sirius.components.annotations.graphql.GraphQLObjectType;
  * @author hmarchadour
  */
 @Immutable
-@GraphQLObjectType
 public final class LabelStyle {
 
     private String color;
@@ -46,44 +42,30 @@ public final class LabelStyle {
         // Prevent instantiation
     }
 
-    @GraphQLField
-    @GraphQLNonNull
     public int getFontSize() {
         return this.fontSize;
     }
 
-    @GraphQLField
-    @GraphQLNonNull
     public boolean isBold() {
         return this.bold;
     }
 
-    @GraphQLField
-    @GraphQLNonNull
     public boolean isItalic() {
         return this.italic;
     }
 
-    @GraphQLField
-    @GraphQLNonNull
     public boolean isUnderline() {
         return this.underline;
     }
 
-    @GraphQLField
-    @GraphQLNonNull
     public boolean isStrikeThrough() {
         return this.strikeThrough;
     }
 
-    @GraphQLField
-    @GraphQLNonNull
     public String getColor() {
         return this.color;
     }
 
-    @GraphQLField
-    @GraphQLNonNull
     public String getIconURL() {
         return this.iconURL;
     }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,10 +18,6 @@ import java.util.Objects;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.annotations.Immutable;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLField;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLID;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLNonNull;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLObjectType;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
 
@@ -32,9 +28,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
  * @author hmarchadour
  */
 @Immutable
-@GraphQLObjectType
 public final class CreateEdgeTool implements ITool {
-
     private String id;
 
     private String imageURL;
@@ -49,30 +43,21 @@ public final class CreateEdgeTool implements ITool {
         // Prevent instantiation
     }
 
-    @GraphQLField
-    @GraphQLNonNull
     public List<EdgeCandidate> getEdgeCandidates() {
         return this.edgeCandidates;
     }
 
     @Override
-    @GraphQLID
-    @GraphQLField
-    @GraphQLNonNull
     public String getId() {
         return this.id;
     }
 
     @Override
-    @GraphQLField
-    @GraphQLNonNull
     public String getImageURL() {
         return this.imageURL;
     }
 
     @Override
-    @GraphQLField
-    @GraphQLNonNull
     public String getLabel() {
         return this.label;
     }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,10 +21,6 @@ import java.util.function.Predicate;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.annotations.PublicApi;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLField;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLID;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLNonNull;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLObjectType;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
 
@@ -35,7 +31,6 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 @PublicApi
 @Immutable
-@GraphQLObjectType
 public final class ValidationDescription implements IRepresentationDescription {
     private UUID id;
 
@@ -54,16 +49,11 @@ public final class ValidationDescription implements IRepresentationDescription {
     }
 
     @Override
-    @GraphQLID
-    @GraphQLField
-    @GraphQLNonNull
     public UUID getId() {
         return this.id;
     }
 
     @Override
-    @GraphQLField
-    @GraphQLNonNull
     public String getLabel() {
         return this.label;
     }
@@ -153,7 +143,5 @@ public final class ValidationDescription implements IRepresentationDescription {
             validationDescription.messageProvider = Objects.requireNonNull(this.messageProvider);
             return validationDescription;
         }
-
     }
-
 }

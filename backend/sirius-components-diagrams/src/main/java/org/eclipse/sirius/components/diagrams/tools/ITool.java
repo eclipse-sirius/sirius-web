@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,10 +14,6 @@ package org.eclipse.sirius.components.diagrams.tools;
 
 import java.util.function.Function;
 
-import org.eclipse.sirius.components.annotations.graphql.GraphQLField;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLID;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLInterfaceType;
-import org.eclipse.sirius.components.annotations.graphql.GraphQLNonNull;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
 
@@ -26,21 +22,13 @@ import org.eclipse.sirius.components.representations.VariableManager;
  *
  * @author hmarchadour
  */
-@GraphQLInterfaceType(name = "Tool")
 public interface ITool {
 
-    @GraphQLID
-    @GraphQLField
-    @GraphQLNonNull
     String getId();
 
-    @GraphQLField
-    @GraphQLNonNull
     String getLabel();
 
     Function<VariableManager, IStatus> getHandler();
 
-    @GraphQLField
-    @GraphQLNonNull
     String getImageURL();
 }
