@@ -22,7 +22,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius.web</groupId>
 	<artifactId>sirius-web-spring-graphql</artifactId>
-	<version>2021.12.15</version>
+	<version>2021.12.16</version>
 	<name>sirius-web-spring-graphql</name>
 	<description>Sirius Web Spring GraphQL</description>
 
@@ -64,28 +64,28 @@
     	<dependency>
     		<groupId>org.eclipse.sirius.web</groupId>
     		<artifactId>sirius-web-annotations</artifactId>
-    		<version>2021.12.15</version>
+    		<version>2021.12.16</version>
     	</dependency>
     	<dependency>
     		<groupId>org.eclipse.sirius.web</groupId>
     		<artifactId>sirius-web-graphql-utils</artifactId>
-    		<version>2021.12.15</version>
+    		<version>2021.12.16</version>
     	</dependency>
     	<dependency>
     		<groupId>org.eclipse.sirius.web</groupId>
     		<artifactId>sirius-web-spring-graphql-api</artifactId>
-    		<version>2021.12.15</version>
+    		<version>2021.12.16</version>
     	</dependency>
     	<dependency>
     		<groupId>org.eclipse.sirius.web</groupId>
     		<artifactId>sirius-web-tests</artifactId>
-    		<version>2021.12.15</version>
+    		<version>2021.12.16</version>
     		<scope>test</scope>
     	</dependency>
     	<dependency>
     		<groupId>org.eclipse.sirius.web</groupId>
     		<artifactId>sirius-web-spring-tests</artifactId>
-    		<version>2021.12.15</version>
+    		<version>2021.12.16</version>
     		<scope>test</scope>
     	</dependency>
     	<dependency>
