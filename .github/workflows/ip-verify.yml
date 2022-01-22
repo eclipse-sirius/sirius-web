@@ -1,0 +1,38 @@
+name: Check dependencies IP
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Check dependencies IP
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Java SDK
+        uses: actions/setup-java@v1.4.3
+        with:
+          java-version: 11
+
+      - name: Cache Maven packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+
+      - name: Check frontend dependencies
+        env:
+          USERNAME: ${{github.actor}}
+          PASSWORD: ${{secrets.GITHUB_TOKEN}}
+        run: |
+          wget -O dash-license.jar 'https://repo.eclipse.org/service/local/artifact/maven/redirect?r=dash-licenses&g=org.eclipse.dash&a=org.eclipse.dash.licenses&v=LATEST'
+          java -jar dash-license.jar frontend/package-lock.json
+
+      - name: Check backend dependencies
+        env:
+          USERNAME: ${{github.actor}}
+          PASSWORD: ${{secrets.GITHUB_TOKEN}}
+        run: mvn -U -B -e clean verify -f backend/pom.xml --settings settings.xml -Pverify-iplog
