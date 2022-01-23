@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -50,7 +50,7 @@ public class PageComponent implements IComponent {
             VariableManager pageVariableManager = variableManager.createChild();
             pageVariableManager.put(VariableManager.SELF, semanticElement);
 
-            String id = pageDescription.getIdProvider().apply(variableManager);
+            String id = pageDescription.getIdProvider().apply(pageVariableManager);
             String label = pageDescription.getLabelProvider().apply(pageVariableManager);
 
             // @formatter:off
