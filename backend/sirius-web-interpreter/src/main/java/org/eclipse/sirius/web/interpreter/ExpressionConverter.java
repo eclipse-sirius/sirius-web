@@ -70,6 +70,8 @@ public class ExpressionConverter {
                 featureName = featureName + "()"; //$NON-NLS-1$
             }
             processedExpression = AQL_PREFIX + "self." + featureName; //$NON-NLS-1$
+        } else if (processedExpression.startsWith(SERVICE_PREFIX)) {
+            processedExpression = processedExpression.replace("service:", "aql:self."); //$NON-NLS-1$ //$NON-NLS-2$
         } else if (!processedExpression.startsWith(AQL_PREFIX) && !processedExpression.startsWith(SERVICE_PREFIX)) {
             // true -> aql:'true', let's go -> aql:'let\'s go'
             processedExpression = processedExpression.replace(QUOTE, ESCAPED_QUOTE);
