@@ -1,0 +1,10 @@
+= sirius-components-collaborative-diagrams
+
+== Goal
+
+This project provides support for our diagram collaborative edition layer.
+
+== Dependencies
+
+- sirius-components-collaborative-diagrams-api
+- sirius-components-services-api

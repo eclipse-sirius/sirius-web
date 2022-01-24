@@ -1,0 +1,11 @@
+= sirius-components-tests
+
+== Goal
+
+This project will contain some testing code for our other projects.
+It will allow us to write tests more easily for the code which is not depending on Spring.
+
+== Dependencies
+
+- Junit
+- ArchUnit

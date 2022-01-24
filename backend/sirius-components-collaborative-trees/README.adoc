@@ -1,0 +1,9 @@
+= sirius-components-collaborative-trees
+
+== Goal
+
+This project provides support for our tree collaborative edition layer.
+
+== Dependencies
+
+- sirius-components-tress

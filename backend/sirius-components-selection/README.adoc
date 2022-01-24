@@ -1,0 +1,12 @@
+= sirius-components-selection
+
+== Goal
+
+This project is used to compute selection representations.
+
+== Dependencies
+
+- sirius-components-annotations
+- sirius-components-representations
+
+This project should not depend on anything else without a good reason to do so.

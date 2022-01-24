@@ -1,0 +1,9 @@
+= sirius-components-collaborative
+
+== Goal
+
+This project provides the core parts of our collaborative edition layer.
+
+== Dependencies
+
+This project should never depend on a specific kind of representation.

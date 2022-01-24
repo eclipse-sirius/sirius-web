@@ -1,0 +1,9 @@
+= sirius-components-graphql-api
+
+== Goal
+
+This project is used to provide some constants and API to interact with sirius-components-spring-graphql
+
+== Dependencies
+
+This project should not depend on anything without a good reason to do so.

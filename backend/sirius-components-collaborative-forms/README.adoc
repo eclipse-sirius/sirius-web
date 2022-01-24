@@ -1,0 +1,9 @@
+= sirius-components-collaborative-forms
+
+== Goal
+
+This project provides support for our form collaborative edition layer.
+
+== Dependencies
+
+- sirius-components-forms
