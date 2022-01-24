@@ -49,6 +49,7 @@ public class FormDescriptionAggregator {
 
         List<GroupDescription> groupDescriptions = pageDescriptions.stream()
                 .flatMap(pageDescription -> pageDescription.getGroupDescriptions().stream())
+                .filter(groupDescription -> groupDescription.getCanCreatePredicate().test(pageVariableManager))
                 .collect(Collectors.toUnmodifiableList());
 
 

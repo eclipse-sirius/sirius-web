@@ -12,16 +12,17 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.compat.forms;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.eclipse.sirius.web.compat.api.IIdentifierProvider;
 import org.eclipse.sirius.web.compat.api.IModelOperationHandlerSwitchProvider;
+import org.eclipse.sirius.web.compat.utils.SemanticCandidatesProvider;
 import org.eclipse.sirius.web.compat.utils.StringValueProvider;
 import org.eclipse.sirius.web.core.api.IObjectService;
 import org.eclipse.sirius.web.forms.description.AbstractControlDescription;
@@ -65,10 +66,24 @@ public class GroupDescriptionConverter {
                 .flatMap(controlDescription -> controlDescriptionConverter.convert(controlDescription).stream())
                 .collect(Collectors.toUnmodifiableList());
 
+        String domainClass = Optional.ofNullable(siriusGroupDescription.getDomainClass()).orElse(""); //$NON-NLS-1$
+        String semanticCandidatesExpression = Optional.ofNullable(siriusGroupDescription.getSemanticCandidateExpression()).orElse(""); //$NON-NLS-1$
+        String preconditionExpression = Optional.ofNullable(siriusGroupDescription.getPreconditionExpression()).orElse(""); //$NON-NLS-1$
+        SemanticCandidatesProvider semanticCandidatesProvider = new SemanticCandidatesProvider(this.interpreter, domainClass, semanticCandidatesExpression, preconditionExpression);
+
+        Predicate<VariableManager> canCreatePredicate = (variableManager) -> {
+            Object object = variableManager.getVariables().get(VariableManager.SELF);
+            if (object != null) {
+                return !semanticCandidatesProvider.apply(variableManager).isEmpty();
+            }
+            return false;
+        };
+
         GroupDescription groupDescription = GroupDescription.newGroupDescription(this.identifierProvider.getIdentifier(siriusGroupDescription))
                 .idProvider(idProvider)
                 .labelProvider(labelProvider)
-                .semanticElementsProvider(variableManager -> Collections.singletonList(variableManager.getVariables().get(VariableManager.SELF)))
+                .semanticElementsProvider(semanticCandidatesProvider)
+                .canCreatePredicate(canCreatePredicate)
                 .controlDescriptions(controlDescriptions)
                 .build();
         // @formatter:on
