@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.emf.view;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -25,10 +27,15 @@ import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.sirius.web.api.configuration.IPropertiesDescriptionRegistry;
 import org.eclipse.sirius.web.api.configuration.IPropertiesDescriptionRegistryConfigurer;
 import org.eclipse.sirius.web.core.api.IEditingContext;
+import org.eclipse.sirius.web.domain.Domain;
+import org.eclipse.sirius.web.domain.Entity;
+import org.eclipse.sirius.web.emf.services.EditingContext;
 import org.eclipse.sirius.web.forms.components.SelectComponent;
 import org.eclipse.sirius.web.forms.description.AbstractControlDescription;
 import org.eclipse.sirius.web.forms.description.CheckboxDescription;
@@ -46,6 +53,7 @@ import org.eclipse.sirius.web.representations.VariableManager;
 import org.eclipse.sirius.web.spring.collaborative.validation.api.IValidationService;
 import org.eclipse.sirius.web.view.ConditionalNodeStyle;
 import org.eclipse.sirius.web.view.LabelStyle;
+import org.eclipse.sirius.web.view.NodeDescription;
 import org.eclipse.sirius.web.view.NodeStyle;
 import org.eclipse.sirius.web.view.ViewPackage;
 import org.springframework.stereotype.Component;
@@ -188,6 +196,7 @@ public class ViewPropertiesConfigurer implements IPropertiesDescriptionRegistryC
                                                                                                      .orElse(null);
 
         List<AbstractControlDescription> controls = List.of(
+                this.createDomainTypeSelectionField(),
                 this.createTextField("nodestyle.sizeExpression", "Size Expression", //$NON-NLS-1$ //$NON-NLS-2$
                         style -> ((NodeStyle) style).getSizeComputationExpression(),
                         (style, newSizeExpression) -> ((NodeStyle) style).setSizeComputationExpression(newSizeExpression),
@@ -427,6 +436,92 @@ public class ViewPropertiesConfigurer implements IPropertiesDescriptionRegistryC
             return diagnostic.getMessage();
         }
         return ""; //$NON-NLS-1$
+    }
+
+    private SelectDescription createDomainTypeSelectionField() {
+        // @formatter:off
+        return SelectDescription.newSelectDescription("nodestyle.domainTypeSelector") //$NON-NLS-1$
+                                .idProvider(variableManager -> "nodestyle.domainTypeSelector") //$NON-NLS-1$
+                                .labelProvider(variableManager -> "Domain Type") //$NON-NLS-1$
+                                .diagnosticsProvider(variableManager -> List.of())
+                                .kindProvider(variableManager -> "") //$NON-NLS-1$
+                                .messageProvider(variableManager -> "") //$NON-NLS-1$
+                                .optionsProvider(variableManager -> {
+                                    Optional<EditingContext> optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, EditingContext.class);
+                                    if (optionalEditingContext.isPresent()) {
+                                        return this.getAllCandidates(optionalEditingContext.get()).stream().collect(Collectors.toList());
+                                    } else {
+                                        return List.of();
+                                    }
+                                })
+                                .optionIdProvider(variableManager -> {
+                                    return variableManager.get(SelectComponent.CANDIDATE_VARIABLE, Entity.class).map(this::getCandidateId).orElse(EMPTY);
+                                })
+                                .optionLabelProvider(variableManager -> {
+                                    return variableManager.get(SelectComponent.CANDIDATE_VARIABLE, Entity.class).map(this::getCandidateLabel).orElse(EMPTY);
+                                })
+                                .valueProvider(variableManager -> {
+                                    return this.getCurrentValue(variableManager).map(this::getCandidateId).orElse(EMPTY);
+                                })
+                                .newValueHandler((variableManager, newValue) -> {
+                                    return this.setValue(variableManager, newValue);
+                                })
+                                .build();
+        // @formatter:on
+    }
+
+    private List<Entity> getAllCandidates(EditingContext editingContext) {
+        Collection<Entity> choices = this.findAllEntities(editingContext.getDomain());
+        return choices.stream().collect(Collectors.toList());
+    }
+
+    private String getCandidateLabel(Entity entity) {
+        String prefix = ""; //$NON-NLS-1$
+        if (entity.eContainer() instanceof Domain) {
+            prefix = ((Domain) entity.eContainer()).getName() + "::"; //$NON-NLS-1$
+        }
+        return prefix + entity.getName();
+    }
+
+    private String getCandidateId(Entity entity) {
+        return this.getCandidateLabel(entity);
+    }
+
+    private Optional<Entity> getCurrentValue(VariableManager variableManager) {
+        var optionalNodeStyle = variableManager.get(VariableManager.SELF, NodeStyle.class);
+        if (optionalNodeStyle.isPresent()) {
+            String domainType = ((NodeDescription) optionalNodeStyle.get().eContainer()).getDomainType();
+            EditingContext editingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, EditingContext.class).get();
+            return this.getAllCandidates(editingContext).stream().filter(entity -> Objects.equals(domainType, this.getCandidateId(entity))).findFirst();
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    private IStatus setValue(VariableManager variableManager, String newValueId) {
+        var optionalNodeStyle = variableManager.get(VariableManager.SELF, NodeStyle.class);
+        if (optionalNodeStyle.isPresent()) {
+            ((NodeDescription) optionalNodeStyle.get().eContainer()).setDomainType(newValueId);
+            return new Success();
+        } else {
+            return new Failure(EMPTY);
+        }
+    }
+
+    private Collection<Entity> findAllEntities(EditingDomain editingDomain) {
+        List<Entity> entities = new ArrayList<>();
+        for (Resource resource : editingDomain.getResourceSet().getResources()) {
+            this.addAllEntities(resource, entities);
+        }
+        return entities;
+    }
+
+    private void addAllEntities(Resource resource, Collection<Entity> entities) {
+        resource.getAllContents().forEachRemaining(obj -> {
+            if (obj instanceof Entity) {
+                entities.add((Entity) obj);
+            }
+        });
     }
 
 }
