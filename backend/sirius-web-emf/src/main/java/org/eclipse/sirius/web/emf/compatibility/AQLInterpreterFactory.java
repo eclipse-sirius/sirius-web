@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.emf.compatibility;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -26,6 +27,8 @@ import org.eclipse.sirius.viewpoint.description.Group;
 import org.eclipse.sirius.viewpoint.description.JavaExtension;
 import org.eclipse.sirius.viewpoint.description.Viewpoint;
 import org.eclipse.sirius.web.compat.api.IAQLInterpreterFactory;
+import org.eclipse.sirius.web.compat.forms.EditSupportServices;
+import org.eclipse.sirius.web.compat.forms.FormStandardServices;
 import org.eclipse.sirius.web.interpreter.AQLInterpreter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,12 +70,14 @@ public class AQLInterpreterFactory implements IAQLInterpreterFactory {
         var javaClasses = viewpoints.stream()
                 .map(this::getJavaServices)
                 .flatMap(Collection::stream)
-                .collect(Collectors.toUnmodifiableList());
+                .collect(Collectors.toList());
         // @formatter:on
+        javaClasses.add(FormStandardServices.class);
+        javaClasses.add(EditSupportServices.class);
 
         List<EPackage> ePackages = viewExtensionDescription.getMetamodels();
 
-        return new AQLInterpreter(javaClasses, ePackages);
+        return new AQLInterpreter(Collections.unmodifiableList(javaClasses), ePackages);
     }
 
     private List<Class<?>> getJavaServices(Viewpoint viewpoint) {
