@@ -1,9 +1,0 @@
-= sirius-web-components
-
-== Goal
-
-This project provides a React-like API to build representation renderers.
-
-== Dependencies
-
-None.

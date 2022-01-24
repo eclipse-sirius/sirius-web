@@ -1,0 +1,10 @@
+= sirius-components-graphiql
+
+== Goal
+
+This project contains the static resources used to provide support for GraphiQL.
+This project should not contain anything more than that in the foreseeable future.
+
+== Dependencies
+
+None, it does not even contain Java resources

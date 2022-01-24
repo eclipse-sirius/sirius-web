@@ -1,0 +1,11 @@
+= sirius-components-diagrams
+
+== Goal
+
+This project is used to compute diagrams.
+
+== Dependencies
+
+- sirius-components-representations (interfaces which are implemented)
+
+This project should not depend on anything else without a good reason to do so

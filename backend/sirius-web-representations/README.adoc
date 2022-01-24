@@ -1,9 +1,0 @@
-= sirius-web-representations
-
-== Goal
-
-Common interfaces for all the representations (IRepresentation, IRepresentationDescription, etc).
-
-== Dependencies
-
-None

@@ -1,0 +1,11 @@
+= sirius-components-annotations-spring
+
+== Goal
+
+This project provides some annotations which can be used to decorate our code.
+Contrary to sirius-components-annotations, the annotations inside this project need to depend on some Spring annotations
+
+
+== Dependencies
+
+None.

@@ -1,9 +1,0 @@
-= sirius-web-diagrams-layout-api
-
-== Goal
-
-This project is used to provide some constants and API to interact with sirius-web-diagrams-layout
-
-== Dependencies
-
-This project should not only depend on sirius-web-diagrams
