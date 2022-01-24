@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius.web</groupId>
 	<artifactId>sirius-web-domain</artifactId>
-	<version>2021.12.16</version>
+	<version>2022.01.0</version>
 	<name>sirius-web-domain</name>
 	<description>Sirius Web Domain Definition DSL</description>
 
