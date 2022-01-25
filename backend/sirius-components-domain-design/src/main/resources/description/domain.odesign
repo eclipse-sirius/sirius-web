@@ -186,7 +186,7 @@
         </toolSections>
       </defaultLayer>
     </ownedRepresentations>
-    <ownedJavaExtensions qualifiedClassName="org.eclipse.sirius.web.domain.design.services.DomainServices"/>
+    <ownedJavaExtensions qualifiedClassName="org.eclipse.sirius.components.domain.design.services.DomainServices"/>
   </ownedViewpoints>
   <userColorsPalettes name="Sirius Web">
     <entries xsi:type="description:UserFixedColor" red="251" green="184" blue="0" name="warning/main"/>

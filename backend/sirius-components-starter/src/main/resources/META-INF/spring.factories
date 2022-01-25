@@ -1,1 +1,1 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=org.eclipse.sirius.web.starter.SiriusWebStarterConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=org.eclipse.sirius.components.starter.SiriusWebStarterConfiguration
