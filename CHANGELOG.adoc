@@ -5,6 +5,7 @@
 === Breaking changes
 
 - https://github.com/eclipse-sirius/sirius-components/issues/808[#808] [core] Update the namespace of the projects from `sirius-web-xxx` to `sirius-components-xxx`. The projects `sirius-web-api` and `sirius-web-core-api` have been merged into `sirius-components-core` since there was no difference in scope between both projects and neither of them was strictly limited to an api. Since we have validated that most of our projects can be reused outside of a Spring environment (i.e. an environment where Spring Frameworks is in charge of the ApplicationContext), we have also removed the `-spring-` from most of our project names. We already had Spring dependencies outside of those `-spring-` projects anyway.
+- [core] Switch to the `org.eclipse.sirius` groupId in order to prepare for a future publication of our backend on maven central
 
 == v2022.01.0
 

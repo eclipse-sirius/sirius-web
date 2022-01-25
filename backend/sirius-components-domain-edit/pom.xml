@@ -21,7 +21,7 @@
 		<version>2.6.1</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>org.eclipse.sirius.web</groupId>
+	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-domain-edit</artifactId>
 	<version>2022.01.1</version>
 	<name>sirius-components-domain-edit</name>
@@ -62,7 +62,7 @@
 			<version>2.16.0</version>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse.sirius.web</groupId>
+			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-domain</artifactId>
 			<version>2022.01.1</version>
 		</dependency>

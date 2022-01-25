@@ -20,7 +20,7 @@
 		<version>2.6.1</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>org.eclipse.sirius.web</groupId>
+	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-diagrams-layout-api</artifactId>
 	<version>2022.01.1</version>
 	<name>sirius-components-diagrams-layout-api</name>
@@ -40,12 +40,12 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.eclipse.sirius.web</groupId>
+			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-diagrams</artifactId>
 			<version>2022.01.1</version>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse.sirius.web</groupId>
+			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-core</artifactId>
 			<version>2022.01.1</version>
 		</dependency>
