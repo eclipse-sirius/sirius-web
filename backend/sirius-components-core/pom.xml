@@ -20,7 +20,7 @@
 		<version>2.6.1</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>org.eclipse.sirius.web</groupId>
+	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-core</artifactId>
 	<version>2022.01.1</version>
 	<name>sirius-components-core</name>
@@ -49,17 +49,17 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse.sirius.web</groupId>
+			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-annotations</artifactId>
 			<version>2022.01.1</version>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse.sirius.web</groupId>
+			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-representations</artifactId>
 			<version>2022.01.1</version>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse.sirius.web</groupId>
+			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tests</artifactId>
 			<version>2022.01.1</version>
 			<scope>test</scope>

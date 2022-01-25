@@ -21,7 +21,7 @@
 		<version>2.6.1</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>org.eclipse.sirius.web</groupId>
+	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-collaborative-selection</artifactId>
 	<version>2022.01.1</version>
 	<name>sirius-components-collaborative-selection</name>
@@ -41,7 +41,7 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.eclipse.sirius.web</groupId>
+			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-selection</artifactId>
 			<version>2022.01.1</version>
 		</dependency>
@@ -54,18 +54,18 @@
 			<artifactId>micrometer-core</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse.sirius.web</groupId>
+			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative</artifactId>
 			<version>2022.01.1</version>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse.sirius.web</groupId>
+			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tests</artifactId>
 			<version>2022.01.1</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse.sirius.web</groupId>
+			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-spring-tests</artifactId>
 			<version>2022.01.1</version>
 			<scope>test</scope>

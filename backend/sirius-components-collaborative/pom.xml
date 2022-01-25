@@ -20,7 +20,7 @@
 		<version>2.6.1</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>org.eclipse.sirius.web</groupId>
+	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-collaborative</artifactId>
 	<version>2022.01.1</version>
 	<name>sirius-components-collaborative</name>
@@ -64,23 +64,23 @@
 			<artifactId>javax.annotation-api</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse.sirius.web</groupId>
+			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-core</artifactId>
 			<version>2022.01.1</version>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse.sirius.web</groupId>
+			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-representations</artifactId>
 			<version>2022.01.1</version>
 		</dependency>
 		<dependency>
-    		<groupId>org.eclipse.sirius.web</groupId>
+    		<groupId>org.eclipse.sirius</groupId>
     		<artifactId>sirius-components-tests</artifactId>
     		<version>2022.01.1</version>
     		<scope>test</scope>
     	</dependency>
     	<dependency>
-    		<groupId>org.eclipse.sirius.web</groupId>
+    		<groupId>org.eclipse.sirius</groupId>
     		<artifactId>sirius-components-spring-tests</artifactId>
     		<version>2022.01.1</version>
     		<scope>test</scope>
