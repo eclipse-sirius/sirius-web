@@ -22,7 +22,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius.web</groupId>
 	<artifactId>sirius-components-annotations-spring</artifactId>
-	<version>2022.01.0</version>
+	<version>2022.01.1</version>
 	<name>sirius-components-annotations-spring</name>
 	<description>Sirius Components Annotations Spring</description>
 
