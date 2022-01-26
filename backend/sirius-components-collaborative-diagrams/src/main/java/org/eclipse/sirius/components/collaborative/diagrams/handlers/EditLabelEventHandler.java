@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQuerySer
 import org.eclipse.sirius.components.collaborative.diagrams.dto.EditLabelInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.EditLabelSuccessPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
+import org.eclipse.sirius.components.core.api.Environment;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
@@ -131,6 +132,7 @@ public class EditLabelEventHandler implements IDiagramEventHandler {
                 Object self = optionalSelf.get();
 
                 VariableManager variableManager = new VariableManager();
+                variableManager.put(Environment.ENVIRONMENT, new Environment(Environment.SIRIUS_COMPONENTS));
                 variableManager.put(VariableManager.SELF, self);
                 nodeDescription.getLabelEditHandler().apply(variableManager, newText);
                 this.logger.debug("Edited label of diagram element {} to {}", node.getId(), newText); //$NON-NLS-1$
@@ -148,6 +150,7 @@ public class EditLabelEventHandler implements IDiagramEventHandler {
                 Object self = optionalSelf.get();
 
                 VariableManager variableManager = new VariableManager();
+                variableManager.put(Environment.ENVIRONMENT, new Environment(Environment.SIRIUS_COMPONENTS));
                 variableManager.put(VariableManager.SELF, self);
                 edgeDescription.getLabelEditHandler().apply(variableManager, newText);
                 this.logger.debug("Edited label of diagram element {} to {}", edge.getId(), newText); //$NON-NLS-1$

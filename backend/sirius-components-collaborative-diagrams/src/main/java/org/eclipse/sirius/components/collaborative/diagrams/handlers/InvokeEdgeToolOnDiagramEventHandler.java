@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IToolService;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeEdgeToolOnDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeEdgeToolOnDiagramSuccessPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
+import org.eclipse.sirius.components.core.api.Environment;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
@@ -136,6 +137,7 @@ public class InvokeEdgeToolOnDiagramEventHandler implements IDiagramEventHandler
             VariableManager variableManager = new VariableManager();
             variableManager.put(IDiagramContext.DIAGRAM_CONTEXT, diagramContext);
             variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
+            variableManager.put(Environment.ENVIRONMENT, new Environment(Environment.SIRIUS_COMPONENTS));
             variableManager.put(EdgeDescription.SEMANTIC_EDGE_SOURCE, source.get());
             variableManager.put(EdgeDescription.SEMANTIC_EDGE_TARGET, target.get());
 

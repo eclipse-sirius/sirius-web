@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.DeleteFromDiagra
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DeleteFromDiagramSuccessPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DeletionPolicy;
 import org.eclipse.sirius.components.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
+import org.eclipse.sirius.components.core.api.Environment;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
@@ -183,6 +184,7 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
                 variableManager.put(IDiagramContext.DIAGRAM_CONTEXT, diagramContext);
                 variableManager.put(Node.SELECTED_NODE, node);
                 variableManager.put(DELETION_POLICY, deletionPolicy);
+                variableManager.put(Environment.ENVIRONMENT, new Environment(Environment.SIRIUS_COMPONENTS));
 
                 NodeDescription nodeDescription = optionalNodeDescription.get();
                 this.logger.debug("Deleted diagram element {}", node.getId()); //$NON-NLS-1$
@@ -211,6 +213,7 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
                 variableManager.put(IDiagramContext.DIAGRAM_CONTEXT, diagramContext);
                 variableManager.put(Edge.SELECTED_EDGE, edge);
                 variableManager.put(DELETION_POLICY, deletionPolicy);
+                variableManager.put(Environment.ENVIRONMENT, new Environment(Environment.SIRIUS_COMPONENTS));
 
                 // @formatter:off
                 this.diagramQueryService.findNodeById(diagramContext.getDiagram(), edge.getSourceId())
