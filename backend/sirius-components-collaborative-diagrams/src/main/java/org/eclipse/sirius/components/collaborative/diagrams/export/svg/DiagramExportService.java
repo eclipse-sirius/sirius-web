@@ -37,6 +37,8 @@ public class DiagramExportService implements ISVGDiagramExportService {
 
     private final EdgeExportService edgeExport;
 
+    private final ImageRegistry imageRegistry;
+
     private final List<Double> xBeginPositions = new ArrayList<>();
 
     private final List<Double> yBeginPositions = new ArrayList<>();
@@ -45,9 +47,10 @@ public class DiagramExportService implements ISVGDiagramExportService {
 
     private final List<Double> yEndPositions = new ArrayList<>();
 
-    public DiagramExportService(NodeExportService nodeExport, EdgeExportService edgeExport) {
+    public DiagramExportService(NodeExportService nodeExport, EdgeExportService edgeExport, ImageRegistry imageRegistry) {
         this.nodeExport = Objects.requireNonNull(nodeExport);
         this.edgeExport = Objects.requireNonNull(edgeExport);
+        this.imageRegistry = Objects.requireNonNull(imageRegistry);
     }
 
     @Override
@@ -61,6 +64,8 @@ public class DiagramExportService implements ISVGDiagramExportService {
         diagram.getEdges().forEach(edge -> svg.append(this.edgeExport.export(edge)));
 
         svg.append("</g>"); //$NON-NLS-1$
+
+        svg.append(this.imageRegistry.getReferencedImageSymbols());
 
         return svg.append("</svg>").toString(); //$NON-NLS-1$
     }
