@@ -20,6 +20,7 @@ import java.util.Optional;
 import org.eclipse.sirius.components.compatibility.api.IIdentifierProvider;
 import org.eclipse.sirius.components.compatibility.api.IModelOperationHandler;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IRepresentationMetadataSearchService;
 import org.eclipse.sirius.components.core.api.WorkbenchSelection;
 import org.eclipse.sirius.components.emf.compatibility.api.IExternalJavaActionProvider;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
@@ -41,11 +42,13 @@ public class ChildModelOperationHandler {
         this.externalJavaActionProviders = Objects.requireNonNull(externalJavaActionProviders);
     }
 
-    public IStatus handle(IObjectService objectService, IIdentifierProvider identifierProvider, AQLInterpreter interpreter, Map<String, Object> variables, List<ModelOperation> modelOperations) {
+    public IStatus handle(IObjectService objectService, IRepresentationMetadataSearchService representationMetadataSearchService, IIdentifierProvider identifierProvider, AQLInterpreter interpreter,
+            Map<String, Object> variables, List<ModelOperation> modelOperations) {
         Success success = new Success();
         boolean hasBeenSuccessfullyExecuted = true;
 
-        ModelOperationHandlerSwitch modelOperationHandlerSwitch = new ModelOperationHandlerSwitch(objectService, identifierProvider, this.externalJavaActionProviders, interpreter);
+        ModelOperationHandlerSwitch modelOperationHandlerSwitch = new ModelOperationHandlerSwitch(objectService, representationMetadataSearchService, identifierProvider,
+                this.externalJavaActionProviders, interpreter);
         for (ModelOperation modelOperation : modelOperations) {
             Optional<IModelOperationHandler> optionalModelOperationHandler = modelOperationHandlerSwitch.apply(modelOperation);
 

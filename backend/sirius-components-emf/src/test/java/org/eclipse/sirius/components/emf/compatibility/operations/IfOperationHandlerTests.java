@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo and others.
+ * Copyright (c) 2019, 2022 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -50,8 +50,8 @@ public class IfOperationHandlerTests {
 
         this.ifOperation = ToolFactory.eINSTANCE.createIf();
 
-        this.ifOperationHandler = new IfOperationHandler(this.operationTestContext.getObjectService(), this.operationTestContext.getIdentifierProvider(), this.operationTestContext.getInterpreter(),
-                new ChildModelOperationHandler(List.of()), this.ifOperation);
+        this.ifOperationHandler = new IfOperationHandler(this.operationTestContext.getObjectService(), this.operationTestContext.getRepresentationMetadataSearchService(),
+                this.operationTestContext.getIdentifierProvider(), this.operationTestContext.getInterpreter(), new ChildModelOperationHandler(List.of()), this.ifOperation);
     }
 
     @Test

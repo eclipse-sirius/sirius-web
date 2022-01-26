@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,6 +26,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.compatibility.api.IIdentifierProvider;
 import org.eclipse.sirius.components.compatibility.api.IModelOperationHandler;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IRepresentationMetadataSearchService;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -41,6 +42,8 @@ public class UnsetOperationHandler implements IModelOperationHandler {
 
     private final IObjectService objectService;
 
+    private final IRepresentationMetadataSearchService representationMetadataSearchService;
+
     private final IIdentifierProvider identifierProvider;
 
     private final AQLInterpreter interpreter;
@@ -49,9 +52,10 @@ public class UnsetOperationHandler implements IModelOperationHandler {
 
     private final Unset unsetOperation;
 
-    public UnsetOperationHandler(IObjectService objectService, IIdentifierProvider identifierProvider, AQLInterpreter interpreter, ChildModelOperationHandler childModelOperationHandler,
-            Unset unsetOperation) {
+    public UnsetOperationHandler(IObjectService objectService, IRepresentationMetadataSearchService representationMetadataSearchService, IIdentifierProvider identifierProvider,
+            AQLInterpreter interpreter, ChildModelOperationHandler childModelOperationHandler, Unset unsetOperation) {
         this.objectService = Objects.requireNonNull(objectService);
+        this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
         this.identifierProvider = Objects.requireNonNull(identifierProvider);
         this.interpreter = Objects.requireNonNull(interpreter);
         this.childModelOperationHandler = Objects.requireNonNull(childModelOperationHandler);
@@ -121,7 +125,7 @@ public class UnsetOperationHandler implements IModelOperationHandler {
     private IStatus executeChildrenOperations(Map<String, Object> variables) {
         Map<String, Object> childVariables = new HashMap<>(variables);
         List<ModelOperation> subModelOperations = this.unsetOperation.getSubModelOperations();
-        return this.childModelOperationHandler.handle(this.objectService, this.identifierProvider, this.interpreter, childVariables, subModelOperations);
+        return this.childModelOperationHandler.handle(this.objectService, this.representationMetadataSearchService, this.identifierProvider, this.interpreter, childVariables, subModelOperations);
     }
 
 }

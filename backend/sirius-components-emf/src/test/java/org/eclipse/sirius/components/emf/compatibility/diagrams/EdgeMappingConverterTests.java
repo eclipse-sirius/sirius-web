@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo and others.
+ * Copyright (c) 2019, 2022 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.compatibility.api.ISemanticCandidatesProvid
 import org.eclipse.sirius.components.compatibility.diagrams.EdgeMappingConverter;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IRepresentationMetadataSearchService;
 import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.diagrams.description.LabelDescription;
@@ -71,9 +72,11 @@ public class EdgeMappingConverterTests {
         // @formatter:on
 
         IObjectService objectService = new IObjectService.NoOp();
+        IRepresentationMetadataSearchService representationMetadataSearchService = new IRepresentationMetadataSearchService.NoOp();
         IIdentifierProvider identifierProvider = element -> containerMappingUUID.toString();
         ISemanticCandidatesProviderFactory semanticCandidatesProviderFactory = SemanticCandidatesProvider::new;
-        IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider = interpeter -> new ModelOperationHandlerSwitch(objectService, identifierProvider, List.of(), interpeter);
+        IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider = interpeter -> new ModelOperationHandlerSwitch(objectService, representationMetadataSearchService, identifierProvider,
+                List.of(), interpeter);
         EdgeMappingConverter edgeMappingConverter = new EdgeMappingConverter(new IObjectService.NoOp(), new IEditService.NoOp(), identifierProvider, semanticCandidatesProviderFactory,
                 modelOperationHandlerSwitchProvider);
 
@@ -139,10 +142,12 @@ public class EdgeMappingConverterTests {
         );
         // @formatter:on
         IObjectService objectService = new IObjectService.NoOp();
+        IRepresentationMetadataSearchService representationMetadataSearchService = new IRepresentationMetadataSearchService.NoOp();
         IIdentifierProvider identifierProvider = element -> containerMappingUUID.toString();
         ISemanticCandidatesProviderFactory semanticCandidatesProviderFactory = SemanticCandidatesProvider::new;
 
-        IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider = interpeter -> new ModelOperationHandlerSwitch(objectService, identifierProvider, List.of(), interpeter);
+        IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider = interpeter -> new ModelOperationHandlerSwitch(objectService, representationMetadataSearchService, identifierProvider,
+                List.of(), interpeter);
         EdgeMappingConverter edgeMappingConverter = new EdgeMappingConverter(objectService, new IEditService.NoOp(), identifierProvider, semanticCandidatesProviderFactory,
                 modelOperationHandlerSwitchProvider);
 
@@ -173,9 +178,11 @@ public class EdgeMappingConverterTests {
         );
         // @formatter:on
         IObjectService objectService = new IObjectService.NoOp();
+        IRepresentationMetadataSearchService representationMetadataSearchService = new IRepresentationMetadataSearchService.NoOp();
         IIdentifierProvider identifierProvider = element -> targetContainerMappingUUID.toString();
         ISemanticCandidatesProviderFactory semanticCandidatesProviderFactory = SemanticCandidatesProvider::new;
-        IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider = interpeter -> new ModelOperationHandlerSwitch(objectService, identifierProvider, List.of(), interpeter);
+        IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider = interpeter -> new ModelOperationHandlerSwitch(objectService, representationMetadataSearchService, identifierProvider,
+                List.of(), interpeter);
         EdgeMappingConverter edgeMappingConverter = new EdgeMappingConverter(objectService, new IEditService.NoOp(), identifierProvider, semanticCandidatesProviderFactory,
                 modelOperationHandlerSwitchProvider);
 
