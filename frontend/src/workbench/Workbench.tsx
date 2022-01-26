@@ -20,6 +20,8 @@ import { HORIZONTAL, Panels, SECOND_PANEL } from 'core/panels/Panels';
 import gql from 'graphql-tag';
 import { OnboardArea } from 'onboarding/OnboardArea';
 import React, { useContext, useEffect } from 'react';
+import { DiagramTreeItemContextMenuContribution } from 'tree/DiagramTreeItemContextMenuContribution';
+import { TreeItemType } from 'tree/TreeItem.types';
 import { TreeItemContextMenuContext } from 'tree/TreeItemContextMenu';
 import { TreeItemContextMenuContribution } from 'tree/TreeItemContextMenuContribution';
 import { LeftSite } from 'workbench/LeftSite';
@@ -155,6 +157,13 @@ export const Workbench = ({
       treeItemContextMenuContributions.push(child);
     }
   });
+
+  treeItemContextMenuContributions.push(
+    <TreeItemContextMenuContribution
+      canHandle={(item: TreeItemType) => item.kind === 'siriusComponents://representation?type=Diagram'}
+      component={DiagramTreeItemContextMenuContribution}
+    />
+  );
 
   const leftSite = (
     <TreeItemContextMenuContext.Provider value={treeItemContextMenuContributions}>
