@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,26 +10,31 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.emf.view;
+package org.eclipse.sirius.components.emf.view.diagram;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.elements.NodeElementProps;
 import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderingCache;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
-import org.eclipse.sirius.components.interpreter.Result;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.DiagramElementDescription;
+import org.eclipse.sirius.components.view.EdgeDescription;
 
 /**
- * The target nodes provider.
+ * Finds the target nodes for an edge. A target node is an already existing graphical node which:
+ * <ul>
+ * <li>is an instance of one of the the edge's possible target types;</li>
+ * <li>represents one of the semantic target elements returned by the
+ * {@link EdgeDescription#getTargetNodesExpression()}.</li>
+ * </ul>
+ * The implementation depends on the availability of the {@link DiagramRenderingCache} in the variables.
  *
  * @author pcdavid
  */
@@ -37,12 +42,12 @@ public class TargetNodesProvider implements Function<VariableManager, List<Eleme
 
     private final Function<DiagramElementDescription, UUID> idProvider;
 
-    private final org.eclipse.sirius.components.view.EdgeDescription edgeDescription;
+    private final EdgeDescription edgeDescription;
 
     private final AQLInterpreter interpreter;
 
-    public TargetNodesProvider(Function<DiagramElementDescription, UUID> idProvider, org.eclipse.sirius.components.view.EdgeDescription edgeDescription, AQLInterpreter interpreter) {
-        this.idProvider = idProvider;
+    public TargetNodesProvider(Function<DiagramElementDescription, UUID> idProvider, EdgeDescription edgeDescription, AQLInterpreter interpreter) {
+        this.idProvider = Objects.requireNonNull(idProvider);
         this.edgeDescription = Objects.requireNonNull(edgeDescription);
         this.interpreter = Objects.requireNonNull(interpreter);
     }
@@ -58,17 +63,21 @@ public class TargetNodesProvider implements Function<VariableManager, List<Eleme
         DiagramRenderingCache cache = optionalCache.get();
 
         // @formatter:off
-        Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), this.edgeDescription.getTargetNodesExpression());
-        return result.asObjects().orElse(List.of()).stream()
+        String expression = this.edgeDescription.getTargetNodesExpression();
+        List<Object> semanticCandidates = this.interpreter.evaluateExpression(variableManager.getVariables(), expression).asObjects().orElse(List.of());
+        return semanticCandidates.stream()
                 .flatMap(semanticObject-> cache.getElementsRepresenting(semanticObject).stream())
-                .filter(this.isFromCompatibleTargetMapping())
+                .filter(this::isFromCompatibleTargetMapping)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
         // @formatter:on
     }
 
-    private Predicate<Element> isFromCompatibleTargetMapping() {
-        return nodeElement -> this.edgeDescription.getTargetNodeDescriptions().stream().anyMatch(nodeDescription -> this.isFromDescription(nodeElement, nodeDescription));
+    private boolean isFromCompatibleTargetMapping(Element nodeElement) {
+        // @formatter:off
+        return this.edgeDescription.getTargetNodeDescriptions().stream()
+                   .anyMatch(nodeDescription -> this.isFromDescription(nodeElement, nodeDescription));
+        // @formatter:on
     }
 
     private boolean isFromDescription(Element nodeElement, DiagramElementDescription description) {

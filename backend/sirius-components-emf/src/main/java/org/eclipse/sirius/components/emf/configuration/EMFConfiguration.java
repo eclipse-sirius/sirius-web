@@ -29,7 +29,7 @@ import org.eclipse.sirius.components.emf.domain.DomainValidator;
 import org.eclipse.sirius.components.emf.services.ILabelFeatureProvider;
 import org.eclipse.sirius.components.emf.services.ISuggestedRootObjectTypesProvider;
 import org.eclipse.sirius.components.emf.services.LabelFeatureProviderRegistry;
-import org.eclipse.sirius.components.emf.view.ViewValidator;
+import org.eclipse.sirius.components.emf.view.diagram.DiagramDescriptionValidator;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -72,7 +72,7 @@ public class EMFConfiguration {
     public EValidator.Registry getEValidatorRegistry() {
         Registry eValidatorRegistry = new EValidatorRegistryImpl(EValidator.Registry.INSTANCE);
         eValidatorRegistry.put(DomainPackage.eINSTANCE, new DomainValidator());
-        eValidatorRegistry.put(ViewPackage.eINSTANCE, new ViewValidator());
+        eValidatorRegistry.put(ViewPackage.eINSTANCE, new DiagramDescriptionValidator());
         return eValidatorRegistry;
     }
 }

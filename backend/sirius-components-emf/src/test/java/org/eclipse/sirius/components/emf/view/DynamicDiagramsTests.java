@@ -128,7 +128,7 @@ public class DynamicDiagramsTests {
         View view = ViewFactory.eINSTANCE.createView();
         view.getDescriptions().add(diagramDescription);
 
-        var viewConverter = new ViewConverter(List.of(), new IObjectService.NoOp(), new IEditService.NoOp(), true);
+        var viewConverter = new ViewConverter(new IObjectService.NoOp(), new IEditService.NoOp(), List.of());
         List<IRepresentationDescription> conversionResult = viewConverter.convert(view, List.of(EcorePackage.eINSTANCE));
         assertThat(conversionResult).hasSize(1);
         assertThat(conversionResult.get(0)).isInstanceOf(org.eclipse.sirius.components.diagrams.description.DiagramDescription.class);

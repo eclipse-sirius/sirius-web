@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.emf.view;
+package org.eclipse.sirius.components.emf.view.diagram;
 
 import java.util.Optional;
 
@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.diagrams.ListNodeStyle;
 import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
+import org.eclipse.sirius.components.emf.view.ViewConverter;
 import org.eclipse.sirius.components.view.NodeStyle;
 
 /**

@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.emf.view;
+package org.eclipse.sirius.components.emf.view.diagram;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -44,11 +44,11 @@ import org.eclipse.sirius.components.view.NodeStyle;
 import org.eclipse.sirius.components.view.ViewPackage;
 
 /**
- * The validator for View.
+ * The validator for {@link DiagramDescription}.
  *
  * @author gcoutable
  */
-public class ViewValidator implements EValidator {
+public class DiagramDescriptionValidator implements EValidator {
 
     public static final String DIAGRAM_DESCRIPTION_INVALID_DOMAIN_TYPE_ERROR_MESSAGE = "The diagram description \"%1$s\" does not have a valid domain class"; //$NON-NLS-1$
 

@@ -30,7 +30,7 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.eclipse.sirius.components.domain.Domain;
 import org.eclipse.sirius.components.domain.DomainFactory;
 import org.eclipse.sirius.components.domain.Entity;
-import org.eclipse.sirius.components.emf.view.ViewValidator;
+import org.eclipse.sirius.components.emf.view.diagram.DiagramDescriptionValidator;
 import org.eclipse.sirius.components.view.ConditionalNodeStyle;
 import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.NodeStyle;
@@ -39,7 +39,7 @@ import org.eclipse.sirius.components.view.ViewPackage;
 import org.junit.jupiter.api.Test;
 
 /**
- * Unit tests for the {@link ViewValidator}.
+ * Unit tests for the {@link DiagramDescriptionValidator}.
  *
  * @author gcoutable
  */
@@ -57,7 +57,7 @@ public class ViewValidatorTests {
         NodeStyle nodeStyle = ViewFactory.eINSTANCE.createNodeStyle();
 
         BasicDiagnostic diagnosticChain = new BasicDiagnostic(Diagnostic.OK, null, 0, null, null);
-        boolean validationResult = new ViewValidator().validate(nodeStyle.eClass(), nodeStyle, diagnosticChain, defaultContext);
+        boolean validationResult = new DiagramDescriptionValidator().validate(nodeStyle.eClass(), nodeStyle, diagnosticChain, defaultContext);
         assertThat(validationResult).isTrue();
 
         assertThat(diagnosticChain).isEqualTo(new BasicDiagnostic(Diagnostic.OK, null, 0, null, null));
@@ -69,7 +69,7 @@ public class ViewValidatorTests {
         NodeStyle conditionalNodeStyle = ViewFactory.eINSTANCE.createConditionalNodeStyle();
 
         BasicDiagnostic diagnosticChain = new BasicDiagnostic(Diagnostic.OK, null, 0, null, null);
-        boolean validationResult = new ViewValidator().validate(conditionalNodeStyle.eClass(), conditionalNodeStyle, diagnosticChain, defaultContext);
+        boolean validationResult = new DiagramDescriptionValidator().validate(conditionalNodeStyle.eClass(), conditionalNodeStyle, diagnosticChain, defaultContext);
         assertThat(validationResult).isTrue();
 
         assertThat(diagnosticChain).isEqualTo(new BasicDiagnostic(Diagnostic.OK, null, 0, null, null));
@@ -96,7 +96,7 @@ public class ViewValidatorTests {
         // @formatter:on
 
         BasicDiagnostic diagnosticChain = new BasicDiagnostic(Diagnostic.OK, null, 0, null, null);
-        boolean validationResult = new ViewValidator().validate(conditionalNodeStyle.eClass(), conditionalNodeStyle, diagnosticChain, defaultContext);
+        boolean validationResult = new DiagramDescriptionValidator().validate(conditionalNodeStyle.eClass(), conditionalNodeStyle, diagnosticChain, defaultContext);
         assertThat(validationResult).isFalse();
         assertThat(diagnosticChain).isEqualTo(expected);
     }
@@ -121,7 +121,7 @@ public class ViewValidatorTests {
         // @formatter:on
 
         BasicDiagnostic diagnosticChain = new BasicDiagnostic(Diagnostic.OK, null, 0, null, null);
-        boolean validationResult = new ViewValidator().validate(conditionalNodeStyle.eClass(), conditionalNodeStyle, diagnosticChain, defaultContext);
+        boolean validationResult = new DiagramDescriptionValidator().validate(conditionalNodeStyle.eClass(), conditionalNodeStyle, diagnosticChain, defaultContext);
         assertThat(validationResult).isFalse();
         assertThat(diagnosticChain).isEqualTo(expected);
     }
@@ -141,7 +141,7 @@ public class ViewValidatorTests {
         expected.add(new BasicDiagnostic(Diagnostic.ERROR,
                 SIRIUS_COMPONENTS_EMF_PACKAGE,
                 0,
-                String.format(ViewValidator.DIAGRAM_ELEMENT_DESCRIPTION_INVALID_DOMAIN_TYPE_ERROR_MESSAGE, Optional.ofNullable(nodeDescription.getDomainType()).orElse("")), //$NON-NLS-1$
+                String.format(DiagramDescriptionValidator.DIAGRAM_ELEMENT_DESCRIPTION_INVALID_DOMAIN_TYPE_ERROR_MESSAGE, Optional.ofNullable(nodeDescription.getDomainType()).orElse("")), //$NON-NLS-1$
                 new Object [] {
                         nodeDescription,
                         ViewPackage.Literals.DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE,
@@ -151,7 +151,7 @@ public class ViewValidatorTests {
         // @formatter:on
 
         BasicDiagnostic diagnosticChain = new BasicDiagnostic(Diagnostic.OK, null, 0, null, null);
-        boolean validationResult = new ViewValidator().validate(nodeDescription.eClass(), nodeDescription, diagnosticChain, defaultContext);
+        boolean validationResult = new DiagramDescriptionValidator().validate(nodeDescription.eClass(), nodeDescription, diagnosticChain, defaultContext);
         assertThat(validationResult).isFalse();
         assertThat(diagnosticChain).isEqualTo(expected);
     }
@@ -177,7 +177,7 @@ public class ViewValidatorTests {
         resourceSet.getResources().add(domainResource);
 
         BasicDiagnostic diagnosticChain = new BasicDiagnostic(Diagnostic.OK, null, 0, null, null);
-        boolean validationResult = new ViewValidator().validate(nodeDescription.eClass(), nodeDescription, diagnosticChain, defaultContext);
+        boolean validationResult = new DiagramDescriptionValidator().validate(nodeDescription.eClass(), nodeDescription, diagnosticChain, defaultContext);
         assertThat(validationResult).isTrue();
         assertThat(diagnosticChain).isEqualTo(new BasicDiagnostic(Diagnostic.OK, null, 0, null, null));
     }
@@ -203,7 +203,7 @@ public class ViewValidatorTests {
         resourceSet.getResources().add(domainResource);
 
         BasicDiagnostic diagnosticChain = new BasicDiagnostic(Diagnostic.OK, null, 0, null, null);
-        boolean validationResult = new ViewValidator().validate(nodeDescription.eClass(), nodeDescription, diagnosticChain, defaultContext);
+        boolean validationResult = new DiagramDescriptionValidator().validate(nodeDescription.eClass(), nodeDescription, diagnosticChain, defaultContext);
         assertThat(validationResult).isTrue();
         assertThat(diagnosticChain).isEqualTo(new BasicDiagnostic(Diagnostic.OK, null, 0, null, null));
     }
@@ -232,7 +232,7 @@ public class ViewValidatorTests {
         resourceSet.setPackageRegistry(packageRegistryImpl);
 
         BasicDiagnostic diagnosticChain = new BasicDiagnostic(Diagnostic.OK, null, 0, null, null);
-        boolean validationResult = new ViewValidator().validate(nodeDescription.eClass(), nodeDescription, diagnosticChain, defaultContext);
+        boolean validationResult = new DiagramDescriptionValidator().validate(nodeDescription.eClass(), nodeDescription, diagnosticChain, defaultContext);
         assertThat(validationResult).isTrue();
 
         assertThat(diagnosticChain).isEqualTo(new BasicDiagnostic(Diagnostic.OK, null, 0, null, null));
@@ -262,7 +262,7 @@ public class ViewValidatorTests {
         resourceSet.setPackageRegistry(packageRegistryImpl);
 
         BasicDiagnostic diagnosticChain = new BasicDiagnostic(Diagnostic.OK, null, 0, null, null);
-        boolean validationResult = new ViewValidator().validate(nodeDescription.eClass(), nodeDescription, diagnosticChain, defaultContext);
+        boolean validationResult = new DiagramDescriptionValidator().validate(nodeDescription.eClass(), nodeDescription, diagnosticChain, defaultContext);
         assertThat(validationResult).isTrue();
 
         assertThat(diagnosticChain).isEqualTo(new BasicDiagnostic(Diagnostic.OK, null, 0, null, null));
