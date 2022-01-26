@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.emf.view;
+package org.eclipse.sirius.components.emf.view.diagram;
 
 import java.util.Comparator;
 import java.util.List;
@@ -30,6 +30,8 @@ import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertie
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistryConfigurer;
 import org.eclipse.sirius.components.collaborative.validation.api.IValidationService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.emf.view.CustomImage;
+import org.eclipse.sirius.components.emf.view.ICustomImageSearchService;
 import org.eclipse.sirius.components.forms.components.SelectComponent;
 import org.eclipse.sirius.components.forms.description.AbstractControlDescription;
 import org.eclipse.sirius.components.forms.description.CheckboxDescription;
@@ -56,7 +58,7 @@ import org.springframework.stereotype.Component;
  * @author pcdavid
  */
 @Component
-public class ViewPropertiesConfigurer implements IPropertiesDescriptionRegistryConfigurer {
+public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegistryConfigurer {
 
     private static final String EMPTY = ""; //$NON-NLS-1$
 
@@ -68,7 +70,7 @@ public class ViewPropertiesConfigurer implements IPropertiesDescriptionRegistryC
 
     private final IValidationService validationService;
 
-    public ViewPropertiesConfigurer(ICustomImageSearchService customImageSearchService, IValidationService validationService) {
+    public NodeStylePropertiesConfigurer(ICustomImageSearchService customImageSearchService, IValidationService validationService) {
         this.validationService = Objects.requireNonNull(validationService);
         this.customImageSearchService = Objects.requireNonNull(customImageSearchService);
     }

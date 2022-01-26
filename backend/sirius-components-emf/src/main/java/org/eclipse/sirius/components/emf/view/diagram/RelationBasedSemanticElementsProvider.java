@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.emf.view;
+package org.eclipse.sirius.components.emf.view.diagram;
 
 import java.util.ArrayList;
 import java.util.List;
