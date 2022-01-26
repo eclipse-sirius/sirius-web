@@ -12,7 +12,9 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.diagrams.export.svg;
 
+import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
@@ -30,6 +32,12 @@ import org.springframework.stereotype.Service;
 @Service
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 public class DiagramElementExportService {
+    private final ImageRegistry imageRegistry;
+
+    public DiagramElementExportService(ImageRegistry imageRegistry) {
+        this.imageRegistry = Objects.requireNonNull(imageRegistry);
+    }
+
     public StringBuilder exportLabel(Label label) {
         StringBuilder labelExport = new StringBuilder();
         Position position = label.getPosition();
@@ -53,14 +61,16 @@ public class DiagramElementExportService {
 
     public StringBuilder exportImageElement(String imageURL, int x, int y, Optional<Size> size) {
         StringBuilder imageExport = new StringBuilder();
-
-        imageExport.append("<image "); //$NON-NLS-1$
-        imageExport.append("href=\"" + imageURL + "\" "); //$NON-NLS-1$ //$NON-NLS-2$
-        imageExport.append("x=\"0\" "); //$NON-NLS-1$
-        imageExport.append("y=\"0\" "); //$NON-NLS-1$
-        size.ifPresent(it -> imageExport.append(this.addSizeParam(it)));
-
-        return imageExport.append("/>"); //$NON-NLS-1$
+        UUID symbolId = this.imageRegistry.registerImage(imageURL);
+        if (symbolId != null) {
+            imageExport.append("<use "); //$NON-NLS-1$
+            imageExport.append("xlink:href=\"#" + symbolId + "\" "); //$NON-NLS-1$ //$NON-NLS-2$
+            imageExport.append("x=\"0\" "); //$NON-NLS-1$
+            imageExport.append("y=\"0\" "); //$NON-NLS-1$
+            size.ifPresent(it -> imageExport.append(this.addSizeParam(it)));
+            imageExport.append("/>"); //$NON-NLS-1$
+        }
+        return imageExport;
     }
 
     /**
