@@ -260,4 +260,13 @@ type UploadDocumentSuccessPayload {
   id: ID!
 }
 
+type WorkbenchSelection {
+  entries: [WorkbenchSelectionEntry!]!
+}
+
+type WorkbenchSelectionEntry {
+  id: String!
+  label: String!
+  kind: String!
+}
 

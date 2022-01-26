@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo and others.
+ * Copyright (c) 2019, 2022 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -272,8 +272,12 @@ export const invokeNodeToolOnDiagramMutation = gql`
     invokeNodeToolOnDiagram(input: $input) {
       __typename
       ... on InvokeNodeToolOnDiagramSuccessPayload {
-        diagram {
-          id
+        newSelection {
+          entries {
+            id
+            label
+            kind
+          }
         }
       }
       ... on ErrorPayload {
@@ -288,8 +292,12 @@ export const invokeEdgeToolOnDiagramMutation = gql`
     invokeEdgeToolOnDiagram(input: $input) {
       __typename
       ... on InvokeEdgeToolOnDiagramSuccessPayload {
-        diagram {
-          id
+        newSelection {
+          entries {
+            id
+            label
+            kind
+          }
         }
       }
       ... on ErrorPayload {

@@ -29,6 +29,16 @@ import {
   GQLErrorPayload,
   GQLGetToolSectionsData,
   GQLGetToolSectionsVariables,
+  GQLInvokeEdgeToolOnDiagramData,
+  GQLInvokeEdgeToolOnDiagramInput,
+  GQLInvokeEdgeToolOnDiagramPayload,
+  GQLInvokeEdgeToolOnDiagramSuccessPayload,
+  GQLInvokeEdgeToolOnDiagramVariables,
+  GQLInvokeNodeToolOnDiagramData,
+  GQLInvokeNodeToolOnDiagramInput,
+  GQLInvokeNodeToolOnDiagramPayload,
+  GQLInvokeNodeToolOnDiagramSuccessPayload,
+  GQLInvokeNodeToolOnDiagramVariables,
   GQLSubscribersUpdatedEventPayload,
   Menu,
   Palette,
@@ -144,6 +154,14 @@ const isSubscribersUpdatedEventPayload = (
 ): payload is GQLSubscribersUpdatedEventPayload => payload.__typename === 'SubscribersUpdatedEventPayload';
 const isErrorPayload = (payload: GQLDiagramEventPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
+const isInvokeNodeToolOnDiagramSuccessPayload = (
+  payload: GQLInvokeNodeToolOnDiagramPayload
+): payload is GQLInvokeNodeToolOnDiagramSuccessPayload =>
+  payload.__typename === 'InvokeNodeToolOnDiagramSuccessPayload';
+const isInvokeEdgeToolOnDiagramSuccessPayload = (
+  payload: GQLInvokeEdgeToolOnDiagramPayload
+): payload is GQLInvokeEdgeToolOnDiagramSuccessPayload =>
+  payload.__typename === 'InvokeEdgeToolOnDiagramSuccessPayload';
 
 /**
  * Here be dragons!
@@ -332,11 +350,11 @@ export const DiagramWebSocketContainer = ({
   const [
     invokeNodeToolMutation,
     { loading: invokeNodeToolLoading, data: invokeNodeToolData, error: invokeNodeToolError },
-  ] = useMutation(invokeNodeToolOnDiagramMutation);
+  ] = useMutation<GQLInvokeNodeToolOnDiagramData, GQLInvokeNodeToolOnDiagramVariables>(invokeNodeToolOnDiagramMutation);
   const [
     invokeEdgeToolMutation,
     { loading: invokeEdgeToolLoading, data: invokeEdgeToolData, error: invokeEdgeToolError },
-  ] = useMutation(invokeEdgeToolOnDiagramMutation);
+  ] = useMutation<GQLInvokeEdgeToolOnDiagramData, GQLInvokeEdgeToolOnDiagramVariables>(invokeEdgeToolOnDiagramMutation);
   const [editLabelMutation, { loading: editLabelLoading, data: editLabelData, error: editLabelError }] =
     useMutation(editLabelMutationOp);
   const [
@@ -462,7 +480,7 @@ export const DiagramWebSocketContainer = ({
           const targetPositionX = targetPosition?.x;
           const targetPositionY = targetPosition?.y;
 
-          const input = {
+          const input: GQLInvokeEdgeToolOnDiagramInput = {
             id: uuid(),
             editingContextId,
             representationId,
@@ -481,7 +499,7 @@ export const DiagramWebSocketContainer = ({
           const [diagramElementId, startingPosition] = params;
           let startingPositionX = startingPosition ? startingPosition.x : 0;
           let startingPositionY = startingPosition ? startingPosition.y : 0;
-          const input = {
+          const input: GQLInvokeNodeToolOnDiagramInput = {
             id: uuid(),
             editingContextId,
             representationId,
@@ -844,10 +862,36 @@ export const DiagramWebSocketContainer = ({
     if (!invokeNodeToolLoading) {
       resetTools();
     }
-  }, [invokeNodeToolLoading, invokeNodeToolData, invokeNodeToolError, handleError, resetTools]);
+    if (invokeNodeToolData) {
+      const { invokeNodeToolOnDiagram } = invokeNodeToolData;
+      if (isInvokeNodeToolOnDiagramSuccessPayload(invokeNodeToolOnDiagram)) {
+        const { newSelection } = invokeNodeToolOnDiagram;
+        if (newSelection?.entries.length ?? 0 > 0) {
+          setSelection(newSelection);
+        }
+      }
+    }
+  }, [
+    invokeNodeToolLoading,
+    invokeNodeToolData,
+    invokeNodeToolError,
+    handleError,
+    resetTools,
+    setSelection,
+    selection,
+  ]);
   useEffect(() => {
     handleError(invokeEdgeToolLoading, invokeEdgeToolData, invokeEdgeToolError);
-  }, [invokeEdgeToolLoading, invokeEdgeToolData, invokeEdgeToolError, handleError]);
+    if (invokeEdgeToolData) {
+      const { invokeEdgeToolOnDiagram } = invokeEdgeToolData;
+      if (isInvokeEdgeToolOnDiagramSuccessPayload(invokeEdgeToolOnDiagram)) {
+        const { newSelection } = invokeEdgeToolOnDiagram;
+        if (newSelection?.entries.length ?? 0 > 0) {
+          setSelection(newSelection);
+        }
+      }
+    }
+  }, [invokeEdgeToolLoading, invokeEdgeToolData, invokeEdgeToolError, handleError, setSelection, selection]);
   useEffect(() => {
     handleError(arrangeAllLoading, arrangeAllData, arrangeAllError);
   }, [arrangeAllLoading, arrangeAllData, arrangeAllError, handleError]);

@@ -18,10 +18,6 @@ export interface GQLDiagramEventPayload {
   __typename: string;
 }
 
-export interface GQLErrorPayload extends GQLDiagramEventPayload {
-  message: string;
-}
-
 export interface GQLSubscribersUpdatedEventPayload extends GQLDiagramEventPayload {
   id: string;
   subscribers: GQLSubscriber[];
@@ -302,4 +298,78 @@ export interface GQLTool {
 export enum GQLDeletionPolicy {
   SEMANTIC = 'SEMANTIC',
   GRAPHICAL = 'GRAPHICAL',
+}
+
+export interface GQLInvokeNodeToolOnDiagramVariables {
+  input: GQLInvokeNodeToolOnDiagramInput;
+}
+
+export interface GQLInvokeNodeToolOnDiagramInput {
+  id: string;
+  editingContextId: string;
+  representationId: string;
+  diagramElementId: string;
+  toolId: string;
+  startingPositionX: number;
+  startingPositionY: number;
+  selectedObjectId: string;
+}
+
+export interface GQLInvokeNodeToolOnDiagramData {
+  invokeNodeToolOnDiagram: GQLInvokeNodeToolOnDiagramPayload;
+}
+
+export interface GQLInvokeNodeToolOnDiagramPayload {
+  __typename: string;
+}
+
+export interface GQLInvokeNodeToolOnDiagramSuccessPayload extends GQLInvokeNodeToolOnDiagramPayload {
+  id: string;
+  newSelection: GQLWorkbenchSelection;
+}
+
+export interface GQLInvokeEdgeToolOnDiagramVariables {
+  input: GQLInvokeEdgeToolOnDiagramInput;
+}
+
+export interface GQLInvokeEdgeToolOnDiagramInput {
+  id: string;
+  editingContextId: string;
+  representationId: string;
+  diagramSourceElementId: string;
+  diagramTargetElementId: string;
+  sourcePositionX: number;
+  sourcePositionY: number;
+  targetPositionX: number;
+  targetPositionY: number;
+  toolId: string;
+}
+
+export interface GQLInvokeEdgeToolOnDiagramData {
+  invokeEdgeToolOnDiagram: GQLInvokeEdgeToolOnDiagramPayload;
+}
+
+export interface GQLInvokeEdgeToolOnDiagramPayload {
+  __typename: string;
+}
+
+export interface GQLInvokeEdgeToolOnDiagramSuccessPayload extends GQLInvokeEdgeToolOnDiagramPayload {
+  id: string;
+  newSelection: GQLWorkbenchSelection;
+}
+
+export interface GQLErrorPayload
+  extends GQLDiagramEventPayload,
+    GQLInvokeNodeToolOnDiagramPayload,
+    GQLInvokeEdgeToolOnDiagramPayload {
+  message: string;
+}
+export interface GQLWorkbenchSelection {
+  entries: GQLWorkbenchSelectionEntry[];
+}
+
+export interface GQLWorkbenchSelectionEntry {
+  id: string;
+  label: string;
+  kind: string;
 }

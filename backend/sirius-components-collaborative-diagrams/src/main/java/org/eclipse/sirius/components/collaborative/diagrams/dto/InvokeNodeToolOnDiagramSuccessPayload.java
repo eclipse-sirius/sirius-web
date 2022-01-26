@@ -17,7 +17,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.core.api.IPayload;
-import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.core.api.WorkbenchSelection;
 
 /**
  * The payload of the "Invoke node tool on diagram" mutation returned on success.
@@ -27,11 +27,11 @@ import org.eclipse.sirius.components.diagrams.Diagram;
 public final class InvokeNodeToolOnDiagramSuccessPayload implements IPayload {
     private final UUID id;
 
-    private final Diagram diagram;
+    private final WorkbenchSelection newSelection;
 
-    public InvokeNodeToolOnDiagramSuccessPayload(UUID id, Diagram diagram) {
+    public InvokeNodeToolOnDiagramSuccessPayload(UUID id, WorkbenchSelection newSelection) {
         this.id = Objects.requireNonNull(id);
-        this.diagram = Objects.requireNonNull(diagram);
+        this.newSelection = newSelection;
     }
 
     @Override
@@ -39,13 +39,13 @@ public final class InvokeNodeToolOnDiagramSuccessPayload implements IPayload {
         return this.id;
     }
 
-    public Diagram getDiagram() {
-        return this.diagram;
+    public WorkbenchSelection getNewSelection() {
+        return this.newSelection;
     }
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, diagram: '{'id: {2}, label: {3}'}''}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.diagram.getId(), this.diagram.getLabel());
+        String pattern = "{0} '{'id: {1}, newSelection: {2}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.getId(), this.newSelection);
     }
 }

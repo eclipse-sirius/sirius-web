@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.core.api.WorkbenchSelection;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.Position;
@@ -108,7 +109,12 @@ public class InvokeEdgeToolOnDiagramEventHandler implements IDiagramEventHandler
                 IStatus status = this.executeTool(editingContext, diagramContext, input.getDiagramSourceElementId(), input.getDiagramTargetElementId(), optionalTool.get(), sourcePosition,
                         targetPosition);
                 if (status instanceof Success) {
-                    payload = new InvokeEdgeToolOnDiagramSuccessPayload(diagramInput.getId(), diagram);
+                    WorkbenchSelection newSelection = null;
+                    Object newSelectionParameter = ((Success) status).getParameters().get(Success.NEW_SELECTION);
+                    if (newSelectionParameter instanceof WorkbenchSelection) {
+                        newSelection = (WorkbenchSelection) newSelectionParameter;
+                    }
+                    payload = new InvokeEdgeToolOnDiagramSuccessPayload(diagramInput.getId(), newSelection);
                     changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, diagramInput.getRepresentationId(), diagramInput);
                 } else if (status instanceof Failure) {
                     payload = new ErrorPayload(diagramInput.getId(), ((Failure) status).getMessage());

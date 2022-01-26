@@ -17,7 +17,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.core.api.IPayload;
-import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.core.api.WorkbenchSelection;
 
 /**
  * The payload of the "Invoke edge tool on diagram" mutation returned on success.
@@ -28,11 +28,11 @@ import org.eclipse.sirius.components.diagrams.Diagram;
 public final class InvokeEdgeToolOnDiagramSuccessPayload implements IPayload {
     private final UUID id;
 
-    private final Diagram diagram;
+    private final WorkbenchSelection newSelection;
 
-    public InvokeEdgeToolOnDiagramSuccessPayload(UUID id, Diagram diagram) {
+    public InvokeEdgeToolOnDiagramSuccessPayload(UUID id, WorkbenchSelection newSelection) {
         this.id = Objects.requireNonNull(id);
-        this.diagram = Objects.requireNonNull(diagram);
+        this.newSelection = Objects.requireNonNull(newSelection);
     }
 
     @Override
@@ -40,13 +40,13 @@ public final class InvokeEdgeToolOnDiagramSuccessPayload implements IPayload {
         return this.id;
     }
 
-    public Diagram getDiagram() {
-        return this.diagram;
+    public WorkbenchSelection getNewSelection() {
+        return this.newSelection;
     }
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, diagram: '{'id: {2}, label: {3}'}''}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.diagram.getId(), this.diagram.getLabel());
+        String pattern = "{0} '{'id: {1}, newSelection: {2}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.getId(), this.newSelection);
     }
 }

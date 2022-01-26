@@ -19,4 +19,18 @@ package org.eclipse.sirius.components.compatibility.api;
  */
 public interface IIdentifierProvider {
     String getIdentifier(Object element);
+
+    /**
+     * Implementation which does nothing, used for mocks in unit tests.
+     *
+     * @author sbegaudeau
+     */
+    class NoOp implements IIdentifierProvider {
+
+        @Override
+        public String getIdentifier(Object element) {
+            return ""; //$NON-NLS-1$
+        }
+
+    }
 }
