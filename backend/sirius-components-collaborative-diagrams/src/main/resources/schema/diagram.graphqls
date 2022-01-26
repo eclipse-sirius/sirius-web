@@ -280,7 +280,7 @@ union InvokeEdgeToolOnDiagramPayload = ErrorPayload | InvokeEdgeToolOnDiagramSuc
 
 type InvokeEdgeToolOnDiagramSuccessPayload {
   id: ID!
-  diagram: Diagram!
+  newSelection: WorkbenchSelection!
 }
 
 input InvokeNodeToolOnDiagramInput {
@@ -298,7 +298,7 @@ union InvokeNodeToolOnDiagramPayload = ErrorPayload | InvokeNodeToolOnDiagramSuc
 
 type InvokeNodeToolOnDiagramSuccessPayload {
   id: ID!
-  diagram: Diagram!
+  newSelection: WorkbenchSelection!
 }
 
 input UpdateNodeBoundsInput {

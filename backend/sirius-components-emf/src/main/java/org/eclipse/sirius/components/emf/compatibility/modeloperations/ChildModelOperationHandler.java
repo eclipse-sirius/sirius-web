@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo and others.
+ * Copyright (c) 2019, 2022 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@ import java.util.Optional;
 import org.eclipse.sirius.components.compatibility.api.IIdentifierProvider;
 import org.eclipse.sirius.components.compatibility.api.IModelOperationHandler;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.WorkbenchSelection;
 import org.eclipse.sirius.components.emf.compatibility.api.IExternalJavaActionProvider;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.Failure;
@@ -41,6 +42,7 @@ public class ChildModelOperationHandler {
     }
 
     public IStatus handle(IObjectService objectService, IIdentifierProvider identifierProvider, AQLInterpreter interpreter, Map<String, Object> variables, List<ModelOperation> modelOperations) {
+        Success success = new Success();
         boolean hasBeenSuccessfullyExecuted = true;
 
         ModelOperationHandlerSwitch modelOperationHandlerSwitch = new ModelOperationHandlerSwitch(objectService, identifierProvider, this.externalJavaActionProviders, interpreter);
@@ -52,10 +54,32 @@ public class ChildModelOperationHandler {
             }).orElse(new Failure("")); //$NON-NLS-1$
 
             hasBeenSuccessfullyExecuted = hasBeenSuccessfullyExecuted && status instanceof Success;
+
+            if (hasBeenSuccessfullyExecuted) {
+                // @formatter:off
+                var optionalChildModelOperationNewSelection = Optional.of(status)
+                        .filter(Success.class::isInstance)
+                        .map(Success.class::cast)
+                        .map(result -> result.getParameters().get(Success.NEW_SELECTION))
+                        .filter(WorkbenchSelection.class::isInstance)
+                        .map(WorkbenchSelection.class::cast);
+                // @formatter:on
+
+                if (optionalChildModelOperationNewSelection.isPresent()) {
+                    WorkbenchSelection childWorkbenchSelection = optionalChildModelOperationNewSelection.get();
+
+                    Object newSelection = success.getParameters().get(Success.NEW_SELECTION);
+                    if (newSelection instanceof WorkbenchSelection) {
+                        ((WorkbenchSelection) newSelection).getEntries().addAll(childWorkbenchSelection.getEntries());
+                    } else if (newSelection == null) {
+                        success.getParameters().put(Success.NEW_SELECTION, new WorkbenchSelection(childWorkbenchSelection.getEntries()));
+                    }
+                }
+            }
         }
 
         if (hasBeenSuccessfullyExecuted) {
-            return new Success();
+            return success;
         }
         return new Failure(""); //$NON-NLS-1$
     }

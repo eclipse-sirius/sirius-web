@@ -29,6 +29,10 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/1025[#1025] [diagram] Add a new API to perform tests of our layout algorithm
 
 
+=== New features
+
+- https://github.com/eclipse-sirius/sirius-components/issues/988[#988] [core] Add support for a post selection
+
 == v2022.01.0
 
 === Architectural decision records
