@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IToolService;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeNodeToolOnDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeNodeToolOnDiagramSuccessPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
+import org.eclipse.sirius.components.core.api.Environment;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
@@ -145,6 +146,7 @@ public class InvokeNodeToolOnDiagramEventHandler implements IDiagramEventHandler
             VariableManager variableManager = new VariableManager();
             variableManager.put(IDiagramContext.DIAGRAM_CONTEXT, diagramContext);
             variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
+            variableManager.put(Environment.ENVIRONMENT, new Environment(Environment.SIRIUS_COMPONENTS));
             variableManager.put(VariableManager.SELF, self.get());
             node.ifPresent(selectedNode -> variableManager.put(Node.SELECTED_NODE, selectedNode));
 

@@ -24,6 +24,10 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/992[#992] [view] Let the `ViewValidator` consider statically contributed `EPackages` when validating domain types
 
 
+=== Improvements
+
+- https://github.com/eclipse-sirius/sirius-components/issues/985[#985] [core] Provide a variable to detect which environment is used. The value of the variable will change to something specific for the integrating application (for example siriusWeb). This is only available for the diagram for now.
+
 == v2022.01.0
 
 === Architectural decision records
