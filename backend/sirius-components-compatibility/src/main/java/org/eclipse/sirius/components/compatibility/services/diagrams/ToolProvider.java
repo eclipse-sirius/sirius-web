@@ -36,7 +36,6 @@ import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.tools.CreateEdgeTool;
 import org.eclipse.sirius.components.diagrams.tools.CreateNodeTool;
-import org.eclipse.sirius.components.diagrams.tools.DeleteTool;
 import org.eclipse.sirius.components.diagrams.tools.EdgeCandidate;
 import org.eclipse.sirius.components.diagrams.tools.ITool;
 import org.eclipse.sirius.components.diagrams.tools.ToolSection;
@@ -362,7 +361,7 @@ public class ToolProvider implements IToolProvider {
         // @formatter:on
     }
 
-    private DeleteTool convertDeleteElementDescription(Map<UUID, NodeDescription> id2NodeDescriptions, AQLInterpreter interpreter, DeleteElementDescription deleteElementDescription) {
+    private CreateNodeTool convertDeleteElementDescription(Map<UUID, NodeDescription> id2NodeDescriptions, AQLInterpreter interpreter, DeleteElementDescription deleteElementDescription) {
         String id = this.identifierProvider.getIdentifier(deleteElementDescription);
         String label = new IdentifiedElementQuery(deleteElementDescription).getLabel();
         String imagePath = this.toolImageProviderFactory.getToolImageProvider(deleteElementDescription).get();
@@ -377,10 +376,11 @@ public class ToolProvider implements IToolProvider {
                 .map(UUID::fromString)
                 .map(id2NodeDescriptions::get)
                 .collect(Collectors.toList());
-        return DeleteTool.newDeleteTool(id)
+        return CreateNodeTool.newCreateNodeTool(id)
                 .label(label)
                 .imageURL(imagePath)
                 .handler(this.createDeleteToolHandler(interpreter, deleteElementDescription))
+                .appliesToDiagramRoot(false)
                 .targetDescriptions(targetDescriptions)
                 .build();
         // @formatter:on

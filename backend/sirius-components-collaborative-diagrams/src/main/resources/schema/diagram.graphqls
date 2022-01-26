@@ -171,13 +171,6 @@ type CreateEdgeTool implements Tool {
   edgeCandidates: [EdgeCandidate]!
 }
 
-type DeleteTool implements Tool {
-  id: ID!
-  label: String!
-  imageURL: String!
-  targetDescriptions: [NodeDescription!]!
-}
-
 type EdgeCandidate {
   sources: [NodeDescription!]!
   targets: [NodeDescription!]!
@@ -217,7 +210,6 @@ extend type Mutation {
   editLabel(input: EditLabelInput!): EditLabelPayload!
   invokeEdgeToolOnDiagram(input: InvokeEdgeToolOnDiagramInput!): InvokeEdgeToolOnDiagramPayload!
   invokeNodeToolOnDiagram(input: InvokeNodeToolOnDiagramInput!): InvokeNodeToolOnDiagramPayload!
-  invokeDeleteToolOnDiagram(input: InvokeDeleteToolOnDiagramInput!): InvokeDeleteToolOnDiagramPayload!
   updateNodeBounds(input: UpdateNodeBoundsInput!): UpdateNodeBoundsPayload!
   updateNodePosition(input: UpdateNodePositionInput!): UpdateNodePositionPayload!
   dropOnDiagram(input: DropOnDiagramInput!): DropOnDiagramPayload!
@@ -305,21 +297,6 @@ input InvokeNodeToolOnDiagramInput {
 union InvokeNodeToolOnDiagramPayload = ErrorPayload | InvokeNodeToolOnDiagramSuccessPayload
 
 type InvokeNodeToolOnDiagramSuccessPayload {
-  id: ID!
-  diagram: Diagram!
-}
-
-input InvokeDeleteToolOnDiagramInput {
-  id: ID!
-  editingContextId: ID!
-  representationId: ID!
-  diagramElementId: ID!
-  toolId: ID!
-}
-
-union InvokeDeleteToolOnDiagramPayload = ErrorPayload | InvokeDeleteToolOnDiagramSuccessPayload
-
-type InvokeDeleteToolOnDiagramSuccessPayload {
   id: ID!
   diagram: Diagram!
 }

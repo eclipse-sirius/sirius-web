@@ -19,8 +19,6 @@ export function isContextualTool(tool, element) {
     result = tool.edgeCandidates.some((edgeCandidate) =>
       edgeCandidate.sources.some((source) => source.id === element.descriptionId)
     );
-  } else if (tool.__typename === 'DeleteTool') {
-    result = tool.targetDescriptions.some((targetDescription) => targetDescription.id === element.descriptionId);
   }
   return result;
 }
