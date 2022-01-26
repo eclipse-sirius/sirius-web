@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,7 @@ import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.sirius.components.compatibility.api.IIdentifierProvider;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IRepresentationMetadataSearchService;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.VariableManager;
 
@@ -45,6 +46,8 @@ public class OperationTestContext {
 
     private IObjectService objectService;
 
+    private IRepresentationMetadataSearchService representationMetadataSearchService;
+
     private IIdentifierProvider identifierProvider;
 
     private AQLInterpreter interpreter;
@@ -58,6 +61,7 @@ public class OperationTestContext {
         this.rootPackage.getEClassifiers().add(0, this.class1);
 
         this.objectService = new IObjectService.NoOp();
+        this.representationMetadataSearchService = new IRepresentationMetadataSearchService.NoOp();
         this.identifierProvider = element -> UUID.randomUUID().toString();
         this.interpreter = new AQLInterpreter(List.of(ModelOperationServices.class), List.of(EcorePackage.eINSTANCE));
 
@@ -79,6 +83,10 @@ public class OperationTestContext {
 
     public IObjectService getObjectService() {
         return this.objectService;
+    }
+
+    public IRepresentationMetadataSearchService getRepresentationMetadataSearchService() {
+        return this.representationMetadataSearchService;
     }
 
     public IIdentifierProvider getIdentifierProvider() {

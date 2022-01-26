@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo and others.
+ * Copyright (c) 2019, 2022 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.compatibility.api.ISemanticCandidatesProvid
 import org.eclipse.sirius.components.compatibility.forms.ViewExtensionDescriptionConverter;
 import org.eclipse.sirius.components.compatibility.services.representations.IdentifiedElementLabelProvider;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IRepresentationMetadataSearchService;
 import org.eclipse.sirius.components.emf.compatibility.AQLInterpreterFactory;
 import org.eclipse.sirius.components.emf.compatibility.SemanticCandidatesProvider;
 import org.eclipse.sirius.components.emf.compatibility.modeloperations.ModelOperationHandlerSwitch;
@@ -72,11 +73,13 @@ public class FormRendererTests {
         };
 
         IObjectService objectService = new IObjectService.NoOp();
+        IRepresentationMetadataSearchService representationMetadataSearchService = new IRepresentationMetadataSearchService.NoOp();
         IIdentifierProvider identifierProvider = element -> UUID.randomUUID().toString();
         IdentifiedElementLabelProvider identifiedElementLabelProvider = new IdentifiedElementLabelProvider();
         ISemanticCandidatesProviderFactory semanticCandidatesProviderFactory = SemanticCandidatesProvider::new;
 
-        IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider = interpeter -> new ModelOperationHandlerSwitch(objectService, identifierProvider, List.of(), interpeter);
+        IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider = interpeter -> new ModelOperationHandlerSwitch(objectService, representationMetadataSearchService, identifierProvider,
+                List.of(), interpeter);
         ViewExtensionDescriptionConverter converter = new ViewExtensionDescriptionConverter(objectService, interpreterFactory, identifierProvider, semanticCandidatesProviderFactory,
                 modelOperationHandlerSwitchProvider, identifiedElementLabelProvider);
         FormDescription description = converter.convert(viewExtensionDescription);

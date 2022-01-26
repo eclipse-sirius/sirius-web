@@ -9,6 +9,7 @@
 
 === Deprecation warning
 - [core] The various DTOs related to the creation and renaming of both documents and representations will be removed from the project at some point. The only reason why we will keep them for the moment is that some of them are used to trigger some specific behavior in the `EditingContextEventProcessor`. The split of the representation metadata should help us remove those special use cases
+- [core] The method `IRepresentationMetadataSearchService#findByRepresentation` will be deleted in the future, it only exists as a transition from requesting the whole content of a representation everytime to requesting only its metadata when it's necessary
 
 === Breaking changes
 
@@ -18,6 +19,7 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/998[#998] [core] Remove the various annotations used to support a code-first approach to build the GraphQL schema
 - https://github.com/eclipse-sirius/sirius-components/issues/975[#975] [core] Remove useless parts of the GraphQL API which were both unused by the Sirius Components frontend and not handled by the Sirius Components backend
 - https://github.com/eclipse-sirius/sirius-components/issues/959[#959] [diagram] Remove the concept of `DeleteTool`. This concept was not useful since any tool can perform a deletion
+- https://github.com/eclipse-sirius/sirius-components/issues/1018[#1018] [core] Remove the default implementation of `IRepresentationMetadataSearchService` since products integrating Sirius Components needs the ability to customize its behavior
 
 === Bug fixes
 
@@ -32,6 +34,7 @@
 === New features
 
 - https://github.com/eclipse-sirius/sirius-components/issues/988[#988] [core] Add support for a post selection
+- https://github.com/eclipse-sirius/sirius-components/issues/1018[#1018] [compatibility] Add support for the `Navigation` model operation from Sirius RCP
 
 == v2022.01.0
 

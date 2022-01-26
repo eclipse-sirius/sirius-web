@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.core.api;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.core.RepresentationMetadata;
@@ -24,4 +25,24 @@ import org.eclipse.sirius.components.representations.IRepresentation;
  */
 public interface IRepresentationMetadataSearchService {
     Optional<RepresentationMetadata> findByRepresentation(IRepresentation representation);
+
+    List<RepresentationMetadata> findAll(String targetObjectId);
+
+    /**
+     * Implementation which does nothing, used for mocks in unit tests.
+     *
+     * @author arichard
+     */
+    class NoOp implements IRepresentationMetadataSearchService {
+
+        @Override
+        public Optional<RepresentationMetadata> findByRepresentation(IRepresentation representation) {
+            return Optional.empty();
+        }
+
+        @Override
+        public List<RepresentationMetadata> findAll(String targetObjectId) {
+            return List.of();
+        }
+    }
 }

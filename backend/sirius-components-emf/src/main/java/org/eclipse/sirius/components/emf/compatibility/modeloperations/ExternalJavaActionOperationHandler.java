@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo and others.
+ * Copyright (c) 2021, 2022 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.compatibility.api.IIdentifierProvider;
 import org.eclipse.sirius.components.compatibility.api.IModelOperationHandler;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IRepresentationMetadataSearchService;
 import org.eclipse.sirius.components.emf.compatibility.api.IExternalJavaActionProvider;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.Failure;
@@ -45,6 +46,8 @@ public class ExternalJavaActionOperationHandler implements IModelOperationHandle
 
     private final IObjectService objectService;
 
+    private final IRepresentationMetadataSearchService representationMetadataSearchService;
+
     private final IIdentifierProvider identifierProvider;
 
     private final AQLInterpreter interpreter;
@@ -55,9 +58,10 @@ public class ExternalJavaActionOperationHandler implements IModelOperationHandle
 
     private final ExternalJavaAction externalJavaAction;
 
-    public ExternalJavaActionOperationHandler(IObjectService objectService, IIdentifierProvider identifierProvider, AQLInterpreter interpreter, ChildModelOperationHandler childModelOperationHandler,
-            List<IExternalJavaActionProvider> externalJavaActionProviders, ExternalJavaAction externalJavaAction) {
+    public ExternalJavaActionOperationHandler(IObjectService objectService, IRepresentationMetadataSearchService representationSearchService, IIdentifierProvider identifierProvider,
+            AQLInterpreter interpreter, ChildModelOperationHandler childModelOperationHandler, List<IExternalJavaActionProvider> externalJavaActionProviders, ExternalJavaAction externalJavaAction) {
         this.objectService = Objects.requireNonNull(objectService);
+        this.representationMetadataSearchService = Objects.requireNonNull(representationSearchService);
         this.identifierProvider = Objects.requireNonNull(identifierProvider);
         this.interpreter = Objects.requireNonNull(interpreter);
         this.childModelOperationHandler = Objects.requireNonNull(childModelOperationHandler);
@@ -94,7 +98,7 @@ public class ExternalJavaActionOperationHandler implements IModelOperationHandle
         }
 
         List<ModelOperation> subModelOperations = this.externalJavaAction.getSubModelOperations();
-        return this.childModelOperationHandler.handle(this.objectService, this.identifierProvider, this.interpreter, variables, subModelOperations);
+        return this.childModelOperationHandler.handle(this.objectService, this.representationMetadataSearchService, this.identifierProvider, this.interpreter, variables, subModelOperations);
     }
 
 }

@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.compatibility.api.IModelOperationHandlerSwi
 import org.eclipse.sirius.components.compatibility.api.ISemanticCandidatesProviderFactory;
 import org.eclipse.sirius.components.compatibility.api.IToolImageProviderFactory;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IRepresentationMetadataSearchService;
 import org.eclipse.sirius.components.emf.compatibility.SemanticCandidatesProvider;
 import org.eclipse.sirius.components.emf.compatibility.api.IExternalJavaActionProvider;
 import org.eclipse.sirius.components.emf.compatibility.diagrams.CanCreateDiagramPredicate;
@@ -48,9 +49,9 @@ public class CompatibilityConfiguration {
     }
 
     @Bean
-    public IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider(IObjectService objectService, IIdentifierProvider identifierProvider,
-            List<IExternalJavaActionProvider> externalJavaActionProviders) {
-        return (interpreter) -> new ModelOperationHandlerSwitch(objectService, identifierProvider, externalJavaActionProviders, interpreter);
+    public IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider(IObjectService objectService, IRepresentationMetadataSearchService representationMetadataSearchService,
+            IIdentifierProvider identifierProvider, List<IExternalJavaActionProvider> externalJavaActionProviders) {
+        return (interpreter) -> new ModelOperationHandlerSwitch(objectService, representationMetadataSearchService, identifierProvider, externalJavaActionProviders, interpreter);
     }
 
     @Bean
