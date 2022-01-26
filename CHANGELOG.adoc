@@ -37,6 +37,7 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/988[#988] [core] Add support for a post selection
 - https://github.com/eclipse-sirius/sirius-components/issues/1018[#1018] [compatibility] Add support for the `Navigation` model operation from Sirius RCP
 - https://github.com/eclipse-sirius/sirius-components/issues/1026[#1026] [compatibility] Add support for `OperationAction`. The action are converted to regular tools available in the palette of the frontend
+- https://github.com/eclipse-sirius/sirius-components/issues/937[#937] [diagram] Add the ability to export diagram as SVG images
 
 
 == v2022.01.0

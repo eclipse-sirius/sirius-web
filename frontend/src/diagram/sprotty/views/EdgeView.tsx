@@ -33,7 +33,7 @@ export class EdgeView extends PolylineEdgeView {
       stroke: style.color,
       'stroke-width': style.size,
       'pointer-events': 'stroke',
-      fill: 'transparent',
+      fill: 'none',
     };
 
     if (style.lineStyle === 'Dash') {
@@ -193,7 +193,7 @@ export class EdgeView extends PolylineEdgeView {
   }
 
   buildInputArrow(path, p1, p2, styleObject) {
-    styleObject.fill = 'transparent';
+    styleObject.fill = 'none';
     const offsetX = p2.x;
     const offsetY = p2.y;
     const rotationAngle = toDegrees(angle(p1, p2));

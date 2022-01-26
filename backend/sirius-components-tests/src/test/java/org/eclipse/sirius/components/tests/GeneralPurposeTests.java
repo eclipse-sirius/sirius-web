@@ -61,6 +61,8 @@ public class GeneralPurposeTests {
 
     private static final String CHECKSTYLE_ILLEGAL_CATCH = "@SuppressWarnings(\"checkstyle:IllegalCatch\")"; //$NON-NLS-1$
 
+    private static final String CHECKSTYLE_MULTIPLE_STRING_LITERALS = "@SuppressWarnings(\"checkstyle:MultipleStringLiterals\")"; //$NON-NLS-1$
+
     private static final String BUILDER = "Builder"; //$NON-NLS-1$
 
     private static final String CHECKSTYLE_OFF = "CHECKSTYLE:OFF"; //$NON-NLS-1$
@@ -193,8 +195,9 @@ public class GeneralPurposeTests {
                 isValidUsage = isValidUsage && lines.get(index + 1).contains(BUILDER);
             } else if (line.contains(CHECKSTYLE_ILLEGAL_CATCH)) {
                 isValidUsage = true;
+            } else if (line.contains(CHECKSTYLE_MULTIPLE_STRING_LITERALS)) {
+                isValidUsage = true;
             }
-
             if (!isValidUsage) {
                 fail(this.createErrorMessage("@SuppressWarnings", javaFilePath, index)); //$NON-NLS-1$
             }
