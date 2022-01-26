@@ -20,6 +20,7 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/975[#975] [core] Remove useless parts of the GraphQL API which were both unused by the Sirius Components frontend and not handled by the Sirius Components backend
 - https://github.com/eclipse-sirius/sirius-components/issues/959[#959] [diagram] Remove the concept of `DeleteTool`. This concept was not useful since any tool can perform a deletion
 - https://github.com/eclipse-sirius/sirius-components/issues/1018[#1018] [core] Remove the default implementation of `IRepresentationMetadataSearchService` since products integrating Sirius Components needs the ability to customize its behavior
+- https://github.com/eclipse-sirius/sirius-components/issues/1019[#1019] [core] Services now have access to the context of the request triggering their execution. Consumer of Sirius Components will have to provide the `RequestAttributes`` in the `RequestContextHolder`` to make the `EditingContextEventProcessor`` work. It should be very easy for those in a Spring environment, but it is not automatic for those outside of a Spring environment
 
 === Bug fixes
 
