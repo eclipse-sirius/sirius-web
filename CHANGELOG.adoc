@@ -17,6 +17,7 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/808[#808] [core] Update the namespace of the packages from `org.eclipse.sirius.web.xxx` to `org.eclipse.sirius.components.xxx`.
 - https://github.com/eclipse-sirius/sirius-components/issues/998[#998] [core] Remove the various annotations used to support a code-first approach to build the GraphQL schema
 - https://github.com/eclipse-sirius/sirius-components/issues/975[#975] [core] Remove useless parts of the GraphQL API which were both unused by the Sirius Components frontend and not handled by the Sirius Components backend
+- https://github.com/eclipse-sirius/sirius-components/issues/959[#959] [diagram] Remove the concept of `DeleteTool`. This concept was not useful since any tool can perform a deletion
 
 === Bug fixes
 

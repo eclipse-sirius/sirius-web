@@ -321,8 +321,6 @@ export class DiagramServer extends ModelSource {
           this.diagramSource.position,
           this.mousePositionTracker.lastPositionOnDiagram
         );
-      } else if (this.activeTool.__typename === 'DeleteTool') {
-        this.invokeTool(this.activeTool, element.id);
       }
     } else {
       this.actionDispatcher.dispatch({
