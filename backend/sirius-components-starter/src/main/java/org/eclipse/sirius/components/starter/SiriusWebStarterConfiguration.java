@@ -39,13 +39,13 @@ import org.springframework.web.socket.WebSocketSession;
 // @formatter:off
 @ComponentScan(basePackages = {
         "org.eclipse.sirius.components.diagrams.layout",
-        "org.eclipse.sirius.components.spring.graphql",
-        "org.eclipse.sirius.components.spring.collaborative",
-        "org.eclipse.sirius.components.spring.collaborative.diagrams",
-        "org.eclipse.sirius.components.spring.collaborative.forms",
-        "org.eclipse.sirius.components.spring.collaborative.selection",
-        "org.eclipse.sirius.components.spring.collaborative.trees",
-        "org.eclipse.sirius.components.spring.collaborative.validation",
+        "org.eclipse.sirius.components.graphql",
+        "org.eclipse.sirius.components.collaborative",
+        "org.eclipse.sirius.components.collaborative.diagrams",
+        "org.eclipse.sirius.components.collaborative.forms",
+        "org.eclipse.sirius.components.collaborative.selection",
+        "org.eclipse.sirius.components.collaborative.trees",
+        "org.eclipse.sirius.components.collaborative.validation",
     }
 )
 // @formatter:on
