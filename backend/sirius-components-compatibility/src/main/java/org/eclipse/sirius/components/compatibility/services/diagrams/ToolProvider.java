@@ -61,6 +61,7 @@ import org.eclipse.sirius.viewpoint.description.tool.AbstractToolDescription;
 import org.eclipse.sirius.viewpoint.description.tool.InitEdgeCreationOperation;
 import org.eclipse.sirius.viewpoint.description.tool.InitialNodeCreationOperation;
 import org.eclipse.sirius.viewpoint.description.tool.InitialOperation;
+import org.eclipse.sirius.viewpoint.description.tool.OperationAction;
 import org.eclipse.sirius.viewpoint.description.tool.ToolDescription;
 import org.springframework.stereotype.Service;
 
@@ -157,6 +158,7 @@ public class ToolProvider implements IToolProvider {
         isSupported = isSupported || toolDescription instanceof EdgeCreationDescription;
         isSupported = isSupported || toolDescription instanceof ToolDescription;
         isSupported = isSupported || toolDescription instanceof DeleteElementDescription;
+        isSupported = isSupported || toolDescription instanceof OperationAction;
         return isSupported;
     }
 
@@ -229,6 +231,9 @@ public class ToolProvider implements IToolProvider {
         } else if (siriusTool instanceof DeleteElementDescription) {
             DeleteElementDescription deleteElementDescription = (DeleteElementDescription) siriusTool;
             result = Optional.of(this.convertDeleteElementDescription(id2NodeDescriptions, interpreter, deleteElementDescription));
+        } else if (siriusTool instanceof OperationAction) {
+            OperationAction operationAction = (OperationAction) siriusTool;
+            result = Optional.of(this.convertOperationAction(id2NodeDescriptions, interpreter, siriusDiagramDescription, operationAction));
         }
 
         return result;
@@ -298,6 +303,32 @@ public class ToolProvider implements IToolProvider {
                 .label(label)
                 .imageURL(imagePath)
                 .handler(this.createGenericToolHandler(interpreter, toolDescription))
+                .targetDescriptions(targetDescriptions)
+                .appliesToDiagramRoot(true)
+                .build();
+        // @formatter:on
+    }
+
+    private CreateNodeTool convertOperationAction(Map<UUID, NodeDescription> id2NodeDescriptions, AQLInterpreter interpreter, DiagramDescription siriusDiagramDescription,
+            OperationAction operationAction) {
+        String id = this.identifierProvider.getIdentifier(operationAction);
+        String label = new IdentifiedElementQuery(operationAction).getLabel();
+        String imagePath = this.toolImageProviderFactory.getToolImageProvider(operationAction).get();
+
+        List<DiagramElementMapping> mappings = this.getAllDiagramElementMappings(siriusDiagramDescription);
+
+        // @formatter:off
+        List<String> targetDescriptionIds = mappings.stream()
+                .map(this.identifierProvider::getIdentifier)
+                .collect(Collectors.toList());
+        List<NodeDescription> targetDescriptions = targetDescriptionIds.stream()
+                .map(UUID::fromString)
+                .map(id2NodeDescriptions::get)
+                .collect(Collectors.toList());
+        return CreateNodeTool.newCreateNodeTool(id)
+                .label(label)
+                .imageURL(imagePath)
+                .handler(this.createOperationActionHandler(interpreter, operationAction))
                 .targetDescriptions(targetDescriptions)
                 .appliesToDiagramRoot(true)
                 .build();
@@ -457,6 +488,23 @@ public class ToolProvider implements IToolProvider {
     private Function<VariableManager, IStatus> createGenericToolHandler(AQLInterpreter interpreter, org.eclipse.sirius.viewpoint.description.tool.ToolDescription toolDescription) {
         if (toolDescription != null) {
             InitialOperation initialOperation = toolDescription.getInitialOperation();
+            return variableManager -> {
+                Map<String, Object> variables = variableManager.getVariables();
+                // Provide compatibility aliases for this variable
+                variables.put(ELEMENT, variables.get(VariableManager.SELF));
+                var modelOperationHandlerSwitch = this.modelOperationHandlerSwitchProvider.getModelOperationHandlerSwitch(interpreter);
+                return modelOperationHandlerSwitch.apply(initialOperation.getFirstModelOperations()).map(handler -> {
+                    return handler.handle(variables);
+                }).orElse(new Failure("")); //$NON-NLS-1$
+            };
+        } else {
+            return variableManager -> new Success();
+        }
+    }
+
+    private Function<VariableManager, IStatus> createOperationActionHandler(AQLInterpreter interpreter, OperationAction operationAction) {
+        if (operationAction != null) {
+            InitialOperation initialOperation = operationAction.getInitialOperation();
             return variableManager -> {
                 Map<String, Object> variables = variableManager.getVariables();
                 // Provide compatibility aliases for this variable
