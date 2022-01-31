@@ -35,6 +35,8 @@
 
 - https://github.com/eclipse-sirius/sirius-components/issues/988[#988] [core] Add support for a post selection
 - https://github.com/eclipse-sirius/sirius-components/issues/1018[#1018] [compatibility] Add support for the `Navigation` model operation from Sirius RCP
+- https://github.com/eclipse-sirius/sirius-components/issues/1026[#1026] [compatibility] Add support for `OperationAction`. The action are converted to regular tools available in the palette of the frontend
+
 
 == v2022.01.0
 
