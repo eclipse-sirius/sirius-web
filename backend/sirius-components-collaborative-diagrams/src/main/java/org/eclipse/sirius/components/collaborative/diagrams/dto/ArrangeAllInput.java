@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.collaborative.diagrams.dto;
 
 import java.text.MessageFormat;
+import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
@@ -29,6 +30,16 @@ public final class ArrangeAllInput implements IDiagramInput {
     private String editingContextId;
 
     private String representationId;
+
+    public ArrangeAllInput() {
+        // Used by jackson
+    }
+
+    public ArrangeAllInput(UUID id, String editingContextId, String representationId) {
+        this.id = Objects.requireNonNull(id);
+        this.editingContextId = Objects.requireNonNull(editingContextId);
+        this.representationId = Objects.requireNonNull(representationId);
+    }
 
     @Override
     public UUID getId() {

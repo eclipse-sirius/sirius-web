@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramCreationService;
+import org.eclipse.sirius.components.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationSuccessPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -35,7 +36,6 @@ import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.tests.TestDiagramBuilder;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
-import org.eclipse.sirius.components.representations.ISemanticRepresentation;
 import org.junit.jupiter.api.Test;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
@@ -88,14 +88,8 @@ public class CreateDiagramEventHandlerTests {
             }
         };
 
-        IRepresentationPersistenceService representationPersistenceService = new IRepresentationPersistenceService() {
-            @Override
-            public void save(IEditingContext editingContext, ISemanticRepresentation representation) {
-            }
-        };
-
-        CreateDiagramEventHandler handler = new CreateDiagramEventHandler(representationDescriptionSearchService, representationPersistenceService, diagramCreationService, objectService,
-                new NoOpCollaborativeDiagramMessageService(), new SimpleMeterRegistry());
+        CreateDiagramEventHandler handler = new CreateDiagramEventHandler(representationDescriptionSearchService, new IRepresentationPersistenceService.NoOp(), diagramCreationService, objectService,
+                new ICollaborativeDiagramMessageService.NoOp(), new SimpleMeterRegistry());
 
         var input = new CreateRepresentationInput(UUID.randomUUID(), UUID.randomUUID().toString(), UUID.randomUUID(), "objectId", "representationName"); //$NON-NLS-1$//$NON-NLS-2$
         assertThat(handler.canHandle(null, input)).isTrue();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo and others.
+ * Copyright (c) 2019, 2022 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -85,6 +85,8 @@ public class TestDiagramDescriptionBuilder {
                 .targetObjectKindProvider(variableManager -> "") //$NON-NLS-1$
                 .targetObjectLabelProvider(variableManager -> "")//$NON-NLS-1$
                 .styleProvider(edgeStyleProvider)
+                .labelEditHandler((variableManager, newValue) -> new Failure("")) //$NON-NLS-1$
+                .deleteHandler(variableManager -> new Success())
                 .build();
         // @formatter:on
     }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenc
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.RenameDiagramInput;
+import org.eclipse.sirius.components.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
 import org.eclipse.sirius.components.collaborative.dto.RenameRepresentationSuccessPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
@@ -34,7 +35,6 @@ import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.tests.TestDiagramDescriptionBuilder;
 import org.eclipse.sirius.components.representations.IRepresentation;
-import org.eclipse.sirius.components.representations.ISemanticRepresentation;
 import org.junit.jupiter.api.Test;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
@@ -79,14 +79,7 @@ public class RenameDiagramEventHandlerTests {
             }
         };
 
-        IRepresentationPersistenceService representationPersistenceService = new IRepresentationPersistenceService() {
-
-            @Override
-            public void save(IEditingContext editingContext, ISemanticRepresentation representation) {
-            }
-        };
-
-        RenameDiagramEventHandler handler = new RenameDiagramEventHandler(representationSearchService, representationPersistenceService, new NoOpCollaborativeDiagramMessageService(),
+        RenameDiagramEventHandler handler = new RenameDiagramEventHandler(representationSearchService, new IRepresentationPersistenceService.NoOp(), new ICollaborativeDiagramMessageService.NoOp(),
                 new SimpleMeterRegistry());
 
         var input = new RenameDiagramInput(UUID.randomUUID(), projectId, representationId, NEW_LABEL);

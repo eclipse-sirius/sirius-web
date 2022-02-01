@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,4 +30,22 @@ public interface IDiagramDescriptionService {
 
     Optional<EdgeDescription> findEdgeDescriptionById(DiagramDescription diagramDescription, UUID edgeDescriptionId);
 
+    /**
+     * Implementation which does nothing, used for mocks in unit tests.
+     *
+     * @author sbegaudeau
+     */
+    class NoOp implements IDiagramDescriptionService {
+
+        @Override
+        public Optional<NodeDescription> findNodeDescriptionById(DiagramDescription diagramDescription, UUID nodeDescriptionId) {
+            return Optional.empty();
+        }
+
+        @Override
+        public Optional<EdgeDescription> findEdgeDescriptionById(DiagramDescription diagramDescription, UUID edgeDescriptionId) {
+            return Optional.empty();
+        }
+
+    }
 }
