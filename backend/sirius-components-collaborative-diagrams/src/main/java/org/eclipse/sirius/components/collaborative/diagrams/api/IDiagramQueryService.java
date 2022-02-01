@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo and others.
+ * Copyright (c) 2021, 2022 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,5 +32,34 @@ public interface IDiagramQueryService {
     Optional<Edge> findEdgeById(Diagram diagram, String edgeId);
 
     Optional<Edge> findEdgeByLabelId(Diagram diagram, String labelId);
+
+    /**
+     * Implementation which does nothing, used for mocks in unit tests.
+     *
+     * @author sbegaudeau
+     */
+    class NoOp implements IDiagramQueryService {
+
+        @Override
+        public Optional<Node> findNodeById(Diagram diagram, String nodeId) {
+            return Optional.empty();
+        }
+
+        @Override
+        public Optional<Node> findNodeByLabelId(Diagram diagram, String labelId) {
+            return Optional.empty();
+        }
+
+        @Override
+        public Optional<Edge> findEdgeById(Diagram diagram, String edgeId) {
+            return Optional.empty();
+        }
+
+        @Override
+        public Optional<Edge> findEdgeByLabelId(Diagram diagram, String labelId) {
+            return Optional.empty();
+        }
+
+    }
 
 }

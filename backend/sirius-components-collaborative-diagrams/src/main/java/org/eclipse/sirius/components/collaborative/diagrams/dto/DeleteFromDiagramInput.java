@@ -14,6 +14,7 @@ package org.eclipse.sirius.components.collaborative.diagrams.dto;
 
 import java.text.MessageFormat;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
@@ -36,6 +37,19 @@ public final class DeleteFromDiagramInput implements IDiagramInput {
     private List<String> edgeIds;
 
     private DeletionPolicy deletionPolicy;
+
+    public DeleteFromDiagramInput() {
+        // Used by Jackson
+    }
+
+    public DeleteFromDiagramInput(UUID id, String editingContextId, String representationId, List<String> nodeIds, List<String> edgeIds, DeletionPolicy deletionPolicy) {
+        this.id = Objects.requireNonNull(id);
+        this.editingContextId = Objects.requireNonNull(editingContextId);
+        this.representationId = Objects.requireNonNull(representationId);
+        this.nodeIds = Objects.requireNonNull(nodeIds);
+        this.edgeIds = Objects.requireNonNull(edgeIds);
+        this.deletionPolicy = Objects.requireNonNull(deletionPolicy);
+    }
 
     @Override
     public UUID getId() {
