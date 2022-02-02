@@ -602,13 +602,13 @@ export const DiagramWebSocketContainer = ({
       diagramServer.actionDispatcher.dispatch(selectSprottyAction);
     };
 
-    const getCursorOn = (element, diagramServer) => {
+    const getCursorOn = (element, diagramServer: DiagramServer) => {
       let cursor = 'pointer';
-      if (diagramServer.diagramSourceElement) {
+      if (diagramServer.diagramSource) {
         if (diagramServer.activeConnectorTools.length > 0) {
           const cursorAllowed = atLeastOneCanInvokeEdgeTool(
             diagramServer.activeConnectorTools,
-            diagramServer.diagramSourceElement,
+            diagramServer.diagramSource,
             element
           );
           if (cursorAllowed) {
@@ -617,7 +617,7 @@ export const DiagramWebSocketContainer = ({
             cursor = 'not-allowed';
           }
         } else if (diagramServer.activeTool) {
-          const cursorAllowed = canInvokeTool(diagramServer.activeTool, diagramServer.diagramSourceElement, element);
+          const cursorAllowed = canInvokeTool(diagramServer.activeTool, diagramServer.diagramSource, element);
           if (cursorAllowed) {
             cursor = 'copy';
           } else {
