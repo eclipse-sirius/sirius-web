@@ -10,7 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Bounds, CreateEdgeTool, GQLDeletionPolicy, Menu, Palette } from 'diagram/DiagramWebSocketContainer.types';
+import {
+  Bounds,
+  CreateEdgeTool,
+  GQLDeletionPolicy,
+  Menu,
+  Palette,
+  Tool,
+} from 'diagram/DiagramWebSocketContainer.types';
 import { convertDiagram } from 'diagram/sprotty/convertDiagram';
 import { SEditableLabel } from 'diagram/sprotty/DependencyInjection';
 import {
@@ -100,7 +107,7 @@ export class DiagramServer extends ModelSource {
   logger: ILogger;
   mousePositionTracker: MousePositionTracker;
   modelFactory: IModelFactory;
-  activeTool;
+  activeTool: Tool;
   activeConnectorTools: CreateEdgeTool[];
   editLabel;
   moveElement;
