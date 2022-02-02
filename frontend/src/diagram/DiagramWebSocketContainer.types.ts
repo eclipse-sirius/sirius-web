@@ -190,6 +190,10 @@ export interface GQLINodeStyle {
 
 export interface GQLImageNodeStyle extends GQLINodeStyle {
   imageURL: string;
+  borderColor: string;
+  borderRadius: number;
+  borderSize: number;
+  borderStyle: GQLLineStyle;
 }
 
 export interface GQLListNodeStyle extends GQLINodeStyle {

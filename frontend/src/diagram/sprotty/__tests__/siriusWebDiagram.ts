@@ -76,6 +76,10 @@ export const siriusWebDiagram: GQLDiagram = {
       style: {
         __typename: 'ImageNodeStyle',
         imageURL: '/api/images/images/antenna.svg',
+        borderSize: 1,
+        borderRadius: 2,
+        borderColor: 'red',
+        borderStyle: GQLLineStyle.Solid,
       } as GQLImageNodeStyle,
       position: {
         x: 314,
@@ -126,8 +130,9 @@ export const siriusWebDiagram: GQLDiagram = {
         __typename: 'RectangularNodeStyle',
         color: '#f0f0f0',
         borderColor: '#b1bcbe',
-        borderStyle: GQLLineStyle.Solid,
+        borderStyle: GQLLineStyle.Dash,
         borderSize: 1,
+        borderRadius: 5,
       } as GQLRectangularNodeStyle,
       position: {
         x: 483,
@@ -175,6 +180,10 @@ export const siriusWebDiagram: GQLDiagram = {
           style: {
             __typename: 'ImageNodeStyle',
             imageURL: '/api/images/images/power_output.svg',
+            borderSize: 0,
+            borderRadius: 0,
+            borderColor: '',
+            borderStyle: GQLLineStyle.Dash,
           } as GQLImageNodeStyle,
           position: {
             x: -30,
@@ -226,6 +235,10 @@ export const siriusWebDiagram: GQLDiagram = {
           style: {
             __typename: 'ImageNodeStyle',
             imageURL: '/api/images/images/chipset_standard.svg',
+            borderSize: 0,
+            borderRadius: 0,
+            borderColor: '',
+            borderStyle: GQLLineStyle.Dash_Dot,
           } as GQLImageNodeStyle,
           position: {
             x: 86,
@@ -275,7 +288,11 @@ export const siriusWebDiagram: GQLDiagram = {
           style: {
             __typename: 'ImageNodeStyle',
             imageURL: '/api/images/images/chipset2_high.svg',
-          },
+            borderSize: 0,
+            borderRadius: 0,
+            borderColor: '',
+            borderStyle: GQLLineStyle.Solid,
+          } as GQLImageNodeStyle,
           position: {
             x: 180,
             y: 58.6982421875,
@@ -324,7 +341,11 @@ export const siriusWebDiagram: GQLDiagram = {
           style: {
             __typename: 'ImageNodeStyle',
             imageURL: '/api/images/images/fan.svg',
-          },
+            borderSize: 0,
+            borderRadius: 0,
+            borderColor: '',
+            borderStyle: GQLLineStyle.Solid,
+          } as GQLImageNodeStyle,
           position: {
             x: 12,
             y: 65.1982421875,
@@ -425,7 +446,11 @@ export const siriusWebDiagram: GQLDiagram = {
           style: {
             __typename: 'ImageNodeStyle',
             imageURL: '/api/images/images/power_input.svg',
-          },
+            borderSize: 0,
+            borderRadius: 0,
+            borderColor: '',
+            borderStyle: GQLLineStyle.Solid,
+          } as GQLImageNodeStyle,
           position: {
             x: -30,
             y: 28.4990234375,
@@ -476,7 +501,11 @@ export const siriusWebDiagram: GQLDiagram = {
           style: {
             __typename: 'ImageNodeStyle',
             imageURL: '/api/images/images/cpu_standard.svg',
-          },
+            borderSize: 0,
+            borderRadius: 0,
+            borderColor: '',
+            borderStyle: GQLLineStyle.Solid,
+          } as GQLImageNodeStyle,
           position: {
             x: 136,
             y: 53.34003915810084,
@@ -525,7 +554,11 @@ export const siriusWebDiagram: GQLDiagram = {
           style: {
             __typename: 'ImageNodeStyle',
             imageURL: '/api/images/images/chipset2_standard.svg',
-          },
+            borderSize: 0,
+            borderRadius: 0,
+            borderColor: '',
+            borderStyle: GQLLineStyle.Solid,
+          } as GQLImageNodeStyle,
           position: {
             x: 240,
             y: 106.53925790810084,
@@ -574,7 +607,11 @@ export const siriusWebDiagram: GQLDiagram = {
           style: {
             __typename: 'ImageNodeStyle',
             imageURL: '/api/images/images/cpu_standard.svg',
-          },
+            borderSize: 0,
+            borderRadius: 0,
+            borderColor: '',
+            borderStyle: GQLLineStyle.Solid,
+          } as GQLImageNodeStyle,
           position: {
             x: 136,
             y: 184.32137814757868,
@@ -623,7 +660,11 @@ export const siriusWebDiagram: GQLDiagram = {
           style: {
             __typename: 'ImageNodeStyle',
             imageURL: '/api/images/images/camera.svg',
-          },
+            borderSize: 0,
+            borderRadius: 0,
+            borderColor: '',
+            borderStyle: GQLLineStyle.Solid,
+          } as GQLImageNodeStyle,
           position: {
             x: 32,
             y: 182.18105487870167,
@@ -672,7 +713,11 @@ export const siriusWebDiagram: GQLDiagram = {
           style: {
             __typename: 'ImageNodeStyle',
             imageURL: '/api/images/images/radar.svg',
-          },
+            borderSize: 0,
+            borderRadius: 0,
+            borderColor: '',
+            borderStyle: GQLLineStyle.Solid,
+          } as GQLImageNodeStyle,
           position: {
             x: 12,
             y: 42.6982421875,
@@ -721,7 +766,11 @@ export const siriusWebDiagram: GQLDiagram = {
           style: {
             __typename: 'ImageNodeStyle',
             imageURL: '/api/images/images/fan.svg',
-          },
+            borderSize: 0,
+            borderRadius: 0,
+            borderColor: '',
+            borderStyle: GQLLineStyle.Solid,
+          } as GQLImageNodeStyle,
           position: {
             x: 52,
             y: 304.6609201664557,

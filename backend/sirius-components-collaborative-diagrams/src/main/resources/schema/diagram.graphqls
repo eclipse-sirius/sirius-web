@@ -65,6 +65,10 @@ union INodeStyle = ImageNodeStyle | ListItemNodeStyle | ListNodeStyle | Rectangu
 
 type ImageNodeStyle {
   imageURL: String!
+  borderColor: String!
+  borderRadius: Int!
+  borderSize: Int!
+  borderStyle: LineStyle!
 }
 
 type ListNodeStyle {

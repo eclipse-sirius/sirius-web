@@ -15,9 +15,12 @@ package org.eclipse.sirius.components.compatibility.diagrams;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
+import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.interpreter.Result;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.diagram.description.style.ContainerStyleDescription;
+import org.eclipse.sirius.diagram.description.style.StylePackage;
 import org.eclipse.sirius.diagram.description.style.WorkspaceImageDescription;
 import org.eclipse.sirius.viewpoint.description.EAttributeCustomization;
 
@@ -58,12 +61,36 @@ public class WorkspaceImageDescriptionConverter {
         Result scalingFactorResult = this.interpreter.evaluateExpression(this.variableManager.getVariables(), this.workspaceImageDescription.getSizeComputationExpression());
         int scalingFactor = scalingFactorResult.asInt().orElse(DEFAULT_SCALING_FACTOR);
 
+        ColorDescriptionConverter colorDescriptionConverter = new ColorDescriptionConverter(this.interpreter, this.variableManager.getVariables());
+        String borderColor = colorDescriptionConverter.convert(this.workspaceImageDescription.getBorderColor());
+        LineStyle borderStyle = new LineStyleConverter().getStyle(this.workspaceImageDescription.getBorderLineStyle());
+        int borderRadius = this.getBorderRadius(this.workspaceImageDescription);
+        Result result = this.interpreter.evaluateExpression(this.variableManager.getVariables(), this.workspaceImageDescription.getBorderSizeComputationExpression());
+        int borderSize = result.asInt().getAsInt();
+
         // @formatter:off
         return ImageNodeStyle.newImageNodeStyle()
                 .imageURL(workspacePath.substring(workspacePath.indexOf('/', 1)))
                 .scalingFactor(scalingFactor)
+                .borderColor(borderColor)
+                .borderRadius(borderRadius)
+                .borderSize(borderSize)
+                .borderStyle(borderStyle)
                 .build();
         // @formatter:on
+    }
+
+    private int getBorderRadius(ContainerStyleDescription containerStyleDescription) {
+        int borderRadius = 0;
+        if (containerStyleDescription.isRoundedCorner()) {
+            if (containerStyleDescription.eIsSet(StylePackage.Literals.ROUNDED_CORNER_STYLE_DESCRIPTION__ARC_HEIGHT)) {
+                borderRadius = Math.max(borderRadius, containerStyleDescription.getArcHeight());
+            }
+            if (containerStyleDescription.eIsSet(StylePackage.Literals.ROUNDED_CORNER_STYLE_DESCRIPTION__ARC_WIDTH)) {
+                borderRadius = Math.max(borderRadius, containerStyleDescription.getArcWidth());
+            }
+        }
+        return borderRadius;
     }
 
 }

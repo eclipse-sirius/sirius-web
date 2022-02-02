@@ -85,25 +85,35 @@ public class ImageRegistry {
 
     private StringBuilder getReferencedImage(URI imageURI, UUID symbolId) {
         HttpRequest request = HttpRequest.newBuilder().uri(imageURI).GET().build();
-        Optional<String> imageType = this.getImageType(imageURI);
-        if (!imageType.isPresent()) {
-            this.logger.warn("The type of the image at URI " + imageURI + " is not valid."); //$NON-NLS-1$ //$NON-NLS-2$
-        } else {
-            try {
-                byte[] content = this.imageFetcher.send(request, BodyHandlers.ofByteArray()).body();
-                return this.addSymbolElement(symbolId, imageType.get(), content);
-            } catch (IOException | InterruptedException e) {
-                this.logger.warn(e.getMessage(), e);
+
+        try {
+            Optional<String> imageType = Optional.empty();
+
+            byte[] byteContent = this.imageFetcher.send(request, BodyHandlers.ofByteArray()).body();
+            String content = new String(byteContent);
+            if (content.contains("<svg")) { //$NON-NLS-1$
+                imageType = Optional.of("svg"); //$NON-NLS-1$
+            } else {
+                imageType = this.getImageType(imageURI);
             }
+
+            if (!imageType.isPresent()) {
+                this.logger.warn("The type of the image at URI " + imageURI + " is not valid."); //$NON-NLS-1$ //$NON-NLS-2$
+            } else {
+                return this.addSymbolElement(symbolId, imageType.get(), byteContent);
+            }
+        } catch (IOException | InterruptedException e) {
+            this.logger.warn(e.getMessage(), e);
         }
         return new StringBuilder();
+
     }
 
     private StringBuilder addSymbolElement(UUID symbolId, String imageType, byte[] content) {
         StringBuilder symbol = new StringBuilder();
         symbol.append("<symbol id=\"" + symbolId + "\">"); //$NON-NLS-1$ //$NON-NLS-2$
         if ("svg".equals(imageType)) { //$NON-NLS-1$
-            symbol.append(new String(content));
+            symbol.append(this.updateSvgContent(content));
         } else {
             symbol.append("<image xlink:href=\"data:image/" + imageType + ";charset=utf-8;base64,"); //$NON-NLS-1$ //$NON-NLS-2$
             String encodedString = Base64.getEncoder().encodeToString(content);
@@ -111,6 +121,19 @@ public class ImageRegistry {
             symbol.append("\"/>"); //$NON-NLS-1$
         }
         return symbol.append("</symbol>"); //$NON-NLS-1$
+    }
+
+    private String updateSvgContent(byte[] content) {
+        String xmlDeclaration = "<\\?xml.*?\\?>"; //$NON-NLS-1$
+
+        String cleanSvgString = new String(content).replaceAll(xmlDeclaration, ""); //$NON-NLS-1$
+
+        String svgWidthPattern = "width=\".*?\""; //$NON-NLS-1$
+        cleanSvgString = cleanSvgString.replaceFirst(svgWidthPattern, ""); //$NON-NLS-1$
+        String svgHeightPattern = "height=\".*?\""; //$NON-NLS-1$
+        cleanSvgString = cleanSvgString.replaceFirst(svgHeightPattern, ""); //$NON-NLS-1$
+
+        return cleanSvgString;
     }
 
     private Optional<String> getImageType(URI imageURI) {
