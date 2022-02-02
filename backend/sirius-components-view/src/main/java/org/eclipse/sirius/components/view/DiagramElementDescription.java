@@ -26,9 +26,11 @@ import org.eclipse.emf.ecore.EObject;
  * <li>{@link org.eclipse.sirius.components.view.DiagramElementDescription#getDomainType <em>Domain Type</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.DiagramElementDescription#getSemanticCandidatesExpression <em>Semantic
  * Candidates Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.DiagramElementDescription#getLabelExpression <em>Label Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.DiagramElementDescription#getLabelExpression <em>Label
+ * Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.DiagramElementDescription#getDeleteTool <em>Delete Tool</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.DiagramElementDescription#getLabelEditTool <em>Label Edit Tool</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.DiagramElementDescription#getLabelEditTool <em>Label Edit
+ * Tool</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.DiagramElementDescription#getSynchronizationPolicy <em>Synchronization
  * Policy</em>}</li>
  * </ul>
@@ -51,8 +53,8 @@ public interface DiagramElementDescription extends EObject {
     String getName();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.DiagramElementDescription#getName <em>Name</em>}'
-     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.DiagramElementDescription#getName
+     * <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
      *            the new value of the '<em>Name</em>' attribute.
@@ -73,8 +75,8 @@ public interface DiagramElementDescription extends EObject {
     String getDomainType();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.DiagramElementDescription#getDomainType <em>Domain
-     * Type</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.DiagramElementDescription#getDomainType
+     * <em>Domain Type</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
      *            the new value of the '<em>Domain Type</em>' attribute.
@@ -120,8 +122,8 @@ public interface DiagramElementDescription extends EObject {
     String getLabelExpression();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.DiagramElementDescription#getLabelExpression <em>Label
-     * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.DiagramElementDescription#getLabelExpression
+     * <em>Label Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
      *            the new value of the '<em>Label Expression</em>' attribute.
@@ -143,8 +145,8 @@ public interface DiagramElementDescription extends EObject {
     DeleteTool getDeleteTool();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.DiagramElementDescription#getDeleteTool <em>Delete
-     * Tool</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.DiagramElementDescription#getDeleteTool
+     * <em>Delete Tool</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
      *            the new value of the '<em>Delete Tool</em>' containment reference.
@@ -166,8 +168,8 @@ public interface DiagramElementDescription extends EObject {
     LabelEditTool getLabelEditTool();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.DiagramElementDescription#getLabelEditTool <em>Label
-     * Edit Tool</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.DiagramElementDescription#getLabelEditTool
+     * <em>Label Edit Tool</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
      *            the new value of the '<em>Label Edit Tool</em>' containment reference.
@@ -178,8 +180,8 @@ public interface DiagramElementDescription extends EObject {
 
     /**
      * Returns the value of the '<em><b>Synchronization Policy</b></em>' attribute. The literals are from the
-     * enumeration {@link org.eclipse.sirius.components.view.SynchronizationPolicy}. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
+     * enumeration {@link org.eclipse.sirius.components.view.SynchronizationPolicy}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
      *
      * @return the value of the '<em>Synchronization Policy</em>' attribute.
      * @see org.eclipse.sirius.components.view.SynchronizationPolicy
@@ -191,8 +193,9 @@ public interface DiagramElementDescription extends EObject {
     SynchronizationPolicy getSynchronizationPolicy();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.DiagramElementDescription#getSynchronizationPolicy
-     * <em>Synchronization Policy</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Sets the value of the
+     * '{@link org.eclipse.sirius.components.view.DiagramElementDescription#getSynchronizationPolicy <em>Synchronization
+     * Policy</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
      *            the new value of the '<em>Synchronization Policy</em>' attribute.

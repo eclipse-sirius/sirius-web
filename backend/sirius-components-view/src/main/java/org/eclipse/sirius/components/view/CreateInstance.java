@@ -87,8 +87,8 @@ public interface CreateInstance extends Operation {
     String getVariableName();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.CreateInstance#getVariableName <em>Variable Name</em>}'
-     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.CreateInstance#getVariableName <em>Variable
+     * Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
      *            the new value of the '<em>Variable Name</em>' attribute.

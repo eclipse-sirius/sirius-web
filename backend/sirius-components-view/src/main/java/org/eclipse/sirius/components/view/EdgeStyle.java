@@ -29,11 +29,11 @@ package org.eclipse.sirius.components.view;
  * @model
  * @generated
  */
-public interface EdgeStyle extends Style {
+public interface EdgeStyle extends Style, LabelStyle {
     /**
      * Returns the value of the '<em><b>Line Style</b></em>' attribute. The default value is <code>"Solid"</code>. The
-     * literals are from the enumeration {@link org.eclipse.sirius.components.view.LineStyle}. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * literals are from the enumeration {@link org.eclipse.sirius.components.view.LineStyle}. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
      *
      * @return the value of the '<em>Line Style</em>' attribute.
      * @see org.eclipse.sirius.components.view.LineStyle
@@ -45,8 +45,8 @@ public interface EdgeStyle extends Style {
     LineStyle getLineStyle();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.EdgeStyle#getLineStyle <em>Line Style</em>}' attribute.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.EdgeStyle#getLineStyle <em>Line Style</em>}'
+     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
      *            the new value of the '<em>Line Style</em>' attribute.
@@ -58,8 +58,8 @@ public interface EdgeStyle extends Style {
 
     /**
      * Returns the value of the '<em><b>Source Arrow Style</b></em>' attribute. The default value is
-     * <code>"None"</code>. The literals are from the enumeration {@link org.eclipse.sirius.components.view.ArrowStyle}. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * <code>"None"</code>. The literals are from the enumeration {@link org.eclipse.sirius.components.view.ArrowStyle}.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Source Arrow Style</em>' attribute.
      * @see org.eclipse.sirius.components.view.ArrowStyle
@@ -84,14 +84,14 @@ public interface EdgeStyle extends Style {
 
     /**
      * Returns the value of the '<em><b>Target Arrow Style</b></em>' attribute. The default value is
-     * <code>"None"</code>. The literals are from the enumeration {@link org.eclipse.sirius.components.view.ArrowStyle}. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * <code>"InputArrow"</code>. The literals are from the enumeration
+     * {@link org.eclipse.sirius.components.view.ArrowStyle}. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Target Arrow Style</em>' attribute.
      * @see org.eclipse.sirius.components.view.ArrowStyle
      * @see #setTargetArrowStyle(ArrowStyle)
      * @see org.eclipse.sirius.components.view.ViewPackage#getEdgeStyle_TargetArrowStyle()
-     * @model default="None" required="true"
+     * @model default="InputArrow" required="true"
      * @generated
      */
     ArrowStyle getTargetArrowStyle();
@@ -121,8 +121,8 @@ public interface EdgeStyle extends Style {
     int getEdgeWidth();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.EdgeStyle#getEdgeWidth <em>Edge Width</em>}' attribute.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.EdgeStyle#getEdgeWidth <em>Edge Width</em>}'
+     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
      *            the new value of the '<em>Edge Width</em>' attribute.

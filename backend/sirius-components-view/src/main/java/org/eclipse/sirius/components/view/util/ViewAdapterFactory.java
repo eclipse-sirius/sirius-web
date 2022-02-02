@@ -16,6 +16,7 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.sirius.components.view.BorderStyle;
 import org.eclipse.sirius.components.view.ChangeContext;
 import org.eclipse.sirius.components.view.Conditional;
 import org.eclipse.sirius.components.view.ConditionalEdgeStyle;
@@ -129,6 +130,11 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseLabelStyle(LabelStyle object) {
             return ViewAdapterFactory.this.createLabelStyleAdapter();
+        }
+
+        @Override
+        public Adapter caseBorderStyle(BorderStyle object) {
+            return ViewAdapterFactory.this.createBorderStyleAdapter();
         }
 
         @Override
@@ -251,9 +257,9 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.View <em>View</em>}'. <!--
-     * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful to
-     * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.View <em>View</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
      * @see org.eclipse.sirius.components.view.View
@@ -278,9 +284,10 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.DiagramDescription <em>Diagram
-     * Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
-     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.DiagramDescription
+     * <em>Diagram Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
      *
      * @return the new adapter.
      * @see org.eclipse.sirius.components.view.DiagramDescription
@@ -344,9 +351,22 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.Style <em>Style</em>}'. <!--
-     * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful to
-     * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.BorderStyle <em>Border
+     * Style</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.BorderStyle
+     * @generated
+     */
+    public Adapter createBorderStyleAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.Style <em>Style</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
      * @see org.eclipse.sirius.components.view.Style
@@ -357,9 +377,9 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.NodeStyle <em>Node Style</em>}'.
-     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
-     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.NodeStyle <em>Node
+     * Style</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
      * @see org.eclipse.sirius.components.view.NodeStyle
@@ -370,9 +390,9 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.EdgeStyle <em>Edge Style</em>}'.
-     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
-     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.EdgeStyle <em>Edge
+     * Style</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
      * @see org.eclipse.sirius.components.view.EdgeStyle
@@ -383,9 +403,9 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.Tool <em>Tool</em>}'. <!--
-     * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful to
-     * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.Tool <em>Tool</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
      * @see org.eclipse.sirius.components.view.Tool
@@ -396,9 +416,9 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.LabelEditTool <em>Label Edit
-     * Tool</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.LabelEditTool <em>Label
+     * Edit Tool</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
      * @see org.eclipse.sirius.components.view.LabelEditTool
@@ -422,9 +442,9 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.NodeTool <em>Node Tool</em>}'.
-     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
-     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.NodeTool <em>Node
+     * Tool</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
      * @see org.eclipse.sirius.components.view.NodeTool
@@ -435,9 +455,9 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.EdgeTool <em>Edge Tool</em>}'.
-     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
-     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.EdgeTool <em>Edge
+     * Tool</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
      * @see org.eclipse.sirius.components.view.EdgeTool
@@ -448,9 +468,9 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.DropTool <em>Drop Tool</em>}'.
-     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
-     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.DropTool <em>Drop
+     * Tool</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
      * @see org.eclipse.sirius.components.view.DropTool
@@ -461,9 +481,10 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.Operation <em>Operation</em>}'.
-     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
-     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.Operation
+     * <em>Operation</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
      *
      * @return the new adapter.
      * @see org.eclipse.sirius.components.view.Operation
@@ -500,9 +521,9 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.SetValue <em>Set Value</em>}'.
-     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
-     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.SetValue <em>Set
+     * Value</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
      * @see org.eclipse.sirius.components.view.SetValue

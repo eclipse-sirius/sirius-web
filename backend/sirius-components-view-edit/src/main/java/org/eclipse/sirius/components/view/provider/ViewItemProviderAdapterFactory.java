@@ -86,8 +86,8 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     protected ViewItemProvider viewItemProvider;
 
     /**
-     * This creates an adapter for a {@link org.eclipse.sirius.components.view.View}. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.View}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
      *
      * @generated
      */
@@ -109,8 +109,8 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     protected DiagramDescriptionItemProvider diagramDescriptionItemProvider;
 
     /**
-     * This creates an adapter for a {@link org.eclipse.sirius.components.view.DiagramDescription}. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.DiagramDescription}. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -124,16 +124,16 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.NodeDescription} instances.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.NodeDescription}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     protected NodeDescriptionItemProvider nodeDescriptionItemProvider;
 
     /**
-     * This creates an adapter for a {@link org.eclipse.sirius.components.view.NodeDescription}. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.NodeDescription}. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
      *
      * @generated
      */
@@ -147,16 +147,16 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.EdgeDescription} instances.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.EdgeDescription}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     protected EdgeDescriptionItemProvider edgeDescriptionItemProvider;
 
     /**
-     * This creates an adapter for a {@link org.eclipse.sirius.components.view.EdgeDescription}. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.EdgeDescription}. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
      *
      * @generated
      */
@@ -170,8 +170,8 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.NodeStyle} instances. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.NodeStyle} instances.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -193,8 +193,8 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.EdgeStyle} instances. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.EdgeStyle} instances.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -216,16 +216,16 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.LabelEditTool} instances.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.LabelEditTool}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     protected LabelEditToolItemProvider labelEditToolItemProvider;
 
     /**
-     * This creates an adapter for a {@link org.eclipse.sirius.components.view.LabelEditTool}. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.LabelEditTool}. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
      *
      * @generated
      */
@@ -239,8 +239,8 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.DeleteTool} instances. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.DeleteTool} instances.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -262,8 +262,8 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.NodeTool} instances. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.NodeTool} instances.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -285,8 +285,8 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.EdgeTool} instances. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.EdgeTool} instances.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -308,8 +308,8 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.DropTool} instances. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.DropTool} instances.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -331,16 +331,16 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.ChangeContext} instances.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.ChangeContext}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     protected ChangeContextItemProvider changeContextItemProvider;
 
     /**
-     * This creates an adapter for a {@link org.eclipse.sirius.components.view.ChangeContext}. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.ChangeContext}. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
      *
      * @generated
      */
@@ -354,16 +354,16 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.CreateInstance} instances.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.CreateInstance}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     protected CreateInstanceItemProvider createInstanceItemProvider;
 
     /**
-     * This creates an adapter for a {@link org.eclipse.sirius.components.view.CreateInstance}. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.CreateInstance}. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
      *
      * @generated
      */
@@ -377,8 +377,8 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.SetValue} instances. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.SetValue} instances.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -400,8 +400,8 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.UnsetValue} instances. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.UnsetValue} instances.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -423,16 +423,16 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.DeleteElement} instances.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.DeleteElement}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     protected DeleteElementItemProvider deleteElementItemProvider;
 
     /**
-     * This creates an adapter for a {@link org.eclipse.sirius.components.view.DeleteElement}. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.DeleteElement}. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
      *
      * @generated
      */
@@ -446,8 +446,8 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.CreateView} instances. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.CreateView} instances.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -469,8 +469,8 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.DeleteView} instances. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.DeleteView} instances.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -500,8 +500,8 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     protected ConditionalNodeStyleItemProvider conditionalNodeStyleItemProvider;
 
     /**
-     * This creates an adapter for a {@link org.eclipse.sirius.components.view.ConditionalNodeStyle}. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.ConditionalNodeStyle}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -523,8 +523,8 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     protected ConditionalEdgeStyleItemProvider conditionalEdgeStyleItemProvider;
 
     /**
-     * This creates an adapter for a {@link org.eclipse.sirius.components.view.ConditionalEdgeStyle}. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.ConditionalEdgeStyle}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */

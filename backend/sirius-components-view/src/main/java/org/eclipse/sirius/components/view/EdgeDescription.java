@@ -51,8 +51,8 @@ public interface EdgeDescription extends DiagramElementDescription {
     String getBeginLabelExpression();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.EdgeDescription#getBeginLabelExpression <em>Begin Label
-     * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.EdgeDescription#getBeginLabelExpression
+     * <em>Begin Label Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
      *            the new value of the '<em>Begin Label Expression</em>' attribute.
@@ -74,8 +74,8 @@ public interface EdgeDescription extends DiagramElementDescription {
     String getEndLabelExpression();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.EdgeDescription#getEndLabelExpression <em>End Label
-     * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.EdgeDescription#getEndLabelExpression <em>End
+     * Label Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
      *            the new value of the '<em>End Label Expression</em>' attribute.
@@ -97,8 +97,8 @@ public interface EdgeDescription extends DiagramElementDescription {
     boolean isIsDomainBasedEdge();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.EdgeDescription#isIsDomainBasedEdge <em>Is Domain Based
-     * Edge</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.EdgeDescription#isIsDomainBasedEdge <em>Is
+     * Domain Based Edge</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
      *            the new value of the '<em>Is Domain Based Edge</em>' attribute.
@@ -142,8 +142,8 @@ public interface EdgeDescription extends DiagramElementDescription {
     String getSourceNodesExpression();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.EdgeDescription#getSourceNodesExpression <em>Source
-     * Nodes Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.EdgeDescription#getSourceNodesExpression
+     * <em>Source Nodes Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
      *            the new value of the '<em>Source Nodes Expression</em>' attribute.
@@ -165,8 +165,8 @@ public interface EdgeDescription extends DiagramElementDescription {
     String getTargetNodesExpression();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.EdgeDescription#getTargetNodesExpression <em>Target
-     * Nodes Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.EdgeDescription#getTargetNodesExpression
+     * <em>Target Nodes Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
      *            the new value of the '<em>Target Nodes Expression</em>' attribute.
@@ -188,8 +188,8 @@ public interface EdgeDescription extends DiagramElementDescription {
     EdgeStyle getStyle();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.EdgeDescription#getStyle <em>Style</em>}' containment
-     * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.EdgeDescription#getStyle <em>Style</em>}'
+     * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
      *            the new value of the '<em>Style</em>' containment reference.
@@ -211,7 +211,8 @@ public interface EdgeDescription extends DiagramElementDescription {
 
     /**
      * Returns the value of the '<em><b>Conditional Styles</b></em>' containment reference list. The list contents are
-     * of type {@link org.eclipse.sirius.components.view.ConditionalEdgeStyle}. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * of type {@link org.eclipse.sirius.components.view.ConditionalEdgeStyle}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
      *
      * @return the value of the '<em>Conditional Styles</em>' containment reference list.
      * @see org.eclipse.sirius.components.view.ViewPackage#getEdgeDescription_ConditionalStyles()

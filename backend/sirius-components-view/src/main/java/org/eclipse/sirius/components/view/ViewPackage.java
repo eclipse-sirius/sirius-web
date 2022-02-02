@@ -257,8 +257,8 @@ public interface ViewPackage extends EPackage {
     int DIAGRAM_DESCRIPTION_OPERATION_COUNT = REPRESENTATION_DESCRIPTION_OPERATION_COUNT + 0;
 
     /**
-     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.DiagramElementDescriptionImpl <em>Diagram
-     * Element Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.DiagramElementDescriptionImpl
+     * <em>Diagram Element Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @see org.eclipse.sirius.components.view.impl.DiagramElementDescriptionImpl
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getDiagramElementDescription()
@@ -657,8 +657,8 @@ public interface ViewPackage extends EPackage {
     int EDGE_DESCRIPTION_OPERATION_COUNT = DIAGRAM_ELEMENT_DESCRIPTION_OPERATION_COUNT + 0;
 
     /**
-     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.LabelStyleImpl <em>Label Style</em>}' class.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.LabelStyleImpl <em>Label Style</em>}'
+     * class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @see org.eclipse.sirius.components.view.impl.LabelStyleImpl
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLabelStyle()
@@ -724,62 +724,14 @@ public interface ViewPackage extends EPackage {
     int LABEL_STYLE_OPERATION_COUNT = 0;
 
     /**
-     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.StyleImpl <em>Style</em>}' class. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.BorderStyle <em>Border Style</em>}' class.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see org.eclipse.sirius.components.view.impl.StyleImpl
-     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getStyle()
+     * @see org.eclipse.sirius.components.view.BorderStyle
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getBorderStyle()
      * @generated
      */
-    int STYLE = 7;
-
-    /**
-     * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int STYLE__FONT_SIZE = LABEL_STYLE__FONT_SIZE;
-
-    /**
-     * The feature id for the '<em><b>Italic</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int STYLE__ITALIC = LABEL_STYLE__ITALIC;
-
-    /**
-     * The feature id for the '<em><b>Bold</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int STYLE__BOLD = LABEL_STYLE__BOLD;
-
-    /**
-     * The feature id for the '<em><b>Underline</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int STYLE__UNDERLINE = LABEL_STYLE__UNDERLINE;
-
-    /**
-     * The feature id for the '<em><b>Strike Through</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int STYLE__STRIKE_THROUGH = LABEL_STYLE__STRIKE_THROUGH;
-
-    /**
-     * The feature id for the '<em><b>Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int STYLE__COLOR = LABEL_STYLE_FEATURE_COUNT + 0;
+    int BORDER_STYLE = 7;
 
     /**
      * The feature id for the '<em><b>Border Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -787,7 +739,67 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int STYLE__BORDER_COLOR = LABEL_STYLE_FEATURE_COUNT + 1;
+    int BORDER_STYLE__BORDER_COLOR = 0;
+
+    /**
+     * The feature id for the '<em><b>Border Radius</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int BORDER_STYLE__BORDER_RADIUS = 1;
+
+    /**
+     * The feature id for the '<em><b>Border Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int BORDER_STYLE__BORDER_SIZE = 2;
+
+    /**
+     * The feature id for the '<em><b>Border Line Style</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int BORDER_STYLE__BORDER_LINE_STYLE = 3;
+
+    /**
+     * The number of structural features of the '<em>Border Style</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int BORDER_STYLE_FEATURE_COUNT = 4;
+
+    /**
+     * The number of operations of the '<em>Border Style</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int BORDER_STYLE_OPERATION_COUNT = 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.StyleImpl <em>Style</em>}' class. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.StyleImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getStyle()
+     * @generated
+     */
+    int STYLE = 8;
+
+    /**
+     * The feature id for the '<em><b>Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int STYLE__COLOR = 0;
 
     /**
      * The number of structural features of the '<em>Style</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -795,7 +807,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int STYLE_FEATURE_COUNT = LABEL_STYLE_FEATURE_COUNT + 2;
+    int STYLE_FEATURE_COUNT = 1;
 
     /**
      * The number of operations of the '<em>Style</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -803,57 +815,17 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int STYLE_OPERATION_COUNT = LABEL_STYLE_OPERATION_COUNT + 0;
+    int STYLE_OPERATION_COUNT = 0;
 
     /**
-     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.NodeStyleImpl <em>Node Style</em>}' class.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.NodeStyleImpl <em>Node Style</em>}'
+     * class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @see org.eclipse.sirius.components.view.impl.NodeStyleImpl
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getNodeStyle()
      * @generated
      */
-    int NODE_STYLE = 8;
-
-    /**
-     * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int NODE_STYLE__FONT_SIZE = STYLE__FONT_SIZE;
-
-    /**
-     * The feature id for the '<em><b>Italic</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int NODE_STYLE__ITALIC = STYLE__ITALIC;
-
-    /**
-     * The feature id for the '<em><b>Bold</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int NODE_STYLE__BOLD = STYLE__BOLD;
-
-    /**
-     * The feature id for the '<em><b>Underline</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int NODE_STYLE__UNDERLINE = STYLE__UNDERLINE;
-
-    /**
-     * The feature id for the '<em><b>Strike Through</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int NODE_STYLE__STRIKE_THROUGH = STYLE__STRIKE_THROUGH;
+    int NODE_STYLE = 9;
 
     /**
      * The feature id for the '<em><b>Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -864,20 +836,52 @@ public interface ViewPackage extends EPackage {
     int NODE_STYLE__COLOR = STYLE__COLOR;
 
     /**
+     * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_STYLE__FONT_SIZE = STYLE_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Italic</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_STYLE__ITALIC = STYLE_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Bold</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_STYLE__BOLD = STYLE_FEATURE_COUNT + 2;
+
+    /**
+     * The feature id for the '<em><b>Underline</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_STYLE__UNDERLINE = STYLE_FEATURE_COUNT + 3;
+
+    /**
+     * The feature id for the '<em><b>Strike Through</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_STYLE__STRIKE_THROUGH = STYLE_FEATURE_COUNT + 4;
+
+    /**
      * The feature id for the '<em><b>Border Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int NODE_STYLE__BORDER_COLOR = STYLE__BORDER_COLOR;
-
-    /**
-     * The feature id for the '<em><b>List Mode</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int NODE_STYLE__LIST_MODE = STYLE_FEATURE_COUNT + 0;
+    int NODE_STYLE__BORDER_COLOR = STYLE_FEATURE_COUNT + 5;
 
     /**
      * The feature id for the '<em><b>Border Radius</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -885,15 +889,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_STYLE__BORDER_RADIUS = STYLE_FEATURE_COUNT + 1;
-
-    /**
-     * The feature id for the '<em><b>Shape</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int NODE_STYLE__SHAPE = STYLE_FEATURE_COUNT + 2;
+    int NODE_STYLE__BORDER_RADIUS = STYLE_FEATURE_COUNT + 6;
 
     /**
      * The feature id for the '<em><b>Border Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -901,7 +897,32 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_STYLE__BORDER_SIZE = STYLE_FEATURE_COUNT + 3;
+    int NODE_STYLE__BORDER_SIZE = STYLE_FEATURE_COUNT + 7;
+
+    /**
+     * The feature id for the '<em><b>Border Line Style</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_STYLE__BORDER_LINE_STYLE = STYLE_FEATURE_COUNT + 8;
+
+    /**
+     * The feature id for the '<em><b>List Mode</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_STYLE__LIST_MODE = STYLE_FEATURE_COUNT + 9;
+
+    /**
+     * The feature id for the '<em><b>Shape</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_STYLE__SHAPE = STYLE_FEATURE_COUNT + 10;
 
     /**
      * The feature id for the '<em><b>Label Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -909,7 +930,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_STYLE__LABEL_COLOR = STYLE_FEATURE_COUNT + 4;
+    int NODE_STYLE__LABEL_COLOR = STYLE_FEATURE_COUNT + 11;
 
     /**
      * The feature id for the '<em><b>Size Computation Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -918,7 +939,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_STYLE__SIZE_COMPUTATION_EXPRESSION = STYLE_FEATURE_COUNT + 5;
+    int NODE_STYLE__SIZE_COMPUTATION_EXPRESSION = STYLE_FEATURE_COUNT + 12;
 
     /**
      * The number of structural features of the '<em>Node Style</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
@@ -927,7 +948,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_STYLE_FEATURE_COUNT = STYLE_FEATURE_COUNT + 6;
+    int NODE_STYLE_FEATURE_COUNT = STYLE_FEATURE_COUNT + 13;
 
     /**
      * The number of operations of the '<em>Node Style</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -938,54 +959,14 @@ public interface ViewPackage extends EPackage {
     int NODE_STYLE_OPERATION_COUNT = STYLE_OPERATION_COUNT + 0;
 
     /**
-     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.EdgeStyleImpl <em>Edge Style</em>}' class.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.EdgeStyleImpl <em>Edge Style</em>}'
+     * class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @see org.eclipse.sirius.components.view.impl.EdgeStyleImpl
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getEdgeStyle()
      * @generated
      */
-    int EDGE_STYLE = 9;
-
-    /**
-     * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int EDGE_STYLE__FONT_SIZE = STYLE__FONT_SIZE;
-
-    /**
-     * The feature id for the '<em><b>Italic</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int EDGE_STYLE__ITALIC = STYLE__ITALIC;
-
-    /**
-     * The feature id for the '<em><b>Bold</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int EDGE_STYLE__BOLD = STYLE__BOLD;
-
-    /**
-     * The feature id for the '<em><b>Underline</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int EDGE_STYLE__UNDERLINE = STYLE__UNDERLINE;
-
-    /**
-     * The feature id for the '<em><b>Strike Through</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int EDGE_STYLE__STRIKE_THROUGH = STYLE__STRIKE_THROUGH;
+    int EDGE_STYLE = 10;
 
     /**
      * The feature id for the '<em><b>Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -996,12 +977,44 @@ public interface ViewPackage extends EPackage {
     int EDGE_STYLE__COLOR = STYLE__COLOR;
 
     /**
-     * The feature id for the '<em><b>Border Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int EDGE_STYLE__BORDER_COLOR = STYLE__BORDER_COLOR;
+    int EDGE_STYLE__FONT_SIZE = STYLE_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Italic</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_STYLE__ITALIC = STYLE_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Bold</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_STYLE__BOLD = STYLE_FEATURE_COUNT + 2;
+
+    /**
+     * The feature id for the '<em><b>Underline</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_STYLE__UNDERLINE = STYLE_FEATURE_COUNT + 3;
+
+    /**
+     * The feature id for the '<em><b>Strike Through</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_STYLE__STRIKE_THROUGH = STYLE_FEATURE_COUNT + 4;
 
     /**
      * The feature id for the '<em><b>Line Style</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1009,7 +1022,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int EDGE_STYLE__LINE_STYLE = STYLE_FEATURE_COUNT + 0;
+    int EDGE_STYLE__LINE_STYLE = STYLE_FEATURE_COUNT + 5;
 
     /**
      * The feature id for the '<em><b>Source Arrow Style</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -1018,7 +1031,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int EDGE_STYLE__SOURCE_ARROW_STYLE = STYLE_FEATURE_COUNT + 1;
+    int EDGE_STYLE__SOURCE_ARROW_STYLE = STYLE_FEATURE_COUNT + 6;
 
     /**
      * The feature id for the '<em><b>Target Arrow Style</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -1027,7 +1040,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int EDGE_STYLE__TARGET_ARROW_STYLE = STYLE_FEATURE_COUNT + 2;
+    int EDGE_STYLE__TARGET_ARROW_STYLE = STYLE_FEATURE_COUNT + 7;
 
     /**
      * The feature id for the '<em><b>Edge Width</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1035,7 +1048,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int EDGE_STYLE__EDGE_WIDTH = STYLE_FEATURE_COUNT + 3;
+    int EDGE_STYLE__EDGE_WIDTH = STYLE_FEATURE_COUNT + 8;
 
     /**
      * The number of structural features of the '<em>Edge Style</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
@@ -1044,7 +1057,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int EDGE_STYLE_FEATURE_COUNT = STYLE_FEATURE_COUNT + 4;
+    int EDGE_STYLE_FEATURE_COUNT = STYLE_FEATURE_COUNT + 9;
 
     /**
      * The number of operations of the '<em>Edge Style</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1062,7 +1075,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getTool()
      * @generated
      */
-    int TOOL = 10;
+    int TOOL = 11;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1098,14 +1111,14 @@ public interface ViewPackage extends EPackage {
     int TOOL_OPERATION_COUNT = 0;
 
     /**
-     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.LabelEditToolImpl <em>Label Edit Tool</em>}'
-     * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.LabelEditToolImpl <em>Label Edit
+     * Tool</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @see org.eclipse.sirius.components.view.impl.LabelEditToolImpl
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLabelEditTool()
      * @generated
      */
-    int LABEL_EDIT_TOOL = 11;
+    int LABEL_EDIT_TOOL = 12;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1134,8 +1147,9 @@ public interface ViewPackage extends EPackage {
     int LABEL_EDIT_TOOL_FEATURE_COUNT = TOOL_FEATURE_COUNT + 0;
 
     /**
-     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.DiagramDescription#isAutoLayout
-     * <em>Auto Layout</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.DiagramDescription#isAutoLayout <em>Auto Layout</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Auto Layout</em>'.
      * @see org.eclipse.sirius.components.view.DiagramDescription#isAutoLayout()
@@ -1146,8 +1160,8 @@ public interface ViewPackage extends EPackage {
 
     /**
      * Returns the meta object for the containment reference list
-     * '{@link org.eclipse.sirius.components.view.DiagramDescription#getNodeDescriptions <em>Node Descriptions</em>}'. <!--
-     * begin-user-doc --> <!-- end-user-doc --> >>>>>>> 025361a0 ([512] View DSL: Add support for layout mode
+     * '{@link org.eclipse.sirius.components.view.DiagramDescription#getNodeDescriptions <em>Node Descriptions</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc --> >>>>>>> 025361a0 ([512] View DSL: Add support for layout mode
      * configuration)
      *
      * @generated
@@ -1156,14 +1170,14 @@ public interface ViewPackage extends EPackage {
     int LABEL_EDIT_TOOL_OPERATION_COUNT = TOOL_OPERATION_COUNT + 0;
 
     /**
-     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.DeleteToolImpl <em>Delete Tool</em>}' class.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.DeleteToolImpl <em>Delete Tool</em>}'
+     * class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @see org.eclipse.sirius.components.view.impl.DeleteToolImpl
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getDeleteTool()
      * @generated
      */
-    int DELETE_TOOL = 12;
+    int DELETE_TOOL = 13;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1200,14 +1214,14 @@ public interface ViewPackage extends EPackage {
     int DELETE_TOOL_OPERATION_COUNT = TOOL_OPERATION_COUNT + 0;
 
     /**
-     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.NodeToolImpl <em>Node Tool</em>}' class. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.NodeToolImpl <em>Node Tool</em>}'
+     * class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @see org.eclipse.sirius.components.view.impl.NodeToolImpl
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getNodeTool()
      * @generated
      */
-    int NODE_TOOL = 13;
+    int NODE_TOOL = 14;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1244,14 +1258,14 @@ public interface ViewPackage extends EPackage {
     int NODE_TOOL_OPERATION_COUNT = TOOL_OPERATION_COUNT + 0;
 
     /**
-     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.EdgeToolImpl <em>Edge Tool</em>}' class. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.EdgeToolImpl <em>Edge Tool</em>}'
+     * class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @see org.eclipse.sirius.components.view.impl.EdgeToolImpl
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getEdgeTool()
      * @generated
      */
-    int EDGE_TOOL = 14;
+    int EDGE_TOOL = 15;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1288,14 +1302,14 @@ public interface ViewPackage extends EPackage {
     int EDGE_TOOL_OPERATION_COUNT = TOOL_OPERATION_COUNT + 0;
 
     /**
-     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.DropToolImpl <em>Drop Tool</em>}' class. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.DropToolImpl <em>Drop Tool</em>}'
+     * class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @see org.eclipse.sirius.components.view.impl.DropToolImpl
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getDropTool()
      * @generated
      */
-    int DROP_TOOL = 15;
+    int DROP_TOOL = 16;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1332,14 +1346,14 @@ public interface ViewPackage extends EPackage {
     int DROP_TOOL_OPERATION_COUNT = TOOL_OPERATION_COUNT + 0;
 
     /**
-     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.OperationImpl <em>Operation</em>}' class.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.OperationImpl <em>Operation</em>}'
+     * class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @see org.eclipse.sirius.components.view.impl.OperationImpl
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getOperation()
      * @generated
      */
-    int OPERATION = 16;
+    int OPERATION = 17;
 
     /**
      * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -1368,14 +1382,14 @@ public interface ViewPackage extends EPackage {
     int OPERATION_OPERATION_COUNT = 0;
 
     /**
-     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.ChangeContextImpl <em>Change Context</em>}'
-     * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.ChangeContextImpl <em>Change
+     * Context</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @see org.eclipse.sirius.components.view.impl.ChangeContextImpl
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getChangeContext()
      * @generated
      */
-    int CHANGE_CONTEXT = 17;
+    int CHANGE_CONTEXT = 18;
 
     /**
      * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -1412,14 +1426,14 @@ public interface ViewPackage extends EPackage {
     int CHANGE_CONTEXT_OPERATION_COUNT = OPERATION_OPERATION_COUNT + 0;
 
     /**
-     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.CreateInstanceImpl <em>Create Instance</em>}'
-     * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.CreateInstanceImpl <em>Create
+     * Instance</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @see org.eclipse.sirius.components.view.impl.CreateInstanceImpl
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getCreateInstance()
      * @generated
      */
-    int CREATE_INSTANCE = 18;
+    int CREATE_INSTANCE = 19;
 
     /**
      * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -1472,14 +1486,14 @@ public interface ViewPackage extends EPackage {
     int CREATE_INSTANCE_OPERATION_COUNT = OPERATION_OPERATION_COUNT + 0;
 
     /**
-     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.SetValueImpl <em>Set Value</em>}' class. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.SetValueImpl <em>Set Value</em>}'
+     * class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @see org.eclipse.sirius.components.view.impl.SetValueImpl
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getSetValue()
      * @generated
      */
-    int SET_VALUE = 19;
+    int SET_VALUE = 20;
 
     /**
      * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -1525,14 +1539,14 @@ public interface ViewPackage extends EPackage {
     int SET_VALUE_OPERATION_COUNT = OPERATION_OPERATION_COUNT + 0;
 
     /**
-     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.UnsetValueImpl <em>Unset Value</em>}' class.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.UnsetValueImpl <em>Unset Value</em>}'
+     * class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @see org.eclipse.sirius.components.view.impl.UnsetValueImpl
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getUnsetValue()
      * @generated
      */
-    int UNSET_VALUE = 20;
+    int UNSET_VALUE = 21;
 
     /**
      * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -1578,14 +1592,14 @@ public interface ViewPackage extends EPackage {
     int UNSET_VALUE_OPERATION_COUNT = OPERATION_OPERATION_COUNT + 0;
 
     /**
-     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.DeleteElementImpl <em>Delete Element</em>}'
-     * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.DeleteElementImpl <em>Delete
+     * Element</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @see org.eclipse.sirius.components.view.impl.DeleteElementImpl
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getDeleteElement()
      * @generated
      */
-    int DELETE_ELEMENT = 21;
+    int DELETE_ELEMENT = 22;
 
     /**
      * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -1614,14 +1628,14 @@ public interface ViewPackage extends EPackage {
     int DELETE_ELEMENT_OPERATION_COUNT = OPERATION_OPERATION_COUNT + 0;
 
     /**
-     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.CreateViewImpl <em>Create View</em>}' class.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.CreateViewImpl <em>Create View</em>}'
+     * class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @see org.eclipse.sirius.components.view.impl.CreateViewImpl
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getCreateView()
      * @generated
      */
-    int CREATE_VIEW = 22;
+    int CREATE_VIEW = 23;
 
     /**
      * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -1685,14 +1699,14 @@ public interface ViewPackage extends EPackage {
     int CREATE_VIEW_OPERATION_COUNT = OPERATION_OPERATION_COUNT + 0;
 
     /**
-     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.DeleteViewImpl <em>Delete View</em>}' class.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.DeleteViewImpl <em>Delete View</em>}'
+     * class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @see org.eclipse.sirius.components.view.impl.DeleteViewImpl
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getDeleteView()
      * @generated
      */
-    int DELETE_VIEW = 23;
+    int DELETE_VIEW = 24;
 
     /**
      * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -1729,14 +1743,14 @@ public interface ViewPackage extends EPackage {
     int DELETE_VIEW_OPERATION_COUNT = OPERATION_OPERATION_COUNT + 0;
 
     /**
-     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.ConditionalImpl <em>Conditional</em>}' class.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.ConditionalImpl <em>Conditional</em>}'
+     * class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @see org.eclipse.sirius.components.view.impl.ConditionalImpl
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditional()
      * @generated
      */
-    int CONDITIONAL = 24;
+    int CONDITIONAL = 25;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1764,14 +1778,14 @@ public interface ViewPackage extends EPackage {
     int CONDITIONAL_OPERATION_COUNT = 0;
 
     /**
-     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.ConditionalNodeStyleImpl <em>Conditional Node
-     * Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.ConditionalNodeStyleImpl
+     * <em>Conditional Node Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @see org.eclipse.sirius.components.view.impl.ConditionalNodeStyleImpl
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalNodeStyle()
      * @generated
      */
-    int CONDITIONAL_NODE_STYLE = 25;
+    int CONDITIONAL_NODE_STYLE = 26;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1782,12 +1796,20 @@ public interface ViewPackage extends EPackage {
     int CONDITIONAL_NODE_STYLE__CONDITION = CONDITIONAL__CONDITION;
 
     /**
+     * The feature id for the '<em><b>Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_NODE_STYLE__COLOR = CONDITIONAL_FEATURE_COUNT + 0;
+
+    /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int CONDITIONAL_NODE_STYLE__FONT_SIZE = CONDITIONAL_FEATURE_COUNT + 0;
+    int CONDITIONAL_NODE_STYLE__FONT_SIZE = CONDITIONAL_FEATURE_COUNT + 1;
 
     /**
      * The feature id for the '<em><b>Italic</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1795,7 +1817,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CONDITIONAL_NODE_STYLE__ITALIC = CONDITIONAL_FEATURE_COUNT + 1;
+    int CONDITIONAL_NODE_STYLE__ITALIC = CONDITIONAL_FEATURE_COUNT + 2;
 
     /**
      * The feature id for the '<em><b>Bold</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1803,7 +1825,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CONDITIONAL_NODE_STYLE__BOLD = CONDITIONAL_FEATURE_COUNT + 2;
+    int CONDITIONAL_NODE_STYLE__BOLD = CONDITIONAL_FEATURE_COUNT + 3;
 
     /**
      * The feature id for the '<em><b>Underline</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1811,7 +1833,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CONDITIONAL_NODE_STYLE__UNDERLINE = CONDITIONAL_FEATURE_COUNT + 3;
+    int CONDITIONAL_NODE_STYLE__UNDERLINE = CONDITIONAL_FEATURE_COUNT + 4;
 
     /**
      * The feature id for the '<em><b>Strike Through</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1819,15 +1841,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CONDITIONAL_NODE_STYLE__STRIKE_THROUGH = CONDITIONAL_FEATURE_COUNT + 4;
-
-    /**
-     * The feature id for the '<em><b>Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int CONDITIONAL_NODE_STYLE__COLOR = CONDITIONAL_FEATURE_COUNT + 5;
+    int CONDITIONAL_NODE_STYLE__STRIKE_THROUGH = CONDITIONAL_FEATURE_COUNT + 5;
 
     /**
      * The feature id for the '<em><b>Border Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1838,28 +1852,12 @@ public interface ViewPackage extends EPackage {
     int CONDITIONAL_NODE_STYLE__BORDER_COLOR = CONDITIONAL_FEATURE_COUNT + 6;
 
     /**
-     * The feature id for the '<em><b>List Mode</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int CONDITIONAL_NODE_STYLE__LIST_MODE = CONDITIONAL_FEATURE_COUNT + 7;
-
-    /**
      * The feature id for the '<em><b>Border Radius</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int CONDITIONAL_NODE_STYLE__BORDER_RADIUS = CONDITIONAL_FEATURE_COUNT + 8;
-
-    /**
-     * The feature id for the '<em><b>Shape</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int CONDITIONAL_NODE_STYLE__SHAPE = CONDITIONAL_FEATURE_COUNT + 9;
+    int CONDITIONAL_NODE_STYLE__BORDER_RADIUS = CONDITIONAL_FEATURE_COUNT + 7;
 
     /**
      * The feature id for the '<em><b>Border Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1867,7 +1865,32 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CONDITIONAL_NODE_STYLE__BORDER_SIZE = CONDITIONAL_FEATURE_COUNT + 10;
+    int CONDITIONAL_NODE_STYLE__BORDER_SIZE = CONDITIONAL_FEATURE_COUNT + 8;
+
+    /**
+     * The feature id for the '<em><b>Border Line Style</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_NODE_STYLE__BORDER_LINE_STYLE = CONDITIONAL_FEATURE_COUNT + 9;
+
+    /**
+     * The feature id for the '<em><b>List Mode</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_NODE_STYLE__LIST_MODE = CONDITIONAL_FEATURE_COUNT + 10;
+
+    /**
+     * The feature id for the '<em><b>Shape</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_NODE_STYLE__SHAPE = CONDITIONAL_FEATURE_COUNT + 11;
 
     /**
      * The feature id for the '<em><b>Label Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1875,7 +1898,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CONDITIONAL_NODE_STYLE__LABEL_COLOR = CONDITIONAL_FEATURE_COUNT + 11;
+    int CONDITIONAL_NODE_STYLE__LABEL_COLOR = CONDITIONAL_FEATURE_COUNT + 12;
 
     /**
      * The feature id for the '<em><b>Size Computation Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -1884,7 +1907,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CONDITIONAL_NODE_STYLE__SIZE_COMPUTATION_EXPRESSION = CONDITIONAL_FEATURE_COUNT + 12;
+    int CONDITIONAL_NODE_STYLE__SIZE_COMPUTATION_EXPRESSION = CONDITIONAL_FEATURE_COUNT + 13;
 
     /**
      * The number of structural features of the '<em>Conditional Node Style</em>' class. <!-- begin-user-doc --> <!--
@@ -1893,7 +1916,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CONDITIONAL_NODE_STYLE_FEATURE_COUNT = CONDITIONAL_FEATURE_COUNT + 13;
+    int CONDITIONAL_NODE_STYLE_FEATURE_COUNT = CONDITIONAL_FEATURE_COUNT + 14;
 
     /**
      * The number of operations of the '<em>Conditional Node Style</em>' class. <!-- begin-user-doc --> <!--
@@ -1905,14 +1928,14 @@ public interface ViewPackage extends EPackage {
     int CONDITIONAL_NODE_STYLE_OPERATION_COUNT = CONDITIONAL_OPERATION_COUNT + 0;
 
     /**
-     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.ConditionalEdgeStyleImpl <em>Conditional Edge
-     * Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.ConditionalEdgeStyleImpl
+     * <em>Conditional Edge Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @see org.eclipse.sirius.components.view.impl.ConditionalEdgeStyleImpl
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalEdgeStyle()
      * @generated
      */
-    int CONDITIONAL_EDGE_STYLE = 26;
+    int CONDITIONAL_EDGE_STYLE = 27;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1923,12 +1946,20 @@ public interface ViewPackage extends EPackage {
     int CONDITIONAL_EDGE_STYLE__CONDITION = CONDITIONAL__CONDITION;
 
     /**
+     * The feature id for the '<em><b>Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_EDGE_STYLE__COLOR = CONDITIONAL_FEATURE_COUNT + 0;
+
+    /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int CONDITIONAL_EDGE_STYLE__FONT_SIZE = CONDITIONAL_FEATURE_COUNT + 0;
+    int CONDITIONAL_EDGE_STYLE__FONT_SIZE = CONDITIONAL_FEATURE_COUNT + 1;
 
     /**
      * The feature id for the '<em><b>Italic</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1936,7 +1967,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CONDITIONAL_EDGE_STYLE__ITALIC = CONDITIONAL_FEATURE_COUNT + 1;
+    int CONDITIONAL_EDGE_STYLE__ITALIC = CONDITIONAL_FEATURE_COUNT + 2;
 
     /**
      * The feature id for the '<em><b>Bold</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1944,7 +1975,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CONDITIONAL_EDGE_STYLE__BOLD = CONDITIONAL_FEATURE_COUNT + 2;
+    int CONDITIONAL_EDGE_STYLE__BOLD = CONDITIONAL_FEATURE_COUNT + 3;
 
     /**
      * The feature id for the '<em><b>Underline</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1952,7 +1983,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CONDITIONAL_EDGE_STYLE__UNDERLINE = CONDITIONAL_FEATURE_COUNT + 3;
+    int CONDITIONAL_EDGE_STYLE__UNDERLINE = CONDITIONAL_FEATURE_COUNT + 4;
 
     /**
      * The feature id for the '<em><b>Strike Through</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1960,23 +1991,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CONDITIONAL_EDGE_STYLE__STRIKE_THROUGH = CONDITIONAL_FEATURE_COUNT + 4;
-
-    /**
-     * The feature id for the '<em><b>Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int CONDITIONAL_EDGE_STYLE__COLOR = CONDITIONAL_FEATURE_COUNT + 5;
-
-    /**
-     * The feature id for the '<em><b>Border Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int CONDITIONAL_EDGE_STYLE__BORDER_COLOR = CONDITIONAL_FEATURE_COUNT + 6;
+    int CONDITIONAL_EDGE_STYLE__STRIKE_THROUGH = CONDITIONAL_FEATURE_COUNT + 5;
 
     /**
      * The feature id for the '<em><b>Line Style</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1984,7 +1999,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CONDITIONAL_EDGE_STYLE__LINE_STYLE = CONDITIONAL_FEATURE_COUNT + 7;
+    int CONDITIONAL_EDGE_STYLE__LINE_STYLE = CONDITIONAL_FEATURE_COUNT + 6;
 
     /**
      * The feature id for the '<em><b>Source Arrow Style</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -1993,7 +2008,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CONDITIONAL_EDGE_STYLE__SOURCE_ARROW_STYLE = CONDITIONAL_FEATURE_COUNT + 8;
+    int CONDITIONAL_EDGE_STYLE__SOURCE_ARROW_STYLE = CONDITIONAL_FEATURE_COUNT + 7;
 
     /**
      * The feature id for the '<em><b>Target Arrow Style</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -2002,7 +2017,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CONDITIONAL_EDGE_STYLE__TARGET_ARROW_STYLE = CONDITIONAL_FEATURE_COUNT + 9;
+    int CONDITIONAL_EDGE_STYLE__TARGET_ARROW_STYLE = CONDITIONAL_FEATURE_COUNT + 8;
 
     /**
      * The feature id for the '<em><b>Edge Width</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2010,7 +2025,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CONDITIONAL_EDGE_STYLE__EDGE_WIDTH = CONDITIONAL_FEATURE_COUNT + 10;
+    int CONDITIONAL_EDGE_STYLE__EDGE_WIDTH = CONDITIONAL_FEATURE_COUNT + 9;
 
     /**
      * The number of structural features of the '<em>Conditional Edge Style</em>' class. <!-- begin-user-doc --> <!--
@@ -2019,7 +2034,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CONDITIONAL_EDGE_STYLE_FEATURE_COUNT = CONDITIONAL_FEATURE_COUNT + 11;
+    int CONDITIONAL_EDGE_STYLE_FEATURE_COUNT = CONDITIONAL_FEATURE_COUNT + 10;
 
     /**
      * The number of operations of the '<em>Conditional Edge Style</em>' class. <!-- begin-user-doc --> <!--
@@ -2031,14 +2046,14 @@ public interface ViewPackage extends EPackage {
     int CONDITIONAL_EDGE_STYLE_OPERATION_COUNT = CONDITIONAL_OPERATION_COUNT + 0;
 
     /**
-     * The meta object id for the '{@link org.eclipse.sirius.components.view.ArrowStyle <em>Arrow Style</em>}' enum. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.ArrowStyle <em>Arrow Style</em>}' enum.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @see org.eclipse.sirius.components.view.ArrowStyle
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getArrowStyle()
      * @generated
      */
-    int ARROW_STYLE = 27;
+    int ARROW_STYLE = 28;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.LineStyle <em>Line Style</em>}' enum. <!--
@@ -2048,7 +2063,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLineStyle()
      * @generated
      */
-    int LINE_STYLE = 28;
+    int LINE_STYLE = 29;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.SynchronizationPolicy <em>Synchronization
@@ -2058,11 +2073,11 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getSynchronizationPolicy()
      * @generated
      */
-    int SYNCHRONIZATION_POLICY = 29;
+    int SYNCHRONIZATION_POLICY = 30;
 
     /**
-     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.View <em>View</em>}'. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.View <em>View</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>View</em>'.
      * @see org.eclipse.sirius.components.view.View
@@ -2072,8 +2087,8 @@ public interface ViewPackage extends EPackage {
 
     /**
      * Returns the meta object for the containment reference list
-     * '{@link org.eclipse.sirius.components.view.View#getDescriptions <em>Descriptions</em>}'. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * '{@link org.eclipse.sirius.components.view.View#getDescriptions <em>Descriptions</em>}'. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
      *
      * @return the meta object for the containment reference list '<em>Descriptions</em>'.
      * @see org.eclipse.sirius.components.view.View#getDescriptions()
@@ -2093,8 +2108,9 @@ public interface ViewPackage extends EPackage {
     EClass getRepresentationDescription();
 
     /**
-     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.RepresentationDescription#getName
-     * <em>Name</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.RepresentationDescription#getName <em>Name</em>}'. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Name</em>'.
      * @see org.eclipse.sirius.components.view.RepresentationDescription#getName()
@@ -2129,8 +2145,8 @@ public interface ViewPackage extends EPackage {
 
     /**
      * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.RepresentationDescription#getTitleExpression <em>Title Expression</em>}'.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * '{@link org.eclipse.sirius.components.view.RepresentationDescription#getTitleExpression <em>Title
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Title Expression</em>'.
      * @see org.eclipse.sirius.components.view.RepresentationDescription#getTitleExpression()
@@ -2151,8 +2167,8 @@ public interface ViewPackage extends EPackage {
 
     /**
      * Returns the meta object for the containment reference list
-     * '{@link org.eclipse.sirius.components.view.DiagramDescription#getNodeDescriptions <em>Node Descriptions</em>}'. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * '{@link org.eclipse.sirius.components.view.DiagramDescription#getNodeDescriptions <em>Node Descriptions</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the containment reference list '<em>Node Descriptions</em>'.
      * @see org.eclipse.sirius.components.view.DiagramDescription#getNodeDescriptions()
@@ -2163,8 +2179,8 @@ public interface ViewPackage extends EPackage {
 
     /**
      * Returns the meta object for the containment reference list
-     * '{@link org.eclipse.sirius.components.view.DiagramDescription#getEdgeDescriptions <em>Edge Descriptions</em>}'. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * '{@link org.eclipse.sirius.components.view.DiagramDescription#getEdgeDescriptions <em>Edge Descriptions</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the containment reference list '<em>Edge Descriptions</em>'.
      * @see org.eclipse.sirius.components.view.DiagramDescription#getEdgeDescriptions()
@@ -2175,8 +2191,8 @@ public interface ViewPackage extends EPackage {
 
     /**
      * Returns the meta object for the containment reference
-     * '{@link org.eclipse.sirius.components.view.DiagramDescription#getOnDrop <em>On Drop</em>}'. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * '{@link org.eclipse.sirius.components.view.DiagramDescription#getOnDrop <em>On Drop</em>}'. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
      *
      * @return the meta object for the containment reference '<em>On Drop</em>'.
      * @see org.eclipse.sirius.components.view.DiagramDescription#getOnDrop()
@@ -2186,8 +2202,8 @@ public interface ViewPackage extends EPackage {
     EReference getDiagramDescription_OnDrop();
 
     /**
-     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.DiagramElementDescription <em>Diagram
-     * Element Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.DiagramElementDescription
+     * <em>Diagram Element Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Diagram Element Description</em>'.
      * @see org.eclipse.sirius.components.view.DiagramElementDescription
@@ -2196,8 +2212,9 @@ public interface ViewPackage extends EPackage {
     EClass getDiagramElementDescription();
 
     /**
-     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.DiagramElementDescription#getName
-     * <em>Name</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.DiagramElementDescription#getName <em>Name</em>}'. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Name</em>'.
      * @see org.eclipse.sirius.components.view.DiagramElementDescription#getName()
@@ -2232,8 +2249,8 @@ public interface ViewPackage extends EPackage {
 
     /**
      * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.DiagramElementDescription#getLabelExpression <em>Label Expression</em>}'.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * '{@link org.eclipse.sirius.components.view.DiagramElementDescription#getLabelExpression <em>Label
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Label Expression</em>'.
      * @see org.eclipse.sirius.components.view.DiagramElementDescription#getLabelExpression()
@@ -2256,8 +2273,8 @@ public interface ViewPackage extends EPackage {
 
     /**
      * Returns the meta object for the containment reference
-     * '{@link org.eclipse.sirius.components.view.DiagramElementDescription#getLabelEditTool <em>Label Edit Tool</em>}'. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * '{@link org.eclipse.sirius.components.view.DiagramElementDescription#getLabelEditTool <em>Label Edit Tool</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the containment reference '<em>Label Edit Tool</em>'.
      * @see org.eclipse.sirius.components.view.DiagramElementDescription#getLabelEditTool()
@@ -2290,8 +2307,8 @@ public interface ViewPackage extends EPackage {
 
     /**
      * Returns the meta object for the containment reference list
-     * '{@link org.eclipse.sirius.components.view.NodeDescription#getChildrenDescriptions <em>Children Descriptions</em>}'.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * '{@link org.eclipse.sirius.components.view.NodeDescription#getChildrenDescriptions <em>Children
+     * Descriptions</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the containment reference list '<em>Children Descriptions</em>'.
      * @see org.eclipse.sirius.components.view.NodeDescription#getChildrenDescriptions()
@@ -2314,8 +2331,8 @@ public interface ViewPackage extends EPackage {
 
     /**
      * Returns the meta object for the containment reference
-     * '{@link org.eclipse.sirius.components.view.NodeDescription#getStyle <em>Style</em>}'. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * '{@link org.eclipse.sirius.components.view.NodeDescription#getStyle <em>Style</em>}'. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
      *
      * @return the meta object for the containment reference '<em>Style</em>'.
      * @see org.eclipse.sirius.components.view.NodeDescription#getStyle()
@@ -2326,8 +2343,8 @@ public interface ViewPackage extends EPackage {
 
     /**
      * Returns the meta object for the containment reference list
-     * '{@link org.eclipse.sirius.components.view.NodeDescription#getNodeTools <em>Node Tools</em>}'. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * '{@link org.eclipse.sirius.components.view.NodeDescription#getNodeTools <em>Node Tools</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the containment reference list '<em>Node Tools</em>'.
      * @see org.eclipse.sirius.components.view.NodeDescription#getNodeTools()
@@ -2338,8 +2355,8 @@ public interface ViewPackage extends EPackage {
 
     /**
      * Returns the meta object for the containment reference list
-     * '{@link org.eclipse.sirius.components.view.NodeDescription#getConditionalStyles <em>Conditional Styles</em>}'. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * '{@link org.eclipse.sirius.components.view.NodeDescription#getConditionalStyles <em>Conditional Styles</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the containment reference list '<em>Conditional Styles</em>'.
      * @see org.eclipse.sirius.components.view.NodeDescription#getConditionalStyles()
@@ -2360,8 +2377,8 @@ public interface ViewPackage extends EPackage {
 
     /**
      * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.EdgeDescription#getBeginLabelExpression <em>Begin Label Expression</em>}'.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * '{@link org.eclipse.sirius.components.view.EdgeDescription#getBeginLabelExpression <em>Begin Label
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Begin Label Expression</em>'.
      * @see org.eclipse.sirius.components.view.EdgeDescription#getBeginLabelExpression()
@@ -2372,8 +2389,8 @@ public interface ViewPackage extends EPackage {
 
     /**
      * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.EdgeDescription#getEndLabelExpression <em>End Label Expression</em>}'. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * '{@link org.eclipse.sirius.components.view.EdgeDescription#getEndLabelExpression <em>End Label Expression</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>End Label Expression</em>'.
      * @see org.eclipse.sirius.components.view.EdgeDescription#getEndLabelExpression()
@@ -2383,8 +2400,9 @@ public interface ViewPackage extends EPackage {
     EAttribute getEdgeDescription_EndLabelExpression();
 
     /**
-     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.EdgeDescription#isIsDomainBasedEdge
-     * <em>Is Domain Based Edge</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.EdgeDescription#isIsDomainBasedEdge <em>Is Domain Based Edge</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Is Domain Based Edge</em>'.
      * @see org.eclipse.sirius.components.view.EdgeDescription#isIsDomainBasedEdge()
@@ -2419,8 +2437,8 @@ public interface ViewPackage extends EPackage {
 
     /**
      * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.EdgeDescription#getSourceNodesExpression <em>Source Nodes Expression</em>}'.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * '{@link org.eclipse.sirius.components.view.EdgeDescription#getSourceNodesExpression <em>Source Nodes
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Source Nodes Expression</em>'.
      * @see org.eclipse.sirius.components.view.EdgeDescription#getSourceNodesExpression()
@@ -2431,8 +2449,8 @@ public interface ViewPackage extends EPackage {
 
     /**
      * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.EdgeDescription#getTargetNodesExpression <em>Target Nodes Expression</em>}'.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * '{@link org.eclipse.sirius.components.view.EdgeDescription#getTargetNodesExpression <em>Target Nodes
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Target Nodes Expression</em>'.
      * @see org.eclipse.sirius.components.view.EdgeDescription#getTargetNodesExpression()
@@ -2443,8 +2461,8 @@ public interface ViewPackage extends EPackage {
 
     /**
      * Returns the meta object for the containment reference
-     * '{@link org.eclipse.sirius.components.view.EdgeDescription#getStyle <em>Style</em>}'. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * '{@link org.eclipse.sirius.components.view.EdgeDescription#getStyle <em>Style</em>}'. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
      *
      * @return the meta object for the containment reference '<em>Style</em>'.
      * @see org.eclipse.sirius.components.view.EdgeDescription#getStyle()
@@ -2455,8 +2473,8 @@ public interface ViewPackage extends EPackage {
 
     /**
      * Returns the meta object for the containment reference list
-     * '{@link org.eclipse.sirius.components.view.EdgeDescription#getEdgeTools <em>Edge Tools</em>}'. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * '{@link org.eclipse.sirius.components.view.EdgeDescription#getEdgeTools <em>Edge Tools</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the containment reference list '<em>Edge Tools</em>'.
      * @see org.eclipse.sirius.components.view.EdgeDescription#getEdgeTools()
@@ -2467,8 +2485,8 @@ public interface ViewPackage extends EPackage {
 
     /**
      * Returns the meta object for the containment reference list
-     * '{@link org.eclipse.sirius.components.view.EdgeDescription#getConditionalStyles <em>Conditional Styles</em>}'. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * '{@link org.eclipse.sirius.components.view.EdgeDescription#getConditionalStyles <em>Conditional Styles</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the containment reference list '<em>Conditional Styles</em>'.
      * @see org.eclipse.sirius.components.view.EdgeDescription#getConditionalStyles()
@@ -2478,8 +2496,8 @@ public interface ViewPackage extends EPackage {
     EReference getEdgeDescription_ConditionalStyles();
 
     /**
-     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.LabelStyle <em>Label Style</em>}'. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.LabelStyle <em>Label Style</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Label Style</em>'.
      * @see org.eclipse.sirius.components.view.LabelStyle
@@ -2488,8 +2506,8 @@ public interface ViewPackage extends EPackage {
     EClass getLabelStyle();
 
     /**
-     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.LabelStyle#getFontSize <em>Font
-     * Size</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.LabelStyle#getFontSize
+     * <em>Font Size</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Font Size</em>'.
      * @see org.eclipse.sirius.components.view.LabelStyle#getFontSize()
@@ -2510,8 +2528,8 @@ public interface ViewPackage extends EPackage {
     EAttribute getLabelStyle_Italic();
 
     /**
-     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.LabelStyle#isBold <em>Bold</em>}'.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.LabelStyle#isBold
+     * <em>Bold</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Bold</em>'.
      * @see org.eclipse.sirius.components.view.LabelStyle#isBold()
@@ -2543,8 +2561,63 @@ public interface ViewPackage extends EPackage {
     EAttribute getLabelStyle_StrikeThrough();
 
     /**
-     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.Style <em>Style</em>}'. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.BorderStyle <em>Border Style</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Border Style</em>'.
+     * @see org.eclipse.sirius.components.view.BorderStyle
+     * @generated
+     */
+    EClass getBorderStyle();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.BorderStyle#getBorderColor
+     * <em>Border Color</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Border Color</em>'.
+     * @see org.eclipse.sirius.components.view.BorderStyle#getBorderColor()
+     * @see #getBorderStyle()
+     * @generated
+     */
+    EAttribute getBorderStyle_BorderColor();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.BorderStyle#getBorderRadius
+     * <em>Border Radius</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Border Radius</em>'.
+     * @see org.eclipse.sirius.components.view.BorderStyle#getBorderRadius()
+     * @see #getBorderStyle()
+     * @generated
+     */
+    EAttribute getBorderStyle_BorderRadius();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.BorderStyle#getBorderSize
+     * <em>Border Size</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Border Size</em>'.
+     * @see org.eclipse.sirius.components.view.BorderStyle#getBorderSize()
+     * @see #getBorderStyle()
+     * @generated
+     */
+    EAttribute getBorderStyle_BorderSize();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.BorderStyle#getBorderLineStyle <em>Border Line Style</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Border Line Style</em>'.
+     * @see org.eclipse.sirius.components.view.BorderStyle#getBorderLineStyle()
+     * @see #getBorderStyle()
+     * @generated
+     */
+    EAttribute getBorderStyle_BorderLineStyle();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.Style <em>Style</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Style</em>'.
      * @see org.eclipse.sirius.components.view.Style
@@ -2553,8 +2626,8 @@ public interface ViewPackage extends EPackage {
     EClass getStyle();
 
     /**
-     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.Style#getColor <em>Color</em>}'.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.Style#getColor
+     * <em>Color</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Color</em>'.
      * @see org.eclipse.sirius.components.view.Style#getColor()
@@ -2564,19 +2637,8 @@ public interface ViewPackage extends EPackage {
     EAttribute getStyle_Color();
 
     /**
-     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.Style#getBorderColor <em>Border
-     * Color</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the attribute '<em>Border Color</em>'.
-     * @see org.eclipse.sirius.components.view.Style#getBorderColor()
-     * @see #getStyle()
-     * @generated
-     */
-    EAttribute getStyle_BorderColor();
-
-    /**
-     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.NodeStyle <em>Node Style</em>}'. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.NodeStyle <em>Node Style</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Node Style</em>'.
      * @see org.eclipse.sirius.components.view.NodeStyle
@@ -2585,8 +2647,8 @@ public interface ViewPackage extends EPackage {
     EClass getNodeStyle();
 
     /**
-     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.NodeStyle#isListMode <em>List
-     * Mode</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.NodeStyle#isListMode
+     * <em>List Mode</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>List Mode</em>'.
      * @see org.eclipse.sirius.components.view.NodeStyle#isListMode()
@@ -2594,17 +2656,6 @@ public interface ViewPackage extends EPackage {
      * @generated
      */
     EAttribute getNodeStyle_ListMode();
-
-    /**
-     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.NodeStyle#getBorderRadius
-     * <em>Border Radius</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the attribute '<em>Border Radius</em>'.
-     * @see org.eclipse.sirius.components.view.NodeStyle#getBorderRadius()
-     * @see #getNodeStyle()
-     * @generated
-     */
-    EAttribute getNodeStyle_BorderRadius();
 
     /**
      * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.NodeStyle#getShape
@@ -2618,19 +2669,8 @@ public interface ViewPackage extends EPackage {
     EAttribute getNodeStyle_Shape();
 
     /**
-     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.NodeStyle#getBorderSize <em>Border
-     * Size</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the attribute '<em>Border Size</em>'.
-     * @see org.eclipse.sirius.components.view.NodeStyle#getBorderSize()
-     * @see #getNodeStyle()
-     * @generated
-     */
-    EAttribute getNodeStyle_BorderSize();
-
-    /**
-     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.NodeStyle#getLabelColor <em>Label
-     * Color</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.NodeStyle#getLabelColor
+     * <em>Label Color</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Label Color</em>'.
      * @see org.eclipse.sirius.components.view.NodeStyle#getLabelColor()
@@ -2652,8 +2692,8 @@ public interface ViewPackage extends EPackage {
     EAttribute getNodeStyle_SizeComputationExpression();
 
     /**
-     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.EdgeStyle <em>Edge Style</em>}'. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.EdgeStyle <em>Edge Style</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Edge Style</em>'.
      * @see org.eclipse.sirius.components.view.EdgeStyle
@@ -2662,8 +2702,8 @@ public interface ViewPackage extends EPackage {
     EClass getEdgeStyle();
 
     /**
-     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.EdgeStyle#getLineStyle <em>Line
-     * Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.EdgeStyle#getLineStyle
+     * <em>Line Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Line Style</em>'.
      * @see org.eclipse.sirius.components.view.EdgeStyle#getLineStyle()
@@ -2673,8 +2713,9 @@ public interface ViewPackage extends EPackage {
     EAttribute getEdgeStyle_LineStyle();
 
     /**
-     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.EdgeStyle#getSourceArrowStyle
-     * <em>Source Arrow Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.EdgeStyle#getSourceArrowStyle <em>Source Arrow Style</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Source Arrow Style</em>'.
      * @see org.eclipse.sirius.components.view.EdgeStyle#getSourceArrowStyle()
@@ -2684,8 +2725,9 @@ public interface ViewPackage extends EPackage {
     EAttribute getEdgeStyle_SourceArrowStyle();
 
     /**
-     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.EdgeStyle#getTargetArrowStyle
-     * <em>Target Arrow Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.EdgeStyle#getTargetArrowStyle <em>Target Arrow Style</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Target Arrow Style</em>'.
      * @see org.eclipse.sirius.components.view.EdgeStyle#getTargetArrowStyle()
@@ -2695,8 +2737,8 @@ public interface ViewPackage extends EPackage {
     EAttribute getEdgeStyle_TargetArrowStyle();
 
     /**
-     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.EdgeStyle#getEdgeWidth <em>Edge
-     * Width</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.EdgeStyle#getEdgeWidth
+     * <em>Edge Width</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Edge Width</em>'.
      * @see org.eclipse.sirius.components.view.EdgeStyle#getEdgeWidth()
@@ -2706,8 +2748,8 @@ public interface ViewPackage extends EPackage {
     EAttribute getEdgeStyle_EdgeWidth();
 
     /**
-     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.Tool <em>Tool</em>}'. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.Tool <em>Tool</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Tool</em>'.
      * @see org.eclipse.sirius.components.view.Tool
@@ -2716,8 +2758,8 @@ public interface ViewPackage extends EPackage {
     EClass getTool();
 
     /**
-     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.Tool#getName <em>Name</em>}'. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.Tool#getName
+     * <em>Name</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Name</em>'.
      * @see org.eclipse.sirius.components.view.Tool#getName()
@@ -2727,8 +2769,9 @@ public interface ViewPackage extends EPackage {
     EAttribute getTool_Name();
 
     /**
-     * Returns the meta object for the containment reference list '{@link org.eclipse.sirius.components.view.Tool#getBody
-     * <em>Body</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.Tool#getBody <em>Body</em>}'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
      *
      * @return the meta object for the containment reference list '<em>Body</em>'.
      * @see org.eclipse.sirius.components.view.Tool#getBody()
@@ -2738,8 +2781,8 @@ public interface ViewPackage extends EPackage {
     EReference getTool_Body();
 
     /**
-     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.LabelEditTool <em>Label Edit Tool</em>}'.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.LabelEditTool <em>Label Edit
+     * Tool</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Label Edit Tool</em>'.
      * @see org.eclipse.sirius.components.view.LabelEditTool
@@ -2748,8 +2791,8 @@ public interface ViewPackage extends EPackage {
     EClass getLabelEditTool();
 
     /**
-     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.DeleteTool <em>Delete Tool</em>}'. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.DeleteTool <em>Delete Tool</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Delete Tool</em>'.
      * @see org.eclipse.sirius.components.view.DeleteTool
@@ -2799,8 +2842,8 @@ public interface ViewPackage extends EPackage {
 
     /**
      * Returns the meta object for the containment reference list
-     * '{@link org.eclipse.sirius.components.view.Operation#getChildren <em>Children</em>}'. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * '{@link org.eclipse.sirius.components.view.Operation#getChildren <em>Children</em>}'. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
      *
      * @return the meta object for the containment reference list '<em>Children</em>'.
      * @see org.eclipse.sirius.components.view.Operation#getChildren()
@@ -2810,8 +2853,8 @@ public interface ViewPackage extends EPackage {
     EReference getOperation_Children();
 
     /**
-     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.ChangeContext <em>Change Context</em>}'.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.ChangeContext <em>Change
+     * Context</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Change Context</em>'.
      * @see org.eclipse.sirius.components.view.ChangeContext
@@ -2831,8 +2874,8 @@ public interface ViewPackage extends EPackage {
     EAttribute getChangeContext_Expression();
 
     /**
-     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.CreateInstance <em>Create Instance</em>}'.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.CreateInstance <em>Create
+     * Instance</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Create Instance</em>'.
      * @see org.eclipse.sirius.components.view.CreateInstance
@@ -2841,8 +2884,8 @@ public interface ViewPackage extends EPackage {
     EClass getCreateInstance();
 
     /**
-     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.CreateInstance#getTypeName <em>Type
-     * Name</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.CreateInstance#getTypeName
+     * <em>Type Name</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Type Name</em>'.
      * @see org.eclipse.sirius.components.view.CreateInstance#getTypeName()
@@ -2852,8 +2895,9 @@ public interface ViewPackage extends EPackage {
     EAttribute getCreateInstance_TypeName();
 
     /**
-     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.CreateInstance#getReferenceName
-     * <em>Reference Name</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.CreateInstance#getReferenceName <em>Reference Name</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Reference Name</em>'.
      * @see org.eclipse.sirius.components.view.CreateInstance#getReferenceName()
@@ -2863,8 +2907,9 @@ public interface ViewPackage extends EPackage {
     EAttribute getCreateInstance_ReferenceName();
 
     /**
-     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.CreateInstance#getVariableName
-     * <em>Variable Name</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.CreateInstance#getVariableName <em>Variable Name</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Variable Name</em>'.
      * @see org.eclipse.sirius.components.view.CreateInstance#getVariableName()
@@ -2884,8 +2929,8 @@ public interface ViewPackage extends EPackage {
     EClass getSetValue();
 
     /**
-     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.SetValue#getFeatureName <em>Feature
-     * Name</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.SetValue#getFeatureName
+     * <em>Feature Name</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Feature Name</em>'.
      * @see org.eclipse.sirius.components.view.SetValue#getFeatureName()
@@ -2906,8 +2951,8 @@ public interface ViewPackage extends EPackage {
     EAttribute getSetValue_ValueExpression();
 
     /**
-     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.UnsetValue <em>Unset Value</em>}'. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.UnsetValue <em>Unset Value</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Unset Value</em>'.
      * @see org.eclipse.sirius.components.view.UnsetValue
@@ -2927,8 +2972,9 @@ public interface ViewPackage extends EPackage {
     EAttribute getUnsetValue_FeatureName();
 
     /**
-     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.UnsetValue#getElementExpression
-     * <em>Element Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.UnsetValue#getElementExpression <em>Element Expression</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Element Expression</em>'.
      * @see org.eclipse.sirius.components.view.UnsetValue#getElementExpression()
@@ -2938,8 +2984,8 @@ public interface ViewPackage extends EPackage {
     EAttribute getUnsetValue_ElementExpression();
 
     /**
-     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.DeleteElement <em>Delete Element</em>}'.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.DeleteElement <em>Delete
+     * Element</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Delete Element</em>'.
      * @see org.eclipse.sirius.components.view.DeleteElement
@@ -2948,8 +2994,8 @@ public interface ViewPackage extends EPackage {
     EClass getDeleteElement();
 
     /**
-     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.CreateView <em>Create View</em>}'. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.CreateView <em>Create View</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Create View</em>'.
      * @see org.eclipse.sirius.components.view.CreateView
@@ -2958,8 +3004,9 @@ public interface ViewPackage extends EPackage {
     EClass getCreateView();
 
     /**
-     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.CreateView#getParentViewExpression
-     * <em>Parent View Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.CreateView#getParentViewExpression <em>Parent View Expression</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Parent View Expression</em>'.
      * @see org.eclipse.sirius.components.view.CreateView#getParentViewExpression()
@@ -2969,8 +3016,9 @@ public interface ViewPackage extends EPackage {
     EAttribute getCreateView_ParentViewExpression();
 
     /**
-     * Returns the meta object for the reference '{@link org.eclipse.sirius.components.view.CreateView#getElementDescription
-     * <em>Element Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for the reference
+     * '{@link org.eclipse.sirius.components.view.CreateView#getElementDescription <em>Element Description</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the reference '<em>Element Description</em>'.
      * @see org.eclipse.sirius.components.view.CreateView#getElementDescription()
@@ -3003,8 +3051,8 @@ public interface ViewPackage extends EPackage {
     EAttribute getCreateView_VariableName();
 
     /**
-     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.DeleteView <em>Delete View</em>}'. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.DeleteView <em>Delete View</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Delete View</em>'.
      * @see org.eclipse.sirius.components.view.DeleteView
@@ -3024,8 +3072,8 @@ public interface ViewPackage extends EPackage {
     EAttribute getDeleteView_ViewExpression();
 
     /**
-     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.Conditional <em>Conditional</em>}'. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.Conditional <em>Conditional</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Conditional</em>'.
      * @see org.eclipse.sirius.components.view.Conditional
@@ -3045,8 +3093,8 @@ public interface ViewPackage extends EPackage {
     EAttribute getConditional_Condition();
 
     /**
-     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.ConditionalNodeStyle <em>Conditional Node
-     * Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.ConditionalNodeStyle <em>Conditional
+     * Node Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Conditional Node Style</em>'.
      * @see org.eclipse.sirius.components.view.ConditionalNodeStyle
@@ -3055,8 +3103,8 @@ public interface ViewPackage extends EPackage {
     EClass getConditionalNodeStyle();
 
     /**
-     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.ConditionalEdgeStyle <em>Conditional Edge
-     * Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.ConditionalEdgeStyle <em>Conditional
+     * Edge Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Conditional Edge Style</em>'.
      * @see org.eclipse.sirius.components.view.ConditionalEdgeStyle
@@ -3065,8 +3113,8 @@ public interface ViewPackage extends EPackage {
     EClass getConditionalEdgeStyle();
 
     /**
-     * Returns the meta object for enum '{@link org.eclipse.sirius.components.view.ArrowStyle <em>Arrow Style</em>}'. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for enum '{@link org.eclipse.sirius.components.view.ArrowStyle <em>Arrow Style</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for enum '<em>Arrow Style</em>'.
      * @see org.eclipse.sirius.components.view.ArrowStyle
@@ -3085,8 +3133,8 @@ public interface ViewPackage extends EPackage {
     EEnum getLineStyle();
 
     /**
-     * Returns the meta object for enum '{@link org.eclipse.sirius.components.view.SynchronizationPolicy <em>Synchronization
-     * Policy</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for enum '{@link org.eclipse.sirius.components.view.SynchronizationPolicy
+     * <em>Synchronization Policy</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for enum '<em>Synchronization Policy</em>'.
      * @see org.eclipse.sirius.components.view.SynchronizationPolicy
@@ -3117,8 +3165,8 @@ public interface ViewPackage extends EPackage {
      */
     interface Literals {
         /**
-         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.ViewImpl <em>View</em>}' class. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.ViewImpl <em>View</em>}'
+         * class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
          * @see org.eclipse.sirius.components.view.impl.ViewImpl
          * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getView()
@@ -3177,8 +3225,8 @@ public interface ViewPackage extends EPackage {
         EAttribute REPRESENTATION_DESCRIPTION__TITLE_EXPRESSION = eINSTANCE.getRepresentationDescription_TitleExpression();
 
         /**
-         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.DiagramDescriptionImpl <em>Diagram
-         * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.DiagramDescriptionImpl
+         * <em>Diagram Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
          * @see org.eclipse.sirius.components.view.impl.DiagramDescriptionImpl
          * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getDiagramDescription()
@@ -3475,8 +3523,50 @@ public interface ViewPackage extends EPackage {
         EAttribute LABEL_STYLE__STRIKE_THROUGH = eINSTANCE.getLabelStyle_StrikeThrough();
 
         /**
-         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.StyleImpl <em>Style</em>}' class.
-         * <!-- begin-user-doc --> <!-- end-user-doc -->
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.BorderStyle <em>Border
+         * Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.BorderStyle
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getBorderStyle()
+         * @generated
+         */
+        EClass BORDER_STYLE = eINSTANCE.getBorderStyle();
+
+        /**
+         * The meta object literal for the '<em><b>Border Color</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute BORDER_STYLE__BORDER_COLOR = eINSTANCE.getBorderStyle_BorderColor();
+
+        /**
+         * The meta object literal for the '<em><b>Border Radius</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute BORDER_STYLE__BORDER_RADIUS = eINSTANCE.getBorderStyle_BorderRadius();
+
+        /**
+         * The meta object literal for the '<em><b>Border Size</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute BORDER_STYLE__BORDER_SIZE = eINSTANCE.getBorderStyle_BorderSize();
+
+        /**
+         * The meta object literal for the '<em><b>Border Line Style</b></em>' attribute feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute BORDER_STYLE__BORDER_LINE_STYLE = eINSTANCE.getBorderStyle_BorderLineStyle();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.StyleImpl <em>Style</em>}'
+         * class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
          * @see org.eclipse.sirius.components.view.impl.StyleImpl
          * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getStyle()
@@ -3493,16 +3583,8 @@ public interface ViewPackage extends EPackage {
         EAttribute STYLE__COLOR = eINSTANCE.getStyle_Color();
 
         /**
-         * The meta object literal for the '<em><b>Border Color</b></em>' attribute feature. <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EAttribute STYLE__BORDER_COLOR = eINSTANCE.getStyle_BorderColor();
-
-        /**
-         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.NodeStyleImpl <em>Node Style</em>}'
-         * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.NodeStyleImpl <em>Node
+         * Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
          * @see org.eclipse.sirius.components.view.impl.NodeStyleImpl
          * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getNodeStyle()
@@ -3519,28 +3601,12 @@ public interface ViewPackage extends EPackage {
         EAttribute NODE_STYLE__LIST_MODE = eINSTANCE.getNodeStyle_ListMode();
 
         /**
-         * The meta object literal for the '<em><b>Border Radius</b></em>' attribute feature. <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EAttribute NODE_STYLE__BORDER_RADIUS = eINSTANCE.getNodeStyle_BorderRadius();
-
-        /**
          * The meta object literal for the '<em><b>Shape</b></em>' attribute feature. <!-- begin-user-doc --> <!--
          * end-user-doc -->
          *
          * @generated
          */
         EAttribute NODE_STYLE__SHAPE = eINSTANCE.getNodeStyle_Shape();
-
-        /**
-         * The meta object literal for the '<em><b>Border Size</b></em>' attribute feature. <!-- begin-user-doc --> <!--
-         * end-user-doc -->
-         *
-         * @generated
-         */
-        EAttribute NODE_STYLE__BORDER_SIZE = eINSTANCE.getNodeStyle_BorderSize();
 
         /**
          * The meta object literal for the '<em><b>Label Color</b></em>' attribute feature. <!-- begin-user-doc --> <!--
@@ -3559,8 +3625,8 @@ public interface ViewPackage extends EPackage {
         EAttribute NODE_STYLE__SIZE_COMPUTATION_EXPRESSION = eINSTANCE.getNodeStyle_SizeComputationExpression();
 
         /**
-         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.EdgeStyleImpl <em>Edge Style</em>}'
-         * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.EdgeStyleImpl <em>Edge
+         * Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
          * @see org.eclipse.sirius.components.view.impl.EdgeStyleImpl
          * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getEdgeStyle()
@@ -3601,8 +3667,8 @@ public interface ViewPackage extends EPackage {
         EAttribute EDGE_STYLE__EDGE_WIDTH = eINSTANCE.getEdgeStyle_EdgeWidth();
 
         /**
-         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.ToolImpl <em>Tool</em>}' class. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.ToolImpl <em>Tool</em>}'
+         * class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
          * @see org.eclipse.sirius.components.view.impl.ToolImpl
          * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getTool()
@@ -3627,8 +3693,8 @@ public interface ViewPackage extends EPackage {
         EReference TOOL__BODY = eINSTANCE.getTool_Body();
 
         /**
-         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.LabelEditToolImpl <em>Label Edit
-         * Tool</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.LabelEditToolImpl <em>Label
+         * Edit Tool</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
          * @see org.eclipse.sirius.components.view.impl.LabelEditToolImpl
          * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLabelEditTool()
@@ -3647,8 +3713,8 @@ public interface ViewPackage extends EPackage {
         EClass DELETE_TOOL = eINSTANCE.getDeleteTool();
 
         /**
-         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.NodeToolImpl <em>Node Tool</em>}'
-         * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.NodeToolImpl <em>Node
+         * Tool</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
          * @see org.eclipse.sirius.components.view.impl.NodeToolImpl
          * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getNodeTool()
@@ -3657,8 +3723,8 @@ public interface ViewPackage extends EPackage {
         EClass NODE_TOOL = eINSTANCE.getNodeTool();
 
         /**
-         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.EdgeToolImpl <em>Edge Tool</em>}'
-         * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.EdgeToolImpl <em>Edge
+         * Tool</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
          * @see org.eclipse.sirius.components.view.impl.EdgeToolImpl
          * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getEdgeTool()
@@ -3667,8 +3733,8 @@ public interface ViewPackage extends EPackage {
         EClass EDGE_TOOL = eINSTANCE.getEdgeTool();
 
         /**
-         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.DropToolImpl <em>Drop Tool</em>}'
-         * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.DropToolImpl <em>Drop
+         * Tool</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
          * @see org.eclipse.sirius.components.view.impl.DropToolImpl
          * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getDropTool()
@@ -3677,8 +3743,8 @@ public interface ViewPackage extends EPackage {
         EClass DROP_TOOL = eINSTANCE.getDropTool();
 
         /**
-         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.OperationImpl <em>Operation</em>}'
-         * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.OperationImpl
+         * <em>Operation</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
          * @see org.eclipse.sirius.components.view.impl.OperationImpl
          * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getOperation()
@@ -3747,8 +3813,8 @@ public interface ViewPackage extends EPackage {
         EAttribute CREATE_INSTANCE__VARIABLE_NAME = eINSTANCE.getCreateInstance_VariableName();
 
         /**
-         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.SetValueImpl <em>Set Value</em>}'
-         * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.SetValueImpl <em>Set
+         * Value</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
          * @see org.eclipse.sirius.components.view.impl.SetValueImpl
          * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getSetValue()
@@ -3907,8 +3973,8 @@ public interface ViewPackage extends EPackage {
         EClass CONDITIONAL_EDGE_STYLE = eINSTANCE.getConditionalEdgeStyle();
 
         /**
-         * The meta object literal for the '{@link org.eclipse.sirius.components.view.ArrowStyle <em>Arrow Style</em>}' enum.
-         * <!-- begin-user-doc --> <!-- end-user-doc -->
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.ArrowStyle <em>Arrow Style</em>}'
+         * enum. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
          * @see org.eclipse.sirius.components.view.ArrowStyle
          * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getArrowStyle()
@@ -3917,8 +3983,8 @@ public interface ViewPackage extends EPackage {
         EEnum ARROW_STYLE = eINSTANCE.getArrowStyle();
 
         /**
-         * The meta object literal for the '{@link org.eclipse.sirius.components.view.LineStyle <em>Line Style</em>}' enum.
-         * <!-- begin-user-doc --> <!-- end-user-doc -->
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.LineStyle <em>Line Style</em>}'
+         * enum. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
          * @see org.eclipse.sirius.components.view.LineStyle
          * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLineStyle()
@@ -3927,8 +3993,8 @@ public interface ViewPackage extends EPackage {
         EEnum LINE_STYLE = eINSTANCE.getLineStyle();
 
         /**
-         * The meta object literal for the '{@link org.eclipse.sirius.components.view.SynchronizationPolicy <em>Synchronization
-         * Policy</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.SynchronizationPolicy
+         * <em>Synchronization Policy</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
          * @see org.eclipse.sirius.components.view.SynchronizationPolicy
          * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getSynchronizationPolicy()

@@ -86,15 +86,18 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//LabelStyle/underline"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//LabelStyle/strikeThrough"/>
     </genClasses>
+    <genClasses image="false" ecoreClass="view.ecore#//BorderStyle">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//BorderStyle/borderColor"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//BorderStyle/borderRadius"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//BorderStyle/borderSize"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//BorderStyle/borderLineStyle"/>
+    </genClasses>
     <genClasses ecoreClass="view.ecore#//Style">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//Style/color"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//Style/borderColor"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//NodeStyle">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//NodeStyle/listMode"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//NodeStyle/borderRadius"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//NodeStyle/shape"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//NodeStyle/borderSize"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//NodeStyle/labelColor"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//NodeStyle/sizeComputationExpression"/>
     </genClasses>

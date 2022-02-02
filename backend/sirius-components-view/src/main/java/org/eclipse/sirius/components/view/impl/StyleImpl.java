@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.view.impl;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.sirius.components.view.Style;
 import org.eclipse.sirius.components.view.ViewPackage;
 
@@ -25,12 +26,11 @@ import org.eclipse.sirius.components.view.ViewPackage;
  * </p>
  * <ul>
  * <li>{@link org.eclipse.sirius.components.view.impl.StyleImpl#getColor <em>Color</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.impl.StyleImpl#getBorderColor <em>Border Color</em>}</li>
  * </ul>
  *
  * @generated
  */
-public abstract class StyleImpl extends LabelStyleImpl implements Style {
+public abstract class StyleImpl extends MinimalEObjectImpl.Container implements Style {
     /**
      * The default value of the '{@link #getColor() <em>Color</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -50,26 +50,6 @@ public abstract class StyleImpl extends LabelStyleImpl implements Style {
      * @ordered
      */
     protected String color = COLOR_EDEFAULT;
-
-    /**
-     * The default value of the '{@link #getBorderColor() <em>Border Color</em>}' attribute. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @see #getBorderColor()
-     * @generated
-     * @ordered
-     */
-    protected static final String BORDER_COLOR_EDEFAULT = "#33B0C3"; //$NON-NLS-1$
-
-    /**
-     * The cached value of the '{@link #getBorderColor() <em>Border Color</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @see #getBorderColor()
-     * @generated
-     * @ordered
-     */
-    protected String borderColor = BORDER_COLOR_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -119,35 +99,10 @@ public abstract class StyleImpl extends LabelStyleImpl implements Style {
      * @generated
      */
     @Override
-    public String getBorderColor() {
-        return this.borderColor;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public void setBorderColor(String newBorderColor) {
-        String oldBorderColor = this.borderColor;
-        this.borderColor = newBorderColor;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.STYLE__BORDER_COLOR, oldBorderColor, this.borderColor));
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
         case ViewPackage.STYLE__COLOR:
             return this.getColor();
-        case ViewPackage.STYLE__BORDER_COLOR:
-            return this.getBorderColor();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -162,9 +117,6 @@ public abstract class StyleImpl extends LabelStyleImpl implements Style {
         switch (featureID) {
         case ViewPackage.STYLE__COLOR:
             this.setColor((String) newValue);
-            return;
-        case ViewPackage.STYLE__BORDER_COLOR:
-            this.setBorderColor((String) newValue);
             return;
         }
         super.eSet(featureID, newValue);
@@ -181,9 +133,6 @@ public abstract class StyleImpl extends LabelStyleImpl implements Style {
         case ViewPackage.STYLE__COLOR:
             this.setColor(COLOR_EDEFAULT);
             return;
-        case ViewPackage.STYLE__BORDER_COLOR:
-            this.setBorderColor(BORDER_COLOR_EDEFAULT);
-            return;
         }
         super.eUnset(featureID);
     }
@@ -198,8 +147,6 @@ public abstract class StyleImpl extends LabelStyleImpl implements Style {
         switch (featureID) {
         case ViewPackage.STYLE__COLOR:
             return COLOR_EDEFAULT == null ? this.color != null : !COLOR_EDEFAULT.equals(this.color);
-        case ViewPackage.STYLE__BORDER_COLOR:
-            return BORDER_COLOR_EDEFAULT == null ? this.borderColor != null : !BORDER_COLOR_EDEFAULT.equals(this.borderColor);
         }
         return super.eIsSet(featureID);
     }
@@ -217,8 +164,6 @@ public abstract class StyleImpl extends LabelStyleImpl implements Style {
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (color: "); //$NON-NLS-1$
         result.append(this.color);
-        result.append(", borderColor: "); //$NON-NLS-1$
-        result.append(this.borderColor);
         result.append(')');
         return result.toString();
     }

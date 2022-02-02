@@ -50,13 +50,12 @@ public class ConditionalEdgeStyleItemProvider extends ConditionalItemProvider {
         if (this.itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
+            this.addColorPropertyDescriptor(object);
             this.addFontSizePropertyDescriptor(object);
             this.addItalicPropertyDescriptor(object);
             this.addBoldPropertyDescriptor(object);
             this.addUnderlinePropertyDescriptor(object);
             this.addStrikeThroughPropertyDescriptor(object);
-            this.addColorPropertyDescriptor(object);
-            this.addBorderColorPropertyDescriptor(object);
             this.addLineStylePropertyDescriptor(object);
             this.addSourceArrowStylePropertyDescriptor(object);
             this.addTargetArrowStylePropertyDescriptor(object);
@@ -75,18 +74,6 @@ public class ConditionalEdgeStyleItemProvider extends ConditionalItemProvider {
                 .add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(), this.getString("_UI_Style_color_feature"), //$NON-NLS-1$
                         this.getString("_UI_PropertyDescriptor_description", "_UI_Style_color_feature", "_UI_Style_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                         ViewPackage.Literals.STYLE__COLOR, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
-
-    /**
-     * This adds a property descriptor for the Border Color feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected void addBorderColorPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(
-                this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(), this.getString("_UI_Style_borderColor_feature"), //$NON-NLS-1$
-                        this.getString("_UI_PropertyDescriptor_description", "_UI_Style_borderColor_feature", "_UI_Style_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                        ViewPackage.Literals.STYLE__BORDER_COLOR, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -241,13 +228,12 @@ public class ConditionalEdgeStyleItemProvider extends ConditionalItemProvider {
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(ConditionalEdgeStyle.class)) {
+        case ViewPackage.CONDITIONAL_EDGE_STYLE__COLOR:
         case ViewPackage.CONDITIONAL_EDGE_STYLE__FONT_SIZE:
         case ViewPackage.CONDITIONAL_EDGE_STYLE__ITALIC:
         case ViewPackage.CONDITIONAL_EDGE_STYLE__BOLD:
         case ViewPackage.CONDITIONAL_EDGE_STYLE__UNDERLINE:
         case ViewPackage.CONDITIONAL_EDGE_STYLE__STRIKE_THROUGH:
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__COLOR:
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__BORDER_COLOR:
         case ViewPackage.CONDITIONAL_EDGE_STYLE__LINE_STYLE:
         case ViewPackage.CONDITIONAL_EDGE_STYLE__SOURCE_ARROW_STYLE:
         case ViewPackage.CONDITIONAL_EDGE_STYLE__TARGET_ARROW_STYLE:

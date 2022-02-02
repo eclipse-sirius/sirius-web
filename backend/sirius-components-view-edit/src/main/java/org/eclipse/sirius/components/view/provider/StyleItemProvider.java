@@ -17,20 +17,27 @@ import java.util.List;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.util.ResourceLocator;
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
+import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
+import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
+import org.eclipse.emf.edit.provider.IItemPropertySource;
+import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
+import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
+import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 import org.eclipse.sirius.components.view.Style;
 import org.eclipse.sirius.components.view.ViewPackage;
 
 /**
- * This is the item provider adapter for a {@link org.eclipse.sirius.components.view.Style} object. <!-- begin-user-doc -->
- * <!-- end-user-doc -->
+ * This is the item provider adapter for a {@link org.eclipse.sirius.components.view.Style} object. <!-- begin-user-doc
+ * --> <!-- end-user-doc -->
  *
  * @generated
  */
-public class StyleItemProvider extends LabelStyleItemProvider {
+public class StyleItemProvider extends ItemProviderAdapter implements IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource {
     /**
      * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -51,7 +58,6 @@ public class StyleItemProvider extends LabelStyleItemProvider {
             super.getPropertyDescriptors(object);
 
             this.addColorPropertyDescriptor(object);
-            this.addBorderColorPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -66,18 +72,6 @@ public class StyleItemProvider extends LabelStyleItemProvider {
                 .add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(), this.getString("_UI_Style_color_feature"), //$NON-NLS-1$
                         this.getString("_UI_PropertyDescriptor_description", "_UI_Style_color_feature", "_UI_Style_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                         ViewPackage.Literals.STYLE__COLOR, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
-
-    /**
-     * This adds a property descriptor for the Border Color feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected void addBorderColorPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(
-                this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(), this.getString("_UI_Style_borderColor_feature"), //$NON-NLS-1$
-                        this.getString("_UI_PropertyDescriptor_description", "_UI_Style_borderColor_feature", "_UI_Style_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                        ViewPackage.Literals.STYLE__BORDER_COLOR, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -107,8 +101,9 @@ public class StyleItemProvider extends LabelStyleItemProvider {
      */
     @Override
     public String getText(Object object) {
-        Style style = (Style) object;
-        return this.getString("_UI_Style_type") + " " + style.getFontSize(); //$NON-NLS-1$ //$NON-NLS-2$
+        String label = ((Style) object).getColor();
+        return label == null || label.length() == 0 ? this.getString("_UI_Style_type") : //$NON-NLS-1$
+                this.getString("_UI_Style_type") + " " + label; //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /**
@@ -124,7 +119,6 @@ public class StyleItemProvider extends LabelStyleItemProvider {
 
         switch (notification.getFeatureID(Style.class)) {
         case ViewPackage.STYLE__COLOR:
-        case ViewPackage.STYLE__BORDER_COLOR:
             this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
             return;
         }
@@ -140,6 +134,16 @@ public class StyleItemProvider extends LabelStyleItemProvider {
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
+    }
+
+    /**
+     * Return the resource locator for this item provider's resources. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public ResourceLocator getResourceLocator() {
+        return ViewEditPlugin.INSTANCE;
     }
 
 }

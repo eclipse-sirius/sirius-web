@@ -25,7 +25,8 @@ import org.eclipse.sirius.components.view.ViewPackage;
  * </p>
  * <ul>
  * <li>{@link org.eclipse.sirius.components.view.impl.UnsetValueImpl#getFeatureName <em>Feature Name</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.impl.UnsetValueImpl#getElementExpression <em>Element Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.impl.UnsetValueImpl#getElementExpression <em>Element
+ * Expression</em>}</li>
  * </ul>
  *
  * @generated

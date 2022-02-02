@@ -27,9 +27,10 @@ import org.eclipse.sirius.components.view.ViewPackage;
  * </p>
  * <ul>
  * <li>{@link org.eclipse.sirius.components.view.impl.RepresentationDescriptionImpl#getName <em>Name</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.impl.RepresentationDescriptionImpl#getDomainType <em>Domain Type</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.impl.RepresentationDescriptionImpl#getPreconditionExpression <em>Precondition
- * Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.impl.RepresentationDescriptionImpl#getDomainType <em>Domain
+ * Type</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.impl.RepresentationDescriptionImpl#getPreconditionExpression
+ * <em>Precondition Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.impl.RepresentationDescriptionImpl#getTitleExpression <em>Title
  * Expression</em>}</li>
  * </ul>

@@ -28,7 +28,8 @@ import org.eclipse.sirius.components.view.ViewPackage;
  * <ul>
  * <li>{@link org.eclipse.sirius.components.view.impl.CreateViewImpl#getParentViewExpression <em>Parent View
  * Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.impl.CreateViewImpl#getElementDescription <em>Element Description</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.impl.CreateViewImpl#getElementDescription <em>Element
+ * Description</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.impl.CreateViewImpl#getSemanticElementExpression <em>Semantic Element
  * Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.impl.CreateViewImpl#getVariableName <em>Variable Name</em>}</li>

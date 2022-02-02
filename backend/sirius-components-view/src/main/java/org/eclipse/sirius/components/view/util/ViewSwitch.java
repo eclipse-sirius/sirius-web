@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.view.util;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.Switch;
+import org.eclipse.sirius.components.view.BorderStyle;
 import org.eclipse.sirius.components.view.ChangeContext;
 import org.eclipse.sirius.components.view.Conditional;
 import org.eclipse.sirius.components.view.ConditionalEdgeStyle;
@@ -150,11 +151,16 @@ public class ViewSwitch<T> extends Switch<T> {
                 result = this.defaultCase(theEObject);
             return result;
         }
+        case ViewPackage.BORDER_STYLE: {
+            BorderStyle borderStyle = (BorderStyle) theEObject;
+            T result = this.caseBorderStyle(borderStyle);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
         case ViewPackage.STYLE: {
             Style style = (Style) theEObject;
             T result = this.caseStyle(style);
-            if (result == null)
-                result = this.caseLabelStyle(style);
             if (result == null)
                 result = this.defaultCase(theEObject);
             return result;
@@ -166,6 +172,8 @@ public class ViewSwitch<T> extends Switch<T> {
                 result = this.caseStyle(nodeStyle);
             if (result == null)
                 result = this.caseLabelStyle(nodeStyle);
+            if (result == null)
+                result = this.caseBorderStyle(nodeStyle);
             if (result == null)
                 result = this.defaultCase(theEObject);
             return result;
@@ -322,6 +330,8 @@ public class ViewSwitch<T> extends Switch<T> {
             if (result == null)
                 result = this.caseLabelStyle(conditionalNodeStyle);
             if (result == null)
+                result = this.caseBorderStyle(conditionalNodeStyle);
+            if (result == null)
                 result = this.defaultCase(theEObject);
             return result;
         }
@@ -445,6 +455,20 @@ public class ViewSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseLabelStyle(LabelStyle object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Border Style</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Border Style</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseBorderStyle(BorderStyle object) {
         return null;
     }
 

@@ -43,8 +43,8 @@ public interface DiagramDescription extends RepresentationDescription {
     boolean isAutoLayout();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.DiagramDescription#isAutoLayout <em>Auto Layout</em>}'
-     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.DiagramDescription#isAutoLayout <em>Auto
+     * Layout</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
      *            the new value of the '<em>Auto Layout</em>' attribute.

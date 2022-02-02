@@ -46,8 +46,8 @@ public interface LabelStyle extends EObject {
     int getFontSize();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.LabelStyle#getFontSize <em>Font Size</em>}' attribute.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.LabelStyle#getFontSize <em>Font Size</em>}'
+     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
      *            the new value of the '<em>Font Size</em>' attribute.
@@ -69,8 +69,8 @@ public interface LabelStyle extends EObject {
     boolean isItalic();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.LabelStyle#isItalic <em>Italic</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.LabelStyle#isItalic <em>Italic</em>}' attribute.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
      *            the new value of the '<em>Italic</em>' attribute.
@@ -92,8 +92,8 @@ public interface LabelStyle extends EObject {
     boolean isBold();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.LabelStyle#isBold <em>Bold</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.LabelStyle#isBold <em>Bold</em>}' attribute.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
      *            the new value of the '<em>Bold</em>' attribute.
@@ -115,8 +115,8 @@ public interface LabelStyle extends EObject {
     boolean isUnderline();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.LabelStyle#isUnderline <em>Underline</em>}' attribute.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.LabelStyle#isUnderline <em>Underline</em>}'
+     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
      *            the new value of the '<em>Underline</em>' attribute.
@@ -138,8 +138,8 @@ public interface LabelStyle extends EObject {
     boolean isStrikeThrough();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.LabelStyle#isStrikeThrough <em>Strike Through</em>}'
-     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.LabelStyle#isStrikeThrough <em>Strike
+     * Through</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
      *            the new value of the '<em>Strike Through</em>' attribute.
