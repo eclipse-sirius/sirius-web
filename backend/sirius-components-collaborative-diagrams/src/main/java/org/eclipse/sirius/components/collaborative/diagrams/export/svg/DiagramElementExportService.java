@@ -91,11 +91,16 @@ public class DiagramElementExportService {
 
     public StringBuilder exportRectangleElement(Size size, Optional<Integer> borderRadius, Optional<String> color, Optional<String> borderColor, Optional<Integer> borderSize,
             Optional<LineStyle> borderStyle) {
+        return this.exportRectangleElement(size, Position.at(0, 0), borderRadius, color, borderColor, borderSize, borderStyle);
+    }
+
+    public StringBuilder exportRectangleElement(Size size, Position position, Optional<Integer> borderRadius, Optional<String> color, Optional<String> borderColor, Optional<Integer> borderSize,
+            Optional<LineStyle> borderStyle) {
         StringBuilder rectangle = new StringBuilder();
 
         rectangle.append("<rect "); //$NON-NLS-1$
-        rectangle.append("x=\"0\" "); //$NON-NLS-1$
-        rectangle.append("y=\"0\" "); //$NON-NLS-1$
+        rectangle.append("x=\"" + position.getX() + "\" "); //$NON-NLS-1$ //$NON-NLS-2$
+        rectangle.append("y=\"" + position.getY() + "\" "); //$NON-NLS-1$ //$NON-NLS-2$
         borderRadius.ifPresent(radius -> rectangle.append("rx=\"" + radius + "\" ")); //$NON-NLS-1$ //$NON-NLS-2$
         rectangle.append(this.addSizeParam(size));
         rectangle.append(this.exportRectangleStyleParam(color, borderColor, borderSize, borderStyle));
@@ -179,7 +184,11 @@ public class DiagramElementExportService {
         StringBuilder styleExport = new StringBuilder();
 
         styleExport.append("style=\""); //$NON-NLS-1$
-        color.ifPresent(it -> styleExport.append("fill: " + it + "; ")); //$NON-NLS-1$ //$NON-NLS-2$
+        if (color.isPresent()) {
+            styleExport.append("fill: " + color.get() + "; "); //$NON-NLS-1$ //$NON-NLS-2$
+        } else {
+            styleExport.append("fill-opacity: " + 0 + "; "); //$NON-NLS-1$ //$NON-NLS-2$
+        }
         borderColor.ifPresent(it -> styleExport.append("stroke: " + it + "; ")); //$NON-NLS-1$ //$NON-NLS-2$
         borderSize.ifPresent(it -> styleExport.append("stroke-width: " + it + "px; ")); //$NON-NLS-1$ //$NON-NLS-2$
         borderStyle.ifPresent(style -> styleExport.append(this.exportBorderStyle(style)));

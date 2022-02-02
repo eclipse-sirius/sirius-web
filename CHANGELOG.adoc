@@ -69,6 +69,7 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/919[#919] [diagram] Support the parent container resize for the border nodes on back-end
 - https://github.com/eclipse-sirius/sirius-components/issues/1071[#1071] [diagram] Add a label for the border nodes
 - https://github.com/eclipse-sirius/sirius-components/issues/1071[#1071] [diagram] Improve the resizing of the border nodes
+- https://github.com/eclipse-sirius/sirius-components/issues/783[#783] [diagram] Nodes which use images can now also have a border with all the relevant properties: color, size, radius, and line style. This applies to modelers using the compatibility layer and the web-based diagram definitions
 
 === New features
 

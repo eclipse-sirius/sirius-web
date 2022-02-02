@@ -129,6 +129,10 @@ export const diagramEventSubscription = gql`
       }
       ... on ImageNodeStyle {
         imageURL
+        borderColor
+        borderStyle
+        borderSize
+        borderRadius
       }
       ... on ListItemNodeStyle {
         backgroundColor

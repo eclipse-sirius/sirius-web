@@ -258,10 +258,14 @@ const convertNodeStyle = (style: GQLINodeStyle, httpOrigin: string): INodeStyle 
   let convertedStyle: INodeStyle | null = null;
 
   if (isImageNodeStyle(style)) {
-    const { imageURL } = style;
+    const { imageURL, borderColor, borderSize, borderStyle, borderRadius } = style;
 
     const imageNodeStyle = new ImageNodeStyle();
     imageNodeStyle.imageURL = httpOrigin + imageURL;
+    imageNodeStyle.borderColor = borderColor;
+    imageNodeStyle.borderSize = borderSize;
+    imageNodeStyle.borderRadius = borderRadius;
+    imageNodeStyle.borderStyle = LineStyle[GQLLineStyle[borderStyle]];
 
     convertedStyle = imageNodeStyle;
   } else if (isRectangularNodeStyle(style)) {

@@ -64,7 +64,7 @@ public final class RectangularNodeStyle implements INodeStyle {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'color: {1}, borderColor: {2}, borderSize: {3}, borderRadius: {4}, borderStyle: {4}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'color: {1}, border: '{' color: {2}, size: {3}, radius: {4}, style: {5} '}''}'"; //$NON-NLS-1$
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.color, this.borderColor, this.borderSize, this.borderRadius, this.borderStyle);
     }
 

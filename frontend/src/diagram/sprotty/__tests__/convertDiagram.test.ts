@@ -12,6 +12,7 @@
  *******************************************************************************/
 import { httpOrigin } from 'common/URL';
 import { GQLImageNodeStyle, GQLINodeStyle } from 'diagram/DiagramWebSocketContainer.types';
+import { GQLRectangularNodeStyle } from 'index';
 import 'reflect-metadata';
 import {
   boundsFeature,
@@ -27,12 +28,15 @@ import {
   withEditLabelFeature,
 } from 'sprotty';
 import { convertDiagram } from '../convertDiagram';
-import { Diagram, Edge, ImageNodeStyle, Label, Node } from '../Diagram.types';
+import { Diagram, Edge, ImageNodeStyle, Label, Node, RectangularNodeStyle } from '../Diagram.types';
 import { resizeFeature } from '../resize/model';
 import { siriusWebDiagram } from './siriusWebDiagram';
 
 const isImageNodeStyle = (nodeStyle: GQLINodeStyle): nodeStyle is GQLImageNodeStyle =>
   nodeStyle.__typename === 'ImageNodeStyle';
+
+const isRectangleNodeStyle = (nodeStyle: GQLINodeStyle): nodeStyle is GQLRectangularNodeStyle =>
+  nodeStyle.__typename === 'RectangularNodeStyle';
 
 describe('ModelConverter', () => {
   it('converts a diagram', () => {
@@ -67,8 +71,21 @@ describe('ModelConverter', () => {
         expect(node.descriptionId).toBe(descriptionId);
 
         if (isImageNodeStyle(style)) {
+          expect(node.style).toBeInstanceOf(ImageNodeStyle);
           if (node.style instanceof ImageNodeStyle) {
             expect(node.style.imageURL).toStrictEqual(httpOrigin + style.imageURL);
+            expect(node.style.borderColor).toStrictEqual(style.borderColor);
+            expect(node.style.borderSize).toStrictEqual(style.borderSize);
+            expect(node.style.borderRadius).toStrictEqual(style.borderRadius);
+            expect(node.style.borderStyle).toStrictEqual(style.borderStyle);
+          }
+        } else if (isRectangleNodeStyle(style)) {
+          expect(node.style).toBeInstanceOf(RectangularNodeStyle);
+          if (node.style instanceof RectangularNodeStyle) {
+            expect(node.style.borderColor).toStrictEqual(style.borderColor);
+            expect(node.style.borderSize).toStrictEqual(style.borderSize);
+            expect(node.style.borderRadius).toStrictEqual(style.borderRadius);
+            expect(node.style.borderStyle).toStrictEqual(style.borderStyle);
           }
         }
 

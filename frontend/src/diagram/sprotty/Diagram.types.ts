@@ -44,6 +44,10 @@ export interface INodeStyle {}
 
 export class ImageNodeStyle implements INodeStyle {
   imageURL: string;
+  borderColor: string;
+  borderRadius: number;
+  borderSize: number;
+  borderStyle: LineStyle;
 }
 
 export class RectangularNodeStyle implements INodeStyle {

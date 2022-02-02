@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.ListItemNodeStyle;
 import org.eclipse.sirius.components.diagrams.ListNodeStyle;
 import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.components.diagrams.Size;
 import org.springframework.stereotype.Service;
@@ -73,6 +74,11 @@ public class NodeExportService {
         Label label = node.getLabel();
 
         imageExport.append(this.elementExport.exportGNodeElement(node));
+        // adapt the size and position to show the full width of the border
+        Size imageSize = Size.of(node.getSize().getWidth() + style.getBorderSize(), node.getSize().getHeight() + style.getBorderSize());
+        Position position = Position.at(-style.getBorderSize() / 2., -style.getBorderSize() / 2.);
+        imageExport.append(this.elementExport.exportRectangleElement(imageSize, position, Optional.of(style.getBorderRadius()), Optional.empty(), Optional.of(style.getBorderColor()),
+                Optional.of(style.getBorderSize()), Optional.of(style.getBorderStyle())));
         imageExport.append(this.elementExport.exportImageElement(style.getImageURL(), 0, 0, Optional.of(size)));
         imageExport.append(this.elementExport.exportLabel(label));
         imageExport.append(this.exportChildren(node));
