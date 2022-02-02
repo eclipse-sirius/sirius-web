@@ -98,6 +98,10 @@ public final class StylesFactory {
                 result = ImageNodeStyle.newImageNodeStyle()
                                        .scalingFactor(1)
                                        .imageURL("/custom/" + optionalEditingContextId.get().toString() + "/" + nodeStyle.getShape()) //$NON-NLS-1$ //$NON-NLS-2$
+                                       .borderColor(Optional.ofNullable(nodeStyle.getBorderColor()).orElse(DEFAULT_COLOR))
+                                       .borderSize(nodeStyle.getBorderSize())
+                                       .borderStyle(LineStyle.valueOf(nodeStyle.getBorderLineStyle().getLiteral()))
+                                       .borderRadius(nodeStyle.getBorderRadius())
                                        .build();
                 // @formatter:on
             } else {
@@ -105,8 +109,8 @@ public final class StylesFactory {
                 result = RectangularNodeStyle.newRectangularNodeStyle()
                                              .color(Optional.ofNullable(nodeStyle.getColor()).orElse(DEFAULT_COLOR))
                                              .borderColor(Optional.ofNullable(nodeStyle.getBorderColor()).orElse(DEFAULT_COLOR))
-                                             .borderSize(1)
-                                             .borderStyle(LineStyle.Solid)
+                                             .borderSize(nodeStyle.getBorderSize())
+                                             .borderStyle(LineStyle.valueOf(nodeStyle.getBorderLineStyle().getLiteral()))
                                              .borderRadius(nodeStyle.getBorderRadius())
                                              .build();
                 // @formatter:on
@@ -118,7 +122,7 @@ public final class StylesFactory {
                                   .color(Optional.ofNullable(nodeStyle.getColor()).orElse(DEFAULT_COLOR))
                                   .borderColor(Optional.ofNullable(nodeStyle.getBorderColor()).orElse(DEFAULT_COLOR))
                                   .borderSize(nodeStyle.getBorderSize())
-                                  .borderStyle(LineStyle.Solid)
+                                  .borderStyle(LineStyle.valueOf(nodeStyle.getBorderLineStyle().getLiteral()))
                                   .borderRadius(nodeStyle.getBorderRadius())
                                   .build();
             // @formatter:on
@@ -133,7 +137,7 @@ public final class StylesFactory {
                                          .color(Optional.ofNullable(nodeStyle.getColor()).orElse(DEFAULT_COLOR))
                                          .borderColor(Optional.ofNullable(nodeStyle.getBorderColor()).orElse(DEFAULT_COLOR))
                                          .borderSize(nodeStyle.getBorderSize())
-                                         .borderStyle(LineStyle.Solid)
+                                         .borderStyle(LineStyle.valueOf(nodeStyle.getBorderLineStyle().getLiteral()))
                                          .borderRadius(nodeStyle.getBorderRadius())
                                          .build();
             // @formatter:on

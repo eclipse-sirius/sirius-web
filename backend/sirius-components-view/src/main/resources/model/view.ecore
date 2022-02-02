@@ -85,26 +85,29 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="strikeThrough" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" defaultValueLiteral="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Style" abstract="true" eSuperTypes="#//LabelStyle">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
-        defaultValueLiteral="#E5F5F8"/>
+  <eClassifiers xsi:type="ecore:EClass" name="BorderStyle" abstract="true" interface="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="borderColor" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="#33B0C3"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="NodeStyle" eSuperTypes="#//Style">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="listMode" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="borderRadius" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="3"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="shape" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="borderSize" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="1"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="borderLineStyle" eType="#//LineStyle"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Style" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="#E5F5F8"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NodeStyle" eSuperTypes="#//Style #//LabelStyle #//BorderStyle">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="listMode" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="shape" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="labelColor" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         defaultValueLiteral="black"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="sizeComputationExpression"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="1"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="EdgeStyle" eSuperTypes="#//Style">
+  <eClassifiers xsi:type="ecore:EClass" name="EdgeStyle" eSuperTypes="#//Style #//LabelStyle">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="lineStyle" lowerBound="1"
         eType="#//LineStyle" defaultValueLiteral="Solid"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="sourceArrowStyle" lowerBound="1"

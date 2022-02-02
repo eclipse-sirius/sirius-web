@@ -20,9 +20,7 @@ package org.eclipse.sirius.components.view;
  * </p>
  * <ul>
  * <li>{@link org.eclipse.sirius.components.view.NodeStyle#isListMode <em>List Mode</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.NodeStyle#getBorderRadius <em>Border Radius</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.NodeStyle#getShape <em>Shape</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.NodeStyle#getBorderSize <em>Border Size</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.NodeStyle#getLabelColor <em>Label Color</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.NodeStyle#getSizeComputationExpression <em>Size Computation
  * Expression</em>}</li>
@@ -32,7 +30,7 @@ package org.eclipse.sirius.components.view;
  * @model
  * @generated
  */
-public interface NodeStyle extends Style {
+public interface NodeStyle extends Style, LabelStyle, BorderStyle {
 
     /**
      * Returns the value of the '<em><b>List Mode</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -46,8 +44,8 @@ public interface NodeStyle extends Style {
     boolean isListMode();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.NodeStyle#isListMode <em>List Mode</em>}' attribute.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.NodeStyle#isListMode <em>List Mode</em>}'
+     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
      *            the new value of the '<em>List Mode</em>' attribute.
@@ -55,29 +53,6 @@ public interface NodeStyle extends Style {
      * @generated
      */
     void setListMode(boolean value);
-
-    /**
-     * Returns the value of the '<em><b>Border Radius</b></em>' attribute. The default value is <code>"0"</code>. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Border Radius</em>' attribute.
-     * @see #setBorderRadius(int)
-     * @see org.eclipse.sirius.components.view.ViewPackage#getNodeStyle_BorderRadius()
-     * @model default="0" required="true"
-     * @generated
-     */
-    int getBorderRadius();
-
-    /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.NodeStyle#getBorderRadius <em>Border Radius</em>}'
-     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Border Radius</em>' attribute.
-     * @see #getBorderRadius()
-     * @generated
-     */
-    void setBorderRadius(int value);
 
     /**
      * Returns the value of the '<em><b>Shape</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -91,8 +66,8 @@ public interface NodeStyle extends Style {
     String getShape();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.NodeStyle#getShape <em>Shape</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.NodeStyle#getShape <em>Shape</em>}' attribute.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
      *            the new value of the '<em>Shape</em>' attribute.
@@ -100,29 +75,6 @@ public interface NodeStyle extends Style {
      * @generated
      */
     void setShape(String value);
-
-    /**
-     * Returns the value of the '<em><b>Border Size</b></em>' attribute. The default value is <code>"1"</code>. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Border Size</em>' attribute.
-     * @see #setBorderSize(int)
-     * @see org.eclipse.sirius.components.view.ViewPackage#getNodeStyle_BorderSize()
-     * @model default="1" required="true"
-     * @generated
-     */
-    int getBorderSize();
-
-    /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.NodeStyle#getBorderSize <em>Border Size</em>}'
-     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Border Size</em>' attribute.
-     * @see #getBorderSize()
-     * @generated
-     */
-    void setBorderSize(int value);
 
     /**
      * Returns the value of the '<em><b>Label Color</b></em>' attribute. The default value is <code>"black"</code>. <!--

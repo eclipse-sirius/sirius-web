@@ -40,8 +40,8 @@ public interface DeleteView extends Operation {
     String getViewExpression();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.DeleteView#getViewExpression <em>View Expression</em>}'
-     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.DeleteView#getViewExpression <em>View
+     * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
      *            the new value of the '<em>View Expression</em>' attribute.

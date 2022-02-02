@@ -32,12 +32,14 @@ import org.eclipse.sirius.components.view.ViewPackage;
  * </p>
  * <ul>
  * <li>{@link org.eclipse.sirius.components.view.impl.DiagramElementDescriptionImpl#getName <em>Name</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.impl.DiagramElementDescriptionImpl#getDomainType <em>Domain Type</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.impl.DiagramElementDescriptionImpl#getDomainType <em>Domain
+ * Type</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.impl.DiagramElementDescriptionImpl#getSemanticCandidatesExpression
  * <em>Semantic Candidates Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.impl.DiagramElementDescriptionImpl#getLabelExpression <em>Label
  * Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.impl.DiagramElementDescriptionImpl#getDeleteTool <em>Delete Tool</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.impl.DiagramElementDescriptionImpl#getDeleteTool <em>Delete
+ * Tool</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.impl.DiagramElementDescriptionImpl#getLabelEditTool <em>Label Edit
  * Tool</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.impl.DiagramElementDescriptionImpl#getSynchronizationPolicy

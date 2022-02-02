@@ -26,7 +26,8 @@ import org.eclipse.emf.ecore.EObject;
  * <li>{@link org.eclipse.sirius.components.view.RepresentationDescription#getDomainType <em>Domain Type</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.RepresentationDescription#getPreconditionExpression <em>Precondition
  * Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.RepresentationDescription#getTitleExpression <em>Title Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.RepresentationDescription#getTitleExpression <em>Title
+ * Expression</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.ViewPackage#getRepresentationDescription()
@@ -47,8 +48,8 @@ public interface RepresentationDescription extends EObject {
     String getName();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.RepresentationDescription#getName <em>Name</em>}'
-     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.RepresentationDescription#getName
+     * <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
      *            the new value of the '<em>Name</em>' attribute.
@@ -70,8 +71,8 @@ public interface RepresentationDescription extends EObject {
     String getDomainType();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.RepresentationDescription#getDomainType <em>Domain
-     * Type</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.RepresentationDescription#getDomainType
+     * <em>Domain Type</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
      *            the new value of the '<em>Domain Type</em>' attribute.
@@ -93,8 +94,9 @@ public interface RepresentationDescription extends EObject {
     String getPreconditionExpression();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.RepresentationDescription#getPreconditionExpression
-     * <em>Precondition Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Sets the value of the
+     * '{@link org.eclipse.sirius.components.view.RepresentationDescription#getPreconditionExpression <em>Precondition
+     * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
      *            the new value of the '<em>Precondition Expression</em>' attribute.
@@ -116,8 +118,8 @@ public interface RepresentationDescription extends EObject {
     String getTitleExpression();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.RepresentationDescription#getTitleExpression <em>Title
-     * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.RepresentationDescription#getTitleExpression
+     * <em>Title Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
      *            the new value of the '<em>Title Expression</em>' attribute.

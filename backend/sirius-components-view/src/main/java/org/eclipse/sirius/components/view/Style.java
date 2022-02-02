@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view;
 
+import org.eclipse.emf.ecore.EObject;
+
 /**
  * <!-- begin-user-doc --> A representation of the model object '<em><b>Style</b></em>'. <!-- end-user-doc -->
  *
@@ -20,14 +22,13 @@ package org.eclipse.sirius.components.view;
  * </p>
  * <ul>
  * <li>{@link org.eclipse.sirius.components.view.Style#getColor <em>Color</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.Style#getBorderColor <em>Border Color</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.ViewPackage#getStyle()
  * @model abstract="true"
  * @generated
  */
-public interface Style extends LabelStyle {
+public interface Style extends EObject {
     /**
      * Returns the value of the '<em><b>Color</b></em>' attribute. The default value is <code>"#a590df"</code>. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -50,28 +51,5 @@ public interface Style extends LabelStyle {
      * @generated
      */
     void setColor(String value);
-
-    /**
-     * Returns the value of the '<em><b>Border Color</b></em>' attribute. The default value is <code>"#33B0C3"</code>.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Border Color</em>' attribute.
-     * @see #setBorderColor(String)
-     * @see org.eclipse.sirius.components.view.ViewPackage#getStyle_BorderColor()
-     * @model default="#33B0C3" required="true"
-     * @generated
-     */
-    String getBorderColor();
-
-    /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.Style#getBorderColor <em>Border Color</em>}' attribute.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Border Color</em>' attribute.
-     * @see #getBorderColor()
-     * @generated
-     */
-    void setBorderColor(String value);
 
 } // Style

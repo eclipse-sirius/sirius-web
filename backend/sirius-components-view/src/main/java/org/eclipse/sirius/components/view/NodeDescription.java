@@ -22,7 +22,8 @@ import org.eclipse.emf.common.util.EList;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.NodeDescription#getChildrenDescriptions <em>Children Descriptions</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.NodeDescription#getChildrenDescriptions <em>Children
+ * Descriptions</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.ViewPackage#getNodeDescription()
@@ -32,7 +33,8 @@ import org.eclipse.emf.common.util.EList;
 public interface NodeDescription extends DiagramElementDescription {
     /**
      * Returns the value of the '<em><b>Children Descriptions</b></em>' containment reference list. The list contents
-     * are of type {@link org.eclipse.sirius.components.view.NodeDescription}. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * are of type {@link org.eclipse.sirius.components.view.NodeDescription}. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
      *
      * @return the value of the '<em>Children Descriptions</em>' containment reference list.
      * @see org.eclipse.sirius.components.view.ViewPackage#getNodeDescription_ChildrenDescriptions()
@@ -66,8 +68,8 @@ public interface NodeDescription extends DiagramElementDescription {
     NodeStyle getStyle();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.NodeDescription#getStyle <em>Style</em>}' containment
-     * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.NodeDescription#getStyle <em>Style</em>}'
+     * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
      *            the new value of the '<em>Style</em>' containment reference.
@@ -89,7 +91,8 @@ public interface NodeDescription extends DiagramElementDescription {
 
     /**
      * Returns the value of the '<em><b>Conditional Styles</b></em>' containment reference list. The list contents are
-     * of type {@link org.eclipse.sirius.components.view.ConditionalNodeStyle}. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * of type {@link org.eclipse.sirius.components.view.ConditionalNodeStyle}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
      *
      * @return the value of the '<em>Conditional Styles</em>' containment reference list.
      * @see org.eclipse.sirius.components.view.ViewPackage#getNodeDescription_ConditionalStyles()

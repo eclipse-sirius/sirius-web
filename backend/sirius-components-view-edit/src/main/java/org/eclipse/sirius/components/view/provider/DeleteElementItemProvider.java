@@ -20,8 +20,8 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 
 /**
- * This is the item provider adapter for a {@link org.eclipse.sirius.components.view.DeleteElement} object. <!-- begin-user-doc
- * --> <!-- end-user-doc -->
+ * This is the item provider adapter for a {@link org.eclipse.sirius.components.view.DeleteElement} object. <!--
+ * begin-user-doc --> <!-- end-user-doc -->
  *
  * @generated
  */

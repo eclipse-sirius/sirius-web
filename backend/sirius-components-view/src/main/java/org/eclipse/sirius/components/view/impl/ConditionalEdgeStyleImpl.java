@@ -30,13 +30,13 @@ import org.eclipse.sirius.components.view.ViewPackage;
  * The following features are implemented:
  * </p>
  * <ul>
+ * <li>{@link org.eclipse.sirius.components.view.impl.ConditionalEdgeStyleImpl#getColor <em>Color</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.impl.ConditionalEdgeStyleImpl#getFontSize <em>Font Size</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.impl.ConditionalEdgeStyleImpl#isItalic <em>Italic</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.impl.ConditionalEdgeStyleImpl#isBold <em>Bold</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.impl.ConditionalEdgeStyleImpl#isUnderline <em>Underline</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.impl.ConditionalEdgeStyleImpl#isStrikeThrough <em>Strike Through</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.impl.ConditionalEdgeStyleImpl#getColor <em>Color</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.impl.ConditionalEdgeStyleImpl#getBorderColor <em>Border Color</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.impl.ConditionalEdgeStyleImpl#isStrikeThrough <em>Strike
+ * Through</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.impl.ConditionalEdgeStyleImpl#getLineStyle <em>Line Style</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.impl.ConditionalEdgeStyleImpl#getSourceArrowStyle <em>Source Arrow
  * Style</em>}</li>
@@ -48,6 +48,26 @@ import org.eclipse.sirius.components.view.ViewPackage;
  * @generated
  */
 public class ConditionalEdgeStyleImpl extends ConditionalImpl implements ConditionalEdgeStyle {
+    /**
+     * The default value of the '{@link #getColor() <em>Color</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getColor()
+     * @generated
+     * @ordered
+     */
+    protected static final String COLOR_EDEFAULT = "#E5F5F8"; //$NON-NLS-1$
+
+    /**
+     * The cached value of the '{@link #getColor() <em>Color</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @see #getColor()
+     * @generated
+     * @ordered
+     */
+    protected String color = COLOR_EDEFAULT;
+
     /**
      * The default value of the '{@link #getFontSize() <em>Font Size</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -147,46 +167,6 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
      * @ordered
      */
     protected boolean strikeThrough = STRIKE_THROUGH_EDEFAULT;
-
-    /**
-     * The default value of the '{@link #getColor() <em>Color</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @see #getColor()
-     * @generated
-     * @ordered
-     */
-    protected static final String COLOR_EDEFAULT = "#E5F5F8"; //$NON-NLS-1$
-
-    /**
-     * The cached value of the '{@link #getColor() <em>Color</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
-     *
-     * @see #getColor()
-     * @generated
-     * @ordered
-     */
-    protected String color = COLOR_EDEFAULT;
-
-    /**
-     * The default value of the '{@link #getBorderColor() <em>Border Color</em>}' attribute. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @see #getBorderColor()
-     * @generated
-     * @ordered
-     */
-    protected static final String BORDER_COLOR_EDEFAULT = "#33B0C3"; //$NON-NLS-1$
-
-    /**
-     * The cached value of the '{@link #getBorderColor() <em>Border Color</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @see #getBorderColor()
-     * @generated
-     * @ordered
-     */
-    protected String borderColor = BORDER_COLOR_EDEFAULT;
 
     /**
      * The default value of the '{@link #getLineStyle() <em>Line Style</em>}' attribute. <!-- begin-user-doc --> <!--
@@ -308,29 +288,6 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
         this.color = newColor;
         if (this.eNotificationRequired())
             this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.CONDITIONAL_EDGE_STYLE__COLOR, oldColor, this.color));
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public String getBorderColor() {
-        return this.borderColor;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public void setBorderColor(String newBorderColor) {
-        String oldBorderColor = this.borderColor;
-        this.borderColor = newBorderColor;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.CONDITIONAL_EDGE_STYLE__BORDER_COLOR, oldBorderColor, this.borderColor));
     }
 
     /**
@@ -548,6 +505,8 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
+        case ViewPackage.CONDITIONAL_EDGE_STYLE__COLOR:
+            return this.getColor();
         case ViewPackage.CONDITIONAL_EDGE_STYLE__FONT_SIZE:
             return this.getFontSize();
         case ViewPackage.CONDITIONAL_EDGE_STYLE__ITALIC:
@@ -558,10 +517,6 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
             return this.isUnderline();
         case ViewPackage.CONDITIONAL_EDGE_STYLE__STRIKE_THROUGH:
             return this.isStrikeThrough();
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__COLOR:
-            return this.getColor();
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__BORDER_COLOR:
-            return this.getBorderColor();
         case ViewPackage.CONDITIONAL_EDGE_STYLE__LINE_STYLE:
             return this.getLineStyle();
         case ViewPackage.CONDITIONAL_EDGE_STYLE__SOURCE_ARROW_STYLE:
@@ -582,6 +537,9 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
+        case ViewPackage.CONDITIONAL_EDGE_STYLE__COLOR:
+            this.setColor((String) newValue);
+            return;
         case ViewPackage.CONDITIONAL_EDGE_STYLE__FONT_SIZE:
             this.setFontSize((Integer) newValue);
             return;
@@ -596,12 +554,6 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
             return;
         case ViewPackage.CONDITIONAL_EDGE_STYLE__STRIKE_THROUGH:
             this.setStrikeThrough((Boolean) newValue);
-            return;
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__COLOR:
-            this.setColor((String) newValue);
-            return;
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__BORDER_COLOR:
-            this.setBorderColor((String) newValue);
             return;
         case ViewPackage.CONDITIONAL_EDGE_STYLE__LINE_STYLE:
             this.setLineStyle((LineStyle) newValue);
@@ -627,6 +579,9 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
+        case ViewPackage.CONDITIONAL_EDGE_STYLE__COLOR:
+            this.setColor(COLOR_EDEFAULT);
+            return;
         case ViewPackage.CONDITIONAL_EDGE_STYLE__FONT_SIZE:
             this.setFontSize(FONT_SIZE_EDEFAULT);
             return;
@@ -641,12 +596,6 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
             return;
         case ViewPackage.CONDITIONAL_EDGE_STYLE__STRIKE_THROUGH:
             this.setStrikeThrough(STRIKE_THROUGH_EDEFAULT);
-            return;
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__COLOR:
-            this.setColor(COLOR_EDEFAULT);
-            return;
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__BORDER_COLOR:
-            this.setBorderColor(BORDER_COLOR_EDEFAULT);
             return;
         case ViewPackage.CONDITIONAL_EDGE_STYLE__LINE_STYLE:
             this.setLineStyle(LINE_STYLE_EDEFAULT);
@@ -672,6 +621,8 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
+        case ViewPackage.CONDITIONAL_EDGE_STYLE__COLOR:
+            return COLOR_EDEFAULT == null ? this.color != null : !COLOR_EDEFAULT.equals(this.color);
         case ViewPackage.CONDITIONAL_EDGE_STYLE__FONT_SIZE:
             return this.fontSize != FONT_SIZE_EDEFAULT;
         case ViewPackage.CONDITIONAL_EDGE_STYLE__ITALIC:
@@ -682,10 +633,6 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
             return this.underline != UNDERLINE_EDEFAULT;
         case ViewPackage.CONDITIONAL_EDGE_STYLE__STRIKE_THROUGH:
             return this.strikeThrough != STRIKE_THROUGH_EDEFAULT;
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__COLOR:
-            return COLOR_EDEFAULT == null ? this.color != null : !COLOR_EDEFAULT.equals(this.color);
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__BORDER_COLOR:
-            return BORDER_COLOR_EDEFAULT == null ? this.borderColor != null : !BORDER_COLOR_EDEFAULT.equals(this.borderColor);
         case ViewPackage.CONDITIONAL_EDGE_STYLE__LINE_STYLE:
             return this.lineStyle != LINE_STYLE_EDEFAULT;
         case ViewPackage.CONDITIONAL_EDGE_STYLE__SOURCE_ARROW_STYLE:
@@ -705,6 +652,14 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
      */
     @Override
     public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
+        if (baseClass == Style.class) {
+            switch (derivedFeatureID) {
+            case ViewPackage.CONDITIONAL_EDGE_STYLE__COLOR:
+                return ViewPackage.STYLE__COLOR;
+            default:
+                return -1;
+            }
+        }
         if (baseClass == LabelStyle.class) {
             switch (derivedFeatureID) {
             case ViewPackage.CONDITIONAL_EDGE_STYLE__FONT_SIZE:
@@ -717,16 +672,6 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
                 return ViewPackage.LABEL_STYLE__UNDERLINE;
             case ViewPackage.CONDITIONAL_EDGE_STYLE__STRIKE_THROUGH:
                 return ViewPackage.LABEL_STYLE__STRIKE_THROUGH;
-            default:
-                return -1;
-            }
-        }
-        if (baseClass == Style.class) {
-            switch (derivedFeatureID) {
-            case ViewPackage.CONDITIONAL_EDGE_STYLE__COLOR:
-                return ViewPackage.STYLE__COLOR;
-            case ViewPackage.CONDITIONAL_EDGE_STYLE__BORDER_COLOR:
-                return ViewPackage.STYLE__BORDER_COLOR;
             default:
                 return -1;
             }
@@ -755,6 +700,14 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
      */
     @Override
     public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
+        if (baseClass == Style.class) {
+            switch (baseFeatureID) {
+            case ViewPackage.STYLE__COLOR:
+                return ViewPackage.CONDITIONAL_EDGE_STYLE__COLOR;
+            default:
+                return -1;
+            }
+        }
         if (baseClass == LabelStyle.class) {
             switch (baseFeatureID) {
             case ViewPackage.LABEL_STYLE__FONT_SIZE:
@@ -767,16 +720,6 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
                 return ViewPackage.CONDITIONAL_EDGE_STYLE__UNDERLINE;
             case ViewPackage.LABEL_STYLE__STRIKE_THROUGH:
                 return ViewPackage.CONDITIONAL_EDGE_STYLE__STRIKE_THROUGH;
-            default:
-                return -1;
-            }
-        }
-        if (baseClass == Style.class) {
-            switch (baseFeatureID) {
-            case ViewPackage.STYLE__COLOR:
-                return ViewPackage.CONDITIONAL_EDGE_STYLE__COLOR;
-            case ViewPackage.STYLE__BORDER_COLOR:
-                return ViewPackage.CONDITIONAL_EDGE_STYLE__BORDER_COLOR;
             default:
                 return -1;
             }
@@ -809,7 +752,9 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
             return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (fontSize: "); //$NON-NLS-1$
+        result.append(" (color: "); //$NON-NLS-1$
+        result.append(this.color);
+        result.append(", fontSize: "); //$NON-NLS-1$
         result.append(this.fontSize);
         result.append(", italic: "); //$NON-NLS-1$
         result.append(this.italic);
@@ -819,10 +764,6 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
         result.append(this.underline);
         result.append(", strikeThrough: "); //$NON-NLS-1$
         result.append(this.strikeThrough);
-        result.append(", color: "); //$NON-NLS-1$
-        result.append(this.color);
-        result.append(", borderColor: "); //$NON-NLS-1$
-        result.append(this.borderColor);
         result.append(", lineStyle: "); //$NON-NLS-1$
         result.append(this.lineStyle);
         result.append(", sourceArrowStyle: "); //$NON-NLS-1$

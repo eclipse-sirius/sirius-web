@@ -32,7 +32,8 @@ import org.eclipse.emf.ecore.EObject;
 public interface View extends EObject {
     /**
      * Returns the value of the '<em><b>Descriptions</b></em>' containment reference list. The list contents are of type
-     * {@link org.eclipse.sirius.components.view.RepresentationDescription}. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * {@link org.eclipse.sirius.components.view.RepresentationDescription}. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
      *
      * @return the value of the '<em>Descriptions</em>' containment reference list.
      * @see org.eclipse.sirius.components.view.ViewPackage#getView_Descriptions()

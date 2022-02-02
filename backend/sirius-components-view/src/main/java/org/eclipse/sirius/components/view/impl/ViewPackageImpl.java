@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.eclipse.sirius.components.view.ArrowStyle;
+import org.eclipse.sirius.components.view.BorderStyle;
 import org.eclipse.sirius.components.view.ChangeContext;
 import org.eclipse.sirius.components.view.Conditional;
 import org.eclipse.sirius.components.view.ConditionalEdgeStyle;
@@ -105,6 +106,13 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     private EClass labelStyleEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass borderStyleEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -764,6 +772,56 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
+    public EClass getBorderStyle() {
+        return this.borderStyleEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getBorderStyle_BorderColor() {
+        return (EAttribute) this.borderStyleEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getBorderStyle_BorderRadius() {
+        return (EAttribute) this.borderStyleEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getBorderStyle_BorderSize() {
+        return (EAttribute) this.borderStyleEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getBorderStyle_BorderLineStyle() {
+        return (EAttribute) this.borderStyleEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getStyle() {
         return this.styleEClass;
     }
@@ -776,16 +834,6 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
     @Override
     public EAttribute getStyle_Color() {
         return (EAttribute) this.styleEClass.getEStructuralFeatures().get(0);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public EAttribute getStyle_BorderColor() {
-        return (EAttribute) this.styleEClass.getEStructuralFeatures().get(1);
     }
 
     /**
@@ -814,7 +862,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
-    public EAttribute getNodeStyle_BorderRadius() {
+    public EAttribute getNodeStyle_Shape() {
         return (EAttribute) this.nodeStyleEClass.getEStructuralFeatures().get(1);
     }
 
@@ -824,7 +872,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
-    public EAttribute getNodeStyle_Shape() {
+    public EAttribute getNodeStyle_LabelColor() {
         return (EAttribute) this.nodeStyleEClass.getEStructuralFeatures().get(2);
     }
 
@@ -834,28 +882,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
-    public EAttribute getNodeStyle_BorderSize() {
-        return (EAttribute) this.nodeStyleEClass.getEStructuralFeatures().get(3);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public EAttribute getNodeStyle_LabelColor() {
-        return (EAttribute) this.nodeStyleEClass.getEStructuralFeatures().get(4);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
     public EAttribute getNodeStyle_SizeComputationExpression() {
-        return (EAttribute) this.nodeStyleEClass.getEStructuralFeatures().get(5);
+        return (EAttribute) this.nodeStyleEClass.getEStructuralFeatures().get(3);
     }
 
     /**
@@ -1357,15 +1385,18 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.createEAttribute(this.labelStyleEClass, LABEL_STYLE__UNDERLINE);
         this.createEAttribute(this.labelStyleEClass, LABEL_STYLE__STRIKE_THROUGH);
 
+        this.borderStyleEClass = this.createEClass(BORDER_STYLE);
+        this.createEAttribute(this.borderStyleEClass, BORDER_STYLE__BORDER_COLOR);
+        this.createEAttribute(this.borderStyleEClass, BORDER_STYLE__BORDER_RADIUS);
+        this.createEAttribute(this.borderStyleEClass, BORDER_STYLE__BORDER_SIZE);
+        this.createEAttribute(this.borderStyleEClass, BORDER_STYLE__BORDER_LINE_STYLE);
+
         this.styleEClass = this.createEClass(STYLE);
         this.createEAttribute(this.styleEClass, STYLE__COLOR);
-        this.createEAttribute(this.styleEClass, STYLE__BORDER_COLOR);
 
         this.nodeStyleEClass = this.createEClass(NODE_STYLE);
         this.createEAttribute(this.nodeStyleEClass, NODE_STYLE__LIST_MODE);
-        this.createEAttribute(this.nodeStyleEClass, NODE_STYLE__BORDER_RADIUS);
         this.createEAttribute(this.nodeStyleEClass, NODE_STYLE__SHAPE);
-        this.createEAttribute(this.nodeStyleEClass, NODE_STYLE__BORDER_SIZE);
         this.createEAttribute(this.nodeStyleEClass, NODE_STYLE__LABEL_COLOR);
         this.createEAttribute(this.nodeStyleEClass, NODE_STYLE__SIZE_COMPUTATION_EXPRESSION);
 
@@ -1463,9 +1494,11 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.diagramDescriptionEClass.getESuperTypes().add(this.getRepresentationDescription());
         this.nodeDescriptionEClass.getESuperTypes().add(this.getDiagramElementDescription());
         this.edgeDescriptionEClass.getESuperTypes().add(this.getDiagramElementDescription());
-        this.styleEClass.getESuperTypes().add(this.getLabelStyle());
         this.nodeStyleEClass.getESuperTypes().add(this.getStyle());
+        this.nodeStyleEClass.getESuperTypes().add(this.getLabelStyle());
+        this.nodeStyleEClass.getESuperTypes().add(this.getBorderStyle());
         this.edgeStyleEClass.getESuperTypes().add(this.getStyle());
+        this.edgeStyleEClass.getESuperTypes().add(this.getLabelStyle());
         this.labelEditToolEClass.getESuperTypes().add(this.getTool());
         this.deleteToolEClass.getESuperTypes().add(this.getTool());
         this.nodeToolEClass.getESuperTypes().add(this.getTool());
@@ -1570,20 +1603,24 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.initEAttribute(this.getLabelStyle_StrikeThrough(), this.ecorePackage.getEBoolean(), "strikeThrough", "false", 1, 1, LabelStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, //$NON-NLS-1$ //$NON-NLS-2$
                 !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+        this.initEClass(this.borderStyleEClass, BorderStyle.class, "BorderStyle", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+        this.initEAttribute(this.getBorderStyle_BorderColor(), this.ecorePackage.getEString(), "borderColor", "#33B0C3", 1, 1, BorderStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, //$NON-NLS-1$ //$NON-NLS-2$
+                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getBorderStyle_BorderRadius(), this.ecorePackage.getEInt(), "borderRadius", "3", 1, 1, BorderStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, //$NON-NLS-1$ //$NON-NLS-2$
+                !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getBorderStyle_BorderSize(), this.ecorePackage.getEInt(), "borderSize", "1", 1, 1, BorderStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, //$NON-NLS-1$ //$NON-NLS-2$
+                !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getBorderStyle_BorderLineStyle(), this.getLineStyle(), "borderLineStyle", null, 0, 1, BorderStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, //$NON-NLS-1$
+                !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
         this.initEClass(this.styleEClass, Style.class, "Style", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
         this.initEAttribute(this.getStyle_Color(), this.ecorePackage.getEString(), "color", "#E5F5F8", 0, 1, Style.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, //$NON-NLS-1$ //$NON-NLS-2$
                 !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getStyle_BorderColor(), this.ecorePackage.getEString(), "borderColor", "#33B0C3", 1, 1, Style.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, //$NON-NLS-1$ //$NON-NLS-2$
-                !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.nodeStyleEClass, NodeStyle.class, "NodeStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
         this.initEAttribute(this.getNodeStyle_ListMode(), this.ecorePackage.getEBoolean(), "listMode", null, 1, 1, NodeStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, //$NON-NLS-1$
                 IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getNodeStyle_BorderRadius(), this.ecorePackage.getEInt(), "borderRadius", "3", 1, 1, NodeStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, //$NON-NLS-1$ //$NON-NLS-2$
-                !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getNodeStyle_Shape(), this.ecorePackage.getEString(), "shape", null, 0, 1, NodeStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, //$NON-NLS-1$
-                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getNodeStyle_BorderSize(), this.ecorePackage.getEInt(), "borderSize", "1", 1, 1, NodeStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, //$NON-NLS-1$ //$NON-NLS-2$
                 IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getNodeStyle_LabelColor(), this.ecorePackage.getEString(), "labelColor", "black", 0, 1, NodeStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, //$NON-NLS-1$ //$NON-NLS-2$
                 !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

@@ -40,8 +40,8 @@ public interface ChangeContext extends Operation {
     String getExpression();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.ChangeContext#getExpression <em>Expression</em>}'
-     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.ChangeContext#getExpression
+     * <em>Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
      *            the new value of the '<em>Expression</em>' attribute.

@@ -21,8 +21,8 @@ import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.sirius.components.view.NodeTool;
 
 /**
- * This is the item provider adapter for a {@link org.eclipse.sirius.components.view.NodeTool} object. <!-- begin-user-doc -->
- * <!-- end-user-doc -->
+ * This is the item provider adapter for a {@link org.eclipse.sirius.components.view.NodeTool} object. <!--
+ * begin-user-doc --> <!-- end-user-doc -->
  *
  * @generated
  */

@@ -64,8 +64,8 @@ public interface SetValue extends Operation {
     String getValueExpression();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.SetValue#getValueExpression <em>Value Expression</em>}'
-     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.SetValue#getValueExpression <em>Value
+     * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
      *            the new value of the '<em>Value Expression</em>' attribute.

@@ -45,8 +45,10 @@ import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.components.view.BorderStyle;
 import org.eclipse.sirius.components.view.ConditionalNodeStyle;
 import org.eclipse.sirius.components.view.LabelStyle;
+import org.eclipse.sirius.components.view.LineStyle;
 import org.eclipse.sirius.components.view.NodeStyle;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.springframework.stereotype.Component;
@@ -85,7 +87,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
 
         // @formatter:off
         List<AbstractControlDescription> controls = List.of(
-                this.createTextField("nodestyle.sizeExpression", "Size Expression", //$NON-NLS-1$ //$NON-NLS-2$
+                this.createTextField("conditionalnodestyle.sizeExpression", "Size Expression", //$NON-NLS-1$ //$NON-NLS-2$
                         style -> ((NodeStyle) style).getSizeComputationExpression(),
                         (style, newSizeExpression) -> ((NodeStyle) style).setSizeComputationExpression(newSizeExpression),
                         ViewPackage.Literals.NODE_STYLE__SIZE_COMPUTATION_EXPRESSION),
@@ -104,7 +106,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 this.createTextField("conditionalnodestyle.borderColor", "Border Color", //$NON-NLS-1$ //$NON-NLS-2$
                         style -> ((NodeStyle) style).getBorderColor(),
                         (style, newColor) -> ((NodeStyle) style).setBorderColor(newColor),
-                        ViewPackage.Literals.STYLE__BORDER_COLOR),
+                        ViewPackage.Literals.BORDER_STYLE__BORDER_COLOR),
                 this.createTextField("conditionalnodestyle.borderRadius", "Border Radius", //$NON-NLS-1$ //$NON-NLS-2$
                         style -> String.valueOf(((NodeStyle) style).getBorderRadius()),
                         (style, newBorderRadius) -> {
@@ -114,7 +116,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                                 // Ignore.
                             }
                         },
-                        ViewPackage.Literals.NODE_STYLE__BORDER_RADIUS),
+                        ViewPackage.Literals.BORDER_STYLE__BORDER_RADIUS),
                 this.createTextField("conditionalnodestyle.borderSize", "Border Size", //$NON-NLS-1$ //$NON-NLS-2$
                         style -> String.valueOf(((NodeStyle) style).getBorderSize()),
                         (style, newBorderSize) -> {
@@ -124,8 +126,9 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                                 // Ignore.
                             }
                         },
-                        ViewPackage.Literals.NODE_STYLE__BORDER_SIZE),
-                this.createCheckbox("conditionalnodestyle.listMost", "List Mode", //$NON-NLS-1$ //$NON-NLS-2$
+                        ViewPackage.Literals.BORDER_STYLE__BORDER_SIZE),
+                this.createBorderLineStyleSelectionField("conditionalnodestyle.borderstyle", ViewPackage.Literals.BORDER_STYLE__BORDER_LINE_STYLE), //$NON-NLS-1$
+                this.createCheckbox("conditionalnodestyle.listMode", "List Mode", //$NON-NLS-1$ //$NON-NLS-2$
                         style -> ((NodeStyle) style).isListMode(),
                         (style, newListMode) -> ((NodeStyle) style).setListMode(newListMode),
                         ViewPackage.Literals.NODE_STYLE__LIST_MODE),
@@ -198,7 +201,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 this.createTextField("nodestyle.borderColor", "Border Color", //$NON-NLS-1$ //$NON-NLS-2$
                         style -> ((NodeStyle) style).getBorderColor(),
                         (style, newColor) -> ((NodeStyle) style).setBorderColor(newColor),
-                        ViewPackage.Literals.STYLE__BORDER_COLOR),
+                        ViewPackage.Literals.BORDER_STYLE__BORDER_COLOR),
                 this.createTextField("nodestyle.borderRadius", "Border Radius", //$NON-NLS-1$ //$NON-NLS-2$
                         style -> String.valueOf(((NodeStyle) style).getBorderRadius()),
                         (style, newBorderRadius) -> {
@@ -208,11 +211,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                                 // Ignore.
                             }
                         },
-                        ViewPackage.Literals.NODE_STYLE__BORDER_RADIUS),
-                this.createCheckbox("nodestyle.listMost", "List Mode", //$NON-NLS-1$ //$NON-NLS-2$
-                        style -> ((NodeStyle) style).isListMode(),
-                        (style, newListMode) -> ((NodeStyle) style).setListMode(newListMode),
-                        ViewPackage.Literals.NODE_STYLE__LIST_MODE),
+                        ViewPackage.Literals.BORDER_STYLE__BORDER_RADIUS),
                 this.createTextField("nodestyle.borderSize", "Border Size", //$NON-NLS-1$ //$NON-NLS-2$
                         style -> String.valueOf(((NodeStyle) style).getBorderSize()),
                         (style, newBorderSize) -> {
@@ -222,7 +221,12 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                                 // Ignore.
                             }
                         },
-                        ViewPackage.Literals.NODE_STYLE__BORDER_SIZE),
+                        ViewPackage.Literals.BORDER_STYLE__BORDER_SIZE),
+                this.createBorderLineStyleSelectionField("nodestyle.borderstyle", ViewPackage.Literals.BORDER_STYLE__BORDER_LINE_STYLE), //$NON-NLS-1$
+                this.createCheckbox("nodestyle.listMode", "List Mode", //$NON-NLS-1$ //$NON-NLS-2$
+                        style -> ((NodeStyle) style).isListMode(),
+                        (style, newListMode) -> ((NodeStyle) style).setListMode(newListMode),
+                        ViewPackage.Literals.NODE_STYLE__LIST_MODE),
                 this.createTextField("nodestyle.fontSize", "Font Size", //$NON-NLS-1$ //$NON-NLS-2$
                         style -> String.valueOf(((LabelStyle) style).getFontSize()),
                         (style, newColor) -> {
@@ -354,6 +358,34 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 .kindProvider(this::kindProvider)
                 .messageProvider(this::messageProvider)
                 .build();
+        // @formatter:on
+    }
+
+    private SelectDescription createBorderLineStyleSelectionField(String id, Object feature) {
+        // @formatter:off
+        return SelectDescription.newSelectDescription(id)
+                                .idProvider(variableManager -> id)
+                                .labelProvider(variableManager -> "Border Line Style") //$NON-NLS-1$
+                                .valueProvider(variableManager -> variableManager.get(VariableManager.SELF, BorderStyle.class).map(BorderStyle::getBorderLineStyle).map(LineStyle::toString).orElse(EMPTY))
+                                .optionsProvider(variableManager -> LineStyle.VALUES.stream().collect(Collectors.toList()))
+                                .optionIdProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, LineStyle.class).map(LineStyle::getLiteral).orElse(EMPTY))
+                                .optionLabelProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, LineStyle.class).map(LineStyle::getName).orElse(EMPTY))
+                                .newValueHandler((variableManager, newValue) -> {
+                                        var optionalBorderStyle = variableManager.get(VariableManager.SELF, BorderStyle.class);
+                                        if (optionalBorderStyle.isPresent()) {
+                                            if (newValue != null && LineStyle.get(newValue) != null) {
+                                                optionalBorderStyle.get().setBorderLineStyle(LineStyle.get(newValue));
+                                            } else {
+                                                optionalBorderStyle.get().setBorderLineStyle(LineStyle.SOLID);
+                                            }
+                                            return new Success();
+                                        }
+                                        return new Failure(""); //$NON-NLS-1$
+                                })
+                                .diagnosticsProvider(this.getDiagnosticsProvider(feature))
+                                .kindProvider(this::kindProvider)
+                                .messageProvider(this::messageProvider)
+                                .build();
         // @formatter:on
     }
 

@@ -25,8 +25,8 @@ import org.eclipse.sirius.components.view.NodeStyle;
 import org.eclipse.sirius.components.view.ViewPackage;
 
 /**
- * This is the item provider adapter for a {@link org.eclipse.sirius.components.view.NodeStyle} object. <!-- begin-user-doc -->
- * <!-- end-user-doc -->
+ * This is the item provider adapter for a {@link org.eclipse.sirius.components.view.NodeStyle} object. <!--
+ * begin-user-doc --> <!-- end-user-doc -->
  *
  * @generated
  */
@@ -50,14 +50,93 @@ public class NodeStyleItemProvider extends StyleItemProvider {
         if (this.itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
-            this.addListModePropertyDescriptor(object);
+            this.addFontSizePropertyDescriptor(object);
+            this.addItalicPropertyDescriptor(object);
+            this.addBoldPropertyDescriptor(object);
+            this.addUnderlinePropertyDescriptor(object);
+            this.addStrikeThroughPropertyDescriptor(object);
+            this.addBorderColorPropertyDescriptor(object);
             this.addBorderRadiusPropertyDescriptor(object);
-            this.addShapePropertyDescriptor(object);
             this.addBorderSizePropertyDescriptor(object);
+            this.addBorderLineStylePropertyDescriptor(object);
+            this.addListModePropertyDescriptor(object);
+            this.addShapePropertyDescriptor(object);
             this.addLabelColorPropertyDescriptor(object);
             this.addSizeComputationExpressionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
+    }
+
+    /**
+     * This adds a property descriptor for the Font Size feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addFontSizePropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_LabelStyle_fontSize_feature"), //$NON-NLS-1$
+                this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_fontSize_feature", "_UI_LabelStyle_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                ViewPackage.Literals.LABEL_STYLE__FONT_SIZE, true, false, false, ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Italic feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addItalicPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(
+                this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(), this.getString("_UI_LabelStyle_italic_feature"), //$NON-NLS-1$
+                        this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_italic_feature", "_UI_LabelStyle_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                        ViewPackage.Literals.LABEL_STYLE__ITALIC, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Bold feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addBoldPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(
+                this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(), this.getString("_UI_LabelStyle_bold_feature"), //$NON-NLS-1$
+                        this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_bold_feature", "_UI_LabelStyle_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                        ViewPackage.Literals.LABEL_STYLE__BOLD, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Underline feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addUnderlinePropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_LabelStyle_underline_feature"), //$NON-NLS-1$
+                this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_underline_feature", "_UI_LabelStyle_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                ViewPackage.Literals.LABEL_STYLE__UNDERLINE, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Strike Through feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addStrikeThroughPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_LabelStyle_strikeThrough_feature"), //$NON-NLS-1$
+                this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_strikeThrough_feature", "_UI_LabelStyle_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                ViewPackage.Literals.LABEL_STYLE__STRIKE_THROUGH, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Border Color feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addBorderColorPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_BorderStyle_borderColor_feature"), //$NON-NLS-1$
+                this.getString("_UI_PropertyDescriptor_description", "_UI_BorderStyle_borderColor_feature", "_UI_BorderStyle_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                ViewPackage.Literals.BORDER_STYLE__BORDER_COLOR, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -79,9 +158,9 @@ public class NodeStyleItemProvider extends StyleItemProvider {
      */
     protected void addBorderRadiusPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_NodeStyle_borderRadius_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_NodeStyle_borderRadius_feature", "_UI_NodeStyle_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                ViewPackage.Literals.NODE_STYLE__BORDER_RADIUS, true, false, false, ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
+                this.getString("_UI_BorderStyle_borderRadius_feature"), //$NON-NLS-1$
+                this.getString("_UI_PropertyDescriptor_description", "_UI_BorderStyle_borderRadius_feature", "_UI_BorderStyle_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                ViewPackage.Literals.BORDER_STYLE__BORDER_RADIUS, true, false, false, ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -103,9 +182,21 @@ public class NodeStyleItemProvider extends StyleItemProvider {
      */
     protected void addBorderSizePropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_NodeStyle_borderSize_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_NodeStyle_borderSize_feature", "_UI_NodeStyle_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                ViewPackage.Literals.NODE_STYLE__BORDER_SIZE, true, false, false, ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
+                this.getString("_UI_BorderStyle_borderSize_feature"), //$NON-NLS-1$
+                this.getString("_UI_PropertyDescriptor_description", "_UI_BorderStyle_borderSize_feature", "_UI_BorderStyle_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                ViewPackage.Literals.BORDER_STYLE__BORDER_SIZE, true, false, false, ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Border Line Style feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addBorderLineStylePropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_BorderStyle_borderLineStyle_feature"), //$NON-NLS-1$
+                this.getString("_UI_PropertyDescriptor_description", "_UI_BorderStyle_borderLineStyle_feature", "_UI_BorderStyle_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                ViewPackage.Literals.BORDER_STYLE__BORDER_LINE_STYLE, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -160,8 +251,9 @@ public class NodeStyleItemProvider extends StyleItemProvider {
      */
     @Override
     public String getText(Object object) {
-        NodeStyle nodeStyle = (NodeStyle) object;
-        return this.getString("_UI_NodeStyle_type") + " " + nodeStyle.getFontSize(); //$NON-NLS-1$ //$NON-NLS-2$
+        String label = ((NodeStyle) object).getColor();
+        return label == null || label.length() == 0 ? this.getString("_UI_NodeStyle_type") : //$NON-NLS-1$
+                this.getString("_UI_NodeStyle_type") + " " + label; //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /**
@@ -176,10 +268,17 @@ public class NodeStyleItemProvider extends StyleItemProvider {
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(NodeStyle.class)) {
-        case ViewPackage.NODE_STYLE__LIST_MODE:
+        case ViewPackage.NODE_STYLE__FONT_SIZE:
+        case ViewPackage.NODE_STYLE__ITALIC:
+        case ViewPackage.NODE_STYLE__BOLD:
+        case ViewPackage.NODE_STYLE__UNDERLINE:
+        case ViewPackage.NODE_STYLE__STRIKE_THROUGH:
+        case ViewPackage.NODE_STYLE__BORDER_COLOR:
         case ViewPackage.NODE_STYLE__BORDER_RADIUS:
-        case ViewPackage.NODE_STYLE__SHAPE:
         case ViewPackage.NODE_STYLE__BORDER_SIZE:
+        case ViewPackage.NODE_STYLE__BORDER_LINE_STYLE:
+        case ViewPackage.NODE_STYLE__LIST_MODE:
+        case ViewPackage.NODE_STYLE__SHAPE:
         case ViewPackage.NODE_STYLE__LABEL_COLOR:
         case ViewPackage.NODE_STYLE__SIZE_COMPUTATION_EXPRESSION:
             this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));

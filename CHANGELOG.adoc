@@ -70,6 +70,7 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/1071[#1071] [diagram] Add a label for the border nodes
 - https://github.com/eclipse-sirius/sirius-components/issues/1071[#1071] [diagram] Improve the resizing of the border nodes
 - https://github.com/eclipse-sirius/sirius-components/issues/783[#783] [diagram] Nodes which use images can now also have a border with all the relevant properties: color, size, radius, and line style. This applies to modelers using the compatibility layer and the web-based diagram definitions
+- https://github.com/eclipse-sirius/sirius-components/issues/1033[#1033] [view] It is now possible to configure all properties of node's border in web-based diagrams, including the border line style
 
 === New features
 

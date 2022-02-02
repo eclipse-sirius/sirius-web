@@ -19,7 +19,8 @@ package org.eclipse.sirius.components.view;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.CreateView#getParentViewExpression <em>Parent View Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.CreateView#getParentViewExpression <em>Parent View
+ * Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.CreateView#getElementDescription <em>Element Description</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.CreateView#getSemanticElementExpression <em>Semantic Element
  * Expression</em>}</li>
@@ -44,8 +45,8 @@ public interface CreateView extends Operation {
     String getParentViewExpression();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.CreateView#getParentViewExpression <em>Parent View
-     * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.CreateView#getParentViewExpression <em>Parent
+     * View Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
      *            the new value of the '<em>Parent View Expression</em>' attribute.
@@ -90,8 +91,8 @@ public interface CreateView extends Operation {
     String getSemanticElementExpression();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.CreateView#getSemanticElementExpression <em>Semantic
-     * Element Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.CreateView#getSemanticElementExpression
+     * <em>Semantic Element Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
      *            the new value of the '<em>Semantic Element Expression</em>' attribute.
@@ -112,8 +113,8 @@ public interface CreateView extends Operation {
     String getVariableName();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.CreateView#getVariableName <em>Variable Name</em>}'
-     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.CreateView#getVariableName <em>Variable
+     * Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
      *            the new value of the '<em>Variable Name</em>' attribute.
