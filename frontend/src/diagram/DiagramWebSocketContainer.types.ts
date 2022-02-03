@@ -100,12 +100,6 @@ export interface NodeDescription {
   id: string;
 }
 
-export interface GQLGetToolSectionsVariables {}
-
-export interface GQLGetToolSectionsData {
-  viewer: GQLViewer;
-}
-
 export interface GQLViewer {
   editingContext: GQLEditingContext;
 }
@@ -123,26 +117,6 @@ export interface GQLRepresentationMetadata {
 
 export interface GQLRepresentationDescription {
   id: string;
-}
-
-export interface GQLDiagramDescription extends GQLRepresentationDescription {
-  toolSections: GQLToolSection[];
-  nodeDescriptions: GQLNodeDescription[];
-  edgeDescriptions: GQLEdgeDescription[];
-}
-
-export interface GQLNodeDescription {
-  id: string;
-  synchronizationPolicy: GQLSynchronizationPolicy;
-  childNodeDescriptions: GQLNodeDescription[] | undefined;
-  borderNodeDescriptions: GQLNodeDescription[] | undefined;
-}
-
-export interface GQLEdgeDescription {
-  id: string;
-  synchronizationPolicy: GQLSynchronizationPolicy;
-  sourceNodeDescriptions: GQLNodeDescription[];
-  targetNodeDescriptions: GQLNodeDescription[];
 }
 
 export enum GQLSynchronizationPolicy {
@@ -281,19 +255,6 @@ export enum GQLArrowStyle {
   OutputArrow = 'OutputArrow',
   OutputClosedArrow = 'OutputClosedArrow',
   OutputFillClosedArrow = 'OutputFillClosedArrow',
-}
-
-export interface GQLToolSection {
-  id: string;
-  label: string;
-  imageURL: string;
-  tools: GQLTool[];
-}
-
-export interface GQLTool {
-  id: string;
-  label: string;
-  imageURL: string;
 }
 
 export enum GQLDeletionPolicy {

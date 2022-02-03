@@ -16,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.compatibility.api.IIdentifierProvider;
@@ -73,7 +74,12 @@ public class EdgeMappingConverterTests {
 
         IObjectService objectService = new IObjectService.NoOp();
         IRepresentationMetadataSearchService representationMetadataSearchService = new IRepresentationMetadataSearchService.NoOp();
-        IIdentifierProvider identifierProvider = element -> containerMappingUUID.toString();
+        IIdentifierProvider identifierProvider = new IIdentifierProvider.NoOp() {
+            @Override
+            public String getIdentifier(Object element) {
+                return containerMappingUUID.toString();
+            }
+        };
         ISemanticCandidatesProviderFactory semanticCandidatesProviderFactory = SemanticCandidatesProvider::new;
         IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider = interpeter -> new ModelOperationHandlerSwitch(objectService, representationMetadataSearchService, identifierProvider,
                 List.of(), interpeter);
@@ -143,7 +149,18 @@ public class EdgeMappingConverterTests {
         // @formatter:on
         IObjectService objectService = new IObjectService.NoOp();
         IRepresentationMetadataSearchService representationMetadataSearchService = new IRepresentationMetadataSearchService.NoOp();
-        IIdentifierProvider identifierProvider = element -> containerMappingUUID.toString();
+        IIdentifierProvider identifierProvider = new IIdentifierProvider() {
+
+            @Override
+            public String getIdentifier(Object element) {
+                return containerMappingUUID.toString();
+            }
+
+            @Override
+            public Optional<String> findVsmElementId(UUID id) {
+                return Optional.empty();
+            }
+        };
         ISemanticCandidatesProviderFactory semanticCandidatesProviderFactory = SemanticCandidatesProvider::new;
 
         IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider = interpeter -> new ModelOperationHandlerSwitch(objectService, representationMetadataSearchService, identifierProvider,
@@ -179,7 +196,18 @@ public class EdgeMappingConverterTests {
         // @formatter:on
         IObjectService objectService = new IObjectService.NoOp();
         IRepresentationMetadataSearchService representationMetadataSearchService = new IRepresentationMetadataSearchService.NoOp();
-        IIdentifierProvider identifierProvider = element -> targetContainerMappingUUID.toString();
+        IIdentifierProvider identifierProvider = new IIdentifierProvider() {
+
+            @Override
+            public String getIdentifier(Object element) {
+                return targetContainerMappingUUID.toString();
+            }
+
+            @Override
+            public Optional<String> findVsmElementId(UUID id) {
+                return Optional.empty();
+            }
+        };
         ISemanticCandidatesProviderFactory semanticCandidatesProviderFactory = SemanticCandidatesProvider::new;
         IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider = interpeter -> new ModelOperationHandlerSwitch(objectService, representationMetadataSearchService, identifierProvider,
                 List.of(), interpeter);

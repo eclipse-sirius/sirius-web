@@ -12,10 +12,13 @@
 - [ADR-044] Use border node "snap to parent container" algorithm
 - [ADR-045] Allow the explorer to reveal the current selection
 - [ADR-046] Make the workbench panels' content configurable
+- [ADR-047] Add support for tools preconditions
+- [ADR-048] Rename concepts related to tools
 
 === Deprecation warning
 - [core] The various DTOs related to the creation and renaming of both documents and representations will be removed from the project at some point. The only reason why we will keep them for the moment is that some of them are used to trigger some specific behavior in the `EditingContextEventProcessor`. The split of the representation metadata should help us remove those special use cases
 - [core] The method `IRepresentationMetadataSearchService#findByRepresentation` will be deleted in the future, it only exists as a transition from requesting the whole content of a representation everytime to requesting only its metadata when it's necessary
+- https://github.com/eclipse-sirius/sirius-components/issues/779[#779] [diagram] The properties `DiagramDescription#toolSections` should be removed in the near future since it has no real reason to exist now that the tools are computed on the fly. On top of that, `ITool.handler` will also be deleted at the same time since we no longer need to create the handlers of all the tools while the server is starting
 
 === Breaking changes
 
@@ -33,6 +36,7 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/1068[#1068] [form] The form representation is now supporting multiple elements as an input
 - https://github.com/eclipse-sirius/sirius-components/issues/1068[#1068] [workbench] The integration of the details view in the workbench is not limited to semantic objects with a kind starting with `siriusComponents://semantic`. Any object can be used as the input of the details view and we will now provide the identifier of all the objects in the selection. This may include graphical elements such as nodes, edges, representations or anything selected in the explorer for example
 - https://github.com/eclipse-sirius/sirius-components/issues/693[#693] [workbench] The workbench non longer hard-codes the views which are visible in the left and right side-panels. Instead, each application must explicitly configure its workbench using the new `WorkbenchViewContribution` element. See ADR-046 for more details. As part of this change, the `ExplorerWebSocketContainerProps`, `PropertiesWebSocketContainerProps`, `RepresentationsWebSocketContainerProps` and `ValidationWebSocketContainer` types have been removed and replaced with the single `WorkbenchViewComponentProps` type which is structurally equivalent.
+- https://github.com/eclipse-sirius/sirius-components/issues/779[#779] [diagram] Change the signature of the GraphQL API used to retrieve the tools of the diagram's contextual palette in order to include the identifier of the diagram element
 
 === Dependency update
 
@@ -70,6 +74,7 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/1018[#1018] [compatibility] Add support for the `Navigation` model operation from Sirius RCP
 - https://github.com/eclipse-sirius/sirius-components/issues/1026[#1026] [compatibility] Add support for `OperationAction`. The action are converted to regular tools available in the palette of the frontend
 - https://github.com/eclipse-sirius/sirius-components/issues/937[#937] [diagram] Add the ability to export diagram as SVG images
+- https://github.com/eclipse-sirius/sirius-components/issues/779[#779] [diagram] Add support for tools preconditions
 
 
 == v2022.01.0

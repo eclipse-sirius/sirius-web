@@ -1,0 +1,97 @@
+= ADR-047 - Add support for tools preconditions
+
+== Context
+
+When a user clicks on a Node/Edge/Diagram background, the Contextual Palette is opened, containing the tools available for this element.
+We only want to display the tools with no precondition or with a precondition returning `true`.
+
+== Decision
+
+=== Frontend
+
+Rename `getToolSectionsQuery` in operation.ts to `getDiagramDescriptionQuery` (along with the renaming of the associated mutation and results in `DiagramWebSocketContainer`)
+
+Tools are part of the DiagramDescription, they will be computed on-the-fly from now on. Remove `DiagramDescription.getToolSections() and `GQLDiagramDescription#toolSections`
+
+Remove `toolSections` retrieving part from `getDiagramDescriptionQuery` and add it on `ContextualPalette` opening.
+
+=== GraphQL API
+
+`ContextualPalette` should ask for the `toolsSections` while opening with a `useQuery<..., ...> ` thanks to the following GraphQL query :
+
+```
+query getToolSections($editingContextId: ID!, $diagramId: ID!, $diagramElementId: ID!) {
+  viewer {
+    editingContext(editingContextId: $editingContextId) {
+      representation(representationId: $diagramId) {
+        description {
+          ... on DiagramDescription {
+            toolSections(diagramElementId: $diagramElementId) {
+            // All the tool sections and tool fields such as id, label, imageURL etc
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+=== Backend
+
+Only the relevant tools (i.e. the tools compatible with the target element and for which the precondition, if defined, returns true for that element) will be return by this data fetcher, the `DiagramDescriptionToolSectionsDataFetcher, heavily inspired by the Sirius Web `EditingContextQueryBasedObjectDataFetcher` with its custom internal input and payload.
+
+It will need to use the `IEditingContextEventProcessorRegistry` to ask for the tool sections since you will need to be in the thread of the editing context to have the semantic element to run the precondition.
+
+```
+package o.e.s.c.collaborative.diagrams.handlers
+
+public ToolSectionEventHandler implements IDiagramEventHandler {
+
+  private final IDiagramQueryService diagramQueryService;
+  private final IObjectService objectService;
+  private final List<IToolSectionProvider> toolSectionProviders;
+
+  public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IInput input) {
+     return this.representationDescriptionSearchService.findById(this.diagram.getDescriptionId())
+         .map(diagramDescription -> diagramDescription.getToolSections());
+
+     ToolSectionInput toolSectionInput = (ToolSectionInput) input;
+     var optionalTargetElement = this.diagramQueryService.findNodeById(input.getDiagramElementId())
+         .flatMap(node -> this.ObjectService.findById(node.getTargetId()));
+     // Find the tool section providers which canHandle the diagram
+     // Ask this provider for the tool
+  }
+}
+```
+
+
+=== Compatibility layer
+
+We will need a `IToolSectionProvider` to compute the preconditions for the compatibility layer.
+
+```
+public interface IToolSectionProvider {
+  boolean canHandle(..);
+  List<ToolSection> handle(Object targetElement,...);
+}
+```
+
+== Status
+
+WIP
+
+== Consequences
+
+=== Support in the View DSL
+
+It could also be supported in the View DSL by:
+
+- adding a preconditionExpression to `org.eclipse.sirius.components.view.Tool`
+- creating a dedicated `IToolSectionProvider` to determine which tool to return for a given diagram element
+
+=== Deprecation warning
+
+The feature `DiagramDescription#toolSections` is now pretty much useless.
+It may be removed in the near future.
+
+The code of both `DiagramConverter.createToolSections(AQLInterpreter)` and `ToolProvider.getToolSections(Map<UUID, NodeDescription>, List<EdgeDescription>, DiagramDescription, List<Layer>)` would thus be transferred to two `IToolSectionProvider`.

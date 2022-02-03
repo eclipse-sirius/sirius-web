@@ -12,9 +12,10 @@
  *******************************************************************************/
 .toolSection {
   display: flex;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
-  padding: 0 0px 0 8px;
+  margin-left: 8px;
 }
 
 .img {
@@ -48,7 +49,7 @@
   cursor: pointer;
   height: 14px;
   width: 14px;
-  margin-left: -5px;
+  margin-left: -4px;
   margin-top: 12px;
 }
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -61,7 +61,12 @@ public class DomainBasedSourceNodesProviderTests {
 
         variableManager.put(DiagramDescription.CACHE, cache);
 
-        IIdentifierProvider identifierProvider = element -> nodeMapping.getName();
+        IIdentifierProvider identifierProvider = new IIdentifierProvider.NoOp() {
+            @Override
+            public String getIdentifier(Object element) {
+                return nodeMapping.getName();
+            }
+        };
         List<Element> sourceNodes = new DomainBasedSourceNodesProvider(edgeMapping, interpreter, identifierProvider).apply(variableManager);
         assertThat(sourceNodes).hasSize(1);
         assertThat(sourceNodes).contains(nodeElement);

@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useLazyQuery, useMutation, useSubscription } from '@apollo/client';
+import { useMutation, useSubscription } from '@apollo/client';
 import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
 import makeStyles from '@material-ui/core/styles/makeStyles';
@@ -19,16 +19,11 @@ import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
 import { ServerContext } from 'common/ServerContext';
 import {
-  CreateEdgeTool,
-  CreateNodeTool,
   GQLDeletionPolicy,
-  GQLDiagramDescription,
   GQLDiagramEventPayload,
   GQLDiagramEventSubscription,
   GQLDiagramRefreshedEventPayload,
   GQLErrorPayload,
-  GQLGetToolSectionsData,
-  GQLGetToolSectionsVariables,
   GQLInvokeEdgeToolOnDiagramData,
   GQLInvokeEdgeToolOnDiagramInput,
   GQLInvokeEdgeToolOnDiagramPayload,
@@ -65,7 +60,6 @@ import {
   SetContextualMenuEvent,
   SetContextualPaletteEvent,
   SetDefaultToolEvent,
-  SetDiagramDescriptionEvent,
   ShowSelectionDialogEvent,
   ShowToastEvent,
   SubscribersUpdatedEvent,
@@ -77,7 +71,6 @@ import {
   deleteFromDiagramMutation,
   diagramEventSubscription,
   editLabelMutation as editLabelMutationOp,
-  getToolSectionsQuery,
   invokeEdgeToolOnDiagramMutation,
   invokeNodeToolOnDiagramMutation,
   updateNodeBoundsOp,
@@ -85,6 +78,7 @@ import {
 } from 'diagram/operations';
 import { ContextualMenu } from 'diagram/palette/ContextualMenu';
 import { ContextualPalette } from 'diagram/palette/ContextualPalette';
+import { GQLCreateEdgeTool, GQLCreateNodeTool, GQLToolSection } from 'diagram/palette/ContextualPalette.types';
 import {
   DiagramServer,
   HIDE_CONTEXTUAL_TOOLBAR_ACTION,
@@ -146,8 +140,6 @@ const useDiagramWebSocketContainerStyle = makeStyles((theme) => ({
   },
 }));
 
-const isDiagramDescription = (representationDescription): representationDescription is GQLDiagramDescription =>
-  representationDescription.__typename === 'DiagramDescription';
 const isDiagramRefreshedEventPayload = (payload: GQLDiagramEventPayload): payload is GQLDiagramRefreshedEventPayload =>
   payload.__typename === 'DiagramRefreshedEventPayload';
 const isSubscribersUpdatedEventPayload = (
@@ -331,7 +323,6 @@ export const DiagramWebSocketContainer = ({
     displayedRepresentationId,
     diagramServer,
     diagram,
-    diagramDescription,
     toolSections,
     contextualPalette,
     contextualMenu,
@@ -368,19 +359,7 @@ export const DiagramWebSocketContainer = ({
   ] = useMutation(updateNodeBoundsOp);
   const [arrangeAllMutation, { loading: arrangeAllLoading, data: arrangeAllData, error: arrangeAllError }] =
     useMutation(arrangeAllOp);
-  const [getToolSectionData, { loading: toolSectionLoading, data: toolSectionData }] = useLazyQuery<
-    GQLGetToolSectionsData,
-    GQLGetToolSectionsVariables
-  >(getToolSectionsQuery);
-  /**
-   * We have choose to make only one query by diagram to get tools to avoid network flooding.
-   * In consequence, a tool must contains all necessary properties to be filtered on a specific context (In the contextual palette for example).
-   * The query to get tool sections depends on the representationId and we use a React useEffect to match this workflow.
-   * For each update of the representationId value, we will redo a query and update tools.
-   */
-  useEffect(() => {
-    getToolSectionData({ variables: { editingContextId, diagramId: representationId } });
-  }, [editingContextId, representationId, getToolSectionData]);
+
   /**
    * Dispatch the diagram to the diagramServer if our state indicate that diagram has changed.
    */
@@ -708,19 +687,6 @@ export const DiagramWebSocketContainer = ({
   ]);
 
   useEffect(() => {
-    if (!toolSectionLoading && diagramWebSocketContainer === 'ready' && toolSectionData) {
-      const representationDescription = toolSectionData.viewer.editingContext.representation.description;
-      if (isDiagramDescription(representationDescription)) {
-        const setDiagramDescriptionEvent: SetDiagramDescriptionEvent = {
-          type: 'SET_DIAGRAM_DESCRIPTION',
-          diagramDescription: representationDescription,
-        };
-        dispatch(setDiagramDescriptionEvent);
-      }
-    }
-  }, [toolSectionLoading, toolSectionData, diagramWebSocketContainer, dispatch]);
-
-  useEffect(() => {
     if (selectedObjectId && activeTool && contextualPalette) {
       invokeTool(activeTool, contextualPalette.element.id, contextualPalette.palettePosition);
       const sourceElementAction: SourceElementAction = { kind: SOURCE_ELEMENT_ACTION, sourceElement: null };
@@ -934,14 +900,7 @@ export const DiagramWebSocketContainer = ({
    */
   let contextualPaletteContent;
   if (!readOnly && contextualPalette) {
-    const {
-      element,
-      palettePosition,
-      canvasBounds,
-      edgeStartPosition: edgeStartPosition,
-      renameable,
-      deletable,
-    } = contextualPalette;
+    const { element, palettePosition, canvasBounds, edgeStartPosition, renameable, deletable } = contextualPalette;
     const { x, y } = edgeStartPosition;
     const style = {
       left: canvasBounds.x + 'px',
@@ -992,13 +951,13 @@ export const DiagramWebSocketContainer = ({
       const setDefaultToolEvent: SetDefaultToolEvent = { type: 'SET_DEFAULT_TOOL', defaultTool: tool };
       dispatch(setDefaultToolEvent);
     };
-    const invokeConnectorToolFromContextualPalette = () => {
+    const invokeConnectorToolFromContextualPalette = (toolSections: GQLToolSection[]) => {
       resetTools();
       const edgeTools = [];
       toolSections.forEach((toolSection) => {
         const filteredTools = toolSection.tools
           .filter((tool) => tool.__typename === 'CreateEdgeTool')
-          .map((tool) => tool as CreateEdgeTool)
+          .map((tool) => tool as GQLCreateEdgeTool)
           .filter((edgeTool) =>
             edgeTool.edgeCandidates.some((edgeCandidate) =>
               edgeCandidate.sources.some((source) => source.id === element.descriptionId)
@@ -1022,9 +981,9 @@ export const DiagramWebSocketContainer = ({
     contextualPaletteContent = (
       <div className={classes.contextualPalette} style={style}>
         <ContextualPalette
-          diagramDescription={diagramDescription}
-          toolSections={toolSections}
-          targetElement={element}
+          editingContextId={editingContextId}
+          representationId={representationId}
+          diagramElement={element}
           invokeTool={invokeToolFromContextualPalette}
           invokeConnectorTool={invokeConnectorToolFromContextualPalette}
           invokeLabelEdit={invokeLabelEditFromContextualPalette}
@@ -1089,7 +1048,7 @@ export const DiagramWebSocketContainer = ({
     selectModelElementDialog = (
       <SelectionDialogWebSocketContainer
         editingContextId={editingContextId}
-        selectionRepresentationId={(activeTool as CreateNodeTool).selectionDescriptionId}
+        selectionRepresentationId={(activeTool as GQLCreateNodeTool).selectionDescriptionId}
         targetObjectId={contextualPalette?.element.targetObjectId}
         onClose={() => {
           dispatch({ type: 'CLOSE_SELECTION_DIALOG' } as CloseSelectionDialogEvent);
