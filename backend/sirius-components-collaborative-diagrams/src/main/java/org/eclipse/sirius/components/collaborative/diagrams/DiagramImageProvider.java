@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,7 +16,6 @@ import java.util.Optional;
 
 import org.eclipse.sirius.components.collaborative.api.IRepresentationImageProvider;
 import org.eclipse.sirius.components.diagrams.Diagram;
-import org.eclipse.sirius.components.representations.IRepresentation;
 import org.springframework.stereotype.Service;
 
 /**
@@ -28,13 +27,11 @@ import org.springframework.stereotype.Service;
 public class DiagramImageProvider implements IRepresentationImageProvider {
 
     @Override
-    public Optional<String> getImageURL(IRepresentation representation) {
-        // @formatter:off
-        return Optional.of(representation)
-                .filter(Diagram.class::isInstance)
-                .map(Diagram.class::cast)
-                .map(diagram -> "/diagram-images/diagram.svg"); //$NON-NLS-1$
-        // @formatter:on
+    public Optional<String> getImageURL(String kind) {
+        if (Diagram.KIND.equals(kind)) {
+            return Optional.of("/diagram-images/diagram.svg"); //$NON-NLS-1$
+        }
+        return Optional.empty();
     }
 
 }

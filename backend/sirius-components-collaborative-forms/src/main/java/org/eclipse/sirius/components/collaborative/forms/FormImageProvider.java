@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,7 +16,6 @@ import java.util.Optional;
 
 import org.eclipse.sirius.components.collaborative.api.IRepresentationImageProvider;
 import org.eclipse.sirius.components.forms.Form;
-import org.eclipse.sirius.components.representations.IRepresentation;
 import org.springframework.stereotype.Service;
 
 /**
@@ -28,13 +27,11 @@ import org.springframework.stereotype.Service;
 public class FormImageProvider implements IRepresentationImageProvider {
 
     @Override
-    public Optional<String> getImageURL(IRepresentation representation) {
-        // @formatter:off
-        return Optional.of(representation)
-                .filter(Form.class::isInstance)
-                .map(Form.class::cast)
-                .map(form -> "/form-images/form.svg"); //$NON-NLS-1$
-        // @formatter:on
+    public Optional<String> getImageURL(String kind) {
+        if (Form.KIND.equals(kind)) {
+            return Optional.of("/form-images/form.svg"); //$NON-NLS-1$
+        }
+        return Optional.empty();
     }
 
 }

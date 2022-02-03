@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,8 +14,6 @@ package org.eclipse.sirius.components.collaborative.api;
 
 import java.util.Optional;
 
-import org.eclipse.sirius.components.representations.IRepresentation;
-
 /**
  * Interface used to provide an image for a representation when it is displayed in the user interface of the frontend.
  * For example, this method should return the URL of the image displayed for a representation in the explorer.
@@ -26,9 +24,9 @@ public interface IRepresentationImageProvider {
     /**
      * Returns the path of an image inside the classpath.
      *
-     * @param representation
-     *            The representation
+     * @param kind
+     *            The kind
      * @return An optional containing a path for the given representation or an empty optional if not supported.
      */
-    Optional<String> getImageURL(IRepresentation representation);
+    Optional<String> getImageURL(String kind);
 }
