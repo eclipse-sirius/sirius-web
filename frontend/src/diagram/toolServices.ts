@@ -17,18 +17,6 @@ import { SourceElement } from './sprotty/DiagramServer.types';
 const isCreateNodeTool = (tool: Tool): tool is CreateNodeTool => tool.__typename === 'CreateNodeTool';
 const isCreateEdgeTool = (tool: Tool): tool is CreateEdgeTool => tool.__typename === 'CreateEdgeTool';
 
-export function isContextualTool(tool, element) {
-  let result = false;
-  if (tool.__typename === 'CreateNodeTool') {
-    result = canInvokeTool(tool, null, element);
-  } else if (tool.__typename === 'CreateEdgeTool') {
-    result = tool.edgeCandidates.some((edgeCandidate) =>
-      edgeCandidate.sources.some((source) => source.id === element.descriptionId)
-    );
-  }
-  return result;
-}
-
 export const canInvokeTool = (tool: Tool, sourceElement: SourceElement, targetElement) => {
   let result = false;
   if (isCreateNodeTool(tool)) {

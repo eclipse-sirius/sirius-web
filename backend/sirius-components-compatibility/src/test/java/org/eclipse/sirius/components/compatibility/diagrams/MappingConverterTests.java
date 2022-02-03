@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -103,7 +103,12 @@ public class MappingConverterTests {
         containerMapping.getConditionnalStyles().add(this.createConditionalContainerStyle(EXPRESSION_TRUE, secondConditionalStyle));
         containerMapping.getConditionnalStyles().add(this.createConditionalContainerStyle(EXPRESSION_TRUE, thirdConditionalStyle));
 
-        IIdentifierProvider identifierProvider = element -> UUID.randomUUID().toString();
+        IIdentifierProvider identifierProvider = new IIdentifierProvider.NoOp() {
+            @Override
+            public String getIdentifier(Object element) {
+                return UUID.randomUUID().toString();
+            }
+        };
         ISemanticCandidatesProviderFactory semanticCandidatesProviderFactory = (interpreter, domainClass, semanticCandidatesExpression, preconditionExpression) -> variableManager -> List.of();
         IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider = interpreter -> modelOperation -> Optional.empty();
 
@@ -159,7 +164,18 @@ public class MappingConverterTests {
         itemMapping.setStyle(imageStyle);
         containerMapping.getSubNodeMappings().add(itemMapping);
 
-        IIdentifierProvider identifierProvider = element -> UUID.randomUUID().toString();
+        IIdentifierProvider identifierProvider = new IIdentifierProvider() {
+
+            @Override
+            public String getIdentifier(Object element) {
+                return UUID.randomUUID().toString();
+            }
+
+            @Override
+            public Optional<String> findVsmElementId(UUID id) {
+                return Optional.empty();
+            }
+        };
         ISemanticCandidatesProviderFactory semanticCandidatesProviderFactory = (interpreter, domainClass, semanticCandidatesExpression, preconditionExpression) -> variableManager -> List.of();
         IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider = interpreter -> modelOperation -> Optional.empty();
 
@@ -223,7 +239,18 @@ public class MappingConverterTests {
         nodeMapping.getConditionnalStyles().add(this.createConditionalNodeStyle(EXPRESSION_TRUE, secondConditionalStyle));
         nodeMapping.getConditionnalStyles().add(this.createConditionalNodeStyle(EXPRESSION_TRUE, thirdConditionalStyle));
 
-        IIdentifierProvider identifierProvider = element -> UUID.randomUUID().toString();
+        IIdentifierProvider identifierProvider = new IIdentifierProvider() {
+
+            @Override
+            public String getIdentifier(Object element) {
+                return UUID.randomUUID().toString();
+            }
+
+            @Override
+            public Optional<String> findVsmElementId(UUID id) {
+                return Optional.empty();
+            }
+        };
         ISemanticCandidatesProviderFactory semanticCandidatesProviderFactory = (interpreter, domainClass, semanticCandidatesExpression, preconditionExpression) -> variableManager -> List.of();
         IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider = interpreter -> modelOperation -> Optional.empty();
 

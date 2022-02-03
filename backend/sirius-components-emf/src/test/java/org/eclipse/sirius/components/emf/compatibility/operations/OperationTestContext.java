@@ -62,7 +62,12 @@ public class OperationTestContext {
 
         this.objectService = new IObjectService.NoOp();
         this.representationMetadataSearchService = new IRepresentationMetadataSearchService.NoOp();
-        this.identifierProvider = element -> UUID.randomUUID().toString();
+        this.identifierProvider = new IIdentifierProvider.NoOp() {
+            @Override
+            public String getIdentifier(Object element) {
+                return UUID.randomUUID().toString();
+            }
+        };
         this.interpreter = new AQLInterpreter(List.of(ModelOperationServices.class), List.of(EcorePackage.eINSTANCE));
 
         this.variables = new HashMap<>();

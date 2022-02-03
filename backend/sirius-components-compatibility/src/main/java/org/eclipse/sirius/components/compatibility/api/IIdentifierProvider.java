@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 THALES GLOBAL SERVICES.
+ * Copyright (c) 2021, 2022 THALES GLOBAL SERVICES.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,9 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.compatibility.api;
 
+import java.util.Optional;
+import java.util.UUID;
+
 /**
  * Used to compute a stable identifier for the element coming from the odesign.
  *
@@ -19,6 +22,8 @@ package org.eclipse.sirius.components.compatibility.api;
  */
 public interface IIdentifierProvider {
     String getIdentifier(Object element);
+
+    Optional<String> findVsmElementId(UUID id);
 
     /**
      * Implementation which does nothing, used for mocks in unit tests.
@@ -30,6 +35,11 @@ public interface IIdentifierProvider {
         @Override
         public String getIdentifier(Object element) {
             return ""; //$NON-NLS-1$
+        }
+
+        @Override
+        public Optional<String> findVsmElementId(UUID id) {
+            return Optional.empty();
         }
 
     }

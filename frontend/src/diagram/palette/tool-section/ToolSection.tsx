@@ -10,9 +10,10 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import React, { useState, useCallback } from 'react';
+import { ToolSectionProps } from 'diagram/palette/tool-section/ToolSection.types';
 import { Tool } from 'diagram/palette/tool/Tool';
 import { ArrowExpanded } from 'icons/ArrowExpanded';
+import React, { useCallback, useState } from 'react';
 import styles from './ToolSection.module.css';
 
 /**
@@ -20,21 +21,19 @@ import styles from './ToolSection.module.css';
  *
  * @hmarchadour
  */
-export const ToolSection = ({ toolSection, onToolClick }) => {
-  const { defaultTool, tools } = toolSection;
+export const ToolSection = ({ toolSection, onToolClick }: ToolSectionProps) => {
+  const { tools } = toolSection;
   const initialState = {
     expanded: false,
-    activeTool: defaultTool,
   };
   const [state, setState] = useState(initialState);
-  const { expanded, activeTool } = state;
+  const { expanded } = state;
   const onActiveTool = useCallback(
     (tool) => {
       onToolClick(tool);
       setState((prevState) => {
         return {
           expanded: false,
-          activeTool: tool,
         };
       });
     },
@@ -44,7 +43,6 @@ export const ToolSection = ({ toolSection, onToolClick }) => {
     setState((prevState) => {
       return {
         expanded: !prevState.expanded,
-        activeTool: prevState.activeTool,
       };
     });
   }, []);
@@ -82,7 +80,7 @@ export const ToolSection = ({ toolSection, onToolClick }) => {
   return (
     <>
       <div className={styles.toolSection}>
-        <Tool tool={activeTool} thumbnail={true} onClick={() => onToolClick(activeTool)} />
+        <Tool tool={tools[0]} thumbnail={true} onClick={() => onToolClick(tools[0])} />
         {caretContent}
       </div>
       {toolChoiceContent}

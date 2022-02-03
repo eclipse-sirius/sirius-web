@@ -74,7 +74,12 @@ public class FormRendererTests {
 
         IObjectService objectService = new IObjectService.NoOp();
         IRepresentationMetadataSearchService representationMetadataSearchService = new IRepresentationMetadataSearchService.NoOp();
-        IIdentifierProvider identifierProvider = element -> UUID.randomUUID().toString();
+        IIdentifierProvider identifierProvider = new IIdentifierProvider.NoOp() {
+            @Override
+            public String getIdentifier(Object element) {
+                return UUID.randomUUID().toString();
+            }
+        };
         IdentifiedElementLabelProvider identifiedElementLabelProvider = new IdentifiedElementLabelProvider();
         ISemanticCandidatesProviderFactory semanticCandidatesProviderFactory = SemanticCandidatesProvider::new;
 

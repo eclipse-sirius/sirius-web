@@ -182,7 +182,7 @@ type DiagramDescription implements RepresentationDescription {
   autoLayout: Boolean!
   nodeDescriptions: [NodeDescription!]!
   edgeDescriptions: [EdgeDescription!]!
-  toolSections: [ToolSection!]!
+  toolSections(diagramElementId: ID!): [ToolSection!]
 }
 
 type NodeDescription {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 THALES GLOBAL SERVICES.
+ * Copyright (c) 2021, 2022 THALES GLOBAL SERVICES.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,6 @@
  *******************************************************************************/
 import {
   CreateEdgeTool,
-  GQLDiagramDescription,
   Menu,
   Palette,
   Position,
@@ -65,7 +64,6 @@ export interface DiagramWebSocketContainerContext {
   displayedRepresentationId: string | null;
   diagramServer: DiagramServer;
   diagram: GQLDiagram;
-  diagramDescription: GQLDiagramDescription | null;
   toolSections: ToolSection[];
   activeTool: Tool | null;
   activeConnectorTools: CreateEdgeTool[];
@@ -89,7 +87,6 @@ export type HandleSelectedObjectInSelectionDialogEvent = {
 };
 export type ResetSelectedObjectInSelectionDialogEvent = { type: 'RESET_SELECTED_OBJECT_IN_SELECTION_DIALOG' };
 export type SwithRepresentationEvent = { type: 'SWITCH_REPRESENTATION'; representationId: string };
-export type SetDiagramDescriptionEvent = { type: 'SET_DIAGRAM_DESCRIPTION'; diagramDescription: GQLDiagramDescription };
 export type SetDefaultToolEvent = { type: 'SET_DEFAULT_TOOL'; defaultTool: Tool };
 export type DiagramRefreshedEvent = { type: 'HANDLE_DIAGRAM_REFRESHED'; diagram: GQLDiagram };
 export type SubscribersUpdatedEvent = { type: 'HANDLE_SUBSCRIBERS_UPDATED'; subscribers: Subscriber[] };
@@ -129,7 +126,6 @@ export type DiagramWebSocketContainerEvent =
   | ResetSelectedObjectInSelectionDialogEvent
   | SwithRepresentationEvent
   | InitializeRepresentationEvent
-  | SetDiagramDescriptionEvent
   | SetDefaultToolEvent
   | DiagramRefreshedEvent
   | SubscribersUpdatedEvent
@@ -162,7 +158,6 @@ export const diagramWebSocketContainerMachine = Machine<
       displayedRepresentationId: null,
       diagramServer: null,
       diagram: null,
-      diagramDescription: null,
       toolSections: [],
       activeTool: null,
       activeConnectorTools: [],
@@ -232,11 +227,6 @@ export const diagramWebSocketContainerMachine = Machine<
                 {
                   target: 'loading',
                   actions: 'switchRepresentation',
-                },
-              ],
-              SET_DIAGRAM_DESCRIPTION: [
-                {
-                  actions: 'setDiagramDescription',
                 },
               ],
               SET_DEFAULT_TOOL: [
@@ -416,21 +406,6 @@ export const diagramWebSocketContainerMachine = Machine<
           message: undefined,
           selectedObjectId: undefined,
         };
-      }),
-
-      setDiagramDescription: assign((_, event) => {
-        const { diagramDescription } = event as SetDiagramDescriptionEvent;
-
-        let toolSectionsWithDefaults = [];
-        toolSectionsWithDefaults = diagramDescription.toolSections.map((toolSection) => {
-          if (toolSection.tools && toolSection.tools.length > 0) {
-            return { ...toolSection, defaultTool: toolSection.tools[0] };
-          } else {
-            return { ...toolSection, defaultTool: null };
-          }
-        });
-
-        return { diagramDescription, toolSections: toolSectionsWithDefaults };
       }),
 
       setDefaultTool: assign((context, event) => {
