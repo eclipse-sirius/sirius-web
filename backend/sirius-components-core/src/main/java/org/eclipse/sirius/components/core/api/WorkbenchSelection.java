@@ -34,6 +34,20 @@ public class WorkbenchSelection {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof WorkbenchSelection) {
+            WorkbenchSelection selection = (WorkbenchSelection) obj;
+            return this.entries.equals(selection.entries);
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.entries);
+    }
+
+    @Override
     public String toString() {
         String pattern = "{0} '{'entries: {1}'}'"; //$NON-NLS-1$
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.entries);
