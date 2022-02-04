@@ -112,6 +112,8 @@ type Edge {
   targetObjectLabel: String!
   style: EdgeStyle!
   routingPoints: [Position]!
+  sourceAnchorRelativePosition: Ratio!
+  targetAnchorRelativePosition: Ratio!
 }
 
 type EdgeStyle {
@@ -134,6 +136,11 @@ enum ArrowStyle {
   OutputArrow
   OutputClosedArrow
   OutputFillClosedArrow
+}
+
+type Ratio {
+  x: Float!
+  y: Float!
 }
 
 type Position {
