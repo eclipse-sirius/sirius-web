@@ -32,7 +32,7 @@ public final class InvokeEdgeToolOnDiagramSuccessPayload implements IPayload {
 
     public InvokeEdgeToolOnDiagramSuccessPayload(UUID id, WorkbenchSelection newSelection) {
         this.id = Objects.requireNonNull(id);
-        this.newSelection = Objects.requireNonNull(newSelection);
+        this.newSelection = newSelection;
     }
 
     @Override
