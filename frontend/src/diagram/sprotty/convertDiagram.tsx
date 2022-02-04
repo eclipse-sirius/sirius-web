@@ -316,6 +316,8 @@ const convertEdge = (diagram: Diagram, gqlEdge: GQLEdge, httpOrigin: string, rea
     centerLabel,
     endLabel,
     style,
+    sourceAnchorRelativePosition,
+    targetAnchorRelativePosition,
   } = gqlEdge;
 
   const edgeStyle = new EdgeStyle();
@@ -348,6 +350,8 @@ const convertEdge = (diagram: Diagram, gqlEdge: GQLEdge, httpOrigin: string, rea
   edge.targetObjectId = targetObjectId;
   edge.targetObjectKind = targetObjectKind;
   edge.targetObjectLabel = targetObjectLabel;
+  edge.sourceAnchorRelativePosition = sourceAnchorRelativePosition;
+  edge.targetAnchorRelativePosition = targetAnchorRelativePosition;
   edge.features = handleEdgeFeatures(readOnly);
 
   return edge;
