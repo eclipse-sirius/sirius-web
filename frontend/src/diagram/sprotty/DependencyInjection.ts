@@ -50,7 +50,6 @@ import {
   overrideCommandStackOptions,
   overrideViewerOptions,
   PreRenderedView,
-  routingModule,
   SCompartmentView,
   SEdge,
   selectModule,
@@ -65,6 +64,7 @@ import {
   zorderModule,
 } from 'sprotty';
 import { Action, Point, RequestPopupModelAction, SetPopupModelAction, UpdateModelAction } from 'sprotty-protocol';
+import { siriusRoutingModule } from './routing/siriusRoutingModule';
 
 const labelEditUiModule = new ContainerModule((bind, _unbind, isBound) => {
   const context = { bind, isBound };
@@ -140,7 +140,7 @@ export const createDependencyInjectionContainer = (containerId: string, getCurso
     graphModule,
     updateModule,
     modelSourceModule,
-    routingModule,
+    siriusRoutingModule,
     edgeEditModule,
     edgeLayoutModule,
     zorderModule,

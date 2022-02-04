@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 THALES GLOBAL SERVICES.
+ * Copyright (c) 2021, 2022 THALES GLOBAL SERVICES.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -52,18 +52,18 @@ export class SiriusMoveCommand extends MoveCommand {
           y: labelY,
         };
       }
-    } else if (edge.routingPoints?.length === 5) {
+    } else if (edge.sourceId === edge.targetId && edge.routingPoints?.length === 4) {
       /*
        * We made this in a context where we cannot create routing point manually.
-       * So having 5 routing points here means we are handling the move of an element
-       * that contains a selfloop edge.
+       * So having 4 routing points here means we are handling the move of an element
+       * used as source and target of a self loop edge.
        */
       const label = edge.children.find((child) => this.isSLabel(child)) as SLabel;
       if (label) {
-        const source = edge.routingPoints[2];
-        const target = edge.routingPoints[3];
+        const source = edge.routingPoints[1];
+        const target = edge.routingPoints[2];
         const labelX = source.x + (target.x - source.x) / 2 - label.bounds.width / 2;
-        const labelY = source.y;
+        const labelY = source.y - 2 - label.size.height;
         label.position = {
           x: labelX,
           y: labelY,
