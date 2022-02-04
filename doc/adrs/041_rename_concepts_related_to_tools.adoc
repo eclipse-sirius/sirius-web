@@ -1,0 +1,29 @@
+= ADR-041 - Rename concepts related to tools
+
+== Context
+
+The concepts related to our tools are very tightly related to the effect that we think they will have most of the time.
+As a result, we have concepts such as the `CreateNodeTool` and the `CreateEdgeTool` in the GraphQL API.
+We also have the internal concepts of `NodeCreationEvent` and the `EdgeCreationEvent` in the internal diagram API.
+
+This create an issue since, by design, we cannot predict the behavior of any of those tool or event.
+It leads to situation where, we don't consider the information provided by events for the layout or for the palette.
+For example, we don't have tools available on edges since `CreateNodeTool` can only be applied to nodes or the background of the diagram since we have only thought about using them to create nodes, border nodes and child nodes.
+
+== Decision
+
+We should rename those concepts to this new naming convention:
+
+- `NodeCreationEvent` should become `SinglePositionEvent`
+- `EdgeCreationEvent` should become `DoublePositionEvent`
+- `CreateNodeTool` should become `SinglePositionTool`
+- `CreateEdgeTool` should become `DoublePositionTool`
+
+== Status
+
+WIP
+
+== Consequences
+
+We should open the API to be able to provide `SinglePositionTool` on edges.
+It's quite odd that we can't offer anything relevant in the contextual palette of the edge.
