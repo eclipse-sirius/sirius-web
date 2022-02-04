@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -816,6 +816,14 @@ export const siriusWebDiagram: GQLDiagram = {
           y: 238.32137814757868,
         },
       ],
+      sourceAnchorRelativePosition: {
+        x: 0.5,
+        y: 0.5,
+      },
+      targetAnchorRelativePosition: {
+        x: 0.5,
+        y: 0.5,
+      },
     },
     {
       id: '21ed0822-c3c6-432f-b6e8-b006e9277e1e',
@@ -847,6 +855,14 @@ export const siriusWebDiagram: GQLDiagram = {
           y: 107.34003915810084,
         },
       ],
+      sourceAnchorRelativePosition: {
+        x: 0.5,
+        y: 0.5,
+      },
+      targetAnchorRelativePosition: {
+        x: 0.5,
+        y: 0.5,
+      },
     },
     {
       id: '140136fc-aaf2-413f-9a5a-63bba1fbd47a',
@@ -886,6 +902,14 @@ export const siriusWebDiagram: GQLDiagram = {
           y: 193.53925790810084,
         },
       ],
+      sourceAnchorRelativePosition: {
+        x: 0.5,
+        y: 0.5,
+      },
+      targetAnchorRelativePosition: {
+        x: 0.5,
+        y: 0.5,
+      },
     },
     {
       id: 'edf00d10-266e-4047-8a33-061f7e7badd5',
@@ -917,6 +941,14 @@ export const siriusWebDiagram: GQLDiagram = {
           y: 193.53925790810084,
         },
       ],
+      sourceAnchorRelativePosition: {
+        x: 0.5,
+        y: 0.5,
+      },
+      targetAnchorRelativePosition: {
+        x: 0.5,
+        y: 0.5,
+      },
     },
     {
       id: 'd76ffcad-c185-4a44-b04b-645938b9426c',
@@ -956,6 +988,14 @@ export const siriusWebDiagram: GQLDiagram = {
           y: 146.53925790810084,
         },
       ],
+      sourceAnchorRelativePosition: {
+        x: 0.5,
+        y: 0.5,
+      },
+      targetAnchorRelativePosition: {
+        x: 0.5,
+        y: 0.5,
+      },
     },
     {
       id: '118bc317-88f5-45d1-9c67-5983a5adb53b',
@@ -995,6 +1035,14 @@ export const siriusWebDiagram: GQLDiagram = {
           y: 160.53925790810084,
         },
       ],
+      sourceAnchorRelativePosition: {
+        x: 0.5,
+        y: 0.5,
+      },
+      targetAnchorRelativePosition: {
+        x: 0.5,
+        y: 0.5,
+      },
     },
     {
       id: '71a29dfc-3c77-4673-b5e5-ec2996035d9a',
@@ -1042,6 +1090,14 @@ export const siriusWebDiagram: GQLDiagram = {
           y: 170.03925790810084,
         },
       ],
+      sourceAnchorRelativePosition: {
+        x: 0.5,
+        y: 0.5,
+      },
+      targetAnchorRelativePosition: {
+        x: 0.5,
+        y: 0.5,
+      },
     },
     {
       id: '61bb606e-89a3-42c4-b80e-8f7627ea1a48',
@@ -1064,6 +1120,14 @@ export const siriusWebDiagram: GQLDiagram = {
         color: '#002b3c',
       },
       routingPoints: [],
+      sourceAnchorRelativePosition: {
+        x: 0.5,
+        y: 0.5,
+      },
+      targetAnchorRelativePosition: {
+        x: 0.5,
+        y: 0.5,
+      },
     },
   ],
 };

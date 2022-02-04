@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.Position;
+import org.eclipse.sirius.components.diagrams.Ratio;
 import org.eclipse.sirius.components.diagrams.Size;
 import org.springframework.stereotype.Service;
 
@@ -119,20 +120,31 @@ public class ELKLayoutedDiagramProvider {
                 parent = parent.getParent();
             }
         }
+        double sourceAnchorRatioX = 0.5;
+        double sourceAnchorRatioY = 0.5;
+        double targetAnchorRatioX = 0.5;
+        double targetAnchorRatioY = 0.5;
+        Ratio sourceAnchorRatio = Ratio.of(sourceAnchorRatioX, sourceAnchorRatioY);
+        Ratio targetAnchorRatio = Ratio.of(targetAnchorRatioX, targetAnchorRatioY);
 
         if (!elkEdge.getSections().isEmpty()) {
             ElkEdgeSection section = elkEdge.getSections().get(0);
 
-            Position startPosition = Position.at(xOffset + section.getStartX(), yOffset + section.getStartY());
-            routingPoints.add(startPosition);
+            Optional<ElkNode> optionalSource = elkEdge.getSources().stream().filter(ElkNode.class::isInstance).map(ElkNode.class::cast).findFirst();
+            Optional<ElkNode> optionalTarget = elkEdge.getTargets().stream().filter(ElkNode.class::isInstance).map(ElkNode.class::cast).findFirst();
+            if (optionalSource.isPresent() && optionalTarget.isPresent()) {
+
+                ElkNode sourceNode = optionalSource.get();
+                ElkNode targetNode = optionalTarget.get();
+
+                sourceAnchorRatio = this.getSectionRatio(sourceNode, section.getStartX() + xOffset, section.getStartY() + yOffset);
+                targetAnchorRatio = this.getSectionRatio(targetNode, section.getEndX() + xOffset, section.getEndY() + yOffset);
+            }
 
             for (ElkBendPoint bendPoint : section.getBendPoints()) {
                 Position position = Position.at(xOffset + bendPoint.getX(), yOffset + bendPoint.getY());
                 routingPoints.add(position);
             }
-
-            Position endPosition = Position.at(xOffset + section.getEndX(), yOffset + section.getEndY());
-            routingPoints.add(endPosition);
         }
 
         Label beginLabel = edge.getBeginLabel();
@@ -154,8 +166,33 @@ public class ELKLayoutedDiagramProvider {
                 .centerLabel(centerLabel)
                 .endLabel(endLabel)
                 .routingPoints(routingPoints)
+                .sourceAnchorRelativePosition(sourceAnchorRatio)
+                .targetAnchorRelativePosition(targetAnchorRatio)
                 .build();
         // @formatter:on
+    }
+
+    private Ratio getSectionRatio(ElkNode node, double sectionX, double sectionY) {
+        double sourceAnchorRatioX;
+        double sourceAnchorRatioY;
+        Position nodeAbsolutePosition = this.getAbsolutePosition(node);
+        if (sectionX == nodeAbsolutePosition.getX()) {
+            sourceAnchorRatioX = 0.5;
+        } else if (sectionX == nodeAbsolutePosition.getX() + node.getWidth()) {
+            sourceAnchorRatioX = 0.5;
+        } else {
+            sourceAnchorRatioX = (sectionX - nodeAbsolutePosition.getX()) / node.getWidth();
+        }
+
+        if (sectionY == nodeAbsolutePosition.getY()) {
+            sourceAnchorRatioY = 0.5;
+        } else if (sectionY == nodeAbsolutePosition.getY() + node.getHeight()) {
+            sourceAnchorRatioY = 0.5;
+        } else {
+            sourceAnchorRatioY = (sectionY - nodeAbsolutePosition.getY()) / node.getHeight();
+        }
+
+        return Ratio.of(sourceAnchorRatioX, sourceAnchorRatioY);
     }
 
     private Label getLayoutedLabel(Label label, Map<String, ElkGraphElement> id2ElkGraphElements, double xOffset, double yOffset) {
@@ -184,5 +221,20 @@ public class ELKLayoutedDiagramProvider {
             // @formatter:on
         }
         return layoutedLabel;
+    }
+
+    private Position getAbsolutePosition(ElkNode node) {
+        ElkNode currentNode = node;
+        Position absolutePosition = Position.at(node.getX(), node.getY());
+        while (currentNode.getParent() != null) {
+            currentNode = currentNode.getParent();
+            // @formatter:off
+            absolutePosition = Position.newPosition()
+                    .x(absolutePosition.getX() + currentNode.getX())
+                    .y(absolutePosition.getY() + currentNode.getY())
+                    .build();
+            // @formatter:on
+        }
+        return absolutePosition;
     }
 }

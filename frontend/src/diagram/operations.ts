@@ -177,6 +177,14 @@ export const diagramEventSubscription = gql`
       x
       y
     }
+    sourceAnchorRelativePosition {
+      x
+      y
+    }
+    targetAnchorRelativePosition {
+      x
+      y
+    }
   }
 
   fragment labelFields on Label {

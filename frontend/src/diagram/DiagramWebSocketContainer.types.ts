@@ -144,6 +144,11 @@ export interface GQLSize {
   width: number;
 }
 
+export interface GQLRatio {
+  x: number;
+  y: number;
+}
+
 export interface GQLPosition {
   x: number;
   y: number;
@@ -237,6 +242,8 @@ export interface GQLEdge {
   targetObjectLabel: string;
   style: GQLEdgeStyle;
   routingPoints: GQLPosition[];
+  sourceAnchorRelativePosition: GQLRatio;
+  targetAnchorRelativePosition: GQLRatio;
 }
 
 export interface GQLEdgeStyle {
