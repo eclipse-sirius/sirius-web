@@ -20,6 +20,7 @@ import java.util.UUID;
 
 import org.eclipse.sirius.components.compatibility.api.IIdentifierProvider;
 import org.eclipse.sirius.components.core.RepresentationMetadata;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IRepresentationMetadataSearchService;
 import org.eclipse.sirius.components.core.api.WorkbenchSelection;
@@ -60,7 +61,7 @@ public class NavigationOperationHandlerTests {
 
     private final IRepresentationMetadataSearchService representationMetadataSearchService = new IRepresentationMetadataSearchService.NoOp() {
         @Override
-        public List<RepresentationMetadata> findAll(String targetObjectId) {
+        public List<RepresentationMetadata> findAllByTargetObjectId(IEditingContext editingContext, String targetObjectId) {
             var firstRepresentationMetadata = new RepresentationMetadata(FIRST_DIAGRAM_ID, Diagram.KIND, FIRST_DIAGRAM_LABEL, FIRST_DIAGRAM_DESCRIPTION_ID);
             var secondRepresentationMetadata = new RepresentationMetadata(SECOND_DIAGRAM_ID, Diagram.KIND, SECOND_DIAGRAM_LABEL, FIRST_DIAGRAM_DESCRIPTION_ID);
             var thirdRepresentationMetadata = new RepresentationMetadata(THIRD_DIAGRAM_ID, Diagram.KIND, THIRD_DIAGRAM_LABEL, SECOND_DIAGRAM_DESCRIPTION_ID);
@@ -86,7 +87,7 @@ public class NavigationOperationHandlerTests {
         navigation.setDiagramDescription(diagramDescription);
 
         IStatus status = new ChildModelOperationHandler(List.of()).handle(new IObjectService.NoOp(), this.representationMetadataSearchService, this.diagramDescriptionIdentifierProvider,
-                new AQLInterpreter(List.of(), List.of()), Map.of(), List.of(navigation));
+                new AQLInterpreter(List.of(), List.of()), Map.of(IEditingContext.EDITING_CONTEXT, new IEditingContext.NoOp()), List.of(navigation));
 
         assertThat(status).isInstanceOf(Success.class);
 
@@ -118,7 +119,7 @@ public class NavigationOperationHandlerTests {
         secondNavigation.setDiagramDescription(secondDiagramDescription);
 
         IStatus status = new ChildModelOperationHandler(List.of()).handle(new IObjectService.NoOp(), this.representationMetadataSearchService, this.diagramDescriptionIdentifierProvider,
-                new AQLInterpreter(List.of(), List.of()), Map.of(), List.of(firstNavigation, secondNavigation));
+                new AQLInterpreter(List.of(), List.of()), Map.of(IEditingContext.EDITING_CONTEXT, new IEditingContext.NoOp()), List.of(firstNavigation, secondNavigation));
 
         assertThat(status).isInstanceOf(Success.class);
 

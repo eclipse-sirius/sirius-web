@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.compatibility.api.IIdentifierProvider;
 import org.eclipse.sirius.components.compatibility.api.IModelOperationHandler;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IRepresentationMetadataSearchService;
 import org.eclipse.sirius.components.core.api.WorkbenchSelection;
@@ -57,8 +58,11 @@ public class NavigationOperationHandler implements IModelOperationHandler {
     @Override
     public IStatus handle(Map<String, Object> variables) {
         Success success = new Success();
+
+        Object editingContextVariable = variables.get(IEditingContext.EDITING_CONTEXT);
         boolean createIfNotExistent = this.navigation.isCreateIfNotExistent();
-        if (!createIfNotExistent) {
+        if (!createIfNotExistent && editingContextVariable instanceof IEditingContext) {
+            IEditingContext editingContext = (IEditingContext) editingContextVariable;
             DiagramDescription diagramDescription = this.navigation.getDiagramDescription();
             String diagramDescriptionIdString = this.identifierProvider.getIdentifier(diagramDescription);
 
@@ -68,7 +72,7 @@ public class NavigationOperationHandler implements IModelOperationHandler {
             String selfId = this.objectService.getId(self);
 
             // @formatter:off
-            List<WorkbenchSelectionEntry> entries = this.representationMetadataSearchService.findAll(selfId).stream()
+            List<WorkbenchSelectionEntry> entries = this.representationMetadataSearchService.findAllByTargetObjectId(editingContext, selfId).stream()
                     .filter(representationMetadata -> representationMetadata.getDescriptionId().equals(diagramDescriptionId))
                     .map(representationMetadata -> {
                         String id = representationMetadata.getId();

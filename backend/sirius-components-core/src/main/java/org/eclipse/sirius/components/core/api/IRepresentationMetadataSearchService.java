@@ -26,7 +26,7 @@ import org.eclipse.sirius.components.representations.IRepresentation;
 public interface IRepresentationMetadataSearchService {
     Optional<RepresentationMetadata> findByRepresentation(IRepresentation representation);
 
-    List<RepresentationMetadata> findAll(String targetObjectId);
+    List<RepresentationMetadata> findAllByTargetObjectId(IEditingContext editingContext, String targetObjectId);
 
     /**
      * Implementation which does nothing, used for mocks in unit tests.
@@ -41,7 +41,7 @@ public interface IRepresentationMetadataSearchService {
         }
 
         @Override
-        public List<RepresentationMetadata> findAll(String targetObjectId) {
+        public List<RepresentationMetadata> findAllByTargetObjectId(IEditingContext editingContext, String targetObjectId) {
             return List.of();
         }
     }
