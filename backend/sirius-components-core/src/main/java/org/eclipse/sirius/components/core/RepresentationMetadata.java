@@ -30,11 +30,14 @@ public class RepresentationMetadata {
 
     private final UUID descriptionId;
 
-    public RepresentationMetadata(String id, String kind, String label, UUID descriptionId) {
+    private final String targetObjectId;
+
+    public RepresentationMetadata(String id, String kind, String label, UUID descriptionId, String targetObjectId) {
         this.id = Objects.requireNonNull(id);
         this.kind = Objects.requireNonNull(kind);
         this.label = Objects.requireNonNull(label);
         this.descriptionId = Objects.requireNonNull(descriptionId);
+        this.targetObjectId = targetObjectId;
     }
 
     public String getId() {
@@ -53,9 +56,13 @@ public class RepresentationMetadata {
         return this.descriptionId;
     }
 
+    public String getTargetObjectId() {
+        return this.targetObjectId;
+    }
+
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, kind: {2}, label: {3}, descriptionId: {4}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.kind, this.label, this.descriptionId);
+        String pattern = "{0} '{'id: {1}, kind: {2}, label: {3}, descriptionId: {4}, targetObjectId: {5}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.kind, this.label, this.descriptionId, this.targetObjectId);
     }
 }
