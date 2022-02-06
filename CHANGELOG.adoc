@@ -22,6 +22,7 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/1018[#1018] [core] Remove the default implementation of `IRepresentationMetadataSearchService` since products integrating Sirius Components needs the ability to customize its behavior
 - https://github.com/eclipse-sirius/sirius-components/issues/1019[#1019] [core] Services now have access to the context of the request triggering their execution. Consumer of Sirius Components will have to provide the `RequestAttributes`` in the `RequestContextHolder`` to make the `EditingContextEventProcessor`` work. It should be very easy for those in a Spring environment, but it is not automatic for those outside of a Spring environment
 - https://github.com/eclipse-sirius/sirius-components/issues/699[#699] [core] The `IRepresentationImageProvider` will now use the `kind` of the representation instead of the instance to compute the image. It will allow users to ask for the image of a representation with either its instance or its metadata
+- https://github.com/eclipse-sirius/sirius-components/issues/699[#699] [core] Add the `targetObjectId` to the `RepresentationMetadata`
 
 === Bug fixes
 
