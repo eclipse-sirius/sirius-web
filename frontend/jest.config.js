@@ -9,4 +9,7 @@ module.exports = {
     '^.+\\.js$': 'babel-jest',
     '^.+\\.css$': 'jest-transform-css',
   },
+  moduleNameMapper: {
+    '\\.(css|less)$': '<rootDir>/__mocks__/styleMock.js',
+  },
 };

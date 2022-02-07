@@ -10,7 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { getBasicType, HtmlRoot, SGraphFactory, PreRenderedElement } from 'sprotty';
+import { HtmlRoot, PreRenderedElement, SGraphFactory } from 'sprotty';
+import { getBasicType } from 'sprotty-protocol';
 
 /**
  * The graph factory used to create all the graph elements.

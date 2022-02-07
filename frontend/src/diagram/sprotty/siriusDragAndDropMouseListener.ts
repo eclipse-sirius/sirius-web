@@ -10,16 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import {
-  Action,
-  Dimension,
-  findParentByFeature,
-  isViewport,
-  MoveMouseListener,
-  Point,
-  SModelElement,
-  SNode,
-} from 'sprotty';
+import { findParentByFeature, isViewport, MoveMouseListener, SModelElement, SNode } from 'sprotty';
+import { Action, Dimension, Point } from 'sprotty-protocol';
 import { ElementResize, ResizeAction } from './resize/siriusResize';
 
 /**
