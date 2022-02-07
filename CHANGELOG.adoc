@@ -22,7 +22,11 @@
 
 === Bug fixes
 
+- https://github.com/eclipse-sirius/sirius-components/issues/1130[#1130] [diagram] This is a part of https://github.com/eclipse-sirius/sirius-components/issues/966[#966]
+
 === Improvements
+
+- https://github.com/eclipse-sirius/sirius-components/issues/1130[#1130] [diagram] Add the support source and target edge position ratio on the frontend side. For further explanation see ADR-050.
 
 === New features
 
