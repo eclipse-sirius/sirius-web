@@ -19,6 +19,7 @@ import {
   Point,
   SModelElement,
   SNode,
+  SPort,
 } from 'sprotty';
 import { ElementResize, ResizeAction } from './resize/siriusResize';
 
@@ -94,7 +95,9 @@ export class SiriusDragAndDropMouseListener extends MoveMouseListener {
   protected snap(position: Point, element: SModelElement, isSnap: boolean): Point {
     let newPosition = super.snap(position, element, isSnap);
     if (this.isSNode(element)) {
-      return this.getValidPosition(element, newPosition);
+      return this.getValidChildPosition(element, newPosition);
+    } else if (this.isSPort(element)) {
+      return this.getValidPortPosition(element, newPosition);
     }
     return newPosition;
   }
@@ -104,7 +107,7 @@ export class SiriusDragAndDropMouseListener extends MoveMouseListener {
    * @param element the element currently moved.
    * @param position the new candidate position.
    */
-  private getValidPosition(element: SNode, position: Point): Point {
+  private getValidChildPosition(element: SNode, position: Point): Point {
     const parent = element.parent;
     if (this.isSNode(parent)) {
       const bottomRight = {
@@ -120,6 +123,19 @@ export class SiriusDragAndDropMouseListener extends MoveMouseListener {
         y: Math.max(0, inBoundsBottomRight.y - element.size.height),
       };
       return newValidPosition;
+    }
+    return position;
+  }
+
+  /**
+   * Provides the position on the parent bounding box's border.
+   * @param element the element currently moved.
+   * @param position the new candidate position.
+   */
+  private getValidPortPosition(element: SPort, position: Point): Point {
+    const parent = element.parent;
+    if (this.isSNode(parent)) {
+      return { x: -element.bounds.width / 2, y: -element.bounds.height / 2 } as Point;
     }
     return position;
   }
@@ -142,6 +158,10 @@ export class SiriusDragAndDropMouseListener extends MoveMouseListener {
 
   protected isSNode(element: SModelElement): element is SNode {
     return element instanceof SNode;
+  }
+
+  protected isSPort(element: SModelElement): element is SPort {
+    return element instanceof SPort;
   }
 
   /**

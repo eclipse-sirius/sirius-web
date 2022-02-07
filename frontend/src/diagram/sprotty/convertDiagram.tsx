@@ -25,6 +25,7 @@ import {
 } from 'diagram/DiagramWebSocketContainer.types';
 import {
   ArrowStyle,
+  BorderNode,
   Diagram,
   Edge,
   EdgeStyle,
@@ -111,7 +112,7 @@ const convertNode = (gqlNode: GQLNode, httpOrigin: string, readOnly: boolean, au
 
   const convertedLabel = convertLabel(label, httpOrigin, readOnly);
   const convertedBorderNodes = (borderNodes ?? []).map((borderNode) =>
-    convertNode(borderNode, httpOrigin, readOnly, autoLayout)
+    convertBorderNode(borderNode, httpOrigin, readOnly, autoLayout)
   );
   const convertedChildNodes = (childNodes ?? []).map((childNode) =>
     convertNode(childNode, httpOrigin, readOnly, autoLayout)
@@ -132,6 +133,52 @@ const convertNode = (gqlNode: GQLNode, httpOrigin: string, readOnly: boolean, au
   node.features = handleNodeFeatures(gqlNode, readOnly, autoLayout);
   node.children = [convertedLabel, ...convertedBorderNodes, ...convertedChildNodes];
 
+  return node;
+};
+const convertBorderNode = (
+  gqlNode: GQLNode,
+  httpOrigin: string,
+  readOnly: boolean,
+  autoLayout: boolean
+): BorderNode => {
+  const {
+    id,
+    label,
+    descriptionId,
+    type,
+    targetObjectId,
+    targetObjectKind,
+    targetObjectLabel,
+    size,
+    position,
+    style,
+    // borderNodes,
+    // childNodes,
+  } = gqlNode;
+  const convertedLabel = convertLabel(label, httpOrigin, readOnly);
+  // const convertedBorderNodes = (borderNodes ?? []).map((borderNode) =>
+  //   convertBorderNode(borderNode, httpOrigin, readOnly, autoLayout)
+  // );
+  // const convertedChildNodes = (childNodes ?? []).map((childNode) =>
+  //   convertNode(childNode, httpOrigin, readOnly, autoLayout)
+  // );
+
+  const node: BorderNode = new BorderNode();
+  node.id = id;
+  node.type = type.replace('node:', 'port:');
+  node.kind = `siriusComponents://graphical?representationType=Diagram&type=Node`;
+  node.descriptionId = descriptionId;
+  node.style = convertNodeStyle(style, httpOrigin);
+  node.editableLabel = !readOnly ? convertedLabel : null;
+  node.targetObjectId = targetObjectId;
+  node.targetObjectKind = targetObjectKind;
+  node.targetObjectLabel = targetObjectLabel;
+  node.position = position;
+  node.size = size;
+  node.features = handleNodeFeatures(gqlNode, readOnly, autoLayout);
+  // node.add(convertedLabel);
+  // convertedBorderNodes.forEach((borderNode) => node.add(borderNode));
+  // convertedChildNodes.forEach((childNode) => node.add(childNode));
   return node;
 };
 

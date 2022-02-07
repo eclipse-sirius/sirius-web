@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Node } from 'diagram/sprotty/Diagram.types';
+import { BorderNode, Node } from 'diagram/sprotty/Diagram.types';
 import { DiagramServer, HIDE_CONTEXTUAL_TOOLBAR_ACTION, SPROTTY_DELETE_ACTION } from 'diagram/sprotty/DiagramServer';
 import { SetActiveConnectorToolsAction, SetActiveToolAction } from 'diagram/sprotty/DiagramServer.types';
 import { edgeCreationFeedback } from 'diagram/sprotty/edgeCreationFeedback';
@@ -123,7 +123,9 @@ const siriusWebContainerModule = new ContainerModule((bind, unbind, isBound, reb
   // @ts-ignore
   configureModelElement(context, 'node:list:item', Node, ListItemView);
   // @ts-ignore
-  configureView({ bind, isBound }, 'port:square', RectangleView);
+  configureModelElement(context, 'port:rectangle', BorderNode, RectangleView);
+  // @ts-ignore
+  configureModelElement(context, 'port:image', BorderNode, ImageView);
   configureView({ bind, isBound }, 'edge:straight', EdgeView);
   // @ts-ignore
   configureModelElement(context, 'label:inside-center', SEditableLabel, LabelView);
