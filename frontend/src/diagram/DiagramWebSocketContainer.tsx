@@ -106,7 +106,8 @@ import { Toolbar } from 'diagram/Toolbar';
 import { atLeastOneCanInvokeEdgeTool, canInvokeTool } from 'diagram/toolServices';
 import React, { useCallback, useContext, useEffect, useRef } from 'react';
 import { SelectionDialogWebSocketContainer } from 'selection/SelectionDialogWebSocketContainer';
-import { EditLabelAction, FitToScreenAction, HoverFeedbackAction, SEdge, SGraph, SModelElement, SNode } from 'sprotty';
+import { EditLabelAction, HoverFeedbackAction, SEdge, SGraph, SModelElement, SNode } from 'sprotty';
+import { FitToScreenAction } from 'sprotty-protocol';
 import { v4 as uuid } from 'uuid';
 import { RepresentationComponentProps, Selection, SelectionEntry } from 'workbench/Workbench.types';
 
@@ -551,7 +552,9 @@ export const DiagramWebSocketContainer = ({
 
   const invokeHover = (id: string, mouseIsHover: boolean) => {
     if (diagramServer) {
-      diagramServer.actionDispatcher.dispatch(new HoverFeedbackAction(id, mouseIsHover));
+      diagramServer.actionDispatcher.dispatch(
+        HoverFeedbackAction.create({ mouseoverElement: id, mouseIsOver: mouseIsHover })
+      );
     }
   };
   /**
@@ -782,7 +785,7 @@ export const DiagramWebSocketContainer = ({
 
   const onFitToScreen = () => {
     if (diagramServer) {
-      diagramServer.actionDispatcher.dispatch(new FitToScreenAction([], 20));
+      diagramServer.actionDispatcher.dispatch(FitToScreenAction.create([], { padding: 20 }));
     }
   };
 
@@ -943,7 +946,7 @@ export const DiagramWebSocketContainer = ({
       invokeLabelEditFromContextualPalette = () =>
         diagramServer.actionDispatcher.dispatchAll([
           { kind: HIDE_CONTEXTUAL_TOOLBAR_ACTION },
-          new EditLabelAction(element.editableLabel.id),
+          EditLabelAction.create(element.editableLabel.id),
         ]);
     }
     let invokeDeleteFromContextualPalette;

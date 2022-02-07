@@ -11,7 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { CreateEdgeTool, GQLDiagram, Position, Tool } from 'diagram/DiagramWebSocketContainer.types';
-import { Action, SModelElement } from 'sprotty';
+import { SModelElement } from 'sprotty';
+import { Action } from 'sprotty-protocol';
 import { Selection } from 'workbench/Workbench.types';
 
 export interface SiriusUpdateModelAction extends Action {

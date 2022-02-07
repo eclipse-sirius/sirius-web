@@ -11,17 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { decorate, inject } from 'inversify';
-import {
-  Action,
-  Command,
-  CommandExecutionContext,
-  CommandReturn,
-  Dimension,
-  Point,
-  SModelElement,
-  SNode,
-  TYPES,
-} from 'sprotty';
+import { Command, CommandExecutionContext, CommandReturn, SModelElement, SNode, TYPES } from 'sprotty';
+import { Action, Dimension, Point } from 'sprotty-protocol';
 
 export class ResizeAction implements Action {
   kind = SiriusResizeCommand.KIND;

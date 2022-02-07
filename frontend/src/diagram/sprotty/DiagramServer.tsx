@@ -31,12 +31,9 @@ import {
 } from 'diagram/sprotty/DiagramServer.types';
 import { ResizeAction, SiriusResizeCommand } from 'diagram/sprotty/resize/siriusResize';
 import {
-  Action,
   ActionHandlerRegistry,
   ApplyLabelEditAction,
-  CenterAction,
   EditLabelAction,
-  FitToScreenAction,
   GetSelectionAction,
   GetViewportAction,
   getWindowScroll,
@@ -47,12 +44,20 @@ import {
   MousePositionTracker,
   MoveAction,
   MoveCommand,
-  SelectAction,
-  SetViewportAction,
+  SelectionResult,
   SGraph,
   SNode,
-  UpdateModelAction,
+  ViewportResult,
 } from 'sprotty';
+import {
+  Action,
+  CenterAction,
+  FitToScreenAction,
+  SelectAction,
+  SetViewportAction,
+  UpdateModelAction,
+} from 'sprotty-protocol';
+
 /** Action to delete a sprotty element */
 export const SPROTTY_DELETE_ACTION = 'sprottyDeleteElement';
 /** Action to select a sprotty element */
@@ -252,7 +257,10 @@ export class DiagramServer extends ModelSource {
           if (editableLabel && action.preSelect !== undefined) {
             editableLabel.preSelect = action.preSelect;
           }
-          this.actionDispatcher.dispatchAll([{ kind: HIDE_CONTEXTUAL_TOOLBAR_ACTION }, new EditLabelAction(label.id)]);
+          this.actionDispatcher.dispatchAll([
+            { kind: HIDE_CONTEXTUAL_TOOLBAR_ACTION },
+            EditLabelAction.create(label.id),
+          ]);
         }
       });
     }
@@ -275,7 +283,7 @@ export class DiagramServer extends ModelSource {
 
   handleInitializeCanvasBoundsAction(action: InitializeCanvasBoundsAction) {
     if (this.firstOpen && this.currentRoot.id !== INITIAL_ROOT.id) {
-      this.actionDispatcher.dispatch(new FitToScreenAction([], 20, 1));
+      this.actionDispatcher.dispatch(FitToScreenAction.create([], { padding: 20, maxZoom: 1 }));
       this.firstOpen = false;
     }
   }
@@ -342,21 +350,21 @@ export class DiagramServer extends ModelSource {
     if (diagram) {
       const convertedDiagram = convertDiagram(diagram, this.httpOrigin, readOnly);
       const sprottyModel = this.modelFactory.createRoot(convertedDiagram);
-      this.actionDispatcher.request(GetSelectionAction.create()).then((selectionResult) => {
+      this.actionDispatcher.request<SelectionResult>(GetSelectionAction.create()).then((selectionResult) => {
         sprottyModel.index
           .all()
           .filter((element) => selectionResult.selectedElementsIDs.indexOf(element.id) >= 0)
           .forEach((element) => ((element as any).selected = true));
-        this.actionDispatcher.dispatch(new UpdateModelAction(sprottyModel as any));
+        this.actionDispatcher.dispatch(UpdateModelAction.create(sprottyModel as any));
       });
     } else {
-      this.actionDispatcher.dispatch(new UpdateModelAction(INITIAL_ROOT));
+      this.actionDispatcher.dispatch(UpdateModelAction.create(INITIAL_ROOT));
     }
   }
 
   handleSiriusSelectAction(action: SiriusSelectAction) {
     const { selection } = action;
-    this.actionDispatcher.request(GetSelectionAction.create()).then((selectionResult) => {
+    this.actionDispatcher.request<SelectionResult>(GetSelectionAction.create()).then((selectionResult) => {
       const selectedElementsIDs = [];
       const deselectedElementsIDs = [...selectionResult.selectedElementsIDs];
       selection.entries
@@ -371,10 +379,10 @@ export class DiagramServer extends ModelSource {
 
       const actions: Action[] = [];
       if (selectedElementsIDs.length > 0 || deselectedElementsIDs.length > 0) {
-        actions.push(new SelectAction(selectedElementsIDs, deselectedElementsIDs));
+        actions.push(SelectAction.create({ selectedElementsIDs, deselectedElementsIDs }));
       }
       if (selectedElementsIDs.length > 0) {
-        actions.push(new CenterAction(selectedElementsIDs));
+        actions.push(CenterAction.create(selectedElementsIDs));
         actions.push({ kind: HIDE_CONTEXTUAL_TOOLBAR_ACTION });
       }
       this.actionDispatcher.dispatchAll(actions);
@@ -409,7 +417,7 @@ export class DiagramServer extends ModelSource {
   handleShowContextualToolbarAction(action) {
     const { element } = action;
     if (element && (element.kind === 'siriusComponents://representation?type=Diagram' || element.parent)) {
-      this.actionDispatcher.request(GetViewportAction.create()).then((viewportResult) => {
+      this.actionDispatcher.request<ViewportResult>(GetViewportAction.create()).then((viewportResult) => {
         const { viewport, canvasBounds } = viewportResult;
         const { scroll, zoom } = viewport;
         const lastPositionOnDiagram = this.mousePositionTracker.lastPositionOnDiagram;
@@ -454,7 +462,7 @@ export class DiagramServer extends ModelSource {
    * Convert a given browser clientX/clientY couple in the current sprotty diagram coordinate system.
    */
   async convertInSprottyCoordinate(clientX, clientY) {
-    const { viewport, canvasBounds } = await this.actionDispatcher.request(GetViewportAction.create());
+    const { viewport, canvasBounds } = await this.actionDispatcher.request<ViewportResult>(GetViewportAction.create());
     const { scroll, zoom } = viewport;
     return {
       x: (clientX - canvasBounds.x) / zoom + scroll.x,
@@ -470,7 +478,7 @@ export class DiagramServer extends ModelSource {
     const { tools, startPosition, endPosition } = action;
     const element: any = action.element;
     if (element && (element.kind === 'siriusComponents://representation?type=Diagram' || element.parent)) {
-      this.actionDispatcher.request(GetViewportAction.create()).then((viewportResult) => {
+      this.actionDispatcher.request<ViewportResult>(GetViewportAction.create()).then((viewportResult) => {
         const { viewport, canvasBounds } = viewportResult;
         const { scroll, zoom } = viewport;
         const lastPositionOnDiagram = this.mousePositionTracker.lastPositionOnDiagram;
@@ -517,14 +525,14 @@ export class DiagramServer extends ModelSource {
 
   doZoom(zoomFactor) {
     this.setContextualPalette(null);
-    this.actionDispatcher.request(GetViewportAction.create()).then((viewportResult) => {
+    this.actionDispatcher.request<ViewportResult>(GetViewportAction.create()).then((viewportResult) => {
       const { viewport } = viewportResult;
       this.doZoomLevel(viewport.zoom * zoomFactor);
     });
   }
 
   doZoomLevel(zoomLevel) {
-    this.actionDispatcher.request(GetViewportAction.create()).then((viewportResult) => {
+    this.actionDispatcher.request<ViewportResult>(GetViewportAction.create()).then((viewportResult) => {
       const { viewport, canvasBounds } = viewportResult;
       const windowScroll = getWindowScroll();
       const clientX = canvasBounds.x + canvasBounds.width / 2;
@@ -542,7 +550,7 @@ export class DiagramServer extends ModelSource {
           y: viewport.scroll.y - offsetFactor * viewportOffset.y,
         },
       };
-      this.actionDispatcher.dispatch(new SetViewportAction(this.currentRoot.id, newViewport, true));
+      this.actionDispatcher.dispatch(SetViewportAction.create(this.currentRoot.id, newViewport, { animate: true }));
     });
   }
 

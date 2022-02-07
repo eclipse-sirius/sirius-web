@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,8 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 /** @jsx svg */
-import { svg } from 'snabbdom-jsx';
-import { getSubType, setAttr, SLabelView } from 'sprotty';
+import { setAttr, SLabelView, svg } from 'sprotty';
+import { getSubType } from 'sprotty-protocol';
 
 /**
  * The view used to display labels.

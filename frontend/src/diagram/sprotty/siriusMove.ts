@@ -10,7 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { MoveCommand, Point, ResolvedHandleMove, SEdge, SLabel, SModelElement, SNode, SRoutableElement } from 'sprotty';
+import { MoveCommand, ResolvedHandleMove, SEdge, SLabel, SModelElement, SNode, SRoutableElement } from 'sprotty';
+import { Point } from 'sprotty-protocol';
 
 export class SiriusMoveCommand extends MoveCommand {
   protected doMove(

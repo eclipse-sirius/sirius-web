@@ -25,7 +25,6 @@ import { ListView } from 'diagram/sprotty/views/ListView';
 import { RectangleView } from 'diagram/sprotty/views/RectangleView';
 import { Container, ContainerModule, decorate, inject } from 'inversify';
 import {
-  Action,
   boundsModule,
   configureActionHandler,
   configureModelElement,
@@ -50,25 +49,22 @@ import {
   MouseListener,
   overrideCommandStackOptions,
   overrideViewerOptions,
-  Point,
   PreRenderedView,
-  RequestPopupModelAction,
   routingModule,
   SCompartmentView,
   SEdge,
   selectModule,
-  SetPopupModelAction,
   SGraph,
   SLabel,
   SModelElement,
   SRoutingHandleView,
   TYPES,
-  UpdateModelAction,
   updateModule,
   viewportModule,
   ZoomMouseListener,
   zorderModule,
 } from 'sprotty';
+import { Action, Point, RequestPopupModelAction, SetPopupModelAction, UpdateModelAction } from 'sprotty-protocol';
 
 /**
  * Extends Sprotty's SLabel to add support for having the initial text when entering
