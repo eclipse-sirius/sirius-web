@@ -121,4 +121,52 @@ public class NodeAssert extends AbstractAssert<NodeAssert, Node> {
 
         return this;
     }
+
+    public NodeAssert hasEveryChildWithinItsBounds() {
+        this.isNotNull();
+        assertThat(this.actual.getChildNodes()).allMatch(child -> {
+            assertThat(child).hasEveryChildWithinItsBounds();
+            boolean isChildInParentBounds = this.isChildWithinParentBounds(this.actual, child);
+            boolean areChildBorderNodesInParentBounds = child.getBorderNodes().stream().allMatch(border -> this.isChildWithinParentBounds(this.actual, border));
+            return isChildInParentBounds && areChildBorderNodesInParentBounds;
+        });
+        return this;
+    }
+
+    private boolean isChildWithinParentBounds(Node parent, Node child) {
+        Position parentPosition = parent.getPosition();
+        Size parentSize = parent.getSize();
+
+        Position childPosition = child.getPosition();
+        Size childSize = child.getSize();
+
+        double parentX = parentPosition.getX();
+        double parentY = parentPosition.getY();
+        double parentWidth = parentSize.getWidth();
+        double parentHeight = parentSize.getHeight();
+
+        double childX = parentX + childPosition.getX();
+        double childY = parentY + childPosition.getY();
+        double childWidth = childSize.getWidth();
+        double childHeight = childSize.getHeight();
+
+        if (childX < parentX || childY < parentY) {
+            return false;
+        }
+
+        boolean top = this.compareDimensions(parentX, parentWidth, childX, childWidth);
+        boolean side = this.compareDimensions(parentY, parentHeight, childY, childHeight);
+
+        return top && side;
+    }
+
+    private boolean compareDimensions(double parentStart, double parentDimension, double childStart, double childDimension) {
+        double parentEnd = parentStart + parentDimension;
+        double childEnd = childStart + childDimension;
+        if (childEnd <= childStart) {
+            return !(parentEnd >= parentStart || childEnd > parentEnd);
+        } else {
+            return !(parentEnd >= parentStart && childEnd > parentEnd);
+        }
+    }
 }

@@ -95,12 +95,53 @@ public class ContainmentUpdater {
 
         if (container instanceof NodeLayoutData) {
             NodeLayoutData nodeLayoutData = (NodeLayoutData) container;
-            shouldUpdate = !nodeLayoutData.isResizedByUser();
+            shouldUpdate = !(nodeLayoutData.isResizedByUser() && this.hasEveryChildWithinItsBounds(nodeLayoutData));
         }
 
         shouldUpdate = shouldUpdate && (!container.getChildrenNodes().isEmpty() || this.isLabelContained(container));
 
         return shouldUpdate;
+    }
+
+    private boolean hasEveryChildWithinItsBounds(NodeLayoutData nodeLayoutData) {
+        return nodeLayoutData.getChildrenNodes().stream().allMatch(child -> this.isChildWithinParentBounds(nodeLayoutData, child));
+    }
+
+    private boolean isChildWithinParentBounds(NodeLayoutData parent, NodeLayoutData child) {
+        Position parentPosition = parent.getPosition();
+        Size parentSize = parent.getSize();
+
+        Position childPosition = child.getPosition();
+        Size childSize = child.getSize();
+
+        double parentX = parentPosition.getX();
+        double parentY = parentPosition.getY();
+        double parentWidth = parentSize.getWidth();
+        double parentHeight = parentSize.getHeight();
+
+        double childX = parentX + childPosition.getX();
+        double childY = parentY + childPosition.getY();
+        double childWidth = childSize.getWidth();
+        double childHeight = childSize.getHeight();
+
+        if (childX < parentX || childY < parentY) {
+            return false;
+        }
+
+        boolean top = this.compareDimensions(parentX, parentWidth, childX, childWidth);
+        boolean side = this.compareDimensions(parentY, parentHeight, childY, childHeight);
+
+        return top && side;
+    }
+
+    private boolean compareDimensions(double parentStart, double parentDimension, double childStart, double childDimension) {
+        double parentEnd = parentStart + parentDimension;
+        double childEnd = childStart + childDimension;
+        if (childEnd <= childStart) {
+            return !(parentEnd >= parentStart || childEnd > parentEnd);
+        } else {
+            return !(parentEnd >= parentStart && childEnd > parentEnd);
+        }
     }
 
     private boolean isLabelContained(IContainerLayoutData container) {
