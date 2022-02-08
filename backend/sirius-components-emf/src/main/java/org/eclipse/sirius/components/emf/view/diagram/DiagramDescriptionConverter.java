@@ -405,7 +405,7 @@ public class DiagramDescriptionConverter {
         // @formatter:on
     }
 
-    private Function<VariableManager, List<Object>> getSemanticElementsProvider(org.eclipse.sirius.components.view.DiagramElementDescription elementDescription, AQLInterpreter interpreter) {
+    private Function<VariableManager, List<?>> getSemanticElementsProvider(org.eclipse.sirius.components.view.DiagramElementDescription elementDescription, AQLInterpreter interpreter) {
         return variableManager -> {
             Result result = interpreter.evaluateExpression(variableManager.getVariables(), elementDescription.getSemanticCandidatesExpression());
             List<Object> candidates = result.asObjects().orElse(List.of());
@@ -420,7 +420,7 @@ public class DiagramDescriptionConverter {
     }
 
     private EdgeDescription convert(org.eclipse.sirius.components.view.EdgeDescription viewEdgeDescription, AQLInterpreter interpreter) {
-        Function<VariableManager, List<Object>> semanticElementsProvider;
+        Function<VariableManager, List<?>> semanticElementsProvider;
         if (viewEdgeDescription.isIsDomainBasedEdge()) {
             // Same logic as for nodes.
             semanticElementsProvider = this.getSemanticElementsProvider(viewEdgeDescription, interpreter);

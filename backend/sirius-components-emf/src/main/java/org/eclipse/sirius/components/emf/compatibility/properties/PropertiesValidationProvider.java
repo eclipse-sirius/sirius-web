@@ -39,7 +39,7 @@ public class PropertiesValidationProvider implements IPropertiesValidationProvid
     }
 
     @Override
-    public Function<VariableManager, List<Object>> getDiagnosticsProvider() {
+    public Function<VariableManager, List<?>> getDiagnosticsProvider() {
         return variableManager -> {
             var optionalEObject = variableManager.get(VariableManager.SELF, EObject.class);
             var optionalEAttribute = variableManager.get(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE, EAttribute.class);

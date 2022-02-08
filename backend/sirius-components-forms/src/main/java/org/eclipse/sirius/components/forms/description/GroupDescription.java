@@ -33,7 +33,7 @@ public final class GroupDescription {
 
     private Function<VariableManager, String> labelProvider;
 
-    private Function<VariableManager, List<Object>> semanticElementsProvider;
+    private Function<VariableManager, List<?>> semanticElementsProvider;
 
     private List<AbstractControlDescription> controlDescriptions;
 
@@ -53,7 +53,7 @@ public final class GroupDescription {
         return this.labelProvider;
     }
 
-    public Function<VariableManager, List<Object>> getSemanticElementsProvider() {
+    public Function<VariableManager, List<?>> getSemanticElementsProvider() {
         return this.semanticElementsProvider;
     }
 
@@ -84,7 +84,7 @@ public final class GroupDescription {
 
         private Function<VariableManager, String> labelProvider;
 
-        private Function<VariableManager, List<Object>> semanticElementsProvider;
+        private Function<VariableManager, List<?>> semanticElementsProvider;
 
         private List<AbstractControlDescription> controlDescriptions;
 
@@ -102,7 +102,7 @@ public final class GroupDescription {
             return this;
         }
 
-        public Builder semanticElementsProvider(Function<VariableManager, List<Object>> semanticElementsProvider) {
+        public Builder semanticElementsProvider(Function<VariableManager, List<?>> semanticElementsProvider) {
             this.semanticElementsProvider = Objects.requireNonNull(semanticElementsProvider);
             return this;
         }

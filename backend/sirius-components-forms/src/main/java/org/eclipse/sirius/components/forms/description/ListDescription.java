@@ -33,7 +33,7 @@ public final class ListDescription extends AbstractWidgetDescription {
 
     private Function<VariableManager, String> labelProvider;
 
-    private Function<VariableManager, List<Object>> itemsProvider;
+    private Function<VariableManager, List<?>> itemsProvider;
 
     private Function<VariableManager, String> itemIdProvider;
 
@@ -59,7 +59,7 @@ public final class ListDescription extends AbstractWidgetDescription {
         return this.labelProvider;
     }
 
-    public Function<VariableManager, List<Object>> getItemsProvider() {
+    public Function<VariableManager, List<?>> getItemsProvider() {
         return this.itemsProvider;
     }
 
@@ -110,7 +110,7 @@ public final class ListDescription extends AbstractWidgetDescription {
 
         private Function<VariableManager, String> labelProvider;
 
-        private Function<VariableManager, List<Object>> itemsProvider;
+        private Function<VariableManager, List<?>> itemsProvider;
 
         private Function<VariableManager, String> itemIdProvider;
 
@@ -124,7 +124,7 @@ public final class ListDescription extends AbstractWidgetDescription {
 
         private Function<VariableManager, IStatus> itemDeleteHandlerProvider;
 
-        private Function<VariableManager, List<Object>> diagnosticsProvider;
+        private Function<VariableManager, List<?>> diagnosticsProvider;
 
         private Function<Object, String> kindProvider;
 
@@ -144,7 +144,7 @@ public final class ListDescription extends AbstractWidgetDescription {
             return this;
         }
 
-        public Builder itemsProvider(Function<VariableManager, List<Object>> itemsProvider) {
+        public Builder itemsProvider(Function<VariableManager, List<?>> itemsProvider) {
             this.itemsProvider = Objects.requireNonNull(itemsProvider);
             return this;
         }
@@ -179,7 +179,7 @@ public final class ListDescription extends AbstractWidgetDescription {
             return this;
         }
 
-        public Builder diagnosticsProvider(Function<VariableManager, List<Object>> diagnosticsProvider) {
+        public Builder diagnosticsProvider(Function<VariableManager, List<?>> diagnosticsProvider) {
             this.diagnosticsProvider = Objects.requireNonNull(diagnosticsProvider);
             return this;
         }

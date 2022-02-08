@@ -137,7 +137,7 @@ public class DefaultTestDiagramDescriptionProvider {
         // @formatter:on
     };
 
-    private Function<VariableManager, List<Object>> nodeSemanticElementProvider = variableManager -> {
+    private Function<VariableManager, List<?>> nodeSemanticElementProvider = variableManager -> {
         // @formatter:off
         List<Object> children = new ArrayList<>();
         variableManager.get(VariableManager.SELF, Element.class)

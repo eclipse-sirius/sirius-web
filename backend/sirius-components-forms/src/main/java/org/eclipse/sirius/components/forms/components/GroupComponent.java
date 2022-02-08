@@ -52,9 +52,9 @@ public class GroupComponent implements IComponent {
         GroupDescription groupDescription = this.props.getGroupDescription();
         WidgetIdCounter widgetIdCounter = new WidgetIdCounter();
 
-        List<Element> children = new ArrayList<>();
+        List<?> semanticElements = groupDescription.getSemanticElementsProvider().apply(variableManager);
+        List<Element> children = new ArrayList<>(semanticElements.size());
 
-        List<Object> semanticElements = groupDescription.getSemanticElementsProvider().apply(variableManager);
         for (Object semanticElement : semanticElements) {
             VariableManager groupVariableManager = variableManager.createChild();
             groupVariableManager.put(VariableManager.SELF, semanticElement);

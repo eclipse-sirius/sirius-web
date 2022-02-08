@@ -24,5 +24,5 @@ import org.eclipse.sirius.components.representations.VariableManager;
  * @author sbegaudeau
  */
 public interface ISemanticCandidatesProviderFactory {
-    Function<VariableManager, List<Object>> getSemanticCandidatesProvider(AQLInterpreter interpreter, String domainClass, String semanticCandidatesExpression, String preconditionExpression);
+    Function<VariableManager, List<?>> getSemanticCandidatesProvider(AQLInterpreter interpreter, String domainClass, String semanticCandidatesExpression, String preconditionExpression);
 }

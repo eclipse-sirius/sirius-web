@@ -50,11 +50,11 @@ public class RadioComponent implements IComponent {
 
         String id = radioDescription.getIdProvider().apply(variableManager);
         String label = radioDescription.getLabelProvider().apply(variableManager);
-        List<Object> optionCandidates = radioDescription.getOptionsProvider().apply(variableManager);
+        List<?> optionCandidates = radioDescription.getOptionsProvider().apply(variableManager);
 
         List<Element> children = List.of(new Element(DiagnosticComponent.class, new DiagnosticComponentProps(radioDescription, variableManager)));
 
-        List<RadioOption> options = new ArrayList<>();
+        List<RadioOption> options = new ArrayList<>(optionCandidates.size());
         for (Object candidate : optionCandidates) {
             VariableManager optionVariableManager = variableManager.createChild();
             optionVariableManager.put(CANDIDATE_VARIABLE, candidate);

@@ -114,7 +114,7 @@ public class WidgetDescriptionConverter {
 
     }
 
-    private Function<VariableManager, List<Object>> getDiagnosticsProvider() {
+    private Function<VariableManager, List<?>> getDiagnosticsProvider() {
         return variableManager -> {
             return List.of();
         };
@@ -173,7 +173,7 @@ public class WidgetDescriptionConverter {
             return optionalResult.map(candidate::equals).orElse(Boolean.FALSE);
         };
 
-        Function<VariableManager, List<Object>> optionsProvider = variableManager -> {
+        Function<VariableManager, List<?>> optionsProvider = variableManager -> {
             Optional<List<Object>> optional = this.interpreter.evaluateExpression(variableManager.getVariables(), radioDescription.getCandidatesExpression()).asObjects();
             return optional.orElse(Collections.emptyList());
         };
@@ -228,7 +228,7 @@ public class WidgetDescriptionConverter {
         };
         // @formatter:on
 
-        Function<VariableManager, List<Object>> optionsProvider = (variableManager) -> {
+        Function<VariableManager, List<?>> optionsProvider = (variableManager) -> {
             String candidateExpression = selectDescription.getCandidatesExpression();
             return this.interpreter.evaluateExpression(variableManager.getVariables(), candidateExpression).asObjects().orElse(new ArrayList<>());
         };

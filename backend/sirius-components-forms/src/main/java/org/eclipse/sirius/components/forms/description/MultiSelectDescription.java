@@ -35,7 +35,7 @@ public final class MultiSelectDescription extends AbstractWidgetDescription {
 
     private Function<VariableManager, String> labelProvider;
 
-    private Function<VariableManager, List<Object>> optionsProvider;
+    private Function<VariableManager, List<?>> optionsProvider;
 
     private Function<VariableManager, String> optionIdProvider;
 
@@ -57,7 +57,7 @@ public final class MultiSelectDescription extends AbstractWidgetDescription {
         return this.labelProvider;
     }
 
-    public Function<VariableManager, List<Object>> getOptionsProvider() {
+    public Function<VariableManager, List<?>> getOptionsProvider() {
         return this.optionsProvider;
     }
 
@@ -101,7 +101,7 @@ public final class MultiSelectDescription extends AbstractWidgetDescription {
 
         private Function<VariableManager, String> labelProvider;
 
-        private Function<VariableManager, List<Object>> optionsProvider;
+        private Function<VariableManager, List<?>> optionsProvider;
 
         private Function<VariableManager, String> optionIdProvider;
 
@@ -111,7 +111,7 @@ public final class MultiSelectDescription extends AbstractWidgetDescription {
 
         private BiFunction<VariableManager, List<String>, IStatus> newValuesHandler;
 
-        private Function<VariableManager, List<Object>> diagnosticsProvider;
+        private Function<VariableManager, List<?>> diagnosticsProvider;
 
         private Function<Object, String> kindProvider;
 
@@ -131,7 +131,7 @@ public final class MultiSelectDescription extends AbstractWidgetDescription {
             return this;
         }
 
-        public Builder optionsProvider(Function<VariableManager, List<Object>> optionsProvider) {
+        public Builder optionsProvider(Function<VariableManager, List<?>> optionsProvider) {
             this.optionsProvider = Objects.requireNonNull(optionsProvider);
             return this;
         }
@@ -156,7 +156,7 @@ public final class MultiSelectDescription extends AbstractWidgetDescription {
             return this;
         }
 
-        public Builder diagnosticsProvider(Function<VariableManager, List<Object>> diagnosticsProvider) {
+        public Builder diagnosticsProvider(Function<VariableManager, List<?>> diagnosticsProvider) {
             this.diagnosticsProvider = Objects.requireNonNull(diagnosticsProvider);
             return this;
         }

@@ -24,13 +24,13 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 public abstract class AbstractWidgetDescription extends AbstractControlDescription {
 
-    protected Function<VariableManager, List<Object>> diagnosticsProvider;
+    protected Function<VariableManager, List<?>> diagnosticsProvider;
 
     protected Function<Object, String> kindProvider;
 
     protected Function<Object, String> messageProvider;
 
-    public Function<VariableManager, List<Object>> getDiagnosticsProvider() {
+    public Function<VariableManager, List<?>> getDiagnosticsProvider() {
         return this.diagnosticsProvider;
     }
 

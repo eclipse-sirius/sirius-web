@@ -42,9 +42,9 @@ public class ForComponent implements IComponent {
         ForDescription forDescription = this.props.getForDescription();
 
         // @formatter:off
-        List<Element> children = new ArrayList<>();
+        List<?> objects = forDescription.getIterableProvider().apply(variableManager);
+        List<Element> children = new ArrayList<>(objects.size());
 
-        List<Object> objects = forDescription.getIterableProvider().apply(variableManager);
         for (Object object : objects) {
             VariableManager childVariableManager = variableManager.createChild();
             childVariableManager.put(forDescription.getIterator(), object);

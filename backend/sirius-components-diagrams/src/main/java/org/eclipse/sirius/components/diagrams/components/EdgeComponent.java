@@ -73,7 +73,7 @@ public class EdgeComponent implements IComponent {
             variableManager.getVariables().forEach(semanticElementsVariableManager::put);
             semanticElementsVariableManager.put(DiagramDescription.CACHE, cache);
 
-            List<Object> semanticElements = edgeDescription.getSemanticElementsProvider().apply(semanticElementsVariableManager);
+            List<?> semanticElements = edgeDescription.getSemanticElementsProvider().apply(semanticElementsVariableManager);
             int count = 0;
             for (Object semanticElement : semanticElements) {
                 VariableManager edgeVariableManager = variableManager.createChild();

@@ -44,8 +44,8 @@ public class SelectionRenderer {
         String message = this.selectionDescription.getMessageProvider().apply(this.variableManager);
         String targetObjectId = this.selectionDescription.getTargetObjectIdProvider().apply(this.variableManager);
 
-        List<SelectionObject> objects = new ArrayList<>();
-        List<Object> selectionObjects = this.selectionDescription.getObjectsProvider().apply(this.variableManager);
+        List<?> selectionObjects = this.selectionDescription.getObjectsProvider().apply(this.variableManager);
+        List<SelectionObject> objects = new ArrayList<>(selectionObjects.size());
         for (Object selectionObject : selectionObjects) {
             VariableManager selectionObjectVariableManager = this.variableManager.createChild();
             selectionObjectVariableManager.put(VariableManager.SELF, selectionObject);

@@ -104,7 +104,7 @@ public class EEnumIfDescriptionProvider {
         return new EStructuralFeatureLabelProvider(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE, this.composedAdapterFactory);
     }
 
-    private Function<VariableManager, List<Object>> getOptionsProvider() {
+    private Function<VariableManager, List<?>> getOptionsProvider() {
         return variableManager -> {
             Object feature = variableManager.getVariables().get(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE);
             if (feature instanceof EAttribute) {

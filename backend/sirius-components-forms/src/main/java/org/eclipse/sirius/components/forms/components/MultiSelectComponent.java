@@ -50,12 +50,12 @@ public class MultiSelectComponent implements IComponent {
 
         String id = multiSelectDescription.getIdProvider().apply(variableManager);
         String label = multiSelectDescription.getLabelProvider().apply(variableManager);
-        List<Object> optionCandidates = multiSelectDescription.getOptionsProvider().apply(variableManager);
+        List<?> optionCandidates = multiSelectDescription.getOptionsProvider().apply(variableManager);
         List<String> values = multiSelectDescription.getValuesProvider().apply(variableManager);
 
         List<Element> children = List.of(new Element(DiagnosticComponent.class, new DiagnosticComponentProps(multiSelectDescription, variableManager)));
 
-        List<SelectOption> options = new ArrayList<>();
+        List<SelectOption> options = new ArrayList<>(optionCandidates.size());
         for (Object candidate : optionCandidates) {
             VariableManager optionVariableManager = variableManager.createChild();
             optionVariableManager.put(CANDIDATE_VARIABLE, candidate);

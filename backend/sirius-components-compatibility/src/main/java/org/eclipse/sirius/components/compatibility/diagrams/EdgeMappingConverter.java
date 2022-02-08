@@ -28,10 +28,10 @@ import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
+import org.eclipse.sirius.components.diagrams.description.EdgeDescription.Builder;
 import org.eclipse.sirius.components.diagrams.description.LabelDescription;
 import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
-import org.eclipse.sirius.components.diagrams.description.EdgeDescription.Builder;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -83,7 +83,7 @@ public class EdgeMappingConverter {
         List<NodeDescription> sourceNodeDescriptions = this.getNodeDescriptions(edgeMapping.getSourceMapping(), id2NodeDescriptions);
         List<NodeDescription> targetNodeDescriptions = this.getNodeDescriptions(edgeMapping.getTargetMapping(), id2NodeDescriptions);
 
-        Function<VariableManager, List<Object>> semanticElementsProvider = this.getSemanticElementsProvider(interpreter, edgeMapping, sourceNodeDescriptions);
+        Function<VariableManager, List<?>> semanticElementsProvider = this.getSemanticElementsProvider(interpreter, edgeMapping, sourceNodeDescriptions);
 
         Function<VariableManager, List<Element>> sourceNodesProvider = null;
         if (edgeMapping.isUseDomainElement()) {
@@ -179,8 +179,8 @@ public class EdgeMappingConverter {
         // @formatter:on
     }
 
-    private Function<VariableManager, List<Object>> getSemanticElementsProvider(AQLInterpreter interpreter, EdgeMapping edgeMapping, List<NodeDescription> sourceNodeDescriptions) {
-        Function<VariableManager, List<Object>> semanticElementsProvider = variableManager -> List.of();
+    private Function<VariableManager, List<?>> getSemanticElementsProvider(AQLInterpreter interpreter, EdgeMapping edgeMapping, List<NodeDescription> sourceNodeDescriptions) {
+        Function<VariableManager, List<?>> semanticElementsProvider = variableManager -> List.of();
 
         if (edgeMapping.isUseDomainElement()) {
             String semanticCandidatesExpression = edgeMapping.getSemanticCandidatesExpression();

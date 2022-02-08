@@ -43,9 +43,9 @@ public class PageComponent implements IComponent {
         VariableManager variableManager = this.props.getVariableManager();
         PageDescription pageDescription = this.props.getPageDescription();
 
-        List<Element> children = new ArrayList<>();
+        List<?> semanticElements = pageDescription.getSemanticElementsProvider().apply(variableManager);
+        List<Element> children = new ArrayList<>(semanticElements.size());
 
-        List<Object> semanticElements = pageDescription.getSemanticElementsProvider().apply(variableManager);
         for (Object semanticElement : semanticElements) {
             VariableManager pageVariableManager = variableManager.createChild();
             pageVariableManager.put(VariableManager.SELF, semanticElement);
