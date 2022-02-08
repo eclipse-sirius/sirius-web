@@ -30,7 +30,7 @@ public final class ForDescription extends AbstractControlDescription {
 
     private String iterator;
 
-    private Function<VariableManager, List<Object>> iterableProvider;
+    private Function<VariableManager, List<?>> iterableProvider;
 
     private List<IfDescription> ifDescriptions;
 
@@ -42,7 +42,7 @@ public final class ForDescription extends AbstractControlDescription {
         return this.iterator;
     }
 
-    public Function<VariableManager, List<Object>> getIterableProvider() {
+    public Function<VariableManager, List<?>> getIterableProvider() {
         return this.iterableProvider;
     }
 
@@ -71,7 +71,7 @@ public final class ForDescription extends AbstractControlDescription {
 
         private String iterator;
 
-        private Function<VariableManager, List<Object>> iterableProvider;
+        private Function<VariableManager, List<?>> iterableProvider;
 
         private List<IfDescription> ifDescriptions;
 
@@ -84,7 +84,7 @@ public final class ForDescription extends AbstractControlDescription {
             return this;
         }
 
-        public Builder iterableProvider(Function<VariableManager, List<Object>> iterableProvider) {
+        public Builder iterableProvider(Function<VariableManager, List<?>> iterableProvider) {
             this.iterableProvider = Objects.requireNonNull(iterableProvider);
             return this;
         }

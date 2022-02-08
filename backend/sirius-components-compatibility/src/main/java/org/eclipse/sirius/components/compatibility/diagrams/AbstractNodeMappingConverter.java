@@ -118,7 +118,7 @@ public class AbstractNodeMappingConverter {
         String domainClass = abstractNodeMapping.getDomainClass();
         String semanticCandidatesExpression = abstractNodeMapping.getSemanticCandidatesExpression();
         String preconditionExpression = abstractNodeMapping.getPreconditionExpression();
-        Function<VariableManager, List<Object>> semanticElementsProvider = this.semanticCandidatesProviderFactory.getSemanticCandidatesProvider(interpreter, domainClass, semanticCandidatesExpression,
+        Function<VariableManager, List<?>> semanticElementsProvider = this.semanticCandidatesProviderFactory.getSemanticCandidatesProvider(interpreter, domainClass, semanticCandidatesExpression,
                 preconditionExpression);
 
         List<NodeDescription> childNodeDescriptions = this.getChildNodeDescriptions(abstractNodeMapping, interpreter, id2NodeDescriptions);

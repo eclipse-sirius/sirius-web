@@ -64,7 +64,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
 
     private static final String UNNAMED = "<unnamed>"; //$NON-NLS-1$
 
-    private final Function<VariableManager, List<Object>> semanticElementsProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).stream().collect(Collectors.toList());
+    private final Function<VariableManager, List<?>> semanticElementsProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).stream().collect(Collectors.toList());
 
     private final ICustomImageSearchService customImageSearchService;
 
@@ -387,7 +387,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
         };
     }
 
-    private Function<VariableManager, List<Object>> getDiagnosticsProvider(Object feature) {
+    private Function<VariableManager, List<?>> getDiagnosticsProvider(Object feature) {
         return variableManager -> {
             var optionalSelf = variableManager.get(VariableManager.SELF, EObject.class);
 

@@ -30,7 +30,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
  *
  * @author lfasani
  */
-public class EStructuralFeatureChoiceOfValueProvider implements Function<VariableManager, List<Object>> {
+public class EStructuralFeatureChoiceOfValueProvider implements Function<VariableManager, List<?>> {
 
     private String featureVariableName;
 
@@ -42,7 +42,7 @@ public class EStructuralFeatureChoiceOfValueProvider implements Function<Variabl
     }
 
     @Override
-    public List<Object> apply(VariableManager variableManager) {
+    public List<?> apply(VariableManager variableManager) {
         var optionalEObject = variableManager.get(VariableManager.SELF, EObject.class);
         var optionalEReference = variableManager.get(this.featureVariableName, EReference.class);
 

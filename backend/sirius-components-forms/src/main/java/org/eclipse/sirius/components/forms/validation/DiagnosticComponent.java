@@ -41,9 +41,9 @@ public class DiagnosticComponent implements IComponent {
         AbstractWidgetDescription widgetDescription = this.props.getWidgetDescription();
         VariableManager variableManager = this.props.getVariableManager();
 
-        List<Element> children = new ArrayList<>();
+        List<?> diagnostics = widgetDescription.getDiagnosticsProvider().apply(variableManager);
+        List<Element> children = new ArrayList<>(diagnostics.size());
 
-        List<Object> diagnostics = widgetDescription.getDiagnosticsProvider().apply(variableManager);
         for (Object diagnostic : diagnostics) {
             UUID id = UUID.randomUUID();
             String kind = widgetDescription.getKindProvider().apply(diagnostic);

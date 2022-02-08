@@ -165,7 +165,7 @@ public class MultiValuedNonContainmentReferenceIfDescriptionProvider {
         };
     }
 
-    private Function<VariableManager, List<Object>> getOptionsProvider() {
+    private Function<VariableManager, List<?>> getOptionsProvider() {
         return new EStructuralFeatureChoiceOfValueProvider(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE, this.composedAdapterFactory);
     }
 

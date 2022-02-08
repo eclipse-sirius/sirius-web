@@ -115,7 +115,7 @@ public class PropertiesDefaultDescriptionProvider implements IPropertiesDefaultD
     private GroupDescription getGroupDescription() {
         List<AbstractControlDescription> controlDescriptions = new ArrayList<>();
 
-        Function<VariableManager, List<Object>> iterableProvider = variableManager -> {
+        Function<VariableManager, List<?>> iterableProvider = variableManager -> {
             List<Object> objects = new ArrayList<>();
 
             Object self = variableManager.getVariables().get(VariableManager.SELF);

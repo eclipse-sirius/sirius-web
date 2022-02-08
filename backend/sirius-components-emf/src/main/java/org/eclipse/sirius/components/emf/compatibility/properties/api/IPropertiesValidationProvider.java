@@ -23,7 +23,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
  * @author sbegaudeau
  */
 public interface IPropertiesValidationProvider {
-    Function<VariableManager, List<Object>> getDiagnosticsProvider();
+    Function<VariableManager, List<?>> getDiagnosticsProvider();
 
     Function<Object, String> getKindProvider();
 
@@ -37,7 +37,7 @@ public interface IPropertiesValidationProvider {
     class NoOp implements IPropertiesValidationProvider {
 
         @Override
-        public Function<VariableManager, List<Object>> getDiagnosticsProvider() {
+        public Function<VariableManager, List<?>> getDiagnosticsProvider() {
             return variableManager -> List.of();
         }
 

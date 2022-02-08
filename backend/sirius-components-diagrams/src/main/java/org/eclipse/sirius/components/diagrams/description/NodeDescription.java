@@ -45,7 +45,7 @@ public final class NodeDescription {
 
     private Function<VariableManager, String> targetObjectLabelProvider;
 
-    private Function<VariableManager, List<Object>> semanticElementsProvider;
+    private Function<VariableManager, List<?>> semanticElementsProvider;
 
     private LabelDescription labelDescription;
 
@@ -89,7 +89,7 @@ public final class NodeDescription {
         return this.targetObjectLabelProvider;
     }
 
-    public Function<VariableManager, List<Object>> getSemanticElementsProvider() {
+    public Function<VariableManager, List<?>> getSemanticElementsProvider() {
         return this.semanticElementsProvider;
     }
 
@@ -150,7 +150,7 @@ public final class NodeDescription {
 
         private Function<VariableManager, String> targetObjectLabelProvider;
 
-        private Function<VariableManager, List<Object>> semanticElementsProvider;
+        private Function<VariableManager, List<?>> semanticElementsProvider;
 
         private LabelDescription labelDescription;
 
@@ -195,7 +195,7 @@ public final class NodeDescription {
             return this;
         }
 
-        public Builder semanticElementsProvider(Function<VariableManager, List<Object>> semanticElementsProvider) {
+        public Builder semanticElementsProvider(Function<VariableManager, List<?>> semanticElementsProvider) {
             this.semanticElementsProvider = Objects.requireNonNull(semanticElementsProvider);
             return this;
         }

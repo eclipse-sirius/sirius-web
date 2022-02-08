@@ -49,12 +49,12 @@ public class SelectComponent implements IComponent {
 
         String id = selectDescription.getIdProvider().apply(variableManager);
         String label = selectDescription.getLabelProvider().apply(variableManager);
-        List<Object> optionCandidates = selectDescription.getOptionsProvider().apply(variableManager);
+        List<?> optionCandidates = selectDescription.getOptionsProvider().apply(variableManager);
         String value = selectDescription.getValueProvider().apply(variableManager);
 
         List<Element> children = List.of(new Element(DiagnosticComponent.class, new DiagnosticComponentProps(selectDescription, variableManager)));
 
-        List<SelectOption> options = new ArrayList<>();
+        List<SelectOption> options = new ArrayList<>(optionCandidates.size());
         for (Object candidate : optionCandidates) {
             VariableManager optionVariableManager = variableManager.createChild();
             optionVariableManager.put(CANDIDATE_VARIABLE, candidate);

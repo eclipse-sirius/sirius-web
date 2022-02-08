@@ -29,7 +29,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
  *
  * @author sbegaudeau
  */
-public class RelationBasedSemanticElementsProvider implements Function<VariableManager, List<Object>> {
+public class RelationBasedSemanticElementsProvider implements Function<VariableManager, List<?>> {
 
     private final List<UUID> sourceNodeDescriptionIds;
 
@@ -38,7 +38,7 @@ public class RelationBasedSemanticElementsProvider implements Function<VariableM
     }
 
     @Override
-    public List<Object> apply(VariableManager variableManager) {
+    public List<?> apply(VariableManager variableManager) {
         List<Object> objects = new ArrayList<>();
 
         var optionalCache = variableManager.get(DiagramDescription.CACHE, DiagramRenderingCache.class);

@@ -91,7 +91,7 @@ public class TestDiagramDescriptionBuilder {
         // @formatter:on
     }
 
-    public NodeDescription getNodeDescription(UUID nodeDescriptionId, Function<VariableManager, List<Object>> semanticElementsProvider) {
+    public NodeDescription getNodeDescription(UUID nodeDescriptionId, Function<VariableManager, List<?>> semanticElementsProvider) {
         // @formatter:off
         LabelStyleDescription labelStyleDescription = LabelStyleDescription.newLabelStyleDescription()
                 .colorProvider(variableManager -> "#000000") //$NON-NLS-1$

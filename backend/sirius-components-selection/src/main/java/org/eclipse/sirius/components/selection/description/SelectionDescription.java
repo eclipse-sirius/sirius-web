@@ -46,7 +46,7 @@ public final class SelectionDescription implements IRepresentationDescription {
 
     private Function<VariableManager, String> messageProvider;
 
-    private Function<VariableManager, List<Object>> objectsProvider;
+    private Function<VariableManager, List<?>> objectsProvider;
 
     private Function<VariableManager, String> selectionObjectsIdProvider;
 
@@ -88,7 +88,7 @@ public final class SelectionDescription implements IRepresentationDescription {
         return this.messageProvider;
     }
 
-    public Function<VariableManager, List<Object>> getObjectsProvider() {
+    public Function<VariableManager, List<?>> getObjectsProvider() {
         return this.objectsProvider;
     }
 
@@ -132,7 +132,7 @@ public final class SelectionDescription implements IRepresentationDescription {
 
         private Function<VariableManager, String> messageProvider;
 
-        private Function<VariableManager, List<Object>> objectsProvider;
+        private Function<VariableManager, List<?>> objectsProvider;
 
         private Function<VariableManager, String> selectionObjectsIdProvider;
 
@@ -172,7 +172,7 @@ public final class SelectionDescription implements IRepresentationDescription {
             return this;
         }
 
-        public Builder objectsProvider(Function<VariableManager, List<Object>> objectsProvider) {
+        public Builder objectsProvider(Function<VariableManager, List<?>> objectsProvider) {
             this.objectsProvider = Objects.requireNonNull(objectsProvider);
             return this;
         }

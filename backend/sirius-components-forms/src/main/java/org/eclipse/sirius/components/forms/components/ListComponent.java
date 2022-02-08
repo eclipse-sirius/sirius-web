@@ -50,11 +50,11 @@ public class ListComponent implements IComponent {
 
         String id = listDescription.getIdProvider().apply(variableManager);
         String label = listDescription.getLabelProvider().apply(variableManager);
-        List<Object> itemCandidates = listDescription.getItemsProvider().apply(variableManager);
+        List<?> itemCandidates = listDescription.getItemsProvider().apply(variableManager);
 
         List<Element> children = List.of(new Element(DiagnosticComponent.class, new DiagnosticComponentProps(listDescription, variableManager)));
 
-        List<ListItem> items = new ArrayList<>();
+        List<ListItem> items = new ArrayList<>(itemCandidates.size());
         for (Object itemCandidate : itemCandidates) {
             VariableManager itemVariableManager = variableManager.createChild();
             itemVariableManager.put(CANDIDATE_VARIABLE, itemCandidate);

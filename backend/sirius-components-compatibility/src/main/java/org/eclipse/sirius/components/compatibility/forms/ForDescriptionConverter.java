@@ -52,7 +52,7 @@ public class ForDescriptionConverter {
 
     public ForDescription convert(org.eclipse.sirius.properties.DynamicMappingForDescription siriusForDescription) {
         // @formatter:off
-        Function<VariableManager, List<Object>> iterableProvider = (variableManager) -> {
+        Function<VariableManager, List<?>> iterableProvider = (variableManager) -> {
             return this.interpreter.evaluateExpression(variableManager.getVariables(), siriusForDescription.getIterableExpression()).asObjects()
                     .orElse(Collections.emptyList());
         };

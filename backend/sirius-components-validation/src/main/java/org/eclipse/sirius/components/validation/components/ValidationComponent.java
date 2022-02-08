@@ -45,9 +45,8 @@ public class ValidationComponent implements IComponent {
         String id = optionalPreviousValidation.map(Validation::getId).orElseGet(() -> "validation"); //$NON-NLS-1$
         String label = validationDescription.getLabel();
 
-        List<Element> children = new ArrayList<>();
-
-        List<Object> diagnostics = validationDescription.getDiagnosticsProvider().apply(variableManager);
+        List<?> diagnostics = validationDescription.getDiagnosticsProvider().apply(variableManager);
+        List<Element> children = new ArrayList<>(diagnostics.size());
         for (Object diagnostic : diagnostics) {
             DiagnosticComponentProps diagnosticComponentProps = new DiagnosticComponentProps(diagnostic, validationDescription);
             children.add(new Element(DiagnosticComponent.class, diagnosticComponentProps));

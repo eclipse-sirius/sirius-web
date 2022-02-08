@@ -59,7 +59,7 @@ public class NodeComponent implements IComponent {
         DiagramRenderingCache cache = this.props.getCache();
 
         List<Element> children = new ArrayList<>();
-        List<Object> semanticElements = nodeDescription.getSemanticElementsProvider().apply(variableManager);
+        List<?> semanticElements = nodeDescription.getSemanticElementsProvider().apply(variableManager);
 
         for (Object semanticElement : semanticElements) {
             VariableManager nodeVariableManager = variableManager.createChild();

@@ -30,7 +30,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
  *
  * @author sbegaudeau
  */
-public class SemanticCandidatesProvider implements Function<VariableManager, List<Object>> {
+public class SemanticCandidatesProvider implements Function<VariableManager, List<?>> {
     /**
      * The default expression to use when no semantic candidates expression is explicitly defined.
      * <p>
@@ -62,7 +62,7 @@ public class SemanticCandidatesProvider implements Function<VariableManager, Lis
     }
 
     @Override
-    public List<Object> apply(VariableManager variableManager) {
+    public List<?> apply(VariableManager variableManager) {
         List<Object> semanticCandidates = new ArrayList<>();
 
         Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), this.semanticCandidatesExpression);

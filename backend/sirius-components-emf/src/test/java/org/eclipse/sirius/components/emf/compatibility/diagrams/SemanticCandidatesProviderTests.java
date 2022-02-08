@@ -62,7 +62,7 @@ public class SemanticCandidatesProviderTests {
         VariableManager variableManager = new VariableManager();
         variableManager.put(VariableManager.SELF, EcorePackage.eINSTANCE);
 
-        List<Object> semanticCandidates = semanticCandidatesProvider.apply(variableManager);
+        List<?> semanticCandidates = semanticCandidatesProvider.apply(variableManager);
         assertThat(semanticCandidates).allMatch(EClass.class::isInstance);
         assertThat(semanticCandidates).hasSize(20);
     }
@@ -87,7 +87,7 @@ public class SemanticCandidatesProviderTests {
         VariableManager variableManager = new VariableManager();
         variableManager.put(VariableManager.SELF, EcorePackage.eINSTANCE);
 
-        List<Object> semanticCandidates = semanticCandidatesProvider.apply(variableManager);
+        List<?> semanticCandidates = semanticCandidatesProvider.apply(variableManager);
         assertThat(semanticCandidates).allMatch(EClass.class::isInstance);
 
         // @formatter:off

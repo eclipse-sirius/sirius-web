@@ -1,0 +1,92 @@
+= ADR-042 - Use Wildcard Collections instead of List<Object>
+
+== Context
+
+Sirius-Components has API that expose `Function<Something, List<Object>>` attributes.
+That is used especially in Descriptors (`TreeDescription`, `ListDescription`, ...)
+
+Using `List<Object>` as the return type forces implementors to copy lists returned by existing services typed with `List<Something>`, or to create lists when using a service that returns a Collection or an Iterable.
+
+Here are some alternatives:
+
+* Using `Iterable<?>`
+** Clarifies that what's returned is only intended to be iterated over, but does not make it possible to easily know the number of elements, or if there's an element at all.
+* Using `Collection<?>`
+** Better than `List<Object>`, does not impose ordering of elements, and makes it easy to check isEmpty() or size().
+* Using `List<?>`
+** Better than `List<Object>`, conveys that ordering of elements matters, and makes it easy to check isEmpty() or size().
+
+== Decision
+
+We will use `List<?>` in order to improve the API
+
+
+=== Backend
+
+* sirius-components-compatibility
+** .../api/ISemanticCandidatesProviderFactory.java
+** .../diagrams/AbstractNodeMappingConverter.java
+** .../diagrams/EdgeMappingConverter.java
+** .../diagrams/RelationBasedSemanticElementsProvider.java
+** .../forms/ForDescriptionConverter.java
+** .../forms/WidgetDescriptionConverter.java
+* sirius-components-diagrams-layout
+** .../services/DefaultTestDiagramDescriptionProvider.java
+* sirius-components-diagrams-test
+** .../TestDiagramDescriptionBuilder.java
+* sirius-components-diagrams
+** .../components/EdgeComponent.java
+** .../components/NodeComponent.java
+** .../description/EdgeDescription.java
+** .../description/NodeDescription.java
+* sirius-components-emf
+** .../compatibility/SemanticCandidatesProvider.java
+** .../compatibility/properties/EEnumIfDescriptionProvider.java
+** .../compatibility/properties/EStructuralFeatureChoiceOfValueProvider.java
+** .../compatibility/properties/MonoValuedNonContainmentReferenceIfDescriptionProvider.java
+** .../compatibility/properties/MultiValuedNonContainmentReferenceIfDescriptionProvider.java
+** .../compatibility/properties/PropertiesDefaultDescriptionProvider.java
+** .../compatibility/properties/PropertiesValidationProvider.java
+** .../compatibility/properties/api/IPropertiesValidationProvider.java
+** .../view/diagram/DiagramDescriptionConverter.java
+** .../view/diagram/NodeStylePropertiesConfigurer.java
+** .../view/diagram/RelationBasedSemanticElementsProvider.java
+** .../compatibility/diagrams/SemanticCandidatesProviderTests.java
+* sirius-components-forms
+/src/main/java/org/eclipse/sirius/components/forms/components/ForComponent.java
+** .../components/GroupComponent.java
+** .../components/ListComponent.java
+** .../components/MultiSelectComponent.java
+** .../components/PageComponent.java
+** .../components/RadioComponent.java
+** .../components/SelectComponent.java
+** .../description/AbstractWidgetDescription.java
+** .../description/CheckboxDescription.java
+** .../description/ForDescription.java
+** .../description/GroupDescription.java
+** .../description/ListDescription.java
+** .../description/MultiSelectDescription.java
+** .../description/OptionDescription.java
+** .../description/PageDescription.java
+** .../description/RadioDescription.java
+** .../description/SelectDescription.java
+** .../description/TextareaDescription.java
+** .../description/TextfieldDescription.java
+** .../validation/DiagnosticComponent.java
+* sirius-components-trees
+** .../description/TreeDescription.java
+** .../renderer/TreeRenderer.java
+* sirius-components-selection
+** .../description/SelectionDescription
+** .../renderer/SelectionRenderer
+* sirius-components-selection
+** .../components/ValidationComponent
+** .../description/ValidationDescription
+
+== Status
+
+Accepted.
+
+== Consequences
+
+This is an API break, so sirius-web and other projects that depend on sirius-components must be updated accordingly.
