@@ -36,6 +36,7 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/991[#991] [diagram] Restore edge creation tools feedback
 - https://github.com/eclipse-sirius/sirius-components/issues/1056[#1056] [core] Fix an invalid usage of `forwardRef` in  `DiagramTreeItemContextMenuContribution`
 - https://github.com/eclipse-sirius/sirius-components/issues/962[#962] [layout] Fix an issue preventing nodes from being properly resized when a child node is created
+- https://github.com/eclipse-sirius/sirius-components/issues/1051[#1051] [layout] Fix an issue resizing nodes when a child node was created even if it was not necessary
 
 === Improvements
 
