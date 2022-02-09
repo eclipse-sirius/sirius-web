@@ -18,8 +18,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EPackage.Registry;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandler;
@@ -29,11 +28,9 @@ import org.eclipse.sirius.components.collaborative.dto.EditingContextRepresentat
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
+import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
-import org.eclipse.sirius.components.core.api.SemanticKindConstants;
-import org.eclipse.sirius.components.emf.services.EditingContext;
-import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
 import org.eclipse.sirius.components.emf.services.messages.IEMFMessageService;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -52,14 +49,14 @@ import reactor.core.publisher.Sinks.One;
 public class EditingContextRepresentationDescriptionsEventHandler implements IEditingContextEventHandler {
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
-    private final IEMFKindService emfKindService;
+    private final IObjectService objectService;
 
     private final IEMFMessageService emfMessageService;
 
-    public EditingContextRepresentationDescriptionsEventHandler(IRepresentationDescriptionSearchService representationDescriptionSearchService, IEMFKindService emfKindService,
+    public EditingContextRepresentationDescriptionsEventHandler(IRepresentationDescriptionSearchService representationDescriptionSearchService, IObjectService objectService,
             IEMFMessageService emfMessageService) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
-        this.emfKindService = Objects.requireNonNull(emfKindService);
+        this.objectService = Objects.requireNonNull(objectService);
         this.emfMessageService = Objects.requireNonNull(emfMessageService);
     }
 
@@ -72,7 +69,7 @@ public class EditingContextRepresentationDescriptionsEventHandler implements IEd
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IInput input) {
         if (input instanceof EditingContextRepresentationDescriptionsInput) {
             EditingContextRepresentationDescriptionsInput editingContextRepresentationDescriptionsInput = (EditingContextRepresentationDescriptionsInput) input;
-            var result = this.findAllCompatibleRepresentationDescriptions(editingContext, editingContextRepresentationDescriptionsInput.getKind());
+            var result = this.findAllCompatibleRepresentationDescriptions(editingContext, editingContextRepresentationDescriptionsInput.getObjectId());
             payloadSink.tryEmitValue(new EditingContextRepresentationDescriptionsPayload(input.getId(), result));
         } else {
             String message = this.emfMessageService.invalidInput(input.getClass().getSimpleName(), CreateChildInput.class.getSimpleName());
@@ -81,16 +78,17 @@ public class EditingContextRepresentationDescriptionsEventHandler implements IEd
         changeDescriptionSink.tryEmitNext(new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input));
     }
 
-    private List<IRepresentationDescription> findAllCompatibleRepresentationDescriptions(IEditingContext editingContext, String kind) {
+    private List<IRepresentationDescription> findAllCompatibleRepresentationDescriptions(IEditingContext editingContext, String objectId) {
         List<IRepresentationDescription> result = new ArrayList<>();
 
-        Optional<Object> optionalClazz = this.resolveKind(editingContext, kind);
-        if (optionalClazz.isPresent()) {
+        Optional<Object> optionalObject = this.objectService.getObject(editingContext, objectId);
+        if (optionalObject.isPresent()) {
             var allRepresentationDescriptions = this.representationDescriptionSearchService.findAll(editingContext);
 
             for (IRepresentationDescription description : allRepresentationDescriptions.values()) {
                 VariableManager variableManager = new VariableManager();
-                variableManager.put(IRepresentationDescription.CLASS, optionalClazz.get());
+                variableManager.put(VariableManager.SELF, optionalObject.get());
+                variableManager.put(IRepresentationDescription.CLASS, ((EObject) optionalObject.get()).eClass());
                 Predicate<VariableManager> canCreatePredicate = description.getCanCreatePredicate();
                 boolean canCreate = canCreatePredicate.test(variableManager);
                 if (canCreate) {
@@ -99,32 +97,5 @@ public class EditingContextRepresentationDescriptionsEventHandler implements IEd
             }
         }
         return result;
-    }
-
-    private Optional<Object> resolveKind(IEditingContext editingContext, String kind) {
-        Optional<Registry> optionalRegistry = this.getPackageRegistry(editingContext);
-        if (optionalRegistry.isPresent() && !kind.isBlank() && kind.startsWith(SemanticKindConstants.PREFIX)) {
-            var ePackageRegistry = optionalRegistry.get();
-            String ePackageName = this.emfKindService.getEPackageName(kind);
-            String eClassName = this.emfKindService.getEClassName(kind);
-
-            // @formatter:off
-            return this.emfKindService.findEPackage(ePackageRegistry, ePackageName)
-                    .map(ePackage -> ePackage.getEClassifier(eClassName))
-                    .filter(EClass.class::isInstance)
-                    .map(EClass.class::cast);
-            // @formatter:on
-        } else {
-            return Optional.empty();
-        }
-    }
-
-    private Optional<Registry> getPackageRegistry(IEditingContext editingContext) {
-        if (editingContext instanceof EditingContext) {
-            Registry packageRegistry = ((EditingContext) editingContext).getDomain().getResourceSet().getPackageRegistry();
-            return Optional.of(packageRegistry);
-        } else {
-            return Optional.empty();
-        }
     }
 }

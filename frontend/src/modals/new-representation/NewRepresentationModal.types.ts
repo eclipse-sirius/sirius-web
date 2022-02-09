@@ -20,7 +20,7 @@ export interface NewRepresentationModalProps {
 
 export interface GQLGetRepresentationDescriptionsQueryVariables {
   editingContextId: string;
-  kind: string;
+  objectId: string;
 }
 
 export interface GQLGetRepresentationDescriptionsQueryData {

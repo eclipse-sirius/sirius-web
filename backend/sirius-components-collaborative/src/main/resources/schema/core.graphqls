@@ -16,7 +16,7 @@ type EditingContext {
   domains: [Domain!]!
   representation(representationId: ID!): RepresentationMetadata
   representations: EditingContextRepresentationConnection!
-  representationDescriptions(kind: ID!): EditingContextRepresentationDescriptionConnection!
+  representationDescriptions(objectId: ID!): EditingContextRepresentationDescriptionConnection!
   stereotypeDescriptions: EditingContextStereotypeDescriptionConnection!
   rootObjectCreationDescriptions(domainId: ID!, suggested: Boolean!): [ChildCreationDescription!]!
   childCreationDescriptions(kind: ID!): [ChildCreationDescription!]!
