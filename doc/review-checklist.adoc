@@ -1,0 +1,117 @@
+# Review checklist
+
+This document will contain a cheklist of the various things to consider while submitting or reviewing a contribution.
+
+## Issues
+
+### Labels
+
+Issues are quite simple to review, you should mostly consider if the appropriate labels have been added with at least a label for:
+
+- The area such as `area: backend`, `area: frontend`, `area: diagram` etc
+- The difficulty such as `difficulty: starter`
+- The type like `type: enhancement``
+
+Those various labels are important to find existing issues and also because we have from time to time some contributors available on the project for a couple of day or weeks and we need to find simple enhancements for them to perform.
+
+Do not add try to create labels of various shapes in the title of your issues such as `Topic:` or `[Topic]`.
+If it's necessary, ask for the creation of a proper label dedicated to your topic.
+It will make it easier to find issues in the future.
+
+Issues and pull requests on Sirius Components should be focused on Sirius Components.
+If an application integrating Sirius Components needs to be mentionned, please use Sirius Web.
+
+### Projects and milestones
+
+We are currently working on a single project and milestone at a time.
+If you know for a fact that your work will be part of the current iteration, you can add the current project and milestone to the issue and pull request.
+
+
+### Linked pull requests
+
+If there are pull requests for an issue, you should link them.
+Once the pull request will be merged, the issue will be closed automatically.
+If some work remains to be done, it's best to open a new issue to indicate that a first part of the work has been merged and that some work remains to be done.
+
+
+## Pull requests
+
+### Commit
+
+All the commits of a pull request should be properly formatted.
+Have a look at other commits if you have any doubts about the way we format our commit messages.
+Commits should thus start with a title starting with the topic of the commit, either the number of an issue or a general purpose tag like `[releng]`, `[test]`, `[doc]` etc.
+General purpose tags should only be used for small improvements.
+
+If such an improvement requires some explanation or some additional context, then using a proper issue capturing those pieces of information is better.
+If you are referencing an issue, the URL of the issue should be specified too.
+
+We are using `Signed-off-by` at the end of each commit.
+It's not required anymore by the Eclipse Foundation and we may remove this requirement one day but that's what we are currently doing.
+
+
+### Code, documentation and CHANGELOG
+
+The code should have a proper copyright which should be updated when necessary.
+
+A commit fixing an issue should also update the `CHANGELOG` to indicate what has been done.
+For most contributions, a simple sentence with the link of the issue and it's description is enough.
+Important API breaks should also be noted in the dedicated sections.
+
+Major evolutions require a dedicated `ADR` which should be referenced in the `CHANGELOG` too.
+It is better to contribute the ADR before starting to work on an issue in order to ensure that you are not starting in a wrong direction.
+
+
+### Backend
+
+Here is a list of things to consider while reviewing some backend changes:
+
+- [ ] Is there really a good reason not to have tests?
+- [ ] Are there new depencencies? Are they really relevant?
+- [ ] Do the variables have a meaningful name?
+- [ ] If the commit includes or modified an event handler, a regular service class or anything related to the layout algorithm, then it should contain some tests
+- [ ] If an input, a payload or a datafetcher has been modified then the associated schema should be updated too (it works both ways)
+- [ ] Is `null` really an acceptable value?
+- [ ] Are there non `final` fields and are they really necessary?
+- [ ] Does a data structure contain some behavior?
+- [ ] Is any data structure mutable? Is that really necessary?
+- [ ] Is the dependency to EMF / Sirius RCP properly isolated?
+
+
+### Frontend
+
+Our frontend has been started in JavaScript and it is being migrated to TypeScript.
+This is continuous improvement should be done by everybody, one piece of code at a time.
+If you modify a file which is not properly typed, you will be asked to improve its TypeScript typing.
+
+Here is a list of things to consider while reviewing some frontend changes:
+
+- [ ] Is there really a good reason not to have tests?
+- [ ] Is this really necessary to use a snapshot for this test? Why can't a simple assertion be used?
+- [ ] Are there new depencencies? Are they really relevant?
+- [ ] Do the variables have a meaningful name?
+- [ ] Is the code modified or the new code properly typed? This includes calls to Apollo, XState or React hooks like `useState`, `useMachine`, `useQuery`, `useMutation` or `useSubscription`. It also includes the return type of the function and the type of the event handlers.
+- [ ] Are there useless `null` or `undefined` checks? This includes unnecessary `?.` of course
+- [ ] Does it display errors from `useQuery`, `useMutation`, `useSubscription`, `useLazyQuery` to the end user?
+- [ ] Are types in a `.types.ts` file?
+- [ ] Do new files have the proper extension `ts` or `tsx`?
+- [ ] Does the code rely on the `function` keyword instead of an arrow function?
+
+
+### Integration
+
+When the code is good and the PR ready to be merged, you should first start by rebasing the PR on top of master in order to check that it is really working.
+There are some use cases in which a PR can be rebased without any conflict while still producing code that does not compile (for example a class has been moved on master and the PR needs to be updated because a newly created file references the old qualified name).
+
+The reviewer should consider if the PR needs to be squashed and he should do it if necessary.
+
+After that, the reviewer should use the `Rebase and merge` action to merge the PR and `Delete the branch` to clean the, now useless, branch.
+
+If the commit is necessary for another project, for example to merge some changes in Sirius Web, then a new release should be performed.
+Most of the time, the commit for the release should be added by the reviewer in the PR.
+This prevent the need for another reviewer to perform a review of a pull request containing only the commit for the release.
+
+To create this commit, use the prepare release script like that: `node scripts/prepare-release.js 2022.3.0`
+
+Once the PR has been merged and the build is green on master, if a release is necessary then the commit of the release should be tagged using `git tag -a v2022.3.0 -m v2022.3.0` and `git push origin v2022.3.0`.
+Do not forget to tag the commit on the master branch and not on the pull request branch.
