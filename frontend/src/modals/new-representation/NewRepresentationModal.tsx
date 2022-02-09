@@ -135,7 +135,7 @@ export const NewRepresentationModal = ({
     error: representationDescriptionsError,
   } = useQuery<GQLGetRepresentationDescriptionsQueryData, GQLGetRepresentationDescriptionsQueryVariables>(
     getRepresentationDescriptionsQuery,
-    { variables: { editingContextId, objectId: item.id} }
+    { variables: { editingContextId, objectId: item.id } }
   );
 
   useEffect(() => {
