@@ -44,9 +44,13 @@ public class NodePositionProviderTests {
 
     private static final Position ZERO_POSITION = Position.at(0, 0);
 
-    private static final double STARTX = 1000;
+    private static final double START_X_WITHIN_PARENT = 75;
 
-    private static final double STARTY = 1000;
+    private static final double START_Y_WITHIN_PARENT = 35;
+
+    private static final double START_X_OUTSIDE_PARENT = 1000;
+
+    private static final double START_Y_OUTSIDE_PARENT = 1000;
 
     @Test
     public void testDiagramSeveralNewNodesAtOnce() {
@@ -96,16 +100,27 @@ public class NodePositionProviderTests {
         assertThat(nextPosition).extracting(Position::getX).isEqualTo(Double.valueOf(0));
         assertThat(nextPosition).extracting(Position::getY).isEqualTo(Double.valueOf(DEFAULT_NODE_SIZE.getHeight() + 30));
 
-        // Test creation of a new node at a given position (creation tool)
-        Position startingPosition = Position.at(STARTX, STARTY);
+        // Test creation of a new node at a given position within parent (creation tool)
+        Position startingPosition = Position.at(START_X_WITHIN_PARENT, START_Y_WITHIN_PARENT);
         nodePositionProvider = new NodePositionProvider();
         nodeLayoutData = this.createNodeLayoutData(Position.UNDEFINED, DEFAULT_NODE_SIZE, diagramLayoutData, NodeType.NODE_RECTANGLE);
         nodes.add(nodeLayoutData);
 
         Optional<IDiagramEvent> optionalEvent = Optional.of(new NodeCreationEvent(startingPosition));
         nextPosition = nodePositionProvider.getPosition(optionalEvent, nodeLayoutData);
-        assertThat(nextPosition).extracting(Position::getX).isEqualTo(STARTX);
-        assertThat(nextPosition).extracting(Position::getY).isEqualTo(STARTY);
+        assertThat(nextPosition).extracting(Position::getX).isEqualTo(START_X_WITHIN_PARENT);
+        assertThat(nextPosition).extracting(Position::getY).isEqualTo(START_Y_WITHIN_PARENT);
+
+        // Test creation of a new node at a given position outside parent (creation tool)
+        Position startingPositionOutside = Position.at(START_X_OUTSIDE_PARENT, START_Y_OUTSIDE_PARENT);
+        nodePositionProvider = new NodePositionProvider();
+        nodeLayoutData = this.createNodeLayoutData(Position.UNDEFINED, DEFAULT_NODE_SIZE, diagramLayoutData, NodeType.NODE_RECTANGLE);
+        nodes.add(nodeLayoutData);
+
+        Optional<IDiagramEvent> optionalEventOutside = Optional.of(new NodeCreationEvent(startingPositionOutside));
+        nextPosition = nodePositionProvider.getPosition(optionalEventOutside, nodeLayoutData);
+        assertThat(nextPosition).extracting(Position::getX).isEqualTo(Double.valueOf(10));
+        assertThat(nextPosition).extracting(Position::getY).isEqualTo(Double.valueOf(10));
     }
 
     @Test
@@ -159,15 +174,25 @@ public class NodePositionProviderTests {
         assertThat(nextPosition).extracting(Position::getX).isEqualTo(Double.valueOf(0));
         assertThat(nextPosition).extracting(Position::getY).isEqualTo(Double.valueOf(DEFAULT_NODE_SIZE.getHeight() + 30));
 
-        // Test creation of a new node at a given position (creation tool)
+        // Test creation of a new node at a given position within parent (creation tool)
         nodeLayoutData = this.createNodeLayoutData(Position.UNDEFINED, DEFAULT_NODE_SIZE, parentNodeLayoutData, NodeType.NODE_RECTANGLE);
-        Position startingPosition = Position.at(STARTX, STARTY);
+        Position startingPosition = Position.at(START_X_WITHIN_PARENT, START_Y_WITHIN_PARENT);
         nodes.add(nodeLayoutData);
 
         nodePositionProvider = new NodePositionProvider();
         nextPosition = nodePositionProvider.getPosition(Optional.of(new NodeCreationEvent(startingPosition)), nodeLayoutData);
-        assertThat(nextPosition).extracting(Position::getX).isEqualTo(STARTX);
-        assertThat(nextPosition).extracting(Position::getY).isEqualTo(STARTY);
+        assertThat(nextPosition).extracting(Position::getX).isEqualTo(START_X_WITHIN_PARENT);
+        assertThat(nextPosition).extracting(Position::getY).isEqualTo(START_Y_WITHIN_PARENT);
+
+        // Test creation of a new node at a given position outside parent (creation tool)
+        nodeLayoutData = this.createNodeLayoutData(Position.UNDEFINED, DEFAULT_NODE_SIZE, parentNodeLayoutData, NodeType.NODE_RECTANGLE);
+        Position startingPositionOutside = Position.at(START_X_OUTSIDE_PARENT, START_Y_OUTSIDE_PARENT);
+        nodes.add(nodeLayoutData);
+
+        nodePositionProvider = new NodePositionProvider();
+        nextPosition = nodePositionProvider.getPosition(Optional.of(new NodeCreationEvent(startingPositionOutside)), nodeLayoutData);
+        assertThat(nextPosition).extracting(Position::getX).isEqualTo(Double.valueOf(10));
+        assertThat(nextPosition).extracting(Position::getY).isEqualTo(Double.valueOf(10));
     }
 
     @Test

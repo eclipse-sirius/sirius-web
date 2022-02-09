@@ -58,18 +58,44 @@ public class NodePositionProvider {
         } else if (!this.isAlreadyPositioned(node) || NodeType.NODE_LIST_ITEM.equals(node.getNodeType())) {
             Optional<Position> optionalStartingPosition = this.getOptionalStartingPositionFromEvent(optionalDiagramElementEvent);
             if (optionalStartingPosition.isPresent() && this.last == null && !NodeType.NODE_LIST_ITEM.equals(node.getNodeType())) {
-                // The node has been created by a tool and has a fixed position
                 Position parentPosition = node.getParent().getAbsolutePosition();
-                double xPosition = optionalStartingPosition.get().getX() - parentPosition.getX();
-                double yPosition = optionalStartingPosition.get().getY() - parentPosition.getY();
-                position = Position.at(xPosition, yPosition);
-                this.last = node;
+                double eventX = optionalStartingPosition.get().getX();
+                double eventY = optionalStartingPosition.get().getY();
+                if (this.isEventPositionInParentBounds(node.getParent(), Position.at(eventX, eventY))) {
+                    // The node has been created by a tool and has a fixed position
+                    double xPosition = eventX - parentPosition.getX();
+                    double yPosition = eventY - parentPosition.getY();
+                    position = Position.at(xPosition, yPosition);
+                    this.last = node;
+                } else {
+                    // The new node should appear in the parent, without moving the parent unless necessary
+                    position = Position.at(10, 10);
+                    this.last = node;
+                }
             } else {
                 // The node has been created along with others, by a tool or a refresh
                 position = this.getNewPosition(node);
             }
         }
         return position;
+    }
+
+    private boolean isEventPositionInParentBounds(IContainerLayoutData node, Position eventPosition) {
+        Position topLeft = node.getPosition();
+        double topLeftX = topLeft.getX();
+        double topLeftY = topLeft.getY();
+        double eventX = eventPosition.getX();
+        double eventY = eventPosition.getY();
+
+        if (topLeftX > eventX || topLeftY > eventY) {
+            return false;
+        }
+
+        Size nodeSize = node.getSize();
+        double bottomRightX = topLeftX + nodeSize.getWidth();
+        double bottomRightY = topLeftY + nodeSize.getHeight();
+
+        return (bottomRightX < topLeftX || bottomRightX > eventX) && (bottomRightY < topLeftY || bottomRightY > eventY);
     }
 
     private Optional<Position> getOptionalStartingPositionFromEvent(Optional<IDiagramEvent> optionalDiagramElementEvent) {
