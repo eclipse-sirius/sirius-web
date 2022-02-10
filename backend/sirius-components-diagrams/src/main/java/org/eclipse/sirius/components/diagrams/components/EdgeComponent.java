@@ -114,7 +114,7 @@ public class EdgeComponent implements IComponent {
                                 List<Position> routingPoints = optionalPreviousEdge.map(Edge::getRoutingPoints).orElse(List.of());
                                 Ratio sourceAnchorRelativePosition = optionalPreviousEdge.map(Edge::getSourceAnchorRelativePosition).orElse(Ratio.UNDEFINED);
                                 Ratio targetAnchorRelativePosition = optionalPreviousEdge.map(Edge::getTargetAnchorRelativePosition).orElse(Ratio.UNDEFINED);
-                                List<Element> labelChildren = this.getLabelsChildren(edgeDescription, edgeVariableManager, optionalPreviousEdge, id, routingPoints);
+                                List<Element> labelChildren = this.getLabelsChildren(edgeDescription, edgeInstanceVariableManager, optionalPreviousEdge, id, routingPoints);
                                 EdgeElementProps edgeElementProps = EdgeElementProps.newEdgeElementProps(id)
                                         .type(edgeType)
                                         .descriptionId(edgeDescription.getId())

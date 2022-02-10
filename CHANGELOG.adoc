@@ -38,6 +38,7 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/985[#985] [core] Provide a variable to detect which environment is used. The value of the variable will change to something specific for the integrating application (for example siriusWeb). This is only available for the diagram for now
 - https://github.com/eclipse-sirius/sirius-components/issues/1025[#1025] [diagram] Add a new API to perform tests of our layout algorithm
 - https://github.com/eclipse-sirius/sirius-components/issues/699[#699] [core] Provide the `IEditingContext` to find all the `RepresentationMetadata` for a specific object
+- https://github.com/eclipse-sirius/sirius-components/issues/1054[#1054] [diagram] Add missing variables to compute the label of an edge
 
 
 === New features
