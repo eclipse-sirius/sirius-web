@@ -61,7 +61,7 @@ public class EMFQueryServiceTests {
                 return List.of(EcorePackage.eINSTANCE);
             }
         };
-        IQueryService queryService = new EMFQueryService(editingContextEPackageService);
+        IQueryService queryService = new EMFQueryService(editingContextEPackageService, List.of());
 
         QueryBasedIntInput input = new QueryBasedIntInput(UUID.randomUUID(), "aql:editingContext.allContents()->size()", Map.of()); //$NON-NLS-1$
         IPayload payload = queryService.execute(editingContext, input);
@@ -80,7 +80,7 @@ public class EMFQueryServiceTests {
                 return List.of(EcorePackage.eINSTANCE);
             }
         };
-        IQueryService queryService = new EMFQueryService(editingContextEPackageService);
+        IQueryService queryService = new EMFQueryService(editingContextEPackageService, List.of());
 
         QueryBasedIntInput input = new QueryBasedIntInput(UUID.randomUUID(), "aql:editingContext.contents()->size()", Map.of()); //$NON-NLS-1$
         IPayload payload = queryService.execute(editingContext, input);
@@ -99,7 +99,7 @@ public class EMFQueryServiceTests {
             }
         };
 
-        IQueryService queryService = new EMFQueryService(editingContextEPackageService);
+        IQueryService queryService = new EMFQueryService(editingContextEPackageService, List.of());
 
         // @formatter:off
         EObject eObjectToRetrieve = editingContext.getDomain().getResourceSet()
