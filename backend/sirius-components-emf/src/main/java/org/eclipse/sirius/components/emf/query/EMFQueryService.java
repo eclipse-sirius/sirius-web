@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.OptionalInt;
+import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.sirius.components.collaborative.api.IQueryService;
@@ -34,6 +35,7 @@ import org.eclipse.sirius.components.collaborative.dto.QueryBasedStringSuccessPa
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.emf.query.api.IQueryJavaServiceProvider;
 import org.eclipse.sirius.components.emf.services.IEditingContextEPackageService;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.interpreter.Result;
@@ -51,8 +53,11 @@ public class EMFQueryService implements IQueryService {
 
     private final IEditingContextEPackageService editingContextEPackageService;
 
-    public EMFQueryService(IEditingContextEPackageService editingContextEPackageService) {
+    private final List<IQueryJavaServiceProvider> queryJavaServiceProviders;
+
+    public EMFQueryService(IEditingContextEPackageService editingContextEPackageService, List<IQueryJavaServiceProvider> queryJavaServiceProviders) {
         this.editingContextEPackageService = Objects.requireNonNull(editingContextEPackageService);
+        this.queryJavaServiceProviders = Objects.requireNonNull(queryJavaServiceProviders);
     }
 
     @Override
@@ -111,7 +116,8 @@ public class EMFQueryService implements IQueryService {
     }
 
     private Result executeQuery(IEditingContext editingContext, String query, Map<String, Object> providedVariables) {
-        List<Class<?>> classes = List.of(EditingContextServices.class);
+        List<Class<?>> classes = this.queryJavaServiceProviders.stream().flatMap(provider -> provider.getClasses(editingContext).stream()).collect(Collectors.toList());
+        classes.add(EditingContextServices.class);
         List<EPackage> ePackages = this.editingContextEPackageService.getEPackages(editingContext.getId());
 
         Map<String, Object> variables = new HashMap<>(providedVariables);
