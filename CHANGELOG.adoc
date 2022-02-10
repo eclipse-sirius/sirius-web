@@ -33,6 +33,7 @@
 
 - https://github.com/eclipse-sirius/sirius-components/issues/992[#992] [view] Let the `ViewValidator` consider statically contributed `EPackages` when validating domain types
 - https://github.com/eclipse-sirius/sirius-components/issues/991[#991] [diagram] Restore edge creation tools feedback
+- https://github.com/eclipse-sirius/sirius-components/issues/1056[#1056] [core] Fix an invalid usage of `forwardRef` in  `DiagramTreeItemContextMenuContribution`
 
 === Improvements
 
