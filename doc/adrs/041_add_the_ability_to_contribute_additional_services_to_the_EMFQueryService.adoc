@@ -1,0 +1,23 @@
+= ADR-041 - Add the ability to contribute additional services to the EMFQueryService
+
+== Context
+
+We have only one hardcoded service in the `EMFQueryService` and we want to be able to contribute new ones.
+
+== Decision
+
+We will add a new interface like this one:
+
+```
+public interface IQueryJavaServiceProvider {
+  List<Class<?>> getClasses(IEditingContext editingContext);
+}
+```
+
+We will retrieve all those providers in the `EMFQueryService` and use them to register the additional Java services in the `AQLInterpreter` used.
+
+We will keep the existing `EditingContextServices` class hardcoded.
+
+== Status
+
+Accepted

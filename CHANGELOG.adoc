@@ -6,6 +6,7 @@
 
 - [ADR-039] Provide a variable to detect the environment
 - [ADR-040] Add support for a post selection
+- [ADR-041] Add the ability to contribute additional services to the EMFQueryService
 
 === Deprecation warning
 - [core] The various DTOs related to the creation and renaming of both documents and representations will be removed from the project at some point. The only reason why we will keep them for the moment is that some of them are used to trigger some specific behavior in the `EditingContextEventProcessor`. The split of the representation metadata should help us remove those special use cases
