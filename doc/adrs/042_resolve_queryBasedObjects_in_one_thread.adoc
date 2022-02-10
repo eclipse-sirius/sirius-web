@@ -1,0 +1,17 @@
+= ADR-042 - Resolve queryBasedObjects in one thread
+
+== Context
+
+We want to be able to resolve graphQL queries containing aql expressions.
+Currently one thread is created for each sub-request, leading to performances issues. 
+
+== Decision
+
+=== Backend
+
+ObjectQueryBasedBooleanDataFetcher, ObjectQueryBasedIntDataFetcher, ObjectQueryBasedStringDataFetcher, ObjectQueryBasedObjectsDataFetcher and ObjectQueryBasedObjectDataFetcher will be deleted.
+They will be replaced by a single QueryResultDataFetcher, which will compute the result for the parent query and with the query of its children.
+
+== Status
+
+WIP
