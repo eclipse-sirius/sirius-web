@@ -19,7 +19,10 @@ import React, { forwardRef, Fragment, useContext } from 'react';
 import { TreeItemContextMenuComponentProps } from 'tree/TreeItemContextMenuContribution.types';
 
 export const DiagramTreeItemContextMenuContribution = forwardRef(
-  ({ editingContextId, item, onClose }: TreeItemContextMenuComponentProps) => {
+  (
+    { editingContextId, item, onClose }: TreeItemContextMenuComponentProps,
+    ref: React.ForwardedRef<HTMLAnchorElement>
+  ) => {
     const { httpOrigin } = useContext(ServerContext);
 
     return (
@@ -27,6 +30,7 @@ export const DiagramTreeItemContextMenuContribution = forwardRef(
         <MenuItem
           key="exportSVG"
           divider
+          ref={ref}
           component="a"
           onClick={onClose}
           href={`${httpOrigin}/api/editingcontexts/${editingContextId}/representations/${item.id}`}
