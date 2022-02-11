@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -49,7 +49,7 @@ const renameTreeItemMutation = gql`
 // The list of characters that will enable the direct edit mechanism.
 const directEditActivationValidCharacters = /[\w&é§èàùçÔØÁÛÊË"«»’”„´$¥€£\\¿?!=+-,;:%/{}[\]–#@*.]/;
 
-const ItemCollapseToggle = ({ item, depth, onExpand }) => {
+const ItemCollapseToggle = ({ item, depth, onExpand, dataTestid }) => {
   if (item.hasChildren) {
     const onClick = () => onExpand(item.id, depth);
     if (item.expanded) {
@@ -60,7 +60,7 @@ const ItemCollapseToggle = ({ item, depth, onExpand }) => {
           width="20"
           height="20"
           onClick={onClick}
-          data-testid="expand"
+          data-testid={dataTestid}
         />
       );
     } else {
@@ -71,7 +71,7 @@ const ItemCollapseToggle = ({ item, depth, onExpand }) => {
           width="20"
           height="20"
           onClick={onClick}
-          data-testid="expand"
+          data-testid={dataTestid}
         />
       );
     }
@@ -355,36 +355,37 @@ export const TreeItem = ({
   /* ref, tabindex and onFocus are used to set the React component focusabled and to set the focus to the corresponding DOM part */
   return (
     <>
-      <div
-        className={className}
-        ref={refDom}
-        tabIndex={0}
-        onFocus={onFocus}
-        onKeyDown={onBeginEditing}
-        draggable={draggable}
-        onDragStart={dragStart}
-        onDragOver={dragOver}
-        data-treeitemid={item.id}
-        data-haschildren={item.hasChildren.toString()}
-        data-depth={depth}
-        data-expanded={item.expanded.toString()}
-        data-testid={dataTestid}
-      >
-        <ItemCollapseToggle item={item} depth={depth} onExpand={onExpand} />
-        <div className={styles.content}>
-          <div
-            className={styles.imageAndLabel}
-            onClick={onClick}
-            onDoubleClick={() => item.hasChildren && onExpand(item.id, depth)}
-            title={tooltipText}
-            data-testid={item.label}
-          >
-            {image}
-            {text}
+      <div className={className}>
+        <ItemCollapseToggle item={item} depth={depth} onExpand={onExpand} dataTestid={`${item.label}-toggle`} />
+        <div
+          ref={refDom}
+          tabIndex={0}
+          onFocus={onFocus}
+          onKeyDown={onBeginEditing}
+          draggable={draggable}
+          onDragStart={dragStart}
+          onDragOver={dragOver}
+          data-treeitemid={item.id}
+          data-haschildren={item.hasChildren.toString()}
+          data-depth={depth}
+          data-expanded={item.expanded.toString()}
+          data-testid={dataTestid}
+        >
+          <div className={styles.content}>
+            <div
+              className={styles.imageAndLabel}
+              onClick={onClick}
+              onDoubleClick={() => item.hasChildren && onExpand(item.id, depth)}
+              title={tooltipText}
+              data-testid={item.label}
+            >
+              {image}
+              {text}
+            </div>
+            <IconButton className={styles.more} onClick={openContextMenu} data-testid={`${item.label}-more`}>
+              <More title="More" />
+            </IconButton>
           </div>
-          <IconButton className={styles.more} onClick={openContextMenu} data-testid={`${item.label}-more`}>
-            <More title="More" />
-          </IconButton>
         </div>
       </div>
       {children}
