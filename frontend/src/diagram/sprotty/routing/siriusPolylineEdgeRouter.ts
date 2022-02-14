@@ -20,7 +20,7 @@ import {
   translatePoint,
 } from 'sprotty';
 import { Bounds, Point } from 'sprotty-protocol';
-import { Ratio } from '../Diagram.types';
+import { Edge, Ratio } from '../Diagram.types';
 import { isSiriusRectangleAnchor } from './siriusPolylineAnchor';
 
 export class SiriusPolylineEdgeRouter extends PolylineEdgeRouter {
@@ -31,7 +31,7 @@ export class SiriusPolylineEdgeRouter extends PolylineEdgeRouter {
     };
   }
 
-  route(edge: SRoutableElement): RoutedPoint[] {
+  route(edge: Edge): RoutedPoint[] {
     const source = edge.source;
     const target = edge.target;
     if (source === undefined || target === undefined) {
@@ -44,14 +44,14 @@ export class SiriusPolylineEdgeRouter extends PolylineEdgeRouter {
     const routingPoints = edge.routingPoints.length > 0 ? edge.routingPoints : [];
     this.cleanupRoutingPoints(edge, routingPoints, false, false);
     const rpCount = routingPoints !== undefined ? routingPoints.length : 0;
+    const targetAbsolutePositionRef = this.refPosition(target.bounds, edge.targetAnchorRelativePosition);
+    const sourceAbsolutePositionRef = this.refPosition(source.bounds, edge.sourceAnchorRelativePosition);
     if (rpCount === 0) {
-      const targetAbsolutePosition = this.refPosition(target.bounds, (edge as any).targetAnchorRelativePosition);
-      const sourceAbsolutePositionRef = this.refPosition(source.bounds, (edge as any).sourceAnchorRelativePosition);
       // Use the target absolute position as start anchor reference
       sourceAnchor = this.getTranslatedAnchorFromRatioPoint(
         source,
         sourceAbsolutePositionRef,
-        targetAbsolutePosition,
+        targetAbsolutePositionRef,
         target.parent,
         edge,
         edge.sourceAnchorCorrection
@@ -59,7 +59,7 @@ export class SiriusPolylineEdgeRouter extends PolylineEdgeRouter {
       // Use the source absolute position as end anchor reference
       targetAnchor = this.getTranslatedAnchorFromRatioPoint(
         target,
-        targetAbsolutePosition,
+        targetAbsolutePositionRef,
         sourceAbsolutePositionRef,
         source.parent,
         edge,
@@ -68,10 +68,24 @@ export class SiriusPolylineEdgeRouter extends PolylineEdgeRouter {
     } else {
       // Use the first routing point as start anchor reference
       const p0 = routingPoints[0];
-      sourceAnchor = this.getTranslatedAnchor(source, p0, edge.parent, edge, edge.sourceAnchorCorrection);
+      sourceAnchor = this.getTranslatedAnchorFromRatioPoint(
+        source,
+        sourceAbsolutePositionRef,
+        p0,
+        edge.parent,
+        edge,
+        edge.sourceAnchorCorrection
+      );
       // Use the last routing point as end anchor reference
       const pn = routingPoints[rpCount - 1];
-      targetAnchor = this.getTranslatedAnchor(target, pn, edge.parent, edge, edge.targetAnchorCorrection);
+      targetAnchor = this.getTranslatedAnchorFromRatioPoint(
+        target,
+        targetAbsolutePositionRef,
+        pn,
+        edge.parent,
+        edge,
+        edge.sourceAnchorCorrection
+      );
     }
 
     const result: RoutedPoint[] = [];
@@ -111,35 +125,12 @@ export class SiriusPolylineEdgeRouter extends PolylineEdgeRouter {
       super.cleanupRoutingPoints(edge, routingPoints, updateHandles, addRoutingPoints);
     }
   }
-
-  getTranslatedAnchor(
-    connectable: SConnectableElement,
-    refPoint: Point,
-    refContainer: SParentElement,
-    edge: SRoutableElement,
-    anchorCorrection?: number
-  ): Point {
-    if (edge.sourceId === edge.targetId) {
-      const translatedRefPoint = translatePoint(refPoint, refContainer, connectable.parent);
-      let anchor;
-      const anchorComputer = this.getAnchorComputer(connectable);
-      const strokeCorrection = 0.5 * connectable.strokeWidth;
-      if (isSiriusRectangleAnchor(anchorComputer)) {
-        anchor = anchorComputer.getSelfLoopAnchor(connectable, translatedRefPoint, anchorCorrection + strokeCorrection);
-      } else {
-        anchor = anchorComputer.getAnchor(connectable, translatedRefPoint, anchorCorrection + strokeCorrection);
-      }
-      return translatePoint(anchor, connectable.parent, edge.parent);
-    }
-    return super.getTranslatedAnchor(connectable, refPoint, refContainer, edge, anchorCorrection);
-  }
-
   getTranslatedAnchorFromRatioPoint(
     connectable: SConnectableElement,
     endRefPoint: Point,
     otherEndRefPoint: Point,
     refContainer: SParentElement,
-    edge: SRoutableElement,
+    edge: Edge,
     anchorCorrection: number = 0
   ): Point {
     const translatedRefPoint = translatePoint(otherEndRefPoint, refContainer, connectable.parent);
@@ -148,12 +139,16 @@ export class SiriusPolylineEdgeRouter extends PolylineEdgeRouter {
     let anchor: Point;
     const anchorComputer = this.getAnchorComputer(connectable);
     if (isSiriusRectangleAnchor(anchorComputer)) {
-      anchor = anchorComputer.getAnchorFromRatioPoint(
-        connectable,
-        translatedRefPoint,
-        endRefPoint,
-        anchorCorrection + strokeCorrection
-      );
+      if (edge.sourceId === edge.targetId) {
+        anchor = anchorComputer.getSelfLoopAnchor(connectable, translatedRefPoint, anchorCorrection + strokeCorrection);
+      } else {
+        anchor = anchorComputer.getAnchorFromRatioPoint(
+          connectable,
+          translatedRefPoint,
+          endRefPoint,
+          anchorCorrection + strokeCorrection
+        );
+      }
     } else {
       anchor = anchorComputer.getAnchor(connectable, translatedRefPoint, anchorCorrection + strokeCorrection);
     }
