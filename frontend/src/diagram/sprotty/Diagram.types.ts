@@ -30,6 +30,16 @@ export class Node extends SNode implements WithEditableLabel {
   targetObjectLabel: string;
 }
 
+export class BorderNode extends SPort implements WithEditableLabel {
+  editableLabel?: EditableLabel & Label;
+  descriptionId: string;
+  kind: string;
+  style: INodeStyle;
+  targetObjectId: string;
+  targetObjectKind: string;
+  targetObjectLabel: string;
+}
+
 export interface INodeStyle {}
 
 export class ImageNodeStyle implements INodeStyle {
@@ -108,5 +118,3 @@ export class LabelStyle {
   strikeThrough: boolean;
   underline: boolean;
 }
-
-export class Port extends SPort {}

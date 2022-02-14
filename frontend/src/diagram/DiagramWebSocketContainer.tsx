@@ -106,7 +106,7 @@ import { Toolbar } from 'diagram/Toolbar';
 import { atLeastOneCanInvokeEdgeTool, canInvokeTool } from 'diagram/toolServices';
 import React, { useCallback, useContext, useEffect, useRef } from 'react';
 import { SelectionDialogWebSocketContainer } from 'selection/SelectionDialogWebSocketContainer';
-import { EditLabelAction, HoverFeedbackAction, SEdge, SGraph, SModelElement, SNode } from 'sprotty';
+import { EditLabelAction, HoverFeedbackAction, SEdge, SGraph, SModelElement, SNode, SPort } from 'sprotty';
 import { FitToScreenAction } from 'sprotty-protocol';
 import { v4 as uuid } from 'uuid';
 import { RepresentationComponentProps, Selection, SelectionEntry } from 'workbench/Workbench.types';
@@ -454,7 +454,9 @@ export const DiagramWebSocketContainer = ({
   const deleteElements = useCallback(
     (diagramElements: SModelElement[], deletionPolicy: GQLDeletionPolicy): void => {
       const edgeIds = diagramElements.filter((diagramElement) => diagramElement instanceof SEdge).map((elt) => elt.id);
-      const nodeIds = diagramElements.filter((diagramElement) => diagramElement instanceof SNode).map((elt) => elt.id);
+      const nodeIds = diagramElements
+        .filter((diagramElement) => diagramElement instanceof SNode || diagramElement instanceof SPort)
+        .map((elt) => elt.id);
 
       const input = {
         id: uuid(),
@@ -568,7 +570,11 @@ export const DiagramWebSocketContainer = ({
       if (selectedElement instanceof SGraph) {
         const { id, label, kind } = selectedElement as any; // (as any) to be removed when the proper type will be available
         newSelection.entries.push({ id, label, kind });
-      } else if (selectedElement instanceof SNode || selectedElement instanceof SEdge) {
+      } else if (
+        selectedElement instanceof SNode ||
+        selectedElement instanceof SPort ||
+        selectedElement instanceof SEdge
+      ) {
         const { id, kind, targetObjectId, targetObjectKind, targetObjectLabel } = selectedElement as any; // (as any) to be removed when the proper type will be available
 
         const semanticSelectionEntry: SelectionEntry = {

@@ -21,7 +21,7 @@ import {
 import { ContextualPaletteProps } from 'diagram/palette/ContextualPalette.types';
 import { ToolSection } from 'diagram/palette/tool-section/ToolSection';
 import { Tool } from 'diagram/palette/tool/Tool';
-import { Node } from 'diagram/sprotty/Diagram.types';
+import { BorderNode, Node } from 'diagram/sprotty/Diagram.types';
 import { isContextualTool } from 'diagram/toolServices';
 import { GQLSynchronizationPolicy } from 'index';
 import React from 'react';
@@ -109,7 +109,7 @@ const isSynchronized = (diagramDescription: GQLDiagramDescription, element: SMod
     elementWithTarget = elementWithTarget.parent;
   }
 
-  if (element instanceof Node) {
+  if (element instanceof Node || element instanceof BorderNode) {
     const descriptionId = element.descriptionId;
     return (
       findNodeDescription(diagramDescription.nodeDescriptions, [], descriptionId).synchronizationPolicy ===
@@ -245,7 +245,7 @@ export const ContextualPalette = ({
   });
 
   let renameEntry;
-  if (invokeLabelEdit) {
+  if (invokeLabelEdit && !(targetElement instanceof BorderNode)) {
     renameEntry = (
       <div className={classes.toolEntry}>
         <Tool tool={editTool} thumbnail={true} onClick={() => invokeLabelEdit()} />

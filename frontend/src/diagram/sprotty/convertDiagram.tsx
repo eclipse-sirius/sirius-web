@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,6 +25,7 @@ import {
 } from 'diagram/DiagramWebSocketContainer.types';
 import {
   ArrowStyle,
+  BorderNode,
   Diagram,
   Edge,
   EdgeStyle,
@@ -53,6 +54,7 @@ import {
   popupFeature,
   selectFeature,
   SLabel,
+  SParentElement,
   viewportFeature,
   withEditLabelFeature,
 } from 'sprotty';
@@ -87,13 +89,19 @@ export const convertDiagram = (gqlDiagram: GQLDiagram, httpOrigin: string, readO
   diagram.targetObjectId = targetObjectId;
   diagram.features = createFeatureSet([hoverFeedbackFeature, viewportFeature]);
 
-  nodes.map((node) => convertNode(node, httpOrigin, readOnly, autoLayout)).map((node) => diagram.add(node));
+  nodes.map((node) => convertNode(diagram, node, httpOrigin, readOnly, autoLayout));
   edges.map((edge) => convertEdge(diagram, edge, httpOrigin, readOnly));
 
   return diagram;
 };
 
-const convertNode = (gqlNode: GQLNode, httpOrigin: string, readOnly: boolean, autoLayout: boolean): Node => {
+const convertNode = (
+  parentElement: SParentElement,
+  gqlNode: GQLNode,
+  httpOrigin: string,
+  readOnly: boolean,
+  autoLayout: boolean
+): Node => {
   const {
     id,
     label,
@@ -109,15 +117,13 @@ const convertNode = (gqlNode: GQLNode, httpOrigin: string, readOnly: boolean, au
     childNodes,
   } = gqlNode;
 
-  const convertedLabel = convertLabel(label, httpOrigin, readOnly);
-  const convertedBorderNodes = (borderNodes ?? []).map((borderNode) =>
-    convertNode(borderNode, httpOrigin, readOnly, autoLayout)
-  );
-  const convertedChildNodes = (childNodes ?? []).map((childNode) =>
-    convertNode(childNode, httpOrigin, readOnly, autoLayout)
-  );
-
   const node: Node = new Node();
+  parentElement.add(node);
+
+  const convertedLabel = convertLabel(node, label, httpOrigin, readOnly);
+  (borderNodes ?? []).map((borderNode) => convertBorderNode(node, borderNode, httpOrigin, readOnly, autoLayout));
+  (childNodes ?? []).map((childNode) => convertNode(node, childNode, httpOrigin, readOnly, autoLayout));
+
   node.id = id;
   node.type = type;
   node.kind = `siriusComponents://graphical?representationType=Diagram&type=Node`;
@@ -130,8 +136,33 @@ const convertNode = (gqlNode: GQLNode, httpOrigin: string, readOnly: boolean, au
   node.position = position;
   node.size = size;
   node.features = handleNodeFeatures(gqlNode, readOnly, autoLayout);
-  node.children = [convertedLabel, ...convertedBorderNodes, ...convertedChildNodes];
 
+  return node;
+};
+const convertBorderNode = (
+  parentElement: SParentElement,
+  gqlNode: GQLNode,
+  httpOrigin: string,
+  readOnly: boolean,
+  autoLayout: boolean
+): BorderNode => {
+  const { id, descriptionId, type, targetObjectId, targetObjectKind, targetObjectLabel, size, position, style } =
+    gqlNode;
+
+  const node: BorderNode = new BorderNode();
+  parentElement.add(node);
+
+  node.id = id;
+  node.type = type.replace('node:', 'port:');
+  node.kind = `siriusComponents://graphical?representationType=Diagram&type=Node`;
+  node.descriptionId = descriptionId;
+  node.style = convertNodeStyle(style, httpOrigin);
+  node.targetObjectId = targetObjectId;
+  node.targetObjectKind = targetObjectKind;
+  node.targetObjectLabel = targetObjectLabel;
+  node.position = position;
+  node.size = size;
+  node.features = handleNodeFeatures(gqlNode, readOnly, autoLayout);
   return node;
 };
 
@@ -172,10 +203,16 @@ const handleNodeFeatures = (gqlNode: GQLNode, readOnly: boolean, autoLayout: boo
   return features;
 };
 
-const convertLabel = (gqlLabel: GQLLabel, httpOrigin: string, readOnly: boolean): Label => {
+const convertLabel = (
+  parentElement: SParentElement,
+  gqlLabel: GQLLabel,
+  httpOrigin: string,
+  readOnly: boolean
+): Label => {
   const { id, text, type, style, alignment, position, size } = gqlLabel;
 
   const label: Label = new Label();
+  parentElement.add(label);
   label.id = id;
   label.text = text;
   label.type = type;
@@ -274,10 +311,6 @@ const convertEdge = (diagram: Diagram, gqlEdge: GQLEdge, httpOrigin: string, rea
     style,
   } = gqlEdge;
 
-  const convertedBeginLabel: Label | null = beginLabel ? convertLabel(beginLabel, httpOrigin, readOnly) : null;
-  const convertedCenterLabel: Label | null = centerLabel ? convertLabel(centerLabel, httpOrigin, readOnly) : null;
-  const convertedEndLabel: Label | null = endLabel ? convertLabel(endLabel, httpOrigin, readOnly) : null;
-
   const edgeStyle = new EdgeStyle();
   edgeStyle.color = style.color;
   edgeStyle.size = style.size;
@@ -287,6 +320,15 @@ const convertEdge = (diagram: Diagram, gqlEdge: GQLEdge, httpOrigin: string, rea
 
   const edge = new Edge();
   diagram.add(edge);
+
+  if (beginLabel) {
+    convertLabel(edge, beginLabel, httpOrigin, readOnly);
+  }
+  const convertedCenterLabel: Label | null = centerLabel ? convertLabel(edge, centerLabel, httpOrigin, readOnly) : null;
+  if (endLabel) {
+    convertLabel(edge, endLabel, httpOrigin, readOnly);
+  }
+
   edge.id = id;
   edge.type = type;
   edge.kind = `siriusComponents://graphical?representationType=Diagram&type=Edge`;
@@ -300,16 +342,6 @@ const convertEdge = (diagram: Diagram, gqlEdge: GQLEdge, httpOrigin: string, rea
   edge.targetObjectKind = targetObjectKind;
   edge.targetObjectLabel = targetObjectLabel;
   edge.features = handleEdgeFeatures(readOnly);
-
-  if (convertedBeginLabel) {
-    edge.add(convertedBeginLabel);
-  }
-  if (convertedCenterLabel) {
-    edge.add(convertedCenterLabel);
-  }
-  if (convertedEndLabel) {
-    edge.add(convertedEndLabel);
-  }
 
   return edge;
 };

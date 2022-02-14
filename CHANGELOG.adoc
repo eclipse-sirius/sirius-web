@@ -9,6 +9,7 @@
 - [ADR-041] Add the ability to contribute additional services to the EMFQueryService
 - [ADR-042] Use wildcard collections instead of List<Object> in Providers
 - [ADR-043] Consider multiple objects as the input of a form
+- [ADR-044] Use border node "snap to parent container" algorithm
 
 === Deprecation warning
 - [core] The various DTOs related to the creation and renaming of both documents and representations will be removed from the project at some point. The only reason why we will keep them for the moment is that some of them are used to trigger some specific behavior in the `EditingContextEventProcessor`. The split of the representation metadata should help us remove those special use cases
@@ -52,6 +53,7 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/1054[#1054] [diagram] Add missing variables to compute the label of an edge
 - https://github.com/eclipse-sirius/sirius-components/issues/1063[#1063] [explorer] It is now possible to expand or collapse items in the explorer without selecting them by clicking directly on the expand/collapse arrow icon
 - https://github.com/eclipse-sirius/sirius-components/issues/1068[#1068] [form] Add support for displaying details on arbitrary element kinds
+- https://github.com/eclipse-sirius/sirius-components/issues/956[#956] [diagram] Add the border node concept on front-end and implement the border node snap. The user can move the border node only on the side of its parent node. The border node enters its parent node with 8px. The ELK automatic layout is adapated to have the same behavior.
 
 === New features
 
