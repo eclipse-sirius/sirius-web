@@ -13,6 +13,7 @@
 === Breaking changes
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1088[#1088] [core] Change the type of `IRepresentationDescription#id` from UUID to String. This will allow us, when we will receive an operation to perform with a given representation description identifier, to determine if this operation should be handled by the Sirius Desktop compatibility layer, the View support or by a programmatic API
+- https://github.com/eclipse-sirius/sirius-components/issues/1065[#1065] [core] The source and target edge anchor are not considered as routing points anymore. Edges of old diagrams may have unexpected behavior since new edges will have two less routing points than existing edges in old diagrams. For further explanation see ADR-051.
 
 === Dependency update
 
@@ -23,6 +24,7 @@
 === Bug fixes
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1130[#1130] [diagram] This is a part of https://github.com/eclipse-sirius/sirius-components/issues/966[#966]
+- https://github.com/eclipse-sirius/sirius-components/issues/1065[#1065] [core] With https://github.com/eclipse-sirius/sirius-components/issues/1130[#1130], they are a part of https://github.com/eclipse-sirius/sirius-components/issues/966[#966]
 
 === Improvements
 

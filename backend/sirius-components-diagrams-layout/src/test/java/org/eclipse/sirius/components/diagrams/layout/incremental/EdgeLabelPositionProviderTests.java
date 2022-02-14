@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 THALES GLOBAL SERVICES.
+ * Copyright (c) 2021, 2022 THALES GLOBAL SERVICES.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,6 @@ package org.eclipse.sirius.components.diagrams.layout.incremental;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,6 +22,7 @@ import org.eclipse.elk.alg.layered.options.LayeredMetaDataProvider;
 import org.eclipse.elk.core.data.LayoutMetaDataService;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
 import org.eclipse.sirius.components.diagrams.Position;
+import org.eclipse.sirius.components.diagrams.Ratio;
 import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.TextBounds;
 import org.eclipse.sirius.components.diagrams.TextBoundsProvider;
@@ -94,8 +94,9 @@ public class EdgeLabelPositionProviderTests {
         edgeLayoutData.setId(UUID.randomUUID().toString());
         edgeLayoutData.setSource(this.createNodeLayoutData(Position.at(0, 0), Size.of(200, 200), diagramLayoutData));
         edgeLayoutData.setTarget(this.createNodeLayoutData(Position.at(400, 0), Size.of(200, 200), diagramLayoutData));
-        List<Position> routingPoints = Arrays.asList(Position.at(200, 100), Position.at(400, 100));
-        edgeLayoutData.setRoutingPoints(routingPoints);
+        edgeLayoutData.setSourceAnchorRelativePosition(Ratio.of(0.5, 0.5));
+        edgeLayoutData.setTargetAnchorRelativePosition(Ratio.of(0.5, 0.5));
+        edgeLayoutData.setRoutingPoints(List.of());
         return edgeLayoutData;
     }
 
