@@ -31,7 +31,7 @@ export class SiriusPolylineEdgeRouter extends PolylineEdgeRouter {
     };
   }
 
-  route(edge: Edge): RoutedPoint[] {
+  override route(edge: Edge): RoutedPoint[] {
     const source = edge.source;
     const target = edge.target;
     if (source === undefined || target === undefined) {
@@ -109,11 +109,11 @@ export class SiriusPolylineEdgeRouter extends PolylineEdgeRouter {
   /**
    * When we are handling self loop edge and there are no routing points, adds two routing points that will be used by an anchor computer.
    */
-  cleanupRoutingPoints(
+  override cleanupRoutingPoints(
     edge: SRoutableElement,
     routingPoints: Point[],
-    updateHandles: boolean,
-    addRoutingPoints: boolean
+    _updateHandles: boolean,
+    _addRoutingPoints: boolean
   ): void {
     if (edge.sourceId === edge.targetId && routingPoints.length === 0) {
       const spaceBetweenRp = edge.source.bounds.width / 3;
@@ -121,8 +121,6 @@ export class SiriusPolylineEdgeRouter extends PolylineEdgeRouter {
       const p2 = { x: p1.x + spaceBetweenRp, y: p1.y };
       routingPoints.push(p1);
       routingPoints.push(p2);
-    } else {
-      super.cleanupRoutingPoints(edge, routingPoints, updateHandles, addRoutingPoints);
     }
   }
   getTranslatedAnchorBetweenTwoPoints(

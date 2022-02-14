@@ -332,3 +332,14 @@ export const arrangeAllOp = gql`
     }
   }
 `;
+
+export const updateEdgeRoutingPointsOp = gql`
+  mutation updateEdgeRoutingPoints($input: UpdateEdgeRoutingPointsInput!) {
+    updateEdgeRoutingPoints(input: $input) {
+      __typename
+      ... on ErrorPayload {
+        message
+      }
+    }
+  }
+`;

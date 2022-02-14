@@ -138,7 +138,7 @@ public class LayoutService implements ILayoutService {
         } else {
             layoutConfigurator = this.layoutConfiguratorRegistry.getDefaultLayoutConfigurator();
         }
-        this.incrementalLayoutEngine.layout(optionalDiagramElementEvent, diagramLayoutData, layoutConfigurator);
+        this.incrementalLayoutEngine.layout(optionalDiagramElementEvent, convertedDiagram, layoutConfigurator);
 
         Map<String, ILayoutData> id2LayoutData = convertedDiagram.getId2LayoutData();
         return this.incrementalLayoutedDiagramProvider.getLayoutedDiagram(newDiagram, diagramLayoutData, id2LayoutData);

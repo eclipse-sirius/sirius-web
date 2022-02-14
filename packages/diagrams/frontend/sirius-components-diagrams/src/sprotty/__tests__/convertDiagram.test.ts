@@ -16,6 +16,7 @@ import {
   connectableFeature,
   createFeatureSet,
   deletableFeature,
+  editFeature,
   fadeFeature,
   hoverFeedbackFeature,
   layoutContainerFeature,
@@ -32,7 +33,7 @@ import {
 } from '../../representation/DiagramRepresentation.types';
 import { convertDiagram } from '../convertDiagram';
 import { Diagram, Edge, ImageNodeStyle, Label, Node, RectangularNodeStyle } from '../Diagram.types';
-import { resizeFeature } from '../resize/model';
+import { resizeFeature } from '../dragAndDrop/model';
 import { siriusWebDiagram } from './siriusWebDiagram';
 
 const isImageNodeStyle = (nodeStyle: GQLINodeStyle): nodeStyle is GQLImageNodeStyle =>
@@ -135,7 +136,7 @@ test('converts a diagram', () => {
       expect((edge as any).targetId).toBe(odWebEdge.targetId);
       expect((edge as any).routingPoints).toBe(odWebEdge.routingPoints);
       expect(edge.features).toStrictEqual(
-        createFeatureSet([deletableFeature, selectFeature, fadeFeature, hoverFeedbackFeature])
+        createFeatureSet([deletableFeature, selectFeature, fadeFeature, hoverFeedbackFeature, editFeature])
       );
     }
   }

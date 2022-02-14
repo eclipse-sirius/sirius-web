@@ -13,10 +13,17 @@
 package org.eclipse.sirius.components.diagrams.layout.incremental.provider;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Ratio;
+import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
+import org.eclipse.sirius.components.diagrams.events.MoveEvent;
+import org.eclipse.sirius.components.diagrams.events.UpdateEdgeRoutingPointsEvent;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.EdgeLayoutData;
+import org.eclipse.sirius.components.diagrams.layout.incremental.data.IContainerLayoutData;
+import org.eclipse.sirius.components.diagrams.layout.incremental.data.NodeLayoutData;
 
 /**
  * Provides the routing points to apply to an Edge.
@@ -25,13 +32,40 @@ import org.eclipse.sirius.components.diagrams.layout.incremental.data.EdgeLayout
  */
 public class EdgeRoutingPointsProvider {
 
-    public List<Position> getRoutingPoints(EdgeLayoutData edge) {
+    public List<Position> getRoutingPoints(Optional<IDiagramEvent> optionalDiagramElementEvent, Optional<Position> optionalDelta, EdgeLayoutData edge) {
         List<Position> positions = List.of();
         this.supportOldDiagramWithExistingEdge(edge);
-        if (edge.getSource().equals(edge.getTarget())) {
-            positions = this.getRoutingPointsToMyself(edge.getSource().getPosition(), edge.getSource().getSize().getWidth());
+        if (optionalDiagramElementEvent.filter(UpdateEdgeRoutingPointsEvent.class::isInstance).isPresent()) {
+            UpdateEdgeRoutingPointsEvent updateEdgeRoutingPointsEvent = optionalDiagramElementEvent.map(UpdateEdgeRoutingPointsEvent.class::cast).get();
+            positions = updateEdgeRoutingPointsEvent.getRoutingPoints();
+        } else {
+            if (!edge.getRoutingPoints().isEmpty()) {
+                positions = edge.getRoutingPoints();
+            }
+
+            if (optionalDelta.isPresent() && this.isContainedInMovedElement(optionalDiagramElementEvent, edge.getSource())
+                    && this.isContainedInMovedElement(optionalDiagramElementEvent, edge.getTarget())) {
+                Position delta = optionalDelta.get();
+                positions = positions.stream().map(position -> {
+                    return Position.at(position.getX() + delta.getX(), position.getY() + delta.getY());
+                }).collect(Collectors.toList());
+            }
+
+            if (edge.getSource().equals(edge.getTarget()) && (positions.isEmpty() || this.hasBeenMoved(edge.getSource(), optionalDiagramElementEvent))) {
+                positions = this.getRoutingPointsToMyself(edge.getSource().getPosition(), edge.getSource().getSize().getWidth());
+            }
         }
         return positions;
+    }
+
+    private boolean hasBeenMoved(NodeLayoutData node, Optional<IDiagramEvent> optionalDiagramElementEvent) {
+        // @formatter:off
+        return optionalDiagramElementEvent.filter(MoveEvent.class::isInstance)
+                .map(MoveEvent.class::cast)
+                .map(MoveEvent::getNodeId)
+                .filter(node.getId()::equals)
+                .isPresent();
+        // @formatter:on
     }
 
     /**
@@ -54,4 +88,26 @@ public class EdgeRoutingPointsProvider {
         return List.of(firstRoutingPoint, secondRoutingPoint);
     }
 
+    private boolean isContainedInMovedElement(Optional<IDiagramEvent> optionalDiagramElementEvent, NodeLayoutData node) {
+        // @formatter:off
+        return optionalDiagramElementEvent.filter(MoveEvent.class::isInstance)
+                .map(MoveEvent.class::cast)
+                .map(MoveEvent::getNodeId)
+                .filter(nodeId -> this.isContainedIn(node, nodeId))
+                .isPresent();
+        // @formatter:on
+    }
+
+    private boolean isContainedIn(NodeLayoutData node, String nodeId) {
+        boolean result = false;
+        if (nodeId.equals(node.getId())) {
+            result = true;
+        } else {
+            IContainerLayoutData parent = node.getParent();
+            if (parent instanceof NodeLayoutData) {
+                result = this.isContainedIn((NodeLayoutData) parent, nodeId);
+            }
+        }
+        return result;
+    }
 }

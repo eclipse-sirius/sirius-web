@@ -21,11 +21,15 @@ import java.util.Set;
 
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Size;
+import org.eclipse.sirius.components.diagrams.events.MoveEvent;
 import org.eclipse.sirius.components.diagrams.layout.api.Bounds;
 import org.eclipse.sirius.components.diagrams.layout.api.Geometry;
 import org.eclipse.sirius.components.diagrams.layout.incremental.IncrementalLayoutEngine;
+import org.eclipse.sirius.components.diagrams.layout.incremental.data.DiagramLayoutData;
+import org.eclipse.sirius.components.diagrams.layout.incremental.data.EdgeLayoutData;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.IContainerLayoutData;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.NodeLayoutData;
+import org.eclipse.sirius.components.diagrams.layout.incremental.provider.EdgeRoutingPointsProvider;
 
 /**
  * An algorithm dedicated to solve overlaps issues. Any node in a given container might be moved to avoid overlaps,
@@ -43,15 +47,18 @@ public class OverlapsUpdater {
 
     private Set<NodeLayoutData> fixedNodes = new HashSet<>();
 
+    private final EdgeRoutingPointsProvider edgeRoutingPointsProvider = new EdgeRoutingPointsProvider();
+
     public void update(IContainerLayoutData container) {
+        Optional<DiagramLayoutData> optionalRoot = this.getRoot(container);
         Collection<NodeLayoutData[]> overlaps = this.findAllOverlaps(container);
         int iteration = 0;
         while (!overlaps.isEmpty() && iteration <= MAX_OVERLAP_ITERATION) {
             for (NodeLayoutData[] overlap : overlaps) {
                 NodeLayoutData fixedNode = overlap[0];
                 NodeLayoutData nodeToMove = overlap[1];
-                nodeToMove.setPosition(this.computeNewPosition(fixedNode, nodeToMove));
-                nodeToMove.setChanged(true);
+                Position newPosition = this.computeNewPosition(fixedNode, nodeToMove);
+                this.updateNodePosition(nodeToMove, newPosition, optionalRoot);
                 this.fixedNodes.add(nodeToMove);
             }
             overlaps = this.findAllOverlaps(container);
@@ -60,6 +67,61 @@ public class OverlapsUpdater {
         if (container instanceof NodeLayoutData) {
             this.update(((NodeLayoutData) container).getParent());
         }
+    }
+
+    /**
+     * Updates the node position and all "contained" edges routing points.
+     *
+     * @param node
+     *            The node to update
+     * @param newPosition
+     *            The new position of the node
+     * @param optionalRoot
+     *            The possible diagram layout data
+     */
+    private void updateNodePosition(NodeLayoutData node, Position newPosition, Optional<DiagramLayoutData> optionalRoot) {
+        Position previousPosition = node.getPosition();
+        node.setPosition(newPosition);
+        node.setChanged(true);
+
+        if (optionalRoot.isPresent()) {
+            DiagramLayoutData root = optionalRoot.get();
+            Position delta = Position.at(newPosition.getX() - previousPosition.getX(), newPosition.getY() - previousPosition.getY());
+            List<NodeLayoutData> movedNodes = this.getChildren(node);
+
+            for (EdgeLayoutData edgeLayoutData : root.getEdges()) {
+                if (movedNodes.contains(edgeLayoutData.getSource()) && movedNodes.contains(edgeLayoutData.getTarget())) {
+                    MoveEvent moveEvent = new MoveEvent(node.getId(), newPosition);
+                    List<Position> updatedRoutingPoints = this.edgeRoutingPointsProvider.getRoutingPoints(Optional.of(moveEvent), Optional.of(delta), edgeLayoutData);
+                    edgeLayoutData.setRoutingPoints(updatedRoutingPoints);
+                }
+            }
+        }
+    }
+
+    private Optional<DiagramLayoutData> getRoot(IContainerLayoutData container) {
+        Optional<DiagramLayoutData> optionalRoot = Optional.empty();
+
+        if (container instanceof DiagramLayoutData) {
+            optionalRoot = Optional.of((DiagramLayoutData) container);
+        }
+
+        if (container instanceof NodeLayoutData) {
+            NodeLayoutData nodeContainer = (NodeLayoutData) container;
+            optionalRoot = this.getRoot(nodeContainer.getParent());
+        }
+
+        return optionalRoot;
+    }
+
+    private List<NodeLayoutData> getChildren(NodeLayoutData nodeLayoutData) {
+        List<NodeLayoutData> allChildrenNode = new ArrayList<>(nodeLayoutData.getChildrenNodes());
+
+        for (NodeLayoutData child : nodeLayoutData.getChildrenNodes()) {
+            allChildrenNode.addAll(this.getChildren(child));
+        }
+
+        return allChildrenNode;
     }
 
     private Collection<NodeLayoutData[]> findAllOverlaps(IContainerLayoutData container) {
