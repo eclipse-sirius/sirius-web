@@ -13,7 +13,7 @@
 /** @jsx svg */
 /** @jsxRuntime classic */
 import { svg } from 'sprotty';
-import { isResizeable } from '../resize/model';
+import { isResizeable } from '../dragAndDrop/model';
 const preventRemovalOfUnusedImportByPrettier = svg !== null;
 
 /**

@@ -15,6 +15,7 @@ import {
   connectableFeature,
   createFeatureSet,
   deletableFeature,
+  editFeature,
   editLabelFeature,
   fadeFeature,
   FeatureSet,
@@ -57,7 +58,7 @@ import {
   RectangularNodeStyle,
   ParametricSVGNodeStyle,
 } from './Diagram.types';
-import { resizeFeature } from './resize/model';
+import { resizeFeature } from './dragAndDrop/model';
 
 /**
  * Convert the given diagram object to a Sprotty diagram.
@@ -354,15 +355,16 @@ const convertEdge = (diagram: Diagram, gqlEdge: GQLEdge, httpOrigin: string, rea
   edge.targetObjectLabel = targetObjectLabel;
   edge.sourceAnchorRelativePosition = sourceAnchorRelativePosition;
   edge.targetAnchorRelativePosition = targetAnchorRelativePosition;
-  edge.features = handleEdgeFeatures(readOnly);
+  edge.features = handleEdgeFeatures(edge, readOnly);
 
   return edge;
 };
 
-const handleEdgeFeatures = (readOnly: boolean): FeatureSet => {
-  if (readOnly) {
+const handleEdgeFeatures = (edge: Edge, readOnly: boolean): FeatureSet => {
+  // We will be able to remove the edge.sourceId === edge.targetId when we will be able to change the anchor relative position of an edge.
+  if (readOnly || edge.sourceId === edge.targetId) {
     return createFeatureSet([selectFeature, fadeFeature, hoverFeedbackFeature]);
   }
 
-  return createFeatureSet([deletableFeature, selectFeature, fadeFeature, hoverFeedbackFeature]);
+  return createFeatureSet([deletableFeature, selectFeature, fadeFeature, hoverFeedbackFeature, editFeature]);
 };

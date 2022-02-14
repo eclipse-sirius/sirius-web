@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,8 @@
 package org.eclipse.sirius.components.diagrams.tests;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.List;
 
 import org.assertj.core.api.AbstractAssert;
 import org.eclipse.sirius.components.diagrams.Edge;
@@ -70,6 +72,18 @@ public class EdgeAssert extends AbstractAssert<EdgeAssert, Edge> {
                     }
                 }
             }
+        }
+
+        return this;
+    }
+
+    public EdgeAssert goesThrough(List<Position> routingPoints) {
+        assertThat(this.actual.getRoutingPoints()).hasSameSizeAs(routingPoints);
+
+        for (int i = 0; i < routingPoints.size(); i++) {
+            Position routingPoint = routingPoints.get(i);
+            Position actualRoutingPoint = this.actual.getRoutingPoints().get(i);
+            assertThat(actualRoutingPoint).isEqualTo(routingPoint);
         }
 
         return this;

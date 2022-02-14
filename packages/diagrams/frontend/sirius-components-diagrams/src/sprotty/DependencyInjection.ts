@@ -19,7 +19,6 @@ import {
   configureViewerOptions,
   ConsoleLogger,
   defaultModule,
-  edgeEditModule,
   edgeLayoutModule,
   EditLabelAction,
   EditLabelActionHandler,
@@ -42,22 +41,24 @@ import {
   SGraph,
   SLabel,
   SModelElement,
-  SRoutingHandleView,
+  SRoutingHandle,
   TYPES,
   updateModule,
   viewportModule,
   ZoomMouseListener,
   zorderModule,
 } from 'sprotty';
-import { Action, Point, RequestPopupModelAction, SetPopupModelAction, UpdateModelAction } from 'sprotty-protocol';
+import { Action, Point, RequestPopupModelAction, SetPopupModelAction } from 'sprotty-protocol';
+import { siriusCommonModule } from './common/siriusCommonModule';
 import { BorderNode, Label, Node } from './Diagram.types';
 import { DiagramServer, HIDE_CONTEXTUAL_TOOLBAR_ACTION, SPROTTY_DELETE_ACTION } from './DiagramServer';
 import { SetActiveConnectorToolsAction, SetActiveToolAction } from './DiagramServer.types';
+import { siriusDragAndDropModule } from './dragAndDrop/siriusDragAndDropModule';
 import { edgeCreationFeedback } from './edgeCreationFeedback';
+import { siriusEdgeEditModule } from './edgeEdition/siriusEdgeEditModule';
 import { EditLabelUIWithInitialContent } from './EditLabelUIWithInitialContent';
 import { GraphFactory } from './GraphFactory';
 import { siriusRoutingModule } from './routing/siriusRoutingModule';
-import siriusDragAndDropModule from './siriusDragAndDropModule';
 import { DiagramView } from './views/DiagramView';
 import { EdgeView } from './views/EdgeView';
 import { IconLabelView } from './views/IconLabelView';
@@ -65,6 +66,8 @@ import { ImageView } from './views/ImageView';
 import { ParametricSVGImageView } from './views/ParametricSVGImageView';
 import { LabelView } from './views/LabelView';
 import { RectangleView } from './views/RectangleView';
+import { RoutingHandleView } from './views/RoutingHandleView';
+import { VolatileRoutingHandleView } from './views/VolatileRoutingHandleView';
 
 const labelEditUiModule = new ContainerModule((bind, _unbind, isBound) => {
   const context = { bind, isBound };
@@ -117,8 +120,8 @@ const siriusWebContainerModule = new ContainerModule((bind, unbind, isBound, reb
   configureView({ bind, isBound }, 'html', HtmlRootView);
   // @ts-ignore
   configureView({ bind, isBound }, 'pre-rendered', PreRenderedView);
-  configureView({ bind, isBound }, 'routing-point', SRoutingHandleView);
-  configureView({ bind, isBound }, 'volatile-routing-point', SRoutingHandleView);
+  configureModelElement(context, 'routing-point', SRoutingHandle, RoutingHandleView);
+  configureModelElement(context, 'volatile-routing-point', SRoutingHandle, VolatileRoutingHandleView);
 });
 
 /**
@@ -126,10 +129,11 @@ const siriusWebContainerModule = new ContainerModule((bind, unbind, isBound, reb
  * @param containerId The identifier of the container
  * @param onSelectElement The selection call back
  */
-export const createDependencyInjectionContainer = (containerId: string, getCursorOn) => {
+export const createDependencyInjectionContainer = (containerId: string) => {
   const container = new Container();
   container.load(
     defaultModule,
+    siriusCommonModule,
     boundsModule,
     selectModule,
     siriusDragAndDropModule,
@@ -141,23 +145,13 @@ export const createDependencyInjectionContainer = (containerId: string, getCurso
     updateModule,
     modelSourceModule,
     siriusRoutingModule,
-    edgeEditModule,
+    siriusEdgeEditModule,
     edgeLayoutModule,
     zorderModule,
     siriusWebContainerModule,
     labelEditModule,
     labelEditUiModule
   );
-
-  const findElementWithTarget = (element) => {
-    if (element.targetObjectId) {
-      return element;
-    } else if (element.parent) {
-      return findElementWithTarget(element.parent);
-    }
-    // Otherwise, use the diagram as element with target.
-    return element.root;
-  };
 
   class DiagramMouseListener extends MouseListener {
     diagramServer: DiagramServer;
@@ -177,8 +171,12 @@ export const createDependencyInjectionContainer = (containerId: string, getCurso
     }
 
     override mouseUp(element: SModelElement, event: MouseEvent): (Action | Promise<Action>)[] {
+      const actions: Action[] = [];
+
       if (event.button === 0) {
-        if (this.previousCoordinates?.x === event.clientX && this.previousCoordinates?.y === event.clientY) {
+        if (element instanceof SRoutingHandle) {
+          actions.push({ kind: HIDE_CONTEXTUAL_TOOLBAR_ACTION });
+        } else if (this.previousCoordinates?.x === event.clientX && this.previousCoordinates?.y === event.clientY) {
           const elementWithTarget = findModelElementWithSemanticTarget(element);
           this.diagramServer.onSelectElement(
             elementWithTarget,
@@ -242,34 +240,6 @@ export const createDependencyInjectionContainer = (containerId: string, getCurso
     }
   }
   container.bind(TYPES.MouseListener).to(DiagramZoomMouseListener).inSingletonScope();
-
-  class CursorMouseListener extends MouseListener {
-    diagramServer: any;
-    constructor(diagramServer) {
-      super();
-      this.diagramServer = diagramServer;
-    }
-
-    override mouseMove(element, event) {
-      const root = element.root;
-      const elementWithTarget = findElementWithTarget(element);
-      const expectedCursor = getCursorOn(elementWithTarget, this.diagramServer);
-      if (root.cursor !== expectedCursor) {
-        root.cursor = expectedCursor;
-        return [
-          {
-            kind: UpdateModelAction.KIND,
-            input: root,
-          },
-        ];
-      }
-
-      return [];
-    }
-  }
-  decorate(inject(TYPES.ModelSource) as ParameterDecorator, CursorMouseListener, 0);
-
-  container.bind(TYPES.MouseListener).to(CursorMouseListener).inSingletonScope();
 
   // The list of characters that will enable the direct edit mechanism.
   const directEditActivationValidCharacters = /[\w&é§èàùçÔØÁÛÊË"«»’”„´$¥€£\\¿?!=+-,;:%/{}[\]–#@*.]/;

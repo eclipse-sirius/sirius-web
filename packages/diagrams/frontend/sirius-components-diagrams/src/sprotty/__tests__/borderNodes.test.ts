@@ -16,7 +16,7 @@ import { Point } from 'sprotty-protocol/';
 import { expect, test } from 'vitest';
 import { convertDiagram } from '../convertDiagram';
 import { BorderNode } from '../Diagram.types';
-import { SiriusDragAndDropMouseListener } from '../siriusDragAndDropMouseListener';
+import { SiriusDragAndDropMouseListener } from '../dragAndDrop/siriusDragAndDropMouseListener';
 import { siriusWebDiagram } from './siriusWebDiagram';
 
 const httpOrigin = 'http://localhost';

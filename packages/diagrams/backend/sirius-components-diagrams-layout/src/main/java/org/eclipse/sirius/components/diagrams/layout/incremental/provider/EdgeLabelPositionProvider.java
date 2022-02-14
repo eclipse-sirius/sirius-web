@@ -49,7 +49,7 @@ public class EdgeLabelPositionProvider {
         Position position = Position.UNDEFINED;
         List<Position> routingPoints = edge.getRoutingPoints();
 
-        if (routingPoints.size() == 0 && !edge.getSource().equals(edge.getTarget())) {
+        if (routingPoints.size() == 0) {
             // Straight edge between two elements.
 
             Bounds sourceBounds = this.getAbsoluteBounds(edge.getSource());
@@ -68,14 +68,28 @@ public class EdgeLabelPositionProvider {
                 double y = (sourceAnchor.getY() + targetAnchor.getY()) / 2 + spacingEdgeLabel;
                 position = Position.at(x, y);
             }
-
         }
 
-        if (routingPoints.size() == 2 && edge.getSource().equals(edge.getTarget())) {
-            // Self loop edge
-            double x = ((routingPoints.get(1).getX() + routingPoints.get(1).getX()) / 2) - (label.getTextBounds().getSize().getWidth() / 2);
-            double y = routingPoints.get(0).getY() - spacingEdgeLabel - label.getTextBounds().getSize().getHeight();
-            position = Position.at(x, y);
+        if (position == Position.UNDEFINED && !routingPoints.isEmpty()) {
+            if ((routingPoints.size() & 1) == 0) {
+                int sourceRefIndex = routingPoints.size() / 2;
+                Position sourceRef = routingPoints.get(sourceRefIndex - 1);
+                Position targetRef = routingPoints.get(sourceRefIndex);
+
+                // Self loop edge
+                double x = ((sourceRef.getX() + targetRef.getX()) / 2) - (label.getTextBounds().getSize().getWidth() / 2);
+                double y = (sourceRef.getY() + targetRef.getY()) / 2 - spacingEdgeLabel - label.getTextBounds().getSize().getHeight();
+                position = Position.at(x, y);
+            }
+
+            if ((routingPoints.size() & 1) == 1) {
+                int labelPositionRefIndex = routingPoints.size() / 2;
+                Position labelPositionref = routingPoints.get(labelPositionRefIndex);
+
+                double x = labelPositionref.getX() - (label.getTextBounds().getSize().getWidth() / 2);
+                double y = labelPositionref.getY() - spacingEdgeLabel - label.getTextBounds().getSize().getHeight();
+                position = Position.at(x, y);
+            }
         }
 
         return position;
