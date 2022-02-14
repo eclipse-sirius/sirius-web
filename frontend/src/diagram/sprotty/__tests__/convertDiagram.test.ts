@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import {
   connectableFeature,
   createFeatureSet,
   deletableFeature,
+  editFeature,
   fadeFeature,
   hoverFeedbackFeature,
   layoutContainerFeature,
@@ -131,7 +132,7 @@ describe('ModelConverter', () => {
         expect((edge as any).targetId).toBe(odWebEdge.targetId);
         expect((edge as any).routingPoints).toBe(odWebEdge.routingPoints);
         expect(edge.features).toStrictEqual(
-          createFeatureSet([deletableFeature, selectFeature, fadeFeature, hoverFeedbackFeature])
+          createFeatureSet([deletableFeature, selectFeature, fadeFeature, hoverFeedbackFeature, editFeature])
         );
       }
     }

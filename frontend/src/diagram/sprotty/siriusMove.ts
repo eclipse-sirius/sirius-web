@@ -27,6 +27,13 @@ export class SiriusMoveCommand extends MoveCommand {
     edge2move: Map<SRoutableElement, ResolvedHandleMove[]>,
     attachedEdgeShifts: Map<SRoutableElement, Point>
   ) {
+    edge2move.forEach((moves, edge) => {
+      const router = this.edgeRouterRegistry!.get(edge.routerKind);
+      const before = router.takeSnapshot(edge);
+      router.applyHandleMoves(edge, moves);
+      const after = router.takeSnapshot(edge);
+      this.edgeMementi.push({ edge, before, after });
+    });
     const allEdgesToReset = new Set<SEdge>();
     this.resolvedMoves.forEach((res) => {
       var element = res.element;
