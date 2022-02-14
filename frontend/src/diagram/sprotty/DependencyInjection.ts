@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Node } from 'diagram/sprotty/Diagram.types';
+import { BorderNode, Node } from 'diagram/sprotty/Diagram.types';
 import { DiagramServer, HIDE_CONTEXTUAL_TOOLBAR_ACTION, SPROTTY_DELETE_ACTION } from 'diagram/sprotty/DiagramServer';
 import { SetActiveConnectorToolsAction, SetActiveToolAction } from 'diagram/sprotty/DiagramServer.types';
 import { edgeCreationFeedback } from 'diagram/sprotty/edgeCreationFeedback';
@@ -119,7 +119,9 @@ const siriusWebContainerModule = new ContainerModule((bind, unbind, isBound, reb
   // @ts-ignore
   configureModelElement(context, 'node:list:item', Node, ListItemView);
   // @ts-ignore
-  configureView({ bind, isBound }, 'port:square', RectangleView);
+  configureModelElement(context, 'port:rectangle', BorderNode, RectangleView);
+  // @ts-ignore
+  configureModelElement(context, 'port:image', BorderNode, ImageView);
   configureView({ bind, isBound }, 'edge:straight', EdgeView);
   // @ts-ignore
   configureModelElement(context, 'label:inside-center', SEditableLabel, LabelView);
@@ -229,9 +231,14 @@ export const createDependencyInjectionContainer = (containerId: string, getCurso
     }
   }
 
-  const findModelElementWithSemanticTarget = (element: SModelElement): SGraph | Node | SEdge | null => {
-    let graphicalElement: SGraph | Node | SEdge | null = null;
-    if (element instanceof SGraph || element instanceof Node || element instanceof SEdge) {
+  const findModelElementWithSemanticTarget = (element: SModelElement): SGraph | Node | BorderNode | SEdge | null => {
+    let graphicalElement: SGraph | Node | BorderNode | SEdge | null = null;
+    if (
+      element instanceof SGraph ||
+      element instanceof Node ||
+      element instanceof BorderNode ||
+      element instanceof SEdge
+    ) {
       graphicalElement = element;
     } else if (element instanceof SLabel) {
       graphicalElement = findModelElementWithSemanticTarget(element.parent);

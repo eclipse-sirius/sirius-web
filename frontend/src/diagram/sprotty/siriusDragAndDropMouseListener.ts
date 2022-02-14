@@ -10,9 +10,17 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { findParentByFeature, isViewport, MoveMouseListener, SModelElement, SNode } from 'sprotty';
+import { findParentByFeature, isViewport, MoveMouseListener, SModelElement, SNode, SPort } from 'sprotty';
 import { Action, Dimension, Point } from 'sprotty-protocol';
+import { Bounds } from 'sprotty-protocol/';
 import { ElementResize, ResizeAction } from './resize/siriusResize';
+import { snapToRectangle } from './utils/geometry';
+import { RectangleSide } from './utils/geometry.types';
+
+/**
+ * The offset of the port inside its container. It should be the same value as the ELK default value.
+ */
+const PORT_OFFSET = 8;
 
 /**
  * A common listener for drag and drop actions. This class allows to enter in resize or move mode.
@@ -83,10 +91,12 @@ export class SiriusDragAndDropMouseListener extends MoveMouseListener {
   /**
    * We override the snap method to prevent moving an element out of the container.
    */
-  protected snap(position: Point, element: SModelElement, isSnap: boolean): Point {
+  public snap(position: Point, element: SModelElement, isSnap: boolean): Point {
     let newPosition = super.snap(position, element, isSnap);
     if (this.isSNode(element)) {
-      return this.getValidPosition(element, newPosition);
+      return this.getValidChildPosition(element, newPosition);
+    } else if (this.isSPort(element)) {
+      return this.getValidPortPosition(element, newPosition);
     }
     return newPosition;
   }
@@ -96,7 +106,7 @@ export class SiriusDragAndDropMouseListener extends MoveMouseListener {
    * @param element the element currently moved.
    * @param position the new candidate position.
    */
-  private getValidPosition(element: SNode, position: Point): Point {
+  private getValidChildPosition(element: SNode, position: Point): Point {
     const parent = element.parent;
     if (this.isSNode(parent)) {
       const bottomRight = {
@@ -114,6 +124,64 @@ export class SiriusDragAndDropMouseListener extends MoveMouseListener {
       return newValidPosition;
     }
     return position;
+  }
+
+  /**
+   * Provides the position on the parent bounding box's border.
+   * @param sPort the sPort currently moved.
+   * @param position the new candidate position of the SPort upper left corner.
+   * @returns the real position of the port.
+   */
+  private getValidPortPosition(sPort: SPort, newSportPosition: Point): Point {
+    const parent = sPort.parent;
+
+    // by default, the SPort is not moved
+    let portPosition: Point = { x: sPort.bounds.x, y: sPort.bounds.y };
+
+    if (this.isSNode(parent)) {
+      // Determine on which side the port should be associated
+      const translationPoint: Point = {
+        x: newSportPosition.x - sPort.bounds.x,
+        y: newSportPosition.y - sPort.bounds.y,
+      };
+      const currentSPortCenter: Point = Bounds.center(sPort.bounds);
+      const candidateSPortCenter: Point = {
+        x: currentSPortCenter.x + translationPoint.x,
+        y: currentSPortCenter.y + translationPoint.y,
+      };
+
+      const { pointOnRectangleSide, side } = snapToRectangle(candidateSPortCenter, {
+        x: 0, // because newSportPosition has coordinates relative to parent
+        y: 0,
+        width: parent.bounds.width,
+        height: parent.bounds.height,
+      });
+
+      // Move the port according to the offset and the side position
+      if (side === RectangleSide.north) {
+        portPosition = {
+          x: pointOnRectangleSide.x - sPort.bounds.width / 2,
+          y: pointOnRectangleSide.y - sPort.bounds.height + PORT_OFFSET,
+        };
+      } else if (side === RectangleSide.south) {
+        portPosition = {
+          x: pointOnRectangleSide.x - sPort.bounds.width / 2,
+          y: pointOnRectangleSide.y - PORT_OFFSET,
+        };
+      } else if (side === RectangleSide.west) {
+        portPosition = {
+          x: pointOnRectangleSide.x - sPort.bounds.width + PORT_OFFSET,
+          y: pointOnRectangleSide.y - sPort.bounds.height / 2,
+        };
+      } else if (side === RectangleSide.east) {
+        portPosition = {
+          x: pointOnRectangleSide.x - PORT_OFFSET,
+          y: pointOnRectangleSide.y - sPort.bounds.height / 2,
+        };
+      }
+    }
+
+    return portPosition;
   }
 
   protected reset() {
@@ -134,6 +202,10 @@ export class SiriusDragAndDropMouseListener extends MoveMouseListener {
 
   protected isSNode(element: SModelElement): element is SNode {
     return element instanceof SNode;
+  }
+
+  protected isSPort(element: SModelElement): element is SPort {
+    return element instanceof SPort;
   }
 
   /**

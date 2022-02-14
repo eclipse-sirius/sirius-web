@@ -47,6 +47,7 @@ import {
   SelectionResult,
   SGraph,
   SNode,
+  SPort,
   ViewportResult,
 } from 'sprotty';
 import {
@@ -430,7 +431,7 @@ export class DiagramServer extends ModelSource {
           };
 
           let edgeStartPosition = { x: 0, y: 0 };
-          if (element instanceof SNode) {
+          if (element instanceof SNode || element instanceof SPort) {
             edgeStartPosition = {
               x: (lastPositionOnDiagram.x - scroll.x) * zoom,
               y: (lastPositionOnDiagram.y - scroll.y) * zoom,

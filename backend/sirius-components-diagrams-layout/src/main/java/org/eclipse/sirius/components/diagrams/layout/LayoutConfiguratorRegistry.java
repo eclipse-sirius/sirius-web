@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -67,6 +67,11 @@ public class LayoutConfiguratorRegistry {
      */
     private static final int MIN_WIDTH_CONSTRAINT = 150;
 
+    /**
+     * The default value for port border offset.
+     */
+    private static final double DEFAULT_PORT_BORDER_OFFSET = -8;
+
     private final List<IDiagramLayoutConfiguratorProvider> customLayoutProviders;
 
     public LayoutConfiguratorRegistry(List<IDiagramLayoutConfiguratorProvider> customLayoutProviders) {
@@ -90,7 +95,8 @@ public class LayoutConfiguratorRegistry {
                 .setProperty(CoreOptions.NODE_SIZE_OPTIONS, EnumSet.of(SizeOptions.ASYMMETRICAL))
                 .setProperty(CoreOptions.NODE_SIZE_MINIMUM, new KVector(LayoutOptionValues.MIN_WIDTH_CONSTRAINT, LayoutOptionValues.MIN_HEIGHT_CONSTRAINT))
                 .setProperty(CoreOptions.NODE_LABELS_PLACEMENT, NodeLabelPlacement.insideTopCenter())
-                .setProperty(CoreOptions.NODE_SIZE_MINIMUM, new KVector(MIN_WIDTH_CONSTRAINT, MIN_HEIGHT_CONSTRAINT));
+                .setProperty(CoreOptions.NODE_SIZE_MINIMUM, new KVector(MIN_WIDTH_CONSTRAINT, MIN_HEIGHT_CONSTRAINT))
+                .setProperty(CoreOptions.PORT_BORDER_OFFSET, DEFAULT_PORT_BORDER_OFFSET);
 
         configurator.configureByType(NodeType.NODE_LIST)
                 .setProperty(CoreOptions.ALGORITHM, FixedLayouterOptions.ALGORITHM_ID)
@@ -103,7 +109,8 @@ public class LayoutConfiguratorRegistry {
 
         configurator.configureByType(NodeType.NODE_IMAGE)
                 .setProperty(CoreOptions.NODE_SIZE_CONSTRAINTS, EnumSet.of(SizeConstraint.MINIMUM_SIZE, SizeConstraint.PORT_LABELS, SizeConstraint.PORTS))
-                .setProperty(CoreOptions.NODE_LABELS_PLACEMENT, NodeLabelPlacement.outsideTopCenter());
+                .setProperty(CoreOptions.NODE_LABELS_PLACEMENT, NodeLabelPlacement.outsideTopCenter())
+                .setProperty(CoreOptions.PORT_BORDER_OFFSET, DEFAULT_PORT_BORDER_OFFSET);
 
         // This image type does not match any diagram item. We add it to define the image size as constraint for the node image parent.
         configurator.configureByType(ELKDiagramConverter.DEFAULT_IMAGE_TYPE)

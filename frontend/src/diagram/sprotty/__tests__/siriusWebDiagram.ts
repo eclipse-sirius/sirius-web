@@ -134,8 +134,8 @@ export const siriusWebDiagram: GQLDiagram = {
         y: 64.34101572060084,
       },
       size: {
-        width: 286,
-        height: 181.6982421875,
+        width: 280,
+        height: 180,
       },
       borderNodes: [
         {
@@ -181,8 +181,8 @@ export const siriusWebDiagram: GQLDiagram = {
             y: 139.6982421875,
           },
           size: {
-            width: 30,
-            height: 30,
+            width: 60,
+            height: 40,
           },
           borderNodes: [],
           childNodes: [],

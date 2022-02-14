@@ -1,0 +1,30 @@
+= ADR-44 - Use border node "snap to parent container" algorithm
+
+== Context
+
+On the front end, consider a diagram containing nodes with border nodes.
+
+The user has the abilty to move the border nodes on a side of the parent rectangle node or onto another side.
+
+Until now, the border node is considered as any node and consequently the user has the ability to move the border node inside the parent node and only inside.
+
+== Decision
+
+A "snap to parent rectangle" is added.
+It is used by the front end code.
+
+Now, when the user moves the border node, it is moved only on the border of the parent node, outside the parent node.
+
+An 8px offset is used to have the border node entering the parent node.
+
+=== Algorithm details
+
+When the user is dragging the border node, to determine the side on which the border node will snap, the algorithm calculates the distance between the center of the dragged border node to each side segment of the parent node. The snap is done on the closest parent node side. 
+
+Then the offset is applied on the border node to have the border node entering the parent node
+
+== Status
+
+WIP
+
+== Consequences
