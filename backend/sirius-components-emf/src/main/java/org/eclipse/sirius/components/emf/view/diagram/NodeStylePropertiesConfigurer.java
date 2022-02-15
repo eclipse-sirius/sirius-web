@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -42,7 +42,6 @@ import org.eclipse.sirius.components.forms.description.SelectDescription;
 import org.eclipse.sirius.components.forms.description.TextfieldDescription;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
-import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -85,10 +84,6 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
         UUID formDescriptionId = UUID.nameUUIDFromBytes("conditionalnodestyle".getBytes()); //$NON-NLS-1$
 
         // @formatter:off
-        Function<VariableManager, String> targetObjectIdProvider = variableManager -> variableManager.get(VariableManager.SELF, NodeStyle.class)
-                                                                                                     .map(obj -> EcoreUtil.getURI(obj).toString())
-                                                                                                     .orElse(null);
-
         List<AbstractControlDescription> controls = List.of(
                 this.createTextField("nodestyle.sizeExpression", "Size Expression", //$NON-NLS-1$ //$NON-NLS-2$
                         style -> ((NodeStyle) style).getSizeComputationExpression(),
@@ -163,19 +158,21 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 this.createShapeSelectionField(ViewPackage.Literals.NODE_STYLE__SHAPE));
 
         GroupDescription groupDescription = this.createSimpleGroupDescription(controls);
+
+        Predicate<VariableManager> canCreatePagePredicate = variableManager ->  variableManager.get(VariableManager.SELF, Object.class)
+                .filter(self -> self instanceof List<?>)
+                .map(self -> (List<?>) self)
+                .flatMap(self -> self.stream().findFirst())
+                .filter(self -> self instanceof ConditionalNodeStyle)
+                .isPresent();
+
         return FormDescription.newFormDescription(formDescriptionId)
                 .label("Conditional Node Style") //$NON-NLS-1$
                 .labelProvider(variableManager -> variableManager.get(VariableManager.SELF, ConditionalNodeStyle.class).map(ConditionalNodeStyle::getCondition).orElse(UNNAMED))
-                .canCreatePredicate(variableManager -> {
-                    var optionalClass = variableManager.get(IRepresentationDescription.CLASS, Object.class);
-                    return optionalClass.isPresent() && optionalClass.get().equals(ConditionalNodeStyle.class);
-                })
+                .canCreatePredicate(variableManager -> true)
                 .idProvider(new GetOrCreateRandomIdProvider())
-                .targetObjectIdProvider(targetObjectIdProvider)
-                .pageDescriptions(List.of(this.createSimplePageDescription(groupDescription,  variableManager -> {
-                    Optional<?> optionalValue = variableManager.get(VariableManager.SELF, ConditionalNodeStyle.class);
-                    return optionalValue.isPresent();
-                })))
+                .targetObjectIdProvider(this.getTargetObjectIdProvider())
+                .pageDescriptions(List.of(this.createSimplePageDescription(groupDescription,  canCreatePagePredicate)))
                 .groupDescriptions(List.of(groupDescription))
                 .build();
         // @formatter:on
@@ -185,10 +182,6 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
         UUID formDescriptionId = UUID.nameUUIDFromBytes("nodestyle".getBytes()); //$NON-NLS-1$
 
         // @formatter:off
-        Function<VariableManager, String> targetObjectIdProvider = variableManager -> variableManager.get(VariableManager.SELF, NodeStyle.class)
-                                                                                                     .map(obj -> EcoreUtil.getURI(obj).toString())
-                                                                                                     .orElse(null);
-
         List<AbstractControlDescription> controls = List.of(
                 this.createTextField("nodestyle.sizeExpression", "Size Expression", //$NON-NLS-1$ //$NON-NLS-2$
                         style -> ((NodeStyle) style).getSizeComputationExpression(),
@@ -259,44 +252,59 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 this.createShapeSelectionField(ViewPackage.Literals.NODE_STYLE__SHAPE));
 
         GroupDescription groupDescription = this.createSimpleGroupDescription(controls);
+
+        Predicate<VariableManager> canCreatePagePredicate = variableManager ->  variableManager.get(VariableManager.SELF, Object.class)
+                    .filter(self -> self instanceof List<?>)
+                    .map(self -> (List<?>) self)
+                    .flatMap(self -> self.stream().findFirst())
+                    .filter(self -> self instanceof NodeStyle && !(self instanceof ConditionalNodeStyle))
+                    .isPresent();
+
         return FormDescription.newFormDescription(formDescriptionId)
                 .label("Node Style") //$NON-NLS-1$
-                .labelProvider(variableManager -> variableManager.get(VariableManager.SELF, NodeStyle.class).map(style -> style.getColor()).orElse(UNNAMED))
-                .canCreatePredicate(variableManager -> {
-                    var optionalClass = variableManager.get(IRepresentationDescription.CLASS, Object.class);
-                    return optionalClass.isPresent() && optionalClass.get().equals(NodeStyle.class);
-                })
+                .labelProvider(variableManager -> variableManager.get(VariableManager.SELF, NodeStyle.class).map(NodeStyle::getColor).orElse(UNNAMED))
+                .canCreatePredicate(variableManager -> true)
                 .idProvider(new GetOrCreateRandomIdProvider())
-                .targetObjectIdProvider(targetObjectIdProvider)
-                .pageDescriptions(List.of(this.createSimplePageDescription(groupDescription, variableManager -> {
-                    Optional<?> optionalValue = variableManager.get(VariableManager.SELF, NodeStyle.class);
-                    return optionalValue.isPresent() && !(optionalValue.get() instanceof ConditionalNodeStyle);
-                })))
+                .targetObjectIdProvider(this.getTargetObjectIdProvider())
+                .pageDescriptions(List.of(this.createSimplePageDescription(groupDescription, canCreatePagePredicate)))
                 .groupDescriptions(List.of(groupDescription))
                 .build();
+        // @formatter:on
+    }
+
+    private Function<VariableManager, String> getTargetObjectIdProvider() {
+        // @formatter:off
+        return variableManager -> variableManager.get(VariableManager.SELF, Object.class)
+                .filter(self -> self instanceof List<?>)
+                .map(self -> (List<?>) self)
+                .flatMap(self -> self.stream().findFirst())
+                .filter(EObject.class::isInstance)
+                .map(EObject.class::cast)
+                .map(obj -> EcoreUtil.getURI(obj).toString())
+                .orElse(null);
         // @formatter:on
     }
 
     private PageDescription createSimplePageDescription(GroupDescription groupDescription, Predicate<VariableManager> canCreatePredicate) {
         // @formatter:off
         return PageDescription.newPageDescription("page") //$NON-NLS-1$
-                              .idProvider(variableManager -> "page") //$NON-NLS-1$
-                              .labelProvider(variableManager -> "Properties") //$NON-NLS-1$
-                              .semanticElementsProvider(this.semanticElementsProvider)
-                              .canCreatePredicate(canCreatePredicate)
-                              .groupDescriptions(List.of(groupDescription))
-                              .build();
+                .idProvider(variableManager -> "page") //$NON-NLS-1$
+                .labelProvider(variableManager -> "Properties") //$NON-NLS-1$
+                .semanticElementsProvider(this.semanticElementsProvider)
+                .canCreatePredicate(canCreatePredicate)
+                .groupDescriptions(List.of(groupDescription))
+                .build();
         // @formatter:on
     }
 
     private GroupDescription createSimpleGroupDescription(List<AbstractControlDescription> controls) {
         // @formatter:off
         return GroupDescription.newGroupDescription("group") //$NON-NLS-1$
-                               .idProvider(variableManager -> "group") //$NON-NLS-1$
-                               .labelProvider(variableManager -> "General") //$NON-NLS-1$
-                               .semanticElementsProvider(this.semanticElementsProvider)
-                               .controlDescriptions(controls)
-                               .build();
+                .idProvider(variableManager -> "group") //$NON-NLS-1$
+                .labelProvider(variableManager -> "General") //$NON-NLS-1$
+                .semanticElementsProvider(this.semanticElementsProvider)
+                .controlDescriptions(controls)
+                .build();
         // @formatter:on
     }
 
@@ -314,14 +322,14 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
 
         // @formatter:off
         return TextfieldDescription.newTextfieldDescription(id)
-                                   .idProvider(variableManager -> id)
-                                   .labelProvider(variableManager -> title)
-                                   .valueProvider(valueProvider)
-                                   .newValueHandler(newValueHandler)
-                                   .diagnosticsProvider(this.getDiagnosticsProvider(feature))
-                                   .kindProvider(this::kindProvider)
-                                   .messageProvider(this::messageProvider)
-                                   .build();
+                .idProvider(variableManager -> id)
+                .labelProvider(variableManager -> title)
+                .valueProvider(valueProvider)
+                .newValueHandler(newValueHandler)
+                .diagnosticsProvider(this.getDiagnosticsProvider(feature))
+                .kindProvider(this::kindProvider)
+                .messageProvider(this::messageProvider)
+                .build();
         // @formatter:on
     }
 
@@ -338,38 +346,45 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
         };
         // @formatter:off
         return CheckboxDescription.newCheckboxDescription(id)
-                                   .idProvider(variableManager -> id)
-                                   .labelProvider(variableManager -> title)
-                                   .valueProvider(valueProvider)
-                                   .newValueHandler(newValueHandler)
-                                   .diagnosticsProvider(this.getDiagnosticsProvider(feature))
-                                   .kindProvider(this::kindProvider)
-                                   .messageProvider(this::messageProvider)
-                                   .build();
+                .idProvider(variableManager -> id)
+                .labelProvider(variableManager -> title)
+                .valueProvider(valueProvider)
+                .newValueHandler(newValueHandler)
+                .diagnosticsProvider(this.getDiagnosticsProvider(feature))
+                .kindProvider(this::kindProvider)
+                .messageProvider(this::messageProvider)
+                .build();
         // @formatter:on
     }
 
     private SelectDescription createShapeSelectionField(Object feature) {
         // @formatter:off
         return SelectDescription.newSelectDescription("nodestyle.shapeSelector") //$NON-NLS-1$
-                                .idProvider(variableManager -> "nodestyle.shapeSelector") //$NON-NLS-1$
-                                .labelProvider(variableManager -> "Shape") //$NON-NLS-1$
-                                .valueProvider(variableManager -> variableManager.get(VariableManager.SELF, NodeStyle.class).map(NodeStyle::getShape).orElse(EMPTY))
-                                .optionsProvider(variableManager -> {
-                                    Optional<IEditingContext> optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
-                                    if (optionalEditingContext.isPresent()) {
-                                        return this.customImageSearchService.getAvailableImages(optionalEditingContext.get().getId()).stream().sorted(Comparator.comparing(CustomImage::getLabel)).collect(Collectors.toList());
-                                    } else {
-                                        return List.of();
-                                    }
-                                })
-                                .optionIdProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, CustomImage.class).map(CustomImage::getId).map(UUID::toString).orElse(EMPTY))
-                                .optionLabelProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, CustomImage.class).map(CustomImage::getLabel).orElse(EMPTY))
-                                .newValueHandler(this.getNewShapeValueHandler())
-                                .diagnosticsProvider(this.getDiagnosticsProvider(feature))
-                                .kindProvider(this::kindProvider)
-                                .messageProvider(this::messageProvider)
-                                .build();
+                .idProvider(variableManager -> "nodestyle.shapeSelector") //$NON-NLS-1$
+                .labelProvider(variableManager -> "Shape") //$NON-NLS-1$
+                .valueProvider(variableManager -> variableManager.get(VariableManager.SELF, NodeStyle.class).map(NodeStyle::getShape).orElse(EMPTY))
+                .optionsProvider(variableManager -> {
+                    Optional<IEditingContext> optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
+                    if (optionalEditingContext.isPresent()) {
+                        return this.customImageSearchService.getAvailableImages(optionalEditingContext.get().getId()).stream()
+                                .sorted(Comparator.comparing(CustomImage::getLabel))
+                                .collect(Collectors.toList());
+                    } else {
+                        return List.of();
+                    }
+                })
+                .optionIdProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, CustomImage.class)
+                        .map(CustomImage::getId)
+                        .map(UUID::toString)
+                        .orElse(EMPTY))
+                .optionLabelProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, CustomImage.class)
+                        .map(CustomImage::getLabel)
+                        .orElse(EMPTY))
+                .newValueHandler(this.getNewShapeValueHandler())
+                .diagnosticsProvider(this.getDiagnosticsProvider(feature))
+                .kindProvider(this::kindProvider)
+                .messageProvider(this::messageProvider)
+                .build();
         // @formatter:on
     }
 

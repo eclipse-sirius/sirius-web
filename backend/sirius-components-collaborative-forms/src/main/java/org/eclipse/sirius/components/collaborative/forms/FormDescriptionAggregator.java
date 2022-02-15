@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,41 +26,48 @@ import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider
 import org.eclipse.sirius.components.representations.VariableManager;
 
 /**
- * Aggregates all pages that can be created from the provided {@link FormDescription}s, according to the given object
- * context.
+ * Aggregates all pages that can be created from the provided {@link FormDescription}s, according to all the given
+ * objects.
  *
  * @author fbarbin
  */
 public class FormDescriptionAggregator {
 
-    public Optional<FormDescription> aggregate(List<FormDescription> formDescriptions, Object object, IObjectService objectService) {
+    public Optional<FormDescription> aggregate(List<FormDescription> formDescriptions, List<Object> objects, IObjectService objectService) {
         VariableManager pageVariableManager = new VariableManager();
-        pageVariableManager.put(VariableManager.SELF, object);
+        pageVariableManager.put(VariableManager.SELF, objects);
 
         // @formatter:off
         List<PageDescription> pageDescriptions = formDescriptions.stream()
                 .flatMap(formDescription -> formDescription.getPageDescriptions().stream())
                 .filter(pageDescription -> pageDescription.getCanCreatePredicate().test(pageVariableManager))
                 .collect(Collectors.toList());
+        // @formatter:on
 
         if (pageDescriptions.isEmpty()) {
             return Optional.empty();
         }
 
+        // @formatter:off
         List<GroupDescription> groupDescriptions = pageDescriptions.stream()
                 .flatMap(pageDescription -> pageDescription.getGroupDescriptions().stream())
                 .collect(Collectors.toUnmodifiableList());
 
+        Function<VariableManager, String> labelProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
+                .filter(self -> self instanceof List<?>)
+                .map(self -> (List<?>) self)
+                .flatMap(self -> self.stream().findFirst())
+                .map(objectService::getFullLabel)
+                .orElse("Properties"); //$NON-NLS-1$
+        // @formatter:on
 
-        Function<VariableManager, String> labelProvider = variableManager -> {
-            return Optional.ofNullable(variableManager.getVariables().get(VariableManager.SELF))
-                    .map(objectService::getFullLabel)
-                    .orElse("Properties"); //$NON-NLS-1$
-        };
-
-        Function<VariableManager, String> targetObjectIdProvider = variableManager -> {
-            return Optional.ofNullable(object).map(objectService::getId).orElse(null);
-        };
+        // @formatter:off
+        Function<VariableManager, String> targetObjectIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
+                .filter(self -> self instanceof List<?>)
+                .map(self -> (List<?>) self)
+                .flatMap(self -> self.stream().findFirst())
+                .map(objectService::getId)
+                .orElse(null);
 
         return Optional.of(FormDescription.newFormDescription(UUID.randomUUID())
                 .label("Aggregated form description") //$NON-NLS-1$

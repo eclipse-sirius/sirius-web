@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.forms.components;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,11 +47,28 @@ public class FormComponent implements IComponent {
         String targetObjectId = formDescription.getTargetObjectIdProvider().apply(variableManager);
         List<PageDescription> pageDescriptions = formDescription.getPageDescriptions();
 
+        List<Object> candidates = new ArrayList<>();
+
+        var optionalSelf = variableManager.get(VariableManager.SELF, Object.class);
+        if (optionalSelf.isPresent()) {
+            Object self = optionalSelf.get();
+            if (self instanceof Collection<?>) {
+                Collection<?> objects = (Collection<?>) self;
+                candidates.addAll(objects);
+            } else {
+                candidates.add(self);
+            }
+        }
+
         // @formatter:off
-        List<Element> children = pageDescriptions.stream().map(pageDescription -> {
-            PageComponentProps pageComponentProps = new PageComponentProps(variableManager, pageDescription);
+        List<Element> children = candidates.stream().map(candidate -> {
+            VariableManager childVariableManager = variableManager.createChild();
+            childVariableManager.put(VariableManager.SELF, candidate);
+            return childVariableManager;
+        }).flatMap(childVariableManager -> pageDescriptions.stream().map(pageDescription -> {
+            PageComponentProps pageComponentProps = new PageComponentProps(childVariableManager, pageDescription);
             return new Element(PageComponent.class, pageComponentProps);
-        }).collect(Collectors.toList());
+        })).collect(Collectors.toList());
 
         FormElementProps formElementProps = FormElementProps.newFormElementProps(id)
                 .label(label)

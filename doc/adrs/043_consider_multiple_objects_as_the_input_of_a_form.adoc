@@ -1,0 +1,43 @@
+= ADR-043 - Consider multiple objects as the input of a form
+
+== Context
+
+The selection in the frontend can be composed of multiple objects since the introduction of the multi-selection API.
+As a result, the details view had been hardcoded to display the properties of the first semantic object selected.
+Since we need to display the properties of additional kinds of objects, we will allow the details view to show the details of non-semantic objects.
+There are no good reason to hardcode the fact that we can only see the properties of the first element of the selection.
+
+There are lot of valid use cases in which we may want to see the properties of all the elements selected.
+
+
+== Decision
+
+We will send the identifier of all the entries of the selection to the backend in order to subscribe to the properties event.
+As such, the GraphQL schema of the input of the `PropertiesEventInput` to require a collection of object identifiers.
+
+```
+input PropertiesEventInput {
+   id: ID!
+   editingContextId: ID!
+   objectIds: [ID!]!
+ }
+```
+
+The backend will then retrieve the objects matching those identifiers and populate accordingly the variable manager.
+The main consequence of this change is that the variable `self` of the root variable manager of the form rendering will now be a collection.
+In order to remove the need to consider either a single object or a collection for all the providers impacted, it will always be a collection even if it contains only a single object.
+As a result, the variable `self` of the `FormDescription#idProvider`, `FormDescription#targetIdProvider` and `FormDescription#labelProvider` will be a list of objects.
+
+This will break existing form descriptions which may still expect a single object.
+
+The behavior of the for renderer will be updated and any page supporting any of the objects in the `self` variable will be used.
+As such, if there are two objects in the input and if a page is available for each of them, both pages will be displayed.
+
+
+== Status
+
+WIP
+
+== Consequences
+
+Existing form descriptions will need to be updated to handle the change of the type of the root variable `self`.

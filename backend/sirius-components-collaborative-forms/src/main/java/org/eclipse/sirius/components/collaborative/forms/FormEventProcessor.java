@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -157,7 +157,7 @@ public class FormEventProcessor implements IFormEventProcessor {
 
     private Form refreshForm() {
         VariableManager variableManager = new VariableManager();
-        variableManager.put(VariableManager.SELF, this.formCreationParameters.getObject());
+        variableManager.put(VariableManager.SELF, this.formCreationParameters.getObjects());
         variableManager.put(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, this.formCreationParameters.getId());
         variableManager.put(IEditingContext.EDITING_CONTEXT, this.formCreationParameters.getEditingContext());
 

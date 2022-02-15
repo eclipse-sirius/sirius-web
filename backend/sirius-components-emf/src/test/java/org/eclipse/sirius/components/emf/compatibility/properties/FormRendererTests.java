@@ -225,7 +225,7 @@ public class FormRendererTests {
 
         // Test FormRenderer
         VariableManager variableManager = new VariableManager();
-        variableManager.put(VariableManager.SELF, EcorePackage.eINSTANCE);
+        variableManager.put(VariableManager.SELF, List.of(EcorePackage.eINSTANCE));
 
         FormRenderer formRenderer = new FormRenderer();
         FormComponentProps props = new FormComponentProps(variableManager, description);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,7 +22,7 @@ import {
   subscribersUpdatedEventPayloadFragment,
   widgetSubscriptionsUpdatedEventPayloadFragment,
 } from 'form/FormEventFragments';
-import { GQLPropertiesEventSubscription } from 'form/FormEventFragments.types';
+import { GQLPropertiesEventSubscription, GQLPropertiesEventVariables } from 'form/FormEventFragments.types';
 import gql from 'graphql-tag';
 import { Properties } from 'properties/Properties';
 import { PropertiesWebSocketContainerProps } from 'properties/PropertiesWebSocketContainer.types';
@@ -86,10 +86,10 @@ export const PropertiesWebSocketContainer = ({
    * Displays an other form if the selection indicates that we should display another properties view.
    */
   useEffect(() => {
-    if (selection.entries.length > 0 && selection.entries[0].id !== currentSelection?.id) {
+    if (selection.entries.length > 0 && selection !== currentSelection) {
       const switchSelectionEvent: SwitchSelectionEvent = {
         type: 'SWITCH_SELECTION',
-        selection: selection.entries[0],
+        selection: selection,
       };
       dispatch(switchSelectionEvent);
     } else if (selection.entries.length === 0) {
@@ -101,28 +101,31 @@ export const PropertiesWebSocketContainer = ({
     }
   }, [currentSelection, selection, dispatch]);
 
-  const { error } = useSubscription<GQLPropertiesEventSubscription>(propertiesEventSubscription, {
-    variables: {
-      input: {
-        id,
-        editingContextId,
-        objectId: currentSelection?.id,
+  const { error } = useSubscription<GQLPropertiesEventSubscription, GQLPropertiesEventVariables>(
+    propertiesEventSubscription,
+    {
+      variables: {
+        input: {
+          id,
+          editingContextId,
+          objectIds: currentSelection?.entries.map((entry) => entry.id),
+        },
       },
-    },
-    fetchPolicy: 'no-cache',
-    skip: propertiesWebSocketContainer === 'empty' || propertiesWebSocketContainer === 'unsupportedSelection',
-    onSubscriptionData: ({ subscriptionData }) => {
-      const handleDataEvent: HandleSubscriptionResultEvent = {
-        type: 'HANDLE_SUBSCRIPTION_RESULT',
-        result: subscriptionData,
-      };
-      dispatch(handleDataEvent);
-    },
-    onSubscriptionComplete: () => {
-      const completeEvent: HandleCompleteEvent = { type: 'HANDLE_COMPLETE' };
-      dispatch(completeEvent);
-    },
-  });
+      fetchPolicy: 'no-cache',
+      skip: propertiesWebSocketContainer === 'empty' || propertiesWebSocketContainer === 'unsupportedSelection',
+      onSubscriptionData: ({ subscriptionData }) => {
+        const handleDataEvent: HandleSubscriptionResultEvent = {
+          type: 'HANDLE_SUBSCRIPTION_RESULT',
+          result: subscriptionData,
+        };
+        dispatch(handleDataEvent);
+      },
+      onSubscriptionComplete: () => {
+        const completeEvent: HandleCompleteEvent = { type: 'HANDLE_COMPLETE' };
+        dispatch(completeEvent);
+      },
+    }
+  );
 
   useEffect(() => {
     if (error) {
@@ -132,8 +135,12 @@ export const PropertiesWebSocketContainer = ({
     }
   }, [error, dispatch]);
 
-  let content = null;
-  if (!selection || propertiesWebSocketContainer === 'unsupportedSelection') {
+  let content: JSX.Element | null = null;
+  if (
+    propertiesWebSocketContainer === 'empty' ||
+    propertiesWebSocketContainer === 'unsupportedSelection' ||
+    propertiesWebSocketContainer === 'complete'
+  ) {
     content = (
       <div className={classes.idle}>
         <Typography variant="subtitle2">No object selected</Typography>
