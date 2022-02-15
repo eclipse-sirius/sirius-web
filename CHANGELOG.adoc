@@ -8,6 +8,7 @@
 - [ADR-040] Add support for a post selection
 - [ADR-041] Add the ability to contribute additional services to the EMFQueryService
 - [ADR-042] Use wildcard collections instead of List<Object> in Providers
+- [ADR-043] Consider multiple objects as the input of a form
 
 === Deprecation warning
 - [core] The various DTOs related to the creation and renaming of both documents and representations will be removed from the project at some point. The only reason why we will keep them for the moment is that some of them are used to trigger some specific behavior in the `EditingContextEventProcessor`. The split of the representation metadata should help us remove those special use cases
@@ -25,7 +26,9 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/1019[#1019] [core] Services now have access to the context of the request triggering their execution. Consumer of Sirius Components will have to provide the `RequestAttributes`` in the `RequestContextHolder`` to make the `EditingContextEventProcessor`` work. It should be very easy for those in a Spring environment, but it is not automatic for those outside of a Spring environment
 - https://github.com/eclipse-sirius/sirius-components/issues/699[#699] [core] The `IRepresentationImageProvider` will now use the `kind` of the representation instead of the instance to compute the image. It will allow users to ask for the image of a representation with either its instance or its metadata
 - https://github.com/eclipse-sirius/sirius-components/issues/699[#699] [core] Add the `targetObjectId` to the `RepresentationMetadata`
-- https://github.com/eclipse-sirius/sirius-components/issues/1045[#1045] [core] Providers will now return List<?> instead of List<Object>. This makes it possible for applications to reuse existing services to implement providers without making useless copies of lists.
+- https://github.com/eclipse-sirius/sirius-components/issues/1045[#1045] [core] Providers will now return List<?> instead of List<Object>. This makes it possible for applications to reuse existing services to implement providers without making useless copies of lists
+- https://github.com/eclipse-sirius/sirius-components/issues/1068[#1068] [form] The form representation is now supporting multiple elements as an input
+- https://github.com/eclipse-sirius/sirius-components/issues/1068[#1068] [workbench] The integration of the details view in the workbench is not limited to semantic objects with a kind starting with `siriusComponents://semantic`. Any object can be used as the input of the details view and we will now provide the identifier of all the objects in the selection. This may include graphical elements such as nodes, edges, representations or anything selected in the explorer for example
 
 === Dependency update
 
@@ -48,6 +51,7 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/699[#699] [core] Provide the `IEditingContext` to find all the `RepresentationMetadata` for a specific object
 - https://github.com/eclipse-sirius/sirius-components/issues/1054[#1054] [diagram] Add missing variables to compute the label of an edge
 - https://github.com/eclipse-sirius/sirius-components/issues/1063[#1063] [explorer] It is now possible to expand or collapse items in the explorer without selecting them by clicking directly on the expand/collapse arrow icon
+- https://github.com/eclipse-sirius/sirius-components/issues/1068[#1068] [form] Add support for displaying details on arbitrary element kinds
 
 === New features
 

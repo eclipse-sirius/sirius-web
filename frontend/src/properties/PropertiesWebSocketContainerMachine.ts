@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,7 +20,7 @@ import {
   GQLWidgetSubscriptionsUpdatedEventPayload,
 } from 'form/FormEventFragments.types';
 import { v4 as uuid } from 'uuid';
-import { SelectionEntry } from 'workbench/Workbench.types';
+import { Selection } from 'workbench/Workbench.types';
 import { assign, Machine } from 'xstate';
 
 export interface PropertiesWebSocketContainerStateSchema {
@@ -50,7 +50,7 @@ export type SchemaValue = {
 
 export interface PropertiesWebSocketContainerContext {
   id: string;
-  currentSelection: SelectionEntry | null;
+  currentSelection: Selection | null;
   form: Form | null;
   subscribers: Subscriber[];
   widgetSubscriptions: WidgetSubscription[];
@@ -61,7 +61,7 @@ export type ShowToastEvent = { type: 'SHOW_TOAST'; message: string };
 export type HideToastEvent = { type: 'HIDE_TOAST' };
 export type SwitchSelectionEvent = {
   type: 'SWITCH_SELECTION';
-  selection: SelectionEntry | null;
+  selection: Selection | null;
 };
 export type HandleSubscriptionResultEvent = {
   type: 'HANDLE_SUBSCRIPTION_RESULT';
@@ -179,6 +179,9 @@ export const propertiesWebSocketContainerMachine = Machine<
                   actions: 'handleSubscriptionResult',
                 },
               ],
+              HANDLE_COMPLETE: {
+                target: 'complete',
+              },
             },
           },
           ready: {
@@ -231,7 +234,7 @@ export const propertiesWebSocketContainerMachine = Machine<
       },
       isSelectionUnsupported: (_, event) => {
         const { selection } = event as SwitchSelectionEvent;
-        return !selection || !selection.kind.startsWith('siriusComponents://semantic');
+        return !selection;
       },
     },
     actions: {

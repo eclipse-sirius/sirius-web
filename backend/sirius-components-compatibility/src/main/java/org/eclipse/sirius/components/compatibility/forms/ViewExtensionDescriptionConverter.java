@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,7 +16,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -87,11 +86,17 @@ public class ViewExtensionDescriptionConverter implements IViewExtensionDescript
                 .map(pageDescription -> pageDescriptionConverter.convert(pageDescription, siriusGroup2SiriusWebGroup))
                 .collect(Collectors.toList());
 
-        Function<VariableManager, String> labelProvider = variableManager -> Optional.ofNullable(variableManager.getVariables().get(VariableManager.SELF))
-                .map(this.objectService::getLabel)
+        Function<VariableManager, String> labelProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
+                .filter(self -> self instanceof List<?>)
+                .map(self -> (List<?>) self)
+                .flatMap(self -> self.stream().findFirst())
+                .map(this.objectService::getFullLabel)
                 .orElse("Properties"); //$NON-NLS-1$
 
         Function<VariableManager, String> targetObjectIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
+                .filter(self -> self instanceof List<?>)
+                .map(self -> (List<?>) self)
+                .flatMap(self -> self.stream().findFirst())
                 .map(this.objectService::getId)
                 .orElse(null);
 

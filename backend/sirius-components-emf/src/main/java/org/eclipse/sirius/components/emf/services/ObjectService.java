@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -222,8 +222,10 @@ public class ObjectService implements IObjectService {
                     // If not found in the resources of the ResourceSet, we search in the PackageRegistry resources
                     if (!optionalEObject.isPresent()) {
                         URI uri = URI.createURI(objectId);
-                        EObject eObject = resourceSet.getEObject(uri, false);
-                        optionalEObject = Optional.ofNullable(eObject);
+                        if (uri.hasFragment()) {
+                            EObject eObject = resourceSet.getEObject(uri, false);
+                            optionalEObject = Optional.ofNullable(eObject);
+                        }
                     }
                     return optionalEObject;
                 });

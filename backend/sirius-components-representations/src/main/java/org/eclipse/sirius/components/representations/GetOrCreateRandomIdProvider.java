@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,7 +29,7 @@ public class GetOrCreateRandomIdProvider implements Function<VariableManager, St
     public String apply(VariableManager variableManager) {
         // @formatter:off
         return variableManager.get(PREVIOUS_REPRESENTATION_ID, String.class)
-        .orElseGet(() -> UUID.randomUUID().toString());
+                .orElseGet(() -> UUID.randomUUID().toString());
         // @formatter:on
     }
 

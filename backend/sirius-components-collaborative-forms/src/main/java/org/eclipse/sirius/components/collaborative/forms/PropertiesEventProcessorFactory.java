@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.collaborative.forms;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.collaborative.api.IRepresentationConfiguration;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessor;
@@ -79,12 +80,16 @@ public class PropertiesEventProcessorFactory implements IRepresentationEventProc
             PropertiesConfiguration propertiesConfiguration = (PropertiesConfiguration) configuration;
 
             List<FormDescription> formDescriptions = this.propertiesDescriptionService.getPropertiesDescriptions();
-            Optional<Object> optionalObject = this.objectService.getObject(editingContext, propertiesConfiguration.getObjectId());
-            if (optionalObject.isPresent()) {
-                Object object = optionalObject.get();
+            // @formatter:off
+            var objects = propertiesConfiguration.getObjectIds().stream()
+                    .map(objectId -> this.objectService.getObject(editingContext, objectId))
+                    .flatMap(Optional::stream)
+                    .collect(Collectors.toList());
+            // @formatter:on
+            if (!objects.isEmpty()) {
                 Optional<FormDescription> optionalFormDescription = Optional.empty();
                 if (!formDescriptions.isEmpty()) {
-                    optionalFormDescription = new FormDescriptionAggregator().aggregate(formDescriptions, object, this.objectService);
+                    optionalFormDescription = new FormDescriptionAggregator().aggregate(formDescriptions, objects, this.objectService);
                 }
                 FormDescription formDescription = optionalFormDescription.orElse(this.propertiesDefaultDescriptionProvider.getFormDescription());
 
@@ -92,7 +97,7 @@ public class PropertiesEventProcessorFactory implements IRepresentationEventProc
                 FormCreationParameters formCreationParameters = FormCreationParameters.newFormCreationParameters(propertiesConfiguration.getId())
                         .editingContext(editingContext)
                         .formDescription(formDescription)
-                        .object(object)
+                        .objects(objects)
                         .build();
                 // @formatter:on
 

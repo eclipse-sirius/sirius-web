@@ -13,7 +13,7 @@ input FormEventInput {
 input PropertiesEventInput {
   id: ID!
   editingContextId: ID!
-  objectId: ID!
+  objectIds: [ID!]!
 }
 
 input RepresentationsEventInput {

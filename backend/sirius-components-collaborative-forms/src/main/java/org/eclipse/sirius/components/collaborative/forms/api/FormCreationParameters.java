@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.collaborative.forms.api;
 
 import java.text.MessageFormat;
+import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.Immutable;
@@ -32,7 +33,7 @@ public final class FormCreationParameters {
 
     private String id;
 
-    private Object object;
+    private List<Object> objects;
 
     private FormDescription formDescription;
 
@@ -46,8 +47,8 @@ public final class FormCreationParameters {
         return this.id;
     }
 
-    public Object getObject() {
-        return this.object;
+    public List<Object> getObjects() {
+        return this.objects;
     }
 
     public FormDescription getFormDescription() {
@@ -67,7 +68,7 @@ public final class FormCreationParameters {
         return new Builder(formCreationParameters.getId())
                 .formDescription(formCreationParameters.getFormDescription())
                 .editingContext(formCreationParameters.getEditingContext())
-                .object(formCreationParameters.getObject());
+                .objects(formCreationParameters.getObjects());
         // @formatter:on
     }
 
@@ -86,7 +87,7 @@ public final class FormCreationParameters {
     public static final class Builder {
         private String id;
 
-        private Object object;
+        private List<Object> objects;
 
         private FormDescription formDescription;
 
@@ -96,8 +97,8 @@ public final class FormCreationParameters {
             this.id = id;
         }
 
-        public Builder object(Object object) {
-            this.object = Objects.requireNonNull(object);
+        public Builder objects(List<Object> objects) {
+            this.objects = Objects.requireNonNull(objects);
             return this;
         }
 
@@ -114,7 +115,7 @@ public final class FormCreationParameters {
         public FormCreationParameters build() {
             FormCreationParameters formCreationParameters = new FormCreationParameters();
             formCreationParameters.id = this.id;
-            formCreationParameters.object = Objects.requireNonNull(this.object);
+            formCreationParameters.objects = Objects.requireNonNull(this.objects);
             formCreationParameters.formDescription = Objects.requireNonNull(this.formDescription);
             formCreationParameters.editingContext = Objects.requireNonNull(this.editingContext);
             return formCreationParameters;

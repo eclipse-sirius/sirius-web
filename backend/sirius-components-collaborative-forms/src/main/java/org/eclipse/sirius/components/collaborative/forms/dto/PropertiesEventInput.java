@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.collaborative.forms.dto;
 
 import java.text.MessageFormat;
+import java.util.List;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.core.api.IInput;
@@ -27,7 +28,7 @@ public final class PropertiesEventInput implements IInput {
 
     private String editingContextId;
 
-    private String objectId;
+    private List<String> objectIds;
 
     @Override
     public UUID getId() {
@@ -38,13 +39,13 @@ public final class PropertiesEventInput implements IInput {
         return this.editingContextId;
     }
 
-    public String getObjectId() {
-        return this.objectId;
+    public List<String> getObjectIds() {
+        return this.objectIds;
     }
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, editingContextId: {2}, objectId: {3}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.editingContextId, this.objectId);
+        String pattern = "{0} '{'id: {1}, editingContextId: {2}, objectIds: {3}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.editingContextId, this.objectIds);
     }
 }
