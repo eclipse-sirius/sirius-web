@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 THALES GLOBAL SERVICES.
+ * Copyright (c) 2021, 2022 THALES GLOBAL SERVICES.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,14 +14,21 @@ package org.eclipse.sirius.components.diagrams.layout.incremental;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Ratio;
 import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.events.EdgeCreationEvent;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
+import org.eclipse.sirius.components.diagrams.events.MoveEvent;
+import org.eclipse.sirius.components.diagrams.events.ResizeEvent;
 import org.eclipse.sirius.components.diagrams.layout.ISiriusWebLayoutConfigurator;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.DiagramLayoutData;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.EdgeLayoutData;
@@ -34,6 +41,10 @@ import org.eclipse.sirius.components.diagrams.layout.incremental.provider.NodePo
 import org.eclipse.sirius.components.diagrams.layout.incremental.provider.NodeSizeProvider;
 import org.eclipse.sirius.components.diagrams.layout.incremental.updater.ContainmentUpdater;
 import org.eclipse.sirius.components.diagrams.layout.incremental.updater.OverlapsUpdater;
+import org.eclipse.sirius.components.diagrams.layout.incremental.utils.Bounds;
+import org.eclipse.sirius.components.diagrams.layout.incremental.utils.Geometry;
+import org.eclipse.sirius.components.diagrams.layout.incremental.utils.PointOnRectangleInfo;
+import org.eclipse.sirius.components.diagrams.layout.incremental.utils.RectangleSide;
 import org.springframework.stereotype.Service;
 
 /**
@@ -109,10 +120,8 @@ public class IncrementalLayoutEngine {
     }
 
     private void layoutNode(Optional<IDiagramEvent> optionalDiagramElementEvent, NodeLayoutData node, ISiriusWebLayoutConfigurator layoutConfigurator) {
-        // first layout border & child nodes
-        for (NodeLayoutData borderNode : node.getBorderNodes()) {
-            this.layoutNode(optionalDiagramElementEvent, borderNode, layoutConfigurator);
-        }
+        Bounds initialNodeBounds = Bounds.newBounds().position(node.getPosition()).size(node.getSize()).build();
+        // first layout child nodes
         for (NodeLayoutData childNode : node.getChildrenNodes()) {
             this.layoutNode(optionalDiagramElementEvent, childNode, layoutConfigurator);
         }
@@ -137,10 +146,155 @@ public class IncrementalLayoutEngine {
         // resize / change position according to the content
         new ContainmentUpdater().update(node);
 
+        // update the border node once the current node bounds are updated
+        Bounds newBounds = Bounds.newBounds().position(node.getPosition()).size(node.getSize()).build();
+        this.layoutBorderNodes(optionalDiagramElementEvent, node.getBorderNodes(), initialNodeBounds, newBounds, layoutConfigurator);
+
         // recompute the label
         if (node.getLabel() != null) {
             node.getLabel().setPosition(this.nodeLabelPositionProvider.getPosition(node, node.getLabel()));
         }
+    }
+
+    /**
+     * Update the border nodes position according to the side length change where it is located.<br>
+     * The aim is to keep the positioning ratio of the border node on its side.
+     */
+    private void layoutBorderNodes(Optional<IDiagramEvent> optionalDiagramElementEvent, List<NodeLayoutData> borderNodesLayoutData, Bounds initialNodeBounds, Bounds newNodeBounds,
+            ISiriusWebLayoutConfigurator layoutConfigurator) {
+        if (!borderNodesLayoutData.isEmpty()) {
+            for (NodeLayoutData nodeLayoutData : borderNodesLayoutData) {
+                // 1- update the position of the border node if it has been explicitly moved
+                this.updateBorderNodePosition(optionalDiagramElementEvent, nodeLayoutData);
+
+                Size size = this.nodeSizeProvider.getSize(optionalDiagramElementEvent, nodeLayoutData, layoutConfigurator);
+                if (!this.getRoundedSize(size).equals(this.getRoundedSize(nodeLayoutData.getSize()))) {
+                    nodeLayoutData.setSize(size);
+                    nodeLayoutData.setChanged(true);
+                }
+            }
+
+            // 2- recompute the border node
+            EnumMap<RectangleSide, List<NodeLayoutData>> borderNodesPerSide = this.snapBorderNodes(borderNodesLayoutData, initialNodeBounds.getSize(), layoutConfigurator);
+
+            // 3 - move the border node along the side according to the side change
+            this.updateBorderNodeAccordingParentResize(optionalDiagramElementEvent, initialNodeBounds, newNodeBounds, borderNodesPerSide, borderNodesLayoutData.get(0).getParent().getId());
+        }
+    }
+
+    /**
+     * Move the border node along the side according to the parent Size changes.
+     */
+    private void updateBorderNodeAccordingParentResize(Optional<IDiagramEvent> optionalDiagramElementEvent, Bounds initialNodeBounds, Bounds newNodeBounds,
+            EnumMap<RectangleSide, List<NodeLayoutData>> borderNodesPerSide, String parentId) {
+        // @formatter:off
+        boolean isParentRectangleResized = optionalDiagramElementEvent
+            .filter(ResizeEvent.class::isInstance)
+            .map(ResizeEvent.class::cast)
+            .map(ResizeEvent::getNodeId)
+            .filter(parentId::equals)
+            .isPresent();
+        // @formatter:on
+
+        if (isParentRectangleResized && !initialNodeBounds.equals(newNodeBounds)) {
+            EnumMap<RectangleSide, Double> sideHomotheticRatio = this.getHomotheticRatio(initialNodeBounds.getSize(), newNodeBounds.getSize());
+
+            Size initialSize = initialNodeBounds.getSize();
+            Size newSize = newNodeBounds.getSize();
+
+            for (Entry<RectangleSide, List<NodeLayoutData>> entry : borderNodesPerSide.entrySet()) {
+                RectangleSide side = entry.getKey();
+                List<NodeLayoutData> borderNodeOnSide = entry.getValue();
+                double homotheticRatio = sideHomotheticRatio.get(entry.getKey());
+                for (NodeLayoutData borderNodeLayoutData : borderNodeOnSide) {
+                    // The border node position is done in the parent node coordinate system
+                    Position position = borderNodeLayoutData.getPosition();
+                    Size size = borderNodeLayoutData.getSize();
+                    if (RectangleSide.NORTH.equals(side)) {
+                        borderNodeLayoutData.setPosition(Position.at((position.getX() + size.getWidth() / 2) * homotheticRatio - size.getWidth() / 2, position.getY()));
+                    } else if (RectangleSide.SOUTH.equals(side)) {
+                        double dySouthShift = newSize.getHeight() - initialSize.getHeight();
+                        borderNodeLayoutData.setPosition(Position.at((position.getX() + size.getWidth() / 2) * homotheticRatio - size.getWidth() / 2, position.getY() + dySouthShift));
+                    } else if (RectangleSide.WEST.equals(side)) {
+                        borderNodeLayoutData.setPosition(Position.at(position.getX(), (position.getY() + size.getHeight() / 2) * homotheticRatio - size.getHeight() / 2));
+                    } else if (RectangleSide.EAST.equals(side)) {
+                        double dxEastShift = newSize.getWidth() - initialSize.getWidth();
+                        borderNodeLayoutData.setPosition(Position.at(position.getX() + dxEastShift, (position.getY() + size.getHeight() / 2) * homotheticRatio - size.getHeight() / 2));
+                    }
+                }
+            }
+        }
+    }
+
+    private void updateBorderNodePosition(Optional<IDiagramEvent> optionalDiagramElementEvent, NodeLayoutData nodeLayoutData) {
+        // @formatter:off
+        optionalDiagramElementEvent.filter(MoveEvent.class::isInstance)
+            .map(MoveEvent.class::cast)
+            .map(MoveEvent::getNodeId)
+            .filter(nodeLayoutData.getId()::equals)
+            .ifPresent(nodeId  -> {
+                Position position = this.nodePositionProvider.getPosition(optionalDiagramElementEvent, nodeLayoutData);
+                if (!position.equals(nodeLayoutData.getPosition())) {
+                    nodeLayoutData.setPosition(position);
+                    nodeLayoutData.setChanged(true);
+                    nodeLayoutData.setPinned(true);
+                }
+        });
+        // @formatter:on
+    }
+
+    /**
+     * Update the border node by snapping it to the parentRectangle, that is moving it to the closest point of the
+     * parentRectangle.
+     *
+     * @param borderNodesLayoutData
+     *            the border nodes which position is given in the rectangle upper right corner coordinates system
+     * @param layoutConfigurator
+     * @return for each side of the given parentRectangle, the list of the updates border node
+     */
+    private EnumMap<RectangleSide, List<NodeLayoutData>> snapBorderNodes(List<NodeLayoutData> borderNodesLayoutData, Size parentRectangle, ISiriusWebLayoutConfigurator layoutConfigurator) {
+        EnumMap<RectangleSide, List<NodeLayoutData>> borderNodesPerSide = new EnumMap<>(RectangleSide.class);
+
+        Geometry geometry = new Geometry();
+
+        for (NodeLayoutData borderNodeLayoutData : borderNodesLayoutData) {
+            double portOffset = layoutConfigurator.configureByType(borderNodeLayoutData.getNodeType()).getProperty(CoreOptions.PORT_BORDER_OFFSET).doubleValue();
+
+            Bounds borderNodeRectangle = Bounds.newBounds().position(borderNodeLayoutData.getPosition()).size(borderNodeLayoutData.getSize()).build();
+            PointOnRectangleInfo borderNodePositionOnSide = geometry.snapBorderNodeOnRectangle(borderNodeRectangle, parentRectangle, portOffset);
+            // update the border node
+            borderNodeLayoutData.setPosition(borderNodePositionOnSide.getPosition());
+
+            borderNodesPerSide.computeIfAbsent(borderNodePositionOnSide.getSide(), side -> new ArrayList<>());
+            borderNodesPerSide.get(borderNodePositionOnSide.getSide()).add(borderNodeLayoutData);
+        }
+        return borderNodesPerSide;
+    }
+
+    /**
+     * This method compares two rectangles and for each side return the homothetic ratio.
+     */
+    private EnumMap<RectangleSide, Double> getHomotheticRatio(Size rectangle1, Size rectangle2) {
+        EnumMap<RectangleSide, Double> sideToHomotheticRatio = new EnumMap<>(RectangleSide.class);
+        double initialHeight = rectangle1.getHeight();
+        double initialWidth = rectangle1.getWidth();
+        double newHeight = rectangle2.getHeight();
+        double newWidth = rectangle2.getWidth();
+
+        double verticalRatio = 0;
+        if (initialHeight != 0) {
+            verticalRatio = newHeight / initialHeight;
+        }
+        double horizontalRatio = 0;
+        if (initialWidth != 0) {
+            horizontalRatio = newWidth / initialWidth;
+        }
+        sideToHomotheticRatio.put(RectangleSide.NORTH, horizontalRatio);
+        sideToHomotheticRatio.put(RectangleSide.SOUTH, horizontalRatio);
+        sideToHomotheticRatio.put(RectangleSide.EAST, verticalRatio);
+        sideToHomotheticRatio.put(RectangleSide.WEST, verticalRatio);
+
+        return sideToHomotheticRatio;
     }
 
     private Ratio getPositionProportionOfEdgeEndAbsolutePosition(NodeLayoutData nodeLayoutData, Position absolutePosition) {
@@ -205,8 +359,8 @@ public class IncrementalLayoutEngine {
      * @return the rounded size.
      */
     private Size getRoundedSize(Size size) {
-        BigDecimal roundedWidth = new BigDecimal(size.getWidth()).setScale(4, RoundingMode.HALF_UP);
-        BigDecimal roundedHeight = new BigDecimal(size.getHeight()).setScale(4, RoundingMode.HALF_UP);
+        BigDecimal roundedWidth = BigDecimal.valueOf(size.getWidth()).setScale(4, RoundingMode.HALF_UP);
+        BigDecimal roundedHeight = BigDecimal.valueOf(size.getHeight()).setScale(4, RoundingMode.HALF_UP);
         return Size.of(roundedWidth.doubleValue(), roundedHeight.doubleValue());
     }
 }
