@@ -59,6 +59,7 @@ import {
   SetViewportAction,
   UpdateModelAction,
 } from 'sprotty-protocol';
+import { IsSiriusModelElementAction, IsSiriusModelElementResult } from './common/isSiriusModelElementRequest';
 
 /** Action to delete a sprotty element */
 export const SPROTTY_DELETE_ACTION = 'sprottyDeleteElement';
@@ -268,13 +269,20 @@ export class DiagramServer extends ModelSource {
     }
   }
 
-  handleMoveAction(action) {
+  handleMoveAction(action: MoveAction) {
     const { finished, moves } = action;
     if (finished && moves.length > 0) {
       const { elementId, toPosition } = moves[0];
-      this.moveElement(elementId, toPosition?.x, toPosition?.y);
+      this.actionDispatcher
+        .request<IsSiriusModelElementResult>(IsSiriusModelElementAction.create(elementId))
+        .then((isSiriusModelElementResult) => {
+          if (isSiriusModelElementResult.isSiriusModelElement) {
+            this.moveElement(elementId, toPosition?.x, toPosition?.y);
+          }
+        });
     }
   }
+
   handleResizeAction(action: ResizeAction) {
     const { finished, resize } = action;
     if (finished && resize) {
