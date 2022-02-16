@@ -76,7 +76,7 @@ const ItemCollapseToggle = ({ item, depth, onExpand, dataTestid }) => {
       );
     }
   }
-  return null;
+  return <div></div>;
 };
 
 export const TreeItem = ({
