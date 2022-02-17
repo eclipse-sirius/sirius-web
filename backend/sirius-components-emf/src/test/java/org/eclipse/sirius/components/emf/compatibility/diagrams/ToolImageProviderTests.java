@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.viewpoint.description.tool.OperationAction;
 import org.eclipse.sirius.viewpoint.description.tool.ToolDescription;
 import org.eclipse.sirius.viewpoint.description.tool.ToolFactory;
 import org.junit.jupiter.api.Test;
@@ -37,6 +38,19 @@ public class ToolImageProviderTests {
         IObjectService objectService = new IObjectService.NoOp();
         EPackage.Registry ePackageRegistry = EPackage.Registry.INSTANCE;
         ToolImageProvider toolImageProvider = new ToolImageProvider(objectService, ePackageRegistry, toolDescription);
+
+        String convertedIconPath = toolImageProvider.get();
+        assertThat(convertedIconPath.equals(ICON_PATH.substring(ICON_PATH.indexOf('/', 1)))).isTrue();
+    }
+
+    @Test
+    public void testIconNormalization() {
+        OperationAction operationAction = ToolFactory.eINSTANCE.createOperationAction();
+        operationAction.setIcon(ICON_PATH);
+
+        IObjectService objectService = new IObjectService.NoOp();
+        EPackage.Registry ePackageRegistry = EPackage.Registry.INSTANCE;
+        ToolImageProvider toolImageProvider = new ToolImageProvider(objectService, ePackageRegistry, operationAction);
 
         String convertedIconPath = toolImageProvider.get();
         assertThat(convertedIconPath.equals(ICON_PATH.substring(ICON_PATH.indexOf('/', 1)))).isTrue();
