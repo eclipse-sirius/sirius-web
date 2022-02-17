@@ -352,7 +352,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
                             } else {
                                 this.logger.trace("Stopping the disposal of the representation event processor {}", configuration.getId()); //$NON-NLS-1$
                             }
-                        });
+                        }, throwable -> this.logger.warn(throwable.getMessage(), throwable));
                 // @formatter:on
 
                 var representationEventProcessorEntry = new RepresentationEventProcessorEntry(representationEventProcessor, subscription);
