@@ -14,6 +14,7 @@ package org.eclipse.sirius.components.collaborative.forms.dto;
 
 import java.text.MessageFormat;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.forms.api.IFormInput;
@@ -33,6 +34,18 @@ public final class EditMultiSelectInput implements IFormInput {
     private String selectId;
 
     private List<String> newValues;
+
+    public EditMultiSelectInput() {
+        // Used by Jackson
+    }
+
+    public EditMultiSelectInput(UUID id, String editingContextId, String representationId, String selectId, List<String> newValues) {
+        this.id = Objects.requireNonNull(id);
+        this.editingContextId = Objects.requireNonNull(editingContextId);
+        this.representationId = Objects.requireNonNull(representationId);
+        this.selectId = Objects.requireNonNull(selectId);
+        this.newValues = Objects.requireNonNull(newValues);
+    }
 
     @Override
     public UUID getId() {
