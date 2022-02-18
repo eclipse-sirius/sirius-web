@@ -73,6 +73,9 @@ jobs:
           path: backend/sirius-components-test-coverage/target/site/jacoco-aggregate
           retention-days: 5
 
+      - name: Check the global code coverage
+        run: jshell scripts/check-coverage.jsh
+
       - name: Publish the backend
         if: startsWith(github.ref, 'refs/tags/v')
         env:
