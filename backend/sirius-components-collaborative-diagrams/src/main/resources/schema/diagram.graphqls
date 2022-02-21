@@ -225,6 +225,7 @@ extend type Mutation {
   updateNodeBounds(input: UpdateNodeBoundsInput!): UpdateNodeBoundsPayload!
   updateNodePosition(input: UpdateNodePositionInput!): UpdateNodePositionPayload!
   dropOnDiagram(input: DropOnDiagramInput!): DropOnDiagramPayload!
+  updateEdgeRoutingPoints(input: UpdateEdgeRoutingPointsInput!): UpdateEdgeRoutingPointsPayload!
 }
 
 input ArrangeAllInput {
@@ -362,4 +363,23 @@ union DropOnDiagramPayload = ErrorPayload | DropOnDiagramSuccessPayload
 type DropOnDiagramSuccessPayload {
   id: ID!
   diagram: Diagram!
+}
+
+input UpdateEdgeRoutingPointsInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  diagramElementId: ID!
+  routingPoints: [PositionInput]!
+}
+
+input PositionInput {
+  x: Float!
+  y: Float!
+}
+
+union UpdateEdgeRoutingPointsPayload = ErrorPayload | UpdateEdgeRoutingPointsSuccessPayload
+
+type UpdateEdgeRoutingPointsSuccessPayload {
+  id: ID!
 }

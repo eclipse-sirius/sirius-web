@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.diagrams.events.DoublePositionEvent;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.diagrams.events.MoveEvent;
 import org.eclipse.sirius.components.diagrams.events.ResizeEvent;
+import org.eclipse.sirius.components.diagrams.events.UpdateEdgeRoutingPointsEvent;
 import org.eclipse.sirius.components.diagrams.layout.ISiriusWebLayoutConfigurator;
 import org.eclipse.sirius.components.diagrams.layout.api.Bounds;
 import org.eclipse.sirius.components.diagrams.layout.api.Geometry;
@@ -99,10 +100,22 @@ public class IncrementalLayoutEngine {
 
         // finally we recompute the edges that needs to
         for (EdgeLayoutData edge : diagram.getEdges()) {
-            if (this.hasChanged(edge.getSource()) || this.hasChanged(edge.getTarget()) || !this.isLabelPositioned(edge) || !this.isEdgePositioned(edge)) {
+            if (this.shouldLayoutEdge(optionalDiagramElementEvent, edge)) {
                 this.layoutEdge(optionalDiagramElementEvent, edge);
             }
         }
+    }
+
+    private boolean shouldLayoutEdge(Optional<IDiagramEvent> optionalDiagramElementEvent, EdgeLayoutData edge) {
+        boolean shouldLayoutEdge = false;
+
+        shouldLayoutEdge = shouldLayoutEdge || this.hasChanged(edge.getSource());
+        shouldLayoutEdge = shouldLayoutEdge || this.hasChanged(edge.getTarget());
+        shouldLayoutEdge = shouldLayoutEdge || !this.isLabelPositioned(edge);
+        shouldLayoutEdge = shouldLayoutEdge || this.hasRoutingPointsToUpdate(optionalDiagramElementEvent, edge);
+        shouldLayoutEdge = shouldLayoutEdge || !this.isEdgePositioned(edge);
+
+        return shouldLayoutEdge;
     }
 
     /**
@@ -120,6 +133,16 @@ public class IncrementalLayoutEngine {
             return position.getX() != -1 || position.getY() != -1;
         }
         return false;
+    }
+
+    private boolean hasRoutingPointsToUpdate(Optional<IDiagramEvent> diagramEvent, EdgeLayoutData edge) {
+        // @formatter:off
+        return diagramEvent.filter(UpdateEdgeRoutingPointsEvent.class::isInstance)
+                .map(UpdateEdgeRoutingPointsEvent.class::cast)
+                .map(UpdateEdgeRoutingPointsEvent::getEdgeId)
+                .filter(edge.getId()::equals)
+                .isPresent();
+        // @formatter:on
     }
 
     private void layoutNode(Optional<IDiagramEvent> optionalDiagramElementEvent, NodeLayoutData node, ISiriusWebLayoutConfigurator layoutConfigurator) {
@@ -344,7 +367,7 @@ public class IncrementalLayoutEngine {
         // @formatter:on
 
         // recompute the edge routing points
-        edge.setRoutingPoints(this.edgeRoutingPointsProvider.getRoutingPoints(edge));
+        edge.setRoutingPoints(this.edgeRoutingPointsProvider.getRoutingPoints(optionalDiagramElementEvent, edge));
 
         // recompute edge labels
         if (edge.getCenterLabel() != null) {
