@@ -63,7 +63,7 @@ import {
   ZoomMouseListener,
   zorderModule,
 } from 'sprotty';
-import { Action, Point, RequestPopupModelAction, SetPopupModelAction, UpdateModelAction } from 'sprotty-protocol';
+import { Action, Point, RequestPopupModelAction, SetPopupModelAction } from 'sprotty-protocol';
 import { siriusCommonModule } from './common/siriusCommonModule';
 import { siriusEdgeEditModule } from './edgeEdition/siriusEdgeEditModule';
 import { siriusRoutingModule } from './routing/siriusRoutingModule';
@@ -128,7 +128,7 @@ const siriusWebContainerModule = new ContainerModule((bind, unbind, isBound, reb
  * @param containerId The identifier of the container
  * @param onSelectElement The selection call back
  */
-export const createDependencyInjectionContainer = (containerId: string, getCursorOn) => {
+export const createDependencyInjectionContainer = (containerId: string) => {
   const container = new Container();
   container.load(
     defaultModule,
@@ -151,16 +151,6 @@ export const createDependencyInjectionContainer = (containerId: string, getCurso
     labelEditModule,
     labelEditUiModule
   );
-
-  const findElementWithTarget = (element) => {
-    if (element.targetObjectId) {
-      return element;
-    } else if (element.parent) {
-      return findElementWithTarget(element.parent);
-    }
-    // Otherwise, use the diagram as element with target.
-    return element.root;
-  };
 
   class DiagramMouseListener extends MouseListener {
     diagramServer: DiagramServer;
@@ -245,34 +235,6 @@ export const createDependencyInjectionContainer = (containerId: string, getCurso
     }
   }
   container.bind(TYPES.MouseListener).to(DiagramZoomMouseListener).inSingletonScope();
-
-  class CursorMouseListener extends MouseListener {
-    diagramServer: any;
-    constructor(diagramServer) {
-      super();
-      this.diagramServer = diagramServer;
-    }
-
-    mouseMove(element, event) {
-      const root = element.root;
-      const elementWithTarget = findElementWithTarget(element);
-      const expectedCursor = getCursorOn(elementWithTarget, this.diagramServer);
-      if (root.cursor !== expectedCursor) {
-        root.cursor = expectedCursor;
-        return [
-          {
-            kind: UpdateModelAction.KIND,
-            input: root,
-          },
-        ];
-      }
-
-      return [];
-    }
-  }
-  decorate(inject(TYPES.ModelSource) as ParameterDecorator, CursorMouseListener, 0);
-
-  container.bind(TYPES.MouseListener).to(CursorMouseListener).inSingletonScope();
 
   // The list of characters that will enable the direct edit mechanism.
   const directEditActivationValidCharacters = /[\w&é§èàùçÔØÁÛÊË"«»’”„´$¥€£\\¿?!=+-,;:%/{}[\]–#@*.]/;

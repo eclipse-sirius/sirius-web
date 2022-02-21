@@ -12,6 +12,8 @@
  *******************************************************************************/
 import { Node } from './sprotty/Diagram.types';
 
+export type CursorValue = 'pointer' | 'copy' | 'not-allowed';
+
 export interface GQLDiagramEventSubscription {
   diagramEvent: GQLDiagramEventPayload;
 }
@@ -152,7 +154,6 @@ export interface GQLRatio {
 }
 
 export interface GQLPosition {
-  __typename: string;
   x: number;
   y: number;
 }

@@ -11,6 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import {
+  CursorValue,
+  GQLDiagram,
   Menu,
   Palette,
   Position,
@@ -21,7 +23,6 @@ import {
 } from 'diagram/DiagramWebSocketContainer.types';
 import { createDependencyInjectionContainer } from 'diagram/sprotty/DependencyInjection';
 import { DiagramServer } from 'diagram/sprotty/DiagramServer';
-import { GQLDiagram } from 'index';
 import { MutableRefObject } from 'react';
 import { MousePositionTracker, SModelElement, TYPES } from 'sprotty';
 import { Point } from 'sprotty-protocol';
@@ -118,7 +119,7 @@ export type InitializeRepresentationEvent = {
     position: Position,
     event: MouseEvent
   ) => void;
-  getCursorOn: any;
+  getCursorOn: (element, diagramServer: DiagramServer) => CursorValue;
   setActiveTool: (tool: Tool) => void;
   toolSections: ToolSection[];
   setContextualPalette: (contextualPalette: Palette) => void;
@@ -381,7 +382,7 @@ export const diagramWebSocketContainerMachine = Machine<
           httpOrigin,
         } = event as InitializeRepresentationEvent;
 
-        const container = createDependencyInjectionContainer(diagramDomElement.current.id, getCursorOn);
+        const container = createDependencyInjectionContainer(diagramDomElement.current.id);
         const diagramServer = <DiagramServer>container.get(TYPES.ModelSource);
 
         /**
@@ -403,6 +404,7 @@ export const diagramWebSocketContainerMachine = Machine<
         diagramServer.setActiveToolListener(setActiveTool);
         diagramServer.setOnSelectElementListener(onSelectElement);
         diagramServer.setUpdateRoutingPointsListener(updateRoutingPointsListener);
+        diagramServer.setGetCursorOnListener(getCursorOn);
 
         return {
           diagramServer,

@@ -19,6 +19,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
 import { ServerContext } from 'common/ServerContext';
 import {
+  CursorValue,
   GQLDeletionPolicy,
   GQLDiagramEventPayload,
   GQLDiagramEventSubscription,
@@ -636,8 +637,8 @@ export const DiagramWebSocketContainer = ({
       diagramServer.actionDispatcher.dispatch(selectSprottyAction);
     };
 
-    const getCursorOn = (element, diagramServer: DiagramServer) => {
-      let cursor = 'pointer';
+    const getCursorOn = (element, diagramServer: DiagramServer): CursorValue => {
+      let cursor: CursorValue = 'pointer';
       if (diagramServer.diagramSource) {
         if (diagramServer.activeConnectorTools.length > 0) {
           const cursorAllowed = atLeastOneSingleClickOnTwoDiagramElementsTool(
