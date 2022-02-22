@@ -146,17 +146,20 @@ const convertBorderNode = (
   readOnly: boolean,
   autoLayout: boolean
 ): BorderNode => {
-  const { id, descriptionId, type, targetObjectId, targetObjectKind, targetObjectLabel, size, position, style } =
+  const { id, label, descriptionId, type, targetObjectId, targetObjectKind, targetObjectLabel, size, position, style } =
     gqlNode;
 
   const node: BorderNode = new BorderNode();
   parentElement.add(node);
+
+  const convertedLabel = convertLabel(node, label, httpOrigin, readOnly);
 
   node.id = id;
   node.type = type.replace('node:', 'port:');
   node.kind = `siriusComponents://graphical?representationType=Diagram&type=Node`;
   node.descriptionId = descriptionId;
   node.style = convertNodeStyle(style, httpOrigin);
+  node.editableLabel = !readOnly ? convertedLabel : null;
   node.targetObjectId = targetObjectId;
   node.targetObjectKind = targetObjectKind;
   node.targetObjectLabel = targetObjectLabel;

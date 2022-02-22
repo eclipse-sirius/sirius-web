@@ -24,6 +24,7 @@ import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.core.options.FixedLayouterOptions;
 import org.eclipse.elk.core.options.HierarchyHandling;
 import org.eclipse.elk.core.options.NodeLabelPlacement;
+import org.eclipse.elk.core.options.PortLabelPlacement;
 import org.eclipse.elk.core.options.SizeConstraint;
 import org.eclipse.elk.core.options.SizeOptions;
 import org.eclipse.elk.graph.ElkEdge;
@@ -96,7 +97,8 @@ public class LayoutConfiguratorRegistry {
                 .setProperty(CoreOptions.NODE_SIZE_MINIMUM, new KVector(LayoutOptionValues.MIN_WIDTH_CONSTRAINT, LayoutOptionValues.MIN_HEIGHT_CONSTRAINT))
                 .setProperty(CoreOptions.NODE_LABELS_PLACEMENT, NodeLabelPlacement.insideTopCenter())
                 .setProperty(CoreOptions.NODE_SIZE_MINIMUM, new KVector(MIN_WIDTH_CONSTRAINT, MIN_HEIGHT_CONSTRAINT))
-                .setProperty(CoreOptions.PORT_BORDER_OFFSET, DEFAULT_PORT_BORDER_OFFSET);
+                .setProperty(CoreOptions.PORT_BORDER_OFFSET, DEFAULT_PORT_BORDER_OFFSET)
+                .setProperty(CoreOptions.PORT_LABELS_PLACEMENT, PortLabelPlacement.outside());
 
         configurator.configureByType(NodeType.NODE_LIST)
                 .setProperty(CoreOptions.ALGORITHM, FixedLayouterOptions.ALGORITHM_ID)

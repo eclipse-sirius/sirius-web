@@ -17,9 +17,9 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.sirius.components.diagrams.Position;
@@ -34,6 +34,7 @@ import org.eclipse.sirius.components.diagrams.layout.incremental.data.DiagramLay
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.EdgeLayoutData;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.IContainerLayoutData;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.NodeLayoutData;
+import org.eclipse.sirius.components.diagrams.layout.incremental.provider.BorderNodeLabelPositionProvider;
 import org.eclipse.sirius.components.diagrams.layout.incremental.provider.EdgeLabelPositionProvider;
 import org.eclipse.sirius.components.diagrams.layout.incremental.provider.EdgeRoutingPointsProvider;
 import org.eclipse.sirius.components.diagrams.layout.incremental.provider.NodeLabelPositionProvider;
@@ -66,6 +67,8 @@ public class IncrementalLayoutEngine {
 
     private NodeLabelPositionProvider nodeLabelPositionProvider;
 
+    private BorderNodeLabelPositionProvider borderNodeLabelPositionProvider;
+
     private final EdgeRoutingPointsProvider edgeRoutingPointsProvider = new EdgeRoutingPointsProvider();
 
     private EdgeLabelPositionProvider edgeLabelPositionProvider;
@@ -80,6 +83,7 @@ public class IncrementalLayoutEngine {
 
     public void layout(Optional<IDiagramEvent> optionalDiagramElementEvent, DiagramLayoutData diagram, ISiriusWebLayoutConfigurator layoutConfigurator) {
         this.nodePositionProvider.reset();
+        this.borderNodeLabelPositionProvider = new BorderNodeLabelPositionProvider();
         this.nodeLabelPositionProvider = new NodeLabelPositionProvider(layoutConfigurator);
         this.edgeLabelPositionProvider = new EdgeLabelPositionProvider(layoutConfigurator);
 
@@ -175,10 +179,24 @@ public class IncrementalLayoutEngine {
             }
 
             // 2- recompute the border node
-            EnumMap<RectangleSide, List<NodeLayoutData>> borderNodesPerSide = this.snapBorderNodes(borderNodesLayoutData, initialNodeBounds.getSize(), layoutConfigurator);
+            List<BorderNodesOnSide> borderNodesPerSide = this.snapBorderNodes(borderNodesLayoutData, initialNodeBounds.getSize(), layoutConfigurator);
 
             // 3 - move the border node along the side according to the side change
             this.updateBorderNodeAccordingParentResize(optionalDiagramElementEvent, initialNodeBounds, newNodeBounds, borderNodesPerSide, borderNodesLayoutData.get(0).getParent().getId());
+
+            // 4- set the label position if the border is newly created
+            this.updateBorderNodeLabel(optionalDiagramElementEvent, borderNodesPerSide);
+        }
+    }
+
+    private void updateBorderNodeLabel(Optional<IDiagramEvent> optionalDiagramElementEvent, List<BorderNodesOnSide> borderNodesPerSideList) {
+
+        for (BorderNodesOnSide borderNodesOnSide : borderNodesPerSideList) {
+            RectangleSide side = borderNodesOnSide.getSide();
+            List<NodeLayoutData> borderNodes = borderNodesOnSide.getBorderNodes();
+            for (NodeLayoutData borderNodeLayoutData : borderNodes) {
+                this.borderNodeLabelPositionProvider.updateLabelPosition(optionalDiagramElementEvent, side, borderNodeLayoutData);
+            }
         }
     }
 
@@ -186,7 +204,7 @@ public class IncrementalLayoutEngine {
      * Move the border node along the side according to the parent Size changes.
      */
     private void updateBorderNodeAccordingParentResize(Optional<IDiagramEvent> optionalDiagramElementEvent, Bounds initialNodeBounds, Bounds newNodeBounds,
-            EnumMap<RectangleSide, List<NodeLayoutData>> borderNodesPerSide, String parentId) {
+            List<BorderNodesOnSide> borderNodesPerSideList, String parentId) {
         // @formatter:off
         boolean isParentRectangleResized = optionalDiagramElementEvent
             .filter(ResizeEvent.class::isInstance)
@@ -202,11 +220,11 @@ public class IncrementalLayoutEngine {
             Size initialSize = initialNodeBounds.getSize();
             Size newSize = newNodeBounds.getSize();
 
-            for (Entry<RectangleSide, List<NodeLayoutData>> entry : borderNodesPerSide.entrySet()) {
-                RectangleSide side = entry.getKey();
-                List<NodeLayoutData> borderNodeOnSide = entry.getValue();
-                double homotheticRatio = sideHomotheticRatio.get(entry.getKey());
-                for (NodeLayoutData borderNodeLayoutData : borderNodeOnSide) {
+            for (BorderNodesOnSide borderNodesOnSide : borderNodesPerSideList) {
+                RectangleSide side = borderNodesOnSide.getSide();
+                List<NodeLayoutData> borderNodes = borderNodesOnSide.getBorderNodes();
+                double homotheticRatio = sideHomotheticRatio.get(side);
+                for (NodeLayoutData borderNodeLayoutData : borderNodes) {
                     // The border node position is done in the parent node coordinate system
                     Position position = borderNodeLayoutData.getPosition();
                     Size size = borderNodeLayoutData.getSize();
@@ -249,10 +267,9 @@ public class IncrementalLayoutEngine {
      *
      * @param borderNodesLayoutData
      *            the border nodes which position is given in the rectangle upper right corner coordinates system
-     * @param layoutConfigurator
      * @return for each side of the given parentRectangle, the list of the updates border node
      */
-    private EnumMap<RectangleSide, List<NodeLayoutData>> snapBorderNodes(List<NodeLayoutData> borderNodesLayoutData, Size parentRectangle, ISiriusWebLayoutConfigurator layoutConfigurator) {
+    private List<BorderNodesOnSide> snapBorderNodes(List<NodeLayoutData> borderNodesLayoutData, Size parentRectangle, ISiriusWebLayoutConfigurator layoutConfigurator) {
         EnumMap<RectangleSide, List<NodeLayoutData>> borderNodesPerSide = new EnumMap<>(RectangleSide.class);
 
         Geometry geometry = new Geometry();
@@ -268,7 +285,12 @@ public class IncrementalLayoutEngine {
             borderNodesPerSide.computeIfAbsent(borderNodePositionOnSide.getSide(), side -> new ArrayList<>());
             borderNodesPerSide.get(borderNodePositionOnSide.getSide()).add(borderNodeLayoutData);
         }
-        return borderNodesPerSide;
+
+        // @formatter:off
+        return borderNodesPerSide.entrySet().stream()
+                .map(entry -> new BorderNodesOnSide(entry.getKey(), entry.getValue()))
+                .collect(Collectors.toList());
+        // @formatter:on
     }
 
     /**
