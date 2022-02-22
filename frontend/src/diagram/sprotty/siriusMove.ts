@@ -48,7 +48,6 @@ export class SiriusMoveCommand extends MoveCommand {
   private resetEdgesRoutingPoints(AllEdgesToReset: Set<SEdge>) {
     AllEdgesToReset.forEach((edge) => {
       const router = this.edgeRouterRegistry!.get(edge.routerKind);
-      edge.routingPoints = [];
       const routedPoints = router.route(edge);
       if (edge.sourceId === edge.targetId) {
         // Do not put source and target routed point as routing pointed.
