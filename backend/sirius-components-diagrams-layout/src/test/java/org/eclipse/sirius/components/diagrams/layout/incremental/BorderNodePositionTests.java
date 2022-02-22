@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.TextBounds;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.diagrams.events.MoveEvent;
+import org.eclipse.sirius.components.diagrams.events.NodeCreationEvent;
 import org.eclipse.sirius.components.diagrams.events.ResizeEvent;
 import org.eclipse.sirius.components.diagrams.layout.LayoutConfiguratorRegistry;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.DiagramLayoutData;
@@ -48,6 +49,10 @@ public class BorderNodePositionTests {
     private static final Size DEFAULT_NODE_SIZE = Size.of(200, 100);
 
     private static final Size DEFAULT_BORDER_NODE_SIZE = Size.of(24, 20);
+
+    private static final TextBounds BORDER_NODE_LABEL_TEXT_BOUNDS = new TextBounds(Size.of(100, 26), Position.at(0, 20));
+
+    private static final Position BORDER_NODE_LABEL_TEXT_POSITION = Position.at(-100, DEFAULT_BORDER_NODE_SIZE.getHeight());
 
     private static final Position ZERO_POSITION = Position.at(0, 0);
 
@@ -71,6 +76,31 @@ public class BorderNodePositionTests {
         incrementalLayoutEngine.layout(Optional.empty(), initializeDiagram, new LayoutConfiguratorRegistry(List.of()).getDefaultLayoutConfigurator());
 
         this.checkBorderNodesAtInitialPosition(borderNodes);
+
+        this.checkBorderNodeLabel(borderNodes.get(0).getLabel(), BORDER_NODE_LABEL_TEXT_POSITION, BORDER_NODE_LABEL_TEXT_BOUNDS);
+    }
+
+    private void checkBorderNodeLabel(LabelLayoutData labelLayoutData, Position borderNodeLabelTextPosition, TextBounds borderNodeLabelTextBounds) {
+        assertThat(labelLayoutData.getPosition()).isEqualTo(borderNodeLabelTextPosition);
+        assertThat(labelLayoutData.getTextBounds()).isEqualTo(borderNodeLabelTextBounds);
+    }
+
+    @Test
+    public void testBorderNodeCreationEvent() {
+        DiagramLayoutData initializeDiagram = this.initializeDiagram();
+        List<NodeLayoutData> borderNodes = initializeDiagram.getChildrenNodes().get(0).getBorderNodes();
+
+        // add a border node with an non positioned label
+        LabelLayoutData labelLayoutData = this.createLabelLayoutData(Position.at(-1, -1), "any", BORDER_NODE_LABEL_TEXT_BOUNDS); //$NON-NLS-1$
+        borderNodes.add(this.createBorderNodeLayoutData(BORDER_NODE_LABEL_TEXT_POSITION, DEFAULT_BORDER_NODE_SIZE, initializeDiagram, NodeType.NODE_RECTANGLE, labelLayoutData));
+
+        NodeSizeProvider nodeSizeProvider = new NodeSizeProvider(new ImageSizeProvider());
+        IncrementalLayoutEngine incrementalLayoutEngine = new IncrementalLayoutEngine(nodeSizeProvider);
+
+        Optional<IDiagramEvent> creationEvent = Optional.of(new NodeCreationEvent(Position.at(10, 10)));
+        incrementalLayoutEngine.layout(creationEvent, initializeDiagram, new LayoutConfiguratorRegistry(List.of()).getDefaultLayoutConfigurator());
+
+        this.checkBorderNodeLabel(borderNodes.get(0).getLabel(), BORDER_NODE_LABEL_TEXT_POSITION, BORDER_NODE_LABEL_TEXT_BOUNDS);
     }
 
     @Test
@@ -86,6 +116,29 @@ public class BorderNodePositionTests {
         incrementalLayoutEngine.layout(resizeEvent, initializeDiagram, new LayoutConfiguratorRegistry(List.of()).getDefaultLayoutConfigurator());
 
         this.checkBorderNodesAtInitialPosition(borderNodes);
+
+        this.checkBorderNodeLabel(borderNodes.get(0).getLabel(), BORDER_NODE_LABEL_TEXT_POSITION, BORDER_NODE_LABEL_TEXT_BOUNDS);
+    }
+
+    @Test
+    public void testMoveBorderNodeEvent() {
+        DiagramLayoutData initializeDiagram = this.initializeDiagram();
+        NodeLayoutData northBorderNode = initializeDiagram.getChildrenNodes().get(0).getBorderNodes().get(0);
+        NodeLayoutData eastBorderNode = initializeDiagram.getChildrenNodes().get(0).getBorderNodes().get(3);
+
+        NodeSizeProvider nodeSizeProvider = new NodeSizeProvider(new ImageSizeProvider());
+        IncrementalLayoutEngine incrementalLayoutEngine = new IncrementalLayoutEngine(nodeSizeProvider);
+
+        // move slightly the north border node so that the incremental layout updates the label position
+        Optional<IDiagramEvent> resizeEvent = Optional.of(new MoveEvent(northBorderNode.getId(), Position.at(northBorderNode.getPosition().getX() + 1, northBorderNode.getPosition().getY())));
+        incrementalLayoutEngine.layout(resizeEvent, initializeDiagram, new LayoutConfiguratorRegistry(List.of()).getDefaultLayoutConfigurator());
+
+        this.checkBorderNodeLabel(northBorderNode.getLabel(), Position.at(-100, -BORDER_NODE_LABEL_TEXT_BOUNDS.getSize().getHeight()), BORDER_NODE_LABEL_TEXT_BOUNDS);
+
+        // move slightly the east border node so that the incremental layout updates the label position
+        resizeEvent = Optional.of(new MoveEvent(eastBorderNode.getId(), Position.at(eastBorderNode.getPosition().getX() + 1, eastBorderNode.getPosition().getY())));
+        incrementalLayoutEngine.layout(resizeEvent, initializeDiagram, new LayoutConfiguratorRegistry(List.of()).getDefaultLayoutConfigurator());
+        this.checkBorderNodeLabel(eastBorderNode.getLabel(), Position.at(DEFAULT_BORDER_NODE_SIZE.getWidth(), DEFAULT_BORDER_NODE_SIZE.getHeight()), BORDER_NODE_LABEL_TEXT_BOUNDS);
     }
 
     private void checkBorderNodesAtInitialPosition(List<NodeLayoutData> borderNodes) {
@@ -119,6 +172,8 @@ public class BorderNodePositionTests {
         incrementalLayoutEngine.layout(resizeEvent, initializeDiagram, new LayoutConfiguratorRegistry(List.of()).getDefaultLayoutConfigurator());
 
         this.checkBorderNodesAtInitialPosition(borderNodes);
+
+        this.checkBorderNodeLabel(borderNodes.get(0).getLabel(), BORDER_NODE_LABEL_TEXT_POSITION, BORDER_NODE_LABEL_TEXT_BOUNDS);
     }
 
     @Test
@@ -142,6 +197,7 @@ public class BorderNodePositionTests {
 
         this.checkBorderNodesAtInitialPosition(borderNodes);
 
+        this.checkBorderNodeLabel(borderNodes.get(0).getLabel(), BORDER_NODE_LABEL_TEXT_POSITION, BORDER_NODE_LABEL_TEXT_BOUNDS);
     }
 
     private void checkBorderNodesAfterResize(List<NodeLayoutData> borderNodes) {
@@ -212,7 +268,7 @@ public class BorderNodePositionTests {
         return diagramLayoutData;
     }
 
-    private NodeLayoutData createBorderNodeLayoutData(Position position, Size size, IContainerLayoutData parent, String nodeType) {
+    private NodeLayoutData createBorderNodeLayoutData(Position position, Size size, IContainerLayoutData parent, String nodeType, LabelLayoutData labelLayoutData) {
         NodeLayoutData nodeLayoutData = new NodeLayoutData();
         nodeLayoutData.setId(UUID.randomUUID().toString());
         nodeLayoutData.setParent(parent);
@@ -220,6 +276,13 @@ public class BorderNodePositionTests {
         nodeLayoutData.setSize(size);
         nodeLayoutData.setNodeType(nodeType);
         nodeLayoutData.setBorderNode(true);
+        nodeLayoutData.setLabel(labelLayoutData);
+        return nodeLayoutData;
+    }
+
+    private NodeLayoutData createBorderNodeLayoutData(Position position, Size size, IContainerLayoutData parent, String nodeType) {
+        NodeLayoutData nodeLayoutData = this.createBorderNodeLayoutData(position, size, parent, nodeType,
+                this.createLabelLayoutData(BORDER_NODE_LABEL_TEXT_POSITION, "any", BORDER_NODE_LABEL_TEXT_BOUNDS)); //$NON-NLS-1$
         return nodeLayoutData;
     }
 
@@ -231,16 +294,16 @@ public class BorderNodePositionTests {
         nodeLayoutData.setSize(size);
         nodeLayoutData.setNodeType(nodeType);
         nodeLayoutData.setChildrenNodes(new ArrayList<>());
-        nodeLayoutData.setLabel(this.createLabelLayoutData(Position.at(0, 0), Size.of(0, 0), nodeLayoutData, "inside")); //$NON-NLS-1$
+        nodeLayoutData.setLabel(this.createLabelLayoutData(Position.at(0, 0), "inside", new TextBounds(Size.of(0, 0), Position.at(0, 0)))); //$NON-NLS-1$
         return nodeLayoutData;
     }
 
-    private LabelLayoutData createLabelLayoutData(Position position, Size size, IContainerLayoutData parent, String labelType) {
+    private LabelLayoutData createLabelLayoutData(Position position, String labelType, TextBounds textBounds) {
         LabelLayoutData labelLayoutData = new LabelLayoutData();
         labelLayoutData.setId(UUID.randomUUID().toString());
         labelLayoutData.setPosition(position);
         labelLayoutData.setLabelType(labelType);
-        labelLayoutData.setTextBounds(new TextBounds(Size.of(0, 0), Position.at(0, 0)));
+        labelLayoutData.setTextBounds(textBounds);
         return labelLayoutData;
     }
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -355,8 +355,8 @@ public class ELKDiagramConverter implements IELKDiagramConverter {
         elkPort.setProperty(PROPERTY_TYPE, borderNode.getType());
 
         TextBounds textBounds = this.textBoundsService.getBounds(borderNode.getLabel());
-        double width = Math.max(textBounds.getSize().getWidth(), borderNode.getSize().getWidth());
-        double height = Math.max(textBounds.getSize().getHeight(), borderNode.getSize().getHeight());
+        double width = borderNode.getSize().getWidth();
+        double height = borderNode.getSize().getHeight();
 
         elkPort.setDimensions(width, height);
         elkPort.setParent(elkNode);

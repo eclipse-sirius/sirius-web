@@ -245,7 +245,7 @@ export const ContextualPalette = ({
   });
 
   let renameEntry;
-  if (invokeLabelEdit && !(targetElement instanceof BorderNode)) {
+  if (invokeLabelEdit) {
     renameEntry = (
       <div className={classes.toolEntry}>
         <Tool tool={editTool} thumbnail={true} onClick={() => invokeLabelEdit()} />
