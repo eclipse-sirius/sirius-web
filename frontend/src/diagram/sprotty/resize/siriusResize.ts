@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 THALES GLOBAL SERVICES.
+ * Copyright (c) 2021, 2022 THALES GLOBAL SERVICES.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { decorate, inject } from 'inversify';
-import { Command, CommandExecutionContext, CommandReturn, SModelElement, SNode, TYPES } from 'sprotty';
+import { Command, CommandExecutionContext, CommandReturn, SModelElement, SNode, SPort, TYPES } from 'sprotty';
 import { Action, Dimension, Point } from 'sprotty-protocol';
 
 export class ResizeAction implements Action {
@@ -34,7 +34,7 @@ export class SiriusResizeCommand extends Command {
     const index = context.root.index;
     const elementResize: ElementResize = this.action.resize;
     const element: SModelElement = index.getById(elementResize.elementId);
-    if (this.isNode(element)) {
+    if (this.isNode(element) || this.isPort(element)) {
       const positionDelta: Point = {
         x: elementResize.newPosition.x - element.position.x,
         y: elementResize.newPosition.y - element.position.y,
@@ -47,35 +47,37 @@ export class SiriusResizeCommand extends Command {
       let validSize = elementResize.newSize;
       let validPosition = elementResize.newPosition;
 
-      //If the element size is decreased, we compute a valid size and position to make sure that all children are still within the new bounds.
-      if (
-        element.children.filter((child) => this.isNode(child)).length > 0 &&
-        this.sizeDecreased(sizeDelta, positionDelta)
-      ) {
-        const [minTopLeft, maxBottomRight] = this.getChildrenLimits(element);
-        //A positive position delta means that the resize from the NW has been done toward the center of the figure (the size is decreased)
-        if (positionDelta.x > 0 || positionDelta.y > 0) {
-          const previousValidPositionDelta = validPositionDelta;
-          validPositionDelta = this.computeValidPositionDelta(validPositionDelta, minTopLeft);
-          validPosition = {
-            x: element.position.x + validPositionDelta.x,
-            y: element.position.y + validPositionDelta.y,
-          };
-          //If the valid position has been modified, we need to modify the size
-          const positionCorrection = {
-            x: previousValidPositionDelta.x - validPositionDelta.x,
-            y: previousValidPositionDelta.y - validPositionDelta.y,
-          };
-          validSize = {
-            width: validSize.width + positionCorrection.x,
-            height: validSize.height + positionCorrection.y,
-          };
+      if (this.isNode(element)) {
+        //If the element size is decreased, we compute a valid size and position to make sure that all children are still within the new bounds.
+        if (
+          element.children.filter((child) => this.isNode(child)).length > 0 &&
+          this.sizeDecreased(sizeDelta, positionDelta)
+        ) {
+          const [minTopLeft, maxBottomRight] = this.getChildrenLimits(element);
+          //A positive position delta means that the resize from the NW has been done toward the center of the figure (the size is decreased)
+          if (positionDelta.x > 0 || positionDelta.y > 0) {
+            const previousValidPositionDelta = validPositionDelta;
+            validPositionDelta = this.computeValidPositionDelta(validPositionDelta, minTopLeft);
+            validPosition = {
+              x: element.position.x + validPositionDelta.x,
+              y: element.position.y + validPositionDelta.y,
+            };
+            //If the valid position has been modified, we need to modify the size
+            const positionCorrection = {
+              x: previousValidPositionDelta.x - validPositionDelta.x,
+              y: previousValidPositionDelta.y - validPositionDelta.y,
+            };
+            validSize = {
+              width: validSize.width + positionCorrection.x,
+              height: validSize.height + positionCorrection.y,
+            };
+          }
+          if (sizeDelta.x < 0 || sizeDelta.y < 0) {
+            validSize = this.computeValidSize(validSize, maxBottomRight);
+          }
         }
-        if (sizeDelta.x < 0 || sizeDelta.y < 0) {
-          validSize = this.computeValidSize(validSize, maxBottomRight);
-        }
+        this.updateChildrenRelativePosition(element, validPositionDelta);
       }
-      this.updateChildrenRelativePosition(element, validPositionDelta);
       element.size = validSize;
       element.position = validPosition;
     }
@@ -138,6 +140,9 @@ export class SiriusResizeCommand extends Command {
 
   private isNode(element: SModelElement): element is SNode {
     return element instanceof SNode;
+  }
+  private isPort(element: SModelElement): element is SPort {
+    return element instanceof SPort;
   }
   undo(context: CommandExecutionContext): CommandReturn {
     return context.root;

@@ -59,7 +59,8 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/1081[#1081] [workbench] It is now possible to specify the component to display in the main area when no representation is open instead of the `OnboardArea` (which is still the default when there is no override)
 - https://github.com/eclipse-sirius/sirius-components/issues/1070[#1070] [explorer] When selecting an element or opening a representation (for example from its URL or from the onboard area), it is automatically made visible and selected in the explorer.
 - https://github.com/eclipse-sirius/sirius-components/issues/919[#919] [diagram] Support the parent container resize for the border nodes on back-end
-- https://github.com/eclipse-sirius/sirius-components/issues/1071[#1071] [diagram] Add a label for the border nodes.
+- https://github.com/eclipse-sirius/sirius-components/issues/1071[#1071] [diagram] Add a label for the border nodes
+- https://github.com/eclipse-sirius/sirius-components/issues/1071[#1071] [diagram] Improve the resizing of the border nodes
 
 === New features
 

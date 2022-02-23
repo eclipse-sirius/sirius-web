@@ -17,6 +17,7 @@ import java.util.Optional;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.diagrams.events.MoveEvent;
+import org.eclipse.sirius.components.diagrams.events.ResizeEvent;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.LabelLayoutData;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.NodeLayoutData;
 import org.eclipse.sirius.components.diagrams.layout.incremental.utils.RectangleSide;
@@ -32,15 +33,22 @@ public class BorderNodeLabelPositionProvider {
         LabelLayoutData label = borderNodeLayoutData.getLabel();
         if (label != null) {
             // @formatter:off
-            Boolean isBorderNodeMoved = optionalDiagramElementEvent
+            boolean isBorderNodeMoved = optionalDiagramElementEvent
                     .filter(MoveEvent.class::isInstance)
                     .map(MoveEvent.class::cast)
                     .map(MoveEvent::getNodeId)
                     .filter(borderNodeLayoutData.getId()::equals)
                     .isPresent();
+
+            boolean isBorderNodeResized = optionalDiagramElementEvent
+                    .filter(ResizeEvent.class::isInstance)
+                    .map(ResizeEvent.class::cast)
+                    .map(ResizeEvent::getNodeId)
+                    .filter(borderNodeLayoutData.getId()::equals)
+                    .isPresent();
             // @formatter:on
 
-            if (borderNodeLayoutData.getLabel().getPosition().getX() == -1 || Boolean.TRUE.equals(isBorderNodeMoved)) {
+            if (borderNodeLayoutData.getLabel().getPosition().getX() == -1 || isBorderNodeMoved || isBorderNodeResized) {
                 if (RectangleSide.NORTH.equals(side)) {
                     label.setPosition(Position.at(-label.getTextBounds().getSize().getWidth(), -label.getTextBounds().getSize().getHeight()));
                 } else if (RectangleSide.EAST.equals(side)) {
