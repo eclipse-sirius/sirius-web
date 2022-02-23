@@ -1,0 +1,100 @@
+= ADR-060 - Add support for the edition of routing points
+
+== Context
+
+We have to support the edition of edges routing points.
+
+The only routing points we can have are those created when the ELK layout is applied, when a diagram is created or when the user execute the _Arrange All_ action.
+As long as the user does not update the position or the bounds of the source or the target of an edge layouted with ELK, existing routing points will be displayed.
+But, once the user moves or resize the source or the target of edge, routing points are removed making the edge straight.
+
+== Decision
+
+=== Frontend
+
+We will rely on Sprotty to handle the creation, edition and removal of routing points.
+With Sprotty when an edge is selected it displayes selectors along the edge, one for the source, one for the target, one for every existing routing points and one for every line between two routing points.
+There are four kinds of selectors:
+- The one for the source is a 'source' selector.
+- The one for the target is a 'target' selector.
+- Those for routing points are 'junction' selectors.
+- Those between routing points are 'line' selectors.
+
+When one 'line' selector is dragged then dropped, sprotty transforms the line selector into a 'junction' selector and creates two 'line' selectors on both sides of the 'junction' selector, then Sprotty creates a new routing point on the edge.
+When one 'junction' selector is dragged then dropped, Sprotty can have two behavior depending on the drop position.
+If the drop position make the portion of the edge almost straight, Sprotty makes the 'junction' a 'line' again, then remove the routing point associated with the 'junction' selector. Otherwise Sprotty only updates the position of the routing points associated with the 'junction'.
+
+Once Sprotty has created, updated or removed a routing point, we will send the whole routing points of the edited edge thanks to a new mutation:
+
+```
+type Mutation {
+  updateEdgeRoutingPoints(input: UpdateEdgeRoutingPointsInput!): UpdateEdgeRoutingPointsPayload!
+}
+
+input UpdateEdgeRoutingPointsInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  diagramElementId: ID!
+  routingPoints: [PositionInput]!
+}
+
+input PositionInput {
+  x: Float!
+  y: Float!
+}
+
+type UpdateEdgeRoutingPointsSuccessPayload {
+  id: ID!
+}
+```
+
+Thanks to this new API, the component `DiagramWebSocketContainer` will be able to send the routing points to let the backend refreshes the diagram.
+
+```
+export const updateEdgeRoutingPointsOp = gql`
+  mutation updateEdgeRoutingPoints($input: UpdateEdgeRoutingPointsInput!) {
+    updateEdgeRoutingPoints(input: $input) {
+      __typename
+      ... on ErrorPayload {
+        message
+      }
+    }
+  }
+`;
+```
+
+=== Backend
+
+On the backend, a new diagram event handler will be introduced to handle the edge routing points to update.
+It will dispatch a new `UpdateEdgeRoutingPointsEvent` diagram event that lets the `IncrementalLayoutEngine` be aware of the routing points to handle on the next diagram refresh.
+
+```java
+public class UpdateEdgeRoutingPointsEvent implements IDiagramEvent {
+
+    private final String edgeId;
+
+    private final List<Position> routingPoints;
+
+    public UpdateEdgeRoutingPointsEvent(String edgeId, List<Position> routingPoints) {
+        this.edgeId = Objects.requireNonNull(edgeId);
+        this.routingPoints = Objects.requireNonNull(routingPoints);
+    }
+
+    public String getEdgeId() {
+        return this.edgeId;
+    }
+
+    public List<Position> getRoutingPoints() {
+        return this.routingPoints;
+    }
+}
+```
+
+== Status
+
+Accepted
+
+== Consequences
+
+Any application integrating Sirius Components will have to provide a data fetcher to dispatch to the new diagram event handler.

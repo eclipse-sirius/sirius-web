@@ -4,6 +4,8 @@
 
 === Architectural decision records
 
+- [ADR-60] Add support for the edition of routing points
+
 === Deprecation warning
 
 === Breaking changes
@@ -18,7 +20,8 @@
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1212[#1212] [form] Add styling support on Textfield Widget in View DSL
 - https://github.com/eclipse-sirius/sirius-components/issues/1233[#1233] [form] Handle styling of the View DSL widgets
-- https://github.com/eclipse-sirius/sirius-components/issues/1236[#1236] [form] Handle conditional styling of the View DSL widgets 
+- https://github.com/eclipse-sirius/sirius-components/issues/1236[#1236] [form] Handle conditional styling of the View DSL widgets
+- https://github.com/eclipse-sirius/sirius-components/issues/997[#997] [diagram] Add the support for edition of edges routing points.
 
 == v2022.5.0
 
