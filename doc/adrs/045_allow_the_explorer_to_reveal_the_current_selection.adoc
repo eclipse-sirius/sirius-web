@@ -1,0 +1,137 @@
+= ADR-045 - Allow the explorer to reveal the current selection
+
+== Context
+
+We need to be able to reveal the current selection in the explorer.
+For that, when the selection changes, the explorer should be expanded to reveal the various selection entries.
+
+The explorer is subscribed to the tree representation of the backend using both the `editingContextId` and the list of the identifier of the tree items to expand in a variable named `expanded`.
+In order to compute the GraphQL subscription itself, we need the max depth of the tree that we want to display in order to create a subscription with this specific depth since GraphQL does not support recursion on purpose.
+
+```
+const { error } = useSubscription(gql(getTreeEventSubscription(maxDepth)), {
+  variables: {
+    input: {
+      id,
+      editingContextId,
+      expanded,
+    },
+  },
+  fetchPolicy: 'no-cache',
+  skip: viewState === COMPLETE__STATE,
+  onSubscriptionData: ({ subscriptionData }) => dispatch({ type: HANDLE_DATA__ACTION, message: subscriptionData }),
+  onSubscriptionComplete: () => dispatch({ type: HANDLE_COMPLETE__ACTION }),
+});
+```
+
+== Decision
+
+=== Frontend
+
+When the selection is modified, we will ask the server for both the identifier of the tree items that should be expanded to reveal the selection and the max depth of the tree items to reveal.
+As a result, we will introduce a new query to retrieve both pieces of information:
+
+```
+type EditingContext {
+  treePath(selectionEntryIds: [ID!]!): TreePath!
+}
+
+type TreePath {
+  treeItemIdsToExpand: [ID!]!
+  maxDepth: Int!
+}
+```
+
+Thanks to this new API, the component `ExplorerWebSocketContainer` will be able to retrieve the identifier of the tree items to exand and the max depth of the new version of the explorer to which it should be subscribed.
+
+```
+const getTreePathQuery = gql`
+  query getTreePath($editingContextId: ID!, $selectionEntryIds: [ID!]!) {
+    viewer {
+      editingContext(editingContextId: $editingContextId) {
+        treePath(selectionEntryIds: $selectionEntryIds) {
+          treeItemIdsToExpand
+          maxDepth
+        }
+      }
+    }
+  }
+`
+```
+
+From this query, we can get the up to date version of the tree path matching the current selection using `useQuery`:
+
+```
+const variables: GQLGetTreePathVariables = {
+  editingContextId,
+  selectionEntryIds: selection.entries.map(entry => entry.id)
+};
+const { loading, data, error } = useQuery<GQLGetTreePathData, GQLGetTreePathVariables>(getTreePathQuery, { variables });
+
+useEffect(() => {
+  if (!loading) {
+    if (data) {
+      dispatch({ type: HANDLE_TREE_PATH, data });
+    }
+    if (error) {
+      dispatch({ type: HANDLE_ERROR__ACTION, message: error });
+    }
+  }
+}, [loading, data, error]);
+```
+
+Now the state machine can simply update the current depth of the requested tree if the depth coming from the query is higher than the current depth and it can merge the list of the `treeItemIdsToExpand` with the current list of identifier contained in the variable `expanded`.
+If the depth of the subscription is modified or if the list of identifier in the `expanded` variable is changed, then the subscription should be updated and a new tree should be computed.
+This new tree will reveal the content of the selection.
+
+If the new tree path does not require a bigger depth or additional tree items to be expanded (because they are already expanded) then the current subscription should remain the same.
+
+
+=== Backend
+
+On the backend, a new dedicated service will be introduced to compute the tree path.
+This service will be called by an `ITreeEventHandler` in the package `org.eclipse.sirius.components.collaborative.trees.handlers` named `TreePathEventHandler`.
+The GraphQL layer should send a tree input, `TreePathInput`, to this event handler in order to compute the tree path since the editing context may be required for this computation.
+
+```
+package org.eclipse.sirius.components.collaborative.trees.api;
+
+public interface ITreePathProvider {
+  boolean canHandle(Tree tree);
+  TreePath handle(IEditingContext editingContext, Tree tree, TreePathInput input);
+}
+```
+
+Using this interface, anyone contributing a `TreeDescription` (for the explorer) will be able to provide a class to compute the tree path.
+For example, in Sirius Web we could have an ExplorerTreePathProvider like this one:
+
+```
+package org.eclipse.sirius.web.services.explorer;
+
+@Service
+public ExplorerTreePathProvider implements ITreePathProvider {
+
+  @Override
+  public boolean canHandle(Tree tree) {
+    return tree.getDescriptionId().equals(UUID.nameUUIDFromBytes("explorer_tree_description".getBytes()));
+  }
+
+  @Override
+  public TreePath handle(IEditingContext editingContext, Tree tree, TreePathInput input) {
+    // Compute the tree path using the tree, the editing context, and the input
+    return new TreePath(List.of(), 0);
+  }
+}
+```
+
+If there are no `ITreePathProvider` for the given explorer, then the result should be an empty list with `0` as the max depth.
+As a result, the state machine of the frontend should keep the current max depth (which will be bigger than 0) and it will not add anything to the list of tree items to expand.
+
+
+== Status
+
+WIP
+
+== Consequences
+
+Any application integrating Sirius Components will have to provide an `ITreePathProvider` matching the description of its `IExplorerDescriptionProvider` in order to compute the tree path of the selection.

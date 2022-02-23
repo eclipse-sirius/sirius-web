@@ -10,6 +10,7 @@
 - [ADR-042] Use wildcard collections instead of List<Object> in Providers
 - [ADR-043] Consider multiple objects as the input of a form
 - [ADR-044] Use border node "snap to parent container" algorithm
+- [ADR-045] Allow the explorer to reveal the current selection
 
 === Deprecation warning
 - [core] The various DTOs related to the creation and renaming of both documents and representations will be removed from the project at some point. The only reason why we will keep them for the moment is that some of them are used to trigger some specific behavior in the `EditingContextEventProcessor`. The split of the representation metadata should help us remove those special use cases
