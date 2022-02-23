@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 THALES GLOBAL SERVICES.
+ * Copyright (c) 2021, 2022 THALES GLOBAL SERVICES.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { findParentByFeature, isViewport, MoveMouseListener, SModelElement, SNode, SPort } from 'sprotty';
+import {
+  findParentByFeature,
+  isViewport,
+  MoveMouseListener,
+  SConnectableElement,
+  SModelElement,
+  SNode,
+  SPort,
+} from 'sprotty';
 import { Action, Dimension, Point } from 'sprotty-protocol';
 import { Bounds } from 'sprotty-protocol/';
 import { ElementResize, ResizeAction } from './resize/siriusResize';
@@ -28,7 +36,7 @@ const PORT_OFFSET = 8;
 export class SiriusDragAndDropMouseListener extends MoveMouseListener {
   startResizePosition: Point | undefined;
   selector: String;
-  intialTarget: SNode;
+  intialTarget: SConnectableElement;
   startingPosition: Point;
   startingSize: Dimension;
 
@@ -39,7 +47,7 @@ export class SiriusDragAndDropMouseListener extends MoveMouseListener {
       //if the click is perfomed on a resize selector, we switch from the move mode to resize mode.
       const selector = this.isResizeSelector(event);
       if (selector) {
-        if (this.isSNode(target)) {
+        if (this.isSNode(target) || this.isSPort(target)) {
           this.selector = selector;
           this.startResizePosition = this.startDragPosition;
           //Deactivate the move

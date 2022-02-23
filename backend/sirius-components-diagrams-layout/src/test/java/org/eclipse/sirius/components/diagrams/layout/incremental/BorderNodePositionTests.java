@@ -177,6 +177,30 @@ public class BorderNodePositionTests {
     }
 
     @Test
+    public void testResizeBorderNodeEvent() {
+        DiagramLayoutData initializeDiagram = this.initializeDiagram();
+        List<NodeLayoutData> borderNodes = initializeDiagram.getChildrenNodes().get(0).getBorderNodes();
+
+        NodeSizeProvider nodeSizeProvider = new NodeSizeProvider(new ImageSizeProvider());
+        IncrementalLayoutEngine incrementalLayoutEngine = new IncrementalLayoutEngine(nodeSizeProvider);
+
+        // decrease the height of the west border node
+        NodeLayoutData westBorderNode = borderNodes.get(6);
+        Optional<IDiagramEvent> resizeEvent = Optional
+                .of(new ResizeEvent(westBorderNode.getId(), ZERO_POSITION, Size.of(DEFAULT_BORDER_NODE_SIZE.getWidth(), DEFAULT_BORDER_NODE_SIZE.getHeight() / 2)));
+        incrementalLayoutEngine.layout(resizeEvent, initializeDiagram, new LayoutConfiguratorRegistry(List.of()).getDefaultLayoutConfigurator());
+
+        this.checkBorderNodeLabel(westBorderNode.getLabel(), Position.at(BORDER_NODE_LABEL_TEXT_POSITION.getX(), BORDER_NODE_LABEL_TEXT_POSITION.getY() / 2), BORDER_NODE_LABEL_TEXT_BOUNDS);
+
+        // increase the width and the height of the east border node
+        NodeLayoutData eastBorderNode = borderNodes.get(3);
+        resizeEvent = Optional.of(new ResizeEvent(eastBorderNode.getId(), ZERO_POSITION, Size.of(DEFAULT_BORDER_NODE_SIZE.getWidth() + 10, DEFAULT_BORDER_NODE_SIZE.getHeight() + 10)));
+        incrementalLayoutEngine.layout(resizeEvent, initializeDiagram, new LayoutConfiguratorRegistry(List.of()).getDefaultLayoutConfigurator());
+
+        this.checkBorderNodeLabel(eastBorderNode.getLabel(), Position.at(eastBorderNode.getSize().getWidth(), eastBorderNode.getSize().getHeight()), BORDER_NODE_LABEL_TEXT_BOUNDS);
+    }
+
+    @Test
     public void testResizeParentNodeNorthWestEvent() {
         DiagramLayoutData initializeDiagram = this.initializeDiagram();
         String nodeId = initializeDiagram.getChildrenNodes().get(0).getId();
