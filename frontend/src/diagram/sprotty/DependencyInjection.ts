@@ -56,7 +56,6 @@ import {
   SLabel,
   SModelElement,
   SRoutingHandle,
-  SRoutingHandleView,
   TYPES,
   updateModule,
   viewportModule,
@@ -67,6 +66,8 @@ import { Action, Point, RequestPopupModelAction, SetPopupModelAction } from 'spr
 import { siriusCommonModule } from './common/siriusCommonModule';
 import { siriusEdgeEditModule } from './edgeEdition/siriusEdgeEditModule';
 import { siriusRoutingModule } from './routing/siriusRoutingModule';
+import { RoutingHandleView } from './views/RoutingHandleView';
+import { VolatileRoutingHandleView } from './views/VolatileRoutingHandleView';
 
 const labelEditUiModule = new ContainerModule((bind, _unbind, isBound) => {
   const context = { bind, isBound };
@@ -119,8 +120,8 @@ const siriusWebContainerModule = new ContainerModule((bind, unbind, isBound, reb
   configureView({ bind, isBound }, 'html', HtmlRootView);
   // @ts-ignore
   configureView({ bind, isBound }, 'pre-rendered', PreRenderedView);
-  configureModelElement(context, 'routing-point', SRoutingHandle, SRoutingHandleView);
-  configureModelElement(context, 'volatile-routing-point', SRoutingHandle, SRoutingHandleView);
+  configureModelElement(context, 'routing-point', SRoutingHandle, RoutingHandleView);
+  configureModelElement(context, 'volatile-routing-point', SRoutingHandle, VolatileRoutingHandleView);
 });
 
 /**
