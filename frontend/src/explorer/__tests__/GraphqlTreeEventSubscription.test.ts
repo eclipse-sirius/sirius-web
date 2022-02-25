@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import gql from 'graphql-tag';
-import { getTreeEventSubscription } from '../getTreeEventSubscription';
+import { getTreeEventSubscription } from '../operations';
 
 const getDocumentSubscription = gql`
   subscription treeEvent($input: TreeEventInput!) {

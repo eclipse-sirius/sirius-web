@@ -33,6 +33,7 @@ const treeLoadedState = {
   },
   expanded: [],
   maxDepth: 1,
+  synchronized: true,
   message: '',
 };
 
@@ -46,6 +47,7 @@ const treeLoadedWithErrorState = {
   },
   expanded: [],
   maxDepth: 1,
+  synchronized: false,
   message: 'An error has occured while retrieving the content from the server',
 };
 
@@ -78,6 +80,7 @@ describe('ExplorerWebSocketContainer - reducer', () => {
       tree: undefined,
       expanded: [],
       maxDepth: 1,
+      synchronized: true,
       message: '',
       modal: undefined,
     });
@@ -97,6 +100,7 @@ describe('ExplorerWebSocketContainer - reducer', () => {
       tree: undefined,
       expanded: [],
       maxDepth: 1,
+      synchronized: false,
       message: 'An error has occured while retrieving the content from the server',
       modal: undefined,
     });
@@ -114,6 +118,7 @@ describe('ExplorerWebSocketContainer - reducer', () => {
       tree: undefined,
       expanded: [],
       maxDepth: 1,
+      synchronized: false,
       message: message,
       modal: undefined,
     });
@@ -131,6 +136,7 @@ describe('ExplorerWebSocketContainer - reducer', () => {
       tree: message.data.treeEvent.tree,
       expanded: [],
       maxDepth: 1,
+      synchronized: true,
       message: '',
       modal: undefined,
     });
@@ -148,6 +154,7 @@ describe('ExplorerWebSocketContainer - reducer', () => {
       tree: message.data.treeEvent.tree,
       expanded: [],
       maxDepth: 1,
+      synchronized: prevState.synchronized,
       message: '',
       modal: undefined,
     });
@@ -165,6 +172,7 @@ describe('ExplorerWebSocketContainer - reducer', () => {
       tree: prevState.tree,
       expanded: prevState.expanded,
       maxDepth: prevState.maxDepth,
+      synchronized: prevState.synchronized,
       message: message,
       modal: undefined,
     });
@@ -182,6 +190,7 @@ describe('ExplorerWebSocketContainer - reducer', () => {
       tree: message.data.treeEvent.tree,
       expanded: [],
       maxDepth: 1,
+      synchronized: prevState.synchronized,
       message: '',
       modal: undefined,
     });
@@ -199,6 +208,7 @@ describe('ExplorerWebSocketContainer - reducer', () => {
       tree: undefined,
       expanded: [],
       maxDepth: 1,
+      synchronized: false,
       message: '',
       modal: undefined,
     });

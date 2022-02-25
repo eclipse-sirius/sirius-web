@@ -204,7 +204,7 @@ export const TreeItem = ({
   }
 
   let children = null;
-  if (item.expanded) {
+  if (item.expanded && item.children) {
     children = (
       <ul className={styles.ul}>
         {item.children.map((childItem) => {

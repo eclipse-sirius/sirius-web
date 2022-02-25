@@ -2,6 +2,15 @@ extend type Subscription {
   treeEvent(input: TreeEventInput!): TreeEventPayload!
 }
 
+extend type EditingContext {
+  treePath(treeId: ID!, selectionEntryIds: [ID!]!): TreePath!
+}
+
+type TreePath {
+  treeItemIdsToExpand: [ID!]!
+  maxDepth: Int!
+}
+
 input TreeEventInput {
   id: ID!
   editingContextId: ID!
@@ -39,7 +48,7 @@ type TreeDescription implements RepresentationDescription {
 }
 
 extend type Mutation {
-  deleteTreeItem(input: DeleteTreeItemInput!): DeleteTreeItemPayload 
+  deleteTreeItem(input: DeleteTreeItemInput!): DeleteTreeItemPayload
   renameTreeItem(input: RenameTreeItemInput!): RenameTreeItemPayload
 }
 
@@ -54,7 +63,7 @@ type DeleteTreeItemSuccessPayload {
   id: ID!
 }
 
-union DeleteTreeItemPayload = DeleteTreeItemSuccessPayload | ErrorPayload 
+union DeleteTreeItemPayload = DeleteTreeItemSuccessPayload | ErrorPayload
 
 input RenameTreeItemInput {
     id: ID!
@@ -63,7 +72,7 @@ input RenameTreeItemInput {
     treeItemId: ID!
     newLabel: String!
 }
- 
+
 type RenameTreeItemSuccessPayload {
   id: ID!
 }

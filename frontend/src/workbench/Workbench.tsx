@@ -86,6 +86,7 @@ export const Workbench = ({
   const { registry } = useContext(RepresentationContext);
   const [{ value, context }, dispatch] = useMachine<WorkbenchContext, WorkbenchEvent>(workbenchMachine, {
     context: {
+      selection: { entries: initialRepresentationSelected ? [initialRepresentationSelected] : [] },
       displayedRepresentation: initialRepresentationSelected,
       representations: initialRepresentationSelected ? [initialRepresentationSelected] : [],
     },

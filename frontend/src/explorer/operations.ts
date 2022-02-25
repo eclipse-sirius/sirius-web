@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,22 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+
+import gql from 'graphql-tag';
+
+export const getTreePathQuery = gql`
+  query getTreePath($editingContextId: ID!, $treeId: ID!, $selectionEntryIds: [ID!]!) {
+    viewer {
+      editingContext(editingContextId: $editingContextId) {
+        treePath(treeId: $treeId, selectionEntryIds: $selectionEntryIds) {
+          treeItemIdsToExpand
+          maxDepth
+        }
+      }
+    }
+  }
+`;
+
 export const getTreeEventSubscription = (depth) => {
   const treeChildren = recursiveGetChildren(depth);
   const subscription = `

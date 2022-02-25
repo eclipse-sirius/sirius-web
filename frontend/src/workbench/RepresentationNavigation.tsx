@@ -86,7 +86,11 @@ export const RepresentationNavigation = ({
             label={
               <div className={classes.tabLabel}>
                 {representation.label}
-                <CloseIcon fontSize="small" onClick={(event) => onRepresentationClose(event, representation)} />
+                <CloseIcon
+                  fontSize="small"
+                  onClick={(event) => onRepresentationClose(event, representation)}
+                  data-testid={`close-representation-tab-${representation.label}`}
+                />
               </div>
             }
             key={representation.id}
