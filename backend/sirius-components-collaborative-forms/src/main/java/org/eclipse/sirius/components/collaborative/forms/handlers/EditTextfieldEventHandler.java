@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.collaborative.forms.handlers;
 
 import java.util.Objects;
+import java.util.function.Function;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
@@ -26,6 +27,7 @@ import org.eclipse.sirius.components.collaborative.forms.messages.ICollaborative
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.forms.Form;
+import org.eclipse.sirius.components.forms.Textarea;
 import org.eclipse.sirius.components.forms.Textfield;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
@@ -78,11 +80,16 @@ public class EditTextfieldEventHandler implements IFormEventHandler {
             EditTextfieldInput input = (EditTextfieldInput) formInput;
 
             // @formatter:off
-            var optionalTextfield = this.formQueryService.findWidget(form, input.getTextfieldId())
-                    .filter(Textfield.class::isInstance)
-                    .map(Textfield.class::cast);
-
-            IStatus status = optionalTextfield.map(Textfield::getNewValueHandler)
+            IStatus status = this.formQueryService.findWidget(form, input.getTextfieldId())
+                    .map(widget -> {
+                            Function<String, IStatus> handlerFunction = null;
+                            if (widget instanceof Textfield) {
+                                handlerFunction = ((Textfield) widget).getNewValueHandler();
+                            } else if (widget instanceof Textarea) {
+                                handlerFunction = ((Textarea) widget).getNewValueHandler();
+                            }
+                            return handlerFunction;
+                        })
                     .map(handler -> handler.apply(input.getNewValue()))
                     .orElse(new Failure("")); //$NON-NLS-1$
             // @formatter:on

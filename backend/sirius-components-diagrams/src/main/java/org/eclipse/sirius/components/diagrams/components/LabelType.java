@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ package org.eclipse.sirius.components.diagrams.components;
  */
 public enum LabelType {
 
+    OUTSIDE("label:outside"), //$NON-NLS-1$
     INSIDE_CENTER("label:inside-center"), //$NON-NLS-1$
     OUTSIDE_CENTER("label:outside-center"), //$NON-NLS-1$
     EDGE_BEGIN("label:edge-begin"), //$NON-NLS-1$

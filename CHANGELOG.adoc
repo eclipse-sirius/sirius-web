@@ -77,6 +77,7 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/1026[#1026] [compatibility] Add support for `OperationAction`. The action are converted to regular tools available in the palette of the frontend
 - https://github.com/eclipse-sirius/sirius-components/issues/937[#937] [diagram] Add the ability to export diagram as SVG images
 - https://github.com/eclipse-sirius/sirius-components/issues/779[#779] [diagram] Add support for tools preconditions
+- https://github.com/eclipse-sirius/sirius-components/issues/781[#781] [diagram] Add support for multiline labels
 
 
 == v2022.01.0

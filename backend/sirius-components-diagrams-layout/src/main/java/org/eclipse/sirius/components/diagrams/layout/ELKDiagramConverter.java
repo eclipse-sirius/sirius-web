@@ -320,8 +320,8 @@ public class ELKDiagramConverter implements IELKDiagramConverter {
             elkNode.setDimensions(node.getSize().getWidth(), node.getSize().getHeight());
             elkNode.setLocation(node.getPosition().getX(), node.getPosition().getY());
         } else {
-            double width = Math.max(textBounds.getSize().getWidth(), node.getSize().getWidth());
-            double height = Math.max(textBounds.getSize().getHeight(), node.getSize().getHeight());
+            double width = textBounds.getSize().getWidth();
+            double height = textBounds.getSize().getHeight();
             elkNode.setDimensions(width, height);
         }
 

@@ -19,7 +19,7 @@ import {
   Tool,
 } from 'diagram/DiagramWebSocketContainer.types';
 import { convertDiagram } from 'diagram/sprotty/convertDiagram';
-import { SEditableLabel } from 'diagram/sprotty/DependencyInjection';
+import { Label } from 'diagram/sprotty/Diagram.types';
 import {
   SetActiveConnectorToolsAction,
   ShowContextualMenuAction,
@@ -251,7 +251,7 @@ export class DiagramServer extends ModelSource {
       selectedItems.forEach((item) => {
         const label = item.editableLabel;
         if (label) {
-          const editableLabel = item.children.find((c) => c instanceof SEditableLabel);
+          const editableLabel = item.children.find((c) => c instanceof Label);
           if (editableLabel && action.initialText) {
             editableLabel.initialText = action.initialText;
           }

@@ -94,4 +94,8 @@ public class TestDiagramCreationService {
         return this.layoutService.incrementalLayout(editingContext, diagram, Optional.of(diagramEvent));
     }
 
+    public Diagram performElKLayout(IEditingContext editingContext, Diagram diagram) {
+        return this.layoutService.layout(editingContext, diagram);
+    }
+
 }

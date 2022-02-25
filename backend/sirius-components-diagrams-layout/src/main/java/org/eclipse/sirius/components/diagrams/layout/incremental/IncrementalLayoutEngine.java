@@ -152,11 +152,11 @@ public class IncrementalLayoutEngine {
 
         // update the border node once the current node bounds are updated
         Bounds newBounds = Bounds.newBounds().position(node.getPosition()).size(node.getSize()).build();
-        this.layoutBorderNodes(optionalDiagramElementEvent, node.getBorderNodes(), initialNodeBounds, newBounds, layoutConfigurator);
+        List<BorderNodesOnSide> borderNodesOnSide = this.layoutBorderNodes(optionalDiagramElementEvent, node.getBorderNodes(), initialNodeBounds, newBounds, layoutConfigurator);
 
         // recompute the label
         if (node.getLabel() != null) {
-            node.getLabel().setPosition(this.nodeLabelPositionProvider.getPosition(node, node.getLabel()));
+            node.getLabel().setPosition(this.nodeLabelPositionProvider.getPosition(node, node.getLabel(), borderNodesOnSide));
         }
     }
 
@@ -164,8 +164,9 @@ public class IncrementalLayoutEngine {
      * Update the border nodes position according to the side length change where it is located.<br>
      * The aim is to keep the positioning ratio of the border node on its side.
      */
-    private void layoutBorderNodes(Optional<IDiagramEvent> optionalDiagramElementEvent, List<NodeLayoutData> borderNodesLayoutData, Bounds initialNodeBounds, Bounds newNodeBounds,
+    private List<BorderNodesOnSide> layoutBorderNodes(Optional<IDiagramEvent> optionalDiagramElementEvent, List<NodeLayoutData> borderNodesLayoutData, Bounds initialNodeBounds, Bounds newNodeBounds,
             ISiriusWebLayoutConfigurator layoutConfigurator) {
+        List<BorderNodesOnSide> borderNodesPerSide = new ArrayList<>();
         if (!borderNodesLayoutData.isEmpty()) {
             for (NodeLayoutData nodeLayoutData : borderNodesLayoutData) {
                 // 1- update the position of the border node if it has been explicitly moved
@@ -179,7 +180,7 @@ public class IncrementalLayoutEngine {
             }
 
             // 2- recompute the border node
-            List<BorderNodesOnSide> borderNodesPerSide = this.snapBorderNodes(borderNodesLayoutData, initialNodeBounds.getSize(), layoutConfigurator);
+            borderNodesPerSide = this.snapBorderNodes(borderNodesLayoutData, initialNodeBounds.getSize(), layoutConfigurator);
 
             // 3 - move the border node along the side according to the side change
             this.updateBorderNodeAccordingParentResize(optionalDiagramElementEvent, initialNodeBounds, newNodeBounds, borderNodesPerSide, borderNodesLayoutData.get(0).getParent().getId());
@@ -187,6 +188,7 @@ public class IncrementalLayoutEngine {
             // 4- set the label position if the border is newly created
             this.updateBorderNodeLabel(optionalDiagramElementEvent, borderNodesPerSide);
         }
+        return borderNodesPerSide;
     }
 
     private void updateBorderNodeLabel(Optional<IDiagramEvent> optionalDiagramElementEvent, List<BorderNodesOnSide> borderNodesPerSideList) {
