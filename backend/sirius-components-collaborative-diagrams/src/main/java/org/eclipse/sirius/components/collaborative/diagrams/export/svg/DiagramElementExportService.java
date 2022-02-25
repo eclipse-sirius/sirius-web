@@ -54,7 +54,7 @@ public class DiagramElementExportService {
             labelExport.append(this.exportImageElement(style.getIconURL(), -20, -12, Optional.empty()));
         }
 
-        labelExport.append(this.exportTextElement(label.getText(), style));
+        labelExport.append(this.exportTextElement(label.getText(), label.getType(), style));
 
         return labelExport.append("</g>"); //$NON-NLS-1$
     }
@@ -109,16 +109,32 @@ public class DiagramElementExportService {
         return sizeParam.append("height=\"" + size.getHeight() + "\" "); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
-    private StringBuilder exportTextElement(String text, LabelStyle labelStyle) {
+    private StringBuilder exportTextElement(String text, String type, LabelStyle labelStyle) {
         StringBuilder textExport = new StringBuilder();
 
         textExport.append("<text "); //$NON-NLS-1$
         textExport.append("style=\""); //$NON-NLS-1$
         textExport.append("fill: " + labelStyle.getColor() + "; "); //$NON-NLS-1$ //$NON-NLS-2$
         textExport.append(this.exportFont(labelStyle));
+        if (type.contains("center")) { //$NON-NLS-1$
+            textExport.append("text-anchor:middle"); //$NON-NLS-1$
+        }
         textExport.append("\">"); //$NON-NLS-1$
 
-        textExport.append(text);
+        String[] lines = text.split("\\n", -1); //$NON-NLS-1$
+        if (lines.length == 1) {
+            textExport.append(text);
+        } else {
+            textExport.append("<tspan x=\"0\">" + lines[0] + "</tspan>"); //$NON-NLS-1$//$NON-NLS-2$
+            double fontSize = labelStyle.getFontSize();
+            for (int i = 1; i < lines.length; i++) {
+                if (lines[i].isEmpty()) {
+                    // avoid tspan to be ignored if there is only a line return
+                    lines[i] = " "; //$NON-NLS-1$
+                }
+                textExport.append("<tspan x=\"0\" dy=\"" + fontSize + "\">" + lines[i] + "</tspan>"); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+            }
+        }
 
         return textExport.append("</text>"); //$NON-NLS-1$
     }

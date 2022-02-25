@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo and others.
+ * Copyright (c) 2019, 2022 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -136,7 +136,9 @@ public class NodeComponent implements IComponent {
         nodeVariableManager.put(LabelDescription.OWNER_ID, nodeId);
 
         LabelType nodeLabelType = LabelType.INSIDE_CENTER;
-        if (NodeType.NODE_IMAGE.equals(type)) {
+        if (containmentKind == NodeContainmentKind.BORDER_NODE) {
+            nodeLabelType = LabelType.OUTSIDE;
+        } else if (NodeType.NODE_IMAGE.equals(type)) {
             nodeLabelType = LabelType.OUTSIDE_CENTER;
         }
 

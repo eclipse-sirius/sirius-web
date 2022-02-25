@@ -105,8 +105,16 @@ export enum ArrowStyle {
   OutputFillClosedArrow = 'OutputFillClosedArrow',
 }
 
+/**
+ * Extends Sprotty's SLabel to add support for having the initial text when entering
+ * in direct edit mode different from the text's label itself, and makes the
+ * pre-selection of the edited text optional.
+ */
 export class Label extends SLabel {
+  isMultiLine: boolean = true;
   style: LabelStyle;
+  initialText: string;
+  preSelect: boolean = true;
 }
 
 export class LabelStyle {

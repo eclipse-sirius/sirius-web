@@ -15,9 +15,11 @@ package org.eclipse.sirius.components.forms;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.forms.validation.Diagnostic;
+import org.eclipse.sirius.components.representations.IStatus;
 
 /**
  * The text area widget.
@@ -30,6 +32,8 @@ public final class Textarea extends AbstractWidget {
 
     private String value;
 
+    private Function<String, IStatus> newValueHandler;
+
     private Textarea() {
         // Prevent instantiation
     }
@@ -40,6 +44,10 @@ public final class Textarea extends AbstractWidget {
 
     public String getValue() {
         return this.value;
+    }
+
+    public Function<String, IStatus> getNewValueHandler() {
+        return this.newValueHandler;
     }
 
     public static Builder newTextarea(String id) {
@@ -59,12 +67,13 @@ public final class Textarea extends AbstractWidget {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-
         private String id;
 
         private String label;
 
         private String value;
+
+        private Function<String, IStatus> newValueHandler;
 
         private List<Diagnostic> diagnostics;
 
@@ -82,6 +91,11 @@ public final class Textarea extends AbstractWidget {
             return this;
         }
 
+        public Builder newValueHandler(Function<String, IStatus> newValueHandler) {
+            this.newValueHandler = Objects.requireNonNull(newValueHandler);
+            return this;
+        }
+
         public Builder diagnostics(List<Diagnostic> diagnostics) {
             this.diagnostics = Objects.requireNonNull(diagnostics);
             return this;
@@ -92,6 +106,7 @@ public final class Textarea extends AbstractWidget {
             textarea.id = Objects.requireNonNull(this.id);
             textarea.label = Objects.requireNonNull(this.label);
             textarea.value = Objects.requireNonNull(this.value);
+            textarea.newValueHandler = Objects.requireNonNull(this.newValueHandler);
             textarea.diagnostics = Objects.requireNonNull(this.diagnostics);
             return textarea;
         }

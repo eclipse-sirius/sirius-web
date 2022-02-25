@@ -10,10 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { BorderNode, Node } from 'diagram/sprotty/Diagram.types';
+import { BorderNode, Label, Node } from 'diagram/sprotty/Diagram.types';
 import { DiagramServer, HIDE_CONTEXTUAL_TOOLBAR_ACTION, SPROTTY_DELETE_ACTION } from 'diagram/sprotty/DiagramServer';
 import { SetActiveConnectorToolsAction, SetActiveToolAction } from 'diagram/sprotty/DiagramServer.types';
 import { edgeCreationFeedback } from 'diagram/sprotty/edgeCreationFeedback';
+import { EditLabelUIWithInitialContent } from 'diagram/sprotty/EditLabelUIWithInitialContent';
 import { GraphFactory } from 'diagram/sprotty/GraphFactory';
 import siriusDragAndDropModule from 'diagram/sprotty/siriusDragAndDropModule';
 import { DiagramView } from 'diagram/sprotty/views/DiagramView';
@@ -36,7 +37,6 @@ import {
   edgeLayoutModule,
   EditLabelAction,
   EditLabelActionHandler,
-  EditLabelUI,
   exportModule,
   fadeModule,
   graphModule,
@@ -65,29 +65,6 @@ import {
   zorderModule,
 } from 'sprotty';
 import { Action, Point, RequestPopupModelAction, SetPopupModelAction, UpdateModelAction } from 'sprotty-protocol';
-
-/**
- * Extends Sprotty's SLabel to add support for having the initial text when entering
- * in direct edit mode different from the text's label itself, and makes the
- * pre-selection of the edited text optional.
- */
-export class SEditableLabel extends SLabel {
-  initialText: string;
-  preSelect: boolean = true;
-}
-
-class EditLabelUIWithInitialContent extends EditLabelUI {
-  protected applyTextContents() {
-    if (this.label instanceof SEditableLabel) {
-      this.inputElement.value = this.label.initialText || this.label.text;
-      if (this.label.preSelect) {
-        this.inputElement.setSelectionRange(0, this.inputElement.value.length);
-      }
-    } else {
-      super.applyTextContents();
-    }
-  }
-}
 
 const labelEditUiModule = new ContainerModule((bind, _unbind, isBound) => {
   const context = { bind, isBound };
@@ -124,15 +101,17 @@ const siriusWebContainerModule = new ContainerModule((bind, unbind, isBound, reb
   configureModelElement(context, 'port:image', BorderNode, ImageView);
   configureView({ bind, isBound }, 'edge:straight', EdgeView);
   // @ts-ignore
-  configureModelElement(context, 'label:inside-center', SEditableLabel, LabelView);
+  configureModelElement(context, 'label:inside-center', Label, LabelView);
   // @ts-ignore
-  configureModelElement(context, 'label:outside-center', SEditableLabel, LabelView);
+  configureModelElement(context, 'label:outside-center', Label, LabelView);
   // @ts-ignore
-  configureModelElement(context, 'label:edge-begin', SEditableLabel, LabelView);
+  configureModelElement(context, 'label:outside', Label, LabelView);
   // @ts-ignore
-  configureModelElement(context, 'label:edge-center', SEditableLabel, LabelView);
+  configureModelElement(context, 'label:edge-begin', Label, LabelView);
   // @ts-ignore
-  configureModelElement(context, 'label:edge-end', SEditableLabel, LabelView);
+  configureModelElement(context, 'label:edge-center', Label, LabelView);
+  // @ts-ignore
+  configureModelElement(context, 'label:edge-end', Label, LabelView);
   // @ts-ignore
   configureView({ bind, isBound }, 'comp:main', SCompartmentView);
   configureView({ bind, isBound }, 'html', HtmlRootView);

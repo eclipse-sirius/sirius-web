@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 THALES GLOBAL SERVICES.
+ * Copyright (c) 2021, 2022 THALES GLOBAL SERVICES.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.diagrams.layout.incremental.provider;
 
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.elk.core.math.ElkPadding;
@@ -21,8 +22,10 @@ import org.eclipse.elk.core.options.NodeLabelPlacement;
 import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.layout.ISiriusWebLayoutConfigurator;
+import org.eclipse.sirius.components.diagrams.layout.incremental.BorderNodesOnSide;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.LabelLayoutData;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.NodeLayoutData;
+import org.eclipse.sirius.components.diagrams.layout.incremental.utils.RectangleSide;
 
 /**
  * Provides the position to apply to a Node Label.
@@ -37,7 +40,7 @@ public class NodeLabelPositionProvider {
         this.layoutConfigurator = Objects.requireNonNull(layoutConfigurator);
     }
 
-    public Position getPosition(NodeLayoutData node, LabelLayoutData label) {
+    public Position getPosition(NodeLayoutData node, LabelLayoutData label, List<BorderNodesOnSide> borderNodesOnSide) {
         double x = 0d;
         double y = 0d;
 
@@ -49,7 +52,7 @@ public class NodeLabelPositionProvider {
             }
             break;
         default:
-            x = this.getHorizontalPosition(node, label);
+            x = this.getHorizontalPosition(node, label, borderNodesOnSide);
             y = this.getVerticalPosition(node, label);
             break;
         }
@@ -57,7 +60,7 @@ public class NodeLabelPositionProvider {
         return Position.at(x, y);
     }
 
-    private double getHorizontalPosition(NodeLayoutData node, LabelLayoutData label) {
+    private double getHorizontalPosition(NodeLayoutData node, LabelLayoutData label, List<BorderNodesOnSide> borderNodesOnSides) {
         double x = 0d;
         EnumSet<NodeLabelPlacement> nodeLabelPlacementSet = this.layoutConfigurator.configureByType(node.getNodeType()).getProperty(CoreOptions.NODE_LABELS_PLACEMENT);
         ElkPadding nodeLabelsPadding = this.layoutConfigurator.configureByType(node.getNodeType()).getProperty(CoreOptions.NODE_LABELS_PADDING);
@@ -79,7 +82,21 @@ public class NodeLabelPositionProvider {
                 }
                 break;
             case H_CENTER:
-                x = (node.getSize().getWidth() - label.getTextBounds().getSize().getWidth()) / 2;
+                // The label is positioned at the center of the node and the front-end will apply a "'text-anchor':
+                // 'middle'" property.
+                int shiftToEast = 0;
+                int shiftToWest = 0;
+                for (BorderNodesOnSide borderNodesOnSide : borderNodesOnSides) {
+                    if (RectangleSide.WEST.equals(borderNodesOnSide.getSide())) {
+                        shiftToEast = 1;
+                    } else if (RectangleSide.EAST.equals(borderNodesOnSide.getSide())) {
+                        shiftToWest = 1;
+                    }
+                }
+                double portOffset = this.layoutConfigurator.configureByType(node.getNodeType()).getProperty(CoreOptions.PORT_BORDER_OFFSET).doubleValue();
+                double offSetAccordingToBorderNodes = -portOffset / 2 * (shiftToEast - shiftToWest);
+
+                x = node.getSize().getWidth() / 2 + offSetAccordingToBorderNodes;
                 break;
             case H_RIGHT:
                 if (outside) {

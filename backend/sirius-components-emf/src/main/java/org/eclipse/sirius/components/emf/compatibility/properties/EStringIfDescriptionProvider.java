@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,7 +25,7 @@ import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.components.compatibility.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.emf.compatibility.properties.api.IPropertiesValidationProvider;
 import org.eclipse.sirius.components.forms.description.IfDescription;
-import org.eclipse.sirius.components.forms.description.TextfieldDescription;
+import org.eclipse.sirius.components.forms.description.TextareaDescription;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
@@ -39,7 +39,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
 public class EStringIfDescriptionProvider {
     private static final String IF_DESCRIPTION_ID = "EString"; //$NON-NLS-1$
 
-    private static final String TEXTFIELD_DESCRIPTION_ID = "Textfield"; //$NON-NLS-1$
+    private static final String TEXTAREA_DESCRIPTION_ID = "Textarea"; //$NON-NLS-1$
 
     private final ComposedAdapterFactory composedAdapterFactory;
 
@@ -54,7 +54,7 @@ public class EStringIfDescriptionProvider {
         // @formatter:off
         return IfDescription.newIfDescription(IF_DESCRIPTION_ID)
                 .predicate(this.getPredicate())
-                .widgetDescription(this.getTextfieldDescription())
+                .widgetDescription(this.getTextareaDescription())
                 .build();
         // @formatter:on
     }
@@ -69,9 +69,9 @@ public class EStringIfDescriptionProvider {
         };
     }
 
-    private TextfieldDescription getTextfieldDescription() {
+    private TextareaDescription getTextareaDescription() {
         // @formatter:off
-        return TextfieldDescription.newTextfieldDescription(TEXTFIELD_DESCRIPTION_ID)
+        return TextareaDescription.newTextareaDescription(TEXTAREA_DESCRIPTION_ID)
                 .idProvider(new WidgetIdProvider())
                 .labelProvider(this.getLabelProvider())
                 .valueProvider(this.getValueProvider())

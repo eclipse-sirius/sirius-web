@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -185,7 +185,7 @@ export const TextfieldPropertySection = ({
   };
 
   const onKeyPress = (event) => {
-    if ('Enter' === event.key) {
+    if ('Enter' === event.key && !event.shiftKey) {
       sendEditedValue();
     }
   };
