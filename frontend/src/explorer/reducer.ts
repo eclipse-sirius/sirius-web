@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { GQLGetTreePathData } from 'explorer/ExplorerWebSocketContainer.types';
 import { v4 as uuid } from 'uuid';
 import {
   COMPLETE__STATE,
@@ -19,6 +20,8 @@ import {
   HANDLE_DATA__ACTION,
   HANDLE_ERROR__ACTION,
   HANDLE_EXPANDED__ACTION,
+  HANDLE_SYNCHRONIZE__ACTION,
+  HANDLE_TREE_PATH__ACTION,
   LOADING__STATE,
   machine,
   TREE_LOADED__STATE,
@@ -30,6 +33,7 @@ export const initialState = {
   tree: undefined,
   expanded: [],
   maxDepth: 1,
+  synchronized: true,
   message: '',
   modal: undefined,
 };
@@ -57,6 +61,12 @@ export const reducer = (prevState, action) => {
     case HANDLE_EXPANDED__ACTION:
       state = handleExpandedAction(prevState, action);
       break;
+    case HANDLE_TREE_PATH__ACTION:
+      state = handleTreePathAction(prevState, action);
+      break;
+    case HANDLE_SYNCHRONIZE__ACTION:
+      state = handleSynchronizeAction(prevState, action);
+      break;
     default:
       state = prevState;
       break;
@@ -77,20 +87,21 @@ const handleConnectionErrorAction = (prevState) => {
     tree: undefined,
     expanded: [],
     maxDepth: 1,
+    synchronized: false,
     message: 'An error has occured while retrieving the content from the server',
     modal: undefined,
   };
 };
 
 const handleDataAction = (prevState, action) => {
-  const { id, expanded, maxDepth, modal } = prevState;
+  const { id, expanded, maxDepth, synchronized, modal } = prevState;
   const { message } = action;
 
   if (message?.data?.treeEvent) {
     const { treeEvent } = message.data;
     if (treeEvent.__typename === 'TreeRefreshedEventPayload') {
       const { tree } = treeEvent;
-      return { viewState: TREE_LOADED__STATE, id, tree, expanded, maxDepth, message: '', modal };
+      return { viewState: TREE_LOADED__STATE, id, tree, expanded, maxDepth, synchronized, message: '', modal };
     }
   }
 
@@ -98,12 +109,12 @@ const handleDataAction = (prevState, action) => {
 };
 
 const handleErrorAction = (prevState, action) => {
-  const { viewState, id, tree, expanded, maxDepth, modal } = prevState;
+  const { viewState, id, tree, expanded, maxDepth, synchronized, modal } = prevState;
   const { message } = action;
   if (viewState === TREE_LOADED__STATE) {
-    return { viewState: TREE_LOADED__STATE, id, tree, expanded, maxDepth, message, modal };
+    return { viewState: TREE_LOADED__STATE, id, tree, expanded, maxDepth, synchronized, message, modal };
   }
-  return { viewState: ERROR__STATE, id, tree, expanded, maxDepth, message, modal };
+  return { viewState: ERROR__STATE, id, tree, expanded, maxDepth, synchronized: false, message, modal };
 };
 
 const handleCompleteAction = (prevState) => {
@@ -114,21 +125,66 @@ const handleCompleteAction = (prevState) => {
     tree: undefined,
     expanded: [],
     maxDepth: 1,
+    synchronized: false,
     message: '',
     modal: undefined,
   };
 };
 
 const handleExpandedAction = (prevState, action) => {
-  const { viewState, id, tree, expanded, maxDepth, message, modal } = prevState;
+  const { viewState, id, tree, expanded, maxDepth, synchronized, message, modal } = prevState;
   const { id: elementId, depth } = action;
   let newExpanded;
+  let newSynchronized = synchronized;
   if (expanded.includes(elementId)) {
     newExpanded = [...expanded];
     newExpanded.splice(newExpanded.indexOf(elementId), 1);
+    newSynchronized = false; // Disable synchronize mode on collapse
   } else {
     newExpanded = [...expanded, elementId];
   }
 
-  return { viewState, id, tree, expanded: newExpanded, maxDepth: Math.max(maxDepth, depth), message, modal };
+  return {
+    viewState,
+    id,
+    tree,
+    expanded: newExpanded,
+    maxDepth: Math.max(maxDepth, depth),
+    synchronized: newSynchronized,
+    message,
+    modal,
+  };
+};
+
+const handleTreePathAction = (prevState, action) => {
+  const { viewState, id, tree, expanded, maxDepth, synchronized, message, modal } = prevState;
+  const treePathData: GQLGetTreePathData = action.treePathData;
+
+  if (treePathData.viewer?.editingContext?.treePath) {
+    const { treeItemIdsToExpand, maxDepth: expandedMaxDepth } = treePathData.viewer.editingContext.treePath;
+    const newExpanded: string[] = [...expanded];
+    treeItemIdsToExpand?.forEach((itemToExpand) => {
+      if (!expanded.includes(itemToExpand)) {
+        newExpanded.push(itemToExpand);
+      }
+    });
+    return {
+      viewState,
+      id,
+      tree,
+      expanded: newExpanded,
+      maxDepth: Math.max(expandedMaxDepth, maxDepth),
+      synchronized,
+      message,
+      modal,
+    };
+  } else {
+    return prevState;
+  }
+};
+
+const handleSynchronizeAction = (prevState, action) => {
+  const { viewState, id, tree, expanded, maxDepth, message, modal } = prevState;
+  const { synchronized } = action;
+  return { viewState, id, tree, expanded, maxDepth, synchronized, message, modal };
 };

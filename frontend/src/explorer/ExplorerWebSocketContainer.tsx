@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { gql, useSubscription } from '@apollo/client';
+import { gql, useLazyQuery, useSubscription } from '@apollo/client';
 import { M, Spacing } from 'core/spacing/Spacing';
 import { Text } from 'core/text/Text';
 import {
@@ -20,13 +20,19 @@ import {
   HANDLE_DATA__ACTION,
   HANDLE_ERROR__ACTION,
   HANDLE_EXPANDED__ACTION,
+  HANDLE_SYNCHRONIZE__ACTION,
+  HANDLE_TREE_PATH__ACTION,
   LOADING__STATE,
 } from 'explorer/machine';
-import React, { useReducer } from 'react';
+import React, { useEffect, useReducer } from 'react';
 import { Explorer } from './Explorer';
 import styles from './ExplorerWebSocketContainer.module.css';
-import { ExplorerWebSocketContainerProps } from './ExplorerWebSocketContainer.types';
-import { getTreeEventSubscription } from './getTreeEventSubscription';
+import {
+  ExplorerWebSocketContainerProps,
+  GQLGetTreePathData,
+  GQLGetTreePathVariables,
+} from './ExplorerWebSocketContainer.types';
+import { getTreeEventSubscription, getTreePathQuery } from './operations';
 import { initialState, reducer } from './reducer';
 
 export const ExplorerWebSocketContainer = ({
@@ -36,7 +42,36 @@ export const ExplorerWebSocketContainer = ({
   readOnly,
 }: ExplorerWebSocketContainerProps) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { viewState, id, tree, expanded, maxDepth, message } = state;
+  const { viewState, id, tree, expanded, maxDepth, synchronized, message } = state;
+
+  const [getTreePath, { loading: treePathLoading, data: treePathData, error: treePathError }] = useLazyQuery<
+    GQLGetTreePathData,
+    GQLGetTreePathVariables
+  >(getTreePathQuery);
+
+  useEffect(() => {
+    if (tree) {
+      const variables: GQLGetTreePathVariables = {
+        editingContextId,
+        treeId: tree.id,
+        selectionEntryIds: synchronized ? selection.entries.map((entry) => entry.id) : [],
+      };
+      getTreePath({
+        variables,
+      });
+    }
+  }, [editingContextId, tree, selection, synchronized, getTreePath]);
+
+  useEffect(() => {
+    if (!treePathLoading) {
+      if (treePathData) {
+        dispatch({ type: HANDLE_TREE_PATH__ACTION, treePathData });
+      }
+      if (treePathError) {
+        dispatch({ type: HANDLE_ERROR__ACTION, message: treePathError });
+      }
+    }
+  }, [treePathLoading, treePathData, treePathError]);
 
   const { error } = useSubscription(gql(getTreeEventSubscription(maxDepth)), {
     variables: {
@@ -56,6 +91,11 @@ export const ExplorerWebSocketContainer = ({
   if (error) {
     dispatch({ type: HANDLE_ERROR__ACTION, message: error });
   }
+
+  // Enable synchronize mode when the selection is explicitly changed
+  useEffect(() => {
+    dispatch({ type: HANDLE_SYNCHRONIZE__ACTION, synchronized: true });
+  }, [selection]);
 
   const onExpand = (id: string, depth: number) => {
     dispatch({ type: HANDLE_EXPANDED__ACTION, id, depth });

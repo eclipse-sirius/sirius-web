@@ -130,7 +130,7 @@ As a result, the state machine of the frontend should keep the current max depth
 
 == Status
 
-WIP
+Accepted
 
 == Consequences
 

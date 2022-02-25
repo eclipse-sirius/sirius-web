@@ -27,7 +27,7 @@ export const RepresentationsArea = ({ representations, setSelection }: Represent
             <LinkButton
               key={representation.id}
               label={representation.label}
-              data-testid={representation.id}
+              data-testid={`onboard-open-${representation.label}`}
               onClick={() =>
                 setSelection({
                   entries: [{ id: representation.id, label: representation.label, kind: representation.kind }],
