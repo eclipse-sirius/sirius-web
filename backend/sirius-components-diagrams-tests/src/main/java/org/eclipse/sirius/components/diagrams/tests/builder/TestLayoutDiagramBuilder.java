@@ -84,8 +84,8 @@ public final class TestLayoutDiagramBuilder {
                 .edges(edges)
                 .label(Objects.requireNonNull(this.targetObjectId))
                 .descriptionId(DIAGRAM_DESCRIPTION_ID)
-                .position(Position.UNDEFINED)
-                .size(Size.UNDEFINED)
+                .position(Position.at(0, 0))
+                .size(Size.of(1000, 1000))
                 .targetObjectId(this.targetObjectId)
                 .build();
         // @formatter:on

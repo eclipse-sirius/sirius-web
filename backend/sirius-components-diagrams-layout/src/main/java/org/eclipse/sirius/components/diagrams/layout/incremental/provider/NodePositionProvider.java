@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 THALES GLOBAL SERVICES.
+ * Copyright (c) 2021, 2022 THALES GLOBAL SERVICES.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.diagrams.events.ResizeEvent;
 import org.eclipse.sirius.components.diagrams.events.SinglePositionEvent;
 import org.eclipse.sirius.components.diagrams.layout.LayoutOptionValues;
 import org.eclipse.sirius.components.diagrams.layout.incremental.IncrementalLayoutEngine;
+import org.eclipse.sirius.components.diagrams.layout.incremental.data.DiagramLayoutData;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.IContainerLayoutData;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.LabelLayoutData;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.NodeLayoutData;
@@ -33,15 +34,17 @@ import org.eclipse.sirius.components.diagrams.layout.incremental.data.NodeLayout
  * @author wpiers
  */
 public class NodePositionProvider {
-
     /**
-     * The last node for which we computed a position. Used when computing several new positions during one refresh.
+     * For elk, all labels have a padding in four directions (top, right, bottom and left). By default the padding value
+     * is 5 on each direction, so to have the real size of a node label we must add the
+     * {@link LayoutOptionValues#DEFAULT_ELK_NODE_LABELS_PADDING} twice to the node label width and the node label
+     * height.
      */
-    private NodeLayoutData last;
+    private static final double DEFAULT_NODE_LABELS_PADDING = 2 * LayoutOptionValues.DEFAULT_ELK_NODE_LABELS_PADDING;
 
     /**
-     * Provides the new position of the given node. If the node position is no need to be updated, the current position
-     * is returned.
+     * Provides the new position of the given node. If the node position does not need to be updated, the current
+     * position is returned.
      *
      * @param optionalDiagramElementEvent
      *            The event currently taken into account
@@ -51,36 +54,175 @@ public class NodePositionProvider {
      */
     public Position getPosition(Optional<IDiagramEvent> optionalDiagramElementEvent, NodeLayoutData node) {
         Position position = node.getPosition();
-
-        Optional<Position> optionalPosition = this.getSpecificNodePositionFromEvent(optionalDiagramElementEvent, node);
-        if (optionalPosition.isPresent() && !NodeType.NODE_LIST_ITEM.equals(node.getNodeType())) {
-            position = optionalPosition.get();
-        } else if (!this.isAlreadyPositioned(node) || NodeType.NODE_LIST_ITEM.equals(node.getNodeType())) {
-            Optional<Position> optionalStartingPosition = this.getOptionalStartingPositionFromEvent(optionalDiagramElementEvent);
-            if (optionalStartingPosition.isPresent() && this.last == null && !NodeType.NODE_LIST_ITEM.equals(node.getNodeType())) {
-                Position parentPosition = node.getParent().getAbsolutePosition();
-                double eventX = optionalStartingPosition.get().getX();
-                double eventY = optionalStartingPosition.get().getY();
-                if (this.isEventPositionInParentBounds(node.getParent(), Position.at(eventX, eventY))) {
-                    // The node has been created by a tool and has a fixed position
-                    double xPosition = eventX - parentPosition.getX();
-                    double yPosition = eventY - parentPosition.getY();
-                    position = Position.at(xPosition, yPosition);
-                    this.last = node;
-                } else {
-                    // The new node should appear in the parent, without moving the parent unless necessary
-                    position = Position.at(10, 10);
-                    this.last = node;
-                }
-            } else {
-                // The node has been created along with others, by a tool or a refresh
-                position = this.getNewPosition(node);
+        if (NodeType.NODE_LIST_ITEM.equals(node.getNodeType())) {
+            Optional<Position> nodeListItemPosition = this.getNodeListItemPosition(node);
+            if (nodeListItemPosition.isPresent()) {
+                position = nodeListItemPosition.get();
+            }
+        } else if (optionalDiagramElementEvent.isPresent()) {
+            IDiagramEvent diagramEvent = optionalDiagramElementEvent.get();
+            Optional<Position> eventRelativePosition = this.getEventRelativePosition(diagramEvent, node);
+            if (eventRelativePosition.isPresent()) {
+                position = eventRelativePosition.get();
             }
         }
         return position;
     }
 
-    private boolean isEventPositionInParentBounds(IContainerLayoutData node, Position eventPosition) {
+    private Optional<Position> getNodeListItemPosition(NodeLayoutData node) {
+        Optional<Position> nodeListItemPosition = this.getPositionRelativeToSibling(node);
+        if (nodeListItemPosition.isPresent()) {
+            return nodeListItemPosition;
+        } else {
+            Double maxBottom = this.findMaxBottom(node.getParent());
+            // We are positioning the first element during this layout
+            if (maxBottom == null) {
+                // @formatter:off
+                if (NodeType.NODE_LIST_ITEM.equals(node.getNodeType()) &&
+                        node.getParent() instanceof NodeLayoutData &&
+                        NodeType.NODE_LIST.equals(((NodeLayoutData) node.getParent()).getNodeType())
+                        ) {
+                    NodeLayoutData parentLayoutData = (NodeLayoutData) node.getParent();
+                    LabelLayoutData parentLabelLayoutData = parentLayoutData.getLabel();
+                    double posY = parentLabelLayoutData.getPosition().getY() +
+                            parentLabelLayoutData.getTextBounds().getSize().getHeight() +
+                            LayoutOptionValues.NODE_LIST_ELK_PADDING_TOP +
+                            LayoutOptionValues.DEFAULT_ELK_NODE_LABELS_PADDING;
+                    nodeListItemPosition = Optional.of(Position.at(0, posY));
+                }
+                // @formatter:on
+            } else {
+                double newY = maxBottom + LayoutOptionValues.NODE_LIST_ELK_NODE_NODE_GAP;
+                nodeListItemPosition = Optional.of(Position.at(0, newY));
+            }
+        }
+        return nodeListItemPosition;
+    }
+
+    /**
+     * Provides the maximal bottom value within the given parent children.
+     *
+     * @param parent
+     *            the node parent.
+     * @return the maximal bottom value or null if no already positioned child has been found.
+     */
+    private Double findMaxBottom(IContainerLayoutData parent) {
+        Double bottom = null;
+        for (NodeLayoutData node : parent.getChildrenNodes()) {
+            Position nodePosition = node.getPosition();
+            // If the node has not been located, we skip it from the calculation
+            if (Position.UNDEFINED.equals(nodePosition)) {
+                double nodeBottom = nodePosition.getY() + node.getSize().getHeight();
+                if (bottom == null) {
+                    bottom = nodeBottom;
+                } else {
+                    bottom = Math.max(bottom, nodeBottom);
+                }
+            }
+        }
+        return bottom;
+    }
+
+    private Optional<Position> getEventRelativePosition(IDiagramEvent diagramElementEvent, NodeLayoutData node) {
+        Optional<Position> optionalPosition = Optional.empty();
+        if (diagramElementEvent instanceof MoveEvent) {
+            optionalPosition = this.getPositionFromMoveEvent(node, (MoveEvent) diagramElementEvent);
+        } else if (diagramElementEvent instanceof ResizeEvent) {
+            optionalPosition = this.getPositionFromResizeEvent(node, (ResizeEvent) diagramElementEvent);
+        } else if (diagramElementEvent instanceof SinglePositionEvent) {
+            optionalPosition = this.getPositionFromSinglePositionEvent(node, (SinglePositionEvent) diagramElementEvent);
+        }
+        return optionalPosition;
+    }
+
+    private Optional<Position> getPositionFromSinglePositionEvent(NodeLayoutData node, SinglePositionEvent diagramElementEvent) {
+        Optional<Position> optionalPosition = Optional.empty();
+        if (Position.UNDEFINED.equals(node.getPosition())) {
+            // @formatter:off
+             Position nodePosition = this.getPositionRelativeToSibling(node)
+                    .orElse(this.getPositionRelativeToParent(node, diagramElementEvent));
+             optionalPosition = Optional.of(nodePosition);
+            // @formatter:on
+        }
+        return optionalPosition;
+    }
+
+    private Position getPositionRelativeToParent(NodeLayoutData node, SinglePositionEvent diagramElementEvent) {
+        Position position;
+        IContainerLayoutData parent = node.getParent();
+        Position eventPosition = diagramElementEvent.getPosition();
+        if (Position.UNDEFINED.equals(parent.getPosition())) {
+            position = this.getDefaultPosition(node);
+        } else {
+            if (parent instanceof DiagramLayoutData) {
+                position = eventPosition;
+            } else if (this.isEventPositionInNodeBounds(parent, eventPosition)) {
+                Position parentPosition = parent.getPosition();
+                double xPosition = eventPosition.getX() - parentPosition.getX();
+                double yPosition = eventPosition.getY() - parentPosition.getY();
+                position = Position.at(xPosition, yPosition);
+            } else {
+                position = this.getDefaultPosition(node);
+            }
+        }
+        return position;
+    }
+
+    private Optional<Position> getPositionRelativeToSibling(NodeLayoutData node) {
+        Optional<NodeLayoutData> lastPositionedSiblingOptional = this.getLastPositionedSibling(node);
+        if (lastPositionedSiblingOptional.isPresent()) {
+            NodeLayoutData lastPositionedSibling = lastPositionedSiblingOptional.get();
+            Position lastPosition = lastPositionedSibling.getPosition();
+            Size lastSize = lastPositionedSibling.getSize();
+            double x = lastPosition.getX();
+            double y = lastPosition.getY() + lastSize.getHeight() + IncrementalLayoutEngine.NODES_GAP;
+            return Optional.of(Position.at(x, y));
+        }
+        return Optional.empty();
+    }
+
+    private Optional<NodeLayoutData> getLastPositionedSibling(NodeLayoutData node) {
+        // return the last sibling who has a fixed position.
+        // this only works because we know that the nodes are positioned
+        // in the order of parent.getChildrenNodes
+
+        // @formatter:off
+        return node.getParent().getChildrenNodes().stream()
+            .filter(child -> child.isPinned() && !child.equals(node))
+            .reduce((first, second) -> second);
+        // @formatter:on
+    }
+
+    private Optional<Position> getPositionFromMoveEvent(NodeLayoutData node, MoveEvent moveEvent) {
+        if (moveEvent.getNodeId().equals(node.getId())) {
+            return Optional.of(moveEvent.getNewPosition());
+        }
+        return Optional.empty();
+    }
+
+    private Optional<Position> getPositionFromResizeEvent(NodeLayoutData node, ResizeEvent resizeEvent) {
+        Optional<Position> optionalPosition = Optional.empty();
+        // The current node is directly resized
+        if (resizeEvent.getNodeId().equals(node.getId())) {
+            Position oldPosition = node.getPosition();
+            double newX = oldPosition.getX() - resizeEvent.getPositionDelta().getX();
+            double newY = oldPosition.getY() - resizeEvent.getPositionDelta().getY();
+            optionalPosition = Optional.of(Position.at(newX, newY));
+
+        }
+        // The current node is a direct child of a resized container.
+        else if (resizeEvent.getNodeId().toString().equals(node.getParent().getId().toString())) {
+            // The parent has been resized so the relative new position may have to be changed to keep the same
+            // absolute coordinates
+            Position oldPosition = node.getPosition();
+            double newX = oldPosition.getX() + resizeEvent.getPositionDelta().getX();
+            double newY = oldPosition.getY() + resizeEvent.getPositionDelta().getY();
+            optionalPosition = Optional.of(Position.at(newX, newY));
+        }
+        return optionalPosition;
+    }
+
+    private boolean isEventPositionInNodeBounds(IContainerLayoutData node, Position eventPosition) {
         Position topLeft = node.getPosition();
         double topLeftX = topLeft.getX();
         double topLeftY = topLeft.getY();
@@ -98,142 +240,39 @@ public class NodePositionProvider {
         return (bottomRightX < topLeftX || bottomRightX > eventX) && (bottomRightY < topLeftY || bottomRightY > eventY);
     }
 
-    private Optional<Position> getOptionalStartingPositionFromEvent(Optional<IDiagramEvent> optionalDiagramElementEvent) {
-        // @formatter:off
-        return optionalDiagramElementEvent.filter(SinglePositionEvent.class::isInstance)
-                .map(SinglePositionEvent.class::cast)
-                .map(SinglePositionEvent::getPosition);
-        // @formatter:on
-    }
-
-    private boolean isAlreadyPositioned(NodeLayoutData node) {
-        Position position = node.getPosition();
-        return position.getX() != -1 && position.getY() != -1;
-    }
-
-    private Position getNewPosition(NodeLayoutData node) {
-        Position newPosition;
-        if (this.last == null) {
-            // We are positioning the first element during this layout
-            Double maxBottom = this.findMaxBottom(node.getParent());
-            if (maxBottom == null) {
-                newPosition = this.getNewChildPosition(node);
-            } else {
-                double newY = maxBottom + this.getNodeGap(node);
-                newPosition = Position.at(0, newY);
-            }
-        } else {
-            Position lastPosition = this.last.getPosition();
-            Size lastSize = this.last.getSize();
-            double x = lastPosition.getX();
-            double y = lastPosition.getY() + lastSize.getHeight() + this.getNodeGap(node);
-            newPosition = Position.at(x, y);
-        }
-        this.last = node;
-        return newPosition;
-    }
-
-    private Optional<Position> getSpecificNodePositionFromEvent(Optional<IDiagramEvent> optionalDiagramElementEvent, NodeLayoutData node) {
-        Position position = null;
-        if (optionalDiagramElementEvent.isPresent()) {
-            IDiagramEvent diagramElementEvent = optionalDiagramElementEvent.get();
-            if (diagramElementEvent instanceof MoveEvent) {
-                position = this.getPossiblePositionFromMoveEvent(node, (MoveEvent) diagramElementEvent);
-            } else if (diagramElementEvent instanceof ResizeEvent) {
-                position = this.getPossiblePositionFromResizeEvent(node, (ResizeEvent) diagramElementEvent);
-            }
-        }
-        return Optional.ofNullable(position);
-    }
-
-    private Position getPossiblePositionFromMoveEvent(NodeLayoutData node, MoveEvent moveEvent) {
-        if (moveEvent.getNodeId().equals(node.getId())) {
-            return moveEvent.getNewPosition();
-        }
-        return null;
-    }
-
-    private Position getPossiblePositionFromResizeEvent(NodeLayoutData node, ResizeEvent resizeEvent) {
-        Position position = null;
-        // The current node is directly resized
-        if (resizeEvent.getNodeId().equals(node.getId())) {
-            Position oldPosition = node.getPosition();
-            double newX = oldPosition.getX() - resizeEvent.getPositionDelta().getX();
-            double newY = oldPosition.getY() - resizeEvent.getPositionDelta().getY();
-            position = Position.at(newX, newY);
-
-        }
-        // The current node is a direct child of a resized container.
-        else if (resizeEvent.getNodeId().toString().equals(node.getParent().getId().toString())) {
-            // The parent has been resized so the relative new position may have to be changed to keep the same
-            // absolute coordinates
-            Position oldPosition = node.getPosition();
-            double newX = oldPosition.getX() + resizeEvent.getPositionDelta().getX();
-            double newY = oldPosition.getY() + resizeEvent.getPositionDelta().getY();
-            position = Position.at(newX, newY);
-        }
-        return position;
-    }
-
     /**
-     * Returns the position of the child that have been created.
-     *
-     * <p>
-     * If the node being positioned is a {@link NodeType#NODE_LIST_ITEM},
-     * </p>
+     * The default position of a node is on the top left of its container, with correct label and side paddings.
      *
      * @param node
-     *            the being positioned
-     * @return the position of the child that have been created
+     *            the node to position
+     * @return the default position of the node
      */
-    private Position getNewChildPosition(NodeLayoutData node) {
-        double posX = 0;
-        double posY = 0;
-        if (NodeType.NODE_LIST_ITEM.equals(node.getNodeType()) && node.getParent() instanceof NodeLayoutData && NodeType.NODE_LIST.equals(((NodeLayoutData) node.getParent()).getNodeType())) {
-            NodeLayoutData parentLayoutData = (NodeLayoutData) node.getParent();
-            LabelLayoutData parentLabelLayoutData = parentLayoutData.getLabel();
-            posY = parentLabelLayoutData.getPosition().getY() + parentLabelLayoutData.getTextBounds().getSize().getHeight() + LayoutOptionValues.NODE_LIST_ELK_PADDING_TOP
-                    + LayoutOptionValues.DEFAULT_ELK_NODE_LABELS_PADDING;
+    public Position getDefaultPosition(NodeLayoutData node) {
+        IContainerLayoutData parent = node.getParent();
+        double defaultYPosition = LayoutOptionValues.DEFAULT_ELK_PADDING;
+        double labelPaddings = 0;
+        if (this.isLabelOfType(parent, "inside")) { //$NON-NLS-1$
+            double parentLabelHeight = ((NodeLayoutData) parent).getLabel().getTextBounds().getSize().getHeight();
+            labelPaddings += parentLabelHeight + DEFAULT_NODE_LABELS_PADDING;
         }
-        return Position.at(posX, posY);
+        if (this.isLabelOfType(node, "outside")) { //$NON-NLS-1$
+            double nodeLabelHeight = node.getLabel().getTextBounds().getSize().getHeight();
+            labelPaddings += nodeLabelHeight + DEFAULT_NODE_LABELS_PADDING;
+        }
+        double yPosition = Math.max(labelPaddings, defaultYPosition);
+
+        return Position.at(LayoutOptionValues.DEFAULT_ELK_PADDING, yPosition);
     }
 
-    private double getNodeGap(NodeLayoutData node) {
-        if (NodeType.NODE_LIST_ITEM.equals(node.getNodeType())) {
-            return LayoutOptionValues.NODE_LIST_ELK_NODE_NODE_GAP;
-        }
-        return IncrementalLayoutEngine.NODES_GAP;
-    }
-
-    /**
-     * Provides the maximal bottom value within the given parent children.
-     *
-     * @param parent
-     *            the node parent.
-     * @return the maximal bottom value or null if no already positioned child has been found.
-     */
-    private Double findMaxBottom(IContainerLayoutData parent) {
-        Double bottom = null;
-        for (NodeLayoutData node : parent.getChildrenNodes()) {
-            Position nodePosition = node.getPosition();
-            // If the node has not been located, we skip it from the calculation
-            if (!this.isUndefined(nodePosition)) {
-                double nodeBottom = nodePosition.getY() + node.getSize().getHeight();
-                if (bottom == null) {
-                    bottom = nodeBottom;
-                } else {
-                    bottom = Math.max(bottom, nodeBottom);
-                }
+    private boolean isLabelOfType(IContainerLayoutData container, String labelType) {
+        if (container instanceof NodeLayoutData) {
+            NodeLayoutData nodeLayoutData = (NodeLayoutData) container;
+            LabelLayoutData label = nodeLayoutData.getLabel();
+            if (label != null) {
+                return label.getLabelType().contains(labelType);
             }
         }
-        return bottom;
+        return false;
     }
 
-    private boolean isUndefined(Position position) {
-        return position.getX() == -1 || position.getY() == -1;
-    }
-
-    public void reset() {
-        this.last = null;
-    }
 }

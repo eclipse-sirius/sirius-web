@@ -24,8 +24,8 @@ import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.diagrams.events.MoveEvent;
-import org.eclipse.sirius.components.diagrams.events.SinglePositionEvent;
 import org.eclipse.sirius.components.diagrams.events.ResizeEvent;
+import org.eclipse.sirius.components.diagrams.events.SinglePositionEvent;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.DiagramLayoutData;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.IContainerLayoutData;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.NodeLayoutData;
@@ -48,9 +48,9 @@ public class NodePositionProviderTests {
 
     private static final double START_Y_WITHIN_PARENT = 35;
 
-    private static final double START_X_OUTSIDE_PARENT = 1000;
+    private static final double START_X_OUTSIDE_PARENT = 1001;
 
-    private static final double START_Y_OUTSIDE_PARENT = 1000;
+    private static final double START_Y_OUTSIDE_PARENT = 1001;
 
     @Test
     public void testDiagramSeveralNewNodesAtOnce() {
@@ -64,16 +64,15 @@ public class NodePositionProviderTests {
         Optional<IDiagramEvent> optionalDiagramElementEvent = Optional.of(new SinglePositionEvent(ZERO_POSITION));
         Position nextPosition = nodePositionProvider.getPosition(optionalDiagramElementEvent, nodeLayoutData);
         nodeLayoutData.setPosition(nextPosition);
-
-        assertThat(nextPosition).extracting(Position::getX).isEqualTo(Double.valueOf(0));
-        assertThat(nextPosition).extracting(Position::getY).isEqualTo(Double.valueOf(0));
+        // we pin the node so the next one gets positioned after
+        // this is what happens in the incremental layout
+        nodeLayoutData.setPinned(true);
+        assertThat(nextPosition).isEqualTo(ZERO_POSITION);
 
         NodeLayoutData nodeLayoutData2 = this.createNodeLayoutData(Position.UNDEFINED, DEFAULT_NODE_SIZE, diagramLayoutData, NodeType.NODE_RECTANGLE);
         nodes.add(nodeLayoutData2);
         nextPosition = nodePositionProvider.getPosition(optionalDiagramElementEvent, nodeLayoutData2);
-
-        assertThat(nextPosition).extracting(Position::getX).isEqualTo(Double.valueOf(0));
-        assertThat(nextPosition).extracting(Position::getY).isEqualTo(Double.valueOf(DEFAULT_NODE_SIZE.getHeight() + 30));
+        assertThat(nextPosition).isEqualTo(Position.at(Double.valueOf(0), Double.valueOf(DEFAULT_NODE_SIZE.getHeight() + 30)));
     }
 
     @Test
@@ -86,41 +85,32 @@ public class NodePositionProviderTests {
         diagramLayoutData.setChildrenNodes(nodes);
         nodes.add(nodeLayoutData);
 
-        Position nextPosition = nodePositionProvider.getPosition(Optional.empty(), nodeLayoutData);
+        Optional<IDiagramEvent> optionalDiagramElementEvent = Optional.of(new SinglePositionEvent(ZERO_POSITION));
+        Position nextPosition = nodePositionProvider.getPosition(optionalDiagramElementEvent, nodeLayoutData);
         nodeLayoutData.setPosition(nextPosition);
+        assertThat(nextPosition).isEqualTo(Position.at(0, 0));
 
-        assertThat(nextPosition).extracting(Position::getX).isEqualTo(Double.valueOf(0));
-        assertThat(nextPosition).extracting(Position::getY).isEqualTo(Double.valueOf(0));
-
-        nodePositionProvider = new NodePositionProvider();
-        nodeLayoutData = this.createNodeLayoutData(Position.UNDEFINED, DEFAULT_NODE_SIZE, diagramLayoutData, NodeType.NODE_RECTANGLE);
-        nodes.add(nodeLayoutData);
-        nextPosition = nodePositionProvider.getPosition(Optional.empty(), nodeLayoutData);
-        nodeLayoutData.setPosition(nextPosition);
-        assertThat(nextPosition).extracting(Position::getX).isEqualTo(Double.valueOf(0));
-        assertThat(nextPosition).extracting(Position::getY).isEqualTo(Double.valueOf(DEFAULT_NODE_SIZE.getHeight() + 30));
-
+        List<NodeLayoutData> childNodes = new ArrayList<>();
+        nodeLayoutData.setChildrenNodes(childNodes);
         // Test creation of a new node at a given position within parent (creation tool)
         Position startingPosition = Position.at(START_X_WITHIN_PARENT, START_Y_WITHIN_PARENT);
         nodePositionProvider = new NodePositionProvider();
-        nodeLayoutData = this.createNodeLayoutData(Position.UNDEFINED, DEFAULT_NODE_SIZE, diagramLayoutData, NodeType.NODE_RECTANGLE);
-        nodes.add(nodeLayoutData);
+        NodeLayoutData childLayoutData = this.createNodeLayoutData(Position.UNDEFINED, DEFAULT_NODE_SIZE, nodeLayoutData, NodeType.NODE_RECTANGLE);
+        childNodes.add(childLayoutData);
 
-        Optional<IDiagramEvent> optionalEvent = Optional.of(new SinglePositionEvent(startingPosition));
-        nextPosition = nodePositionProvider.getPosition(optionalEvent, nodeLayoutData);
-        assertThat(nextPosition).extracting(Position::getX).isEqualTo(START_X_WITHIN_PARENT);
-        assertThat(nextPosition).extracting(Position::getY).isEqualTo(START_Y_WITHIN_PARENT);
+        Optional<IDiagramEvent> optionalEventInside = Optional.of(new SinglePositionEvent(startingPosition));
+        nextPosition = nodePositionProvider.getPosition(optionalEventInside, childLayoutData);
+        assertThat(nextPosition).isEqualTo(startingPosition);
 
         // Test creation of a new node at a given position outside parent (creation tool)
         Position startingPositionOutside = Position.at(START_X_OUTSIDE_PARENT, START_Y_OUTSIDE_PARENT);
         nodePositionProvider = new NodePositionProvider();
-        nodeLayoutData = this.createNodeLayoutData(Position.UNDEFINED, DEFAULT_NODE_SIZE, diagramLayoutData, NodeType.NODE_RECTANGLE);
-        nodes.add(nodeLayoutData);
+        childLayoutData = this.createNodeLayoutData(Position.UNDEFINED, DEFAULT_NODE_SIZE, nodeLayoutData, NodeType.NODE_RECTANGLE);
+        childNodes.add(nodeLayoutData);
 
         Optional<IDiagramEvent> optionalEventOutside = Optional.of(new SinglePositionEvent(startingPositionOutside));
-        nextPosition = nodePositionProvider.getPosition(optionalEventOutside, nodeLayoutData);
-        assertThat(nextPosition).extracting(Position::getX).isEqualTo(Double.valueOf(10));
-        assertThat(nextPosition).extracting(Position::getY).isEqualTo(Double.valueOf(10));
+        nextPosition = nodePositionProvider.getPosition(optionalEventOutside, childLayoutData);
+        assertThat(nextPosition).isEqualTo(nodePositionProvider.getDefaultPosition(childLayoutData));
     }
 
     @Test
@@ -138,14 +128,15 @@ public class NodePositionProviderTests {
         nodes.add(nodeLayoutData);
         Position nextPosition = nodePositionProvider.getPosition(optionalEvent, nodeLayoutData);
         nodeLayoutData.setPosition(nextPosition);
-        assertThat(nextPosition).extracting(Position::getX).isEqualTo(Double.valueOf(0));
-        assertThat(nextPosition).extracting(Position::getY).isEqualTo(Double.valueOf(0));
+        // we pin the node so the next one gets positioned after
+        // this is what happens in the incremental layout
+        nodeLayoutData.setPinned(true);
+        assertThat(nextPosition).isEqualTo(ZERO_POSITION);
 
         nodeLayoutData = this.createNodeLayoutData(Position.UNDEFINED, DEFAULT_NODE_SIZE, parentNodeLayoutData, NodeType.NODE_RECTANGLE);
         nodes.add(nodeLayoutData);
         nextPosition = nodePositionProvider.getPosition(optionalEvent, nodeLayoutData);
-        assertThat(nextPosition).extracting(Position::getX).isEqualTo(Double.valueOf(0));
-        assertThat(nextPosition).extracting(Position::getY).isEqualTo(Double.valueOf(DEFAULT_NODE_SIZE.getHeight() + 30));
+        assertThat(nextPosition).isEqualTo(Position.at(0, Double.valueOf(DEFAULT_NODE_SIZE.getHeight() + 30)));
     }
 
     @Test
@@ -159,40 +150,35 @@ public class NodePositionProviderTests {
 
         Optional<IDiagramEvent> optionalEvent = Optional.of(new SinglePositionEvent(ZERO_POSITION));
 
-        NodeLayoutData nodeLayoutData = this.createNodeLayoutData(Position.UNDEFINED, DEFAULT_NODE_SIZE, parentNodeLayoutData, NodeType.NODE_RECTANGLE);
-        nodes.add(nodeLayoutData);
-        Position nextPosition = nodePositionProvider.getPosition(optionalEvent, nodeLayoutData);
-        nodeLayoutData.setPosition(nextPosition);
-        assertThat(nextPosition).extracting(Position::getX).isEqualTo(Double.valueOf(0));
-        assertThat(nextPosition).extracting(Position::getY).isEqualTo(Double.valueOf(0));
+        NodeLayoutData firstChild = this.createNodeLayoutData(Position.UNDEFINED, DEFAULT_NODE_SIZE, parentNodeLayoutData, NodeType.NODE_RECTANGLE);
+        nodes.add(firstChild);
+        Position nextPosition = nodePositionProvider.getPosition(optionalEvent, firstChild);
+        firstChild.setPosition(nextPosition);
+        assertThat(nextPosition).isEqualTo(ZERO_POSITION);
 
-        nodeLayoutData = this.createNodeLayoutData(Position.UNDEFINED, DEFAULT_NODE_SIZE, parentNodeLayoutData, NodeType.NODE_RECTANGLE);
-        nodes.add(nodeLayoutData);
-        nodePositionProvider = new NodePositionProvider();
-        nextPosition = nodePositionProvider.getPosition(Optional.empty(), nodeLayoutData);
-        nodeLayoutData.setPosition(nextPosition);
-        assertThat(nextPosition).extracting(Position::getX).isEqualTo(Double.valueOf(0));
-        assertThat(nextPosition).extracting(Position::getY).isEqualTo(Double.valueOf(DEFAULT_NODE_SIZE.getHeight() + 30));
+        NodeLayoutData secondChild = this.createNodeLayoutData(Position.UNDEFINED, DEFAULT_NODE_SIZE, parentNodeLayoutData, NodeType.NODE_RECTANGLE);
+        nodes.add(secondChild);
+        nextPosition = nodePositionProvider.getPosition(optionalEvent, secondChild);
+        secondChild.setPosition(nextPosition);
+        assertThat(nextPosition).isEqualTo(ZERO_POSITION);
 
         // Test creation of a new node at a given position within parent (creation tool)
-        nodeLayoutData = this.createNodeLayoutData(Position.UNDEFINED, DEFAULT_NODE_SIZE, parentNodeLayoutData, NodeType.NODE_RECTANGLE);
-        Position startingPosition = Position.at(START_X_WITHIN_PARENT, START_Y_WITHIN_PARENT);
-        nodes.add(nodeLayoutData);
-
         nodePositionProvider = new NodePositionProvider();
-        nextPosition = nodePositionProvider.getPosition(Optional.of(new SinglePositionEvent(startingPosition)), nodeLayoutData);
-        assertThat(nextPosition).extracting(Position::getX).isEqualTo(START_X_WITHIN_PARENT);
-        assertThat(nextPosition).extracting(Position::getY).isEqualTo(START_Y_WITHIN_PARENT);
+        NodeLayoutData thirdChild = this.createNodeLayoutData(Position.UNDEFINED, DEFAULT_NODE_SIZE, parentNodeLayoutData, NodeType.NODE_RECTANGLE);
+        Position startingPosition = Position.at(START_X_WITHIN_PARENT, START_Y_WITHIN_PARENT);
+        nodes.add(thirdChild);
+
+        nextPosition = nodePositionProvider.getPosition(Optional.of(new SinglePositionEvent(startingPosition)), thirdChild);
+        assertThat(nextPosition).isEqualTo(Position.at(START_X_WITHIN_PARENT, START_Y_WITHIN_PARENT));
 
         // Test creation of a new node at a given position outside parent (creation tool)
-        nodeLayoutData = this.createNodeLayoutData(Position.UNDEFINED, DEFAULT_NODE_SIZE, parentNodeLayoutData, NodeType.NODE_RECTANGLE);
+        NodeLayoutData fourthChild = this.createNodeLayoutData(Position.UNDEFINED, DEFAULT_NODE_SIZE, parentNodeLayoutData, NodeType.NODE_RECTANGLE);
         Position startingPositionOutside = Position.at(START_X_OUTSIDE_PARENT, START_Y_OUTSIDE_PARENT);
-        nodes.add(nodeLayoutData);
+        nodes.add(fourthChild);
 
         nodePositionProvider = new NodePositionProvider();
-        nextPosition = nodePositionProvider.getPosition(Optional.of(new SinglePositionEvent(startingPositionOutside)), nodeLayoutData);
-        assertThat(nextPosition).extracting(Position::getX).isEqualTo(Double.valueOf(10));
-        assertThat(nextPosition).extracting(Position::getY).isEqualTo(Double.valueOf(10));
+        nextPosition = nodePositionProvider.getPosition(Optional.of(new SinglePositionEvent(startingPositionOutside)), fourthChild);
+        assertThat(nextPosition).isEqualTo(nodePositionProvider.getDefaultPosition(fourthChild));
     }
 
     @Test

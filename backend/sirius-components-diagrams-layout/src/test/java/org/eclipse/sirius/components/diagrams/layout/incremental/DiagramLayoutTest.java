@@ -157,6 +157,6 @@ public class DiagramLayoutTest {
         Optional<Node> optionalLayoutedThirdParent = this.getNode(layoutedDiagram.getNodes(), "Third Parent"); //$NON-NLS-1$
         assertThat(optionalLayoutedThirdParent).isPresent();
         Node layoutedThirdParent = optionalLayoutedThirdParent.get();
-        assertThat(layoutedThirdParent.getPosition()).isEqualTo(Position.at(301, 101));
+        assertThat(layoutedThirdParent.getPosition()).isEqualTo(Position.at(300, 100));
     }
 }
