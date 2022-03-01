@@ -235,6 +235,16 @@ export const TreeItem = ({
     className = `${className} ${styles.selected}`;
     dataTestid = 'selected';
   }
+  useEffect(() => {
+    if (selected) {
+      if (refDom.current.scrollIntoViewIfNeeded) {
+        refDom.current.scrollIntoViewIfNeeded(true);
+      } else {
+        // Fallback for browsers not supporting the non-standard `scrollIntoViewIfNeeded`
+        refDom.current.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  }, [selected]);
 
   let image = <NoIcon title={item.kind} />;
   if (item.imageURL) {
