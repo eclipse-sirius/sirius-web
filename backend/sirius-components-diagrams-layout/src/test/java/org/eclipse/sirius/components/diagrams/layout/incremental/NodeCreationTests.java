@@ -14,7 +14,6 @@ package org.eclipse.sirius.components.diagrams.layout.incremental;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.sirius.components.diagrams.tests.DiagramAssertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -29,16 +28,20 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.CustomizableProperties;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.Position;
+import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.diagrams.events.SinglePositionEvent;
 import org.eclipse.sirius.components.diagrams.layout.ELKLayoutedDiagramProvider;
 import org.eclipse.sirius.components.diagrams.layout.IELKDiagramConverter;
 import org.eclipse.sirius.components.diagrams.layout.LayoutConfiguratorRegistry;
+import org.eclipse.sirius.components.diagrams.layout.LayoutOptionValues;
 import org.eclipse.sirius.components.diagrams.layout.LayoutService;
 import org.eclipse.sirius.components.diagrams.layout.incremental.provider.ImageSizeProvider;
+import org.eclipse.sirius.components.diagrams.layout.incremental.provider.NodePositionProvider;
 import org.eclipse.sirius.components.diagrams.layout.incremental.provider.NodeSizeProvider;
 import org.eclipse.sirius.components.diagrams.layout.services.DefaultTestDiagramDescriptionProvider;
 import org.eclipse.sirius.components.diagrams.layout.services.TestDiagramCreationService;
@@ -66,7 +69,6 @@ public class NodeCreationTests {
 
         Position eventCreationPosition = Position.at(10, 10);
         Diagram diagram = this.createParentNotResizedDiagram();
-        this.createNewNode(diagram, editingContext, eventCreationPosition);
         Diagram layoutedDiagram = this.createNewNode(diagram, editingContext, eventCreationPosition);
 
         this.testThatChildIsInParentBounds(layoutedDiagram);
@@ -77,9 +79,8 @@ public class NodeCreationTests {
         Path path = Paths.get("src", "test", "resources", "editing-contexts", "testNodeCreation"); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$ //$NON-NLS-5$
         JsonBasedEditingContext editingContext = new JsonBasedEditingContext(path);
 
-        Position eventCreationPosition = Position.at(199, 199);
+        Position eventCreationPosition = Position.at(200, 200);
         Diagram diagram = this.createParentNotResizedDiagram();
-        this.createNewNode(diagram, editingContext, eventCreationPosition);
         Diagram layoutedDiagram = this.createNewNode(diagram, editingContext, eventCreationPosition);
 
         this.testThatChildIsInParentBounds(layoutedDiagram);
@@ -92,7 +93,6 @@ public class NodeCreationTests {
 
         Position eventCreationPosition = Position.at(10, 10);
         Diagram diagram = this.createParentResizedDiagram();
-        this.createNewNode(diagram, editingContext, eventCreationPosition);
         Diagram layoutedDiagram = this.createNewNode(diagram, editingContext, eventCreationPosition);
 
         this.testThatChildIsInParentBounds(layoutedDiagram);
@@ -103,7 +103,7 @@ public class NodeCreationTests {
         Path path = Paths.get("src", "test", "resources", "editing-contexts", "testNodeCreation"); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$ //$NON-NLS-5$
         JsonBasedEditingContext editingContext = new JsonBasedEditingContext(path);
 
-        Position eventCreationPosition = Position.at(199, 199);
+        Position eventCreationPosition = Position.at(200, 200);
         Diagram diagram = this.createParentResizedDiagram();
         Diagram layoutedDiagram = this.createNewNode(diagram, editingContext, eventCreationPosition);
 
@@ -137,20 +137,89 @@ public class NodeCreationTests {
 
         // A should not have been resized
         Node aNode = optionalA.get();
-        double epsilon = 0.000001d;
-        assertEquals(aNode.getPosition().getX(), 10, epsilon);
-        assertEquals(aNode.getPosition().getY(), 10, epsilon);
-        assertEquals(aNode.getSize().getWidth(), 200, epsilon);
-        assertEquals(aNode.getSize().getHeight(), 300, epsilon);
+        assertThat(aNode.getPosition()).isEqualTo(Position.at(10, 10));
+        assertThat(aNode.getSize()).isEqualTo(Size.of(200, 300));
 
         Node bNode = optionalB.get();
         // Child should be within B
         assertThat(bNode).hasEveryChildWithinItsBounds();
         // B should not haven been resized
-        assertEquals(bNode.getPosition().getX(), 500, epsilon);
-        assertEquals(bNode.getPosition().getY(), 500, epsilon);
-        assertEquals(bNode.getSize().getWidth(), 200, epsilon);
-        assertEquals(bNode.getSize().getHeight(), 300, epsilon);
+        assertThat(bNode.getPosition()).isEqualTo(Position.at(500, 500));
+        assertThat(bNode.getSize()).isEqualTo(Size.of(200, 300));
+    }
+
+    @Test
+    public void testChildlessNodeCreation() {
+        Path path = Paths.get("src", "test", "resources", "editing-contexts", "testChildlessNodeCreation"); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$ //$NON-NLS-5$
+        JsonBasedEditingContext editingContext = new JsonBasedEditingContext(path);
+
+        Position eventCreationPosition = Position.at(100, 100);
+        Diagram diagram = TestLayoutDiagramBuilder.diagram("Root").nodes().and().build(); //$NON-NLS-1$
+
+        Diagram layoutedDiagram = this.createNewNode(diagram, editingContext, eventCreationPosition);
+
+        // parent node should still be positioned at the eventCreationPosition
+        Optional<Node> optionalParent = this.getNode(layoutedDiagram.getNodes(), "Parent"); //$NON-NLS-1$
+        assertThat(optionalParent).isPresent();
+        Node parent = optionalParent.get();
+        Position parentPosition = parent.getPosition();
+        assertThat(parentPosition).isEqualTo(Position.at(100, 100));
+    }
+
+    @Test
+    public void testMultiNodeCreation() {
+        Path path = Paths.get("src", "test", "resources", "editing-contexts", "testNodeCreation"); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$ //$NON-NLS-5$
+        JsonBasedEditingContext editingContext = new JsonBasedEditingContext(path);
+
+        Position eventCreationPosition = Position.at(100, 100);
+        Diagram diagram = TestLayoutDiagramBuilder.diagram("Root").nodes().and().build(); //$NON-NLS-1$
+
+        Diagram layoutedDiagram = this.createNewNode(diagram, editingContext, eventCreationPosition);
+
+        // parent node should still be positioned at the eventCreationPosition
+        Optional<Node> optionalParent = this.getNode(layoutedDiagram.getNodes(), "Parent"); //$NON-NLS-1$
+        assertThat(optionalParent).isPresent();
+        Node parent = optionalParent.get();
+        Position parentPosition = parent.getPosition();
+        assertThat(parentPosition).isEqualTo(Position.at(100, 100));
+
+        // since the parent was not positioned yet, its children should be at a default position
+        Optional<Node> optionalChild = this.getNode(layoutedDiagram.getNodes(), "Child"); //$NON-NLS-1$
+        assertThat(optionalChild).isPresent();
+        Node child = optionalChild.get();
+        assertThat(child.getPosition()).isEqualTo(this.getDefaultPosition(parent, child));
+    }
+
+    /**
+     * The is the exact same method than {@link NodePositionProvider} except that it is for {@link Node}.
+     *
+     * @param node
+     *            The node
+     * @return its default position
+     */
+    private Position getDefaultPosition(Node parent, Node child) {
+        double defaultLabelPadding = 2 * LayoutOptionValues.DEFAULT_ELK_NODE_LABELS_PADDING;
+        double defaultYPosition = LayoutOptionValues.DEFAULT_ELK_PADDING;
+        double labelPaddings = 0;
+        if (this.isLabelOfType(parent, "inside")) { //$NON-NLS-1$
+            double parentLabelHeight = parent.getLabel().getSize().getHeight();
+            labelPaddings += parentLabelHeight + defaultLabelPadding;
+        }
+        if (this.isLabelOfType(child, "outside")) { //$NON-NLS-1$
+            double nodeLabelHeight = child.getLabel().getSize().getHeight();
+            labelPaddings += nodeLabelHeight + defaultLabelPadding;
+        }
+        double yPosition = Math.max(labelPaddings, defaultYPosition);
+
+        return Position.at(LayoutOptionValues.DEFAULT_ELK_PADDING, yPosition);
+    }
+
+    private boolean isLabelOfType(Node node, String labelType) {
+        Label label = node.getLabel();
+        if (label != null) {
+            return label.getType().contains(labelType);
+        }
+        return false;
     }
 
     private Diagram createParentNotResizedDiagram() {

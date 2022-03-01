@@ -1,0 +1,31 @@
+= ADR-049 - Improve the incremental layout for dropper elements
+
+== Context
+
+Previously, the `NodePositionProvider` was reset every time we required the incremental layout of a diagram.
+
+The effect of this reset was exclusively to set to `null` a field, named `last`.
+This field was used to remember the last node whose position was computed by the `NodePositionProvider`.
+This node can not be affected by the rest of the layout.
+The provider required this information when several siblings need to be positioned so that they do not overlap.
+
+== Decision
+
+This reset mechanism caused two main issues :
+
+The first one is probably personal, but it is odd that the `NodePositionProvider` was not 'self contained'.
+In this state, the provider actually depended on the layout algorithm to decide the position of the nodes.
+This goes against the logic that this component is supposed to be the one providing the position of the nodes.
+
+The second one is what caused the bug https://github.com/eclipse-sirius/sirius-components/issues/837[#837].
+Take a parent node and two children, they are all being created at the same time, so none of those nodes have a position.
+The node provider pins the first child.
+Then it uses its field `last` to position the second child.
+The second child becomes `last`.
+Now we are positioning the parent.
+Since `last` is not reseted, the parent is positioned after child two.
+This is why we should remove this reset mechanism, and let the provider find the last positioned sibling by itslef.
+
+== Status
+
+Accepted

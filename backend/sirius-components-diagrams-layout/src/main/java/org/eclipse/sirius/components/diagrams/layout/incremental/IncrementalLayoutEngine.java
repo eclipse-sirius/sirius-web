@@ -82,7 +82,6 @@ public class IncrementalLayoutEngine {
     }
 
     public void layout(Optional<IDiagramEvent> optionalDiagramElementEvent, DiagramLayoutData diagram, ISiriusWebLayoutConfigurator layoutConfigurator) {
-        this.nodePositionProvider.reset();
         this.borderNodeLabelPositionProvider = new BorderNodeLabelPositionProvider();
         this.nodeLabelPositionProvider = new NodeLabelPositionProvider(layoutConfigurator);
         this.edgeLabelPositionProvider = new EdgeLabelPositionProvider(layoutConfigurator);

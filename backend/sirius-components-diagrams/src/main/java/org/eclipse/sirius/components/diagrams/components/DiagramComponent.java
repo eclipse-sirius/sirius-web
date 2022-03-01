@@ -89,12 +89,19 @@ public class DiagramComponent implements IComponent {
         children.addAll(edges);
 
         // @formatter:off
+        Position position = optionalPreviousDiagram.map(Diagram::getPosition)
+                .orElse(Position.UNDEFINED);
+
+
+        Size size = optionalPreviousDiagram.map(Diagram::getSize)
+                .orElse(Size.UNDEFINED);
+
         DiagramElementProps diagramElementProps = DiagramElementProps.newDiagramElementProps(diagramId)
                 .targetObjectId(targetObjectId)
                 .descriptionId(diagramDescription.getId())
                 .label(label)
-                .position(Position.UNDEFINED)
-                .size(Size.UNDEFINED)
+                .position(position)
+                .size(size)
                 .children(children)
                 .build();
         // @formatter:on

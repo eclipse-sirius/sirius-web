@@ -14,6 +14,7 @@
 - [ADR-046] Make the workbench panels' content configurable
 - [ADR-047] Add support for tools preconditions
 - [ADR-048] Rename concepts related to tools
+- [ADR-049] Improve the incremental layout for dropper elements
 
 === Deprecation warning
 - [core] The various DTOs related to the creation and renaming of both documents and representations will be removed from the project at some point. The only reason why we will keep them for the moment is that some of them are used to trigger some specific behavior in the `EditingContextEventProcessor`. The split of the representation metadata should help us remove those special use cases
@@ -72,6 +73,7 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/1071[#1071] [diagram] Improve the resizing of the border nodes
 - https://github.com/eclipse-sirius/sirius-components/issues/783[#783] [diagram] Nodes which use images can now also have a border with all the relevant properties: color, size, radius, and line style. This applies to modelers using the compatibility layer and the web-based diagram definitions
 - https://github.com/eclipse-sirius/sirius-components/issues/1033[#1033] [view] It is now possible to configure all properties of node's border in web-based diagrams, including the border line style
+- https://github.com/eclipse-sirius/sirius-components/issues/837[#837] [layout] Improve the position of the dropped elements
 
 === New features
 
