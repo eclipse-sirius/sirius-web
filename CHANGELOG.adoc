@@ -54,6 +54,7 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/1063[#1063] [explorer] It is now possible to expand or collapse items in the explorer without selecting them by clicking directly on the expand/collapse arrow icon
 - https://github.com/eclipse-sirius/sirius-components/issues/1068[#1068] [form] Add support for displaying details on arbitrary element kinds
 - https://github.com/eclipse-sirius/sirius-components/issues/956[#956] [diagram] Add the border node concept on front-end and implement the border node snap. The user can move the border node only on the side of its parent node. The border node enters its parent node with 8px. The ELK automatic layout is adapated to have the same behavior.
+- https://github.com/eclipse-sirius/sirius-components/issues/1081[#1081] [workbench] It is now possible to specify the component to display in the main area when no representation is open instead of the `OnboardArea` (which is still the default when there is no override)
 
 === New features
 
