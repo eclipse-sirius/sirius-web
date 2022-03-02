@@ -42,11 +42,21 @@ export type Representation = {
   kind: string;
 };
 
+export interface MainAreaComponentProps {
+  editingContextId: string;
+  selection: Selection;
+  setSelection: (selection: Selection) => void;
+  readOnly: boolean;
+}
+
+export type MainAreaComponent = (props: MainAreaComponentProps) => JSX.Element;
+
 export type WorkbenchProps = {
   editingContextId: string;
   initialRepresentationSelected: Representation;
   onRepresentationSelected: (representation: Representation) => void;
   readOnly: boolean;
+  mainAreaComponent: MainAreaComponent;
   children: ReactNode;
 };
 

@@ -16,8 +16,8 @@ import { NewDocumentArea } from 'onboarding/NewDocumentArea';
 import { NewRepresentationArea } from 'onboarding/NewRepresentationArea';
 import { RepresentationsArea } from 'onboarding/RepresentationsArea';
 import React, { useEffect, useState } from 'react';
+import { MainAreaComponentProps } from 'workbench/Workbench.types';
 import styles from './OnboardArea.module.css';
-import { OnboardAreaProps } from './OnboardArea.types';
 
 const getOnboardDataQuery = gql`
   query getOnboardData($editingContextId: ID!, $kind: ID!) {
@@ -60,7 +60,7 @@ const INITIAL_STATE = {
   representations: [],
 };
 
-export const OnboardArea = ({ editingContextId, selection, setSelection, readOnly }: OnboardAreaProps) => {
+export const OnboardArea = ({ editingContextId, selection, setSelection, readOnly }: MainAreaComponentProps) => {
   const [state, setState] = useState(INITIAL_STATE);
   const { stereotypeDescriptions, representationDescriptions, representations } = state;
 

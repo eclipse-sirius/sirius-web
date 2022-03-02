@@ -78,6 +78,7 @@ export const Workbench = ({
   editingContextId,
   initialRepresentationSelected,
   onRepresentationSelected,
+  mainAreaComponent,
   readOnly,
   children,
 }: WorkbenchProps) => {
@@ -185,14 +186,16 @@ export const Workbench = ({
     />
   );
 
+  const MainComponent = mainAreaComponent || OnboardArea;
   let main = (
-    <OnboardArea
+    <MainComponent
       editingContextId={editingContextId}
       selection={selection}
       setSelection={setSelection}
       readOnly={readOnly}
     />
   );
+
   if (displayedRepresentation) {
     const RepresentationComponent = registry.getComponent(displayedRepresentation);
     const props: RepresentationComponentProps = {
