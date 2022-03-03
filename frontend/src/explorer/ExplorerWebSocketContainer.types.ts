@@ -10,14 +10,6 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Selection } from 'workbench/Workbench.types';
-
-export interface ExplorerWebSocketContainerProps {
-  editingContextId: string;
-  selection: Selection;
-  setSelection: (selection: Selection) => void;
-  readOnly: boolean;
-}
 
 export interface GQLGetTreePathVariables {
   editingContextId: string;

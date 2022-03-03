@@ -25,22 +25,18 @@ import {
   LOADING__STATE,
 } from 'explorer/machine';
 import React, { useEffect, useReducer } from 'react';
+import { WorkbenchViewComponentProps } from 'workbench/Workbench.types';
 import { Explorer } from './Explorer';
 import styles from './ExplorerWebSocketContainer.module.css';
-import {
-  ExplorerWebSocketContainerProps,
-  GQLGetTreePathData,
-  GQLGetTreePathVariables,
-} from './ExplorerWebSocketContainer.types';
+import { GQLGetTreePathData, GQLGetTreePathVariables } from './ExplorerWebSocketContainer.types';
 import { getTreeEventSubscription, getTreePathQuery } from './operations';
 import { initialState, reducer } from './reducer';
-
 export const ExplorerWebSocketContainer = ({
   editingContextId,
   selection,
   setSelection,
   readOnly,
-}: ExplorerWebSocketContainerProps) => {
+}: WorkbenchViewComponentProps) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { viewState, id, tree, expanded, maxDepth, synchronized, message } = state;
 

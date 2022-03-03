@@ -17,21 +17,16 @@ import MuiAccordionSummary from '@material-ui/core/AccordionSummary';
 import MuiCollapse, { CollapseProps } from '@material-ui/core/Collapse';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { PropertiesWebSocketContainer } from 'properties/PropertiesWebSocketContainer';
 import React, { useState } from 'react';
-import { RepresentationsWebSocketContainer } from 'representations/RepresentationsWebSocketContainer';
-import { RightSiteProps } from './RightSite.types';
+import { SiteProps } from './Site.types';
 
 const useSiteStyles = makeStyles((theme) => ({
   site: {
-    display: 'grid',
-    gridTemplateColumns: 'minmax(0,1fr)',
+    display: 'flex',
+    flexDirection: 'column',
   },
-  detailsExpanded: {
-    gridTemplateRows: 'minmax(0,1fr) min-content',
-  },
-  representationsExpanded: {
-    gridTemplateRows: 'min-content minmax(0,1fr)',
+  expanded: {
+    flexGrow: 1,
   },
   accordionDetailsRoot: {
     display: 'block',
@@ -98,63 +93,44 @@ const CustomCollapse = (props: CollapseProps) => {
   );
 };
 
-const DETAILS_PANEL_NAME = 'details';
-const REPRESENTATIONS_PANEL_NAME = 'representations';
-
-export const RightSite = ({ editingContextId, selection, setSelection, readOnly }: RightSiteProps) => {
+export const Site = ({ editingContextId, selection, setSelection, readOnly, contributions }: SiteProps) => {
   const classes = useSiteStyles();
-
-  const [expanded, setExpanded] = useState<string>(DETAILS_PANEL_NAME);
-
-  const handleChange = (panel: string) => () => {
-    setExpanded(panel);
-  };
+  const [expanded, setExpanded] = useState<number>(0);
 
   let classSite = classes.site;
-  if (expanded === DETAILS_PANEL_NAME) {
-    classSite = `${classSite} ${classes.detailsExpanded}`;
-  } else if (expanded === REPRESENTATIONS_PANEL_NAME) {
-    classSite = `${classSite} ${classes.representationsExpanded}`;
-  }
 
   return (
     <div className={classSite}>
-      <Accordion
-        square
-        expanded={expanded === DETAILS_PANEL_NAME}
-        onChange={handleChange(DETAILS_PANEL_NAME)}
-        TransitionComponent={CustomCollapse}
-      >
-        <AccordionSummary expandIcon={<ExpandMoreIcon />} IconButtonProps={{ size: 'small' }}>
-          Details
-        </AccordionSummary>
-        <AccordionDetails className={classes.accordionDetailsRoot} data-testid={'Details AccordionDetails'}>
-          <PropertiesWebSocketContainer
-            editingContextId={editingContextId}
-            selection={selection}
-            setSelection={setSelection}
-            readOnly={readOnly}
-          />
-        </AccordionDetails>
-      </Accordion>
-      <Accordion
-        square
-        expanded={expanded === 'representations'}
-        onChange={handleChange(REPRESENTATIONS_PANEL_NAME)}
-        TransitionComponent={CustomCollapse}
-      >
-        <AccordionSummary expandIcon={<ExpandMoreIcon />} IconButtonProps={{ size: 'small' }}>
-          Representations
-        </AccordionSummary>
-        <AccordionDetails className={classes.accordionDetailsRoot} data-testid={'Representations AccordionDetails'}>
-          <RepresentationsWebSocketContainer
-            editingContextId={editingContextId}
-            selection={selection}
-            setSelection={setSelection}
-            readOnly={readOnly}
-          />
-        </AccordionDetails>
-      </Accordion>
+      {contributions.map((contribution, index) => {
+        const title = contribution.props.title;
+        const Component = contribution.props.component;
+        return (
+          <Accordion
+            key={index}
+            square
+            expanded={expanded === index}
+            className={expanded === index ? classes.expanded : ''}
+            onChange={(event, expanded) => {
+              if (expanded) {
+                setExpanded(index);
+              }
+            }}
+            TransitionComponent={CustomCollapse}
+          >
+            <AccordionSummary expandIcon={<ExpandMoreIcon />} IconButtonProps={{ size: 'small' }}>
+              {title}
+            </AccordionSummary>
+            <AccordionDetails className={classes.accordionDetailsRoot} data-testid={'Details AccordionDetails'}>
+              <Component
+                editingContextId={editingContextId}
+                selection={selection}
+                setSelection={setSelection}
+                readOnly={readOnly}
+              />
+            </AccordionDetails>
+          </Accordion>
+        );
+      })}
     </div>
   );
 };

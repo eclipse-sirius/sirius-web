@@ -25,7 +25,6 @@ import {
 import { GQLPropertiesEventSubscription, GQLPropertiesEventVariables } from 'form/FormEventFragments.types';
 import gql from 'graphql-tag';
 import { Properties } from 'properties/Properties';
-import { PropertiesWebSocketContainerProps } from 'properties/PropertiesWebSocketContainer.types';
 import {
   HandleCompleteEvent,
   HandleSubscriptionResultEvent,
@@ -38,6 +37,7 @@ import {
   SwitchSelectionEvent,
 } from 'properties/PropertiesWebSocketContainerMachine';
 import React, { useEffect } from 'react';
+import { WorkbenchViewComponentProps } from 'workbench/Workbench.types';
 
 const propertiesEventSubscription = gql`
   subscription propertiesEvent($input: PropertiesEventInput!) {
@@ -73,7 +73,7 @@ export const PropertiesWebSocketContainer = ({
   selection,
   setSelection,
   readOnly,
-}: PropertiesWebSocketContainerProps) => {
+}: WorkbenchViewComponentProps) => {
   const classes = usePropertiesWebSocketContainerStyles();
   const [{ value, context }, dispatch] = useMachine<
     PropertiesWebSocketContainerContext,

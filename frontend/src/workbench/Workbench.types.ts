@@ -42,6 +42,21 @@ export type Representation = {
   kind: string;
 };
 
+export type WorkbenchViewSide = 'left' | 'right';
+
+export interface WorkbenchViewContributionProps {
+  side: WorkbenchViewSide;
+  title: string;
+  component: (props: WorkbenchViewComponentProps) => JSX.Element;
+}
+
+export interface WorkbenchViewComponentProps {
+  editingContextId: string;
+  selection: Selection;
+  setSelection: (selection: Selection) => void;
+  readOnly: boolean;
+}
+
 export interface MainAreaComponentProps {
   editingContextId: string;
   selection: Selection;

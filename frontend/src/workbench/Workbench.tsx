@@ -24,10 +24,9 @@ import { DiagramTreeItemContextMenuContribution } from 'tree/DiagramTreeItemCont
 import { TreeItemType } from 'tree/TreeItem.types';
 import { TreeItemContextMenuContext } from 'tree/TreeItemContextMenu';
 import { TreeItemContextMenuContribution } from 'tree/TreeItemContextMenuContribution';
-import { LeftSite } from 'workbench/LeftSite';
 import { RepresentationContext } from 'workbench/RepresentationContext';
 import { RepresentationNavigation } from 'workbench/RepresentationNavigation';
-import { RightSite } from 'workbench/RightSite';
+import { Site } from 'workbench/Site';
 import {
   GQLEditingContextEventSubscription,
   Representation,
@@ -48,6 +47,7 @@ import {
   WorkbenchEvent,
   workbenchMachine,
 } from 'workbench/WorkbenchMachine';
+import { WorkbenchViewContribution } from './WorkbenchViewContribution';
 
 const editingContextEventSubscription = gql`
   subscription editingContextEvent($input: EditingContextEventInput!) {
@@ -154,9 +154,17 @@ export const Workbench = ({
   }, [onRepresentationSelected, initialRepresentationSelected, displayedRepresentation]);
 
   const treeItemContextMenuContributions = [];
+  const workbenchViewLeftSideContributions = [];
+  const workbenchViewRightSideContributions = [];
   React.Children.forEach(children, (child) => {
     if (React.isValidElement(child) && child.type === TreeItemContextMenuContribution) {
       treeItemContextMenuContributions.push(child);
+    } else if (React.isValidElement(child) && child.type === WorkbenchViewContribution) {
+      if (child.props.side === 'left') {
+        workbenchViewLeftSideContributions.push(child);
+      } else if (child.props.side === 'right') {
+        workbenchViewRightSideContributions.push(child);
+      }
     }
   });
 
@@ -169,21 +177,23 @@ export const Workbench = ({
 
   const leftSite = (
     <TreeItemContextMenuContext.Provider value={treeItemContextMenuContributions}>
-      <LeftSite
+      <Site
         editingContextId={editingContextId}
         selection={selection}
         setSelection={setSelection}
         readOnly={readOnly}
+        contributions={workbenchViewLeftSideContributions}
       />
     </TreeItemContextMenuContext.Provider>
   );
 
   const rightSite = (
-    <RightSite
+    <Site
       editingContextId={editingContextId}
       selection={selection}
       setSelection={setSelection}
       readOnly={readOnly}
+      contributions={workbenchViewRightSideContributions}
     />
   );
 
