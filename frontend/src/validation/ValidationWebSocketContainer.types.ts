@@ -11,10 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export interface ValidationWebSocketContainerProps {
-  editingContextId: string;
-}
-
 export interface GQLValidationEventSubscription {
   validationEvent: GQLValidationEventPayload;
 }

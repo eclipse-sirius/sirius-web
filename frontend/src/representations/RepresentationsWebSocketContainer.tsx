@@ -26,7 +26,7 @@ import {
 import gql from 'graphql-tag';
 import { ListPropertySection } from 'properties/propertysections/ListPropertySection';
 import React, { useEffect } from 'react';
-import { RepresentationsWebSocketContainerProps } from './RepresentationsWebSocketContainer.types';
+import { WorkbenchViewComponentProps } from 'workbench/Workbench.types';
 import {
   HandleCompleteEvent,
   HandleSubscriptionResultEvent,
@@ -38,7 +38,6 @@ import {
   ShowToastEvent,
   SwitchSelectionEvent,
 } from './RepresentationsWebSocketContainerMachine';
-
 const representationsEventSubscription = gql`
   subscription representationsEvent($input: RepresentationsEventInput!) {
     representationsEvent(input: $input) {
@@ -70,7 +69,7 @@ export const RepresentationsWebSocketContainer = ({
   selection,
   setSelection,
   readOnly,
-}: RepresentationsWebSocketContainerProps) => {
+}: WorkbenchViewComponentProps) => {
   const classes = useRepresentationsWebSocketContainerStyles();
 
   const [{ value, context }, dispatch] = useMachine<

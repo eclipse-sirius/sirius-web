@@ -24,10 +24,8 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { useMachine } from '@xstate/react';
 import gql from 'graphql-tag';
 import React, { useEffect } from 'react';
-import {
-  GQLValidationEventSubscription,
-  ValidationWebSocketContainerProps,
-} from './ValidationWebSocketContainer.types';
+import { WorkbenchViewComponentProps } from 'workbench/Workbench.types';
+import { GQLValidationEventSubscription } from './ValidationWebSocketContainer.types';
 import {
   HandleCompleteEvent,
   HandleSubscriptionResultEvent,
@@ -80,7 +78,7 @@ const useValidationWebSocketContainerStyle = makeStyles((theme) => ({
   },
 }));
 
-export const ValidationWebSocketContainer = ({ editingContextId }: ValidationWebSocketContainerProps) => {
+export const ValidationWebSocketContainer = ({ editingContextId }: WorkbenchViewComponentProps) => {
   const classes = useValidationWebSocketContainerStyle();
   const [{ value, context }, dispatch] = useMachine<
     ValidationWebSocketContainerContext,

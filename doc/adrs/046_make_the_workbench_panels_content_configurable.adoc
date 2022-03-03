@@ -1,0 +1,74 @@
+= ADR-046 - Make the workbench panels' content configurable
+
+== Context
+
+The `Workbench` frontend component is responsible for displaying and coordinating the different views and representations in the main project edition page.
+Currently its layout and content is hard-coded, with the _explorer_ and _validation view_ on top of each other in the left panel, and the _details view_ and _representations view_ on the right panel.
+For some applications, some of these views are not relevant or should be replaced by application-specific alternatives.
+
+== Decision
+
+The workbench will keep its overall organisation in 3 panels, but the left and right panels will no longer hard-code the list of views they contain.
+
+Instead the workbench will accept a new kind of children element, `WorkbenchViewContribution` to indicate the list of components to place in the left or right panels.
+
+```js
+<Workbench
+  editingContextId={project.currentEditingContext.id}
+  initialRepresentationSelected={representation}
+  onRepresentationSelected={onRepresentationSelected}
+  readOnly={project.accessLevel === 'READ'}>
+  <WorkbenchViewContribution side="left" title="Validation" component={ValidationWebSocketContainer} />
+  <WorkbenchViewContribution side="left" title="Explorer" component={ExplorerWebSocketContainer} />
+  <WorkbenchViewContribution side="right" title="Details" component={PropertiesWebSocketContainer} />
+  <WorkbenchViewContribution side="right" title="Representations" component={RepresentationsWebSocketContainer} />
+  <TreeItemContextMenuContribution canHandle={(item: TreeItemType) => item.kind.startsWith('siriusWeb://document')}
+                                   component={DocumentTreeItemContextMenuContribution}/>
+  ...
+</Workbench>
+```
+
+The contributions will appear in the corresponding panels in the other they are defined inside the `Workbench` element.
+The first contribution will be initally expanded and take all the available vertical space in its panel.
+Each side (left or right) must have at least one contribution, but can have more than two.
+
+We will only support two side panels for now, which can be specified using this new type:
+
+```js
+export type WorkenchViewSide = 'left' | 'right';
+```
+
+To be usable inside one of the panels, a component will need to have the following signature, which matches the existing signature of all the hard-coded views we currently display (whose custom types are no longer needed):
+
+```js
+export interface WorkbenchViewComponentProps {
+  editingContextId: string;
+  selection: Selection;
+  setSelection: (selection: Selection) => void;
+  readOnly: boolean;
+}
+```
+
+The `WorkbenchViewContribution` component used inside the `Workbench` will not render anything by itself, but will hold the configuration information that the workbench component will use to configure its panels:
+
+```js
+export interface WorkbenchViewContributionProps {
+  side: WorkbenchViewSide;
+  title: string;
+  component: (props: WorkbenchViewComponentProps) => JSX.Element;
+}
+
+export const WorkbenchViewContribution = ({ side, component }: WorkbenchViewContributionProps) => {
+  return null;
+}
+```
+
+== Status
+
+Accepted
+
+== Consequences
+
+* Applications based on Sirius Components (like Sirius Web) will need to be updated to explicitly configure the workbench's content, even if they want to keep the previous configuration.
+* The views currently hard-coded in the workbench will need to be exported so that concrete applications can use them in their workbench configuration.
+* The left and right panels will have the same behavior, with only one of their components expanded at a time (currently the left panel supports having both the explorer and the validation views visible at the same time).
