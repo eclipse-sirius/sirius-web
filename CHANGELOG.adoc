@@ -45,6 +45,7 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/962[#962] [layout] Fix an issue preventing nodes from being properly resized when a child node is created
 - https://github.com/eclipse-sirius/sirius-components/issues/1051[#1051] [layout] Fix an issue resizing nodes when a child node was created even if it was not necessary
 - https://github.com/eclipse-sirius/sirius-components/issues/1073[#1073] [core] Add missing ErrorCallback on the canBeDisposed subscriber of the EditingContextEventProcessor
+- [diagram] Fix an issue preventing the resizing of a node if the cursor had not moved after a previous resizing
 
 === Improvements
 
