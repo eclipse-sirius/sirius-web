@@ -155,7 +155,7 @@ interface Tool {
   imageURL: String!
 }
 
-type CreateNodeTool implements Tool {
+type SingleClickOnDiagramElementTool implements Tool {
   id: ID!
   label: String!
   imageURL: String!
@@ -164,14 +164,14 @@ type CreateNodeTool implements Tool {
   targetDescriptions: [NodeDescription!]!
 }
 
-type CreateEdgeTool implements Tool {
+type SingleClickOnTwoDiagramElementsTool implements Tool {
   id: ID!
   label: String!
   imageURL: String!
-  edgeCandidates: [EdgeCandidate]!
+  candidates: [SingleClickOnTwoDiagramElementsCandidate]!
 }
 
-type EdgeCandidate {
+type SingleClickOnTwoDiagramElementsCandidate {
   sources: [NodeDescription!]!
   targets: [NodeDescription!]!
 }
@@ -208,8 +208,8 @@ extend type Mutation {
   arrangeAll(input: ArrangeAllInput!): ArrangeAllPayload!
   deleteFromDiagram(input: DeleteFromDiagramInput!): DeleteFromDiagramPayload!
   editLabel(input: EditLabelInput!): EditLabelPayload!
-  invokeEdgeToolOnDiagram(input: InvokeEdgeToolOnDiagramInput!): InvokeEdgeToolOnDiagramPayload!
-  invokeNodeToolOnDiagram(input: InvokeNodeToolOnDiagramInput!): InvokeNodeToolOnDiagramPayload!
+  invokeSingleClickOnDiagramElementTool(input: InvokeSingleClickOnDiagramElementToolInput!): InvokeSingleClickOnDiagramElementToolPayload!
+  invokeSingleClickOnTwoDiagramElementsTool(input: InvokeSingleClickOnTwoDiagramElementsToolInput!): InvokeSingleClickOnTwoDiagramElementsToolPayload!
   updateNodeBounds(input: UpdateNodeBoundsInput!): UpdateNodeBoundsPayload!
   updateNodePosition(input: UpdateNodePositionInput!): UpdateNodePositionPayload!
   dropOnDiagram(input: DropOnDiagramInput!): DropOnDiagramPayload!
@@ -263,7 +263,7 @@ type EditLabelSuccessPayload {
   diagram: Diagram!
 }
 
-input InvokeEdgeToolOnDiagramInput {
+input InvokeSingleClickOnTwoDiagramElementsToolInput {
   id: ID!
   editingContextId: ID!
   representationId: ID!
@@ -276,14 +276,14 @@ input InvokeEdgeToolOnDiagramInput {
   targetPositionY: Float!
 }
 
-union InvokeEdgeToolOnDiagramPayload = ErrorPayload | InvokeEdgeToolOnDiagramSuccessPayload
+union InvokeSingleClickOnTwoDiagramElementsToolPayload = ErrorPayload | InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload
 
-type InvokeEdgeToolOnDiagramSuccessPayload {
+type InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload {
   id: ID!
   newSelection: WorkbenchSelection
 }
 
-input InvokeNodeToolOnDiagramInput {
+input InvokeSingleClickOnDiagramElementToolInput {
   id: ID!
   editingContextId: ID!
   representationId: ID!
@@ -294,9 +294,9 @@ input InvokeNodeToolOnDiagramInput {
   toolId: ID!
 }
 
-union InvokeNodeToolOnDiagramPayload = ErrorPayload | InvokeNodeToolOnDiagramSuccessPayload
+union InvokeSingleClickOnDiagramElementToolPayload = ErrorPayload | InvokeSingleClickOnDiagramElementToolSuccessPayload
 
-type InvokeNodeToolOnDiagramSuccessPayload {
+type InvokeSingleClickOnDiagramElementToolSuccessPayload {
   id: ID!
   newSelection: WorkbenchSelection
 }

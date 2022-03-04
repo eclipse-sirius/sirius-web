@@ -42,9 +42,9 @@ import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
 import org.eclipse.sirius.components.diagrams.elements.NodeElementProps;
 import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderingCache;
-import org.eclipse.sirius.components.diagrams.tools.CreateEdgeTool;
-import org.eclipse.sirius.components.diagrams.tools.CreateNodeTool;
-import org.eclipse.sirius.components.diagrams.tools.EdgeCandidate;
+import org.eclipse.sirius.components.diagrams.tools.SingleClickOnTwoDiagramElementsTool;
+import org.eclipse.sirius.components.diagrams.tools.SingleClickOnDiagramElementTool;
+import org.eclipse.sirius.components.diagrams.tools.SingleClickOnTwoDiagramElementsCandidate;
 import org.eclipse.sirius.components.diagrams.tools.ITool;
 import org.eclipse.sirius.components.diagrams.tools.ToolSection;
 import org.eclipse.sirius.components.emf.compatibility.DomainClassPredicate;
@@ -272,7 +272,7 @@ public class DiagramDescriptionConverter {
             int i = 0;
             for (NodeTool nodeTool : nodeDescription.getNodeTools()) {
                 // @formatter:off
-                CreateNodeTool customTool = CreateNodeTool.newCreateNodeTool(this.idProvider.apply(nodeDescription) + "_tool" + i++) //$NON-NLS-1$
+                SingleClickOnDiagramElementTool customTool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(this.idProvider.apply(nodeDescription) + "_tool" + i++) //$NON-NLS-1$
                         .label(nodeTool.getName())
                         .imageURL(NODE_CREATION_TOOL_ICON)
                         .handler(variableManager -> new ToolInterpreter(interpreter, this.objectService, this.editService, this.getDiagramContext(variableManager), capturedConvertedNodes).executeTool(nodeTool, variableManager))
@@ -285,7 +285,7 @@ public class DiagramDescriptionConverter {
             // If there are no custom tools defined, add a canonical creation tool
             if (i == 0) {
                 // @formatter:off
-                CreateNodeTool tool = CreateNodeTool.newCreateNodeTool(this.idProvider.apply(nodeDescription) + "_creationTool") //$NON-NLS-1$
+                SingleClickOnDiagramElementTool tool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(this.idProvider.apply(nodeDescription) + "_creationTool") //$NON-NLS-1$
                         .label("New " + this.getSimpleTypeName(nodeDescription.getDomainType())) //$NON-NLS-1$
                         .imageURL(NODE_CREATION_TOOL_ICON)
                         .handler(variableManager -> this.canonicalBehaviors.createNewNode(nodeDescription, variableManager))
@@ -303,10 +303,10 @@ public class DiagramDescriptionConverter {
             int i = 0;
             for (EdgeTool edgeTool : edgeDescription.getEdgeTools()) {
                 // @formatter:off
-                CreateEdgeTool customTool = CreateEdgeTool.newCreateEdgeTool(this.idProvider.apply(edgeDescription) + "_tool" + i++) //$NON-NLS-1$
+                SingleClickOnTwoDiagramElementsTool customTool = SingleClickOnTwoDiagramElementsTool.newSingleClickOnTwoDiagramElementsTool(this.idProvider.apply(edgeDescription) + "_tool" + i++) //$NON-NLS-1$
                         .label(edgeTool.getName())
                         .imageURL(EDGE_CREATION_TOOL_ICON)
-                        .edgeCandidates(List.of(EdgeCandidate.newEdgeCandidate()
+                        .candidates(List.of(SingleClickOnTwoDiagramElementsCandidate.newSingleClickOnTwoDiagramElementsCandidate()
                                 .sources(edgeDescription.getSourceNodeDescriptions().stream().map(this.convertedNodes::get).collect(Collectors.toList()))
                                 .targets(edgeDescription.getTargetNodeDescriptions().stream().map(this.convertedNodes::get).collect(Collectors.toList()))
                                 .build()))
@@ -318,10 +318,10 @@ public class DiagramDescriptionConverter {
             // If there are no custom tools defined, add a canonical creation tool
             if (i == 0) {
                 // @formatter:off
-                CreateEdgeTool tool = CreateEdgeTool.newCreateEdgeTool(this.idProvider.apply(edgeDescription) + "_creationTool") //$NON-NLS-1$
+                SingleClickOnTwoDiagramElementsTool tool = SingleClickOnTwoDiagramElementsTool.newSingleClickOnTwoDiagramElementsTool(this.idProvider.apply(edgeDescription) + "_creationTool") //$NON-NLS-1$
                         .label("New " + this.getSimpleTypeName(edgeDescription.getDomainType())) //$NON-NLS-1$
                         .imageURL(EDGE_CREATION_TOOL_ICON)
-                        .edgeCandidates(List.of(EdgeCandidate.newEdgeCandidate()
+                        .candidates(List.of(SingleClickOnTwoDiagramElementsCandidate.newSingleClickOnTwoDiagramElementsCandidate()
                                 .sources(edgeDescription.getSourceNodeDescriptions().stream().map(this.convertedNodes::get).collect(Collectors.toList()))
                                 .targets(edgeDescription.getTargetNodeDescriptions().stream().map(this.convertedNodes::get).collect(Collectors.toList()))
                                 .build()))

@@ -33,7 +33,7 @@ import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
-import org.eclipse.sirius.components.diagrams.events.NodeCreationEvent;
+import org.eclipse.sirius.components.diagrams.events.SinglePositionEvent;
 import org.eclipse.sirius.components.diagrams.layout.ELKLayoutedDiagramProvider;
 import org.eclipse.sirius.components.diagrams.layout.IELKDiagramConverter;
 import org.eclipse.sirius.components.diagrams.layout.LayoutConfiguratorRegistry;
@@ -192,7 +192,7 @@ public class NodeCreationTests {
         assertThat(optionalRefreshedDiagram).isNotEmpty();
         Diagram refreshedDiagram = optionalRefreshedDiagram.get();
 
-        IDiagramEvent diagramEvent = new NodeCreationEvent(eventCreationPosition);
+        IDiagramEvent diagramEvent = new SinglePositionEvent(eventCreationPosition);
         return diagramCreationService.performLayout(editingContext, refreshedDiagram, diagramEvent);
     }
 

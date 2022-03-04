@@ -24,7 +24,7 @@ import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.diagrams.events.MoveEvent;
-import org.eclipse.sirius.components.diagrams.events.NodeCreationEvent;
+import org.eclipse.sirius.components.diagrams.events.SinglePositionEvent;
 import org.eclipse.sirius.components.diagrams.events.ResizeEvent;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.DiagramLayoutData;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.IContainerLayoutData;
@@ -61,7 +61,7 @@ public class NodePositionProviderTests {
         diagramLayoutData.setChildrenNodes(nodes);
         nodes.add(nodeLayoutData);
 
-        Optional<IDiagramEvent> optionalDiagramElementEvent = Optional.of(new NodeCreationEvent(ZERO_POSITION));
+        Optional<IDiagramEvent> optionalDiagramElementEvent = Optional.of(new SinglePositionEvent(ZERO_POSITION));
         Position nextPosition = nodePositionProvider.getPosition(optionalDiagramElementEvent, nodeLayoutData);
         nodeLayoutData.setPosition(nextPosition);
 
@@ -106,7 +106,7 @@ public class NodePositionProviderTests {
         nodeLayoutData = this.createNodeLayoutData(Position.UNDEFINED, DEFAULT_NODE_SIZE, diagramLayoutData, NodeType.NODE_RECTANGLE);
         nodes.add(nodeLayoutData);
 
-        Optional<IDiagramEvent> optionalEvent = Optional.of(new NodeCreationEvent(startingPosition));
+        Optional<IDiagramEvent> optionalEvent = Optional.of(new SinglePositionEvent(startingPosition));
         nextPosition = nodePositionProvider.getPosition(optionalEvent, nodeLayoutData);
         assertThat(nextPosition).extracting(Position::getX).isEqualTo(START_X_WITHIN_PARENT);
         assertThat(nextPosition).extracting(Position::getY).isEqualTo(START_Y_WITHIN_PARENT);
@@ -117,7 +117,7 @@ public class NodePositionProviderTests {
         nodeLayoutData = this.createNodeLayoutData(Position.UNDEFINED, DEFAULT_NODE_SIZE, diagramLayoutData, NodeType.NODE_RECTANGLE);
         nodes.add(nodeLayoutData);
 
-        Optional<IDiagramEvent> optionalEventOutside = Optional.of(new NodeCreationEvent(startingPositionOutside));
+        Optional<IDiagramEvent> optionalEventOutside = Optional.of(new SinglePositionEvent(startingPositionOutside));
         nextPosition = nodePositionProvider.getPosition(optionalEventOutside, nodeLayoutData);
         assertThat(nextPosition).extracting(Position::getX).isEqualTo(Double.valueOf(10));
         assertThat(nextPosition).extracting(Position::getY).isEqualTo(Double.valueOf(10));
@@ -132,7 +132,7 @@ public class NodePositionProviderTests {
         List<NodeLayoutData> nodes = new ArrayList<>();
         parentNodeLayoutData.setChildrenNodes(nodes);
 
-        Optional<IDiagramEvent> optionalEvent = Optional.of(new NodeCreationEvent(ZERO_POSITION));
+        Optional<IDiagramEvent> optionalEvent = Optional.of(new SinglePositionEvent(ZERO_POSITION));
 
         NodeLayoutData nodeLayoutData = this.createNodeLayoutData(Position.UNDEFINED, DEFAULT_NODE_SIZE, parentNodeLayoutData, NodeType.NODE_RECTANGLE);
         nodes.add(nodeLayoutData);
@@ -157,7 +157,7 @@ public class NodePositionProviderTests {
         List<NodeLayoutData> nodes = new ArrayList<>();
         parentNodeLayoutData.setChildrenNodes(nodes);
 
-        Optional<IDiagramEvent> optionalEvent = Optional.of(new NodeCreationEvent(ZERO_POSITION));
+        Optional<IDiagramEvent> optionalEvent = Optional.of(new SinglePositionEvent(ZERO_POSITION));
 
         NodeLayoutData nodeLayoutData = this.createNodeLayoutData(Position.UNDEFINED, DEFAULT_NODE_SIZE, parentNodeLayoutData, NodeType.NODE_RECTANGLE);
         nodes.add(nodeLayoutData);
@@ -180,7 +180,7 @@ public class NodePositionProviderTests {
         nodes.add(nodeLayoutData);
 
         nodePositionProvider = new NodePositionProvider();
-        nextPosition = nodePositionProvider.getPosition(Optional.of(new NodeCreationEvent(startingPosition)), nodeLayoutData);
+        nextPosition = nodePositionProvider.getPosition(Optional.of(new SinglePositionEvent(startingPosition)), nodeLayoutData);
         assertThat(nextPosition).extracting(Position::getX).isEqualTo(START_X_WITHIN_PARENT);
         assertThat(nextPosition).extracting(Position::getY).isEqualTo(START_Y_WITHIN_PARENT);
 
@@ -190,7 +190,7 @@ public class NodePositionProviderTests {
         nodes.add(nodeLayoutData);
 
         nodePositionProvider = new NodePositionProvider();
-        nextPosition = nodePositionProvider.getPosition(Optional.of(new NodeCreationEvent(startingPositionOutside)), nodeLayoutData);
+        nextPosition = nodePositionProvider.getPosition(Optional.of(new SinglePositionEvent(startingPositionOutside)), nodeLayoutData);
         assertThat(nextPosition).extracting(Position::getX).isEqualTo(Double.valueOf(10));
         assertThat(nextPosition).extracting(Position::getY).isEqualTo(Double.valueOf(10));
     }

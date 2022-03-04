@@ -56,15 +56,15 @@ export const getToolSectionsQuery = gql`
                   id
                   label
                   imageURL
-                  ... on CreateNodeTool {
+                  ... on SingleClickOnDiagramElementTool {
                     targetDescriptions {
                       id
                     }
                     appliesToDiagramRoot
                     selectionDescriptionId
                   }
-                  ... on CreateEdgeTool {
-                    edgeCandidates {
+                  ... on SingleClickOnTwoDiagramElementsTool {
+                    candidates {
                       sources {
                         id
                       }
@@ -173,12 +173,12 @@ export const ContextualPalette = ({
     }
   }, [toolSectionsLoading, toolSectionsData, toolSectionsError, dispatch]);
 
-  const atLeastOneEdgeTool = toolSections.some((toolSection) =>
-    toolSection.tools.some((tool) => tool.__typename === 'CreateEdgeTool')
+  const atLeastOneSingleClickOnTwoDiagramElementsTool = toolSections.some((toolSection) =>
+    toolSection.tools.some((tool) => tool.__typename === 'SingleClickOnTwoDiagramElementsTool')
   );
 
   let toolSectionsCount = toolSections.length + 1;
-  if (atLeastOneEdgeTool) {
+  if (atLeastOneSingleClickOnTwoDiagramElementsTool) {
     toolSectionsCount = toolSectionsCount + 1;
   }
 
@@ -208,7 +208,7 @@ export const ContextualPalette = ({
     contextualPalette === 'loaded' ? (
       <div className={classes.toolbar} data-testid="PopupToolbar" key="PopupToolbar">
         <div className={classes.toolEntries}>
-          {atLeastOneEdgeTool ? (
+          {atLeastOneSingleClickOnTwoDiagramElementsTool ? (
             <div className={classes.connectorTool} key="connectorTool">
               <Tool tool={connectorTool} thumbnail={true} onClick={() => invokeConnectorTool(toolSections)} />
             </div>

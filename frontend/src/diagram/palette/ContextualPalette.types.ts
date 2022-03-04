@@ -75,16 +75,16 @@ export interface GQLTool {
   __typename: string;
 }
 
-export interface GQLCreateNodeTool extends GQLTool {
+export interface GQLSingleClickOnDiagramElementTool extends GQLTool {
   appliesToDiagramRoot: boolean;
   selectionDescriptionId: string;
 }
 
-export interface GQLCreateEdgeTool extends GQLTool {
-  edgeCandidates: GQLEdgeCandidate[];
+export interface GQLSingleClickOnTwoDiagramElementsTool extends GQLTool {
+  candidates: GQLSingleClickOnTwoDiagramElementsCandidate[];
 }
 
-export interface GQLEdgeCandidate {
+export interface GQLSingleClickOnTwoDiagramElementsCandidate {
   sources: GQLNodeDescription[];
   targets: GQLNodeDescription[];
 }

@@ -31,7 +31,7 @@ import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
-import org.eclipse.sirius.components.diagrams.events.NodeCreationEvent;
+import org.eclipse.sirius.components.diagrams.events.SinglePositionEvent;
 import org.eclipse.sirius.components.diagrams.layout.ELKLayoutedDiagramProvider;
 import org.eclipse.sirius.components.diagrams.layout.IELKDiagramConverter;
 import org.eclipse.sirius.components.diagrams.layout.LayoutConfiguratorRegistry;
@@ -151,7 +151,7 @@ public class DiagramLayoutTest {
         Node thirdParent = optionalThirdParent.get();
         assertThat(thirdParent.getPosition()).isEqualTo(Position.UNDEFINED);
 
-        IDiagramEvent diagramEvent = new NodeCreationEvent(Position.at(300, 100));
+        IDiagramEvent diagramEvent = new SinglePositionEvent(Position.at(300, 100));
         Diagram layoutedDiagram = diagramCreationService.performLayout(editingContext, refreshedDiagram, diagramEvent);
 
         Optional<Node> optionalLayoutedThirdParent = this.getNode(layoutedDiagram.getNodes(), "Third Parent"); //$NON-NLS-1$

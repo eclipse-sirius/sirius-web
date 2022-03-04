@@ -81,17 +81,17 @@ export interface Tool {
   __typename: string;
 }
 
-export interface CreateNodeTool extends Tool {
+export interface SingleClickOnDiagramElementTool extends Tool {
   appliesToDiagramRoot: boolean;
   selectionDescriptionId: string;
   targetDescriptions: NodeDescription[];
 }
 
-export interface CreateEdgeTool extends Tool {
-  edgeCandidates: EdgeCandidate[];
+export interface SingleClickOnTwoDiagramElementsTool extends Tool {
+  candidates: SingleClickOnTwoDiagramElementsCandidate[];
 }
 
-export interface EdgeCandidate {
+export interface SingleClickOnTwoDiagramElementsCandidate {
   sources: NodeDescription[];
   targets: NodeDescription[];
 }
@@ -262,11 +262,11 @@ export enum GQLDeletionPolicy {
   GRAPHICAL = 'GRAPHICAL',
 }
 
-export interface GQLInvokeNodeToolOnDiagramVariables {
-  input: GQLInvokeNodeToolOnDiagramInput;
+export interface GQLInvokeSingleClickOnDiagramElementToolVariables {
+  input: GQLInvokeSingleClickOnDiagramElementToolInput;
 }
 
-export interface GQLInvokeNodeToolOnDiagramInput {
+export interface GQLInvokeSingleClickOnDiagramElementToolInput {
   id: string;
   editingContextId: string;
   representationId: string;
@@ -277,24 +277,25 @@ export interface GQLInvokeNodeToolOnDiagramInput {
   selectedObjectId: string;
 }
 
-export interface GQLInvokeNodeToolOnDiagramData {
-  invokeNodeToolOnDiagram: GQLInvokeNodeToolOnDiagramPayload;
+export interface GQLInvokeSingleClickOnDiagramElementToolData {
+  invokeSingleClickOnDiagramElementTool: GQLInvokeSingleClickOnDiagramElementToolPayload;
 }
 
-export interface GQLInvokeNodeToolOnDiagramPayload {
+export interface GQLInvokeSingleClickOnDiagramElementToolPayload {
   __typename: string;
 }
 
-export interface GQLInvokeNodeToolOnDiagramSuccessPayload extends GQLInvokeNodeToolOnDiagramPayload {
+export interface GQLInvokeSingleClickOnDiagramElementToolSuccessPayload
+  extends GQLInvokeSingleClickOnDiagramElementToolPayload {
   id: string;
   newSelection: GQLWorkbenchSelection;
 }
 
-export interface GQLInvokeEdgeToolOnDiagramVariables {
-  input: GQLInvokeEdgeToolOnDiagramInput;
+export interface GQLInvokeSingleClickOnTwoDiagramElementsToolVariables {
+  input: GQLInvokeSingleClickOnTwoDiagramElementsToolInput;
 }
 
-export interface GQLInvokeEdgeToolOnDiagramInput {
+export interface GQLInvokeSingleClickOnTwoDiagramElementsToolInput {
   id: string;
   editingContextId: string;
   representationId: string;
@@ -307,23 +308,24 @@ export interface GQLInvokeEdgeToolOnDiagramInput {
   toolId: string;
 }
 
-export interface GQLInvokeEdgeToolOnDiagramData {
-  invokeEdgeToolOnDiagram: GQLInvokeEdgeToolOnDiagramPayload;
+export interface GQLInvokeSingleClickOnTwoDiagramElementsToolData {
+  invokeSingleClickOnTwoDiagramElementsTool: GQLInvokeSingleClickOnTwoDiagramElementsToolPayload;
 }
 
-export interface GQLInvokeEdgeToolOnDiagramPayload {
+export interface GQLInvokeSingleClickOnTwoDiagramElementsToolPayload {
   __typename: string;
 }
 
-export interface GQLInvokeEdgeToolOnDiagramSuccessPayload extends GQLInvokeEdgeToolOnDiagramPayload {
+export interface GQLInvokeSingleClickOnTwoDiagramElementsToolSuccessPayload
+  extends GQLInvokeSingleClickOnTwoDiagramElementsToolPayload {
   id: string;
   newSelection: GQLWorkbenchSelection;
 }
 
 export interface GQLErrorPayload
   extends GQLDiagramEventPayload,
-    GQLInvokeNodeToolOnDiagramPayload,
-    GQLInvokeEdgeToolOnDiagramPayload {
+    GQLInvokeSingleClickOnDiagramElementToolPayload,
+    GQLInvokeSingleClickOnTwoDiagramElementsToolPayload {
   message: string;
 }
 export interface GQLWorkbenchSelection {

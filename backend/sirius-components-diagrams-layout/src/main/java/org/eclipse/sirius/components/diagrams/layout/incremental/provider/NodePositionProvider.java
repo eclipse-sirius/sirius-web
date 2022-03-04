@@ -19,8 +19,8 @@ import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.diagrams.events.MoveEvent;
-import org.eclipse.sirius.components.diagrams.events.NodeCreationEvent;
 import org.eclipse.sirius.components.diagrams.events.ResizeEvent;
+import org.eclipse.sirius.components.diagrams.events.SinglePositionEvent;
 import org.eclipse.sirius.components.diagrams.layout.LayoutOptionValues;
 import org.eclipse.sirius.components.diagrams.layout.incremental.IncrementalLayoutEngine;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.IContainerLayoutData;
@@ -99,14 +99,11 @@ public class NodePositionProvider {
     }
 
     private Optional<Position> getOptionalStartingPositionFromEvent(Optional<IDiagramEvent> optionalDiagramElementEvent) {
-        Position position = null;
-        if (optionalDiagramElementEvent.isPresent()) {
-            IDiagramEvent diagramElementEvent = optionalDiagramElementEvent.get();
-            if (diagramElementEvent instanceof NodeCreationEvent) {
-                position = ((NodeCreationEvent) diagramElementEvent).getStartingPosition();
-            }
-        }
-        return Optional.ofNullable(position);
+        // @formatter:off
+        return optionalDiagramElementEvent.filter(SinglePositionEvent.class::isInstance)
+                .map(SinglePositionEvent.class::cast)
+                .map(SinglePositionEvent::getPosition);
+        // @formatter:on
     }
 
     private boolean isAlreadyPositioned(NodeLayoutData node) {

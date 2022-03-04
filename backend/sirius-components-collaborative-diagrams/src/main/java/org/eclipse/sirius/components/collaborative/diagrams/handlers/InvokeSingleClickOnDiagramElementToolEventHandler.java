@@ -24,8 +24,8 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventHan
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IToolService;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeNodeToolOnDiagramInput;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeNodeToolOnDiagramSuccessPayload;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolInput;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolSuccessPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
 import org.eclipse.sirius.components.core.api.Environment;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
@@ -37,8 +37,8 @@ import org.eclipse.sirius.components.core.api.WorkbenchSelection;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.Position;
-import org.eclipse.sirius.components.diagrams.events.NodeCreationEvent;
-import org.eclipse.sirius.components.diagrams.tools.CreateNodeTool;
+import org.eclipse.sirius.components.diagrams.events.SinglePositionEvent;
+import org.eclipse.sirius.components.diagrams.tools.SingleClickOnDiagramElementTool;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
@@ -53,14 +53,14 @@ import reactor.core.publisher.Sinks.Many;
 import reactor.core.publisher.Sinks.One;
 
 /**
- * Handle "Invoke node tool on diagram" events.
+ * Handle "Invoke single click on diagram element tool" events.
  *
  * @author pcdavid
  */
 @Service
-public class InvokeNodeToolOnDiagramEventHandler implements IDiagramEventHandler {
+public class InvokeSingleClickOnDiagramElementToolEventHandler implements IDiagramEventHandler {
 
-    private final Logger logger = LoggerFactory.getLogger(InvokeNodeToolOnDiagramEventHandler.class);
+    private final Logger logger = LoggerFactory.getLogger(InvokeSingleClickOnDiagramElementToolEventHandler.class);
 
     private final IObjectService objectService;
 
@@ -74,7 +74,7 @@ public class InvokeNodeToolOnDiagramEventHandler implements IDiagramEventHandler
 
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
-    public InvokeNodeToolOnDiagramEventHandler(IObjectService objectService, IDiagramQueryService diagramQueryService, IToolService toolService, ICollaborativeDiagramMessageService messageService,
+    public InvokeSingleClickOnDiagramElementToolEventHandler(IObjectService objectService, IDiagramQueryService diagramQueryService, IToolService toolService, ICollaborativeDiagramMessageService messageService,
             MeterRegistry meterRegistry, IRepresentationDescriptionSearchService representationDescriptionSearchService) {
         this.objectService = Objects.requireNonNull(objectService);
         this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
@@ -92,24 +92,24 @@ public class InvokeNodeToolOnDiagramEventHandler implements IDiagramEventHandler
 
     @Override
     public boolean canHandle(IDiagramInput diagramInput) {
-        return diagramInput instanceof InvokeNodeToolOnDiagramInput;
+        return diagramInput instanceof InvokeSingleClickOnDiagramElementToolInput;
     }
 
     @Override
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IDiagramContext diagramContext, IDiagramInput diagramInput) {
         this.counter.increment();
 
-        String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), InvokeNodeToolOnDiagramInput.class.getSimpleName());
+        String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), InvokeSingleClickOnDiagramElementToolInput.class.getSimpleName());
         IPayload payload = new ErrorPayload(diagramInput.getId(), message);
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, diagramInput.getRepresentationId(), diagramInput);
 
-        if (diagramInput instanceof InvokeNodeToolOnDiagramInput) {
-            InvokeNodeToolOnDiagramInput input = (InvokeNodeToolOnDiagramInput) diagramInput;
+        if (diagramInput instanceof InvokeSingleClickOnDiagramElementToolInput) {
+            InvokeSingleClickOnDiagramElementToolInput input = (InvokeSingleClickOnDiagramElementToolInput) diagramInput;
             Diagram diagram = diagramContext.getDiagram();
             // @formatter:off
             var optionalTool = this.toolService.findToolById(editingContext, diagram, input.getToolId())
-                    .filter(CreateNodeTool.class::isInstance)
-                    .map(CreateNodeTool.class::cast);
+                    .filter(SingleClickOnDiagramElementTool.class::isInstance)
+                    .map(SingleClickOnDiagramElementTool.class::cast);
             // @formatter:on
             if (optionalTool.isPresent()) {
                 IStatus status = this.executeTool(editingContext, diagramContext, input.getDiagramElementId(), optionalTool.get(), input.getStartingPositionX(), input.getStartingPositionY(),
@@ -120,7 +120,7 @@ public class InvokeNodeToolOnDiagramEventHandler implements IDiagramEventHandler
                     if (newSelectionParameter instanceof WorkbenchSelection) {
                         newSelection = (WorkbenchSelection) newSelectionParameter;
                     }
-                    payload = new InvokeNodeToolOnDiagramSuccessPayload(diagramInput.getId(), newSelection);
+                    payload = new InvokeSingleClickOnDiagramElementToolSuccessPayload(diagramInput.getId(), newSelection);
                     changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, diagramInput.getRepresentationId(), diagramInput);
                 } else if (status instanceof Failure) {
                     payload = new ErrorPayload(diagramInput.getId(), ((Failure) status).getMessage());
@@ -132,8 +132,8 @@ public class InvokeNodeToolOnDiagramEventHandler implements IDiagramEventHandler
         changeDescriptionSink.tryEmitNext(changeDescription);
     }
 
-    private IStatus executeTool(IEditingContext editingContext, IDiagramContext diagramContext, String diagramElementId, CreateNodeTool tool, double startingPositionX, double startingPositionY,
-            String selectedObjectId) {
+    private IStatus executeTool(IEditingContext editingContext, IDiagramContext diagramContext, String diagramElementId, SingleClickOnDiagramElementTool tool, double startingPositionX,
+            double startingPositionY, String selectedObjectId) {
         IStatus result = new Failure(""); //$NON-NLS-1$
         Diagram diagram = diagramContext.getDiagram();
         Optional<Node> node = this.diagramQueryService.findNodeById(diagram, diagramElementId);
@@ -161,14 +161,14 @@ public class InvokeNodeToolOnDiagramEventHandler implements IDiagramEventHandler
                 var selectionDescriptionOpt = this.representationDescriptionSearchService.findById(editingContext, UUID.fromString(selectionDescriptionId));
                 var selectedObjectOpt = this.objectService.getObject(editingContext, selectedObjectId);
                 if (selectionDescriptionOpt.isPresent() && selectedObjectOpt.isPresent()) {
-                    variableManager.put(CreateNodeTool.SELECTED_OBJECT, selectedObjectOpt.get());
+                    variableManager.put(SingleClickOnDiagramElementTool.SELECTED_OBJECT, selectedObjectOpt.get());
                 }
             }
             if (selectionDescriptionId == null || selectedObjectId != null) {
                 result = tool.getHandler().apply(variableManager);
                 Position newPosition = Position.at(startingPositionX, startingPositionY);
 
-                diagramContext.setDiagramEvent(new NodeCreationEvent(newPosition));
+                diagramContext.setDiagramEvent(new SinglePositionEvent(newPosition));
             }
         }
         return result;

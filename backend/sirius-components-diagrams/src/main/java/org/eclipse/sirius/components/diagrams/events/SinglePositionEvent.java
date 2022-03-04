@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021 THALES GLOBAL SERVICES.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,26 +17,19 @@ import java.util.Objects;
 import org.eclipse.sirius.components.diagrams.Position;
 
 /**
- * Represent an immutable edge creation event.
+ * Represent an event using a single position.
  *
- * @author gcoutable
+ * @author fbarbin
  */
-public class EdgeCreationEvent implements IDiagramEvent {
+public class SinglePositionEvent implements IDiagramEvent {
 
-    private final Position sourcePosition;
+    private final Position position;
 
-    private final Position targetPosition;
-
-    public EdgeCreationEvent(Position sourcePosition, Position targetPosition) {
-        this.sourcePosition = Objects.requireNonNull(sourcePosition);
-        this.targetPosition = Objects.requireNonNull(targetPosition);
+    public SinglePositionEvent(Position position) {
+        this.position = Objects.requireNonNull(position);
     }
 
-    public Position getSourcePosition() {
-        return this.sourcePosition;
-    }
-
-    public Position getTargetPosition() {
-        return this.targetPosition;
+    public Position getPosition() {
+        return this.position;
     }
 }

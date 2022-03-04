@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,12 +18,12 @@ import java.util.UUID;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 
 /**
- * The input for the "Invoke an edge tool on diagram" mutation.
+ * The input for the "Invoke single click on two diagram elements tool" mutation.
  *
  * @author pcdavid
  * @author hmarchadour
  */
-public final class InvokeEdgeToolOnDiagramInput implements IDiagramInput {
+public final class InvokeSingleClickOnTwoDiagramElementsToolInput implements IDiagramInput {
     private UUID id;
 
     private String editingContextId;

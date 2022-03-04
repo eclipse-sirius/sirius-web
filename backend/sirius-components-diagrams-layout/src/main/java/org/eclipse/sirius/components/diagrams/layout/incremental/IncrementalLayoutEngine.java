@@ -25,7 +25,7 @@ import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Ratio;
 import org.eclipse.sirius.components.diagrams.Size;
-import org.eclipse.sirius.components.diagrams.events.EdgeCreationEvent;
+import org.eclipse.sirius.components.diagrams.events.DoublePositionEvent;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.diagrams.events.MoveEvent;
 import org.eclipse.sirius.components.diagrams.events.ResizeEvent;
@@ -332,11 +332,11 @@ public class IncrementalLayoutEngine {
 
     private void layoutEdge(Optional<IDiagramEvent> optionalDiagramElementEvent, EdgeLayoutData edge) {
         // @formatter:off
-        optionalDiagramElementEvent.filter(EdgeCreationEvent.class::isInstance)
-                .map(EdgeCreationEvent.class::cast)
-                .ifPresent(edgeCreationEvent -> {
-                    Ratio edgeSourceAnchorRelativePosition = this.getPositionProportionOfEdgeEndAbsolutePosition(edge.getSource(), edgeCreationEvent.getSourcePosition());
-                    Ratio edgeTargetAnchorRelativePosition = this.getPositionProportionOfEdgeEndAbsolutePosition(edge.getTarget(), edgeCreationEvent.getTargetPosition());
+        optionalDiagramElementEvent.filter(DoublePositionEvent.class::isInstance)
+                .map(DoublePositionEvent.class::cast)
+                .ifPresent(doublePositionEvent -> {
+                    Ratio edgeSourceAnchorRelativePosition = this.getPositionProportionOfEdgeEndAbsolutePosition(edge.getSource(), doublePositionEvent.getSourcePosition());
+                    Ratio edgeTargetAnchorRelativePosition = this.getPositionProportionOfEdgeEndAbsolutePosition(edge.getTarget(), doublePositionEvent.getTargetPosition());
                     edge.setSourceAnchorRelativePosition(edgeSourceAnchorRelativePosition);
                     edge.setTargetAnchorRelativePosition(edgeTargetAnchorRelativePosition);
                 });

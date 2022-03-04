@@ -10,7 +10,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { CreateEdgeTool, GQLDiagram, Position, Tool } from 'diagram/DiagramWebSocketContainer.types';
+import {
+  GQLDiagram,
+  Position,
+  SingleClickOnTwoDiagramElementsTool,
+  Tool,
+} from 'diagram/DiagramWebSocketContainer.types';
 import { SModelElement } from 'sprotty';
 import { Action } from 'sprotty-protocol';
 import { Selection } from 'workbench/Workbench.types';
@@ -53,7 +58,7 @@ export interface SourceElement {
 
 export interface SetActiveConnectorToolsAction extends Action {
   kind: 'activeConnectorTools';
-  tools: CreateEdgeTool[];
+  tools: SingleClickOnTwoDiagramElementsTool[];
 }
 
 export interface ShowContextualMenuAction extends Action {

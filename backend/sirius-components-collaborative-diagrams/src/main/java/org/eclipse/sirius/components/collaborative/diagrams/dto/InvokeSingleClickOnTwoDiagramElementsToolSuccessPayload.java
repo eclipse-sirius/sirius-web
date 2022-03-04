@@ -20,17 +20,17 @@ import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.WorkbenchSelection;
 
 /**
- * The payload of the "Invoke edge tool on diagram" mutation returned on success.
+ * The payload of the "Invoke single click on two diagram elements" mutation returned on success.
  *
  * @author pcdavid
  * @author hmarchadour
  */
-public final class InvokeEdgeToolOnDiagramSuccessPayload implements IPayload {
+public final class InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload implements IPayload {
     private final UUID id;
 
     private final WorkbenchSelection newSelection;
 
-    public InvokeEdgeToolOnDiagramSuccessPayload(UUID id, WorkbenchSelection newSelection) {
+    public InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload(UUID id, WorkbenchSelection newSelection) {
         this.id = Objects.requireNonNull(id);
         this.newSelection = newSelection;
     }

@@ -23,8 +23,8 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventHan
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IToolService;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeEdgeToolOnDiagramInput;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeEdgeToolOnDiagramSuccessPayload;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnTwoDiagramElementsToolInput;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
 import org.eclipse.sirius.components.core.api.Environment;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
@@ -36,8 +36,8 @@ import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
-import org.eclipse.sirius.components.diagrams.events.EdgeCreationEvent;
-import org.eclipse.sirius.components.diagrams.tools.CreateEdgeTool;
+import org.eclipse.sirius.components.diagrams.events.DoublePositionEvent;
+import org.eclipse.sirius.components.diagrams.tools.SingleClickOnTwoDiagramElementsTool;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
@@ -50,13 +50,13 @@ import reactor.core.publisher.Sinks.Many;
 import reactor.core.publisher.Sinks.One;
 
 /**
- * Handle "Invoke edge tool on diagram" events.
+ * Handle "Invoke single click on two diagram elements tool" events.
  *
  * @author pcdavid
  * @author hmarchadour
  */
 @Service
-public class InvokeEdgeToolOnDiagramEventHandler implements IDiagramEventHandler {
+public class InvokeSingleClickOnTwoDiagramElementsToolEventHandler implements IDiagramEventHandler {
 
     private final IObjectService objectService;
 
@@ -68,7 +68,7 @@ public class InvokeEdgeToolOnDiagramEventHandler implements IDiagramEventHandler
 
     private final Counter counter;
 
-    public InvokeEdgeToolOnDiagramEventHandler(IObjectService objectService, IDiagramQueryService diagramQueryService, IToolService toolService, ICollaborativeDiagramMessageService messageService,
+    public InvokeSingleClickOnTwoDiagramElementsToolEventHandler(IObjectService objectService, IDiagramQueryService diagramQueryService, IToolService toolService, ICollaborativeDiagramMessageService messageService,
             MeterRegistry meterRegistry) {
         this.objectService = Objects.requireNonNull(objectService);
         this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
@@ -84,24 +84,24 @@ public class InvokeEdgeToolOnDiagramEventHandler implements IDiagramEventHandler
 
     @Override
     public boolean canHandle(IDiagramInput diagramInput) {
-        return diagramInput instanceof InvokeEdgeToolOnDiagramInput;
+        return diagramInput instanceof InvokeSingleClickOnTwoDiagramElementsToolInput;
     }
 
     @Override
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IDiagramContext diagramContext, IDiagramInput diagramInput) {
         this.counter.increment();
 
-        String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), InvokeEdgeToolOnDiagramInput.class.getSimpleName());
+        String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), InvokeSingleClickOnTwoDiagramElementsToolInput.class.getSimpleName());
         IPayload payload = new ErrorPayload(diagramInput.getId(), message);
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, diagramInput.getRepresentationId(), diagramInput);
 
-        if (diagramInput instanceof InvokeEdgeToolOnDiagramInput) {
-            InvokeEdgeToolOnDiagramInput input = (InvokeEdgeToolOnDiagramInput) diagramInput;
+        if (diagramInput instanceof InvokeSingleClickOnTwoDiagramElementsToolInput) {
+            InvokeSingleClickOnTwoDiagramElementsToolInput input = (InvokeSingleClickOnTwoDiagramElementsToolInput) diagramInput;
             Diagram diagram = diagramContext.getDiagram();
             // @formatter:off
             var optionalTool = this.toolService.findToolById(editingContext, diagram, input.getToolId())
-                    .filter(CreateEdgeTool.class::isInstance)
-                    .map(CreateEdgeTool.class::cast);
+                    .filter(SingleClickOnTwoDiagramElementsTool.class::isInstance)
+                    .map(SingleClickOnTwoDiagramElementsTool.class::cast);
             // @formatter:on
             if (optionalTool.isPresent()) {
                 Position sourcePosition = Position.at(input.getSourcePositionX(), input.getSourcePositionY());
@@ -114,7 +114,7 @@ public class InvokeEdgeToolOnDiagramEventHandler implements IDiagramEventHandler
                     if (newSelectionParameter instanceof WorkbenchSelection) {
                         newSelection = (WorkbenchSelection) newSelectionParameter;
                     }
-                    payload = new InvokeEdgeToolOnDiagramSuccessPayload(diagramInput.getId(), newSelection);
+                    payload = new InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload(diagramInput.getId(), newSelection);
                     changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, diagramInput.getRepresentationId(), diagramInput);
                 } else if (status instanceof Failure) {
                     payload = new ErrorPayload(diagramInput.getId(), ((Failure) status).getMessage());
@@ -126,7 +126,7 @@ public class InvokeEdgeToolOnDiagramEventHandler implements IDiagramEventHandler
         changeDescriptionSink.tryEmitNext(changeDescription);
     }
 
-    private IStatus executeTool(IEditingContext editingContext, IDiagramContext diagramContext, String sourceNodeId, String targetNodeId, CreateEdgeTool tool, Position sourcePosition,
+    private IStatus executeTool(IEditingContext editingContext, IDiagramContext diagramContext, String sourceNodeId, String targetNodeId, SingleClickOnTwoDiagramElementsTool tool, Position sourcePosition,
             Position targetPosition) {
         IStatus result = new Failure(""); //$NON-NLS-1$
         Diagram diagram = diagramContext.getDiagram();
@@ -149,7 +149,7 @@ public class InvokeEdgeToolOnDiagramEventHandler implements IDiagramEventHandler
 
             result = tool.getHandler().apply(variableManager);
 
-            diagramContext.setDiagramEvent(new EdgeCreationEvent(sourcePosition, targetPosition));
+            diagramContext.setDiagramEvent(new DoublePositionEvent(sourcePosition, targetPosition));
         }
         return result;
     }

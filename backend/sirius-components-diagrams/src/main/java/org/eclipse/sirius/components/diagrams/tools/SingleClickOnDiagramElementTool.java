@@ -18,17 +18,21 @@ import java.util.Objects;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
 
 /**
- * A create edge Tool implementation.
+ * A tool triggered by a single click in the palette on a diagram element.
  *
  * @author pcdavid
  * @author hmarchadour
  */
 @Immutable
-public final class CreateEdgeTool implements ITool {
+public final class SingleClickOnDiagramElementTool implements ITool {
+
+    public static final String SELECTED_OBJECT = "selectedObject"; //$NON-NLS-1$
+
     private String id;
 
     private String imageURL;
@@ -37,14 +41,22 @@ public final class CreateEdgeTool implements ITool {
 
     private Function<VariableManager, IStatus> handler;
 
-    private List<EdgeCandidate> edgeCandidates;
+    private List<NodeDescription> targetDescriptions;
 
-    private CreateEdgeTool() {
+    private boolean appliesToDiagramRoot;
+
+    private String selectionDescriptionId;
+
+    private SingleClickOnDiagramElementTool() {
         // Prevent instantiation
     }
 
-    public List<EdgeCandidate> getEdgeCandidates() {
-        return this.edgeCandidates;
+    public List<NodeDescription> getTargetDescriptions() {
+        return this.targetDescriptions;
+    }
+
+    public boolean isAppliesToDiagramRoot() {
+        return this.appliesToDiagramRoot;
     }
 
     @Override
@@ -52,6 +64,7 @@ public final class CreateEdgeTool implements ITool {
         return this.id;
     }
 
+    // This field is defined in DiagramTypesProvider to add the server base URL prefix.
     @Override
     public String getImageURL() {
         return this.imageURL;
@@ -60,6 +73,10 @@ public final class CreateEdgeTool implements ITool {
     @Override
     public String getLabel() {
         return this.label;
+    }
+
+    public String getSelectionDescriptionId() {
+        return this.selectionDescriptionId;
     }
 
     @Override
@@ -73,7 +90,7 @@ public final class CreateEdgeTool implements ITool {
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.label, this.imageURL);
     }
 
-    public static Builder newCreateEdgeTool(String id) {
+    public static Builder newSingleClickOnDiagramElementTool(String id) {
         return new Builder(id);
     }
 
@@ -92,7 +109,11 @@ public final class CreateEdgeTool implements ITool {
 
         private Function<VariableManager, IStatus> handler;
 
-        private List<EdgeCandidate> edgeCandidates;
+        private List<NodeDescription> targetDescriptions;
+
+        private boolean appliesToDiagramRoot;
+
+        private String selectionDescriptionId;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -108,8 +129,13 @@ public final class CreateEdgeTool implements ITool {
             return this;
         }
 
-        public Builder edgeCandidates(List<EdgeCandidate> edgeCandidates) {
-            this.edgeCandidates = Objects.requireNonNull(edgeCandidates);
+        public Builder targetDescriptions(List<NodeDescription> targetDescriptions) {
+            this.targetDescriptions = Objects.requireNonNull(targetDescriptions);
+            return this;
+        }
+
+        public Builder appliesToDiagramRoot(boolean appliesToDiagramRoot) {
+            this.appliesToDiagramRoot = appliesToDiagramRoot;
             return this;
         }
 
@@ -118,13 +144,20 @@ public final class CreateEdgeTool implements ITool {
             return this;
         }
 
-        public CreateEdgeTool build() {
-            CreateEdgeTool tool = new CreateEdgeTool();
+        public Builder selectionDescriptionId(String selectionDescriptionId) {
+            this.selectionDescriptionId = selectionDescriptionId;
+            return this;
+        }
+
+        public SingleClickOnDiagramElementTool build() {
+            SingleClickOnDiagramElementTool tool = new SingleClickOnDiagramElementTool();
             tool.id = Objects.requireNonNull(this.id);
             tool.imageURL = Objects.requireNonNull(this.imageURL);
             tool.label = Objects.requireNonNull(this.label);
             tool.handler = Objects.requireNonNull(this.handler);
-            tool.edgeCandidates = Objects.requireNonNull(this.edgeCandidates);
+            tool.targetDescriptions = Objects.requireNonNull(this.targetDescriptions);
+            tool.appliesToDiagramRoot = this.appliesToDiagramRoot;
+            tool.selectionDescriptionId = this.selectionDescriptionId;
             return tool;
         }
     }
