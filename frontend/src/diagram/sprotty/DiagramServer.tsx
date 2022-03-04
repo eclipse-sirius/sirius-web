@@ -12,10 +12,10 @@
  *******************************************************************************/
 import {
   Bounds,
-  CreateEdgeTool,
   GQLDeletionPolicy,
   Menu,
   Palette,
+  SingleClickOnTwoDiagramElementsTool,
   Tool,
 } from 'diagram/DiagramWebSocketContainer.types';
 import { convertDiagram } from 'diagram/sprotty/convertDiagram';
@@ -114,7 +114,7 @@ export class DiagramServer extends ModelSource {
   mousePositionTracker: MousePositionTracker;
   modelFactory: IModelFactory;
   activeTool: Tool;
-  activeConnectorTools: CreateEdgeTool[];
+  activeConnectorTools: SingleClickOnTwoDiagramElementsTool[];
   editLabel;
   moveElement;
   resizeElement;
@@ -292,11 +292,11 @@ export class DiagramServer extends ModelSource {
   handleSprottySelectAction(action: SprottySelectAction) {
     const { element } = action;
     if (this.activeConnectorTools?.length > 0) {
-      const filteredTools = this.activeConnectorTools.filter((edgeTool) =>
-        edgeTool.edgeCandidates.some(
-          (edgeCandidate) =>
-            edgeCandidate.sources.some((source) => source.id === this.diagramSource.element.descriptionId) &&
-            edgeCandidate.targets.some((target) => target.id === (element as any).descriptionId)
+      const filteredTools = this.activeConnectorTools.filter((tool) =>
+        tool.candidates.some(
+          (candidate) =>
+            candidate.sources.some((source) => source.id === this.diagramSource.element.descriptionId) &&
+            candidate.targets.some((target) => target.id === (element as any).descriptionId)
         )
       );
       if (filteredTools.length < 1) {
@@ -327,9 +327,9 @@ export class DiagramServer extends ModelSource {
         this.actionDispatcher.dispatch(showContextualMenuAction);
       }
     } else if (this.activeTool) {
-      if (this.activeTool.__typename === 'CreateNodeTool') {
+      if (this.activeTool.__typename === 'SingleClickOnDiagramElementTool') {
         this.invokeTool(this.activeTool, element.id);
-      } else if (this.activeTool.__typename === 'CreateEdgeTool') {
+      } else if (this.activeTool.__typename === 'SingleClickOnTwoDiagramElementsTool') {
         this.invokeTool(
           this.activeTool,
           this.diagramSource.element.id,

@@ -267,11 +267,11 @@ export const updateNodeBoundsOp = gql`
   }
 `;
 
-export const invokeNodeToolOnDiagramMutation = gql`
-  mutation invokeNodeToolOnDiagram($input: InvokeNodeToolOnDiagramInput!) {
-    invokeNodeToolOnDiagram(input: $input) {
+export const invokeSingleClickOnDiagramElementToolMutation = gql`
+  mutation invokeSingleClickOnDiagramElementTool($input: InvokeSingleClickOnDiagramElementToolInput!) {
+    invokeSingleClickOnDiagramElementTool(input: $input) {
       __typename
-      ... on InvokeNodeToolOnDiagramSuccessPayload {
+      ... on InvokeSingleClickOnDiagramElementToolSuccessPayload {
         newSelection {
           entries {
             id
@@ -287,11 +287,11 @@ export const invokeNodeToolOnDiagramMutation = gql`
   }
 `;
 
-export const invokeEdgeToolOnDiagramMutation = gql`
-  mutation invokeEdgeToolOnDiagram($input: InvokeEdgeToolOnDiagramInput!) {
-    invokeEdgeToolOnDiagram(input: $input) {
+export const invokeSingleClickOnTwoDiagramElementsToolMutation = gql`
+  mutation invokeSingleClickOnTwoDiagramElementsTool($input: InvokeSingleClickOnTwoDiagramElementsToolInput!) {
+    invokeSingleClickOnTwoDiagramElementsTool(input: $input) {
       __typename
-      ... on InvokeEdgeToolOnDiagramSuccessPayload {
+      ... on InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload {
         newSelection {
           entries {
             id

@@ -24,16 +24,16 @@ import {
   GQLDiagramEventSubscription,
   GQLDiagramRefreshedEventPayload,
   GQLErrorPayload,
-  GQLInvokeEdgeToolOnDiagramData,
-  GQLInvokeEdgeToolOnDiagramInput,
-  GQLInvokeEdgeToolOnDiagramPayload,
-  GQLInvokeEdgeToolOnDiagramSuccessPayload,
-  GQLInvokeEdgeToolOnDiagramVariables,
-  GQLInvokeNodeToolOnDiagramData,
-  GQLInvokeNodeToolOnDiagramInput,
-  GQLInvokeNodeToolOnDiagramPayload,
-  GQLInvokeNodeToolOnDiagramSuccessPayload,
-  GQLInvokeNodeToolOnDiagramVariables,
+  GQLInvokeSingleClickOnDiagramElementToolData,
+  GQLInvokeSingleClickOnDiagramElementToolInput,
+  GQLInvokeSingleClickOnDiagramElementToolPayload,
+  GQLInvokeSingleClickOnDiagramElementToolSuccessPayload,
+  GQLInvokeSingleClickOnDiagramElementToolVariables,
+  GQLInvokeSingleClickOnTwoDiagramElementsToolData,
+  GQLInvokeSingleClickOnTwoDiagramElementsToolInput,
+  GQLInvokeSingleClickOnTwoDiagramElementsToolPayload,
+  GQLInvokeSingleClickOnTwoDiagramElementsToolSuccessPayload,
+  GQLInvokeSingleClickOnTwoDiagramElementsToolVariables,
   GQLSubscribersUpdatedEventPayload,
   Menu,
   Palette,
@@ -71,14 +71,18 @@ import {
   deleteFromDiagramMutation,
   diagramEventSubscription,
   editLabelMutation as editLabelMutationOp,
-  invokeEdgeToolOnDiagramMutation,
-  invokeNodeToolOnDiagramMutation,
+  invokeSingleClickOnDiagramElementToolMutation,
+  invokeSingleClickOnTwoDiagramElementsToolMutation,
   updateNodeBoundsOp,
   updateNodePositionOp,
 } from 'diagram/operations';
 import { ContextualMenu } from 'diagram/palette/ContextualMenu';
 import { ContextualPalette } from 'diagram/palette/ContextualPalette';
-import { GQLCreateEdgeTool, GQLCreateNodeTool, GQLToolSection } from 'diagram/palette/ContextualPalette.types';
+import {
+  GQLSingleClickOnDiagramElementTool,
+  GQLSingleClickOnTwoDiagramElementsTool,
+  GQLToolSection,
+} from 'diagram/palette/ContextualPalette.types';
 import {
   DiagramServer,
   HIDE_CONTEXTUAL_TOOLBAR_ACTION,
@@ -97,7 +101,7 @@ import {
 } from 'diagram/sprotty/DiagramServer.types';
 import { edgeCreationFeedback } from 'diagram/sprotty/edgeCreationFeedback';
 import { Toolbar } from 'diagram/Toolbar';
-import { atLeastOneCanInvokeEdgeTool, canInvokeTool } from 'diagram/toolServices';
+import { atLeastOneSingleClickOnTwoDiagramElementsTool, canInvokeTool } from 'diagram/toolServices';
 import React, { useCallback, useContext, useEffect, useRef } from 'react';
 import { SelectionDialogWebSocketContainer } from 'selection/SelectionDialogWebSocketContainer';
 import { EditLabelAction, HoverFeedbackAction, SEdge, SGraph, SModelElement, SNode, SPort } from 'sprotty';
@@ -147,14 +151,14 @@ const isSubscribersUpdatedEventPayload = (
 ): payload is GQLSubscribersUpdatedEventPayload => payload.__typename === 'SubscribersUpdatedEventPayload';
 const isErrorPayload = (payload: GQLDiagramEventPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
-const isInvokeNodeToolOnDiagramSuccessPayload = (
-  payload: GQLInvokeNodeToolOnDiagramPayload
-): payload is GQLInvokeNodeToolOnDiagramSuccessPayload =>
-  payload.__typename === 'InvokeNodeToolOnDiagramSuccessPayload';
-const isInvokeEdgeToolOnDiagramSuccessPayload = (
-  payload: GQLInvokeEdgeToolOnDiagramPayload
-): payload is GQLInvokeEdgeToolOnDiagramSuccessPayload =>
-  payload.__typename === 'InvokeEdgeToolOnDiagramSuccessPayload';
+const isInvokeSingleClickOnDiagramElementToolSuccessPayload = (
+  payload: GQLInvokeSingleClickOnDiagramElementToolPayload
+): payload is GQLInvokeSingleClickOnDiagramElementToolSuccessPayload =>
+  payload.__typename === 'InvokeSingleClickOnDiagramElementToolSuccessPayload';
+const isInvokeSingleClickOnTwoDiagramElementsToolSuccessPayload = (
+  payload: GQLInvokeSingleClickOnTwoDiagramElementsToolPayload
+): payload is GQLInvokeSingleClickOnTwoDiagramElementsToolSuccessPayload =>
+  payload.__typename === 'InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload';
 
 /**
  * Here be dragons!
@@ -340,13 +344,26 @@ export const DiagramWebSocketContainer = ({
     { loading: deleteFromDiagramLoading, data: deleteFromDiagramData, error: deleteFromDiagramError },
   ] = useMutation(deleteFromDiagramMutation);
   const [
-    invokeNodeToolMutation,
-    { loading: invokeNodeToolLoading, data: invokeNodeToolData, error: invokeNodeToolError },
-  ] = useMutation<GQLInvokeNodeToolOnDiagramData, GQLInvokeNodeToolOnDiagramVariables>(invokeNodeToolOnDiagramMutation);
+    invokeSingleClickOnDiagramElementTool,
+    {
+      loading: invokeSingleClickOnDiagramElementToolLoading,
+      data: invokeSingleClickOnDiagramElementToolData,
+      error: invokeSingleClickOnDiagramElementToolError,
+    },
+  ] = useMutation<GQLInvokeSingleClickOnDiagramElementToolData, GQLInvokeSingleClickOnDiagramElementToolVariables>(
+    invokeSingleClickOnDiagramElementToolMutation
+  );
   const [
-    invokeEdgeToolMutation,
-    { loading: invokeEdgeToolLoading, data: invokeEdgeToolData, error: invokeEdgeToolError },
-  ] = useMutation<GQLInvokeEdgeToolOnDiagramData, GQLInvokeEdgeToolOnDiagramVariables>(invokeEdgeToolOnDiagramMutation);
+    invokeSingleClickOnTwoDiagramElementsTool,
+    {
+      loading: invokeSingleClickOnTwoDiagramElementsToolLoading,
+      data: invokeSingleClickOnTwoDiagramElementsToolData,
+      error: invokeSingleClickOnTwoDiagramElementsToolError,
+    },
+  ] = useMutation<
+    GQLInvokeSingleClickOnTwoDiagramElementsToolData,
+    GQLInvokeSingleClickOnTwoDiagramElementsToolVariables
+  >(invokeSingleClickOnTwoDiagramElementsToolMutation);
   const [editLabelMutation, { loading: editLabelLoading, data: editLabelData, error: editLabelError }] =
     useMutation(editLabelMutationOp);
   const [
@@ -455,14 +472,14 @@ export const DiagramWebSocketContainer = ({
     (tool, ...params) => {
       if (tool) {
         const { id: toolId } = tool;
-        if (tool.__typename === 'CreateEdgeTool') {
+        if (tool.__typename === 'SingleClickOnTwoDiagramElementsTool') {
           const [diagramSourceElementId, diagramTargetElementId, sourcePosition, targetPosition] = params;
           const sourcePositionX = sourcePosition?.x;
           const sourcePositionY = sourcePosition?.y;
           const targetPositionX = targetPosition?.x;
           const targetPositionY = targetPosition?.y;
 
-          const input: GQLInvokeEdgeToolOnDiagramInput = {
+          const input: GQLInvokeSingleClickOnTwoDiagramElementsToolInput = {
             id: uuid(),
             editingContextId,
             representationId,
@@ -474,14 +491,14 @@ export const DiagramWebSocketContainer = ({
             targetPositionX,
             targetPositionY,
           };
-          invokeEdgeToolMutation({ variables: { input } });
+          invokeSingleClickOnTwoDiagramElementsTool({ variables: { input } });
 
           edgeCreationFeedback.reset();
         } else {
           const [diagramElementId, startingPosition] = params;
           let startingPositionX = startingPosition ? startingPosition.x : 0;
           let startingPositionY = startingPosition ? startingPosition.y : 0;
-          const input: GQLInvokeNodeToolOnDiagramInput = {
+          const input: GQLInvokeSingleClickOnDiagramElementToolInput = {
             id: uuid(),
             editingContextId,
             representationId,
@@ -491,12 +508,19 @@ export const DiagramWebSocketContainer = ({
             startingPositionY,
             selectedObjectId,
           };
-          invokeNodeToolMutation({ variables: { input } });
+          invokeSingleClickOnDiagramElementTool({ variables: { input } });
         }
         resetTools();
       }
     },
-    [editingContextId, representationId, selectedObjectId, resetTools, invokeNodeToolMutation, invokeEdgeToolMutation]
+    [
+      editingContextId,
+      representationId,
+      selectedObjectId,
+      resetTools,
+      invokeSingleClickOnDiagramElementTool,
+      invokeSingleClickOnTwoDiagramElementsTool,
+    ]
   );
 
   const moveElement = useCallback(
@@ -594,7 +618,7 @@ export const DiagramWebSocketContainer = ({
       let cursor = 'pointer';
       if (diagramServer.diagramSource) {
         if (diagramServer.activeConnectorTools.length > 0) {
-          const cursorAllowed = atLeastOneCanInvokeEdgeTool(
+          const cursorAllowed = atLeastOneSingleClickOnTwoDiagramElementsTool(
             diagramServer.activeConnectorTools,
             diagramServer.diagramSource,
             element
@@ -833,40 +857,55 @@ export const DiagramWebSocketContainer = ({
     handleError(deleteFromDiagramLoading, deleteFromDiagramData, deleteFromDiagramError);
   }, [deleteFromDiagramLoading, deleteFromDiagramData, deleteFromDiagramError, handleError]);
   useEffect(() => {
-    handleError(invokeNodeToolLoading, invokeNodeToolData, invokeNodeToolError);
-    if (!invokeNodeToolLoading) {
+    handleError(
+      invokeSingleClickOnDiagramElementToolLoading,
+      invokeSingleClickOnDiagramElementToolData,
+      invokeSingleClickOnDiagramElementToolError
+    );
+    if (!invokeSingleClickOnDiagramElementToolLoading) {
       resetTools();
     }
-    if (invokeNodeToolData) {
-      const { invokeNodeToolOnDiagram } = invokeNodeToolData;
-      if (isInvokeNodeToolOnDiagramSuccessPayload(invokeNodeToolOnDiagram)) {
-        const { newSelection } = invokeNodeToolOnDiagram;
+    if (invokeSingleClickOnDiagramElementToolData) {
+      const { invokeSingleClickOnDiagramElementTool } = invokeSingleClickOnDiagramElementToolData;
+      if (isInvokeSingleClickOnDiagramElementToolSuccessPayload(invokeSingleClickOnDiagramElementTool)) {
+        const { newSelection } = invokeSingleClickOnDiagramElementTool;
         if (newSelection?.entries.length ?? 0 > 0) {
           setSelection(newSelection);
         }
       }
     }
   }, [
-    invokeNodeToolLoading,
-    invokeNodeToolData,
-    invokeNodeToolError,
+    invokeSingleClickOnDiagramElementToolLoading,
+    invokeSingleClickOnDiagramElementToolData,
+    invokeSingleClickOnDiagramElementToolError,
     handleError,
     resetTools,
     setSelection,
     selection,
   ]);
   useEffect(() => {
-    handleError(invokeEdgeToolLoading, invokeEdgeToolData, invokeEdgeToolError);
-    if (invokeEdgeToolData) {
-      const { invokeEdgeToolOnDiagram } = invokeEdgeToolData;
-      if (isInvokeEdgeToolOnDiagramSuccessPayload(invokeEdgeToolOnDiagram)) {
-        const { newSelection } = invokeEdgeToolOnDiagram;
+    handleError(
+      invokeSingleClickOnTwoDiagramElementsToolLoading,
+      invokeSingleClickOnTwoDiagramElementsToolData,
+      invokeSingleClickOnTwoDiagramElementsToolError
+    );
+    if (invokeSingleClickOnTwoDiagramElementsToolData) {
+      const { invokeSingleClickOnTwoDiagramElementsTool } = invokeSingleClickOnTwoDiagramElementsToolData;
+      if (isInvokeSingleClickOnTwoDiagramElementsToolSuccessPayload(invokeSingleClickOnTwoDiagramElementsTool)) {
+        const { newSelection } = invokeSingleClickOnTwoDiagramElementsTool;
         if (newSelection?.entries.length ?? 0 > 0) {
           setSelection(newSelection);
         }
       }
     }
-  }, [invokeEdgeToolLoading, invokeEdgeToolData, invokeEdgeToolError, handleError, setSelection, selection]);
+  }, [
+    invokeSingleClickOnTwoDiagramElementsToolLoading,
+    invokeSingleClickOnTwoDiagramElementsToolData,
+    invokeSingleClickOnTwoDiagramElementsToolError,
+    handleError,
+    setSelection,
+    selection,
+  ]);
   useEffect(() => {
     handleError(arrangeAllLoading, arrangeAllData, arrangeAllError);
   }, [arrangeAllLoading, arrangeAllData, arrangeAllError, handleError]);
@@ -920,7 +959,7 @@ export const DiagramWebSocketContainer = ({
         deleteElements([element], deletionPolicy);
     }
     const invokeToolFromContextualPalette = (tool) => {
-      if (tool.__typename === 'CreateEdgeTool') {
+      if (tool.__typename === 'SingleClickOnTwoDiagramElementsTool') {
         const setActiveToolEvent: SetActiveToolEvent = { type: 'SET_ACTIVE_TOOL', activeTool: tool };
         dispatch(setActiveToolEvent);
         const setContextualPaletteEvent: SetContextualPaletteEvent = {
@@ -935,7 +974,7 @@ export const DiagramWebSocketContainer = ({
           sourceElement: { element, position: { ...palettePosition } },
         };
         diagramServer.actionDispatcher.dispatch(action);
-      } else if (tool.__typename === 'CreateNodeTool') {
+      } else if (tool.__typename === 'SingleClickOnDiagramElementTool') {
         if (tool.selectionDescriptionId) {
           const showSelectionDialogEvent: ShowSelectionDialogEvent = {
             type: 'SHOW_SELECTION_DIALOG',
@@ -953,21 +992,19 @@ export const DiagramWebSocketContainer = ({
     };
     const invokeConnectorToolFromContextualPalette = (toolSections: GQLToolSection[]) => {
       resetTools();
-      const edgeTools = [];
+      const tools = [];
       toolSections.forEach((toolSection) => {
         const filteredTools = toolSection.tools
-          .filter((tool) => tool.__typename === 'CreateEdgeTool')
-          .map((tool) => tool as GQLCreateEdgeTool)
-          .filter((edgeTool) =>
-            edgeTool.edgeCandidates.some((edgeCandidate) =>
-              edgeCandidate.sources.some((source) => source.id === element.descriptionId)
-            )
+          .filter((tool) => tool.__typename === 'SingleClickOnTwoDiagramElementsTool')
+          .map((tool) => tool as GQLSingleClickOnTwoDiagramElementsTool)
+          .filter((tool) =>
+            tool.candidates.some((candidate) => candidate.sources.some((source) => source.id === element.descriptionId))
           );
-        edgeTools.push(...filteredTools);
+        tools.push(...filteredTools);
       });
       const setActiveConnectorToolsEvent: SetActiveConnectorToolsEvent = {
         type: 'SET_ACTIVE_CONNECTOR_TOOLS',
-        tools: edgeTools,
+        tools,
       };
       dispatch(setActiveConnectorToolsEvent);
       edgeCreationFeedback.init(x, y);
@@ -995,19 +1032,19 @@ export const DiagramWebSocketContainer = ({
   }
   let contextualMenuContent;
   if (!readOnly && contextualMenu) {
-    const { sourceElement, targetElement, canvasBounds, tools: edgeTools, startPosition, endPosition } = contextualMenu;
+    const { sourceElement, targetElement, canvasBounds, tools, startPosition, endPosition } = contextualMenu;
     const style = {
       left: canvasBounds.x + 'px',
       top: canvasBounds.y + 'px',
     };
-    if (edgeTools && edgeTools.length > 1 && !!startPosition && !!endPosition) {
+    if (tools && tools.length > 1 && !!startPosition && !!endPosition) {
       const invokeToolFromContextualMenu = (tool) => {
         invokeTool(tool, sourceElement.id, targetElement.id, startPosition, endPosition);
       };
       contextualMenuContent = (
         <div className={classes.contextualMenu} style={style}>
           <ContextualMenu
-            tools={edgeTools}
+            tools={tools}
             invokeTool={invokeToolFromContextualMenu}
             invokeClose={resetTools}
           ></ContextualMenu>
@@ -1048,7 +1085,7 @@ export const DiagramWebSocketContainer = ({
     selectModelElementDialog = (
       <SelectionDialogWebSocketContainer
         editingContextId={editingContextId}
-        selectionRepresentationId={(activeTool as GQLCreateNodeTool).selectionDescriptionId}
+        selectionRepresentationId={(activeTool as GQLSingleClickOnDiagramElementTool).selectionDescriptionId}
         targetObjectId={contextualPalette?.element.targetObjectId}
         onClose={() => {
           dispatch({ type: 'CLOSE_SELECTION_DIALOG' } as CloseSelectionDialogEvent);

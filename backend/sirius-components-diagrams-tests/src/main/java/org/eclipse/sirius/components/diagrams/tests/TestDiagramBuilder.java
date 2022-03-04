@@ -29,7 +29,7 @@ import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Ratio;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.components.diagrams.Size;
-import org.eclipse.sirius.components.diagrams.tools.CreateNodeTool;
+import org.eclipse.sirius.components.diagrams.tools.SingleClickOnDiagramElementTool;
 import org.eclipse.sirius.components.representations.Success;
 
 /**
@@ -137,9 +137,9 @@ public class TestDiagramBuilder {
         // @formatter:on
     }
 
-    public CreateNodeTool getNodeTool(String id) {
+    public SingleClickOnDiagramElementTool getNodeTool(String id) {
         // @formatter:off
-        return CreateNodeTool.newCreateNodeTool(id)
+        return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(id)
                 .label(TOOL_LABEL)
                 .imageURL(TOOL_IMAGE_URL)
                 .handler(variableManager -> new Success())

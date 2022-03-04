@@ -27,8 +27,8 @@ import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
-import org.eclipse.sirius.components.diagrams.tools.CreateEdgeTool;
-import org.eclipse.sirius.components.diagrams.tools.CreateNodeTool;
+import org.eclipse.sirius.components.diagrams.tools.SingleClickOnTwoDiagramElementsTool;
+import org.eclipse.sirius.components.diagrams.tools.SingleClickOnDiagramElementTool;
 import org.eclipse.sirius.components.diagrams.tools.ITool;
 import org.eclipse.sirius.components.diagrams.tools.ToolSection;
 import org.eclipse.sirius.components.representations.IStatus;
@@ -76,7 +76,7 @@ public class ViewToolSectionsProvider implements IToolSectionsProvider {
         for (ToolSection toolSection : diagramDescription.getToolSections()) {
             List<ITool> tools = new ArrayList<>();
             for (ITool tool : toolSection.getTools()) {
-                if (tool instanceof CreateNodeTool && ((CreateNodeTool) tool).isAppliesToDiagramRoot()) {
+                if (tool instanceof SingleClickOnDiagramElementTool && ((SingleClickOnDiagramElementTool) tool).isAppliesToDiagramRoot()) {
                     tools.add(tool);
                 }
             }
@@ -103,9 +103,9 @@ public class ViewToolSectionsProvider implements IToolSectionsProvider {
     }
 
     private boolean isValidTool(ITool tool, NodeDescription nodeDescription) {
-        boolean isValidTool = tool instanceof CreateNodeTool && ((CreateNodeTool) tool).getTargetDescriptions().contains(nodeDescription);
+        boolean isValidTool = tool instanceof SingleClickOnDiagramElementTool && ((SingleClickOnDiagramElementTool) tool).getTargetDescriptions().contains(nodeDescription);
         isValidTool = isValidTool
-                || tool instanceof CreateEdgeTool && ((CreateEdgeTool) tool).getEdgeCandidates().stream().anyMatch(edgeCandidate -> edgeCandidate.getSources().contains(nodeDescription));
+                || tool instanceof SingleClickOnTwoDiagramElementsTool && ((SingleClickOnTwoDiagramElementsTool) tool).getCandidates().stream().anyMatch(edgeCandidate -> edgeCandidate.getSources().contains(nodeDescription));
         return isValidTool;
     }
 
@@ -128,7 +128,7 @@ public class ViewToolSectionsProvider implements IToolSectionsProvider {
 
         if (diagramElementDescription instanceof NodeDescription) {
             // Edit Tool (the handler is never called)
-            CreateNodeTool editTool = CreateNodeTool.newCreateNodeTool("edit") //$NON-NLS-1$
+            SingleClickOnDiagramElementTool editTool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("edit") //$NON-NLS-1$
                     .label("Edit") //$NON-NLS-1$
                     .imageURL(DiagramImageConstants.EDIT_SVG)
                     .targetDescriptions(targetDescriptions)
@@ -146,7 +146,7 @@ public class ViewToolSectionsProvider implements IToolSectionsProvider {
         // Graphical Delete Tool for unsynchronized mapping only (the handler is never called)
         if (diagramElementDescription instanceof NodeDescription || diagramElementDescription instanceof EdgeDescription) {
             if (unsynchronizedMapping) {
-                CreateNodeTool graphicalDeleteTool = CreateNodeTool.newCreateNodeTool("graphical-delete") //$NON-NLS-1$
+                SingleClickOnDiagramElementTool graphicalDeleteTool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("graphical-delete") //$NON-NLS-1$
                         .label("Delete from diagram") //$NON-NLS-1$
                         .imageURL(DiagramImageConstants.GRAPHICAL_DELETE_SVG)
                         .targetDescriptions(targetDescriptions)
@@ -162,7 +162,7 @@ public class ViewToolSectionsProvider implements IToolSectionsProvider {
             }
 
             // Semantic Delete Tool (the handler is never called)
-            CreateNodeTool semanticDeleteTool = CreateNodeTool.newCreateNodeTool("semantic-delete") //$NON-NLS-1$
+            SingleClickOnDiagramElementTool semanticDeleteTool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("semantic-delete") //$NON-NLS-1$
                     .label("Delete from model") //$NON-NLS-1$
                     .imageURL(DiagramImageConstants.SEMANTIC_DELETE_SVG)
                     .targetDescriptions(targetDescriptions)

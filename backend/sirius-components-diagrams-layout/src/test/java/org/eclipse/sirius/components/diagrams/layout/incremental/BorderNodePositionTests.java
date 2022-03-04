@@ -27,8 +27,8 @@ import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.TextBounds;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.diagrams.events.MoveEvent;
-import org.eclipse.sirius.components.diagrams.events.NodeCreationEvent;
 import org.eclipse.sirius.components.diagrams.events.ResizeEvent;
+import org.eclipse.sirius.components.diagrams.events.SinglePositionEvent;
 import org.eclipse.sirius.components.diagrams.layout.LayoutConfiguratorRegistry;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.DiagramLayoutData;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.IContainerLayoutData;
@@ -97,7 +97,7 @@ public class BorderNodePositionTests {
         NodeSizeProvider nodeSizeProvider = new NodeSizeProvider(new ImageSizeProvider());
         IncrementalLayoutEngine incrementalLayoutEngine = new IncrementalLayoutEngine(nodeSizeProvider);
 
-        Optional<IDiagramEvent> creationEvent = Optional.of(new NodeCreationEvent(Position.at(10, 10)));
+        Optional<IDiagramEvent> creationEvent = Optional.of(new SinglePositionEvent(Position.at(10, 10)));
         incrementalLayoutEngine.layout(creationEvent, initializeDiagram, new LayoutConfiguratorRegistry(List.of()).getDefaultLayoutConfigurator());
 
         this.checkBorderNodeLabel(borderNodes.get(0).getLabel(), BORDER_NODE_LABEL_TEXT_POSITION, BORDER_NODE_LABEL_TEXT_BOUNDS);

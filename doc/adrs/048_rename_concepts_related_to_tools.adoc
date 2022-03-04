@@ -19,8 +19,13 @@ We should rename the two following diagram events since they are only used to ca
 
 The following diagram tools should also be renamed:
 
-- `CreateNodeTool` should become `SingleClickOnOneDiagramElementTool`
+- `CreateNodeTool` should become `SingleClickOnDiagramElementTool`
 - `CreateEdgeTool` should become `SingleClickOnTwoDiagramElementsTool`
+
+The following mutations (and their related inputs and payloads) will also be renamed:
+
+- `invokeNodeToolOnDiagram` should become `invokeSingleClickOnDiagramElementTool`
+- `invokeEdgeToolOnDiagram` should become `invokeSingleClickOnTwoDiagramElementsTool`
 
 == Status
 

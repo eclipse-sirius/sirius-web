@@ -11,34 +11,44 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { CreateEdgeTool, CreateNodeTool, Tool } from './DiagramWebSocketContainer.types';
+import {
+  SingleClickOnDiagramElementTool,
+  SingleClickOnTwoDiagramElementsTool,
+  Tool,
+} from './DiagramWebSocketContainer.types';
 import { SourceElement } from './sprotty/DiagramServer.types';
 
-const isCreateNodeTool = (tool: Tool): tool is CreateNodeTool => tool.__typename === 'CreateNodeTool';
-const isCreateEdgeTool = (tool: Tool): tool is CreateEdgeTool => tool.__typename === 'CreateEdgeTool';
+const isSingleClickOnDiagramElementTool = (tool: Tool): tool is SingleClickOnDiagramElementTool =>
+  tool.__typename === 'SingleClickOnDiagramElementTool';
+const isSingleClickOnTwoDiagramElementsTool = (tool: Tool): tool is SingleClickOnTwoDiagramElementsTool =>
+  tool.__typename === 'SingleClickOnTwoDiagramElementsTool';
 
 export const canInvokeTool = (tool: Tool, sourceElement: SourceElement, targetElement) => {
   let result = false;
-  if (isCreateNodeTool(tool)) {
+  if (isSingleClickOnDiagramElementTool(tool)) {
     result =
       (tool.appliesToDiagramRoot && targetElement.kind === 'siriusComponents://representation?type=Diagram') ||
       tool.targetDescriptions.some((targetDescription) => targetDescription.id === targetElement.descriptionId);
-  } else if (isCreateEdgeTool(tool)) {
-    result = tool.edgeCandidates.some(
-      (edgeCandidate) =>
-        edgeCandidate.sources.some((source) => source.id === sourceElement.element.descriptionId) &&
-        edgeCandidate.targets.some((target) => target.id === targetElement.descriptionId)
+  } else if (isSingleClickOnTwoDiagramElementsTool(tool)) {
+    result = tool.candidates.some(
+      (candidate) =>
+        candidate.sources.some((source) => source.id === sourceElement.element.descriptionId) &&
+        candidate.targets.some((target) => target.id === targetElement.descriptionId)
     );
   }
   return result;
 };
 
-export const atLeastOneCanInvokeEdgeTool = (tools: CreateEdgeTool[], sourceElement: SourceElement, targetElement) => {
+export const atLeastOneSingleClickOnTwoDiagramElementsTool = (
+  tools: SingleClickOnTwoDiagramElementsTool[],
+  sourceElement: SourceElement,
+  targetElement
+) => {
   return tools.some((tool) =>
-    tool.edgeCandidates.some(
-      (edgeCandidate) =>
-        edgeCandidate.sources.some((source) => source.id === sourceElement.element.descriptionId) &&
-        edgeCandidate.targets.some((target) => target.id === targetElement.descriptionId)
+    tool.candidates.some(
+      (candidate) =>
+        candidate.sources.some((source) => source.id === sourceElement.element.descriptionId) &&
+        candidate.targets.some((target) => target.id === targetElement.descriptionId)
     )
   );
 };

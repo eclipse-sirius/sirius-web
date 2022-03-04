@@ -18,21 +18,17 @@ import java.util.Objects;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.annotations.Immutable;
-import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
 
 /**
- * A create node Tool implementation.
+ * A tool triggered by a single click on two diagram elements thanks to the palette.
  *
  * @author pcdavid
  * @author hmarchadour
  */
 @Immutable
-public final class CreateNodeTool implements ITool {
-
-    public static final String SELECTED_OBJECT = "selectedObject"; //$NON-NLS-1$
-
+public final class SingleClickOnTwoDiagramElementsTool implements ITool {
     private String id;
 
     private String imageURL;
@@ -41,22 +37,14 @@ public final class CreateNodeTool implements ITool {
 
     private Function<VariableManager, IStatus> handler;
 
-    private List<NodeDescription> targetDescriptions;
+    private List<SingleClickOnTwoDiagramElementsCandidate> candidates;
 
-    private boolean appliesToDiagramRoot;
-
-    private String selectionDescriptionId;
-
-    private CreateNodeTool() {
+    private SingleClickOnTwoDiagramElementsTool() {
         // Prevent instantiation
     }
 
-    public List<NodeDescription> getTargetDescriptions() {
-        return this.targetDescriptions;
-    }
-
-    public boolean isAppliesToDiagramRoot() {
-        return this.appliesToDiagramRoot;
+    public List<SingleClickOnTwoDiagramElementsCandidate> getCandidates() {
+        return this.candidates;
     }
 
     @Override
@@ -64,7 +52,6 @@ public final class CreateNodeTool implements ITool {
         return this.id;
     }
 
-    // This field is defined in DiagramTypesProvider to add the server base URL prefix.
     @Override
     public String getImageURL() {
         return this.imageURL;
@@ -73,10 +60,6 @@ public final class CreateNodeTool implements ITool {
     @Override
     public String getLabel() {
         return this.label;
-    }
-
-    public String getSelectionDescriptionId() {
-        return this.selectionDescriptionId;
     }
 
     @Override
@@ -90,7 +73,7 @@ public final class CreateNodeTool implements ITool {
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.label, this.imageURL);
     }
 
-    public static Builder newCreateNodeTool(String id) {
+    public static Builder newSingleClickOnTwoDiagramElementsTool(String id) {
         return new Builder(id);
     }
 
@@ -109,11 +92,7 @@ public final class CreateNodeTool implements ITool {
 
         private Function<VariableManager, IStatus> handler;
 
-        private List<NodeDescription> targetDescriptions;
-
-        private boolean appliesToDiagramRoot;
-
-        private String selectionDescriptionId;
+        private List<SingleClickOnTwoDiagramElementsCandidate> candidates;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -129,13 +108,8 @@ public final class CreateNodeTool implements ITool {
             return this;
         }
 
-        public Builder targetDescriptions(List<NodeDescription> targetDescriptions) {
-            this.targetDescriptions = Objects.requireNonNull(targetDescriptions);
-            return this;
-        }
-
-        public Builder appliesToDiagramRoot(boolean appliesToDiagramRoot) {
-            this.appliesToDiagramRoot = appliesToDiagramRoot;
+        public Builder candidates(List<SingleClickOnTwoDiagramElementsCandidate> candidates) {
+            this.candidates = Objects.requireNonNull(candidates);
             return this;
         }
 
@@ -144,20 +118,13 @@ public final class CreateNodeTool implements ITool {
             return this;
         }
 
-        public Builder selectionDescriptionId(String selectionDescriptionId) {
-            this.selectionDescriptionId = selectionDescriptionId;
-            return this;
-        }
-
-        public CreateNodeTool build() {
-            CreateNodeTool tool = new CreateNodeTool();
+        public SingleClickOnTwoDiagramElementsTool build() {
+            SingleClickOnTwoDiagramElementsTool tool = new SingleClickOnTwoDiagramElementsTool();
             tool.id = Objects.requireNonNull(this.id);
             tool.imageURL = Objects.requireNonNull(this.imageURL);
             tool.label = Objects.requireNonNull(this.label);
             tool.handler = Objects.requireNonNull(this.handler);
-            tool.targetDescriptions = Objects.requireNonNull(this.targetDescriptions);
-            tool.appliesToDiagramRoot = this.appliesToDiagramRoot;
-            tool.selectionDescriptionId = this.selectionDescriptionId;
+            tool.candidates = Objects.requireNonNull(this.candidates);
             return tool;
         }
     }

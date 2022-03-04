@@ -11,10 +11,10 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import {
-  CreateEdgeTool,
   Menu,
   Palette,
   Position,
+  SingleClickOnTwoDiagramElementsTool,
   Subscriber,
   Tool,
   ToolSection,
@@ -66,7 +66,7 @@ export interface DiagramWebSocketContainerContext {
   diagram: GQLDiagram;
   toolSections: ToolSection[];
   activeTool: Tool | null;
-  activeConnectorTools: CreateEdgeTool[];
+  activeConnectorTools: SingleClickOnTwoDiagramElementsTool[];
   contextualPalette: Palette | null;
   contextualMenu: Menu | null;
   latestSelection: Selection;
@@ -92,7 +92,10 @@ export type DiagramRefreshedEvent = { type: 'HANDLE_DIAGRAM_REFRESHED'; diagram:
 export type SubscribersUpdatedEvent = { type: 'HANDLE_SUBSCRIBERS_UPDATED'; subscribers: Subscriber[] };
 export type ResetToolsEvent = { type: 'RESET_TOOLS' };
 export type SetActiveToolEvent = { type: 'SET_ACTIVE_TOOL'; activeTool: Tool | null };
-export type SetActiveConnectorToolsEvent = { type: 'SET_ACTIVE_CONNECTOR_TOOLS'; tools: CreateEdgeTool[] };
+export type SetActiveConnectorToolsEvent = {
+  type: 'SET_ACTIVE_CONNECTOR_TOOLS';
+  tools: SingleClickOnTwoDiagramElementsTool[];
+};
 export type SetContextualPaletteEvent = { type: 'SET_CONTEXTUAL_PALETTE'; contextualPalette: Palette | null };
 export type SetContextualMenuEvent = { type: 'SET_CONTEXTUAL_MENU'; contextualMenu: Menu | null };
 export type SelectionEvent = { type: 'SELECTION'; selection: Selection };

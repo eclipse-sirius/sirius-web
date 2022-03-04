@@ -18,11 +18,11 @@ import java.util.UUID;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 
 /**
- * The input for the "Invoke a node tool on diagram" mutation.
+ * The input for the "Invoke single click on diagram element tool" mutation.
  *
  * @author pcdavid
  */
-public final class InvokeNodeToolOnDiagramInput implements IDiagramInput {
+public final class InvokeSingleClickOnDiagramElementToolInput implements IDiagramInput {
     private UUID id;
 
     private String editingContextId;

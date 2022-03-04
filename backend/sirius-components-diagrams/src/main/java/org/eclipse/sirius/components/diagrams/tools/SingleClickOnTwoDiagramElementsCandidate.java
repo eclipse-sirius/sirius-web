@@ -20,18 +20,18 @@ import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 
 /**
- * An edge candidate contains a valid couple of sources/targets.
+ * An candidate containing a valid couple of sources/targets.
  *
  * @author hmarchadour
  */
 @Immutable
-public final class EdgeCandidate {
+public final class SingleClickOnTwoDiagramElementsCandidate {
 
     private List<NodeDescription> sources;
 
     private List<NodeDescription> targets;
 
-    private EdgeCandidate() {
+    private SingleClickOnTwoDiagramElementsCandidate() {
         // Prevent instantiation
     }
 
@@ -49,12 +49,12 @@ public final class EdgeCandidate {
         return MessageFormat.format(pattern, this.getClass().getSimpleName());
     }
 
-    public static Builder newEdgeCandidate() {
+    public static Builder newSingleClickOnTwoDiagramElementsCandidate() {
         return new Builder();
     }
 
     /**
-     * The builder used to create a sourceTargetsDescription.
+     * The builder used to create a candidate.
      *
      * @author hmarchadour
      */
@@ -77,11 +77,11 @@ public final class EdgeCandidate {
             return this;
         }
 
-        public EdgeCandidate build() {
-            EdgeCandidate tool = new EdgeCandidate();
-            tool.sources = Objects.requireNonNull(this.sources);
-            tool.targets = Objects.requireNonNull(this.targets);
-            return tool;
+        public SingleClickOnTwoDiagramElementsCandidate build() {
+            SingleClickOnTwoDiagramElementsCandidate candidate = new SingleClickOnTwoDiagramElementsCandidate();
+            candidate.sources = Objects.requireNonNull(this.sources);
+            candidate.targets = Objects.requireNonNull(this.targets);
+            return candidate;
         }
     }
 }

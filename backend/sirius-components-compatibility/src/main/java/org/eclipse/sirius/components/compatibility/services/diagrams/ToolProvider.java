@@ -34,9 +34,9 @@ import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
-import org.eclipse.sirius.components.diagrams.tools.CreateEdgeTool;
-import org.eclipse.sirius.components.diagrams.tools.CreateNodeTool;
-import org.eclipse.sirius.components.diagrams.tools.EdgeCandidate;
+import org.eclipse.sirius.components.diagrams.tools.SingleClickOnTwoDiagramElementsTool;
+import org.eclipse.sirius.components.diagrams.tools.SingleClickOnDiagramElementTool;
+import org.eclipse.sirius.components.diagrams.tools.SingleClickOnTwoDiagramElementsCandidate;
 import org.eclipse.sirius.components.diagrams.tools.ITool;
 import org.eclipse.sirius.components.diagrams.tools.ToolSection;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
@@ -239,7 +239,7 @@ public class ToolProvider implements IToolProvider {
         return result;
     }
 
-    private CreateNodeTool convertNodeCreationDescription(Map<UUID, NodeDescription> id2NodeDescriptions, AQLInterpreter interpreter, NodeCreationDescription nodeCreationTool) {
+    private SingleClickOnDiagramElementTool convertNodeCreationDescription(Map<UUID, NodeDescription> id2NodeDescriptions, AQLInterpreter interpreter, NodeCreationDescription nodeCreationTool) {
         String id = this.identifierProvider.getIdentifier(nodeCreationTool);
         String label = new IdentifiedElementQuery(nodeCreationTool).getLabel();
         String imagePath = this.toolImageProviderFactory.getToolImageProvider(nodeCreationTool).get();
@@ -250,7 +250,7 @@ public class ToolProvider implements IToolProvider {
             selectionDescriptionId = this.identifierProvider.getIdentifier(selectModelElementVariableOpt.get());
         }
         // @formatter:off
-        return CreateNodeTool.newCreateNodeTool(id)
+        return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(id)
                 .label(label)
                 .imageURL(imagePath)
                 .handler(this.createNodeCreationHandler(interpreter, nodeCreationTool))
@@ -261,7 +261,7 @@ public class ToolProvider implements IToolProvider {
         // @formatter:on
     }
 
-    private CreateNodeTool convertContainerCreationDescription(Map<UUID, NodeDescription> id2NodeDescriptions, AQLInterpreter interpreter, ContainerCreationDescription containerCreationDescription) {
+    private SingleClickOnDiagramElementTool convertContainerCreationDescription(Map<UUID, NodeDescription> id2NodeDescriptions, AQLInterpreter interpreter, ContainerCreationDescription containerCreationDescription) {
         String id = this.identifierProvider.getIdentifier(containerCreationDescription);
         String label = new IdentifiedElementQuery(containerCreationDescription).getLabel();
         String imagePath = this.toolImageProviderFactory.getToolImageProvider(containerCreationDescription).get();
@@ -272,7 +272,7 @@ public class ToolProvider implements IToolProvider {
             selectionDescriptionId = this.identifierProvider.getIdentifier(selectModelElementVariableOpt.get());
         }
         // @formatter:off
-        return CreateNodeTool.newCreateNodeTool(id)
+        return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(id)
                 .label(label)
                 .imageURL(imagePath)
                 .handler(this.createContainerCreationHandler(interpreter, containerCreationDescription))
@@ -283,7 +283,7 @@ public class ToolProvider implements IToolProvider {
         // @formatter:on
     }
 
-    private CreateNodeTool convertToolDescription(Map<UUID, NodeDescription> id2NodeDescriptions, AQLInterpreter interpreter, DiagramDescription siriusDiagramDescription,
+    private SingleClickOnDiagramElementTool convertToolDescription(Map<UUID, NodeDescription> id2NodeDescriptions, AQLInterpreter interpreter, DiagramDescription siriusDiagramDescription,
             ToolDescription toolDescription) {
         String id = this.identifierProvider.getIdentifier(toolDescription);
         String label = new IdentifiedElementQuery(toolDescription).getLabel();
@@ -299,7 +299,7 @@ public class ToolProvider implements IToolProvider {
                 .map(UUID::fromString)
                 .map(id2NodeDescriptions::get)
                 .collect(Collectors.toList());
-        return CreateNodeTool.newCreateNodeTool(id)
+        return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(id)
                 .label(label)
                 .imageURL(imagePath)
                 .handler(this.createGenericToolHandler(interpreter, toolDescription))
@@ -309,7 +309,7 @@ public class ToolProvider implements IToolProvider {
         // @formatter:on
     }
 
-    private CreateNodeTool convertOperationAction(Map<UUID, NodeDescription> id2NodeDescriptions, AQLInterpreter interpreter, DiagramDescription siriusDiagramDescription,
+    private SingleClickOnDiagramElementTool convertOperationAction(Map<UUID, NodeDescription> id2NodeDescriptions, AQLInterpreter interpreter, DiagramDescription siriusDiagramDescription,
             OperationAction operationAction) {
         String id = this.identifierProvider.getIdentifier(operationAction);
         String label = new IdentifiedElementQuery(operationAction).getLabel();
@@ -325,7 +325,7 @@ public class ToolProvider implements IToolProvider {
                 .map(UUID::fromString)
                 .map(id2NodeDescriptions::get)
                 .collect(Collectors.toList());
-        return CreateNodeTool.newCreateNodeTool(id)
+        return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(id)
                 .label(label)
                 .imageURL(imagePath)
                 .handler(this.createOperationActionHandler(interpreter, operationAction))
@@ -358,12 +358,12 @@ public class ToolProvider implements IToolProvider {
         return result;
     }
 
-    private CreateEdgeTool convertEdgeCreationDescription(Map<UUID, NodeDescription> id2NodeDescriptions, AQLInterpreter interpreter, EdgeCreationDescription edgeCreationDescription) {
+    private SingleClickOnTwoDiagramElementsTool convertEdgeCreationDescription(Map<UUID, NodeDescription> id2NodeDescriptions, AQLInterpreter interpreter, EdgeCreationDescription edgeCreationDescription) {
         String id = this.identifierProvider.getIdentifier(edgeCreationDescription);
         String label = new IdentifiedElementQuery(edgeCreationDescription).getLabel();
         String imagePath = this.toolImageProviderFactory.getToolImageProvider(edgeCreationDescription).get();
         // @formatter:off
-        List<EdgeCandidate> edgeCandidates = new ArrayList<>();
+        List<SingleClickOnTwoDiagramElementsCandidate> edgeCandidates = new ArrayList<>();
         for (EdgeMapping edgeMapping : edgeCreationDescription.getEdgeMappings()) {
             List<NodeDescription> sources = edgeMapping.getSourceMapping().stream()
                     .filter(AbstractNodeMapping.class::isInstance)
@@ -377,22 +377,22 @@ public class ToolProvider implements IToolProvider {
                     .map(UUID::fromString)
                     .map(id2NodeDescriptions::get)
                     .collect(Collectors.toList());
-            EdgeCandidate edgeCandidate = EdgeCandidate.newEdgeCandidate()
+            SingleClickOnTwoDiagramElementsCandidate edgeCandidate = SingleClickOnTwoDiagramElementsCandidate.newSingleClickOnTwoDiagramElementsCandidate()
                 .sources(sources)
                 .targets(targets)
                 .build();
             edgeCandidates.add(edgeCandidate);
         }
-        return CreateEdgeTool.newCreateEdgeTool(id)
+        return SingleClickOnTwoDiagramElementsTool.newSingleClickOnTwoDiagramElementsTool(id)
                 .label(label)
                 .imageURL(imagePath)
                 .handler(this.createEdgeCreationHandler(interpreter, edgeCreationDescription))
-                .edgeCandidates(edgeCandidates)
+                .candidates(edgeCandidates)
                 .build();
         // @formatter:on
     }
 
-    private CreateNodeTool convertDeleteElementDescription(Map<UUID, NodeDescription> id2NodeDescriptions, AQLInterpreter interpreter, DeleteElementDescription deleteElementDescription) {
+    private SingleClickOnDiagramElementTool convertDeleteElementDescription(Map<UUID, NodeDescription> id2NodeDescriptions, AQLInterpreter interpreter, DeleteElementDescription deleteElementDescription) {
         String id = this.identifierProvider.getIdentifier(deleteElementDescription);
         String label = new IdentifiedElementQuery(deleteElementDescription).getLabel();
         String imagePath = this.toolImageProviderFactory.getToolImageProvider(deleteElementDescription).get();
@@ -408,7 +408,7 @@ public class ToolProvider implements IToolProvider {
                 .map(id2NodeDescriptions::get)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
-        return CreateNodeTool.newCreateNodeTool(id)
+        return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(id)
                 .label(label)
                 .imageURL(imagePath)
                 .handler(this.createDeleteToolHandler(interpreter, deleteElementDescription))
@@ -439,7 +439,7 @@ public class ToolProvider implements IToolProvider {
                 }
                 var selectModelelementVariableOpt = new SelectModelElementVariableProvider().getSelectModelElementVariable(toolDescription.getVariable());
                 if (selectModelelementVariableOpt.isPresent()) {
-                    variables.put(selectModelelementVariableOpt.get().getName(), variables.get(CreateNodeTool.SELECTED_OBJECT));
+                    variables.put(selectModelelementVariableOpt.get().getName(), variables.get(SingleClickOnDiagramElementTool.SELECTED_OBJECT));
                 }
                 var modelOperationHandlerSwitch = this.modelOperationHandlerSwitchProvider.getModelOperationHandlerSwitch(interpreter);
                 return modelOperationHandlerSwitch.apply(initialOperation.getFirstModelOperations()).map(handler -> {
@@ -473,7 +473,7 @@ public class ToolProvider implements IToolProvider {
 
                 var selectModelelementVariableOpt = new SelectModelElementVariableProvider().getSelectModelElementVariable(toolDescription.getVariable());
                 if (selectModelelementVariableOpt.isPresent()) {
-                    variables.put(selectModelelementVariableOpt.get().getName(), variables.get(CreateNodeTool.SELECTED_OBJECT));
+                    variables.put(selectModelelementVariableOpt.get().getName(), variables.get(SingleClickOnDiagramElementTool.SELECTED_OBJECT));
                 }
                 var modelOperationHandlerSwitch = this.modelOperationHandlerSwitchProvider.getModelOperationHandlerSwitch(interpreter);
                 return modelOperationHandlerSwitch.apply(initialOperation.getFirstModelOperations()).map(handler -> {

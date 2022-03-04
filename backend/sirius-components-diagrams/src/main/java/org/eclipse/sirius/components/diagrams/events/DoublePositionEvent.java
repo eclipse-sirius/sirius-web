@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 THALES GLOBAL SERVICES.
+ * Copyright (c) 2021 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,19 +17,26 @@ import java.util.Objects;
 import org.eclipse.sirius.components.diagrams.Position;
 
 /**
- * Represent an immutable node creation event.
+ * Represent an event using two positions, a source and a target.
  *
- * @author fbarbin
+ * @author gcoutable
  */
-public class NodeCreationEvent implements IDiagramEvent {
+public class DoublePositionEvent implements IDiagramEvent {
 
-    private final Position startingPosition;
+    private final Position sourcePosition;
 
-    public NodeCreationEvent(Position startingPosition) {
-        this.startingPosition = Objects.requireNonNull(startingPosition);
+    private final Position targetPosition;
+
+    public DoublePositionEvent(Position sourcePosition, Position targetPosition) {
+        this.sourcePosition = Objects.requireNonNull(sourcePosition);
+        this.targetPosition = Objects.requireNonNull(targetPosition);
     }
 
-    public Position getStartingPosition() {
-        return this.startingPosition;
+    public Position getSourcePosition() {
+        return this.sourcePosition;
+    }
+
+    public Position getTargetPosition() {
+        return this.targetPosition;
     }
 }
