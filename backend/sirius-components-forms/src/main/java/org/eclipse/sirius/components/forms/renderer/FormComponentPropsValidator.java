@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,8 @@ import org.eclipse.sirius.components.forms.components.GroupComponent;
 import org.eclipse.sirius.components.forms.components.GroupComponentProps;
 import org.eclipse.sirius.components.forms.components.IfComponent;
 import org.eclipse.sirius.components.forms.components.IfComponentProps;
+import org.eclipse.sirius.components.forms.components.LinkComponent;
+import org.eclipse.sirius.components.forms.components.LinkComponentProps;
 import org.eclipse.sirius.components.forms.components.ListComponent;
 import org.eclipse.sirius.components.forms.components.ListComponentProps;
 import org.eclipse.sirius.components.forms.components.MultiSelectComponent;
@@ -82,6 +84,8 @@ public class FormComponentPropsValidator implements IComponentPropsValidator {
             checkValidProps = props instanceof TextfieldComponentProps;
         } else if (DiagnosticComponent.class.equals(componentType)) {
             checkValidProps = props instanceof DiagnosticComponentProps;
+        } else if (LinkComponent.class.equals(componentType)) {
+            checkValidProps = props instanceof LinkComponentProps;
         }
 
         return checkValidProps;

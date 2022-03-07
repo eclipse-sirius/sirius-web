@@ -78,6 +78,7 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/937[#937] [diagram] Add the ability to export diagram as SVG images
 - https://github.com/eclipse-sirius/sirius-components/issues/779[#779] [diagram] Add support for tools preconditions
 - https://github.com/eclipse-sirius/sirius-components/issues/781[#781] [diagram] Add support for multiline labels
+- https://github.com/eclipse-sirius/sirius-components/issues/695[#695] [form] Add support for links in the form representation
 
 
 == v2022.01.0

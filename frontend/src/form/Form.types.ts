@@ -107,3 +107,8 @@ export interface ListItem {
   imageURL: string;
   deletable: boolean;
 }
+
+export interface Link extends Widget {
+  label: string;
+  url: string;
+}
