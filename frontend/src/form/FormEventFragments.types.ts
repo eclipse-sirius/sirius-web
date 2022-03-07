@@ -169,3 +169,8 @@ export interface GQLListItem {
   imageURL: string;
   deletable: Boolean;
 }
+
+export interface GQLLink extends GQLWidget {
+  label: string;
+  url: string;
+}

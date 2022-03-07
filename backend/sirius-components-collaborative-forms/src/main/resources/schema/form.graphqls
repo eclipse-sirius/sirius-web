@@ -138,6 +138,13 @@ type Textfield implements Widget {
   value: String!
 }
 
+type Link implements Widget {
+  id: ID!
+  diagnostics: [Diagnostic!]!
+  label: String!
+  url: String!
+}
+
 type FormDescription implements RepresentationDescription {
   id: ID!
   label: String!

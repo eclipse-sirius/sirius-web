@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import java.util.Objects;
 
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
 import org.eclipse.sirius.components.forms.description.CheckboxDescription;
+import org.eclipse.sirius.components.forms.description.LinkDescription;
 import org.eclipse.sirius.components.forms.description.ListDescription;
 import org.eclipse.sirius.components.forms.description.MultiSelectDescription;
 import org.eclipse.sirius.components.forms.description.RadioDescription;
@@ -70,6 +71,9 @@ public class WidgetComponent implements IComponent {
         } else if (widgetDescription instanceof ListDescription) {
             ListComponentProps listProps = new ListComponentProps(variableManager, (ListDescription) widgetDescription);
             element = new Element(ListComponent.class, listProps);
+        } else if (widgetDescription instanceof LinkDescription) {
+            LinkComponentProps linkProps = new LinkComponentProps(variableManager, (LinkDescription) widgetDescription);
+            element = new Element(LinkComponent.class, linkProps);
         } else {
             String pattern = "Unsupported widget description: {}"; //$NON-NLS-1$
             this.logger.warn(pattern, widgetDescription.getClass().getSimpleName());

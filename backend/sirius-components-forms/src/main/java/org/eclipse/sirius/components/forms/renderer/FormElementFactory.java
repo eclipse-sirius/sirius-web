@@ -19,6 +19,7 @@ import org.eclipse.sirius.components.forms.AbstractWidget;
 import org.eclipse.sirius.components.forms.Checkbox;
 import org.eclipse.sirius.components.forms.Form;
 import org.eclipse.sirius.components.forms.Group;
+import org.eclipse.sirius.components.forms.Link;
 import org.eclipse.sirius.components.forms.MultiSelect;
 import org.eclipse.sirius.components.forms.Page;
 import org.eclipse.sirius.components.forms.Radio;
@@ -28,6 +29,7 @@ import org.eclipse.sirius.components.forms.Textfield;
 import org.eclipse.sirius.components.forms.elements.CheckboxElementProps;
 import org.eclipse.sirius.components.forms.elements.FormElementProps;
 import org.eclipse.sirius.components.forms.elements.GroupElementProps;
+import org.eclipse.sirius.components.forms.elements.LinkElementProps;
 import org.eclipse.sirius.components.forms.elements.ListElementProps;
 import org.eclipse.sirius.components.forms.elements.MultiSelectElementProps;
 import org.eclipse.sirius.components.forms.elements.PageElementProps;
@@ -72,6 +74,8 @@ public class FormElementFactory implements IElementFactory {
             object = this.instantiateTextfield((TextfieldElementProps) props, children);
         } else if (DiagnosticElementProps.TYPE.equals(type) && props instanceof DiagnosticElementProps) {
             object = this.instantiateDiagnostic((DiagnosticElementProps) props, children);
+        } else if (LinkElementProps.TYPE.equals(type) && props instanceof LinkElementProps) {
+            object = this.instantiateLink((LinkElementProps) props, children);
         }
         return object;
     }
@@ -219,6 +223,18 @@ public class FormElementFactory implements IElementFactory {
                 .message(props.getMessage())
                 .build();
         // @formatter:on
+    }
+
+    private Link instantiateLink(LinkElementProps props, List<Object> children) {
+        List<Diagnostic> diagnostics = this.getDiagnosticsFromChildren(children);
+
+        // @formatter:off
+        return Link.newLink(props.getId())
+                 .label(props.getLabel())
+                 .url(props.getUrl())
+                 .diagnostics(diagnostics)
+                 .build();
+       // @formatter:on
     }
 
     private List<Diagnostic> getDiagnosticsFromChildren(List<Object> children) {

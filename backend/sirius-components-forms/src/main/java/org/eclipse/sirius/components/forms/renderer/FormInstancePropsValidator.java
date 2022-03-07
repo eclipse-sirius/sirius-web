@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.forms.renderer;
 import org.eclipse.sirius.components.forms.elements.CheckboxElementProps;
 import org.eclipse.sirius.components.forms.elements.FormElementProps;
 import org.eclipse.sirius.components.forms.elements.GroupElementProps;
+import org.eclipse.sirius.components.forms.elements.LinkElementProps;
 import org.eclipse.sirius.components.forms.elements.ListElementProps;
 import org.eclipse.sirius.components.forms.elements.MultiSelectElementProps;
 import org.eclipse.sirius.components.forms.elements.PageElementProps;
@@ -59,6 +60,8 @@ public class FormInstancePropsValidator implements IInstancePropsValidator {
             checkValidProps = props instanceof TextfieldElementProps;
         } else if (DiagnosticElementProps.TYPE.equals(type)) {
             checkValidProps = props instanceof DiagnosticElementProps;
+        } else if (LinkElementProps.TYPE.equals(type)) {
+            checkValidProps = props instanceof LinkElementProps;
         }
 
         return checkValidProps;

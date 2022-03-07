@@ -14,6 +14,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import {
   Checkbox,
+  Link,
   List,
   MultiSelect,
   Radio,
@@ -25,6 +26,7 @@ import {
 } from 'form/Form.types';
 import { GroupProps } from 'properties/Group.types';
 import { CheckboxPropertySection } from 'properties/propertysections/CheckboxPropertySection';
+import { LinkPropertySection } from 'properties/propertysections/LinkPropertySection';
 import { ListPropertySection } from 'properties/propertysections/ListPropertySection';
 import { MultiSelectPropertySection } from 'properties/propertysections/MultiSelectPropertySection';
 import { RadioPropertySection } from 'properties/propertysections/RadioPropertySection';
@@ -76,6 +78,7 @@ const isSelect = (widget: Widget): widget is Select => widget.__typename === 'Se
 const isMultiSelect = (widget: Widget): widget is MultiSelect => widget.__typename === 'MultiSelect';
 const isRadio = (widget: Widget): widget is Radio => widget.__typename === 'Radio';
 const isList = (widget: Widget): widget is List => widget.__typename === 'List';
+const isLink = (widget: Widget): widget is Link => widget.__typename === 'Link';
 
 const widgetToPropertySection = (
   editingContextId: string,
@@ -158,6 +161,8 @@ const widgetToPropertySection = (
         readOnly={readOnly}
       />
     );
+  } else if (isLink(widget)) {
+    propertySection = <LinkPropertySection widget={widget} key={widget.id} />;
   } else {
     console.error(`Unsupported widget type ${widget.__typename}`);
   }

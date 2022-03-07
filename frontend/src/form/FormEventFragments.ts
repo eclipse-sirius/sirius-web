@@ -101,6 +101,10 @@ export const formRefreshedEventPayloadFragment = gql`
                 deletable
               }
             }
+            ... on Link {
+              label
+              url
+            }
           }
         }
       }
