@@ -27,6 +27,7 @@ const useSiteStyles = makeStyles((theme) => ({
   },
   expanded: {
     flexGrow: 1,
+    overflow: 'auto',
   },
   accordionDetailsRoot: {
     display: 'block',
@@ -120,7 +121,7 @@ export const Site = ({ editingContextId, selection, setSelection, readOnly, cont
             <AccordionSummary expandIcon={<ExpandMoreIcon />} IconButtonProps={{ size: 'small' }}>
               {title}
             </AccordionSummary>
-            <AccordionDetails className={classes.accordionDetailsRoot} data-testid={'Details AccordionDetails'}>
+            <AccordionDetails className={classes.accordionDetailsRoot} data-testid={`${title} AccordionDetails`}>
               <Component
                 editingContextId={editingContextId}
                 selection={selection}
