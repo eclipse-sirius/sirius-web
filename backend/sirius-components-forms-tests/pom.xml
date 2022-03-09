@@ -22,7 +22,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-forms-tests</artifactId>
-	<version>2022.01.17</version>
+	<version>2022.01.18</version>
 	<name>sirius-components-forms-tests</name>
 	<description>Sirius Components Forms Tests</description>
 
@@ -42,7 +42,7 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-forms</artifactId>
-			<version>2022.01.17</version>
+			<version>2022.01.18</version>
 		</dependency>
 		<dependency>
 			<groupId>org.assertj</groupId>
