@@ -15,7 +15,6 @@ package org.eclipse.sirius.components.validation;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.representations.IRepresentation;
@@ -35,7 +34,7 @@ public final class Validation implements IRepresentation {
 
     private String label;
 
-    private UUID descriptionId;
+    private String descriptionId;
 
     private List<Diagnostic> diagnostics;
 
@@ -49,7 +48,7 @@ public final class Validation implements IRepresentation {
     }
 
     @Override
-    public UUID getDescriptionId() {
+    public String getDescriptionId() {
         return this.descriptionId;
     }
 
@@ -91,7 +90,7 @@ public final class Validation implements IRepresentation {
 
         private String label;
 
-        private UUID descriptionId;
+        private String descriptionId;
 
         private List<Diagnostic> diagnostics;
 
@@ -104,7 +103,7 @@ public final class Validation implements IRepresentation {
             return this;
         }
 
-        public Builder descriptionId(UUID descriptionId) {
+        public Builder descriptionId(String descriptionId) {
             this.descriptionId = Objects.requireNonNull(descriptionId);
             return this;
         }

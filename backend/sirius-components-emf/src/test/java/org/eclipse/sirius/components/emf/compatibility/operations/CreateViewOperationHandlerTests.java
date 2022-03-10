@@ -77,7 +77,7 @@ public class CreateViewOperationHandlerTests {
         this.operationTestContext = new OperationTestContext();
 
         // @formatter:off
-        DiagramDescription diagramDescription = DiagramDescription.newDiagramDescription(UUID.randomUUID())
+        DiagramDescription diagramDescription = DiagramDescription.newDiagramDescription(UUID.randomUUID().toString())
                 .label("DiagramDescriptionTest") //$NON-NLS-1$
                 .targetObjectIdProvider(variableManager -> "diagramTargetObjectId") //$NON-NLS-1$
                 .canCreatePredicate(variableManager -> true)

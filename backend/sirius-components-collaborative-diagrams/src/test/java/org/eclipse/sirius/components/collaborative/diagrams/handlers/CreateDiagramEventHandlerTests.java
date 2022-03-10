@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -53,9 +53,9 @@ public class CreateDiagramEventHandlerTests {
     public void testDiagramCreation() {
         IRepresentationDescriptionSearchService representationDescriptionSearchService = new IRepresentationDescriptionSearchService.NoOp() {
             @Override
-            public Optional<IRepresentationDescription> findById(IEditingContext editingContext, UUID id) {
+            public Optional<IRepresentationDescription> findById(IEditingContext editingContext, String id) {
                 // @formatter:off
-                DiagramDescription diagramDescription = DiagramDescription.newDiagramDescription(UUID.randomUUID())
+                DiagramDescription diagramDescription = DiagramDescription.newDiagramDescription(UUID.randomUUID().toString())
                         .label("label") //$NON-NLS-1$
                         .canCreatePredicate(variableManager -> Boolean.TRUE)
                         .edgeDescriptions(new ArrayList<>())
@@ -91,7 +91,7 @@ public class CreateDiagramEventHandlerTests {
         CreateDiagramEventHandler handler = new CreateDiagramEventHandler(representationDescriptionSearchService, new IRepresentationPersistenceService.NoOp(), diagramCreationService, objectService,
                 new ICollaborativeDiagramMessageService.NoOp(), new SimpleMeterRegistry());
 
-        var input = new CreateRepresentationInput(UUID.randomUUID(), UUID.randomUUID().toString(), UUID.randomUUID(), "objectId", "representationName"); //$NON-NLS-1$//$NON-NLS-2$
+        var input = new CreateRepresentationInput(UUID.randomUUID(), UUID.randomUUID().toString(), UUID.randomUUID().toString(), "objectId", "representationName"); //$NON-NLS-1$//$NON-NLS-2$
         assertThat(handler.canHandle(null, input)).isTrue();
 
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();

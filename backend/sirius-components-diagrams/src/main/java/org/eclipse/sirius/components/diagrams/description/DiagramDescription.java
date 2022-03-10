@@ -15,7 +15,6 @@ package org.eclipse.sirius.components.diagrams.description;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -42,7 +41,7 @@ public final class DiagramDescription implements IRepresentationDescription {
 
     public static final String LABEL = "label"; //$NON-NLS-1$
 
-    private UUID id;
+    private String id;
 
     private String label;
 
@@ -67,7 +66,7 @@ public final class DiagramDescription implements IRepresentationDescription {
     }
 
     @Override
-    public UUID getId() {
+    public String getId() {
         return this.id;
     }
 
@@ -109,7 +108,7 @@ public final class DiagramDescription implements IRepresentationDescription {
         return this.dropHandler;
     }
 
-    public static Builder newDiagramDescription(UUID id) {
+    public static Builder newDiagramDescription(String id) {
         return new Builder(id);
     }
 
@@ -126,7 +125,7 @@ public final class DiagramDescription implements IRepresentationDescription {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private UUID id;
+        private String id;
 
         private String label;
 
@@ -146,7 +145,7 @@ public final class DiagramDescription implements IRepresentationDescription {
 
         private Function<VariableManager, IStatus> dropHandler;
 
-        private Builder(UUID id) {
+        private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
 

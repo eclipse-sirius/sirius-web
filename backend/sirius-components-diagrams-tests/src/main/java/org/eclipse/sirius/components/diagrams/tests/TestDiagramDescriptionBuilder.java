@@ -41,7 +41,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 public class TestDiagramDescriptionBuilder {
 
-    public DiagramDescription getDiagramDescription(UUID diagramDescriptionId, List<NodeDescription> nodeDescriptions, List<EdgeDescription> edgeDescriptions, List<ToolSection> toolSections) {
+    public DiagramDescription getDiagramDescription(String diagramDescriptionId, List<NodeDescription> nodeDescriptions, List<EdgeDescription> edgeDescriptions, List<ToolSection> toolSections) {
         // @formatter:off
         return DiagramDescription.newDiagramDescription(diagramDescriptionId)
             .label("") //$NON-NLS-1$

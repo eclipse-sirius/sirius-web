@@ -15,7 +15,6 @@ package org.eclipse.sirius.components.diagrams;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.representations.IRepresentation;
@@ -36,7 +35,7 @@ public final class Diagram implements IRepresentation, ISemanticRepresentation {
 
     private String targetObjectId;
 
-    private UUID descriptionId;
+    private String descriptionId;
 
     private String label;
 
@@ -68,7 +67,7 @@ public final class Diagram implements IRepresentation, ISemanticRepresentation {
     }
 
     @Override
-    public UUID getDescriptionId() {
+    public String getDescriptionId() {
         return this.descriptionId;
     }
 
@@ -120,7 +119,7 @@ public final class Diagram implements IRepresentation, ISemanticRepresentation {
 
         private String targetObjectId;
 
-        private UUID descriptionId;
+        private String descriptionId;
 
         private String label;
 
@@ -152,7 +151,7 @@ public final class Diagram implements IRepresentation, ISemanticRepresentation {
             return this;
         }
 
-        public Builder descriptionId(UUID descriptionId) {
+        public Builder descriptionId(String descriptionId) {
             this.descriptionId = Objects.requireNonNull(descriptionId);
             return this;
         }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,6 @@ package org.eclipse.sirius.components.compatibility.services.diagrams;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -64,7 +63,7 @@ public class DiagramDescriptionConverter implements IDiagramDescriptionConverter
         Predicate<VariableManager> canCreatePredicate = this.canCreateDiagramPredicateFactory.getCanCreateDiagramPredicate(siriusDiagramDescription, interpreter);
 
         // @formatter:off
-        Builder builder = DiagramDescription.newDiagramDescription(UUID.fromString(this.identifierProvider.getIdentifier(siriusDiagramDescription)))
+        Builder builder = DiagramDescription.newDiagramDescription(this.identifierProvider.getIdentifier(siriusDiagramDescription))
                 .canCreatePredicate(canCreatePredicate)
                 .labelProvider(labelProvider)
                 .autoLayout(this.isAutoLayoutMode(siriusDiagramDescription));

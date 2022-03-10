@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,6 @@ package org.eclipse.sirius.components.compatibility.diagrams;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.compatibility.api.IAQLInterpreterFactory;
@@ -55,7 +54,7 @@ public class SelectModelElementVariableConverter implements ISelectModelElementV
     public SelectionDescription convert(SelectModelElementVariable selectModelElementVariable, org.eclipse.sirius.diagram.description.DiagramDescription diagramDescription) {
         AQLInterpreter interpreter = this.interpreterFactory.create(diagramDescription);
         // @formatter:off
-        SelectionDescription selectionDescription = SelectionDescription.newSelectionDescription(UUID.fromString(this.identifierProvider.getIdentifier(selectModelElementVariable)))
+        SelectionDescription selectionDescription = SelectionDescription.newSelectionDescription(this.identifierProvider.getIdentifier(selectModelElementVariable))
                 .objectsProvider(variableManager -> {
                     Result result = interpreter.evaluateExpression(variableManager.getVariables(), selectModelElementVariable.getCandidatesExpression());
                     return result.asObjects().orElse(List.of()).stream()

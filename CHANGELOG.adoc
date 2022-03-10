@@ -8,6 +8,8 @@
 
 === Breaking changes
 
+- https://github.com/eclipse-sirius/sirius-components/issues/1088[#1088] [core] Change the type of `IRepresentationDescription#id` from UUID to String. This will allow us, when we will receive an operation to perform with a given representation description identifier, to determine if this operation should be handled by the Sirius Desktop compatibility layer, the View support or by a programmatic API
+
 === Dependency update
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1118[#1118] [core] Switch to Spring Boot 2.6.6

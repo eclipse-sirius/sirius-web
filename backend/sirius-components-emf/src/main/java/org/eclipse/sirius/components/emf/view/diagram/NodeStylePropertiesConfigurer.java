@@ -83,7 +83,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
     }
 
     private FormDescription getConditionalNodeStyleProperties() {
-        UUID formDescriptionId = UUID.nameUUIDFromBytes("conditionalnodestyle".getBytes()); //$NON-NLS-1$
+        String formDescriptionId = UUID.nameUUIDFromBytes("conditionalnodestyle".getBytes()).toString(); //$NON-NLS-1$
 
         // @formatter:off
         List<AbstractControlDescription> controls = List.of(
@@ -182,7 +182,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
     }
 
     private FormDescription getNodeStyleProperties() {
-        UUID formDescriptionId = UUID.nameUUIDFromBytes("nodestyle".getBytes()); //$NON-NLS-1$
+        String formDescriptionId = UUID.nameUUIDFromBytes("nodestyle".getBytes()).toString(); //$NON-NLS-1$
 
         // @formatter:off
         List<AbstractControlDescription> controls = List.of(

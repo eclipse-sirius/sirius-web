@@ -100,7 +100,7 @@ public class ViewExtensionDescriptionConverter implements IViewExtensionDescript
                 .map(this.objectService::getId)
                 .orElse(null);
 
-        return FormDescription.newFormDescription(UUID.fromString(this.identifierProvider.getIdentifier(viewExtensionDescription)))
+        return FormDescription.newFormDescription(UUID.fromString(this.identifierProvider.getIdentifier(viewExtensionDescription)).toString())
                 .label(this.identifiedElementLabelProvider.getLabel(viewExtensionDescription))
                 .idProvider(new GetOrCreateRandomIdProvider())
                 .labelProvider(labelProvider)

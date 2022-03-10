@@ -16,7 +16,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
@@ -137,7 +136,7 @@ public class DynamicDiagramsTests {
 
         IRepresentationDescriptionSearchService representationDescriptionSearchService = new IRepresentationDescriptionSearchService.NoOp() {
             @Override
-            public Optional<IRepresentationDescription> findById(IEditingContext editingContext, UUID representationDescriptionId) {
+            public Optional<IRepresentationDescription> findById(IEditingContext editingContext, String representationDescriptionId) {
                 return Optional.of(convertedDiagramDescription);
             }
         };

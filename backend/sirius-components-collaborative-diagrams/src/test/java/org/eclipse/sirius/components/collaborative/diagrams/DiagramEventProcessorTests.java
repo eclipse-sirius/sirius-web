@@ -44,7 +44,7 @@ public class DiagramEventProcessorTests {
 
     private static final String DIAGRAM_ID = UUID.randomUUID().toString();
 
-    private static final UUID DIAGRAM_DESCRIPTION_ID = UUID.randomUUID();
+    private static final String DIAGRAM_DESCRIPTION_ID = UUID.randomUUID().toString();
 
     // @formatter:off
     private static final Diagram INITIAL_TEST_DIAGRAM = Diagram.newDiagram(DIAGRAM_ID)

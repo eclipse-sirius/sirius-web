@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo and others.
+ * Copyright (c) 2019, 2022 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -329,7 +329,7 @@ public class UnsynchronizedDiagramTests {
                 .deleteHandler(variableManager -> new Success())
                 .build();
 
-        DiagramDescription diagramDescription = DiagramDescription.newDiagramDescription(UUID.nameUUIDFromBytes("diagram".getBytes())) //$NON-NLS-1$
+        DiagramDescription diagramDescription = DiagramDescription.newDiagramDescription(UUID.nameUUIDFromBytes("diagram".getBytes()).toString()) //$NON-NLS-1$
                 .label("") //$NON-NLS-1$
                 .canCreatePredicate(variableManager -> true)
                 .targetObjectIdProvider(variableManager -> "diagramTargetObjectId") //$NON-NLS-1$

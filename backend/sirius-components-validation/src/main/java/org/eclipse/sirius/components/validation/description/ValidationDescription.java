@@ -15,7 +15,6 @@ package org.eclipse.sirius.components.validation.description;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -32,7 +31,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
 @PublicApi
 @Immutable
 public final class ValidationDescription implements IRepresentationDescription {
-    private UUID id;
+    private String id;
 
     private String label;
 
@@ -49,7 +48,7 @@ public final class ValidationDescription implements IRepresentationDescription {
     }
 
     @Override
-    public UUID getId() {
+    public String getId() {
         return this.id;
     }
 
@@ -75,7 +74,7 @@ public final class ValidationDescription implements IRepresentationDescription {
         return this.messageProvider;
     }
 
-    public static Builder newValidationDescription(UUID id) {
+    public static Builder newValidationDescription(String id) {
         return new Builder(id);
     }
 
@@ -92,7 +91,7 @@ public final class ValidationDescription implements IRepresentationDescription {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private UUID id;
+        private String id;
 
         private String label;
 
@@ -104,7 +103,7 @@ public final class ValidationDescription implements IRepresentationDescription {
 
         private Function<Object, String> messageProvider;
 
-        public Builder(UUID id) {
+        public Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
 

@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.representations;
 
-import java.util.UUID;
 import java.util.function.Predicate;
 
 import org.eclipse.sirius.components.annotations.PublicApi;
@@ -27,7 +26,7 @@ public interface IRepresentationDescription {
 
     String CLASS = "class"; //$NON-NLS-1$
 
-    UUID getId();
+    String getId();
 
     String getLabel();
 

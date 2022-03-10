@@ -15,7 +15,6 @@ package org.eclipse.sirius.components.selection.description;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -29,10 +28,9 @@ import org.eclipse.sirius.components.representations.VariableManager;
  * @author arichard
  */
 @Immutable
-
 public final class SelectionDescription implements IRepresentationDescription {
 
-    private UUID id;
+    private String id;
 
     private String label;
 
@@ -57,13 +55,11 @@ public final class SelectionDescription implements IRepresentationDescription {
     }
 
     @Override
-
-    public UUID getId() {
+    public String getId() {
         return this.id;
     }
 
     @Override
-
     public String getLabel() {
         return this.label;
     }
@@ -101,7 +97,7 @@ public final class SelectionDescription implements IRepresentationDescription {
         return this.canCreatePredicate;
     }
 
-    public static Builder newSelectionDescription(UUID id) {
+    public static Builder newSelectionDescription(String id) {
         return new Builder(id);
     }
 
@@ -118,7 +114,7 @@ public final class SelectionDescription implements IRepresentationDescription {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private UUID id;
+        private String id;
 
         private String label;
 
@@ -138,7 +134,7 @@ public final class SelectionDescription implements IRepresentationDescription {
 
         private Predicate<VariableManager> canCreatePredicate;
 
-        private Builder(UUID id) {
+        private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
 
