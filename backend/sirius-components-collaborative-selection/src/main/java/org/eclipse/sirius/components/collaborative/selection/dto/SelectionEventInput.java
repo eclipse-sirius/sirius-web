@@ -29,7 +29,7 @@ public final class SelectionEventInput implements IInput {
 
     private String editingContextId;
 
-    private UUID selectionId;
+    private String selectionId;
 
     private String targetObjectId;
 
@@ -37,7 +37,7 @@ public final class SelectionEventInput implements IInput {
         // Used by Jackson
     }
 
-    public SelectionEventInput(UUID id, String editingContextId, UUID selectionId, String targetObjectId) {
+    public SelectionEventInput(UUID id, String editingContextId, String selectionId, String targetObjectId) {
         this.id = Objects.requireNonNull(id);
         this.editingContextId = Objects.requireNonNull(editingContextId);
         this.selectionId = Objects.requireNonNull(selectionId);
@@ -53,7 +53,7 @@ public final class SelectionEventInput implements IInput {
         return this.editingContextId;
     }
 
-    public UUID getSelectionId() {
+    public String getSelectionId() {
         return this.selectionId;
     }
 

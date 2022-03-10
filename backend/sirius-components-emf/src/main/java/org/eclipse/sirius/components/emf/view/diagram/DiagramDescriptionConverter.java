@@ -42,10 +42,10 @@ import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
 import org.eclipse.sirius.components.diagrams.elements.NodeElementProps;
 import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderingCache;
-import org.eclipse.sirius.components.diagrams.tools.SingleClickOnTwoDiagramElementsTool;
+import org.eclipse.sirius.components.diagrams.tools.ITool;
 import org.eclipse.sirius.components.diagrams.tools.SingleClickOnDiagramElementTool;
 import org.eclipse.sirius.components.diagrams.tools.SingleClickOnTwoDiagramElementsCandidate;
-import org.eclipse.sirius.components.diagrams.tools.ITool;
+import org.eclipse.sirius.components.diagrams.tools.SingleClickOnTwoDiagramElementsTool;
 import org.eclipse.sirius.components.diagrams.tools.ToolSection;
 import org.eclipse.sirius.components.emf.compatibility.DomainClassPredicate;
 import org.eclipse.sirius.components.emf.view.CanonicalBehaviors;
@@ -124,7 +124,7 @@ public class DiagramDescriptionConverter {
             List<EdgeDescription> edgeDescriptions = viewDiagramDescription.getEdgeDescriptions().stream().map(edge -> this.convert(edge, interpreter)).collect(Collectors.toList());
             // @formatter:off
             String diagramDescriptionURI = EcoreUtil.getURI(viewDiagramDescription).toString();
-            return DiagramDescription.newDiagramDescription(UUID.nameUUIDFromBytes(diagramDescriptionURI.getBytes()))
+            return DiagramDescription.newDiagramDescription(UUID.nameUUIDFromBytes(diagramDescriptionURI.getBytes()).toString())
                     .label(Optional.ofNullable(viewDiagramDescription.getName()).orElse(DEFAULT_DIAGRAM_LABEL))
                     .labelProvider(variableManager -> this.computeDiagramLabel(viewDiagramDescription, variableManager, interpreter))
                     .canCreatePredicate(variableManager -> this.canCreateDiagram(viewDiagramDescription, variableManager, interpreter))

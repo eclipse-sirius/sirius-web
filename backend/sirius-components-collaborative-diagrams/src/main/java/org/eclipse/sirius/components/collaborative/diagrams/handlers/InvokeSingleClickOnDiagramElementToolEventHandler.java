@@ -14,7 +14,6 @@ package org.eclipse.sirius.components.collaborative.diagrams.handlers;
 
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
@@ -74,8 +73,8 @@ public class InvokeSingleClickOnDiagramElementToolEventHandler implements IDiagr
 
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
-    public InvokeSingleClickOnDiagramElementToolEventHandler(IObjectService objectService, IDiagramQueryService diagramQueryService, IToolService toolService, ICollaborativeDiagramMessageService messageService,
-            MeterRegistry meterRegistry, IRepresentationDescriptionSearchService representationDescriptionSearchService) {
+    public InvokeSingleClickOnDiagramElementToolEventHandler(IObjectService objectService, IDiagramQueryService diagramQueryService, IToolService toolService,
+            ICollaborativeDiagramMessageService messageService, MeterRegistry meterRegistry, IRepresentationDescriptionSearchService representationDescriptionSearchService) {
         this.objectService = Objects.requireNonNull(objectService);
         this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
         this.toolService = Objects.requireNonNull(toolService);
@@ -158,7 +157,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandler implements IDiagr
 
             String selectionDescriptionId = tool.getSelectionDescriptionId();
             if (selectionDescriptionId != null && selectedObjectId != null) {
-                var selectionDescriptionOpt = this.representationDescriptionSearchService.findById(editingContext, UUID.fromString(selectionDescriptionId));
+                var selectionDescriptionOpt = this.representationDescriptionSearchService.findById(editingContext, selectionDescriptionId);
                 var selectedObjectOpt = this.objectService.getObject(editingContext, selectedObjectId);
                 if (selectionDescriptionOpt.isPresent() && selectedObjectOpt.isPresent()) {
                     variableManager.put(SingleClickOnDiagramElementTool.SELECTED_OBJECT, selectedObjectOpt.get());

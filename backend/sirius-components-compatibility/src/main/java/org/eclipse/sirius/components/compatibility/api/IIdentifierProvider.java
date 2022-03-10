@@ -13,7 +13,6 @@
 package org.eclipse.sirius.components.compatibility.api;
 
 import java.util.Optional;
-import java.util.UUID;
 
 /**
  * Used to compute a stable identifier for the element coming from the odesign.
@@ -23,7 +22,7 @@ import java.util.UUID;
 public interface IIdentifierProvider {
     String getIdentifier(Object element);
 
-    Optional<String> findVsmElementId(UUID id);
+    Optional<String> findVsmElementId(String id);
 
     /**
      * Implementation which does nothing, used for mocks in unit tests.
@@ -38,7 +37,7 @@ public interface IIdentifierProvider {
         }
 
         @Override
-        public Optional<String> findVsmElementId(UUID id) {
+        public Optional<String> findVsmElementId(String id) {
             return Optional.empty();
         }
 

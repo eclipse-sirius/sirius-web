@@ -15,7 +15,6 @@ package org.eclipse.sirius.components.emf.compatibility.modeloperations;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.compatibility.api.IIdentifierProvider;
@@ -64,9 +63,7 @@ public class NavigationOperationHandler implements IModelOperationHandler {
         if (!createIfNotExistent && editingContextVariable instanceof IEditingContext) {
             IEditingContext editingContext = (IEditingContext) editingContextVariable;
             DiagramDescription diagramDescription = this.navigation.getDiagramDescription();
-            String diagramDescriptionIdString = this.identifierProvider.getIdentifier(diagramDescription);
-
-            UUID diagramDescriptionId = UUID.fromString(diagramDescriptionIdString);
+            String diagramDescriptionId = this.identifierProvider.getIdentifier(diagramDescription);
 
             Object self = variables.get(VariableManager.SELF);
             String selfId = this.objectService.getId(self);

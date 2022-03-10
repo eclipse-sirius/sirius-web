@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,6 @@ package org.eclipse.sirius.components.diagrams.elements;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.diagrams.Position;
@@ -36,7 +35,7 @@ public final class DiagramElementProps implements IProps {
 
     private String targetObjectId;
 
-    private UUID descriptionId;
+    private String descriptionId;
 
     private String label;
 
@@ -58,7 +57,7 @@ public final class DiagramElementProps implements IProps {
         return this.targetObjectId;
     }
 
-    public UUID getDescriptionId() {
+    public String getDescriptionId() {
         return this.descriptionId;
     }
 
@@ -100,7 +99,7 @@ public final class DiagramElementProps implements IProps {
 
         private String targetObjectId;
 
-        private UUID descriptionId;
+        private String descriptionId;
 
         private String label;
 
@@ -119,7 +118,7 @@ public final class DiagramElementProps implements IProps {
             return this;
         }
 
-        public Builder descriptionId(UUID descriptionId) {
+        public Builder descriptionId(String descriptionId) {
             this.descriptionId = Objects.requireNonNull(descriptionId);
             return this;
         }

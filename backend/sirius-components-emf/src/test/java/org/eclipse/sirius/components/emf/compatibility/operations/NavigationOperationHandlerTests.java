@@ -55,9 +55,9 @@ public class NavigationOperationHandlerTests {
 
     private static final String THIRD_DIAGRAM_LABEL = "Third label"; //$NON-NLS-1$
 
-    private static final UUID FIRST_DIAGRAM_DESCRIPTION_ID = UUID.randomUUID();
+    private static final String FIRST_DIAGRAM_DESCRIPTION_ID = UUID.randomUUID().toString();
 
-    private static final UUID SECOND_DIAGRAM_DESCRIPTION_ID = UUID.randomUUID();
+    private static final String SECOND_DIAGRAM_DESCRIPTION_ID = UUID.randomUUID().toString();
 
     private final IRepresentationMetadataSearchService representationMetadataSearchService = new IRepresentationMetadataSearchService.NoOp() {
         @Override

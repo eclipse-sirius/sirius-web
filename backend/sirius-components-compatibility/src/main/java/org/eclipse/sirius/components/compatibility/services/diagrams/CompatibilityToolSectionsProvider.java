@@ -17,7 +17,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -120,7 +119,7 @@ public class CompatibilityToolSectionsProvider implements IToolSectionsProvider 
         List<ITool> tools = toolSection.getTools().stream()
                 .filter(tool -> {
                     boolean keepTool = false;
-                    var optionalVsmElementId = this.identifierProvider.findVsmElementId(UUID.fromString(tool.getId()));
+                    var optionalVsmElementId = this.identifierProvider.findVsmElementId(tool.getId());
                     if (optionalVsmElementId.isPresent()) {
                         var optionalSiriusTool = this.odesignRegistry.getODesigns().stream()
                                 .map(EObject::eResource)
@@ -166,7 +165,7 @@ public class CompatibilityToolSectionsProvider implements IToolSectionsProvider 
     }
 
     private Optional<EObject> getDiagramElementMapping(Object diagramElementDescription) {
-        UUID descriptionId = this.getDescriptionId(diagramElementDescription);
+        String descriptionId = this.getDescriptionId(diagramElementDescription);
         var optionalVsmElementId = this.identifierProvider.findVsmElementId(descriptionId);
         if (optionalVsmElementId.isPresent()) {
             // @formatter:off
@@ -218,14 +217,14 @@ public class CompatibilityToolSectionsProvider implements IToolSectionsProvider 
         //@formatter:on
     }
 
-    private UUID getDescriptionId(Object diagramElementDescription) {
-        UUID descriptionId = null;
+    private String getDescriptionId(Object diagramElementDescription) {
+        String descriptionId = null;
         if (diagramElementDescription instanceof DiagramDescription) {
             descriptionId = ((DiagramDescription) diagramElementDescription).getId();
         } else if (diagramElementDescription instanceof NodeDescription) {
-            descriptionId = ((NodeDescription) diagramElementDescription).getId();
+            descriptionId = ((NodeDescription) diagramElementDescription).getId().toString();
         } else if (diagramElementDescription instanceof EdgeDescription) {
-            descriptionId = ((EdgeDescription) diagramElementDescription).getId();
+            descriptionId = ((EdgeDescription) diagramElementDescription).getId().toString();
         }
         return descriptionId;
     }

@@ -58,7 +58,7 @@ public class RenameDiagramEventHandlerTests {
         String representationId = UUID.randomUUID().toString();
         UUID targetObjectId = UUID.randomUUID();
 
-        DiagramDescription diagramDescription = new TestDiagramDescriptionBuilder().getDiagramDescription(UUID.randomUUID(), List.of(), List.of(), List.of());
+        DiagramDescription diagramDescription = new TestDiagramDescriptionBuilder().getDiagramDescription(UUID.randomUUID().toString(), List.of(), List.of(), List.of());
 
         // @formatter:off
         Diagram diagram = Diagram.newDiagram(representationId)

@@ -29,7 +29,7 @@ public final class CreateRepresentationInput implements IInput {
 
     private String editingContextId;
 
-    private UUID representationDescriptionId;
+    private String representationDescriptionId;
 
     private String objectId;
 
@@ -39,7 +39,7 @@ public final class CreateRepresentationInput implements IInput {
         // Used by Jackson
     }
 
-    public CreateRepresentationInput(UUID id, String editingContextId, UUID representationDescriptionId, String objectId, String representationName) {
+    public CreateRepresentationInput(UUID id, String editingContextId, String representationDescriptionId, String objectId, String representationName) {
         this.id = Objects.requireNonNull(id);
         this.editingContextId = Objects.requireNonNull(editingContextId);
         this.representationDescriptionId = Objects.requireNonNull(representationDescriptionId);
@@ -56,7 +56,7 @@ public final class CreateRepresentationInput implements IInput {
         return this.editingContextId;
     }
 
-    public UUID getRepresentationDescriptionId() {
+    public String getRepresentationDescriptionId() {
         return this.representationDescriptionId;
     }
 

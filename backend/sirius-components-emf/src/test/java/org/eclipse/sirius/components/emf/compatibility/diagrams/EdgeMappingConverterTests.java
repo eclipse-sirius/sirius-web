@@ -16,7 +16,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.compatibility.api.IIdentifierProvider;
@@ -149,16 +148,10 @@ public class EdgeMappingConverterTests {
         // @formatter:on
         IObjectService objectService = new IObjectService.NoOp();
         IRepresentationMetadataSearchService representationMetadataSearchService = new IRepresentationMetadataSearchService.NoOp();
-        IIdentifierProvider identifierProvider = new IIdentifierProvider() {
-
+        IIdentifierProvider identifierProvider = new IIdentifierProvider.NoOp() {
             @Override
             public String getIdentifier(Object element) {
                 return containerMappingUUID.toString();
-            }
-
-            @Override
-            public Optional<String> findVsmElementId(UUID id) {
-                return Optional.empty();
             }
         };
         ISemanticCandidatesProviderFactory semanticCandidatesProviderFactory = SemanticCandidatesProvider::new;
@@ -196,16 +189,10 @@ public class EdgeMappingConverterTests {
         // @formatter:on
         IObjectService objectService = new IObjectService.NoOp();
         IRepresentationMetadataSearchService representationMetadataSearchService = new IRepresentationMetadataSearchService.NoOp();
-        IIdentifierProvider identifierProvider = new IIdentifierProvider() {
-
+        IIdentifierProvider identifierProvider = new IIdentifierProvider.NoOp() {
             @Override
             public String getIdentifier(Object element) {
                 return targetContainerMappingUUID.toString();
-            }
-
-            @Override
-            public Optional<String> findVsmElementId(UUID id) {
-                return Optional.empty();
             }
         };
         ISemanticCandidatesProviderFactory semanticCandidatesProviderFactory = SemanticCandidatesProvider::new;

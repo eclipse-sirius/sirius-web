@@ -164,16 +164,10 @@ public class MappingConverterTests {
         itemMapping.setStyle(imageStyle);
         containerMapping.getSubNodeMappings().add(itemMapping);
 
-        IIdentifierProvider identifierProvider = new IIdentifierProvider() {
-
+        IIdentifierProvider identifierProvider = new IIdentifierProvider.NoOp() {
             @Override
             public String getIdentifier(Object element) {
                 return UUID.randomUUID().toString();
-            }
-
-            @Override
-            public Optional<String> findVsmElementId(UUID id) {
-                return Optional.empty();
             }
         };
         ISemanticCandidatesProviderFactory semanticCandidatesProviderFactory = (interpreter, domainClass, semanticCandidatesExpression, preconditionExpression) -> variableManager -> List.of();
@@ -239,16 +233,10 @@ public class MappingConverterTests {
         nodeMapping.getConditionnalStyles().add(this.createConditionalNodeStyle(EXPRESSION_TRUE, secondConditionalStyle));
         nodeMapping.getConditionnalStyles().add(this.createConditionalNodeStyle(EXPRESSION_TRUE, thirdConditionalStyle));
 
-        IIdentifierProvider identifierProvider = new IIdentifierProvider() {
-
+        IIdentifierProvider identifierProvider = new IIdentifierProvider.NoOp() {
             @Override
             public String getIdentifier(Object element) {
                 return UUID.randomUUID().toString();
-            }
-
-            @Override
-            public Optional<String> findVsmElementId(UUID id) {
-                return Optional.empty();
             }
         };
         ISemanticCandidatesProviderFactory semanticCandidatesProviderFactory = (interpreter, domainClass, semanticCandidatesExpression, preconditionExpression) -> variableManager -> List.of();

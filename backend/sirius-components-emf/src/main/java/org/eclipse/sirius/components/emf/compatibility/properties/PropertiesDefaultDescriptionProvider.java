@@ -94,7 +94,7 @@ public class PropertiesDefaultDescriptionProvider implements IPropertiesDefaultD
                 .map(this.objectService::getId)
                 .orElse(null);
 
-        return FormDescription.newFormDescription(UUID.nameUUIDFromBytes("default_form_description".getBytes())) //$NON-NLS-1$
+        return FormDescription.newFormDescription(UUID.nameUUIDFromBytes("default_form_description".getBytes()).toString()) //$NON-NLS-1$
                 .label("Default form description") //$NON-NLS-1$
                 .idProvider(new GetOrCreateRandomIdProvider())
                 .labelProvider(labelProvider)

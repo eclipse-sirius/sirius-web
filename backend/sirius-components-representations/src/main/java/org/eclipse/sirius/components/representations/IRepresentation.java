@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.representations;
 
-import java.util.UUID;
-
 /**
  * Common interface for all the representations.
  *
@@ -24,7 +22,7 @@ public interface IRepresentation {
 
     String getId();
 
-    UUID getDescriptionId();
+    String getDescriptionId();
 
     String getLabel();
 

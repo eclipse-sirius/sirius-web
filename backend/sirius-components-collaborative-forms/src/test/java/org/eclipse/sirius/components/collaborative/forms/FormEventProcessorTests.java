@@ -42,7 +42,7 @@ public class FormEventProcessorTests {
 
     private FormDescription getFormDescription() {
         // @formatter:off
-        return FormDescription.newFormDescription(UUID.randomUUID())
+        return FormDescription.newFormDescription(UUID.randomUUID().toString())
                 .targetObjectIdProvider(targetObjectIdProvider -> "targetObjectId") //$NON-NLS-1$
                 .canCreatePredicate(variableManager -> true)
                 .idProvider(variableManager -> UUID.randomUUID().toString())

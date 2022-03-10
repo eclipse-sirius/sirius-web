@@ -27,7 +27,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.diagrams.INodeStyleDeserializer;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -191,7 +190,7 @@ public class IncrementalLayoutTests {
     private TestDiagramCreationService createDiagramCreationService(Diagram diagram) {
         IRepresentationDescriptionSearchService.NoOp representationDescriptionSearchService = new IRepresentationDescriptionSearchService.NoOp() {
             @Override
-            public Optional<IRepresentationDescription> findById(IEditingContext editingContext, UUID representationDescriptionId) {
+            public Optional<IRepresentationDescription> findById(IEditingContext editingContext, String representationDescriptionId) {
                 DiagramDescription diagramDescription = IncrementalLayoutTests.this.defaultTestDiagramDescriptionProvider.getDefaultDiagramDescription(diagram);
                 return Optional.of(diagramDescription);
             }

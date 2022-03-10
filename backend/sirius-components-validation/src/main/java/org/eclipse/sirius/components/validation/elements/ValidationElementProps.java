@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,6 @@ package org.eclipse.sirius.components.validation.elements;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.representations.Element;
@@ -34,7 +33,7 @@ public final class ValidationElementProps implements IProps {
 
     private String label;
 
-    private UUID descriptionId;
+    private String descriptionId;
 
     private List<Element> children;
 
@@ -50,7 +49,7 @@ public final class ValidationElementProps implements IProps {
         return this.label;
     }
 
-    public UUID getDescriptionId() {
+    public String getDescriptionId() {
         return this.descriptionId;
     }
 
@@ -81,7 +80,7 @@ public final class ValidationElementProps implements IProps {
 
         private String label;
 
-        private UUID descriptionId;
+        private String descriptionId;
 
         private List<Element> children;
 
@@ -94,7 +93,7 @@ public final class ValidationElementProps implements IProps {
             return this;
         }
 
-        public Builder descriptionId(UUID descriptionId) {
+        public Builder descriptionId(String descriptionId) {
             this.descriptionId = Objects.requireNonNull(descriptionId);
             return this;
         }

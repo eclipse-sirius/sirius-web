@@ -69,7 +69,7 @@ public class FormDescriptionAggregator {
                 .map(objectService::getId)
                 .orElse(null);
 
-        return Optional.of(FormDescription.newFormDescription(UUID.randomUUID())
+        return Optional.of(FormDescription.newFormDescription(UUID.randomUUID().toString())
                 .label("Aggregated form description") //$NON-NLS-1$
                 .idProvider(new GetOrCreateRandomIdProvider())
                 .labelProvider(labelProvider)

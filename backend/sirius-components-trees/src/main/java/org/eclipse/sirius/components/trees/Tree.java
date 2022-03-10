@@ -15,7 +15,6 @@ package org.eclipse.sirius.components.trees;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.representations.IRepresentation;
@@ -35,7 +34,7 @@ public final class Tree implements IRepresentation {
 
     private String kind;
 
-    private UUID descriptionId;
+    private String descriptionId;
 
     private String label;
 
@@ -46,25 +45,21 @@ public final class Tree implements IRepresentation {
     }
 
     @Override
-
     public String getId() {
         return this.id;
     }
 
     @Override
-
-    public UUID getDescriptionId() {
+    public String getDescriptionId() {
         return this.descriptionId;
     }
 
     @Override
-
     public String getKind() {
         return this.kind;
     }
 
     @Override
-
     public String getLabel() {
         return this.label;
     }
@@ -94,7 +89,7 @@ public final class Tree implements IRepresentation {
 
         private String kind = KIND;
 
-        private UUID descriptionId;
+        private String descriptionId;
 
         private String label;
 
@@ -104,7 +99,7 @@ public final class Tree implements IRepresentation {
             this.id = Objects.requireNonNull(id);
         }
 
-        public Builder descriptionId(UUID descriptionId) {
+        public Builder descriptionId(String descriptionId) {
             this.descriptionId = Objects.requireNonNull(descriptionId);
             return this;
         }

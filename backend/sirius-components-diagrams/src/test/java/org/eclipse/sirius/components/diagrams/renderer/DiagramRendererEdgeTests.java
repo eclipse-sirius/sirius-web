@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo and others.
+ * Copyright (c) 2019, 2022 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -56,7 +56,7 @@ public class DiagramRendererEdgeTests {
 
     private static final UUID EDGE_DESCRIPTION_ID = UUID.randomUUID();
 
-    private static final UUID DIAGRAM_DESCRIPTION_ID = UUID.randomUUID();
+    private static final String DIAGRAM_DESCRIPTION_ID = UUID.randomUUID().toString();
 
     private static final UUID NODE_DESCRIPTION_ID1 = UUID.randomUUID();
 

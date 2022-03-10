@@ -41,7 +41,7 @@ public final class TestLayoutDiagramBuilder {
 
     public static final UUID EDGE_DESCRIPTION_ID = UUID.nameUUIDFromBytes("EDGE_DESCRIPTION_ID".getBytes()); //$NON-NLS-1$
 
-    public static final UUID DIAGRAM_DESCRIPTION_ID = UUID.nameUUIDFromBytes("DIAGRAM_DESCRIPTION_ID".getBytes()); //$NON-NLS-1$
+    public static final String DIAGRAM_DESCRIPTION_ID = UUID.nameUUIDFromBytes("DIAGRAM_DESCRIPTION_ID".getBytes()).toString(); //$NON-NLS-1$
 
     private String diagramId;
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo and others.
+ * Copyright (c) 2019, 2022 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -49,7 +49,7 @@ public class TestDiagramBuilder {
         // @formatter:off
         return Diagram.newDiagram(id)
                 .label("diagramLabel") //$NON-NLS-1$
-                .descriptionId(UUID.randomUUID())
+                .descriptionId(UUID.randomUUID().toString())
                 .targetObjectId("diagramTargetObjectId") //$NON-NLS-1$
                 .position(Position.UNDEFINED)
                 .size(Size.UNDEFINED)

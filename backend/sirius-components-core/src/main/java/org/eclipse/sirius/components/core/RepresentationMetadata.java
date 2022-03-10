@@ -14,7 +14,6 @@ package org.eclipse.sirius.components.core;
 
 import java.text.MessageFormat;
 import java.util.Objects;
-import java.util.UUID;
 
 /**
  * The metadata of a representation.
@@ -28,11 +27,11 @@ public class RepresentationMetadata {
 
     private final String label;
 
-    private final UUID descriptionId;
+    private final String descriptionId;
 
     private final String targetObjectId;
 
-    public RepresentationMetadata(String id, String kind, String label, UUID descriptionId, String targetObjectId) {
+    public RepresentationMetadata(String id, String kind, String label, String descriptionId, String targetObjectId) {
         this.id = Objects.requireNonNull(id);
         this.kind = Objects.requireNonNull(kind);
         this.label = Objects.requireNonNull(label);
@@ -52,7 +51,7 @@ public class RepresentationMetadata {
         return this.label;
     }
 
-    public UUID getDescriptionId() {
+    public String getDescriptionId() {
         return this.descriptionId;
     }
 

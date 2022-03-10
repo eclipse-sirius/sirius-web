@@ -92,8 +92,8 @@ public class DeleteFromDiagramEventHandlerTests {
 
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService = new IRepresentationDescriptionSearchService.NoOp() {
         @Override
-        public Optional<IRepresentationDescription> findById(IEditingContext editingContext, UUID representationDescriptionId) {
-            return Optional.of(new TestDiagramDescriptionBuilder().getDiagramDescription(UUID.randomUUID(), List.of(), List.of(), List.of()));
+        public Optional<IRepresentationDescription> findById(IEditingContext editingContext, String representationDescriptionId) {
+            return Optional.of(new TestDiagramDescriptionBuilder().getDiagramDescription(UUID.randomUUID().toString(), List.of(), List.of(), List.of()));
         }
     };
 

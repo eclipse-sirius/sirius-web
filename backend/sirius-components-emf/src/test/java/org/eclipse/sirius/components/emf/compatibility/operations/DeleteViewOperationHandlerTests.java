@@ -58,9 +58,6 @@ import org.junit.jupiter.api.Test;
  * @author arichard
  */
 public class DeleteViewOperationHandlerTests {
-    /**
-     *
-     */
     private static final String AQL = "aql:"; //$NON-NLS-1$
 
     private static final String VARIABLE_NAME = "myVariableName"; //$NON-NLS-1$
@@ -78,7 +75,7 @@ public class DeleteViewOperationHandlerTests {
         this.operationTestContext = new OperationTestContext();
 
         // @formatter:off
-        DiagramDescription diagramDescription = DiagramDescription.newDiagramDescription(UUID.randomUUID())
+        DiagramDescription diagramDescription = DiagramDescription.newDiagramDescription(UUID.randomUUID().toString())
                 .label("DiagramDescriptionTest") //$NON-NLS-1$
                 .targetObjectIdProvider(variableManager -> "diagramTargetObjectId") //$NON-NLS-1$
                 .canCreatePredicate(variableManager -> true)
