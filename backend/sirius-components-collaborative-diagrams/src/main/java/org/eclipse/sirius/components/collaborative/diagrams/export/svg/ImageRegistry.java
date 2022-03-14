@@ -24,6 +24,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -57,8 +58,14 @@ public class ImageRegistry {
 
     public ImageRegistry(HttpServletRequest request) throws URISyntaxException {
         Objects.requireNonNull(request);
+        this.logHeaders(request);
         URI uri = URI.create(request.getRequestURL().toString());
-        this.imageBasePath = new URI(uri.getScheme() + "://" + uri.getHost() + ":" + uri.getPort() + "/api/images"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        String imageBasePathString = uri.getScheme() + "://" + uri.getHost(); //$NON-NLS-1$
+        if (uri.getPort() != -1) {
+            imageBasePathString += ":" + uri.getPort(); //$NON-NLS-1$
+        }
+        imageBasePathString += "/api/images"; //$NON-NLS-1$
+        this.imageBasePath = new URI(imageBasePathString);
         this.imageFetcher = this.buildImageClient(request);
     }
 
@@ -81,6 +88,17 @@ public class ImageRegistry {
         StringBuilder symbols = new StringBuilder();
         this.imageRegistry.entrySet().forEach(entry -> symbols.append(this.getReferencedImage(entry.getKey(), entry.getValue())));
         return symbols;
+    }
+
+    private void logHeaders(HttpServletRequest request) {
+        Enumeration<String> headerNames = request.getHeaderNames();
+        if (headerNames != null) {
+            headerNames.asIterator().forEachRemaining(headerName -> {
+                this.logger.info("Header name : " + headerName + " ; Header value : " + request.getHeader(headerName)); //$NON-NLS-1$ //$NON-NLS-2$
+            });
+        } else {
+            this.logger.info("Headers name is null, can not access to this method."); //$NON-NLS-1$
+        }
     }
 
     private StringBuilder getReferencedImage(URI imageURI, UUID symbolId) {
