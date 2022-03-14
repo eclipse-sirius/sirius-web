@@ -56,6 +56,7 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/1073[#1073] [core] Add missing ErrorCallback on the canBeDisposed subscriber of the EditingContextEventProcessor
 - [diagram] Fix an issue preventing the resizing of a node if the cursor had not moved after a previous resizing
 - https://github.com/eclipse-sirius/sirius-components/issues/1075[#1075] [compatibility] Use the proper icon feature for OperationAction
+- https://github.com/eclipse-sirius/sirius-components/issues/1104[#1104] [diagram] Fix the image base path during the SVG export
 
 === Improvements
 
