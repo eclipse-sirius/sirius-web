@@ -24,6 +24,35 @@ export interface TreeItemContextMenuProps {
   selection: Selection;
   setSelection: (selection: Selection) => void;
   enterEditingMode: () => void;
-  deleteItem: () => void;
   onClose: () => void;
+}
+
+export interface GQLDeleteTreeItemData {
+  deleteTreeItem: GQLDeleteTreeItemPayload;
+}
+export interface GQLDeleteTreeItemPayload {
+  __typename: string;
+}
+
+export interface GQLDeleteTreeItemSuccessPayload extends GQLDeleteTreeItemPayload {
+  id: string;
+}
+
+export interface GQLErrorPayload extends GQLDeleteTreeItemPayload {
+  message: string;
+}
+
+export interface GQLDeleteTreeItemVariables {
+  input: GQLDeleteTreeItemInput;
+}
+
+export interface GQLDeleteTreeItemInput {
+  id: string;
+  editingContextId: string;
+  representationId: string;
+  treeItemId: string;
+}
+
+export interface TreeItemContextMenuState {
+  message: string | null;
 }
