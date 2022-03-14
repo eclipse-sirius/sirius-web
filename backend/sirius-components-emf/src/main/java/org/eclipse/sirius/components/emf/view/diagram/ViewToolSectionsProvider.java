@@ -27,9 +27,9 @@ import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
-import org.eclipse.sirius.components.diagrams.tools.SingleClickOnTwoDiagramElementsTool;
-import org.eclipse.sirius.components.diagrams.tools.SingleClickOnDiagramElementTool;
 import org.eclipse.sirius.components.diagrams.tools.ITool;
+import org.eclipse.sirius.components.diagrams.tools.SingleClickOnDiagramElementTool;
+import org.eclipse.sirius.components.diagrams.tools.SingleClickOnTwoDiagramElementsTool;
 import org.eclipse.sirius.components.diagrams.tools.ToolSection;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
@@ -104,8 +104,8 @@ public class ViewToolSectionsProvider implements IToolSectionsProvider {
 
     private boolean isValidTool(ITool tool, NodeDescription nodeDescription) {
         boolean isValidTool = tool instanceof SingleClickOnDiagramElementTool && ((SingleClickOnDiagramElementTool) tool).getTargetDescriptions().contains(nodeDescription);
-        isValidTool = isValidTool
-                || tool instanceof SingleClickOnTwoDiagramElementsTool && ((SingleClickOnTwoDiagramElementsTool) tool).getCandidates().stream().anyMatch(edgeCandidate -> edgeCandidate.getSources().contains(nodeDescription));
+        isValidTool = isValidTool || tool instanceof SingleClickOnTwoDiagramElementsTool
+                && ((SingleClickOnTwoDiagramElementsTool) tool).getCandidates().stream().anyMatch(edgeCandidate -> edgeCandidate.getSources().contains(nodeDescription));
         return isValidTool;
     }
 
@@ -126,7 +126,8 @@ public class ViewToolSectionsProvider implements IToolSectionsProvider {
 
         Function<VariableManager, IStatus> fakeHandler = variableManager -> new Success();
 
-        if (diagramElementDescription instanceof NodeDescription) {
+        // Graphical Delete Tool for unsynchronized mapping only (the handler is never called)
+        if (diagramElementDescription instanceof NodeDescription || diagramElementDescription instanceof EdgeDescription) {
             // Edit Tool (the handler is never called)
             SingleClickOnDiagramElementTool editTool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("edit") //$NON-NLS-1$
                     .label("Edit") //$NON-NLS-1$
@@ -141,10 +142,6 @@ public class ViewToolSectionsProvider implements IToolSectionsProvider {
                     .tools(List.of(editTool))
                     .build();
             extraToolSections.add(editToolSection);
-        }
-
-        // Graphical Delete Tool for unsynchronized mapping only (the handler is never called)
-        if (diagramElementDescription instanceof NodeDescription || diagramElementDescription instanceof EdgeDescription) {
             if (unsynchronizedMapping) {
                 SingleClickOnDiagramElementTool graphicalDeleteTool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("graphical-delete") //$NON-NLS-1$
                         .label("Delete from diagram") //$NON-NLS-1$
