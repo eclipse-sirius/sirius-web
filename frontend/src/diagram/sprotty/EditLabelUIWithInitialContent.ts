@@ -34,7 +34,8 @@ export class EditLabelUIWithInitialContent extends EditLabelUI {
     let width = 100;
     let height = 20;
     // used to avoid the scrollbar
-    const extraSize: number = 10;
+    const extraWidth: number = 50;
+    const extraHeight: number = 10;
 
     if (this.label) {
       const nbLines: number = this.label.text.split('\n').length;
@@ -43,8 +44,8 @@ export class EditLabelUIWithInitialContent extends EditLabelUI {
       // make the edit area centered on the label
       x = bounds.x + (bounds.width * (1 - 1 / zoom)) / 2;
       y = bounds.y;
-      height = height * nbLines + extraSize;
-      width = bounds.width / zoom + extraSize;
+      height = height * nbLines + extraHeight;
+      width = bounds.width / zoom + extraWidth;
     }
 
     containerElement.style.left = `${x}px`;
