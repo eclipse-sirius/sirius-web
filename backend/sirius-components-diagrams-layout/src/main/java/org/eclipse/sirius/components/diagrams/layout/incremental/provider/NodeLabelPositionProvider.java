@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.diagrams.layout.incremental.provider;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.eclipse.elk.core.math.ElkPadding;
 import org.eclipse.elk.core.options.CoreOptions;
@@ -93,7 +94,7 @@ public class NodeLabelPositionProvider {
                         shiftToWest = 1;
                     }
                 }
-                double portOffset = this.layoutConfigurator.configureByType(node.getNodeType()).getProperty(CoreOptions.PORT_BORDER_OFFSET).doubleValue();
+                double portOffset = Optional.ofNullable(this.layoutConfigurator.configureByType(node.getNodeType()).getProperty(CoreOptions.PORT_BORDER_OFFSET)).orElse(0.);
                 double offSetAccordingToBorderNodes = -portOffset / 2 * (shiftToEast - shiftToWest);
 
                 x = node.getSize().getWidth() / 2 + offSetAccordingToBorderNodes;

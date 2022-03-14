@@ -103,7 +103,8 @@ public class LayoutConfiguratorRegistry {
         configurator.configureByType(NodeType.NODE_LIST)
                 .setProperty(CoreOptions.ALGORITHM, FixedLayouterOptions.ALGORITHM_ID)
                 .setProperty(CoreOptions.NODE_LABELS_PLACEMENT, NodeLabelPlacement.insideTopCenter())
-                .setProperty(CoreOptions.NODE_SIZE_FIXED_GRAPH_SIZE, true);
+                .setProperty(CoreOptions.NODE_SIZE_FIXED_GRAPH_SIZE, true)
+                .setProperty(CoreOptions.PORT_BORDER_OFFSET, DEFAULT_PORT_BORDER_OFFSET);
 
         configurator.configureByType(NodeType.NODE_LIST_ITEM)
                 .setProperty(CoreOptions.NO_LAYOUT, true)
