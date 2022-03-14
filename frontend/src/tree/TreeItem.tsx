@@ -24,17 +24,6 @@ import styles from './TreeItem.module.css';
 import { TreeItemProps } from './TreeItem.types';
 import { TreeItemContextMenu } from './TreeItemContextMenu';
 
-const deleteTreeItemMutation = gql`
-  mutation deleteTreeItem($input: DeleteTreeItemInput!) {
-    deleteTreeItem(input: $input) {
-      __typename
-      ... on ErrorPayload {
-        message
-      }
-    }
-  }
-`;
-
 const renameTreeItemMutation = gql`
   mutation renameTreeItem($input: RenameTreeItemInput!) {
     renameTreeItem(input: $input) {
@@ -101,7 +90,6 @@ export const TreeItem = ({
 
   const refDom = useRef() as any;
 
-  const [deleteTreeItem] = useMutation(deleteTreeItemMutation);
   const [renameTreeItem, { loading: renameTreeItemLoading, data: renameTreeItemData, error: renameTreeItemError }] =
     useMutation(renameTreeItemMutation);
   useEffect(() => {
@@ -172,18 +160,6 @@ export const TreeItem = ({
         };
       });
     };
-    const deleteItem = () => {
-      const variables = {
-        input: {
-          id: uuid(),
-          editingContextId,
-          representationId: treeId,
-          treeItemId: item.id,
-        },
-      };
-      deleteTreeItem({ variables });
-      closeContextMenu();
-    };
 
     contextMenu = (
       <TreeItemContextMenu
@@ -197,7 +173,6 @@ export const TreeItem = ({
         selection={selection}
         setSelection={setSelection}
         enterEditingMode={enterEditingMode}
-        deleteItem={deleteItem}
         onClose={closeContextMenu}
       />
     );
