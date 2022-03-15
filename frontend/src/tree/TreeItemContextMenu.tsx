@@ -21,7 +21,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import gql from 'graphql-tag';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { v4 as uuid } from 'uuid';
 import {
   GQLDeleteTreeItemData,
@@ -56,6 +56,7 @@ export const TreeItemContextMenu = ({
   treeId,
   item,
   readOnly,
+  treeItemMenuContributionComponents,
   depth,
   onExpand,
   selection,
@@ -65,7 +66,6 @@ export const TreeItemContextMenu = ({
 }: TreeItemContextMenuProps) => {
   const [state, setState] = useState<TreeItemContextMenuState>({ message: null });
   const closeToast = () => setState({ message: null });
-  const treeItemContextMenuContributions = useContext(TreeItemContextMenuContext);
 
   const expandItem = () => {
     if (!item.expanded && item.hasChildren) {
@@ -120,23 +120,22 @@ export const TreeItemContextMenu = ({
           horizontal: 'right',
         }}
       >
-        {treeItemContextMenuContributions
-          .filter((contribution) => contribution.props.canHandle(item))
-          .map((contribution, index) => {
-            const props: TreeItemContextMenuComponentProps = {
-              editingContextId,
-              item,
-              readOnly,
-              onClose,
-              selection,
-              setSelection,
-              expandItem,
-              key: index.toString(),
-              treeId: treeId,
-            };
-            const element = React.createElement(contribution.props.component, props);
-            return element;
-          })}
+        {treeItemMenuContributionComponents.map((component, index) => {
+          const props: TreeItemContextMenuComponentProps = {
+            editingContextId,
+            item,
+            readOnly,
+            onClose,
+            selection,
+            setSelection,
+            expandItem,
+            key: index.toString(),
+            treeId: treeId,
+          };
+          const element = React.createElement(component, props);
+          return element;
+        })}
+
         {item.editable ? (
           <MenuItem
             key="rename"

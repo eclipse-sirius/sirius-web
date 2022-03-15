@@ -12,6 +12,7 @@
  *******************************************************************************/
 import { Selection } from 'workbench/Workbench.types';
 import { TreeItemType } from './TreeItem.types';
+import { TreeItemContextMenuComponentProps } from './TreeItemContextMenuContribution.types';
 
 export interface TreeItemContextMenuProps {
   menuAnchor: Element;
@@ -19,6 +20,7 @@ export interface TreeItemContextMenuProps {
   editingContextId: string;
   treeId: string;
   readOnly: boolean;
+  treeItemMenuContributionComponents: ((props: TreeItemContextMenuComponentProps) => JSX.Element)[];
   depth: number;
   onExpand: (id: string, depth: number) => void;
   selection: Selection;

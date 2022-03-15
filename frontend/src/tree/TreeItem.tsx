@@ -18,11 +18,11 @@ import { Text } from 'core/text/Text';
 import { Textfield } from 'core/textfield/Textfield';
 import gql from 'graphql-tag';
 import { ArrowCollapsed, ArrowExpanded, More, NoIcon } from 'icons';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { v4 as uuid } from 'uuid';
 import styles from './TreeItem.module.css';
 import { TreeItemProps } from './TreeItem.types';
-import { TreeItemContextMenu } from './TreeItemContextMenu';
+import { TreeItemContextMenu, TreeItemContextMenuContext } from './TreeItemContextMenu';
 
 const renameTreeItemMutation = gql`
   mutation renameTreeItem($input: RenameTreeItemInput!) {
@@ -78,6 +78,10 @@ export const TreeItem = ({
   setSelection,
   readOnly,
 }: TreeItemProps) => {
+  const treeItemMenuContributionComponents = useContext(TreeItemContextMenuContext)
+    .filter((contribution) => contribution.props.canHandle(item))
+    .map((contribution) => contribution.props.component);
+
   const initialState = {
     showContextMenu: false,
     menuAnchor: null,
@@ -168,6 +172,7 @@ export const TreeItem = ({
         treeId={treeId}
         item={item}
         readOnly={readOnly}
+        treeItemMenuContributionComponents={treeItemMenuContributionComponents}
         depth={depth}
         onExpand={onExpand}
         selection={selection}
@@ -337,6 +342,8 @@ export const TreeItem = ({
     }
   }
 
+  const shouldDisplayMoreButton = item.deletable || item.editable || treeItemMenuContributionComponents.length > 0;
+
   /* ref, tabindex and onFocus are used to set the React component focusabled and to set the focus to the corresponding DOM part */
   return (
     <>
@@ -367,9 +374,11 @@ export const TreeItem = ({
               {image}
               {text}
             </div>
-            <IconButton className={styles.more} onClick={openContextMenu} data-testid={`${item.label}-more`}>
-              <More title="More" />
-            </IconButton>
+            {shouldDisplayMoreButton ? (
+              <IconButton className={styles.more} onClick={openContextMenu} data-testid={`${item.label}-more`}>
+                <More title="More" />
+              </IconButton>
+            ) : null}
           </div>
         </div>
       </div>
