@@ -230,4 +230,18 @@ public final class Geometry {
         return new PointOnRectangleInfo(newBorderNodePosition, currentClosestSide);
     }
 
+    public boolean isOverlapping(Bounds rectangle1, Bounds rectangle2) {
+        boolean isOverlapping = true;
+        Position topRight1 = Position.at(rectangle1.getPosition().getX() + rectangle1.getSize().getWidth(), rectangle1.getPosition().getY());
+        Position bottomLeft1 = Position.at(rectangle1.getPosition().getX(), rectangle1.getPosition().getY() + rectangle1.getSize().getHeight());
+        Position topRight2 = Position.at(rectangle2.getPosition().getX() + rectangle2.getSize().getWidth(), rectangle2.getPosition().getY());
+        Position bottomLeft2 = Position.at(rectangle2.getPosition().getX(), rectangle2.getPosition().getY() + rectangle2.getSize().getHeight());
+        if (topRight1.getY() > bottomLeft2.getY() || bottomLeft1.getY() < topRight2.getY()) {
+            isOverlapping = false;
+        }
+        if (topRight1.getX() < bottomLeft2.getX() || bottomLeft1.getX() > topRight2.getX()) {
+            isOverlapping = false;
+        }
+        return isOverlapping;
+    }
 }

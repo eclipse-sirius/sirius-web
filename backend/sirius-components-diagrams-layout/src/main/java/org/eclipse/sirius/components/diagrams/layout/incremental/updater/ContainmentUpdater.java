@@ -12,14 +12,23 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.diagrams.layout.incremental.updater;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Size;
+import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
+import org.eclipse.sirius.components.diagrams.events.ResizeEvent;
 import org.eclipse.sirius.components.diagrams.layout.LayoutOptionValues;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.IConnectable;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.IContainerLayoutData;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.LabelLayoutData;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.NodeLayoutData;
+import org.eclipse.sirius.components.diagrams.layout.incremental.provider.BorderNodesOnSide;
+import org.eclipse.sirius.components.diagrams.layout.incremental.utils.Bounds;
+import org.eclipse.sirius.components.diagrams.layout.incremental.utils.RectangleSide;
 
 /**
  * An algorithm dedicated to recompute the size & position of a container, according to its children. The container
@@ -307,4 +316,92 @@ public class ContainmentUpdater {
         }
     }
 
+    /**
+     * The node may need to be enlarged according to the border nodes.
+     *
+     * @param optionalDiagramElementEvent
+     */
+    public void updateAccordingToBorderNodes(Optional<IDiagramEvent> optionalDiagramElementEvent, NodeLayoutData node, Bounds initialNodeBounds, List<BorderNodesOnSide> borderNodesPerSideList) {
+
+        // @formatter:off
+        boolean isParentRectangleResized = optionalDiagramElementEvent
+                .filter(ResizeEvent.class::isInstance)
+                .map(ResizeEvent.class::cast)
+                .map(ResizeEvent::getNodeId)
+                .filter(node.getId()::equals)
+                .isPresent();
+        // @formatter:on
+
+        if (!isParentRectangleResized) {
+            return;
+        }
+
+        Position initialPosition = initialNodeBounds.getPosition();
+        Size initialSize = initialNodeBounds.getSize();
+        Position currentNodePosition = node.getPosition();
+        Size currentNodeSize = node.getSize();
+
+        double westSideShift = currentNodePosition.getX() - initialPosition.getX();
+        double eastSideShift = currentNodePosition.getX() + currentNodeSize.getWidth() - initialPosition.getX() - initialSize.getWidth();
+        double northSideShift = currentNodePosition.getY() - initialPosition.getY();
+        double southSideShift = currentNodePosition.getY() + currentNodeSize.getHeight() - initialPosition.getY() - initialSize.getHeight();
+
+        double maxWestSideInsideShift = 10000;
+        double maxEastSideInsideShift = 10000;
+        double maxNorthSideInsideShift = 10000;
+        double maxSouthSideInsideShift = 10000;
+
+        for (BorderNodesOnSide borderNodesOnSide : borderNodesPerSideList) {
+            RectangleSide side = borderNodesOnSide.getSide();
+            List<NodeLayoutData> borderNodes = borderNodesOnSide.getBorderNodes();
+
+            if (RectangleSide.NORTH.equals(side) || RectangleSide.SOUTH.equals(side)) {
+                if (!borderNodes.isEmpty()) {
+                    NodeLayoutData leftNode = borderNodes.get(0);
+                    maxWestSideInsideShift = Math.min(maxWestSideInsideShift, leftNode.getPosition().getX());
+
+                    NodeLayoutData rightNode = borderNodes.get(borderNodes.size() - 1);
+                    maxEastSideInsideShift = Math.min(maxEastSideInsideShift, initialSize.getWidth() - (rightNode.getPosition().getX() + rightNode.getSize().getWidth()));
+                }
+            } else {
+                if (!borderNodes.isEmpty()) {
+                    NodeLayoutData topNode = borderNodes.get(0);
+                    maxNorthSideInsideShift = Math.min(maxNorthSideInsideShift, topNode.getPosition().getY());
+
+                    NodeLayoutData bottomNode = borderNodes.get(borderNodes.size() - 1);
+                    maxSouthSideInsideShift = Math.min(maxSouthSideInsideShift, initialSize.getHeight() - (bottomNode.getPosition().getY() + bottomNode.getSize().getHeight()));
+                }
+            }
+        }
+
+        double realWestSideShift = Math.min(westSideShift, maxWestSideInsideShift);
+        double realEastSideShift = Math.max(eastSideShift, -maxEastSideInsideShift);
+        double realNorthSideShift = Math.min(northSideShift, maxNorthSideInsideShift);
+        double realSouthSideShift = Math.max(southSideShift, -maxSouthSideInsideShift);
+
+        Position realPosition = Position.at(initialPosition.getX() + realWestSideShift, initialPosition.getY() + realNorthSideShift);
+        Size realSize = Size.of(initialSize.getWidth() - realWestSideShift + realEastSideShift, initialSize.getHeight() - realNorthSideShift + realSouthSideShift);
+
+        // update north and south x position
+        if (realWestSideShift > 0) {
+
+            List<NodeLayoutData> borderNodesToShift = borderNodesPerSideList.stream().filter(b -> RectangleSide.NORTH.equals(b.getSide()) || RectangleSide.SOUTH.equals(b.getSide()))
+                    .flatMap(b -> b.getBorderNodes().stream()).collect(Collectors.toList());
+            for (NodeLayoutData borderNode : borderNodesToShift) {
+                borderNode.setPosition(Position.at(borderNode.getPosition().getX() - realWestSideShift, borderNode.getPosition().getY()));
+            }
+        }
+
+        // update east and west x position
+        if (realNorthSideShift > 0) {
+            List<NodeLayoutData> borderNodesToShift = borderNodesPerSideList.stream().filter(b -> RectangleSide.EAST.equals(b.getSide()) || RectangleSide.WEST.equals(b.getSide()))
+                    .flatMap(b -> b.getBorderNodes().stream()).collect(Collectors.toList());
+            for (NodeLayoutData borderNode : borderNodesToShift) {
+                borderNode.setPosition(Position.at(borderNode.getPosition().getX(), borderNode.getPosition().getY() - realNorthSideShift));
+            }
+        }
+
+        node.setPosition(realPosition);
+        node.setSize(realSize);
+    }
 }

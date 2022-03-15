@@ -23,7 +23,6 @@ import org.eclipse.elk.core.options.NodeLabelPlacement;
 import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.layout.ISiriusWebLayoutConfigurator;
-import org.eclipse.sirius.components.diagrams.layout.incremental.BorderNodesOnSide;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.LabelLayoutData;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.NodeLayoutData;
 import org.eclipse.sirius.components.diagrams.layout.incremental.utils.RectangleSide;

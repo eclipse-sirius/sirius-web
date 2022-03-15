@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Bounds, Point } from 'sprotty-protocol/';
-import { RectangleSide, SnapPointToRectangleInfo, SnapToRectangleInfo } from './geometry.types';
+import { PointOnRectangleInfo, RectangleSide, SnapPointToRectangleInfo } from './geometry.types';
 
 /**
  * Returns the distance between the point p and the segment made of p1 and p2
@@ -54,7 +54,7 @@ export const closestPointOnSegment = (p: Point, p1: Point, p2: Point): Point => 
 /**
  * Returns a point on the rectangle that is the closest from the given p point.
  */
-export const snapToRectangle = (point: Point, rectangle: Bounds): SnapToRectangleInfo => {
+export const snapToRectangle = (point: Point, rectangle: Bounds): PointOnRectangleInfo => {
   const upperLeftCorner: Point = { x: rectangle.x, y: rectangle.y };
   const upperRightCorner: Point = { x: rectangle.x + rectangle.width, y: rectangle.y };
   const bottomLeftCorner: Point = { x: rectangle.x, y: rectangle.y + rectangle.height };
@@ -83,7 +83,7 @@ export const snapToRectangle = (point: Point, rectangle: Bounds): SnapToRectangl
     RectangleSide.west
   );
 
-  return { pointOnRectangleSide: closestPointInfo.pointOnSegment, side: closestPointInfo.side };
+  return { pointOnRectangle: closestPointInfo.pointOnSegment, side: closestPointInfo.side };
 };
 
 const computeClosestPoint = (

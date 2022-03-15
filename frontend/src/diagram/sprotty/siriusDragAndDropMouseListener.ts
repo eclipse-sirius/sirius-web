@@ -158,33 +158,48 @@ export class SiriusDragAndDropMouseListener extends MoveMouseListener {
         y: currentSPortCenter.y + translationPoint.y,
       };
 
-      const { pointOnRectangleSide, side } = snapToRectangle(candidateSPortCenter, {
+      const { pointOnRectangle, side } = snapToRectangle(candidateSPortCenter, {
         x: 0, // because newSportPosition has coordinates relative to parent
         y: 0,
         width: parent.bounds.width,
         height: parent.bounds.height,
       });
 
+      //shift to keep inside the side
+      let adaptedPointOnRectangleX: number = pointOnRectangle.x;
+      let adaptedPointOnRectangleY: number = pointOnRectangle.y;
+      if (side === RectangleSide.north || side === RectangleSide.south) {
+        adaptedPointOnRectangleX = Math.max(
+          Math.min(pointOnRectangle.x, parent.bounds.width - sPort.bounds.width / 2),
+          sPort.bounds.width / 2
+        );
+      } else if (side === RectangleSide.east || side === RectangleSide.west) {
+        adaptedPointOnRectangleY = Math.max(
+          Math.min(pointOnRectangle.y, parent.bounds.height - sPort.bounds.height / 2),
+          sPort.bounds.height / 2
+        );
+      }
+
       // Move the port according to the offset and the side position
       if (side === RectangleSide.north) {
         portPosition = {
-          x: pointOnRectangleSide.x - sPort.bounds.width / 2,
-          y: pointOnRectangleSide.y - sPort.bounds.height + PORT_OFFSET,
+          x: adaptedPointOnRectangleX - sPort.bounds.width / 2,
+          y: adaptedPointOnRectangleY - sPort.bounds.height + PORT_OFFSET,
         };
       } else if (side === RectangleSide.south) {
         portPosition = {
-          x: pointOnRectangleSide.x - sPort.bounds.width / 2,
-          y: pointOnRectangleSide.y - PORT_OFFSET,
+          x: adaptedPointOnRectangleX - sPort.bounds.width / 2,
+          y: adaptedPointOnRectangleY - PORT_OFFSET,
         };
       } else if (side === RectangleSide.west) {
         portPosition = {
-          x: pointOnRectangleSide.x - sPort.bounds.width + PORT_OFFSET,
-          y: pointOnRectangleSide.y - sPort.bounds.height / 2,
+          x: adaptedPointOnRectangleX - sPort.bounds.width + PORT_OFFSET,
+          y: adaptedPointOnRectangleY - sPort.bounds.height / 2,
         };
       } else if (side === RectangleSide.east) {
         portPosition = {
-          x: pointOnRectangleSide.x - PORT_OFFSET,
-          y: pointOnRectangleSide.y - sPort.bounds.height / 2,
+          x: adaptedPointOnRectangleX - PORT_OFFSET,
+          y: adaptedPointOnRectangleY - sPort.bounds.height / 2,
         };
       }
     }

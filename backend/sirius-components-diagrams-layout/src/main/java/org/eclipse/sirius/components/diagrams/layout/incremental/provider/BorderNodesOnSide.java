@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.diagrams.layout.incremental;
+package org.eclipse.sirius.components.diagrams.layout.incremental.provider;
 
 import java.util.List;
 import java.util.Objects;

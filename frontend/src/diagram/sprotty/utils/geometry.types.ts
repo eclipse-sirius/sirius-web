@@ -18,8 +18,8 @@ export enum RectangleSide {
   'west',
   'east',
 }
-export interface SnapToRectangleInfo {
-  pointOnRectangleSide: Point;
+export interface PointOnRectangleInfo {
+  pointOnRectangle: Point;
   side: RectangleSide;
 }
 

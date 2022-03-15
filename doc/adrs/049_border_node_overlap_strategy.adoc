@@ -1,0 +1,25 @@
+= ADR-049 - Border nodes overlap strategy
+
+== Context
+
+This adr is about the way the border should behave when
+* being resized/moved
+* the parent container is resized
+* a new border node is created
+
+== Constraint
+
+The chosen constraints come from the Sirius Desktop experience.
+* It should not possible to resize or move a node if it overlaps another node or if it goes outside the side of the parent rectangle
+* resizing the parent node should not impact the absolute position of the border nodes except for those on the shifted sides. This is particularly important if there are edges linked to the border nodes.
+* resizing the parent node should be limited so that the border nodes does not goes oustside the parent node
+
+== Decision
+
+The feedback and the incremental layout should take the constraints into account.
+
+== Status
+
+WIP
+
+== Consequences
