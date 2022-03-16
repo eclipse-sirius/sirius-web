@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
+import { makeStyles } from '@material-ui/core/styles';
 import { DRAG_SOURCES_TYPE } from 'common/dataTransferTypes';
 import { httpOrigin } from 'common/URL';
 import { IconButton } from 'core/button/Button';
@@ -23,7 +24,6 @@ import { TreeItemProps } from 'tree/TreeItem.types';
 import { TreeItemContextMenu, TreeItemContextMenuContext } from 'tree/TreeItemContextMenu';
 import { v4 as uuid } from 'uuid';
 import { Selection } from 'workbench/Workbench.types';
-import styles from './TreeItem.module.css';
 
 const renameTreeItemMutation = gql`
   mutation renameTreeItem($input: RenameTreeItemInput!) {
@@ -36,17 +36,86 @@ const renameTreeItemMutation = gql`
   }
 `;
 
+const useTreeItemStyle = makeStyles((theme) => ({
+  treeItem: {
+    display: 'grid',
+    gridTemplateRows: '20px',
+    gridTemplateColumns: '24px min-content',
+    alignItems: 'center',
+    userSelect: 'none',
+    fill: '#66808a',
+    '&:hover': {
+      stroke: 'var(--daintree)',
+      fill: 'var(--daintree)',
+      backgroundColor: 'var(--blue-lagoon-lighten-95)',
+    },
+  },
+  selected: {
+    fontWeight: 'bold',
+    stroke: '#66808a',
+    fill: '#66808a',
+    backgroundColor: 'var(--blue-lagoon-lighten-90)',
+    '&:hover': {
+      stroke: '#66808a',
+      fill: '#66808a',
+      backgroundColor: 'var(--blue-lagoon-lighten-90)',
+    },
+  },
+  arrow: {
+    cursor: 'pointer',
+  },
+  more: {
+    hover: {
+      stroke: 'var(--daintree)',
+      fill: 'var(--daintree)',
+      backgroundColor: 'var(--blue-lagoon-lighten-95)',
+    },
+    focus: {
+      stroke: 'var(--daintree)',
+      fill: 'var(--daintree)',
+      backgroundColor: 'var(--blue-lagoon-lighten-90)',
+    },
+  },
+  content: {
+    display: 'grid',
+    gridTemplateRows: '1fr',
+    gridTemplateColumns: '1fr 20px',
+    columnGap: '8px',
+    alignItems: 'center',
+    gridColumnStart: '2',
+    gridColumnEnd: '3',
+  },
+  imageAndLabel: {
+    display: 'grid',
+    gridTemplateRows: '1fr',
+    gridTemplateColumns: 'min-content 1fr',
+    columnGap: '4px',
+    alignItems: 'center',
+    cursor: 'pointer',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+  },
+  label: {
+    color: 'var(--daintree)',
+    fontSize: 'var(--font-size-5)',
+  },
+  ul: {
+    marginLeft: '20px',
+  },
+}));
+
 // The list of characters that will enable the direct edit mechanism.
 const directEditActivationValidCharacters = /[\w&é§èàùçÔØÁÛÊË"«»’”„´$¥€£\\¿?!=+-,;:%/{}[\]–#@*.]/;
 
 const ItemCollapseToggle = ({ item, depth, onExpand, dataTestid }) => {
+  const classes = useTreeItemStyle();
   if (item.hasChildren) {
     const onClick = () => onExpand(item.id, depth);
     if (item.expanded) {
       return (
         <ArrowExpanded
           title="Collapse"
-          className={styles.arrow}
+          className={classes.arrow}
           width="20"
           height="20"
           onClick={onClick}
@@ -57,7 +126,7 @@ const ItemCollapseToggle = ({ item, depth, onExpand, dataTestid }) => {
       return (
         <ArrowCollapsed
           title="Expand"
-          className={styles.arrow}
+          className={classes.arrow}
           width="20"
           height="20"
           onClick={onClick}
@@ -79,6 +148,8 @@ export const TreeItem = ({
   setSelection,
   readOnly,
 }: TreeItemProps) => {
+  const classes = useTreeItemStyle();
+
   const treeItemMenuContributionComponents = useContext(TreeItemContextMenuContext)
     .filter((contribution) => contribution.props.canHandle(item))
     .map((contribution) => contribution.props.component);
@@ -187,7 +258,7 @@ export const TreeItem = ({
   let children = null;
   if (item.expanded && item.children) {
     children = (
-      <ul className={styles.ul}>
+      <ul className={classes.ul}>
         {item.children.map((childItem) => {
           return (
             <li key={childItem.id}>
@@ -208,12 +279,12 @@ export const TreeItem = ({
     );
   }
 
-  let className = styles.treeItem;
+  let className = classes.treeItem;
   let dataTestid = undefined;
 
   const selected = selection.entries.find((entry) => entry.id === item.id);
   if (selected) {
-    className = `${className} ${styles.selected}`;
+    className = `${className} ${classes.selected}`;
     dataTestid = 'selected';
   }
   useEffect(() => {
@@ -285,7 +356,7 @@ export const TreeItem = ({
       />
     );
   } else {
-    text = <Text className={styles.label}>{item.label}</Text>;
+    text = <Text className={classes.label}>{item.label}</Text>;
   }
 
   const onClick: React.MouseEventHandler<HTMLDivElement> = (event) => {
@@ -375,9 +446,9 @@ export const TreeItem = ({
           data-expanded={item.expanded.toString()}
           data-testid={dataTestid}
         >
-          <div className={styles.content}>
+          <div className={classes.content}>
             <div
-              className={styles.imageAndLabel}
+              className={classes.imageAndLabel}
               onDoubleClick={() => item.hasChildren && onExpand(item.id, depth)}
               title={tooltipText}
               data-testid={item.label}
@@ -386,7 +457,7 @@ export const TreeItem = ({
               {text}
             </div>
             {shouldDisplayMoreButton ? (
-              <IconButton className={styles.more} onClick={openContextMenu} data-testid={`${item.label}-more`}>
+              <IconButton className={classes.more} onClick={openContextMenu} data-testid={`${item.label}-more`}>
                 <More title="More" />
               </IconButton>
             ) : null}
