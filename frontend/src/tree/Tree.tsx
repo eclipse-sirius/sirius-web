@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -51,12 +51,12 @@ export const Tree = ({ editingContextId, tree, onExpand, selection, setSelection
               break;
             case 'ArrowUp':
               if (index > 0) {
-                treeItemDomElements[index - 1].focus();
+                treeItemDomElements[index - 1].click();
               }
               break;
             case 'ArrowDown':
               if (index < treeItemDomElements.length - 1) {
-                treeItemDomElements[index + 1].focus();
+                treeItemDomElements[index + 1].click();
               }
               break;
             default:
