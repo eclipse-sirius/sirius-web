@@ -1,0 +1,25 @@
+name: Pull Request Checks
+
+on:
+  pull_request:
+
+jobs:
+  build:
+    name: Metadata Review
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node SDK
+        uses: actions/setup-node@v1.4.4
+        with:
+          node-version: 16
+          registry-url: https://npm.pkg.github.com/
+
+      - name: Check that the CHANGELOG has been updated
+        env:
+          GITHUB_EVENT: ${{ toJSON(github.event) }}
+        run: node scripts/check-changelog.js
