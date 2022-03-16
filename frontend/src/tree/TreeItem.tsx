@@ -19,10 +19,11 @@ import { Textfield } from 'core/textfield/Textfield';
 import gql from 'graphql-tag';
 import { ArrowCollapsed, ArrowExpanded, More, NoIcon } from 'icons';
 import React, { useContext, useEffect, useRef, useState } from 'react';
+import { TreeItemProps } from 'tree/TreeItem.types';
+import { TreeItemContextMenu, TreeItemContextMenuContext } from 'tree/TreeItemContextMenu';
 import { v4 as uuid } from 'uuid';
+import { Selection } from 'workbench/Workbench.types';
 import styles from './TreeItem.module.css';
-import { TreeItemProps } from './TreeItem.types';
-import { TreeItemContextMenu, TreeItemContextMenuContext } from './TreeItemContextMenu';
 
 const renameTreeItemMutation = gql`
   mutation renameTreeItem($input: RenameTreeItemInput!) {
@@ -286,14 +287,25 @@ export const TreeItem = ({
   } else {
     text = <Text className={styles.label}>{item.label}</Text>;
   }
-  const onFocus = () => {
-    const { id, label, kind } = item;
-    setSelection({ entries: [{ id, label, kind }] });
-  };
 
-  const onClick = () => {
-    if (!editingMode) {
-      refDom.current.focus();
+  const onClick: React.MouseEventHandler<HTMLDivElement> = (event) => {
+    refDom.current.focus();
+
+    if (event.ctrlKey || event.metaKey) {
+      event.stopPropagation();
+      const isItemInSelection = selection.entries.find((entry) => entry.id === item.id);
+      if (isItemInSelection) {
+        const newSelection: Selection = { entries: selection.entries.filter((entry) => entry.id !== item.id) };
+        setSelection(newSelection);
+      } else {
+        const { id, label, kind } = item;
+        const newEntry = { id, label, kind };
+        const newSelection: Selection = { entries: [...selection.entries, newEntry] };
+        setSelection(newSelection);
+      }
+    } else {
+      const { id, label, kind } = item;
+      setSelection({ entries: [{ id, label, kind }] });
     }
   };
 
@@ -317,13 +329,13 @@ export const TreeItem = ({
 
   const { kind } = item;
   const draggable = kind.startsWith('siriusComponents://semantic');
-  const dragStart = (event) => {
+  const dragStart: React.DragEventHandler<HTMLDivElement> = (event) => {
     const entries = selection.entries.filter((entry) => entry.kind.startsWith('siriusComponents://semantic'));
     if (entries.length > 0) {
       event.dataTransfer.setData(DRAG_SOURCES_TYPE, JSON.stringify(entries));
     }
   };
-  const dragOver = (event) => {
+  const dragOver: React.DragEventHandler<HTMLDivElement> = (event) => {
     event.stopPropagation();
   };
 
@@ -352,9 +364,9 @@ export const TreeItem = ({
         <div
           ref={refDom}
           tabIndex={0}
-          onFocus={onFocus}
           onKeyDown={onBeginEditing}
           draggable={draggable}
+          onClick={onClick}
           onDragStart={dragStart}
           onDragOver={dragOver}
           data-treeitemid={item.id}
@@ -366,7 +378,6 @@ export const TreeItem = ({
           <div className={styles.content}>
             <div
               className={styles.imageAndLabel}
-              onClick={onClick}
               onDoubleClick={() => item.hasChildren && onExpand(item.id, depth)}
               title={tooltipText}
               data-testid={item.label}
