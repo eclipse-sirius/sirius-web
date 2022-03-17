@@ -4,6 +4,8 @@
 
 === Architectural decision records
 
+- [ADR-50] Add support for multiple selection entries in the details view
+
 === Deprecation warning
 
 === Breaking changes
@@ -23,6 +25,7 @@
 === New features
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1112[#1112] [explorer] Add support for Ctrl+click or ⌘+click to select multiple elements in the explorer
+- https://github.com/eclipse-sirius/sirius-components/issues/1116[#1116] [form] Add support for multiple selection entries in the details view
 
 == v2022.3.0
 

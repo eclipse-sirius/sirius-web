@@ -1,0 +1,20 @@
+= ADR-050 - Add support for multiple selection entries in the details view
+
+== Context
+
+The API of the selection has changed a couple months ago in order to support multiple selection entries.
+We did not have the time to support those multiple selection entries in the details view.
+Now we want to see the details of all the selection entries supported by the details view.
+
+== Decision
+
+The default description used for the details view will not support multiple selection entries and the frontend will be adapted to display the various selection entries at once.
+For that, the backend will return one page per selection entry supported with the label of each entry used as the label of the page.
+We will only display the properties of the semantic elements for now.
+
+On the frontend side, we will now use the MaterialUI tabs in order to display a tab for each page returned by the server.
+Those tabs will share a similar appearance as the representation tabs.
+
+== Status
+
+WIP

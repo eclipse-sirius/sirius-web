@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo and others.
+ * Copyright (c) 2021, 2022 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -59,7 +59,7 @@ const representationsEventSubscription = gql`
 `;
 
 const useRepresentationsWebSocketContainerStyles = makeStyles((theme) => ({
-  idle: {
+  content: {
     padding: theme.spacing(1),
   },
 }));
@@ -124,21 +124,23 @@ export const RepresentationsWebSocketContainer = ({
   let content = null;
   if (!selection || representationsWebSocketContainer === 'unsupportedSelection') {
     content = (
-      <div className={classes.idle}>
+      <div className={classes.content}>
         <Typography variant="subtitle2">No object selected</Typography>
       </div>
     );
   }
   if ((representationsWebSocketContainer === 'idle' && widget) || representationsWebSocketContainer === 'ready') {
     content = (
-      <ListPropertySection
-        editingContextId={editingContextId}
-        formId={formId}
-        readOnly={readOnly}
-        widget={widget}
-        subscribers={subscribers}
-        setSelection={setSelection}
-      />
+      <div className={classes.content}>
+        <ListPropertySection
+          editingContextId={editingContextId}
+          formId={formId}
+          readOnly={readOnly}
+          widget={widget}
+          subscribers={subscribers}
+          setSelection={setSelection}
+        />
+      </div>
     );
   }
 

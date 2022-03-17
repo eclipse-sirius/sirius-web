@@ -80,7 +80,7 @@ export const PropertiesWebSocketContainer = ({
     PropertiesWebSocketContainerEvent
   >(propertiesWebSocketContainerMachine);
   const { toast, propertiesWebSocketContainer } = value as SchemaValue;
-  const { id, currentSelection, form, subscribers, widgetSubscriptions, message } = context;
+  const { id, currentSelection, form, widgetSubscriptions, message } = context;
 
   /**
    * Displays an other form if the selection indicates that we should display another properties view.
@@ -152,7 +152,6 @@ export const PropertiesWebSocketContainer = ({
       <Properties
         editingContextId={editingContextId}
         form={form}
-        subscribers={subscribers}
         widgetSubscriptions={widgetSubscriptions}
         setSelection={setSelection}
         readOnly={readOnly}

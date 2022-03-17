@@ -78,12 +78,7 @@ public class PropertiesDefaultDescriptionProvider implements IPropertiesDefaultD
         pageDescriptions.add(firstPageDescription);
 
         // @formatter:off
-        Function<VariableManager, String> labelProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
-                .filter(self -> self instanceof List<?>)
-                .map(self -> (List<?>) self)
-                .flatMap(self -> self.stream().findFirst())
-                .map(this.objectService::getFullLabel)
-                .orElse("Properties"); //$NON-NLS-1$
+        Function<VariableManager, String> labelProvider = variableManager -> "Properties"; //$NON-NLS-1$
         // @formatter:on
 
         // @formatter:off
@@ -107,10 +102,28 @@ public class PropertiesDefaultDescriptionProvider implements IPropertiesDefaultD
     }
 
     private PageDescription getPageDescription(List<GroupDescription> groupDescriptions) {
+        Function<VariableManager, String> idProvider = variableManager -> {
+            var optionalSelf = variableManager.get(VariableManager.SELF, Object.class);
+            if (optionalSelf.isPresent()) {
+                Object self = optionalSelf.get();
+                return this.objectService.getId(self);
+            }
+            return UUID.randomUUID().toString();
+        };
+
+        Function<VariableManager, String> labelProvider = variableManager -> {
+            var optionalSelf = variableManager.get(VariableManager.SELF, Object.class);
+            if (optionalSelf.isPresent()) {
+                Object self = optionalSelf.get();
+                return this.objectService.getLabel(self);
+            }
+            return UUID.randomUUID().toString();
+        };
+
         // @formatter:off
         return PageDescription.newPageDescription("firstPageId") //$NON-NLS-1$
-                .idProvider(variableManager -> "Main") //$NON-NLS-1$
-                .labelProvider(variableManager -> "Main") //$NON-NLS-1$
+                .idProvider(idProvider)
+                .labelProvider(labelProvider)
                 .semanticElementsProvider(variableManager -> Collections.singletonList(variableManager.getVariables().get(VariableManager.SELF)))
                 .groupDescriptions(groupDescriptions)
                 .canCreatePredicate(variableManager -> true)
