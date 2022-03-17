@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,6 +31,7 @@ const useSiteStyles = makeStyles((theme) => ({
   },
   accordionDetailsRoot: {
     display: 'block',
+    padding: '0px',
   },
 }));
 

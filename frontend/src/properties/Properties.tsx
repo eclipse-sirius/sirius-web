@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,15 +10,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import Avatar from '@material-ui/core/Avatar';
 import { makeStyles } from '@material-ui/core/styles';
-import Toolbar from '@material-ui/core/Toolbar';
-import Tooltip from '@material-ui/core/Tooltip';
-import Typography from '@material-ui/core/Typography';
+import Tab from '@material-ui/core/Tab';
+import Tabs from '@material-ui/core/Tabs';
 import { Page } from 'properties/Page';
-import { PageList } from 'properties/pagelist/PageList';
-import { FormProps } from 'properties/Properties.types';
-import React from 'react';
+import { FormProps, PropertiesState } from 'properties/Properties.types';
+import React, { useEffect, useState } from 'react';
 
 const usePropertiesStyles = makeStyles((theme) => ({
   properties: {
@@ -27,91 +24,84 @@ const usePropertiesStyles = makeStyles((theme) => ({
     paddingLeft: theme.spacing(1),
     paddingRight: theme.spacing(1),
   },
-  content: {
-    overflowX: 'hidden',
-    overflowY: 'auto',
+  tabsRoot: {
+    minHeight: theme.spacing(4),
+    borderBottomColor: theme.palette.divider,
+    borderBottomWidth: '1px',
+    borderBottomStyle: 'solid',
   },
-  subscribers: {
-    marginLeft: 'auto',
+  tabRoot: {
+    minHeight: theme.spacing(4),
+    textTransform: 'none',
+  },
+  tabLabel: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    '& > *': {
-      marginLeft: theme.spacing(0.5),
-      marginRight: theme.spacing(0.5),
-    },
-  },
-  avatar: {
-    fontSize: '1rem',
-    width: theme.spacing(3),
-    height: theme.spacing(3),
-  },
-  container: {
-    display: 'grid',
-    gridTemplateRows: '1fr',
-    gridTemplateColumns: 'min-content 1fr',
   },
 }));
 
-export const Properties = ({
-  editingContextId,
-  form,
-  subscribers,
-  widgetSubscriptions,
-  setSelection,
-  readOnly,
-}: FormProps) => {
-  const classes = usePropertiesStyles();
-  const {
-    id,
-    metadata: { label },
-    pages,
-  } = form;
+const a11yProps = (id: string) => {
+  return {
+    id: `simple-tab-${id}`,
+    'aria-controls': `simple-tabpanel-${id}`,
+  };
+};
 
-  let content;
-  if (pages.length > 1) {
-    content = (
-      <div className={classes.container}>
-        <PageList pages={pages} />
-        <Page
-          editingContextId={editingContextId}
-          formId={id}
-          page={pages[0]}
-          widgetSubscriptions={widgetSubscriptions}
-          setSelection={setSelection}
-          readOnly={readOnly}
-        />
-      </div>
-    );
-  } else if (pages.length === 1) {
-    content = (
+export const Properties = ({ editingContextId, form, widgetSubscriptions, setSelection, readOnly }: FormProps) => {
+  const classes = usePropertiesStyles();
+  const { id, pages } = form;
+
+  const [state, setState] = useState<PropertiesState>({ selectedPage: pages[0], pages });
+
+  useEffect(() => {
+    setState(() => {
+      const selectedPage = pages.find((page) => page.id === state.selectedPage.id);
+      if (selectedPage) {
+        return { selectedPage, pages };
+      }
+      return { selectedPage: pages[0], pages };
+    });
+  }, [pages, state.selectedPage.id]);
+
+  const onChangeTab = (_: React.ChangeEvent<{}>, value: string) => {
+    const selectedPage = pages.find((page) => page.id === value);
+    setState((prevState) => {
+      return { ...prevState, selectedPage };
+    });
+  };
+
+  return (
+    <div data-testid="properties" className={classes.properties}>
+      <Tabs
+        classes={{ root: classes.tabsRoot }}
+        value={state.selectedPage.id}
+        onChange={onChangeTab}
+        variant="scrollable"
+        scrollButtons="on"
+        textColor="primary"
+        indicatorColor="primary"
+      >
+        {state.pages.map((page) => {
+          return (
+            <Tab
+              {...a11yProps(page.id)}
+              classes={{ root: classes.tabRoot }}
+              value={page.id}
+              label={<div className={classes.tabLabel}>{page.label}</div>}
+              key={page.id}
+            />
+          );
+        })}
+      </Tabs>
       <Page
         editingContextId={editingContextId}
         formId={id}
-        page={pages[0]}
+        page={state.selectedPage}
         widgetSubscriptions={widgetSubscriptions}
         setSelection={setSelection}
         readOnly={readOnly}
       />
-    );
-  }
-  return (
-    <div data-testid="properties" className={classes.properties}>
-      <Toolbar variant="dense" disableGutters>
-        <Tooltip title={label}>
-          <Typography variant="h6" noWrap>
-            {label}
-          </Typography>
-        </Tooltip>
-        <div className={classes.subscribers}>
-          {subscribers.map((subscriber) => (
-            <Tooltip title={subscriber.username} arrow key={subscriber.username}>
-              <Avatar classes={{ root: classes.avatar }}>{subscriber.username.substring(0, 1).toUpperCase()}</Avatar>
-            </Tooltip>
-          ))}
-        </div>
-      </Toolbar>
-      <div className={classes.content}>{content}</div>
     </div>
   );
 };
