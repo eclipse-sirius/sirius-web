@@ -111,7 +111,12 @@ export type InitializeRepresentationEvent = {
   moveElement: any;
   resizeElement: any;
   editLabel: any;
-  onSelectElement: (selectedElement: SModelElement, diagramServer: DiagramServer, position: Position) => void;
+  onSelectElement: (
+    selectedElement: SModelElement,
+    diagramServer: DiagramServer,
+    position: Position,
+    event: MouseEvent
+  ) => void;
   getCursorOn: any;
   setActiveTool: (tool: Tool) => void;
   toolSections: ToolSection[];
@@ -477,8 +482,10 @@ export const diagramWebSocketContainerMachine = Machine<
         const { selection } = event as SelectionEvent;
         let newSelectionValue: Selection;
         if (
-          (context.latestSelection.entries.length <= 0 && selection.entries.length <= 0) ||
-          context.latestSelection.entries[0]?.id === selection.entries[0]?.id
+          context.latestSelection.entries.length === selection.entries.length &&
+          context.latestSelection.entries.every(
+            (entry) => selection.entries.find((e) => e.id === entry.id) !== undefined
+          )
         ) {
           newSelectionValue = context.newSelection;
         } else {
