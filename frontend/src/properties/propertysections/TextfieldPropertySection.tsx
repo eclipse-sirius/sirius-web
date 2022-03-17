@@ -184,8 +184,9 @@ export const TextfieldPropertySection = ({
     sendEditedValue();
   };
 
-  const onKeyPress = (event) => {
+  const onKeyPress: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
     if ('Enter' === event.key && !event.shiftKey) {
+      event.preventDefault();
       sendEditedValue();
     }
   };

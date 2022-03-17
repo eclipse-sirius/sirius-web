@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -120,7 +120,7 @@ export const textfieldPropertySectionMachine = Machine<
           // Similar issue as in EEFLifecycleManager, some update is coming from the server
           // while we have started to enter some content locally. We are choosing here to drop
           // the content entered locally but we will still log it.
-          console.trace(`The following content has been lost "${previousValue}"`);
+          console.trace(`The following content "${previousValue}" has been overwritten by "${value}"`);
         }
 
         return { value };
