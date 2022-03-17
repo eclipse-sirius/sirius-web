@@ -367,16 +367,18 @@ export class DiagramServer extends ModelSource {
     const { selection } = action;
     this.actionDispatcher.request<SelectionResult>(GetSelectionAction.create()).then((selectionResult) => {
       const selectedElementsIDs = [];
-      const deselectedElementsIDs = [...selectionResult.selectedElementsIDs];
       selection.entries
         .filter((entry) => entry.id !== this.currentRoot.id)
         .forEach((entry) => {
           const selectionElement = this.findElement(this.currentRoot, entry.id);
-          if (selectionElement && deselectedElementsIDs.indexOf(selectionElement.id) < 0) {
+          if (selectionElement) {
             // The React selection and the Sprotty selection does not match. We must update the Sprotty selection
             selectedElementsIDs.push(selectionElement.id);
           }
         });
+      const deselectedElementsIDs = [...selectionResult.selectedElementsIDs].filter(
+        (id) => !selectedElementsIDs.includes(id)
+      );
 
       const actions: Action[] = [];
       if (selectedElementsIDs.length > 0 || deselectedElementsIDs.length > 0) {

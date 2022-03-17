@@ -567,7 +567,12 @@ export const DiagramWebSocketContainer = ({
    * initialization will be done each time we are in the loading state.
    */
   useEffect(() => {
-    const onSelectElement = (selectedElement: SModelElement, diagramServer: DiagramServer, position: Position) => {
+    const onSelectElement = (
+      selectedElement: SModelElement,
+      diagramServer: DiagramServer,
+      position: Position,
+      event: MouseEvent
+    ) => {
       const newSelection: Selection = { entries: [] };
 
       if (selectedElement instanceof SGraph) {
@@ -578,7 +583,7 @@ export const DiagramWebSocketContainer = ({
         selectedElement instanceof SPort ||
         selectedElement instanceof SEdge
       ) {
-        const { id, kind, targetObjectId, targetObjectKind, targetObjectLabel } = selectedElement as any; // (as any) to be removed when the proper type will be available
+        const { targetObjectId, targetObjectKind, targetObjectLabel } = selectedElement as any; // (as any) to be removed when the proper type will be available
 
         const semanticSelectionEntry: SelectionEntry = {
           id: targetObjectId,
@@ -586,14 +591,7 @@ export const DiagramWebSocketContainer = ({
           kind: targetObjectKind,
         };
 
-        const graphicalSelectionEntry: SelectionEntry = {
-          id,
-          label: '',
-          kind,
-        };
-
         newSelection.entries.push(semanticSelectionEntry);
-        newSelection.entries.push(graphicalSelectionEntry);
       }
 
       setSelection(newSelection);

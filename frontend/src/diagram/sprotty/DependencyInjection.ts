@@ -180,10 +180,15 @@ export const createDependencyInjectionContainer = (containerId: string, getCurso
       if (event.button === 0) {
         if (this.previousCoordinates?.x === event.clientX && this.previousCoordinates?.y === event.clientY) {
           const elementWithTarget = findModelElementWithSemanticTarget(element);
-          this.diagramServer.onSelectElement(elementWithTarget, this.diagramServer, {
-            x: event.offsetX,
-            y: event.offsetY,
-          });
+          this.diagramServer.onSelectElement(
+            elementWithTarget,
+            this.diagramServer,
+            {
+              x: event.offsetX,
+              y: event.offsetY,
+            },
+            event
+          );
         }
       } else if (event.button === 2) {
         edgeCreationFeedback.reset();
