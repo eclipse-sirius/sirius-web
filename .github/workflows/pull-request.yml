@@ -23,3 +23,8 @@ jobs:
         env:
           GITHUB_EVENT: ${{ toJSON(github.event) }}
         run: node scripts/check-changelog.js
+
+      - name: Check that the copyright of the modified files has been updated
+        env:
+          GITHUB_EVENT: ${{ toJSON(github.event) }}
+        run: node scripts/check-copyright.js
