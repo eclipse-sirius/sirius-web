@@ -24,7 +24,6 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.util.Arrays;
 import java.util.Base64;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -37,6 +36,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.RequestScope;
 
@@ -58,8 +58,8 @@ public class ImageRegistry {
 
     public ImageRegistry(HttpServletRequest request) throws URISyntaxException {
         Objects.requireNonNull(request);
-        this.logHeaders(request);
-        URI uri = URI.create(request.getRequestURL().toString());
+
+        URI uri = URI.create(this.getRequestURL(request));
         String imageBasePathString = uri.getScheme() + "://" + uri.getHost(); //$NON-NLS-1$
         if (uri.getPort() != -1) {
             imageBasePathString += ":" + uri.getPort(); //$NON-NLS-1$
@@ -67,6 +67,11 @@ public class ImageRegistry {
         imageBasePathString += "/api/images"; //$NON-NLS-1$
         this.imageBasePath = new URI(imageBasePathString);
         this.imageFetcher = this.buildImageClient(request);
+    }
+
+    private String getRequestURL(HttpServletRequest request) {
+        var optionalReferer = Optional.ofNullable(request.getHeader(HttpHeaders.REFERER));
+        return optionalReferer.orElse(request.getRequestURL().toString());
     }
 
     public UUID registerImage(String imageURL) {
@@ -88,17 +93,6 @@ public class ImageRegistry {
         StringBuilder symbols = new StringBuilder();
         this.imageRegistry.entrySet().forEach(entry -> symbols.append(this.getReferencedImage(entry.getKey(), entry.getValue())));
         return symbols;
-    }
-
-    private void logHeaders(HttpServletRequest request) {
-        Enumeration<String> headerNames = request.getHeaderNames();
-        if (headerNames != null) {
-            headerNames.asIterator().forEachRemaining(headerName -> {
-                this.logger.info("Header name : " + headerName + " ; Header value : " + request.getHeader(headerName)); //$NON-NLS-1$ //$NON-NLS-2$
-            });
-        } else {
-            this.logger.info("Headers name is null, can not access to this method."); //$NON-NLS-1$
-        }
     }
 
     private StringBuilder getReferencedImage(URI imageURI, UUID symbolId) {
