@@ -180,7 +180,7 @@ public class EEnumIfDescriptionProvider {
                         EEnum eEnum = (EEnum) eType;
                         EEnumLiteral literal = eEnum.getEEnumLiteral(id);
                         if (literal != null) {
-                            Object value = EcoreUtil.createFromString(eEnum, literal.getName());
+                            Object value = EcoreUtil.createFromString(eEnum, literal.getLiteral());
                             eObject.eSet(eAttribute, value);
                         }
                     }
