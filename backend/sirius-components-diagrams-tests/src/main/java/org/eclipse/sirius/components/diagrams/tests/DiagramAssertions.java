@@ -19,6 +19,7 @@ import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
 import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
 import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 
 /**
@@ -53,5 +54,9 @@ public class DiagramAssertions extends Assertions {
 
     public static LabelStyleAssert assertThat(LabelStyle labelStyle) {
         return new LabelStyleAssert(labelStyle);
+    }
+
+    public static PositionAssert assertThat(Position position) {
+        return new PositionAssert(position);
     }
 }

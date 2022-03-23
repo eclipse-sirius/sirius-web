@@ -15,12 +15,16 @@ package org.eclipse.sirius.components.diagrams.tests;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.sirius.components.diagrams.tests.DiagramAssertions.assertThat;
 
+import java.util.List;
+
 import org.assertj.core.api.AbstractAssert;
 import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
+import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.components.diagrams.Size;
+import org.eclipse.sirius.components.diagrams.components.LabelType;
 
 /**
  * Custom assertion class used to perform some tests on a node.
@@ -169,4 +173,38 @@ public class NodeAssert extends AbstractAssert<NodeAssert, Node> {
             return !(parentEnd >= parentStart && childEnd > parentEnd);
         }
     }
+
+    public void hasNoOverflow() {
+        Size size = this.actual.getSize();
+
+        Label label = this.actual.getLabel();
+        if (!label.getType().equals(LabelType.OUTSIDE.getValue()) && !label.getType().equals(LabelType.OUTSIDE_CENTER.getValue())) {
+            Position labelTopLeftCorner = Position.at(label.getPosition().getX() + label.getAlignment().getX(), label.getPosition().getY() + label.getAlignment().getY());
+            Position labelTopRightCorner = Position.at(labelTopLeftCorner.getX() + label.getSize().getWidth(), labelTopLeftCorner.getY());
+            Position labelBottomLeftCorner = Position.at(labelTopLeftCorner.getX(), labelTopLeftCorner.getY() + label.getSize().getHeight());
+            Position labelBottomRightCorner = Position.at(labelTopRightCorner.getX(), labelBottomLeftCorner.getY());
+
+            assertThat(labelTopLeftCorner).isInside(size);
+            assertThat(labelTopRightCorner).isInside(size);
+            assertThat(labelBottomLeftCorner).isInside(size);
+            assertThat(labelBottomRightCorner).isInside(size);
+        }
+
+        List<Node> childNodes = this.actual.getChildNodes();
+        for (Node childNode : childNodes) {
+            Position childNodeTopLeftCorner = childNode.getPosition();
+            Position childNodeTopRightCorner = Position.at(childNodeTopLeftCorner.getX() + childNode.getSize().getWidth(), childNodeTopLeftCorner.getY());
+            Position childNodeBottomLeftCorner = Position.at(childNodeTopLeftCorner.getX(), childNodeTopLeftCorner.getY() + childNode.getSize().getHeight());
+            Position childNodeBottomRightCorner = Position.at(childNodeTopRightCorner.getX(), childNodeBottomLeftCorner.getY());
+
+            assertThat(childNodeTopLeftCorner).isInside(size);
+            assertThat(childNodeTopRightCorner).isInside(size);
+            assertThat(childNodeBottomLeftCorner).isInside(size);
+            assertThat(childNodeBottomRightCorner).isInside(size);
+        }
+
+        this.actual.getChildNodes().forEach(childNode -> assertThat(childNode).hasNoOverflow());
+        this.actual.getBorderNodes().forEach(borderNode -> assertThat(borderNode).hasNoOverflow());
+    }
+
 }

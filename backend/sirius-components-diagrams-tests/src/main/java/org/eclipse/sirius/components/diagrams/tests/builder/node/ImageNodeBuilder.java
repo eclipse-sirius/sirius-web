@@ -43,7 +43,7 @@ public final class ImageNodeBuilder<T> implements NodeBuilder<T> {
 
     private NodesBuilder<T> nodesBuilder;
 
-    private boolean borderNode;
+    private boolean isBorderNode;
 
     private Label label;
 
@@ -59,7 +59,7 @@ public final class ImageNodeBuilder<T> implements NodeBuilder<T> {
 
     public ImageNodeBuilder(NodesBuilder<T> nodesBuilder, String nodeLabel, boolean isBorderNode) {
         this.label = new LabelBuilder().basicLabel(nodeLabel, LabelType.OUTSIDE_CENTER);
-        this.borderNode = isBorderNode;
+        this.isBorderNode = isBorderNode;
         this.nodesBuilder = Objects.requireNonNull(nodesBuilder);
     }
 
@@ -114,12 +114,12 @@ public final class ImageNodeBuilder<T> implements NodeBuilder<T> {
         }
 
        // @formatter:off
-    return Node.newNode(nodeId)
+        return Node.newNode(nodeId)
                .type(NodeType.NODE_IMAGE)
                .label(this.label)
                .position(Objects.requireNonNull(this.position))
                .size(Objects.requireNonNull(this.size))
-               .borderNode(this.borderNode)
+               .borderNode(this.isBorderNode)
                .borderNodes(borderNodes)
                .childNodes(childNodes)
                .customizedProperties(this.customizedProperties)

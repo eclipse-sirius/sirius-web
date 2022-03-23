@@ -22,25 +22,25 @@ import java.util.UUID;
 import org.eclipse.sirius.components.diagrams.CustomizableProperties;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.Label;
-import org.eclipse.sirius.components.diagrams.LineStyle;
+import org.eclipse.sirius.components.diagrams.ListItemNodeStyle;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.Position;
-import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.components.LabelType;
 import org.eclipse.sirius.components.diagrams.tests.builder.TestLayoutDiagramBuilder;
 import org.eclipse.sirius.components.diagrams.tests.builder.label.LabelBuilder;
 
 /**
- * Builder used to build a rectangle node.
+ * Used to build list item nodes.
  *
  * @param <T>
  *            The parent builder type
- * @author gcoutable
+ *
+ * @author sbegaudeau
  */
 @SuppressWarnings("checkstyle:HiddenField")
-public final class RectangleNodeBuilder<T> implements NodeBuilder<T> {
+public class ListItemNodeBuilder<T> implements NodeBuilder<T> {
 
     private NodesBuilder<T> nodesBuilder;
 
@@ -52,39 +52,39 @@ public final class RectangleNodeBuilder<T> implements NodeBuilder<T> {
 
     private Size size;
 
-    private NodesBuilder<RectangleNodeBuilder<T>> borderNodesBuilder;
+    private NodesBuilder<ListItemNodeBuilder<T>> borderNodesBuilder;
 
-    private NodesBuilder<RectangleNodeBuilder<T>> childNodesBuilder;
+    private NodesBuilder<ListItemNodeBuilder<T>> childNodesBuilder;
 
     private Set<CustomizableProperties> customizedProperties = Set.of();
 
-    public RectangleNodeBuilder(NodesBuilder<T> nodesBuilder, String nodeLabel, boolean isBorderNode) {
+    public ListItemNodeBuilder(NodesBuilder<T> nodesBuilder, String nodeLabel, boolean isBorderNode) {
         this.label = new LabelBuilder().basicLabel(nodeLabel, LabelType.INSIDE_CENTER);
         this.isBorderNode = isBorderNode;
         this.nodesBuilder = Objects.requireNonNull(nodesBuilder);
     }
 
-    public RectangleNodeBuilder<T> at(double x, double y) {
+    public ListItemNodeBuilder<T> at(double x, double y) {
         this.position = Position.at(x, y);
         return this;
     }
 
-    public RectangleNodeBuilder<T> of(double width, double height) {
+    public ListItemNodeBuilder<T> of(double width, double height) {
         this.size = Size.of(width, height);
         return this;
     }
 
-    public NodesBuilder<RectangleNodeBuilder<T>> borderNodes() {
+    public NodesBuilder<ListItemNodeBuilder<T>> borderNodes() {
         this.borderNodesBuilder = new NodesBuilder<>(this, true);
         return this.borderNodesBuilder;
     }
 
-    public NodesBuilder<RectangleNodeBuilder<T>> childNodes() {
+    public NodesBuilder<ListItemNodeBuilder<T>> childNodes() {
         this.childNodesBuilder = new NodesBuilder<>(this, false);
         return this.childNodesBuilder;
     }
 
-    public RectangleNodeBuilder<T> customizedProperties(Set<CustomizableProperties> customizedProperties) {
+    public ListItemNodeBuilder<T> customizedProperties(Set<CustomizableProperties> customizedProperties) {
         this.customizedProperties = Objects.requireNonNull(customizedProperties);
         return this;
     }
@@ -99,18 +99,14 @@ public final class RectangleNodeBuilder<T> implements NodeBuilder<T> {
         List<Node> childNodes = Optional.ofNullable(this.childNodesBuilder).map(nodesBuilder -> nodesBuilder.build(targetObjectIdToNodeId)).orElse(List.of());
 
         // @formatter:off
-        INodeStyle style = RectangularNodeStyle.newRectangularNodeStyle()
-                .color("#E5F5F8") //$NON-NLS-1$
-                .borderColor("#33B0C3") //$NON-NLS-1$
-                .borderSize(1)
-                .borderRadius(3)
-                .borderStyle(LineStyle.Solid)
+        INodeStyle style = ListItemNodeStyle.newListItemNodeStyle()
+                .backgroundColor("white") //$NON-NLS-1$
                 .build();
         // @formatter:on
 
-        String labeltext = this.label.getText();
+        String labelText = this.label.getText();
         String nodeId = UUID.randomUUID().toString();
-        targetObjectIdToNodeId.put(labeltext, nodeId);
+        targetObjectIdToNodeId.put(labelText, nodeId);
 
         UUID descriptionId = TestLayoutDiagramBuilder.NODE_DESCRIPTION_ID;
         if (this.nodesBuilder.and() instanceof NodeBuilder) {
@@ -118,8 +114,8 @@ public final class RectangleNodeBuilder<T> implements NodeBuilder<T> {
         }
 
        // @formatter:off
-    return Node.newNode(nodeId)
-               .type(NodeType.NODE_RECTANGLE)
+        return Node.newNode(nodeId)
+               .type(NodeType.NODE_LIST_ITEM)
                .label(this.label)
                .position(Objects.requireNonNull(this.position))
                .size(Objects.requireNonNull(this.size))
@@ -128,9 +124,9 @@ public final class RectangleNodeBuilder<T> implements NodeBuilder<T> {
                .childNodes(childNodes)
                .customizedProperties(this.customizedProperties)
                .descriptionId(descriptionId)
-               .targetObjectId(labeltext)
+               .targetObjectId(labelText)
                .targetObjectKind("") //$NON-NLS-1$
-               .targetObjectLabel(this.label.getText())
+               .targetObjectLabel(labelText)
                .style(Objects.requireNonNull(style))
                .build();
        // @formatter:on

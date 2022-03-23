@@ -1,0 +1,5603 @@
+{
+  "id": "88a9251f-c0b2-42a4-8266-b46e38b18de4",
+  "kind": "siriusComponents://representation?type=Diagram",
+  "label": "Process Diagram",
+  "descriptiond": "15835992-4fdd-46e3-a2d1-7b35469a1767",
+  "targetObjectId": "19e60cfb-4ada-4f63-a905-68f06b7e0dcc",
+  "position": { "x": 0.0, "y": 0.0, "__typename": "Position" },
+  "size": {
+    "width": 4386.25390625,
+    "height": 781.9921837722908,
+    "__typename": "Size"
+  },
+  "autoLayout": false,
+  "nodes": [
+    {
+      "id": "10d0f001-fa68-37a6-b822-47f3f556ffdc",
+      "type": "node:rectangle",
+      "targetObjectId": "6f781030-4f49-445a-b2e8-4d85ff62c143",
+      "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=LaneSet",
+      "targetObjectLabel": "Nobel commitee for Medecine",
+      "descriptionId": "c583888c-c82b-479d-b2f2-2fbfea25a107",
+      "label": {
+        "id": "c44d276a-7959-3432-944b-b375d10a3708",
+        "type": "label:inside-center",
+        "text": "Nobel commitee for Medecine",
+        "style": {
+          "color": "#402900",
+          "fontSize": 12,
+          "bold": true,
+          "italic": false,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 1461.89013671875,
+          "y": 5.0,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 170.0390625,
+          "height": 13.798828125,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 10.86328125,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "style": {
+        "color": "#fff3ab",
+        "borderColor": "#402900",
+        "borderStyle": "Solid",
+        "borderSize": 1,
+        "borderRadius": 0,
+        "__typename": "RectangularNodeStyle"
+      },
+      "position": {
+        "x": 47.0,
+        "y": 222.1302064694787,
+        "__typename": "Position"
+      },
+      "size": {
+        "width": 2923.7802734375,
+        "height": 368.3274951213615,
+        "__typename": "Size"
+      },
+      "__typename": "Node",
+      "borderNodes": [],
+      "childNodes": [
+        {
+          "id": "02db94bf-f1a4-34eb-8e41-bb7259920314",
+          "type": "node:rectangle",
+          "targetObjectId": "8a3f35e0-1a58-4bf1-b3cf-d1a64732ec42",
+          "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=Lane",
+          "targetObjectLabel": "",
+          "descriptionId": "d2546f9b-51f7-4061-9a59-f75363fe339a",
+          "label": {
+            "id": "0cb24ef4-981c-3c7e-b186-959cb123175b",
+            "type": "label:inside-center",
+            "text": "",
+            "style": {
+              "color": "#402900",
+              "fontSize": 12,
+              "bold": true,
+              "italic": false,
+              "underline": false,
+              "strikeThrough": false,
+              "iconURL": "",
+              "__typename": "LabelStyle"
+            },
+            "position": {
+              "x": 0.0,
+              "y": 0.0,
+              "__typename": "Position"
+            },
+            "size": {
+              "width": 0.0,
+              "height": 13.798828125,
+              "__typename": "Size"
+            },
+            "alignment": {
+              "x": 0.0,
+              "y": 10.86328125,
+              "__typename": "Position"
+            },
+            "__typename": "Label"
+          },
+          "style": {
+            "color": "#fff9e1",
+            "borderColor": "#402900",
+            "borderStyle": "Solid",
+            "borderSize": 3,
+            "borderRadius": 0,
+            "__typename": "RectangularNodeStyle"
+          },
+          "position": {
+            "x": 17.0,
+            "y": 30.798828125,
+            "__typename": "Position"
+          },
+          "size": {
+            "width": 2889.7802734375,
+            "height": 325.5286669963615,
+            "__typename": "Size"
+          },
+          "__typename": "Node",
+          "borderNodes": [],
+          "childNodes": [
+            {
+              "id": "9d95f792-3dd8-3697-9c12-aa2b9199a5fd",
+              "type": "node:image",
+              "targetObjectId": "e0fb7246-af96-460d-b9f0-833551e9c6cc",
+              "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=StartEvent",
+              "targetObjectLabel": "",
+              "descriptionId": "25330a64-150f-4bcb-b822-c8e8ce9aac6e",
+              "label": {
+                "id": "13856197-1f4a-37a0-80ad-5413c03c0158",
+                "type": "label:outside-center",
+                "text": "",
+                "style": {
+                  "color": "#402900",
+                  "fontSize": 8,
+                  "bold": false,
+                  "italic": false,
+                  "underline": false,
+                  "strikeThrough": false,
+                  "iconURL": "",
+                  "__typename": "LabelStyle"
+                },
+                "position": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "__typename": "Position"
+                },
+                "size": {
+                  "width": 0.0,
+                  "height": 9.19921875,
+                  "__typename": "Size"
+                },
+                "alignment": {
+                  "x": 0.0,
+                  "y": 7.2421875,
+                  "__typename": "Position"
+                },
+                "__typename": "Label"
+              },
+              "style": {
+                "imageURL": "/api/images/icons2/nodes/start-event/timer.svg",
+                "borderColor": "#000000",
+                "borderStyle": "Solid",
+                "borderSize": 0,
+                "borderRadius": 0,
+                "__typename": "ImageNodeStyle"
+              },
+              "position": {
+                "x": 313.05859375,
+                "y": 279.52866886021616,
+                "__typename": "Position"
+              },
+              "size": {
+                "width": 34.0,
+                "height": 33.999998136145386,
+                "__typename": "Size"
+              },
+              "__typename": "Node",
+              "borderNodes": [],
+              "childNodes": []
+            },
+            {
+              "id": "04eb55f0-3cc8-3f4a-b7bb-28ac19325392",
+              "type": "node:image",
+              "targetObjectId": "2fa4f53a-4b87-44f1-924e-771a4c27c578",
+              "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=EndEvent",
+              "targetObjectLabel": "",
+              "descriptionId": "4c9900b0-c708-4b7f-8cd4-fcdb0bf72e89",
+              "label": {
+                "id": "b2a7d259-ace8-38b7-b959-c1b9e9cfacae",
+                "type": "label:outside-center",
+                "text": "",
+                "style": {
+                  "color": "#402900",
+                  "fontSize": 8,
+                  "bold": false,
+                  "italic": false,
+                  "underline": false,
+                  "strikeThrough": false,
+                  "iconURL": "",
+                  "__typename": "LabelStyle"
+                },
+                "position": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "__typename": "Position"
+                },
+                "size": {
+                  "width": 0.0,
+                  "height": 9.19921875,
+                  "__typename": "Size"
+                },
+                "alignment": {
+                  "x": 0.0,
+                  "y": 7.2421875,
+                  "__typename": "Position"
+                },
+                "__typename": "Label"
+              },
+              "style": {
+                "imageURL": "/api/images/icons2/nodes/end-event/end.svg",
+                "borderColor": "#000000",
+                "borderStyle": "Solid",
+                "borderSize": 0,
+                "borderRadius": 0,
+                "__typename": "ImageNodeStyle"
+              },
+              "position": {
+                "x": 2843.7802734375,
+                "y": 48.7988290569273,
+                "__typename": "Position"
+              },
+              "size": {
+                "width": 34.0,
+                "height": 33.999998136145386,
+                "__typename": "Size"
+              },
+              "__typename": "Node",
+              "borderNodes": [],
+              "childNodes": []
+            },
+            {
+              "id": "259b961a-7e95-3a5a-aa7d-744b2d08773e",
+              "type": "node:image",
+              "targetObjectId": "6880866e-ffcf-4cc8-95bb-687e5baa46c2",
+              "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=ExclusiveGateway",
+              "targetObjectLabel": "Expert Assistance?",
+              "descriptionId": "5f4b5b63-4a2c-482b-98ea-a361c71ac640",
+              "label": {
+                "id": "99c774ca-3c03-3ca8-9c8d-2d78a5d5dd95",
+                "type": "label:outside-center",
+                "text": "Expert Assistance?",
+                "style": {
+                  "color": "#402900",
+                  "fontSize": 8,
+                  "bold": false,
+                  "italic": false,
+                  "underline": false,
+                  "strikeThrough": false,
+                  "iconURL": "",
+                  "__typename": "LabelStyle"
+                },
+                "position": {
+                  "x": 17.0,
+                  "y": -14.19921875,
+                  "__typename": "Position"
+                },
+                "size": {
+                  "width": 68.4765625,
+                  "height": 9.19921875,
+                  "__typename": "Size"
+                },
+                "alignment": {
+                  "x": 0.0,
+                  "y": 7.2421875,
+                  "__typename": "Position"
+                },
+                "__typename": "Label"
+              },
+              "style": {
+                "imageURL": "/api/images/icons2/nodes/gateway/exclusive-gateway.svg",
+                "borderColor": "#000000",
+                "borderStyle": "Solid",
+                "borderSize": 0,
+                "borderRadius": 0,
+                "__typename": "ImageNodeStyle"
+              },
+              "position": {
+                "x": 1272.5087890625,
+                "y": 109.46549479166666,
+                "__typename": "Position"
+              },
+              "size": {
+                "width": 34.0,
+                "height": 34.0,
+                "__typename": "Size"
+              },
+              "__typename": "Node",
+              "borderNodes": [],
+              "childNodes": []
+            },
+            {
+              "id": "c2a6f082-017d-3f51-b20a-86882473f79d",
+              "type": "node:rectangle",
+              "targetObjectId": "1b9269d0-17f1-452a-a16b-6b10042e68db",
+              "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=TextAnnotation",
+              "targetObjectLabel": "_sRn88JUyEeKCl81VVvO1pQ",
+              "descriptionId": "12e8fd58-ece4-42a9-b1e7-30733af09fb7",
+              "label": {
+                "id": "23d70444-0827-37fa-812f-35eb8f183eed",
+                "type": "label:inside-center",
+                "text": "Around 3000 invitations/confidential nomination forms are sent to selected Nominators",
+                "style": {
+                  "color": "#000000",
+                  "fontSize": 8,
+                  "bold": false,
+                  "italic": false,
+                  "underline": false,
+                  "strikeThrough": false,
+                  "iconURL": "/api/images/icons/full/obj16/TextAnnotation.png",
+                  "__typename": "LabelStyle"
+                },
+                "position": {
+                  "x": 167.529296875,
+                  "y": 5.0,
+                  "__typename": "Position"
+                },
+                "size": {
+                  "width": 325.05859375,
+                  "height": 19.19921875,
+                  "__typename": "Size"
+                },
+                "alignment": {
+                  "x": 20.0,
+                  "y": 7.2421875,
+                  "__typename": "Position"
+                },
+                "__typename": "Label"
+              },
+              "style": {
+                "color": "#fff9e1",
+                "borderColor": "#402900",
+                "borderStyle": "Solid",
+                "borderSize": 0,
+                "borderRadius": 0,
+                "__typename": "RectangularNodeStyle"
+              },
+              "position": {
+                "x": 12.0,
+                "y": 137.46549479166666,
+                "__typename": "Position"
+              },
+              "size": {
+                "width": 335.05859375,
+                "height": 70.0,
+                "__typename": "Size"
+              },
+              "__typename": "Node",
+              "borderNodes": [],
+              "childNodes": []
+            },
+            {
+              "id": "71777ffb-7e96-3e6e-9a92-26ffff1c3e2c",
+              "type": "node:image",
+              "targetObjectId": "ada8b0e7-7283-401c-b716-14a8dd6574f0",
+              "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=DataObject",
+              "targetObjectLabel": "Report with Recommendations",
+              "descriptionId": "c9943e3f-daad-4ce6-9af9-a14cfd511d63",
+              "label": {
+                "id": "d2786257-3128-3a65-8db2-4c8224ef5cc6",
+                "type": "label:outside-center",
+                "text": "Report with Recommendations",
+                "style": {
+                  "color": "#402900",
+                  "fontSize": 8,
+                  "bold": false,
+                  "italic": false,
+                  "underline": false,
+                  "strikeThrough": false,
+                  "iconURL": "",
+                  "__typename": "LabelStyle"
+                },
+                "position": {
+                  "x": 17.0,
+                  "y": -14.19921875,
+                  "__typename": "Position"
+                },
+                "size": {
+                  "width": 109.3828125,
+                  "height": 9.19921875,
+                  "__typename": "Size"
+                },
+                "alignment": {
+                  "x": 0.0,
+                  "y": 7.2421875,
+                  "__typename": "Position"
+                },
+                "__typename": "Label"
+              },
+              "style": {
+                "imageURL": "/api/images/icons2/nodes/data/data-object.svg",
+                "borderColor": "#000000",
+                "borderStyle": "Solid",
+                "borderSize": 0,
+                "borderRadius": 0,
+                "__typename": "ImageNodeStyle"
+              },
+              "position": {
+                "x": 2331.041015625,
+                "y": 49.99977823523698,
+                "__typename": "Position"
+              },
+              "size": {
+                "width": 34.0,
+                "height": 31.598099779526038,
+                "__typename": "Size"
+              },
+              "__typename": "Node",
+              "borderNodes": [],
+              "childNodes": []
+            },
+            {
+              "id": "af6e3eb7-971f-3b67-ba71-4aac5fa4902f",
+              "type": "node:image",
+              "targetObjectId": "0b3ba110-6a66-41c7-a8f4-c1d32faaad6e",
+              "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=DataStore",
+              "targetObjectLabel": "",
+              "descriptionId": "37c0e5ce-ffaa-4469-bace-72abd8d6e35d",
+              "label": {
+                "id": "4e8fe63a-6904-34a6-8511-8ce2de3cd20d",
+                "type": "label:outside-center",
+                "text": "",
+                "style": {
+                  "color": "#402900",
+                  "fontSize": 8,
+                  "bold": false,
+                  "italic": false,
+                  "underline": false,
+                  "strikeThrough": false,
+                  "iconURL": "",
+                  "__typename": "LabelStyle"
+                },
+                "position": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "__typename": "Position"
+                },
+                "size": {
+                  "width": 0.0,
+                  "height": 9.19921875,
+                  "__typename": "Size"
+                },
+                "alignment": {
+                  "x": 0.0,
+                  "y": 7.2421875,
+                  "__typename": "Position"
+                },
+                "__typename": "Label"
+              },
+              "style": {
+                "imageURL": "/api/images/icons2/nodes/data/data-store.svg",
+                "borderColor": "#000000",
+                "borderStyle": "Solid",
+                "borderSize": 0,
+                "borderRadius": 0,
+                "__typename": "ImageNodeStyle"
+              },
+              "position": {
+                "x": 313.05859375,
+                "y": 227.46549479166666,
+                "__typename": "Position"
+              },
+              "size": {
+                "width": 34.0,
+                "height": 32.063174068549465,
+                "__typename": "Size"
+              },
+              "__typename": "Node",
+              "borderNodes": [],
+              "childNodes": []
+            },
+            {
+              "id": "0f7f80a5-0054-3590-8eae-adce32eb3897",
+              "type": "node:image",
+              "targetObjectId": "33c1c93f-1041-49b2-aa8b-5f2d24a67c93",
+              "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=DataStore",
+              "targetObjectLabel": "",
+              "descriptionId": "37c0e5ce-ffaa-4469-bace-72abd8d6e35d",
+              "label": {
+                "id": "516cfc11-34f4-36d1-af32-8b933788e22e",
+                "type": "label:outside-center",
+                "text": "",
+                "style": {
+                  "color": "#402900",
+                  "fontSize": 8,
+                  "bold": false,
+                  "italic": false,
+                  "underline": false,
+                  "strikeThrough": false,
+                  "iconURL": "",
+                  "__typename": "LabelStyle"
+                },
+                "position": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "__typename": "Position"
+                },
+                "size": {
+                  "width": 0.0,
+                  "height": 9.19921875,
+                  "__typename": "Size"
+                },
+                "alignment": {
+                  "x": 0.0,
+                  "y": 7.2421875,
+                  "__typename": "Position"
+                },
+                "__typename": "Label"
+              },
+              "style": {
+                "imageURL": "/api/images/icons2/nodes/data/data-store.svg",
+                "borderColor": "#000000",
+                "borderStyle": "Solid",
+                "borderSize": 0,
+                "borderRadius": 0,
+                "__typename": "ImageNodeStyle"
+              },
+              "position": {
+                "x": 767.13671875,
+                "y": 110.43390775739194,
+                "__typename": "Position"
+              },
+              "size": {
+                "width": 34.0,
+                "height": 32.063174068549465,
+                "__typename": "Size"
+              },
+              "__typename": "Node",
+              "borderNodes": [],
+              "childNodes": []
+            },
+            {
+              "id": "58dec097-d74f-35e3-9985-1df50dccc68a",
+              "type": "node:image",
+              "targetObjectId": "5ad930e2-dd0c-4b8b-ae6c-97ceddeef959",
+              "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=DataStore",
+              "targetObjectLabel": "",
+              "descriptionId": "37c0e5ce-ffaa-4469-bace-72abd8d6e35d",
+              "label": {
+                "id": "4ba11980-cee9-36fe-983f-9ae336e0296c",
+                "type": "label:outside-center",
+                "text": "",
+                "style": {
+                  "color": "#402900",
+                  "fontSize": 8,
+                  "bold": false,
+                  "italic": false,
+                  "underline": false,
+                  "strikeThrough": false,
+                  "iconURL": "",
+                  "__typename": "LabelStyle"
+                },
+                "position": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "__typename": "Position"
+                },
+                "size": {
+                  "width": 0.0,
+                  "height": 9.19921875,
+                  "__typename": "Size"
+                },
+                "alignment": {
+                  "x": 0.0,
+                  "y": 7.2421875,
+                  "__typename": "Position"
+                },
+                "__typename": "Label"
+              },
+              "style": {
+                "imageURL": "/api/images/icons2/nodes/data/data-store.svg",
+                "borderColor": "#000000",
+                "borderStyle": "Solid",
+                "borderSize": 0,
+                "borderRadius": 0,
+                "__typename": "ImageNodeStyle"
+              },
+              "position": {
+                "x": 1817.77001953125,
+                "y": 38.10057442405861,
+                "__typename": "Position"
+              },
+              "size": {
+                "width": 34.0,
+                "height": 32.063174068549465,
+                "__typename": "Size"
+              },
+              "__typename": "Node",
+              "borderNodes": [],
+              "childNodes": []
+            },
+            {
+              "id": "e3b1873a-fc4d-3362-91ee-6450b2c2db0d",
+              "type": "node:image",
+              "targetObjectId": "eb7cf2f8-b6fd-46d7-9bcf-8e2265e1892b",
+              "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=DataStore",
+              "targetObjectLabel": "",
+              "descriptionId": "37c0e5ce-ffaa-4469-bace-72abd8d6e35d",
+              "label": {
+                "id": "0f07c2cf-8b17-361d-83c3-56e695138a31",
+                "type": "label:outside-center",
+                "text": "",
+                "style": {
+                  "color": "#402900",
+                  "fontSize": 8,
+                  "bold": false,
+                  "italic": false,
+                  "underline": false,
+                  "strikeThrough": false,
+                  "iconURL": "",
+                  "__typename": "LabelStyle"
+                },
+                "position": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "__typename": "Position"
+                },
+                "size": {
+                  "width": 0.0,
+                  "height": 9.19921875,
+                  "__typename": "Size"
+                },
+                "alignment": {
+                  "x": 0.0,
+                  "y": 7.2421875,
+                  "__typename": "Position"
+                },
+                "__typename": "Label"
+              },
+              "style": {
+                "imageURL": "/api/images/icons2/nodes/data/data-store.svg",
+                "borderColor": "#000000",
+                "borderStyle": "Solid",
+                "borderSize": 0,
+                "borderRadius": 0,
+                "__typename": "ImageNodeStyle"
+              },
+              "position": {
+                "x": 1272.5087890625,
+                "y": 163.46549479166666,
+                "__typename": "Position"
+              },
+              "size": {
+                "width": 34.0,
+                "height": 32.063174068549465,
+                "__typename": "Size"
+              },
+              "__typename": "Node",
+              "borderNodes": [],
+              "childNodes": []
+            },
+            {
+              "id": "8654a8c9-bfb5-3229-bcef-bbc1ac785913",
+              "type": "node:rectangle",
+              "targetObjectId": "15065210-168e-4173-b5d5-de0b37424ff4",
+              "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=SendTask",
+              "targetObjectLabel": "Send Nomination Form",
+              "descriptionId": "6ff1fd56-ac0e-41d0-88b9-0cfe066fc730",
+              "label": {
+                "id": "74fa356e-7212-3833-9f7b-8669571cc993",
+                "type": "label:inside-center",
+                "text": "Send Nomination Form",
+                "style": {
+                  "color": "#402900",
+                  "fontSize": 9,
+                  "bold": true,
+                  "italic": false,
+                  "underline": false,
+                  "strikeThrough": false,
+                  "iconURL": "/api/images/icons/full/obj16/SendTask.png",
+                  "__typename": "LabelStyle"
+                },
+                "position": {
+                  "x": 90.01953125,
+                  "y": 5.0,
+                  "__typename": "Position"
+                },
+                "size": {
+                  "width": 119.0,
+                  "height": 10.34912109375,
+                  "__typename": "Size"
+                },
+                "alignment": {
+                  "x": 20.0,
+                  "y": 8.1474609375,
+                  "__typename": "Position"
+                },
+                "__typename": "Label"
+              },
+              "style": {
+                "color": "#fff3ab",
+                "borderColor": "#402900",
+                "borderStyle": "Solid",
+                "borderSize": 1,
+                "borderRadius": 20,
+                "__typename": "RectangularNodeStyle"
+              },
+              "position": {
+                "x": 367.05859375,
+                "y": 208.4970818259414,
+                "__typename": "Position"
+              },
+              "size": {
+                "width": 180.0390625,
+                "height": 70.0,
+                "__typename": "Size"
+              },
+              "__typename": "Node",
+              "borderNodes": [],
+              "childNodes": []
+            },
+            {
+              "id": "e40d9052-ce1d-380a-8146-8105adeecd04",
+              "type": "node:rectangle",
+              "targetObjectId": "c8b2fa47-e72b-4b91-a9f1-a0377eee5c25",
+              "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=ReceiveTask",
+              "targetObjectLabel": "Collect Completed form",
+              "descriptionId": "6ff1fd56-ac0e-41d0-88b9-0cfe066fc730",
+              "label": {
+                "id": "e55b3c09-2e4d-3161-b999-ab9a8159db22",
+                "type": "label:inside-center",
+                "text": "Collect Completed form",
+                "style": {
+                  "color": "#402900",
+                  "fontSize": 9,
+                  "bold": true,
+                  "italic": false,
+                  "underline": false,
+                  "strikeThrough": false,
+                  "iconURL": "/api/images/icons/full/obj16/ReceiveTask.png",
+                  "__typename": "LabelStyle"
+                },
+                "position": {
+                  "x": 90.01953125,
+                  "y": 5.0,
+                  "__typename": "Position"
+                },
+                "size": {
+                  "width": 121.50927734375,
+                  "height": 10.34912109375,
+                  "__typename": "Size"
+                },
+                "alignment": {
+                  "x": 20.0,
+                  "y": 8.1474609375,
+                  "__typename": "Position"
+                },
+                "__typename": "Label"
+              },
+              "style": {
+                "color": "#fff3ab",
+                "borderColor": "#402900",
+                "borderStyle": "Solid",
+                "borderSize": 1,
+                "borderRadius": 20,
+                "__typename": "RectangularNodeStyle"
+              },
+              "position": {
+                "x": 567.09765625,
+                "y": 103.13216145833333,
+                "__typename": "Position"
+              },
+              "size": {
+                "width": 180.0390625,
+                "height": 70.0,
+                "__typename": "Size"
+              },
+              "__typename": "Node",
+              "borderNodes": [],
+              "childNodes": []
+            },
+            {
+              "id": "7a256769-672d-37b0-8f7b-ab1854d23a9d",
+              "type": "node:rectangle",
+              "targetObjectId": "739556cd-5fa5-4506-8fe7-fe741f37ee2b",
+              "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=UserTask",
+              "targetObjectLabel": "Screen & Select Preliminary Candidates",
+              "descriptionId": "6ff1fd56-ac0e-41d0-88b9-0cfe066fc730",
+              "label": {
+                "id": "8e88ba58-f8f8-31e6-afdc-152e7fc99311",
+                "type": "label:inside-center",
+                "text": "Screen & Select Preliminary Candidates",
+                "style": {
+                  "color": "#402900",
+                  "fontSize": 9,
+                  "bold": true,
+                  "italic": false,
+                  "underline": false,
+                  "strikeThrough": false,
+                  "iconURL": "/api/images/icons/full/obj16/UserTask.png",
+                  "__typename": "LabelStyle"
+                },
+                "position": {
+                  "x": 100.286865234375,
+                  "y": 5.0,
+                  "__typename": "Position"
+                },
+                "size": {
+                  "width": 190.57373046875,
+                  "height": 10.34912109375,
+                  "__typename": "Size"
+                },
+                "alignment": {
+                  "x": 20.0,
+                  "y": 8.1474609375,
+                  "__typename": "Position"
+                },
+                "__typename": "Label"
+              },
+              "style": {
+                "color": "#fff3ab",
+                "borderColor": "#402900",
+                "borderStyle": "Solid",
+                "borderSize": 1,
+                "borderRadius": 20,
+                "__typename": "RectangularNodeStyle"
+              },
+              "position": {
+                "x": 821.13671875,
+                "y": 103.13216145833333,
+                "__typename": "Position"
+              },
+              "size": {
+                "width": 200.57373046875,
+                "height": 70.0,
+                "__typename": "Size"
+              },
+              "__typename": "Node",
+              "borderNodes": [],
+              "childNodes": []
+            },
+            {
+              "id": "311a59e3-41e5-3939-b6aa-e4d6fa24f491",
+              "type": "node:rectangle",
+              "targetObjectId": "106f8bfd-ee1c-4ec0-9b65-a6004a0c1576",
+              "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=UserTask",
+              "targetObjectLabel": "Determine Need for Expert Assistance",
+              "descriptionId": "6ff1fd56-ac0e-41d0-88b9-0cfe066fc730",
+              "label": {
+                "id": "3be6ffc1-01f8-3243-b851-84a37fdf2b42",
+                "type": "label:inside-center",
+                "text": "Determine Need for Expert Assistance",
+                "style": {
+                  "color": "#402900",
+                  "fontSize": 9,
+                  "bold": true,
+                  "italic": false,
+                  "underline": false,
+                  "strikeThrough": false,
+                  "iconURL": "/api/images/icons/full/obj16/UserTask.png",
+                  "__typename": "LabelStyle"
+                },
+                "position": {
+                  "x": 96.780029296875,
+                  "y": 5.0,
+                  "__typename": "Position"
+                },
+                "size": {
+                  "width": 183.56005859375,
+                  "height": 10.34912109375,
+                  "__typename": "Size"
+                },
+                "alignment": {
+                  "x": 20.0,
+                  "y": 8.1474609375,
+                  "__typename": "Position"
+                },
+                "__typename": "Label"
+              },
+              "style": {
+                "color": "#fff3ab",
+                "borderColor": "#402900",
+                "borderStyle": "Solid",
+                "borderSize": 1,
+                "borderRadius": 20,
+                "__typename": "RectangularNodeStyle"
+              },
+              "position": {
+                "x": 1041.71044921875,
+                "y": 91.46549479166666,
+                "__typename": "Position"
+              },
+              "size": {
+                "width": 193.56005859375,
+                "height": 70.0,
+                "__typename": "Size"
+              },
+              "__typename": "Node",
+              "borderNodes": [],
+              "childNodes": []
+            },
+            {
+              "id": "155e9faf-5948-34b5-a003-ea014079089c",
+              "type": "node:rectangle",
+              "targetObjectId": "0bab49a4-4328-4af2-a940-8f4f5779047f",
+              "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=SendTask",
+              "targetObjectLabel": "Send List of preliminary Candidates",
+              "descriptionId": "6ff1fd56-ac0e-41d0-88b9-0cfe066fc730",
+              "label": {
+                "id": "58556bb4-75f6-3479-af1a-be6e63754f1d",
+                "type": "label:inside-center",
+                "text": "Send List of preliminary Candidates",
+                "style": {
+                  "color": "#402900",
+                  "fontSize": 9,
+                  "bold": true,
+                  "italic": false,
+                  "underline": false,
+                  "strikeThrough": false,
+                  "iconURL": "/api/images/icons/full/obj16/SendTask.png",
+                  "__typename": "LabelStyle"
+                },
+                "position": {
+                  "x": 91.765869140625,
+                  "y": 5.0,
+                  "__typename": "Position"
+                },
+                "size": {
+                  "width": 173.53173828125,
+                  "height": 10.34912109375,
+                  "__typename": "Size"
+                },
+                "alignment": {
+                  "x": 20.0,
+                  "y": 8.1474609375,
+                  "__typename": "Position"
+                },
+                "__typename": "Label"
+              },
+              "style": {
+                "color": "#fff3ab",
+                "borderColor": "#402900",
+                "borderStyle": "Solid",
+                "borderSize": 1,
+                "borderRadius": 20,
+                "__typename": "RectangularNodeStyle"
+              },
+              "position": {
+                "x": 1376.1962890625,
+                "y": 131.798828125,
+                "__typename": "Position"
+              },
+              "size": {
+                "width": 183.53173828125,
+                "height": 70.0,
+                "__typename": "Size"
+              },
+              "__typename": "Node",
+              "borderNodes": [],
+              "childNodes": []
+            },
+            {
+              "id": "0cf98301-22c9-35d8-8b92-7bd2bb6ea9a1",
+              "type": "node:rectangle",
+              "targetObjectId": "ecff9ba7-9f78-4d78-a7eb-2cd4cf8ebc9c",
+              "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=ReceiveTask",
+              "targetObjectLabel": "Collect Candidates Work Assesment Report",
+              "descriptionId": "6ff1fd56-ac0e-41d0-88b9-0cfe066fc730",
+              "label": {
+                "id": "bd1e682d-c281-3c3b-b0a9-e1a12473a9c9",
+                "type": "label:inside-center",
+                "text": "Collect Candidates Work Assesment Report",
+                "style": {
+                  "color": "#402900",
+                  "fontSize": 9,
+                  "bold": true,
+                  "italic": false,
+                  "underline": false,
+                  "strikeThrough": false,
+                  "iconURL": "/api/images/icons/full/obj16/ReceiveTask.png",
+                  "__typename": "LabelStyle"
+                },
+                "position": {
+                  "x": 109.02099609375,
+                  "y": 5.0,
+                  "__typename": "Position"
+                },
+                "size": {
+                  "width": 208.0419921875,
+                  "height": 10.34912109375,
+                  "__typename": "Size"
+                },
+                "alignment": {
+                  "x": 20.0,
+                  "y": 8.1474609375,
+                  "__typename": "Position"
+                },
+                "__typename": "Label"
+              },
+              "style": {
+                "color": "#fff3ab",
+                "borderColor": "#402900",
+                "borderStyle": "Solid",
+                "borderSize": 1,
+                "borderRadius": 20,
+                "__typename": "RectangularNodeStyle"
+              },
+              "position": {
+                "x": 1579.72802734375,
+                "y": 30.798828125,
+                "__typename": "Position"
+              },
+              "size": {
+                "width": 218.0419921875,
+                "height": 70.0,
+                "__typename": "Size"
+              },
+              "__typename": "Node",
+              "borderNodes": [],
+              "childNodes": []
+            },
+            {
+              "id": "9cee4a6e-8c3a-35b2-9bc1-333800c16e79",
+              "type": "node:rectangle",
+              "targetObjectId": "ba3bb8dd-b96a-40f7-9679-536650ad17a4",
+              "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=UserTask",
+              "targetObjectLabel": "Select Final Candidates and their Works",
+              "descriptionId": "6ff1fd56-ac0e-41d0-88b9-0cfe066fc730",
+              "label": {
+                "id": "b851e55c-e27d-3772-9ab4-ca4cf18d717f",
+                "type": "label:inside-center",
+                "text": "Select Final Candidates and their Works",
+                "style": {
+                  "color": "#402900",
+                  "fontSize": 9,
+                  "bold": true,
+                  "italic": false,
+                  "underline": false,
+                  "strikeThrough": false,
+                  "iconURL": "/api/images/icons/full/obj16/UserTask.png",
+                  "__typename": "LabelStyle"
+                },
+                "position": {
+                  "x": 100.770263671875,
+                  "y": 5.0,
+                  "__typename": "Position"
+                },
+                "size": {
+                  "width": 191.54052734375,
+                  "height": 10.34912109375,
+                  "__typename": "Size"
+                },
+                "alignment": {
+                  "x": 20.0,
+                  "y": 8.1474609375,
+                  "__typename": "Position"
+                },
+                "__typename": "Label"
+              },
+              "style": {
+                "color": "#fff3ab",
+                "borderColor": "#402900",
+                "borderStyle": "Solid",
+                "borderSize": 1,
+                "borderRadius": 20,
+                "__typename": "RectangularNodeStyle"
+              },
+              "position": {
+                "x": 1871.77001953125,
+                "y": 30.798828125,
+                "__typename": "Position"
+              },
+              "size": {
+                "width": 201.54052734375,
+                "height": 70.0,
+                "__typename": "Size"
+              },
+              "__typename": "Node",
+              "borderNodes": [],
+              "childNodes": []
+            },
+            {
+              "id": "a69e6eb2-2ded-3e57-9aef-4eb7a9c40bec",
+              "type": "node:rectangle",
+              "targetObjectId": "45f38f76-9f4c-484a-a456-fac91ae2e72c",
+              "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=Task",
+              "targetObjectLabel": "Write Recommendation Report",
+              "descriptionId": "6ff1fd56-ac0e-41d0-88b9-0cfe066fc730",
+              "label": {
+                "id": "57d94f17-008a-3a60-9468-09c7745a1246",
+                "type": "label:inside-center",
+                "text": "Write Recommendation Report",
+                "style": {
+                  "color": "#402900",
+                  "fontSize": 9,
+                  "bold": true,
+                  "italic": false,
+                  "underline": false,
+                  "strikeThrough": false,
+                  "iconURL": "/api/images/icons/full/obj16/Task.png",
+                  "__typename": "LabelStyle"
+                },
+                "position": {
+                  "x": 90.01953125,
+                  "y": 5.0,
+                  "__typename": "Position"
+                },
+                "size": {
+                  "width": 152.01171875,
+                  "height": 10.34912109375,
+                  "__typename": "Size"
+                },
+                "alignment": {
+                  "x": 20.0,
+                  "y": 8.1474609375,
+                  "__typename": "Position"
+                },
+                "__typename": "Label"
+              },
+              "style": {
+                "color": "#fff3ab",
+                "borderColor": "#402900",
+                "borderStyle": "Solid",
+                "borderSize": 1,
+                "borderRadius": 20,
+                "__typename": "RectangularNodeStyle"
+              },
+              "position": {
+                "x": 2093.310546875,
+                "y": 42.465494791666664,
+                "__typename": "Position"
+              },
+              "size": {
+                "width": 180.0390625,
+                "height": 70.0,
+                "__typename": "Size"
+              },
+              "__typename": "Node",
+              "borderNodes": [],
+              "childNodes": []
+            },
+            {
+              "id": "c1453f09-50e3-3ab0-91c1-1d0b24152588",
+              "type": "node:rectangle",
+              "targetObjectId": "209ec8d6-47c4-4c1c-8c70-595186b6d0a9",
+              "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=SendTask",
+              "targetObjectLabel": "Submit Report with Reconmmendations",
+              "descriptionId": "6ff1fd56-ac0e-41d0-88b9-0cfe066fc730",
+              "label": {
+                "id": "c0b8201e-34c9-3acc-b326-ae998278bcb9",
+                "type": "label:inside-center",
+                "text": "Submit Report with Reconmmendations",
+                "style": {
+                  "color": "#402900",
+                  "fontSize": 9,
+                  "bold": true,
+                  "italic": false,
+                  "underline": false,
+                  "strikeThrough": false,
+                  "iconURL": "/api/images/icons/full/obj16/SendTask.png",
+                  "__typename": "LabelStyle"
+                },
+                "position": {
+                  "x": 100.50439453125,
+                  "y": 5.0,
+                  "__typename": "Position"
+                },
+                "size": {
+                  "width": 191.0087890625,
+                  "height": 10.34912109375,
+                  "__typename": "Size"
+                },
+                "alignment": {
+                  "x": 20.0,
+                  "y": 8.1474609375,
+                  "__typename": "Position"
+                },
+                "__typename": "Label"
+              },
+              "style": {
+                "color": "#fff3ab",
+                "borderColor": "#402900",
+                "borderStyle": "Solid",
+                "borderSize": 1,
+                "borderRadius": 20,
+                "__typename": "RectangularNodeStyle"
+              },
+              "position": {
+                "x": 2422.732421875,
+                "y": 42.465494791666664,
+                "__typename": "Position"
+              },
+              "size": {
+                "width": 201.0087890625,
+                "height": 70.0,
+                "__typename": "Size"
+              },
+              "__typename": "Node",
+              "borderNodes": [],
+              "childNodes": []
+            },
+            {
+              "id": "0332dc2f-c526-38f0-bb7a-cdb872a67dab",
+              "type": "node:rectangle",
+              "targetObjectId": "32b3934a-3f83-4aea-b1c2-49e45f8dd46e",
+              "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=UserTask",
+              "targetObjectLabel": "Hold Nobel Prize",
+              "descriptionId": "6ff1fd56-ac0e-41d0-88b9-0cfe066fc730",
+              "label": {
+                "id": "3d6f97a7-b6fd-3544-80e2-3fa7538fb2bb",
+                "type": "label:inside-center",
+                "text": "Hold Nobel Prize",
+                "style": {
+                  "color": "#402900",
+                  "fontSize": 9,
+                  "bold": true,
+                  "italic": false,
+                  "underline": false,
+                  "strikeThrough": false,
+                  "iconURL": "/api/images/icons/full/obj16/UserTask.png",
+                  "__typename": "LabelStyle"
+                },
+                "position": {
+                  "x": 90.01953125,
+                  "y": 5.0,
+                  "__typename": "Position"
+                },
+                "size": {
+                  "width": 91.5078125,
+                  "height": 10.34912109375,
+                  "__typename": "Size"
+                },
+                "alignment": {
+                  "x": 20.0,
+                  "y": 8.1474609375,
+                  "__typename": "Position"
+                },
+                "__typename": "Label"
+              },
+              "style": {
+                "color": "#fff3ab",
+                "borderColor": "#402900",
+                "borderStyle": "Solid",
+                "borderSize": 1,
+                "borderRadius": 20,
+                "__typename": "RectangularNodeStyle"
+              },
+              "position": {
+                "x": 2643.7412109375,
+                "y": 30.798828125,
+                "__typename": "Position"
+              },
+              "size": {
+                "width": 180.0390625,
+                "height": 70.0,
+                "__typename": "Size"
+              },
+              "__typename": "Node",
+              "borderNodes": [],
+              "childNodes": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "7c727fd1-ef0f-3e3c-b9a2-cc8754fa7742",
+      "type": "node:rectangle",
+      "targetObjectId": "2b0d8ab6-a052-4871-88d8-36fc1d9cbea5",
+      "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=LaneSet",
+      "targetObjectLabel": "Nominator",
+      "descriptionId": "c583888c-c82b-479d-b2f2-2fbfea25a107",
+      "label": {
+        "id": "f28a29cf-ca80-3e90-88a7-6ab3d202a3d1",
+        "type": "label:inside-center",
+        "text": "Nominator",
+        "style": {
+          "color": "#402900",
+          "fontSize": 12,
+          "bold": true,
+          "italic": false,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 383.869140625,
+          "y": 5.0,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 60.0,
+          "height": 13.798828125,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 10.86328125,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "style": {
+        "color": "#fff3ab",
+        "borderColor": "#402900",
+        "borderStyle": "Solid",
+        "borderSize": 1,
+        "borderRadius": 0,
+        "__typename": "RectangularNodeStyle"
+      },
+      "position": {
+        "x": 3120.7802734375,
+        "y": 507.1953106361454,
+        "__typename": "Position"
+      },
+      "size": {
+        "width": 767.73828125,
+        "height": 209.5976543861454,
+        "__typename": "Size"
+      },
+      "__typename": "Node",
+      "borderNodes": [],
+      "childNodes": [
+        {
+          "id": "4b1b37f8-8e1e-371b-9475-1aa365f84e59",
+          "type": "node:rectangle",
+          "targetObjectId": "fab59951-1452-42e6-b9da-a2261a39feb0",
+          "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=Lane",
+          "targetObjectLabel": " ",
+          "descriptionId": "d2546f9b-51f7-4061-9a59-f75363fe339a",
+          "label": {
+            "id": "16695f80-d1f6-3273-9f89-1cd1eef5f14e",
+            "type": "label:inside-center",
+            "text": " ",
+            "style": {
+              "color": "#402900",
+              "fontSize": 12,
+              "bold": true,
+              "italic": false,
+              "underline": false,
+              "strikeThrough": false,
+              "iconURL": "",
+              "__typename": "LabelStyle"
+            },
+            "position": {
+              "x": 366.869140625,
+              "y": 5.0,
+              "__typename": "Position"
+            },
+            "size": {
+              "width": 3.333984375,
+              "height": 13.798828125,
+              "__typename": "Size"
+            },
+            "alignment": {
+              "x": 0.0,
+              "y": 10.86328125,
+              "__typename": "Position"
+            },
+            "__typename": "Label"
+          },
+          "style": {
+            "color": "#fff9e1",
+            "borderColor": "#402900",
+            "borderStyle": "Solid",
+            "borderSize": 3,
+            "borderRadius": 0,
+            "__typename": "RectangularNodeStyle"
+          },
+          "position": {
+            "x": 17.0,
+            "y": 30.798828125,
+            "__typename": "Position"
+          },
+          "size": {
+            "width": 733.73828125,
+            "height": 166.7988262611454,
+            "__typename": "Size"
+          },
+          "__typename": "Node",
+          "borderNodes": [],
+          "childNodes": [
+            {
+              "id": "b2201f30-e8a1-3e64-88a7-c4b9d7aa7341",
+              "type": "node:image",
+              "targetObjectId": "1ac7795a-6f35-412c-8609-f303b2e118f6",
+              "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=StartEvent",
+              "targetObjectLabel": "",
+              "descriptionId": "25330a64-150f-4bcb-b822-c8e8ce9aac6e",
+              "label": {
+                "id": "e267b132-0881-3aa6-97a7-dc85e709e5b4",
+                "type": "label:outside-center",
+                "text": "",
+                "style": {
+                  "color": "#402900",
+                  "fontSize": 8,
+                  "bold": false,
+                  "italic": false,
+                  "underline": false,
+                  "strikeThrough": false,
+                  "iconURL": "",
+                  "__typename": "LabelStyle"
+                },
+                "position": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "__typename": "Position"
+                },
+                "size": {
+                  "width": 0.0,
+                  "height": 9.19921875,
+                  "__typename": "Size"
+                },
+                "alignment": {
+                  "x": 0.0,
+                  "y": 7.2421875,
+                  "__typename": "Position"
+                },
+                "__typename": "Label"
+              },
+              "style": {
+                "imageURL": "/api/images/icons2/nodes/start-event/message.svg",
+                "borderColor": "#000000",
+                "borderStyle": "Solid",
+                "borderSize": 0,
+                "borderRadius": 0,
+                "__typename": "ImageNodeStyle"
+              },
+              "position": {
+                "x": 96.482421875,
+                "y": 120.798828125,
+                "__typename": "Position"
+              },
+              "size": {
+                "width": 34.0,
+                "height": 33.999998136145386,
+                "__typename": "Size"
+              },
+              "__typename": "Node",
+              "borderNodes": [],
+              "childNodes": []
+            },
+            {
+              "id": "906845a4-7155-3d9b-a787-d762afbeb7f5",
+              "type": "node:image",
+              "targetObjectId": "ddb829ea-280d-4acd-884b-9f8ddf0ebb9a",
+              "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=EndEvent",
+              "targetObjectLabel": "Nomination form(s) Sent",
+              "descriptionId": "4c9900b0-c708-4b7f-8cd4-fcdb0bf72e89",
+              "label": {
+                "id": "1a74192e-739f-3476-82c0-1b58f77ddfb4",
+                "type": "label:outside-center",
+                "text": "Nomination form(s) Sent",
+                "style": {
+                  "color": "#402900",
+                  "fontSize": 8,
+                  "bold": false,
+                  "italic": false,
+                  "underline": false,
+                  "strikeThrough": false,
+                  "iconURL": "",
+                  "__typename": "LabelStyle"
+                },
+                "position": {
+                  "x": 17.0,
+                  "y": -14.19921875,
+                  "__typename": "Position"
+                },
+                "size": {
+                  "width": 86.6953125,
+                  "height": 9.19921875,
+                  "__typename": "Size"
+                },
+                "alignment": {
+                  "x": 0.0,
+                  "y": 7.2421875,
+                  "__typename": "Position"
+                },
+                "__typename": "Label"
+              },
+              "style": {
+                "imageURL": "/api/images/icons2/nodes/end-event/end.svg",
+                "borderColor": "#000000",
+                "borderStyle": "Solid",
+                "borderSize": 0,
+                "borderRadius": 0,
+                "__typename": "ImageNodeStyle"
+              },
+              "position": {
+                "x": 661.390625,
+                "y": 48.7988290569273,
+                "__typename": "Position"
+              },
+              "size": {
+                "width": 34.0,
+                "height": 33.999998136145386,
+                "__typename": "Size"
+              },
+              "__typename": "Node",
+              "borderNodes": [],
+              "childNodes": []
+            },
+            {
+              "id": "7c720596-5b17-31df-afe6-73279cc5e12a",
+              "type": "node:rectangle",
+              "targetObjectId": "df86ff71-aa92-486c-a545-659d640b9d00",
+              "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=TextAnnotation",
+              "targetObjectLabel": "_Ur4M8JUtEeKSM8dNXYpfyA",
+              "descriptionId": "12e8fd58-ece4-42a9-b1e7-30733af09fb7",
+              "label": {
+                "id": "28a91844-0b5f-394a-b3db-132a17a7fd08",
+                "type": "label:inside-center",
+                "text": "Nominator may nominate one or more Nominees",
+                "style": {
+                  "color": "#000000",
+                  "fontSize": 8,
+                  "bold": false,
+                  "italic": false,
+                  "underline": false,
+                  "strikeThrough": false,
+                  "iconURL": "/api/images/icons/full/obj16/TextAnnotation.png",
+                  "__typename": "LabelStyle"
+                },
+                "position": {
+                  "x": 101.482421875,
+                  "y": 5.0,
+                  "__typename": "Position"
+                },
+                "size": {
+                  "width": 192.96484375,
+                  "height": 19.19921875,
+                  "__typename": "Size"
+                },
+                "alignment": {
+                  "x": 20.0,
+                  "y": 7.2421875,
+                  "__typename": "Position"
+                },
+                "__typename": "Label"
+              },
+              "style": {
+                "color": "#fff9e1",
+                "borderColor": "#402900",
+                "borderStyle": "Solid",
+                "borderSize": 0,
+                "borderRadius": 0,
+                "__typename": "RectangularNodeStyle"
+              },
+              "position": {
+                "x": 12.0,
+                "y": 30.798828125,
+                "__typename": "Position"
+              },
+              "size": {
+                "width": 202.96484375,
+                "height": 70.0,
+                "__typename": "Size"
+              },
+              "__typename": "Node",
+              "borderNodes": [],
+              "childNodes": []
+            },
+            {
+              "id": "f96a8635-2b94-3e67-b4b4-bf294ed32bcb",
+              "type": "node:rectangle",
+              "targetObjectId": "e6cb4426-2fcc-4fc8-b35a-accc9caa4cdb",
+              "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=UserTask",
+              "targetObjectLabel": "Identify Potentiel Nominee(s)",
+              "descriptionId": "6ff1fd56-ac0e-41d0-88b9-0cfe066fc730",
+              "label": {
+                "id": "acbbbbb4-0768-34a9-9230-fdfce0710465",
+                "type": "label:inside-center",
+                "text": "Identify Potentiel Nominee(s)",
+                "style": {
+                  "color": "#402900",
+                  "fontSize": 9,
+                  "bold": true,
+                  "italic": false,
+                  "underline": false,
+                  "strikeThrough": false,
+                  "iconURL": "/api/images/icons/full/obj16/UserTask.png",
+                  "__typename": "LabelStyle"
+                },
+                "position": {
+                  "x": 90.01953125,
+                  "y": 5.0,
+                  "__typename": "Position"
+                },
+                "size": {
+                  "width": 144.013671875,
+                  "height": 10.34912109375,
+                  "__typename": "Size"
+                },
+                "alignment": {
+                  "x": 20.0,
+                  "y": 8.1474609375,
+                  "__typename": "Position"
+                },
+                "__typename": "Label"
+              },
+              "style": {
+                "color": "#fff3ab",
+                "borderColor": "#402900",
+                "borderStyle": "Solid",
+                "borderSize": 1,
+                "borderRadius": 20,
+                "__typename": "RectangularNodeStyle"
+              },
+              "position": {
+                "x": 234.96484375,
+                "y": 42.465494791666664,
+                "__typename": "Position"
+              },
+              "size": {
+                "width": 180.0390625,
+                "height": 70.0,
+                "__typename": "Size"
+              },
+              "__typename": "Node",
+              "borderNodes": [],
+              "childNodes": []
+            },
+            {
+              "id": "3a3e7a5d-80b8-3b6f-8449-1bb5f42b4bb6",
+              "type": "node:rectangle",
+              "targetObjectId": "a759e054-521a-411a-944c-3932b1238715",
+              "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=SendTask",
+              "targetObjectLabel": "Send Nominee Completed Form(s)",
+              "descriptionId": "6ff1fd56-ac0e-41d0-88b9-0cfe066fc730",
+              "label": {
+                "id": "a5220faf-03b6-3171-bf96-4037e01e7f02",
+                "type": "label:inside-center",
+                "text": "Send Nominee Completed Form(s)",
+                "style": {
+                  "color": "#402900",
+                  "fontSize": 9,
+                  "bold": true,
+                  "italic": false,
+                  "underline": false,
+                  "strikeThrough": false,
+                  "iconURL": "/api/images/icons/full/obj16/SendTask.png",
+                  "__typename": "LabelStyle"
+                },
+                "position": {
+                  "x": 90.01953125,
+                  "y": 5.0,
+                  "__typename": "Position"
+                },
+                "size": {
+                  "width": 167.515625,
+                  "height": 10.34912109375,
+                  "__typename": "Size"
+                },
+                "alignment": {
+                  "x": 20.0,
+                  "y": 8.1474609375,
+                  "__typename": "Position"
+                },
+                "__typename": "Label"
+              },
+              "style": {
+                "color": "#fff3ab",
+                "borderColor": "#402900",
+                "borderStyle": "Solid",
+                "borderSize": 1,
+                "borderRadius": 20,
+                "__typename": "RectangularNodeStyle"
+              },
+              "position": {
+                "x": 435.00390625,
+                "y": 42.465494791666664,
+                "__typename": "Position"
+              },
+              "size": {
+                "width": 180.0390625,
+                "height": 70.0,
+                "__typename": "Size"
+              },
+              "__typename": "Node",
+              "borderNodes": [],
+              "childNodes": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "4944533a-6c6a-3c76-8bfd-ed86e47f2b7c",
+      "type": "node:rectangle",
+      "targetObjectId": "c466d45e-3156-49d5-af93-448840df9e72",
+      "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=LaneSet",
+      "targetObjectLabel": "Expert",
+      "descriptionId": "c583888c-c82b-479d-b2f2-2fbfea25a107",
+      "label": {
+        "id": "f4878e4a-1115-36ac-bc8a-10614f419321",
+        "type": "label:inside-center",
+        "text": "Expert",
+        "style": {
+          "color": "#402900",
+          "fontSize": 12,
+          "bold": true,
+          "italic": false,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 440.21728515625,
+          "y": 5.0,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 37.34765625,
+          "height": 13.798828125,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 10.86328125,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "style": {
+        "color": "#fff3ab",
+        "borderColor": "#402900",
+        "borderStyle": "Solid",
+        "borderSize": 1,
+        "borderRadius": 0,
+        "__typename": "RectangularNodeStyle"
+      },
+      "position": {
+        "x": 3120.7802734375,
+        "y": 42.0,
+        "__typename": "Position"
+      },
+      "size": {
+        "width": 880.4345703125,
+        "height": 209.5976543861454,
+        "__typename": "Size"
+      },
+      "__typename": "Node",
+      "borderNodes": [],
+      "childNodes": [
+        {
+          "id": "0ca860d9-6402-3df7-bf9a-54b80a5ff981",
+          "type": "node:rectangle",
+          "targetObjectId": "7bb60f51-477f-4a84-b6a6-c536c7f1c482",
+          "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=Lane",
+          "targetObjectLabel": "",
+          "descriptionId": "d2546f9b-51f7-4061-9a59-f75363fe339a",
+          "label": {
+            "id": "e502ba43-2a75-3b26-bac4-d182ecc6e739",
+            "type": "label:inside-center",
+            "text": "",
+            "style": {
+              "color": "#402900",
+              "fontSize": 12,
+              "bold": true,
+              "italic": false,
+              "underline": false,
+              "strikeThrough": false,
+              "iconURL": "",
+              "__typename": "LabelStyle"
+            },
+            "position": {
+              "x": 0.0,
+              "y": 0.0,
+              "__typename": "Position"
+            },
+            "size": {
+              "width": 0.0,
+              "height": 13.798828125,
+              "__typename": "Size"
+            },
+            "alignment": {
+              "x": 0.0,
+              "y": 10.86328125,
+              "__typename": "Position"
+            },
+            "__typename": "Label"
+          },
+          "style": {
+            "color": "#fff9e1",
+            "borderColor": "#402900",
+            "borderStyle": "Solid",
+            "borderSize": 3,
+            "borderRadius": 0,
+            "__typename": "RectangularNodeStyle"
+          },
+          "position": {
+            "x": 17.0,
+            "y": 30.798828125,
+            "__typename": "Position"
+          },
+          "size": {
+            "width": 846.4345703125,
+            "height": 166.7988262611454,
+            "__typename": "Size"
+          },
+          "__typename": "Node",
+          "borderNodes": [],
+          "childNodes": [
+            {
+              "id": "bf1905b7-8242-316f-8a05-61d37146ee4a",
+              "type": "node:image",
+              "targetObjectId": "d6c99b47-9c3b-4c8c-b626-c4c1a5abc28a",
+              "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=StartEvent",
+              "targetObjectLabel": "",
+              "descriptionId": "25330a64-150f-4bcb-b822-c8e8ce9aac6e",
+              "label": {
+                "id": "2a58e0e6-0f56-3cff-89b3-1cc01afa2a13",
+                "type": "label:outside-center",
+                "text": "",
+                "style": {
+                  "color": "#402900",
+                  "fontSize": 8,
+                  "bold": false,
+                  "italic": false,
+                  "underline": false,
+                  "strikeThrough": false,
+                  "iconURL": "",
+                  "__typename": "LabelStyle"
+                },
+                "position": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "__typename": "Position"
+                },
+                "size": {
+                  "width": 0.0,
+                  "height": 9.19921875,
+                  "__typename": "Size"
+                },
+                "alignment": {
+                  "x": 0.0,
+                  "y": 7.2421875,
+                  "__typename": "Position"
+                },
+                "__typename": "Label"
+              },
+              "style": {
+                "imageURL": "/api/images/icons2/nodes/start-event/message.svg",
+                "borderColor": "#000000",
+                "borderStyle": "Solid",
+                "borderSize": 0,
+                "borderRadius": 0,
+                "__typename": "ImageNodeStyle"
+              },
+              "position": {
+                "x": 159.40625,
+                "y": 120.798828125,
+                "__typename": "Position"
+              },
+              "size": {
+                "width": 34.0,
+                "height": 33.999998136145386,
+                "__typename": "Size"
+              },
+              "__typename": "Node",
+              "borderNodes": [],
+              "childNodes": []
+            },
+            {
+              "id": "70b18536-06b6-3067-98be-cc9730fd51b3",
+              "type": "node:image",
+              "targetObjectId": "7dd70ba8-3dcf-4665-913c-deba73e9bb51",
+              "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=EndEvent",
+              "targetObjectLabel": "End Assesments",
+              "descriptionId": "4c9900b0-c708-4b7f-8cd4-fcdb0bf72e89",
+              "label": {
+                "id": "d8c21dd2-7d1f-3046-a3dc-e526c0b13abf",
+                "type": "label:outside-center",
+                "text": "End Assesments",
+                "style": {
+                  "color": "#402900",
+                  "fontSize": 8,
+                  "bold": false,
+                  "italic": false,
+                  "underline": false,
+                  "strikeThrough": false,
+                  "iconURL": "",
+                  "__typename": "LabelStyle"
+                },
+                "position": {
+                  "x": 17.0,
+                  "y": -14.19921875,
+                  "__typename": "Position"
+                },
+                "size": {
+                  "width": 60.02734375,
+                  "height": 9.19921875,
+                  "__typename": "Size"
+                },
+                "alignment": {
+                  "x": 0.0,
+                  "y": 7.2421875,
+                  "__typename": "Position"
+                },
+                "__typename": "Label"
+              },
+              "style": {
+                "imageURL": "/api/images/icons2/nodes/end-event/end.svg",
+                "borderColor": "#000000",
+                "borderStyle": "Solid",
+                "borderSize": 0,
+                "borderRadius": 0,
+                "__typename": "ImageNodeStyle"
+              },
+              "position": {
+                "x": 787.4208984375,
+                "y": 48.7988290569273,
+                "__typename": "Position"
+              },
+              "size": {
+                "width": 34.0,
+                "height": 33.999998136145386,
+                "__typename": "Size"
+              },
+              "__typename": "Node",
+              "borderNodes": [],
+              "childNodes": []
+            },
+            {
+              "id": "6b6dd54d-eff8-34ce-8e14-4a8aae327d88",
+              "type": "node:rectangle",
+              "targetObjectId": "cc52caf4-e306-428f-9422-6b0b788017e4",
+              "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=TextAnnotation",
+              "targetObjectLabel": "_GzIUcJUtEeKSM8dNXYpfyA",
+              "descriptionId": "12e8fd58-ece4-42a9-b1e7-30733af09fb7",
+              "label": {
+                "id": "1b44db4b-4157-3d3a-b800-f9dd28e2dd77",
+                "type": "label:inside-center",
+                "text": "A selected expert is asked to asses the work of the Preliminary Candidates in the list",
+                "style": {
+                  "color": "#000000",
+                  "fontSize": 8,
+                  "bold": false,
+                  "italic": false,
+                  "underline": false,
+                  "strikeThrough": false,
+                  "iconURL": "/api/images/icons/full/obj16/TextAnnotation.png",
+                  "__typename": "LabelStyle"
+                },
+                "position": {
+                  "x": 164.40625,
+                  "y": 5.0,
+                  "__typename": "Position"
+                },
+                "size": {
+                  "width": 318.8125,
+                  "height": 19.19921875,
+                  "__typename": "Size"
+                },
+                "alignment": {
+                  "x": 20.0,
+                  "y": 7.2421875,
+                  "__typename": "Position"
+                },
+                "__typename": "Label"
+              },
+              "style": {
+                "color": "#fff9e1",
+                "borderColor": "#402900",
+                "borderStyle": "Solid",
+                "borderSize": 0,
+                "borderRadius": 0,
+                "__typename": "RectangularNodeStyle"
+              },
+              "position": {
+                "x": 12.0,
+                "y": 30.798828125,
+                "__typename": "Position"
+              },
+              "size": {
+                "width": 328.8125,
+                "height": 70.0,
+                "__typename": "Size"
+              },
+              "__typename": "Node",
+              "borderNodes": [],
+              "childNodes": []
+            },
+            {
+              "id": "e3c0fb82-eabc-3124-9657-13de5567c48e",
+              "type": "node:rectangle",
+              "targetObjectId": "9945a0c5-3040-4f48-be76-666a7c790cfb",
+              "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=SendTask",
+              "targetObjectLabel": "Send candidates Assessments Report",
+              "descriptionId": "6ff1fd56-ac0e-41d0-88b9-0cfe066fc730",
+              "label": {
+                "id": "1cead98c-b4eb-37ba-b098-3bfb7631acd9",
+                "type": "label:inside-center",
+                "text": "Send candidates Assessments Report",
+                "style": {
+                  "color": "#402900",
+                  "fontSize": 9,
+                  "bold": true,
+                  "italic": false,
+                  "underline": false,
+                  "strikeThrough": false,
+                  "iconURL": "/api/images/icons/full/obj16/SendTask.png",
+                  "__typename": "LabelStyle"
+                },
+                "position": {
+                  "x": 96.77783203125,
+                  "y": 5.0,
+                  "__typename": "Position"
+                },
+                "size": {
+                  "width": 183.5556640625,
+                  "height": 10.34912109375,
+                  "__typename": "Size"
+                },
+                "alignment": {
+                  "x": 20.0,
+                  "y": 8.1474609375,
+                  "__typename": "Position"
+                },
+                "__typename": "Label"
+              },
+              "style": {
+                "color": "#fff3ab",
+                "borderColor": "#402900",
+                "borderStyle": "Solid",
+                "borderSize": 1,
+                "borderRadius": 20,
+                "__typename": "RectangularNodeStyle"
+              },
+              "position": {
+                "x": 560.8515625,
+                "y": 42.465494791666664,
+                "__typename": "Position"
+              },
+              "size": {
+                "width": 193.5556640625,
+                "height": 70.0,
+                "__typename": "Size"
+              },
+              "__typename": "Node",
+              "borderNodes": [],
+              "childNodes": []
+            },
+            {
+              "id": "f7ba404a-f5c7-38fd-a0ae-b121bb01213b",
+              "type": "node:rectangle",
+              "targetObjectId": "9a048eba-02eb-4cbe-b4f4-9e6b96ce0e52",
+              "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=UserTask",
+              "targetObjectLabel": "Assess Candidates work",
+              "descriptionId": "6ff1fd56-ac0e-41d0-88b9-0cfe066fc730",
+              "label": {
+                "id": "0d5ee6c4-3b90-3495-b45a-0587850521a7",
+                "type": "label:inside-center",
+                "text": "Assess Candidates work",
+                "style": {
+                  "color": "#402900",
+                  "fontSize": 9,
+                  "bold": true,
+                  "italic": false,
+                  "underline": false,
+                  "strikeThrough": false,
+                  "iconURL": "/api/images/icons/full/obj16/UserTask.png",
+                  "__typename": "LabelStyle"
+                },
+                "position": {
+                  "x": 90.01953125,
+                  "y": 5.0,
+                  "__typename": "Position"
+                },
+                "size": {
+                  "width": 126.04443359375,
+                  "height": 10.34912109375,
+                  "__typename": "Size"
+                },
+                "alignment": {
+                  "x": 20.0,
+                  "y": 8.1474609375,
+                  "__typename": "Position"
+                },
+                "__typename": "Label"
+              },
+              "style": {
+                "color": "#fff3ab",
+                "borderColor": "#402900",
+                "borderStyle": "Solid",
+                "borderSize": 1,
+                "borderRadius": 20,
+                "__typename": "RectangularNodeStyle"
+              },
+              "position": {
+                "x": 360.8125,
+                "y": 42.465494791666664,
+                "__typename": "Position"
+              },
+              "size": {
+                "width": 180.0390625,
+                "height": 70.0,
+                "__typename": "Size"
+              },
+              "__typename": "Node",
+              "borderNodes": [],
+              "childNodes": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "d506b092-a81e-3f7e-9894-4b0c0f96e5ed",
+      "type": "node:rectangle",
+      "targetObjectId": "bf0a3fc9-1334-4a20-aaac-db4d0cc8235f",
+      "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=LaneSet",
+      "targetObjectLabel": "Nobel Assembly",
+      "descriptionId": "c583888c-c82b-479d-b2f2-2fbfea25a107",
+      "label": {
+        "id": "d682be7c-6867-3d81-9162-4f98d038d32e",
+        "type": "label:inside-center",
+        "text": "Nobel Assembly",
+        "style": {
+          "color": "#402900",
+          "fontSize": 12,
+          "bold": true,
+          "italic": false,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 373.05859375,
+          "y": 5.0,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 93.36328125,
+          "height": 13.798828125,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 10.86328125,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "style": {
+        "color": "#fff3ab",
+        "borderColor": "#402900",
+        "borderStyle": "Solid",
+        "borderSize": 1,
+        "borderRadius": 0,
+        "__typename": "RectangularNodeStyle"
+      },
+      "position": {
+        "x": 3187.93896484375,
+        "y": 301.5976543861454,
+        "__typename": "Position"
+      },
+      "size": {
+        "width": 746.1171875,
+        "height": 155.59765625,
+        "__typename": "Size"
+      },
+      "__typename": "Node",
+      "borderNodes": [],
+      "childNodes": [
+        {
+          "id": "bd43fc3f-bfa9-37bd-be94-f2435927e45b",
+          "type": "node:rectangle",
+          "targetObjectId": "d45f8e58-7f26-4b32-a1a0-51fb989ab403",
+          "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=Lane",
+          "targetObjectLabel": "",
+          "descriptionId": "d2546f9b-51f7-4061-9a59-f75363fe339a",
+          "label": {
+            "id": "d0bb4ea3-7704-31f4-9b9b-870f2bc61f95",
+            "type": "label:inside-center",
+            "text": "",
+            "style": {
+              "color": "#402900",
+              "fontSize": 12,
+              "bold": true,
+              "italic": false,
+              "underline": false,
+              "strikeThrough": false,
+              "iconURL": "",
+              "__typename": "LabelStyle"
+            },
+            "position": {
+              "x": 0.0,
+              "y": 0.0,
+              "__typename": "Position"
+            },
+            "size": {
+              "width": 0.0,
+              "height": 13.798828125,
+              "__typename": "Size"
+            },
+            "alignment": {
+              "x": 0.0,
+              "y": 10.86328125,
+              "__typename": "Position"
+            },
+            "__typename": "Label"
+          },
+          "style": {
+            "color": "#fff9e1",
+            "borderColor": "#402900",
+            "borderStyle": "Solid",
+            "borderSize": 3,
+            "borderRadius": 0,
+            "__typename": "RectangularNodeStyle"
+          },
+          "position": {
+            "x": 17.0,
+            "y": 30.798828125,
+            "__typename": "Position"
+          },
+          "size": {
+            "width": 712.1171875,
+            "height": 112.798828125,
+            "__typename": "Size"
+          },
+          "__typename": "Node",
+          "borderNodes": [],
+          "childNodes": [
+            {
+              "id": "addfd127-5d92-3251-8557-b03e8acb14d8",
+              "type": "node:image",
+              "targetObjectId": "1de74a89-a897-4c60-83e7-78075ed7fea3",
+              "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=StartEvent",
+              "targetObjectLabel": "",
+              "descriptionId": "25330a64-150f-4bcb-b822-c8e8ce9aac6e",
+              "label": {
+                "id": "2dd1078c-8cba-3614-8d45-fdda53302cf5",
+                "type": "label:outside-center",
+                "text": "",
+                "style": {
+                  "color": "#402900",
+                  "fontSize": 8,
+                  "bold": false,
+                  "italic": false,
+                  "underline": false,
+                  "strikeThrough": false,
+                  "iconURL": "",
+                  "__typename": "LabelStyle"
+                },
+                "position": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "__typename": "Position"
+                },
+                "size": {
+                  "width": 0.0,
+                  "height": 9.19921875,
+                  "__typename": "Size"
+                },
+                "alignment": {
+                  "x": 0.0,
+                  "y": 7.2421875,
+                  "__typename": "Position"
+                },
+                "__typename": "Label"
+              },
+              "style": {
+                "imageURL": "/api/images/icons2/nodes/start-event/message.svg",
+                "borderColor": "#000000",
+                "borderStyle": "Solid",
+                "borderSize": 0,
+                "borderRadius": 0,
+                "__typename": "ImageNodeStyle"
+              },
+              "position": {
+                "x": 12.0,
+                "y": 48.7988290569273,
+                "__typename": "Position"
+              },
+              "size": {
+                "width": 34.0,
+                "height": 33.999998136145386,
+                "__typename": "Size"
+              },
+              "__typename": "Node",
+              "borderNodes": [],
+              "childNodes": []
+            },
+            {
+              "id": "99132c67-b0e8-3030-b459-6f4eff81e03a",
+              "type": "node:image",
+              "targetObjectId": "e96cf391-b172-402e-9ec0-3e1d314d75c4",
+              "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=EndEvent",
+              "targetObjectLabel": "",
+              "descriptionId": "4c9900b0-c708-4b7f-8cd4-fcdb0bf72e89",
+              "label": {
+                "id": "2fa916dd-c9d9-3403-800d-82e2f15931d4",
+                "type": "label:outside-center",
+                "text": "",
+                "style": {
+                  "color": "#402900",
+                  "fontSize": 8,
+                  "bold": false,
+                  "italic": false,
+                  "underline": false,
+                  "strikeThrough": false,
+                  "iconURL": "",
+                  "__typename": "LabelStyle"
+                },
+                "position": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "__typename": "Position"
+                },
+                "size": {
+                  "width": 0.0,
+                  "height": 9.19921875,
+                  "__typename": "Size"
+                },
+                "alignment": {
+                  "x": 0.0,
+                  "y": 7.2421875,
+                  "__typename": "Position"
+                },
+                "__typename": "Label"
+              },
+              "style": {
+                "imageURL": "/api/images/icons2/nodes/end-event/end.svg",
+                "borderColor": "#000000",
+                "borderStyle": "Solid",
+                "borderSize": 0,
+                "borderRadius": 0,
+                "__typename": "ImageNodeStyle"
+              },
+              "position": {
+                "x": 666.1171875,
+                "y": 37.132162390260646,
+                "__typename": "Position"
+              },
+              "size": {
+                "width": 34.0,
+                "height": 33.999998136145386,
+                "__typename": "Size"
+              },
+              "__typename": "Node",
+              "borderNodes": [],
+              "childNodes": []
+            },
+            {
+              "id": "e4bfcd33-4433-3a63-a695-767ff032435a",
+              "type": "node:rectangle",
+              "targetObjectId": "7b4e10e7-f116-44ce-8a92-0647da2f0eea",
+              "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=UserTask",
+              "targetObjectLabel": "Discuss Nominations (Meeting 1)",
+              "descriptionId": "6ff1fd56-ac0e-41d0-88b9-0cfe066fc730",
+              "label": {
+                "id": "bdd5fa30-3645-3bc6-8142-a4983465fd4e",
+                "type": "label:inside-center",
+                "text": "Discuss Nominations (Meeting 1)",
+                "style": {
+                  "color": "#402900",
+                  "fontSize": 9,
+                  "bold": true,
+                  "italic": false,
+                  "underline": false,
+                  "strikeThrough": false,
+                  "iconURL": "/api/images/icons/full/obj16/UserTask.png",
+                  "__typename": "LabelStyle"
+                },
+                "position": {
+                  "x": 90.01953125,
+                  "y": 5.0,
+                  "__typename": "Position"
+                },
+                "size": {
+                  "width": 161.521484375,
+                  "height": 10.34912109375,
+                  "__typename": "Size"
+                },
+                "alignment": {
+                  "x": 20.0,
+                  "y": 8.1474609375,
+                  "__typename": "Position"
+                },
+                "__typename": "Label"
+              },
+              "style": {
+                "color": "#fff3ab",
+                "borderColor": "#402900",
+                "borderStyle": "Solid",
+                "borderSize": 1,
+                "borderRadius": 20,
+                "__typename": "RectangularNodeStyle"
+              },
+              "position": {
+                "x": 66.0,
+                "y": 30.798828125,
+                "__typename": "Position"
+              },
+              "size": {
+                "width": 180.0390625,
+                "height": 70.0,
+                "__typename": "Size"
+              },
+              "__typename": "Node",
+              "borderNodes": [],
+              "childNodes": []
+            },
+            {
+              "id": "52e3384c-e85c-30fe-8cc1-1134804b1c04",
+              "type": "node:rectangle",
+              "targetObjectId": "9618c227-2c29-42e5-adae-9dea3bb88401",
+              "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=UserTask",
+              "targetObjectLabel": "Select Laureates (Meeting 2)",
+              "descriptionId": "6ff1fd56-ac0e-41d0-88b9-0cfe066fc730",
+              "label": {
+                "id": "6065d403-5846-3ac1-89c2-917ec00de58c",
+                "type": "label:inside-center",
+                "text": "Select Laureates (Meeting 2)",
+                "style": {
+                  "color": "#402900",
+                  "fontSize": 9,
+                  "bold": true,
+                  "italic": false,
+                  "underline": false,
+                  "strikeThrough": false,
+                  "iconURL": "/api/images/icons/full/obj16/UserTask.png",
+                  "__typename": "LabelStyle"
+                },
+                "position": {
+                  "x": 90.01953125,
+                  "y": 5.0,
+                  "__typename": "Position"
+                },
+                "size": {
+                  "width": 141.53955078125,
+                  "height": 10.34912109375,
+                  "__typename": "Size"
+                },
+                "alignment": {
+                  "x": 20.0,
+                  "y": 8.1474609375,
+                  "__typename": "Position"
+                },
+                "__typename": "Label"
+              },
+              "style": {
+                "color": "#fff3ab",
+                "borderColor": "#402900",
+                "borderStyle": "Solid",
+                "borderSize": 1,
+                "borderRadius": 20,
+                "__typename": "RectangularNodeStyle"
+              },
+              "position": {
+                "x": 266.0390625,
+                "y": 30.798828125,
+                "__typename": "Position"
+              },
+              "size": {
+                "width": 180.0390625,
+                "height": 70.0,
+                "__typename": "Size"
+              },
+              "__typename": "Node",
+              "borderNodes": [],
+              "childNodes": []
+            },
+            {
+              "id": "9f568d8b-1f6c-3ebf-a77b-ccc8b9535829",
+              "type": "node:rectangle",
+              "targetObjectId": "ec7c8cc5-e4b1-4cf1-93fa-f2d6f21c6ebc",
+              "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=UserTask",
+              "targetObjectLabel": "Announce Nobel Prize Laureates",
+              "descriptionId": "6ff1fd56-ac0e-41d0-88b9-0cfe066fc730",
+              "label": {
+                "id": "9ee9bfc1-b314-353e-9f88-ec30ca8352ac",
+                "type": "label:inside-center",
+                "text": "Announce Nobel Prize Laureates",
+                "style": {
+                  "color": "#402900",
+                  "fontSize": 9,
+                  "bold": true,
+                  "italic": false,
+                  "underline": false,
+                  "strikeThrough": false,
+                  "iconURL": "/api/images/icons/full/obj16/UserTask.png",
+                  "__typename": "LabelStyle"
+                },
+                "position": {
+                  "x": 90.01953125,
+                  "y": 5.0,
+                  "__typename": "Position"
+                },
+                "size": {
+                  "width": 160.53271484375,
+                  "height": 10.34912109375,
+                  "__typename": "Size"
+                },
+                "alignment": {
+                  "x": 20.0,
+                  "y": 8.1474609375,
+                  "__typename": "Position"
+                },
+                "__typename": "Label"
+              },
+              "style": {
+                "color": "#fff3ab",
+                "borderColor": "#402900",
+                "borderStyle": "Solid",
+                "borderSize": 1,
+                "borderRadius": 20,
+                "__typename": "RectangularNodeStyle"
+              },
+              "position": {
+                "x": 466.078125,
+                "y": 30.798828125,
+                "__typename": "Position"
+              },
+              "size": {
+                "width": 180.0390625,
+                "height": 70.0,
+                "__typename": "Size"
+              },
+              "__typename": "Node",
+              "borderNodes": [],
+              "childNodes": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "1b90db48-fec5-3eab-aa04-1519519d2c34",
+      "type": "node:rectangle",
+      "targetObjectId": "335f833a-5d63-456b-bc83-4c4a9153fec6",
+      "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=LaneSet",
+      "targetObjectLabel": "Noble Prize Laureat",
+      "descriptionId": "c583888c-c82b-479d-b2f2-2fbfea25a107",
+      "label": {
+        "id": "5acc404c-996f-3bee-880b-8503c8e6b2c6",
+        "type": "label:inside-center",
+        "text": "Noble Prize Laureat",
+        "style": {
+          "color": "#402900",
+          "fontSize": 12,
+          "bold": true,
+          "italic": false,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 116.51953125,
+          "y": 5.0,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 112.03125,
+          "height": 13.798828125,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 10.86328125,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "style": {
+        "color": "#fff3ab",
+        "borderColor": "#402900",
+        "borderStyle": "Solid",
+        "borderSize": 1,
+        "borderRadius": 0,
+        "__typename": "RectangularNodeStyle"
+      },
+      "position": {
+        "x": 4141.21484375,
+        "y": 316.93098678755143,
+        "__typename": "Position"
+      },
+      "size": {
+        "width": 233.0390625,
+        "height": 155.59765625,
+        "__typename": "Size"
+      },
+      "__typename": "Node",
+      "borderNodes": [],
+      "childNodes": [
+        {
+          "id": "3ca6a47d-590a-3bd7-b5e6-4254acbe075b",
+          "type": "node:rectangle",
+          "targetObjectId": "7435f61d-fe55-45c3-8b12-fbb423b8c83d",
+          "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=Lane",
+          "targetObjectLabel": "",
+          "descriptionId": "d2546f9b-51f7-4061-9a59-f75363fe339a",
+          "label": {
+            "id": "977bcb91-15aa-36e9-b111-780e4fdb549d",
+            "type": "label:inside-center",
+            "text": "",
+            "style": {
+              "color": "#402900",
+              "fontSize": 12,
+              "bold": true,
+              "italic": false,
+              "underline": false,
+              "strikeThrough": false,
+              "iconURL": "",
+              "__typename": "LabelStyle"
+            },
+            "position": {
+              "x": 0.0,
+              "y": 0.0,
+              "__typename": "Position"
+            },
+            "size": {
+              "width": 0.0,
+              "height": 13.798828125,
+              "__typename": "Size"
+            },
+            "alignment": {
+              "x": 0.0,
+              "y": 10.86328125,
+              "__typename": "Position"
+            },
+            "__typename": "Label"
+          },
+          "style": {
+            "color": "#fff9e1",
+            "borderColor": "#402900",
+            "borderStyle": "Solid",
+            "borderSize": 3,
+            "borderRadius": 0,
+            "__typename": "RectangularNodeStyle"
+          },
+          "position": {
+            "x": 17.0,
+            "y": 30.798828125,
+            "__typename": "Position"
+          },
+          "size": {
+            "width": 204.0390625,
+            "height": 112.798828125,
+            "__typename": "Size"
+          },
+          "__typename": "Node",
+          "borderNodes": [],
+          "childNodes": [
+            {
+              "id": "8e42a55c-8fa2-31ad-83d0-c34895425c90",
+              "type": "node:rectangle",
+              "targetObjectId": "5fdcbe99-73f3-4d50-8e0d-df1845d5439b",
+              "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=ReceiveTask",
+              "targetObjectLabel": "Receive Nomination",
+              "descriptionId": "6ff1fd56-ac0e-41d0-88b9-0cfe066fc730",
+              "label": {
+                "id": "000e1622-5d0b-3881-b0cf-d3b7eadd2526",
+                "type": "label:inside-center",
+                "text": "Receive Nomination",
+                "style": {
+                  "color": "#402900",
+                  "fontSize": 9,
+                  "bold": true,
+                  "italic": false,
+                  "underline": false,
+                  "strikeThrough": false,
+                  "iconURL": "/api/images/icons/full/obj16/ReceiveTask.png",
+                  "__typename": "LabelStyle"
+                },
+                "position": {
+                  "x": 90.01953125,
+                  "y": 5.0,
+                  "__typename": "Position"
+                },
+                "size": {
+                  "width": 106.02294921875,
+                  "height": 10.34912109375,
+                  "__typename": "Size"
+                },
+                "alignment": {
+                  "x": 20.0,
+                  "y": 8.1474609375,
+                  "__typename": "Position"
+                },
+                "__typename": "Label"
+              },
+              "style": {
+                "color": "#fff3ab",
+                "borderColor": "#402900",
+                "borderStyle": "Solid",
+                "borderSize": 1,
+                "borderRadius": 20,
+                "__typename": "RectangularNodeStyle"
+              },
+              "position": {
+                "x": 12.0,
+                "y": 30.798828125,
+                "__typename": "Position"
+              },
+              "size": {
+                "width": 180.0390625,
+                "height": 70.0,
+                "__typename": "Size"
+              },
+              "__typename": "Node",
+              "borderNodes": [],
+              "childNodes": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "969999fa-1f9f-3954-9ef4-beba44f42862",
+      "type": "edge:straight",
+      "targetObjectId": "22a5f869-4050-4093-a6c2-94721b9f2f90",
+      "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=SequenceFlow",
+      "targetObjectLabel": "",
+      "descriptionId": "8710f3a9-a29a-4c91-8c5d-ccf6f0a532fb",
+      "sourceId": "8654a8c9-bfb5-3229-bcef-bbc1ac785913",
+      "targetId": "e40d9052-ce1d-380a-8146-8105adeecd04",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "933e5e0d-f898-3768-b7d7-ef8a521cca95",
+        "type": "label:edge-center",
+        "text": "",
+        "style": {
+          "color": "#000000",
+          "fontSize": 8,
+          "bold": false,
+          "italic": true,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 64.0,
+          "y": 252.9290345944787,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 0.0,
+          "height": 9.19921875,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 7.2421875,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "endLabel": null,
+      "style": {
+        "size": 2,
+        "lineStyle": "Solid",
+        "sourceArrow": "None",
+        "targetArrow": "InputFillClosedArrow",
+        "color": "#7d7d7d",
+        "__typename": "EdgeStyle"
+      },
+      "routingPoints": [
+        {
+          "x": 611.09765625,
+          "y": 484.7594497537534,
+          "__typename": "Position"
+        },
+        {
+          "x": 621.09765625,
+          "y": 484.7594497537534,
+          "__typename": "Position"
+        },
+        {
+          "x": 621.09765625,
+          "y": 402.7278627194787,
+          "__typename": "Position"
+        },
+        {
+          "x": 631.09765625,
+          "y": 402.7278627194787,
+          "__typename": "Position"
+        }
+      ],
+      "__typename": "Edge"
+    },
+    {
+      "id": "f1e67ae1-fc17-333c-bfd3-b15497b661ae",
+      "type": "edge:straight",
+      "targetObjectId": "97db8f26-87f3-4d9f-9ab1-a61f6c136509",
+      "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=SequenceFlow",
+      "targetObjectLabel": "",
+      "descriptionId": "8710f3a9-a29a-4c91-8c5d-ccf6f0a532fb",
+      "sourceId": "e40d9052-ce1d-380a-8146-8105adeecd04",
+      "targetId": "7a256769-672d-37b0-8f7b-ab1854d23a9d",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "85ef6f3f-9d7b-3c0f-9a4b-3a34daccaef0",
+        "type": "label:edge-center",
+        "text": "",
+        "style": {
+          "color": "#000000",
+          "fontSize": 8,
+          "bold": false,
+          "italic": true,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 64.0,
+          "y": 252.9290345944787,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 0.0,
+          "height": 9.19921875,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 7.2421875,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "endLabel": null,
+      "style": {
+        "size": 2,
+        "lineStyle": "Solid",
+        "sourceArrow": "None",
+        "targetArrow": "InputFillClosedArrow",
+        "color": "#7d7d7d",
+        "__typename": "EdgeStyle"
+      },
+      "routingPoints": [
+        {
+          "x": 811.13671875,
+          "y": 402.7278627194787,
+          "__typename": "Position"
+        },
+        {
+          "x": 821.13671875,
+          "y": 402.7278627194787,
+          "__typename": "Position"
+        },
+        {
+          "x": 821.13671875,
+          "y": 405.4261164204201,
+          "__typename": "Position"
+        },
+        {
+          "x": 875.13671875,
+          "y": 405.4261164204201,
+          "__typename": "Position"
+        },
+        {
+          "x": 875.13671875,
+          "y": 402.7278627194787,
+          "__typename": "Position"
+        },
+        {
+          "x": 885.13671875,
+          "y": 402.7278627194787,
+          "__typename": "Position"
+        }
+      ],
+      "__typename": "Edge"
+    },
+    {
+      "id": "a24a3cf1-5477-3380-bfe0-a4cd0f8836dd",
+      "type": "edge:straight",
+      "targetObjectId": "e3ebb672-bb7e-4749-b667-3d0b0f81fe0c",
+      "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=SequenceFlow",
+      "targetObjectLabel": "",
+      "descriptionId": "8710f3a9-a29a-4c91-8c5d-ccf6f0a532fb",
+      "sourceId": "7a256769-672d-37b0-8f7b-ab1854d23a9d",
+      "targetId": "311a59e3-41e5-3939-b6aa-e4d6fa24f491",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "afda4a77-9590-3d5d-928b-ac43ff952f49",
+        "type": "label:edge-center",
+        "text": "",
+        "style": {
+          "color": "#000000",
+          "fontSize": 8,
+          "bold": false,
+          "italic": true,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 64.0,
+          "y": 252.9290345944787,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 0.0,
+          "height": 9.19921875,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 7.2421875,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "endLabel": null,
+      "style": {
+        "size": 2,
+        "lineStyle": "Solid",
+        "sourceArrow": "None",
+        "targetArrow": "InputFillClosedArrow",
+        "color": "#7d7d7d",
+        "__typename": "EdgeStyle"
+      },
+      "routingPoints": [
+        {
+          "x": 1085.71044921875,
+          "y": 379.39452938614534,
+          "__typename": "Position"
+        },
+        {
+          "x": 1105.71044921875,
+          "y": 379.39452938614534,
+          "__typename": "Position"
+        }
+      ],
+      "__typename": "Edge"
+    },
+    {
+      "id": "88094b45-8259-32e4-bfd0-84192f81f5db",
+      "type": "edge:straight",
+      "targetObjectId": "f7ea561f-51f3-4e5e-be18-5eda5f269648",
+      "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=SequenceFlow",
+      "targetObjectLabel": "",
+      "descriptionId": "8710f3a9-a29a-4c91-8c5d-ccf6f0a532fb",
+      "sourceId": "f96a8635-2b94-3e67-b4b4-bf294ed32bcb",
+      "targetId": "3a3e7a5d-80b8-3b6f-8449-1bb5f42b4bb6",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "c7c7ab04-a70a-30d0-ba05-4fb239e9f47f",
+        "type": "label:edge-center",
+        "text": "",
+        "style": {
+          "color": "#000000",
+          "fontSize": 8,
+          "bold": false,
+          "italic": true,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 3137.7802734375,
+          "y": 537.9941387611455,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 0.0,
+          "height": 9.19921875,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 7.2421875,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "endLabel": null,
+      "style": {
+        "size": 2,
+        "lineStyle": "Solid",
+        "sourceArrow": "None",
+        "targetArrow": "InputFillClosedArrow",
+        "color": "#7d7d7d",
+        "__typename": "EdgeStyle"
+      },
+      "routingPoints": [
+        {
+          "x": 3552.7841796875,
+          "y": 615.4596335528121,
+          "__typename": "Position"
+        },
+        {
+          "x": 3572.7841796875,
+          "y": 615.4596335528121,
+          "__typename": "Position"
+        }
+      ],
+      "__typename": "Edge"
+    },
+    {
+      "id": "ff8209c7-aae0-3229-98ce-a68e9f75282b",
+      "type": "edge:straight",
+      "targetObjectId": "967e9d35-910d-4c6c-a59b-464d49131606",
+      "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=SequenceFlow",
+      "targetObjectLabel": "",
+      "descriptionId": "8710f3a9-a29a-4c91-8c5d-ccf6f0a532fb",
+      "sourceId": "3a3e7a5d-80b8-3b6f-8449-1bb5f42b4bb6",
+      "targetId": "906845a4-7155-3d9b-a787-d762afbeb7f5",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "3a2dfd4c-77a1-33fd-b70b-afb6f0ef363c",
+        "type": "label:edge-center",
+        "text": "",
+        "style": {
+          "color": "#000000",
+          "fontSize": 8,
+          "bold": false,
+          "italic": true,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 3137.7802734375,
+          "y": 537.9941387611455,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 0.0,
+          "height": 9.19921875,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 7.2421875,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "endLabel": null,
+      "style": {
+        "size": 2,
+        "lineStyle": "Solid",
+        "sourceArrow": "None",
+        "targetArrow": "InputFillClosedArrow",
+        "color": "#7d7d7d",
+        "__typename": "EdgeStyle"
+      },
+      "routingPoints": [
+        {
+          "x": 3752.8232421875,
+          "y": 603.7929668861455,
+          "__typename": "Position"
+        },
+        {
+          "x": 3799.1708984375,
+          "y": 603.7929668861455,
+          "__typename": "Position"
+        }
+      ],
+      "__typename": "Edge"
+    },
+    {
+      "id": "95a9b4bb-ef32-3257-a2ef-648777600629",
+      "type": "edge:straight",
+      "targetObjectId": "cd5b9eb5-8de4-4e64-a744-98b9f1bf860c",
+      "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=SequenceFlow",
+      "targetObjectLabel": "",
+      "descriptionId": "8710f3a9-a29a-4c91-8c5d-ccf6f0a532fb",
+      "sourceId": "b2201f30-e8a1-3e64-88a7-c4b9d7aa7341",
+      "targetId": "f96a8635-2b94-3e67-b4b4-bf294ed32bcb",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "4a988bb6-8aa1-30e8-9226-52962756a051",
+        "type": "label:edge-center",
+        "text": "",
+        "style": {
+          "color": "#000000",
+          "fontSize": 8,
+          "bold": false,
+          "italic": true,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 3137.7802734375,
+          "y": 537.9941387611455,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 0.0,
+          "height": 9.19921875,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 7.2421875,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "endLabel": null,
+      "style": {
+        "size": 2,
+        "lineStyle": "Solid",
+        "sourceArrow": "None",
+        "targetArrow": "InputFillClosedArrow",
+        "color": "#7d7d7d",
+        "__typename": "EdgeStyle"
+      },
+      "routingPoints": [
+        {
+          "x": 3268.2626953125,
+          "y": 675.7929659542182,
+          "__typename": "Position"
+        },
+        {
+          "x": 3362.7451171875,
+          "y": 675.7929659542182,
+          "__typename": "Position"
+        },
+        {
+          "x": 3362.7451171875,
+          "y": 627.1263002194788,
+          "__typename": "Position"
+        },
+        {
+          "x": 3372.7451171875,
+          "y": 627.1263002194788,
+          "__typename": "Position"
+        }
+      ],
+      "__typename": "Edge"
+    },
+    {
+      "id": "22132834-23e5-33d4-9d6f-5d563ff9080e",
+      "type": "edge:straight",
+      "targetObjectId": "03f86fb7-ade9-40e3-a207-482b97ee3e91",
+      "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=SequenceFlow",
+      "targetObjectLabel": "",
+      "descriptionId": "8710f3a9-a29a-4c91-8c5d-ccf6f0a532fb",
+      "sourceId": "bf1905b7-8242-316f-8a05-61d37146ee4a",
+      "targetId": "f7ba404a-f5c7-38fd-a0ae-b121bb01213b",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "982647f7-e573-36e2-a293-7435e2b69d87",
+        "type": "label:edge-center",
+        "text": "",
+        "style": {
+          "color": "#000000",
+          "fontSize": 8,
+          "bold": false,
+          "italic": true,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 3137.7802734375,
+          "y": 72.798828125,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 0.0,
+          "height": 9.19921875,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 7.2421875,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "endLabel": null,
+      "style": {
+        "size": 2,
+        "lineStyle": "Solid",
+        "sourceArrow": "None",
+        "targetArrow": "InputFillClosedArrow",
+        "color": "#7d7d7d",
+        "__typename": "EdgeStyle"
+      },
+      "routingPoints": [
+        {
+          "x": 3331.1865234375,
+          "y": 210.5976553180727,
+          "__typename": "Position"
+        },
+        {
+          "x": 3488.5927734375,
+          "y": 210.5976553180727,
+          "__typename": "Position"
+        },
+        {
+          "x": 3488.5927734375,
+          "y": 161.93098958333334,
+          "__typename": "Position"
+        },
+        {
+          "x": 3498.5927734375,
+          "y": 161.93098958333334,
+          "__typename": "Position"
+        }
+      ],
+      "__typename": "Edge"
+    },
+    {
+      "id": "d92aa088-1f94-3d80-b0a7-08cc5485ef38",
+      "type": "edge:straight",
+      "targetObjectId": "f18359e6-467d-43c3-9247-69da8b438f36",
+      "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=SequenceFlow",
+      "targetObjectLabel": "",
+      "descriptionId": "8710f3a9-a29a-4c91-8c5d-ccf6f0a532fb",
+      "sourceId": "e3c0fb82-eabc-3124-9657-13de5567c48e",
+      "targetId": "70b18536-06b6-3067-98be-cc9730fd51b3",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "6ff405d7-3997-33be-ba42-7f66aeb817ee",
+        "type": "label:edge-center",
+        "text": "",
+        "style": {
+          "color": "#000000",
+          "fontSize": 8,
+          "bold": false,
+          "italic": true,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 3137.7802734375,
+          "y": 72.798828125,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 0.0,
+          "height": 9.19921875,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 7.2421875,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "endLabel": null,
+      "style": {
+        "size": 2,
+        "lineStyle": "Solid",
+        "sourceArrow": "None",
+        "targetArrow": "InputFillClosedArrow",
+        "color": "#7d7d7d",
+        "__typename": "EdgeStyle"
+      },
+      "routingPoints": [
+        { "x": 3892.1875, "y": 138.59765625, "__typename": "Position" },
+        {
+          "x": 3925.201171875,
+          "y": 138.59765625,
+          "__typename": "Position"
+        }
+      ],
+      "__typename": "Edge"
+    },
+    {
+      "id": "18c04fb4-46fc-3e6a-9a5a-5bef943f3eb9",
+      "type": "edge:straight",
+      "targetObjectId": "9c9c0504-8e53-4265-8f98-ec6ff7cc0ad7",
+      "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=SequenceFlow",
+      "targetObjectLabel": "",
+      "descriptionId": "8710f3a9-a29a-4c91-8c5d-ccf6f0a532fb",
+      "sourceId": "addfd127-5d92-3251-8557-b03e8acb14d8",
+      "targetId": "e4bfcd33-4433-3a63-a695-767ff032435a",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "ef6d84dd-2a37-3021-9d8d-efa3147610e8",
+        "type": "label:edge-center",
+        "text": "",
+        "style": {
+          "color": "#000000",
+          "fontSize": 8,
+          "bold": false,
+          "italic": true,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 3204.93896484375,
+          "y": 332.3964825111454,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 0.0,
+          "height": 9.19921875,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 7.2421875,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "endLabel": null,
+      "style": {
+        "size": 2,
+        "lineStyle": "Solid",
+        "sourceArrow": "None",
+        "targetArrow": "InputFillClosedArrow",
+        "color": "#7d7d7d",
+        "__typename": "EdgeStyle"
+      },
+      "routingPoints": [
+        {
+          "x": 3250.93896484375,
+          "y": 398.1953106361454,
+          "__typename": "Position"
+        },
+        {
+          "x": 3270.93896484375,
+          "y": 398.1953106361454,
+          "__typename": "Position"
+        }
+      ],
+      "__typename": "Edge"
+    },
+    {
+      "id": "4ab76321-b572-38ab-a787-aae8265e8fff",
+      "type": "edge:straight",
+      "targetObjectId": "22ff9b65-bb82-4d3f-9826-ed50146f3e15",
+      "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=SequenceFlow",
+      "targetObjectLabel": "",
+      "descriptionId": "8710f3a9-a29a-4c91-8c5d-ccf6f0a532fb",
+      "sourceId": "e4bfcd33-4433-3a63-a695-767ff032435a",
+      "targetId": "52e3384c-e85c-30fe-8cc1-1134804b1c04",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "0fad5d60-fefb-3eee-84ca-f196a2868b10",
+        "type": "label:edge-center",
+        "text": "",
+        "style": {
+          "color": "#000000",
+          "fontSize": 8,
+          "bold": false,
+          "italic": true,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 3204.93896484375,
+          "y": 332.3964825111454,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 0.0,
+          "height": 9.19921875,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 7.2421875,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "endLabel": null,
+      "style": {
+        "size": 2,
+        "lineStyle": "Solid",
+        "sourceArrow": "None",
+        "targetArrow": "InputFillClosedArrow",
+        "color": "#7d7d7d",
+        "__typename": "EdgeStyle"
+      },
+      "routingPoints": [
+        {
+          "x": 3450.97802734375,
+          "y": 398.1953106361454,
+          "__typename": "Position"
+        },
+        {
+          "x": 3470.97802734375,
+          "y": 398.1953106361454,
+          "__typename": "Position"
+        }
+      ],
+      "__typename": "Edge"
+    },
+    {
+      "id": "78238dfc-8fc5-3e54-b18c-b9d82b0fc29c",
+      "type": "edge:straight",
+      "targetObjectId": "a25f5514-769e-4288-9d21-1e43509b2655",
+      "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=SequenceFlow",
+      "targetObjectLabel": "",
+      "descriptionId": "8710f3a9-a29a-4c91-8c5d-ccf6f0a532fb",
+      "sourceId": "52e3384c-e85c-30fe-8cc1-1134804b1c04",
+      "targetId": "9f568d8b-1f6c-3ebf-a77b-ccc8b9535829",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "c5d7d161-e5c1-3493-9562-d9041b70b4c0",
+        "type": "label:edge-center",
+        "text": "",
+        "style": {
+          "color": "#000000",
+          "fontSize": 8,
+          "bold": false,
+          "italic": true,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 3204.93896484375,
+          "y": 332.3964825111454,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 0.0,
+          "height": 9.19921875,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 7.2421875,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "endLabel": null,
+      "style": {
+        "size": 2,
+        "lineStyle": "Solid",
+        "sourceArrow": "None",
+        "targetArrow": "InputFillClosedArrow",
+        "color": "#7d7d7d",
+        "__typename": "EdgeStyle"
+      },
+      "routingPoints": [
+        {
+          "x": 3651.01708984375,
+          "y": 398.1953106361454,
+          "__typename": "Position"
+        },
+        {
+          "x": 3671.01708984375,
+          "y": 398.1953106361454,
+          "__typename": "Position"
+        }
+      ],
+      "__typename": "Edge"
+    },
+    {
+      "id": "fee5d386-570a-330f-81fc-6a8212e81066",
+      "type": "edge:straight",
+      "targetObjectId": "a1af7e69-8170-4c05-93cc-85d68d82c3aa",
+      "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=SequenceFlow",
+      "targetObjectLabel": "",
+      "descriptionId": "8710f3a9-a29a-4c91-8c5d-ccf6f0a532fb",
+      "sourceId": "9f568d8b-1f6c-3ebf-a77b-ccc8b9535829",
+      "targetId": "99132c67-b0e8-3030-b459-6f4eff81e03a",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "06a3a0a5-7b36-3306-9696-71e449747711",
+        "type": "label:edge-center",
+        "text": "",
+        "style": {
+          "color": "#000000",
+          "fontSize": 8,
+          "bold": false,
+          "italic": true,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 3204.93896484375,
+          "y": 332.3964825111454,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 0.0,
+          "height": 9.19921875,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 7.2421875,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "endLabel": null,
+      "style": {
+        "size": 2,
+        "lineStyle": "Solid",
+        "sourceArrow": "None",
+        "targetArrow": "InputFillClosedArrow",
+        "color": "#7d7d7d",
+        "__typename": "EdgeStyle"
+      },
+      "routingPoints": [
+        {
+          "x": 3851.05615234375,
+          "y": 386.5286439694787,
+          "__typename": "Position"
+        },
+        {
+          "x": 3871.05615234375,
+          "y": 386.5286439694787,
+          "__typename": "Position"
+        }
+      ],
+      "__typename": "Edge"
+    },
+    {
+      "id": "542dcace-38ce-31c2-9c9b-8122faf54d15",
+      "type": "edge:straight",
+      "targetObjectId": "983d1a9d-cb76-4d4c-a717-79ad8113b74a",
+      "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=SequenceFlow",
+      "targetObjectLabel": "",
+      "descriptionId": "8710f3a9-a29a-4c91-8c5d-ccf6f0a532fb",
+      "sourceId": "311a59e3-41e5-3939-b6aa-e4d6fa24f491",
+      "targetId": "259b961a-7e95-3a5a-aa7d-744b2d08773e",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "4362a15e-5177-336b-b5c1-6e1c1f3f24a1",
+        "type": "label:edge-center",
+        "text": "",
+        "style": {
+          "color": "#000000",
+          "fontSize": 8,
+          "bold": false,
+          "italic": true,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 64.0,
+          "y": 252.9290345944787,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 0.0,
+          "height": 9.19921875,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 7.2421875,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "endLabel": null,
+      "style": {
+        "size": 2,
+        "lineStyle": "Solid",
+        "sourceArrow": "None",
+        "targetArrow": "InputFillClosedArrow",
+        "color": "#7d7d7d",
+        "__typename": "EdgeStyle"
+      },
+      "routingPoints": [
+        {
+          "x": 1299.2705078125,
+          "y": 379.39452938614534,
+          "__typename": "Position"
+        },
+        {
+          "x": 1336.5087890625,
+          "y": 379.39452938614534,
+          "__typename": "Position"
+        }
+      ],
+      "__typename": "Edge"
+    },
+    {
+      "id": "f8d8c4dc-2eef-327a-aef3-9f19ebd4c7e2",
+      "type": "edge:straight",
+      "targetObjectId": "bc8dd816-0ced-42f1-a71d-89800d4606a6",
+      "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=SequenceFlow",
+      "targetObjectLabel": "yes",
+      "descriptionId": "8710f3a9-a29a-4c91-8c5d-ccf6f0a532fb",
+      "sourceId": "259b961a-7e95-3a5a-aa7d-744b2d08773e",
+      "targetId": "155e9faf-5948-34b5-a003-ea014079089c",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "80459869-ad84-3626-8177-8a77f6971199",
+        "type": "label:edge-center",
+        "text": "yes",
+        "style": {
+          "color": "#000000",
+          "fontSize": 8,
+          "bold": false,
+          "italic": true,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 1407.7470703125,
+          "y": 411.0611960528121,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 12.44921875,
+          "height": 9.19921875,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 7.2421875,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "endLabel": null,
+      "style": {
+        "size": 2,
+        "lineStyle": "Solid",
+        "sourceArrow": "None",
+        "targetArrow": "InputFillClosedArrow",
+        "color": "#7d7d7d",
+        "__typename": "EdgeStyle"
+      },
+      "routingPoints": [
+        {
+          "x": 1370.5087890625,
+          "y": 385.061196052812,
+          "__typename": "Position"
+        },
+        {
+          "x": 1397.7470703125,
+          "y": 385.061196052812,
+          "__typename": "Position"
+        },
+        {
+          "x": 1397.7470703125,
+          "y": 408.0611960528121,
+          "__typename": "Position"
+        },
+        {
+          "x": 1440.1962890625,
+          "y": 408.0611960528121,
+          "__typename": "Position"
+        }
+      ],
+      "__typename": "Edge"
+    },
+    {
+      "id": "17cff94f-a945-3cb4-a34e-a7d3511d38a6",
+      "type": "edge:straight",
+      "targetObjectId": "84dee81a-7f0e-4e2b-b40a-9ff7a63d3a47",
+      "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=SequenceFlow",
+      "targetObjectLabel": "",
+      "descriptionId": "8710f3a9-a29a-4c91-8c5d-ccf6f0a532fb",
+      "sourceId": "155e9faf-5948-34b5-a003-ea014079089c",
+      "targetId": "0cf98301-22c9-35d8-8b92-7bd2bb6ea9a1",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "f6d8f34b-3d3c-39fd-8034-a075b31dc220",
+        "type": "label:edge-center",
+        "text": "",
+        "style": {
+          "color": "#000000",
+          "fontSize": 8,
+          "bold": false,
+          "italic": true,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 64.0,
+          "y": 252.9290345944787,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 0.0,
+          "height": 9.19921875,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 7.2421875,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "endLabel": null,
+      "style": {
+        "size": 2,
+        "lineStyle": "Solid",
+        "sourceArrow": "None",
+        "targetArrow": "InputFillClosedArrow",
+        "color": "#7d7d7d",
+        "__typename": "EdgeStyle"
+      },
+      "routingPoints": [
+        {
+          "x": 1623.72802734375,
+          "y": 408.0611960528121,
+          "__typename": "Position"
+        },
+        {
+          "x": 1633.72802734375,
+          "y": 408.0611960528121,
+          "__typename": "Position"
+        },
+        {
+          "x": 1633.72802734375,
+          "y": 330.3945293861454,
+          "__typename": "Position"
+        },
+        {
+          "x": 1643.72802734375,
+          "y": 330.3945293861454,
+          "__typename": "Position"
+        }
+      ],
+      "__typename": "Edge"
+    },
+    {
+      "id": "a068ff89-b17a-316d-8aa3-b0c400f1ed77",
+      "type": "edge:straight",
+      "targetObjectId": "94919658-9345-49a8-93ab-19332cae14c2",
+      "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=SequenceFlow",
+      "targetObjectLabel": "",
+      "descriptionId": "8710f3a9-a29a-4c91-8c5d-ccf6f0a532fb",
+      "sourceId": "0cf98301-22c9-35d8-8b92-7bd2bb6ea9a1",
+      "targetId": "9cee4a6e-8c3a-35b2-9bc1-333800c16e79",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "2ae01c51-3d07-30f1-9024-808e1b01e634",
+        "type": "label:edge-center",
+        "text": "",
+        "style": {
+          "color": "#000000",
+          "fontSize": 8,
+          "bold": false,
+          "italic": true,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 64.0,
+          "y": 252.9290345944787,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 0.0,
+          "height": 9.19921875,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 7.2421875,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "endLabel": null,
+      "style": {
+        "size": 2,
+        "lineStyle": "Solid",
+        "sourceArrow": "None",
+        "targetArrow": "InputFillClosedArrow",
+        "color": "#7d7d7d",
+        "__typename": "EdgeStyle"
+      },
+      "routingPoints": [
+        {
+          "x": 1861.77001953125,
+          "y": 330.3945293861454,
+          "__typename": "Position"
+        },
+        {
+          "x": 1871.77001953125,
+          "y": 330.3945293861454,
+          "__typename": "Position"
+        },
+        {
+          "x": 1871.77001953125,
+          "y": 333.0927830870868,
+          "__typename": "Position"
+        },
+        {
+          "x": 1925.77001953125,
+          "y": 333.0927830870868,
+          "__typename": "Position"
+        },
+        {
+          "x": 1925.77001953125,
+          "y": 330.3945293861454,
+          "__typename": "Position"
+        },
+        {
+          "x": 1935.77001953125,
+          "y": 330.3945293861454,
+          "__typename": "Position"
+        }
+      ],
+      "__typename": "Edge"
+    },
+    {
+      "id": "3b0b526f-2c0f-3e2b-9805-94bd6ef0234e",
+      "type": "edge:straight",
+      "targetObjectId": "3ab0d845-3774-4720-8e3d-63f1b0a44961",
+      "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=SequenceFlow",
+      "targetObjectLabel": "",
+      "descriptionId": "8710f3a9-a29a-4c91-8c5d-ccf6f0a532fb",
+      "sourceId": "9cee4a6e-8c3a-35b2-9bc1-333800c16e79",
+      "targetId": "a69e6eb2-2ded-3e57-9aef-4eb7a9c40bec",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "5a435daf-8ed4-326a-886e-89de5a1c8b1c",
+        "type": "label:edge-center",
+        "text": "",
+        "style": {
+          "color": "#000000",
+          "fontSize": 8,
+          "bold": false,
+          "italic": true,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 64.0,
+          "y": 252.9290345944787,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 0.0,
+          "height": 9.19921875,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 7.2421875,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "endLabel": null,
+      "style": {
+        "size": 2,
+        "lineStyle": "Solid",
+        "sourceArrow": "None",
+        "targetArrow": "InputFillClosedArrow",
+        "color": "#7d7d7d",
+        "__typename": "EdgeStyle"
+      },
+      "routingPoints": [
+        {
+          "x": 2137.310546875,
+          "y": 318.7278627194787,
+          "__typename": "Position"
+        },
+        {
+          "x": 2157.310546875,
+          "y": 318.7278627194787,
+          "__typename": "Position"
+        }
+      ],
+      "__typename": "Edge"
+    },
+    {
+      "id": "818b9b8e-e32f-3996-8044-7ea481b5dbc1",
+      "type": "edge:straight",
+      "targetObjectId": "9f6de51d-9cdd-4482-b33f-97e862e9aa9a",
+      "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=SequenceFlow",
+      "targetObjectLabel": "",
+      "descriptionId": "8710f3a9-a29a-4c91-8c5d-ccf6f0a532fb",
+      "sourceId": "9d95f792-3dd8-3697-9c12-aa2b9199a5fd",
+      "targetId": "8654a8c9-bfb5-3229-bcef-bbc1ac785913",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "4484e84e-5755-30e9-a5f3-2c7a08265a72",
+        "type": "label:edge-center",
+        "text": "",
+        "style": {
+          "color": "#000000",
+          "fontSize": 8,
+          "bold": false,
+          "italic": true,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 64.0,
+          "y": 252.9290345944787,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 0.0,
+          "height": 9.19921875,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 7.2421875,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "endLabel": null,
+      "style": {
+        "size": 2,
+        "lineStyle": "Solid",
+        "sourceArrow": "None",
+        "targetArrow": "InputFillClosedArrow",
+        "color": "#7d7d7d",
+        "__typename": "EdgeStyle"
+      },
+      "routingPoints": [
+        {
+          "x": 411.05859375,
+          "y": 549.4577025227675,
+          "__typename": "Position"
+        },
+        {
+          "x": 421.05859375,
+          "y": 549.4577025227675,
+          "__typename": "Position"
+        },
+        {
+          "x": 421.05859375,
+          "y": 513.9261164204202,
+          "__typename": "Position"
+        },
+        {
+          "x": 431.05859375,
+          "y": 513.9261164204202,
+          "__typename": "Position"
+        }
+      ],
+      "__typename": "Edge"
+    },
+    {
+      "id": "5fc6c4d9-d39c-302f-9190-de1d18632b0b",
+      "type": "edge:straight",
+      "targetObjectId": "7132224f-5e75-4495-9969-987e71af0fb9",
+      "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=SequenceFlow",
+      "targetObjectLabel": "",
+      "descriptionId": "8710f3a9-a29a-4c91-8c5d-ccf6f0a532fb",
+      "sourceId": "a69e6eb2-2ded-3e57-9aef-4eb7a9c40bec",
+      "targetId": "c1453f09-50e3-3ab0-91c1-1d0b24152588",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "6fed56a9-0607-331a-9f62-0bc27414bfdd",
+        "type": "label:edge-center",
+        "text": "",
+        "style": {
+          "color": "#000000",
+          "fontSize": 8,
+          "bold": false,
+          "italic": true,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 64.0,
+          "y": 252.9290345944787,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 0.0,
+          "height": 9.19921875,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 7.2421875,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "endLabel": null,
+      "style": {
+        "size": 2,
+        "lineStyle": "Solid",
+        "sourceArrow": "None",
+        "targetArrow": "InputFillClosedArrow",
+        "color": "#7d7d7d",
+        "__typename": "EdgeStyle"
+      },
+      "routingPoints": [
+        {
+          "x": 2337.349609375,
+          "y": 342.0611960528121,
+          "__typename": "Position"
+        },
+        {
+          "x": 2347.349609375,
+          "y": 342.0611960528121,
+          "__typename": "Position"
+        },
+        {
+          "x": 2347.349609375,
+          "y": 344.5269126092417,
+          "__typename": "Position"
+        },
+        {
+          "x": 2476.732421875,
+          "y": 344.5269126092417,
+          "__typename": "Position"
+        },
+        {
+          "x": 2476.732421875,
+          "y": 342.0611960528121,
+          "__typename": "Position"
+        },
+        {
+          "x": 2486.732421875,
+          "y": 342.0611960528121,
+          "__typename": "Position"
+        }
+      ],
+      "__typename": "Edge"
+    },
+    {
+      "id": "37d5d9d8-9c19-3d0b-bb8e-f7f1f6c97de1",
+      "type": "edge:straight",
+      "targetObjectId": "1da8542a-27c3-40d2-a082-a3189581d163",
+      "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=SequenceFlow",
+      "targetObjectLabel": "",
+      "descriptionId": "8710f3a9-a29a-4c91-8c5d-ccf6f0a532fb",
+      "sourceId": "c1453f09-50e3-3ab0-91c1-1d0b24152588",
+      "targetId": "0332dc2f-c526-38f0-bb7a-cdb872a67dab",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "3c3eec74-0591-3a92-9aba-06b04bd15221",
+        "type": "label:edge-center",
+        "text": "",
+        "style": {
+          "color": "#000000",
+          "fontSize": 8,
+          "bold": false,
+          "italic": true,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 64.0,
+          "y": 252.9290345944787,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 0.0,
+          "height": 9.19921875,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 7.2421875,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "endLabel": null,
+      "style": {
+        "size": 2,
+        "lineStyle": "Solid",
+        "sourceArrow": "None",
+        "targetArrow": "InputFillClosedArrow",
+        "color": "#7d7d7d",
+        "__typename": "EdgeStyle"
+      },
+      "routingPoints": [
+        {
+          "x": 2687.7412109375,
+          "y": 318.7278627194787,
+          "__typename": "Position"
+        },
+        {
+          "x": 2707.7412109375,
+          "y": 318.7278627194787,
+          "__typename": "Position"
+        }
+      ],
+      "__typename": "Edge"
+    },
+    {
+      "id": "677d644f-4792-317a-89f5-019f7023cbb3",
+      "type": "edge:straight",
+      "targetObjectId": "a299c4aa-7423-4edf-9e7d-1e90f2fa9bec",
+      "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=SequenceFlow",
+      "targetObjectLabel": "",
+      "descriptionId": "8710f3a9-a29a-4c91-8c5d-ccf6f0a532fb",
+      "sourceId": "0332dc2f-c526-38f0-bb7a-cdb872a67dab",
+      "targetId": "04eb55f0-3cc8-3f4a-b7bb-28ac19325392",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "6b6e5c4b-3b29-3125-b0b9-bbd3735e28a6",
+        "type": "label:edge-center",
+        "text": "",
+        "style": {
+          "color": "#000000",
+          "fontSize": 8,
+          "bold": false,
+          "italic": true,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 64.0,
+          "y": 252.9290345944787,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 0.0,
+          "height": 9.19921875,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 7.2421875,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "endLabel": null,
+      "style": {
+        "size": 2,
+        "lineStyle": "Solid",
+        "sourceArrow": "None",
+        "targetArrow": "InputFillClosedArrow",
+        "color": "#7d7d7d",
+        "__typename": "EdgeStyle"
+      },
+      "routingPoints": [
+        {
+          "x": 2887.7802734375,
+          "y": 318.7278627194787,
+          "__typename": "Position"
+        },
+        {
+          "x": 2907.7802734375,
+          "y": 318.7278627194787,
+          "__typename": "Position"
+        }
+      ],
+      "__typename": "Edge"
+    },
+    {
+      "id": "ea81d4a7-b3df-315c-abbb-b5cedfa0273e",
+      "type": "edge:straight",
+      "targetObjectId": "14d02306-f241-4979-8ff3-2664d0be9bd4",
+      "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=SequenceFlow",
+      "targetObjectLabel": "No",
+      "descriptionId": "8710f3a9-a29a-4c91-8c5d-ccf6f0a532fb",
+      "sourceId": "259b961a-7e95-3a5a-aa7d-744b2d08773e",
+      "targetId": "a69e6eb2-2ded-3e57-9aef-4eb7a9c40bec",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "a599de0f-734b-3782-a3b3-a50722c8f4f8",
+        "type": "label:edge-center",
+        "text": "No",
+        "style": {
+          "color": "#000000",
+          "fontSize": 8,
+          "bold": false,
+          "italic": true,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 1747.6357421875,
+          "y": 376.7278627194787,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 10.2265625,
+          "height": 9.19921875,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 7.2421875,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "endLabel": null,
+      "style": {
+        "size": 2,
+        "lineStyle": "Solid",
+        "sourceArrow": "None",
+        "targetArrow": "InputFillClosedArrow",
+        "color": "#7d7d7d",
+        "__typename": "EdgeStyle"
+      },
+      "routingPoints": [
+        {
+          "x": 1370.5087890625,
+          "y": 373.7278627194787,
+          "__typename": "Position"
+        },
+        {
+          "x": 2147.310546875,
+          "y": 373.7278627194787,
+          "__typename": "Position"
+        },
+        {
+          "x": 2147.310546875,
+          "y": 342.0611960528121,
+          "__typename": "Position"
+        },
+        {
+          "x": 2157.310546875,
+          "y": 342.0611960528121,
+          "__typename": "Position"
+        }
+      ],
+      "__typename": "Edge"
+    },
+    {
+      "id": "abc8625f-a20b-3977-b198-f1ad1a11b948",
+      "type": "edge:straight",
+      "targetObjectId": "0585ef8b-cb11-4653-a841-2b701235e1e5",
+      "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=SequenceFlow",
+      "targetObjectLabel": "",
+      "descriptionId": "8710f3a9-a29a-4c91-8c5d-ccf6f0a532fb",
+      "sourceId": "f7ba404a-f5c7-38fd-a0ae-b121bb01213b",
+      "targetId": "e3c0fb82-eabc-3124-9657-13de5567c48e",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "3ee76c67-e9da-35f0-8111-f3294002502d",
+        "type": "label:edge-center",
+        "text": "",
+        "style": {
+          "color": "#000000",
+          "fontSize": 8,
+          "bold": false,
+          "italic": true,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 3137.7802734375,
+          "y": 72.798828125,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 0.0,
+          "height": 9.19921875,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 7.2421875,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "endLabel": null,
+      "style": {
+        "size": 2,
+        "lineStyle": "Solid",
+        "sourceArrow": "None",
+        "targetArrow": "InputFillClosedArrow",
+        "color": "#7d7d7d",
+        "__typename": "EdgeStyle"
+      },
+      "routingPoints": [
+        {
+          "x": 3678.6318359375,
+          "y": 150.26432291666666,
+          "__typename": "Position"
+        },
+        {
+          "x": 3698.6318359375,
+          "y": 150.26432291666666,
+          "__typename": "Position"
+        }
+      ],
+      "__typename": "Edge"
+    },
+    {
+      "id": "129bc77e-0c4f-3b82-aa39-f1fbd94075b5",
+      "type": "edge:straight",
+      "targetObjectId": "f7f061e1-38fa-4b6f-b1eb-c04078dc2682",
+      "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=MessageFlow",
+      "targetObjectLabel": "",
+      "descriptionId": "93bd8132-f714-4271-bb74-a4e0cdc8bf85",
+      "sourceId": "8654a8c9-bfb5-3229-bcef-bbc1ac785913",
+      "targetId": "b2201f30-e8a1-3e64-88a7-c4b9d7aa7341",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "6dd3f1ae-d623-33f5-870f-bd1bd74f5338",
+        "type": "label:edge-center",
+        "text": "",
+        "style": {
+          "color": "#000000",
+          "fontSize": 8,
+          "bold": false,
+          "italic": true,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "/api/images/icons2/decorations/process/north-west/receive-task.png",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 3035.7802734375,
+          "y": 653.5937472042181,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 20.0,
+          "height": 19.19921875,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 20.0,
+          "y": 7.2421875,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "endLabel": null,
+      "style": {
+        "size": 2,
+        "lineStyle": "Dash",
+        "sourceArrow": "None",
+        "targetArrow": "InputClosedArrow",
+        "color": "#7d7d7d",
+        "__typename": "EdgeStyle"
+      },
+      "routingPoints": [
+        {
+          "x": 611.09765625,
+          "y": 508.0927830870868,
+          "__typename": "Position"
+        },
+        {
+          "x": 3005.7802734375,
+          "y": 508.0927830870868,
+          "__typename": "Position"
+        },
+        {
+          "x": 3005.7802734375,
+          "y": 675.7929659542181,
+          "__typename": "Position"
+        },
+        {
+          "x": 3234.2626953125,
+          "y": 675.7929659542182,
+          "__typename": "Position"
+        }
+      ],
+      "__typename": "Edge"
+    },
+    {
+      "id": "f415708a-223d-3574-92d4-021d22abbe43",
+      "type": "edge:straight",
+      "targetObjectId": "cec57b1d-7a9b-42d2-980d-b3fb4a7bd0e9",
+      "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=MessageFlow",
+      "targetObjectLabel": "",
+      "descriptionId": "93bd8132-f714-4271-bb74-a4e0cdc8bf85",
+      "sourceId": "3a3e7a5d-80b8-3b6f-8449-1bb5f42b4bb6",
+      "targetId": "e40d9052-ce1d-380a-8146-8105adeecd04",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "1790a508-9b6c-3d89-ade5-5afcbd0a1f70",
+        "type": "label:edge-center",
+        "text": "",
+        "style": {
+          "color": "#000000",
+          "fontSize": 8,
+          "bold": false,
+          "italic": true,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "/api/images/icons2/decorations/process/north-west/receive-task.png",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 3035.7802734375,
+          "y": 749.7929650222909,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 20.0,
+          "height": 19.19921875,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 20.0,
+          "y": 7.2421875,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "endLabel": null,
+      "style": {
+        "size": 2,
+        "lineStyle": "Dash",
+        "sourceArrow": "None",
+        "targetArrow": "InputClosedArrow",
+        "color": "#7d7d7d",
+        "__typename": "EdgeStyle"
+      },
+      "routingPoints": [
+        {
+          "x": 3752.8232421875,
+          "y": 627.1263002194788,
+          "__typename": "Position"
+        },
+        {
+          "x": 3762.8232421875,
+          "y": 627.1263002194788,
+          "__typename": "Position"
+        },
+        {
+          "x": 3762.8232421875,
+          "y": 630.7929659542182,
+          "__typename": "Position"
+        },
+        {
+          "x": 4036.21484375,
+          "y": 630.7929659542181,
+          "__typename": "Position"
+        },
+        {
+          "x": 4036.21484375,
+          "y": 746.7929650222908,
+          "__typename": "Position"
+        },
+        { "x": 12.0, "y": 746.7929650222908, "__typename": "Position" },
+        {
+          "x": 12.0,
+          "y": 379.39452938614534,
+          "__typename": "Position"
+        },
+        {
+          "x": 631.09765625,
+          "y": 379.39452938614545,
+          "__typename": "Position"
+        }
+      ],
+      "__typename": "Edge"
+    },
+    {
+      "id": "4998d08b-cd0e-3eb6-bd29-6bdf80ca66bf",
+      "type": "edge:straight",
+      "targetObjectId": "a9d2a5be-e134-4239-a30f-c4d41db79df5",
+      "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=MessageFlow",
+      "targetObjectLabel": "",
+      "descriptionId": "93bd8132-f714-4271-bb74-a4e0cdc8bf85",
+      "sourceId": "155e9faf-5948-34b5-a003-ea014079089c",
+      "targetId": "bf1905b7-8242-316f-8a05-61d37146ee4a",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "9e71e093-b2fe-34b5-b4dc-5c7dddf7f909",
+        "type": "label:edge-center",
+        "text": "",
+        "style": {
+          "color": "#000000",
+          "fontSize": 8,
+          "bold": false,
+          "italic": true,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "/api/images/icons2/decorations/process/north-west/receive-task.png",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 3035.7802734375,
+          "y": 434.3945293861454,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 20.0,
+          "height": 19.19921875,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 20.0,
+          "y": 7.2421875,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "endLabel": null,
+      "style": {
+        "size": 2,
+        "lineStyle": "Dash",
+        "sourceArrow": "None",
+        "targetArrow": "InputClosedArrow",
+        "color": "#7d7d7d",
+        "__typename": "EdgeStyle"
+      },
+      "routingPoints": [
+        {
+          "x": 1623.72802734375,
+          "y": 431.3945293861454,
+          "__typename": "Position"
+        },
+        {
+          "x": 3085.7802734375,
+          "y": 431.3945293861454,
+          "__typename": "Position"
+        },
+        {
+          "x": 3085.7802734375,
+          "y": 210.5976553180727,
+          "__typename": "Position"
+        },
+        {
+          "x": 3297.1865234375,
+          "y": 210.5976553180727,
+          "__typename": "Position"
+        }
+      ],
+      "__typename": "Edge"
+    },
+    {
+      "id": "1db4c8ea-fcd4-3803-94b2-7ac4fc0896ad",
+      "type": "edge:straight",
+      "targetObjectId": "bdf463cc-b244-4cb8-b29c-82095ca3b64f",
+      "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=MessageFlow",
+      "targetObjectLabel": "",
+      "descriptionId": "93bd8132-f714-4271-bb74-a4e0cdc8bf85",
+      "sourceId": "e3c0fb82-eabc-3124-9657-13de5567c48e",
+      "targetId": "0cf98301-22c9-35d8-8b92-7bd2bb6ea9a1",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "460582d4-e4ab-3ad2-a5a7-a8f059b92d03",
+        "type": "label:edge-center",
+        "text": "",
+        "style": {
+          "color": "#000000",
+          "fontSize": 8,
+          "bold": false,
+          "italic": true,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "/api/images/icons2/decorations/process/north-west/receive-task.png",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 3035.7802734375,
+          "y": 15.0,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 20.0,
+          "height": 19.19921875,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 20.0,
+          "y": 7.2421875,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "endLabel": null,
+      "style": {
+        "size": 2,
+        "lineStyle": "Dash",
+        "sourceArrow": "None",
+        "targetArrow": "InputClosedArrow",
+        "color": "#7d7d7d",
+        "__typename": "EdgeStyle"
+      },
+      "routingPoints": [
+        {
+          "x": 3892.1875,
+          "y": 161.93098958333334,
+          "__typename": "Position"
+        },
+        {
+          "x": 3902.1875,
+          "y": 161.93098958333334,
+          "__typename": "Position"
+        },
+        {
+          "x": 3902.1875,
+          "y": 165.5976553180727,
+          "__typename": "Position"
+        },
+        {
+          "x": 4036.21484375,
+          "y": 165.5976553180727,
+          "__typename": "Position"
+        },
+        { "x": 4036.21484375, "y": 12.0, "__typename": "Position" },
+        { "x": 12.0, "y": 12.0, "__typename": "Position" },
+        { "x": 12.0, "y": 307.0611960528121, "__typename": "Position" },
+        {
+          "x": 1643.72802734375,
+          "y": 307.0611960528121,
+          "__typename": "Position"
+        }
+      ],
+      "__typename": "Edge"
+    },
+    {
+      "id": "f0336672-7629-3ecd-8850-a234ddda262b",
+      "type": "edge:straight",
+      "targetObjectId": "ad4c300c-e02a-47e9-97ac-f28b61fcfcc5",
+      "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=MessageFlow",
+      "targetObjectLabel": "",
+      "descriptionId": "93bd8132-f714-4271-bb74-a4e0cdc8bf85",
+      "sourceId": "c1453f09-50e3-3ab0-91c1-1d0b24152588",
+      "targetId": "addfd127-5d92-3251-8557-b03e8acb14d8",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "8fb65d0f-d49e-381f-b313-f50b94a74d2a",
+        "type": "label:edge-center",
+        "text": "",
+        "style": {
+          "color": "#000000",
+          "fontSize": 8,
+          "bold": false,
+          "italic": true,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "/api/images/icons2/decorations/process/north-west/receive-task.png",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 3035.7802734375,
+          "y": 401.1953106361454,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 20.0,
+          "height": 19.19921875,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 20.0,
+          "y": 7.2421875,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "endLabel": null,
+      "style": {
+        "size": 2,
+        "lineStyle": "Dash",
+        "sourceArrow": "None",
+        "targetArrow": "InputClosedArrow",
+        "color": "#7d7d7d",
+        "__typename": "EdgeStyle"
+      },
+      "routingPoints": [
+        {
+          "x": 2687.7412109375,
+          "y": 342.061196052812,
+          "__typename": "Position"
+        },
+        {
+          "x": 2697.7412109375,
+          "y": 342.061196052812,
+          "__typename": "Position"
+        },
+        {
+          "x": 2697.7412109375,
+          "y": 363.7278627194787,
+          "__typename": "Position"
+        },
+        {
+          "x": 3005.7802734375,
+          "y": 363.7278627194787,
+          "__typename": "Position"
+        },
+        {
+          "x": 3005.7802734375,
+          "y": 398.1953106361454,
+          "__typename": "Position"
+        },
+        {
+          "x": 3216.93896484375,
+          "y": 398.1953106361454,
+          "__typename": "Position"
+        }
+      ],
+      "__typename": "Edge"
+    },
+    {
+      "id": "c09f8f7b-2f77-305d-beaa-c1d73fe0bc9b",
+      "type": "edge:straight",
+      "targetObjectId": "632798ef-cd0f-4ee4-94d7-98c28401ccf4",
+      "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=MessageFlow",
+      "targetObjectLabel": "",
+      "descriptionId": "93bd8132-f714-4271-bb74-a4e0cdc8bf85",
+      "sourceId": "9f568d8b-1f6c-3ebf-a77b-ccc8b9535829",
+      "targetId": "8e42a55c-8fa2-31ad-83d0-c34895425c90",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "fdddf6db-53a0-3a6b-9789-c33660f0ce81",
+        "type": "label:edge-center",
+        "text": "",
+        "style": {
+          "color": "#000000",
+          "fontSize": 8,
+          "bold": false,
+          "italic": true,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "/api/images/icons2/decorations/process/north-west/receive-task.png",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 4066.21484375,
+          "y": 416.52864303755143,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 20.0,
+          "height": 19.19921875,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 20.0,
+          "y": 7.2421875,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "endLabel": null,
+      "style": {
+        "size": 2,
+        "lineStyle": "Dash",
+        "sourceArrow": "None",
+        "targetArrow": "InputClosedArrow",
+        "color": "#7d7d7d",
+        "__typename": "EdgeStyle"
+      },
+      "routingPoints": [
+        {
+          "x": 3851.05615234375,
+          "y": 409.8619773028121,
+          "__typename": "Position"
+        },
+        {
+          "x": 3861.05615234375,
+          "y": 409.8619773028121,
+          "__typename": "Position"
+        },
+        {
+          "x": 3861.05615234375,
+          "y": 413.52864303755143,
+          "__typename": "Position"
+        },
+        {
+          "x": 4170.21484375,
+          "y": 413.52864303755143,
+          "__typename": "Position"
+        }
+      ],
+      "__typename": "Edge"
+    },
+    {
+      "id": "7de6627f-9b40-3bba-a841-dc3ec3550226",
+      "type": "edge:straight",
+      "targetObjectId": "c295777b-8fd0-41cd-b2c9-4cf3c723ecd5",
+      "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=Association",
+      "targetObjectLabel": "_3YSBgJMzEeKGz_kv5DLbCg",
+      "descriptionId": "68a88921-e246-45d1-a61e-9c32070aab4c",
+      "sourceId": "a69e6eb2-2ded-3e57-9aef-4eb7a9c40bec",
+      "targetId": "71777ffb-7e96-3e6e-9a92-26ffff1c3e2c",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "a8f99d0b-64c9-37d5-976b-b0cb59856e7e",
+        "type": "label:edge-center",
+        "text": "",
+        "style": {
+          "color": "#000000",
+          "fontSize": 8,
+          "bold": false,
+          "italic": false,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 64.0,
+          "y": 252.9290345944787,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 0.0,
+          "height": 9.19921875,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 7.2421875,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "endLabel": null,
+      "style": {
+        "size": 2,
+        "lineStyle": "Dot",
+        "sourceArrow": "None",
+        "targetArrow": "InputArrow",
+        "color": "#b0b0b0",
+        "__typename": "EdgeStyle"
+      },
+      "routingPoints": [
+        {
+          "x": 2337.349609375,
+          "y": 318.7278627194787,
+          "__typename": "Position"
+        },
+        {
+          "x": 2395.041015625,
+          "y": 318.7278627194787,
+          "__typename": "Position"
+        }
+      ],
+      "__typename": "Edge"
+    },
+    {
+      "id": "c40a0617-6c84-368a-912d-1b78045ea1ba",
+      "type": "edge:straight",
+      "targetObjectId": "bd0be6be-4da5-401c-a36f-d135dffe9013",
+      "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=Association",
+      "targetObjectLabel": "_4Td3YJMzEeKGz_kv5DLbCg",
+      "descriptionId": "68a88921-e246-45d1-a61e-9c32070aab4c",
+      "sourceId": "71777ffb-7e96-3e6e-9a92-26ffff1c3e2c",
+      "targetId": "c1453f09-50e3-3ab0-91c1-1d0b24152588",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "0b1596d7-065a-3395-a336-9d5231045e13",
+        "type": "label:edge-center",
+        "text": "",
+        "style": {
+          "color": "#000000",
+          "fontSize": 8,
+          "bold": false,
+          "italic": false,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 64.0,
+          "y": 252.9290345944787,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 0.0,
+          "height": 9.19921875,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 7.2421875,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "endLabel": null,
+      "style": {
+        "size": 2,
+        "lineStyle": "Dot",
+        "sourceArrow": "None",
+        "targetArrow": "InputArrow",
+        "color": "#b0b0b0",
+        "__typename": "EdgeStyle"
+      },
+      "routingPoints": [
+        {
+          "x": 2429.041015625,
+          "y": 318.7278627194787,
+          "__typename": "Position"
+        },
+        {
+          "x": 2486.732421875,
+          "y": 318.7278627194787,
+          "__typename": "Position"
+        }
+      ],
+      "__typename": "Edge"
+    },
+    {
+      "id": "6385b440-674e-363d-ac59-78fb0bc30ce8",
+      "type": "edge:straight",
+      "targetObjectId": "01d998a9-7412-4921-a62e-855e1bc2b02c",
+      "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=Association",
+      "targetObjectLabel": "_Rz2zwJUpEeKHo-HauyzVXA",
+      "descriptionId": "68a88921-e246-45d1-a61e-9c32070aab4c",
+      "sourceId": "af6e3eb7-971f-3b67-ba71-4aac5fa4902f",
+      "targetId": "8654a8c9-bfb5-3229-bcef-bbc1ac785913",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "8582579c-4f96-3098-a54a-05db114986ce",
+        "type": "label:edge-center",
+        "text": "",
+        "style": {
+          "color": "#000000",
+          "fontSize": 8,
+          "bold": false,
+          "italic": false,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 64.0,
+          "y": 252.9290345944787,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 0.0,
+          "height": 9.19921875,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 7.2421875,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "endLabel": null,
+      "style": {
+        "size": 2,
+        "lineStyle": "Dot",
+        "sourceArrow": "None",
+        "targetArrow": "InputArrow",
+        "color": "#b0b0b0",
+        "__typename": "EdgeStyle"
+      },
+      "routingPoints": [
+        {
+          "x": 411.05859375,
+          "y": 496.4261164204201,
+          "__typename": "Position"
+        },
+        {
+          "x": 431.05859375,
+          "y": 496.4261164204201,
+          "__typename": "Position"
+        }
+      ],
+      "__typename": "Edge"
+    },
+    {
+      "id": "dd9d3248-3499-3663-b942-95d5546d4230",
+      "type": "edge:straight",
+      "targetObjectId": "c7de8b10-d092-4100-8a7d-710d5ef51015",
+      "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=Association",
+      "targetObjectLabel": "_e4kAMJUpEeKHo-HauyzVXA",
+      "descriptionId": "68a88921-e246-45d1-a61e-9c32070aab4c",
+      "sourceId": "e40d9052-ce1d-380a-8146-8105adeecd04",
+      "targetId": "0f7f80a5-0054-3590-8eae-adce32eb3897",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "9e2106d5-db9e-36ef-9ec4-fcff452f2700",
+        "type": "label:edge-center",
+        "text": "",
+        "style": {
+          "color": "#000000",
+          "fontSize": 8,
+          "bold": false,
+          "italic": false,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 64.0,
+          "y": 252.9290345944787,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 0.0,
+          "height": 9.19921875,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 7.2421875,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "endLabel": null,
+      "style": {
+        "size": 2,
+        "lineStyle": "Dot",
+        "sourceArrow": "None",
+        "targetArrow": "InputArrow",
+        "color": "#b0b0b0",
+        "__typename": "EdgeStyle"
+      },
+      "routingPoints": [
+        {
+          "x": 811.13671875,
+          "y": 379.39452938614534,
+          "__typename": "Position"
+        },
+        {
+          "x": 831.13671875,
+          "y": 379.3945293861454,
+          "__typename": "Position"
+        }
+      ],
+      "__typename": "Edge"
+    },
+    {
+      "id": "7a30752e-d770-3136-aa0d-a8c1fe310742",
+      "type": "edge:straight",
+      "targetObjectId": "a9184fd9-8ec6-4b17-af9f-cbb318cd1a0f",
+      "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=Association",
+      "targetObjectLabel": "_hXhV8JUpEeKHo-HauyzVXA",
+      "descriptionId": "68a88921-e246-45d1-a61e-9c32070aab4c",
+      "sourceId": "0f7f80a5-0054-3590-8eae-adce32eb3897",
+      "targetId": "7a256769-672d-37b0-8f7b-ab1854d23a9d",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "1284fd81-531a-334b-b276-37eeba078a3e",
+        "type": "label:edge-center",
+        "text": "",
+        "style": {
+          "color": "#000000",
+          "fontSize": 8,
+          "bold": false,
+          "italic": false,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 64.0,
+          "y": 252.9290345944787,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 0.0,
+          "height": 9.19921875,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 7.2421875,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "endLabel": null,
+      "style": {
+        "size": 2,
+        "lineStyle": "Dot",
+        "sourceArrow": "None",
+        "targetArrow": "InputArrow",
+        "color": "#b0b0b0",
+        "__typename": "EdgeStyle"
+      },
+      "routingPoints": [
+        {
+          "x": 865.13671875,
+          "y": 379.3945293861454,
+          "__typename": "Position"
+        },
+        {
+          "x": 885.13671875,
+          "y": 379.39452938614534,
+          "__typename": "Position"
+        }
+      ],
+      "__typename": "Edge"
+    },
+    {
+      "id": "c80bfd2d-230c-3bb0-b5de-7fb2979cf74a",
+      "type": "edge:straight",
+      "targetObjectId": "18befe12-363a-456d-bdb6-5afadc7cf2fb",
+      "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=Association",
+      "targetObjectLabel": "_kV4kgJUpEeKHo-HauyzVXA",
+      "descriptionId": "68a88921-e246-45d1-a61e-9c32070aab4c",
+      "sourceId": "7a256769-672d-37b0-8f7b-ab1854d23a9d",
+      "targetId": "e3b1873a-fc4d-3362-91ee-6450b2c2db0d",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "39f1eeb6-0612-3bee-bfeb-1dd4f90497b4",
+        "type": "label:edge-center",
+        "text": "",
+        "style": {
+          "color": "#000000",
+          "fontSize": 8,
+          "bold": false,
+          "italic": false,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 64.0,
+          "y": 252.9290345944787,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 0.0,
+          "height": 9.19921875,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 7.2421875,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "endLabel": null,
+      "style": {
+        "size": 2,
+        "lineStyle": "Dot",
+        "sourceArrow": "None",
+        "targetArrow": "InputArrow",
+        "color": "#b0b0b0",
+        "__typename": "EdgeStyle"
+      },
+      "routingPoints": [
+        {
+          "x": 1085.71044921875,
+          "y": 402.7278627194787,
+          "__typename": "Position"
+        },
+        {
+          "x": 1095.71044921875,
+          "y": 402.7278627194787,
+          "__typename": "Position"
+        },
+        {
+          "x": 1095.71044921875,
+          "y": 432.4261164204201,
+          "__typename": "Position"
+        },
+        {
+          "x": 1336.5087890625,
+          "y": 432.4261164204201,
+          "__typename": "Position"
+        }
+      ],
+      "__typename": "Edge"
+    },
+    {
+      "id": "c1f243fe-a163-3b54-9b17-41a1f442f907",
+      "type": "edge:straight",
+      "targetObjectId": "e7b32603-8b19-4089-896a-2f56b0aaf107",
+      "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=Association",
+      "targetObjectLabel": "_lLXbAJUpEeKHo-HauyzVXA",
+      "descriptionId": "68a88921-e246-45d1-a61e-9c32070aab4c",
+      "sourceId": "e3b1873a-fc4d-3362-91ee-6450b2c2db0d",
+      "targetId": "155e9faf-5948-34b5-a003-ea014079089c",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "36532617-45a8-374c-9e38-5f4151b5cb3d",
+        "type": "label:edge-center",
+        "text": "",
+        "style": {
+          "color": "#000000",
+          "fontSize": 8,
+          "bold": false,
+          "italic": false,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 64.0,
+          "y": 252.9290345944787,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 0.0,
+          "height": 9.19921875,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 7.2421875,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "endLabel": null,
+      "style": {
+        "size": 2,
+        "lineStyle": "Dot",
+        "sourceArrow": "None",
+        "targetArrow": "InputArrow",
+        "color": "#b0b0b0",
+        "__typename": "EdgeStyle"
+      },
+      "routingPoints": [
+        {
+          "x": 1370.5087890625,
+          "y": 432.4261164204201,
+          "__typename": "Position"
+        },
+        {
+          "x": 1430.1962890625,
+          "y": 432.4261164204201,
+          "__typename": "Position"
+        },
+        {
+          "x": 1430.1962890625,
+          "y": 431.3945293861454,
+          "__typename": "Position"
+        },
+        {
+          "x": 1440.1962890625,
+          "y": 431.3945293861454,
+          "__typename": "Position"
+        }
+      ],
+      "__typename": "Edge"
+    },
+    {
+      "id": "a84b0958-881e-365f-8318-a7890af25c1f",
+      "type": "edge:straight",
+      "targetObjectId": "61f9b195-e30c-448a-9749-66c38300c6e7",
+      "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=Association",
+      "targetObjectLabel": "_rtY9kJUpEeKHo-HauyzVXA",
+      "descriptionId": "68a88921-e246-45d1-a61e-9c32070aab4c",
+      "sourceId": "0cf98301-22c9-35d8-8b92-7bd2bb6ea9a1",
+      "targetId": "58dec097-d74f-35e3-9985-1df50dccc68a",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "e33dc70c-f0cc-35e7-8885-6cf37441f5b4",
+        "type": "label:edge-center",
+        "text": "",
+        "style": {
+          "color": "#000000",
+          "fontSize": 8,
+          "bold": false,
+          "italic": false,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 64.0,
+          "y": 252.9290345944787,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 0.0,
+          "height": 9.19921875,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 7.2421875,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "endLabel": null,
+      "style": {
+        "size": 2,
+        "lineStyle": "Dot",
+        "sourceArrow": "None",
+        "targetArrow": "InputArrow",
+        "color": "#b0b0b0",
+        "__typename": "EdgeStyle"
+      },
+      "routingPoints": [
+        {
+          "x": 1861.77001953125,
+          "y": 307.061196052812,
+          "__typename": "Position"
+        },
+        {
+          "x": 1881.77001953125,
+          "y": 307.061196052812,
+          "__typename": "Position"
+        }
+      ],
+      "__typename": "Edge"
+    },
+    {
+      "id": "7ef93f47-2033-311e-8f43-c73781c0225c",
+      "type": "edge:straight",
+      "targetObjectId": "1da28b1d-d54f-4d72-9797-80c870e26f67",
+      "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=Association",
+      "targetObjectLabel": "_sw5pAJUpEeKHo-HauyzVXA",
+      "descriptionId": "68a88921-e246-45d1-a61e-9c32070aab4c",
+      "sourceId": "58dec097-d74f-35e3-9985-1df50dccc68a",
+      "targetId": "9cee4a6e-8c3a-35b2-9bc1-333800c16e79",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "bc20c350-8de1-31d0-96e2-64ce7cd4625d",
+        "type": "label:edge-center",
+        "text": "",
+        "style": {
+          "color": "#000000",
+          "fontSize": 8,
+          "bold": false,
+          "italic": false,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 64.0,
+          "y": 252.9290345944787,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 0.0,
+          "height": 9.19921875,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 7.2421875,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "endLabel": null,
+      "style": {
+        "size": 2,
+        "lineStyle": "Dot",
+        "sourceArrow": "None",
+        "targetArrow": "InputArrow",
+        "color": "#b0b0b0",
+        "__typename": "EdgeStyle"
+      },
+      "routingPoints": [
+        {
+          "x": 1915.77001953125,
+          "y": 307.061196052812,
+          "__typename": "Position"
+        },
+        {
+          "x": 1935.77001953125,
+          "y": 307.061196052812,
+          "__typename": "Position"
+        }
+      ],
+      "__typename": "Edge"
+    },
+    {
+      "id": "9158af4d-0614-3a96-b5c2-ee790593a5d0",
+      "type": "edge:straight",
+      "targetObjectId": "c7b62b18-4764-49a7-932e-1aa2aa0235b3",
+      "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=Association",
+      "targetObjectLabel": "_Q6lsoJUtEeKSM8dNXYpfyA",
+      "descriptionId": "68a88921-e246-45d1-a61e-9c32070aab4c",
+      "sourceId": "6b6dd54d-eff8-34ce-8e14-4a8aae327d88",
+      "targetId": "f7ba404a-f5c7-38fd-a0ae-b121bb01213b",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "90770635-5f4f-3ef6-816f-892fa8748ffe",
+        "type": "label:edge-center",
+        "text": "",
+        "style": {
+          "color": "#000000",
+          "fontSize": 8,
+          "bold": false,
+          "italic": false,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 3137.7802734375,
+          "y": 72.798828125,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 0.0,
+          "height": 9.19921875,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 7.2421875,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "endLabel": null,
+      "style": {
+        "size": 2,
+        "lineStyle": "Dot",
+        "sourceArrow": "None",
+        "targetArrow": "InputArrow",
+        "color": "#b0b0b0",
+        "__typename": "EdgeStyle"
+      },
+      "routingPoints": [
+        {
+          "x": 3478.5927734375,
+          "y": 138.59765625,
+          "__typename": "Position"
+        },
+        {
+          "x": 3498.5927734375,
+          "y": 138.59765625,
+          "__typename": "Position"
+        }
+      ],
+      "__typename": "Edge"
+    },
+    {
+      "id": "530a7c8e-461c-3895-8cef-a349de4f73c8",
+      "type": "edge:straight",
+      "targetObjectId": "c7abf28f-62f8-47de-aef8-746edf1977f3",
+      "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=Association",
+      "targetObjectLabel": "_YOVnEJUtEeKSM8dNXYpfyA",
+      "descriptionId": "68a88921-e246-45d1-a61e-9c32070aab4c",
+      "sourceId": "7c720596-5b17-31df-afe6-73279cc5e12a",
+      "targetId": "f96a8635-2b94-3e67-b4b4-bf294ed32bcb",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "f1207874-47db-3f0e-9636-9aadaf8294fb",
+        "type": "label:edge-center",
+        "text": "",
+        "style": {
+          "color": "#000000",
+          "fontSize": 8,
+          "bold": false,
+          "italic": false,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 3137.7802734375,
+          "y": 537.9941387611455,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 0.0,
+          "height": 9.19921875,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 7.2421875,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "endLabel": null,
+      "style": {
+        "size": 2,
+        "lineStyle": "Dot",
+        "sourceArrow": "None",
+        "targetArrow": "InputArrow",
+        "color": "#b0b0b0",
+        "__typename": "EdgeStyle"
+      },
+      "routingPoints": [
+        {
+          "x": 3352.7451171875,
+          "y": 603.7929668861455,
+          "__typename": "Position"
+        },
+        {
+          "x": 3372.7451171875,
+          "y": 603.7929668861455,
+          "__typename": "Position"
+        }
+      ],
+      "__typename": "Edge"
+    },
+    {
+      "id": "7fbe8f05-b700-38f9-b50c-70b05c913d03",
+      "type": "edge:straight",
+      "targetObjectId": "2636805b-0d22-4824-8fa8-cd93b8d85164",
+      "targetObjectKind": "siriusComponents://semantic?domain=bpmn2&entity=Association",
+      "targetObjectLabel": "_6rnhUJUyEeKCl81VVvO1pQ",
+      "descriptionId": "68a88921-e246-45d1-a61e-9c32070aab4c",
+      "sourceId": "c2a6f082-017d-3f51-b20a-86882473f79d",
+      "targetId": "8654a8c9-bfb5-3229-bcef-bbc1ac785913",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "b19b1bfc-118f-3ff2-b296-9dc94e6ce433",
+        "type": "label:edge-center",
+        "text": "",
+        "style": {
+          "color": "#000000",
+          "fontSize": 8,
+          "bold": false,
+          "italic": false,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 64.0,
+          "y": 252.9290345944787,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 0.0,
+          "height": 9.19921875,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 7.2421875,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "endLabel": null,
+      "style": {
+        "size": 2,
+        "lineStyle": "Dot",
+        "sourceArrow": "None",
+        "targetArrow": "InputArrow",
+        "color": "#b0b0b0",
+        "__typename": "EdgeStyle"
+      },
+      "routingPoints": [
+        {
+          "x": 411.05859375,
+          "y": 425.39452938614534,
+          "__typename": "Position"
+        },
+        {
+          "x": 421.05859375,
+          "y": 425.39452938614534,
+          "__typename": "Position"
+        },
+        {
+          "x": 421.05859375,
+          "y": 478.9261164204201,
+          "__typename": "Position"
+        },
+        {
+          "x": 431.05859375,
+          "y": 478.9261164204201,
+          "__typename": "Position"
+        }
+      ],
+      "__typename": "Edge"
+    }
+  ],
+  "__typename": "Diagram"
+}

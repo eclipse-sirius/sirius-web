@@ -29,6 +29,8 @@ import org.eclipse.sirius.components.diagrams.EdgeStyle;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
 import org.eclipse.sirius.components.diagrams.LineStyle;
+import org.eclipse.sirius.components.diagrams.ListItemNodeStyle;
+import org.eclipse.sirius.components.diagrams.ListNodeStyle;
 import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.components.diagrams.Size;
@@ -72,6 +74,7 @@ public class DefaultTestDiagramDescriptionProvider {
                 .map(composedName -> composedName[0])
                 .orElse(""); //$NON-NLS-1$
         // @formatter:on
+
         INodeStyle nodeStyle = null;
         switch (prefix) {
         case "rect": //$NON-NLS-1$
@@ -90,6 +93,24 @@ public class DefaultTestDiagramDescriptionProvider {
             nodeStyle = ImageNodeStyle.newImageNodeStyle()
                     .imageURL("") //$NON-NLS-1$
                     .scalingFactor(1)
+                    .build();
+            // @formatter:on
+            break;
+        case "list": //$NON-NLS-1$
+            // @formatter:off
+            nodeStyle = ListNodeStyle.newListNodeStyle()
+                    .borderColor("black") //$NON-NLS-1$
+                    .borderRadius(0)
+                    .borderSize(1)
+                    .borderStyle(LineStyle.Solid)
+                    .color("white") //$NON-NLS-1$
+                    .build();
+            // @formatter:on
+            break;
+        case "listitem": //$NON-NLS-1$
+            // @formatter:off
+            nodeStyle = ListItemNodeStyle.newListItemNodeStyle()
+                    .backgroundColor("white") //$NON-NLS-1$
                     .build();
             // @formatter:on
             break;
@@ -115,6 +136,12 @@ public class DefaultTestDiagramDescriptionProvider {
                         break;
                     case "img": //$NON-NLS-1$
                         type = NodeType.NODE_IMAGE;
+                        break;
+                    case "list": //$NON-NLS-1$
+                        type = NodeType.NODE_LIST;
+                        break;
+                    case "listitem": //$NON-NLS-1$
+                        type = NodeType.NODE_LIST_ITEM;
                         break;
                     default:
                         type = ""; //$NON-NLS-1$

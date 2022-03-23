@@ -136,6 +136,12 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-collaborative-diagrams</artifactId>
+			<version>2022.01.20</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 		    <groupId>org.apache.xmlgraphics</groupId>
 		    <artifactId>batik-bridge</artifactId>
 		    <version>1.14</version>
