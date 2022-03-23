@@ -381,7 +381,7 @@ export const DiagramWebSocketContainer = ({
    * Dispatch the diagram to the diagramServer if our state indicate that diagram has changed.
    */
   useEffect(() => {
-    if (diagramServer) {
+    if (diagramServer && diagram) {
       const action: SiriusUpdateModelAction = { kind: 'siriusUpdateModel', diagram, readOnly };
       diagramServer.actionDispatcher.dispatch(action);
     }
@@ -470,7 +470,7 @@ export const DiagramWebSocketContainer = ({
 
   const invokeTool = useCallback(
     (tool, ...params) => {
-      if (tool) {
+      if (selectedObjectId && tool) {
         const { id: toolId } = tool;
         if (tool.__typename === 'SingleClickOnTwoDiagramElementsTool') {
           const [diagramSourceElementId, diagramTargetElementId, sourcePosition, targetPosition] = params;
@@ -711,10 +711,12 @@ export const DiagramWebSocketContainer = ({
   ]);
 
   useEffect(() => {
-    if (selectedObjectId && activeTool && contextualPalette) {
+    if (diagramServer && selectedObjectId && activeTool && contextualPalette) {
       invokeTool(activeTool, contextualPalette.element.id, contextualPalette.palettePosition);
+
       const sourceElementAction: SourceElementAction = { kind: SOURCE_ELEMENT_ACTION, sourceElement: null };
       diagramServer.actionDispatcher.dispatch(sourceElementAction);
+
       const resetSelectedObjectInSelectionDialogEvent: ResetSelectedObjectInSelectionDialogEvent = {
         type: 'RESET_SELECTED_OBJECT_IN_SELECTION_DIALOG',
       };
@@ -938,7 +940,7 @@ export const DiagramWebSocketContainer = ({
    * TLDR: Do not touch the div structure below without a deep understanding of the React reconciliation algorithm!
    */
   let contextualPaletteContent;
-  if (!readOnly && contextualPalette) {
+  if (diagramServer && !readOnly && contextualPalette) {
     const { element, palettePosition, canvasBounds, edgeStartPosition, renameable, deletable } = contextualPalette;
     const { x, y } = edgeStartPosition;
     const style = {
@@ -992,7 +994,7 @@ export const DiagramWebSocketContainer = ({
     };
     const invokeConnectorToolFromContextualPalette = (toolSections: GQLToolSection[]) => {
       resetTools();
-      const tools = [];
+      const tools: GQLSingleClickOnTwoDiagramElementsTool[] = [];
       toolSections.forEach((toolSection) => {
         const filteredTools = toolSection.tools
           .filter((tool) => tool.__typename === 'SingleClickOnTwoDiagramElementsTool')
@@ -1107,7 +1109,7 @@ export const DiagramWebSocketContainer = ({
         onFitToScreen={onFitToScreen}
         onArrangeAll={onArrangeAll}
         setZoomLevel={setZoomLevel}
-        autoLayout={diagram?.autoLayout}
+        autoLayout={diagram?.autoLayout ?? false}
         zoomLevel={zoomLevel}
         subscribers={subscribers}
       />

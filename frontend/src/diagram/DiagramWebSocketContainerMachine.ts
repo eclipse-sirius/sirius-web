@@ -62,8 +62,8 @@ export type SchemaValue = {
 export interface DiagramWebSocketContainerContext {
   id: string;
   displayedRepresentationId: string | null;
-  diagramServer: DiagramServer;
-  diagram: GQLDiagram;
+  diagramServer: DiagramServer | null;
+  diagram: GQLDiagram | null;
   toolSections: ToolSection[];
   activeTool: Tool | null;
   activeConnectorTools: SingleClickOnTwoDiagramElementsTool[];

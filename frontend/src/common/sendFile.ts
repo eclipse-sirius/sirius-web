@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,22 +24,24 @@ export const sendFile = async (query: string, variables: any, file: File) => {
   formData.append('0', file);
 
   const csrfToken = getCookie('XSRF-TOKEN');
+  const headers: HeadersInit = {};
+  if (csrfToken) {
+    headers['X-XSRF-TOKEN'] = csrfToken;
+  }
 
   const response = await fetch(`${httpOrigin}/api/graphql/upload`, {
     method: 'POST',
     body: formData,
     credentials: 'include',
     mode: 'cors',
-    headers: {
-      'X-XSRF-TOKEN': csrfToken,
-    },
+    headers,
   });
 
   return await response.json();
 };
 
-const getCookie = (name: string): string => {
-  let cookieValue: string = null;
+const getCookie = (name: string): string | null => {
+  let cookieValue: string | null = null;
   if (document.cookie && document.cookie !== '') {
     const cookies = document.cookie.split(';');
     for (let i = 0; i < cookies.length; i++) {
