@@ -143,19 +143,21 @@ public class DiagramAssert extends AbstractAssert<DiagramAssert, Diagram> {
         return this;
     }
 
-    public void isValid() {
+    public DiagramAssert isValid() {
         this.isNotNull();
 
         List<String> ids = new ArrayList<>();
         this.actual.getNodes().forEach(node -> this.visitNodeId(ids, node));
         this.actual.getEdges().forEach(edge -> this.visitEdgeId(ids, edge));
+
+        return this;
     }
 
     private void visitNodeId(List<String> ids, Node node) {
-        if (ids.contains(node.getId().toString())) {
+        if (ids.contains(node.getId())) {
             this.failWithMessage("The id of the node <%s> already exist in the diagram", node.getId()); //$NON-NLS-1$
         }
-        ids.add(node.getId().toString());
+        ids.add(node.getId());
         this.visitLabelId(ids, node.getLabel());
 
         node.getBorderNodes().forEach(borderNode -> this.visitNodeId(ids, borderNode));
@@ -163,10 +165,10 @@ public class DiagramAssert extends AbstractAssert<DiagramAssert, Diagram> {
     }
 
     private void visitEdgeId(List<String> ids, Edge edge) {
-        if (ids.contains(edge.getId().toString())) {
+        if (ids.contains(edge.getId())) {
             this.failWithMessage("The id of the edge <%s> already exist in the diagram", edge.getId()); //$NON-NLS-1$
         }
-        ids.add(edge.getId().toString());
+        ids.add(edge.getId());
 
         this.visitLabelId(ids, edge.getBeginLabel());
         this.visitLabelId(ids, edge.getCenterLabel());
@@ -175,10 +177,19 @@ public class DiagramAssert extends AbstractAssert<DiagramAssert, Diagram> {
 
     private void visitLabelId(List<String> ids, Label label) {
         if (label != null) {
-            if (ids.contains(label.getId().toString())) {
+            if (ids.contains(label.getId())) {
                 this.failWithMessage("The id of the label <%s> already exist in the diagram", label.getId()); //$NON-NLS-1$
             }
-            ids.add(label.getId().toString());
+            ids.add(label.getId());
         }
+    }
+
+    public DiagramAssert hasNoOverflow() {
+        List<Node> nodes = this.actual.getNodes();
+        for (Node node : nodes) {
+            assertThat(node).hasNoOverflow();
+        }
+
+        return this;
     }
 }

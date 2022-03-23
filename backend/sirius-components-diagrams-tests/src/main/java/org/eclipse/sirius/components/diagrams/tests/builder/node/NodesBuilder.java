@@ -33,23 +33,35 @@ public final class NodesBuilder<T> {
 
     private List<NodeBuilder<T>> nodeBuilders = new ArrayList<>();
 
-    private boolean areBorderNodes;
+    private boolean isBorderNode;
 
-    public NodesBuilder(T parentBuilder, boolean areBorderNodes) {
+    public NodesBuilder(T parentBuilder, boolean isBorderNode) {
         this.parentBuilder = Objects.requireNonNull(parentBuilder);
-        this.areBorderNodes = areBorderNodes;
+        this.isBorderNode = isBorderNode;
     }
 
     public RectangleNodeBuilder<T> rectangleNode(String nodeLabel) {
-        RectangleNodeBuilder<T> nodeBuilder = new RectangleNodeBuilder<>(this, nodeLabel, this.areBorderNodes);
+        RectangleNodeBuilder<T> nodeBuilder = new RectangleNodeBuilder<>(this, nodeLabel, this.isBorderNode);
         this.nodeBuilders.add(nodeBuilder);
         return nodeBuilder;
     }
 
     public ImageNodeBuilder<T> imageNode(String nodeLabel) {
-        ImageNodeBuilder<T> imageNodeBuilder = new ImageNodeBuilder<>(this, nodeLabel, this.areBorderNodes);
+        ImageNodeBuilder<T> imageNodeBuilder = new ImageNodeBuilder<>(this, nodeLabel, this.isBorderNode);
         this.nodeBuilders.add(imageNodeBuilder);
         return imageNodeBuilder;
+    }
+
+    public ListNodeBuilder<T> listNode(String nodeLabel) {
+        ListNodeBuilder<T> listNodeBuilder = new ListNodeBuilder<>(this, nodeLabel, this.isBorderNode);
+        this.nodeBuilders.add(listNodeBuilder);
+        return listNodeBuilder;
+    }
+
+    public ListItemNodeBuilder<T> listItemNode(String nodeLabel) {
+        ListItemNodeBuilder<T> listItemNodeBuilder = new ListItemNodeBuilder<>(this, nodeLabel, this.isBorderNode);
+        this.nodeBuilders.add(listItemNodeBuilder);
+        return listItemNodeBuilder;
     }
 
     public T and() {

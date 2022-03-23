@@ -1,0 +1,3293 @@
+{
+  "id": "69dff4e4-8f89-4237-a5d2-80c8c807de2a",
+  "kind": "siriusComponents://representation?type=Diagram",
+  "label": "Topography with auto layout",
+  "descriptionId": "e57c2c68-b12b-4e12-a170-29e890cd476f",
+  "targetObjectId": "39720959-ba7d-4bea-a0bf-8a19660d3325",
+  "position": { "x": 0.0, "y": 0.0, "__typename": "Position" },
+  "size": {
+    "width": 1718.7822265625,
+    "height": 864.7689455037016,
+    "__typename": "Size"
+  },
+  "autoLayout": true,
+  "nodes": [
+    {
+      "id": "2fc1e0c9-6458-324f-88d1-25e7915d1548",
+      "type": "node:image",
+      "targetObjectId": "132a6d33-e544-43dc-9c09-9fe745d63a18",
+      "targetObjectKind": "siriusComponents://semantic?domain=flow&entity=DataSource",
+      "targetObjectLabel": "Radar",
+      "descriptionId": "adeeb7fe-2af9-4694-b69b-8be8a00329d8",
+      "label": {
+        "id": "6e530bf3-ee62-377d-91f1-4b06c00bb2e9",
+        "type": "label:outside-center",
+        "text": "Radar",
+        "style": {
+          "color": "#002b3c",
+          "fontSize": 8,
+          "bold": false,
+          "italic": false,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 32.0,
+          "y": -14.19921875,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 21.7890625,
+          "height": 9.19921875,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 7.2421875,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "style": {
+        "imageURL": "/api/images/images/radar.svg",
+        "borderColor": "#000000",
+        "borderStyle": "Solid",
+        "borderSize": 0,
+        "borderRadius": 0,
+        "__typename": "ImageNodeStyle"
+      },
+      "position": {
+        "x": 617.34765625,
+        "y": 224.76993930414517,
+        "__typename": "Position"
+      },
+      "size": {
+        "width": 64.0,
+        "height": 64.64179697060084,
+        "__typename": "Size"
+      },
+      "__typename": "Node",
+      "borderNodes": [],
+      "childNodes": []
+    },
+    {
+      "id": "c6f72a18-25af-313d-a521-bcd7f0c7456f",
+      "type": "node:rectangle",
+      "targetObjectId": "88936827-22be-427b-a355-37dbd570ead7",
+      "targetObjectKind": "siriusComponents://semantic?domain=flow&entity=CompositeProcessor",
+      "targetObjectLabel": "Central_Unit24",
+      "descriptionId": "072da3e6-94af-4a4a-9df1-f0dfee88a850",
+      "label": {
+        "id": "66aa3b45-1619-31c6-84fb-08159e217465",
+        "type": "label:inside-center",
+        "text": "Central_Unit24",
+        "style": {
+          "color": "#002b3c",
+          "fontSize": 10,
+          "bold": true,
+          "italic": false,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 129.412109375,
+          "y": 5.0,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 70.576171875,
+          "height": 11.4990234375,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 9.052734375,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "style": {
+        "color": "#f0f0f0",
+        "borderColor": "#b1bcbe",
+        "borderStyle": "Solid",
+        "borderSize": 1,
+        "borderRadius": 0,
+        "__typename": "RectangularNodeStyle"
+      },
+      "position": {
+        "x": 810.24609375,
+        "y": 170.99609375,
+        "__typename": "Position"
+      },
+      "size": {
+        "width": 258.82421875,
+        "height": 335.89453125,
+        "__typename": "Size"
+      },
+      "__typename": "Node",
+      "borderNodes": [],
+      "childNodes": [
+        {
+          "id": "e5a91e41-91f0-3c5f-a830-ec1badb71495",
+          "type": "node:image",
+          "targetObjectId": "ad21134b-1860-481d-8569-ee9e1ea041b2",
+          "targetObjectKind": "siriusComponents://semantic?domain=flow&entity=Processor",
+          "targetObjectLabel": "DSP",
+          "descriptionId": "f3bea903-ff34-4868-87f8-42f7578b7b79",
+          "label": {
+            "id": "7c71c6a5-44da-3236-92db-cad1fb6eb9d9",
+            "type": "label:outside-center",
+            "text": "DSP",
+            "style": {
+              "color": "#000000",
+              "fontSize": 8,
+              "bold": false,
+              "italic": false,
+              "underline": false,
+              "strikeThrough": false,
+              "iconURL": "",
+              "__typename": "LabelStyle"
+            },
+            "position": {
+              "x": 32.0,
+              "y": -14.19921875,
+              "__typename": "Position"
+            },
+            "size": {
+              "width": 16.44921875,
+              "height": 9.19921875,
+              "__typename": "Size"
+            },
+            "alignment": {
+              "x": 0.0,
+              "y": 7.2421875,
+              "__typename": "Position"
+            },
+            "__typename": "Label"
+          },
+          "style": {
+            "imageURL": "/api/images/images/chipset_standard.svg",
+            "borderColor": "#000000",
+            "borderStyle": "Solid",
+            "borderSize": 0,
+            "borderRadius": 0,
+            "__typename": "ImageNodeStyle"
+          },
+          "position": {
+            "x": 25.962890625,
+            "y": 221.39453125,
+            "__typename": "Position"
+          },
+          "size": {
+            "width": 64.0,
+            "height": 64.0,
+            "__typename": "Size"
+          },
+          "__typename": "Node",
+          "borderNodes": [],
+          "childNodes": []
+        },
+        {
+          "id": "a5833408-915a-31a9-9e41-c7c2f1d7f6cb",
+          "type": "node:image",
+          "targetObjectId": "83ed86fe-60fd-43d1-8fb8-e7ecedbe9bfb",
+          "targetObjectKind": "siriusComponents://semantic?domain=flow&entity=Processor",
+          "targetObjectLabel": "Motion_Engine",
+          "descriptionId": "f3bea903-ff34-4868-87f8-42f7578b7b79",
+          "label": {
+            "id": "a2afb9c4-4082-3a21-b643-7cf620789b54",
+            "type": "label:outside-center",
+            "text": "Motion_Engine",
+            "style": {
+              "color": "#000000",
+              "fontSize": 8,
+              "bold": false,
+              "italic": false,
+              "underline": false,
+              "strikeThrough": false,
+              "iconURL": "",
+              "__typename": "LabelStyle"
+            },
+            "position": {
+              "x": 47.0,
+              "y": -14.19921875,
+              "__typename": "Position"
+            },
+            "size": {
+              "width": 53.37109375,
+              "height": 9.19921875,
+              "__typename": "Size"
+            },
+            "alignment": {
+              "x": 0.0,
+              "y": 7.2421875,
+              "__typename": "Position"
+            },
+            "__typename": "Label"
+          },
+          "style": {
+            "imageURL": "/api/images/images/chipset2_high.svg",
+            "borderColor": "#000000",
+            "borderStyle": "Solid",
+            "borderSize": 0,
+            "borderRadius": 0,
+            "__typename": "ImageNodeStyle"
+          },
+          "position": {
+            "x": 152.82421875,
+            "y": 229.89453125,
+            "__typename": "Position"
+          },
+          "size": {
+            "width": 94.0,
+            "height": 94.0,
+            "__typename": "Size"
+          },
+          "__typename": "Node",
+          "borderNodes": [],
+          "childNodes": []
+        },
+        {
+          "id": "184acff8-808d-3945-8479-062f8137670a",
+          "type": "node:image",
+          "targetObjectId": "9e9c53e1-be85-4fea-9eca-808bc74d45ac",
+          "targetObjectKind": "siriusComponents://semantic?domain=flow&entity=Fan",
+          "targetObjectLabel": "active",
+          "descriptionId": "b386cf1d-0723-4633-8be8-a6ee840ebe3f",
+          "label": {
+            "id": "d13d7a6b-3d5d-39fa-8fcc-3100936f7b92",
+            "type": "label:outside-center",
+            "text": "100",
+            "style": {
+              "color": "#000000",
+              "fontSize": 8,
+              "bold": false,
+              "italic": false,
+              "underline": false,
+              "strikeThrough": false,
+              "iconURL": "",
+              "__typename": "LabelStyle"
+            },
+            "position": {
+              "x": 27.0,
+              "y": -14.19921875,
+              "__typename": "Position"
+            },
+            "size": {
+              "width": 13.34765625,
+              "height": 9.19921875,
+              "__typename": "Size"
+            },
+            "alignment": {
+              "x": 0.0,
+              "y": 7.2421875,
+              "__typename": "Position"
+            },
+            "__typename": "Label"
+          },
+          "style": {
+            "imageURL": "/api/images/images/fan.svg",
+            "borderColor": "#000000",
+            "borderStyle": "Solid",
+            "borderSize": 0,
+            "borderRadius": 0,
+            "__typename": "ImageNodeStyle"
+          },
+          "position": {
+            "x": 30.962890625,
+            "y": 42.6982421875,
+            "__typename": "Position"
+          },
+          "size": {
+            "width": 54.0,
+            "height": 54.0,
+            "__typename": "Size"
+          },
+          "__typename": "Node",
+          "borderNodes": [],
+          "childNodes": []
+        },
+        {
+          "id": "c941f9f4-f2b7-3334-829a-3fc2a6a1d80a",
+          "type": "node:list",
+          "targetObjectId": "88936827-22be-427b-a355-37dbd570ead7",
+          "targetObjectKind": "siriusComponents://semantic?domain=flow&entity=CompositeProcessor",
+          "targetObjectLabel": "Central_Unit24",
+          "descriptionId": "f5434fd0-afa5-4f51-8edd-ca205219eb14",
+          "label": {
+            "id": "3442ccef-ed57-3a4f-88d0-47ca5ccc57a8",
+            "type": "label:inside-center",
+            "text": "Description",
+            "style": {
+              "color": "#000000",
+              "fontSize": 10,
+              "bold": false,
+              "italic": false,
+              "underline": false,
+              "strikeThrough": false,
+              "iconURL": "",
+              "__typename": "LabelStyle"
+            },
+            "position": {
+              "x": 45.962890625,
+              "y": 5.0,
+              "__typename": "Position"
+            },
+            "size": {
+              "width": 50.01953125,
+              "height": 11.4990234375,
+              "__typename": "Size"
+            },
+            "alignment": {
+              "x": 0.0,
+              "y": 9.052734375,
+              "__typename": "Position"
+            },
+            "__typename": "Label"
+          },
+          "style": {
+            "color": "#ffffff",
+            "borderColor": "#000000",
+            "borderStyle": "Solid",
+            "borderSize": 1,
+            "borderRadius": 3,
+            "__typename": "ListNodeStyle"
+          },
+          "position": {
+            "x": 12.0,
+            "y": 116.6982421875,
+            "__typename": "Position"
+          },
+          "size": {
+            "width": 91.92578125,
+            "height": 70.4970703125,
+            "__typename": "Size"
+          },
+          "__typename": "Node",
+          "borderNodes": [],
+          "childNodes": [
+            {
+              "id": "f5aa1192-14c7-3c66-9db9-b43cb3d14947",
+              "type": "node:list:item",
+              "targetObjectId": "88936827-22be-427b-a355-37dbd570ead7",
+              "targetObjectKind": "siriusComponents://semantic?domain=flow&entity=CompositeProcessor",
+              "targetObjectLabel": "Central_Unit24",
+              "descriptionId": "7c4d7e53-308f-4bf4-8c2c-62f3a13ea49b",
+              "label": {
+                "id": "163201e1-6016-3166-a40e-d13b2f2198d1",
+                "type": "label:inside-center",
+                "text": "Weight: 23",
+                "style": {
+                  "color": "#000000",
+                  "fontSize": 10,
+                  "bold": false,
+                  "italic": false,
+                  "underline": false,
+                  "strikeThrough": false,
+                  "iconURL": "",
+                  "__typename": "LabelStyle"
+                },
+                "position": {
+                  "x": 23.9013671875,
+                  "y": 0.0,
+                  "__typename": "Position"
+                },
+                "size": {
+                  "width": 47.802734375,
+                  "height": 11.4990234375,
+                  "__typename": "Size"
+                },
+                "alignment": {
+                  "x": 0.0,
+                  "y": 9.052734375,
+                  "__typename": "Position"
+                },
+                "__typename": "Label"
+              },
+              "style": {
+                "backgroundColor": "transparent",
+                "__typename": "ListItemNodeStyle"
+              },
+              "position": {
+                "x": 6.0,
+                "y": 29.4990234375,
+                "__typename": "Position"
+              },
+              "size": {
+                "width": 85.92578125,
+                "height": 11.4990234375,
+                "__typename": "Size"
+              },
+              "__typename": "Node",
+              "borderNodes": [],
+              "childNodes": []
+            },
+            {
+              "id": "6e9c8fc6-129b-307d-9251-17356f1f13fa",
+              "type": "node:list:item",
+              "targetObjectId": "88936827-22be-427b-a355-37dbd570ead7",
+              "targetObjectKind": "siriusComponents://semantic?domain=flow&entity=CompositeProcessor",
+              "targetObjectLabel": "Central_Unit24",
+              "descriptionId": "f0896d06-1a4f-4f0f-901e-8c49c158f909",
+              "label": {
+                "id": "d049f08a-aa11-30c7-81f8-79e69ccdfd37",
+                "type": "label:inside-center",
+                "text": "Temperature: 25",
+                "style": {
+                  "color": "#000000",
+                  "fontSize": 10,
+                  "bold": false,
+                  "italic": false,
+                  "underline": false,
+                  "strikeThrough": false,
+                  "iconURL": "",
+                  "__typename": "LabelStyle"
+                },
+                "position": {
+                  "x": 36.962890625,
+                  "y": 0.0,
+                  "__typename": "Position"
+                },
+                "size": {
+                  "width": 73.92578125,
+                  "height": 11.4990234375,
+                  "__typename": "Size"
+                },
+                "alignment": {
+                  "x": 0.0,
+                  "y": 9.052734375,
+                  "__typename": "Position"
+                },
+                "__typename": "Label"
+              },
+              "style": {
+                "backgroundColor": "transparent",
+                "__typename": "ListItemNodeStyle"
+              },
+              "position": {
+                "x": 6.0,
+                "y": 46.998046875,
+                "__typename": "Position"
+              },
+              "size": {
+                "width": 85.92578125,
+                "height": 11.4990234375,
+                "__typename": "Size"
+              },
+              "__typename": "Node",
+              "borderNodes": [],
+              "childNodes": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "22a6bcc2-e4e1-3fc8-a5fa-7219d0944fe4",
+      "type": "node:rectangle",
+      "targetObjectId": "e3eb52b9-cbfe-4265-9247-1e3f09156af7",
+      "targetObjectKind": "siriusComponents://semantic?domain=flow&entity=CompositeProcessor",
+      "targetObjectLabel": "CaptureSubSystem",
+      "descriptionId": "072da3e6-94af-4a4a-9df1-f0dfee88a850",
+      "label": {
+        "id": "03f053ee-f596-397d-ab23-d70cd8e84227",
+        "type": "label:inside-center",
+        "text": "CaptureSubSystem",
+        "style": {
+          "color": "#002b3c",
+          "fontSize": 10,
+          "bold": true,
+          "italic": false,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 192.44921875,
+          "y": 5.0,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 92.24609375,
+          "height": 11.4990234375,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 9.052734375,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "style": {
+        "color": "#f0f0f0",
+        "borderColor": "#b1bcbe",
+        "borderStyle": "Solid",
+        "borderSize": 1,
+        "borderRadius": 0,
+        "__typename": "RectangularNodeStyle"
+      },
+      "position": {
+        "x": 296.44921875,
+        "y": 339.411736274746,
+        "__typename": "Position"
+      },
+      "size": {
+        "width": 384.8984375,
+        "height": 470.1579904789557,
+        "__typename": "Size"
+      },
+      "__typename": "Node",
+      "borderNodes": [],
+      "childNodes": [
+        {
+          "id": "937af716-ff4e-3734-bb67-0a446585f529",
+          "type": "node:image",
+          "targetObjectId": "6ab55fa8-e341-489a-9bbf-f3426af343a7",
+          "targetObjectKind": "siriusComponents://semantic?domain=flow&entity=Processor",
+          "targetObjectLabel": "Radar_Capture",
+          "descriptionId": "f3bea903-ff34-4868-87f8-42f7578b7b79",
+          "label": {
+            "id": "d96ad858-235e-30cf-b9ad-904828021647",
+            "type": "label:outside-center",
+            "text": "Radar_Capture",
+            "style": {
+              "color": "#000000",
+              "fontSize": 8,
+              "bold": false,
+              "italic": false,
+              "underline": false,
+              "strikeThrough": false,
+              "iconURL": "",
+              "__typename": "LabelStyle"
+            },
+            "position": {
+              "x": 42.0,
+              "y": -14.19921875,
+              "__typename": "Position"
+            },
+            "size": {
+              "width": 54.69921875,
+              "height": 9.19921875,
+              "__typename": "Size"
+            },
+            "alignment": {
+              "x": 0.0,
+              "y": 7.2421875,
+              "__typename": "Position"
+            },
+            "__typename": "Label"
+          },
+          "style": {
+            "imageURL": "/api/images/images/cpu_standard.svg",
+            "borderColor": "#000000",
+            "borderStyle": "Solid",
+            "borderSize": 0,
+            "borderRadius": 0,
+            "__typename": "ImageNodeStyle"
+          },
+          "position": {
+            "x": 160.44921875,
+            "y": 325.51619350835483,
+            "__typename": "Position"
+          },
+          "size": {
+            "width": 84.0,
+            "height": 84.0,
+            "__typename": "Size"
+          },
+          "__typename": "Node",
+          "borderNodes": [],
+          "childNodes": []
+        },
+        {
+          "id": "bce3bd58-d7c3-369b-9ed9-c0c02019f263",
+          "type": "node:image",
+          "targetObjectId": "4a0d5479-c1db-4533-bb90-6dca467d4b88",
+          "targetObjectKind": "siriusComponents://semantic?domain=flow&entity=Processor",
+          "targetObjectLabel": "Engine",
+          "descriptionId": "f3bea903-ff34-4868-87f8-42f7578b7b79",
+          "label": {
+            "id": "2518138a-80b8-317d-90a4-1dac8a5c2897",
+            "type": "label:outside-center",
+            "text": "Engine",
+            "style": {
+              "color": "#000000",
+              "fontSize": 8,
+              "bold": false,
+              "italic": false,
+              "underline": false,
+              "strikeThrough": false,
+              "iconURL": "",
+              "__typename": "LabelStyle"
+            },
+            "position": {
+              "x": 42.0,
+              "y": -14.19921875,
+              "__typename": "Position"
+            },
+            "size": {
+              "width": 24.91015625,
+              "height": 9.19921875,
+              "__typename": "Size"
+            },
+            "alignment": {
+              "x": 0.0,
+              "y": 7.2421875,
+              "__typename": "Position"
+            },
+            "__typename": "Label"
+          },
+          "style": {
+            "imageURL": "/api/images/images/chipset2_over.svg",
+            "borderColor": "#000000",
+            "borderStyle": "Solid",
+            "borderSize": 0,
+            "borderRadius": 0,
+            "__typename": "ImageNodeStyle"
+          },
+          "position": {
+            "x": 288.8984375,
+            "y": 374.1579904789557,
+            "__typename": "Position"
+          },
+          "size": {
+            "width": 84.0,
+            "height": 84.0,
+            "__typename": "Size"
+          },
+          "__typename": "Node",
+          "borderNodes": [],
+          "childNodes": []
+        },
+        {
+          "id": "e23d2564-c20e-3f3f-a29d-746a1b8e27f0",
+          "type": "node:image",
+          "targetObjectId": "54f1bb27-1c82-455b-a46e-58dc4044e859",
+          "targetObjectKind": "siriusComponents://semantic?domain=flow&entity=Processor",
+          "targetObjectLabel": "GPU",
+          "descriptionId": "f3bea903-ff34-4868-87f8-42f7578b7b79",
+          "label": {
+            "id": "67253b3b-4e46-3d6d-98f5-75fcc4b23273",
+            "type": "label:outside-center",
+            "text": "GPU",
+            "style": {
+              "color": "#000000",
+              "fontSize": 8,
+              "bold": false,
+              "italic": false,
+              "underline": false,
+              "strikeThrough": false,
+              "iconURL": "",
+              "__typename": "LabelStyle"
+            },
+            "position": {
+              "x": 42.0,
+              "y": -14.19921875,
+              "__typename": "Position"
+            },
+            "size": {
+              "width": 17.3359375,
+              "height": 9.19921875,
+              "__typename": "Size"
+            },
+            "alignment": {
+              "x": 0.0,
+              "y": 7.2421875,
+              "__typename": "Position"
+            },
+            "__typename": "Label"
+          },
+          "style": {
+            "imageURL": "/api/images/images/cpu_standard.svg",
+            "borderColor": "#000000",
+            "borderStyle": "Solid",
+            "borderSize": 0,
+            "borderRadius": 0,
+            "__typename": "ImageNodeStyle"
+          },
+          "position": {
+            "x": 160.44921875,
+            "y": 84.97888872525402,
+            "__typename": "Position"
+          },
+          "size": {
+            "width": 84.0,
+            "height": 84.0,
+            "__typename": "Size"
+          },
+          "__typename": "Node",
+          "borderNodes": [],
+          "childNodes": []
+        },
+        {
+          "id": "198057c7-c2d2-3589-a06f-eeadb79cc43a",
+          "type": "node:image",
+          "targetObjectId": "dfdcab08-ffea-4de0-9501-1d68270e07ff",
+          "targetObjectKind": "siriusComponents://semantic?domain=flow&entity=DataSource",
+          "targetObjectLabel": "Back_Camera",
+          "descriptionId": "7b7104e0-d1cc-4038-9415-f15deefcd2ef",
+          "label": {
+            "id": "74043fe4-f569-3e03-910c-a4d0aff5ba89",
+            "type": "label:outside-center",
+            "text": "Back_Camera",
+            "style": {
+              "color": "#002b3c",
+              "fontSize": 8,
+              "bold": false,
+              "italic": false,
+              "underline": false,
+              "strikeThrough": false,
+              "iconURL": "",
+              "__typename": "LabelStyle"
+            },
+            "position": {
+              "x": 42.0,
+              "y": -14.19921875,
+              "__typename": "Position"
+            },
+            "size": {
+              "width": 50.6875,
+              "height": 9.19921875,
+              "__typename": "Size"
+            },
+            "alignment": {
+              "x": 0.0,
+              "y": 7.2421875,
+              "__typename": "Position"
+            },
+            "__typename": "Label"
+          },
+          "style": {
+            "imageURL": "/api/images/images/camera.svg",
+            "borderColor": "#000000",
+            "borderStyle": "Solid",
+            "borderSize": 0,
+            "borderRadius": 0,
+            "__typename": "ImageNodeStyle"
+          },
+          "position": {
+            "x": 32.0,
+            "y": 42.6982421875,
+            "__typename": "Position"
+          },
+          "size": {
+            "width": 84.0,
+            "height": 88.28064653775401,
+            "__typename": "Size"
+          },
+          "__typename": "Node",
+          "borderNodes": [],
+          "childNodes": []
+        },
+        {
+          "id": "8a3f377f-35e7-31d9-ab24-b55539504781",
+          "type": "node:image",
+          "targetObjectId": "ac94c05d-78d7-405e-9fe5-b2109698d202",
+          "targetObjectKind": "siriusComponents://semantic?domain=flow&entity=DataSource",
+          "targetObjectLabel": "Radar",
+          "descriptionId": "7b7104e0-d1cc-4038-9415-f15deefcd2ef",
+          "label": {
+            "id": "1891fa13-f2ab-36b1-80b2-14245f42d6b9",
+            "type": "label:outside-center",
+            "text": "Radar",
+            "style": {
+              "color": "#002b3c",
+              "fontSize": 8,
+              "bold": false,
+              "italic": false,
+              "underline": false,
+              "strikeThrough": false,
+              "iconURL": "",
+              "__typename": "LabelStyle"
+            },
+            "position": {
+              "x": 52.0,
+              "y": -14.19921875,
+              "__typename": "Position"
+            },
+            "size": {
+              "width": 21.7890625,
+              "height": 9.19921875,
+              "__typename": "Size"
+            },
+            "alignment": {
+              "x": 0.0,
+              "y": 7.2421875,
+              "__typename": "Position"
+            },
+            "__typename": "Label"
+          },
+          "style": {
+            "imageURL": "/api/images/images/radar.svg",
+            "borderColor": "#000000",
+            "borderStyle": "Solid",
+            "borderSize": 0,
+            "borderRadius": 0,
+            "__typename": "ImageNodeStyle"
+          },
+          "position": {
+            "x": 12.0,
+            "y": 314.874396537754,
+            "__typename": "Position"
+          },
+          "size": {
+            "width": 104.0,
+            "height": 105.28359394120169,
+            "__typename": "Size"
+          },
+          "__typename": "Node",
+          "borderNodes": [],
+          "childNodes": []
+        },
+        {
+          "id": "1a9a5c8c-810d-35a1-8f6f-8377741e36df",
+          "type": "node:image",
+          "targetObjectId": "e3559de0-72cd-47a0-bfb9-924dcc10273f",
+          "targetObjectKind": "siriusComponents://semantic?domain=flow&entity=Fan",
+          "targetObjectLabel": "active",
+          "descriptionId": "b386cf1d-0723-4633-8be8-a6ee840ebe3f",
+          "label": {
+            "id": "a08a850d-99f0-3d44-8db2-da7b17dad5a9",
+            "type": "label:outside-center",
+            "text": "20",
+            "style": {
+              "color": "#000000",
+              "fontSize": 8,
+              "bold": false,
+              "italic": false,
+              "underline": false,
+              "strikeThrough": false,
+              "iconURL": "",
+              "__typename": "LabelStyle"
+            },
+            "position": {
+              "x": 12.0,
+              "y": -14.19921875,
+              "__typename": "Position"
+            },
+            "size": {
+              "width": 8.8984375,
+              "height": 9.19921875,
+              "__typename": "Size"
+            },
+            "alignment": {
+              "x": 0.0,
+              "y": 7.2421875,
+              "__typename": "Position"
+            },
+            "__typename": "Label"
+          },
+          "style": {
+            "imageURL": "/api/images/images/fan.svg",
+            "borderColor": "#000000",
+            "borderStyle": "Solid",
+            "borderSize": 0,
+            "borderRadius": 0,
+            "__typename": "ImageNodeStyle"
+          },
+          "position": {
+            "x": 52.0,
+            "y": 166.17810747525402,
+            "__typename": "Position"
+          },
+          "size": {
+            "width": 24.0,
+            "height": 24.0,
+            "__typename": "Size"
+          },
+          "__typename": "Node",
+          "borderNodes": [],
+          "childNodes": []
+        },
+        {
+          "id": "d7a1be61-213d-3910-9c0c-c9fa95c6531a",
+          "type": "node:list",
+          "targetObjectId": "e3eb52b9-cbfe-4265-9247-1e3f09156af7",
+          "targetObjectKind": "siriusComponents://semantic?domain=flow&entity=CompositeProcessor",
+          "targetObjectLabel": "CaptureSubSystem",
+          "descriptionId": "f5434fd0-afa5-4f51-8edd-ca205219eb14",
+          "label": {
+            "id": "a1c9d201-6b4f-3e06-9a05-4c223badc270",
+            "type": "label:inside-center",
+            "text": "Description",
+            "style": {
+              "color": "#000000",
+              "fontSize": 10,
+              "bold": false,
+              "italic": false,
+              "underline": false,
+              "strikeThrough": false,
+              "iconURL": "",
+              "__typename": "LabelStyle"
+            },
+            "position": {
+              "x": 45.962890625,
+              "y": 5.0,
+              "__typename": "Position"
+            },
+            "size": {
+              "width": 50.01953125,
+              "height": 11.4990234375,
+              "__typename": "Size"
+            },
+            "alignment": {
+              "x": 0.0,
+              "y": 9.052734375,
+              "__typename": "Position"
+            },
+            "__typename": "Label"
+          },
+          "style": {
+            "color": "#ffffff",
+            "borderColor": "#000000",
+            "borderStyle": "Solid",
+            "borderSize": 1,
+            "borderRadius": 3,
+            "__typename": "ListNodeStyle"
+          },
+          "position": {
+            "x": 18.037109375,
+            "y": 210.17810747525402,
+            "__typename": "Position"
+          },
+          "size": {
+            "width": 91.92578125,
+            "height": 70.4970703125,
+            "__typename": "Size"
+          },
+          "__typename": "Node",
+          "borderNodes": [],
+          "childNodes": [
+            {
+              "id": "6e308a5b-f22b-3a08-9872-12a766d7ee3e",
+              "type": "node:list:item",
+              "targetObjectId": "e3eb52b9-cbfe-4265-9247-1e3f09156af7",
+              "targetObjectKind": "siriusComponents://semantic?domain=flow&entity=CompositeProcessor",
+              "targetObjectLabel": "CaptureSubSystem",
+              "descriptionId": "7c4d7e53-308f-4bf4-8c2c-62f3a13ea49b",
+              "label": {
+                "id": "58776e5e-c2ce-36b7-93ca-f9b270a9c990",
+                "type": "label:inside-center",
+                "text": "Weight: 33",
+                "style": {
+                  "color": "#000000",
+                  "fontSize": 10,
+                  "bold": false,
+                  "italic": false,
+                  "underline": false,
+                  "strikeThrough": false,
+                  "iconURL": "",
+                  "__typename": "LabelStyle"
+                },
+                "position": {
+                  "x": 23.9013671875,
+                  "y": 0.0,
+                  "__typename": "Position"
+                },
+                "size": {
+                  "width": 47.802734375,
+                  "height": 11.4990234375,
+                  "__typename": "Size"
+                },
+                "alignment": {
+                  "x": 0.0,
+                  "y": 9.052734375,
+                  "__typename": "Position"
+                },
+                "__typename": "Label"
+              },
+              "style": {
+                "backgroundColor": "transparent",
+                "__typename": "ListItemNodeStyle"
+              },
+              "position": {
+                "x": 6.0,
+                "y": 29.4990234375,
+                "__typename": "Position"
+              },
+              "size": {
+                "width": 85.92578125,
+                "height": 11.4990234375,
+                "__typename": "Size"
+              },
+              "__typename": "Node",
+              "borderNodes": [],
+              "childNodes": []
+            },
+            {
+              "id": "53d08543-cdfc-31c8-947c-62a10994dc28",
+              "type": "node:list:item",
+              "targetObjectId": "e3eb52b9-cbfe-4265-9247-1e3f09156af7",
+              "targetObjectKind": "siriusComponents://semantic?domain=flow&entity=CompositeProcessor",
+              "targetObjectLabel": "CaptureSubSystem",
+              "descriptionId": "f0896d06-1a4f-4f0f-901e-8c49c158f909",
+              "label": {
+                "id": "405bad2a-ebf4-3e74-8217-ea5ffb37f328",
+                "type": "label:inside-center",
+                "text": "Temperature: 28",
+                "style": {
+                  "color": "#000000",
+                  "fontSize": 10,
+                  "bold": false,
+                  "italic": false,
+                  "underline": false,
+                  "strikeThrough": false,
+                  "iconURL": "",
+                  "__typename": "LabelStyle"
+                },
+                "position": {
+                  "x": 36.962890625,
+                  "y": 0.0,
+                  "__typename": "Position"
+                },
+                "size": {
+                  "width": 73.92578125,
+                  "height": 11.4990234375,
+                  "__typename": "Size"
+                },
+                "alignment": {
+                  "x": 0.0,
+                  "y": 9.052734375,
+                  "__typename": "Position"
+                },
+                "__typename": "Label"
+              },
+              "style": {
+                "backgroundColor": "transparent",
+                "__typename": "ListItemNodeStyle"
+              },
+              "position": {
+                "x": 6.0,
+                "y": 46.998046875,
+                "__typename": "Position"
+              },
+              "size": {
+                "width": 85.92578125,
+                "height": 11.4990234375,
+                "__typename": "Size"
+              },
+              "__typename": "Node",
+              "borderNodes": [],
+              "childNodes": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "2f20e9ce-4175-3ce0-9794-f566a8e289eb",
+      "type": "node:rectangle",
+      "targetObjectId": "94e3568b-1985-40e7-9f15-fb6fd08ea25a",
+      "targetObjectKind": "siriusComponents://semantic?domain=flow&entity=CompositeProcessor",
+      "targetObjectLabel": "Processor3",
+      "descriptionId": "072da3e6-94af-4a4a-9df1-f0dfee88a850",
+      "label": {
+        "id": "a17928e6-00af-3a92-89d0-34adc3e84228",
+        "type": "label:inside-center",
+        "text": "Processor3",
+        "style": {
+          "color": "#002b3c",
+          "fontSize": 10,
+          "bold": true,
+          "italic": false,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 119.40673828125,
+          "y": 5.0,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 54.4775390625,
+          "height": 11.4990234375,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 9.052734375,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "style": {
+        "color": "#f0f0f0",
+        "borderColor": "#b1bcbe",
+        "borderStyle": "Solid",
+        "borderSize": 1,
+        "borderRadius": 0,
+        "__typename": "RectangularNodeStyle"
+      },
+      "position": {
+        "x": 1183.51953125,
+        "y": 363.1923828125,
+        "__typename": "Position"
+      },
+      "size": {
+        "width": 238.8134765625,
+        "height": 229.1953125,
+        "__typename": "Size"
+      },
+      "__typename": "Node",
+      "borderNodes": [],
+      "childNodes": [
+        {
+          "id": "15c32639-5732-3960-8b16-306471609b03",
+          "type": "node:image",
+          "targetObjectId": "55c334ce-c711-4349-9332-2bc45ec57395",
+          "targetObjectKind": "siriusComponents://semantic?domain=flow&entity=Processor",
+          "targetObjectLabel": "Processor1",
+          "descriptionId": "f3bea903-ff34-4868-87f8-42f7578b7b79",
+          "label": {
+            "id": "22a22388-9d5f-3df7-9655-f08487d4d588",
+            "type": "label:outside-center",
+            "text": "Processor1",
+            "style": {
+              "color": "#000000",
+              "fontSize": 8,
+              "bold": false,
+              "italic": false,
+              "underline": false,
+              "strikeThrough": false,
+              "iconURL": "",
+              "__typename": "LabelStyle"
+            },
+            "position": {
+              "x": 42.0,
+              "y": -14.19921875,
+              "__typename": "Position"
+            },
+            "size": {
+              "width": 40.4609375,
+              "height": 9.19921875,
+              "__typename": "Size"
+            },
+            "alignment": {
+              "x": 0.0,
+              "y": 7.2421875,
+              "__typename": "Position"
+            },
+            "__typename": "Label"
+          },
+          "style": {
+            "imageURL": "/api/images/images/cpu_unused.svg",
+            "borderColor": "#000000",
+            "borderStyle": "Solid",
+            "borderSize": 0,
+            "borderRadius": 0,
+            "__typename": "ImageNodeStyle"
+          },
+          "position": {
+            "x": 13.576171875,
+            "y": 42.6982421875,
+            "__typename": "Position"
+          },
+          "size": {
+            "width": 84.0,
+            "height": 84.0,
+            "__typename": "Size"
+          },
+          "__typename": "Node",
+          "borderNodes": [],
+          "childNodes": []
+        },
+        {
+          "id": "60e1070d-2fe7-3481-b9d8-001f95ca901b",
+          "type": "node:image",
+          "targetObjectId": "6fa9a196-c882-4df0-8b06-a90625645211",
+          "targetObjectKind": "siriusComponents://semantic?domain=flow&entity=Processor",
+          "targetObjectLabel": "Processor2",
+          "descriptionId": "f3bea903-ff34-4868-87f8-42f7578b7b79",
+          "label": {
+            "id": "cd54671f-92cf-309e-b81e-5ef3a7aea3ff",
+            "type": "label:outside-center",
+            "text": "Processor2",
+            "style": {
+              "color": "#000000",
+              "fontSize": 8,
+              "bold": false,
+              "italic": false,
+              "underline": false,
+              "strikeThrough": false,
+              "iconURL": "",
+              "__typename": "LabelStyle"
+            },
+            "position": {
+              "x": 42.0,
+              "y": -14.19921875,
+              "__typename": "Position"
+            },
+            "size": {
+              "width": 40.4609375,
+              "height": 9.19921875,
+              "__typename": "Size"
+            },
+            "alignment": {
+              "x": 0.0,
+              "y": 7.2421875,
+              "__typename": "Position"
+            },
+            "__typename": "Label"
+          },
+          "style": {
+            "imageURL": "/api/images/images/cpu_unused.svg",
+            "borderColor": "#000000",
+            "borderStyle": "Solid",
+            "borderSize": 0,
+            "borderRadius": 0,
+            "__typename": "ImageNodeStyle"
+          },
+          "position": {
+            "x": 142.8134765625,
+            "y": 42.6982421875,
+            "__typename": "Position"
+          },
+          "size": {
+            "width": 84.0,
+            "height": 84.0,
+            "__typename": "Size"
+          },
+          "__typename": "Node",
+          "borderNodes": [],
+          "childNodes": []
+        },
+        {
+          "id": "103d0916-2802-37d4-8c67-a0bbf9196cc1",
+          "type": "node:list",
+          "targetObjectId": "94e3568b-1985-40e7-9f15-fb6fd08ea25a",
+          "targetObjectKind": "siriusComponents://semantic?domain=flow&entity=CompositeProcessor",
+          "targetObjectLabel": "Processor3",
+          "descriptionId": "f5434fd0-afa5-4f51-8edd-ca205219eb14",
+          "label": {
+            "id": "1605e325-4564-357c-b0da-58550e73715e",
+            "type": "label:inside-center",
+            "text": "Description",
+            "style": {
+              "color": "#000000",
+              "fontSize": 10,
+              "bold": false,
+              "italic": false,
+              "underline": false,
+              "strikeThrough": false,
+              "iconURL": "",
+              "__typename": "LabelStyle"
+            },
+            "position": {
+              "x": 43.18212890625,
+              "y": 5.0,
+              "__typename": "Position"
+            },
+            "size": {
+              "width": 50.01953125,
+              "height": 11.4990234375,
+              "__typename": "Size"
+            },
+            "alignment": {
+              "x": 0.0,
+              "y": 9.052734375,
+              "__typename": "Position"
+            },
+            "__typename": "Label"
+          },
+          "style": {
+            "color": "#ffffff",
+            "borderColor": "#000000",
+            "borderStyle": "Solid",
+            "borderSize": 1,
+            "borderRadius": 3,
+            "__typename": "ListNodeStyle"
+          },
+          "position": {
+            "x": 12.0,
+            "y": 146.6982421875,
+            "__typename": "Position"
+          },
+          "size": {
+            "width": 86.3642578125,
+            "height": 70.4970703125,
+            "__typename": "Size"
+          },
+          "__typename": "Node",
+          "borderNodes": [],
+          "childNodes": [
+            {
+              "id": "f3b928b4-ffc9-3ec2-b3ad-17b59691b44c",
+              "type": "node:list:item",
+              "targetObjectId": "94e3568b-1985-40e7-9f15-fb6fd08ea25a",
+              "targetObjectKind": "siriusComponents://semantic?domain=flow&entity=CompositeProcessor",
+              "targetObjectLabel": "Processor3",
+              "descriptionId": "7c4d7e53-308f-4bf4-8c2c-62f3a13ea49b",
+              "label": {
+                "id": "0695dd0a-54ee-307b-84b6-5554881f83b4",
+                "type": "label:inside-center",
+                "text": "Weight: 0",
+                "style": {
+                  "color": "#000000",
+                  "fontSize": 10,
+                  "bold": false,
+                  "italic": false,
+                  "underline": false,
+                  "strikeThrough": false,
+                  "iconURL": "",
+                  "__typename": "LabelStyle"
+                },
+                "position": {
+                  "x": 21.12060546875,
+                  "y": 0.0,
+                  "__typename": "Position"
+                },
+                "size": {
+                  "width": 42.2412109375,
+                  "height": 11.4990234375,
+                  "__typename": "Size"
+                },
+                "alignment": {
+                  "x": 0.0,
+                  "y": 9.052734375,
+                  "__typename": "Position"
+                },
+                "__typename": "Label"
+              },
+              "style": {
+                "backgroundColor": "transparent",
+                "__typename": "ListItemNodeStyle"
+              },
+              "position": {
+                "x": 6.0,
+                "y": 29.4990234375,
+                "__typename": "Position"
+              },
+              "size": {
+                "width": 80.3642578125,
+                "height": 11.4990234375,
+                "__typename": "Size"
+              },
+              "__typename": "Node",
+              "borderNodes": [],
+              "childNodes": []
+            },
+            {
+              "id": "7ca3f06a-9112-35b7-8c23-8db98c4ccaf4",
+              "type": "node:list:item",
+              "targetObjectId": "94e3568b-1985-40e7-9f15-fb6fd08ea25a",
+              "targetObjectKind": "siriusComponents://semantic?domain=flow&entity=CompositeProcessor",
+              "targetObjectLabel": "Processor3",
+              "descriptionId": "f0896d06-1a4f-4f0f-901e-8c49c158f909",
+              "label": {
+                "id": "05c93c72-67f9-3bf2-a404-c45b8055c7ad",
+                "type": "label:inside-center",
+                "text": "Temperature: 0",
+                "style": {
+                  "color": "#000000",
+                  "fontSize": 10,
+                  "bold": false,
+                  "italic": false,
+                  "underline": false,
+                  "strikeThrough": false,
+                  "iconURL": "",
+                  "__typename": "LabelStyle"
+                },
+                "position": {
+                  "x": 34.18212890625,
+                  "y": 0.0,
+                  "__typename": "Position"
+                },
+                "size": {
+                  "width": 68.3642578125,
+                  "height": 11.4990234375,
+                  "__typename": "Size"
+                },
+                "alignment": {
+                  "x": 0.0,
+                  "y": 9.052734375,
+                  "__typename": "Position"
+                },
+                "__typename": "Label"
+              },
+              "style": {
+                "backgroundColor": "transparent",
+                "__typename": "ListItemNodeStyle"
+              },
+              "position": {
+                "x": 6.0,
+                "y": 46.998046875,
+                "__typename": "Position"
+              },
+              "size": {
+                "width": 80.3642578125,
+                "height": 11.4990234375,
+                "__typename": "Size"
+              },
+              "__typename": "Node",
+              "borderNodes": [],
+              "childNodes": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "723f5363-8d3e-3f30-be12-172215442875",
+      "type": "node:rectangle",
+      "targetObjectId": "64053157-82e6-46b1-8c22-4b51cda9c761",
+      "targetObjectKind": "siriusComponents://semantic?domain=flow&entity=CompositeProcessor",
+      "targetObjectLabel": "Processor4",
+      "descriptionId": "072da3e6-94af-4a4a-9df1-f0dfee88a850",
+      "label": {
+        "id": "0fd7fccf-7303-3547-a248-2be5e0c8c103",
+        "type": "label:inside-center",
+        "text": "Processor4",
+        "style": {
+          "color": "#002b3c",
+          "fontSize": 10,
+          "bold": true,
+          "italic": false,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": { "x": 75.0, "y": 5.0, "__typename": "Position" },
+        "size": {
+          "width": 54.4775390625,
+          "height": 11.4990234375,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 9.052734375,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "style": {
+        "color": "#f0f0f0",
+        "borderColor": "#b1bcbe",
+        "borderStyle": "Solid",
+        "borderSize": 1,
+        "borderRadius": 0,
+        "__typename": "RectangularNodeStyle"
+      },
+      "position": { "x": 14.5, "y": 12.0, "__typename": "Position" },
+      "size": {
+        "width": 150.0,
+        "height": 110.99609375,
+        "__typename": "Size"
+      },
+      "__typename": "Node",
+      "borderNodes": [],
+      "childNodes": [
+        {
+          "id": "2dd9e73c-5f8f-3619-b427-d2af1e3d9bb8",
+          "type": "node:list",
+          "targetObjectId": "64053157-82e6-46b1-8c22-4b51cda9c761",
+          "targetObjectKind": "siriusComponents://semantic?domain=flow&entity=CompositeProcessor",
+          "targetObjectLabel": "Processor4",
+          "descriptionId": "f5434fd0-afa5-4f51-8edd-ca205219eb14",
+          "label": {
+            "id": "d9c93f8a-5bb0-3900-b065-82457a027851",
+            "type": "label:inside-center",
+            "text": "Description",
+            "style": {
+              "color": "#000000",
+              "fontSize": 10,
+              "bold": false,
+              "italic": false,
+              "underline": false,
+              "strikeThrough": false,
+              "iconURL": "",
+              "__typename": "LabelStyle"
+            },
+            "position": {
+              "x": 43.18212890625,
+              "y": 5.0,
+              "__typename": "Position"
+            },
+            "size": {
+              "width": 50.01953125,
+              "height": 11.4990234375,
+              "__typename": "Size"
+            },
+            "alignment": {
+              "x": 0.0,
+              "y": 9.052734375,
+              "__typename": "Position"
+            },
+            "__typename": "Label"
+          },
+          "style": {
+            "color": "#ffffff",
+            "borderColor": "#000000",
+            "borderStyle": "Solid",
+            "borderSize": 1,
+            "borderRadius": 3,
+            "__typename": "ListNodeStyle"
+          },
+          "position": {
+            "x": 12.0,
+            "y": 28.4990234375,
+            "__typename": "Position"
+          },
+          "size": {
+            "width": 86.3642578125,
+            "height": 70.4970703125,
+            "__typename": "Size"
+          },
+          "__typename": "Node",
+          "borderNodes": [],
+          "childNodes": [
+            {
+              "id": "b14d2253-b202-399f-b8ad-ff58f6df94f4",
+              "type": "node:list:item",
+              "targetObjectId": "64053157-82e6-46b1-8c22-4b51cda9c761",
+              "targetObjectKind": "siriusComponents://semantic?domain=flow&entity=CompositeProcessor",
+              "targetObjectLabel": "Processor4",
+              "descriptionId": "7c4d7e53-308f-4bf4-8c2c-62f3a13ea49b",
+              "label": {
+                "id": "c262699e-4315-3484-8d82-6fe572f74848",
+                "type": "label:inside-center",
+                "text": "Weight: 0",
+                "style": {
+                  "color": "#000000",
+                  "fontSize": 10,
+                  "bold": false,
+                  "italic": false,
+                  "underline": false,
+                  "strikeThrough": false,
+                  "iconURL": "",
+                  "__typename": "LabelStyle"
+                },
+                "position": {
+                  "x": 21.12060546875,
+                  "y": 0.0,
+                  "__typename": "Position"
+                },
+                "size": {
+                  "width": 42.2412109375,
+                  "height": 11.4990234375,
+                  "__typename": "Size"
+                },
+                "alignment": {
+                  "x": 0.0,
+                  "y": 9.052734375,
+                  "__typename": "Position"
+                },
+                "__typename": "Label"
+              },
+              "style": {
+                "backgroundColor": "transparent",
+                "__typename": "ListItemNodeStyle"
+              },
+              "position": {
+                "x": 6.0,
+                "y": 29.4990234375,
+                "__typename": "Position"
+              },
+              "size": {
+                "width": 80.3642578125,
+                "height": 11.4990234375,
+                "__typename": "Size"
+              },
+              "__typename": "Node",
+              "borderNodes": [],
+              "childNodes": []
+            },
+            {
+              "id": "98f8820d-eaad-355f-994f-ced1055aff2d",
+              "type": "node:list:item",
+              "targetObjectId": "64053157-82e6-46b1-8c22-4b51cda9c761",
+              "targetObjectKind": "siriusComponents://semantic?domain=flow&entity=CompositeProcessor",
+              "targetObjectLabel": "Processor4",
+              "descriptionId": "f0896d06-1a4f-4f0f-901e-8c49c158f909",
+              "label": {
+                "id": "bd756765-e317-3a57-b01a-e7f1669a83d0",
+                "type": "label:inside-center",
+                "text": "Temperature: 0",
+                "style": {
+                  "color": "#000000",
+                  "fontSize": 10,
+                  "bold": false,
+                  "italic": false,
+                  "underline": false,
+                  "strikeThrough": false,
+                  "iconURL": "",
+                  "__typename": "LabelStyle"
+                },
+                "position": {
+                  "x": 34.18212890625,
+                  "y": 0.0,
+                  "__typename": "Position"
+                },
+                "size": {
+                  "width": 68.3642578125,
+                  "height": 11.4990234375,
+                  "__typename": "Size"
+                },
+                "alignment": {
+                  "x": 0.0,
+                  "y": 9.052734375,
+                  "__typename": "Position"
+                },
+                "__typename": "Label"
+              },
+              "style": {
+                "backgroundColor": "transparent",
+                "__typename": "ListItemNodeStyle"
+              },
+              "position": {
+                "x": 6.0,
+                "y": 46.998046875,
+                "__typename": "Position"
+              },
+              "size": {
+                "width": 80.3642578125,
+                "height": 11.4990234375,
+                "__typename": "Size"
+              },
+              "__typename": "Node",
+              "borderNodes": [],
+              "childNodes": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "4628d88f-bc3f-3c9c-877f-32315f5b93e4",
+      "type": "node:rectangle",
+      "targetObjectId": "835c02d5-77de-4d02-ab98-ecd3be4b5c5b",
+      "targetObjectKind": "siriusComponents://semantic?domain=flow&entity=CompositeProcessor",
+      "targetObjectLabel": "Processor5",
+      "descriptionId": "072da3e6-94af-4a4a-9df1-f0dfee88a850",
+      "label": {
+        "id": "81cb3b73-6736-3eef-b5e8-b7e77be837a7",
+        "type": "label:inside-center",
+        "text": "Processor5",
+        "style": {
+          "color": "#002b3c",
+          "fontSize": 10,
+          "bold": true,
+          "italic": false,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": { "x": 75.0, "y": 5.0, "__typename": "Position" },
+        "size": {
+          "width": 54.4775390625,
+          "height": 11.4990234375,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 9.052734375,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "style": {
+        "color": "#f0f0f0",
+        "borderColor": "#b1bcbe",
+        "borderStyle": "Solid",
+        "borderSize": 1,
+        "borderRadius": 0,
+        "__typename": "RectangularNodeStyle"
+      },
+      "position": {
+        "x": 1556.7822265625,
+        "y": 244.6953125,
+        "__typename": "Position"
+      },
+      "size": {
+        "width": 150.0,
+        "height": 229.1953125,
+        "__typename": "Size"
+      },
+      "__typename": "Node",
+      "borderNodes": [],
+      "childNodes": [
+        {
+          "id": "3e53b87e-d438-351f-93dc-708509275f23",
+          "type": "node:image",
+          "targetObjectId": "6ac04061-b0cb-4a7b-98a7-eb0b2652aab7",
+          "targetObjectKind": "siriusComponents://semantic?domain=flow&entity=Processor",
+          "targetObjectLabel": "Processor1",
+          "descriptionId": "f3bea903-ff34-4868-87f8-42f7578b7b79",
+          "label": {
+            "id": "46d39492-6404-398c-a560-3971feaf4220",
+            "type": "label:outside-center",
+            "text": "Processor1",
+            "style": {
+              "color": "#000000",
+              "fontSize": 8,
+              "bold": false,
+              "italic": false,
+              "underline": false,
+              "strikeThrough": false,
+              "iconURL": "",
+              "__typename": "LabelStyle"
+            },
+            "position": {
+              "x": 42.0,
+              "y": -14.19921875,
+              "__typename": "Position"
+            },
+            "size": {
+              "width": 40.4609375,
+              "height": 9.19921875,
+              "__typename": "Size"
+            },
+            "alignment": {
+              "x": 0.0,
+              "y": 7.2421875,
+              "__typename": "Position"
+            },
+            "__typename": "Label"
+          },
+          "style": {
+            "imageURL": "/api/images/images/cpu_unused.svg",
+            "borderColor": "#000000",
+            "borderStyle": "Solid",
+            "borderSize": 0,
+            "borderRadius": 0,
+            "__typename": "ImageNodeStyle"
+          },
+          "position": {
+            "x": 12.0,
+            "y": 133.1953125,
+            "__typename": "Position"
+          },
+          "size": {
+            "width": 84.0,
+            "height": 84.0,
+            "__typename": "Size"
+          },
+          "__typename": "Node",
+          "borderNodes": [],
+          "childNodes": []
+        },
+        {
+          "id": "4aa86d3d-5d5a-35fa-9362-56c3d1efc7c2",
+          "type": "node:list",
+          "targetObjectId": "835c02d5-77de-4d02-ab98-ecd3be4b5c5b",
+          "targetObjectKind": "siriusComponents://semantic?domain=flow&entity=CompositeProcessor",
+          "targetObjectLabel": "Processor5",
+          "descriptionId": "f5434fd0-afa5-4f51-8edd-ca205219eb14",
+          "label": {
+            "id": "7a9fd89f-933a-35ba-a91c-c62dca702b2a",
+            "type": "label:inside-center",
+            "text": "Description",
+            "style": {
+              "color": "#000000",
+              "fontSize": 10,
+              "bold": false,
+              "italic": false,
+              "underline": false,
+              "strikeThrough": false,
+              "iconURL": "",
+              "__typename": "LabelStyle"
+            },
+            "position": {
+              "x": 43.18212890625,
+              "y": 5.0,
+              "__typename": "Position"
+            },
+            "size": {
+              "width": 50.01953125,
+              "height": 11.4990234375,
+              "__typename": "Size"
+            },
+            "alignment": {
+              "x": 0.0,
+              "y": 9.052734375,
+              "__typename": "Position"
+            },
+            "__typename": "Label"
+          },
+          "style": {
+            "color": "#ffffff",
+            "borderColor": "#000000",
+            "borderStyle": "Solid",
+            "borderSize": 1,
+            "borderRadius": 3,
+            "__typename": "ListNodeStyle"
+          },
+          "position": {
+            "x": 12.0,
+            "y": 28.4990234375,
+            "__typename": "Position"
+          },
+          "size": {
+            "width": 86.3642578125,
+            "height": 70.4970703125,
+            "__typename": "Size"
+          },
+          "__typename": "Node",
+          "borderNodes": [],
+          "childNodes": [
+            {
+              "id": "2c9d1c25-c181-31a2-b406-e7fa374742ed",
+              "type": "node:list:item",
+              "targetObjectId": "835c02d5-77de-4d02-ab98-ecd3be4b5c5b",
+              "targetObjectKind": "siriusComponents://semantic?domain=flow&entity=CompositeProcessor",
+              "targetObjectLabel": "Processor5",
+              "descriptionId": "7c4d7e53-308f-4bf4-8c2c-62f3a13ea49b",
+              "label": {
+                "id": "33d7e99b-a9d1-3faf-b492-42e953d7ad47",
+                "type": "label:inside-center",
+                "text": "Weight: 0",
+                "style": {
+                  "color": "#000000",
+                  "fontSize": 10,
+                  "bold": false,
+                  "italic": false,
+                  "underline": false,
+                  "strikeThrough": false,
+                  "iconURL": "",
+                  "__typename": "LabelStyle"
+                },
+                "position": {
+                  "x": 21.12060546875,
+                  "y": 0.0,
+                  "__typename": "Position"
+                },
+                "size": {
+                  "width": 42.2412109375,
+                  "height": 11.4990234375,
+                  "__typename": "Size"
+                },
+                "alignment": {
+                  "x": 0.0,
+                  "y": 9.052734375,
+                  "__typename": "Position"
+                },
+                "__typename": "Label"
+              },
+              "style": {
+                "backgroundColor": "transparent",
+                "__typename": "ListItemNodeStyle"
+              },
+              "position": {
+                "x": 6.0,
+                "y": 29.4990234375,
+                "__typename": "Position"
+              },
+              "size": {
+                "width": 80.3642578125,
+                "height": 11.4990234375,
+                "__typename": "Size"
+              },
+              "__typename": "Node",
+              "borderNodes": [],
+              "childNodes": []
+            },
+            {
+              "id": "ab26ee92-9d35-3afb-bd93-7f2a28e23ded",
+              "type": "node:list:item",
+              "targetObjectId": "835c02d5-77de-4d02-ab98-ecd3be4b5c5b",
+              "targetObjectKind": "siriusComponents://semantic?domain=flow&entity=CompositeProcessor",
+              "targetObjectLabel": "Processor5",
+              "descriptionId": "f0896d06-1a4f-4f0f-901e-8c49c158f909",
+              "label": {
+                "id": "76607650-cb21-3496-94d9-e4ec66ce0e4f",
+                "type": "label:inside-center",
+                "text": "Temperature: 0",
+                "style": {
+                  "color": "#000000",
+                  "fontSize": 10,
+                  "bold": false,
+                  "italic": false,
+                  "underline": false,
+                  "strikeThrough": false,
+                  "iconURL": "",
+                  "__typename": "LabelStyle"
+                },
+                "position": {
+                  "x": 34.18212890625,
+                  "y": 0.0,
+                  "__typename": "Position"
+                },
+                "size": {
+                  "width": 68.3642578125,
+                  "height": 11.4990234375,
+                  "__typename": "Size"
+                },
+                "alignment": {
+                  "x": 0.0,
+                  "y": 9.052734375,
+                  "__typename": "Position"
+                },
+                "__typename": "Label"
+              },
+              "style": {
+                "backgroundColor": "transparent",
+                "__typename": "ListItemNodeStyle"
+              },
+              "position": {
+                "x": 6.0,
+                "y": 46.998046875,
+                "__typename": "Position"
+              },
+              "size": {
+                "width": 80.3642578125,
+                "height": 11.4990234375,
+                "__typename": "Size"
+              },
+              "__typename": "Node",
+              "borderNodes": [],
+              "childNodes": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fd1d401b-488b-3209-b213-206551f80b59",
+      "type": "node:rectangle",
+      "targetObjectId": "5de514a6-c9ad-478a-ad20-964611408450",
+      "targetObjectKind": "siriusComponents://semantic?domain=flow&entity=CompositeProcessor",
+      "targetObjectLabel": "Processor6",
+      "descriptionId": "072da3e6-94af-4a4a-9df1-f0dfee88a850",
+      "label": {
+        "id": "298199a4-3122-3e6a-82b5-f1da35058d03",
+        "type": "label:inside-center",
+        "text": "Processor6",
+        "style": {
+          "color": "#002b3c",
+          "fontSize": 10,
+          "bold": true,
+          "italic": false,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": { "x": 75.0, "y": 5.0, "__typename": "Position" },
+        "size": {
+          "width": 54.4775390625,
+          "height": 11.4990234375,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 9.052734375,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "style": {
+        "color": "#f0f0f0",
+        "borderColor": "#b1bcbe",
+        "borderStyle": "Solid",
+        "borderSize": 1,
+        "borderRadius": 0,
+        "__typename": "RectangularNodeStyle"
+      },
+      "position": {
+        "x": 12.0,
+        "y": 172.99609375,
+        "__typename": "Position"
+      },
+      "size": {
+        "width": 150.0,
+        "height": 347.39453125,
+        "__typename": "Size"
+      },
+      "__typename": "Node",
+      "borderNodes": [],
+      "childNodes": [
+        {
+          "id": "b6aebcd5-47d8-31b7-be43-7399b90838e3",
+          "type": "node:image",
+          "targetObjectId": "6cc09443-0621-43f9-83a3-2cbff71ceea7",
+          "targetObjectKind": "siriusComponents://semantic?domain=flow&entity=Processor",
+          "targetObjectLabel": "Processor1",
+          "descriptionId": "f3bea903-ff34-4868-87f8-42f7578b7b79",
+          "label": {
+            "id": "817ae956-a961-3092-88c5-ae20c4075e15",
+            "type": "label:outside-center",
+            "text": "Processor1",
+            "style": {
+              "color": "#000000",
+              "fontSize": 8,
+              "bold": false,
+              "italic": false,
+              "underline": false,
+              "strikeThrough": false,
+              "iconURL": "",
+              "__typename": "LabelStyle"
+            },
+            "position": {
+              "x": 42.0,
+              "y": -14.19921875,
+              "__typename": "Position"
+            },
+            "size": {
+              "width": 40.4609375,
+              "height": 9.19921875,
+              "__typename": "Size"
+            },
+            "alignment": {
+              "x": 0.0,
+              "y": 7.2421875,
+              "__typename": "Position"
+            },
+            "__typename": "Label"
+          },
+          "style": {
+            "imageURL": "/api/images/images/cpu_unused.svg",
+            "borderColor": "#000000",
+            "borderStyle": "Solid",
+            "borderSize": 0,
+            "borderRadius": 0,
+            "__typename": "ImageNodeStyle"
+          },
+          "position": {
+            "x": 14.3642578125,
+            "y": 251.39453125,
+            "__typename": "Position"
+          },
+          "size": {
+            "width": 84.0,
+            "height": 84.0,
+            "__typename": "Size"
+          },
+          "__typename": "Node",
+          "borderNodes": [],
+          "childNodes": []
+        },
+        {
+          "id": "0b1fea3e-8417-3f49-ba20-0c9f1ad62581",
+          "type": "node:image",
+          "targetObjectId": "07231d33-2231-4c2b-8483-4ebb85441630",
+          "targetObjectKind": "siriusComponents://semantic?domain=flow&entity=Fan",
+          "targetObjectLabel": "active",
+          "descriptionId": "b386cf1d-0723-4633-8be8-a6ee840ebe3f",
+          "label": {
+            "id": "de2916a7-3e6a-3678-8ead-ef32bdfc1271",
+            "type": "label:outside-center",
+            "text": "200",
+            "style": {
+              "color": "#000000",
+              "fontSize": 8,
+              "bold": false,
+              "italic": false,
+              "underline": false,
+              "strikeThrough": false,
+              "iconURL": "",
+              "__typename": "LabelStyle"
+            },
+            "position": {
+              "x": 42.0,
+              "y": -14.19921875,
+              "__typename": "Position"
+            },
+            "size": {
+              "width": 13.34765625,
+              "height": 9.19921875,
+              "__typename": "Size"
+            },
+            "alignment": {
+              "x": 0.0,
+              "y": 7.2421875,
+              "__typename": "Position"
+            },
+            "__typename": "Label"
+          },
+          "style": {
+            "imageURL": "/api/images/images/fan.svg",
+            "borderColor": "#000000",
+            "borderStyle": "Solid",
+            "borderSize": 0,
+            "borderRadius": 0,
+            "__typename": "ImageNodeStyle"
+          },
+          "position": {
+            "x": 13.18212890625,
+            "y": 133.1953125,
+            "__typename": "Position"
+          },
+          "size": {
+            "width": 84.0,
+            "height": 84.0,
+            "__typename": "Size"
+          },
+          "__typename": "Node",
+          "borderNodes": [],
+          "childNodes": []
+        },
+        {
+          "id": "d571fc67-4bd8-3f23-aaf1-1e1e7af650a1",
+          "type": "node:list",
+          "targetObjectId": "5de514a6-c9ad-478a-ad20-964611408450",
+          "targetObjectKind": "siriusComponents://semantic?domain=flow&entity=CompositeProcessor",
+          "targetObjectLabel": "Processor6",
+          "descriptionId": "f5434fd0-afa5-4f51-8edd-ca205219eb14",
+          "label": {
+            "id": "a4fe78d6-b7c7-3314-b614-396f5840f91e",
+            "type": "label:inside-center",
+            "text": "Description",
+            "style": {
+              "color": "#000000",
+              "fontSize": 10,
+              "bold": false,
+              "italic": false,
+              "underline": false,
+              "strikeThrough": false,
+              "iconURL": "",
+              "__typename": "LabelStyle"
+            },
+            "position": {
+              "x": 43.18212890625,
+              "y": 5.0,
+              "__typename": "Position"
+            },
+            "size": {
+              "width": 50.01953125,
+              "height": 11.4990234375,
+              "__typename": "Size"
+            },
+            "alignment": {
+              "x": 0.0,
+              "y": 9.052734375,
+              "__typename": "Position"
+            },
+            "__typename": "Label"
+          },
+          "style": {
+            "color": "#ffffff",
+            "borderColor": "#000000",
+            "borderStyle": "Solid",
+            "borderSize": 1,
+            "borderRadius": 3,
+            "__typename": "ListNodeStyle"
+          },
+          "position": {
+            "x": 12.0,
+            "y": 28.4990234375,
+            "__typename": "Position"
+          },
+          "size": {
+            "width": 86.3642578125,
+            "height": 70.4970703125,
+            "__typename": "Size"
+          },
+          "__typename": "Node",
+          "borderNodes": [],
+          "childNodes": [
+            {
+              "id": "40958a06-8414-3c1c-ae8d-323bfb1438d4",
+              "type": "node:list:item",
+              "targetObjectId": "5de514a6-c9ad-478a-ad20-964611408450",
+              "targetObjectKind": "siriusComponents://semantic?domain=flow&entity=CompositeProcessor",
+              "targetObjectLabel": "Processor6",
+              "descriptionId": "7c4d7e53-308f-4bf4-8c2c-62f3a13ea49b",
+              "label": {
+                "id": "155ebc03-d197-3a87-8f12-c247fda32112",
+                "type": "label:inside-center",
+                "text": "Weight: 0",
+                "style": {
+                  "color": "#000000",
+                  "fontSize": 10,
+                  "bold": false,
+                  "italic": false,
+                  "underline": false,
+                  "strikeThrough": false,
+                  "iconURL": "",
+                  "__typename": "LabelStyle"
+                },
+                "position": {
+                  "x": 21.12060546875,
+                  "y": 0.0,
+                  "__typename": "Position"
+                },
+                "size": {
+                  "width": 42.2412109375,
+                  "height": 11.4990234375,
+                  "__typename": "Size"
+                },
+                "alignment": {
+                  "x": 0.0,
+                  "y": 9.052734375,
+                  "__typename": "Position"
+                },
+                "__typename": "Label"
+              },
+              "style": {
+                "backgroundColor": "transparent",
+                "__typename": "ListItemNodeStyle"
+              },
+              "position": {
+                "x": 6.0,
+                "y": 29.4990234375,
+                "__typename": "Position"
+              },
+              "size": {
+                "width": 80.3642578125,
+                "height": 11.4990234375,
+                "__typename": "Size"
+              },
+              "__typename": "Node",
+              "borderNodes": [],
+              "childNodes": []
+            },
+            {
+              "id": "1c995fc1-6e8f-3294-acc9-69c5ebd56db8",
+              "type": "node:list:item",
+              "targetObjectId": "5de514a6-c9ad-478a-ad20-964611408450",
+              "targetObjectKind": "siriusComponents://semantic?domain=flow&entity=CompositeProcessor",
+              "targetObjectLabel": "Processor6",
+              "descriptionId": "f0896d06-1a4f-4f0f-901e-8c49c158f909",
+              "label": {
+                "id": "286e8337-1b07-3141-82b8-a7decf943a63",
+                "type": "label:inside-center",
+                "text": "Temperature: 0",
+                "style": {
+                  "color": "#000000",
+                  "fontSize": 10,
+                  "bold": false,
+                  "italic": false,
+                  "underline": false,
+                  "strikeThrough": false,
+                  "iconURL": "",
+                  "__typename": "LabelStyle"
+                },
+                "position": {
+                  "x": 34.18212890625,
+                  "y": 0.0,
+                  "__typename": "Position"
+                },
+                "size": {
+                  "width": 68.3642578125,
+                  "height": 11.4990234375,
+                  "__typename": "Size"
+                },
+                "alignment": {
+                  "x": 0.0,
+                  "y": 9.052734375,
+                  "__typename": "Position"
+                },
+                "__typename": "Label"
+              },
+              "style": {
+                "backgroundColor": "transparent",
+                "__typename": "ListItemNodeStyle"
+              },
+              "position": {
+                "x": 6.0,
+                "y": 46.998046875,
+                "__typename": "Position"
+              },
+              "size": {
+                "width": 80.3642578125,
+                "height": 11.4990234375,
+                "__typename": "Size"
+              },
+              "__typename": "Node",
+              "borderNodes": [],
+              "childNodes": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "808145cf-3702-3708-b083-5d9b3be5d3cb",
+      "type": "edge:straight",
+      "targetObjectId": "acc96f97-fad4-48a7-a803-7aaac1eb6d3f",
+      "targetObjectKind": "siriusComponents://semantic?domain=flow&entity=DataFlow",
+      "targetObjectLabel": "standard",
+      "descriptionId": "eb36f725-53a3-47f3-9a39-46aa84817114",
+      "sourceId": "198057c7-c2d2-3589-a06f-eeadb79cc43a",
+      "targetId": "e23d2564-c20e-3f3f-a29d-746a1b8e27f0",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "f53102d0-657a-374b-84b7-b0f3a9bd777d",
+        "type": "label:edge-center",
+        "text": "6",
+        "style": {
+          "color": "#000000",
+          "fontSize": 8,
+          "bold": false,
+          "italic": false,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 432.44921875,
+          "y": 429.250301731123,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 4.44921875,
+          "height": 9.19921875,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 7.2421875,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "endLabel": null,
+      "style": {
+        "size": 1,
+        "lineStyle": "Dash",
+        "sourceArrow": "None",
+        "targetArrow": "InputClosedArrow",
+        "color": "#b1bcbe",
+        "__typename": "EdgeStyle"
+      },
+      "routingPoints": [
+        {
+          "x": 412.44921875,
+          "y": 426.250301731123,
+          "__typename": "Position"
+        },
+        {
+          "x": 446.8984375,
+          "y": 426.250301731123,
+          "__typename": "Position"
+        },
+        { "x": 446.8984375, "y": 452.390625, "__typename": "Position" },
+        { "x": 456.8984375, "y": 452.390625, "__typename": "Position" }
+      ],
+      "__typename": "Edge"
+    },
+    {
+      "id": "0dfad660-11f1-3f0f-86fa-9b077600b0b8",
+      "type": "edge:straight",
+      "targetObjectId": "e6f78d0c-fb4a-4493-bb41-47166b182658",
+      "targetObjectKind": "siriusComponents://semantic?domain=flow&entity=DataFlow",
+      "targetObjectLabel": "high",
+      "descriptionId": "eb36f725-53a3-47f3-9a39-46aa84817114",
+      "sourceId": "8a3f377f-35e7-31d9-ab24-b55539504781",
+      "targetId": "937af716-ff4e-3734-bb67-0a446585f529",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "33baf448-8c3a-3658-a529-d1ba43535cb9",
+        "type": "label:edge-center",
+        "text": "6",
+        "style": {
+          "color": "#000000",
+          "fontSize": 8,
+          "bold": false,
+          "italic": false,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 432.44921875,
+          "y": 709.9279297831008,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 4.44921875,
+          "height": 9.19921875,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 7.2421875,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "endLabel": null,
+      "style": {
+        "size": 1,
+        "lineStyle": "Dash",
+        "sourceArrow": "None",
+        "targetArrow": "InputClosedArrow",
+        "color": "#b1bcbe",
+        "__typename": "EdgeStyle"
+      },
+      "routingPoints": [
+        {
+          "x": 412.44921875,
+          "y": 706.9279297831008,
+          "__typename": "Position"
+        },
+        {
+          "x": 456.8984375,
+          "y": 706.9279297831008,
+          "__typename": "Position"
+        }
+      ],
+      "__typename": "Edge"
+    },
+    {
+      "id": "27acd6cc-b230-33b2-829e-9c739f4ae22c",
+      "type": "edge:straight",
+      "targetObjectId": "4ed93e59-2fca-4044-bca4-ccbe6f796dea",
+      "targetObjectKind": "siriusComponents://semantic?domain=flow&entity=DataFlow",
+      "targetObjectLabel": "standard",
+      "descriptionId": "eb36f725-53a3-47f3-9a39-46aa84817114",
+      "sourceId": "2fc1e0c9-6458-324f-88d1-25e7915d1548",
+      "targetId": "e5a91e41-91f0-3c5f-a830-ec1badb71495",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "dee20c54-7fee-3399-8960-27e09c6c11b3",
+        "type": "label:edge-center",
+        "text": "4",
+        "style": {
+          "color": "#000000",
+          "fontSize": 8,
+          "bold": false,
+          "italic": false,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 738.572265625,
+          "y": 260.0908377894456,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 4.44921875,
+          "height": 9.19921875,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 7.2421875,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "endLabel": null,
+      "style": {
+        "size": 1,
+        "lineStyle": "Dash",
+        "sourceArrow": "None",
+        "targetArrow": "InputClosedArrow",
+        "color": "#b1bcbe",
+        "__typename": "EdgeStyle"
+      },
+      "routingPoints": [
+        {
+          "x": 681.34765625,
+          "y": 257.0908377894456,
+          "__typename": "Position"
+        },
+        {
+          "x": 775.24609375,
+          "y": 257.0908377894456,
+          "__typename": "Position"
+        },
+        {
+          "x": 775.24609375,
+          "y": 424.390625,
+          "__typename": "Position"
+        },
+        {
+          "x": 836.208984375,
+          "y": 424.390625,
+          "__typename": "Position"
+        }
+      ],
+      "__typename": "Edge"
+    },
+    {
+      "id": "3c6b256b-7a5a-3d0a-a55c-06c2b7180884",
+      "type": "edge:straight",
+      "targetObjectId": "adfa0f6c-c966-4a9d-b42a-861fb6e0e9f5",
+      "targetObjectKind": "siriusComponents://semantic?domain=flow&entity=DataFlow",
+      "targetObjectLabel": "standard",
+      "descriptionId": "89362979-2b88-48ea-89d6-811f46030283",
+      "sourceId": "e5a91e41-91f0-3c5f-a830-ec1badb71495",
+      "targetId": "a5833408-915a-31a9-9e41-c7c2f1d7f6cb",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "41152291-2b2d-3d58-b95a-d41e4ce893db",
+        "type": "label:edge-center",
+        "text": "10",
+        "style": {
+          "color": "#000000",
+          "fontSize": 8,
+          "bold": false,
+          "italic": false,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 934.171875,
+          "y": 412.19140625,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 8.8984375,
+          "height": 9.19921875,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 7.2421875,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "endLabel": null,
+      "style": {
+        "size": 1,
+        "lineStyle": "Solid",
+        "sourceArrow": "None",
+        "targetArrow": "InputArrow",
+        "color": "#b1bcbe",
+        "__typename": "EdgeStyle"
+      },
+      "routingPoints": [
+        {
+          "x": 900.208984375,
+          "y": 424.390625,
+          "__typename": "Position"
+        },
+        { "x": 963.0703125, "y": 424.390625, "__typename": "Position" }
+      ],
+      "__typename": "Edge"
+    },
+    {
+      "id": "162e3415-1ed0-3d2f-8a6c-3d14d334532d",
+      "type": "edge:straight",
+      "targetObjectId": "8b3d8429-c1b1-453f-ab97-06aa3010f7cf",
+      "targetObjectKind": "siriusComponents://semantic?domain=flow&entity=DataFlow",
+      "targetObjectLabel": "unused",
+      "descriptionId": "89362979-2b88-48ea-89d6-811f46030283",
+      "sourceId": "a5833408-915a-31a9-9e41-c7c2f1d7f6cb",
+      "targetId": "15c32639-5732-3960-8b16-306471609b03",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "dba4ac17-fe4a-3fe3-9b4d-fb3e9ad1ad55",
+        "type": "label:edge-center",
+        "text": "6",
+        "style": {
+          "color": "#000000",
+          "fontSize": 8,
+          "bold": false,
+          "italic": false,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 1124.0703125,
+          "y": 450.890625,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 4.44921875,
+          "height": 9.19921875,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 7.2421875,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "endLabel": null,
+      "style": {
+        "size": 1,
+        "lineStyle": "Solid",
+        "sourceArrow": "None",
+        "targetArrow": "InputArrow",
+        "color": "#b1bcbe",
+        "__typename": "EdgeStyle"
+      },
+      "routingPoints": [
+        {
+          "x": 1057.0703125,
+          "y": 447.890625,
+          "__typename": "Position"
+        },
+        {
+          "x": 1197.095703125,
+          "y": 447.890625,
+          "__typename": "Position"
+        }
+      ],
+      "__typename": "Edge"
+    },
+    {
+      "id": "fa0a143e-fb3e-3314-82c2-52482116543d",
+      "type": "edge:straight",
+      "targetObjectId": "6f853283-66d4-4f36-9d0e-bf1f40cee84b",
+      "targetObjectKind": "siriusComponents://semantic?domain=flow&entity=DataFlow",
+      "targetObjectLabel": "high",
+      "descriptionId": "89362979-2b88-48ea-89d6-811f46030283",
+      "sourceId": "937af716-ff4e-3734-bb67-0a446585f529",
+      "targetId": "a5833408-915a-31a9-9e41-c7c2f1d7f6cb",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "50d9af74-dd0b-37a7-8e5b-88ad3ca5f4cf",
+        "type": "label:edge-center",
+        "text": "6",
+        "style": {
+          "color": "#000000",
+          "fontSize": 8,
+          "bold": false,
+          "italic": false,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 738.572265625,
+          "y": 691.3705080037016,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 4.44921875,
+          "height": 9.19921875,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 7.2421875,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "endLabel": null,
+      "style": {
+        "size": 1,
+        "lineStyle": "Solid",
+        "sourceArrow": "None",
+        "targetArrow": "InputArrow",
+        "color": "#b1bcbe",
+        "__typename": "EdgeStyle"
+      },
+      "routingPoints": [
+        {
+          "x": 540.8984375,
+          "y": 692.9279297831008,
+          "__typename": "Position"
+        },
+        {
+          "x": 550.8984375,
+          "y": 692.9279297831008,
+          "__typename": "Position"
+        },
+        {
+          "x": 550.8984375,
+          "y": 688.3705080037016,
+          "__typename": "Position"
+        },
+        {
+          "x": 775.24609375,
+          "y": 688.3705080037016,
+          "__typename": "Position"
+        },
+        {
+          "x": 775.24609375,
+          "y": 477.390625,
+          "__typename": "Position"
+        },
+        {
+          "x": 953.0703125,
+          "y": 477.39062499999994,
+          "__typename": "Position"
+        },
+        {
+          "x": 953.0703125,
+          "y": 471.39062499999994,
+          "__typename": "Position"
+        },
+        {
+          "x": 963.0703125,
+          "y": 471.39062499999994,
+          "__typename": "Position"
+        }
+      ],
+      "__typename": "Edge"
+    },
+    {
+      "id": "45aed436-5f72-314f-a7ae-e22cc7a0c3c4",
+      "type": "edge:straight",
+      "targetObjectId": "25fd7691-bfc5-4906-b08b-008e080a28b3",
+      "targetObjectKind": "siriusComponents://semantic?domain=flow&entity=DataFlow",
+      "targetObjectLabel": "high",
+      "descriptionId": "89362979-2b88-48ea-89d6-811f46030283",
+      "sourceId": "937af716-ff4e-3734-bb67-0a446585f529",
+      "targetId": "bce3bd58-d7c3-369b-9ed9-c0c02019f263",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "8f3a9206-074d-3c7f-84f3-5e9eb672506a",
+        "type": "label:edge-center",
+        "text": "6",
+        "style": {
+          "color": "#000000",
+          "fontSize": 8,
+          "bold": false,
+          "italic": false,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 560.8984375,
+          "y": 723.9279297831008,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 4.44921875,
+          "height": 9.19921875,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 7.2421875,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "endLabel": null,
+      "style": {
+        "size": 1,
+        "lineStyle": "Solid",
+        "sourceArrow": "None",
+        "targetArrow": "InputArrow",
+        "color": "#b1bcbe",
+        "__typename": "EdgeStyle"
+      },
+      "routingPoints": [
+        {
+          "x": 540.8984375,
+          "y": 720.9279297831008,
+          "__typename": "Position"
+        },
+        {
+          "x": 575.34765625,
+          "y": 720.9279297831008,
+          "__typename": "Position"
+        },
+        {
+          "x": 575.34765625,
+          "y": 741.5697267537016,
+          "__typename": "Position"
+        },
+        {
+          "x": 585.34765625,
+          "y": 741.5697267537016,
+          "__typename": "Position"
+        }
+      ],
+      "__typename": "Edge"
+    },
+    {
+      "id": "35b5fc15-0b5d-33c6-92c5-0262f2c3b928",
+      "type": "edge:straight",
+      "targetObjectId": "bd674b56-327c-4a54-9521-c166cd6af067",
+      "targetObjectKind": "siriusComponents://semantic?domain=flow&entity=DataFlow",
+      "targetObjectLabel": "standard",
+      "descriptionId": "89362979-2b88-48ea-89d6-811f46030283",
+      "sourceId": "e23d2564-c20e-3f3f-a29d-746a1b8e27f0",
+      "targetId": "a5833408-915a-31a9-9e41-c7c2f1d7f6cb",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "839f6837-ec46-3e8d-8004-038ba93025b2",
+        "type": "label:edge-center",
+        "text": "10",
+        "style": {
+          "color": "#000000",
+          "fontSize": 8,
+          "bold": false,
+          "italic": false,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 736.34765625,
+          "y": 454.19140625,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 8.8984375,
+          "height": 9.19921875,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 7.2421875,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "endLabel": null,
+      "style": {
+        "size": 1,
+        "lineStyle": "Solid",
+        "sourceArrow": "None",
+        "targetArrow": "InputArrow",
+        "color": "#b1bcbe",
+        "__typename": "EdgeStyle"
+      },
+      "routingPoints": [
+        {
+          "x": 540.8984375,
+          "y": 466.39062499999994,
+          "__typename": "Position"
+        },
+        {
+          "x": 953.0703125,
+          "y": 466.39062499999994,
+          "__typename": "Position"
+        },
+        {
+          "x": 953.0703125,
+          "y": 447.89062499999994,
+          "__typename": "Position"
+        },
+        {
+          "x": 963.0703125,
+          "y": 447.89062499999994,
+          "__typename": "Position"
+        }
+      ],
+      "__typename": "Edge"
+    },
+    {
+      "id": "8d75c01c-f515-3c70-8ca7-4155fafc8941",
+      "type": "edge:straight",
+      "targetObjectId": "b82fac90-fc6c-4209-ae41-c9530d790259",
+      "targetObjectKind": "siriusComponents://semantic?domain=flow&entity=DataFlow",
+      "targetObjectLabel": "unused",
+      "descriptionId": "89362979-2b88-48ea-89d6-811f46030283",
+      "sourceId": "15c32639-5732-3960-8b16-306471609b03",
+      "targetId": "60e1070d-2fe7-3481-b9d8-001f95ca901b",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "876fa439-51a7-3060-bd3c-b1d8620b3e0f",
+        "type": "label:edge-center",
+        "text": "6",
+        "style": {
+          "color": "#000000",
+          "fontSize": 8,
+          "bold": false,
+          "italic": false,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 1301.8837890625,
+          "y": 464.890625,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 4.44921875,
+          "height": 9.19921875,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 7.2421875,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "endLabel": null,
+      "style": {
+        "size": 1,
+        "lineStyle": "Solid",
+        "sourceArrow": "None",
+        "targetArrow": "InputArrow",
+        "color": "#b1bcbe",
+        "__typename": "EdgeStyle"
+      },
+      "routingPoints": [
+        {
+          "x": 1281.095703125,
+          "y": 461.890625,
+          "__typename": "Position"
+        },
+        {
+          "x": 1326.3330078125,
+          "y": 461.890625,
+          "__typename": "Position"
+        }
+      ],
+      "__typename": "Edge"
+    },
+    {
+      "id": "43b501b7-f09f-34de-a1f0-eab9c16338c8",
+      "type": "edge:straight",
+      "targetObjectId": "cf8ee5b5-f324-4e4f-b8e3-f298893b44b5",
+      "targetObjectKind": "siriusComponents://semantic?domain=flow&entity=DataFlow",
+      "targetObjectLabel": "unused",
+      "descriptionId": "89362979-2b88-48ea-89d6-811f46030283",
+      "sourceId": "15c32639-5732-3960-8b16-306471609b03",
+      "targetId": "60e1070d-2fe7-3481-b9d8-001f95ca901b",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "48509d0e-0356-32fc-a53a-1f2e8323ddd6",
+        "type": "label:edge-center",
+        "text": "6",
+        "style": {
+          "color": "#000000",
+          "fontSize": 8,
+          "bold": false,
+          "italic": false,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 1301.8837890625,
+          "y": 421.69140625,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 4.44921875,
+          "height": 9.19921875,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 7.2421875,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "endLabel": null,
+      "style": {
+        "size": 1,
+        "lineStyle": "Solid",
+        "sourceArrow": "None",
+        "targetArrow": "InputArrow",
+        "color": "#b1bcbe",
+        "__typename": "EdgeStyle"
+      },
+      "routingPoints": [
+        {
+          "x": 1281.095703125,
+          "y": 433.890625,
+          "__typename": "Position"
+        },
+        {
+          "x": 1326.3330078125,
+          "y": 433.890625,
+          "__typename": "Position"
+        }
+      ],
+      "__typename": "Edge"
+    },
+    {
+      "id": "6234a0a0-9937-3e68-a905-201e2bfea978",
+      "type": "edge:straight",
+      "targetObjectId": "bb23cd14-45b6-45a6-99fe-8d78c0dd251f",
+      "targetObjectKind": "siriusComponents://semantic?domain=flow&entity=DataFlow",
+      "targetObjectLabel": "unused",
+      "descriptionId": "89362979-2b88-48ea-89d6-811f46030283",
+      "sourceId": "60e1070d-2fe7-3481-b9d8-001f95ca901b",
+      "targetId": "bce3bd58-d7c3-369b-9ed9-c0c02019f263",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "3e8c9bed-c0f9-389d-b150-94cabdb4aeb4",
+        "type": "label:edge-center",
+        "text": "6",
+        "style": {
+          "color": "#000000",
+          "fontSize": 8,
+          "bold": false,
+          "italic": false,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 937.43359375,
+          "y": 842.5697267537016,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 4.44921875,
+          "height": 9.19921875,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 7.2421875,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "endLabel": null,
+      "style": {
+        "size": 1,
+        "lineStyle": "Solid",
+        "sourceArrow": "None",
+        "targetArrow": "InputArrow",
+        "color": "#b1bcbe",
+        "__typename": "EdgeStyle"
+      },
+      "routingPoints": [
+        {
+          "x": 1410.3330078125,
+          "y": 461.890625,
+          "__typename": "Position"
+        },
+        {
+          "x": 1457.3330078125,
+          "y": 461.890625,
+          "__typename": "Position"
+        },
+        {
+          "x": 1457.3330078125,
+          "y": 839.5697267537016,
+          "__typename": "Position"
+        },
+        {
+          "x": 261.44921875,
+          "y": 839.5697267537016,
+          "__typename": "Position"
+        },
+        {
+          "x": 261.44921875,
+          "y": 769.5697267537016,
+          "__typename": "Position"
+        },
+        {
+          "x": 585.34765625,
+          "y": 769.5697267537016,
+          "__typename": "Position"
+        }
+      ],
+      "__typename": "Edge"
+    },
+    {
+      "id": "4083031b-f8b9-3e7b-858d-00221341e90c",
+      "type": "edge:straight",
+      "targetObjectId": "35c6f996-7a97-4557-b701-f22150cd3a99",
+      "targetObjectKind": "siriusComponents://semantic?domain=flow&entity=DataFlow",
+      "targetObjectLabel": "unused",
+      "descriptionId": "89362979-2b88-48ea-89d6-811f46030283",
+      "sourceId": "60e1070d-2fe7-3481-b9d8-001f95ca901b",
+      "targetId": "3e53b87e-d438-351f-93dc-708509275f23",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "4c7fc5e1-acf2-396e-803b-01be7ae9c4c6",
+        "type": "label:edge-center",
+        "text": "6",
+        "style": {
+          "color": "#000000",
+          "fontSize": 8,
+          "bold": false,
+          "italic": false,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 1487.3330078125,
+          "y": 436.890625,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 4.44921875,
+          "height": 9.19921875,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 7.2421875,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "endLabel": null,
+      "style": {
+        "size": 1,
+        "lineStyle": "Solid",
+        "sourceArrow": "None",
+        "targetArrow": "InputArrow",
+        "color": "#b1bcbe",
+        "__typename": "EdgeStyle"
+      },
+      "routingPoints": [
+        {
+          "x": 1410.3330078125,
+          "y": 433.890625,
+          "__typename": "Position"
+        },
+        {
+          "x": 1568.7822265625,
+          "y": 433.890625,
+          "__typename": "Position"
+        }
+      ],
+      "__typename": "Edge"
+    },
+    {
+      "id": "0f7fdbdf-0820-3f02-a0c8-3bf7987f079a",
+      "type": "edge:straight",
+      "targetObjectId": "77a70d24-e84c-41e5-b99d-28f59eccccc7",
+      "targetObjectKind": "siriusComponents://semantic?domain=flow&entity=DataFlow",
+      "targetObjectLabel": "unused",
+      "descriptionId": "89362979-2b88-48ea-89d6-811f46030283",
+      "sourceId": "b6aebcd5-47d8-31b7-be43-7399b90838e3",
+      "targetId": "3e53b87e-d438-351f-93dc-708509275f23",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "b909d09a-77b1-3ab2-bf94-b959a74dc1b5",
+        "type": "label:edge-center",
+        "text": "6",
+        "style": {
+          "color": "#000000",
+          "fontSize": 8,
+          "bold": false,
+          "italic": false,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 937.43359375,
+          "y": 107.796875,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 4.44921875,
+          "height": 9.19921875,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 7.2421875,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "endLabel": null,
+      "style": {
+        "size": 1,
+        "lineStyle": "Solid",
+        "sourceArrow": "None",
+        "targetArrow": "InputArrow",
+        "color": "#b1bcbe",
+        "__typename": "EdgeStyle"
+      },
+      "routingPoints": [
+        {
+          "x": 110.3642578125,
+          "y": 452.390625,
+          "__typename": "Position"
+        },
+        { "x": 197.0, "y": 452.390625, "__typename": "Position" },
+        { "x": 197.0, "y": 119.99609375, "__typename": "Position" },
+        {
+          "x": 1521.7822265625,
+          "y": 119.99609375,
+          "__typename": "Position"
+        },
+        {
+          "x": 1521.7822265625,
+          "y": 405.890625,
+          "__typename": "Position"
+        },
+        {
+          "x": 1568.7822265625,
+          "y": 405.890625,
+          "__typename": "Position"
+        }
+      ],
+      "__typename": "Edge"
+    },
+    {
+      "id": "8d342945-ab5b-39bf-99b7-e5e1b83ea988",
+      "type": "edge:straight",
+      "targetObjectId": "fe8e29ae-0962-4ab3-8320-af354d6ed212",
+      "targetObjectKind": "siriusComponents://semantic?domain=flow&entity=DataFlow",
+      "targetObjectLabel": "unused",
+      "descriptionId": "89362979-2b88-48ea-89d6-811f46030283",
+      "sourceId": "b6aebcd5-47d8-31b7-be43-7399b90838e3",
+      "targetId": "e23d2564-c20e-3f3f-a29d-746a1b8e27f0",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "4ea54ef3-cc55-3c28-96c9-93de7013ad71",
+        "type": "label:edge-center",
+        "text": "6",
+        "style": {
+          "color": "#000000",
+          "fontSize": 8,
+          "bold": false,
+          "italic": false,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": "",
+          "__typename": "LabelStyle"
+        },
+        "position": {
+          "x": 227.0,
+          "y": 483.390625,
+          "__typename": "Position"
+        },
+        "size": {
+          "width": 4.44921875,
+          "height": 9.19921875,
+          "__typename": "Size"
+        },
+        "alignment": {
+          "x": 0.0,
+          "y": 7.2421875,
+          "__typename": "Position"
+        },
+        "__typename": "Label"
+      },
+      "endLabel": null,
+      "style": {
+        "size": 1,
+        "lineStyle": "Solid",
+        "sourceArrow": "None",
+        "targetArrow": "InputArrow",
+        "color": "#b1bcbe",
+        "__typename": "EdgeStyle"
+      },
+      "routingPoints": [
+        {
+          "x": 110.3642578125,
+          "y": 480.390625,
+          "__typename": "Position"
+        },
+        {
+          "x": 456.8984375,
+          "y": 480.39062499999994,
+          "__typename": "Position"
+        }
+      ],
+      "__typename": "Edge"
+    }
+  ],
+  "__typename": "Diagram"
+}

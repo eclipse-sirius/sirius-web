@@ -51,7 +51,7 @@ import org.junit.jupiter.api.Test;
  *
  * @author gcoutable
  */
-public class DiagramLayoutTest {
+public class DiagramLayoutTests {
 
     private TestLayoutObjectService objectService = new TestLayoutObjectService();
 
@@ -82,7 +82,7 @@ public class DiagramLayoutTest {
         IRepresentationDescriptionSearchService.NoOp representationDescriptionSearchService = new IRepresentationDescriptionSearchService.NoOp() {
             @Override
             public Optional<IRepresentationDescription> findById(IEditingContext editingContext, UUID representationDescriptionId) {
-                DiagramDescription diagramDescription = DiagramLayoutTest.this.defaultTestDiagramDescriptionProvider.getDefaultDiagramDescription(diagram);
+                DiagramDescription diagramDescription = DiagramLayoutTests.this.defaultTestDiagramDescriptionProvider.getDefaultDiagramDescription(diagram);
                 return Optional.of(diagramDescription);
             }
         };

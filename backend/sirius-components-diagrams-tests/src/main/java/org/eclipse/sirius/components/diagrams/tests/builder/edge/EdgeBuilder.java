@@ -89,8 +89,8 @@ public final class EdgeBuilder {
         // @formatter:off
         return Edge.newEdge(targetObjectId)
                 .type("edge:straight") //$NON-NLS-1$
-                .sourceId(sourceEdgeEnd.getEndId())
-                .targetId(targetEdgeEnd.getEndId())
+                .sourceId(sourceId)
+                .targetId(targetId)
                 .sourceAnchorRelativePosition(sourceEdgeEnd.getEndRatio())
                 .targetAnchorRelativePosition(targetEdgeEnd.getEndRatio())
                 .beginLabel(null)
