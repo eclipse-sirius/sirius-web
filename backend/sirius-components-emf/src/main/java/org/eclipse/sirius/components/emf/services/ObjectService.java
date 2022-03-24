@@ -158,13 +158,9 @@ public class ObjectService implements IObjectService {
                 IItemLabelProvider labelProvider = (IItemLabelProvider) adapter;
                 try {
                     Object image = labelProvider.getImage(eObject);
-                    String imagePath = this.findImagePath(image);
-                    if (imagePath != null) {
-                        String[] uriSplit = imagePath.split("!"); //$NON-NLS-1$
-                        if (uriSplit.length > 1) {
-                            String insideJarPath = uriSplit[uriSplit.length - 1];
-                            return insideJarPath;
-                        }
+                    String imageFullPath = this.findImagePath(image);
+                    if (imageFullPath != null) {
+                        return this.getImageRelativePath(imageFullPath);
                     }
                 } catch (MissingResourceException exception) {
                     this.logger.warn("Missing icon for {}", eObject); //$NON-NLS-1$
@@ -172,6 +168,21 @@ public class ObjectService implements IObjectService {
             }
         }
         return null;
+    }
+
+    private String getImageRelativePath(String imageFullPath) {
+        String imageRelativePath = null;
+        String[] uriSplit = imageFullPath.split("!"); //$NON-NLS-1$
+        if (uriSplit.length > 1) {
+            imageRelativePath = uriSplit[uriSplit.length - 1];
+        } else {
+            // in development mode, when the image is not contained in a jar
+            uriSplit = imageFullPath.split("target/classes"); //$NON-NLS-1$
+            if (uriSplit.length > 1) {
+                imageRelativePath = uriSplit[uriSplit.length - 1];
+            }
+        }
+        return imageRelativePath;
     }
 
     private String findImagePath(Object image) {
