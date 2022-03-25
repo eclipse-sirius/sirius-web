@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,7 +19,7 @@ import { ShareDiagramModalProps } from './ShareDiagramModal.types';
 
 export const ShareDiagramModal = ({ url, onClose }: ShareDiagramModalProps) => {
   let message = 'Shareable link';
-  if (navigator.clipboard && document.hasFocus()) {
+  if (navigator.clipboard && document.hasFocus() && url.length > 0) {
     navigator.clipboard.writeText(url);
     message += ' (copied into the clipboard)';
   }
