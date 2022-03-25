@@ -97,7 +97,7 @@ public class NodeLabelPositionProvider {
                 double portOffset = Optional.ofNullable(this.layoutConfigurator.configureByType(node.getNodeType()).getProperty(CoreOptions.PORT_BORDER_OFFSET)).orElse(0.);
                 double offSetAccordingToBorderNodes = -portOffset / 2 * (shiftToEast - shiftToWest);
 
-                x = node.getSize().getWidth() / 2 + offSetAccordingToBorderNodes;
+                x = (node.getSize().getWidth() - label.getTextBounds().getSize().getWidth()) / 2 + offSetAccordingToBorderNodes;
                 break;
             case H_RIGHT:
                 if (outside) {
