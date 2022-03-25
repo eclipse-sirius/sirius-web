@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,9 +28,13 @@ public class SiriusComponentsConfigurationProperties {
     @NestedConfigurationProperty
     private final EditingContextConfigurationProperty editingContext;
 
-    public SiriusComponentsConfigurationProperties(CorsConfigurationProperty cors, EditingContextConfigurationProperty editingContext) {
+    @NestedConfigurationProperty
+    private final ImageRegistryConfigurationProperty imageRegistry;
+
+    public SiriusComponentsConfigurationProperties(CorsConfigurationProperty cors, EditingContextConfigurationProperty editingContext, ImageRegistryConfigurationProperty imageRegistry) {
         this.cors = cors;
         this.editingContext = editingContext;
+        this.imageRegistry = imageRegistry;
     }
 
     public CorsConfigurationProperty getCors() {
@@ -39,5 +43,9 @@ public class SiriusComponentsConfigurationProperties {
 
     public EditingContextConfigurationProperty getEditingContext() {
         return this.editingContext;
+    }
+
+    public ImageRegistryConfigurationProperty getImageRegistry() {
+        return this.imageRegistry;
     }
 }

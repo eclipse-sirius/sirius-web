@@ -36,6 +36,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.RequestScope;
@@ -56,10 +57,10 @@ public class ImageRegistry {
 
     private final Logger logger = LoggerFactory.getLogger(ImageRegistry.class);
 
-    public ImageRegistry(HttpServletRequest request) throws URISyntaxException {
+    public ImageRegistry(HttpServletRequest request, @Value("${sirius.components.imageRegistry.referer.enabled:true}") boolean refererEnabled) throws URISyntaxException {
         Objects.requireNonNull(request);
 
-        URI uri = URI.create(this.getRequestURL(request));
+        URI uri = URI.create(this.getRequestURL(request, refererEnabled));
         String imageBasePathString = uri.getScheme() + "://" + uri.getHost(); //$NON-NLS-1$
         if (uri.getPort() != -1) {
             imageBasePathString += ":" + uri.getPort(); //$NON-NLS-1$
@@ -69,9 +70,12 @@ public class ImageRegistry {
         this.imageFetcher = this.buildImageClient(request);
     }
 
-    private String getRequestURL(HttpServletRequest request) {
-        var optionalReferer = Optional.ofNullable(request.getHeader(HttpHeaders.REFERER));
-        return optionalReferer.orElse(request.getRequestURL().toString());
+    private String getRequestURL(HttpServletRequest request, boolean refererEnabled) {
+        Optional<String> optionalRequestURL = Optional.empty();
+        if (refererEnabled) {
+            optionalRequestURL = Optional.ofNullable(request.getHeader(HttpHeaders.REFERER));
+        }
+        return optionalRequestURL.orElse(request.getRequestURL().toString());
     }
 
     public UUID registerImage(String imageURL) {
