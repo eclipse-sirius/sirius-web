@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -256,6 +256,7 @@ export const NewRepresentationModal = ({
               onChange={onRepresentationDescriptionChange}
               disabled={newRepresentationModal === 'loading' || newRepresentationModal === 'creatingRepresentation'}
               labelId="newDocumentModalStereotypeDescriptionLabel"
+              inputProps={{ 'data-testid': 'representationDescription-input' }}
               fullWidth
               data-testid="representationDescription"
             >

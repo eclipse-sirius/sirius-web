@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -198,6 +198,7 @@ export const NewDocumentModal = ({ editingContextId, onClose }: NewDocumentModal
               value={name}
               placeholder="Enter the name of the model"
               data-testid="name"
+              inputProps={{ 'data-testid': 'name-input' }}
               autoFocus={true}
               onChange={onNameChange}
               disabled={newDocumentModal === 'loading' || newDocumentModal === 'creatingDocument'}
@@ -209,6 +210,7 @@ export const NewDocumentModal = ({ editingContextId, onClose }: NewDocumentModal
               disabled={newDocumentModal === 'loading' || newDocumentModal === 'creatingDocument'}
               labelId="newDocumentModalStereotypeDescriptionLabel"
               fullWidth
+              inputProps={{ 'data-testid': 'stereotype-input' }}
               data-testid="stereotype"
             >
               {stereotypeDescriptions.map((stereotypeDescription) => (
