@@ -144,11 +144,6 @@ public class ImageRegistry {
 
         String cleanSvgString = new String(content).replaceAll(xmlDeclaration, ""); //$NON-NLS-1$
 
-        String svgWidthPattern = "width=\".*?\""; //$NON-NLS-1$
-        cleanSvgString = cleanSvgString.replaceFirst(svgWidthPattern, ""); //$NON-NLS-1$
-        String svgHeightPattern = "height=\".*?\""; //$NON-NLS-1$
-        cleanSvgString = cleanSvgString.replaceFirst(svgHeightPattern, ""); //$NON-NLS-1$
-
         return cleanSvgString;
     }
 
