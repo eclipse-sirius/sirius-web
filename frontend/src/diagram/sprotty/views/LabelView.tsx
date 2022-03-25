@@ -75,11 +75,8 @@ export class LabelView extends SLabelView {
         styleObject['text-decoration'] += ' line-through';
       }
     }
-    if (label.type.includes('center')) {
-      styleObject['text-anchor'] = 'middle';
-    }
-    const iconVerticalOffset = -12;
 
+    const iconVerticalOffset = -12;
     const text = label.text;
 
     const vnode = (
@@ -90,6 +87,7 @@ export class LabelView extends SLabelView {
         </text>
       </g>
     );
+
     const subType = getSubType(label);
     if (subType) {
       // @ts-ignore

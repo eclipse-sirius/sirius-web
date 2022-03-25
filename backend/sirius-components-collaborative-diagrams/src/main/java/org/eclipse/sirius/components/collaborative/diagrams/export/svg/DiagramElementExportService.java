@@ -121,9 +121,6 @@ public class DiagramElementExportService {
         textExport.append("style=\""); //$NON-NLS-1$
         textExport.append("fill: " + labelStyle.getColor() + "; "); //$NON-NLS-1$ //$NON-NLS-2$
         textExport.append(this.exportFont(labelStyle));
-        if (type.contains("center")) { //$NON-NLS-1$
-            textExport.append("text-anchor:middle"); //$NON-NLS-1$
-        }
         textExport.append("\">"); //$NON-NLS-1$
 
         String[] lines = text.split("\\n", -1); //$NON-NLS-1$

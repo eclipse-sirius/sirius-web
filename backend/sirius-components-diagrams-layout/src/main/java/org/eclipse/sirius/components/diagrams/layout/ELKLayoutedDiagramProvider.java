@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -76,13 +76,7 @@ public class ELKLayoutedDiagramProvider {
         Size size = Size.of(elkConnectableShape.getWidth(), elkConnectableShape.getHeight());
         Position position = Position.at(elkConnectableShape.getX(), elkConnectableShape.getY());
 
-        double xOffSet = 0;
-        if (!node.isBorderNode()) {
-            // The label is positioned at the center of the node and the front-end will apply a "'text-anchor':
-            // 'middle'" property.
-            xOffSet = node.getLabel().getSize().getWidth() / 2;
-        }
-        Label label = this.getLayoutedLabel(node.getLabel(), id2ElkGraphElements, xOffSet, 0);
+        Label label = this.getLayoutedLabel(node.getLabel(), id2ElkGraphElements, 0, 0);
 
         List<Node> childNodes = this.getLayoutedNodes(node.getChildNodes(), id2ElkGraphElements);
         List<Node> borderNodes = this.getLayoutedNodes(node.getBorderNodes(), id2ElkGraphElements);

@@ -14,7 +14,7 @@ package org.eclipse.sirius.components.diagrams.layout.incremental;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -62,8 +62,8 @@ public class NodeLabelPositionProviderTests {
         NodeLabelPositionProvider labelBoundsProvider = new NodeLabelPositionProvider(new LayoutConfiguratorRegistry(List.of()).getDefaultLayoutConfigurator());
         LabelLayoutData labelLayoutData = this.createLabelLayoutData();
 
-        Position position = labelBoundsProvider.getPosition(nodeLayoutData, labelLayoutData, new ArrayList<>());
-        assertThat(position).extracting(Position::getX).isEqualTo(Double.valueOf(DEFAULT_NODE_SIZE.getWidth() / 2));
+        Position position = labelBoundsProvider.getPosition(nodeLayoutData, labelLayoutData, Collections.emptyList());
+        assertThat(position).extracting(Position::getX).isEqualTo(Double.valueOf(42.5390625));
         assertThat(position).extracting(Position::getY).isEqualTo(Double.valueOf(-23.3984375));
     }
 
@@ -73,8 +73,8 @@ public class NodeLabelPositionProviderTests {
         NodeLayoutData nodeLayoutData = this.createNodeLayoutData(Position.at(0, 0), DEFAULT_NODE_SIZE, createDiagramLayoutData, NodeType.NODE_RECTANGLE);
         NodeLabelPositionProvider labelBoundsProvider = new NodeLabelPositionProvider(new LayoutConfiguratorRegistry(List.of()).getDefaultLayoutConfigurator());
         LabelLayoutData labelLayoutData = this.createLabelLayoutData();
-        Position position = labelBoundsProvider.getPosition(nodeLayoutData, labelLayoutData, new ArrayList<>());
-        assertThat(position).extracting(Position::getX).isEqualTo(Double.valueOf(DEFAULT_NODE_SIZE.getWidth() / 2));
+        Position position = labelBoundsProvider.getPosition(nodeLayoutData, labelLayoutData, Collections.emptyList());
+        assertThat(position).extracting(Position::getX).isEqualTo(Double.valueOf(42.5390625));
         assertThat(position).extracting(Position::getY).isEqualTo(Double.valueOf(5));
     }
 
