@@ -65,8 +65,8 @@ public class DiagramElementExportService {
         if (symbolId != null) {
             imageExport.append("<use "); //$NON-NLS-1$
             imageExport.append("xlink:href=\"#" + symbolId + "\" "); //$NON-NLS-1$ //$NON-NLS-2$
-            imageExport.append("x=\"0\" "); //$NON-NLS-1$
-            imageExport.append("y=\"0\" "); //$NON-NLS-1$
+            imageExport.append("x=\"" + x + "\" "); //$NON-NLS-1$ //$NON-NLS-2$
+            imageExport.append("y=\"" + y + "\" "); //$NON-NLS-1$ //$NON-NLS-2$
             size.ifPresent(it -> imageExport.append(this.addSizeParam(it)));
             imageExport.append("/>"); //$NON-NLS-1$
         }
