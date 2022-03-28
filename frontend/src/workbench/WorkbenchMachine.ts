@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -51,7 +51,6 @@ export interface WorkbenchContext {
   message: string | null;
 }
 
-export type ShowRepresentationEvent = { type: 'SHOW_REPRESENTATION'; representation: Representation };
 export type HideRepresentationEvent = { type: 'HIDE_REPRESENTATION'; representation: Representation };
 export type UpdateSelectionEvent = {
   type: 'UPDATE_SELECTION';
@@ -68,7 +67,6 @@ export type HandleSubscriptionResultEvent = {
 export type HandleCompleteEvent = { type: 'HANDLE_COMPLETE' };
 export type WorkbenchEvent =
   | UpdateSelectionEvent
-  | ShowRepresentationEvent
   | HideRepresentationEvent
   | HandleSubscriptionResultEvent
   | HandleCompleteEvent
@@ -120,10 +118,6 @@ export const workbenchMachine = Machine<WorkbenchContext, WorkbenchStateSchema, 
                 target: 'initial',
                 actions: 'updateSelection',
               },
-              SHOW_REPRESENTATION: {
-                target: 'initial',
-                actions: 'showRepresentation',
-              },
               HIDE_REPRESENTATION: {
                 target: 'initial',
                 actions: 'hideRepresentation',
@@ -162,10 +156,6 @@ export const workbenchMachine = Machine<WorkbenchContext, WorkbenchStateSchema, 
           return { selection, displayedRepresentation, representations: newSelectedRepresentations };
         }
         return { selection };
-      }),
-      showRepresentation: assign((_, event) => {
-        const { representation } = event as ShowRepresentationEvent;
-        return { displayedRepresentation: representation };
       }),
       hideRepresentation: assign((context, event) => {
         const { representation: representationToHide } = event as HideRepresentationEvent;
