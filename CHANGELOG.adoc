@@ -76,6 +76,7 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/1033[#1033] [view] It is now possible to configure all properties of node's border in web-based diagrams, including the border line style
 - https://github.com/eclipse-sirius/sirius-components/issues/837[#837] [layout] Improve the position of the dropped elements
 - https://github.com/eclipse-sirius/sirius-components/issues/1067[#1067] [workbench] Hide hamburger menu on tree items with no operations
+- https://github.com/eclipse-sirius/sirius-components/issues/1128[#1128] [workbench] Select representation opened from a tab
 
 === New features
 
