@@ -1,0 +1,36 @@
+:imagesdir: images/055
+= ADR-055 - Stop considering the source and target anchors as routing points anymore
+
+== Context
+
+We have a different approach than Sprotty to handle edge route.
+That different approach has been needed to compute the position of edge labels.
+While our layout engines (ELK layout engine and incremental layout engine) save source and target anchors as routing points in the model, Sprotty does not.
+That difference is one of the causes that makes edges blink when Sprotty renders the diagram, and that something we want to get rid of.
+
+== Decision
+
+We will stop considering the source and target anchors as routing points.
+The new behavior will come with https://github.com/eclipse-sirius/sirius-components/issues/1065[#1065].
+This new behavior should come after the implementation of a custom router discussed in ADR-054.
+
+=== Backend
+
+We will keep the `EdgeRoutingPointsProvider` to handle self-loop edges.
+We will move the edge label position algorithm from the `EdgeRoutingPointsProvider` to `EdgeLabelPositionProvider`.
+Since we introduced edge anchor positions we will adapt the `ELKLayoutedDiagramProvider` to compute anchor position instead of the source and target routing points. 
+
+image:055_anchors_inferred_from_ELK.png[alt]
+
+=== Frontend
+
+Since this should come after we have customized the sprotty edge router to take account of our edge anchors, we will have to adapt that customization.
+
+== Status
+
+Done
+
+== Consequences
+
+- Source and target anchors will be updated according to the ELK layout after the user has used the `Arrange all`.
+- This ADR invalidates ADR-017

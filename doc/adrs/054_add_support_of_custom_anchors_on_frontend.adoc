@@ -1,0 +1,33 @@
+= ADR-054 - Add support of custom anchors on frontend
+
+== Context
+
+Since https://github.com/eclipse-sirius/sirius-components/issues/565[#565] introducing custom anchors on the backend to support multiple edges between the same elements, we have diverged from Sprotty that use the center of the edge source element and edge target element as anchors to compute the edge route.
+That difference is one of the causes that makes edges blink when Sprotty renders the diagram, and that something we want to get rid of.
+
+== Decision
+
+We will support custom anchors on the frontend.
+We will leverage on anchors that has been computed by the backend.
+This behavior should come before we stop considering the source and target anchors as routing points presented in ADR-055.
+
+=== Frontend
+
+We will support the new `Ratio` type used to keep track of the relative position of an edge anchor.
+We will replace the default implementation of the Sprotty edge router as well as the default Sprotty anchor computer.
+Our implementation of the anchor computer will rely on the `Ratio` that comes from the backend.
+Our implementation of the edge router will rely on our anchor computer to compute the route of the edge.
+Both custom implementations will be declared in a new routing module that will replace the default Sprotty routing module.
+
+=== Backend
+
+We will update the graphQL schema in order to give the anchor position ratios of an edge.
+
+== Status
+
+Done
+
+== Consequences
+
+Existing edges may have unexpected behavior since new created edges will have two less routing points than existing ones.
+It may be needed to remove then create edges again.

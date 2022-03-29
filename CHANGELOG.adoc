@@ -8,6 +8,8 @@
 - [ADR-51] Add support for form descriptions in the View DSL
 - [ADR-52] Add support for EditingContext actions
 - [ADR-53] Add support for form descriptions in the view converter
+- [ADR-54] Add the support of custom anchors on the frontend side
+- [ADR-55] Stop considering the source and target anchors as routing points anymore
 - [ADR-56] Add support for a form descriptions editor
 
 === Deprecation warning
