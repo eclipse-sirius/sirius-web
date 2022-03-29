@@ -5,6 +5,8 @@
 === Architectural decision records
 
 - [ADR-50] Add support for multiple selection entries in the details view
+- [ADR-051] Add the support of custom anchors on the frontend side
+- [ADR-052] Stop considering the source and target anchors as routing points anymore
 
 === Deprecation warning
 
