@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-view</artifactId>
-	<version>2022.01.22</version>
+	<version>2022.3.0</version>
 	<name>sirius-components-view</name>
 	<description>Sirius Components View Definition DSL</description>
 
