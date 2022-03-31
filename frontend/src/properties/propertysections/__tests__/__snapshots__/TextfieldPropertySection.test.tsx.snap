@@ -1,0 +1,303 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should display the edited value 1`] = `
+<div>
+  <div>
+    <div
+      class="makeStyles-propertySectionLabel-7"
+    >
+      <h6
+        class="MuiTypography-root MuiTypography-subtitle2"
+      >
+        Name:
+      </h6>
+      <div
+        class="makeStyles-subscribers-8"
+      />
+    </div>
+    <div
+      class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+      data-testid="Name:"
+    >
+      <div
+        class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
+      >
+        <input
+          aria-invalid="false"
+          class="MuiInputBase-input MuiInput-input MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
+          name="Name:"
+          placeholder="Name:"
+          type="text"
+          value="Composite Processor"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`should display the edited value 2`] = `
+<div>
+  <div>
+    <div
+      class="makeStyles-propertySectionLabel-7"
+    >
+      <h6
+        class="MuiTypography-root MuiTypography-subtitle2"
+      >
+        Name:
+      </h6>
+      <div
+        class="makeStyles-subscribers-8"
+      />
+    </div>
+    <div
+      class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+      data-testid="Name:"
+    >
+      <div
+        class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-fullWidth MuiInput-fullWidth Mui-focused Mui-focused MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
+      >
+        <input
+          aria-invalid="false"
+          class="MuiInputBase-input MuiInput-input MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
+          name="Name:"
+          placeholder="Name:"
+          type="text"
+          value="Composite Processor"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`should display the edited value 3`] = `
+<div>
+  <div>
+    <div
+      class="makeStyles-propertySectionLabel-7"
+    >
+      <h6
+        class="MuiTypography-root MuiTypography-subtitle2"
+      >
+        Name:
+      </h6>
+      <div
+        class="makeStyles-subscribers-8"
+      />
+    </div>
+    <div
+      class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+      data-testid="Name:"
+    >
+      <div
+        class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-fullWidth MuiInput-fullWidth Mui-focused Mui-focused MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
+      >
+        <input
+          aria-invalid="false"
+          class="MuiInputBase-input MuiInput-input MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
+          name="Name:"
+          placeholder="Name:"
+          type="text"
+          value="Main Composite Processor"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`should display the error received 1`] = `
+<body>
+  <div>
+    <div>
+      <div
+        class="makeStyles-propertySectionLabel-10"
+      >
+        <h6
+          class="MuiTypography-root MuiTypography-subtitle2"
+        >
+          Name:
+        </h6>
+        <div
+          class="makeStyles-subscribers-11"
+        />
+      </div>
+      <div
+        class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+        data-testid="Name:"
+      >
+        <div
+          class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
+        >
+          <input
+            aria-invalid="false"
+            class="MuiInputBase-input MuiInput-input MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
+            name="Name:"
+            placeholder="Name:"
+            type="text"
+            value="Composite Processor"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`should display the error received 2`] = `
+<body>
+  <div>
+    <div>
+      <div
+        class="makeStyles-propertySectionLabel-10"
+      >
+        <h6
+          class="MuiTypography-root MuiTypography-subtitle2"
+        >
+          Name:
+        </h6>
+        <div
+          class="makeStyles-subscribers-11"
+        />
+      </div>
+      <div
+        class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+        data-testid="Name:"
+      >
+        <div
+          class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-fullWidth MuiInput-fullWidth Mui-focused Mui-focused MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
+        >
+          <input
+            aria-invalid="false"
+            class="MuiInputBase-input MuiInput-input MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
+            name="Name:"
+            placeholder="Name:"
+            type="text"
+            value="Composite Processor"
+          />
+        </div>
+      </div>
+      <div
+        class="MuiSnackbar-root MuiSnackbar-anchorOriginBottomRight"
+        data-testid="error"
+      >
+        <div
+          class="MuiPaper-root MuiSnackbarContent-root MuiPaper-elevation6"
+          direction="up"
+          role="alert"
+          style="opacity: 1; transform: scale(1, 1); transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,transform 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;"
+        >
+          <div
+            class="MuiSnackbarContent-message"
+          >
+            An error has occurred, please refresh the page
+          </div>
+          <div
+            class="MuiSnackbarContent-action"
+          >
+            <button
+              aria-label="close"
+              class="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorInherit MuiIconButton-sizeSmall"
+              tabindex="0"
+              type="button"
+            >
+              <span
+                class="MuiIconButton-label"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall"
+                  focusable="false"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+                  />
+                </svg>
+              </span>
+              <span
+                class="MuiTouchRipple-root"
+              />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`should render a readOnly textfield 1`] = `
+<div>
+  <div>
+    <div
+      class="makeStyles-propertySectionLabel-4"
+    >
+      <h6
+        class="MuiTypography-root MuiTypography-subtitle2"
+      >
+        Name:
+      </h6>
+      <div
+        class="makeStyles-subscribers-5"
+      />
+    </div>
+    <div
+      class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+      data-testid="Name:"
+    >
+      <div
+        class="MuiInputBase-root MuiInput-root MuiInput-underline Mui-disabled Mui-disabled MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
+      >
+        <input
+          aria-invalid="false"
+          class="MuiInputBase-input MuiInput-input Mui-disabled Mui-disabled MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
+          disabled=""
+          name="Name:"
+          placeholder="Name:"
+          type="text"
+          value="Composite Processor"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`should render the textfield 1`] = `
+<div>
+  <div>
+    <div
+      class="makeStyles-propertySectionLabel-1"
+    >
+      <h6
+        class="MuiTypography-root MuiTypography-subtitle2"
+      >
+        Name:
+      </h6>
+      <div
+        class="makeStyles-subscribers-2"
+      />
+    </div>
+    <div
+      class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+      data-testid="Name:"
+    >
+      <div
+        class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
+      >
+        <input
+          aria-invalid="false"
+          class="MuiInputBase-input MuiInput-input MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
+          name="Name:"
+          placeholder="Name:"
+          type="text"
+          value="Composite Processor"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;
