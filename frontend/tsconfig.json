@@ -23,12 +23,5 @@
     "noImplicitThis": true
   },
   "include": ["src/**/*"],
-  "exclude": [
-    "node_modules",
-    "build",
-    "src/**/*.stories.tsx",
-    "src/**/*.stories.js",
-    "src/**/*.test.tsx",
-    "src/**/*.test.js"
-  ]
+  "exclude": ["node_modules", "build", "src/**/*.stories.tsx", "src/**/*.stories.js"]
 }

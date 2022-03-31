@@ -20,10 +20,14 @@ import { Textarea, Widget } from 'form/Form.types';
 import gql from 'graphql-tag';
 import { PropertySectionLabel } from 'properties/propertysections/PropertySectionLabel';
 import {
+  GQLEditTextfieldInput,
   GQLEditTextfieldMutationData,
+  GQLEditTextfieldMutationVariables,
   GQLEditTextfieldPayload,
   GQLErrorPayload,
+  GQLUpdateWidgetFocusInput,
   GQLUpdateWidgetFocusMutationData,
+  GQLUpdateWidgetFocusMutationVariables,
   GQLUpdateWidgetFocusPayload,
   TextfieldPropertySectionProps,
 } from 'properties/propertysections/TextfieldPropertySection.types';
@@ -39,7 +43,7 @@ import {
 import React, { useEffect } from 'react';
 import { v4 as uuid } from 'uuid';
 
-const editTextfieldMutation = gql`
+export const editTextfieldMutation = gql`
   mutation editTextfield($input: EditTextfieldInput!) {
     editTextfield(input: $input) {
       __typename
@@ -50,7 +54,7 @@ const editTextfieldMutation = gql`
   }
 `;
 
-const updateWidgetFocusMutation = gql`
+export const updateWidgetFocusMutation = gql`
   mutation updateWidgetFocus($input: UpdateWidgetFocusInput!) {
     updateWidgetFocus(input: $input) {
       __typename
@@ -95,18 +99,17 @@ export const TextfieldPropertySection = ({
   };
 
   const [editTextfield, { loading: updateTextfieldLoading, data: updateTextfieldData, error: updateTextfieldError }] =
-    useMutation<GQLEditTextfieldMutationData>(editTextfieldMutation);
+    useMutation<GQLEditTextfieldMutationData, GQLEditTextfieldMutationVariables>(editTextfieldMutation);
   const sendEditedValue = () => {
     if (textfieldPropertySection === 'edited') {
-      const variables = {
-        input: {
-          id: uuid(),
-          editingContextId,
-          representationId: formId,
-          textfieldId: widget.id,
-          newValue: value,
-        },
+      const input: GQLEditTextfieldInput = {
+        id: uuid(),
+        editingContextId,
+        representationId: formId,
+        textfieldId: widget.id,
+        newValue: value,
       };
+      const variables: GQLEditTextfieldMutationVariables = { input };
       editTextfield({ variables });
     }
   };
@@ -144,16 +147,17 @@ export const TextfieldPropertySection = ({
   const [
     updateWidgetFocus,
     { loading: updateWidgetFocusLoading, data: updateWidgetFocusData, error: updateWidgetFocusError },
-  ] = useMutation<GQLUpdateWidgetFocusMutationData>(updateWidgetFocusMutation);
+  ] = useMutation<GQLUpdateWidgetFocusMutationData, GQLUpdateWidgetFocusMutationVariables>(updateWidgetFocusMutation);
   const sendUpdateWidgetFocus = (selected: boolean) => {
-    const variables = {
-      input: {
-        id: uuid(),
-        editingContextId,
-        representationId: formId,
-        widgetId: widget.id,
-        selected,
-      },
+    const input: GQLUpdateWidgetFocusInput = {
+      id: uuid(),
+      editingContextId,
+      representationId: formId,
+      widgetId: widget.id,
+      selected,
+    };
+    const variables: GQLUpdateWidgetFocusMutationVariables = {
+      input,
     };
     updateWidgetFocus({ variables });
   };
