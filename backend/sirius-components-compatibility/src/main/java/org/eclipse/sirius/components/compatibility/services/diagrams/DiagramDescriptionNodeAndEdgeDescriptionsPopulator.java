@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -41,12 +41,13 @@ import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.sirius.diagram.business.internal.metamodel.helper.LayerHelper;
+import org.eclipse.sirius.diagram.business.api.query.DiagramDescriptionQuery;
 import org.eclipse.sirius.diagram.description.AdditionalLayer;
 import org.eclipse.sirius.diagram.description.ContainerMappingImport;
 import org.eclipse.sirius.diagram.description.DiagramDescription;
 import org.eclipse.sirius.diagram.description.Layer;
 import org.eclipse.sirius.diagram.description.tool.ContainerDropDescription;
+import org.eclipse.sirius.diagram.model.business.internal.helper.LayerModelHelper;
 import org.springframework.stereotype.Service;
 
 /**
@@ -89,7 +90,7 @@ public class DiagramDescriptionNodeAndEdgeDescriptionsPopulator implements IDiag
         Map<UUID, NodeDescription> id2NodeDescriptions = new HashMap<>();
 
         // @formatter:off
-        List<Layer> layers = LayerHelper.getAllLayers(siriusDiagramDescription).stream()
+        List<Layer> layers = LayerModelHelper.getAllLayers(siriusDiagramDescription).stream()
                 .filter(this::isEnabledByDefault)
                 .collect(Collectors.toList());
 
@@ -134,7 +135,7 @@ public class DiagramDescriptionNodeAndEdgeDescriptionsPopulator implements IDiag
 
     private Function<VariableManager, IStatus> getDropHandler(DiagramDescription siriusDiagramDescription, AQLInterpreter interpreter) {
         // @formatter:off
-        List<ContainerDropDescription> diagramDropTools = siriusDiagramDescription.getAllTools().stream()
+        List<ContainerDropDescription> diagramDropTools = new DiagramDescriptionQuery(siriusDiagramDescription).getAllTools().stream()
                 .filter(ContainerDropDescription.class::isInstance)
                 .map(ContainerDropDescription.class::cast)
                 .collect(Collectors.toList());

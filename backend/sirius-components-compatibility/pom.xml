@@ -28,7 +28,7 @@
 
 	<properties>
 		<java.version>11</java.version>
-		<sirius.version>6.6.0-SNAPSHOT</sirius.version>
+		<sirius.version>7.0.0-SNAPSHOT</sirius.version>
 	</properties>
 	
 	<distributionManagement>
@@ -138,6 +138,11 @@
 		</dependency>
 		<dependency>
 			 <groupId>org.eclipse.sirius</groupId>
+			<artifactId>org.eclipse.sirius.model</artifactId>
+			<version>${sirius.version}</version>
+		</dependency>
+		<dependency>
+			 <groupId>org.eclipse.sirius</groupId>
 			<artifactId>org.eclipse.sirius.common</artifactId>
 			<version>${sirius.version}</version>
 		</dependency>
@@ -148,7 +153,12 @@
 		</dependency>
 		<dependency>
 			 <groupId>org.eclipse.sirius</groupId>
-			<artifactId>org.eclipse.sirius.diagram.sequence</artifactId>
+			<artifactId>org.eclipse.sirius.diagram.model</artifactId>
+			<version>${sirius.version}</version>
+		</dependency>
+		<dependency>
+			 <groupId>org.eclipse.sirius</groupId>
+			<artifactId>org.eclipse.sirius.diagram.sequence.model</artifactId>
 			<version>${sirius.version}</version>
 		</dependency>
 		<dependency>
@@ -173,12 +183,12 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>org.eclipse.sirius.table</artifactId>
+			<artifactId>org.eclipse.sirius.table.model</artifactId>
 			<version>${sirius.version}</version>
 		</dependency>
 		<dependency>
 			 <groupId>org.eclipse.sirius</groupId>
-			<artifactId>org.eclipse.sirius.tree</artifactId>
+			<artifactId>org.eclipse.sirius.tree.model</artifactId>
 			<version>${sirius.version}</version>
 		</dependency>
 		<dependency>

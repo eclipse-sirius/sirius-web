@@ -34,17 +34,16 @@ import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
-import org.eclipse.sirius.components.diagrams.tools.SingleClickOnTwoDiagramElementsTool;
+import org.eclipse.sirius.components.diagrams.tools.ITool;
 import org.eclipse.sirius.components.diagrams.tools.SingleClickOnDiagramElementTool;
 import org.eclipse.sirius.components.diagrams.tools.SingleClickOnTwoDiagramElementsCandidate;
-import org.eclipse.sirius.components.diagrams.tools.ITool;
+import org.eclipse.sirius.components.diagrams.tools.SingleClickOnTwoDiagramElementsTool;
 import org.eclipse.sirius.components.diagrams.tools.ToolSection;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.sirius.diagram.business.internal.metamodel.description.spec.LayerSpec;
 import org.eclipse.sirius.diagram.description.AbstractNodeMapping;
 import org.eclipse.sirius.diagram.description.AdditionalLayer;
 import org.eclipse.sirius.diagram.description.ContainerMapping;
@@ -209,7 +208,7 @@ public class ToolProvider implements IToolProvider {
         //@formatter:off
         return nodeMappings.stream()
                 .map(AbstractNodeMapping::eContainer)
-                .anyMatch(LayerSpec.class::isInstance);
+                .anyMatch(Layer.class::isInstance);
         //@formatter:on
     }
 
@@ -261,7 +260,8 @@ public class ToolProvider implements IToolProvider {
         // @formatter:on
     }
 
-    private SingleClickOnDiagramElementTool convertContainerCreationDescription(Map<UUID, NodeDescription> id2NodeDescriptions, AQLInterpreter interpreter, ContainerCreationDescription containerCreationDescription) {
+    private SingleClickOnDiagramElementTool convertContainerCreationDescription(Map<UUID, NodeDescription> id2NodeDescriptions, AQLInterpreter interpreter,
+            ContainerCreationDescription containerCreationDescription) {
         String id = this.identifierProvider.getIdentifier(containerCreationDescription);
         String label = new IdentifiedElementQuery(containerCreationDescription).getLabel();
         String imagePath = this.toolImageProviderFactory.getToolImageProvider(containerCreationDescription).get();
@@ -358,7 +358,8 @@ public class ToolProvider implements IToolProvider {
         return result;
     }
 
-    private SingleClickOnTwoDiagramElementsTool convertEdgeCreationDescription(Map<UUID, NodeDescription> id2NodeDescriptions, AQLInterpreter interpreter, EdgeCreationDescription edgeCreationDescription) {
+    private SingleClickOnTwoDiagramElementsTool convertEdgeCreationDescription(Map<UUID, NodeDescription> id2NodeDescriptions, AQLInterpreter interpreter,
+            EdgeCreationDescription edgeCreationDescription) {
         String id = this.identifierProvider.getIdentifier(edgeCreationDescription);
         String label = new IdentifiedElementQuery(edgeCreationDescription).getLabel();
         String imagePath = this.toolImageProviderFactory.getToolImageProvider(edgeCreationDescription).get();
@@ -392,7 +393,8 @@ public class ToolProvider implements IToolProvider {
         // @formatter:on
     }
 
-    private SingleClickOnDiagramElementTool convertDeleteElementDescription(Map<UUID, NodeDescription> id2NodeDescriptions, AQLInterpreter interpreter, DeleteElementDescription deleteElementDescription) {
+    private SingleClickOnDiagramElementTool convertDeleteElementDescription(Map<UUID, NodeDescription> id2NodeDescriptions, AQLInterpreter interpreter,
+            DeleteElementDescription deleteElementDescription) {
         String id = this.identifierProvider.getIdentifier(deleteElementDescription);
         String label = new IdentifiedElementQuery(deleteElementDescription).getLabel();
         String imagePath = this.toolImageProviderFactory.getToolImageProvider(deleteElementDescription).get();

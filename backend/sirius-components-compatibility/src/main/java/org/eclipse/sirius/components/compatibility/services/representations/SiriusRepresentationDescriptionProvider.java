@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.compatibility.services.selection.api.ISelec
 import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.selection.description.SelectionDescription;
+import org.eclipse.sirius.diagram.business.api.query.DiagramDescriptionQuery;
 import org.eclipse.sirius.diagram.description.tool.ContainerCreationDescription;
 import org.eclipse.sirius.diagram.description.tool.NodeCreationDescription;
 import org.eclipse.sirius.properties.ViewExtensionDescription;
@@ -80,12 +81,12 @@ public class SiriusRepresentationDescriptionProvider {
 
     private List<SelectionDescription> getSelectionDescriptions(org.eclipse.sirius.diagram.description.DiagramDescription diagramDescription) {
         // @formatter:off
-        List<ContainerCreationDescription> containerCreationDescriptions = diagramDescription.getAllTools().stream()
+        List<ContainerCreationDescription> containerCreationDescriptions = new DiagramDescriptionQuery(diagramDescription).getAllTools().stream()
                 .filter(ContainerCreationDescription.class::isInstance)
                 .map(ContainerCreationDescription.class::cast)
                 .collect(Collectors.toList());
 
-        List<NodeCreationDescription> nodeCreationDescriptions = diagramDescription.getAllTools().stream()
+        List<NodeCreationDescription> nodeCreationDescriptions = new DiagramDescriptionQuery(diagramDescription).getAllTools().stream()
                 .filter(NodeCreationDescription.class::isInstance)
                 .map(NodeCreationDescription.class::cast)
                 .collect(Collectors.toList());
