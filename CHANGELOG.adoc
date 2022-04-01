@@ -1,6 +1,24 @@
 = Changelog
 
-== v2022.03.0
+== v2022.5.0 (unreleased)
+
+=== Architectural decision records
+
+=== Deprecation warning
+
+=== Breaking changes
+
+=== Dependency update
+
+- https://github.com/eclipse-sirius/sirius-components/issues/1118[#1118] [core] Switch to Spring Boot 2.6.6
+
+=== Bug fixes
+
+=== Improvements
+
+=== New features
+
+== v2022.3.0
 
 === Architectural decision records
 
