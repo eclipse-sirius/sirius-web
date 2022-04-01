@@ -45,10 +45,10 @@ import org.eclipse.sirius.components.interpreter.Status;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.sirius.diagram.business.internal.metamodel.description.spec.LayerSpec;
 import org.eclipse.sirius.diagram.description.ContainerMapping;
 import org.eclipse.sirius.diagram.description.DiagramElementMapping;
 import org.eclipse.sirius.diagram.description.EdgeMapping;
+import org.eclipse.sirius.diagram.description.Layer;
 import org.eclipse.sirius.diagram.description.NodeMapping;
 import org.eclipse.sirius.diagram.description.tool.ContainerCreationDescription;
 import org.eclipse.sirius.diagram.description.tool.DeleteElementDescription;
@@ -214,7 +214,7 @@ public class CompatibilityToolSectionsProvider implements IToolSectionsProvider 
         //@formatter:off
         return mappings.stream()
                 .map(DiagramElementMapping::eContainer)
-                .anyMatch(LayerSpec.class::isInstance);
+                .anyMatch(Layer.class::isInstance);
         //@formatter:on
     }
 

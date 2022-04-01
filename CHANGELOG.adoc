@@ -12,6 +12,7 @@
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1118[#1118] [core] Switch to Spring Boot 2.6.6
 - https://github.com/eclipse-sirius/sirius-components/issues/1118[#1118] [core] Switch to GraphQL Java 18.0
+- https://github.com/eclipse-sirius/sirius-components/issues/1118[#1118] [core] Switch to Sirius Desktop 7.0.0
 
 === Bug fixes
 
