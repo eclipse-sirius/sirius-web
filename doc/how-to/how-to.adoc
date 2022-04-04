@@ -1,0 +1,64 @@
+= How to
+
+== Start integrating Sirius Components
+
+In order to start integrating Sirius Components in your application, you will first need to understand the role of our core concepts such as `IEditingContext`, `IEditingContextEventProcessor` or `IRepresentationEventProcessor`.
+
+To integrate Sirius Components in another application, you will need to connect your application to our `IEditingContextEventProcessorRegistry`.
+This registry will be used to manage the various `IEditingContext` that are being manipulated at a given time.
+In order to start making it work, Sirius Components expects from the integrating application the implementation of at least two core interfaces, `IEditingContextSearchService` and `IEditingContextPersistenceService`.
+
+The `IEditingContextSearchService` is used to load an `IEditingContext` which will be manipulated by Sirius Components.
+An implementation of this interface can perform requests to load data from a database for example (this is how Sirius Web behaves for example).
+The `IEditingContext` interface has one very simple requirement: It needs to provide us with a unique identifier.
+We do not provide an implementation of this interface on purpose, you can store anything you like inside.
+
+On the other hand, the `IEditingContextPersistenceService` is used to save changes made to the `IEditingContext`.
+If you do not want to use a database and keep everything in memory, you do not have to do anything in the implementation that you will provide.
+If you are loading data from a database, you may want to save the content of your `IEditingContext` in your implementation.
+
+
+== Perform changes on the IEditingContext
+
+In order to perform changes on the data of the `IEditingContext`, we are providing a simple API in three parts:
+
+- IInput
+- IPayload
+- IEditingContextEventHandler
+
+If you want to execute an operation already supported by Sirius Components on an `IEditingContext`, you can simply instantiate the corresponding `IInput` such as the `CreateChildInput` and send it to the `IEditingContextEventProcessorRegistry` using the `dispatchEvent` method.
+This `IInput` will then be handled by the `IEditingContextEventProcessorRegistry` in order to find or create the relevant `IEditingContextEventProcessor` and then an event handler like an implementation of `IEditingContextEventHandler` will perform the appropriate changes described by the `IInput`.
+Once the operation has been performed, the event handler will return a `IPayload` back to the caller.
+For that, the `IEditingContextEventProcessorRegistry` returns a `Mono<IPayload>` in order to let callers subscribe to the result to be called when the operation will be done.
+
+You can create your own implementation of `IInput` and you can add your own `IEditingContextEventHandler` to perform any change you want in the `IEditingContext`.
+This handler could then return your own implementation of `IPayload`.
+We have lot of examples of `IInput` and `IPayload` in Sirius Components.
+
+You need to keep in mind one constraint, the `id` of the `IPayload` is a correlation identifier and as such, it must be the `id` of the `IInput` which has triggered the operation.
+
+
+== Create a custom IEditingContextEventHandler
+
+The interface of the `IEditingContextEventHandler` uses a pattern that we are using in multiple parts of our application.
+With this pattern, you can register multiple handlers and we will ask them if they can handle some specific data and if one of them do, we will use the first one found to handle the data.
+
+If you write your own custom `IEditingContextEventHandler`, you can use both the `IEditingContext` and the `IInput` received to determine if you want to handle the operation requested.
+If you choose to do so, we will give you access to additional arguments to perform your work.
+In the handle method, you have thus access to not only the `IEditingContext` and the `IInput` but also to the `One<IPayload> payloadSink` and the `Many<ChangeDescription> changeDescriptionSink`.
+
+The core parts of Sirius Components are using Reactor in order to process the operations to perform.
+The `payloadSink` is a Reactor Sink used to provide an `IPayload` as a response to the original caller which must have subscribed to a `Mono<IPayload>` in order to wait for an answer.
+This sink should be used to provide any response you want to the caller.
+In Sirius Components, we are using it for example to indicate that the creation of a representation has been performed successfully using a `CreateRepresentationSuccessPayload`.
+
+You also have access to the `changeDescriptionSink` which is used to communicate with other internal parts of Sirius Components.
+Thanks to this sink, your handler will be able to describe the work that has been done and Sirius Components will thus know how the other parts of the system should behave.
+For example, if you want to create an `IEditingContextEventHandler` which changes some data in your `IEditingContext` then if something has been changed, you can return a change description indicating that a semantic change has been performed on the `IEditingContext` using the following code:
+
+```
+changeDescriptionSink.tryEmitNext(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input));
+```
+
+Then the `IEditingContextEventProcessor` will detect this semantic change in order to request a refresh of all the representations currently used and to ask for the modified `IEditingContext` to be saved.
+As a result, the operation triggered by your `IInput` can both refresh all the representations and update your database with the new version of the `IEditingContext`.
