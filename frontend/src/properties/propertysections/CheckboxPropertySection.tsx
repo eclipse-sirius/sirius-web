@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,16 +21,20 @@ import CloseIcon from '@material-ui/icons/Close';
 import gql from 'graphql-tag';
 import {
   CheckboxPropertySectionProps,
+  GQLEditCheckboxInput,
   GQLEditCheckboxMutationData,
+  GQLEditCheckboxMutationVariables,
   GQLEditCheckboxPayload,
   GQLErrorPayload,
+  GQLUpdateWidgetFocusInput,
   GQLUpdateWidgetFocusMutationData,
+  GQLUpdateWidgetFocusMutationVariables,
 } from 'properties/propertysections/CheckboxPropertySection.types';
 import { PropertySectionLabel } from 'properties/propertysections/PropertySectionLabel';
 import React, { useEffect, useState } from 'react';
 import { v4 as uuid } from 'uuid';
 
-const editCheckboxMutation = gql`
+export const editCheckboxMutation = gql`
   mutation editCheckbox($input: EditCheckboxInput!) {
     editCheckbox(input: $input) {
       __typename
@@ -41,7 +45,7 @@ const editCheckboxMutation = gql`
   }
 `;
 
-const updateWidgetFocusMutation = gql`
+export const updateWidgetFocusMutation = gql`
   mutation updateWidgetFocus($input: UpdateWidgetFocusInput!) {
     updateWidgetFocus(input: $input) {
       __typename
@@ -67,14 +71,15 @@ export const CheckboxPropertySection = ({
   const [editCheckbox, { loading, error, data }] = useMutation<GQLEditCheckboxMutationData>(editCheckboxMutation);
   const onChange = (event) => {
     const newValue = event.target.checked;
-    const variables = {
-      input: {
-        id: uuid(),
-        editingContextId,
-        representationId: formId,
-        checkboxId: widget.id,
-        newValue,
-      },
+    const input: GQLEditCheckboxInput = {
+      id: uuid(),
+      editingContextId,
+      representationId: formId,
+      checkboxId: widget.id,
+      newValue,
+    };
+    const variables: GQLEditCheckboxMutationVariables = {
+      input,
     };
     editCheckbox({ variables });
   };
@@ -98,14 +103,15 @@ export const CheckboxPropertySection = ({
     { loading: updateWidgetFocusLoading, data: updateWidgetFocusData, error: updateWidgetFocusError },
   ] = useMutation<GQLUpdateWidgetFocusMutationData>(updateWidgetFocusMutation);
   const sendUpdateWidgetFocus = (selected: boolean) => {
-    const variables = {
-      input: {
-        id: uuid(),
-        editingContextId,
-        representationId: formId,
-        widgetId: widget.id,
-        selected,
-      },
+    const input: GQLUpdateWidgetFocusInput = {
+      id: uuid(),
+      editingContextId,
+      representationId: formId,
+      widgetId: widget.id,
+      selected,
+    };
+    const variables: GQLUpdateWidgetFocusMutationVariables = {
+      input,
     };
     updateWidgetFocus({ variables });
   };

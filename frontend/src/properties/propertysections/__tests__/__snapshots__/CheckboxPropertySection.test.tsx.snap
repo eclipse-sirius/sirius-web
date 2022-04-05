@@ -1,0 +1,397 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should display the error received 1`] = `
+<body>
+  <div>
+    <div
+      class="MuiFormControl-root"
+    >
+      <div
+        class="makeStyles-propertySectionLabel-22"
+      >
+        <h6
+          class="MuiTypography-root MuiTypography-subtitle2"
+        >
+          CheckboxLabel
+        </h6>
+        <div
+          class="makeStyles-subscribers-23"
+        />
+      </div>
+      <div
+        class="MuiFormGroup-root MuiFormGroup-row"
+      >
+        <span
+          aria-disabled="false"
+          class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-25 MuiCheckbox-root MuiCheckbox-colorPrimary MuiIconButton-colorPrimary"
+          data-testid="CheckboxLabel"
+        >
+          <span
+            class="MuiIconButton-label"
+          >
+            <input
+              class="PrivateSwitchBase-input-28"
+              data-indeterminate="false"
+              name="CheckboxLabel"
+              type="checkbox"
+              value=""
+            />
+            <svg
+              aria-hidden="true"
+              class="MuiSvgIcon-root"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
+              />
+            </svg>
+          </span>
+          <span
+            class="MuiTouchRipple-root"
+          />
+        </span>
+      </div>
+      <p
+        class="MuiFormHelperText-root"
+      />
+    </div>
+  </div>
+</body>
+`;
+
+exports[`should display the error received 2`] = `
+<body>
+  <div>
+    <div
+      class="MuiFormControl-root"
+    >
+      <div
+        class="makeStyles-propertySectionLabel-22"
+      >
+        <h6
+          class="MuiTypography-root MuiTypography-subtitle2"
+        >
+          CheckboxLabel
+        </h6>
+        <div
+          class="makeStyles-subscribers-23"
+        />
+      </div>
+      <div
+        class="MuiFormGroup-root MuiFormGroup-row"
+      >
+        <span
+          aria-disabled="false"
+          class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-25 MuiCheckbox-root MuiCheckbox-colorPrimary MuiIconButton-colorPrimary"
+          data-testid="CheckboxLabel"
+        >
+          <span
+            class="MuiIconButton-label"
+          >
+            <input
+              class="PrivateSwitchBase-input-28"
+              data-indeterminate="false"
+              name="CheckboxLabel"
+              type="checkbox"
+              value=""
+            />
+            <svg
+              aria-hidden="true"
+              class="MuiSvgIcon-root"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
+              />
+            </svg>
+          </span>
+          <span
+            class="MuiTouchRipple-root"
+          />
+        </span>
+      </div>
+      <p
+        class="MuiFormHelperText-root Mui-focused"
+      />
+      <div
+        class="MuiSnackbar-root MuiSnackbar-anchorOriginBottomRight"
+        data-testid="error"
+      >
+        <div
+          class="MuiPaper-root MuiSnackbarContent-root MuiPaper-elevation6"
+          direction="up"
+          role="alert"
+          style="opacity: 1; transform: scale(1, 1); transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,transform 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;"
+        >
+          <div
+            class="MuiSnackbarContent-message"
+          >
+            An error has occurred, please refresh the page
+          </div>
+          <div
+            class="MuiSnackbarContent-action"
+          >
+            <button
+              aria-label="close"
+              class="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorInherit MuiIconButton-sizeSmall"
+              tabindex="0"
+              type="button"
+            >
+              <span
+                class="MuiIconButton-label"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall"
+                  focusable="false"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+                  />
+                </svg>
+              </span>
+              <span
+                class="MuiTouchRipple-root"
+              />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`should render a readOnly checkbox 1`] = `
+<div>
+  <div
+    class="MuiFormControl-root"
+  >
+    <div
+      class="makeStyles-propertySectionLabel-8"
+    >
+      <h6
+        class="MuiTypography-root MuiTypography-subtitle2"
+      >
+        CheckboxLabel
+      </h6>
+      <div
+        class="makeStyles-subscribers-9"
+      />
+    </div>
+    <div
+      class="MuiFormGroup-root MuiFormGroup-row"
+    >
+      <span
+        aria-disabled="true"
+        class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-11 MuiCheckbox-root MuiCheckbox-colorPrimary PrivateSwitchBase-disabled-13 Mui-disabled MuiIconButton-colorPrimary Mui-disabled Mui-disabled"
+        data-testid="CheckboxLabel"
+        tabindex="-1"
+      >
+        <span
+          class="MuiIconButton-label"
+        >
+          <input
+            class="PrivateSwitchBase-input-14"
+            data-indeterminate="false"
+            disabled=""
+            name="CheckboxLabel"
+            type="checkbox"
+            value=""
+          />
+          <svg
+            aria-hidden="true"
+            class="MuiSvgIcon-root"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
+            />
+          </svg>
+        </span>
+      </span>
+    </div>
+    <p
+      class="MuiFormHelperText-root"
+    />
+  </div>
+</div>
+`;
+
+exports[`should render the checkbox 1`] = `
+<div>
+  <div
+    class="MuiFormControl-root"
+  >
+    <div
+      class="makeStyles-propertySectionLabel-1"
+    >
+      <h6
+        class="MuiTypography-root MuiTypography-subtitle2"
+      >
+        CheckboxLabel
+      </h6>
+      <div
+        class="makeStyles-subscribers-2"
+      />
+    </div>
+    <div
+      class="MuiFormGroup-root MuiFormGroup-row"
+    >
+      <span
+        aria-disabled="false"
+        class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-4 MuiCheckbox-root MuiCheckbox-colorPrimary MuiIconButton-colorPrimary"
+        data-testid="CheckboxLabel"
+      >
+        <span
+          class="MuiIconButton-label"
+        >
+          <input
+            class="PrivateSwitchBase-input-7"
+            data-indeterminate="false"
+            name="CheckboxLabel"
+            type="checkbox"
+            value=""
+          />
+          <svg
+            aria-hidden="true"
+            class="MuiSvgIcon-root"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
+            />
+          </svg>
+        </span>
+        <span
+          class="MuiTouchRipple-root"
+        />
+      </span>
+    </div>
+    <p
+      class="MuiFormHelperText-root"
+    />
+  </div>
+</div>
+`;
+
+exports[`should send mutation when clicked 1`] = `
+<div>
+  <div
+    class="MuiFormControl-root"
+  >
+    <div
+      class="makeStyles-propertySectionLabel-15"
+    >
+      <h6
+        class="MuiTypography-root MuiTypography-subtitle2"
+      >
+        CheckboxLabel
+      </h6>
+      <div
+        class="makeStyles-subscribers-16"
+      />
+    </div>
+    <div
+      class="MuiFormGroup-root MuiFormGroup-row"
+    >
+      <span
+        aria-disabled="false"
+        class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-18 MuiCheckbox-root MuiCheckbox-colorPrimary MuiIconButton-colorPrimary"
+        data-testid="CheckboxLabel"
+      >
+        <span
+          class="MuiIconButton-label"
+        >
+          <input
+            class="PrivateSwitchBase-input-21"
+            data-indeterminate="false"
+            name="CheckboxLabel"
+            type="checkbox"
+            value=""
+          />
+          <svg
+            aria-hidden="true"
+            class="MuiSvgIcon-root"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
+            />
+          </svg>
+        </span>
+        <span
+          class="MuiTouchRipple-root"
+        />
+      </span>
+    </div>
+    <p
+      class="MuiFormHelperText-root"
+    />
+  </div>
+</div>
+`;
+
+exports[`should send mutation when clicked 2`] = `
+<div>
+  <div
+    class="MuiFormControl-root"
+  >
+    <div
+      class="makeStyles-propertySectionLabel-15"
+    >
+      <h6
+        class="MuiTypography-root MuiTypography-subtitle2"
+      >
+        CheckboxLabel
+      </h6>
+      <div
+        class="makeStyles-subscribers-16"
+      />
+    </div>
+    <div
+      class="MuiFormGroup-root MuiFormGroup-row"
+    >
+      <span
+        aria-disabled="false"
+        class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-18 MuiCheckbox-root MuiCheckbox-colorPrimary MuiIconButton-colorPrimary"
+        data-testid="CheckboxLabel"
+      >
+        <span
+          class="MuiIconButton-label"
+        >
+          <input
+            class="PrivateSwitchBase-input-21"
+            data-indeterminate="false"
+            name="CheckboxLabel"
+            type="checkbox"
+            value=""
+          />
+          <svg
+            aria-hidden="true"
+            class="MuiSvgIcon-root"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
+            />
+          </svg>
+        </span>
+        <span
+          class="MuiTouchRipple-root"
+        />
+      </span>
+    </div>
+    <p
+      class="MuiFormHelperText-root Mui-focused"
+    />
+  </div>
+</div>
+`;
