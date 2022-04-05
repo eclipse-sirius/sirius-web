@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,10 +23,14 @@ import CloseIcon from '@material-ui/icons/Close';
 import gql from 'graphql-tag';
 import { PropertySectionLabel } from 'properties/propertysections/PropertySectionLabel';
 import {
+  GQLEditRadioInput,
   GQLEditRadioMutationData,
+  GQLEditRadioMutationVariables,
   GQLEditRadioPayload,
   GQLErrorPayload,
+  GQLUpdateWidgetFocusInput,
   GQLUpdateWidgetFocusMutationData,
+  GQLUpdateWidgetFocusMutationVariables,
   GQLUpdateWidgetFocusPayload,
   RadioPropertySectionProps,
 } from 'properties/propertysections/RadioPropertySection.types';
@@ -44,7 +48,7 @@ export const editRadioMutation = gql`
   }
 `;
 
-const updateWidgetFocusMutation = gql`
+export const updateWidgetFocusMutation = gql`
   mutation updateWidgetFocus($input: UpdateWidgetFocusInput!) {
     updateWidgetFocus(input: $input) {
       __typename
@@ -78,15 +82,14 @@ export const RadioPropertySection = ({
 
   const onChange = (event) => {
     const newValue = event.target.value;
-    const variables = {
-      input: {
-        id: uuid(),
-        editingContextId,
-        representationId: formId,
-        radioId: widget.id,
-        newValue,
-      },
+    const input: GQLEditRadioInput = {
+      id: uuid(),
+      editingContextId,
+      representationId: formId,
+      radioId: widget.id,
+      newValue,
     };
+    const variables: GQLEditRadioMutationVariables = { input };
     editRadio({ variables });
   };
 
@@ -109,14 +112,15 @@ export const RadioPropertySection = ({
     { loading: updateWidgetFocusLoading, data: updateWidgetFocusData, error: updateWidgetFocusError },
   ] = useMutation<GQLUpdateWidgetFocusMutationData>(updateWidgetFocusMutation);
   const sendUpdateWidgetFocus = (selected: boolean) => {
-    const variables = {
-      input: {
-        id: uuid(),
-        editingContextId,
-        representationId: formId,
-        widgetId: widget.id,
-        selected,
-      },
+    const input: GQLUpdateWidgetFocusInput = {
+      id: uuid(),
+      editingContextId,
+      representationId: formId,
+      widgetId: widget.id,
+      selected,
+    };
+    const variables: GQLUpdateWidgetFocusMutationVariables = {
+      input,
     };
     updateWidgetFocus({ variables });
   };
