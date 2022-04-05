@@ -1,0 +1,858 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should display the error received 1`] = `
+<body>
+  <div>
+    <div
+      class="MuiFormControl-root"
+    >
+      <div
+        class="makeStyles-propertySectionLabel-35"
+      >
+        <h6
+          class="MuiTypography-root MuiTypography-subtitle2"
+        >
+          Status:
+        </h6>
+        <div
+          class="makeStyles-subscribers-36"
+        />
+      </div>
+      <div
+        aria-label="Status:"
+        class="MuiFormGroup-root makeStyles-radioGroupRoot-34"
+        role="radiogroup"
+      >
+        <label
+          class="MuiFormControlLabel-root"
+        >
+          <span
+            aria-disabled="false"
+            class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-38 MuiRadio-root MuiRadio-colorPrimary PrivateSwitchBase-checked-39 Mui-checked MuiIconButton-colorPrimary"
+            data-testid="inactive"
+          >
+            <span
+              class="MuiIconButton-label"
+            >
+              <input
+                checked=""
+                class="PrivateSwitchBase-input-41"
+                name="Status:"
+                type="radio"
+                value="0"
+              />
+              <div
+                class="PrivateRadioButtonIcon-root-42 PrivateRadioButtonIcon-checked-44"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="MuiSvgIcon-root"
+                  focusable="false"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
+                  />
+                </svg>
+                <svg
+                  aria-hidden="true"
+                  class="MuiSvgIcon-root PrivateRadioButtonIcon-layer-43"
+                  focusable="false"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M8.465 8.465C9.37 7.56 10.62 7 12 7C14.76 7 17 9.24 17 12C17 13.38 16.44 14.63 15.535 15.535C14.63 16.44 13.38 17 12 17C9.24 17 7 14.76 7 12C7 10.62 7.56 9.37 8.465 8.465Z"
+                  />
+                </svg>
+              </div>
+            </span>
+            <span
+              class="MuiTouchRipple-root"
+            />
+          </span>
+          <span
+            class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
+          >
+            inactive
+          </span>
+        </label>
+        <label
+          class="MuiFormControlLabel-root"
+        >
+          <span
+            aria-disabled="false"
+            class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-38 MuiRadio-root MuiRadio-colorPrimary MuiIconButton-colorPrimary"
+            data-testid="active"
+          >
+            <span
+              class="MuiIconButton-label"
+            >
+              <input
+                class="PrivateSwitchBase-input-41"
+                name="Status:"
+                type="radio"
+                value="1"
+              />
+              <div
+                class="PrivateRadioButtonIcon-root-42"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="MuiSvgIcon-root"
+                  focusable="false"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
+                  />
+                </svg>
+                <svg
+                  aria-hidden="true"
+                  class="MuiSvgIcon-root PrivateRadioButtonIcon-layer-43"
+                  focusable="false"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M8.465 8.465C9.37 7.56 10.62 7 12 7C14.76 7 17 9.24 17 12C17 13.38 16.44 14.63 15.535 15.535C14.63 16.44 13.38 17 12 17C9.24 17 7 14.76 7 12C7 10.62 7.56 9.37 8.465 8.465Z"
+                  />
+                </svg>
+              </div>
+            </span>
+            <span
+              class="MuiTouchRipple-root"
+            />
+          </span>
+          <span
+            class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
+          >
+            active
+          </span>
+        </label>
+      </div>
+      <p
+        class="MuiFormHelperText-root"
+      />
+    </div>
+  </div>
+</body>
+`;
+
+exports[`should display the error received 2`] = `
+<body>
+  <div>
+    <div
+      class="MuiFormControl-root"
+    >
+      <div
+        class="makeStyles-propertySectionLabel-35"
+      >
+        <h6
+          class="MuiTypography-root MuiTypography-subtitle2"
+        >
+          Status:
+        </h6>
+        <div
+          class="makeStyles-subscribers-36"
+        />
+      </div>
+      <div
+        aria-label="Status:"
+        class="MuiFormGroup-root makeStyles-radioGroupRoot-34"
+        role="radiogroup"
+      >
+        <label
+          class="MuiFormControlLabel-root"
+        >
+          <span
+            aria-disabled="false"
+            class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-38 MuiRadio-root MuiRadio-colorPrimary PrivateSwitchBase-checked-39 Mui-checked MuiIconButton-colorPrimary"
+            data-testid="inactive"
+          >
+            <span
+              class="MuiIconButton-label"
+            >
+              <input
+                checked=""
+                class="PrivateSwitchBase-input-41"
+                name="Status:"
+                type="radio"
+                value="0"
+              />
+              <div
+                class="PrivateRadioButtonIcon-root-42 PrivateRadioButtonIcon-checked-44"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="MuiSvgIcon-root"
+                  focusable="false"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
+                  />
+                </svg>
+                <svg
+                  aria-hidden="true"
+                  class="MuiSvgIcon-root PrivateRadioButtonIcon-layer-43"
+                  focusable="false"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M8.465 8.465C9.37 7.56 10.62 7 12 7C14.76 7 17 9.24 17 12C17 13.38 16.44 14.63 15.535 15.535C14.63 16.44 13.38 17 12 17C9.24 17 7 14.76 7 12C7 10.62 7.56 9.37 8.465 8.465Z"
+                  />
+                </svg>
+              </div>
+            </span>
+            <span
+              class="MuiTouchRipple-root"
+            />
+          </span>
+          <span
+            class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
+          >
+            inactive
+          </span>
+        </label>
+        <label
+          class="MuiFormControlLabel-root"
+        >
+          <span
+            aria-disabled="false"
+            class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-38 MuiRadio-root MuiRadio-colorPrimary MuiIconButton-colorPrimary"
+            data-testid="active"
+          >
+            <span
+              class="MuiIconButton-label"
+            >
+              <input
+                class="PrivateSwitchBase-input-41"
+                name="Status:"
+                type="radio"
+                value="1"
+              />
+              <div
+                class="PrivateRadioButtonIcon-root-42"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="MuiSvgIcon-root"
+                  focusable="false"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
+                  />
+                </svg>
+                <svg
+                  aria-hidden="true"
+                  class="MuiSvgIcon-root PrivateRadioButtonIcon-layer-43"
+                  focusable="false"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M8.465 8.465C9.37 7.56 10.62 7 12 7C14.76 7 17 9.24 17 12C17 13.38 16.44 14.63 15.535 15.535C14.63 16.44 13.38 17 12 17C9.24 17 7 14.76 7 12C7 10.62 7.56 9.37 8.465 8.465Z"
+                  />
+                </svg>
+              </div>
+            </span>
+            <span
+              class="MuiTouchRipple-root"
+            />
+          </span>
+          <span
+            class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
+          >
+            active
+          </span>
+        </label>
+      </div>
+      <p
+        class="MuiFormHelperText-root Mui-focused"
+      />
+      <div
+        class="MuiSnackbar-root MuiSnackbar-anchorOriginBottomRight"
+        data-testid="error"
+      >
+        <div
+          class="MuiPaper-root MuiSnackbarContent-root MuiPaper-elevation6"
+          direction="up"
+          role="alert"
+          style="opacity: 1; transform: scale(1, 1); transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,transform 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;"
+        >
+          <div
+            class="MuiSnackbarContent-message"
+          >
+            An error has occurred, please refresh the page
+          </div>
+          <div
+            class="MuiSnackbarContent-action"
+          >
+            <button
+              aria-label="close"
+              class="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorInherit MuiIconButton-sizeSmall"
+              tabindex="0"
+              type="button"
+            >
+              <span
+                class="MuiIconButton-label"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall"
+                  focusable="false"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+                  />
+                </svg>
+              </span>
+              <span
+                class="MuiTouchRipple-root"
+              />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`should render a readOnly radio 1`] = `
+<div>
+  <div
+    class="MuiFormControl-root"
+  >
+    <div
+      class="makeStyles-propertySectionLabel-13"
+    >
+      <h6
+        class="MuiTypography-root MuiTypography-subtitle2"
+      >
+        Status:
+      </h6>
+      <div
+        class="makeStyles-subscribers-14"
+      />
+    </div>
+    <div
+      aria-label="Status:"
+      class="MuiFormGroup-root makeStyles-radioGroupRoot-12"
+      role="radiogroup"
+    >
+      <label
+        class="MuiFormControlLabel-root Mui-disabled"
+      >
+        <span
+          aria-disabled="true"
+          class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-16 MuiRadio-root MuiRadio-colorPrimary PrivateSwitchBase-checked-17 Mui-checked PrivateSwitchBase-disabled-18 Mui-disabled MuiIconButton-colorPrimary Mui-disabled Mui-disabled"
+          data-testid="inactive"
+          tabindex="-1"
+        >
+          <span
+            class="MuiIconButton-label"
+          >
+            <input
+              checked=""
+              class="PrivateSwitchBase-input-19"
+              disabled=""
+              name="Status:"
+              type="radio"
+              value="0"
+            />
+            <div
+              class="PrivateRadioButtonIcon-root-20 PrivateRadioButtonIcon-checked-22"
+            >
+              <svg
+                aria-hidden="true"
+                class="MuiSvgIcon-root"
+                focusable="false"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
+                />
+              </svg>
+              <svg
+                aria-hidden="true"
+                class="MuiSvgIcon-root PrivateRadioButtonIcon-layer-21"
+                focusable="false"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M8.465 8.465C9.37 7.56 10.62 7 12 7C14.76 7 17 9.24 17 12C17 13.38 16.44 14.63 15.535 15.535C14.63 16.44 13.38 17 12 17C9.24 17 7 14.76 7 12C7 10.62 7.56 9.37 8.465 8.465Z"
+                />
+              </svg>
+            </div>
+          </span>
+        </span>
+        <span
+          class="MuiTypography-root MuiFormControlLabel-label Mui-disabled MuiTypography-body1"
+        >
+          inactive
+        </span>
+      </label>
+      <label
+        class="MuiFormControlLabel-root Mui-disabled"
+      >
+        <span
+          aria-disabled="true"
+          class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-16 MuiRadio-root MuiRadio-colorPrimary PrivateSwitchBase-disabled-18 Mui-disabled MuiIconButton-colorPrimary Mui-disabled Mui-disabled"
+          data-testid="active"
+          tabindex="-1"
+        >
+          <span
+            class="MuiIconButton-label"
+          >
+            <input
+              class="PrivateSwitchBase-input-19"
+              disabled=""
+              name="Status:"
+              type="radio"
+              value="1"
+            />
+            <div
+              class="PrivateRadioButtonIcon-root-20"
+            >
+              <svg
+                aria-hidden="true"
+                class="MuiSvgIcon-root"
+                focusable="false"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
+                />
+              </svg>
+              <svg
+                aria-hidden="true"
+                class="MuiSvgIcon-root PrivateRadioButtonIcon-layer-21"
+                focusable="false"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M8.465 8.465C9.37 7.56 10.62 7 12 7C14.76 7 17 9.24 17 12C17 13.38 16.44 14.63 15.535 15.535C14.63 16.44 13.38 17 12 17C9.24 17 7 14.76 7 12C7 10.62 7.56 9.37 8.465 8.465Z"
+                />
+              </svg>
+            </div>
+          </span>
+        </span>
+        <span
+          class="MuiTypography-root MuiFormControlLabel-label Mui-disabled MuiTypography-body1"
+        >
+          active
+        </span>
+      </label>
+    </div>
+    <p
+      class="MuiFormHelperText-root"
+    />
+  </div>
+</div>
+`;
+
+exports[`should render the radio 1`] = `
+<div>
+  <div
+    class="MuiFormControl-root"
+  >
+    <div
+      class="makeStyles-propertySectionLabel-2"
+    >
+      <h6
+        class="MuiTypography-root MuiTypography-subtitle2"
+      >
+        Status:
+      </h6>
+      <div
+        class="makeStyles-subscribers-3"
+      />
+    </div>
+    <div
+      aria-label="Status:"
+      class="MuiFormGroup-root makeStyles-radioGroupRoot-1"
+      role="radiogroup"
+    >
+      <label
+        class="MuiFormControlLabel-root"
+      >
+        <span
+          aria-disabled="false"
+          class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-5 MuiRadio-root MuiRadio-colorPrimary PrivateSwitchBase-checked-6 Mui-checked MuiIconButton-colorPrimary"
+          data-testid="inactive"
+        >
+          <span
+            class="MuiIconButton-label"
+          >
+            <input
+              checked=""
+              class="PrivateSwitchBase-input-8"
+              name="Status:"
+              type="radio"
+              value="0"
+            />
+            <div
+              class="PrivateRadioButtonIcon-root-9 PrivateRadioButtonIcon-checked-11"
+            >
+              <svg
+                aria-hidden="true"
+                class="MuiSvgIcon-root"
+                focusable="false"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
+                />
+              </svg>
+              <svg
+                aria-hidden="true"
+                class="MuiSvgIcon-root PrivateRadioButtonIcon-layer-10"
+                focusable="false"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M8.465 8.465C9.37 7.56 10.62 7 12 7C14.76 7 17 9.24 17 12C17 13.38 16.44 14.63 15.535 15.535C14.63 16.44 13.38 17 12 17C9.24 17 7 14.76 7 12C7 10.62 7.56 9.37 8.465 8.465Z"
+                />
+              </svg>
+            </div>
+          </span>
+          <span
+            class="MuiTouchRipple-root"
+          />
+        </span>
+        <span
+          class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
+        >
+          inactive
+        </span>
+      </label>
+      <label
+        class="MuiFormControlLabel-root"
+      >
+        <span
+          aria-disabled="false"
+          class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-5 MuiRadio-root MuiRadio-colorPrimary MuiIconButton-colorPrimary"
+          data-testid="active"
+        >
+          <span
+            class="MuiIconButton-label"
+          >
+            <input
+              class="PrivateSwitchBase-input-8"
+              name="Status:"
+              type="radio"
+              value="1"
+            />
+            <div
+              class="PrivateRadioButtonIcon-root-9"
+            >
+              <svg
+                aria-hidden="true"
+                class="MuiSvgIcon-root"
+                focusable="false"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
+                />
+              </svg>
+              <svg
+                aria-hidden="true"
+                class="MuiSvgIcon-root PrivateRadioButtonIcon-layer-10"
+                focusable="false"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M8.465 8.465C9.37 7.56 10.62 7 12 7C14.76 7 17 9.24 17 12C17 13.38 16.44 14.63 15.535 15.535C14.63 16.44 13.38 17 12 17C9.24 17 7 14.76 7 12C7 10.62 7.56 9.37 8.465 8.465Z"
+                />
+              </svg>
+            </div>
+          </span>
+          <span
+            class="MuiTouchRipple-root"
+          />
+        </span>
+        <span
+          class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
+        >
+          active
+        </span>
+      </label>
+    </div>
+    <p
+      class="MuiFormHelperText-root"
+    />
+  </div>
+</div>
+`;
+
+exports[`should send mutation when clicked 1`] = `
+<div>
+  <div
+    class="MuiFormControl-root"
+  >
+    <div
+      class="makeStyles-propertySectionLabel-24"
+    >
+      <h6
+        class="MuiTypography-root MuiTypography-subtitle2"
+      >
+        Status:
+      </h6>
+      <div
+        class="makeStyles-subscribers-25"
+      />
+    </div>
+    <div
+      aria-label="Status:"
+      class="MuiFormGroup-root makeStyles-radioGroupRoot-23"
+      role="radiogroup"
+    >
+      <label
+        class="MuiFormControlLabel-root"
+      >
+        <span
+          aria-disabled="false"
+          class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-27 MuiRadio-root MuiRadio-colorPrimary PrivateSwitchBase-checked-28 Mui-checked MuiIconButton-colorPrimary"
+          data-testid="inactive"
+        >
+          <span
+            class="MuiIconButton-label"
+          >
+            <input
+              checked=""
+              class="PrivateSwitchBase-input-30"
+              name="Status:"
+              type="radio"
+              value="0"
+            />
+            <div
+              class="PrivateRadioButtonIcon-root-31 PrivateRadioButtonIcon-checked-33"
+            >
+              <svg
+                aria-hidden="true"
+                class="MuiSvgIcon-root"
+                focusable="false"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
+                />
+              </svg>
+              <svg
+                aria-hidden="true"
+                class="MuiSvgIcon-root PrivateRadioButtonIcon-layer-32"
+                focusable="false"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M8.465 8.465C9.37 7.56 10.62 7 12 7C14.76 7 17 9.24 17 12C17 13.38 16.44 14.63 15.535 15.535C14.63 16.44 13.38 17 12 17C9.24 17 7 14.76 7 12C7 10.62 7.56 9.37 8.465 8.465Z"
+                />
+              </svg>
+            </div>
+          </span>
+          <span
+            class="MuiTouchRipple-root"
+          />
+        </span>
+        <span
+          class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
+        >
+          inactive
+        </span>
+      </label>
+      <label
+        class="MuiFormControlLabel-root"
+      >
+        <span
+          aria-disabled="false"
+          class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-27 MuiRadio-root MuiRadio-colorPrimary MuiIconButton-colorPrimary"
+          data-testid="active"
+        >
+          <span
+            class="MuiIconButton-label"
+          >
+            <input
+              class="PrivateSwitchBase-input-30"
+              name="Status:"
+              type="radio"
+              value="1"
+            />
+            <div
+              class="PrivateRadioButtonIcon-root-31"
+            >
+              <svg
+                aria-hidden="true"
+                class="MuiSvgIcon-root"
+                focusable="false"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
+                />
+              </svg>
+              <svg
+                aria-hidden="true"
+                class="MuiSvgIcon-root PrivateRadioButtonIcon-layer-32"
+                focusable="false"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M8.465 8.465C9.37 7.56 10.62 7 12 7C14.76 7 17 9.24 17 12C17 13.38 16.44 14.63 15.535 15.535C14.63 16.44 13.38 17 12 17C9.24 17 7 14.76 7 12C7 10.62 7.56 9.37 8.465 8.465Z"
+                />
+              </svg>
+            </div>
+          </span>
+          <span
+            class="MuiTouchRipple-root"
+          />
+        </span>
+        <span
+          class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
+        >
+          active
+        </span>
+      </label>
+    </div>
+    <p
+      class="MuiFormHelperText-root"
+    />
+  </div>
+</div>
+`;
+
+exports[`should send mutation when clicked 2`] = `
+<div>
+  <div
+    class="MuiFormControl-root"
+  >
+    <div
+      class="makeStyles-propertySectionLabel-24"
+    >
+      <h6
+        class="MuiTypography-root MuiTypography-subtitle2"
+      >
+        Status:
+      </h6>
+      <div
+        class="makeStyles-subscribers-25"
+      />
+    </div>
+    <div
+      aria-label="Status:"
+      class="MuiFormGroup-root makeStyles-radioGroupRoot-23"
+      role="radiogroup"
+    >
+      <label
+        class="MuiFormControlLabel-root"
+      >
+        <span
+          aria-disabled="false"
+          class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-27 MuiRadio-root MuiRadio-colorPrimary PrivateSwitchBase-checked-28 Mui-checked MuiIconButton-colorPrimary"
+          data-testid="inactive"
+        >
+          <span
+            class="MuiIconButton-label"
+          >
+            <input
+              checked=""
+              class="PrivateSwitchBase-input-30"
+              name="Status:"
+              type="radio"
+              value="0"
+            />
+            <div
+              class="PrivateRadioButtonIcon-root-31 PrivateRadioButtonIcon-checked-33"
+            >
+              <svg
+                aria-hidden="true"
+                class="MuiSvgIcon-root"
+                focusable="false"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
+                />
+              </svg>
+              <svg
+                aria-hidden="true"
+                class="MuiSvgIcon-root PrivateRadioButtonIcon-layer-32"
+                focusable="false"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M8.465 8.465C9.37 7.56 10.62 7 12 7C14.76 7 17 9.24 17 12C17 13.38 16.44 14.63 15.535 15.535C14.63 16.44 13.38 17 12 17C9.24 17 7 14.76 7 12C7 10.62 7.56 9.37 8.465 8.465Z"
+                />
+              </svg>
+            </div>
+          </span>
+          <span
+            class="MuiTouchRipple-root"
+          />
+        </span>
+        <span
+          class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
+        >
+          inactive
+        </span>
+      </label>
+      <label
+        class="MuiFormControlLabel-root"
+      >
+        <span
+          aria-disabled="false"
+          class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-27 MuiRadio-root MuiRadio-colorPrimary MuiIconButton-colorPrimary"
+          data-testid="active"
+        >
+          <span
+            class="MuiIconButton-label"
+          >
+            <input
+              class="PrivateSwitchBase-input-30"
+              name="Status:"
+              type="radio"
+              value="1"
+            />
+            <div
+              class="PrivateRadioButtonIcon-root-31"
+            >
+              <svg
+                aria-hidden="true"
+                class="MuiSvgIcon-root"
+                focusable="false"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
+                />
+              </svg>
+              <svg
+                aria-hidden="true"
+                class="MuiSvgIcon-root PrivateRadioButtonIcon-layer-32"
+                focusable="false"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M8.465 8.465C9.37 7.56 10.62 7 12 7C14.76 7 17 9.24 17 12C17 13.38 16.44 14.63 15.535 15.535C14.63 16.44 13.38 17 12 17C9.24 17 7 14.76 7 12C7 10.62 7.56 9.37 8.465 8.465Z"
+                />
+              </svg>
+            </div>
+          </span>
+          <span
+            class="MuiTouchRipple-root"
+          />
+        </span>
+        <span
+          class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
+        >
+          active
+        </span>
+      </label>
+    </div>
+    <p
+      class="MuiFormHelperText-root Mui-focused"
+    />
+  </div>
+</div>
+`;
