@@ -1,0 +1,74 @@
+= Reference
+
+Sirius Components is composed of both backend and frontend components which can be reused in various applications to build a modeling workbench based on representations.
+
+== Backend
+
+Our backend components are mostly used in https://spring.io[Spring] applications and as such they depend on Spring Boot.
+Nevertheless, they have been successfully reused in non Spring applications in the past.
+
+=== Technologies
+
+Our backend relies on the following frameworks and libraries:
+
+- https://github.com/spring-projects/spring-boot[Spring Boot]
+- https://github.com/reactor[Reactor]
+- https://github.com/graphql-java/graphql-java[GraphQL Java]
+- https://www.eclipse.org/modeling/emf/[Eclipse Modeling Framework]
+- https://www.eclipse.org/sirius/[Eclipse Sirius]
+- https://www.eclipse.org/acceleo/documentation/[Acceleo Query Language (AQL)]
+
+Spring Boot comes with a set of dependencies that have been tested and validated one with the others.
+In a similar fashion as an Eclipse Release Train, using a specific version of Spring Boot lets us find easily the version of the other dependencies used by the Spring community.
+As a result, the versions of Spring Framework, Spring MVC, Spring Security or even Reactor that we are using are all derived from our version of Spring Boot.
+Have a look at the Spring Boot release notes to find more about the versions of the other components of the Spring ecosystem.
+
+=== Architecture
+
+Sirius Components provides some backend components for various layers of a Spring application.
+You do not need to use everything in order to start integrating Sirius Components in your application.
+
+==== GraphQL layer
+
+===== Spring and GraphQL Java
+
+Our GraphQL layer is in charge of the integration of GraphQL Java in Spring.
+There are multiple solutions today to use GraphQL Java in a Spring application such as Netflix DGS or Spring GraphQL but when we started our work on Sirius Components, most of those solutions did not exist.
+You do not need to use this integration of GraphQL Java with Spring to use Sirius Components, you can rely on another one.
+
+To perform this integration, we are providing the following projects:
+
+- sirius-components-graphiql
+- sirius-components-graphql
+- sirius-components-graphql-api
+- sirius-components-graphql-utils
+- sirius-components-graphql-voyager
+
+The projects `sirius-components-graphiql` and `sirius-components-graphql-voyager` are used to monitor and interact with our GraphQL API.
+They could easily be replaced with other options such as Insomnia, Postman or others.
+We may delete those projects in the future.
+
+The projects `sirius-components-graphql-utils` and `sirius-components-graphql-api` both contains a couple of utility classes and interfaces to help us build the GraphQL layer of Sirius Web.
+In those projects, you can find our custom scalars, some of our constants and the utility interface `IDataFetcherWithFieldCoordinates` used by Sirius Web.
+A significant part of this code could be moved to Sirius Web in the future.
+
+The main project of our GraphQL layer is `sirius-components-graphql` which contains the integration of GraphQL Java to both the HTTP API and WebSockets API of Spring using respectively the `GraphQLController` and `GraphQLWebSocketHandler`.
+If you want to debug how a GraphQL request is processed on the HTTP API or the WebSocket API, these are the relevant entry point.
+
+===== Schema
+
+The GraphQL schema of Sirius Components is defined using several distinct `.graphqls` files.
+This allow an application to only integrate the parts that it requires.
+The only required part of the schema is located in `sirius-components-collaborative/src/main/resources/schema/core.graphqls`.
+This file contains the core concepts of our GraphQL schema and is required by all the other schema files.
+
+On top of that, we have the following schema files to add support for each kind of representation:
+
+- Diagrams: `sirius-components-collaborative-diagrams/src/main/resources/schema/diagrams.graphqls`
+- Forms: `sirius-components-collaborative-forms/src/main/resources/schema/forms.graphqls`
+- Selection: `sirius-components-collaborative-selection/src/main/resources/schema/selection.graphqls`
+- Trees: `sirius-components-collaborative-trees/src/main/resources/schema/trees.graphqls`
+- Validation: `sirius-components-collaborative-validation/src/main/resources/schema/validation.graphqls`
+
+In order to create properly the full GraphQL schema of Sirius Components, you will thus need to scan the classpath for all those files and combine them into a single GraphQL schema.
+This architecture gives the ability to create an application based on Sirius Components using, for example, only the diagram and form representations but not the tree one.
