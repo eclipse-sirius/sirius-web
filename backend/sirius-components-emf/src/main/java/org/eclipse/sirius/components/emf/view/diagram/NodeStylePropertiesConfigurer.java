@@ -424,10 +424,11 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
         return (variableManager, newValue) -> {
             var optionalNodeStyle = variableManager.get(VariableManager.SELF, NodeStyle.class);
             if (optionalNodeStyle.isPresent()) {
+                String newShape = newValue;
                 if (newValue != null && newValue.isBlank()) {
-                    newValue = null;
+                    newShape = null;
                 }
-                optionalNodeStyle.get().setShape(newValue);
+                optionalNodeStyle.get().setShape(newShape);
                 return new Success();
             }
             return new Failure(""); //$NON-NLS-1$
