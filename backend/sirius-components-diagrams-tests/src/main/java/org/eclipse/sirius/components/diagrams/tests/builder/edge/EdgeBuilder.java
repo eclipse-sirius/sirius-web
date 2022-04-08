@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.diagrams.tests.builder.edge;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -22,6 +23,7 @@ import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
 import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.LineStyle;
+import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.components.LabelType;
 import org.eclipse.sirius.components.diagrams.tests.builder.TestLayoutDiagramBuilder;
 import org.eclipse.sirius.components.diagrams.tests.builder.edge.EdgeEnd.EdgeEndBuilder;
@@ -41,12 +43,14 @@ public final class EdgeBuilder {
 
     private EdgeEndBuilder targetEdgeBuilder;
 
-    private int edgeCount;
+    private Map<String, Integer> edgeIdPrefixToCount;
 
-    public EdgeBuilder(TestLayoutDiagramBuilder diagramBuilder, String edgeCenterLabel, int edgeCount) {
+    private List<Position> routingPoints = new ArrayList<>();
+
+    public EdgeBuilder(TestLayoutDiagramBuilder diagramBuilder, String edgeCenterLabel, Map<String, Integer> edgeIdPrefixToCount) {
         this.diagramBuilder = Objects.requireNonNull(diagramBuilder);
         this.centerLabel = new LabelBuilder().basicLabel(edgeCenterLabel, LabelType.EDGE_CENTER);
-        this.edgeCount = edgeCount;
+        this.edgeIdPrefixToCount = edgeIdPrefixToCount;
     }
 
     public EdgeEndBuilder from(String sourceTargetObjectLabel) {
@@ -59,14 +63,24 @@ public final class EdgeBuilder {
         return this.targetEdgeBuilder;
     }
 
+    public EdgeBuilder goingThrough(double x, double y) {
+        this.routingPoints.add(Position.at(x, y));
+        return this;
+    }
+
     public TestLayoutDiagramBuilder and() {
         return this.diagramBuilder;
     }
 
-    private String computeEdgeId(String sourceId, String targetId) {
-        String rawIdentifier = TestLayoutDiagramBuilder.EDGE_DESCRIPTION_ID.toString() + ": " + sourceId + " --> " + targetId + " - " + this.edgeCount; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    private String computeEdgeId(String sourceId, String targetId, int edgeCount) {
+        String rawIdentifier = TestLayoutDiagramBuilder.EDGE_DESCRIPTION_ID.toString() + ": " + sourceId + " --> " + targetId + " - " + edgeCount; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         String id = UUID.nameUUIDFromBytes(rawIdentifier.getBytes()).toString();
         return id;
+    }
+
+    private String computeEdgeDiscriminant(String sourceId, String targetId) {
+        String rawDiscriminant = TestLayoutDiagramBuilder.EDGE_DESCRIPTION_ID.toString() + sourceId + targetId;
+        return UUID.nameUUIDFromBytes(rawDiscriminant.getBytes()).toString();
     }
 
     public Edge build(Map<String, String> targetObjectIdToNodeId) {
@@ -84,7 +98,10 @@ public final class EdgeBuilder {
 
         String sourceId = targetObjectIdToNodeId.get(sourceEdgeEnd.getEndId());
         String targetId = targetObjectIdToNodeId.get(targetEdgeEnd.getEndId());
-        String targetObjectId = this.computeEdgeId(sourceId, targetId);
+        String edgeDiscriminant = this.computeEdgeDiscriminant(sourceId, targetId);
+        int count = this.edgeIdPrefixToCount.getOrDefault(edgeDiscriminant, 0);
+        String targetObjectId = this.computeEdgeId(sourceId, targetId, count);
+        this.edgeIdPrefixToCount.put(edgeDiscriminant, ++count);
 
         // @formatter:off
         return Edge.newEdge(targetObjectId)
@@ -97,7 +114,7 @@ public final class EdgeBuilder {
                 .centerLabel(this.centerLabel)
                 .endLabel(null)
                 .descriptionId(TestLayoutDiagramBuilder.EDGE_DESCRIPTION_ID)
-                .routingPoints(List.of())
+                .routingPoints(this.routingPoints)
                 .style(edgeStyle)
                 .targetObjectId(sourceEdgeEnd.getEndId())
                 .targetObjectKind("") //$NON-NLS-1$

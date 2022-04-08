@@ -117,8 +117,8 @@ public final class RectangleNodeBuilder<T> implements NodeBuilder<T> {
             descriptionId = TestLayoutDiagramBuilder.CHILD_NODE_DESCRIPTION_ID;
         }
 
-       // @formatter:off
-    return Node.newNode(nodeId)
+        // @formatter:off
+        return Node.newNode(nodeId)
                .type(NodeType.NODE_RECTANGLE)
                .label(this.label)
                .position(Objects.requireNonNull(this.position))
@@ -133,7 +133,7 @@ public final class RectangleNodeBuilder<T> implements NodeBuilder<T> {
                .targetObjectLabel(this.label.getText())
                .style(Objects.requireNonNull(style))
                .build();
-       // @formatter:on
+        // @formatter:on
     }
 
 }

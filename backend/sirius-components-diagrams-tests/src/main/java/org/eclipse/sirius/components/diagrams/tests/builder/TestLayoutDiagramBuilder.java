@@ -49,6 +49,8 @@ public final class TestLayoutDiagramBuilder {
 
     private List<EdgeBuilder> edgeBuilders = new ArrayList<>();
 
+    private Map<String, Integer> edgeIdPrefixToCount = new HashMap<>();
+
     private String targetObjectId;
 
     private TestLayoutDiagramBuilder(String targetObjectId) {
@@ -67,7 +69,7 @@ public final class TestLayoutDiagramBuilder {
     }
 
     public EdgeBuilder edge(String edgeCenterLabel) {
-        EdgeBuilder edgeBuilder = new EdgeBuilder(this, edgeCenterLabel, this.edgeBuilders.size());
+        EdgeBuilder edgeBuilder = new EdgeBuilder(this, edgeCenterLabel, this.edgeIdPrefixToCount);
         this.edgeBuilders.add(edgeBuilder);
         return edgeBuilder;
     }

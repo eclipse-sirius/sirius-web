@@ -1,0 +1,13 @@
+{
+  "name": "diag:Root",
+  "children": [
+    {
+      "name": "rect:First",
+      "children": []
+    },
+    {
+      "name": "rect:Third",
+      "children": []
+    }
+  ]
+}
