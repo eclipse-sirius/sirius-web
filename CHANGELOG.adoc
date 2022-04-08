@@ -28,6 +28,7 @@ This will allow us, when we will receive an operation to perform with a given re
 === Bug fixes
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1154[#1154] [diagram] Display the palette where the click has been made, not where the cursor is. With the edge animation it was possible for the palette to be displayed at a wrong position which was making possible to create a floating edge.
+- https://github.com/eclipse-sirius/sirius-components/issues/1148[#1148] [diagram] Fix a lot of cases where removing an edge will change the layout of some other edges. This behavior will still happen when it will exist two edges between the two same elements and one of the edge is removed, the other edge will probably take the layout of the removed edge.
 
 === Improvements
 

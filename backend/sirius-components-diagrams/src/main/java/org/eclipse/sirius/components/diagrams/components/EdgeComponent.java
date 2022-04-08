@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo and others.
+ * Copyright (c) 2019, 2022 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,9 @@ package org.eclipse.sirius.components.diagrams.components;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -73,8 +75,8 @@ public class EdgeComponent implements IComponent {
             variableManager.getVariables().forEach(semanticElementsVariableManager::put);
             semanticElementsVariableManager.put(DiagramDescription.CACHE, cache);
 
+            Map<String, Integer> edgeIdPrefixToCount = new HashMap<>();
             List<?> semanticElements = edgeDescription.getSemanticElementsProvider().apply(semanticElementsVariableManager);
-            int count = 0;
             for (Object semanticElement : semanticElements) {
                 VariableManager edgeVariableManager = variableManager.createChild();
                 edgeVariableManager.put(VariableManager.SELF, semanticElement);
@@ -90,6 +92,9 @@ public class EdgeComponent implements IComponent {
 
                     for (Element sourceNode : sourceNodes) {
                         for (Element targetNode : targetNodes) {
+                            String edgeIdPrefix = this.computeEdgeIdPrefix(edgeDescription, sourceNode, targetNode);
+                            int count = edgeIdPrefixToCount.getOrDefault(edgeIdPrefix, 0);
+
                             String id = this.computeEdgeId(edgeDescription, sourceNode, targetNode, count);
                             var optionalPreviousEdge = edgesRequestor.getById(id);
                             var edgeInstanceVariableManager = edgeVariableManager.createChild();
@@ -133,7 +138,7 @@ public class EdgeComponent implements IComponent {
 
                                 Element edgeElement = new Element(EdgeElementProps.TYPE, edgeElementProps);
                                 children.add(edgeElement);
-                                count++;
+                                edgeIdPrefixToCount.put(edgeIdPrefix, ++count);
                             }
                         }
                     }
@@ -189,6 +194,25 @@ public class EdgeComponent implements IComponent {
         // @formatter:on
         String rawIdentifier = descriptionId + ": " + sourceId + " --> " + targetId + " - " + count; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         return UUID.nameUUIDFromBytes(rawIdentifier.getBytes()).toString();
+    }
+
+    private String computeEdgeIdPrefix(EdgeDescription edgeDescription, Element sourceNode, Element targetNode) {
+        var descriptionId = edgeDescription.getId().toString();
+        // @formatter:off
+        var sourceId = Optional.of(sourceNode.getProps())
+                .filter(NodeElementProps.class::isInstance)
+                .map(NodeElementProps.class::cast)
+                .map(NodeElementProps::getId)
+                .orElse(INVALID_NODE_ID);
+
+        var targetId = Optional.of(targetNode.getProps())
+                .filter(NodeElementProps.class::isInstance)
+                .map(NodeElementProps.class::cast)
+                .map(NodeElementProps::getId)
+                .orElse(INVALID_NODE_ID);
+        // @formatter:on
+        String rawPrefix = descriptionId + sourceId + targetId;
+        return UUID.nameUUIDFromBytes(rawPrefix.getBytes()).toString();
     }
 
     private boolean hasNodeCandidates(List<NodeDescription> nodeDescriptions, DiagramRenderingCache cache) {

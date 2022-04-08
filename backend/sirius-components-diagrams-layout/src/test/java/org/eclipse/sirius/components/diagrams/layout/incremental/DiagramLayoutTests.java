@@ -98,6 +98,63 @@ public class DiagramLayoutTests {
     }
 
     @Test
+    public void testRemoveEdgeDoesNotAffectUnrelated() {
+        String firstTargetObjectId = "First"; //$NON-NLS-1$
+        String secondTargetObjectId = "Second"; //$NON-NLS-1$
+        String thirdTargetObjectId = "Third"; //$NON-NLS-1$
+
+        // @formatter:off
+        Diagram diagram = TestLayoutDiagramBuilder.diagram("Root") //$NON-NLS-1$
+            .nodes()
+                .rectangleNode(firstTargetObjectId).at(10, 10).of(20, 20).and()
+                .rectangleNode(secondTargetObjectId).at(50, 10).of(20, 20).and()
+                .rectangleNode(thirdTargetObjectId).at(50, 40).of(20, 20).and()
+                .and()
+            .edge("one") //$NON-NLS-1$
+                .from(firstTargetObjectId).at(0.75, 0.5)
+                .to(secondTargetObjectId).at(0.25, 0.5)
+                .and()
+            .edge("two") //$NON-NLS-1$
+                .from(firstTargetObjectId).at(0.5, 0.75)
+                .to(thirdTargetObjectId).at(0.25, 0.5)
+                .goingThrough(20, 50)
+                .and()
+            .build();
+        // @formatter:on
+
+        Path path = Paths.get("src", "test", "resources", "editing-contexts", "testRemoveEdgeDoesNotAffectUnrelated"); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$ //$NON-NLS-5$
+        JsonBasedEditingContext editingContext = new JsonBasedEditingContext(path);
+
+        TestDiagramCreationService diagramCreationService = this.createDiagramCreationService(diagram);
+        Optional<Diagram> optionalRefreshedDiagram = diagramCreationService.performRefresh(editingContext, diagram);
+        assertThat(optionalRefreshedDiagram).isPresent();
+        Diagram refreshedDiagram = optionalRefreshedDiagram.get();
+        assertThat(refreshedDiagram.getNodes()).hasSize(2);
+
+        Optional<Node> optionalFirstNode = this.getNode(refreshedDiagram.getNodes(), firstTargetObjectId);
+        assertThat(optionalFirstNode).isPresent();
+        Node firstNode = optionalFirstNode.get();
+        assertThat(firstNode.getPosition()).isEqualTo(Position.at(10, 10));
+        assertThat(firstNode.getSize()).isEqualTo(Size.of(20, 20));
+
+        Optional<Node> optionalSecondNode = this.getNode(refreshedDiagram.getNodes(), secondTargetObjectId);
+        assertThat(optionalSecondNode).isNotPresent();
+
+        Optional<Node> optionalThirdNode = this.getNode(refreshedDiagram.getNodes(), thirdTargetObjectId);
+        assertThat(optionalThirdNode).isPresent();
+        Node thirdNode = optionalThirdNode.get();
+        assertThat(thirdNode.getPosition()).isEqualTo(Position.at(50, 40));
+        assertThat(thirdNode.getSize()).isEqualTo(Size.of(20, 20));
+
+        assertThat(refreshedDiagram.getEdges()).hasSize(1);
+        Edge edge = refreshedDiagram.getEdges().get(0);
+        assertThat(edge.getSourceAnchorRelativePosition()).isEqualTo(Ratio.of(0.5, 0.75));
+        assertThat(edge.getTargetAnchorRelativePosition()).isEqualTo(Ratio.of(0.25, 0.5));
+        assertThat(edge.getRoutingPoints()).hasSize(1);
+        assertThat(edge.getRoutingPoints().get(0)).isEqualTo(Position.at(20, 50));
+    }
+
+    @Test
     public void testSimpleDiagramLayout() throws IOException {
         String firstParentTargetObjectId = "First Parent"; //$NON-NLS-1$
         String secondParentTargetObjectId = "Second Parent"; //$NON-NLS-1$
