@@ -43,7 +43,7 @@ public class EdgeRoutingPointsProviderTests {
 
         DiagramLayoutData diagramLayoutData = this.createDiagramLayoutData();
         EdgeLayoutData edgeLayoutData = this.createEdgeLayoutData(diagramLayoutData);
-        List<Position> routingPoints = edgeRoutingPointsProvider.getRoutingPoints(Optional.empty(), edgeLayoutData);
+        List<Position> routingPoints = edgeRoutingPointsProvider.getRoutingPoints(Optional.empty(), Optional.empty(), edgeLayoutData);
         assertThat(routingPoints).hasSize(0);
 
         assertThat(edgeLayoutData.getSourceAnchorRelativePosition()).isEqualTo(Ratio.of(0.5, 0.5));
@@ -56,7 +56,7 @@ public class EdgeRoutingPointsProviderTests {
 
         DiagramLayoutData diagramLayoutData = this.createDiagramLayoutData();
         EdgeLayoutData edgeLayoutData = this.createSelfLoopEdgeLayoutData(diagramLayoutData, List.of());
-        List<Position> routingPoints = edgeRoutingPointsProvider.getRoutingPoints(Optional.empty(), edgeLayoutData);
+        List<Position> routingPoints = edgeRoutingPointsProvider.getRoutingPoints(Optional.empty(), Optional.empty(), edgeLayoutData);
         assertThat(routingPoints).hasSize(2);
 
         Position firstRoutingPoint = routingPoints.get(0);
@@ -89,7 +89,7 @@ public class EdgeRoutingPointsProviderTests {
         MoveEvent moveEvent = new MoveEvent(edgeLayoutData.getSource().getId(), newNodePosition);
         edgeLayoutData.getSource().setPosition(newNodePosition);
 
-        List<Position> newRoutingPoints = edgeRoutingPointsProvider.getRoutingPoints(Optional.of(moveEvent), edgeLayoutData);
+        List<Position> newRoutingPoints = edgeRoutingPointsProvider.getRoutingPoints(Optional.of(moveEvent), Optional.empty(), edgeLayoutData);
         assertThat(newRoutingPoints).hasSize(2);
 
         Position firstRoutingPoint = newRoutingPoints.get(0);
@@ -110,7 +110,7 @@ public class EdgeRoutingPointsProviderTests {
         List<Position> newEdgeRoutingPoints = List.of(Position.at(100, 100));
         UpdateEdgeRoutingPointsEvent edgeRoutingPointsEvent = new UpdateEdgeRoutingPointsEvent(edgeLayoutData.getId(), newEdgeRoutingPoints);
 
-        List<Position> updatedRoutingPoints = edgeRoutingPointsProvider.getRoutingPoints(Optional.of(edgeRoutingPointsEvent), edgeLayoutData);
+        List<Position> updatedRoutingPoints = edgeRoutingPointsProvider.getRoutingPoints(Optional.of(edgeRoutingPointsEvent), Optional.empty(), edgeLayoutData);
         assertThat(updatedRoutingPoints).hasSize(1);
 
         Position routingPoint = updatedRoutingPoints.get(0);

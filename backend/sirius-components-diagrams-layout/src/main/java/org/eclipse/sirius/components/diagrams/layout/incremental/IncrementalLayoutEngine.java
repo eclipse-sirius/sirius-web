@@ -17,6 +17,7 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -38,6 +39,7 @@ import org.eclipse.sirius.components.diagrams.layout.api.RectangleSide;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.DiagramLayoutData;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.EdgeLayoutData;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.IContainerLayoutData;
+import org.eclipse.sirius.components.diagrams.layout.incremental.data.ILayoutData;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.NodeLayoutData;
 import org.eclipse.sirius.components.diagrams.layout.incremental.provider.BorderNodeLabelPositionProvider;
 import org.eclipse.sirius.components.diagrams.layout.incremental.provider.EdgeLabelPositionProvider;
@@ -82,28 +84,48 @@ public class IncrementalLayoutEngine {
         this.nodeSizeProvider = Objects.requireNonNull(nodeSizeProvider);
     }
 
-    public void layout(Optional<IDiagramEvent> optionalDiagramElementEvent, DiagramLayoutData diagram, ISiriusWebLayoutConfigurator layoutConfigurator) {
+    public void layout(Optional<IDiagramEvent> optionalDiagramElementEvent, IncrementalLayoutConvertedDiagram diagram, ISiriusWebLayoutConfigurator layoutConfigurator) {
         this.borderNodeLabelPositionProvider = new BorderNodeLabelPositionProvider();
         this.nodeLabelPositionProvider = new NodeLabelPositionProvider(layoutConfigurator);
         this.edgeLabelPositionProvider = new EdgeLabelPositionProvider(layoutConfigurator);
+        DiagramLayoutData diagramLayoutData = diagram.getDiagramLayoutData();
+        Optional<Position> optionalDelta = this.getDeltaFromMoveEvent(optionalDiagramElementEvent, diagram);
 
         // first we layout all the nodes
-        for (NodeLayoutData node : diagram.getChildrenNodes()) {
+        for (NodeLayoutData node : diagramLayoutData.getChildrenNodes()) {
             this.layoutNode(optionalDiagramElementEvent, node, layoutConfigurator);
         }
 
         // resolve overlaps due to previous changes
-        new OverlapsUpdater().update(diagram);
+        new OverlapsUpdater().update(diagramLayoutData);
 
         // resize according to the content
-        new ContainmentUpdater().update(diagram);
+        new ContainmentUpdater().update(diagramLayoutData);
 
         // finally we recompute the edges that needs to
-        for (EdgeLayoutData edge : diagram.getEdges()) {
+        for (EdgeLayoutData edge : diagramLayoutData.getEdges()) {
             if (this.shouldLayoutEdge(optionalDiagramElementEvent, edge)) {
-                this.layoutEdge(optionalDiagramElementEvent, edge);
+                this.layoutEdge(optionalDiagramElementEvent, optionalDelta, edge);
             }
         }
+    }
+
+    private Optional<Position> getDeltaFromMoveEvent(Optional<IDiagramEvent> optionalDiagramElementEvent, IncrementalLayoutConvertedDiagram diagram) {
+        Map<String, ILayoutData> id2LayoutData = diagram.getId2LayoutData();
+        // @formatter:off
+        return optionalDiagramElementEvent.filter(MoveEvent.class::isInstance)
+                .map(MoveEvent.class::cast)
+                .map(moveEvent -> {
+            ILayoutData iLayoutData = id2LayoutData.get(moveEvent.getNodeId());
+            if (iLayoutData instanceof NodeLayoutData) {
+                NodeLayoutData nodeLayoutData = (NodeLayoutData) iLayoutData;
+                Position fromPosition = nodeLayoutData.getPosition();
+                Position toPosition = moveEvent.getNewPosition();
+                return Position.at(toPosition.getX() - fromPosition.getX(), toPosition.getY() - fromPosition.getY());
+            }
+            return null;
+        });
+        // @formatter:on
     }
 
     private boolean shouldLayoutEdge(Optional<IDiagramEvent> optionalDiagramElementEvent, EdgeLayoutData edge) {
@@ -354,7 +376,7 @@ public class IncrementalLayoutEngine {
         return Ratio.of(edgeXProportion, edgeYProportion);
     }
 
-    private void layoutEdge(Optional<IDiagramEvent> optionalDiagramElementEvent, EdgeLayoutData edge) {
+    private void layoutEdge(Optional<IDiagramEvent> optionalDiagramElementEvent, Optional<Position> optionalDelta, EdgeLayoutData edge) {
         // @formatter:off
         optionalDiagramElementEvent.filter(DoublePositionEvent.class::isInstance)
                 .map(DoublePositionEvent.class::cast)
@@ -367,7 +389,7 @@ public class IncrementalLayoutEngine {
         // @formatter:on
 
         // recompute the edge routing points
-        edge.setRoutingPoints(this.edgeRoutingPointsProvider.getRoutingPoints(optionalDiagramElementEvent, edge));
+        edge.setRoutingPoints(this.edgeRoutingPointsProvider.getRoutingPoints(optionalDiagramElementEvent, optionalDelta, edge));
 
         // recompute edge labels
         if (edge.getCenterLabel() != null) {

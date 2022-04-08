@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo and others.
+ * Copyright (c) 2019, 2022 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -138,7 +138,7 @@ public class LayoutService implements ILayoutService {
         } else {
             layoutConfigurator = this.layoutConfiguratorRegistry.getDefaultLayoutConfigurator();
         }
-        this.incrementalLayoutEngine.layout(optionalDiagramElementEvent, diagramLayoutData, layoutConfigurator);
+        this.incrementalLayoutEngine.layout(optionalDiagramElementEvent, convertedDiagram, layoutConfigurator);
 
         Map<String, ILayoutData> id2LayoutData = convertedDiagram.getId2LayoutData();
         return this.incrementalLayoutedDiagramProvider.getLayoutedDiagram(newDiagram, diagramLayoutData, id2LayoutData);

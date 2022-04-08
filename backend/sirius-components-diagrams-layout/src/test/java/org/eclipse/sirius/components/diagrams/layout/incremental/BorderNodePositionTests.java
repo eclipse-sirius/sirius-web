@@ -16,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -67,13 +68,14 @@ public class BorderNodePositionTests {
      */
     @Test
     public void testSnap() {
-        DiagramLayoutData initializeDiagram = this.initializeDiagram();
+        IncrementalLayoutConvertedDiagram incrementalLayoutConvertedDiagram = this.initializeDiagram();
+        DiagramLayoutData initializeDiagram = incrementalLayoutConvertedDiagram.getDiagramLayoutData();
         List<NodeLayoutData> borderNodes = initializeDiagram.getChildrenNodes().get(0).getBorderNodes();
 
         NodeSizeProvider nodeSizeProvider = new NodeSizeProvider(new ImageSizeProvider());
         IncrementalLayoutEngine incrementalLayoutEngine = new IncrementalLayoutEngine(nodeSizeProvider);
 
-        incrementalLayoutEngine.layout(Optional.empty(), initializeDiagram, new LayoutConfiguratorRegistry(List.of()).getDefaultLayoutConfigurator());
+        incrementalLayoutEngine.layout(Optional.empty(), incrementalLayoutConvertedDiagram, new LayoutConfiguratorRegistry(List.of()).getDefaultLayoutConfigurator());
 
         this.checkBorderNodesAtInitialPosition(borderNodes);
 
@@ -87,7 +89,8 @@ public class BorderNodePositionTests {
 
     @Test
     public void testBorderNodeCreationEvent() {
-        DiagramLayoutData initializeDiagram = this.initializeDiagram();
+        IncrementalLayoutConvertedDiagram incrementalLayoutConvertedDiagram = this.initializeDiagram();
+        DiagramLayoutData initializeDiagram = incrementalLayoutConvertedDiagram.getDiagramLayoutData();
         List<NodeLayoutData> borderNodes = initializeDiagram.getChildrenNodes().get(0).getBorderNodes();
 
         // add a border node with an non positioned label
@@ -98,14 +101,15 @@ public class BorderNodePositionTests {
         IncrementalLayoutEngine incrementalLayoutEngine = new IncrementalLayoutEngine(nodeSizeProvider);
 
         Optional<IDiagramEvent> creationEvent = Optional.of(new SinglePositionEvent(Position.at(10, 10)));
-        incrementalLayoutEngine.layout(creationEvent, initializeDiagram, new LayoutConfiguratorRegistry(List.of()).getDefaultLayoutConfigurator());
+        incrementalLayoutEngine.layout(creationEvent, incrementalLayoutConvertedDiagram, new LayoutConfiguratorRegistry(List.of()).getDefaultLayoutConfigurator());
 
         this.checkBorderNodeLabel(borderNodes.get(0).getLabel(), BORDER_NODE_LABEL_TEXT_POSITION, BORDER_NODE_LABEL_TEXT_BOUNDS);
     }
 
     @Test
     public void testMoveParentNodeEvent() {
-        DiagramLayoutData initializeDiagram = this.initializeDiagram();
+        IncrementalLayoutConvertedDiagram incrementalLayoutConvertedDiagram = this.initializeDiagram();
+        DiagramLayoutData initializeDiagram = incrementalLayoutConvertedDiagram.getDiagramLayoutData();
         List<NodeLayoutData> borderNodes = initializeDiagram.getChildrenNodes().get(0).getBorderNodes();
         String nodeId = initializeDiagram.getChildrenNodes().get(0).getId();
 
@@ -113,7 +117,7 @@ public class BorderNodePositionTests {
         IncrementalLayoutEngine incrementalLayoutEngine = new IncrementalLayoutEngine(nodeSizeProvider);
 
         Optional<IDiagramEvent> resizeEvent = Optional.of(new MoveEvent(nodeId, Position.at(50, -100)));
-        incrementalLayoutEngine.layout(resizeEvent, initializeDiagram, new LayoutConfiguratorRegistry(List.of()).getDefaultLayoutConfigurator());
+        incrementalLayoutEngine.layout(resizeEvent, incrementalLayoutConvertedDiagram, new LayoutConfiguratorRegistry(List.of()).getDefaultLayoutConfigurator());
 
         this.checkBorderNodesAtInitialPosition(borderNodes);
 
@@ -122,7 +126,8 @@ public class BorderNodePositionTests {
 
     @Test
     public void testMoveBorderNodeEvent() {
-        DiagramLayoutData initializeDiagram = this.initializeDiagram();
+        IncrementalLayoutConvertedDiagram incrementalLayoutConvertedDiagram = this.initializeDiagram();
+        DiagramLayoutData initializeDiagram = incrementalLayoutConvertedDiagram.getDiagramLayoutData();
         NodeLayoutData northBorderNode = initializeDiagram.getChildrenNodes().get(0).getBorderNodes().get(0);
         NodeLayoutData eastBorderNode = initializeDiagram.getChildrenNodes().get(0).getBorderNodes().get(3);
 
@@ -131,13 +136,13 @@ public class BorderNodePositionTests {
 
         // move slightly the north border node so that the incremental layout updates the label position
         Optional<IDiagramEvent> resizeEvent = Optional.of(new MoveEvent(northBorderNode.getId(), Position.at(northBorderNode.getPosition().getX() + 1, northBorderNode.getPosition().getY())));
-        incrementalLayoutEngine.layout(resizeEvent, initializeDiagram, new LayoutConfiguratorRegistry(List.of()).getDefaultLayoutConfigurator());
+        incrementalLayoutEngine.layout(resizeEvent, incrementalLayoutConvertedDiagram, new LayoutConfiguratorRegistry(List.of()).getDefaultLayoutConfigurator());
 
         this.checkBorderNodeLabel(northBorderNode.getLabel(), Position.at(-100, -BORDER_NODE_LABEL_TEXT_BOUNDS.getSize().getHeight()), BORDER_NODE_LABEL_TEXT_BOUNDS);
 
         // move slightly the east border node so that the incremental layout updates the label position
         resizeEvent = Optional.of(new MoveEvent(eastBorderNode.getId(), Position.at(eastBorderNode.getPosition().getX() + 1, eastBorderNode.getPosition().getY())));
-        incrementalLayoutEngine.layout(resizeEvent, initializeDiagram, new LayoutConfiguratorRegistry(List.of()).getDefaultLayoutConfigurator());
+        incrementalLayoutEngine.layout(resizeEvent, incrementalLayoutConvertedDiagram, new LayoutConfiguratorRegistry(List.of()).getDefaultLayoutConfigurator());
         this.checkBorderNodeLabel(eastBorderNode.getLabel(), Position.at(DEFAULT_BORDER_NODE_SIZE.getWidth(), DEFAULT_BORDER_NODE_SIZE.getHeight()), BORDER_NODE_LABEL_TEXT_BOUNDS);
     }
 
@@ -154,7 +159,8 @@ public class BorderNodePositionTests {
 
     @Test
     public void testResizeParentNodeSouthEastEvent() {
-        DiagramLayoutData initializeDiagram = this.initializeDiagram();
+        IncrementalLayoutConvertedDiagram incrementalLayoutConvertedDiagram = this.initializeDiagram();
+        DiagramLayoutData initializeDiagram = incrementalLayoutConvertedDiagram.getDiagramLayoutData();
         String nodeId = initializeDiagram.getChildrenNodes().get(0).getId();
         List<NodeLayoutData> borderNodes = initializeDiagram.getChildrenNodes().get(0).getBorderNodes();
 
@@ -163,13 +169,13 @@ public class BorderNodePositionTests {
 
         // Decrease the parent node size
         Optional<IDiagramEvent> resizeEvent = Optional.of(new ResizeEvent(nodeId, ZERO_POSITION, Size.of(100, 50)));
-        incrementalLayoutEngine.layout(resizeEvent, initializeDiagram, new LayoutConfiguratorRegistry(List.of()).getDefaultLayoutConfigurator());
+        incrementalLayoutEngine.layout(resizeEvent, incrementalLayoutConvertedDiagram, new LayoutConfiguratorRegistry(List.of()).getDefaultLayoutConfigurator());
 
         this.checkBorderNodesAfterResize(borderNodes);
 
         // Increase the parent node size to get the initial size
         resizeEvent = Optional.of(new ResizeEvent(nodeId, ZERO_POSITION, DEFAULT_NODE_SIZE));
-        incrementalLayoutEngine.layout(resizeEvent, initializeDiagram, new LayoutConfiguratorRegistry(List.of()).getDefaultLayoutConfigurator());
+        incrementalLayoutEngine.layout(resizeEvent, incrementalLayoutConvertedDiagram, new LayoutConfiguratorRegistry(List.of()).getDefaultLayoutConfigurator());
 
         this.checkBorderNodesAtInitialPosition(borderNodes);
 
@@ -178,7 +184,8 @@ public class BorderNodePositionTests {
 
     @Test
     public void testResizeBorderNodeEvent() {
-        DiagramLayoutData initializeDiagram = this.initializeDiagram();
+        IncrementalLayoutConvertedDiagram incrementalLayoutConvertedDiagram = this.initializeDiagram();
+        DiagramLayoutData initializeDiagram = incrementalLayoutConvertedDiagram.getDiagramLayoutData();
         List<NodeLayoutData> borderNodes = initializeDiagram.getChildrenNodes().get(0).getBorderNodes();
 
         NodeSizeProvider nodeSizeProvider = new NodeSizeProvider(new ImageSizeProvider());
@@ -188,21 +195,22 @@ public class BorderNodePositionTests {
         NodeLayoutData westBorderNode = borderNodes.get(6);
         Optional<IDiagramEvent> resizeEvent = Optional
                 .of(new ResizeEvent(westBorderNode.getId(), ZERO_POSITION, Size.of(DEFAULT_BORDER_NODE_SIZE.getWidth(), DEFAULT_BORDER_NODE_SIZE.getHeight() / 2)));
-        incrementalLayoutEngine.layout(resizeEvent, initializeDiagram, new LayoutConfiguratorRegistry(List.of()).getDefaultLayoutConfigurator());
+        incrementalLayoutEngine.layout(resizeEvent, incrementalLayoutConvertedDiagram, new LayoutConfiguratorRegistry(List.of()).getDefaultLayoutConfigurator());
 
         this.checkBorderNodeLabel(westBorderNode.getLabel(), Position.at(BORDER_NODE_LABEL_TEXT_POSITION.getX(), BORDER_NODE_LABEL_TEXT_POSITION.getY() / 2), BORDER_NODE_LABEL_TEXT_BOUNDS);
 
         // increase the width and the height of the east border node
         NodeLayoutData eastBorderNode = borderNodes.get(3);
         resizeEvent = Optional.of(new ResizeEvent(eastBorderNode.getId(), ZERO_POSITION, Size.of(DEFAULT_BORDER_NODE_SIZE.getWidth() + 10, DEFAULT_BORDER_NODE_SIZE.getHeight() + 10)));
-        incrementalLayoutEngine.layout(resizeEvent, initializeDiagram, new LayoutConfiguratorRegistry(List.of()).getDefaultLayoutConfigurator());
+        incrementalLayoutEngine.layout(resizeEvent, incrementalLayoutConvertedDiagram, new LayoutConfiguratorRegistry(List.of()).getDefaultLayoutConfigurator());
 
         this.checkBorderNodeLabel(eastBorderNode.getLabel(), Position.at(eastBorderNode.getSize().getWidth(), eastBorderNode.getSize().getHeight()), BORDER_NODE_LABEL_TEXT_BOUNDS);
     }
 
     @Test
     public void testResizeParentNodeNorthWestEvent() {
-        DiagramLayoutData initializeDiagram = this.initializeDiagram();
+        IncrementalLayoutConvertedDiagram incrementalLayoutConvertedDiagram = this.initializeDiagram();
+        DiagramLayoutData initializeDiagram = incrementalLayoutConvertedDiagram.getDiagramLayoutData();
         String nodeId = initializeDiagram.getChildrenNodes().get(0).getId();
         List<NodeLayoutData> borderNodes = initializeDiagram.getChildrenNodes().get(0).getBorderNodes();
 
@@ -211,13 +219,13 @@ public class BorderNodePositionTests {
 
         // Decrease the parent node size
         Optional<IDiagramEvent> resizeEvent = Optional.of(new ResizeEvent(nodeId, Position.at(100, 50), Size.of(100, 50)));
-        incrementalLayoutEngine.layout(resizeEvent, initializeDiagram, new LayoutConfiguratorRegistry(List.of()).getDefaultLayoutConfigurator());
+        incrementalLayoutEngine.layout(resizeEvent, incrementalLayoutConvertedDiagram, new LayoutConfiguratorRegistry(List.of()).getDefaultLayoutConfigurator());
 
         this.checkBorderNodesAfterResize(borderNodes);
 
         // Increase the parent node size to get the initial size
         resizeEvent = Optional.of(new ResizeEvent(nodeId, ZERO_POSITION, DEFAULT_NODE_SIZE));
-        incrementalLayoutEngine.layout(resizeEvent, initializeDiagram, new LayoutConfiguratorRegistry(List.of()).getDefaultLayoutConfigurator());
+        incrementalLayoutEngine.layout(resizeEvent, incrementalLayoutConvertedDiagram, new LayoutConfiguratorRegistry(List.of()).getDefaultLayoutConfigurator());
 
         this.checkBorderNodesAtInitialPosition(borderNodes);
 
@@ -240,7 +248,8 @@ public class BorderNodePositionTests {
      * The border nodes are voluntary at an invalid position to make sure they properly positioned after nay layout
      * event.
      */
-    private DiagramLayoutData initializeDiagram() {
+    private IncrementalLayoutConvertedDiagram initializeDiagram() {
+
         DiagramLayoutData diagramLayoutData = this.createDiagramLayoutData();
         diagramLayoutData.setEdges(new ArrayList<>());
 
@@ -280,7 +289,8 @@ public class BorderNodePositionTests {
 
         nodeLayoutData.setBorderNodes(borderNodes);
 
-        return diagramLayoutData;
+        IncrementalLayoutConvertedDiagram incrementalLayoutConvertedDiagram = new IncrementalLayoutConvertedDiagram(diagramLayoutData, Map.of());
+        return incrementalLayoutConvertedDiagram;
     }
 
     private DiagramLayoutData createDiagramLayoutData() {

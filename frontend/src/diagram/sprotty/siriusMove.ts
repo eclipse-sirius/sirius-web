@@ -12,8 +12,11 @@
  *******************************************************************************/
 import {
   MoveCommand,
+  ResolvedElementMove,
   ResolvedHandleMove,
   RoutedPoint,
+  SChildElement,
+  SConnectableElement,
   SEdge,
   SLabel,
   SModelElement,
@@ -27,37 +30,60 @@ export class SiriusMoveCommand extends MoveCommand {
     edge2move: Map<SRoutableElement, ResolvedHandleMove[]>,
     attachedEdgeShifts: Map<SRoutableElement, Point>
   ) {
-    edge2move.forEach((moves, edge) => {
-      const router = this.edgeRouterRegistry!.get(edge.routerKind);
-      const before = router.takeSnapshot(edge);
-      router.applyHandleMoves(edge, moves);
-      const after = router.takeSnapshot(edge);
-      this.edgeMementi.push({ edge, before, after });
-    });
-    const allEdgesToReset = new Set<SEdge>();
+    super.doMove(edge2move, attachedEdgeShifts);
+    const allEdgesToUpdate = new Set<SEdge>();
     this.resolvedMoves.forEach((res) => {
       var element = res.element;
       if (this.isSNode(element)) {
-        this.collectAllEdges(element, allEdgesToReset);
+        this.collectAllEdges(element, allEdgesToUpdate);
       }
       element.position = res.toPosition;
     });
-    this.resetEdgesRoutingPoints(allEdgesToReset);
+    this.updateRelatedEdges(allEdgesToUpdate, attachedEdgeShifts);
   }
 
-  private resetEdgesRoutingPoints(AllEdgesToReset: Set<SEdge>) {
-    AllEdgesToReset.forEach((edge) => {
-      const router = this.edgeRouterRegistry!.get(edge.routerKind);
-      const routedPoints = router.route(edge);
-      if (edge.sourceId === edge.targetId) {
-        // Do not put source and target routed point as routing pointed.
-        edge.routingPoints = routedPoints.slice(1, -1);
-      }
-      this.resetLabelPosition(edge, routedPoints);
+  private updateRelatedEdges(allEdgesToUpdate: Set<SEdge>, attachedEdgeShifts: Map<SRoutableElement, Point>) {
+    allEdgesToUpdate.forEach((edge) => {
+      const firstMove = (this.resolvedMoves.values().next() as IteratorYieldResult<ResolvedElementMove>).value;
+      const delta = Point.subtract(firstMove.toPosition, firstMove.fromPosition);
+      const edgeIsMoving = this.updateMovingEdge(edge, attachedEdgeShifts, delta);
+      this.updateEdgeLabelPosition(edge, edgeIsMoving, delta);
     });
   }
 
-  private resetLabelPosition(edge: SEdge, routedPoints: RoutedPoint[]) {
+  private updateMovingEdge(edge: SEdge, attachedEdgeShifts: Map<SRoutableElement, Point>, delta: Point): boolean {
+    let edgeIsMoving: boolean = !!attachedEdgeShifts.get(edge);
+    if (!edgeIsMoving && this.isContainedInResolvedMove(edge.source) && this.isContainedInResolvedMove(edge.target)) {
+      edge.routingPoints = edge.routingPoints.map((rp) => Point.add(rp, delta));
+      edgeIsMoving = true;
+    }
+    return edgeIsMoving;
+  }
+
+  private updateEdgeLabelPosition(edge: SEdge, edgeIsMoving: boolean, delta: Point): void {
+    const router = this.edgeRouterRegistry!.get(edge.routerKind);
+    const routedPoints = router.route(edge);
+    if (edge.sourceId === edge.targetId) {
+      // Do not put source and target routed point as routing point.
+      edge.routingPoints = routedPoints.slice(1, -1);
+    }
+    this.resetLabelPosition(edge, edgeIsMoving, routedPoints, delta);
+  }
+  private isContainedInResolvedMove(connectableElement: SConnectableElement): boolean {
+    let isContainedInResolvedMove: boolean = false;
+    let element: SChildElement = connectableElement;
+    while (!isContainedInResolvedMove && !!element) {
+      isContainedInResolvedMove = this.resolvedMoves.get(element.id) !== undefined;
+      if (element.parent instanceof SChildElement) {
+        element = element.parent;
+      } else {
+        element = undefined;
+      }
+    }
+    return isContainedInResolvedMove;
+  }
+
+  private resetLabelPosition(edge: SEdge, edgeHasBeenMoved: boolean, routedPoints: RoutedPoint[], delta: Point) {
     if (routedPoints.length === 2) {
       const label = edge.children.find((child) => this.isSLabel(child)) as SLabel;
       if (label) {
@@ -70,22 +96,10 @@ export class SiriusMoveCommand extends MoveCommand {
           y: labelY,
         };
       }
-    } else if (edge.sourceId === edge.targetId && routedPoints.length === 4) {
-      /*
-       * We made this in a context where we cannot create routing point manually.
-       * So having 4 routing points here means we are handling the move of an element
-       * used as source and target of a self loop edge.
-       */
+    } else if (edgeHasBeenMoved) {
       const label = edge.children.find((child) => this.isSLabel(child)) as SLabel;
-      if (label) {
-        const source = routedPoints[1];
-        const target = routedPoints[2];
-        const labelX = source.x + (target.x - source.x) / 2 - label.bounds.width / 2;
-        const labelY = source.y - 2 - label.size.height;
-        label.position = {
-          x: labelX,
-          y: labelY,
-        };
+      if (!!label) {
+        label.position = Point.add(label.position, delta);
       }
     }
   }
@@ -93,14 +107,14 @@ export class SiriusMoveCommand extends MoveCommand {
   private isSLabel(element: SModelElement): element is SLabel {
     return element instanceof SLabel;
   }
-  private collectAllEdges(element: SNode, allEdgesToReset: Set<SEdge>) {
+  private collectAllEdges(element: SNode, allEdgesToUpdate: Set<SEdge>) {
     element.children.forEach((child) => {
       if (this.isSNode(child)) {
-        this.collectAllEdges(child, allEdgesToReset);
+        this.collectAllEdges(child, allEdgesToUpdate);
       }
     });
-    element.outgoingEdges.forEach((edge) => allEdgesToReset.add(edge));
-    element.incomingEdges.forEach((edge) => allEdgesToReset.add(edge));
+    element.outgoingEdges.forEach((edge) => allEdgesToUpdate.add(edge));
+    element.incomingEdges.forEach((edge) => allEdgesToUpdate.add(edge));
   }
   private isSNode(element: SModelElement): element is SNode {
     return element instanceof SNode;
