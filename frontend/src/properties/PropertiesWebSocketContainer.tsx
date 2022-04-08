@@ -22,7 +22,11 @@ import {
   subscribersUpdatedEventPayloadFragment,
   widgetSubscriptionsUpdatedEventPayloadFragment,
 } from 'form/FormEventFragments';
-import { GQLPropertiesEventSubscription, GQLPropertiesEventVariables } from 'form/FormEventFragments.types';
+import {
+  GQLPropertiesEventInput,
+  GQLPropertiesEventSubscription,
+  GQLPropertiesEventVariables,
+} from 'form/FormEventFragments.types';
 import gql from 'graphql-tag';
 import { Properties } from 'properties/Properties';
 import {
@@ -39,7 +43,7 @@ import {
 import React, { useEffect } from 'react';
 import { WorkbenchViewComponentProps } from 'workbench/Workbench.types';
 
-const propertiesEventSubscription = gql`
+export const propertiesEventSubscription = gql`
   subscription propertiesEvent($input: PropertiesEventInput!) {
     propertiesEvent(input: $input) {
       __typename
@@ -101,16 +105,17 @@ export const PropertiesWebSocketContainer = ({
     }
   }, [currentSelection, selection, dispatch]);
 
+  const input: GQLPropertiesEventInput = {
+    id,
+    editingContextId,
+    objectIds: currentSelection?.entries.map((entry) => entry.id),
+  };
+  const variables: GQLPropertiesEventVariables = { input };
+
   const { error } = useSubscription<GQLPropertiesEventSubscription, GQLPropertiesEventVariables>(
     propertiesEventSubscription,
     {
-      variables: {
-        input: {
-          id,
-          editingContextId,
-          objectIds: currentSelection?.entries.map((entry) => entry.id),
-        },
-      },
+      variables,
       fetchPolicy: 'no-cache',
       skip: propertiesWebSocketContainer === 'empty' || propertiesWebSocketContainer === 'unsupportedSelection',
       onSubscriptionData: ({ subscriptionData }) => {

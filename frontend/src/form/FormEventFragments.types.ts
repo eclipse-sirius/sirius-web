@@ -128,7 +128,7 @@ export interface GQLTextarea extends GQLWidget {
 
 export interface GQLCheckbox extends GQLWidget {
   label: string;
-  booleanValue: string;
+  booleanValue: boolean;
 }
 
 export interface GQLSelect extends GQLWidget {
