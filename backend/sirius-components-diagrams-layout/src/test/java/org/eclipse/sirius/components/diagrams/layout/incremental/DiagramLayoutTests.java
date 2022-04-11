@@ -25,8 +25,10 @@ import java.util.Optional;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.Position;
+import org.eclipse.sirius.components.diagrams.Ratio;
 import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
@@ -149,6 +151,17 @@ public class DiagramLayoutTests {
         assertThat(optionalThirdParent).isPresent();
         Node thirdParent = optionalThirdParent.get();
         assertThat(thirdParent.getPosition()).isEqualTo(Position.UNDEFINED);
+
+        assertThat(refreshedDiagram.getEdges()).hasSize(2);
+        Edge firstToSecondEdge = refreshedDiagram.getEdges().get(0);
+        assertThat(firstToSecondEdge.getSourceAnchorRelativePosition()).isEqualTo(Ratio.of(0.5, 0.5));
+        assertThat(firstToSecondEdge.getTargetAnchorRelativePosition()).isEqualTo(Ratio.of(0.8, 0.8));
+        assertThat(firstToSecondEdge.getRoutingPoints()).isEmpty();
+
+        Edge secondToFirstEdge = refreshedDiagram.getEdges().get(1);
+        assertThat(secondToFirstEdge.getSourceAnchorRelativePosition()).isEqualTo(Ratio.of(0.2, 0.7));
+        assertThat(secondToFirstEdge.getTargetAnchorRelativePosition()).isEqualTo(Ratio.of(0.1, 0.9));
+        assertThat(secondToFirstEdge.getRoutingPoints()).isEmpty();
 
         IDiagramEvent diagramEvent = new SinglePositionEvent(Position.at(300, 100));
         Diagram layoutedDiagram = diagramCreationService.performLayout(editingContext, refreshedDiagram, diagramEvent);
