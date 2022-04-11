@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,7 +30,23 @@ const defaultProps = {
   resizablePanel: FIRST_PANEL,
 };
 
-export const Panels = ({ firstPanel, secondPanel, orientation, resizablePanel, initialResizablePanelSize }) => {
+type Orientation = 'HORIZONTAL' | 'VERTICAL';
+
+interface PanelsProps {
+  firstPanel: any;
+  secondPanel: any;
+  orientation: Orientation;
+  resizablePanel: any;
+  initialResizablePanelSize: number;
+}
+
+export const Panels = ({
+  firstPanel,
+  secondPanel,
+  orientation,
+  resizablePanel,
+  initialResizablePanelSize,
+}: PanelsProps) => {
   const initialState = { isDragging: false, initialPosition: 0, resizablePanelSize: initialResizablePanelSize };
   const [state, setState] = useState(initialState);
   const { isDragging, resizablePanelSize } = state;
