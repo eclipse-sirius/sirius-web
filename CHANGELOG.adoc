@@ -12,7 +12,10 @@
 
 === Breaking changes
 
-- https://github.com/eclipse-sirius/sirius-components/issues/1088[#1088] [core] Change the type of `IRepresentationDescription#id` from UUID to String. This will allow us, when we will receive an operation to perform with a given representation description identifier, to determine if this operation should be handled by the Sirius Desktop compatibility layer, the View support or by a programmatic API
+- https://github.com/eclipse-sirius/sirius-components/issues/1088[#1088] [core] Change the type of `IRepresentationDescription#id` from UUID to String.
+This will allow us, when we will receive an operation to perform with a given representation description identifier, to determine if this operation should be handled by the Sirius Desktop compatibility layer, the View support or by a programmatic API
+- https://github.com/eclipse-sirius/sirius-components/issues/1155[#1155] [workbench] `WorkbenchViewContribution` now require an `icon` prop
+- https://github.com/eclipse-sirius/sirius-components/issues/1155[#1155] [core] The palette used by Sirius Components now require two additional colors for the navigation area. The type of the new palette is described in `frontend/src/materialui.ts`. Users of the fallback theme can upgrade without having to add those new colors since they are provided by default.
 
 === Dependency update
 
@@ -27,6 +30,7 @@
 === Improvements
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1165[#1165] [doc] Improve the pull request template
+- https://github.com/eclipse-sirius/sirius-components/issues/1155[#1155] [workbench] The left and right panels now use a vertical bar of icons (instead of accordions) to select which view to display
 
 === New features
 

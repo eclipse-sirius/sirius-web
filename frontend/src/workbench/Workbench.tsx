@@ -180,6 +180,7 @@ export const Workbench = ({
         selection={selection}
         setSelection={setSelection}
         readOnly={readOnly}
+        side="left"
         contributions={workbenchViewLeftSideContributions}
       />
     </TreeItemContextMenuContext.Provider>
@@ -191,6 +192,7 @@ export const Workbench = ({
       selection={selection}
       setSelection={setSelection}
       readOnly={readOnly}
+      side="right"
       contributions={workbenchViewRightSideContributions}
     />
   );
