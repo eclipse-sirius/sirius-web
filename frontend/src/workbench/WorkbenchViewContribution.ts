@@ -13,6 +13,6 @@
 
 import { WorkbenchViewContributionProps } from './Workbench.types';
 
-export const WorkbenchViewContribution = ({ side, title, component }: WorkbenchViewContributionProps) => {
+export const WorkbenchViewContribution = ({ side, title, icon, component }: WorkbenchViewContributionProps) => {
   return null;
 };
