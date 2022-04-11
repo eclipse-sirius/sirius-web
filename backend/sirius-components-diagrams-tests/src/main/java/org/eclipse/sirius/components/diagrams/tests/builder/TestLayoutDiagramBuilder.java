@@ -74,7 +74,6 @@ public final class TestLayoutDiagramBuilder {
 
     public Diagram build() {
         Map<String, String> targetObjectIdToNodeId = new HashMap<>();
-
         List<Node> nodes = this.nodesBuilder.build(targetObjectIdToNodeId);
         List<Edge> edges = this.edgeBuilders.stream().map(edgeBuilder -> edgeBuilder.build(targetObjectIdToNodeId)).collect(Collectors.toList());
 

@@ -17,8 +17,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,27 +52,6 @@ public class DiagramELKLayoutTest {
     private TestLayoutObjectService objectService = new TestLayoutObjectService();
 
     private DefaultTestDiagramDescriptionProvider defaultTestDiagramDescriptionProvider = new DefaultTestDiagramDescriptionProvider(this.objectService);
-
-    private Optional<Node> getNode(List<Node> nodes, String targetObjectId) {
-        Optional<Node> optionalNode = Optional.empty();
-        List<Node> deeperNode = new ArrayList<>();
-
-        Iterator<Node> nodeIt = nodes.iterator();
-        while (optionalNode.isEmpty() && nodeIt.hasNext()) {
-            Node node = nodeIt.next();
-            if (targetObjectId.equals(node.getTargetObjectId())) {
-                optionalNode = Optional.of(node);
-            } else {
-                deeperNode.addAll(node.getChildNodes());
-            }
-        }
-
-        if (optionalNode.isEmpty() && !deeperNode.isEmpty()) {
-            optionalNode = this.getNode(deeperNode, targetObjectId);
-        }
-
-        return optionalNode;
-    }
 
     private TestDiagramCreationService createDiagramCreationService(Diagram diagram) {
         IRepresentationDescriptionSearchService.NoOp representationDescriptionSearchService = new IRepresentationDescriptionSearchService.NoOp() {
