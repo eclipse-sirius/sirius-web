@@ -5,6 +5,7 @@
 === Architectural decision records
 
 - [ADR-50] Add support for multiple selection entries in the details view
+- [ADR-51] Add the ability to minimize the content of a site
 
 === Deprecation warning
 

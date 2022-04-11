@@ -1,0 +1,53 @@
+= ADR-051 - Add the ability to minimize the content of a site
+
+== Context
+
+The workbench currently displays panels ("sites") on the left and right of the main area.
+Each panel displays a single component at a time, among a configurable set (see `WorkbenchViewContribution`).
+While the panels' width can be changed by the user, it is not possible to hide them.
+It is possible to reduce their size to almost nothing, but this tends to break the layout and is difficult to reverse.
+
+It should be possible for the end-user to minimize either panel with a single click to have more space for the representation area.
+Once minimized, it should be possible to re-open a minimized panel to its default width as simply.
+
+== Decision
+
+For that, we want to stop using the `<Accordion />` component from MaterialUI and instead use a vertical bar which will display the icons of the various views to display.
+Each contribution, which is currently displayed in its own accordion will be displayed using an icon (with the name as a tooltip).
+We will use Material's `Tabs` and `Tab` component (in vertical mode) to display the vertical bars.
+
+Clicking on a contribution's icon will either:
+* select this contribution and make it the only one visible in the panel, possibly opening the panel if it was minimized;
+* minimize the panel if it was already the visible contribution.
+
+On a `<Site />` located on the right, the vertical bar should be located on the right and on the left for a `<Site />` located on the left.
+The `Site` component will get a new prop to configure this behavior:
+
+```
+export interface SiteProps {
+    // existing props
+    side: WorkbenchViewSide;
+}
+```
+
+Each view should will need to specific an icon (from MaterialUI) in order to identify the view in the vertical bar:
+
+```
+export interface WorkbenchViewContributionProps {
+  // existing props
+  icon: React.ReactElement;
+}
+```
+
+The width of each panel is managed by the `<Panels/>` component.
+Currently the width can only be controlled by the end-user.
+The `<Panels/`> component will evolve to allow its width to be set programmatically, so that the `<Site/>` inside can tell reduce the panel's width when minimized.
+
+This change will not involve any change on the backend.
+The only difference in behavior will come from the fact that the views which are not displayed will be unmounted and as such they won't subscribe to the relevant subscription.
+This will help lower the CPU and Memory footprint of the <Workbench />.
+This means components like the Explorer will lose their local state (e.g. which items are expanded) when minimized and re-expanded.
+
+== Status
+
+WIP
