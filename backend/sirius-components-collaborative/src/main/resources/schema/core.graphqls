@@ -25,6 +25,7 @@ type EditingContext {
   queryBasedBoolean(query: String!): Boolean
   queryBasedObject(query: String!, variableName: String): Object
   queryBasedObjects(query: String!, variableName: String): [Object]
+  actions: EditingContextActionsConnection!
 }
 
 type Domain {
@@ -87,6 +88,20 @@ type EditingContextStereotypeDescriptionEdge {
   node: StereotypeDescription!
 }
 
+type EditingContextActionsConnection {
+  edges: [EditingContextActionsEdge!]!
+  pageInfo: PageInfo!
+}
+
+type EditingContextActionsEdge {
+  node: EditingContextAction!
+}
+
+type EditingContextAction {
+  id: ID!
+  label: String!
+}
+
 type SubscribersUpdatedEventPayload {
   id: ID!
   subscribers: [Subscriber]!
@@ -146,6 +161,7 @@ type Mutation {
   deleteObject(input: DeleteObjectInput!): DeleteObjectPayload!
   renameObject(input: RenameObjectInput!): RenameObjectPayload!
   uploadDocument(input: UploadDocumentInput!): UploadDocumentPayload!
+  invokeEditingContextAction(input: InvokeEditingContextActionInput!): InvokeEditingContextActionPayload!
 }
 
 type Document {
@@ -270,3 +286,14 @@ type WorkbenchSelectionEntry {
   kind: String!
 }
 
+input InvokeEditingContextActionInput {
+  id: ID!
+  editingContextId: ID!
+  actionId: String!
+}
+
+union InvokeEditingContextActionPayload = ErrorPayload | InvokeEditingContextActionSuccessPayload
+
+type InvokeEditingContextActionSuccessPayload {
+  id: ID!
+}

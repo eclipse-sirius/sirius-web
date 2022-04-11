@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -49,6 +49,14 @@ const getOnboardDataQuery = gql`
             }
           }
         }
+        actions {
+          edges {
+            node {
+              id
+              label
+            }
+          }
+        }
       }
     }
   }
@@ -56,13 +64,14 @@ const getOnboardDataQuery = gql`
 
 const INITIAL_STATE = {
   stereotypeDescriptions: [],
+  editingContextActions: [],
   representationDescriptions: [],
   representations: [],
 };
 
 export const OnboardArea = ({ editingContextId, selection, setSelection, readOnly }: MainAreaComponentProps) => {
   const [state, setState] = useState(INITIAL_STATE);
-  const { stereotypeDescriptions, representationDescriptions, representations } = state;
+  const { stereotypeDescriptions, editingContextActions, representationDescriptions, representations } = state;
 
   const kind = selection.entries.length > 0 ? selection.entries[0].kind : '';
 
@@ -75,6 +84,7 @@ export const OnboardArea = ({ editingContextId, selection, setSelection, readOnl
       const { viewer } = data;
       const representations = viewer.editingContext.representations.edges.map((edge) => edge.node);
       const stereotypeDescriptions = viewer.editingContext.stereotypeDescriptions.edges.map((edge) => edge.node);
+      const editingContextActions = viewer.editingContext.actions.edges.map((edge) => edge.node);
       const representationDescriptions = viewer.editingContext.representationDescriptions.edges.map(
         (edge) => edge.node
       );
@@ -82,6 +92,7 @@ export const OnboardArea = ({ editingContextId, selection, setSelection, readOnl
       setState({
         representations,
         stereotypeDescriptions,
+        editingContextActions,
         representationDescriptions,
       });
     }
@@ -93,6 +104,7 @@ export const OnboardArea = ({ editingContextId, selection, setSelection, readOnl
         <NewDocumentArea
           editingContextId={editingContextId}
           stereotypeDescriptions={stereotypeDescriptions}
+          editingContextActions={editingContextActions}
           setSelection={setSelection}
           readOnly={readOnly}
         />
