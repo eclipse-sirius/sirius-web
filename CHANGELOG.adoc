@@ -25,6 +25,7 @@
 
 === New features
 
+- https://github.com/eclipse-sirius/sirius-components/issues/1149[#1149] [form] Add support for form descriptions in the View DSL
 - https://github.com/eclipse-sirius/sirius-components/issues/1112[#1112] [explorer] Add support for Ctrl+click or ⌘+click to select multiple elements in the explorer
 - https://github.com/eclipse-sirius/sirius-components/issues/1116[#1116] [form] Add support for multiple selection entries in the details view
 - https://github.com/eclipse-sirius/sirius-components/issues/1117[#1117] [diagram] Add support for multiple selections in a diagram. This work only display the various selection entries in the diagram. It does not support Ctrl+click or ⌘+click in a diagram. Support for this feature would require additional work with major improvements in the lifecycle of the `DiagramServer``

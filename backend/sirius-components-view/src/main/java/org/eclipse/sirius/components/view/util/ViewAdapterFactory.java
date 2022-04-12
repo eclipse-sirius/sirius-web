@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,6 +32,7 @@ import org.eclipse.sirius.components.view.DropTool;
 import org.eclipse.sirius.components.view.EdgeDescription;
 import org.eclipse.sirius.components.view.EdgeStyle;
 import org.eclipse.sirius.components.view.EdgeTool;
+import org.eclipse.sirius.components.view.FormDescription;
 import org.eclipse.sirius.components.view.LabelEditTool;
 import org.eclipse.sirius.components.view.LabelStyle;
 import org.eclipse.sirius.components.view.NodeDescription;
@@ -41,10 +42,12 @@ import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.SetValue;
 import org.eclipse.sirius.components.view.Style;
+import org.eclipse.sirius.components.view.TextfieldDescription;
 import org.eclipse.sirius.components.view.Tool;
 import org.eclipse.sirius.components.view.UnsetValue;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewPackage;
+import org.eclipse.sirius.components.view.WidgetDescription;
 
 /**
  * <!-- begin-user-doc --> The <b>Adapter Factory</b> for the model. It provides an adapter <code>createXXX</code>
@@ -235,6 +238,21 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseConditionalEdgeStyle(ConditionalEdgeStyle object) {
             return ViewAdapterFactory.this.createConditionalEdgeStyleAdapter();
+        }
+
+        @Override
+        public Adapter caseFormDescription(FormDescription object) {
+            return ViewAdapterFactory.this.createFormDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter caseWidgetDescription(WidgetDescription object) {
+            return ViewAdapterFactory.this.createWidgetDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter caseTextfieldDescription(TextfieldDescription object) {
+            return ViewAdapterFactory.this.createTextfieldDescriptionAdapter();
         }
 
         @Override
@@ -624,6 +642,47 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createConditionalEdgeStyleAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.FormDescription <em>Form
+     * Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.FormDescription
+     * @generated
+     */
+    public Adapter createFormDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.WidgetDescription
+     * <em>Widget Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.WidgetDescription
+     * @generated
+     */
+    public Adapter createWidgetDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.TextfieldDescription
+     * <em>Textfield Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.TextfieldDescription
+     * @generated
+     */
+    public Adapter createTextfieldDescriptionAdapter() {
         return null;
     }
 
