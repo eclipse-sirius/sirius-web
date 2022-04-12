@@ -150,5 +150,15 @@
     </genClasses>
     <genClasses ecoreClass="view.ecore#//ConditionalNodeStyle"/>
     <genClasses ecoreClass="view.ecore#//ConditionalEdgeStyle"/>
+    <genClasses ecoreClass="view.ecore#//FormDescription">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//FormDescription/widgets"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="view.ecore#//WidgetDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//WidgetDescription/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//WidgetDescription/labelExpression"/>
+    </genClasses>
+    <genClasses ecoreClass="view.ecore#//TextfieldDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//TextfieldDescription/valueExpression"/>
+    </genClasses>
   </genPackages>
 </genmodel:GenModel>

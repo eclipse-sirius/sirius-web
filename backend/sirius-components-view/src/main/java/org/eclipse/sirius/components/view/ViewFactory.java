@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -188,6 +188,22 @@ public interface ViewFactory extends EFactory {
      * @generated
      */
     ConditionalEdgeStyle createConditionalEdgeStyle();
+
+    /**
+     * Returns a new object of class '<em>Form Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Form Description</em>'.
+     * @generated
+     */
+    FormDescription createFormDescription();
+
+    /**
+     * Returns a new object of class '<em>Textfield Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Textfield Description</em>'.
+     * @generated
+     */
+    TextfieldDescription createTextfieldDescription();
 
     /**
      * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->

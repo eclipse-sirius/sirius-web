@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,6 +32,7 @@ import org.eclipse.sirius.components.view.DropTool;
 import org.eclipse.sirius.components.view.EdgeDescription;
 import org.eclipse.sirius.components.view.EdgeStyle;
 import org.eclipse.sirius.components.view.EdgeTool;
+import org.eclipse.sirius.components.view.FormDescription;
 import org.eclipse.sirius.components.view.LabelEditTool;
 import org.eclipse.sirius.components.view.LineStyle;
 import org.eclipse.sirius.components.view.NodeDescription;
@@ -39,6 +40,7 @@ import org.eclipse.sirius.components.view.NodeStyle;
 import org.eclipse.sirius.components.view.NodeTool;
 import org.eclipse.sirius.components.view.SetValue;
 import org.eclipse.sirius.components.view.SynchronizationPolicy;
+import org.eclipse.sirius.components.view.TextfieldDescription;
 import org.eclipse.sirius.components.view.UnsetValue;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewFactory;
@@ -124,6 +126,10 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
             return this.createConditionalNodeStyle();
         case ViewPackage.CONDITIONAL_EDGE_STYLE:
             return this.createConditionalEdgeStyle();
+        case ViewPackage.FORM_DESCRIPTION:
+            return this.createFormDescription();
+        case ViewPackage.TEXTFIELD_DESCRIPTION:
+            return this.createTextfieldDescription();
         default:
             throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
         }
@@ -385,6 +391,28 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
     public ConditionalEdgeStyle createConditionalEdgeStyle() {
         ConditionalEdgeStyleImpl conditionalEdgeStyle = new ConditionalEdgeStyleImpl();
         return conditionalEdgeStyle;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public FormDescription createFormDescription() {
+        FormDescriptionImpl formDescription = new FormDescriptionImpl();
+        return formDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public TextfieldDescription createTextfieldDescription() {
+        TextfieldDescriptionImpl textfieldDescription = new TextfieldDescriptionImpl();
+        return textfieldDescription;
     }
 
     /**

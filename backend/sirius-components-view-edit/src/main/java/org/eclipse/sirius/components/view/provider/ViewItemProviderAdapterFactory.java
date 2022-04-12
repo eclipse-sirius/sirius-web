@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -538,6 +538,52 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     }
 
     /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.FormDescription}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected FormDescriptionItemProvider formDescriptionItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.FormDescription}. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createFormDescriptionAdapter() {
+        if (this.formDescriptionItemProvider == null) {
+            this.formDescriptionItemProvider = new FormDescriptionItemProvider(this);
+        }
+
+        return this.formDescriptionItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.TextfieldDescription}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected TextfieldDescriptionItemProvider textfieldDescriptionItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.TextfieldDescription}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createTextfieldDescriptionAdapter() {
+        if (this.textfieldDescriptionItemProvider == null) {
+            this.textfieldDescriptionItemProvider = new TextfieldDescriptionItemProvider(this);
+        }
+
+        return this.textfieldDescriptionItemProvider;
+    }
+
+    /**
      * This returns the root adapter factory that contains this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -677,6 +723,10 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
             this.conditionalNodeStyleItemProvider.dispose();
         if (this.conditionalEdgeStyleItemProvider != null)
             this.conditionalEdgeStyleItemProvider.dispose();
+        if (this.formDescriptionItemProvider != null)
+            this.formDescriptionItemProvider.dispose();
+        if (this.textfieldDescriptionItemProvider != null)
+            this.textfieldDescriptionItemProvider.dispose();
     }
 
 }

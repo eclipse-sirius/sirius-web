@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,6 +35,7 @@ import org.eclipse.sirius.components.view.DropTool;
 import org.eclipse.sirius.components.view.EdgeDescription;
 import org.eclipse.sirius.components.view.EdgeStyle;
 import org.eclipse.sirius.components.view.EdgeTool;
+import org.eclipse.sirius.components.view.FormDescription;
 import org.eclipse.sirius.components.view.LabelEditTool;
 import org.eclipse.sirius.components.view.LabelStyle;
 import org.eclipse.sirius.components.view.LineStyle;
@@ -46,11 +47,13 @@ import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.SetValue;
 import org.eclipse.sirius.components.view.Style;
 import org.eclipse.sirius.components.view.SynchronizationPolicy;
+import org.eclipse.sirius.components.view.TextfieldDescription;
 import org.eclipse.sirius.components.view.Tool;
 import org.eclipse.sirius.components.view.UnsetValue;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.ViewPackage;
+import org.eclipse.sirius.components.view.WidgetDescription;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Package</b>. <!-- end-user-doc -->
@@ -253,6 +256,27 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     private EClass conditionalEdgeStyleEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass formDescriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass widgetDescriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass textfieldDescriptionEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1282,6 +1306,76 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
+    public EClass getFormDescription() {
+        return this.formDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getFormDescription_Widgets() {
+        return (EReference) this.formDescriptionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getWidgetDescription() {
+        return this.widgetDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getWidgetDescription_Name() {
+        return (EAttribute) this.widgetDescriptionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getWidgetDescription_LabelExpression() {
+        return (EAttribute) this.widgetDescriptionEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getTextfieldDescription() {
+        return this.textfieldDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getTextfieldDescription_ValueExpression() {
+        return (EAttribute) this.textfieldDescriptionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EEnum getArrowStyle() {
         return this.arrowStyleEEnum;
     }
@@ -1457,6 +1551,16 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
 
         this.conditionalEdgeStyleEClass = this.createEClass(CONDITIONAL_EDGE_STYLE);
 
+        this.formDescriptionEClass = this.createEClass(FORM_DESCRIPTION);
+        this.createEReference(this.formDescriptionEClass, FORM_DESCRIPTION__WIDGETS);
+
+        this.widgetDescriptionEClass = this.createEClass(WIDGET_DESCRIPTION);
+        this.createEAttribute(this.widgetDescriptionEClass, WIDGET_DESCRIPTION__NAME);
+        this.createEAttribute(this.widgetDescriptionEClass, WIDGET_DESCRIPTION__LABEL_EXPRESSION);
+
+        this.textfieldDescriptionEClass = this.createEClass(TEXTFIELD_DESCRIPTION);
+        this.createEAttribute(this.textfieldDescriptionEClass, TEXTFIELD_DESCRIPTION__VALUE_EXPRESSION);
+
         // Create enums
         this.arrowStyleEEnum = this.createEEnum(ARROW_STYLE);
         this.lineStyleEEnum = this.createEEnum(LINE_STYLE);
@@ -1515,6 +1619,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.conditionalNodeStyleEClass.getESuperTypes().add(this.getNodeStyle());
         this.conditionalEdgeStyleEClass.getESuperTypes().add(this.getConditional());
         this.conditionalEdgeStyleEClass.getESuperTypes().add(this.getEdgeStyle());
+        this.formDescriptionEClass.getESuperTypes().add(this.getRepresentationDescription());
+        this.textfieldDescriptionEClass.getESuperTypes().add(this.getWidgetDescription());
 
         // Initialize classes, features, and operations; add parameters
         this.initEClass(this.viewEClass, View.class, "View", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
@@ -1704,6 +1810,20 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.initEClass(this.conditionalNodeStyleEClass, ConditionalNodeStyle.class, "ConditionalNodeStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
         this.initEClass(this.conditionalEdgeStyleEClass, ConditionalEdgeStyle.class, "ConditionalEdgeStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+
+        this.initEClass(this.formDescriptionEClass, FormDescription.class, "FormDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+        this.initEReference(this.getFormDescription_Widgets(), this.getWidgetDescription(), null, "widgets", null, 0, -1, FormDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, //$NON-NLS-1$
+                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.widgetDescriptionEClass, WidgetDescription.class, "WidgetDescription", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+        this.initEAttribute(this.getWidgetDescription_Name(), this.ecorePackage.getEString(), "name", null, 0, 1, WidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, //$NON-NLS-1$
+                !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getWidgetDescription_LabelExpression(), this.ecorePackage.getEString(), "labelExpression", null, 0, 1, WidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE, //$NON-NLS-1$
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.textfieldDescriptionEClass, TextfieldDescription.class, "TextfieldDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+        this.initEAttribute(this.getTextfieldDescription_ValueExpression(), this.ecorePackage.getEString(), "valueExpression", null, 0, 1, TextfieldDescription.class, !IS_TRANSIENT, !IS_VOLATILE, //$NON-NLS-1$
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         // Initialize enums and add enum literals
         this.initEEnum(this.arrowStyleEEnum, ArrowStyle.class, "ArrowStyle"); //$NON-NLS-1$

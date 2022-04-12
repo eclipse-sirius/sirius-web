@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -2046,6 +2046,175 @@ public interface ViewPackage extends EPackage {
     int CONDITIONAL_EDGE_STYLE_OPERATION_COUNT = CONDITIONAL_OPERATION_COUNT + 0;
 
     /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.FormDescriptionImpl <em>Form
+     * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.FormDescriptionImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getFormDescription()
+     * @generated
+     */
+    int FORM_DESCRIPTION = 28;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FORM_DESCRIPTION__NAME = REPRESENTATION_DESCRIPTION__NAME;
+
+    /**
+     * The feature id for the '<em><b>Domain Type</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FORM_DESCRIPTION__DOMAIN_TYPE = REPRESENTATION_DESCRIPTION__DOMAIN_TYPE;
+
+    /**
+     * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FORM_DESCRIPTION__PRECONDITION_EXPRESSION = REPRESENTATION_DESCRIPTION__PRECONDITION_EXPRESSION;
+
+    /**
+     * The feature id for the '<em><b>Title Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FORM_DESCRIPTION__TITLE_EXPRESSION = REPRESENTATION_DESCRIPTION__TITLE_EXPRESSION;
+
+    /**
+     * The feature id for the '<em><b>Widgets</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FORM_DESCRIPTION__WIDGETS = REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 0;
+
+    /**
+     * The number of structural features of the '<em>Form Description</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FORM_DESCRIPTION_FEATURE_COUNT = REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 1;
+
+    /**
+     * The number of operations of the '<em>Form Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FORM_DESCRIPTION_OPERATION_COUNT = REPRESENTATION_DESCRIPTION_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.WidgetDescriptionImpl <em>Widget
+     * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.WidgetDescriptionImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getWidgetDescription()
+     * @generated
+     */
+    int WIDGET_DESCRIPTION = 29;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int WIDGET_DESCRIPTION__NAME = 0;
+
+    /**
+     * The feature id for the '<em><b>Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int WIDGET_DESCRIPTION__LABEL_EXPRESSION = 1;
+
+    /**
+     * The number of structural features of the '<em>Widget Description</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int WIDGET_DESCRIPTION_FEATURE_COUNT = 2;
+
+    /**
+     * The number of operations of the '<em>Widget Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int WIDGET_DESCRIPTION_OPERATION_COUNT = 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.TextfieldDescriptionImpl <em>Textfield
+     * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.TextfieldDescriptionImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getTextfieldDescription()
+     * @generated
+     */
+    int TEXTFIELD_DESCRIPTION = 30;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TEXTFIELD_DESCRIPTION__NAME = WIDGET_DESCRIPTION__NAME;
+
+    /**
+     * The feature id for the '<em><b>Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TEXTFIELD_DESCRIPTION__LABEL_EXPRESSION = WIDGET_DESCRIPTION__LABEL_EXPRESSION;
+
+    /**
+     * The feature id for the '<em><b>Value Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TEXTFIELD_DESCRIPTION__VALUE_EXPRESSION = WIDGET_DESCRIPTION_FEATURE_COUNT + 0;
+
+    /**
+     * The number of structural features of the '<em>Textfield Description</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TEXTFIELD_DESCRIPTION_FEATURE_COUNT = WIDGET_DESCRIPTION_FEATURE_COUNT + 1;
+
+    /**
+     * The number of operations of the '<em>Textfield Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TEXTFIELD_DESCRIPTION_OPERATION_COUNT = WIDGET_DESCRIPTION_OPERATION_COUNT + 0;
+
+    /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.ArrowStyle <em>Arrow Style</em>}' enum.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -2053,7 +2222,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getArrowStyle()
      * @generated
      */
-    int ARROW_STYLE = 28;
+    int ARROW_STYLE = 31;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.LineStyle <em>Line Style</em>}' enum. <!--
@@ -2063,7 +2232,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLineStyle()
      * @generated
      */
-    int LINE_STYLE = 29;
+    int LINE_STYLE = 32;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.SynchronizationPolicy <em>Synchronization
@@ -2073,7 +2242,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getSynchronizationPolicy()
      * @generated
      */
-    int SYNCHRONIZATION_POLICY = 30;
+    int SYNCHRONIZATION_POLICY = 33;
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.View <em>View</em>}'. <!--
@@ -3113,6 +3282,83 @@ public interface ViewPackage extends EPackage {
     EClass getConditionalEdgeStyle();
 
     /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.FormDescription <em>Form
+     * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Form Description</em>'.
+     * @see org.eclipse.sirius.components.view.FormDescription
+     * @generated
+     */
+    EClass getFormDescription();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.FormDescription#getWidgets <em>Widgets</em>}'. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Widgets</em>'.
+     * @see org.eclipse.sirius.components.view.FormDescription#getWidgets()
+     * @see #getFormDescription()
+     * @generated
+     */
+    EReference getFormDescription_Widgets();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.WidgetDescription <em>Widget
+     * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Widget Description</em>'.
+     * @see org.eclipse.sirius.components.view.WidgetDescription
+     * @generated
+     */
+    EClass getWidgetDescription();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.WidgetDescription#getName
+     * <em>Name</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Name</em>'.
+     * @see org.eclipse.sirius.components.view.WidgetDescription#getName()
+     * @see #getWidgetDescription()
+     * @generated
+     */
+    EAttribute getWidgetDescription_Name();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.WidgetDescription#getLabelExpression <em>Label Expression</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Label Expression</em>'.
+     * @see org.eclipse.sirius.components.view.WidgetDescription#getLabelExpression()
+     * @see #getWidgetDescription()
+     * @generated
+     */
+    EAttribute getWidgetDescription_LabelExpression();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.TextfieldDescription <em>Textfield
+     * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Textfield Description</em>'.
+     * @see org.eclipse.sirius.components.view.TextfieldDescription
+     * @generated
+     */
+    EClass getTextfieldDescription();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.TextfieldDescription#getValueExpression <em>Value Expression</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Value Expression</em>'.
+     * @see org.eclipse.sirius.components.view.TextfieldDescription#getValueExpression()
+     * @see #getTextfieldDescription()
+     * @generated
+     */
+    EAttribute getTextfieldDescription_ValueExpression();
+
+    /**
      * Returns the meta object for enum '{@link org.eclipse.sirius.components.view.ArrowStyle <em>Arrow Style</em>}'.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -3971,6 +4217,68 @@ public interface ViewPackage extends EPackage {
          * @generated
          */
         EClass CONDITIONAL_EDGE_STYLE = eINSTANCE.getConditionalEdgeStyle();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.FormDescriptionImpl <em>Form
+         * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.impl.FormDescriptionImpl
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getFormDescription()
+         * @generated
+         */
+        EClass FORM_DESCRIPTION = eINSTANCE.getFormDescription();
+
+        /**
+         * The meta object literal for the '<em><b>Widgets</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference FORM_DESCRIPTION__WIDGETS = eINSTANCE.getFormDescription_Widgets();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.WidgetDescriptionImpl
+         * <em>Widget Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.impl.WidgetDescriptionImpl
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getWidgetDescription()
+         * @generated
+         */
+        EClass WIDGET_DESCRIPTION = eINSTANCE.getWidgetDescription();
+
+        /**
+         * The meta object literal for the '<em><b>Name</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute WIDGET_DESCRIPTION__NAME = eINSTANCE.getWidgetDescription_Name();
+
+        /**
+         * The meta object literal for the '<em><b>Label Expression</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute WIDGET_DESCRIPTION__LABEL_EXPRESSION = eINSTANCE.getWidgetDescription_LabelExpression();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.TextfieldDescriptionImpl
+         * <em>Textfield Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.impl.TextfieldDescriptionImpl
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getTextfieldDescription()
+         * @generated
+         */
+        EClass TEXTFIELD_DESCRIPTION = eINSTANCE.getTextfieldDescription();
+
+        /**
+         * The meta object literal for the '<em><b>Value Expression</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute TEXTFIELD_DESCRIPTION__VALUE_EXPRESSION = eINSTANCE.getTextfieldDescription_ValueExpression();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.ArrowStyle <em>Arrow Style</em>}'
