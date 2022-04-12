@@ -1,0 +1,28 @@
+= ADR-051 - Add support for form descriptions in the View DSL
+
+== Context
+
+The current existing Form representation in Sirius-web does not rely on a dynamic description but on a static configuration in the application, by providing a FormDescription to the IRepresentationDescriptionRegistry.
+This feature aims to make it possible to define its own FormDescription in the View DSL.
+
+
+== Decision
+
+As a first step, only one widget, the `Textfield` widget will be supported.
+In the DSL, a new `FormDescription` EClass with RepresentationDescription as super Type will be created.
+This `FormDescription` will have a multi-valued containing feature `widgets` of type `WidgetDescription`.
+The `WidgetDescription` will be abstract and will own de following attributes:
+- `name`: EString
+- `labelExpression`: EString
+The widget `TextfieldDescription` will be created. It will own the following attribute:
+- `valueExpression`: EString
+
+`TextfieldDescription` will have `WidgetDescription` as super type.
+
+== Status
+
+WIP
+
+== Consequences
+
+ A `FormConverter` will have to be created to make it possible to create FormDescriptions from the frontend workbench.

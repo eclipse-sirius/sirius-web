@@ -5,6 +5,7 @@
 === Architectural decision records
 
 - [ADR-50] Add support for multiple selection entries in the details view
+- [ADR-51] Add support for form descriptions in the View DSL
 
 === Deprecation warning
 
