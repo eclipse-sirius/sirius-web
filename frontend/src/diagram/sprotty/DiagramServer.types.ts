@@ -17,7 +17,7 @@ import {
   Tool,
 } from 'diagram/DiagramWebSocketContainer.types';
 import { SModelElement } from 'sprotty';
-import { Action } from 'sprotty-protocol';
+import { Action, Point } from 'sprotty-protocol';
 import { Selection } from 'workbench/Workbench.types';
 
 export interface SiriusUpdateModelAction extends Action {
@@ -67,4 +67,10 @@ export interface ShowContextualMenuAction extends Action {
   tools: Tool[];
   startPosition: Position | null;
   endPosition: Position | null;
+}
+
+export interface ShowContextualToolbarAction {
+  kind: 'showContextualToolbar';
+  element: SModelElement;
+  position: Point;
 }

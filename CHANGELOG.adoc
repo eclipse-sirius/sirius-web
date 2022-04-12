@@ -22,6 +22,8 @@
 
 === Bug fixes
 
+- https://github.com/eclipse-sirius/sirius-components/issues/1154[#1154] [diagram] Display the palette where the click has been made, not where the cursor is. With the edge animation it was possible for the palette to be displayed at a wrong position which was making possible to create a floating edge.
+
 === Improvements
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1165[#1165] [doc] Improve the pull request template
