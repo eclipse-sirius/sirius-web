@@ -23,6 +23,7 @@ import { Label } from 'diagram/sprotty/Diagram.types';
 import {
   SetActiveConnectorToolsAction,
   ShowContextualMenuAction,
+  ShowContextualToolbarAction,
   SiriusSelectAction,
   SiriusUpdateModelAction,
   SourceElement,
@@ -206,7 +207,7 @@ export class DiagramServer extends ModelSource {
         this.handleSourceElementAction(action as SourceElementAction);
         break;
       case SHOW_CONTEXTUAL_TOOLBAR_ACTION:
-        this.handleShowContextualToolbarAction(action);
+        this.handleShowContextualToolbarAction(action as ShowContextualToolbarAction);
         break;
       case HIDE_CONTEXTUAL_TOOLBAR_ACTION:
         this.handleHideContextualToolbarAction(action);
@@ -339,10 +340,12 @@ export class DiagramServer extends ModelSource {
         );
       }
     } else {
-      this.actionDispatcher.dispatch({
+      const showContextualToolbarAction: ShowContextualToolbarAction = {
         kind: SHOW_CONTEXTUAL_TOOLBAR_ACTION,
         element,
-      } as any);
+        position: this.mousePositionTracker.lastPositionOnDiagram,
+      };
+      this.actionDispatcher.dispatch(showContextualToolbarAction);
     }
   }
 
@@ -417,17 +420,19 @@ export class DiagramServer extends ModelSource {
     this.diagramSource = sourceElement;
   }
 
-  handleShowContextualToolbarAction(action) {
-    const { element } = action;
-    if (element && (element.kind === 'siriusComponents://representation?type=Diagram' || element.parent)) {
+  handleShowContextualToolbarAction(action: ShowContextualToolbarAction) {
+    const { element, position: palettePosition } = action;
+    if (
+      !!element &&
+      ((element as any).kind === 'siriusComponents://representation?type=Diagram' || (element as any).parent)
+    ) {
       this.actionDispatcher.request<ViewportResult>(GetViewportAction.create()).then((viewportResult) => {
         const { viewport, canvasBounds } = viewportResult;
         const { scroll, zoom } = viewport;
-        const lastPositionOnDiagram = this.mousePositionTracker.lastPositionOnDiagram;
-        if (lastPositionOnDiagram) {
+        if (palettePosition) {
           const bounds: Bounds = {
-            x: (lastPositionOnDiagram.x - scroll.x) * zoom + canvasBounds.x + popupOffset.x,
-            y: (lastPositionOnDiagram.y - scroll.y) * zoom + canvasBounds.y + popupOffset.y,
+            x: (palettePosition.x - scroll.x) * zoom + canvasBounds.x + popupOffset.x,
+            y: (palettePosition.y - scroll.y) * zoom + canvasBounds.y + popupOffset.y,
             width: -1,
             height: -1,
           };
@@ -435,12 +440,12 @@ export class DiagramServer extends ModelSource {
           let edgeStartPosition = { x: 0, y: 0 };
           if (element instanceof SNode || element instanceof SPort) {
             edgeStartPosition = {
-              x: (lastPositionOnDiagram.x - scroll.x) * zoom,
-              y: (lastPositionOnDiagram.y - scroll.y) * zoom,
+              x: (palettePosition.x - scroll.x) * zoom,
+              y: (palettePosition.y - scroll.y) * zoom,
             };
           }
           const contextualPalette: Palette = {
-            palettePosition: lastPositionOnDiagram,
+            palettePosition,
             canvasBounds: bounds,
             edgeStartPosition,
             element,
@@ -451,7 +456,7 @@ export class DiagramServer extends ModelSource {
         }
       });
     } else {
-      const contextualPalette = null;
+      const contextualPalette: Palette = null;
       this.setContextualPalette(contextualPalette);
     }
   }
