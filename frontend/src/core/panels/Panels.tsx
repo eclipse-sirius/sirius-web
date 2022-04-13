@@ -10,22 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import styles from './Panels.module.css';
+import { PanelsProps } from './Panels.types';
 
-export const FIRST_PANEL = 'FIRST_PANEL';
-export const SECOND_PANEL = 'SECOND_PANEL';
-
-const propTypes = {
-  resizablePanel: PropTypes.oneOf([FIRST_PANEL, SECOND_PANEL]),
-  initialResizablePanelSize: PropTypes.number.isRequired,
-};
-const defaultProps = {
-  resizablePanel: FIRST_PANEL,
-};
-
-export const Panels = ({ firstPanel, secondPanel, resizablePanel, initialResizablePanelSize }) => {
+export const Panels = ({
+  firstPanel,
+  secondPanel,
+  resizablePanel = 'FIRST_PANEL',
+  initialResizablePanelSize,
+}: PanelsProps) => {
   const initialState = { isDragging: false, initialPosition: 0, resizablePanelSize: initialResizablePanelSize };
   const [state, setState] = useState(initialState);
   const { isDragging, resizablePanelSize } = state;
@@ -43,7 +37,7 @@ export const Panels = ({ firstPanel, secondPanel, resizablePanel, initialResizab
       setState((prevState) => {
         const delta = initialPosition - prevState.initialPosition;
         let resizablePanelSize = prevState.resizablePanelSize + delta;
-        if (resizablePanel === SECOND_PANEL) {
+        if (resizablePanel === 'SECOND_PANEL') {
           resizablePanelSize = prevState.resizablePanelSize - delta;
         }
         return { ...prevState, initialPosition, resizablePanelSize };
@@ -64,7 +58,7 @@ export const Panels = ({ firstPanel, secondPanel, resizablePanel, initialResizab
     gridTemplateRows: 'minmax(0, 1fr)',
     gridTemplateColumns: `${resizablePanelSize}px min-content minmax(0, 1fr)`,
   };
-  if (resizablePanel === SECOND_PANEL) {
+  if (resizablePanel === 'SECOND_PANEL') {
     style = {
       display: 'grid',
       gridTemplateRows: 'minmax(0, 1fr)',
@@ -83,5 +77,3 @@ export const Panels = ({ firstPanel, secondPanel, resizablePanel, initialResizab
     </div>
   );
 };
-Panels.propTypes = propTypes;
-Panels.defaultProps = defaultProps;

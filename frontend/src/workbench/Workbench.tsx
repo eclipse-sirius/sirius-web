@@ -16,7 +16,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
-import { Panels, SECOND_PANEL } from 'core/panels/Panels';
+import { Panels } from 'core/panels/Panels';
 import gql from 'graphql-tag';
 import { OnboardArea } from 'onboarding/OnboardArea';
 import React, { useContext, useEffect } from 'react';
@@ -234,7 +234,7 @@ export const Workbench = ({
         secondPanel={
           <div className={classes.main} data-testid="representationAndProperties">
             <Panels
-              resizablePanel={SECOND_PANEL}
+              resizablePanel="SECOND_PANEL"
               firstPanel={main}
               secondPanel={rightSite}
               initialResizablePanelSize={300}
