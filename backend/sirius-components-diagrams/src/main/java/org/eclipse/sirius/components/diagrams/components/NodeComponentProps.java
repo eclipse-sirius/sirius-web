@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo and others.
+ * Copyright (c) 2019, 2022 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -47,6 +47,8 @@ public final class NodeComponentProps implements IProps {
 
     private String parentElementId;
 
+    private List<String> previousTargetObjectIds;
+
     private NodeComponentProps() {
         // Prevent instantiation
     }
@@ -83,6 +85,10 @@ public final class NodeComponentProps implements IProps {
         return this.parentElementId;
     }
 
+    public List<String> getPreviousTargetObjectIds() {
+        return this.previousTargetObjectIds;
+    }
+
     public static Builder newNodeComponentProps() {
         return new Builder();
     }
@@ -109,6 +115,8 @@ public final class NodeComponentProps implements IProps {
         private List<ViewDeletionRequest> viewDeletionRequests;
 
         private String parentElementId;
+
+        private List<String> previousTargetObjectIds;
 
         public Builder variableManager(VariableManager variableManager) {
             this.variableManager = Objects.requireNonNull(variableManager);
@@ -150,6 +158,11 @@ public final class NodeComponentProps implements IProps {
             return this;
         }
 
+        public Builder previousTargetObjectIds(List<String> previousTargetObjectIds) {
+            this.previousTargetObjectIds = Objects.requireNonNull(previousTargetObjectIds);
+            return this;
+        }
+
         public NodeComponentProps build() {
             NodeComponentProps nodeComponentProps = new NodeComponentProps();
             nodeComponentProps.variableManager = Objects.requireNonNull(this.variableManager);
@@ -160,6 +173,7 @@ public final class NodeComponentProps implements IProps {
             nodeComponentProps.viewCreationRequests = Objects.requireNonNull(this.viewCreationRequests);
             nodeComponentProps.viewDeletionRequests = Objects.requireNonNull(this.viewDeletionRequests);
             nodeComponentProps.parentElementId = Objects.requireNonNull(this.parentElementId);
+            nodeComponentProps.previousTargetObjectIds = Objects.requireNonNull(this.previousTargetObjectIds);
             return nodeComponentProps;
         }
     }

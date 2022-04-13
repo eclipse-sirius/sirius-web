@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Size;
+import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.components.diagrams.description.LabelDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
@@ -45,6 +46,8 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 public class NodeComponent implements IComponent {
 
+    public static final String SEMANTIC_ELEMENT_IDS = "semanticElementIds"; //$NON-NLS-1$
+
     private NodeComponentProps props;
 
     public NodeComponent(NodeComponentProps props) {
@@ -58,8 +61,24 @@ public class NodeComponent implements IComponent {
         INodesRequestor nodesRequestor = this.props.getNodesRequestor();
         DiagramRenderingCache cache = this.props.getCache();
 
+        VariableManager nodeComponentVariableManager = variableManager.createChild();
+
+        if (nodeDescription.getSynchronizationPolicy().equals(SynchronizationPolicy.UNSYNCHRONIZED)) {
+            //@formatter:off
+            List<String> creationRequestsIds = this.props.getViewCreationRequests().stream()
+                    .filter(viewCreationRequest -> Objects.equals(viewCreationRequest.getDescriptionId(), nodeDescription.getId()))
+                    .filter(viewCreationRequest -> Objects.equals(viewCreationRequest.getParentElementId(), this.props.getParentElementId()))
+                    .map(ViewCreationRequest::getTargetObjectId)
+                    .collect(Collectors.toList());
+            //@formatter:on
+            List<String> previousNodeIds = this.props.getPreviousTargetObjectIds();
+            List<String> semanticElementIds = new ArrayList<>(creationRequestsIds);
+            semanticElementIds.addAll(previousNodeIds);
+            nodeComponentVariableManager.put(SEMANTIC_ELEMENT_IDS, semanticElementIds);
+        }
+
         List<Element> children = new ArrayList<>();
-        List<?> semanticElements = nodeDescription.getSemanticElementsProvider().apply(variableManager);
+        List<?> semanticElements = nodeDescription.getSemanticElementsProvider().apply(nodeComponentVariableManager);
 
         for (Object semanticElement : semanticElements) {
             VariableManager nodeVariableManager = variableManager.createChild();
@@ -221,6 +240,7 @@ public class NodeComponent implements IComponent {
 
         return nodeDescription.getBorderNodeDescriptions().stream().map(borderNodeDescription -> {
             List<Node> previousBorderNodes = optionalPreviousNode.map(previousNode -> new DiagramElementRequestor().getBorderNodes(previousNode, borderNodeDescription)).orElse(List.of());
+            List<String> previousBorderNodesTargetObjectIds = previousBorderNodes.stream().map(node -> node.getTargetObjectId()).collect(Collectors.toList());
             INodesRequestor borderNodesRequestor = new NodesRequestor(previousBorderNodes);
             //@formatter:off
             var nodeComponentProps = NodeComponentProps.newNodeComponentProps()
@@ -232,6 +252,7 @@ public class NodeComponent implements IComponent {
                     .viewCreationRequests(this.props.getViewCreationRequests())
                     .viewDeletionRequests(this.props.getViewDeletionRequests())
                     .parentElementId(nodeId)
+                    .previousTargetObjectIds(previousBorderNodesTargetObjectIds)
                     .build();
             //@formatter:on
             return new Element(NodeComponent.class, nodeComponentProps);
@@ -245,6 +266,7 @@ public class NodeComponent implements IComponent {
         //@formatter:off
         return nodeDescription.getChildNodeDescriptions().stream().map(childNodeDescription -> {
             List<Node> previousChildNodes = optionalPreviousNode.map(previousNode -> new DiagramElementRequestor().getChildNodes(previousNode, childNodeDescription)).orElse(List.of());
+            List<String> previousChildNodesTargetObjectIds = previousChildNodes.stream().map(node -> node.getTargetObjectId()).collect(Collectors.toList());
             INodesRequestor childNodesRequestor = new NodesRequestor(previousChildNodes);
             var nodeComponentProps = NodeComponentProps.newNodeComponentProps()
                     .variableManager(nodeVariableManager)
@@ -255,6 +277,7 @@ public class NodeComponent implements IComponent {
                     .viewCreationRequests(this.props.getViewCreationRequests())
                     .viewDeletionRequests(this.props.getViewDeletionRequests())
                     .parentElementId(nodeId)
+                    .previousTargetObjectIds(previousChildNodesTargetObjectIds)
                     .build();
 
             // @formatter:on

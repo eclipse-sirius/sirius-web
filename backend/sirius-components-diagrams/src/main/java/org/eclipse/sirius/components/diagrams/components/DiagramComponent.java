@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo and others.
+ * Copyright (c) 2019, 2022 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -59,6 +59,7 @@ public class DiagramComponent implements IComponent {
                 .map(nodeDescription -> {
                     var previousNodes = optionalPreviousDiagram.map(previousDiagram -> diagramElementRequestor.getRootNodes(previousDiagram, nodeDescription))
                             .orElse(List.of());
+                    var previousNodesTargetIds = previousNodes.stream().map(node -> node.getTargetObjectId()).collect(Collectors.toList());
                     INodesRequestor nodesRequestor = new NodesRequestor(previousNodes);
                     var nodeComponentProps = NodeComponentProps.newNodeComponentProps()
                             .variableManager(variableManager)
@@ -69,6 +70,7 @@ public class DiagramComponent implements IComponent {
                             .viewCreationRequests(this.props.getViewCreationRequests())
                             .viewDeletionRequests(this.props.getViewDeletionRequests())
                             .parentElementId(diagramId)
+                            .previousTargetObjectIds(previousNodesTargetIds)
                             .build();
                     return new Element(NodeComponent.class, nodeComponentProps);
                 }).collect(Collectors.toList());

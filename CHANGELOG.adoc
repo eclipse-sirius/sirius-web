@@ -48,6 +48,7 @@ See ADR-54 for the details.
 - [releng] Detect the presence of classes without a public visibility or with a package or protected constructor in order to speed up the code reviews.
 - https://github.com/eclipse-sirius/sirius-components/issues/1138[#1138] [workbench] The left and right panels can be closed by clicking on the current view's icon or by resizing them to the minimum widht (showing only the icons).
 When closed, clicking on any of the views' icon will re-open the panel to make the selected view visible.
+- https://github.com/eclipse-sirius/sirius-components/issues/689[#689] [diagram] Add a variable containing objects ids to render for unsynchronized nodes rendering
 
 === New features
 
