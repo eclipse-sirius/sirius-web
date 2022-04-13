@@ -16,7 +16,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
-import { HORIZONTAL, Panels, SECOND_PANEL } from 'core/panels/Panels';
+import { Panels, SECOND_PANEL } from 'core/panels/Panels';
 import gql from 'graphql-tag';
 import { OnboardArea } from 'onboarding/OnboardArea';
 import React, { useContext, useEffect } from 'react';
@@ -230,12 +230,10 @@ export const Workbench = ({
   return (
     <>
       <Panels
-        orientation={HORIZONTAL}
         firstPanel={leftSite}
         secondPanel={
           <div className={classes.main} data-testid="representationAndProperties">
             <Panels
-              orientation={HORIZONTAL}
               resizablePanel={SECOND_PANEL}
               firstPanel={main}
               secondPanel={rightSite}
