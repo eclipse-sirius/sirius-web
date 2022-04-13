@@ -241,6 +241,24 @@ type FlexboxContainer implements Widget {
   children: [Widget!]! 
 }
 
+type TreeWidget implements Widget {
+  id: ID!
+  diagnostics: [Diagnostic!]!
+  label: String!
+  iconURL: String
+  nodes: [TreeNode!]!
+  expandedNodesIds: [ID!]!
+}
+
+type TreeNode {
+  id: ID!
+  parentId: ID
+  label: String!
+  kind: String!
+  imageURL: String!
+  selectable: Boolean!
+}
+
 type FormDescription implements RepresentationDescription {
   id: ID!
   label: String!

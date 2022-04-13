@@ -17,6 +17,7 @@ import java.util.Objects;
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
 import org.eclipse.sirius.components.forms.description.ChartWidgetDescription;
 import org.eclipse.sirius.components.forms.description.CheckboxDescription;
+import org.eclipse.sirius.components.forms.description.FlexboxContainerDescription;
 import org.eclipse.sirius.components.forms.description.LinkDescription;
 import org.eclipse.sirius.components.forms.description.ListDescription;
 import org.eclipse.sirius.components.forms.description.MultiSelectDescription;
@@ -24,7 +25,7 @@ import org.eclipse.sirius.components.forms.description.RadioDescription;
 import org.eclipse.sirius.components.forms.description.SelectDescription;
 import org.eclipse.sirius.components.forms.description.TextareaDescription;
 import org.eclipse.sirius.components.forms.description.TextfieldDescription;
-import org.eclipse.sirius.components.forms.description.FlexboxContainerDescription;
+import org.eclipse.sirius.components.forms.description.TreeDescription;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IComponent;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -82,6 +83,9 @@ public class WidgetComponent implements IComponent {
         } else if (widgetDescription instanceof FlexboxContainerDescription) {
             FlexboxContainerComponentProps flexboxContainerProps = new FlexboxContainerComponentProps(variableManager, (FlexboxContainerDescription) widgetDescription);
             element = new Element(FlexboxContainerComponent.class, flexboxContainerProps);
+        } else if (widgetDescription instanceof TreeDescription) {
+            TreeComponentProps treeComponentProps = new TreeComponentProps(variableManager, (TreeDescription) widgetDescription);
+            element = new Element(TreeComponent.class, treeComponentProps);
         } else {
             String pattern = "Unsupported widget description: {}"; //$NON-NLS-1$
             this.logger.warn(pattern, widgetDescription.getClass().getSimpleName());

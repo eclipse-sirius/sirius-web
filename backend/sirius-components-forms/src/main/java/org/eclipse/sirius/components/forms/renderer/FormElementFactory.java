@@ -38,6 +38,7 @@ import org.eclipse.sirius.components.forms.Select;
 import org.eclipse.sirius.components.forms.Textarea;
 import org.eclipse.sirius.components.forms.Textfield;
 import org.eclipse.sirius.components.forms.elements.ChartWidgetElementProps;
+import org.eclipse.sirius.components.forms.TreeWidget;
 import org.eclipse.sirius.components.forms.elements.CheckboxElementProps;
 import org.eclipse.sirius.components.forms.elements.FlexboxContainerElementProps;
 import org.eclipse.sirius.components.forms.elements.FormElementProps;
@@ -50,6 +51,7 @@ import org.eclipse.sirius.components.forms.elements.RadioElementProps;
 import org.eclipse.sirius.components.forms.elements.SelectElementProps;
 import org.eclipse.sirius.components.forms.elements.TextareaElementProps;
 import org.eclipse.sirius.components.forms.elements.TextfieldElementProps;
+import org.eclipse.sirius.components.forms.elements.TreeElementProps;
 import org.eclipse.sirius.components.forms.validation.Diagnostic;
 import org.eclipse.sirius.components.forms.validation.DiagnosticElementProps;
 import org.eclipse.sirius.components.representations.IElementFactory;
@@ -97,6 +99,8 @@ public class FormElementFactory implements IElementFactory {
             object = this.instantiatePieChart((PieChartElementProps) props);
         } else if (FlexboxContainerElementProps.TYPE.equals(type) && props instanceof FlexboxContainerElementProps) {
             object = this.instantiateFlexboxContainer((FlexboxContainerElementProps) props, children);
+        } else if (TreeElementProps.TYPE.equals(type) && props instanceof TreeElementProps) {
+            object = this.instantiateTree((TreeElementProps) props, children);
         }
 
         return object;
@@ -390,6 +394,20 @@ public class FormElementFactory implements IElementFactory {
                  .children(widgets)
                  .diagnostics(diagnostics)
                  .build();
+       // @formatter:on
+    }
+
+    private TreeWidget instantiateTree(TreeElementProps props, List<Object> children) {
+        List<Diagnostic> diagnostics = this.getDiagnosticsFromChildren(children);
+
+        // @formatter:off
+        return TreeWidget.newTreeWidget(props.getId())
+                .label(props.getLabel())
+                .iconURL(props.getIconURL())
+                .nodes(props.getNodes())
+                .expandedNodesIds(props.getExpandedNodesIds())
+                .diagnostics(diagnostics)
+                .build();
        // @formatter:on
     }
 

@@ -21,11 +21,11 @@ import {
   Select,
   Textarea,
   Textfield,
+  Tree,
   Widget,
-  WidgetSubscription,
 } from 'form/Form.types';
 import React from 'react';
-import { Selection } from 'workbench/Workbench.types';
+import { PropertySectionProps } from './PropertySection.types';
 import { ChartWidgetPropertySection } from './propertysections/ChartWidgetPropertySection';
 import { CheckboxPropertySection } from './propertysections/CheckboxPropertySection';
 import { FlexboxContainerPropertySection } from './propertysections/FlexboxContainerPropertySection';
@@ -35,6 +35,7 @@ import { MultiSelectPropertySection } from './propertysections/MultiSelectProper
 import { RadioPropertySection } from './propertysections/RadioPropertySection';
 import { SelectPropertySection } from './propertysections/SelectPropertySection';
 import { TextfieldPropertySection } from './propertysections/TextfieldPropertySection';
+import { TreePropertySection } from './propertysections/TreePropertySection';
 
 const isTextfield = (widget: Widget): widget is Textfield => widget.__typename === 'Textfield';
 const isTextarea = (widget: Widget): widget is Textarea => widget.__typename === 'Textarea';
@@ -46,15 +47,16 @@ const isList = (widget: Widget): widget is List => widget.__typename === 'List';
 const isLink = (widget: Widget): widget is Link => widget.__typename === 'Link';
 const isChartWidget = (widget: Widget): widget is ChartWidget => widget.__typename === 'ChartWidget';
 const isFlexboxContainer = (widget: Widget): widget is FlexboxContainer => widget.__typename === 'FlexboxContainer';
+const isTree = (widget: Widget): widget is Tree => widget.__typename === 'TreeWidget';
 
-export const widgetToPropertySection = (
-  editingContextId: string,
-  formId: string,
-  widget: Widget,
-  widgetSubscriptions: WidgetSubscription[],
-  setSelection: (selection: Selection) => void,
-  readOnly: boolean
-): JSX.Element | null => {
+export const PropertySection = ({
+  editingContextId,
+  formId,
+  widget,
+  widgetSubscriptions,
+  setSelection,
+  readOnly,
+}: PropertySectionProps) => {
   let subscribers = [];
 
   widgetSubscriptions
@@ -144,6 +146,10 @@ export const widgetToPropertySection = (
         setSelection={setSelection}
         readOnly={readOnly}
       />
+    );
+  } else if (isTree(widget)) {
+    propertySection = (
+      <TreePropertySection widget={widget} key={widget.id} subscribers={subscribers} setSelection={setSelection} />
     );
   } else {
     console.error(`Unsupported widget type ${widget.__typename}`);

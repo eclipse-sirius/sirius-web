@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2020, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatObject;
 import static org.eclipse.sirius.components.forms.tests.FormAssertions.assertThat;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import org.assertj.core.api.AbstractAssert;
 import org.eclipse.sirius.components.forms.AbstractWidget;
 import org.eclipse.sirius.components.forms.Checkbox;
@@ -27,6 +31,8 @@ import org.eclipse.sirius.components.forms.Select;
 import org.eclipse.sirius.components.forms.SelectOption;
 import org.eclipse.sirius.components.forms.Textarea;
 import org.eclipse.sirius.components.forms.Textfield;
+import org.eclipse.sirius.components.forms.TreeNode;
+import org.eclipse.sirius.components.forms.TreeWidget;
 
 /**
  * Custom assertion class used to perform some tests on a widget.
@@ -50,7 +56,7 @@ public class WidgetAssert extends AbstractAssert<WidgetAssert, AbstractWidget> {
             List actualList = (List) this.actual;
             List list = (List) widget;
             assertThat(actualList.getLabel()).isEqualTo(list.getLabel());
-            assertThat(actualList.getItems().size()).isEqualTo(list.getItems().size());
+            assertThat(actualList.getItems()).hasSameSizeAs(list.getItems());
 
             int size = actualList.getItems().size();
             for (int i = 0; i < size; i++) {
@@ -67,6 +73,8 @@ public class WidgetAssert extends AbstractAssert<WidgetAssert, AbstractWidget> {
             this.assertRadio((Radio) this.actual, (Radio) widget, idPolicy);
         } else if (this.actual instanceof Select && widget instanceof Select) {
             this.assertSelect((Select) this.actual, (Select) widget, idPolicy);
+        } else if (this.actual instanceof TreeWidget && widget instanceof TreeWidget) {
+            this.assertTree((TreeWidget) this.actual, (TreeWidget) widget, idPolicy);
         } else if (this.actual instanceof Textarea && widget instanceof Textarea) {
             Textarea actualTextarea = (Textarea) this.actual;
             Textarea textarea = (Textarea) widget;
@@ -84,7 +92,7 @@ public class WidgetAssert extends AbstractAssert<WidgetAssert, AbstractWidget> {
 
     private void assertSelect(Select actualSelect, Select select, IdPolicy idPolicy) {
         assertThat(actualSelect.getLabel()).isEqualTo(select.getLabel());
-        assertThat(actualSelect.getOptions().size()).isEqualTo(select.getOptions().size());
+        assertThat(actualSelect.getOptions()).hasSameSizeAs(select.getOptions());
 
         int size = actualSelect.getOptions().size();
         for (int i = 0; i < size; i++) {
@@ -101,7 +109,7 @@ public class WidgetAssert extends AbstractAssert<WidgetAssert, AbstractWidget> {
 
     private void assertRadio(Radio actualRadio, Radio radio, IdPolicy idPolicy) {
         assertThat(actualRadio.getLabel()).isEqualTo(radio.getLabel());
-        assertThat(actualRadio.getOptions().size()).isEqualTo(radio.getOptions().size());
+        assertThat(actualRadio.getOptions()).hasSameSizeAs(radio.getOptions());
 
         int size = actualRadio.getOptions().size();
         for (int i = 0; i < size; i++) {
@@ -115,6 +123,52 @@ public class WidgetAssert extends AbstractAssert<WidgetAssert, AbstractWidget> {
             assertThat(actualRadioOption.getLabel()).isEqualTo(radioOption.getLabel());
             assertThat(actualRadioOption.isSelected()).isEqualTo(radioOption.isSelected());
         }
+    }
+
+    private void assertTree(TreeWidget actualTree, TreeWidget expectedTree, IdPolicy idPolicy) {
+        assertThat(actualTree.getLabel()).isEqualTo(expectedTree.getLabel());
+        assertThat(actualTree.getNodes()).hasSameSizeAs(expectedTree.getNodes());
+        assertThat(actualTree.getExpandedNodesIds()).hasSameSizeAs(expectedTree.getExpandedNodesIds());
+
+        if (idPolicy == IdPolicy.WITH_ID) {
+            assertThat(actualTree.getExpandedNodesIds()).hasSameElementsAs(expectedTree.getExpandedNodesIds());
+        }
+
+        int size = actualTree.getNodes().size();
+        for (int i = 0; i < size; i++) {
+            TreeNode actualNode = actualTree.getNodes().get(i);
+            TreeNode expectedNode = expectedTree.getNodes().get(i);
+
+            assertThat(actualNode.getLabel()).isEqualTo(expectedNode.getLabel());
+            assertThat("/api/images" + actualNode.getImageURL()).isEqualTo(expectedNode.getImageURL()); //$NON-NLS-1$
+            assertThat(actualNode.getKind()).isEqualTo(expectedNode.getKind());
+            if (idPolicy == IdPolicy.WITH_ID) {
+                assertThat(actualNode.getId()).isEqualTo(expectedNode.getId());
+            }
+        }
+        if (idPolicy == IdPolicy.WITHOUT_ID) {
+            // Even if we do not test that nodes have the same id equality, we need to check that the logically
+            // equivalent nodes are expanded and have the same parent/child relationship.
+            Map<String, String> expectedToActualIds = new HashMap<>();
+            for (int i = 0; i < size; i++) {
+                TreeNode actualNode = actualTree.getNodes().get(i);
+                TreeNode expectedNode = expectedTree.getNodes().get(i);
+                expectedToActualIds.put(expectedNode.getId(), actualNode.getId());
+            }
+
+            // @formatter:off
+            assertThat(actualTree.getExpandedNodesIds())
+                 .containsAll(expectedTree.getExpandedNodesIds().stream().map(expectedToActualIds::get).collect(Collectors.toList()));
+            // @formatter:on
+
+            for (int i = 0; i < size; i++) {
+                TreeNode actualNode = actualTree.getNodes().get(i);
+                TreeNode expectedNode = expectedTree.getNodes().get(i);
+                assertThat(actualNode.getId()).isEqualTo(expectedToActualIds.get(expectedNode.getId()));
+                assertThat(actualNode.getParentId()).isEqualTo(expectedToActualIds.get(expectedNode.getParentId()));
+            }
+        }
+
     }
 
 }

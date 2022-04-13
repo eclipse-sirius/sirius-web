@@ -44,6 +44,8 @@ import org.eclipse.sirius.components.forms.components.TextareaComponent;
 import org.eclipse.sirius.components.forms.components.TextareaComponentProps;
 import org.eclipse.sirius.components.forms.components.TextfieldComponent;
 import org.eclipse.sirius.components.forms.components.TextfieldComponentProps;
+import org.eclipse.sirius.components.forms.components.TreeComponent;
+import org.eclipse.sirius.components.forms.components.TreeComponentProps;
 import org.eclipse.sirius.components.forms.components.WidgetComponent;
 import org.eclipse.sirius.components.forms.components.WidgetComponentProps;
 import org.eclipse.sirius.components.forms.components.FlexboxContainerComponent;
@@ -102,6 +104,8 @@ public class FormComponentPropsValidator implements IComponentPropsValidator {
             checkValidProps = props instanceof PieChartComponentProps;
         } else if (FlexboxContainerComponent.class.equals(componentType)) {
             checkValidProps = props instanceof FlexboxContainerComponentProps;
+        } else if (TreeComponent.class.equals(componentType)) {
+            checkValidProps = props instanceof TreeComponentProps;
         }
 
         return checkValidProps;

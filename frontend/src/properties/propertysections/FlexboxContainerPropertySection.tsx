@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { makeStyles, Theme } from '@material-ui/core/styles';
-import { widgetToPropertySection } from 'properties/PropertySectionOperations';
+import { PropertySection } from 'properties/PropertySection';
 import {
   FlexboxContainerPropertySectionProps,
   FlexboxContainerPropertySectionStyleProps,
@@ -50,8 +50,16 @@ export const FlexboxContainerPropertySection = ({
   });
 
   let children = widget.children.map((widget) => (
-    <div className={classes.children}>
-      {widgetToPropertySection(editingContextId, formId, widget, widgetSubscriptions, setSelection, readOnly)}
+    <div className={classes.children} key={widget.id}>
+      <PropertySection
+        editingContextId={editingContextId}
+        formId={formId}
+        widget={widget}
+        widgetSubscriptions={widgetSubscriptions}
+        setSelection={setSelection}
+        readOnly={readOnly}
+        key={widget.id}
+      />
     </div>
   ));
 

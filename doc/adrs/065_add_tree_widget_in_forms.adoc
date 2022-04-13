@@ -1,0 +1,111 @@
+= ADR-065 - Add support for a tree widget in forms
+
+== Context
+
+The forms DSL currently supports a variety of widgets, but none which can represent hierarchical content.
+
+== Decision
+
+We will add support for a new `Tree` widget.
+This first version will only support displaying elements, with no edition capabilities.
+Some elements will be selectable (which will change the global workbench selection), but not all.
+Non-selectable elements can be used to group items into categories which do not correspond to a semantic element or representation.
+
+=== GraphQL Schema
+
+The `forms.graphqs` part of our schema will be extended with the following types:
+
+```
+type TreeWidget implements Widget {
+  id: ID!
+  diagnostics: [Diagnostic!]!
+  label: String!
+  nodes: [TreeNode!]!
+  expandedNodesIds: [ID!]!
+}
+
+type TreeNode {
+  id: ID!
+  parentId: ID
+  label: String!
+  kind: String!
+  imageURL: String!
+  selectable: Boolean!
+}
+```
+
+The widget will be named `TreeWidget` instead of the more natural `Tree` as we already have a type with that name for the tree representations.
+We can not easily reuse the same type as the existing `Tree` is a `Representation` (with metadata, etc.) and not a `Widget`.
+
+Similarly, we will not reuse the existing `TreeItem` used for the `Tree` representation as it includes attributes like `editable` and `deletable` which do not make sense in the context of a read-only widget.
+
+The `selectable` flag on `TreeNode` will be used to allow the creation of "folder" nodes inside the tree, which only exist for the purpose of organizing nodes in categories.
+A selectable node (e.g. one which represents a semantic element or representation) will change the workbench's selection when clicked on (using its `id`, `label` and `kind` attributes as `SelectionEntry`).
+Clicking on a non-selectable node will have no effect on the selection; in the UI the only effect will be to highlight it and toggle its expanded/collapsed state.
+
+The existing `Tree` *representation* is designed to be used directly through a subscription and manages its "expanded" state accordingly, with each change in the expansion depth creating a new representation and a new subscription.
+The new `TreeWidget` will be embedded in an enclosing `Form` representation.
+We do not want to invalidate and recompute the whole form when the user expands or collapses tree nodes.
+
+The `TreeWidget` will thus send its full content to the frontend, with the ids of the elements to expand for the initial display (the `TreeWidget.expandedNodesIds` attribute).
+Subsequent changes in the collapse/expand state of the nodes will be done purely on the client.
+If the underlying model changes, the frontend will receive a new state for the whole enclosing form, including the tree widget(s) anyway.
+
+Because the depth of a tree is not known beforehand by the frontend, we will use a flattened representation of the hierarchy so that the GraphQL subscription (on `FormRefreshedEventPayload`) has a fixed depth.
+Instead of recursive structure of `TreeItem` as used for the `Tree` representation, the `TreeWidget` contains a flat list of `TreeNode`, each with its `parentId`.
+Root nodes in the tree will have a null `parentId`.
+The frontend will have to rebuild the tree data structure from this flat list.
+
+=== Backend
+
+The backend representation of a tree will be plain POJOs corresponding to the `TreeWidget` and `TreeNode` GraphQL types above.
+As is the case for `TreeItem`, each concrete application (e.g. Sirius Web) will need a custom data fetcher to rewrite the `TreeNode.imageURL` attribute to make it relative to the server's image base path (see `TreeItemImageURLDataFetcher`).
+
+The backend API to describe a tree widget will follow the same pattern as the other `AbstractWidgetDescription`.
+It will have the following fields:
+
+- `Function<VariableManager, String> idProvider, labelProvider, iconURLProvider`: used to provide the unique id, label and optional icon URL of the actual `TreeWidget` being rendered.
+- `Function<VariableManager, List<?>> childrenProvider`: used to provide the ordered children of a particular element.
+For a given render, this will be invoked *once* with both `root` and `self` variables set to the target element of the widget itself, and `ancestors` set to an empty list to determine the root elements to display.
+It will then be invoked recursively on every element returned with:
+  * `root` always set the target element of the widget itself;
+  * `self` set to each element in turn;
+  * `ancestors` set to the list of ancestor elements which lead to the current element (i.e. the last element of `ancestors` will be the the direct parent of `self`).
+It is the responsibility of the implementer to ensure the recursion ends.
+- `Function<VariableManager, List<String>> expandedNodeIdsProvider`: used indicates which `TreeNodes` should be initially expanded when the tree is displayed on the client.
+Evaluated once per render, with `self` set to the target element of the widget itself and `nodes` set to a `List<TreeNode>` with all the `TreeNodes` that make up the tree.
+- `Function<VariableManager, String> nodeIdProvider, nodeLabelProvider, nodeKindProvider, nodeImageURLProvider` and `Function<VariableManager, Boolean> nodeSelectableProvider`: invoked once for each of the elements returned by `childrenProvider` to build the actual `TreeNode` representing the element.
+It will be invoked with `self` and `root` set to the same values as with `childrenProvider`.
+
+Note that we use a single `childrenProvider` instead of `hasChildrenProvider` and `childrenProvider` as in the Tree representation.
+In the tree representation where the tree items are only computed up to some configurable depth, the client needs to know which nodes, while they are not expanded, _could_ be expanded (i.e. have children).
+In such a case it makes sense to have a separate `hasChildrenProvider` which can (in some cases) be more efficient that calling `childrenProvider` and testing the result.
+However, in the case of the tree _widget_ where we will render the complete hierarchy anyway, having a separate `hasChildrenProvider` would be pure overhead.
+
+=== Frontend
+
+On the frontend, we will use Material UI's https://v4.mui.com/components/tree-view/[TreeView] component.
+It is part of Materal UI's lab in the version we use (v4), but is still available (also in the lab) in v5 when we migrate to that.
+We will need to add `@material-ui/lab` to the frontend dependencies.
+
+The widget will be integrated as a new property section following the same model as the others.
+
+The widget will not have a fixed/maximum size.
+It will take all the space necessary to display its visible elements.
+
+The `TreePropertySection` will have to interpret the flat list of nodes with (optional) parent id as a proper recursive structure to create the hierarchy of Material UI `TreeItems`.
+Nodes with no `parentId` will be displayed at the root of the tree.
+Nodes with a `parentId` which do not match the id of any other node in the same tree will be ignored (not displayed).
+The nodes received in `TreeWidget.nodes` with the same `parentId` will be displayed as children of the node with the corresponding id, in the order they appear in the `TreeWidget.nodes` list.
+
+The `TreeWidget` will initially expand all the nodes whose ids appear in `TreeWidget.expandedNodesIds` (using the `defaultExpanded` prop of `TreeView`).
+The end-user will be able to expand/collapse nodes but this will not trigger any communication with the server.
+
+When the user will click on a particular node, the behavior will depend on the corresponding `TreeNode`'s `selectable` attribute:
+
+- If the node is selectable, the node's `id`, `label` and `kind` attributes will be used to set the global workbench selection.
+- If the node is _not_ selectable, this will simply toggle the collapsed/expanded state of the node.
+
+== Status
+
+Accepted.
