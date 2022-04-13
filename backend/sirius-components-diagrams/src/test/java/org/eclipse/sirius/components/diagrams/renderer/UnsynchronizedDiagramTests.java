@@ -64,7 +64,7 @@ public class UnsynchronizedDiagramTests {
      */
     @Test
     public void testRenderingOnRoot() {
-        DiagramDescription diagramDescription = this.getDiagramDescription();
+        DiagramDescription diagramDescription = this.getDiagramDescription(variableManager -> List.of(new Object()));
 
         Diagram initialDiagram = this.render(diagramDescription, List.of(), List.of(), Optional.empty());
         assertThat(initialDiagram.getNodes()).hasSize(1);
@@ -86,7 +86,7 @@ public class UnsynchronizedDiagramTests {
      */
     @Test
     public void testUnsynchronizedRenderingOnRoot() {
-        DiagramDescription diagramDescription = this.getDiagramDescription();
+        DiagramDescription diagramDescription = this.getDiagramDescription(variableManager -> List.of(new Object()));
 
         Diagram initialDiagram = this.render(diagramDescription, List.of(), List.of(), Optional.empty());
 
@@ -116,7 +116,7 @@ public class UnsynchronizedDiagramTests {
      */
     @Test
     public void testUnsynchronizedRenderingOnRootAfterDeletion() {
-        DiagramDescription diagramDescription = this.getDiagramDescription();
+        DiagramDescription diagramDescription = this.getDiagramDescription(variableManager -> List.of(new Object()));
 
         Diagram initialDiagram = this.render(diagramDescription, List.of(), List.of(), Optional.empty());
 
@@ -154,7 +154,14 @@ public class UnsynchronizedDiagramTests {
      */
     @Test
     public void testUnsynchronizedRenderingOnNodeContainer() {
-        DiagramDescription diagramDescription = this.getDiagramDescription();
+        Function<VariableManager, List<?>> semanticElementsProvider = new Function<>() {
+            @Override
+            public List<?> apply(VariableManager variableManager) {
+                return List.of(new Object());
+            }
+        };
+
+        DiagramDescription diagramDescription = this.getDiagramDescription(semanticElementsProvider);
 
         Diagram initialDiagram = this.render(diagramDescription, List.of(), List.of(), Optional.empty());
         // @formatter:off
@@ -199,7 +206,7 @@ public class UnsynchronizedDiagramTests {
      */
     @Test
     public void testUnsynchronizedRenderingOnNodeContainerAfterDeletion() {
-        DiagramDescription diagramDescription = this.getDiagramDescription();
+        DiagramDescription diagramDescription = this.getDiagramDescription(variableManager -> List.of(new Object()));
 
         Diagram initialDiagram = this.render(diagramDescription, List.of(), List.of(), Optional.empty());
         // @formatter:off
@@ -255,7 +262,7 @@ public class UnsynchronizedDiagramTests {
         return diagram;
     }
 
-    private DiagramDescription getDiagramDescription() {
+    private DiagramDescription getDiagramDescription(Function<VariableManager, List<?>> semanticElementsProvider) {
         // @formatter:off
         LabelStyleDescription labelStyleDescription = LabelStyleDescription.newLabelStyleDescription()
                 .italicProvider(VariableManager -> true)
@@ -285,7 +292,7 @@ public class UnsynchronizedDiagramTests {
         NodeDescription subUnsynchronizedNodeDescription = NodeDescription.newNodeDescription(UUID.nameUUIDFromBytes("subUnsynchronized".getBytes())) //$NON-NLS-1$
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
                 .typeProvider(variableManager -> NODE_TYPE)
-                .semanticElementsProvider(variableManager -> List.of(new Object()))
+                .semanticElementsProvider(semanticElementsProvider)
                 .targetObjectIdProvider(variableManager -> TARGET_OBJECT_ID)
                 .targetObjectKindProvider(variableManager -> "") //$NON-NLS-1$
                 .targetObjectLabelProvider(variableManager -> "")//$NON-NLS-1$
@@ -300,7 +307,7 @@ public class UnsynchronizedDiagramTests {
         NodeDescription unsynchronizedNodeDescription = NodeDescription.newNodeDescription(UUID.nameUUIDFromBytes("unsynchronized".getBytes())) //$NON-NLS-1$
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
                 .typeProvider(variableManager -> NODE_TYPE)
-                .semanticElementsProvider(variableManager -> List.of(new Object()))
+                .semanticElementsProvider(semanticElementsProvider)
                 .targetObjectIdProvider(variableManager -> TARGET_OBJECT_ID)
                 .targetObjectKindProvider(variableManager -> "") //$NON-NLS-1$
                 .targetObjectLabelProvider(variableManager -> "")//$NON-NLS-1$
