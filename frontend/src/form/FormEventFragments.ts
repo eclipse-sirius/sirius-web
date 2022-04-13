@@ -88,6 +88,9 @@ export const formRefreshedEventPayloadFragment = gql`
     ... on ChartWidget {
       ...chartWidgetFields
     }
+    ... on TreeWidget {
+      ...treeWidgetFields
+    }
   }
 
   fragment commonFields on Widget {
@@ -268,6 +271,20 @@ export const formRefreshedEventPayloadFragment = gql`
           }
         }
       }
+    }
+  }
+
+  fragment treeWidgetFields on TreeWidget {
+    label
+    iconURL
+    expandedNodesIds
+    nodes {
+      id
+      parentId
+      label
+      kind
+      imageURL
+      selectable
     }
   }
 `;

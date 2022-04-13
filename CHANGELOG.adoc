@@ -9,6 +9,7 @@
 - [ADR-62] Switch to a monorepo layout
 - [ADR-63] Simplify the Sprotty integration
 - [ADR-64] Add support for a ToggableAreaContainer in forms
+- [ADR-65] Add support for a tree widget in forms
 
 === Deprecation warnings
 
@@ -16,6 +17,8 @@
 === Breaking changes
 
 === Dependency update
+
+- The frontend now depends on `@material-ui/lab` to support the new https://github.com/eclipse-sirius/sirius-components/issues/1139[tree widget] (see ADR-065).
 
 === Bug fixes
 
@@ -41,6 +44,7 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/1248[#1248] [charts] Add support for pie-chart in Form representation
 - https://github.com/eclipse-sirius/sirius-components/issues/1255[#1255] [form] Add support for charts in form descriptions editor
 - https://github.com/eclipse-sirius/sirius-components/issues/1244[#1244] [form] Add support for flexbox containers on FormDescriptions
+- https://github.com/eclipse-sirius/sirius-components/issues/1139[#1139] [form] Add support for a new Tree widget
 - https://github.com/eclipse-sirius/sirius-components/issues/1140[#1140] [form] Widget groups now support a new setting (`displayMode = TOGGLEABLE_AREAS`) which allows end-users to select which of the widgets in the group are visible, and adapts their layout to the available horizontal space.
 
 == v2022.5.0

@@ -186,3 +186,18 @@ export interface FlexboxContainer extends Widget {
 export type FlexDirection = 'row' | 'row-reverse' | 'column' | 'column-reverse';
 
 export type FlexWrap = 'nowrap' | 'wrap' | 'wrap-reverse';
+
+export interface Tree extends Widget {
+  label: string;
+  nodes: TreeNode[];
+  expandedNodesIds: string[];
+}
+
+export interface TreeNode {
+  id: string;
+  parentId: string;
+  label: string;
+  kind: string;
+  imageURL: string;
+  selectable: Boolean;
+}

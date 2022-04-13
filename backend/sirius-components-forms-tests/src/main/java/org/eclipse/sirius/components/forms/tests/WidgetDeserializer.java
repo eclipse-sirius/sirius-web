@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2020, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.forms.Radio;
 import org.eclipse.sirius.components.forms.Select;
 import org.eclipse.sirius.components.forms.Textarea;
 import org.eclipse.sirius.components.forms.Textfield;
+import org.eclipse.sirius.components.forms.TreeWidget;
 
 /**
  * Custom deserializer for AbstractWidget since Jackson need to know how to find the concrete class matching the JSON
@@ -70,6 +71,8 @@ public class WidgetDeserializer extends StdDeserializer<AbstractWidget> {
                 nodeStyle = mapper.readValue(root.toString(), Textfield.class);
             } else if (List.class.getSimpleName().equals(typeName.asText())) {
                 nodeStyle = mapper.readValue(root.toString(), List.class);
+            } else if (TreeWidget.class.getSimpleName().equals(typeName.asText())) {
+                nodeStyle = mapper.readValue(root.toString(), TreeWidget.class);
             }
         }
         return nodeStyle;

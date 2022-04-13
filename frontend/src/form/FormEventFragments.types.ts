@@ -248,3 +248,18 @@ export interface GQLFlexboxContainer extends GQLWidget {
 export type GQLFlexDirection = 'row' | 'row-reverse' | 'column' | 'column-reverse';
 
 export type GQLFlexWrap = 'nowrap' | 'wrap' | 'wrap-reverse';
+
+export interface GQLTree extends GQLWidget {
+  label: string;
+  nodes: GQLTreeNode[];
+  expandedNodesIds: string[];
+}
+
+export interface GQLTreeNode {
+  id: string;
+  parentId: string;
+  label: string;
+  kind: string;
+  imageURL: string;
+  selectable: Boolean;
+}

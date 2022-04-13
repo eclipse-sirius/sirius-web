@@ -17,7 +17,7 @@ import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import { httpOrigin } from 'common/URL';
 import { GroupProps } from 'properties/Group.types';
 import React, { useEffect, useState } from 'react';
-import { widgetToPropertySection } from './PropertySectionOperations';
+import { PropertySection } from './PropertySection';
 
 const useGroupStyles = makeStyles((theme) => ({
   group: {
@@ -64,10 +64,7 @@ export const Group = ({ editingContextId, formId, group, widgetSubscriptions, se
   let widgetSelector = undefined;
   if (group.displayMode === 'TOGGLEABLE_AREAS') {
     widgetSelector = (
-      <ToggleButtonGroup
-        value={visibleWidgetIds}
-        onChange={(event, newVisibleIds) => setVisibleWidgetIds(newVisibleIds)}
-      >
+      <ToggleButtonGroup value={visibleWidgetIds} onChange={(_, newVisibleIds) => setVisibleWidgetIds(newVisibleIds)}>
         {group.widgets.map((widget) => {
           return (
             <ToggleButton className={classes.button} value={widget.id} key={widget.id}>
@@ -88,12 +85,6 @@ export const Group = ({ editingContextId, formId, group, widgetSubscriptions, se
     );
   }
 
-  const renderedWidgets = group.widgets
-    .filter((widget) => visibleWidgetIds.includes(widget.id))
-    .map((widget) =>
-      widgetToPropertySection(editingContextId, formId, widget, widgetSubscriptions, setSelection, readOnly)
-    );
-
   return (
     <div className={classes.group}>
       {group.displayMode === 'TOGGLEABLE_AREAS' ? (
@@ -104,7 +95,19 @@ export const Group = ({ editingContextId, formId, group, widgetSubscriptions, se
         </Typography>
       )}
       <div className={group.displayMode === 'LIST' ? classes.verticalSections : classes.adaptableSections}>
-        {renderedWidgets}
+        {group.widgets
+          .filter((widget) => visibleWidgetIds.includes(widget.id))
+          .map((widget) => (
+            <PropertySection
+              editingContextId={editingContextId}
+              formId={formId}
+              widget={widget}
+              widgetSubscriptions={widgetSubscriptions}
+              setSelection={setSelection}
+              readOnly={readOnly}
+              key={widget.id}
+            />
+          ))}
       </div>
     </div>
   );
