@@ -6,7 +6,8 @@
 
 - [ADR-50] Add support for multiple selection entries in the details view
 - [ADR-51] Add support for form descriptions in the View DSL
-- [ADR-52] Add Support for EditingContext actions
+- [ADR-52] Add support for EditingContext actions
+- [ADR-53] Add support for form descriptions in the view converter
 
 === Deprecation warning
 

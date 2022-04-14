@@ -1,0 +1,44 @@
+= ADR-053 - Add support for form descriptions in the view converter
+
+== Context
+
+The RepresentationDescriptions in the View DSL needs to be converted in the supported type `org.eclipse.sirius.components.representations.IRepresentationDescription`.
+
+For now, only `DiagramDescription` are converted by the `ViewConverter`.
+
+== Decision
+
+We need to create and add a `FormDescriptionConverter` to the `ViewConverter`.
+The `ViewConverter.convert()` method statically converts DiagramDescription:
+
+```            
+result = view.getDescriptions().stream()
+    .filter(org.eclipse.sirius.components.view.DiagramDescription.class::isInstance)
+    .map(org.eclipse.sirius.components.view.DiagramDescription.class::cast)
+    .map(viewDiagramDescription -> this.convertDiagramDescription(viewDiagramDescription, interpreter))
+    .collect(Collectors.toList());
+                         
+```
+
+We need to modify this logic to dispatch to the correct converter according to the `IRepresentationDescription` concrete type.
+We will create a common interface `IRepresentationDescriptionConverter` for `FormDescriptionConverter` and `DiagramDescriptionConverter`. The `ViewConverter` will no longer reference a specific converter implementation.
+
+The `FormDescriptionConverter` will create a new `org.eclipse.sirius.components.forms.description.FormDescription`. The DSL does not yet handle Pages and Groups. The converter will create a default page and group.
+
+As a first step, we will only convert `TextfieldDescription`. The Textfield Widget will be read only for now.
+
+Since the View DSL does not yet allow defining behavior on the Textfield Widget, the following fields from `TextfieldDescription` will be provided with default values:
+
+* `textfieldDescription.newValueHandler`: Will do nothing for now.
+* `textfieldDescription.diagnosticsProvider`: Will return an empty list.
+* `textfieldDescription.kindProvider`: Will return an empty String.
+* `textfieldDescription.messageProvider`: Will return an empty String.
+
+
+== Status
+
+WIP
+
+== Consequences
+
+We will be able to create a new Form Representation based on a defined FormDescription. This representation will just allow to display Textfield with a computed value but without editing capabilities in a first step.
