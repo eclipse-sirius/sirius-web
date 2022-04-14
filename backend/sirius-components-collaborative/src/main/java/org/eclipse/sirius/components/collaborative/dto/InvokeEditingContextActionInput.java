@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.collaborative.dto;
 
 import java.text.MessageFormat;
+import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.handlers.InvokeEditingContextActionEventHandler;
@@ -29,6 +30,16 @@ public final class InvokeEditingContextActionInput implements IInput {
     private String editingContextId;
 
     private String actionId;
+
+    public InvokeEditingContextActionInput() {
+        // Used by Jackson
+    }
+
+    public InvokeEditingContextActionInput(UUID id, String editingContextId, String actionId) {
+        this.id = Objects.requireNonNull(id);
+        this.editingContextId = Objects.requireNonNull(editingContextId);
+        this.actionId = Objects.requireNonNull(actionId);
+    }
 
     @Override
     public UUID getId() {
