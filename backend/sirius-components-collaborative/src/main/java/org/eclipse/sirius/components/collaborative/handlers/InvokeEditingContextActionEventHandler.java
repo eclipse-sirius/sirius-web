@@ -95,7 +95,7 @@ public class InvokeEditingContextActionEventHandler implements IEditingContextEv
                 changeDescription = new ChangeDescription(((Success) status).getChangeKind(), editingContext.getId(), input);
             } else if (status instanceof Failure) {
                 this.logger.warn("The action with id {} could not be executed", invokeEditingContextActionInput.getActionId()); //$NON-NLS-1$
-                new ErrorPayload(input.getId(), ((Failure) status).getMessage());
+                payload = new ErrorPayload(input.getId(), ((Failure) status).getMessage());
             }
         }
 
