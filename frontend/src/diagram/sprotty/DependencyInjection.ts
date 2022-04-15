@@ -171,8 +171,12 @@ export const createDependencyInjectionContainer = (containerId: string) => {
     }
 
     mouseUp(element: SModelElement, event: MouseEvent): (Action | Promise<Action>)[] {
+      const actions: Action[] = [];
+
       if (event.button === 0) {
-        if (this.previousCoordinates?.x === event.clientX && this.previousCoordinates?.y === event.clientY) {
+        if (element instanceof SRoutingHandle) {
+          actions.push({ kind: HIDE_CONTEXTUAL_TOOLBAR_ACTION });
+        } else if (this.previousCoordinates?.x === event.clientX && this.previousCoordinates?.y === event.clientY) {
           const elementWithTarget = findModelElementWithSemanticTarget(element);
           this.diagramServer.onSelectElement(
             elementWithTarget,
@@ -193,9 +197,10 @@ export const createDependencyInjectionContainer = (containerId: string) => {
           kind: 'activeConnectorTools',
           tools: [],
         };
-        return [setActiveToolAction, setActiveConnectorToolsAction];
+        actions.push(setActiveToolAction, setActiveConnectorToolsAction);
+        return actions;
       }
-      return [];
+      return actions;
     }
 
     mouseMove(_: SModelElement, event: MouseEvent): (Action | Promise<Action>)[] {
