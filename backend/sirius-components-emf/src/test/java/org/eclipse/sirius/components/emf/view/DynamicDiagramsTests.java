@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.layout.api.ILayoutService;
+import org.eclipse.sirius.components.emf.view.diagram.ViewDiagramDescriptionConverter;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.NodeDescription;
@@ -127,7 +128,8 @@ public class DynamicDiagramsTests {
         View view = ViewFactory.eINSTANCE.createView();
         view.getDescriptions().add(diagramDescription);
 
-        var viewConverter = new ViewConverter(new IObjectService.NoOp(), new IEditService.NoOp(), List.of());
+        ViewDiagramDescriptionConverter diagramDescriptionConverter = new ViewDiagramDescriptionConverter(new IObjectService.NoOp(), new IEditService.NoOp());
+        var viewConverter = new ViewConverter(List.of(), List.of(diagramDescriptionConverter));
         List<IRepresentationDescription> conversionResult = viewConverter.convert(view, List.of(EcorePackage.eINSTANCE));
         assertThat(conversionResult).hasSize(1);
         assertThat(conversionResult.get(0)).isInstanceOf(org.eclipse.sirius.components.diagrams.description.DiagramDescription.class);

@@ -14,56 +14,63 @@ package org.eclipse.sirius.components.emf.view;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.sirius.components.core.api.IEditService;
-import org.eclipse.sirius.components.core.api.IObjectService;
-import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
-import org.eclipse.sirius.components.emf.view.diagram.DiagramDescriptionConverter;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
+import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.View;
+import org.springframework.stereotype.Service;
 
 /**
- * Converts a View into an equivalent list of {@link DiagramDescription}.
+ * Converts a View into an equivalent list of {@link RepresentationDescription}.
  *
  * @author pcdavid
  */
-public class ViewConverter {
-
-    private final IObjectService objectService;
-
-    private final IEditService editService;
+@Service
+public class ViewConverter implements IViewConverter {
 
     private final List<IJavaServiceProvider> javaServiceProviders;
 
-    public ViewConverter(IObjectService objectService, IEditService editService, List<IJavaServiceProvider> javaServiceProviders) {
-        this.objectService = Objects.requireNonNull(objectService);
-        this.editService = Objects.requireNonNull(editService);
+    private final List<IRepresentationDescriptionConverter> representationDescriptionConverters;
+
+    public ViewConverter(List<IJavaServiceProvider> javaServiceProviders, List<IRepresentationDescriptionConverter> representationDescriptionConverters) {
         this.javaServiceProviders = Objects.requireNonNull(javaServiceProviders);
+        this.representationDescriptionConverters = Objects.requireNonNull(representationDescriptionConverters);
     }
 
     /**
-     * Extract and convert the {@link IRepresentationDescription} from a {@link View} model. Currently only
-     * {@link DiagramDescription}s are supported.
+     * Extract and convert the {@link IRepresentationDescription} from a {@link View} model by delegating to provided
+     * {@link IRepresentationDescriptionConverter}.
      */
+    @Override
     public List<IRepresentationDescription> convert(View view, List<EPackage> visibleEPackages) {
         List<IRepresentationDescription> result = List.of();
         AQLInterpreter interpreter = this.createInterpreter(view, visibleEPackages);
         try {
             // @formatter:off
             result = view.getDescriptions().stream()
-                         .filter(org.eclipse.sirius.components.view.DiagramDescription.class::isInstance)
-                         .map(org.eclipse.sirius.components.view.DiagramDescription.class::cast)
-                         .map(viewDiagramDescription -> this.convertDiagramDescription(viewDiagramDescription, interpreter))
-                         .collect(Collectors.toList());
+                    .map(representationDescription -> this.convert(representationDescription, interpreter))
+                    .flatMap(Optional::stream)
+                    .collect(Collectors.toList());
+
             // @formatter:on
         } catch (NullPointerException e) {
             // Can easily happen if the View model is currently invalid/inconsistent, typically because it is
             // currently being created or edited.
         }
         return result;
+    }
+
+    private Optional<IRepresentationDescription> convert(RepresentationDescription representationDescription, AQLInterpreter aqlInterpreter) {
+        // @formatter:off
+        return this.representationDescriptionConverters.stream()
+                .filter(converter -> converter.canConvert(representationDescription))
+                .map(converter -> converter.convert(representationDescription, aqlInterpreter))
+                .findFirst();
+        // @formatter:on
     }
 
     private AQLInterpreter createInterpreter(View view, List<EPackage> visibleEPackages) {
@@ -74,10 +81,4 @@ public class ViewConverter {
         // @formatter:on
         return new AQLInterpreter(serviceClasses, visibleEPackages);
     }
-
-    private DiagramDescription convertDiagramDescription(org.eclipse.sirius.components.view.DiagramDescription viewDiagramDescription, AQLInterpreter interpreter) {
-        DiagramDescriptionConverter converter = new DiagramDescriptionConverter(this.objectService, this.editService);
-        return converter.convert(viewDiagramDescription, interpreter);
-    }
-
 }
