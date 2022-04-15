@@ -49,6 +49,7 @@ import org.eclipse.sirius.components.diagrams.tools.SingleClickOnTwoDiagramEleme
 import org.eclipse.sirius.components.diagrams.tools.ToolSection;
 import org.eclipse.sirius.components.emf.compatibility.DomainClassPredicate;
 import org.eclipse.sirius.components.emf.view.CanonicalBehaviors;
+import org.eclipse.sirius.components.emf.view.IRepresentationDescriptionConverter;
 import org.eclipse.sirius.components.emf.view.ToolInterpreter;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.interpreter.Result;
@@ -64,14 +65,17 @@ import org.eclipse.sirius.components.view.EdgeTool;
 import org.eclipse.sirius.components.view.LabelEditTool;
 import org.eclipse.sirius.components.view.NodeStyle;
 import org.eclipse.sirius.components.view.NodeTool;
+import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.ViewPackage;
+import org.springframework.stereotype.Service;
 
 /**
  * Converts a View-based diagram description into an equivalent {@link DiagramDescription}.
  *
  * @author pcdavid
  */
-public class DiagramDescriptionConverter {
+@Service
+public class ViewDiagramDescriptionConverter implements IRepresentationDescriptionConverter {
     private static final String DEFAULT_DIAGRAM_LABEL = "Diagram"; //$NON-NLS-1$
 
     private static final String NODE_CREATION_TOOL_SECTION = "Node Creation"; //$NON-NLS-1$
@@ -105,7 +109,7 @@ public class DiagramDescriptionConverter {
 
     private Map<org.eclipse.sirius.components.view.EdgeDescription, EdgeDescription> convertedEdges;
 
-    public DiagramDescriptionConverter(IObjectService objectService, IEditService editService) {
+    public ViewDiagramDescriptionConverter(IObjectService objectService, IEditService editService) {
         this.objectService = Objects.requireNonNull(objectService);
         this.editService = Objects.requireNonNull(editService);
         this.stylesFactory = new StylesFactory();
@@ -115,7 +119,14 @@ public class DiagramDescriptionConverter {
         this.canonicalBehaviors = new CanonicalBehaviors(objectService, editService);
     }
 
-    public DiagramDescription convert(org.eclipse.sirius.components.view.DiagramDescription viewDiagramDescription, AQLInterpreter interpreter) {
+    @Override
+    public boolean canConvert(RepresentationDescription representationDescription) {
+        return representationDescription instanceof org.eclipse.sirius.components.view.DiagramDescription;
+    }
+
+    @Override
+    public IRepresentationDescription convert(RepresentationDescription viewRepresentationDescription, AQLInterpreter interpreter) {
+        org.eclipse.sirius.components.view.DiagramDescription viewDiagramDescription = (org.eclipse.sirius.components.view.DiagramDescription) viewRepresentationDescription;
         this.convertedNodes = new HashMap<>();
         this.convertedEdges = new HashMap<>();
         try {
@@ -560,4 +571,5 @@ public class DiagramDescriptionConverter {
     private IDiagramContext getDiagramContext(VariableManager variableManager) {
         return variableManager.get(IDiagramContext.DIAGRAM_CONTEXT, IDiagramContext.class).orElse(null);
     }
+
 }
