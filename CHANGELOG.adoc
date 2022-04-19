@@ -24,6 +24,8 @@
 
 === Improvements
 
+- https://github.com/eclipse-sirius/sirius-components/issues/1165[#1165] [doc] Improve the pull request template
+
 === New features
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1149[#1149] [form] Add support for form descriptions in the View DSL
