@@ -1,0 +1,63 @@
+= ADR-056 - Add support for form description editor in the View DSL
+
+== Context
+
+In the View DSL, it is now possible to create form descriptions, in addition to diagram descriptions.
+A form description contains a set of widgets (textfields, checkboxes, radio buttons...).
+We would like to be able to create those widgets from a WYSIWYG editor.
+Such editor would be available on form description elements only.
+In the editor, Users (specifiers) would drag & drop widgets from a list of widgets to create the future form representations.
+Widgets placed in the editor would have the values and styles defined in the details view.
+The placement/layout of the widgets in the editor would follow the order defined in the explorer view.
+
+== Decision
+
+As a first step, only one widget, the `Textfield` widget will be supported by the Editor.
+As a second step, other widgets will be supported by the Editor.
+
+=== Frontend
+
+As a first step (temporarily), users will be able to open `FormDescriptionEditors` on any model element.
+The frontend will not be linked to the backend (no graphql). 
+
+As a second step, users will be able to open `FormDescriptionEditors` only on `FormDescriptions` model elements (from the View DSL).
+The frontend will be linked to the backend. 
+
+=== Backend
+
+Contrary to other `IRepresentationDescription`, the new `FormDescriptionEditorDescription` will not be configurable (no handlers or providers associated to this kind of description):
+
+```
+  public final class FormDescriptionEditorDescription implements IRepresentationDescription {
+    private String id;
+    private String label;
+    private Predicate<VariableManager> canCreatePredicate;
+  }
+```
+
+A new `IRepresentation` will be created. This new `FormDescriptionEditor` will not store a list of widgets. the list of widgets will be read from the `targetObjectId` (i.e. a `FormDescription`) associated to the `FormDescriptionEditor` :
+
+```
+  public final class FormDescriptionEditor implements IRepresentation, ISemanticRepresentation {
+    public static final String KIND = IRepresentation.KIND_PREFIX + "?type=FormDescriptionEditor"; //$NON-NLS-1$
+    private String id;
+    private String kind;
+    private String targetObjectId;
+    private String descriptionId;
+    private String label;
+  }
+```
+
+A new `IRepresentationEventProcessor` will be created:
+
+```
+public interface IFormDescriptionEditorEventProcessor extends IRepresentationEventProcessor {
+}
+```
+
+== Status
+
+WIP
+
+== Consequences
+

@@ -8,6 +8,7 @@
 - [ADR-51] Add support for form descriptions in the View DSL
 - [ADR-52] Add support for EditingContext actions
 - [ADR-53] Add support for form descriptions in the view converter
+- [ADR-56] Add support for a form descriptions editor
 
 === Deprecation warning
 
