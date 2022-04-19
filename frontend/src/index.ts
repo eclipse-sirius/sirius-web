@@ -27,6 +27,7 @@ export * from './errors/ErrorBoundary';
 export * from './explorer/ExplorerWebSocketContainer';
 export * from './explorer/ExplorerWebSocketContainer.types';
 export * from './form/FormWebSocketContainer';
+export * from './formdescriptioneditor/FormDescriptionEditorWebSocketContainer';
 export * from './icons';
 export * from './modals/delete-project/DeleteProjectModal';
 export * from './modals/new-document/NewDocumentModal';
