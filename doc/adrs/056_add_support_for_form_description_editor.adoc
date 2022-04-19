@@ -6,7 +6,7 @@ In the View DSL, it is now possible to create form descriptions, in addition to 
 A form description contains a set of widgets (textfields, checkboxes, radio buttons...).
 We would like to be able to create those widgets from a WYSIWYG editor.
 Such editor would be available on form description elements only.
-In the editor, Users (specifiers) would drag & drop widgets from a list of widgets to create the future form representations.
+In the editor, users (specifiers) would drag & drop widgets from a list of widgets to create the future form representations.
 Widgets placed in the editor would have the values and styles defined in the details view.
 The placement/layout of the widgets in the editor would follow the order defined in the explorer view.
 
@@ -35,24 +35,35 @@ Contrary to other `IRepresentationDescription`, the new `FormDescriptionEditorDe
   }
 ```
 
-A new `IRepresentation` will be created. This new `FormDescriptionEditor` will not store a list of widgets. the list of widgets will be read from the `targetObjectId` (i.e. a `FormDescription`) associated to the `FormDescriptionEditor` :
+A new `IRepresentation` will be created. This new `FormDescriptionEditor` will store a list of widgets:
 
 ```
   public final class FormDescriptionEditor implements IRepresentation, ISemanticRepresentation {
     public static final String KIND = IRepresentation.KIND_PREFIX + "?type=FormDescriptionEditor"; //$NON-NLS-1$
     private String id;
+    private String label;
     private String kind;
     private String targetObjectId;
     private String descriptionId;
+    private List<IFormDescriptionEditorWidget> widgets;
+  }
+```
+
+A new interface `IFormDescriptionEditorWidget` will be created:
+
+```
+  public interface IFormDescriptionEditorWidget {
+    private String id;
     private String label;
+    private String kind;
   }
 ```
 
 A new `IRepresentationEventProcessor` will be created:
 
 ```
-public interface IFormDescriptionEditorEventProcessor extends IRepresentationEventProcessor {
-}
+  public interface IFormDescriptionEditorEventProcessor extends IRepresentationEventProcessor {
+  }
 ```
 
 == Status
