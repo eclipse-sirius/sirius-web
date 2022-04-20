@@ -47,6 +47,7 @@
 		<module>sirius-components-diagrams-layout</module>
 		<module>sirius-components-diagrams-tests</module>
 		<module>sirius-components-diagrams</module>
+		<module>sirius-components-formdescriptioneditors</module>
 		<module>sirius-components-forms-tests</module>
 		<module>sirius-components-forms</module>
 		<module>sirius-components-graphiql</module>
@@ -55,6 +56,7 @@
 		<module>sirius-components-representations</module>
 		<module>sirius-components-selection</module>
 		<module>sirius-components-collaborative-diagrams</module>
+		<module>sirius-components-collaborative-formdescriptioneditors</module>
 		<module>sirius-components-collaborative-forms</module>
 		<module>sirius-components-collaborative-selection</module>
 		<module>sirius-components-collaborative-trees</module>
