@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -24,9 +25,11 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.compatibility.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.compatibility.utils.StringValueProvider;
+import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.emf.compatibility.DomainClassPredicate;
 import org.eclipse.sirius.components.emf.view.IRepresentationDescriptionConverter;
+import org.eclipse.sirius.components.emf.view.OperationInterpreter;
 import org.eclipse.sirius.components.forms.description.AbstractControlDescription;
 import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.forms.description.GroupDescription;
@@ -36,6 +39,8 @@ import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
+import org.eclipse.sirius.components.representations.IStatus;
+import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.springframework.stereotype.Service;
@@ -48,12 +53,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class ViewFormDescriptionConverter implements IRepresentationDescriptionConverter {
 
+    public static final String NEW_VALUE = "newValue"; //$NON-NLS-1$
+
     private static final String DEFAULT_FORM_LABEL = "Form"; //$NON-NLS-1$
 
     private final IObjectService objectService;
 
-    public ViewFormDescriptionConverter(IObjectService objectService) {
+    private final IEditService editService;
+
+    public ViewFormDescriptionConverter(IObjectService objectService, IEditService editService) {
         this.objectService = Objects.requireNonNull(objectService);
+        this.editService = Objects.requireNonNull(editService);
     }
 
     @Override
@@ -168,11 +178,24 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
                 .idProvider(new WidgetIdProvider())
                 .labelProvider(labelProvider)
                 .valueProvider(valueProvider)
-                .newValueHandler((variableManager, newValue) -> new Failure("Value Handler not yet supported")) //$NON-NLS-1$
+                .newValueHandler(this.getTextFieldNewValueHandler(interpreter, viewTextfieldDescription))
                 .diagnosticsProvider(variableManager -> List.of())
                 .kindProvider(diagnostic -> "") //$NON-NLS-1$
                 .messageProvider(diagnostic -> "") //$NON-NLS-1$
                 .build();
         // @formatter:on
+    }
+
+    private BiFunction<VariableManager, String, IStatus> getTextFieldNewValueHandler(AQLInterpreter interpreter, org.eclipse.sirius.components.view.TextfieldDescription viewTextfieldDescription) {
+        return (variableManager, newValue) -> {
+            variableManager.put(NEW_VALUE, newValue);
+            OperationInterpreter operationInterpreter = new OperationInterpreter(interpreter, this.editService);
+            Optional<VariableManager> optionalVariableManager = operationInterpreter.executeOperations(viewTextfieldDescription.getBody(), variableManager);
+            if (optionalVariableManager.isEmpty()) {
+                return new Failure(""); //$NON-NLS-1$
+            } else {
+                return new Success();
+            }
+        };
     }
 }

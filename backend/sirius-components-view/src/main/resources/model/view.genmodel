@@ -159,6 +159,7 @@
     </genClasses>
     <genClasses ecoreClass="view.ecore#//TextfieldDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//TextfieldDescription/valueExpression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//TextfieldDescription/body"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>
