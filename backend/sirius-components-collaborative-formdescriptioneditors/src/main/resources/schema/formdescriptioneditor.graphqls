@@ -1,0 +1,26 @@
+extend type Subscription {
+  formDescriptionEditorEvent(input: FormDescriptionEditorEventInput!): FormDescriptionEditorEventPayload!
+}
+
+input FormDescriptionEditorEventInput {
+  id: ID!
+  editingContextId: ID!
+  formDescriptionEditorId: ID!
+}
+
+union FormDescriptionEditorEventPayload = ErrorPayload | FormDescriptionEditorRefreshedEventPayload | SubscribersUpdatedEventPayload
+
+type FormDescriptionEditorRefreshedEventPayload {
+  id: ID!
+  formDescriptionEditor: FormDescriptionEditor!
+}
+
+type FormDescriptionEditor implements Representation {
+  id: ID!
+  metadata: RepresentationMetadata!
+}
+
+type FormDescriptionEditorDescription implements RepresentationDescription {
+  id: ID!
+  label: String!
+}

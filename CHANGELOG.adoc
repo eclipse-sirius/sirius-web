@@ -49,7 +49,7 @@ This will allow us, when we will receive an operation to perform with a given re
 - https://github.com/eclipse-sirius/sirius-components/issues/1146[#1146] [core] Add support for EditingContext actions
 - https://github.com/eclipse-sirius/sirius-components/issues/1152[#1152] [form] Add support for form descriptions in the view converter 
 - https://github.com/eclipse-sirius/sirius-components/issues/1169[#1169] [form] Add support for a form description editor
-
+- https://github.com/eclipse-sirius/sirius-components/issues/1181[#1181] [form] Add backend for a form description editor
 
 == v2022.3.0
 
