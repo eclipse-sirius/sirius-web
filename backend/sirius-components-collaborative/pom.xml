@@ -22,7 +22,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-collaborative</artifactId>
-	<version>2022.3.5</version>
+	<version>2022.3.6</version>
 	<name>sirius-components-collaborative</name>
 	<description>Sirius Components Collaborative</description>
 
@@ -66,12 +66,12 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-core</artifactId>
-			<version>2022.3.5</version>
+			<version>2022.3.6</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-representations</artifactId>
-			<version>2022.3.5</version>
+			<version>2022.3.6</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -80,13 +80,13 @@
 		<dependency>
     		<groupId>org.eclipse.sirius</groupId>
     		<artifactId>sirius-components-tests</artifactId>
-    		<version>2022.3.5</version>
+    		<version>2022.3.6</version>
     		<scope>test</scope>
     	</dependency>
     	<dependency>
     		<groupId>org.eclipse.sirius</groupId>
     		<artifactId>sirius-components-spring-tests</artifactId>
-    		<version>2022.3.5</version>
+    		<version>2022.3.6</version>
     		<scope>test</scope>
     	</dependency>
     	<dependency>
