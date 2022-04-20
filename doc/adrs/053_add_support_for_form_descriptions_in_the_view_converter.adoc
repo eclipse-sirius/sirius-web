@@ -8,6 +8,8 @@ For now, only `DiagramDescription` are converted by the `ViewConverter`.
 
 == Decision
 
+
+=== ViewConverter
 We need to create and add a `FormDescriptionConverter` to the `ViewConverter`.
 The `ViewConverter.convert()` method statically converts DiagramDescription:
 
@@ -23,17 +25,25 @@ result = view.getDescriptions().stream()
 We need to modify this logic to dispatch to the correct converter according to the `IRepresentationDescription` concrete type.
 We will create a common interface `IRepresentationDescriptionConverter` for `FormDescriptionConverter` and `DiagramDescriptionConverter`. The `ViewConverter` will no longer reference a specific converter implementation.
 
+=== FormDescriptionConverter
+
 The `FormDescriptionConverter` will create a new `org.eclipse.sirius.components.forms.description.FormDescription`. The DSL does not yet handle Pages and Groups. The converter will create a default page and group.
 
 As a first step, we will only convert `TextfieldDescription`. The Textfield Widget will be read only for now.
 
-Since the View DSL does not yet allow defining behavior on the Textfield Widget, the following fields from `TextfieldDescription` will be provided with default values:
+Since the View DSL does not yet allow defining validation on the Textfield Widget, the following fields from `TextfieldDescription` will be provided with default values:
 
-* `textfieldDescription.newValueHandler`: Will do nothing for now.
 * `textfieldDescription.diagnosticsProvider`: Will return an empty list.
 * `textfieldDescription.kindProvider`: Will return an empty String.
 * `textfieldDescription.messageProvider`: Will return an empty String.
 
+=== Editing
+
+In the same way than `view::Tool`, The `view::TextfieldDescription` EClass will have a new field `body: 0..* Operation` to specify how the new value set by the end-user will be handled.
+The variable `newValue` will be available from the `TextfieldDescription` to retrieve the value set by the end-user.
+The function set in `textfieldDescription.newValueHandler` will delegate to an `OperationInterpreter` the execution of the specified operations.
+The `OperationInterpreter` class is the renamed `ToolInterpreter` class with a new public method to execute a list of `Operation`. 
+The code specific to diagrams will be extracted in a specific class `DiagramOperationInterpreter`. This class will enherit from the `OperationInterpreter`.
 
 == Status
 
