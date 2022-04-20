@@ -12,6 +12,8 @@
  */
 package org.eclipse.sirius.components.view;
 
+import org.eclipse.emf.common.util.EList;
+
 /**
  * <!-- begin-user-doc --> A representation of the model object '<em><b>Textfield Description</b></em>'. <!--
  * end-user-doc -->
@@ -21,6 +23,7 @@ package org.eclipse.sirius.components.view;
  * </p>
  * <ul>
  * <li>{@link org.eclipse.sirius.components.view.TextfieldDescription#getValueExpression <em>Value Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.TextfieldDescription#getBody <em>Body</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.ViewPackage#getTextfieldDescription()
@@ -50,5 +53,16 @@ public interface TextfieldDescription extends WidgetDescription {
      * @generated
      */
     void setValueExpression(String value);
+
+    /**
+     * Returns the value of the '<em><b>Body</b></em>' containment reference list. The list contents are of type
+     * {@link org.eclipse.sirius.components.view.Operation}. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Body</em>' containment reference list.
+     * @see org.eclipse.sirius.components.view.ViewPackage#getTextfieldDescription_Body()
+     * @model containment="true"
+     * @generated
+     */
+    EList<Operation> getBody();
 
 } // TextfieldDescription

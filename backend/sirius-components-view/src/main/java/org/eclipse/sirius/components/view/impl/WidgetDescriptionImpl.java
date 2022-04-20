@@ -162,6 +162,7 @@ public abstract class WidgetDescriptionImpl extends MinimalEObjectImpl.Container
      *
      * @generated
      */
+    @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {

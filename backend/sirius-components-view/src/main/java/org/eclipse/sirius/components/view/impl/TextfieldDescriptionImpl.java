@@ -12,9 +12,17 @@
  */
 package org.eclipse.sirius.components.view.impl;
 
+import java.util.Collection;
+
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.TextfieldDescription;
 import org.eclipse.sirius.components.view.ViewPackage;
 
@@ -27,6 +35,7 @@ import org.eclipse.sirius.components.view.ViewPackage;
  * <ul>
  * <li>{@link org.eclipse.sirius.components.view.impl.TextfieldDescriptionImpl#getValueExpression <em>Value
  * Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.impl.TextfieldDescriptionImpl#getBody <em>Body</em>}</li>
  * </ul>
  *
  * @generated
@@ -51,6 +60,16 @@ public class TextfieldDescriptionImpl extends WidgetDescriptionImpl implements T
      * @ordered
      */
     protected String valueExpression = VALUE_EXPRESSION_EDEFAULT;
+
+    /**
+     * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference list. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @see #getBody()
+     * @generated
+     * @ordered
+     */
+    protected EList<Operation> body;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -100,10 +119,39 @@ public class TextfieldDescriptionImpl extends WidgetDescriptionImpl implements T
      * @generated
      */
     @Override
+    public EList<Operation> getBody() {
+        if (this.body == null) {
+            this.body = new EObjectContainmentEList<>(Operation.class, this, ViewPackage.TEXTFIELD_DESCRIPTION__BODY);
+        }
+        return this.body;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+        switch (featureID) {
+        case ViewPackage.TEXTFIELD_DESCRIPTION__BODY:
+            return ((InternalEList<?>) this.getBody()).basicRemove(otherEnd, msgs);
+        }
+        return super.eInverseRemove(otherEnd, featureID, msgs);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
         case ViewPackage.TEXTFIELD_DESCRIPTION__VALUE_EXPRESSION:
             return this.getValueExpression();
+        case ViewPackage.TEXTFIELD_DESCRIPTION__BODY:
+            return this.getBody();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -113,11 +161,16 @@ public class TextfieldDescriptionImpl extends WidgetDescriptionImpl implements T
      *
      * @generated
      */
+    @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
         case ViewPackage.TEXTFIELD_DESCRIPTION__VALUE_EXPRESSION:
             this.setValueExpression((String) newValue);
+            return;
+        case ViewPackage.TEXTFIELD_DESCRIPTION__BODY:
+            this.getBody().clear();
+            this.getBody().addAll((Collection<? extends Operation>) newValue);
             return;
         }
         super.eSet(featureID, newValue);
@@ -134,6 +187,9 @@ public class TextfieldDescriptionImpl extends WidgetDescriptionImpl implements T
         case ViewPackage.TEXTFIELD_DESCRIPTION__VALUE_EXPRESSION:
             this.setValueExpression(VALUE_EXPRESSION_EDEFAULT);
             return;
+        case ViewPackage.TEXTFIELD_DESCRIPTION__BODY:
+            this.getBody().clear();
+            return;
         }
         super.eUnset(featureID);
     }
@@ -148,6 +204,8 @@ public class TextfieldDescriptionImpl extends WidgetDescriptionImpl implements T
         switch (featureID) {
         case ViewPackage.TEXTFIELD_DESCRIPTION__VALUE_EXPRESSION:
             return VALUE_EXPRESSION_EDEFAULT == null ? this.valueExpression != null : !VALUE_EXPRESSION_EDEFAULT.equals(this.valueExpression);
+        case ViewPackage.TEXTFIELD_DESCRIPTION__BODY:
+            return this.body != null && !this.body.isEmpty();
         }
         return super.eIsSet(featureID);
     }

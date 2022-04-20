@@ -49,7 +49,6 @@ import org.eclipse.sirius.components.diagrams.tools.ToolSection;
 import org.eclipse.sirius.components.emf.compatibility.DomainClassPredicate;
 import org.eclipse.sirius.components.emf.view.CanonicalBehaviors;
 import org.eclipse.sirius.components.emf.view.IRepresentationDescriptionConverter;
-import org.eclipse.sirius.components.emf.view.ToolInterpreter;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.interpreter.Result;
 import org.eclipse.sirius.components.interpreter.Status;
@@ -149,7 +148,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
             if (viewDiagramDescription.getOnDrop() != null) {
                 var augmentedVariableManager = variableManager.createChild();
                 augmentedVariableManager.put("convertedNodes", capturedNodeDescriptions); //$NON-NLS-1$
-                return new ToolInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager), capturedNodeDescriptions)
+                return new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager), capturedNodeDescriptions)
                         .executeTool(viewDiagramDescription.getOnDrop(), augmentedVariableManager);
             } else {
                 return new Failure("No drop handler configured"); //$NON-NLS-1$
@@ -275,7 +274,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 SingleClickOnDiagramElementTool customTool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(this.idProvider.apply(nodeDescription) + "_tool" + i++) //$NON-NLS-1$
                         .label(nodeTool.getName())
                         .imageURL(NODE_CREATION_TOOL_ICON)
-                        .handler(variableManager -> new ToolInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager), capturedConvertedNodes).executeTool(nodeTool, variableManager))
+                        .handler(variableManager -> new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager), capturedConvertedNodes).executeTool(nodeTool, variableManager))
                         .targetDescriptions(Optional.ofNullable(nodeDescription.eContainer()).map(converterContext.getConvertedNodes()::get).stream().collect(Collectors.toList()))
                         .appliesToDiagramRoot(nodeDescription.eContainer() instanceof org.eclipse.sirius.components.view.DiagramDescription)
                         .build();
@@ -310,7 +309,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                                 .sources(edgeDescription.getSourceNodeDescriptions().stream().map(converterContext.getConvertedNodes()::get).collect(Collectors.toList()))
                                 .targets(edgeDescription.getTargetNodeDescriptions().stream().map(converterContext.getConvertedNodes()::get).collect(Collectors.toList()))
                                 .build()))
-                        .handler(variableManager -> new ToolInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager), capturedConvertedNodes).executeTool(edgeTool, variableManager))
+                        .handler(variableManager -> new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager), capturedConvertedNodes).executeTool(edgeTool, variableManager))
                         .build();
                 // @formatter:on
                 edgeCreationTools.add(customTool);
@@ -516,8 +515,8 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         var capturedConvertedNodes = Map.copyOf(converterContext.getConvertedNodes());
         DeleteTool tool = diagramElementDescription.getDeleteTool();
         if (tool != null) {
-            return variableManager -> new ToolInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager), capturedConvertedNodes)
-                    .executeTool(tool, variableManager);
+            return variableManager -> new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager),
+                    capturedConvertedNodes).executeTool(tool, variableManager);
         } else {
             return this.canonicalBehaviors::deleteElement;
         }
@@ -530,8 +529,8 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
             return (variableManager, newLabel) -> {
                 VariableManager childVariableManager = variableManager.createChild();
                 childVariableManager.put("arg0", newLabel); //$NON-NLS-1$
-                return new ToolInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager), capturedConvertedNodes).executeTool(tool,
-                        childVariableManager);
+                return new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager), capturedConvertedNodes)
+                        .executeTool(tool, childVariableManager);
             };
         } else {
             return this.canonicalBehaviors::editLabel;

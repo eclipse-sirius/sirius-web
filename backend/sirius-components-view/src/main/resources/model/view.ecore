@@ -209,5 +209,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TextfieldDescription" eSuperTypes="#//WidgetDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="valueExpression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="body" upperBound="-1" eType="#//Operation"
+        containment="true"/>
   </eClassifiers>
 </ecore:EPackage>
