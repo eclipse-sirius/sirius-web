@@ -57,15 +57,23 @@ const useSiteStyles = makeStyles((theme) => ({
     flexGrow: 1,
     display: 'flex',
     flexDirection: 'column',
+    minWidth: 0,
   },
   viewHeader: {
     display: 'flex',
     flexDirection: 'row',
-    padding: theme.spacing(1),
-    columnGap: theme.spacing(1),
     borderBottomColor: theme.palette.divider,
     borderBottomWidth: '1px',
     borderBottomStyle: 'solid',
+    overflow: 'auto',
+  },
+  viewHeaderIcon: {
+    margin: theme.spacing(1),
+  },
+  viewHeaderTitle: {
+    marginTop: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    marginBottom: theme.spacing(1),
   },
   viewContent: {
     flexGrow: 1,
@@ -109,8 +117,8 @@ export const Site = ({ editingContextId, selection, setSelection, readOnly, side
     selectedView = (
       <div className={classes.view}>
         <div className={classes.viewHeader}>
-          {icon}
-          <Typography>{title}</Typography>
+          {React.cloneElement(icon, { className: classes.viewHeaderIcon })}
+          <Typography className={classes.viewHeaderTitle}>{title}</Typography>
         </div>
         <div className={classes.viewContent} data-testid={`view-${title}`}>
           <Component
