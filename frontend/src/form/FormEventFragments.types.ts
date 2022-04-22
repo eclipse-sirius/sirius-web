@@ -99,11 +99,16 @@ export interface GQLPage {
   label: string;
   groups: GQLGroup[];
 }
+
 export interface GQLGroup {
   id: string;
   label: string;
+  displayMode: GQLGroupDisplayMode;
   widgets: GQLWidget[];
 }
+
+export type GQLGroupDisplayMode = 'LIST' | 'TOGGLEABLE_AREAS';
+
 export interface GQLWidget {
   id: string;
   label: string;

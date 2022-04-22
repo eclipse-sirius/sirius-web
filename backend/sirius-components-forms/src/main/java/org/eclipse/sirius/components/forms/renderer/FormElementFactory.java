@@ -179,6 +179,7 @@ public class FormElementFactory implements IElementFactory {
 
         return Group.newGroup(props.getId())
                 .label(props.getLabel())
+                .displayMode(props.getDisplayMode())
                 .widgets(widgets)
                 .build();
         // @formatter:on

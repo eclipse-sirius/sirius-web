@@ -8,6 +8,7 @@
 - [ADR-61] Add support for flexbox containers on form description
 - [ADR-62] Switch to a monorepo layout
 - [ADR-63] Simplify the Sprotty integration
+- [ADR-64] Add support for a ToggableAreaContainer in forms
 
 === Deprecation warnings
 
@@ -28,7 +29,7 @@
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1242[#1242] [view] Provide icons for View DSL Widgets and FormDescription
 - https://github.com/eclipse-sirius/sirius-components/issues/1214[#1214] [forms] The mandatory label attribute which was available in all concrete widget types is now explicitly part of the common supertype.
-- https://github.com/eclipse-sirius/sirius-components/issues/1215[#1215] [forms] Widgets can now optionally specify an `iconURL`. It is not used in the default UI for the details view or forms representations for now, but will be used in an upcoming UI to allow users to hide/reveal individual widgets inside a group.
+- https://github.com/eclipse-sirius/sirius-components/issues/1215[#1215] [forms] Widgets can now optionally specify an `iconURL`. It is not used in the default UI for the details view or forms representations for now, but icons (if present) are visible in the toggle buttons bar for groups using the new `displayMode = TOGGLEABLE_AREAS`.
 
 === New features
 
@@ -40,6 +41,7 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/1248[#1248] [charts] Add support for pie-chart in Form representation
 - https://github.com/eclipse-sirius/sirius-components/issues/1255[#1255] [form] Add support for charts in form descriptions editor
 - https://github.com/eclipse-sirius/sirius-components/issues/1244[#1244] [form] Add support for flexbox containers on FormDescriptions
+- https://github.com/eclipse-sirius/sirius-components/issues/1140[#1140] [form] Widget groups now support a new setting (`displayMode = TOGGLEABLE_AREAS`) which allows end-users to select which of the widgets in the group are visible, and adapts their layout to the available horizontal space.
 
 == v2022.5.0
 
@@ -75,6 +77,7 @@ See ADR-54 for the details.
 - https://github.com/eclipse-sirius/sirius-components/issues/1118[#1118] [core] Switch to Spring Boot 2.6.6
 - https://github.com/eclipse-sirius/sirius-components/issues/1118[#1118] [core] Switch to GraphQL Java 18.0
 - https://github.com/eclipse-sirius/sirius-components/issues/1118[#1118] [core] Switch to Sirius Desktop 7.0.0
+- https://github.com/eclipse-sirius/sirius-components/issues/1140[#1140] [forms] The frontend now depends on `@material-ui/lab` version 4.0.0-alpha.61
 
 === Bug fixes
 

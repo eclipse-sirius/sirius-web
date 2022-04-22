@@ -33,8 +33,12 @@ export interface Page {
 export interface Group {
   id: string;
   label: string;
+  displayMode: GroupDisplayMode;
   widgets: Widget[];
 }
+
+export type GroupDisplayMode = 'LIST' | 'TOGGLEABLE_AREAS';
+
 export interface Widget {
   id: string;
   label: string;

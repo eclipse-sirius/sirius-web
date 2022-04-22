@@ -29,6 +29,8 @@ public final class Group {
 
     private String label;
 
+    private GroupDisplayMode displayMode;
+
     private List<AbstractWidget> widgets;
 
     private Group() {
@@ -47,14 +49,18 @@ public final class Group {
         return this.widgets;
     }
 
+    public GroupDisplayMode getDisplayMode() {
+        return this.displayMode;
+    }
+
     public static Builder newGroup(String id) {
         return new Builder(id);
     }
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, label: {2}, widgetCount: {3}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.label, this.widgets.size());
+        String pattern = "{0} '{'id: {1}, label: {2}, displayMode: {3}, widgetCount: {4}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.label, this.displayMode, this.widgets.size());
     }
 
     /**
@@ -68,6 +74,8 @@ public final class Group {
 
         private String label;
 
+        private GroupDisplayMode displayMode = GroupDisplayMode.LIST;
+
         private List<AbstractWidget> widgets;
 
         private Builder(String id) {
@@ -76,6 +84,11 @@ public final class Group {
 
         public Builder label(String label) {
             this.label = Objects.requireNonNull(label);
+            return this;
+        }
+
+        public Builder displayMode(GroupDisplayMode displayMode) {
+            this.displayMode = Objects.requireNonNull(displayMode);
             return this;
         }
 
@@ -88,6 +101,7 @@ public final class Group {
             Group group = new Group();
             group.id = Objects.requireNonNull(this.id);
             group.label = Objects.requireNonNull(this.label);
+            group.displayMode = Objects.requireNonNull(this.displayMode);
             group.widgets = Objects.requireNonNull(this.widgets);
             return group;
         }
