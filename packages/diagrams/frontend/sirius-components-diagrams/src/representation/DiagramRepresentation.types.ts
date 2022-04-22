@@ -273,9 +273,57 @@ export enum GQLArrowStyle {
   OutputFillClosedArrow = 'OutputFillClosedArrow',
 }
 
+export interface GQLDeleteFromDiagramVariables {
+  input: GQLDeleteFromDiagramInput;
+}
+
+export interface GQLDeleteFromDiagramInput {
+  id: string;
+  editingContextId: string;
+  representationId: string;
+  nodeIds: string[];
+  edgeIds: string[];
+  deletionPolicy: GQLDeletionPolicy;
+}
+
+export interface GQLDeleteFromDiagramData {
+  deleteFromDiagram: GQLDeleteFromDiagramPayload;
+}
+
+export interface GQLDeleteFromDiagramPayload {
+  __typename: string;
+}
+
 export enum GQLDeletionPolicy {
   SEMANTIC = 'SEMANTIC',
   GRAPHICAL = 'GRAPHICAL',
+}
+
+export interface GQLReconnectEdgeVariables {
+  input: GQLReconnectEdgeInput;
+}
+
+export interface GQLReconnectEdgeInput {
+  id: string;
+  editingContextId: string;
+  representationId: string;
+  edgeId: string;
+  newEdgeEndId: string;
+  reconnectEdgeKind: GQLReconnectKind;
+  newEdgeEndPosition: Position;
+}
+
+export interface GQLReconnectEdgeData {
+  reconnectEdge: GQLReconnectEdgePayload;
+}
+
+export interface GQLReconnectEdgePayload {
+  __typename: string;
+}
+
+export enum GQLReconnectKind {
+  SOURCE = 'SOURCE',
+  TARGET = 'TARGET',
 }
 
 export interface GQLInvokeSingleClickOnDiagramElementToolVariables {
@@ -359,7 +407,13 @@ export interface GQLErrorPayload
   extends GQLDiagramEventPayload,
     GQLInvokeSingleClickOnDiagramElementToolPayload,
     GQLInvokeSingleClickOnTwoDiagramElementsToolPayload,
-    GQLUpdateEdgeRoutingPointsPayload {
+    GQLUpdateEdgeRoutingPointsPayload,
+    GQLReconnectEdgePayload,
+    GQLDeleteFromDiagramPayload,
+    GQLEditLabelPayload,
+    GQLUpdateNodePositionPayload,
+    GQLUpdateNodeBoundsPayload,
+    GQLArrangeAllPayload {
   message: string;
 }
 export interface GQLWorkbenchSelection {
@@ -370,4 +424,86 @@ export interface GQLWorkbenchSelectionEntry {
   id: string;
   label: string;
   kind: string;
+}
+
+export interface GQLEditLabelVariables {
+  input: GQLEditLabelInput;
+}
+
+export interface GQLEditLabelInput {
+  id: string;
+  editingContextId: string;
+  representationId: string;
+  labelId: string;
+  newText: string;
+}
+
+export interface GQLEditLabelData {
+  editLabel: GQLEditLabelPayload;
+}
+
+export interface GQLEditLabelPayload {
+  __typename: string;
+}
+
+export interface GQLUpdateNodePositionVariables {
+  input: GQLUpdateNodePositionInput;
+}
+
+export interface GQLUpdateNodePositionInput {
+  id: string;
+  editingContextId: string;
+  representationId: string;
+  diagramElementId: string;
+  newPositionX: number;
+  newPositionY: number;
+}
+
+export interface GQLUpdateNodePositionData {
+  updateNodePosition: GQLUpdateNodePositionPayload;
+}
+
+export interface GQLUpdateNodePositionPayload {
+  __typename: string;
+}
+
+export interface GQLUpdateNodeBoundsVariables {
+  input: GQLUpdateNodeBoundsInput;
+}
+
+export interface GQLUpdateNodeBoundsInput {
+  id: string;
+  editingContextId: string;
+  representationId: string;
+  diagramElementId: string;
+  newHeight: number;
+  newPositionX: number;
+  newPositionY: number;
+  newWidth: number;
+}
+
+export interface GQLUpdateNodeBoundsData {
+  updateNodeBounds: GQLUpdateNodeBoundsPayload;
+}
+
+export interface GQLUpdateNodeBoundsPayload {
+  __typename: string;
+}
+
+export interface GQLArrangeAllVariables {
+  input: GQLArrangeAllInput;
+}
+
+export interface GQLArrangeAllInput {
+  id: string;
+  editingContextId: string;
+  representationId: string;
+}
+
+export interface GQLArrangeAllData {
+  arrangeAll: GQLArrangeAllPayload;
+}
+
+export interface GQLArrangeAllPayload {
+  __typename: string;
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,6 +27,9 @@ import org.eclipse.sirius.components.view.ConditionalEdgeStyle;
 import org.eclipse.sirius.components.view.EdgeDescription;
 import org.eclipse.sirius.components.view.EdgeStyle;
 import org.eclipse.sirius.components.view.EdgeTool;
+import org.eclipse.sirius.components.view.SetValue;
+import org.eclipse.sirius.components.view.SourceEdgeEndReconnectionTool;
+import org.eclipse.sirius.components.view.TargetEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.ViewPackage;
 
@@ -172,6 +175,7 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
             super.getChildrenFeatures(object);
             this.childrenFeatures.add(ViewPackage.Literals.EDGE_DESCRIPTION__STYLE);
             this.childrenFeatures.add(ViewPackage.Literals.EDGE_DESCRIPTION__EDGE_TOOLS);
+            this.childrenFeatures.add(ViewPackage.Literals.EDGE_DESCRIPTION__RECONNECT_EDGE_TOOLS);
             this.childrenFeatures.add(ViewPackage.Literals.EDGE_DESCRIPTION__CONDITIONAL_STYLES);
         }
         return this.childrenFeatures;
@@ -243,6 +247,7 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
             return;
         case ViewPackage.EDGE_DESCRIPTION__STYLE:
         case ViewPackage.EDGE_DESCRIPTION__EDGE_TOOLS:
+        case ViewPackage.EDGE_DESCRIPTION__RECONNECT_EDGE_TOOLS:
         case ViewPackage.EDGE_DESCRIPTION__CONDITIONAL_STYLES:
             this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
             return;
@@ -266,6 +271,24 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
         initialOperation.setExpression("aql:semanticEdgeSource"); //$NON-NLS-1$
         newEdgeTool.getBody().add(initialOperation);
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.EDGE_DESCRIPTION__EDGE_TOOLS, newEdgeTool));
+
+        SourceEdgeEndReconnectionTool sourceReconnectionTool = ViewFactory.eINSTANCE.createSourceEdgeEndReconnectionTool();
+        sourceReconnectionTool.setName("Reconnect Edge Source"); //$NON-NLS-1$
+        ChangeContext reconnectSourceInitialOperation = ViewFactory.eINSTANCE.createChangeContext();
+        reconnectSourceInitialOperation.setExpression("aql:edgeSemanticElement"); //$NON-NLS-1$
+        SetValue reconnectSourceSetValue = ViewFactory.eINSTANCE.createSetValue();
+        reconnectSourceInitialOperation.getChildren().add(reconnectSourceSetValue);
+        sourceReconnectionTool.getBody().add(reconnectSourceInitialOperation);
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.EDGE_DESCRIPTION__RECONNECT_EDGE_TOOLS, sourceReconnectionTool));
+
+        TargetEdgeEndReconnectionTool targetReconnectionTool = ViewFactory.eINSTANCE.createTargetEdgeEndReconnectionTool();
+        targetReconnectionTool.setName("Reconnect Edge Target"); //$NON-NLS-1$
+        ChangeContext reconnectTargetInitialOperation = ViewFactory.eINSTANCE.createChangeContext();
+        reconnectTargetInitialOperation.setExpression("aql:edgeSemanticElement"); //$NON-NLS-1$
+        SetValue reconnectTargetSetValue = ViewFactory.eINSTANCE.createSetValue();
+        reconnectTargetInitialOperation.getChildren().add(reconnectTargetSetValue);
+        targetReconnectionTool.getBody().add(reconnectTargetInitialOperation);
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.EDGE_DESCRIPTION__RECONNECT_EDGE_TOOLS, targetReconnectionTool));
 
         EdgeStyle newEdgeStyle = ViewFactory.eINSTANCE.createEdgeStyle();
         newEdgeStyle.setColor("#002639"); //$NON-NLS-1$

@@ -1,4 +1,4 @@
-/*******************************************************************************
+/**
  * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -8,8 +8,8 @@
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+ *      Obeo - initial API and implementation
+ */
 package org.eclipse.sirius.components.view;
 
 import org.eclipse.emf.ecore.EAttribute;
@@ -658,13 +658,22 @@ public interface ViewPackage extends EPackage {
     int EDGE_DESCRIPTION__EDGE_TOOLS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 8;
 
     /**
+     * The feature id for the '<em><b>Reconnect Edge Tools</b></em>' containment reference list. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_DESCRIPTION__RECONNECT_EDGE_TOOLS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 9;
+
+    /**
      * The feature id for the '<em><b>Conditional Styles</b></em>' containment reference list. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int EDGE_DESCRIPTION__CONDITIONAL_STYLES = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 9;
+    int EDGE_DESCRIPTION__CONDITIONAL_STYLES = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 10;
 
     /**
      * The number of structural features of the '<em>Edge Description</em>' class. <!-- begin-user-doc --> <!--
@@ -673,7 +682,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int EDGE_DESCRIPTION_FEATURE_COUNT = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 10;
+    int EDGE_DESCRIPTION_FEATURE_COUNT = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 11;
 
     /**
      * The number of operations of the '<em>Edge Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1616,8 +1625,8 @@ public interface ViewPackage extends EPackage {
     int TOOL__NAME = 0;
 
     /**
-     * The feature id for the '<em><b>Body</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
+     * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
      *
      * @generated
      * @ordered
@@ -1659,8 +1668,8 @@ public interface ViewPackage extends EPackage {
     int LABEL_EDIT_TOOL__NAME = TOOL__NAME;
 
     /**
-     * The feature id for the '<em><b>Body</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
+     * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
      *
      * @generated
      * @ordered
@@ -1677,22 +1686,7 @@ public interface ViewPackage extends EPackage {
     int LABEL_EDIT_TOOL_FEATURE_COUNT = TOOL_FEATURE_COUNT + 0;
 
     /**
-     * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.DiagramDescription#isAutoLayout <em>Auto Layout</em>}'. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the attribute '<em>Auto Layout</em>'.
-     * @see org.eclipse.sirius.components.view.DiagramDescription#isAutoLayout()
-     * @see #getDiagramDescription()
-     * @generated
-     */
-    EAttribute getDiagramDescription_AutoLayout();
-
-    /**
-     * Returns the meta object for the containment reference list
-     * '{@link org.eclipse.sirius.components.view.DiagramDescription#getNodeDescriptions <em>Node Descriptions</em>}'.
-     * <!-- begin-user-doc --> <!-- end-user-doc --> >>>>>>> 025361a0 ([512] View DSL: Add support for layout mode
-     * configuration)
+     * The number of operations of the '<em>Label Edit Tool</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
@@ -1718,8 +1712,8 @@ public interface ViewPackage extends EPackage {
     int DELETE_TOOL__NAME = TOOL__NAME;
 
     /**
-     * The feature id for the '<em><b>Body</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
+     * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
      *
      * @generated
      * @ordered
@@ -1762,8 +1756,8 @@ public interface ViewPackage extends EPackage {
     int NODE_TOOL__NAME = TOOL__NAME;
 
     /**
-     * The feature id for the '<em><b>Body</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
+     * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
      *
      * @generated
      * @ordered
@@ -1806,8 +1800,8 @@ public interface ViewPackage extends EPackage {
     int EDGE_TOOL__NAME = TOOL__NAME;
 
     /**
-     * The feature id for the '<em><b>Body</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
+     * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
      *
      * @generated
      * @ordered
@@ -1832,6 +1826,141 @@ public interface ViewPackage extends EPackage {
     int EDGE_TOOL_OPERATION_COUNT = TOOL_OPERATION_COUNT + 0;
 
     /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.EdgeReconnectionToolImpl <em>Edge
+     * Reconnection Tool</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.EdgeReconnectionToolImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getEdgeReconnectionTool()
+     * @generated
+     */
+    int EDGE_RECONNECTION_TOOL = 22;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_RECONNECTION_TOOL__NAME = TOOL__NAME;
+
+    /**
+     * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_RECONNECTION_TOOL__BODY = TOOL__BODY;
+
+    /**
+     * The number of structural features of the '<em>Edge Reconnection Tool</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_RECONNECTION_TOOL_FEATURE_COUNT = TOOL_FEATURE_COUNT + 0;
+
+    /**
+     * The number of operations of the '<em>Edge Reconnection Tool</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_RECONNECTION_TOOL_OPERATION_COUNT = TOOL_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.SourceEdgeEndReconnectionToolImpl
+     * <em>Source Edge End Reconnection Tool</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.SourceEdgeEndReconnectionToolImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getSourceEdgeEndReconnectionTool()
+     * @generated
+     */
+    int SOURCE_EDGE_END_RECONNECTION_TOOL = 23;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SOURCE_EDGE_END_RECONNECTION_TOOL__NAME = EDGE_RECONNECTION_TOOL__NAME;
+
+    /**
+     * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SOURCE_EDGE_END_RECONNECTION_TOOL__BODY = EDGE_RECONNECTION_TOOL__BODY;
+
+    /**
+     * The number of structural features of the '<em>Source Edge End Reconnection Tool</em>' class. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SOURCE_EDGE_END_RECONNECTION_TOOL_FEATURE_COUNT = EDGE_RECONNECTION_TOOL_FEATURE_COUNT + 0;
+
+    /**
+     * The number of operations of the '<em>Source Edge End Reconnection Tool</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SOURCE_EDGE_END_RECONNECTION_TOOL_OPERATION_COUNT = EDGE_RECONNECTION_TOOL_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.TargetEdgeEndReconnectionToolImpl
+     * <em>Target Edge End Reconnection Tool</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.TargetEdgeEndReconnectionToolImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getTargetEdgeEndReconnectionTool()
+     * @generated
+     */
+    int TARGET_EDGE_END_RECONNECTION_TOOL = 24;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TARGET_EDGE_END_RECONNECTION_TOOL__NAME = EDGE_RECONNECTION_TOOL__NAME;
+
+    /**
+     * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TARGET_EDGE_END_RECONNECTION_TOOL__BODY = EDGE_RECONNECTION_TOOL__BODY;
+
+    /**
+     * The number of structural features of the '<em>Target Edge End Reconnection Tool</em>' class. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TARGET_EDGE_END_RECONNECTION_TOOL_FEATURE_COUNT = EDGE_RECONNECTION_TOOL_FEATURE_COUNT + 0;
+
+    /**
+     * The number of operations of the '<em>Target Edge End Reconnection Tool</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TARGET_EDGE_END_RECONNECTION_TOOL_OPERATION_COUNT = EDGE_RECONNECTION_TOOL_OPERATION_COUNT + 0;
+
+    /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.DropToolImpl <em>Drop Tool</em>}'
      * class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1839,7 +1968,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getDropTool()
      * @generated
      */
-    int DROP_TOOL = 22;
+    int DROP_TOOL = 25;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1883,7 +2012,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getOperation()
      * @generated
      */
-    int OPERATION = 23;
+    int OPERATION = 26;
 
     /**
      * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -1919,7 +2048,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getChangeContext()
      * @generated
      */
-    int CHANGE_CONTEXT = 24;
+    int CHANGE_CONTEXT = 27;
 
     /**
      * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -1963,7 +2092,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getCreateInstance()
      * @generated
      */
-    int CREATE_INSTANCE = 25;
+    int CREATE_INSTANCE = 28;
 
     /**
      * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -2023,7 +2152,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getSetValue()
      * @generated
      */
-    int SET_VALUE = 26;
+    int SET_VALUE = 29;
 
     /**
      * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -2076,7 +2205,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getUnsetValue()
      * @generated
      */
-    int UNSET_VALUE = 27;
+    int UNSET_VALUE = 30;
 
     /**
      * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -2129,7 +2258,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getDeleteElement()
      * @generated
      */
-    int DELETE_ELEMENT = 28;
+    int DELETE_ELEMENT = 31;
 
     /**
      * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -2165,7 +2294,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getCreateView()
      * @generated
      */
-    int CREATE_VIEW = 29;
+    int CREATE_VIEW = 32;
 
     /**
      * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -2236,7 +2365,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getDeleteView()
      * @generated
      */
-    int DELETE_VIEW = 30;
+    int DELETE_VIEW = 33;
 
     /**
      * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -2280,7 +2409,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditional()
      * @generated
      */
-    int CONDITIONAL = 31;
+    int CONDITIONAL = 34;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2315,7 +2444,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalNodeStyle()
      * @generated
      */
-    int CONDITIONAL_NODE_STYLE = 32;
+    int CONDITIONAL_NODE_STYLE = 35;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2360,7 +2489,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalEdgeStyle()
      * @generated
      */
-    int CONDITIONAL_EDGE_STYLE = 33;
+    int CONDITIONAL_EDGE_STYLE = 36;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2486,7 +2615,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getFormDescription()
      * @generated
      */
-    int FORM_DESCRIPTION = 34;
+    int FORM_DESCRIPTION = 37;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2556,7 +2685,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getWidgetDescription()
      * @generated
      */
-    int WIDGET_DESCRIPTION = 35;
+    int WIDGET_DESCRIPTION = 38;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2601,7 +2730,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getTextfieldDescription()
      * @generated
      */
-    int TEXTFIELD_DESCRIPTION = 36;
+    int TEXTFIELD_DESCRIPTION = 39;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2682,7 +2811,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getCheckboxDescription()
      * @generated
      */
-    int CHECKBOX_DESCRIPTION = 37;
+    int CHECKBOX_DESCRIPTION = 40;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2763,7 +2892,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getSelectDescription()
      * @generated
      */
-    int SELECT_DESCRIPTION = 38;
+    int SELECT_DESCRIPTION = 41;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2862,7 +2991,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getMultiSelectDescription()
      * @generated
      */
-    int MULTI_SELECT_DESCRIPTION = 39;
+    int MULTI_SELECT_DESCRIPTION = 42;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2961,7 +3090,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getTextAreaDescription()
      * @generated
      */
-    int TEXT_AREA_DESCRIPTION = 40;
+    int TEXT_AREA_DESCRIPTION = 43;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3042,7 +3171,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getRadioDescription()
      * @generated
      */
-    int RADIO_DESCRIPTION = 41;
+    int RADIO_DESCRIPTION = 44;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3133,140 +3262,6 @@ public interface ViewPackage extends EPackage {
     int RADIO_DESCRIPTION_OPERATION_COUNT = WIDGET_DESCRIPTION_OPERATION_COUNT + 0;
 
     /**
-     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.WidgetDescriptionStyleImpl <em>Widget
-     * Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see org.eclipse.sirius.components.view.impl.WidgetDescriptionStyleImpl
-     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getWidgetDescriptionStyle()
-     * @generated
-     */
-    int WIDGET_DESCRIPTION_STYLE = 46;
-
-    /**
-     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.TextfieldDescriptionStyleImpl
-     * <em>Textfield Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see org.eclipse.sirius.components.view.impl.TextfieldDescriptionStyleImpl
-     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getTextfieldDescriptionStyle()
-     * @generated
-     */
-    int TEXTFIELD_DESCRIPTION_STYLE = 47;
-
-    /**
-     * The meta object id for the
-     * '{@link org.eclipse.sirius.components.view.impl.ConditionalTextfieldDescriptionStyleImpl <em>Conditional
-     * Textfield Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see org.eclipse.sirius.components.view.impl.ConditionalTextfieldDescriptionStyleImpl
-     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalTextfieldDescriptionStyle()
-     * @generated
-     */
-    int CONDITIONAL_TEXTFIELD_DESCRIPTION_STYLE = 48;
-
-    /**
-     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.CheckboxDescriptionStyleImpl
-     * <em>Checkbox Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see org.eclipse.sirius.components.view.impl.CheckboxDescriptionStyleImpl
-     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getCheckboxDescriptionStyle()
-     * @generated
-     */
-    int CHECKBOX_DESCRIPTION_STYLE = 49;
-
-    /**
-     * The meta object id for the
-     * '{@link org.eclipse.sirius.components.view.impl.ConditionalCheckboxDescriptionStyleImpl <em>Conditional Checkbox
-     * Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see org.eclipse.sirius.components.view.impl.ConditionalCheckboxDescriptionStyleImpl
-     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalCheckboxDescriptionStyle()
-     * @generated
-     */
-    int CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE = 50;
-
-    /**
-     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.SelectDescriptionStyleImpl <em>Select
-     * Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see org.eclipse.sirius.components.view.impl.SelectDescriptionStyleImpl
-     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getSelectDescriptionStyle()
-     * @generated
-     */
-    int SELECT_DESCRIPTION_STYLE = 51;
-
-    /**
-     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.ConditionalSelectDescriptionStyleImpl
-     * <em>Conditional Select Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see org.eclipse.sirius.components.view.impl.ConditionalSelectDescriptionStyleImpl
-     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalSelectDescriptionStyle()
-     * @generated
-     */
-    int CONDITIONAL_SELECT_DESCRIPTION_STYLE = 52;
-
-    /**
-     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.MultiSelectDescriptionStyleImpl
-     * <em>Multi Select Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see org.eclipse.sirius.components.view.impl.MultiSelectDescriptionStyleImpl
-     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getMultiSelectDescriptionStyle()
-     * @generated
-     */
-    int MULTI_SELECT_DESCRIPTION_STYLE = 53;
-
-    /**
-     * The meta object id for the
-     * '{@link org.eclipse.sirius.components.view.impl.ConditionalMultiSelectDescriptionStyleImpl <em>Conditional Multi
-     * Select Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see org.eclipse.sirius.components.view.impl.ConditionalMultiSelectDescriptionStyleImpl
-     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalMultiSelectDescriptionStyle()
-     * @generated
-     */
-    int CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE = 54;
-
-    /**
-     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.TextareaDescriptionStyleImpl
-     * <em>Textarea Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see org.eclipse.sirius.components.view.impl.TextareaDescriptionStyleImpl
-     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getTextareaDescriptionStyle()
-     * @generated
-     */
-    int TEXTAREA_DESCRIPTION_STYLE = 55;
-
-    /**
-     * The meta object id for the
-     * '{@link org.eclipse.sirius.components.view.impl.ConditionalTextareaDescriptionStyleImpl <em>Conditional Textarea
-     * Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see org.eclipse.sirius.components.view.impl.ConditionalTextareaDescriptionStyleImpl
-     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalTextareaDescriptionStyle()
-     * @generated
-     */
-    int CONDITIONAL_TEXTAREA_DESCRIPTION_STYLE = 56;
-
-    /**
-     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.RadioDescriptionStyleImpl <em>Radio
-     * Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see org.eclipse.sirius.components.view.impl.RadioDescriptionStyleImpl
-     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getRadioDescriptionStyle()
-     * @generated
-     */
-    int RADIO_DESCRIPTION_STYLE = 57;
-
-    /**
-     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.ConditionalRadioDescriptionStyleImpl
-     * <em>Conditional Radio Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see org.eclipse.sirius.components.view.impl.ConditionalRadioDescriptionStyleImpl
-     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalRadioDescriptionStyle()
-     * @generated
-     */
-    int CONDITIONAL_RADIO_DESCRIPTION_STYLE = 58;
-
-    /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.BarChartDescriptionImpl <em>Bar Chart
      * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -3274,7 +3269,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getBarChartDescription()
      * @generated
      */
-    int BAR_CHART_DESCRIPTION = 42;
+    int BAR_CHART_DESCRIPTION = 45;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3363,7 +3358,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getPieChartDescription()
      * @generated
      */
-    int PIE_CHART_DESCRIPTION = 43;
+    int PIE_CHART_DESCRIPTION = 46;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3443,7 +3438,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getFlexboxContainerDescription()
      * @generated
      */
-    int FLEXBOX_CONTAINER_DESCRIPTION = 44;
+    int FLEXBOX_CONTAINER_DESCRIPTION = 47;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3505,7 +3500,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getButtonDescription()
      * @generated
      */
-    int BUTTON_DESCRIPTION = 45;
+    int BUTTON_DESCRIPTION = 48;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3588,6 +3583,16 @@ public interface ViewPackage extends EPackage {
     int BUTTON_DESCRIPTION_OPERATION_COUNT = WIDGET_DESCRIPTION_OPERATION_COUNT + 0;
 
     /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.WidgetDescriptionStyleImpl <em>Widget
+     * Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.WidgetDescriptionStyleImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getWidgetDescriptionStyle()
+     * @generated
+     */
+    int WIDGET_DESCRIPTION_STYLE = 49;
+
+    /**
      * The number of structural features of the '<em>Widget Description Style</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
@@ -3604,6 +3609,16 @@ public interface ViewPackage extends EPackage {
      * @ordered
      */
     int WIDGET_DESCRIPTION_STYLE_OPERATION_COUNT = 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.TextfieldDescriptionStyleImpl
+     * <em>Textfield Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.TextfieldDescriptionStyleImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getTextfieldDescriptionStyle()
+     * @generated
+     */
+    int TEXTFIELD_DESCRIPTION_STYLE = 50;
 
     /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3680,6 +3695,17 @@ public interface ViewPackage extends EPackage {
      * @ordered
      */
     int TEXTFIELD_DESCRIPTION_STYLE_OPERATION_COUNT = WIDGET_DESCRIPTION_STYLE_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the
+     * '{@link org.eclipse.sirius.components.view.impl.ConditionalTextfieldDescriptionStyleImpl <em>Conditional
+     * Textfield Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.ConditionalTextfieldDescriptionStyleImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalTextfieldDescriptionStyle()
+     * @generated
+     */
+    int CONDITIONAL_TEXTFIELD_DESCRIPTION_STYLE = 51;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3766,6 +3792,16 @@ public interface ViewPackage extends EPackage {
     int CONDITIONAL_TEXTFIELD_DESCRIPTION_STYLE_OPERATION_COUNT = CONDITIONAL_OPERATION_COUNT + 0;
 
     /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.CheckboxDescriptionStyleImpl
+     * <em>Checkbox Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.CheckboxDescriptionStyleImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getCheckboxDescriptionStyle()
+     * @generated
+     */
+    int CHECKBOX_DESCRIPTION_STYLE = 52;
+
+    /**
      * The feature id for the '<em><b>Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -3790,6 +3826,17 @@ public interface ViewPackage extends EPackage {
      * @ordered
      */
     int CHECKBOX_DESCRIPTION_STYLE_OPERATION_COUNT = WIDGET_DESCRIPTION_STYLE_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the
+     * '{@link org.eclipse.sirius.components.view.impl.ConditionalCheckboxDescriptionStyleImpl <em>Conditional Checkbox
+     * Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.ConditionalCheckboxDescriptionStyleImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalCheckboxDescriptionStyle()
+     * @generated
+     */
+    int CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE = 53;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3824,6 +3871,16 @@ public interface ViewPackage extends EPackage {
      * @ordered
      */
     int CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE_OPERATION_COUNT = CONDITIONAL_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.SelectDescriptionStyleImpl <em>Select
+     * Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.SelectDescriptionStyleImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getSelectDescriptionStyle()
+     * @generated
+     */
+    int SELECT_DESCRIPTION_STYLE = 54;
 
     /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3900,6 +3957,16 @@ public interface ViewPackage extends EPackage {
      * @ordered
      */
     int SELECT_DESCRIPTION_STYLE_OPERATION_COUNT = WIDGET_DESCRIPTION_STYLE_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.ConditionalSelectDescriptionStyleImpl
+     * <em>Conditional Select Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.ConditionalSelectDescriptionStyleImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalSelectDescriptionStyle()
+     * @generated
+     */
+    int CONDITIONAL_SELECT_DESCRIPTION_STYLE = 55;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3986,6 +4053,16 @@ public interface ViewPackage extends EPackage {
     int CONDITIONAL_SELECT_DESCRIPTION_STYLE_OPERATION_COUNT = CONDITIONAL_OPERATION_COUNT + 0;
 
     /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.MultiSelectDescriptionStyleImpl
+     * <em>Multi Select Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.MultiSelectDescriptionStyleImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getMultiSelectDescriptionStyle()
+     * @generated
+     */
+    int MULTI_SELECT_DESCRIPTION_STYLE = 56;
+
+    /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -4060,6 +4137,17 @@ public interface ViewPackage extends EPackage {
      * @ordered
      */
     int MULTI_SELECT_DESCRIPTION_STYLE_OPERATION_COUNT = WIDGET_DESCRIPTION_STYLE_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the
+     * '{@link org.eclipse.sirius.components.view.impl.ConditionalMultiSelectDescriptionStyleImpl <em>Conditional Multi
+     * Select Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.ConditionalMultiSelectDescriptionStyleImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalMultiSelectDescriptionStyle()
+     * @generated
+     */
+    int CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE = 57;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -4146,6 +4234,16 @@ public interface ViewPackage extends EPackage {
     int CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE_OPERATION_COUNT = CONDITIONAL_OPERATION_COUNT + 0;
 
     /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.TextareaDescriptionStyleImpl
+     * <em>Textarea Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.TextareaDescriptionStyleImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getTextareaDescriptionStyle()
+     * @generated
+     */
+    int TEXTAREA_DESCRIPTION_STYLE = 58;
+
+    /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -4220,6 +4318,17 @@ public interface ViewPackage extends EPackage {
      * @ordered
      */
     int TEXTAREA_DESCRIPTION_STYLE_OPERATION_COUNT = WIDGET_DESCRIPTION_STYLE_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the
+     * '{@link org.eclipse.sirius.components.view.impl.ConditionalTextareaDescriptionStyleImpl <em>Conditional Textarea
+     * Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.ConditionalTextareaDescriptionStyleImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalTextareaDescriptionStyle()
+     * @generated
+     */
+    int CONDITIONAL_TEXTAREA_DESCRIPTION_STYLE = 59;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -4306,6 +4415,16 @@ public interface ViewPackage extends EPackage {
     int CONDITIONAL_TEXTAREA_DESCRIPTION_STYLE_OPERATION_COUNT = CONDITIONAL_OPERATION_COUNT + 0;
 
     /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.RadioDescriptionStyleImpl <em>Radio
+     * Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.RadioDescriptionStyleImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getRadioDescriptionStyle()
+     * @generated
+     */
+    int RADIO_DESCRIPTION_STYLE = 60;
+
+    /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -4370,6 +4489,16 @@ public interface ViewPackage extends EPackage {
      * @ordered
      */
     int RADIO_DESCRIPTION_STYLE_OPERATION_COUNT = WIDGET_DESCRIPTION_STYLE_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.ConditionalRadioDescriptionStyleImpl
+     * <em>Conditional Radio Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.ConditionalRadioDescriptionStyleImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalRadioDescriptionStyle()
+     * @generated
+     */
+    int CONDITIONAL_RADIO_DESCRIPTION_STYLE = 61;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -4453,7 +4582,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getButtonDescriptionStyle()
      * @generated
      */
-    int BUTTON_DESCRIPTION_STYLE = 59;
+    int BUTTON_DESCRIPTION_STYLE = 62;
 
     /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -4539,7 +4668,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalButtonDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_BUTTON_DESCRIPTION_STYLE = 60;
+    int CONDITIONAL_BUTTON_DESCRIPTION_STYLE = 63;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -4633,7 +4762,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getBarChartDescriptionStyle()
      * @generated
      */
-    int BAR_CHART_DESCRIPTION_STYLE = 61;
+    int BAR_CHART_DESCRIPTION_STYLE = 64;
 
     /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -4710,7 +4839,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalBarChartDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_BAR_CHART_DESCRIPTION_STYLE = 62;
+    int CONDITIONAL_BAR_CHART_DESCRIPTION_STYLE = 65;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -4794,7 +4923,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getPieChartDescriptionStyle()
      * @generated
      */
-    int PIE_CHART_DESCRIPTION_STYLE = 63;
+    int PIE_CHART_DESCRIPTION_STYLE = 66;
 
     /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -4887,7 +5016,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalPieChartDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_PIE_CHART_DESCRIPTION_STYLE = 64;
+    int CONDITIONAL_PIE_CHART_DESCRIPTION_STYLE = 67;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -4987,7 +5116,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLabelDescription()
      * @generated
      */
-    int LABEL_DESCRIPTION = 65;
+    int LABEL_DESCRIPTION = 68;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -5058,7 +5187,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLabelDescriptionStyle()
      * @generated
      */
-    int LABEL_DESCRIPTION_STYLE = 66;
+    int LABEL_DESCRIPTION_STYLE = 69;
 
     /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -5134,7 +5263,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalLabelDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_LABEL_DESCRIPTION_STYLE = 67;
+    int CONDITIONAL_LABEL_DESCRIPTION_STYLE = 70;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -5218,7 +5347,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLinkDescription()
      * @generated
      */
-    int LINK_DESCRIPTION = 68;
+    int LINK_DESCRIPTION = 71;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -5289,7 +5418,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLinkDescriptionStyle()
      * @generated
      */
-    int LINK_DESCRIPTION_STYLE = 69;
+    int LINK_DESCRIPTION_STYLE = 72;
 
     /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -5365,7 +5494,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalLinkDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_LINK_DESCRIPTION_STYLE = 70;
+    int CONDITIONAL_LINK_DESCRIPTION_STYLE = 73;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -5449,7 +5578,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getListDescription()
      * @generated
      */
-    int LIST_DESCRIPTION = 71;
+    int LIST_DESCRIPTION = 74;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -5547,7 +5676,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getListDescriptionStyle()
      * @generated
      */
-    int LIST_DESCRIPTION_STYLE = 72;
+    int LIST_DESCRIPTION_STYLE = 75;
 
     /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -5623,7 +5752,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalListDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_LIST_DESCRIPTION_STYLE = 73;
+    int CONDITIONAL_LIST_DESCRIPTION_STYLE = 76;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -5707,7 +5836,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLayoutDirection()
      * @generated
      */
-    int LAYOUT_DIRECTION = 74;
+    int LAYOUT_DIRECTION = 77;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.ArrowStyle <em>Arrow Style</em>}' enum.
@@ -5717,7 +5846,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getArrowStyle()
      * @generated
      */
-    int ARROW_STYLE = 75;
+    int ARROW_STYLE = 78;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.LineStyle <em>Line Style</em>}' enum. <!--
@@ -5727,7 +5856,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLineStyle()
      * @generated
      */
-    int LINE_STYLE = 76;
+    int LINE_STYLE = 79;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.SynchronizationPolicy <em>Synchronization
@@ -5737,7 +5866,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getSynchronizationPolicy()
      * @generated
      */
-    int SYNCHRONIZATION_POLICY = 77;
+    int SYNCHRONIZATION_POLICY = 80;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.FlexDirection <em>Flex Direction</em>}'
@@ -5747,7 +5876,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getFlexDirection()
      * @generated
      */
-    int FLEX_DIRECTION = 78;
+    int FLEX_DIRECTION = 81;
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.View <em>View</em>}'. <!--
@@ -5838,6 +5967,18 @@ public interface ViewPackage extends EPackage {
      * @generated
      */
     EClass getDiagramDescription();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.DiagramDescription#isAutoLayout <em>Auto Layout</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Auto Layout</em>'.
+     * @see org.eclipse.sirius.components.view.DiagramDescription#isAutoLayout()
+     * @see #getDiagramDescription()
+     * @generated
+     */
+    EAttribute getDiagramDescription_AutoLayout();
 
     /**
      * Returns the meta object for the containment reference list
@@ -6192,6 +6333,18 @@ public interface ViewPackage extends EPackage {
      * @generated
      */
     EReference getEdgeDescription_EdgeTools();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.EdgeDescription#getReconnectEdgeTools <em>Reconnect Edge Tools</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Reconnect Edge Tools</em>'.
+     * @see org.eclipse.sirius.components.view.EdgeDescription#getReconnectEdgeTools()
+     * @see #getEdgeDescription()
+     * @generated
+     */
+    EReference getEdgeDescription_ReconnectEdgeTools();
 
     /**
      * Returns the meta object for the containment reference list
@@ -6615,6 +6768,36 @@ public interface ViewPackage extends EPackage {
      * @generated
      */
     EClass getEdgeTool();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.EdgeReconnectionTool <em>Edge
+     * Reconnection Tool</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Edge Reconnection Tool</em>'.
+     * @see org.eclipse.sirius.components.view.EdgeReconnectionTool
+     * @generated
+     */
+    EClass getEdgeReconnectionTool();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.SourceEdgeEndReconnectionTool
+     * <em>Source Edge End Reconnection Tool</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Source Edge End Reconnection Tool</em>'.
+     * @see org.eclipse.sirius.components.view.SourceEdgeEndReconnectionTool
+     * @generated
+     */
+    EClass getSourceEdgeEndReconnectionTool();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.TargetEdgeEndReconnectionTool
+     * <em>Target Edge End Reconnection Tool</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Target Edge End Reconnection Tool</em>'.
+     * @see org.eclipse.sirius.components.view.TargetEdgeEndReconnectionTool
+     * @generated
+     */
+    EClass getTargetEdgeEndReconnectionTool();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.DropTool <em>Drop Tool</em>}'. <!--
@@ -7396,6 +7579,238 @@ public interface ViewPackage extends EPackage {
     EReference getRadioDescription_ConditionalStyles();
 
     /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.BarChartDescription <em>Bar Chart
+     * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Bar Chart Description</em>'.
+     * @see org.eclipse.sirius.components.view.BarChartDescription
+     * @generated
+     */
+    EClass getBarChartDescription();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.BarChartDescription#getValuesExpression <em>Values Expression</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Values Expression</em>'.
+     * @see org.eclipse.sirius.components.view.BarChartDescription#getValuesExpression()
+     * @see #getBarChartDescription()
+     * @generated
+     */
+    EAttribute getBarChartDescription_ValuesExpression();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.BarChartDescription#getKeysExpression <em>Keys Expression</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Keys Expression</em>'.
+     * @see org.eclipse.sirius.components.view.BarChartDescription#getKeysExpression()
+     * @see #getBarChartDescription()
+     * @generated
+     */
+    EAttribute getBarChartDescription_KeysExpression();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.BarChartDescription#getYAxisLabelExpression <em>YAxis Label
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>YAxis Label Expression</em>'.
+     * @see org.eclipse.sirius.components.view.BarChartDescription#getYAxisLabelExpression()
+     * @see #getBarChartDescription()
+     * @generated
+     */
+    EAttribute getBarChartDescription_YAxisLabelExpression();
+
+    /**
+     * Returns the meta object for the containment reference
+     * '{@link org.eclipse.sirius.components.view.BarChartDescription#getStyle <em>Style</em>}'. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>Style</em>'.
+     * @see org.eclipse.sirius.components.view.BarChartDescription#getStyle()
+     * @see #getBarChartDescription()
+     * @generated
+     */
+    EReference getBarChartDescription_Style();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.BarChartDescription#getConditionalStyles <em>Conditional
+     * Styles</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Conditional Styles</em>'.
+     * @see org.eclipse.sirius.components.view.BarChartDescription#getConditionalStyles()
+     * @see #getBarChartDescription()
+     * @generated
+     */
+    EReference getBarChartDescription_ConditionalStyles();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.PieChartDescription <em>Pie Chart
+     * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Pie Chart Description</em>'.
+     * @see org.eclipse.sirius.components.view.PieChartDescription
+     * @generated
+     */
+    EClass getPieChartDescription();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.PieChartDescription#getValuesExpression <em>Values Expression</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Values Expression</em>'.
+     * @see org.eclipse.sirius.components.view.PieChartDescription#getValuesExpression()
+     * @see #getPieChartDescription()
+     * @generated
+     */
+    EAttribute getPieChartDescription_ValuesExpression();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.PieChartDescription#getKeysExpression <em>Keys Expression</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Keys Expression</em>'.
+     * @see org.eclipse.sirius.components.view.PieChartDescription#getKeysExpression()
+     * @see #getPieChartDescription()
+     * @generated
+     */
+    EAttribute getPieChartDescription_KeysExpression();
+
+    /**
+     * Returns the meta object for the containment reference
+     * '{@link org.eclipse.sirius.components.view.PieChartDescription#getStyle <em>Style</em>}'. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>Style</em>'.
+     * @see org.eclipse.sirius.components.view.PieChartDescription#getStyle()
+     * @see #getPieChartDescription()
+     * @generated
+     */
+    EReference getPieChartDescription_Style();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.PieChartDescription#getConditionalStyles <em>Conditional
+     * Styles</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Conditional Styles</em>'.
+     * @see org.eclipse.sirius.components.view.PieChartDescription#getConditionalStyles()
+     * @see #getPieChartDescription()
+     * @generated
+     */
+    EReference getPieChartDescription_ConditionalStyles();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.FlexboxContainerDescription
+     * <em>Flexbox Container Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Flexbox Container Description</em>'.
+     * @see org.eclipse.sirius.components.view.FlexboxContainerDescription
+     * @generated
+     */
+    EClass getFlexboxContainerDescription();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.FlexboxContainerDescription#getChildren <em>Children</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Children</em>'.
+     * @see org.eclipse.sirius.components.view.FlexboxContainerDescription#getChildren()
+     * @see #getFlexboxContainerDescription()
+     * @generated
+     */
+    EReference getFlexboxContainerDescription_Children();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.FlexboxContainerDescription#getFlexDirection <em>Flex
+     * Direction</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Flex Direction</em>'.
+     * @see org.eclipse.sirius.components.view.FlexboxContainerDescription#getFlexDirection()
+     * @see #getFlexboxContainerDescription()
+     * @generated
+     */
+    EAttribute getFlexboxContainerDescription_FlexDirection();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.ButtonDescription <em>Button
+     * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Button Description</em>'.
+     * @see org.eclipse.sirius.components.view.ButtonDescription
+     * @generated
+     */
+    EClass getButtonDescription();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.ButtonDescription#getButtonLabelExpression <em>Button Label
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Button Label Expression</em>'.
+     * @see org.eclipse.sirius.components.view.ButtonDescription#getButtonLabelExpression()
+     * @see #getButtonDescription()
+     * @generated
+     */
+    EAttribute getButtonDescription_ButtonLabelExpression();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.ButtonDescription#getBody <em>Body</em>}'. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Body</em>'.
+     * @see org.eclipse.sirius.components.view.ButtonDescription#getBody()
+     * @see #getButtonDescription()
+     * @generated
+     */
+    EReference getButtonDescription_Body();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.ButtonDescription#getImageExpression <em>Image Expression</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Image Expression</em>'.
+     * @see org.eclipse.sirius.components.view.ButtonDescription#getImageExpression()
+     * @see #getButtonDescription()
+     * @generated
+     */
+    EAttribute getButtonDescription_ImageExpression();
+
+    /**
+     * Returns the meta object for the containment reference
+     * '{@link org.eclipse.sirius.components.view.ButtonDescription#getStyle <em>Style</em>}'. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>Style</em>'.
+     * @see org.eclipse.sirius.components.view.ButtonDescription#getStyle()
+     * @see #getButtonDescription()
+     * @generated
+     */
+    EReference getButtonDescription_Style();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.ButtonDescription#getConditionalStyles <em>Conditional Styles</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Conditional Styles</em>'.
+     * @see org.eclipse.sirius.components.view.ButtonDescription#getConditionalStyles()
+     * @see #getButtonDescription()
+     * @generated
+     */
+    EReference getButtonDescription_ConditionalStyles();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.WidgetDescriptionStyle <em>Widget
      * Description Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -8059,238 +8474,6 @@ public interface ViewPackage extends EPackage {
     EEnum getLayoutDirection();
 
     /**
-     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.BarChartDescription <em>Bar Chart
-     * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for class '<em>Bar Chart Description</em>'.
-     * @see org.eclipse.sirius.components.view.BarChartDescription
-     * @generated
-     */
-    EClass getBarChartDescription();
-
-    /**
-     * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.BarChartDescription#getValuesExpression <em>Values Expression</em>}'.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the attribute '<em>Values Expression</em>'.
-     * @see org.eclipse.sirius.components.view.BarChartDescription#getValuesExpression()
-     * @see #getBarChartDescription()
-     * @generated
-     */
-    EAttribute getBarChartDescription_ValuesExpression();
-
-    /**
-     * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.BarChartDescription#getKeysExpression <em>Keys Expression</em>}'. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the attribute '<em>Keys Expression</em>'.
-     * @see org.eclipse.sirius.components.view.BarChartDescription#getKeysExpression()
-     * @see #getBarChartDescription()
-     * @generated
-     */
-    EAttribute getBarChartDescription_KeysExpression();
-
-    /**
-     * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.BarChartDescription#getYAxisLabelExpression <em>YAxis Label
-     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the attribute '<em>YAxis Label Expression</em>'.
-     * @see org.eclipse.sirius.components.view.BarChartDescription#getYAxisLabelExpression()
-     * @see #getBarChartDescription()
-     * @generated
-     */
-    EAttribute getBarChartDescription_YAxisLabelExpression();
-
-    /**
-     * Returns the meta object for the containment reference
-     * '{@link org.eclipse.sirius.components.view.BarChartDescription#getStyle <em>Style</em>}'. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @return the meta object for the containment reference '<em>Style</em>'.
-     * @see org.eclipse.sirius.components.view.BarChartDescription#getStyle()
-     * @see #getBarChartDescription()
-     * @generated
-     */
-    EReference getBarChartDescription_Style();
-
-    /**
-     * Returns the meta object for the containment reference list
-     * '{@link org.eclipse.sirius.components.view.BarChartDescription#getConditionalStyles <em>Conditional
-     * Styles</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the containment reference list '<em>Conditional Styles</em>'.
-     * @see org.eclipse.sirius.components.view.BarChartDescription#getConditionalStyles()
-     * @see #getBarChartDescription()
-     * @generated
-     */
-    EReference getBarChartDescription_ConditionalStyles();
-
-    /**
-     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.PieChartDescription <em>Pie Chart
-     * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for class '<em>Pie Chart Description</em>'.
-     * @see org.eclipse.sirius.components.view.PieChartDescription
-     * @generated
-     */
-    EClass getPieChartDescription();
-
-    /**
-     * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.PieChartDescription#getValuesExpression <em>Values Expression</em>}'.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the attribute '<em>Values Expression</em>'.
-     * @see org.eclipse.sirius.components.view.PieChartDescription#getValuesExpression()
-     * @see #getPieChartDescription()
-     * @generated
-     */
-    EAttribute getPieChartDescription_ValuesExpression();
-
-    /**
-     * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.PieChartDescription#getKeysExpression <em>Keys Expression</em>}'. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the attribute '<em>Keys Expression</em>'.
-     * @see org.eclipse.sirius.components.view.PieChartDescription#getKeysExpression()
-     * @see #getPieChartDescription()
-     * @generated
-     */
-    EAttribute getPieChartDescription_KeysExpression();
-
-    /**
-     * Returns the meta object for the containment reference
-     * '{@link org.eclipse.sirius.components.view.PieChartDescription#getStyle <em>Style</em>}'. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @return the meta object for the containment reference '<em>Style</em>'.
-     * @see org.eclipse.sirius.components.view.PieChartDescription#getStyle()
-     * @see #getPieChartDescription()
-     * @generated
-     */
-    EReference getPieChartDescription_Style();
-
-    /**
-     * Returns the meta object for the containment reference list
-     * '{@link org.eclipse.sirius.components.view.PieChartDescription#getConditionalStyles <em>Conditional
-     * Styles</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the containment reference list '<em>Conditional Styles</em>'.
-     * @see org.eclipse.sirius.components.view.PieChartDescription#getConditionalStyles()
-     * @see #getPieChartDescription()
-     * @generated
-     */
-    EReference getPieChartDescription_ConditionalStyles();
-
-    /**
-     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.FlexboxContainerDescription
-     * <em>Flexbox Container Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for class '<em>Flexbox Container Description</em>'.
-     * @see org.eclipse.sirius.components.view.FlexboxContainerDescription
-     * @generated
-     */
-    EClass getFlexboxContainerDescription();
-
-    /**
-     * Returns the meta object for the containment reference list
-     * '{@link org.eclipse.sirius.components.view.FlexboxContainerDescription#getChildren <em>Children</em>}'. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the containment reference list '<em>Children</em>'.
-     * @see org.eclipse.sirius.components.view.FlexboxContainerDescription#getChildren()
-     * @see #getFlexboxContainerDescription()
-     * @generated
-     */
-    EReference getFlexboxContainerDescription_Children();
-
-    /**
-     * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.FlexboxContainerDescription#getFlexDirection <em>Flex
-     * Direction</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the attribute '<em>Flex Direction</em>'.
-     * @see org.eclipse.sirius.components.view.FlexboxContainerDescription#getFlexDirection()
-     * @see #getFlexboxContainerDescription()
-     * @generated
-     */
-    EAttribute getFlexboxContainerDescription_FlexDirection();
-
-    /**
-     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.ButtonDescription <em>Button
-     * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for class '<em>Button Description</em>'.
-     * @see org.eclipse.sirius.components.view.ButtonDescription
-     * @generated
-     */
-    EClass getButtonDescription();
-
-    /**
-     * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.ButtonDescription#getButtonLabelExpression <em>Button Label
-     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the attribute '<em>Button Label Expression</em>'.
-     * @see org.eclipse.sirius.components.view.ButtonDescription#getButtonLabelExpression()
-     * @see #getButtonDescription()
-     * @generated
-     */
-    EAttribute getButtonDescription_ButtonLabelExpression();
-
-    /**
-     * Returns the meta object for the containment reference list
-     * '{@link org.eclipse.sirius.components.view.ButtonDescription#getBody <em>Body</em>}'. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @return the meta object for the containment reference list '<em>Body</em>'.
-     * @see org.eclipse.sirius.components.view.ButtonDescription#getBody()
-     * @see #getButtonDescription()
-     * @generated
-     */
-    EReference getButtonDescription_Body();
-
-    /**
-     * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.ButtonDescription#getImageExpression <em>Image Expression</em>}'. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the attribute '<em>Image Expression</em>'.
-     * @see org.eclipse.sirius.components.view.ButtonDescription#getImageExpression()
-     * @see #getButtonDescription()
-     * @generated
-     */
-    EAttribute getButtonDescription_ImageExpression();
-
-    /**
-     * Returns the meta object for the containment reference
-     * '{@link org.eclipse.sirius.components.view.ButtonDescription#getStyle <em>Style</em>}'. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @return the meta object for the containment reference '<em>Style</em>'.
-     * @see org.eclipse.sirius.components.view.ButtonDescription#getStyle()
-     * @see #getButtonDescription()
-     * @generated
-     */
-    EReference getButtonDescription_Style();
-
-    /**
-     * Returns the meta object for the containment reference list
-     * '{@link org.eclipse.sirius.components.view.ButtonDescription#getConditionalStyles <em>Conditional Styles</em>}'.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the containment reference list '<em>Conditional Styles</em>'.
-     * @see org.eclipse.sirius.components.view.ButtonDescription#getConditionalStyles()
-     * @see #getButtonDescription()
-     * @generated
-     */
-    EReference getButtonDescription_ConditionalStyles();
-
-    /**
      * Returns the meta object for enum '{@link org.eclipse.sirius.components.view.ArrowStyle <em>Arrow Style</em>}'.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -8571,7 +8754,7 @@ public interface ViewPackage extends EPackage {
         EReference NODE_DESCRIPTION__STYLE = eINSTANCE.getNodeDescription_Style();
 
         /**
-         * The meta object literal for the '<em><b>Node Tools</b></em>' containment reference feature. <!--
+         * The meta object literal for the '<em><b>Node Tools</b></em>' containment reference list feature. <!--
          * begin-user-doc --> <!-- end-user-doc -->
          *
          * @generated
@@ -8669,12 +8852,20 @@ public interface ViewPackage extends EPackage {
         EReference EDGE_DESCRIPTION__STYLE = eINSTANCE.getEdgeDescription_Style();
 
         /**
-         * The meta object literal for the '<em><b>Edge Tools</b></em>' containment reference feature. <!--
+         * The meta object literal for the '<em><b>Edge Tools</b></em>' containment reference list feature. <!--
          * begin-user-doc --> <!-- end-user-doc -->
          *
          * @generated
          */
         EReference EDGE_DESCRIPTION__EDGE_TOOLS = eINSTANCE.getEdgeDescription_EdgeTools();
+
+        /**
+         * The meta object literal for the '<em><b>Reconnect Edge Tools</b></em>' containment reference list feature.
+         * <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference EDGE_DESCRIPTION__RECONNECT_EDGE_TOOLS = eINSTANCE.getEdgeDescription_ReconnectEdgeTools();
 
         /**
          * The meta object literal for the '<em><b>Conditional Styles</b></em>' containment reference list feature. <!--
@@ -9023,6 +9214,38 @@ public interface ViewPackage extends EPackage {
          * @generated
          */
         EClass EDGE_TOOL = eINSTANCE.getEdgeTool();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.EdgeReconnectionToolImpl
+         * <em>Edge Reconnection Tool</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.impl.EdgeReconnectionToolImpl
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getEdgeReconnectionTool()
+         * @generated
+         */
+        EClass EDGE_RECONNECTION_TOOL = eINSTANCE.getEdgeReconnectionTool();
+
+        /**
+         * The meta object literal for the
+         * '{@link org.eclipse.sirius.components.view.impl.SourceEdgeEndReconnectionToolImpl <em>Source Edge End
+         * Reconnection Tool</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.impl.SourceEdgeEndReconnectionToolImpl
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getSourceEdgeEndReconnectionTool()
+         * @generated
+         */
+        EClass SOURCE_EDGE_END_RECONNECTION_TOOL = eINSTANCE.getSourceEdgeEndReconnectionTool();
+
+        /**
+         * The meta object literal for the
+         * '{@link org.eclipse.sirius.components.view.impl.TargetEdgeEndReconnectionToolImpl <em>Target Edge End
+         * Reconnection Tool</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.impl.TargetEdgeEndReconnectionToolImpl
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getTargetEdgeEndReconnectionTool()
+         * @generated
+         */
+        EClass TARGET_EDGE_END_RECONNECTION_TOOL = eINSTANCE.getTargetEdgeEndReconnectionTool();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.DropToolImpl <em>Drop
@@ -9617,6 +9840,175 @@ public interface ViewPackage extends EPackage {
         EReference RADIO_DESCRIPTION__CONDITIONAL_STYLES = eINSTANCE.getRadioDescription_ConditionalStyles();
 
         /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.BarChartDescriptionImpl
+         * <em>Bar Chart Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.impl.BarChartDescriptionImpl
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getBarChartDescription()
+         * @generated
+         */
+        EClass BAR_CHART_DESCRIPTION = eINSTANCE.getBarChartDescription();
+
+        /**
+         * The meta object literal for the '<em><b>Values Expression</b></em>' attribute feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute BAR_CHART_DESCRIPTION__VALUES_EXPRESSION = eINSTANCE.getBarChartDescription_ValuesExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Keys Expression</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute BAR_CHART_DESCRIPTION__KEYS_EXPRESSION = eINSTANCE.getBarChartDescription_KeysExpression();
+
+        /**
+         * The meta object literal for the '<em><b>YAxis Label Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute BAR_CHART_DESCRIPTION__YAXIS_LABEL_EXPRESSION = eINSTANCE.getBarChartDescription_YAxisLabelExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Style</b></em>' containment reference feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference BAR_CHART_DESCRIPTION__STYLE = eINSTANCE.getBarChartDescription_Style();
+
+        /**
+         * The meta object literal for the '<em><b>Conditional Styles</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference BAR_CHART_DESCRIPTION__CONDITIONAL_STYLES = eINSTANCE.getBarChartDescription_ConditionalStyles();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.PieChartDescriptionImpl
+         * <em>Pie Chart Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.impl.PieChartDescriptionImpl
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getPieChartDescription()
+         * @generated
+         */
+        EClass PIE_CHART_DESCRIPTION = eINSTANCE.getPieChartDescription();
+
+        /**
+         * The meta object literal for the '<em><b>Values Expression</b></em>' attribute feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute PIE_CHART_DESCRIPTION__VALUES_EXPRESSION = eINSTANCE.getPieChartDescription_ValuesExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Keys Expression</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute PIE_CHART_DESCRIPTION__KEYS_EXPRESSION = eINSTANCE.getPieChartDescription_KeysExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Style</b></em>' containment reference feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference PIE_CHART_DESCRIPTION__STYLE = eINSTANCE.getPieChartDescription_Style();
+
+        /**
+         * The meta object literal for the '<em><b>Conditional Styles</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference PIE_CHART_DESCRIPTION__CONDITIONAL_STYLES = eINSTANCE.getPieChartDescription_ConditionalStyles();
+
+        /**
+         * The meta object literal for the
+         * '{@link org.eclipse.sirius.components.view.impl.FlexboxContainerDescriptionImpl <em>Flexbox Container
+         * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.impl.FlexboxContainerDescriptionImpl
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getFlexboxContainerDescription()
+         * @generated
+         */
+        EClass FLEXBOX_CONTAINER_DESCRIPTION = eINSTANCE.getFlexboxContainerDescription();
+
+        /**
+         * The meta object literal for the '<em><b>Children</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN = eINSTANCE.getFlexboxContainerDescription_Children();
+
+        /**
+         * The meta object literal for the '<em><b>Flex Direction</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute FLEXBOX_CONTAINER_DESCRIPTION__FLEX_DIRECTION = eINSTANCE.getFlexboxContainerDescription_FlexDirection();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.ButtonDescriptionImpl
+         * <em>Button Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.impl.ButtonDescriptionImpl
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getButtonDescription()
+         * @generated
+         */
+        EClass BUTTON_DESCRIPTION = eINSTANCE.getButtonDescription();
+
+        /**
+         * The meta object literal for the '<em><b>Button Label Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute BUTTON_DESCRIPTION__BUTTON_LABEL_EXPRESSION = eINSTANCE.getButtonDescription_ButtonLabelExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Body</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference BUTTON_DESCRIPTION__BODY = eINSTANCE.getButtonDescription_Body();
+
+        /**
+         * The meta object literal for the '<em><b>Image Expression</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute BUTTON_DESCRIPTION__IMAGE_EXPRESSION = eINSTANCE.getButtonDescription_ImageExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Style</b></em>' containment reference feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference BUTTON_DESCRIPTION__STYLE = eINSTANCE.getButtonDescription_Style();
+
+        /**
+         * The meta object literal for the '<em><b>Conditional Styles</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference BUTTON_DESCRIPTION__CONDITIONAL_STYLES = eINSTANCE.getButtonDescription_ConditionalStyles();
+
+        /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.WidgetDescriptionStyleImpl
          * <em>Widget Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
@@ -10166,175 +10558,6 @@ public interface ViewPackage extends EPackage {
          * @generated
          */
         EEnum LAYOUT_DIRECTION = eINSTANCE.getLayoutDirection();
-
-        /**
-         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.BarChartDescriptionImpl
-         * <em>Bar Chart Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @see org.eclipse.sirius.components.view.impl.BarChartDescriptionImpl
-         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getBarChartDescription()
-         * @generated
-         */
-        EClass BAR_CHART_DESCRIPTION = eINSTANCE.getBarChartDescription();
-
-        /**
-         * The meta object literal for the '<em><b>Values Expression</b></em>' attribute feature. <!-- begin-user-doc
-         * --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EAttribute BAR_CHART_DESCRIPTION__VALUES_EXPRESSION = eINSTANCE.getBarChartDescription_ValuesExpression();
-
-        /**
-         * The meta object literal for the '<em><b>Keys Expression</b></em>' attribute feature. <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EAttribute BAR_CHART_DESCRIPTION__KEYS_EXPRESSION = eINSTANCE.getBarChartDescription_KeysExpression();
-
-        /**
-         * The meta object literal for the '<em><b>YAxis Label Expression</b></em>' attribute feature. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EAttribute BAR_CHART_DESCRIPTION__YAXIS_LABEL_EXPRESSION = eINSTANCE.getBarChartDescription_YAxisLabelExpression();
-
-        /**
-         * The meta object literal for the '<em><b>Style</b></em>' containment reference feature. <!-- begin-user-doc
-         * --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EReference BAR_CHART_DESCRIPTION__STYLE = eINSTANCE.getBarChartDescription_Style();
-
-        /**
-         * The meta object literal for the '<em><b>Conditional Styles</b></em>' containment reference list feature. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EReference BAR_CHART_DESCRIPTION__CONDITIONAL_STYLES = eINSTANCE.getBarChartDescription_ConditionalStyles();
-
-        /**
-         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.PieChartDescriptionImpl
-         * <em>Pie Chart Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @see org.eclipse.sirius.components.view.impl.PieChartDescriptionImpl
-         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getPieChartDescription()
-         * @generated
-         */
-        EClass PIE_CHART_DESCRIPTION = eINSTANCE.getPieChartDescription();
-
-        /**
-         * The meta object literal for the '<em><b>Values Expression</b></em>' attribute feature. <!-- begin-user-doc
-         * --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EAttribute PIE_CHART_DESCRIPTION__VALUES_EXPRESSION = eINSTANCE.getPieChartDescription_ValuesExpression();
-
-        /**
-         * The meta object literal for the '<em><b>Keys Expression</b></em>' attribute feature. <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EAttribute PIE_CHART_DESCRIPTION__KEYS_EXPRESSION = eINSTANCE.getPieChartDescription_KeysExpression();
-
-        /**
-         * The meta object literal for the '<em><b>Style</b></em>' containment reference feature. <!-- begin-user-doc
-         * --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EReference PIE_CHART_DESCRIPTION__STYLE = eINSTANCE.getPieChartDescription_Style();
-
-        /**
-         * The meta object literal for the '<em><b>Conditional Styles</b></em>' containment reference list feature. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EReference PIE_CHART_DESCRIPTION__CONDITIONAL_STYLES = eINSTANCE.getPieChartDescription_ConditionalStyles();
-
-        /**
-         * The meta object literal for the
-         * '{@link org.eclipse.sirius.components.view.impl.FlexboxContainerDescriptionImpl <em>Flexbox Container
-         * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @see org.eclipse.sirius.components.view.impl.FlexboxContainerDescriptionImpl
-         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getFlexboxContainerDescription()
-         * @generated
-         */
-        EClass FLEXBOX_CONTAINER_DESCRIPTION = eINSTANCE.getFlexboxContainerDescription();
-
-        /**
-         * The meta object literal for the '<em><b>Children</b></em>' containment reference list feature. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EReference FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN = eINSTANCE.getFlexboxContainerDescription_Children();
-
-        /**
-         * The meta object literal for the '<em><b>Flex Direction</b></em>' attribute feature. <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EAttribute FLEXBOX_CONTAINER_DESCRIPTION__FLEX_DIRECTION = eINSTANCE.getFlexboxContainerDescription_FlexDirection();
-
-        /**
-         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.ButtonDescriptionImpl
-         * <em>Button Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @see org.eclipse.sirius.components.view.impl.ButtonDescriptionImpl
-         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getButtonDescription()
-         * @generated
-         */
-        EClass BUTTON_DESCRIPTION = eINSTANCE.getButtonDescription();
-
-        /**
-         * The meta object literal for the '<em><b>Button Label Expression</b></em>' attribute feature. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EAttribute BUTTON_DESCRIPTION__BUTTON_LABEL_EXPRESSION = eINSTANCE.getButtonDescription_ButtonLabelExpression();
-
-        /**
-         * The meta object literal for the '<em><b>Body</b></em>' containment reference list feature. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EReference BUTTON_DESCRIPTION__BODY = eINSTANCE.getButtonDescription_Body();
-
-        /**
-         * The meta object literal for the '<em><b>Image Expression</b></em>' attribute feature. <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EAttribute BUTTON_DESCRIPTION__IMAGE_EXPRESSION = eINSTANCE.getButtonDescription_ImageExpression();
-
-        /**
-         * The meta object literal for the '<em><b>Style</b></em>' containment reference feature. <!-- begin-user-doc
-         * --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EReference BUTTON_DESCRIPTION__STYLE = eINSTANCE.getButtonDescription_Style();
-
-        /**
-         * The meta object literal for the '<em><b>Conditional Styles</b></em>' containment reference list feature. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EReference BUTTON_DESCRIPTION__CONDITIONAL_STYLES = eINSTANCE.getButtonDescription_ConditionalStyles();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.ArrowStyle <em>Arrow Style</em>}'

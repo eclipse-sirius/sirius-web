@@ -405,6 +405,54 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     }
 
     /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.SourceEdgeEndReconnectionTool} instances. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected SourceEdgeEndReconnectionToolItemProvider sourceEdgeEndReconnectionToolItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.SourceEdgeEndReconnectionTool}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createSourceEdgeEndReconnectionToolAdapter() {
+        if (this.sourceEdgeEndReconnectionToolItemProvider == null) {
+            this.sourceEdgeEndReconnectionToolItemProvider = new SourceEdgeEndReconnectionToolItemProvider(this);
+        }
+
+        return this.sourceEdgeEndReconnectionToolItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.TargetEdgeEndReconnectionTool} instances. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected TargetEdgeEndReconnectionToolItemProvider targetEdgeEndReconnectionToolItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.TargetEdgeEndReconnectionTool}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createTargetEdgeEndReconnectionToolAdapter() {
+        if (this.targetEdgeEndReconnectionToolItemProvider == null) {
+            this.targetEdgeEndReconnectionToolItemProvider = new TargetEdgeEndReconnectionToolItemProvider(this);
+        }
+
+        return this.targetEdgeEndReconnectionToolItemProvider;
+    }
+
+    /**
      * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.DropTool} instances.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1658,6 +1706,10 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
             this.nodeToolItemProvider.dispose();
         if (this.edgeToolItemProvider != null)
             this.edgeToolItemProvider.dispose();
+        if (this.sourceEdgeEndReconnectionToolItemProvider != null)
+            this.sourceEdgeEndReconnectionToolItemProvider.dispose();
+        if (this.targetEdgeEndReconnectionToolItemProvider != null)
+            this.targetEdgeEndReconnectionToolItemProvider.dispose();
         if (this.dropToolItemProvider != null)
             this.dropToolItemProvider.dispose();
         if (this.changeContextItemProvider != null)

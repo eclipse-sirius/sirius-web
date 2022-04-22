@@ -267,7 +267,7 @@ export const updateNodePositionOp = gql`
 `;
 
 export const updateNodeBoundsOp = gql`
-  mutation updateNodePosition($input: UpdateNodeBoundsInput!) {
+  mutation updateNodeBounds($input: UpdateNodeBoundsInput!) {
     updateNodeBounds(input: $input) {
       __typename
       ... on UpdateNodeBoundsSuccessPayload {
@@ -275,6 +275,17 @@ export const updateNodeBoundsOp = gql`
           id
         }
       }
+      ... on ErrorPayload {
+        message
+      }
+    }
+  }
+`;
+
+export const reconnectEdgeMutation = gql`
+  mutation reconnectEdge($input: ReconnectEdgeInput!) {
+    reconnectEdge(input: $input) {
+      __typename
       ... on ErrorPayload {
         message
       }

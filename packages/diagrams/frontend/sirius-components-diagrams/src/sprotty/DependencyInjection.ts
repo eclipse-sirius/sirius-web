@@ -36,9 +36,7 @@ import {
   overrideViewerOptions,
   PreRenderedView,
   SCompartmentView,
-  SEdge,
   selectModule,
-  SGraph,
   SLabel,
   SModelElement,
   SRoutingHandle,
@@ -50,7 +48,7 @@ import {
 } from 'sprotty';
 import { Action, Point, RequestPopupModelAction, SetPopupModelAction } from 'sprotty-protocol';
 import { siriusCommonModule } from './common/siriusCommonModule';
-import { BorderNode, Label, Node } from './Diagram.types';
+import { BorderNode, Diagram, Edge, Label, Node } from './Diagram.types';
 import { DiagramServer, HIDE_CONTEXTUAL_TOOLBAR_ACTION, SPROTTY_DELETE_ACTION } from './DiagramServer';
 import { SetActiveConnectorToolsAction, SetActiveToolAction } from './DiagramServer.types';
 import { siriusDragAndDropModule } from './dragAndDrop/siriusDragAndDropModule';
@@ -89,7 +87,7 @@ const siriusWebContainerModule = new ContainerModule((bind, unbind, isBound, reb
   });
 
   // @ts-ignore
-  configureView({ bind, isBound }, 'graph', DiagramView);
+  configureModelElement(context, 'graph', Diagram, DiagramView);
   // @ts-ignore
   configureModelElement(context, 'node:rectangle', Node, RectangleView);
   // @ts-ignore
@@ -102,7 +100,8 @@ const siriusWebContainerModule = new ContainerModule((bind, unbind, isBound, reb
   configureModelElement(context, 'port:rectangle', BorderNode, RectangleView);
   // @ts-ignore
   configureModelElement(context, 'port:image', BorderNode, ImageView);
-  configureView({ bind, isBound }, 'edge:straight', EdgeView);
+  // @ts-ignore
+  configureModelElement(context, 'edge:straight', Edge, EdgeView);
   // @ts-ignore
   configureModelElement(context, 'label:inside-center', Label, LabelView);
   // @ts-ignore
@@ -213,18 +212,18 @@ export const createDependencyInjectionContainer = (containerId: string) => {
     }
   }
 
-  const findModelElementWithSemanticTarget = (element: SModelElement): SGraph | Node | BorderNode | SEdge | null => {
-    let graphicalElement: SGraph | Node | BorderNode | SEdge | null = null;
+  const findModelElementWithSemanticTarget = (element: SModelElement): Diagram | Node | BorderNode | Edge | null => {
+    let graphicalElement: Diagram | Node | BorderNode | Edge | null = null;
     if (
-      element instanceof SGraph ||
+      element instanceof Diagram ||
       element instanceof Node ||
       element instanceof BorderNode ||
-      element instanceof SEdge
+      element instanceof Edge
     ) {
       graphicalElement = element;
     } else if (element instanceof SLabel) {
       graphicalElement = findModelElementWithSemanticTarget(element.parent);
-    } else if (element.root instanceof SGraph) {
+    } else if (element.root instanceof Diagram) {
       graphicalElement = element.root;
     }
     return graphicalElement;
@@ -234,7 +233,7 @@ export const createDependencyInjectionContainer = (containerId: string) => {
   container.bind(TYPES.MouseListener).to(DiagramMouseListener).inSingletonScope();
 
   class DiagramZoomMouseListener extends ZoomMouseListener {
-    override wheel(target, event) {
+    override wheel(_target, _event) {
       // Hide the palette during zoom
       return [{ kind: HIDE_CONTEXTUAL_TOOLBAR_ACTION }];
     }

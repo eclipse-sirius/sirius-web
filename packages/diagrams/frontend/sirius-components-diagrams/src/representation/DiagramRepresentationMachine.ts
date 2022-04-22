@@ -17,10 +17,13 @@ import { Point } from 'sprotty-protocol';
 import { v4 as uuid } from 'uuid';
 import { assign, Machine } from 'xstate';
 import { createDependencyInjectionContainer } from '../sprotty/DependencyInjection';
+import { BorderNode, Diagram, Edge, Node } from '../sprotty/Diagram.types';
 import { DiagramServer } from '../sprotty/DiagramServer';
 import {
   CursorValue,
+  GQLDeletionPolicy,
   GQLDiagram,
+  GQLReconnectKind,
   Menu,
   Palette,
   Position,
@@ -107,23 +110,35 @@ export type CompleteEvent = { type: 'HANDLE_COMPLETE' };
 
 export type InitializeRepresentationEvent = {
   type: 'INITIALIZE';
-  diagramDomElement: MutableRefObject<any>;
-  deleteElements: any;
+  diagramDomElement: MutableRefObject<HTMLDivElement | null>;
+  deleteElements: (diagramElements: SModelElement[], deletionPolicy: GQLDeletionPolicy) => void;
   invokeTool: any;
   moveElement: (diagramElementId: string, newPositionX: number, newPositionY: number) => void;
-  resizeElement: any;
-  editLabel: any;
+  reconnectEdge: (
+    edgeId: string,
+    newEdgeEndId: string,
+    reconnectEdgeKind: GQLReconnectKind,
+    newEdgeEndPosition: Point
+  ) => void;
+  resizeElement: (
+    diagramElementId: string,
+    newPositionX: number,
+    newPositionY: number,
+    newWidth: number,
+    newHeight: number
+  ) => void;
+  editLabel: (labelId: string, newText: string) => void;
   onSelectElement: (
-    selectedElement: SModelElement,
+    selectedElement: Diagram | Node | BorderNode | Edge | null,
     diagramServer: DiagramServer,
     position: Position,
     event: MouseEvent
   ) => void;
   getCursorOn: (element, diagramServer: DiagramServer) => CursorValue;
-  setActiveTool: (tool: Tool) => void;
+  setActiveTool: (tool: Tool | null) => void;
   toolSections: ToolSection[];
-  setContextualPalette: (contextualPalette: Palette) => void;
-  setContextualMenu: (contextualMenu: Menu) => void;
+  setContextualPalette: (contextualPalette: Palette | null) => void;
+  setContextualMenu: (contextualMenu: Menu | null) => void;
   updateRoutingPointsListener: (routingPoints: Point[], edgeId: string) => void;
   httpOrigin: string;
 };
@@ -370,6 +385,7 @@ export const diagramRepresentationMachine = Machine<
           deleteElements,
           invokeTool,
           moveElement,
+          reconnectEdge,
           resizeElement,
           editLabel,
           onSelectElement,
@@ -396,6 +412,7 @@ export const diagramRepresentationMachine = Machine<
         diagramServer.setEditLabelListener(editLabel);
         diagramServer.setMoveElementListener(moveElement);
         diagramServer.setResizeElementListener(resizeElement);
+        diagramServer.setReconnectEdgeListener(reconnectEdge);
         diagramServer.setDeleteElementsListener(deleteElements);
         diagramServer.setInvokeToolListener(invokeTool);
         diagramServer.setContextualPaletteListener(setContextualPalette);
@@ -451,7 +468,7 @@ export const diagramRepresentationMachine = Machine<
         return { subscribers };
       }),
 
-      resetTools: assign((_, event) => {
+      resetTools: assign((_, _event) => {
         return {
           contextualPalette: undefined,
           contextualMenu: undefined,
@@ -518,7 +535,7 @@ export const diagramRepresentationMachine = Machine<
       resetSelectedObjectInSelectionDialog: assign((_) => {
         return { selectedObjectId: null };
       }),
-      closeSelectionDialog: assign((_, event) => {
+      closeSelectionDialog: assign((_, _event) => {
         return { activeTool: null, selectedObjectId: null };
       }),
       handleComplete: assign((_) => {

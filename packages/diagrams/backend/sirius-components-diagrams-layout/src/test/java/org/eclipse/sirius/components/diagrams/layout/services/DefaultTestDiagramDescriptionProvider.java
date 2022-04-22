@@ -301,6 +301,7 @@ public class DefaultTestDiagramDescriptionProvider {
                  .canCreatePredicate(variableManager -> false)
                  .labelProvider(variableManager -> variableManager.get(DiagramDescription.LABEL, String.class).orElse(""))  //$NON-NLS-1$
                  .toolSections(List.of())
+                 .tools(List.of())
                  .nodeDescriptions(List.of(nodeDescription))
                  .edgeDescriptions(List.of(edgeDescription))
                  .dropHandler(variableManager -> new Failure("")) //$NON-NLS-1$

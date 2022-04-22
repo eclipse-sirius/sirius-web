@@ -25,7 +25,7 @@ import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
 import { useCallback, useContext, useEffect, useRef } from 'react';
-import { EditLabelAction, HoverFeedbackAction, SEdge, SGraph, SModelElement, SNode, SPort } from 'sprotty';
+import { EditLabelAction, HoverFeedbackAction, SEdge, SModelElement, SNode, SPort } from 'sprotty';
 import { FitToScreenAction, Point } from 'sprotty-protocol';
 import { v4 as uuid } from 'uuid';
 import { DropArea } from '../droparea/DropArea';
@@ -36,6 +36,7 @@ import {
   GQLSingleClickOnTwoDiagramElementsTool,
   GQLToolSection,
 } from '../palette/ContextualPalette.types';
+import { BorderNode, Diagram, Edge, Node } from '../sprotty/Diagram.types';
 import {
   DiagramServer,
   HIDE_CONTEXTUAL_TOOLBAR_ACTION,
@@ -56,10 +57,19 @@ import { edgeCreationFeedback } from '../sprotty/edgeCreationFeedback';
 import { Toolbar } from '../toolbar/Toolbar';
 import {
   CursorValue,
+  GQLArrangeAllData,
+  GQLArrangeAllInput,
+  GQLArrangeAllVariables,
+  GQLDeleteFromDiagramData,
+  GQLDeleteFromDiagramInput,
+  GQLDeleteFromDiagramVariables,
   GQLDeletionPolicy,
   GQLDiagramEventPayload,
   GQLDiagramEventSubscription,
   GQLDiagramRefreshedEventPayload,
+  GQLEditLabelData,
+  GQLEditLabelInput,
+  GQLEditLabelVariables,
   GQLErrorPayload,
   GQLInvokeSingleClickOnDiagramElementToolData,
   GQLInvokeSingleClickOnDiagramElementToolInput,
@@ -71,10 +81,20 @@ import {
   GQLInvokeSingleClickOnTwoDiagramElementsToolPayload,
   GQLInvokeSingleClickOnTwoDiagramElementsToolSuccessPayload,
   GQLInvokeSingleClickOnTwoDiagramElementsToolVariables,
+  GQLReconnectEdgeData,
+  GQLReconnectEdgeInput,
+  GQLReconnectEdgeVariables,
+  GQLReconnectKind,
   GQLSubscribersUpdatedEventPayload,
   GQLUpdateEdgeRoutingPointsData,
   GQLUpdateEdgeRoutingPointsInput,
   GQLUpdateEdgeRoutingPointsVariables,
+  GQLUpdateNodeBoundsData,
+  GQLUpdateNodeBoundsInput,
+  GQLUpdateNodeBoundsVariables,
+  GQLUpdateNodePositionData,
+  GQLUpdateNodePositionInput,
+  GQLUpdateNodePositionVariables,
   Menu,
   Palette,
   Tool,
@@ -111,6 +131,7 @@ import {
   editLabelMutation as editLabelMutationOp,
   invokeSingleClickOnDiagramElementToolMutation,
   invokeSingleClickOnTwoDiagramElementsToolMutation,
+  reconnectEdgeMutation,
   updateEdgeRoutingPointsOp,
   updateNodeBoundsOp,
   updateNodePositionOp,
@@ -323,7 +344,7 @@ export const DiagramRepresentation = ({
   selection,
   setSelection,
 }: RepresentationComponentProps) => {
-  const diagramDomElement = useRef(null);
+  const diagramDomElement = useRef<HTMLDivElement | null>(null);
   const { httpOrigin } = useContext(ServerContext);
   const classes = useDiagramRepresentationStyle();
   const [{ value, context }, dispatch] = useMachine<DiagramRepresentationContext, DiagramRepresentationEvent>(
@@ -350,7 +371,9 @@ export const DiagramRepresentation = ({
   const [
     deleteElementsMutation,
     { loading: deleteFromDiagramLoading, data: deleteFromDiagramData, error: deleteFromDiagramError },
-  ] = useMutation(deleteFromDiagramMutation);
+  ] = useMutation<GQLDeleteFromDiagramData, GQLDeleteFromDiagramVariables>(deleteFromDiagramMutation);
+  const [updateEdgeEnd, { loading: reconnectEdgeLoading, data: reconnectEdgeData, error: reconnectEdgeError }] =
+    useMutation<GQLReconnectEdgeData, GQLReconnectEdgeVariables>(reconnectEdgeMutation);
   const [
     invokeSingleClickOnDiagramElementTool,
     {
@@ -372,18 +395,20 @@ export const DiagramRepresentation = ({
     GQLInvokeSingleClickOnTwoDiagramElementsToolData,
     GQLInvokeSingleClickOnTwoDiagramElementsToolVariables
   >(invokeSingleClickOnTwoDiagramElementsToolMutation);
-  const [editLabelMutation, { loading: editLabelLoading, data: editLabelData, error: editLabelError }] =
-    useMutation(editLabelMutationOp);
+  const [editLabelMutation, { loading: editLabelLoading, data: editLabelData, error: editLabelError }] = useMutation<
+    GQLEditLabelData,
+    GQLEditLabelVariables
+  >(editLabelMutationOp);
   const [
     updateNodePositionMutation,
     { loading: updateNodePositionLoading, data: updateNodePositionData, error: updateNodePositionError },
-  ] = useMutation(updateNodePositionOp);
+  ] = useMutation<GQLUpdateNodePositionData, GQLUpdateNodePositionVariables>(updateNodePositionOp);
   const [
     updateNodeBoundsMutation,
     { loading: updateNodeBoundsLoading, data: updateNodeBoundsData, error: updateNodeBoundsError },
-  ] = useMutation(updateNodeBoundsOp);
+  ] = useMutation<GQLUpdateNodeBoundsData, GQLUpdateNodeBoundsVariables>(updateNodeBoundsOp);
   const [arrangeAllMutation, { loading: arrangeAllLoading, data: arrangeAllData, error: arrangeAllError }] =
-    useMutation(arrangeAllOp);
+    useMutation<GQLArrangeAllData, GQLArrangeAllVariables>(arrangeAllOp);
   const [
     updateEdgeRoutingPointsMutation,
     { loading: updateEdgeRoutingPointsLoading, error: updateEdgeRoutingPointsError, data: updateEdgeRoutingPointsData },
@@ -466,7 +491,7 @@ export const DiagramRepresentation = ({
         .filter((diagramElement) => diagramElement instanceof SNode || diagramElement instanceof SPort)
         .map((elt) => elt.id);
 
-      const input = {
+      const input: GQLDeleteFromDiagramInput = {
         id: uuid(),
         editingContextId,
         representationId,
@@ -478,6 +503,22 @@ export const DiagramRepresentation = ({
       resetTools();
     },
     [editingContextId, representationId, deleteElementsMutation, resetTools]
+  );
+
+  const reconnectEdge = useCallback(
+    (edgeId: string, newEdgeEndId: string, reconnectEdgeKind: GQLReconnectKind, newEdgeEndPosition: Point): void => {
+      const input: GQLReconnectEdgeInput = {
+        id: uuid(),
+        editingContextId,
+        representationId,
+        edgeId,
+        newEdgeEndId,
+        reconnectEdgeKind,
+        newEdgeEndPosition,
+      };
+      updateEdgeEnd({ variables: { input } });
+    },
+    [editingContextId, representationId, updateEdgeEnd]
   );
 
   const invokeTool = useCallback(
@@ -537,7 +578,7 @@ export const DiagramRepresentation = ({
 
   const moveElement = useCallback(
     (diagramElementId: string, newPositionX: number, newPositionY: number) => {
-      const input = {
+      const input: GQLUpdateNodePositionInput = {
         id: uuid(),
         editingContextId,
         representationId,
@@ -551,8 +592,14 @@ export const DiagramRepresentation = ({
   );
 
   const resizeElement = useCallback(
-    (diagramElementId, newPositionX, newPositionY, newWidth, newHeight) => {
-      const input = {
+    (
+      diagramElementId: string,
+      newPositionX: number,
+      newPositionY: number,
+      newWidth: number,
+      newHeight: number
+    ): void => {
+      const input: GQLUpdateNodeBoundsInput = {
         id: uuid(),
         editingContextId,
         representationId,
@@ -593,18 +640,21 @@ export const DiagramRepresentation = ({
    * initialization will be done each time we are in the loading state.
    */
   useEffect(() => {
-    const onSelectElement = (selectedElement: SModelElement, diagramServer: DiagramServer) => {
+    const onSelectElement = (
+      selectedElement: Diagram | Node | BorderNode | Edge | null,
+      diagramServer: DiagramServer
+    ) => {
       const newSelection: Selection = { entries: [] };
 
-      if (selectedElement instanceof SGraph) {
-        const { id, label, kind } = selectedElement as any; // (as any) to be removed when the proper type will be available
+      if (selectedElement instanceof Diagram) {
+        const { id, label, kind } = selectedElement;
         newSelection.entries.push({ id, label, kind });
       } else if (
-        selectedElement instanceof SNode ||
-        selectedElement instanceof SPort ||
-        selectedElement instanceof SEdge
+        selectedElement instanceof Node ||
+        selectedElement instanceof BorderNode ||
+        selectedElement instanceof Edge
       ) {
-        const { targetObjectId, targetObjectKind, targetObjectLabel } = selectedElement as any; // (as any) to be removed when the proper type will be available
+        const { targetObjectId, targetObjectKind, targetObjectLabel } = selectedElement;
 
         const semanticSelectionEntry: SelectionEntry = {
           id: targetObjectId,
@@ -662,8 +712,8 @@ export const DiagramRepresentation = ({
       const setActiveToolEvent: SetActiveToolEvent = { type: 'SET_ACTIVE_TOOL', activeTool: tool };
       dispatch(setActiveToolEvent);
     };
-    const editLabel = (labelId, newText) => {
-      const input = {
+    const editLabel = (labelId: string, newText: string): void => {
+      const input: GQLEditLabelInput = {
         id: uuid(),
         editingContextId,
         representationId,
@@ -672,7 +722,7 @@ export const DiagramRepresentation = ({
       };
       editLabelMutation({ variables: { input } });
     };
-    const setContextualPalette = (contextualPalette: Palette) => {
+    const setContextualPalette = (contextualPalette: Palette | null) => {
       if (!readOnly) {
         const setContextualPaletteEvent: SetContextualPaletteEvent = {
           type: 'SET_CONTEXTUAL_PALETTE',
@@ -681,7 +731,7 @@ export const DiagramRepresentation = ({
         dispatch(setContextualPaletteEvent);
       }
     };
-    const setContextualMenu = (contextualMenu: Menu) => {
+    const setContextualMenu = (contextualMenu: Menu | null) => {
       if (!readOnly) {
         const setContextualMenuEvent: SetContextualMenuEvent = {
           type: 'SET_CONTEXTUAL_MENU',
@@ -696,6 +746,7 @@ export const DiagramRepresentation = ({
         type: 'INITIALIZE',
         diagramDomElement,
         deleteElements,
+        reconnectEdge,
         invokeTool,
         moveElement,
         resizeElement,
@@ -717,6 +768,7 @@ export const DiagramRepresentation = ({
     diagramServer,
     setSelection,
     deleteElements,
+    reconnectEdge,
     invokeTool,
     moveElement,
     resizeElement,
@@ -807,7 +859,7 @@ export const DiagramRepresentation = ({
   };
 
   const onArrangeAll = () => {
-    const input = {
+    const input: GQLArrangeAllInput = {
       id: uuid(),
       editingContextId,
       representationId,
@@ -877,6 +929,9 @@ export const DiagramRepresentation = ({
   useEffect(() => {
     handleError(deleteFromDiagramLoading, deleteFromDiagramData, deleteFromDiagramError);
   }, [deleteFromDiagramLoading, deleteFromDiagramData, deleteFromDiagramError, handleError]);
+  useEffect(() => {
+    handleError(reconnectEdgeLoading, reconnectEdgeData, reconnectEdgeError);
+  }, [reconnectEdgeLoading, reconnectEdgeData, reconnectEdgeError, handleError]);
   useEffect(() => {
     handleError(
       invokeSingleClickOnDiagramElementToolLoading,

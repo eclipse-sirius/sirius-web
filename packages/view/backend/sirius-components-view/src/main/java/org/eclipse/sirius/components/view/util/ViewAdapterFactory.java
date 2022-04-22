@@ -48,6 +48,7 @@ import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.DiagramElementDescription;
 import org.eclipse.sirius.components.view.DropTool;
 import org.eclipse.sirius.components.view.EdgeDescription;
+import org.eclipse.sirius.components.view.EdgeReconnectionTool;
 import org.eclipse.sirius.components.view.EdgeStyle;
 import org.eclipse.sirius.components.view.EdgeTool;
 import org.eclipse.sirius.components.view.FlexboxContainerDescription;
@@ -80,7 +81,9 @@ import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.SelectDescription;
 import org.eclipse.sirius.components.view.SelectDescriptionStyle;
 import org.eclipse.sirius.components.view.SetValue;
+import org.eclipse.sirius.components.view.SourceEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.Style;
+import org.eclipse.sirius.components.view.TargetEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.TextAreaDescription;
 import org.eclipse.sirius.components.view.TextareaDescriptionStyle;
 import org.eclipse.sirius.components.view.TextfieldDescription;
@@ -251,6 +254,21 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseEdgeTool(EdgeTool object) {
             return ViewAdapterFactory.this.createEdgeToolAdapter();
+        }
+
+        @Override
+        public Adapter caseEdgeReconnectionTool(EdgeReconnectionTool object) {
+            return ViewAdapterFactory.this.createEdgeReconnectionToolAdapter();
+        }
+
+        @Override
+        public Adapter caseSourceEdgeEndReconnectionTool(SourceEdgeEndReconnectionTool object) {
+            return ViewAdapterFactory.this.createSourceEdgeEndReconnectionToolAdapter();
+        }
+
+        @Override
+        public Adapter caseTargetEdgeEndReconnectionTool(TargetEdgeEndReconnectionTool object) {
+            return ViewAdapterFactory.this.createTargetEdgeEndReconnectionToolAdapter();
         }
 
         @Override
@@ -825,6 +843,48 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createEdgeToolAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.EdgeReconnectionTool
+     * <em>Edge Reconnection Tool</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we
+     * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.EdgeReconnectionTool
+     * @generated
+     */
+    public Adapter createEdgeReconnectionToolAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.sirius.components.view.SourceEdgeEndReconnectionTool <em>Source Edge End Reconnection
+     * Tool</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.SourceEdgeEndReconnectionTool
+     * @generated
+     */
+    public Adapter createSourceEdgeEndReconnectionToolAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.sirius.components.view.TargetEdgeEndReconnectionTool <em>Target Edge End Reconnection
+     * Tool</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.TargetEdgeEndReconnectionTool
+     * @generated
+     */
+    public Adapter createTargetEdgeEndReconnectionToolAdapter() {
         return null;
     }
 

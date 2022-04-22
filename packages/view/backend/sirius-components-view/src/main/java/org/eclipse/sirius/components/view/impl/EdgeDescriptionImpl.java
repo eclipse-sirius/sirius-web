@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,6 +25,7 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.sirius.components.view.ConditionalEdgeStyle;
 import org.eclipse.sirius.components.view.EdgeDescription;
+import org.eclipse.sirius.components.view.EdgeReconnectionTool;
 import org.eclipse.sirius.components.view.EdgeStyle;
 import org.eclipse.sirius.components.view.EdgeTool;
 import org.eclipse.sirius.components.view.NodeDescription;
@@ -191,6 +192,16 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @ordered
      */
     protected EList<EdgeTool> edgeTools;
+
+    /**
+     * The cached value of the '{@link #getReconnectEdgeTools() <em>Reconnect Edge Tools</em>}' containment reference
+     * list. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getReconnectEdgeTools()
+     * @generated
+     * @ordered
+     */
+    protected EList<EdgeReconnectionTool> reconnectEdgeTools;
 
     /**
      * The cached value of the '{@link #getConditionalStyles() <em>Conditional Styles</em>}' containment reference list.
@@ -429,6 +440,19 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @generated
      */
     @Override
+    public EList<EdgeReconnectionTool> getReconnectEdgeTools() {
+        if (this.reconnectEdgeTools == null) {
+            this.reconnectEdgeTools = new EObjectContainmentEList<>(EdgeReconnectionTool.class, this, ViewPackage.EDGE_DESCRIPTION__RECONNECT_EDGE_TOOLS);
+        }
+        return this.reconnectEdgeTools;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EList<ConditionalEdgeStyle> getConditionalStyles() {
         if (this.conditionalStyles == null) {
             this.conditionalStyles = new EObjectContainmentEList<>(ConditionalEdgeStyle.class, this, ViewPackage.EDGE_DESCRIPTION__CONDITIONAL_STYLES);
@@ -448,6 +472,8 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
             return this.basicSetStyle(null, msgs);
         case ViewPackage.EDGE_DESCRIPTION__EDGE_TOOLS:
             return ((InternalEList<?>) this.getEdgeTools()).basicRemove(otherEnd, msgs);
+        case ViewPackage.EDGE_DESCRIPTION__RECONNECT_EDGE_TOOLS:
+            return ((InternalEList<?>) this.getReconnectEdgeTools()).basicRemove(otherEnd, msgs);
         case ViewPackage.EDGE_DESCRIPTION__CONDITIONAL_STYLES:
             return ((InternalEList<?>) this.getConditionalStyles()).basicRemove(otherEnd, msgs);
         }
@@ -480,6 +506,8 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
             return this.getStyle();
         case ViewPackage.EDGE_DESCRIPTION__EDGE_TOOLS:
             return this.getEdgeTools();
+        case ViewPackage.EDGE_DESCRIPTION__RECONNECT_EDGE_TOOLS:
+            return this.getReconnectEdgeTools();
         case ViewPackage.EDGE_DESCRIPTION__CONDITIONAL_STYLES:
             return this.getConditionalStyles();
         }
@@ -525,6 +553,10 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
             this.getEdgeTools().clear();
             this.getEdgeTools().addAll((Collection<? extends EdgeTool>) newValue);
             return;
+        case ViewPackage.EDGE_DESCRIPTION__RECONNECT_EDGE_TOOLS:
+            this.getReconnectEdgeTools().clear();
+            this.getReconnectEdgeTools().addAll((Collection<? extends EdgeReconnectionTool>) newValue);
+            return;
         case ViewPackage.EDGE_DESCRIPTION__CONDITIONAL_STYLES:
             this.getConditionalStyles().clear();
             this.getConditionalStyles().addAll((Collection<? extends ConditionalEdgeStyle>) newValue);
@@ -568,6 +600,9 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
         case ViewPackage.EDGE_DESCRIPTION__EDGE_TOOLS:
             this.getEdgeTools().clear();
             return;
+        case ViewPackage.EDGE_DESCRIPTION__RECONNECT_EDGE_TOOLS:
+            this.getReconnectEdgeTools().clear();
+            return;
         case ViewPackage.EDGE_DESCRIPTION__CONDITIONAL_STYLES:
             this.getConditionalStyles().clear();
             return;
@@ -601,6 +636,8 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
             return this.style != null;
         case ViewPackage.EDGE_DESCRIPTION__EDGE_TOOLS:
             return this.edgeTools != null && !this.edgeTools.isEmpty();
+        case ViewPackage.EDGE_DESCRIPTION__RECONNECT_EDGE_TOOLS:
+            return this.reconnectEdgeTools != null && !this.reconnectEdgeTools.isEmpty();
         case ViewPackage.EDGE_DESCRIPTION__CONDITIONAL_STYLES:
             return this.conditionalStyles != null && !this.conditionalStyles.isEmpty();
         }

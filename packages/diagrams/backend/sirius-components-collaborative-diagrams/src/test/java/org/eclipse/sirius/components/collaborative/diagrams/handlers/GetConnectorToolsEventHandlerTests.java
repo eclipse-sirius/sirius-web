@@ -127,23 +127,41 @@ public class GetConnectorToolsEventHandlerTests {
     public void testGetConnectorTools() {
         NodeDescription nodeDescription = new TestDiagramDescriptionBuilder().getNodeDescription(NODE_DESCRIPTION_ID, variableManager -> List.of());
 
-        SingleClickOnTwoDiagramElementsCandidate candidates = SingleClickOnTwoDiagramElementsCandidate.newSingleClickOnTwoDiagramElementsCandidate().sources(List.of(nodeDescription))
-                .targets(List.of(nodeDescription)).build();
-
-        SingleClickOnTwoDiagramElementsTool connectorTool = SingleClickOnTwoDiagramElementsTool.newSingleClickOnTwoDiagramElementsTool(CONNECTOR_TOOL_ID).candidates(List.of(candidates))
-                .handler(variableManager -> new Success()).label(CONNECTOR_TOOL_LABEL).imageURL("") //$NON-NLS-1$
+        // @formatter:off
+        SingleClickOnTwoDiagramElementsCandidate candidates = SingleClickOnTwoDiagramElementsCandidate.newSingleClickOnTwoDiagramElementsCandidate()
+                .sources(List.of(nodeDescription))
+                .targets(List.of(nodeDescription))
                 .build();
 
-        SingleClickOnTwoDiagramElementsTool notConnectorTool = SingleClickOnTwoDiagramElementsTool.newSingleClickOnTwoDiagramElementsTool(NOT_CONNECTOR_TOOL_ID).candidates(List.of(candidates))
-                .handler(variableManager -> new Success()).label(NOT_CONNECTOR_TOOL_LABEL).imageURL("") //$NON-NLS-1$
+        SingleClickOnTwoDiagramElementsTool connectorTool = SingleClickOnTwoDiagramElementsTool.newSingleClickOnTwoDiagramElementsTool(CONNECTOR_TOOL_ID)
+                .candidates(List.of(candidates))
+                .handler(variableManager -> new Success())
+                .label(CONNECTOR_TOOL_LABEL)
+                .imageURL("") //$NON-NLS-1$
                 .build();
 
-        ToolSection toolSection = ToolSection.newToolSection(TOOLSECTION_ID).label(TOOLSECTION_LABEL).tools(List.of(connectorTool, notConnectorTool)).imageURL("") //$NON-NLS-1$
+        SingleClickOnTwoDiagramElementsTool notConnectorTool = SingleClickOnTwoDiagramElementsTool.newSingleClickOnTwoDiagramElementsTool(NOT_CONNECTOR_TOOL_ID)
+                .candidates(List.of(candidates))
+                .handler(variableManager -> new Success())
+                .label(NOT_CONNECTOR_TOOL_LABEL)
+                .imageURL("") //$NON-NLS-1$
                 .build();
 
-        DiagramDescription diagramDescription = DiagramDescription.newDiagramDescription(DIAGRAM_DESCRIPTION_ID.toString()).label("") //$NON-NLS-1$
-                .canCreatePredicate(variableManager -> true).targetObjectIdProvider(variableManager -> "diagramTargetObjectId") //$NON-NLS-1$
-                .labelProvider(variableManager -> DIAGRAM_LABEL).nodeDescriptions(List.of(nodeDescription)).edgeDescriptions(new ArrayList<>()).toolSections(List.of(toolSection))
+        ToolSection toolSection = ToolSection.newToolSection(TOOLSECTION_ID)
+                .label(TOOLSECTION_LABEL)
+                .tools(List.of(connectorTool, notConnectorTool))
+                .imageURL("") //$NON-NLS-1$
+                .build();
+
+        DiagramDescription diagramDescription = DiagramDescription.newDiagramDescription(DIAGRAM_DESCRIPTION_ID.toString())
+                .label("") //$NON-NLS-1$
+                .canCreatePredicate(variableManager -> true)
+                .targetObjectIdProvider(variableManager -> "diagramTargetObjectId") //$NON-NLS-1$
+                .labelProvider(variableManager -> DIAGRAM_LABEL)
+                .nodeDescriptions(List.of(nodeDescription))
+                .edgeDescriptions(new ArrayList<>())
+                .toolSections(List.of(toolSection))
+                .tools(List.of())
                 .dropHandler(variableManager -> new Failure("")) //$NON-NLS-1$
                 .build();
         //@formatter:on

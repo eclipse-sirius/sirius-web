@@ -11,51 +11,24 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { ContainerModule, decorate, inject } from 'inversify';
+import { ContainerModule } from 'inversify';
 import {
-  Command,
-  CommandExecutionContext,
-  CommandReturn,
   configureCommand,
   configureModelElement,
   DeleteElementCommand,
   EmptyGroupView,
-  ReconnectAction,
-  SDanglingAnchor,
-  TYPES,
+  ReconnectCommand,
 } from 'sprotty';
+import { SiriusDanglingAnchor } from '../routing/siriusDanglingAnchor';
 import { SiriusSwitchEditModeCommand } from './siriusSwitchEditModeCommand';
 
 /**
  * Replaces the sprotty edge edit module to use our own implementation of a switch edit mode command.
  */
-export const siriusEdgeEditModule = new ContainerModule((bind, unbind, isBound, rebind) => {
+export const siriusEdgeEditModule = new ContainerModule((bind, _unbind, isBound) => {
   const context = { bind, isBound };
   configureCommand(context, SiriusSwitchEditModeCommand);
-  configureCommand(context, EmptyReconnectCommand);
+  configureCommand(context, ReconnectCommand);
   configureCommand(context, DeleteElementCommand);
-  configureModelElement(context, 'dangling-anchor', SDanglingAnchor, EmptyGroupView);
+  configureModelElement(context, 'dangling-anchor', SiriusDanglingAnchor, EmptyGroupView);
 });
-
-/**
- * Prevent the reconnect to fail since we activate the edge edition.
- * This class will be removed soon, when we will support the edge reconnection.
- */
-class EmptyReconnectCommand extends Command {
-  static readonly KIND = ReconnectAction.KIND;
-
-  constructor(protected readonly action: ReconnectAction) {
-    super();
-  }
-
-  override execute(context: CommandExecutionContext): CommandReturn {
-    return context.root;
-  }
-  undo(context: CommandExecutionContext): CommandReturn {
-    return context.root;
-  }
-  redo(context: CommandExecutionContext): CommandReturn {
-    return context.root;
-  }
-}
-decorate(inject(TYPES.Action) as ParameterDecorator, EmptyReconnectCommand, 0);

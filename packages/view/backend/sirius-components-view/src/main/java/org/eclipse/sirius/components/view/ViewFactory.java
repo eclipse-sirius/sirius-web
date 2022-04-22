@@ -147,6 +147,24 @@ public interface ViewFactory extends EFactory {
     EdgeTool createEdgeTool();
 
     /**
+     * Returns a new object of class '<em>Source Edge End Reconnection Tool</em>'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return a new object of class '<em>Source Edge End Reconnection Tool</em>'.
+     * @generated
+     */
+    SourceEdgeEndReconnectionTool createSourceEdgeEndReconnectionTool();
+
+    /**
+     * Returns a new object of class '<em>Target Edge End Reconnection Tool</em>'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return a new object of class '<em>Target Edge End Reconnection Tool</em>'.
+     * @generated
+     */
+    TargetEdgeEndReconnectionTool createTargetEdgeEndReconnectionTool();
+
+    /**
      * Returns a new object of class '<em>Drop Tool</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return a new object of class '<em>Drop Tool</em>'.

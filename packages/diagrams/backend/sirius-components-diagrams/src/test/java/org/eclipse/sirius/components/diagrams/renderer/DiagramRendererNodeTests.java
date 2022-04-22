@@ -278,6 +278,7 @@ public class DiagramRendererNodeTests {
                 .nodeDescriptions(List.of(nodeDescription))
                 .edgeDescriptions(new ArrayList<>())
                 .toolSections(List.of())
+                .tools(List.of())
                 .dropHandler(variableManager -> new Failure("")) //$NON-NLS-1$
                 .build();
         // @formatter:on

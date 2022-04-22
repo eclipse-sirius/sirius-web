@@ -11,16 +11,28 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import {
+  CommitModelAction,
+  DeleteElementAction,
+  edgeInProgressID,
+  findChildrenAtPosition,
   findParentByFeature,
+  isConnectable,
   isViewport,
   MoveMouseListener,
+  ReconnectAction,
+  SChildElement,
   SConnectableElement,
   SModelElement,
   SNode,
   SPort,
+  SRoutableElement,
+  SRoutingHandle,
+  SwitchEditModeAction,
+  translatePoint,
 } from 'sprotty';
 import { Action, Dimension, Point } from 'sprotty-protocol';
 import { Bounds } from 'sprotty-protocol/';
+import { SiriusReconnectAction } from '../edgeEdition/model';
 import { snapToRectangle } from '../utils/geometry';
 import { RectangleSide } from '../utils/geometry.types';
 import { ElementResize, ResizeAction } from './siriusResize';
@@ -90,9 +102,63 @@ export class SiriusDragAndDropMouseListener extends MoveMouseListener {
         result.push(action);
       }
     } else {
-      result = super.mouseUp(target, event);
+      result = this.onMouseUp(target, event);
     }
     this.reset();
+    return result;
+  }
+
+  private onMouseUp(target: SModelElement, event: MouseEvent): Action[] {
+    const result: Action[] = [];
+    let hasReconnected = false;
+    if (this.startDragPosition) {
+      const moveAction = this.getElementMoves(target, event, true);
+      if (moveAction) result.push(moveAction);
+      target.root.index.all().forEach((element) => {
+        if (element instanceof SRoutingHandle) {
+          const parent = element.parent;
+          if (parent instanceof SRoutableElement && element.danglingAnchor) {
+            const handlePos = this.getHandlePosition(element);
+            if (handlePos) {
+              const handlePosAbs = translatePoint(handlePos, element.parent, element.root);
+              const newEnd = findChildrenAtPosition(target.root, handlePosAbs)
+                .reverse()
+                .find((e) => isConnectable(e) && e.canConnect(parent, element.kind as 'source' | 'target'));
+              if (newEnd && this.hasDragged) {
+                if (element.kind === 'source' || element.kind === 'target') {
+                  const action: SiriusReconnectAction = {
+                    kind: ReconnectAction.KIND,
+                    routableId: element.parent.id,
+                    newSourceId: element.kind === 'source' ? newEnd.id : parent.sourceId,
+                    newTargetId: element.kind === 'target' ? newEnd.id : parent.targetId,
+                    newEndPosition: { x: handlePosAbs.x, y: handlePosAbs.y },
+                    reconnectKind: element.kind,
+                  };
+                  result.push(action);
+                  hasReconnected = true;
+                }
+              }
+            }
+          }
+          if (element.editMode) result.push(SwitchEditModeAction.create({ elementsToDeactivate: [element.id] }));
+        }
+      });
+    }
+    if (!hasReconnected) {
+      const edgeInProgress = target.root.index.getById(edgeInProgressID);
+      if (edgeInProgress instanceof SChildElement) {
+        const deleteIds: string[] = [];
+        deleteIds.push(edgeInProgressID);
+        edgeInProgress.children.forEach((c) => {
+          if (c instanceof SRoutingHandle && c.danglingAnchor) deleteIds.push(c.danglingAnchor.id);
+        });
+        result.push(DeleteElementAction.create(deleteIds));
+      }
+    }
+    if (this.hasDragged) result.push(CommitModelAction.create());
+    this.hasDragged = false;
+    this.startDragPosition = undefined;
+    this.elementId2startPos.clear();
     return result;
   }
 
@@ -117,15 +183,15 @@ export class SiriusDragAndDropMouseListener extends MoveMouseListener {
   private getValidChildPosition(element: SNode, position: Point): Point {
     const parent = element.parent;
     if (this.isSNode(parent)) {
-      const bottomRight = {
+      const bottomRight: Point = {
         x: position.x + element.size.width,
         y: position.y + element.size.height,
       };
-      const inBoundsBottomRight = {
+      const inBoundsBottomRight: Point = {
         x: Math.min(bottomRight.x, parent.bounds.width),
         y: Math.min(bottomRight.y, parent.bounds.height),
       };
-      const newValidPosition = {
+      const newValidPosition: Point = {
         x: Math.max(0, inBoundsBottomRight.x - element.size.width),
         y: Math.max(0, inBoundsBottomRight.y - element.size.height),
       };
@@ -221,10 +287,12 @@ export class SiriusDragAndDropMouseListener extends MoveMouseListener {
    * It is only "potential" because the ResizeAction can prevent the resize.
    */
   protected getMouseMoveResizeAction(event: MouseEvent, finished: boolean): ResizeAction | undefined {
-    if (!this.startResizePosition) return undefined;
+    if (!this.startResizePosition) {
+      return undefined;
+    }
     const viewport = findParentByFeature(this.intialTarget, isViewport);
     const zoom = viewport ? viewport.zoom : 1;
-    const delta = {
+    const delta: Point = {
       x: (event.pageX - this.startResizePosition.x) / zoom,
       y: (event.pageY - this.startResizePosition.y) / zoom,
     };
@@ -237,11 +305,11 @@ export class SiriusDragAndDropMouseListener extends MoveMouseListener {
 
   private computeElementResize(delta: Point): ElementResize {
     const elementId = this.intialTarget.id;
-    const previousPosition = {
+    const previousPosition: Point = {
       x: this.intialTarget.position.x,
       y: this.intialTarget.position.y,
     };
-    const previousSize = {
+    const previousSize: Dimension = {
       width: this.intialTarget.size.width,
       height: this.intialTarget.size.height,
     };
@@ -276,36 +344,36 @@ export class SiriusDragAndDropMouseListener extends MoveMouseListener {
   }
 
   private handleNorth(previousSize: Dimension, previousPosition: Point, delta: Point): [Dimension, Point] {
-    const newSize = {
+    const newSize: Dimension = {
       width: previousSize.width,
       height: this.startingSize.height - delta.y,
     };
-    const newPosition = {
+    const newPosition: Point = {
       x: previousPosition.x,
       y: this.startingPosition.y + delta.y,
     };
     return [newSize, newPosition];
   }
   private handleSouth(previousSize: Dimension, previousPosition: Point, delta: Point): [Dimension, Point] {
-    const newSize = {
+    const newSize: Dimension = {
       width: previousSize.width,
       height: this.startingSize.height + delta.y,
     };
     return [newSize, previousPosition];
   }
   private handleEast(previousSize: Dimension, previousPosition: Point, delta: Point): [Dimension, Point] {
-    const newSize = {
+    const newSize: Dimension = {
       width: this.startingSize.width + delta.x,
       height: previousSize.height,
     };
     return [newSize, previousPosition];
   }
   private handleWest(previousSize: Dimension, previousPosition: Point, delta: Point): [Dimension, Point] {
-    const newSize = {
+    const newSize: Dimension = {
       width: this.startingSize.width - delta.x,
       height: previousSize.height,
     };
-    const newPosition = {
+    const newPosition: Point = {
       x: this.startingPosition.x + delta.x,
       y: previousPosition.y,
     };

@@ -76,6 +76,8 @@
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="edgeTools" upperBound="-1"
         eType="#//EdgeTool" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="reconnectEdgeTools" upperBound="-1"
+        eType="#//EdgeReconnectionTool" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="conditionalStyles" upperBound="-1"
         eType="#//ConditionalEdgeStyle" containment="true"/>
   </eClassifiers>
@@ -167,6 +169,10 @@
   <eClassifiers xsi:type="ecore:EClass" name="DeleteTool" eSuperTypes="#//Tool"/>
   <eClassifiers xsi:type="ecore:EClass" name="NodeTool" eSuperTypes="#//Tool"/>
   <eClassifiers xsi:type="ecore:EClass" name="EdgeTool" eSuperTypes="#//Tool"/>
+  <eClassifiers xsi:type="ecore:EClass" name="EdgeReconnectionTool" abstract="true"
+      eSuperTypes="#//Tool"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SourceEdgeEndReconnectionTool" eSuperTypes="#//EdgeReconnectionTool"/>
+  <eClassifiers xsi:type="ecore:EClass" name="TargetEdgeEndReconnectionTool" eSuperTypes="#//EdgeReconnectionTool"/>
   <eClassifiers xsi:type="ecore:EClass" name="DropTool" eSuperTypes="#//Tool"/>
   <eClassifiers xsi:type="ecore:EClass" name="Operation" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EReference" name="children" upperBound="-1"

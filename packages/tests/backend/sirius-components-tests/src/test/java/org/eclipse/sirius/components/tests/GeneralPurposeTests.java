@@ -47,11 +47,11 @@ public class GeneralPurposeTests {
 
     private static final String FRONTEND_SRC_FOLDER_PATH = "packages"; //$NON-NLS-1$
 
-    private static final String TYPESCRIPT_FILE_EXTENSION = "ts"; //$NON-NLS-1$
+    private static final String TYPESCRIPT_FILE_EXTENSION = ".ts"; //$NON-NLS-1$
 
-    private static final String TYPESCRIPT_JSX_FILE_EXTENSION = "tsx"; //$NON-NLS-1$
+    private static final String TYPESCRIPT_JSX_FILE_EXTENSION = ".tsx"; //$NON-NLS-1$
 
-    private static final String CSS_FILE_EXTENSION = "css"; //$NON-NLS-1$
+    private static final String CSS_FILE_EXTENSION = ".css"; //$NON-NLS-1$
 
     private static final String JAVA_FILE_EXTENSION = "java"; //$NON-NLS-1$
 
