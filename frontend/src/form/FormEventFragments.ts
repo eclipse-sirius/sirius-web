@@ -47,6 +47,7 @@ export const formRefreshedEventPayloadFragment = gql`
         groups {
           id
           label
+          displayMode
           widgets {
             ...widgetFields
             ... on FlexboxContainer {

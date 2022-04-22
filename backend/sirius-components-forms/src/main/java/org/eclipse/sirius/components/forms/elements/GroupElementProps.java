@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2020, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.forms.GroupDisplayMode;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IProps;
 
@@ -33,6 +34,8 @@ public final class GroupElementProps implements IProps {
 
     private String label;
 
+    private GroupDisplayMode displayMode;
+
     private List<Element> children;
 
     private GroupElementProps() {
@@ -45,6 +48,10 @@ public final class GroupElementProps implements IProps {
 
     public String getLabel() {
         return this.label;
+    }
+
+    public GroupDisplayMode getDisplayMode() {
+        return this.displayMode;
     }
 
     @Override
@@ -73,6 +80,8 @@ public final class GroupElementProps implements IProps {
 
         private String label;
 
+        private GroupDisplayMode displayMode = GroupDisplayMode.LIST;
+
         private List<Element> children;
 
         private Builder(String id) {
@@ -81,6 +90,11 @@ public final class GroupElementProps implements IProps {
 
         public Builder label(String label) {
             this.label = Objects.requireNonNull(label);
+            return this;
+        }
+
+        public Builder displayMode(GroupDisplayMode displayMode) {
+            this.displayMode = Objects.requireNonNull(displayMode);
             return this;
         }
 
@@ -93,6 +107,7 @@ public final class GroupElementProps implements IProps {
             GroupElementProps groupElementProps = new GroupElementProps();
             groupElementProps.id = Objects.requireNonNull(this.id);
             groupElementProps.label = Objects.requireNonNull(this.label);
+            groupElementProps.displayMode = Objects.requireNonNull(this.displayMode);
             groupElementProps.children = Objects.requireNonNull(this.children);
             return groupElementProps;
         }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2020, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import java.util.Objects;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.forms.GroupDisplayMode;
 import org.eclipse.sirius.components.representations.VariableManager;
 
 /**
@@ -32,6 +33,8 @@ public final class GroupDescription {
     private Function<VariableManager, String> idProvider;
 
     private Function<VariableManager, String> labelProvider;
+
+    private Function<VariableManager, GroupDisplayMode> displayModeProvider;
 
     private Function<VariableManager, List<?>> semanticElementsProvider;
 
@@ -51,6 +54,10 @@ public final class GroupDescription {
 
     public Function<VariableManager, String> getLabelProvider() {
         return this.labelProvider;
+    }
+
+    public Function<VariableManager, GroupDisplayMode> getDisplayModeProvider() {
+        return this.displayModeProvider;
     }
 
     public Function<VariableManager, List<?>> getSemanticElementsProvider() {
@@ -84,6 +91,8 @@ public final class GroupDescription {
 
         private Function<VariableManager, String> labelProvider;
 
+        private Function<VariableManager, GroupDisplayMode> displayModeProvider = variableManager -> GroupDisplayMode.LIST;
+
         private Function<VariableManager, List<?>> semanticElementsProvider;
 
         private List<AbstractControlDescription> controlDescriptions;
@@ -102,6 +111,11 @@ public final class GroupDescription {
             return this;
         }
 
+        public Builder displayModeProvider(Function<VariableManager, GroupDisplayMode> displayModeProvider) {
+            this.displayModeProvider = Objects.requireNonNull(displayModeProvider);
+            return this;
+        }
+
         public Builder semanticElementsProvider(Function<VariableManager, List<?>> semanticElementsProvider) {
             this.semanticElementsProvider = Objects.requireNonNull(semanticElementsProvider);
             return this;
@@ -117,6 +131,7 @@ public final class GroupDescription {
             groupDescription.id = Objects.requireNonNull(this.id);
             groupDescription.idProvider = Objects.requireNonNull(this.idProvider);
             groupDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
+            groupDescription.displayModeProvider = Objects.requireNonNull(this.displayModeProvider);
             groupDescription.semanticElementsProvider = Objects.requireNonNull(this.semanticElementsProvider);
             groupDescription.controlDescriptions = Objects.requireNonNull(this.controlDescriptions);
             return groupDescription;

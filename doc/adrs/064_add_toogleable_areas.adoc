@@ -1,0 +1,77 @@
+= ADR-064 - Add support for a ToggableAreaContainer in forms
+
+== Context
+
+The right panel (e.g. _Details_ view) has a relatively limited screen real estate available (especially horizontally).
+However given that it is synchronized with the selection, it is a natural and convenient location to display contextual information using widgets which can be relatively large.
+A typical example would be to display something like Capella's _semantic browser_ which shows elements "related" to the current selection (for different kinds of relations) using tree widgets.
+
+We need a way to display widgets inside forms that account for the limited space available.
+The end user should be able to decide which of a particular group of widgets to make visible or to hide.
+The UI should automatically adapt the layout of the visible widgets to the available horizontal space:
+
+- if there is enough horizontal space to display all the selected children along each other, they will be displayed ina single row;
+- otherwise they will be displayed in a single column, each taking all the horizontal space available.
+
+== Decision
+
+The current structure of a `Form` is organized as:
+
+- zero or more instances of `Page` (one per selection entry in the case of the _Details_ view);
+- zero or more instances of `Group` (in _Details_, in general we have a single "Core Properties" one);
+- zero or more `XXXPropertySection` (one per widget).
+
+The "ToggableAreaContainer" is essentially an alternative way to present a set of widgets.
+Instead of simply showing all of its widgets one above the other, it will provide a group of toggle buttons to allow the end-user to select which of the children widgets to display.
+
+Instead of introducing a new concept for this we will extend `Group` with a new attribute named `displayMode`:
+
+[source,typescript]
+----
+export interface Group {
+  id: string;
+  label: string;
+  displayMode: GroupDisplayMode;
+  widgets: Widget[];
+}
+
+export type GroupDisplayMode = 'LIST' | 'TOGGLEABLE_AREAS';
+----
+
+The `LIST` mode will correspond to the current behavior of showing all the widgets one above the other.
+The `TOGGLEABLE_AREAS` mode will correspond to the new behavior.
+It will be possible to add other modes in the future if needed.
+
+The GraphQL Schema will be modified accordingly:
+
+[source,graphqls]
+----
+type Group {
+  id: ID!
+  label: String!
+  displayMode: GroupDisplayMode!
+  widgets: [Widget!]!
+}
+
+enum GroupDisplayMode {
+  LIST,
+  TOGGLEABLE_AREAS
+}
+----
+
+On the backend, `GroupDescription` will get a new field `Function<VariableManager, GroupDisplayMode> displayModeProvider`.
+To avoid breaking compatibility, its builder will provide a default `displayModeProvider` which returns `LIST`.
+There will be no other change on the backend.
+
+On the frontend, `FormEventFragments.ts` will be modified to fetch the value of this new field on `GQLGroup`.
+The `Group` component in `GroupPropertySection` will be updated to handle the new mode.
+
+When configured to use the `TOGGLEABLE_AREAS` mode, the group will display a horizontal bar of toggle buttons, one per widget inside the group.
+The buttons will display the icon (if present) and label of the corresponding widget.
+Toggling the state of a button will toggle the visibility of the corresponding widget
+
+On initial rendering of a group, all widgets will be visible by default.
+
+== Status
+
+Accepted.

@@ -59,7 +59,13 @@ type Page {
 type Group {
   id: ID!
   label: String!
+  displayMode: GroupDisplayMode!
   widgets: [Widget!]!
+}
+
+enum GroupDisplayMode {
+  LIST,
+  TOGGLEABLE_AREAS
 }
 
 interface Widget {

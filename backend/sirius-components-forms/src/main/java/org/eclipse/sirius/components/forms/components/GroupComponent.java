@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2020, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import org.eclipse.sirius.components.forms.GroupDisplayMode;
 import org.eclipse.sirius.components.forms.description.AbstractControlDescription;
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
 import org.eclipse.sirius.components.forms.description.ForDescription;
@@ -62,6 +63,7 @@ public class GroupComponent implements IComponent {
 
             String id = groupDescription.getIdProvider().apply(groupVariableManager);
             String label = groupDescription.getLabelProvider().apply(groupVariableManager);
+            GroupDisplayMode displayMode = groupDescription.getDisplayModeProvider().apply(groupVariableManager);
 
             // @formatter:off
             List<Element> groupChildren = new ArrayList<>();
@@ -80,6 +82,7 @@ public class GroupComponent implements IComponent {
 
             GroupElementProps groupElementProps = GroupElementProps.newGroupElementProps(id)
                     .label(label)
+                    .displayMode(displayMode)
                     .children(groupChildren)
                     .build();
             Element groupElement = new Element(GroupElementProps.TYPE, groupElementProps);
