@@ -103,10 +103,10 @@ public class GetToolSectionsEventHandler implements IDiagramEventHandler {
 
             Diagram diagram = diagramContext.getDiagram();
             // @formatter:off
-                var optionalDiagramDescription = this.representationDescriptionSearchService.findById(editingContext, diagram.getDescriptionId())
-                        .filter(DiagramDescription.class::isInstance)
-                        .map(DiagramDescription.class::cast);
-                // @formatter:on
+            var optionalDiagramDescription = this.representationDescriptionSearchService.findById(editingContext, diagram.getDescriptionId())
+                    .filter(DiagramDescription.class::isInstance)
+                    .map(DiagramDescription.class::cast);
+            // @formatter:on
             if (optionalDiagramDescription.isPresent()) {
                 DiagramDescription diagramDescription = optionalDiagramDescription.get();
                 var optionalToolSectionsProvider = this.toolSectionsProviders.stream().filter(toolSectionProvider -> toolSectionProvider.canHandle(diagramDescription)).findFirst();

@@ -1,0 +1,38 @@
+{
+  "name": "diag:Root",
+  "children": [
+    {
+      "name": "rect:First",
+      "children": [
+        {
+          "name": "edge:Second",
+          "children": []
+        },
+        {
+          "name": "edge:Third",
+          "children": []
+        },
+        {
+          "name": "edge:Second",
+          "children": []
+        },
+        {
+          "name": "edge:Third",
+          "children": []
+        },
+        {
+          "name": "edge:Second",
+          "children": []
+        }
+      ]
+    },
+    {
+      "name": "rect:Second",
+      "children": []
+    },
+    {
+      "name": "rect:Third",
+      "children": []
+    }
+  ]
+}

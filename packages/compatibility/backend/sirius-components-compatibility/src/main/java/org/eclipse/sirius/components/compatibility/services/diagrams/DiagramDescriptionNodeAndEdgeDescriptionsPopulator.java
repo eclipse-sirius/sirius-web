@@ -121,7 +121,10 @@ public class DiagramDescriptionNodeAndEdgeDescriptionsPopulator implements IDiag
         return builder.nodeDescriptions(nodeDescriptions)
                 .edgeDescriptions(edgeDescriptions)
                 .dropHandler(dropHandler)
-                .toolSections(this.toolProvider.getToolSections(id2NodeDescriptions, edgeDescriptions, siriusDiagramDescription, layers));
+                .toolSections(this.toolProvider.getToolSections(id2NodeDescriptions, edgeDescriptions, siriusDiagramDescription, layers))
+                // We don't care about populating tools here, there are executed on the fly from the compatibility reconnection tool executor.
+                // We must add it here to support the conversion from the View MM which is not able to execute tool on the fly.
+                .tools(List.of());
         // @formatter:on
     }
 

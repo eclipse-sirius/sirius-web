@@ -47,6 +47,7 @@ import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.DiagramElementDescription;
 import org.eclipse.sirius.components.view.DropTool;
 import org.eclipse.sirius.components.view.EdgeDescription;
+import org.eclipse.sirius.components.view.EdgeReconnectionTool;
 import org.eclipse.sirius.components.view.EdgeStyle;
 import org.eclipse.sirius.components.view.EdgeTool;
 import org.eclipse.sirius.components.view.FlexboxContainerDescription;
@@ -79,7 +80,9 @@ import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.SelectDescription;
 import org.eclipse.sirius.components.view.SelectDescriptionStyle;
 import org.eclipse.sirius.components.view.SetValue;
+import org.eclipse.sirius.components.view.SourceEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.Style;
+import org.eclipse.sirius.components.view.TargetEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.TextAreaDescription;
 import org.eclipse.sirius.components.view.TextareaDescriptionStyle;
 import org.eclipse.sirius.components.view.TextfieldDescription;
@@ -344,6 +347,37 @@ public class ViewSwitch<T> extends Switch<T> {
             T result = this.caseEdgeTool(edgeTool);
             if (result == null)
                 result = this.caseTool(edgeTool);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.EDGE_RECONNECTION_TOOL: {
+            EdgeReconnectionTool edgeReconnectionTool = (EdgeReconnectionTool) theEObject;
+            T result = this.caseEdgeReconnectionTool(edgeReconnectionTool);
+            if (result == null)
+                result = this.caseTool(edgeReconnectionTool);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.SOURCE_EDGE_END_RECONNECTION_TOOL: {
+            SourceEdgeEndReconnectionTool sourceEdgeEndReconnectionTool = (SourceEdgeEndReconnectionTool) theEObject;
+            T result = this.caseSourceEdgeEndReconnectionTool(sourceEdgeEndReconnectionTool);
+            if (result == null)
+                result = this.caseEdgeReconnectionTool(sourceEdgeEndReconnectionTool);
+            if (result == null)
+                result = this.caseTool(sourceEdgeEndReconnectionTool);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.TARGET_EDGE_END_RECONNECTION_TOOL: {
+            TargetEdgeEndReconnectionTool targetEdgeEndReconnectionTool = (TargetEdgeEndReconnectionTool) theEObject;
+            T result = this.caseTargetEdgeEndReconnectionTool(targetEdgeEndReconnectionTool);
+            if (result == null)
+                result = this.caseEdgeReconnectionTool(targetEdgeEndReconnectionTool);
+            if (result == null)
+                result = this.caseTool(targetEdgeEndReconnectionTool);
             if (result == null)
                 result = this.defaultCase(theEObject);
             return result;
@@ -1229,6 +1263,51 @@ public class ViewSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseEdgeTool(EdgeTool object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Edge Reconnection Tool</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Edge Reconnection Tool</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseEdgeReconnectionTool(EdgeReconnectionTool object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Source Edge End Reconnection Tool</em>'.
+     * <!-- begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Source Edge End Reconnection Tool</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseSourceEdgeEndReconnectionTool(SourceEdgeEndReconnectionTool object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Target Edge End Reconnection Tool</em>'.
+     * <!-- begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Target Edge End Reconnection Tool</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseTargetEdgeEndReconnectionTool(TargetEdgeEndReconnectionTool object) {
         return null;
     }
 

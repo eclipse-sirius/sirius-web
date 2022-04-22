@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -39,6 +39,11 @@ public class CollaborativeDiagramMessageService implements ICollaborativeDiagram
     @Override
     public String edgeNotFound(String id) {
         return this.messageSourceAccessor.getMessage(MessageConstants.EDGE_NOT_FOUND, new Object[] { id });
+    }
+
+    @Override
+    public String reconnectEdgeSameEdgeEnd() {
+        return this.messageSourceAccessor.getMessage(MessageConstants.RECONNECT_EDGE_SAME_EDGE_END);
     }
 
     @Override

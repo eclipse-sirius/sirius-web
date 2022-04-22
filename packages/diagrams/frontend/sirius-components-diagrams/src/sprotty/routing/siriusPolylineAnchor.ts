@@ -11,16 +11,18 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { IAnchorComputer, RectangleAnchor, SConnectableElement } from 'sprotty';
+import { RectangleAnchor, SConnectableElement } from 'sprotty';
 import { almostEquals, Point } from 'sprotty-protocol';
+import { Edge, Ratio } from '../Diagram.types';
+import { ISiriusAnchorComputer } from './siriusRoutingModule.types';
 
-export class SiriusRectangleAnchor extends RectangleAnchor {
+export class SiriusRectangleAnchor extends RectangleAnchor implements ISiriusAnchorComputer {
   /**
    * Rewrite this once we will support the self loop edge placement around its source/target.
    *
    * The current implementation only support self loop edge facing the north face of the edge source/target.
    */
-  getSelfLoopAnchor(connectable: SConnectableElement, refPoint: Point, offset?: number): Point {
+  getSelfLoopAnchor(connectable: SConnectableElement, refPoint: Point, _offset?: number): Point {
     const bounds = connectable.bounds;
     return {
       x: refPoint.x,
@@ -28,18 +30,22 @@ export class SiriusRectangleAnchor extends RectangleAnchor {
     };
   }
 
-  /**
-   * Compute an anchor position for routing an end of an edge towards this element - the other edge end -.
-   *
-   * @param connectable The node or port an edge should be connected to.
-   * @param insideConnectableBoundsPoint The point from which the edge is routed from, in the same coordinate system as the connectable. It should represent a point inside the bounds of the connectable.
-   * @param otherEndRefPoint The point from which the edge is routed towards, in the same coordinate system as the connectable.
-   * @param offset An optional offset value to be considered in the anchor computation;
-   *               positive values should shift the anchor away from this element, negative values
-   *               should shift the anchor more to the inside. Use this to adapt ot arrow heads.
-   * @returns the anchor position
-   */
-  getAnchorBetweenTwoPoints(
+  getReferencePosition(connectable: SConnectableElement, edge: Edge): Point {
+    const bounds = connectable.bounds;
+    let ratio: Ratio;
+    if (edge.target === connectable) {
+      ratio = edge.targetAnchorRelativePosition;
+    } else {
+      ratio = edge.sourceAnchorRelativePosition;
+    }
+
+    return {
+      x: bounds.x + (bounds.width >= 0 ? ratio.x * bounds.width : 0),
+      y: bounds.y + (bounds.height >= 0 ? ratio.y * bounds.height : 0),
+    };
+  }
+
+  getSiriusAnchor(
     connectable: SConnectableElement,
     insideConnectableBoundsPoint: Point,
     otherEndRefPoint: Point,
@@ -62,6 +68,25 @@ export class SiriusRectangleAnchor extends RectangleAnchor {
         finder.addCandidate(bounds.x + bounds.width + offset, yRight);
     }
     return finder.best;
+  }
+
+  updateAnchor(connectable: SConnectableElement, edge: Edge, position: Point): void {
+    const bounds = connectable.bounds;
+    let ratio: Ratio = {
+      x: 0.5,
+      y: 0.5,
+    };
+    if (bounds.width > 0 && bounds.height > 0) {
+      ratio = {
+        x: (position.x - bounds.x) / bounds.width,
+        y: (position.y - bounds.y) / bounds.height,
+      };
+    }
+    if (edge.target === connectable) {
+      edge.targetAnchorRelativePosition = ratio;
+    } else {
+      edge.sourceAnchorRelativePosition = ratio;
+    }
   }
 }
 
@@ -92,6 +117,3 @@ class NearestPointFinder {
     }
   }
 }
-
-export const isSiriusRectangleAnchor = (anchorComputer: IAnchorComputer): anchorComputer is SiriusRectangleAnchor =>
-  anchorComputer instanceof SiriusRectangleAnchor;

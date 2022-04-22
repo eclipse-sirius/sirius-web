@@ -89,6 +89,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//EdgeDescription/targetNodesExpression"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//EdgeDescription/style"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//EdgeDescription/edgeTools"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//EdgeDescription/reconnectEdgeTools"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//EdgeDescription/conditionalStyles"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//LabelStyle">
@@ -137,6 +138,9 @@
     <genClasses ecoreClass="view.ecore#//DeleteTool"/>
     <genClasses ecoreClass="view.ecore#//NodeTool"/>
     <genClasses ecoreClass="view.ecore#//EdgeTool"/>
+    <genClasses image="false" ecoreClass="view.ecore#//EdgeReconnectionTool"/>
+    <genClasses ecoreClass="view.ecore#//SourceEdgeEndReconnectionTool"/>
+    <genClasses ecoreClass="view.ecore#//TargetEdgeEndReconnectionTool"/>
     <genClasses ecoreClass="view.ecore#//DropTool"/>
     <genClasses image="false" ecoreClass="view.ecore#//Operation">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//Operation/children"/>

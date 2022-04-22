@@ -13,6 +13,7 @@
 
 import {
   PolylineEdgeRouter,
+  ResolvedHandleMove,
   RoutedPoint,
   SConnectableElement,
   SParentElement,
@@ -20,15 +21,17 @@ import {
   translatePoint,
 } from 'sprotty';
 import { Bounds, Point } from 'sprotty-protocol';
-import { Edge, Ratio } from '../Diagram.types';
-import { isSiriusRectangleAnchor } from './siriusPolylineAnchor';
+import { Edge } from '../Diagram.types';
+import { SiriusDanglingAnchor } from './siriusDanglingAnchor';
+import { isSiriusAnchor } from './siriusRoutingModule.types';
 
 export class SiriusPolylineEdgeRouter extends PolylineEdgeRouter {
-  refPosition(bounds: Bounds, ratio: Ratio): Point {
-    return {
-      x: bounds.x + (bounds.width >= 0 ? ratio.x * bounds.width : 0),
-      y: bounds.y + (bounds.height >= 0 ? ratio.y * bounds.height : 0),
-    };
+  getReferencePosition(connectable: SConnectableElement, edge: Edge): Point {
+    const anchorComputer = this.getAnchorComputer(connectable);
+    if (isSiriusAnchor(anchorComputer)) {
+      return anchorComputer.getReferencePosition(connectable, edge);
+    }
+    return Bounds.center(connectable.bounds);
   }
 
   override route(edge: Edge): RoutedPoint[] {
@@ -42,10 +45,10 @@ export class SiriusPolylineEdgeRouter extends PolylineEdgeRouter {
     let targetAnchor: Point;
     const options = this.getOptions(edge);
     const routingPoints = edge.routingPoints.length > 0 ? edge.routingPoints : [];
-    this.cleanupRoutingPoints(edge, routingPoints, false, false);
+    this.cleanupRoutingPoints(edge, routingPoints, false, true);
     const rpCount = routingPoints !== undefined ? routingPoints.length : 0;
-    const targetAbsolutePositionRef = this.refPosition(target.bounds, edge.targetAnchorRelativePosition);
-    const sourceAbsolutePositionRef = this.refPosition(source.bounds, edge.sourceAnchorRelativePosition);
+    const targetAbsolutePositionRef = this.getReferencePosition(target, edge);
+    const sourceAbsolutePositionRef = this.getReferencePosition(source, edge);
     if (rpCount === 0) {
       // Use the target absolute position as start anchor reference
       sourceAnchor = this.getTranslatedAnchorBetweenTwoPoints(
@@ -113,9 +116,9 @@ export class SiriusPolylineEdgeRouter extends PolylineEdgeRouter {
     edge: SRoutableElement,
     routingPoints: Point[],
     _updateHandles: boolean,
-    _addRoutingPoints: boolean
+    addRoutingPoints: boolean
   ): void {
-    if (edge.sourceId === edge.targetId && routingPoints.length === 0) {
+    if (edge.sourceId === edge.targetId && routingPoints.length === 0 && addRoutingPoints) {
       const spaceBetweenRp = edge.source.bounds.width / 3;
       const p1 = { x: edge.source.bounds.x + spaceBetweenRp, y: edge.source.bounds.y - 10 };
       const p2 = { x: p1.x + spaceBetweenRp, y: p1.y };
@@ -136,11 +139,11 @@ export class SiriusPolylineEdgeRouter extends PolylineEdgeRouter {
 
     let anchor: Point;
     const anchorComputer = this.getAnchorComputer(connectable);
-    if (isSiriusRectangleAnchor(anchorComputer)) {
+    if (isSiriusAnchor(anchorComputer)) {
       if (edge.sourceId === edge.targetId) {
         anchor = anchorComputer.getSelfLoopAnchor(connectable, translatedRefPoint, anchorCorrection + strokeCorrection);
       } else {
-        anchor = anchorComputer.getAnchorBetweenTwoPoints(
+        anchor = anchorComputer.getSiriusAnchor(
           connectable,
           insideConnectableBoundsRefPoint,
           translatedRefPoint,
@@ -152,5 +155,89 @@ export class SiriusPolylineEdgeRouter extends PolylineEdgeRouter {
     }
 
     return translatePoint(anchor, connectable.parent, edge.parent);
+  }
+
+  override applyHandleMoves(edge: SRoutableElement, moves: ResolvedHandleMove[]): void {
+    const remainingMoves = moves.slice();
+    moves.forEach((move) => {
+      const handle = move.handle;
+      if (handle.kind === 'source' && !(edge.source instanceof SiriusDanglingAnchor)) {
+        // detach source
+        const anchor = new SiriusDanglingAnchor();
+        anchor.id = edge.id + '_dangling-source';
+        anchor.original = edge.source;
+        anchor.position = move.toPosition;
+        handle.root.add(anchor);
+        handle.danglingAnchor = anchor;
+        edge.sourceId = anchor.id;
+      } else if (handle.kind === 'target' && !(edge.target instanceof SiriusDanglingAnchor)) {
+        // detach target
+        const anchor = new SiriusDanglingAnchor();
+        anchor.id = edge.id + '_dangling-target';
+        anchor.original = edge.target;
+        anchor.position = move.toPosition;
+        handle.root.add(anchor);
+        handle.danglingAnchor = anchor;
+        edge.targetId = anchor.id;
+      }
+      if (handle.danglingAnchor) {
+        handle.danglingAnchor.position = move.toPosition;
+        remainingMoves.splice(remainingMoves.indexOf(move), 1);
+      }
+    });
+    if (remainingMoves.length > 0) this.applyInnerHandleMoves(edge, remainingMoves);
+    this.cleanupRoutingPoints(edge, edge.routingPoints, true, true);
+  }
+
+  /**
+   * Updates the edge anchor regarding the move.
+   *
+   * @param edge The edge which one of its end has been moved
+   * @param newSourceId The new source id if the source end has been reconnected, the current edge source end, or undefined
+   * @param newTargetId The new target id if the target end has been reconnected, the current edge target end, or undefined
+   */
+  override applyReconnect(edge: Edge, newSourceId?: string, newTargetId?: string): void {
+    let previousSource: SConnectableElement | undefined;
+    let previousTarget: SConnectableElement | undefined;
+
+    /**
+     * Get the previous source and target if applicable.
+     * If the previous source or target are not undefined, they should be a SiriusDanglingAnchor.
+     */
+    if (!!newSourceId && newSourceId !== edge.sourceId) {
+      previousSource = edge.source;
+    }
+    if (!!newTargetId && newTargetId !== edge.targetId) {
+      previousTarget = edge.target;
+    }
+
+    super.applyReconnect(edge, newSourceId, newTargetId);
+
+    if (!!previousSource) {
+      const newConnectableElement = edge.source;
+      const anchorComputer = this.getAnchorComputer(newConnectableElement);
+      if (isSiriusAnchor(anchorComputer)) {
+        const translatedPoint = translatePoint(
+          previousSource.position,
+          previousSource.parent,
+          newConnectableElement.parent
+        );
+        // Use the translated position of the SiriusDanglingAnchor to compute the ratio of the source edge end.
+        anchorComputer.updateAnchor(newConnectableElement, edge, translatedPoint);
+      }
+    }
+    if (!!previousTarget) {
+      const newConnectableElement = edge.target;
+      const anchorComputer = this.getAnchorComputer(newConnectableElement);
+      if (isSiriusAnchor(anchorComputer)) {
+        const translatedPoint = translatePoint(
+          previousTarget.position,
+          previousTarget.parent,
+          newConnectableElement.parent
+        );
+        // Use the translated position of the SiriusDanglingAnchor to compute the ratio of the target edge end.
+        anchorComputer.updateAnchor(newConnectableElement, edge, translatedPoint);
+      }
+    }
   }
 }

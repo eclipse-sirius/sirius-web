@@ -108,9 +108,10 @@ export class SiriusMoveCommand extends MoveCommand {
    */
   private updateEdgeFromHandleMoves(edge2move: Map<SRoutableElement, ResolvedHandleMove[]>) {
     edge2move.forEach((resolvedHandleMoves, routableElement) => {
-      const routingPoint = routableElement.routingPoints;
-      if (routingPoint.length & 1) {
-        const medianRoutingPointIndex = Math.floor(routingPoint.length / 2);
+      const router = this.edgeRouterRegistry!.get(routableElement.routerKind);
+      const routedPoint: Point[] = router.route(routableElement);
+      if (routedPoint.length & 1) {
+        const medianRoutingPointIndex = Math.floor((routedPoint.length - 2) / 2);
         resolvedHandleMoves.forEach((resolvedHandleMove) => {
           if (medianRoutingPointIndex === resolvedHandleMove.handle.pointIndex) {
             this.updateEdgeLabelPositionFromDelta(
@@ -120,15 +121,15 @@ export class SiriusMoveCommand extends MoveCommand {
           }
         });
       } else {
-        const medianRoutingPointIndex = routingPoint.length / 2;
+        const medianRoutingPointIndex = (routedPoint.length - 2) / 2;
         resolvedHandleMoves.forEach((resolvedHandleMove) => {
           if (
             medianRoutingPointIndex === resolvedHandleMove.handle.pointIndex ||
             medianRoutingPointIndex === resolvedHandleMove.handle.pointIndex + 1
           ) {
             this.updateEdgeLabelPositionFromEdgeSection(routableElement, {
-              sectionStart: routingPoint[medianRoutingPointIndex - 1],
-              sectionEnd: routingPoint[medianRoutingPointIndex],
+              sectionStart: routedPoint[medianRoutingPointIndex],
+              sectionEnd: routedPoint[medianRoutingPointIndex + 1],
             });
           }
         });

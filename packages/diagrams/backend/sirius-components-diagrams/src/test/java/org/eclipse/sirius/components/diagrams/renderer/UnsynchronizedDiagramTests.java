@@ -354,6 +354,7 @@ public class UnsynchronizedDiagramTests {
                 .nodeDescriptions(List.of(unsynchronizedNodeDescription, synchronizedNodeDescription))
                 .edgeDescriptions(List.of())
                 .toolSections(List.of())
+                .tools(List.of())
                 .dropHandler(variableManager -> new Failure("")) //$NON-NLS-1$
                 .build();
         // @formatter:on

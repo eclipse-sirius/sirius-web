@@ -23,6 +23,8 @@ public interface ICollaborativeDiagramMessageService {
 
     String edgeNotFound(String id);
 
+    String reconnectEdgeSameEdgeEnd();
+
     String nodeNotFound(String id);
 
     String deleteEdgeFailed(String id);
@@ -53,6 +55,11 @@ public interface ICollaborativeDiagramMessageService {
 
         @Override
         public String edgeNotFound(String id) {
+            return ""; //$NON-NLS-1$
+        }
+
+        @Override
+        public String reconnectEdgeSameEdgeEnd() {
             return ""; //$NON-NLS-1$
         }
 
@@ -95,6 +102,5 @@ public interface ICollaborativeDiagramMessageService {
         public String invalidDrop() {
             return ""; //$NON-NLS-1$
         }
-
     }
 }

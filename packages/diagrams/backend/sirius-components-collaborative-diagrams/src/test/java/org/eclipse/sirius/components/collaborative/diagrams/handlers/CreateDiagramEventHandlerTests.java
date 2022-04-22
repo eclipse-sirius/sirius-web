@@ -61,6 +61,7 @@ public class CreateDiagramEventHandlerTests {
                         .edgeDescriptions(new ArrayList<>())
                         .labelProvider(variableManager -> "label") //$NON-NLS-1$
                         .toolSections(List.of())
+                        .tools(List.of())
                         .nodeDescriptions(new ArrayList<>())
                         .targetObjectIdProvider(variableManager -> "targetObjectId") //$NON-NLS-1$
                         .dropHandler(variableManager -> new Failure("")) //$NON-NLS-1$

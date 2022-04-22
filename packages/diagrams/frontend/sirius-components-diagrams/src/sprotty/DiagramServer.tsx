@@ -25,9 +25,11 @@ import {
   MousePositionTracker,
   MoveAction,
   MoveCommand,
+  ReconnectAction,
   SEdge,
   SelectionResult,
   SGraph,
+  SModelElement,
   SNode,
   SPort,
   SwitchEditModeAction,
@@ -46,6 +48,7 @@ import {
   Bounds,
   CursorValue,
   GQLDeletionPolicy,
+  GQLReconnectKind,
   Menu,
   Palette,
   SingleClickOnTwoDiagramElementsTool,
@@ -53,7 +56,7 @@ import {
 } from '../representation/DiagramRepresentation.types';
 import { IsSiriusModelElementAction, IsSiriusModelElementResult } from './common/isSiriusModelElementRequest';
 import { convertDiagram } from './convertDiagram';
-import { Label } from './Diagram.types';
+import { BorderNode, Diagram, Edge, Label, Node } from './Diagram.types';
 import {
   SetActiveConnectorToolsAction,
   ShowContextualMenuAction,
@@ -65,6 +68,7 @@ import {
   SprottySelectAction,
 } from './DiagramServer.types';
 import { ResizeAction, SiriusResizeCommand } from './dragAndDrop/siriusResize';
+import { SiriusReconnectAction } from './edgeEdition/model';
 
 /** Action to delete a sprotty element */
 export const SPROTTY_DELETE_ACTION = 'sprottyDeleteElement';
@@ -122,26 +126,43 @@ export class DiagramServer extends ModelSource {
   modelFactory: IModelFactory;
   activeTool: Tool;
   activeConnectorTools: SingleClickOnTwoDiagramElementsTool[];
-  editLabel;
+  editLabel: (labelId: string, newText: string) => void;
   moveElement: (diagramElementId: string, newPositionX: number, newPositionY: number) => void;
-  resizeElement;
-  deleteElements;
+  resizeElement: (
+    diagramElementId: string,
+    newPositionX: number,
+    newPositionY: number,
+    newWidth: number,
+    newHeight: number
+  ) => void;
+  deleteElements: (diagramElements: SModelElement[], deletionPolicy: GQLDeletionPolicy) => void;
 
   invokeTool;
-  setContextualPalette: (contextualPalette: Palette) => void;
-  setContextualMenu;
-  setActiveTool;
-  onSelectElement;
+  setContextualPalette: (contextualPalette: Palette | null) => void;
+  setContextualMenu: (contextualMenu: Menu | null) => void;
+  setActiveTool: (tool: Tool | null) => void;
+  onSelectElement: (
+    selectedElement: Diagram | Node | BorderNode | Edge | null,
+    diagramServer: DiagramServer,
+    position: Point,
+    event: MouseEvent
+  ) => void;
   updateRoutingPointsListener: (routingPoints: Point[], edgeId: string) => void;
 
   // Used to store the edge source element.
   diagramSource: SourceElement | null;
   currentRoot: Root = INITIAL_ROOT;
 
-  httpOrigin;
+  httpOrigin: string;
 
   firstOpen: boolean = true;
   getCursorOn: (element: any, diagramServer: DiagramServer) => CursorValue;
+  reconnectEdge: (
+    edgeId: string,
+    newEdgeEndId: string,
+    reconnectEdgeKind: GQLReconnectKind,
+    newEdgeEndPosition: Point
+  ) => void;
 
   override initialize(registry: ActionHandlerRegistry) {
     super.initialize(registry);
@@ -151,6 +172,7 @@ export class DiagramServer extends ModelSource {
     registry.register(MoveCommand.KIND, this);
     registry.register(SiriusResizeCommand.KIND, this);
     registry.register(InitializeCanvasBoundsAction.KIND, this);
+    registry.register(ReconnectAction.KIND, this);
     registry.register(SIRIUS_UPDATE_MODEL_ACTION, this);
     registry.register(SIRIUS_SELECT_ACTION, this);
     registry.register(SPROTTY_SELECT_ACTION, this);
@@ -192,6 +214,9 @@ export class DiagramServer extends ModelSource {
         break;
       case InitializeCanvasBoundsAction.KIND:
         this.handleInitializeCanvasBoundsAction(action as InitializeCanvasBoundsAction);
+        break;
+      case ReconnectAction.KIND:
+        this.handleReconnectAction(action as SiriusReconnectAction);
         break;
       case SIRIUS_UPDATE_MODEL_ACTION:
         this.handleSiriusUpdateModelAction(action as SiriusUpdateModelAction);
@@ -248,7 +273,7 @@ export class DiagramServer extends ModelSource {
     }
   }
 
-  handleApplyLabelEditAction(action) {
+  handleApplyLabelEditAction(action: ApplyLabelEditAction) {
     const { labelId, text } = action;
     this.editLabel(labelId, text);
   }
@@ -303,6 +328,14 @@ export class DiagramServer extends ModelSource {
       this.actionDispatcher.dispatch(FitToScreenAction.create([], { padding: 20, maxZoom: 1 }));
       this.firstOpen = false;
     }
+  }
+
+  handleReconnectAction(action: SiriusReconnectAction) {
+    if (action.reconnectKind === 'source') {
+      return this.reconnectEdge(action.routableId, action.newSourceId, GQLReconnectKind.SOURCE, action.newEndPosition);
+    }
+
+    return this.reconnectEdge(action.routableId, action.newTargetId, GQLReconnectKind.TARGET, action.newEndPosition);
   }
 
   handleSprottySelectAction(action: SprottySelectAction) {
@@ -634,34 +667,55 @@ export class DiagramServer extends ModelSource {
     this.modelFactory = modelFactory;
   }
 
-  setEditLabelListener(editLabel) {
+  setEditLabelListener(editLabel: (labelId: string, newText: string) => void) {
     this.editLabel = editLabel;
   }
 
   setMoveElementListener(moveElement: (diagramElementId: string, newPositionX: number, newPositionY: number) => void) {
     this.moveElement = moveElement;
   }
-  setResizeElementListener(resizeElement) {
+  setResizeElementListener(
+    resizeElement: (
+      diagramElementId: string,
+      newPositionX: number,
+      newPositionY: number,
+      newWidth: number,
+      newHeight: number
+    ) => void
+  ) {
     this.resizeElement = resizeElement;
   }
 
-  setDeleteElementsListener(deleteElements) {
+  setDeleteElementsListener(
+    deleteElements: (diagramElements: SModelElement[], deletionPolicy: GQLDeletionPolicy) => void
+  ) {
     this.deleteElements = deleteElements;
+  }
+
+  setReconnectEdgeListener(
+    reconnectEdge: (
+      edgeId: string,
+      newEdgeEndId: string,
+      reconnectEdgeKind: GQLReconnectKind,
+      newEdgeEndPosition: Point
+    ) => void
+  ) {
+    this.reconnectEdge = reconnectEdge;
   }
 
   setInvokeToolListener(invokeTool) {
     this.invokeTool = invokeTool;
   }
 
-  setContextualPaletteListener(setContextualPalette: (contextualPalette: Palette) => void) {
+  setContextualPaletteListener(setContextualPalette: (contextualPalette: Palette | null) => void) {
     this.setContextualPalette = setContextualPalette;
   }
 
-  setContextualMenuListener(setContextualMenu) {
+  setContextualMenuListener(setContextualMenu: (contextualMenu: Menu | null) => void) {
     this.setContextualMenu = setContextualMenu;
   }
 
-  setHttpOrigin(httpOrigin) {
+  setHttpOrigin(httpOrigin: string) {
     this.httpOrigin = httpOrigin;
   }
 
@@ -669,7 +723,14 @@ export class DiagramServer extends ModelSource {
     this.setActiveTool = setActiveTool;
   }
 
-  setOnSelectElementListener(onSelectElement) {
+  setOnSelectElementListener(
+    onSelectElement: (
+      selectedElement: Diagram | Node | BorderNode | Edge | null,
+      diagramServer: DiagramServer,
+      position: Point,
+      event: MouseEvent
+    ) => void
+  ) {
     this.onSelectElement = onSelectElement;
   }
 

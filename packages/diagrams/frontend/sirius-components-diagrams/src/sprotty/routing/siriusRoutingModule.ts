@@ -12,10 +12,11 @@
  *******************************************************************************/
 import { ContainerModule } from 'inversify';
 import { AnchorComputerRegistry, EdgeRouterRegistry, TYPES } from 'sprotty';
+import { SiriusDanglingAnchorComputer } from './siriusDanglingAnchorComputer';
 import { SiriusRectangleAnchor } from './siriusPolylineAnchor';
 import { SiriusPolylineEdgeRouter } from './siriusPolylineEdgeRouter';
 
-export const siriusRoutingModule = new ContainerModule((bind, unbind, _isBound, rebind) => {
+export const siriusRoutingModule = new ContainerModule((bind) => {
   bind(EdgeRouterRegistry).toSelf().inSingletonScope();
 
   bind(AnchorComputerRegistry).toSelf().inSingletonScope();
@@ -23,4 +24,5 @@ export const siriusRoutingModule = new ContainerModule((bind, unbind, _isBound, 
   bind(SiriusPolylineEdgeRouter).toSelf().inSingletonScope();
   bind(TYPES.IEdgeRouter).toService(SiriusPolylineEdgeRouter);
   bind(TYPES.IAnchorComputer).to(SiriusRectangleAnchor);
+  bind(TYPES.IAnchorComputer).to(SiriusDanglingAnchorComputer);
 });

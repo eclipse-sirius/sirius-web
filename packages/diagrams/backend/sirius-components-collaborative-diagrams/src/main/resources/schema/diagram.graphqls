@@ -219,6 +219,7 @@ extend type Mutation {
   updateNodePosition(input: UpdateNodePositionInput!): UpdateNodePositionPayload!
   dropOnDiagram(input: DropOnDiagramInput!): DropOnDiagramPayload!
   updateEdgeRoutingPoints(input: UpdateEdgeRoutingPointsInput!): UpdateEdgeRoutingPointsPayload!
+  reconnectEdge(input: ReconnectEdgeInput!): ReconnectEdgePayload!
 }
 
 input ArrangeAllInput {
@@ -262,7 +263,7 @@ input EditLabelInput {
   newText: String!
 }
 
-union EditLabelPayload = ErrorPayload|EditLabelSuccessPayload
+union EditLabelPayload = ErrorPayload | EditLabelSuccessPayload
 
 type EditLabelSuccessPayload {
   id: ID!
@@ -374,5 +375,26 @@ input PositionInput {
 union UpdateEdgeRoutingPointsPayload = ErrorPayload | UpdateEdgeRoutingPointsSuccessPayload
 
 type UpdateEdgeRoutingPointsSuccessPayload {
+  id: ID!
+}
+
+enum ReconnectEdgeKind {
+  SOURCE
+  TARGET
+}
+
+input ReconnectEdgeInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  edgeId: String!
+  newEdgeEndId: String!
+  reconnectEdgeKind: ReconnectEdgeKind!
+  newEdgeEndPosition: PositionInput!
+}
+
+union ReconnectEdgePayload = ErrorPayload | ReconnectEdgeSuccessPayload
+
+type ReconnectEdgeSuccessPayload {
   id: ID!
 }

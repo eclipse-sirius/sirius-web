@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -208,6 +208,18 @@ public interface EdgeDescription extends DiagramElementDescription {
      * @generated
      */
     EList<EdgeTool> getEdgeTools();
+
+    /**
+     * Returns the value of the '<em><b>Reconnect Edge Tools</b></em>' containment reference list. The list contents are
+     * of type {@link org.eclipse.sirius.components.view.EdgeReconnectionTool}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Reconnect Edge Tools</em>' containment reference list.
+     * @see org.eclipse.sirius.components.view.ViewPackage#getEdgeDescription_ReconnectEdgeTools()
+     * @model containment="true"
+     * @generated
+     */
+    EList<EdgeReconnectionTool> getReconnectEdgeTools();
 
     /**
      * Returns the value of the '<em><b>Conditional Styles</b></em>' containment reference list. The list contents are

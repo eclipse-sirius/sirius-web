@@ -1,0 +1,71 @@
+= ADR-074 - Add support for edge reconnection
+
+== Context
+
+We want to be able to change the source or the target of an edge by moving the corresponding end onto another graphical element. 
+
+== Decision
+
+=== GraphQL API Change
+
+```
+extend type Mutation {
+  reconnectEdge(input: ReconnectEdgeInput!): ReconnectEdgePayload!
+}
+
+enum ReconnectEdgeKind {
+  SOURCE
+  TARGET
+}
+
+input ReconnectEdgeInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  edgeId: String!
+  newEdgeEndId: String!
+  reconnectEdgeKind: ReconnectEdgeKind!
+  newEdgeEndPosition: PositionInput!
+}
+```
+
+We will leverage of the subscription to send the new diagram state to the frontend.
+
+=== Frontend
+
+We will rely as much as possible on Sprotty behavior.
+We will have to adapt the reconnect action to take account of the source and target anchor relative position ratio.
+We will need to prevent Sprotty to reset routing point during the reconnect by preventing the `SiriusPolylineEdgeRouter` to call `resetRoutingPointsOnReconnect`.
+When the end is dropped, Sprotty tries to find the right node to reconnect the edge.
+Unfortunately Sprotty selects the most distant ancestor on which the edge end is dropped while we want the element on which the edge end is dropped.
+To fix that we will override the `MoveMouseListener#mouseUp` to always take the node right under the drop position.
+We will need to improve the contract of the anchor computer since it should know where the anchor is and how to update the anchor position.
+We will need to override the sprotty reconnect action to makes it provide the drop position to send it the the backend.
+We will need to support that custom reconnect action in our diagram server.
+The mutation will be send only if the source or the target of the reconnecting edge has changed.
+To tell the user that the reconnection he tried is not possible we will leverage on the Snackbar to display the error return by the reconnect edge mutation.
+
+=== Backend
+
+In the first version of this feature, we will create a reconnect edge event handler that will be used to handle the reconnection and send a reconnect edge event to notify the layout engine that an edge has been reconnected.
+
+Since reconnecting an edge is similar to removing an edge, then creating a new one. We will need to be able to find the previous edge during the edge rendering to pass data from the previous edge to the new one (e.g. routing points, anchors).
+We will improve the diagram renderer by giving the `IDiagramEvent` to the edge component.
+We will add the `ReconnectEdgeEvent` which will be given to the edge component to let it be able to match the reconnected edge with its previous version.
+
+```java
+public class ReconnectEdgeEvent implements IDiagramEvent {
+
+  private final String previousEdgeId;
+
+  private final String newEdgeEndId;
+
+  private final Position newEdgeEndAnchor;
+}
+```
+
+The `ReconnectEdgeEvent` will also be used to compute the new edge end position ratio during the layout.
+
+== Status
+
+Proposed

@@ -12,7 +12,8 @@
  *******************************************************************************/
 /** @jsx svg */
 /** @jsxRuntime classic */
-import { RenderingContext, SGraph, SGraphView, svg } from 'sprotty';
+import { RenderingContext, SGraphView, svg } from 'sprotty';
+import { Diagram } from '../Diagram.types';
 const preventRemovalOfUnusedImportByPrettier = svg !== null;
 
 /**
@@ -22,7 +23,7 @@ const preventRemovalOfUnusedImportByPrettier = svg !== null;
  */
 export class DiagramView extends SGraphView<{}> {
   // @ts-ignore
-  render(model: Readonly<SGraph>, context: RenderingContext) {
+  render(model: Readonly<Diagram>, context: RenderingContext) {
     const transform = `scale(${model.zoom}) translate(${-model.scroll.x},${-model.scroll.y})`;
     let cursor = 'pointer';
     if (model['cursor']) {
