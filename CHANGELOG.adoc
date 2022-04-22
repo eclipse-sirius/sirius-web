@@ -5,6 +5,7 @@
 === Architectural decision records
 
 - [ADR-60] Add support for the edition of routing points
+- [ADR-61] Add support for edge reconnection
 
 === Deprecation warning
 
