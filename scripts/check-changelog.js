@@ -30,6 +30,8 @@ console.log();
 
 const changelog = fs.readFileSync(`${workspace}/CHANGELOG.adoc`, { encoding: 'utf8' });
 
+const invalidContent = changelog.includes('<<<<<<<') || changelog.includes('=======') || changelog.includes('>>>>>>>');
+
 const missingIssuesInChangelog = [];
 for (let index = 0; index < lines.length; index++) {
   const line = lines[index];
@@ -61,5 +63,8 @@ for (let index = 0; index < lines.length; index++) {
 if (missingIssuesInChangelog.length > 0) {
   console.log('The following issues should appear in the CHANGELOG with some documentation');
   console.log(missingIssuesInChangelog);
+  process.exit(1);
+} else if (invalidContent) {
+  console.log('The CHANGELOG seems to contain Git conflict markers like "<<<<<<<", "=======" or ">>>>>>>"')
   process.exit(1);
 }
