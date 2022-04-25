@@ -10,14 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.core.api;
+package org.eclipse.sirius.components.representations;
 
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
 
 /**
- * Used to select some objects after the execution of a tool in a representation.
+ * Used to represent a workbench selection.
  *
  * @author arichard
  */
