@@ -21,12 +21,12 @@ import org.eclipse.sirius.components.compatibility.api.IIdentifierProvider;
 import org.eclipse.sirius.components.compatibility.api.IModelOperationHandler;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IRepresentationMetadataSearchService;
-import org.eclipse.sirius.components.core.api.WorkbenchSelection;
 import org.eclipse.sirius.components.emf.compatibility.api.IExternalJavaActionProvider;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
+import org.eclipse.sirius.components.representations.WorkbenchSelection;
 import org.eclipse.sirius.viewpoint.description.tool.ModelOperation;
 
 /**

@@ -17,7 +17,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.core.api.IPayload;
-import org.eclipse.sirius.components.core.api.WorkbenchSelection;
+import org.eclipse.sirius.components.representations.WorkbenchSelection;
 
 /**
  * The payload of the "Invoke single click on two diagram elements" mutation returned on success.

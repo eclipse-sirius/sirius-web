@@ -22,12 +22,12 @@ import org.eclipse.sirius.components.compatibility.api.IModelOperationHandler;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IRepresentationMetadataSearchService;
-import org.eclipse.sirius.components.core.api.WorkbenchSelection;
-import org.eclipse.sirius.components.core.api.WorkbenchSelectionEntry;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.components.representations.WorkbenchSelection;
+import org.eclipse.sirius.components.representations.WorkbenchSelectionEntry;
 import org.eclipse.sirius.diagram.description.DiagramDescription;
 import org.eclipse.sirius.diagram.description.tool.Navigation;
 
