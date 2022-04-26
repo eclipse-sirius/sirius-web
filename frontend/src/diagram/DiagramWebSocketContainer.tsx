@@ -758,7 +758,7 @@ export const DiagramWebSocketContainer = ({
 
   useEffect(() => {
     if (error) {
-      const message = 'An error has occured while trying to retrieve the diagram';
+      const message = 'An error has occurred while trying to retrieve the diagram';
       const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
       dispatch(showToastEvent);
       dispatch({ type: 'HANDLE_COMPLETE' });
