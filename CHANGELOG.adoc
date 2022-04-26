@@ -25,6 +25,7 @@ See ADR-54 for the details.
 - https://github.com/eclipse-sirius/sirius-components/issues/1155[#1155] [workbench] `WorkbenchViewContribution` now require an `icon` prop
 - https://github.com/eclipse-sirius/sirius-components/issues/1155[#1155] [core] The palette used by Sirius Components now require two additional colors for the navigation area. The type of the new palette is described in `frontend/src/materialui.ts`. Users of the fallback theme can upgrade without having to add those new colors since they are provided by default.
 - https://github.com/eclipse-sirius/sirius-components/issues/966[#966] [core] The source and target edge anchor are not considered as routing points anymore. Edges of old diagrams may have unexpected behavior since new edges will have two less routing points than existing edges in old diagrams. For further explanation see ADR-054.
+- https://github.com/eclipse-sirius/sirius-components/issues/699[#699] [core] Update `IRepresentationMetadataSearchService` to allow the retrieval of the `RepresentationMetadata` without having to retrieve the representation first
 
 === Dependency update
 
