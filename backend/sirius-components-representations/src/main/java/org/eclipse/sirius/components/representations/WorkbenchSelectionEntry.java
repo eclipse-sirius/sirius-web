@@ -22,11 +22,15 @@ import java.util.Objects;
  */
 public class WorkbenchSelectionEntry {
 
-    private final String id;
+    private String id;
 
-    private final String label;
+    private String label;
 
-    private final String kind;
+    private String kind;
+
+    public WorkbenchSelectionEntry() {
+        // Used Jackson
+    }
 
     public WorkbenchSelectionEntry(String id, String label, String kind) {
         this.id = Objects.requireNonNull(id);

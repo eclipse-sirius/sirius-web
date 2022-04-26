@@ -23,7 +23,11 @@ import java.util.Objects;
  */
 public class WorkbenchSelection {
 
-    private final List<WorkbenchSelectionEntry> entries;
+    private List<WorkbenchSelectionEntry> entries;
+
+    public WorkbenchSelection() {
+        // Used by Jackson
+    }
 
     public WorkbenchSelection(List<WorkbenchSelectionEntry> entries) {
         this.entries = Objects.requireNonNull(entries);
