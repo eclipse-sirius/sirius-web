@@ -18,9 +18,16 @@ type FormDescriptionEditorRefreshedEventPayload {
 type FormDescriptionEditor implements Representation {
   id: ID!
   metadata: RepresentationMetadata!
+  widgets: [FormDescriptionEditorWidget!]!
 }
 
 type FormDescriptionEditorDescription implements RepresentationDescription {
   id: ID!
   label: String!
+}
+
+type FormDescriptionEditorWidget {
+	id: ID!
+	kind: String!
+	label: String!
 }

@@ -10,11 +10,26 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Widget } from 'formdescriptioneditor/FormDescriptionEditorWebSocketContainer.types';
+import { SubscriptionResult } from '@apollo/client';
+import {
+  GQLFormDescriptionEditor,
+  GQLFormDescriptionEditorEventPayload,
+  GQLFormDescriptionEditorEventSubscription,
+  GQLFormDescriptionEditorRefreshedEventPayload,
+  GQLSubscribersUpdatedEventPayload,
+  Subscriber,
+} from 'formdescriptioneditor/FormDescriptionEditorWebSocketContainer.types';
+import { v4 as uuid } from 'uuid';
 import { assign, Machine } from 'xstate';
 
 export interface FormDescriptionEditorWebSocketContainerStateSchema {
   states: {
+    toast: {
+      states: {
+        visible: {};
+        hidden: {};
+      };
+    };
     formDescriptionEditorWebSocketContainer: {
       states: {
         empty: {};
@@ -27,26 +42,42 @@ export interface FormDescriptionEditorWebSocketContainerStateSchema {
 }
 
 export type SchemaValue = {
+  toast: 'visible' | 'hidden';
   formDescriptionEditorWebSocketContainer: 'loading' | 'ready' | 'empty' | 'complete';
 };
 
 export interface FormDescriptionEditorWebSocketContainerContext {
-  widgets: Widget[];
+  id: string;
+  formDescriptionEditor: GQLFormDescriptionEditor;
+  subscribers: Subscriber[];
   message: string | null;
 }
-
-export type UpdateWidgetsEvent = { type: 'UPDATE_WIDGETS'; widgets: Widget[] };
+export type ShowToastEvent = { type: 'SHOW_TOAST'; message: string };
+export type HideToastEvent = { type: 'HIDE_TOAST' };
+export type HandleSubscriptionResultEvent = {
+  type: 'HANDLE_SUBSCRIPTION_RESULT';
+  result: SubscriptionResult<GQLFormDescriptionEditorEventSubscription>;
+};
 export type CompleteEvent = { type: 'HANDLE_COMPLETE' };
 
 export type InitializeRepresentationEvent = {
   type: 'INITIALIZE';
-  widgets: Widget[];
 };
 
 export type FormDescriptionEditorWebSocketContainerEvent =
+  | ShowToastEvent
+  | HideToastEvent
   | CompleteEvent
   | InitializeRepresentationEvent
-  | UpdateWidgetsEvent;
+  | HandleSubscriptionResultEvent;
+
+const isFormDescriptionEditorRefreshedEventPayload = (
+  payload: GQLFormDescriptionEditorEventPayload
+): payload is GQLFormDescriptionEditorRefreshedEventPayload =>
+  payload.__typename === 'FormDescriptionEditorRefreshedEventPayload';
+const isSubscribersUpdatedEventPayload = (
+  payload: GQLFormDescriptionEditorEventPayload
+): payload is GQLSubscribersUpdatedEventPayload => payload.__typename === 'SubscribersUpdatedEventPayload';
 
 export const formDescriptionEditorWebSocketContainerMachine = Machine<
   FormDescriptionEditorWebSocketContainerContext,
@@ -56,10 +87,33 @@ export const formDescriptionEditorWebSocketContainerMachine = Machine<
   {
     type: 'parallel',
     context: {
-      widgets: [],
+      id: uuid(),
+      formDescriptionEditor: null,
+      subscribers: [],
       message: null,
     },
     states: {
+      toast: {
+        initial: 'hidden',
+        states: {
+          hidden: {
+            on: {
+              SHOW_TOAST: {
+                target: 'visible',
+                actions: 'setMessage',
+              },
+            },
+          },
+          visible: {
+            on: {
+              HIDE_TOAST: {
+                target: 'hidden',
+                actions: 'clearMessage',
+              },
+            },
+          },
+        },
+      },
       formDescriptionEditorWebSocketContainer: {
         initial: 'loading',
         states: {
@@ -76,9 +130,9 @@ export const formDescriptionEditorWebSocketContainerMachine = Machine<
           },
           ready: {
             on: {
-              UPDATE_WIDGETS: [
+              HANDLE_SUBSCRIPTION_RESULT: [
                 {
-                  actions: 'updateWidgets',
+                  actions: 'handleSubscriptionResult',
                 },
               ],
               HANDLE_COMPLETE: [
@@ -96,21 +150,32 @@ export const formDescriptionEditorWebSocketContainerMachine = Machine<
   },
   {
     actions: {
-      initialize: assign((_, event) => {
-        const { widgets } = event as InitializeRepresentationEvent;
+      initialize: assign((_) => {
         return {
-          widgets,
           message: undefined,
         };
       }),
       handleComplete: assign((_) => {
-        return {
-          widgets: [],
-        };
+        return {};
       }),
-      updateWidgets: assign((_, event) => {
-        const { widgets } = event as UpdateWidgetsEvent;
-        return { widgets: widgets };
+      handleSubscriptionResult: assign((_, event) => {
+        const { result } = event as HandleSubscriptionResultEvent;
+        const { data } = result;
+        if (isFormDescriptionEditorRefreshedEventPayload(data.formDescriptionEditorEvent)) {
+          const { formDescriptionEditor } = data.formDescriptionEditorEvent;
+          return { formDescriptionEditor };
+        } else if (isSubscribersUpdatedEventPayload(data.formDescriptionEditorEvent)) {
+          const { subscribers } = data.formDescriptionEditorEvent;
+          return { subscribers };
+        }
+        return {};
+      }),
+      setMessage: assign((_, event) => {
+        const { message } = event as ShowToastEvent;
+        return { message };
+      }),
+      clearMessage: assign((_) => {
+        return { message: null };
       }),
     },
   }
