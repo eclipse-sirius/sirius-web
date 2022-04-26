@@ -13,7 +13,6 @@
 package org.eclipse.sirius.components.emf.view.diagram;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -105,10 +104,6 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         return UUID.nameUUIDFromBytes(EcoreUtil.getURI(diagramElementDescription).toString().getBytes());
     };
 
-    private Map<org.eclipse.sirius.components.view.NodeDescription, NodeDescription> convertedNodes;
-
-    private Map<org.eclipse.sirius.components.view.EdgeDescription, EdgeDescription> convertedEdges;
-
     public ViewDiagramDescriptionConverter(IObjectService objectService, IEditService editService) {
         this.objectService = Objects.requireNonNull(objectService);
         this.editService = Objects.requireNonNull(editService);
@@ -127,39 +122,34 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
     @Override
     public IRepresentationDescription convert(RepresentationDescription viewRepresentationDescription, AQLInterpreter interpreter) {
         org.eclipse.sirius.components.view.DiagramDescription viewDiagramDescription = (org.eclipse.sirius.components.view.DiagramDescription) viewRepresentationDescription;
-        this.convertedNodes = new HashMap<>();
-        this.convertedEdges = new HashMap<>();
-        try {
-            // Nodes must be fully converted first.
-            List<NodeDescription> nodeDescriptions = viewDiagramDescription.getNodeDescriptions().stream().map(node -> this.convert(node, interpreter)).collect(Collectors.toList());
-            List<EdgeDescription> edgeDescriptions = viewDiagramDescription.getEdgeDescriptions().stream().map(edge -> this.convert(edge, interpreter)).collect(Collectors.toList());
-            // @formatter:off
-            String diagramDescriptionURI = EcoreUtil.getURI(viewDiagramDescription).toString();
-            return DiagramDescription.newDiagramDescription(UUID.nameUUIDFromBytes(diagramDescriptionURI.getBytes()).toString())
-                    .label(Optional.ofNullable(viewDiagramDescription.getName()).orElse(DEFAULT_DIAGRAM_LABEL))
-                    .labelProvider(variableManager -> this.computeDiagramLabel(viewDiagramDescription, variableManager, interpreter))
-                    .canCreatePredicate(variableManager -> this.canCreateDiagram(viewDiagramDescription, variableManager, interpreter))
-                    .autoLayout(viewDiagramDescription.isAutoLayout())
-                    .targetObjectIdProvider(this.semanticTargetIdProvider)
-                    .nodeDescriptions(nodeDescriptions)
-                    .edgeDescriptions(edgeDescriptions)
-                    .toolSections(this.createToolSections(interpreter))
-                    .dropHandler(this.createDiagramDropHandler(viewDiagramDescription, interpreter))
-                    .build();
-            // @formatter:on
-        } finally {
-            this.convertedNodes.clear();
-            this.convertedEdges.clear();
-        }
+        ViewDiagramDescriptionConverterContext converterContext = new ViewDiagramDescriptionConverterContext(interpreter);
+        // Nodes must be fully converted first.
+        List<NodeDescription> nodeDescriptions = viewDiagramDescription.getNodeDescriptions().stream().map(node -> this.convert(node, converterContext)).collect(Collectors.toList());
+        List<EdgeDescription> edgeDescriptions = viewDiagramDescription.getEdgeDescriptions().stream().map(edge -> this.convert(edge, converterContext)).collect(Collectors.toList());
+        // @formatter:off
+        String diagramDescriptionURI = EcoreUtil.getURI(viewDiagramDescription).toString();
+        return DiagramDescription.newDiagramDescription(UUID.nameUUIDFromBytes(diagramDescriptionURI.getBytes()).toString())
+                .label(Optional.ofNullable(viewDiagramDescription.getName()).orElse(DEFAULT_DIAGRAM_LABEL))
+                .labelProvider(variableManager -> this.computeDiagramLabel(viewDiagramDescription, variableManager, interpreter))
+                .canCreatePredicate(variableManager -> this.canCreateDiagram(viewDiagramDescription, variableManager, interpreter))
+                .autoLayout(viewDiagramDescription.isAutoLayout())
+                .targetObjectIdProvider(this.semanticTargetIdProvider)
+                .nodeDescriptions(nodeDescriptions)
+                .edgeDescriptions(edgeDescriptions)
+                .toolSections(this.createToolSections(converterContext))
+                .dropHandler(this.createDiagramDropHandler(viewDiagramDescription, converterContext))
+                .build();
+        // @formatter:on
     }
 
-    private Function<VariableManager, IStatus> createDiagramDropHandler(org.eclipse.sirius.components.view.DiagramDescription viewDiagramDescription, AQLInterpreter interpreter) {
-        Map<org.eclipse.sirius.components.view.NodeDescription, NodeDescription> capturedNodeDescriptions = Map.copyOf(this.convertedNodes);
+    private Function<VariableManager, IStatus> createDiagramDropHandler(org.eclipse.sirius.components.view.DiagramDescription viewDiagramDescription,
+            ViewDiagramDescriptionConverterContext converterContext) {
+        Map<org.eclipse.sirius.components.view.NodeDescription, NodeDescription> capturedNodeDescriptions = Map.copyOf(converterContext.getConvertedNodes());
         return variableManager -> {
             if (viewDiagramDescription.getOnDrop() != null) {
                 var augmentedVariableManager = variableManager.createChild();
                 augmentedVariableManager.put("convertedNodes", capturedNodeDescriptions); //$NON-NLS-1$
-                return new ToolInterpreter(interpreter, this.objectService, this.editService, this.getDiagramContext(variableManager), capturedNodeDescriptions)
+                return new ToolInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager), capturedNodeDescriptions)
                         .executeTool(viewDiagramDescription.getOnDrop(), augmentedVariableManager);
             } else {
                 return new Failure("No drop handler configured"); //$NON-NLS-1$
@@ -168,9 +158,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
     }
 
     private String computeDiagramLabel(org.eclipse.sirius.components.view.DiagramDescription viewDiagramDescription, VariableManager variableManager, AQLInterpreter interpreter) {
-        String title = variableManager.get(DiagramDescription.LABEL, String.class).orElseGet(() -> {
-            return this.evaluateString(interpreter, variableManager, viewDiagramDescription.getTitleExpression());
-        });
+        String title = variableManager.get(DiagramDescription.LABEL, String.class).orElseGet(() -> this.evaluateString(interpreter, variableManager, viewDiagramDescription.getTitleExpression()));
         if (title == null || title.isBlank()) {
             return DEFAULT_DIAGRAM_LABEL;
         } else {
@@ -195,18 +183,19 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         return result;
     }
 
-    private NodeDescription convert(org.eclipse.sirius.components.view.NodeDescription viewNodeDescription, AQLInterpreter interpreter) {
+    private NodeDescription convert(org.eclipse.sirius.components.view.NodeDescription viewNodeDescription, ViewDiagramDescriptionConverterContext converterContext) {
         // @formatter:off
         // Convert our children first, we need their converted values to build our NodeDescription
         var childNodeDescriptions = viewNodeDescription.getChildrenDescriptions().stream()
-                                                       .map(childNodeDescription -> this.convert(childNodeDescription, interpreter))
+                                                       .map(childNodeDescription -> this.convert(childNodeDescription, converterContext))
                                                        .collect(Collectors.toList());
         var borderNodeDescriptions = viewNodeDescription.getBorderNodesDescriptions().stream()
-                                                        .map(borderNodeDescription -> this.convert(borderNodeDescription, interpreter))
+                                                        .map(borderNodeDescription -> this.convert(borderNodeDescription, converterContext))
                                                         .collect(Collectors.toList());
         // @formatter:on
         SynchronizationPolicy synchronizationPolicy = SynchronizationPolicy.valueOf(viewNodeDescription.getSynchronizationPolicy().getName());
 
+        AQLInterpreter interpreter = converterContext.getInterpreter();
         Function<VariableManager, String> typeProvider = variableManager -> {
             // @formatter:off
             var effectiveStyle = viewNodeDescription.getConditionalStyles().stream()
@@ -263,11 +252,11 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 .childNodeDescriptions(childNodeDescriptions)
                 .borderNodeDescriptions(borderNodeDescriptions)
                 .sizeProvider(sizeProvider)
-                .labelEditHandler(this.createLabelEditHandler(viewNodeDescription, interpreter))
-                .deleteHandler(this.createDeleteHandler(viewNodeDescription, interpreter))
+                .labelEditHandler(this.createLabelEditHandler(viewNodeDescription, converterContext))
+                .deleteHandler(this.createDeleteHandler(viewNodeDescription, converterContext))
                 .build();
         // @formatter:on
-        this.convertedNodes.put(viewNodeDescription, result);
+        converterContext.getConvertedNodes().put(viewNodeDescription, result);
         return result;
     }
 
@@ -275,10 +264,10 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         return interpreter.evaluateExpression(variableManager.getVariables(), condition).asBoolean().orElse(Boolean.FALSE);
     }
 
-    private List<ToolSection> createToolSections(AQLInterpreter interpreter) {
-        var capturedConvertedNodes = Map.copyOf(this.convertedNodes);
+    private List<ToolSection> createToolSections(ViewDiagramDescriptionConverterContext converterContext) {
+        var capturedConvertedNodes = Map.copyOf(converterContext.getConvertedNodes());
         List<ITool> nodeCreationTools = new ArrayList<>();
-        for (var nodeDescription : this.convertedNodes.keySet()) {
+        for (var nodeDescription : converterContext.getConvertedNodes().keySet()) {
             // Add custom tools
             int i = 0;
             for (NodeTool nodeTool : nodeDescription.getNodeTools()) {
@@ -286,8 +275,8 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 SingleClickOnDiagramElementTool customTool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(this.idProvider.apply(nodeDescription) + "_tool" + i++) //$NON-NLS-1$
                         .label(nodeTool.getName())
                         .imageURL(NODE_CREATION_TOOL_ICON)
-                        .handler(variableManager -> new ToolInterpreter(interpreter, this.objectService, this.editService, this.getDiagramContext(variableManager), capturedConvertedNodes).executeTool(nodeTool, variableManager))
-                        .targetDescriptions(Optional.ofNullable(nodeDescription.eContainer()).map(this.convertedNodes::get).stream().collect(Collectors.toList()))
+                        .handler(variableManager -> new ToolInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager), capturedConvertedNodes).executeTool(nodeTool, variableManager))
+                        .targetDescriptions(Optional.ofNullable(nodeDescription.eContainer()).map(converterContext.getConvertedNodes()::get).stream().collect(Collectors.toList()))
                         .appliesToDiagramRoot(nodeDescription.eContainer() instanceof org.eclipse.sirius.components.view.DiagramDescription)
                         .build();
                 // @formatter:on
@@ -300,7 +289,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                         .label("New " + this.getSimpleTypeName(nodeDescription.getDomainType())) //$NON-NLS-1$
                         .imageURL(NODE_CREATION_TOOL_ICON)
                         .handler(variableManager -> this.canonicalBehaviors.createNewNode(nodeDescription, variableManager))
-                        .targetDescriptions(Optional.ofNullable(nodeDescription.eContainer()).map(this.convertedNodes::get).stream().collect(Collectors.toList()))
+                        .targetDescriptions(Optional.ofNullable(nodeDescription.eContainer()).map(converterContext.getConvertedNodes()::get).stream().collect(Collectors.toList()))
                         .appliesToDiagramRoot(nodeDescription.eContainer() instanceof org.eclipse.sirius.components.view.DiagramDescription)
                         .build();
                 // @formatter:on
@@ -309,7 +298,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         }
 
         List<ITool> edgeCreationTools = new ArrayList<>();
-        for (var edgeDescription : this.convertedEdges.keySet()) {
+        for (var edgeDescription : converterContext.getConvertedEdges().keySet()) {
             // Add custom tools
             int i = 0;
             for (EdgeTool edgeTool : edgeDescription.getEdgeTools()) {
@@ -318,10 +307,10 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                         .label(edgeTool.getName())
                         .imageURL(EDGE_CREATION_TOOL_ICON)
                         .candidates(List.of(SingleClickOnTwoDiagramElementsCandidate.newSingleClickOnTwoDiagramElementsCandidate()
-                                .sources(edgeDescription.getSourceNodeDescriptions().stream().map(this.convertedNodes::get).collect(Collectors.toList()))
-                                .targets(edgeDescription.getTargetNodeDescriptions().stream().map(this.convertedNodes::get).collect(Collectors.toList()))
+                                .sources(edgeDescription.getSourceNodeDescriptions().stream().map(converterContext.getConvertedNodes()::get).collect(Collectors.toList()))
+                                .targets(edgeDescription.getTargetNodeDescriptions().stream().map(converterContext.getConvertedNodes()::get).collect(Collectors.toList()))
                                 .build()))
-                        .handler(variableManager -> new ToolInterpreter(interpreter, this.objectService, this.editService, this.getDiagramContext(variableManager), capturedConvertedNodes).executeTool(edgeTool, variableManager))
+                        .handler(variableManager -> new ToolInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager), capturedConvertedNodes).executeTool(edgeTool, variableManager))
                         .build();
                 // @formatter:on
                 edgeCreationTools.add(customTool);
@@ -333,8 +322,8 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                         .label("New " + this.getSimpleTypeName(edgeDescription.getDomainType())) //$NON-NLS-1$
                         .imageURL(EDGE_CREATION_TOOL_ICON)
                         .candidates(List.of(SingleClickOnTwoDiagramElementsCandidate.newSingleClickOnTwoDiagramElementsCandidate()
-                                .sources(edgeDescription.getSourceNodeDescriptions().stream().map(this.convertedNodes::get).collect(Collectors.toList()))
-                                .targets(edgeDescription.getTargetNodeDescriptions().stream().map(this.convertedNodes::get).collect(Collectors.toList()))
+                                .sources(edgeDescription.getSourceNodeDescriptions().stream().map(converterContext.getConvertedNodes()::get).collect(Collectors.toList()))
+                                .targets(edgeDescription.getTargetNodeDescriptions().stream().map(converterContext.getConvertedNodes()::get).collect(Collectors.toList()))
                                 .build()))
                         .handler(variableManager -> this.canonicalBehaviors.createNewEdge(variableManager, edgeDescription))
                         .build();
@@ -430,14 +419,15 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         };
     }
 
-    private EdgeDescription convert(org.eclipse.sirius.components.view.EdgeDescription viewEdgeDescription, AQLInterpreter interpreter) {
+    private EdgeDescription convert(org.eclipse.sirius.components.view.EdgeDescription viewEdgeDescription, ViewDiagramDescriptionConverterContext converterContext) {
         Function<VariableManager, List<?>> semanticElementsProvider;
+        AQLInterpreter interpreter = converterContext.getInterpreter();
         if (viewEdgeDescription.isIsDomainBasedEdge()) {
             // Same logic as for nodes.
             semanticElementsProvider = this.getSemanticElementsProvider(viewEdgeDescription, interpreter);
         } else {
             //
-            var sourceNodeDescriptions = viewEdgeDescription.getSourceNodeDescriptions().stream().map(this.convertedNodes::get);
+            var sourceNodeDescriptions = viewEdgeDescription.getSourceNodeDescriptions().stream().map(converterContext.getConvertedNodes()::get);
             semanticElementsProvider = new RelationBasedSemanticElementsProvider(sourceNodeDescriptions.map(NodeDescription::getId).collect(Collectors.toList()));
         }
 
@@ -502,46 +492,46 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                                      .targetObjectIdProvider(this.semanticTargetIdProvider)
                                      .targetObjectKindProvider(this.semanticTargetKindProvider)
                                      .targetObjectLabelProvider(this.semanticTargetLabelProvider)
-                                     .sourceNodeDescriptions(viewEdgeDescription.getSourceNodeDescriptions().stream().map(this.convertedNodes::get).collect(Collectors.toList()))
-                                     .targetNodeDescriptions(viewEdgeDescription.getTargetNodeDescriptions().stream().map(this.convertedNodes::get).collect(Collectors.toList()))
+                                     .sourceNodeDescriptions(viewEdgeDescription.getSourceNodeDescriptions().stream().map(converterContext.getConvertedNodes()::get).collect(Collectors.toList()))
+                                     .targetNodeDescriptions(viewEdgeDescription.getTargetNodeDescriptions().stream().map(converterContext.getConvertedNodes()::get).collect(Collectors.toList()))
                                      .semanticElementsProvider(semanticElementsProvider)
                                      .synchronizationPolicy(synchronizationPolicy)
                                      .sourceNodesProvider(sourceNodesProvider)
                                      .targetNodesProvider(targetNodesProvider)
                                      .styleProvider(styleProvider)
-                                     .deleteHandler(this.createDeleteHandler(viewEdgeDescription, interpreter))
-                                     .labelEditHandler(this.createLabelEditHandler(viewEdgeDescription, interpreter));
+                                     .deleteHandler(this.createDeleteHandler(viewEdgeDescription, converterContext))
+                                     .labelEditHandler(this.createLabelEditHandler(viewEdgeDescription, converterContext));
 
         this.getSpecificEdgeLabelDescription(viewEdgeDescription, viewEdgeDescription.getBeginLabelExpression(), "_beginlabel", interpreter).ifPresent(builder::beginLabelDescription); //$NON-NLS-1$
         this.getSpecificEdgeLabelDescription(viewEdgeDescription, viewEdgeDescription.getLabelExpression(), "_centerlabel", interpreter).ifPresent(builder::centerLabelDescription); //$NON-NLS-1$
         this.getSpecificEdgeLabelDescription(viewEdgeDescription, viewEdgeDescription.getEndLabelExpression(), "_endlabel", interpreter).ifPresent(builder::endLabelDescription); //$NON-NLS-1$
 
         EdgeDescription result = builder.build();
-        this.convertedEdges.put(viewEdgeDescription, result);
+        converterContext.getConvertedEdges().put(viewEdgeDescription, result);
         return result;
         // @formatter:on
     }
 
-    private Function<VariableManager, IStatus> createDeleteHandler(DiagramElementDescription diagramElementDescription, AQLInterpreter interpreter) {
-        var capturedConvertedNodes = Map.copyOf(this.convertedNodes);
+    private Function<VariableManager, IStatus> createDeleteHandler(DiagramElementDescription diagramElementDescription, ViewDiagramDescriptionConverterContext converterContext) {
+        var capturedConvertedNodes = Map.copyOf(converterContext.getConvertedNodes());
         DeleteTool tool = diagramElementDescription.getDeleteTool();
         if (tool != null) {
-            return variableManager -> {
-                return new ToolInterpreter(interpreter, this.objectService, this.editService, this.getDiagramContext(variableManager), capturedConvertedNodes).executeTool(tool, variableManager);
-            };
+            return variableManager -> new ToolInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager), capturedConvertedNodes)
+                    .executeTool(tool, variableManager);
         } else {
             return this.canonicalBehaviors::deleteElement;
         }
     }
 
-    private BiFunction<VariableManager, String, IStatus> createLabelEditHandler(DiagramElementDescription diagramElementDescription, AQLInterpreter interpreter) {
-        var capturedConvertedNodes = Map.copyOf(this.convertedNodes);
+    private BiFunction<VariableManager, String, IStatus> createLabelEditHandler(DiagramElementDescription diagramElementDescription, ViewDiagramDescriptionConverterContext converterContext) {
+        var capturedConvertedNodes = Map.copyOf(converterContext.getConvertedNodes());
         LabelEditTool tool = diagramElementDescription.getLabelEditTool();
         if (tool != null) {
             return (variableManager, newLabel) -> {
                 VariableManager childVariableManager = variableManager.createChild();
                 childVariableManager.put("arg0", newLabel); //$NON-NLS-1$
-                return new ToolInterpreter(interpreter, this.objectService, this.editService, this.getDiagramContext(variableManager), capturedConvertedNodes).executeTool(tool, childVariableManager);
+                return new ToolInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager), capturedConvertedNodes).executeTool(tool,
+                        childVariableManager);
             };
         } else {
             return this.canonicalBehaviors::editLabel;

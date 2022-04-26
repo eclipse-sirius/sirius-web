@@ -29,7 +29,7 @@ public class BorderNodesOnSide {
 
     private final RectangleSide side;
 
-    BorderNodesOnSide(RectangleSide side, List<NodeLayoutData> borderNodes) {
+    public BorderNodesOnSide(RectangleSide side, List<NodeLayoutData> borderNodes) {
         this.side = Objects.requireNonNull(side);
         this.borderNodes = Objects.requireNonNull(borderNodes);
     }
