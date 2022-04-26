@@ -32,6 +32,7 @@ This will allow us, when we will receive an operation to perform with a given re
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1154[#1154] [diagram] Display the palette where the click has been made, not where the cursor is. With the edge animation it was possible for the palette to be displayed at a wrong position which was making possible to create a floating edge.
 - https://github.com/eclipse-sirius/sirius-components/issues/1148[#1148] [diagram] Fix a lot of cases where removing an edge will change the layout of some other edges. This behavior will still happen when it will exist two edges between the two same elements and one of the edge is removed, the other edge will probably take the layout of the removed edge.
+- https://github.com/eclipse-sirius/sirius-components/issues/1176[#1176] [diagram] Fix potential ConcurrentModificationException in ViewDiagramDescriptionConverter when manipulating diagrams. This bug was introduced by the https://github.com/eclipse-sirius/sirius-components/issues/1152[#1152].
 
 === Improvements
 
@@ -39,6 +40,7 @@ This will allow us, when we will receive an operation to perform with a given re
 - https://github.com/eclipse-sirius/sirius-components/issues/1155[#1155] [workbench] The left and right panels now use a vertical bar of icons (instead of accordions) to select which view to display
 - https://github.com/eclipse-sirius/sirius-components/issues/966[#966] [diagram] Add the support source and target edge position ratio on the frontend side. For further explanation see ADR-055.
 - https://github.com/eclipse-sirius/sirius-components/issues/1179[#1179] [core] Move `WorkbenchSelection` and `WorkbenchSelectionEntry` to `sirius-components-representations` in order to let any representation use those classes. We may rename the `Selection` representation in the future in order to rename them to `Selection` and `SelectionEntry` to align the frontend and backend API
+- [releng] Detect the presence of classes without a public visibility or with a package or protected constructor in order to speed up the code reviews.
 
 === New features
 

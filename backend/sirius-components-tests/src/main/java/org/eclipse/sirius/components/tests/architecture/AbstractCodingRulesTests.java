@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import com.tngtech.archunit.base.DescribedPredicate;
 import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.domain.JavaMethod;
+import com.tngtech.archunit.core.domain.JavaModifier;
 import com.tngtech.archunit.lang.ArchCondition;
 import com.tngtech.archunit.lang.ArchRule;
 import com.tngtech.archunit.lang.ConditionEvents;
@@ -194,6 +195,58 @@ public abstract class AbstractCodingRulesTests {
         // @formatter:on
 
         rule.check(this.getClasses());
+    }
+
+    @Test
+    public void classesShouldUsePublicVisibility() {
+        // @formatter:off
+        ArchRule rule = ArchRuleDefinition.noClasses()
+                .that()
+                .resideInAPackage(this.getProjectRootPackage())
+                .should().bePackagePrivate()
+                .andShould().bePrivate()
+                .andShould().beProtected();
+        // @formatter:on
+        rule.check(this.getClasses());
+    }
+
+    @Test
+    public void classesShouldHavePublicOrPrivateConstructors() {
+        // @formatter:off
+        ArchRule rule = ArchRuleDefinition.noClasses()
+                .that()
+                .resideInAPackage(this.getProjectRootPackage())
+                .should(this.haveProtectedOrPackageConstructor());
+        // @formatter:on
+        rule.check(this.getClasses());
+    }
+
+    private ArchCondition<JavaClass> haveProtectedOrPackageConstructor() {
+        return new ArchCondition<>("have a package private constructor") { //$NON-NLS-1$
+            @Override
+            public void check(JavaClass javaClass, ConditionEvents events) {
+                // @formatter:off
+                boolean hasProtectedOrPackageConstructor = javaClass.getAllConstructors().stream()
+                        .filter(javaConstructor -> {
+                            return javaConstructor.reflect().getDeclaringClass().equals(javaClass.reflect());
+                        })
+                        .anyMatch(javaConstructor -> {
+                            boolean isProtected  = javaConstructor.getModifiers().contains(JavaModifier.PROTECTED);
+                            boolean isPackage = !javaConstructor.getModifiers().contains(JavaModifier.PRIVATE) && !javaConstructor.getModifiers().contains(JavaModifier.PROTECTED) && !javaConstructor.getModifiers().contains(JavaModifier.PUBLIC);
+                            return isProtected || isPackage;
+                        });
+                // @formatter:on
+
+                boolean isAnonymousClass = javaClass.isAnonymousClass();
+                boolean isEnum = javaClass.isEnum();
+
+                boolean conditionSatisfied = hasProtectedOrPackageConstructor && !isAnonymousClass && !isEnum;
+
+                String pattern = "The class {0} has a constructor with a protected or package visibility"; //$NON-NLS-1$
+                String message = MessageFormat.format(pattern, javaClass.getSimpleName());
+                events.add(new SimpleConditionEvent(javaClass, conditionSatisfied, message));
+            }
+        };
     }
 
     @Test
