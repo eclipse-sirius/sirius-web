@@ -14,7 +14,6 @@ import {
   MoveCommand,
   ResolvedElementMove,
   ResolvedHandleMove,
-  RoutedPoint,
   SChildElement,
   SConnectableElement,
   SEdge,
@@ -25,53 +24,121 @@ import {
 } from 'sprotty';
 import { Point } from 'sprotty-protocol';
 
+const SPACING_EDGE_LABEL = 2;
+
 export class SiriusMoveCommand extends MoveCommand {
+  /**
+   * Applies the move given in `edge2move` and `attachedEdgeShifts` to graphical elements.
+   *
+   * It first, uses `MoveCommand.doMove` to applies the default Sprotty behavior. Then, applies the move
+   * to "contained" edges and to edge labels.
+   *
+   * @param edge2move The map of edge to resolved move of edge handles
+   * @param attachedEdgeShifts The map of edge to delta move
+   */
   protected doMove(
     edge2move: Map<SRoutableElement, ResolvedHandleMove[]>,
     attachedEdgeShifts: Map<SRoutableElement, Point>
-  ) {
+  ): void {
     super.doMove(edge2move, attachedEdgeShifts);
+
     const allEdgesToUpdate = new Set<SEdge>();
     this.resolvedMoves.forEach((res) => {
-      var element = res.element;
+      const element = res.element;
       if (this.isSNode(element)) {
         this.collectAllEdges(element, allEdgesToUpdate);
       }
       element.position = res.toPosition;
     });
-    this.updateRelatedEdges(allEdgesToUpdate, attachedEdgeShifts);
+    this.updateEdge(allEdgesToUpdate);
+
+    this.updateEdgeFromHandleMoves(edge2move);
   }
 
-  private updateRelatedEdges(allEdgesToUpdate: Set<SEdge>, attachedEdgeShifts: Map<SRoutableElement, Point>) {
-    allEdgesToUpdate.forEach((edge) => {
+  /**
+   * Updates edges label and, if necessary, edges routing points.
+   *
+   * At this point provided edges source end or target - sometime both - end have been moved.
+   * If both ends of an edge have been moved, updates routing points position in addition of the edge label.
+   *
+   * If only one edge end has been moved, updates the edge label position only if the edge does not have routing points.
+   * If the edge has routing points, its label is either positioned on a routing point, or on a section of the edge, and
+   * thus, the label is not affected by the move.
+   *
+   * @param edgeToUpdate The set of edge that have their source end or target end move, directly or indirectly
+   */
+  private updateEdge(edgeToUpdate: Set<SEdge>) {
+    if (edgeToUpdate.size > 0) {
       const firstMove = (this.resolvedMoves.values().next() as IteratorYieldResult<ResolvedElementMove>).value;
       const delta = Point.subtract(firstMove.toPosition, firstMove.fromPosition);
-      const edgeIsMoving = this.updateMovingEdge(edge, attachedEdgeShifts, delta);
-      this.updateEdgeLabelPosition(edge, edgeIsMoving, delta);
+      edgeToUpdate.forEach((edge) => {
+        if (this.isContainedInResolvedMove(edge.source) && this.isContainedInResolvedMove(edge.target)) {
+          // Both edge ends are contained in the move
+          edge.routingPoints = edge.routingPoints.map((rp) => Point.add(rp, delta));
+          this.updateEdgeLabelPositionFromDelta(edge, delta);
+        } else {
+          // Only one edge end is moving
+          const router = this.edgeRouterRegistry!.get(edge.routerKind);
+          const routedPoints: Point[] = router.route(edge);
+          if (routedPoints.length === 2) {
+            // Its a straight edge, and thus, the edge label must be updated
+            this.updateEdgeLabelPositionFromEdgeSection(edge, {
+              sectionStart: routedPoints[0],
+              sectionEnd: routedPoints[1],
+            });
+          }
+        }
+      });
+    }
+  }
+
+  /**
+   * For each edge handle moves, updates the label position if its positioned on the moved handle or is on an edge section bounded by a moved handle.
+   *
+   * An edge label is either positioned on a routing point or a section of an edge depending on whether the number of the edge routing points is odd or even.
+   *
+   * @param edge2move The map of edge to resolved move of edge handles
+   */
+  private updateEdgeFromHandleMoves(edge2move: Map<SRoutableElement, ResolvedHandleMove[]>) {
+    edge2move.forEach((resolvedHandleMoves, routableElement) => {
+      const routingPoint = routableElement.routingPoints;
+      if (routingPoint.length & 1) {
+        const medianRoutingPointIndex = Math.floor(routingPoint.length / 2);
+        resolvedHandleMoves.forEach((resolvedHandleMove) => {
+          if (medianRoutingPointIndex === resolvedHandleMove.handle.pointIndex) {
+            this.updateEdgeLabelPositionFromDelta(
+              routableElement,
+              Point.subtract(resolvedHandleMove.toPosition, resolvedHandleMove.fromPosition)
+            );
+          }
+        });
+      } else {
+        const medianRoutingPointIndex = routingPoint.length / 2;
+        resolvedHandleMoves.forEach((resolvedHandleMove) => {
+          if (
+            medianRoutingPointIndex === resolvedHandleMove.handle.pointIndex ||
+            medianRoutingPointIndex === resolvedHandleMove.handle.pointIndex + 1
+          ) {
+            this.updateEdgeLabelPositionFromEdgeSection(routableElement, {
+              sectionStart: routingPoint[medianRoutingPointIndex - 1],
+              sectionEnd: routingPoint[medianRoutingPointIndex],
+            });
+          }
+        });
+      }
     });
   }
 
-  private updateMovingEdge(edge: SEdge, attachedEdgeShifts: Map<SRoutableElement, Point>, delta: Point): boolean {
-    let edgeIsMoving: boolean = !!attachedEdgeShifts.get(edge);
-    if (!edgeIsMoving && this.isContainedInResolvedMove(edge.source) && this.isContainedInResolvedMove(edge.target)) {
-      edge.routingPoints = edge.routingPoints.map((rp) => Point.add(rp, delta));
-      edgeIsMoving = true;
+  private updateEdgeLabelPositionFromDelta(edge: SRoutableElement, delta: Point) {
+    const label = edge.children.find<SLabel>(this.isSLabel);
+    if (!!label) {
+      label.position = Point.add(label.position, delta);
     }
-    return edgeIsMoving;
   }
 
-  private updateEdgeLabelPosition(edge: SEdge, edgeIsMoving: boolean, delta: Point): void {
-    const router = this.edgeRouterRegistry!.get(edge.routerKind);
-    const routedPoints = router.route(edge);
-    if (edge.sourceId === edge.targetId) {
-      // Do not put source and target routed point as routing point.
-      edge.routingPoints = routedPoints.slice(1, -1);
-    }
-    this.resetLabelPosition(edge, edgeIsMoving, routedPoints, delta);
-  }
-  private isContainedInResolvedMove(connectableElement: SConnectableElement): boolean {
+  private isContainedInResolvedMove(connectableElement: SConnectableElement | undefined): boolean {
     let isContainedInResolvedMove: boolean = false;
-    let element: SChildElement = connectableElement;
+    let element: SChildElement | undefined = connectableElement;
     while (!isContainedInResolvedMove && !!element) {
       isContainedInResolvedMove = this.resolvedMoves.get(element.id) !== undefined;
       if (element.parent instanceof SChildElement) {
@@ -83,30 +150,25 @@ export class SiriusMoveCommand extends MoveCommand {
     return isContainedInResolvedMove;
   }
 
-  private resetLabelPosition(edge: SEdge, edgeHasBeenMoved: boolean, routedPoints: RoutedPoint[], delta: Point) {
-    if (routedPoints.length === 2) {
-      const label = edge.children.find((child) => this.isSLabel(child)) as SLabel;
-      if (label) {
-        const source = routedPoints[0];
-        const target = routedPoints[1];
-        const labelX = source.x + (target.x - source.x) / 2;
-        const labelY = source.y + (target.y - source.y) / 2;
-        label.position = {
-          x: labelX,
-          y: labelY,
-        };
+  private updateEdgeLabelPositionFromEdgeSection(edge: SRoutableElement, updatedEdgeSection: EdgeSection) {
+    const label = edge.children.find<SLabel>(this.isSLabel);
+    if (!!label) {
+      const sectionStart = updatedEdgeSection.sectionStart;
+      const sectionEnd = updatedEdgeSection.sectionEnd;
+      const labelX = sectionStart.x + (sectionEnd.x - sectionStart.x) / 2 - label.bounds.width / 2;
+      let labelY = sectionStart.y + (sectionEnd.y - sectionStart.y) / 2;
+      if (edge.routingPoints.length === 0) {
+        labelY = labelY + SPACING_EDGE_LABEL;
+      } else {
+        labelY = labelY - label.bounds.height - SPACING_EDGE_LABEL;
       }
-    } else if (edgeHasBeenMoved) {
-      const label = edge.children.find((child) => this.isSLabel(child)) as SLabel;
-      if (!!label) {
-        label.position = Point.add(label.position, delta);
-      }
+      label.position = {
+        x: labelX,
+        y: labelY,
+      };
     }
   }
 
-  private isSLabel(element: SModelElement): element is SLabel {
-    return element instanceof SLabel;
-  }
   private collectAllEdges(element: SNode, allEdgesToUpdate: Set<SEdge>) {
     element.children.forEach((child) => {
       if (this.isSNode(child)) {
@@ -116,7 +178,17 @@ export class SiriusMoveCommand extends MoveCommand {
     element.outgoingEdges.forEach((edge) => allEdgesToUpdate.add(edge));
     element.incomingEdges.forEach((edge) => allEdgesToUpdate.add(edge));
   }
+
+  private isSLabel(element: SModelElement): element is SLabel {
+    return element instanceof SLabel;
+  }
+
   private isSNode(element: SModelElement): element is SNode {
     return element instanceof SNode;
   }
+}
+
+interface EdgeSection {
+  sectionStart: Point;
+  sectionEnd: Point;
 }
