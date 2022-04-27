@@ -11,11 +11,16 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export type PanelChoice = 'FIRST_PANEL' | 'SECOND_PANEL';
+import { Selection } from 'workbench/Workbench.types';
 
 export interface PanelsProps {
-  firstPanel: JSX.Element;
-  secondPanel: JSX.Element;
-  resizablePanel?: PanelChoice;
-  initialResizablePanelSize: number;
+  editingContextId: string;
+  selection: Selection;
+  setSelection: (selection: Selection) => void;
+  readOnly: boolean;
+  leftContributions: Array<React.ReactElement>;
+  rightContributions: Array<React.ReactElement>;
+  mainArea: JSX.Element;
+  leftPanelInitialSize: number;
+  rightPanelInitialSize: number;
 }

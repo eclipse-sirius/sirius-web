@@ -26,7 +26,6 @@ import { TreeItemContextMenuContext } from 'tree/TreeItemContextMenu';
 import { TreeItemContextMenuContribution } from 'tree/TreeItemContextMenuContribution';
 import { RepresentationContext } from 'workbench/RepresentationContext';
 import { RepresentationNavigation } from 'workbench/RepresentationNavigation';
-import { Site } from 'workbench/Site';
 import {
   GQLEditingContextEventSubscription,
   Representation,
@@ -173,30 +172,6 @@ export const Workbench = ({
     />
   );
 
-  const leftSite = (
-    <TreeItemContextMenuContext.Provider value={treeItemContextMenuContributions}>
-      <Site
-        editingContextId={editingContextId}
-        selection={selection}
-        setSelection={setSelection}
-        readOnly={readOnly}
-        side="left"
-        contributions={workbenchViewLeftSideContributions}
-      />
-    </TreeItemContextMenuContext.Provider>
-  );
-
-  const rightSite = (
-    <Site
-      editingContextId={editingContextId}
-      selection={selection}
-      setSelection={setSelection}
-      readOnly={readOnly}
-      side="right"
-      contributions={workbenchViewRightSideContributions}
-    />
-  );
-
   const MainComponent = mainAreaComponent || OnboardArea;
   let main = (
     <MainComponent
@@ -231,20 +206,20 @@ export const Workbench = ({
 
   return (
     <>
-      <Panels
-        firstPanel={leftSite}
-        secondPanel={
-          <div className={classes.main} data-testid="representationAndProperties">
-            <Panels
-              resizablePanel="SECOND_PANEL"
-              firstPanel={main}
-              secondPanel={rightSite}
-              initialResizablePanelSize={300}
-            />
-          </div>
-        }
-        initialResizablePanelSize={300}
-      />
+      <TreeItemContextMenuContext.Provider value={treeItemContextMenuContributions}>
+        <Panels
+          editingContextId={editingContextId}
+          selection={selection}
+          setSelection={setSelection}
+          readOnly={readOnly}
+          leftContributions={workbenchViewLeftSideContributions}
+          leftPanelInitialSize={300}
+          rightContributions={workbenchViewRightSideContributions}
+          rightPanelInitialSize={300}
+          mainArea={main}
+        />
+      </TreeItemContextMenuContext.Provider>
+
       <Snackbar
         anchorOrigin={{
           vertical: 'bottom',
