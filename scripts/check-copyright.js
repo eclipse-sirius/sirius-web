@@ -33,14 +33,16 @@ for (let index = 0; index < filePaths.length; index++) {
   const filePath = filePaths[index];
 
   if (filePath.endsWith('.java') || filePath.endsWith('.ts') || filePath.endsWith('.tsx') || filePath.endsWith('.js')) {
-    const file = fs.readFileSync(`${workspace}/${filePath}`, { encoding: 'utf8' });
-    const lines = file.split(/\r?\n/);
+    if (fs.existsSync(filePath)) {
+      const file = fs.readFileSync(`${workspace}/${filePath}`, { encoding: 'utf8' });
+      const lines = file.split(/\r?\n/);
 
-    if (lines.length > 2 && lines[1].includes('Copyright')) {
-      const currentYear = new Date().getFullYear();
-      if (!lines[1].includes(currentYear.toString())) {
-        console.log(`${filePath} : ${lines[1]}`);
-        filesWithAnInvalidCopyright.push(filePath);
+      if (lines.length > 2 && lines[1].includes('Copyright')) {
+        const currentYear = new Date().getFullYear();
+        if (!lines[1].includes(currentYear.toString())) {
+          console.log(`${filePath} : ${lines[1]}`);
+          filesWithAnInvalidCopyright.push(filePath);
+        }
       }
     }
   }
