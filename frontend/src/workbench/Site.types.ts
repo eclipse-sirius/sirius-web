@@ -19,5 +19,7 @@ export interface SiteProps {
   setSelection: (selection: Selection) => void;
   readOnly: boolean;
   side: WorkbenchViewSide;
+  expanded: boolean;
+  toggleExpansion: () => void;
   contributions: Array<React.ReactElement>;
 }

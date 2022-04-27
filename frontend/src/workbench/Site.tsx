@@ -15,7 +15,7 @@ import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SiteProps } from './Site.types';
 
 const useSiteStyles = makeStyles((theme) => ({
@@ -37,8 +37,19 @@ const useSiteStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     background: theme.palette.navigation.rightBackground,
   },
-  viewSelectorIcon: {
+  viewSelectorIconLeft: {
     color: theme.palette.text.disabled,
+    borderLeftStyle: 'solid',
+    borderLefttSize: '2px',
+    borderColor: theme.palette.navigation.leftBackground,
+    borderRadius: 0,
+  },
+  viewSelectorIconRight: {
+    color: theme.palette.text.disabled,
+    borderRightStyle: 'solid',
+    borderRightSize: '2px',
+    borderRightColor: theme.palette.navigation.rightBackground,
+    borderRadius: 0,
   },
   viewSelectorIconSelectedLeft: {
     color: theme.palette.primary.main,
@@ -81,16 +92,30 @@ const useSiteStyles = makeStyles((theme) => ({
   },
 }));
 
-export const Site = ({ editingContextId, selection, setSelection, readOnly, side, contributions }: SiteProps) => {
+export const Site = ({
+  editingContextId,
+  selection,
+  setSelection,
+  readOnly,
+  side,
+  expanded,
+  toggleExpansion,
+  contributions,
+}: SiteProps) => {
   const classes = useSiteStyles();
+  const [isExpanded, setExpanded] = useState<boolean>(expanded);
   const [selectedViewIndex, setSelectedViewIndex] = useState<number>(0);
+
+  useEffect(() => {
+    setExpanded(expanded);
+  }, [expanded]);
 
   const viewSelector = (
     <div className={side === 'left' ? classes.viewSelectorLeft : classes.viewSelectorRight}>
       {contributions.map((contribution, index) => {
         const title = contribution.props.title;
         const icon = contribution.props.icon;
-        let iconClassName = classes.viewSelectorIcon;
+        let iconClassName = side === 'left' ? classes.viewSelectorIconLeft : classes.viewSelectorIconRight;
         if (index === selectedViewIndex) {
           iconClassName =
             side === 'left' ? classes.viewSelectorIconSelectedLeft : classes.viewSelectorIconSelectedRight;
@@ -101,7 +126,16 @@ export const Site = ({ editingContextId, selection, setSelection, readOnly, side
               className={iconClassName}
               aria-label={title}
               data-testid={`viewselector-${title}`}
-              onClick={() => setSelectedViewIndex(index)}
+              onClick={() => {
+                if (index === selectedViewIndex) {
+                  toggleExpansion();
+                } else {
+                  setSelectedViewIndex(index);
+                  if (!expanded) {
+                    toggleExpansion();
+                  }
+                }
+              }}
             >
               {icon}
             </IconButton>
@@ -112,7 +146,7 @@ export const Site = ({ editingContextId, selection, setSelection, readOnly, side
   );
 
   let selectedView = undefined;
-  if (selectedViewIndex < contributions.length) {
+  if (isExpanded && selectedViewIndex < contributions.length) {
     const { title, icon, component: Component } = contributions[selectedViewIndex].props;
     selectedView = (
       <div className={classes.view}>

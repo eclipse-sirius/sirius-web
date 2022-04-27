@@ -1,0 +1,43 @@
+= ADR-057 - Add the ability to minimize the content of a site
+
+== Context
+
+We need the ability to minimize the content of a `<Site />` in order to have more space for the representation area.
+https://github.com/eclipse-sirius/sirius-components/issues/1155[#1155] implemented a first step by replacing the `<Accordion />` components using to organize the different views in a side panel with a vertical bar of icons.
+To complete the feature we need to allow a `Site` to be expanded or collapsed when the user clicks on these icons or manually resizes the side panels.
+
+The current structure and separation of responsibility between `Workbench`, `Panels` and `Site` is not well adapted to handle this.
+In particuler the `Panels` and `Site` components must be more thightly coordinated, but currently `Sites` are instantiated by the workbench.
+
+== Decision
+
+The `Workbench` component will delegate all the layout management to `Panels`.
+`Workbench` will no longer instantiate the `Site` components directly but pass the required data to `Panels` who will do it instead.
+
+`Panels` will directly manage the whole 3-parts layout, with 2 side panels, a main area and draggable separators between them.
+Previously `Panels` only supported 2-parts layout, and getting the workbench layout required nesting of `Panels` components.
+
+`Site` will support two-way communication with its parent component (`Panels`) to manage its collapsed/expanded state with two new props:
+
+```
+export interface SiteProps {
+  // ...
+  expanded: boolean; // Added
+  toggleExpansion: () => void; // Added
+}
+```
+
+The new `expanded` boolean prop as argument will be `true` initialy.
+The parent `Panels` component will update it to `false` when it detects the user has resized the panel to its minimum width (showing only the icons).
+`Site` will only display the currently selected view component if `expanded` is `true`.
+
+The new `toggleExpansion` callback function will be used by `Site` to programmatically tell the parent `Panels` to minimize (or restore) the site.
+`Panels` will update its overall layout accordingly and update the site's `expanded` prop accordingly.
+
+== Status
+
+Accepted.
+
+== Consequences
+
+Applications which directly used the previous `Workbench`, `Panels` or `Site` components will need to be updated.
