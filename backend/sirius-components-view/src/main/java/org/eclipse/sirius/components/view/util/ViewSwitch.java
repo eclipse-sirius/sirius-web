@@ -17,6 +17,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.Switch;
 import org.eclipse.sirius.components.view.BorderStyle;
 import org.eclipse.sirius.components.view.ChangeContext;
+import org.eclipse.sirius.components.view.CheckboxDescription;
 import org.eclipse.sirius.components.view.Conditional;
 import org.eclipse.sirius.components.view.ConditionalEdgeStyle;
 import org.eclipse.sirius.components.view.ConditionalNodeStyle;
@@ -34,13 +35,17 @@ import org.eclipse.sirius.components.view.EdgeTool;
 import org.eclipse.sirius.components.view.FormDescription;
 import org.eclipse.sirius.components.view.LabelEditTool;
 import org.eclipse.sirius.components.view.LabelStyle;
+import org.eclipse.sirius.components.view.MultiSelectDescription;
 import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.NodeStyle;
 import org.eclipse.sirius.components.view.NodeTool;
 import org.eclipse.sirius.components.view.Operation;
+import org.eclipse.sirius.components.view.RadioDescription;
 import org.eclipse.sirius.components.view.RepresentationDescription;
+import org.eclipse.sirius.components.view.SelectDescription;
 import org.eclipse.sirius.components.view.SetValue;
 import org.eclipse.sirius.components.view.Style;
+import org.eclipse.sirius.components.view.TextAreaDescription;
 import org.eclipse.sirius.components.view.TextfieldDescription;
 import org.eclipse.sirius.components.view.Tool;
 import org.eclipse.sirius.components.view.UnsetValue;
@@ -374,6 +379,51 @@ public class ViewSwitch<T> extends Switch<T> {
             T result = this.caseTextfieldDescription(textfieldDescription);
             if (result == null)
                 result = this.caseWidgetDescription(textfieldDescription);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.CHECKBOX_DESCRIPTION: {
+            CheckboxDescription checkboxDescription = (CheckboxDescription) theEObject;
+            T result = this.caseCheckboxDescription(checkboxDescription);
+            if (result == null)
+                result = this.caseWidgetDescription(checkboxDescription);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.SELECT_DESCRIPTION: {
+            SelectDescription selectDescription = (SelectDescription) theEObject;
+            T result = this.caseSelectDescription(selectDescription);
+            if (result == null)
+                result = this.caseWidgetDescription(selectDescription);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.MULTI_SELECT_DESCRIPTION: {
+            MultiSelectDescription multiSelectDescription = (MultiSelectDescription) theEObject;
+            T result = this.caseMultiSelectDescription(multiSelectDescription);
+            if (result == null)
+                result = this.caseWidgetDescription(multiSelectDescription);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.TEXT_AREA_DESCRIPTION: {
+            TextAreaDescription textAreaDescription = (TextAreaDescription) theEObject;
+            T result = this.caseTextAreaDescription(textAreaDescription);
+            if (result == null)
+                result = this.caseWidgetDescription(textAreaDescription);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.RADIO_DESCRIPTION: {
+            RadioDescription radioDescription = (RadioDescription) theEObject;
+            T result = this.caseRadioDescription(radioDescription);
+            if (result == null)
+                result = this.caseWidgetDescription(radioDescription);
             if (result == null)
                 result = this.defaultCase(theEObject);
             return result;
@@ -828,6 +878,81 @@ public class ViewSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseTextfieldDescription(TextfieldDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Checkbox Description</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Checkbox Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseCheckboxDescription(CheckboxDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Select Description</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Select Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseSelectDescription(SelectDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Multi Select Description</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Multi Select Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseMultiSelectDescription(MultiSelectDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Text Area Description</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Text Area Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseTextAreaDescription(TextAreaDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Radio Description</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Radio Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseRadioDescription(RadioDescription object) {
         return null;
     }
 

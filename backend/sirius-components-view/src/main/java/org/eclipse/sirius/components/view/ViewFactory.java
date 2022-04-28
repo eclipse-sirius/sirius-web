@@ -206,6 +206,46 @@ public interface ViewFactory extends EFactory {
     TextfieldDescription createTextfieldDescription();
 
     /**
+     * Returns a new object of class '<em>Checkbox Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Checkbox Description</em>'.
+     * @generated
+     */
+    CheckboxDescription createCheckboxDescription();
+
+    /**
+     * Returns a new object of class '<em>Select Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Select Description</em>'.
+     * @generated
+     */
+    SelectDescription createSelectDescription();
+
+    /**
+     * Returns a new object of class '<em>Multi Select Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Multi Select Description</em>'.
+     * @generated
+     */
+    MultiSelectDescription createMultiSelectDescription();
+
+    /**
+     * Returns a new object of class '<em>Text Area Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Text Area Description</em>'.
+     * @generated
+     */
+    TextAreaDescription createTextAreaDescription();
+
+    /**
+     * Returns a new object of class '<em>Radio Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Radio Description</em>'.
+     * @generated
+     */
+    RadioDescription createRadioDescription();
+
+    /**
      * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the package supported by this factory.

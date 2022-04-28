@@ -16,31 +16,23 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.sirius.components.compatibility.forms.WidgetIdProvider;
-import org.eclipse.sirius.components.compatibility.utils.StringValueProvider;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.emf.compatibility.DomainClassPredicate;
 import org.eclipse.sirius.components.emf.view.IRepresentationDescriptionConverter;
-import org.eclipse.sirius.components.emf.view.OperationInterpreter;
 import org.eclipse.sirius.components.forms.description.AbstractControlDescription;
 import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.forms.description.GroupDescription;
 import org.eclipse.sirius.components.forms.description.PageDescription;
-import org.eclipse.sirius.components.forms.description.TextfieldDescription;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
-import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
-import org.eclipse.sirius.components.representations.IStatus;
-import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.springframework.stereotype.Service;
@@ -74,11 +66,10 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
     @Override
     public IRepresentationDescription convert(RepresentationDescription representationDescription, AQLInterpreter interpreter) {
         org.eclipse.sirius.components.view.FormDescription viewFormDescription = (org.eclipse.sirius.components.view.FormDescription) representationDescription;
+        ViewFormDescriptionConverterSwitch dispatcher = new ViewFormDescriptionConverterSwitch(interpreter, this.editService, this.objectService);
         // @formatter:off
         List<AbstractControlDescription> textfieldDescriptions = viewFormDescription.getWidgets().stream()
-                .filter(org.eclipse.sirius.components.view.TextfieldDescription.class::isInstance)
-                .map(org.eclipse.sirius.components.view.TextfieldDescription.class::cast)
-                .map(viewTextfieldDescription -> this.convertTextfieldDescriptionviewTextfieldDescription(viewTextfieldDescription, interpreter))
+                .map(dispatcher::doSwitch)
                 .collect(Collectors.toList());
 
         Function<VariableManager, List<?>> semanticElementsProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).stream()
@@ -126,11 +117,6 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
         // @formatter:on
     }
 
-    private String getDescriptionId(EObject description) {
-        String descriptionURI = EcoreUtil.getURI(description).toString();
-        return UUID.nameUUIDFromBytes(descriptionURI.getBytes()).toString();
-    }
-
     private String computeFormLabel(org.eclipse.sirius.components.view.FormDescription viewFormDescription, VariableManager variableManager, AQLInterpreter interpreter) {
         String title = this.evaluateString(interpreter, variableManager, viewFormDescription.getTitleExpression());
         if (title == null || title.isBlank()) {
@@ -165,37 +151,9 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
         return variableManager.get(VariableManager.SELF, Object.class);
     }
 
-    private TextfieldDescription convertTextfieldDescriptionviewTextfieldDescription(org.eclipse.sirius.components.view.TextfieldDescription viewTextfieldDescription, AQLInterpreter interpreter) {
-
-        String labelExpression = Optional.ofNullable(viewTextfieldDescription.getLabelExpression()).orElse(""); //$NON-NLS-1$
-        StringValueProvider labelProvider = new StringValueProvider(interpreter, labelExpression);
-
-        String valueExpression = Optional.ofNullable(viewTextfieldDescription.getValueExpression()).orElse(""); //$NON-NLS-1$
-        StringValueProvider valueProvider = new StringValueProvider(interpreter, valueExpression);
-
-        // @formatter:off
-        return TextfieldDescription.newTextfieldDescription(this.getDescriptionId(viewTextfieldDescription))
-                .idProvider(new WidgetIdProvider())
-                .labelProvider(labelProvider)
-                .valueProvider(valueProvider)
-                .newValueHandler(this.getTextFieldNewValueHandler(interpreter, viewTextfieldDescription))
-                .diagnosticsProvider(variableManager -> List.of())
-                .kindProvider(diagnostic -> "") //$NON-NLS-1$
-                .messageProvider(diagnostic -> "") //$NON-NLS-1$
-                .build();
-        // @formatter:on
+    private String getDescriptionId(EObject description) {
+        String descriptionURI = EcoreUtil.getURI(description).toString();
+        return UUID.nameUUIDFromBytes(descriptionURI.getBytes()).toString();
     }
 
-    private BiFunction<VariableManager, String, IStatus> getTextFieldNewValueHandler(AQLInterpreter interpreter, org.eclipse.sirius.components.view.TextfieldDescription viewTextfieldDescription) {
-        return (variableManager, newValue) -> {
-            variableManager.put(NEW_VALUE, newValue);
-            OperationInterpreter operationInterpreter = new OperationInterpreter(interpreter, this.editService);
-            Optional<VariableManager> optionalVariableManager = operationInterpreter.executeOperations(viewTextfieldDescription.getBody(), variableManager);
-            if (optionalVariableManager.isEmpty()) {
-                return new Failure(""); //$NON-NLS-1$
-            } else {
-                return new Success();
-            }
-        };
-    }
 }

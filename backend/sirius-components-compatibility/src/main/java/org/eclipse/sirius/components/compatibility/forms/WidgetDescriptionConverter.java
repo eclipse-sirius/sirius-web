@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -107,8 +107,8 @@ public class WidgetDescriptionConverter {
                 .valueProvider(valueProvider)
                 .newValueHandler(newValueHandler)
                 .diagnosticsProvider(this.getDiagnosticsProvider())
-                .kindProvider((object) -> "") //$NON-NLS-1$
-                .messageProvider((object) -> "") //$NON-NLS-1$
+                .kindProvider(object -> "") //$NON-NLS-1$
+                .messageProvider(object -> "") //$NON-NLS-1$
                 .build();
         // @formatter:on
 
@@ -135,16 +135,16 @@ public class WidgetDescriptionConverter {
                 .labelProvider(labelProvider)
                 .valueProvider(valueProvider)
                 .newValueHandler(newValueHandler)
-                .diagnosticsProvider((variableManager) -> List.of())
-                .kindProvider((object) -> "") //$NON-NLS-1$
-                .messageProvider((object) -> "") //$NON-NLS-1$
+                .diagnosticsProvider(variableManager -> List.of())
+                .kindProvider(object -> "") //$NON-NLS-1$
+                .messageProvider(object -> "") //$NON-NLS-1$
                 .build();
         // @formatter:on
 
     }
 
     private BiFunction<VariableManager, String, IStatus> getNewValueHandler(InitialOperation initialOperation) {
-        BiFunction<VariableManager, String, IStatus> newValueHandler = (variableManager, newValue) -> {
+        return (variableManager, newValue) -> {
             VariableManager childVariableManager = variableManager.createChild();
             childVariableManager.put(NEW_VALUE, newValue);
 
@@ -154,7 +154,6 @@ public class WidgetDescriptionConverter {
             Optional<IModelOperationHandler> optionalModelOperationHandler = modelOperationHandlerSwitch.apply(modelOperation);
             return optionalModelOperationHandler.map(handler -> handler.handle(childVariableManager.getVariables())).orElse(new Failure("")); //$NON-NLS-1$
         };
-        return newValueHandler;
     }
 
     private RadioDescription convertRadio(org.eclipse.sirius.properties.RadioDescription radioDescription) {
@@ -211,9 +210,9 @@ public class WidgetDescriptionConverter {
                 .optionSelectedProvider(optionSelectedProvider)
                 .optionsProvider(optionsProvider)
                 .newValueHandler(newValueHandler)
-                .diagnosticsProvider((variableManager) -> List.of())
-                .kindProvider((object) -> "") //$NON-NLS-1$
-                .messageProvider((object) -> "") //$NON-NLS-1$
+                .diagnosticsProvider(variableManager -> List.of())
+                .kindProvider(object -> "") //$NON-NLS-1$
+                .messageProvider(object -> "") //$NON-NLS-1$
                 .build();
         // @formatter:on
 
@@ -250,9 +249,7 @@ public class WidgetDescriptionConverter {
 
             var modelOperationHandlerSwitch = this.modelOperationHandlerSwitchProvider.getModelOperationHandlerSwitch(this.interpreter);
             Optional<IModelOperationHandler> optionalModelOperationHandler = modelOperationHandlerSwitch.apply(modelOperation);
-            return optionalModelOperationHandler.map(handler -> {
-                return handler.handle(variables);
-            }).orElse(new Failure("")); //$NON-NLS-1$
+            return optionalModelOperationHandler.map(handler -> handler.handle(variables)).orElse(new Failure("")); //$NON-NLS-1$
         };
 
         // @formatter:off
@@ -264,9 +261,9 @@ public class WidgetDescriptionConverter {
                 .optionIdProvider(optionIdProvider)
                 .optionLabelProvider(optionLabelProvider)
                 .newValueHandler(newValueHandler)
-                .diagnosticsProvider((variableManager) -> List.of())
-                .kindProvider((object) -> "") //$NON-NLS-1$
-                .messageProvider((object) -> "") //$NON-NLS-1$
+                .diagnosticsProvider(variableManager -> List.of())
+                .kindProvider(object -> "") //$NON-NLS-1$
+                .messageProvider(object -> "") //$NON-NLS-1$
                 .build();
         // @formatter:on
 
@@ -284,9 +281,7 @@ public class WidgetDescriptionConverter {
 
             var modelOperationHandlerSwitch = this.modelOperationHandlerSwitchProvider.getModelOperationHandlerSwitch(this.interpreter);
             Optional<IModelOperationHandler> optionalModelOperationHandler = modelOperationHandlerSwitch.apply(modelOperation);
-            return optionalModelOperationHandler.map(handler -> {
-                return handler.handle(variables);
-            }).orElse(new Failure("")); //$NON-NLS-1$
+            return optionalModelOperationHandler.map(handler -> handler.handle(variables)).orElse(new Failure("")); //$NON-NLS-1$
         };
 
         String valueExpression = Optional.ofNullable(checkboxDescription.getValueExpression()).orElse(""); //$NON-NLS-1$
@@ -298,9 +293,9 @@ public class WidgetDescriptionConverter {
                 .labelProvider(labelProvider)
                 .valueProvider(valueProvider)
                 .newValueHandler(newValueHandler)
-                .diagnosticsProvider((variableManager) -> List.of())
-                .kindProvider((object) -> "") //$NON-NLS-1$
-                .messageProvider((object) -> "") //$NON-NLS-1$
+                .diagnosticsProvider(variableManager -> List.of())
+                .kindProvider(object -> "") //$NON-NLS-1$
+                .messageProvider(object -> "") //$NON-NLS-1$
                 .build();
         // @formatter:on
     }
