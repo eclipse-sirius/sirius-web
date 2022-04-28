@@ -161,5 +161,31 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//TextfieldDescription/valueExpression"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//TextfieldDescription/body"/>
     </genClasses>
+    <genClasses ecoreClass="view.ecore#//CheckboxDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//CheckboxDescription/valueExpression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//CheckboxDescription/body"/>
+    </genClasses>
+    <genClasses ecoreClass="view.ecore#//SelectDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//SelectDescription/valueExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//SelectDescription/candidatesExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//SelectDescription/candidateLabelExpression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//SelectDescription/body"/>
+    </genClasses>
+    <genClasses ecoreClass="view.ecore#//MultiSelectDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//MultiSelectDescription/valueExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//MultiSelectDescription/candidatesExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//MultiSelectDescription/candidateLabelExpression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//MultiSelectDescription/body"/>
+    </genClasses>
+    <genClasses ecoreClass="view.ecore#//TextAreaDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//TextAreaDescription/valueExpression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//TextAreaDescription/body"/>
+    </genClasses>
+    <genClasses ecoreClass="view.ecore#//RadioDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//RadioDescription/valueExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//RadioDescription/candidatesExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//RadioDescription/candidateLabelExpression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//RadioDescription/body"/>
+    </genClasses>
   </genPackages>
 </genmodel:GenModel>

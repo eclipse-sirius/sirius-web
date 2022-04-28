@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.eclipse.sirius.components.view.ArrowStyle;
 import org.eclipse.sirius.components.view.ChangeContext;
+import org.eclipse.sirius.components.view.CheckboxDescription;
 import org.eclipse.sirius.components.view.ConditionalEdgeStyle;
 import org.eclipse.sirius.components.view.ConditionalNodeStyle;
 import org.eclipse.sirius.components.view.CreateInstance;
@@ -35,11 +36,15 @@ import org.eclipse.sirius.components.view.EdgeTool;
 import org.eclipse.sirius.components.view.FormDescription;
 import org.eclipse.sirius.components.view.LabelEditTool;
 import org.eclipse.sirius.components.view.LineStyle;
+import org.eclipse.sirius.components.view.MultiSelectDescription;
 import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.NodeStyle;
 import org.eclipse.sirius.components.view.NodeTool;
+import org.eclipse.sirius.components.view.RadioDescription;
+import org.eclipse.sirius.components.view.SelectDescription;
 import org.eclipse.sirius.components.view.SetValue;
 import org.eclipse.sirius.components.view.SynchronizationPolicy;
+import org.eclipse.sirius.components.view.TextAreaDescription;
 import org.eclipse.sirius.components.view.TextfieldDescription;
 import org.eclipse.sirius.components.view.UnsetValue;
 import org.eclipse.sirius.components.view.View;
@@ -130,6 +135,16 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
             return this.createFormDescription();
         case ViewPackage.TEXTFIELD_DESCRIPTION:
             return this.createTextfieldDescription();
+        case ViewPackage.CHECKBOX_DESCRIPTION:
+            return this.createCheckboxDescription();
+        case ViewPackage.SELECT_DESCRIPTION:
+            return this.createSelectDescription();
+        case ViewPackage.MULTI_SELECT_DESCRIPTION:
+            return this.createMultiSelectDescription();
+        case ViewPackage.TEXT_AREA_DESCRIPTION:
+            return this.createTextAreaDescription();
+        case ViewPackage.RADIO_DESCRIPTION:
+            return this.createRadioDescription();
         default:
             throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
         }
@@ -413,6 +428,61 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
     public TextfieldDescription createTextfieldDescription() {
         TextfieldDescriptionImpl textfieldDescription = new TextfieldDescriptionImpl();
         return textfieldDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public CheckboxDescription createCheckboxDescription() {
+        CheckboxDescriptionImpl checkboxDescription = new CheckboxDescriptionImpl();
+        return checkboxDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public SelectDescription createSelectDescription() {
+        SelectDescriptionImpl selectDescription = new SelectDescriptionImpl();
+        return selectDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public MultiSelectDescription createMultiSelectDescription() {
+        MultiSelectDescriptionImpl multiSelectDescription = new MultiSelectDescriptionImpl();
+        return multiSelectDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public TextAreaDescription createTextAreaDescription() {
+        TextAreaDescriptionImpl textAreaDescription = new TextAreaDescriptionImpl();
+        return textAreaDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public RadioDescription createRadioDescription() {
+        RadioDescriptionImpl radioDescription = new RadioDescriptionImpl();
+        return radioDescription;
     }
 
     /**

@@ -18,25 +18,27 @@ import java.util.List;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
+import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
-import org.eclipse.sirius.components.view.FormDescription;
+import org.eclipse.sirius.components.view.TextAreaDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.ViewPackage;
 
 /**
- * This is the item provider adapter for a {@link org.eclipse.sirius.components.view.FormDescription} object. <!--
+ * This is the item provider adapter for a {@link org.eclipse.sirius.components.view.TextAreaDescription} object. <!--
  * begin-user-doc --> <!-- end-user-doc -->
  *
  * @generated
  */
-public class FormDescriptionItemProvider extends RepresentationDescriptionItemProvider {
+public class TextAreaDescriptionItemProvider extends WidgetDescriptionItemProvider {
     /**
      * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
-    public FormDescriptionItemProvider(AdapterFactory adapterFactory) {
+    public TextAreaDescriptionItemProvider(AdapterFactory adapterFactory) {
         super(adapterFactory);
     }
 
@@ -50,8 +52,21 @@ public class FormDescriptionItemProvider extends RepresentationDescriptionItemPr
         if (this.itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
+            this.addValueExpressionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
+    }
+
+    /**
+     * This adds a property descriptor for the Value Expression feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addValueExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_TextAreaDescription_valueExpression_feature"), //$NON-NLS-1$
+                this.getString("_UI_PropertyDescriptor_description", "_UI_TextAreaDescription_valueExpression_feature", "_UI_TextAreaDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                ViewPackage.Literals.TEXT_AREA_DESCRIPTION__VALUE_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -66,7 +81,7 @@ public class FormDescriptionItemProvider extends RepresentationDescriptionItemPr
     public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
         if (this.childrenFeatures == null) {
             super.getChildrenFeatures(object);
-            this.childrenFeatures.add(ViewPackage.Literals.FORM_DESCRIPTION__WIDGETS);
+            this.childrenFeatures.add(ViewPackage.Literals.TEXT_AREA_DESCRIPTION__BODY);
         }
         return this.childrenFeatures;
     }
@@ -85,13 +100,13 @@ public class FormDescriptionItemProvider extends RepresentationDescriptionItemPr
     }
 
     /**
-     * This returns FormDescription.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This returns TextAreaDescription.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/FormDescription")); //$NON-NLS-1$
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/TextAreaDescription")); //$NON-NLS-1$
     }
 
     /**
@@ -111,9 +126,9 @@ public class FormDescriptionItemProvider extends RepresentationDescriptionItemPr
      */
     @Override
     public String getText(Object object) {
-        String label = ((FormDescription) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_FormDescription_type") : //$NON-NLS-1$
-                this.getString("_UI_FormDescription_type") + " " + label; //$NON-NLS-1$ //$NON-NLS-2$
+        String label = ((TextAreaDescription) object).getName();
+        return label == null || label.length() == 0 ? this.getString("_UI_TextAreaDescription_type") : //$NON-NLS-1$
+                this.getString("_UI_TextAreaDescription_type") + " " + label; //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /**
@@ -127,8 +142,11 @@ public class FormDescriptionItemProvider extends RepresentationDescriptionItemPr
     public void notifyChanged(Notification notification) {
         this.updateChildren(notification);
 
-        switch (notification.getFeatureID(FormDescription.class)) {
-        case ViewPackage.FORM_DESCRIPTION__WIDGETS:
+        switch (notification.getFeatureID(TextAreaDescription.class)) {
+        case ViewPackage.TEXT_AREA_DESCRIPTION__VALUE_EXPRESSION:
+            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+            return;
+        case ViewPackage.TEXT_AREA_DESCRIPTION__BODY:
             this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
             return;
         }
@@ -145,17 +163,19 @@ public class FormDescriptionItemProvider extends RepresentationDescriptionItemPr
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
 
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__WIDGETS, ViewFactory.eINSTANCE.createTextfieldDescription()));
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.TEXT_AREA_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createChangeContext()));
 
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__WIDGETS, ViewFactory.eINSTANCE.createCheckboxDescription()));
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.TEXT_AREA_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createCreateInstance()));
 
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__WIDGETS, ViewFactory.eINSTANCE.createSelectDescription()));
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.TEXT_AREA_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createSetValue()));
 
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__WIDGETS, ViewFactory.eINSTANCE.createMultiSelectDescription()));
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.TEXT_AREA_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createUnsetValue()));
 
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__WIDGETS, ViewFactory.eINSTANCE.createTextAreaDescription()));
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.TEXT_AREA_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createDeleteElement()));
 
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__WIDGETS, ViewFactory.eINSTANCE.createRadioDescription()));
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.TEXT_AREA_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createCreateView()));
+
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.TEXT_AREA_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createDeleteView()));
     }
 
 }

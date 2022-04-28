@@ -18,6 +18,7 @@ import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.view.BorderStyle;
 import org.eclipse.sirius.components.view.ChangeContext;
+import org.eclipse.sirius.components.view.CheckboxDescription;
 import org.eclipse.sirius.components.view.Conditional;
 import org.eclipse.sirius.components.view.ConditionalEdgeStyle;
 import org.eclipse.sirius.components.view.ConditionalNodeStyle;
@@ -35,13 +36,17 @@ import org.eclipse.sirius.components.view.EdgeTool;
 import org.eclipse.sirius.components.view.FormDescription;
 import org.eclipse.sirius.components.view.LabelEditTool;
 import org.eclipse.sirius.components.view.LabelStyle;
+import org.eclipse.sirius.components.view.MultiSelectDescription;
 import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.NodeStyle;
 import org.eclipse.sirius.components.view.NodeTool;
 import org.eclipse.sirius.components.view.Operation;
+import org.eclipse.sirius.components.view.RadioDescription;
 import org.eclipse.sirius.components.view.RepresentationDescription;
+import org.eclipse.sirius.components.view.SelectDescription;
 import org.eclipse.sirius.components.view.SetValue;
 import org.eclipse.sirius.components.view.Style;
+import org.eclipse.sirius.components.view.TextAreaDescription;
 import org.eclipse.sirius.components.view.TextfieldDescription;
 import org.eclipse.sirius.components.view.Tool;
 import org.eclipse.sirius.components.view.UnsetValue;
@@ -253,6 +258,31 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseTextfieldDescription(TextfieldDescription object) {
             return ViewAdapterFactory.this.createTextfieldDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter caseCheckboxDescription(CheckboxDescription object) {
+            return ViewAdapterFactory.this.createCheckboxDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter caseSelectDescription(SelectDescription object) {
+            return ViewAdapterFactory.this.createSelectDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter caseMultiSelectDescription(MultiSelectDescription object) {
+            return ViewAdapterFactory.this.createMultiSelectDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter caseTextAreaDescription(TextAreaDescription object) {
+            return ViewAdapterFactory.this.createTextAreaDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter caseRadioDescription(RadioDescription object) {
+            return ViewAdapterFactory.this.createRadioDescriptionAdapter();
         }
 
         @Override
@@ -683,6 +713,76 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createTextfieldDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.CheckboxDescription
+     * <em>Checkbox Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.CheckboxDescription
+     * @generated
+     */
+    public Adapter createCheckboxDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.SelectDescription
+     * <em>Select Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.SelectDescription
+     * @generated
+     */
+    public Adapter createSelectDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.MultiSelectDescription
+     * <em>Multi Select Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we
+     * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.MultiSelectDescription
+     * @generated
+     */
+    public Adapter createMultiSelectDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.TextAreaDescription
+     * <em>Text Area Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.TextAreaDescription
+     * @generated
+     */
+    public Adapter createTextAreaDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.RadioDescription
+     * <em>Radio Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.RadioDescription
+     * @generated
+     */
+    public Adapter createRadioDescriptionAdapter() {
         return null;
     }
 
