@@ -8,16 +8,56 @@ This feature aims to make it possible to define its own FormDescription in the V
 
 == Decision
 
-As a first step, only one widget, the `Textfield` widget will be supported.
 In the DSL, a new `FormDescription` EClass with RepresentationDescription as super Type will be created.
 This `FormDescription` will have a multi-valued containing feature `widgets` of type `WidgetDescription`.
 The `WidgetDescription` will be abstract and will own de following attributes:
 - `name`: EString
 - `labelExpression`: EString
-The widget `TextfieldDescription` will be created. It will own the following attribute:
+
+All widgets will have `WidgetDescription` as super type.
+
+=== TextfieldDescription
+The widget `TextfieldDescription` will own the following attribute:
 - `valueExpression`: EString
 
-`TextfieldDescription` will have `WidgetDescription` as super type.
+=== TextAreaDescription
+
+The `TextAreaDescription` will own the following attribute:
+- `valueExpression`: EString
+
+=== RadioDescription
+The widget `RadioDescription` will own the following attributes:
+* `valueExpression`: EString: the expression is expected to return the selected value
+* `candidatesExpression`: EString: Will return a list of object
+* `candidateLabelExpression`: EString: Will return the label for a given candidate (`candidate` variable)
+
+=== CheckboxDescription
+The widget `CheckboxDescription` will own the following attributes:
+* `valueExpression`: EString
+
+=== SelectDescription
+The widget `SelectDescription` will own the following attributes:
+* `valueExpression`: EString: the expression is expected to return the selected value
+* `candidatesExpression`: EString: Will return a list of object
+* `candidateLabelExpression`: EString: Will return the label for a given candidate (`candidate` variable)
+
+=== MultiSelectDescription
+The widget `MultiSelectDescription` will own the following attributes:
+* `valueExpression`: EString: the expression is expected to return a collection of selected value
+* `candidatesExpression`: EString: Will return a list of object
+* `candidateLabelExpression`: EString: Will return the label for a given candidate (`candidate` variable)
+
+
+== Behavior
+
+The following widgetDescriptions will have a `body : 1..* Operation` field to make it possible to execute operations when the user set a new value. The `newValue` variable will be available from these Operations. The type and the content is detailed below:
+
+* TextfieldDescription: `newValue:String` the new text value
+* TextAreaDescription: `newValue:String` the new text value
+* RadioDescription: `newValue:Object` the new selected value
+* CheckboxDescription: `newValue:Boolean` the new status (checked or not)
+* SelectDescription: `newValue:Object` the new selected value
+* MultiSelectDescription: `newValue:Object[]` the new list of selected values
 
 == Status
 
