@@ -39,7 +39,7 @@ import {
   Node,
   RectangularNodeStyle,
 } from 'diagram/sprotty/Diagram.types';
-import { resizeFeature } from 'diagram/sprotty/resize/model';
+import { resizeFeature } from 'diagram/sprotty/dragAndDrop/model';
 import {
   boundsFeature,
   connectableFeature,

@@ -21,9 +21,9 @@ import {
 } from 'sprotty';
 import { Action, Dimension, Point } from 'sprotty-protocol';
 import { Bounds } from 'sprotty-protocol/';
-import { ElementResize, ResizeAction } from './resize/siriusResize';
-import { snapToRectangle } from './utils/geometry';
-import { RectangleSide } from './utils/geometry.types';
+import { snapToRectangle } from '../utils/geometry';
+import { RectangleSide } from '../utils/geometry.types';
+import { ElementResize, ResizeAction } from './siriusResize';
 
 /**
  * The offset of the port inside its container. It should be the same value as the ELK default value.

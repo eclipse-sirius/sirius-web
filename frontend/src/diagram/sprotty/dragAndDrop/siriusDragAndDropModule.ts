@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 THALES GLOBAL SERVICES.
+ * Copyright (c) 2021, 2022 THALES GLOBAL SERVICES.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,11 +13,11 @@
 
 import { ContainerModule } from 'inversify';
 import { configureCommand, LocationPostprocessor, TYPES } from 'sprotty';
-import { SiriusResizeCommand } from './resize/siriusResize';
 import { SiriusDragAndDropMouseListener } from './siriusDragAndDropMouseListener';
 import { SiriusMoveCommand } from './siriusMove';
+import { SiriusResizeCommand } from './siriusResize';
 
-const siriusDragAndDropModule = new ContainerModule((bind, _unbind, isBound) => {
+export const siriusDragAndDropModule = new ContainerModule((bind, _unbind, isBound) => {
   bind(TYPES.MouseListener).to(SiriusDragAndDropMouseListener);
   configureCommand({ bind, isBound }, SiriusMoveCommand);
   configureCommand({ bind, isBound }, SiriusResizeCommand);
@@ -25,5 +25,3 @@ const siriusDragAndDropModule = new ContainerModule((bind, _unbind, isBound) => 
   bind(TYPES.IVNodePostprocessor).toService(LocationPostprocessor);
   bind(TYPES.HiddenVNodePostprocessor).toService(LocationPostprocessor);
 });
-
-export default siriusDragAndDropModule;

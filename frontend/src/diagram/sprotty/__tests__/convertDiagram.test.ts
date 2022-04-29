@@ -30,7 +30,7 @@ import {
 } from 'sprotty';
 import { convertDiagram } from '../convertDiagram';
 import { Diagram, Edge, ImageNodeStyle, Label, Node, RectangularNodeStyle } from '../Diagram.types';
-import { resizeFeature } from '../resize/model';
+import { resizeFeature } from '../dragAndDrop/model';
 import { siriusWebDiagram } from './siriusWebDiagram';
 
 const isImageNodeStyle = (nodeStyle: GQLINodeStyle): nodeStyle is GQLImageNodeStyle =>

@@ -16,7 +16,6 @@ import { SetActiveConnectorToolsAction, SetActiveToolAction } from 'diagram/spro
 import { edgeCreationFeedback } from 'diagram/sprotty/edgeCreationFeedback';
 import { EditLabelUIWithInitialContent } from 'diagram/sprotty/EditLabelUIWithInitialContent';
 import { GraphFactory } from 'diagram/sprotty/GraphFactory';
-import siriusDragAndDropModule from 'diagram/sprotty/siriusDragAndDropModule';
 import { DiagramView } from 'diagram/sprotty/views/DiagramView';
 import { EdgeView } from 'diagram/sprotty/views/EdgeView';
 import { ImageView } from 'diagram/sprotty/views/ImageView';
@@ -64,6 +63,7 @@ import {
 } from 'sprotty';
 import { Action, Point, RequestPopupModelAction, SetPopupModelAction } from 'sprotty-protocol';
 import { siriusCommonModule } from './common/siriusCommonModule';
+import { siriusDragAndDropModule } from './dragAndDrop/siriusDragAndDropModule';
 import { siriusEdgeEditModule } from './edgeEdition/siriusEdgeEditModule';
 import { siriusRoutingModule } from './routing/siriusRoutingModule';
 import { RoutingHandleView } from './views/RoutingHandleView';

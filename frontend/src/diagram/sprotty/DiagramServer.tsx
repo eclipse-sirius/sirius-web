@@ -31,7 +31,6 @@ import {
   SourceElementAction,
   SprottySelectAction,
 } from 'diagram/sprotty/DiagramServer.types';
-import { ResizeAction, SiriusResizeCommand } from 'diagram/sprotty/resize/siriusResize';
 import {
   ActionHandlerRegistry,
   ApplyLabelEditAction,
@@ -65,6 +64,7 @@ import {
   UpdateModelAction,
 } from 'sprotty-protocol';
 import { IsSiriusModelElementAction, IsSiriusModelElementResult } from './common/isSiriusModelElementRequest';
+import { ResizeAction, SiriusResizeCommand } from './dragAndDrop/siriusResize';
 
 /** Action to delete a sprotty element */
 export const SPROTTY_DELETE_ACTION = 'sprottyDeleteElement';

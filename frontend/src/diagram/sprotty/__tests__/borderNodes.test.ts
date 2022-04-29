@@ -16,7 +16,7 @@ import { SNode } from 'sprotty';
 import { Point } from 'sprotty-protocol/';
 import { convertDiagram } from '../convertDiagram';
 import { BorderNode } from '../Diagram.types';
-import { SiriusDragAndDropMouseListener } from '../siriusDragAndDropMouseListener';
+import { SiriusDragAndDropMouseListener } from '../dragAndDrop/siriusDragAndDropMouseListener';
 import { siriusWebDiagram } from './siriusWebDiagram';
 
 describe('Border node positioning', () => {

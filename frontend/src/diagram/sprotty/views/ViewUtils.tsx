@@ -12,7 +12,7 @@
  *******************************************************************************/
 /** @jsx svg */
 import { svg } from 'sprotty';
-import { isResizeable } from '../resize/model';
+import { isResizeable } from '../dragAndDrop/model';
 
 /**
  * Adds resize handles to the given node.
