@@ -3,7 +3,12 @@
   "children": [
     {
       "name": "rect:First",
-      "children": []
+      "children": [
+        {
+          "name": "edge:Third",
+          "children": []
+        }
+      ]
     },
     {
       "name": "rect:Third",

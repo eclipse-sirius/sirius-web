@@ -26,7 +26,6 @@ import java.util.stream.Collectors;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.ArrowStyle;
 import org.eclipse.sirius.components.diagrams.Diagram;
-import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
@@ -174,6 +173,7 @@ public class DefaultTestDiagramDescriptionProvider {
                 .map(Element::getChildren)
                 .orElse(List.of())
                 .stream()
+                .filter(element -> !element.getName().startsWith("edge:")) //$NON-NLS-1$
                 .forEach(children::add);
         return children;
         // @formatter:on
@@ -212,10 +212,9 @@ public class DefaultTestDiagramDescriptionProvider {
             DiagramRenderingCache cache = optionalCache.get();
 
             // @formatter:off
-            String sourceId = variableManager.get(VariableManager.SELF, Element.class)
+            variableManager.get(VariableManager.SELF, Element.class)
                     .map(this.objectService::getId)
-                    .map(id -> targetObjectIdToNodeId.computeIfAbsent(id, k -> UUID.randomUUID().toString()))
-                    .orElse(""); //$NON-NLS-1$
+                    .ifPresent(id -> targetObjectIdToNodeId.computeIfAbsent(id, k -> UUID.randomUUID().toString()));
             // @formatter:on
 
             // @formatter:off
@@ -229,13 +228,17 @@ public class DefaultTestDiagramDescriptionProvider {
             // @formatter:on
 
             // @formatter:off
-            return diagram.getEdges().stream()
-                    .filter(edge -> sourceId.equals(edge.getSourceId()))
-                    .map(Edge::getTargetId)
-                    .map(idToElement::get)
-                    .map(cache::getElementsRepresenting)
-                    .flatMap(Collection::stream)
-                    .collect(Collectors.toList());
+            return variableManager.get(VariableManager.SELF, Element.class)
+                .map(Element::getChildren)
+                .orElseGet(List::of)
+                .stream()
+                .filter(element -> element.getName().startsWith("edge:")) //$NON-NLS-1$
+                .map(this.objectService::getId)
+                .map(targetObjectIdToNodeId::get)
+                .map(idToElement::get)
+                .map(cache::getElementsRepresenting)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
             // @formatter:on
         };
     }

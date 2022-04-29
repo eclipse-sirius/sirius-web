@@ -53,7 +53,7 @@
         </edgeMappings>
         <containerMappings name="Entity" labelDirectEdit="//@ownedViewpoints[name='Domain']/@ownedRepresentations[name='Domain']/@defaultLayer/@toolSections.0/@ownedTools[name='Edit_Entity']" semanticCandidatesExpression="aql:self.types" domainClass="domain::Entity" childrenPresentation="List">
           <subNodeMappings name="Attribute" labelDirectEdit="//@ownedViewpoints[name='Domain']/@ownedRepresentations[name='Domain']/@defaultLayer/@toolSections.0/@ownedTools[name='Edit_Attribute']" semanticCandidatesExpression="aql:self.attributes" domainClass="domain::Attribute">
-            <style xsi:type="style:SquareDescription" labelSize="12" labelExpression="aql:self.renderAttribute()" labelColor="//@userColorsPalettes[name='Sirius%20Web']/@entries[name='grey%2Fgrey-800']" labelAlignment="LEFT" labelPosition="node" resizeKind="NSEW" color="//@userColorsPalettes[name='Sirius%20Web']/@entries[name='grey%2Fgrey-800']">
+            <style xsi:type="style:SquareDescription" labelSize="12" labelExpression="aql:self.renderAttribute()" labelColor="//@userColorsPalettes[name='Sirius%20Web']/@entries[name='grey%2Fgrey-800']" labelAlignment="LEFT" sizeComputationExpression="-1" labelPosition="node" resizeKind="NSEW" color="//@userColorsPalettes[name='Sirius%20Web']/@entries[name='grey%2Fgrey-800']">
               <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
             </style>
             <conditionnalStyles predicateExpression="aql:not self.optional">

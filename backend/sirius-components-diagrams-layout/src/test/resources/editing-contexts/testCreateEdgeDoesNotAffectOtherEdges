@@ -1,0 +1,26 @@
+{
+  "name": "diag:Root",
+  "children": [
+    {
+      "name": "list:First",
+      "children": [
+        {
+      	  "name": "listitem:Child",
+      	  "children": []
+        },
+        {
+          "name": "edge:Second",
+          "children": []
+        },
+        {
+          "name": "edge:First",
+          "children": []
+        }
+      ]
+    },
+    {
+      "name": "list:Second",
+      "children": []
+    }
+  ]
+}

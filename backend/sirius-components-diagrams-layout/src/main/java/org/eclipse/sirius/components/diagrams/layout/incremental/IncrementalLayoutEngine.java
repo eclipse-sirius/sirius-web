@@ -22,6 +22,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.eclipse.elk.core.options.CoreOptions;
+import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Ratio;
 import org.eclipse.sirius.components.diagrams.Size;
@@ -126,7 +127,11 @@ public class IncrementalLayoutEngine {
         Bounds initialNodeBounds = Bounds.newBounds().position(node.getPosition()).size(node.getSize()).build();
         // first layout child nodes
         for (NodeLayoutData childNode : node.getChildrenNodes()) {
-            this.layoutNode(optionalDiagramElementEvent, childNode, layoutConfigurator);
+            if (NodeType.NODE_LIST_ITEM.equals(childNode.getNodeType())) {
+                this.layoutNodeListItem(optionalDiagramElementEvent, childNode, layoutConfigurator);
+            } else {
+                this.layoutNode(optionalDiagramElementEvent, childNode, layoutConfigurator);
+            }
         }
 
         // compute the node size according to what has been done in the previous steps
@@ -148,6 +153,32 @@ public class IncrementalLayoutEngine {
 
         // resize / change position according to the content
         new ContainmentUpdater().update(node);
+
+        // update the border node once the current node bounds are updated
+        Bounds newBounds = Bounds.newBounds().position(node.getPosition()).size(node.getSize()).build();
+        List<BorderNodesOnSide> borderNodesOnSide = this.layoutBorderNodes(optionalDiagramElementEvent, node.getBorderNodes(), initialNodeBounds, newBounds, layoutConfigurator);
+
+        // recompute the label
+        if (node.getLabel() != null) {
+            node.getLabel().setPosition(this.nodeLabelPositionProvider.getPosition(node, node.getLabel(), borderNodesOnSide));
+        }
+    }
+
+    private void layoutNodeListItem(Optional<IDiagramEvent> optionalDiagramElementEvent, NodeLayoutData node, ISiriusWebLayoutConfigurator layoutConfigurator) {
+        Bounds initialNodeBounds = Bounds.newBounds().position(node.getPosition()).size(node.getSize()).build();
+
+        Size size = this.nodeSizeProvider.getSize(optionalDiagramElementEvent, node, layoutConfigurator);
+        if (!this.getRoundedSize(size).equals(this.getRoundedSize(node.getSize()))) {
+            node.setSize(size);
+            node.setChanged(true);
+        }
+
+        Position position = this.nodePositionProvider.getPosition(optionalDiagramElementEvent, node);
+        if (!position.equals(node.getPosition())) {
+            node.setPosition(position);
+            node.setChanged(true);
+            node.setPinned(true);
+        }
 
         // update the border node once the current node bounds are updated
         Bounds newBounds = Bounds.newBounds().position(node.getPosition()).size(node.getSize()).build();
