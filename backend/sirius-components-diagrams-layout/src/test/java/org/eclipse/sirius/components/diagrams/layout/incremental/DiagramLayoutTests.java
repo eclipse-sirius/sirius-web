@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Ratio;
 import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
+import org.eclipse.sirius.components.diagrams.events.DoublePositionEvent;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.diagrams.events.SinglePositionEvent;
 import org.eclipse.sirius.components.diagrams.layout.ELKLayoutedDiagramProvider;
@@ -53,6 +54,16 @@ import org.junit.jupiter.api.Test;
  * @author gcoutable
  */
 public class DiagramLayoutTests {
+
+    private static final String DIAGRAM_ROOT_ID = "Root"; //$NON-NLS-1$
+
+    private static final String THIRD_TARGET_OBJECT_ID = "Third"; //$NON-NLS-1$
+
+    private static final String SECOND_TARGET_OBJECT_ID = "Second"; //$NON-NLS-1$
+
+    private static final String FIRST_TARGET_OBJECT_ID = "First"; //$NON-NLS-1$
+
+    private static final Path PATH_TO_EDITING_CONTEXTS = Paths.get("src", "test", "resources", "editing-contexts"); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
 
     private TestLayoutObjectService objectService = new TestLayoutObjectService();
 
@@ -99,30 +110,27 @@ public class DiagramLayoutTests {
 
     @Test
     public void testRemoveEdgeDoesNotAffectUnrelated() {
-        String firstTargetObjectId = "First"; //$NON-NLS-1$
-        String secondTargetObjectId = "Second"; //$NON-NLS-1$
-        String thirdTargetObjectId = "Third"; //$NON-NLS-1$
 
         // @formatter:off
-        Diagram diagram = TestLayoutDiagramBuilder.diagram("Root") //$NON-NLS-1$
+        Diagram diagram = TestLayoutDiagramBuilder.diagram(DIAGRAM_ROOT_ID)
             .nodes()
-                .rectangleNode(firstTargetObjectId).at(10, 10).of(20, 20).and()
-                .rectangleNode(secondTargetObjectId).at(50, 10).of(20, 20).and()
-                .rectangleNode(thirdTargetObjectId).at(50, 40).of(20, 20).and()
+                .rectangleNode(FIRST_TARGET_OBJECT_ID).at(10, 10).of(20, 20).and()
+                .rectangleNode(SECOND_TARGET_OBJECT_ID).at(50, 10).of(20, 20).and()
+                .rectangleNode(THIRD_TARGET_OBJECT_ID).at(50, 40).of(20, 20).and()
                 .and()
             .edge("one") //$NON-NLS-1$
-                .from(firstTargetObjectId).at(0.75, 0.5)
-                .to(secondTargetObjectId).at(0.25, 0.5)
+                .from(FIRST_TARGET_OBJECT_ID).at(0.75, 0.5)
+                .to(SECOND_TARGET_OBJECT_ID).at(0.25, 0.5)
                 .and()
             .edge("two") //$NON-NLS-1$
-                .from(firstTargetObjectId).at(0.5, 0.75)
-                .to(thirdTargetObjectId).at(0.25, 0.5)
+                .from(FIRST_TARGET_OBJECT_ID).at(0.5, 0.75)
+                .to(THIRD_TARGET_OBJECT_ID).at(0.25, 0.5)
                 .goingThrough(20, 50)
                 .and()
             .build();
         // @formatter:on
 
-        Path path = Paths.get("src", "test", "resources", "editing-contexts", "testRemoveEdgeDoesNotAffectUnrelated"); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$ //$NON-NLS-5$
+        Path path = Paths.get(PATH_TO_EDITING_CONTEXTS.toString(), "testRemoveEdgeDoesNotAffectUnrelated"); //$NON-NLS-1$
         JsonBasedEditingContext editingContext = new JsonBasedEditingContext(path);
 
         TestDiagramCreationService diagramCreationService = this.createDiagramCreationService(diagram);
@@ -131,16 +139,16 @@ public class DiagramLayoutTests {
         Diagram refreshedDiagram = optionalRefreshedDiagram.get();
         assertThat(refreshedDiagram.getNodes()).hasSize(2);
 
-        Optional<Node> optionalFirstNode = this.getNode(refreshedDiagram.getNodes(), firstTargetObjectId);
+        Optional<Node> optionalFirstNode = this.getNode(refreshedDiagram.getNodes(), FIRST_TARGET_OBJECT_ID);
         assertThat(optionalFirstNode).isPresent();
         Node firstNode = optionalFirstNode.get();
         assertThat(firstNode.getPosition()).isEqualTo(Position.at(10, 10));
         assertThat(firstNode.getSize()).isEqualTo(Size.of(20, 20));
 
-        Optional<Node> optionalSecondNode = this.getNode(refreshedDiagram.getNodes(), secondTargetObjectId);
+        Optional<Node> optionalSecondNode = this.getNode(refreshedDiagram.getNodes(), SECOND_TARGET_OBJECT_ID);
         assertThat(optionalSecondNode).isNotPresent();
 
-        Optional<Node> optionalThirdNode = this.getNode(refreshedDiagram.getNodes(), thirdTargetObjectId);
+        Optional<Node> optionalThirdNode = this.getNode(refreshedDiagram.getNodes(), THIRD_TARGET_OBJECT_ID);
         assertThat(optionalThirdNode).isPresent();
         Node thirdNode = optionalThirdNode.get();
         assertThat(thirdNode.getPosition()).isEqualTo(Position.at(50, 40));
@@ -162,7 +170,7 @@ public class DiagramLayoutTests {
         String secondChildTargetObjectId = "Second child"; //$NON-NLS-1$
 
         // @formatter:off
-        Diagram diagram = TestLayoutDiagramBuilder.diagram("Root") //$NON-NLS-1$
+        Diagram diagram = TestLayoutDiagramBuilder.diagram(DIAGRAM_ROOT_ID)
             .nodes()
                 .rectangleNode(firstParentTargetObjectId).at(10, 10).of(200, 300)
                     .childNodes()
@@ -183,7 +191,7 @@ public class DiagramLayoutTests {
         .build();
         // @formatter:on
 
-        Path path = Paths.get("src", "test", "resources", "editing-contexts", "testSimpleDiagramLayout"); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$ //$NON-NLS-5$
+        Path path = Paths.get(PATH_TO_EDITING_CONTEXTS.toString(), "testSimpleDiagramLayout"); //$NON-NLS-1$
         JsonBasedEditingContext editingContext = new JsonBasedEditingContext(path);
 
         TestDiagramCreationService diagramCreationService = this.createDiagramCreationService(diagram);
@@ -227,5 +235,54 @@ public class DiagramLayoutTests {
         assertThat(optionalLayoutedThirdParent).isPresent();
         Node layoutedThirdParent = optionalLayoutedThirdParent.get();
         assertThat(layoutedThirdParent.getPosition()).isEqualTo(Position.at(300, 100));
+    }
+
+    @Test
+    public void testCreateEdgeDoesNotAffectOtherEdges() {
+        // @formatter:off
+        Diagram diagram = TestLayoutDiagramBuilder.diagram(DIAGRAM_ROOT_ID)
+            .nodes()
+                .listNode(FIRST_TARGET_OBJECT_ID).at(10, 10).of(-1, -1)
+                    .childNodes()
+                        .listItemNode("Child").at(-1, -1).of(-1, -1).and() //$NON-NLS-1$
+                        .and()
+                    .and()
+                .listNode(SECOND_TARGET_OBJECT_ID).at(100, 100).of(-1, -1).and()
+                    .and()
+            .edge(SECOND_TARGET_OBJECT_ID)
+                .from(FIRST_TARGET_OBJECT_ID).at(0.75, 0.25)
+                .to(SECOND_TARGET_OBJECT_ID).at(0.25, 0.25)
+                .and()
+            .build();
+        // @formatter:on
+        TestDiagramCreationService layoutDiagramInitialDiagram = this.createDiagramCreationService(diagram);
+        Diagram initialLayoutedDiagram = layoutDiagramInitialDiagram.performLayout(new IEditingContext.NoOp(), diagram, null);
+        assertThat(initialLayoutedDiagram.getEdges()).hasSize(1);
+        Edge initialEdge = initialLayoutedDiagram.getEdges().get(0);
+        assertThat(initialEdge.getSourceAnchorRelativePosition()).isEqualTo(Ratio.of(0.75, 0.25));
+        assertThat(initialEdge.getTargetAnchorRelativePosition()).isEqualTo(Ratio.of(0.25, 0.25));
+
+        Path path = Paths.get(PATH_TO_EDITING_CONTEXTS.toString(), "testCreateEdgeDoesNotAffectOtherEdges"); //$NON-NLS-1$
+        JsonBasedEditingContext editingContext = new JsonBasedEditingContext(path);
+
+        TestDiagramCreationService diagramCreationService = this.createDiagramCreationService(initialLayoutedDiagram);
+        Optional<Diagram> optionalRefreshedDiagram = diagramCreationService.performRefresh(editingContext, initialLayoutedDiagram);
+        assertThat(optionalRefreshedDiagram).isPresent();
+        Diagram refreshedDiagram = optionalRefreshedDiagram.get();
+        assertThat(refreshedDiagram.getEdges()).hasSize(2);
+
+        Optional<Node> first = this.getNode(refreshedDiagram.getNodes(), FIRST_TARGET_OBJECT_ID);
+        assertThat(refreshedDiagram.getEdges().get(1).getSourceId()).isEqualTo(first.get().getId());
+        assertThat(refreshedDiagram.getEdges().get(1).getTargetId()).isEqualTo(first.get().getId());
+
+        Diagram layoutedDiagram = diagramCreationService.performLayout(editingContext, refreshedDiagram, new DoublePositionEvent(Position.at(20, 20), Position.at(60, 30)));
+        assertThat(layoutedDiagram.getEdges().get(1).getSourceAnchorRelativePosition().getX()).isGreaterThanOrEqualTo(0).isLessThanOrEqualTo(1);
+        assertThat(layoutedDiagram.getEdges().get(1).getSourceAnchorRelativePosition().getY()).isGreaterThanOrEqualTo(0).isLessThanOrEqualTo(1);
+        assertThat(layoutedDiagram.getEdges().get(1).getTargetAnchorRelativePosition().getX()).isGreaterThanOrEqualTo(0).isLessThanOrEqualTo(1);
+        assertThat(layoutedDiagram.getEdges().get(1).getTargetAnchorRelativePosition().getX()).isGreaterThanOrEqualTo(0).isLessThanOrEqualTo(1);
+
+        assertThat(layoutedDiagram.getEdges().get(0).getSourceAnchorRelativePosition()).isEqualTo(refreshedDiagram.getEdges().get(0).getSourceAnchorRelativePosition());
+        assertThat(layoutedDiagram.getEdges().get(0).getTargetAnchorRelativePosition()).isEqualTo(refreshedDiagram.getEdges().get(0).getTargetAnchorRelativePosition());
+
     }
 }

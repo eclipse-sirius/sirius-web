@@ -55,7 +55,8 @@ public class NodePositionProvider {
     public Position getPosition(Optional<IDiagramEvent> optionalDiagramElementEvent, NodeLayoutData node) {
         Position position = node.getPosition();
         if (NodeType.NODE_LIST_ITEM.equals(node.getNodeType())) {
-            Optional<Position> nodeListItemPosition = this.getNodeListItemPosition(node);
+            int nodeListItemIndex = node.getParent().getChildrenNodes().indexOf(node);
+            Optional<Position> nodeListItemPosition = this.getNodeListItemPosition(node, nodeListItemIndex);
             if (nodeListItemPosition.isPresent()) {
                 position = nodeListItemPosition.get();
             }
@@ -69,58 +70,28 @@ public class NodePositionProvider {
         return position;
     }
 
-    private Optional<Position> getNodeListItemPosition(NodeLayoutData node) {
-        Optional<Position> nodeListItemPosition = this.getPositionRelativeToSibling(node);
-        if (nodeListItemPosition.isPresent()) {
-            return nodeListItemPosition;
-        } else {
-            Double maxBottom = this.findMaxBottom(node.getParent());
+    private Optional<Position> getNodeListItemPosition(NodeLayoutData node, int nodeListItemIndex) {
+        Optional<Position> nodeListItemPosition = Optional.empty();
+        if (nodeListItemIndex > 0) {
+            NodeLayoutData previousNodeListItem = node.getParent().getChildrenNodes().get(nodeListItemIndex - 1);
+            Position lastPosition = previousNodeListItem.getPosition();
+            Size lastSize = previousNodeListItem.getSize();
+            double y = lastPosition.getY() + lastSize.getHeight() + LayoutOptionValues.NODE_LIST_ELK_NODE_NODE_GAP;
+            nodeListItemPosition = Optional.of(Position.at(0, y));
+        } else if (nodeListItemIndex == 0) {
             // We are positioning the first element during this layout
-            if (maxBottom == null) {
+            if (node.getParent() instanceof NodeLayoutData) {
+                NodeLayoutData parentLayoutData = (NodeLayoutData) node.getParent();
+                LabelLayoutData parentLabelLayoutData = parentLayoutData.getLabel();
                 // @formatter:off
-                if (NodeType.NODE_LIST_ITEM.equals(node.getNodeType()) &&
-                        node.getParent() instanceof NodeLayoutData &&
-                        NodeType.NODE_LIST.equals(((NodeLayoutData) node.getParent()).getNodeType())
-                        ) {
-                    NodeLayoutData parentLayoutData = (NodeLayoutData) node.getParent();
-                    LabelLayoutData parentLabelLayoutData = parentLayoutData.getLabel();
-                    double posY = parentLabelLayoutData.getPosition().getY() +
-                            parentLabelLayoutData.getTextBounds().getSize().getHeight() +
-                            LayoutOptionValues.NODE_LIST_ELK_PADDING_TOP +
-                            LayoutOptionValues.DEFAULT_ELK_NODE_LABELS_PADDING;
-                    nodeListItemPosition = Optional.of(Position.at(0, posY));
-                }
+                double posY = parentLabelLayoutData.getTextBounds().getSize().getHeight()
+                        + LayoutOptionValues.NODE_LIST_ELK_PADDING_TOP
+                        + LayoutOptionValues.DEFAULT_ELK_NODE_LABELS_PADDING;
                 // @formatter:on
-            } else {
-                double newY = maxBottom + LayoutOptionValues.NODE_LIST_ELK_NODE_NODE_GAP;
-                nodeListItemPosition = Optional.of(Position.at(0, newY));
+                nodeListItemPosition = Optional.of(Position.at(0, posY));
             }
         }
         return nodeListItemPosition;
-    }
-
-    /**
-     * Provides the maximal bottom value within the given parent children.
-     *
-     * @param parent
-     *            the node parent.
-     * @return the maximal bottom value or null if no already positioned child has been found.
-     */
-    private Double findMaxBottom(IContainerLayoutData parent) {
-        Double bottom = null;
-        for (NodeLayoutData node : parent.getChildrenNodes()) {
-            Position nodePosition = node.getPosition();
-            // If the node has not been located, we skip it from the calculation
-            if (Position.UNDEFINED.equals(nodePosition)) {
-                double nodeBottom = nodePosition.getY() + node.getSize().getHeight();
-                if (bottom == null) {
-                    bottom = nodeBottom;
-                } else {
-                    bottom = Math.max(bottom, nodeBottom);
-                }
-            }
-        }
-        return bottom;
     }
 
     private Optional<Position> getEventRelativePosition(IDiagramEvent diagramElementEvent, NodeLayoutData node) {

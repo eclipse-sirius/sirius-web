@@ -11,12 +11,21 @@
         {
           "name": "rect:Second child",
           "children": []
+        },
+        {
+          "name": "edge:Second Parent",
+          "children": []
         }
       ]
     },
     {
       "name": "rect:Second Parent",
-      "children": []
+      "children": [
+        {
+          "name": "edge:First Parent",
+          "children": []
+        }
+      ]
     },
     {
       "name": "img:Third Parent",

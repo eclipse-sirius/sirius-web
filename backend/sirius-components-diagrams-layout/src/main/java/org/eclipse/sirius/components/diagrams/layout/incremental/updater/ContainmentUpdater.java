@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 THALES GLOBAL SERVICES.
+ * Copyright (c) 2021, 2022 THALES GLOBAL SERVICES.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -71,12 +71,8 @@ public class ContainmentUpdater {
                 switch (nodeLayoutData.getNodeType()) {
                 case NodeType.NODE_LIST:
                     // No need to change the position of a Node List as contained list items are fixed.
-                    this.updateContentPosition(nodeLayoutData);
+                    this.updateNodeListContentSize(nodeLayoutData);
                     this.updateBottomRight(nodeLayoutData);
-                    break;
-                case NodeType.NODE_LIST_ITEM:
-                    // Update the size of a list item regarding the size of its label.
-                    this.updateNodeListItem(nodeLayoutData);
                     break;
                 default:
                     // We do not change the position of diagrams as it disturbs the feedback
@@ -153,14 +149,30 @@ public class ContainmentUpdater {
         return false;
     }
 
-    private void updateContentPosition(NodeLayoutData nodeLayoutData) {
-        double nextYChildPosition = nodeLayoutData.getLabel().getTextBounds().getSize().getHeight() + LayoutOptionValues.NODE_LIST_ELK_PADDING_TOP + LayoutOptionValues.DEFAULT_ELK_NODE_LABELS_PADDING;
-        for (NodeLayoutData childLayoutData : nodeLayoutData.getChildrenNodes()) {
-            double currentYChildPosition = childLayoutData.getPosition().getY();
-            if (currentYChildPosition != nextYChildPosition) {
-                childLayoutData.setPosition(Position.at(childLayoutData.getPosition().getX(), nextYChildPosition));
+    /**
+     * Uses the wider label between the node list label and all its node list item labels to update the width of every
+     * list item
+     *
+     * @param nodeLayoutData
+     *            The layout data of the node list
+     */
+    private void updateNodeListContentSize(NodeLayoutData nodeLayoutData) {
+        Size nodeListLabelSize = nodeLayoutData.getLabel().getTextBounds().getSize();
+        Size widerLabel = Size.of(nodeListLabelSize.getWidth() + LayoutOptionValues.DEFAULT_ELK_NODE_LABELS_PADDING * 2, nodeListLabelSize.getHeight());
+        for (NodeLayoutData nodeListItemLayoutData : nodeLayoutData.getChildrenNodes()) {
+            Size labelSize = nodeListItemLayoutData.getLabel().getTextBounds().getSize();
+            double labelWidth = labelSize.getWidth() + LayoutOptionValues.NODE_LIST_ELK_NODE_LABELS_PADDING_RIGHT + LayoutOptionValues.NODE_LIST_ELK_NODE_LABELS_PADDING_LEFT;
+            if (widerLabel.getWidth() < labelWidth) {
+                widerLabel = Size.of(labelWidth, -1);
             }
-            nextYChildPosition = childLayoutData.getPosition().getY() + childLayoutData.getLabel().getTextBounds().getSize().getHeight() + LayoutOptionValues.NODE_LIST_ELK_NODE_NODE_GAP;
+        }
+
+        for (NodeLayoutData nodeListItemLayoutData : nodeLayoutData.getChildrenNodes()) {
+            double childNodeWidth = nodeListItemLayoutData.getSize().getWidth();
+            if (childNodeWidth != widerLabel.getWidth()) {
+                nodeListItemLayoutData.setSize(Size.of(widerLabel.getWidth(), nodeListItemLayoutData.getSize().getHeight()));
+                nodeListItemLayoutData.setChanged(true);
+            }
         }
     }
 
@@ -184,20 +196,6 @@ public class ContainmentUpdater {
         }
     }
 
-    private void updateNodeListItem(NodeLayoutData nodeLayoutData) {
-        Size labelSize = nodeLayoutData.getLabel().getTextBounds().getSize();
-        double width = labelSize.getWidth() + LayoutOptionValues.NODE_LIST_ELK_NODE_LABELS_PADDING_RIGHT + LayoutOptionValues.NODE_LIST_ELK_NODE_LABELS_PADDING_LEFT;
-        double height = labelSize.getHeight() + LayoutOptionValues.NODE_LIST_ELK_NODE_LABELS_PADDING_TOP + LayoutOptionValues.NODE_LIST_ELK_NODE_LABELS_PADDING_BOTTOM;
-
-        Size nodeSize = nodeLayoutData.getSize();
-        if (width != nodeSize.getWidth() || height != nodeSize.getHeight()) {
-            nodeLayoutData.setSize(Size.of(width, height));
-            if (nodeLayoutData instanceof IConnectable) {
-                ((IConnectable) nodeLayoutData).setChanged(true);
-            }
-        }
-    }
-
     private void updateBottomRight(IContainerLayoutData container) {
         Size contentSize = this.computeContentSize(container);
 
@@ -210,14 +208,6 @@ public class ContainmentUpdater {
             container.setSize(contentSize);
             if (container instanceof IConnectable) {
                 ((IConnectable) container).setChanged(true);
-            }
-        }
-        if (isNodeListContainer) {
-            for (NodeLayoutData child : container.getChildrenNodes()) {
-                child.setSize(Size.of(container.getSize().getWidth(), child.getSize().getHeight()));
-                if (child instanceof IConnectable) {
-                    ((IConnectable) container).setChanged(true);
-                }
             }
         }
     }

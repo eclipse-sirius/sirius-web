@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 THALES GLOBAL SERVICES.
+ * Copyright (c) 2021, 2022 THALES GLOBAL SERVICES.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,12 +22,16 @@ import java.util.UUID;
 import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Size;
+import org.eclipse.sirius.components.diagrams.TextBounds;
+import org.eclipse.sirius.components.diagrams.components.LabelType;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.diagrams.events.MoveEvent;
 import org.eclipse.sirius.components.diagrams.events.ResizeEvent;
 import org.eclipse.sirius.components.diagrams.events.SinglePositionEvent;
+import org.eclipse.sirius.components.diagrams.layout.LayoutOptionValues;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.DiagramLayoutData;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.IContainerLayoutData;
+import org.eclipse.sirius.components.diagrams.layout.incremental.data.LabelLayoutData;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.NodeLayoutData;
 import org.eclipse.sirius.components.diagrams.layout.incremental.provider.NodePositionProvider;
 import org.junit.jupiter.api.Test;
@@ -274,6 +278,61 @@ public class NodePositionProviderTests {
         assertThat(newPosition2).isEqualTo(nodePosition2);
         assertThat(newPosition1).isEqualTo(nodePosition1);
         assertThat(newPosition21).isEqualTo(nodePosition21);
+    }
+
+    @Test
+    public void testProvidePositionOfAListItem() {
+        Position nodeListPosition = Position.at(10, 10);
+        Position nodeListItemPosition = Position.at(0, 38);
+        Size nodeListSize = Size.of(100, 64);
+        Size nodeListItemSize = Size.of(100, 20);
+
+        DiagramLayoutData diagramLayoutData = this.createDiagramLayoutData();
+        NodeLayoutData nodeListLayoutData = this.createNodeLayoutData(nodeListPosition, nodeListSize, diagramLayoutData, NodeType.NODE_LIST);
+        NodeLayoutData nodeListItemLayoutData = this.createNodeLayoutData(nodeListItemPosition, nodeListItemSize, nodeListLayoutData, NodeType.NODE_LIST_ITEM);
+        nodeListLayoutData.setChildrenNodes(List.of(nodeListItemLayoutData));
+        nodeListLayoutData.setLabel(this.createNodeListLabelLayoutData());
+        diagramLayoutData.setChildrenNodes(List.of(nodeListLayoutData));
+
+        NodePositionProvider nodePositionProvider = new NodePositionProvider();
+
+        Position newListItemPosition = nodePositionProvider.getPosition(Optional.empty(), nodeListItemLayoutData);
+        assertThat(newListItemPosition).isEqualTo(nodeListItemPosition);
+    }
+
+    @Test
+    public void testProvidePositionOfTwoListItems() {
+        Size nodeListSize = Size.of(100, 64);
+        Size nodeListItemSize = Size.of(100, 20);
+        Position nodeListPosition = Position.at(10, 10);
+        Position firstNodeListItemPosition = Position.at(0, 38);
+        Position secondNodeListItemPosition = Position.at(0, firstNodeListItemPosition.getY() + nodeListItemSize.getHeight() + LayoutOptionValues.NODE_LIST_ELK_NODE_NODE_GAP);
+
+        DiagramLayoutData diagramLayoutData = this.createDiagramLayoutData();
+        NodeLayoutData nodeListLayoutData = this.createNodeLayoutData(nodeListPosition, nodeListSize, diagramLayoutData, NodeType.NODE_LIST);
+        NodeLayoutData firstNodeListItemLayoutData = this.createNodeLayoutData(firstNodeListItemPosition, nodeListItemSize, nodeListLayoutData, NodeType.NODE_LIST_ITEM);
+        NodeLayoutData secondNodeListItemLayoutData = this.createNodeLayoutData(secondNodeListItemPosition, nodeListItemSize, nodeListLayoutData, NodeType.NODE_LIST_ITEM);
+        nodeListLayoutData.setChildrenNodes(List.of(firstNodeListItemLayoutData, secondNodeListItemLayoutData));
+        nodeListLayoutData.setLabel(this.createNodeListLabelLayoutData());
+        diagramLayoutData.setChildrenNodes(List.of(nodeListLayoutData));
+
+        NodePositionProvider nodePositionProvider = new NodePositionProvider();
+
+        Position newFisrtNodeListItemPosition = nodePositionProvider.getPosition(Optional.empty(), firstNodeListItemLayoutData);
+        assertThat(newFisrtNodeListItemPosition).isEqualTo(firstNodeListItemPosition);
+
+        Position newSecondNodeListItemPosition = nodePositionProvider.getPosition(Optional.empty(), secondNodeListItemLayoutData);
+        assertThat(newSecondNodeListItemPosition).isEqualTo(secondNodeListItemPosition);
+    }
+
+    private LabelLayoutData createNodeListLabelLayoutData() {
+        LabelLayoutData labelLayoutData = new LabelLayoutData();
+        labelLayoutData.setId(UUID.randomUUID().toString());
+        labelLayoutData.setLabelType(LabelType.INSIDE_CENTER.getValue());
+        labelLayoutData.setPosition(Position.at(5, 5));
+        TextBounds textBounds = new TextBounds(Size.of(90, 20), Position.UNDEFINED);
+        labelLayoutData.setTextBounds(textBounds);
+        return labelLayoutData;
     }
 
     private DiagramLayoutData createDiagramLayoutData() {
