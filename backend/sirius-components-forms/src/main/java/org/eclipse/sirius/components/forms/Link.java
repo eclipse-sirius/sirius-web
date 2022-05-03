@@ -26,16 +26,11 @@ import org.eclipse.sirius.components.forms.validation.Diagnostic;
  */
 @Immutable
 public final class Link extends AbstractWidget {
-    private String label;
 
     private String url;
 
     private Link() {
         // Prevent instantiation
-    }
-
-    public String getLabel() {
-        return this.label;
     }
 
     public String getUrl() {

@@ -28,7 +28,6 @@ import org.eclipse.sirius.components.representations.IStatus;
  */
 @Immutable
 public final class Textfield extends AbstractWidget {
-    private String label;
 
     private String value;
 
@@ -38,10 +37,6 @@ public final class Textfield extends AbstractWidget {
 
     private Textfield() {
         // Prevent instantiation
-    }
-
-    public String getLabel() {
-        return this.label;
     }
 
     public String getValue() {

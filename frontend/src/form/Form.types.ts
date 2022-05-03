@@ -37,6 +37,7 @@ export interface Group {
 }
 export interface Widget {
   id: string;
+  label: string;
   __typename: string;
   diagnostics: Diagnostic[];
 }
@@ -53,7 +54,6 @@ export interface WidgetSubscription {
 }
 
 export interface Textfield extends Widget {
-  label: string;
   stringValue: string;
   style: TextfieldStyle | null;
 }
@@ -69,7 +69,6 @@ export interface TextfieldStyle {
 }
 
 export interface Textarea extends Widget {
-  label: string;
   stringValue: string;
   style: TextareaStyle | null;
 }
@@ -85,7 +84,6 @@ export interface TextareaStyle {
 }
 
 export interface Checkbox extends Widget {
-  label: string;
   booleanValue: boolean;
   style: CheckboxStyle | null;
 }
@@ -95,7 +93,6 @@ export interface CheckboxStyle {
 }
 
 export interface Select extends Widget {
-  label: string;
   value: string;
   options: SelectOption[];
   style: SelectStyle | null;
@@ -112,7 +109,6 @@ export interface SelectStyle {
 }
 
 export interface MultiSelect extends Widget {
-  label: string;
   values: string[];
   options: SelectOption[];
   style: MultiSelectStyle | null;
@@ -134,7 +130,6 @@ export interface SelectOption {
 }
 
 export interface Radio extends Widget {
-  label: string;
   options: RadioOption[];
   style: RadioStyle | null;
 }
@@ -155,7 +150,6 @@ export interface RadioStyle {
 }
 
 export interface List extends Widget {
-  label: string;
   items: ListItem[];
 }
 
@@ -168,7 +162,6 @@ export interface ListItem {
 }
 
 export interface Link extends Widget {
-  label: string;
   url: string;
 }
 

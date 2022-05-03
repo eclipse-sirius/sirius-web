@@ -28,8 +28,6 @@ import org.eclipse.sirius.components.representations.IStatus;
  */
 @Immutable
 public final class Radio extends AbstractWidget {
-    private String label;
-
     private List<RadioOption> options;
 
     private Function<String, IStatus> newValueHandler;
@@ -38,10 +36,6 @@ public final class Radio extends AbstractWidget {
 
     private Radio() {
         // Prevent instantiation
-    }
-
-    public String getLabel() {
-        return this.label;
     }
 
     public List<RadioOption> getOptions() {
