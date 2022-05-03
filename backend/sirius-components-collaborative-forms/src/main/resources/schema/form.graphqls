@@ -64,6 +64,7 @@ type Group {
 
 interface Widget {
   id: ID!
+  label: String!
   diagnostics: [Diagnostic!]!
 }
 

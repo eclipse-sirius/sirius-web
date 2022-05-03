@@ -28,7 +28,6 @@ import org.eclipse.sirius.components.representations.IStatus;
  */
 @Immutable
 public final class Textarea extends AbstractWidget {
-    private String label;
 
     private String value;
 
@@ -38,10 +37,6 @@ public final class Textarea extends AbstractWidget {
 
     private Textarea() {
         // Prevent instantiation
-    }
-
-    public String getLabel() {
-        return this.label;
     }
 
     public String getValue() {

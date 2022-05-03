@@ -28,8 +28,6 @@ import org.eclipse.sirius.components.representations.IStatus;
  */
 @Immutable
 public final class Checkbox extends AbstractWidget {
-    private String label;
-
     private boolean value;
 
     private Function<Boolean, IStatus> newValueHandler;
@@ -38,10 +36,6 @@ public final class Checkbox extends AbstractWidget {
 
     private Checkbox() {
         // Prevent instantiation
-    }
-
-    public String getLabel() {
-        return this.label;
     }
 
     public boolean isValue() {

@@ -106,6 +106,7 @@ export interface GQLGroup {
 }
 export interface GQLWidget {
   id: string;
+  label: string;
   __typename: string;
   diagnostics: GQLDiagnostic[];
 }
@@ -117,7 +118,6 @@ export interface GQLDiagnostic {
 }
 
 export interface GQLTextfield extends GQLWidget {
-  label: string;
   stringValue: string;
   style: GQLTextfieldStyle;
 }
@@ -133,7 +133,6 @@ export interface GQLTextfieldStyle {
 }
 
 export interface GQLTextarea extends GQLWidget {
-  label: string;
   stringValue: string;
   style: GQLTextareaStyle;
 }
@@ -149,7 +148,6 @@ export interface GQLTextareaStyle {
 }
 
 export interface GQLCheckbox extends GQLWidget {
-  label: string;
   booleanValue: boolean;
   style: GQLCheckboxStyle;
 }
@@ -159,7 +157,6 @@ export interface GQLCheckboxStyle {
 }
 
 export interface GQLSelect extends GQLWidget {
-  label: string;
   value: string;
   options: GQLSelectOption[];
   style: GQLSelectStyle;
@@ -176,7 +173,6 @@ export interface GQLSelectStyle {
 }
 
 export interface GQLMultiSelect extends GQLWidget {
-  label: string;
   values: string[];
   options: GQLSelectOption[];
   style: GQLMultiSelectStyle;
@@ -198,7 +194,6 @@ export interface GQLSelectOption {
 }
 
 export interface GQLRadio extends GQLWidget {
-  label: string;
   options: GQLRadioOption[];
   style: GQLRadioStyle;
 }
@@ -219,19 +214,16 @@ export interface GQLRadioOption {
 }
 
 export interface GQLList extends GQLWidget {
-  label: string;
   items: GQLListItem[];
 }
 
 export interface GQLListItem {
   id: string;
-  label: string;
   imageURL: string;
   deletable: Boolean;
 }
 
 export interface GQLLink extends GQLWidget {
-  label: string;
   url: string;
 }
 

@@ -1,6 +1,6 @@
 = Changelog
 
-== v2022.7.0 (unrelased)
+== v2022.7.0 (unreleased)
 
 === Architectural decision records
 
@@ -9,7 +9,8 @@
 - [ADR-62] Switch to a monorepo layout
 - [ADR-63] Simplify the Sprotty integration
 
-=== Deprecation warning
+=== Deprecation warnings
+
 
 === Breaking changes
 
@@ -26,6 +27,7 @@
 === Improvements
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1242[#1242] [view] Provide icons for View DSL Widgets and FormDescription
+- https://github.com/eclipse-sirius/sirius-components/issues/1214[#1214] [forms] The mandatory label attribute which was available in all concrete widget types is now explicitly part of the common supertype.
 
 === New features
 

@@ -24,10 +24,16 @@ import org.eclipse.sirius.components.forms.validation.Diagnostic;
 public abstract class AbstractWidget {
     protected String id;
 
+    protected String label;
+
     protected List<Diagnostic> diagnostics;
 
     public String getId() {
         return this.id;
+    }
+
+    public String getLabel() {
+        return this.label;
     }
 
     public List<Diagnostic> getDiagnostics() {

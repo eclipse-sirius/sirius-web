@@ -29,8 +29,6 @@ import org.eclipse.sirius.components.representations.IStatus;
  */
 @Immutable
 public final class MultiSelect extends AbstractWidget {
-    private String label;
-
     private List<SelectOption> options;
 
     private List<String> values;
@@ -41,10 +39,6 @@ public final class MultiSelect extends AbstractWidget {
 
     private MultiSelect() {
         // Prevent instantiation
-    }
-
-    public String getLabel() {
-        return this.label;
     }
 
     public List<SelectOption> getOptions() {

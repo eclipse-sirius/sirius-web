@@ -25,16 +25,10 @@ import org.eclipse.sirius.components.forms.validation.Diagnostic;
  */
 @Immutable
 public final class List extends AbstractWidget {
-    private String label;
-
     private java.util.List<ListItem> items;
 
     private List() {
         // Prevent instantiation
-    }
-
-    public String getLabel() {
-        return this.label;
     }
 
     public java.util.List<ListItem> getItems() {

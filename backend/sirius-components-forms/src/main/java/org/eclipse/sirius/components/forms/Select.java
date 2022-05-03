@@ -28,8 +28,6 @@ import org.eclipse.sirius.components.representations.IStatus;
  */
 @Immutable
 public final class Select extends AbstractWidget {
-    private String label;
-
     private List<SelectOption> options;
 
     private String value;
@@ -40,10 +38,6 @@ public final class Select extends AbstractWidget {
 
     private Select() {
         // Prevent instantiation
-    }
-
-    public String getLabel() {
-        return this.label;
     }
 
     public List<SelectOption> getOptions() {
