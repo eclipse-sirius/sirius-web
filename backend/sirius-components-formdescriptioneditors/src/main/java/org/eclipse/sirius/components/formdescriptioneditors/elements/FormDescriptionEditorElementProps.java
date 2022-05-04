@@ -13,10 +13,12 @@
 package org.eclipse.sirius.components.formdescriptioneditors.elements;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.formdescriptioneditors.FormDescriptionEditorWidget;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IProps;
 
@@ -37,7 +39,7 @@ public final class FormDescriptionEditorElementProps implements IProps {
 
     private String descriptionId;
 
-    private List<Element> children;
+    private List<FormDescriptionEditorWidget> widgets;
 
     private FormDescriptionEditorElementProps() {
         // Prevent instantiation
@@ -59,9 +61,13 @@ public final class FormDescriptionEditorElementProps implements IProps {
         return this.descriptionId;
     }
 
+    public List<FormDescriptionEditorWidget> getWidgets() {
+        return this.widgets;
+    }
+
     @Override
     public List<Element> getChildren() {
-        return this.children;
+        return new ArrayList<>();
     }
 
     public static Builder newFormDescriptionEditorElementProps(String id) {
@@ -89,7 +95,7 @@ public final class FormDescriptionEditorElementProps implements IProps {
 
         private String descriptionId;
 
-        private List<Element> children;
+        private List<FormDescriptionEditorWidget> widgets;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -110,8 +116,8 @@ public final class FormDescriptionEditorElementProps implements IProps {
             return this;
         }
 
-        public Builder children(List<Element> children) {
-            this.children = Objects.requireNonNull(children);
+        public Builder widgets(List<FormDescriptionEditorWidget> widgets) {
+            this.widgets = Objects.requireNonNull(widgets);
             return this;
         }
 
@@ -121,7 +127,7 @@ public final class FormDescriptionEditorElementProps implements IProps {
             formDescriptionEditorElementProps.label = Objects.requireNonNull(this.label);
             formDescriptionEditorElementProps.targetObjectId = Objects.requireNonNull(this.targetObjectId);
             formDescriptionEditorElementProps.descriptionId = Objects.requireNonNull(this.descriptionId);
-            formDescriptionEditorElementProps.children = Objects.requireNonNull(this.children);
+            formDescriptionEditorElementProps.widgets = Objects.requireNonNull(this.widgets);
             return formDescriptionEditorElementProps;
         }
     }

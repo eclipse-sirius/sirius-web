@@ -13,7 +13,6 @@
 package org.eclipse.sirius.components.formdescriptioneditors.renderer;
 
 import org.eclipse.sirius.components.formdescriptioneditors.elements.FormDescriptionEditorElementProps;
-import org.eclipse.sirius.components.formdescriptioneditors.elements.FormDescriptionEditorTextfieldElementProps;
 import org.eclipse.sirius.components.representations.IInstancePropsValidator;
 import org.eclipse.sirius.components.representations.IProps;
 
@@ -30,8 +29,6 @@ public class FormDescriptionEditorInstancePropsValidator implements IInstancePro
 
         if (FormDescriptionEditorElementProps.TYPE.equals(type)) {
             checkValidProps = props instanceof FormDescriptionEditorElementProps;
-        } else if (FormDescriptionEditorTextfieldElementProps.TYPE.equals(type)) {
-            checkValidProps = props instanceof FormDescriptionEditorTextfieldElementProps;
         }
         return checkValidProps;
     }

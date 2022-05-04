@@ -31,3 +31,21 @@ type FormDescriptionEditorWidget {
 	kind: String!
 	label: String!
 }
+
+extend type Mutation {
+  addWidget(input: AddWidgetInput!): AddWidgetPayload!
+}
+
+input AddWidgetInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  kind: String!
+  index: Int!
+}
+
+union AddWidgetPayload = AddWidgetSuccessPayload | ErrorPayload
+
+type AddWidgetSuccessPayload {
+  id: ID!
+}

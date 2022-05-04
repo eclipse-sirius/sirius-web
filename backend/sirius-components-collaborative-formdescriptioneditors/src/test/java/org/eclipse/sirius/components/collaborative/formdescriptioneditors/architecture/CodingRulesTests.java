@@ -36,12 +36,6 @@ public class CodingRulesTests extends AbstractCodingRulesTests {
 
     @Test
     @Override
-    public void noClassesShouldUseEMF() {
-        super.noClassesShouldUseEMF();
-    }
-
-    @Test
-    @Override
     public void noClassesShouldUseApacheCommons() {
         super.noClassesShouldUseApacheCommons();
     }

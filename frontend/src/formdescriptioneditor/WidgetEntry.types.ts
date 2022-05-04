@@ -12,13 +12,15 @@
  *******************************************************************************/
 import React from 'react';
 import { Selection } from 'workbench/Workbench.types';
-import { GQLFormDescriptionEditorWidget } from './FormDescriptionEditorWebSocketContainer.types';
+import { GQLFormDescriptionEditor, GQLFormDescriptionEditorWidget } from './FormDescriptionEditorEventFragment.types';
 
 export interface WidgetEntryProps {
+  editingContextId: string;
+  representationId: string;
+  formDescriptionEditor: GQLFormDescriptionEditor;
   widget: GQLFormDescriptionEditorWidget;
   selection: Selection;
   setSelection: (newSelection: Selection) => void;
-  onDropBefore: (event: React.DragEvent<HTMLDivElement>, widget: GQLFormDescriptionEditorWidget) => void;
 }
 
 export interface WidgetProps {
@@ -26,4 +28,8 @@ export interface WidgetProps {
   selection: Selection;
   setSelection: (newSelection: Selection) => void;
   onDropBefore: (event: React.DragEvent<HTMLDivElement>, widget: GQLFormDescriptionEditorWidget) => void;
+}
+
+export interface WidgetEntryState {
+  message: string | null;
 }
