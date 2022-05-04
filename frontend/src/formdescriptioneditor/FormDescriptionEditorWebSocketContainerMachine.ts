@@ -18,7 +18,7 @@ import {
   GQLFormDescriptionEditorRefreshedEventPayload,
   GQLSubscribersUpdatedEventPayload,
   Subscriber,
-} from 'formdescriptioneditor/FormDescriptionEditorWebSocketContainer.types';
+} from 'formdescriptioneditor/FormDescriptionEditorEventFragment.types';
 import { v4 as uuid } from 'uuid';
 import { assign, Machine } from 'xstate';
 

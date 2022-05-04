@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useSubscription } from '@apollo/client';
+import { useMutation, useSubscription } from '@apollo/client';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
@@ -21,12 +21,16 @@ import CloseIcon from '@material-ui/icons/Close';
 import TextFieldsIcon from '@material-ui/icons/TextFields';
 import { useMachine } from '@xstate/react';
 import {
+  GQLAddWidgetInput,
+  GQLAddWidgetMutationData,
+  GQLAddWidgetMutationVariables,
+  GQLAddWidgetPayload,
+  GQLErrorPayload,
   GQLFormDescriptionEditorEventInput,
   GQLFormDescriptionEditorEventSubscription,
   GQLFormDescriptionEditorEventVariables,
-  GQLFormDescriptionEditorWidget,
-  Kind,
-} from 'formdescriptioneditor/FormDescriptionEditorWebSocketContainer.types';
+} from 'formdescriptioneditor/FormDescriptionEditorEventFragment.types';
+import { Kind } from 'formdescriptioneditor/FormDescriptionEditorWebSocketContainer.types';
 import {
   FormDescriptionEditorWebSocketContainerContext,
   FormDescriptionEditorWebSocketContainerEvent,
@@ -38,46 +42,13 @@ import {
   ShowToastEvent,
 } from 'formdescriptioneditor/FormDescriptionEditorWebSocketContainerMachine';
 import { WidgetEntry } from 'formdescriptioneditor/WidgetEntry';
-import gql from 'graphql-tag';
 import React, { useEffect } from 'react';
 import { v4 as uuid } from 'uuid';
 import { RepresentationComponentProps } from 'workbench/Workbench.types';
+import { addWidgetMutation, formDescriptionEditorEventSubscription } from './FormDescriptionEditorEventFragment';
 
-export const formDescriptionEditorEventSubscription = gql`
-  subscription formDescriptionEditorEvent($input: FormDescriptionEditorEventInput!) {
-    formDescriptionEditorEvent(input: $input) {
-      __typename
-      ... on ErrorPayload {
-        id
-        message
-      }
-      ... on SubscribersUpdatedEventPayload {
-        id
-        subscribers {
-          username
-        }
-      }
-      ... on FormDescriptionEditorRefreshedEventPayload {
-        id
-        formDescriptionEditor {
-          id
-          metadata {
-            kind
-            label
-            description {
-              id
-            }
-          }
-          widgets {
-            id
-            label
-            kind
-          }
-        }
-      }
-    }
-  }
-`;
+const isErrorPayload = (payload: GQLAddWidgetPayload): payload is GQLErrorPayload =>
+  payload.__typename === 'ErrorPayload';
 
 const useFormDescriptionEditorStyles = makeStyles((theme) => ({
   formDescriptionEditor: {
@@ -193,6 +164,29 @@ export const FormDescriptionEditorWebSocketContainer = ({
     }
   );
 
+  const [addWidget, { loading: addWidgetLoading, data: addWidgetData, error: addWidgetError }] = useMutation<
+    GQLAddWidgetMutationData,
+    GQLAddWidgetMutationVariables
+  >(addWidgetMutation);
+
+  useEffect(() => {
+    if (!addWidgetLoading) {
+      if (addWidgetError) {
+        const message: string = addWidgetError.message;
+        const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
+        dispatch(showToastEvent);
+      }
+      if (addWidgetData) {
+        const { addWidget } = addWidgetData;
+        if (isErrorPayload(addWidget)) {
+          const { message } = addWidget;
+          const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
+          dispatch(showToastEvent);
+        }
+      }
+    }
+  }, [addWidgetLoading, addWidgetData, addWidgetError, dispatch]);
+
   useEffect(() => {
     if (error) {
       const message: string = 'An error has occurred while trying to retrieve the form description editor';
@@ -229,28 +223,16 @@ export const FormDescriptionEditorWebSocketContainer = ({
     event.currentTarget.classList.remove(classes.dragOver);
 
     const id: string = event.dataTransfer.getData('text/plain');
-    const newWidget: GQLFormDescriptionEditorWidget = {
+
+    const addWidgetInput: GQLAddWidgetInput = {
       id: uuid(),
-      label: id,
+      editingContextId,
+      representationId,
       kind: isKind(id) ? id : 'Textfield',
+      index: formDescriptionEditor.widgets.length,
     };
-    const updatedWidgets: GQLFormDescriptionEditorWidget[] = formDescriptionEditor.widgets;
-    updatedWidgets.push(newWidget);
-  };
-  const handleDropBefore = (event: React.DragEvent<HTMLDivElement>, widget: GQLFormDescriptionEditorWidget) => {
-    const id: string = event.dataTransfer.getData('text/plain');
-    const newWidget: GQLFormDescriptionEditorWidget = {
-      id: uuid(),
-      label: id,
-      kind: isKind(id) ? id : 'Textfield',
-    };
-    const updatedWidgets: GQLFormDescriptionEditorWidget[] = formDescriptionEditor.widgets;
-    let index: number = updatedWidgets.indexOf(widget);
-    if (index === -1) {
-      updatedWidgets.push(newWidget);
-    } else {
-      updatedWidgets.splice(index, 0, newWidget);
-    }
+    const addWidgetVariables: GQLAddWidgetMutationVariables = { input: addWidgetInput };
+    addWidget({ variables: addWidgetVariables });
   };
 
   let content: JSX.Element | null = null;
@@ -279,10 +261,12 @@ export const FormDescriptionEditorWebSocketContainer = ({
             {formDescriptionEditor.widgets.map((widget) => (
               <WidgetEntry
                 key={widget.id}
+                editingContextId={editingContextId}
+                representationId={representationId}
+                formDescriptionEditor={formDescriptionEditor}
                 widget={widget}
                 selection={selection}
                 setSelection={setSelection}
-                onDropBefore={handleDropBefore}
               />
             ))}
             <div

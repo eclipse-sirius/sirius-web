@@ -13,12 +13,9 @@
 package org.eclipse.sirius.components.formdescriptioneditors.renderer;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.formdescriptioneditors.FormDescriptionEditor;
-import org.eclipse.sirius.components.formdescriptioneditors.FormDescriptionEditorWidget;
 import org.eclipse.sirius.components.formdescriptioneditors.elements.FormDescriptionEditorElementProps;
-import org.eclipse.sirius.components.formdescriptioneditors.elements.FormDescriptionEditorTextfieldElementProps;
 import org.eclipse.sirius.components.representations.IElementFactory;
 import org.eclipse.sirius.components.representations.IProps;
 
@@ -34,33 +31,17 @@ public class FormDescriptionEditorElementFactory implements IElementFactory {
         Object object = null;
         if (FormDescriptionEditorElementProps.TYPE.equals(type) && props instanceof FormDescriptionEditorElementProps) {
             object = this.instantiateForm((FormDescriptionEditorElementProps) props, children);
-        } else if (FormDescriptionEditorTextfieldElementProps.TYPE.equals(type) && props instanceof FormDescriptionEditorTextfieldElementProps) {
-            object = this.instantiateWidget((FormDescriptionEditorTextfieldElementProps) props);
         }
         return object;
     }
 
     private FormDescriptionEditor instantiateForm(FormDescriptionEditorElementProps props, List<Object> children) {
         // @formatter:off
-        List<FormDescriptionEditorWidget> widgets = children.stream()
-                .filter(FormDescriptionEditorWidget.class::isInstance)
-                .map(FormDescriptionEditorWidget.class::cast)
-                .collect(Collectors.toList());
-
         return FormDescriptionEditor.newFormDescriptionEditor(props.getId())
                 .label(props.getLabel())
                 .targetObjectId(props.getTargetObjectId())
                 .descriptionId(props.getDescriptionId())
-                .widgets(widgets)
-                .build();
-        // @formatter:on
-    }
-
-    private FormDescriptionEditorWidget instantiateWidget(FormDescriptionEditorTextfieldElementProps props) {
-        // @formatter:off
-        return FormDescriptionEditorWidget.newFormDescriptionEditorWidget(props.getId())
-                .label(props.getLabel())
-                .kind(props.getKind())
+                .widgets(props.getWidgets())
                 .build();
         // @formatter:on
     }
