@@ -22,7 +22,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-validation</artifactId>
-	<version>2022.3.10</version>
+	<version>2022.3.11</version>
 	<name>sirius-components-validation</name>
 	<description>Sirius Components Validation</description>
 	
@@ -47,12 +47,12 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-representations</artifactId>
-			<version>2022.3.10</version>
+			<version>2022.3.11</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tests</artifactId>
-			<version>2022.3.10</version>
+			<version>2022.3.11</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
