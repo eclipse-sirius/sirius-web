@@ -56,6 +56,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-charts</artifactId>
+			<version>2022.3.11</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-core</artifactId>
 			<version>2022.3.11</version>
 		</dependency>
@@ -122,6 +127,11 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative</artifactId>
+			<version>2022.3.11</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-collaborative-charts</artifactId>
 			<version>2022.3.11</version>
 		</dependency>
 		<dependency>

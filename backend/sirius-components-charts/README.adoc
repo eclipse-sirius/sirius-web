@@ -1,0 +1,9 @@
+= sirius-component-charts
+
+== Goal
+
+This project contains the renderer, description and data structure to create charts.
+
+== Dependencies
+
+Nothing specific

@@ -1,0 +1,35 @@
+extend type Subscription {
+  hierarchyEvent(input: HierarchyEventInput!): HierarchyEventPayload!
+}
+
+input HierarchyEventInput {
+  id: ID!
+  editingContextId: ID!
+  hierarchyId: ID!
+}
+
+union HierarchyEventPayload = ErrorPayload | SubscribersUpdatedEventPayload | HierarchyRefreshedEventPayload
+
+type HierarchyRefreshedEventPayload {
+  id: ID!
+  hierarchy: Hierarchy!
+}
+
+type Hierarchy implements Representation {
+  id: ID!
+  metadata: RepresentationMetadata!
+  targetObjectId: ID!
+  children: [HierarchyNode!]!
+}
+
+type HierarchyNode {
+  id: ID!
+  label: String!
+  targetObjectId: ID!
+  children: [HierarchyNode]!
+}
+
+type HierarchyDescription implements RepresentationDescription {
+  id: ID!
+  label: String!
+}
