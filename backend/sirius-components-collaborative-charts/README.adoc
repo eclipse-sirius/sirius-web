@@ -1,0 +1,9 @@
+= sirius-component-collaborative-charts
+
+== Goal
+
+This project provides support for our charts collaborative edition layer.
+
+== Dependencies
+
+- sirius-component-charts

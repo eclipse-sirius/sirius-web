@@ -42,6 +42,7 @@
 	<modules>
 		<module>sirius-components-annotations-spring</module>
 		<module>sirius-components-annotations</module>
+		<module>sirius-components-charts</module>
 		<module>sirius-components-core</module>
 		<module>sirius-components-diagrams-layout-api</module>
 		<module>sirius-components-diagrams-layout</module>
@@ -55,6 +56,7 @@
 		<module>sirius-components-graphql-voyager</module>
 		<module>sirius-components-representations</module>
 		<module>sirius-components-selection</module>
+		<module>sirius-components-collaborative-charts</module>
 		<module>sirius-components-collaborative-diagrams</module>
 		<module>sirius-components-collaborative-formdescriptioneditors</module>
 		<module>sirius-components-collaborative-forms</module>
