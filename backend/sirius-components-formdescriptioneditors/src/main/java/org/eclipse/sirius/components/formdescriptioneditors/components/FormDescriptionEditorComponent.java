@@ -49,7 +49,11 @@ public class FormDescriptionEditorComponent implements IComponent {
         var optionalPreviousFormDescriptionEditor = this.props.getOptionalPreviousFormDescriptionEditor();
 
         String id = optionalPreviousFormDescriptionEditor.map(FormDescriptionEditor::getId).orElseGet(() -> UUID.randomUUID().toString());
-        String label = optionalPreviousFormDescriptionEditor.map(FormDescriptionEditor::getLabel).orElseGet(() -> "Form Description Editor"); //$NON-NLS-1$
+        // @formatter:off
+        String label = optionalPreviousFormDescriptionEditor.map(FormDescriptionEditor::getLabel)
+                .orElseGet(() -> variableManager.get(FormDescriptionEditor.LABEL, String.class)
+                .orElse("Form Description Editor")); //$NON-NLS-1$
+        // @formatter:on
         String targetObjectId = formDescriptionEditorDescription.getTargetObjectIdProvider().apply(variableManager);
         List<FormDescriptionEditorWidget> widgets = new ArrayList<>();
         widgets = formDescription.getWidgets().stream().map(widget -> {

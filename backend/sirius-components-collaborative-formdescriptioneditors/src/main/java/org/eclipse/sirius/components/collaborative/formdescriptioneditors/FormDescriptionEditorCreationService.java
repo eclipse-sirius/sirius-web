@@ -101,6 +101,7 @@ public class FormDescriptionEditorCreationService implements IFormDescriptionEdi
 
         VariableManager variableManager = new VariableManager();
         variableManager.put(VariableManager.SELF, targetObject);
+        variableManager.put(FormDescriptionEditor.LABEL, label);
         variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
         variableManager.put(Environment.ENVIRONMENT, new Environment(Environment.SIRIUS_COMPONENTS));
 
