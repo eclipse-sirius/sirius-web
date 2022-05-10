@@ -99,7 +99,7 @@ export const WidgetEntry = ({
         {
           id: widget.id,
           label: widget.label,
-          kind: `siriusComponents://semantic?domain=view&type=${widget.kind}Description`,
+          kind: `siriusComponents://semantic?domain=view&entity=${widget.kind}Description`,
         },
       ],
     };

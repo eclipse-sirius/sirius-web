@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.formdescriptioneditors.FormDescriptionEditor;
 import org.eclipse.sirius.components.formdescriptioneditors.FormDescriptionEditorWidget;
 import org.eclipse.sirius.components.formdescriptioneditors.description.FormDescriptionEditorDescription;
@@ -54,12 +53,17 @@ public class FormDescriptionEditorComponent implements IComponent {
         String targetObjectId = formDescriptionEditorDescription.getTargetObjectIdProvider().apply(variableManager);
         List<FormDescriptionEditorWidget> widgets = new ArrayList<>();
         widgets = formDescription.getWidgets().stream().map(widget -> {
+
+            VariableManager variableManager2 = variableManager.createChild();
+            variableManager2.put(VariableManager.SELF, widget);
+            String widgetId = formDescriptionEditorDescription.getTargetObjectIdProvider().apply(variableManager2);
+
             String name = widget.getName();
             if (name == null) {
                 name = this.getKind(widget);
             }
             // @formatter:off
-            return FormDescriptionEditorWidget.newFormDescriptionEditorWidget(UUID.nameUUIDFromBytes(EcoreUtil.getURI(widget).toString().getBytes()).toString())
+            return FormDescriptionEditorWidget.newFormDescriptionEditorWidget(widgetId)
                     .label(name)
                     .kind(this.getKind(widget))
                     .build();
