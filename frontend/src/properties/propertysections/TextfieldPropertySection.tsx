@@ -204,7 +204,7 @@ export const TextfieldPropertySection = ({
         value={value}
         margin="dense"
         multiline={isTextarea(widget)}
-        rowsMax={isTextarea(widget) ? 4 : 1}
+        maxRows={isTextarea(widget) ? 4 : 1}
         fullWidth
         onChange={onChange}
         onBlur={onBlur}
