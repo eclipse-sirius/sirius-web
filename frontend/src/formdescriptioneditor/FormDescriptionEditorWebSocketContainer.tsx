@@ -17,7 +17,10 @@ import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
+import ArrowDropDownCircleIcon from '@material-ui/icons/ArrowDropDownCircle';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import CloseIcon from '@material-ui/icons/Close';
+import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
 import TextFieldsIcon from '@material-ui/icons/TextFields';
 import { useMachine } from '@xstate/react';
 import {
@@ -120,7 +123,14 @@ const useFormDescriptionEditorStyles = makeStyles((theme) => ({
 }));
 
 const isKind = (value: string): value is Kind => {
-  return value === 'Textfield';
+  return (
+    value === 'Textfield' ||
+    value === 'TextArea' ||
+    value === 'Checkbox' ||
+    value === 'Radio' ||
+    value === 'Select' ||
+    value === 'MultiSelect'
+  );
 };
 
 export const FormDescriptionEditorWebSocketContainer = ({
@@ -252,6 +262,66 @@ export const FormDescriptionEditorWebSocketContainer = ({
             <TextFieldsIcon />
             <Typography variant="caption" gutterBottom>
               Textfield
+            </Typography>
+          </div>
+          <div
+            id="TextArea"
+            data-testid="FormDescriptionEditor-TextArea"
+            draggable="true"
+            className={classes.widgetKind}
+            onDragStart={handleDragStart}
+          >
+            <TextFieldsIcon />
+            <Typography variant="caption" gutterBottom>
+              Textarea
+            </Typography>
+          </div>
+          <div
+            id="Checkbox"
+            data-testid="FormDescriptionEditor-Checkbox"
+            draggable="true"
+            className={classes.widgetKind}
+            onDragStart={handleDragStart}
+          >
+            <CheckBoxIcon />
+            <Typography variant="caption" gutterBottom>
+              Checkbox
+            </Typography>
+          </div>
+          <div
+            id="Radio"
+            data-testid="FormDescriptionEditor-Radio"
+            draggable="true"
+            className={classes.widgetKind}
+            onDragStart={handleDragStart}
+          >
+            <RadioButtonCheckedIcon />
+            <Typography variant="caption" gutterBottom>
+              Radio
+            </Typography>
+          </div>
+          <div
+            id="Select"
+            data-testid="FormDescriptionEditor-Select"
+            draggable="true"
+            className={classes.widgetKind}
+            onDragStart={handleDragStart}
+          >
+            <ArrowDropDownCircleIcon />
+            <Typography variant="caption" gutterBottom>
+              Select
+            </Typography>
+          </div>
+          <div
+            id="MultiSelect"
+            data-testid="FormDescriptionEditor-MultiSelect"
+            draggable="true"
+            className={classes.widgetKind}
+            onDragStart={handleDragStart}
+          >
+            <ArrowDropDownCircleIcon />
+            <Typography variant="caption" gutterBottom>
+              MultiSelect
             </Typography>
           </div>
         </div>

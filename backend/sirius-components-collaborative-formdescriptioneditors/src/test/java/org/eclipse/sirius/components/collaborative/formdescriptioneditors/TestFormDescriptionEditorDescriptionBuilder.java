@@ -12,9 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.formdescriptioneditors;
 
-import java.util.List;
-
-import org.eclipse.sirius.components.formdescriptioneditors.description.AbstractFormDescriptionEditorWidgetDescription;
 import org.eclipse.sirius.components.formdescriptioneditors.description.FormDescriptionEditorDescription;
 
 /**
@@ -24,13 +21,12 @@ import org.eclipse.sirius.components.formdescriptioneditors.description.FormDesc
  */
 public class TestFormDescriptionEditorDescriptionBuilder {
 
-    public FormDescriptionEditorDescription getFormDescriptionEditorDescription(String formDescriptionEditorDescriptionId, List<AbstractFormDescriptionEditorWidgetDescription> widgetDescriptions) {
+    public FormDescriptionEditorDescription getFormDescriptionEditorDescription(String formDescriptionEditorDescriptionId) {
         // @formatter:off
         return FormDescriptionEditorDescription.newFormDescriptionEditorDescription(formDescriptionEditorDescriptionId)
             .label("") //$NON-NLS-1$
             .canCreatePredicate(variableManager -> Boolean.TRUE)
             .targetObjectIdProvider(variableManager -> "targetObjectId") //$NON-NLS-1$
-            .widgetDescriptions(widgetDescriptions)
             .build();
         // @formatter:on
     }

@@ -10,8 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import Checkbox from '@material-ui/core/Checkbox';
 import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import { WidgetProps } from 'formdescriptioneditor/WidgetEntry.types';
 import React, { useEffect, useRef, useState } from 'react';
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const TextfieldWidget = ({ widget, selection }: WidgetProps) => {
+export const CheckboxWidget = ({ widget, selection }: WidgetProps) => {
   const classes = useStyles();
 
   const [selected, setSelected] = useState<boolean>(false);
@@ -43,16 +43,12 @@ export const TextfieldWidget = ({ widget, selection }: WidgetProps) => {
       <Typography variant="subtitle2" className={selected ? classes.selected : ''}>
         {widget.label}
       </Typography>
-      <TextField
+      <Checkbox
         data-testid={widget.label}
-        fullWidth
+        checked
         inputRef={ref}
         onFocus={() => setSelected(true)}
         onBlur={() => setSelected(false)}
-        InputProps={{
-          readOnly: true,
-        }}
-        value="Lorem ipsum dolor sit amet, consectetur adipiscing elit"
       />
     </div>
   );

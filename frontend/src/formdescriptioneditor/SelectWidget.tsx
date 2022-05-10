@@ -10,8 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
 import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import { WidgetProps } from 'formdescriptioneditor/WidgetEntry.types';
 import React, { useEffect, useRef, useState } from 'react';
@@ -22,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const TextfieldWidget = ({ widget, selection }: WidgetProps) => {
+export const SelectWidget = ({ widget, selection }: WidgetProps) => {
   const classes = useStyles();
 
   const [selected, setSelected] = useState<boolean>(false);
@@ -43,17 +44,22 @@ export const TextfieldWidget = ({ widget, selection }: WidgetProps) => {
       <Typography variant="subtitle2" className={selected ? classes.selected : ''}>
         {widget.label}
       </Typography>
-      <TextField
+      <Select
         data-testid={widget.label}
+        label={widget.label}
         fullWidth
+        value="value1"
         inputRef={ref}
         onFocus={() => setSelected(true)}
         onBlur={() => setSelected(false)}
-        InputProps={{
-          readOnly: true,
-        }}
-        value="Lorem ipsum dolor sit amet, consectetur adipiscing elit"
-      />
+      >
+        <MenuItem value="">
+          <em>None</em>
+        </MenuItem>
+        <MenuItem value="value1">Value 1</MenuItem>
+        <MenuItem value="value2">Value 2</MenuItem>
+        <MenuItem value="value3">Value 3</MenuItem>
+      </Select>
     </div>
   );
 };

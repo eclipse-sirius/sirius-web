@@ -18,6 +18,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import React, { useEffect, useState } from 'react';
 import { v4 as uuid } from 'uuid';
 import { Selection } from 'workbench/Workbench.types';
+import { CheckboxWidget } from './CheckboxWidget';
 import { addWidgetMutation } from './FormDescriptionEditorEventFragment';
 import {
   GQLAddWidgetInput,
@@ -28,10 +29,14 @@ import {
   GQLFormDescriptionEditorWidget,
 } from './FormDescriptionEditorEventFragment.types';
 import { Kind } from './FormDescriptionEditorWebSocketContainer.types';
+import { MultiSelectWidget } from './MultiSelectWidget';
+import { RadioWidget } from './RadioWidget';
+import { SelectWidget } from './SelectWidget';
+import { TextAreaWidget } from './TextAreaWidget';
 import { TextfieldWidget } from './TextfieldWidget';
 import { WidgetEntryProps, WidgetEntryState } from './WidgetEntry.types';
 
-const useWidgetEntryStyles = makeStyles((theme) => ({
+const useWidgetEntryStyles = makeStyles(() => ({
   widget: {
     display: 'flex',
     flexDirection: 'column',
@@ -49,7 +54,14 @@ const isErrorPayload = (payload: GQLAddWidgetPayload): payload is GQLErrorPayloa
   payload.__typename === 'ErrorPayload';
 
 const isKind = (value: string): value is Kind => {
-  return value === 'Textfield';
+  return (
+    value === 'Textfield' ||
+    value === 'TextArea' ||
+    value === 'Checkbox' ||
+    value === 'Radio' ||
+    value === 'Select' ||
+    value === 'MultiSelect'
+  );
 };
 
 export const WidgetEntry = ({
@@ -146,6 +158,56 @@ export const WidgetEntry = ({
   if (widget.kind === 'Textfield') {
     widgetElement = (
       <TextfieldWidget
+        data-testid={widget.id}
+        widget={widget}
+        selection={selection}
+        setSelection={setSelection}
+        onDropBefore={onDropBefore}
+      />
+    );
+  } else if (widget.kind === 'TextArea') {
+    widgetElement = (
+      <TextAreaWidget
+        data-testid={widget.id}
+        widget={widget}
+        selection={selection}
+        setSelection={setSelection}
+        onDropBefore={onDropBefore}
+      />
+    );
+  } else if (widget.kind === 'Checkbox') {
+    widgetElement = (
+      <CheckboxWidget
+        data-testid={widget.id}
+        widget={widget}
+        selection={selection}
+        setSelection={setSelection}
+        onDropBefore={onDropBefore}
+      />
+    );
+  } else if (widget.kind === 'Radio') {
+    widgetElement = (
+      <RadioWidget
+        data-testid={widget.id}
+        widget={widget}
+        selection={selection}
+        setSelection={setSelection}
+        onDropBefore={onDropBefore}
+      />
+    );
+  } else if (widget.kind === 'Select') {
+    widgetElement = (
+      <SelectWidget
+        data-testid={widget.id}
+        widget={widget}
+        selection={selection}
+        setSelection={setSelection}
+        onDropBefore={onDropBefore}
+      />
+    );
+  } else if (widget.kind === 'MultiSelect') {
+    widgetElement = (
+      <MultiSelectWidget
         data-testid={widget.id}
         widget={widget}
         selection={selection}

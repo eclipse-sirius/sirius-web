@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.formdescriptioneditors.configuration;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Function;
@@ -22,9 +20,7 @@ import java.util.function.Predicate;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.configuration.IRepresentationDescriptionRegistry;
 import org.eclipse.sirius.components.core.configuration.IRepresentationDescriptionRegistryConfigurer;
-import org.eclipse.sirius.components.formdescriptioneditors.description.AbstractFormDescriptionEditorWidgetDescription;
 import org.eclipse.sirius.components.formdescriptioneditors.description.FormDescriptionEditorDescription;
-import org.eclipse.sirius.components.formdescriptioneditors.description.FormDescriptionEditorTextfieldDescription;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.ViewPackage;
@@ -57,20 +53,10 @@ public class FormDescriptionEditorDescriptionRegistryConfigurer implements IRepr
                 .map(this.objectService::getId)
                 .orElse(null);
 
-        List<AbstractFormDescriptionEditorWidgetDescription> widgetsDescriptions = new ArrayList<>();
-
-        UUID textfieldId = UUID.nameUUIDFromBytes("FormDescriptionEditorTextfield".getBytes()); //$NON-NLS-1$
-        String textfieldLabel = "Textfield"; //$NON-NLS-1$
-        FormDescriptionEditorTextfieldDescription textfieldDescription = FormDescriptionEditorTextfieldDescription.newFormDescriptionEditorTextfieldDescription(textfieldId.toString())
-                .label(textfieldLabel)
-                .build();
-        widgetsDescriptions.add(textfieldDescription);
-
         FormDescriptionEditorDescription formDescriptionEditorDescription = FormDescriptionEditorDescription.newFormDescriptionEditorDescription(id.toString())
                 .label(label)
                 .targetObjectIdProvider(targetObjectIdProvider)
                 .canCreatePredicate(canCreatePredicate)
-                .widgetDescriptions(widgetsDescriptions)
                 .build();
 
         registry.add(formDescriptionEditorDescription);

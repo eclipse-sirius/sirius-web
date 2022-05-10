@@ -10,4 +10,4 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-export type Kind = 'Textfield';
+export type Kind = 'Textfield' | 'TextArea' | 'Checkbox' | 'Radio' | 'Select' | 'MultiSelect';
