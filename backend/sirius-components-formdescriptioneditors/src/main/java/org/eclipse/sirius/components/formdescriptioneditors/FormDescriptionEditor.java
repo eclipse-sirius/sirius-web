@@ -30,6 +30,8 @@ public final class FormDescriptionEditor implements IRepresentation, ISemanticRe
 
     public static final String KIND = IRepresentation.KIND_PREFIX + "?type=FormDescriptionEditor"; //$NON-NLS-1$
 
+    public static final String LABEL = "label"; //$NON-NLS-1$
+
     private String id;
 
     private String kind;
