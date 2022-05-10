@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const TextfieldWidget = ({ widget, selection }: WidgetProps) => {
+export const TextAreaWidget = ({ widget, selection }: WidgetProps) => {
   const classes = useStyles();
 
   const [selected, setSelected] = useState<boolean>(false);
@@ -45,6 +45,8 @@ export const TextfieldWidget = ({ widget, selection }: WidgetProps) => {
       </Typography>
       <TextField
         data-testid={widget.label}
+        multiline
+        minRows={3}
         fullWidth
         inputRef={ref}
         onFocus={() => setSelected(true)}
@@ -52,7 +54,7 @@ export const TextfieldWidget = ({ widget, selection }: WidgetProps) => {
         InputProps={{
           readOnly: true,
         }}
-        value="Lorem ipsum dolor sit amet, consectetur adipiscing elit"
+        value="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
       />
     </div>
   );

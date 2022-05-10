@@ -13,7 +13,6 @@
 package org.eclipse.sirius.components.formdescriptioneditors.description;
 
 import java.text.MessageFormat;
-import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -40,8 +39,6 @@ public final class FormDescriptionEditorDescription implements IRepresentationDe
 
     private Predicate<VariableManager> canCreatePredicate;
 
-    private List<AbstractFormDescriptionEditorWidgetDescription> widgetDescriptions;
-
     private FormDescriptionEditorDescription() {
         // Prevent instantiation
     }
@@ -63,10 +60,6 @@ public final class FormDescriptionEditorDescription implements IRepresentationDe
     @Override
     public Predicate<VariableManager> getCanCreatePredicate() {
         return this.canCreatePredicate;
-    }
-
-    public List<AbstractFormDescriptionEditorWidgetDescription> getWidgetDescriptions() {
-        return this.widgetDescriptions;
     }
 
     public static Builder newFormDescriptionEditorDescription(String id) {
@@ -94,8 +87,6 @@ public final class FormDescriptionEditorDescription implements IRepresentationDe
 
         private Predicate<VariableManager> canCreatePredicate;
 
-        private List<AbstractFormDescriptionEditorWidgetDescription> widgetDescriptions;
-
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -115,18 +106,12 @@ public final class FormDescriptionEditorDescription implements IRepresentationDe
             return this;
         }
 
-        public Builder widgetDescriptions(List<AbstractFormDescriptionEditorWidgetDescription> widgetDescriptions) {
-            this.widgetDescriptions = Objects.requireNonNull(widgetDescriptions);
-            return this;
-        }
-
         public FormDescriptionEditorDescription build() {
             FormDescriptionEditorDescription formDescriptionEditorDescription = new FormDescriptionEditorDescription();
             formDescriptionEditorDescription.id = Objects.requireNonNull(this.id);
             formDescriptionEditorDescription.label = Objects.requireNonNull(this.label);
             formDescriptionEditorDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
             formDescriptionEditorDescription.canCreatePredicate = Objects.requireNonNull(this.canCreatePredicate);
-            formDescriptionEditorDescription.widgetDescriptions = Objects.requireNonNull(this.widgetDescriptions);
             return formDescriptionEditorDescription;
         }
     }

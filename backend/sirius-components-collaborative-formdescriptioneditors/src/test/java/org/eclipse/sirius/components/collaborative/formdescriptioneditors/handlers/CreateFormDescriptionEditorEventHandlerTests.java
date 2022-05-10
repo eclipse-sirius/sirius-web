@@ -14,7 +14,6 @@ package org.eclipse.sirius.components.collaborative.formdescriptioneditors.handl
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -56,7 +55,6 @@ public class CreateFormDescriptionEditorEventHandlerTests {
                         .label("label") //$NON-NLS-1$
                         .canCreatePredicate(variableManager -> Boolean.TRUE)
                         .targetObjectIdProvider(variableManager -> "targetObjectId") //$NON-NLS-1$
-                        .widgetDescriptions(List.of())
                         .build();
                 // @formatter:on
 
