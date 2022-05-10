@@ -12,13 +12,22 @@
  *******************************************************************************/
 import TextField from '@material-ui/core/TextField';
 import { WidgetProps } from 'formdescriptioneditor/WidgetEntry.types';
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 
-export const TextfieldWidget = ({ widget }: WidgetProps) => {
+export const TextfieldWidget = ({ widget, selection }: WidgetProps) => {
+  const ref = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    if (ref.current && selection.entries.find((entry) => entry.id === widget.id)) {
+      ref.current.focus();
+    }
+  }, [selection, widget]);
+
   return (
     <TextField
       data-testid={widget.label}
       label={widget.label}
+      inputRef={ref}
       InputProps={{
         readOnly: true,
       }}
