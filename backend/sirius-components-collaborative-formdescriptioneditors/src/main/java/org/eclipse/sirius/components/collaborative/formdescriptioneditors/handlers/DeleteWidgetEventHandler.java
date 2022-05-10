@@ -14,24 +14,20 @@ package org.eclipse.sirius.components.collaborative.formdescriptioneditors.handl
 
 import java.util.Objects;
 
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.api.IFormDescriptionEditorContext;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.api.IFormDescriptionEditorEventHandler;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.api.IFormDescriptionEditorInput;
-import org.eclipse.sirius.components.collaborative.formdescriptioneditors.dto.AddWidgetInput;
-import org.eclipse.sirius.components.collaborative.formdescriptioneditors.dto.AddWidgetSuccessPayload;
+import org.eclipse.sirius.components.collaborative.formdescriptioneditors.dto.DeleteWidgetInput;
+import org.eclipse.sirius.components.collaborative.formdescriptioneditors.dto.DeleteWidgetSuccessPayload;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.messages.ICollaborativeFormDescriptionEditorMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
+import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
-import org.eclipse.sirius.components.view.FormDescription;
-import org.eclipse.sirius.components.view.ViewFactory;
-import org.eclipse.sirius.components.view.WidgetDescription;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
@@ -40,21 +36,24 @@ import reactor.core.publisher.Sinks.Many;
 import reactor.core.publisher.Sinks.One;
 
 /**
- * Handle the add widget event on Form Description Editor.
+ * Handle the delete widget event on Form Description Editor.
  *
  * @author arichard
  */
 @Service
-public class AddWidgetEventHandler implements IFormDescriptionEditorEventHandler {
+public class DeleteWidgetEventHandler implements IFormDescriptionEditorEventHandler {
 
     private final IObjectService objectService;
+
+    private final IEditService editService;
 
     private final ICollaborativeFormDescriptionEditorMessageService messageService;
 
     private final Counter counter;
 
-    public AddWidgetEventHandler(IObjectService objectService, ICollaborativeFormDescriptionEditorMessageService messageService, MeterRegistry meterRegistry) {
+    public DeleteWidgetEventHandler(IObjectService objectService, IEditService editService, ICollaborativeFormDescriptionEditorMessageService messageService, MeterRegistry meterRegistry) {
         this.objectService = Objects.requireNonNull(objectService);
+        this.editService = Objects.requireNonNull(editService);
         this.messageService = Objects.requireNonNull(messageService);
 
         // @formatter:off
@@ -66,7 +65,7 @@ public class AddWidgetEventHandler implements IFormDescriptionEditorEventHandler
 
     @Override
     public boolean canHandle(IFormDescriptionEditorInput formDescriptionEditorInput) {
-        return formDescriptionEditorInput instanceof AddWidgetInput;
+        return formDescriptionEditorInput instanceof DeleteWidgetInput;
     }
 
     @Override
@@ -74,16 +73,15 @@ public class AddWidgetEventHandler implements IFormDescriptionEditorEventHandler
             IFormDescriptionEditorInput formDescriptionEditorInput) {
         this.counter.increment();
 
-        String message = this.messageService.invalidInput(formDescriptionEditorInput.getClass().getSimpleName(), AddWidgetInput.class.getSimpleName());
+        String message = this.messageService.invalidInput(formDescriptionEditorInput.getClass().getSimpleName(), DeleteWidgetInput.class.getSimpleName());
         IPayload payload = new ErrorPayload(formDescriptionEditorInput.getId(), message);
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, formDescriptionEditorInput.getRepresentationId(), formDescriptionEditorInput);
 
-        if (formDescriptionEditorInput instanceof AddWidgetInput) {
-            String kind = ((AddWidgetInput) formDescriptionEditorInput).getKind();
-            int index = ((AddWidgetInput) formDescriptionEditorInput).getIndex();
-            boolean addWidget = this.addWidget(editingContext, formDescriptionEditorContext, kind, index);
-            if (addWidget) {
-                payload = new AddWidgetSuccessPayload(formDescriptionEditorInput.getId());
+        if (formDescriptionEditorInput instanceof DeleteWidgetInput) {
+            String widgetId = ((DeleteWidgetInput) formDescriptionEditorInput).getWidgetId();
+            boolean deleteWidget = this.deleteWidget(editingContext, formDescriptionEditorContext, widgetId);
+            if (deleteWidget) {
+                payload = new DeleteWidgetSuccessPayload(formDescriptionEditorInput.getId());
                 changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formDescriptionEditorInput.getRepresentationId(), formDescriptionEditorInput);
             }
         }
@@ -92,20 +90,11 @@ public class AddWidgetEventHandler implements IFormDescriptionEditorEventHandler
         changeDescriptionSink.tryEmitNext(changeDescription);
     }
 
-    protected boolean addWidget(IEditingContext editingContext, IFormDescriptionEditorContext formDescriptionEditorContext, String kind, int index) {
-        var optionalSelf = this.objectService.getObject(editingContext, formDescriptionEditorContext.getFormDescriptionEditor().getTargetObjectId());
+    protected boolean deleteWidget(IEditingContext editingContext, IFormDescriptionEditorContext formDescriptionEditorContext, String widgetId) {
+        var optionalSelf = this.objectService.getObject(editingContext, widgetId);
         if (optionalSelf.isPresent()) {
-            Object formDescription = optionalSelf.get();
-            if (formDescription instanceof FormDescription) {
-                EClassifier eClassifier = ViewFactory.eINSTANCE.getEPackage().getEClassifier(kind + "Description"); //$NON-NLS-1$
-                if (eClassifier instanceof EClass) {
-                    var widgetDescription = ViewFactory.eINSTANCE.create((EClass) eClassifier);
-                    if (widgetDescription instanceof WidgetDescription) {
-                        ((FormDescription) formDescription).getWidgets().add(index, (WidgetDescription) widgetDescription);
-                        return true;
-                    }
-                }
-            }
+            this.editService.delete(optionalSelf.get());
+            return true;
         }
         return false;
     }

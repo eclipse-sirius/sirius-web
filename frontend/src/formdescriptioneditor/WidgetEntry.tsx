@@ -19,12 +19,15 @@ import React, { useEffect, useState } from 'react';
 import { v4 as uuid } from 'uuid';
 import { Selection } from 'workbench/Workbench.types';
 import { CheckboxWidget } from './CheckboxWidget';
-import { addWidgetMutation } from './FormDescriptionEditorEventFragment';
+import { addWidgetMutation, deleteWidgetMutation } from './FormDescriptionEditorEventFragment';
 import {
   GQLAddWidgetInput,
   GQLAddWidgetMutationData,
   GQLAddWidgetMutationVariables,
   GQLAddWidgetPayload,
+  GQLDeleteWidgetInput,
+  GQLDeleteWidgetMutationData,
+  GQLDeleteWidgetMutationVariables,
   GQLErrorPayload,
   GQLFormDescriptionEditorWidget,
 } from './FormDescriptionEditorEventFragment.types';
@@ -105,6 +108,31 @@ export const WidgetEntry = ({
     }
   }, [addWidgetLoading, addWidgetData, addWidgetError]);
 
+  const [deleteWidget, { loading: deleteWidgetLoading, data: deleteWidgetData, error: deleteWidgetError }] =
+    useMutation<GQLDeleteWidgetMutationData, GQLDeleteWidgetMutationVariables>(deleteWidgetMutation);
+
+  useEffect(() => {
+    if (!deleteWidgetLoading) {
+      if (deleteWidgetError) {
+        setState((prevState) => {
+          const newState = { ...prevState };
+          newState.message = deleteWidgetError.message;
+          return newState;
+        });
+      }
+      if (deleteWidgetData) {
+        const { deleteWidget } = deleteWidgetData;
+        if (isErrorPayload(deleteWidget)) {
+          setState((prevState) => {
+            const newState = { ...prevState };
+            newState.message = deleteWidget.message;
+            return newState;
+          });
+        }
+      }
+    }
+  }, [deleteWidgetLoading, deleteWidgetData, deleteWidgetError]);
+
   const handleClick: React.MouseEventHandler<HTMLDivElement> = (event) => {
     const newSelection: Selection = {
       entries: [
@@ -116,6 +144,20 @@ export const WidgetEntry = ({
       ],
     };
     setSelection(newSelection);
+  };
+
+  const handleDelete: React.KeyboardEventHandler<HTMLDivElement> = (event) => {
+    event.preventDefault();
+    if (event.key === 'Delete') {
+      const deleteWidgetInput: GQLDeleteWidgetInput = {
+        id: uuid(),
+        editingContextId,
+        representationId,
+        widgetId: widget.id,
+      };
+      const deleteWidgetVariables: GQLDeleteWidgetMutationVariables = { input: deleteWidgetInput };
+      deleteWidget({ variables: deleteWidgetVariables });
+    }
   };
 
   const handleDragEnter: React.DragEventHandler<HTMLDivElement> = (event) => {
@@ -217,7 +259,7 @@ export const WidgetEntry = ({
     );
   }
   return (
-    <div className={classes.widget} onClick={handleClick}>
+    <div className={classes.widget} onClick={handleClick} onKeyDown={handleDelete}>
       <div
         data-testid="WidgetEntry-DropArea"
         className={classes.placeholder}

@@ -12,11 +12,14 @@
  *******************************************************************************/
 import { MockedProvider, MockedResponse } from '@apollo/client/testing';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { addWidgetMutation } from 'formdescriptioneditor/FormDescriptionEditorEventFragment';
+import { addWidgetMutation, deleteWidgetMutation } from 'formdescriptioneditor/FormDescriptionEditorEventFragment';
 import {
   GQLAddWidgetMutationData,
   GQLAddWidgetMutationVariables,
   GQLAddWidgetSuccessPayload,
+  GQLDeleteWidgetMutationData,
+  GQLDeleteWidgetMutationVariables,
+  GQLDeleteWidgetSuccessPayload,
   GQLFormDescriptionEditor,
   GQLFormDescriptionEditorWidget,
 } from 'formdescriptioneditor/FormDescriptionEditorEventFragment.types';
@@ -47,6 +50,20 @@ const addWidgetSuccessPayload: GQLAddWidgetSuccessPayload = {
   id: '48be95fc-3422-45d3-b1f9-d590e847e9e1',
 };
 const addWidgetSuccessData: GQLAddWidgetMutationData = { addWidget: addWidgetSuccessPayload };
+
+const deleteWidgetVariables: GQLDeleteWidgetMutationVariables = {
+  input: {
+    id: '48be95fc-3422-45d3-b1f9-d590e847e9e1',
+    editingContextId: 'editingContextId',
+    representationId: 'formDescriptionEditorId',
+    widgetId: 'Textfield1',
+  },
+};
+const deleteWidgetSuccessPayload: GQLDeleteWidgetSuccessPayload = {
+  __typename: 'AddWidgetSuccessPayload',
+  id: '48be95fc-3422-45d3-b1f9-d590e847e9e1',
+};
+const deleteWidgetSuccessData: GQLDeleteWidgetMutationData = { deleteWidget: deleteWidgetSuccessPayload };
 
 test('should drop the Textfield in the drop area', async () => {
   const formDescriptionEditor: GQLFormDescriptionEditor = {
@@ -103,6 +120,64 @@ test('should drop the Textfield in the drop area', async () => {
     await new Promise((resolve) => setTimeout(resolve, 0));
     await waitFor(() => {
       expect(addWidgetCalled).toBeTruthy();
+    });
+  });
+});
+
+test('should delete the Textfield from the drop area', async () => {
+  const formDescriptionEditor: GQLFormDescriptionEditor = {
+    id: 'FormDescriptionEditor',
+    widgets: [{ id: 'TextfieldDescription', kind: 'TextfieldDescription', label: 'Textfield1' }],
+    metadata: {
+      id: 'FormDescriptionEditor',
+      kind: 'FormDescriptionEditor',
+      label: 'FormDescriptionEditor',
+      description: { id: 'FormDescriptionEditorDescription' },
+    },
+  };
+
+  const textfieldWidget: GQLFormDescriptionEditorWidget = {
+    id: 'Textfield1',
+    label: 'Textfield1',
+    kind: 'Textfield',
+  };
+
+  let deleteWidgetCalled: boolean = false;
+  const deleteWidgetSuccessMock: MockedResponse<Record<string, any>> = {
+    request: {
+      query: deleteWidgetMutation,
+      variables: deleteWidgetVariables,
+    },
+    result: () => {
+      deleteWidgetCalled = true;
+      return { data: deleteWidgetSuccessData };
+    },
+  };
+
+  const mocks: MockedResponse<Record<string, any>>[] = [deleteWidgetSuccessMock];
+
+  render(
+    <MockedProvider mocks={mocks}>
+      <WidgetEntry
+        editingContextId="editingContextId"
+        representationId="formDescriptionEditorId"
+        formDescriptionEditor={formDescriptionEditor}
+        widget={textfieldWidget}
+        selection={emptySelection}
+        setSelection={emptySetSelection}
+      />
+    </MockedProvider>
+  );
+
+  const textfield1: HTMLElement = screen.getByTestId('Textfield1');
+  expect(textfield1).not.toBeUndefined();
+
+  await act(async () => {
+    textfield1.focus();
+    fireEvent.keyDown(textfield1, { key: 'Delete', code: 'NumpadDecimal' });
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    await waitFor(() => {
+      expect(deleteWidgetCalled).toBeTruthy();
     });
   });
 });
