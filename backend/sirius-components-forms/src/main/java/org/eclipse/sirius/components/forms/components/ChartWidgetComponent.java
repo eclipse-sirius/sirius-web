@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.charts.piechart.components.PieChartComponen
 import org.eclipse.sirius.components.charts.piechart.components.PieChartComponentProps;
 import org.eclipse.sirius.components.forms.description.ChartWidgetDescription;
 import org.eclipse.sirius.components.forms.elements.ChartWidgetElementProps;
+import org.eclipse.sirius.components.forms.elements.ChartWidgetElementProps.Builder;
 import org.eclipse.sirius.components.forms.validation.DiagnosticComponent;
 import org.eclipse.sirius.components.forms.validation.DiagnosticComponentProps;
 import org.eclipse.sirius.components.representations.Element;
@@ -52,6 +53,7 @@ public class ChartWidgetComponent implements IComponent {
 
         String id = chartWidgetDescription.getIdProvider().apply(variableManager);
         String label = chartWidgetDescription.getLabelProvider().apply(variableManager);
+        String iconURL = chartWidgetDescription.getIconURLProvider().apply(variableManager);
         IChartDescription chartDescription = chartWidgetDescription.getChartDescription();
 
         List<Element> children = new ArrayList<>();
@@ -63,12 +65,14 @@ public class ChartWidgetComponent implements IComponent {
         children.add(new Element(DiagnosticComponent.class, new DiagnosticComponentProps(chartWidgetDescription, variableManager)));
 
         // @formatter:off
-        ChartWidgetElementProps chartWidgetElementProps = ChartWidgetElementProps.newChartWidgetElementProps(id)
+        Builder chartWidgetElementPropsBuilder = ChartWidgetElementProps.newChartWidgetElementProps(id)
                 .label(label)
-                .children(children)
-                .build();
+                .children(children);
         // @formatter:on
-        return new Element(ChartWidgetElementProps.TYPE, chartWidgetElementProps);
+        if (iconURL != null) {
+            chartWidgetElementPropsBuilder.iconURL(iconURL);
+        }
+        return new Element(ChartWidgetElementProps.TYPE, chartWidgetElementPropsBuilder.build());
     }
 
 }

@@ -72,6 +72,8 @@ public final class Textfield extends AbstractWidget {
 
         private String label;
 
+        private String iconURL;
+
         private String value;
 
         private Function<String, IStatus> newValueHandler;
@@ -86,6 +88,11 @@ public final class Textfield extends AbstractWidget {
 
         public Builder label(String label) {
             this.label = Objects.requireNonNull(label);
+            return this;
+        }
+
+        public Builder iconURL(String iconURL) {
+            this.iconURL = Objects.requireNonNull(iconURL);
             return this;
         }
 
@@ -113,6 +120,7 @@ public final class Textfield extends AbstractWidget {
             Textfield textfield = new Textfield();
             textfield.id = Objects.requireNonNull(this.id);
             textfield.label = Objects.requireNonNull(this.label);
+            textfield.iconURL = this.iconURL;
             textfield.value = Objects.requireNonNull(this.value);
             textfield.newValueHandler = Objects.requireNonNull(this.newValueHandler);
             textfield.style = this.style; // Optional on purpose

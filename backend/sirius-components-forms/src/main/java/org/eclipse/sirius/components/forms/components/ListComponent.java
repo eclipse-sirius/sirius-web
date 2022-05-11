@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -50,6 +50,7 @@ public class ListComponent implements IComponent {
 
         String id = listDescription.getIdProvider().apply(variableManager);
         String label = listDescription.getLabelProvider().apply(variableManager);
+        String iconURL = listDescription.getIconURLProvider().apply(variableManager);
         List<?> itemCandidates = listDescription.getItemsProvider().apply(variableManager);
 
         List<Element> children = List.of(new Element(DiagnosticComponent.class, new DiagnosticComponentProps(listDescription, variableManager)));
@@ -83,14 +84,15 @@ public class ListComponent implements IComponent {
         }
 
         // @formatter:off
-        ListElementProps listElementProps = ListElementProps.newListElementProps(id)
+        ListElementProps.Builder listElementPropsBuilder = ListElementProps.newListElementProps(id)
                 .label(label)
                 .items(items)
-                .children(children)
-                .build();
+                .children(children);
         // @formatter:on
-
-        return new Element(ListElementProps.TYPE, listElementProps);
+        if (iconURL != null) {
+            listElementPropsBuilder.iconURL(iconURL);
+        }
+        return new Element(ListElementProps.TYPE, listElementPropsBuilder.build());
     }
 
 }

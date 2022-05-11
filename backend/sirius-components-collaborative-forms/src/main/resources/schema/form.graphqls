@@ -65,6 +65,7 @@ type Group {
 interface Widget {
   id: ID!
   label: String!
+  iconURL: String
   diagnostics: [Diagnostic!]!
 }
 
@@ -72,6 +73,7 @@ type Checkbox implements Widget {
   id: ID!
   diagnostics: [Diagnostic!]!
   label: String!
+  iconURL: String
   value: Boolean!
   style: CheckboxStyle
 }
@@ -84,6 +86,7 @@ type List implements Widget {
   id: ID!
   diagnostics: [Diagnostic!]!
   label: String!
+  iconURL: String
   items: [ListItem!]!
 }
 
@@ -99,6 +102,7 @@ type MultiSelect implements Widget {
   id: ID!
   diagnostics: [Diagnostic!]!
   label: String!
+  iconURL: String
   options: [SelectOption!]!
   values: [String]
   style: MultiSelectStyle
@@ -118,6 +122,7 @@ type Radio implements Widget {
   id: ID!
   diagnostics: [Diagnostic!]!
   label: String!
+  iconURL: String
   options: [RadioOption!]!
   style: RadioStyle
 }
@@ -141,6 +146,7 @@ type Select implements Widget {
   id: ID!
   diagnostics: [Diagnostic!]!
   label: String!
+  iconURL: String
   options: [SelectOption!]!
   value: String
   style: SelectStyle
@@ -165,6 +171,7 @@ type Textarea implements Widget {
   id: ID!
   diagnostics: [Diagnostic!]!
   label: String!
+  iconURL: String
   value: String!
   style: TextareaStyle
 }
@@ -184,6 +191,7 @@ type Textfield implements Widget {
   id: ID!
   diagnostics: [Diagnostic!]!
   label: String!
+  iconURL: String
   value: String!
   style: TextfieldStyle
 }
@@ -202,6 +210,7 @@ type Link implements Widget {
   id: ID!
   diagnostics: [Diagnostic!]!
   label: String!
+  iconURL: String
   url: String!
 }
 

@@ -72,6 +72,8 @@ public final class Textarea extends AbstractWidget {
 
         private String label;
 
+        private String iconURL;
+
         private String value;
 
         private Function<String, IStatus> newValueHandler;
@@ -86,6 +88,11 @@ public final class Textarea extends AbstractWidget {
 
         public Builder label(String label) {
             this.label = Objects.requireNonNull(label);
+            return this;
+        }
+
+        public Builder iconURL(String iconURL) {
+            this.iconURL = Objects.requireNonNull(iconURL);
             return this;
         }
 
@@ -113,6 +120,7 @@ public final class Textarea extends AbstractWidget {
             Textarea textarea = new Textarea();
             textarea.id = Objects.requireNonNull(this.id);
             textarea.label = Objects.requireNonNull(this.label);
+            textarea.iconURL = this.iconURL;
             textarea.value = Objects.requireNonNull(this.value);
             textarea.newValueHandler = Objects.requireNonNull(this.newValueHandler);
             textarea.style = this.style; // Optional on purpose

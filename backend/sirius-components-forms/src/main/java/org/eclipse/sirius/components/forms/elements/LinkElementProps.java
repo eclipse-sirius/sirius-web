@@ -33,6 +33,8 @@ public final class LinkElementProps implements IProps {
 
     private String label;
 
+    private String iconURL;
+
     private String url;
 
     private List<Element> children;
@@ -47,6 +49,10 @@ public final class LinkElementProps implements IProps {
 
     public String getLabel() {
         return this.label;
+    }
+
+    public String getIconURL() {
+        return this.iconURL;
     }
 
     public String getUrl() {
@@ -79,6 +85,8 @@ public final class LinkElementProps implements IProps {
 
         private String label;
 
+        private String iconURL;
+
         private String url;
 
         private List<Element> children;
@@ -89,6 +97,11 @@ public final class LinkElementProps implements IProps {
 
         public Builder label(String label) {
             this.label = Objects.requireNonNull(label);
+            return this;
+        }
+
+        public Builder iconURL(String iconURL) {
+            this.iconURL = Objects.requireNonNull(iconURL);
             return this;
         }
 
@@ -106,6 +119,7 @@ public final class LinkElementProps implements IProps {
             LinkElementProps linkElementProps = new LinkElementProps();
             linkElementProps.id = Objects.requireNonNull(this.id);
             linkElementProps.label = Objects.requireNonNull(this.label);
+            linkElementProps.iconURL = this.iconURL;
             linkElementProps.url = Objects.requireNonNull(this.url);
             linkElementProps.children = Objects.requireNonNull(this.children);
             return linkElementProps;

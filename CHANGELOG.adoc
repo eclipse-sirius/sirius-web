@@ -28,6 +28,7 @@
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1242[#1242] [view] Provide icons for View DSL Widgets and FormDescription
 - https://github.com/eclipse-sirius/sirius-components/issues/1214[#1214] [forms] The mandatory label attribute which was available in all concrete widget types is now explicitly part of the common supertype.
+- https://github.com/eclipse-sirius/sirius-components/issues/1215[#1215] [forms] Widgets can now optionally specify an `iconURL`. It is not used in the default UI for the details view or forms representations for now, but will be used in an upcoming UI to allow users to hide/reveal individual widgets inside a group.
 
 === New features
 
@@ -104,7 +105,7 @@ When closed, clicking on any of the views' icon will re-open the panel to make t
 - https://github.com/eclipse-sirius/sirius-components/issues/1116[#1116] [form] Add support for multiple selection entries in the details view
 - https://github.com/eclipse-sirius/sirius-components/issues/1117[#1117] [diagram] Add support for multiple selections in a diagram. This work only display the various selection entries in the diagram. It does not support Ctrl+click or ⌘+click in a diagram. Support for this feature would require additional work with major improvements in the lifecycle of the `DiagramServer``
 - https://github.com/eclipse-sirius/sirius-components/issues/1146[#1146] [core] Add support for EditingContext actions
-- https://github.com/eclipse-sirius/sirius-components/issues/1152[#1152] [form] Add support for form descriptions in the view converter 
+- https://github.com/eclipse-sirius/sirius-components/issues/1152[#1152] [form] Add support for form descriptions in the view converter
 - https://github.com/eclipse-sirius/sirius-components/issues/1169[#1169] [form] Add support for a form description editor
 - https://github.com/eclipse-sirius/sirius-components/issues/1181[#1181] [form] Add backend for a form description editor
 - https://github.com/eclipse-sirius/sirius-components/issues/1201[#1201] [charts] Prepare support for charts in Sirius Components

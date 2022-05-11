@@ -47,6 +47,7 @@ public class TextfieldComponent implements IComponent {
 
         String id = textfieldDescription.getIdProvider().apply(variableManager);
         String label = textfieldDescription.getLabelProvider().apply(variableManager);
+        String iconURL = textfieldDescription.getIconURLProvider().apply(variableManager);
         String value = textfieldDescription.getValueProvider().apply(variableManager);
         BiFunction<VariableManager, String, IStatus> genericHandler = textfieldDescription.getNewValueHandler();
         Function<String, IStatus> specializedHandler = newValue -> {
@@ -63,6 +64,9 @@ public class TextfieldComponent implements IComponent {
                 .newValueHandler(specializedHandler)
                 .children(children);
 
+        if (iconURL != null) {
+            textfieldElementPropsBuilder.iconURL(iconURL);
+        }
         if (textfieldStyle != null) {
             textfieldElementPropsBuilder.style(textfieldStyle);
         }

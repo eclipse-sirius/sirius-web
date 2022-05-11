@@ -38,6 +38,8 @@ public final class MultiSelectElementProps implements IProps {
 
     private String label;
 
+    private String iconURL;
+
     private List<SelectOption> options;
 
     private List<String> values;
@@ -58,6 +60,10 @@ public final class MultiSelectElementProps implements IProps {
 
     public String getLabel() {
         return this.label;
+    }
+
+    public String getIconURL() {
+        return this.iconURL;
     }
 
     public List<SelectOption> getOptions() {
@@ -103,6 +109,8 @@ public final class MultiSelectElementProps implements IProps {
 
         private String label;
 
+        private String iconURL;
+
         private List<SelectOption> options;
 
         private List<String> values;
@@ -119,6 +127,11 @@ public final class MultiSelectElementProps implements IProps {
 
         public Builder label(String label) {
             this.label = Objects.requireNonNull(label);
+            return this;
+        }
+
+        public Builder iconURL(String iconURL) {
+            this.iconURL = Objects.requireNonNull(iconURL);
             return this;
         }
 
@@ -151,6 +164,7 @@ public final class MultiSelectElementProps implements IProps {
             MultiSelectElementProps multiSelectElementProps = new MultiSelectElementProps();
             multiSelectElementProps.id = Objects.requireNonNull(this.id);
             multiSelectElementProps.label = Objects.requireNonNull(this.label);
+            multiSelectElementProps.iconURL = this.iconURL;
             multiSelectElementProps.options = Objects.requireNonNull(this.options);
             multiSelectElementProps.values = List.copyOf(this.values);
             multiSelectElementProps.newValuesHandler = Objects.requireNonNull(this.newValuesHandler);

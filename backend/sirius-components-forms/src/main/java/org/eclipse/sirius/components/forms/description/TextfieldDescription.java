@@ -34,6 +34,8 @@ public final class TextfieldDescription extends AbstractWidgetDescription {
 
     private Function<VariableManager, String> labelProvider;
 
+    private Function<VariableManager, String> iconURLProvider;
+
     private Function<VariableManager, String> valueProvider;
 
     private BiFunction<VariableManager, String, IStatus> newValueHandler;
@@ -50,6 +52,10 @@ public final class TextfieldDescription extends AbstractWidgetDescription {
 
     public Function<VariableManager, String> getLabelProvider() {
         return this.labelProvider;
+    }
+
+    public Function<VariableManager, String> getIconURLProvider() {
+        return this.iconURLProvider;
     }
 
     public Function<VariableManager, String> getValueProvider() {
@@ -87,6 +93,8 @@ public final class TextfieldDescription extends AbstractWidgetDescription {
 
         private Function<VariableManager, String> labelProvider;
 
+        private Function<VariableManager, String> iconURLProvider = variableManager -> null;
+
         private Function<VariableManager, String> valueProvider;
 
         private BiFunction<VariableManager, String, IStatus> newValueHandler;
@@ -110,6 +118,11 @@ public final class TextfieldDescription extends AbstractWidgetDescription {
 
         public Builder labelProvider(Function<VariableManager, String> labelProvider) {
             this.labelProvider = Objects.requireNonNull(labelProvider);
+            return this;
+        }
+
+        public Builder iconURLProvider(Function<VariableManager, String> iconURLProvider) {
+            this.iconURLProvider = Objects.requireNonNull(iconURLProvider);
             return this;
         }
 
@@ -148,6 +161,7 @@ public final class TextfieldDescription extends AbstractWidgetDescription {
             textfieldDescription.id = Objects.requireNonNull(this.id);
             textfieldDescription.idProvider = Objects.requireNonNull(this.idProvider);
             textfieldDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
+            textfieldDescription.iconURLProvider = Objects.requireNonNull(this.iconURLProvider);
             textfieldDescription.valueProvider = Objects.requireNonNull(this.valueProvider);
             textfieldDescription.newValueHandler = Objects.requireNonNull(this.newValueHandler);
             textfieldDescription.diagnosticsProvider = Objects.requireNonNull(this.diagnosticsProvider);

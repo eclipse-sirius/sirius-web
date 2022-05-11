@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -33,6 +33,8 @@ public final class ListDescription extends AbstractWidgetDescription {
 
     private Function<VariableManager, String> labelProvider;
 
+    private Function<VariableManager, String> iconURLProvider;
+
     private Function<VariableManager, List<?>> itemsProvider;
 
     private Function<VariableManager, String> itemIdProvider;
@@ -57,6 +59,10 @@ public final class ListDescription extends AbstractWidgetDescription {
 
     public Function<VariableManager, String> getLabelProvider() {
         return this.labelProvider;
+    }
+
+    public Function<VariableManager, String> getIconURLProvider() {
+        return this.iconURLProvider;
     }
 
     public Function<VariableManager, List<?>> getItemsProvider() {
@@ -110,6 +116,8 @@ public final class ListDescription extends AbstractWidgetDescription {
 
         private Function<VariableManager, String> labelProvider;
 
+        private Function<VariableManager, String> iconURLProvider = variableManager -> null;
+
         private Function<VariableManager, List<?>> itemsProvider;
 
         private Function<VariableManager, String> itemIdProvider;
@@ -141,6 +149,11 @@ public final class ListDescription extends AbstractWidgetDescription {
 
         public Builder labelProvider(Function<VariableManager, String> labelProvider) {
             this.labelProvider = Objects.requireNonNull(labelProvider);
+            return this;
+        }
+
+        public Builder iconURLProvider(Function<VariableManager, String> iconURLProvider) {
+            this.iconURLProvider = Objects.requireNonNull(iconURLProvider);
             return this;
         }
 
@@ -199,6 +212,7 @@ public final class ListDescription extends AbstractWidgetDescription {
             listDescription.id = Objects.requireNonNull(this.id);
             listDescription.idProvider = Objects.requireNonNull(this.idProvider);
             listDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
+            listDescription.iconURLProvider = Objects.requireNonNull(this.iconURLProvider);
             listDescription.itemsProvider = Objects.requireNonNull(this.itemsProvider);
             listDescription.itemIdProvider = Objects.requireNonNull(this.itemIdProvider);
             listDescription.itemLabelProvider = Objects.requireNonNull(this.itemLabelProvider);

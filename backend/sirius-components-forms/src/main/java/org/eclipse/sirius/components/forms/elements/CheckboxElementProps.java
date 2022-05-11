@@ -36,6 +36,8 @@ public final class CheckboxElementProps implements IProps {
 
     private String label;
 
+    private String iconURL;
+
     private boolean value;
 
     private Function<Boolean, IStatus> newValueHandler;
@@ -54,6 +56,10 @@ public final class CheckboxElementProps implements IProps {
 
     public String getLabel() {
         return this.label;
+    }
+
+    public String getIconURL() {
+        return this.iconURL;
     }
 
     public boolean isValue() {
@@ -94,6 +100,8 @@ public final class CheckboxElementProps implements IProps {
 
         private String label;
 
+        private String iconURL;
+
         private boolean value;
 
         private Function<Boolean, IStatus> newValueHandler;
@@ -108,6 +116,11 @@ public final class CheckboxElementProps implements IProps {
 
         public Builder label(String label) {
             this.label = Objects.requireNonNull(label);
+            return this;
+        }
+
+        public Builder iconURL(String iconURL) {
+            this.iconURL = Objects.requireNonNull(iconURL);
             return this;
         }
 
@@ -135,6 +148,7 @@ public final class CheckboxElementProps implements IProps {
             CheckboxElementProps checkboxElementProps = new CheckboxElementProps();
             checkboxElementProps.id = Objects.requireNonNull(this.id);
             checkboxElementProps.label = Objects.requireNonNull(this.label);
+            checkboxElementProps.iconURL = this.iconURL;
             checkboxElementProps.value = Objects.requireNonNull(this.value);
             checkboxElementProps.newValueHandler = Objects.requireNonNull(this.newValueHandler);
             checkboxElementProps.style = this.style; // Optional on purpose

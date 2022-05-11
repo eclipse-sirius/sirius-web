@@ -51,6 +51,7 @@ public class RadioComponent implements IComponent {
 
         String id = radioDescription.getIdProvider().apply(variableManager);
         String label = radioDescription.getLabelProvider().apply(variableManager);
+        String iconURL = radioDescription.getIconURLProvider().apply(variableManager);
         List<?> optionCandidates = radioDescription.getOptionsProvider().apply(variableManager);
 
         List<Element> children = List.of(new Element(DiagnosticComponent.class, new DiagnosticComponentProps(radioDescription, variableManager)));
@@ -87,6 +88,9 @@ public class RadioComponent implements IComponent {
                 .newValueHandler(specializedHandler)
                 .children(children);
 
+        if (iconURL != null) {
+            radioElementPropsBuilder.iconURL(iconURL);
+        }
         if (radioStyle != null) {
             radioElementPropsBuilder.style(radioStyle);
         }

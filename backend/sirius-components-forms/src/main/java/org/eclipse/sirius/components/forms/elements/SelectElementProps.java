@@ -37,6 +37,8 @@ public final class SelectElementProps implements IProps {
 
     private String label;
 
+    private String iconURL;
+
     private List<SelectOption> options;
 
     private String value;
@@ -57,6 +59,10 @@ public final class SelectElementProps implements IProps {
 
     public String getLabel() {
         return this.label;
+    }
+
+    public String getIconURL() {
+        return this.iconURL;
     }
 
     public List<SelectOption> getOptions() {
@@ -102,6 +108,8 @@ public final class SelectElementProps implements IProps {
 
         private String label;
 
+        private String iconURL;
+
         private List<SelectOption> options;
 
         private String value;
@@ -118,6 +126,11 @@ public final class SelectElementProps implements IProps {
 
         public Builder label(String label) {
             this.label = Objects.requireNonNull(label);
+            return this;
+        }
+
+        public Builder iconURL(String iconURL) {
+            this.iconURL = Objects.requireNonNull(iconURL);
             return this;
         }
 
@@ -150,6 +163,7 @@ public final class SelectElementProps implements IProps {
             SelectElementProps selectElementProps = new SelectElementProps();
             selectElementProps.id = Objects.requireNonNull(this.id);
             selectElementProps.label = Objects.requireNonNull(this.label);
+            selectElementProps.iconURL = this.iconURL;
             selectElementProps.options = Objects.requireNonNull(this.options);
             selectElementProps.value = this.value;
             selectElementProps.newValueHandler = Objects.requireNonNull(this.newValueHandler);

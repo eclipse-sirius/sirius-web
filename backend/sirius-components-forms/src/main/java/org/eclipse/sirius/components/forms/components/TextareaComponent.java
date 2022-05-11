@@ -46,6 +46,7 @@ public class TextareaComponent implements IComponent {
 
         String id = textareaDescription.getIdProvider().apply(variableManager);
         String label = textareaDescription.getLabelProvider().apply(variableManager);
+        String iconURL = textareaDescription.getIconURLProvider().apply(variableManager);
         String value = textareaDescription.getValueProvider().apply(variableManager);
         Function<String, IStatus> specializedHandler = newValue -> {
             return textareaDescription.getNewValueHandler().apply(variableManager, newValue);
@@ -61,6 +62,9 @@ public class TextareaComponent implements IComponent {
                 .newValueHandler(specializedHandler)
                 .children(children);
 
+        if (iconURL != null) {
+            textareaElementPropsBuilder.iconURL(iconURL);
+        }
         if (textareaStyle != null) {
             textareaElementPropsBuilder.style(textareaStyle);
         }
