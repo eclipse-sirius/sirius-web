@@ -12,12 +12,16 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.diagrams.handlers;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IConnectorToolsProvider;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
@@ -31,9 +35,11 @@ import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.Position;
+import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.diagrams.events.DoublePositionEvent;
 import org.eclipse.sirius.components.diagrams.tools.SingleClickOnTwoDiagramElementsTool;
@@ -66,13 +72,20 @@ public class InvokeSingleClickOnTwoDiagramElementsToolEventHandler implements ID
 
     private final ICollaborativeDiagramMessageService messageService;
 
+    private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
+
+    private final List<IConnectorToolsProvider> connectorToolsProviders;
+
     private final Counter counter;
 
-    public InvokeSingleClickOnTwoDiagramElementsToolEventHandler(IObjectService objectService, IDiagramQueryService diagramQueryService, IToolService toolService, ICollaborativeDiagramMessageService messageService,
+    public InvokeSingleClickOnTwoDiagramElementsToolEventHandler(IObjectService objectService, IDiagramQueryService diagramQueryService, IToolService toolService,
+            ICollaborativeDiagramMessageService messageService, IRepresentationDescriptionSearchService representationDescriptionSearchService, List<IConnectorToolsProvider> connectorToolsProviders,
             MeterRegistry meterRegistry) {
         this.objectService = Objects.requireNonNull(objectService);
         this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
         this.toolService = Objects.requireNonNull(toolService);
+        this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
+        this.connectorToolsProviders = Objects.requireNonNull(connectorToolsProviders);
         this.messageService = Objects.requireNonNull(messageService);
 
         // @formatter:off
@@ -101,7 +114,8 @@ public class InvokeSingleClickOnTwoDiagramElementsToolEventHandler implements ID
             // @formatter:off
             var optionalTool = this.toolService.findToolById(editingContext, diagram, input.getToolId())
                     .filter(SingleClickOnTwoDiagramElementsTool.class::isInstance)
-                    .map(SingleClickOnTwoDiagramElementsTool.class::cast);
+                    .map(SingleClickOnTwoDiagramElementsTool.class::cast)
+                    .or(this.findConnectorToolById(input.getDiagramSourceElementId(), input.getDiagramTargetElementId(), editingContext, diagram, input.getToolId()));
             // @formatter:on
             if (optionalTool.isPresent()) {
                 Position sourcePosition = Position.at(input.getSourcePositionX(), input.getSourcePositionY());
@@ -126,8 +140,8 @@ public class InvokeSingleClickOnTwoDiagramElementsToolEventHandler implements ID
         changeDescriptionSink.tryEmitNext(changeDescription);
     }
 
-    private IStatus executeTool(IEditingContext editingContext, IDiagramContext diagramContext, String sourceNodeId, String targetNodeId, SingleClickOnTwoDiagramElementsTool tool, Position sourcePosition,
-            Position targetPosition) {
+    private IStatus executeTool(IEditingContext editingContext, IDiagramContext diagramContext, String sourceNodeId, String targetNodeId, SingleClickOnTwoDiagramElementsTool tool,
+            Position sourcePosition, Position targetPosition) {
         IStatus result = new Failure(""); //$NON-NLS-1$
         Diagram diagram = diagramContext.getDiagram();
         Optional<Node> sourceNode = this.diagramQueryService.findNodeById(diagram, sourceNodeId);
@@ -152,6 +166,39 @@ public class InvokeSingleClickOnTwoDiagramElementsToolEventHandler implements ID
             diagramContext.setDiagramEvent(new DoublePositionEvent(sourcePosition, targetPosition));
         }
         return result;
+    }
+
+    private Supplier<Optional<SingleClickOnTwoDiagramElementsTool>> findConnectorToolById(String diagramSourceElementId, String diagramTargetElementId, IEditingContext editingContext, Diagram diagram,
+            String searchedToolId) {
+        //@formatter:off
+        var diagramDescription = this.representationDescriptionSearchService.findById(editingContext, diagram.getDescriptionId())
+                .filter(DiagramDescription.class::isInstance)
+                .map(DiagramDescription.class::cast);
+        //@formatter:on
+
+        if (diagramDescription.isPresent()) {
+          //@formatter:off
+            List<IConnectorToolsProvider> compatibleConnectorToolsProviders = this.connectorToolsProviders.stream()
+                    .filter(provider -> provider.canHandle(diagramDescription.get()))
+                    .collect(Collectors.toList());
+            //@formatter:on
+            if (!compatibleConnectorToolsProviders.isEmpty()) {
+                var diagramSourceElement = this.diagramQueryService.findNodeById(diagram, diagramSourceElementId);
+                var diagramTargetElement = this.diagramQueryService.findNodeById(diagram, diagramTargetElementId);
+                if (diagramSourceElement.isPresent() && diagramTargetElement.isPresent()) {
+                    //@formatter:off
+                    return () -> compatibleConnectorToolsProviders.stream()
+                            .map(provider -> provider.getConnectorTools(diagramSourceElement.get(), diagramTargetElement.get(), diagram, editingContext))
+                            .flatMap(List::stream)
+                            .filter(tool -> tool.getId().equals(searchedToolId))
+                            .filter(SingleClickOnTwoDiagramElementsTool.class::isInstance)
+                            .map(SingleClickOnTwoDiagramElementsTool.class::cast)
+                            .findFirst();
+                    //@formatter:on
+                }
+            }
+        }
+        return () -> Optional.empty();
     }
 
 }

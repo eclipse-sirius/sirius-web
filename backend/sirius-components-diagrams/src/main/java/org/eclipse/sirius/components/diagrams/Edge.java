@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,6 +29,14 @@ import org.eclipse.sirius.components.annotations.Immutable;
 public final class Edge {
 
     public static final String SELECTED_EDGE = "selectedEdge"; //$NON-NLS-1$
+
+    public static final String PRE_SOURCE = "preSource"; //$NON-NLS-1$
+
+    public static final String PRE_TARGET = "preTarget"; //$NON-NLS-1$
+
+    public static final String PRE_SOURCE_VIEW = "preSourceView"; //$NON-NLS-1$
+
+    public static final String PRE_TARGET_VIEW = "preTargetView"; //$NON-NLS-1$
 
     private String id;
 
